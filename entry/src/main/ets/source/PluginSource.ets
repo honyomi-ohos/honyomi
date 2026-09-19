@@ -15,6 +15,8 @@ export interface PluginManifest {
   supportsLatest: boolean;
   minAppVersion: number;
   dslVersion: number;
+  // 可选：插件包内图标文件名（如 icon.png）
+  icon: string;
 }
 
 // 插件返回值（JSON 宽松形态）

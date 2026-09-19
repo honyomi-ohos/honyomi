@@ -325,18 +325,9 @@ export struct BrowsePage {
         .padding({ left: 16, right: 16, top: 4 })
         .contentEndOffset(this.navBarH + 76)
         .layoutWeight(1)
-
-        if (this.hasNextPage) {
-          Button(this.loadingMore ? '加载中…' : '加载更多')
-            .fontSize(14)
-            .height(36)
-            .backgroundColor(this.pal.chip)
-            .fontColor(this.pal.text)
-            .margin(12)
-            .onClick(() => {
-              this.loadMore();
-            })
-        }
+        .onReachEnd(() => {
+          this.loadMore();
+        })
       }
     }
     .width('100%')

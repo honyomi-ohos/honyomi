@@ -93,9 +93,9 @@ export class AppIconRes {
 @Component
 export struct AppIcon {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  name: string = '';
-  iconSize: number = 24;
-  tint: ResourceColor = '';
+  @Prop name: string = '';
+  @Prop iconSize: number = 24;
+  @Prop tint: ResourceColor = '';
 
   build() {
     Image(AppIconRes.get(this.name))

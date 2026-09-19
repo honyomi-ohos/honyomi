@@ -28,7 +28,7 @@ import { DownloadsSettingsPage } from './settings/DownloadsSettingsPage';
 import { BrowseSettingsPage } from './settings/BrowseSettingsPage';
 import { AdvancedPage } from './settings/AdvancedPage';
 import { AboutPage } from './settings/AboutPage';
-import { AppIcon } from './components/AppIcon';
+import { AppIconRes } from './components/AppIcon';
 
 @Entry
 @Component
@@ -150,11 +150,10 @@ struct Index {
   @Builder
   tabBuilder(title: string, icon: string, index: number) {
     Column({ space: 2 }) {
-      AppIcon({
-        name: icon,
-        iconSize: 22,
-        tint: this.currentTab === index ? this.pal.primary : this.pal.sub
-      })
+      Image(AppIconRes.get(icon))
+        .width(22)
+        .height(22)
+        .fillColor(this.currentTab === index ? this.pal.primary : this.pal.sub)
       Text(title)
         .fontSize(11)
         .fontColor(this.currentTab === index ? this.pal.primary : this.pal.sub)
