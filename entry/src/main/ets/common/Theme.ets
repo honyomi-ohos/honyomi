@@ -1,35 +1,106 @@
-// 主题色（浅色/深色双套，跟随 AppStorage 'isDark'）
+// 主题：色板资源化（base/dark color.json）+ AppStorage 'palette' 状态绑定
+// 组件用法：@StorageProp('palette') pal: ThemePalette = new ThemePalette()
+//           .fontColor(this.pal.text)
+// palette 由 Settings.applyTheme / applyAccent / pushPalette 重建并写入 AppStorage，
+// 深浅色值引用 color.json 资源（随应用颜色模式自动解析），AMOLED/accent 由构建时选取。
+
+export class ThemePalette {
+  bg: ResourceColor = '#F2F3F7';
+  card: ResourceColor = '#FFFFFF';
+  chip: ResourceColor = '#E9ECF2';
+  divider: ResourceColor = '#E5E7EB';
+  text: ResourceColor = '#16181D';
+  sub: ResourceColor = '#6B7280';
+  primary: ResourceColor = '#4E6E9E';
+  primarySoft: ResourceColor = '#E0E7F0';
+  badgeRed: ResourceColor = '#E5484D';
+  badgeBlue: ResourceColor = '#3D7DC8';
+}
 
 export class Theme {
-  static bg(dark: boolean): string {
-    return dark ? '#101318' : '#F2F3F7';
+  static accentNames(): string[] {
+    return ['blue', 'green', 'pink', 'purple', 'orange'];
   }
 
-  static card(dark: boolean): string {
-    return dark ? '#1B212B' : '#FFFFFF';
+  static accentLabel(name: string): string {
+    if (name === 'green') {
+      return '绿色';
+    }
+    if (name === 'pink') {
+      return '粉色';
+    }
+    if (name === 'purple') {
+      return '紫色';
+    }
+    if (name === 'orange') {
+      return '橙色';
+    }
+    return '蓝色';
   }
 
-  static text(dark: boolean): string {
-    return dark ? '#ECEEF2' : '#16181D';
+  static accentDot(name: string): string {
+    if (name === 'green') {
+      return '#388E64';
+    }
+    if (name === 'pink') {
+      return '#D45E88';
+    }
+    if (name === 'purple') {
+      return '#7B5EA7';
+    }
+    if (name === 'orange') {
+      return '#E07840';
+    }
+    return '#4E6E9E';
   }
 
-  static sub(dark: boolean): string {
-    return dark ? '#8B93A1' : '#6B7280';
+  // 构建 palette：AMOLED 仅深色模式生效；accent 决定 primary/primarySoft
+  static buildPalette(dark: boolean, amoled: boolean, accent: string): ThemePalette {
+    const pal: ThemePalette = new ThemePalette();
+    pal.bg = $r('app.color.mihon_bg');
+    pal.card = $r('app.color.mihon_card');
+    pal.chip = $r('app.color.mihon_chip');
+    pal.divider = $r('app.color.mihon_divider');
+    pal.text = $r('app.color.mihon_text');
+    pal.sub = $r('app.color.mihon_sub');
+    pal.badgeRed = $r('app.color.mihon_badge_red');
+    pal.badgeBlue = $r('app.color.mihon_badge_blue');
+    if (dark && amoled) {
+      pal.bg = $r('app.color.mihon_bg_amoled');
+      pal.card = $r('app.color.mihon_card_amoled');
+      pal.chip = $r('app.color.mihon_chip_amoled');
+      pal.divider = $r('app.color.mihon_divider_amoled');
+    }
+    if (accent === 'green') {
+      pal.primary = $r('app.color.mihon_primary_green');
+      pal.primarySoft = $r('app.color.mihon_primary_soft_green');
+    } else if (accent === 'pink') {
+      pal.primary = $r('app.color.mihon_primary_pink');
+      pal.primarySoft = $r('app.color.mihon_primary_soft_pink');
+    } else if (accent === 'purple') {
+      pal.primary = $r('app.color.mihon_primary_purple');
+      pal.primarySoft = $r('app.color.mihon_primary_soft_purple');
+    } else if (accent === 'orange') {
+      pal.primary = $r('app.color.mihon_primary_orange');
+      pal.primarySoft = $r('app.color.mihon_primary_soft_orange');
+    } else {
+      pal.primary = $r('app.color.mihon_primary_blue');
+      pal.primarySoft = $r('app.color.mihon_primary_soft_blue');
+    }
+    return pal;
   }
 
-  static primary(dark: boolean): string {
-    return dark ? '#7B9BD4' : '#4E6E9E';
-  }
-
-  static chip(dark: boolean): string {
-    return dark ? '#242B37' : '#E9ECF2';
-  }
-
-  static divider(dark: boolean): string {
-    return dark ? '#2A313D' : '#E5E7EB';
-  }
-
-  static readerBg(dark: boolean): string {
+  // 阅读器背景：readerTheme 0=白 1=黑 2=灰 3=自动（跟随深色模式）
+  static readerBg(theme: number, dark: boolean): string {
+    if (theme === 0) {
+      return '#FFFFFF';
+    }
+    if (theme === 1) {
+      return '#000000';
+    }
+    if (theme === 2) {
+      return '#3A3A3A';
+    }
     return dark ? '#000000' : '#FFFFFF';
   }
 }

@@ -6,7 +6,7 @@ import { SourceRegistry, Source } from '../source/Source';
 import { LocalSource } from '../source/LocalSource';
 import { MangaRecord, SManga } from '../model/Models';
 import { DetailParams } from '../model/RouteParams';
-import { Theme } from '../common/Theme';
+import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { MangaCard } from './components/MangaCard';
 import { InputDialog } from './components/Dialogs';
@@ -16,6 +16,7 @@ import { InputDialog } from './components/Dialogs';
 export struct BrowsePage {
   @Consume('navStack') pathStack: NavPathStack;
   @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('pluginsDirty') @Watch('onPluginsChanged') pluginsDirty: number = 0;
   @State sources: Source[] = [];
   @State selectedSource: string = 'mangadex';
@@ -221,20 +222,20 @@ export struct BrowsePage {
         Text('浏览')
           .fontSize(22)
           .fontWeight(FontWeight.Bold)
-          .fontColor(Theme.text(this.isDark))
+          .fontColor(this.pal.text)
           .layoutWeight(1)
         if (this.selectedSource === 'local') {
           Button('导入')
             .fontSize(14)
             .height(32)
-            .backgroundColor(Theme.primary(this.isDark))
+            .backgroundColor(this.pal.primary)
             .onClick(() => {
               this.pickImportFiles();
             })
         }
         Text('插件')
           .fontSize(13)
-          .fontColor(Theme.primary(this.isDark))
+          .fontColor(this.pal.primary)
           .padding({ left: 12, right: 4 })
           .onClick(() => {
             this.pathStack.pushPathByName('Plugins', null);
@@ -248,8 +249,8 @@ export struct BrowsePage {
         ForEach(this.sources, (source: Source) => {
           Text(source.name)
             .fontSize(13)
-            .fontColor(this.selectedSource === source.key ? '#FFFFFF' : Theme.text(this.isDark))
-            .backgroundColor(this.selectedSource === source.key ? Theme.primary(this.isDark) : Theme.chip(this.isDark))
+            .fontColor(this.selectedSource === source.key ? '#FFFFFF' : this.pal.text)
+            .backgroundColor(this.selectedSource === source.key ? this.pal.primary : this.pal.chip)
             .borderRadius(14)
             .padding({ left: 14, right: 14, top: 6, bottom: 6 })
             .onClick(() => {
@@ -270,14 +271,14 @@ export struct BrowsePage {
           TextInput({ placeholder: '搜索漫画…' })
             .layoutWeight(1)
             .height(38)
-            .backgroundColor(Theme.card(this.isDark))
+            .backgroundColor(this.pal.card)
             .onChange((value: string) => {
               this.query = value;
             })
           Button('搜索')
             .fontSize(14)
             .height(38)
-            .backgroundColor(Theme.primary(this.isDark))
+            .backgroundColor(this.pal.primary)
             .onClick(() => {
               this.search();
             })
@@ -292,7 +293,7 @@ export struct BrowsePage {
           LoadingProgress()
             .width(36)
             .height(36)
-            .color(Theme.primary(this.isDark))
+            .color(this.pal.primary)
         }
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)
@@ -300,7 +301,7 @@ export struct BrowsePage {
         Column() {
           Text(this.selectedSource === 'local' ? '暂无本地漫画，点击右上角「导入」' : '没有找到漫画')
             .fontSize(14)
-            .fontColor(Theme.sub(this.isDark))
+            .fontColor(this.pal.sub)
         }
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)
@@ -327,8 +328,8 @@ export struct BrowsePage {
           Button(this.loadingMore ? '加载中…' : '加载更多')
             .fontSize(14)
             .height(36)
-            .backgroundColor(Theme.chip(this.isDark))
-            .fontColor(Theme.text(this.isDark))
+            .backgroundColor(this.pal.chip)
+            .fontColor(this.pal.text)
             .margin(12)
             .onClick(() => {
               this.loadMore();
@@ -338,6 +339,6 @@ export struct BrowsePage {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor(Theme.bg(this.isDark))
+    .backgroundColor(this.pal.bg)
   }
 }

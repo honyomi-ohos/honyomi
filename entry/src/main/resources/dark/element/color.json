@@ -1,0 +1,92 @@
+{
+  "color": [
+    {
+      "name": "mihon_bg",
+      "value": "#101318"
+    },
+    {
+      "name": "mihon_card",
+      "value": "#1B212B"
+    },
+    {
+      "name": "mihon_chip",
+      "value": "#242B37"
+    },
+    {
+      "name": "mihon_divider",
+      "value": "#2A313D"
+    },
+    {
+      "name": "mihon_text",
+      "value": "#ECEEF2"
+    },
+    {
+      "name": "mihon_sub",
+      "value": "#8B93A1"
+    },
+    {
+      "name": "mihon_badge_red",
+      "value": "#E5484D"
+    },
+    {
+      "name": "mihon_badge_blue",
+      "value": "#3D7DC8"
+    },
+    {
+      "name": "mihon_primary_blue",
+      "value": "#7B9BD4"
+    },
+    {
+      "name": "mihon_primary_green",
+      "value": "#6FBF95"
+    },
+    {
+      "name": "mihon_primary_pink",
+      "value": "#E58BB1"
+    },
+    {
+      "name": "mihon_primary_purple",
+      "value": "#A98BD1"
+    },
+    {
+      "name": "mihon_primary_orange",
+      "value": "#F09A6A"
+    },
+    {
+      "name": "mihon_primary_soft_blue",
+      "value": "#28303C"
+    },
+    {
+      "name": "mihon_primary_soft_green",
+      "value": "#26382F"
+    },
+    {
+      "name": "mihon_primary_soft_pink",
+      "value": "#3A2A33"
+    },
+    {
+      "name": "mihon_primary_soft_purple",
+      "value": "#302A3C"
+    },
+    {
+      "name": "mihon_primary_soft_orange",
+      "value": "#3A2E25"
+    },
+    {
+      "name": "mihon_bg_amoled",
+      "value": "#000000"
+    },
+    {
+      "name": "mihon_card_amoled",
+      "value": "#0D0D0D"
+    },
+    {
+      "name": "mihon_chip_amoled",
+      "value": "#161616"
+    },
+    {
+      "name": "mihon_divider_amoled",
+      "value": "#1E1E1E"
+    }
+  ]
+}

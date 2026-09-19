@@ -4,7 +4,7 @@ import { MangaRepo, ChapterRepo, CategoryRepo } from '../data/Repos';
 import { UpdateService } from '../data/UpdateService';
 import { MangaRecord, CategoryRecord } from '../model/Models';
 import { DetailParams } from '../model/RouteParams';
-import { Theme } from '../common/Theme';
+import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { MangaCard, CategoryChip } from './components/MangaCard';
 import { InputDialog, CategoryDialog } from './components/Dialogs';
@@ -14,6 +14,7 @@ import { InputDialog, CategoryDialog } from './components/Dialogs';
 export struct LibraryPage {
   @Consume('navStack') pathStack: NavPathStack;
   @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State mangas: MangaRecord[] = [];
   @State categories: CategoryRecord[] = [];
   @State selectedCategory: number = 0;
@@ -93,18 +94,18 @@ export struct LibraryPage {
         Text('书架')
           .fontSize(22)
           .fontWeight(FontWeight.Bold)
-          .fontColor(Theme.text(this.isDark))
+          .fontColor(this.pal.text)
           .layoutWeight(1)
         Text(this.refreshing ? '刷新中…' : '⟳')
           .fontSize(this.refreshing ? 14 : 24)
-          .fontColor(Theme.primary(this.isDark))
+          .fontColor(this.pal.primary)
           .padding({ left: 8, right: 8 })
           .onClick(() => {
             this.refreshLibrary();
           })
         Text('＋')
           .fontSize(22)
-          .fontColor(Theme.primary(this.isDark))
+          .fontColor(this.pal.primary)
           .padding({ left: 8 })
           .onClick(() => {
             this.showAddCategoryDialog();
@@ -118,8 +119,8 @@ export struct LibraryPage {
         Row({ space: 8 }) {
           Text('全部')
             .fontSize(13)
-            .fontColor(this.selectedCategory === 0 ? '#FFFFFF' : Theme.text(this.isDark))
-            .backgroundColor(this.selectedCategory === 0 ? Theme.primary(this.isDark) : Theme.chip(this.isDark))
+            .fontColor(this.selectedCategory === 0 ? '#FFFFFF' : this.pal.text)
+            .backgroundColor(this.selectedCategory === 0 ? this.pal.primary : this.pal.chip)
             .borderRadius(14)
             .padding({ left: 14, right: 14, top: 6, bottom: 6 })
             .onClick(() => {
@@ -148,7 +149,7 @@ export struct LibraryPage {
           LoadingProgress()
             .width(36)
             .height(36)
-            .color(Theme.primary(this.isDark))
+            .color(this.pal.primary)
         }
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)
@@ -156,10 +157,10 @@ export struct LibraryPage {
         Column() {
           Text('书架空空如也')
             .fontSize(15)
-            .fontColor(Theme.sub(this.isDark))
+            .fontColor(this.pal.sub)
           Text('去「浏览」页发现并收藏漫画吧')
             .fontSize(13)
-            .fontColor(Theme.sub(this.isDark))
+            .fontColor(this.pal.sub)
             .margin({ top: 8 })
         }
         .layoutWeight(1)
@@ -190,7 +191,7 @@ export struct LibraryPage {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor(Theme.bg(this.isDark))
+    .backgroundColor(this.pal.bg)
   }
 
   private showAddCategoryDialog(): void {

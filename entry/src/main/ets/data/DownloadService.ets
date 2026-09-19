@@ -13,6 +13,7 @@ export class DownloadService {
   private static rootDir: string = '';
   private static queue: DownloadTask[] = [];
   private static running: boolean = false;
+  private static paused: boolean = false;
   private static listeners: Array<() => void> = [];
 
   static init(context: common.UIAbilityContext): void {
@@ -79,8 +80,58 @@ export class DownloadService {
     DownloadService.notify();
   }
 
+  // 暂停：当前任务继续跑完，不再启动新任务
+  static pauseAll(): void {
+    DownloadService.paused = true;
+    DownloadService.notify();
+  }
+
+  static resumeAll(): void {
+    DownloadService.paused = false;
+    DownloadService.notify();
+    DownloadService.pump();
+  }
+
+  static isPaused(): boolean {
+    return DownloadService.paused;
+  }
+
+  // 置顶/移底：仅对排队中(state=0)的任务生效
+  static moveToTop(chapterId: number): void {
+    const task = DownloadService.queue.find((t: DownloadTask) => t.chapterId === chapterId && t.state === 0);
+    if (task === undefined) {
+      return;
+    }
+    DownloadService.queue = DownloadService.queue.filter((t: DownloadTask) => t !== task);
+    DownloadService.queue.unshift(task);
+    DownloadService.notify();
+  }
+
+  static moveToBottom(chapterId: number): void {
+    const task = DownloadService.queue.find((t: DownloadTask) => t.chapterId === chapterId && t.state === 0);
+    if (task === undefined) {
+      return;
+    }
+    DownloadService.queue = DownloadService.queue.filter((t: DownloadTask) => t !== task);
+    DownloadService.queue.push(task);
+    DownloadService.notify();
+  }
+
+  // 重试失败任务
+  static retry(chapterId: number): void {
+    for (const t of DownloadService.queue) {
+      if (t.chapterId === chapterId && t.state === 3) {
+        t.state = 0;
+        t.progress = 0;
+        t.error = '';
+      }
+    }
+    DownloadService.notify();
+    DownloadService.pump();
+  }
+
   private static pump(): void {
-    if (DownloadService.running) {
+    if (DownloadService.running || DownloadService.paused) {
       return;
     }
     const next = DownloadService.queue.find((t: DownloadTask) => t.state === 0);

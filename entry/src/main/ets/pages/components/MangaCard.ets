@@ -1,5 +1,5 @@
 import { MangaRecord, CategoryRecord } from '../../model/Models';
-import { Theme } from '../../common/Theme';
+import { ThemePalette } from '../../common/Theme';
 import { SmartImage } from './SmartImage';
 
 // 漫画封面卡片（书架/浏览通用）
@@ -8,6 +8,7 @@ export struct MangaCard {
   @Prop record: MangaRecord = new MangaRecord();
   @Prop badge: string = '';
   @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   onCardClick: (record: MangaRecord) => void = (_r: MangaRecord) => {};
   onCardLongPress: (record: MangaRecord) => void = (_r: MangaRecord) => {};
 
@@ -20,7 +21,7 @@ export struct MangaCard {
           }
           .width('100%')
           .aspectRatio(0.7)
-          .backgroundColor(Theme.chip(this.isDark))
+          .backgroundColor(this.pal.chip)
           .borderRadius(8)
           .justifyContent(FlexAlign.Center)
         } else {
@@ -29,7 +30,7 @@ export struct MangaCard {
             .aspectRatio(0.7)
             .borderRadius(8)
             .clip(true)
-            .backgroundColor(Theme.chip(this.isDark))
+            .backgroundColor(this.pal.chip)
         }
         if (this.badge !== '') {
           Text(this.badge)
@@ -44,7 +45,7 @@ export struct MangaCard {
 
       Text(this.record.title)
         .fontSize(12)
-        .fontColor(Theme.text(this.isDark))
+        .fontColor(this.pal.text)
         .maxLines(2)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
         .margin({ top: 6 })
@@ -69,13 +70,14 @@ export struct CategoryChip {
   @Prop category: CategoryRecord = new CategoryRecord();
   @Prop selected: boolean = false;
   @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   onChipClick: (category: CategoryRecord) => void = (_c: CategoryRecord) => {};
 
   build() {
     Text(this.category.name)
       .fontSize(13)
-      .fontColor(this.selected ? '#FFFFFF' : Theme.text(this.isDark))
-      .backgroundColor(this.selected ? Theme.primary(this.isDark) : Theme.chip(this.isDark))
+      .fontColor(this.selected ? '#FFFFFF' : this.pal.text)
+      .backgroundColor(this.selected ? this.pal.primary : this.pal.chip)
       .borderRadius(14)
       .padding({ left: 14, right: 14, top: 6, bottom: 6 })
       .onClick(() => {

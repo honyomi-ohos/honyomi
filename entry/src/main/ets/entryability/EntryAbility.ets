@@ -30,6 +30,7 @@ export default class EntryAbility extends UIAbility {
       this.context.config.colorMode === ConfigurationConstant.ColorMode.COLOR_MODE_DARK;
     AppStorage.set('isDarkSystem', systemDark);
     Settings.applyTheme(systemDark);
+    Settings.applyColorMode(this.context);
     // 数据库
     AppDb.ready(this.context).catch((e: Error) => {
       hilog.error(DOMAIN, 'Mihon', 'db init failed: %{public}s', e.message);

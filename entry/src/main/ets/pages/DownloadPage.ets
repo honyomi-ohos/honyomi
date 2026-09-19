@@ -1,6 +1,6 @@
 import { DownloadService } from '../data/DownloadService';
 import { DownloadTask, DownloadedManga, DownloadedChapter } from '../model/Models';
-import { Theme } from '../common/Theme';
+import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 
 // 下载管理页：下载队列 + 已下载章节
@@ -8,18 +8,22 @@ import { Util } from '../common/Util';
 export struct DownloadPage {
   pathStack: NavPathStack = new NavPathStack();
   @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State queue: DownloadTask[] = [];
   @State downloaded: DownloadedManga[] = [];
   @State loading: boolean = true;
+  @State paused: boolean = false;
 
   private onQueueChanged = (): void => {
     this.queue = DownloadService.getQueue().slice();
+    this.paused = DownloadService.isPaused();
     this.loadDownloaded();
   }
 
   aboutToAppear(): void {
     DownloadService.addListener(this.onQueueChanged);
     this.queue = DownloadService.getQueue().slice();
+    this.paused = DownloadService.isPaused();
     this.loadDownloaded();
   }
 
@@ -57,7 +61,7 @@ export struct DownloadPage {
         Row() {
           Text('‹')
             .fontSize(30)
-            .fontColor(Theme.text(this.isDark))
+            .fontColor(this.pal.text)
             .padding({ left: 12, right: 12 })
             .onClick(() => {
               this.pathStack.pop();
@@ -65,13 +69,25 @@ export struct DownloadPage {
           Text('下载管理')
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
-            .fontColor(Theme.text(this.isDark))
+            .fontColor(this.pal.text)
             .layoutWeight(1)
           if (this.queue.length > 0) {
+            Text(this.paused ? '继续' : '暂停')
+              .fontSize(13)
+              .fontColor(this.pal.primary)
+              .padding(6)
+              .onClick(() => {
+                if (this.paused) {
+                  DownloadService.resumeAll();
+                } else {
+                  DownloadService.pauseAll();
+                }
+              })
             Text('清除记录')
               .fontSize(13)
-              .fontColor(Theme.primary(this.isDark))
+              .fontColor(this.pal.primary)
               .padding(6)
+              .margin({ left: 4 })
               .onClick(() => {
                 DownloadService.clearFinished();
               })
@@ -87,7 +103,7 @@ export struct DownloadPage {
               Text('下载队列')
                 .fontSize(14)
                 .fontWeight(FontWeight.Bold)
-                .fontColor(Theme.sub(this.isDark))
+                .fontColor(this.pal.sub)
                 .width('100%')
                 .padding({ left: 16, right: 16, top: 10, bottom: 6 })
             }
@@ -97,18 +113,18 @@ export struct DownloadPage {
                   Column() {
                     Text(task.chapterName)
                       .fontSize(14)
-                      .fontColor(Theme.text(this.isDark))
+                      .fontColor(this.pal.text)
                       .maxLines(1)
                       .textOverflow({ overflow: TextOverflow.Ellipsis })
                     Text(task.mangaTitle)
                       .fontSize(11)
-                      .fontColor(Theme.sub(this.isDark))
+                      .fontColor(this.pal.sub)
                       .maxLines(1)
                       .textOverflow({ overflow: TextOverflow.Ellipsis })
                       .margin({ top: 2 })
                     if (task.total > 0) {
                       Progress({ value: task.progress, total: task.total, type: ProgressType.Linear })
-                        .color(Theme.primary(this.isDark))
+                        .color(this.pal.primary)
                         .margin({ top: 6 })
                     }
                     if (task.state === 3 && task.error !== '') {
@@ -124,16 +140,49 @@ export struct DownloadPage {
 
                   Text(this.stateLabel(task.state))
                     .fontSize(11)
-                    .fontColor(task.state === 2 ? Theme.primary(this.isDark) :
-                      (task.state === 3 ? '#E05252' : Theme.sub(this.isDark)))
-                  if (task.state !== 1 && task.state !== 2) {
-                    Text('取消')
-                      .fontSize(12)
-                      .fontColor('#E05252')
-                      .padding({ left: 8 })
-                      .onClick(() => {
-                        DownloadService.cancel(task.chapterId);
-                      })
+                    .fontColor(task.state === 2 ? this.pal.primary :
+                      (task.state === 3 ? '#E05252' : this.pal.sub))
+                  if (task.state === 0) {
+                    Row({ space: 2 }) {
+                      Text('置顶')
+                        .fontSize(12)
+                        .fontColor(this.pal.primary)
+                        .padding({ left: 6 })
+                        .onClick(() => {
+                          DownloadService.moveToTop(task.chapterId);
+                        })
+                      Text('移底')
+                        .fontSize(12)
+                        .fontColor(this.pal.primary)
+                        .padding({ left: 6 })
+                        .onClick(() => {
+                          DownloadService.moveToBottom(task.chapterId);
+                        })
+                      Text('取消')
+                        .fontSize(12)
+                        .fontColor('#E05252')
+                        .padding({ left: 6 })
+                        .onClick(() => {
+                          DownloadService.cancel(task.chapterId);
+                        })
+                    }
+                  } else if (task.state === 3) {
+                    Row({ space: 2 }) {
+                      Text('重试')
+                        .fontSize(12)
+                        .fontColor(this.pal.primary)
+                        .padding({ left: 6 })
+                        .onClick(() => {
+                          DownloadService.retry(task.chapterId);
+                        })
+                      Text('取消')
+                        .fontSize(12)
+                        .fontColor('#E05252')
+                        .padding({ left: 6 })
+                        .onClick(() => {
+                          DownloadService.cancel(task.chapterId);
+                        })
+                    }
                   }
                 }
                 .width('100%')
@@ -149,7 +198,7 @@ export struct DownloadPage {
                 LoadingProgress()
                   .width(28)
                   .height(28)
-                  .color(Theme.primary(this.isDark))
+                  .color(this.pal.primary)
               }
               .width('100%')
               .justifyContent(FlexAlign.Center)
@@ -161,7 +210,7 @@ export struct DownloadPage {
                 Text('⬇️').fontSize(28)
                 Text('暂无下载内容')
                   .fontSize(13)
-                  .fontColor(Theme.sub(this.isDark))
+                  .fontColor(this.pal.sub)
                   .margin({ top: 8 })
               }
               .width('100%')
@@ -176,13 +225,13 @@ export struct DownloadPage {
                     Row() {
                       Text(item.chapterName)
                         .fontSize(14)
-                        .fontColor(Theme.text(this.isDark))
+                        .fontColor(this.pal.text)
                         .maxLines(1)
                         .textOverflow({ overflow: TextOverflow.Ellipsis })
                         .layoutWeight(1)
                       Text('已下载')
                         .fontSize(11)
-                        .fontColor(Theme.primary(this.isDark))
+                        .fontColor(this.pal.primary)
                         .margin({ right: 8 })
                       Text('删除')
                         .fontSize(12)
@@ -203,17 +252,17 @@ export struct DownloadPage {
         .scrollBar(BarState.Auto)
         .divider({
           strokeWidth: 1,
-          color: Theme.divider(this.isDark),
+          color: this.pal.divider,
           startMargin: 16,
           endMargin: 16,
         })
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(Theme.bg(this.isDark))
+      .backgroundColor(this.pal.bg)
     }
     .hideTitleBar(true)
-    .backgroundColor(Theme.bg(this.isDark))
+    .backgroundColor(this.pal.bg)
     .onReady((ctx: NavDestinationContext) => {
       this.pathStack = ctx.pathStack;
     })
@@ -226,16 +275,16 @@ export struct DownloadPage {
       Text(group.mangaTitle)
         .fontSize(14)
         .fontWeight(FontWeight.Bold)
-        .fontColor(Theme.text(this.isDark))
+        .fontColor(this.pal.text)
         .maxLines(1)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
         .layoutWeight(1)
       Text(`${group.chapters.length} 话`)
         .fontSize(11)
-        .fontColor(Theme.sub(this.isDark))
+        .fontColor(this.pal.sub)
     }
     .width('100%')
     .padding({ left: 16, right: 16, top: 14, bottom: 8 })
-    .backgroundColor(Theme.bg(this.isDark))
+    .backgroundColor(this.pal.bg)
   }
 }

@@ -4,7 +4,7 @@ import { MangaRepo, ChapterRepo, TrackRepo } from '../data/Repos';
 import { SourceRegistry } from '../source/Source';
 import { MangaRecord, ChapterRecord, TrackRecord, DownloadTask, ALMediaItem } from '../model/Models';
 import { DetailParams, ReaderParams } from '../model/RouteParams';
-import { Theme } from '../common/Theme';
+import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { Settings } from '../common/Settings';
 import { DownloadService } from '../data/DownloadService';
@@ -17,6 +17,7 @@ import { SmartImage } from './components/SmartImage';
 export struct MangaDetailPage {
   pathStack: NavPathStack = new NavPathStack();
   @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
   @State manga: MangaRecord = new MangaRecord();
   @State chapters: ChapterRecord[] = [];
@@ -228,7 +229,7 @@ export struct MangaDetailPage {
             Column()
               .width('100%')
               .height(280)
-              .backgroundColor(Theme.chip(this.isDark))
+              .backgroundColor(this.pal.chip)
           }
           Column()
             .width('100%')
@@ -268,7 +269,7 @@ export struct MangaDetailPage {
                 .width(110)
                 .height(150)
                 .borderRadius(10)
-                .backgroundColor(Theme.chip(this.isDark))
+                .backgroundColor(this.pal.chip)
                 .justifyContent(FlexAlign.Center)
               } else {
                 SmartImage({ url: this.manga.thumbnailUrl, sourceKey: this.manga.sourceKey, fit: ImageFit.Cover, fill: true })
@@ -281,19 +282,19 @@ export struct MangaDetailPage {
                 Text(this.manga.title)
                   .fontSize(20)
                   .fontWeight(FontWeight.Bold)
-                  .fontColor(Theme.text(this.isDark))
+                  .fontColor(this.pal.text)
                   .maxLines(3)
                   .textOverflow({ overflow: TextOverflow.Ellipsis })
                 if (this.manga.author !== '') {
                   Text(this.manga.author)
                     .fontSize(13)
-                    .fontColor(Theme.sub(this.isDark))
+                    .fontColor(this.pal.sub)
                     .maxLines(1)
                 }
                 Text(this.manga.sourceKey === 'local' ? '本地' : Util.statusLabel(this.manga.status))
                   .fontSize(12)
-                  .fontColor(Theme.primary(this.isDark))
-                  .backgroundColor(Theme.chip(this.isDark))
+                  .fontColor(this.pal.primary)
+                  .backgroundColor(this.pal.chip)
                   .borderRadius(8)
                   .padding({ left: 8, right: 8, top: 3, bottom: 3 })
               }
@@ -314,8 +315,8 @@ export struct MangaDetailPage {
             .fontSize(14)
             .height(38)
             .layoutWeight(1)
-            .backgroundColor(this.manga.inLibrary ? Theme.chip(this.isDark) : Theme.primary(this.isDark))
-            .fontColor(this.manga.inLibrary ? Theme.text(this.isDark) : '#FFFFFF')
+            .backgroundColor(this.manga.inLibrary ? this.pal.chip : this.pal.primary)
+            .fontColor(this.manga.inLibrary ? this.pal.text : '#FFFFFF')
             .onClick(() => {
               this.toggleLibrary();
             })
@@ -324,8 +325,8 @@ export struct MangaDetailPage {
             .fontSize(14)
             .height(38)
             .layoutWeight(1)
-            .backgroundColor(Theme.chip(this.isDark))
-            .fontColor(Theme.text(this.isDark))
+            .backgroundColor(this.pal.chip)
+            .fontColor(this.pal.text)
             .onClick(() => {
               const chapter = this.continueChapter();
               if (chapter !== undefined) {
@@ -341,13 +342,13 @@ export struct MangaDetailPage {
           Column() {
             Text(this.manga.description)
               .fontSize(13)
-              .fontColor(Theme.sub(this.isDark))
+              .fontColor(this.pal.sub)
               .maxLines(this.descExpanded ? 999 : 3)
               .textOverflow({ overflow: TextOverflow.Ellipsis })
               .width('100%')
             Text(this.descExpanded ? '收起' : '展开')
               .fontSize(12)
-              .fontColor(Theme.primary(this.isDark))
+              .fontColor(this.pal.primary)
               .margin({ top: 4 })
               .onClick(() => {
                 this.descExpanded = !this.descExpanded;
@@ -363,29 +364,29 @@ export struct MangaDetailPage {
           Text('AniList 追踪')
             .fontSize(15)
             .fontWeight(FontWeight.Bold)
-            .fontColor(Theme.text(this.isDark))
+            .fontColor(this.pal.text)
             .width('100%')
             .margin({ bottom: 8 })
           if (Settings.getAnilistToken() === '') {
             Text('在「更多」页配置 AniList 访问令牌后可追踪阅读进度')
               .fontSize(12)
-              .fontColor(Theme.sub(this.isDark))
+              .fontColor(this.pal.sub)
           } else if (this.track === undefined) {
             if (this.alSearching) {
               Row({ space: 8 }) {
                 LoadingProgress()
                   .width(16)
                   .height(16)
-                  .color(Theme.primary(this.isDark))
+                  .color(this.pal.primary)
                 Text('搜索中...')
                   .fontSize(12)
-                  .fontColor(Theme.sub(this.isDark))
+                  .fontColor(this.pal.sub)
               }
             } else {
               Text('搜索并绑定')
                 .fontSize(13)
                 .fontColor('#FFFFFF')
-                .backgroundColor(Theme.primary(this.isDark))
+                .backgroundColor(this.pal.primary)
                 .borderRadius(14)
                 .padding({ left: 14, right: 14, top: 6, bottom: 6 })
                 .onClick(() => {
@@ -396,13 +397,13 @@ export struct MangaDetailPage {
               Row() {
                 Text(item.title)
                   .fontSize(13)
-                  .fontColor(Theme.text(this.isDark))
+                  .fontColor(this.pal.text)
                   .maxLines(1)
                   .textOverflow({ overflow: TextOverflow.Ellipsis })
                   .layoutWeight(1)
                 Text('绑定')
                   .fontSize(12)
-                  .fontColor(Theme.primary(this.isDark))
+                  .fontColor(this.pal.primary)
                   .padding({ left: 8 })
                   .onClick(() => {
                     this.bindAl(item);
@@ -414,18 +415,18 @@ export struct MangaDetailPage {
           } else {
             Text(this.track.title)
               .fontSize(13)
-              .fontColor(Theme.text(this.isDark))
+              .fontColor(this.pal.text)
               .maxLines(1)
               .textOverflow({ overflow: TextOverflow.Ellipsis })
             Text(`已同步到第 ${this.track.lastChapterRead} 话`)
               .fontSize(11)
-              .fontColor(Theme.sub(this.isDark))
+              .fontColor(this.pal.sub)
               .margin({ top: 2 })
             Row({ space: 12 }) {
               Text('同步进度')
                 .fontSize(12)
-                .fontColor(Theme.primary(this.isDark))
-                .backgroundColor(Theme.chip(this.isDark))
+                .fontColor(this.pal.primary)
+                .backgroundColor(this.pal.chip)
                 .borderRadius(12)
                 .padding({ left: 10, right: 10, top: 4, bottom: 4 })
                 .margin({ top: 8 })
@@ -435,7 +436,7 @@ export struct MangaDetailPage {
               Text('解绑')
                 .fontSize(12)
                 .fontColor('#E05252')
-                .backgroundColor(Theme.chip(this.isDark))
+                .backgroundColor(this.pal.chip)
                 .borderRadius(12)
                 .padding({ left: 10, right: 10, top: 4, bottom: 4 })
                 .margin({ top: 8 })
@@ -448,7 +449,7 @@ export struct MangaDetailPage {
         .width('100%')
         .alignItems(HorizontalAlign.Start)
         .padding(16)
-        .backgroundColor(Theme.card(this.isDark))
+        .backgroundColor(this.pal.card)
         .borderRadius(14)
         .margin({ left: 16, right: 16, top: 12 })
 
@@ -457,18 +458,18 @@ export struct MangaDetailPage {
           Text(`章节 ${this.chapters.length}`)
             .fontSize(16)
             .fontWeight(FontWeight.Bold)
-            .fontColor(Theme.text(this.isDark))
+            .fontColor(this.pal.text)
             .layoutWeight(1)
           Text(this.sortAsc ? '正序 ↑' : '倒序 ↓')
             .fontSize(13)
-            .fontColor(Theme.primary(this.isDark))
+            .fontColor(this.pal.primary)
             .padding(6)
             .onClick(() => {
               this.sortAsc = !this.sortAsc;
             })
           Text('全部已读')
             .fontSize(13)
-            .fontColor(Theme.primary(this.isDark))
+            .fontColor(this.pal.primary)
             .padding(6)
             .onClick(() => {
               this.markAllRead();
@@ -483,7 +484,7 @@ export struct MangaDetailPage {
             LoadingProgress()
               .width(36)
               .height(36)
-              .color(Theme.primary(this.isDark))
+              .color(this.pal.primary)
           }
           .layoutWeight(1)
           .justifyContent(FlexAlign.Center)
@@ -491,7 +492,7 @@ export struct MangaDetailPage {
           Column() {
             Text('暂无章节')
               .fontSize(14)
-              .fontColor(Theme.sub(this.isDark))
+              .fontColor(this.pal.sub)
           }
           .layoutWeight(1)
           .justifyContent(FlexAlign.Center)
@@ -503,12 +504,12 @@ export struct MangaDetailPage {
                   Column() {
                     Text(chapter.name)
                       .fontSize(14)
-                      .fontColor(chapter.read ? Theme.sub(this.isDark) : Theme.text(this.isDark))
+                      .fontColor(chapter.read ? this.pal.sub : this.pal.text)
                       .maxLines(1)
                       .textOverflow({ overflow: TextOverflow.Ellipsis })
                     Text(Util.formatDate(chapter.dateUpload))
                       .fontSize(11)
-                      .fontColor(Theme.sub(this.isDark))
+                      .fontColor(this.pal.sub)
                       .margin({ top: 2 })
                   }
                   .alignItems(HorizontalAlign.Start)
@@ -517,7 +518,7 @@ export struct MangaDetailPage {
                   if (chapter.read) {
                     Text('已读')
                       .fontSize(11)
-                      .fontColor(Theme.sub(this.isDark))
+                      .fontColor(this.pal.sub)
                   } else {
                     Text('NEW')
                       .fontSize(10)
@@ -531,17 +532,17 @@ export struct MangaDetailPage {
                     if (DownloadService.isDownloaded(chapter.id)) {
                       Text('已下载')
                         .fontSize(11)
-                        .fontColor(Theme.primary(this.isDark))
+                        .fontColor(this.pal.primary)
                         .margin({ left: 8 })
                     } else if (DownloadService.isQueued(chapter.id)) {
                       Text('队列中')
                         .fontSize(11)
-                        .fontColor(Theme.sub(this.isDark))
+                        .fontColor(this.pal.sub)
                         .margin({ left: 8 })
                     } else {
                       Text('下载')
                         .fontSize(11)
-                        .fontColor(Theme.sub(this.isDark))
+                        .fontColor(this.pal.sub)
                         .margin({ left: 8 })
                         .padding(4)
                         .onClick(() => {
@@ -562,7 +563,7 @@ export struct MangaDetailPage {
           .scrollBar(BarState.Auto)
           .divider({
             strokeWidth: 1,
-            color: Theme.divider(this.isDark),
+            color: this.pal.divider,
             startMargin: 16,
             endMargin: 16,
           })
@@ -570,10 +571,10 @@ export struct MangaDetailPage {
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(Theme.bg(this.isDark))
+      .backgroundColor(this.pal.bg)
     }
     .hideTitleBar(true)
-    .backgroundColor(Theme.bg(this.isDark))
+    .backgroundColor(this.pal.bg)
     .onReady((ctx: NavDestinationContext) => {
       this.pathStack = ctx.pathStack;
       const params = ctx.pathInfo.param as DetailParams;

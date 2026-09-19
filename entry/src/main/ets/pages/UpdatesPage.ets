@@ -4,7 +4,7 @@ import { UpdatesRepo } from '../data/Repos';
 import { UpdateService } from '../data/UpdateService';
 import { UpdateItem } from '../model/Models';
 import { ReaderParams } from '../model/RouteParams';
-import { Theme } from '../common/Theme';
+import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 
 // 更新页：书架未读章节
@@ -12,6 +12,7 @@ import { Util } from '../common/Util';
 export struct UpdatesPage {
   @Consume('navStack') pathStack: NavPathStack;
   @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
   @State items: UpdateItem[] = [];
   @State loading: boolean = true;
@@ -54,11 +55,11 @@ export struct UpdatesPage {
         Text('更新')
           .fontSize(22)
           .fontWeight(FontWeight.Bold)
-          .fontColor(Theme.text(this.isDark))
+          .fontColor(this.pal.text)
           .layoutWeight(1)
         Text(this.refreshing ? '刷新中…' : '⟳')
           .fontSize(this.refreshing ? 14 : 24)
-          .fontColor(Theme.primary(this.isDark))
+          .fontColor(this.pal.primary)
           .padding({ left: 8, right: 8 })
           .onClick(() => {
             this.refreshLibrary();
@@ -72,7 +73,7 @@ export struct UpdatesPage {
           LoadingProgress()
             .width(36)
             .height(36)
-            .color(Theme.primary(this.isDark))
+            .color(this.pal.primary)
         }
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)
@@ -80,7 +81,7 @@ export struct UpdatesPage {
         Column() {
           Text('没有未读章节')
             .fontSize(14)
-            .fontColor(Theme.sub(this.isDark))
+            .fontColor(this.pal.sub)
         }
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)
@@ -96,7 +97,7 @@ export struct UpdatesPage {
                   .width(44)
                   .height(60)
                   .borderRadius(6)
-                  .backgroundColor(Theme.chip(this.isDark))
+                  .backgroundColor(this.pal.chip)
                   .justifyContent(FlexAlign.Center)
                 } else {
                   Image(item.coverUrl)
@@ -104,24 +105,24 @@ export struct UpdatesPage {
                     .height(60)
                     .objectFit(ImageFit.Cover)
                     .borderRadius(6)
-                    .backgroundColor(Theme.chip(this.isDark))
+                    .backgroundColor(this.pal.chip)
                 }
                 Column() {
                   Text(item.mangaTitle)
                     .fontSize(14)
                     .fontWeight(FontWeight.Medium)
-                    .fontColor(Theme.text(this.isDark))
+                    .fontColor(this.pal.text)
                     .maxLines(1)
                     .textOverflow({ overflow: TextOverflow.Ellipsis })
                   Text(item.chapterName)
                     .fontSize(13)
-                    .fontColor(Theme.sub(this.isDark))
+                    .fontColor(this.pal.sub)
                     .maxLines(1)
                     .textOverflow({ overflow: TextOverflow.Ellipsis })
                     .margin({ top: 4 })
                   Text(Util.timeAgo(item.dateUpload))
                     .fontSize(11)
-                    .fontColor(Theme.sub(this.isDark))
+                    .fontColor(this.pal.sub)
                     .margin({ top: 4 })
                 }
                 .alignItems(HorizontalAlign.Start)
@@ -140,7 +141,7 @@ export struct UpdatesPage {
         .scrollBar(BarState.Auto)
         .divider({
           strokeWidth: 1,
-          color: Theme.divider(this.isDark),
+          color: this.pal.divider,
           startMargin: 72,
           endMargin: 16,
         })
@@ -148,6 +149,6 @@ export struct UpdatesPage {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor(Theme.bg(this.isDark))
+    .backgroundColor(this.pal.bg)
   }
 }

@@ -1,5 +1,5 @@
 import { CategoryRecord } from '../../model/Models';
-import { Theme } from '../../common/Theme';
+import { ThemePalette } from '../../common/Theme';
 
 // 文本输入弹窗（新建分类 / 导入漫画命名）
 @CustomDialog
@@ -10,13 +10,14 @@ export struct InputDialog {
   @State inputText: string = '';
   onConfirm: (text: string) => void = (_t: string) => {};
   @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   build() {
     Column({ space: 16 }) {
       Text(this.title)
         .fontSize(16)
         .fontWeight(FontWeight.Bold)
-        .fontColor(Theme.text(this.isDark))
+        .fontColor(this.pal.text)
       TextInput({ placeholder: this.placeholder, text: this.inputText })
         .onChange((value: string) => {
           this.inputText = value;
@@ -24,8 +25,8 @@ export struct InputDialog {
       Row({ space: 12 }) {
         Button('取消')
           .layoutWeight(1)
-          .backgroundColor(Theme.chip(this.isDark))
-          .fontColor(Theme.text(this.isDark))
+          .backgroundColor(this.pal.chip)
+          .fontColor(this.pal.text)
           .onClick(() => {
             if (this.controller !== undefined) {
               this.controller.close();
@@ -33,7 +34,7 @@ export struct InputDialog {
           })
         Button('确定')
           .layoutWeight(1)
-          .backgroundColor(Theme.primary(this.isDark))
+          .backgroundColor(this.pal.primary)
           .onClick(() => {
             if (this.controller !== undefined) {
               this.controller.close();
@@ -44,7 +45,7 @@ export struct InputDialog {
       .width('100%')
     }
     .padding(20)
-    .backgroundColor(Theme.card(this.isDark))
+    .backgroundColor(this.pal.card)
     .borderRadius(16)
     .width('86%')
   }
@@ -57,23 +58,24 @@ export struct CategoryDialog {
   categories: CategoryRecord[] = [];
   onPick: (categoryId: number) => void = (_id: number) => {};
   @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   build() {
     Column({ space: 8 }) {
       Text('选择分类')
         .fontSize(16)
         .fontWeight(FontWeight.Bold)
-        .fontColor(Theme.text(this.isDark))
+        .fontColor(this.pal.text)
         .margin({ bottom: 8 })
       ForEach(this.categories, (cat: CategoryRecord) => {
         Text(cat.name)
           .fontSize(15)
-          .fontColor(Theme.text(this.isDark))
+          .fontColor(this.pal.text)
           .width('100%')
           .textAlign(TextAlign.Center)
           .padding(12)
           .borderRadius(10)
-          .backgroundColor(Theme.chip(this.isDark))
+          .backgroundColor(this.pal.chip)
           .onClick(() => {
             if (this.controller !== undefined) {
               this.controller.close();
@@ -83,7 +85,7 @@ export struct CategoryDialog {
       }, (cat: CategoryRecord) => `cat-${cat.id}`)
     }
     .padding(20)
-    .backgroundColor(Theme.card(this.isDark))
+    .backgroundColor(this.pal.card)
     .borderRadius(16)
     .width('80%')
   }

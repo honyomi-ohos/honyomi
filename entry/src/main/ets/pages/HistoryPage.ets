@@ -3,7 +3,7 @@ import { AppDb } from '../data/AppDb';
 import { HistoryRepo } from '../data/Repos';
 import { HistoryItem } from '../model/Models';
 import { ReaderParams } from '../model/RouteParams';
-import { Theme } from '../common/Theme';
+import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 
 // 历史页：最近阅读记录
@@ -11,6 +11,7 @@ import { Util } from '../common/Util';
 export struct HistoryPage {
   @Consume('navStack') pathStack: NavPathStack;
   @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
   @State items: HistoryItem[] = [];
   @State loading: boolean = true;
@@ -51,11 +52,11 @@ export struct HistoryPage {
         Text('历史')
           .fontSize(22)
           .fontWeight(FontWeight.Bold)
-          .fontColor(Theme.text(this.isDark))
+          .fontColor(this.pal.text)
           .layoutWeight(1)
         Text(this.confirmClear ? '确认清空？' : '清空')
           .fontSize(14)
-          .fontColor(this.confirmClear ? '#E05252' : Theme.sub(this.isDark))
+          .fontColor(this.confirmClear ? '#E05252' : this.pal.sub)
           .padding({ left: 8, right: 8 })
           .onClick(() => {
             this.clearHistory();
@@ -69,7 +70,7 @@ export struct HistoryPage {
           LoadingProgress()
             .width(36)
             .height(36)
-            .color(Theme.primary(this.isDark))
+            .color(this.pal.primary)
         }
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)
@@ -77,7 +78,7 @@ export struct HistoryPage {
         Column() {
           Text('暂无阅读历史')
             .fontSize(14)
-            .fontColor(Theme.sub(this.isDark))
+            .fontColor(this.pal.sub)
         }
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)
@@ -93,7 +94,7 @@ export struct HistoryPage {
                   .width(44)
                   .height(60)
                   .borderRadius(6)
-                  .backgroundColor(Theme.chip(this.isDark))
+                  .backgroundColor(this.pal.chip)
                   .justifyContent(FlexAlign.Center)
                 } else {
                   Image(item.coverUrl)
@@ -101,32 +102,32 @@ export struct HistoryPage {
                     .height(60)
                     .objectFit(ImageFit.Cover)
                     .borderRadius(6)
-                    .backgroundColor(Theme.chip(this.isDark))
+                    .backgroundColor(this.pal.chip)
                 }
                 Column() {
                   Text(item.mangaTitle)
                     .fontSize(14)
                     .fontWeight(FontWeight.Medium)
-                    .fontColor(Theme.text(this.isDark))
+                    .fontColor(this.pal.text)
                     .maxLines(1)
                     .textOverflow({ overflow: TextOverflow.Ellipsis })
                   Text(item.chapterName)
                     .fontSize(13)
-                    .fontColor(Theme.sub(this.isDark))
+                    .fontColor(this.pal.sub)
                     .maxLines(1)
                     .textOverflow({ overflow: TextOverflow.Ellipsis })
                     .margin({ top: 4 })
                   Text(Util.timeAgo(item.seenAt))
                     .fontSize(11)
-                    .fontColor(Theme.sub(this.isDark))
+                    .fontColor(this.pal.sub)
                     .margin({ top: 4 })
                 }
                 .alignItems(HorizontalAlign.Start)
                 .layoutWeight(1)
                 Text('继续')
                   .fontSize(12)
-                  .fontColor(Theme.primary(this.isDark))
-                  .backgroundColor(Theme.chip(this.isDark))
+                  .fontColor(this.pal.primary)
+                  .backgroundColor(this.pal.chip)
                   .borderRadius(12)
                   .padding({ left: 10, right: 10, top: 4, bottom: 4 })
               }
@@ -143,7 +144,7 @@ export struct HistoryPage {
         .scrollBar(BarState.Auto)
         .divider({
           strokeWidth: 1,
-          color: Theme.divider(this.isDark),
+          color: this.pal.divider,
           startMargin: 72,
           endMargin: 16,
         })
@@ -151,6 +152,6 @@ export struct HistoryPage {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor(Theme.bg(this.isDark))
+    .backgroundColor(this.pal.bg)
   }
 }

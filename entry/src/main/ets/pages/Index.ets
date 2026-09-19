@@ -1,7 +1,7 @@
 import { common } from '@kit.AbilityKit';
 import { webview } from '@kit.ArkWeb';
 import { hilog } from '@kit.PerformanceAnalysisKit';
-import { Theme } from '../common/Theme';
+import { ThemePalette } from '../common/Theme';
 import { Settings } from '../common/Settings';
 import { UpdateService } from '../data/UpdateService';
 import { PluginHost } from '../data/PluginHost';
@@ -18,6 +18,16 @@ import { MangaDetailPage } from './MangaDetailPage';
 import { ReaderPage } from './ReaderPage';
 import { DownloadPage } from './DownloadPage';
 import { PluginManagePage } from './PluginManagePage';
+import { CategoriesPage } from './CategoriesPage';
+import { SettingsPage } from './settings/SettingsPage';
+import { AppearancePage } from './settings/AppearancePage';
+import { LibrarySettingsPage } from './settings/LibrarySettingsPage';
+import { ReaderSettingsPage } from './settings/ReaderSettingsPage';
+import { DownloadsSettingsPage } from './settings/DownloadsSettingsPage';
+import { BrowseSettingsPage } from './settings/BrowseSettingsPage';
+import { AdvancedPage } from './settings/AdvancedPage';
+import { AboutPage } from './settings/AboutPage';
+import { AppIcon } from './components/AppIcon';
 
 @Entry
 @Component
@@ -25,12 +35,14 @@ struct Index {
   @Provide('navStack') pathStack: NavPathStack = new NavPathStack();
   @State currentTab: number = 0;
   @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageLink('cfChallengeUrl') @Watch('onCfUrlChanged') cfChallengeUrl: string = '';
   @State cfStatus: string = '';
   private hostController: webview.WebviewController = new webview.WebviewController();
   private cfController: webview.WebviewController = new webview.WebviewController();
 
   aboutToAppear(): void {
+    this.currentTab = Settings.getStartTab();
     PluginHost.getInstance().attachController(this.hostController);
     this.autoRefresh();
   }
@@ -111,16 +123,38 @@ struct Index {
       DownloadPage()
     } else if (name === 'Plugins') {
       PluginManagePage()
+    } else if (name === 'Categories') {
+      CategoriesPage()
+    } else if (name === 'Settings') {
+      SettingsPage()
+    } else if (name === 'Appearance') {
+      AppearancePage()
+    } else if (name === 'LibrarySettings') {
+      LibrarySettingsPage()
+    } else if (name === 'ReaderSettings') {
+      ReaderSettingsPage()
+    } else if (name === 'DownloadsSettings') {
+      DownloadsSettingsPage()
+    } else if (name === 'BrowseSettings') {
+      BrowseSettingsPage()
+    } else if (name === 'Advanced') {
+      AdvancedPage()
+    } else if (name === 'About') {
+      AboutPage()
     }
   }
 
   @Builder
-  tabBuilder(title: string, index: number) {
-    Column() {
+  tabBuilder(title: string, icon: string, index: number) {
+    Column({ space: 2 }) {
+      AppIcon({
+        name: icon,
+        iconSize: 22,
+        tint: this.currentTab === index ? this.pal.primary : this.pal.sub
+      })
       Text(title)
-        .fontSize(14)
-        .fontWeight(this.currentTab === index ? FontWeight.Bold : FontWeight.Normal)
-        .fontColor(this.currentTab === index ? Theme.primary(this.isDark) : Theme.sub(this.isDark))
+        .fontSize(11)
+        .fontColor(this.currentTab === index ? this.pal.primary : this.pal.sub)
     }
     .justifyContent(FlexAlign.Center)
     .height('100%')
@@ -129,31 +163,31 @@ struct Index {
   build() {
     Navigation(this.pathStack) {
       Stack({ alignContent: Alignment.TopStart }) {
-        Tabs({ barPosition: BarPosition.End }) {
+        Tabs({ barPosition: BarPosition.End, index: this.currentTab }) {
           TabContent() {
             LibraryPage()
           }
-          .tabBar(this.tabBuilder('书架', 0))
+          .tabBar(this.tabBuilder('书架', 'collections_bookmark', 0))
 
           TabContent() {
             UpdatesPage()
           }
-          .tabBar(this.tabBuilder('更新', 1))
+          .tabBar(this.tabBuilder('更新', 'new_releases', 1))
 
           TabContent() {
             HistoryPage()
           }
-          .tabBar(this.tabBuilder('历史', 2))
+          .tabBar(this.tabBuilder('历史', 'schedule', 2))
 
           TabContent() {
             BrowsePage()
           }
-          .tabBar(this.tabBuilder('浏览', 3))
+          .tabBar(this.tabBuilder('浏览', 'explore', 3))
 
           TabContent() {
             MorePage()
           }
-          .tabBar(this.tabBuilder('更多', 4))
+          .tabBar(this.tabBuilder('更多', 'more_vert', 4))
         }
         .scrollable(true)
         .barMode(BarMode.Fixed)
@@ -234,14 +268,14 @@ struct Index {
 
             Text(this.cfStatus)
               .fontSize(12)
-              .fontColor(Theme.sub(this.isDark))
+              .fontColor(this.pal.sub)
               .width('100%')
               .textAlign(TextAlign.Center)
               .padding(8)
           }
           .width('100%')
           .height('100%')
-          .backgroundColor(Theme.bg(this.isDark))
+          .backgroundColor(this.pal.bg)
         }
       }
       .width('100%')
@@ -250,6 +284,6 @@ struct Index {
     .navDestination(this.pageMap)
     .hideTitleBar(true)
     .mode(NavigationMode.Stack)
-    .backgroundColor(Theme.bg(this.isDark))
+    .backgroundColor(this.pal.bg)
   }
 }

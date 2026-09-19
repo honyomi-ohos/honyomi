@@ -48,6 +48,32 @@ export class ImageCache {
     }
   }
 
+  // 缓存目录占用字节数
+  static size(): number {
+    if (ImageCache.dir === '' || !fs.accessSync(ImageCache.dir)) {
+      return 0;
+    }
+    let total = 0;
+    const names = fs.listFileSync(ImageCache.dir);
+    for (let i = 0; i < names.length; i++) {
+      const stat = fs.statSync(`${ImageCache.dir}/${names[i]}`);
+      total += stat.size;
+    }
+    return total;
+  }
+
+  // 清空缓存目录，返回清除的字节数
+  static clearAll(): number {
+    const total = ImageCache.size();
+    if (ImageCache.dir !== '' && fs.accessSync(ImageCache.dir)) {
+      const names = fs.listFileSync(ImageCache.dir);
+      for (let i = 0; i < names.length; i++) {
+        fs.unlinkSync(`${ImageCache.dir}/${names[i]}`);
+      }
+    }
+    return total;
+  }
+
   // ---------------- 内部实现 ----------------
 
   private static async fetch(url: string, headers: Record<string, string>, path: string): Promise<string> {

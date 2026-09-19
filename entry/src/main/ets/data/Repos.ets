@@ -330,6 +330,17 @@ export class CategoryRepo {
     await store.insert('category', values);
   }
 
+  static async rename(id: number, name: string): Promise<void> {
+    if (id === 1 || name === '') {
+      return;
+    }
+    const store = await AppDb.get();
+    const values: relationalStore.ValuesBucket = { 'name': name };
+    const pred = new relationalStore.RdbPredicates('category');
+    pred.equalTo('id', id);
+    await store.update(values, pred);
+  }
+
   static async remove(id: number): Promise<void> {
     if (id === 1) {
       return;
