@@ -1,6 +1,7 @@
 # P4 Phase1 icon pipeline:
 #  1. Rasterize Mihon launcher icon (background/foreground/monochrome/startIcon) via GDI+
-#  2. Copy material-symbols SVGs into app resources as dark/white two-set app icons
+#  2. Copy material-symbols SVGs into app resources as single-set app icons (no fill
+#     attribute; color is applied at runtime via Image.fillColor with theme palette)
 # Reference repo is read-only; all output goes into this project.
 param(
   [string]$RefRoot = "D:\project\reference\mihon-main",
@@ -182,7 +183,6 @@ foreach ($pair in $filled) {
   $jobs += ,@{ file = "$symRoot\roundedFilled\$srcName.svg"; name = $dstName }
 }
 
-$darkColor = '#333333'; $whiteColor = '#FFFFFF'
 $count = 0
 foreach ($job in $jobs) {
   if (!(Test-Path -LiteralPath $job.file)) { Write-Output "MISSING: $($job.file)"; continue }
@@ -193,15 +193,12 @@ foreach ($job in $jobs) {
   $vbp = $vb -split '[\s,]+'
   $minY = [double]$vbp[1]; $w = [double]$vbp[2]; $h = [double]$vbp[3]
   if ($minY -ne 0) { $w = [double]$vbp[2]; }
-  foreach ($variant in @(@{ suffix = ''; color = $darkColor }, @{ suffix = '_w'; color = $whiteColor })) {
-    $inner = '<path fill="{0}" d="{1}"/>' -f $variant.color, $d
-    $useT = $minY
-    if ($minY -ne 0) { $inner = '<g transform="translate(0,{0})">{1}</g>' -f ([string](-$minY)), $inner }
-    $out = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 {0} {1}">{2}</svg>' -f $w, $h, $inner
-    $outPath = Join-Path $EntryMedia ("ic_{0}{1}.svg" -f $job.name, $variant.suffix)
-    [System.IO.File]::WriteAllText($outPath, $out, (New-Object System.Text.UTF8Encoding($false)))
-    $count++
-  }
+  $inner = '<path d="{0}"/>' -f $d
+  if ($minY -ne 0) { $inner = '<g transform="translate(0,{0})">{1}</g>' -f ([string](-$minY)), $inner }
+  $out = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 {0} {1}">{2}</svg>' -f $w, $h, $inner
+  $outPath = Join-Path $EntryMedia ("ic_{0}.svg" -f $job.name)
+  [System.IO.File]::WriteAllText($outPath, $out, (New-Object System.Text.UTF8Encoding($false)))
+  $count++
 }
 Write-Output "App icons done: $count svg files written to entry media"
 Write-Output "DONE"

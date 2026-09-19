@@ -522,9 +522,10 @@ export struct ReaderPage {
               Row({ space: 12 }) {
                 // 上一章
                 Column() {
-                  Image(AppIconRes.get('skip_previous', true))
+                  Image(AppIconRes.get('skip_previous'))
                     .width(24)
                     .height(24)
+                    .fillColor('#FFFFFF')
                 }
                 .width(44)
                 .height(44)
@@ -579,9 +580,10 @@ export struct ReaderPage {
 
                 // 下一章
                 Column() {
-                  Image(AppIconRes.get('skip_next', true))
+                  Image(AppIconRes.get('skip_next'))
                     .width(24)
                     .height(24)
+                    .fillColor('#FFFFFF')
                 }
                 .width(44)
                 .height(44)
@@ -601,9 +603,10 @@ export struct ReaderPage {
               // 设置行：阅读模式 / 旋转 / 裁边 / 设置
               Row() {
                 Column() {
-                  Image(AppIconRes.get(this.modeIcon(), true))
+                  Image(AppIconRes.get(this.modeIcon()))
                     .width(24)
                     .height(24)
+                    .fillColor('#FFFFFF')
                 }
                 .width(48)
                 .height(44)
@@ -613,9 +616,10 @@ export struct ReaderPage {
                 })
 
                 Column() {
-                  Image(AppIconRes.get('screen_rotation', true))
+                  Image(AppIconRes.get('screen_rotation'))
                     .width(24)
                     .height(24)
+                    .fillColor('#FFFFFF')
                 }
                 .width(48)
                 .height(44)
@@ -625,9 +629,10 @@ export struct ReaderPage {
                 })
 
                 Column() {
-                  Image(AppIconRes.get(this.crop ? 'crop' : 'crop_off', true))
+                  Image(AppIconRes.get(this.crop ? 'crop' : 'crop_off'))
                     .width(24)
                     .height(24)
+                    .fillColor('#FFFFFF')
                 }
                 .width(48)
                 .height(44)
@@ -637,9 +642,10 @@ export struct ReaderPage {
                 })
 
                 Column() {
-                  Image(AppIconRes.get('settings', true))
+                  Image(AppIconRes.get('settings'))
                     .width(24)
                     .height(24)
+                    .fillColor('#FFFFFF')
                 }
                 .width(48)
                 .height(44)
