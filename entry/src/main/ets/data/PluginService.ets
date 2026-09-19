@@ -21,11 +21,13 @@ interface RawManifest {
   supportsLatest?: boolean;
   minAppVersion?: number;
   dslVersion?: number;
+  icon?: string;
 }
 
 export interface InstalledPlugin {
   manifest: PluginManifest;
   enabled: boolean;
+  iconPath: string;
 }
 
 export interface RepoEntry {
@@ -117,6 +119,7 @@ export class PluginService {
       supportsLatest: raw.supportsLatest !== false,
       minAppVersion: raw.minAppVersion ?? 1,
       dslVersion: raw.dslVersion ?? 1,
+      icon: raw.icon ?? '',
     };
     return manifest;
   }
@@ -134,9 +137,11 @@ export class PluginService {
       }
       try {
         const manifest = PluginService.parseManifest(fs.readTextSync(manifestPath));
+        const iconPath = `${PluginService.pluginsDir}/${dir}/${manifest.icon}`;
         const item: InstalledPlugin = {
           manifest: manifest,
           enabled: PluginHost.getInstance().isPluginEnabled(manifest.key),
+          iconPath: manifest.icon !== '' && fs.accessSync(iconPath) ? `file://${iconPath}` : '',
         };
         result.push(item);
       } catch (e) {
@@ -277,6 +282,9 @@ export class PluginService {
       fs.mkdirSync(destDir, true);
       fs.copyFileSync(`${rootDir}/manifest.json`, `${destDir}/manifest.json`);
       fs.copyFileSync(`${rootDir}/main.js`, `${destDir}/main.js`);
+      if (manifest.icon !== '' && fs.accessSync(`${rootDir}/${manifest.icon}`)) {
+        fs.copyFileSync(`${rootDir}/${manifest.icon}`, `${destDir}/${manifest.icon}`);
+      }
       const scriptText = fs.readTextSync(`${destDir}/main.js`);
       await PluginService.reloadOne(manifest, scriptText);
       hilog.info(DOMAIN, TAG, 'plugin installed: %{public}s', manifest.key);

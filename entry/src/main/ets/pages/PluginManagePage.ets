@@ -31,6 +31,13 @@ export struct PluginManagePage {
     this.installed = PluginService.listInstalled();
   }
 
+  private firstCharOf(name: string): string {
+    if (name.length === 0) {
+      return '?';
+    }
+    return name.substring(0, 1).toUpperCase();
+  }
+
   private installedVersionOf(key: string): number {
     for (const item of this.installed) {
       if (item.manifest.key === key) {
@@ -160,6 +167,25 @@ export struct PluginManagePage {
   pluginRow(item: InstalledPlugin) {
     Column() {
       Row() {
+        if (item.iconPath !== '') {
+          Image(item.iconPath)
+            .width(40)
+            .height(40)
+            .borderRadius(10)
+            .objectFit(ImageFit.Cover)
+            .clip(true)
+        } else {
+          Text(this.firstCharOf(item.manifest.name))
+            .fontSize(17)
+            .fontWeight(FontWeight.Bold)
+            .fontColor('#FFFFFF')
+            .textAlign(TextAlign.Center)
+            .width(40)
+            .height(40)
+            .borderRadius(10)
+            .backgroundColor(this.pal.primary)
+        }
+
         Column() {
           Text(item.manifest.name)
             .fontSize(15)
@@ -172,6 +198,7 @@ export struct PluginManagePage {
         }
         .alignItems(HorizontalAlign.Start)
         .layoutWeight(1)
+        .margin({ left: 12 })
 
         Toggle({ type: ToggleType.Switch, isOn: item.enabled })
           .onChange((on: boolean) => {
@@ -282,7 +309,7 @@ export struct PluginManagePage {
               } else {
                 ForEach(this.installed, (item: InstalledPlugin) => {
                   this.pluginRow(item)
-                }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.enabled}`)
+                }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.enabled}-${item.iconPath}`)
               }
             }
             .width('100%')
