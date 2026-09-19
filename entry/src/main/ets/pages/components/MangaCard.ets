@@ -1,5 +1,6 @@
 import { MangaRecord, CategoryRecord } from '../../model/Models';
 import { Theme } from '../../common/Theme';
+import { SmartImage } from './SmartImage';
 
 // 漫画封面卡片（书架/浏览通用）
 @Component
@@ -23,11 +24,11 @@ export struct MangaCard {
           .borderRadius(8)
           .justifyContent(FlexAlign.Center)
         } else {
-          Image(this.record.thumbnailUrl)
+          SmartImage({ url: this.record.thumbnailUrl, sourceKey: this.record.sourceKey, fit: ImageFit.Cover, fill: true })
             .width('100%')
             .aspectRatio(0.7)
-            .objectFit(ImageFit.Cover)
             .borderRadius(8)
+            .clip(true)
             .backgroundColor(Theme.chip(this.isDark))
         }
         if (this.badge !== '') {

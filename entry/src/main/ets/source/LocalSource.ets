@@ -48,6 +48,10 @@ export class LocalSource implements Source {
     return this.buildManga(mangaKey);
   }
 
+  imageRequestHeaders(): Record<string, string> | undefined {
+    return undefined;
+  }
+
   async getChapterList(mangaKey: string): Promise<SChapter[]> {
     const dir = `${this.rootDir}/${mangaKey}`;
     const chapters: SChapter[] = [];

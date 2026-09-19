@@ -64,6 +64,32 @@ export class PluginService {
     if (!fs.accessSync(PluginService.pluginsDir)) {
       fs.mkdirSync(PluginService.pluginsDir, true);
     }
+    PluginService.cleanStaleTemp();
+  }
+
+  // 清理历史失败安装遗留的临时文件/目录（plugin_extract_*/plugin_install_*/plugin_repo_*）
+  private static cleanStaleTemp(): void {
+    if (!fs.accessSync(PluginService.cacheDir)) {
+      return;
+    }
+    const names: string[] = fs.listFileSync(PluginService.cacheDir);
+    for (const name of names) {
+      if (!name.startsWith('plugin_extract_') && !name.startsWith('plugin_install_') &&
+        !name.startsWith('plugin_repo_')) {
+        continue;
+      }
+      const path = `${PluginService.cacheDir}/${name}`;
+      try {
+        if (fs.statSync(path).isDirectory()) {
+          fs.rmdirSync(path);
+        } else {
+          fs.unlinkSync(path);
+        }
+        hilog.info(DOMAIN, TAG, 'cleaned stale temp: %{public}s', name);
+      } catch (e) {
+        hilog.warn(DOMAIN, TAG, 'clean stale temp failed: %{public}s %{public}s', name, (e as Error).message);
+      }
+    }
   }
 
   static parseManifest(text: string): PluginManifest {
@@ -186,7 +212,10 @@ export class PluginService {
       try {
         const scriptText = fs.readTextSync(`${PluginService.pluginsDir}/${item.manifest.key}/main.js`);
         await PluginHost.getInstance().loadPlugin(item.manifest.key, JSON.stringify(item.manifest), scriptText);
-        SourceRegistry.register(new PluginSource(item.manifest));
+        const ps = new PluginSource(item.manifest);
+        SourceRegistry.register(ps);
+        PluginService.warmImageHeaders(ps);
+        hilog.info(DOMAIN, TAG, 'plugin loaded: %{public}s v%{public}s', item.manifest.key, item.manifest.version);
       } catch (e) {
         hilog.error(DOMAIN, TAG, 'load plugin %{public}s failed: %{public}s',
           item.manifest.key, (e as Error).message);
@@ -293,6 +322,30 @@ export class PluginService {
       return;
     }
     await PluginHost.getInstance().loadPlugin(manifest.key, JSON.stringify(manifest), scriptText);
-    SourceRegistry.register(new PluginSource(manifest));
+    const ps = new PluginSource(manifest);
+    SourceRegistry.register(ps);
+    PluginService.warmImageHeaders(ps);
+  }
+
+  // 插件可选导出 imageHeaders()：声明后图片经宿主 http 管线加载（支持 Referer/Cookie）
+  // 未声明（或调用失败）时保持系统 Image 直连
+  private static warmImageHeaders(source: PluginSource): void {
+    PluginHost.getInstance().callPlugin(source.key, 'imageHeaders', [])
+      .then((json: string) => {
+        const raw = JSON.parse(json) as Record<string, Object>;
+        const keys = Object.keys(raw);
+        const headers: Record<string, string> = {};
+        for (const k of keys) {
+          const v = raw[k];
+          if (typeof v === 'string') {
+            headers[k] = v;
+          }
+        }
+        source.setImageHeaders(headers);
+        hilog.info(DOMAIN, TAG, 'image headers ready: %{public}s', source.key);
+      })
+      .catch((_e: Error) => {
+        // 插件未声明 imageHeaders：直连加载
+      });
   }
 }

@@ -9,6 +9,7 @@ import { Theme } from '../common/Theme';
 import { Util } from '../common/Util';
 import { Settings } from '../common/Settings';
 import { DownloadService } from '../data/DownloadService';
+import { SmartImage } from './components/SmartImage';
 
 // LazyForEach 数据源
 class PageDataSource implements IDataSource {
@@ -304,7 +305,7 @@ export struct ReaderPage {
           List({ scroller: this.scroller }) {
             LazyForEach(this.dataSource, (page: SPage) => {
               ListItem() {
-                Image(page.url)
+                SmartImage({ url: page.url, sourceKey: this.manga.sourceKey, fit: ImageFit.Cover, fill: false })
                   .width('100%')
                   .onClick(() => {
                     this.showMenu = !this.showMenu;
@@ -327,10 +328,9 @@ export struct ReaderPage {
         } else {
           Swiper() {
             LazyForEach(this.dataSource, (page: SPage) => {
-              Image(page.url)
+              SmartImage({ url: page.url, sourceKey: this.manga.sourceKey, fit: ImageFit.Contain, fill: true })
                 .width('100%')
                 .height('100%')
-                .objectFit(ImageFit.Contain)
             }, (page: SPage) => page.url)
           }
           .width('100%')

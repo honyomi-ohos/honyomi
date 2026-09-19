@@ -112,6 +112,7 @@ export class DownloadService {
       const pages: SPage[] = await source.getPageList(task.chapterUrl);
       task.total = pages.length;
       DownloadService.notify();
+      const imageHeaders = source.imageRequestHeaders();
       const dir = DownloadService.chapterDir(task.mangaId, task.chapterId);
       if (!fileIo.accessSync(dir)) {
         fileIo.mkdirSync(dir, true);
@@ -120,7 +121,7 @@ export class DownloadService {
         const fileName = DownloadService.pad(p.index);
         const filePath = `${dir}/${fileName}.jpg`;
         if (!fileIo.accessSync(filePath)) {
-          const buffer = await Http.getBuffer(p.url, undefined);
+          const buffer = await Http.getBuffer(p.url, imageHeaders);
           const fd = fileIo.openSync(filePath, fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE).fd;
           try {
             fileIo.writeSync(fd, buffer);

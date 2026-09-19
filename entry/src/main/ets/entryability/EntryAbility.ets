@@ -7,6 +7,8 @@ import { SourceRegistry } from '../source/Source';
 import { LocalSource } from '../source/LocalSource';
 import { DownloadService } from '../data/DownloadService';
 import { PluginService } from '../data/PluginService';
+import { CookieJar } from '../net/CookieJar';
+import { ImageCache } from '../common/ImageCache';
 
 const DOMAIN = 0x0001;
 
@@ -34,6 +36,10 @@ export default class EntryAbility extends UIAbility {
     });
     // 下载服务
     DownloadService.init(this.context);
+    // Cookie 存储与图片缓存
+    CookieJar.init(this.context);
+    ImageCache.init(this.context);
+    AppStorage.setOrCreate('cfChallengeUrl', '');
   }
 
   onConfigurationUpdate(newConfig: Configuration): void {

@@ -10,6 +10,7 @@ import { Settings } from '../common/Settings';
 import { DownloadService } from '../data/DownloadService';
 import { AniListTracker } from '../data/AniListTracker';
 import { InputDialog } from './components/Dialogs';
+import { SmartImage } from './components/SmartImage';
 
 // 漫画详情页：信息 + 章节列表 + 收藏 + 下载 + AniList 追踪
 @Component
@@ -219,10 +220,9 @@ export struct MangaDetailPage {
         // 头部：封面背景 + 信息
         Stack({ alignContent: Alignment.TopStart }) {
           if (this.manga.thumbnailUrl !== '') {
-            Image(this.manga.thumbnailUrl)
+            SmartImage({ url: this.manga.thumbnailUrl, sourceKey: this.manga.sourceKey, fit: ImageFit.Cover, fill: true })
               .width('100%')
               .height(280)
-              .objectFit(ImageFit.Cover)
               .blur(30)
           } else {
             Column()
@@ -271,11 +271,11 @@ export struct MangaDetailPage {
                 .backgroundColor(Theme.chip(this.isDark))
                 .justifyContent(FlexAlign.Center)
               } else {
-                Image(this.manga.thumbnailUrl)
+                SmartImage({ url: this.manga.thumbnailUrl, sourceKey: this.manga.sourceKey, fit: ImageFit.Cover, fill: true })
                   .width(110)
                   .height(150)
-                  .objectFit(ImageFit.Cover)
                   .borderRadius(10)
+                  .clip(true)
               }
               Column({ space: 6 }) {
                 Text(this.manga.title)

@@ -12,6 +12,8 @@ export interface Source {
   getMangaDetail(mangaKey: string): Promise<SManga>;
   getChapterList(mangaKey: string): Promise<SChapter[]>;
   getPageList(chapterKey: string): Promise<SPage[]>;
+  // 图片加载附加请求头；undefined = 直连加载（系统 Image 网络栈）
+  imageRequestHeaders(): Record<string, string> | undefined;
 }
 
 // 源注册表（内置源编译期注册；插件源运行期动态注册/注销）

@@ -1,6 +1,7 @@
 import { SManga, SChapter, SPage, MangasPage } from '../model/Models';
 import { Source } from './Source';
 import { PluginHost } from '../data/PluginHost';
+import { Http } from '../net/Http';
 
 // 插件包 manifest.json 模型（宽松字段，解析时校验必填项）
 export interface PluginManifest {
@@ -54,12 +55,41 @@ export class PluginSource implements Source {
   readonly supportsLatest: boolean;
   readonly manifest: PluginManifest;
 
+  private customImageHeaders: Record<string, string> | undefined = undefined;
+  private imageViaHost: boolean = false;
+
   constructor(manifest: PluginManifest) {
     this.manifest = manifest;
     this.key = manifest.key;
     this.name = manifest.name;
     this.lang = manifest.lang;
     this.supportsLatest = manifest.supportsLatest;
+  }
+
+  // 插件声明 imageHeaders() 后：图片经宿主 http 管线加载（可携带 Referer/Cookie）
+  // 传 undefined 表示直连；传 {} 表示走管线但仅默认 UA（为拿 Cookie 能力）
+  setImageHeaders(headers: Record<string, string> | undefined): void {
+    if (headers === undefined) {
+      this.imageViaHost = false;
+      this.customImageHeaders = undefined;
+    } else {
+      this.imageViaHost = true;
+      this.customImageHeaders = headers;
+    }
+  }
+
+  imageRequestHeaders(): Record<string, string> | undefined {
+    if (!this.imageViaHost) {
+      return undefined;
+    }
+    const merged: Record<string, string> = { 'User-Agent': Http.USER_AGENT };
+    if (this.customImageHeaders !== undefined) {
+      const keys = Object.keys(this.customImageHeaders);
+      for (const k of keys) {
+        merged[k] = this.customImageHeaders[k];
+      }
+    }
+    return merged;
   }
 
   async getPopularManga(page: number): Promise<MangasPage> {
