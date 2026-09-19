@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>mihon-plugin-host</title>
+</head>
+<body>
+<script>
+'use strict';
+// ============================================================
+// MihonHarmony 插件宿主沙箱
+// - 插件脚本通过 new Function 注入，唯一宿主 API 是 $ 命名空间
+// - 唯一网络出口：__hostBridge.request -> ArkTS Http
+// - 协议：JS/ArkTS 双向均为「发起即返回 + callId 回调回填」
+// ============================================================
+(function () {
+  var bridgeSeq = 0;            // JS -> ArkTS 调用序号
+  var bridgePending = {};       // callId -> {resolve, reject, timer}
+  var plugins = {};             // pluginKey -> exports
+  var PLUGIN_METHODS = ['getPopularManga', 'getSearchManga', 'getMangaDetail', 'getChapterList', 'getPageList'];
+
+  function settleBridge(id, ok, raw) {
+    var p = bridgePending[id];
+    if (!p) { return; }
+    delete bridgePending[id];
+    clearTimeout(p.timer);
+    if (ok) {
+      try { p.resolve(JSON.parse(raw)); } catch (e) { p.reject(new Error('桥响应解析失败')); }
+    } else {
+      var msg = raw;
+      try { msg = JSON.parse(raw); } catch (e) { /* keep raw */ }
+      p.reject(new Error(String(msg)));
+    }
+  }
+
+  // ArkTS 完成桥请求后通过 runJavaScript 回填
+  window.__bridgeResolve = function (callId, ok, resultJson) {
+    settleBridge(String(callId), !!ok, String(resultJson));
+  };
+
+  // JS -> ArkTS：method + payload(JSON)，返回 Promise(JSON 值)
+  function callHost(method, payload) {
+    return new Promise(function (resolve, reject) {
+      var id = String(++bridgeSeq);
+      bridgePending[id] = {
+        resolve: resolve,
+        reject: reject,
+        timer: setTimeout(function () {
+          settleBridge(id, false, JSON.stringify('bridge timeout: ' + method));
+        }, 60000)
+      };
+      try {
+        __hostBridge.request(id, method, JSON.stringify(payload || {}));
+      } catch (e) {
+        settleBridge(id, false, JSON.stringify(String(e && e.message ? e.message : e)));
+      }
+    });
+  }
+
+  function pickStr(obj, key) {
+    return (obj && typeof obj[key] === 'string') ? obj[key] : '';
+  }
+
+  // ---------------- $ 命名空间（按插件实例化） ----------------
+  function makeDollar(manifest) {
+    var baseUrl = pickStr(manifest, 'baseUrl');
+    var pluginKey = pickStr(manifest, 'key');
+
+    function mergedHeaders(headers) {
+      var h = { 'User-Agent': 'Mozilla/5.0 (MihonHarmony plugin)' };
+      if (baseUrl) {
+        try { h['Referer'] = new URL(baseUrl).origin + '/'; } catch (e) { /* ignore */ }
+      }
+      if (headers) {
+        for (var k in headers) {
+          if (Object.prototype.hasOwnProperty.call(headers, k)) { h[k] = String(headers[k]); }
+        }
+      }
+      return h;
+    }
+
+    var http = {
+      get: function (url, headers) {
+        return callHost('http.get', { url: String(url), headers: mergedHeaders(headers) });
+      },
+      post: function (url, body, headers) {
+        return callHost('http.post', { url: String(url), body: String(body), headers: mergedHeaders(headers) });
+      }
+    };
+
+    // HTML 解析：DOMParser + 最小 Jsoup 风格包装
+    function wrapNode(node, base) {
+      return {
+        select: function (css) {
+          var list = node.querySelectorAll(css);
+          var out = [];
+          for (var i = 0; i < list.length; i++) { out.push(wrapNode(list[i], base)); }
+          return out;
+        },
+        selectFirst: function (css) {
+          var el = node.querySelector(css);
+          return el ? wrapNode(el, base) : null;
+        },
+        attr: function (name) {
+          var v = node.getAttribute && node.getAttribute(name);
+          return (v === null || v === undefined) ? '' : String(v);
+        },
+        text: function () {
+          return node.textContent ? String(node.textContent).trim() : '';
+        },
+        html: function () {
+          return node.innerHTML ? String(node.innerHTML) : '';
+        },
+        absUrl: function (name) {
+          var v = node.getAttribute && node.getAttribute(name);
+          if (!v) { return ''; }
+          try { return new URL(v, base).href; } catch (e) {
+            return /^https?:\/\//.test(v) ? v : '';
+          }
+        }
+      };
+    }
+
+    var htmlApi = {
+      parse: function (text, base) {
+        var doc = new DOMParser().parseFromString(String(text), 'text/html');
+        return wrapNode(doc, base || baseUrl);
+      }
+    };
+
+    var logApi = {
+      info: function (msg) { __hostBridge.log('info', '[' + pluginKey + '] ' + String(msg)); },
+      error: function (msg) { __hostBridge.log('error', '[' + pluginKey + '] ' + String(msg)); }
+    };
+
+    var prefsApi = {
+      get: function (name, def) {
+        return callHost('prefs.get', { plugin: pluginKey, name: String(name), def: def === undefined ? '' : String(def) });
+      },
+      set: function (name, value) {
+        return callHost('prefs.set', { plugin: pluginKey, name: String(name), value: String(value) });
+      }
+    };
+
+    return { http: http, html: htmlApi, json: JSON, log: logApi, prefs: prefsApi, manifest: manifest };
+  }
+
+  function errMsg(e) {
+    return String(e && e.message ? e.message : e);
+  }
+
+  // ---------------- ArkTS -> JS 入口 ----------------
+  // 握手探测
+  window.__ping = function (callId) {
+    __hostBridge.result(String(callId), true, JSON.stringify('pong'));
+  };
+
+  // 加载/替换插件
+  window.__loadPlugin = function (callId, pluginKey, manifestJson, scriptText) {
+    try {
+      var manifest = {};
+      try { manifest = JSON.parse(manifestJson) || {}; } catch (e) { /* ignore */ }
+      if (plugins[pluginKey]) { delete plugins[pluginKey]; }
+      var moduleObj = { exports: {} };
+      var dollar = makeDollar(manifest);
+      var factory = new Function('$', 'module', scriptText);
+      factory(dollar, moduleObj);
+      var ex = moduleObj.exports;
+      if (!ex || typeof ex !== 'object') { throw new Error('插件未导出对象'); }
+      for (var i = 0; i < PLUGIN_METHODS.length; i++) {
+        if (typeof ex[PLUGIN_METHODS[i]] !== 'function') {
+          throw new Error('插件缺少方法: ' + PLUGIN_METHODS[i]);
+        }
+      }
+      plugins[pluginKey] = ex;
+      __hostBridge.result(String(callId), true, JSON.stringify({ 'ok': true }));
+    } catch (e) {
+      __hostBridge.result(String(callId), false, JSON.stringify(errMsg(e)));
+    }
+  };
+
+  // 卸载插件
+  window.__unloadPlugin = function (callId, pluginKey) {
+    delete plugins[pluginKey];
+    __hostBridge.result(String(callId), true, JSON.stringify({ 'ok': true }));
+  };
+
+  // 调用插件方法（异步，完成后回填）
+  window.__callPlugin = function (callId, pluginKey, method, argsJson) {
+    var ex = plugins[pluginKey];
+    if (!ex) {
+      __hostBridge.result(String(callId), false, JSON.stringify('插件未加载: ' + pluginKey));
+      return;
+    }
+    var fn = ex[method];
+    if (typeof fn !== 'function') {
+      __hostBridge.result(String(callId), false, JSON.stringify('插件不支持方法: ' + method));
+      return;
+    }
+    var args = [];
+    try { args = JSON.parse(argsJson) || []; } catch (e) { /* ignore */ }
+    Promise.resolve()
+      .then(function () { return fn.apply(ex, args); })
+      .then(function (r) {
+        __hostBridge.result(String(callId), true, JSON.stringify(r === undefined ? null : r));
+      })
+      .catch(function (e) {
+        __hostBridge.result(String(callId), false, JSON.stringify(errMsg(e)));
+      });
+  };
+})();
+</script>
+</body>
+</html>

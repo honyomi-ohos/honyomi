@@ -11,11 +11,12 @@ import { Util } from '../common/Util';
 import { MangaCard } from './components/MangaCard';
 import { InputDialog } from './components/Dialogs';
 
-// 浏览页：源选择 + 搜索 + 本地导入
+// 浏览页：源选择 + 搜索 + 本地导入 + 插件管理入口
 @Component
 export struct BrowsePage {
   @Consume('navStack') pathStack: NavPathStack;
   @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('pluginsDirty') @Watch('onPluginsChanged') pluginsDirty: number = 0;
   @State sources: Source[] = [];
   @State selectedSource: string = 'mangadex';
   @State query: string = '';
@@ -27,8 +28,29 @@ export struct BrowsePage {
   private pickedUris: string[] = [];
 
   aboutToAppear(): void {
-    this.sources = SourceRegistry.all();
+    this.refreshSources();
     this.loadPopular();
+  }
+
+  // 插件安装/启停后刷新源列表
+  onPluginsChanged(): void {
+    this.refreshSources();
+  }
+
+  private refreshSources(): void {
+    this.sources = SourceRegistry.all();
+    const cur = SourceRegistry.get(this.selectedSource);
+    if (cur === undefined) {
+      const mangadex = SourceRegistry.get('mangadex');
+      const fallback = mangadex !== undefined ? mangadex :
+        (this.sources.length > 0 ? this.sources[0] : undefined);
+      if (fallback !== undefined) {
+        this.selectedSource = fallback.key;
+        this.loadPopular();
+      } else {
+        this.selectedSource = 'local';
+      }
+    }
   }
 
   currentSource(): Source | undefined {
@@ -210,6 +232,13 @@ export struct BrowsePage {
               this.pickImportFiles();
             })
         }
+        Text('插件')
+          .fontSize(13)
+          .fontColor(Theme.primary(this.isDark))
+          .padding({ left: 12, right: 4 })
+          .onClick(() => {
+            this.pathStack.pushPathByName('Plugins', null);
+          })
       }
       .width('100%')
       .padding({ left: 16, right: 16, top: 12, bottom: 8 })

@@ -8,6 +8,7 @@ import { ReaderParams } from '../model/RouteParams';
 import { Theme } from '../common/Theme';
 import { Util } from '../common/Util';
 import { Settings } from '../common/Settings';
+import { DownloadService } from '../data/DownloadService';
 
 // LazyForEach 数据源
 class PageDataSource implements IDataSource {
@@ -89,11 +90,21 @@ export struct ReaderPage {
       if (manga !== undefined) {
         this.manga = manga;
       }
-      const source = SourceRegistry.get(this.manga.sourceKey);
-      if (source === undefined) {
-        throw new Error('源不可用');
+      let pages: SPage[] = [];
+      if (DownloadService.isDownloaded(chapter.id)) {
+        // 离线优先：读取已下载的本地页面
+        const files: string[] = DownloadService.localPages(chapter.mangaId, chapter.id);
+        for (let i = 0; i < files.length; i++) {
+          const p: SPage = { index: i, url: `file://${files[i]}` };
+          pages.push(p);
+        }
+      } else {
+        const source = SourceRegistry.get(this.manga.sourceKey);
+        if (source === undefined) {
+          throw new Error('源不可用');
+        }
+        pages = await source.getPageList(chapter.url);
       }
-      const pages = await source.getPageList(chapter.url);
       this.pages = pages;
       this.mode = Settings.getReaderMode();
       this.currentReal = chapter.lastPageRead > 0 && chapter.lastPageRead < pages.length

@@ -14,12 +14,23 @@ export interface Source {
   getPageList(chapterKey: string): Promise<SPage[]>;
 }
 
-// 源注册表（内置源编译期注册；P3 扩展为脚本源加载）
+// 源注册表（内置源编译期注册；插件源运行期动态注册/注销）
 export class SourceRegistry {
   private static sources: Source[] = [];
 
   static register(source: Source): void {
+    SourceRegistry.unregister(source.key);
     SourceRegistry.sources.push(source);
+  }
+
+  static unregister(key: string): void {
+    const kept: Source[] = [];
+    for (const s of SourceRegistry.sources) {
+      if (s.key !== key) {
+        kept.push(s);
+      }
+    }
+    SourceRegistry.sources = kept;
   }
 
   static all(): Source[] {

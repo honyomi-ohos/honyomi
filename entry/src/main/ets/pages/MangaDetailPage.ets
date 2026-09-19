@@ -1,13 +1,17 @@
 import { common } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
-import { MangaRepo, ChapterRepo } from '../data/Repos';
+import { MangaRepo, ChapterRepo, TrackRepo } from '../data/Repos';
 import { SourceRegistry } from '../source/Source';
-import { MangaRecord, ChapterRecord } from '../model/Models';
+import { MangaRecord, ChapterRecord, TrackRecord, DownloadTask, ALMediaItem } from '../model/Models';
 import { DetailParams, ReaderParams } from '../model/RouteParams';
 import { Theme } from '../common/Theme';
 import { Util } from '../common/Util';
+import { Settings } from '../common/Settings';
+import { DownloadService } from '../data/DownloadService';
+import { AniListTracker } from '../data/AniListTracker';
+import { InputDialog } from './components/Dialogs';
 
-// 漫画详情页：信息 + 章节列表 + 收藏
+// 漫画详情页：信息 + 章节列表 + 收藏 + 下载 + AniList 追踪
 @Component
 export struct MangaDetailPage {
   pathStack: NavPathStack = new NavPathStack();
@@ -19,7 +23,23 @@ export struct MangaDetailPage {
   @State sortAsc: boolean = false;
   @State descExpanded: boolean = false;
   @State syncing: boolean = false;
+  @State track: TrackRecord | undefined = undefined;
+  @State alResults: ALMediaItem[] = [];
+  @State alSearching: boolean = false;
+  @State dlVersion: number = 0;
   private mangaId: number = -1;
+
+  private onDownloadChanged = (): void => {
+    this.dlVersion += 1;
+  }
+
+  aboutToAppear(): void {
+    DownloadService.addListener(this.onDownloadChanged);
+  }
+
+  aboutToDisappear(): void {
+    DownloadService.removeListener(this.onDownloadChanged);
+  }
 
   onLibDirty(): void {
     this.reloadLocal();
@@ -28,6 +48,7 @@ export struct MangaDetailPage {
   private async loadAll(): Promise<void> {
     await this.reloadLocal();
     await this.syncFromSource();
+    this.track = await TrackRepo.get(this.mangaId);
   }
 
   private async reloadLocal(): Promise<void> {
@@ -98,6 +119,98 @@ export struct MangaDetailPage {
     await this.reloadLocal();
     AppStorage.set('libDirty', this.libDirty + 1);
     Util.toast(this.getUIContext(), '已全部标为已读');
+  }
+
+  private downloadChapter(chapter: ChapterRecord): void {
+    if (this.manga.sourceKey === 'local') {
+      return;
+    }
+    const task = new DownloadTask();
+    task.mangaId = this.mangaId;
+    task.mangaTitle = this.manga.title;
+    task.chapterId = chapter.id;
+    task.chapterName = chapter.name;
+    task.sourceKey = this.manga.sourceKey;
+    task.mangaUrl = this.manga.url;
+    task.chapterUrl = chapter.url;
+    DownloadService.enqueue(task);
+    this.dlVersion += 1;
+    Util.toast(this.getUIContext(), '已加入下载队列');
+  }
+
+  private showAlSearch(): void {
+    if (Settings.getAnilistToken() === '') {
+      Util.toast(this.getUIContext(), '请先在「更多」页配置 AniList 令牌');
+      return;
+    }
+    const dialog = new CustomDialogController({
+      builder: InputDialog({
+        title: '搜索 AniList',
+        placeholder: '漫画名称',
+        onConfirm: (text: string): void => {
+          this.doAlSearch(text);
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  private async doAlSearch(query: string): Promise<void> {
+    const q = query.trim();
+    if (q === '') {
+      return;
+    }
+    const token = Settings.getAnilistToken();
+    this.alSearching = true;
+    try {
+      this.alResults = await AniListTracker.search(q, token);
+      if (this.alResults.length === 0) {
+        Util.toast(this.getUIContext(), '无搜索结果');
+      }
+    } catch (e) {
+      Util.toast(this.getUIContext(), 'AniList 搜索失败');
+    }
+    this.alSearching = false;
+  }
+
+  private async bindAl(item: ALMediaItem): Promise<void> {
+    await TrackRepo.bind(this.mangaId, item.id, item.title);
+    this.track = await TrackRepo.get(this.mangaId);
+    this.alResults = [];
+    Util.toast(this.getUIContext(), '已绑定 AniList 条目');
+  }
+
+  private async unbindAl(): Promise<void> {
+    await TrackRepo.unbind(this.mangaId);
+    this.track = undefined;
+    this.alResults = [];
+    Util.toast(this.getUIContext(), '已解绑');
+  }
+
+  private async syncTrack(): Promise<void> {
+    if (this.track === undefined) {
+      return;
+    }
+    const token = Settings.getAnilistToken();
+    if (token === '') {
+      Util.toast(this.getUIContext(), '请先在「更多」页配置 AniList 令牌');
+      return;
+    }
+    let progress = 0;
+    for (const c of this.chapters) {
+      if (c.read && c.chapterNumber > progress) {
+        progress = Math.floor(c.chapterNumber);
+      }
+    }
+    try {
+      await AniListTracker.updateProgress(token, this.track.remoteId, progress);
+      await TrackRepo.setLastChapterRead(this.mangaId, progress);
+      this.track = await TrackRepo.get(this.mangaId);
+      Util.toast(this.getUIContext(), `已同步进度到第 ${progress} 话`);
+    } catch (e) {
+      Util.toast(this.getUIContext(), 'AniList 同步失败');
+    }
   }
 
   build() {
@@ -245,6 +358,100 @@ export struct MangaDetailPage {
           .padding({ left: 16, right: 16, top: 10 })
         }
 
+        // AniList 追踪
+        Column() {
+          Text('AniList 追踪')
+            .fontSize(15)
+            .fontWeight(FontWeight.Bold)
+            .fontColor(Theme.text(this.isDark))
+            .width('100%')
+            .margin({ bottom: 8 })
+          if (Settings.getAnilistToken() === '') {
+            Text('在「更多」页配置 AniList 访问令牌后可追踪阅读进度')
+              .fontSize(12)
+              .fontColor(Theme.sub(this.isDark))
+          } else if (this.track === undefined) {
+            if (this.alSearching) {
+              Row({ space: 8 }) {
+                LoadingProgress()
+                  .width(16)
+                  .height(16)
+                  .color(Theme.primary(this.isDark))
+                Text('搜索中...')
+                  .fontSize(12)
+                  .fontColor(Theme.sub(this.isDark))
+              }
+            } else {
+              Text('搜索并绑定')
+                .fontSize(13)
+                .fontColor('#FFFFFF')
+                .backgroundColor(Theme.primary(this.isDark))
+                .borderRadius(14)
+                .padding({ left: 14, right: 14, top: 6, bottom: 6 })
+                .onClick(() => {
+                  this.showAlSearch();
+                })
+            }
+            ForEach(this.alResults, (item: ALMediaItem) => {
+              Row() {
+                Text(item.title)
+                  .fontSize(13)
+                  .fontColor(Theme.text(this.isDark))
+                  .maxLines(1)
+                  .textOverflow({ overflow: TextOverflow.Ellipsis })
+                  .layoutWeight(1)
+                Text('绑定')
+                  .fontSize(12)
+                  .fontColor(Theme.primary(this.isDark))
+                  .padding({ left: 8 })
+                  .onClick(() => {
+                    this.bindAl(item);
+                  })
+              }
+              .width('100%')
+              .padding({ top: 8, bottom: 8 })
+            }, (item: ALMediaItem) => `al-${item.id}`)
+          } else {
+            Text(this.track.title)
+              .fontSize(13)
+              .fontColor(Theme.text(this.isDark))
+              .maxLines(1)
+              .textOverflow({ overflow: TextOverflow.Ellipsis })
+            Text(`已同步到第 ${this.track.lastChapterRead} 话`)
+              .fontSize(11)
+              .fontColor(Theme.sub(this.isDark))
+              .margin({ top: 2 })
+            Row({ space: 12 }) {
+              Text('同步进度')
+                .fontSize(12)
+                .fontColor(Theme.primary(this.isDark))
+                .backgroundColor(Theme.chip(this.isDark))
+                .borderRadius(12)
+                .padding({ left: 10, right: 10, top: 4, bottom: 4 })
+                .margin({ top: 8 })
+                .onClick(() => {
+                  this.syncTrack();
+                })
+              Text('解绑')
+                .fontSize(12)
+                .fontColor('#E05252')
+                .backgroundColor(Theme.chip(this.isDark))
+                .borderRadius(12)
+                .padding({ left: 10, right: 10, top: 4, bottom: 4 })
+                .margin({ top: 8 })
+                .onClick(() => {
+                  this.unbindAl();
+                })
+            }
+          }
+        }
+        .width('100%')
+        .alignItems(HorizontalAlign.Start)
+        .padding(16)
+        .backgroundColor(Theme.card(this.isDark))
+        .borderRadius(14)
+        .margin({ left: 16, right: 16, top: 12 })
+
         // 章节标题栏
         Row() {
           Text(`章节 ${this.chapters.length}`)
@@ -319,6 +526,29 @@ export struct MangaDetailPage {
                       .borderRadius(8)
                       .padding({ left: 6, right: 6, top: 2, bottom: 2 })
                   }
+
+                  if (this.manga.sourceKey !== 'local') {
+                    if (DownloadService.isDownloaded(chapter.id)) {
+                      Text('已下载')
+                        .fontSize(11)
+                        .fontColor(Theme.primary(this.isDark))
+                        .margin({ left: 8 })
+                    } else if (DownloadService.isQueued(chapter.id)) {
+                      Text('队列中')
+                        .fontSize(11)
+                        .fontColor(Theme.sub(this.isDark))
+                        .margin({ left: 8 })
+                    } else {
+                      Text('下载')
+                        .fontSize(11)
+                        .fontColor(Theme.sub(this.isDark))
+                        .margin({ left: 8 })
+                        .padding(4)
+                        .onClick(() => {
+                          this.downloadChapter(chapter);
+                        })
+                    }
+                  }
                 }
                 .width('100%')
                 .padding({ left: 16, right: 16, top: 10, bottom: 10 })
@@ -326,7 +556,7 @@ export struct MangaDetailPage {
                   this.openReader(chapter.id);
                 })
               }
-            }, (chapter: ChapterRecord) => `ch-${chapter.id}-${chapter.read}`)
+            }, (chapter: ChapterRecord) => `ch-${chapter.id}-${chapter.read}-${this.dlVersion}`)
           }
           .layoutWeight(1)
           .scrollBar(BarState.Auto)

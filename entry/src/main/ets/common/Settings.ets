@@ -82,4 +82,20 @@ export class Settings {
     Settings.store.putSync('lastRefreshAt', time);
     Settings.store.flush();
   }
+
+  static getPluginRepoUrl(): string {
+    if (Settings.store === undefined) {
+      return '';
+    }
+    const value = Settings.store.getSync('pluginRepoUrl', '') as string;
+    return value;
+  }
+
+  static setPluginRepoUrl(url: string): void {
+    if (Settings.store === undefined) {
+      return;
+    }
+    Settings.store.putSync('pluginRepoUrl', url);
+    Settings.store.flush();
+  }
 }

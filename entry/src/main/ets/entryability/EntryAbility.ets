@@ -4,9 +4,9 @@ import { window } from '@kit.ArkUI';
 import { Settings } from '../common/Settings';
 import { AppDb } from '../data/AppDb';
 import { SourceRegistry } from '../source/Source';
-import { MangaDexSource } from '../source/MangaDexSource';
 import { LocalSource } from '../source/LocalSource';
 import { DownloadService } from '../data/DownloadService';
+import { PluginService } from '../data/PluginService';
 
 const DOMAIN = 0x0001;
 
@@ -17,10 +17,12 @@ export default class EntryAbility extends UIAbility {
     AppStorage.setOrCreate('isDark', false);
     AppStorage.setOrCreate('isDarkSystem', false);
     AppStorage.setOrCreate('libDirty', 0);
+    AppStorage.setOrCreate('pluginsDirty', 0);
     Settings.init(this.context);
-    // 注册内置源
-    SourceRegistry.register(new MangaDexSource());
+    // 注册内置源（LocalSource；在线源全部通过插件动态安装）
     SourceRegistry.register(new LocalSource(this.context.filesDir, this.context.cacheDir));
+    // 插件宿主
+    PluginService.init(this.context);
     // 主题
     const systemDark = this.context.config !== undefined &&
       this.context.config.colorMode === ConfigurationConstant.ColorMode.COLOR_MODE_DARK;
