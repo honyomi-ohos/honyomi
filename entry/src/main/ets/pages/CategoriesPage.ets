@@ -12,6 +12,7 @@ import { InputDialog } from './components/Dialogs';
 export struct CategoriesPage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @StorageProp('navBarH') navBarH: number = 0;
   @State categories: CategoryRecord[] = [];
 
   aboutToAppear(): void {
@@ -158,7 +159,7 @@ export struct CategoriesPage {
           .fontColor(this.pal.sub)
           .width('100%')
           .textAlign(TextAlign.Center)
-          .padding(12)
+          .padding({ left: 12, right: 12, top: 12, bottom: this.navBarH + 12 })
       }
       .width('100%')
       .height('100%')

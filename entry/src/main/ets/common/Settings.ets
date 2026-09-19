@@ -1,5 +1,6 @@
 import { preferences } from '@kit.ArkData';
 import { common, ConfigurationConstant } from '@kit.AbilityKit';
+import { window, UIContext } from '@kit.ArkUI';
 import { Theme } from './Theme';
 
 // 轻量设置存储（阅读/主题/书架/阅读器/浏览/全局开关等）
@@ -330,5 +331,37 @@ export class Settings {
     } else {
       context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);
     }
+    Settings.applySystemBar(context);
+  }
+
+  // 系统栏：透明背景（沉浸式，光感效果由系统渲染），内容色与应用文本色一致
+  // 文本色与 color.json 的 mihon_text 对应（浅 #16181D / 深 #ECEEF2）
+  static applySystemBar(context: common.Context): void {
+    window.getLastWindow(context).then((win: window.Window) => {
+      const dark: boolean = AppStorage.get<boolean>('isDark') ?? false;
+      const content: string = dark ? '#ECEEF2' : '#16181D';
+      win.setWindowSystemBarProperties({
+        statusBarColor: '#00000000',
+        statusBarContentColor: content,
+        isStatusBarLightIcon: dark,
+        navigationBarColor: '#00000000',
+        navigationBarContentColor: content,
+        isNavigationBarLightIcon: dark
+      }).catch((_e: Error) => {
+      });
+    }).catch((_e: Error) => {
+    });
+  }
+
+  // 避让区高度（vp）写入 AppStorage，供页面上下 padding 避让状态栏/导航栏
+  static initAvoidAreas(context: common.Context): void {
+    window.getLastWindow(context).then((win: window.Window) => {
+      const ui: UIContext = win.getUIContext();
+      const sb: window.AvoidArea = win.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM);
+      const nb: window.AvoidArea = win.getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR);
+      AppStorage.setOrCreate('statusBarH', ui.px2vp(sb.topRect.height));
+      AppStorage.setOrCreate('navBarH', ui.px2vp(nb.bottomRect.height));
+    }).catch((_e: Error) => {
+    });
   }
 }

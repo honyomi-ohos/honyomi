@@ -17,6 +17,7 @@ export struct BrowsePage {
   @Consume('navStack') pathStack: NavPathStack;
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @StorageProp('navBarH') navBarH: number = 0;
   @StorageProp('pluginsDirty') @Watch('onPluginsChanged') pluginsDirty: number = 0;
   @State sources: Source[] = [];
   @State selectedSource: string = 'mangadex';
@@ -322,6 +323,7 @@ export struct BrowsePage {
         .columnsGap(12)
         .rowsGap(16)
         .padding({ left: 16, right: 16, top: 4 })
+        .contentEndOffset(this.navBarH + 76)
         .layoutWeight(1)
 
         if (this.hasNextPage) {

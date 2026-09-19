@@ -12,6 +12,7 @@ export struct PluginManagePage {
   pathStack: NavPathStack = new NavPathStack();
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @StorageProp('statusBarH') statusBarH: number = 0;
   @State installed: InstalledPlugin[] = [];
   @State repoEntries: RepoEntry[] = [];
   @State repoUrl: string = '';
@@ -259,7 +260,7 @@ export struct PluginManagePage {
             .margin({ left: 8 })
         }
         .width('100%')
-        .padding({ left: 16, right: 16, top: 10, bottom: 10 })
+        .padding({ left: 16, right: 16, top: this.statusBarH + 10, bottom: 10 })
 
         Scroll() {
           Column() {

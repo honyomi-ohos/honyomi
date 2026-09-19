@@ -8,6 +8,7 @@ export struct MorePage {
   @Consume('navStack') pathStack: NavPathStack;
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @StorageProp('navBarH') navBarH: number = 0;
   @StorageProp('downloadedOnly') downloadedOnly: boolean = false;
   @StorageProp('incognito') incognito: boolean = false;
 
@@ -117,6 +118,7 @@ export struct MorePage {
       .layoutWeight(1)
       .scrollBar(BarState.Off)
       .align(Alignment.TopStart)
+      .contentEndOffset(this.navBarH + 76)
     }
     .width('100%')
     .height('100%')

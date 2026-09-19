@@ -18,6 +18,7 @@ export struct MangaDetailPage {
   pathStack: NavPathStack = new NavPathStack();
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
   @State manga: MangaRecord = new MangaRecord();
   @State chapters: ChapterRecord[] = [];
@@ -259,7 +260,7 @@ export struct MangaDetailPage {
               .layoutWeight(1)
             }
             .width('100%')
-            .padding({ top: 8 })
+            .padding({ top: this.statusBarH + 8 })
 
             Row({ space: 14 }) {
               if (this.manga.thumbnailUrl === '') {

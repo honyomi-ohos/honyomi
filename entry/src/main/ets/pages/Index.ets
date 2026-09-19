@@ -1,6 +1,7 @@
 import { common } from '@kit.AbilityKit';
 import { webview } from '@kit.ArkWeb';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { HdsTabs, hdsMaterial } from '@kit.UIDesignKit';
 import { ThemePalette } from '../common/Theme';
 import { Settings } from '../common/Settings';
 import { UpdateService } from '../data/UpdateService';
@@ -36,6 +37,8 @@ struct Index {
   @State currentTab: number = 0;
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @StorageProp('statusBarH') statusBarH: number = 0;
+  @StorageProp('navBarH') navBarH: number = 0;
   @StorageLink('cfChallengeUrl') @Watch('onCfUrlChanged') cfChallengeUrl: string = '';
   @State cfStatus: string = '';
   private hostController: webview.WebviewController = new webview.WebviewController();
@@ -163,34 +166,63 @@ struct Index {
   build() {
     Navigation(this.pathStack) {
       Stack({ alignContent: Alignment.TopStart }) {
-        Tabs({ barPosition: BarPosition.End, index: this.currentTab }) {
+        HdsTabs({ barPosition: BarPosition.End, index: this.currentTab }) {
           TabContent() {
-            LibraryPage()
+            Column() {
+              LibraryPage()
+            }
+            .height('100%')
+            .padding({ top: this.statusBarH })
           }
           .tabBar(this.tabBuilder('书架', 'collections_bookmark', 0))
 
           TabContent() {
-            UpdatesPage()
+            Column() {
+              UpdatesPage()
+            }
+            .height('100%')
+            .padding({ top: this.statusBarH })
           }
           .tabBar(this.tabBuilder('更新', 'new_releases', 1))
 
           TabContent() {
-            HistoryPage()
+            Column() {
+              HistoryPage()
+            }
+            .height('100%')
+            .padding({ top: this.statusBarH })
           }
           .tabBar(this.tabBuilder('历史', 'schedule', 2))
 
           TabContent() {
-            BrowsePage()
+            Column() {
+              BrowsePage()
+            }
+            .height('100%')
+            .padding({ top: this.statusBarH })
           }
           .tabBar(this.tabBuilder('浏览', 'explore', 3))
 
           TabContent() {
-            MorePage()
+            Column() {
+              MorePage()
+            }
+            .height('100%')
+            .padding({ top: this.statusBarH })
           }
           .tabBar(this.tabBuilder('更多', 'more_vert', 4))
         }
         .scrollable(true)
-        .barMode(BarMode.Fixed)
+        .barOverlap(true)
+        .barPosition(BarPosition.End)
+        .vertical(false)
+        .barFloatingStyle({
+          barBottomMargin: this.navBarH + 8,
+          systemMaterialEffect: {
+            materialType: hdsMaterial.MaterialType.IMMERSIVE,
+            materialLevel: hdsMaterial.MaterialLevel.ADAPTIVE
+          }
+        })
         .onChange((index: number) => {
           this.currentTab = index;
         })
@@ -275,6 +307,7 @@ struct Index {
           }
           .width('100%')
           .height('100%')
+          .padding({ top: this.statusBarH })
           .backgroundColor(this.pal.bg)
         }
       }

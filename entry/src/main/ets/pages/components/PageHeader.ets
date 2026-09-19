@@ -15,6 +15,7 @@ export struct PageHeader {
   @Consume('navStack') pathStack: NavPathStack;
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @StorageProp('statusBarH') statusBarH: number = 0;
   @Prop title: string = '';
   @BuilderParam right: () => void = headerEmpty;
 
@@ -34,7 +35,7 @@ export struct PageHeader {
       this.right()
     }
     .width('100%')
-    .height(52)
-    .padding({ left: 4, right: 12 })
+    .height(52 + this.statusBarH)
+    .padding({ top: this.statusBarH, left: 4, right: 12 })
   }
 }

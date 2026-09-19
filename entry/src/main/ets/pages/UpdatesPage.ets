@@ -13,6 +13,7 @@ export struct UpdatesPage {
   @Consume('navStack') pathStack: NavPathStack;
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @StorageProp('navBarH') navBarH: number = 0;
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
   @State items: UpdateItem[] = [];
   @State loading: boolean = true;
@@ -139,6 +140,7 @@ export struct UpdatesPage {
         }
         .layoutWeight(1)
         .scrollBar(BarState.Auto)
+        .contentEndOffset(this.navBarH + 76)
         .divider({
           strokeWidth: 1,
           color: this.pal.divider,

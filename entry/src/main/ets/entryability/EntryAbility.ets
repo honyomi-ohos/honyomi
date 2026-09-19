@@ -47,6 +47,8 @@ export default class EntryAbility extends UIAbility {
     const systemDark = newConfig.colorMode === ConfigurationConstant.ColorMode.COLOR_MODE_DARK;
     AppStorage.set('isDarkSystem', systemDark);
     Settings.applyTheme(systemDark);
+    Settings.applySystemBar(this.context);
+    Settings.initAvoidAreas(this.context);
   }
 
   onDestroy(): void {
@@ -55,6 +57,17 @@ export default class EntryAbility extends UIAbility {
 
   onWindowStageCreate(windowStage: window.WindowStage): void {
     hilog.info(DOMAIN, 'Mihon', '%{public}s', 'Ability onWindowStageCreate');
+    // 窗口沉浸式：全屏布局 + 透明系统栏（内容延伸到状态栏/导航栏下方）
+    windowStage.getMainWindow().then((win: window.Window) => {
+      win.setWindowLayoutFullScreen(true).then(() => {
+        Settings.applySystemBar(this.context);
+        Settings.initAvoidAreas(this.context);
+      }).catch((e: Error) => {
+        hilog.error(DOMAIN, 'Mihon', 'Failed to set full screen. Cause: %{public}s', e.message);
+      });
+    }).catch((e: Error) => {
+      hilog.error(DOMAIN, 'Mihon', 'Failed to get main window. Cause: %{public}s', e.message);
+    });
     windowStage.loadContent('pages/Index', (err) => {
       if (err.code) {
         hilog.error(DOMAIN, 'Mihon', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));

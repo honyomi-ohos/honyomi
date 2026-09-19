@@ -49,6 +49,8 @@ export struct ReaderPage {
   pathStack: NavPathStack = new NavPathStack();
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @StorageProp('statusBarH') statusBarH: number = 0;
+  @StorageProp('navBarH') navBarH: number = 0;
   @StorageLink('libDirty') libDirty: number = 0;
   @State manga: MangaRecord = new MangaRecord();
   @State chapter: ChapterRecord = new ChapterRecord();
@@ -475,7 +477,7 @@ export struct ReaderPage {
             .padding({ left: 8, right: 8, top: 3, bottom: 3 })
             .borderRadius(10)
             .backgroundColor('#66000000')
-            .margin(16)
+            .margin({ left: 16, top: 16, right: 16, bottom: this.navBarH + 16 })
         }
 
         // 菜单
@@ -506,7 +508,7 @@ export struct ReaderPage {
               .layoutWeight(1)
             }
             .width('100%')
-            .padding({ left: 4, right: 16, top: 10, bottom: 10 })
+            .padding({ left: 4, right: 16, top: this.statusBarH + 10, bottom: 10 })
             .backgroundColor('#CC000000')
 
             // 占位
@@ -660,7 +662,7 @@ export struct ReaderPage {
               .backgroundColor('#CC000000')
             }
             .width('100%')
-            .padding({ top: 8, bottom: 8 })
+            .padding({ top: 8, bottom: this.navBarH + 8 })
             .backgroundColor('#CC000000')
           }
           .width('100%')

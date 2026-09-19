@@ -9,6 +9,7 @@ export struct DownloadPage {
   pathStack: NavPathStack = new NavPathStack();
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @StorageProp('statusBarH') statusBarH: number = 0;
   @State queue: DownloadTask[] = [];
   @State downloaded: DownloadedManga[] = [];
   @State loading: boolean = true;
@@ -94,7 +95,7 @@ export struct DownloadPage {
           }
         }
         .width('100%')
-        .padding({ left: 4, right: 16, top: 8, bottom: 8 })
+        .padding({ left: 4, right: 16, top: this.statusBarH + 8, bottom: 8 })
 
         List({ space: 0 }) {
           // 下载队列
