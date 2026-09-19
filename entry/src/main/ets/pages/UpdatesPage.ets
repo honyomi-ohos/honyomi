@@ -1,0 +1,152 @@
+import { common } from '@kit.AbilityKit';
+import { AppDb } from '../data/AppDb';
+import { UpdatesRepo } from '../data/Repos';
+import { UpdateService } from '../data/UpdateService';
+import { UpdateItem, ReaderParams } from '../model/Models';
+import { Theme } from '../common/Theme';
+import { Util } from '../common/Util';
+
+// 更新页：书架未读章节
+@Component
+export struct UpdatesPage {
+  @Consume('navStack') pathStack: NavPathStack;
+  @StorageProp('isDark') isDark: boolean = false;
+  @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
+  @State items: UpdateItem[] = [];
+  @State loading: boolean = true;
+  @State refreshing: boolean = false;
+
+  aboutToAppear(): void {
+    this.loadData();
+  }
+
+  onLibDirty(): void {
+    this.loadData();
+  }
+
+  async loadData(): Promise<void> {
+    const context = getContext(this) as common.UIAbilityContext;
+    await AppDb.ready(context);
+    this.items = await UpdatesRepo.unreadChapters(300);
+    this.loading = false;
+  }
+
+  async refreshLibrary(): Promise<void> {
+    if (this.refreshing) {
+      return;
+    }
+    this.refreshing = true;
+    try {
+      const context = getContext(this) as common.UIAbilityContext;
+      const newCount = await UpdateService.refreshLibrary(context);
+      Util.toast(this.getUIContext(), newCount > 0 ? `发现 ${newCount} 个新章节` : '没有新章节');
+    } catch (e) {
+      Util.toast(this.getUIContext(), '刷新失败，请检查网络');
+    }
+    this.refreshing = false;
+    await this.loadData();
+  }
+
+  build() {
+    Column() {
+      Row() {
+        Text('更新')
+          .fontSize(22)
+          .fontWeight(FontWeight.Bold)
+          .fontColor(Theme.text(this.isDark))
+          .layoutWeight(1)
+        Text(this.refreshing ? '刷新中…' : '⟳')
+          .fontSize(this.refreshing ? 14 : 24)
+          .fontColor(Theme.primary(this.isDark))
+          .padding({ left: 8, right: 8 })
+          .onClick(() => {
+            this.refreshLibrary();
+          })
+      }
+      .width('100%')
+      .padding({ left: 16, right: 16, top: 12, bottom: 8 })
+
+      if (this.loading) {
+        Column() {
+          LoadingProgress()
+            .width(36)
+            .height(36)
+            .color(Theme.primary(this.isDark))
+        }
+        .layoutWeight(1)
+        .justifyContent(FlexAlign.Center)
+      } else if (this.items.length === 0) {
+        Column() {
+          Text('没有未读章节')
+            .fontSize(14)
+            .fontColor(Theme.sub(this.isDark))
+        }
+        .layoutWeight(1)
+        .justifyContent(FlexAlign.Center)
+      } else {
+        List({ space: 0 }) {
+          ForEach(this.items, (item: UpdateItem) => {
+            ListItem() {
+              Row({ space: 12 }) {
+                if (item.coverUrl === '') {
+                  Column() {
+                    Text('📖').fontSize(20)
+                  }
+                  .width(44)
+                  .height(60)
+                  .borderRadius(6)
+                  .backgroundColor(Theme.chip(this.isDark))
+                  .justifyContent(FlexAlign.Center)
+                } else {
+                  Image(item.coverUrl)
+                    .width(44)
+                    .height(60)
+                    .objectFit(ImageFit.Cover)
+                    .borderRadius(6)
+                    .backgroundColor(Theme.chip(this.isDark))
+                }
+                Column() {
+                  Text(item.mangaTitle)
+                    .fontSize(14)
+                    .fontWeight(FontWeight.Medium)
+                    .fontColor(Theme.text(this.isDark))
+                    .maxLines(1)
+                    .textOverflow({ overflow: TextOverflow.Ellipsis })
+                  Text(item.chapterName)
+                    .fontSize(13)
+                    .fontColor(Theme.sub(this.isDark))
+                    .maxLines(1)
+                    .textOverflow({ overflow: TextOverflow.Ellipsis })
+                    .margin({ top: 4 })
+                  Text(Util.timeAgo(item.dateUpload))
+                    .fontSize(11)
+                    .fontColor(Theme.sub(this.isDark))
+                    .margin({ top: 4 })
+                }
+                .alignItems(HorizontalAlign.Start)
+                .layoutWeight(1)
+              }
+              .width('100%')
+              .padding({ left: 16, right: 16, top: 10, bottom: 10 })
+              .onClick(() => {
+                const params: ReaderParams = { mangaId: item.mangaId, chapterId: item.chapterId };
+                this.pathStack.pushPathByName('Reader', params);
+              })
+            }
+          }, (item: UpdateItem) => `upd-${item.chapterId}`)
+        }
+        .layoutWeight(1)
+        .scrollBar(BarState.Auto)
+        .divider({
+          strokeWidth: 1,
+          color: Theme.divider(this.isDark),
+          startMargin: 72,
+          endMargin: 16,
+        })
+      }
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor(Theme.bg(this.isDark))
+  }
+}
