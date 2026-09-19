@@ -6,6 +6,7 @@ import { AppDb } from '../data/AppDb';
 import { SourceRegistry } from '../source/Source';
 import { MangaDexSource } from '../source/MangaDexSource';
 import { LocalSource } from '../source/LocalSource';
+import { DownloadService } from '../data/DownloadService';
 
 const DOMAIN = 0x0001;
 
@@ -29,6 +30,8 @@ export default class EntryAbility extends UIAbility {
     AppDb.ready(this.context).catch((e: Error) => {
       hilog.error(DOMAIN, 'Mihon', 'db init failed: %{public}s', e.message);
     });
+    // 下载服务
+    DownloadService.init(this.context);
   }
 
   onConfigurationUpdate(newConfig: Configuration): void {

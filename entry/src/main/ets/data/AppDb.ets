@@ -68,6 +68,17 @@ export class AppDb {
       seenAt INTEGER NOT NULL,
       lastPageRead INTEGER DEFAULT 0
     )`);
+    await store.executeSql(`CREATE TABLE IF NOT EXISTS track (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      mangaId INTEGER NOT NULL,
+      syncId INTEGER NOT NULL DEFAULT 1,
+      remoteId INTEGER NOT NULL,
+      title TEXT DEFAULT '',
+      status TEXT DEFAULT '',
+      lastChapterRead INTEGER DEFAULT 0,
+      score REAL DEFAULT 0,
+      UNIQUE(mangaId, syncId)
+    )`);
     await store.executeSql(
       `INSERT INTO category(id, name, sortOrder)
        SELECT 1, '默认', 0

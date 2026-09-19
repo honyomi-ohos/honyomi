@@ -111,3 +111,62 @@ export class HistoryItem {
     return item;
   }
 }
+
+// P2 模型
+
+export class TrackRecord {
+  id: number = 0;
+  mangaId: number = 0;
+  syncId: number = 1; // 1 = AniList
+  remoteId: number = 0;
+  title: string = '';
+  status: string = '';
+  lastChapterRead: number = 0;
+  score: number = 0;
+}
+
+export class DownloadTask {
+  mangaId: number = 0;
+  mangaTitle: string = '';
+  chapterId: number = 0;
+  chapterName: string = '';
+  sourceKey: string = '';
+  mangaUrl: string = '';
+  chapterUrl: string = '';
+  state: number = 0; // 0=队列 1=下载中 2=完成 3=失败
+  progress: number = 0; // 已下载页数
+  total: number = 0;
+  error: string = '';
+
+  key(): string {
+    return `${this.chapterId}`;
+  }
+}
+
+export class DownloadedChapter {
+  mangaId: number = 0;
+  mangaTitle: string = '';
+  chapterId: number = 0;
+  chapterName: string = '';
+
+  static of(mangaId: number, mangaTitle: string, chapterId: number, chapterName: string): DownloadedChapter {
+    const item = new DownloadedChapter();
+    item.mangaId = mangaId;
+    item.mangaTitle = mangaTitle;
+    item.chapterId = chapterId;
+    item.chapterName = chapterName;
+    return item;
+  }
+}
+
+export class DownloadedManga {
+  mangaId: number = 0;
+  mangaTitle: string = '';
+  chapters: DownloadedChapter[] = [];
+}
+
+// AniList 搜索结果
+export class ALMediaItem {
+  id: number = 0;
+  title: string = '';
+}

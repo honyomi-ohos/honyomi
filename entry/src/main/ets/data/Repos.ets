@@ -1,6 +1,6 @@
 import { relationalStore } from '@kit.ArkData';
 import { AppDb } from './AppDb';
-import { SManga, SChapter, MangaRecord, ChapterRecord, CategoryRecord, UpdateItem, HistoryItem } from '../model/Models';
+import { SManga, SChapter, MangaRecord, ChapterRecord, CategoryRecord, UpdateItem, HistoryItem, TrackRecord } from '../model/Models';
 
 // 漫画仓库
 export class MangaRepo {
@@ -213,6 +213,70 @@ export class ChapterRepo {
     return count;
   }
 
+  // 备份恢复用：按 mangaId+url 更新阅读状态
+  static async applyStateByUrl(mangaId: number, url: string, read: boolean, lastPageRead: number): Promise<void> {
+    const store = await AppDb.get();
+    const values: relationalStore.ValuesBucket = {
+      'read': read ? 1 : 0,
+      'lastPageRead': lastPageRead,
+    };
+    const pred = new relationalStore.RdbPredicates('chapter');
+    pred.equalTo('mangaId', mangaId).and().equalTo('url', url);
+    await store.update(values, pred);
+  }
+
+  // 备份恢复用：章节不存在则插入，存在则仅恢复阅读状态
+  static async upsertBackup(mangaId: number, url: string, name: string, chapterNumber: number,
+    read: boolean, lastPageRead: number): Promise<void> {
+    const store = await AppDb.get();
+    const pred = new relationalStore.RdbPredicates('chapter');
+    pred.equalTo('mangaId', mangaId).and().equalTo('url', url);
+    const rs = await store.query(pred, ['id']);
+    const exists = rs.goToNextRow();
+    rs.close();
+    if (exists) {
+      const values: relationalStore.ValuesBucket = {
+        'read': read ? 1 : 0,
+        'lastPageRead': lastPageRead,
+      };
+      await store.update(values, pred);
+      return;
+    }
+    const values: relationalStore.ValuesBucket = {
+      'mangaId': mangaId,
+      'url': url,
+      'name': name,
+      'chapterNumber': chapterNumber,
+      'dateUpload': 0,
+      'pages': 0,
+      'sortOrder': 0,
+      'read': read ? 1 : 0,
+      'bookmark': 0,
+      'lastPageRead': lastPageRead,
+    };
+    await store.insert('chapter', values);
+  }
+
+  static async setPages(id: number, pages: number): Promise<void> {
+    const store = await AppDb.get();
+    const values: relationalStore.ValuesBucket = { 'pages': pages };
+    const pred = new relationalStore.RdbPredicates('chapter');
+    pred.equalTo('id', id);
+    await store.update(values, pred);
+  }
+
+  static async countRead(mangaId: number): Promise<number> {
+    const store = await AppDb.get();
+    const rs = await store.querySql(
+      `SELECT COUNT(*) AS cnt FROM chapter WHERE mangaId = ? AND read = 1`, [mangaId]);
+    let count = 0;
+    if (rs.goToNextRow()) {
+      count = rs.getLong(rs.getColumnIndex('cnt'));
+    }
+    rs.close();
+    return count;
+  }
+
   private static readonly COLUMNS: string[] = [
     'id', 'mangaId', 'url', 'name', 'chapterNumber', 'dateUpload',
     'pages', 'sortOrder', 'read', 'bookmark', 'lastPageRead',
@@ -362,5 +426,75 @@ export class UpdatesRepo {
     }
     rs.close();
     return list;
+  }
+}
+
+// 追踪仓库（AniList）
+export class TrackRepo {
+  private static readonly COLUMNS: string[] = [
+    'id', 'mangaId', 'syncId', 'remoteId', 'title', 'status', 'lastChapterRead', 'score',
+  ];
+
+  static async get(mangaId: number): Promise<TrackRecord | undefined> {
+    const store = await AppDb.get();
+    const pred = new relationalStore.RdbPredicates('track');
+    pred.equalTo('mangaId', mangaId).and().equalTo('syncId', 1);
+    const rs = await store.query(pred, TrackRepo.COLUMNS);
+    const result: TrackRecord | undefined = rs.goToNextRow() ? TrackRepo.rowToTrack(rs) : undefined;
+    rs.close();
+    return result;
+  }
+
+  static async bind(mangaId: number, remoteId: number, title: string): Promise<void> {
+    const store = await AppDb.get();
+    const existing = await TrackRepo.get(mangaId);
+    if (existing !== undefined) {
+      const values: relationalStore.ValuesBucket = {
+        'remoteId': remoteId,
+        'title': title,
+      };
+      const pred = new relationalStore.RdbPredicates('track');
+      pred.equalTo('id', existing.id);
+      await store.update(values, pred);
+      return;
+    }
+    const values: relationalStore.ValuesBucket = {
+      'mangaId': mangaId,
+      'syncId': 1,
+      'remoteId': remoteId,
+      'title': title,
+      'status': '',
+      'lastChapterRead': 0,
+      'score': 0,
+    };
+    await store.insert('track', values);
+  }
+
+  static async unbind(mangaId: number): Promise<void> {
+    const store = await AppDb.get();
+    const pred = new relationalStore.RdbPredicates('track');
+    pred.equalTo('mangaId', mangaId).and().equalTo('syncId', 1);
+    await store.delete(pred);
+  }
+
+  static async setLastChapterRead(mangaId: number, lastChapterRead: number): Promise<void> {
+    const store = await AppDb.get();
+    const values: relationalStore.ValuesBucket = { 'lastChapterRead': lastChapterRead };
+    const pred = new relationalStore.RdbPredicates('track');
+    pred.equalTo('mangaId', mangaId).and().equalTo('syncId', 1);
+    await store.update(values, pred);
+  }
+
+  private static rowToTrack(rs: relationalStore.ResultSet): TrackRecord {
+    const t = new TrackRecord();
+    t.id = rs.getLong(rs.getColumnIndex('id'));
+    t.mangaId = rs.getLong(rs.getColumnIndex('mangaId'));
+    t.syncId = rs.getLong(rs.getColumnIndex('syncId'));
+    t.remoteId = rs.getLong(rs.getColumnIndex('remoteId'));
+    t.title = rs.getString(rs.getColumnIndex('title'));
+    t.status = rs.getString(rs.getColumnIndex('status'));
+    t.lastChapterRead = rs.getLong(rs.getColumnIndex('lastChapterRead'));
+    t.score = rs.getDouble(rs.getColumnIndex('score'));
+    return t;
   }
 }
