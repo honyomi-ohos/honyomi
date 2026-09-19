@@ -1,5 +1,5 @@
-import { CategoryRecord } from '../model/Models';
-import { Theme } from '../common/Theme';
+import { CategoryRecord } from '../../model/Models';
+import { Theme } from '../../common/Theme';
 
 // 文本输入弹窗（新建分类 / 导入漫画命名）
 @CustomDialog

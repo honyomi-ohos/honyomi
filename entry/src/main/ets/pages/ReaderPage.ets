@@ -3,7 +3,8 @@ import { display } from '@kit.ArkUI';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo, ChapterRepo, HistoryRepo } from '../data/Repos';
 import { SourceRegistry } from '../source/Source';
-import { MangaRecord, ChapterRecord, SPage, ReaderParams } from '../model/Models';
+import { MangaRecord, ChapterRecord, SPage } from '../model/Models';
+import { ReaderParams } from '../model/RouteParams';
 import { Theme } from '../common/Theme';
 import { Util } from '../common/Util';
 import { Settings } from '../common/Settings';
@@ -131,7 +132,7 @@ export struct ReaderPage {
     if (this.mode === 'webtoon' && scrollToResume) {
       const target = this.currentReal;
       setTimeout(() => {
-        this.scroller.scrollToIndex(target, false, ScrollAlign.Start);
+        this.scroller.scrollToIndex(target, false, ScrollAlign.START);
       }, 200);
     }
   }

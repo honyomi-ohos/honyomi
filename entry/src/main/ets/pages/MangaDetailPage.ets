@@ -2,7 +2,8 @@ import { common } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo, ChapterRepo } from '../data/Repos';
 import { SourceRegistry } from '../source/Source';
-import { MangaRecord, ChapterRecord, DetailParams, ReaderParams } from '../model/Models';
+import { MangaRecord, ChapterRecord } from '../model/Models';
+import { DetailParams, ReaderParams } from '../model/RouteParams';
 import { Theme } from '../common/Theme';
 import { Util } from '../common/Util';
 

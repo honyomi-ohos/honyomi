@@ -1,5 +1,5 @@
 import { fileIo as fs } from '@kit.CoreFileKit';
-import { zlib } from '@kit.ZlibKit';
+import zlib from '@ohos.zlib';
 import { SManga, SChapter, SPage, MangasPage } from '../model/Models';
 import { Source } from './Source';
 

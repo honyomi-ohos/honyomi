@@ -1,7 +1,8 @@
 import { common } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
 import { HistoryRepo } from '../data/Repos';
-import { HistoryItem, ReaderParams } from '../model/Models';
+import { HistoryItem } from '../model/Models';
+import { ReaderParams } from '../model/RouteParams';
 import { Theme } from '../common/Theme';
 import { Util } from '../common/Util';
 

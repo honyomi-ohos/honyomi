@@ -1,5 +1,5 @@
-import { MangaRecord, CategoryRecord } from '../model/Models';
-import { Theme } from '../common/Theme';
+import { MangaRecord, CategoryRecord } from '../../model/Models';
+import { Theme } from '../../common/Theme';
 
 // 漫画封面卡片（书架/浏览通用）
 @Component

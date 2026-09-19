@@ -2,7 +2,8 @@ import { common } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
 import { UpdatesRepo } from '../data/Repos';
 import { UpdateService } from '../data/UpdateService';
-import { UpdateItem, ReaderParams } from '../model/Models';
+import { UpdateItem } from '../model/Models';
+import { ReaderParams } from '../model/RouteParams';
 import { Theme } from '../common/Theme';
 import { Util } from '../common/Util';
 
