@@ -821,13 +821,13 @@ EXTERN_C_START
 static napi_value Export(napi_env env, napi_value exports)
 {
     static napi_property_descriptor desc[] = {
-        { "createEngine", nullptr, CreateEngine, nullptr, nullptr, nullptr, nullptr, nullptr },
-        { "destroyEngine", nullptr, DestroyEngine, nullptr, nullptr, nullptr, nullptr, nullptr },
-        { "runScript", nullptr, RunScript, nullptr, nullptr, nullptr, nullptr, nullptr },
-        { "callFunction", nullptr, CallFunction, nullptr, nullptr, nullptr, nullptr, nullptr },
-        { "initHttpDispatcher", nullptr, InitHttpDispatcher, nullptr, nullptr, nullptr, nullptr, nullptr },
-        { "resolveHttp", nullptr, ResolveHttp, nullptr, nullptr, nullptr, nullptr, nullptr },
-        { "engineMemoryBytes", nullptr, EngineMemoryBytes, nullptr, nullptr, nullptr, nullptr, nullptr },
+        { "createEngine", nullptr, CreateEngine, nullptr, nullptr, nullptr, napi_default, nullptr },
+        { "destroyEngine", nullptr, DestroyEngine, nullptr, nullptr, nullptr, napi_default, nullptr },
+        { "runScript", nullptr, RunScript, nullptr, nullptr, nullptr, napi_default, nullptr },
+        { "callFunction", nullptr, CallFunction, nullptr, nullptr, nullptr, napi_default, nullptr },
+        { "initHttpDispatcher", nullptr, InitHttpDispatcher, nullptr, nullptr, nullptr, napi_default, nullptr },
+        { "resolveHttp", nullptr, ResolveHttp, nullptr, nullptr, nullptr, napi_default, nullptr },
+        { "engineMemoryBytes", nullptr, EngineMemoryBytes, nullptr, nullptr, nullptr, napi_default, nullptr },
     };
     napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc);
     return exports;

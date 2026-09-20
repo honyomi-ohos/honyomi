@@ -8,7 +8,7 @@
  * can never contaminate each other's global scope). All engine calls are
  * executed on this background thread so parsing / searching / chapter
  * fetching never touch the UI thread; HTTP performed by extension code is
- * bridged to the main thread by the native engine (see NativeHttpBridge.ts).
+ * bridged to the main thread by the native engine (see NativeHttpBridge.ets).
  *
  * Message protocol (JSON strings, both directions):
  *   host -> worker: {"type":"init","code":"<extension js>"}
@@ -19,10 +19,10 @@
  *                   {"type":"destroyed"}
  */
 
-import { worker, MessageEvents } from '@kit.ArkTS';
+import { worker, MessageEvents, ThreadWorkerGlobalScope } from '@kit.ArkTS';
 import jsvmEngine from 'libjsvmengine.so';
 
-const workerPort: worker.ThreadWorkerGlobalScope = worker.workerPort;
+const workerPort: ThreadWorkerGlobalScope = worker.workerPort;
 
 let engineId: number = -1;
 

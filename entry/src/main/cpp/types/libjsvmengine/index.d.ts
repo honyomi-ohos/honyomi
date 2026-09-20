@@ -1,10 +1,10 @@
-/*
+﻿/*
  * Copyright (c) 2026 mihon-harmony
  *
- * Typed surface of libjsvmengine.so — the native JSVM extension engine.
+ * Typed surface of libjsvmengine.so 鈥?the native JSVM extension engine.
  * All functions except initHttpDispatcher/resolveHttp are meant to be called
  * from the dedicated JsvmWorker thread; the two bridge functions run on the
- * main ArkTS thread (see NativeHttpBridge.ts).
+ * main ArkTS thread (see NativeHttpBridge.ets).
  */
 
 /** KotlinHttpResult shape returned to extension JS by the http bridge. */

@@ -95,10 +95,7 @@ export class StripImagePipeline {
   // 超宽图等比缩放解码，限制单页内存占用
   private static async decodeOptions(source: image.ImageSource): Promise<image.DecodingOptions | undefined> {
     try {
-      const info = await source.getImageSourceInfo();
-      if (info.size === undefined) {
-        return undefined;
-      }
+      const info = await source.getImageInfo();
       const w = info.size.width;
       const h = info.size.height;
       if (w <= StripImagePipeline.MAX_DECODE_WIDTH || w <= 0 || h <= 0) {

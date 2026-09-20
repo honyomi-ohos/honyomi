@@ -15,7 +15,7 @@
  *   - Tracks per-extension JS heap usage (2MB budget watchdog).
  */
 
-import { worker } from '@kit.ArkTS';
+import { worker, MessageEvents, ErrorEvent } from '@kit.ArkTS';
 import { NativeHttpBridge, WebChallengeError } from './NativeHttpBridge';
 
 /** Per-extension JSVM heap budget (bytes) — see architecture spec. */

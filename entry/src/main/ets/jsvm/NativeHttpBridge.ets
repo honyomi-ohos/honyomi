@@ -55,10 +55,6 @@ export class WebChallengeError extends Error {
 /** Marker prefix used inside the bridge error field. */
 const CHALLENGE_PREFIX = 'CF_CHALLENGE:';
 
-interface RawHeaders {
-  [key: string]: Object;
-}
-
 export class NativeHttpBridge {
   private static installed: boolean = false;
   private static inflight: number = 0;
@@ -237,7 +233,7 @@ export class NativeHttpBridge {
 
   private static flattenHeaders(header: Object): Record<string, string> {
     const flat: Record<string, string> = {};
-    const raw = header as RawHeaders;
+    const raw = header as Record<string, Object>;
     const keys = Object.keys(raw);
     for (const key of keys) {
       const value = raw[key];
@@ -256,7 +252,7 @@ export class NativeHttpBridge {
     if (resp.responseCode !== 401 && resp.responseCode !== 403 && resp.responseCode !== 503) {
       return false;
     }
-    const headers = resp.header as RawHeaders;
+    const headers = resp.header as Record<string, Object>;
     const keys = Object.keys(headers);
     for (const key of keys) {
       if (key.toLowerCase() === 'cf-mitigated') {

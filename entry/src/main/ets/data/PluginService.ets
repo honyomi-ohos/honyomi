@@ -1,4 +1,4 @@
-import { common } from '@kit.AbilityKit';
+import { common, bundleManager } from '@kit.AbilityKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
 import zlib from '@ohos.zlib';
 import { hilog } from '@kit.PerformanceAnalysisKit';
@@ -74,7 +74,12 @@ export class PluginService {
     PluginService.pluginsDir = `${context.filesDir}/plugins`;
     PluginService.cacheDir = context.cacheDir;
     PluginService.context = context;
-    PluginService.appVersionCode = context.applicationInfo.versionCode;
+    try {
+      const bundleInfo = bundleManager.getBundleInfoForSelfSync(bundleManager.BundleFlag.GET_BUNDLE_INFO_DEFAULT);
+      PluginService.appVersionCode = bundleInfo.versionCode;
+    } catch (e) {
+      PluginService.appVersionCode = 1;
+    }
     if (PluginService.prefs === undefined) {
       const options: preferences.Options = { name: 'plugin_prefs' };
       PluginService.prefs = preferences.getPreferencesSync(context, options);
