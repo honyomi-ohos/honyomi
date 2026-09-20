@@ -8,6 +8,7 @@ import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { MangaCard, CategoryChip } from './components/MangaCard';
 import { InputDialog, CategoryDialog } from './components/Dialogs';
+import { EmptyScreen } from './components/EmptyScreen';
 
 // 书架页：分类 + 收藏网格 + 刷新
 @Component
@@ -156,13 +157,7 @@ export struct LibraryPage {
         .justifyContent(FlexAlign.Center)
       } else if (this.shownMangas().length === 0) {
         Column() {
-          Text('书架空空如也')
-            .fontSize(15)
-            .fontColor(this.pal.sub)
-          Text('去「浏览」页发现并收藏漫画吧')
-            .fontSize(13)
-            .fontColor(this.pal.sub)
-            .margin({ top: 8 })
+          EmptyScreen({ message: '书架为空，去「浏览」页发现并收藏漫画吧' })
         }
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)

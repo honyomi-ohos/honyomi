@@ -5,6 +5,7 @@ import { HistoryItem } from '../model/Models';
 import { ReaderParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
+import { EmptyScreen } from './components/EmptyScreen';
 
 // 历史页：最近阅读记录
 @Component
@@ -77,9 +78,7 @@ export struct HistoryPage {
         .justifyContent(FlexAlign.Center)
       } else if (this.items.length === 0) {
         Column() {
-          Text('暂无阅读历史')
-            .fontSize(14)
-            .fontColor(this.pal.sub)
+          EmptyScreen({ message: '最近没有阅读' })
         }
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)

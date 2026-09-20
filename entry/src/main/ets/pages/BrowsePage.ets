@@ -10,6 +10,7 @@ import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { MangaCard } from './components/MangaCard';
 import { InputDialog } from './components/Dialogs';
+import { EmptyScreen } from './components/EmptyScreen';
 
 // 浏览页：源选择 + 搜索 + 本地导入 + 插件管理入口
 @Component
@@ -342,9 +343,9 @@ export struct BrowsePage {
         .justifyContent(FlexAlign.Center)
       } else if (this.results.length === 0) {
         Column() {
-          Text(this.selectedSource === 'local' ? '暂无本地漫画，点击右上角「导入」' : '没有找到漫画')
-            .fontSize(14)
-            .fontColor(this.pal.sub)
+          EmptyScreen({
+            message: this.selectedSource === 'local' ? '暂无本地漫画，点击右上角「导入」' : '没有找到漫画',
+          })
         }
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)

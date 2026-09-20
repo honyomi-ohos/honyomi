@@ -11,6 +11,7 @@ import { DownloadService } from '../data/DownloadService';
 import { AniListTracker } from '../data/AniListTracker';
 import { InputDialog } from './components/Dialogs';
 import { SmartImage } from './components/SmartImage';
+import { EmptyScreen } from './components/EmptyScreen';
 
 // 漫画详情页：信息 + 章节列表 + 收藏 + 下载 + AniList 追踪
 @Component
@@ -491,9 +492,7 @@ export struct MangaDetailPage {
           .justifyContent(FlexAlign.Center)
         } else if (this.chapters.length === 0) {
           Column() {
-            Text('暂无章节')
-              .fontSize(14)
-              .fontColor(this.pal.sub)
+            EmptyScreen({ message: '没有章节' })
           }
           .layoutWeight(1)
           .justifyContent(FlexAlign.Center)

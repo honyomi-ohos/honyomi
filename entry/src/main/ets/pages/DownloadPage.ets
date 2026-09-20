@@ -2,6 +2,7 @@ import { DownloadService } from '../data/DownloadService';
 import { DownloadTask, DownloadedManga, DownloadedChapter } from '../model/Models';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
+import { EmptyScreen } from './components/EmptyScreen';
 
 // 下载管理页：下载队列 + 已下载章节
 @Component
@@ -208,15 +209,10 @@ export struct DownloadPage {
           } else if (this.downloaded.length === 0 && this.queue.length === 0) {
             ListItem() {
               Column() {
-                Text('⬇️').fontSize(28)
-                Text('暂无下载内容')
-                  .fontSize(13)
-                  .fontColor(this.pal.sub)
-                  .margin({ top: 8 })
+                EmptyScreen({ message: '暂无下载内容', compact: true })
               }
               .width('100%')
-              .alignItems(HorizontalAlign.Center)
-              .padding({ top: 80, bottom: 80 })
+              .padding({ top: 48, bottom: 48 })
             }
           } else {
             ForEach(this.downloaded, (group: DownloadedManga) => {

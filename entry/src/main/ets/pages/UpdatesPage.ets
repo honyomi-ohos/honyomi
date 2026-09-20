@@ -6,6 +6,7 @@ import { UpdateItem } from '../model/Models';
 import { ReaderParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
+import { EmptyScreen } from './components/EmptyScreen';
 
 // 更新页：书架未读章节
 @Component
@@ -80,9 +81,7 @@ export struct UpdatesPage {
         .justifyContent(FlexAlign.Center)
       } else if (this.items.length === 0) {
         Column() {
-          Text('没有未读章节')
-            .fontSize(14)
-            .fontColor(this.pal.sub)
+          EmptyScreen({ message: '最近没有更新' })
         }
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)

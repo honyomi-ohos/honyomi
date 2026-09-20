@@ -5,6 +5,7 @@ import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { Settings } from '../common/Settings';
 import { InputDialog } from './components/Dialogs';
+import { EmptyScreen } from './components/EmptyScreen';
 
 // 插件管理页：已安装列表 / 启停 / 卸载 / 从文件安装 / 在线仓库
 @Component
@@ -301,11 +302,7 @@ export struct PluginManagePage {
                 .margin({ bottom: 4 })
 
               if (this.installed.length === 0) {
-                Text('暂无插件，从下方安装')
-                  .fontSize(12)
-                  .fontColor(this.pal.sub)
-                  .width('100%')
-                  .padding({ top: 10, bottom: 10 })
+                EmptyScreen({ message: '暂无插件，从下方安装', compact: true })
               } else {
                 ForEach(this.installed, (item: InstalledPlugin) => {
                   this.pluginRow(item)
