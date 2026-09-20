@@ -103,4 +103,9 @@ export class Theme {
     }
     return dark ? '#000000' : '#FFFFFF';
   }
+
+  // 条漫加载占位/错误提示色（随深浅色）
+  static readerPlaceholder(dark: boolean): string {
+    return dark ? '#80FFFFFF' : '#80000000';
+  }
 }

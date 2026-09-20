@@ -8,22 +8,36 @@ export class MangaRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('sourceKey', sourceKey).and().equalTo('url', m.key);
-    const rs = await store.query(pred, ['id', 'inLibrary']);
+    const rs = await store.query(pred,
+      ['id', 'inLibrary', 'title', 'thumbnailUrl', 'author', 'description', 'genre', 'status']);
     let id = -1;
     let inLibrary = 0;
+    let oldTitle = '';
+    let oldThumb = '';
+    let oldAuthor = '';
+    let oldDesc = '';
+    let oldGenre = '';
+    let oldStatus = '';
     if (rs.goToNextRow()) {
       id = rs.getLong(rs.getColumnIndex('id'));
       inLibrary = rs.getLong(rs.getColumnIndex('inLibrary'));
+      oldTitle = rs.getString(rs.getColumnIndex('title'));
+      oldThumb = rs.getString(rs.getColumnIndex('thumbnailUrl'));
+      oldAuthor = rs.getString(rs.getColumnIndex('author'));
+      oldDesc = rs.getString(rs.getColumnIndex('description'));
+      oldGenre = rs.getString(rs.getColumnIndex('genre'));
+      oldStatus = rs.getString(rs.getColumnIndex('status'));
     }
     rs.close();
     if (id >= 0) {
+      // 源返回空字段时保留旧值，避免解析回退把已有信息清空
       const values: relationalStore.ValuesBucket = {
-        'title': m.title,
-        'thumbnailUrl': m.coverUrl,
-        'author': m.author,
-        'description': m.description,
-        'genre': m.genre,
-        'status': m.status,
+        'title': m.title !== '' ? m.title : oldTitle,
+        'thumbnailUrl': m.coverUrl !== '' ? m.coverUrl : oldThumb,
+        'author': m.author !== '' ? m.author : oldAuthor,
+        'description': m.description !== '' ? m.description : oldDesc,
+        'genre': m.genre !== '' ? m.genre : oldGenre,
+        'status': m.status !== '' ? m.status : oldStatus,
       };
       await store.update(values, pred);
       return id;

@@ -34,6 +34,11 @@ export class LocalSource implements Source {
     return result;
   }
 
+  // 本地源不支持最新更新，回退为全部列表（接口要求实现，UI 不会触发）
+  async getLatestManga(page: number): Promise<MangasPage> {
+    return this.getPopularManga(page);
+  }
+
   async getSearchManga(page: number, query: string): Promise<MangasPage> {
     const names = this.listMangaDirs().filter((n: string): boolean => n.includes(query));
     const mangas: SManga[] = [];

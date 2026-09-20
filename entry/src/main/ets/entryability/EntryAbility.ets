@@ -7,6 +7,7 @@ import { SourceRegistry } from '../source/Source';
 import { LocalSource } from '../source/LocalSource';
 import { DownloadService } from '../data/DownloadService';
 import { PluginService } from '../data/PluginService';
+import { JsvmExtensionManager } from '../jsvm/JsvmExtensionManager';
 import { CookieJar } from '../net/CookieJar';
 import { ImageCache } from '../common/ImageCache';
 
@@ -23,8 +24,9 @@ export default class EntryAbility extends UIAbility {
     Settings.init(this.context);
     // 注册内置源（LocalSource；在线源全部通过插件动态安装）
     SourceRegistry.register(new LocalSource(this.context.filesDir, this.context.cacheDir));
-    // 插件宿主
+    // 插件宿主（JSVM 隔离引擎：安装主线程 HTTP 桥）
     PluginService.init(this.context);
+    JsvmExtensionManager.init();
     // 主题
     const systemDark = this.context.config !== undefined &&
       this.context.config.colorMode === ConfigurationConstant.ColorMode.COLOR_MODE_DARK;

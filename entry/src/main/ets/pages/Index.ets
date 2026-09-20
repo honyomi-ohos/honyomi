@@ -1,11 +1,9 @@
 import { common } from '@kit.AbilityKit';
 import { webview } from '@kit.ArkWeb';
-import { hilog } from '@kit.PerformanceAnalysisKit';
 import { HdsTabs, hdsMaterial } from '@kit.UIDesignKit';
 import { ThemePalette } from '../common/Theme';
 import { Settings } from '../common/Settings';
 import { UpdateService } from '../data/UpdateService';
-import { PluginHost } from '../data/PluginHost';
 import { PluginService } from '../data/PluginService';
 import { Http } from '../net/Http';
 import { CookieJar } from '../net/CookieJar';
@@ -41,12 +39,12 @@ struct Index {
   @StorageProp('navBarH') navBarH: number = 0;
   @StorageLink('cfChallengeUrl') @Watch('onCfUrlChanged') cfChallengeUrl: string = '';
   @State cfStatus: string = '';
-  private hostController: webview.WebviewController = new webview.WebviewController();
   private cfController: webview.WebviewController = new webview.WebviewController();
 
   aboutToAppear(): void {
     this.currentTab = Settings.getStartTab();
-    PluginHost.getInstance().attachController(this.hostController);
+    // 插件直接运行于 JSVM 隔离引擎（无 Web 沙箱依赖），启动即加载
+    this.loadInstalledPlugins();
     this.autoRefresh();
   }
 
@@ -88,8 +86,8 @@ struct Index {
     this.cfChallengeUrl = '';
   }
 
-  // 插件宿主沙箱就绪：加载已安装插件并广播刷新
-  private async onHostReady(): Promise<void> {
+  // 加载已安装插件并广播刷新（每个插件在专属 Worker 的隔离 JSVM 引擎中执行）
+  private async loadInstalledPlugins(): Promise<void> {
     try {
       await PluginService.loadAll();
     } catch (e) {
@@ -227,31 +225,6 @@ struct Index {
         })
         .width('100%')
         .height('100%')
-
-        // 插件宿主：隐藏 1x1 Web 沙箱（唯一 JS 执行引擎）
-        Web({ src: $rawfile('plugin_host.html'), controller: this.hostController })
-          .javaScriptAccess(true)
-          .fileAccess(false)
-          .onlineImageAccess(false)
-          .domStorageAccess(false)
-          .onPageEnd(() => {
-            PluginHost.getInstance().markPageLoaded();
-            this.onHostReady();
-          })
-          .onConsole((event: OnConsoleEvent): boolean => {
-            hilog.info(0x0002, 'PluginConsole', '%{public}s',
-              event.message.getMessage());
-            return false;
-          })
-          .javaScriptProxy({
-            object: PluginHost.getInstance().bridge,
-            name: '__hostBridge',
-            methodList: ['request', 'result', 'log'],
-            controller: this.hostController,
-          })
-          .width(1)
-          .height(1)
-          .opacity(0)
 
         // Cloudflare 盾验证页：Http 层检测到 challenge 时弹出
         if (this.cfChallengeUrl !== '') {

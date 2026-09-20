@@ -4,7 +4,7 @@ import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
 import { SourceRegistry, Source } from '../source/Source';
 import { LocalSource } from '../source/LocalSource';
-import { MangaRecord, SManga } from '../model/Models';
+import { MangaRecord, SManga, MangasPage } from '../model/Models';
 import { DetailParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
@@ -22,6 +22,7 @@ export struct BrowsePage {
   @State sources: Source[] = [];
   @State selectedSource: string = 'mangadex';
   @State query: string = '';
+  @State mode: string = 'popular'; // popular | latest
   @State results: MangaRecord[] = [];
   @State searching: boolean = false;
   @State page: number = 1;
@@ -59,6 +60,14 @@ export struct BrowsePage {
     return SourceRegistry.get(this.selectedSource);
   }
 
+  // 当前模式下的列表页（最新模式仅在源支持时生效）
+  private fetchPage(source: Source, page: number): Promise<MangasPage> {
+    if (this.mode === 'latest' && source.supportsLatest) {
+      return source.getLatestManga(page);
+    }
+    return source.getPopularManga(page);
+  }
+
   async loadPopular(): Promise<void> {
     const source = this.currentSource();
     if (source === undefined) {
@@ -70,7 +79,7 @@ export struct BrowsePage {
     try {
       const context = getContext(this) as common.UIAbilityContext;
       await AppDb.ready(context);
-      const result = await source.getPopularManga(1);
+      const result = await this.fetchPage(source, 1);
       this.results = await this.toRecords(source.key, result.mangas);
       this.hasNextPage = result.hasNextPage;
     } catch (e) {
@@ -109,7 +118,8 @@ export struct BrowsePage {
     try {
       const nextPage = this.page + 1;
       const q = this.query.trim();
-      const result = q === '' ? await source.getPopularManga(nextPage) : await source.getSearchManga(nextPage, q);
+      const result = q === '' ? await this.fetchPage(source, nextPage) :
+        await source.getSearchManga(nextPage, q);
       const more = await this.toRecords(source.key, result.mangas);
       this.results = this.results.concat(more);
       this.page = nextPage;
@@ -265,6 +275,38 @@ export struct BrowsePage {
       }
       .width('100%')
       .padding({ left: 16, right: 16, bottom: 8 })
+
+      // 模式切换（仅支持最新更新的源显示）
+      if (this.selectedSource !== 'local' && this.currentSource()?.supportsLatest === true) {
+        Row({ space: 8 }) {
+          Text('最热')
+            .fontSize(13)
+            .fontColor(this.mode === 'popular' ? '#FFFFFF' : this.pal.sub)
+            .backgroundColor(this.mode === 'popular' ? this.pal.primary : this.pal.bg)
+            .borderRadius(12)
+            .padding({ left: 12, right: 12, top: 4, bottom: 4 })
+            .onClick(() => {
+              if (this.mode !== 'popular') {
+                this.mode = 'popular';
+                this.loadPopular();
+              }
+            })
+          Text('最新')
+            .fontSize(13)
+            .fontColor(this.mode === 'latest' ? '#FFFFFF' : this.pal.sub)
+            .backgroundColor(this.mode === 'latest' ? this.pal.primary : this.pal.bg)
+            .borderRadius(12)
+            .padding({ left: 12, right: 12, top: 4, bottom: 4 })
+            .onClick(() => {
+              if (this.mode !== 'latest') {
+                this.mode = 'latest';
+                this.loadPopular();
+              }
+            })
+        }
+        .width('100%')
+        .padding({ left: 16, right: 16, bottom: 8 })
+      }
 
       // 搜索栏
       if (this.selectedSource !== 'local') {

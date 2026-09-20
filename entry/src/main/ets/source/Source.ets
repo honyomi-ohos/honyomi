@@ -8,6 +8,8 @@ export interface Source {
   readonly supportsLatest: boolean;
 
   getPopularManga(page: number): Promise<MangasPage>;
+  // 最新更新（supportsLatest 为 false 时宿主不会调用）
+  getLatestManga(page: number): Promise<MangasPage>;
   getSearchManga(page: number, query: string): Promise<MangasPage>;
   getMangaDetail(mangaKey: string): Promise<SManga>;
   getChapterList(mangaKey: string): Promise<SChapter[]>;

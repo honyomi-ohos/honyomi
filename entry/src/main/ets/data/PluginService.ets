@@ -2,9 +2,11 @@ import { common } from '@kit.AbilityKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
 import zlib from '@ohos.zlib';
 import { hilog } from '@kit.PerformanceAnalysisKit';
-import { PluginManifest, PluginSource } from '../source/PluginSource';
+import { util } from '@kit.ArkTS';
+import { preferences } from '@kit.ArkData';
+import { PluginManifest, JsvmSource } from '../source/JsvmSource';
+import { JsvmExtensionManager } from '../jsvm/JsvmExtensionManager';
 import { SourceRegistry } from '../source/Source';
-import { PluginHost } from './PluginHost';
 import { Http } from '../net/Http';
 
 const DOMAIN = 0x0002;
@@ -22,6 +24,8 @@ interface RawManifest {
   minAppVersion?: number;
   dslVersion?: number;
   icon?: string;
+  runtime?: string;
+  engine?: string;
 }
 
 export interface InstalledPlugin {
@@ -55,18 +59,46 @@ interface RawRepoIndex {
 }
 
 // 插件包管理：.mihonplug(zip: manifest.json + main.js) 安装/卸载/启停 + 在线仓库索引
+// 所有插件统一运行于 JSVM 隔离引擎（专属 Worker + 本机 C++ JSVM，零 ArkWeb 依赖）
 export class PluginService {
+  // 宿主支持的插件 DSL 最高版本（与 JSVM 适配层 ADAPTER_JS 的契约保持一致）
+  static readonly HOST_DSL_VERSION: number = 2;
   private static pluginsDir: string = '';
   private static cacheDir: string = '';
+  private static context: common.UIAbilityContext | undefined = undefined;
+  private static runtimeCache: Map<string, string> = new Map();
+  private static appVersionCode: number = 1;
+  private static prefs: preferences.Preferences | undefined = undefined;
 
   static init(context: common.UIAbilityContext): void {
     PluginService.pluginsDir = `${context.filesDir}/plugins`;
     PluginService.cacheDir = context.cacheDir;
-    PluginHost.getInstance().init(context);
+    PluginService.context = context;
+    PluginService.appVersionCode = context.applicationInfo.versionCode;
+    if (PluginService.prefs === undefined) {
+      const options: preferences.Options = { name: 'plugin_prefs' };
+      PluginService.prefs = preferences.getPreferencesSync(context, options);
+    }
     if (!fs.accessSync(PluginService.pluginsDir)) {
       fs.mkdirSync(PluginService.pluginsDir, true);
     }
     PluginService.cleanStaleTemp();
+  }
+
+  // 插件启停状态持久化（沿用原 plugin_prefs 存储，兼容升级前状态）
+  private static isPluginEnabled(key: string): boolean {
+    if (PluginService.prefs === undefined) {
+      return true;
+    }
+    return !(PluginService.prefs.getSync(`__disabled:${key}`, false) as boolean);
+  }
+
+  private static setPluginEnabled(key: string, enabled: boolean): void {
+    if (PluginService.prefs === undefined) {
+      return;
+    }
+    PluginService.prefs.putSync(`__disabled:${key}`, !enabled);
+    PluginService.prefs.flush();
   }
 
   // 清理历史失败安装遗留的临时文件/目录（plugin_extract_*/plugin_install_*/plugin_repo_*）
@@ -108,6 +140,20 @@ export class PluginService {
     if (versionCode <= 0) {
       throw new Error('manifest.versionCode 无效');
     }
+    // 引擎门禁：唯一支持的执行引擎是 jsvm
+    const engine = raw.engine ?? 'jsvm';
+    if (engine !== 'jsvm') {
+      throw new Error(`不支持的插件引擎: ${engine}（本应用仅支持 jsvm）`);
+    }
+    // 版本门禁：DSL 版本过高或要求的应用版本过高时拒绝加载，给出可理解的错误
+    const dslVersion = raw.dslVersion ?? 1;
+    if (dslVersion > PluginService.HOST_DSL_VERSION) {
+      throw new Error(`插件需要新版应用（DSL v${dslVersion} > v${PluginService.HOST_DSL_VERSION}），请先升级应用`);
+    }
+    const minAppVersion = raw.minAppVersion ?? 1;
+    if (minAppVersion > PluginService.appVersionCode) {
+      throw new Error(`插件需要应用版本号 ≥ ${minAppVersion}，请先升级应用`);
+    }
     const manifest: PluginManifest = {
       key: key,
       name: name,
@@ -117,9 +163,11 @@ export class PluginService {
       baseUrl: raw.baseUrl ?? '',
       nsfw: raw.nsfw === true,
       supportsLatest: raw.supportsLatest !== false,
-      minAppVersion: raw.minAppVersion ?? 1,
-      dslVersion: raw.dslVersion ?? 1,
+      minAppVersion: minAppVersion,
+      dslVersion: dslVersion,
       icon: raw.icon ?? '',
+      runtime: raw.runtime ?? '',
+      engine: engine,
     };
     return manifest;
   }
@@ -140,7 +188,7 @@ export class PluginService {
         const iconPath = `${PluginService.pluginsDir}/${dir}/${manifest.icon}`;
         const item: InstalledPlugin = {
           manifest: manifest,
-          enabled: PluginHost.getInstance().isPluginEnabled(manifest.key),
+          enabled: PluginService.isPluginEnabled(manifest.key),
           iconPath: manifest.icon !== '' && fs.accessSync(iconPath) ? `file://${iconPath}` : '',
         };
         result.push(item);
@@ -193,13 +241,13 @@ export class PluginService {
   }
 
   static async setEnabled(key: string, enabled: boolean): Promise<void> {
-    PluginHost.getInstance().setPluginEnabled(key, enabled);
+    PluginService.setPluginEnabled(key, enabled);
     await PluginService.reloadKey(key);
   }
 
   static async uninstall(key: string): Promise<void> {
     SourceRegistry.unregister(key);
-    await PluginHost.getInstance().unloadPlugin(key);
+    await JsvmExtensionManager.unloadExtension(key);
     const dir = `${PluginService.pluginsDir}/${key}`;
     if (fs.accessSync(dir)) {
       fs.rmdirSync(dir);
@@ -207,7 +255,7 @@ export class PluginService {
     // 注意：数据库中该源的漫画数据保留，重装同 key 插件后自动恢复
   }
 
-  // 宿主就绪后加载全部已启用插件
+  // 加载全部已启用插件（每个插件在其专属 Worker 的隔离 JSVM 引擎中执行）
   static async loadAll(): Promise<void> {
     const installed = PluginService.listInstalled();
     for (const item of installed) {
@@ -216,11 +264,7 @@ export class PluginService {
       }
       try {
         const scriptText = fs.readTextSync(`${PluginService.pluginsDir}/${item.manifest.key}/main.js`);
-        await PluginHost.getInstance().loadPlugin(item.manifest.key, JSON.stringify(item.manifest), scriptText);
-        const ps = new PluginSource(item.manifest);
-        SourceRegistry.register(ps);
-        PluginService.warmImageHeaders(ps);
-        hilog.info(DOMAIN, TAG, 'plugin loaded: %{public}s v%{public}s', item.manifest.key, item.manifest.version);
+        await PluginService.reloadOne(item.manifest, scriptText);
       } catch (e) {
         hilog.error(DOMAIN, TAG, 'load plugin %{public}s failed: %{public}s',
           item.manifest.key, (e as Error).message);
@@ -262,6 +306,29 @@ export class PluginService {
   }
 
   // ---------------- 内部实现 ----------------
+
+  // manifest.runtime 非空时，在 main.js 前拼接共享运行时（rawfile plugin_runtime_<name>.js）
+  static composeScript(manifest: PluginManifest, mainJs: string): string {
+    if (manifest.runtime === '') {
+      return mainJs;
+    }
+    return `${PluginService.getRuntime(manifest.runtime)}\n;\n${mainJs}`;
+  }
+
+  private static getRuntime(name: string): string {
+    const cached = PluginService.runtimeCache.get(name);
+    if (cached !== undefined) {
+      return cached;
+    }
+    if (!new RegExp('^[a-z0-9_]+$').test(name) || PluginService.context === undefined) {
+      return '';
+    }
+    const data = PluginService.context.resourceManager
+      .getRawFileContentSync(`plugin_runtime_${name}.js`);
+    const text = util.TextDecoder.create('utf-8').decodeToString(data);
+    PluginService.runtimeCache.set(name, text);
+    return text;
+  }
 
   private static async installZip(zipPath: string): Promise<string> {
     const extractDir = `${PluginService.cacheDir}/plugin_extract_${Date.now()}`;
@@ -315,7 +382,7 @@ export class PluginService {
     const manifestPath = `${PluginService.pluginsDir}/${key}/manifest.json`;
     if (!fs.accessSync(manifestPath)) {
       SourceRegistry.unregister(key);
-      await PluginHost.getInstance().unloadPlugin(key);
+      await JsvmExtensionManager.unloadExtension(key);
       return;
     }
     const manifest = PluginService.parseManifest(fs.readTextSync(manifestPath));
@@ -323,37 +390,20 @@ export class PluginService {
     await PluginService.reloadOne(manifest, scriptText);
   }
 
-  private static async reloadOne(manifest: PluginManifest, scriptText: string): Promise<void> {
-    if (!PluginHost.getInstance().isPluginEnabled(manifest.key)) {
+  // 加载/替换插件：卸载旧引擎后重新拉起专属 Worker + 隔离 JSVM_Context
+  private static async reloadOne(manifest: PluginManifest, mainJs: string): Promise<void> {
+    if (!PluginService.isPluginEnabled(manifest.key)) {
       SourceRegistry.unregister(manifest.key);
-      await PluginHost.getInstance().unloadPlugin(manifest.key);
+      await JsvmExtensionManager.unloadExtension(manifest.key);
       return;
     }
-    await PluginHost.getInstance().loadPlugin(manifest.key, JSON.stringify(manifest), scriptText);
-    const ps = new PluginSource(manifest);
-    SourceRegistry.register(ps);
-    PluginService.warmImageHeaders(ps);
-  }
-
-  // 插件可选导出 imageHeaders()：声明后图片经宿主 http 管线加载（支持 Referer/Cookie）
-  // 未声明（或调用失败）时保持系统 Image 直连
-  private static warmImageHeaders(source: PluginSource): void {
-    PluginHost.getInstance().callPlugin(source.key, 'imageHeaders', [])
-      .then((json: string) => {
-        const raw = JSON.parse(json) as Record<string, Object>;
-        const keys = Object.keys(raw);
-        const headers: Record<string, string> = {};
-        for (const k of keys) {
-          const v = raw[k];
-          if (typeof v === 'string') {
-            headers[k] = v;
-          }
-        }
-        source.setImageHeaders(headers);
-        hilog.info(DOMAIN, TAG, 'image headers ready: %{public}s', source.key);
-      })
-      .catch((_e: Error) => {
-        // 插件未声明 imageHeaders：直连加载
-      });
+    const script = PluginService.composeScript(manifest, mainJs);
+    const info = await JsvmExtensionManager.loadExtension(manifest.key, script);
+    const src = new JsvmSource(manifest, info.methods);
+    SourceRegistry.register(src);
+    // 插件可选导出 getHeaders：声明后图片经宿主 http 管线加载（支持 Referer/Cookie）
+    src.warmImageHeaders();
+    hilog.info(DOMAIN, TAG, 'jsvm plugin ready: %{public}s v%{public}s (kind %{public}s, %{public}d methods, mem %{public}d)',
+      manifest.key, manifest.version, info.kind, info.methods.length, JsvmExtensionManager.memoryBytes(manifest.key));
   }
 }

@@ -10,6 +10,7 @@ import { Util } from '../common/Util';
 import { Settings } from '../common/Settings';
 import { DownloadService } from '../data/DownloadService';
 import { SmartImage } from './components/SmartImage';
+import { ComicStripViewer } from './components/ComicStripViewer';
 import { AppIconRes } from './components/AppIcon';
 import { SwitchRow } from './components/Prefs';
 
@@ -419,30 +420,27 @@ export struct ReaderPage {
           .height('100%')
           .justifyContent(FlexAlign.Center)
         } else if (this.mode === 'webtoon') {
-          List({ scroller: this.scroller }) {
-            LazyForEach(this.dataSource, (page: SPage) => {
-              ListItem() {
-                SmartImage({ url: page.url, sourceKey: this.manga.sourceKey, fit: ImageFit.Cover, fill: false })
-                  .width('100%')
-                  .onClick(() => {
-                    this.showMenu = !this.showMenu;
-                  })
+          // 条漫模式：PixelMap 直绘的无限竖向滚动（防防盗链拦截 + 内存受控）
+          ComicStripViewer({
+            pages: this.pages,
+            sourceKey: this.manga.sourceKey,
+            initialIndex: this.currentReal,
+            isDark: this.isDark,
+            scroller: this.scroller,
+            onTap: (): void => {
+              this.showMenu = !this.showMenu;
+            },
+            onPageVisible: (index: number): void => {
+              this.displayIndex = index;
+              const real = this.displayToReal(index);
+              if (real !== this.currentReal && index >= 0) {
+                this.currentReal = real;
+                this.persistProgress();
               }
-            }, (page: SPage) => page.url)
-          }
-          .width('100%')
-          .height('100%')
-          .cachedCount(2)
-          .scrollBar(BarState.Off)
-          .edgeEffect(EdgeEffect.None)
-          .onScrollIndex((first: number, last: number) => {
-            this.displayIndex = first;
-            const real = this.displayToReal(first);
-            if (real !== this.currentReal && first >= 0) {
-              this.currentReal = real;
-              this.persistProgress();
             }
           })
+            .width('100%')
+            .height('100%')
         } else {
           Swiper() {
             LazyForEach(this.dataSource, (page: SPage) => {
