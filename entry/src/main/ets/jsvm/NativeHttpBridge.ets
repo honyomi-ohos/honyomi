@@ -25,6 +25,10 @@ export interface JsvmBridgeRequest {
   headersJson: string;
   body: string;
   wantBytes: boolean;
+  /** True for zero-copy requests answered via resolveHttpBytes(). */
+  shared?: boolean;
+  /** Present only on release messages: '{"type":"release","callId":N}'. */
+  type?: string;
 }
 
 /** KotlinHttpResult shape expected by the extension runtime. */
@@ -34,6 +38,11 @@ export interface JsvmHttpResult {
   headersJson: string;
   body: string;
   error: string | null;
+}
+
+/** Shared (zero-copy) result: meta envelope plus the pinned response body. */
+export interface JsvmSharedResult extends JsvmHttpResult {
+  bytes: ArrayBuffer | null;
 }
 
 /**
@@ -101,13 +110,37 @@ export class NativeHttpBridge {
   // ------------------------------------------------------------------ private
 
   private static onRequest(reqJson: string): void {
-    let req: JsvmBridgeRequest;
+    let msg: JsvmBridgeRequest;
     try {
-      req = JSON.parse(reqJson) as JsvmBridgeRequest;
+      msg = JSON.parse(reqJson) as JsvmBridgeRequest;
     } catch (e) {
       return; // malformed dispatch: nothing to resolve
     }
+    // Zero-copy body release: the JSVM side garbage-collected a shared
+    // response buffer; drop its native pin.
+    if (msg.type === 'release') {
+      jsvmEngine.releaseHttpBuffer(msg.callId);
+      return;
+    }
+    const req = msg;
     NativeHttpBridge.inflight += 1;
+    if (req.shared === true) {
+      NativeHttpBridge.executeShared(req).then((result: JsvmSharedResult) => {
+        NativeHttpBridge.inflight -= 1;
+        const meta: JsvmHttpResult = {
+          status: result.status,
+          statusText: result.statusText,
+          headersJson: result.headersJson,
+          body: '',
+          error: result.error,
+        };
+        jsvmEngine.resolveHttpBytes(req.callId, JSON.stringify(meta), result.bytes);
+      }).catch((e: Error) => {
+        NativeHttpBridge.inflight -= 1;
+        jsvmEngine.resolveHttpBytes(req.callId, JSON.stringify(NativeHttpBridge.error(0, e.message)), null);
+      });
+      return;
+    }
     NativeHttpBridge.execute(req).then((result: JsvmHttpResult) => {
       NativeHttpBridge.inflight -= 1;
       jsvmEngine.resolveHttp(req.callId, JSON.stringify(result));
@@ -165,6 +198,64 @@ export class NativeHttpBridge {
         headersJson: headersJson,
         body: body,
         error: null,
+      };
+    } finally {
+      client.destroy();
+    }
+  }
+
+  // Zero-copy variant: fetches with expectDataType ARRAY_BUFFER and hands the
+  // raw buffer to the native engine (no base64 round-trip). Challenge
+  // detection is header-based only here (cf-mitigated), since the body is not
+  // decoded as text on this path.
+  private static async executeShared(req: JsvmBridgeRequest): Promise<JsvmSharedResult> {
+    const url = req.url;
+    if (url.indexOf('https://') !== 0 && url.indexOf('http://') !== 0) {
+      const e = NativeHttpBridge.error(0, `仅支持 http/https 请求: ${url}`);
+      return {
+        status: e.status, statusText: e.statusText, headersJson: e.headersJson,
+        body: e.body, error: e.error, bytes: null,
+      };
+    }
+    let headers: Record<string, string> = {};
+    try {
+      headers = JSON.parse(req.headersJson) as Record<string, string>;
+    } catch (e) {
+      headers = {};
+    }
+    const client: http.HttpRequest = http.createHttp();
+    try {
+      const method = NativeHttpBridge.methodOf(req.method);
+      const options: http.HttpRequestOptions = {
+        method: method,
+        header: NativeHttpBridge.mergeHeaders(url, headers),
+        expectDataType: http.HttpDataType.ARRAY_BUFFER,
+        connectTimeout: 15000,
+        readTimeout: 60000,
+      };
+      if (req.body !== '' && method !== http.RequestMethod.GET && method !== http.RequestMethod.HEAD) {
+        options.extraData = req.body;
+      }
+      const resp: http.HttpResponse = await client.request(url, options);
+      CookieJar.storeFromResponse(url, resp.header);
+      const headersJson = JSON.stringify(NativeHttpBridge.flattenHeaders(resp.header));
+      if (NativeHttpBridge.isChallenge(resp, url)) {
+        return {
+          status: resp.responseCode,
+          statusText: '',
+          headersJson: headersJson,
+          body: '',
+          error: NativeHttpBridge.challengeError(url),
+          bytes: null,
+        };
+      }
+      return {
+        status: resp.responseCode,
+        statusText: '',
+        headersJson: headersJson,
+        body: '',
+        error: null,
+        bytes: resp.result as ArrayBuffer,
       };
     } finally {
       client.destroy();

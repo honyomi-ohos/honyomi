@@ -30,6 +30,8 @@
 
 #include "html_selector.h"
 
+// Enables OH_JSVM_CreateArrayBufferFromExternalMemory (zero-copy ArrayBuffer).
+#define JSVM_EXPERIMENTAL
 #include "ark_runtime/jsvm.h"
 #include "hilog/log.h"
 #include "napi/native_api.h"
@@ -75,11 +77,14 @@ struct HttpTask {
     std::string reqJson;
 };
 
+struct SharedBody; // defined below (shared-body registry)
+
 struct PendingHttp {
     std::mutex mtx;
     std::condition_variable cv;
     bool done = false;
     std::string resultJson;
+    SharedBody *sharedBody = nullptr; // pinned by g_sharedBodies until released
 };
 
 static std::mutex g_pendingLock;
@@ -88,6 +93,29 @@ static std::atomic<uint64_t> g_nextCallId{1};
 
 static napi_threadsafe_function g_httpTsf = nullptr;
 static std::mutex g_tsfLock;
+
+// ============================================================================
+// Shared-body registry (zero-copy HTTP pipeline)
+//
+// The main thread pins the ArkTS response ArrayBuffer with a napi_ref
+// (ResolveHttpBytes); the worker wraps the SAME memory in a JSVM external
+// ArrayBuffer (OH_JSVM_CreateArrayBufferFromExternalMemory). When the JS side
+// garbage-collects that buffer, the finalize callback posts a release task
+// back through the TSF; ReleaseHttpBuffer (main thread) then drops the
+// napi_ref. Release tasks reuse the HttpTask channel with
+// reqJson == {"type":"release"}.
+// ============================================================================
+
+struct SharedBody {
+    uint64_t callId;
+    napi_env nenv; // main-thread napi env that owns the ref
+    napi_ref ref;
+    void *data;
+    size_t length;
+};
+
+static std::mutex g_bodiesLock;
+static std::unordered_map<uint64_t, SharedBody *> g_sharedBodies;
 
 // ============================================================================
 // Small helpers
@@ -190,6 +218,78 @@ static void PumpVm(JSVM_VM vm)
     bool hasMore = false;
     OH_JSVM_PumpMessageLoop(vm, &hasMore);
     OH_JSVM_PerformMicrotaskCheckpoint(vm);
+}
+
+// ----------------------------------------------------------------------------
+// Shared-body helpers (see registry comment above)
+// ----------------------------------------------------------------------------
+
+// Worker/main thread: asks the main thread to drop the napi_ref pinning a
+// shared HTTP body. Safe to call multiple times for one callId (idempotent
+// through the registry erase).
+static void PostRelease(uint64_t callId)
+{
+    std::lock_guard<std::mutex> lock(g_tsfLock);
+    if (g_httpTsf == nullptr) {
+        return; // bridge torn down: bounded leak of the pinned ref
+    }
+    HttpTask *task = new HttpTask{callId, "{\"type\":\"release\"}"};
+    if (napi_call_threadsafe_function(g_httpTsf, task, napi_tsfn_nonblocking) != napi_ok) {
+        delete task;
+    }
+}
+
+// JSVM finalize callback for external ArrayBuffers over shared HTTP bodies.
+static void SharedBodyFinalize(JSVM_Env env, void *finalizeData, void *finalizeHint, bool copied)
+{
+    (void)env;
+    (void)finalizeData;
+    (void)copied;
+    auto *body = static_cast<SharedBody *>(finalizeHint);
+    if (body != nullptr) {
+        PostRelease(body->callId);
+    }
+}
+
+// Main thread only: unregisters a shared body, drops its napi_ref and frees it.
+static void ReleaseSharedBodyMain(napi_env env, uint64_t callId)
+{
+    (void)env;
+    SharedBody *body = nullptr;
+    {
+        std::lock_guard<std::mutex> lock(g_bodiesLock);
+        auto it = g_sharedBodies.find(callId);
+        if (it == g_sharedBodies.end()) {
+            return;
+        }
+        body = it->second;
+        g_sharedBodies.erase(it);
+    }
+    napi_delete_reference(body->nenv, body->ref);
+    delete body;
+}
+
+static size_t TypedarrayElementSize(JSVM_TypedarrayType type)
+{
+    switch (type) {
+        case JSVM_INT8_ARRAY:
+        case JSVM_UINT8_ARRAY:
+        case JSVM_UINT8_CLAMPED_ARRAY:
+            return 1;
+        case JSVM_INT16_ARRAY:
+        case JSVM_UINT16_ARRAY:
+            return 2;
+        case JSVM_INT32_ARRAY:
+        case JSVM_UINT32_ARRAY:
+        case JSVM_FLOAT32_ARRAY:
+            return 4;
+        case JSVM_FLOAT64_ARRAY:
+        case JSVM_BIGINT64_ARRAY:
+        case JSVM_BIGUINT64_ARRAY:
+            return 8;
+        default:
+            return 0;
+    }
 }
 
 // Runs one raw script inside a fresh handle scope; returns the captured result
@@ -295,6 +395,147 @@ static JSVM_Value NativeSelector(JSVM_Env env, JSVM_CallbackInfo info)
     return ToJsString(env, NativeSelectHtml(html, query));
 }
 
+// querySelectorAll over an ArrayBuffer / TypedArray: lexbor parses the bytes
+// in place — the buffer is never copied.
+static JSVM_Value NativeSelectorBuffer(JSVM_Env env, JSVM_CallbackInfo info)
+{
+    size_t argc = 2;
+    JSVM_Value args[2] = {nullptr, nullptr};
+    OH_JSVM_GetCbInfo(env, info, &argc, args, nullptr, nullptr);
+    if (argc < 1 || args[0] == nullptr) {
+        return ToJsString(env, "[]");
+    }
+    void *data = nullptr;
+    size_t length = 0;
+    bool isAb = false;
+    bool isTa = false;
+    if (OH_JSVM_IsArraybuffer(env, args[0], &isAb) == JSVM_OK && isAb) {
+        if (OH_JSVM_GetArraybufferInfo(env, args[0], &data, &length) != JSVM_OK) {
+            return ToJsString(env, "[]");
+        }
+    } else if (OH_JSVM_IsTypedarray(env, args[0], &isTa) == JSVM_OK && isTa) {
+        JSVM_TypedarrayType type = JSVM_INT8_ARRAY;
+        size_t elementCount = 0;
+        JSVM_Value arraybuffer = nullptr;
+        size_t byteOffset = 0;
+        if (OH_JSVM_GetTypedarrayInfo(env, args[0], &type, &elementCount, &data, &arraybuffer,
+                                      &byteOffset) != JSVM_OK) {
+            return ToJsString(env, "[]");
+        }
+        const size_t elementSize = TypedarrayElementSize(type);
+        if (elementSize == 0) {
+            return ToJsString(env, "[]");
+        }
+        length = elementCount * elementSize;
+    } else {
+        return ToJsString(env, "[]");
+    }
+    std::string query = argc > 1 ? ToStdString(env, args[1]) : "";
+    return ToJsString(env, NativeSelectHtmlBytes(static_cast<const uint8_t *>(data), length, query));
+}
+
+// Synchronous zero-copy HTTP fetch: the main thread answers via
+// ResolveHttpBytes with the response ArrayBuffer pinned by a napi_ref; the
+// same memory is then wrapped as a JSVM external ArrayBuffer. Returns a JS
+// object {status, statusText, headersJson, body:"", bytes, error} where
+// `bytes` is an ArrayBuffer (or null after errors).
+static JSVM_Value NativeHttpRequestShared(JSVM_Env env, JSVM_CallbackInfo info)
+{
+    size_t argc = 4;
+    JSVM_Value args[4] = {nullptr, nullptr, nullptr, nullptr};
+    OH_JSVM_GetCbInfo(env, info, &argc, args, nullptr, nullptr);
+    std::string url = argc > 0 ? ToStdString(env, args[0]) : "";
+    std::string method = argc > 1 ? ToStdString(env, args[1]) : "GET";
+    std::string headersJson = argc > 2 ? ToStdString(env, args[2]) : "{}";
+    std::string body = argc > 3 ? ToStdString(env, args[3]) : "";
+
+    const uint64_t callId = g_nextCallId.fetch_add(1);
+    auto pending = std::make_shared<PendingHttp>();
+    {
+        std::lock_guard<std::mutex> lock(g_pendingLock);
+        g_pending[callId] = pending;
+    }
+
+    std::string reqJson = std::string("{\"callId\":") + std::to_string(callId) +
+        ",\"url\":\"" + JsonEscape(url) +
+        "\",\"method\":\"" + JsonEscape(method) +
+        "\",\"headersJson\":\"" + JsonEscape(headersJson) +
+        "\",\"body\":\"" + JsonEscape(body) + "\",\"shared\":true}";
+
+    bool dispatched = false;
+    {
+        std::lock_guard<std::mutex> lock(g_tsfLock);
+        if (g_httpTsf != nullptr) {
+            HttpTask *task = new HttpTask{callId, reqJson};
+            if (napi_call_threadsafe_function(g_httpTsf, task, napi_tsfn_nonblocking) == napi_ok) {
+                dispatched = true;
+            } else {
+                delete task;
+            }
+        }
+    }
+
+    std::string resultJson;
+    SharedBody *bodyShared = nullptr;
+    if (!dispatched) {
+        resultJson = HttpErrResult("http bridge not initialized");
+        std::lock_guard<std::mutex> lock(g_pendingLock);
+        g_pending.erase(callId);
+    } else {
+        std::unique_lock<std::mutex> lock(pending->mtx);
+        bool woke = pending->cv.wait_for(lock, std::chrono::seconds(HTTP_BRIDGE_TIMEOUT_S),
+                                         [&pending]() { return pending->done; });
+        if (!woke) {
+            resultJson = HttpErrResult("http bridge timeout");
+            std::lock_guard<std::mutex> plock(g_pendingLock);
+            g_pending.erase(callId);
+        } else {
+            resultJson = pending->resultJson;
+            bodyShared = pending->sharedBody;
+        }
+    }
+
+    JSVM_Value obj = nullptr;
+    JSVM_Value meta = ToJsString(env, resultJson);
+    if (meta == nullptr || OH_JSVM_JsonParse(env, meta, &obj) != JSVM_OK || obj == nullptr) {
+        OH_JSVM_CreateObject(env, &obj);
+        JSVM_Value zero = nullptr;
+        OH_JSVM_CreateInt32(env, 0, &zero);
+        OH_JSVM_SetNamedProperty(env, obj, "status", zero);
+        JSVM_Value empty = ToJsString(env, "");
+        OH_JSVM_SetNamedProperty(env, obj, "statusText", empty);
+        OH_JSVM_SetNamedProperty(env, obj, "headersJson", ToJsString(env, "{}"));
+        OH_JSVM_SetNamedProperty(env, obj, "body", ToJsString(env, ""));
+        OH_JSVM_SetNamedProperty(env, obj, "error", ToJsString(env, "bridge result parse failed"));
+    }
+
+    JSVM_Value bytes = nullptr;
+    OH_JSVM_GetNull(env, &bytes);
+    if (bodyShared != nullptr) {
+        bool copied = false;
+        JSVM_Value external = nullptr;
+        if (OH_JSVM_CreateArrayBufferFromExternalMemory(env, bodyShared->data, bodyShared->length,
+                SharedBodyFinalize, bodyShared, &copied, &external) == JSVM_OK &&
+            external != nullptr) {
+            bytes = external;
+        } else {
+            // Fallback (e.g. unaligned backing store): copy once, then unpin.
+            JSVM_Value copy = nullptr;
+            void *copyData = nullptr;
+            if (OH_JSVM_CreateArraybuffer(env, bodyShared->length, &copyData, &copy) == JSVM_OK &&
+                copy != nullptr && copyData != nullptr) {
+                if (bodyShared->length > 0) {
+                    std::memcpy(copyData, bodyShared->data, bodyShared->length);
+                }
+                bytes = copy;
+            }
+            PostRelease(bodyShared->callId);
+        }
+    }
+    OH_JSVM_SetNamedProperty(env, obj, "bytes", bytes);
+    return obj;
+}
+
 static JSVM_Value NativeLog(JSVM_Env env, JSVM_CallbackInfo info)
 {
     size_t argc = 2;
@@ -316,7 +557,9 @@ static JSVM_Value NativeLog(JSVM_Env env, JSVM_CallbackInfo info)
 
 // Static callback structs: must outlive the env (keep as globals, never free).
 static JSVM_CallbackStruct g_httpCb = {NativeHttpRequest, nullptr};
+static JSVM_CallbackStruct g_httpSharedCb = {NativeHttpRequestShared, nullptr};
 static JSVM_CallbackStruct g_selectorCb = {NativeSelector, nullptr};
+static JSVM_CallbackStruct g_selectorBufferCb = {NativeSelectorBuffer, nullptr};
 static JSVM_CallbackStruct g_logCb = {NativeLog, nullptr};
 
 // ============================================================================
@@ -375,8 +618,29 @@ static const char *BOOTSTRAP_JS = R"JS((function () {
     };
   };
 
+  // ---- zero-copy bytes fetch ------------------------------------------------
+  // Returns {ok, status, statusText, headers, bytes: ArrayBuffer}. `bytes`
+  // shares memory with the native response buffer (released automatically
+  // once garbage collected / no longer referenced by JS).
+  g.fetchBytes = function (url, options) {
+    options = options || {};
+    var headers = options.headers || {};
+    var r = __nativeHttpRequestShared(String(url), options.method || 'GET',
+      JSON.stringify(headers), options.body == null ? '' : String(options.body));
+    if (r.error) { throw new Error(r.error); }
+    r.ok = r.status >= 200 && r.status < 300;
+    try { r.headers = JSON.parse(r.headersJson || '{}'); } catch (e) { r.headers = {}; }
+    return r;
+  };
+
   // ---- DOM-ish selector bridge ---------------------------------------------
+  // Accepts an HTML string, an ArrayBuffer or a TypedArray view. Buffer inputs
+  // are parsed in place by lexbor (zero-copy).
   g.querySelectorAll = function (html, cssQuery) {
+    if (html instanceof ArrayBuffer || (typeof ArrayBuffer !== 'undefined' &&
+        ArrayBuffer.isView && ArrayBuffer.isView(html))) {
+      return JSON.parse(nativeSelectorBuffer(html, String(cssQuery)));
+    }
     return JSON.parse(nativeSelector(String(html), String(cssQuery)));
   };
   g.nativeSelector = function (html, cssQuery) { return nativeSelector(String(html), String(cssQuery)); };
@@ -559,7 +823,9 @@ static napi_value CreateEngine(napi_env env, napi_callback_info info)
 
     JSVM_PropertyDescriptor descriptors[] = {
         { "__nativeHttpRequest", nullptr, &g_httpCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
+        { "__nativeHttpRequestShared", nullptr, &g_httpSharedCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
         { "nativeSelector", nullptr, &g_selectorCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
+        { "nativeSelectorBuffer", nullptr, &g_selectorBufferCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
         { "__nativeLog", nullptr, &g_logCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
     };
 
@@ -787,6 +1053,90 @@ static napi_value ResolveHttp(napi_env env, napi_callback_info info)
     return result;
 }
 
+// Main thread: answers a shared (zero-copy) bridge request. metaJson carries
+// the JsvmHttpResult envelope (body left empty); body is the response
+// ArrayBuffer, pinned here by a napi_ref and wrapped by the worker as a JSVM
+// external ArrayBuffer over the same memory.
+static napi_value ResolveHttpBytes(napi_env env, napi_callback_info info)
+{
+    size_t argc = 3;
+    napi_value args[3] = {nullptr, nullptr, nullptr};
+    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    napi_value result = nullptr;
+    uint32_t callId = 0;
+    if (argc < 2 || napi_get_value_uint32(env, args[0], &callId) != napi_ok) {
+        napi_get_boolean(env, false, &result);
+        return result;
+    }
+    size_t len = 0;
+    if (napi_get_value_string_utf8(env, args[1], nullptr, 0, &len) != napi_ok) {
+        napi_get_boolean(env, false, &result);
+        return result;
+    }
+    std::vector<char> buf(len + 1, '\0');
+    size_t written = 0;
+    napi_get_value_string_utf8(env, args[1], buf.data(), buf.size(), &written);
+    std::string metaJson(buf.data(), written);
+
+    SharedBody *body = nullptr;
+    bool isAb = false;
+    if (argc >= 3 && args[2] != nullptr &&
+        napi_is_arraybuffer(env, args[2], &isAb) == napi_ok && isAb) {
+        void *data = nullptr;
+        size_t dataLen = 0;
+        napi_ref ref = nullptr;
+        if (napi_get_arraybuffer_info(env, args[2], &data, &dataLen) == napi_ok &&
+            napi_create_reference(env, args[2], 1, &ref) == napi_ok && ref != nullptr) {
+            body = new SharedBody{callId, env, ref, data, dataLen};
+            std::lock_guard<std::mutex> lock(g_bodiesLock);
+            g_sharedBodies[callId] = body;
+        }
+    }
+
+    std::shared_ptr<PendingHttp> pending;
+    {
+        std::lock_guard<std::mutex> lock(g_pendingLock);
+        auto it = g_pending.find(callId);
+        if (it != g_pending.end()) {
+            pending = it->second;
+            g_pending.erase(it);
+        }
+    }
+    if (pending == nullptr) {
+        // Worker timed out or bogus callId: unpin immediately.
+        ReleaseSharedBodyMain(env, callId);
+        napi_get_boolean(env, false, &result);
+        return result;
+    }
+    {
+        std::lock_guard<std::mutex> lock(pending->mtx);
+        pending->sharedBody = body;
+        pending->resultJson = metaJson;
+        pending->done = true;
+        pending->cv.notify_all();
+    }
+    napi_get_boolean(env, true, &result);
+    return result;
+}
+
+// Main thread: drops the napi_ref pinning a shared body (dispatched from the
+// JSVM ArrayBuffer finalize callback through the TSF).
+static napi_value ReleaseHttpBuffer(napi_env env, napi_callback_info info)
+{
+    size_t argc = 1;
+    napi_value args[1] = {nullptr};
+    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    napi_value result = nullptr;
+    uint32_t callId = 0;
+    if (argc < 1 || napi_get_value_uint32(env, args[0], &callId) != napi_ok) {
+        napi_get_boolean(env, false, &result);
+        return result;
+    }
+    ReleaseSharedBodyMain(env, callId);
+    napi_get_boolean(env, true, &result);
+    return result;
+}
+
 static napi_value EngineMemoryBytes(napi_env env, napi_callback_info info)
 {
     size_t argc = 1;
@@ -827,6 +1177,8 @@ static napi_value Export(napi_env env, napi_value exports)
         { "callFunction", nullptr, CallFunction, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "initHttpDispatcher", nullptr, InitHttpDispatcher, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "resolveHttp", nullptr, ResolveHttp, nullptr, nullptr, nullptr, napi_default, nullptr },
+        { "resolveHttpBytes", nullptr, ResolveHttpBytes, nullptr, nullptr, nullptr, napi_default, nullptr },
+        { "releaseHttpBuffer", nullptr, ReleaseHttpBuffer, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "engineMemoryBytes", nullptr, EngineMemoryBytes, nullptr, nullptr, nullptr, napi_default, nullptr },
     };
     napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc);

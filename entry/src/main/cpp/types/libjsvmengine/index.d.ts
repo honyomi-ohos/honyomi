@@ -31,6 +31,10 @@ export interface JsvmBridgeRequest {
   headersJson: string;
   body: string;
   wantBytes: boolean;
+  /** True for zero-copy requests answered via resolveHttpBytes(). */
+  shared?: boolean;
+  /** Present only on release messages: '{"type":"release","callId":N}'. */
+  type?: string;
 }
 
 /**
@@ -68,6 +72,22 @@ export function initHttpDispatcher(onRequest: (reqJson: string) => void): boolea
  * resultJson is a JSON-encoded JsvmHttpResult.
  */
 export function resolveHttp(callId: number, resultJson: string): boolean;
+
+/**
+ * Resolves a pending zero-copy bridge request (main thread). The response
+ * ArrayBuffer is pinned natively and wrapped by the worker as a JSVM external
+ * ArrayBuffer over the same memory; it is unpinned automatically once the
+ * extension no longer references it. Pass null when the request failed before
+ * a body existed.
+ */
+export function resolveHttpBytes(callId: number, metaJson: string, body: ArrayBuffer | null): boolean;
+
+/**
+ * Drops the native pin of a shared response body (main thread). Dispatched
+ * from the engine through the http dispatcher callback as
+ * '{"type":"release","callId":N}'.
+ */
+export function releaseHttpBuffer(callId: number): boolean;
 
 /** Current JS heap usage of the engine in bytes (-1 when unknown). */
 export function engineMemoryBytes(engineId: number): number;
