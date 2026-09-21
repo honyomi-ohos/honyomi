@@ -1,0 +1,1216 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "MihonHarmony"
+    },
+    {
+      "name": "common_ok",
+      "value": "ОК"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Отказ"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Потвърди"
+    },
+    {
+      "name": "common_delete",
+      "value": "Изтрий"
+    },
+    {
+      "name": "common_retry",
+      "value": "Опитай отново"
+    },
+    {
+      "name": "common_search",
+      "value": "Търсене"
+    },
+    {
+      "name": "common_all",
+      "value": "Всички"
+    },
+    {
+      "name": "common_close",
+      "value": "Затвори"
+    },
+    {
+      "name": "common_save",
+      "value": "Запази"
+    },
+    {
+      "name": "common_install",
+      "value": "Инсталирай"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "Деинсталирай"
+    },
+    {
+      "name": "common_update",
+      "value": "Обнови"
+    },
+    {
+      "name": "common_none",
+      "value": "Няма"
+    },
+    {
+      "name": "common_default",
+      "value": "По подразбиране"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Външен вид"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Език"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Следвай системата"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Режим на темата"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Следвай системата"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Светла"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Тъмна"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Акцентен цвят"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Други"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "Чист черен фон AMOLED"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Синьо"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "Зелено"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Розово"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Лилаво"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "Оранжево"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "преди %d мин"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "преди %d ч"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "преди %d д"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "Издава се"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Завършено"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "На пауза"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Отменено"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Публикацията е завършена"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Неизвестно"
+    },
+    {
+      "name": "tab_library",
+      "value": "Библиотека"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Обновления"
+    },
+    {
+      "name": "tab_history",
+      "value": "История"
+    },
+    {
+      "name": "tab_browse",
+      "value": "Разглеждане"
+    },
+    {
+      "name": "tab_more",
+      "value": "Още"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "Изчакване на проверка…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "Проверката е завършена"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "Проверка за човек"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "Готово"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "Резултатът от проверката е запазен"
+    },
+    {
+      "name": "more_title",
+      "value": "Още"
+    },
+    {
+      "name": "more_version",
+      "value": "Версия %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Само изтеглено (офлайн четене)"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Инкогнито"
+    },
+    {
+      "name": "more_downloads",
+      "value": "Изтегляния"
+    },
+    {
+      "name": "more_categories",
+      "value": "Категории"
+    },
+    {
+      "name": "more_settings",
+      "value": "Настройки"
+    },
+    {
+      "name": "more_about",
+      "value": "Относно"
+    },
+    {
+      "name": "more_plugins",
+      "value": "Разширения"
+    },
+    {
+      "name": "categories_title",
+      "value": "Категории"
+    },
+    {
+      "name": "categories_add",
+      "value": "Нова категория"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "Име на категория"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "Преименувай категория"
+    },
+    {
+      "name": "categories_rename",
+      "value": "Преименувай"
+    },
+    {
+      "name": "categories_hint",
+      "value": "Задръжте категория, за да я преименувате или изтриете; мангата от изтрита категория се връща в „По подразбиране“"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "Изберете категория"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "Зареждане…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "Неуспешно зареждане на изображението"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "Докоснете, за да опитате отново"
+    },
+    {
+      "name": "library_title",
+      "value": "Библиотека"
+    },
+    {
+      "name": "library_empty",
+      "value": "Библиотеката е празна — отворете Разглеждане, за да добавите манга"
+    },
+    {
+      "name": "library_new_category",
+      "value": "Нова категория"
+    },
+    {
+      "name": "library_category_name",
+      "value": "Име на категория"
+    },
+    {
+      "name": "updates_title",
+      "value": "Обновления"
+    },
+    {
+      "name": "updates_empty",
+      "value": "Няма скорошни обновления"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "Намерени са %d нови глави"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "Няма нови глави"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "Неуспешно обновяване"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "Обновяване…"
+    },
+    {
+      "name": "history_title",
+      "value": "История"
+    },
+    {
+      "name": "history_clear",
+      "value": "Изчисти"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "Да се изчисти ли?"
+    },
+    {
+      "name": "history_empty",
+      "value": "Все още няма история на четене"
+    },
+    {
+      "name": "history_cleared",
+      "value": "Историята е изчистена"
+    },
+    {
+      "name": "history_continue",
+      "value": "Продължи"
+    },
+    {
+      "name": "browse_title",
+      "value": "Разглеждане"
+    },
+    {
+      "name": "browse_import",
+      "value": "Импортиране"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "Приставки"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "Локална манга"
+    },
+    {
+      "name": "browse_popular",
+      "value": "Популярни"
+    },
+    {
+      "name": "browse_latest",
+      "value": "Най-нови"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "Търсене на манга…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "Не е намерена манга"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "Все още няма локална манга — докоснете „Импортиране“, за да добавите"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "Неуспешно зареждане: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "Неуспешно търсене: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "Неуспешно зареждане на още"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "Неуспешно отваряне на подробности"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "Неуспешен избор на файлове"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "Импортиране на %d файла"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "Име на мангата"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "Въведете име"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "Импортирани са %d файла"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "Неуспешно импортиране: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "Изтегляния"
+    },
+    {
+      "name": "download_resume",
+      "value": "Продължи"
+    },
+    {
+      "name": "download_pause",
+      "value": "Пауза"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "Изчисти завършените"
+    },
+    {
+      "name": "download_queue",
+      "value": "Опашка за изтегляне"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "На опашка"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "Изтегляне"
+    },
+    {
+      "name": "download_state_done",
+      "value": "Готово"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "Неуспешно"
+    },
+    {
+      "name": "download_move_top",
+      "value": "Премести най-горе"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "Премести най-долу"
+    },
+    {
+      "name": "download_deleted",
+      "value": "Изтрито"
+    },
+    {
+      "name": "download_empty",
+      "value": "Все още няма изтегляния"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "Изтеглено"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d глави"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "Няма глави"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "Синхронизацията не успя, показват се локални данни"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "Добавено в библиотеката"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "Премахнато от библиотеката"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "Всички глави са маркирани като прочетени"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "Добавено в опашката за изтегляне"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "Първо конфигурирайте токена за AniList"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "Търсене в AniList"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "Заглавие на мангата"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "Няма резултати от търсенето"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "Неуспешно търсене в AniList"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "Свързано с AniList"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "Прекратена връзка с AniList"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "Напредъкът е синхронизиран до глава %d"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "Неуспешна синхронизация с AniList"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "Локално"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "В библиотеката"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "Добави в библиотеката"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "Продължи четенето"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "Започни четене"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "Все още няма глави"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "Свий"
+    },
+    {
+      "name": "detail_expand",
+      "value": "Разгъни"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "Проследяване в AniList"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "Токенът за AniList още не е конфигуриран"
+    },
+    {
+      "name": "detail_searching",
+      "value": "Търсене…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "Търси и свържи"
+    },
+    {
+      "name": "detail_bind",
+      "value": "Свържи"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "Синхронизирано до глава %d"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "Синхронизирай напредъка"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "Прекрати връзката"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "Глави (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "Възходящо"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "Низходящо"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "Маркирай всички като прочетени"
+    },
+    {
+      "name": "detail_read",
+      "value": "Прочетено"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "Изтеглено"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "На опашка"
+    },
+    {
+      "name": "detail_download",
+      "value": "Изтегли"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "Главата не е намерена"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "Неуспешно зареждане: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "Отляво надясно"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "Отдясно наляво"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Уебтун"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "Режим на четене"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "Свободна"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "Портретна"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "Пейзажна"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "Ориентация на екрана"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "Вече сте на последната глава"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "Вече сте на първата глава"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "Вече сте на първата страница"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "Вече сте на последната страница"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "Зареждане на глава…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "Настройки на четеца"
+    },
+    {
+      "name": "reader_background",
+      "value": "Фон"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Авто"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "Бяло"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "Сиво"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "Черно"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "Показвай номер на страницата"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "Яркост"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Авто"
+    },
+    {
+      "name": "plugin_title",
+      "value": "Разширения"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "Инсталирани"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "Все още няма разширения — инсталирайте по-долу"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "Изключените разширения могат да бъдат включени отново по всяко време"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "Актуално"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "Инсталирай от файл"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "Изберете файл за инсталиране"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "Обработка…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "Поддържат се пакети .mihonplug / .zip"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "Онлайн хранилище"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "Настрой хранилище"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "Обнови"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "Все още няма конфигурирано хранилище за приставки"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "Зареждане на хранилището…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "URL на хранилището за приставки"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "Въведете URL на хранилището за приставки"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "Неуспешно зареждане на хранилището: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "Неуспешен избор на файл"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "Инсталирано: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "Инсталирано %s"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "Неуспешна инсталация: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "Действието не успя"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "Деинсталирано: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "Неуспешно деинсталиране"
+    },
+    {
+      "name": "settings_title",
+      "value": "Настройки"
+    },
+    {
+      "name": "settings_general",
+      "value": "Общи"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Начален екран"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "Персонализиране"
+    },
+    {
+      "name": "settings_library",
+      "value": "Библиотека"
+    },
+    {
+      "name": "settings_reader",
+      "value": "Четец"
+    },
+    {
+      "name": "settings_data",
+      "value": "Данни"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Изтегляния"
+    },
+    {
+      "name": "settings_browse",
+      "value": "Разглеждане"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Разширени"
+    },
+    {
+      "name": "settings_about",
+      "value": "Относно"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "Библиотека"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Обновления"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "История"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "Разглеждане"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "Още"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Разширени"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "Изчисляване…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "Хранилище"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "Изчисти кеша на изображенията"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "Кешът на изображенията е изчистен"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "Изчисти бисквитките"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "Всички бисквитки са изчистени"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "Архивиране и възстановяване"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "Експортирай архив"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "Импортирай архив"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "Проследяване"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "Токен за AniList"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "Токен за достъп до AniList"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "Поставете токена за достъп (оставете празно, за да изчистите)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "Не е зададен"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "Зададен"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "Токенът е запазен"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "Токенът е изчистен"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "Архивът е експортиран"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "Експортирането е отменено"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "Неуспешен експорт"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "Импортирането е отменено"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "Невалиден архивен файл"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "Възстановени са %d манги"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "Неуспешно импортиране"
+    },
+    {
+      "name": "about_title",
+      "value": "Относно"
+    },
+    {
+      "name": "about_version",
+      "value": "Версия 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "Архитектурата е вдъхновена от Mihon (Apache-2.0). Онлайн източниците се инсталират динамично като разширения, а локалните са вградени."
+    },
+    {
+      "name": "about_ack",
+      "value": "Благодарности за отворен код:\n· Mihon / Tachiyomi — архитектура на приложението и взаимодействие (Apache-2.0)\n· Material Symbols — икони в приложението (Apache-2.0)\n· MangaDex — тестов източник на данни"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "Разглеждане"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "Съдържание"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "Показвай NSFW източници"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "Когато е включено, източници, маркирани от разширенията като NSFW, ще се появят в Разглеждане"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Изтегляния"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Мрежа"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Изтегляй само през Wi-Fi"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "Забележка: в текущата версия този превключвател е резервиран; откриването на типа мрежа ще дойде по-късно"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "Библиотека"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "Филтър и сортиране"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "Сортиране по подразбиране"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "Заглавие"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "Последна глава"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "Дата на добавяне"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "Брой непрочетени"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "Сортирай по заглавие възходящо"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "Филтър по подразбиране"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "Непрочетено"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "Изтеглено"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "Незавършено"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Показване"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "Изглед по подразбиране"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "Мрежа"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "Мрежа с корици"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "Списък"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "Колони в мрежата"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "Авто"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 колони"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 колони"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 колони"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "Значки за непрочетено"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "Значки за изтегляния"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "Четец"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "Режим на четене"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "Режим по подразбиране"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "Отляво надясно"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "Отдясно наляво"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "Вертикално прелистване"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Уебтун"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "Двойна страница (пейзаж)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Показване"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "Показвай номер на страницата"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "Фон на четеца"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "Следвай темата"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "Бяло"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "Черно"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "Сиво"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "Нулирай яркостта на четеца"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "Яркостта отново следва системата"
+    }
+  ]
+}

@@ -1,0 +1,1216 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "MihonHarmony"
+    },
+    {
+      "name": "common_ok",
+      "value": "OK"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Anulează"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Confirmă"
+    },
+    {
+      "name": "common_delete",
+      "value": "Șterge"
+    },
+    {
+      "name": "common_retry",
+      "value": "Reîncearcă"
+    },
+    {
+      "name": "common_search",
+      "value": "Caută"
+    },
+    {
+      "name": "common_all",
+      "value": "Toate"
+    },
+    {
+      "name": "common_close",
+      "value": "Închide"
+    },
+    {
+      "name": "common_save",
+      "value": "Salvează"
+    },
+    {
+      "name": "common_install",
+      "value": "Instalează"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "Dezinstalează"
+    },
+    {
+      "name": "common_update",
+      "value": "Actualizează"
+    },
+    {
+      "name": "common_none",
+      "value": "Niciunul"
+    },
+    {
+      "name": "common_default",
+      "value": "Implicit"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Aspect"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Limbă"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Urmează sistemul"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Mod temă"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Urmează sistemul"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Deschis"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Întunecat"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Culoare de accent"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Altele"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "Fundal negru pur AMOLED"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Albastru"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "Verde"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Roz"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Mov"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "Portocaliu"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "acum %d min"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "acum %d h"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "acum %d z"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "În desfășurare"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Finalizat"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "În hiatus"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Anulat"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Publicare finalizată"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Necunoscut"
+    },
+    {
+      "name": "tab_library",
+      "value": "Bibliotecă"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Actualizări"
+    },
+    {
+      "name": "tab_history",
+      "value": "Istoric"
+    },
+    {
+      "name": "tab_browse",
+      "value": "Explorează"
+    },
+    {
+      "name": "tab_more",
+      "value": "Mai multe"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "Se așteaptă verificarea…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "Verificare finalizată"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "Verificare umană"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "Gata"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "Rezultatul verificării a fost salvat"
+    },
+    {
+      "name": "more_title",
+      "value": "Mai multe"
+    },
+    {
+      "name": "more_version",
+      "value": "Versiunea %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Doar descărcate (citire offline)"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Mod incognito"
+    },
+    {
+      "name": "more_downloads",
+      "value": "Descărcări"
+    },
+    {
+      "name": "more_categories",
+      "value": "Categorii"
+    },
+    {
+      "name": "more_settings",
+      "value": "Setări"
+    },
+    {
+      "name": "more_about",
+      "value": "Despre"
+    },
+    {
+      "name": "more_plugins",
+      "value": "Extensii"
+    },
+    {
+      "name": "categories_title",
+      "value": "Categorii"
+    },
+    {
+      "name": "categories_add",
+      "value": "Categorie nouă"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "Numele categoriei"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "Redenumește categoria"
+    },
+    {
+      "name": "categories_rename",
+      "value": "Redenumește"
+    },
+    {
+      "name": "categories_hint",
+      "value": "Ține apăsat pe o categorie pentru a o redenumi sau șterge; manga dintr-o categorie ștearsă revine la Implicit"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "Selectează categoria"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "Se încarcă…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "Încărcarea imaginii a eșuat"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "Atinge pentru a reîncerca"
+    },
+    {
+      "name": "library_title",
+      "value": "Bibliotecă"
+    },
+    {
+      "name": "library_empty",
+      "value": "Biblioteca este goală; explorează pentru a adăuga manga"
+    },
+    {
+      "name": "library_new_category",
+      "value": "Categorie nouă"
+    },
+    {
+      "name": "library_category_name",
+      "value": "Numele categoriei"
+    },
+    {
+      "name": "updates_title",
+      "value": "Actualizări"
+    },
+    {
+      "name": "updates_empty",
+      "value": "Nicio actualizare recentă"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%d capitole noi găsite"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "Niciun capitol nou"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "Reîmprospătarea a eșuat"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "Se reîmprospătează…"
+    },
+    {
+      "name": "history_title",
+      "value": "Istoric"
+    },
+    {
+      "name": "history_clear",
+      "value": "Șterge"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "Confirmi ștergerea?"
+    },
+    {
+      "name": "history_empty",
+      "value": "Încă nu există istoric de lectură"
+    },
+    {
+      "name": "history_cleared",
+      "value": "Istoricul a fost șters"
+    },
+    {
+      "name": "history_continue",
+      "value": "Continuă"
+    },
+    {
+      "name": "browse_title",
+      "value": "Explorează"
+    },
+    {
+      "name": "browse_import",
+      "value": "Importă"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "Pluginuri"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "Manga local"
+    },
+    {
+      "name": "browse_popular",
+      "value": "Populare"
+    },
+    {
+      "name": "browse_latest",
+      "value": "Recente"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "Caută manga…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "Nu s-a găsit nicio manga"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "Încă nu există manga local; atinge Importă pentru a adăuga"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "Încărcarea a eșuat: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "Căutarea a eșuat: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "Încărcarea ulterioară a eșuat"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "Deschiderea detaliilor a eșuat"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "Selectarea fișierelor a eșuat"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "Importă %d fișiere"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "Numele manga"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "Introdu un nume"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "S-au importat %d fișiere"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "Importul a eșuat: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "Descărcări"
+    },
+    {
+      "name": "download_resume",
+      "value": "Reia"
+    },
+    {
+      "name": "download_pause",
+      "value": "Pauză"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "Șterge finalizate"
+    },
+    {
+      "name": "download_queue",
+      "value": "Coadă de descărcare"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "În coadă"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "Se descarcă"
+    },
+    {
+      "name": "download_state_done",
+      "value": "Gata"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "Eșuat"
+    },
+    {
+      "name": "download_move_top",
+      "value": "Mută sus"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "Mută jos"
+    },
+    {
+      "name": "download_deleted",
+      "value": "Șters"
+    },
+    {
+      "name": "download_empty",
+      "value": "Încă nu există descărcări"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "Descărcat"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d capitole"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "Niciun capitol"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "Sincronizarea a eșuat; se afișează datele locale"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "Adăugat în bibliotecă"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "Eliminat din bibliotecă"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "Toate capitolele marcate ca citite"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "Descărcare pusă în coadă"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "Configurează mai întâi tokenul AniList"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "Caută pe AniList"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "Titlul manga"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "Niciun rezultat al căutării"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "Căutarea AniList a eșuat"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "Asociat cu AniList"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "Dezasociat de AniList"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "Progres sincronizat la capitolul %d"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "Sincronizarea AniList a eșuat"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "Local"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "În bibliotecă"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "Adaugă în bibliotecă"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "Continuă lectura"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "Începe lectura"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "Încă nu există capitole"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "Restrânge"
+    },
+    {
+      "name": "detail_expand",
+      "value": "Extinde"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "Urmărire AniList"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "Tokenul AniList nu este încă configurat"
+    },
+    {
+      "name": "detail_searching",
+      "value": "Se caută…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "Caută și asociază"
+    },
+    {
+      "name": "detail_bind",
+      "value": "Asociază"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "Sincronizat la capitolul %d"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "Sincronizează progresul"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "Dezasociază"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "Capitole (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "Crescător"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "Descrescător"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "Marchează totul ca citit"
+    },
+    {
+      "name": "detail_read",
+      "value": "Citit"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "Descărcat"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "În coadă"
+    },
+    {
+      "name": "detail_download",
+      "value": "Descarcă"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "Capitolul nu a fost găsit"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "Încărcarea a eșuat: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "De la stânga la dreapta"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "De la dreapta la stânga"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "Mod de lectură"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "Liber"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "Portret"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "Peisaj"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "Orientarea ecranului"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "Ești deja la ultimul capitol"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "Ești deja la primul capitol"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "Ești deja la prima pagină"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "Ești deja la ultima pagină"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "Se încarcă capitolul…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "Setări cititor"
+    },
+    {
+      "name": "reader_background",
+      "value": "Fundal"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Automat"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "Alb"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "Gri"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "Negru"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "Afișează numărul paginii"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "Luminozitate"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Automat"
+    },
+    {
+      "name": "plugin_title",
+      "value": "Extensii"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "Instalate"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "Încă nu există extensii; instalează mai jos"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "Extensiile dezactivate pot fi reactivate oricând"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "La zi"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "Instalează din fișier"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "Alege un fișier de instalat"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "Se procesează…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "Acceptă pachete de pluginuri .mihonplug / .zip"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "Depozit online"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "Configurează depozitul"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "Reîmprospătează"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "Niciun depozit de pluginuri configurat încă"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "Se încarcă depozitul…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "URL-ul depozitului de pluginuri"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "Introdu URL-ul depozitului de pluginuri"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "Încărcarea depozitului a eșuat: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "Selectarea fișierului a eșuat"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "Instalat: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "S-a instalat %s"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "Instalarea a eșuat: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "Acțiunea a eșuat"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "Dezinstalat: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "Dezinstalarea a eșuat"
+    },
+    {
+      "name": "settings_title",
+      "value": "Setări"
+    },
+    {
+      "name": "settings_general",
+      "value": "General"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Ecran de pornire"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "Personalizare"
+    },
+    {
+      "name": "settings_library",
+      "value": "Bibliotecă"
+    },
+    {
+      "name": "settings_reader",
+      "value": "Cititor"
+    },
+    {
+      "name": "settings_data",
+      "value": "Date"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Descărcări"
+    },
+    {
+      "name": "settings_browse",
+      "value": "Explorează"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Avansat"
+    },
+    {
+      "name": "settings_about",
+      "value": "Despre"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "Bibliotecă"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Actualizări"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "Istoric"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "Explorează"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "Mai multe"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Avansat"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "Se calculează…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "Stocare"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "Golește memoria cache a imaginilor"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "Memoria cache a imaginilor a fost golită"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "Șterge cookie-urile"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "Toate cookie-urile au fost șterse"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "Copie de rezervă și restaurare"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "Exportă copia de rezervă"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "Importă copia de rezervă"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "Urmărire"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "Token AniList"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "Token de acces AniList"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "Lipește tokenul de acces (lasă gol pentru a-l șterge)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "Nesetat"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "Setat"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "Token salvat"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "Token șters"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "Copia de rezervă a fost exportată"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "Export anulat"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "Exportul a eșuat"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "Import anulat"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "Fișier de rezervă nevalid"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "S-au restaurat %d manga"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "Importul a eșuat"
+    },
+    {
+      "name": "about_title",
+      "value": "Despre"
+    },
+    {
+      "name": "about_version",
+      "value": "Versiunea 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "Arhitectură inspirată de Mihon (Apache-2.0). Sursele online se instalează dinamic ca extensii, iar sursele locale sunt încorporate."
+    },
+    {
+      "name": "about_ack",
+      "value": "Mulțumiri open source:\n· Mihon / Tachiyomi — arhitectura aplicației și designul interacțiunii (Apache-2.0)\n· Material Symbols — pictogramele din aplicație (Apache-2.0)\n· MangaDex — sursă de date de test"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "Explorează"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "Conținut"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "Afișează sursele NSFW"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "Când este activat, sursele marcate NSFW de extensii vor apărea în Explorează"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Descărcări"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Rețea"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Descarcă doar prin Wi-Fi"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "Notă: acest comutator este un substituent în versiunea actuală; detectarea tipului de rețea va sosi într-o versiune viitoare"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "Bibliotecă"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "Filtrare și sortare"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "Sortare implicită"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "Titlu"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "Ultimul capitol"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "Data adăugării"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "Număr necitite"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "Sortează după titlu crescător"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "Filtru implicit"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "Necitite"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "Descărcate"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "Neterminate"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Afișare"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "Vizualizare implicită"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "Grilă"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "Grilă de coperți"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "Listă"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "Coloane grilă"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "Automat"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 coloane"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 coloane"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 coloane"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "Insigne necitite"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "Insigne descărcări"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "Cititor"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "Mod de lectură"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "Mod implicit"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "De la stânga la dreapta"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "De la dreapta la stânga"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "Paginare verticală"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "Pagină dublă (peisaj)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Afișare"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "Afișează numărul paginii"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "Fundalul cititorului"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "Urmează tema"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "Alb"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "Negru"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "Gri"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "Resetează luminozitatea cititorului"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "Luminozitatea este setată să urmeze sistemul"
+    }
+  ]
+}

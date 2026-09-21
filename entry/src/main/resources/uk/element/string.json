@@ -1,0 +1,1216 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "MihonHarmony"
+    },
+    {
+      "name": "common_ok",
+      "value": "ОК"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Скасувати"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Підтвердити"
+    },
+    {
+      "name": "common_delete",
+      "value": "Видалити"
+    },
+    {
+      "name": "common_retry",
+      "value": "Повторити"
+    },
+    {
+      "name": "common_search",
+      "value": "Пошук"
+    },
+    {
+      "name": "common_all",
+      "value": "Усі"
+    },
+    {
+      "name": "common_close",
+      "value": "Закрити"
+    },
+    {
+      "name": "common_save",
+      "value": "Зберегти"
+    },
+    {
+      "name": "common_install",
+      "value": "Встановити"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "Видалити"
+    },
+    {
+      "name": "common_update",
+      "value": "Оновити"
+    },
+    {
+      "name": "common_none",
+      "value": "Немає"
+    },
+    {
+      "name": "common_default",
+      "value": "Типово"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Вигляд"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Мова"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Як у системі"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Режим теми"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Як у системі"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Світла"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Темна"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Колір акценту"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Інше"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "Чистий чорний фон AMOLED"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Синій"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "Зелений"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Рожевий"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Фіолетовий"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "Помаранчевий"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d хв тому"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d год тому"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d дн тому"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "Виходить"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Завершено"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "На паузі"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Скасовано"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Публікацію завершено"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Невідомо"
+    },
+    {
+      "name": "tab_library",
+      "value": "Бібліотека"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Оновлення"
+    },
+    {
+      "name": "tab_history",
+      "value": "Історія"
+    },
+    {
+      "name": "tab_browse",
+      "value": "Огляд"
+    },
+    {
+      "name": "tab_more",
+      "value": "Ще"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "Очікування перевірки…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "Перевірку завершено"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "Перевірка людини"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "Готово"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "Результат перевірки збережено"
+    },
+    {
+      "name": "more_title",
+      "value": "Ще"
+    },
+    {
+      "name": "more_version",
+      "value": "Версія %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Лише завантажене (офлайн-читання)"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Інкогніто"
+    },
+    {
+      "name": "more_downloads",
+      "value": "Завантаження"
+    },
+    {
+      "name": "more_categories",
+      "value": "Категорії"
+    },
+    {
+      "name": "more_settings",
+      "value": "Налаштування"
+    },
+    {
+      "name": "more_about",
+      "value": "Про застосунок"
+    },
+    {
+      "name": "more_plugins",
+      "value": "Розширення"
+    },
+    {
+      "name": "categories_title",
+      "value": "Категорії"
+    },
+    {
+      "name": "categories_add",
+      "value": "Нова категорія"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "Назва категорії"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "Перейменувати категорію"
+    },
+    {
+      "name": "categories_rename",
+      "value": "Перейменувати"
+    },
+    {
+      "name": "categories_hint",
+      "value": "Довге натискання на категорію — перейменувати або видалити; манґа з видаленої категорії повернеться до «Типово»"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "Виберіть категорію"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "Завантаження…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "Не вдалося завантажити зображення"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "Натисніть, щоб повторити"
+    },
+    {
+      "name": "library_title",
+      "value": "Бібліотека"
+    },
+    {
+      "name": "library_empty",
+      "value": "Бібліотека порожня — відкрийте огляд, щоб додати манґу"
+    },
+    {
+      "name": "library_new_category",
+      "value": "Нова категорія"
+    },
+    {
+      "name": "library_category_name",
+      "value": "Назва категорії"
+    },
+    {
+      "name": "updates_title",
+      "value": "Оновлення"
+    },
+    {
+      "name": "updates_empty",
+      "value": "Немає нещодавніх оновлень"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "Знайдено нових розділів: %d"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "Немає нових розділів"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "Не вдалося оновити"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "Оновлення…"
+    },
+    {
+      "name": "history_title",
+      "value": "Історія"
+    },
+    {
+      "name": "history_clear",
+      "value": "Очистити"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "Очистити історію?"
+    },
+    {
+      "name": "history_empty",
+      "value": "Історії читання ще немає"
+    },
+    {
+      "name": "history_cleared",
+      "value": "Історію очищено"
+    },
+    {
+      "name": "history_continue",
+      "value": "Продовжити"
+    },
+    {
+      "name": "browse_title",
+      "value": "Огляд"
+    },
+    {
+      "name": "browse_import",
+      "value": "Імпорт"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "Плагіни"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "Локальна манґа"
+    },
+    {
+      "name": "browse_popular",
+      "value": "Популярне"
+    },
+    {
+      "name": "browse_latest",
+      "value": "Нове"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "Пошук манґи…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "Манґу не знайдено"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "Локальної манґи ще немає — натисніть «Імпорт», щоб додати"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "Не вдалося завантажити: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "Помилка пошуку: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "Не вдалося завантажити більше"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "Не вдалося відкрити деталі"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "Не вдалося вибрати файли"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "Імпорт файлів: %d"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "Назва манґи"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "Введіть назву"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "Імпортовано файлів: %d"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "Помилка імпорту: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "Завантаження"
+    },
+    {
+      "name": "download_resume",
+      "value": "Продовжити"
+    },
+    {
+      "name": "download_pause",
+      "value": "Пауза"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "Очистити завершені"
+    },
+    {
+      "name": "download_queue",
+      "value": "Черга завантажень"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "У черзі"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "Завантаження"
+    },
+    {
+      "name": "download_state_done",
+      "value": "Готово"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "Помилка"
+    },
+    {
+      "name": "download_move_top",
+      "value": "На початок"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "У кінець"
+    },
+    {
+      "name": "download_deleted",
+      "value": "Видалено"
+    },
+    {
+      "name": "download_empty",
+      "value": "Завантажень ще немає"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "Завантажено"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d розділів"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "Немає розділів"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "Синхронізація не вдалася, показано локальні дані"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "Додано до бібліотеки"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "Вилучено з бібліотеки"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "Усі розділи позначено як прочитані"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "Додано до черги завантаження"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "Спочатку налаштуйте токен AniList"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "Пошук в AniList"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "Назва манґи"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "Нічого не знайдено"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "Помилка пошуку AniList"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "Прив’язано до AniList"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "Відв’язано від AniList"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "Прогрес синхронізовано до розділу %d"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "Помилка синхронізації AniList"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "Локально"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "У бібліотеці"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "До бібліотеки"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "Продовжити читання"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "Почати читання"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "Розділів ще немає"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "Згорнути"
+    },
+    {
+      "name": "detail_expand",
+      "value": "Розгорнути"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "Трекінг AniList"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "Токен AniList ще не налаштовано"
+    },
+    {
+      "name": "detail_searching",
+      "value": "Пошук…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "Знайти й прив’язати"
+    },
+    {
+      "name": "detail_bind",
+      "value": "Прив’язати"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "Синхронізовано до розділу %d"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "Синхронізувати прогрес"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "Відв’язати"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "Розділи (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "За зростанням"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "За спаданням"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "Позначити все прочитаним"
+    },
+    {
+      "name": "detail_read",
+      "value": "Прочитано"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "Завантажено"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "У черзі"
+    },
+    {
+      "name": "detail_download",
+      "value": "Завантажити"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "Розділ не знайдено"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "Не вдалося завантажити: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "Зліва направо"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "Справа наліво"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Вебтун"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "Режим читання"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "Вільна"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "Портретна"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "Альбомна"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "Орієнтація екрана"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "Це вже останній розділ"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "Це вже перший розділ"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "Це вже перша сторінка"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "Це вже остання сторінка"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "Завантаження розділу…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "Налаштування читалки"
+    },
+    {
+      "name": "reader_background",
+      "value": "Тло"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Авто"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "Біле"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "Сіре"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "Чорне"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "Показувати номер сторінки"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "Яскравість"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Авто"
+    },
+    {
+      "name": "plugin_title",
+      "value": "Розширення"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "Встановлені"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "Розширень ще немає — встановіть нижче"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "Вимкнені розширення можна знову ввімкнути будь-коли"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "Актуальна версія"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "Встановити з файлу"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "Виберіть файл для встановлення"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "Обробка…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "Підтримуються пакети .mihonplug / .zip"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "Онлайн-репозиторій"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "Налаштувати репозиторій"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "Оновити"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "Репозиторій плагінів ще не налаштовано"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "Завантаження репозиторію…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "URL репозиторію плагінів"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "Введіть URL репозиторію плагінів"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "Не вдалося завантажити репозиторій: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "Не вдалося вибрати файл"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "Встановлено: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "Встановлено %s"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "Помилка встановлення: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "Дію не виконано"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "Видалено: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "Не вдалося видалити"
+    },
+    {
+      "name": "settings_title",
+      "value": "Налаштування"
+    },
+    {
+      "name": "settings_general",
+      "value": "Загальні"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Початковий екран"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "Персоналізація"
+    },
+    {
+      "name": "settings_library",
+      "value": "Бібліотека"
+    },
+    {
+      "name": "settings_reader",
+      "value": "Читалка"
+    },
+    {
+      "name": "settings_data",
+      "value": "Дані"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Завантаження"
+    },
+    {
+      "name": "settings_browse",
+      "value": "Огляд"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Додатково"
+    },
+    {
+      "name": "settings_about",
+      "value": "Про застосунок"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "Бібліотека"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Оновлення"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "Історія"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "Огляд"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "Ще"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Додатково"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "Обчислення…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "Сховище"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "Очистити кеш зображень"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "Кеш зображень очищено"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "Очистити cookie"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "Усі cookie видалено"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "Резервне копіювання та відновлення"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "Експортувати резервну копію"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "Імпортувати резервну копію"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "Трекінг"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "Токен AniList"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "Токен доступу AniList"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "Вставте токен доступу (залиште порожнім, щоб видалити)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "Не задано"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "Задано"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "Токен збережено"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "Токен видалено"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "Резервну копію експортовано"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "Експорт скасовано"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "Помилка експорту"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "Імпорт скасовано"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "Недійсний файл резервної копії"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "Відновлено манґи: %d"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "Помилка імпорту"
+    },
+    {
+      "name": "about_title",
+      "value": "Про застосунок"
+    },
+    {
+      "name": "about_version",
+      "value": "Версія 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "Архітектуру натхненно Mihon (Apache-2.0). Онлайн-джерела встановлюються динамічно як розширення, локальні джерела вбудовані."
+    },
+    {
+      "name": "about_ack",
+      "value": "Подяки за відкритий код:\n· Mihon / Tachiyomi — архітектура застосунку та взаємодія (Apache-2.0)\n· Material Symbols — піктограми в застосунку (Apache-2.0)\n· MangaDex — тестове джерело даних"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "Огляд"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "Вміст"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "Показувати джерела NSFW"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "Якщо ввімкнено, джерела, позначені розширеннями як NSFW, з’являться в огляді"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Завантаження"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Мережа"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Завантажувати лише через Wi-Fi"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "Примітка: у цій версії цей перемикач зарезервовано; визначення типу мережі з’явиться пізніше"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "Бібліотека"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "Фільтр і сортування"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "Типове сортування"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "Назва"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "Останній розділ"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "Дата додавання"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "Кількість непрочитаних"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "Сортувати за назвою за зростанням"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "Типовий фільтр"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "Непрочитане"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "Завантажене"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "Незавершене"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Відображення"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "Типовий вигляд"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "Сітка"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "Сітка обкладинок"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "Список"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "Стовпці сітки"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "Авто"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 стовпці"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 стовпці"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 стовпці"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "Значки непрочитаного"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "Значки завантажень"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "Читалка"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "Режим читання"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "Типовий режим"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "Зліва направо"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "Справа наліво"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "Вертикальне гортання сторінок"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Вебтун"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "Дві сторінки (альбомна)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Відображення"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "Показувати номер сторінки"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "Тло читалки"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "Як у темі"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "Біле"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "Чорне"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "Сіре"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "Скинути яскравість читалки"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "Яскравість знову відповідає системі"
+    }
+  ]
+}

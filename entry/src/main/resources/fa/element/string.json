@@ -1,0 +1,1216 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "MihonHarmony"
+    },
+    {
+      "name": "common_ok",
+      "value": "تأیید"
+    },
+    {
+      "name": "common_cancel",
+      "value": "لغو"
+    },
+    {
+      "name": "common_confirm",
+      "value": "تأیید"
+    },
+    {
+      "name": "common_delete",
+      "value": "حذف"
+    },
+    {
+      "name": "common_retry",
+      "value": "تلاش دوباره"
+    },
+    {
+      "name": "common_search",
+      "value": "جستجو"
+    },
+    {
+      "name": "common_all",
+      "value": "همه"
+    },
+    {
+      "name": "common_close",
+      "value": "بستن"
+    },
+    {
+      "name": "common_save",
+      "value": "ذخیره"
+    },
+    {
+      "name": "common_install",
+      "value": "نصب"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "حذف نصب"
+    },
+    {
+      "name": "common_update",
+      "value": "به‌روزرسانی"
+    },
+    {
+      "name": "common_none",
+      "value": "هیچ‌کدام"
+    },
+    {
+      "name": "common_default",
+      "value": "پیش‌فرض"
+    },
+    {
+      "name": "appearance_title",
+      "value": "ظاهر"
+    },
+    {
+      "name": "appearance_language",
+      "value": "زبان"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "پیروی از سیستم"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "حالت پوسته"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "پیروی از سیستم"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "روشن"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "تیره"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "رنگ تأکید"
+    },
+    {
+      "name": "appearance_other",
+      "value": "سایر"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "پس‌زمینه سیاه خالص AMOLED"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "آبی"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "سبز"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "صورتی"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "بنفش"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "نارنجی"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d دقیقه پیش"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d ساعت پیش"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d روز پیش"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "در حال انتشار"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "تمام‌شده"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "متوقف موقت"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "لغوشده"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "انتشار کامل شد"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "نامشخص"
+    },
+    {
+      "name": "tab_library",
+      "value": "کتابخانه"
+    },
+    {
+      "name": "tab_updates",
+      "value": "به‌روزرسانی‌ها"
+    },
+    {
+      "name": "tab_history",
+      "value": "تاریخچه"
+    },
+    {
+      "name": "tab_browse",
+      "value": "مرور"
+    },
+    {
+      "name": "tab_more",
+      "value": "بیشتر"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "در انتظار تأیید…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "تأیید کامل شد"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "تأیید انسانی"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "تمام"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "نتیجه تأیید ذخیره شد"
+    },
+    {
+      "name": "more_title",
+      "value": "بیشتر"
+    },
+    {
+      "name": "more_version",
+      "value": "نسخه %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "فقط دانلودشده‌ها (خواندن آفلاین)"
+    },
+    {
+      "name": "more_incognito",
+      "value": "ناشناس"
+    },
+    {
+      "name": "more_downloads",
+      "value": "دانلودها"
+    },
+    {
+      "name": "more_categories",
+      "value": "دسته‌ها"
+    },
+    {
+      "name": "more_settings",
+      "value": "تنظیمات"
+    },
+    {
+      "name": "more_about",
+      "value": "درباره"
+    },
+    {
+      "name": "more_plugins",
+      "value": "افزونه‌ها"
+    },
+    {
+      "name": "categories_title",
+      "value": "دسته‌ها"
+    },
+    {
+      "name": "categories_add",
+      "value": "دسته جدید"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "نام دسته"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "تغییر نام دسته"
+    },
+    {
+      "name": "categories_rename",
+      "value": "تغییر نام"
+    },
+    {
+      "name": "categories_hint",
+      "value": "برای تغییر نام یا حذف، دسته را لمس طولانی کنید؛ مانگای دستهٔ حذف‌شده به پیش‌فرض برمی‌گردد"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "انتخاب دسته"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "در حال بارگذاری…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "بارگذاری تصویر ناموفق بود"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "برای تلاش دوباره ضربه بزنید"
+    },
+    {
+      "name": "library_title",
+      "value": "کتابخانه"
+    },
+    {
+      "name": "library_empty",
+      "value": "کتابخانه خالی است، برای افزودن مانگا مرور کنید"
+    },
+    {
+      "name": "library_new_category",
+      "value": "دسته جدید"
+    },
+    {
+      "name": "library_category_name",
+      "value": "نام دسته"
+    },
+    {
+      "name": "updates_title",
+      "value": "به‌روزرسانی‌ها"
+    },
+    {
+      "name": "updates_empty",
+      "value": "به‌روزرسانی اخیری نیست"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%d فصل جدید پیدا شد"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "فصل جدیدی نیست"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "تازه‌سازی ناموفق بود"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "در حال تازه‌سازی…"
+    },
+    {
+      "name": "history_title",
+      "value": "تاریخچه"
+    },
+    {
+      "name": "history_clear",
+      "value": "پاک کردن"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "پاک شود؟"
+    },
+    {
+      "name": "history_empty",
+      "value": "هنوز تاریخچه خواندن نیست"
+    },
+    {
+      "name": "history_cleared",
+      "value": "تاریخچه پاک شد"
+    },
+    {
+      "name": "history_continue",
+      "value": "ادامه"
+    },
+    {
+      "name": "browse_title",
+      "value": "مرور"
+    },
+    {
+      "name": "browse_import",
+      "value": "ورود"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "افزونه‌ها"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "مانگای محلی"
+    },
+    {
+      "name": "browse_popular",
+      "value": "محبوب"
+    },
+    {
+      "name": "browse_latest",
+      "value": "جدیدترین"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "جستجوی مانگا…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "مانگایی یافت نشد"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "هنوز مانگای محلی نیست، برای افزودن روی ورود بزنید"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "بارگذاری ناموفق: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "جستجو ناموفق: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "بارگذاری بیشتر ناموفق بود"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "باز کردن جزئیات ناموفق بود"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "انتخاب پرونده‌ها ناموفق بود"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "ورود %d پرونده"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "نام مانگا"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "لطفاً نامی وارد کنید"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "%d پرونده وارد شد"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "ورود ناموفق: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "دانلودها"
+    },
+    {
+      "name": "download_resume",
+      "value": "ادامه"
+    },
+    {
+      "name": "download_pause",
+      "value": "مکث"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "پاک کردن تمام‌شده‌ها"
+    },
+    {
+      "name": "download_queue",
+      "value": "صف دانلود"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "در صف"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "در حال دانلود"
+    },
+    {
+      "name": "download_state_done",
+      "value": "تمام"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "ناموفق"
+    },
+    {
+      "name": "download_move_top",
+      "value": "انتقال به بالا"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "انتقال به پایین"
+    },
+    {
+      "name": "download_deleted",
+      "value": "حذف شد"
+    },
+    {
+      "name": "download_empty",
+      "value": "هنوز دانلودی نیست"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "دانلود شده"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d فصل"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "فصلی نیست"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "همگام‌سازی ناموفق بود، دادهٔ محلی نمایش داده می‌شود"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "به کتابخانه افزوده شد"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "از کتابخانه حذف شد"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "همهٔ فصل‌ها به‌عنوان خوانده‌شده علامت خوردند"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "به صف دانلود افزوده شد"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "لطفاً ابتدا رمز AniList را پیکربندی کنید"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "جستجو در AniList"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "عنوان مانگا"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "نتیجهٔ جستجویی نیست"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "جستجوی AniList ناموفق بود"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "به AniList متصل شد"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "از AniList جدا شد"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "پیشرفت تا فصل %d همگام شد"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "همگام‌سازی AniList ناموفق بود"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "محلی"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "در کتابخانه"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "افزودن به کتابخانه"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "ادامهٔ خواندن"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "شروع خواندن"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "هنوز فصلی نیست"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "جمع کردن"
+    },
+    {
+      "name": "detail_expand",
+      "value": "گستردن"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "ردیابی AniList"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "رمز AniList هنوز پیکربندی نشده"
+    },
+    {
+      "name": "detail_searching",
+      "value": "در حال جستجو…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "جستجو و اتصال"
+    },
+    {
+      "name": "detail_bind",
+      "value": "اتصال"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "تا فصل %d همگام شد"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "همگام‌سازی پیشرفت"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "قطع اتصال"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "فصل‌ها (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "صعودی"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "نزولی"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "علامت همه به‌عنوان خوانده‌شده"
+    },
+    {
+      "name": "detail_read",
+      "value": "خوانده‌شده"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "دانلود شده"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "در صف"
+    },
+    {
+      "name": "detail_download",
+      "value": "دانلود"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "فصل پیدا نشد"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "بارگذاری ناموفق: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "چپ به راست"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "راست به چپ"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "وب‌تون"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "حالت خواندن"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "آزاد"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "عمودی"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "افقی"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "جهت صفحه"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "همین حالا در آخرین فصل هستید"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "همین حالا در نخستین فصل هستید"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "همین حالا در نخستین صفحه هستید"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "همین حالا در آخرین صفحه هستید"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "در حال بارگذاری فصل…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "تنظیمات خواننده"
+    },
+    {
+      "name": "reader_background",
+      "value": "پس‌زمینه"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "خودکار"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "سفید"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "خاکستری"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "سیاه"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "نمایش شماره صفحه"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "روشنایی"
+    },
+    {
+      "name": "reader_auto",
+      "value": "خودکار"
+    },
+    {
+      "name": "plugin_title",
+      "value": "افزونه‌ها"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "نصب‌شده"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "هنوز افزونه‌ای نیست، از پایین نصب کنید"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "افزونه‌های غیرفعال را هر زمان می‌توان دوباره فعال کرد"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "به‌روز"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "نصب از پرونده"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "پرونده‌ای برای نصب انتخاب کنید"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "در حال پردازش…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "بسته‌های افزونهٔ .mihonplug / .zip پشتیبانی می‌شوند"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "مخزن آنلاین"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "تنظیم مخزن"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "تازه‌سازی"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "هنوز مخزن افزونه پیکربندی نشده"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "در حال بارگذاری مخزن…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "نشانی URL مخزن افزونه"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "نشانی URL مخزن افزونه را وارد کنید"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "بارگذاری مخزن ناموفق: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "انتخاب پرونده ناموفق بود"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "نصب شد: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "%s نصب شد"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "نصب ناموفق: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "عملیات ناموفق بود"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "حذف نصب شد: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "حذف نصب ناموفق بود"
+    },
+    {
+      "name": "settings_title",
+      "value": "تنظیمات"
+    },
+    {
+      "name": "settings_general",
+      "value": "عمومی"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "صفحهٔ شروع"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "شخصی‌سازی"
+    },
+    {
+      "name": "settings_library",
+      "value": "کتابخانه"
+    },
+    {
+      "name": "settings_reader",
+      "value": "خواننده"
+    },
+    {
+      "name": "settings_data",
+      "value": "داده"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "دانلودها"
+    },
+    {
+      "name": "settings_browse",
+      "value": "مرور"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "پیشرفته"
+    },
+    {
+      "name": "settings_about",
+      "value": "درباره"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "کتابخانه"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "به‌روزرسانی‌ها"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "تاریخچه"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "مرور"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "بیشتر"
+    },
+    {
+      "name": "advanced_title",
+      "value": "پیشرفته"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "در حال محاسبه…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "حافظه"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "پاک کردن حافظهٔ پنهان تصویر"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "حافظهٔ پنهان تصویر پاک شد"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "پاک کردن کوکی‌ها"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "همهٔ کوکی‌ها پاک شدند"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "پشتیبان‌گیری و بازیابی"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "برون‌بری پشتیبان"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "ورود پشتیبان"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "ردیابی"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "رمز AniList"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "رمز دسترسی AniList"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "رمز دسترسی را بچسبانید (برای پاک کردن خالی بگذارید)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "تنظیم نشده"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "تنظیم شده"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "رمز ذخیره شد"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "رمز پاک شد"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "پشتیبان برون‌بری شد"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "برون‌بری لغو شد"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "برون‌بری ناموفق بود"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "ورود لغو شد"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "پروندهٔ پشتیبان نامعتبر است"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "%d مانگا بازیابی شد"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "ورود ناموفق بود"
+    },
+    {
+      "name": "about_title",
+      "value": "درباره"
+    },
+    {
+      "name": "about_version",
+      "value": "نسخه ۱.۰.۰"
+    },
+    {
+      "name": "about_desc",
+      "value": "معماری از Mihon (Apache-2.0) الهام گرفته است. منابع آنلاین به‌صورت پویا به‌عنوان افزونه نصب می‌شوند و منابع محلی داخلی‌اند."
+    },
+    {
+      "name": "about_ack",
+      "value": "سپاس منابع باز:\n· Mihon / Tachiyomi — معماری برنامه و طراحی تعامل (Apache-2.0)\n· Material Symbols — نمادهای درون برنامه (Apache-2.0)\n· MangaDex — منبع دادهٔ آزمایشی"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "مرور"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "محتوا"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "نمایش منابع NSFW"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "وقتی فعال باشد، منابعی که افزونه‌هایشان آن‌ها را NSFW علامت زده‌اند در مرور ظاهر می‌شوند"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "دانلودها"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "شبکه"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "دانلود فقط از طریق Wi-Fi"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "توجه: در نسخهٔ فعلی این کلید جای‌نگهدار است؛ تشخیص نوع شبکه در نسخه‌ای بعدی می‌آید"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "کتابخانه"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "پالایش و مرتب‌سازی"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "مرتب‌سازی پیش‌فرض"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "عنوان"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "آخرین فصل"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "تاریخ افزودن"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "تعداد نخوانده"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "مرتب‌سازی عنوان به‌صورت صعودی"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "پالایش پیش‌فرض"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "نخوانده"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "دانلود شده"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "ناتمام"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "نمایش"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "نمای پیش‌فرض"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "شبکه"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "شبکهٔ جلد"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "فهرست"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "ستون‌های شبکه"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "خودکار"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "۲ ستون"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "۳ ستون"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "۴ ستون"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "نشان‌های نخوانده"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "نشان‌های دانلود"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "خواننده"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "حالت خواندن"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "حالت پیش‌فرض"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "چپ به راست"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "راست به چپ"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "صفحه‌بندی عمودی"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "وب‌تون"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "دو صفحه (افقی)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "نمایش"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "نمایش شماره صفحه"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "پس‌زمینهٔ خواننده"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "پیروی از پوسته"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "سفید"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "سیاه"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "خاکستری"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "بازنشانی روشنایی خواننده"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "روشنایی دوباره از سیستم پیروی می‌کند"
+    }
+  ]
+}

@@ -1,0 +1,1216 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "MihonHarmony"
+    },
+    {
+      "name": "common_ok",
+      "value": "Сөп"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Тохтот"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Бигэргэт"
+    },
+    {
+      "name": "common_delete",
+      "value": "Сотон кэбис"
+    },
+    {
+      "name": "common_retry",
+      "value": "Хатылаа"
+    },
+    {
+      "name": "common_search",
+      "value": "Көрдөөһүн"
+    },
+    {
+      "name": "common_all",
+      "value": "Барыта"
+    },
+    {
+      "name": "common_close",
+      "value": "Сап"
+    },
+    {
+      "name": "common_save",
+      "value": "Бигэргэтэн уур"
+    },
+    {
+      "name": "common_install",
+      "value": "Туруор"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "Уһул"
+    },
+    {
+      "name": "common_update",
+      "value": "Саҥардан биэр"
+    },
+    {
+      "name": "common_none",
+      "value": "Суох"
+    },
+    {
+      "name": "common_default",
+      "value": "Сүрүн"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Тас көрүҥ"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Тыл"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Системаны батыһын"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Тиэмэ эрэһиимэ"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Системаны батыһын"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Сырдык"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Хараҥа"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Сүрүн өҥ"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Атын"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED ыраас хара фон"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Күөх"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "От күөх"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Роза өҥ"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Фиолет"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "Араҕас-кыһыл"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d мүн иннинэ"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d чаас иннинэ"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d күн иннинэ"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "Баран иһэр"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Түмүктэммит"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "Тохтообута"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Салгыы суох"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Таһаарыы түмүктэммит"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Биллибэт"
+    },
+    {
+      "name": "tab_library",
+      "value": "Бэбэлэтиэкэ"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Саҥардыылар"
+    },
+    {
+      "name": "tab_history",
+      "value": "История"
+    },
+    {
+      "name": "tab_browse",
+      "value": "Көрдөөһүн"
+    },
+    {
+      "name": "tab_more",
+      "value": "Эбии"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "Бигэргэтиини кэтэһэбит…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "Бигэргэтии түмүктэннэ"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "Киһи бигэргэтиитэ"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "Бэлэм"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "Бигэргэтии түмүгэ хараллыбыт"
+    },
+    {
+      "name": "more_title",
+      "value": "Эбии"
+    },
+    {
+      "name": "more_version",
+      "value": "Барыл %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Хачайдаммыттар эрэ (офлайн ааҕыы)"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Кистэлэҥ"
+    },
+    {
+      "name": "more_downloads",
+      "value": "Хачайдааһыннар"
+    },
+    {
+      "name": "more_categories",
+      "value": "Категориялар"
+    },
+    {
+      "name": "more_settings",
+      "value": "Түстэл"
+    },
+    {
+      "name": "more_about",
+      "value": "Туһунан"
+    },
+    {
+      "name": "more_plugins",
+      "value": "Кэҥэтиилэр"
+    },
+    {
+      "name": "categories_title",
+      "value": "Категориялар"
+    },
+    {
+      "name": "categories_add",
+      "value": "Саҥа категория"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "Категория аата"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "Категория аатын уларыт"
+    },
+    {
+      "name": "categories_rename",
+      "value": "Аатын уларыт"
+    },
+    {
+      "name": "categories_hint",
+      "value": "Аатын уларытарга эбэтэр соторго категорияны уһуннук баттаа; сотуллубут категория мангата Сүрүҥҥэ төннөр"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "Категорияны тал"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "Хачайдыыр…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "Ойуу хачайдаммата"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "Хатылыырга баттаа"
+    },
+    {
+      "name": "library_title",
+      "value": "Бэбэлэтиэкэ"
+    },
+    {
+      "name": "library_empty",
+      "value": "Эн бэбэлэтиэкэҥ кураанах, манга эбэргэ көрдөө"
+    },
+    {
+      "name": "library_new_category",
+      "value": "Саҥа категория"
+    },
+    {
+      "name": "library_category_name",
+      "value": "Категория аата"
+    },
+    {
+      "name": "updates_title",
+      "value": "Саҥардыылар"
+    },
+    {
+      "name": "updates_empty",
+      "value": "Соторутааҕы саҥардыы суох"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%d саҥа түһүмэх булулунна"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "Саҥа түһүмэх суох"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "Саҥардыы сатаммата"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "Саҥардар…"
+    },
+    {
+      "name": "history_title",
+      "value": "История"
+    },
+    {
+      "name": "history_clear",
+      "value": "Ыраастаа"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "Ыраастыахха дуо?"
+    },
+    {
+      "name": "history_empty",
+      "value": "Ааҕыы историята өссө суох"
+    },
+    {
+      "name": "history_cleared",
+      "value": "История ыраастанна"
+    },
+    {
+      "name": "history_continue",
+      "value": "Салгыы"
+    },
+    {
+      "name": "browse_title",
+      "value": "Көрдөөһүн"
+    },
+    {
+      "name": "browse_import",
+      "value": "Киллэр"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "Плагиннар"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "Олохтоох манга"
+    },
+    {
+      "name": "browse_popular",
+      "value": "Биллэр"
+    },
+    {
+      "name": "browse_latest",
+      "value": "Саҥа"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "Манга көрдөө…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "Манга булуллубата"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "Олохтоох манга өссө суох, эбэргэ Киллэри баттаа"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "Хачайдааһын сатаммата: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "Көрдөөһүн сатаммата: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "Эбии хачайдаммата"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "Сиһилии арыллыбата"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "Билэлэри талыы сатаммата"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "%d билэни киллэр"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "Манга аата"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "Бука диэн ааты суруй"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "%d билэ киирдэ"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "Киллэрии сатаммата: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "Хачайдааһыннар"
+    },
+    {
+      "name": "download_resume",
+      "value": "Салгыы"
+    },
+    {
+      "name": "download_pause",
+      "value": "Тохтот"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "Түмүктэммити ыраастаа"
+    },
+    {
+      "name": "download_queue",
+      "value": "Хачайдааһын уочарата"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "Уочаракка"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "Хачайдыыр"
+    },
+    {
+      "name": "download_state_done",
+      "value": "Бэлэм"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "Сатаммата"
+    },
+    {
+      "name": "download_move_top",
+      "value": "Үөһээ көһөр"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "Аллара көһөр"
+    },
+    {
+      "name": "download_deleted",
+      "value": "Сотулунна"
+    },
+    {
+      "name": "download_empty",
+      "value": "Хачайдааһын өссө суох"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "Хачайдаммыт"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d түһүмэх"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "Түһүмэх суох"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "Синхрон сатаммата, олохтоох дааннай көрдөрүллэр"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "Бэбэлэтиэкэҕэ эбилиннэ"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "Бэбэлэтиэкэттэн уһулунна"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "Бары түһүмэхтэр ааҕыллыбыт курдук бэлиэтэннилэр"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "Хачайдааһын уочаратыгар эбилиннэ"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "Бастаан AniList токенын туруор"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "AniList көрдөө"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "Манга аата"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "Көрдөөһүн түмүгэ суох"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "AniList көрдөөһүнэ сатаммата"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "AniList-ы кытта холбонно"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "AniList-тан араарылынна"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "Прогресс %d түһүмэххэ синхроннаммыт"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "AniList синхрона сатаммата"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "Олохтоох"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "Бэбэлэтиэкэҕэ баар"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "Бэбэлэтиэкэҕэ эп"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "Ааҕыыны салҕаа"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "Ааҕарга саҕалаа"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "Түһүмэх өссө суох"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "Кыччат"
+    },
+    {
+      "name": "detail_expand",
+      "value": "Тэнит"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList кэтээһин"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList токена өссө туруоруллубатах"
+    },
+    {
+      "name": "detail_searching",
+      "value": "Көрдүүр…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "Көрдөө уонна холбоо"
+    },
+    {
+      "name": "detail_bind",
+      "value": "Холбоо"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "%d түһүмэххэ синхроннаммыт"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "Прогреһы синхроннаа"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "Араар"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "Түһүмэхтэр (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "Үүнэр"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "Төттөрү"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "Барытын ааҕыллыбыт гын"
+    },
+    {
+      "name": "detail_read",
+      "value": "Ааҕыллыбыт"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "Хачайдаммыт"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "Уочаракка"
+    },
+    {
+      "name": "detail_download",
+      "value": "Хачайдаа"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "Түһүмэх булуллубата"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "Хачайдааһын сатаммата: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "Хатаҥҥаттан уҥаҕа"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "Уҥаттан хаҥаска"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Вебтун"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "Ааҕыы эрэһиимэ"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "Көҥүл"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "Туруору"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "Сытыары"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "Экраан хайысхата"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "Бүтэһик түһүмэххэ хайыы-үйэ"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "Бастакы түһүмэххэ хайыы-үйэ"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "Бастакы сирэйгэ хайыы-үйэ"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "Бүтэһик сирэйгэ хайыы-үйэ"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "Түһүмэх хачайданар…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "Ааҕааччы түстэлэ"
+    },
+    {
+      "name": "reader_background",
+      "value": "Фон"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Аптамаатынан"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "Үрүҥ"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "Бороҥ"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "Хара"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "Сирэй нүөмэрин көрдөр"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "Сырдык"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Аптамаатынан"
+    },
+    {
+      "name": "plugin_title",
+      "value": "Кэҥэтиилэр"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "Туруоруллубуттар"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "Кэҥэтии өссө суох, аллара туруор"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "Араарыллыбыт кэҥэтиилэри хаһан баҕарар төттөрү холбуохха сөп"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "Саҥа"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "Билэттэн туруор"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "Туруорарга билэни тал"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "Оҥорор…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": ".mihonplug / .zip плагин паагыттарын өйүүр"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "Онлайн репозиторий"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "Репозиторийы туруор"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "Саҥардан биэр"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "Плагин репозиторийа өссө суох"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "Репозиторий хачайданар…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "Плагин репозиторийын URL"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "Плагин репозиторийын URL суруй"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "Репозиторий хачайдаммата: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "Билэни талыы сатаммата"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "Туруорулунна: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "%s туруорулунна"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "Туруоруу сатаммата: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "Дьайыы сатаммата"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "Уһулунна: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "Уһуу сатаммата"
+    },
+    {
+      "name": "settings_title",
+      "value": "Түстэл"
+    },
+    {
+      "name": "settings_general",
+      "value": "Сүрүн"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Саҕалыыр экраан"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "Тус бэйэ"
+    },
+    {
+      "name": "settings_library",
+      "value": "Бэбэлэтиэкэ"
+    },
+    {
+      "name": "settings_reader",
+      "value": "Ааҕааччы"
+    },
+    {
+      "name": "settings_data",
+      "value": "Дааннай"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Хачайдааһыннар"
+    },
+    {
+      "name": "settings_browse",
+      "value": "Көрдөөһүн"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Дириҥник"
+    },
+    {
+      "name": "settings_about",
+      "value": "Туһунан"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "Бэбэлэтиэкэ"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Саҥардыылар"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "История"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "Көрдөөһүн"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "Эбии"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Дириҥник"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "Ааҕар…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "Хараал"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "Ойуу кээһин ыраастаа"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "Ойуу кээһэ ыраастанна"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "Куукилары ыраастаа"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "Бары куукилар ыраастаннылар"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "Резерв уонна төннөрүү"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "Резерви таһаар"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "Резерви киллэр"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "Кэтээһин"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList токена"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList киирии токена"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "Киирии токены уган биэр (ыраастыырга кураанах хааллар)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "Туруоруллубатах"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "Туруоруллубут"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "Токен хараллыбыт"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "Токен ыраастаммыт"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "Резерв таһаарылынна"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "Таһаарыы тохтотулунна"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "Таһаарыы сатаммата"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "Киллэрии тохтотулунна"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "Сыыһа резерв билэтэ"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "%d манга төннөрүллүбүт"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "Киллэрии сатаммата"
+    },
+    {
+      "name": "about_title",
+      "value": "Туһунан"
+    },
+    {
+      "name": "about_version",
+      "value": "Барыл 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "Архитектура Mihon-тан (Apache-2.0) ылыллыбыт. Онлайн источниктар кэҥэтии быһыытынан динамическайдык туруоруллаллар, олохтоох источниктар иһигэр тутуллубуттар."
+    },
+    {
+      "name": "about_ack",
+      "value": "Аһаҕас куод махтал:\n· Mihon / Tachiyomi — сыһыарыы архитектурата уонна дьайыы дизайна (Apache-2.0)\n· Material Symbols — сыһыарыы иконкалара (Apache-2.0)\n· MangaDex — тургутуу дааннайын источник"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "Көрдөөһүн"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "Иһинээҕитэ"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "NSFW источнигы көрдөр"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "Холбоотоххо, кэҥэтиилэр NSFW диэн бэлиэтээбит источниктара Көрдөөһүҥҥэ көстөллөр"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Хачайдааһыннар"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Ситим"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Wi-Fi эрэ нөҥүө хачайдаа"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "Бэлиэтээһин: бу көһөрөөччү аныгы барылга оннуксут; ситим көрүҥүн билэр буолуу кэлэр барылга кэлиэ"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "Бэбэлэтиэкэ"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "Фильтр уонна наардааһын"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "Сүрүн наардааһын"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "Аат"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "Саҥа түһүмэх"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "Эбиллибит күнэ"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "Ааҕыллыбатах ахсаан"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "Аатынан үүнэр наардааһын"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "Сүрүн фильтр"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "Ааҕыллыбатах"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "Хачайдаммыт"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "Түмүктэммэтэх"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Көрдөрүү"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "Сүрүн көрүҥ"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "Ситим"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "Хахха ситимэ"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "Тиһик"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "Ситим колонналара"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "Аптамаатынан"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 колонна"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 колонна"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 колонна"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "Ааҕыллыбатах бэлиэлэр"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "Хачайдааһын бэлиэлэрэ"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "Ааҕааччы"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "Ааҕыы эрэһиимэ"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "Сүрүн эрэһиим"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "Хатаҥҥаттан уҥаҕа"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "Уҥаттан хаҥаска"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "Туруору сирэй"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Вебтун"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "Икки сирэй (сытыары)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Көрдөрүү"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "Сирэй нүөмэрин көрдөр"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "Ааҕааччы фона"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "Тиэмэни батыһын"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "Үрүҥ"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "Хара"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "Бороҥ"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "Ааҕааччы сырдыгын төннөр"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "Сырдык системаны батыһарга туруорулунна"
+    }
+  ]
+}

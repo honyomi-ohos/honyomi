@@ -1,0 +1,1216 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "MihonHarmony"
+    },
+    {
+      "name": "common_ok",
+      "value": "OK"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Annuler"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Confirmer"
+    },
+    {
+      "name": "common_delete",
+      "value": "Supprimer"
+    },
+    {
+      "name": "common_retry",
+      "value": "Réessayer"
+    },
+    {
+      "name": "common_search",
+      "value": "Rechercher"
+    },
+    {
+      "name": "common_all",
+      "value": "Tout"
+    },
+    {
+      "name": "common_close",
+      "value": "Fermer"
+    },
+    {
+      "name": "common_save",
+      "value": "Enregistrer"
+    },
+    {
+      "name": "common_install",
+      "value": "Installer"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "Désinstaller"
+    },
+    {
+      "name": "common_update",
+      "value": "Mettre à jour"
+    },
+    {
+      "name": "common_none",
+      "value": "Aucun"
+    },
+    {
+      "name": "common_default",
+      "value": "Par défaut"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Apparence"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Langue"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Suivre le système"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Mode du thème"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Suivre le système"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Clair"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Sombre"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Couleur d’accentuation"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Autres"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "Arrière-plan noir pur AMOLED"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Bleu"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "Vert"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Rose"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Violet"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "Orange"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "Il y a %d min"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "Il y a %d h"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "Il y a %d j"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "En cours"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Terminé"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "En pause"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Annulé"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Publication terminée"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Inconnu"
+    },
+    {
+      "name": "tab_library",
+      "value": "Bibliothèque"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Mises à jour"
+    },
+    {
+      "name": "tab_history",
+      "value": "Historique"
+    },
+    {
+      "name": "tab_browse",
+      "value": "Explorer"
+    },
+    {
+      "name": "tab_more",
+      "value": "Plus"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "En attente de vérification…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "Vérification terminée"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "Vérification humaine"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "Terminé"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "Résultat de la vérification enregistré"
+    },
+    {
+      "name": "more_title",
+      "value": "Plus"
+    },
+    {
+      "name": "more_version",
+      "value": "Version %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Téléchargés uniquement (lecture hors ligne)"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Navigation privée"
+    },
+    {
+      "name": "more_downloads",
+      "value": "Téléchargements"
+    },
+    {
+      "name": "more_categories",
+      "value": "Catégories"
+    },
+    {
+      "name": "more_settings",
+      "value": "Paramètres"
+    },
+    {
+      "name": "more_about",
+      "value": "À propos"
+    },
+    {
+      "name": "more_plugins",
+      "value": "Extensions"
+    },
+    {
+      "name": "categories_title",
+      "value": "Catégories"
+    },
+    {
+      "name": "categories_add",
+      "value": "Nouvelle catégorie"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "Nom de la catégorie"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "Renommer la catégorie"
+    },
+    {
+      "name": "categories_rename",
+      "value": "Renommer"
+    },
+    {
+      "name": "categories_hint",
+      "value": "Appuyez longuement sur une catégorie pour la renommer ou la supprimer ; le manga d’une catégorie supprimée revient à Par défaut"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "Sélectionner une catégorie"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "Chargement…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "Échec du chargement de l’image"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "Appuyez pour réessayer"
+    },
+    {
+      "name": "library_title",
+      "value": "Bibliothèque"
+    },
+    {
+      "name": "library_empty",
+      "value": "Votre bibliothèque est vide ; explorez pour ajouter des mangas"
+    },
+    {
+      "name": "library_new_category",
+      "value": "Nouvelle catégorie"
+    },
+    {
+      "name": "library_category_name",
+      "value": "Nom de la catégorie"
+    },
+    {
+      "name": "updates_title",
+      "value": "Mises à jour"
+    },
+    {
+      "name": "updates_empty",
+      "value": "Aucune mise à jour récente"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%d nouveaux chapitres trouvés"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "Aucun nouveau chapitre"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "Échec de l’actualisation"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "Actualisation…"
+    },
+    {
+      "name": "history_title",
+      "value": "Historique"
+    },
+    {
+      "name": "history_clear",
+      "value": "Effacer"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "Confirmer l’effacement ?"
+    },
+    {
+      "name": "history_empty",
+      "value": "Pas encore d’historique de lecture"
+    },
+    {
+      "name": "history_cleared",
+      "value": "Historique effacé"
+    },
+    {
+      "name": "history_continue",
+      "value": "Continuer"
+    },
+    {
+      "name": "browse_title",
+      "value": "Explorer"
+    },
+    {
+      "name": "browse_import",
+      "value": "Importer"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "Plugins"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "Manga local"
+    },
+    {
+      "name": "browse_popular",
+      "value": "Populaire"
+    },
+    {
+      "name": "browse_latest",
+      "value": "Récents"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "Rechercher un manga…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "Aucun manga trouvé"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "Pas encore de manga local ; appuyez sur Importer pour en ajouter"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "Échec du chargement : %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "Échec de la recherche : %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "Échec du chargement supplémentaire"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "Échec de l’ouverture des détails"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "Échec de la sélection des fichiers"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "Importer %d fichiers"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "Nom du manga"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "Veuillez saisir un nom"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "%d fichiers importés"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "Échec de l’importation : %s"
+    },
+    {
+      "name": "download_title",
+      "value": "Téléchargements"
+    },
+    {
+      "name": "download_resume",
+      "value": "Reprendre"
+    },
+    {
+      "name": "download_pause",
+      "value": "Pause"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "Effacer les terminés"
+    },
+    {
+      "name": "download_queue",
+      "value": "File de téléchargement"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "En file"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "Téléchargement"
+    },
+    {
+      "name": "download_state_done",
+      "value": "Terminé"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "Échec"
+    },
+    {
+      "name": "download_move_top",
+      "value": "Déplacer en haut"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "Déplacer en bas"
+    },
+    {
+      "name": "download_deleted",
+      "value": "Supprimé"
+    },
+    {
+      "name": "download_empty",
+      "value": "Pas encore de téléchargements"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "Téléchargé"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d chapitres"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "Aucun chapitre"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "Échec de la synchronisation ; affichage des données locales"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "Ajouté à la bibliothèque"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "Retiré de la bibliothèque"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "Tous les chapitres marqués comme lus"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "Téléchargement ajouté à la file"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "Veuillez d’abord configurer votre jeton AniList"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "Rechercher sur AniList"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "Titre du manga"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "Aucun résultat de recherche"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "Échec de la recherche AniList"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "Lié à AniList"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "Dissocié d’AniList"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "Progression synchronisée au chapitre %d"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "Échec de la synchronisation AniList"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "Local"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "Dans la bibliothèque"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "Ajouter à la bibliothèque"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "Continuer la lecture"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "Commencer la lecture"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "Pas encore de chapitres"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "Réduire"
+    },
+    {
+      "name": "detail_expand",
+      "value": "Développer"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "Suivi AniList"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "Jeton AniList non encore configuré"
+    },
+    {
+      "name": "detail_searching",
+      "value": "Recherche…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "Rechercher et lier"
+    },
+    {
+      "name": "detail_bind",
+      "value": "Lier"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "Synchronisé au chapitre %d"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "Synchroniser la progression"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "Dissocier"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "Chapitres (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "Croissant"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "Décroissant"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "Tout marquer comme lu"
+    },
+    {
+      "name": "detail_read",
+      "value": "Lu"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "Téléchargé"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "En file"
+    },
+    {
+      "name": "detail_download",
+      "value": "Télécharger"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "Chapitre introuvable"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "Échec du chargement : %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "De gauche à droite"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "De droite à gauche"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "Mode de lecture"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "Libre"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "Portrait"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "Paysage"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "Orientation de l’écran"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "Déjà au dernier chapitre"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "Déjà au premier chapitre"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "Déjà à la première page"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "Déjà à la dernière page"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "Chargement du chapitre…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "Paramètres du lecteur"
+    },
+    {
+      "name": "reader_background",
+      "value": "Arrière-plan"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "Blanc"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "Gris"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "Noir"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "Afficher le numéro de page"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "Luminosité"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "plugin_title",
+      "value": "Extensions"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "Installées"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "Pas encore d’extensions ; installez-en ci-dessous"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "Les extensions désactivées peuvent être réactivées à tout moment"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "À jour"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "Installer depuis un fichier"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "Choisissez un fichier à installer"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "Traitement…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "Prend en charge les paquets de plugins .mihonplug / .zip"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "Dépôt en ligne"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "Configurer le dépôt"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "Actualiser"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "Aucun dépôt de plugins configuré pour le moment"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "Chargement du dépôt…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "URL du dépôt de plugins"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "Saisissez l’URL du dépôt de plugins"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "Échec du chargement du dépôt : %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "Échec de la sélection du fichier"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "Installé : %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "%s installé"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "Échec de l’installation : %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "Échec de l’action"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "Désinstallé : %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "Échec de la désinstallation"
+    },
+    {
+      "name": "settings_title",
+      "value": "Paramètres"
+    },
+    {
+      "name": "settings_general",
+      "value": "Général"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Écran de démarrage"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "Personnalisation"
+    },
+    {
+      "name": "settings_library",
+      "value": "Bibliothèque"
+    },
+    {
+      "name": "settings_reader",
+      "value": "Lecteur"
+    },
+    {
+      "name": "settings_data",
+      "value": "Données"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Téléchargements"
+    },
+    {
+      "name": "settings_browse",
+      "value": "Explorer"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Avancé"
+    },
+    {
+      "name": "settings_about",
+      "value": "À propos"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "Bibliothèque"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Mises à jour"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "Historique"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "Explorer"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "Plus"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Avancé"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "Calcul…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "Stockage"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "Vider le cache d’images"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "Cache d’images vidé"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "Effacer les cookies"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "Tous les cookies ont été effacés"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "Sauvegarde et restauration"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "Exporter la sauvegarde"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "Importer une sauvegarde"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "Suivi"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "Jeton AniList"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "Jeton d’accès AniList"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "Collez votre jeton d’accès (laissez vide pour l’effacer)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "Non défini"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "Défini"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "Jeton enregistré"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "Jeton effacé"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "Sauvegarde exportée"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "Exportation annulée"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "Échec de l’exportation"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "Importation annulée"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "Fichier de sauvegarde non valide"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "%d mangas restaurés"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "Échec de l’importation"
+    },
+    {
+      "name": "about_title",
+      "value": "À propos"
+    },
+    {
+      "name": "about_version",
+      "value": "Version 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "Architecture inspirée de Mihon (Apache-2.0). Les sources en ligne s’installent dynamiquement sous forme d’extensions, tandis que les sources locales sont intégrées."
+    },
+    {
+      "name": "about_ack",
+      "value": "Remerciements open source :\n· Mihon / Tachiyomi — architecture de l’application et conception des interactions (Apache-2.0)\n· Material Symbols — icônes de l’application (Apache-2.0)\n· MangaDex — source de données de test"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "Explorer"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "Contenu"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "Afficher les sources NSFW"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "Une fois activé, les sources marquées NSFW par leurs extensions apparaîtront dans Explorer"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Téléchargements"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Réseau"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Télécharger uniquement en Wi-Fi"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "Remarque : ce commutateur est un espace réservé dans la version actuelle ; la détection du type de réseau arrivera dans une version future"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "Bibliothèque"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "Filtre et tri"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "Tri par défaut"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "Titre"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "Dernier chapitre"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "Date d’ajout"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "Nombre de non lus"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "Trier par titre croissant"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "Filtre par défaut"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "Non lus"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "Téléchargés"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "Non terminés"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Affichage"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "Vue par défaut"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "Grille"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "Grille de couvertures"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "Liste"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "Colonnes de la grille"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 colonnes"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 colonnes"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 colonnes"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "Badges non lus"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "Badges de téléchargement"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "Lecteur"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "Mode de lecture"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "Mode par défaut"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "De gauche à droite"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "De droite à gauche"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "Pagination verticale"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "Double page (paysage)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Affichage"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "Afficher le numéro de page"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "Arrière-plan du lecteur"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "Suivre le thème"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "Blanc"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "Noir"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "Gris"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "Réinitialiser la luminosité du lecteur"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "Luminosité définie pour suivre le système"
+    }
+  ]
+}

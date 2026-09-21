@@ -1,0 +1,1216 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "MihonHarmony"
+    },
+    {
+      "name": "common_ok",
+      "value": "ശരി"
+    },
+    {
+      "name": "common_cancel",
+      "value": "റദ്ദാക്കുക"
+    },
+    {
+      "name": "common_confirm",
+      "value": "സ്ഥിരീകരിക്കുക"
+    },
+    {
+      "name": "common_delete",
+      "value": "ഇല്ലാതാക്കുക"
+    },
+    {
+      "name": "common_retry",
+      "value": "വീണ്ടും ശ്രമിക്കുക"
+    },
+    {
+      "name": "common_search",
+      "value": "തിരയുക"
+    },
+    {
+      "name": "common_all",
+      "value": "എല്ലാം"
+    },
+    {
+      "name": "common_close",
+      "value": "അടയ്ക്കുക"
+    },
+    {
+      "name": "common_save",
+      "value": "സംരക്ഷിക്കുക"
+    },
+    {
+      "name": "common_install",
+      "value": "ഇൻസ്റ്റാൾ"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "അൺഇൻസ്റ്റാൾ"
+    },
+    {
+      "name": "common_update",
+      "value": "അപ്ഡേറ്റ്"
+    },
+    {
+      "name": "common_none",
+      "value": "ഒന്നുമില്ല"
+    },
+    {
+      "name": "common_default",
+      "value": "സ്ഥിരസ്ഥിതി"
+    },
+    {
+      "name": "appearance_title",
+      "value": "രൂപം"
+    },
+    {
+      "name": "appearance_language",
+      "value": "ഭാഷ"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "സിസ്റ്റം പിന്തുടരുക"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "തീം മോഡ്"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "സിസ്റ്റം പിന്തുടരുക"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "ലഘു"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "ഇരുണ്ട"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "പ്രധാന നിറം"
+    },
+    {
+      "name": "appearance_other",
+      "value": "മറ്റുള്ളവ"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED ശുദ്ധ കറുത്ത പശ്ചാത്തലം"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "നീല"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "പച്ച"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "പിങ്ക്"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "ധൂമ്രം"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "ഓറഞ്ച്"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d മിനിറ്റ് മുമ്പ്"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d മണിക്കൂർ മുമ്പ്"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d ദിവസം മുമ്പ്"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "തുടരുന്നു"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "പൂർത്തിയായി"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "വിരാമത്തിൽ"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "റദ്ദാക്കി"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "പ്രസിദ്ധീകരണം പൂർത്തി"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "അജ്ഞാതം"
+    },
+    {
+      "name": "tab_library",
+      "value": "ലൈബ്രറി"
+    },
+    {
+      "name": "tab_updates",
+      "value": "അപ്ഡേറ്റുകൾ"
+    },
+    {
+      "name": "tab_history",
+      "value": "ചരിത്രം"
+    },
+    {
+      "name": "tab_browse",
+      "value": "ബ്രൗസ്"
+    },
+    {
+      "name": "tab_more",
+      "value": "ഇനിയും"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "സ്ഥിരീകരണത്തിനായി കാത്തിരിക്കുന്നു…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "സ്ഥിരീകരണം പൂർത്തി"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "മനുഷ്യ സ്ഥിരീകരണം"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "കഴിഞ്ഞു"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "സ്ഥിരീകരണ ഫലം സംരക്ഷിച്ചു"
+    },
+    {
+      "name": "more_title",
+      "value": "ഇനിയും"
+    },
+    {
+      "name": "more_version",
+      "value": "പതിപ്പ് %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "ഡൗൺലോഡ് മാത്രം (ഓഫ്‌ലൈൻ വായന)"
+    },
+    {
+      "name": "more_incognito",
+      "value": "രഹസ്യം"
+    },
+    {
+      "name": "more_downloads",
+      "value": "ഡൗൺലോഡുകൾ"
+    },
+    {
+      "name": "more_categories",
+      "value": "വിഭാഗങ്ങൾ"
+    },
+    {
+      "name": "more_settings",
+      "value": "ക്രമീകരണങ്ങൾ"
+    },
+    {
+      "name": "more_about",
+      "value": "കുറിച്ച്"
+    },
+    {
+      "name": "more_plugins",
+      "value": "വിപുലീകരണങ്ങൾ"
+    },
+    {
+      "name": "categories_title",
+      "value": "വിഭാഗങ്ങൾ"
+    },
+    {
+      "name": "categories_add",
+      "value": "പുതിയ വിഭാഗം"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "വിഭാഗത്തിന്റെ പേര്"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "വിഭാഗം പേരുമാറ്റുക"
+    },
+    {
+      "name": "categories_rename",
+      "value": "പേരുമാറ്റുക"
+    },
+    {
+      "name": "categories_hint",
+      "value": "പേരുമാറ്റാനോ ഇല്ലാതാക്കാനോ വിഭാഗം ദീർഘനേരം അമർത്തുക; ഇല്ലാതാക്കിയ വിഭാഗത്തിലെ മംഗ സ്ഥിരസ്ഥിതിയിലേക്ക് മടങ്ങും"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "വിഭാഗം തിരഞ്ഞെടുക്കുക"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "ലോഡ് ചെയ്യുന്നു…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "ചിത്രം ലോഡ് ചെയ്യാനായില്ല"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "വീണ്ടും ശ്രമിക്കാൻ ടാപ്പ് ചെയ്യുക"
+    },
+    {
+      "name": "library_title",
+      "value": "ലൈബ്രറി"
+    },
+    {
+      "name": "library_empty",
+      "value": "നിങ്ങളുടെ ലൈബ്രറി ശൂന്യമാണ്, മംഗ ചേർക്കാൻ ബ്രൗസ് ചെയ്യുക"
+    },
+    {
+      "name": "library_new_category",
+      "value": "പുതിയ വിഭാഗം"
+    },
+    {
+      "name": "library_category_name",
+      "value": "വിഭാഗത്തിന്റെ പേര്"
+    },
+    {
+      "name": "updates_title",
+      "value": "അപ്ഡേറ്റുകൾ"
+    },
+    {
+      "name": "updates_empty",
+      "value": "അടുത്തിടെയുള്ള അപ്ഡേറ്റുകളില്ല"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%d പുതിയ അധ്യായങ്ങൾ കണ്ടെത്തി"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "പുതിയ അധ്യായങ്ങളില്ല"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "പുതുക്കൽ പരാജയപ്പെട്ടു"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "പുതുക്കുന്നു…"
+    },
+    {
+      "name": "history_title",
+      "value": "ചരിത്രം"
+    },
+    {
+      "name": "history_clear",
+      "value": "മായ്ക്കുക"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "മായ്ക്കട്ടെ?"
+    },
+    {
+      "name": "history_empty",
+      "value": "ഇതുവരെ വായനാ ചരിത്രമില്ല"
+    },
+    {
+      "name": "history_cleared",
+      "value": "ചരിത്രം മായ്ച്ചു"
+    },
+    {
+      "name": "history_continue",
+      "value": "തുടരുക"
+    },
+    {
+      "name": "browse_title",
+      "value": "ബ്രൗസ്"
+    },
+    {
+      "name": "browse_import",
+      "value": "ഇറക്കുമതി"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "പ്ലഗിനുകൾ"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "പ്രാദേശിക മംഗ"
+    },
+    {
+      "name": "browse_popular",
+      "value": "ജനപ്രിയം"
+    },
+    {
+      "name": "browse_latest",
+      "value": "പുതിയത്"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "മംഗ തിരയുക…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "മംഗ കണ്ടെത്തിയില്ല"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "ഇതുവരെ പ്രാദേശിക മംഗയില്ല, ചേർക്കാൻ ഇറക്കുമതി ടാപ്പ് ചെയ്യുക"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "ലോഡ് പരാജയപ്പെട്ടു: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "തിരയൽ പരാജയപ്പെട്ടു: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "കൂടുതൽ ലോഡ് ചെയ്യാനായില്ല"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "വിശദാംശങ്ങൾ തുറക്കാനായില്ല"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "ഫയലുകൾ തിരഞ്ഞെടുക്കാനായില്ല"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "%d ഫയലുകൾ ഇറക്കുമതി ചെയ്യുക"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "മംഗയുടെ പേര്"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "ദയവായി ഒരു പേര് നൽകുക"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "%d ഫയലുകൾ ഇറക്കുമതി ചെയ്തു"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "ഇറക്കുമതി പരാജയപ്പെട്ടു: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "ഡൗൺലോഡുകൾ"
+    },
+    {
+      "name": "download_resume",
+      "value": "തുടരുക"
+    },
+    {
+      "name": "download_pause",
+      "value": "വിരാമം"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "പൂർത്തിയായവ മായ്ക്കുക"
+    },
+    {
+      "name": "download_queue",
+      "value": "ഡൗൺലോഡ് ക്യൂ"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "ക്യൂവിൽ"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "ഡൗൺലോഡ് ചെയ്യുന്നു"
+    },
+    {
+      "name": "download_state_done",
+      "value": "കഴിഞ്ഞു"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "പരാജയപ്പെട്ടു"
+    },
+    {
+      "name": "download_move_top",
+      "value": "മുകളിലേക്ക് നീക്കുക"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "താഴേക്ക് നീക്കുക"
+    },
+    {
+      "name": "download_deleted",
+      "value": "ഇല്ലാതാക്കി"
+    },
+    {
+      "name": "download_empty",
+      "value": "ഇതുവരെ ഡൗൺലോഡുകളില്ല"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "ഡൗൺലോഡ് ചെയ്തു"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d അധ്യായങ്ങൾ"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "അധ്യായങ്ങളില്ല"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "സിങ്ക് പരാജയപ്പെട്ടു, പ്രാദേശിക ഡാറ്റ കാണിക്കുന്നു"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "ലൈബ്രറിയിലേക്ക് ചേർത്തു"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "ലൈബ്രറിയിൽ നിന്ന് നീക്കം ചെയ്തു"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "എല്ലാ അധ്യായങ്ങളും വായിച്ചതായി അടയാളപ്പെടുത്തി"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "ഡൗൺലോഡ് ക്യൂവിലേക്ക് ചേർത്തു"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "ആദ്യം AniList ടോക്കൺ ക്രമീകരിക്കുക"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "AniList തിരയുക"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "മംഗയുടെ ശീർഷകം"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "തിരയൽ ഫലങ്ങളില്ല"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "AniList തിരയൽ പരാജയപ്പെട്ടു"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "AniList-മായി ബന്ധിപ്പിച്ചു"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "AniList-ൽ നിന്ന് വിച്ഛേദിച്ചു"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "പുരോഗതി %d അധ്യായത്തിലേക്ക് സിങ്ക് ചെയ്തു"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "AniList സിങ്ക് പരാജയപ്പെട്ടു"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "പ്രാദേശികം"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "ലൈബ്രറിയിൽ"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "ലൈബ്രറിയിലേക്ക് ചേർക്കുക"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "വായന തുടരുക"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "വായന ആരംഭിക്കുക"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "ഇതുവരെ അധ്യായങ്ങളില്ല"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "ചുരുക്കുക"
+    },
+    {
+      "name": "detail_expand",
+      "value": "വികസിപ്പിക്കുക"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList ട്രാക്കിംഗ്"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList ടോക്കൺ ഇതുവരെ ക്രമീകരിച്ചിട്ടില്ല"
+    },
+    {
+      "name": "detail_searching",
+      "value": "തിരയുന്നു…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "തിരഞ്ഞ് ബന്ധിപ്പിക്കുക"
+    },
+    {
+      "name": "detail_bind",
+      "value": "ബന്ധിപ്പിക്കുക"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "%d അധ്യായത്തിലേക്ക് സിങ്ക് ചെയ്തു"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "പുരോഗതി സിങ്ക് ചെയ്യുക"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "വിച്ഛേദിക്കുക"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "അധ്യായങ്ങൾ (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "ആരോഹണം"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "അവരോഹണം"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "എല്ലാം വായിച്ചതായി അടയാളപ്പെടുത്തുക"
+    },
+    {
+      "name": "detail_read",
+      "value": "വായിച്ചത്"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "ഡൗൺലോഡ് ചെയ്തു"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "ക്യൂവിൽ"
+    },
+    {
+      "name": "detail_download",
+      "value": "ഡൗൺലോഡ്"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "അധ്യായം കണ്ടെത്തിയില്ല"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "ലോഡ് പരാജയപ്പെട്ടു: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "ഇടത്തുനിന്ന് വലത്തോട്ട്"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "വലത്തുനിന്ന് ഇടത്തോട്ട്"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "വെബ്‌ടൂൺ"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "വായനാ രീതി"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "സ്വതന്ത്രം"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "ലംബം"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "തിരശ്ചീനം"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "സ്ക്രീൻ ദിശ"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "ഇതിനകം അവസാന അധ്യായത്തിലാണ്"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "ഇതിനകം ആദ്യ അധ്യായത്തിലാണ്"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "ഇതിനകം ആദ്യ പേജിലാണ്"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "ഇതിനകം അവസാന പേജിലാണ്"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "അധ്യായം ലോഡ് ചെയ്യുന്നു…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "റീഡർ ക്രമീകരണങ്ങൾ"
+    },
+    {
+      "name": "reader_background",
+      "value": "പശ്ചാത്തലം"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "സ്വയം"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "വെള്ള"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "ചാരം"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "കറുപ്പ്"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "പേജ് നമ്പർ കാണിക്കുക"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "തെളിച്ചം"
+    },
+    {
+      "name": "reader_auto",
+      "value": "സ്വയം"
+    },
+    {
+      "name": "plugin_title",
+      "value": "വിപുലീകരണങ്ങൾ"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "ഇൻസ്റ്റാൾ ചെയ്തവ"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "ഇതുവരെ വിപുലീകരണങ്ങളില്ല, താഴെ ഇൻസ്റ്റാൾ ചെയ്യുക"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "നിർജ്ജീവമാക്കിയ വിപുലീകരണങ്ങൾ എപ്പോൾ വേണമെങ്കിലും വീണ്ടും പ്രവർത്തനക്ഷമമാക്കാം"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "പുതിയത്"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "ഫയലിൽ നിന്ന് ഇൻസ്റ്റാൾ"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "ഇൻസ്റ്റാൾ ചെയ്യാൻ ഫയൽ തിരഞ്ഞെടുക്കുക"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "പ്രോസസ് ചെയ്യുന്നു…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": ".mihonplug / .zip പ്ലഗിൻ പാക്കേജുകളെ പിന്തുണയ്ക്കുന്നു"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "ഓൺലൈൻ റെപ്പോസിറ്ററി"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "റെപ്പോസിറ്ററി ക്രമീകരിക്കുക"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "പുതുക്കുക"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "ഇതുവരെ പ്ലഗിൻ റെപ്പോസിറ്ററി ക്രമീകരിച്ചിട്ടില്ല"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "റെപ്പോസിറ്ററി ലോഡ് ചെയ്യുന്നു…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "പ്ലഗിൻ റെപ്പോസിറ്ററി URL"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "പ്ലഗിൻ റെപ്പോസിറ്ററി URL നൽകുക"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "റെപ്പോസിറ്ററി ലോഡ് പരാജയപ്പെട്ടു: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "ഫയൽ തിരഞ്ഞെടുക്കാനായില്ല"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "ഇൻസ്റ്റാൾ ചെയ്തു: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "%s ഇൻസ്റ്റാൾ ചെയ്തു"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "ഇൻസ്റ്റാൾ പരാജയപ്പെട്ടു: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "പ്രവർത്തി പരാജയപ്പെട്ടു"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "നീക്കം ചെയ്തു: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "അൺഇൻസ്റ്റാൾ പരാജയപ്പെട്ടു"
+    },
+    {
+      "name": "settings_title",
+      "value": "ക്രമീകരണങ്ങൾ"
+    },
+    {
+      "name": "settings_general",
+      "value": "പൊതു"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "ആരംഭ സ്ക്രീൻ"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "വ്യക്തിഗതമാക്കൽ"
+    },
+    {
+      "name": "settings_library",
+      "value": "ലൈബ്രറി"
+    },
+    {
+      "name": "settings_reader",
+      "value": "റീഡർ"
+    },
+    {
+      "name": "settings_data",
+      "value": "ഡാറ്റ"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "ഡൗൺലോഡുകൾ"
+    },
+    {
+      "name": "settings_browse",
+      "value": "ബ്രൗസ്"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "വിപുലം"
+    },
+    {
+      "name": "settings_about",
+      "value": "കുറിച്ച്"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "ലൈബ്രറി"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "അപ്ഡേറ്റുകൾ"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "ചരിത്രം"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "ബ്രൗസ്"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "ഇനിയും"
+    },
+    {
+      "name": "advanced_title",
+      "value": "വിപുലം"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "കണക്കാക്കുന്നു…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "സംഭരണം"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "ചിത്ര കാഷെ മായ്ക്കുക"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "ചിത്ര കാഷെ മായ്ച്ചു"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "കുക്കികൾ മായ്ക്കുക"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "എല്ലാ കുക്കികളും മായ്ച്ചു"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "ബാക്കപ്പും റിസ്റ്റോറും"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "ബാക്കപ്പ് എക്സ്പോർട്ട്"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "ബാക്കപ്പ് ഇറക്കുമതി"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "ട്രാക്കിംഗ്"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList ടോക്കൺ"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList ആക്സസ് ടോക്കൺ"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "ആക്സസ് ടോക്കൺ ഒട്ടിക്കുക (മായ്ക്കാൻ ശൂന്യമായി വയ്ക്കുക)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "സജ്ജമാക്കിയിട്ടില്ല"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "സജ്ജമാക്കി"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "ടോക്കൺ സംരക്ഷിച്ചു"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "ടോക്കൺ മായ്ച്ചു"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "ബാക്കപ്പ് എക്സ്പോർട്ട് ചെയ്തു"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "എക്സ്പോർട്ട് റദ്ദാക്കി"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "എക്സ്പോർട്ട് പരാജയപ്പെട്ടു"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "ഇറക്കുമതി റദ്ദാക്കി"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "അസാധുവായ ബാക്കപ്പ് ഫയൽ"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "%d മംഗ പുനഃസ്ഥാപിച്ചു"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "ഇറക്കുമതി പരാജയപ്പെട്ടു"
+    },
+    {
+      "name": "about_title",
+      "value": "കുറിച്ച്"
+    },
+    {
+      "name": "about_version",
+      "value": "പതിപ്പ് 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "ആർക്കിടെക്ചർ Mihon (Apache-2.0)-ൽ നിന്ന് പ്രചോദനം ഉൾക്കൊണ്ടതാണ്. ഓൺലൈൻ ഉറവിടങ്ങൾ വിപുലീകരണങ്ങളായി ഡൈനാമിക്കായി ഇൻസ്റ്റാൾ ചെയ്യുന്നു, പ്രാദേശിക ഉറവിടങ്ങൾ അന്തർനിർമിതമാണ്."
+    },
+    {
+      "name": "about_ack",
+      "value": "ഓപ്പൺ സോഴ്സ് നന്ദി:\n· Mihon / Tachiyomi — ആപ്പ് ആർക്കിടെക്ചറും ഇടപെടൽ ഡിസൈനും (Apache-2.0)\n· Material Symbols — ആപ്പ് ഐക്കണുകൾ (Apache-2.0)\n· MangaDex — ടെസ്റ്റ് ഡാറ്റ ഉറവിടം"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "ബ്രൗസ്"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "ഉള്ളടക്കം"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "NSFW ഉറവിടങ്ങൾ കാണിക്കുക"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "പ്രവർത്തനക്ഷമമാക്കുമ്പോൾ, വിപുലീകരണങ്ങൾ NSFW ആയി അടയാളപ്പെടുത്തിയ ഉറവിടങ്ങൾ ബ്രൗസിൽ കാണും"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "ഡൗൺലോഡുകൾ"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "നെറ്റ്‌വർക്ക്"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Wi-Fi വഴി മാത്രം ഡൗൺലോഡ്"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "കുറിപ്പ്: ഈ സ്വിച്ച് നിലവിലെ പതിപ്പിൽ പ്ലേസ്‌ഹോൾഡറാണ്; നെറ്റ്‌വർക്ക് തരം കണ്ടെത്തൽ അടുത്ത പതിപ്പിൽ വരും"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "ലൈബ്രറി"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "ഫിൽട്ടറും ക്രമീകരണവും"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "സ്ഥിരസ്ഥിതി ക്രമം"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "ശീർഷകം"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "ഏറ്റവും പുതിയ അധ്യായം"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "ചേർത്ത തീയതി"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "വായിക്കാത്ത എണ്ണം"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "ശീർഷകം അനുസരിച്ച് ആരോഹണം"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "സ്ഥിരസ്ഥിതി ഫിൽട്ടർ"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "വായിക്കാത്തത്"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "ഡൗൺലോഡ് ചെയ്തത്"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "പൂർത്തിയാകാത്തത്"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "പ്രദർശനം"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "സ്ഥിരസ്ഥിതി കാഴ്ച"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "ഗ്രിഡ്"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "കവർ ഗ്രിഡ്"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "ലിസ്റ്റ്"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "ഗ്രിഡ് നിരകൾ"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "സ്വയം"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 നിര"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 നിര"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 നിര"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "വായിക്കാത്ത ബാഡ്ജുകൾ"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "ഡൗൺലോഡ് ബാഡ്ജുകൾ"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "റീഡർ"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "വായനാ രീതി"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "സ്ഥിരസ്ഥിതി രീതി"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "ഇടത്തുനിന്ന് വലത്തോട്ട്"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "വലത്തുനിന്ന് ഇടത്തോട്ട്"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "ലംബ പേജിംഗ്"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "വെബ്‌ടൂൺ"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "രണ്ട് പേജ് (തിരശ്ചീനം)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "പ്രദർശനം"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "പേജ് നമ്പർ കാണിക്കുക"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "റീഡർ പശ്ചാത്തലം"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "തീം പിന്തുടരുക"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "വെള്ള"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "കറുപ്പ്"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "ചാരം"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "റീഡർ തെളിച്ചം പുനഃസജ്ജമാക്കുക"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "തെളിച്ചം സിസ്റ്റം പിന്തുടരാൻ സജ്ജമാക്കി"
+    }
+  ]
+}

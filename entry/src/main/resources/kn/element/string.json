@@ -1,0 +1,1216 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "MihonHarmony"
+    },
+    {
+      "name": "common_ok",
+      "value": "ಸರಿ"
+    },
+    {
+      "name": "common_cancel",
+      "value": "ರದ್ದುಮಾಡಿ"
+    },
+    {
+      "name": "common_confirm",
+      "value": "ದೃಢೀಕರಿಸಿ"
+    },
+    {
+      "name": "common_delete",
+      "value": "ಅಳಿಸಿ"
+    },
+    {
+      "name": "common_retry",
+      "value": "ಮರುಪ್ರಯತ್ನಿಸಿ"
+    },
+    {
+      "name": "common_search",
+      "value": "ಹುಡುಕಿ"
+    },
+    {
+      "name": "common_all",
+      "value": "ಎಲ್ಲಾ"
+    },
+    {
+      "name": "common_close",
+      "value": "ಮುಚ್ಚಿ"
+    },
+    {
+      "name": "common_save",
+      "value": "ಉಳಿಸಿ"
+    },
+    {
+      "name": "common_install",
+      "value": "ಇನ್‌ಸ್ಟಾಲ್"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "ಅನ್‌ಇನ್‌ಸ್ಟಾಲ್"
+    },
+    {
+      "name": "common_update",
+      "value": "ನವೀಕರಿಸಿ"
+    },
+    {
+      "name": "common_none",
+      "value": "ಯಾವುದೂ ಇಲ್ಲ"
+    },
+    {
+      "name": "common_default",
+      "value": "ಡೀಫಾಲ್ಟ್"
+    },
+    {
+      "name": "appearance_title",
+      "value": "ಗೋಚರತೆ"
+    },
+    {
+      "name": "appearance_language",
+      "value": "ಭಾಷೆ"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "ಸಿಸ್ಟಮ್ ಅನುಸರಿಸಿ"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "ಥೀಮ್ ಮೋಡ್"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "ಸಿಸ್ಟಮ್ ಅನುಸರಿಸಿ"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "ತಿಳಿ"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "ಗಾಢ"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "ಮುಖ್ಯ ಬಣ್ಣ"
+    },
+    {
+      "name": "appearance_other",
+      "value": "ಇತರೆ"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED ಶುದ್ಧ ಕಪ್ಪು ಹಿನ್ನೆಲೆ"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "ನೀಲಿ"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "ಹಸಿರು"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "ಗುಲಾಬಿ"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "ನೇರಳೆ"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "ಕಿತ್ತಳೆ"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d ನಿಮಿಷ ಹಿಂದೆ"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d ಗಂಟೆ ಹಿಂದೆ"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d ದಿನ ಹಿಂದೆ"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "ನಡೆಯುತ್ತಿದೆ"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "ಪೂರ್ಣಗೊಂಡಿದೆ"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "ವಿರಾಮದಲ್ಲಿದೆ"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "ರದ್ದು"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "ಪ್ರಕಟಣೆ ಪೂರ್ಣ"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "ಅಜ್ಞಾತ"
+    },
+    {
+      "name": "tab_library",
+      "value": "ಗ್ರಂಥಾಲಯ"
+    },
+    {
+      "name": "tab_updates",
+      "value": "ನವೀಕರಣಗಳು"
+    },
+    {
+      "name": "tab_history",
+      "value": "ಇತಿಹಾಸ"
+    },
+    {
+      "name": "tab_browse",
+      "value": "ಬ್ರೌಸ್"
+    },
+    {
+      "name": "tab_more",
+      "value": "ಇನ್ನಷ್ಟು"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "ಪರಿಶೀಲನೆಗಾಗಿ ನಿರೀಕ್ಷಿಸಲಾಗುತ್ತಿದೆ…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "ಪರಿಶೀಲನೆ ಪೂರ್ಣ"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "ಮಾನವ ಪರಿಶೀಲನೆ"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "ಆಯಿತು"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "ಪರಿಶೀಲನೆ ಫಲಿತಾಂಶ ಉಳಿಸಲಾಗಿದೆ"
+    },
+    {
+      "name": "more_title",
+      "value": "ಇನ್ನಷ್ಟು"
+    },
+    {
+      "name": "more_version",
+      "value": "ಆವೃತ್ತಿ %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "ಡೌನ್‌ಲೋಡ್ ಮಾತ್ರ (ಆಫ್‌ಲೈನ್ ಓದುವಿಕೆ)"
+    },
+    {
+      "name": "more_incognito",
+      "value": "ಗುಪ್ತ"
+    },
+    {
+      "name": "more_downloads",
+      "value": "ಡೌನ್‌ಲೋಡ್‌ಗಳು"
+    },
+    {
+      "name": "more_categories",
+      "value": "ವರ್ಗಗಳು"
+    },
+    {
+      "name": "more_settings",
+      "value": "ಸಂಯೋಜನೆಗಳು"
+    },
+    {
+      "name": "more_about",
+      "value": "ಬಗ್ಗೆ"
+    },
+    {
+      "name": "more_plugins",
+      "value": "ವಿಸ್ತರಣೆಗಳು"
+    },
+    {
+      "name": "categories_title",
+      "value": "ವರ್ಗಗಳು"
+    },
+    {
+      "name": "categories_add",
+      "value": "ಹೊಸ ವರ್ಗ"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "ವರ್ಗದ ಹೆಸರು"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "ವರ್ಗವನ್ನು ಮರುಹೆಸರಿಸಿ"
+    },
+    {
+      "name": "categories_rename",
+      "value": "ಮರುಹೆಸರಿಸಿ"
+    },
+    {
+      "name": "categories_hint",
+      "value": "ಮರುಹೆಸರಿಸಲು ಅಥವಾ ಅಳಿಸಲು ವರ್ಗವನ್ನು ದೀರ್ಘವಾಗಿ ಒತ್ತಿ; ಅಳಿಸಿದ ವರ್ಗದ ಮಾಂಗಾ ಡೀಫಾಲ್ಟ್‌ಗೆ ಹಿಂತಿರುಗುತ್ತದೆ"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "ವರ್ಗ ಆಯ್ಕೆಮಾಡಿ"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "ಚಿತ್ರ ಲೋಡ್ ಆಗಲಿಲ್ಲ"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "ಮರುಪ್ರಯತ್ನಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ"
+    },
+    {
+      "name": "library_title",
+      "value": "ಗ್ರಂಥಾಲಯ"
+    },
+    {
+      "name": "library_empty",
+      "value": "ನಿಮ್ಮ ಗ್ರಂಥಾಲಯ ಖಾಲಿಯಾಗಿದೆ, ಮಾಂಗಾ ಸೇರಿಸಲು ಬ್ರೌಸ್ ಮಾಡಿ"
+    },
+    {
+      "name": "library_new_category",
+      "value": "ಹೊಸ ವರ್ಗ"
+    },
+    {
+      "name": "library_category_name",
+      "value": "ವರ್ಗದ ಹೆಸರು"
+    },
+    {
+      "name": "updates_title",
+      "value": "ನವೀಕರಣಗಳು"
+    },
+    {
+      "name": "updates_empty",
+      "value": "ಇತ್ತೀಚಿನ ನವೀಕರಣಗಳಿಲ್ಲ"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%d ಹೊಸ ಅಧ್ಯಾಯಗಳು ಸಿಕ್ಕಿವೆ"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "ಹೊಸ ಅಧ್ಯಾಯಗಳಿಲ್ಲ"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "ರಿಫ್ರೆಶ್ ವಿಫಲ"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "ರಿಫ್ರೆಶ್ ಮಾಡಲಾಗುತ್ತಿದೆ…"
+    },
+    {
+      "name": "history_title",
+      "value": "ಇತಿಹಾಸ"
+    },
+    {
+      "name": "history_clear",
+      "value": "ತೆರವುಗೊಳಿಸಿ"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "ತೆರವುಗೊಳಿಸುವುದೇ?"
+    },
+    {
+      "name": "history_empty",
+      "value": "ಇನ್ನೂ ಓದುವ ಇತಿಹಾಸವಿಲ್ಲ"
+    },
+    {
+      "name": "history_cleared",
+      "value": "ಇತಿಹಾಸ ತೆರವುಗೊಂಡಿದೆ"
+    },
+    {
+      "name": "history_continue",
+      "value": "ಮುಂದುವರಿಸಿ"
+    },
+    {
+      "name": "browse_title",
+      "value": "ಬ್ರೌಸ್"
+    },
+    {
+      "name": "browse_import",
+      "value": "ಆಮದು"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "ಪ್ಲಗಿನ್‌ಗಳು"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "ಸ್ಥಳೀಯ ಮಾಂಗಾ"
+    },
+    {
+      "name": "browse_popular",
+      "value": "ಜನಪ್ರಿಯ"
+    },
+    {
+      "name": "browse_latest",
+      "value": "ಹೊಸತು"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "ಮಾಂಗಾ ಹುಡುಕಿ…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "ಮಾಂಗಾ ಸಿಗಲಿಲ್ಲ"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "ಇನ್ನೂ ಸ್ಥಳೀಯ ಮಾಂಗಾ ಇಲ್ಲ, ಸೇರಿಸಲು ಆಮದು ಟ್ಯಾಪ್ ಮಾಡಿ"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "ಲೋಡ್ ವಿಫಲ: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "ಹುಡುಕಾಟ ವಿಫಲ: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "ಇನ್ನಷ್ಟು ಲೋಡ್ ಆಗಲಿಲ್ಲ"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "ವಿವರಗಳು ತೆರೆಯಲಿಲ್ಲ"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "ಫೈಲ್‌ಗಳನ್ನು ಆಯ್ಕೆಮಾಡಲಾಗಲಿಲ್ಲ"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "%d ಫೈಲ್‌ಗಳನ್ನು ಆಮದು ಮಾಡಿ"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "ಮಾಂಗಾ ಹೆಸರು"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "ದಯವಿಟ್ಟು ಹೆಸರು ನಮೂದಿಸಿ"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "%d ಫೈಲ್‌ಗಳು ಆಮದು ಆದವು"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "ಆಮದು ವಿಫಲ: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "ಡೌನ್‌ಲೋಡ್‌ಗಳು"
+    },
+    {
+      "name": "download_resume",
+      "value": "ಮುಂದುವರಿಸಿ"
+    },
+    {
+      "name": "download_pause",
+      "value": "ವಿರಾಮ"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "ಪೂರ್ಣಗೊಂಡವುಗಳನ್ನು ತೆರವುಗೊಳಿಸಿ"
+    },
+    {
+      "name": "download_queue",
+      "value": "ಡೌನ್‌ಲೋಡ್ ಸಾಲು"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "ಸಾಲಿನಲ್ಲಿ"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತಿದೆ"
+    },
+    {
+      "name": "download_state_done",
+      "value": "ಆಯಿತು"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "ವಿಫಲ"
+    },
+    {
+      "name": "download_move_top",
+      "value": "ಮೇಲಕ್ಕೆ ಸರಿಸಿ"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "ಕೆಳಕ್ಕೆ ಸರಿಸಿ"
+    },
+    {
+      "name": "download_deleted",
+      "value": "ಅಳಿಸಲಾಗಿದೆ"
+    },
+    {
+      "name": "download_empty",
+      "value": "ಇನ್ನೂ ಡೌನ್‌ಲೋಡ್‌ಗಳಿಲ್ಲ"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "ಡೌನ್‌ಲೋಡ್ ಆಗಿದೆ"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d ಅಧ್ಯಾಯಗಳು"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "ಅಧ್ಯಾಯಗಳಿಲ್ಲ"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "ಸಿಂಕ್ ವಿಫಲ, ಸ್ಥಳೀಯ ಡೇಟಾ ತೋರಿಸಲಾಗುತ್ತಿದೆ"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "ಗ್ರಂಥಾಲಯಕ್ಕೆ ಸೇರಿಸಲಾಗಿದೆ"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "ಗ್ರಂಥಾಲಯದಿಂದ ತೆಗೆದುಹಾಕಲಾಗಿದೆ"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "ಎಲ್ಲಾ ಅಧ್ಯಾಯಗಳನ್ನು ಓದಿದಂತೆ ಗುರುತಿಸಲಾಗಿದೆ"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "ಡೌನ್‌ಲೋಡ್ ಸಾಲಿಗೆ ಸೇರಿಸಲಾಗಿದೆ"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "ಮೊದಲು AniList ಟೋಕನ್ ಅನ್ನು ಹೊಂದಿಸಿ"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "AniList ಹುಡುಕಿ"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "ಮಾಂಗಾ ಶೀರ್ಷಿಕೆ"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "ಹುಡುಕಾಟ ಫಲಿತಾಂಶಗಳಿಲ್ಲ"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "AniList ಹುಡುಕಾಟ ವಿಫಲ"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "AniListಗೆ ಲಿಂಕ್ ಆಗಿದೆ"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "AniListನಿಂದ ಬೇರ್ಪಡಿಸಲಾಗಿದೆ"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "ಪ್ರಗತಿ %d ಅಧ್ಯಾಯಕ್ಕೆ ಸಿಂಕ್ ಆಗಿದೆ"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "AniList ಸಿಂಕ್ ವಿಫಲ"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "ಸ್ಥಳೀಯ"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "ಗ್ರಂಥಾಲಯದಲ್ಲಿದೆ"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "ಗ್ರಂಥಾಲಯಕ್ಕೆ ಸೇರಿಸಿ"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "ಓದುವುದನ್ನು ಮುಂದುವರಿಸಿ"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "ಓದಲು ಪ್ರಾರಂಭಿಸಿ"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "ಇನ್ನೂ ಅಧ್ಯಾಯಗಳಿಲ್ಲ"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "ಕುಗ್ಗಿಸಿ"
+    },
+    {
+      "name": "detail_expand",
+      "value": "ವಿಸ್ತರಿಸಿ"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList ಟ್ರ್ಯಾಕಿಂಗ್"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList ಟೋಕನ್ ಇನ್ನೂ ಹೊಂದಿಸಿಲ್ಲ"
+    },
+    {
+      "name": "detail_searching",
+      "value": "ಹುಡುಕಲಾಗುತ್ತಿದೆ…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "ಹುಡುಕಿ ಲಿಂಕ್ ಮಾಡಿ"
+    },
+    {
+      "name": "detail_bind",
+      "value": "ಲಿಂಕ್"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "%d ಅಧ್ಯಾಯಕ್ಕೆ ಸಿಂಕ್ ಆಗಿದೆ"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "ಪ್ರಗತಿಯನ್ನು ಸಿಂಕ್ ಮಾಡಿ"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "ಬೇರ್ಪಡಿಸಿ"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "ಅಧ್ಯಾಯಗಳು (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "ಏರಿಕೆ"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "ಇಳಿಕೆ"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "ಎಲ್ಲವನ್ನೂ ಓದಿದಂತೆ ಗುರುತಿಸಿ"
+    },
+    {
+      "name": "detail_read",
+      "value": "ಓದಿದ"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "ಡೌನ್‌ಲೋಡ್ ಆಗಿದೆ"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "ಸಾಲಿನಲ್ಲಿ"
+    },
+    {
+      "name": "detail_download",
+      "value": "ಡೌನ್‌ಲೋಡ್"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "ಅಧ್ಯಾಯ ಸಿಗಲಿಲ್ಲ"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "ಲೋಡ್ ವಿಫಲ: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "ಎಡದಿಂದ ಬಲಕ್ಕೆ"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "ಬಲದಿಂದ ಎಡಕ್ಕೆ"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "ವೆಬ್‌ಟೂನ್"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "ಓದುವ ರೀತಿ"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "ಮುಕ್ತ"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "ಉದ್ದ"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "ಅಡ್ಡ"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "ಪರದೆಯ ದಿಕ್ಕು"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "ಈಗಾಗಲೇ ಕೊನೆಯ ಅಧ್ಯಾಯದಲ್ಲಿದ್ದೀರಿ"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "ಈಗಾಗಲೇ ಮೊದಲ ಅಧ್ಯಾಯದಲ್ಲಿದ್ದೀರಿ"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "ಈಗಾಗಲೇ ಮೊದಲ ಪುಟದಲ್ಲಿದ್ದೀರಿ"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "ಈಗಾಗಲೇ ಕೊನೆಯ ಪುಟದಲ್ಲಿದ್ದೀರಿ"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "ಅಧ್ಯಾಯ ಲೋಡ್ ಆಗುತ್ತಿದೆ…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "ಓದುವ ಸಂಯೋಜನೆಗಳು"
+    },
+    {
+      "name": "reader_background",
+      "value": "ಹಿನ್ನೆಲೆ"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "ಸ್ವಯಂ"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "ಬಿಳಿ"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "ಬೂದು"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "ಕಪ್ಪು"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "ಪುಟ ಸಂಖ್ಯೆ ತೋರಿಸಿ"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "ಪ್ರಕಾಶ"
+    },
+    {
+      "name": "reader_auto",
+      "value": "ಸ್ವಯಂ"
+    },
+    {
+      "name": "plugin_title",
+      "value": "ವಿಸ್ತರಣೆಗಳು"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "ಇನ್‌ಸ್ಟಾಲ್ ಆದವು"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "ಇನ್ನೂ ವಿಸ್ತರಣೆಗಳಿಲ್ಲ, ಕೆಳಗೆ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿದ ವಿಸ್ತರಣೆಗಳನ್ನು ಯಾವಾಗ ಬೇಕಾದರೂ ಮರುಸಕ್ರಿಯಗೊಳಿಸಬಹುದು"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "ನವೀನ"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "ಫೈಲ್‌ನಿಂದ ಇನ್‌ಸ್ಟಾಲ್"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಲು ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲಾಗುತ್ತಿದೆ…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": ".mihonplug / .zip ಪ್ಲಗಿನ್ ಪ್ಯಾಕೇಜ್‌ಗಳನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "ಆನ್‌ಲೈನ್ ರೆಪೊಸಿಟರಿ"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "ರೆಪೊಸಿಟರಿ ಹೊಂದಿಸಿ"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "ರಿಫ್ರೆಶ್"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "ಇನ್ನೂ ಪ್ಲಗಿನ್ ರೆಪೊಸಿಟರಿ ಹೊಂದಿಸಿಲ್ಲ"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "ರೆಪೊಸಿಟರಿ ಲೋಡ್ ಆಗುತ್ತಿದೆ…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "ಪ್ಲಗಿನ್ ರೆಪೊಸಿಟರಿ URL"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "ಪ್ಲಗಿನ್ ರೆಪೊಸಿಟರಿ URL ನಮೂದಿಸಿ"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "ರೆಪೊಸಿಟರಿ ಲೋಡ್ ವಿಫಲ: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "ಫೈಲ್ ಆಯ್ಕೆ ವಿಫಲ"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "ಇನ್‌ಸ್ಟಾಲ್ ಆಯಿತು: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "%s ಇನ್‌ಸ್ಟಾಲ್ ಆಯಿತು"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "ಇನ್‌ಸ್ಟಾಲ್ ವಿಫಲ: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "ಕ್ರಿಯೆ ವಿಫಲ"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "ತೆಗೆದುಹಾಕಲಾಗಿದೆ: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "ಅನ್‌ಇನ್‌ಸ್ಟಾಲ್ ವಿಫಲ"
+    },
+    {
+      "name": "settings_title",
+      "value": "ಸಂಯೋಜನೆಗಳು"
+    },
+    {
+      "name": "settings_general",
+      "value": "ಸಾಮಾನ್ಯ"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "ಪ್ರಾರಂಭ ಪರದೆ"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "ವೈಯಕ್ತೀಕರಣ"
+    },
+    {
+      "name": "settings_library",
+      "value": "ಗ್ರಂಥಾಲಯ"
+    },
+    {
+      "name": "settings_reader",
+      "value": "ಓದುಗ"
+    },
+    {
+      "name": "settings_data",
+      "value": "ಡೇಟಾ"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "ಡೌನ್‌ಲೋಡ್‌ಗಳು"
+    },
+    {
+      "name": "settings_browse",
+      "value": "ಬ್ರೌಸ್"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "ಸುಧಾರಿತ"
+    },
+    {
+      "name": "settings_about",
+      "value": "ಬಗ್ಗೆ"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "ಗ್ರಂಥಾಲಯ"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "ನವೀಕರಣಗಳು"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "ಇತಿಹಾಸ"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "ಬ್ರೌಸ್"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "ಇನ್ನಷ್ಟು"
+    },
+    {
+      "name": "advanced_title",
+      "value": "ಸುಧಾರಿತ"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "ಲೆಕ್ಕ ಹಾಕಲಾಗುತ್ತಿದೆ…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "ಸಂಗ್ರಹ"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "ಚಿತ್ರ ಕ್ಯಾಶೆ ತೆರವುಗೊಳಿಸಿ"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "ಚಿತ್ರ ಕ್ಯಾಶೆ ತೆರವುಗೊಂಡಿದೆ"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "ಕುಕೀಗಳನ್ನು ತೆರವುಗೊಳಿಸಿ"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "ಎಲ್ಲಾ ಕುಕೀಗಳು ತೆರವುಗೊಂಡಿವೆ"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "ಬ್ಯಾಕಪ್ ಮತ್ತು ಮರುಸ್ಥಾಪನೆ"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "ಬ್ಯಾಕಪ್ ರಫ್ತು"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "ಬ್ಯಾಕಪ್ ಆಮದು"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "ಟ್ರ್ಯಾಕಿಂಗ್"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList ಟೋಕನ್"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList ಪ್ರವೇಶ ಟೋಕನ್"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "ಪ್ರವೇಶ ಟೋಕನ್ ಅಂಟಿಸಿ (ತೆರವುಗೊಳಿಸಲು ಖಾಲಿ ಬಿಡಿ)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "ಹೊಂದಿಸಿಲ್ಲ"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "ಹೊಂದಿಸಲಾಗಿದೆ"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "ಟೋಕನ್ ಉಳಿಸಲಾಗಿದೆ"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "ಟೋಕನ್ ತೆರವುಗೊಂಡಿದೆ"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "ಬ್ಯಾಕಪ್ ರಫ್ತು ಆಯಿತು"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "ರಫ್ತು ರದ್ದು"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "ರಫ್ತು ವಿಫಲ"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "ಆಮದು ರದ್ದು"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "ಅಮಾನ್ಯ ಬ್ಯಾಕಪ್ ಫೈಲ್"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "%d ಮಾಂಗಾ ಮರುಸ್ಥಾಪಿಸಲಾಗಿದೆ"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "ಆಮದು ವಿಫಲ"
+    },
+    {
+      "name": "about_title",
+      "value": "ಬಗ್ಗೆ"
+    },
+    {
+      "name": "about_version",
+      "value": "ಆವೃತ್ತಿ 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "ವಾಸ್ತುಶಿಲ್ಪ Mihon (Apache-2.0) ನಿಂದ ಸ್ಫೂರ್ತಿ ಪಡೆದಿದೆ. ಆನ್‌ಲೈನ್ ಮೂಲಗಳು ವಿಸ್ತರಣೆಗಳಾಗಿ ಡೈನಾಮಿಕ್ ಆಗಿ ಇನ್‌ಸ್ಟಾಲ್ ಆಗುತ್ತವೆ, ಸ್ಥಳೀಯ ಮೂಲಗಳು ಒಳನಿರ್ಮಿತ."
+    },
+    {
+      "name": "about_ack",
+      "value": "ಮುಕ್ತ ಮೂಲ ಕೃತಜ್ಞತೆಗಳು:\n· Mihon / Tachiyomi — ಅಪ್ಲಿಕೇಶನ್ ವಾಸ್ತುಶಿಲ್ಪ ಮತ್ತು ಸಂವಹನ ವಿನ್ಯಾಸ (Apache-2.0)\n· Material Symbols — ಅಪ್ಲಿಕೇಶನ್ ಐಕಾನ್‌ಗಳು (Apache-2.0)\n· MangaDex — ಪರೀಕ್ಷಾ ಡೇಟಾ ಮೂಲ"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "ಬ್ರೌಸ್"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "ವಿಷಯ"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "NSFW ಮೂಲಗಳನ್ನು ತೋರಿಸಿ"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "ಸಕ್ರಿಯಗೊಳಿಸಿದಾಗ, ವಿಸ್ತರಣೆಗಳು NSFW ಎಂದು ಗುರುತಿಸಿದ ಮೂಲಗಳು ಬ್ರೌಸ್‌ನಲ್ಲಿ ಕಾಣಿಸುತ್ತವೆ"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "ಡೌನ್‌ಲೋಡ್‌ಗಳು"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "ನೆಟ್‌ವರ್ಕ್"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Wi-Fi ಮೂಲಕ ಮಾತ್ರ ಡೌನ್‌ಲೋಡ್"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "ಗಮನಿಸಿ: ಈ ಸ್ವಿಚ್ ಪ್ರಸ್ತುತ ಆವೃತ್ತಿಯಲ್ಲಿ ಪ್ಲೇಸ್‌ಹೋಲ್ಡರ್; ನೆಟ್‌ವರ್ಕ್ ಪ್ರಕಾರ ಪತ್ತೆ ಭವಿಷ್ಯದ ಬಿಡುಗಡೆಯಲ್ಲಿ ಬರುತ್ತದೆ"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "ಗ್ರಂಥಾಲಯ"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "ಸೋಸು ಮತ್ತು ವಿಂಗಡಣೆ"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "ಡೀಫಾಲ್ಟ್ ವಿಂಗಡಣೆ"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "ಶೀರ್ಷಿಕೆ"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "ಇತ್ತೀಚಿನ ಅಧ್ಯಾಯ"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "ಸೇರಿಸಿದ ದಿನಾಂಕ"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "ಓದದ ಎಣಿಕೆ"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "ಶೀರ್ಷಿಕೆಯ ಪ್ರಕಾರ ಏರಿಕೆ"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "ಡೀಫಾಲ್ಟ್ ಸೋಸು"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "ಓದದ"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "ಡೌನ್‌ಲೋಡ್ ಆದವು"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "ಪೂರ್ಣಗೊಳ್ಳದ"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "ಪ್ರದರ್ಶನ"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "ಡೀಫಾಲ್ಟ್ ನೋಟ"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "ಗ್ರಿಡ್"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "ಕವರ್ ಗ್ರಿಡ್"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "ಪಟ್ಟಿ"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "ಗ್ರಿಡ್ ಕಾಲಮ್‌ಗಳು"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "ಸ್ವಯಂ"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 ಕಾಲಮ್‌ಗಳು"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 ಕಾಲಮ್‌ಗಳು"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 ಕಾಲಮ್‌ಗಳು"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "ಓದದ ಬ್ಯಾಡ್ಜ್‌ಗಳು"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "ಡೌನ್‌ಲೋಡ್ ಬ್ಯಾಡ್ಜ್‌ಗಳು"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "ಓದುಗ"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "ಓದುವ ರೀತಿ"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "ಡೀಫಾಲ್ಟ್ ರೀತಿ"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "ಎಡದಿಂದ ಬಲಕ್ಕೆ"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "ಬಲದಿಂದ ಎಡಕ್ಕೆ"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "ಲಂಬ ಪುಟ"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "ವೆಬ್‌ಟೂನ್"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "ಎರಡು ಪುಟ (ಅಡ್ಡ)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "ಪ್ರದರ್ಶನ"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "ಪುಟ ಸಂಖ್ಯೆ ತೋರಿಸಿ"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "ಓದುಗ ಹಿನ್ನೆಲೆ"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "ಥೀಮ್ ಅನುಸರಿಸಿ"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "ಬಿಳಿ"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "ಕಪ್ಪು"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "ಬೂದು"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "ಓದುಗ ಪ್ರಕಾಶವನ್ನು ಮರುಹೊಂದಿಸಿ"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "ಪ್ರಕಾಶ ಸಿಸ್ಟಮ್ ಅನುಸರಿಸುವಂತೆ ಹೊಂದಿಸಲಾಗಿದೆ"
+    }
+  ]
+}

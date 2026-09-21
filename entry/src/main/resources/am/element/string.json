@@ -1,0 +1,1216 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "MihonHarmony"
+    },
+    {
+      "name": "common_ok",
+      "value": "እሺ"
+    },
+    {
+      "name": "common_cancel",
+      "value": "ሰርዝ"
+    },
+    {
+      "name": "common_confirm",
+      "value": "አረጋግጥ"
+    },
+    {
+      "name": "common_delete",
+      "value": "ሰርዝ"
+    },
+    {
+      "name": "common_retry",
+      "value": "እንደገና ሞክር"
+    },
+    {
+      "name": "common_search",
+      "value": "ፈልግ"
+    },
+    {
+      "name": "common_all",
+      "value": "ሁሉም"
+    },
+    {
+      "name": "common_close",
+      "value": "ዝጋ"
+    },
+    {
+      "name": "common_save",
+      "value": "አስቀምጥ"
+    },
+    {
+      "name": "common_install",
+      "value": "ጫን"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "አራግፍ"
+    },
+    {
+      "name": "common_update",
+      "value": "አዘምን"
+    },
+    {
+      "name": "common_none",
+      "value": "ምንም"
+    },
+    {
+      "name": "common_default",
+      "value": "ነባሪ"
+    },
+    {
+      "name": "appearance_title",
+      "value": "መልክ"
+    },
+    {
+      "name": "appearance_language",
+      "value": "ቋንቋ"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "ስርዓቱን ተከተል"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "የገጽታ ሁነታ"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "ስርዓቱን ተከተል"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "ብርሃን"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "ጨለማ"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "የአጽንኦት ቀለም"
+    },
+    {
+      "name": "appearance_other",
+      "value": "ሌሎች"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED ንጹህ ጥቁር ዳራ"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "ሰማያዊ"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "አረንጓዴ"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "ሮዝ"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "ሐምራዊ"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "ብርቱካናማ"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "ከ%d ደቂቃ በፊት"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "ከ%d ሰዓት በፊት"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "ከ%d ቀን በፊት"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "በሂደት ላይ"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "ተጠናቋል"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "በእረፍት ላይ"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "ተሰርዟል"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "ህትመት ተጠናቋል"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "ያልታወቀ"
+    },
+    {
+      "name": "tab_library",
+      "value": "ቤተ-መጻሕፍት"
+    },
+    {
+      "name": "tab_updates",
+      "value": "ዝመናዎች"
+    },
+    {
+      "name": "tab_history",
+      "value": "ታሪክ"
+    },
+    {
+      "name": "tab_browse",
+      "value": "አስስ"
+    },
+    {
+      "name": "tab_more",
+      "value": "ተጨማሪ"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "ማረጋገጫን በመጠበቅ ላይ…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "ማረጋገጫ ተጠናቋል"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "የሰው ማረጋገጫ"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "ተከናውኗል"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "የማረጋገጫ ውጤት ተቀምጧል"
+    },
+    {
+      "name": "more_title",
+      "value": "ተጨማሪ"
+    },
+    {
+      "name": "more_version",
+      "value": "ስሪት %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "የወረዱ ብቻ (ከመስመር ውጭ ንባብ)"
+    },
+    {
+      "name": "more_incognito",
+      "value": "ስውር"
+    },
+    {
+      "name": "more_downloads",
+      "value": "ውርዶች"
+    },
+    {
+      "name": "more_categories",
+      "value": "ምድቦች"
+    },
+    {
+      "name": "more_settings",
+      "value": "ማስተካከያዎች"
+    },
+    {
+      "name": "more_about",
+      "value": "ስለ"
+    },
+    {
+      "name": "more_plugins",
+      "value": "ቅጥያዎች"
+    },
+    {
+      "name": "categories_title",
+      "value": "ምድቦች"
+    },
+    {
+      "name": "categories_add",
+      "value": "አዲስ ምድብ"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "የምድብ ስም"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "ምድብ ዳግም ሰይም"
+    },
+    {
+      "name": "categories_rename",
+      "value": "ዳግም ሰይም"
+    },
+    {
+      "name": "categories_hint",
+      "value": "ለመሰየም ወይም ለመሰረዝ ምድቡን ረጅም ይጫኑ፤ ከተሰረዘ ምድብ የመጣ ማንጋ ወደ ነባሪ ይመለሳል"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "ምድብ ይምረጡ"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "በመጫን ላይ…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "ምስል መጫን አልተሳካም"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "እንደገና ለመሞከር ይንኩ"
+    },
+    {
+      "name": "library_title",
+      "value": "ቤተ-መጻሕፍት"
+    },
+    {
+      "name": "library_empty",
+      "value": "ቤተ-መጻሕፍትዎ ባዶ ነው፣ ማንጋ ለመጨመር ያስሱ"
+    },
+    {
+      "name": "library_new_category",
+      "value": "አዲስ ምድብ"
+    },
+    {
+      "name": "library_category_name",
+      "value": "የምድብ ስም"
+    },
+    {
+      "name": "updates_title",
+      "value": "ዝመናዎች"
+    },
+    {
+      "name": "updates_empty",
+      "value": "የቅርብ ዝመናዎች የሉም"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%d አዲስ ምዕራፎች ተገኝተዋል"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "አዲስ ምዕራፎች የሉም"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "ማደስ አልተሳካም"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "በማደስ ላይ…"
+    },
+    {
+      "name": "history_title",
+      "value": "ታሪክ"
+    },
+    {
+      "name": "history_clear",
+      "value": "አጽዳ"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "ይጸዳ?"
+    },
+    {
+      "name": "history_empty",
+      "value": "እስካሁን የንባብ ታሪክ የለም"
+    },
+    {
+      "name": "history_cleared",
+      "value": "ታሪክ ጸድቷል"
+    },
+    {
+      "name": "history_continue",
+      "value": "ቀጥል"
+    },
+    {
+      "name": "browse_title",
+      "value": "አስስ"
+    },
+    {
+      "name": "browse_import",
+      "value": "አስመጣ"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "ተሰኪዎች"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "አካባቢያዊ ማንጋ"
+    },
+    {
+      "name": "browse_popular",
+      "value": "ታዋቂ"
+    },
+    {
+      "name": "browse_latest",
+      "value": "አዲስ"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "ማንጋ ፈልግ…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "ማንጋ አልተገኘም"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "እስካሁን አካባቢያዊ ማንጋ የለም፣ ለመጨመር አስመጣን ይንኩ"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "መጫን አልተሳካም: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "ፍለጋ አልተሳካም: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "ተጨማሪ መጫን አልተሳካም"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "ዝርዝር መክፈት አልተሳካም"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "ፋይሎች መምረጥ አልተሳካም"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "%d ፋይሎች አስመጣ"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "የማንጋ ስም"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "እባክዎ ስም ያስገቡ"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "%d ፋይሎች ገብተዋል"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "ማስመጣት አልተሳካም: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "ውርዶች"
+    },
+    {
+      "name": "download_resume",
+      "value": "ቀጥል"
+    },
+    {
+      "name": "download_pause",
+      "value": "አቁም"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "የተጠናቀቁትን አጽዳ"
+    },
+    {
+      "name": "download_queue",
+      "value": "የውርድ ወረፋ"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "በወረፋ"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "በመውረድ ላይ"
+    },
+    {
+      "name": "download_state_done",
+      "value": "ተከናውኗል"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "አልተሳካም"
+    },
+    {
+      "name": "download_move_top",
+      "value": "ወደ ላይ ውሰድ"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "ወደ ታች ውሰድ"
+    },
+    {
+      "name": "download_deleted",
+      "value": "ተሰርዟል"
+    },
+    {
+      "name": "download_empty",
+      "value": "እስካሁን ውርዶች የሉም"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "ወርዷል"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d ምዕራፎች"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "ምዕራፎች የሉም"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "ማመሳሰል አልተሳካም፣ የአካባቢ ውሂብ ይታያል"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "ወደ ቤተ-መጻሕፍት ታክሏል"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "ከቤተ-መጻሕፍት ተወግዷል"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "ሁሉም ምዕራፎች እንደተነበቡ ምልክት ተደርጓል"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "ወደ የውርድ ወረፋ ታክሏል"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "እባክዎ መጀመሪያ የAniList ቶከን ያዋቅሩ"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "AniList ፈልግ"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "የማንጋ ርዕስ"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "የፍለጋ ውጤቶች የሉም"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "የAniList ፍለጋ አልተሳካም"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "ከAniList ጋር ታስሯል"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "ከAniList ተላቅቋል"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "እድገት ወደ ምዕራፍ %d ተመሳስሏል"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "የAniList ማመሳሰል አልተሳካም"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "አካባቢያዊ"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "በቤተ-መጻሕፍት ውስጥ"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "ወደ ቤተ-መጻሕፍት ጨምር"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "ንባብ ቀጥል"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "ንባብ ጀምር"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "እስካሁን ምዕራፎች የሉም"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "ሰብስብ"
+    },
+    {
+      "name": "detail_expand",
+      "value": "ዘርጋ"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "የAniList ክትትል"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "የAniList ቶከን ገና አልተዋቀረም"
+    },
+    {
+      "name": "detail_searching",
+      "value": "በመፈለግ ላይ…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "ፈልግ እና አስር"
+    },
+    {
+      "name": "detail_bind",
+      "value": "አስር"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "ወደ ምዕራፍ %d ተመሳስሏል"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "እድገት አመሳስል"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "ላቅቅ"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "ምዕራፎች (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "እየጨመረ"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "እየቀነሰ"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "ሁሉንም እንደተነበቡ ምልክት አድርግ"
+    },
+    {
+      "name": "detail_read",
+      "value": "ተነብቧል"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "ወርዷል"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "በወረፋ"
+    },
+    {
+      "name": "detail_download",
+      "value": "አውርድ"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "ምዕራፍ አልተገኘም"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "መጫን አልተሳካም: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "ከግራ ወደ ቀኝ"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "ከቀኝ ወደ ግራ"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "ዌብቱን"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "የንባብ ሁነታ"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "ነጻ"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "ቁም"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "አግድም"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "የማያ አቅጣጫ"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "አስቀድሞ በመጨረሻው ምዕራፍ ላይ ነዎት"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "አስቀድሞ በመጀመሪያው ምዕራፍ ላይ ነዎት"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "አስቀድሞ በመጀመሪያው ገጽ ላይ ነዎት"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "አስቀድሞ በመጨረሻው ገጽ ላይ ነዎት"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "ምዕራፍ በመጫን ላይ…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "የአንባቢ ማስተካከያዎች"
+    },
+    {
+      "name": "reader_background",
+      "value": "ዳራ"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "ራስ-ሰር"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "ነጭ"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "ግራጫ"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "ጥቁር"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "የገጽ ቁጥር አሳይ"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "ብሩህነት"
+    },
+    {
+      "name": "reader_auto",
+      "value": "ራስ-ሰር"
+    },
+    {
+      "name": "plugin_title",
+      "value": "ቅጥያዎች"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "የተጫኑ"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "እስካሁን ቅጥያዎች የሉም፣ ከታች ይጫኑ"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "የተሰናከሉ ቅጥያዎች በማንኛውም ጊዜ እንደገና ሊነቁ ይችላሉ"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "ዘምኗል"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "ከፋይል ጫን"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "ለመጫን ፋይል ይምረጡ"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "በማስኬድ ላይ…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": ".mihonplug / .zip የተሰኪ ጥቅሎች ይደገፋሉ"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "የመስመር ላይ ማከማቻ"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "ማከማቻ አዋቅር"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "አድስ"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "እስካሁን የተሰኪ ማከማቻ አልተዋቀረም"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "ማከማቻ በመጫን ላይ…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "የተሰኪ ማከማቻ URL"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "የተሰኪ ማከማቻ URL ያስገቡ"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "ማከማቻ መጫን አልተሳካም: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "ፋይል መምረጥ አልተሳካም"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "ተጭኗል: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "%s ተጭኗል"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "መጫን አልተሳካም: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "እርምጃ አልተሳካም"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "ወርዷል: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "ማውረድ አልተሳካም"
+    },
+    {
+      "name": "settings_title",
+      "value": "ማስተካከያዎች"
+    },
+    {
+      "name": "settings_general",
+      "value": "አጠቃላይ"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "መነሻ ማያ"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "ግላዊነት"
+    },
+    {
+      "name": "settings_library",
+      "value": "ቤተ-መጻሕፍት"
+    },
+    {
+      "name": "settings_reader",
+      "value": "አንባቢ"
+    },
+    {
+      "name": "settings_data",
+      "value": "ውሂብ"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "ውርዶች"
+    },
+    {
+      "name": "settings_browse",
+      "value": "አስስ"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "የላቀ"
+    },
+    {
+      "name": "settings_about",
+      "value": "ስለ"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "ቤተ-መጻሕፍት"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "ዝመናዎች"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "ታሪክ"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "አስስ"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "ተጨማሪ"
+    },
+    {
+      "name": "advanced_title",
+      "value": "የላቀ"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "በማስላት ላይ…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "ማከማቻ"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "የምስል መሸጎጫ አጽዳ"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "የምስል መሸጎጫ ጸድቷል"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "ኩኪዎችን አጽዳ"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "ሁሉም ኩኪዎች ጸድተዋል"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "ምትኬ እና መመለስ"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "ምትኬ ላክ"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "ምትኬ አስመጣ"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "ክትትል"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "የAniList ቶከን"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "የAniList መዳረሻ ቶከን"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "መዳረሻ ቶከን ይለጥፉ (ለማጽዳት ባዶ ይተው)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "አልተዘጋጀም"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "ተዘጋጅቷል"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "ቶከን ተቀምጧል"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "ቶከን ጸድቷል"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "ምትኬ ተልኳል"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "መላክ ተሰርዟል"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "መላክ አልተሳካም"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "ማስመጣት ተሰርዟል"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "ልክ ያልሆነ የምትኬ ፋይል"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "%d ማንጋ ተመልሰዋል"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "ማስመጣት አልተሳካም"
+    },
+    {
+      "name": "about_title",
+      "value": "ስለ"
+    },
+    {
+      "name": "about_version",
+      "value": "ስሪት 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "አርክቴክቸር ከMihon (Apache-2.0) ተመስጧል። የመስመር ላይ ምንጮች እንደ ቅጥያ በተለዋዋጭ ይጫናሉ፣ አካባቢያዊ ምንጮች ደግሞ የተገነቡ ናቸው።"
+    },
+    {
+      "name": "about_ack",
+      "value": "የክፍት ምንጭ ምስጋናዎች:\n· Mihon / Tachiyomi — የመተግበሪያ አርክቴክቸር እና የመስተጋብር ንድፍ (Apache-2.0)\n· Material Symbols — በመተግበሪያ ውስጥ አዶዎች (Apache-2.0)\n· MangaDex — የሙከራ ውሂብ ምንጭ"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "አስስ"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "ይዘት"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "NSFW ምንጮችን አሳይ"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "ሲነቃ፣ በቅጥያዎች NSFW ተብለው የተሰየሙ ምንጮች በአስስ ውስጥ ይታያሉ"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "ውርዶች"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "አውታረ መረብ"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "በWi-Fi ብቻ አውርድ"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "ማስታወሻ: ይህ ማብሪያ/ማጥፊያ በአሁኑ ስሪት ቦታ ያዥ ነው፤ የአውታረ መረብ አይነት መለየት በወደፊት ስሪት ይመጣል"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "ቤተ-መጻሕፍት"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "አጣራ እና ደርድር"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "ነባሪ ደርድር"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "ርዕስ"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "አዲስ ምዕራፍ"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "የታከለበት ቀን"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "ያልተነበበ ቁጥር"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "ርዕስ በመጨመር"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "ነባሪ ማጣሪያ"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "ያልተነበበ"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "ወርዷል"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "ያልተጠናቀቀ"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "ማሳያ"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "ነባሪ እይታ"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "ፍርግርግ"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "የሽፋን ፍርግርግ"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "ዝርዝር"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "የፍርግርግ አምዶች"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "ራስ-ሰር"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 አምዶች"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 አምዶች"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 አምዶች"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "ያልተነበበ ምልክቶች"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "የውርድ ምልክቶች"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "አንባቢ"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "የንባብ ሁነታ"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "ነባሪ ሁነታ"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "ከግራ ወደ ቀኝ"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "ከቀኝ ወደ ግራ"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "ቁመታዊ ገጽ"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "ዌብቱን"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "ድርብ ገጽ (አግድም)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "ማሳያ"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "የገጽ ቁጥር አሳይ"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "የአንባቢ ዳራ"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "ገጽታን ተከተል"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "ነጭ"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "ጥቁር"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "ግራጫ"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "የአንባቢ ብሩህነት ዳግም አስጀምር"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "ብሩህነት ስርዓቱን እንዲከተል ተዘጋጅቷል"
+    }
+  ]
+}

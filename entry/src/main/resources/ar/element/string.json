@@ -1,0 +1,1216 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "MihonHarmony"
+    },
+    {
+      "name": "common_ok",
+      "value": "حسنًا"
+    },
+    {
+      "name": "common_cancel",
+      "value": "إلغاء"
+    },
+    {
+      "name": "common_confirm",
+      "value": "تأكيد"
+    },
+    {
+      "name": "common_delete",
+      "value": "حذف"
+    },
+    {
+      "name": "common_retry",
+      "value": "إعادة المحاولة"
+    },
+    {
+      "name": "common_search",
+      "value": "بحث"
+    },
+    {
+      "name": "common_all",
+      "value": "الكل"
+    },
+    {
+      "name": "common_close",
+      "value": "إغلاق"
+    },
+    {
+      "name": "common_save",
+      "value": "حفظ"
+    },
+    {
+      "name": "common_install",
+      "value": "تثبيت"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "إلغاء التثبيت"
+    },
+    {
+      "name": "common_update",
+      "value": "تحديث"
+    },
+    {
+      "name": "common_none",
+      "value": "لا شيء"
+    },
+    {
+      "name": "common_default",
+      "value": "افتراضي"
+    },
+    {
+      "name": "appearance_title",
+      "value": "المظهر"
+    },
+    {
+      "name": "appearance_language",
+      "value": "اللغة"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "اتباع النظام"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "وضع السمة"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "اتباع النظام"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "فاتح"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "داكن"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "لون التمييز"
+    },
+    {
+      "name": "appearance_other",
+      "value": "أخرى"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "خلفية سوداء نقية لـ AMOLED"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "أزرق"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "أخضر"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "وردي"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "بنفسجي"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "برتقالي"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "منذ %d د"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "منذ %d س"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "منذ %d ي"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "مستمر"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "مكتمل"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "متوقف مؤقتًا"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "ملغى"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "اكتمل النشر"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "غير معروف"
+    },
+    {
+      "name": "tab_library",
+      "value": "المكتبة"
+    },
+    {
+      "name": "tab_updates",
+      "value": "التحديثات"
+    },
+    {
+      "name": "tab_history",
+      "value": "السجل"
+    },
+    {
+      "name": "tab_browse",
+      "value": "تصفح"
+    },
+    {
+      "name": "tab_more",
+      "value": "المزيد"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "بانتظار التحقق…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "اكتمل التحقق"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "التحقق البشري"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "تم"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "تم حفظ نتيجة التحقق"
+    },
+    {
+      "name": "more_title",
+      "value": "المزيد"
+    },
+    {
+      "name": "more_version",
+      "value": "الإصدار %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "التنزيلات فقط (قراءة دون اتصال)"
+    },
+    {
+      "name": "more_incognito",
+      "value": "التصفح المتخفي"
+    },
+    {
+      "name": "more_downloads",
+      "value": "التنزيلات"
+    },
+    {
+      "name": "more_categories",
+      "value": "الفئات"
+    },
+    {
+      "name": "more_settings",
+      "value": "الإعدادات"
+    },
+    {
+      "name": "more_about",
+      "value": "حول"
+    },
+    {
+      "name": "more_plugins",
+      "value": "الإضافات"
+    },
+    {
+      "name": "categories_title",
+      "value": "الفئات"
+    },
+    {
+      "name": "categories_add",
+      "value": "فئة جديدة"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "اسم الفئة"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "إعادة تسمية الفئة"
+    },
+    {
+      "name": "categories_rename",
+      "value": "إعادة التسمية"
+    },
+    {
+      "name": "categories_hint",
+      "value": "اضغط مطولًا على فئة لإعادة تسميتها أو حذفها؛ تعود المانغا في الفئة المحذوفة إلى الافتراضي"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "اختر فئة"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "جارٍ التحميل…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "فشل تحميل الصورة"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "انقر لإعادة المحاولة"
+    },
+    {
+      "name": "library_title",
+      "value": "المكتبة"
+    },
+    {
+      "name": "library_empty",
+      "value": "مكتبتك فارغة، تصفح لإضافة مانغا"
+    },
+    {
+      "name": "library_new_category",
+      "value": "فئة جديدة"
+    },
+    {
+      "name": "library_category_name",
+      "value": "اسم الفئة"
+    },
+    {
+      "name": "updates_title",
+      "value": "التحديثات"
+    },
+    {
+      "name": "updates_empty",
+      "value": "لا توجد تحديثات حديثة"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "تم العثور على %d فصول جديدة"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "لا توجد فصول جديدة"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "فشل التحديث"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "جارٍ التحديث…"
+    },
+    {
+      "name": "history_title",
+      "value": "السجل"
+    },
+    {
+      "name": "history_clear",
+      "value": "مسح"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "تأكيد المسح؟"
+    },
+    {
+      "name": "history_empty",
+      "value": "لا يوجد سجل قراءة بعد"
+    },
+    {
+      "name": "history_cleared",
+      "value": "تم مسح السجل"
+    },
+    {
+      "name": "history_continue",
+      "value": "متابعة"
+    },
+    {
+      "name": "browse_title",
+      "value": "تصفح"
+    },
+    {
+      "name": "browse_import",
+      "value": "استيراد"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "الإضافات"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "مانغا محلية"
+    },
+    {
+      "name": "browse_popular",
+      "value": "شائع"
+    },
+    {
+      "name": "browse_latest",
+      "value": "الأحدث"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "البحث عن مانغا…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "لم يتم العثور على مانغا"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "لا توجد مانغا محلية بعد، انقر على استيراد لإضافتها"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "فشل التحميل: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "فشل البحث: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "فشل تحميل المزيد"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "فشل فتح التفاصيل"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "فشل اختيار الملفات"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "استيراد %d ملفات"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "اسم المانغا"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "يرجى إدخال اسم"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "تم استيراد %d ملفات"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "فشل الاستيراد: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "التنزيلات"
+    },
+    {
+      "name": "download_resume",
+      "value": "استئناف"
+    },
+    {
+      "name": "download_pause",
+      "value": "إيقاف مؤقت"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "مسح المكتمل"
+    },
+    {
+      "name": "download_queue",
+      "value": "قائمة انتظار التنزيل"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "في الانتظار"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "جارٍ التنزيل"
+    },
+    {
+      "name": "download_state_done",
+      "value": "تم"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "فشل"
+    },
+    {
+      "name": "download_move_top",
+      "value": "نقل إلى الأعلى"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "نقل إلى الأسفل"
+    },
+    {
+      "name": "download_deleted",
+      "value": "تم الحذف"
+    },
+    {
+      "name": "download_empty",
+      "value": "لا توجد تنزيلات بعد"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "تم التنزيل"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d فصول"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "لا توجد فصول"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "فشلت المزامنة، يتم عرض البيانات المحلية"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "أُضيفت إلى المكتبة"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "أُزيلت من المكتبة"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "تم تعليم كل الفصول كمقروءة"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "أُضيفت إلى قائمة انتظار التنزيل"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "يرجى إعداد رمز AniList أولاً"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "البحث في AniList"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "عنوان المانغا"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "لا توجد نتائج بحث"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "فشل البحث في AniList"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "تم الربط بـ AniList"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "تم فك الربط من AniList"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "تمت مزامنة التقدم إلى الفصل %d"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "فشلت مزامنة AniList"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "محلي"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "في المكتبة"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "إضافة إلى المكتبة"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "متابعة القراءة"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "بدء القراءة"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "لا توجد فصول بعد"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "طي"
+    },
+    {
+      "name": "detail_expand",
+      "value": "توسيع"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "تتبع AniList"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "لم يُعد رمز AniList بعد"
+    },
+    {
+      "name": "detail_searching",
+      "value": "جارٍ البحث…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "بحث وربط"
+    },
+    {
+      "name": "detail_bind",
+      "value": "ربط"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "تمت المزامنة إلى الفصل %d"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "مزامنة التقدم"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "فك الربط"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "الفصول (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "تصاعدي"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "تنازلي"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "تعليم الكل كمقروء"
+    },
+    {
+      "name": "detail_read",
+      "value": "مقروء"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "تم التنزيل"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "في الانتظار"
+    },
+    {
+      "name": "detail_download",
+      "value": "تنزيل"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "الفصل غير موجود"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "فشل التحميل: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "من اليسار إلى اليمين"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "من اليمين إلى اليسار"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "ويبتون"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "وضع القراءة"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "حر"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "عمودي"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "أفقي"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "اتجاه الشاشة"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "أنت بالفعل في الفصل الأخير"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "أنت بالفعل في الفصل الأول"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "أنت بالفعل في الصفحة الأولى"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "أنت بالفعل في الصفحة الأخيرة"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "جارٍ تحميل الفصل…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "إعدادات القارئ"
+    },
+    {
+      "name": "reader_background",
+      "value": "الخلفية"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "تلقائي"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "أبيض"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "رمادي"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "أسود"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "إظهار رقم الصفحة"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "السطوع"
+    },
+    {
+      "name": "reader_auto",
+      "value": "تلقائي"
+    },
+    {
+      "name": "plugin_title",
+      "value": "الإضافات"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "مثبّتة"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "لا توجد إضافات بعد، ثبّتها أدناه"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "يمكن إعادة تفعيل الإضافات المعطّلة في أي وقت"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "محدَّث"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "التثبيت من ملف"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "اختر ملفًا للتثبيت"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "جارٍ المعالجة…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "تُدعم حزم الإضافات .mihonplug / .zip"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "المستودع عبر الإنترنت"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "إعداد المستودع"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "تحديث"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "لم يُعد مستودع الإضافات بعد"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "جارٍ تحميل المستودع…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "عنوان URL لمستودع الإضافات"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "أدخل عنوان URL لمستودع الإضافات"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "فشل تحميل المستودع: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "فشل اختيار الملف"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "تم التثبيت: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "تم تثبيت %s"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "فشل التثبيت: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "فشل الإجراء"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "تم إلغاء التثبيت: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "فشل إلغاء التثبيت"
+    },
+    {
+      "name": "settings_title",
+      "value": "الإعدادات"
+    },
+    {
+      "name": "settings_general",
+      "value": "عام"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "شاشة البداية"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "التخصيص"
+    },
+    {
+      "name": "settings_library",
+      "value": "المكتبة"
+    },
+    {
+      "name": "settings_reader",
+      "value": "القارئ"
+    },
+    {
+      "name": "settings_data",
+      "value": "البيانات"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "التنزيلات"
+    },
+    {
+      "name": "settings_browse",
+      "value": "تصفح"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "متقدم"
+    },
+    {
+      "name": "settings_about",
+      "value": "حول"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "المكتبة"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "التحديثات"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "السجل"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "تصفح"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "المزيد"
+    },
+    {
+      "name": "advanced_title",
+      "value": "متقدم"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "جارٍ الحساب…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "التخزين"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "مسح ذاكرة الصور المؤقتة"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "تم مسح ذاكرة الصور المؤقتة"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "مسح ملفات تعريف الارتباط"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "تم مسح كل ملفات تعريف الارتباط"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "النسخ الاحتياطي والاستعادة"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "تصدير نسخة احتياطية"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "استيراد نسخة احتياطية"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "التتبع"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "رمز AniList"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "رمز وصول AniList"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "الصق رمز الوصول (اتركه فارغًا للمسح)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "غير معيَّن"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "معيَّن"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "تم حفظ الرمز"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "تم مسح الرمز"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "تم تصدير النسخة الاحتياطية"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "أُلغي التصدير"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "فشل التصدير"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "أُلغي الاستيراد"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "ملف نسخة احتياطية غير صالح"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "تمت استعادة %d مانغا"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "فشل الاستيراد"
+    },
+    {
+      "name": "about_title",
+      "value": "حول"
+    },
+    {
+      "name": "about_version",
+      "value": "الإصدار 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "البنية مستوحاة من Mihon (Apache-2.0). تُثبَّت المصادر عبر الإنترنت ديناميكيًا كإضافات، بينما المصادر المحلية مدمجة."
+    },
+    {
+      "name": "about_ack",
+      "value": "شكر مفتوح المصدر:\n· Mihon / Tachiyomi — بنية التطبيق وتصميم التفاعل (Apache-2.0)\n· Material Symbols — أيقونات داخل التطبيق (Apache-2.0)\n· MangaDex — مصدر بيانات للاختبار"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "تصفح"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "المحتوى"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "إظهار مصادر NSFW"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "عند التفعيل، ستظهر في التصفح المصادر التي تُعلّمها إضافاتها كـ NSFW"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "التنزيلات"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "الشبكة"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "التنزيل عبر Wi-Fi فقط"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "ملاحظة: هذا المفتاح عنصر نائب في الإصدار الحالي؛ وسيأتي اكتشاف نوع الشبكة في إصدار لاحق"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "المكتبة"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "التصفية والترتيب"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "الترتيب الافتراضي"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "العنوان"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "آخر فصل"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "تاريخ الإضافة"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "عدد غير المقروء"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "ترتيب حسب العنوان تصاعديًا"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "التصفية الافتراضية"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "غير مقروء"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "تم التنزيل"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "غير مكتمل"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "العرض"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "العرض الافتراضي"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "شبكة"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "شبكة الأغلفة"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "قائمة"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "أعمدة الشبكة"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "تلقائي"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "عمودان"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 أعمدة"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 أعمدة"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "شارات غير المقروء"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "شارات التنزيل"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "القارئ"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "وضع القراءة"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "الوضع الافتراضي"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "من اليسار إلى اليمين"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "من اليمين إلى اليسار"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "تقليب عمودي"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "ويبتون"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "صفحتان (أفقي)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "العرض"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "إظهار رقم الصفحة"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "خلفية القارئ"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "اتباع السمة"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "أبيض"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "أسود"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "رمادي"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "إعادة ضبط سطوع القارئ"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "أُعيد السطوع ليتبع النظام"
+    }
+  ]
+}

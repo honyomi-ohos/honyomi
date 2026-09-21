@@ -1,0 +1,1216 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "MihonHarmony"
+    },
+    {
+      "name": "common_ok",
+      "value": "సరే"
+    },
+    {
+      "name": "common_cancel",
+      "value": "రద్దు చేయి"
+    },
+    {
+      "name": "common_confirm",
+      "value": "నిర్ధారించు"
+    },
+    {
+      "name": "common_delete",
+      "value": "తొలగించు"
+    },
+    {
+      "name": "common_retry",
+      "value": "మళ్ళీ ప్రయత్నించు"
+    },
+    {
+      "name": "common_search",
+      "value": "వెతకండి"
+    },
+    {
+      "name": "common_all",
+      "value": "అన్నీ"
+    },
+    {
+      "name": "common_close",
+      "value": "మూసివేయి"
+    },
+    {
+      "name": "common_save",
+      "value": "భద్రపరుచు"
+    },
+    {
+      "name": "common_install",
+      "value": "ఇన్‌స్టాల్"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "అన్‌ఇన్‌స్టాల్"
+    },
+    {
+      "name": "common_update",
+      "value": "నవీకరించు"
+    },
+    {
+      "name": "common_none",
+      "value": "ఏదీ కాదు"
+    },
+    {
+      "name": "common_default",
+      "value": "ప్రమాణం"
+    },
+    {
+      "name": "appearance_title",
+      "value": "రూపం"
+    },
+    {
+      "name": "appearance_language",
+      "value": "భాష"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "పరికరాన్ని అనుసరించు"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "థీమ్ మోడ్"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "పరికరాన్ని అనుసరించు"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "లేత"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "ముదురు"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "ప్రధాన రంగు"
+    },
+    {
+      "name": "appearance_other",
+      "value": "ఇతరాలు"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED స్వచ్ఛమైన నలుపు నేపథ్యం"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "నీలం"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "ఆకుపచ్చ"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "గులాబీ"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "ఊదా"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "నారింజ"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d నిమి క్రితం"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d గం క్రితం"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d రో క్రితం"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "కొనసాగుతున్నది"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "పూర్తయింది"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "నిలిపివేయబడింది"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "రద్దు"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "ప్రచురణ పూర్తి"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "తెలియదు"
+    },
+    {
+      "name": "tab_library",
+      "value": "గ్రంథాలయము"
+    },
+    {
+      "name": "tab_updates",
+      "value": "నవీకరణలు"
+    },
+    {
+      "name": "tab_history",
+      "value": "చరిత్ర"
+    },
+    {
+      "name": "tab_browse",
+      "value": "విహరించండి"
+    },
+    {
+      "name": "tab_more",
+      "value": "మరింత"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "ధృవీకరణ కోసం వేచి…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "ధృవీకరణ పూర్తి"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "మానవ ధృవీకరణ"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "అయింది"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "ధృవీకరణ ఫలితం భద్రపరచబడింది"
+    },
+    {
+      "name": "more_title",
+      "value": "మరింత"
+    },
+    {
+      "name": "more_version",
+      "value": "వెర్షన్ %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "దిగుమతులు మాత్రమే (ఆఫ్‌లైన్ చదవడం)"
+    },
+    {
+      "name": "more_incognito",
+      "value": "గుప్తం"
+    },
+    {
+      "name": "more_downloads",
+      "value": "దిగుమతులు"
+    },
+    {
+      "name": "more_categories",
+      "value": "విభాగములు"
+    },
+    {
+      "name": "more_settings",
+      "value": "అమరికలు"
+    },
+    {
+      "name": "more_about",
+      "value": "గురించి"
+    },
+    {
+      "name": "more_plugins",
+      "value": "పొడిగింపులు"
+    },
+    {
+      "name": "categories_title",
+      "value": "విభాగములు"
+    },
+    {
+      "name": "categories_add",
+      "value": "కొత్త విభాగం"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "విభాగం పేరు"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "విభాగ పేరును మార్చు"
+    },
+    {
+      "name": "categories_rename",
+      "value": "పేరు మార్చు"
+    },
+    {
+      "name": "categories_hint",
+      "value": "పేరు మార్చడానికి లేదా తొలగించడానికి విభాగాన్ని ఎక్కువసేపు నొక్కండి; తొలగించిన విభాగంలోని మంగా ప్రమాణానికి తిరిగి వెళ్తుంది"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "విభాగం ఎంచుకోండి"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "లోడ్ అవుతుంది…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "చిత్రం లోడ్ కాలేదు"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "మళ్ళీ ప్రయత్నించడానికి నొక్కండి"
+    },
+    {
+      "name": "library_title",
+      "value": "గ్రంథాలయము"
+    },
+    {
+      "name": "library_empty",
+      "value": "మీ గ్రంథాలయం ఖాళీగా ఉంది, మంగా జోడించడానికి విహరించండి"
+    },
+    {
+      "name": "library_new_category",
+      "value": "కొత్త విభాగం"
+    },
+    {
+      "name": "library_category_name",
+      "value": "విభాగం పేరు"
+    },
+    {
+      "name": "updates_title",
+      "value": "నవీకరణలు"
+    },
+    {
+      "name": "updates_empty",
+      "value": "ఇటీవలి నవీకరణలు లేవు"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%d కొత్త అధ్యాయాలు దొరికాయి"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "కొత్త అధ్యాయాలు లేవు"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "నవీకరణ విఫలం"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "నవీకరిస్తోంది…"
+    },
+    {
+      "name": "history_title",
+      "value": "చరిత్ర"
+    },
+    {
+      "name": "history_clear",
+      "value": "తొలగించు"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "తొలగించాలా?"
+    },
+    {
+      "name": "history_empty",
+      "value": "ఇంకా చదివిన చరిత్ర లేదు"
+    },
+    {
+      "name": "history_cleared",
+      "value": "చరిత్ర తొలగించబడింది"
+    },
+    {
+      "name": "history_continue",
+      "value": "కొనసాగించు"
+    },
+    {
+      "name": "browse_title",
+      "value": "విహరించండి"
+    },
+    {
+      "name": "browse_import",
+      "value": "దిగుమతి"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "ప్లగిన్లు"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "స్థానిక మంగా"
+    },
+    {
+      "name": "browse_popular",
+      "value": "ప్రసిద్ధం"
+    },
+    {
+      "name": "browse_latest",
+      "value": "నూతనం"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "మంగా వెతకండి…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "మంగా దొరకలేదు"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "ఇంకా స్థానిక మంగా లేదు, జోడించడానికి దిగుమతి నొక్కండి"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "లోడ్ విఫలం: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "శోధన విఫలం: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "మరిన్ని లోడ్ కాలేదు"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "వివరాలు తెరవలేదు"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "ఫైళ్లు ఎంచుకోలేకపోయాం"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "%d ఫైళ్లను దిగుమతి చేయి"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "మంగా పేరు"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "దయచేసి పేరు నమోదు చేయండి"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "%d ఫైళ్లు దిగుమతి అయ్యాయి"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "దిగుమతి విఫలం: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "దిగుమతులు"
+    },
+    {
+      "name": "download_resume",
+      "value": "కొనసాగించు"
+    },
+    {
+      "name": "download_pause",
+      "value": "నిలిపివేయి"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "పూర్తయినవి తొలగించు"
+    },
+    {
+      "name": "download_queue",
+      "value": "దిగుమతి వరుస"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "వరుసలో"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "దిగుమతి అవుతోంది"
+    },
+    {
+      "name": "download_state_done",
+      "value": "అయింది"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "విఫలం"
+    },
+    {
+      "name": "download_move_top",
+      "value": "అగ్రానికి జరుపు"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "చివరకు జరుపు"
+    },
+    {
+      "name": "download_deleted",
+      "value": "తొలగించబడింది"
+    },
+    {
+      "name": "download_empty",
+      "value": "ఇంకా దిగుమతులు లేవు"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "దిగుమతి అయింది"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d అధ్యాయాలు"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "అధ్యాయాలు లేవు"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "సింక్ విఫలం, స్థానిక డేటా చూపిస్తున్నాం"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "గ్రంథాలయానికి జోడించబడింది"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "గ్రంథాలయం నుండి తొలగించబడింది"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "అన్ని అధ్యాయాలు చదివినట్లు గుర్తించబడ్డాయి"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "దిగుమతి వరుసకు జోడించబడింది"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "ముందుగా AniList టోకెన్‌ను అమర్చండి"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "AniList వెతకండి"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "మంగా పేరు"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "శోధన ఫలితాలు లేవు"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "AniList శోధన విఫలం"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "AniListకు లింక్ అయింది"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "AniList నుండి తొలగించబడింది"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "ప్రగతి %d అధ్యాయానికి సింక్ అయింది"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "AniList సింక్ విఫలం"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "స్థానిక"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "గ్రంథాలయంలో ఉంది"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "గ్రంథాలయానికి జోడించు"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "చదవడం కొనసాగించు"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "చదవడం ప్రారంభించు"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "ఇంకా అధ్యాయాలు లేవు"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "కుదించు"
+    },
+    {
+      "name": "detail_expand",
+      "value": "విస్తరించు"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList ట్రాకింగ్"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList టోకెన్ ఇంకా అమర్చబడలేదు"
+    },
+    {
+      "name": "detail_searching",
+      "value": "వెతుకుతోంది…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "వెతికి లింక్ చేయి"
+    },
+    {
+      "name": "detail_bind",
+      "value": "లింక్"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "%d అధ్యాయానికి సింక్ అయింది"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "ప్రగతిని సింక్ చేయి"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "లింక్ తీయి"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "అధ్యాయాలు (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "ఆరోహణ"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "అవరోహణ"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "అన్నీ చదివినట్లు గుర్తించు"
+    },
+    {
+      "name": "detail_read",
+      "value": "చదివినవి"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "దిగుమతి అయింది"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "వరుసలో"
+    },
+    {
+      "name": "detail_download",
+      "value": "దిగుమతి"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "అధ్యాయం దొరకలేదు"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "లోడ్ విఫలం: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "ఎడమ నుండి కుడికి"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "కుడి నుండి ఎడమకు"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "వెబ్‌టూన్"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "చదవడం మోడ్"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "స్వేచ్ఛ"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "నిలువు"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "అడ్డం"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "స్క్రీన్ దిశ"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "ఇప్పటికే చివరి అధ్యాయంలో ఉన్నారు"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "ఇప్పటికే మొదటి అధ్యాయంలో ఉన్నారు"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "ఇప్పటికే మొదటి పేజీలో ఉన్నారు"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "ఇప్పటికే చివరి పేజీలో ఉన్నారు"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "అధ్యాయం లోడ్ అవుతోంది…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "పాఠక అమరికలు"
+    },
+    {
+      "name": "reader_background",
+      "value": "నేపథ్యం"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "స్వయంచాలకం"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "తెలుపు"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "బూడిద"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "నలుపు"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "పేజీ సంఖ్య చూపు"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "కాంతి"
+    },
+    {
+      "name": "reader_auto",
+      "value": "స్వయంచాలకం"
+    },
+    {
+      "name": "plugin_title",
+      "value": "పొడిగింపులు"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "ఇన్‌స్టాల్ అయినవి"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "ఇంకా పొడిగింపులు లేవు, కింద ఇన్‌స్టాల్ చేయండి"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "నిలిపివేసిన పొడిగింపులను ఎప్పుడైనా మళ్ళీ చేతనం చేయవచ్చు"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "తాజాది"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "ఫైల్ నుండి ఇన్‌స్టాల్"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "ఇన్‌స్టాల్ చేయడానికి ఫైల్ ఎంచుకోండి"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "ప్రాసెస్ చేస్తోంది…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": ".mihonplug / .zip ప్లగిన్ ప్యాకేజీలను సపోర్ట్ చేస్తుంది"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "ఆన్‌లైన్ రిపోజిటరీ"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "రిపోజిటరీని అమర్చు"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "నవీకరించు"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "ఇంకా ప్లగిన్ రిపోజిటరీ లేదు"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "రిపోజిటరీ లోడ్ అవుతోంది…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "ప్లగిన్ రిపోజిటరీ URL"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "ప్లగిన్ రిపోజిటరీ URL నమోదు చేయండి"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "రిపోజిటరీ లోడ్ విఫలం: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "ఫైల్ ఎంచుకోలేకపోయాం"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "ఇన్‌స్టాల్ అయింది: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "%s ఇన్‌స్టాల్ అయింది"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "ఇన్‌స్టాల్ విఫలం: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "చర్య విఫలం"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "తొలగించబడింది: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "అన్‌ఇన్‌స్టాల్ విఫలం"
+    },
+    {
+      "name": "settings_title",
+      "value": "అమరికలు"
+    },
+    {
+      "name": "settings_general",
+      "value": "సామాన్యం"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "ప్రారంభ స్క్రీన్"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "వ్యక్తిగతీకరణ"
+    },
+    {
+      "name": "settings_library",
+      "value": "గ్రంథాలయము"
+    },
+    {
+      "name": "settings_reader",
+      "value": "పాఠకము"
+    },
+    {
+      "name": "settings_data",
+      "value": "డేటా"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "దిగుమతులు"
+    },
+    {
+      "name": "settings_browse",
+      "value": "విహరించండి"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "ఆధునికం"
+    },
+    {
+      "name": "settings_about",
+      "value": "గురించి"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "గ్రంథాలయము"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "నవీకరణలు"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "చరిత్ర"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "విహరించండి"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "మరింత"
+    },
+    {
+      "name": "advanced_title",
+      "value": "ఆధునికం"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "లెక్కిస్తోంది…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "నిల్వ"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "చిత్ర కాష్ తొలగించు"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "చిత్ర కాష్ తొలగించబడింది"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "కుకీలను తొలగించు"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "అన్ని కుకీలు తొలగించబడ్డాయి"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "భద్రపరచడం మరియు పునరుద్ధరణ"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "బ్యాకప్ ఎగుమతి"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "బ్యాకప్ దిగుమతి"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "ట్రాకింగ్"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList టోకెన్"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList యాక్సెస్ టోకెన్"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "యాక్సెస్ టోకెన్‌ను అతికించండి (తొలగించడానికి ఖాళీగా ఉంచండి)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "అమర్చబడలేదు"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "అమర్చబడింది"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "టోకెన్ భద్రపరచబడింది"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "టోకెన్ తొలగించబడింది"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "బ్యాకప్ ఎగుమతి అయింది"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "ఎగుమతి రద్దు"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "ఎగుమతి విఫలం"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "దిగుమతి రద్దు"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "చెల్లని బ్యాకప్ ఫైల్"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "%d మంగా పునరుద్ధరించబడింది"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "దిగుమతి విఫలం"
+    },
+    {
+      "name": "about_title",
+      "value": "గురించి"
+    },
+    {
+      "name": "about_version",
+      "value": "వెర్షన్ 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "నిర్మాణం Mihon (Apache-2.0) నుండి స్ఫూర్తి పొందింది. ఆన్‌లైన్ మూలాలు పొడిగింపులుగా డైనమిక్‌గా ఇన్‌స్టాల్ అవుతాయి, స్థానిక మూలాలు అంతర్గతంగా ఉంటాయి."
+    },
+    {
+      "name": "about_ack",
+      "value": "ఓపెన్ సోర్స్ కృతజ్ఞతలు:\n· Mihon / Tachiyomi — యాప్ నిర్మాణం మరియు ఇంటరాక్షన్ డిజైన్ (Apache-2.0)\n· Material Symbols — యాప్ ఐకాన్లు (Apache-2.0)\n· MangaDex — పరీక్ష డేటా మూలం"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "విహరించండి"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "కంటెంట్"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "NSFW మూలాలను చూపు"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "చేతనం చేస్తే, పొడిగింపులు NSFWగా గుర్తించిన మూలాలు విహరణలో కనిపిస్తాయి"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "దిగుమతులు"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "నెట్‌వర్క్"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Wi-Fi ద్వారా మాత్రమే దిగుమతి"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "గమనిక: ఈ స్విచ్ ప్రస్తుత వెర్షన్‌లో ప్లేస్‌హోల్డర్; నెట్‌వర్క్ రకం గుర్తింపు రాబోయే వెర్షన్‌లో వస్తుంది"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "గ్రంథాలయము"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "ఫిల్టర్ మరియు క్రమం"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "ప్రమాణ క్రమం"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "పేరు"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "నూతన అధ్యాయం"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "జోడించిన తేదీ"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "చదవని సంఖ్య"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "పేరు ప్రకారం ఆరోహణ"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "ప్రమాణ ఫిల్టర్"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "చదవనివి"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "దిగుమతి అయినవి"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "పూర్తికానివి"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "ప్రదర్శన"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "ప్రమాణ వీక్షణ"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "గ్రిడ్"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "కవర్ గ్రిడ్"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "జాబితా"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "గ్రిడ్ నిలువు వరుసలు"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "స్వయంచాలకం"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 నిలువు వరుసలు"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 నిలువు వరుసలు"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 నిలువు వరుసలు"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "చదవని బ్యాడ్జ్‌లు"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "దిగుమతి బ్యాడ్జ్‌లు"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "పాఠకము"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "చదవడం మోడ్"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "ప్రమాణ మోడ్"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "ఎడమ నుండి కుడికి"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "కుడి నుండి ఎడమకు"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "నిలువు పేజింగ్"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "వెబ్‌టూన్"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "రెండు పేజీలు (అడ్డం)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "ప్రదర్శన"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "పేజీ సంఖ్య చూపు"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "పాఠక నేపథ్యం"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "థీమ్‌ను అనుసరించు"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "తెలుపు"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "నలుపు"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "బూడిద"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "పాఠక కాంతిని రీసెట్ చేయి"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "కాంతి పరికరాన్ని అనుసరించేలా అమర్చబడింది"
+    }
+  ]
+}

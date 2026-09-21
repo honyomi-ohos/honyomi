@@ -1,0 +1,1216 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "MihonHarmony"
+    },
+    {
+      "name": "common_ok",
+      "value": "OK"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Bekor qilish"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Tasdiqlash"
+    },
+    {
+      "name": "common_delete",
+      "value": "O‘chirish"
+    },
+    {
+      "name": "common_retry",
+      "value": "Qayta urinish"
+    },
+    {
+      "name": "common_search",
+      "value": "Qidirish"
+    },
+    {
+      "name": "common_all",
+      "value": "Hammasi"
+    },
+    {
+      "name": "common_close",
+      "value": "Yopish"
+    },
+    {
+      "name": "common_save",
+      "value": "Saqlash"
+    },
+    {
+      "name": "common_install",
+      "value": "O‘rnatish"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "Olib tashlash"
+    },
+    {
+      "name": "common_update",
+      "value": "Yangilash"
+    },
+    {
+      "name": "common_none",
+      "value": "Yo‘q"
+    },
+    {
+      "name": "common_default",
+      "value": "Standart"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Ko‘rinish"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Til"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Tizimga rioya qilish"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Mavzu rejimi"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Tizimga rioya qilish"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Yorug‘"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Qorong‘i"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Urg‘u rangi"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Boshqa"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED sof qora fon"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Ko‘k"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "Yashil"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Pushti"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Binafsha"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "To‘q sariq"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d daqiqa oldin"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d soat oldin"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d kun oldin"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "Davom etmoqda"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Tugallangan"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "Tanaffusda"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Bekor qilingan"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Nashr tugallangan"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Noma’lum"
+    },
+    {
+      "name": "tab_library",
+      "value": "Kutubxona"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Yangilanishlar"
+    },
+    {
+      "name": "tab_history",
+      "value": "Tarix"
+    },
+    {
+      "name": "tab_browse",
+      "value": "Ko‘rish"
+    },
+    {
+      "name": "tab_more",
+      "value": "Yana"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "Tekshiruv kutilmoqda…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "Tekshiruv yakunlandi"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "Inson tekshiruvi"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "Tayyor"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "Tekshiruv natijasi saqlandi"
+    },
+    {
+      "name": "more_title",
+      "value": "Yana"
+    },
+    {
+      "name": "more_version",
+      "value": "Versiya %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Faqat yuklab olinganlar (oflayn o‘qish)"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Maxfiy"
+    },
+    {
+      "name": "more_downloads",
+      "value": "Yuklamalar"
+    },
+    {
+      "name": "more_categories",
+      "value": "Toifalar"
+    },
+    {
+      "name": "more_settings",
+      "value": "Sozlamalar"
+    },
+    {
+      "name": "more_about",
+      "value": "Haqida"
+    },
+    {
+      "name": "more_plugins",
+      "value": "Kengaytmalar"
+    },
+    {
+      "name": "categories_title",
+      "value": "Toifalar"
+    },
+    {
+      "name": "categories_add",
+      "value": "Yangi toifa"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "Toifa nomi"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "Toifani qayta nomlash"
+    },
+    {
+      "name": "categories_rename",
+      "value": "Qayta nomlash"
+    },
+    {
+      "name": "categories_hint",
+      "value": "Qayta nomlash yoki o‘chirish uchun toifani uzoq bosing; o‘chirilgan toifadagi mangalar Standartga qaytadi"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "Toifani tanlang"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "Yuklanmoqda…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "Rasm yuklanmadi"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "Qayta urinish uchun bosing"
+    },
+    {
+      "name": "library_title",
+      "value": "Kutubxona"
+    },
+    {
+      "name": "library_empty",
+      "value": "Kutubxonangiz bo‘sh, manga qo‘shish uchun ko‘ring"
+    },
+    {
+      "name": "library_new_category",
+      "value": "Yangi toifa"
+    },
+    {
+      "name": "library_category_name",
+      "value": "Toifa nomi"
+    },
+    {
+      "name": "updates_title",
+      "value": "Yangilanishlar"
+    },
+    {
+      "name": "updates_empty",
+      "value": "Yaqinda yangilanish yo‘q"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%d ta yangi bob topildi"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "Yangi bob yo‘q"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "Yangilash muvaffaqiyatsiz"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "Yangilanmoqda…"
+    },
+    {
+      "name": "history_title",
+      "value": "Tarix"
+    },
+    {
+      "name": "history_clear",
+      "value": "Tozalash"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "Tozalansinmi?"
+    },
+    {
+      "name": "history_empty",
+      "value": "Hali o‘qish tarixi yo‘q"
+    },
+    {
+      "name": "history_cleared",
+      "value": "Tarix tozalandi"
+    },
+    {
+      "name": "history_continue",
+      "value": "Davom etish"
+    },
+    {
+      "name": "browse_title",
+      "value": "Ko‘rish"
+    },
+    {
+      "name": "browse_import",
+      "value": "Import"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "Plaginlar"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "Mahalliy manga"
+    },
+    {
+      "name": "browse_popular",
+      "value": "Mashhur"
+    },
+    {
+      "name": "browse_latest",
+      "value": "Eng yangi"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "Manga qidirish…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "Manga topilmadi"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "Hali mahalliy manga yo‘q, qo‘shish uchun Import-ni bosing"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "Yuklash muvaffaqiyatsiz: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "Qidiruv muvaffaqiyatsiz: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "Yana yuklanmadi"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "Tafsilotlar ochilmadi"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "Fayllar tanlanmadi"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "%d ta faylni import qilish"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "Manga nomi"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "Iltimos, nom kiriting"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "%d ta fayl import qilindi"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "Import muvaffaqiyatsiz: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "Yuklamalar"
+    },
+    {
+      "name": "download_resume",
+      "value": "Davom ettirish"
+    },
+    {
+      "name": "download_pause",
+      "value": "Pauza"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "Tugaganlarni tozalash"
+    },
+    {
+      "name": "download_queue",
+      "value": "Yuklash navbati"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "Navbatda"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "Yuklanmoqda"
+    },
+    {
+      "name": "download_state_done",
+      "value": "Tayyor"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "Muvaffaqiyatsiz"
+    },
+    {
+      "name": "download_move_top",
+      "value": "Eng tepaga ko‘chirish"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "Eng pastga ko‘chirish"
+    },
+    {
+      "name": "download_deleted",
+      "value": "O‘chirildi"
+    },
+    {
+      "name": "download_empty",
+      "value": "Hali yuklama yo‘q"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "Yuklab olingan"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d ta bob"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "Bob yo‘q"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "Sinxronlash muvaffaqiyatsiz, mahalliy ma’lumot ko‘rsatilmoqda"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "Kutubxonaga qo‘shildi"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "Kutubxonadan olib tashlandi"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "Barcha boblar o‘qilgan deb belgilandi"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "Yuklash navbatiga qo‘shildi"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "Avval AniList tokenini sozlang"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "AniList-dan qidirish"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "Manga sarlavhasi"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "Qidiruv natijasi yo‘q"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "AniList qidiruvi muvaffaqiyatsiz"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "AniList-ga bog‘landi"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "AniList bog‘lanishi uzildi"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "Jarayon %d-bobgacha sinxronlandi"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "AniList sinxronlash muvaffaqiyatsiz"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "Mahalliy"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "Kutubxonada"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "Kutubxonaga qo‘shish"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "O‘qishni davom ettirish"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "O‘qishni boshlash"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "Hali bob yo‘q"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "Yig‘ish"
+    },
+    {
+      "name": "detail_expand",
+      "value": "Yoyish"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList kuzatuvi"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList tokeni hali sozlanmagan"
+    },
+    {
+      "name": "detail_searching",
+      "value": "Qidirilmoqda…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "Qidirish va bog‘lash"
+    },
+    {
+      "name": "detail_bind",
+      "value": "Bog‘lash"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "%d-bobgacha sinxronlandi"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "Jarayonni sinxronlash"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "Bog‘lanishni uzish"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "Boblar (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "O‘sish tartibida"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "Kamayish tartibida"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "Hammasini o‘qilgan deb belgilash"
+    },
+    {
+      "name": "detail_read",
+      "value": "O‘qilgan"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "Yuklab olingan"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "Navbatda"
+    },
+    {
+      "name": "detail_download",
+      "value": "Yuklab olish"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "Bob topilmadi"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "Yuklash muvaffaqiyatsiz: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "Chapdan o‘ngga"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "O‘ngdan chapga"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "O‘qish rejimi"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "Erkin"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "Portret"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "Landshaft"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "Ekran yo‘nalishi"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "Allaqachon oxirgi bobdasiz"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "Allaqachon birinchi bobdasiz"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "Allaqachon birinchi sahifadasiz"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "Allaqachon oxirgi sahifadasiz"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "Bob yuklanmoqda…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "O‘quvchi sozlamalari"
+    },
+    {
+      "name": "reader_background",
+      "value": "Fon"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Avto"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "Oq"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "Kulrang"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "Qora"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "Sahifa raqamini ko‘rsatish"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "Yorqinlik"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Avto"
+    },
+    {
+      "name": "plugin_title",
+      "value": "Kengaytmalar"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "O‘rnatilgan"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "Hali kengaytma yo‘q, pastdan o‘rnating"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "O‘chirilgan kengaytmalarni istalgan vaqtda qayta yoqish mumkin"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "Yangilangan"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "Fayldan o‘rnatish"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "O‘rnatish uchun fayl tanlang"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "Qayta ishlanmoqda…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": ".mihonplug / .zip plagin paketlari qo‘llab-quvvatlanadi"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "Onlayn ombor"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "Omborni sozlash"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "Yangilash"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "Hali plagin ombori sozlanmagan"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "Ombor yuklanmoqda…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "Plagin ombori URL manzili"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "Plagin ombori URL manzilini kiriting"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "Ombor yuklanmadi: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "Fayl tanlanmadi"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "O‘rnatildi: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "%s o‘rnatildi"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "O‘rnatish muvaffaqiyatsiz: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "Amal muvaffaqiyatsiz"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "Olib tashlandi: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "Olib tashlash muvaffaqiyatsiz"
+    },
+    {
+      "name": "settings_title",
+      "value": "Sozlamalar"
+    },
+    {
+      "name": "settings_general",
+      "value": "Umumiy"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Boshlang‘ich ekran"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "Moslashtirish"
+    },
+    {
+      "name": "settings_library",
+      "value": "Kutubxona"
+    },
+    {
+      "name": "settings_reader",
+      "value": "O‘quvchi"
+    },
+    {
+      "name": "settings_data",
+      "value": "Ma’lumot"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Yuklamalar"
+    },
+    {
+      "name": "settings_browse",
+      "value": "Ko‘rish"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Qo‘shimcha"
+    },
+    {
+      "name": "settings_about",
+      "value": "Haqida"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "Kutubxona"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Yangilanishlar"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "Tarix"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "Ko‘rish"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "Yana"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Qo‘shimcha"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "Hisoblanmoqda…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "Xotira"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "Rasm keshini tozalash"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "Rasm keshi tozalandi"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "Cookie-larni tozalash"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "Barcha cookie-lar tozalandi"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "Zaxira va tiklash"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "Zaxirani eksport qilish"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "Zaxirani import qilish"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "Kuzatish"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList tokeni"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList kirish tokeni"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "Kirish tokenini joylashtiring (o‘chirish uchun bo‘sh qoldiring)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "O‘rnatilmagan"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "O‘rnatilgan"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "Token saqlandi"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "Token o‘chirildi"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "Zaxira eksport qilindi"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "Eksport bekor qilindi"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "Eksport muvaffaqiyatsiz"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "Import bekor qilindi"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "Noto‘g‘ri zaxira fayli"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "%d ta manga tiklandi"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "Import muvaffaqiyatsiz"
+    },
+    {
+      "name": "about_title",
+      "value": "Haqida"
+    },
+    {
+      "name": "about_version",
+      "value": "Versiya 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "Arxitektura Mihon (Apache-2.0) dan ilhomlangan. Onlayn manbalar kengaytma sifatida dinamik o‘rnatiladi, mahalliy manbalar esa o‘rnatilgan."
+    },
+    {
+      "name": "about_ack",
+      "value": "Ochiq manba minnatdorchiligi:\n· Mihon / Tachiyomi — ilova arxitekturasi va o‘zaro ta’sir dizayni (Apache-2.0)\n· Material Symbols — ilova ichidagi belgilar (Apache-2.0)\n· MangaDex — sinov ma’lumot manbai"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "Ko‘rish"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "Tarkib"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "NSFW manbalarini ko‘rsatish"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "Yoqilganda, kengaytmalari NSFW deb belgilagan manbalar Ko‘rishda paydo bo‘ladi"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Yuklamalar"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Tarmoq"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Faqat Wi-Fi orqali yuklash"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "Eslatma: joriy versiyada bu kalit o‘rinbosar; tarmoq turini aniqlash keyingi relizda keladi"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "Kutubxona"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "Filtrlash va saralash"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "Standart saralash"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "Sarlavha"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "Oxirgi bob"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "Qo‘shilgan sana"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "O‘qilmaganlar soni"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "Sarlavha bo‘yicha o‘sish tartibida"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "Standart filtr"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "O‘qilmagan"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "Yuklab olingan"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "Tugallanmagan"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Ko‘rsatish"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "Standart ko‘rinish"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "Panjara"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "Muqova panjarasi"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "Ro‘yxat"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "Panjara ustunlari"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "Avto"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 ustun"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 ustun"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 ustun"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "O‘qilmagan nishonlari"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "Yuklama nishonlari"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "O‘quvchi"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "O‘qish rejimi"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "Standart rejim"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "Chapdan o‘ngga"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "O‘ngdan chapga"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "Vertikal sahifalash"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "Ikki sahifa (landshaft)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Ko‘rsatish"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "Sahifa raqamini ko‘rsatish"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "O‘quvchi foni"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "Mavzuga rioya qilish"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "Oq"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "Qora"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "Kulrang"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "O‘quvchi yorqinligini tiklash"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "Yorqinlik tizimga rioya qilishga sozlandi"
+    }
+  ]
+}

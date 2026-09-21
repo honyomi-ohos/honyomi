@@ -1,0 +1,1216 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "MihonHarmony"
+    },
+    {
+      "name": "common_ok",
+      "value": "Ados"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Ezeztatu"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Berretsi"
+    },
+    {
+      "name": "common_delete",
+      "value": "Ezabatu"
+    },
+    {
+      "name": "common_retry",
+      "value": "Saiatu berriro"
+    },
+    {
+      "name": "common_search",
+      "value": "Bilatu"
+    },
+    {
+      "name": "common_all",
+      "value": "Guztiak"
+    },
+    {
+      "name": "common_close",
+      "value": "Itxi"
+    },
+    {
+      "name": "common_save",
+      "value": "Gorde"
+    },
+    {
+      "name": "common_install",
+      "value": "Instalatu"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "Desinstalatu"
+    },
+    {
+      "name": "common_update",
+      "value": "Eguneratu"
+    },
+    {
+      "name": "common_none",
+      "value": "Bat ere ez"
+    },
+    {
+      "name": "common_default",
+      "value": "Lehenetsia"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Itxura"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Hizkuntza"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Sistemari jarraitu"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Gaiaren modua"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Sistemari jarraitu"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Argia"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Iluna"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Azentu-kolorea"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Besteak"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED atzealde beltz hutsa"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Urdina"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "Berdea"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Arrosa"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Morea"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "Laranja"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "Duela %d min"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "Duela %d h"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "Duela %d e"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "Argitaratzen"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Bukatua"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "Etenaldian"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Bertan behera utzia"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Argitalpena osatuta"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Ezezaguna"
+    },
+    {
+      "name": "tab_library",
+      "value": "Liburutegia"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Eguneratzeak"
+    },
+    {
+      "name": "tab_history",
+      "value": "Historiala"
+    },
+    {
+      "name": "tab_browse",
+      "value": "Arakatu"
+    },
+    {
+      "name": "tab_more",
+      "value": "Gehiago"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "Egiaztapenaren zain…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "Egiaztapena osatuta"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "Giza egiaztapena"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "Egina"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "Egiaztapenaren emaitza gordeta"
+    },
+    {
+      "name": "more_title",
+      "value": "Gehiago"
+    },
+    {
+      "name": "more_version",
+      "value": "%s bertsioa"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Deskargatuak soilik (lineaz kanpoko irakurketa)"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Ezkutuko modua"
+    },
+    {
+      "name": "more_downloads",
+      "value": "Deskargak"
+    },
+    {
+      "name": "more_categories",
+      "value": "Kategoriak"
+    },
+    {
+      "name": "more_settings",
+      "value": "Ezarpenak"
+    },
+    {
+      "name": "more_about",
+      "value": "Honi buruz"
+    },
+    {
+      "name": "more_plugins",
+      "value": "Luzapenak"
+    },
+    {
+      "name": "categories_title",
+      "value": "Kategoriak"
+    },
+    {
+      "name": "categories_add",
+      "value": "Kategoria berria"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "Kategoriaren izena"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "Aldatu kategoriaren izena"
+    },
+    {
+      "name": "categories_rename",
+      "value": "Aldatu izena"
+    },
+    {
+      "name": "categories_hint",
+      "value": "Sakatu luze kategoria bat izena aldatzeko edo ezabatzeko; ezabatutako kategoriako mangak Lehenetsiara itzultzen dira"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "Hautatu kategoria"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "Kargatzen…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "Ezin izan da irudia kargatu"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "Sakatu berriro saiatzeko"
+    },
+    {
+      "name": "library_title",
+      "value": "Liburutegia"
+    },
+    {
+      "name": "library_empty",
+      "value": "Liburutegia hutsik dago; arakatu manga gehitzeko"
+    },
+    {
+      "name": "library_new_category",
+      "value": "Kategoria berria"
+    },
+    {
+      "name": "library_category_name",
+      "value": "Kategoriaren izena"
+    },
+    {
+      "name": "updates_title",
+      "value": "Eguneratzeak"
+    },
+    {
+      "name": "updates_empty",
+      "value": "Ez dago eguneratze berririk"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%d kapitulu berri aurkitu dira"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "Ez dago kapitulu berririk"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "Ezin izan da freskatu"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "Freskatzen…"
+    },
+    {
+      "name": "history_title",
+      "value": "Historiala"
+    },
+    {
+      "name": "history_clear",
+      "value": "Garbitu"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "Garbiketa berretsi?"
+    },
+    {
+      "name": "history_empty",
+      "value": "Oraindik ez dago irakurketa-historialik"
+    },
+    {
+      "name": "history_cleared",
+      "value": "Historiala garbitu da"
+    },
+    {
+      "name": "history_continue",
+      "value": "Jarraitu"
+    },
+    {
+      "name": "browse_title",
+      "value": "Arakatu"
+    },
+    {
+      "name": "browse_import",
+      "value": "Inportatu"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "Pluginak"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "Manga lokala"
+    },
+    {
+      "name": "browse_popular",
+      "value": "Ezagunak"
+    },
+    {
+      "name": "browse_latest",
+      "value": "Azkenak"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "Bilatu manga…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "Ez da mangarik aurkitu"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "Oraindik ez dago manga lokalik; sakatu Inportatu gehitzeko"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "Ezin izan da kargatu: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "Bilaketak huts egin du: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "Ezin izan da gehiago kargatu"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "Ezin izan dira xehetasunak ireki"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "Ezin izan dira fitxategiak hautatu"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "Inportatu %d fitxategi"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "Mangaren izena"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "Idatzi izen bat"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "%d fitxategi inportatu dira"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "Inportazioak huts egin du: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "Deskargak"
+    },
+    {
+      "name": "download_resume",
+      "value": "Berrekin"
+    },
+    {
+      "name": "download_pause",
+      "value": "Pausatu"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "Garbitu amaituak"
+    },
+    {
+      "name": "download_queue",
+      "value": "Deskarga-ilara"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "Ilaran"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "Deskargatzen"
+    },
+    {
+      "name": "download_state_done",
+      "value": "Egina"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "Huts egin du"
+    },
+    {
+      "name": "download_move_top",
+      "value": "Eraman goraino"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "Eraman beheraino"
+    },
+    {
+      "name": "download_deleted",
+      "value": "Ezabatuta"
+    },
+    {
+      "name": "download_empty",
+      "value": "Oraindik ez dago deskargarik"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "Deskargatuta"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d kapitulu"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "Ez dago kapitulurik"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "Sinkronizazioak huts egin du; datu lokalak erakusten"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "Liburutegira gehituta"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "Liburutegitik kenduta"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "Kapitulu guztiak irakurrita gisa markatuta"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "Deskarga ilaran"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "Konfiguratu lehenik AniList tokena"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "Bilatu AniListen"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "Mangaren izenburua"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "Ez dago bilaketa-emaitzarik"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "AniList bilaketak huts egin du"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "AniListi lotuta"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "AniListetik askatuta"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "Aurrerapena %d kapitulura sinkronizatuta"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "AniList sinkronizazioak huts egin du"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "Lokala"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "Liburutegian"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "Gehitu liburutegira"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "Jarraitu irakurtzen"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "Hasi irakurtzen"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "Oraindik ez dago kapitulurik"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "Tolestu"
+    },
+    {
+      "name": "detail_expand",
+      "value": "Zabaldu"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList jarraipena"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList tokena oraindik ez dago konfiguratuta"
+    },
+    {
+      "name": "detail_searching",
+      "value": "Bilatzen…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "Bilatu eta lotu"
+    },
+    {
+      "name": "detail_bind",
+      "value": "Lotu"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "%d kapitulura sinkronizatuta"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "Sinkronizatu aurrerapena"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "Askatu"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "Kapituluak (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "Goranzkoa"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "Beheranzkoa"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "Markatu denak irakurrita"
+    },
+    {
+      "name": "detail_read",
+      "value": "Irakurrita"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "Deskargatuta"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "Ilaran"
+    },
+    {
+      "name": "detail_download",
+      "value": "Deskargatu"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "Kapitulua ez da aurkitu"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "Ezin izan da kargatu: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "Ezkerretik eskuinera"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "Eskuinetik ezkerrera"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "Irakurketa-modua"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "Askea"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "Bertikala"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "Horizontala"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "Pantailaren orientazioa"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "Dagoeneko azken kapituluan zaude"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "Dagoeneko lehen kapituluan zaude"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "Dagoeneko lehen orrian zaude"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "Dagoeneko azken orrian zaude"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "Kapitulua kargatzen…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "Irakurlearen ezarpenak"
+    },
+    {
+      "name": "reader_background",
+      "value": "Atzealdea"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Automatikoa"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "Zuria"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "Grisa"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "Beltza"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "Erakutsi orri-zenbakia"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "Distira"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Automatikoa"
+    },
+    {
+      "name": "plugin_title",
+      "value": "Luzapenak"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "Instalatuta"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "Oraindik ez dago luzapenik; instalatu behean"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "Desgaitutako luzapenak edonoiz berriro gaitu daitezke"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "Eguneratuta"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "Instalatu fitxategitik"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "Aukeratu instalatzeko fitxategi bat"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "Prozesatzen…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": ".mihonplug / .zip plugin-paketeak onartzen ditu"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "Lineako biltegia"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "Konfiguratu biltegia"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "Freskatu"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "Oraindik ez dago plugin-biltegirik konfiguratuta"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "Biltegia kargatzen…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "Plugin-biltegiaren URLa"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "Idatzi plugin-biltegiaren URLa"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "Ezin izan da biltegia kargatu: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "Ezin izan da fitxategia hautatu"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "Instalatuta: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "%s instalatu da"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "Instalazioak huts egin du: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "Ekintzak huts egin du"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "Desinstalatuta: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "Desinstalazioak huts egin du"
+    },
+    {
+      "name": "settings_title",
+      "value": "Ezarpenak"
+    },
+    {
+      "name": "settings_general",
+      "value": "Orokorra"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Hasierako pantaila"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "Pertsonalizazioa"
+    },
+    {
+      "name": "settings_library",
+      "value": "Liburutegia"
+    },
+    {
+      "name": "settings_reader",
+      "value": "Irakurlea"
+    },
+    {
+      "name": "settings_data",
+      "value": "Datuak"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Deskargak"
+    },
+    {
+      "name": "settings_browse",
+      "value": "Arakatu"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Aurreratua"
+    },
+    {
+      "name": "settings_about",
+      "value": "Honi buruz"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "Liburutegia"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Eguneratzeak"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "Historiala"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "Arakatu"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "Gehiago"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Aurreratua"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "Kalkulatzen…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "Biltegiratzea"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "Garbitu irudi-cachea"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "Irudi-cachea garbitu da"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "Garbitu cookieak"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "Cookie guztiak garbitu dira"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "Babeskopia eta leheneratzea"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "Esportatu babeskopia"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "Inportatu babeskopia"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "Jarraipena"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList tokena"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList sarbide-tokena"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "Itsatsi sarbide-tokena (utzi hutsik garbitzeko)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "Ez da ezarri"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "Ezarrita"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "Tokena gordeta"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "Tokena garbitu da"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "Babeskopia esportatu da"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "Esportazioa bertan behera utzi da"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "Esportazioak huts egin du"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "Inportazioa bertan behera utzi da"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "Babeskopia-fitxategi baliogabea"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "%d manga leheneratu dira"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "Inportazioak huts egin du"
+    },
+    {
+      "name": "about_title",
+      "value": "Honi buruz"
+    },
+    {
+      "name": "about_version",
+      "value": "1.0.0 bertsioa"
+    },
+    {
+      "name": "about_desc",
+      "value": "Arkitektura Mihonen inspiratua (Apache-2.0). Lineako iturriak luzapen gisa instalatzen dira dinamikoki; iturri lokalak, berriz, barnean daude."
+    },
+    {
+      "name": "about_ack",
+      "value": "Kode irekiko esker onak:\n· Mihon / Tachiyomi — aplikazioaren arkitektura eta interakzio-diseinua (Apache-2.0)\n· Material Symbols — aplikazioko ikonoak (Apache-2.0)\n· MangaDex — proba-datuen iturria"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "Arakatu"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "Edukia"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "Erakutsi NSFW iturriak"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "Gaituz gero, beren luzapenek NSFW gisa markatutako iturriak Arakatu atalean agertuko dira"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Deskargak"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Sarea"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Deskargatu Wi-Fiz soilik"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "Oharra: etengailu hau leku-marka da bertsio honetan; sare-mota detekzioa etorkizuneko bertsio batean etorriko da"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "Liburutegia"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "Iragazi eta ordenatu"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "Ordena lehenetsia"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "Izenburua"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "Azken kapitulua"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "Gehitze-data"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "Irakurri gabeko kopurua"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "Ordenatu izenburuz goraka"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "Iragazki lehenetsia"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "Irakurri gabeak"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "Deskargatuak"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "Amaitu gabeak"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Bistaratzea"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "Ikuspegi lehenetsia"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "Sareta"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "Azalen sarea"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "Zerrenda"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "Sareta-zutabeak"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "Automatikoa"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 zutabe"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 zutabe"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 zutabe"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "Irakurri gabeko bereizgarriak"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "Deskarga-bereizgarriak"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "Irakurlea"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "Irakurketa-modua"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "Modu lehenetsia"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "Ezkerretik eskuinera"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "Eskuinetik ezkerrera"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "Orrikatze bertikala"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "Orri bikoitza (horizontala)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Bistaratzea"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "Erakutsi orri-zenbakia"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "Irakurlearen atzealdea"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "Gaiari jarraitu"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "Zuria"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "Beltza"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "Grisa"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "Berrezarri irakurlearen distira"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "Distira sistemari jarraitzeko ezarri da"
+    }
+  ]
+}

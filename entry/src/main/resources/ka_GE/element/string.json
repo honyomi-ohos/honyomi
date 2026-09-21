@@ -1,0 +1,1216 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "MihonHarmony"
+    },
+    {
+      "name": "common_ok",
+      "value": "კარგი"
+    },
+    {
+      "name": "common_cancel",
+      "value": "გაუქმება"
+    },
+    {
+      "name": "common_confirm",
+      "value": "დადასტურება"
+    },
+    {
+      "name": "common_delete",
+      "value": "წაშლა"
+    },
+    {
+      "name": "common_retry",
+      "value": "ხელახლა"
+    },
+    {
+      "name": "common_search",
+      "value": "ძებნა"
+    },
+    {
+      "name": "common_all",
+      "value": "ყველა"
+    },
+    {
+      "name": "common_close",
+      "value": "დახურვა"
+    },
+    {
+      "name": "common_save",
+      "value": "შენახვა"
+    },
+    {
+      "name": "common_install",
+      "value": "დაყენება"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "წაშლა"
+    },
+    {
+      "name": "common_update",
+      "value": "განახლება"
+    },
+    {
+      "name": "common_none",
+      "value": "არცერთი"
+    },
+    {
+      "name": "common_default",
+      "value": "ნაგულისხმევი"
+    },
+    {
+      "name": "appearance_title",
+      "value": "გარეგნობა"
+    },
+    {
+      "name": "appearance_language",
+      "value": "ენა"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "სისტემის მიყოლა"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "თემის რეჟიმი"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "სისტემის მიყოლა"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "ღია"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "მუქი"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "აქცენტის ფერი"
+    },
+    {
+      "name": "appearance_other",
+      "value": "სხვა"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED სუფთა შავი ფონი"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "ლურჯი"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "მწვანე"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "ვარდისფერი"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "იისფერი"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "ნარინჯისფერი"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d წთ წინ"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d სთ წინ"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d დღის წინ"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "მიმდინარე"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "დასრულებული"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "შეჩერებული"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "გაუქმებული"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "გამოცემა დასრულდა"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "უცნობი"
+    },
+    {
+      "name": "tab_library",
+      "value": "ბიბლიოთეკა"
+    },
+    {
+      "name": "tab_updates",
+      "value": "განახლებები"
+    },
+    {
+      "name": "tab_history",
+      "value": "ისტორია"
+    },
+    {
+      "name": "tab_browse",
+      "value": "დათვალიერება"
+    },
+    {
+      "name": "tab_more",
+      "value": "მეტი"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "ველოდებით შემოწმებას…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "შემოწმება დასრულდა"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "ადამიანის შემოწმება"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "მზადაა"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "შემოწმების შედეგი შენახულია"
+    },
+    {
+      "name": "more_title",
+      "value": "მეტი"
+    },
+    {
+      "name": "more_version",
+      "value": "ვერსია %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "მხოლოდ ჩამოტვირთულები (ოფლაინ კითხვა)"
+    },
+    {
+      "name": "more_incognito",
+      "value": "ინკოგნიტო"
+    },
+    {
+      "name": "more_downloads",
+      "value": "ჩამოტვირთვები"
+    },
+    {
+      "name": "more_categories",
+      "value": "კატეგორიები"
+    },
+    {
+      "name": "more_settings",
+      "value": "პარამეტრები"
+    },
+    {
+      "name": "more_about",
+      "value": "შესახებ"
+    },
+    {
+      "name": "more_plugins",
+      "value": "გაფართოებები"
+    },
+    {
+      "name": "categories_title",
+      "value": "კატეგორიები"
+    },
+    {
+      "name": "categories_add",
+      "value": "ახალი კატეგორია"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "კატეგორიის სახელი"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "კატეგორიის სახელის შეცვლა"
+    },
+    {
+      "name": "categories_rename",
+      "value": "სახელის შეცვლა"
+    },
+    {
+      "name": "categories_hint",
+      "value": "გრძელად დააჭირეთ კატეგორიას სახელის შესაცვლელად ან წასაშლელად; წაშლილი კატეგორიის მანგა ბრუნდება ნაგულისხმევში"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "აირჩიეთ კატეგორია"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "იტვირთება…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "სურათი ვერ ჩაიტვირთა"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "ხელახლა სცადეთ შეხებით"
+    },
+    {
+      "name": "library_title",
+      "value": "ბიბლიოთეკა"
+    },
+    {
+      "name": "library_empty",
+      "value": "ბიბლიოთეკა ცარიელია, დაამატეთ მანგა დათვალიერებით"
+    },
+    {
+      "name": "library_new_category",
+      "value": "ახალი კატეგორია"
+    },
+    {
+      "name": "library_category_name",
+      "value": "კატეგორიის სახელი"
+    },
+    {
+      "name": "updates_title",
+      "value": "განახლებები"
+    },
+    {
+      "name": "updates_empty",
+      "value": "ბოლო განახლებები არ არის"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "ნაპოვნია %d ახალი თავი"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "ახალი თავები არ არის"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "განახლება ვერ მოხერხდა"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "ახლდება…"
+    },
+    {
+      "name": "history_title",
+      "value": "ისტორია"
+    },
+    {
+      "name": "history_clear",
+      "value": "გასუფთავება"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "გასუფთავდეს?"
+    },
+    {
+      "name": "history_empty",
+      "value": "კითხვის ისტორია ჯერ არ არის"
+    },
+    {
+      "name": "history_cleared",
+      "value": "ისტორია გასუფთავდა"
+    },
+    {
+      "name": "history_continue",
+      "value": "გაგრძელება"
+    },
+    {
+      "name": "browse_title",
+      "value": "დათვალიერება"
+    },
+    {
+      "name": "browse_import",
+      "value": "იმპორტი"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "დანამატები"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "ადგილობრივი მანგა"
+    },
+    {
+      "name": "browse_popular",
+      "value": "პოპულარული"
+    },
+    {
+      "name": "browse_latest",
+      "value": "უახლესი"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "მანგის ძებნა…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "მანგა ვერ მოიძებნა"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "ადგილობრივი მანგა ჯერ არ არის, დააჭირეთ იმპორტს"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "ჩატვირთვა ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "ძებნა ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "მეტის ჩატვირთვა ვერ მოხერხდა"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "დეტალების გახსნა ვერ მოხერხდა"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "ფაილების არჩევა ვერ მოხერხდა"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "%d ფაილის იმპორტი"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "მანგის სახელი"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "გთხოვთ შეიყვანოთ სახელი"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "იმპორტირებულია %d ფაილი"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "იმპორტი ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "ჩამოტვირთვები"
+    },
+    {
+      "name": "download_resume",
+      "value": "გაგრძელება"
+    },
+    {
+      "name": "download_pause",
+      "value": "პაუზა"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "დასრულებულების გასუფთავება"
+    },
+    {
+      "name": "download_queue",
+      "value": "ჩამოტვირთვის რიგი"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "რიგში"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "იტვირთება"
+    },
+    {
+      "name": "download_state_done",
+      "value": "მზადაა"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "ვერ მოხერხდა"
+    },
+    {
+      "name": "download_move_top",
+      "value": "ზევით გადატანა"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "ქვევით გადატანა"
+    },
+    {
+      "name": "download_deleted",
+      "value": "წაიშალა"
+    },
+    {
+      "name": "download_empty",
+      "value": "ჩამოტვირთვები ჯერ არ არის"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "ჩამოტვირთულია"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d თავი"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "თავები არ არის"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "სინქრონიზაცია ვერ მოხერხდა, ნაჩვენებია ადგილობრივი მონაცემები"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "დაემატა ბიბლიოთეკაში"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "ამოიშალა ბიბლიოთეკიდან"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "ყველა თავი მონიშნულია წაკითხულად"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "დაემატა ჩამოტვირთვის რიგში"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "ჯერ დააყენეთ AniList ტოკენი"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "AniList-ის ძებნა"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "მანგის სათაური"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "შედეგები არ არის"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "AniList-ის ძებნა ვერ მოხერხდა"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "დაკავშირდა AniList-თან"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "გაუქმდა AniList-თან კავშირი"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "პროგრესი დასინქრონდა თავამდე %d"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "AniList-ის სინქრონიზაცია ვერ მოხერხდა"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "ადგილობრივი"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "ბიბლიოთეკაშია"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "ბიბლიოთეკაში დამატება"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "კითხვის გაგრძელება"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "კითხვის დაწყება"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "თავები ჯერ არ არის"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "ჩაკეცვა"
+    },
+    {
+      "name": "detail_expand",
+      "value": "გაშლა"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList თვალყური"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList ტოკენი ჯერ არ არის დაყენებული"
+    },
+    {
+      "name": "detail_searching",
+      "value": "მიმდინარეობს ძებნა…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "მოძებნა და დაკავშირება"
+    },
+    {
+      "name": "detail_bind",
+      "value": "დაკავშირება"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "დასინქრდა თავამდე %d"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "პროგრესის სინქრონიზაცია"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "გათიშვა"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "თავები (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "ზრდადი"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "კლებადი"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "ყველას წაკითხულად მონიშვნა"
+    },
+    {
+      "name": "detail_read",
+      "value": "წაკითხული"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "ჩამოტვირთული"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "რიგში"
+    },
+    {
+      "name": "detail_download",
+      "value": "ჩამოტვირთვა"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "თავი ვერ მოიძებნა"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "ჩატვირთვა ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "მარცხნიდან მარჯვნივ"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "მარჯვნიდან მარცხნივ"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "ვებტუნი"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "კითხვის რეჟიმი"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "თავისუფალი"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "პორტრეტი"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "ლანდშაფტი"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "ეკრანის ორიენტაცია"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "უკვე ბოლო თავზე ხართ"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "უკვე პირველ თავზე ხართ"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "უკვე პირველ გვერდზე ხართ"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "უკვე ბოლო გვერდზე ხართ"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "თავი იტვირთება…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "მკითხველის პარამეტრები"
+    },
+    {
+      "name": "reader_background",
+      "value": "ფონი"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "ავტო"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "თეთრი"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "ნაცრისფერი"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "შავი"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "გვერდის ნომრის ჩვენება"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "სიკაშკაშე"
+    },
+    {
+      "name": "reader_auto",
+      "value": "ავტო"
+    },
+    {
+      "name": "plugin_title",
+      "value": "გაფართოებები"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "დაყენებული"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "გაფართოებები ჯერ არ არის, დააყენეთ ქვემოთ"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "გამორთული გაფართოებები ნებისმიერ დროს შეიძლება ჩაირთოს"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "განახლებულია"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "ფაილიდან დაყენება"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "აირჩიეთ ფაილი დასაყენებლად"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "მუშავდება…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "მხარდაჭერილია .mihonplug / .zip დანამატის პაკეტები"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "ონლაინ საცავი"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "საცავის დაყენება"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "განახლება"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "დანამატის საცავი ჯერ არ არის დაყენებული"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "საცავი იტვირთება…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "დანამატის საცავის URL"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "შეიყვანეთ დანამატის საცავის URL"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "საცავის ჩატვირთვა ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "ფაილის არჩევა ვერ მოხერხდა"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "დაყენდა: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "დაყენდა %s"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "დაყენება ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "მოქმედება ვერ მოხერხდა"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "წაიშალა: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "წაშლა ვერ მოხერხდა"
+    },
+    {
+      "name": "settings_title",
+      "value": "პარამეტრები"
+    },
+    {
+      "name": "settings_general",
+      "value": "ზოგადი"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "საწყისი ეკრანი"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "პერსონალიზაცია"
+    },
+    {
+      "name": "settings_library",
+      "value": "ბიბლიოთეკა"
+    },
+    {
+      "name": "settings_reader",
+      "value": "მკითხველი"
+    },
+    {
+      "name": "settings_data",
+      "value": "მონაცემები"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "ჩამოტვირთვები"
+    },
+    {
+      "name": "settings_browse",
+      "value": "დათვალიერება"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "გაფართოებული"
+    },
+    {
+      "name": "settings_about",
+      "value": "შესახებ"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "ბიბლიოთეკა"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "განახლებები"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "ისტორია"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "დათვალიერება"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "მეტი"
+    },
+    {
+      "name": "advanced_title",
+      "value": "გაფართოებული"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "ითვლება…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "საცავი"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "სურათების ქეშის გასუფთავება"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "სურათების ქეში გასუფთავდა"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "ქუქიების გასუფთავება"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "ყველა ქუქი გასუფთავდა"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "სარეზერვო ასლი და აღდგენა"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "სარეზერვო ასლის ექსპორტი"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "სარეზერვო ასლის იმპორტი"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "თვალყური"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList ტოკენი"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList წვდომის ტოკენი"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "ჩასვით წვდომის ტოკენი (გასასუფთავებლად დატოვეთ ცარიელი)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "არ არის დაყენებული"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "დაყენებულია"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "ტოკენი შენახულია"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "ტოკენი გასუფთავდა"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "სარეზერვო ასლი გავიდა"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "ექსპორტი გაუქმდა"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "ექსპორტი ვერ მოხერხდა"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "იმპორტი გაუქმდა"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "არასწორი სარეზერვო ფაილი"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "აღდგა %d მანგა"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "იმპორტი ვერ მოხერხდა"
+    },
+    {
+      "name": "about_title",
+      "value": "შესახებ"
+    },
+    {
+      "name": "about_version",
+      "value": "ვერსია 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "არქიტექტურა შთაგონებულია Mihon-ით (Apache-2.0). ონლაინ წყაროები დინამიურად დგება გაფართოებებად, ადგილობრივი წყაროები კი ჩაშენებულია."
+    },
+    {
+      "name": "about_ack",
+      "value": "ღია კოდის მადლობები:\n· Mihon / Tachiyomi — აპის არქიტექტურა და ინტერაქციის დიზაინი (Apache-2.0)\n· Material Symbols — აპის ხატულები (Apache-2.0)\n· MangaDex — სატესტო მონაცემების წყარო"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "დათვალიერება"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "შიგთავსი"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "NSFW წყაროების ჩვენება"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "ჩართვისას, გაფართოებების მიერ NSFW-ად მონიშნული წყაროები გამოჩნდება დათვალიერებაში"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "ჩამოტვირთვები"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "ქსელი"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "ჩამოტვირთვა მხოლოდ Wi-Fi-ით"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "შენიშვნა: ამ ვერსიაში ეს გადამრთველი ადგილისმჭერია; ქსელის ტიპის ამოცნობა მოვა მომავალ გამოშვებაში"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "ბიბლიოთეკა"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "ფილტრი და დალაგება"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "ნაგულისხმევი დალაგება"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "სათაური"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "უახლესი თავი"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "დამატების თარიღი"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "წაუკითხავი რაოდენობა"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "სათაური ზრდადი თანმიმდევრობით"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "ნაგულისხმევი ფილტრი"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "წაუკითხავი"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "ჩამოტვირთული"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "დაუსრულებელი"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "ჩვენება"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "ნაგულისხმევი ხედი"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "ბადე"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "ყდის ბადე"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "სია"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "ბადის სვეტები"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "ავტო"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 სვეტი"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 სვეტი"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 სვეტი"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "წაუკითხავი ნიშნები"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "ჩამოტვირთვის ნიშნები"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "მკითხველი"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "კითხვის რეჟიმი"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "ნაგულისხმევი რეჟიმი"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "მარცხნიდან მარჯვნივ"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "მარჯვნიდან მარცხნივ"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "ვერტიკალური გვერდები"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "ვებტუნი"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "ორმაგი გვერდი (ლანდშაფტი)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "ჩვენება"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "გვერდის ნომრის ჩვენება"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "მკითხველის ფონი"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "თემის მიყოლა"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "თეთრი"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "შავი"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "ნაცრისფერი"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "მკითხველის სიკაშკაშის აღდგენა"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "სიკაშკაშე დაყენდა სისტემის მიყოლაზე"
+    }
+  ]
+}
