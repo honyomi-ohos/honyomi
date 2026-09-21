@@ -17,12 +17,12 @@ export struct BrowseSettingsPage {
   build() {
     NavDestination() {
       Column() {
-        PageHeader({ title: '浏览' })
+        PageHeader({ title: $r('app.string.browse_set_title') })
         Scroll() {
           Column() {
-            PrefGroup({ groupTitle: '内容' }) {
+            PrefGroup({ groupTitle: $r('app.string.browse_set_content') }) {
               SwitchRow({
-                title: '显示成人内容源 (NSFW)',
+                title: $r('app.string.browse_set_show_nsfw'),
                 isOn: this.showNsfw,
                 onChange: (value: boolean): void => {
                   this.showNsfw = value;
@@ -30,7 +30,7 @@ export struct BrowseSettingsPage {
                 }
               })
             }
-            Text('开启后，插件声明为成人内容的源会出现在浏览页中')
+            Text($r('app.string.browse_set_nsfw_hint'))
               .fontSize(12)
               .fontColor(this.pal.sub)
               .margin({ left: 20, top: 8 })

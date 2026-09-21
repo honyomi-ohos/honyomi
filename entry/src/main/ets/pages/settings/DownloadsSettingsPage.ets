@@ -17,12 +17,12 @@ export struct DownloadsSettingsPage {
   build() {
     NavDestination() {
       Column() {
-        PageHeader({ title: '下载' })
+        PageHeader({ title: $r('app.string.dl_set_title') })
         Scroll() {
           Column() {
-            PrefGroup({ groupTitle: '网络' }) {
+            PrefGroup({ groupTitle: $r('app.string.dl_set_network') }) {
               SwitchRow({
-                title: '仅 Wi-Fi 时下载',
+                title: $r('app.string.dl_set_wifi_only'),
                 isOn: this.wifiOnly,
                 onChange: (value: boolean): void => {
                   this.wifiOnly = value;
@@ -30,7 +30,7 @@ export struct DownloadsSettingsPage {
                 }
               })
             }
-            Text('说明：当前版本此开关为预留项，网络类型检测将在后续版本提供')
+            Text($r('app.string.dl_set_wifi_only_hint'))
               .fontSize(12)
               .fontColor(this.pal.sub)
               .margin({ left: 20, top: 8 })

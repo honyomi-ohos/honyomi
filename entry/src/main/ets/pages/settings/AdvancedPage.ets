@@ -14,13 +14,16 @@ import { InputDialog } from '../components/Dialogs';
 export struct AdvancedPage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @State cacheLabel: string = '计算中…';
-  @State tokenLabel: string = '未配置';
+  @State cacheLabel: string = '';
+  @State tokenLabel: string = '';
   @State busy: boolean = false;
 
   aboutToAppear(): void {
+    this.cacheLabel = Util.resStr(this.getUIContext(), $r('app.string.advanced_calculating'));
     this.refreshCacheLabel();
-    this.tokenLabel = Settings.getAnilistToken() === '' ? '未配置' : '已配置';
+    this.tokenLabel = Settings.getAnilistToken() === '' ?
+      Util.resStr(this.getUIContext(), $r('app.string.advanced_token_not_set')) :
+      Util.resStr(this.getUIContext(), $r('app.string.advanced_token_set'));
   }
 
   private refreshCacheLabel(): void {
@@ -37,13 +40,16 @@ export struct AdvancedPage {
   private showTokenDialog(): void {
     const dialog = new CustomDialogController({
       builder: InputDialog({
-        title: 'AniList 访问令牌',
-        placeholder: '粘贴 access token（留空清除）',
+        title: $r('app.string.advanced_token_title'),
+        placeholder: $r('app.string.advanced_token_hint'),
         onConfirm: (text: string): void => {
           const token = text.trim();
           Settings.setAnilistToken(token);
-          this.tokenLabel = token === '' ? '未配置' : '已配置';
-          Util.toast(this.getUIContext(), token === '' ? '已清除令牌' : '已保存令牌');
+          this.tokenLabel = token === '' ?
+            Util.resStr(this.getUIContext(), $r('app.string.advanced_token_not_set')) :
+            Util.resStr(this.getUIContext(), $r('app.string.advanced_token_set'));
+          Util.toastRes(this.getUIContext(), token === '' ?
+            $r('app.string.advanced_token_cleared') : $r('app.string.advanced_token_saved'));
         },
       }),
       autoCancel: true,
@@ -59,9 +65,9 @@ export struct AdvancedPage {
     try {
       const context = getContext(this) as common.UIAbilityContext;
       const ok = await BackupService.exportBackup(context);
-      Util.toast(this.getUIContext(), ok ? '备份已导出' : '已取消导出');
+      Util.toastRes(this.getUIContext(), ok ? $r('app.string.advanced_backup_exported') : $r('app.string.advanced_export_canceled'));
     } catch (e) {
-      Util.toast(this.getUIContext(), '导出失败');
+      Util.toastRes(this.getUIContext(), $r('app.string.advanced_export_failed'));
     }
     this.busy = false;
   }
@@ -75,15 +81,15 @@ export struct AdvancedPage {
       const context = getContext(this) as common.UIAbilityContext;
       const count = await BackupService.importBackup(context);
       if (count === -1) {
-        Util.toast(this.getUIContext(), '已取消导入');
+        Util.toastRes(this.getUIContext(), $r('app.string.advanced_import_canceled'));
       } else if (count === -2) {
-        Util.toast(this.getUIContext(), '备份文件无效');
+        Util.toastRes(this.getUIContext(), $r('app.string.advanced_backup_invalid'));
       } else {
-        Util.toast(this.getUIContext(), `已恢复 ${count} 部漫画`);
+        Util.toastRes(this.getUIContext(), $r('app.string.advanced_restored_manga'), [count]);
         AppStorage.setOrCreate('libDirty', (AppStorage.get<number>('libDirty') ?? 0) + 1);
       }
     } catch (e) {
-      Util.toast(this.getUIContext(), '导入失败');
+      Util.toastRes(this.getUIContext(), $r('app.string.advanced_import_failed'));
     }
     this.busy = false;
   }
@@ -91,32 +97,32 @@ export struct AdvancedPage {
   build() {
     NavDestination() {
       Column() {
-        PageHeader({ title: '高级' })
+        PageHeader({ title: $r('app.string.advanced_title') })
         Scroll() {
           Column() {
-            PrefGroup({ groupTitle: '存储' }) {
+            PrefGroup({ groupTitle: $r('app.string.advanced_storage') }) {
               TextRow({
-                title: '清除图片缓存',
+                title: $r('app.string.advanced_clear_image_cache'),
                 value: this.cacheLabel,
                 onTap: (): void => {
                   ImageCache.clearAll();
                   this.refreshCacheLabel();
-                  Util.toast(this.getUIContext(), '已清除图片缓存');
+                  Util.toastRes(this.getUIContext(), $r('app.string.advanced_image_cache_cleared'));
                 }
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
               TextRow({
-                title: '清除 Cookie',
+                title: $r('app.string.advanced_clear_cookies'),
                 onTap: (): void => {
                   CookieJar.clear();
-                  Util.toast(this.getUIContext(), '已清除全部 Cookie');
+                  Util.toastRes(this.getUIContext(), $r('app.string.advanced_cookies_cleared'));
                 }
               })
             }
 
-            PrefGroup({ groupTitle: '备份与还原' }) {
+            PrefGroup({ groupTitle: $r('app.string.advanced_backup_restore') }) {
               TextRow({
-                title: '导出备份',
+                title: $r('app.string.advanced_export_backup'),
                 value: 'JSON',
                 onTap: (): void => {
                   this.doExport();
@@ -124,7 +130,7 @@ export struct AdvancedPage {
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
               TextRow({
-                title: '导入备份',
+                title: $r('app.string.advanced_import_backup'),
                 value: 'JSON',
                 onTap: (): void => {
                   this.doImport();
@@ -132,9 +138,9 @@ export struct AdvancedPage {
               })
             }
 
-            PrefGroup({ groupTitle: '追踪服务' }) {
+            PrefGroup({ groupTitle: $r('app.string.advanced_tracking') }) {
               TextRow({
-                title: 'AniList 令牌',
+                title: $r('app.string.advanced_anilist_token'),
                 value: this.tokenLabel,
                 onTap: (): void => {
                   this.showTokenDialog();

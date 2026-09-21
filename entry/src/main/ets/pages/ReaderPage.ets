@@ -696,7 +696,7 @@ export struct ReaderPage {
   @Builder
   settingsSheet() {
     Column({ space: 0 }) {
-      Text('阅读器设置')
+      Text($r('app.string.reader_settings'))
         .fontSize(16)
         .fontWeight(FontWeight.Bold)
         .fontColor(this.pal.text)
@@ -705,15 +705,15 @@ export struct ReaderPage {
 
       // 背景色
       Column({ space: 8 }) {
-        Text('背景')
+        Text($r('app.string.reader_background'))
           .fontSize(13)
           .fontColor(this.pal.sub)
           .width('100%')
         Row({ space: 8 }) {
-          this.themeChip('自动', 3)
-          this.themeChip('白色', 0)
-          this.themeChip('灰色', 2)
-          this.themeChip('黑色', 1)
+          this.themeChip($r('app.string.reader_theme_auto'), 3)
+          this.themeChip($r('app.string.reader_theme_white'), 0)
+          this.themeChip($r('app.string.reader_theme_gray'), 2)
+          this.themeChip($r('app.string.reader_theme_black'), 1)
         }
         .width('100%')
       }
@@ -724,7 +724,7 @@ export struct ReaderPage {
 
       // 显示页码
       SwitchRow({
-        title: '显示页码',
+        title: $r('app.string.reader_show_page_number'),
         isOn: this.showPageNumber,
         onChange: (value: boolean): void => {
           this.showPageNumber = value;
@@ -736,7 +736,7 @@ export struct ReaderPage {
 
       // 亮度
       Row() {
-        Text('亮度')
+        Text($r('app.string.reader_brightness'))
           .fontSize(16)
           .fontColor(this.pal.text)
           .width(64)
@@ -752,7 +752,7 @@ export struct ReaderPage {
               this.applyBrightness();
             }
           })
-        Text(this.brightLv === 0 ? '自动' : `${Math.round(this.brightLv * 100)}%`)
+        Text(this.brightLv === 0 ? $r('app.string.reader_auto') : `${Math.round(this.brightLv * 100)}%`)
           .fontSize(12)
           .fontColor(this.pal.sub)
           .width(44)
@@ -769,7 +769,7 @@ export struct ReaderPage {
   }
 
   @Builder
-  themeChip(label: string, value: number) {
+  themeChip(label: ResourceStr, value: number) {
     Text(label)
       .fontSize(13)
       .fontColor(this.readerTheme === value ? '#FFFFFF' : this.pal.text)

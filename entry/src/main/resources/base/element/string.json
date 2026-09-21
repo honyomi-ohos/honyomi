@@ -1,176 +1,1216 @@
 {
-  "string": [
-    {
-      "name": "module_desc",
-      "value": "module description"
-    },
-    {
-      "name": "EntryAbility_desc",
-      "value": "description"
-    },
-    {
-      "name": "EntryAbility_label",
-      "value": "MihonHarmony"
-    },
-    {
-      "name": "common_ok",
-      "value": "确定"
-    },
-    {
-      "name": "common_cancel",
-      "value": "取消"
-    },
-    {
-      "name": "common_confirm",
-      "value": "确认"
-    },
-    {
-      "name": "common_delete",
-      "value": "删除"
-    },
-    {
-      "name": "common_retry",
-      "value": "重试"
-    },
-    {
-      "name": "common_search",
-      "value": "搜索"
-    },
-    {
-      "name": "common_all",
-      "value": "全部"
-    },
-    {
-      "name": "common_close",
-      "value": "关闭"
-    },
-    {
-      "name": "common_save",
-      "value": "保存"
-    },
-    {
-      "name": "common_install",
-      "value": "安装"
-    },
-    {
-      "name": "common_uninstall",
-      "value": "卸载"
-    },
-    {
-      "name": "common_update",
-      "value": "更新"
-    },
-    {
-      "name": "common_none",
-      "value": "无"
-    },
-    {
-      "name": "common_default",
-      "value": "默认"
-    },
-    {
-      "name": "appearance_title",
-      "value": "外观"
-    },
-    {
-      "name": "appearance_language",
-      "value": "语言"
-    },
-    {
-      "name": "lang_follow_system",
-      "value": "跟随系统"
-    },
-    {
-      "name": "lang_simplified_chinese",
-      "value": "简体中文"
-    },
-    {
-      "name": "lang_english",
-      "value": "English"
-    },
-    {
-      "name": "appearance_theme_mode",
-      "value": "主题模式"
-    },
-    {
-      "name": "appearance_theme_auto",
-      "value": "跟随系统"
-    },
-    {
-      "name": "appearance_theme_light",
-      "value": "浅色"
-    },
-    {
-      "name": "appearance_theme_dark",
-      "value": "深色"
-    },
-    {
-      "name": "appearance_accent_color",
-      "value": "主题色"
-    },
-    {
-      "name": "appearance_other",
-      "value": "其他"
-    },
-    {
-      "name": "appearance_amoled",
-      "value": "AMOLED 纯黑背景"
-    },
-    {
-      "name": "theme_accent_blue",
-      "value": "蓝色"
-    },
-    {
-      "name": "theme_accent_green",
-      "value": "绿色"
-    },
-    {
-      "name": "theme_accent_pink",
-      "value": "粉色"
-    },
-    {
-      "name": "theme_accent_purple",
-      "value": "紫色"
-    },
-    {
-      "name": "theme_accent_orange",
-      "value": "橙色"
-    },
-    {
-      "name": "util_time_minutes_ago",
-      "value": "%d 分钟前"
-    },
-    {
-      "name": "util_time_hours_ago",
-      "value": "%d 小时前"
-    },
-    {
-      "name": "util_time_days_ago",
-      "value": "%d 天前"
-    },
-    {
-      "name": "util_status_ongoing",
-      "value": "连载中"
-    },
-    {
-      "name": "util_status_completed",
-      "value": "已完结"
-    },
-    {
-      "name": "util_status_hiatus",
-      "value": "休刊中"
-    },
-    {
-      "name": "util_status_cancelled",
-      "value": "已弃坑"
-    },
-    {
-      "name": "util_status_publication_complete",
-      "value": "出版完毕"
-    },
-    {
-      "name": "util_status_unknown",
-      "value": "未知"
-    }
-  ]
+    "string":  [
+                   {
+                       "name":  "module_desc",
+                       "value":  "module description"
+                   },
+                   {
+                       "name":  "EntryAbility_desc",
+                       "value":  "description"
+                   },
+                   {
+                       "name":  "EntryAbility_label",
+                       "value":  "MihonHarmony"
+                   },
+                   {
+                       "name":  "common_ok",
+                       "value":  "确定"
+                   },
+                   {
+                       "name":  "common_cancel",
+                       "value":  "取消"
+                   },
+                   {
+                       "name":  "common_confirm",
+                       "value":  "确认"
+                   },
+                   {
+                       "name":  "common_delete",
+                       "value":  "删除"
+                   },
+                   {
+                       "name":  "common_retry",
+                       "value":  "重试"
+                   },
+                   {
+                       "name":  "common_search",
+                       "value":  "搜索"
+                   },
+                   {
+                       "name":  "common_all",
+                       "value":  "全部"
+                   },
+                   {
+                       "name":  "common_close",
+                       "value":  "关闭"
+                   },
+                   {
+                       "name":  "common_save",
+                       "value":  "保存"
+                   },
+                   {
+                       "name":  "common_install",
+                       "value":  "安装"
+                   },
+                   {
+                       "name":  "common_uninstall",
+                       "value":  "卸载"
+                   },
+                   {
+                       "name":  "common_update",
+                       "value":  "更新"
+                   },
+                   {
+                       "name":  "common_none",
+                       "value":  "无"
+                   },
+                   {
+                       "name":  "common_default",
+                       "value":  "默认"
+                   },
+                   {
+                       "name":  "appearance_title",
+                       "value":  "外观"
+                   },
+                   {
+                       "name":  "appearance_language",
+                       "value":  "语言"
+                   },
+                   {
+                       "name":  "lang_follow_system",
+                       "value":  "跟随系统"
+                   },
+                   {
+                       "name":  "lang_simplified_chinese",
+                       "value":  "简体中文"
+                   },
+                   {
+                       "name":  "lang_english",
+                       "value":  "English"
+                   },
+                   {
+                       "name":  "appearance_theme_mode",
+                       "value":  "主题模式"
+                   },
+                   {
+                       "name":  "appearance_theme_auto",
+                       "value":  "跟随系统"
+                   },
+                   {
+                       "name":  "appearance_theme_light",
+                       "value":  "浅色"
+                   },
+                   {
+                       "name":  "appearance_theme_dark",
+                       "value":  "深色"
+                   },
+                   {
+                       "name":  "appearance_accent_color",
+                       "value":  "主题色"
+                   },
+                   {
+                       "name":  "appearance_other",
+                       "value":  "其他"
+                   },
+                   {
+                       "name":  "appearance_amoled",
+                       "value":  "AMOLED 纯黑背景"
+                   },
+                   {
+                       "name":  "theme_accent_blue",
+                       "value":  "蓝色"
+                   },
+                   {
+                       "name":  "theme_accent_green",
+                       "value":  "绿色"
+                   },
+                   {
+                       "name":  "theme_accent_pink",
+                       "value":  "粉色"
+                   },
+                   {
+                       "name":  "theme_accent_purple",
+                       "value":  "紫色"
+                   },
+                   {
+                       "name":  "theme_accent_orange",
+                       "value":  "橙色"
+                   },
+                   {
+                       "name":  "util_time_minutes_ago",
+                       "value":  "%d 分钟前"
+                   },
+                   {
+                       "name":  "util_time_hours_ago",
+                       "value":  "%d 小时前"
+                   },
+                   {
+                       "name":  "util_time_days_ago",
+                       "value":  "%d 天前"
+                   },
+                   {
+                       "name":  "util_status_ongoing",
+                       "value":  "连载中"
+                   },
+                   {
+                       "name":  "util_status_completed",
+                       "value":  "已完结"
+                   },
+                   {
+                       "name":  "util_status_hiatus",
+                       "value":  "休刊中"
+                   },
+                   {
+                       "name":  "util_status_cancelled",
+                       "value":  "已弃坑"
+                   },
+                   {
+                       "name":  "util_status_publication_complete",
+                       "value":  "出版完毕"
+                   },
+                   {
+                       "name":  "util_status_unknown",
+                       "value":  "未知"
+                   },
+                   {
+                       "name":  "tab_library",
+                       "value":  "书架"
+                   },
+                   {
+                       "name":  "tab_updates",
+                       "value":  "更新"
+                   },
+                   {
+                       "name":  "tab_history",
+                       "value":  "历史"
+                   },
+                   {
+                       "name":  "tab_browse",
+                       "value":  "浏览"
+                   },
+                   {
+                       "name":  "tab_more",
+                       "value":  "更多"
+                   },
+                   {
+                       "name":  "tab_cf_waiting",
+                       "value":  "等待验证完成…"
+                   },
+                   {
+                       "name":  "tab_cf_verified",
+                       "value":  "验证完成"
+                   },
+                   {
+                       "name":  "tab_cf_title",
+                       "value":  "人机验证"
+                   },
+                   {
+                       "name":  "tab_cf_done",
+                       "value":  "完成"
+                   },
+                   {
+                       "name":  "tab_cf_saved",
+                       "value":  "已保存验证结果"
+                   },
+                   {
+                       "name":  "more_title",
+                       "value":  "更多"
+                   },
+                   {
+                       "name":  "more_version",
+                       "value":  "版本 %s"
+                   },
+                   {
+                       "name":  "more_downloaded_only",
+                       "value":  "仅下载（离线阅读）"
+                   },
+                   {
+                       "name":  "more_incognito",
+                       "value":  "无痕浏览"
+                   },
+                   {
+                       "name":  "more_downloads",
+                       "value":  "下载管理"
+                   },
+                   {
+                       "name":  "more_categories",
+                       "value":  "分类"
+                   },
+                   {
+                       "name":  "more_settings",
+                       "value":  "设置"
+                   },
+                   {
+                       "name":  "more_about",
+                       "value":  "关于"
+                   },
+                   {
+                       "name":  "more_plugins",
+                       "value":  "插件管理"
+                   },
+                   {
+                       "name":  "categories_title",
+                       "value":  "分类"
+                   },
+                   {
+                       "name":  "categories_add",
+                       "value":  "新建分类"
+                   },
+                   {
+                       "name":  "categories_name_placeholder",
+                       "value":  "分类名称"
+                   },
+                   {
+                       "name":  "categories_rename_category",
+                       "value":  "重命名分类"
+                   },
+                   {
+                       "name":  "categories_rename",
+                       "value":  "重命名"
+                   },
+                   {
+                       "name":  "categories_hint",
+                       "value":  "长按分类可重命名或删除；删除后其中的漫画会移回「默认」分类"
+                   },
+                   {
+                       "name":  "dialog_pick_category",
+                       "value":  "选择分类"
+                   },
+                   {
+                       "name":  "viewer_loading",
+                       "value":  "加载中…"
+                   },
+                   {
+                       "name":  "viewer_load_failed",
+                       "value":  "图片加载失败"
+                   },
+                   {
+                       "name":  "viewer_tap_retry",
+                       "value":  "点按重试"
+                   },
+                   {
+                       "name":  "library_title",
+                       "value":  "书架"
+                   },
+                   {
+                       "name":  "library_empty",
+                       "value":  "书架为空，去浏览页添加漫画吧"
+                   },
+                   {
+                       "name":  "library_new_category",
+                       "value":  "新建分类"
+                   },
+                   {
+                       "name":  "library_category_name",
+                       "value":  "分类名称"
+                   },
+                   {
+                       "name":  "updates_title",
+                       "value":  "更新"
+                   },
+                   {
+                       "name":  "updates_empty",
+                       "value":  "最近没有更新"
+                   },
+                   {
+                       "name":  "updates_found_new",
+                       "value":  "发现 %d 个新章节"
+                   },
+                   {
+                       "name":  "updates_no_new",
+                       "value":  "没有新章节"
+                   },
+                   {
+                       "name":  "updates_refresh_failed",
+                       "value":  "刷新失败"
+                   },
+                   {
+                       "name":  "updates_refreshing",
+                       "value":  "刷新中…"
+                   },
+                   {
+                       "name":  "history_title",
+                       "value":  "历史"
+                   },
+                   {
+                       "name":  "history_clear",
+                       "value":  "清除"
+                   },
+                   {
+                       "name":  "history_confirm_clear",
+                       "value":  "确认清除？"
+                   },
+                   {
+                       "name":  "history_empty",
+                       "value":  "还没有阅读记录"
+                   },
+                   {
+                       "name":  "history_cleared",
+                       "value":  "历史已清除"
+                   },
+                   {
+                       "name":  "history_continue",
+                       "value":  "继续"
+                   },
+                   {
+                       "name":  "browse_title",
+                       "value":  "浏览"
+                   },
+                   {
+                       "name":  "browse_import",
+                       "value":  "导入"
+                   },
+                   {
+                       "name":  "browse_plugins",
+                       "value":  "插件"
+                   },
+                   {
+                       "name":  "browse_local_source_name",
+                       "value":  "本地漫画"
+                   },
+                   {
+                       "name":  "browse_popular",
+                       "value":  "热门"
+                   },
+                   {
+                       "name":  "browse_latest",
+                       "value":  "最新"
+                   },
+                   {
+                       "name":  "browse_search_hint",
+                       "value":  "搜索漫画…"
+                   },
+                   {
+                       "name":  "browse_no_results",
+                       "value":  "没有找到漫画"
+                   },
+                   {
+                       "name":  "browse_local_empty",
+                       "value":  "还没有本地漫画，点击导入添加"
+                   },
+                   {
+                       "name":  "browse_load_failed",
+                       "value":  "加载失败：%s"
+                   },
+                   {
+                       "name":  "browse_search_failed",
+                       "value":  "搜索失败：%s"
+                   },
+                   {
+                       "name":  "browse_load_more_failed",
+                       "value":  "加载更多失败"
+                   },
+                   {
+                       "name":  "browse_open_detail_failed",
+                       "value":  "打开详情失败"
+                   },
+                   {
+                       "name":  "browse_pick_file_failed",
+                       "value":  "选择文件失败"
+                   },
+                   {
+                       "name":  "browse_import_title",
+                       "value":  "导入 %d 个文件"
+                   },
+                   {
+                       "name":  "browse_manga_name_hint",
+                       "value":  "漫画名称"
+                   },
+                   {
+                       "name":  "browse_input_name",
+                       "value":  "请输入名称"
+                   },
+                   {
+                       "name":  "browse_import_done",
+                       "value":  "已导入 %d 个文件"
+                   },
+                   {
+                       "name":  "browse_import_failed",
+                       "value":  "导入失败：%s"
+                   },
+                   {
+                       "name":  "download_title",
+                       "value":  "下载"
+                   },
+                   {
+                       "name":  "download_resume",
+                       "value":  "继续"
+                   },
+                   {
+                       "name":  "download_pause",
+                       "value":  "暂停"
+                   },
+                   {
+                       "name":  "download_clear_finished",
+                       "value":  "清除已完成"
+                   },
+                   {
+                       "name":  "download_queue",
+                       "value":  "下载队列"
+                   },
+                   {
+                       "name":  "download_state_queued",
+                       "value":  "排队中"
+                   },
+                   {
+                       "name":  "download_state_downloading",
+                       "value":  "下载中"
+                   },
+                   {
+                       "name":  "download_state_done",
+                       "value":  "已完成"
+                   },
+                   {
+                       "name":  "download_state_failed",
+                       "value":  "失败"
+                   },
+                   {
+                       "name":  "download_move_top",
+                       "value":  "置顶"
+                   },
+                   {
+                       "name":  "download_move_bottom",
+                       "value":  "移到底部"
+                   },
+                   {
+                       "name":  "download_deleted",
+                       "value":  "已删除"
+                   },
+                   {
+                       "name":  "download_empty",
+                       "value":  "还没有下载内容"
+                   },
+                   {
+                       "name":  "download_status_downloaded",
+                       "value":  "已下载"
+                   },
+                   {
+                       "name":  "download_chapter_count",
+                       "value":  "%d 章"
+                   },
+                   {
+                       "name":  "detail_no_chapters",
+                       "value":  "没有章节"
+                   },
+                   {
+                       "name":  "detail_sync_failed_local",
+                       "value":  "同步失败，已显示本地数据"
+                   },
+                   {
+                       "name":  "detail_added_to_library",
+                       "value":  "已加入书架"
+                   },
+                   {
+                       "name":  "detail_removed_from_library",
+                       "value":  "已移出书架"
+                   },
+                   {
+                       "name":  "detail_all_marked_read",
+                       "value":  "已全部标记为已读"
+                   },
+                   {
+                       "name":  "detail_download_queued",
+                       "value":  "已加入下载队列"
+                   },
+                   {
+                       "name":  "detail_config_anilist_token",
+                       "value":  "请先配置 AniList Token"
+                   },
+                   {
+                       "name":  "detail_search_anilist",
+                       "value":  "搜索 AniList"
+                   },
+                   {
+                       "name":  "detail_manga_title_hint",
+                       "value":  "漫画标题"
+                   },
+                   {
+                       "name":  "detail_no_search_results",
+                       "value":  "没有搜索结果"
+                   },
+                   {
+                       "name":  "detail_anilist_search_failed",
+                       "value":  "AniList 搜索失败"
+                   },
+                   {
+                       "name":  "detail_anilist_bound",
+                       "value":  "已绑定 AniList"
+                   },
+                   {
+                       "name":  "detail_anilist_unbound",
+                       "value":  "已解绑 AniList"
+                   },
+                   {
+                       "name":  "detail_synced_progress",
+                       "value":  "已同步进度到第 %d 话"
+                   },
+                   {
+                       "name":  "detail_anilist_sync_failed",
+                       "value":  "AniList 同步失败"
+                   },
+                   {
+                       "name":  "detail_status_local",
+                       "value":  "本地"
+                   },
+                   {
+                       "name":  "detail_in_library",
+                       "value":  "已在书架"
+                   },
+                   {
+                       "name":  "detail_add_to_library",
+                       "value":  "加入书架"
+                   },
+                   {
+                       "name":  "detail_continue_reading",
+                       "value":  "继续阅读"
+                   },
+                   {
+                       "name":  "detail_start_reading",
+                       "value":  "开始阅读"
+                   },
+                   {
+                       "name":  "detail_no_chapters_yet",
+                       "value":  "暂无章节"
+                   },
+                   {
+                       "name":  "detail_collapse",
+                       "value":  "收起"
+                   },
+                   {
+                       "name":  "detail_expand",
+                       "value":  "展开"
+                   },
+                   {
+                       "name":  "detail_anilist_tracking",
+                       "value":  "AniList 追踪"
+                   },
+                   {
+                       "name":  "detail_anilist_token_hint",
+                       "value":  "尚未配置 AniList Token"
+                   },
+                   {
+                       "name":  "detail_searching",
+                       "value":  "搜索中…"
+                   },
+                   {
+                       "name":  "detail_search_and_bind",
+                       "value":  "搜索并绑定"
+                   },
+                   {
+                       "name":  "detail_bind",
+                       "value":  "绑定"
+                   },
+                   {
+                       "name":  "detail_synced_to_chapter",
+                       "value":  "已同步到第 %d 话"
+                   },
+                   {
+                       "name":  "detail_sync_progress",
+                       "value":  "同步进度"
+                   },
+                   {
+                       "name":  "detail_unbind",
+                       "value":  "解绑"
+                   },
+                   {
+                       "name":  "detail_chapters_count",
+                       "value":  "章节（%d）"
+                   },
+                   {
+                       "name":  "detail_sort_asc",
+                       "value":  "正序"
+                   },
+                   {
+                       "name":  "detail_sort_desc",
+                       "value":  "倒序"
+                   },
+                   {
+                       "name":  "detail_mark_all_read",
+                       "value":  "全部已读"
+                   },
+                   {
+                       "name":  "detail_read",
+                       "value":  "已读"
+                   },
+                   {
+                       "name":  "detail_downloaded",
+                       "value":  "已下载"
+                   },
+                   {
+                       "name":  "detail_in_queue",
+                       "value":  "队列中"
+                   },
+                   {
+                       "name":  "detail_download",
+                       "value":  "下载"
+                   },
+                   {
+                       "name":  "reader_chapter_not_found",
+                       "value":  "章节不存在"
+                   },
+                   {
+                       "name":  "reader_load_failed",
+                       "value":  "加载失败：%s"
+                   },
+                   {
+                       "name":  "reader_mode_ltr",
+                       "value":  "从左到右"
+                   },
+                   {
+                       "name":  "reader_mode_rtl",
+                       "value":  "从右到左"
+                   },
+                   {
+                       "name":  "reader_mode_webtoon",
+                       "value":  "条漫"
+                   },
+                   {
+                       "name":  "reader_reading_mode",
+                       "value":  "阅读模式"
+                   },
+                   {
+                       "name":  "reader_orientation_free",
+                       "value":  "自由"
+                   },
+                   {
+                       "name":  "reader_orientation_portrait",
+                       "value":  "竖屏"
+                   },
+                   {
+                       "name":  "reader_orientation_landscape",
+                       "value":  "横屏"
+                   },
+                   {
+                       "name":  "reader_screen_orientation",
+                       "value":  "屏幕方向"
+                   },
+                   {
+                       "name":  "reader_last_chapter",
+                       "value":  "已经是最后一章"
+                   },
+                   {
+                       "name":  "reader_first_chapter",
+                       "value":  "已经是第一章"
+                   },
+                   {
+                       "name":  "reader_first_page",
+                       "value":  "已经是第一页"
+                   },
+                   {
+                       "name":  "reader_last_page",
+                       "value":  "已经是最后一页"
+                   },
+                   {
+                       "name":  "reader_loading_chapter",
+                       "value":  "正在加载章节…"
+                   },
+                   {
+                       "name":  "reader_settings",
+                       "value":  "阅读器设置"
+                   },
+                   {
+                       "name":  "reader_background",
+                       "value":  "背景"
+                   },
+                   {
+                       "name":  "reader_theme_auto",
+                       "value":  "自动"
+                   },
+                   {
+                       "name":  "reader_theme_white",
+                       "value":  "白色"
+                   },
+                   {
+                       "name":  "reader_theme_gray",
+                       "value":  "灰色"
+                   },
+                   {
+                       "name":  "reader_theme_black",
+                       "value":  "黑色"
+                   },
+                   {
+                       "name":  "reader_show_page_number",
+                       "value":  "显示页码"
+                   },
+                   {
+                       "name":  "reader_brightness",
+                       "value":  "亮度"
+                   },
+                   {
+                       "name":  "reader_auto",
+                       "value":  "自动"
+                   },
+                   {
+                       "name":  "plugin_title",
+                       "value":  "插件管理"
+                   },
+                   {
+                       "name":  "plugin_installed_section",
+                       "value":  "已安装"
+                   },
+                   {
+                       "name":  "plugin_empty",
+                       "value":  "暂无插件，从下方安装"
+                   },
+                   {
+                       "name":  "plugin_disable_hint",
+                       "value":  "停用后可在需要时重新开启"
+                   },
+                   {
+                       "name":  "plugin_up_to_date",
+                       "value":  "已是最新版本"
+                   },
+                   {
+                       "name":  "plugin_local_install",
+                       "value":  "从文件安装"
+                   },
+                   {
+                       "name":  "plugin_install_from_file",
+                       "value":  "选择文件安装"
+                   },
+                   {
+                       "name":  "plugin_processing",
+                       "value":  "处理中…"
+                   },
+                   {
+                       "name":  "plugin_package_hint",
+                       "value":  "支持 .mihonplug / .zip 插件包"
+                   },
+                   {
+                       "name":  "plugin_repo",
+                       "value":  "在线仓库"
+                   },
+                   {
+                       "name":  "plugin_repo_config",
+                       "value":  "配置仓库"
+                   },
+                   {
+                       "name":  "plugin_repo_refresh",
+                       "value":  "刷新"
+                   },
+                   {
+                       "name":  "plugin_repo_hint",
+                       "value":  "尚未配置插件仓库"
+                   },
+                   {
+                       "name":  "plugin_repo_loading",
+                       "value":  "仓库加载中…"
+                   },
+                   {
+                       "name":  "plugin_repo_url_title",
+                       "value":  "插件仓库地址"
+                   },
+                   {
+                       "name":  "plugin_repo_url_hint",
+                       "value":  "请输入插件仓库地址"
+                   },
+                   {
+                       "name":  "plugin_repo_load_failed",
+                       "value":  "仓库加载失败：%s"
+                   },
+                   {
+                       "name":  "plugin_pick_file_failed",
+                       "value":  "选择文件失败"
+                   },
+                   {
+                       "name":  "plugin_installed",
+                       "value":  "已安装：%s"
+                   },
+                   {
+                       "name":  "plugin_installed_name",
+                       "value":  "已安装 %s"
+                   },
+                   {
+                       "name":  "plugin_install_failed",
+                       "value":  "安装失败：%s"
+                   },
+                   {
+                       "name":  "plugin_action_failed",
+                       "value":  "操作失败"
+                   },
+                   {
+                       "name":  "plugin_uninstalled",
+                       "value":  "已卸载：%s"
+                   },
+                   {
+                       "name":  "plugin_uninstall_failed",
+                       "value":  "卸载失败"
+                   },
+                   {
+                       "name":  "settings_title",
+                       "value":  "设置"
+                   },
+                   {
+                       "name":  "settings_general",
+                       "value":  "常规"
+                   },
+                   {
+                       "name":  "settings_start_tab",
+                       "value":  "启动页面"
+                   },
+                   {
+                       "name":  "settings_personalization",
+                       "value":  "个性化"
+                   },
+                   {
+                       "name":  "settings_library",
+                       "value":  "书架"
+                   },
+                   {
+                       "name":  "settings_reader",
+                       "value":  "阅读器"
+                   },
+                   {
+                       "name":  "settings_data",
+                       "value":  "数据"
+                   },
+                   {
+                       "name":  "settings_downloads",
+                       "value":  "下载"
+                   },
+                   {
+                       "name":  "settings_browse",
+                       "value":  "浏览"
+                   },
+                   {
+                       "name":  "settings_advanced",
+                       "value":  "高级"
+                   },
+                   {
+                       "name":  "settings_about",
+                       "value":  "关于"
+                   },
+                   {
+                       "name":  "settings_tab_library",
+                       "value":  "书架"
+                   },
+                   {
+                       "name":  "settings_tab_updates",
+                       "value":  "更新"
+                   },
+                   {
+                       "name":  "settings_tab_history",
+                       "value":  "历史"
+                   },
+                   {
+                       "name":  "settings_tab_browse",
+                       "value":  "浏览"
+                   },
+                   {
+                       "name":  "settings_tab_more",
+                       "value":  "更多"
+                   },
+                   {
+                       "name":  "advanced_title",
+                       "value":  "高级"
+                   },
+                   {
+                       "name":  "advanced_calculating",
+                       "value":  "计算中…"
+                   },
+                   {
+                       "name":  "advanced_storage",
+                       "value":  "存储"
+                   },
+                   {
+                       "name":  "advanced_clear_image_cache",
+                       "value":  "清除图片缓存"
+                   },
+                   {
+                       "name":  "advanced_image_cache_cleared",
+                       "value":  "已清除图片缓存"
+                   },
+                   {
+                       "name":  "advanced_clear_cookies",
+                       "value":  "清除 Cookie"
+                   },
+                   {
+                       "name":  "advanced_cookies_cleared",
+                       "value":  "已清除全部 Cookie"
+                   },
+                   {
+                       "name":  "advanced_backup_restore",
+                       "value":  "备份与还原"
+                   },
+                   {
+                       "name":  "advanced_export_backup",
+                       "value":  "导出备份"
+                   },
+                   {
+                       "name":  "advanced_import_backup",
+                       "value":  "导入备份"
+                   },
+                   {
+                       "name":  "advanced_tracking",
+                       "value":  "追踪服务"
+                   },
+                   {
+                       "name":  "advanced_anilist_token",
+                       "value":  "AniList 令牌"
+                   },
+                   {
+                       "name":  "advanced_token_title",
+                       "value":  "AniList 访问令牌"
+                   },
+                   {
+                       "name":  "advanced_token_hint",
+                       "value":  "粘贴 access token（留空清除）"
+                   },
+                   {
+                       "name":  "advanced_token_not_set",
+                       "value":  "未配置"
+                   },
+                   {
+                       "name":  "advanced_token_set",
+                       "value":  "已配置"
+                   },
+                   {
+                       "name":  "advanced_token_saved",
+                       "value":  "已保存令牌"
+                   },
+                   {
+                       "name":  "advanced_token_cleared",
+                       "value":  "已清除令牌"
+                   },
+                   {
+                       "name":  "advanced_backup_exported",
+                       "value":  "备份已导出"
+                   },
+                   {
+                       "name":  "advanced_export_canceled",
+                       "value":  "已取消导出"
+                   },
+                   {
+                       "name":  "advanced_export_failed",
+                       "value":  "导出失败"
+                   },
+                   {
+                       "name":  "advanced_import_canceled",
+                       "value":  "已取消导入"
+                   },
+                   {
+                       "name":  "advanced_backup_invalid",
+                       "value":  "备份文件无效"
+                   },
+                   {
+                       "name":  "advanced_restored_manga",
+                       "value":  "已恢复 %d 部漫画"
+                   },
+                   {
+                       "name":  "advanced_import_failed",
+                       "value":  "导入失败"
+                   },
+                   {
+                       "name":  "about_title",
+                       "value":  "关于"
+                   },
+                   {
+                       "name":  "about_version",
+                       "value":  "版本 1.0.0"
+                   },
+                   {
+                       "name":  "about_desc",
+                       "value":  "架构参考 Mihon (Apache-2.0)。在线源以插件形式动态安装，本地源内置。"
+                   },
+                   {
+                       "name":  "about_ack",
+                       "value":  "开源致谢：\n· Mihon / Tachiyomi — 应用架构与交互设计 (Apache-2.0)\n· Material Symbols — 应用内图标 (Apache-2.0)\n· MangaDex — 测试用例数据源"
+                   },
+                   {
+                       "name":  "browse_set_title",
+                       "value":  "浏览"
+                   },
+                   {
+                       "name":  "browse_set_content",
+                       "value":  "内容"
+                   },
+                   {
+                       "name":  "browse_set_show_nsfw",
+                       "value":  "显示成人内容源 (NSFW)"
+                   },
+                   {
+                       "name":  "browse_set_nsfw_hint",
+                       "value":  "开启后，插件声明为成人内容的源会出现在浏览页中"
+                   },
+                   {
+                       "name":  "dl_set_title",
+                       "value":  "下载"
+                   },
+                   {
+                       "name":  "dl_set_network",
+                       "value":  "网络"
+                   },
+                   {
+                       "name":  "dl_set_wifi_only",
+                       "value":  "仅 Wi-Fi 时下载"
+                   },
+                   {
+                       "name":  "dl_set_wifi_only_hint",
+                       "value":  "说明：当前版本此开关为预留项，网络类型检测将在后续版本提供"
+                   },
+                   {
+                       "name":  "lib_set_title",
+                       "value":  "书架"
+                   },
+                   {
+                       "name":  "lib_set_sort_group",
+                       "value":  "分类与排序"
+                   },
+                   {
+                       "name":  "lib_set_sort_default",
+                       "value":  "默认排序"
+                   },
+                   {
+                       "name":  "lib_set_sort_title",
+                       "value":  "标题"
+                   },
+                   {
+                       "name":  "lib_set_sort_last_update",
+                       "value":  "最新章节"
+                   },
+                   {
+                       "name":  "lib_set_sort_added",
+                       "value":  "添加时间"
+                   },
+                   {
+                       "name":  "lib_set_sort_unread",
+                       "value":  "未读数"
+                   },
+                   {
+                       "name":  "lib_set_sort_asc",
+                       "value":  "按标题正序排列"
+                   },
+                   {
+                       "name":  "lib_set_filter_default",
+                       "value":  "默认筛选"
+                   },
+                   {
+                       "name":  "lib_set_filter_unread",
+                       "value":  "未读"
+                   },
+                   {
+                       "name":  "lib_set_filter_downloaded",
+                       "value":  "已下载"
+                   },
+                   {
+                       "name":  "lib_set_filter_uncompleted",
+                       "value":  "未完结"
+                   },
+                   {
+                       "name":  "lib_set_display_group",
+                       "value":  "显示"
+                   },
+                   {
+                       "name":  "lib_set_view_default",
+                       "value":  "默认视图"
+                   },
+                   {
+                       "name":  "lib_set_view_grid",
+                       "value":  "网格"
+                   },
+                   {
+                       "name":  "lib_set_view_cover",
+                       "value":  "封面网格"
+                   },
+                   {
+                       "name":  "lib_set_view_list",
+                       "value":  "列表"
+                   },
+                   {
+                       "name":  "lib_set_grid_cols",
+                       "value":  "网格列数"
+                   },
+                   {
+                       "name":  "lib_set_cols_auto",
+                       "value":  "自适应"
+                   },
+                   {
+                       "name":  "lib_set_cols_2",
+                       "value":  "2 列"
+                   },
+                   {
+                       "name":  "lib_set_cols_3",
+                       "value":  "3 列"
+                   },
+                   {
+                       "name":  "lib_set_cols_4",
+                       "value":  "4 列"
+                   },
+                   {
+                       "name":  "lib_set_unread_badge",
+                       "value":  "未读数徽标"
+                   },
+                   {
+                       "name":  "lib_set_download_badge",
+                       "value":  "下载数徽标"
+                   },
+                   {
+                       "name":  "reader_set_title",
+                       "value":  "阅读器"
+                   },
+                   {
+                       "name":  "reader_set_mode_group",
+                       "value":  "阅读模式"
+                   },
+                   {
+                       "name":  "reader_set_mode_default",
+                       "value":  "默认模式"
+                   },
+                   {
+                       "name":  "reader_set_mode_ltr",
+                       "value":  "左右翻页"
+                   },
+                   {
+                       "name":  "reader_set_mode_rtl",
+                       "value":  "右到左"
+                   },
+                   {
+                       "name":  "reader_set_mode_vertical",
+                       "value":  "竖向分页"
+                   },
+                   {
+                       "name":  "reader_set_mode_webtoon",
+                       "value":  "条漫"
+                   },
+                   {
+                       "name":  "reader_set_dual_page",
+                       "value":  "双页显示（横向模式）"
+                   },
+                   {
+                       "name":  "reader_set_display_group",
+                       "value":  "显示"
+                   },
+                   {
+                       "name":  "reader_set_show_page_number",
+                       "value":  "显示页码"
+                   },
+                   {
+                       "name":  "reader_set_bg_color",
+                       "value":  "阅读器背景色"
+                   },
+                   {
+                       "name":  "reader_set_theme_follow",
+                       "value":  "跟随主题"
+                   },
+                   {
+                       "name":  "reader_set_theme_white",
+                       "value":  "白色"
+                   },
+                   {
+                       "name":  "reader_set_theme_black",
+                       "value":  "黑色"
+                   },
+                   {
+                       "name":  "reader_set_theme_gray",
+                       "value":  "灰色"
+                   },
+                   {
+                       "name":  "reader_set_reset_brightness",
+                       "value":  "重置阅读器亮度"
+                   },
+                   {
+                       "name":  "reader_set_brightness_reset",
+                       "value":  "已恢复跟随系统亮度"
+                   }
+               ]
 }

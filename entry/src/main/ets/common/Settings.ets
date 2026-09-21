@@ -168,9 +168,17 @@ export class Settings {
   }
 
   // ---- 应用语言 ----
-  // 'auto' 跟随系统 | 'zh' 简体中文 | 'en' English
+  // 'auto' 跟随系统，否则为 BCP-47 语言标签（如 'zh-Hans' / 'en-US'）
   static getAppLanguage(): string {
-    return Settings.getStr('appLanguage', 'auto');
+    const raw: string = Settings.getStr('appLanguage', 'auto');
+    // 旧版取值迁移（'zh'/'en'）
+    if (raw === 'zh') {
+      return 'zh-Hans';
+    }
+    if (raw === 'en') {
+      return 'en-US';
+    }
+    return raw;
   }
 
   static setAppLanguage(v: string): void {
@@ -180,7 +188,8 @@ export class Settings {
   // 应用语言偏好到系统（立即生效并持久化；'default' 跟随系统需冷启动生效）
   static applyAppLanguage(): void {
     const lang: string = Settings.getAppLanguage();
-    const tag: string = lang === 'zh' ? 'zh-Hans' : (lang === 'en' ? 'en-US' : 'default');
+    AppStorage.setOrCreate('appLanguage', lang);
+    const tag: string = lang === 'auto' ? 'default' : lang;
     try {
       i18n.System.setAppPreferredLanguage(tag);
     } catch (_e) {

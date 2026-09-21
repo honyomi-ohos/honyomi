@@ -1,22 +1,23 @@
 import { common } from '@kit.AbilityKit';
 import { Theme, ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
+import { Languages } from '../../common/Languages';
 import { PageHeader } from '../components/PageHeader';
-import { PrefGroup, SwitchRow } from '../components/Prefs';
+import { PrefGroup, SwitchRow, TextRow } from '../components/Prefs';
 
 // 外观设置：语言 / 主题模式 / 主题色 / AMOLED
 @Component
 export struct AppearancePage {
+  @Consume('navStack') pathStack: NavPathStack;
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('accent') accent: string = 'blue';
+  @StorageProp('appLanguage') appLanguage: string = 'auto';
   @State themeMode: string = 'auto';
-  @State langMode: string = 'auto';
   @State amoled: boolean = false;
 
   aboutToAppear(): void {
     this.themeMode = Settings.getThemeMode();
-    this.langMode = Settings.getAppLanguage();
     this.amoled = Settings.getAmoledMode();
   }
 
@@ -26,12 +27,6 @@ export struct AppearancePage {
     const systemDark = AppStorage.get<boolean>('isDarkSystem') ?? false;
     Settings.applyTheme(systemDark);
     Settings.applyColorMode(getContext(this) as common.UIAbilityContext);
-  }
-
-  private applyLang(mode: string): void {
-    this.langMode = mode;
-    Settings.setAppLanguage(mode);
-    Settings.applyAppLanguage();
   }
 
   @Builder
@@ -47,19 +42,6 @@ export struct AppearancePage {
       })
   }
 
-  @Builder
-  langChip(label: Resource | string, mode: string) {
-    Text(label)
-      .fontSize(13)
-      .fontColor(this.langMode === mode ? '#FFFFFF' : this.pal.text)
-      .backgroundColor(this.langMode === mode ? this.pal.primary : this.pal.chip)
-      .borderRadius(16)
-      .padding({ left: 16, right: 16, top: 7, bottom: 7 })
-      .onClick(() => {
-        this.applyLang(mode);
-      })
-  }
-
   build() {
     NavDestination() {
       Column() {
@@ -67,12 +49,15 @@ export struct AppearancePage {
         Scroll() {
           Column() {
             PrefGroup({ groupTitle: $r('app.string.appearance_language') }) {
-              Row({ space: 8 }) {
-                this.langChip($r('app.string.lang_follow_system'), 'auto')
-                this.langChip($r('app.string.lang_simplified_chinese'), 'zh')
-                this.langChip($r('app.string.lang_english'), 'en')
-              }
-              .padding({ left: 16, right: 16, top: 12, bottom: 14 })
+              TextRow({
+                title: $r('app.string.appearance_language'),
+                value: this.appLanguage === 'auto'
+                  ? $r('app.string.lang_follow_system')
+                  : Languages.displayName(this.appLanguage),
+                onTap: (): void => {
+                  this.pathStack.pushPathByName('Language', null);
+                }
+              })
             }
 
             PrefGroup({ groupTitle: $r('app.string.appearance_theme_mode') }) {

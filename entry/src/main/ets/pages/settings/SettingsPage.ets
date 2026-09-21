@@ -30,16 +30,16 @@ export struct SettingsPage {
   build() {
     NavDestination() {
       Column() {
-        PageHeader({ title: '设置' })
+        PageHeader({ title: $r('app.string.settings_title') })
         Scroll() {
           Column({ space: 12 }) {
-            PrefGroup({ groupTitle: '常规' }) {
+            PrefGroup({ groupTitle: $r('app.string.settings_general') }) {
               SelectRow({
-                title: '启动页面',
+                title: $r('app.string.settings_start_tab'),
                 value: this.startTabLabel,
-                options: TAB_LABELS,
+                options: this.tabLabels,
                 onSelect: (value: string): void => {
-                  const idx = TAB_LABELS.indexOf(value);
+                  const idx = this.tabLabels.indexOf(value);
                   if (idx >= 0) {
                     Settings.setStartTab(idx);
                     this.startTabLabel = value;
@@ -48,9 +48,9 @@ export struct SettingsPage {
               })
             }
 
-            PrefGroup({ groupTitle: '个性化' }) {
+            PrefGroup({ groupTitle: $r('app.string.settings_personalization') }) {
               IconRow({
-                title: '外观',
+                title: $r('app.string.appearance_title'),
                 icon: 'palette',
                 onTap: (): void => {
                   this.pathStack.pushPathByName('Appearance', null);
@@ -58,7 +58,7 @@ export struct SettingsPage {
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
               IconRow({
-                title: '书架',
+                title: $r('app.string.settings_library'),
                 icon: 'collections_bookmark',
                 onTap: (): void => {
                   this.pathStack.pushPathByName('LibrarySettings', null);
@@ -66,7 +66,7 @@ export struct SettingsPage {
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
               IconRow({
-                title: '阅读器',
+                title: $r('app.string.settings_reader'),
                 icon: 'image',
                 onTap: (): void => {
                   this.pathStack.pushPathByName('ReaderSettings', null);
@@ -74,9 +74,9 @@ export struct SettingsPage {
               })
             }
 
-            PrefGroup({ groupTitle: '数据' }) {
+            PrefGroup({ groupTitle: $r('app.string.settings_data') }) {
               IconRow({
-                title: '下载',
+                title: $r('app.string.settings_downloads'),
                 icon: 'download',
                 onTap: (): void => {
                   this.pathStack.pushPathByName('DownloadsSettings', null);
@@ -84,7 +84,7 @@ export struct SettingsPage {
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
               IconRow({
-                title: '浏览',
+                title: $r('app.string.settings_browse'),
                 icon: 'explore',
                 onTap: (): void => {
                   this.pathStack.pushPathByName('BrowseSettings', null);
@@ -92,7 +92,7 @@ export struct SettingsPage {
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
               IconRow({
-                title: '高级',
+                title: $r('app.string.settings_advanced'),
                 icon: 'settings',
                 onTap: (): void => {
                   this.pathStack.pushPathByName('Advanced', null);
@@ -100,9 +100,9 @@ export struct SettingsPage {
               })
             }
 
-            PrefGroup({ groupTitle: '其他' }) {
+            PrefGroup({ groupTitle: $r('app.string.appearance_other') }) {
               IconRow({
-                title: '关于',
+                title: $r('app.string.settings_about'),
                 icon: 'info',
                 onTap: (): void => {
                   this.pathStack.pushPathByName('About', null);

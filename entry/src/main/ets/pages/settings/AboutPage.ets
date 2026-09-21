@@ -10,7 +10,7 @@ export struct AboutPage {
   build() {
     NavDestination() {
       Column() {
-        PageHeader({ title: '关于' })
+        PageHeader({ title: $r('app.string.about_title') })
         Scroll() {
           Column() {
             Image($r('app.media.startIcon'))
@@ -23,17 +23,17 @@ export struct AboutPage {
               .fontWeight(FontWeight.Bold)
               .fontColor(this.pal.text)
               .margin({ top: 12 })
-            Text('版本 1.0.0')
+            Text($r('app.string.about_version'))
               .fontSize(13)
               .fontColor(this.pal.sub)
               .margin({ top: 4 })
 
             Column() {
-              Text('架构参考 Mihon (Apache-2.0)。在线源以插件形式动态安装，本地源内置。')
+              Text($r('app.string.about_desc'))
                 .fontSize(13)
                 .fontColor(this.pal.text)
                 .lineHeight(20)
-              Text('开源致谢：\n· Mihon / Tachiyomi — 应用架构与交互设计 (Apache-2.0)\n· Material Symbols — 应用内图标 (Apache-2.0)\n· MangaDex — 测试用例数据源')
+              Text($r('app.string.about_ack'))
                 .fontSize(12)
                 .fontColor(this.pal.sub)
                 .lineHeight(19)

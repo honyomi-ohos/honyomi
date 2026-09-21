@@ -20,6 +20,7 @@ import { PluginManagePage } from './PluginManagePage';
 import { CategoriesPage } from './CategoriesPage';
 import { SettingsPage } from './settings/SettingsPage';
 import { AppearancePage } from './settings/AppearancePage';
+import { LanguagePage } from './settings/LanguagePage';
 import { LibrarySettingsPage } from './settings/LibrarySettingsPage';
 import { ReaderSettingsPage } from './settings/ReaderSettingsPage';
 import { DownloadsSettingsPage } from './settings/DownloadsSettingsPage';
@@ -130,6 +131,8 @@ struct Index {
       SettingsPage()
     } else if (name === 'Appearance') {
       AppearancePage()
+    } else if (name === 'Language') {
+      LanguagePage()
     } else if (name === 'LibrarySettings') {
       LibrarySettingsPage()
     } else if (name === 'ReaderSettings') {
