@@ -4,17 +4,19 @@ import { Settings } from '../../common/Settings';
 import { PageHeader } from '../components/PageHeader';
 import { PrefGroup, SwitchRow } from '../components/Prefs';
 
-// 外观设置：主题模式 / 主题色 / AMOLED
+// 外观设置：语言 / 主题模式 / 主题色 / AMOLED
 @Component
 export struct AppearancePage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('accent') accent: string = 'blue';
   @State themeMode: string = 'auto';
+  @State langMode: string = 'auto';
   @State amoled: boolean = false;
 
   aboutToAppear(): void {
     this.themeMode = Settings.getThemeMode();
+    this.langMode = Settings.getAppLanguage();
     this.amoled = Settings.getAmoledMode();
   }
 
@@ -26,8 +28,14 @@ export struct AppearancePage {
     Settings.applyColorMode(getContext(this) as common.UIAbilityContext);
   }
 
+  private applyLang(mode: string): void {
+    this.langMode = mode;
+    Settings.setAppLanguage(mode);
+    Settings.applyAppLanguage();
+  }
+
   @Builder
-  modeChip(label: string, mode: string) {
+  modeChip(label: Resource | string, mode: string) {
     Text(label)
       .fontSize(13)
       .fontColor(this.themeMode === mode ? '#FFFFFF' : this.pal.text)
@@ -39,22 +47,44 @@ export struct AppearancePage {
       })
   }
 
+  @Builder
+  langChip(label: Resource | string, mode: string) {
+    Text(label)
+      .fontSize(13)
+      .fontColor(this.langMode === mode ? '#FFFFFF' : this.pal.text)
+      .backgroundColor(this.langMode === mode ? this.pal.primary : this.pal.chip)
+      .borderRadius(16)
+      .padding({ left: 16, right: 16, top: 7, bottom: 7 })
+      .onClick(() => {
+        this.applyLang(mode);
+      })
+  }
+
   build() {
     NavDestination() {
       Column() {
-        PageHeader({ title: '外观' })
+        PageHeader({ title: $r('app.string.appearance_title') })
         Scroll() {
           Column() {
-            PrefGroup({ groupTitle: '主题模式' }) {
+            PrefGroup({ groupTitle: $r('app.string.appearance_language') }) {
               Row({ space: 8 }) {
-                this.modeChip('跟随系统', 'auto')
-                this.modeChip('浅色', 'light')
-                this.modeChip('深色', 'dark')
+                this.langChip($r('app.string.lang_follow_system'), 'auto')
+                this.langChip($r('app.string.lang_simplified_chinese'), 'zh')
+                this.langChip($r('app.string.lang_english'), 'en')
               }
               .padding({ left: 16, right: 16, top: 12, bottom: 14 })
             }
 
-            PrefGroup({ groupTitle: '主题色' }) {
+            PrefGroup({ groupTitle: $r('app.string.appearance_theme_mode') }) {
+              Row({ space: 8 }) {
+                this.modeChip($r('app.string.appearance_theme_auto'), 'auto')
+                this.modeChip($r('app.string.appearance_theme_light'), 'light')
+                this.modeChip($r('app.string.appearance_theme_dark'), 'dark')
+              }
+              .padding({ left: 16, right: 16, top: 12, bottom: 14 })
+            }
+
+            PrefGroup({ groupTitle: $r('app.string.appearance_accent_color') }) {
               Row({ space: 18 }) {
                 ForEach(Theme.accentNames(), (name: string) => {
                   Column({ space: 4 }) {
@@ -92,9 +122,9 @@ export struct AppearancePage {
               .padding({ left: 16, right: 16, top: 14, bottom: 14 })
             }
 
-            PrefGroup({ groupTitle: '其他' }) {
+            PrefGroup({ groupTitle: $r('app.string.appearance_other') }) {
               SwitchRow({
-                title: 'AMOLED 纯黑背景',
+                title: $r('app.string.appearance_amoled'),
                 isOn: this.amoled,
                 onChange: (value: boolean): void => {
                   this.amoled = value;

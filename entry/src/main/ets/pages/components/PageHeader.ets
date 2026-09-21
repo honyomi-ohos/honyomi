@@ -16,7 +16,7 @@ export struct PageHeader {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('statusBarH') statusBarH: number = 0;
-  @Prop title: string = '';
+  title: Resource | string = '';
   @BuilderParam right: () => void = headerEmpty;
 
   build() {

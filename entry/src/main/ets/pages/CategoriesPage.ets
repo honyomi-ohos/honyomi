@@ -34,8 +34,8 @@ export struct CategoriesPage {
   private showAdd(): void {
     const dialog = new CustomDialogController({
       builder: InputDialog({
-        title: '新建分类',
-        placeholder: '分类名称',
+        title: $r('app.string.categories_add'),
+        placeholder: $r('app.string.categories_name_placeholder'),
         onConfirm: (text: string): void => {
           if (text.trim() !== '') {
             CategoryRepo.add(text.trim()).then(() => {
@@ -52,7 +52,7 @@ export struct CategoriesPage {
   private showRename(cat: CategoryRecord): void {
     const dialog = new CustomDialogController({
       builder: InputDialog({
-        title: '重命名分类',
+        title: $r('app.string.categories_rename_category'),
         placeholder: cat.name,
         onConfirm: (text: string): void => {
           if (text.trim() !== '') {
@@ -73,13 +73,13 @@ export struct CategoriesPage {
     }
     const sheets: SheetInfo[] = [];
     sheets.push({
-      title: '重命名',
+      title: $r('app.string.categories_rename'),
       action: (): void => {
         this.showRename(cat);
       }
     });
     sheets.push({
-      title: '删除',
+      title: $r('app.string.common_delete'),
       action: (): void => {
         CategoryRepo.remove(cat.id).then(() => {
           this.reload();
@@ -106,7 +106,7 @@ export struct CategoriesPage {
   build() {
     NavDestination() {
       Column() {
-        PageHeader({ title: '分类' }) {
+        PageHeader({ title: $r('app.string.categories_title') }) {
           this.headerRight()
         }
         List({ space: 0 }) {
@@ -121,7 +121,7 @@ export struct CategoriesPage {
                   .margin({ left: 14 })
                   .maxLines(1)
                 if (cat.id === 1) {
-                  Text('默认')
+                  Text($r('app.string.common_default'))
                     .fontSize(11)
                     .fontColor(this.pal.sub)
                     .backgroundColor(this.pal.chip)
@@ -154,7 +154,7 @@ export struct CategoriesPage {
           endMargin: 16,
         })
 
-        Text('长按分类可重命名或删除；删除后其中的漫画会移回「默认」分类')
+        Text($r('app.string.categories_hint'))
           .fontSize(11)
           .fontColor(this.pal.sub)
           .width('100%')

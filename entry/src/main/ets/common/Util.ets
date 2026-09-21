@@ -13,7 +13,7 @@ export class Util {
     return `${d.getFullYear()}-${mm}-${dd}`;
   }
 
-  static timeAgo(ms: number): string {
+  static timeAgo(ms: number): Resource | string {
     if (ms <= 0) {
       return '';
     }
@@ -26,35 +26,48 @@ export class Util {
     }
     if (diff < hour) {
       const m: number = Math.max(1, Math.floor(diff / minute));
-      return `${m}分钟前`;
+      return $r('app.string.util_time_minutes_ago', m);
     }
     if (diff < day) {
-      return `${Math.floor(diff / hour)}小时前`;
+      return $r('app.string.util_time_hours_ago', Math.floor(diff / hour));
     }
     if (diff < 30 * day) {
-      return `${Math.floor(diff / day)}天前`;
+      return $r('app.string.util_time_days_ago', Math.floor(diff / day));
     }
     return Util.formatDate(ms);
   }
 
-  static statusLabel(status: string): string {
+  static statusLabel(status: string): Resource {
     switch (status) {
       case 'ongoing':
-        return '连载中';
+        return $r('app.string.util_status_ongoing');
       case 'completed':
-        return '已完结';
+        return $r('app.string.util_status_completed');
       case 'hiatus':
-        return '休刊中';
+        return $r('app.string.util_status_hiatus');
       case 'cancelled':
-        return '已弃坑';
+        return $r('app.string.util_status_cancelled');
       case 'publication_complete':
-        return '出版完毕';
+        return $r('app.string.util_status_publication_complete');
       default:
-        return '未知';
+        return $r('app.string.util_status_unknown');
     }
+  }
+
+  // 从资源取字符串（用于 toast / 非组件上下文）；args 对应资源中的 %d/%s 占位
+  static resStr(ui: UIContext, res: Resource, args: Array<string | number> = []): string {
+    const ctx = ui.getHostContext();
+    if (ctx === undefined) {
+      return '';
+    }
+    return ctx.resourceManager.getStringSync(res, ...args);
   }
 
   static toast(ui: UIContext, message: string): void {
     ui.getPromptAction().showToast({ message: message });
+  }
+
+  static toastRes(ui: UIContext, res: Resource, args: Array<string | number> = []): void {
+    Util.toast(ui, Util.resStr(ui, res, args));
   }
 }

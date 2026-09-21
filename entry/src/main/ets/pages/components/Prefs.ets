@@ -1,4 +1,4 @@
-﻿// 閫氱敤鍋忓ソ/璁剧疆琛岀粍浠讹細PrefGroup / TextRow / SwitchRow / SelectRow / IconRow
+// 閫氱敤鍋忓ソ/璁剧疆琛岀粍浠讹細PrefGroup / TextRow / SwitchRow / SelectRow / IconRow
 import { ThemePalette } from '../../common/Theme';
 import { AppIcon } from './AppIcon';
 
@@ -14,7 +14,7 @@ function emptyContent() {
 export struct PrefGroup {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @Prop groupTitle: string = '';
+  groupTitle: Resource | string = '';
   @BuilderParam content: () => void = emptyContent;
 
   build() {
@@ -42,8 +42,8 @@ export struct PrefGroup {
 export struct TextRow {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @Prop title: string = '';
-  @Prop value: string = '';
+  title: Resource | string = '';
+  value: Resource | string = '';
   onTap: () => void = () => {};
 
   build() {
@@ -75,7 +75,7 @@ export struct TextRow {
 export struct SwitchRow {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @Prop title: string = '';
+  title: Resource | string = '';
   @Prop icon: string = '';
   @Prop isOn: boolean = false;
   onChange: (value: boolean) => void = (value: boolean) => {};
@@ -105,8 +105,8 @@ export struct SwitchRow {
 export struct SelectRow {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @Prop title: string = '';
-  @Prop value: string = '';
+  title: Resource | string = '';
+  value: Resource | string = '';
   @Prop options: string[] = [];
   onSelect: (value: string) => void = (value: string) => {};
 
@@ -153,7 +153,7 @@ export struct SelectRow {
 export struct IconRow {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @Prop title: string = '';
+  title: Resource | string = '';
   @Prop icon: string = '';
   onTap: () => void = () => {};
 

@@ -54,10 +54,10 @@ export struct LibraryPage {
     try {
       const context = getContext(this) as common.UIAbilityContext;
       const newCount = await UpdateService.refreshLibrary(context);
-      Util.toast(this.getUIContext(), newCount > 0 ? `发现 ${newCount} 个新章节` : '没有新章节');
+      Util.toastRes(this.getUIContext(), newCount > 0 ? $r('app.string.updates_found_new', newCount) : $r('app.string.updates_no_new'));
       await this.loadData();
     } catch (e) {
-      Util.toast(this.getUIContext(), '刷新失败，请检查网络');
+      Util.toastRes(this.getUIContext(), $r('app.string.updates_refresh_failed'));
     }
     this.refreshing = false;
   }
@@ -93,12 +93,12 @@ export struct LibraryPage {
     Column() {
       // 顶栏
       Row() {
-        Text('书架')
+        Text($r('app.string.library_title'))
           .fontSize(22)
           .fontWeight(FontWeight.Bold)
           .fontColor(this.pal.text)
           .layoutWeight(1)
-        Text(this.refreshing ? '刷新中…' : '⟳')
+        Text(this.refreshing ? $r('app.string.updates_refreshing') : '⟳')
           .fontSize(this.refreshing ? 14 : 24)
           .fontColor(this.pal.primary)
           .padding({ left: 8, right: 8 })
@@ -119,7 +119,7 @@ export struct LibraryPage {
       // 分类 chips
       Scroll() {
         Row({ space: 8 }) {
-          Text('全部')
+          Text($r('app.string.common_all'))
             .fontSize(13)
             .fontColor(this.selectedCategory === 0 ? '#FFFFFF' : this.pal.text)
             .backgroundColor(this.selectedCategory === 0 ? this.pal.primary : this.pal.chip)
@@ -157,7 +157,7 @@ export struct LibraryPage {
         .justifyContent(FlexAlign.Center)
       } else if (this.shownMangas().length === 0) {
         Column() {
-          EmptyScreen({ message: '书架为空，去「浏览」页发现并收藏漫画吧' })
+          EmptyScreen({ message: $r('app.string.library_empty') })
         }
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)
@@ -194,8 +194,8 @@ export struct LibraryPage {
   private showAddCategoryDialog(): void {
     const dialog = new CustomDialogController({
       builder: InputDialog({
-        title: '新建分类',
-        placeholder: '分类名称',
+        title: $r('app.string.library_new_category'),
+        placeholder: $r('app.string.library_category_name'),
         onConfirm: (text: string): void => {
           if (text.trim() !== '') {
             CategoryRepo.add(text.trim()).then(() => {

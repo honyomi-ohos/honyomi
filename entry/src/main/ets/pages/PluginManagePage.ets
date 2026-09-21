@@ -56,7 +56,7 @@ export struct PluginManagePage {
     try {
       this.repoEntries = await PluginService.fetchRepo(this.repoUrl);
     } catch (e) {
-      Util.toast(this.getUIContext(), `仓库加载失败：${(e as Error).message}`);
+      Util.toastRes(this.getUIContext(), $r('app.string.plugin_repo_load_failed'), [(e as Error).message]);
     }
     this.loadingRepo = false;
   }
@@ -77,7 +77,7 @@ export struct PluginManagePage {
       }
       await this.installUri(uris[0]);
     } catch (e) {
-      Util.toast(this.getUIContext(), '选择文件失败');
+      Util.toastRes(this.getUIContext(), $r('app.string.plugin_pick_file_failed'));
     }
   }
 
@@ -90,9 +90,9 @@ export struct PluginManagePage {
       const key = await PluginService.installFromFile(uri);
       this.refreshInstalled();
       PluginService.markDirty();
-      Util.toast(this.getUIContext(), `已安装插件：${key}`);
+      Util.toastRes(this.getUIContext(), $r('app.string.plugin_installed'), [key]);
     } catch (e) {
-      Util.toast(this.getUIContext(), `安装失败：${(e as Error).message}`);
+      Util.toastRes(this.getUIContext(), $r('app.string.plugin_install_failed'), [(e as Error).message]);
     }
     this.busy = false;
   }
@@ -108,7 +108,7 @@ export struct PluginManagePage {
       PluginService.markDirty();
     } catch (e) {
       this.refreshInstalled();
-      Util.toast(this.getUIContext(), '操作失败');
+      Util.toastRes(this.getUIContext(), $r('app.string.plugin_action_failed'));
     }
     this.busy = false;
   }
@@ -122,9 +122,9 @@ export struct PluginManagePage {
       await PluginService.uninstall(item.manifest.key);
       this.refreshInstalled();
       PluginService.markDirty();
-      Util.toast(this.getUIContext(), `已卸载 ${item.manifest.name}（数据保留）`);
+      Util.toastRes(this.getUIContext(), $r('app.string.plugin_uninstalled'), [item.manifest.name]);
     } catch (e) {
-      Util.toast(this.getUIContext(), '卸载失败');
+      Util.toastRes(this.getUIContext(), $r('app.string.plugin_uninstall_failed'));
     }
     this.busy = false;
   }
@@ -138,9 +138,9 @@ export struct PluginManagePage {
       await PluginService.installFromRepo(entry);
       this.refreshInstalled();
       PluginService.markDirty();
-      Util.toast(this.getUIContext(), `已安装：${entry.name}`);
+      Util.toastRes(this.getUIContext(), $r('app.string.plugin_installed_name'), [entry.name]);
     } catch (e) {
-      Util.toast(this.getUIContext(), `安装失败：${(e as Error).message}`);
+      Util.toastRes(this.getUIContext(), $r('app.string.plugin_install_failed'), [(e as Error).message]);
     }
     this.busy = false;
   }
@@ -148,8 +148,8 @@ export struct PluginManagePage {
   private showRepoUrlDialog(): void {
     const dialog = new CustomDialogController({
       builder: InputDialog({
-        title: '插件仓库索引 URL',
-        placeholder: 'https://…/index.json（留空清除）',
+        title: $r('app.string.plugin_repo_url_title'),
+        placeholder: $r('app.string.plugin_repo_url_hint'),
         onConfirm: (text: string): void => {
           this.repoUrl = text.trim();
           Settings.setPluginRepoUrl(this.repoUrl);
@@ -209,14 +209,14 @@ export struct PluginManagePage {
       .width('100%')
 
       Row() {
-        Text('卸载')
+        Text($r('app.string.common_uninstall'))
           .fontSize(12)
           .fontColor('#E05252')
           .padding({ top: 6, bottom: 2, left: 4, right: 4 })
           .onClick(() => {
             this.uninstallPlugin(item);
           })
-        Text('禁用后将从源列表隐藏，卸载不删除已收藏漫画')
+        Text($r('app.string.plugin_disable_hint'))
           .fontSize(10)
           .fontColor(this.pal.sub)
           .margin({ left: 12 })
@@ -244,7 +244,7 @@ export struct PluginManagePage {
       .layoutWeight(1)
 
       if (this.installedVersionOf(entry.key) < 0) {
-        Text('安装')
+        Text($r('app.string.common_install'))
           .fontSize(13)
           .fontColor(this.pal.primary)
           .padding(4)
@@ -252,7 +252,7 @@ export struct PluginManagePage {
             this.installFromRepo(entry);
           })
       } else if (this.installedVersionOf(entry.key) < entry.versionCode) {
-        Text('更新')
+        Text($r('app.string.common_update'))
           .fontSize(13)
           .fontColor('#E08A3C')
           .padding(4)
@@ -260,7 +260,7 @@ export struct PluginManagePage {
             this.installFromRepo(entry);
           })
       } else {
-        Text('已最新')
+        Text($r('app.string.plugin_up_to_date'))
           .fontSize(12)
           .fontColor(this.pal.sub)
           .padding(4)
@@ -281,7 +281,7 @@ export struct PluginManagePage {
             .onClick(() => {
               this.pathStack.pop();
             })
-          Text('插件管理')
+          Text($r('app.string.plugin_title'))
             .fontSize(18)
             .fontWeight(FontWeight.Bold)
             .fontColor(this.pal.text)
@@ -294,7 +294,7 @@ export struct PluginManagePage {
           Column() {
             // 已安装
             Column() {
-              Text('已安装插件')
+              Text($r('app.string.plugin_installed_section'))
                 .fontSize(15)
                 .fontWeight(FontWeight.Bold)
                 .fontColor(this.pal.text)
@@ -302,7 +302,7 @@ export struct PluginManagePage {
                 .margin({ bottom: 4 })
 
               if (this.installed.length === 0) {
-                EmptyScreen({ message: '暂无插件，从下方安装', compact: true })
+                EmptyScreen({ message: $r('app.string.plugin_empty'), compact: true })
               } else {
                 ForEach(this.installed, (item: InstalledPlugin) => {
                   this.pluginRow(item)
@@ -318,20 +318,20 @@ export struct PluginManagePage {
 
             // 从文件安装
             Column() {
-              Text('本地安装')
+              Text($r('app.string.plugin_local_install'))
                 .fontSize(15)
                 .fontWeight(FontWeight.Bold)
                 .fontColor(this.pal.text)
                 .width('100%')
                 .margin({ bottom: 8 })
-              Button(this.busy ? '处理中…' : '从文件安装（.mihonplug）')
+              Button(this.busy ? $r('app.string.plugin_processing') : $r('app.string.plugin_install_from_file'))
                 .fontSize(14)
                 .width('100%')
                 .backgroundColor(this.pal.primary)
                 .onClick(() => {
                   this.pickPluginFile();
                 })
-              Text('插件包 = manifest.json + main.js 打包的 zip 文件')
+              Text($r('app.string.plugin_package_hint'))
                 .fontSize(11)
                 .fontColor(this.pal.sub)
                 .margin({ top: 8 })
@@ -346,12 +346,12 @@ export struct PluginManagePage {
             // 在线仓库
             Column() {
               Row() {
-                Text('插件仓库')
+                Text($r('app.string.plugin_repo'))
                   .fontSize(15)
                   .fontWeight(FontWeight.Bold)
                   .fontColor(this.pal.text)
                   .layoutWeight(1)
-                Text(this.repoUrl === '' ? '配置' : '刷新')
+                Text(this.repoUrl === '' ? $r('app.string.plugin_repo_config') : $r('app.string.plugin_repo_refresh'))
                   .fontSize(13)
                   .fontColor(this.pal.primary)
                   .padding(4)
@@ -367,7 +367,7 @@ export struct PluginManagePage {
               .margin({ bottom: 4 })
 
               if (this.repoUrl === '') {
-                Text('配置仓库索引 URL 后可在线安装/更新插件')
+                Text($r('app.string.plugin_repo_hint'))
                   .fontSize(12)
                   .fontColor(this.pal.sub)
                   .width('100%')
@@ -378,7 +378,7 @@ export struct PluginManagePage {
                     .width(18)
                     .height(18)
                     .color(this.pal.primary)
-                  Text('加载仓库中…')
+                  Text($r('app.string.plugin_repo_loading'))
                     .fontSize(12)
                     .fontColor(this.pal.sub)
                 }

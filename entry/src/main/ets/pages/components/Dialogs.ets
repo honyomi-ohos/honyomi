@@ -5,8 +5,8 @@ import { ThemePalette } from '../../common/Theme';
 @CustomDialog
 export struct InputDialog {
   controller?: CustomDialogController;
-  title: string = '';
-  placeholder: string = '';
+  title: Resource | string = '';
+  placeholder: Resource | string = '';
   @State inputText: string = '';
   onConfirm: (text: string) => void = (_t: string) => {};
   @StorageProp('isDark') isDark: boolean = false;
@@ -23,7 +23,7 @@ export struct InputDialog {
           this.inputText = value;
         })
       Row({ space: 12 }) {
-        Button('取消')
+        Button($r('app.string.common_cancel'))
           .layoutWeight(1)
           .backgroundColor(this.pal.chip)
           .fontColor(this.pal.text)
@@ -32,7 +32,7 @@ export struct InputDialog {
               this.controller.close();
             }
           })
-        Button('确定')
+        Button($r('app.string.common_ok'))
           .layoutWeight(1)
           .backgroundColor(this.pal.primary)
           .onClick(() => {
@@ -62,7 +62,7 @@ export struct CategoryDialog {
 
   build() {
     Column({ space: 8 }) {
-      Text('选择分类')
+      Text($r('app.string.dialog_pick_category'))
         .fontSize(16)
         .fontWeight(FontWeight.Bold)
         .fontColor(this.pal.text)

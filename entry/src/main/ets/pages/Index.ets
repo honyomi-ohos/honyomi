@@ -38,7 +38,7 @@ struct Index {
   @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageProp('navBarH') navBarH: number = 0;
   @StorageLink('cfChallengeUrl') @Watch('onCfUrlChanged') cfChallengeUrl: string = '';
-  @State cfStatus: string = '';
+  @State cfStatus: ResourceStr = '';
   private cfController: webview.WebviewController = new webview.WebviewController();
 
   aboutToAppear(): void {
@@ -53,7 +53,7 @@ struct Index {
     if (this.cfChallengeUrl === '') {
       return;
     }
-    this.cfStatus = '等待验证完成…';
+    this.cfStatus = $r('app.string.tab_cf_waiting');
     const jar = CookieJar.headerFor(this.cfChallengeUrl);
     if (jar !== '') {
       webview.WebCookieManager.configCookie(this.cfChallengeUrl, jar).catch((_e: Error) => {
@@ -67,7 +67,7 @@ struct Index {
     webview.WebCookieManager.fetchCookie(this.cfChallengeUrl).then((cookies: string) => {
       if (cookies.indexOf('cf_clearance') >= 0) {
         this.closeCf(true);
-        Util.toast(this.getUIContext(), '验证完成');
+        Util.toastRes(this.getUIContext(), $r('app.string.tab_cf_verified'));
       }
     }).catch((_e: Error) => {
       // 忽略
@@ -146,7 +146,7 @@ struct Index {
   }
 
   @Builder
-  tabBuilder(title: string, icon: string, index: number) {
+  tabBuilder(title: ResourceStr, icon: string, index: number) {
     Column({ space: 2 }) {
       Image(AppIconRes.get(icon))
         .width(22)
@@ -171,7 +171,7 @@ struct Index {
             .height('100%')
             .padding({ top: this.statusBarH })
           }
-          .tabBar(this.tabBuilder('书架', 'collections_bookmark', 0))
+          .tabBar(this.tabBuilder($r('app.string.tab_library'), 'collections_bookmark', 0))
 
           TabContent() {
             Column() {
@@ -180,7 +180,7 @@ struct Index {
             .height('100%')
             .padding({ top: this.statusBarH })
           }
-          .tabBar(this.tabBuilder('更新', 'new_releases', 1))
+          .tabBar(this.tabBuilder($r('app.string.tab_updates'), 'new_releases', 1))
 
           TabContent() {
             Column() {
@@ -189,7 +189,7 @@ struct Index {
             .height('100%')
             .padding({ top: this.statusBarH })
           }
-          .tabBar(this.tabBuilder('历史', 'schedule', 2))
+          .tabBar(this.tabBuilder($r('app.string.tab_history'), 'schedule', 2))
 
           TabContent() {
             Column() {
@@ -198,7 +198,7 @@ struct Index {
             .height('100%')
             .padding({ top: this.statusBarH })
           }
-          .tabBar(this.tabBuilder('浏览', 'explore', 3))
+          .tabBar(this.tabBuilder($r('app.string.tab_browse'), 'explore', 3))
 
           TabContent() {
             Column() {
@@ -207,7 +207,7 @@ struct Index {
             .height('100%')
             .padding({ top: this.statusBarH })
           }
-          .tabBar(this.tabBuilder('更多', 'more_vert', 4))
+          .tabBar(this.tabBuilder($r('app.string.tab_more'), 'more_vert', 4))
         }
         .scrollable(true)
         .barOverlap(true)
@@ -237,19 +237,19 @@ struct Index {
                 .onClick(() => {
                   this.closeCf(false);
                 })
-              Text('人机验证')
+              Text($r('app.string.tab_cf_title'))
                 .fontSize(16)
                 .fontWeight(FontWeight.Bold)
                 .fontColor('#FFFFFF')
                 .layoutWeight(1)
                 .textAlign(TextAlign.Center)
-              Text('完成')
+              Text($r('app.string.tab_cf_done'))
                 .fontSize(15)
                 .fontColor('#FFFFFF')
                 .padding({ left: 14, right: 14, top: 10, bottom: 10 })
                 .onClick(() => {
                   this.closeCf(true);
-                  Util.toast(this.getUIContext(), '已保存验证结果');
+                  Util.toastRes(this.getUIContext(), $r('app.string.tab_cf_saved'));
                 })
             }
             .width('100%')

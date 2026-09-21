@@ -45,18 +45,18 @@ export struct HistoryPage {
     this.confirmClear = false;
     await HistoryRepo.clear();
     await this.loadData();
-    Util.toast(this.getUIContext(), '已清空历史');
+    Util.toastRes(this.getUIContext(), $r('app.string.history_cleared'));
   }
 
   build() {
     Column() {
       Row() {
-        Text('历史')
+        Text($r('app.string.history_title'))
           .fontSize(22)
           .fontWeight(FontWeight.Bold)
           .fontColor(this.pal.text)
           .layoutWeight(1)
-        Text(this.confirmClear ? '确认清空？' : '清空')
+        Text(this.confirmClear ? $r('app.string.history_confirm_clear') : $r('app.string.history_clear'))
           .fontSize(14)
           .fontColor(this.confirmClear ? '#E05252' : this.pal.sub)
           .padding({ left: 8, right: 8 })
@@ -78,7 +78,7 @@ export struct HistoryPage {
         .justifyContent(FlexAlign.Center)
       } else if (this.items.length === 0) {
         Column() {
-          EmptyScreen({ message: '最近没有阅读' })
+          EmptyScreen({ message: $r('app.string.history_empty') })
         }
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)
@@ -124,8 +124,8 @@ export struct HistoryPage {
                 }
                 .alignItems(HorizontalAlign.Start)
                 .layoutWeight(1)
-                Text('继续')
-                  .fontSize(12)
+                  Text($r('app.string.history_continue'))
+                    .fontSize(12)
                   .fontColor(this.pal.primary)
                   .backgroundColor(this.pal.chip)
                   .borderRadius(12)

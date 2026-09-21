@@ -84,7 +84,7 @@ export struct BrowsePage {
       this.results = await this.toRecords(source.key, result.mangas);
       this.hasNextPage = result.hasNextPage;
     } catch (e) {
-      Util.toast(this.getUIContext(), `加载失败：${(e as Error).message}`);
+      Util.toastRes(this.getUIContext(), $r('app.string.browse_load_failed'), [(e as Error).message]);
     }
     this.searching = false;
   }
@@ -105,7 +105,7 @@ export struct BrowsePage {
       this.results = await this.toRecords(source.key, result.mangas);
       this.hasNextPage = result.hasNextPage;
     } catch (e) {
-      Util.toast(this.getUIContext(), `搜索失败：${(e as Error).message}`);
+      Util.toastRes(this.getUIContext(), $r('app.string.browse_search_failed'), [(e as Error).message]);
     }
     this.searching = false;
   }
@@ -126,7 +126,7 @@ export struct BrowsePage {
       this.page = nextPage;
       this.hasNextPage = result.hasNextPage;
     } catch (e) {
-      Util.toast(this.getUIContext(), '加载更多失败');
+      Util.toastRes(this.getUIContext(), $r('app.string.browse_load_more_failed'));
     }
     this.loadingMore = false;
   }
@@ -160,7 +160,7 @@ export struct BrowsePage {
       const params: DetailParams = { mangaId: id };
       this.pathStack.pushPathByName('MangaDetail', params);
     } catch (e) {
-      Util.toast(this.getUIContext(), '打开详情失败');
+      Util.toastRes(this.getUIContext(), $r('app.string.browse_open_detail_failed'));
     }
   }
 
@@ -190,15 +190,15 @@ export struct BrowsePage {
       this.pickedUris = uris;
       this.showImportDialog();
     } catch (e) {
-      Util.toast(this.getUIContext(), '选择文件失败');
+      Util.toastRes(this.getUIContext(), $r('app.string.browse_pick_file_failed'));
     }
   }
 
   private showImportDialog(): void {
     const dialog = new CustomDialogController({
       builder: InputDialog({
-        title: `导入 ${this.pickedUris.length} 个文件到漫画`,
-        placeholder: '漫画名称（将创建本地漫画）',
+        title: $r('app.string.browse_import_title', this.pickedUris.length),
+        placeholder: $r('app.string.browse_manga_name_hint'),
         onConfirm: (text: string): void => {
           this.doImport(text.trim());
         },
@@ -210,7 +210,7 @@ export struct BrowsePage {
 
   private async doImport(title: string): Promise<void> {
     if (title === '') {
-      Util.toast(this.getUIContext(), '请输入漫画名称');
+      Util.toastRes(this.getUIContext(), $r('app.string.browse_input_name'));
       return;
     }
     const source = SourceRegistry.get('local');
@@ -220,10 +220,10 @@ export struct BrowsePage {
     const local = source as LocalSource;
     try {
       const count = await local.importFiles(this.pickedUris, title);
-      Util.toast(this.getUIContext(), `已导入 ${count} 个章节文件`);
+      Util.toastRes(this.getUIContext(), $r('app.string.browse_import_done', count));
       await this.loadPopular();
     } catch (e) {
-      Util.toast(this.getUIContext(), `导入失败：${(e as Error).message}`);
+      Util.toastRes(this.getUIContext(), $r('app.string.browse_import_failed'), [(e as Error).message]);
     }
   }
 
@@ -231,13 +231,13 @@ export struct BrowsePage {
     Column() {
       // 顶栏
       Row() {
-        Text('浏览')
+        Text($r('app.string.browse_title'))
           .fontSize(22)
           .fontWeight(FontWeight.Bold)
           .fontColor(this.pal.text)
           .layoutWeight(1)
         if (this.selectedSource === 'local') {
-          Button('导入')
+          Button($r('app.string.browse_import'))
             .fontSize(14)
             .height(32)
             .backgroundColor(this.pal.primary)
@@ -245,7 +245,7 @@ export struct BrowsePage {
               this.pickImportFiles();
             })
         }
-        Text('插件')
+        Text($r('app.string.browse_plugins'))
           .fontSize(13)
           .fontColor(this.pal.primary)
           .padding({ left: 12, right: 4 })
@@ -259,7 +259,7 @@ export struct BrowsePage {
       // 源选择
       Row({ space: 8 }) {
         ForEach(this.sources, (source: Source) => {
-          Text(source.name)
+          Text(source.key === 'local' ? $r('app.string.browse_local_source_name') : source.name)
             .fontSize(13)
             .fontColor(this.selectedSource === source.key ? '#FFFFFF' : this.pal.text)
             .backgroundColor(this.selectedSource === source.key ? this.pal.primary : this.pal.chip)
@@ -280,7 +280,7 @@ export struct BrowsePage {
       // 模式切换（仅支持最新更新的源显示）
       if (this.selectedSource !== 'local' && this.currentSource()?.supportsLatest === true) {
         Row({ space: 8 }) {
-          Text('最热')
+          Text($r('app.string.browse_popular'))
             .fontSize(13)
             .fontColor(this.mode === 'popular' ? '#FFFFFF' : this.pal.sub)
             .backgroundColor(this.mode === 'popular' ? this.pal.primary : this.pal.bg)
@@ -292,7 +292,7 @@ export struct BrowsePage {
                 this.loadPopular();
               }
             })
-          Text('最新')
+          Text($r('app.string.browse_latest'))
             .fontSize(13)
             .fontColor(this.mode === 'latest' ? '#FFFFFF' : this.pal.sub)
             .backgroundColor(this.mode === 'latest' ? this.pal.primary : this.pal.bg)
@@ -312,14 +312,14 @@ export struct BrowsePage {
       // 搜索栏
       if (this.selectedSource !== 'local') {
         Row({ space: 8 }) {
-          TextInput({ placeholder: '搜索漫画…' })
+          TextInput({ placeholder: $r('app.string.browse_search_hint') })
             .layoutWeight(1)
             .height(38)
             .backgroundColor(this.pal.card)
             .onChange((value: string) => {
               this.query = value;
             })
-          Button('搜索')
+          Button($r('app.string.common_search'))
             .fontSize(14)
             .height(38)
             .backgroundColor(this.pal.primary)
@@ -344,7 +344,7 @@ export struct BrowsePage {
       } else if (this.results.length === 0) {
         Column() {
           EmptyScreen({
-            message: this.selectedSource === 'local' ? '暂无本地漫画，点击右上角「导入」' : '没有找到漫画',
+            message: this.selectedSource === 'local' ? $r('app.string.browse_local_empty') : $r('app.string.browse_no_results'),
           })
         }
         .layoutWeight(1)

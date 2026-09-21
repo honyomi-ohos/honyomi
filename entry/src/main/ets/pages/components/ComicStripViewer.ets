@@ -86,7 +86,7 @@ struct StripItemView {
             .width(32)
             .height(32)
             .color(Theme.readerPlaceholder(this.isDark))
-          Text('加载中…')
+          Text($r('app.string.viewer_loading'))
             .fontSize(12)
             .fontColor(Theme.readerPlaceholder(this.isDark))
             .margin({ top: 8 })
@@ -96,10 +96,10 @@ struct StripItemView {
         .justifyContent(FlexAlign.Center)
       } else {
         Column() {
-          Text('图片加载失败')
+          Text($r('app.string.viewer_load_failed'))
             .fontSize(13)
             .fontColor(Theme.readerPlaceholder(this.isDark))
-          Text('点按重试')
+          Text($r('app.string.viewer_tap_retry'))
             .fontSize(12)
             .fontColor(Theme.readerPlaceholder(this.isDark))
             .margin({ top: 6 })

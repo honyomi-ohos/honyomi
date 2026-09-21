@@ -18,7 +18,7 @@ const ERROR_FACES: string[] = [
 
 @Component
 export struct EmptyScreen {
-  @Prop message: string = '';
+  message: Resource | string = '';
   @Prop compact: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State face: string = ERROR_FACES[0];

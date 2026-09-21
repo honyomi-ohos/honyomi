@@ -22,6 +22,8 @@ export default class EntryAbility extends UIAbility {
     AppStorage.setOrCreate('libDirty', 0);
     AppStorage.setOrCreate('pluginsDirty', 0);
     Settings.init(this.context);
+    // 应用语言偏好（跟随系统时由系统资源机制自动匹配）
+    Settings.applyAppLanguage();
     // 注册内置源（LocalSource；在线源全部通过插件动态安装）
     SourceRegistry.register(new LocalSource(this.context.filesDir, this.context.cacheDir));
     // 插件宿主（JSVM 隔离引擎：安装主线程 HTTP 桥）

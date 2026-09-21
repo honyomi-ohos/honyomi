@@ -1,6 +1,7 @@
 import { preferences } from '@kit.ArkData';
 import { common, ConfigurationConstant } from '@kit.AbilityKit';
 import { window, UIContext } from '@kit.ArkUI';
+import { i18n } from '@kit.LocalizationKit';
 import { Theme } from './Theme';
 
 // 轻量设置存储（阅读/主题/书架/阅读器/浏览/全局开关等）
@@ -164,6 +165,26 @@ export class Settings {
 
   static setStartTab(v: number): void {
     Settings.setNum('startTab', v);
+  }
+
+  // ---- 应用语言 ----
+  // 'auto' 跟随系统 | 'zh' 简体中文 | 'en' English
+  static getAppLanguage(): string {
+    return Settings.getStr('appLanguage', 'auto');
+  }
+
+  static setAppLanguage(v: string): void {
+    Settings.setStr('appLanguage', v);
+  }
+
+  // 应用语言偏好到系统（立即生效并持久化；'default' 跟随系统需冷启动生效）
+  static applyAppLanguage(): void {
+    const lang: string = Settings.getAppLanguage();
+    const tag: string = lang === 'zh' ? 'zh-Hans' : (lang === 'en' ? 'en-US' : 'default');
+    try {
+      i18n.System.setAppPreferredLanguage(tag);
+    } catch (_e) {
+    }
   }
 
   // ---- 书架 ----

@@ -43,9 +43,9 @@ export struct UpdatesPage {
     try {
       const context = getContext(this) as common.UIAbilityContext;
       const newCount = await UpdateService.refreshLibrary(context);
-      Util.toast(this.getUIContext(), newCount > 0 ? `发现 ${newCount} 个新章节` : '没有新章节');
+      Util.toastRes(this.getUIContext(), newCount > 0 ? $r('app.string.updates_found_new', newCount) : $r('app.string.updates_no_new'));
     } catch (e) {
-      Util.toast(this.getUIContext(), '刷新失败，请检查网络');
+      Util.toastRes(this.getUIContext(), $r('app.string.updates_refresh_failed'));
     }
     this.refreshing = false;
     await this.loadData();
@@ -54,12 +54,12 @@ export struct UpdatesPage {
   build() {
     Column() {
       Row() {
-        Text('更新')
+        Text($r('app.string.updates_title'))
           .fontSize(22)
           .fontWeight(FontWeight.Bold)
           .fontColor(this.pal.text)
           .layoutWeight(1)
-        Text(this.refreshing ? '刷新中…' : '⟳')
+        Text(this.refreshing ? $r('app.string.updates_refreshing') : '⟳')
           .fontSize(this.refreshing ? 14 : 24)
           .fontColor(this.pal.primary)
           .padding({ left: 8, right: 8 })
@@ -81,7 +81,7 @@ export struct UpdatesPage {
         .justifyContent(FlexAlign.Center)
       } else if (this.items.length === 0) {
         Column() {
-          EmptyScreen({ message: '最近没有更新' })
+          EmptyScreen({ message: $r('app.string.updates_empty') })
         }
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)

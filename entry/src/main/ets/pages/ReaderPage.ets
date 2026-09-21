@@ -134,7 +134,7 @@ export struct ReaderPage {
       await AppDb.ready(context);
       const chapter = await ChapterRepo.getById(this.chapterId);
       if (chapter === undefined) {
-        Util.toast(this.getUIContext(), '章节不存在');
+        Util.toastRes(this.getUIContext(), $r('app.string.reader_chapter_not_found'));
         this.pathStack.pop();
         return;
       }
@@ -167,7 +167,7 @@ export struct ReaderPage {
       await HistoryRepo.upsert(chapter.mangaId, chapter.id, this.currentReal);
       await this.refreshNeighbors();
     } catch (e) {
-      Util.toast(this.getUIContext(), `加载失败：${(e as Error).message}`);
+      Util.toastRes(this.getUIContext(), $r('app.string.reader_load_failed'), [(e as Error).message]);
     }
     this.loading = false;
   }
@@ -253,25 +253,25 @@ export struct ReaderPage {
   private selectMode(): void {
     const sheets: SheetInfo[] = [];
     sheets.push({
-      title: '左到右（左右翻页）',
+      title: $r('app.string.reader_mode_ltr'),
       action: (): void => {
         this.setMode('ltr');
       }
     });
     sheets.push({
-      title: '右到左（日漫方向）',
+      title: $r('app.string.reader_mode_rtl'),
       action: (): void => {
         this.setMode('rtl');
       }
     });
     sheets.push({
-      title: '条漫（上下滚动）',
+      title: $r('app.string.reader_mode_webtoon'),
       action: (): void => {
         this.setMode('webtoon');
       }
     });
     const opts: ActionSheetOptions = {
-      title: '阅读模式',
+      title: $r('app.string.reader_reading_mode'),
       message: '',
       sheets: sheets
     };
@@ -279,7 +279,7 @@ export struct ReaderPage {
   }
 
   private selectOrientation(): void {
-    const labels: string[] = ['跟随系统', '竖屏', '横屏'];
+    const labels: ResourceStr[] = [$r('app.string.reader_orientation_free'), $r('app.string.reader_orientation_portrait'), $r('app.string.reader_orientation_landscape')];
     const values: string[] = ['free', 'portrait', 'landscape'];
     const sheets: SheetInfo[] = [];
     for (let i = 0; i < values.length; i++) {
@@ -294,7 +294,7 @@ export struct ReaderPage {
       });
     }
     const opts: ActionSheetOptions = {
-      title: '屏幕方向',
+      title: $r('app.string.reader_screen_orientation'),
       message: '',
       sheets: sheets
     };
@@ -333,7 +333,7 @@ export struct ReaderPage {
     }
     const targetIdx = next ? idx + 1 : idx - 1;
     if (targetIdx < 0 || targetIdx >= all.length) {
-      Util.toast(this.getUIContext(), next ? '已经是最后一章' : '已经是第一章');
+      Util.toastRes(this.getUIContext(), next ? $r('app.string.reader_last_chapter') : $r('app.string.reader_first_chapter'));
       return;
     }
     if (next && !this.chapter.read) {
@@ -390,11 +390,11 @@ export struct ReaderPage {
   private step(delta: number): void {
     const target = this.displayIndex + delta;
     if (target < 0) {
-      Util.toast(this.getUIContext(), '已经是第一页');
+      Util.toastRes(this.getUIContext(), $r('app.string.reader_first_page'));
       return;
     }
     if (target >= this.pages.length) {
-      Util.toast(this.getUIContext(), '已经是最后一页');
+      Util.toastRes(this.getUIContext(), $r('app.string.reader_last_page'));
       return;
     }
     this.displayIndex = target;
@@ -411,7 +411,7 @@ export struct ReaderPage {
               .width(40)
               .height(40)
               .color(this.pal.primary)
-            Text('正在加载章节…')
+            Text($r('app.string.reader_loading_chapter'))
               .fontSize(13)
               .fontColor(this.pal.sub)
               .margin({ top: 12 })

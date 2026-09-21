@@ -14,7 +14,7 @@ export struct MorePage {
 
   build() {
     Column() {
-      Text('更多')
+      Text($r('app.string.more_title'))
         .fontSize(22)
         .fontWeight(FontWeight.Bold)
         .fontColor(this.pal.text)
@@ -34,7 +34,7 @@ export struct MorePage {
               .fontWeight(FontWeight.Bold)
               .fontColor(this.pal.text)
               .margin({ top: 10 })
-            Text('版本 1.0.0')
+            Text($r('app.string.more_version', '1.0.0'))
               .fontSize(12)
               .fontColor(this.pal.sub)
               .margin({ top: 2 })
@@ -47,7 +47,7 @@ export struct MorePage {
           PrefGroup() {
             SwitchRow({
               icon: 'cloud_off',
-              title: '仅下载（离线阅读）',
+              title: $r('app.string.more_downloaded_only'),
               isOn: this.downloadedOnly,
               onChange: (value: boolean): void => {
                 this.downloadedOnly = value;
@@ -57,7 +57,7 @@ export struct MorePage {
             Divider().color(this.pal.divider).margin({ left: 52 })
             SwitchRow({
               icon: 'visibility_off',
-              title: '无痕浏览',
+              title: $r('app.string.more_incognito'),
               isOn: this.incognito,
               onChange: (value: boolean): void => {
                 this.incognito = value;
@@ -69,7 +69,7 @@ export struct MorePage {
           // 功能入口
           PrefGroup() {
             IconRow({
-              title: '下载管理',
+              title: $r('app.string.more_downloads'),
               icon: 'download',
               onTap: (): void => {
                 this.pathStack.pushPathByName('Downloads', null);
@@ -77,7 +77,7 @@ export struct MorePage {
             })
             Divider().color(this.pal.divider).margin({ left: 52 })
             IconRow({
-              title: '分类',
+              title: $r('app.string.more_categories'),
               icon: 'label',
               onTap: (): void => {
                 this.pathStack.pushPathByName('Categories', null);
@@ -85,7 +85,7 @@ export struct MorePage {
             })
             Divider().color(this.pal.divider).margin({ left: 52 })
             IconRow({
-              title: '设置',
+              title: $r('app.string.more_settings'),
               icon: 'settings',
               onTap: (): void => {
                 this.pathStack.pushPathByName('Settings', null);
@@ -93,7 +93,7 @@ export struct MorePage {
             })
             Divider().color(this.pal.divider).margin({ left: 52 })
             IconRow({
-              title: '关于',
+              title: $r('app.string.more_about'),
               icon: 'info',
               onTap: (): void => {
                 this.pathStack.pushPathByName('About', null);
@@ -104,7 +104,7 @@ export struct MorePage {
           // 插件入口（P2 将迁移至浏览页）
           PrefGroup() {
             IconRow({
-              title: '插件管理',
+              title: $r('app.string.more_plugins'),
               icon: 'travel_explore',
               onTap: (): void => {
                 this.pathStack.pushPathByName('Plugins', null);

@@ -79,7 +79,7 @@ export struct MangaDetailPage {
         const detail = await source.getMangaDetail(this.manga.url);
         await MangaRepo.upsertFromSource(this.manga.sourceKey, detail);
       } catch (e) {
-        Util.toast(this.getUIContext(), '联网同步失败，展示本地缓存');
+        Util.toastRes(this.getUIContext(), $r('app.string.detail_sync_failed_local'));
       }
     }
     await this.reloadLocal();
@@ -98,7 +98,7 @@ export struct MangaDetailPage {
     await MangaRepo.setInLibrary(this.manga.id, target);
     await this.reloadLocal();
     AppStorage.set('libDirty', this.libDirty + 1);
-    Util.toast(this.getUIContext(), target ? '已加入书架' : '已移出书架');
+    Util.toastRes(this.getUIContext(), target ? $r('app.string.detail_added_to_library') : $r('app.string.detail_removed_from_library'));
   }
 
   private continueChapter(): ChapterRecord | undefined {
@@ -122,7 +122,7 @@ export struct MangaDetailPage {
     await ChapterRepo.markAllRead(this.mangaId, true);
     await this.reloadLocal();
     AppStorage.set('libDirty', this.libDirty + 1);
-    Util.toast(this.getUIContext(), '已全部标为已读');
+    Util.toastRes(this.getUIContext(), $r('app.string.detail_all_marked_read'));
   }
 
   private downloadChapter(chapter: ChapterRecord): void {
@@ -139,18 +139,18 @@ export struct MangaDetailPage {
     task.chapterUrl = chapter.url;
     DownloadService.enqueue(task);
     this.dlVersion += 1;
-    Util.toast(this.getUIContext(), '已加入下载队列');
+    Util.toastRes(this.getUIContext(), $r('app.string.detail_download_queued'));
   }
 
   private showAlSearch(): void {
     if (Settings.getAnilistToken() === '') {
-      Util.toast(this.getUIContext(), '请先在「更多」页配置 AniList 令牌');
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_config_anilist_token'));
       return;
     }
     const dialog = new CustomDialogController({
       builder: InputDialog({
-        title: '搜索 AniList',
-        placeholder: '漫画名称',
+        title: $r('app.string.detail_search_anilist'),
+        placeholder: $r('app.string.detail_manga_title_hint'),
         onConfirm: (text: string): void => {
           this.doAlSearch(text);
         },
@@ -170,10 +170,10 @@ export struct MangaDetailPage {
     try {
       this.alResults = await AniListTracker.search(q, token);
       if (this.alResults.length === 0) {
-        Util.toast(this.getUIContext(), '无搜索结果');
+        Util.toastRes(this.getUIContext(), $r('app.string.detail_no_search_results'));
       }
     } catch (e) {
-      Util.toast(this.getUIContext(), 'AniList 搜索失败');
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_anilist_search_failed'));
     }
     this.alSearching = false;
   }
@@ -182,14 +182,14 @@ export struct MangaDetailPage {
     await TrackRepo.bind(this.mangaId, item.id, item.title);
     this.track = await TrackRepo.get(this.mangaId);
     this.alResults = [];
-    Util.toast(this.getUIContext(), '已绑定 AniList 条目');
+    Util.toastRes(this.getUIContext(), $r('app.string.detail_anilist_bound'));
   }
 
   private async unbindAl(): Promise<void> {
     await TrackRepo.unbind(this.mangaId);
     this.track = undefined;
     this.alResults = [];
-    Util.toast(this.getUIContext(), '已解绑');
+    Util.toastRes(this.getUIContext(), $r('app.string.detail_anilist_unbound'));
   }
 
   private async syncTrack(): Promise<void> {
@@ -198,7 +198,7 @@ export struct MangaDetailPage {
     }
     const token = Settings.getAnilistToken();
     if (token === '') {
-      Util.toast(this.getUIContext(), '请先在「更多」页配置 AniList 令牌');
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_config_anilist_token'));
       return;
     }
     let progress = 0;
@@ -211,9 +211,9 @@ export struct MangaDetailPage {
       await AniListTracker.updateProgress(token, this.track.remoteId, progress);
       await TrackRepo.setLastChapterRead(this.mangaId, progress);
       this.track = await TrackRepo.get(this.mangaId);
-      Util.toast(this.getUIContext(), `已同步进度到第 ${progress} 话`);
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_synced_progress'), [progress]);
     } catch (e) {
-      Util.toast(this.getUIContext(), 'AniList 同步失败');
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_anilist_sync_failed'));
     }
   }
 
@@ -293,7 +293,7 @@ export struct MangaDetailPage {
                     .fontColor(this.pal.sub)
                     .maxLines(1)
                 }
-                Text(this.manga.sourceKey === 'local' ? '本地' : Util.statusLabel(this.manga.status))
+                Text(this.manga.sourceKey === 'local' ? $r('app.string.detail_status_local') : Util.statusLabel(this.manga.status))
                   .fontSize(12)
                   .fontColor(this.pal.primary)
                   .backgroundColor(this.pal.chip)
@@ -313,7 +313,7 @@ export struct MangaDetailPage {
 
         // 操作按钮
         Row({ space: 12 }) {
-          Button(this.manga.inLibrary ? '已在书架' : '加入书架')
+          Button(this.manga.inLibrary ? $r('app.string.detail_in_library') : $r('app.string.detail_add_to_library'))
             .fontSize(14)
             .height(38)
             .layoutWeight(1)
@@ -323,7 +323,7 @@ export struct MangaDetailPage {
               this.toggleLibrary();
             })
           Button(this.continueChapter() !== undefined ?
-            (this.chapters.some((c: ChapterRecord): boolean => c.read) ? '继续阅读' : '开始阅读') : '暂无章节')
+            (this.chapters.some((c: ChapterRecord): boolean => c.read) ? $r('app.string.detail_continue_reading') : $r('app.string.detail_start_reading')) : $r('app.string.detail_no_chapters_yet'))
             .fontSize(14)
             .height(38)
             .layoutWeight(1)
@@ -348,7 +348,7 @@ export struct MangaDetailPage {
               .maxLines(this.descExpanded ? 999 : 3)
               .textOverflow({ overflow: TextOverflow.Ellipsis })
               .width('100%')
-            Text(this.descExpanded ? '收起' : '展开')
+            Text(this.descExpanded ? $r('app.string.detail_collapse') : $r('app.string.detail_expand'))
               .fontSize(12)
               .fontColor(this.pal.primary)
               .margin({ top: 4 })
@@ -363,14 +363,14 @@ export struct MangaDetailPage {
 
         // AniList 追踪
         Column() {
-          Text('AniList 追踪')
+          Text($r('app.string.detail_anilist_tracking'))
             .fontSize(15)
             .fontWeight(FontWeight.Bold)
             .fontColor(this.pal.text)
             .width('100%')
             .margin({ bottom: 8 })
           if (Settings.getAnilistToken() === '') {
-            Text('在「更多」页配置 AniList 访问令牌后可追踪阅读进度')
+            Text($r('app.string.detail_anilist_token_hint'))
               .fontSize(12)
               .fontColor(this.pal.sub)
           } else if (this.track === undefined) {
@@ -380,12 +380,12 @@ export struct MangaDetailPage {
                   .width(16)
                   .height(16)
                   .color(this.pal.primary)
-                Text('搜索中...')
+                Text($r('app.string.detail_searching'))
                   .fontSize(12)
                   .fontColor(this.pal.sub)
               }
             } else {
-              Text('搜索并绑定')
+              Text($r('app.string.detail_search_and_bind'))
                 .fontSize(13)
                 .fontColor('#FFFFFF')
                 .backgroundColor(this.pal.primary)
@@ -403,7 +403,7 @@ export struct MangaDetailPage {
                   .maxLines(1)
                   .textOverflow({ overflow: TextOverflow.Ellipsis })
                   .layoutWeight(1)
-                Text('绑定')
+                Text($r('app.string.detail_bind'))
                   .fontSize(12)
                   .fontColor(this.pal.primary)
                   .padding({ left: 8 })
@@ -420,12 +420,12 @@ export struct MangaDetailPage {
               .fontColor(this.pal.text)
               .maxLines(1)
               .textOverflow({ overflow: TextOverflow.Ellipsis })
-            Text(`已同步到第 ${this.track.lastChapterRead} 话`)
+            Text($r('app.string.detail_synced_to_chapter', this.track.lastChapterRead))
               .fontSize(11)
               .fontColor(this.pal.sub)
               .margin({ top: 2 })
             Row({ space: 12 }) {
-              Text('同步进度')
+              Text($r('app.string.detail_sync_progress'))
                 .fontSize(12)
                 .fontColor(this.pal.primary)
                 .backgroundColor(this.pal.chip)
@@ -435,7 +435,7 @@ export struct MangaDetailPage {
                 .onClick(() => {
                   this.syncTrack();
                 })
-              Text('解绑')
+              Text($r('app.string.detail_unbind'))
                 .fontSize(12)
                 .fontColor('#E05252')
                 .backgroundColor(this.pal.chip)
@@ -457,19 +457,19 @@ export struct MangaDetailPage {
 
         // 章节标题栏
         Row() {
-          Text(`章节 ${this.chapters.length}`)
+          Text($r('app.string.detail_chapters_count', this.chapters.length))
             .fontSize(16)
             .fontWeight(FontWeight.Bold)
             .fontColor(this.pal.text)
             .layoutWeight(1)
-          Text(this.sortAsc ? '正序 ↑' : '倒序 ↓')
+          Text(this.sortAsc ? $r('app.string.detail_sort_asc') : $r('app.string.detail_sort_desc'))
             .fontSize(13)
             .fontColor(this.pal.primary)
             .padding(6)
             .onClick(() => {
               this.sortAsc = !this.sortAsc;
             })
-          Text('全部已读')
+          Text($r('app.string.detail_mark_all_read'))
             .fontSize(13)
             .fontColor(this.pal.primary)
             .padding(6)
@@ -492,7 +492,7 @@ export struct MangaDetailPage {
           .justifyContent(FlexAlign.Center)
         } else if (this.chapters.length === 0) {
           Column() {
-            EmptyScreen({ message: '没有章节' })
+            EmptyScreen({ message: $r('app.string.detail_no_chapters') })
           }
           .layoutWeight(1)
           .justifyContent(FlexAlign.Center)
@@ -516,7 +516,7 @@ export struct MangaDetailPage {
                   .layoutWeight(1)
 
                   if (chapter.read) {
-                    Text('已读')
+                    Text($r('app.string.detail_read'))
                       .fontSize(11)
                       .fontColor(this.pal.sub)
                   } else {
@@ -530,17 +530,17 @@ export struct MangaDetailPage {
 
                   if (this.manga.sourceKey !== 'local') {
                     if (DownloadService.isDownloaded(chapter.id)) {
-                      Text('已下载')
+                      Text($r('app.string.detail_downloaded'))
                         .fontSize(11)
                         .fontColor(this.pal.primary)
                         .margin({ left: 8 })
                     } else if (DownloadService.isQueued(chapter.id)) {
-                      Text('队列中')
+                      Text($r('app.string.detail_in_queue'))
                         .fontSize(11)
                         .fontColor(this.pal.sub)
                         .margin({ left: 8 })
                     } else {
-                      Text('下载')
+                      Text($r('app.string.detail_download'))
                         .fontSize(11)
                         .fontColor(this.pal.sub)
                         .margin({ left: 8 })

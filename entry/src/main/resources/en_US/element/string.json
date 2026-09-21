@@ -1,0 +1,176 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "MihonHarmony"
+    },
+    {
+      "name": "common_ok",
+      "value": "OK"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Cancel"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Confirm"
+    },
+    {
+      "name": "common_delete",
+      "value": "Delete"
+    },
+    {
+      "name": "common_retry",
+      "value": "Retry"
+    },
+    {
+      "name": "common_search",
+      "value": "Search"
+    },
+    {
+      "name": "common_all",
+      "value": "All"
+    },
+    {
+      "name": "common_close",
+      "value": "Close"
+    },
+    {
+      "name": "common_save",
+      "value": "Save"
+    },
+    {
+      "name": "common_install",
+      "value": "Install"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "Uninstall"
+    },
+    {
+      "name": "common_update",
+      "value": "Update"
+    },
+    {
+      "name": "common_none",
+      "value": "None"
+    },
+    {
+      "name": "common_default",
+      "value": "Default"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Appearance"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Language"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Follow system"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Theme mode"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Follow system"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Light"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Dark"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Accent color"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Others"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED pure black background"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Blue"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "Green"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Pink"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Purple"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "Orange"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d min ago"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d h ago"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d d ago"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "Ongoing"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Completed"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "On hiatus"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Cancelled"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Publication complete"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Unknown"
+    }
+  ]
+}

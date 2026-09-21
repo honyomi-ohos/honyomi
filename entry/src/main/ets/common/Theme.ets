@@ -22,20 +22,20 @@ export class Theme {
     return ['blue', 'green', 'pink', 'purple', 'orange'];
   }
 
-  static accentLabel(name: string): string {
+  static accentLabel(name: string): Resource {
     if (name === 'green') {
-      return '绿色';
+      return $r('app.string.theme_accent_green');
     }
     if (name === 'pink') {
-      return '粉色';
+      return $r('app.string.theme_accent_pink');
     }
     if (name === 'purple') {
-      return '紫色';
+      return $r('app.string.theme_accent_purple');
     }
     if (name === 'orange') {
-      return '橙色';
+      return $r('app.string.theme_accent_orange');
     }
-    return '蓝色';
+    return $r('app.string.theme_accent_blue');
   }
 
   static accentDot(name: string): string {

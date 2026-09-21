@@ -1,9 +1,10 @@
 ﻿import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
+import { Util } from '../../common/Util';
 import { PageHeader } from '../components/PageHeader';
 import { PrefGroup, IconRow, SelectRow } from '../components/Prefs';
 
-const TAB_LABELS: string[] = ['书架', '更新', '历史', '浏览', '更多'];
+const TAB_COUNT: number = 5;
 
 // 设置中心主页：常规 + 各分类入口
 @Component
@@ -11,11 +12,19 @@ export struct SettingsPage {
   @Consume('navStack') pathStack: NavPathStack;
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @State startTabLabel: string = '书架';
+  @State tabLabels: string[] = [];
+  @State startTabLabel: string = '';
 
   aboutToAppear(): void {
+    this.tabLabels = [
+      Util.resStr(this.getUIContext(), $r('app.string.settings_tab_library')),
+      Util.resStr(this.getUIContext(), $r('app.string.settings_tab_updates')),
+      Util.resStr(this.getUIContext(), $r('app.string.settings_tab_history')),
+      Util.resStr(this.getUIContext(), $r('app.string.settings_tab_browse')),
+      Util.resStr(this.getUIContext(), $r('app.string.settings_tab_more'))
+    ];
     const idx = Settings.getStartTab();
-    this.startTabLabel = idx >= 0 && idx < TAB_LABELS.length ? TAB_LABELS[idx] : TAB_LABELS[0];
+    this.startTabLabel = idx >= 0 && idx < this.tabLabels.length ? this.tabLabels[idx] : this.tabLabels[0];
   }
 
   build() {

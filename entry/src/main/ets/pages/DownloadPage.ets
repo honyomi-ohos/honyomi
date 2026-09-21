@@ -38,22 +38,22 @@ export struct DownloadPage {
     this.loading = false;
   }
 
-  private stateLabel(state: number): string {
+  private stateLabel(state: number): Resource {
     switch (state) {
       case 0:
-        return '队列中';
+        return $r('app.string.download_state_queued');
       case 1:
-        return '下载中';
+        return $r('app.string.download_state_downloading');
       case 2:
-        return '已完成';
+        return $r('app.string.download_state_done');
       default:
-        return '失败';
+        return $r('app.string.download_state_failed');
     }
   }
 
   private deleteChapter(item: DownloadedChapter): void {
     DownloadService.deleteChapter(item.mangaId, item.chapterId);
-    Util.toast(this.getUIContext(), '已删除下载');
+    Util.toastRes(this.getUIContext(), $r('app.string.download_deleted'));
   }
 
   build() {
@@ -68,13 +68,13 @@ export struct DownloadPage {
             .onClick(() => {
               this.pathStack.pop();
             })
-          Text('下载管理')
+          Text($r('app.string.download_title'))
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .fontColor(this.pal.text)
             .layoutWeight(1)
           if (this.queue.length > 0) {
-            Text(this.paused ? '继续' : '暂停')
+            Text(this.paused ? $r('app.string.download_resume') : $r('app.string.download_pause'))
               .fontSize(13)
               .fontColor(this.pal.primary)
               .padding(6)
@@ -85,7 +85,7 @@ export struct DownloadPage {
                   DownloadService.pauseAll();
                 }
               })
-            Text('清除记录')
+            Text($r('app.string.download_clear_finished'))
               .fontSize(13)
               .fontColor(this.pal.primary)
               .padding(6)
@@ -102,7 +102,7 @@ export struct DownloadPage {
           // 下载队列
           if (this.queue.length > 0) {
             ListItem() {
-              Text('下载队列')
+              Text($r('app.string.download_queue'))
                 .fontSize(14)
                 .fontWeight(FontWeight.Bold)
                 .fontColor(this.pal.sub)
@@ -146,21 +146,21 @@ export struct DownloadPage {
                       (task.state === 3 ? '#E05252' : this.pal.sub))
                   if (task.state === 0) {
                     Row({ space: 2 }) {
-                      Text('置顶')
+                      Text($r('app.string.download_move_top'))
                         .fontSize(12)
                         .fontColor(this.pal.primary)
                         .padding({ left: 6 })
                         .onClick(() => {
                           DownloadService.moveToTop(task.chapterId);
                         })
-                      Text('移底')
+                      Text($r('app.string.download_move_bottom'))
                         .fontSize(12)
                         .fontColor(this.pal.primary)
                         .padding({ left: 6 })
                         .onClick(() => {
                           DownloadService.moveToBottom(task.chapterId);
                         })
-                      Text('取消')
+                      Text($r('app.string.common_cancel'))
                         .fontSize(12)
                         .fontColor('#E05252')
                         .padding({ left: 6 })
@@ -170,14 +170,14 @@ export struct DownloadPage {
                     }
                   } else if (task.state === 3) {
                     Row({ space: 2 }) {
-                      Text('重试')
+                      Text($r('app.string.common_retry'))
                         .fontSize(12)
                         .fontColor(this.pal.primary)
                         .padding({ left: 6 })
                         .onClick(() => {
                           DownloadService.retry(task.chapterId);
                         })
-                      Text('取消')
+                      Text($r('app.string.common_cancel'))
                         .fontSize(12)
                         .fontColor('#E05252')
                         .padding({ left: 6 })
@@ -209,7 +209,7 @@ export struct DownloadPage {
           } else if (this.downloaded.length === 0 && this.queue.length === 0) {
             ListItem() {
               Column() {
-                EmptyScreen({ message: '暂无下载内容', compact: true })
+                EmptyScreen({ message: $r('app.string.download_empty'), compact: true })
               }
               .width('100%')
               .padding({ top: 48, bottom: 48 })
@@ -226,11 +226,11 @@ export struct DownloadPage {
                         .maxLines(1)
                         .textOverflow({ overflow: TextOverflow.Ellipsis })
                         .layoutWeight(1)
-                      Text('已下载')
+                      Text($r('app.string.download_status_downloaded'))
                         .fontSize(11)
                         .fontColor(this.pal.primary)
                         .margin({ right: 8 })
-                      Text('删除')
+                      Text($r('app.string.common_delete'))
                         .fontSize(12)
                         .fontColor('#E05252')
                         .onClick(() => {
@@ -276,7 +276,7 @@ export struct DownloadPage {
         .maxLines(1)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
         .layoutWeight(1)
-      Text(`${group.chapters.length} 话`)
+      Text($r('app.string.download_chapter_count', group.chapters.length))
         .fontSize(11)
         .fontColor(this.pal.sub)
     }
