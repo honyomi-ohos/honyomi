@@ -1,0 +1,14 @@
+{
+  "converted": [
+    {
+      "key": "pt_br_taosect",
+      "ext": "pt/taosect",
+      "theme": "",
+      "warnings": [
+        "filters not ported",
+        "Google Drive view-limit pre-check not ported (pages may fail when GD rate-limits)"
+      ]
+    }
+  ],
+  "skipped": []
+}

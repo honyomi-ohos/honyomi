@@ -14,6 +14,8 @@ export interface JsvmHttpResult {
   headersJson: string;
   body: string;
   error: string | null;
+  /** Final URL after redirects (request URL when the hop is unknown). */
+  url: string;
 }
 
 /** Adapter envelope returned by runScript / callFunction. */

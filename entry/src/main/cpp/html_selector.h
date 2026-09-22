@@ -18,8 +18,10 @@
  * (Lexbor CSS selectors: combinators, attribute operators, pseudo-classes,
  * comma-separated lists, ...).
  *
- * Returns a JSON array: [{"outerHtml":"...","innerHtml":"...","text":"...",
- *                         "attrs":{"name":"value",...}}, ...]
+ * Returns a JSON array of hits:
+ *   {"outerHtml","innerHtml","text","ownText","tag","attrs",
+ *    "prev":{"tag","id","className","text","ownText"},
+ *    "parents":[{"tag","id","className","text","ownText"}, ...]}
  * Returns "[]" when nothing matches or on parse failure.
  *
  * The input buffer is parsed IN PLACE: lexbor text nodes reference the caller's

@@ -3,6 +3,7 @@ import { Source } from './Source';
 import { JsvmExtensionManager } from '../jsvm/JsvmExtensionManager';
 import { WebChallengeError } from '../jsvm/NativeHttpBridge';
 import { Http } from '../net/Http';
+import { util } from '@kit.ArkTS';
 
 // 插件包 manifest.json 模型（宽松字段，解析时校验必填项）
 export interface PluginManifest {
@@ -58,6 +59,7 @@ interface RawPage {
   index?: number;
   url?: string;
   imageUrl?: string;
+  pageUrl?: string;
 }
 
 // JSVM 插件适配器：实现 Source 接口，方法经专属 Worker 转发到隔离 JSVM 引擎
@@ -103,6 +105,48 @@ export class JsvmSource implements Source {
       }
     }
     return merged;
+  }
+
+  async fetchPageImage(pageUrl: string, imageUrl: string): Promise<ArrayBuffer | undefined> {
+    if (this.exportedMethods.indexOf('fetchImage') < 0) {
+      return undefined;
+    }
+    const raw = await this.call<string>('fetchImage', [pageUrl, imageUrl]);
+    if (raw === undefined || raw === '') {
+      return undefined;
+    }
+    const helper = new util.Base64Helper();
+    const bytes = helper.decodeSync(raw);
+    return bytes.buffer;
+  }
+
+  async getFilterList(): Promise<object[]> {
+    if (this.exportedMethods.indexOf('getFilterList') < 0) {
+      return [];
+    }
+    const raw = await this.call<object[]>('getFilterList', []);
+    return Array.isArray(raw) ? raw : [];
+  }
+
+  async applyFilterState(state: object[]): Promise<void> {
+    if (this.exportedMethods.indexOf('applyFilterState') < 0) {
+      return;
+    }
+    await this.call<object>('applyFilterState', [JSON.stringify(state)]);
+  }
+
+  async resetFilters(): Promise<void> {
+    if (this.exportedMethods.indexOf('resetFilters') < 0) {
+      return;
+    }
+    await this.call<object>('resetFilters', []);
+  }
+
+  async setPreference(key: string, value: string): Promise<void> {
+    if (this.exportedMethods.indexOf('setPreference') < 0) {
+      return;
+    }
+    await this.call<object>('setPreference', [key, value]);
   }
 
   async getPopularManga(page: number): Promise<MangasPage> {
@@ -155,11 +199,19 @@ export class JsvmSource implements Source {
     }
     for (let i = 0; i < raw.length; i++) {
       const item = raw[i];
-      const url = item.imageUrl ?? item.url ?? '';
-      if (url === '') {
+      const imageUrl = item.imageUrl ?? item.url ?? '';
+      if (imageUrl === '') {
         continue;
       }
-      const page: SPage = { index: item.index ?? i, url: url };
+      let chapterUrl = item.pageUrl ?? '';
+      if (chapterUrl === '' && item.imageUrl !== undefined && item.imageUrl !== '') {
+        chapterUrl = item.url ?? '';
+      }
+      const page: SPage = {
+        index: item.index ?? i,
+        url: imageUrl,
+        pageUrl: chapterUrl,
+      };
       pages.push(page);
     }
     return pages;
@@ -168,7 +220,7 @@ export class JsvmSource implements Source {
   // ---------------- 内部实现 ----------------
 
   // 统一调用入口：CF 盾挑战异常上抛前触发全局验证页
-  private async call<T>(method: string, args: Array<string | number>): Promise<T> {
+  private async call<T>(method: string, args: Array<string | number | boolean | object>): Promise<T> {
     try {
       return await JsvmExtensionManager.callData<T>(this.key, method, args);
     } catch (e) {

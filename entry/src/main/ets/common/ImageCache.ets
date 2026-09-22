@@ -19,7 +19,7 @@ export class ImageCache {
   }
 
   // 解析展示地址：http(s) 且源需要请求头 → file:// 本地缓存；其余原样返回
-  static async resolve(url: string, sourceKey: string): Promise<string> {
+  static async resolve(url: string, sourceKey: string, pageUrl?: string): Promise<string> {
     if (url.indexOf('http://') !== 0 && url.indexOf('https://') !== 0) {
       return url;
     }
@@ -39,13 +39,32 @@ export class ImageCache {
     if (pending !== undefined) {
       return pending;
     }
-    const task = ImageCache.fetch(url, headers, path);
+    const task = ImageCache.fetch(url, ImageCache.withReferer(headers, pageUrl), path);
     ImageCache.inflight.set(url, task);
     try {
       return await task;
     } finally {
       ImageCache.inflight.delete(url);
     }
+  }
+
+  // 防盗链：源请求头未声明 Referer 时回退为章节页地址
+  private static withReferer(headers: Record<string, string>, pageUrl?: string): Record<string, string> {
+    if (pageUrl === undefined || pageUrl === '') {
+      return headers;
+    }
+    const keys = Object.keys(headers);
+    for (let i = 0; i < keys.length; i++) {
+      if (keys[i].toLowerCase() === 'referer') {
+        return headers;
+      }
+    }
+    const merged: Record<string, string> = {};
+    for (let i = 0; i < keys.length; i++) {
+      merged[keys[i]] = headers[keys[i]];
+    }
+    merged['Referer'] = pageUrl;
+    return merged;
   }
 
   // 缓存目录占用字节数

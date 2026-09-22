@@ -299,6 +299,7 @@ export struct BrowsePage {
             .borderRadius(12)
             .padding({ left: 12, right: 12, top: 4, bottom: 4 })
             .onClick(() => {
+              console.info(`[Browse] latest clicked, mode=${this.mode}`);
               if (this.mode !== 'latest') {
                 this.mode = 'latest';
                 this.loadPopular();

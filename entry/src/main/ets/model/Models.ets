@@ -22,6 +22,7 @@ export interface SChapter {
 export interface SPage {
   index: number;
   url: string;
+  pageUrl?: string;
 }
 
 export interface MangasPage {

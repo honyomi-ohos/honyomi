@@ -24,6 +24,8 @@ import jsvmEngine from 'libjsvmengine.so';
 
 const workerPort: ThreadWorkerGlobalScope = worker.workerPort;
 
+console.info('[JsvmWorker] module loaded');
+
 let engineId: number = -1;
 
 interface WorkerRequest {
@@ -49,24 +51,43 @@ function ready(ok: boolean, kind: string, error: string): void {
     'type': 'ready',
     'ok': ok,
     'kind': kind,
-    'error': error
+    'error': error,
+    'prefs': dumpPrefs()
   };
   post(JSON.stringify(shape));
 }
 
-function result(seq: number, ok: boolean, json: string, mem: number): void {
+function result(seq: number, ok: boolean, json: string, mem: number, prefs: string): void {
   const shape: Record<string, Object> = {
     'type': 'result',
     'seq': seq,
     'ok': ok,
     'json': json,
-    'mem': mem
+    'mem': mem,
+    'prefs': prefs
   };
   post(JSON.stringify(shape));
 }
 
+function dumpPrefs(): string {
+  if (engineId < 0) {
+    return '';
+  }
+  try {
+    const envelopeJson = jsvmEngine.callFunction(engineId, '__prefsDump', '[]');
+    const envelope = JSON.parse(envelopeJson) as CallEnvelope;
+    if (envelope.ok === true && envelope.data !== undefined) {
+      return JSON.stringify(envelope.data);
+    }
+  } catch (e) {
+    // prefs dump is best-effort
+  }
+  return '';
+}
+
 function handleInit(req: WorkerRequest): void {
   try {
+    console.info('[JsvmWorker] init start');
     engineId = jsvmEngine.createEngine();
     if (engineId < 0) {
       ready(false, '', 'JSVM 引擎创建失败');
@@ -95,15 +116,15 @@ function handleInit(req: WorkerRequest): void {
 function handleCall(req: WorkerRequest): void {
   const seq = req.seq ?? -1;
   if (engineId < 0) {
-    result(seq, false, '{"ok":false,"error":"engine not initialized"}', -1);
+    result(seq, false, '{"ok":false,"error":"engine not initialized"}', -1, '');
     return;
   }
   try {
     const json = jsvmEngine.callFunction(engineId, req.name ?? '', req.argsJson ?? '[]');
     const mem = jsvmEngine.engineMemoryBytes(engineId);
-    result(seq, true, json, mem);
+    result(seq, true, json, mem, dumpPrefs());
   } catch (e) {
-    result(seq, false, JSON.stringify({ 'ok': false, 'error': (e as Error).message }), -1);
+    result(seq, false, JSON.stringify({ 'ok': false, 'error': (e as Error).message }), -1, '');
   }
 }
 
@@ -119,7 +140,7 @@ function handleDestroy(): void {
 workerPort.onmessage = (e: MessageEvents): void => {
   let req: WorkerRequest;
   try {
-    req = e.data as WorkerRequest;
+    req = (typeof e.data === 'string' ? JSON.parse(e.data as string) : e.data) as WorkerRequest;
   } catch (err) {
     return;
   }

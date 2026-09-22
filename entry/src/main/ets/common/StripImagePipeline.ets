@@ -14,7 +14,7 @@ export class StripImagePipeline {
   private static readonly MAX_CACHE: number = 14;
   private static readonly MAX_DECODE_WIDTH: number = 1440;
 
-  static async load(url: string, sourceKey: string): Promise<image.PixelMap> {
+  static async load(url: string, sourceKey: string, pageUrl: string = ''): Promise<image.PixelMap> {
     const hit = StripImagePipeline.cache.get(url);
     if (hit !== undefined) {
       StripImagePipeline.touch(url);
@@ -24,7 +24,7 @@ export class StripImagePipeline {
     if (pending !== undefined) {
       return pending;
     }
-    const task = StripImagePipeline.fetchAndDecode(url, sourceKey);
+    const task = StripImagePipeline.fetchAndDecode(url, sourceKey, pageUrl);
     StripImagePipeline.inflight.set(url, task);
     try {
       return await task;
@@ -57,8 +57,8 @@ export class StripImagePipeline {
 
   // ---------------- 内部实现 ----------------
 
-  private static async fetchAndDecode(url: string, sourceKey: string): Promise<image.PixelMap> {
-    const buffer = await StripImagePipeline.fetchBytes(url, sourceKey);
+  private static async fetchAndDecode(url: string, sourceKey: string, pageUrl: string): Promise<image.PixelMap> {
+    const buffer = await StripImagePipeline.fetchBytes(url, sourceKey, pageUrl);
     const source: image.ImageSource = image.createImageSource(buffer);
     try {
       const opts = await StripImagePipeline.decodeOptions(source);
@@ -72,8 +72,8 @@ export class StripImagePipeline {
   }
 
   // 防盗链获取：经 ImageCache 管线（源请求头 + 磁盘缓存 + CookieJar）解析为可读地址
-  private static async fetchBytes(url: string, sourceKey: string): Promise<ArrayBuffer> {
-    const display = await ImageCache.resolve(url, sourceKey);
+  private static async fetchBytes(url: string, sourceKey: string, pageUrl: string): Promise<ArrayBuffer> {
+    const display = await ImageCache.resolve(url, sourceKey, pageUrl);
     if (display.indexOf('file://') === 0) {
       return StripImagePipeline.readFile(display.substring('file://'.length));
     }

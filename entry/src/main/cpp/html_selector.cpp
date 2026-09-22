@@ -6,8 +6,8 @@
  * Uses only the HTML parsing + CSS selector modules of Lexbor: the document is
  * parsed in place over the caller's buffer (zero-copy for the ArrayBuffer
  * pipeline), matched with lxb_selectors_find, and each hit is serialized to
- * outer/inner HTML + text + attributes, preserving the historical JSON shape
- * consumed by extension scripts.
+ * outer/inner HTML, text, ownText, tag, attributes, previous sibling, and
+ * parent chain. Historical fields consumed by extension scripts are preserved.
  */
 
 #include "html_selector.h"
@@ -16,16 +16,29 @@
 #include <lexbor/html/html.h>
 #include <lexbor/selectors/selectors.h>
 
+#include <cstdio>
 #include <map>
 #include <vector>
 
 namespace {
 
+struct AncestorInfo {
+    std::string tag;
+    std::string id;
+    std::string className;
+    std::string text;
+    std::string ownText;
+};
+
 struct SelectedElement {
     std::string outerHtml;
     std::string innerHtml;
     std::string text;
+    std::string ownText;
+    std::string tag;
     std::map<std::string, std::string> attrs;
+    AncestorInfo prev;
+    std::vector<AncestorInfo> parents;
 };
 
 struct SelectContext {
@@ -57,6 +70,74 @@ void CollectTextFrom(const lxb_dom_node_t *node, std::string &out)
             CollectTextFrom(child, out);
         }
     }
+}
+
+void CollectOwnTextFrom(const lxb_dom_node_t *node, std::string &out)
+{
+    for (const lxb_dom_node_t *child = node->first_child; child != nullptr; child = child->next) {
+        if (child->type != LXB_DOM_NODE_TYPE_TEXT) {
+            continue;
+        }
+        const lexbor_str_t &data = lxb_dom_interface_text(const_cast<lxb_dom_node_t *>(child))
+                                       ->char_data.data;
+        if (data.data != nullptr && data.length > 0) {
+            out.append(reinterpret_cast<const char *>(data.data), data.length);
+        }
+    }
+}
+
+std::string CollapseWhitespace(const std::string &input);
+
+std::string ElementTag(lxb_dom_element_t *el)
+{
+    size_t nameLen = 0;
+    const lxb_char_t *name = lxb_dom_element_qualified_name(el, &nameLen);
+    if (name == nullptr || nameLen == 0) {
+        return "";
+    }
+    return std::string(reinterpret_cast<const char *>(name), nameLen);
+}
+
+void FillAncestor(const lxb_dom_node_t *node, AncestorInfo &info)
+{
+    if (node == nullptr || node->type != LXB_DOM_NODE_TYPE_ELEMENT) {
+        return;
+    }
+    lxb_dom_element_t *el = lxb_dom_interface_element(const_cast<lxb_dom_node_t *>(node));
+    info.tag = ElementTag(el);
+    for (lxb_dom_attr_t *attr = lxb_dom_element_first_attribute(el); attr != nullptr;
+         attr = lxb_dom_element_next_attribute(attr)) {
+        size_t nameLen = 0;
+        const lxb_char_t *name = lxb_dom_attr_qualified_name(attr, &nameLen);
+        size_t valueLen = 0;
+        const lxb_char_t *value = lxb_dom_attr_value(attr, &valueLen);
+        if (name == nullptr || nameLen == 0) {
+            continue;
+        }
+        std::string key(reinterpret_cast<const char *>(name), nameLen);
+        std::string val = value == nullptr ? "" : std::string(reinterpret_cast<const char *>(value), valueLen);
+        if (key == "id") {
+            info.id = val;
+        } else if (key == "class") {
+            info.className = val;
+        }
+    }
+    std::string rawText;
+    CollectTextFrom(node, rawText);
+    info.text = CollapseWhitespace(rawText);
+    std::string own;
+    CollectOwnTextFrom(node, own);
+    info.ownText = CollapseWhitespace(own);
+}
+
+const lxb_dom_node_t *PreviousElementSibling(const lxb_dom_node_t *node)
+{
+    for (const lxb_dom_node_t *p = node->prev; p != nullptr; p = p->prev) {
+        if (p->type == LXB_DOM_NODE_TYPE_ELEMENT) {
+            return p;
+        }
+    }
+    return nullptr;
 }
 
 std::string CollapseWhitespace(const std::string &input)
@@ -100,8 +181,12 @@ lxb_status_t FindCallback(lxb_dom_node_t *node, lxb_css_selector_specificity_t s
     std::string rawText;
     CollectTextFrom(node, rawText);
     element.text = CollapseWhitespace(rawText);
+    std::string own;
+    CollectOwnTextFrom(node, own);
+    element.ownText = CollapseWhitespace(own);
 
     lxb_dom_element_t *el = lxb_dom_interface_element(node);
+    element.tag = ElementTag(el);
     for (lxb_dom_attr_t *attr = lxb_dom_element_first_attribute(el); attr != nullptr;
          attr = lxb_dom_element_next_attribute(attr)) {
         size_t nameLen = 0;
@@ -113,6 +198,24 @@ lxb_status_t FindCallback(lxb_dom_node_t *node, lxb_css_selector_specificity_t s
         }
         element.attrs[std::string(reinterpret_cast<const char *>(name), nameLen)] =
             value == nullptr ? "" : std::string(reinterpret_cast<const char *>(value), valueLen);
+    }
+
+    const lxb_dom_node_t *prev = PreviousElementSibling(node);
+    if (prev != nullptr) {
+        FillAncestor(prev, element.prev);
+    }
+    constexpr size_t kMaxParents = 24;
+    for (const lxb_dom_node_t *p = node->parent; p != nullptr && element.parents.size() < kMaxParents;
+         p = p->parent) {
+        if (p->type != LXB_DOM_NODE_TYPE_ELEMENT) {
+            continue;
+        }
+        AncestorInfo info;
+        FillAncestor(p, info);
+        if (info.tag.empty()) {
+            continue;
+        }
+        element.parents.push_back(std::move(info));
     }
 
     selectCtx->out->push_back(std::move(element));
@@ -128,7 +231,9 @@ std::string BuildJson(const std::vector<SelectedElement> &elements)
         }
         const SelectedElement &e = elements[i];
         json += "{\"outerHtml\":\"" + JsonEscape(e.outerHtml) + "\",\"innerHtml\":\"" +
-                JsonEscape(e.innerHtml) + "\",\"text\":\"" + JsonEscape(e.text) + "\",\"attrs\":{";
+                JsonEscape(e.innerHtml) + "\",\"text\":\"" + JsonEscape(e.text) +
+                "\",\"ownText\":\"" + JsonEscape(e.ownText) + "\",\"tag\":\"" + JsonEscape(e.tag) +
+                "\",\"attrs\":{";
         size_t a = 0;
         for (const auto &attr : e.attrs) {
             if (a > 0) {
@@ -137,7 +242,20 @@ std::string BuildJson(const std::vector<SelectedElement> &elements)
             json += "\"" + JsonEscape(attr.first) + "\":\"" + JsonEscape(attr.second) + "\"";
             a++;
         }
-        json += "}}";
+        json += "},\"prev\":{\"tag\":\"" + JsonEscape(e.prev.tag) + "\",\"id\":\"" +
+                JsonEscape(e.prev.id) + "\",\"className\":\"" + JsonEscape(e.prev.className) +
+                "\",\"text\":\"" + JsonEscape(e.prev.text) + "\",\"ownText\":\"" +
+                JsonEscape(e.prev.ownText) + "\"},\"parents\":[";
+        for (size_t p = 0; p < e.parents.size(); p++) {
+            if (p > 0) {
+                json += ",";
+            }
+            const AncestorInfo &an = e.parents[p];
+            json += "{\"tag\":\"" + JsonEscape(an.tag) + "\",\"id\":\"" + JsonEscape(an.id) +
+                    "\",\"className\":\"" + JsonEscape(an.className) + "\",\"text\":\"" +
+                    JsonEscape(an.text) + "\",\"ownText\":\"" + JsonEscape(an.ownText) + "\"}";
+        }
+        json += "]}";
     }
     json += "]";
     return json;

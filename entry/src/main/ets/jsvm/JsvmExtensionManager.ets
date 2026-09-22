@@ -17,11 +17,12 @@
 
 import { worker, MessageEvents, ErrorEvent } from '@kit.ArkTS';
 import { NativeHttpBridge, WebChallengeError } from './NativeHttpBridge';
+import { PluginPrefs } from './PluginPrefs';
 
 /** Per-extension JSVM heap budget (bytes) — see architecture spec. */
 export const JSVM_HEAP_BUDGET_BYTES: number = 2 * 1024 * 1024;
 
-const WORKER_SCRIPT: string = 'entry/ets/workers/JsvmWorker.ets';
+
 const READY_TIMEOUT_MS: number = 30000;
 const CALL_TIMEOUT_MS: number = 190000; // > native 180s pump deadline
 
@@ -54,6 +55,7 @@ interface WorkerEvent {
   seq?: number;
   json?: string;
   mem?: number;
+  prefs?: string;
 }
 
 interface CallEnvelope {
@@ -143,13 +145,13 @@ export class JsvmExtensionManager {
    * Calls a normalized extension method. Returns the adapter envelope's
    * `data` payload. Throws WebChallengeError for Cloudflare challenges.
    */
-  static async callData<T>(key: string, method: string, args: Array<string | number>): Promise<T> {
+  static async callData<T>(key: string, method: string, args: Array<string | number | boolean | object>): Promise<T> {
     const json = await JsvmExtensionManager.callMethod(key, method, args);
     return JsvmExtensionManager.unwrap<T>(json);
   }
 
   /** Calls a normalized extension method, returning the raw envelope JSON. */
-  static async callMethod(key: string, method: string, args: Array<string | number>): Promise<string> {
+  static async callMethod(key: string, method: string, args: Array<string | number | boolean | object>): Promise<string> {
     const entry = JsvmExtensionManager.extensions.get(key);
     if (entry === undefined) {
       throw new Error(`扩展未加载: ${key}`);
@@ -163,7 +165,8 @@ export class JsvmExtensionManager {
   // ------------------------------------------------------------------ private
 
   private static spawnWorker(key: string): ExtensionEntry {
-    const threadWorker = new worker.ThreadWorker(WORKER_SCRIPT);
+    console.info(`[JsvmExt] spawning worker for ${key}`);
+    const threadWorker = new worker.ThreadWorker('entry/ets/workers/JsvmWorker.ets');
     const entry: ExtensionEntry = {
       key: key,
       kind: '',
@@ -173,11 +176,21 @@ export class JsvmExtensionManager {
       broken: false
     };
     threadWorker.onmessage = (e: MessageEvents): void => {
+      console.info(`[JsvmExt] worker msg for ${key}: ${(e.data as string).slice(0, 400)}`);
       JsvmExtensionManager.onWorkerMessage(entry, e.data);
     };
     threadWorker.onerror = (err: ErrorEvent): void => {
+      console.error(`[JsvmExt] worker error for ${key}: ${err.message}`);
       entry.broken = true;
       JsvmExtensionManager.failAll(entry, new Error(err.message));
+    };
+    threadWorker.onAllErrors = (err: ErrorEvent): void => {
+      console.error(`[JsvmExt] worker allErrors for ${key}: ${err.message}`);
+      entry.broken = true;
+      JsvmExtensionManager.failAll(entry, new Error(err.message));
+    };
+    threadWorker.onexit = (code: number): void => {
+      console.info(`[JsvmExt] worker exit for ${key}: code=${code}`);
     };
     JsvmExtensionManager.extensions.set(key, entry);
     return entry;
@@ -202,6 +215,9 @@ export class JsvmExtensionManager {
       } else {
         pending.reject(new Error(event.error ?? 'JSVM 扩展初始化失败'));
       }
+      if (event.prefs !== undefined && event.prefs !== '') {
+        PluginPrefs.persist(entry.key, event.prefs);
+      }
       return;
     }
     if (event.type === 'result' && event.seq !== undefined) {
@@ -213,6 +229,9 @@ export class JsvmExtensionManager {
       clearTimeout(pending.timer);
       if (event.mem !== undefined && event.mem >= 0) {
         entry.lastMemoryBytes = event.mem;
+      }
+      if (event.prefs !== undefined && event.prefs !== '') {
+        PluginPrefs.persist(entry.key, event.prefs);
       }
       if (event.ok === true) {
         pending.resolve(event.json ?? '{"ok":false,"error":"empty result"}');

@@ -17,15 +17,17 @@
  *         @ohos.net.http (with CookieJar / Referer support) and resolved back
  *         through resolveHttp().
  *       * nativeSelector(html, cssQuery)
- *         Regex-based lightweight HTML selector (html_selector.cpp).
+ *         Lexbor HTML parser + CSS selectors (html_selector.cpp).
  *       * __nativeLog(level, message) — hilog bridge.
  *   - A JS bootstrap (BOOTSTRAP_JS) builds fetch()/Response-like objects and
- *     console on top of the raw natives; an adapter (ADAPTER_JS) is appended
- *     after each extension script to normalize tachiyomi-generated exports
- *     (globalThis[*].tachiyomi.generated) and simple-contract extensions
- *     (globalThis.extension) into one uniform __mihonCall() entry, with a
- *     promise trampoline (__PENDING__ / __mihonPoll) driven by the native
- *     microtask pump.
+ *     console on top of the raw natives. plugin_runtime_jsvm.js (prepended by
+ *     PluginService) adds the $ DSL, CommonJS, URL/atob/crypto.subtle, prefs.
+ *     An adapter (ADAPTER_JS) is appended after each extension script to
+ *     normalize tachiyomi-generated exports (globalThis[*].tachiyomi.generated
+ *     or module.exports.tachiyomi.generated), host-DSL plugins (module.exports
+ *     with getPopularManga) and simple-contract extensions (globalThis.extension)
+ *     into one uniform __mihonCall() entry, with a promise trampoline
+ *     (__PENDING__ / __mihonPoll) driven by the native microtask pump.
  */
 
 #include "html_selector.h"
@@ -156,7 +158,7 @@ static std::string ErrEnvelope(const std::string &message)
 
 static std::string HttpErrResult(const std::string &message)
 {
-    return std::string("{\"status\":0,\"statusText\":\"\",\"headersJson\":\"{}\",\"body\":\"\",\"error\":\"") +
+    return std::string("{\"status\":0,\"statusText\":\"\",\"headersJson\":\"{}\",\"body\":\"\",\"url\":\"\",\"error\":\"") +
         JsonEscape(message) + "\"}";
 }
 
@@ -506,6 +508,7 @@ static JSVM_Value NativeHttpRequestShared(JSVM_Env env, JSVM_CallbackInfo info)
         OH_JSVM_SetNamedProperty(env, obj, "statusText", empty);
         OH_JSVM_SetNamedProperty(env, obj, "headersJson", ToJsString(env, "{}"));
         OH_JSVM_SetNamedProperty(env, obj, "body", ToJsString(env, ""));
+        OH_JSVM_SetNamedProperty(env, obj, "url", ToJsString(env, ""));
         OH_JSVM_SetNamedProperty(env, obj, "error", ToJsString(env, "bridge result parse failed"));
     }
 
@@ -587,6 +590,11 @@ static const char *BOOTSTRAP_JS = R"JS((function () {
     log: logAt('info'), info: logAt('info'), debug: logAt('debug'),
     warn: logAt('warn'), error: logAt('error')
   };
+  if (typeof g.global === 'undefined') { g.global = g; }
+  if (typeof g.module === 'undefined') {
+    g.module = { exports: {} };
+    g.exports = g.module.exports;
+  }
 
   // ---- synchronous http core ----------------------------------------------
   // Compiled tachiyomi extensions call this via the OkHttp shim; it mirrors
@@ -596,7 +604,7 @@ static const char *BOOTSTRAP_JS = R"JS((function () {
       String(headersJson || '{}'), body == null ? '' : String(body), wantBytes === true);
     var r;
     try { r = JSON.parse(raw); } catch (e) {
-      r = { status: 0, statusText: '', headersJson: '{}', body: '', error: 'bridge result parse failed' };
+      r = { status: 0, statusText: '', headersJson: '{}', body: '', url: '', error: 'bridge result parse failed' };
     }
     return r;
   };
@@ -613,6 +621,7 @@ static const char *BOOTSTRAP_JS = R"JS((function () {
       status: r.status,
       statusText: r.statusText,
       headers: JSON.parse(r.headersJson || '{}'),
+      url: r.url || url,
       text: function () { return r.body; },
       json: function () { return JSON.parse(r.body); }
     };
@@ -629,6 +638,7 @@ static const char *BOOTSTRAP_JS = R"JS((function () {
       JSON.stringify(headers), options.body == null ? '' : String(options.body));
     if (r.error) { throw new Error(r.error); }
     r.ok = r.status >= 200 && r.status < 300;
+    r.url = r.url || url;
     try { r.headers = JSON.parse(r.headersJson || '{}'); } catch (e) { r.headers = {}; }
     return r;
   };
@@ -661,23 +671,110 @@ static const char *ADAPTER_JS = R"JS((function () {
     return r.data;
   }
 
+  var SKIP = {
+    console: 1, fetch: 1, fetchBytes: 1, module: 1, exports: 1, global: 1,
+    $: 1, crypto: 1, URL: 1, URLSearchParams: 1, atob: 1, btoa: 1,
+    TextEncoder: 1, TextDecoder: 1, querySelectorAll: 1, nativeSelector: 1
+  };
+
+  function hasGenerated(obj) {
+    return obj && typeof obj === 'object' && obj.tachiyomi && obj.tachiyomi.generated;
+  }
+
   // Locate compiled tachiyomi exports: globalThis[*].tachiyomi.generated
+  // or module.exports.tachiyomi.generated (CJS / Kotlin UMD captured by exports).
   var gen = null;
   try {
-    for (var k in g) {
-      if (k.indexOf('__') === 0 || k === 'console' || k === 'fetch') { continue; }
-      var v;
-      try { v = g[k]; } catch (e) { continue; }
-      if (v && typeof v === 'object' && v.tachiyomi && v.tachiyomi.generated) {
-        gen = v.tachiyomi.generated;
-        break;
+    if (g.module && hasGenerated(g.module.exports)) {
+      gen = g.module.exports.tachiyomi.generated;
+    }
+    if (!gen && hasGenerated(g)) {
+      gen = g.tachiyomi.generated;
+    }
+    if (!gen) {
+      for (var k in g) {
+        if (k.indexOf('__') === 0 || SKIP[k]) { continue; }
+        var v;
+        try { v = g[k]; } catch (e) { continue; }
+        if (hasGenerated(v)) { gen = v.tachiyomi.generated; break; }
       }
     }
   } catch (e) { gen = null; }
 
+  var hostObj = null;
+  if (g.module && g.module.exports && typeof g.module.exports === 'object') {
+    var mex = g.module.exports;
+    if (typeof mex.getPopularManga === 'function' || typeof mex.getPopular === 'function') {
+      hostObj = mex;
+    }
+  }
   var simple = (g.extension && typeof g.extension === 'object') ? g.extension : null;
   var api = null;
   var sourceId = null;
+
+  function pickFn(obj, names, args, required) {
+    for (var i = 0; i < names.length; i++) {
+      if (typeof obj[names[i]] === 'function') { return obj[names[i]].apply(obj, args); }
+    }
+    if (required) { throw new Error('method not supported: ' + names[0]); }
+    return undefined;
+  }
+
+  function bindHost(obj, kind) {
+    var md = obj.metadata || {};
+    var hasLatest = typeof obj.getLatestManga === 'function' ||
+      typeof obj.getLatestUpdates === 'function' || typeof obj.getLatest === 'function';
+    var api = {
+      kind: kind,
+      getSources: function () {
+        return [{
+          id: String(md.id || kind), name: String(md.name || ''),
+          lang: String(md.lang || ''), baseUrl: String(md.baseUrl || ''),
+          supportsLatest: hasLatest
+        }];
+      },
+      getPopularManga: function (page) { return pickFn(obj, ['getPopularManga', 'getPopular'], [page], true); },
+      getSearchManga: function (page, query) {
+        if (typeof obj.getSearchManga === 'function') { return obj.getSearchManga(page, query); }
+        if (typeof obj.search === 'function') { return obj.search(query, page); }
+        throw new Error('method not supported: getSearchManga');
+      },
+      getMangaDetail: function (url) { return pickFn(obj, ['getMangaDetail', 'getMangaDetails'], [url], false); },
+      getChapterList: function (url) { return pickFn(obj, ['getChapterList', 'getChapters'], [url], true); },
+      getPageList: function (url) { return pickFn(obj, ['getPageList', 'getPages'], [url], true); }
+    };
+    if (hasLatest) {
+      api.getLatestManga = function (page) {
+        return pickFn(obj, ['getLatestManga', 'getLatestUpdates', 'getLatest'], [page], true);
+      };
+    }
+    if (typeof obj.getHeaders === 'function' || typeof obj.headers === 'function') {
+      api.getHeaders = function () {
+        var h = pickFn(obj, ['getHeaders'], [], false);
+        if (h) { return h; }
+        return typeof obj.headers === 'function' ? obj.headers() : {};
+      };
+    }
+    if (typeof obj.getFilterList === 'function') {
+      api.getFilterList = function () { return obj.getFilterList(); };
+    }
+    if (typeof obj.applyFilterState === 'function') {
+      api.applyFilterState = function (state) { return obj.applyFilterState(state); };
+    }
+    if (typeof obj.resetFilters === 'function') {
+      api.resetFilters = function () { return obj.resetFilters(); };
+    }
+    if (typeof obj.fetchImage === 'function') {
+      api.fetchImage = function (pageUrl, imageUrl) { return obj.fetchImage(pageUrl, imageUrl); };
+    }
+    if (typeof obj.setPreference === 'function') {
+      api.setPreference = function (key, value) { return obj.setPreference(key, value); };
+    }
+    if (typeof obj.getSettingsSchema === 'function') {
+      api.getSettingsSchema = function () { return obj.getSettingsSchema(); };
+    }
+    return api;
+  }
 
   if (gen && typeof gen.getManifest === 'function') {
     try {
@@ -694,40 +791,35 @@ static const char *ADAPTER_JS = R"JS((function () {
       getChapterList: function (url) { return unwrap(gen.getChapterList(sourceId, url)); },
       getPageList: function (url) { return unwrap(gen.getPageList(sourceId, url)); },
       getFilterList: function () { return unwrap(gen.getFilterList(sourceId)); },
+      applyFilterState: function (state) {
+        if (typeof gen.applyFilterState !== 'function') { return { ok: true }; }
+        var payload = typeof state === 'string' ? state : JSON.stringify(state == null ? [] : state);
+        return unwrap(gen.applyFilterState(sourceId, payload));
+      },
+      resetFilters: function () {
+        if (typeof gen.resetFilters !== 'function') { return { ok: true }; }
+        return unwrap(gen.resetFilters(sourceId));
+      },
       getHeaders: function () { return unwrap(gen.getHeaders(sourceId)); },
       fetchImage: function (pageUrl, imageUrl) { return unwrap(gen.fetchImage(sourceId, pageUrl, imageUrl)); },
       setPreference: function (key, value) {
         if (typeof gen.setPreference !== 'function') { return null; }
         return unwrap(gen.setPreference(sourceId, key, JSON.stringify(value)));
+      },
+      getSettingsSchema: function () {
+        if (typeof gen.getSettingsSchema !== 'function') { return null; }
+        return unwrap(gen.getSettingsSchema(sourceId));
       }
     };
+  } else if (hostObj) {
+    api = bindHost(hostObj, 'simple');
   } else if (simple) {
-    api = {
-      kind: 'simple',
-      getSources: function () {
-        var md = simple.metadata || {};
-        return [{
-          id: String(md.id || 'simple'), name: String(md.name || ''),
-          lang: String(md.lang || ''), baseUrl: String(md.baseUrl || ''), supportsLatest: false
-        }];
-      },
-      getPopularManga: function (page) { return simple.getPopular(page); },
-      getSearchManga: function (page, query) { return simple.search(query, page); },
-      getChapterList: function (url) { return simple.getChapters(url); },
-      getPageList: function (url) { return simple.getPages(url); },
-      getMangaDetail: function (url) {
-        return simple.getMangaDetail ? simple.getMangaDetail(url) : null;
-      },
-      getHeaders: function () { return simple.headers ? simple.headers() : {}; }
-    };
+    api = bindHost(simple, 'simple');
   }
 
   g.__mihonApi = api;
   g.__mihonKind = api ? api.kind : null;
 
-  // Uniform entry: __mihonCall(name, argsJson) -> result envelope JSON string.
-  // Async results go through a promise trampoline: returns '__PENDING__' and
-  // the native layer pumps microtasks until __mihonPoll() yields the envelope.
   g.__mihonCall = function (name, argsJson) {
     var state = { done: false, json: '' };
     g.__mihonState = state;
@@ -743,14 +835,24 @@ static const char *ADAPTER_JS = R"JS((function () {
         }
         return okJson(names);
       }
+      if (name === '__prefsDump') {
+        return okJson(typeof g.__prefsDump === 'function' ? g.__prefsDump() : (g.__PREFS_STORE__ || {}));
+      }
       if (!api) {
-        return errJson('no extension exports found (expected tachiyomi.generated or globalThis.extension)');
+        return errJson('no extension exports found (expected tachiyomi.generated, module.exports, or globalThis.extension)');
       }
       var fn = api[name];
       if (typeof fn !== 'function') {
         return errJson('method not supported: ' + name);
       }
-      var args = JSON.parse(argsJson || '[]');
+      // C++ CallFunction splices the args JSON as an array literal, but the
+      // ArkTS side may also pass a JSON string: accept both.
+      var args = [];
+      if (typeof argsJson === 'string') {
+        if (argsJson !== '') { args = JSON.parse(argsJson); }
+      } else if (argsJson && typeof argsJson === 'object' && typeof argsJson.length === 'number') {
+        args = argsJson;
+      }
       var r = fn.apply(null, args);
       if (r && typeof r.then === 'function') {
         r.then(function (v) {
@@ -777,8 +879,7 @@ static const char *ADAPTER_JS = R"JS((function () {
     return '';
   };
 
-  // IIFE completion value: runScript() captures this as its result envelope.
-  okJson(api ? api.kind : null);
+  return okJson(api ? api.kind : null);
 })();)JS";
 
 // ============================================================================
