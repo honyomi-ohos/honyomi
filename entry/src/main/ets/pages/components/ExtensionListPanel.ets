@@ -4,17 +4,20 @@ import { PluginService, InstalledPlugin, RepoEntry } from '../../data/PluginServ
 import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
 import { Settings } from '../../common/Settings';
-import { InputDialog } from './Dialogs';
 import { EmptyScreen } from './EmptyScreen';
+import { AppIcon } from './AppIcon';
 
-// 插件列表面板（浏览页“插件”Tab 内嵌）：已安装 / 从文件安装 / 在线仓库
-// 仓库配置与刷新由宿主（BrowsePage 菜单）通过 AppStorage 'extRepoRefresh' 计数驱动
+// 插件列表面板（浏览页“插件”Tab 内嵌）：已安装 / 在线仓库
+// 对齐 Mihon：整行点击进入插件详情页；从本地安装/仓库配置/刷新由宿主（BrowsePage 菜单）
+// 通过 AppStorage 计数器驱动（'extLocalInstall' / 'extRepoRefresh'）
 @Component
 export struct ExtensionListPanel {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('navBarH') navBarH: number = 0;
   @StorageProp('extRepoRefresh') @Watch('onRepoRefresh') extRepoRefresh: number = 0;
+  @StorageProp('extLocalInstall') @Watch('onLocalInstall') extLocalInstall: number = 0;
   @Prop searchQuery: string = '';
+  onOpenPlugin: (pluginKey: string) => void = (_k: string) => {};
   @State installed: InstalledPlugin[] = [];
   @State repoEntries: RepoEntry[] = [];
   @State repoUrl: string = '';
@@ -36,6 +39,11 @@ export struct ExtensionListPanel {
     if (this.repoUrl !== '') {
       this.refreshRepo();
     }
+  }
+
+  // 宿主溢出菜单“从本地安装”触发
+  private onLocalInstall(): void {
+    this.pickPluginFile();
   }
 
   private refreshInstalled(): void {
@@ -135,38 +143,6 @@ export struct ExtensionListPanel {
     this.busy = false;
   }
 
-  private async togglePlugin(item: InstalledPlugin, on: boolean): Promise<void> {
-    if (this.busy) {
-      return;
-    }
-    this.busy = true;
-    try {
-      await PluginService.setEnabled(item.manifest.key, on);
-      this.refreshInstalled();
-      PluginService.markDirty();
-    } catch (e) {
-      this.refreshInstalled();
-      Util.toastRes(this.getUIContext(), $r('app.string.plugin_action_failed'));
-    }
-    this.busy = false;
-  }
-
-  private async uninstallPlugin(item: InstalledPlugin): Promise<void> {
-    if (this.busy) {
-      return;
-    }
-    this.busy = true;
-    try {
-      await PluginService.uninstall(item.manifest.key);
-      this.refreshInstalled();
-      PluginService.markDirty();
-      Util.toastRes(this.getUIContext(), $r('app.string.plugin_uninstalled'), [item.manifest.name]);
-    } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.plugin_uninstall_failed'));
-    }
-    this.busy = false;
-  }
-
   private async installFromRepo(entry: RepoEntry): Promise<void> {
     if (this.busy) {
       return;
@@ -185,66 +161,52 @@ export struct ExtensionListPanel {
 
   @Builder
   pluginRow(item: InstalledPlugin) {
-    Column() {
-      Row() {
-        if (item.iconPath !== '') {
-          Image(item.iconPath)
-            .width(40)
-            .height(40)
-            .borderRadius(10)
-            .objectFit(ImageFit.Cover)
-            .clip(true)
-        } else {
-          Text(this.firstCharOf(item.manifest.name))
-            .fontSize(17)
-            .fontWeight(FontWeight.Bold)
-            .fontColor('#FFFFFF')
-            .textAlign(TextAlign.Center)
-            .width(40)
-            .height(40)
-            .borderRadius(10)
-            .backgroundColor(this.pal.primary)
-        }
-
-        Column() {
-          Text(item.manifest.name)
-            .fontSize(15)
-            .fontWeight(FontWeight.Bold)
-            .fontColor(this.pal.text)
-          Text(`${item.manifest.key} · v${item.manifest.version} · ${item.manifest.lang}`)
-            .fontSize(11)
-            .fontColor(this.pal.sub)
-            .margin({ top: 2 })
-        }
-        .alignItems(HorizontalAlign.Start)
-        .layoutWeight(1)
-        .margin({ left: 12 })
-
-        Toggle({ type: ToggleType.Switch, isOn: item.enabled })
-          .onChange((on: boolean) => {
-            this.togglePlugin(item, on);
-          })
+    Row() {
+      if (item.iconPath !== '') {
+        Image(item.iconPath)
+          .width(40)
+          .height(40)
+          .borderRadius(10)
+          .objectFit(ImageFit.Cover)
+          .clip(true)
+      } else {
+        Text(this.firstCharOf(item.manifest.name))
+          .fontSize(17)
+          .fontWeight(FontWeight.Bold)
+          .fontColor('#FFFFFF')
+          .textAlign(TextAlign.Center)
+          .width(40)
+          .height(40)
+          .borderRadius(10)
+          .backgroundColor(this.pal.primary)
       }
-      .width('100%')
 
-      Row() {
-        Text($r('app.string.common_uninstall'))
-          .fontSize(12)
-          .fontColor('#E05252')
-          .padding({ top: 6, bottom: 2, left: 4, right: 4 })
-          .onClick(() => {
-            this.uninstallPlugin(item);
-          })
-        Text($r('app.string.plugin_disable_hint'))
-          .fontSize(10)
+      Column() {
+        Text(item.manifest.name)
+          .fontSize(15)
+          .fontWeight(FontWeight.Bold)
+          .fontColor(this.pal.text)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+        Text(`${item.manifest.key} · v${item.manifest.version} · ${item.manifest.lang}`)
+          .fontSize(11)
           .fontColor(this.pal.sub)
-          .margin({ left: 12 })
+          .margin({ top: 2 })
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
       }
-      .width('100%')
-      .margin({ top: 4 })
+      .alignItems(HorizontalAlign.Start)
+      .layoutWeight(1)
+      .margin({ left: 12 })
+
+      AppIcon({ name: 'keyboard_arrow_right', iconSize: 20, tint: this.pal.sub })
     }
     .width('100%')
-    .padding({ top: 8, bottom: 8 })
+    .alignItems(VerticalAlign.Center)
+    .padding({ top: 10, bottom: 10 })
+    .onClick(() => {
+      this.onOpenPlugin(item.manifest.key);
+    })
   }
 
   @Builder
@@ -310,7 +272,7 @@ export struct ExtensionListPanel {
           } else {
             ForEach(this.filteredInstalled(), (item: InstalledPlugin) => {
               this.pluginRow(item)
-            }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.enabled}-${item.iconPath}`)
+            }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}`)
           }
         }
         .width('100%')
@@ -319,33 +281,6 @@ export struct ExtensionListPanel {
         .backgroundColor(this.pal.card)
         .borderRadius(14)
         .margin({ left: 16, right: 16, top: 4 })
-
-        // 从文件安装
-        Column() {
-          Text($r('app.string.plugin_local_install'))
-            .fontSize(15)
-            .fontWeight(FontWeight.Bold)
-            .fontColor(this.pal.text)
-            .width('100%')
-            .margin({ bottom: 8 })
-          Button(this.busy ? $r('app.string.plugin_processing') : $r('app.string.plugin_install_from_file'))
-            .fontSize(14)
-            .width('100%')
-            .backgroundColor(this.pal.primary)
-            .onClick(() => {
-              this.pickPluginFile();
-            })
-          Text($r('app.string.plugin_package_hint'))
-            .fontSize(11)
-            .fontColor(this.pal.sub)
-            .margin({ top: 8 })
-        }
-        .width('100%')
-        .alignItems(HorizontalAlign.Start)
-        .padding(16)
-        .backgroundColor(this.pal.card)
-        .borderRadius(14)
-        .margin({ left: 16, right: 16, top: 12 })
 
         // 在线仓库
         Column() {

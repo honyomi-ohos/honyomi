@@ -1,4 +1,5 @@
 import { ImageCache } from '../../common/ImageCache';
+import { AppIcon } from './AppIcon';
 
 // 智能图片：源需要请求头时经 ImageCache 管线加载（Referer/UA/Cookie），
 // 本地文件与未声明请求头的源保持系统 Image 直连行为
@@ -52,8 +53,7 @@ export struct SmartImage {
           .objectFit(this.fit)
       } else if (this.failed) {
         Column() {
-          Text('⚠')
-            .fontSize(20)
+          AppIcon({ name: 'error', iconSize: 20 })
         }
         .width('100%')
         .height(this.fill ? '100%' : 120)

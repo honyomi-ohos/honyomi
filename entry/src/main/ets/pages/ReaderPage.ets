@@ -11,7 +11,7 @@ import { Settings } from '../common/Settings';
 import { DownloadService } from '../data/DownloadService';
 import { SmartImage } from './components/SmartImage';
 import { ComicStripViewer } from './components/ComicStripViewer';
-import { AppIconRes } from './components/AppIcon';
+import { AppIconRes, AppIcon } from './components/AppIcon';
 import { SwitchRow } from './components/Prefs';
 
 // LazyForEach 数据源
@@ -483,9 +483,7 @@ export struct ReaderPage {
           Column() {
             // 顶栏
             Row() {
-              Text('‹')
-                .fontSize(30)
-                .fontColor('#FFFFFF')
+              AppIcon({ name: 'arrow_back', iconSize: 24, tint: '#FFFFFF' })
                 .padding({ left: 12, right: 12 })
                 .onClick(() => {
                   this.pathStack.pop();

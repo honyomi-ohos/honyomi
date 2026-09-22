@@ -62,6 +62,36 @@ interface RawPage {
   pageUrl?: string;
 }
 
+// 插件设置项（getSettingsSchema 契约：type = 'switch' | 'select' | 'edit'）
+export interface SourcePrefOption {
+  value: string;
+  label: string;
+}
+
+export interface SourcePrefItem {
+  type: string;
+  key: string;
+  title: string;
+  summary: string;
+  value: string;
+  options: SourcePrefOption[];
+}
+
+interface RawPrefOption {
+  value?: string;
+  label?: string;
+}
+
+interface RawPrefItem {
+  type?: string;
+  key?: string;
+  title?: string;
+  summary?: string;
+  value?: string | boolean | number;
+  defaultValue?: string | boolean | number;
+  options?: RawPrefOption[];
+}
+
 // JSVM 插件适配器：实现 Source 接口，方法经专属 Worker 转发到隔离 JSVM 引擎
 export class JsvmSource implements Source {
   readonly key: string;
@@ -147,6 +177,69 @@ export class JsvmSource implements Source {
       return;
     }
     await this.call<object>('setPreference', [key, value]);
+  }
+
+  // 插件是否导出某方法（用于设置页判断源是否可配置）
+  hasMethod(name: string): boolean {
+    return this.exportedMethods.indexOf(name) >= 0;
+  }
+
+  // 插件设置声明（getSettingsSchema）：设置页据此渲染 switch/select/edit 行
+  async getSettingsSchema(): Promise<SourcePrefItem[]> {
+    if (this.exportedMethods.indexOf('getSettingsSchema') < 0) {
+      return [];
+    }
+    const raw = await this.call<RawPrefItem[]>('getSettingsSchema', []);
+    const items: SourcePrefItem[] = [];
+    if (!Array.isArray(raw)) {
+      return items;
+    }
+    for (const r of raw) {
+      const item = JsvmSource.toPrefItem(r);
+      if (item !== undefined) {
+        items.push(item);
+      }
+    }
+    return items;
+  }
+
+  private static prefValueToString(v: string | boolean | number | undefined): string {
+    if (v === undefined) {
+      return '';
+    }
+    if (typeof v === 'string') {
+      return v;
+    }
+    return `${v}`;
+  }
+
+  private static toPrefItem(raw: RawPrefItem | undefined): SourcePrefItem | undefined {
+    if (raw === undefined || raw.key === undefined || raw.key === '') {
+      return undefined;
+    }
+    const options: SourcePrefOption[] = [];
+    if (Array.isArray(raw.options)) {
+      for (const o of raw.options) {
+        if (o !== undefined && o.value !== undefined) {
+          const opt: SourcePrefOption = {
+            value: o.value,
+            label: o.label ?? o.value,
+          };
+          options.push(opt);
+        }
+      }
+    }
+    const value = raw.value !== undefined ? JsvmSource.prefValueToString(raw.value) :
+      JsvmSource.prefValueToString(raw.defaultValue);
+    const item: SourcePrefItem = {
+      type: raw.type ?? 'switch',
+      key: raw.key,
+      title: raw.title ?? raw.key,
+      summary: raw.summary ?? '',
+      value: value,
+      options: options,
+    };
+    return item;
   }
 
   async getPopularManga(page: number): Promise<MangasPage> {

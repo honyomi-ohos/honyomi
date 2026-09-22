@@ -3,7 +3,6 @@ import { fileIo as fs } from '@kit.CoreFileKit';
 import zlib from '@ohos.zlib';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { util } from '@kit.ArkTS';
-import { preferences } from '@kit.ArkData';
 import { PluginManifest, JsvmSource } from '../source/JsvmSource';
 import { JsvmExtensionManager } from '../jsvm/JsvmExtensionManager';
 import { SourceRegistry } from '../source/Source';
@@ -30,7 +29,6 @@ interface RawManifest {
 
 export interface InstalledPlugin {
   manifest: PluginManifest;
-  enabled: boolean;
   iconPath: string;
 }
 
@@ -58,7 +56,7 @@ interface RawRepoIndex {
   plugins?: RawRepoEntry[];
 }
 
-// 插件包管理：.mihonplug(zip: manifest.json + main.js) 安装/卸载/启停 + 在线仓库索引
+// 插件包管理：.mihonplug(zip: manifest.json + main.js) 安装/卸载 + 在线仓库索引
 // 所有插件统一运行于 JSVM 隔离引擎（专属 Worker + 本机 C++ JSVM，零 ArkWeb 依赖）
 export class PluginService {
   // 宿主支持的插件 DSL 最高版本（与 JSVM 适配层 ADAPTER_JS 的契约保持一致）
@@ -68,7 +66,6 @@ export class PluginService {
   private static context: common.UIAbilityContext | undefined = undefined;
   private static runtimeCache: Map<string, string> = new Map();
   private static appVersionCode: number = 1;
-  private static prefs: preferences.Preferences | undefined = undefined;
 
   static init(context: common.UIAbilityContext): void {
     PluginService.pluginsDir = `${context.filesDir}/plugins`;
@@ -80,30 +77,10 @@ export class PluginService {
     } catch (e) {
       PluginService.appVersionCode = 1;
     }
-    if (PluginService.prefs === undefined) {
-      const options: preferences.Options = { name: 'plugin_prefs' };
-      PluginService.prefs = preferences.getPreferencesSync(context, options);
-    }
     if (!fs.accessSync(PluginService.pluginsDir)) {
       fs.mkdirSync(PluginService.pluginsDir, true);
     }
     PluginService.cleanStaleTemp();
-  }
-
-  // 插件启停状态持久化（沿用原 plugin_prefs 存储，兼容升级前状态）
-  private static isPluginEnabled(key: string): boolean {
-    if (PluginService.prefs === undefined) {
-      return true;
-    }
-    return !(PluginService.prefs.getSync(`__disabled:${key}`, false) as boolean);
-  }
-
-  private static setPluginEnabled(key: string, enabled: boolean): void {
-    if (PluginService.prefs === undefined) {
-      return;
-    }
-    PluginService.prefs.putSync(`__disabled:${key}`, !enabled);
-    PluginService.prefs.flush();
   }
 
   // 清理历史失败安装遗留的临时文件/目录（plugin_extract_*/plugin_install_*/plugin_repo_*）
@@ -193,7 +170,6 @@ export class PluginService {
         const iconPath = `${PluginService.pluginsDir}/${dir}/${manifest.icon}`;
         const item: InstalledPlugin = {
           manifest: manifest,
-          enabled: PluginService.isPluginEnabled(manifest.key),
           iconPath: manifest.icon !== '' && fs.accessSync(iconPath) ? `file://${iconPath}` : '',
         };
         result.push(item);
@@ -245,11 +221,6 @@ export class PluginService {
     }
   }
 
-  static async setEnabled(key: string, enabled: boolean): Promise<void> {
-    PluginService.setPluginEnabled(key, enabled);
-    await PluginService.reloadKey(key);
-  }
-
   static async uninstall(key: string): Promise<void> {
     SourceRegistry.unregister(key);
     await JsvmExtensionManager.unloadExtension(key);
@@ -260,13 +231,10 @@ export class PluginService {
     // 注意：数据库中该源的漫画数据保留，重装同 key 插件后自动恢复
   }
 
-  // 加载全部已启用插件（每个插件在其专属 Worker 的隔离 JSVM 引擎中执行）
+  // 加载全部插件（每个插件在其专属 Worker 的隔离 JSVM 引擎中执行）
   static async loadAll(): Promise<void> {
     const installed = PluginService.listInstalled();
     for (const item of installed) {
-      if (!item.enabled) {
-        continue;
-      }
       try {
         const scriptText = fs.readTextSync(`${PluginService.pluginsDir}/${item.manifest.key}/main.js`);
         await PluginService.reloadOne(item.manifest, scriptText);
@@ -383,25 +351,8 @@ export class PluginService {
     throw new Error('插件包中未找到 manifest.json');
   }
 
-  private static async reloadKey(key: string): Promise<void> {
-    const manifestPath = `${PluginService.pluginsDir}/${key}/manifest.json`;
-    if (!fs.accessSync(manifestPath)) {
-      SourceRegistry.unregister(key);
-      await JsvmExtensionManager.unloadExtension(key);
-      return;
-    }
-    const manifest = PluginService.parseManifest(fs.readTextSync(manifestPath));
-    const scriptText = fs.readTextSync(`${PluginService.pluginsDir}/${key}/main.js`);
-    await PluginService.reloadOne(manifest, scriptText);
-  }
-
   // 加载/替换插件：卸载旧引擎后重新拉起专属 Worker + 隔离 JSVM_Context
   private static async reloadOne(manifest: PluginManifest, mainJs: string): Promise<void> {
-    if (!PluginService.isPluginEnabled(manifest.key)) {
-      SourceRegistry.unregister(manifest.key);
-      await JsvmExtensionManager.unloadExtension(manifest.key);
-      return;
-    }
     const script = PluginService.composeScript(manifest, mainJs);
     const info = await JsvmExtensionManager.loadExtension(manifest.key, script);
     const src = new JsvmSource(manifest, info.methods);

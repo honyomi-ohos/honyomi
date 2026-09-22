@@ -21,3 +21,7 @@ export interface MigrateMangaParams {
 export interface MigrateSearchParams {
   mangaIds: number[];
 }
+
+export interface ExtensionDetailParams {
+  pluginKey: string;
+}

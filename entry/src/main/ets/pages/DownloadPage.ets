@@ -3,6 +3,7 @@ import { DownloadTask, DownloadedManga, DownloadedChapter } from '../model/Model
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
+import { AppIcon } from './components/AppIcon';
 
 // 下载管理页：下载队列 + 已下载章节
 @Component
@@ -61,9 +62,7 @@ export struct DownloadPage {
       Column() {
         // 头部
         Row() {
-          Text('‹')
-            .fontSize(30)
-            .fontColor(this.pal.text)
+          AppIcon({ name: 'arrow_back', iconSize: 24 })
             .padding({ left: 12, right: 12 })
             .onClick(() => {
               this.pathStack.pop();
@@ -268,7 +267,7 @@ export struct DownloadPage {
   @Builder
   groupHeader(group: DownloadedManga) {
     Row({ space: 8 }) {
-      Text('📖').fontSize(14)
+      AppIcon({ name: 'photo', iconSize: 16 })
       Text(group.mangaTitle)
         .fontSize(14)
         .fontWeight(FontWeight.Bold)

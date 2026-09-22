@@ -3,7 +3,7 @@ import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
 import { PluginService } from '../data/PluginService';
 import { SourceRegistry, Source } from '../source/Source';
-import { BrowseSourceParams, MigrateMangaParams } from '../model/RouteParams';
+import { BrowseSourceParams, MigrateMangaParams, ExtensionDetailParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { Settings } from '../common/Settings';
@@ -61,15 +61,13 @@ export class MigrateSourceCount {
   }
 }
 
-// 源长按选项弹窗（置顶 / 停用）
+// 源长按选项弹窗（置顶）
 @CustomDialog
 struct SourceOptionsDialog {
   controller?: CustomDialogController;
   sourceName: Resource | string = '';
   isPinned: boolean = false;
-  canDisable: boolean = false;
   onPin: () => void = () => {};
-  onDisable: () => void = () => {};
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   build() {
@@ -93,20 +91,6 @@ struct SourceOptionsDialog {
           }
           this.onPin();
         })
-      if (this.canDisable) {
-        Divider().color(this.pal.divider)
-        Text($r('app.string.browse_disable_source'))
-          .fontSize(15)
-          .fontColor('#E05252')
-          .width('100%')
-          .padding({ top: 14, bottom: 14 })
-          .onClick(() => {
-            if (this.controller !== undefined) {
-              this.controller.close();
-            }
-            this.onDisable();
-          })
-      }
     }
     .padding(20)
     .backgroundColor(this.pal.card)
@@ -331,37 +315,13 @@ export struct BrowsePage {
     return sections;
   }
 
-  private isPluginSource(s: Source): boolean {
-    const installed = PluginService.listInstalled();
-    for (const item of installed) {
-      if (item.manifest.key === s.key) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private async disableSource(s: Source): Promise<void> {
-    try {
-      await PluginService.setEnabled(s.key, false);
-      PluginService.markDirty();
-      Util.toastRes(this.getUIContext(), $r('app.string.browse_source_disabled'));
-    } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.plugin_action_failed'));
-    }
-  }
-
   private showSourceOptions(s: Source): void {
     const dialog = new CustomDialogController({
       builder: SourceOptionsDialog({
         sourceName: this.sourceDisplayName(s),
         isPinned: this.isPinned(s.key),
-        canDisable: s.key !== 'local' && this.isPluginSource(s),
         onPin: (): void => {
           this.togglePin(s.key);
-        },
-        onDisable: (): void => {
-          this.disableSource(s);
         },
       }),
       autoCancel: true,
@@ -464,6 +424,10 @@ export struct BrowsePage {
   @Builder
   extMenu() {
     Menu() {
+      MenuItem({ content: $r('app.string.ext_install_local') })
+        .onClick(() => {
+          AppStorage.setOrCreate('extLocalInstall', (AppStorage.get<number>('extLocalInstall') ?? 0) + 1);
+        })
       MenuItem({ content: $r('app.string.ext_repo_settings') })
         .onClick(() => {
           this.showRepoUrlDialog();
@@ -683,9 +647,7 @@ export struct BrowsePage {
             .onChange((value: string) => {
               this.extQuery = value;
             })
-          Text('✕')
-            .fontSize(16)
-            .fontColor(this.pal.text)
+          AppIcon({ name: 'close', iconSize: 20 })
             .padding({ left: 12, right: 4 })
             .onClick(() => {
               this.extSearchOpen = false;
@@ -742,7 +704,13 @@ export struct BrowsePage {
         .tabBar(this.tabLabel($r('app.string.browse_tab_sources'), 0))
 
         TabContent() {
-          ExtensionListPanel({ searchQuery: this.extQuery })
+          ExtensionListPanel({
+            searchQuery: this.extQuery,
+            onOpenPlugin: (pluginKey: string): void => {
+              const params: ExtensionDetailParams = { pluginKey: pluginKey };
+              this.pathStack.pushPathByName('ExtensionDetail', params);
+            },
+          })
         }
         .tabBar(this.tabLabel($r('app.string.browse_tab_extensions'), 1))
 

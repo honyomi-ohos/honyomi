@@ -44,6 +44,17 @@
     { "name": "migrate_item_done", "value": "Migrated: %s" },
     { "name": "migrate_failed", "value": "Migration failed: %s" },
     { "name": "migrate_done", "value": "Migration complete" },
-    { "name": "migrate_no_target", "value": "No target source available" }
+    { "name": "migrate_no_target", "value": "No target source available" },
+    { "name": "ext_install_local", "value": "从本地安装" },
+    { "name": "ext_detail_title", "value": "插件信息" },
+    { "name": "ext_info_version", "value": "版本" },
+    { "name": "ext_info_language", "value": "语言" },
+    { "name": "ext_uninstall_title", "value": "卸载插件" },
+    { "name": "ext_uninstall_msg", "value": "确定要卸载“%s”吗？书架中的漫画数据会保留" },
+    { "name": "ext_detail_sources", "value": "源" },
+    { "name": "ext_detail_settings", "value": "设置" },
+    { "name": "ext_pref_loading", "value": "加载中…" },
+    { "name": "ext_pref_failed", "value": "设置应用失败" },
+    { "name": "ext_detail_missing", "value": "插件不存在或未加载" }
 ]
 }

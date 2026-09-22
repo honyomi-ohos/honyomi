@@ -9,6 +9,7 @@ import { Util } from '../common/Util';
 import { MangaCard, CategoryChip } from './components/MangaCard';
 import { InputDialog, CategoryDialog } from './components/Dialogs';
 import { EmptyScreen } from './components/EmptyScreen';
+import { AppIcon } from './components/AppIcon';
 
 // 书架页：分类 + 收藏网格 + 刷新
 @Component
@@ -98,16 +99,22 @@ export struct LibraryPage {
           .fontWeight(FontWeight.Bold)
           .fontColor(this.pal.text)
           .layoutWeight(1)
-        Text(this.refreshing ? $r('app.string.updates_refreshing') : '⟳')
-          .fontSize(this.refreshing ? 14 : 24)
-          .fontColor(this.pal.primary)
-          .padding({ left: 8, right: 8 })
-          .onClick(() => {
-            this.refreshLibrary();
-          })
-        Text('＋')
-          .fontSize(22)
-          .fontColor(this.pal.primary)
+        if (this.refreshing) {
+          Text($r('app.string.updates_refreshing'))
+            .fontSize(14)
+            .fontColor(this.pal.primary)
+            .padding({ left: 8, right: 8 })
+            .onClick(() => {
+              this.refreshLibrary();
+            })
+        } else {
+          AppIcon({ name: 'refresh', iconSize: 22, tint: this.pal.primary })
+            .padding({ left: 8, right: 8 })
+            .onClick(() => {
+              this.refreshLibrary();
+            })
+        }
+        AppIcon({ name: 'add', iconSize: 22, tint: this.pal.primary })
           .padding({ left: 8 })
           .onClick(() => {
             this.showAddCategoryDialog();

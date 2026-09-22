@@ -8,6 +8,7 @@ import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
 import { MangaRow } from './components/MangaRow';
+import { AppIcon } from './components/AppIcon';
 
 // 全局搜索结果分节（每源一节）
 export class SearchSection {
@@ -113,9 +114,7 @@ export struct GlobalSearchPage {
       Column() {
         // 顶栏
         Row() {
-          Text('‹')
-            .fontSize(30)
-            .fontColor(this.pal.text)
+          AppIcon({ name: 'arrow_back', iconSize: 24 })
             .onClick(() => {
               this.pathStack.pop();
             })

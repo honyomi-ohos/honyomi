@@ -6,6 +6,7 @@ import { ReaderParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
+import { AppIcon } from './components/AppIcon';
 
 // 历史页：最近阅读记录
 @Component
@@ -89,7 +90,7 @@ export struct HistoryPage {
               Row({ space: 12 }) {
                 if (item.coverUrl === '') {
                   Column() {
-                    Text('📖').fontSize(20)
+                    AppIcon({ name: 'photo', iconSize: 20 })
                   }
                   .width(44)
                   .height(60)

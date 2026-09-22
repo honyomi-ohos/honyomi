@@ -12,6 +12,7 @@ import { AniListTracker } from '../data/AniListTracker';
 import { InputDialog } from './components/Dialogs';
 import { SmartImage } from './components/SmartImage';
 import { EmptyScreen } from './components/EmptyScreen';
+import { AppIcon } from './components/AppIcon';
 
 // 漫画详情页：信息 + 章节列表 + 收藏 + 下载 + AniList 追踪
 @Component
@@ -243,9 +244,7 @@ export struct MangaDetailPage {
 
           Column() {
             Row() {
-              Text('‹')
-                .fontSize(30)
-                .fontColor('#FFFFFF')
+              AppIcon({ name: 'arrow_back', iconSize: 24, tint: '#FFFFFF' })
                 .padding({ left: 12, right: 12 })
                 .onClick(() => {
                   this.pathStack.pop();
@@ -266,7 +265,7 @@ export struct MangaDetailPage {
             Row({ space: 14 }) {
               if (this.manga.thumbnailUrl === '') {
                 Column() {
-                  Text('📖').fontSize(30)
+                  AppIcon({ name: 'photo', iconSize: 30 })
                 }
                 .width(110)
                 .height(150)

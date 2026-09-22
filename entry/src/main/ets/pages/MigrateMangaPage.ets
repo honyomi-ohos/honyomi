@@ -7,6 +7,7 @@ import { MigrateMangaParams, MigrateSearchParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { EmptyScreen } from './components/EmptyScreen';
 import { SmartImage } from './components/SmartImage';
+import { AppIcon } from './components/AppIcon';
 
 // 迁移漫画选择页（迁移 Tab 点进某个源）：勾选该书架中的漫画发起迁移
 @Component
@@ -96,9 +97,7 @@ export struct MigrateMangaPage {
       Column() {
         // 顶栏
         Row() {
-          Text('‹')
-            .fontSize(30)
-            .fontColor(this.pal.text)
+          AppIcon({ name: 'arrow_back', iconSize: 24 })
             .onClick(() => {
               this.pathStack.pop();
             })
@@ -150,8 +149,7 @@ export struct MigrateMangaPage {
                     })
                   if (m.thumbnailUrl === '') {
                     Column() {
-                      Text('📖')
-                        .fontSize(18)
+                      AppIcon({ name: 'photo', iconSize: 18 })
                     }
                     .width(44)
                     .height(62)

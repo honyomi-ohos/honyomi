@@ -7,10 +7,15 @@ export struct InputDialog {
   controller?: CustomDialogController;
   title: Resource | string = '';
   placeholder: Resource | string = '';
+  initialText: string = '';
   @State inputText: string = '';
   onConfirm: (text: string) => void = (_t: string) => {};
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+
+  aboutToAppear(): void {
+    this.inputText = this.initialText;
+  }
 
   build() {
     Column({ space: 16 }) {

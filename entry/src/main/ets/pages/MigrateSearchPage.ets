@@ -9,6 +9,7 @@ import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
 import { MangaRow } from './components/MangaRow';
 import { ConfirmDialog } from './components/Dialogs';
+import { AppIcon } from './components/AppIcon';
 
 // 迁移搜索页：依次处理待迁移漫画——选目标源 → 搜索 → 选取匹配项完成迁移
 @Component
@@ -171,9 +172,7 @@ export struct MigrateSearchPage {
       Column() {
         // 顶栏
         Row() {
-          Text('‹')
-            .fontSize(30)
-            .fontColor(this.pal.text)
+          AppIcon({ name: 'arrow_back', iconSize: 24 })
             .onClick(() => {
               this.pathStack.pop();
             })

@@ -11,6 +11,7 @@ import { Util } from '../common/Util';
 import { MangaCard } from './components/MangaCard';
 import { InputDialog } from './components/Dialogs';
 import { EmptyScreen } from './components/EmptyScreen';
+import { AppIcon } from './components/AppIcon';
 
 // 单源浏览页（图源 Tab 点进某个源）：顶栏返回 + 搜索 + 热门/最新模式 + 结果网格
 @Component
@@ -201,9 +202,7 @@ export struct BrowseSourcePage {
       Column() {
         // 顶栏
         Row() {
-          Text('‹')
-            .fontSize(30)
-            .fontColor(this.pal.text)
+          AppIcon({ name: 'arrow_back', iconSize: 24 })
             .onClick(() => {
               this.pathStack.pop();
             })
@@ -225,9 +224,7 @@ export struct BrowseSourcePage {
                 this.pickImportFiles();
               })
           } else if (this.searchOpen) {
-            Text('✕')
-              .fontSize(16)
-              .fontColor(this.pal.text)
+            AppIcon({ name: 'close', iconSize: 20 })
               .padding({ left: 10, right: 10 })
               .onClick(() => {
                 this.searchOpen = false;
@@ -235,8 +232,7 @@ export struct BrowseSourcePage {
                 this.loadFirst();
               })
           } else {
-            Text('🔍')
-              .fontSize(16)
+            AppIcon({ name: 'search', iconSize: 20 })
               .padding({ left: 10, right: 10 })
               .onClick(() => {
                 this.searchOpen = true;

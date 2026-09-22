@@ -1,5 +1,6 @@
 import { common } from '@kit.AbilityKit';
 import { webview } from '@kit.ArkWeb';
+import { curves } from '@kit.ArkUI';
 import { HdsTabs, hdsMaterial } from '@kit.UIDesignKit';
 import { ThemePalette } from '../common/Theme';
 import { Settings } from '../common/Settings';
@@ -20,6 +21,7 @@ import { BrowseSourcePage } from './BrowseSourcePage';
 import { GlobalSearchPage } from './GlobalSearchPage';
 import { MigrateMangaPage } from './MigrateMangaPage';
 import { MigrateSearchPage } from './MigrateSearchPage';
+import { ExtensionDetailPage } from './ExtensionDetailPage';
 import { CategoriesPage } from './CategoriesPage';
 import { SettingsPage } from './settings/SettingsPage';
 import { AppearancePage } from './settings/AppearancePage';
@@ -30,7 +32,168 @@ import { DownloadsSettingsPage } from './settings/DownloadsSettingsPage';
 import { BrowseSettingsPage } from './settings/BrowseSettingsPage';
 import { AdvancedPage } from './settings/AdvancedPage';
 import { AboutPage } from './settings/AboutPage';
-import { AppIconRes } from './components/AppIcon';
+import { AppIcon } from './components/AppIcon';
+
+// 底部导航图标：逐 Tab 复刻 Mihon 的 AnimatedImageVector 动画
+// - library/updates: 描边→填充 pathData 形变（300ms fast_out_slow_in，两层图标交叉淡化近似）
+// - history: 时针静止，环绕箭头绕 (13,12) 整圈旋转 360→0（500ms fast_out_slow_in）
+// - browse: 指针菱形→罗盘形变 + 整体旋转 180°（300ms）+ 中心点延迟 66ms 后 100ms 减速弹出
+// - more: 三点依次波浪弹跳（保持 83/150/217ms 后 100ms 上跳-133ms 下落-67ms 回正，贝塞尔 0.5,0,0.5,1）
+// 图标 SVG 由 Mihon anim_*_enter.xml 的原始 pathData 生成（像素级一致）
+@Component
+struct TabIcon {
+  @Prop @Watch('onSelectedChanged') selected: boolean = false;
+  @Prop kind: string = '';
+  @State fillOpacity: number = 0;
+  @State histAngle: number = 0;
+  @State browseAngle: number = 0;
+  @State browseDotScale: number = 0;
+  @State moreY0: number = 0;
+  @State moreY1: number = 0;
+  @State moreY2: number = 0;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+
+  aboutToAppear(): void {
+    if (this.selected) {
+      this.fillOpacity = 1;
+      this.browseAngle = 180;
+      this.browseDotScale = 1;
+    }
+  }
+
+  private iconTint(): ResourceColor {
+    return this.selected ? this.pal.primary : this.pal.sub;
+  }
+
+  private onSelectedChanged(): void {
+    if (this.kind === 'history') {
+      this.playHistory(this.selected);
+    } else if (this.kind === 'browse') {
+      this.playBrowse(this.selected);
+    } else if (this.kind === 'more') {
+      this.playMore(this.selected);
+    } else {
+      this.getUIContext().animateTo({ duration: 300, curve: Curve.FastOutSlowIn }, (): void => {
+        this.fillOpacity = this.selected ? 1 : 0;
+      });
+    }
+  }
+
+  // 历史：选中 360→0 逆时针整圈，取消选中反向 0→360（360 与 0 视觉等价，中断时从当前角度续走）
+  private playHistory(sel: boolean): void {
+    if (sel) {
+      if (this.histAngle % 360 === 0) {
+        this.histAngle = 360;
+      }
+      this.getUIContext().animateTo({ duration: 500, curve: Curve.FastOutSlowIn }, (): void => {
+        this.histAngle = 0;
+      });
+    } else {
+      if (this.histAngle % 360 === 0) {
+        this.histAngle = 0;
+      }
+      this.getUIContext().animateTo({ duration: 500, curve: Curve.FastOutSlowIn }, (): void => {
+        this.histAngle = 360;
+      });
+    }
+  }
+
+  // 浏览：形变+整体 180° 旋转同帧驱动；中心点 66ms 保持后 100ms 减速弹出
+  private playBrowse(sel: boolean): void {
+    this.getUIContext().animateTo({ duration: 300, curve: Curve.FastOutSlowIn }, (): void => {
+      this.fillOpacity = sel ? 1 : 0;
+      this.browseAngle = sel ? 180 : 0;
+    });
+    if (sel) {
+      this.browseDotScale = 0;
+      this.getUIContext().keyframeAnimateTo({ iterations: 1 }, [
+        {
+          duration: 66,
+          curve: Curve.FastOutSlowIn,
+          event: (): void => {
+            this.browseDotScale = 0;
+          },
+        },
+        {
+          duration: 100,
+          curve: curves.cubicBezierCurve(0, 0, 0.2, 1),
+          event: (): void => {
+            this.browseDotScale = 1;
+          },
+        },
+      ]);
+    } else {
+      this.getUIContext().animateTo({ duration: 100, curve: curves.cubicBezierCurve(0, 0, 0.2, 1) }, (): void => {
+        this.browseDotScale = 0;
+      });
+    }
+  }
+
+  // 更多：三点依次弹跳；取消选中按原关键帧倒放
+  private playMore(sel: boolean): void {
+    const mid = sel ? -2.84 : 0.8;
+    const end = sel ? 0.8 : -2.84;
+    const cb = curves.cubicBezierCurve(0.5, 0, 0.5, 1);
+    this.getUIContext().keyframeAnimateTo({ iterations: 1 }, [
+      { duration: 83, curve: cb, event: (): void => { this.moreY0 = 0; } },
+      { duration: 100, curve: cb, event: (): void => { this.moreY0 = mid; } },
+      { duration: 133, curve: cb, event: (): void => { this.moreY0 = end; } },
+      { duration: 67, curve: cb, event: (): void => { this.moreY0 = 0; } },
+    ]);
+    this.getUIContext().keyframeAnimateTo({ iterations: 1 }, [
+      { duration: 150, curve: cb, event: (): void => { this.moreY1 = 0; } },
+      { duration: 100, curve: cb, event: (): void => { this.moreY1 = mid; } },
+      { duration: 133, curve: cb, event: (): void => { this.moreY1 = end; } },
+      { duration: 67, curve: cb, event: (): void => { this.moreY1 = 0; } },
+    ]);
+    this.getUIContext().keyframeAnimateTo({ iterations: 1 }, [
+      { duration: 217, curve: cb, event: (): void => { this.moreY2 = 0; } },
+      { duration: 100, curve: cb, event: (): void => { this.moreY2 = mid; } },
+      { duration: 133, curve: cb, event: (): void => { this.moreY2 = end; } },
+      { duration: 67, curve: cb, event: (): void => { this.moreY2 = 0; } },
+    ]);
+  }
+
+  build() {
+    if (this.kind === 'more') {
+      Row({ space: 2 }) {
+        Circle().width(4).height(4).fill(this.iconTint()).translate({ y: this.moreY0 })
+        Circle().width(4).height(4).fill(this.iconTint()).translate({ y: this.moreY1 })
+        Circle().width(4).height(4).fill(this.iconTint()).translate({ y: this.moreY2 })
+      }
+      .width(16)
+      .height(24)
+      .justifyContent(FlexAlign.Center)
+    } else if (this.kind === 'history') {
+      Stack() {
+        AppIcon({ name: 'tab_history_hands', iconSize: 24, tint: this.iconTint() })
+        AppIcon({ name: 'tab_history_arrow', iconSize: 24, tint: this.iconTint() })
+          .rotate({ angle: this.histAngle, centerX: '54.2%', centerY: '50%' })
+      }
+      .width(24)
+      .height(24)
+    } else if (this.kind === 'browse') {
+      Stack() {
+        AppIcon({ name: 'tab_browse', iconSize: 24, tint: this.iconTint() })
+        AppIcon({ name: 'tab_browse_on', iconSize: 24, tint: this.iconTint() })
+          .opacity(this.fillOpacity)
+        AppIcon({ name: 'tab_browse_dot', iconSize: 24, tint: this.iconTint() })
+          .scale({ x: this.browseDotScale, y: this.browseDotScale })
+      }
+      .width(24)
+      .height(24)
+      .rotate({ angle: this.browseAngle })
+    } else {
+      Stack() {
+        AppIcon({ name: this.kind === 'library' ? 'tab_library' : 'tab_updates', iconSize: 24, tint: this.iconTint() })
+        AppIcon({ name: this.kind === 'library' ? 'tab_library_on' : 'tab_updates_on', iconSize: 24, tint: this.iconTint() })
+          .opacity(this.fillOpacity)
+      }
+      .width(24)
+      .height(24)
+    }
+  }
+}
 
 @Entry
 @Component
@@ -134,6 +297,8 @@ struct Index {
       MigrateMangaPage()
     } else if (name === 'MigrateSearch') {
       MigrateSearchPage()
+    } else if (name === 'ExtensionDetail') {
+      ExtensionDetailPage()
     } else if (name === 'Categories') {
       CategoriesPage()
     } else if (name === 'Settings') {
@@ -158,12 +323,9 @@ struct Index {
   }
 
   @Builder
-  tabBuilder(title: ResourceStr, icon: string, index: number) {
+  tabBuilder(kind: string, title: ResourceStr, index: number) {
     Column({ space: 2 }) {
-      Image(AppIconRes.get(icon))
-        .width(22)
-        .height(22)
-        .fillColor(this.currentTab === index ? this.pal.primary : this.pal.sub)
+      TabIcon({ kind: kind, selected: this.currentTab === index })
       Text(title)
         .fontSize(11)
         .fontColor(this.currentTab === index ? this.pal.primary : this.pal.sub)
@@ -183,7 +345,7 @@ struct Index {
             .height('100%')
             .padding({ top: this.statusBarH })
           }
-          .tabBar(this.tabBuilder($r('app.string.tab_library'), 'collections_bookmark', 0))
+          .tabBar(this.tabBuilder('library', $r('app.string.tab_library'), 0))
 
           TabContent() {
             Column() {
@@ -192,7 +354,7 @@ struct Index {
             .height('100%')
             .padding({ top: this.statusBarH })
           }
-          .tabBar(this.tabBuilder($r('app.string.tab_updates'), 'new_releases', 1))
+          .tabBar(this.tabBuilder('updates', $r('app.string.tab_updates'), 1))
 
           TabContent() {
             Column() {
@@ -201,7 +363,7 @@ struct Index {
             .height('100%')
             .padding({ top: this.statusBarH })
           }
-          .tabBar(this.tabBuilder($r('app.string.tab_history'), 'schedule', 2))
+          .tabBar(this.tabBuilder('history', $r('app.string.tab_history'), 2))
 
           TabContent() {
             Column() {
@@ -210,7 +372,7 @@ struct Index {
             .height('100%')
             .padding({ top: this.statusBarH })
           }
-          .tabBar(this.tabBuilder($r('app.string.tab_browse'), 'explore', 3))
+          .tabBar(this.tabBuilder('browse', $r('app.string.tab_browse'), 3))
 
           TabContent() {
             Column() {
@@ -219,7 +381,7 @@ struct Index {
             .height('100%')
             .padding({ top: this.statusBarH })
           }
-          .tabBar(this.tabBuilder($r('app.string.tab_more'), 'more_vert', 4))
+          .tabBar(this.tabBuilder('more', $r('app.string.tab_more'), 4))
         }
         .scrollable(true)
         .barOverlap(true)
@@ -232,6 +394,10 @@ struct Index {
             materialLevel: hdsMaterial.MaterialLevel.ADAPTIVE
           }
         })
+        // onSelected 在切换动画开始时触发，让图标动画与 Mihon 一样即刻起播（onChange 在切换完成后才触发）
+        .onSelected((index: number) => {
+          this.currentTab = index;
+        })
         .onChange((index: number) => {
           this.currentTab = index;
         })
@@ -242,9 +408,7 @@ struct Index {
         if (this.cfChallengeUrl !== '') {
           Column() {
             Row() {
-              Text('✕')
-                .fontSize(16)
-                .fontColor('#FFFFFF')
+              AppIcon({ name: 'close', iconSize: 20, tint: '#FFFFFF' })
                 .padding({ left: 14, right: 14, top: 10, bottom: 10 })
                 .onClick(() => {
                   this.closeCf(false);

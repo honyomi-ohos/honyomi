@@ -1,6 +1,7 @@
 import { MangaRecord, CategoryRecord } from '../../model/Models';
 import { ThemePalette } from '../../common/Theme';
 import { SmartImage } from './SmartImage';
+import { AppIcon } from './AppIcon';
 
 // 漫画封面卡片（书架/浏览通用）
 @Component
@@ -17,7 +18,7 @@ export struct MangaCard {
       Stack({ alignContent: Alignment.BottomEnd }) {
         if (this.record.thumbnailUrl === '') {
           Column() {
-            Text('📖').fontSize(28)
+            AppIcon({ name: 'photo', iconSize: 28 })
           }
           .width('100%')
           .aspectRatio(0.7)
