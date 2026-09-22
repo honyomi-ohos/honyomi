@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "Distira sistemari jarraitzeko ezarri da"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "Iturriak" },
+    { "name": "browse_tab_extensions", "value": "Luzapenak" },
+    { "name": "browse_tab_migrate", "value": "Migratu" },
+    { "name": "browse_pin", "value": "Ainguratu" },
+    { "name": "browse_unpin", "value": "Askatu" },
+    { "name": "browse_disable_source", "value": "Desgaitu iturria" },
+    { "name": "browse_source_disabled", "value": "Iturria desgaituta" },
+    { "name": "browse_pinned", "value": "Ainguratuta" },
+    { "name": "browse_sources_empty", "value": "Ez dago iturririk. Instala itzazu Luzapenak fitxan" },
+    { "name": "browse_filter_langs", "value": "Iragazi hizkuntzak" },
+    { "name": "browse_filter_all", "value": "Guztiak" },
+    { "name": "browse_source_missing", "value": "Iturria ez dago erabilgarri. Baliteke luzapena desgaituta egotea" },
+    { "name": "global_search_hint", "value": "Bilatu iturri guztietan" },
+    { "name": "global_search_failed", "value": "Bilaketak huts egin du" },
+    { "name": "ext_search_hint", "value": "Bilatu luzapenak" },
+    { "name": "ext_search_no_match", "value": "Ez dago bat-etortzerik" },
+    { "name": "ext_repo_settings", "value": "Biltegiaren ezarpenak" },
+    { "name": "ext_refresh_repo", "value": "Freskatu biltegia" },
+    { "name": "migrate_pick_source", "value": "Hautatu migratzeko iturria" },
+    { "name": "migrate_empty_library", "value": "Liburutegia hutsik dago" },
+    { "name": "migrate_select_all", "value": "Hautatu dena" },
+    { "name": "migrate_deselect_all", "value": "Desautatu dena" },
+    { "name": "migrate_action", "value": "Migratu (%d)" },
+    { "name": "migrate_title", "value": "Migratu" },
+    { "name": "migrate_skip", "value": "Saltatu" },
+    { "name": "migrate_progress", "value": "%d / %d" },
+    { "name": "migrate_target_source", "value": "Helburuko iturria" },
+    { "name": "migrate_search_hint", "value": "Bilatu manga helburuko iturrian" },
+    { "name": "migrate_confirm_title", "value": "Manga honetara migratu?" },
+    { "name": "migrate_item_done", "value": "Migratuta: %s" },
+    { "name": "migrate_failed", "value": "Migrazioak huts egin du: %s" },
+    { "name": "migrate_done", "value": "Migrazioa amaitu da" },
+    { "name": "migrate_no_target", "value": "Ez dago helburuko iturririk" }
+]
 }

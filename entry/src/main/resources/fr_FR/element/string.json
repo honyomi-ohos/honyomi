@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "Luminosité définie pour suivre le système"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "Sources" },
+    { "name": "browse_tab_extensions", "value": "Extensions" },
+    { "name": "browse_tab_migrate", "value": "Migrer" },
+    { "name": "browse_pin", "value": "Épingler" },
+    { "name": "browse_unpin", "value": "Désépingler" },
+    { "name": "browse_disable_source", "value": "Désactiver la source" },
+    { "name": "browse_source_disabled", "value": "Source désactivée" },
+    { "name": "browse_pinned", "value": "Épinglée" },
+    { "name": "browse_sources_empty", "value": "Aucune source disponible. Installez-en depuis l’onglet Extensions" },
+    { "name": "browse_filter_langs", "value": "Filtrer les langues" },
+    { "name": "browse_filter_all", "value": "Tout" },
+    { "name": "browse_source_missing", "value": "Source indisponible. L’extension est peut-être désactivée" },
+    { "name": "global_search_hint", "value": "Rechercher dans toutes les sources" },
+    { "name": "global_search_failed", "value": "Échec de la recherche" },
+    { "name": "ext_search_hint", "value": "Rechercher des extensions" },
+    { "name": "ext_search_no_match", "value": "Aucune correspondance" },
+    { "name": "ext_repo_settings", "value": "Paramètres du dépôt" },
+    { "name": "ext_refresh_repo", "value": "Actualiser le dépôt" },
+    { "name": "migrate_pick_source", "value": "Sélectionnez une source à migrer" },
+    { "name": "migrate_empty_library", "value": "La bibliothèque est vide" },
+    { "name": "migrate_select_all", "value": "Tout sélectionner" },
+    { "name": "migrate_deselect_all", "value": "Tout désélectionner" },
+    { "name": "migrate_action", "value": "Migrer (%d)" },
+    { "name": "migrate_title", "value": "Migrer" },
+    { "name": "migrate_skip", "value": "Ignorer" },
+    { "name": "migrate_progress", "value": "%d sur %d" },
+    { "name": "migrate_target_source", "value": "Source cible" },
+    { "name": "migrate_search_hint", "value": "Rechercher un manga dans la source cible" },
+    { "name": "migrate_confirm_title", "value": "Migrer vers ce manga ?" },
+    { "name": "migrate_item_done", "value": "Migré : %s" },
+    { "name": "migrate_failed", "value": "Échec de la migration : %s" },
+    { "name": "migrate_done", "value": "Migration terminée" },
+    { "name": "migrate_no_target", "value": "Aucune source cible disponible" }
+]
 }

@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "ብሩህነት ስርዓቱን እንዲከተል ተዘጋጅቷል"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "ምንጮች" },
+    { "name": "browse_tab_extensions", "value": "ቅጥያዎች" },
+    { "name": "browse_tab_migrate", "value": "አዛውር" },
+    { "name": "browse_pin", "value": "ሰካ" },
+    { "name": "browse_unpin", "value": "ንቀል" },
+    { "name": "browse_disable_source", "value": "ምንጭ አሰናክል" },
+    { "name": "browse_source_disabled", "value": "ምንጩ ተሰናክሏል" },
+    { "name": "browse_pinned", "value": "ተሰክቷል" },
+    { "name": "browse_sources_empty", "value": "ምንም ምንጭ የለም። ከቅጥያዎች ትር ይጫኑ" },
+    { "name": "browse_filter_langs", "value": "ቋንቋዎችን አጣራ" },
+    { "name": "browse_filter_all", "value": "ሁሉም" },
+    { "name": "browse_source_missing", "value": "ምንጩ አይገኝም። ቅጥያው ተሰናክሎ ሊሆን ይችላል" },
+    { "name": "global_search_hint", "value": "ሁሉንም ምንጮች ፈልግ" },
+    { "name": "global_search_failed", "value": "ፍለጋ አልተሳካም" },
+    { "name": "ext_search_hint", "value": "ቅጥያዎችን ፈልግ" },
+    { "name": "ext_search_no_match", "value": "ምንም አልተገኘም" },
+    { "name": "ext_repo_settings", "value": "የማከማቻ ቅንብሮች" },
+    { "name": "ext_refresh_repo", "value": "ማከማቻ አድስ" },
+    { "name": "migrate_pick_source", "value": "ለማዛወር ምንጭ ይምረጡ" },
+    { "name": "migrate_empty_library", "value": "ቤተ-መጻሕፍት ባዶ ነው" },
+    { "name": "migrate_select_all", "value": "ሁሉንም ምረጥ" },
+    { "name": "migrate_deselect_all", "value": "ሁሉንም አንሳ" },
+    { "name": "migrate_action", "value": "አዛውር (%d)" },
+    { "name": "migrate_title", "value": "አዛውር" },
+    { "name": "migrate_skip", "value": "ዝለል" },
+    { "name": "migrate_progress", "value": "%d ከ %d" },
+    { "name": "migrate_target_source", "value": "የመድረሻ ምንጭ" },
+    { "name": "migrate_search_hint", "value": "በመድረሻ ምንጭ ውስጥ ማንጋ ፈልግ" },
+    { "name": "migrate_confirm_title", "value": "ወደዚህ ማንጋ ይዛወር?" },
+    { "name": "migrate_item_done", "value": "ተዛውሯል፦ %s" },
+    { "name": "migrate_failed", "value": "ማዛወር አልተሳካም፦ %s" },
+    { "name": "migrate_done", "value": "ማዛወር ተጠናቋል" },
+    { "name": "migrate_no_target", "value": "ምንም የመድረሻ ምንጭ የለም" }
+]
 }

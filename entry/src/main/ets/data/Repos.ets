@@ -102,6 +102,52 @@ export class MangaRepo {
     await store.update(values, pred);
   }
 
+  // 按源获取书架漫画（迁移选择列表）
+  static async getLibraryBySource(sourceKey: string): Promise<MangaRecord[]> {
+    const store = await AppDb.get();
+    const pred = new relationalStore.RdbPredicates('manga');
+    pred.equalTo('inLibrary', 1).and().equalTo('sourceKey', sourceKey).orderByAsc('title');
+    const rs = await store.query(pred, MangaRepo.COLUMNS);
+    const list: MangaRecord[] = [];
+    while (rs.goToNextRow()) {
+      list.push(MangaRepo.rowToManga(rs));
+    }
+    rs.close();
+    return list;
+  }
+
+  // 书架内各源漫画数（迁移源列表）
+  static async countBySource(): Promise<Record<string, number>> {
+    const store = await AppDb.get();
+    const rs = await store.querySql(
+      `SELECT sourceKey, COUNT(*) AS cnt FROM manga WHERE inLibrary = 1 GROUP BY sourceKey`);
+    const counts: Record<string, number> = {};
+    while (rs.goToNextRow()) {
+      counts[rs.getString(rs.getColumnIndex('sourceKey'))] = rs.getLong(rs.getColumnIndex('cnt'));
+    }
+    rs.close();
+    return counts;
+  }
+
+  // 迁移：切换源与地址并更新元数据，清空旧章节记录（进度不保留）
+  static async migrate(id: number, sourceKey: string, url: string, m: SManga): Promise<void> {
+    const store = await AppDb.get();
+    const values: relationalStore.ValuesBucket = {
+      'sourceKey': sourceKey,
+      'url': url,
+      'title': m.title !== '' ? m.title : ' ',
+      'thumbnailUrl': m.coverUrl,
+      'author': m.author,
+      'description': m.description,
+      'genre': m.genre,
+      'status': m.status,
+    };
+    const pred = new relationalStore.RdbPredicates('manga');
+    pred.equalTo('id', id);
+    await store.update(values, pred);
+    await store.executeSql(`DELETE FROM chapter WHERE mangaId = ?`, [id]);
+  }
+
   private static readonly COLUMNS: string[] = [
     'id', 'sourceKey', 'url', 'title', 'thumbnailUrl', 'author',
     'description', 'genre', 'status', 'inLibrary', 'categoryId', 'addedAt',

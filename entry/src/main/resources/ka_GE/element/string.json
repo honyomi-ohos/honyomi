@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "სიკაშკაშე დაყენდა სისტემის მიყოლაზე"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "წყაროები" },
+    { "name": "browse_tab_extensions", "value": "გაფართოებები" },
+    { "name": "browse_tab_migrate", "value": "გადატანა" },
+    { "name": "browse_pin", "value": "მიმაგრება" },
+    { "name": "browse_unpin", "value": "მოხსნა" },
+    { "name": "browse_disable_source", "value": "წყაროს გამორთვა" },
+    { "name": "browse_source_disabled", "value": "წყარო გამოირთო" },
+    { "name": "browse_pinned", "value": "მიმაგრებულია" },
+    { "name": "browse_sources_empty", "value": "წყაროები არ არის. დააყენეთ გაფართოებების ჩანართიდან" },
+    { "name": "browse_filter_langs", "value": "ენების გაფილტვრა" },
+    { "name": "browse_filter_all", "value": "ყველა" },
+    { "name": "browse_source_missing", "value": "წყარო მიუწვდომელია. შესაძლოა გაფართოება გამორთულია" },
+    { "name": "global_search_hint", "value": "ძებნა ყველა წყაროში" },
+    { "name": "global_search_failed", "value": "ძებნა ვერ შესრულდა" },
+    { "name": "ext_search_hint", "value": "გაფართოებების ძებნა" },
+    { "name": "ext_search_no_match", "value": "დამთხვევა არ არის" },
+    { "name": "ext_repo_settings", "value": "საცავის პარამეტრები" },
+    { "name": "ext_refresh_repo", "value": "საცავის განახლება" },
+    { "name": "migrate_pick_source", "value": "აირჩიეთ გადასატანი წყარო" },
+    { "name": "migrate_empty_library", "value": "ბიბლიოთეკა ცარიელია" },
+    { "name": "migrate_select_all", "value": "ყველას არჩევა" },
+    { "name": "migrate_deselect_all", "value": "არჩევის მოხსნა" },
+    { "name": "migrate_action", "value": "გადატანა (%d)" },
+    { "name": "migrate_title", "value": "გადატანა" },
+    { "name": "migrate_skip", "value": "გამოტოვება" },
+    { "name": "migrate_progress", "value": "%d / %d" },
+    { "name": "migrate_target_source", "value": "სამიზნე წყარო" },
+    { "name": "migrate_search_hint", "value": "მანგას ძებნა სამიზნე წყაროში" },
+    { "name": "migrate_confirm_title", "value": "გადავიტანოთ ამ მანგაზე?" },
+    { "name": "migrate_item_done", "value": "გადატანილია: %s" },
+    { "name": "migrate_failed", "value": "გადატანა ვერ შესრულდა: %s" },
+    { "name": "migrate_done", "value": "გადატანა დასრულდა" },
+    { "name": "migrate_no_target", "value": "სამიზნე წყარო არ არის" }
+]
 }

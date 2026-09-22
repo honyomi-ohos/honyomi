@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "ಪ್ರಕಾಶ ಸಿಸ್ಟಮ್ ಅನುಸರಿಸುವಂತೆ ಹೊಂದಿಸಲಾಗಿದೆ"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "ಮೂಲಗಳು" },
+    { "name": "browse_tab_extensions", "value": "ವಿಸ್ತರಣೆಗಳು" },
+    { "name": "browse_tab_migrate", "value": "ಸ್ಥಳಾಂತರ" },
+    { "name": "browse_pin", "value": "ಪಿನ್ ಮಾಡಿ" },
+    { "name": "browse_unpin", "value": "ಪಿನ್ ತೆಗೆಯಿರಿ" },
+    { "name": "browse_disable_source", "value": "ಮೂಲವನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ" },
+    { "name": "browse_source_disabled", "value": "ಮೂಲ ನಿಷ್ಕ್ರಿಯಗೊಂಡಿದೆ" },
+    { "name": "browse_pinned", "value": "ಪಿನ್ ಮಾಡಲಾಗಿದೆ" },
+    { "name": "browse_sources_empty", "value": "ಮೂಲಗಳಿಲ್ಲ. ವಿಸ್ತರಣೆಗಳು ಟ್ಯಾಬ್‌ನಿಂದ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ" },
+    { "name": "browse_filter_langs", "value": "ಭಾಷೆಗಳನ್ನು ಸೋಸಿ" },
+    { "name": "browse_filter_all", "value": "ಎಲ್ಲಾ" },
+    { "name": "browse_source_missing", "value": "ಮೂಲ ಲಭ್ಯವಿಲ್ಲ. ವಿಸ್ತರಣೆ ನಿಷ್ಕ್ರಿಯವಾಗಿರಬಹುದು" },
+    { "name": "global_search_hint", "value": "ಎಲ್ಲಾ ಮೂಲಗಳಲ್ಲಿ ಹುಡುಕಿ" },
+    { "name": "global_search_failed", "value": "ಹುಡುಕಾಟ ವಿಫಲವಾಯಿತು" },
+    { "name": "ext_search_hint", "value": "ವಿಸ್ತರಣೆಗಳನ್ನು ಹುಡುಕಿ" },
+    { "name": "ext_search_no_match", "value": "ಹೊಂದಾಣಿಕೆಗಳಿಲ್ಲ" },
+    { "name": "ext_repo_settings", "value": "ರೆಪೊಸಿಟರಿ ಸೆಟ್ಟಿಂಗ್‌ಗಳು" },
+    { "name": "ext_refresh_repo", "value": "ರೆಪೊಸಿಟರಿ ರಿಫ್ರೆಶ್ ಮಾಡಿ" },
+    { "name": "migrate_pick_source", "value": "ಸ್ಥಳಾಂತರಿಸಲು ಮೂಲವನ್ನು ಆಯ್ಕೆಮಾಡಿ" },
+    { "name": "migrate_empty_library", "value": "ಗ್ರಂಥಾಲಯ ಖಾಲಿಯಾಗಿದೆ" },
+    { "name": "migrate_select_all", "value": "ಎಲ್ಲವನ್ನೂ ಆಯ್ಕೆಮಾಡಿ" },
+    { "name": "migrate_deselect_all", "value": "ಆಯ್ಕೆ ರದ್ದುಮಾಡಿ" },
+    { "name": "migrate_action", "value": "ಸ್ಥಳಾಂತರ (%d)" },
+    { "name": "migrate_title", "value": "ಸ್ಥಳಾಂತರ" },
+    { "name": "migrate_skip", "value": "ಬಿಟ್ಟುಬಿಡಿ" },
+    { "name": "migrate_progress", "value": "%d / %d" },
+    { "name": "migrate_target_source", "value": "ಗುರಿ ಮೂಲ" },
+    { "name": "migrate_search_hint", "value": "ಗುರಿ ಮೂಲದಲ್ಲಿ ಮಾಂಗಾ ಹುಡುಕಿ" },
+    { "name": "migrate_confirm_title", "value": "ಈ ಮಾಂಗಾಗೆ ಸ್ಥಳಾಂತರಿಸುವುದೇ?" },
+    { "name": "migrate_item_done", "value": "ಸ್ಥಳಾಂತರಿಸಲಾಗಿದೆ: %s" },
+    { "name": "migrate_failed", "value": "ಸ್ಥಳಾಂತರ ವಿಫಲ: %s" },
+    { "name": "migrate_done", "value": "ಸ್ಥಳಾಂತರ ಪೂರ್ಣ" },
+    { "name": "migrate_no_target", "value": "ಗುರಿ ಮೂಲವಿಲ್ಲ" }
+]
 }

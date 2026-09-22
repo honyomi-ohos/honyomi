@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "Яскравість знову відповідає системі"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "Джерела" },
+    { "name": "browse_tab_extensions", "value": "Розширення" },
+    { "name": "browse_tab_migrate", "value": "Перенести" },
+    { "name": "browse_pin", "value": "Закріпити" },
+    { "name": "browse_unpin", "value": "Відкріпити" },
+    { "name": "browse_disable_source", "value": "Вимкнути джерело" },
+    { "name": "browse_source_disabled", "value": "Джерело вимкнено" },
+    { "name": "browse_pinned", "value": "Закріплено" },
+    { "name": "browse_sources_empty", "value": "Немає джерел. Установіть їх на вкладці Розширення" },
+    { "name": "browse_filter_langs", "value": "Фільтр мов" },
+    { "name": "browse_filter_all", "value": "Усі" },
+    { "name": "browse_source_missing", "value": "Джерело недоступне. Можливо, розширення вимкнено" },
+    { "name": "global_search_hint", "value": "Пошук в усіх джерелах" },
+    { "name": "global_search_failed", "value": "Помилка пошуку" },
+    { "name": "ext_search_hint", "value": "Пошук розширень" },
+    { "name": "ext_search_no_match", "value": "Немає збігів" },
+    { "name": "ext_repo_settings", "value": "Параметри репозиторію" },
+    { "name": "ext_refresh_repo", "value": "Оновити репозиторій" },
+    { "name": "migrate_pick_source", "value": "Виберіть джерело для перенесення" },
+    { "name": "migrate_empty_library", "value": "Бібліотека порожня" },
+    { "name": "migrate_select_all", "value": "Вибрати все" },
+    { "name": "migrate_deselect_all", "value": "Зняти вибір" },
+    { "name": "migrate_action", "value": "Перенести (%d)" },
+    { "name": "migrate_title", "value": "Перенести" },
+    { "name": "migrate_skip", "value": "Пропустити" },
+    { "name": "migrate_progress", "value": "%d з %d" },
+    { "name": "migrate_target_source", "value": "Цільове джерело" },
+    { "name": "migrate_search_hint", "value": "Шукати манґу в цільовому джерелі" },
+    { "name": "migrate_confirm_title", "value": "Перенести до цієї манґи?" },
+    { "name": "migrate_item_done", "value": "Перенесено: %s" },
+    { "name": "migrate_failed", "value": "Помилка перенесення: %s" },
+    { "name": "migrate_done", "value": "Перенесення завершено" },
+    { "name": "migrate_no_target", "value": "Немає цільового джерела" }
+]
 }

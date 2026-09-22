@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "Яркостта отново следва системата"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "Източници" },
+    { "name": "browse_tab_extensions", "value": "Разширения" },
+    { "name": "browse_tab_migrate", "value": "Мигриране" },
+    { "name": "browse_pin", "value": "Закачи" },
+    { "name": "browse_unpin", "value": "Откачи" },
+    { "name": "browse_disable_source", "value": "Изключи източника" },
+    { "name": "browse_source_disabled", "value": "Източникът е изключен" },
+    { "name": "browse_pinned", "value": "Закачено" },
+    { "name": "browse_sources_empty", "value": "Няма източници. Инсталирайте от раздела Разширения" },
+    { "name": "browse_filter_langs", "value": "Филтър на езици" },
+    { "name": "browse_filter_all", "value": "Всички" },
+    { "name": "browse_source_missing", "value": "Източникът е недостъпен. Разширението може да е изключено" },
+    { "name": "global_search_hint", "value": "Търсене във всички източници" },
+    { "name": "global_search_failed", "value": "Търсенето неуспешно" },
+    { "name": "ext_search_hint", "value": "Търсене на разширения" },
+    { "name": "ext_search_no_match", "value": "Няма съвпадения" },
+    { "name": "ext_repo_settings", "value": "Настройки на хранилището" },
+    { "name": "ext_refresh_repo", "value": "Обнови хранилището" },
+    { "name": "migrate_pick_source", "value": "Изберете източник за мигриране" },
+    { "name": "migrate_empty_library", "value": "Библиотеката е празна" },
+    { "name": "migrate_select_all", "value": "Избери всички" },
+    { "name": "migrate_deselect_all", "value": "Премахни избора" },
+    { "name": "migrate_action", "value": "Мигриране (%d)" },
+    { "name": "migrate_title", "value": "Мигриране" },
+    { "name": "migrate_skip", "value": "Пропусни" },
+    { "name": "migrate_progress", "value": "%d от %d" },
+    { "name": "migrate_target_source", "value": "Целеви източник" },
+    { "name": "migrate_search_hint", "value": "Търсене на манга в целевия източник" },
+    { "name": "migrate_confirm_title", "value": "Да се мигрира към тази манга?" },
+    { "name": "migrate_item_done", "value": "Мигрирано: %s" },
+    { "name": "migrate_failed", "value": "Мигрирането неуспешно: %s" },
+    { "name": "migrate_done", "value": "Мигрирането завърши" },
+    { "name": "migrate_no_target", "value": "Няма целеви източник" }
+]
 }

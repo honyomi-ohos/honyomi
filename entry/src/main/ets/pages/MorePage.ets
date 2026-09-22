@@ -100,17 +100,6 @@ export struct MorePage {
               }
             })
           }
-
-          // 插件入口（P2 将迁移至浏览页）
-          PrefGroup() {
-            IconRow({
-              title: $r('app.string.more_plugins'),
-              icon: 'travel_explore',
-              onTap: (): void => {
-                this.pathStack.pushPathByName('Plugins', null);
-              }
-            })
-          }
         }
         .width('100%')
         .padding({ left: 16, right: 16, bottom: 24 })

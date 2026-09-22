@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "Яктылык система буенча көйләнде"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "Чыганаклар" },
+    { "name": "browse_tab_extensions", "value": "Киңәйтүләр" },
+    { "name": "browse_tab_migrate", "value": "Күчерү" },
+    { "name": "browse_pin", "value": "Беркетү" },
+    { "name": "browse_unpin", "value": "Беркетүне алу" },
+    { "name": "browse_disable_source", "value": "Чыганакны сүндерү" },
+    { "name": "browse_source_disabled", "value": "Чыганак сүндерелде" },
+    { "name": "browse_pinned", "value": "Беркетелгән" },
+    { "name": "browse_sources_empty", "value": "Чыганаклар юк. Киңәйтүләр өстеннән урнаштырыгыз" },
+    { "name": "browse_filter_langs", "value": "Телләрне фильтрлау" },
+    { "name": "browse_filter_all", "value": "Барысы" },
+    { "name": "browse_source_missing", "value": "Чыганак юк. Киңәйтү сүндерелгән булырга мөмкин" },
+    { "name": "global_search_hint", "value": "Барлык чыганакларда эзләү" },
+    { "name": "global_search_failed", "value": "Эзләү уңышсыз" },
+    { "name": "ext_search_hint", "value": "Киңәйтүләрне эзләү" },
+    { "name": "ext_search_no_match", "value": "Туры килүләр юк" },
+    { "name": "ext_repo_settings", "value": "Репозиторий көйләүләре" },
+    { "name": "ext_refresh_repo", "value": "Репозиторийны яңарту" },
+    { "name": "migrate_pick_source", "value": "Күчерү өчен чыганак сайлагыз" },
+    { "name": "migrate_empty_library", "value": "Китапханә буш" },
+    { "name": "migrate_select_all", "value": "Барысын да сайлау" },
+    { "name": "migrate_deselect_all", "value": "Сайлауны алу" },
+    { "name": "migrate_action", "value": "Күчерү (%d)" },
+    { "name": "migrate_title", "value": "Күчерү" },
+    { "name": "migrate_skip", "value": "Калындыру" },
+    { "name": "migrate_progress", "value": "%d / %d" },
+    { "name": "migrate_target_source", "value": "Максат чыганагы" },
+    { "name": "migrate_search_hint", "value": "Максат чыганагында манга эзләү" },
+    { "name": "migrate_confirm_title", "value": "Бу мангага күчерергәме?" },
+    { "name": "migrate_item_done", "value": "Күчерелде: %s" },
+    { "name": "migrate_failed", "value": "Күчерү уңышсыз: %s" },
+    { "name": "migrate_done", "value": "Күчерү тәмам" },
+    { "name": "migrate_no_target", "value": "Максат чыганагы юк" }
+]
 }

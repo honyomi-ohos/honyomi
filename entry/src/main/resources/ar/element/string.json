@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "أُعيد السطوع ليتبع النظام"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "المصادر" },
+    { "name": "browse_tab_extensions", "value": "الإضافات" },
+    { "name": "browse_tab_migrate", "value": "نقل" },
+    { "name": "browse_pin", "value": "تثبيت" },
+    { "name": "browse_unpin", "value": "إلغاء التثبيت" },
+    { "name": "browse_disable_source", "value": "تعطيل المصدر" },
+    { "name": "browse_source_disabled", "value": "تم تعطيل المصدر" },
+    { "name": "browse_pinned", "value": "مثبّت" },
+    { "name": "browse_sources_empty", "value": "لا توجد مصادر. ثبّتها من تبويب الإضافات" },
+    { "name": "browse_filter_langs", "value": "تصفية اللغات" },
+    { "name": "browse_filter_all", "value": "الكل" },
+    { "name": "browse_source_missing", "value": "المصدر غير متاح. ربما تكون الإضافة معطّلة" },
+    { "name": "global_search_hint", "value": "البحث في كل المصادر" },
+    { "name": "global_search_failed", "value": "فشل البحث" },
+    { "name": "ext_search_hint", "value": "البحث في الإضافات" },
+    { "name": "ext_search_no_match", "value": "لا توجد نتائج" },
+    { "name": "ext_repo_settings", "value": "إعدادات المستودع" },
+    { "name": "ext_refresh_repo", "value": "تحديث المستودع" },
+    { "name": "migrate_pick_source", "value": "اختر مصدرًا للنقل" },
+    { "name": "migrate_empty_library", "value": "المكتبة فارغة" },
+    { "name": "migrate_select_all", "value": "تحديد الكل" },
+    { "name": "migrate_deselect_all", "value": "إلغاء تحديد الكل" },
+    { "name": "migrate_action", "value": "نقل (%d)" },
+    { "name": "migrate_title", "value": "نقل" },
+    { "name": "migrate_skip", "value": "تخطي" },
+    { "name": "migrate_progress", "value": "%d من %d" },
+    { "name": "migrate_target_source", "value": "المصدر الهدف" },
+    { "name": "migrate_search_hint", "value": "ابحث عن مانغا في المصدر الهدف" },
+    { "name": "migrate_confirm_title", "value": "النقل إلى هذه المانغا؟" },
+    { "name": "migrate_item_done", "value": "تم النقل: %s" },
+    { "name": "migrate_failed", "value": "فشل النقل: %s" },
+    { "name": "migrate_done", "value": "اكتمل النقل" },
+    { "name": "migrate_no_target", "value": "لا يوجد مصدر هدف" }
+]
 }

@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "Brillantor configurada per seguir el sistema"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "Fonts" },
+    { "name": "browse_tab_extensions", "value": "Extensions" },
+    { "name": "browse_tab_migrate", "value": "Migra" },
+    { "name": "browse_pin", "value": "Fixa" },
+    { "name": "browse_unpin", "value": "Deixa de fixar" },
+    { "name": "browse_disable_source", "value": "Desactiva la font" },
+    { "name": "browse_source_disabled", "value": "Font desactivada" },
+    { "name": "browse_pinned", "value": "Fixada" },
+    { "name": "browse_sources_empty", "value": "No hi ha fonts. Instal·leu-les a la pestanya Extensions" },
+    { "name": "browse_filter_langs", "value": "Filtra idiomes" },
+    { "name": "browse_filter_all", "value": "Tot" },
+    { "name": "browse_source_missing", "value": "La font no està disponible. Potser l'extensió està desactivada" },
+    { "name": "global_search_hint", "value": "Cerca a totes les fonts" },
+    { "name": "global_search_failed", "value": "Ha fallat la cerca" },
+    { "name": "ext_search_hint", "value": "Cerca extensions" },
+    { "name": "ext_search_no_match", "value": "Cap coincidència" },
+    { "name": "ext_repo_settings", "value": "Paràmetres del repositori" },
+    { "name": "ext_refresh_repo", "value": "Actualitza el repositori" },
+    { "name": "migrate_pick_source", "value": "Seleccioneu una font per migrar" },
+    { "name": "migrate_empty_library", "value": "La biblioteca és buida" },
+    { "name": "migrate_select_all", "value": "Selecciona-ho tot" },
+    { "name": "migrate_deselect_all", "value": "Desselecciona-ho tot" },
+    { "name": "migrate_action", "value": "Migra (%d)" },
+    { "name": "migrate_title", "value": "Migra" },
+    { "name": "migrate_skip", "value": "Omet" },
+    { "name": "migrate_progress", "value": "%d de %d" },
+    { "name": "migrate_target_source", "value": "Font de destinació" },
+    { "name": "migrate_search_hint", "value": "Cerca manga a la font de destinació" },
+    { "name": "migrate_confirm_title", "value": "Voleu migrar a aquest manga?" },
+    { "name": "migrate_item_done", "value": "Migrat: %s" },
+    { "name": "migrate_failed", "value": "Ha fallat la migració: %s" },
+    { "name": "migrate_done", "value": "Migració completa" },
+    { "name": "migrate_no_target", "value": "No hi ha cap font de destinació" }
+]
 }

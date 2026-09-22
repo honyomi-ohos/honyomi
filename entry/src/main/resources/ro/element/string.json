@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "Luminozitatea este setată să urmeze sistemul"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "Surse" },
+    { "name": "browse_tab_extensions", "value": "Extensii" },
+    { "name": "browse_tab_migrate", "value": "Migrează" },
+    { "name": "browse_pin", "value": "Fixează" },
+    { "name": "browse_unpin", "value": "Anulează fixarea" },
+    { "name": "browse_disable_source", "value": "Dezactivează sursa" },
+    { "name": "browse_source_disabled", "value": "Sursă dezactivată" },
+    { "name": "browse_pinned", "value": "Fixată" },
+    { "name": "browse_sources_empty", "value": "Nu există surse. Instalează-le din fila Extensii" },
+    { "name": "browse_filter_langs", "value": "Filtrează limbile" },
+    { "name": "browse_filter_all", "value": "Toate" },
+    { "name": "browse_source_missing", "value": "Sursa nu este disponibilă. Extensia poate fi dezactivată" },
+    { "name": "global_search_hint", "value": "Caută în toate sursele" },
+    { "name": "global_search_failed", "value": "Căutarea a eșuat" },
+    { "name": "ext_search_hint", "value": "Caută extensii" },
+    { "name": "ext_search_no_match", "value": "Nicio potrivire" },
+    { "name": "ext_repo_settings", "value": "Setări depozit" },
+    { "name": "ext_refresh_repo", "value": "Reîmprospătează depozitul" },
+    { "name": "migrate_pick_source", "value": "Selectează o sursă de migrat" },
+    { "name": "migrate_empty_library", "value": "Biblioteca este goală" },
+    { "name": "migrate_select_all", "value": "Selectează tot" },
+    { "name": "migrate_deselect_all", "value": "Deselectează tot" },
+    { "name": "migrate_action", "value": "Migrează (%d)" },
+    { "name": "migrate_title", "value": "Migrează" },
+    { "name": "migrate_skip", "value": "Omite" },
+    { "name": "migrate_progress", "value": "%d din %d" },
+    { "name": "migrate_target_source", "value": "Sursă țintă" },
+    { "name": "migrate_search_hint", "value": "Caută manga în sursa țintă" },
+    { "name": "migrate_confirm_title", "value": "Migrezi la acest manga?" },
+    { "name": "migrate_item_done", "value": "Migrat: %s" },
+    { "name": "migrate_failed", "value": "Migrarea a eșuat: %s" },
+    { "name": "migrate_done", "value": "Migrare finalizată" },
+    { "name": "migrate_no_target", "value": "Nicio sursă țintă disponibilă" }
+]
 }

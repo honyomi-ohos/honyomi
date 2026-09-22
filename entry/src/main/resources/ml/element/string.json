@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "തെളിച്ചം സിസ്റ്റം പിന്തുടരാൻ സജ്ജമാക്കി"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "സ്രോതസ്സുകൾ" },
+    { "name": "browse_tab_extensions", "value": "വിപുലീകരണങ്ങൾ" },
+    { "name": "browse_tab_migrate", "value": "മൈഗ്രേറ്റ്" },
+    { "name": "browse_pin", "value": "പിൻ ചെയ്യുക" },
+    { "name": "browse_unpin", "value": "പിൻ നീക്കുക" },
+    { "name": "browse_disable_source", "value": "സ്രോതസ്സ് പ്രവർത്തനരഹിതമാക്കുക" },
+    { "name": "browse_source_disabled", "value": "സ്രോതസ്സ് പ്രവർത്തനരഹിതമാക്കി" },
+    { "name": "browse_pinned", "value": "പിൻ ചെയ്തു" },
+    { "name": "browse_sources_empty", "value": "സ്രോതസ്സുകളില്ല. വിപുലീകരണങ്ങൾ ടാബിൽ നിന്ന് ഇൻസ്റ്റാൾ ചെയ്യുക" },
+    { "name": "browse_filter_langs", "value": "ഭാഷകൾ ഫിൽട്ടർ ചെയ്യുക" },
+    { "name": "browse_filter_all", "value": "എല്ലാം" },
+    { "name": "browse_source_missing", "value": "സ്രോതസ്സ് ലഭ്യമല്ല. വിപുലീകരണം പ്രവർത്തനരഹിതമായിരിക്കാം" },
+    { "name": "global_search_hint", "value": "എല്ലാ സ്രോതസ്സുകളിലും തിരയുക" },
+    { "name": "global_search_failed", "value": "തിരച്ചിൽ പരാജയപ്പെട്ടു" },
+    { "name": "ext_search_hint", "value": "വിപുലീകരണങ്ങൾ തിരയുക" },
+    { "name": "ext_search_no_match", "value": "പൊരുത്തങ്ങളില്ല" },
+    { "name": "ext_repo_settings", "value": "റെപ്പോസിറ്ററി ക്രമീകരണങ്ങൾ" },
+    { "name": "ext_refresh_repo", "value": "റെപ്പോസിറ്ററി പുതുക്കുക" },
+    { "name": "migrate_pick_source", "value": "മൈഗ്രേറ്റ് ചെയ്യാനുള്ള സ്രോതസ്സ് തിരഞ്ഞെടുക്കുക" },
+    { "name": "migrate_empty_library", "value": "ലൈബ്രറി ശൂന്യമാണ്" },
+    { "name": "migrate_select_all", "value": "എല്ലാം തിരഞ്ഞെടുക്കുക" },
+    { "name": "migrate_deselect_all", "value": "തിരഞ്ഞെടുപ്പ് നീക്കുക" },
+    { "name": "migrate_action", "value": "മൈഗ്രേറ്റ് (%d)" },
+    { "name": "migrate_title", "value": "മൈഗ്രേറ്റ്" },
+    { "name": "migrate_skip", "value": "ഒഴിവാക്കുക" },
+    { "name": "migrate_progress", "value": "%d / %d" },
+    { "name": "migrate_target_source", "value": "ലക്ഷ്യ സ്രോതസ്സ്" },
+    { "name": "migrate_search_hint", "value": "ലക്ഷ്യ സ്രോതസ്സിൽ മംഗ തിരയുക" },
+    { "name": "migrate_confirm_title", "value": "ഈ മംഗയിലേക്ക് മൈഗ്രേറ്റ് ചെയ്യണോ?" },
+    { "name": "migrate_item_done", "value": "മൈഗ്രേറ്റ് ചെയ്തു: %s" },
+    { "name": "migrate_failed", "value": "മൈഗ്രേഷൻ പരാജയപ്പെട്ടു: %s" },
+    { "name": "migrate_done", "value": "മൈഗ്രേഷൻ പൂർത്തിയായി" },
+    { "name": "migrate_no_target", "value": "ലക്ഷ്യ സ്രോതസ്സില്ല" }
+]
 }

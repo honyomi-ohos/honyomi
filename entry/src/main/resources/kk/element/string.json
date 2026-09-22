@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "Жарықтық жүйе бойынша орнатылды"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "Дереккөздер" },
+    { "name": "browse_tab_extensions", "value": "Кеңейтімдер" },
+    { "name": "browse_tab_migrate", "value": "Көшіру" },
+    { "name": "browse_pin", "value": "Бекіту" },
+    { "name": "browse_unpin", "value": "Бекітуді алу" },
+    { "name": "browse_disable_source", "value": "Дереккөзді өшіру" },
+    { "name": "browse_source_disabled", "value": "Дереккөз өшірілді" },
+    { "name": "browse_pinned", "value": "Бекітілген" },
+    { "name": "browse_sources_empty", "value": "Дереккөз жоқ. Кеңейтімдер қойындысынан орнатыңыз" },
+    { "name": "browse_filter_langs", "value": "Тілдерді сүзу" },
+    { "name": "browse_filter_all", "value": "Барлығы" },
+    { "name": "browse_source_missing", "value": "Дереккөз қолжетімсіз. Кеңейтім өшірілген болуы мүмкін" },
+    { "name": "global_search_hint", "value": "Барлық дереккөзден іздеу" },
+    { "name": "global_search_failed", "value": "Іздеу сәтсіз аяқталды" },
+    { "name": "ext_search_hint", "value": "Кеңейтімдерді іздеу" },
+    { "name": "ext_search_no_match", "value": "Сәйкестік жоқ" },
+    { "name": "ext_repo_settings", "value": "Репозиторий параметрлері" },
+    { "name": "ext_refresh_repo", "value": "Репозиторийді жаңарту" },
+    { "name": "migrate_pick_source", "value": "Көшіретін дереккөзді таңдаңыз" },
+    { "name": "migrate_empty_library", "value": "Кітапхана бос" },
+    { "name": "migrate_select_all", "value": "Барлығын таңдау" },
+    { "name": "migrate_deselect_all", "value": "Таңдауды алу" },
+    { "name": "migrate_action", "value": "Көшіру (%d)" },
+    { "name": "migrate_title", "value": "Көшіру" },
+    { "name": "migrate_skip", "value": "Өткізіп жіберу" },
+    { "name": "migrate_progress", "value": "%d / %d" },
+    { "name": "migrate_target_source", "value": "Мақсатты дереккөз" },
+    { "name": "migrate_search_hint", "value": "Мақсатты дереккөзден манга іздеу" },
+    { "name": "migrate_confirm_title", "value": "Осы мангаға көшіру керек пе?" },
+    { "name": "migrate_item_done", "value": "Көшірілді: %s" },
+    { "name": "migrate_failed", "value": "Көшіру сәтсіз: %s" },
+    { "name": "migrate_done", "value": "Көшіру аяқталды" },
+    { "name": "migrate_no_target", "value": "Мақсатты дереккөз жоқ" }
+]
 }

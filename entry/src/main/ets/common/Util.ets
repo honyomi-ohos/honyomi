@@ -1,4 +1,5 @@
 // 通用工具
+import { common, Want } from '@kit.AbilityKit';
 
 export class Util {
   static formatDate(ms: number): string {
@@ -69,5 +70,12 @@ export class Util {
 
   static toastRes(ui: UIContext, res: Resource, args: Array<string | number> = []): void {
     Util.toast(ui, Util.resStr(ui, res, args));
+  }
+
+  // 用系统浏览器打开链接
+  static openUrl(context: common.UIAbilityContext, url: string): void {
+    const want: Want = { action: 'ohos.want.action.viewData', uri: url, entities: ['entity.system.browsable'] };
+    context.startAbility(want).catch((_e: Error) => {
+    });
   }
 }

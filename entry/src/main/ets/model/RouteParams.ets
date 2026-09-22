@@ -8,3 +8,16 @@ export interface ReaderParams {
   mangaId: number;
   chapterId: number;
 }
+
+export interface BrowseSourceParams {
+  sourceKey: string;
+  mode: string; // 'popular' | 'latest'
+}
+
+export interface MigrateMangaParams {
+  sourceKey: string;
+}
+
+export interface MigrateSearchParams {
+  mangaIds: number[];
+}

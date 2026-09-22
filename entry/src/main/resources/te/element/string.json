@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "కాంతి పరికరాన్ని అనుసరించేలా అమర్చబడింది"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "మూలాలు" },
+    { "name": "browse_tab_extensions", "value": "పొడిగింపులు" },
+    { "name": "browse_tab_migrate", "value": "మైగ్రేట్" },
+    { "name": "browse_pin", "value": "పిన్ చేయి" },
+    { "name": "browse_unpin", "value": "పిన్ తీసివేయి" },
+    { "name": "browse_disable_source", "value": "మూలాన్ని నిలిపివేయి" },
+    { "name": "browse_source_disabled", "value": "మూలం నిలిపివేయబడింది" },
+    { "name": "browse_pinned", "value": "పిన్ చేయబడింది" },
+    { "name": "browse_sources_empty", "value": "మూలాలు లేవు. పొడిగింపులు ట్యాబ్ నుండి ఇన్‌స్టాల్ చేయండి" },
+    { "name": "browse_filter_langs", "value": "భాషలను ఫిల్టర్ చేయి" },
+    { "name": "browse_filter_all", "value": "అన్నీ" },
+    { "name": "browse_source_missing", "value": "మూలం అందుబాటులో లేదు. పొడిగింపు నిలిపివేయబడి ఉండవచ్చు" },
+    { "name": "global_search_hint", "value": "అన్ని మూలాల్లో వెతకండి" },
+    { "name": "global_search_failed", "value": "శోధన విఫలమైంది" },
+    { "name": "ext_search_hint", "value": "పొడిగింపులను వెతకండి" },
+    { "name": "ext_search_no_match", "value": "సరిపోలికలు లేవు" },
+    { "name": "ext_repo_settings", "value": "రిపోజిటరీ సెట్టింగ్‌లు" },
+    { "name": "ext_refresh_repo", "value": "రిపోజిటరీని నవీకరించు" },
+    { "name": "migrate_pick_source", "value": "మైగ్రేట్ చేయడానికి మూలాన్ని ఎంచుకోండి" },
+    { "name": "migrate_empty_library", "value": "గ్రంథాలయం ఖాళీగా ఉంది" },
+    { "name": "migrate_select_all", "value": "అన్నీ ఎంచుకో" },
+    { "name": "migrate_deselect_all", "value": "ఎంపిక తీసివేయి" },
+    { "name": "migrate_action", "value": "మైగ్రేట్ (%d)" },
+    { "name": "migrate_title", "value": "మైగ్రేట్" },
+    { "name": "migrate_skip", "value": "దాటవేయి" },
+    { "name": "migrate_progress", "value": "%d / %d" },
+    { "name": "migrate_target_source", "value": "లక్ష్య మూలం" },
+    { "name": "migrate_search_hint", "value": "లక్ష్య మూలంలో మంగా వెతకండి" },
+    { "name": "migrate_confirm_title", "value": "ఈ మంగాకు మైగ్రేట్ చేయాలా?" },
+    { "name": "migrate_item_done", "value": "మైగ్రేట్ అయింది: %s" },
+    { "name": "migrate_failed", "value": "మైగ్రేషన్ విఫలమైంది: %s" },
+    { "name": "migrate_done", "value": "మైగ్రేషన్ పూర్తయింది" },
+    { "name": "migrate_no_target", "value": "లక్ష్య మూలం లేదు" }
+]
 }

@@ -90,3 +90,52 @@ export struct CategoryDialog {
     .width('80%')
   }
 }
+
+// 通用确认弹窗（迁移确认等）
+@CustomDialog
+export struct ConfirmDialog {
+  controller?: CustomDialogController;
+  title: Resource | string = '';
+  message: Resource | string = '';
+  confirmText: Resource | string = $r('app.string.common_ok');
+  onConfirm: () => void = () => {};
+  @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+
+  build() {
+    Column({ space: 16 }) {
+      Text(this.title)
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+      Text(this.message)
+        .fontSize(14)
+        .fontColor(this.pal.sub)
+      Row({ space: 12 }) {
+        Button($r('app.string.common_cancel'))
+          .layoutWeight(1)
+          .backgroundColor(this.pal.chip)
+          .fontColor(this.pal.text)
+          .onClick(() => {
+            if (this.controller !== undefined) {
+              this.controller.close();
+            }
+          })
+        Button(this.confirmText)
+          .layoutWeight(1)
+          .backgroundColor(this.pal.primary)
+          .onClick(() => {
+            if (this.controller !== undefined) {
+              this.controller.close();
+            }
+            this.onConfirm();
+          })
+      }
+      .width('100%')
+    }
+    .padding(20)
+    .backgroundColor(this.pal.card)
+    .borderRadius(16)
+    .width('86%')
+  }
+}

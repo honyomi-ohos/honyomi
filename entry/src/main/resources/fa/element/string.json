@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "روشنایی دوباره از سیستم پیروی می‌کند"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "منابع" },
+    { "name": "browse_tab_extensions", "value": "افزونه‌ها" },
+    { "name": "browse_tab_migrate", "value": "انتقال" },
+    { "name": "browse_pin", "value": "سنجاق کردن" },
+    { "name": "browse_unpin", "value": "برداشتن سنجاق" },
+    { "name": "browse_disable_source", "value": "غیرفعال کردن منبع" },
+    { "name": "browse_source_disabled", "value": "منبع غیرفعال شد" },
+    { "name": "browse_pinned", "value": "سنجاق‌شده" },
+    { "name": "browse_sources_empty", "value": "منبعی موجود نیست. از زبانه افزونه‌ها نصب کنید" },
+    { "name": "browse_filter_langs", "value": "پالایش زبان‌ها" },
+    { "name": "browse_filter_all", "value": "همه" },
+    { "name": "browse_source_missing", "value": "منبع در دسترس نیست. ممکن است افزونه غیرفعال باشد" },
+    { "name": "global_search_hint", "value": "جستجو در همه منابع" },
+    { "name": "global_search_failed", "value": "جستجو ناموفق بود" },
+    { "name": "ext_search_hint", "value": "جستجوی افزونه‌ها" },
+    { "name": "ext_search_no_match", "value": "موردی یافت نشد" },
+    { "name": "ext_repo_settings", "value": "تنظیمات مخزن" },
+    { "name": "ext_refresh_repo", "value": "تازه‌سازی مخزن" },
+    { "name": "migrate_pick_source", "value": "منبعی برای انتقال انتخاب کنید" },
+    { "name": "migrate_empty_library", "value": "کتابخانه خالی است" },
+    { "name": "migrate_select_all", "value": "انتخاب همه" },
+    { "name": "migrate_deselect_all", "value": "لغو انتخاب همه" },
+    { "name": "migrate_action", "value": "انتقال (%d)" },
+    { "name": "migrate_title", "value": "انتقال" },
+    { "name": "migrate_skip", "value": "رد شدن" },
+    { "name": "migrate_progress", "value": "%d از %d" },
+    { "name": "migrate_target_source", "value": "منبع مقصد" },
+    { "name": "migrate_search_hint", "value": "جستجوی مانگا در منبع مقصد" },
+    { "name": "migrate_confirm_title", "value": "به این مانگا منتقل شود؟" },
+    { "name": "migrate_item_done", "value": "منتقل شد: %s" },
+    { "name": "migrate_failed", "value": "انتقال ناموفق: %s" },
+    { "name": "migrate_done", "value": "انتقال کامل شد" },
+    { "name": "migrate_no_target", "value": "منبع مقصدی موجود نیست" }
+]
 }

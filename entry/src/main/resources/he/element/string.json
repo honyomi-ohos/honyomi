@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "הבהירות הוגדרה לפי המערכת"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "מקורות" },
+    { "name": "browse_tab_extensions", "value": "הרחבות" },
+    { "name": "browse_tab_migrate", "value": "העברה" },
+    { "name": "browse_pin", "value": "נעיצה" },
+    { "name": "browse_unpin", "value": "ביטול נעיצה" },
+    { "name": "browse_disable_source", "value": "השבתת מקור" },
+    { "name": "browse_source_disabled", "value": "המקור הושבת" },
+    { "name": "browse_pinned", "value": "נעוץ" },
+    { "name": "browse_sources_empty", "value": "אין מקורות. התקינו מלשונית ההרחבות" },
+    { "name": "browse_filter_langs", "value": "סינון שפות" },
+    { "name": "browse_filter_all", "value": "הכול" },
+    { "name": "browse_source_missing", "value": "המקור אינו זמין. ייתכן שההרחבה מושבתת" },
+    { "name": "global_search_hint", "value": "חיפוש בכל המקורות" },
+    { "name": "global_search_failed", "value": "החיפוש נכשל" },
+    { "name": "ext_search_hint", "value": "חיפוש הרחבות" },
+    { "name": "ext_search_no_match", "value": "אין התאמות" },
+    { "name": "ext_repo_settings", "value": "הגדרות מאגר" },
+    { "name": "ext_refresh_repo", "value": "רענון מאגר" },
+    { "name": "migrate_pick_source", "value": "בחרו מקור להעברה" },
+    { "name": "migrate_empty_library", "value": "הספרייה ריקה" },
+    { "name": "migrate_select_all", "value": "בחירת הכול" },
+    { "name": "migrate_deselect_all", "value": "ביטול בחירת הכול" },
+    { "name": "migrate_action", "value": "העברה (%d)" },
+    { "name": "migrate_title", "value": "העברה" },
+    { "name": "migrate_skip", "value": "דילוג" },
+    { "name": "migrate_progress", "value": "%d מתוך %d" },
+    { "name": "migrate_target_source", "value": "מקור יעד" },
+    { "name": "migrate_search_hint", "value": "חיפוש מנגה במקור היעד" },
+    { "name": "migrate_confirm_title", "value": "להעביר למנגה הזו?" },
+    { "name": "migrate_item_done", "value": "הועבר: %s" },
+    { "name": "migrate_failed", "value": "ההעברה נכשלה: %s" },
+    { "name": "migrate_done", "value": "ההעברה הושלמה" },
+    { "name": "migrate_no_target", "value": "אין מקור יעד" }
+]
 }

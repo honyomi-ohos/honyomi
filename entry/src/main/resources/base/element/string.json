@@ -11,6 +11,39 @@
     {
       "name": "EntryAbility_label",
       "value": "MihonHarmony"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "Sources" },
+    { "name": "browse_tab_extensions", "value": "Extensions" },
+    { "name": "browse_tab_migrate", "value": "Migrate" },
+    { "name": "browse_pin", "value": "Pin" },
+    { "name": "browse_unpin", "value": "Unpin" },
+    { "name": "browse_disable_source", "value": "Disable source" },
+    { "name": "browse_source_disabled", "value": "Source disabled" },
+    { "name": "browse_pinned", "value": "Pinned" },
+    { "name": "browse_sources_empty", "value": "No sources available. Install from the Extensions tab" },
+    { "name": "browse_filter_langs", "value": "Filter languages" },
+    { "name": "browse_filter_all", "value": "All" },
+    { "name": "browse_source_missing", "value": "Source unavailable. The extension may be disabled" },
+    { "name": "global_search_hint", "value": "Search all sources" },
+    { "name": "global_search_failed", "value": "Search failed" },
+    { "name": "ext_search_hint", "value": "Search extensions" },
+    { "name": "ext_search_no_match", "value": "No matches" },
+    { "name": "ext_repo_settings", "value": "Repository settings" },
+    { "name": "ext_refresh_repo", "value": "Refresh repository" },
+    { "name": "migrate_pick_source", "value": "Select a source to migrate" },
+    { "name": "migrate_empty_library", "value": "Library is empty" },
+    { "name": "migrate_select_all", "value": "Select all" },
+    { "name": "migrate_deselect_all", "value": "Deselect all" },
+    { "name": "migrate_action", "value": "Migrate (%d)" },
+    { "name": "migrate_title", "value": "Migrate" },
+    { "name": "migrate_skip", "value": "Skip" },
+    { "name": "migrate_progress", "value": "%d of %d" },
+    { "name": "migrate_target_source", "value": "Target source" },
+    { "name": "migrate_search_hint", "value": "Search manga in the target source" },
+    { "name": "migrate_confirm_title", "value": "Migrate to this manga?" },
+    { "name": "migrate_item_done", "value": "Migrated: %s" },
+    { "name": "migrate_failed", "value": "Migration failed: %s" },
+    { "name": "migrate_done", "value": "Migration complete" },
+    { "name": "migrate_no_target", "value": "No target source available" }
+]
 }

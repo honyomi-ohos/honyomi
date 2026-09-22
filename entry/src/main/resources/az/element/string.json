@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "Parlaqlıq sistemi izləyəcək şəkildə ayarlandı"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "Mənbələr" },
+    { "name": "browse_tab_extensions", "value": "Genişləndirmələr" },
+    { "name": "browse_tab_migrate", "value": "Köçür" },
+    { "name": "browse_pin", "value": "Sabitlə" },
+    { "name": "browse_unpin", "value": "Sabitləməni qaldır" },
+    { "name": "browse_disable_source", "value": "Mənbəni söndür" },
+    { "name": "browse_source_disabled", "value": "Mənbə söndürüldü" },
+    { "name": "browse_pinned", "value": "Sabitlənib" },
+    { "name": "browse_sources_empty", "value": "Mənbə yoxdur. Genişləndirmələr tabından quraşdırın" },
+    { "name": "browse_filter_langs", "value": "Dilləri süz" },
+    { "name": "browse_filter_all", "value": "Hamısı" },
+    { "name": "browse_source_missing", "value": "Mənbə əlçatan deyil. Genişləndirmə söndürülmüş ola bilər" },
+    { "name": "global_search_hint", "value": "Bütün mənbələrdə axtar" },
+    { "name": "global_search_failed", "value": "Axtarış uğursuz oldu" },
+    { "name": "ext_search_hint", "value": "Genişləndirmələrdə axtar" },
+    { "name": "ext_search_no_match", "value": "Uyğunluq yoxdur" },
+    { "name": "ext_repo_settings", "value": "Depo ayarları" },
+    { "name": "ext_refresh_repo", "value": "Deponu yenilə" },
+    { "name": "migrate_pick_source", "value": "Köçürmək üçün mənbə seçin" },
+    { "name": "migrate_empty_library", "value": "Kitabxana boşdur" },
+    { "name": "migrate_select_all", "value": "Hamısını seç" },
+    { "name": "migrate_deselect_all", "value": "Seçimi sil" },
+    { "name": "migrate_action", "value": "Köçür (%d)" },
+    { "name": "migrate_title", "value": "Köçür" },
+    { "name": "migrate_skip", "value": "Keç" },
+    { "name": "migrate_progress", "value": "%d / %d" },
+    { "name": "migrate_target_source", "value": "Hədəf mənbə" },
+    { "name": "migrate_search_hint", "value": "Hədəf mənbədə manqa axtar" },
+    { "name": "migrate_confirm_title", "value": "Bu manqaya köçürülsün?" },
+    { "name": "migrate_item_done", "value": "Köçürüldü: %s" },
+    { "name": "migrate_failed", "value": "Köçürmə uğursuz oldu: %s" },
+    { "name": "migrate_done", "value": "Köçürmə tamamlandı" },
+    { "name": "migrate_no_target", "value": "Hədəf mənbə yoxdur" }
+]
 }

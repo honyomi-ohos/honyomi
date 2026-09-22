@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "Сырдык системаны батыһарга туруорулунна"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "Источниктар" },
+    { "name": "browse_tab_extensions", "value": "Кэҥэтиилэр" },
+    { "name": "browse_tab_migrate", "value": "Көһөрүү" },
+    { "name": "browse_pin", "value": "Иҥиннэр" },
+    { "name": "browse_unpin", "value": "Уһул" },
+    { "name": "browse_disable_source", "value": "Источнигы араар" },
+    { "name": "browse_source_disabled", "value": "Источник араарылынна" },
+    { "name": "browse_pinned", "value": "Иҥиннэриллибит" },
+    { "name": "browse_sources_empty", "value": "Источник суох. Кэҥэтиилэр вкладкатыттан туруор" },
+    { "name": "browse_filter_langs", "value": "Тыллары сиидэлээ" },
+    { "name": "browse_filter_all", "value": "Барыта" },
+    { "name": "browse_source_missing", "value": "Источник суох. Кэҥэтии араарыллыбыт буолуон сөп" },
+    { "name": "global_search_hint", "value": "Бары источниктарга көрдөө" },
+    { "name": "global_search_failed", "value": "Көрдөөһүн сатаммата" },
+    { "name": "ext_search_hint", "value": "Кэҥэтиилэри көрдөө" },
+    { "name": "ext_search_no_match", "value": "Сөп түбэһии суох" },
+    { "name": "ext_repo_settings", "value": "Репозиторий туруоруулара" },
+    { "name": "ext_refresh_repo", "value": "Репозиторийы саҥардан биэр" },
+    { "name": "migrate_pick_source", "value": "Көһөрөр источнигы тал" },
+    { "name": "migrate_empty_library", "value": "Бэбэлэтиэкэ кураанах" },
+    { "name": "migrate_select_all", "value": "Барытын тал" },
+    { "name": "migrate_deselect_all", "value": "Талыыны уһул" },
+    { "name": "migrate_action", "value": "Көһөр (%d)" },
+    { "name": "migrate_title", "value": "Көһөрүү" },
+    { "name": "migrate_skip", "value": "Ааһан кэбис" },
+    { "name": "migrate_progress", "value": "%d / %d" },
+    { "name": "migrate_target_source", "value": "Сыал источник" },
+    { "name": "migrate_search_hint", "value": "Сыал источникка манга көрдөө" },
+    { "name": "migrate_confirm_title", "value": "Бу мангаҕа көһөрөҕүн дуо?" },
+    { "name": "migrate_item_done", "value": "Көһөрүлүннэ: %s" },
+    { "name": "migrate_failed", "value": "Көһөрүү сатаммата: %s" },
+    { "name": "migrate_done", "value": "Көһөрүү түмүктэннэ" },
+    { "name": "migrate_no_target", "value": "Сыал источник суох" }
+]
 }

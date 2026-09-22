@@ -1,18 +1,215 @@
 import { common } from '@kit.AbilityKit';
-import { picker } from '@kit.CoreFileKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
+import { PluginService } from '../data/PluginService';
 import { SourceRegistry, Source } from '../source/Source';
-import { LocalSource } from '../source/LocalSource';
-import { MangaRecord, SManga, MangasPage } from '../model/Models';
-import { DetailParams } from '../model/RouteParams';
+import { BrowseSourceParams, MigrateMangaParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
-import { MangaCard } from './components/MangaCard';
-import { InputDialog } from './components/Dialogs';
+import { Settings } from '../common/Settings';
 import { EmptyScreen } from './components/EmptyScreen';
+import { ExtensionListPanel } from './components/ExtensionListPanel';
+import { InputDialog } from './components/Dialogs';
+import { AppIcon } from './components/AppIcon';
 
-// 浏览页：源选择 + 搜索 + 本地导入 + 插件管理入口
+// 语言显示名（对齐 Mihon 源列表的语言分组头）
+const LANG_NAMES: Record<string, string> = {
+  'en': 'English',
+  'ja': '日本語',
+  'zh': '中文',
+  'zh-Hans': '中文',
+  'zh-Hant': '中文（繁）',
+  'ko': '한국어',
+  'multi': 'Multi',
+  'all': 'Multi',
+};
+
+function langDisplayName(lang: string): string {
+  const name: string | undefined = LANG_NAMES[lang];
+  return name !== undefined ? name : lang.toUpperCase();
+}
+
+// 源列表分节模型
+export class SourceSection {
+  key: string = '';
+  title: Resource | string = '';
+  sources: Source[] = [];
+
+  static of(key: string, title: Resource | string, sources: Source[]): SourceSection {
+    const s = new SourceSection();
+    s.key = key;
+    s.title = title;
+    s.sources = sources;
+    return s;
+  }
+}
+
+// 迁移源计数模型
+export class MigrateSourceCount {
+  key: string = '';
+  name: string = '';
+  lang: string = '';
+  count: number = 0;
+
+  static of(key: string, name: string, lang: string, count: number): MigrateSourceCount {
+    const m = new MigrateSourceCount();
+    m.key = key;
+    m.name = name;
+    m.lang = lang;
+    m.count = count;
+    return m;
+  }
+}
+
+// 源长按选项弹窗（置顶 / 停用）
+@CustomDialog
+struct SourceOptionsDialog {
+  controller?: CustomDialogController;
+  sourceName: Resource | string = '';
+  isPinned: boolean = false;
+  canDisable: boolean = false;
+  onPin: () => void = () => {};
+  onDisable: () => void = () => {};
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+
+  build() {
+    Column() {
+      Text(this.sourceName)
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+        .width('100%')
+        .maxLines(1)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .margin({ bottom: 8 })
+      Text(this.isPinned ? $r('app.string.browse_unpin') : $r('app.string.browse_pin'))
+        .fontSize(15)
+        .fontColor(this.pal.text)
+        .width('100%')
+        .padding({ top: 14, bottom: 14 })
+        .onClick(() => {
+          if (this.controller !== undefined) {
+            this.controller.close();
+          }
+          this.onPin();
+        })
+      if (this.canDisable) {
+        Divider().color(this.pal.divider)
+        Text($r('app.string.browse_disable_source'))
+          .fontSize(15)
+          .fontColor('#E05252')
+          .width('100%')
+          .padding({ top: 14, bottom: 14 })
+          .onClick(() => {
+            if (this.controller !== undefined) {
+              this.controller.close();
+            }
+            this.onDisable();
+          })
+      }
+    }
+    .padding(20)
+    .backgroundColor(this.pal.card)
+    .borderRadius(16)
+    .width('80%')
+  }
+}
+
+// 源语言过滤弹窗
+@CustomDialog
+struct LangFilterDialog {
+  controller?: CustomDialogController;
+  langs: string[] = [];
+  initialSelected: string[] = [];
+  onApply: (langs: string[]) => void = (_l: string[]) => {};
+  @State checked: string[] = [];
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+
+  aboutToAppear(): void {
+    this.checked = this.initialSelected.length > 0 ? this.initialSelected.slice() : this.langs.slice();
+  }
+
+  private toggle(lang: string): void {
+    const next: string[] = [];
+    let removed = false;
+    for (const l of this.checked) {
+      if (l === lang) {
+        removed = true;
+      } else {
+        next.push(l);
+      }
+    }
+    if (!removed) {
+      next.push(lang);
+    }
+    this.checked = next;
+  }
+
+  build() {
+    Column() {
+      Text($r('app.string.browse_filter_langs'))
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+        .width('100%')
+        .margin({ bottom: 8 })
+
+      Scroll() {
+        Column() {
+          ForEach(this.langs, (lang: string) => {
+            Row() {
+              Text(langDisplayName(lang))
+                .fontSize(14)
+                .fontColor(this.pal.text)
+                .layoutWeight(1)
+              Toggle({ type: ToggleType.Checkbox, isOn: this.checked.indexOf(lang) >= 0 })
+                .onChange((on: boolean) => {
+                  if (on !== (this.checked.indexOf(lang) >= 0)) {
+                    this.toggle(lang);
+                  }
+                })
+            }
+            .width('100%')
+            .padding({ top: 10, bottom: 10 })
+            .onClick(() => {
+              this.toggle(lang);
+            })
+          }, (lang: string) => `lf-${lang}`)
+        }
+        .width('100%')
+      }
+      .constraintSize({ maxHeight: 260 })
+      .scrollBar(BarState.Off)
+
+      Row({ space: 12 }) {
+        Button($r('app.string.browse_filter_all'))
+          .layoutWeight(1)
+          .backgroundColor(this.pal.chip)
+          .fontColor(this.pal.text)
+          .onClick(() => {
+            this.checked = this.langs.slice();
+          })
+        Button($r('app.string.common_ok'))
+          .layoutWeight(1)
+          .backgroundColor(this.pal.primary)
+          .onClick(() => {
+            if (this.controller !== undefined) {
+              this.controller.close();
+            }
+            this.onApply(this.checked.slice());
+          })
+      }
+      .width('100%')
+      .margin({ top: 12 })
+    }
+    .padding(20)
+    .backgroundColor(this.pal.card)
+    .borderRadius(16)
+    .width('80%')
+  }
+}
+
+// 浏览页：图源 / 插件 / 迁移 三 Tab（对齐原版 Mihon BrowseTab）
 @Component
 export struct BrowsePage {
   @Consume('navStack') pathStack: NavPathStack;
@@ -20,20 +217,23 @@ export struct BrowsePage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('navBarH') navBarH: number = 0;
   @StorageProp('pluginsDirty') @Watch('onPluginsChanged') pluginsDirty: number = 0;
+  @State currentTab: number = 0;
+  // 图源 Tab
   @State sources: Source[] = [];
-  @State selectedSource: string = 'mangadex';
-  @State query: string = '';
-  @State mode: string = 'popular'; // popular | latest
-  @State results: MangaRecord[] = [];
-  @State searching: boolean = false;
-  @State page: number = 1;
-  @State hasNextPage: boolean = false;
-  @State loadingMore: boolean = false;
-  private pickedUris: string[] = [];
+  @State pinnedKeys: string[] = [];
+  @State enabledLangs: string[] = []; // 空数组 = 全部语言
+  // 插件 Tab
+  @State extSearchOpen: boolean = false;
+  @State extQuery: string = '';
+  // 迁移 Tab
+  @State migrateItems: MigrateSourceCount[] = [];
+  @State migrateLoaded: boolean = false;
+  @State migrateSortByCount: boolean = true;
+  @State migrateSortAsc: boolean = true;
 
   aboutToAppear(): void {
     this.refreshSources();
-    this.loadPopular();
+    this.loadPins();
   }
 
   // 插件安装/启停后刷新源列表
@@ -43,164 +243,125 @@ export struct BrowsePage {
 
   private refreshSources(): void {
     this.sources = SourceRegistry.all();
-    const cur = SourceRegistry.get(this.selectedSource);
-    if (cur === undefined) {
-      const mangadex = SourceRegistry.get('mangadex');
-      const fallback = mangadex !== undefined ? mangadex :
-        (this.sources.length > 0 ? this.sources[0] : undefined);
-      if (fallback !== undefined) {
-        this.selectedSource = fallback.key;
-        this.loadPopular();
+  }
+
+  private loadPins(): void {
+    let keys: string[] = [];
+    try {
+      const parsed = JSON.parse(Settings.getPinnedSources()) as string[];
+      if (parsed !== null && parsed !== undefined) {
+        keys = parsed;
+      }
+    } catch (_e) {
+      keys = [];
+    }
+    this.pinnedKeys = keys;
+  }
+
+  private savePins(): void {
+    Settings.setPinnedSources(JSON.stringify(this.pinnedKeys));
+  }
+
+  private isPinned(key: string): boolean {
+    return this.pinnedKeys.indexOf(key) >= 0;
+  }
+
+  private togglePin(key: string): void {
+    const next: string[] = [];
+    let removed = false;
+    for (const k of this.pinnedKeys) {
+      if (k === key) {
+        removed = true;
       } else {
-        this.selectedSource = 'local';
+        next.push(k);
       }
     }
+    if (!removed) {
+      next.push(key);
+    }
+    this.pinnedKeys = next;
+    this.savePins();
   }
 
-  currentSource(): Source | undefined {
-    return SourceRegistry.get(this.selectedSource);
-  }
-
-  // 当前模式下的列表页（最新模式仅在源支持时生效）
-  private fetchPage(source: Source, page: number): Promise<MangasPage> {
-    if (this.mode === 'latest' && source.supportsLatest) {
-      return source.getLatestManga(page);
-    }
-    return source.getPopularManga(page);
-  }
-
-  async loadPopular(): Promise<void> {
-    const source = this.currentSource();
-    if (source === undefined) {
-      return;
-    }
-    this.searching = true;
-    this.results = [];
-    this.page = 1;
-    try {
-      const context = getContext(this) as common.UIAbilityContext;
-      await AppDb.ready(context);
-      const result = await this.fetchPage(source, 1);
-      this.results = await this.toRecords(source.key, result.mangas);
-      this.hasNextPage = result.hasNextPage;
-    } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.browse_load_failed'), [(e as Error).message]);
-    }
-    this.searching = false;
-  }
-
-  async search(): Promise<void> {
-    const source = this.currentSource();
-    if (source === undefined) {
-      return;
-    }
-    this.searching = true;
-    this.results = [];
-    this.page = 1;
-    try {
-      const context = getContext(this) as common.UIAbilityContext;
-      await AppDb.ready(context);
-      const q = this.query.trim();
-      const result = q === '' ? await source.getPopularManga(1) : await source.getSearchManga(1, q);
-      this.results = await this.toRecords(source.key, result.mangas);
-      this.hasNextPage = result.hasNextPage;
-    } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.browse_search_failed'), [(e as Error).message]);
-    }
-    this.searching = false;
-  }
-
-  async loadMore(): Promise<void> {
-    const source = this.currentSource();
-    if (source === undefined || this.loadingMore || !this.hasNextPage) {
-      return;
-    }
-    this.loadingMore = true;
-    try {
-      const nextPage = this.page + 1;
-      const q = this.query.trim();
-      const result = q === '' ? await this.fetchPage(source, nextPage) :
-        await source.getSearchManga(nextPage, q);
-      const more = await this.toRecords(source.key, result.mangas);
-      this.results = this.results.concat(more);
-      this.page = nextPage;
-      this.hasNextPage = result.hasNextPage;
-    } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.browse_load_more_failed'));
-    }
-    this.loadingMore = false;
-  }
-
-  async toRecords(sourceKey: string, mangas: SManga[]): Promise<MangaRecord[]> {
-    const records: MangaRecord[] = [];
-    for (const m of mangas) {
-      const record = new MangaRecord();
-      record.sourceKey = sourceKey;
-      record.url = m.key;
-      record.title = m.title;
-      record.thumbnailUrl = m.coverUrl;
-      record.author = m.author;
-      record.description = m.description;
-      record.genre = m.genre;
-      record.status = m.status;
-      records.push(record);
-    }
-    return records;
-  }
-
-  async openDetail(record: MangaRecord): Promise<void> {
-    const source = this.currentSource();
-    if (source === undefined) {
-      return;
-    }
-    try {
-      const context = getContext(this) as common.UIAbilityContext;
-      await AppDb.ready(context);
-      const id = await MangaRepo.upsertFromSource(record.sourceKey, this.toSManga(record));
-      const params: DetailParams = { mangaId: id };
-      this.pathStack.pushPathByName('MangaDetail', params);
-    } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.browse_open_detail_failed'));
-    }
-  }
-
-  toSManga(record: MangaRecord): SManga {
-    const m: SManga = {
-      key: record.url,
-      title: record.title,
-      coverUrl: record.thumbnailUrl,
-      author: record.author,
-      description: record.description,
-      genre: record.genre,
-      status: record.status,
-    };
-    return m;
-  }
-
-  async pickImportFiles(): Promise<void> {
-    try {
-      const options = new picker.DocumentSelectOptions();
-      options.maxSelectNumber = 50;
-      options.fileSuffixFilters = ['.zip', '.cbz'];
-      const docPicker = new picker.DocumentViewPicker();
-      const uris: Array<string> = await docPicker.select(options);
-      if (uris.length === 0) {
-        return;
+  private allLangs(): string[] {
+    const langs: string[] = [];
+    for (const s of this.sources) {
+      if (langs.indexOf(s.lang) < 0) {
+        langs.push(s.lang);
       }
-      this.pickedUris = uris;
-      this.showImportDialog();
+    }
+    return langs;
+  }
+
+  private sourceDisplayName(s: Source): Resource | string {
+    return s.key === 'local' ? $r('app.string.browse_local_source_name') : s.name;
+  }
+
+  // 源列表分节：已置顶在前，其后按语言分组
+  sourceSections(): SourceSection[] {
+    const sections: SourceSection[] = [];
+    const pinned: Source[] = [];
+    const byLang: Record<string, Source[]> = {};
+    const langOrder: string[] = [];
+    for (const s of this.sources) {
+      if (this.enabledLangs.length > 0 && this.enabledLangs.indexOf(s.lang) < 0) {
+        continue;
+      }
+      if (this.isPinned(s.key)) {
+        pinned.push(s);
+        continue;
+      }
+      const group: Source[] | undefined = byLang[s.lang];
+      if (group !== undefined) {
+        group.push(s);
+      } else {
+        byLang[s.lang] = [s];
+        langOrder.push(s.lang);
+      }
+    }
+    if (pinned.length > 0) {
+      sections.push(SourceSection.of('pinned', $r('app.string.browse_pinned'), pinned));
+    }
+    for (const lang of langOrder) {
+      const group: Source[] | undefined = byLang[lang];
+      if (group !== undefined && group.length > 0) {
+        sections.push(SourceSection.of(`lang-${lang}`, langDisplayName(lang), group));
+      }
+    }
+    return sections;
+  }
+
+  private isPluginSource(s: Source): boolean {
+    const installed = PluginService.listInstalled();
+    for (const item of installed) {
+      if (item.manifest.key === s.key) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private async disableSource(s: Source): Promise<void> {
+    try {
+      await PluginService.setEnabled(s.key, false);
+      PluginService.markDirty();
+      Util.toastRes(this.getUIContext(), $r('app.string.browse_source_disabled'));
     } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.browse_pick_file_failed'));
+      Util.toastRes(this.getUIContext(), $r('app.string.plugin_action_failed'));
     }
   }
 
-  private showImportDialog(): void {
+  private showSourceOptions(s: Source): void {
     const dialog = new CustomDialogController({
-      builder: InputDialog({
-        title: $r('app.string.browse_import_title', this.pickedUris.length),
-        placeholder: $r('app.string.browse_manga_name_hint'),
-        onConfirm: (text: string): void => {
-          this.doImport(text.trim());
+      builder: SourceOptionsDialog({
+        sourceName: this.sourceDisplayName(s),
+        isPinned: this.isPinned(s.key),
+        canDisable: s.key !== 'local' && this.isPluginSource(s),
+        onPin: (): void => {
+          this.togglePin(s.key);
+        },
+        onDisable: (): void => {
+          this.disableSource(s);
         },
       }),
       autoCancel: true,
@@ -208,171 +369,396 @@ export struct BrowsePage {
     dialog.open();
   }
 
-  private async doImport(title: string): Promise<void> {
-    if (title === '') {
-      Util.toastRes(this.getUIContext(), $r('app.string.browse_input_name'));
-      return;
-    }
-    const source = SourceRegistry.get('local');
-    if (source === undefined) {
-      return;
-    }
-    const local = source as LocalSource;
+  private showLangFilter(): void {
+    const dialog = new CustomDialogController({
+      builder: LangFilterDialog({
+        langs: this.allLangs(),
+        initialSelected: this.enabledLangs,
+        onApply: (langs: string[]): void => {
+          this.enabledLangs = langs.length === this.allLangs().length ? [] : langs;
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  private openBrowseSource(s: Source, mode: string): void {
+    const params: BrowseSourceParams = { sourceKey: s.key, mode: mode };
+    this.pathStack.pushPathByName('BrowseSource', params);
+  }
+
+  // ---- 插件 Tab 菜单 ----
+
+  private showRepoUrlDialog(): void {
+    const dialog = new CustomDialogController({
+      builder: InputDialog({
+        title: $r('app.string.plugin_repo_url_title'),
+        placeholder: $r('app.string.plugin_repo_url_hint'),
+        onConfirm: (text: string): void => {
+          Settings.setPluginRepoUrl(text.trim());
+          AppStorage.setOrCreate('extRepoRefresh', (AppStorage.get<number>('extRepoRefresh') ?? 0) + 1);
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  private refreshRepo(): void {
+    AppStorage.setOrCreate('extRepoRefresh', (AppStorage.get<number>('extRepoRefresh') ?? 0) + 1);
+  }
+
+  // ---- 迁移 Tab ----
+
+  private async loadMigrate(): Promise<void> {
     try {
-      const count = await local.importFiles(this.pickedUris, title);
-      Util.toastRes(this.getUIContext(), $r('app.string.browse_import_done', count));
-      await this.loadPopular();
-    } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.browse_import_failed'), [(e as Error).message]);
+      const context = getContext(this) as common.UIAbilityContext;
+      await AppDb.ready(context);
+      const counts = await MangaRepo.countBySource();
+      const items: MigrateSourceCount[] = [];
+      for (const s of SourceRegistry.all()) {
+        const c: number | undefined = counts[s.key];
+        if (c !== undefined && c > 0) {
+          items.push(MigrateSourceCount.of(s.key,
+            s.key === 'local' ? 'Local' : s.name, s.lang, c));
+        }
+      }
+      this.migrateItems = this.sortMigrate(items);
+    } catch (_e) {
+      this.migrateItems = [];
+    }
+    this.migrateLoaded = true;
+  }
+
+  private sortMigrate(items: MigrateSourceCount[]): MigrateSourceCount[] {
+    const list = items.slice();
+    list.sort((a: MigrateSourceCount, b: MigrateSourceCount): number => {
+      const byCount: number = a.count - b.count;
+      const byName: number = a.name.localeCompare(b.name);
+      const result = this.migrateSortByCount ? byCount : byName;
+      return this.migrateSortAsc ? result : -result;
+    });
+    return list;
+  }
+
+  private openMigrateSource(item: MigrateSourceCount): void {
+    const params: MigrateMangaParams = { sourceKey: item.key };
+    this.pathStack.pushPathByName('MigrateManga', params);
+  }
+
+  // ---- UI ----
+
+  @Builder
+  tabLabel(title: ResourceStr, index: number) {
+    Column() {
+      Text(title)
+        .fontSize(14)
+        .fontWeight(this.currentTab === index ? FontWeight.Bold : FontWeight.Normal)
+        .fontColor(this.currentTab === index ? this.pal.primary : this.pal.text)
+    }
+    .height(44)
+    .justifyContent(FlexAlign.Center)
+  }
+
+  @Builder
+  extMenu() {
+    Menu() {
+      MenuItem({ content: $r('app.string.ext_repo_settings') })
+        .onClick(() => {
+          this.showRepoUrlDialog();
+        })
+      MenuItem({ content: $r('app.string.ext_refresh_repo') })
+        .onClick(() => {
+          this.refreshRepo();
+        })
+    }
+  }
+
+  @Builder
+  sourceRow(s: Source) {
+    Row() {
+      Text(s.name.substring(0, 1).toUpperCase())
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .fontColor('#FFFFFF')
+        .textAlign(TextAlign.Center)
+        .width(40)
+        .height(40)
+        .borderRadius(20)
+        .backgroundColor(this.pal.primary)
+
+      Column() {
+        Text(this.sourceDisplayName(s))
+          .fontSize(15)
+          .fontColor(this.pal.text)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+        Text(langDisplayName(s.lang))
+          .fontSize(11)
+          .fontColor(this.pal.sub)
+          .margin({ top: 2 })
+      }
+      .alignItems(HorizontalAlign.Start)
+      .layoutWeight(1)
+      .margin({ left: 12 })
+
+      if (s.supportsLatest) {
+        Text($r('app.string.browse_latest'))
+          .fontSize(13)
+          .fontColor(this.pal.primary)
+          .padding({ left: 8, right: 4, top: 6, bottom: 6 })
+          .onClick(() => {
+            this.openBrowseSource(s, 'latest');
+          })
+      }
+      AppIcon({
+        name: this.isPinned(s.key) ? 'push_pin_filled' : 'push_pin',
+        iconSize: 20,
+        tint: this.isPinned(s.key) ? this.pal.primary : this.pal.sub,
+      })
+        .padding({ left: 4, right: 4 })
+        .onClick(() => {
+          this.togglePin(s.key);
+        })
+    }
+    .width('100%')
+    .alignItems(VerticalAlign.Center)
+    .padding({ top: 8, bottom: 8 })
+    .onClick(() => {
+      this.openBrowseSource(s, 'popular');
+    })
+    .gesture(
+      LongPressGesture()
+        .onAction(() => {
+          this.showSourceOptions(s);
+        })
+    )
+  }
+
+  @Builder
+  sourcesTabContent() {
+    if (this.sources.length === 0) {
+      Column() {
+        EmptyScreen({ message: $r('app.string.browse_sources_empty') })
+      }
+      .width('100%')
+      .height('100%')
+      .justifyContent(FlexAlign.Center)
+    } else {
+      Scroll() {
+        Column() {
+          ForEach(this.sourceSections(), (section: SourceSection) => {
+            Text(section.title)
+              .fontSize(13)
+              .fontWeight(FontWeight.Bold)
+              .fontColor(this.pal.sub)
+              .width('100%')
+              .padding({ top: 12, bottom: 4 })
+            ForEach(section.sources, (s: Source) => {
+              this.sourceRow(s)
+            }, (s: Source) => `src-${s.key}-${this.isPinned(s.key)}`)
+          }, (section: SourceSection) => section.key)
+        }
+        .width('100%')
+        .padding({ left: 16, right: 16, bottom: 16 })
+      }
+      .width('100%')
+      .height('100%')
+      .scrollBar(BarState.Off)
+      .align(Alignment.TopStart)
+      .contentEndOffset(this.navBarH + 76)
+    }
+  }
+
+  @Builder
+  migrateTabContent() {
+    if (!this.migrateLoaded) {
+      Column() {
+        LoadingProgress()
+          .width(36)
+          .height(36)
+          .color(this.pal.primary)
+      }
+      .width('100%')
+      .height('100%')
+      .justifyContent(FlexAlign.Center)
+    } else if (this.migrateItems.length === 0) {
+      Column() {
+        EmptyScreen({ message: $r('app.string.migrate_empty_library') })
+      }
+      .width('100%')
+      .height('100%')
+      .justifyContent(FlexAlign.Center)
+    } else {
+      Column() {
+        // 排序控制（对齐原版 MigrateSourceScreen 的 sticky header）
+        Row() {
+          Text($r('app.string.migrate_pick_source'))
+            .fontSize(13)
+            .fontWeight(FontWeight.Bold)
+            .fontColor(this.pal.sub)
+            .layoutWeight(1)
+          AppIcon({ name: this.migrateSortByCount ? 'query_stats' : 'sort', iconSize: 20, tint: this.pal.sub })
+            .padding({ left: 8 })
+            .onClick(() => {
+              this.migrateSortByCount = !this.migrateSortByCount;
+              this.migrateItems = this.sortMigrate(this.migrateItems);
+            })
+          AppIcon({ name: this.migrateSortAsc ? 'arrow_upward' : 'arrow_downward', iconSize: 20, tint: this.pal.sub })
+            .padding({ left: 8 })
+            .onClick(() => {
+              this.migrateSortAsc = !this.migrateSortAsc;
+              this.migrateItems = this.sortMigrate(this.migrateItems);
+            })
+        }
+        .width('100%')
+        .padding({ left: 16, right: 16, top: 10, bottom: 4 })
+
+        Scroll() {
+          Column() {
+            ForEach(this.migrateItems, (item: MigrateSourceCount) => {
+              Row() {
+                Text(item.name.substring(0, 1).toUpperCase())
+                  .fontSize(16)
+                  .fontWeight(FontWeight.Bold)
+                  .fontColor('#FFFFFF')
+                  .textAlign(TextAlign.Center)
+                  .width(40)
+                  .height(40)
+                  .borderRadius(20)
+                  .backgroundColor(this.pal.primary)
+                Column() {
+                  Text(item.name)
+                    .fontSize(15)
+                    .fontColor(this.pal.text)
+                    .maxLines(1)
+                    .textOverflow({ overflow: TextOverflow.Ellipsis })
+                  Text(langDisplayName(item.lang))
+                    .fontSize(11)
+                    .fontColor(this.pal.sub)
+                    .margin({ top: 2 })
+                }
+                .alignItems(HorizontalAlign.Start)
+                .layoutWeight(1)
+                .margin({ left: 12 })
+                Text(`${item.count}`)
+                  .fontSize(11)
+                  .fontColor('#FFFFFF')
+                  .backgroundColor(this.pal.primary)
+                  .borderRadius(10)
+                  .padding({ left: 8, right: 8, top: 2, bottom: 2 })
+              }
+              .width('100%')
+              .alignItems(VerticalAlign.Center)
+              .padding({ top: 8, bottom: 8 })
+              .onClick(() => {
+                this.openMigrateSource(item);
+              })
+            }, (item: MigrateSourceCount) => `mig-${item.key}-${item.count}`)
+          }
+          .width('100%')
+          .padding({ left: 16, right: 16, bottom: 16 })
+        }
+        .width('100%')
+        .layoutWeight(1)
+        .scrollBar(BarState.Off)
+        .align(Alignment.TopStart)
+        .contentEndOffset(this.navBarH + 76)
+      }
+      .width('100%')
+      .height('100%')
     }
   }
 
   build() {
     Column() {
-      // 顶栏
+      // 顶栏（标题 + 按页签变化的右上角按钮，对齐原版 TabbedScreen）
       Row() {
-        Text($r('app.string.browse_title'))
-          .fontSize(22)
-          .fontWeight(FontWeight.Bold)
-          .fontColor(this.pal.text)
-          .layoutWeight(1)
-        if (this.selectedSource === 'local') {
-          Button($r('app.string.browse_import'))
-            .fontSize(14)
-            .height(32)
-            .backgroundColor(this.pal.primary)
-            .onClick(() => {
-              this.pickImportFiles();
-            })
-        }
-        Text($r('app.string.browse_plugins'))
-          .fontSize(13)
-          .fontColor(this.pal.primary)
-          .padding({ left: 12, right: 4 })
-          .onClick(() => {
-            this.pathStack.pushPathByName('Plugins', null);
-          })
-      }
-      .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 8 })
-
-      // 源选择
-      Row({ space: 8 }) {
-        ForEach(this.sources, (source: Source) => {
-          Text(source.key === 'local' ? $r('app.string.browse_local_source_name') : source.name)
-            .fontSize(13)
-            .fontColor(this.selectedSource === source.key ? '#FFFFFF' : this.pal.text)
-            .backgroundColor(this.selectedSource === source.key ? this.pal.primary : this.pal.chip)
-            .borderRadius(14)
-            .padding({ left: 14, right: 14, top: 6, bottom: 6 })
-            .onClick(() => {
-              if (this.selectedSource !== source.key) {
-                this.selectedSource = source.key;
-                this.query = '';
-                this.loadPopular();
-              }
-            })
-        }, (source: Source) => `src-${source.key}`)
-      }
-      .width('100%')
-      .padding({ left: 16, right: 16, bottom: 8 })
-
-      // 模式切换（仅支持最新更新的源显示）
-      if (this.selectedSource !== 'local' && this.currentSource()?.supportsLatest === true) {
-        Row({ space: 8 }) {
-          Text($r('app.string.browse_popular'))
-            .fontSize(13)
-            .fontColor(this.mode === 'popular' ? '#FFFFFF' : this.pal.sub)
-            .backgroundColor(this.mode === 'popular' ? this.pal.primary : this.pal.bg)
-            .borderRadius(12)
-            .padding({ left: 12, right: 12, top: 4, bottom: 4 })
-            .onClick(() => {
-              if (this.mode !== 'popular') {
-                this.mode = 'popular';
-                this.loadPopular();
-              }
-            })
-          Text($r('app.string.browse_latest'))
-            .fontSize(13)
-            .fontColor(this.mode === 'latest' ? '#FFFFFF' : this.pal.sub)
-            .backgroundColor(this.mode === 'latest' ? this.pal.primary : this.pal.bg)
-            .borderRadius(12)
-            .padding({ left: 12, right: 12, top: 4, bottom: 4 })
-            .onClick(() => {
-              console.info(`[Browse] latest clicked, mode=${this.mode}`);
-              if (this.mode !== 'latest') {
-                this.mode = 'latest';
-                this.loadPopular();
-              }
-            })
-        }
-        .width('100%')
-        .padding({ left: 16, right: 16, bottom: 8 })
-      }
-
-      // 搜索栏
-      if (this.selectedSource !== 'local') {
-        Row({ space: 8 }) {
-          TextInput({ placeholder: $r('app.string.browse_search_hint') })
+        if (this.extSearchOpen && this.currentTab === 1) {
+          TextInput({ placeholder: $r('app.string.ext_search_hint') })
             .layoutWeight(1)
             .height(38)
             .backgroundColor(this.pal.card)
             .onChange((value: string) => {
-              this.query = value;
+              this.extQuery = value;
             })
-          Button($r('app.string.common_search'))
-            .fontSize(14)
-            .height(38)
-            .backgroundColor(this.pal.primary)
+          Text('✕')
+            .fontSize(16)
+            .fontColor(this.pal.text)
+            .padding({ left: 12, right: 4 })
             .onClick(() => {
-              this.search();
+              this.extSearchOpen = false;
+              this.extQuery = '';
+            })
+        } else {
+          Text($r('app.string.browse_title'))
+            .fontSize(22)
+            .fontWeight(FontWeight.Bold)
+            .fontColor(this.pal.text)
+            .layoutWeight(1)
+        }
+
+        if (this.currentTab === 0) {
+          // 图源：全局搜索 + 语言过滤
+          AppIcon({ name: 'travel_explore', iconSize: 22 })
+            .padding({ left: 12, right: 12 })
+            .onClick(() => {
+              this.pathStack.pushPathByName('GlobalSearch', null);
+            })
+          AppIcon({ name: 'filter_list', iconSize: 22 })
+            .padding({ left: 0, right: 4 })
+            .onClick(() => {
+              this.showLangFilter();
+            })
+        } else if (this.currentTab === 1) {
+          // 插件：搜索 + 溢出菜单
+          AppIcon({ name: 'search', iconSize: 22 })
+            .padding({ left: 12, right: 12 })
+            .onClick(() => {
+              this.extSearchOpen = true;
+            })
+          AppIcon({ name: 'more_vert', iconSize: 22 })
+            .padding({ left: 0, right: 4 })
+            .bindMenu(this.extMenu)
+        } else {
+          // 迁移：帮助（打开迁移指南）
+          AppIcon({ name: 'info', iconSize: 22 })
+            .padding({ left: 12, right: 4 })
+            .onClick(() => {
+              const context = getContext(this) as common.UIAbilityContext;
+              Util.openUrl(context, 'https://mihon.app/docs/guides/source-migration');
             })
         }
-        .width('100%')
-        .padding({ left: 16, right: 16, bottom: 8 })
       }
+      .width('100%')
+      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
 
-      // 结果网格
-      if (this.searching) {
-        Column() {
-          LoadingProgress()
-            .width(36)
-            .height(36)
-            .color(this.pal.primary)
+      // 三页签 + 可滑动内容
+      Tabs({ barPosition: BarPosition.Start, index: this.currentTab }) {
+        TabContent() {
+          this.sourcesTabContent()
         }
-        .layoutWeight(1)
-        .justifyContent(FlexAlign.Center)
-      } else if (this.results.length === 0) {
-        Column() {
-          EmptyScreen({
-            message: this.selectedSource === 'local' ? $r('app.string.browse_local_empty') : $r('app.string.browse_no_results'),
-          })
+        .tabBar(this.tabLabel($r('app.string.browse_tab_sources'), 0))
+
+        TabContent() {
+          ExtensionListPanel({ searchQuery: this.extQuery })
         }
-        .layoutWeight(1)
-        .justifyContent(FlexAlign.Center)
-      } else {
-        Grid() {
-          ForEach(this.results, (record: MangaRecord) => {
-            GridItem() {
-              MangaCard({
-                record: record,
-                onCardClick: (r: MangaRecord): void => {
-                  this.openDetail(r);
-                },
-              })
-            }
-          }, (record: MangaRecord) => `browse-${record.sourceKey}-${record.url}`)
+        .tabBar(this.tabLabel($r('app.string.browse_tab_extensions'), 1))
+
+        TabContent() {
+          this.migrateTabContent()
         }
-        .columnsTemplate('1fr 1fr')
-        .columnsGap(12)
-        .rowsGap(16)
-        .padding({ left: 16, right: 16, top: 4 })
-        .contentEndOffset(this.navBarH + 76)
-        .layoutWeight(1)
-        .onReachEnd(() => {
-          this.loadMore();
-        })
+        .tabBar(this.tabLabel($r('app.string.browse_tab_migrate'), 2))
       }
+      .onChange((index: number) => {
+        this.currentTab = index;
+        if (index === 2) {
+          this.loadMigrate();
+        }
+      })
+      .layoutWeight(1)
+      .width('100%')
     }
     .width('100%')
     .height('100%')

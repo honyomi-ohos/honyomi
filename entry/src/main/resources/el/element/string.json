@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "Η φωτεινότητα ακολουθεί ξανά το σύστημα"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "Πηγές" },
+    { "name": "browse_tab_extensions", "value": "Επεκτάσεις" },
+    { "name": "browse_tab_migrate", "value": "Μεταφορά" },
+    { "name": "browse_pin", "value": "Καρφίτσωμα" },
+    { "name": "browse_unpin", "value": "Ξεκαρφίτσωμα" },
+    { "name": "browse_disable_source", "value": "Απενεργοποίηση πηγής" },
+    { "name": "browse_source_disabled", "value": "Η πηγή απενεργοποιήθηκε" },
+    { "name": "browse_pinned", "value": "Καρφιτσωμένη" },
+    { "name": "browse_sources_empty", "value": "Δεν υπάρχουν πηγές. Εγκαταστήστε από την καρτέλα Επεκτάσεις" },
+    { "name": "browse_filter_langs", "value": "Φιλτράρισμα γλωσσών" },
+    { "name": "browse_filter_all", "value": "Όλα" },
+    { "name": "browse_source_missing", "value": "Η πηγή δεν είναι διαθέσιμη. Η επέκταση μπορεί να είναι απενεργοποιημένη" },
+    { "name": "global_search_hint", "value": "Αναζήτηση σε όλες τις πηγές" },
+    { "name": "global_search_failed", "value": "Η αναζήτηση απέτυχε" },
+    { "name": "ext_search_hint", "value": "Αναζήτηση επεκτάσεων" },
+    { "name": "ext_search_no_match", "value": "Κανένα αποτέλεσμα" },
+    { "name": "ext_repo_settings", "value": "Ρυθμίσεις αποθετηρίου" },
+    { "name": "ext_refresh_repo", "value": "Ανανέωση αποθετηρίου" },
+    { "name": "migrate_pick_source", "value": "Επιλέξτε πηγή για μεταφορά" },
+    { "name": "migrate_empty_library", "value": "Η βιβλιοθήκη είναι άδεια" },
+    { "name": "migrate_select_all", "value": "Επιλογή όλων" },
+    { "name": "migrate_deselect_all", "value": "Αποεπιλογή όλων" },
+    { "name": "migrate_action", "value": "Μεταφορά (%d)" },
+    { "name": "migrate_title", "value": "Μεταφορά" },
+    { "name": "migrate_skip", "value": "Παράλειψη" },
+    { "name": "migrate_progress", "value": "%d από %d" },
+    { "name": "migrate_target_source", "value": "Πηγή προορισμού" },
+    { "name": "migrate_search_hint", "value": "Αναζήτηση μάνγκα στην πηγή προορισμού" },
+    { "name": "migrate_confirm_title", "value": "Μεταφορά σε αυτό το μάνγκα;" },
+    { "name": "migrate_item_done", "value": "Μεταφέρθηκε: %s" },
+    { "name": "migrate_failed", "value": "Η μεταφορά απέτυχε: %s" },
+    { "name": "migrate_done", "value": "Η μεταφορά ολοκληρώθηκε" },
+    { "name": "migrate_no_target", "value": "Δεν υπάρχει πηγή προορισμού" }
+]
 }

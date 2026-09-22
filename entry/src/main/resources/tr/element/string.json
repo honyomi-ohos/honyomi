@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "Parlaklık sistemi izleyecek şekilde ayarlandı"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "Kaynaklar" },
+    { "name": "browse_tab_extensions", "value": "Uzantılar" },
+    { "name": "browse_tab_migrate", "value": "Aktar" },
+    { "name": "browse_pin", "value": "Sabitle" },
+    { "name": "browse_unpin", "value": "Sabitlemeyi kaldır" },
+    { "name": "browse_disable_source", "value": "Kaynağı devre dışı bırak" },
+    { "name": "browse_source_disabled", "value": "Kaynak devre dışı bırakıldı" },
+    { "name": "browse_pinned", "value": "Sabitlendi" },
+    { "name": "browse_sources_empty", "value": "Kaynak yok. Uzantılar sekmesinden yükleyin" },
+    { "name": "browse_filter_langs", "value": "Dilleri süz" },
+    { "name": "browse_filter_all", "value": "Tümü" },
+    { "name": "browse_source_missing", "value": "Kaynak kullanılamıyor. Uzantı devre dışı olabilir" },
+    { "name": "global_search_hint", "value": "Tüm kaynaklarda ara" },
+    { "name": "global_search_failed", "value": "Arama başarısız" },
+    { "name": "ext_search_hint", "value": "Uzantılarda ara" },
+    { "name": "ext_search_no_match", "value": "Eşleşme yok" },
+    { "name": "ext_repo_settings", "value": "Depo ayarları" },
+    { "name": "ext_refresh_repo", "value": "Depoyu yenile" },
+    { "name": "migrate_pick_source", "value": "Aktarılacak kaynağı seçin" },
+    { "name": "migrate_empty_library", "value": "Kitaplık boş" },
+    { "name": "migrate_select_all", "value": "Tümünü seç" },
+    { "name": "migrate_deselect_all", "value": "Seçimi kaldır" },
+    { "name": "migrate_action", "value": "Aktar (%d)" },
+    { "name": "migrate_title", "value": "Aktar" },
+    { "name": "migrate_skip", "value": "Atla" },
+    { "name": "migrate_progress", "value": "%d / %d" },
+    { "name": "migrate_target_source", "value": "Hedef kaynak" },
+    { "name": "migrate_search_hint", "value": "Hedef kaynakta manga ara" },
+    { "name": "migrate_confirm_title", "value": "Bu mangaya aktarılsın mı?" },
+    { "name": "migrate_item_done", "value": "Aktarıldı: %s" },
+    { "name": "migrate_failed", "value": "Aktarma başarısız: %s" },
+    { "name": "migrate_done", "value": "Aktarma tamamlandı" },
+    { "name": "migrate_no_target", "value": "Hedef kaynak yok" }
+]
 }

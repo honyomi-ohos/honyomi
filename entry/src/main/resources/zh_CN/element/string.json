@@ -1211,6 +1211,39 @@
                    {
                        "name":  "reader_set_brightness_reset",
                        "value":  "已恢复跟随系统亮度"
-                   }
-               ]
+                   },
+    { "name": "browse_tab_sources", "value": "图源" },
+    { "name": "browse_tab_extensions", "value": "插件" },
+    { "name": "browse_tab_migrate", "value": "迁移" },
+    { "name": "browse_pin", "value": "置顶" },
+    { "name": "browse_unpin", "value": "取消置顶" },
+    { "name": "browse_disable_source", "value": "停用源" },
+    { "name": "browse_source_disabled", "value": "已停用该源" },
+    { "name": "browse_pinned", "value": "已置顶" },
+    { "name": "browse_sources_empty", "value": "没有可用的源，请在插件页安装" },
+    { "name": "browse_filter_langs", "value": "语言过滤" },
+    { "name": "browse_filter_all", "value": "全部" },
+    { "name": "browse_source_missing", "value": "源不可用，可能插件已停用" },
+    { "name": "global_search_hint", "value": "搜索全部源" },
+    { "name": "global_search_failed", "value": "搜索失败" },
+    { "name": "ext_search_hint", "value": "搜索插件" },
+    { "name": "ext_search_no_match", "value": "没有匹配项" },
+    { "name": "ext_repo_settings", "value": "仓库设置" },
+    { "name": "ext_refresh_repo", "value": "刷新仓库" },
+    { "name": "migrate_pick_source", "value": "选择要迁移的源" },
+    { "name": "migrate_empty_library", "value": "书架为空" },
+    { "name": "migrate_select_all", "value": "全选" },
+    { "name": "migrate_deselect_all", "value": "取消全选" },
+    { "name": "migrate_action", "value": "迁移 (%d)" },
+    { "name": "migrate_title", "value": "迁移" },
+    { "name": "migrate_skip", "value": "跳过" },
+    { "name": "migrate_progress", "value": "第 %d/%d 部" },
+    { "name": "migrate_target_source", "value": "目标源" },
+    { "name": "migrate_search_hint", "value": "搜索目标源中的漫画" },
+    { "name": "migrate_confirm_title", "value": "迁移到该漫画？" },
+    { "name": "migrate_item_done", "value": "已迁移：%s" },
+    { "name": "migrate_failed", "value": "迁移失败：%s" },
+    { "name": "migrate_done", "value": "迁移完成" },
+    { "name": "migrate_no_target", "value": "没有可选的目标源" }
+]
 }

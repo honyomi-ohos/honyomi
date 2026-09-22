@@ -1,19 +1,20 @@
 import { common } from '@kit.AbilityKit';
 import { picker } from '@kit.CoreFileKit';
-import { PluginService, InstalledPlugin, RepoEntry } from '../data/PluginService';
-import { ThemePalette } from '../common/Theme';
-import { Util } from '../common/Util';
-import { Settings } from '../common/Settings';
-import { InputDialog } from './components/Dialogs';
-import { EmptyScreen } from './components/EmptyScreen';
+import { PluginService, InstalledPlugin, RepoEntry } from '../../data/PluginService';
+import { ThemePalette } from '../../common/Theme';
+import { Util } from '../../common/Util';
+import { Settings } from '../../common/Settings';
+import { InputDialog } from './Dialogs';
+import { EmptyScreen } from './EmptyScreen';
 
-// 插件管理页：已安装列表 / 启停 / 卸载 / 从文件安装 / 在线仓库
+// 插件列表面板（浏览页“插件”Tab 内嵌）：已安装 / 从文件安装 / 在线仓库
+// 仓库配置与刷新由宿主（BrowsePage 菜单）通过 AppStorage 'extRepoRefresh' 计数驱动
 @Component
-export struct PluginManagePage {
-  pathStack: NavPathStack = new NavPathStack();
-  @StorageProp('isDark') isDark: boolean = false;
+export struct ExtensionListPanel {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @StorageProp('statusBarH') statusBarH: number = 0;
+  @StorageProp('navBarH') navBarH: number = 0;
+  @StorageProp('extRepoRefresh') @Watch('onRepoRefresh') extRepoRefresh: number = 0;
+  @Prop searchQuery: string = '';
   @State installed: InstalledPlugin[] = [];
   @State repoEntries: RepoEntry[] = [];
   @State repoUrl: string = '';
@@ -21,8 +22,17 @@ export struct PluginManagePage {
   @State busy: boolean = false;
 
   aboutToAppear(): void {
-    this.installed = PluginService.listInstalled();
+    this.refreshInstalled();
     this.repoUrl = Settings.getPluginRepoUrl();
+    if (this.repoUrl !== '') {
+      this.refreshRepo();
+    }
+  }
+
+  // 宿主改仓库地址或手动刷新后触发
+  private onRepoRefresh(): void {
+    this.repoUrl = Settings.getPluginRepoUrl();
+    this.repoEntries = [];
     if (this.repoUrl !== '') {
       this.refreshRepo();
     }
@@ -37,6 +47,34 @@ export struct PluginManagePage {
       return '?';
     }
     return name.substring(0, 1).toUpperCase();
+  }
+
+  private matchesQuery(name: string, key: string): boolean {
+    const q = this.searchQuery.trim().toLowerCase();
+    if (q === '') {
+      return true;
+    }
+    return name.toLowerCase().indexOf(q) >= 0 || key.toLowerCase().indexOf(q) >= 0;
+  }
+
+  filteredInstalled(): InstalledPlugin[] {
+    const list: InstalledPlugin[] = [];
+    for (const item of this.installed) {
+      if (this.matchesQuery(item.manifest.name, item.manifest.key)) {
+        list.push(item);
+      }
+    }
+    return list;
+  }
+
+  filteredRepoEntries(): RepoEntry[] {
+    const list: RepoEntry[] = [];
+    for (const entry of this.repoEntries) {
+      if (this.matchesQuery(entry.name, entry.key)) {
+        list.push(entry);
+      }
+    }
+    return list;
   }
 
   private installedVersionOf(key: string): number {
@@ -143,25 +181,6 @@ export struct PluginManagePage {
       Util.toastRes(this.getUIContext(), $r('app.string.plugin_install_failed'), [(e as Error).message]);
     }
     this.busy = false;
-  }
-
-  private showRepoUrlDialog(): void {
-    const dialog = new CustomDialogController({
-      builder: InputDialog({
-        title: $r('app.string.plugin_repo_url_title'),
-        placeholder: $r('app.string.plugin_repo_url_hint'),
-        onConfirm: (text: string): void => {
-          this.repoUrl = text.trim();
-          Settings.setPluginRepoUrl(this.repoUrl);
-          this.repoEntries = [];
-          if (this.repoUrl !== '') {
-            this.refreshRepo();
-          }
-        },
-      }),
-      autoCancel: true,
-    });
-    dialog.open();
   }
 
   @Builder
@@ -271,159 +290,126 @@ export struct PluginManagePage {
   }
 
   build() {
-    NavDestination() {
+    Scroll() {
       Column() {
-        // 头部
-        Row() {
-          Text('‹')
-            .fontSize(30)
-            .fontColor(this.pal.text)
-            .onClick(() => {
-              this.pathStack.pop();
-            })
-          Text($r('app.string.plugin_title'))
-            .fontSize(18)
+        // 已安装
+        Column() {
+          Text($r('app.string.plugin_installed_section'))
+            .fontSize(15)
             .fontWeight(FontWeight.Bold)
             .fontColor(this.pal.text)
-            .margin({ left: 8 })
+            .width('100%')
+            .margin({ bottom: 4 })
+
+          if (this.filteredInstalled().length === 0) {
+            EmptyScreen({
+              message: this.searchQuery.trim() !== '' ? $r('app.string.ext_search_no_match') :
+                $r('app.string.plugin_empty'),
+              compact: true,
+            })
+          } else {
+            ForEach(this.filteredInstalled(), (item: InstalledPlugin) => {
+              this.pluginRow(item)
+            }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.enabled}-${item.iconPath}`)
+          }
         }
         .width('100%')
-        .padding({ left: 16, right: 16, top: this.statusBarH + 10, bottom: 10 })
+        .alignItems(HorizontalAlign.Start)
+        .padding(16)
+        .backgroundColor(this.pal.card)
+        .borderRadius(14)
+        .margin({ left: 16, right: 16, top: 4 })
 
-        Scroll() {
-          Column() {
-            // 已安装
-            Column() {
-              Text($r('app.string.plugin_installed_section'))
-                .fontSize(15)
-                .fontWeight(FontWeight.Bold)
-                .fontColor(this.pal.text)
-                .width('100%')
-                .margin({ bottom: 4 })
-
-              if (this.installed.length === 0) {
-                EmptyScreen({ message: $r('app.string.plugin_empty'), compact: true })
-              } else {
-                ForEach(this.installed, (item: InstalledPlugin) => {
-                  this.pluginRow(item)
-                }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.enabled}-${item.iconPath}`)
-              }
-            }
+        // 从文件安装
+        Column() {
+          Text($r('app.string.plugin_local_install'))
+            .fontSize(15)
+            .fontWeight(FontWeight.Bold)
+            .fontColor(this.pal.text)
             .width('100%')
-            .alignItems(HorizontalAlign.Start)
-            .padding(16)
-            .backgroundColor(this.pal.card)
-            .borderRadius(14)
-            .margin({ left: 16, right: 16, top: 4 })
-
-            // 从文件安装
-            Column() {
-              Text($r('app.string.plugin_local_install'))
-                .fontSize(15)
-                .fontWeight(FontWeight.Bold)
-                .fontColor(this.pal.text)
-                .width('100%')
-                .margin({ bottom: 8 })
-              Button(this.busy ? $r('app.string.plugin_processing') : $r('app.string.plugin_install_from_file'))
-                .fontSize(14)
-                .width('100%')
-                .backgroundColor(this.pal.primary)
-                .onClick(() => {
-                  this.pickPluginFile();
-                })
-              Text($r('app.string.plugin_package_hint'))
-                .fontSize(11)
-                .fontColor(this.pal.sub)
-                .margin({ top: 8 })
-            }
+            .margin({ bottom: 8 })
+          Button(this.busy ? $r('app.string.plugin_processing') : $r('app.string.plugin_install_from_file'))
+            .fontSize(14)
             .width('100%')
-            .alignItems(HorizontalAlign.Start)
-            .padding(16)
-            .backgroundColor(this.pal.card)
-            .borderRadius(14)
-            .margin({ left: 16, right: 16, top: 12 })
-
-            // 在线仓库
-            Column() {
-              Row() {
-                Text($r('app.string.plugin_repo'))
-                  .fontSize(15)
-                  .fontWeight(FontWeight.Bold)
-                  .fontColor(this.pal.text)
-                  .layoutWeight(1)
-                Text(this.repoUrl === '' ? $r('app.string.plugin_repo_config') : $r('app.string.plugin_repo_refresh'))
-                  .fontSize(13)
-                  .fontColor(this.pal.primary)
-                  .padding(4)
-                  .onClick(() => {
-                    if (this.repoUrl === '') {
-                      this.showRepoUrlDialog();
-                    } else {
-                      this.refreshRepo();
-                    }
-                  })
-              }
-              .width('100%')
-              .margin({ bottom: 4 })
-
-              if (this.repoUrl === '') {
-                Text($r('app.string.plugin_repo_hint'))
-                  .fontSize(12)
-                  .fontColor(this.pal.sub)
-                  .width('100%')
-                  .padding({ top: 8, bottom: 8 })
-              } else if (this.loadingRepo) {
-                Row({ space: 8 }) {
-                  LoadingProgress()
-                    .width(18)
-                    .height(18)
-                    .color(this.pal.primary)
-                  Text($r('app.string.plugin_repo_loading'))
-                    .fontSize(12)
-                    .fontColor(this.pal.sub)
-                }
-                .width('100%')
-                .padding({ top: 10, bottom: 10 })
-              } else {
-                ForEach(this.repoEntries, (entry: RepoEntry) => {
-                  this.repoRow(entry)
-                }, (entry: RepoEntry) => `repo-${entry.key}-${entry.versionCode}`)
-              }
-
-              if (this.repoUrl !== '') {
-                Text(this.repoUrl)
-                  .fontSize(10)
-                  .fontColor(this.pal.sub)
-                  .maxLines(1)
-                  .textOverflow({ overflow: TextOverflow.Ellipsis })
-                  .width('100%')
-                  .margin({ top: 6 })
-                  .onClick(() => {
-                    this.showRepoUrlDialog();
-                  })
-              }
-            }
-            .width('100%')
-            .alignItems(HorizontalAlign.Start)
-            .padding(16)
-            .backgroundColor(this.pal.card)
-            .borderRadius(14)
-            .margin({ left: 16, right: 16, top: 12, bottom: 24 })
-          }
-          .width('100%')
+            .backgroundColor(this.pal.primary)
+            .onClick(() => {
+              this.pickPluginFile();
+            })
+          Text($r('app.string.plugin_package_hint'))
+            .fontSize(11)
+            .fontColor(this.pal.sub)
+            .margin({ top: 8 })
         }
-        .layoutWeight(1)
-        .scrollBar(BarState.Off)
-        .align(Alignment.TopStart)
+        .width('100%')
+        .alignItems(HorizontalAlign.Start)
+        .padding(16)
+        .backgroundColor(this.pal.card)
+        .borderRadius(14)
+        .margin({ left: 16, right: 16, top: 12 })
+
+        // 在线仓库
+        Column() {
+          Text($r('app.string.plugin_repo'))
+            .fontSize(15)
+            .fontWeight(FontWeight.Bold)
+            .fontColor(this.pal.text)
+            .width('100%')
+            .margin({ bottom: 4 })
+
+          if (this.repoUrl === '') {
+            Text($r('app.string.plugin_repo_hint'))
+              .fontSize(12)
+              .fontColor(this.pal.sub)
+              .width('100%')
+              .padding({ top: 8, bottom: 8 })
+          } else if (this.loadingRepo) {
+            Row({ space: 8 }) {
+              LoadingProgress()
+                .width(18)
+                .height(18)
+                .color(this.pal.primary)
+              Text($r('app.string.plugin_repo_loading'))
+                .fontSize(12)
+                .fontColor(this.pal.sub)
+            }
+            .width('100%')
+            .padding({ top: 10, bottom: 10 })
+          } else if (this.filteredRepoEntries().length === 0) {
+            Text($r('app.string.ext_search_no_match'))
+              .fontSize(12)
+              .fontColor(this.pal.sub)
+              .width('100%')
+              .padding({ top: 8, bottom: 8 })
+          } else {
+            ForEach(this.filteredRepoEntries(), (entry: RepoEntry) => {
+              this.repoRow(entry)
+            }, (entry: RepoEntry) => `repo-${entry.key}-${entry.versionCode}`)
+          }
+
+          if (this.repoUrl !== '') {
+            Text(this.repoUrl)
+              .fontSize(10)
+              .fontColor(this.pal.sub)
+              .maxLines(1)
+              .textOverflow({ overflow: TextOverflow.Ellipsis })
+              .width('100%')
+              .margin({ top: 6 })
+          }
+        }
+        .width('100%')
+        .alignItems(HorizontalAlign.Start)
+        .padding(16)
+        .backgroundColor(this.pal.card)
+        .borderRadius(14)
+        .margin({ left: 16, right: 16, top: 12, bottom: 24 })
       }
       .width('100%')
-      .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
-    .onReady((ctx: NavDestinationContext) => {
-      this.pathStack = ctx.pathStack;
-    })
+    .layoutWeight(1)
+    .scrollBar(BarState.Off)
+    .align(Alignment.TopStart)
+    .contentEndOffset(this.navBarH + 76)
+    .width('100%')
+    .height('100%')
   }
 }

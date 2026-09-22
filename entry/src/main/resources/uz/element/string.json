@@ -1211,6 +1211,39 @@
     {
       "name": "reader_set_brightness_reset",
       "value": "Yorqinlik tizimga rioya qilishga sozlandi"
-    }
-  ]
+    },
+    { "name": "browse_tab_sources", "value": "Manbalar" },
+    { "name": "browse_tab_extensions", "value": "Kengaytmalar" },
+    { "name": "browse_tab_migrate", "value": "Ko‘chirish" },
+    { "name": "browse_pin", "value": "Mahkamlash" },
+    { "name": "browse_unpin", "value": "Mahkamlashni olib tashlash" },
+    { "name": "browse_disable_source", "value": "Manbani o‘chirish" },
+    { "name": "browse_source_disabled", "value": "Manba o‘chirildi" },
+    { "name": "browse_pinned", "value": "Mahkamlangan" },
+    { "name": "browse_sources_empty", "value": "Manba yo‘q. Kengaytmalar yorlig‘idan o‘rnating" },
+    { "name": "browse_filter_langs", "value": "Tillarni filtrlash" },
+    { "name": "browse_filter_all", "value": "Hammasi" },
+    { "name": "browse_source_missing", "value": "Manba mavjud emas. Kengaytma o‘chirilgan bo‘lishi mumkin" },
+    { "name": "global_search_hint", "value": "Barcha manbalardan qidirish" },
+    { "name": "global_search_failed", "value": "Qidiruv muvaffaqiyatsiz" },
+    { "name": "ext_search_hint", "value": "Kengaytmalarni qidirish" },
+    { "name": "ext_search_no_match", "value": "Moslik yo‘q" },
+    { "name": "ext_repo_settings", "value": "Ombor sozlamalari" },
+    { "name": "ext_refresh_repo", "value": "Omborni yangilash" },
+    { "name": "migrate_pick_source", "value": "Ko‘chiriladigan manbani tanlang" },
+    { "name": "migrate_empty_library", "value": "Kutubxona bo‘sh" },
+    { "name": "migrate_select_all", "value": "Hammasini tanlash" },
+    { "name": "migrate_deselect_all", "value": "Tanlovni bekor qilish" },
+    { "name": "migrate_action", "value": "Ko‘chirish (%d)" },
+    { "name": "migrate_title", "value": "Ko‘chirish" },
+    { "name": "migrate_skip", "value": "O‘tkazib yuborish" },
+    { "name": "migrate_progress", "value": "%d / %d" },
+    { "name": "migrate_target_source", "value": "Maqsad manba" },
+    { "name": "migrate_search_hint", "value": "Maqsad manbada manga qidirish" },
+    { "name": "migrate_confirm_title", "value": "Shu mangaga ko‘chirilsinmi?" },
+    { "name": "migrate_item_done", "value": "Ko‘chirildi: %s" },
+    { "name": "migrate_failed", "value": "Ko‘chirish muvaffaqiyatsiz: %s" },
+    { "name": "migrate_done", "value": "Ko‘chirish yakunlandi" },
+    { "name": "migrate_no_target", "value": "Maqsad manba yo‘q" }
+]
 }

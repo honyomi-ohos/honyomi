@@ -16,7 +16,10 @@ import { MorePage } from './MorePage';
 import { MangaDetailPage } from './MangaDetailPage';
 import { ReaderPage } from './ReaderPage';
 import { DownloadPage } from './DownloadPage';
-import { PluginManagePage } from './PluginManagePage';
+import { BrowseSourcePage } from './BrowseSourcePage';
+import { GlobalSearchPage } from './GlobalSearchPage';
+import { MigrateMangaPage } from './MigrateMangaPage';
+import { MigrateSearchPage } from './MigrateSearchPage';
 import { CategoriesPage } from './CategoriesPage';
 import { SettingsPage } from './settings/SettingsPage';
 import { AppearancePage } from './settings/AppearancePage';
@@ -123,8 +126,14 @@ struct Index {
       ReaderPage()
     } else if (name === 'Downloads') {
       DownloadPage()
-    } else if (name === 'Plugins') {
-      PluginManagePage()
+    } else if (name === 'BrowseSource') {
+      BrowseSourcePage()
+    } else if (name === 'GlobalSearch') {
+      GlobalSearchPage()
+    } else if (name === 'MigrateManga') {
+      MigrateMangaPage()
+    } else if (name === 'MigrateSearch') {
+      MigrateSearchPage()
     } else if (name === 'Categories') {
       CategoriesPage()
     } else if (name === 'Settings') {
