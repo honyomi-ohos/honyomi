@@ -74,14 +74,9 @@ const ICONS: Record<string, Resource> = {
   'reader_ltr': $r('app.media.ic_reader_ltr'),
   'reader_rtl': $r('app.media.ic_reader_rtl'),
   'reader_webtoon': $r('app.media.ic_reader_webtoon'),
-  'tab_library': $r('app.media.ic_tab_library'),
-  'tab_library_on': $r('app.media.ic_tab_library_on'),
-  'tab_updates': $r('app.media.ic_tab_updates'),
-  'tab_updates_on': $r('app.media.ic_tab_updates_on'),
+  'tab_library_angle': $r('app.media.ic_tab_library_angle'),
   'tab_history_hands': $r('app.media.ic_tab_history_hands'),
   'tab_history_arrow': $r('app.media.ic_tab_history_arrow'),
-  'tab_browse': $r('app.media.ic_tab_browse'),
-  'tab_browse_on': $r('app.media.ic_tab_browse_on'),
   'tab_browse_dot': $r('app.media.ic_tab_browse_dot'),
   'tab_browse_ring': $r('app.media.ic_tab_browse_ring')
 };

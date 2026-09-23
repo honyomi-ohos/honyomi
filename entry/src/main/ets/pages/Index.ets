@@ -1,6 +1,6 @@
 import { common } from '@kit.AbilityKit';
 import { webview } from '@kit.ArkWeb';
-import { curves } from '@kit.ArkUI';
+import { curves, AnimatorResult, AnimatorOptions } from '@kit.ArkUI';
 import { HdsTabs, hdsMaterial } from '@kit.UIDesignKit';
 import { ThemePalette } from '../common/Theme';
 import { Settings } from '../common/Settings';
@@ -33,36 +33,58 @@ import { BrowseSettingsPage } from './settings/BrowseSettingsPage';
 import { AdvancedPage } from './settings/AdvancedPage';
 import { AboutPage } from './settings/AboutPage';
 import { AppIcon } from './components/AppIcon';
+import { UPDATES_MORPH, LIBRARY_MORPH, BROWSE_MORPH, PathMorph } from './components/PathMorph';
 
 // 底部导航图标：逐 Tab 复刻 Mihon 的 AnimatedImageVector 动画
-// - library/updates: 描边→填充 pathData 形变（300ms fast_out_slow_in，两层图标交叉淡化近似）
+// - library/updates/browse: 真 pathData 形变（PathMorph 逐帧插值 AVD valueFrom/valueTo，
+//   300ms fast_out_slow_in，ohos.animator 逐帧驱动；中断时从当前进度续走）
+// - library 另有静态 angle 层（AVD 中 angle 路径无 target 恒不变）
+// - browse: 指针→圆盘形变 + 反向指针洞从圆心长出 + 整体随 morphT 旋转 180°
+//   + 中心点 66ms 保持后 100ms 减速弹出（环为静态层）
 // - history: 时针静止，环绕箭头绕 (13,12) 整圈旋转 360→0（500ms fast_out_slow_in）
-// - browse: 指针菱形→罗盘形变 + 整体旋转 180°（300ms）+ 中心点延迟 66ms 后 100ms 减速弹出
 // - more: 三点依次波浪弹跳（保持 83/150/217ms 后 100ms 上跳-133ms 下落-67ms 回正，贝塞尔 0.5,0,0.5,1）
-// 图标 SVG 由 Mihon anim_*_enter.xml 的原始 pathData 生成（像素级一致）
+// 形变 pathData 与 Mihon anim_*_enter.xml 逐字一致（PathMorph.ets 已脚本核对）
 @Component
 struct TabIcon {
   @Prop @Watch('onSelectedChanged') selected: boolean = false;
   @Prop kind: string = '';
-  @State fillOpacity: number = 0;
+  @State morphT: number = 0;
   @State histAngle: number = 0;
-  @State browseAngle: number = 0;
   @State browseDotScale: number = 0;
   @State moreY0: number = 0;
   @State moreY1: number = 0;
   @State moreY2: number = 0;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  private morphAnimator: AnimatorResult | undefined = undefined;
+  private pxPerVp: number = 1;
 
   aboutToAppear(): void {
+    this.pxPerVp = this.getUIContext().vp2px(1);
     if (this.selected) {
-      this.fillOpacity = 1;
-      this.browseAngle = 180;
+      this.morphT = 1;
       this.browseDotScale = 1;
     }
   }
 
+  aboutToDisappear(): void {
+    this.morphAnimator?.finish();
+    this.morphAnimator = undefined;
+  }
+
   private iconTint(): ResourceColor {
     return this.selected ? this.pal.primary : this.pal.sub;
+  }
+
+  // 绘制 Path 的 commands 单位为 px：24 视口图标 24vp，library 为 1080 视口需再乘 24/1080
+  private morphScale(): number {
+    return this.kind === 'library' ? this.pxPerVp * 24 / 1080 : this.pxPerVp;
+  }
+
+  private morphOf(): PathMorph {
+    if (this.kind === 'library') {
+      return LIBRARY_MORPH;
+    }
+    return this.kind === 'browse' ? BROWSE_MORPH : UPDATES_MORPH;
   }
 
   private onSelectedChanged(): void {
@@ -73,10 +95,43 @@ struct TabIcon {
     } else if (this.kind === 'more') {
       this.playMore(this.selected);
     } else {
-      this.getUIContext().animateTo({ duration: 300, curve: Curve.FastOutSlowIn }, (): void => {
-        this.fillOpacity = this.selected ? 1 : 0;
+      this.playMorph(this.selected ? 1 : 0);
+    }
+  }
+
+  // 形变主驱动：begin 取当前 morphT，支持中途反向续走（等效 Mihon 倒放）
+  private playMorph(target: number): void {
+    if (this.morphAnimator === undefined) {
+      this.morphAnimator = this.getUIContext().createAnimator({
+        duration: 300,
+        easing: 'fast-out-slow-in',
+        delay: 0,
+        fill: 'forwards',
+        direction: 'normal',
+        iterations: 1,
+        begin: 0,
+        end: 1
       });
     }
+    const an: AnimatorResult = this.morphAnimator;
+    an.onFrame = (): void => {
+    };
+    an.finish();
+    const opts: AnimatorOptions = {
+      duration: 300,
+      easing: 'fast-out-slow-in',
+      delay: 0,
+      fill: 'forwards',
+      direction: 'normal',
+      iterations: 1,
+      begin: this.morphT,
+      end: target
+    };
+    an.reset(opts);
+    an.onFrame = (value: number): void => {
+      this.morphT = value;
+    };
+    an.play();
   }
 
   // 历史：选中 360→0 逆时针整圈，取消选中反向 0→360（360 与 0 视觉等价，中断时从当前角度续走）
@@ -98,12 +153,9 @@ struct TabIcon {
     }
   }
 
-  // 浏览：形变+整体 180° 旋转同帧驱动；中心点 66ms 保持后 100ms 减速弹出
+  // 浏览：形变+整体 180° 旋转由 morphT 同帧驱动；中心点 66ms 保持后 100ms 减速弹出
   private playBrowse(sel: boolean): void {
-    this.getUIContext().animateTo({ duration: 300, curve: Curve.FastOutSlowIn }, (): void => {
-      this.fillOpacity = sel ? 1 : 0;
-      this.browseAngle = sel ? 180 : 0;
-    });
+    this.playMorph(sel ? 1 : 0);
     if (sel) {
       this.browseDotScale = 0;
       this.getUIContext().keyframeAnimateTo({ iterations: 1 }, [
@@ -175,22 +227,31 @@ struct TabIcon {
     } else if (this.kind === 'browse') {
       Stack() {
         AppIcon({ name: 'tab_browse_ring', iconSize: 24, tint: this.iconTint() })
-        AppIcon({ name: 'tab_browse', iconSize: 24, tint: this.iconTint() })
-          .opacity(1 - this.fillOpacity)
-        AppIcon({ name: 'tab_browse_on', iconSize: 24, tint: this.iconTint() })
-          .opacity(this.fillOpacity)
+        Path()
+          .width(24)
+          .height(24)
+          .commands(BROWSE_MORPH.valueAt(this.morphT, this.morphScale()))
+          .fill(this.iconTint())
+          .stroke(Color.Transparent)
+          .strokeWidth(0)
         AppIcon({ name: 'tab_browse_dot', iconSize: 24, tint: this.iconTint() })
           .scale({ x: this.browseDotScale, y: this.browseDotScale })
       }
       .width(24)
       .height(24)
-      .rotate({ angle: this.browseAngle })
+      .rotate({ angle: 180 * this.morphT })
     } else {
       Stack() {
-        AppIcon({ name: this.kind === 'library' ? 'tab_library' : 'tab_updates', iconSize: 24, tint: this.iconTint() })
-          .opacity(1 - this.fillOpacity)
-        AppIcon({ name: this.kind === 'library' ? 'tab_library_on' : 'tab_updates_on', iconSize: 24, tint: this.iconTint() })
-          .opacity(this.fillOpacity)
+        if (this.kind === 'library') {
+          AppIcon({ name: 'tab_library_angle', iconSize: 24, tint: this.iconTint() })
+        }
+        Path()
+          .width(24)
+          .height(24)
+          .commands(this.morphOf().valueAt(this.morphT, this.morphScale()))
+          .fill(this.iconTint())
+          .stroke(Color.Transparent)
+          .strokeWidth(0)
       }
       .width(24)
       .height(24)
