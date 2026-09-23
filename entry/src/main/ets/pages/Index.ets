@@ -47,7 +47,7 @@ struct TabIcon {
   @State fillOpacity: number = 0;
   @State histAngle: number = 0;
   @State browseAngle: number = 0;
-  @State browseDotScale: number = 0;
+  @State browseDotScale: number = 1;
   @State moreY0: number = 0;
   @State moreY1: number = 0;
   @State moreY2: number = 0;
@@ -123,7 +123,7 @@ struct TabIcon {
         },
       ]);
     } else {
-      this.getUIContext().animateTo({ duration: 100, curve: curves.cubicBezierCurve(0, 0, 0.2, 1) }, (): void => {
+      this.getUIContext().animateTo({ duration: 100, curve: curves.cubicBezierCurve(0.8, 0, 1, 1) }, (): void => {
         this.browseDotScale = 0;
       });
     }
@@ -174,7 +174,9 @@ struct TabIcon {
       .height(24)
     } else if (this.kind === 'browse') {
       Stack() {
+        AppIcon({ name: 'tab_browse_ring', iconSize: 24, tint: this.iconTint() })
         AppIcon({ name: 'tab_browse', iconSize: 24, tint: this.iconTint() })
+          .opacity(1 - this.fillOpacity)
         AppIcon({ name: 'tab_browse_on', iconSize: 24, tint: this.iconTint() })
           .opacity(this.fillOpacity)
         AppIcon({ name: 'tab_browse_dot', iconSize: 24, tint: this.iconTint() })
@@ -186,6 +188,7 @@ struct TabIcon {
     } else {
       Stack() {
         AppIcon({ name: this.kind === 'library' ? 'tab_library' : 'tab_updates', iconSize: 24, tint: this.iconTint() })
+          .opacity(1 - this.fillOpacity)
         AppIcon({ name: this.kind === 'library' ? 'tab_library_on' : 'tab_updates_on', iconSize: 24, tint: this.iconTint() })
           .opacity(this.fillOpacity)
       }

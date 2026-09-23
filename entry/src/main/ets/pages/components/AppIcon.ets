@@ -82,7 +82,8 @@ const ICONS: Record<string, Resource> = {
   'tab_history_arrow': $r('app.media.ic_tab_history_arrow'),
   'tab_browse': $r('app.media.ic_tab_browse'),
   'tab_browse_on': $r('app.media.ic_tab_browse_on'),
-  'tab_browse_dot': $r('app.media.ic_tab_browse_dot')
+  'tab_browse_dot': $r('app.media.ic_tab_browse_dot'),
+  'tab_browse_ring': $r('app.media.ic_tab_browse_ring')
 };
 
 export class AppIconRes {
