@@ -213,6 +213,22 @@ export class DownloadService {
     return `${DownloadService.rootDir}/${mangaId}/${chapterId}`;
   }
 
+  // 已下载漫画的 id 列表（downloads/{mangaId}/ 目录存在即算）
+  static downloadedMangaIds(): number[] {
+    const ids: number[] = [];
+    if (DownloadService.rootDir === '' || !fileIo.accessSync(DownloadService.rootDir)) {
+      return ids;
+    }
+    const mangaDirs = fileIo.listFileSync(DownloadService.rootDir);
+    for (const md of mangaDirs) {
+      const id = parseInt(md, 10);
+      if (id >= 0) {
+        ids.push(id);
+      }
+    }
+    return ids;
+  }
+
   static isDownloaded(chapterId: number): boolean {
     const mangaId = DownloadService.mangaIdOf(chapterId);
     if (mangaId < 0) {

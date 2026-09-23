@@ -7,10 +7,18 @@ import { MangaRecord } from '../model/Models';
 // 书架更新服务：遍历收藏漫画拉取最新章节
 export class UpdateService {
   static async refreshLibrary(context: common.UIAbilityContext): Promise<number> {
+    return UpdateService.refreshCategory(context, 0);
+  }
+
+  // categoryId 为 0 时刷新全部书架
+  static async refreshCategory(context: common.UIAbilityContext, categoryId: number): Promise<number> {
     await AppDb.ready(context);
     const library = await MangaRepo.getLibrary();
+    const list: MangaRecord[] = categoryId > 0
+      ? library.filter((m: MangaRecord): boolean => m.categoryId === categoryId)
+      : library;
     let newCount = 0;
-    for (const manga of library) {
+    for (const manga of list) {
       if (manga.sourceKey === 'local') {
         continue;
       }

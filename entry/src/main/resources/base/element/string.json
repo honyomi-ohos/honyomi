@@ -55,6 +55,12 @@
     { "name": "ext_detail_settings", "value": "设置" },
     { "name": "ext_pref_loading", "value": "加载中…" },
     { "name": "ext_pref_failed", "value": "设置应用失败" },
-    { "name": "ext_detail_missing", "value": "插件不存在或未加载" }
+    { "name": "ext_detail_missing", "value": "插件不存在或未加载" },
+    { "name": "action_filter", "value": "过滤" },
+    { "name": "action_update_library", "value": "更新书架" },
+    { "name": "action_update_category", "value": "更新分类" },
+    { "name": "action_open_random_manga", "value": "随机打开作品" },
+    { "name": "library_search_hint", "value": "搜索书架" },
+    { "name": "library_no_match", "value": "没有匹配的漫画" }
 ]
 }
