@@ -47,7 +47,7 @@ struct TabIcon {
   @State fillOpacity: number = 0;
   @State histAngle: number = 0;
   @State browseAngle: number = 0;
-  @State browseDotScale: number = 1;
+  @State browseDotScale: number = 0;
   @State moreY0: number = 0;
   @State moreY1: number = 0;
   @State moreY2: number = 0;
@@ -391,7 +391,7 @@ struct Index {
         .barPosition(BarPosition.End)
         .vertical(false)
         .barFloatingStyle({
-          barBottomMargin: this.navBarH + 8,
+          barBottomMargin: this.navBarH + 2,
           systemMaterialEffect: {
             materialType: hdsMaterial.MaterialType.IMMERSIVE,
             materialLevel: hdsMaterial.MaterialLevel.ADAPTIVE
