@@ -3,7 +3,7 @@ import { fileIo as fs } from '@kit.CoreFileKit';
 import zlib from '@ohos.zlib';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { util } from '@kit.ArkTS';
-import { PluginManifest, JsvmSource } from '../source/JsvmSource';
+import { PluginManifest, JsvmSource, CompiledSourceInfo } from '../source/JsvmSource';
 import { JsvmExtensionManager } from '../jsvm/JsvmExtensionManager';
 import { SourceRegistry } from '../source/Source';
 import { Http } from '../net/Http';
@@ -222,9 +222,10 @@ export class PluginService {
   }
 
   static async uninstall(key: string): Promise<void> {
-    SourceRegistry.unregister(key);
-    await JsvmExtensionManager.unloadExtension(key);
-    const dir = `${PluginService.pluginsDir}/${key}`;
+    const packageKey = PluginService.packageKeyOf(key);
+    PluginService.unregisterPackage(packageKey);
+    await JsvmExtensionManager.unloadExtension(packageKey);
+    const dir = `${PluginService.pluginsDir}/${packageKey}`;
     if (fs.accessSync(dir)) {
       fs.rmdirSync(dir);
     }
@@ -269,7 +270,7 @@ export class PluginService {
           lang: item.lang ?? 'multi',
           version: item.version ?? '',
           versionCode: item.versionCode ?? 0,
-          file: file,
+          file: PluginService.resolveRepoFile(url, file),
           nsfw: item.nsfw === true,
         };
         entries.push(entry);
@@ -351,11 +352,139 @@ export class PluginService {
     throw new Error('插件包中未找到 manifest.json');
   }
 
-  // 加载/替换插件：卸载旧引擎后重新拉起专属 Worker + 隔离 JSVM_Context
+  // 仓库索引里的 file 可以是绝对 URL，也可以相对 index.json 所在目录。
+  private static resolveRepoFile(indexUrl: string, file: string): string {
+    if (file.startsWith('http://') || file.startsWith('https://')) {
+      return file;
+    }
+    const slash = indexUrl.lastIndexOf('/');
+    const base = slash >= 0 ? indexUrl.substring(0, slash + 1) : indexUrl;
+    let rel = file;
+    while (rel.startsWith('./')) {
+      rel = rel.substring(2);
+    }
+    return `${base}${rel}`;
+  }
+
+  private static packageKeyOf(key: string): string {
+    const existing = SourceRegistry.get(key);
+    if (existing instanceof JsvmSource) {
+      return existing.packageKey;
+    }
+    return key;
+  }
+
+  private static unregisterPackage(packageKey: string): void {
+    const keys: string[] = [];
+    for (const source of SourceRegistry.all()) {
+      if (source instanceof JsvmSource && source.packageKey === packageKey) {
+        keys.push(source.key);
+      } else if (source.key === packageKey) {
+        keys.push(source.key);
+      }
+    }
+    for (const key of keys) {
+      SourceRegistry.unregister(key);
+    }
+  }
+
+  private static keyPart(raw: string): string {
+    const lower = raw.toLowerCase();
+    let out = '';
+    for (let i = 0; i < lower.length; i++) {
+      const c = lower.charAt(i);
+      const ok = (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9');
+      if (ok) {
+        out += c;
+      } else if (out !== '' && out.charAt(out.length - 1) !== '_') {
+        out += '_';
+      }
+    }
+    while (out.length > 0 && out.charAt(out.length - 1) === '_') {
+      out = out.substring(0, out.length - 1);
+    }
+    return out;
+  }
+
+  private static childKey(packageKey: string, src: CompiledSourceInfo, used: string[]): string {
+    const lang = PluginService.keyPart(src.lang ?? 'all');
+    let key = `${packageKey}_${lang !== '' ? lang : 'src'}`;
+    const taken = used.indexOf(key) >= 0 || key === packageKey || SourceRegistry.get(key) !== undefined;
+    if (taken) {
+      const id = PluginService.keyPart(src.id ?? '0');
+      const suffix = id.length > 4 ? id.substring(id.length - 4) : (id !== '' ? id : '0');
+      key = `${key}_${suffix}`;
+    }
+    return key;
+  }
+
+  private static manifestForSource(base: PluginManifest, src: CompiledSourceInfo, key: string): PluginManifest {
+    let supports = base.supportsLatest;
+    if (src.supportsLatest === true || src.supportsLatest === false) {
+      supports = src.supportsLatest;
+    }
+    const manifest: PluginManifest = {
+      key: key,
+      name: src.name !== undefined && src.name !== '' ? src.name : base.name,
+      lang: src.lang !== undefined && src.lang !== '' ? src.lang : base.lang,
+      version: base.version,
+      versionCode: base.versionCode,
+      baseUrl: src.baseUrl !== undefined && src.baseUrl !== '' ? src.baseUrl : base.baseUrl,
+      nsfw: base.nsfw,
+      supportsLatest: supports,
+      minAppVersion: base.minAppVersion,
+      dslVersion: base.dslVersion,
+      icon: base.icon,
+      runtime: base.runtime,
+      engine: base.engine,
+    };
+    return manifest;
+  }
+
+  private static async readCompiledSources(packageKey: string): Promise<CompiledSourceInfo[]> {
+    try {
+      const raw = await JsvmExtensionManager.callData<object>(packageKey, 'getSources', []);
+      const text = JSON.stringify(raw);
+      const parsed = JSON.parse(text) as CompiledSourceInfo[];
+      if (Array.isArray(parsed)) {
+        return parsed;
+      }
+    } catch (e) {
+      hilog.warn(DOMAIN, TAG, 'getSources failed for %{public}s: %{public}s', packageKey, (e as Error).message);
+    }
+    return [];
+  }
+
+  private static registerCompiled(manifest: PluginManifest, methods: string[], compiled: CompiledSourceInfo[]): void {
+    const used: string[] = [manifest.key];
+    for (let i = 0; i < compiled.length; i++) {
+      const info = compiled[i];
+      const key = i === 0 ? manifest.key : PluginService.childKey(manifest.key, info, used);
+      used.push(key);
+      const child = PluginService.manifestForSource(manifest, info, key);
+      const sourceId = info.id !== undefined ? info.id : '';
+      const src = new JsvmSource(child, methods, manifest.key, sourceId);
+      SourceRegistry.register(src);
+      src.warmImageHeaders();
+    }
+  }
+
+  // 加载/替换插件：卸载旧引擎后重新拉起专属 Worker + 隔离 JSVM_Context。
+  // tachiyomi 编译产物若包含多个源，共用一个引擎并各自注册。
   private static async reloadOne(manifest: PluginManifest, mainJs: string): Promise<void> {
     const script = PluginService.composeScript(manifest, mainJs);
     const info = await JsvmExtensionManager.loadExtension(manifest.key, script);
-    const src = new JsvmSource(manifest, info.methods);
+    PluginService.unregisterPackage(manifest.key);
+    if (info.kind === 'tachiyomi' && info.methods.indexOf('getSources') >= 0) {
+      const compiled = await PluginService.readCompiledSources(manifest.key);
+      if (compiled.length > 0) {
+        PluginService.registerCompiled(manifest, info.methods, compiled);
+        hilog.info(DOMAIN, TAG, 'jsvm plugin ready: %{public}s v%{public}s (%{public}d sources, mem %{public}d)',
+          manifest.key, manifest.version, compiled.length, JsvmExtensionManager.memoryBytes(manifest.key));
+        return;
+      }
+    }
+    const src = new JsvmSource(manifest, info.methods, manifest.key, '');
     SourceRegistry.register(src);
     // 插件可选导出 getHeaders：声明后图片经宿主 http 管线加载（支持 Referer/Cookie）
     src.warmImageHeaders();

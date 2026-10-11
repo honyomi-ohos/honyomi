@@ -92,11 +92,6 @@ export struct ExtensionDetailPage {
     return SourceRegistry.get(this.pluginKey);
   }
 
-  private sourceLangText(): string {
-    const src = this.currentSource();
-    return src === undefined ? '' : langDisplayName(src.lang);
-  }
-
   // 插件是否声明了设置页
   private isConfigurable(): boolean {
     const src = this.currentSource();
@@ -208,8 +203,20 @@ export struct ExtensionDetailPage {
     dialog.open();
   }
 
-  private openSource(): void {
-    const params: BrowseSourceParams = { sourceKey: this.pluginKey, mode: 'popular' };
+  private packageSources(): Source[] {
+    const out: Source[] = [];
+    for (const source of SourceRegistry.all()) {
+      if (source instanceof JsvmSource && source.packageKey === this.pluginKey) {
+        out.push(source);
+      } else if (source.key === this.pluginKey) {
+        out.push(source);
+      }
+    }
+    return out;
+  }
+
+  private openSource(key: string): void {
+    const params: BrowseSourceParams = { sourceKey: key, mode: 'popular' };
     this.pathStack.pushPathByName('BrowseSource', params);
   }
 
@@ -410,34 +417,38 @@ export struct ExtensionDetailPage {
                   .width('100%')
                   .margin({ bottom: 4 })
 
-                if (this.currentSource() === undefined) {
+                if (this.packageSources().length === 0) {
                   Text($r('app.string.ext_detail_missing'))
                     .fontSize(12)
                     .fontColor(this.pal.sub)
                     .width('100%')
                     .padding({ top: 8, bottom: 8 })
                 } else {
-                  Row() {
-                    Column() {
-                      Text(this.plugin.manifest.name)
-                        .fontSize(15)
-                        .fontColor(this.pal.text)
-                      Text(this.sourceLangText())
-                        .fontSize(11)
-                        .fontColor(this.pal.sub)
-                        .margin({ top: 2 })
-                    }
-                    .alignItems(HorizontalAlign.Start)
-                    .layoutWeight(1)
+                  ForEach(this.packageSources(), (source: Source) => {
+                    Row() {
+                      Column() {
+                        Text(source.name)
+                          .fontSize(15)
+                          .fontColor(this.pal.text)
+                          .maxLines(1)
+                          .textOverflow({ overflow: TextOverflow.Ellipsis })
+                        Text(langDisplayName(source.lang))
+                          .fontSize(11)
+                          .fontColor(this.pal.sub)
+                          .margin({ top: 2 })
+                      }
+                      .alignItems(HorizontalAlign.Start)
+                      .layoutWeight(1)
 
-                    AppIcon({ name: 'keyboard_arrow_right', iconSize: 20, tint: this.pal.sub })
-                  }
-                  .width('100%')
-                  .alignItems(VerticalAlign.Center)
-                  .padding({ top: 10, bottom: 10 })
-                  .onClick(() => {
-                    this.openSource();
-                  })
+                      AppIcon({ name: 'keyboard_arrow_right', iconSize: 20, tint: this.pal.sub })
+                    }
+                    .width('100%')
+                    .alignItems(VerticalAlign.Center)
+                    .padding({ top: 10, bottom: 10 })
+                    .onClick(() => {
+                      this.openSource(source.key);
+                    })
+                  }, (source: Source) => `src-${source.key}`)
                 }
               }
               .width('100%')

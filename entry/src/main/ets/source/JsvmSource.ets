@@ -89,7 +89,19 @@ interface RawPrefItem {
   summary?: string;
   value?: string | boolean | number;
   defaultValue?: string | boolean | number;
+  default?: string | boolean | number | string[];
   options?: RawPrefOption[];
+  values?: string[];
+  titles?: string[];
+}
+
+// tachiyomi-js getManifest() 里的单个源
+export interface CompiledSourceInfo {
+  id?: string;
+  name?: string;
+  lang?: string;
+  baseUrl?: string;
+  supportsLatest?: boolean;
 }
 
 // JSVM 插件适配器：实现 Source 接口，方法经专属 Worker 转发到隔离 JSVM 引擎
@@ -99,16 +111,22 @@ export class JsvmSource implements Source {
   readonly lang: string;
   readonly supportsLatest: boolean;
   readonly manifest: PluginManifest;
+  // 插件包目录名。多语言扩展共用一个 JSVM 引擎，浏览列表里每个语言各有自己的 key。
+  readonly packageKey: string;
+  // tachiyomi 编译产物的 source id；空字符串表示简单契约插件。
+  readonly sourceId: string;
 
   private exportedMethods: string[] = [];
   private customImageHeaders: Record<string, string> | undefined = undefined;
   private imageViaHost: boolean = false;
 
-  constructor(manifest: PluginManifest, exportedMethods: string[] = []) {
+  constructor(manifest: PluginManifest, exportedMethods: string[] = [], packageKey: string = '', sourceId: string = '') {
     this.manifest = manifest;
     this.key = manifest.key;
     this.name = manifest.name;
     this.lang = manifest.lang;
+    this.packageKey = packageKey !== '' ? packageKey : manifest.key;
+    this.sourceId = sourceId;
     this.exportedMethods = exportedMethods;
     this.supportsLatest = manifest.supportsLatest && exportedMethods.indexOf('getLatestManga') >= 0;
   }
@@ -141,7 +159,7 @@ export class JsvmSource implements Source {
     if (this.exportedMethods.indexOf('fetchImage') < 0) {
       return undefined;
     }
-    const raw = await this.call<string>('fetchImage', [pageUrl, imageUrl]);
+    const raw = await this.call<string>('fetchImage', this.callArgs([pageUrl, imageUrl]));
     if (raw === undefined || raw === '') {
       return undefined;
     }
@@ -154,7 +172,7 @@ export class JsvmSource implements Source {
     if (this.exportedMethods.indexOf('getFilterList') < 0) {
       return [];
     }
-    const raw = await this.call<object[]>('getFilterList', []);
+    const raw = await this.call<object[]>('getFilterList', this.callArgs([]));
     return Array.isArray(raw) ? raw : [];
   }
 
@@ -162,21 +180,21 @@ export class JsvmSource implements Source {
     if (this.exportedMethods.indexOf('applyFilterState') < 0) {
       return;
     }
-    await this.call<object>('applyFilterState', [JSON.stringify(state)]);
+    await this.call<object>('applyFilterState', this.callArgs([JSON.stringify(state)]));
   }
 
   async resetFilters(): Promise<void> {
     if (this.exportedMethods.indexOf('resetFilters') < 0) {
       return;
     }
-    await this.call<object>('resetFilters', []);
+    await this.call<object>('resetFilters', this.callArgs([]));
   }
 
   async setPreference(key: string, value: string): Promise<void> {
     if (this.exportedMethods.indexOf('setPreference') < 0) {
       return;
     }
-    await this.call<object>('setPreference', [key, value]);
+    await this.call<object>('setPreference', this.callArgs([key, value]));
   }
 
   // 插件是否导出某方法（用于设置页判断源是否可配置）
@@ -189,12 +207,10 @@ export class JsvmSource implements Source {
     if (this.exportedMethods.indexOf('getSettingsSchema') < 0) {
       return [];
     }
-    const raw = await this.call<RawPrefItem[]>('getSettingsSchema', []);
+    const raw = await this.call<object>('getSettingsSchema', this.callArgs([]));
+    const list = JsvmSource.prefListOf(raw);
     const items: SourcePrefItem[] = [];
-    if (!Array.isArray(raw)) {
-      return items;
-    }
-    for (const r of raw) {
+    for (const r of list) {
       const item = JsvmSource.toPrefItem(r);
       if (item !== undefined) {
         items.push(item);
@@ -213,6 +229,29 @@ export class JsvmSource implements Source {
     return `${v}`;
   }
 
+  // tachiyomi-js 把 schema 再包成 JSON 字符串，字段是 type/values/titles/default。
+  private static prefListOf(raw: object): RawPrefItem[] {
+    let text = '';
+    if (typeof raw === 'string') {
+      text = raw;
+    } else {
+      try {
+        text = JSON.stringify(raw);
+      } catch (e) {
+        return [];
+      }
+    }
+    try {
+      const parsed = JSON.parse(text) as RawPrefItem[];
+      if (Array.isArray(parsed)) {
+        return parsed;
+      }
+    } catch (e) {
+      return [];
+    }
+    return [];
+  }
+
   private static toPrefItem(raw: RawPrefItem | undefined): SourcePrefItem | undefined {
     if (raw === undefined || raw.key === undefined || raw.key === '') {
       return undefined;
@@ -228,40 +267,62 @@ export class JsvmSource implements Source {
           options.push(opt);
         }
       }
+    } else if (Array.isArray(raw.values)) {
+      for (let i = 0; i < raw.values.length; i++) {
+        const value = raw.values[i];
+        const label = raw.titles !== undefined && i < raw.titles.length ? raw.titles[i] : value;
+        const opt: SourcePrefOption = { value: value, label: label };
+        options.push(opt);
+      }
     }
-    const value = raw.value !== undefined ? JsvmSource.prefValueToString(raw.value) :
-      JsvmSource.prefValueToString(raw.defaultValue);
+    let stored: string | boolean | number | undefined = raw.value;
+    if (stored === undefined && typeof raw.default === 'string') {
+      stored = raw.default;
+    } else if (stored === undefined && typeof raw.default === 'boolean') {
+      stored = raw.default;
+    } else if (stored === undefined && typeof raw.default === 'number') {
+      stored = raw.default;
+    }
+    if (stored === undefined) {
+      stored = raw.defaultValue;
+    }
+    let type = raw.type ?? 'switch';
+    if (type === 'text') {
+      type = 'edit';
+    } else if (type === 'multi-select') {
+      type = 'select';
+    }
     const item: SourcePrefItem = {
-      type: raw.type ?? 'switch',
+      type: type,
       key: raw.key,
       title: raw.title ?? raw.key,
       summary: raw.summary ?? '',
-      value: value,
+      value: JsvmSource.prefValueToString(stored),
       options: options,
     };
     return item;
   }
 
   async getPopularManga(page: number): Promise<MangasPage> {
-    const raw = await this.call<RawMangasPage>('getPopularManga', [page]);
+    const raw = await this.call<RawMangasPage>('getPopularManga', this.callArgs([page]));
     return JsvmSource.toMangasPage(raw);
   }
 
   async getLatestManga(page: number): Promise<MangasPage> {
     if (this.supportsLatest) {
-      const raw = await this.call<RawMangasPage>('getLatestManga', [page]);
+      const raw = await this.call<RawMangasPage>('getLatestManga', this.callArgs([page]));
       return JsvmSource.toMangasPage(raw);
     }
     return this.getPopularManga(page);
   }
 
   async getSearchManga(page: number, query: string): Promise<MangasPage> {
-    const raw = await this.call<RawMangasPage>('getSearchManga', [page, query]);
+    const raw = await this.call<RawMangasPage>('getSearchManga', this.callArgs([page, query]));
     return JsvmSource.toMangasPage(raw);
   }
 
   async getMangaDetail(mangaKey: string): Promise<SManga> {
-    const raw = await this.call<RawManga | undefined>('getMangaDetail', [mangaKey]);
+    const raw = await this.call<RawManga | undefined>('getMangaDetail', this.callArgs([mangaKey]));
     const manga = JsvmSource.toSManga(raw);
     if (manga === undefined) {
       throw new Error('插件详情返回无效');
@@ -270,7 +331,7 @@ export class JsvmSource implements Source {
   }
 
   async getChapterList(mangaKey: string): Promise<SChapter[]> {
-    const raw = await this.call<RawChapter[]>('getChapterList', [mangaKey]);
+    const raw = await this.call<RawChapter[]>('getChapterList', this.callArgs([mangaKey]));
     const chapters: SChapter[] = [];
     if (!Array.isArray(raw)) {
       return chapters;
@@ -285,7 +346,7 @@ export class JsvmSource implements Source {
   }
 
   async getPageList(chapterKey: string): Promise<SPage[]> {
-    const raw = await this.call<RawPage[]>('getPageList', [chapterKey]);
+    const raw = await this.call<RawPage[]>('getPageList', this.callArgs([chapterKey]));
     const pages: SPage[] = [];
     if (!Array.isArray(raw)) {
       return pages;
@@ -313,9 +374,21 @@ export class JsvmSource implements Source {
   // ---------------- 内部实现 ----------------
 
   // 统一调用入口：CF 盾挑战异常上抛前触发全局验证页
+  // 编译产物按 sourceId 选源；简单契约插件不传这个前缀参数。
+  private callArgs(args: Array<string | number | boolean | object>): Array<string | number | boolean | object> {
+    if (this.sourceId === '') {
+      return args;
+    }
+    const next: Array<string | number | boolean | object> = [this.sourceId];
+    for (const item of args) {
+      next.push(item);
+    }
+    return next;
+  }
+
   private async call<T>(method: string, args: Array<string | number | boolean | object>): Promise<T> {
     try {
-      return await JsvmExtensionManager.callData<T>(this.key, method, args);
+      return await JsvmExtensionManager.callData<T>(this.packageKey, method, args);
     } catch (e) {
       if (e instanceof WebChallengeError) {
         AppStorage.setOrCreate('cfChallengeUrl', e.challengeUrl);
@@ -329,7 +402,7 @@ export class JsvmSource implements Source {
     if (this.exportedMethods.indexOf('getHeaders') < 0) {
       return;
     }
-    JsvmExtensionManager.callData<Record<string, Object>>(this.key, 'getHeaders', [])
+    JsvmExtensionManager.callData<Record<string, Object>>(this.packageKey, 'getHeaders', this.callArgs([]))
       .then((raw: Record<string, Object>) => {
         const keys = Object.keys(raw);
         const headers: Record<string, string> = {};

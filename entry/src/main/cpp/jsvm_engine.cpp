@@ -781,34 +781,73 @@ static const char *ADAPTER_JS = R"JS((function () {
       var sources = unwrap(gen.getManifest());
       if (sources && sources.length > 0) { sourceId = String(sources[0].id); }
     } catch (e) { sourceId = null; }
+    // Compiled extensions export one factory with many sources. Calls are
+    // (page, ...) using the first source, or (sourceId, page, ...) when the
+    // host registers each source separately against the same engine.
+    function sid(explicit) {
+      return explicit !== undefined && explicit !== null && String(explicit) !== '' ? String(explicit) : sourceId;
+    }
     api = {
       kind: 'tachiyomi',
       getSources: function () { return unwrap(gen.getManifest()); },
-      getPopularManga: function (page) { return unwrap(gen.getPopularManga(sourceId, page)); },
-      getLatestManga: function (page) { return unwrap(gen.getLatestUpdates(sourceId, page)); },
-      getSearchManga: function (page, query) { return unwrap(gen.searchManga(sourceId, page, query)); },
-      getMangaDetail: function (url) { return unwrap(gen.getMangaDetails(sourceId, url)); },
-      getChapterList: function (url) { return unwrap(gen.getChapterList(sourceId, url)); },
-      getPageList: function (url) { return unwrap(gen.getPageList(sourceId, url)); },
-      getFilterList: function () { return unwrap(gen.getFilterList(sourceId)); },
-      applyFilterState: function (state) {
+      getPopularManga: function (a, b) {
+        if (arguments.length >= 2) { return unwrap(gen.getPopularManga(sid(a), b)); }
+        return unwrap(gen.getPopularManga(sourceId, a));
+      },
+      getLatestManga: function (a, b) {
+        if (arguments.length >= 2) { return unwrap(gen.getLatestUpdates(sid(a), b)); }
+        return unwrap(gen.getLatestUpdates(sourceId, a));
+      },
+      getSearchManga: function (a, b, c) {
+        if (arguments.length >= 3) { return unwrap(gen.searchManga(sid(a), b, c)); }
+        return unwrap(gen.searchManga(sourceId, a, b));
+      },
+      getMangaDetail: function (a, b) {
+        if (arguments.length >= 2) { return unwrap(gen.getMangaDetails(sid(a), b)); }
+        return unwrap(gen.getMangaDetails(sourceId, a));
+      },
+      getChapterList: function (a, b) {
+        if (arguments.length >= 2) { return unwrap(gen.getChapterList(sid(a), b)); }
+        return unwrap(gen.getChapterList(sourceId, a));
+      },
+      getPageList: function (a, b) {
+        if (arguments.length >= 2) { return unwrap(gen.getPageList(sid(a), b)); }
+        return unwrap(gen.getPageList(sourceId, a));
+      },
+      getFilterList: function (a) {
+        var id = arguments.length >= 1 ? sid(a) : sourceId;
+        return unwrap(gen.getFilterList(id));
+      },
+      applyFilterState: function (a, b) {
         if (typeof gen.applyFilterState !== 'function') { return { ok: true }; }
+        var id = sourceId;
+        var state = a;
+        if (arguments.length >= 2) { id = sid(a); state = b; }
         var payload = typeof state === 'string' ? state : JSON.stringify(state == null ? [] : state);
-        return unwrap(gen.applyFilterState(sourceId, payload));
+        return unwrap(gen.applyFilterState(id, payload));
       },
-      resetFilters: function () {
+      resetFilters: function (a) {
         if (typeof gen.resetFilters !== 'function') { return { ok: true }; }
-        return unwrap(gen.resetFilters(sourceId));
+        var id = arguments.length >= 1 ? sid(a) : sourceId;
+        return unwrap(gen.resetFilters(id));
       },
-      getHeaders: function () { return unwrap(gen.getHeaders(sourceId)); },
-      fetchImage: function (pageUrl, imageUrl) { return unwrap(gen.fetchImage(sourceId, pageUrl, imageUrl)); },
-      setPreference: function (key, value) {
+      getHeaders: function (a) {
+        var id = arguments.length >= 1 ? sid(a) : sourceId;
+        return unwrap(gen.getHeaders(id));
+      },
+      fetchImage: function (a, b, c) {
+        if (arguments.length >= 3) { return unwrap(gen.fetchImage(sid(a), b, c)); }
+        return unwrap(gen.fetchImage(sourceId, a, b));
+      },
+      setPreference: function (a, b, c) {
         if (typeof gen.setPreference !== 'function') { return null; }
-        return unwrap(gen.setPreference(sourceId, key, JSON.stringify(value)));
+        if (arguments.length >= 3) { return unwrap(gen.setPreference(sid(a), b, JSON.stringify(c))); }
+        return unwrap(gen.setPreference(sourceId, a, JSON.stringify(b)));
       },
-      getSettingsSchema: function () {
+      getSettingsSchema: function (a) {
         if (typeof gen.getSettingsSchema !== 'function') { return null; }
-        return unwrap(gen.getSettingsSchema(sourceId));
+        var id = arguments.length >= 1 ? sid(a) : sourceId;
+        return unwrap(gen.getSettingsSchema(id));
       }
     };
   } else if (hostObj) {
