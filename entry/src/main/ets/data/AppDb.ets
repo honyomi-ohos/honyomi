@@ -7,7 +7,7 @@ export class AppDb {
   private static store: relationalStore.RdbStore | undefined = undefined;
   private static initPromise: Promise<void> | undefined = undefined;
 
-  static ready(context: common.UIAbilityContext): Promise<void> {
+  static ready(context: common.Context): Promise<void> {
     if (AppDb.initPromise === undefined) {
       AppDb.initPromise = AppDb.doInit(context);
     }
@@ -21,7 +21,7 @@ export class AppDb {
     return AppDb.store;
   }
 
-  private static async doInit(context: common.UIAbilityContext): Promise<void> {
+  private static async doInit(context: common.Context): Promise<void> {
     const config: relationalStore.StoreConfig = {
       name: 'mihon.db',
       securityLevel: relationalStore.SecurityLevel.S1,
@@ -40,8 +40,19 @@ export class AppDb {
       inLibrary INTEGER DEFAULT 0,
       categoryId INTEGER DEFAULT 1,
       addedAt INTEGER DEFAULT 0,
+      lastUpdateAt INTEGER DEFAULT 0,
+      fetchedAt INTEGER DEFAULT 0,
       UNIQUE(sourceKey, url)
     )`);
+    // 旧库迁移：新装库已含列，ALTER 失败说明列已存在，忽略
+    try {
+      await store.executeSql(`ALTER TABLE manga ADD COLUMN lastUpdateAt INTEGER DEFAULT 0`);
+    } catch (_e) {
+    }
+    try {
+      await store.executeSql(`ALTER TABLE manga ADD COLUMN fetchedAt INTEGER DEFAULT 0`);
+    } catch (_e) {
+    }
     await store.executeSql(`CREATE TABLE IF NOT EXISTS chapter (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       mangaId INTEGER NOT NULL,

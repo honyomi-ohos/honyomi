@@ -185,12 +185,12 @@ export struct GlobalSearchPage {
                       .padding({ top: 4, bottom: 4 })
                   } else {
                     ForEach(section.results, (record: MangaRecord) => {
-                      MangaRow({
-                        record: record,
-                        onRowClick: (r: MangaRecord): void => {
-                          this.openDetail(r);
-                        },
-                      })
+                        MangaRow({
+                          record: record,
+                          onRowClick: (r: MangaRecord): void => {
+                           this.openDetail(r);
+                         },
+                       })
                     }, (record: MangaRecord) => `gs-${section.sourceKey}-${record.url}`)
                   }
                 }

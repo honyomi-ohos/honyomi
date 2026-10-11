@@ -1,10 +1,10 @@
 import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
 import { Util } from '../../common/Util';
+import { GripSupport } from '../../common/GripSupport';
 import { PageHeader } from '../components/PageHeader';
 import { PrefGroup, SelectRow, SwitchRow, TextRow } from '../components/Prefs';
 
-const MODE_VALUES: string[] = ['ltr', 'rtl', 'vertical', 'webtoon'];
 const THEME_VALUES: number[] = [3, 0, 1, 2];
 
 // 阅读器设置：默认模式/双页/页码/背景色/亮度
@@ -17,16 +17,23 @@ export struct ReaderSettingsPage {
   @State showPageNumber: boolean = true;
   @State themeLabel: string = '';
   @State brightnessLabel: string = '';
+  private modeValues: string[] = [];
   private modeLabels: string[] = [];
   private themeLabels: string[] = [];
 
   aboutToAppear(): void {
+    this.modeValues = ['ltr', 'rtl', 'vertical', 'webtoon'];
     this.modeLabels = [
       Util.resStr(this.getUIContext(), $r('app.string.reader_set_mode_ltr')),
       Util.resStr(this.getUIContext(), $r('app.string.reader_set_mode_rtl')),
       Util.resStr(this.getUIContext(), $r('app.string.reader_set_mode_vertical')),
       Util.resStr(this.getUIContext(), $r('app.string.reader_set_mode_webtoon'))
     ];
+    // 智感握姿仅在支持的设备上提供
+    if (GripSupport.isSupported()) {
+      this.modeValues.push('smart_grip');
+      this.modeLabels.push(Util.resStr(this.getUIContext(), $r('app.string.reader_set_mode_smart_grip')));
+    }
     this.themeLabels = [
       Util.resStr(this.getUIContext(), $r('app.string.reader_set_theme_follow')),
       Util.resStr(this.getUIContext(), $r('app.string.reader_set_theme_white')),
@@ -34,7 +41,7 @@ export struct ReaderSettingsPage {
       Util.resStr(this.getUIContext(), $r('app.string.reader_set_theme_gray'))
     ];
     const mode = Settings.getReaderMode();
-    const mi = MODE_VALUES.indexOf(mode);
+    const mi = this.modeValues.indexOf(mode);
     this.modeLabel = mi >= 0 ? this.modeLabels[mi] : this.modeLabels[0];
     this.dualPage = Settings.getReaderDualPage();
     this.showPageNumber = Settings.getReaderShowPageNumber();
@@ -60,7 +67,7 @@ export struct ReaderSettingsPage {
                 onSelect: (value: string): void => {
                   const i = this.modeLabels.indexOf(value);
                   if (i >= 0) {
-                    Settings.setReaderMode(MODE_VALUES[i]);
+                    Settings.setReaderMode(this.modeValues[i]);
                     this.modeLabel = value;
                   }
                 }

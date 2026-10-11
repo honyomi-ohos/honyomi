@@ -197,8 +197,17 @@ export class Settings {
   }
 
   // ---- 书架 ----
+  // 排序键：'alpha','total','lastRead','lastUpdate','unread','latestChapter','fetchDate','dateAdded','random'
   static getLibrarySort(): string {
-    return Settings.getStr('librarySort', 'title');
+    const raw: string = Settings.getStr('librarySort', 'alpha');
+    // 旧版取值迁移
+    if (raw === 'title') {
+      return 'alpha';
+    }
+    if (raw === 'added') {
+      return 'dateAdded';
+    }
+    return raw;
   }
 
   static setLibrarySort(v: string): void {
@@ -213,24 +222,36 @@ export class Settings {
     Settings.setBool('librarySortAsc', v);
   }
 
-  static getLibraryFilter(): string {
-    return Settings.getStr('libraryFilter', 'none');
+  // 三态筛选：key 为 'downloaded','unread','started','bookmarked','completed','tracked'
+  // 值为 'ignore'（忽略）| 'include'（包含）| 'exclude'（排除）
+  static getLibraryTriState(key: string): string {
+    return Settings.getStr('libFilter:' + key, 'ignore');
   }
 
-  static setLibraryFilter(v: string): void {
-    Settings.setStr('libraryFilter', v);
+  static setLibraryTriState(key: string, v: string): void {
+    Settings.setStr('libFilter:' + key, v);
   }
 
+  // 显示模式：'compact','comfortable','cover','list'（旧值 'grid' 归一为 'compact'）
   static getLibraryView(): string {
-    return Settings.getStr('libraryView', 'grid');
+    const raw: string = Settings.getStr('libraryView', 'compact');
+    if (raw === 'grid') {
+      return 'compact';
+    }
+    return raw;
   }
 
   static setLibraryView(v: string): void {
     Settings.setStr('libraryView', v);
   }
 
+  // 每行数目：0 = 自动
   static getLibraryGridCols(): number {
-    return Settings.getNum('libraryGridCols', 0);
+    const v: number = Settings.getNum('libraryGridCols', 0);
+    if (v < 0 || v > 10) {
+      return 0;
+    }
+    return Math.floor(v);
   }
 
   static setLibraryGridCols(v: number): void {
@@ -251,6 +272,38 @@ export class Settings {
 
   static setShowDownloadBadge(v: boolean): void {
     Settings.setBool('showDownloadBadge', v);
+  }
+
+  static getShowLocalBadge(): boolean {
+    return Settings.getBool('showLocalBadge', false);
+  }
+
+  static setShowLocalBadge(v: boolean): void {
+    Settings.setBool('showLocalBadge', v);
+  }
+
+  static getShowLanguageBadge(): boolean {
+    return Settings.getBool('showLanguageBadge', false);
+  }
+
+  static setShowLanguageBadge(v: boolean): void {
+    Settings.setBool('showLanguageBadge', v);
+  }
+
+  static getShowCategoryTabs(): boolean {
+    return Settings.getBool('showCategoryTabs', true);
+  }
+
+  static setShowCategoryTabs(v: boolean): void {
+    Settings.setBool('showCategoryTabs', v);
+  }
+
+  static getShowMangaCount(): boolean {
+    return Settings.getBool('showMangaCount', false);
+  }
+
+  static setShowMangaCount(v: boolean): void {
+    Settings.setBool('showMangaCount', v);
   }
 
   // ---- 阅读器 ----
@@ -300,6 +353,90 @@ export class Settings {
 
   static setReaderOrientation(v: string): void {
     Settings.setStr('readerOrientation', v);
+  }
+
+  // ---- 阅读器滤镜（灰度/反色为开关；亮度/对比度/饱和度有开关+百分比，100=原始） ----
+  static getReaderGrayscale(): boolean {
+    return Settings.getBool('readerGrayscale', false);
+  }
+
+  static setReaderGrayscale(v: boolean): void {
+    Settings.setBool('readerGrayscale', v);
+  }
+
+  static getReaderInvert(): boolean {
+    return Settings.getBool('readerInvert', false);
+  }
+
+  static setReaderInvert(v: boolean): void {
+    Settings.setBool('readerInvert', v);
+  }
+
+  static getReaderBrightnessEnabled(): boolean {
+    return Settings.getBool('readerBrightnessEnabled', false);
+  }
+
+  static setReaderBrightnessEnabled(v: boolean): void {
+    Settings.setBool('readerBrightnessEnabled', v);
+  }
+
+  static getReaderFilterBrightness(): number {
+    return Settings.getNum('readerFilterBrightness', 100);
+  }
+
+  static setReaderFilterBrightness(v: number): void {
+    Settings.setNum('readerFilterBrightness', v);
+  }
+
+  static getReaderContrastEnabled(): boolean {
+    return Settings.getBool('readerContrastEnabled', false);
+  }
+
+  static setReaderContrastEnabled(v: boolean): void {
+    Settings.setBool('readerContrastEnabled', v);
+  }
+
+  static getReaderContrast(): number {
+    return Settings.getNum('readerContrast', 100);
+  }
+
+  static setReaderContrast(v: number): void {
+    Settings.setNum('readerContrast', v);
+  }
+
+  static getReaderSaturationEnabled(): boolean {
+    return Settings.getBool('readerSaturationEnabled', false);
+  }
+
+  static setReaderSaturationEnabled(v: boolean): void {
+    Settings.setBool('readerSaturationEnabled', v);
+  }
+
+  static getReaderSaturation(): number {
+    return Settings.getNum('readerSaturation', 100);
+  }
+
+  static setReaderSaturation(v: number): void {
+    Settings.setNum('readerSaturation', v);
+  }
+
+  // ---- 阅读器导航/条漫 ----
+  // 点击翻页区域：'default','ltr','rtl','vertical','edge','none'
+  static getReaderNavMode(): string {
+    return Settings.getStr('readerNavMode', 'default');
+  }
+
+  static setReaderNavMode(v: string): void {
+    Settings.setStr('readerNavMode', v);
+  }
+
+  // 条漫侧边距（百分比 0-25）
+  static getReaderWebtoonPadding(): number {
+    return Settings.getNum('readerWebtoonPadding', 0);
+  }
+
+  static setReaderWebtoonPadding(v: number): void {
+    Settings.setNum('readerWebtoonPadding', v);
   }
 
   static getViewerMode(mangaId: string): string {

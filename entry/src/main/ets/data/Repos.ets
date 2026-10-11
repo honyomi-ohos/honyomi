@@ -1,6 +1,6 @@
 import { relationalStore } from '@kit.ArkData';
 import { AppDb } from './AppDb';
-import { SManga, SChapter, MangaRecord, ChapterRecord, CategoryRecord, UpdateItem, HistoryItem, TrackRecord } from '../model/Models';
+import { SManga, SChapter, MangaRecord, ChapterRecord, CategoryRecord, UpdateItem, HistoryItem, TrackRecord, MangaStats } from '../model/Models';
 
 // 漫画仓库
 export class MangaRepo {
@@ -148,9 +148,45 @@ export class MangaRepo {
     await store.executeSql(`DELETE FROM chapter WHERE mangaId = ?`, [id]);
   }
 
+  // 刷新完成时写入时间戳：fetchedAt 总是更新，有新章节时一并更新 lastUpdateAt
+  static async touch(id: number, updated: boolean): Promise<void> {
+    const store = await AppDb.get();
+    const values: relationalStore.ValuesBucket = updated
+      ? { 'fetchedAt': Date.now(), 'lastUpdateAt': Date.now() }
+      : { 'fetchedAt': Date.now() };
+    const pred = new relationalStore.RdbPredicates('manga');
+    pred.equalTo('id', id);
+    await store.update(values, pred);
+  }
+
+  // 章节/历史聚合统计（书架排序与筛选用），一次查询全部漫画
+  static async stats(): Promise<Record<string, MangaStats>> {
+    const store = await AppDb.get();
+    const rs = await store.querySql(
+      `SELECT c.mangaId AS mangaId, COUNT(*) AS total, SUM(c.read) AS readCnt,
+              SUM(c.bookmark) AS bookmarkCnt, MAX(c.dateUpload) AS latest,
+              (SELECT MAX(h.seenAt) FROM history h WHERE h.mangaId = c.mangaId) AS lastRead
+       FROM chapter c GROUP BY c.mangaId`);
+    const map: Record<string, MangaStats> = {};
+    while (rs.goToNextRow()) {
+      const s = new MangaStats();
+      s.mangaId = rs.getLong(rs.getColumnIndex('mangaId'));
+      s.total = rs.getLong(rs.getColumnIndex('total'));
+      s.readCount = rs.getLong(rs.getColumnIndex('readCnt'));
+      s.bookmarkCount = rs.getLong(rs.getColumnIndex('bookmarkCnt'));
+      s.latest = rs.getLong(rs.getColumnIndex('latest'));
+      s.lastRead = rs.getLong(rs.getColumnIndex('lastRead'));
+      s.unread = s.total - s.readCount;
+      map[`${s.mangaId}`] = s;
+    }
+    rs.close();
+    return map;
+  }
+
   private static readonly COLUMNS: string[] = [
     'id', 'sourceKey', 'url', 'title', 'thumbnailUrl', 'author',
     'description', 'genre', 'status', 'inLibrary', 'categoryId', 'addedAt',
+    'lastUpdateAt', 'fetchedAt',
   ];
 
   private static rowToManga(rs: relationalStore.ResultSet): MangaRecord {
@@ -167,6 +203,8 @@ export class MangaRepo {
     m.inLibrary = rs.getLong(rs.getColumnIndex('inLibrary')) === 1;
     m.categoryId = rs.getLong(rs.getColumnIndex('categoryId'));
     m.addedAt = rs.getLong(rs.getColumnIndex('addedAt'));
+    m.lastUpdateAt = rs.getLong(rs.getColumnIndex('lastUpdateAt'));
+    m.fetchedAt = rs.getLong(rs.getColumnIndex('fetchedAt'));
     return m;
   }
 }
@@ -194,6 +232,19 @@ export class ChapterRepo {
     }
     rs.close();
     return list;
+  }
+
+  // 第一条未读章节完整记录（漫画卡片续读回退；id 版本见 firstUnread）
+  static async firstUnreadChapter(mangaId: number): Promise<ChapterRecord | undefined> {
+    const store = await AppDb.get();
+    const pred = new relationalStore.RdbPredicates('chapter');
+    pred.equalTo('mangaId', mangaId).and().equalTo('read', 0)
+      .orderByAsc('sortOrder').orderByAsc('id');
+    pred.limitAs(1);
+    const rs = await store.query(pred, ChapterRepo.COLUMNS);
+    const result: ChapterRecord | undefined = rs.goToNextRow() ? ChapterRepo.rowToChapter(rs) : undefined;
+    rs.close();
+    return result;
   }
 
   // 用源返回的章节列表刷新本地记录，保留已读状态；返回新增章节数
@@ -323,6 +374,19 @@ export class ChapterRepo {
     const pred = new relationalStore.RdbPredicates('chapter');
     pred.equalTo('id', id);
     await store.update(values, pred);
+  }
+
+  // 第一个未读章节 id（无未读返回 -1），供"继续阅读"按钮
+  static async firstUnread(mangaId: number): Promise<number> {
+    const store = await AppDb.get();
+    const rs = await store.querySql(
+      `SELECT id FROM chapter WHERE mangaId = ? AND read = 0 ORDER BY sortOrder ASC, id ASC LIMIT 1`, [mangaId]);
+    let id = -1;
+    if (rs.goToNextRow()) {
+      id = rs.getLong(rs.getColumnIndex('id'));
+    }
+    rs.close();
+    return id;
   }
 
   static async countRead(mangaId: number): Promise<number> {
@@ -468,6 +532,54 @@ export class HistoryRepo {
     return list;
   }
 
+  // 某部漫画最近一条阅读记录（漫画卡片续读章节）
+  static async lastForManga(mangaId: number): Promise<HistoryItem | undefined> {
+    const store = await AppDb.get();
+    const rs = await store.querySql(
+      `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
+              h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
+              m.thumbnailUrl AS coverUrl, c.name AS chapterName
+       FROM history h
+       JOIN manga m ON m.id = h.mangaId
+       JOIN chapter c ON c.id = h.chapterId
+       WHERE h.mangaId = ?
+       ORDER BY h.seenAt DESC LIMIT 1`, [mangaId]);
+    const item: HistoryItem | undefined = rs.goToNextRow() ? HistoryItem.of(
+      rs.getLong(rs.getColumnIndex('mangaId')),
+      rs.getLong(rs.getColumnIndex('chapterId')),
+      rs.getString(rs.getColumnIndex('mangaTitle')),
+      rs.getString(rs.getColumnIndex('coverUrl')),
+      rs.getString(rs.getColumnIndex('chapterName')),
+      rs.getLong(rs.getColumnIndex('seenAt')),
+      rs.getLong(rs.getColumnIndex('lastPageRead'))) : undefined;
+    rs.close();
+    return item;
+  }
+
+  // 最近阅读的书架内漫画（漫画卡片默认绑定）
+  static async lastInLibrary(): Promise<HistoryItem | undefined> {
+    const store = await AppDb.get();
+    const rs = await store.querySql(
+      `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
+              h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
+              m.thumbnailUrl AS coverUrl, c.name AS chapterName
+       FROM history h
+       JOIN manga m ON m.id = h.mangaId
+       JOIN chapter c ON c.id = h.chapterId
+       WHERE m.inLibrary = 1
+       ORDER BY h.seenAt DESC LIMIT 1`, []);
+    const item: HistoryItem | undefined = rs.goToNextRow() ? HistoryItem.of(
+      rs.getLong(rs.getColumnIndex('mangaId')),
+      rs.getLong(rs.getColumnIndex('chapterId')),
+      rs.getString(rs.getColumnIndex('mangaTitle')),
+      rs.getString(rs.getColumnIndex('coverUrl')),
+      rs.getString(rs.getColumnIndex('chapterName')),
+      rs.getLong(rs.getColumnIndex('seenAt')),
+      rs.getLong(rs.getColumnIndex('lastPageRead'))) : undefined;
+    rs.close();
+    return item;
+  }
+
   static async clear(): Promise<void> {
     const store = await AppDb.get();
     await store.delete(new relationalStore.RdbPredicates('history'));
@@ -498,6 +610,22 @@ export class UpdatesRepo {
     rs.close();
     return list;
   }
+
+  // 未读章节总数（更新卡片角标）
+  static async unreadCount(): Promise<number> {
+    const store = await AppDb.get();
+    const rs = await store.querySql(
+      `SELECT COUNT(*) AS n
+       FROM chapter c
+       JOIN manga m ON m.id = c.mangaId
+       WHERE m.inLibrary = 1 AND c.read = 0`);
+    let n = 0;
+    if (rs.goToNextRow()) {
+      n = rs.getLong(rs.getColumnIndex('n'));
+    }
+    rs.close();
+    return n;
+  }
 }
 
 // 追踪仓库（AniList）
@@ -505,6 +633,18 @@ export class TrackRepo {
   private static readonly COLUMNS: string[] = [
     'id', 'mangaId', 'syncId', 'remoteId', 'title', 'status', 'lastChapterRead', 'score',
   ];
+
+  // 已绑定追踪的漫画 id 集合（书架"已追踪"筛选用）
+  static async trackedMangaIds(): Promise<Set<number>> {
+    const store = await AppDb.get();
+    const rs = await store.querySql(`SELECT DISTINCT mangaId FROM track`);
+    const ids = new Set<number>();
+    while (rs.goToNextRow()) {
+      ids.add(rs.getLong(rs.getColumnIndex('mangaId')));
+    }
+    rs.close();
+    return ids;
+  }
 
   static async get(mangaId: number): Promise<TrackRecord | undefined> {
     const store = await AppDb.get();

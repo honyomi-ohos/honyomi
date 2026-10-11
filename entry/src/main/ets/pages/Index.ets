@@ -1,7 +1,7 @@
 import { common } from '@kit.AbilityKit';
 import { webview } from '@kit.ArkWeb';
 import { curves, AnimatorResult, AnimatorOptions } from '@kit.ArkUI';
-import { HdsTabs, hdsMaterial } from '@kit.UIDesignKit';
+import { HdsTabs, hdsMaterial, HdsTabsController, HdsAnimationMode } from '@kit.UIDesignKit';
 import { ThemePalette } from '../common/Theme';
 import { Settings } from '../common/Settings';
 import { UpdateService } from '../data/UpdateService';
@@ -34,6 +34,14 @@ import { AdvancedPage } from './settings/AdvancedPage';
 import { AboutPage } from './settings/AboutPage';
 import { AppIcon } from './components/AppIcon';
 import { UPDATES_MORPH, LIBRARY_MORPH, BROWSE_MORPH, PathMorph } from './components/PathMorph';
+import { ReaderParams, DetailParams } from '../model/RouteParams';
+
+// 桌面卡片 router 事件载荷（由 EntryAbility.handleCardWant 写入 AppStorage）
+interface CardActionPayload {
+  target: string;
+  mangaId: number;
+  chapterId: number;
+}
 
 // 底部导航图标：逐 Tab 复刻 Mihon 的 AnimatedImageVector 动画
 // - library/updates/browse: 真 pathData 形变（PathMorph 逐帧插值 AVD valueFrom/valueTo，
@@ -213,7 +221,7 @@ struct TabIcon {
         Circle().width(4).height(4).fill(this.iconTint()).translate({ y: this.moreY1 })
         Circle().width(4).height(4).fill(this.iconTint()).translate({ y: this.moreY2 })
       }
-      .width(16)
+      .width(24)
       .height(24)
       .justifyContent(FlexAlign.Center)
     } else if (this.kind === 'history') {
@@ -259,6 +267,42 @@ struct TabIcon {
   }
 }
 
+// 宽屏（lg ≥840vp，平板横屏/PC）侧边导航项：图标在左、文本在右（横排）+ 选中胶囊底 + 鼠标悬停反馈
+@Component
+struct RailItem {
+  @Prop kind: string = '';
+  @Prop selected: boolean = false;
+  title: ResourceStr = '';
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @State hovered: boolean = false;
+  onTap: () => void = () => {};
+
+  build() {
+    Row() {
+      TabIcon({ kind: this.kind, selected: this.selected })
+      Text(this.title)
+        .fontSize(14)
+        .fontColor(this.selected ? this.pal.primary : this.pal.sub)
+        .margin({ left: 12 })
+        .maxLines(1)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .layoutWeight(1)
+    }
+    .width('100%')
+    .height(48)
+    .alignItems(VerticalAlign.Center)
+    .padding({ left: 16, right: 12 })
+    .borderRadius(24)
+    .backgroundColor(this.selected ? this.pal.primarySoft : (this.hovered ? this.pal.chip : Color.Transparent))
+    .onClick(() => {
+      this.onTap();
+    })
+    .onHover((isHover: boolean) => {
+      this.hovered = isHover;
+    })
+  }
+}
+
 @Entry
 @Component
 struct Index {
@@ -269,14 +313,81 @@ struct Index {
   @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageProp('navBarH') navBarH: number = 0;
   @StorageLink('cfChallengeUrl') @Watch('onCfUrlChanged') cfChallengeUrl: string = '';
+  // 书架多选数：>0 时隐藏底部页签栏（HDS 官方多选交互：操作栏替换页签栏）
+  @StorageLink('libSelectionCount') @Watch('onLibSelectionChanged') libSelectionCount: number = 0;
+  @StorageLink('cardAction') @Watch('onCardActionChanged') cardActionJson: string = '';
   @State cfStatus: ResourceStr = '';
+  // 一多响应式：窗口宽度 + 已挂载页签位掩码（宽屏下按需挂载后驻留保状态）
+  @State windowW: number = 0;
+  @State mountedMask: number = 1;
   private cfController: webview.WebviewController = new webview.WebviewController();
+  private tabsController: HdsTabsController = new HdsTabsController();
+
+  // lg 断点（≥840vp）：底部页签切换为侧边导航栏（华为大屏导航规范）
+  private isWide(): boolean {
+    return this.windowW >= 840;
+  }
+
+  private tabMounted(index: number): boolean {
+    return (this.mountedMask & (1 << index)) !== 0;
+  }
+
+  private switchTab(index: number): void {
+    if (!this.tabMounted(index)) {
+      this.mountedMask = this.mountedMask | (1 << index);
+    }
+    this.currentTab = index;
+  }
+
+  // 进入多选隐藏页签栏，退出多选恢复（HdsTabsController 官方隐藏/显示动效）；宽屏侧边栏常驻不参与
+  private onLibSelectionChanged(): void {
+    if (this.isWide()) {
+      return;
+    }
+    if (this.libSelectionCount > 0) {
+      this.tabsController.applyHideAnimation(HdsAnimationMode.CLICK_ANIMATION);
+    } else {
+      this.tabsController.applyShowAnimation(HdsAnimationMode.CLICK_ANIMATION);
+    }
+  }
 
   aboutToAppear(): void {
     this.currentTab = Settings.getStartTab();
+    this.mountedMask = 1 << this.currentTab;
     // 插件直接运行于 JSVM 隔离引擎（无 Web 沙箱依赖），启动即加载
     this.loadInstalledPlugins();
     this.autoRefresh();
+    this.consumeCardAction();
+  }
+
+  // 桌面卡片点击导航：切页签或跳阅读器/详情页
+  private onCardActionChanged(): void {
+    this.consumeCardAction();
+  }
+
+  private consumeCardAction(): void {
+    if (this.cardActionJson === '') {
+      return;
+    }
+    const raw = JSON.parse(this.cardActionJson) as CardActionPayload;
+    this.cardActionJson = '';
+    if (raw.target === 'updates') {
+      this.switchTab(1);
+      return;
+    }
+    if (raw.target === 'history') {
+      this.switchTab(2);
+      return;
+    }
+    if (raw.target === 'reader' && raw.mangaId > 0 && raw.chapterId > 0) {
+      const params: ReaderParams = { mangaId: raw.mangaId, chapterId: raw.chapterId };
+      this.pathStack.pushPathByName('Reader', params);
+      return;
+    }
+    if (raw.target === 'detail' && raw.mangaId > 0) {
+      const params: DetailParams = { mangaId: raw.mangaId };
+      this.pathStack.pushPathByName('MangaDetail', params);
+    }
   }
 
   // CF 验证 URL 变化：打开验证页前把 CookieJar 已有会话注入 ArkWeb
@@ -398,10 +509,100 @@ struct Index {
     .height('100%')
   }
 
+  // 宽屏主界面：左侧固定导航栏 + 右侧内容区（页签首次访问时挂载、驻留保状态）
+  @Builder
+  wideHome() {
+    Row() {
+      Column({ space: 4 }) {
+        RailItem({
+          kind: 'library', title: $r('app.string.tab_library'),
+          selected: this.currentTab === 0,
+          onTap: (): void => { this.switchTab(0); }
+        })
+        RailItem({
+          kind: 'updates', title: $r('app.string.tab_updates'),
+          selected: this.currentTab === 1,
+          onTap: (): void => { this.switchTab(1); }
+        })
+        RailItem({
+          kind: 'history', title: $r('app.string.tab_history'),
+          selected: this.currentTab === 2,
+          onTap: (): void => { this.switchTab(2); }
+        })
+        RailItem({
+          kind: 'browse', title: $r('app.string.tab_browse'),
+          selected: this.currentTab === 3,
+          onTap: (): void => { this.switchTab(3); }
+        })
+        RailItem({
+          kind: 'more', title: $r('app.string.tab_more'),
+          selected: this.currentTab === 4,
+          onTap: (): void => { this.switchTab(4); }
+        })
+      }
+      .width(200)
+      .height('100%')
+      .padding({ top: this.statusBarH + 8, left: 12, right: 12, bottom: 8 })
+      .backgroundColor(this.pal.bg)
+      .border({ width: { right: 1 }, color: this.pal.divider })
+
+      Stack() {
+        if (this.tabMounted(0)) {
+          Column() {
+            LibraryPage()
+          }
+          .height('100%')
+          .padding({ top: this.statusBarH })
+          .visibility(this.currentTab === 0 ? Visibility.Visible : Visibility.None)
+        }
+        if (this.tabMounted(1)) {
+          Column() {
+            UpdatesPage()
+          }
+          .height('100%')
+          .padding({ top: this.statusBarH })
+          .visibility(this.currentTab === 1 ? Visibility.Visible : Visibility.None)
+        }
+        if (this.tabMounted(2)) {
+          Column() {
+            HistoryPage()
+          }
+          .height('100%')
+          .padding({ top: this.statusBarH })
+          .visibility(this.currentTab === 2 ? Visibility.Visible : Visibility.None)
+        }
+        if (this.tabMounted(3)) {
+          Column() {
+            BrowsePage()
+          }
+          .height('100%')
+          .padding({ top: this.statusBarH })
+          .visibility(this.currentTab === 3 ? Visibility.Visible : Visibility.None)
+        }
+        if (this.tabMounted(4)) {
+          Column() {
+            MorePage()
+          }
+          .height('100%')
+          .padding({ top: this.statusBarH })
+          .visibility(this.currentTab === 4 ? Visibility.Visible : Visibility.None)
+        }
+      }
+      .layoutWeight(1)
+      .height('100%')
+      .backgroundColor(this.pal.bg)
+    }
+    .width('100%')
+    .height('100%')
+  }
+
   build() {
     Navigation(this.pathStack) {
       Stack({ alignContent: Alignment.TopStart }) {
-        HdsTabs({ barPosition: BarPosition.End, index: this.currentTab }) {
+        if (this.isWide()) {
+          this.wideHome()
+        } else {
+        HdsTabs({ barPosition: BarPosition.End, index: this.currentTab, controller: this.tabsController }) {
           TabContent() {
             Column() {
               LibraryPage()
@@ -467,6 +668,7 @@ struct Index {
         })
         .width('100%')
         .height('100%')
+        }
 
         // Cloudflare 盾验证页：Http 层检测到 challenge 时弹出
         if (this.cfChallengeUrl !== '') {
@@ -530,5 +732,12 @@ struct Index {
     .hideTitleBar(true)
     .mode(NavigationMode.Stack)
     .backgroundColor(this.pal.bg)
+    // 一多断点跟踪：窗口宽度变化驱动 底部页签/侧边导航 切换
+    .onAreaChange((_old: Area, newArea: Area) => {
+      const w = newArea.width;
+      if (typeof w === 'number') {
+        this.windowW = w;
+      }
+    })
   }
 }

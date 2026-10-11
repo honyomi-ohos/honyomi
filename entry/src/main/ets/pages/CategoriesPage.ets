@@ -6,6 +6,7 @@ import { ThemePalette } from '../common/Theme';
 import { PageHeader } from './components/PageHeader';
 import { AppIcon } from './components/AppIcon';
 import { InputDialog } from './components/Dialogs';
+import { PickerSheet } from './components/PickerSheet';
 
 // 分类管理：列表 + 新建 + 长按重命名/删除
 @Component
@@ -14,6 +15,8 @@ export struct CategoriesPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('navBarH') navBarH: number = 0;
   @State categories: CategoryRecord[] = [];
+  @State showItemSheet: boolean = false;
+  private menuCat: CategoryRecord | null = null;
 
   aboutToAppear(): void {
     const context = getContext(this) as common.UIAbilityContext;
@@ -71,27 +74,30 @@ export struct CategoriesPage {
     if (cat.id === 1) {
       return;
     }
-    const sheets: SheetInfo[] = [];
-    sheets.push({
-      title: $r('app.string.categories_rename'),
-      action: (): void => {
-        this.showRename(cat);
+    this.menuCat = cat;
+    this.showItemSheet = true;
+  }
+
+  @Builder
+  itemSheetBuilder() {
+    PickerSheet({
+      options: [$r('app.string.categories_rename'), $r('app.string.common_delete')],
+      selectedIndex: -1,
+      onPick: (index: number): void => {
+        this.showItemSheet = false;
+        const cat: CategoryRecord | null = this.menuCat;
+        if (cat === null) {
+          return;
+        }
+        if (index === 0) {
+          this.showRename(cat);
+        } else if (index === 1) {
+          CategoryRepo.remove(cat.id).then(() => {
+            this.reload();
+          });
+        }
       }
-    });
-    sheets.push({
-      title: $r('app.string.common_delete'),
-      action: (): void => {
-        CategoryRepo.remove(cat.id).then(() => {
-          this.reload();
-        });
-      }
-    });
-    const opts: ActionSheetOptions = {
-      title: cat.name,
-      message: '',
-      sheets: sheets
-    };
-    this.getUIContext().showActionSheet(opts);
+    })
   }
 
   @Builder
@@ -164,6 +170,13 @@ export struct CategoriesPage {
       .width('100%')
       .height('100%')
       .backgroundColor(this.pal.bg)
+      .bindSheet($$this.showItemSheet, this.itemSheetBuilder(), {
+        title: { title: this.menuCat === null ? '' : this.menuCat.name },
+        detents: [SheetSize.FIT_CONTENT],
+        dragBar: true,
+        showClose: false,
+        blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
+      })
     }
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)

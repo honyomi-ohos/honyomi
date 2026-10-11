@@ -1,6 +1,7 @@
 import { AbilityConstant, UIAbility, Want, Configuration, ConfigurationConstant } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
+import { deviceInfo } from '@kit.BasicServicesKit';
 import { Settings } from '../common/Settings';
 import { AppDb } from '../data/AppDb';
 import { SourceRegistry } from '../source/Source';
@@ -10,6 +11,7 @@ import { PluginService } from '../data/PluginService';
 import { JsvmExtensionManager } from '../jsvm/JsvmExtensionManager';
 import { CookieJar } from '../net/CookieJar';
 import { ImageCache } from '../common/ImageCache';
+import { WidgetUpdater } from '../form/WidgetUpdater';
 
 const DOMAIN = 0x0001;
 
@@ -45,6 +47,7 @@ export default class EntryAbility extends UIAbility {
     CookieJar.init(this.context);
     ImageCache.init(this.context);
     AppStorage.setOrCreate('cfChallengeUrl', '');
+    this.handleCardWant(want);
   }
 
   onConfigurationUpdate(newConfig: Configuration): void {
@@ -61,8 +64,15 @@ export default class EntryAbility extends UIAbility {
 
   onWindowStageCreate(windowStage: window.WindowStage): void {
     hilog.info(DOMAIN, 'Mihon', '%{public}s', 'Ability onWindowStageCreate');
-    // 窗口沉浸式：全屏布局 + 透明系统栏（内容延伸到状态栏/导航栏下方）
+    // PC/2in1：保留系统窗口标题栏（含最小化/关闭按钮），不做全屏沉浸布局，
+    // 避免内容延伸至标题栏三键区造成遮挡；其余设备维持沉浸式全屏
+    const isPcLike: boolean = deviceInfo.deviceType === '2in1' || deviceInfo.deviceType === 'pc';
     windowStage.getMainWindow().then((win: window.Window) => {
+      if (isPcLike) {
+        Settings.applySystemBar(this.context);
+        Settings.initAvoidAreas(this.context);
+        return;
+      }
       win.setWindowLayoutFullScreen(true).then(() => {
         Settings.applySystemBar(this.context);
         Settings.initAvoidAreas(this.context);
@@ -91,5 +101,37 @@ export default class EntryAbility extends UIAbility {
 
   onBackground(): void {
     hilog.info(DOMAIN, 'Mihon', '%{public}s', 'Ability onBackground');
+    WidgetUpdater.refreshAll(this.context).catch((e: Error) => {
+      hilog.warn(DOMAIN, 'Mihon', 'onBackground refreshAll failed: %{public}s', e.message);
+    });
+  }
+
+  onNewWant(want: Want, launchParam: AbilityConstant.LaunchParam): void {
+    hilog.info(DOMAIN, 'Mihon', '%{public}s', 'Ability onNewWant');
+    this.handleCardWant(want);
+  }
+
+  // 解析桌面卡片 router 事件参数，写入 AppStorage 供 Index 导航
+  private handleCardWant(want: Want): void {
+    const params = want.parameters;
+    if (params === undefined) {
+      return;
+    }
+    const target = params['cardTarget'];
+    if (typeof target !== 'string' || target === '') {
+      return;
+    }
+    const mangaIdVal = params['mangaId'];
+    const chapterIdVal = params['chapterId'];
+    const mangaId = typeof mangaIdVal === 'number' ? mangaIdVal :
+      (typeof mangaIdVal === 'string' ? Number(mangaIdVal) : 0);
+    const chapterId = typeof chapterIdVal === 'number' ? chapterIdVal :
+      (typeof chapterIdVal === 'string' ? Number(chapterIdVal) : 0);
+    const payload: Record<string, string | number> = {
+      'target': target,
+      'mangaId': mangaId,
+      'chapterId': chapterId
+    };
+    AppStorage.setOrCreate('cardAction', JSON.stringify(payload));
   }
 }

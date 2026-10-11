@@ -45,6 +45,19 @@ export class MangaRecord {
   inLibrary: boolean = false;
   categoryId: number = 1;
   addedAt: number = 0;
+  lastUpdateAt: number = 0;
+  fetchedAt: number = 0;
+}
+
+// 书架统计（章节/历史聚合查询结果）
+export class MangaStats {
+  mangaId: number = 0;
+  total: number = 0;
+  unread: number = 0;
+  readCount: number = 0;
+  bookmarkCount: number = 0;
+  latest: number = 0; // 最新章节上传时间 MAX(chapter.dateUpload)
+  lastRead: number = 0; // 最近阅读时间 MAX(history.seenAt)
 }
 
 export class ChapterRecord {

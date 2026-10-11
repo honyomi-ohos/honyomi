@@ -237,6 +237,23 @@ export class DownloadService {
     return fileIo.accessSync(`${DownloadService.chapterDir(mangaId, chapterId)}/done.mark`);
   }
 
+  // 每部漫画的已下载章节数（downloads/{mangaId}/ 下章节目录数），书架下载徽标用
+  static downloadedChapterCounts(): Record<string, number> {
+    const counts: Record<string, number> = {};
+    if (DownloadService.rootDir === '' || !fileIo.accessSync(DownloadService.rootDir)) {
+      return counts;
+    }
+    const mangaDirs = fileIo.listFileSync(DownloadService.rootDir);
+    for (const md of mangaDirs) {
+      const id = parseInt(md, 10);
+      if (id >= 0) {
+        const chapterDirs = fileIo.listFileSync(`${DownloadService.rootDir}/${md}`);
+        counts[`${id}`] = chapterDirs.length;
+      }
+    }
+    return counts;
+  }
+
   // 从目录结构反查 mangaId（downloads/{mangaId}/{chapterId}/）
   static mangaIdOf(chapterId: number): number {
     if (DownloadService.rootDir === '' || !fileIo.accessSync(DownloadService.rootDir)) {

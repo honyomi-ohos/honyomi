@@ -9,6 +9,7 @@ export struct MangaRow {
   @Prop record: MangaRecord = new MangaRecord();
   @Prop subtitle: string = '';
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @State hovered: boolean = false;
   onRowClick: (record: MangaRecord) => void = (_r: MangaRecord) => {};
   @BuilderParam trailing: () => void = this.emptyTrailing;
 
@@ -18,23 +19,24 @@ export struct MangaRow {
 
   build() {
     Row() {
-      if (this.record.thumbnailUrl === '') {
-        Column() {
-          AppIcon({ name: 'photo', iconSize: 18 })
+      // 封面
+      Stack() {
+        if (this.record.thumbnailUrl === '') {
+          Column() {
+            AppIcon({ name: 'photo', iconSize: 18 })
+          }
+          .width('100%')
+          .height('100%')
+          .justifyContent(FlexAlign.Center)
+        } else {
+          SmartImage({ url: this.record.thumbnailUrl, sourceKey: this.record.sourceKey, fit: ImageFit.Cover, fill: true })
         }
-        .width(44)
-        .height(62)
-        .borderRadius(6)
-        .backgroundColor(this.pal.chip)
-        .justifyContent(FlexAlign.Center)
-      } else {
-        SmartImage({ url: this.record.thumbnailUrl, sourceKey: this.record.sourceKey, fit: ImageFit.Cover, fill: true })
-          .width(44)
-          .height(62)
-          .borderRadius(6)
-          .clip(true)
-          .backgroundColor(this.pal.chip)
       }
+      .width(44)
+      .height(62)
+      .borderRadius(6)
+      .clip(true)
+      .backgroundColor(this.pal.chip)
 
       Column() {
         Text(this.record.title)
@@ -60,8 +62,12 @@ export struct MangaRow {
     .width('100%')
     .alignItems(VerticalAlign.Center)
     .padding({ top: 6, bottom: 6 })
+    .backgroundColor(this.hovered ? this.pal.chip : Color.Transparent)
     .onClick(() => {
       this.onRowClick(this.record);
+    })
+    .onHover((isHover: boolean) => {
+      this.hovered = isHover;
     })
   }
 }

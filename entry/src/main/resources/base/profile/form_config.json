@@ -1,0 +1,40 @@
+{
+  "forms": [
+    {
+      "name": "RecentCard",
+      "displayName": "$string:card_recent_display",
+      "description": "$string:card_recent_desc",
+      "src": "./ets/widget/RecentCard.ets",
+      "uiSyntax": "arkts",
+      "isDefault": true,
+      "updateEnabled": true,
+      "updateDuration": 2,
+      "supportDimensions": ["2*2", "2*4"],
+      "defaultDimension": "2*2"
+    },
+    {
+      "name": "UpdatesCard",
+      "displayName": "$string:card_updates_display",
+      "description": "$string:card_updates_desc",
+      "src": "./ets/widget/UpdatesCard.ets",
+      "uiSyntax": "arkts",
+      "isDefault": false,
+      "updateEnabled": true,
+      "updateDuration": 2,
+      "supportDimensions": ["2*2", "2*4"],
+      "defaultDimension": "2*2"
+    },
+    {
+      "name": "MangaCard",
+      "displayName": "$string:card_manga_display",
+      "description": "$string:card_manga_desc",
+      "src": "./ets/widget/MangaCard.ets",
+      "uiSyntax": "arkts",
+      "isDefault": false,
+      "updateEnabled": true,
+      "updateDuration": 2,
+      "supportDimensions": ["2*2", "2*4"],
+      "defaultDimension": "2*2"
+    }
+  ]
+}

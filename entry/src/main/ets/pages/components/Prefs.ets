@@ -1,6 +1,7 @@
 // 閫氱敤鍋忓ソ/璁剧疆琛岀粍浠讹細PrefGroup / TextRow / SwitchRow / SelectRow / IconRow
 import { ThemePalette } from '../../common/Theme';
 import { AppIcon } from './AppIcon';
+import { PickerSheet } from './PickerSheet';
 
 @Builder
 function emptyContent() {
@@ -35,6 +36,8 @@ export struct PrefGroup {
     }
     .alignItems(HorizontalAlign.Start)
     .width('100%')
+    // 一多大屏适配：宽屏下限制内容最大宽度并居中，避免列表被拉伸过宽
+    .constraintSize({ maxWidth: 720 })
   }
 }
 
@@ -42,6 +45,7 @@ export struct PrefGroup {
 export struct TextRow {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @State hovered: boolean = false;
   title: Resource | string = '';
   value: Resource | string = '';
   onTap: () => void = () => {};
@@ -67,7 +71,11 @@ export struct TextRow {
     .width('100%')
     .height(52)
     .padding({ left: 16, right: 12 })
+    .backgroundColor(this.hovered ? this.pal.chip : Color.Transparent)
     .onClick(() => this.onTap())
+    .onHover((isHover: boolean) => {
+      this.hovered = isHover;
+    })
   }
 }
 
@@ -105,10 +113,36 @@ export struct SwitchRow {
 export struct SelectRow {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @State hovered: boolean = false;
   title: Resource | string = '';
   value: Resource | string = '';
   @Prop options: string[] = [];
   onSelect: (value: string) => void = (value: string) => {};
+  @State showPicker: boolean = false;
+
+  @Builder
+  pickerSheetBuilder() {
+    PickerSheet({
+      options: this.options,
+      selectedIndex: this.currentValueIndex(),
+      onPick: (index: number): void => {
+        this.showPicker = false;
+        const opt: string | undefined = this.options[index];
+        if (opt !== undefined) {
+          this.onSelect(opt);
+        }
+      }
+    })
+  }
+
+  private currentValueIndex(): number {
+    for (let i = 0; i < this.options.length; i++) {
+      if (this.options[i] === this.value) {
+        return i;
+      }
+    }
+    return -1;
+  }
 
   build() {
     Row() {
@@ -129,22 +163,19 @@ export struct SelectRow {
     .width('100%')
     .height(52)
     .padding({ left: 16, right: 12 })
+    .backgroundColor(this.hovered ? this.pal.chip : Color.Transparent)
+    .bindSheet($$this.showPicker, this.pickerSheetBuilder(), {
+      title: { title: this.title },
+      detents: [SheetSize.FIT_CONTENT],
+      dragBar: true,
+      showClose: false,
+      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
+    })
     .onClick(() => {
-      const sheets: SheetInfo[] = [];
-      this.options.forEach((opt: string) => {
-        sheets.push({
-          title: opt,
-          action: (): void => {
-            this.onSelect(opt);
-          }
-        });
-      });
-      const opts: ActionSheetOptions = {
-        title: this.title,
-        message: '',
-        sheets: sheets
-      };
-      this.getUIContext().showActionSheet(opts);
+      this.showPicker = true;
+    })
+    .onHover((isHover: boolean) => {
+      this.hovered = isHover;
     })
   }
 }
@@ -153,6 +184,7 @@ export struct SelectRow {
 export struct IconRow {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @State hovered: boolean = false;
   title: Resource | string = '';
   @Prop icon: string = '';
   onTap: () => void = () => {};
@@ -171,6 +203,10 @@ export struct IconRow {
     .width('100%')
     .height(52)
     .padding({ left: 16, right: 12 })
+    .backgroundColor(this.hovered ? this.pal.chip : Color.Transparent)
     .onClick(() => this.onTap())
+    .onHover((isHover: boolean) => {
+      this.hovered = isHover;
+    })
   }
 }

@@ -11,7 +11,7 @@ export class ImageCache {
   private static dir: string = '';
   private static inflight: Map<string, Promise<string>> = new Map();
 
-  static init(context: common.UIAbilityContext): void {
+  static init(context: common.Context): void {
     ImageCache.dir = `${context.cacheDir}/image_file_cache`;
     if (!fs.accessSync(ImageCache.dir)) {
       fs.mkdirSync(ImageCache.dir, true);
@@ -45,6 +45,41 @@ export class ImageCache {
       return await task;
     } finally {
       ImageCache.inflight.delete(url);
+    }
+  }
+
+  // 确保本地文件存在并返回裸绝对路径（桌面卡片等需要 fd 的场景）：
+  // 命中缓存直接返回；未命中无论源是否声明请求头都下载落盘；失败返回 ''
+  static async ensureLocal(context: common.Context, url: string, sourceKey: string): Promise<string> {
+    if (url.indexOf('http://') !== 0 && url.indexOf('https://') !== 0) {
+      return url;
+    }
+    if (ImageCache.dir === '') {
+      ImageCache.init(context);
+    }
+    const source = SourceRegistry.get(sourceKey);
+    const srcHeaders = source !== undefined ? source.imageRequestHeaders() : undefined;
+    const headers: Record<string, string> = srcHeaders !== undefined ? srcHeaders : {};
+    const path = await ImageCache.cachedPath(url);
+    if (fs.accessSync(path)) {
+      return path;
+    }
+    try {
+      const pending = ImageCache.inflight.get(url);
+      if (pending !== undefined) {
+        const done = await pending;
+        return done.substring('file://'.length);
+      }
+      const task = ImageCache.fetch(url, headers, path);
+      ImageCache.inflight.set(url, task);
+      try {
+        const done = await task;
+        return done.substring('file://'.length);
+      } finally {
+        ImageCache.inflight.delete(url);
+      }
+    } catch (_e) {
+      return '';
     }
   }
 
@@ -97,11 +132,18 @@ export class ImageCache {
 
   private static async fetch(url: string, headers: Record<string, string>, path: string): Promise<string> {
     const buffer = await Http.getBuffer(url, headers);
-    const file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+    // 原子落盘：先写临时文件再改名，避免应用进程与表单进程并发写坏同一封面
+    const tmp = `${path}.tmp`;
+    const file = fs.openSync(tmp, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE | fs.OpenMode.TRUNC);
     try {
       fs.writeSync(file.fd, buffer);
     } finally {
       fs.closeSync(file);
+    }
+    if (!fs.accessSync(path)) {
+      fs.renameSync(tmp, path);
+    } else {
+      fs.unlinkSync(tmp);
     }
     return `file://${path}`;
   }

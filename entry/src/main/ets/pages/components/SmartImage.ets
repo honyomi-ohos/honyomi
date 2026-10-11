@@ -11,6 +11,7 @@ export struct SmartImage {
   @Prop fill: boolean = true;
   @State display: string = '';
   @State failed: boolean = false;
+  @State imgReady: boolean = false;
   private resolving: string = '';
 
   aboutToAppear(): void {
@@ -29,6 +30,7 @@ export struct SmartImage {
     this.resolving = u;
     this.display = '';
     this.failed = false;
+    this.imgReady = false;
     if (u.indexOf('http://') !== 0 && u.indexOf('https://') !== 0) {
       this.display = u;
       return;
@@ -47,10 +49,35 @@ export struct SmartImage {
   build() {
     Stack() {
       if (this.display !== '') {
-        Image(this.display)
+        if (!this.failed) {
+          Image(this.display)
+            .width('100%')
+            .height(this.fill ? '100%' : 'auto')
+            .objectFit(this.fit)
+            .onComplete((): void => {
+              this.imgReady = true;
+            })
+            .onError((): void => {
+              this.failed = true;
+            })
+        }
+        if (this.failed) {
+          Column() {
+            AppIcon({ name: 'error', iconSize: 20 })
+          }
           .width('100%')
-          .height(this.fill ? '100%' : 'auto')
-          .objectFit(this.fit)
+          .height(this.fill ? '100%' : 120)
+          .justifyContent(FlexAlign.Center)
+        } else if (!this.imgReady) {
+          Column() {
+            LoadingProgress()
+              .width(22)
+              .height(22)
+          }
+          .width('100%')
+          .height(this.fill ? '100%' : 120)
+          .justifyContent(FlexAlign.Center)
+        }
       } else if (this.failed) {
         Column() {
           AppIcon({ name: 'error', iconSize: 20 })

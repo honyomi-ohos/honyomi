@@ -1,19 +1,21 @@
 import { common } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
-import { MangaRepo, ChapterRepo, CategoryRepo } from '../data/Repos';
+import { MangaRepo, ChapterRepo, CategoryRepo, TrackRepo } from '../data/Repos';
 import { UpdateService } from '../data/UpdateService';
 import { DownloadService } from '../data/DownloadService';
 import { Settings } from '../common/Settings';
-import { MangaRecord, CategoryRecord } from '../model/Models';
-import { DetailParams } from '../model/RouteParams';
+import { MangaRecord, CategoryRecord, MangaStats, ChapterRecord, DownloadTask } from '../model/Models';
+import { DetailParams, MigrateSearchParams } from '../model/RouteParams';
+import { SourceRegistry } from '../source/Source';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
-import { MangaCard, CategoryChip } from './components/MangaCard';
-import { CategoryDialog } from './components/Dialogs';
+import { CategoryDialog, ConfirmDialog } from './components/Dialogs';
 import { EmptyScreen } from './components/EmptyScreen';
 import { AppIcon } from './components/AppIcon';
+import { LibraryMangaItem } from './components/LibraryItems';
+import { LibrarySettingsSheet } from './components/LibrarySettingsSheet';
 
-// 书架页：分类 + 收藏网格 + 搜索/过滤/更多
+// 书架页：分类 + 搜索/过滤弹层（筛选/排序/显示）/四种显示模式
 @Component
 export struct LibraryPage {
   @Consume('navStack') pathStack: NavPathStack;
@@ -23,16 +25,46 @@ export struct LibraryPage {
   @State mangas: MangaRecord[] = [];
   @State categories: CategoryRecord[] = [];
   @State selectedCategory: number = 0;
-  @State unreadMap: Record<string, number> = {};
   @State loading: boolean = true;
   @State refreshing: boolean = false;
   @State searchOpen: boolean = false;
   @State searchQuery: string = '';
-  @State filterValue: string = 'none';
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
+  // 弹层状态（与 Settings 同步）
+  @State sortKey: string = 'alpha';
+  @State sortAsc: boolean = true;
+  @State fDownloaded: string = 'ignore';
+  @State fUnread: string = 'ignore';
+  @State fStarted: string = 'ignore';
+  @State fBookmarked: string = 'ignore';
+  @State fCompleted: string = 'ignore';
+  @State fTracked: string = 'ignore';
+  @State viewMode: string = 'compact';
+  @State gridCols: number = 0;
+  @State showUnreadBadge: boolean = true;
+  @State showDownloadBadge: boolean = true;
+  @State showLocalBadge: boolean = false;
+  @State showLanguageBadge: boolean = false;
+  @State showCategoryTabs: boolean = true;
+  @State showMangaCount: boolean = false;
+  @State showFilterSheet: boolean = false;
+  // 聚合数据
+  @State statsMap: Record<string, MangaStats> = {};
+  @State downloadCounts: Record<string, number> = {};
+  @State trackedIds: Set<number> = new Set<number>();
+  @State langMap: Record<string, string> = {};
+  @State randomOrder: Record<string, number> = {};
+  @State contentW: number = 0;
+  // 多选（长按触发，对齐 Mihon 书架选择模式）；变化同步全局计数，
+  // Index 侧据此隐藏/恢复底部悬浮页签栏（HDS 多选交互规范）
+  @State @Watch('onSelectionChanged') selection: Set<number> = new Set<number>();
+
+  private onSelectionChanged(): void {
+    AppStorage.setOrCreate('libSelectionCount', this.selection.size);
+  }
 
   aboutToAppear(): void {
-    this.filterValue = Settings.getLibraryFilter();
+    this.applySettings();
     this.loadData();
   }
 
@@ -40,17 +72,59 @@ export struct LibraryPage {
     this.loadData();
   }
 
+  private applySettings(): void {
+    this.sortKey = Settings.getLibrarySort();
+    this.sortAsc = Settings.getLibrarySortAsc();
+    this.fDownloaded = Settings.getLibraryTriState('downloaded');
+    this.fUnread = Settings.getLibraryTriState('unread');
+    this.fStarted = Settings.getLibraryTriState('started');
+    this.fBookmarked = Settings.getLibraryTriState('bookmarked');
+    this.fCompleted = Settings.getLibraryTriState('completed');
+    this.fTracked = Settings.getLibraryTriState('tracked');
+    this.viewMode = Settings.getLibraryView();
+    this.gridCols = Settings.getLibraryGridCols();
+    this.showUnreadBadge = Settings.getShowUnreadBadge();
+    this.showDownloadBadge = Settings.getShowDownloadBadge();
+    this.showLocalBadge = Settings.getShowLocalBadge();
+    this.showLanguageBadge = Settings.getShowLanguageBadge();
+    this.showCategoryTabs = Settings.getShowCategoryTabs();
+    this.showMangaCount = Settings.getShowMangaCount();
+  }
+
   async loadData(): Promise<void> {
     const context = getContext(this) as common.UIAbilityContext;
     await AppDb.ready(context);
     this.categories = await CategoryRepo.list();
     this.mangas = await MangaRepo.getLibrary();
-    const map: Record<string, number> = {};
+    this.statsMap = await MangaRepo.stats();
+    this.downloadCounts = DownloadService.downloadedChapterCounts();
+    this.trackedIds = await TrackRepo.trackedMangaIds();
+    const langs: Record<string, string> = {};
     for (const manga of this.mangas) {
-      map[`${manga.id}`] = await ChapterRepo.unreadCount(manga.id);
+      if (langs[manga.sourceKey] === undefined) {
+        const source = SourceRegistry.get(manga.sourceKey);
+        langs[manga.sourceKey] = source !== undefined ? source.lang.toUpperCase() : '';
+      }
     }
-    this.unreadMap = map;
+    this.langMap = langs;
+    this.reshuffle();
     this.loading = false;
+  }
+
+  // 随机排序洗牌（sortKey === 'random' 时生效）
+  private reshuffle(): void {
+    const ids: number[] = this.mangas.map((m: MangaRecord): number => m.id);
+    for (let i = ids.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const t = ids[i];
+      ids[i] = ids[j];
+      ids[j] = t;
+    }
+    const order: Record<string, number> = {};
+    ids.forEach((id: number, i: number) => {
+      order[`${id}`] = i;
+    });
+    this.randomOrder = order;
   }
 
   async refreshLibrary(): Promise<void> {
@@ -67,26 +141,6 @@ export struct LibraryPage {
       Util.toastRes(this.getUIContext(), $r('app.string.updates_refresh_failed'));
     }
     this.refreshing = false;
-  }
-
-  shownMangas(): MangaRecord[] {
-    let list = this.mangas;
-    if (this.selectedCategory > 0) {
-      list = list.filter((m: MangaRecord): boolean => m.categoryId === this.selectedCategory);
-    }
-    const q = this.searchQuery.trim().toLowerCase();
-    if (q !== '') {
-      list = list.filter((m: MangaRecord): boolean => m.title.toLowerCase().includes(q));
-    }
-    if (this.filterValue === 'unread') {
-      list = list.filter((m: MangaRecord): boolean => (this.unreadMap[`${m.id}`] || 0) > 0);
-    } else if (this.filterValue === 'downloaded') {
-      const downloaded = new Set(DownloadService.downloadedMangaIds());
-      list = list.filter((m: MangaRecord): boolean => downloaded.has(m.id));
-    } else if (this.filterValue === 'uncompleted') {
-      list = list.filter((m: MangaRecord): boolean => m.status !== 'completed');
-    }
-    return list;
   }
 
   // 溢出菜单：更新分类（仅刷新当前分类）
@@ -115,30 +169,126 @@ export struct LibraryPage {
     this.openDetail(list[idx]);
   }
 
-  showFilterSheet(): void {
-    const labels: string[] = [
-      Util.resStr(this.getUIContext(), $r('app.string.common_all')),
-      Util.resStr(this.getUIContext(), $r('app.string.lib_set_filter_unread')),
-      Util.resStr(this.getUIContext(), $r('app.string.lib_set_filter_downloaded')),
-      Util.resStr(this.getUIContext(), $r('app.string.lib_set_filter_uncompleted')),
-    ];
-    const values: string[] = ['none', 'unread', 'downloaded', 'uncompleted'];
-    const sheets: SheetInfo[] = [];
-    labels.forEach((label: string, i: number) => {
-      sheets.push({
-        title: label,
-        action: (): void => {
-          this.filterValue = values[i];
-          Settings.setLibraryFilter(values[i]);
-        }
-      });
+  private passesTriState(value: string, cond: boolean): boolean {
+    if (value === 'include') {
+      return cond;
+    }
+    if (value === 'exclude') {
+      return !cond;
+    }
+    return true;
+  }
+
+  private filterActive(): boolean {
+    return this.fDownloaded !== 'ignore' || this.fUnread !== 'ignore' || this.fStarted !== 'ignore' ||
+      this.fBookmarked !== 'ignore' || this.fCompleted !== 'ignore' || this.fTracked !== 'ignore';
+  }
+
+  // 应用搜索 + 三态筛选（不含分类），供列表与分类计数共用
+  private filteredAll(): MangaRecord[] {
+    let list = this.mangas;
+    const q = this.searchQuery.trim().toLowerCase();
+    if (q !== '') {
+      list = list.filter((m: MangaRecord): boolean => m.title.toLowerCase().includes(q));
+    }
+    return list.filter((m: MangaRecord): boolean => {
+      const s: MangaStats | undefined = this.statsMap[`${m.id}`];
+      if (!this.passesTriState(this.fDownloaded, (this.downloadCounts[`${m.id}`] || 0) > 0)) {
+        return false;
+      }
+      if (!this.passesTriState(this.fUnread, s !== undefined && s.unread > 0)) {
+        return false;
+      }
+      if (!this.passesTriState(this.fStarted, s !== undefined && s.readCount > 0)) {
+        return false;
+      }
+      if (!this.passesTriState(this.fBookmarked, s !== undefined && s.bookmarkCount > 0)) {
+        return false;
+      }
+      if (!this.passesTriState(this.fCompleted, m.status === 'completed')) {
+        return false;
+      }
+      if (!this.passesTriState(this.fTracked, this.trackedIds.has(m.id))) {
+        return false;
+      }
+      return true;
     });
-    const opts: ActionSheetOptions = {
-      title: $r('app.string.action_filter'),
-      message: '',
-      sheets: sheets
-    };
-    this.getUIContext().showActionSheet(opts);
+  }
+
+  private statsOf(id: number): MangaStats | undefined {
+    return this.statsMap[`${id}`];
+  }
+
+  private unreadOf(id: number): number {
+    const s: MangaStats | undefined = this.statsMap[`${id}`];
+    return s !== undefined ? s.unread : 0;
+  }
+
+  private compareMangas(a: MangaRecord, b: MangaRecord): number {
+    let cmp = 0;
+    if (this.sortKey === 'alpha') {
+      const ta = a.title.toLowerCase();
+      const tb = b.title.toLowerCase();
+      cmp = ta < tb ? -1 : (ta > tb ? 1 : 0);
+    } else if (this.sortKey === 'random') {
+      const oa = this.randomOrder[`${a.id}`] || 0;
+      const ob = this.randomOrder[`${b.id}`] || 0;
+      cmp = oa - ob;
+    } else {
+      const sa = this.statsOf(a.id);
+      const sb = this.statsOf(b.id);
+      if (this.sortKey === 'total') {
+        cmp = (sa !== undefined ? sa.total : 0) - (sb !== undefined ? sb.total : 0);
+      } else if (this.sortKey === 'lastRead') {
+        cmp = (sa !== undefined ? sa.lastRead : 0) - (sb !== undefined ? sb.lastRead : 0);
+      } else if (this.sortKey === 'lastUpdate') {
+        cmp = a.lastUpdateAt - b.lastUpdateAt;
+      } else if (this.sortKey === 'unread') {
+        cmp = (sa !== undefined ? sa.unread : 0) - (sb !== undefined ? sb.unread : 0);
+      } else if (this.sortKey === 'latestChapter') {
+        cmp = (sa !== undefined ? sa.latest : 0) - (sb !== undefined ? sb.latest : 0);
+      } else if (this.sortKey === 'fetchDate') {
+        cmp = a.fetchedAt - b.fetchedAt;
+      } else {
+        cmp = a.addedAt - b.addedAt;
+      }
+    }
+    return this.sortAsc ? cmp : -cmp;
+  }
+
+  shownMangas(): MangaRecord[] {
+    const filtered = this.filteredAll();
+    const sorted = filtered.slice().sort((a: MangaRecord, b: MangaRecord): number => this.compareMangas(a, b));
+    if (this.selectedCategory > 0 && this.showCategoryTabs) {
+      return sorted.filter((m: MangaRecord): boolean => m.categoryId === this.selectedCategory);
+    }
+    return sorted;
+  }
+
+  // 分类 chip 数量（显示作品数开启时）
+  private categoryCount(categoryId: number): number {
+    const filtered = this.filteredAll();
+    if (categoryId === 0) {
+      return filtered.length;
+    }
+    return filtered.filter((m: MangaRecord): boolean => m.categoryId === categoryId).length;
+  }
+
+  private gridColsCount(): number {
+    if (this.gridCols > 0) {
+      return this.gridCols;
+    }
+    // 自动：约 128vp 一格
+    const w = this.contentW > 0 ? this.contentW : 360;
+    return Math.max(1, Math.floor((w - 16) / 128));
+  }
+
+  private columnsTemplate(): string {
+    let tpl = '';
+    for (let i = 0; i < this.gridColsCount(); i++) {
+      tpl += '1fr ';
+    }
+    return tpl.trim();
   }
 
   openDetail(record: MangaRecord): void {
@@ -146,19 +296,192 @@ export struct LibraryPage {
     this.pathStack.pushPathByName('MangaDetail', params);
   }
 
-  showCategoryMenu(record: MangaRecord): void {
+  // ---- 多选逻辑（对齐 Mihon LibraryViewModel selection）----
+
+  private selectionMode(): boolean {
+    return this.selection.size > 0;
+  }
+
+  private toggleSelection(id: number): void {
+    const next: Set<number> = new Set<number>(this.selection);
+    if (next.has(id)) {
+      next.delete(id);
+    } else {
+      next.add(id);
+    }
+    this.selection = next;
+  }
+
+  private clearSelection(): void {
+    this.selection = new Set<number>();
+  }
+
+  private selectAllShown(): void {
+    const next: Set<number> = new Set<number>();
+    this.shownMangas().forEach((m: MangaRecord): void => {
+      next.add(m.id);
+    });
+    this.selection = next;
+  }
+
+  private invertSelection(): void {
+    const next: Set<number> = new Set<number>(this.selection);
+    this.shownMangas().forEach((m: MangaRecord): void => {
+      if (next.has(m.id)) {
+        next.delete(m.id);
+      } else {
+        next.add(m.id);
+      }
+    });
+    this.selection = next;
+  }
+
+  // 条目点击：选择模式下切换选中，否则打开详情
+  private onItemTap(record: MangaRecord): void {
+    if (this.selectionMode()) {
+      this.toggleSelection(record.id);
+    } else {
+      this.openDetail(record);
+    }
+  }
+
+  // 长按：进入/切换多选
+  private onItemLongPress(record: MangaRecord): void {
+    this.toggleSelection(record.id);
+  }
+
+  // 移动分类（对选中集合批量应用）
+  private showMultiCategoryMenu(): void {
     const dialog = new CustomDialogController({
       builder: CategoryDialog({
         categories: this.categories,
         onPick: (categoryId: number): void => {
-          MangaRepo.setCategory(record.id, categoryId).then(() => {
-            this.loadData();
+          const ids: number[] = Array.from(this.selection);
+          this.clearSelection();
+          ids.forEach((id: number): void => {
+            MangaRepo.setCategory(id, categoryId);
           });
+          this.loadData();
         },
       }),
       autoCancel: true,
     });
     dialog.open();
+  }
+
+  private async markSelectionRead(read: boolean): Promise<void> {
+    const ids: number[] = Array.from(this.selection);
+    this.clearSelection();
+    for (const id of ids) {
+      await ChapterRepo.markAllRead(id, read);
+    }
+    await this.loadData();
+  }
+
+  // 下载选中漫画的全部未读章节（本地图源跳过）
+  private async downloadSelection(): Promise<void> {
+    const ids: number[] = Array.from(this.selection);
+    this.clearSelection();
+    let queued: number = 0;
+    for (const id of ids) {
+      const manga: MangaRecord | undefined = this.mangas.find((m: MangaRecord): boolean => m.id === id);
+      if (manga === undefined || manga.sourceKey === 'local') {
+        continue;
+      }
+      const chapters: ChapterRecord[] = await ChapterRepo.listByManga(id);
+      for (const ch of chapters) {
+        if (!ch.read && !DownloadService.isQueued(ch.id)) {
+          const task: DownloadTask = new DownloadTask();
+          task.mangaId = id;
+          task.mangaTitle = manga.title;
+          task.chapterId = ch.id;
+          task.chapterName = ch.name;
+          task.sourceKey = manga.sourceKey;
+          task.mangaUrl = manga.url;
+          task.chapterUrl = ch.url;
+          DownloadService.enqueue(task);
+          queued += 1;
+        }
+      }
+    }
+    Util.toastRes(this.getUIContext(), $r('app.string.action_download_queued', queued));
+  }
+
+  private showDeleteConfirm(): void {
+    const dialog = new CustomDialogController({
+      builder: ConfirmDialog({
+        title: $r('app.string.action_remove_from_library'),
+        message: Util.resStr(this.getUIContext(), $r('app.string.action_remove_from_library_msg', this.selection.size)),
+        confirmText: $r('app.string.action_delete'),
+        onConfirm: (): void => {
+          this.removeSelection();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  private async removeSelection(): Promise<void> {
+    const ids: number[] = Array.from(this.selection);
+    this.clearSelection();
+    for (const id of ids) {
+      await MangaRepo.setInLibrary(id, false);
+    }
+    AppStorage.set('libDirty', this.libDirty + 1);
+    await this.loadData();
+  }
+
+  // 迁移选中漫画（复用迁移搜索页）
+  private migrateSelection(): void {
+    const ids: number[] = Array.from(this.selection);
+    this.clearSelection();
+    const params: MigrateSearchParams = { mangaIds: ids };
+    this.pathStack.pushPathByName('MigrateSearch', params);
+  }
+
+  @Builder
+  selectionActionBtn(icon: string, label: Resource, onTap: () => void) {
+    Column({ space: 4 }) {
+      AppIcon({ name: icon, iconSize: 22, tint: this.pal.text })
+      Text(label)
+        .fontSize(10)
+        .fontColor(this.pal.sub)
+        .maxLines(1)
+    }
+    .layoutWeight(1)
+    .padding({ top: 10, bottom: 10 })
+    .onClick(() => {
+      onTap();
+    })
+  }
+
+  @Builder
+  selectionActionBar() {
+    Row() {
+      this.selectionActionBtn('label', $r('app.string.action_move_category'), (): void => {
+        this.showMultiCategoryMenu();
+      })
+      this.selectionActionBtn('done_all', $r('app.string.action_mark_as_read'), (): void => {
+        this.markSelectionRead(true);
+      })
+      this.selectionActionBtn('cancel', $r('app.string.action_mark_as_unread'), (): void => {
+        this.markSelectionRead(false);
+      })
+      this.selectionActionBtn('download', $r('app.string.action_download'), (): void => {
+        this.downloadSelection();
+      })
+      this.selectionActionBtn('delete', $r('app.string.action_delete'), (): void => {
+        this.showDeleteConfirm();
+      })
+      this.selectionActionBtn('open_in_new', $r('app.string.action_migrate'), (): void => {
+        this.migrateSelection();
+      })
+    }
+    .width('100%')
+    .padding({ left: 8, right: 8, top: 4, bottom: this.navBarH + 8 })
+    .backgroundColor(this.pal.card)
+    .borderRadius({ topLeft: 16, topRight: 16 })
   }
 
   @Builder
@@ -179,11 +502,64 @@ export struct LibraryPage {
     }
   }
 
+  @Builder
+  filterSheetBuilder() {
+    LibrarySettingsSheet({
+      sortKey: this.sortKey,
+      sortAsc: this.sortAsc,
+      filterDownloaded: this.fDownloaded,
+      filterUnread: this.fUnread,
+      filterStarted: this.fStarted,
+      filterBookmarked: this.fBookmarked,
+      filterCompleted: this.fCompleted,
+      filterTracked: this.fTracked,
+      viewMode: this.viewMode,
+      gridCols: this.gridCols,
+      showUnreadBadge: this.showUnreadBadge,
+      showDownloadBadge: this.showDownloadBadge,
+      showLocalBadge: this.showLocalBadge,
+      showLanguageBadge: this.showLanguageBadge,
+      showCategoryTabs: this.showCategoryTabs,
+      showMangaCount: this.showMangaCount,
+      onReshuffle: () => {
+        this.reshuffle();
+      }
+    })
+  }
+
   build() {
     Column() {
-      // 顶栏
-      Row() {
-        if (this.searchOpen) {
+      // 顶栏（选择模式下显示选择工具栏，对齐 Mihon LibrarySelectionToolbar）
+      if (this.selectionMode()) {
+        Row() {
+          AppIcon({ name: 'close', iconSize: 22, tint: this.pal.text })
+            .onClick(() => {
+              this.clearSelection();
+            })
+          Text(`${this.selection.size}`)
+            .fontSize(18)
+            .fontWeight(FontWeight.Bold)
+            .fontColor(this.pal.text)
+            .margin({ left: 16 })
+          Blank()
+            .layoutWeight(1)
+          AppIcon({ name: 'select_all', iconSize: 22, tint: this.pal.text })
+            .padding({ left: 12 })
+            .onClick(() => {
+              this.selectAllShown();
+            })
+          AppIcon({ name: 'autorenew', iconSize: 22, tint: this.pal.text })
+            .padding({ left: 12 })
+            .onClick(() => {
+              this.invertSelection();
+            })
+        }
+        .width('100%')
+        .height(38)
+        .padding({ left: 16, right: 16, top: 12, bottom: 8 })
+      } else {
+        Row() {
+          if (this.searchOpen) {
           TextInput({ text: this.searchQuery, placeholder: $r('app.string.library_search_hint') })
             .layoutWeight(1)
             .height(38)
@@ -207,13 +583,6 @@ export struct LibraryPage {
             .fontSize(22)
             .fontWeight(FontWeight.Bold)
             .fontColor(this.pal.text)
-          Text(`${this.shownMangas().length}`)
-            .fontSize(13)
-            .fontColor(this.pal.sub)
-            .backgroundColor(this.pal.chip)
-            .borderRadius(10)
-            .padding({ left: 8, right: 8, top: 2, bottom: 2 })
-            .margin({ left: 8 })
           if (this.refreshing) {
             LoadingProgress()
               .width(20)
@@ -228,90 +597,157 @@ export struct LibraryPage {
             .onClick(() => {
               this.searchOpen = true;
             })
-          AppIcon({ name: 'filter_list', iconSize: 22, tint: this.filterValue !== 'none' ? this.pal.primary : this.pal.text })
+          AppIcon({ name: 'filter_list', iconSize: 22, tint: this.filterActive() ? this.pal.primary : this.pal.text })
             .padding({ left: 12 })
             .onClick(() => {
-              this.showFilterSheet();
+              this.showFilterSheet = true;
+            })
+            .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(), {
+              detents: ['70%', SheetSize.LARGE],
+              showClose: false,
+              dragBar: true,
+              backgroundColor: this.pal.bg
             })
           AppIcon({ name: 'more_vert', iconSize: 22, tint: this.pal.text })
             .padding({ left: 12 })
             .bindMenu(this.libMenu)
         }
       }
-      .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 8 })
+        .width('100%')
+        .height(38)
+        .padding({ left: 16, right: 16, top: 12, bottom: 8 })
+      }
 
       // 分类 chips
-      Scroll() {
-        Row({ space: 8 }) {
-          Text($r('app.string.common_all'))
-            .fontSize(13)
-            .fontColor(this.selectedCategory === 0 ? '#FFFFFF' : this.pal.text)
-            .backgroundColor(this.selectedCategory === 0 ? this.pal.primary : this.pal.chip)
-            .borderRadius(14)
-            .padding({ left: 14, right: 14, top: 6, bottom: 6 })
-            .onClick(() => {
-              this.selectedCategory = 0;
-            })
-          ForEach(this.categories, (cat: CategoryRecord) => {
-            CategoryChip({
-              category: cat,
-              selected: this.selectedCategory === cat.id,
-              onChipClick: (picked: CategoryRecord): void => {
-                this.selectedCategory = picked.id;
-              },
-            })
-          }, (cat: CategoryRecord) => `chip-${cat.id}-${cat.name}`)
-        }
-        .padding({ left: 16, right: 16 })
-      }
-      .scrollable(ScrollDirection.Horizontal)
-      .scrollBar(BarState.Off)
-      .width('100%')
-      .margin({ bottom: 4 })
-
-      // 网格
-      if (this.loading) {
-        Column() {
-          LoadingProgress()
-            .width(36)
-            .height(36)
-            .color(this.pal.primary)
-        }
-        .layoutWeight(1)
-        .justifyContent(FlexAlign.Center)
-      } else if (this.shownMangas().length === 0) {
-        Column() {
-          EmptyScreen({
-            message: this.searchQuery.trim() !== '' || this.filterValue !== 'none'
-              ? $r('app.string.library_no_match') : $r('app.string.library_empty')
-          })
-        }
-        .layoutWeight(1)
-        .justifyContent(FlexAlign.Center)
-      } else {
-        Grid() {
-          ForEach(this.shownMangas(), (record: MangaRecord) => {
-            GridItem() {
-              MangaCard({
-                record: record,
-                badge: this.unreadMap[`${record.id}`] > 0 ? `${this.unreadMap[`${record.id}`]}` : '',
-                onCardClick: (r: MangaRecord): void => {
-                  this.openDetail(r);
-                },
-                onCardLongPress: (r: MangaRecord): void => {
-                  this.showCategoryMenu(r);
-                },
+      if (this.showCategoryTabs) {
+        Scroll() {
+          Row({ space: 8 }) {
+            Text(this.showMangaCount ?
+              `${Util.resStr(this.getUIContext(), $r('app.string.common_all'))} ${this.categoryCount(0)}` :
+              Util.resStr(this.getUIContext(), $r('app.string.common_all')))
+              .fontSize(13)
+              .fontColor(this.selectedCategory === 0 ? '#FFFFFF' : this.pal.text)
+              .backgroundColor(this.selectedCategory === 0 ? this.pal.primary : this.pal.chip)
+              .borderRadius(14)
+              .padding({ left: 14, right: 14, top: 6, bottom: 6 })
+              .onClick(() => {
+                this.selectedCategory = 0;
               })
-            }
-          }, (record: MangaRecord) => `lib-${record.id}-${record.inLibrary}`)
+            ForEach(this.categories, (cat: CategoryRecord) => {
+              Text(this.showMangaCount ? `${cat.name} ${this.categoryCount(cat.id)}` : cat.name)
+                .fontSize(13)
+                .fontColor(this.selectedCategory === cat.id ? '#FFFFFF' : this.pal.text)
+                .backgroundColor(this.selectedCategory === cat.id ? this.pal.primary : this.pal.chip)
+                .borderRadius(14)
+                .padding({ left: 14, right: 14, top: 6, bottom: 6 })
+                .onClick(() => {
+                  this.selectedCategory = cat.id;
+                })
+            }, (cat: CategoryRecord) => `chip-${cat.id}-${cat.name}`)
+          }
+          .padding({ left: 16, right: 16 })
         }
-        .columnsTemplate('1fr 1fr')
-        .columnsGap(12)
-        .rowsGap(16)
-        .padding({ left: 16, right: 16, top: 8 })
-        .contentEndOffset(this.navBarH + 76)
-        .layoutWeight(1)
+        .scrollable(ScrollDirection.Horizontal)
+        .scrollBar(BarState.Off)
+        .width('100%')
+        .margin({ bottom: 4 })
+      }
+
+      // 内容
+      Column() {
+        if (this.loading) {
+          Column() {
+            LoadingProgress()
+              .width(36)
+              .height(36)
+              .color(this.pal.primary)
+          }
+          .layoutWeight(1)
+          .justifyContent(FlexAlign.Center)
+        } else if (this.shownMangas().length === 0) {
+          Column() {
+            EmptyScreen({
+              message: this.searchQuery.trim() !== '' || this.filterActive()
+                ? $r('app.string.library_no_match') : $r('app.string.library_empty')
+            })
+          }
+          .layoutWeight(1)
+          .justifyContent(FlexAlign.Center)
+        } else if (this.viewMode === 'list') {
+          List({ space: 0 }) {
+            ForEach(this.shownMangas(), (record: MangaRecord) => {
+              ListItem() {
+                LibraryMangaItem({
+                  record: record,
+                  mode: 'list',
+                  unreadCount: this.unreadOf(record.id),
+                  downloadCount: this.downloadCounts[`${record.id}`] || 0,
+                  langLabel: record.sourceKey === 'local' ? '' : this.langMap[record.sourceKey] || '',
+                  isLocal: record.sourceKey === 'local',
+                  showUnreadBadge: this.showUnreadBadge,
+                  showDownloadBadge: this.showDownloadBadge,
+                  showLocalBadge: this.showLocalBadge,
+                  showLanguageBadge: this.showLanguageBadge,
+                  isSelected: this.selection.has(record.id),
+                  onItemClick: (r: MangaRecord): void => {
+                    this.onItemTap(r);
+                  },
+                  onItemLongPress: (r: MangaRecord): void => {
+                    this.onItemLongPress(r);
+                  }
+                })
+              }
+            }, (record: MangaRecord) => `lib-${record.id}-${record.inLibrary}`)
+          }
+          .scrollBar(BarState.Off)
+          .contentEndOffset(this.navBarH + 76)
+          .layoutWeight(1)
+        } else {
+          Grid() {
+            ForEach(this.shownMangas(), (record: MangaRecord) => {
+              GridItem() {
+                LibraryMangaItem({
+                  record: record,
+                  mode: this.viewMode,
+                  unreadCount: this.unreadOf(record.id),
+                  downloadCount: this.downloadCounts[`${record.id}`] || 0,
+                  langLabel: record.sourceKey === 'local' ? '' : this.langMap[record.sourceKey] || '',
+                  isLocal: record.sourceKey === 'local',
+                  showUnreadBadge: this.showUnreadBadge,
+                  showDownloadBadge: this.showDownloadBadge,
+                  showLocalBadge: this.showLocalBadge,
+                  showLanguageBadge: this.showLanguageBadge,
+                  isSelected: this.selection.has(record.id),
+                  onItemClick: (r: MangaRecord): void => {
+                    this.onItemTap(r);
+                  },
+                  onItemLongPress: (r: MangaRecord): void => {
+                    this.onItemLongPress(r);
+                  }
+                })
+              }
+            }, (record: MangaRecord) => `lib-${record.id}-${record.inLibrary}`)
+          }
+          .columnsTemplate(this.columnsTemplate())
+          .columnsGap(8)
+          .rowsGap(12)
+          .padding({ left: 8, right: 8, top: 4 })
+          .contentEndOffset(this.navBarH + 76)
+          .layoutWeight(1)
+        }
+      }
+      .layoutWeight(1)
+      .width('100%')
+      .onAreaChange((_old: Area, newArea: Area) => {
+        const w = newArea.width;
+        if (typeof w === 'number') {
+          this.contentW = w;
+        }
+      })
+
+      // 选择模式底部操作栏（对齐 Mihon LibraryBottomActionMenu）
+      if (this.selectionMode()) {
+        this.selectionActionBar()
       }
     }
     .width('100%')

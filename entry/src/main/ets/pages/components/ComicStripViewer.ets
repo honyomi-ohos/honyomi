@@ -132,6 +132,8 @@ export struct ComicStripViewer {
   @Prop sourceKey: string = '';
   @Prop initialIndex: number = 0;
   @Prop isDark: boolean = false;
+  // 侧边距（百分比 0-25，对齐 Mihon pref_webtoon_side_padding）
+  @Prop sidePadding: number = 0;
   scroller: Scroller = new Scroller();
   onTap: () => void = () => {};
   onPageVisible: (index: number) => void = (_i: number) => {};
@@ -159,6 +161,7 @@ export struct ComicStripViewer {
     }
     .width('100%')
     .height('100%')
+    .padding({ left: `${this.sidePadding}%`, right: `${this.sidePadding}%` })
     .cachedCount(2)
     .scrollBar(BarState.Off)
     .edgeEffect(EdgeEffect.None)

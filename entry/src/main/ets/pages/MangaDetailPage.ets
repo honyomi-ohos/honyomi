@@ -1,4 +1,5 @@
-import { common } from '@kit.AbilityKit';
+import { common, Want } from '@kit.AbilityKit';
+import { formProvider, formInfo } from '@kit.FormKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo, ChapterRepo, TrackRepo } from '../data/Repos';
 import { SourceRegistry } from '../source/Source';
@@ -8,6 +9,7 @@ import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { Settings } from '../common/Settings';
 import { DownloadService } from '../data/DownloadService';
+import { WidgetUpdater } from '../form/WidgetUpdater';
 import { AniListTracker } from '../data/AniListTracker';
 import { InputDialog } from './components/Dialogs';
 import { SmartImage } from './components/SmartImage';
@@ -117,6 +119,29 @@ export struct MangaDetailPage {
   private openReader(chapterId: number): void {
     const params: ReaderParams = { mangaId: this.mangaId, chapterId: chapterId };
     this.pathStack.pushPathByName('Reader', params);
+  }
+
+  // 添加漫画卡片到桌面：先写 pending mangaId（openFormManager 不携带自定义参数），再打开系统卡片管理页
+  private addToDesktop(): void {
+    const context = getContext(this) as common.UIAbilityContext;
+    WidgetUpdater.setPendingManga(context, this.mangaId).then((): void => {
+      const params: Record<string, Object> = {};
+      params[formInfo.FormParam.NAME_KEY] = 'MangaCard';
+      params[formInfo.FormParam.MODULE_NAME_KEY] = 'entry';
+      params[formInfo.FormParam.DIMENSION_KEY] = formInfo.FormDimension.Dimension_2_2;
+      const want: Want = {
+        bundleName: context.abilityInfo.bundleName,
+        abilityName: 'EntryFormAbility',
+        parameters: params
+      };
+      try {
+        formProvider.openFormManager(want);
+      } catch (e) {
+        Util.toastRes(this.getUIContext(), $r('app.string.detail_card_add_failed'));
+      }
+    }).catch((_e: Error) => {
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_card_add_failed'));
+    });
   }
 
   private async markAllRead(): Promise<void> {
@@ -263,22 +288,24 @@ export struct MangaDetailPage {
             .padding({ top: this.statusBarH + 8 })
 
             Row({ space: 14 }) {
-              if (this.manga.thumbnailUrl === '') {
-                Column() {
-                  AppIcon({ name: 'photo', iconSize: 30 })
+              // 封面
+              Stack() {
+                if (this.manga.thumbnailUrl !== '') {
+                  SmartImage({ url: this.manga.thumbnailUrl, sourceKey: this.manga.sourceKey, fit: ImageFit.Cover, fill: true })
+                } else {
+                  Column() {
+                    AppIcon({ name: 'photo', iconSize: 30 })
+                  }
+                  .width('100%')
+                  .height('100%')
+                  .justifyContent(FlexAlign.Center)
                 }
-                .width(110)
-                .height(150)
-                .borderRadius(10)
-                .backgroundColor(this.pal.chip)
-                .justifyContent(FlexAlign.Center)
-              } else {
-                SmartImage({ url: this.manga.thumbnailUrl, sourceKey: this.manga.sourceKey, fit: ImageFit.Cover, fill: true })
-                  .width(110)
-                  .height(150)
-                  .borderRadius(10)
-                  .clip(true)
               }
+              .width(110)
+              .height(150)
+              .borderRadius(10)
+              .clip(true)
+              .backgroundColor(this.pal.chip)
               Column({ space: 6 }) {
                 Text(this.manga.title)
                   .fontSize(20)
@@ -310,8 +337,10 @@ export struct MangaDetailPage {
         .width('100%')
         .height(280)
 
-        // 操作按钮
-        Row({ space: 12 }) {
+        // 头部以下内容
+        Column() {
+          // 操作按钮
+          Row({ space: 12 }) {
           Button(this.manga.inLibrary ? $r('app.string.detail_in_library') : $r('app.string.detail_add_to_library'))
             .fontSize(14)
             .height(38)
@@ -334,6 +363,17 @@ export struct MangaDetailPage {
                 this.openReader(chapter.id);
               }
             })
+          if (this.manga.inLibrary) {
+            Button($r('app.string.detail_add_to_desktop'))
+              .fontSize(14)
+              .height(38)
+              .layoutWeight(1)
+              .backgroundColor(this.pal.chip)
+              .fontColor(this.pal.text)
+              .onClick(() => {
+                this.addToDesktop();
+              })
+          }
         }
         .width('100%')
         .padding({ left: 16, right: 16, top: 12 })
@@ -567,6 +607,9 @@ export struct MangaDetailPage {
             endMargin: 16,
           })
         }
+        }
+        .layoutWeight(1)
+        .width('100%')
       }
       .width('100%')
       .height('100%')

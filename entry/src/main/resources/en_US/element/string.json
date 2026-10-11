@@ -660,10 +660,18 @@
                        "name":  "reader_mode_rtl",
                        "value":  "Right to left"
                    },
-                   {
-                       "name":  "reader_mode_webtoon",
-                       "value":  "Webtoon"
-                   },
+                    {
+                        "name":  "reader_mode_webtoon",
+                        "value":  "Webtoon"
+                    },
+                    {
+                        "name":  "reader_mode_vertical",
+                        "value":  "Vertical"
+                    },
+                    {
+                        "name":  "reader_mode_smart_grip",
+                        "value":  "Smart grip"
+                    },
                    {
                        "name":  "reader_reading_mode",
                        "value":  "Reading mode"
@@ -676,14 +684,86 @@
                        "name":  "reader_orientation_portrait",
                        "value":  "Portrait"
                    },
-                   {
-                       "name":  "reader_orientation_landscape",
-                       "value":  "Landscape"
-                   },
-                   {
-                       "name":  "reader_screen_orientation",
-                       "value":  "Screen orientation"
-                   },
+                    {
+                        "name":  "reader_orientation_landscape",
+                        "value":  "Landscape"
+                    },
+                    {
+                        "name":  "reader_orientation_lock_portrait",
+                        "value":  "Lock portrait"
+                    },
+                    {
+                        "name":  "reader_orientation_lock_landscape",
+                        "value":  "Lock landscape"
+                    },
+                    {
+                        "name":  "reader_screen_orientation",
+                        "value":  "Screen orientation"
+                    },
+                    {
+                        "name":  "reader_tab_general",
+                        "value":  "General"
+                    },
+                    {
+                        "name":  "reader_tab_filter",
+                        "value":  "Color filter"
+                    },
+                    {
+                        "name":  "reader_filter_grayscale",
+                        "value":  "Grayscale"
+                    },
+                    {
+                        "name":  "reader_filter_invert",
+                        "value":  "Inverted colors"
+                    },
+                    {
+                        "name":  "reader_filter_contrast",
+                        "value":  "Contrast"
+                    },
+                    {
+                        "name":  "reader_filter_saturation",
+                        "value":  "Saturation"
+                    },
+                    {
+                        "name":  "reader_crop_borders",
+                        "value":  "Crop borders"
+                    },
+                    {
+                        "name":  "reader_nav_tap_zones",
+                        "value":  "Tap zones"
+                    },
+                    {
+                        "name":  "reader_nav_default",
+                        "value":  "Default"
+                    },
+                    {
+                        "name":  "reader_nav_ltr",
+                        "value":  "Left to right"
+                    },
+                    {
+                        "name":  "reader_nav_rtl",
+                        "value":  "Right to left"
+                    },
+                    {
+                        "name":  "reader_nav_vertical",
+                        "value":  "Vertical"
+                    },
+                    {
+                        "name":  "reader_nav_edge",
+                        "value":  "Edge"
+                    },
+                    {
+                        "name":  "reader_nav_none",
+                        "value":  "None"
+                    },
+                    {
+                        "name":  "reader_dual_page",
+                        "value":  "Dual page view"
+                    },
+                    {
+                        "name":  "reader_webtoon_padding",
+                        "value":  "Webtoon side padding"
+                    },
                    {
                        "name":  "reader_last_chapter",
                        "value":  "Already at the last chapter"
@@ -1168,10 +1248,14 @@
                        "name":  "reader_set_mode_vertical",
                        "value":  "Vertical paging"
                    },
-                   {
-                       "name":  "reader_set_mode_webtoon",
-                       "value":  "Webtoon"
-                   },
+                    {
+                        "name":  "reader_set_mode_webtoon",
+                        "value":  "Webtoon"
+                    },
+                    {
+                        "name":  "reader_set_mode_smart_grip",
+                        "value":  "Smart grip"
+                    },
                    {
                        "name":  "reader_set_dual_page",
                        "value":  "Dual page (landscape)"

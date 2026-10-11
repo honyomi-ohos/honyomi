@@ -9,6 +9,7 @@ import { BrowseSourceParams, DetailParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { MangaCard } from './components/MangaCard';
+import { MangaSkeletonGrid } from './components/MangaSkeletonGrid';
 import { InputDialog } from './components/Dialogs';
 import { EmptyScreen } from './components/EmptyScreen';
 import { AppIcon } from './components/AppIcon';
@@ -29,10 +30,25 @@ export struct BrowseSourcePage {
   @State page: number = 1;
   @State hasNextPage: boolean = false;
   @State loadingMore: boolean = false;
+  @State contentW: number = 0;
   private pickedUris: string[] = [];
 
   currentSource(): Source | undefined {
     return SourceRegistry.get(this.sourceKey);
+  }
+
+  // 结果网格列数：手机双列，平板/横屏按约 160vp 一卡自适应增加列数
+  private gridColumns(): number {
+    const w = this.contentW > 0 ? this.contentW : 360;
+    return Math.max(2, Math.floor((w - 32 - 12) / 160));
+  }
+
+  private columnsTpl(): string {
+    let tpl = '';
+    for (let i = 0; i < this.gridColumns(); i++) {
+      tpl += '1fr ';
+    }
+    return tpl.trim();
   }
 
   // 当前模式下的列表页（最新模式仅在源支持时生效）
@@ -308,14 +324,8 @@ export struct BrowseSourcePage {
           .layoutWeight(1)
           .justifyContent(FlexAlign.Center)
         } else if (this.searching) {
-          Column() {
-            LoadingProgress()
-              .width(36)
-              .height(36)
-              .color(this.pal.primary)
-          }
-          .layoutWeight(1)
-          .justifyContent(FlexAlign.Center)
+          // 首次加载骨架屏（与结果网格同布局的占位卡片）
+          MangaSkeletonGrid({ columns: this.gridColumns() })
         } else if (this.results.length === 0) {
           Column() {
             EmptyScreen({
@@ -337,7 +347,7 @@ export struct BrowseSourcePage {
               }
             }, (record: MangaRecord) => `bs-${record.sourceKey}-${record.url}`)
           }
-          .columnsTemplate('1fr 1fr')
+          .columnsTemplate(this.columnsTpl())
           .columnsGap(12)
           .rowsGap(16)
           .padding({ left: 16, right: 16, top: 4 })
@@ -351,6 +361,12 @@ export struct BrowseSourcePage {
       .width('100%')
       .height('100%')
       .backgroundColor(this.pal.bg)
+      .onAreaChange((_old: Area, newArea: Area) => {
+        const w = newArea.width;
+        if (typeof w === 'number') {
+          this.contentW = w;
+        }
+      })
     }
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)

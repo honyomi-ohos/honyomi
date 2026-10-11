@@ -10,29 +10,31 @@ export struct MangaCard {
   @Prop badge: string = '';
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @State hovered: boolean = false;
   onCardClick: (record: MangaRecord) => void = (_r: MangaRecord) => {};
   onCardLongPress: (record: MangaRecord) => void = (_r: MangaRecord) => {};
 
   build() {
     Column() {
       Stack({ alignContent: Alignment.BottomEnd }) {
-        if (this.record.thumbnailUrl === '') {
-          Column() {
-            AppIcon({ name: 'photo', iconSize: 28 })
-          }
-          .width('100%')
-          .aspectRatio(0.7)
-          .backgroundColor(this.pal.chip)
-          .borderRadius(8)
-          .justifyContent(FlexAlign.Center)
-        } else {
-          SmartImage({ url: this.record.thumbnailUrl, sourceKey: this.record.sourceKey, fit: ImageFit.Cover, fill: true })
+        // 封面
+        Stack() {
+          if (this.record.thumbnailUrl === '') {
+            Column() {
+              AppIcon({ name: 'photo', iconSize: 28 })
+            }
             .width('100%')
-            .aspectRatio(0.7)
-            .borderRadius(8)
-            .clip(true)
-            .backgroundColor(this.pal.chip)
+            .height('100%')
+            .justifyContent(FlexAlign.Center)
+          } else {
+            SmartImage({ url: this.record.thumbnailUrl, sourceKey: this.record.sourceKey, fit: ImageFit.Cover, fill: true })
+          }
         }
+        .width('100%')
+        .aspectRatio(0.7)
+        .borderRadius(8)
+        .clip(true)
+        .backgroundColor(this.pal.chip)
         if (this.badge !== '') {
           Text(this.badge)
             .fontSize(10)
@@ -53,6 +55,7 @@ export struct MangaCard {
     }
     .width('100%')
     .alignItems(HorizontalAlign.Start)
+    .scale({ x: this.hovered ? 1.02 : 1, y: this.hovered ? 1.02 : 1 })
     .onClick(() => {
       this.onCardClick(this.record);
     })
@@ -62,6 +65,11 @@ export struct MangaCard {
           this.onCardLongPress(this.record);
         })
     )
+    .onHover((isHover: boolean) => {
+      this.getUIContext().animateTo({ duration: 120, curve: Curve.Friction }, (): void => {
+        this.hovered = isHover;
+      });
+    })
   }
 }
 
