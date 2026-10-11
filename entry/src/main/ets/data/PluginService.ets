@@ -56,7 +56,7 @@ interface RawRepoIndex {
   plugins?: RawRepoEntry[];
 }
 
-// 插件包管理：.mihonplug(zip: manifest.json + main.js) 安装/卸载 + 在线仓库索引
+// 插件包管理：.honyomiplug(zip: manifest.json + main.js) 安装/卸载 + 在线仓库索引
 // 所有插件统一运行于 JSVM 隔离引擎（专属 Worker + 本机 C++ JSVM，零 ArkWeb 依赖）
 export class PluginService {
   // 宿主支持的插件 DSL 最高版本（与 JSVM 适配层 ADAPTER_JS 的契约保持一致）
@@ -182,7 +182,7 @@ export class PluginService {
 
   // 从文件选择器 URI 安装插件包
   static async installFromFile(uri: string): Promise<string> {
-    const zipPath = `${PluginService.cacheDir}/plugin_install_${Date.now()}.mihonplug`;
+    const zipPath = `${PluginService.cacheDir}/plugin_install_${Date.now()}.honyomiplug`;
     try {
       const srcFile = fs.openSync(uri, fs.OpenMode.READ_ONLY);
       try {
@@ -205,7 +205,7 @@ export class PluginService {
   // 从仓库条目下载并安装
   static async installFromRepo(entry: RepoEntry): Promise<string> {
     const buffer = await Http.getBuffer(entry.file, undefined);
-    const zipPath = `${PluginService.cacheDir}/plugin_repo_${entry.key}_${Date.now()}.mihonplug`;
+    const zipPath = `${PluginService.cacheDir}/plugin_repo_${entry.key}_${Date.now()}.honyomiplug`;
     const file = fs.openSync(zipPath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
     try {
       fs.writeSync(file.fd, buffer);

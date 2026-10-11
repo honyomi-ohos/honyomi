@@ -61,7 +61,7 @@ struct MangaCard {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor($r('app.color.mihon_card'))
+    .backgroundColor($r('app.color.honyomi_card'))
     .borderRadius(16)
     .clip(true)
     .onClick(() => {
@@ -75,10 +75,10 @@ struct MangaCard {
     Column() {
       Text($r('app.string.card_manga_empty'))
         .fontSize(13)
-        .fontColor($r('app.color.mihon_sub'))
+        .fontColor($r('app.color.honyomi_sub'))
       Text($r('app.string.card_open_hint'))
         .fontSize(12)
-        .fontColor($r('app.color.mihon_primary_blue'))
+        .fontColor($r('app.color.honyomi_primary_blue'))
         .margin({ top: 6 })
     }
     .width('100%')
@@ -101,11 +101,11 @@ struct MangaCard {
           Text(this.badgeChar())
             .fontSize(32)
             .fontWeight(FontWeight.Bold)
-            .fontColor($r('app.color.mihon_primary_blue'))
+            .fontColor($r('app.color.honyomi_primary_blue'))
         }
         .width('100%')
         .height('100%')
-        .backgroundColor($r('app.color.mihon_chip'))
+        .backgroundColor($r('app.color.honyomi_chip'))
         .justifyContent(FlexAlign.Center)
         .alignItems(HorizontalAlign.Center)
       }

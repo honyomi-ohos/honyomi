@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2026 mihon-harmony
+ * Copyright (c) 2026 honyomi
  *
  * JsvmExtensionManager — main-thread facade of the JSVM extension engine.
  *

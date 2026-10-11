@@ -115,7 +115,7 @@ export struct ExtensionListPanel {
       const context = getContext(this) as common.UIAbilityContext;
       const options = new picker.DocumentSelectOptions();
       options.maxSelectNumber = 1;
-      options.fileSuffixFilters = ['.mihonplug', '.zip'];
+      options.fileSuffixFilters = ['.honyomiplug', '.zip'];
       const docPicker = new picker.DocumentViewPicker(context);
       const uris: Array<string> = await docPicker.select(options);
       if (uris.length === 0) {

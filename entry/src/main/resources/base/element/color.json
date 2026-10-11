@@ -5,91 +5,91 @@
       "value": "#FFFFFF"
     },
     {
-      "name": "mihon_bg",
+      "name": "honyomi_bg",
       "value": "#F2F3F7"
     },
     {
-      "name": "mihon_card",
+      "name": "honyomi_card",
       "value": "#FFFFFF"
     },
     {
-      "name": "mihon_chip",
+      "name": "honyomi_chip",
       "value": "#E9ECF2"
     },
     {
-      "name": "mihon_divider",
+      "name": "honyomi_divider",
       "value": "#E5E7EB"
     },
     {
-      "name": "mihon_text",
+      "name": "honyomi_text",
       "value": "#16181D"
     },
     {
-      "name": "mihon_sub",
+      "name": "honyomi_sub",
       "value": "#6B7280"
     },
     {
-      "name": "mihon_badge_red",
+      "name": "honyomi_badge_red",
       "value": "#E5484D"
     },
     {
-      "name": "mihon_badge_blue",
+      "name": "honyomi_badge_blue",
       "value": "#3D7DC8"
     },
     {
-      "name": "mihon_primary_blue",
+      "name": "honyomi_primary_blue",
       "value": "#4E6E9E"
     },
     {
-      "name": "mihon_primary_green",
+      "name": "honyomi_primary_green",
       "value": "#388E64"
     },
     {
-      "name": "mihon_primary_pink",
+      "name": "honyomi_primary_pink",
       "value": "#D45E88"
     },
     {
-      "name": "mihon_primary_purple",
+      "name": "honyomi_primary_purple",
       "value": "#7B5EA7"
     },
     {
-      "name": "mihon_primary_orange",
+      "name": "honyomi_primary_orange",
       "value": "#E07840"
     },
     {
-      "name": "mihon_primary_soft_blue",
+      "name": "honyomi_primary_soft_blue",
       "value": "#E0E7F0"
     },
     {
-      "name": "mihon_primary_soft_green",
+      "name": "honyomi_primary_soft_green",
       "value": "#D9EBE1"
     },
     {
-      "name": "mihon_primary_soft_pink",
+      "name": "honyomi_primary_soft_pink",
       "value": "#F4DEE9"
     },
     {
-      "name": "mihon_primary_soft_purple",
+      "name": "honyomi_primary_soft_purple",
       "value": "#E8E0F2"
     },
     {
-      "name": "mihon_primary_soft_orange",
+      "name": "honyomi_primary_soft_orange",
       "value": "#F6E4D7"
     },
     {
-      "name": "mihon_bg_amoled",
+      "name": "honyomi_bg_amoled",
       "value": "#F2F3F7"
     },
     {
-      "name": "mihon_card_amoled",
+      "name": "honyomi_card_amoled",
       "value": "#FFFFFF"
     },
     {
-      "name": "mihon_chip_amoled",
+      "name": "honyomi_chip_amoled",
       "value": "#E9ECF2"
     },
     {
-      "name": "mihon_divider_amoled",
+      "name": "honyomi_divider_amoled",
       "value": "#E5E7EB"
     }
   ]

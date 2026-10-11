@@ -32,7 +32,7 @@ struct StatsWeekCard {
   }
 
   private barColor(h: string): ResourceColor {
-    return Number(h) > 2 ? $r('app.color.mihon_primary_blue') : $r('app.color.mihon_chip');
+    return Number(h) > 2 ? $r('app.color.honyomi_primary_blue') : $r('app.color.honyomi_chip');
   }
 
   build() {
@@ -42,10 +42,10 @@ struct StatsWeekCard {
         Text(this.titleText)
           .fontSize(15)
           .fontWeight(FontWeight.Bold)
-          .fontColor($r('app.color.mihon_text'))
+          .fontColor($r('app.color.honyomi_text'))
         Text(this.rangeText)
           .fontSize(11)
-          .fontColor($r('app.color.mihon_sub'))
+          .fontColor($r('app.color.honyomi_sub'))
           .layoutWeight(1)
           .textAlign(TextAlign.End)
           .maxLines(1)
@@ -58,10 +58,10 @@ struct StatsWeekCard {
         Column() {
           Text($r('app.string.card_stats_empty'))
             .fontSize(13)
-            .fontColor($r('app.color.mihon_sub'))
+            .fontColor($r('app.color.honyomi_sub'))
           Text($r('app.string.card_open_hint'))
             .fontSize(12)
-            .fontColor($r('app.color.mihon_primary_blue'))
+            .fontColor($r('app.color.honyomi_primary_blue'))
             .margin({ top: 6 })
         }
         .width('100%')
@@ -93,7 +93,7 @@ struct StatsWeekCard {
           ForEach(this.labelList(), (l: string) => {
             Text(l)
               .fontSize(10)
-              .fontColor($r('app.color.mihon_sub'))
+              .fontColor($r('app.color.honyomi_sub'))
               .layoutWeight(1)
               .textAlign(TextAlign.Center)
               .maxLines(1)
@@ -105,7 +105,7 @@ struct StatsWeekCard {
         // 本周总时长
         Text(this.totalText)
           .fontSize(12)
-          .fontColor($r('app.color.mihon_primary_blue'))
+          .fontColor($r('app.color.honyomi_primary_blue'))
           .width('100%')
           .textAlign(TextAlign.Center)
           .padding({ top: 6, bottom: 12 })
@@ -114,7 +114,7 @@ struct StatsWeekCard {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor($r('app.color.mihon_card'))
+    .backgroundColor($r('app.color.honyomi_card'))
     .borderRadius(16)
     .onClick(() => {
       postCardAction(this, {

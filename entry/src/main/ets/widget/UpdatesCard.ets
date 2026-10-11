@@ -36,19 +36,19 @@ struct UpdatesCard {
         Text($r('app.string.card_updates_header'))
           .fontSize(15)
           .fontWeight(FontWeight.Bold)
-          .fontColor($r('app.color.mihon_text'))
+          .fontColor($r('app.color.honyomi_text'))
         if (this.countText !== '') {
           Text(this.countText)
             .fontSize(11)
-            .fontColor($r('app.color.mihon_primary_blue'))
-            .backgroundColor($r('app.color.mihon_primary_soft_blue'))
+            .fontColor($r('app.color.honyomi_primary_blue'))
+            .backgroundColor($r('app.color.honyomi_primary_soft_blue'))
             .borderRadius(8)
             .padding({ left: 6, right: 6, top: 2, bottom: 2 })
             .margin({ left: 8 })
         }
         Text('›')
           .fontSize(16)
-          .fontColor($r('app.color.mihon_sub'))
+          .fontColor($r('app.color.honyomi_sub'))
           .margin({ left: 4 })
       }
       .justifyContent(FlexAlign.Start)
@@ -76,10 +76,10 @@ struct UpdatesCard {
         Column() {
           Text($r('app.string.card_empty_updates'))
             .fontSize(13)
-            .fontColor($r('app.color.mihon_sub'))
+            .fontColor($r('app.color.honyomi_sub'))
           Text($r('app.string.card_open_hint'))
             .fontSize(12)
-            .fontColor($r('app.color.mihon_primary_blue'))
+            .fontColor($r('app.color.honyomi_primary_blue'))
             .margin({ top: 6 })
         }
         .width('100%')
@@ -97,7 +97,7 @@ struct UpdatesCard {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor($r('app.color.mihon_card'))
+    .backgroundColor($r('app.color.honyomi_card'))
     .borderRadius(16)
   }
 
@@ -108,24 +108,24 @@ struct UpdatesCard {
         Text(this.badgeOf(index))
           .fontSize(11)
           .fontWeight(FontWeight.Bold)
-          .fontColor($r('app.color.mihon_primary_blue'))
+          .fontColor($r('app.color.honyomi_primary_blue'))
       }
       .width(22)
       .height(22)
       .borderRadius(11)
-      .backgroundColor($r('app.color.mihon_primary_soft_blue'))
+      .backgroundColor($r('app.color.honyomi_primary_soft_blue'))
       .alignContent(Alignment.Center)
 
       Column() {
         Text(this.titleOf(index))
           .fontSize(13)
           .fontWeight(FontWeight.Medium)
-          .fontColor($r('app.color.mihon_text'))
+          .fontColor($r('app.color.honyomi_text'))
           .maxLines(1)
           .textOverflow({ overflow: TextOverflow.Ellipsis })
         Text(this.chapterOf(index))
           .fontSize(11)
-          .fontColor($r('app.color.mihon_sub'))
+          .fontColor($r('app.color.honyomi_sub'))
           .maxLines(1)
           .textOverflow({ overflow: TextOverflow.Ellipsis })
           .margin({ top: 2 })
@@ -137,7 +137,7 @@ struct UpdatesCard {
       if (this.wide) {
         Text(this.timeOf(index))
           .fontSize(11)
-          .fontColor($r('app.color.mihon_sub'))
+          .fontColor($r('app.color.honyomi_sub'))
       }
     }
     .width('100%')

@@ -10,7 +10,7 @@
                    },
                    {
                        "name":  "EntryAbility_label",
-                       "value":  "MihonHarmony"
+                       "value":  "Honyomi"
                    },
                    {
                        "name":  "common_ok",
@@ -986,7 +986,7 @@
                    },
                    {
                        "name":  "plugin_package_hint",
-                       "value":  "支持 .mihonplug / .zip 插件包"
+                       "value":  "支持 .honyomiplug / .zip 插件包"
                    },
                    {
                        "name":  "plugin_repo",
@@ -1522,7 +1522,7 @@
     { "name": "lib_display_tabs_group", "value": "标签" },
     { "name": "lib_show_category_tabs", "value": "显示分类标签" },
     { "name": "lib_show_manga_count", "value": "显示作品数" },
-    { "name": "EntryFormAbility_label", "value": "MihonHarmony 卡片" },
+    { "name": "EntryFormAbility_label", "value": "Honyomi 卡片" },
     { "name": "EntryFormAbility_desc", "value": "桌面卡片提供方" },
     { "name": "card_recent_display", "value": "继续阅读" },
     { "name": "card_recent_desc", "value": "快速继续最近阅读的漫画" },

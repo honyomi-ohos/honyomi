@@ -29,10 +29,10 @@ struct UpcomingCard {
         Text($r('app.string.card_upcoming_header'))
           .fontSize(15)
           .fontWeight(FontWeight.Bold)
-          .fontColor($r('app.color.mihon_text'))
+          .fontColor($r('app.color.honyomi_text'))
         Text('›')
           .fontSize(16)
-          .fontColor($r('app.color.mihon_sub'))
+          .fontColor($r('app.color.honyomi_sub'))
           .margin({ left: 4 })
       }
       .justifyContent(FlexAlign.Start)
@@ -60,10 +60,10 @@ struct UpcomingCard {
         Column() {
           Text($r('app.string.card_empty_upcoming'))
             .fontSize(13)
-            .fontColor($r('app.color.mihon_sub'))
+            .fontColor($r('app.color.honyomi_sub'))
           Text($r('app.string.card_open_hint'))
             .fontSize(12)
-            .fontColor($r('app.color.mihon_primary_blue'))
+            .fontColor($r('app.color.honyomi_primary_blue'))
             .margin({ top: 6 })
         }
         .width('100%')
@@ -81,7 +81,7 @@ struct UpcomingCard {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor($r('app.color.mihon_card'))
+    .backgroundColor($r('app.color.honyomi_card'))
     .borderRadius(16)
   }
 
@@ -92,18 +92,18 @@ struct UpcomingCard {
         Text(this.badgeOf(index))
           .fontSize(11)
           .fontWeight(FontWeight.Bold)
-          .fontColor($r('app.color.mihon_primary_blue'))
+          .fontColor($r('app.color.honyomi_primary_blue'))
       }
       .width(22)
       .height(22)
       .borderRadius(11)
-      .backgroundColor($r('app.color.mihon_primary_soft_blue'))
+      .backgroundColor($r('app.color.honyomi_primary_soft_blue'))
       .alignContent(Alignment.Center)
 
       Text(this.titleOf(index))
         .fontSize(13)
         .fontWeight(FontWeight.Medium)
-        .fontColor($r('app.color.mihon_text'))
+        .fontColor($r('app.color.honyomi_text'))
         .maxLines(1)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
         .layoutWeight(1)
@@ -111,7 +111,7 @@ struct UpcomingCard {
 
       Text(this.dateOf(index))
         .fontSize(11)
-        .fontColor($r('app.color.mihon_primary_blue'))
+        .fontColor($r('app.color.honyomi_primary_blue'))
         .margin({ left: 8 })
     }
     .width('100%')

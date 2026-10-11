@@ -29,7 +29,7 @@ export struct MorePage {
               .width(72)
               .height(72)
               .borderRadius(16)
-            Text('MihonHarmony')
+            Text('Honyomi')
               .fontSize(17)
               .fontWeight(FontWeight.Bold)
               .fontColor(this.pal.text)

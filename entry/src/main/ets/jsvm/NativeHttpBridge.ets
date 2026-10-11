@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2026 mihon-harmony
+ * Copyright (c) 2026 honyomi
  *
  * NativeHttpBridge — ArkTS half of the JSVM <-> native HTTP bridge.
  *

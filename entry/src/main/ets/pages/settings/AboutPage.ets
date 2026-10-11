@@ -18,7 +18,7 @@ export struct AboutPage {
               .height(96)
               .borderRadius(20)
               .margin({ top: 32 })
-            Text('MihonHarmony')
+            Text('Honyomi')
               .fontSize(20)
               .fontWeight(FontWeight.Bold)
               .fontColor(this.pal.text)

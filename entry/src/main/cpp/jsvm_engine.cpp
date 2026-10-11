@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2026 mihon-harmony
+ * Copyright (c) 2026 honyomi
  *
  * JSVM Extension Engine — pure ECMAScript execution context for comic source
  * extensions, fully decoupled from ArkWeb.
@@ -26,8 +26,8 @@
  *     normalize tachiyomi-generated exports (globalThis[*].tachiyomi.generated
  *     or module.exports.tachiyomi.generated), host-DSL plugins (module.exports
  *     with getPopularManga) and simple-contract extensions (globalThis.extension)
- *     into one uniform __mihonCall() entry, with a promise trampoline
- *     (__PENDING__ / __mihonPoll) driven by the native microtask pump.
+ *     into one uniform __honyomiCall() entry, with a promise trampoline
+ *     (__PENDING__ / __honyomiPoll) driven by the native microtask pump.
  */
 
 #include "html_selector.h"
@@ -817,12 +817,12 @@ static const char *ADAPTER_JS = R"JS((function () {
     api = bindHost(simple, 'simple');
   }
 
-  g.__mihonApi = api;
-  g.__mihonKind = api ? api.kind : null;
+  g.__honyomiApi = api;
+  g.__honyomiKind = api ? api.kind : null;
 
-  g.__mihonCall = function (name, argsJson) {
+  g.__honyomiCall = function (name, argsJson) {
     var state = { done: false, json: '' };
-    g.__mihonState = state;
+    g.__honyomiState = state;
     try {
       if (name === '__kind') {
         return api ? okJson(api.kind) : errJson('no extension exports found');
@@ -870,8 +870,8 @@ static const char *ADAPTER_JS = R"JS((function () {
     }
   };
 
-  g.__mihonPoll = function () {
-    var s = g.__mihonState;
+  g.__honyomiPoll = function () {
+    var s = g.__honyomiState;
     if (s && s.done) {
       s.done = false;
       return s.json;
@@ -1011,7 +1011,7 @@ static napi_value RunScript(napi_env env, napi_callback_info info)
     if (engine == nullptr) {
         return NapiString(env, ErrEnvelope("engine not found"));
     }
-    // Extension code first, then the export adapter that binds __mihonCall.
+    // Extension code first, then the export adapter that binds __honyomiCall.
     std::string full = code + "\n;\n" + ADAPTER_JS;
     std::string out = RunRawScript(engine, full);
     if (out.empty() || out == "null") {
@@ -1048,7 +1048,7 @@ static napi_value CallFunction(napi_env env, napi_callback_info info)
         return NapiString(env, ErrEnvelope("engine not found"));
     }
 
-    std::string callSource = "__mihonCall(\"" + JsonEscape(name) + "\", " +
+    std::string callSource = "__honyomiCall(\"" + JsonEscape(name) + "\", " +
         (argsJson.empty() ? "[]" : argsJson) + ")";
     std::string first = RunRawScript(engine, callSource);
     if (first != "__PENDING__") {
@@ -1062,7 +1062,7 @@ static napi_value CallFunction(napi_env env, napi_callback_info info)
         OH_JSVM_PerformMicrotaskCheckpoint(engine->vm);
         bool hasMore = false;
         OH_JSVM_PumpMessageLoop(engine->vm, &hasMore);
-        std::string poll = RunRawScript(engine, "__mihonPoll()");
+        std::string poll = RunRawScript(engine, "__honyomiPoll()");
         if (!poll.empty()) {
             return NapiString(env, poll);
         }

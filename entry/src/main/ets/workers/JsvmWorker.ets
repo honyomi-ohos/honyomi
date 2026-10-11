@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2026 mihon-harmony
+ * Copyright (c) 2026 honyomi
  *
  * JsvmWorker — dedicated Worker thread that owns one isolated JSVM engine.
  *

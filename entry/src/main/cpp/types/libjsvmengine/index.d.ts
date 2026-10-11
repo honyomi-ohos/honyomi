@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2026 mihon-harmony
+ * Copyright (c) 2026 honyomi
  *
  * Typed surface of libjsvmengine.so 鈥?the native JSVM extension engine.
  * All functions except initHttpDispatcher/resolveHttp are meant to be called
@@ -51,12 +51,12 @@ export function destroyEngine(engineId: number): boolean;
 
 /**
  * Executes an extension script inside the engine and appends the export
- * adapter that binds __mihonCall(). Returns a JsvmCallEnvelope JSON string.
+ * adapter that binds __honyomiCall(). Returns a JsvmCallEnvelope JSON string.
  */
 export function runScript(engineId: number, code: string): string;
 
 /**
- * Calls a normalized extension method (see __mihonApi in the native adapter).
+ * Calls a normalized extension method (see __honyomiApi in the native adapter).
  * Async methods are awaited via the native microtask pump.
  * Returns a JsvmCallEnvelope JSON string.
  */

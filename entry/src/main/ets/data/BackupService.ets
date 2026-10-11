@@ -38,7 +38,7 @@ export class BackupService {
     const root: BackupRoot = await BackupService.buildBackup();
     const text: string = JSON.stringify(root);
     const options = new picker.DocumentSaveOptions();
-    options.newFileNames = [`mihon_backup_${Date.now()}.json`];
+    options.newFileNames = [`honyomi_backup_${Date.now()}.json`];
     const docPicker = new picker.DocumentViewPicker(context);
     const uris: Array<string> = await docPicker.save(options);
     if (uris.length === 0) {

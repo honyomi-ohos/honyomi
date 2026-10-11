@@ -57,35 +57,35 @@ export class Theme {
   // 构建 palette：AMOLED 仅深色模式生效；accent 决定 primary/primarySoft
   static buildPalette(dark: boolean, amoled: boolean, accent: string): ThemePalette {
     const pal: ThemePalette = new ThemePalette();
-    pal.bg = $r('app.color.mihon_bg');
-    pal.card = $r('app.color.mihon_card');
-    pal.chip = $r('app.color.mihon_chip');
-    pal.divider = $r('app.color.mihon_divider');
-    pal.text = $r('app.color.mihon_text');
-    pal.sub = $r('app.color.mihon_sub');
-    pal.badgeRed = $r('app.color.mihon_badge_red');
-    pal.badgeBlue = $r('app.color.mihon_badge_blue');
+    pal.bg = $r('app.color.honyomi_bg');
+    pal.card = $r('app.color.honyomi_card');
+    pal.chip = $r('app.color.honyomi_chip');
+    pal.divider = $r('app.color.honyomi_divider');
+    pal.text = $r('app.color.honyomi_text');
+    pal.sub = $r('app.color.honyomi_sub');
+    pal.badgeRed = $r('app.color.honyomi_badge_red');
+    pal.badgeBlue = $r('app.color.honyomi_badge_blue');
     if (dark && amoled) {
-      pal.bg = $r('app.color.mihon_bg_amoled');
-      pal.card = $r('app.color.mihon_card_amoled');
-      pal.chip = $r('app.color.mihon_chip_amoled');
-      pal.divider = $r('app.color.mihon_divider_amoled');
+      pal.bg = $r('app.color.honyomi_bg_amoled');
+      pal.card = $r('app.color.honyomi_card_amoled');
+      pal.chip = $r('app.color.honyomi_chip_amoled');
+      pal.divider = $r('app.color.honyomi_divider_amoled');
     }
     if (accent === 'green') {
-      pal.primary = $r('app.color.mihon_primary_green');
-      pal.primarySoft = $r('app.color.mihon_primary_soft_green');
+      pal.primary = $r('app.color.honyomi_primary_green');
+      pal.primarySoft = $r('app.color.honyomi_primary_soft_green');
     } else if (accent === 'pink') {
-      pal.primary = $r('app.color.mihon_primary_pink');
-      pal.primarySoft = $r('app.color.mihon_primary_soft_pink');
+      pal.primary = $r('app.color.honyomi_primary_pink');
+      pal.primarySoft = $r('app.color.honyomi_primary_soft_pink');
     } else if (accent === 'purple') {
-      pal.primary = $r('app.color.mihon_primary_purple');
-      pal.primarySoft = $r('app.color.mihon_primary_soft_purple');
+      pal.primary = $r('app.color.honyomi_primary_purple');
+      pal.primarySoft = $r('app.color.honyomi_primary_soft_purple');
     } else if (accent === 'orange') {
-      pal.primary = $r('app.color.mihon_primary_orange');
-      pal.primarySoft = $r('app.color.mihon_primary_soft_orange');
+      pal.primary = $r('app.color.honyomi_primary_orange');
+      pal.primarySoft = $r('app.color.honyomi_primary_soft_orange');
     } else {
-      pal.primary = $r('app.color.mihon_primary_blue');
-      pal.primarySoft = $r('app.color.mihon_primary_soft_blue');
+      pal.primary = $r('app.color.honyomi_primary_blue');
+      pal.primarySoft = $r('app.color.honyomi_primary_soft_blue');
     }
     return pal;
   }

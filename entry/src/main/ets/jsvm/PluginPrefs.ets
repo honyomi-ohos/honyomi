@@ -3,7 +3,7 @@ import { preferences } from '@kit.ArkData';
 /**
  * Per-extension SharedPreferences persistence for JSVM plugins.
  * Seeded into the engine as globalThis.__PREFS_STORE__ and flushed after
- * every __mihonCall (see JsvmWorker prefs dump).
+ * every __honyomiCall (see JsvmWorker prefs dump).
  */
 export class PluginPrefs {
   private static store: preferences.Preferences | undefined = undefined;

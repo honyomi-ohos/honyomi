@@ -736,7 +736,7 @@
     }, html, loc, true);
   }
 
-  // ---- $ host DSL (original MihonHarmony plugin contract) -----------------
+  // ---- $ host DSL (original Honyomi plugin contract) -----------------
   function hasHeader(headers, name) {
     name = String(name).toLowerCase();
     for (var k in headers) {

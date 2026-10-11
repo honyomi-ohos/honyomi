@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2026 mihon-harmony
+ * Copyright (c) 2026 honyomi
  *
  * Lexbor-based HTML selector bridge for JSVM.
  * JSVM is a pure ECMAScript runtime without DOM APIs; extensions rely on this

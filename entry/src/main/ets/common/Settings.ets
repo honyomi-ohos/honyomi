@@ -10,7 +10,7 @@ export class Settings {
 
   static init(context: common.UIAbilityContext): void {
     if (Settings.store === undefined) {
-      const options: preferences.Options = { name: 'mihon_settings' };
+      const options: preferences.Options = { name: 'honyomi_settings' };
       Settings.store = preferences.getPreferencesSync(context, options);
     }
   }
@@ -563,7 +563,7 @@ export class Settings {
   }
 
   // 系统栏：透明背景（沉浸式，光感效果由系统渲染），内容色与应用文本色一致
-  // 文本色与 color.json 的 mihon_text 对应（浅 #16181D / 深 #ECEEF2）
+  // 文本色与 color.json 的 honyomi_text 对应（浅 #16181D / 深 #ECEEF2）
   static applySystemBar(context: common.Context): void {
     window.getLastWindow(context).then((win: window.Window) => {
       const dark: boolean = AppStorage.get<boolean>('isDark') ?? false;

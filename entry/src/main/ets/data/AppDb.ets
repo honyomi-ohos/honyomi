@@ -23,7 +23,7 @@ export class AppDb {
 
   private static async doInit(context: common.Context): Promise<void> {
     const config: relationalStore.StoreConfig = {
-      name: 'mihon.db',
+      name: 'honyomi.db',
       securityLevel: relationalStore.SecurityLevel.S1,
     };
     const store = await relationalStore.getRdbStore(context, config);
@@ -44,15 +44,6 @@ export class AppDb {
       fetchedAt INTEGER DEFAULT 0,
       UNIQUE(sourceKey, url)
     )`);
-    // 旧库迁移：新装库已含列，ALTER 失败说明列已存在，忽略
-    try {
-      await store.executeSql(`ALTER TABLE manga ADD COLUMN lastUpdateAt INTEGER DEFAULT 0`);
-    } catch (_e) {
-    }
-    try {
-      await store.executeSql(`ALTER TABLE manga ADD COLUMN fetchedAt INTEGER DEFAULT 0`);
-    } catch (_e) {
-    }
     await store.executeSql(`CREATE TABLE IF NOT EXISTS chapter (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       mangaId INTEGER NOT NULL,
