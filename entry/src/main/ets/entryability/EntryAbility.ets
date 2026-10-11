@@ -12,6 +12,7 @@ import { JsvmExtensionManager } from '../jsvm/JsvmExtensionManager';
 import { CookieJar } from '../net/CookieJar';
 import { ImageCache } from '../common/ImageCache';
 import { WidgetUpdater } from '../form/WidgetUpdater';
+import { ReadingStatsRepo } from '../data/ReadingStats';
 
 const DOMAIN = 0x0001;
 
@@ -101,6 +102,8 @@ export default class EntryAbility extends UIAbility {
 
   onBackground(): void {
     hilog.info(DOMAIN, 'Mihon', '%{public}s', 'Ability onBackground');
+    // 退后台先结算进行中的阅读会话，再刷新桌面卡片
+    ReadingStatsRepo.flush();
     WidgetUpdater.refreshAll(this.context).catch((e: Error) => {
       hilog.warn(DOMAIN, 'Mihon', 'onBackground refreshAll failed: %{public}s', e.message);
     });

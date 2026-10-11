@@ -206,7 +206,7 @@ export struct BrowseSourcePage {
     const local = source as LocalSource;
     try {
       const count = await local.importFiles(this.pickedUris, title);
-      Util.toastRes(this.getUIContext(), $r('app.string.browse_import_done', count));
+      Util.toastRes(this.getUIContext(), $r('app.string.browse_import_done'), [count]);
       await this.loadFirst();
     } catch (e) {
       Util.toastRes(this.getUIContext(), $r('app.string.browse_import_failed'), [(e as Error).message]);

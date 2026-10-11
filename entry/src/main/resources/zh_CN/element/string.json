@@ -244,10 +244,142 @@
                        "name":  "more_about",
                        "value":  "关于"
                    },
-                   {
-                       "name":  "more_plugins",
-                       "value":  "插件管理"
-                   },
+                    {
+                        "name":  "more_plugins",
+                        "value":  "插件管理"
+                    },
+                    {
+                        "name":  "stats_title",
+                        "value":  "统计"
+                    },
+                    {
+                        "name":  "stats_overview_section",
+                        "value":  "概览"
+                    },
+                    {
+                        "name":  "stats_in_library",
+                        "value":  "收藏作品"
+                    },
+                    {
+                        "name":  "stats_read_duration",
+                        "value":  "阅读时长"
+                    },
+                    {
+                        "name":  "stats_completed_titles",
+                        "value":  "已完结"
+                    },
+                    {
+                        "name":  "stats_titles_section",
+                        "value":  "作品"
+                    },
+                    {
+                        "name":  "stats_started_titles",
+                        "value":  "已开始阅读"
+                    },
+                    {
+                        "name":  "stats_local_titles",
+                        "value":  "本地作品"
+                    },
+                    {
+                        "name":  "stats_chapters_section",
+                        "value":  "章节"
+                    },
+                    {
+                        "name":  "stats_total_chapters",
+                        "value":  "总章节"
+                    },
+                    {
+                        "name":  "stats_read_chapters",
+                        "value":  "已读章节"
+                    },
+                    {
+                        "name":  "stats_downloaded_chapters",
+                        "value":  "已下载"
+                    },
+                    {
+                        "name":  "stats_tracker_section",
+                        "value":  "追踪"
+                    },
+                    {
+                        "name":  "stats_tracked_titles",
+                        "value":  "已追踪作品"
+                    },
+                    {
+                        "name":  "stats_mean_score",
+                        "value":  "平均评分"
+                    },
+                    {
+                        "name":  "stats_used",
+                        "value":  "使用中"
+                    },
+                    {
+                        "name":  "stats_not_applicable",
+                        "value":  "暂无"
+                    },
+                    {
+                        "name":  "stats_week",
+                        "value":  "周"
+                    },
+                    {
+                        "name":  "stats_month",
+                        "value":  "月"
+                    },
+                    {
+                        "name":  "stats_week_total",
+                        "value":  "本周共阅读 %s"
+                    },
+                    {
+                        "name":  "stats_month_total",
+                        "value":  "本月共阅读 %s"
+                    },
+                    {
+                        "name":  "stats_no_reading",
+                        "value":  "该时段暂无阅读记录"
+                    },
+                    {
+                        "name":  "stats_day_short",
+                        "value":  "%d天"
+                    },
+                    {
+                        "name":  "stats_hour_short",
+                        "value":  "%d小时"
+                    },
+                    {
+                        "name":  "stats_minute_short",
+                        "value":  "%d分"
+                    },
+                    {
+                        "name":  "stats_second_short",
+                        "value":  "%d秒"
+                    },
+                    {
+                        "name":  "stats_wd_sun",
+                        "value":  "日"
+                    },
+                    {
+                        "name":  "stats_wd_mon",
+                        "value":  "一"
+                    },
+                    {
+                        "name":  "stats_wd_tue",
+                        "value":  "二"
+                    },
+                    {
+                        "name":  "stats_wd_wed",
+                        "value":  "三"
+                    },
+                    {
+                        "name":  "stats_wd_thu",
+                        "value":  "四"
+                    },
+                    {
+                        "name":  "stats_wd_fri",
+                        "value":  "五"
+                    },
+                    {
+                        "name":  "stats_wd_sat",
+                        "value":  "六"
+                    },
                    {
                        "name":  "categories_title",
                        "value":  "分类"
@@ -1405,9 +1537,26 @@
     { "name": "card_manga_display", "value": "漫画卡片" },
     { "name": "card_manga_desc", "value": "在详情页添加，封面点开即读" },
     { "name": "card_manga_empty", "value": "从漫画详情页添加到桌面" },
-    { "name": "card_manga_read_hint", "value": "点击继续阅读" },
-    { "name": "detail_add_to_desktop", "value": "添加到桌面" },
-    { "name": "detail_card_added", "value": "已添加到桌面" },
-    { "name": "detail_card_add_failed", "value": "添加卡片失败" }
+     { "name": "detail_add_to_desktop", "value": "添加到桌面" },
+     { "name": "detail_card_added", "value": "已添加到桌面" },
+     { "name": "detail_card_add_failed", "value": "添加卡片失败" },
+     { "name": "card_stats_week_display", "value": "周统计" },
+     { "name": "card_stats_week_desc", "value": "本周每日阅读时长" },
+     { "name": "card_stats_month_display", "value": "月统计" },
+     { "name": "card_stats_month_desc", "value": "本月每日阅读时长" },
+      { "name": "card_stats_empty", "value": "暂无阅读记录" },
+      { "name": "action_view_upcoming", "value": "显示即将推出的更新" },
+      { "name": "label_upcoming", "value": "即将推出" },
+      { "name": "upcoming_guide", "value": "即将推出的指南" },
+      { "name": "upcoming_calendar_prev", "value": "上个月" },
+      { "name": "upcoming_calendar_next", "value": "下个月" },
+      { "name": "pref_filter_update_categories_details", "value": "同时属于包含和排除分类的标题将不予显示。" },
+      { "name": "relative_time_today", "value": "今天" },
+      { "name": "relative_time_days_ago", "value": "%d 天前" },
+      { "name": "upcoming_relative_time_days", "value": "%d 天后" },
+      { "name": "card_upcoming_display", "value": "即将推出" },
+      { "name": "card_upcoming_desc", "value": "书架漫画的预计更新日历" },
+      { "name": "card_upcoming_header", "value": "即将推出" },
+      { "name": "card_empty_upcoming", "value": "书架内没有连载中的漫画" }
 ]
 }

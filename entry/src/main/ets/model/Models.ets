@@ -89,9 +89,11 @@ export class UpdateItem {
   coverUrl: string = '';
   chapterName: string = '';
   dateUpload: number = 0;
+  read: boolean = false;
+  bookmark: boolean = false;
 
   static of(mangaId: number, chapterId: number, mangaTitle: string, coverUrl: string,
-    chapterName: string, dateUpload: number): UpdateItem {
+    chapterName: string, dateUpload: number, read: boolean, bookmark: boolean): UpdateItem {
     const item = new UpdateItem();
     item.mangaId = mangaId;
     item.chapterId = chapterId;
@@ -99,8 +101,19 @@ export class UpdateItem {
     item.coverUrl = coverUrl;
     item.chapterName = chapterName;
     item.dateUpload = dateUpload;
+    item.read = read;
+    item.bookmark = bookmark;
     return item;
   }
+}
+
+// 即将推出页条目（书架连载中漫画 + 预计下次更新时间）
+export class UpcomingManga {
+  mangaId: number = 0;
+  title: string = '';
+  coverUrl: string = '';
+  categoryId: number = 1;
+  expectedAt: number = 0;
 }
 
 export class HistoryItem {

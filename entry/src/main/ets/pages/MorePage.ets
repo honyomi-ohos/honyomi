@@ -85,6 +85,14 @@ export struct MorePage {
             })
             Divider().color(this.pal.divider).margin({ left: 52 })
             IconRow({
+              title: $r('app.string.stats_title'),
+              icon: 'query_stats',
+              onTap: (): void => {
+                this.pathStack.pushPathByName('Stats', null);
+              }
+            })
+            Divider().color(this.pal.divider).margin({ left: 52 })
+            IconRow({
               title: $r('app.string.more_settings'),
               icon: 'settings',
               onTap: (): void => {

@@ -3,6 +3,7 @@ import { window } from '@kit.ArkUI';
 import { motion } from '@kit.MultimodalAwarenessKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo, ChapterRepo, HistoryRepo } from '../data/Repos';
+import { ReadingStatsRepo } from '../data/ReadingStats';
 import { SourceRegistry } from '../source/Source';
 import { MangaRecord, ChapterRecord, SPage } from '../model/Models';
 import { ReaderParams } from '../model/RouteParams';
@@ -143,6 +144,7 @@ export struct ReaderPage {
 
   aboutToDisappear(): void {
     this.libDirty += 1;
+    ReadingStatsRepo.flush();
     this.updateGripListener(false);
     // 还原窗口方向与亮度
     const ctx = getContext(this) as common.UIAbilityContext;
@@ -206,6 +208,8 @@ export struct ReaderPage {
   private async loadChapter(): Promise<void> {
     this.loading = true;
     this.showMenu = false;
+    // 切章：先结算上一章的阅读会话
+    ReadingStatsRepo.flush();
     try {
       const context = getContext(this) as common.UIAbilityContext;
       await AppDb.ready(context);
@@ -246,6 +250,8 @@ export struct ReaderPage {
         ? chapter.lastPageRead : 0;
       this.applyMode(true);
       await HistoryRepo.upsert(chapter.mangaId, chapter.id, this.currentReal);
+      // 开始本章的阅读时长计时
+      ReadingStatsRepo.begin(chapter.mangaId, chapter.id);
       await this.refreshNeighbors();
     } catch (e) {
       Util.toastRes(this.getUIContext(), $r('app.string.reader_load_failed'), [(e as Error).message]);
@@ -308,6 +314,7 @@ export struct ReaderPage {
   }
 
   private async persistProgress(): Promise<void> {
+    ReadingStatsRepo.tick();
     await ChapterRepo.setLastPageRead(this.chapterId, this.currentReal);
     await HistoryRepo.upsert(this.mangaId, this.chapterId, this.currentReal);
     if (this.currentReal >= this.pages.length - 1 && !this.chapter.read) {

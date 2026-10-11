@@ -244,10 +244,142 @@
                        "name":  "more_about",
                        "value":  "About"
                    },
-                   {
-                       "name":  "more_plugins",
-                       "value":  "Extensions"
-                   },
+                    {
+                        "name":  "more_plugins",
+                        "value":  "Extensions"
+                    },
+                    {
+                        "name":  "stats_title",
+                        "value":  "Statistics"
+                    },
+                    {
+                        "name":  "stats_overview_section",
+                        "value":  "Overview"
+                    },
+                    {
+                        "name":  "stats_in_library",
+                        "value":  "In library"
+                    },
+                    {
+                        "name":  "stats_read_duration",
+                        "value":  "Read duration"
+                    },
+                    {
+                        "name":  "stats_completed_titles",
+                        "value":  "Completed"
+                    },
+                    {
+                        "name":  "stats_titles_section",
+                        "value":  "Entries"
+                    },
+                    {
+                        "name":  "stats_started_titles",
+                        "value":  "Started"
+                    },
+                    {
+                        "name":  "stats_local_titles",
+                        "value":  "Local"
+                    },
+                    {
+                        "name":  "stats_chapters_section",
+                        "value":  "Chapters"
+                    },
+                    {
+                        "name":  "stats_total_chapters",
+                        "value":  "Total"
+                    },
+                    {
+                        "name":  "stats_read_chapters",
+                        "value":  "Read"
+                    },
+                    {
+                        "name":  "stats_downloaded_chapters",
+                        "value":  "Downloaded"
+                    },
+                    {
+                        "name":  "stats_tracker_section",
+                        "value":  "Trackers"
+                    },
+                    {
+                        "name":  "stats_tracked_titles",
+                        "value":  "Tracked entries"
+                    },
+                    {
+                        "name":  "stats_mean_score",
+                        "value":  "Mean score"
+                    },
+                    {
+                        "name":  "stats_used",
+                        "value":  "Used"
+                    },
+                    {
+                        "name":  "stats_not_applicable",
+                        "value":  "N/A"
+                    },
+                    {
+                        "name":  "stats_week",
+                        "value":  "Week"
+                    },
+                    {
+                        "name":  "stats_month",
+                        "value":  "Month"
+                    },
+                    {
+                        "name":  "stats_week_total",
+                        "value":  "%s this week"
+                    },
+                    {
+                        "name":  "stats_month_total",
+                        "value":  "%s this month"
+                    },
+                    {
+                        "name":  "stats_no_reading",
+                        "value":  "No reading in this period"
+                    },
+                    {
+                        "name":  "stats_day_short",
+                        "value":  "%dd"
+                    },
+                    {
+                        "name":  "stats_hour_short",
+                        "value":  "%dh"
+                    },
+                    {
+                        "name":  "stats_minute_short",
+                        "value":  "%dm"
+                    },
+                    {
+                        "name":  "stats_second_short",
+                        "value":  "%ds"
+                    },
+                    {
+                        "name":  "stats_wd_sun",
+                        "value":  "S"
+                    },
+                    {
+                        "name":  "stats_wd_mon",
+                        "value":  "M"
+                    },
+                    {
+                        "name":  "stats_wd_tue",
+                        "value":  "T"
+                    },
+                    {
+                        "name":  "stats_wd_wed",
+                        "value":  "W"
+                    },
+                    {
+                        "name":  "stats_wd_thu",
+                        "value":  "T"
+                    },
+                    {
+                        "name":  "stats_wd_fri",
+                        "value":  "F"
+                    },
+                    {
+                        "name":  "stats_wd_sat",
+                        "value":  "S"
+                    },
                    {
                        "name":  "categories_title",
                        "value":  "Categories"
@@ -1328,6 +1460,18 @@
     { "name": "migrate_item_done", "value": "Migrated: %s" },
     { "name": "migrate_failed", "value": "Migration failed: %s" },
     { "name": "migrate_done", "value": "Migration complete" },
-    { "name": "migrate_no_target", "value": "No target source available" }
+    { "name": "migrate_no_target", "value": "No target source available" },
+    { "name": "card_stats_week_display", "value": "Weekly stats" },
+    { "name": "card_stats_week_desc", "value": "Daily reading time this week" },
+    { "name": "card_stats_month_display", "value": "Monthly stats" },
+    { "name": "card_stats_month_desc", "value": "Daily reading time this month" },
+    { "name": "card_stats_empty", "value": "No reading yet" },
+    { "name": "relative_time_today", "value": "Today" },
+    { "name": "relative_time_days_ago", "value": "%d days ago" },
+    { "name": "upcoming_relative_time_days", "value": "In %d days" },
+    { "name": "card_upcoming_display", "value": "Upcoming" },
+    { "name": "card_upcoming_desc", "value": "Expected update calendar for library manga" },
+    { "name": "card_upcoming_header", "value": "Upcoming" },
+    { "name": "card_empty_upcoming", "value": "No ongoing manga in your library" }
 ]
 }

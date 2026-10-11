@@ -11,6 +11,7 @@ import { CookieJar } from '../net/CookieJar';
 import { Util } from '../common/Util';
 import { LibraryPage } from './LibraryPage';
 import { UpdatesPage } from './UpdatesPage';
+import { UpcomingPage } from './UpcomingPage';
 import { HistoryPage } from './HistoryPage';
 import { BrowsePage } from './BrowsePage';
 import { MorePage } from './MorePage';
@@ -23,6 +24,7 @@ import { MigrateMangaPage } from './MigrateMangaPage';
 import { MigrateSearchPage } from './MigrateSearchPage';
 import { ExtensionDetailPage } from './ExtensionDetailPage';
 import { CategoriesPage } from './CategoriesPage';
+import { StatsPage } from './StatsPage';
 import { SettingsPage } from './settings/SettingsPage';
 import { AppearancePage } from './settings/AppearancePage';
 import { LanguagePage } from './settings/LanguagePage';
@@ -375,8 +377,18 @@ struct Index {
       this.switchTab(1);
       return;
     }
+    if (raw.target === 'upcoming') {
+      this.switchTab(1);
+      this.pathStack.pushPathByName('Upcoming', null);
+      return;
+    }
     if (raw.target === 'history') {
       this.switchTab(2);
+      return;
+    }
+    if (raw.target === 'stats') {
+      this.switchTab(4);
+      this.pathStack.pushPathByName('Stats', null);
       return;
     }
     if (raw.target === 'reader' && raw.mangaId > 0 && raw.chapterId > 0) {
@@ -476,6 +488,10 @@ struct Index {
       ExtensionDetailPage()
     } else if (name === 'Categories') {
       CategoriesPage()
+    } else if (name === 'Stats') {
+      StatsPage()
+    } else if (name === 'Upcoming') {
+      UpcomingPage()
     } else if (name === 'Settings') {
       SettingsPage()
     } else if (name === 'Appearance') {

@@ -4,9 +4,11 @@ import { formBindingData, formProvider } from '@kit.FormKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppDb } from '../data/AppDb';
-import { HistoryRepo, UpdatesRepo, MangaRepo, ChapterRepo } from '../data/Repos';
-import { HistoryItem, MangaRecord } from '../model/Models';
+import { HistoryRepo, UpdatesRepo, MangaRepo, ChapterRepo, UpcomingRepo } from '../data/Repos';
+import { ReadingStatsRepo } from '../data/ReadingStats';
+import { HistoryItem, MangaRecord, UpcomingManga } from '../model/Models';
 import { ImageCache } from '../common/ImageCache';
+import { Util } from '../common/Util';
 
 const DOMAIN = 0x0001;
 const TAG = 'WidgetUpdater';
@@ -123,7 +125,7 @@ export class WidgetUpdater {
   static async refreshOne(context: common.Context, info: CardFormInfo): Promise<void> {
     try {
       if (info.name === 'MangaCard') {
-        const built = await WidgetUpdater.buildMangaData(context, info.mangaId, info.wide);
+        const built = await WidgetUpdater.buildMangaData(context, info.mangaId);
         try {
           await formProvider.updateForm(info.formId, built.data);
         } finally {
@@ -168,10 +170,10 @@ export class WidgetUpdater {
   }
 
   // 构建漫画卡片数据：封面（formImages fd）+ 标题 + 续读章节（最近阅读 → 第一条未读）
-  static async buildMangaData(context: common.Context, mangaId: number, wide: boolean): Promise<MangaCardData> {
+  static async buildMangaData(context: common.Context, mangaId: number): Promise<MangaCardData> {
     const built = new MangaCardData();
     const record: Record<string, string | number | boolean> = {
-      'wide': wide, 'empty': true, 'hasCover': false, 'hasChapter': false,
+      'empty': true, 'hasCover': false, 'hasChapter': false,
       'title': '', 'chapter': '', 'mangaId': '', 'chapterId': ''
     };
     await AppDb.ready(context);
@@ -223,9 +225,12 @@ export class WidgetUpdater {
     return built;
   }
 
-  // 构建卡片数据：RecentCard / UpdatesCard，行内容平铺为 t{i}/c{i}/m{i}/ch{i}/time{i}/b{i}
+  // 构建卡片数据：RecentCard / UpdatesCard / UpcomingCard，行内容平铺为 t{i}/c{i}/m{i}/ch{i}/time{i}/b{i}
   static async buildData(context: common.Context, name: string, wide: boolean):
     Promise<formBindingData.FormBindingData> {
+    if (name === 'StatsWeekCard' || name === 'StatsMonthCard') {
+      return await WidgetUpdater.buildStatsData(context, name, wide);
+    }
     const record: Record<string, string | number | boolean> = { 'wide': wide };
     await AppDb.ready(context);
     if (name === 'RecentCard') {
@@ -238,6 +243,15 @@ export class WidgetUpdater {
         record[`ch${i}`] = item !== undefined ? `${item.chapterId}` : '';
         record[`time${i}`] = item !== undefined ? WidgetUpdater.timeText(item.seenAt) : '';
         record[`b${i}`] = item !== undefined ? WidgetUpdater.badgeChar(item.mangaTitle) : '';
+      }
+    } else if (name === 'UpcomingCard') {
+      const items = await UpcomingRepo.upcomingList();
+      for (let i = 0; i < ROW_COUNT; i++) {
+        const item: UpcomingManga | undefined = i < items.length ? items[i] : undefined;
+        record[`t${i}`] = item !== undefined ? item.title : '';
+        record[`d${i}`] = item !== undefined ? WidgetUpdater.upcomingDateText(context, item.expectedAt) : '';
+        record[`m${i}`] = item !== undefined ? `${item.mangaId}` : '';
+        record[`b${i}`] = item !== undefined ? WidgetUpdater.badgeChar(item.title) : '';
       }
     } else {
       const items = await UpdatesRepo.unreadChapters(ROW_COUNT);
@@ -256,6 +270,63 @@ export class WidgetUpdater {
       }
     }
     return formBindingData.createFormBindingData(record);
+  }
+
+  // 构建统计卡片数据：周（周一~周日）/ 月（1 日~月末）每日阅读时长柱状图
+  // 柱高预计算为 vp 数值，平铺为逗号串（卡片侧 ForEach 渲染）；周卡片附带星期标签
+  private static async buildStatsData(context: common.Context, name: string, wide: boolean):
+    Promise<formBindingData.FormBindingData> {
+    await AppDb.ready(context);
+    const week = name === 'StatsWeekCard';
+    const now = new Date();
+    const range = week ? ReadingStatsRepo.weekRange(now) : ReadingStatsRepo.monthRange(now);
+    const totals = await ReadingStatsRepo.dailyTotals(range[0], range[1]);
+    const days = ReadingStatsRepo.buildRange(range[0], range[1], totals);
+    let totalSeconds = 0;
+    let maxV = 0;
+    for (let i = 0; i < days.length; i++) {
+      totalSeconds += days[i].seconds;
+      if (days[i].seconds > maxV) {
+        maxV = days[i].seconds;
+      }
+    }
+    const month = now.getMonth() + 1;
+    const record: Record<string, string | number | boolean> = {
+      'wide': wide,
+      'empty': totalSeconds <= 0,
+      'titleText': context.resourceManager.getStringSync(
+        week ? $r('app.string.card_stats_week_display') : $r('app.string.card_stats_month_display')),
+      'rangeText': week
+        ? `${range[0].substring(5)} ~ ${range[1].substring(5)}`
+        : `${now.getFullYear()}-${WidgetUpdater.pad2(month)}`,
+      'totalText': context.resourceManager.getStringSync(week
+        ? $r('app.string.stats_week_total')
+        : $r('app.string.stats_month_total'), Util.formatDuration(context, totalSeconds)),
+      'bars': '',
+      'labels': '',
+    };
+    // 柱高（vp）：无数据 2vp 底线，其余按最大值等比缩放
+    const chartH = wide ? 80 : 52;
+    const heights: string[] = [];
+    const labels: string[] = [];
+    for (let i = 0; i < days.length; i++) {
+      const v = days[i].seconds;
+      if (v <= 0 || maxV <= 0) {
+        heights.push('2');
+      } else {
+        heights.push(`${Math.max(4, Math.round(v / maxV * chartH))}`);
+      }
+      if (week) {
+        labels.push(Util.weekdayShort(context, ReadingStatsRepo.dayOfWeek(days[i].day)));
+      }
+    }
+    record['bars'] = heights.join(',');
+    record['labels'] = labels.join(',');
+    return formBindingData.createFormBindingData(record);
+  }
+
+  private static pad2(n: number): string {
+    return n < 10 ? `0${n}` : `${n}`;
   }
 
   // 同一部漫画只保留最近一条阅读记录
@@ -288,6 +359,31 @@ export class WidgetUpdater {
     if (sameDay) {
       return `${pad(d.getHours())}:${pad(d.getMinutes())}`;
     }
+    if (d.getFullYear() === now.getFullYear()) {
+      return `${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    }
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  }
+
+  // 即将推出日期文本（与页面 relativeDate 一致）：今天 / N 天前 / N 天后 / 同年 MM-dd / 跨年 YYYY-MM-dd
+  private static upcomingDateText(context: common.Context, ms: number): string {
+    const startOf = (t: number): number => {
+      const x: Date = new Date(t);
+      return new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
+    };
+    const diff: number = Math.round((startOf(Date.now()) - startOf(ms)) / (24 * 60 * 60 * 1000));
+    if (diff === 0) {
+      return context.resourceManager.getStringSync($r('app.string.relative_time_today'));
+    }
+    if (diff > 0 && diff < 7) {
+      return context.resourceManager.getStringSync($r('app.string.relative_time_days_ago'), diff);
+    }
+    if (diff < 0 && diff >= -7) {
+      return context.resourceManager.getStringSync($r('app.string.upcoming_relative_time_days'), -diff);
+    }
+    const d: Date = new Date(ms);
+    const now: Date = new Date();
+    const pad = (n: number): string => n < 10 ? `0${n}` : `${n}`;
     if (d.getFullYear() === now.getFullYear()) {
       return `${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
     }

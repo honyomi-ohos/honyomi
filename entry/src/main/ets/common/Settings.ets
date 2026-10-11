@@ -232,6 +232,67 @@ export class Settings {
     Settings.setStr('libFilter:' + key, v);
   }
 
+  // ---- 更新页筛选（对齐 Mihon UpdatesPreferences）----
+  // 三态：key 为 'downloaded','unread','started','bookmarked'
+  static getUpdatesTriState(key: string): string {
+    return Settings.getStr('updFilter:' + key, 'ignore');
+  }
+
+  static setUpdatesTriState(key: string, v: string): void {
+    Settings.setStr('updFilter:' + key, v);
+  }
+
+  // 分类筛选（JSON 数组）：排除优先于包含
+  static getUpdatesIncludedCategories(): number[] {
+    return Settings.getNumList('updFilterCats:included');
+  }
+
+  static setUpdatesIncludedCategories(v: number[]): void {
+    Settings.setStr('updFilterCats:included', JSON.stringify(v));
+  }
+
+  static getUpdatesExcludedCategories(): number[] {
+    return Settings.getNumList('updFilterCats:excluded');
+  }
+
+  static setUpdatesExcludedCategories(v: number[]): void {
+    Settings.setStr('updFilterCats:excluded', JSON.stringify(v));
+  }
+
+  // ---- 即将推出页分类筛选（对齐 Mihon UpcomingPreferences）----
+  static getUpcomingIncludedCategories(): number[] {
+    return Settings.getNumList('upcomingCats:included');
+  }
+
+  static setUpcomingIncludedCategories(v: number[]): void {
+    Settings.setStr('upcomingCats:included', JSON.stringify(v));
+  }
+
+  static getUpcomingExcludedCategories(): number[] {
+    return Settings.getNumList('upcomingCats:excluded');
+  }
+
+  static setUpcomingExcludedCategories(v: number[]): void {
+    Settings.setStr('upcomingCats:excluded', JSON.stringify(v));
+  }
+
+  // JSON 数字数组读取（异常/类型不符时回退空数组）
+  private static getNumList(key: string): number[] {
+    const raw: string = Settings.getStr(key, '[]');
+    const result: number[] = [];
+    try {
+      const parsed = JSON.parse(raw) as number[];
+      for (const n of parsed) {
+        if (typeof n === 'number') {
+          result.push(n);
+        }
+      }
+    } catch (e) {
+      // 解析失败按空处理
+    }
+    return result;
+  }
+
   // 显示模式：'compact','comfortable','cover','list'（旧值 'grid' 归一为 'compact'）
   static getLibraryView(): string {
     const raw: string = Settings.getStr('libraryView', 'compact');

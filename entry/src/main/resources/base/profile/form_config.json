@@ -25,10 +25,46 @@
       "defaultDimension": "2*2"
     },
     {
+      "name": "UpcomingCard",
+      "displayName": "$string:card_upcoming_display",
+      "description": "$string:card_upcoming_desc",
+      "src": "./ets/widget/UpcomingCard.ets",
+      "uiSyntax": "arkts",
+      "isDefault": false,
+      "updateEnabled": true,
+      "updateDuration": 2,
+      "supportDimensions": ["2*2", "2*4"],
+      "defaultDimension": "2*2"
+    },
+    {
       "name": "MangaCard",
       "displayName": "$string:card_manga_display",
       "description": "$string:card_manga_desc",
       "src": "./ets/widget/MangaCard.ets",
+      "uiSyntax": "arkts",
+      "isDefault": false,
+      "updateEnabled": true,
+      "updateDuration": 2,
+      "supportDimensions": ["2*2"],
+      "defaultDimension": "2*2"
+    },
+    {
+      "name": "StatsWeekCard",
+      "displayName": "$string:card_stats_week_display",
+      "description": "$string:card_stats_week_desc",
+      "src": "./ets/widget/StatsWeekCard.ets",
+      "uiSyntax": "arkts",
+      "isDefault": false,
+      "updateEnabled": true,
+      "updateDuration": 2,
+      "supportDimensions": ["2*2", "2*4"],
+      "defaultDimension": "2*2"
+    },
+    {
+      "name": "StatsMonthCard",
+      "displayName": "$string:card_stats_month_display",
+      "description": "$string:card_stats_month_desc",
+      "src": "./ets/widget/StatsMonthCard.ets",
       "uiSyntax": "arkts",
       "isDefault": false,
       "updateEnabled": true,

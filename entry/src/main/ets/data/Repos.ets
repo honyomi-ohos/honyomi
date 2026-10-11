@@ -1,6 +1,6 @@
 import { relationalStore } from '@kit.ArkData';
 import { AppDb } from './AppDb';
-import { SManga, SChapter, MangaRecord, ChapterRecord, CategoryRecord, UpdateItem, HistoryItem, TrackRecord, MangaStats } from '../model/Models';
+import { SManga, SChapter, MangaRecord, ChapterRecord, CategoryRecord, UpdateItem, HistoryItem, TrackRecord, MangaStats, UpcomingManga } from '../model/Models';
 
 // 漫画仓库
 export class MangaRepo {
@@ -73,6 +73,20 @@ export class MangaRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('inLibrary', 1).orderByAsc('categoryId').orderByAsc('id');
+    const rs = await store.query(pred, MangaRepo.COLUMNS);
+    const list: MangaRecord[] = [];
+    while (rs.goToNextRow()) {
+      list.push(MangaRepo.rowToManga(rs));
+    }
+    rs.close();
+    return list;
+  }
+
+  // 按连载状态获取书架漫画（即将推出页/卡片：连载中 + 完结连载）
+  static async getLibraryByStatus(statuses: string[]): Promise<MangaRecord[]> {
+    const store = await AppDb.get();
+    const pred = new relationalStore.RdbPredicates('manga');
+    pred.equalTo('inLibrary', 1).in('status', statuses).orderByAsc('title');
     const rs = await store.query(pred, MangaRepo.COLUMNS);
     const list: MangaRecord[] = [];
     while (rs.goToNextRow()) {
@@ -592,7 +606,8 @@ export class UpdatesRepo {
     const store = await AppDb.get();
     const rs = await store.querySql(
       `SELECT c.id AS chapterId, c.mangaId AS mangaId, c.name AS chapterName,
-              c.dateUpload AS dateUpload, m.title AS mangaTitle, m.thumbnailUrl AS coverUrl
+              c.dateUpload AS dateUpload, c.read AS readFlag, c.bookmark AS bookmarkFlag,
+              m.title AS mangaTitle, m.thumbnailUrl AS coverUrl
        FROM chapter c
        JOIN manga m ON m.id = c.mangaId
        WHERE m.inLibrary = 1 AND c.read = 0
@@ -605,7 +620,9 @@ export class UpdatesRepo {
         rs.getString(rs.getColumnIndex('mangaTitle')),
         rs.getString(rs.getColumnIndex('coverUrl')),
         rs.getString(rs.getColumnIndex('chapterName')),
-        rs.getLong(rs.getColumnIndex('dateUpload'))));
+        rs.getLong(rs.getColumnIndex('dateUpload')),
+        rs.getLong(rs.getColumnIndex('readFlag')) === 1,
+        rs.getLong(rs.getColumnIndex('bookmarkFlag')) === 1));
     }
     rs.close();
     return list;
@@ -626,6 +643,194 @@ export class UpdatesRepo {
     rs.close();
     return n;
   }
+
+  // 按筛选条件查询更新章节（对齐 Mihon GetUpdates：unread/started/bookmarked/分类走 SQL，downloaded 由调用方内存过滤）
+  static async filteredChapters(query: UpdatesQuery, limit: number): Promise<UpdateItem[]> {
+    const store = await AppDb.get();
+    let sql: string =
+      `SELECT c.id AS chapterId, c.mangaId AS mangaId, c.name AS chapterName,
+              c.dateUpload AS dateUpload, c.read AS readFlag, c.bookmark AS bookmarkFlag,
+              m.title AS mangaTitle, m.thumbnailUrl AS coverUrl
+       FROM chapter c
+       JOIN manga m ON m.id = c.mangaId
+       WHERE m.inLibrary = 1`;
+    const args: Array<string | number> = [];
+    if (query.unread === 'include') {
+      sql += ' AND c.read = 0';
+    } else if (query.unread === 'exclude') {
+      sql += ' AND c.read = 1';
+    }
+    if (query.bookmarked === 'include') {
+      sql += ' AND c.bookmark = 1';
+    } else if (query.bookmarked === 'exclude') {
+      sql += ' AND c.bookmark = 0';
+    }
+    if (query.started === 'include') {
+      sql += ' AND c.lastPageRead > 0';
+    } else if (query.started === 'exclude') {
+      sql += ' AND c.lastPageRead = 0';
+    }
+    if (query.includedCategories.length > 0) {
+      const marks: string[] = [];
+      for (const id of query.includedCategories) {
+        marks.push('?');
+        args.push(id);
+      }
+      sql += ` AND m.categoryId IN (${marks.join(',')})`;
+    }
+    if (query.excludedCategories.length > 0) {
+      const marks: string[] = [];
+      for (const id of query.excludedCategories) {
+        marks.push('?');
+        args.push(id);
+      }
+      sql += ` AND m.categoryId NOT IN (${marks.join(',')})`;
+    }
+    sql += ' ORDER BY c.dateUpload DESC LIMIT ?';
+    args.push(limit);
+    const rs = await store.querySql(sql, args);
+    const list: UpdateItem[] = [];
+    while (rs.goToNextRow()) {
+      list.push(UpdateItem.of(
+        rs.getLong(rs.getColumnIndex('mangaId')),
+        rs.getLong(rs.getColumnIndex('chapterId')),
+        rs.getString(rs.getColumnIndex('mangaTitle')),
+        rs.getString(rs.getColumnIndex('coverUrl')),
+        rs.getString(rs.getColumnIndex('chapterName')),
+        rs.getLong(rs.getColumnIndex('dateUpload')),
+        rs.getLong(rs.getColumnIndex('readFlag')) === 1,
+        rs.getLong(rs.getColumnIndex('bookmarkFlag')) === 1));
+    }
+    rs.close();
+    return list;
+  }
+}
+
+// 更新页筛选条件（对齐 Mihon UpdatesPreferences：三态 + 分类包含/排除）
+export class UpdatesQuery {
+  downloaded: string = 'ignore';
+  unread: string = 'ignore';
+  started: string = 'ignore';
+  bookmarked: string = 'ignore';
+  includedCategories: number[] = [];
+  excludedCategories: number[] = [];
+}
+
+// 即将推出页查询（对齐 Mihon GetUpcomingManga + FetchInterval 的预计更新推算）
+export class UpcomingRepo {
+  private static readonly DAY_MS: number = 24 * 60 * 60 * 1000;
+  private static readonly MAX_INTERVAL: number = 28;
+
+  // 书架内连载中/完结连载漫画的预计更新列表（按预计时间升序、标题次序），
+  // 即将推出页与桌面卡片共用；分类筛选由调用方自行应用
+  static async upcomingList(): Promise<UpcomingManga[]> {
+    const library = await MangaRepo.getLibraryByStatus(['ongoing', 'publication_complete']);
+    const dates = await UpcomingRepo.chapterUploadDates();
+    const now: number = Date.now();
+    const list: UpcomingManga[] = [];
+    for (const m of library) {
+      const um: UpcomingManga = new UpcomingManga();
+      um.mangaId = m.id;
+      um.title = m.title;
+      um.coverUrl = m.thumbnailUrl;
+      um.categoryId = m.categoryId;
+      const chapterDates: number[] = dates[`${m.id}`] ?? [];
+      um.expectedAt = UpcomingRepo.nextUpdate(m.lastUpdateAt, UpcomingRepo.calcInterval(chapterDates), now);
+      list.push(um);
+    }
+    list.sort((a: UpcomingManga, b: UpcomingManga): number => {
+      if (a.expectedAt !== b.expectedAt) {
+        return a.expectedAt - b.expectedAt;
+      }
+      return a.title < b.title ? -1 : (a.title > b.title ? 1 : 0);
+    });
+    return list;
+  }
+
+  // 各书架漫画的章节上传时间（降序，每部限量 200 条供间隔推算：批量更新时也能取满去重天数）
+  static async chapterUploadDates(): Promise<Record<string, number[]>> {
+    const store = await AppDb.get();
+    const rs = await store.querySql(
+      `SELECT c.mangaId AS mangaId, c.dateUpload AS dateUpload
+       FROM chapter c
+       JOIN manga m ON m.id = c.mangaId
+       WHERE m.inLibrary = 1 AND c.dateUpload > 0
+       ORDER BY c.dateUpload DESC`);
+    const map: Record<string, number[]> = {};
+    while (rs.goToNextRow()) {
+      const key: string = `${rs.getLong(rs.getColumnIndex('mangaId'))}`;
+      let list: number[] | undefined = map[key];
+      if (list === undefined) {
+        list = [];
+        map[key] = list;
+      }
+      if (list.length < 200) {
+        list.push(rs.getLong(rs.getColumnIndex('dateUpload')));
+      }
+    }
+    rs.close();
+    return map;
+  }
+
+  private static startOfDay(ms: number): number {
+    const d: Date = new Date(ms);
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  }
+
+  // 章节发布间隔（天）：上传日去重后取相邻间隔中位数，不足 3 天回退 7 天（对齐 FetchInterval.calculateInterval）
+  static calcInterval(dates: number[]): number {
+    const win: number = dates.length <= 8 ? 3 : 10;
+    const dayStarts: number[] = [];
+    for (const t of dates) {
+      if (t <= 0) {
+        continue;
+      }
+      const ds: number = UpcomingRepo.startOfDay(t);
+      if (dayStarts.length === 0 || dayStarts[dayStarts.length - 1] !== ds) {
+        dayStarts.push(ds);
+      }
+      if (dayStarts.length >= win) {
+        break;
+      }
+    }
+    let interval: number = 7;
+    if (dayStarts.length >= 3) {
+      const ranges: number[] = [];
+      for (let i = 1; i < dayStarts.length; i++) {
+        ranges.push(Math.round((dayStarts[i - 1] - dayStarts[i]) / UpcomingRepo.DAY_MS));
+      }
+      ranges.sort((a: number, b: number): number => a - b);
+      interval = ranges[Math.floor((ranges.length - 1) / 2)];
+    }
+    if (interval < 1) {
+      interval = 1;
+    }
+    if (interval > UpcomingRepo.MAX_INTERVAL) {
+      interval = UpcomingRepo.MAX_INTERVAL;
+    }
+    return interval;
+  }
+
+  // 逾期超过 10 个周期时倍增检查周期（对齐 FetchInterval.increaseInterval）
+  private static increaseInterval(delta: number, daysSinceLatest: number): number {
+    if (delta >= UpcomingRepo.MAX_INTERVAL) {
+      return UpcomingRepo.MAX_INTERVAL;
+    }
+    const cycle: number = Math.floor(daysSinceLatest / delta) + 1;
+    if (cycle > 10) {
+      return UpcomingRepo.increaseInterval(delta * 2, daysSinceLatest);
+    }
+    return delta;
+  }
+
+  // 预计下次更新时间（对齐 FetchInterval.calculateNextUpdate，返回当日零点时间戳）
+  static nextUpdate(lastUpdateAt: number, interval: number, now: number): number {
+    const latest: number = UpcomingRepo.startOfDay(lastUpdateAt > 0 ? lastUpdateAt : now);
+    const daysSince: number = Math.floor((now - latest) / UpcomingRepo.DAY_MS);
+    const adjusted: number = UpcomingRepo.increaseInterval(interval, daysSince);
+    const cycle: number = Math.floor(daysSince / adjusted);
+    return latest + (cycle + 1) * interval * UpcomingRepo.DAY_MS;
+  }
 }
 
 // 追踪仓库（AniList）
@@ -644,6 +849,18 @@ export class TrackRepo {
     }
     rs.close();
     return ids;
+  }
+
+  // 全部已评分记录的分数（统计页平均评分用）
+  static async allScores(): Promise<number[]> {
+    const store = await AppDb.get();
+    const rs = await store.querySql(`SELECT score FROM track WHERE score > 0`);
+    const list: number[] = [];
+    while (rs.goToNextRow()) {
+      list.push(rs.getDouble(rs.getColumnIndex('score')));
+    }
+    rs.close();
+    return list;
   }
 
   static async get(mangaId: number): Promise<TrackRecord | undefined> {

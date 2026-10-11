@@ -4,7 +4,6 @@ let mangaStorage = new LocalStorage();
 @Entry(mangaStorage)
 @Component
 struct MangaCard {
-  @LocalStorageProp('wide') wide: boolean = false;
   @LocalStorageProp('empty') empty: boolean = true;
   @LocalStorageProp('title') title: string = '';
   @LocalStorageProp('chapter') chapter: string = '';
@@ -56,8 +55,6 @@ struct MangaCard {
     Column() {
       if (this.empty) {
         this.emptyState()
-      } else if (this.wide) {
-        this.wideLayout()
       } else {
         this.posterLayout()
       }
@@ -142,62 +139,5 @@ struct MangaCard {
     }
     .width('100%')
     .height('100%')
-  }
-
-  // 2×4 分栏式：左封面 + 右标题/章节/继续阅读提示
-  @Builder
-  wideLayout() {
-    Row() {
-      Stack() {
-        if (this.hasCover) {
-          Image('memory://cover')
-            .width('100%')
-            .height('100%')
-            .objectFit(ImageFit.Cover)
-        } else {
-          Column() {
-            Text(this.badgeChar())
-              .fontSize(24)
-              .fontWeight(FontWeight.Bold)
-              .fontColor($r('app.color.mihon_primary_blue'))
-          }
-          .width('100%')
-          .height('100%')
-          .backgroundColor($r('app.color.mihon_chip'))
-          .justifyContent(FlexAlign.Center)
-          .alignItems(HorizontalAlign.Center)
-        }
-      }
-      .height('100%')
-      .aspectRatio(0.7)
-      .backgroundColor($r('app.color.mihon_chip'))
-
-      Column() {
-        Text(this.title)
-          .fontSize(15)
-          .fontWeight(FontWeight.Bold)
-          .fontColor($r('app.color.mihon_text'))
-          .maxLines(2)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
-        if (this.hasChapter) {
-          Text(this.chapter)
-            .fontSize(12)
-            .fontColor($r('app.color.mihon_sub'))
-            .maxLines(1)
-            .textOverflow({ overflow: TextOverflow.Ellipsis })
-            .margin({ top: 6 })
-        }
-        Text($r('app.string.card_manga_read_hint'))
-          .fontSize(12)
-          .fontColor($r('app.color.mihon_primary_blue'))
-          .margin({ top: 8 })
-      }
-      .layoutWeight(1)
-      .alignItems(HorizontalAlign.Start)
-      .margin({ left: 14, right: 14 })
-    }
-    .width('100%')
-    .height('100%')
-    .alignItems(VerticalAlign.Center)
   }
 }

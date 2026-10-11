@@ -14,6 +14,52 @@ export class Util {
     return `${d.getFullYear()}-${mm}-${dd}`;
   }
 
+  // 紧凑时长（对齐 Mihon Duration.toDurationString）：
+  // "3天2小时" / "5小时30分" / "45分" / "30秒"
+  static formatDuration(context: common.Context, seconds: number): string {
+    if (seconds < 1) {
+      return context.resourceManager.getStringSync($r('app.string.stats_second_short'), 0);
+    }
+    const days: number = Math.floor(seconds / 86400);
+    const hours: number = Math.floor((seconds % 86400) / 3600);
+    const minutes: number = Math.floor((seconds % 3600) / 60);
+    const secs: number = seconds % 60;
+    const parts: string[] = [];
+    if (days > 0) {
+      parts.push(context.resourceManager.getStringSync($r('app.string.stats_day_short'), days));
+    }
+    if (hours > 0) {
+      parts.push(context.resourceManager.getStringSync($r('app.string.stats_hour_short'), hours));
+    }
+    if (minutes > 0 && (days === 0 || hours === 0)) {
+      parts.push(context.resourceManager.getStringSync($r('app.string.stats_minute_short'), minutes));
+    }
+    if (secs > 0 && days === 0 && hours === 0) {
+      parts.push(context.resourceManager.getStringSync($r('app.string.stats_second_short'), secs));
+    }
+    return parts.join(' ');
+  }
+
+  // 星期短标签（周统计横轴）：day 0=周日 .. 6=周六
+  static weekdayShort(context: common.Context, day: number): string {
+    let res: Resource = $r('app.string.stats_wd_sun');
+    if (day === 1) {
+      res = $r('app.string.stats_wd_mon');
+    } else if (day === 2) {
+      res = $r('app.string.stats_wd_tue');
+    } else if (day === 3) {
+      res = $r('app.string.stats_wd_wed');
+    } else if (day === 4) {
+      res = $r('app.string.stats_wd_thu');
+    } else if (day === 5) {
+      res = $r('app.string.stats_wd_fri');
+    } else if (day === 6) {
+      res = $r('app.string.stats_wd_sat');
+    }
+    return context.resourceManager.getStringSync(res);
+  }
+
+
   static timeAgo(ms: number): Resource | string {
     if (ms <= 0) {
       return '';

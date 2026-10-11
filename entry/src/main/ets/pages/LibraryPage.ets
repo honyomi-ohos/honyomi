@@ -135,7 +135,11 @@ export struct LibraryPage {
     try {
       const context = getContext(this) as common.UIAbilityContext;
       const newCount = await UpdateService.refreshLibrary(context);
-      Util.toastRes(this.getUIContext(), newCount > 0 ? $r('app.string.updates_found_new', newCount) : $r('app.string.updates_no_new'));
+      if (newCount > 0) {
+        Util.toastRes(this.getUIContext(), $r('app.string.updates_found_new'), [newCount]);
+      } else {
+        Util.toastRes(this.getUIContext(), $r('app.string.updates_no_new'));
+      }
       await this.loadData();
     } catch (e) {
       Util.toastRes(this.getUIContext(), $r('app.string.updates_refresh_failed'));
@@ -152,7 +156,11 @@ export struct LibraryPage {
     try {
       const context = getContext(this) as common.UIAbilityContext;
       const newCount = await UpdateService.refreshCategory(context, this.selectedCategory);
-      Util.toastRes(this.getUIContext(), newCount > 0 ? $r('app.string.updates_found_new', newCount) : $r('app.string.updates_no_new'));
+      if (newCount > 0) {
+        Util.toastRes(this.getUIContext(), $r('app.string.updates_found_new'), [newCount]);
+      } else {
+        Util.toastRes(this.getUIContext(), $r('app.string.updates_no_new'));
+      }
       await this.loadData();
     } catch (e) {
       Util.toastRes(this.getUIContext(), $r('app.string.updates_refresh_failed'));
@@ -404,14 +412,14 @@ export struct LibraryPage {
         }
       }
     }
-    Util.toastRes(this.getUIContext(), $r('app.string.action_download_queued', queued));
+    Util.toastRes(this.getUIContext(), $r('app.string.action_download_queued'), [queued]);
   }
 
   private showDeleteConfirm(): void {
     const dialog = new CustomDialogController({
       builder: ConfirmDialog({
         title: $r('app.string.action_remove_from_library'),
-        message: Util.resStr(this.getUIContext(), $r('app.string.action_remove_from_library_msg', this.selection.size)),
+        message: Util.resStr(this.getUIContext(), $r('app.string.action_remove_from_library_msg'), [this.selection.size]),
         confirmText: $r('app.string.action_delete'),
         onConfirm: (): void => {
           this.removeSelection();

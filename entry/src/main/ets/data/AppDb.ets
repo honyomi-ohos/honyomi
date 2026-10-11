@@ -79,6 +79,14 @@ export class AppDb {
       seenAt INTEGER NOT NULL,
       lastPageRead INTEGER DEFAULT 0
     )`);
+    await store.executeSql(`CREATE TABLE IF NOT EXISTS readingSession (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      mangaId INTEGER NOT NULL,
+      chapterId INTEGER NOT NULL,
+      day TEXT NOT NULL,
+      startTime INTEGER NOT NULL,
+      duration INTEGER NOT NULL
+    )`);
     await store.executeSql(`CREATE TABLE IF NOT EXISTS track (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       mangaId INTEGER NOT NULL,
