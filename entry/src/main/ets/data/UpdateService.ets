@@ -2,7 +2,7 @@ import { common } from '@kit.AbilityKit';
 import { AppDb } from './AppDb';
 import { MangaRepo, ChapterRepo } from './Repos';
 import { SourceRegistry } from '../source/Source';
-import { MangaRecord } from '../model/Models';
+import { MangaRecord, ContentType } from '../model/Models';
 import { WidgetUpdater } from '../form/WidgetUpdater';
 
 // 书架更新服务：遍历收藏漫画拉取最新章节
@@ -20,7 +20,7 @@ export class UpdateService {
       : library;
     let newCount = 0;
     for (const manga of list) {
-      if (manga.sourceKey === 'local') {
+      if (ContentType.isLocal(manga.sourceKey)) {
         continue;
       }
       const source = SourceRegistry.get(manga.sourceKey);

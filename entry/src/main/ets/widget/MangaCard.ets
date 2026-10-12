@@ -11,6 +11,7 @@ struct MangaCard {
   @LocalStorageProp('chapterId') chapterId: string = '';
   @LocalStorageProp('hasChapter') hasChapter: boolean = false;
   @LocalStorageProp('hasCover') hasCover: boolean = false;
+  @LocalStorageProp('contentType') contentType: string = 'manga';
 
   private badgeChar(): string {
     if (this.title === '') {
@@ -28,7 +29,8 @@ struct MangaCard {
         'params': {
           'cardTarget': 'reader',
           'mangaId': this.mangaId,
-          'chapterId': this.chapterId
+          'chapterId': this.chapterId,
+          'contentType': this.contentType
         }
       });
       return;

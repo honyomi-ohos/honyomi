@@ -25,6 +25,36 @@ export interface SPage {
   pageUrl?: string;
 }
 
+// 视频章节的一条可播放流（直链或 m3u8）
+export interface SVideo {
+  url: string;
+  quality: string;
+  headers: Record<string, string>;
+}
+
+// 作品类型：漫画 / 小说 / 视频。未声明时一律视为漫画。
+export class ContentType {
+  static readonly MANGA: string = 'manga';
+  static readonly NOVEL: string = 'novel';
+  static readonly VIDEO: string = 'video';
+
+  static normalize(raw: string | undefined): string {
+    if (raw === ContentType.NOVEL || raw === ContentType.VIDEO) {
+      return raw;
+    }
+    return ContentType.MANGA;
+  }
+
+  static isLocal(sourceKey: string): boolean {
+    return sourceKey === 'local' || sourceKey === 'local_novel' || sourceKey === 'local_video';
+  }
+
+  // m3u8 只在线播放，不进下载队列
+  static isPlaylist(url: string): boolean {
+    return url.toLowerCase().indexOf('.m3u8') >= 0;
+  }
+}
+
 export interface MangasPage {
   mangas: SManga[];
   hasNextPage: boolean;
@@ -42,6 +72,7 @@ export class MangaRecord {
   description: string = '';
   genre: string = '';
   status: string = '';
+  contentType: string = 'manga';
   inLibrary: boolean = false;
   categoryId: number = 1;
   addedAt: number = 0;

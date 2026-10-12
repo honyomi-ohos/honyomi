@@ -278,7 +278,16 @@ export struct BrowsePage {
   }
 
   private sourceDisplayName(s: Source): Resource | string {
-    return s.key === 'local' ? $r('app.string.browse_local_source_name') : s.name;
+    if (s.key === 'local') {
+      return $r('app.string.browse_local_source_name');
+    }
+    if (s.key === 'local_novel') {
+      return $r('app.string.browse_local_novel_name');
+    }
+    if (s.key === 'local_video') {
+      return $r('app.string.browse_local_video_name');
+    }
+    return s.name;
   }
 
   // 源列表分节：已置顶在前，其后按语言分组

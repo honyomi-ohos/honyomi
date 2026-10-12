@@ -1,6 +1,6 @@
 import { fileIo as fs } from '@kit.CoreFileKit';
 import zlib from '@ohos.zlib';
-import { SManga, SChapter, SPage, MangasPage } from '../model/Models';
+import { SManga, SChapter, SPage, SVideo, MangasPage, ContentType } from '../model/Models';
 import { Source } from './Source';
 
 // 本地漫画源：扫描应用沙箱 local 目录下的漫画
@@ -10,6 +10,7 @@ export class LocalSource implements Source {
   readonly name = '本地漫画';
   readonly lang = 'zh';
   readonly supportsLatest = false;
+  readonly contentType = ContentType.MANGA;
 
   private readonly rootDir: string;
   private readonly cacheDir: string;
@@ -55,6 +56,14 @@ export class LocalSource implements Source {
 
   imageRequestHeaders(): Record<string, string> | undefined {
     return undefined;
+  }
+
+  async getChapterText(_chapterKey: string): Promise<string> {
+    return '';
+  }
+
+  async getVideoList(_chapterKey: string): Promise<SVideo[]> {
+    return [];
   }
 
   async getChapterList(mangaKey: string): Promise<SChapter[]> {

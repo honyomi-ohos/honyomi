@@ -2,7 +2,7 @@ import { picker, fileIo } from '@kit.CoreFileKit';
 import { common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { MangaRepo, ChapterRepo, CategoryRepo } from './Repos';
-import { SManga, CategoryRecord, MangaRecord, ChapterRecord } from '../model/Models';
+import { SManga, CategoryRecord, MangaRecord, ChapterRecord, ContentType } from '../model/Models';
 
 // 备份/恢复（对齐 Mihon BackupCreator / BackupRestore 的 JSON 子集）
 
@@ -24,6 +24,7 @@ export interface BackupManga {
   genre: string;
   status: string;
   category: string;
+  contentType?: string;
   chapters: BackupChapter[];
 }
 
@@ -105,12 +106,13 @@ export class BackupService {
         status: m.status,
         category: categoryById.get(m.categoryId) !== undefined ?
           categoryById.get(m.categoryId) as string : '默认',
+        contentType: ContentType.normalize(m.contentType),
         chapters: backupChapters,
       };
       mangaList.push(bm);
     }
     const root: BackupRoot = {
-      version: 1,
+      version: 2,
       categories: categoryNames,
       manga: mangaList,
     };
@@ -156,7 +158,7 @@ export class BackupService {
         genre: bm.genre,
         status: bm.status,
       };
-      const mangaId = await MangaRepo.upsertFromSource(bm.sourceKey, sm);
+      const mangaId = await MangaRepo.upsertFromSource(bm.sourceKey, sm, ContentType.normalize(bm.contentType));
       if (mangaId < 0) {
         continue;
       }

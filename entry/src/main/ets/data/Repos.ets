@@ -1,10 +1,10 @@
 import { relationalStore } from '@kit.ArkData';
 import { AppDb } from './AppDb';
-import { SManga, SChapter, MangaRecord, ChapterRecord, CategoryRecord, UpdateItem, HistoryItem, TrackRecord, MangaStats, UpcomingManga } from '../model/Models';
+import { SManga, SChapter, MangaRecord, ChapterRecord, CategoryRecord, UpdateItem, HistoryItem, TrackRecord, MangaStats, UpcomingManga, ContentType } from '../model/Models';
 
 // 漫画仓库
 export class MangaRepo {
-  static async upsertFromSource(sourceKey: string, m: SManga): Promise<number> {
+  static async upsertFromSource(sourceKey: string, m: SManga, contentType: string): Promise<number> {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('sourceKey', sourceKey).and().equalTo('url', m.key);
@@ -38,6 +38,7 @@ export class MangaRepo {
         'description': m.description !== '' ? m.description : oldDesc,
         'genre': m.genre !== '' ? m.genre : oldGenre,
         'status': m.status !== '' ? m.status : oldStatus,
+        'contentType': ContentType.normalize(contentType),
       };
       await store.update(values, pred);
       return id;
@@ -51,6 +52,7 @@ export class MangaRepo {
       'description': m.description,
       'genre': m.genre,
       'status': m.status,
+      'contentType': ContentType.normalize(contentType),
       'inLibrary': 0,
       'categoryId': 1,
       'addedAt': Date.now(),
@@ -144,7 +146,7 @@ export class MangaRepo {
   }
 
   // 迁移：切换源与地址并更新元数据，清空旧章节记录（进度不保留）
-  static async migrate(id: number, sourceKey: string, url: string, m: SManga): Promise<void> {
+  static async migrate(id: number, sourceKey: string, url: string, m: SManga, contentType: string): Promise<void> {
     const store = await AppDb.get();
     const values: relationalStore.ValuesBucket = {
       'sourceKey': sourceKey,
@@ -155,6 +157,7 @@ export class MangaRepo {
       'description': m.description,
       'genre': m.genre,
       'status': m.status,
+      'contentType': ContentType.normalize(contentType),
     };
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('id', id);
@@ -199,7 +202,7 @@ export class MangaRepo {
 
   private static readonly COLUMNS: string[] = [
     'id', 'sourceKey', 'url', 'title', 'thumbnailUrl', 'author',
-    'description', 'genre', 'status', 'inLibrary', 'categoryId', 'addedAt',
+    'description', 'genre', 'status', 'contentType', 'inLibrary', 'categoryId', 'addedAt',
     'lastUpdateAt', 'fetchedAt',
   ];
 
@@ -214,6 +217,7 @@ export class MangaRepo {
     m.description = rs.getString(rs.getColumnIndex('description'));
     m.genre = rs.getString(rs.getColumnIndex('genre'));
     m.status = rs.getString(rs.getColumnIndex('status'));
+    m.contentType = ContentType.normalize(rs.getString(rs.getColumnIndex('contentType')));
     m.inLibrary = rs.getLong(rs.getColumnIndex('inLibrary')) === 1;
     m.categoryId = rs.getLong(rs.getColumnIndex('categoryId'));
     m.addedAt = rs.getLong(rs.getColumnIndex('addedAt'));

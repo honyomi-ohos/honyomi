@@ -55,12 +55,27 @@ export struct GlobalSearchPage {
         record.url = m.key;
         record.title = m.title;
         record.thumbnailUrl = m.coverUrl;
+        record.contentType = source.contentType;
         records.push(record);
       }
       this.updateSection(source.key, records, 'done');
     }).catch((_e: Error) => {
       this.updateSection(source.key, [], 'error');
     });
+  }
+
+  private sourceTitle(s: Source): string {
+    const context = getContext(this) as common.UIAbilityContext;
+    if (s.key === 'local') {
+      return context.resourceManager.getStringSync($r('app.string.browse_local_source_name'));
+    }
+    if (s.key === 'local_novel') {
+      return context.resourceManager.getStringSync($r('app.string.browse_local_novel_name'));
+    }
+    if (s.key === 'local_video') {
+      return context.resourceManager.getStringSync($r('app.string.browse_local_video_name'));
+    }
+    return s.name;
   }
 
   private startSearch(): Promise<void> {
@@ -73,7 +88,7 @@ export struct GlobalSearchPage {
     for (const s of sources) {
       const section: SearchSection = new SearchSection();
       section.sourceKey = s.key;
-      section.name = s.key === 'local' ? 'Local' : s.name;
+      section.name = this.sourceTitle(s);
       sections.push(section);
     }
     this.sections = sections;
@@ -101,7 +116,7 @@ export struct GlobalSearchPage {
         genre: record.genre,
         status: record.status,
       };
-      const id = await MangaRepo.upsertFromSource(record.sourceKey, m);
+      const id = await MangaRepo.upsertFromSource(record.sourceKey, m, record.contentType);
       const params: DetailParams = { mangaId: id };
       this.pathStack.pushPathByName('MangaDetail', params);
     } catch (e) {

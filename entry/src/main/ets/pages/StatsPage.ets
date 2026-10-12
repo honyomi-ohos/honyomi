@@ -1,6 +1,7 @@
 import { common } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo, TrackRepo } from '../data/Repos';
+import { ContentType } from '../model/Models';
 import { ReadingStatsRepo, DayDuration } from '../data/ReadingStats';
 import { DownloadService } from '../data/DownloadService';
 import { ThemePalette } from '../common/Theme';
@@ -21,6 +22,9 @@ class StatsSummary {
   meanScore: number = -1;
   trackerCount: number = 0;
   totalReadSeconds: number = 0;
+  mangaSeconds: number = 0;
+  novelSeconds: number = 0;
+  videoSeconds: number = 0;
 }
 
 // 单个统计项：数值 + 标签（对齐 Mihon StatsOverviewItem）
@@ -91,7 +95,7 @@ export struct StatsPage {
         if (readCnt > 0) {
           summary.startedCount += 1;
         }
-        if (m.sourceKey === 'local') {
+        if (ContentType.isLocal(m.sourceKey)) {
           summary.localCount += 1;
         }
         summary.totalChapters += total;
@@ -120,6 +124,10 @@ export struct StatsPage {
       }
       // 阅读时长
       summary.totalReadSeconds = await ReadingStatsRepo.totalDuration();
+      const byType = await ReadingStatsRepo.durationByType();
+      summary.mangaSeconds = byType['manga'] !== undefined ? byType['manga'] : 0;
+      summary.novelSeconds = byType['novel'] !== undefined ? byType['novel'] : 0;
+      summary.videoSeconds = byType['video'] !== undefined ? byType['video'] : 0;
       this.summary = summary;
       // 周/月每日时长
       const now = new Date();
@@ -310,19 +318,35 @@ export struct StatsPage {
             Column({ space: 12 }) {
               // 概览
               PrefGroup({ groupTitle: $r('app.string.stats_overview_section') }) {
-                Row() {
-                  StatsItem({
-                    title: $r('app.string.stats_in_library'),
-                    value: `${this.summary.libraryCount}`
-                  })
-                  StatsItem({
-                    title: $r('app.string.stats_read_duration'),
-                    value: this.totalDurationText()
-                  })
-                  StatsItem({
-                    title: $r('app.string.stats_completed_titles'),
-                    value: `${this.summary.completedCount}`
-                  })
+                Column() {
+                  Row() {
+                    StatsItem({
+                      title: $r('app.string.stats_in_library'),
+                      value: `${this.summary.libraryCount}`
+                    })
+                    StatsItem({
+                      title: $r('app.string.stats_read_duration'),
+                      value: this.totalDurationText()
+                    })
+                    StatsItem({
+                      title: $r('app.string.stats_completed_titles'),
+                      value: `${this.summary.completedCount}`
+                    })
+                  }
+                  Row() {
+                    StatsItem({
+                      title: $r('app.string.stats_duration_manga'),
+                      value: Util.formatDuration(this.ctx(), this.summary.mangaSeconds)
+                    })
+                    StatsItem({
+                      title: $r('app.string.stats_duration_novel'),
+                      value: Util.formatDuration(this.ctx(), this.summary.novelSeconds)
+                    })
+                    StatsItem({
+                      title: $r('app.string.stats_duration_video'),
+                      value: Util.formatDuration(this.ctx(), this.summary.videoSeconds)
+                    })
+                  }
                 }
               }
 

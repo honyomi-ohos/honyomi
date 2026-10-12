@@ -6,6 +6,7 @@ import { util } from '@kit.ArkTS';
 import { PluginManifest, JsvmSource, CompiledSourceInfo } from '../source/JsvmSource';
 import { JsvmExtensionManager } from '../jsvm/JsvmExtensionManager';
 import { SourceRegistry } from '../source/Source';
+import { ContentType } from '../model/Models';
 import { Http } from '../net/Http';
 
 const DOMAIN = 0x0002;
@@ -25,6 +26,7 @@ interface RawManifest {
   icon?: string;
   runtime?: string;
   engine?: string;
+  contentType?: string;
 }
 
 export interface InstalledPlugin {
@@ -150,6 +152,7 @@ export class PluginService {
       icon: raw.icon ?? '',
       runtime: raw.runtime ?? '',
       engine: engine,
+      contentType: ContentType.normalize(raw.contentType),
     };
     return manifest;
   }
@@ -437,6 +440,7 @@ export class PluginService {
       icon: base.icon,
       runtime: base.runtime,
       engine: base.engine,
+      contentType: ContentType.normalize(base.contentType),
     };
     return manifest;
   }

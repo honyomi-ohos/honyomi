@@ -174,7 +174,7 @@ export class WidgetUpdater {
     const built = new MangaCardData();
     const record: Record<string, string | number | boolean> = {
       'empty': true, 'hasCover': false, 'hasChapter': false,
-      'title': '', 'chapter': '', 'mangaId': '', 'chapterId': ''
+      'title': '', 'chapter': '', 'mangaId': '', 'chapterId': '', 'contentType': 'manga'
     };
     await AppDb.ready(context);
     const manga: MangaRecord | undefined = mangaId > 0 ? await MangaRepo.get(mangaId) : undefined;
@@ -185,6 +185,7 @@ export class WidgetUpdater {
     record['empty'] = false;
     record['title'] = manga.title;
     record['mangaId'] = `${manga.id}`;
+    record['contentType'] = manga.contentType;
     let chapterId = 0;
     let chapterName = '';
     const last = await HistoryRepo.lastForManga(manga.id);

@@ -6,6 +6,8 @@ import { Settings } from '../common/Settings';
 import { AppDb } from '../data/AppDb';
 import { SourceRegistry } from '../source/Source';
 import { LocalSource } from '../source/LocalSource';
+import { LocalNovelSource } from '../source/LocalNovelSource';
+import { LocalVideoSource } from '../source/LocalVideoSource';
 import { DownloadService } from '../data/DownloadService';
 import { PluginService } from '../data/PluginService';
 import { JsvmExtensionManager } from '../jsvm/JsvmExtensionManager';
@@ -27,8 +29,10 @@ export default class EntryAbility extends UIAbility {
     Settings.init(this.context);
     // 应用语言偏好（跟随系统时由系统资源机制自动匹配）
     Settings.applyAppLanguage();
-    // 注册内置源（LocalSource；在线源全部通过插件动态安装）
+    // 注册内置源（本地漫画 / 小说 / 视频；在线源全部通过插件动态安装）
     SourceRegistry.register(new LocalSource(this.context.filesDir, this.context.cacheDir));
+    SourceRegistry.register(new LocalNovelSource(this.context.filesDir));
+    SourceRegistry.register(new LocalVideoSource(this.context.filesDir));
     // 插件宿主（JSVM 隔离引擎：安装主线程 HTTP 桥）
     PluginService.init(this.context);
     JsvmExtensionManager.init();
@@ -130,10 +134,13 @@ export default class EntryAbility extends UIAbility {
       (typeof mangaIdVal === 'string' ? Number(mangaIdVal) : 0);
     const chapterId = typeof chapterIdVal === 'number' ? chapterIdVal :
       (typeof chapterIdVal === 'string' ? Number(chapterIdVal) : 0);
+    const typeVal = params['contentType'];
+    const contentType = typeof typeVal === 'string' ? typeVal : '';
     const payload: Record<string, string | number> = {
       'target': target,
       'mangaId': mangaId,
-      'chapterId': chapterId
+      'chapterId': chapterId,
+      'contentType': contentType
     };
     AppStorage.setOrCreate('cardAction', JSON.stringify(payload));
   }

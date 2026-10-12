@@ -5,6 +5,7 @@ import { HdsTabs, hdsMaterial, HdsTabsController, HdsAnimationMode } from '@kit.
 import { ThemePalette } from '../common/Theme';
 import { Settings } from '../common/Settings';
 import { UpdateService } from '../data/UpdateService';
+import { AppDb } from '../data/AppDb';
 import { PluginService } from '../data/PluginService';
 import { Http } from '../net/Http';
 import { CookieJar } from '../net/CookieJar';
@@ -17,6 +18,9 @@ import { BrowsePage } from './BrowsePage';
 import { MorePage } from './MorePage';
 import { MangaDetailPage } from './MangaDetailPage';
 import { ReaderPage } from './ReaderPage';
+import { NovelReaderPage } from './NovelReaderPage';
+import { VideoPlayerPage } from './VideoPlayerPage';
+import { ContentOpen } from './ContentOpen';
 import { DownloadPage } from './DownloadPage';
 import { BrowseSourcePage } from './BrowseSourcePage';
 import { GlobalSearchPage } from './GlobalSearchPage';
@@ -36,13 +40,14 @@ import { AdvancedPage } from './settings/AdvancedPage';
 import { AboutPage } from './settings/AboutPage';
 import { AppIcon } from './components/AppIcon';
 import { UPDATES_MORPH, LIBRARY_MORPH, BROWSE_MORPH, PathMorph } from './components/PathMorph';
-import { ReaderParams, DetailParams } from '../model/RouteParams';
+import { DetailParams } from '../model/RouteParams';
 
 // 桌面卡片 router 事件载荷（由 EntryAbility.handleCardWant 写入 AppStorage）
 interface CardActionPayload {
   target: string;
   mangaId: number;
   chapterId: number;
+  contentType: string;
 }
 
 // 底部导航图标：逐 Tab 复刻 Mihon 的 AnimatedImageVector 动画
@@ -392,8 +397,15 @@ struct Index {
       return;
     }
     if (raw.target === 'reader' && raw.mangaId > 0 && raw.chapterId > 0) {
-      const params: ReaderParams = { mangaId: raw.mangaId, chapterId: raw.chapterId };
-      this.pathStack.pushPathByName('Reader', params);
+      if (raw.contentType === 'novel' || raw.contentType === 'video' || raw.contentType === 'manga') {
+        ContentOpen.push(this.pathStack, raw.contentType, raw.mangaId, raw.chapterId);
+      } else {
+        const context = getContext(this) as common.UIAbilityContext;
+        AppDb.ready(context).then(() => {
+          ContentOpen.open(this.pathStack, raw.mangaId, raw.chapterId);
+        }).catch(() => {
+        });
+      }
       return;
     }
     if (raw.target === 'detail' && raw.mangaId > 0) {
@@ -474,6 +486,10 @@ struct Index {
       MangaDetailPage()
     } else if (name === 'Reader') {
       ReaderPage()
+    } else if (name === 'NovelReader') {
+      NovelReaderPage()
+    } else if (name === 'VideoPlayer') {
+      VideoPlayerPage()
     } else if (name === 'Downloads') {
       DownloadPage()
     } else if (name === 'BrowseSource') {

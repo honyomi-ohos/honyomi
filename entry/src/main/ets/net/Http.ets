@@ -1,4 +1,6 @@
 import { http } from '@kit.NetworkKit';
+import { request } from '@kit.BasicServicesKit';
+import { common } from '@kit.AbilityKit';
 import { CookieJar } from './CookieJar';
 
 // HTTP 客户端封装（对齐 Mihon NetworkHelper 的最小集）
@@ -87,6 +89,33 @@ export class Http {
 
   static defaultHeaders(): Record<string, string> {
     return { 'User-Agent': Http.USER_AGENT };
+  }
+
+  // 合并 UA、调用方头与 Cookie，供图片以外的下载和播放使用
+  static headersFor(url: string, headers: Record<string, string> | undefined): Record<string, string> {
+    return Http.buildHeaders(url, headers);
+  }
+
+  // 流式下载到沙箱文件，避免把视频整段读进内存
+  static downloadToFile(context: common.Context, url: string, headers: Record<string, string> | undefined,
+    filePath: string): Promise<void> {
+    const config: request.DownloadConfig = {
+      url: url,
+      header: Http.buildHeaders(url, headers),
+      filePath: filePath,
+    };
+    return new Promise<void>((resolve: () => void, reject: (err: Error) => void) => {
+      request.downloadFile(context, config).then((task: request.DownloadTask) => {
+        task.on('complete', () => {
+          resolve();
+        });
+        task.on('fail', (err: number) => {
+          reject(new Error(`下载失败 (${err})`));
+        });
+      }).catch((e: Error) => {
+        reject(e);
+      });
+    });
   }
 
   // ---------------- 内部实现 ----------------

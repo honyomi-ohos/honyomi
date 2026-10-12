@@ -3,8 +3,9 @@ import { formProvider, formInfo } from '@kit.FormKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo, ChapterRepo, TrackRepo } from '../data/Repos';
 import { SourceRegistry } from '../source/Source';
-import { MangaRecord, ChapterRecord, TrackRecord, DownloadTask, ALMediaItem } from '../model/Models';
-import { DetailParams, ReaderParams } from '../model/RouteParams';
+import { MangaRecord, ChapterRecord, TrackRecord, DownloadTask, ALMediaItem, ContentType } from '../model/Models';
+import { DetailParams } from '../model/RouteParams';
+import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { Settings } from '../common/Settings';
@@ -80,7 +81,7 @@ export struct MangaDetailPage {
         const chapters = await source.getChapterList(this.manga.url);
         await ChapterRepo.syncFromSource(this.mangaId, chapters);
         const detail = await source.getMangaDetail(this.manga.url);
-        await MangaRepo.upsertFromSource(this.manga.sourceKey, detail);
+        await MangaRepo.upsertFromSource(this.manga.sourceKey, detail, source.contentType);
       } catch (e) {
         Util.toastRes(this.getUIContext(), $r('app.string.detail_sync_failed_local'));
       }
@@ -117,8 +118,18 @@ export struct MangaDetailPage {
   }
 
   private openReader(chapterId: number): void {
-    const params: ReaderParams = { mangaId: this.mangaId, chapterId: chapterId };
-    this.pathStack.pushPathByName('Reader', params);
+    ContentOpen.push(this.pathStack, this.manga.contentType, this.mangaId, chapterId);
+  }
+
+  private actionLabel(): Resource {
+    if (this.continueChapter() === undefined) {
+      return $r('app.string.detail_no_chapters_yet');
+    }
+    const started = this.chapters.some((c: ChapterRecord): boolean => c.read);
+    if (this.manga.contentType === ContentType.VIDEO) {
+      return started ? $r('app.string.detail_continue_playing') : $r('app.string.detail_start_playing');
+    }
+    return started ? $r('app.string.detail_continue_reading') : $r('app.string.detail_start_reading');
   }
 
   // 添加漫画卡片到桌面：先写 pending mangaId（openFormManager 不携带自定义参数），再打开系统卡片管理页
@@ -151,9 +162,33 @@ export struct MangaDetailPage {
     Util.toastRes(this.getUIContext(), $r('app.string.detail_all_marked_read'));
   }
 
-  private downloadChapter(chapter: ChapterRecord): void {
-    if (this.manga.sourceKey === 'local') {
+  private async downloadChapter(chapter: ChapterRecord): Promise<void> {
+    if (ContentType.isLocal(this.manga.sourceKey)) {
       return;
+    }
+    if (this.manga.contentType === ContentType.VIDEO) {
+      const source = SourceRegistry.get(this.manga.sourceKey);
+      if (source === undefined) {
+        Util.toastRes(this.getUIContext(), $r('app.string.reader_load_failed'), ['源不可用']);
+        return;
+      }
+      try {
+        const videos = await source.getVideoList(chapter.url);
+        let direct = false;
+        for (let i = 0; i < videos.length; i++) {
+          if (!ContentType.isPlaylist(videos[i].url)) {
+            direct = true;
+            break;
+          }
+        }
+        if (!direct) {
+          Util.toastRes(this.getUIContext(), $r('app.string.detail_download_stream_only'));
+          return;
+        }
+      } catch (e) {
+        Util.toastRes(this.getUIContext(), $r('app.string.reader_load_failed'), [(e as Error).message]);
+        return;
+      }
     }
     const task = new DownloadTask();
     task.mangaId = this.mangaId;
@@ -194,7 +229,7 @@ export struct MangaDetailPage {
     const token = Settings.getAnilistToken();
     this.alSearching = true;
     try {
-      this.alResults = await AniListTracker.search(q, token);
+      this.alResults = await AniListTracker.search(q, token, this.manga.contentType);
       if (this.alResults.length === 0) {
         Util.toastRes(this.getUIContext(), $r('app.string.detail_no_search_results'));
       }
@@ -319,7 +354,7 @@ export struct MangaDetailPage {
                     .fontColor(this.pal.sub)
                     .maxLines(1)
                 }
-                Text(this.manga.sourceKey === 'local' ? $r('app.string.detail_status_local') : Util.statusLabel(this.manga.status))
+                Text(ContentType.isLocal(this.manga.sourceKey) ? $r('app.string.detail_status_local') : Util.statusLabel(this.manga.status))
                   .fontSize(12)
                   .fontColor(this.pal.primary)
                   .backgroundColor(this.pal.chip)
@@ -350,8 +385,7 @@ export struct MangaDetailPage {
             .onClick(() => {
               this.toggleLibrary();
             })
-          Button(this.continueChapter() !== undefined ?
-            (this.chapters.some((c: ChapterRecord): boolean => c.read) ? $r('app.string.detail_continue_reading') : $r('app.string.detail_start_reading')) : $r('app.string.detail_no_chapters_yet'))
+          Button(this.actionLabel())
             .fontSize(14)
             .height(38)
             .layoutWeight(1)
@@ -567,7 +601,7 @@ export struct MangaDetailPage {
                       .padding({ left: 6, right: 6, top: 2, bottom: 2 })
                   }
 
-                  if (this.manga.sourceKey !== 'local') {
+                  if (!ContentType.isLocal(this.manga.sourceKey)) {
                     if (DownloadService.isDownloaded(chapter.id)) {
                       Text($r('app.string.detail_downloaded'))
                         .fontSize(11)

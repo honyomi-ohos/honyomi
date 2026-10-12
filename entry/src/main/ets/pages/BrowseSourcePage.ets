@@ -4,7 +4,9 @@ import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
 import { SourceRegistry, Source } from '../source/Source';
 import { LocalSource } from '../source/LocalSource';
-import { MangaRecord, SManga, MangasPage } from '../model/Models';
+import { LocalNovelSource } from '../source/LocalNovelSource';
+import { LocalVideoSource } from '../source/LocalVideoSource';
+import { MangaRecord, SManga, MangasPage, ContentType } from '../model/Models';
 import { BrowseSourceParams, DetailParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
@@ -133,6 +135,8 @@ export struct BrowseSourcePage {
       record.description = m.description;
       record.genre = m.genre;
       record.status = m.status;
+      const src = SourceRegistry.get(sourceKey);
+      record.contentType = src !== undefined ? src.contentType : ContentType.MANGA;
       records.push(record);
     }
     return records;
@@ -142,7 +146,7 @@ export struct BrowseSourcePage {
     try {
       const context = getContext(this) as common.UIAbilityContext;
       await AppDb.ready(context);
-      const id = await MangaRepo.upsertFromSource(record.sourceKey, this.toSManga(record));
+      const id = await MangaRepo.upsertFromSource(record.sourceKey, this.toSManga(record), record.contentType);
       const params: DetailParams = { mangaId: id };
       this.pathStack.pushPathByName('MangaDetail', params);
     } catch (e) {
@@ -163,11 +167,44 @@ export struct BrowseSourcePage {
     return m;
   }
 
+  private importSuffixes(): string[] {
+    if (this.sourceKey === 'local_novel') {
+      return ['.txt'];
+    }
+    if (this.sourceKey === 'local_video') {
+      return ['.mp4', '.mkv', '.webm', '.mov', '.m4v'];
+    }
+    return ['.zip', '.cbz'];
+  }
+
+  private localEmptyMessage(): Resource {
+    if (this.sourceKey === 'local') {
+      return $r('app.string.browse_local_empty');
+    }
+    if (this.sourceKey === 'local_novel' || this.sourceKey === 'local_video') {
+      return $r('app.string.browse_local_files_empty');
+    }
+    return $r('app.string.browse_no_results');
+  }
+
+  private async importInto(source: Source, title: string): Promise<number> {
+    if (source instanceof LocalSource) {
+      return source.importFiles(this.pickedUris, title);
+    }
+    if (source instanceof LocalNovelSource) {
+      return source.importFiles(this.pickedUris, title);
+    }
+    if (source instanceof LocalVideoSource) {
+      return source.importFiles(this.pickedUris, title);
+    }
+    return 0;
+  }
+
   async pickImportFiles(): Promise<void> {
     try {
       const options = new picker.DocumentSelectOptions();
       options.maxSelectNumber = 50;
-      options.fileSuffixFilters = ['.zip', '.cbz'];
+      options.fileSuffixFilters = this.importSuffixes();
       const docPicker = new picker.DocumentViewPicker();
       const uris: Array<string> = await docPicker.select(options);
       if (uris.length === 0) {
@@ -184,7 +221,8 @@ export struct BrowseSourcePage {
     const dialog = new CustomDialogController({
       builder: InputDialog({
         title: $r('app.string.browse_import_title', this.pickedUris.length),
-        placeholder: $r('app.string.browse_manga_name_hint'),
+        placeholder: ContentType.isLocal(this.sourceKey) && this.sourceKey !== 'local'
+          ? $r('app.string.browse_work_name_hint') : $r('app.string.browse_manga_name_hint'),
         onConfirm: (text: string): void => {
           this.doImport(text.trim());
         },
@@ -199,13 +237,12 @@ export struct BrowseSourcePage {
       Util.toastRes(this.getUIContext(), $r('app.string.browse_input_name'));
       return;
     }
-    const source = SourceRegistry.get('local');
+    const source = SourceRegistry.get(this.sourceKey);
     if (source === undefined) {
       return;
     }
-    const local = source as LocalSource;
     try {
-      const count = await local.importFiles(this.pickedUris, title);
+      const count = await this.importInto(source, title);
       Util.toastRes(this.getUIContext(), $r('app.string.browse_import_done'), [count]);
       await this.loadFirst();
     } catch (e) {
@@ -231,7 +268,7 @@ export struct BrowseSourcePage {
             .maxLines(1)
             .textOverflow({ overflow: TextOverflow.Ellipsis })
 
-          if (this.sourceKey === 'local') {
+          if (ContentType.isLocal(this.sourceKey)) {
             Text($r('app.string.browse_import'))
               .fontSize(13)
               .fontColor(this.pal.primary)
@@ -329,7 +366,7 @@ export struct BrowseSourcePage {
         } else if (this.results.length === 0) {
           Column() {
             EmptyScreen({
-              message: this.sourceKey === 'local' ? $r('app.string.browse_local_empty') : $r('app.string.browse_no_results'),
+              message: this.localEmptyMessage(),
             })
           }
           .layoutWeight(1)

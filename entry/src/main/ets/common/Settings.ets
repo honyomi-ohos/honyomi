@@ -69,6 +69,37 @@ export class Settings {
     Settings.setStr('readerMode', mode);
   }
 
+  static getNovelFontSize(): number {
+    const n = Settings.getNum('novelFontSize', 18);
+    return n >= 14 && n <= 32 ? n : 18;
+  }
+
+  static setNovelFontSize(v: number): void {
+    Settings.setNum('novelFontSize', v);
+  }
+
+  static getNovelLineHeight(): number {
+    const n = Settings.getNum('novelLineHeight', 32);
+    return n >= 20 && n <= 56 ? n : 32;
+  }
+
+  static setNovelLineHeight(v: number): void {
+    Settings.setNum('novelLineHeight', v);
+  }
+
+  // 书架类型筛选：all | manga | novel | video
+  static getLibraryContentFilter(): string {
+    const raw = Settings.getStr('libContentFilter', 'all');
+    if (raw === 'manga' || raw === 'novel' || raw === 'video') {
+      return raw;
+    }
+    return 'all';
+  }
+
+  static setLibraryContentFilter(v: string): void {
+    Settings.setStr('libContentFilter', v);
+  }
+
   static getThemeMode(): string {
     return Settings.getStr('themeMode', 'auto');
   }

@@ -2,8 +2,8 @@ import { fileIo } from '@kit.CoreFileKit';
 import { common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { Http } from '../net/Http';
-import { SourceRegistry } from '../source/Source';
-import { DownloadTask, DownloadedChapter, DownloadedManga, SPage } from '../model/Models';
+import { SourceRegistry, Source } from '../source/Source';
+import { DownloadTask, DownloadedChapter, DownloadedManga, SPage, SVideo, ContentType } from '../model/Models';
 import { ChapterRepo } from './Repos';
 import { MangaRepo } from './Repos';
 
@@ -11,12 +11,14 @@ import { MangaRepo } from './Repos';
 // 存储布局: {filesDir}/downloads/{mangaId}/{chapterId}/000.jpg ... + done.mark
 export class DownloadService {
   private static rootDir: string = '';
+  private static context: common.UIAbilityContext | undefined = undefined;
   private static queue: DownloadTask[] = [];
   private static running: boolean = false;
   private static paused: boolean = false;
   private static listeners: Array<() => void> = [];
 
   static init(context: common.UIAbilityContext): void {
+    DownloadService.context = context;
     DownloadService.rootDir = `${context.filesDir}/downloads`;
     if (!fileIo.accessSync(DownloadService.rootDir)) {
       fileIo.mkdirSync(DownloadService.rootDir, true);
@@ -160,6 +162,14 @@ export class DownloadService {
       if (source === undefined) {
         throw new Error(`source not found: ${task.sourceKey}`);
       }
+      if (source.contentType === ContentType.NOVEL) {
+        await DownloadService.downloadNovel(task, source);
+        return;
+      }
+      if (source.contentType === ContentType.VIDEO) {
+        await DownloadService.downloadVideo(task, source);
+        return;
+      }
       const pages: SPage[] = await source.getPageList(task.chapterUrl);
       task.total = pages.length;
       DownloadService.notify();
@@ -195,6 +205,68 @@ export class DownloadService {
       task.state = 3;
       task.error = e instanceof Error ? e.message : '下载失败';
     }
+  }
+
+  private static async downloadNovel(task: DownloadTask, source: Source): Promise<void> {
+    const text = await source.getChapterText(task.chapterUrl);
+    if (text === '') {
+      throw new Error('章节没有正文');
+    }
+    const dir = DownloadService.chapterDir(task.mangaId, task.chapterId);
+    if (!fileIo.accessSync(dir)) {
+      fileIo.mkdirSync(dir, true);
+    }
+    const path = `${dir}/chapter.txt`;
+    if (fileIo.accessSync(path)) {
+      fileIo.unlinkSync(path);
+    }
+    const fd = fileIo.openSync(path, fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE).fd;
+    try {
+      fileIo.writeSync(fd, text);
+    } finally {
+      fileIo.closeSync(fd);
+    }
+    DownloadService.markDone(dir);
+    task.total = 1;
+    task.progress = 1;
+    task.state = 2;
+  }
+
+  private static async downloadVideo(task: DownloadTask, source: Source): Promise<void> {
+    const videos: SVideo[] = await source.getVideoList(task.chapterUrl);
+    let chosen: SVideo | undefined = undefined;
+    for (let i = 0; i < videos.length; i++) {
+      if (!ContentType.isPlaylist(videos[i].url)) {
+        chosen = videos[i];
+        break;
+      }
+    }
+    if (chosen === undefined) {
+      throw new Error('该视频是在线串流，不能下载');
+    }
+    if (DownloadService.context === undefined) {
+      throw new Error('下载服务未初始化');
+    }
+    const dir = DownloadService.chapterDir(task.mangaId, task.chapterId);
+    if (!fileIo.accessSync(dir)) {
+      fileIo.mkdirSync(dir, true);
+    }
+    const path = `${dir}/video.mp4`;
+    if (fileIo.accessSync(path)) {
+      fileIo.unlinkSync(path);
+    }
+    task.total = 1;
+    task.progress = 0;
+    DownloadService.notify();
+    await Http.downloadToFile(DownloadService.context, chosen.url, chosen.headers, path);
+    DownloadService.markDone(dir);
+    task.progress = 1;
+    task.state = 2;
+  }
+
+  private static markDone(dir: string): void {
+    const markFd = fileIo.openSync(`${dir}/done.mark`, fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE).fd;
+    fileIo.closeSync(markFd);
   }
 
   private static pad(index: number): string {
@@ -294,13 +366,29 @@ export class DownloadService {
     return -1;
   }
 
+  static localText(mangaId: number, chapterId: number): string {
+    const path = `${DownloadService.chapterDir(mangaId, chapterId)}/chapter.txt`;
+    if (DownloadService.rootDir !== '' && fileIo.accessSync(path)) {
+      return path;
+    }
+    return '';
+  }
+
+  static localVideo(mangaId: number, chapterId: number): string {
+    const path = `${DownloadService.chapterDir(mangaId, chapterId)}/video.mp4`;
+    if (DownloadService.rootDir !== '' && fileIo.accessSync(path)) {
+      return path;
+    }
+    return '';
+  }
+
   static localPages(mangaId: number, chapterId: number): string[] {
     const dir = DownloadService.chapterDir(mangaId, chapterId);
     if (!fileIo.accessSync(dir)) {
       return [];
     }
     const files = fileIo.listFileSync(dir);
-    const pages = files.filter((f: string) => f !== 'done.mark').sort();
+    const pages = files.filter((f: string) => f !== 'done.mark' && f !== 'chapter.txt' && f !== 'video.mp4').sort();
     const result: string[] = [];
     for (const f of pages) {
       result.push(`${dir}/${f}`);

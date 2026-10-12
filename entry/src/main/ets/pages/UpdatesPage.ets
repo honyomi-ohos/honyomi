@@ -4,7 +4,8 @@ import { UpdatesRepo, UpdatesQuery, CategoryRepo } from '../data/Repos';
 import { DownloadService } from '../data/DownloadService';
 import { UpdateService } from '../data/UpdateService';
 import { UpdateItem, CategoryRecord } from '../model/Models';
-import { ReaderParams, DetailParams } from '../model/RouteParams';
+import { DetailParams } from '../model/RouteParams';
+import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
@@ -271,8 +272,7 @@ export struct UpdatesPage {
               .width('100%')
               .padding({ left: 16, right: 16, top: 10, bottom: 10 })
               .onClick(() => {
-                const params: ReaderParams = { mangaId: item.mangaId, chapterId: item.chapterId };
-                this.pathStack.pushPathByName('Reader', params);
+                ContentOpen.open(this.pathStack, item.mangaId, item.chapterId);
               })
             }
           }, (item: UpdateItem) => `upd-${item.chapterId}`)

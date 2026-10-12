@@ -72,6 +72,22 @@ export class ReadingStatsRepo {
     }
   }
 
+  // 按作品类型汇总阅读时长（秒）
+  static async durationByType(): Promise<Record<string, number>> {
+    const store = await AppDb.get();
+    const rs = await store.querySql(
+      `SELECT CASE WHEN m.contentType IN ('novel', 'video') THEN m.contentType ELSE 'manga' END AS kind,
+              COALESCE(SUM(s.duration), 0) AS total
+       FROM readingSession s LEFT JOIN manga m ON m.id = s.mangaId
+       GROUP BY kind`);
+    const map: Record<string, number> = { 'manga': 0, 'novel': 0, 'video': 0 };
+    while (rs.goToNextRow()) {
+      map[rs.getString(rs.getColumnIndex('kind'))] = rs.getLong(rs.getColumnIndex('total'));
+    }
+    rs.close();
+    return map;
+  }
+
   // 总阅读时长（秒）
   static async totalDuration(): Promise<number> {
     const store = await AppDb.get();

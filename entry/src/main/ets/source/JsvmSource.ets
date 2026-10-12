@@ -1,4 +1,4 @@
-import { SManga, SChapter, SPage, MangasPage } from '../model/Models';
+import { SManga, SChapter, SPage, SVideo, MangasPage, ContentType } from '../model/Models';
 import { Source } from './Source';
 import { JsvmExtensionManager } from '../jsvm/JsvmExtensionManager';
 import { WebChallengeError } from '../jsvm/NativeHttpBridge';
@@ -23,6 +23,8 @@ export interface PluginManifest {
   runtime: string;
   // 执行引擎：唯一合法值 'jsvm'（纯 JSVM 隔离引擎，本机 C++ JSVM + Worker）
   engine: string;
+  // manga | novel | video，缺省 manga
+  contentType: string;
 }
 
 // 插件返回值（宽松 JSON 形态，兼容 tachiyomi 编译产物与简单契约两种 key 命名）
@@ -60,6 +62,17 @@ interface RawPage {
   url?: string;
   imageUrl?: string;
   pageUrl?: string;
+}
+
+interface RawTextBody {
+  text?: string;
+  content?: string;
+}
+
+interface RawVideo {
+  url?: string;
+  quality?: string;
+  headers?: Record<string, Object>;
 }
 
 // 插件设置项（getSettingsSchema 契约：type = 'switch' | 'select' | 'edit'）
@@ -110,6 +123,7 @@ export class JsvmSource implements Source {
   readonly name: string;
   readonly lang: string;
   readonly supportsLatest: boolean;
+  readonly contentType: string;
   readonly manifest: PluginManifest;
   // 插件包目录名。多语言扩展共用一个 JSVM 引擎，浏览列表里每个语言各有自己的 key。
   readonly packageKey: string;
@@ -129,6 +143,7 @@ export class JsvmSource implements Source {
     this.sourceId = sourceId;
     this.exportedMethods = exportedMethods;
     this.supportsLatest = manifest.supportsLatest && exportedMethods.indexOf('getLatestManga') >= 0;
+    this.contentType = ContentType.normalize(manifest.contentType);
   }
 
   setImageHeaders(headers: Record<string, string> | undefined): void {
@@ -371,6 +386,28 @@ export class JsvmSource implements Source {
     return pages;
   }
 
+  async getChapterText(chapterKey: string): Promise<string> {
+    if (this.exportedMethods.indexOf('getChapterText') < 0) {
+      if (this.contentType === ContentType.NOVEL) {
+        throw new Error('插件未导出 getChapterText');
+      }
+      return '';
+    }
+    const raw: Object = await this.call<Object>('getChapterText', this.callArgs([chapterKey]));
+    return JsvmSource.textFromRaw(raw);
+  }
+
+  async getVideoList(chapterKey: string): Promise<SVideo[]> {
+    if (this.exportedMethods.indexOf('getVideoList') < 0) {
+      if (this.contentType === ContentType.VIDEO) {
+        throw new Error('插件未导出 getVideoList');
+      }
+      return [];
+    }
+    const raw: Object = await this.call<Object>('getVideoList', this.callArgs([chapterKey]));
+    return JsvmSource.videosFromRaw(raw);
+  }
+
   // ---------------- 内部实现 ----------------
 
   // 统一调用入口：CF 盾挑战异常上抛前触发全局验证页
@@ -395,6 +432,57 @@ export class JsvmSource implements Source {
       }
       throw e as Error;
     }
+  }
+
+  private static textFromRaw(raw: Object): string {
+    if (typeof raw === 'string') {
+      return raw as string;
+    }
+    if (raw === null || raw === undefined) {
+      return '';
+    }
+    const parsed = JSON.parse(JSON.stringify(raw)) as RawTextBody;
+    if (parsed === undefined || parsed === null) {
+      return '';
+    }
+    return parsed.text ?? parsed.content ?? '';
+  }
+
+  private static videosFromRaw(raw: Object): SVideo[] {
+    const parsed = JSON.parse(JSON.stringify(raw)) as RawVideo[];
+    const videos: SVideo[] = [];
+    if (!Array.isArray(parsed)) {
+      return videos;
+    }
+    for (let i = 0; i < parsed.length; i++) {
+      const item = parsed[i];
+      const url = item.url ?? '';
+      if (url === '') {
+        continue;
+      }
+      const video: SVideo = {
+        url: url,
+        quality: item.quality !== undefined && item.quality !== '' ? item.quality : `${i + 1}`,
+        headers: JsvmSource.headerMap(item.headers),
+      };
+      videos.push(video);
+    }
+    return videos;
+  }
+
+  private static headerMap(raw: Record<string, Object> | undefined): Record<string, string> {
+    const headers: Record<string, string> = {};
+    if (raw === undefined) {
+      return headers;
+    }
+    const keys = Object.keys(raw);
+    for (let i = 0; i < keys.length; i++) {
+      const v = raw[keys[i]];
+      if (typeof v === 'string') {
+        headers[keys[i]] = v as string;
+      }
+    }
+    return headers;
   }
 
   // 插件可选导出 getHeaders：声明后图片经宿主 http 管线加载（Referer/Cookie）

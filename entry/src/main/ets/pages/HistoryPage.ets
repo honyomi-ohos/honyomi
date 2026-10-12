@@ -2,7 +2,7 @@ import { common } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
 import { HistoryRepo } from '../data/Repos';
 import { HistoryItem } from '../model/Models';
-import { ReaderParams } from '../model/RouteParams';
+import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
@@ -135,8 +135,7 @@ export struct HistoryPage {
               .width('100%')
               .padding({ left: 16, right: 16, top: 10, bottom: 10 })
               .onClick(() => {
-                const params: ReaderParams = { mangaId: item.mangaId, chapterId: item.chapterId };
-                this.pathStack.pushPathByName('Reader', params);
+                ContentOpen.open(this.pathStack, item.mangaId, item.chapterId);
               })
             }
           }, (item: HistoryItem) => `his-${item.chapterId}-${item.seenAt}`)

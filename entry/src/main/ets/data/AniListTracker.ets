@@ -1,13 +1,31 @@
 import { Http } from '../net/Http';
-import { ALMediaItem } from '../model/Models';
+import { ALMediaItem, ContentType } from '../model/Models';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 
 // AniList GraphQL 追踪（对齐 Mihon AnilistTracker 的最小集）
 const AL_ENDPOINT = 'https://graphql.anilist.co';
 
-const SEARCH_QUERY = `query Search($search: String) {
+const SEARCH_MANGA = `query Search($search: String) {
   Page(perPage: 20) {
-    media(search: $search, type: MANGA) {
+    media(search: $search, type: MANGA, format_not: NOVEL) {
+      id
+      title { romaji english native }
+    }
+  }
+}`;
+
+const SEARCH_NOVEL = `query Search($search: String) {
+  Page(perPage: 20) {
+    media(search: $search, type: MANGA, format: NOVEL) {
+      id
+      title { romaji english native }
+    }
+  }
+}`;
+
+const SEARCH_ANIME = `query Search($search: String) {
+  Page(perPage: 20) {
+    media(search: $search, type: ANIME) {
       id
       title { romaji english native }
     }
@@ -62,9 +80,15 @@ interface ALProgressVars {
 
 export class AniListTracker {
   // 搜索 AniList 漫画条目（需 access token）
-  static async search(query: string, token: string): Promise<ALMediaItem[]> {
+  static async search(query: string, token: string, contentType: string): Promise<ALMediaItem[]> {
     const vars: ALSearchVars = { search: query };
-    const body: Record<string, Object> = { 'query': SEARCH_QUERY, 'variables': vars };
+    let queryText = SEARCH_MANGA;
+    if (contentType === ContentType.NOVEL) {
+      queryText = SEARCH_NOVEL;
+    } else if (contentType === ContentType.VIDEO) {
+      queryText = SEARCH_ANIME;
+    }
+    const body: Record<string, Object> = { 'query': queryText, 'variables': vars };
     const headers: Record<string, string> = {
       'Authorization': `Bearer ${token}`,
     };

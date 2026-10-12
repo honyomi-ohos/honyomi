@@ -2,7 +2,7 @@ import { common } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
 import { SourceRegistry, Source } from '../source/Source';
-import { MangaRecord, SManga, MangasPage } from '../model/Models';
+import { MangaRecord, SManga, MangasPage, ContentType } from '../model/Models';
 import { MigrateSearchParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
@@ -35,11 +35,13 @@ export struct MigrateSearchPage {
     return this.idx < this.queue.length ? this.queue[this.idx] : undefined;
   }
 
-  // 可选目标源：排除来源源与本地源
+  // 可选目标源：与当前作品同类型，排除来源源与本地源
   targetSources(): Source[] {
+    const cur = this.current();
+    const type = cur !== undefined ? ContentType.normalize(cur.contentType) : ContentType.MANGA;
     const list: Source[] = [];
     for (const s of SourceRegistry.all()) {
-      if (s.key !== this.originKey() && s.key !== 'local') {
+      if (s.key !== this.originKey() && !ContentType.isLocal(s.key) && s.contentType === type) {
         list.push(s);
       }
     }
@@ -135,7 +137,7 @@ export struct MigrateSearchPage {
     this.busy = true;
     try {
       const detail = await target.getMangaDetail(record.url);
-      await MangaRepo.migrate(cur.id, target.key, record.url, detail);
+      await MangaRepo.migrate(cur.id, target.key, record.url, detail, target.contentType);
       Util.toastRes(this.getUIContext(), $r('app.string.migrate_item_done'), [cur.title]);
       this.advance();
     } catch (e) {
@@ -163,6 +165,11 @@ export struct MigrateSearchPage {
     const cur = this.current();
     if (cur !== undefined) {
       this.query = cur.title;
+      const target = SourceRegistry.get(this.targetKey);
+      if (target === undefined || target.contentType !== cur.contentType) {
+        this.targetKey = '';
+        return;
+      }
     }
     this.searchNow();
   }

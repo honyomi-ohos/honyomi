@@ -4,7 +4,7 @@ import { MangaRepo, ChapterRepo, CategoryRepo, TrackRepo } from '../data/Repos';
 import { UpdateService } from '../data/UpdateService';
 import { DownloadService } from '../data/DownloadService';
 import { Settings } from '../common/Settings';
-import { MangaRecord, CategoryRecord, MangaStats, ChapterRecord, DownloadTask } from '../model/Models';
+import { MangaRecord, CategoryRecord, MangaStats, ChapterRecord, DownloadTask, ContentType } from '../model/Models';
 import { DetailParams, MigrateSearchParams } from '../model/RouteParams';
 import { SourceRegistry } from '../source/Source';
 import { ThemePalette } from '../common/Theme';
@@ -39,6 +39,7 @@ export struct LibraryPage {
   @State fBookmarked: string = 'ignore';
   @State fCompleted: string = 'ignore';
   @State fTracked: string = 'ignore';
+  @State contentFilter: string = 'all';
   @State viewMode: string = 'compact';
   @State gridCols: number = 0;
   @State showUnreadBadge: boolean = true;
@@ -81,6 +82,7 @@ export struct LibraryPage {
     this.fBookmarked = Settings.getLibraryTriState('bookmarked');
     this.fCompleted = Settings.getLibraryTriState('completed');
     this.fTracked = Settings.getLibraryTriState('tracked');
+    this.contentFilter = Settings.getLibraryContentFilter();
     this.viewMode = Settings.getLibraryView();
     this.gridCols = Settings.getLibraryGridCols();
     this.showUnreadBadge = Settings.getShowUnreadBadge();
@@ -188,8 +190,9 @@ export struct LibraryPage {
   }
 
   private filterActive(): boolean {
-    return this.fDownloaded !== 'ignore' || this.fUnread !== 'ignore' || this.fStarted !== 'ignore' ||
-      this.fBookmarked !== 'ignore' || this.fCompleted !== 'ignore' || this.fTracked !== 'ignore';
+    return this.contentFilter !== 'all' || this.fDownloaded !== 'ignore' || this.fUnread !== 'ignore' ||
+      this.fStarted !== 'ignore' || this.fBookmarked !== 'ignore' || this.fCompleted !== 'ignore' ||
+      this.fTracked !== 'ignore';
   }
 
   // 应用搜索 + 三态筛选（不含分类），供列表与分类计数共用
@@ -200,6 +203,9 @@ export struct LibraryPage {
       list = list.filter((m: MangaRecord): boolean => m.title.toLowerCase().includes(q));
     }
     return list.filter((m: MangaRecord): boolean => {
+      if (this.contentFilter !== 'all' && m.contentType !== this.contentFilter) {
+        return false;
+      }
       const s: MangaStats | undefined = this.statsMap[`${m.id}`];
       if (!this.passesTriState(this.fDownloaded, (this.downloadCounts[`${m.id}`] || 0) > 0)) {
         return false;
@@ -393,7 +399,7 @@ export struct LibraryPage {
     let queued: number = 0;
     for (const id of ids) {
       const manga: MangaRecord | undefined = this.mangas.find((m: MangaRecord): boolean => m.id === id);
-      if (manga === undefined || manga.sourceKey === 'local') {
+      if (manga === undefined || ContentType.isLocal(manga.sourceKey)) {
         continue;
       }
       const chapters: ChapterRecord[] = await ChapterRepo.listByManga(id);
@@ -521,6 +527,7 @@ export struct LibraryPage {
       filterBookmarked: this.fBookmarked,
       filterCompleted: this.fCompleted,
       filterTracked: this.fTracked,
+      contentFilter: this.contentFilter,
       viewMode: this.viewMode,
       gridCols: this.gridCols,
       showUnreadBadge: this.showUnreadBadge,
@@ -690,8 +697,8 @@ export struct LibraryPage {
                   mode: 'list',
                   unreadCount: this.unreadOf(record.id),
                   downloadCount: this.downloadCounts[`${record.id}`] || 0,
-                  langLabel: record.sourceKey === 'local' ? '' : this.langMap[record.sourceKey] || '',
-                  isLocal: record.sourceKey === 'local',
+                  langLabel: ContentType.isLocal(record.sourceKey) ? '' : this.langMap[record.sourceKey] || '',
+                  isLocal: ContentType.isLocal(record.sourceKey),
                   showUnreadBadge: this.showUnreadBadge,
                   showDownloadBadge: this.showDownloadBadge,
                   showLocalBadge: this.showLocalBadge,
@@ -719,8 +726,8 @@ export struct LibraryPage {
                   mode: this.viewMode,
                   unreadCount: this.unreadOf(record.id),
                   downloadCount: this.downloadCounts[`${record.id}`] || 0,
-                  langLabel: record.sourceKey === 'local' ? '' : this.langMap[record.sourceKey] || '',
-                  isLocal: record.sourceKey === 'local',
+                  langLabel: ContentType.isLocal(record.sourceKey) ? '' : this.langMap[record.sourceKey] || '',
+                  isLocal: ContentType.isLocal(record.sourceKey),
                   showUnreadBadge: this.showUnreadBadge,
                   showDownloadBadge: this.showDownloadBadge,
                   showLocalBadge: this.showLocalBadge,

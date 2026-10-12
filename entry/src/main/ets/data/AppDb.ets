@@ -42,8 +42,14 @@ export class AppDb {
       addedAt INTEGER DEFAULT 0,
       lastUpdateAt INTEGER DEFAULT 0,
       fetchedAt INTEGER DEFAULT 0,
+      contentType TEXT DEFAULT 'manga',
       UNIQUE(sourceKey, url)
     )`);
+    try {
+      await store.executeSql(`ALTER TABLE manga ADD COLUMN contentType TEXT DEFAULT 'manga'`);
+    } catch (e) {
+      // 新库建表时已含该列，或旧库已经补过
+    }
     await store.executeSql(`CREATE TABLE IF NOT EXISTS chapter (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       mangaId INTEGER NOT NULL,
