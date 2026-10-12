@@ -1,4 +1,5 @@
 import { common } from '@kit.AbilityKit';
+import { window } from '@kit.ArkUI';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo, ChapterRepo, HistoryRepo } from '../data/Repos';
 import { ReadingStatsRepo } from '../data/ReadingStats';
@@ -10,6 +11,15 @@ import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
 import { DownloadService } from '../data/DownloadService';
 import { AppIconRes, AppIcon } from './components/AppIcon';
+import { PickerSheet } from './components/PickerSheet';
+
+// 屏幕方向的可选值（与方向选择 sheet 选项一一对应）
+const NOVEL_ORIENTATIONS: string[] = ['free', 'portrait', 'landscape', 'lock_portrait', 'lock_landscape'];
+const NOVEL_ORIENTATION_ICONS: string[] =
+  ['screen_rotation', 'stay_current_portrait', 'stay_current_landscape', 'screen_lock_portrait', 'screen_lock_landscape'];
+// 阅读模式的可选值（与模式选择 sheet 选项一一对应）
+const NOVEL_MODES: string[] = ['scroll', 'paged', 'paged_rtl', 'double'];
+const NOVEL_MODE_ICONS: string[] = ['reader_scroll', 'reader_ltr', 'reader_rtl', 'reader_double'];
 
 // 小说阅读器：滚动 / 翻页 / 双页三种模式，交互对齐漫画阅读器——
 // 全屏正文，点击屏幕中间呼出菜单（顶栏+底栏），底部设置面板含
@@ -28,7 +38,6 @@ export struct NovelReaderPage {
   @State html: boolean = false;
   @State loading: boolean = true;
   @State showMenu: boolean = false;
-  @State showSettings: boolean = false;
   @State fontSize: number = 18;
   @State lineHeight: number = 32;
   @State paraSpacing: number = 0;
@@ -42,6 +51,27 @@ export struct NovelReaderPage {
   @State showPageNumber: boolean = true;
   // 菜单/指示器展示用的进度快照（permille 高频变化，不宜直接做状态）
   @State permilleUi: number = 0;
+  // 底栏各设置入口的 Sheet：阅读模式 / 屏幕方向 / 画面 / 文本设置
+  @State showModeSheet: boolean = false;
+  // 翻页动画：curl=仿真 slide=滑动 cover=覆盖
+  @State animMode: string = 'slide';
+  @State orientation: string = 'free';
+  @State showOrientationSheet: boolean = false;
+  @State showDisplaySheet: boolean = false;
+  @State showTextSheet: boolean = false;
+  @State brightLv: number = 0;
+  // 正文配色：auto=跟随背景 light=浅色 dark=深色
+  @State colorScheme: string = 'auto';
+  @State pageMargin: number = 20;
+  // 正文字体：default/serif/sans/mono
+  @State fontFamily: string = 'default';
+  // 翻页动画逐帧变换（与 screenIdxs 一一对应）：x 位移 / y 轴翻转角 / 层级
+  @State transX: number[] = [];
+  @State transAngle: number[] = [];
+  @State transZ: number[] = [];
+  // 双页仿真：左右半页各自绕中线（书脊）的翻转角
+  @State transAngleL: number[] = [];
+  @State transAngleR: number[] = [];
   private mangaId: number = -1;
   private chapterId: number = -1;
   private scroller: Scroller = new Scroller();
@@ -64,11 +94,58 @@ export struct NovelReaderPage {
     this.paraSpacing = Settings.getNovelParagraphSpacing();
     this.readerTheme = Settings.getReaderTheme();
     this.showPageNumber = Settings.getReaderShowPageNumber();
+    this.animMode = Settings.getNovelPageAnim();
+    this.orientation = Settings.getNovelOrientation();
+    this.colorScheme = Settings.getNovelColorScheme();
+    this.pageMargin = Settings.getNovelMargin();
+    this.fontFamily = Settings.getNovelFontFamily();
+    this.brightLv = Settings.getReaderBrightness();
+    this.applyOrientation();
+    this.applyBrightness();
   }
 
   aboutToDisappear(): void {
     this.persist();
     ReadingStatsRepo.flush();
+    // 还原窗口方向与亮度
+    const ctx = getContext(this) as common.UIAbilityContext;
+    window.getLastWindow(ctx).then((win: window.Window) => {
+      win.setPreferredOrientation(window.Orientation.UNSPECIFIED).catch(() => {
+      });
+      win.setWindowBrightness(0).catch(() => {
+      });
+    }).catch(() => {
+    });
+  }
+
+  private applyOrientation(): void {
+    const ctx = getContext(this) as common.UIAbilityContext;
+    window.getLastWindow(ctx).then((win: window.Window) => {
+      // free=传感器自由旋转；portrait/landscape=跟随传感器(含倒置)；
+      // lock_portrait/lock_landscape=固定方向(不受传感器影响)
+      let target: window.Orientation = window.Orientation.AUTO_ROTATION;
+      if (this.orientation === 'portrait') {
+        target = window.Orientation.AUTO_ROTATION_PORTRAIT;
+      } else if (this.orientation === 'landscape') {
+        target = window.Orientation.AUTO_ROTATION_LANDSCAPE;
+      } else if (this.orientation === 'lock_portrait') {
+        target = window.Orientation.PORTRAIT;
+      } else if (this.orientation === 'lock_landscape') {
+        target = window.Orientation.LANDSCAPE;
+      }
+      win.setPreferredOrientation(target).catch(() => {
+      });
+    }).catch(() => {
+    });
+  }
+
+  private applyBrightness(): void {
+    const ctx = getContext(this) as common.UIAbilityContext;
+    window.getLastWindow(ctx).then((win: window.Window) => {
+      win.setWindowBrightness(this.brightLv).catch(() => {
+      });
+    }).catch(() => {
+    });
   }
 
   private async loadChapter(): Promise<void> {
@@ -84,6 +161,10 @@ export struct NovelReaderPage {
     this.fontSize = Settings.getNovelFontSize();
     this.lineHeight = Settings.getNovelLineHeight();
     this.paraSpacing = Settings.getNovelParagraphSpacing();
+    this.animMode = Settings.getNovelPageAnim();
+    this.colorScheme = Settings.getNovelColorScheme();
+    this.pageMargin = Settings.getNovelMargin();
+    this.fontFamily = Settings.getNovelFontFamily();
     ReadingStatsRepo.flush();
     try {
       const context = getContext(this) as common.UIAbilityContext;
@@ -209,10 +290,10 @@ export struct NovelReaderPage {
   // 内容区为全屏，已预留状态栏/导航栏内边距，此处从整高中扣除
   private recalcPageBox(): void {
     if (this.mode === 'double') {
-      // 双页：左右各半，扣除左右边距 40 与中缝 25（Divider 两侧 margin 12 + 1 线宽）
-      this.pageW = Math.floor((this.contW - 40 - 25) / 2);
+      // 双页：左右各半，扣除左右边距与中缝 25（Divider 两侧 margin 12 + 1 线宽）
+      this.pageW = Math.floor((this.contW - this.pageMargin * 2 - 25) / 2);
     } else {
-      this.pageW = Math.floor(this.contW - 40);
+      this.pageW = Math.floor(this.contW - this.pageMargin * 2);
     }
     this.pageH = Math.floor(this.contH - (this.statusBarH + 8) - (this.navBarH + 8));
   }
@@ -227,7 +308,7 @@ export struct NovelReaderPage {
       return;
     }
     const sig = `${this.body.length}|${this.mode}|${this.fontSize}|${this.lineHeight}|${this.paraSpacing}|` +
-      `${Math.round(this.pageW)}|${Math.round(this.pageH)}`;
+      `${this.pageMargin}|${this.fontFamily}|${Math.round(this.pageW)}|${Math.round(this.pageH)}`;
     if (sig === this.pagSig) {
       return;
     }
@@ -242,16 +323,31 @@ export struct NovelReaderPage {
     for (let i = 0; i < screenCount; i++) {
       screens.push(i);
     }
-    const screenIdx = this.mode === 'double' ? Math.floor(logical / 2) : logical;
+    // 从右到左：屏幕序与页序相反，按阅读进度换算起始屏
+    const screenIdx = this.mode === 'double' ? Math.floor(logical / 2) :
+      (this.mode === 'paged_rtl' ? screenCount - 1 - logical : logical);
     this.pagSig = sig;
     this.pages = pages;
     this.screenIdxs = screens;
+    this.transX = NovelReaderPage.zeros(screenCount);
+    this.transAngle = NovelReaderPage.zeros(screenCount);
+    this.transZ = NovelReaderPage.zeros(screenCount);
+    this.transAngleL = NovelReaderPage.zeros(screenCount);
+    this.transAngleR = NovelReaderPage.zeros(screenCount);
     this.pageIdx = screenIdx;
     try {
       this.swiperCtrl.changeIndex(screenIdx, false);
     } catch (e) {
       // Swiper 尚未挂载时忽略，首次渲染由 .index() 指定
     }
+  }
+
+  private static zeros(n: number): number[] {
+    const arr: number[] = [];
+    for (let i = 0; i < n; i++) {
+      arr.push(0);
+    }
+    return arr;
   }
 
   // 按段落贪心装页（段间计入 paraSpacing，与渲染端 Column({space}) 一致）；超长段落按测量二分切分
@@ -364,8 +460,10 @@ export struct NovelReaderPage {
   // 翻页/双页：屏幕（Swiper 页）切换 → 换算千分比并持久化
   private onScreenChange(idx: number): void {
     this.pageIdx = idx;
-    const logical = this.mode === 'double' ? idx * 2 : idx;
     const total = this.pages.length;
+    // 从右到左：屏幕序与页序相反，页码 = 总页数 - 1 - 屏幕索引
+    const logical = this.mode === 'double' ? idx * 2 :
+      (this.mode === 'paged_rtl' ? total - 1 - idx : idx);
     let permille = 1000;
     if (total > 1) {
       permille = Math.round(logical * 1000 / (total - 1));
@@ -382,9 +480,31 @@ export struct NovelReaderPage {
     this.persist();
   }
 
-  // 点击左右 30% 区域翻页；点击中间呼出/收起菜单
+  // 任一设置 Sheet 打开时，内容区点击一律忽略（防止蒙层点击透传触发翻页/菜单）
+  private anySheetOpen(): boolean {
+    return this.showModeSheet || this.showOrientationSheet || this.showDisplaySheet || this.showTextSheet;
+  }
+
+  private contentTap(): void {
+    if (this.anySheetOpen()) {
+      return;
+    }
+    this.toggleMenu();
+  }
+
+  // 点击左右 30% 区域翻页；点击中间呼出/收起菜单（从右到左阅读时点击区镜像）
   private handleTap(event: ClickEvent): void {
-    if (this.contW <= 0) {
+    if (this.contW <= 0 || this.anySheetOpen()) {
+      return;
+    }
+    if (this.mode === 'paged_rtl') {
+      if (event.x < this.contW * 0.3) {
+        this.turnScreen(1);
+      } else if (event.x > this.contW * 0.7) {
+        this.turnScreen(-1);
+      } else {
+        this.toggleMenu();
+      }
       return;
     }
     if (event.x < this.contW * 0.3) {
@@ -396,15 +516,17 @@ export struct NovelReaderPage {
     }
   }
 
-  // 翻页/双页：边界处跳上一章/下一章
+  // 翻页/双页：边界处跳上一章/下一章（dir 为阅读方向：+1 下一页，-1 上一页）
   private turnScreen(dir: number): void {
-    const target = this.pageIdx + dir;
+    const rtl = this.mode === 'paged_rtl';
+    // 从右到左：屏幕序反转，阅读前进 = Swiper 索引递减
+    const target = rtl ? this.pageIdx - dir : this.pageIdx + dir;
     if (target < 0) {
-      this.openChapter(this.prevId);
+      this.openChapter(rtl ? this.nextId : this.prevId);
       return;
     }
     if (target >= this.screenIdxs.length) {
-      this.openChapter(this.nextId);
+      this.openChapter(rtl ? this.prevId : this.nextId);
       return;
     }
     this.pageIdx = target;
@@ -459,14 +581,45 @@ export struct NovelReaderPage {
     this.pagSig = '';
     this.pages = [];
     this.screenIdxs = [];
+    this.transX = [];
+    this.transAngle = [];
+    this.transZ = [];
+    this.transAngleL = [];
+    this.transAngleR = [];
     this.pageIdx = 0;
     if (mode !== 'scroll') {
       this.ensurePaginated();
     }
   }
 
-  // 正文颜色按阅读背景推导：白底深色字，黑/灰底浅色字（自动跟随 isDark）
+  // 翻页动画切换：清空残留变换，避免上一模式的中间态影响渲染
+  private setAnimMode(v: string): void {
+    if (v === this.animMode) {
+      return;
+    }
+    this.animMode = v;
+    Settings.setNovelPageAnim(v);
+    this.resetTransforms();
+  }
+
+  private resetTransforms(): void {
+    for (let i = 0; i < this.transX.length; i++) {
+      this.transX[i] = 0;
+      this.transAngle[i] = 0;
+      this.transZ[i] = 0;
+      this.transAngleL[i] = 0;
+      this.transAngleR[i] = 0;
+    }
+  }
+
+  // 正文颜色：配色为浅色/深色时强制文字色，自动时按阅读背景推导（白底深色字，黑/灰底浅色字）
   private readerTextCol(): string {
+    if (this.colorScheme === 'light') {
+      return '#ECEEF2';
+    }
+    if (this.colorScheme === 'dark') {
+      return '#16181D';
+    }
     const t = this.readerTheme === 3 ? (this.isDark ? 1 : 0) : this.readerTheme;
     if (t === 0) {
       return '#16181D';
@@ -474,15 +627,171 @@ export struct NovelReaderPage {
     return '#ECEEF2';
   }
 
-  // 右下角进度指示文案
+  // 正文字体（映射为系统字体族；默认 HarmonyOS Sans）
+  private fontFamilyVal(): string {
+    if (this.fontFamily === 'serif') {
+      return 'serif';
+    }
+    if (this.fontFamily === 'sans') {
+      return 'sans-serif';
+    }
+    if (this.fontFamily === 'mono') {
+      return 'monospace';
+    }
+    return 'HarmonyOS Sans';
+  }
+
+  // 右下角进度指示文案（从右到左按阅读顺序显示页码）
   private indicatorText(): string {
     if (this.mode === 'scroll' || this.html) {
       return `${Math.round(this.permilleUi / 10)}%`;
     }
     if (this.screenIdxs.length > 0) {
+      if (this.mode === 'paged_rtl') {
+        return `${this.screenIdxs.length - this.pageIdx}/${this.screenIdxs.length}`;
+      }
       return `${this.pageIdx + 1}/${this.screenIdxs.length}`;
     }
     return '';
+  }
+
+  // 底栏进度 Slider 的显示值（从右到左模式按阅读顺序，滑杆方向随之镜像）
+  private pagedSliderPos(): number {
+    const n = this.screenIdxs.length;
+    if (n <= 0) {
+      return 1;
+    }
+    return this.mode === 'paged_rtl' ? n - this.pageIdx : this.pageIdx + 1;
+  }
+
+  private pagedScreenFromSlider(v: number): number {
+    if (this.mode === 'paged_rtl') {
+      return this.screenIdxs.length - v;
+    }
+    return v - 1;
+  }
+
+  // 仿真翻转的旋转轴：从右到左模式绕右边缘（书脊在右），否则绕左边缘
+  private flipPivotX(): string {
+    return this.mode === 'paged_rtl' ? '100%' : '0%';
+  }
+
+  private setPageTransform(i: number, x: number, angle: number, z: number): void {
+    if (this.transX[i] !== x) {
+      this.transX[i] = x;
+    }
+    if (this.transAngle[i] !== angle) {
+      this.transAngle[i] = angle;
+    }
+    if (this.transZ[i] !== z) {
+      this.transZ[i] = z;
+    }
+  }
+
+  // 双页仿真：设置某屏左右半页的绕中线翻转角（书脊固定不动）
+  private setHalfAngle(i: number, angleL: number, angleR: number): void {
+    if (this.transAngleL[i] !== angleL) {
+      this.transAngleL[i] = angleL;
+    }
+    if (this.transAngleR[i] !== angleR) {
+      this.transAngleR[i] = angleR;
+    }
+  }
+
+  // 翻转中的页面投影（增强仿真立体感）
+  private flipShadow(active: boolean): ShadowOptions {
+    if (active) {
+      return { radius: 16, color: '#4D000000' };
+    }
+    return { radius: 0, color: Color.Transparent };
+  }
+
+  // 单页仿真：整页翻转超过 90° 后只显示空白纸背（避免镜像文字穿帮）
+  private singleBackFace(i: number): boolean {
+    return this.animMode === 'curl' && this.mode !== 'double' && Math.abs(this.transAngle[i]) > 90;
+  }
+
+  // 双页仿真：半页翻转超过 90° 后显示真实纸背（对应相邻屏的页内容）
+  private halfBackFace(i: number, left: boolean): boolean {
+    if (this.animMode !== 'curl' || this.mode !== 'double') {
+      return false;
+    }
+    const angle = left ? this.transAngleL[i] : this.transAngleR[i];
+    return Math.abs(angle) > 90;
+  }
+
+  // 翻页动画逐帧回调：滑动=默认位移；覆盖=新页滑入覆盖静止当前页；
+  // 仿真=书页绕书脊翻转（单页绕屏幕边缘、双页绕中线书脊），背面显示纸背。
+  // proxy.position 为该页相对动画起始位置的位移比例（负=向左），默认位移=position*mainAxisLength，
+  // 以负向 translate 抵消默认位移后叠加自定义变换。
+  private onContentTransition(proxy: SwiperContentTransitionProxy): void {
+    const i = proxy.index;
+    if (i < 0 || i >= this.transX.length) {
+      return;
+    }
+    const p = proxy.position;
+    if (this.animMode === 'slide' || Math.abs(p - Math.round(p)) < 0.001) {
+      this.setPageTransform(i, 0, 0, 0);
+      this.setHalfAngle(i, 0, 0);
+      return;
+    }
+    const L = proxy.mainAxisLength;
+    const S = proxy.selectedIndex;
+    const rtl = this.mode === 'paged_rtl';
+    const isDouble = this.mode === 'double';
+    const sign = rtl ? 1 : -1;
+    if (i === S) {
+      // 当前屏
+      const goingNext = rtl ? p > 0 : p < 0;
+      if (this.animMode === 'cover') {
+        // 覆盖：前进时静止在下方，后退时滑开
+        if (goingNext) {
+          this.setPageTransform(i, -p * L, 0, 0);
+        } else {
+          this.setPageTransform(i, 0, 0, 2);
+        }
+        return;
+      }
+      // 仿真：当前屏位于相邻屏之上
+      if (isDouble) {
+        // 双页：前进=右半页绕中线翻向左；后退=左半页绕中线从左翻回
+        this.setPageTransform(i, -p * L, 0, 2);
+        if (goingNext) {
+          this.setHalfAngle(i, 0, -180 * Math.abs(p));
+        } else {
+          this.setHalfAngle(i, 180 * Math.abs(p), 0);
+        }
+      } else if (goingNext) {
+        // 单页：整页绕书脊边缘翻起离开
+        this.setPageTransform(i, -p * L, sign * 180 * Math.abs(p), 2);
+      } else {
+        // 单页后退：当前屏静止在下方，由上一屏翻回覆盖
+        this.setPageTransform(i, -p * L, 0, 0);
+      }
+    } else if (i === S + 1) {
+      // 前进方向相邻屏：整体静止在当前屏下方被揭出
+      if (this.animMode === 'cover') {
+        this.setPageTransform(i, 0, 0, 2);
+      } else {
+        this.setPageTransform(i, -p * L, 0, 0);
+        this.setHalfAngle(i, 0, 0);
+      }
+    } else if (i === S - 1) {
+      // 后退方向相邻屏
+      if (this.animMode === 'cover') {
+        this.setPageTransform(i, -p * L, 0, 0);
+      } else if (isDouble) {
+        // 双页：静止在当前屏下方，由当前屏左半页翻回盖住
+        this.setPageTransform(i, -p * L, 0, 0);
+        this.setHalfAngle(i, 0, 0);
+      } else {
+        // 单页：上一屏从翻过状态绕书脊翻回，覆盖当前屏
+        this.setPageTransform(i, -p * L, sign * 180 * Math.abs(p), 2);
+      }
+    } else {
+      this.setPageTransform(i, 0, 0, 0);
+      this.setHalfAngle(i, 0, 0);
+    }
   }
 
   // 单页正文：段间距为 0 时合并为单个 Text（大章节性能友好），>0 时按段落 Column({space}) 渲染
@@ -494,6 +803,7 @@ export struct NovelReaderPage {
           Text(para)
             .fontSize(this.fontSize)
             .lineHeight(this.lineHeight)
+            .fontFamily(this.fontFamilyVal())
             .fontColor(this.readerTextCol())
             .width('100%')
         }, (para: string, i: number) => `${this.pagSig}#${pIdx}#${i}`)
@@ -504,25 +814,91 @@ export struct NovelReaderPage {
       Text(this.pageAt(pIdx).join('\n'))
         .fontSize(this.fontSize)
         .lineHeight(this.lineHeight)
+        .fontFamily(this.fontFamilyVal())
         .fontColor(this.readerTextCol())
         .layoutWeight(1)
         .height('100%')
     }
   }
 
-  // Swiper 一屏：双页=左右两页 + 中缝分隔线，单页=一页
+  // Swiper 一屏：双页=左右两页 + 中缝分隔线；从右到左=屏幕索引与页序相反；单页=一页
   @Builder
   PageScreen(sIdx: number) {
     if (this.mode === 'double') {
       Row() {
-        this.PageText(sIdx * 2)
-        Divider()
-          .vertical(true)
-          .strokeWidth('1vp')
-          .color('#66808080')
-          .margin({ left: 12, right: 12 })
-          .height('70%')
-        this.PageText(sIdx * 2 + 1)
+        // 左半页：仿真后退时绕中线（书脊）从左翻回，翻过 90° 后显示真实纸背（上一屏右页）
+        Column() {
+          if (this.halfBackFace(sIdx, true)) {
+            Column() {
+              this.PageText(sIdx * 2 - 1)
+            }
+            .width('100%')
+            .height('100%')
+            .scale({ x: -1 })
+          } else {
+            this.PageText(sIdx * 2)
+          }
+        }
+        .layoutWeight(1)
+        .height('100%')
+        .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
+        .rotate({
+          x: 0,
+          y: 1,
+          z: 0,
+          angle: this.transAngleL[sIdx],
+          centerX: '100%',
+          centerY: '50%'
+        })
+        .zIndex(this.transAngleL[sIdx] !== 0 ? 2 : 0)
+        .shadow(this.flipShadow(this.transAngleL[sIdx] !== 0))
+
+        // 中缝书脊（固定不动）
+        Column() {
+          Divider()
+            .vertical(true)
+            .strokeWidth('1vp')
+            .color('#66808080')
+            .height('70%')
+        }
+        .width(25)
+        .height('100%')
+        .justifyContent(FlexAlign.Center)
+        .alignItems(HorizontalAlign.Center)
+        .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
+
+        // 右半页：仿真前进时绕中线（书脊）翻向左侧，翻过 90° 后显示真实纸背（下一屏左页）
+        Column() {
+          if (this.halfBackFace(sIdx, false)) {
+            Column() {
+              this.PageText(sIdx * 2 + 2)
+            }
+            .width('100%')
+            .height('100%')
+            .scale({ x: -1 })
+          } else {
+            this.PageText(sIdx * 2 + 1)
+          }
+        }
+        .layoutWeight(1)
+        .height('100%')
+        .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
+        .rotate({
+          x: 0,
+          y: 1,
+          z: 0,
+          angle: this.transAngleR[sIdx],
+          centerX: '0%',
+          centerY: '50%'
+        })
+        .zIndex(this.transAngleR[sIdx] !== 0 ? 2 : 0)
+        .shadow(this.flipShadow(this.transAngleR[sIdx] !== 0))
+      }
+      .width('100%')
+      .height('100%')
+    } else if (this.mode === 'paged_rtl') {
+      Row() {
+        this.PageText(this.pages.length - 1 - sIdx)
       }
       .width('100%')
       .height('100%')
@@ -547,6 +923,7 @@ export struct NovelReaderPage {
           Text(para === '' ? ' ' : para)
             .fontSize(this.fontSize)
             .lineHeight(this.lineHeight)
+            .fontFamily(this.fontFamilyVal())
             .fontColor(this.readerTextCol())
             .width('100%')
         }, (para: string, i: number) => `${this.body.length}#${i}#${para.length}`)
@@ -556,12 +933,13 @@ export struct NovelReaderPage {
       Text(this.body)
         .fontSize(this.fontSize)
         .lineHeight(this.lineHeight)
+        .fontFamily(this.fontFamilyVal())
         .fontColor(this.readerTextCol())
         .width('100%')
     }
   }
 
-  // 翻页方式 chip（滚动 / 翻页 / 双页）
+  // 阅读模式 chip（滚动 / 单页式从左到右 / 单页式从右到左 / 双页）
   @Builder
   modeChip(label: ResourceStr, value: string) {
     Text(label)
@@ -570,8 +948,57 @@ export struct NovelReaderPage {
       .padding({ left: 14, right: 14, top: 6, bottom: 6 })
       .borderRadius(16)
       .backgroundColor(this.mode === value ? this.pal.primary : this.pal.chip)
+      .margin({ right: 8, bottom: 8 })
       .onClick(() => {
         this.setMode(value);
+      })
+  }
+
+  // 翻页动画 chip（仿真 / 滑动 / 覆盖）
+  @Builder
+  animChip(label: ResourceStr, value: string) {
+    Text(label)
+      .fontSize(13)
+      .fontColor(this.animMode === value ? '#FFFFFF' : this.pal.text)
+      .padding({ left: 14, right: 14, top: 6, bottom: 6 })
+      .borderRadius(16)
+      .backgroundColor(this.animMode === value ? this.pal.primary : this.pal.chip)
+      .margin({ right: 8, bottom: 8 })
+      .onClick(() => {
+        this.setAnimMode(value);
+      })
+  }
+
+  // 配色 chip（自动 / 浅色 / 深色）
+  @Builder
+  schemeChip(label: ResourceStr, value: string) {
+    Text(label)
+      .fontSize(13)
+      .fontColor(this.colorScheme === value ? '#FFFFFF' : this.pal.text)
+      .padding({ left: 14, right: 14, top: 6, bottom: 6 })
+      .borderRadius(16)
+      .backgroundColor(this.colorScheme === value ? this.pal.primary : this.pal.chip)
+      .margin({ right: 8, bottom: 8 })
+      .onClick(() => {
+        this.colorScheme = value;
+        Settings.setNovelColorScheme(value);
+      })
+  }
+
+  // 字体 chip（默认 / 宋体 / 黑体 / 等宽）
+  @Builder
+  fontChip(label: ResourceStr, value: string) {
+    Text(label)
+      .fontSize(13)
+      .fontColor(this.fontFamily === value ? '#FFFFFF' : this.pal.text)
+      .padding({ left: 14, right: 14, top: 6, bottom: 6 })
+      .borderRadius(16)
+      .backgroundColor(this.fontFamily === value ? this.pal.primary : this.pal.chip)
+      .margin({ right: 8, bottom: 8 })
+      .onClick(() => {
+        this.fontFamily = value;
+        Settings.setNovelFontFamily(value);
+        this.ensurePaginated();
       })
   }
 
@@ -584,6 +1011,7 @@ export struct NovelReaderPage {
       .padding({ left: 14, right: 14, top: 6, bottom: 6 })
       .borderRadius(16)
       .backgroundColor(this.readerTheme === value ? this.pal.primary : this.pal.chip)
+      .margin({ right: 8, bottom: 8 })
       .onClick(() => {
         this.readerTheme = value;
         Settings.setReaderTheme(value);
@@ -621,19 +1049,107 @@ export struct NovelReaderPage {
     .padding({ left: 16, right: 16, top: 10, bottom: 6 })
   }
 
-  // 设置面板：翻页方式 / 字号 / 行间距 / 段间距 / 背景
   @Builder
-  settingsSheet() {
+  orientationSheetBuilder() {
+    PickerSheet({
+      options: [$r('app.string.reader_orientation_free'), $r('app.string.reader_orientation_portrait'),
+        $r('app.string.reader_orientation_landscape'), $r('app.string.reader_orientation_lock_portrait'),
+        $r('app.string.reader_orientation_lock_landscape')],
+      icons: NOVEL_ORIENTATION_ICONS,
+      selectedIndex: NOVEL_ORIENTATIONS.indexOf(this.orientation),
+      onPick: (index: number): void => {
+        this.showOrientationSheet = false;
+        const v: string | undefined = NOVEL_ORIENTATIONS[index];
+        if (v !== undefined) {
+          this.orientation = v;
+          Settings.setNovelOrientation(v);
+          this.applyOrientation();
+        }
+      }
+    })
+  }
+
+  // 底栏阅读模式图标（随当前模式变化）
+  private novelModeIcon(): string {
+    if (this.mode === 'paged') {
+      return 'reader_ltr';
+    }
+    if (this.mode === 'paged_rtl') {
+      return 'reader_rtl';
+    }
+    if (this.mode === 'double') {
+      return 'reader_double';
+    }
+    return 'reader_scroll';
+  }
+
+  // 阅读模式选择 + 翻页动画
+  @Builder
+  modeSheetBuilder() {
     Column({ space: 0 }) {
+      PickerSheet({
+        options: [$r('app.string.novel_mode_scroll'), $r('app.string.novel_mode_single_ltr'),
+          $r('app.string.novel_mode_single_rtl'), $r('app.string.novel_mode_double')],
+        icons: NOVEL_MODE_ICONS,
+        selectedIndex: NOVEL_MODES.indexOf(this.mode),
+        onPick: (index: number): void => {
+          this.showModeSheet = false;
+          const v: string | undefined = NOVEL_MODES[index];
+          if (v !== undefined) {
+            this.setMode(v);
+          }
+        }
+      })
+
+      Divider().color(this.pal.divider)
+
       Column({ space: 8 }) {
-        Text($r('app.string.novel_paging_mode'))
+        Text($r('app.string.novel_page_animation'))
           .fontSize(13)
           .fontColor(this.pal.sub)
           .width('100%')
-        Row({ space: 8 }) {
-          this.modeChip($r('app.string.novel_mode_scroll'), 'scroll')
-          this.modeChip($r('app.string.novel_mode_paged'), 'paged')
-          this.modeChip($r('app.string.novel_mode_double'), 'double')
+        Flex({ wrap: FlexWrap.Wrap }) {
+          this.animChip($r('app.string.novel_anim_curl'), 'curl')
+          this.animChip($r('app.string.novel_anim_slide'), 'slide')
+          this.animChip($r('app.string.novel_anim_cover'), 'cover')
+        }
+        .width('100%')
+      }
+      .width('100%')
+      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
+
+      Column().height(16)
+    }
+    .width('100%')
+  }
+
+  // 画面：亮度 / 配色 / 背景
+  @Builder
+  displaySheetBuilder() {
+    Column({ space: 0 }) {
+      Column({ space: 8 }) {
+        Text($r('app.string.reader_brightness'))
+          .fontSize(13)
+          .fontColor(this.pal.sub)
+          .width('100%')
+        Row() {
+          Slider({ value: this.brightLv, min: 0, max: 1, step: 0.05 })
+            .layoutWeight(1)
+            .blockColor(this.pal.primary)
+            .selectedColor(this.pal.primary)
+            .trackColor(this.pal.divider)
+            .onChange((value: number, mode: SliderChangeMode) => {
+              if (mode === SliderChangeMode.End || mode === SliderChangeMode.Click) {
+                this.brightLv = Math.round(value * 20) / 20;
+                Settings.setReaderBrightness(this.brightLv);
+                this.applyBrightness();
+              }
+            })
+          Text(this.brightLv === 0 ? $r('app.string.reader_auto') : `${Math.round(this.brightLv * 100)}%`)
+            .fontSize(13)
+            .fontColor(this.pal.text)
+            .width(52)
+            .textAlign(TextAlign.End)
         }
         .width('100%')
       }
@@ -642,6 +1158,48 @@ export struct NovelReaderPage {
 
       Divider().color(this.pal.divider)
 
+      Column({ space: 8 }) {
+        Text($r('app.string.novel_color_scheme'))
+          .fontSize(13)
+          .fontColor(this.pal.sub)
+          .width('100%')
+        Flex({ wrap: FlexWrap.Wrap }) {
+          this.schemeChip($r('app.string.reader_auto'), 'auto')
+          this.schemeChip($r('app.string.novel_color_light'), 'light')
+          this.schemeChip($r('app.string.novel_color_dark'), 'dark')
+        }
+        .width('100%')
+      }
+      .width('100%')
+      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
+
+      Divider().color(this.pal.divider)
+
+      Column({ space: 8 }) {
+        Text($r('app.string.reader_background'))
+          .fontSize(13)
+          .fontColor(this.pal.sub)
+          .width('100%')
+        Flex({ wrap: FlexWrap.Wrap }) {
+          this.themeChip($r('app.string.reader_theme_auto'), 3)
+          this.themeChip($r('app.string.reader_theme_white'), 0)
+          this.themeChip($r('app.string.reader_theme_gray'), 2)
+          this.themeChip($r('app.string.reader_theme_black'), 1)
+        }
+        .width('100%')
+      }
+      .width('100%')
+      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
+
+      Column().height(16)
+    }
+    .width('100%')
+  }
+
+  // 文本设置：字号 / 边距 / 段间距 / 行间距 / 字体
+  @Builder
+  textSheetBuilder() {
+    Column({ space: 0 }) {
       this.novelSliderRow($r('app.string.novel_font_size'), this.fontSize, 14, 32,
         (value: number, done: boolean): void => {
           this.fontSize = value;
@@ -653,11 +1211,11 @@ export struct NovelReaderPage {
 
       Divider().color(this.pal.divider)
 
-      this.novelSliderRow($r('app.string.novel_line_height'), this.lineHeight, 20, 56,
+      this.novelSliderRow($r('app.string.novel_margin'), this.pageMargin, 8, 48,
         (value: number, done: boolean): void => {
-          this.lineHeight = value;
+          this.pageMargin = value;
           if (done) {
-            Settings.setNovelLineHeight(value);
+            Settings.setNovelMargin(value);
           }
           this.ensurePaginated();
         })
@@ -675,16 +1233,27 @@ export struct NovelReaderPage {
 
       Divider().color(this.pal.divider)
 
+      this.novelSliderRow($r('app.string.novel_line_height'), this.lineHeight, 20, 56,
+        (value: number, done: boolean): void => {
+          this.lineHeight = value;
+          if (done) {
+            Settings.setNovelLineHeight(value);
+          }
+          this.ensurePaginated();
+        })
+
+      Divider().color(this.pal.divider)
+
       Column({ space: 8 }) {
-        Text($r('app.string.reader_background'))
+        Text($r('app.string.novel_font_family'))
           .fontSize(13)
           .fontColor(this.pal.sub)
           .width('100%')
-        Row({ space: 8 }) {
-          this.themeChip($r('app.string.reader_theme_auto'), 3)
-          this.themeChip($r('app.string.reader_theme_white'), 0)
-          this.themeChip($r('app.string.reader_theme_gray'), 2)
-          this.themeChip($r('app.string.reader_theme_black'), 1)
+        Flex({ wrap: FlexWrap.Wrap }) {
+          this.fontChip($r('app.string.novel_font_default'), 'default')
+          this.fontChip($r('app.string.novel_font_serif'), 'serif')
+          this.fontChip($r('app.string.novel_font_sans'), 'sans')
+          this.fontChip($r('app.string.novel_font_mono'), 'mono')
         }
         .width('100%')
       }
@@ -711,7 +1280,7 @@ export struct NovelReaderPage {
           .height('100%')
           .justifyContent(FlexAlign.Center)
           .onClick(() => {
-            this.toggleMenu();
+            this.contentTap();
           })
         } else if (this.body === '') {
           Column() {
@@ -723,7 +1292,7 @@ export struct NovelReaderPage {
           .height('100%')
           .justifyContent(FlexAlign.Center)
           .onClick(() => {
-            this.toggleMenu();
+            this.contentTap();
           })
         } else if (this.mode === 'scroll' || this.html) {
           Scroll(this.scroller) {
@@ -731,7 +1300,7 @@ export struct NovelReaderPage {
               this.ScrollBody()
             }
             .width('100%')
-            .padding({ left: 20, right: 20, top: this.statusBarH + 16, bottom: this.navBarH + 24 })
+            .padding({ left: this.pageMargin, right: this.pageMargin, top: this.statusBarH + 16, bottom: this.navBarH + 24 })
             .onAreaChange((_old: Area, neu: Area) => {
               const h = neu.height;
               if (typeof h === 'number') {
@@ -758,13 +1327,39 @@ export struct NovelReaderPage {
             this.persist();
           })
           .onClick(() => {
-            this.toggleMenu();
+            this.contentTap();
           })
         } else {
           Column() {
             Swiper(this.swiperCtrl) {
               ForEach(this.screenIdxs, (sIdx: number) => {
-                this.PageScreen(sIdx)
+                // 每屏包一层容器：translate/rotate/zIndex 仅能挂在实体组件上；
+                // 双页模式容器透明（遮盖由左右半页承担），单页模式整屏不透明。
+                // 单页仿真翻过 90° 后内容替换为空白纸背，避免镜像文字穿帮
+                Column() {
+                  if (this.singleBackFace(sIdx)) {
+                    Column()
+                      .width('100%')
+                      .height('100%')
+                  } else {
+                    this.PageScreen(sIdx)
+                  }
+                }
+                .width('100%')
+                .height('100%')
+                .backgroundColor(this.mode === 'double' ? Color.Transparent :
+                  Theme.readerBg(this.readerTheme, this.isDark))
+                .translate({ x: this.transX[sIdx] })
+                .rotate({
+                  x: 0,
+                  y: 1,
+                  z: 0,
+                  angle: this.transAngle[sIdx],
+                  centerX: this.flipPivotX(),
+                  centerY: '50%'
+                })
+                .zIndex(this.transZ[sIdx])
+                .shadow(this.flipShadow(this.transAngle[sIdx] !== 0))
               }, (sIdx: number) => `${this.pagSig}#${sIdx}`)
             }
             .width('100%')
@@ -772,13 +1367,19 @@ export struct NovelReaderPage {
             .loop(false)
             .indicator(false)
             .index(this.pageIdx)
+            .customContentTransition({
+              timeout: 1000,
+              transition: (proxy: SwiperContentTransitionProxy) => {
+                this.onContentTransition(proxy);
+              }
+            })
             .onChange((idx: number) => {
               this.onScreenChange(idx);
             })
           }
           .width('100%')
           .height('100%')
-          .padding({ left: 20, right: 20, top: this.statusBarH + 8, bottom: this.navBarH + 8 })
+          .padding({ left: this.pageMargin, right: this.pageMargin, top: this.statusBarH + 8, bottom: this.navBarH + 8 })
           .onAreaChange((_old: Area, neu: Area) => {
             const w = neu.width;
             const h = neu.height;
@@ -909,13 +1510,13 @@ export struct NovelReaderPage {
                   .padding({ left: 14, right: 14 })
                 } else if (this.screenIdxs.length > 0) {
                   Row() {
-                    Text(`${this.pageIdx + 1}`)
+                    Text(`${this.pagedSliderPos()}`)
                       .fontSize(13)
                       .fontColor('#FFFFFF')
                       .width(24)
                       .textAlign(TextAlign.End)
                     Slider({
-                      value: this.pageIdx + 1,
+                      value: this.pagedSliderPos(),
                       min: 1,
                       max: this.screenIdxs.length > 1 ? this.screenIdxs.length : 2,
                       step: 1,
@@ -928,7 +1529,7 @@ export struct NovelReaderPage {
                       .margin({ left: 8, right: 8 })
                       .onChange((value: number, mode: SliderChangeMode) => {
                         if (mode === SliderChangeMode.End || mode === SliderChangeMode.Click) {
-                          this.jumpScreen(Math.round(value) - 1);
+                          this.jumpScreen(this.pagedScreenFromSlider(Math.round(value)));
                         }
                       })
                     Text(`${this.screenIdxs.length}`)
@@ -967,10 +1568,10 @@ export struct NovelReaderPage {
               .width('100%')
               .padding({ left: 16, right: 16 })
 
-              // 设置行：齿轮（打开底部设置面板）
+              // 设置行：阅读模式 / 屏幕方向 / 画面 / 文本设置（对齐漫画阅读器：多个入口图标）
               Row() {
                 Column() {
-                  Image(AppIconRes.get('settings'))
+                  Image(AppIconRes.get(this.novelModeIcon()))
                     .width(24)
                     .height(24)
                     .fillColor('#FFFFFF')
@@ -979,7 +1580,46 @@ export struct NovelReaderPage {
                 .height(44)
                 .justifyContent(FlexAlign.Center)
                 .onClick(() => {
-                  this.showSettings = true;
+                  this.showModeSheet = true;
+                })
+
+                Column() {
+                  Image(AppIconRes.get('screen_rotation'))
+                    .width(24)
+                    .height(24)
+                    .fillColor('#FFFFFF')
+                }
+                .width(48)
+                .height(44)
+                .justifyContent(FlexAlign.Center)
+                .onClick(() => {
+                  this.showOrientationSheet = true;
+                })
+
+                Column() {
+                  Image(AppIconRes.get('palette'))
+                    .width(24)
+                    .height(24)
+                    .fillColor('#FFFFFF')
+                }
+                .width(48)
+                .height(44)
+                .justifyContent(FlexAlign.Center)
+                .onClick(() => {
+                  this.showDisplaySheet = true;
+                })
+
+                Column() {
+                  Image(AppIconRes.get('format_size'))
+                    .width(24)
+                    .height(24)
+                    .fillColor('#FFFFFF')
+                }
+                .width(48)
+                .height(44)
+                .justifyContent(FlexAlign.Center)
+                .onClick(() => {
+                  this.showTextSheet = true;
                 })
               }
               .width('100%')
@@ -1006,8 +1646,15 @@ export struct NovelReaderPage {
               TransitionEffect.OPACITY.animation({ duration: 200, curve: Curve.Linear })
             )
           )
-          .bindSheet($$this.showSettings, this.settingsSheet(), {
-            title: { title: $r('app.string.reader_settings') },
+          .bindSheet($$this.showDisplaySheet, this.displaySheetBuilder(), {
+            title: { title: $r('app.string.novel_tab_display') },
+            detents: [SheetSize.FIT_CONTENT],
+            dragBar: true,
+            showClose: false,
+            blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
+          })
+          .bindSheet($$this.showTextSheet, this.textSheetBuilder(), {
+            title: { title: $r('app.string.novel_tab_text') },
             detents: [SheetSize.FIT_CONTENT],
             dragBar: true,
             showClose: false,
@@ -1018,9 +1665,23 @@ export struct NovelReaderPage {
       .width('100%')
       .height('100%')
       .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
+      .bindSheet($$this.showModeSheet, this.modeSheetBuilder(), {
+        title: { title: $r('app.string.reader_reading_mode') },
+        detents: [SheetSize.FIT_CONTENT],
+        dragBar: true,
+        showClose: false,
+        blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
+      })
     }
     .hideTitleBar(true)
     .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
+    .bindSheet($$this.showOrientationSheet, this.orientationSheetBuilder(), {
+      title: { title: $r('app.string.reader_screen_orientation') },
+      detents: [SheetSize.FIT_CONTENT],
+      dragBar: true,
+      showClose: false,
+      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
+    })
     .onReady((ctx: NavDestinationContext) => {
       this.pathStack = ctx.pathStack;
       const params = ctx.pathInfo.param as ReaderParams;

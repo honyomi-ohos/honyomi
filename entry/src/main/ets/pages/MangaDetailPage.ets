@@ -215,6 +215,9 @@ export struct MangaDetailPage {
         onConfirm: (text: string): void => {
           this.doAlSearch(text);
         },
+        onClose: (): void => {
+          dialog.close();
+        },
       }),
       autoCancel: true,
     });

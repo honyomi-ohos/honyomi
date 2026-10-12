@@ -10,11 +10,19 @@ export struct InputDialog {
   initialText: string = '';
   @State inputText: string = '';
   onConfirm: (text: string) => void = (_t: string) => {};
+  onClose: () => void = () => {};
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   aboutToAppear(): void {
     this.inputText = this.initialText;
+  }
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
   }
 
   build() {
@@ -33,26 +41,20 @@ export struct InputDialog {
           .backgroundColor(this.pal.chip)
           .fontColor(this.pal.text)
           .onClick(() => {
-            if (this.controller !== undefined) {
-              this.controller.close();
-            }
+            this.dismiss();
           })
         Button($r('app.string.common_ok'))
           .layoutWeight(1)
           .backgroundColor(this.pal.primary)
           .onClick(() => {
-            if (this.controller !== undefined) {
-              this.controller.close();
-            }
+            this.dismiss();
             this.onConfirm(this.inputText);
           })
       }
       .width('100%')
     }
     .padding(20)
-    .backgroundColor(this.pal.card)
-    .borderRadius(16)
-    .width('86%')
+    .width('100%')
   }
 }
 
@@ -62,8 +64,16 @@ export struct CategoryDialog {
   controller?: CustomDialogController;
   categories: CategoryRecord[] = [];
   onPick: (categoryId: number) => void = (_id: number) => {};
+  onClose: () => void = () => {};
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
+  }
 
   build() {
     Column({ space: 8 }) {
@@ -82,17 +92,13 @@ export struct CategoryDialog {
           .borderRadius(10)
           .backgroundColor(this.pal.chip)
           .onClick(() => {
-            if (this.controller !== undefined) {
-              this.controller.close();
-            }
+            this.dismiss();
             this.onPick(cat.id);
           })
       }, (cat: CategoryRecord) => `cat-${cat.id}`)
     }
     .padding(20)
-    .backgroundColor(this.pal.card)
-    .borderRadius(16)
-    .width('80%')
+    .width('100%')
   }
 }
 
@@ -102,10 +108,18 @@ export struct ExportColumnsDialog {
   controller?: CustomDialogController;
   onConfirm: (includeTitle: boolean, includeAuthor: boolean) => void =
     (_t: boolean, _a: boolean) => {};
+  onClose: () => void = () => {};
   @State titleSelected: boolean = true;
   @State authorSelected: boolean = true;
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
+  }
 
   build() {
     Column({ space: 16 }) {
@@ -152,26 +166,20 @@ export struct ExportColumnsDialog {
           .backgroundColor(this.pal.chip)
           .fontColor(this.pal.text)
           .onClick(() => {
-            if (this.controller !== undefined) {
-              this.controller.close();
-            }
+            this.dismiss();
           })
         Button($r('app.string.common_save'))
           .layoutWeight(1)
           .backgroundColor(this.pal.primary)
           .onClick(() => {
-            if (this.controller !== undefined) {
-              this.controller.close();
-            }
+            this.dismiss();
             this.onConfirm(this.titleSelected, this.authorSelected);
           })
       }
       .width('100%')
     }
     .padding(20)
-    .backgroundColor(this.pal.card)
-    .borderRadius(16)
-    .width('86%')
+    .width('100%')
   }
 }
 
@@ -183,8 +191,16 @@ export struct ConfirmDialog {
   message: Resource | string = '';
   confirmText: Resource | string = $r('app.string.common_ok');
   onConfirm: () => void = () => {};
+  onClose: () => void = () => {};
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
+  }
 
   build() {
     Column({ space: 16 }) {
@@ -201,25 +217,19 @@ export struct ConfirmDialog {
           .backgroundColor(this.pal.chip)
           .fontColor(this.pal.text)
           .onClick(() => {
-            if (this.controller !== undefined) {
-              this.controller.close();
-            }
+            this.dismiss();
           })
         Button(this.confirmText)
           .layoutWeight(1)
           .backgroundColor(this.pal.primary)
           .onClick(() => {
-            if (this.controller !== undefined) {
-              this.controller.close();
-            }
+            this.dismiss();
             this.onConfirm();
           })
       }
       .width('100%')
     }
     .padding(20)
-    .backgroundColor(this.pal.card)
-    .borderRadius(16)
-    .width('86%')
+    .width('100%')
   }
 }

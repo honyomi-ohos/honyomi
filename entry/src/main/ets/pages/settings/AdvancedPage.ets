@@ -33,6 +33,9 @@ export struct AdvancedPage {
           Util.toastRes(this.getUIContext(), token === '' ?
             $r('app.string.advanced_token_cleared') : $r('app.string.advanced_token_saved'));
         },
+        onClose: (): void => {
+          dialog.close();
+        },
       }),
       autoCancel: true,
     });

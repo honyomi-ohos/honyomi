@@ -154,6 +154,9 @@ export struct DataStoragePage {
         onConfirm: (includeTitle: boolean, includeAuthor: boolean): void => {
           this.doExportCsv(includeTitle, includeAuthor);
         },
+        onClose: (): void => {
+          dialog.close();
+        },
       }),
       autoCancel: true,
     });

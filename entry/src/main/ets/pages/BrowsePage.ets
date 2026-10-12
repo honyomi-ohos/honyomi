@@ -68,7 +68,15 @@ struct SourceOptionsDialog {
   sourceName: Resource | string = '';
   isPinned: boolean = false;
   onPin: () => void = () => {};
+  onClose: () => void = () => {};
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
+  }
 
   build() {
     Column() {
@@ -86,16 +94,12 @@ struct SourceOptionsDialog {
         .width('100%')
         .padding({ top: 14, bottom: 14 })
         .onClick(() => {
-          if (this.controller !== undefined) {
-            this.controller.close();
-          }
+          this.dismiss();
           this.onPin();
         })
     }
     .padding(20)
-    .backgroundColor(this.pal.card)
-    .borderRadius(16)
-    .width('80%')
+    .width('100%')
   }
 }
 
@@ -106,6 +110,7 @@ struct LangFilterDialog {
   langs: string[] = [];
   initialSelected: string[] = [];
   onApply: (langs: string[]) => void = (_l: string[]) => {};
+  onClose: () => void = () => {};
   @State checked: string[] = [];
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
@@ -127,6 +132,13 @@ struct LangFilterDialog {
       next.push(lang);
     }
     this.checked = next;
+  }
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
   }
 
   build() {
@@ -177,9 +189,7 @@ struct LangFilterDialog {
           .layoutWeight(1)
           .backgroundColor(this.pal.primary)
           .onClick(() => {
-            if (this.controller !== undefined) {
-              this.controller.close();
-            }
+            this.dismiss();
             this.onApply(this.checked.slice());
           })
       }
@@ -187,9 +197,7 @@ struct LangFilterDialog {
       .margin({ top: 12 })
     }
     .padding(20)
-    .backgroundColor(this.pal.card)
-    .borderRadius(16)
-    .width('80%')
+    .width('100%')
   }
 }
 
@@ -332,6 +340,9 @@ export struct BrowsePage {
         onPin: (): void => {
           this.togglePin(s.key);
         },
+        onClose: (): void => {
+          dialog.close();
+        },
       }),
       autoCancel: true,
     });
@@ -345,6 +356,9 @@ export struct BrowsePage {
         initialSelected: this.enabledLangs,
         onApply: (langs: string[]): void => {
           this.enabledLangs = langs.length === this.allLangs().length ? [] : langs;
+        },
+        onClose: (): void => {
+          dialog.close();
         },
       }),
       autoCancel: true,
@@ -367,6 +381,9 @@ export struct BrowsePage {
         onConfirm: (text: string): void => {
           Settings.setPluginRepoUrl(text.trim());
           AppStorage.setOrCreate('extRepoRefresh', (AppStorage.get<number>('extRepoRefresh') ?? 0) + 1);
+        },
+        onClose: (): void => {
+          dialog.close();
         },
       }),
       autoCancel: true,

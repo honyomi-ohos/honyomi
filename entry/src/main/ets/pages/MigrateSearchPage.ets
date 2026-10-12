@@ -122,6 +122,9 @@ export struct MigrateSearchPage {
         onConfirm: (): void => {
           this.migrate(record);
         },
+        onClose: (): void => {
+          dialog.close();
+        },
       }),
       autoCancel: true,
     });

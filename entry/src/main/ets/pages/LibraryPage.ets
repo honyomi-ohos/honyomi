@@ -383,6 +383,9 @@ export struct LibraryPage {
           });
           this.loadData();
         },
+        onClose: (): void => {
+          dialog.close();
+        },
       }),
       autoCancel: true,
     });
@@ -435,6 +438,9 @@ export struct LibraryPage {
         confirmText: $r('app.string.action_delete'),
         onConfirm: (): void => {
           this.removeSelection();
+        },
+        onClose: (): void => {
+          dialog.close();
         },
       }),
       autoCancel: true,

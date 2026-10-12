@@ -87,14 +87,75 @@ export class Settings {
     Settings.setNum('novelLineHeight', v);
   }
 
-  // 小说阅读模式：scroll（滚动）| paged（翻页）| double（双页）
+  // 小说阅读模式：scroll（滚动）| paged（单页式从左到右）| paged_rtl（单页式从右到左）| double（双页）
   static getNovelReaderMode(): string {
     const raw = Settings.getStr('novelReaderMode', 'scroll');
-    return raw === 'paged' || raw === 'double' ? raw : 'scroll';
+    if (raw === 'paged' || raw === 'paged_rtl' || raw === 'double') {
+      return raw;
+    }
+    return 'scroll';
   }
 
   static setNovelReaderMode(v: string): void {
     Settings.setStr('novelReaderMode', v);
+  }
+
+  // 小说翻页动画（翻页/双页模式）：curl（仿真）| slide（滑动）| cover（覆盖）
+  static getNovelPageAnim(): string {
+    const raw = Settings.getStr('novelPageAnim', 'slide');
+    if (raw === 'curl' || raw === 'cover') {
+      return raw;
+    }
+    return 'slide';
+  }
+
+  static setNovelPageAnim(v: string): void {
+    Settings.setStr('novelPageAnim', v);
+  }
+
+  // 小说阅读器屏幕方向：free | portrait | landscape | lock_portrait | lock_landscape
+  static getNovelOrientation(): string {
+    return Settings.getStr('novelOrientation', 'free');
+  }
+
+  static setNovelOrientation(v: string): void {
+    Settings.setStr('novelOrientation', v);
+  }
+
+  // 小说文字配色：auto（跟随背景）| light（浅色文字）| dark（深色文字）
+  static getNovelColorScheme(): string {
+    const raw = Settings.getStr('novelColorScheme', 'auto');
+    if (raw === 'light' || raw === 'dark') {
+      return raw;
+    }
+    return 'auto';
+  }
+
+  static setNovelColorScheme(v: string): void {
+    Settings.setStr('novelColorScheme', v);
+  }
+
+  // 小说正文左右边距（vp）
+  static getNovelMargin(): number {
+    const n = Settings.getNum('novelMargin', 20);
+    return n >= 8 && n <= 48 ? n : 20;
+  }
+
+  static setNovelMargin(v: number): void {
+    Settings.setNum('novelMargin', v);
+  }
+
+  // 小说正文字体：default | serif（宋体）| sans（黑体）| mono（等宽）
+  static getNovelFontFamily(): string {
+    const raw = Settings.getStr('novelFontFamily', 'default');
+    if (raw === 'serif' || raw === 'sans' || raw === 'mono') {
+      return raw;
+    }
+    return 'default';
+  }
+
+  static setNovelFontFamily(v: string): void {
+    Settings.setStr('novelFontFamily', v);
   }
 
   // 小说段间距（vp）

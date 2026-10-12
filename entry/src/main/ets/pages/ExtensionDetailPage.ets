@@ -32,7 +32,15 @@ struct PrefSelectDialog {
   title: Resource | string = '';
   options: SourcePrefOption[] = [];
   onPick: (value: string) => void = (_v: string) => {};
+  onClose: () => void = () => {};
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
+  }
 
   build() {
     Column({ space: 8 }) {
@@ -55,9 +63,7 @@ struct PrefSelectDialog {
               .borderRadius(10)
               .backgroundColor(this.pal.chip)
               .onClick(() => {
-                if (this.controller !== undefined) {
-                  this.controller.close();
-                }
+                this.dismiss();
                 this.onPick(opt.value);
               })
           }, (opt: SourcePrefOption) => `opt-${opt.value}`)
@@ -68,9 +74,7 @@ struct PrefSelectDialog {
       .scrollBar(BarState.Off)
     }
     .padding(20)
-    .backgroundColor(this.pal.card)
-    .borderRadius(16)
-    .width('80%')
+    .width('100%')
   }
 }
 
@@ -152,6 +156,9 @@ export struct ExtensionDetailPage {
         onConfirm: (): void => {
           this.uninstall();
         },
+        onClose: (): void => {
+          dialog.close();
+        },
       }),
       autoCancel: true,
     });
@@ -183,6 +190,9 @@ export struct ExtensionDetailPage {
         onConfirm: (text: string): void => {
           this.applyPref(item, text);
         },
+        onClose: (): void => {
+          dialog.close();
+        },
       }),
       autoCancel: true,
     });
@@ -196,6 +206,9 @@ export struct ExtensionDetailPage {
         options: item.options,
         onPick: (value: string): void => {
           this.applyPref(item, value);
+        },
+        onClose: (): void => {
+          dialog.close();
         },
       }),
       autoCancel: true,

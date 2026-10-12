@@ -46,6 +46,9 @@ export struct CategoriesPage {
             });
           }
         },
+        onClose: (): void => {
+          dialog.close();
+        },
       }),
       autoCancel: true,
     });
@@ -63,6 +66,9 @@ export struct CategoriesPage {
               this.reload();
             });
           }
+        },
+        onClose: (): void => {
+          dialog.close();
         },
       }),
       autoCancel: true,
