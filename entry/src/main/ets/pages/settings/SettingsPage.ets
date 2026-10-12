@@ -72,6 +72,14 @@ export struct SettingsPage {
                   this.pathStack.pushPathByName('ReaderSettings', null);
                 }
               })
+              Divider().color(this.pal.divider).margin({ left: 16 })
+              IconRow({
+                title: $r('app.string.player_set_title'),
+                icon: 'play_arrow',
+                onTap: (): void => {
+                  this.pathStack.pushPathByName('PlayerSettings', null);
+                }
+              })
             }
 
             PrefGroup({ groupTitle: $r('app.string.settings_data') }) {

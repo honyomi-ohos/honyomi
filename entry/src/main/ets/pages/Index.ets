@@ -34,6 +34,7 @@ import { AppearancePage } from './settings/AppearancePage';
 import { LanguagePage } from './settings/LanguagePage';
 import { LibrarySettingsPage } from './settings/LibrarySettingsPage';
 import { ReaderSettingsPage } from './settings/ReaderSettingsPage';
+import { PlayerSettingsPage } from './settings/PlayerSettingsPage';
 import { DownloadsSettingsPage } from './settings/DownloadsSettingsPage';
 import { BrowseSettingsPage } from './settings/BrowseSettingsPage';
 import { DataStoragePage } from './settings/DataStoragePage';
@@ -538,6 +539,8 @@ struct Index {
       LibrarySettingsPage()
     } else if (name === 'ReaderSettings') {
       ReaderSettingsPage()
+    } else if (name === 'PlayerSettings') {
+      PlayerSettingsPage()
     } else if (name === 'DownloadsSettings') {
       DownloadsSettingsPage()
     } else if (name === 'BrowseSettings') {

@@ -656,6 +656,75 @@ export class Settings {
     Settings.store.flush();
   }
 
+  // ---- 视频播放器 ----
+  // 默认播放倍速（0.5 - 3.0）
+  static getVideoSpeed(): number {
+    const n = Settings.getNum('videoSpeed', 1.0);
+    return n >= 0.5 && n <= 3.0 ? n : 1.0;
+  }
+
+  static setVideoSpeed(v: number): void {
+    Settings.setNum('videoSpeed', v);
+  }
+
+  // 播完自动连播下一集
+  static getVideoAutoNext(): boolean {
+    return Settings.getBool('videoAutoNext', true);
+  }
+
+  static setVideoAutoNext(v: boolean): void {
+    Settings.setBool('videoAutoNext', v);
+  }
+
+  // ---- 弹幕 ----
+  static getDanmakuEnabled(): boolean {
+    return Settings.getBool('danmakuEnabled', true);
+  }
+
+  static setDanmakuEnabled(v: boolean): void {
+    Settings.setBool('danmakuEnabled', v);
+  }
+
+  // 弹幕字号（vp）
+  static getDanmakuFont(): number {
+    const n = Settings.getNum('danmakuFont', 16);
+    return n >= 12 && n <= 28 ? n : 16;
+  }
+
+  static setDanmakuFont(v: number): void {
+    Settings.setNum('danmakuFont', v);
+  }
+
+  // 弹幕不透明度（百分比 10 - 100）
+  static getDanmakuOpacityPct(): number {
+    const n = Settings.getNum('danmakuOpacity', 80);
+    return n >= 10 && n <= 100 ? n : 80;
+  }
+
+  static setDanmakuOpacityPct(v: number): void {
+    Settings.setNum('danmakuOpacity', v);
+  }
+
+  // 弹幕显示区域（占屏幕高度百分比：25/50/75/100）
+  static getDanmakuAreaPct(): number {
+    const n = Settings.getNum('danmakuArea', 50);
+    return n === 25 || n === 75 || n === 100 ? n : 50;
+  }
+
+  static setDanmakuAreaPct(v: number): void {
+    Settings.setNum('danmakuArea', v);
+  }
+
+  // 弹幕滚动时长（秒，越短越快：6/8/10/12）
+  static getDanmakuDurationSec(): number {
+    const n = Settings.getNum('danmakuDuration', 10);
+    return n === 6 || n === 8 || n === 12 ? n : 10;
+  }
+
+  static setDanmakuDurationSec(v: number): void {
+    Settings.setNum('danmakuDuration', v);
+  }
+
   // ---- 本地源文件夹（Mihon local source：固定一个用户文件夹，同步进沙箱扫描）----
   static getLocalFolderUri(): string {
     return Settings.getStr('localFolderUri', '');

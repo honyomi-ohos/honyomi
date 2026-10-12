@@ -1,5 +1,5 @@
 import { common } from '@kit.AbilityKit';
-import { window } from '@kit.ArkUI';
+import { display, window } from '@kit.ArkUI';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo, ChapterRepo, HistoryRepo } from '../data/Repos';
 import { ReadingStatsRepo } from '../data/ReadingStats';
@@ -87,7 +87,15 @@ export struct NovelReaderPage {
   private pageH: number = 0;
   private pagSig: string = '';
 
+  // 屏幕物理像素密度（仿真翻转的透视距离按物理像素计）
+  private screenDensity: number = 2;
+
   aboutToAppear(): void {
+    try {
+      this.screenDensity = display.getDefaultDisplaySync().densityPixels;
+    } catch (error) {
+      this.screenDensity = 2;
+    }
     this.mode = Settings.getNovelReaderMode();
     this.fontSize = Settings.getNovelFontSize();
     this.lineHeight = Settings.getNovelLineHeight();
@@ -485,8 +493,31 @@ export struct NovelReaderPage {
     return this.showModeSheet || this.showOrientationSheet || this.showDisplaySheet || this.showTextSheet;
   }
 
+  // 关闭全部设置 Sheet（enableOutsideInteractive 模式下由页面点击主动接管关闭）
+  private dismissSheets(): void {
+    this.showModeSheet = false;
+    this.showOrientationSheet = false;
+    this.showDisplaySheet = false;
+    this.showTextSheet = false;
+  }
+
+  // 打开指定 Sheet（互斥：先关其余，避免多个 bindSheet 叠加）
+  private openSheet(which: string): void {
+    this.dismissSheets();
+    if (which === 'mode') {
+      this.showModeSheet = true;
+    } else if (which === 'orientation') {
+      this.showOrientationSheet = true;
+    } else if (which === 'display') {
+      this.showDisplaySheet = true;
+    } else if (which === 'text') {
+      this.showTextSheet = true;
+    }
+  }
+
   private contentTap(): void {
     if (this.anySheetOpen()) {
+      this.dismissSheets();
       return;
     }
     this.toggleMenu();
@@ -494,7 +525,11 @@ export struct NovelReaderPage {
 
   // 点击左右 30% 区域翻页；点击中间呼出/收起菜单（从右到左阅读时点击区镜像）
   private handleTap(event: ClickEvent): void {
-    if (this.contW <= 0 || this.anySheetOpen()) {
+    if (this.anySheetOpen()) {
+      this.dismissSheets();
+      return;
+    }
+    if (this.contW <= 0) {
       return;
     }
     if (this.mode === 'paged_rtl') {
@@ -529,9 +564,14 @@ export struct NovelReaderPage {
       this.openChapter(rtl ? this.prevId : this.nextId);
       return;
     }
-    this.pageIdx = target;
+    // showNext/showPrevious 自带动效并触发自定义过渡回调（仿真/滑动/覆盖均有动画）；
+    // 不先改 this.pageIdx：index 属性变化是无动画瞬跳，会吞掉 changeIndex 的动效
     try {
-      this.swiperCtrl.changeIndex(target, true);
+      if (target > this.pageIdx) {
+        this.swiperCtrl.showNext();
+      } else {
+        this.swiperCtrl.showPrevious();
+      }
     } catch (e) {
       // 忽略控制器未绑定异常
     }
@@ -706,6 +746,30 @@ export struct NovelReaderPage {
     return { radius: 0, color: Color.Transparent };
   }
 
+  // 仿真翻转的透视相机距离（px）：约 2 倍页宽，近大远小，替代正交刚性旋转
+  private flipPerspective(): number {
+    if (this.animMode !== 'curl' || this.contW <= 0) {
+      return 0;
+    }
+    const px = this.contW * this.screenDensity * 2;
+    return Math.min(Math.max(px, 400), 2800);
+  }
+
+  // 仿真卷曲阴影不透明度：翻起（0→90°）随弯曲渐深，翻过竖直（90→180°）渐消，静止时为 0
+  private curlShade(angle: number): number {
+    if (this.animMode !== 'curl') {
+      return 0;
+    }
+    const a = Math.abs(angle);
+    if (a < 0.5) {
+      return 0;
+    }
+    if (a <= 90) {
+      return a / 90 * 0.32;
+    }
+    return Math.max(0, 1 - (a - 90) / 90) * 0.18;
+  }
+
   // 单页仿真：整页翻转超过 90° 后只显示空白纸背（避免镜像文字穿帮）
   private singleBackFace(i: number): boolean {
     return this.animMode === 'curl' && this.mode !== 'double' && Math.abs(this.transAngle[i]) > 90;
@@ -827,7 +891,7 @@ export struct NovelReaderPage {
     if (this.mode === 'double') {
       Row() {
         // 左半页：仿真后退时绕中线（书脊）从左翻回，翻过 90° 后显示真实纸背（上一屏右页）
-        Column() {
+        Stack() {
           if (this.halfBackFace(sIdx, true)) {
             Column() {
               this.PageText(sIdx * 2 - 1)
@@ -838,6 +902,16 @@ export struct NovelReaderPage {
           } else {
             this.PageText(sIdx * 2)
           }
+          // 卷曲阴影：书脊侧（右缘）加深，页面竖起时最深
+          Column()
+            .width('100%')
+            .height('100%')
+            .linearGradient({
+              angle: 270,
+              colors: [['#52000000', 0], ['#00000000', 0.75]]
+            })
+            .opacity(this.curlShade(this.transAngleL[sIdx]))
+            .hitTestBehavior(HitTestMode.None)
         }
         .layoutWeight(1)
         .height('100%')
@@ -848,7 +922,8 @@ export struct NovelReaderPage {
           z: 0,
           angle: this.transAngleL[sIdx],
           centerX: '100%',
-          centerY: '50%'
+          centerY: '50%',
+          perspective: this.flipPerspective()
         })
         .zIndex(this.transAngleL[sIdx] !== 0 ? 2 : 0)
         .shadow(this.flipShadow(this.transAngleL[sIdx] !== 0))
@@ -868,7 +943,7 @@ export struct NovelReaderPage {
         .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
 
         // 右半页：仿真前进时绕中线（书脊）翻向左侧，翻过 90° 后显示真实纸背（下一屏左页）
-        Column() {
+        Stack() {
           if (this.halfBackFace(sIdx, false)) {
             Column() {
               this.PageText(sIdx * 2 + 2)
@@ -879,6 +954,16 @@ export struct NovelReaderPage {
           } else {
             this.PageText(sIdx * 2 + 1)
           }
+          // 卷曲阴影：书脊侧（左缘）加深，页面竖起时最深
+          Column()
+            .width('100%')
+            .height('100%')
+            .linearGradient({
+              angle: 90,
+              colors: [['#52000000', 0], ['#00000000', 0.75]]
+            })
+            .opacity(this.curlShade(this.transAngleR[sIdx]))
+            .hitTestBehavior(HitTestMode.None)
         }
         .layoutWeight(1)
         .height('100%')
@@ -889,7 +974,8 @@ export struct NovelReaderPage {
           z: 0,
           angle: this.transAngleR[sIdx],
           centerX: '0%',
-          centerY: '50%'
+          centerY: '50%',
+          perspective: this.flipPerspective()
         })
         .zIndex(this.transAngleR[sIdx] !== 0 ? 2 : 0)
         .shadow(this.flipShadow(this.transAngleR[sIdx] !== 0))
@@ -1336,7 +1422,7 @@ export struct NovelReaderPage {
                 // 每屏包一层容器：translate/rotate/zIndex 仅能挂在实体组件上；
                 // 双页模式容器透明（遮盖由左右半页承担），单页模式整屏不透明。
                 // 单页仿真翻过 90° 后内容替换为空白纸背，避免镜像文字穿帮
-                Column() {
+                Stack() {
                   if (this.singleBackFace(sIdx)) {
                     Column()
                       .width('100%')
@@ -1344,6 +1430,16 @@ export struct NovelReaderPage {
                   } else {
                     this.PageScreen(sIdx)
                   }
+                  // 仿真卷曲阴影：书脊侧加深，随翻转角度变化（页面竖起时最深）
+                  Column()
+                    .width('100%')
+                    .height('100%')
+                    .linearGradient({
+                      angle: this.mode === 'paged_rtl' ? 270 : 90,
+                      colors: [['#52000000', 0], ['#00000000', 0.75]]
+                    })
+                    .opacity(this.curlShade(this.transAngle[sIdx]))
+                    .hitTestBehavior(HitTestMode.None)
                 }
                 .width('100%')
                 .height('100%')
@@ -1356,7 +1452,8 @@ export struct NovelReaderPage {
                   z: 0,
                   angle: this.transAngle[sIdx],
                   centerX: this.flipPivotX(),
-                  centerY: '50%'
+                  centerY: '50%',
+                  perspective: this.flipPerspective()
                 })
                 .zIndex(this.transZ[sIdx])
                 .shadow(this.flipShadow(this.transAngle[sIdx] !== 0))
@@ -1447,6 +1544,10 @@ export struct NovelReaderPage {
               .layoutWeight(1)
               .width('100%')
               .onClick(() => {
+                if (this.anySheetOpen()) {
+                  this.dismissSheets();
+                  return;
+                }
                 this.showMenu = false;
               })
 
@@ -1580,7 +1681,7 @@ export struct NovelReaderPage {
                 .height(44)
                 .justifyContent(FlexAlign.Center)
                 .onClick(() => {
-                  this.showModeSheet = true;
+                  this.openSheet('mode');
                 })
 
                 Column() {
@@ -1593,7 +1694,7 @@ export struct NovelReaderPage {
                 .height(44)
                 .justifyContent(FlexAlign.Center)
                 .onClick(() => {
-                  this.showOrientationSheet = true;
+                  this.openSheet('orientation');
                 })
 
                 Column() {
@@ -1606,7 +1707,7 @@ export struct NovelReaderPage {
                 .height(44)
                 .justifyContent(FlexAlign.Center)
                 .onClick(() => {
-                  this.showDisplaySheet = true;
+                  this.openSheet('display');
                 })
 
                 Column() {
@@ -1619,7 +1720,7 @@ export struct NovelReaderPage {
                 .height(44)
                 .justifyContent(FlexAlign.Center)
                 .onClick(() => {
-                  this.showTextSheet = true;
+                  this.openSheet('text');
                 })
               }
               .width('100%')
@@ -1651,14 +1752,16 @@ export struct NovelReaderPage {
             detents: [SheetSize.FIT_CONTENT],
             dragBar: true,
             showClose: false,
-            blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
+            blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
+            enableOutsideInteractive: true
           })
           .bindSheet($$this.showTextSheet, this.textSheetBuilder(), {
             title: { title: $r('app.string.novel_tab_text') },
             detents: [SheetSize.FIT_CONTENT],
             dragBar: true,
             showClose: false,
-            blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
+            blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
+            enableOutsideInteractive: true
           })
         }
       }
@@ -1670,7 +1773,8 @@ export struct NovelReaderPage {
         detents: [SheetSize.FIT_CONTENT],
         dragBar: true,
         showClose: false,
-        blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
+        blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
+        enableOutsideInteractive: true
       })
     }
     .hideTitleBar(true)
@@ -1680,7 +1784,8 @@ export struct NovelReaderPage {
       detents: [SheetSize.FIT_CONTENT],
       dragBar: true,
       showClose: false,
-      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
+      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
+      enableOutsideInteractive: true
     })
     .onReady((ctx: NavDestinationContext) => {
       this.pathStack = ctx.pathStack;

@@ -96,7 +96,18 @@ const ICONS: Record<string, Resource> = {
   'volunteer_activism': $r('app.media.ic_volunteer_activism'),
   'patreon': $r('app.media.ic_patreon'),
   'opencollective': $r('app.media.ic_opencollective'),
-  'discord': $r('app.media.ic_discord')
+  'discord': $r('app.media.ic_discord'),
+  'lock': $r('app.media.ic_lock'),
+  'lock_open': $r('app.media.ic_lock_open'),
+  'speed': $r('app.media.ic_speed'),
+  'playlist_play': $r('app.media.ic_playlist_play'),
+  'high_quality': $r('app.media.ic_high_quality'),
+  'forum': $r('app.media.ic_forum'),
+  'tune': $r('app.media.ic_tune'),
+  'fullscreen': $r('app.media.ic_fullscreen'),
+  'fullscreen_exit': $r('app.media.ic_fullscreen_exit'),
+  'forward_10': $r('app.media.ic_forward_10'),
+  'replay_10': $r('app.media.ic_replay_10')
 };
 
 export class AppIconRes {
