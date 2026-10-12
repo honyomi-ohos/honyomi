@@ -30,6 +30,8 @@ export struct LibraryPage {
   @State searchOpen: boolean = false;
   @State searchQuery: string = '';
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
+  // 复刻 Mihon：再次点击书架页签打开筛选/显示设置弹层（LibraryTab.onReselect）
+  @StorageLink('libReselect') @Watch('onLibReselect') libReselect: number = 0;
   // 弹层状态（与 Settings 同步）
   @State sortKey: string = 'alpha';
   @State sortAsc: boolean = true;
@@ -71,6 +73,10 @@ export struct LibraryPage {
 
   onLibDirty(): void {
     this.loadData();
+  }
+
+  private onLibReselect(): void {
+    this.showFilterSheet = true;
   }
 
   private applySettings(): void {

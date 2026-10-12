@@ -10,6 +10,7 @@ import { LocalNovelSource } from '../source/LocalNovelSource';
 import { LocalVideoSource } from '../source/LocalVideoSource';
 import { DownloadService } from '../data/DownloadService';
 import { PluginService } from '../data/PluginService';
+import { BackupService } from '../data/BackupService';
 import { JsvmExtensionManager } from '../jsvm/JsvmExtensionManager';
 import { CookieJar } from '../net/CookieJar';
 import { ImageCache } from '../common/ImageCache';
@@ -43,7 +44,12 @@ export default class EntryAbility extends UIAbility {
     Settings.applyTheme(systemDark);
     Settings.applyColorMode(this.context);
     // 数据库
-    AppDb.ready(this.context).catch((e: Error) => {
+    AppDb.ready(this.context).then(() => {
+      // 数据库就绪后检查自动备份是否到期（数据与存储设置）
+      BackupService.runAutoBackupIfDue(this.context).catch((e: Error) => {
+        hilog.warn(DOMAIN, 'Mihon', 'auto backup failed: %{public}s', e.message);
+      });
+    }).catch((e: Error) => {
       hilog.error(DOMAIN, 'Mihon', 'db init failed: %{public}s', e.message);
     });
     // 下载服务
@@ -51,6 +57,10 @@ export default class EntryAbility extends UIAbility {
     // Cookie 存储与图片缓存
     CookieJar.init(this.context);
     ImageCache.init(this.context);
+    // 启动时清除章节缓存（数据与存储设置）
+    if (Settings.getAutoClearChapterCache()) {
+      ImageCache.clearAll();
+    }
     AppStorage.setOrCreate('cfChallengeUrl', '');
     this.handleCardWant(want);
   }

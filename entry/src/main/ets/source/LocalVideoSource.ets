@@ -1,10 +1,13 @@
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { SManga, SChapter, SPage, SVideo, MangasPage, ContentType } from '../model/Models';
 import { Source } from './Source';
+import { LocalFolderManager } from './LocalFolderManager';
 
 const VIDEO_EXTS: string[] = ['.mp4', '.mkv', '.webm', '.mov', '.m4v'];
 
-// 本地视频：filesDir/local_video/<片名>/*.{mp4,mkv,webm,mov,m4v}，一个文件一集
+// 本地视频：扫描固定本地源文件夹的同步副本（filesDir/local_root，未设置时回退 filesDir/local_video）
+// <片名>/**/*.{mp4,mkv,webm,mov,m4v}，一个文件一集；
+// 支持子目录分层（季/集），章节名按相对路径显示为“季 / 集”
 export class LocalVideoSource implements Source {
   readonly key = 'local_video';
   readonly name = '本地视频';
@@ -12,13 +15,23 @@ export class LocalVideoSource implements Source {
   readonly supportsLatest = false;
   readonly contentType = ContentType.VIDEO;
 
-  private readonly rootDir: string;
+  private readonly legacyDir: string;
+  private readonly syncRoot: string;
 
   constructor(filesDir: string) {
-    this.rootDir = `${filesDir}/local_video`;
-    if (!fs.accessSync(this.rootDir)) {
-      fs.mkdirSync(this.rootDir, true);
+    this.legacyDir = `${filesDir}/local_video`;
+    this.syncRoot = LocalFolderManager.syncedRootPath(filesDir);
+    if (!fs.accessSync(this.legacyDir)) {
+      fs.mkdirSync(this.legacyDir, true);
     }
+  }
+
+  // 扫描根：设置了本地源文件夹且已同步过则用同步副本下的 anime 子文件夹，否则回退旧导入目录
+  private rootDir(): string {
+    if (fs.accessSync(this.syncRoot)) {
+      return `${this.syncRoot}/${LocalFolderManager.ANIME_SUBDIR}`;
+    }
+    return this.legacyDir;
   }
 
   async getPopularManga(page: number): Promise<MangasPage> {
@@ -50,7 +63,14 @@ export class LocalVideoSource implements Source {
   }
 
   async getChapterList(mangaKey: string): Promise<SChapter[]> {
-    return this.chaptersIn(`${this.rootDir}/${mangaKey}`, mangaKey);
+    // 递归收集视频文件相对路径（含季级子目录），按层级自然排序
+    const relEntries: string[] = [];
+    this.collectVideoEntries(`${this.rootDir()}/${mangaKey}`, '', relEntries);
+    const chapters: SChapter[] = [];
+    for (let i = 0; i < relEntries.length; i++) {
+      chapters.push(this.buildChapter(mangaKey, relEntries[i], i));
+    }
+    return chapters;
   }
 
   async getPageList(_chapterKey: string): Promise<SPage[]> {
@@ -74,59 +94,41 @@ export class LocalVideoSource implements Source {
     return undefined;
   }
 
-  async importFiles(uris: string[], title: string): Promise<number> {
-    const destDir = `${this.rootDir}/${title}`;
-    if (!fs.accessSync(destDir)) {
-      fs.mkdirSync(destDir, true);
+  // 递归收集目录下全部视频文件的相对路径，每层按中文数字习惯排序
+  private collectVideoEntries(dir: string, prefix: string, out: string[]): void {
+    if (!fs.accessSync(dir)) {
+      return;
     }
-    let count = 0;
-    for (const uri of uris) {
-      const segs = uri.split('/');
-      const rawName = segs.length > 0 ? segs[segs.length - 1] : `episode_${count}.mp4`;
-      const fileName = decodeURIComponent(rawName);
-      if (!LocalVideoSource.isVideo(fileName)) {
-        continue;
-      }
-      const destPath = `${destDir}/${fileName}`;
-      if (fs.accessSync(destPath)) {
-        continue;
-      }
-      const srcFile = fs.openSync(uri, fs.OpenMode.READ_ONLY);
-      try {
-        fs.copyFile(srcFile.fd, destPath);
-        count += 1;
-      } finally {
-        fs.closeSync(srcFile);
+    const entries = fs.listFileSync(dir).sort((a: string, b: string): number => a.localeCompare(b, 'zh', { numeric: true }));
+    for (const entry of entries) {
+      const rel = prefix === '' ? entry : `${prefix}/${entry}`;
+      const fullPath = `${dir}/${entry}`;
+      if (fs.statSync(fullPath).isDirectory()) {
+        this.collectVideoEntries(fullPath, rel, out);
+      } else if (LocalVideoSource.isVideo(entry)) {
+        out.push(rel);
       }
     }
-    return count;
   }
 
   private listDirs(): string[] {
-    if (!fs.accessSync(this.rootDir)) {
+    if (!fs.accessSync(this.rootDir())) {
       return [];
     }
     const names: string[] = [];
-    const entries = fs.listFileSync(this.rootDir);
+    const entries = fs.listFileSync(this.rootDir());
     for (const entry of entries) {
-      if (fs.statSync(`${this.rootDir}/${entry}`).isDirectory()) {
+      if (entry.startsWith('.')) {
+        continue;
+      }
+      const fullPath = `${this.rootDir()}/${entry}`;
+      // 仅列出含视频文件的目录（本地源文件夹内漫画、小说等自动排除）
+      if (fs.statSync(fullPath).isDirectory() &&
+        LocalFolderManager.hasFileWithExts(fullPath, VIDEO_EXTS)) {
         names.push(entry);
       }
     }
     return names.sort((a: string, b: string): number => a.localeCompare(b, 'zh'));
-  }
-
-  private chaptersIn(dir: string, mangaKey: string): SChapter[] {
-    const chapters: SChapter[] = [];
-    if (!fs.accessSync(dir)) {
-      return chapters;
-    }
-    const entries = fs.listFileSync(dir).filter((name: string): boolean => LocalVideoSource.isVideo(name));
-    const sorted = entries.sort((a: string, b: string): number => a.localeCompare(b, 'zh', { numeric: true }));
-    for (let i = 0; i < sorted.length; i++) {
-      chapters.push(this.buildChapter(mangaKey, sorted[i], i));
-    }
-    return chapters;
   }
 
   private buildManga(dirName: string): SManga {
@@ -142,18 +144,19 @@ export class LocalVideoSource implements Source {
     return manga;
   }
 
+  // 相对路径条目（可含“季/集.mkv”层级）转章节，名称显示为“季 / 集”
   private buildChapter(mangaDir: string, entry: string, order: number): SChapter {
     let dateUpload = 0;
     try {
-      dateUpload = fs.statSync(`${this.rootDir}/${mangaDir}/${entry}`).mtime * 1000;
+      dateUpload = fs.statSync(`${this.rootDir()}/${mangaDir}/${entry}`).mtime * 1000;
     } catch (e) {
       dateUpload = 0;
     }
     const dotIdx = entry.lastIndexOf('.');
-    const name = dotIdx > 0 ? entry.substring(0, dotIdx) : entry;
+    const noExt = dotIdx > 0 ? entry.substring(0, dotIdx) : entry;
     const chapter: SChapter = {
       key: `${mangaDir}::${entry}`,
-      name: name,
+      name: noExt.split('/').join(' / '),
       chapterNumber: -1,
       dateUpload: dateUpload,
       pages: 0,
@@ -169,7 +172,7 @@ export class LocalVideoSource implements Source {
     }
     const mangaDir = chapterKey.substring(0, sepIdx);
     const entry = chapterKey.substring(sepIdx + 2);
-    return `${this.rootDir}/${mangaDir}/${entry}`;
+    return `${this.rootDir()}/${mangaDir}/${entry}`;
   }
 
   private static isVideo(name: string): boolean {

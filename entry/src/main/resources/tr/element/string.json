@@ -1,5 +1,48 @@
 {
   "string": [
+    { "name": "more_downloaded_only_summary", "value": "Kitaplığınızdaki tüm girdileri filtreler" },
+    { "name": "more_incognito_summary", "value": "Okuma geçmişini duraklatır" },
+    { "name": "more_support", "value": "Bizi Destekleyin" },
+    { "name": "more_help", "value": "Yardım" },
+    { "name": "support_perks", "value": "Patronlar, özel kanallara ve gelecekte daha fazlasına erişim elde eder." },
+    { "name": "support_patreon", "value": "Patreon (tercih edilen)" },
+    { "name": "support_opencollective", "value": "OpenCollective" },
+    { "name": "support_supported_by", "value": "Mihon, şu anda %d+ patron tarafından desteklenmektedir. Her birinize ayrı olarak teşekkür etmek istiyoruz. Hadi Mihon'u birlikte daha iyi yapalım." },
+    { "name": "support_contact_msg", "value": "Başka seçenekler ve sorularınız için Discord sunucumuza katılın." },
+    { "name": "support_discord", "value": "Discord" },
+    { "name": "data_storage_title", "value": "Veri ve depolama" },
+    { "name": "data_storage_location", "value": "Depolama konumu" },
+    { "name": "data_storage_location_info", "value": "Otomatik yedeklemeler, bölüm indirmeleri ve yerel kaynak için kullanılır." },
+    { "name": "data_backup_restore", "value": "Yedekle ve geri yükle" },
+    { "name": "data_create_backup", "value": "Yedek oluştur" },
+    { "name": "data_restore_backup", "value": "Yedeği geri yükle" },
+    { "name": "data_backup_interval", "value": "Otomatik yedekleme sıklığı" },
+    { "name": "data_backup_info", "value": "Yedeklerin kopyalarını başka yerlerde de tutmalısınız. Yedekler, şifreler dahil olmak üzere hassas verileri içerebilirler; paylaşıyorsanız dikkat edin." },
+    { "name": "data_last_auto_backup", "value": "Son otomatik yedekleme: %s" },
+    { "name": "data_storage_usage", "value": "Depolama kullanımı" },
+    { "name": "data_available_space", "value": "Kullanılabilir: %s / Toplam: %s" },
+    { "name": "data_clear_chapter_cache", "value": "Bölüm önbelleğini temizle" },
+    { "name": "data_used_cache", "value": "Kullanılan: %s" },
+    { "name": "data_cache_deleted", "value": "Önbellek temizlendi, %d dosya silindi" },
+    { "name": "data_cache_delete_error", "value": "Temizlenirken sorun oluştu" },
+    { "name": "data_auto_clear_cache", "value": "Uygulama başlatıldığında bölüm önbelleğini temizle" },
+    { "name": "data_export", "value": "Dışa Aktar" },
+    { "name": "data_library_list", "value": "Kitaplık Listesi" },
+    { "name": "data_library_exported", "value": "Kitaplık Dışa Aktarıldı" },
+    { "name": "data_export_include", "value": "Dahil edilecek veri seç" },
+    { "name": "data_column_title", "value": "Başlık" },
+    { "name": "data_column_author", "value": "Yazar" },
+    { "name": "data_interval_off", "value": "Kapalı" },
+    { "name": "data_interval_6h", "value": "6 saatte bir" },
+    { "name": "data_interval_12h", "value": "12 saatte bir" },
+    { "name": "data_interval_24h", "value": "Günlük" },
+    { "name": "data_interval_48h", "value": "2 günde bir" },
+    { "name": "data_interval_weekly", "value": "Haftalık" },
+    { "name": "data_storage_location_value", "value": "App private storage" },
+    { "name": "data_storage_name", "value": "Internal storage" },
+    { "name": "data_never_backed_up", "value": "Never" },
+    { "name": "data_export_canceled", "value": "Export canceled" },
+    { "name": "data_export_failed", "value": "Export failed" },
     {
       "name": "module_desc",
       "value": "module description"
@@ -222,15 +265,15 @@
     },
     {
       "name": "more_downloaded_only",
-      "value": "Yalnızca indirilenler (çevrimdışı okuma)"
+      "value": "Yalnızca indirilen"
     },
     {
       "name": "more_incognito",
-      "value": "Gizli"
+      "value": "Gizli mod"
     },
     {
       "name": "more_downloads",
-      "value": "İndirmeler"
+      "value": "İndirme kuyruğu"
     },
     {
       "name": "more_categories",

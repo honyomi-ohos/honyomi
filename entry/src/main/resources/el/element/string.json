@@ -1,5 +1,48 @@
 {
   "string": [
+    { "name": "more_downloaded_only_summary", "value": "Φιλτράρει όλες τις καταχωρήσεις στη βιβλιοθήκη σας" },
+    { "name": "more_incognito_summary", "value": "Παύει το ιστορικό ανάγνωσης" },
+    { "name": "more_support", "value": "Υποστηρίξτε μας" },
+    { "name": "more_help", "value": "Βοήθεια" },
+    { "name": "support_perks", "value": "Οι Patrons έχουν πρόσβαση σε αποκλειστικά κανάλια, ενώ θα ακολουθήσουν και άλλα προνόμια." },
+    { "name": "support_patreon", "value": "Patreon (προτιμάται)" },
+    { "name": "support_opencollective", "value": "OpenCollective" },
+    { "name": "support_supported_by", "value": "Το Mihon υποστηρίζεται αυτήν τη στιγμή από %d+ χρήστες. Θέλουμε να ευχαριστήσουμε τον καθένα από εσάς ξεχωριστά. Ας κάνουμε το Mihon ακόμα καλύτερο μαζί." },
+    { "name": "support_contact_msg", "value": "Για εναλλακτικές επιλογές ή οποιεσδήποτε σχετικές ερωτήσεις, εγγραφείτε στον Discord server." },
+    { "name": "support_discord", "value": "Discord" },
+    { "name": "data_storage_title", "value": "Δεδομένα και χώρος αποθήκευσης" },
+    { "name": "data_storage_location", "value": "Τοποθεσία αποθήκευσης" },
+    { "name": "data_storage_location_info", "value": "Χρησιμοποιείται για αυτόματα αντίγραφα ασφαλείας, λήψη κεφαλαίων και τοπική πηγή." },
+    { "name": "data_backup_restore", "value": "Αντίγραφο ασφαλείας και επαναφορά" },
+    { "name": "data_create_backup", "value": "Δημιουργία αντιγράφου ασφαλείας" },
+    { "name": "data_restore_backup", "value": "Επαναφορά αντιγράφου ασφαλείας" },
+    { "name": "data_backup_interval", "value": "Συχνότητα αυτόματων αντιγράφων ασφαλείας" },
+    { "name": "data_backup_info", "value": "Θα πρέπει να κρατάτε αντίγραφα αντιγράφων ασφαλείας και σε άλλα μέρη. Τα αντίγραφα ασφαλείας ενδέχεται να περιέχουν ευαίσθητα δεδομένα, συμπεριλαμβανομένων τυχόν αποθηκευμένων κωδικών πρόσβασης, να είστε προσεκτικοί αν τα μοιράζεστε." },
+    { "name": "data_last_auto_backup", "value": "Τελευταία αυτόματη δημιουργία αντιγράφων ασφαλείας: %s" },
+    { "name": "data_storage_usage", "value": "Χρήση αποθηκευτικού χώρου" },
+    { "name": "data_available_space", "value": "Διαθέσιμο: %s / Σύνολο: %s" },
+    { "name": "data_clear_chapter_cache", "value": "Καθάρισμα προσωρινής μνήμης κεφαλαίου" },
+    { "name": "data_used_cache", "value": "Χρησιμοποιήθηκε: %s" },
+    { "name": "data_cache_deleted", "value": "Η προσωρινή μνήμη διαγράφηκε, %d αρχεία διαγράφηκαν" },
+    { "name": "data_cache_delete_error", "value": "Παρουσιάστηκε σφάλμα κατά την εκκαθάριση" },
+    { "name": "data_auto_clear_cache", "value": "Εκκαθάριση της προσωρινής μνήμης κεφαλαίων κατά την εκκίνηση της εφαρμογής" },
+    { "name": "data_export", "value": "Εξαγωγή" },
+    { "name": "data_library_list", "value": "Κατάλογος Βιβλιοθήκης" },
+    { "name": "data_library_exported", "value": "Έγινε εξαγωγή της βιβλιοθήκης" },
+    { "name": "data_export_include", "value": "Επιλέξτε τα δεδομένα που θέλετε να συμπεριλάβετε" },
+    { "name": "data_column_title", "value": "Τίτλος" },
+    { "name": "data_column_author", "value": "Συγγραφέας" },
+    { "name": "data_interval_off", "value": "Απενεργοποιημένο" },
+    { "name": "data_interval_6h", "value": "Κάθε 6 ώρες" },
+    { "name": "data_interval_12h", "value": "Κάθε 12 ώρες" },
+    { "name": "data_interval_24h", "value": "Καθημερινά" },
+    { "name": "data_interval_48h", "value": "Κάθε 2 ημέρες" },
+    { "name": "data_interval_weekly", "value": "Εβδομαδιαία" },
+    { "name": "data_storage_location_value", "value": "App private storage" },
+    { "name": "data_storage_name", "value": "Internal storage" },
+    { "name": "data_never_backed_up", "value": "Never" },
+    { "name": "data_export_canceled", "value": "Export canceled" },
+    { "name": "data_export_failed", "value": "Export failed" },
     {
       "name": "module_desc",
       "value": "module description"
@@ -222,15 +265,15 @@
     },
     {
       "name": "more_downloaded_only",
-      "value": "Μόνο ληφθέντα (ανάγνωση εκτός σύνδεσης)"
+      "value": "Ληφθέντα μόνο"
     },
     {
       "name": "more_incognito",
-      "value": "Ανώνυμη λειτουργία"
+      "value": "Λειτουργία ανώνυμης περιήγησης"
     },
     {
       "name": "more_downloads",
-      "value": "Λήψεις"
+      "value": "Ουρά λήψεων"
     },
     {
       "name": "more_categories",

@@ -1,8 +1,12 @@
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { SManga, SChapter, SPage, SVideo, MangasPage, ContentType } from '../model/Models';
 import { Source } from './Source';
+import { LocalFolderManager } from './LocalFolderManager';
+import { Util } from '../common/Util';
 
-// 本地小说：filesDir/local_novel/<书名>/*.txt，一个文件一章
+// 本地小说：扫描固定本地源文件夹的同步副本（filesDir/local_root，未设置时回退 filesDir/local_novel）
+// <书名>/**/*.txt，一个文件一章；
+// 支持子目录分层（卷/章），章节名按相对路径显示为“卷 / 章”
 export class LocalNovelSource implements Source {
   readonly key = 'local_novel';
   readonly name = '本地小说';
@@ -10,13 +14,23 @@ export class LocalNovelSource implements Source {
   readonly supportsLatest = false;
   readonly contentType = ContentType.NOVEL;
 
-  private readonly rootDir: string;
+  private readonly legacyDir: string;
+  private readonly syncRoot: string;
 
   constructor(filesDir: string) {
-    this.rootDir = `${filesDir}/local_novel`;
-    if (!fs.accessSync(this.rootDir)) {
-      fs.mkdirSync(this.rootDir, true);
+    this.legacyDir = `${filesDir}/local_novel`;
+    this.syncRoot = LocalFolderManager.syncedRootPath(filesDir);
+    if (!fs.accessSync(this.legacyDir)) {
+      fs.mkdirSync(this.legacyDir, true);
     }
+  }
+
+  // 扫描根：设置了本地源文件夹且已同步过则用同步副本下的 novel 子文件夹，否则回退旧导入目录
+  private rootDir(): string {
+    if (fs.accessSync(this.syncRoot)) {
+      return `${this.syncRoot}/${LocalFolderManager.NOVEL_SUBDIR}`;
+    }
+    return this.legacyDir;
   }
 
   async getPopularManga(page: number): Promise<MangasPage> {
@@ -48,7 +62,14 @@ export class LocalNovelSource implements Source {
   }
 
   async getChapterList(mangaKey: string): Promise<SChapter[]> {
-    return this.chaptersIn(`${this.rootDir}/${mangaKey}`, mangaKey);
+    // 递归收集 txt 相对路径（含卷级子目录），按层级自然排序
+    const relEntries: string[] = [];
+    this.collectTextEntries(`${this.rootDir()}/${mangaKey}`, '', relEntries);
+    const chapters: SChapter[] = [];
+    for (let i = 0; i < relEntries.length; i++) {
+      chapters.push(this.buildChapter(mangaKey, relEntries[i], i));
+    }
+    return chapters;
   }
 
   async getPageList(_chapterKey: string): Promise<SPage[]> {
@@ -60,7 +81,8 @@ export class LocalNovelSource implements Source {
     if (path === '' || !fs.accessSync(path)) {
       throw new Error('章节文件不存在');
     }
-    return fs.readTextSync(path);
+    // 本地 txt 可能为 UTF-8/GBK 等编码，智能识别解码避免乱码
+    return Util.readTextAuto(path);
   }
 
   async getVideoList(_chapterKey: string): Promise<SVideo[]> {
@@ -71,59 +93,41 @@ export class LocalNovelSource implements Source {
     return undefined;
   }
 
-  async importFiles(uris: string[], title: string): Promise<number> {
-    const destDir = `${this.rootDir}/${title}`;
-    if (!fs.accessSync(destDir)) {
-      fs.mkdirSync(destDir, true);
+  // 递归收集目录下全部 txt 的相对路径，每层按中文数字习惯排序
+  private collectTextEntries(dir: string, prefix: string, out: string[]): void {
+    if (!fs.accessSync(dir)) {
+      return;
     }
-    let count = 0;
-    for (const uri of uris) {
-      const segs = uri.split('/');
-      const rawName = segs.length > 0 ? segs[segs.length - 1] : `chapter_${count}.txt`;
-      const fileName = decodeURIComponent(rawName);
-      if (!fileName.toLowerCase().endsWith('.txt')) {
-        continue;
-      }
-      const destPath = `${destDir}/${fileName}`;
-      if (fs.accessSync(destPath)) {
-        continue;
-      }
-      const srcFile = fs.openSync(uri, fs.OpenMode.READ_ONLY);
-      try {
-        fs.copyFile(srcFile.fd, destPath);
-        count += 1;
-      } finally {
-        fs.closeSync(srcFile);
+    const entries = fs.listFileSync(dir).sort((a: string, b: string): number => a.localeCompare(b, 'zh', { numeric: true }));
+    for (const entry of entries) {
+      const rel = prefix === '' ? entry : `${prefix}/${entry}`;
+      const fullPath = `${dir}/${entry}`;
+      if (fs.statSync(fullPath).isDirectory()) {
+        this.collectTextEntries(fullPath, rel, out);
+      } else if (entry.toLowerCase().endsWith('.txt')) {
+        out.push(rel);
       }
     }
-    return count;
   }
 
   private listDirs(): string[] {
-    if (!fs.accessSync(this.rootDir)) {
+    if (!fs.accessSync(this.rootDir())) {
       return [];
     }
     const names: string[] = [];
-    const entries = fs.listFileSync(this.rootDir);
+    const entries = fs.listFileSync(this.rootDir());
     for (const entry of entries) {
-      if (fs.statSync(`${this.rootDir}/${entry}`).isDirectory()) {
+      if (entry.startsWith('.')) {
+        continue;
+      }
+      const fullPath = `${this.rootDir()}/${entry}`;
+      // 仅列出含 txt 的目录（本地源文件夹内漫画、视频等自动排除）
+      if (fs.statSync(fullPath).isDirectory() &&
+        LocalFolderManager.hasFileWithExts(fullPath, ['.txt'])) {
         names.push(entry);
       }
     }
     return names.sort((a: string, b: string): number => a.localeCompare(b, 'zh'));
-  }
-
-  private chaptersIn(dir: string, mangaKey: string): SChapter[] {
-    const chapters: SChapter[] = [];
-    if (!fs.accessSync(dir)) {
-      return chapters;
-    }
-    const entries = fs.listFileSync(dir).filter((name: string): boolean => name.toLowerCase().endsWith('.txt'));
-    const sorted = entries.sort((a: string, b: string): number => a.localeCompare(b, 'zh', { numeric: true }));
-    for (let i = 0; i < sorted.length; i++) {
-      chapters.push(this.buildChapter(mangaKey, sorted[i], i));
-    }
-    return chapters;
   }
 
   private buildManga(dirName: string): SManga {
@@ -139,18 +143,19 @@ export class LocalNovelSource implements Source {
     return manga;
   }
 
+  // 相对路径条目（可含“卷/章.txt”层级）转章节，名称显示为“卷 / 章”
   private buildChapter(mangaDir: string, entry: string, order: number): SChapter {
     let dateUpload = 0;
     try {
-      dateUpload = fs.statSync(`${this.rootDir}/${mangaDir}/${entry}`).mtime * 1000;
+      dateUpload = fs.statSync(`${this.rootDir()}/${mangaDir}/${entry}`).mtime * 1000;
     } catch (e) {
       dateUpload = 0;
     }
     const dotIdx = entry.lastIndexOf('.');
-    const name = dotIdx > 0 ? entry.substring(0, dotIdx) : entry;
+    const noExt = dotIdx > 0 ? entry.substring(0, dotIdx) : entry;
     const chapter: SChapter = {
       key: `${mangaDir}::${entry}`,
-      name: name,
+      name: noExt.split('/').join(' / '),
       chapterNumber: -1,
       dateUpload: dateUpload,
       pages: 0,
@@ -166,6 +171,6 @@ export class LocalNovelSource implements Source {
     }
     const mangaDir = chapterKey.substring(0, sepIdx);
     const entry = chapterKey.substring(sepIdx + 2);
-    return `${this.rootDir}/${mangaDir}/${entry}`;
+    return `${this.rootDir()}/${mangaDir}/${entry}`;
   }
 }

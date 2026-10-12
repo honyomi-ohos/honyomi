@@ -1,5 +1,48 @@
 {
   "string": [
+    { "name": "more_downloaded_only_summary", "value": "تصفية جميع الإدخالات في مكتبتك" },
+    { "name": "more_incognito_summary", "value": "إيقاف سجل القراءة" },
+    { "name": "more_support", "value": "إدعمنا" },
+    { "name": "more_help", "value": "المساعدة" },
+    { "name": "support_perks", "value": "يحصل الداعمون على إمكانية الوصول إلى قنوات حصرية، مع المزيد من الامتيازات القادمة." },
+    { "name": "support_patreon", "value": "داعم على باتريون (مستحسنة)" },
+    { "name": "support_opencollective", "value": "منصة « OpenCollective»" },
+    { "name": "support_supported_by", "value": "ميهون مدعوم حاليًا بواسطة %d+ داعم. نشكركم جميعًا لدعمكم . معًا لجعل ميهون مكانًا أفضل." },
+    { "name": "support_contact_msg", "value": "للحصول على خيارات بديلة أو أي أسئلة ذات صلة، انضم إلى خادم ديسكورد الخاص بنا." },
+    { "name": "support_discord", "value": "ديسكورد" },
+    { "name": "data_storage_title", "value": "البيانات والتخزين" },
+    { "name": "data_storage_location", "value": "مكان التخزين" },
+    { "name": "data_storage_location_info", "value": "يُستخدَم في الاحتياط وتنزيل الفصول والمصدر المحليِّ." },
+    { "name": "data_backup_restore", "value": "النسخ الاحتياطي والاستعادة" },
+    { "name": "data_create_backup", "value": "إنشاء نسخة إحتياطية" },
+    { "name": "data_restore_backup", "value": "إستعادة النسخة الإحتياطية" },
+    { "name": "data_backup_interval", "value": "معدل النسخ الاحتياطي التلقائي" },
+    { "name": "data_backup_info", "value": "زد على ذلك حفظ الاحتياط في غير هذا المكان، وتنبَّه لوجود الخطير فيها ككلمات السر، وتحفَّظ من مشاركتها." },
+    { "name": "data_last_auto_backup", "value": "آخر احتياط تلقائي: %s" },
+    { "name": "data_storage_usage", "value": "التخزين" },
+    { "name": "data_available_space", "value": "متاح: %s / الكل: %s" },
+    { "name": "data_clear_chapter_cache", "value": "مسح الذاكرة المؤقتة للفصول" },
+    { "name": "data_used_cache", "value": "المستخدمة: %s" },
+    { "name": "data_cache_deleted", "value": "تم محو الذاكرة المؤقتة. %d ملف تم محوه" },
+    { "name": "data_cache_delete_error", "value": "حدث خطأ أثناء محو ذاكرة التخزين المؤقت" },
+    { "name": "data_auto_clear_cache", "value": "امسح ملفات التخزين المؤقت عند فتح التطبيق" },
+    { "name": "data_export", "value": "يصدّر" },
+    { "name": "data_library_list", "value": "قائمة المكتبات" },
+    { "name": "data_library_exported", "value": "تم تصدير المكتبة" },
+    { "name": "data_export_include", "value": "اختر بيانات لتضمينها" },
+    { "name": "data_column_title", "value": "العنوان" },
+    { "name": "data_column_author", "value": "الكاتب" },
+    { "name": "data_interval_off", "value": "إيقاف" },
+    { "name": "data_interval_6h", "value": "كل ٦ ساعات" },
+    { "name": "data_interval_12h", "value": "كل ١٢ ساعة" },
+    { "name": "data_interval_24h", "value": "يومياً" },
+    { "name": "data_interval_48h", "value": "كل يومان" },
+    { "name": "data_interval_weekly", "value": "أسبوعياً" },
+    { "name": "data_storage_location_value", "value": "App private storage" },
+    { "name": "data_storage_name", "value": "Internal storage" },
+    { "name": "data_never_backed_up", "value": "Never" },
+    { "name": "data_export_canceled", "value": "Export canceled" },
+    { "name": "data_export_failed", "value": "Export failed" },
     {
       "name": "module_desc",
       "value": "module description"
@@ -222,15 +265,15 @@
     },
     {
       "name": "more_downloaded_only",
-      "value": "التنزيلات فقط (قراءة دون اتصال)"
+      "value": "المُنزل فقط"
     },
     {
       "name": "more_incognito",
-      "value": "التصفح المتخفي"
+      "value": "الوضع المخفي"
     },
     {
       "name": "more_downloads",
-      "value": "التنزيلات"
+      "value": "قائمة التنزيلات"
     },
     {
       "name": "more_categories",

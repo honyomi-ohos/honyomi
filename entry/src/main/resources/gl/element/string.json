@@ -1,5 +1,48 @@
 {
   "string": [
+    { "name": "more_downloaded_only_summary", "value": "Filtra tódolos elementos da túa biblioteca" },
+    { "name": "more_incognito_summary", "value": "Pausar o historial de lectura" },
+    { "name": "more_support", "value": "Support Us" },
+    { "name": "more_help", "value": "Axuda" },
+    { "name": "support_perks", "value": "Patrons get access to exclusive channels, with more perks to come." },
+    { "name": "support_patreon", "value": "Patreon (preferred)" },
+    { "name": "support_opencollective", "value": "OpenCollective" },
+    { "name": "support_supported_by", "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together." },
+    { "name": "support_contact_msg", "value": "For alternative options or any related questions, join our Discord server." },
+    { "name": "support_discord", "value": "Discord" },
+    { "name": "data_storage_title", "value": "Datos e almacenamento" },
+    { "name": "data_storage_location", "value": "Ubicación do almacenamento" },
+    { "name": "data_storage_location_info", "value": "Utilízase para as copias de seguridade automáticas, as descargas de capítulos e a fonte local." },
+    { "name": "data_backup_restore", "value": "Copia de seguridade e restauración" },
+    { "name": "data_create_backup", "value": "Crear unha copia de seguridade" },
+    { "name": "data_restore_backup", "value": "Restaurar a copia de seguridade" },
+    { "name": "data_backup_interval", "value": "Frecuencia das copias de seguridade" },
+    { "name": "data_backup_info", "value": "Deberías gardar duplicados das copias de seguridade fora do teu dispositivo." },
+    { "name": "data_last_auto_backup", "value": "Última copia de seguridade automática: %s" },
+    { "name": "data_storage_usage", "value": "Almacenamento usado" },
+    { "name": "data_available_space", "value": "Dispoñible: %s / Total: %s" },
+    { "name": "data_clear_chapter_cache", "value": "Borrar a caché dos capítulos" },
+    { "name": "data_used_cache", "value": "Usado: %s" },
+    { "name": "data_cache_deleted", "value": "Borrouse a caché. Elimináronse %d ficheiros" },
+    { "name": "data_cache_delete_error", "value": "Produciuse un erro ao borrar" },
+    { "name": "data_auto_clear_cache", "value": "Borrar a caché dos capítulos ao pechar a aplicación" },
+    { "name": "data_export", "value": "Exportar" },
+    { "name": "data_library_list", "value": "Lista da biblioteca" },
+    { "name": "data_library_exported", "value": "Exportouse a biblioteca" },
+    { "name": "data_export_include", "value": "Escoller os datos a incluír" },
+    { "name": "data_column_title", "value": "Título" },
+    { "name": "data_column_author", "value": "Autor" },
+    { "name": "data_interval_off", "value": "Desactivado" },
+    { "name": "data_interval_6h", "value": "Cada 6 horas" },
+    { "name": "data_interval_12h", "value": "Cada 12 horas" },
+    { "name": "data_interval_24h", "value": "Diariamente" },
+    { "name": "data_interval_48h", "value": "Cada 2 días" },
+    { "name": "data_interval_weekly", "value": "Semanalmente" },
+    { "name": "data_storage_location_value", "value": "App private storage" },
+    { "name": "data_storage_name", "value": "Internal storage" },
+    { "name": "data_never_backed_up", "value": "Never" },
+    { "name": "data_export_canceled", "value": "Export canceled" },
+    { "name": "data_export_failed", "value": "Export failed" },
     {
       "name": "module_desc",
       "value": "module description"
@@ -222,15 +265,15 @@
     },
     {
       "name": "more_downloaded_only",
-      "value": "Só descargados (lectura sen conexión)"
+      "value": "Só os descargados"
     },
     {
       "name": "more_incognito",
-      "value": "Incógnito"
+      "value": "Modo incógnito"
     },
     {
       "name": "more_downloads",
-      "value": "Descargas"
+      "value": "Cola de descargas"
     },
     {
       "name": "more_categories",

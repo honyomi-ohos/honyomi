@@ -1,6 +1,6 @@
 import { common } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
-import { HistoryRepo } from '../data/Repos';
+import { HistoryRepo, ChapterRepo } from '../data/Repos';
 import { HistoryItem } from '../model/Models';
 import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
@@ -16,6 +16,8 @@ export struct HistoryPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('navBarH') navBarH: number = 0;
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
+  // 复刻 Mihon：再次点击历史页签续读最近作品的下一未读章节（HistoryTab.onReselect）
+  @StorageLink('historyReselect') @Watch('onHistoryReselect') historyReselect: number = 0;
   @State items: HistoryItem[] = [];
   @State loading: boolean = true;
   @State confirmClear: boolean = false;
@@ -26,6 +28,25 @@ export struct HistoryPage {
 
   onLibDirty(): void {
     this.loadData();
+  }
+
+  private onHistoryReselect(): void {
+    this.resumeLastRead();
+  }
+
+  // 续读最近一部作品：取最近记录的漫画，打开其第一个未读章节；无可读时提示
+  private async resumeLastRead(): Promise<void> {
+    if (this.items.length === 0) {
+      Util.toastRes(this.getUIContext(), $r('app.string.history_no_next_chapter'));
+      return;
+    }
+    const last: HistoryItem = this.items[0];
+    const nextId = await ChapterRepo.firstUnread(last.mangaId);
+    if (nextId > 0) {
+      ContentOpen.open(this.pathStack, last.mangaId, nextId);
+    } else {
+      Util.toastRes(this.getUIContext(), $r('app.string.history_no_next_chapter'));
+    }
   }
 
   async loadData(): Promise<void> {

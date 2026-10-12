@@ -2,9 +2,11 @@ import { fileIo as fs } from '@kit.CoreFileKit';
 import zlib from '@ohos.zlib';
 import { SManga, SChapter, SPage, SVideo, MangasPage, ContentType } from '../model/Models';
 import { Source } from './Source';
+import { LocalFolderManager } from './LocalFolderManager';
 
-// 本地漫画源：扫描应用沙箱 local 目录下的漫画
-// 目录结构：filesDir/local/<漫画名>/<章节名>.zip|.cbz 或 <章节名>/图片
+// 本地漫画源：扫描固定本地源文件夹的同步副本（filesDir/local_root，未设置时回退 filesDir/local）
+// 目录结构：<系列名>/<章节名>.zip|.cbz 或 <章节名>/图片；
+// 支持子目录分层（卷/章），章节名按相对路径显示为“卷 / 章”
 export class LocalSource implements Source {
   readonly key = 'local';
   readonly name = '本地漫画';
@@ -12,16 +14,26 @@ export class LocalSource implements Source {
   readonly supportsLatest = false;
   readonly contentType = ContentType.MANGA;
 
-  private readonly rootDir: string;
+  private readonly legacyDir: string;
+  private readonly syncRoot: string;
   private readonly cacheDir: string;
   private readonly imageExts: string[] = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.bmp', '.avif'];
 
   constructor(filesDir: string, cacheDir: string) {
-    this.rootDir = `${filesDir}/local`;
+    this.legacyDir = `${filesDir}/local`;
+    this.syncRoot = LocalFolderManager.syncedRootPath(filesDir);
     this.cacheDir = cacheDir;
-    if (!fs.accessSync(this.rootDir)) {
-      fs.mkdirSync(this.rootDir, true);
+    if (!fs.accessSync(this.legacyDir)) {
+      fs.mkdirSync(this.legacyDir, true);
     }
+  }
+
+  // 扫描根：设置了本地源文件夹且已同步过则用同步副本下的 comic 子文件夹，否则回退旧导入目录
+  private rootDir(): string {
+    if (fs.accessSync(this.syncRoot)) {
+      return `${this.syncRoot}/${LocalFolderManager.COMIC_SUBDIR}`;
+    }
+    return this.legacyDir;
   }
 
   async getPopularManga(page: number): Promise<MangasPage> {
@@ -67,26 +79,12 @@ export class LocalSource implements Source {
   }
 
   async getChapterList(mangaKey: string): Promise<SChapter[]> {
-    const dir = `${this.rootDir}/${mangaKey}`;
+    // 递归收集章节条目相对路径（含卷级子目录），按层级自然排序
+    const relEntries: string[] = [];
+    this.collectChapterEntries(`${this.rootDir()}/${mangaKey}`, '', relEntries);
     const chapters: SChapter[] = [];
-    if (!fs.accessSync(dir)) {
-      return chapters;
-    }
-    const entries = fs.listFileSync(dir);
-    let order = 0;
-    const sorted = entries.sort((a: string, b: string): number => a.localeCompare(b, 'zh'));
-    for (const entry of sorted) {
-      const fullPath = `${dir}/${entry}`;
-      if (this.isArchive(entry)) {
-        chapters.push(this.buildChapter(mangaKey, entry, order));
-        order += 1;
-      } else if (fs.statSync(fullPath).isDirectory()) {
-        const images = this.listImages(fullPath);
-        if (images.length > 0) {
-          chapters.push(this.buildChapter(mangaKey, entry, order));
-          order += 1;
-        }
-      }
+    for (let i = 0; i < relEntries.length; i++) {
+      chapters.push(this.buildChapter(mangaKey, relEntries[i], i));
     }
     return chapters;
   }
@@ -99,7 +97,7 @@ export class LocalSource implements Source {
     }
     const mangaDir = chapterKey.substring(0, sepIdx);
     const entry = chapterKey.substring(sepIdx + 2);
-    const entryPath = `${this.rootDir}/${mangaDir}/${entry}`;
+    const entryPath = `${this.rootDir()}/${mangaDir}/${entry}`;
     if (!fs.accessSync(entryPath)) {
       throw new Error('章节文件不存在');
     }
@@ -113,44 +111,21 @@ export class LocalSource implements Source {
     throw new Error('不支持的章节格式');
   }
 
-  // 导入文件（来自文档选择器的 uri），复制进沙箱
-  async importFiles(uris: string[], mangaTitle: string): Promise<number> {
-    const destDir = `${this.rootDir}/${mangaTitle}`;
-    if (!fs.accessSync(destDir)) {
-      fs.mkdirSync(destDir, true);
-    }
-    let count = 0;
-    for (const uri of uris) {
-      const segs = uri.split('/');
-      const rawName = segs.length > 0 ? segs[segs.length - 1] : `chapter_${count}.zip`;
-      const fileName = decodeURIComponent(rawName);
-      const destPath = `${destDir}/${fileName}`;
-      if (fs.accessSync(destPath)) {
-        continue;
-      }
-      const srcFile = fs.openSync(uri, fs.OpenMode.READ_ONLY);
-      try {
-        fs.copyFile(srcFile.fd, destPath);
-        count += 1;
-      } finally {
-        fs.closeSync(srcFile);
-      }
-    }
-    return count;
-  }
-
-  rootPath(): string {
-    return this.rootDir;
-  }
-
   private listMangaDirs(): string[] {
-    if (!fs.accessSync(this.rootDir)) {
+    if (!fs.accessSync(this.rootDir())) {
       return [];
     }
+    const exts: string[] = this.imageExts.concat(['.zip', '.cbz']);
     const names: string[] = [];
-    const entries = fs.listFileSync(this.rootDir);
+    const entries = fs.listFileSync(this.rootDir());
     for (const entry of entries) {
-      if (fs.statSync(`${this.rootDir}/${entry}`).isDirectory()) {
+      if (entry.startsWith('.')) {
+        continue;
+      }
+      const fullPath = `${this.rootDir()}/${entry}`;
+      // 仅列出含图片/漫画归档的目录（本地源文件夹内小说、视频等自动排除）
+      if (fs.statSync(fullPath).isDirectory() &&
+        LocalFolderManager.hasFileWithExts(fullPath, exts)) {
         names.push(entry);
       }
     }
@@ -170,26 +145,49 @@ export class LocalSource implements Source {
     return manga;
   }
 
+  // 相对路径条目（可含“卷/章”层级）转章节，名称显示为“卷 / 章”
   private buildChapter(mangaDir: string, entry: string, order: number): SChapter {
     let dateUpload = 0;
     try {
-      const stat = fs.statSync(`${this.rootDir}/${mangaDir}/${entry}`);
+      const stat = fs.statSync(`${this.rootDir()}/${mangaDir}/${entry}`);
       dateUpload = stat.mtime * 1000;
     } catch (e) {
       dateUpload = 0;
     }
     let pages = 0;
     const dotIdx = entry.lastIndexOf('.');
-    const name = dotIdx > 0 ? entry.substring(0, dotIdx) : entry;
+    const noExt = dotIdx > 0 ? entry.substring(0, dotIdx) : entry;
     const chapter: SChapter = {
       key: `${mangaDir}::${entry}`,
-      name: name,
+      name: noExt.split('/').join(' / '),
       chapterNumber: -1,
       dateUpload: dateUpload,
       pages: pages,
       sortOrder: order,
     };
     return chapter;
+  }
+
+  // 递归收集章节条目相对路径：归档文件与含图片的目录为章节，
+  // 无图片的目录视为卷（继续向下收集其归档/图片目录）
+  private collectChapterEntries(dir: string, prefix: string, out: string[]): void {
+    if (!fs.accessSync(dir)) {
+      return;
+    }
+    const entries = fs.listFileSync(dir).sort((a: string, b: string): number => a.localeCompare(b, 'zh', { numeric: true }));
+    for (const entry of entries) {
+      const rel = prefix === '' ? entry : `${prefix}/${entry}`;
+      const fullPath = `${dir}/${entry}`;
+      if (this.isArchive(entry)) {
+        out.push(rel);
+      } else if (fs.statSync(fullPath).isDirectory() && entry !== '.extracted') {
+        if (this.listImages(fullPath).length > 0) {
+          out.push(rel);
+        } else {
+          this.collectChapterEntries(fullPath, rel, out);
+        }
+      }
+    }
   }
 
   private isArchive(name: string): boolean {
@@ -211,7 +209,7 @@ export class LocalSource implements Source {
   }
 
   private async extractArchive(mangaDir: string, entry: string): Promise<string[]> {
-    const zipPath = `${this.rootDir}/${mangaDir}/${entry}`;
+    const zipPath = `${this.rootDir()}/${mangaDir}/${entry}`;
     const safeEntry = entry.replace(new RegExp('\\.(zip|cbz)$', 'i'), '');
     const outDir = `${this.cacheDir}/local_extract/${mangaDir}/${safeEntry}`;
     if (!fs.accessSync(outDir)) {

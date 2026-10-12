@@ -43,6 +43,10 @@ export struct VideoPlayerPage {
   private dragging: boolean = false;
   private localPath: string = '';
   private playGen: number = 0;
+  private videoW: number = 0;
+  private videoH: number = 0;
+  private areaW: number = 0;
+  private areaH: number = 0;
 
   aboutToDisappear(): void {
     this.persist(false);
@@ -145,7 +149,6 @@ export struct VideoPlayerPage {
       const stat = fs.statSync(path);
       this.mediaFile = file;
       const fdSrc: media.AVFileDescriptor = { fd: file.fd, offset: 0, length: stat.size };
-      player.surfaceId = this.surfaceId;
       player.fdSrc = fdSrc;
     }).catch((e: Error) => {
       this.errorText = e.message;
@@ -162,7 +165,6 @@ export struct VideoPlayerPage {
         return;
       }
       this.bindPlayer(player);
-      player.surfaceId = this.surfaceId;
       const headers = Http.headersFor(video.url, video.headers);
       const source = media.createMediaSourceWithUrl(video.url, headers);
       const strategy: media.PlaybackStrategy = { preferredWidth: 0, preferredHeight: 0 };
@@ -176,9 +178,14 @@ export struct VideoPlayerPage {
     this.player = player;
     player.on('stateChange', (state: media.AVPlayerState) => {
       if (state === 'initialized') {
+        // surfaceId 仅支持在 initialized 状态设置，须在 prepare() 之前完成
+        player.surfaceId = this.surfaceId;
         player.prepare();
       } else if (state === 'prepared') {
         this.durationMs = player.duration > 0 ? player.duration : 0;
+        this.videoW = player.width > 0 ? player.width : 0;
+        this.videoH = player.height > 0 ? player.height : 0;
+        this.adjustSurface();
         if (this.resumeMs > 0 && (this.durationMs === 0 || this.resumeMs < this.durationMs)) {
           player.seek(this.resumeMs, media.SeekMode.SEEK_PREV_SYNC);
         }
@@ -228,6 +235,26 @@ export struct VideoPlayerPage {
       clearInterval(this.ticker);
       this.ticker = -1;
     }
+  }
+
+  // Surface 显示区域按视频宽高比自适应（等比缩放并居中），避免画面被拉伸；SurfaceRect 单位为 px
+  private adjustSurface(): void {
+    if (this.videoW <= 0 || this.videoH <= 0 || this.areaW <= 0 || this.areaH <= 0) {
+      return;
+    }
+    const scale = Math.min(this.areaW / this.videoW, this.areaH / this.videoH);
+    let w = Math.floor(this.videoW * scale);
+    let h = Math.floor(this.videoH * scale);
+    if (w > 8192) {
+      w = 8192;
+    }
+    if (h > 8192) {
+      h = 8192;
+    }
+    if (w <= 0 || h <= 0) {
+      return;
+    }
+    this.xCtrl.setXComponentSurfaceRect({ surfaceWidth: w, surfaceHeight: h });
   }
 
   private releasePlayer(): void {
@@ -355,6 +382,17 @@ export struct VideoPlayerPage {
               if (!this.loading && this.errorText === '' && this.player === undefined) {
                 this.startCurrent();
               }
+            })
+            .onAreaChange((_old: Area, newArea: Area) => {
+              const w = newArea.width;
+              if (typeof w === 'number' && w > 0) {
+                this.areaW = Math.floor(this.getUIContext().vp2px(w));
+              }
+              const h = newArea.height;
+              if (typeof h === 'number' && h > 0) {
+                this.areaH = Math.floor(this.getUIContext().vp2px(h));
+              }
+              this.adjustSurface();
             })
           if (this.loading) {
             LoadingProgress().width(36).height(36).color(Color.White)

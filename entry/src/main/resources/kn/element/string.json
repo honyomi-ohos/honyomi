@@ -1,5 +1,48 @@
 {
   "string": [
+    { "name": "more_downloaded_only_summary", "value": "ನಿಮ್ಮ ಗ್ರಂಥಾಲಯದ ಎಲ್ಲಾ ಮಾಂಗಾವನ್ನು ಫಿಲ್ಟರ್ ಮಾಡುತ್ತದೆ" },
+    { "name": "more_incognito_summary", "value": "ಓದುವ ಇತಿಹಾಸವನ್ನು ವಿರಾಮಗೊಳಿಸುತ್ತದೆ" },
+    { "name": "more_support", "value": "Support Us" },
+    { "name": "more_help", "value": "ಸಹಾಯ" },
+    { "name": "support_perks", "value": "Patrons get access to exclusive channels, with more perks to come." },
+    { "name": "support_patreon", "value": "Patreon (preferred)" },
+    { "name": "support_opencollective", "value": "OpenCollective" },
+    { "name": "support_supported_by", "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together." },
+    { "name": "support_contact_msg", "value": "For alternative options or any related questions, join our Discord server." },
+    { "name": "support_discord", "value": "Discord" },
+    { "name": "data_storage_title", "value": "Data and storage" },
+    { "name": "data_storage_location", "value": "Storage location" },
+    { "name": "data_storage_location_info", "value": "Used for automatic backups, chapter downloads, and local source." },
+    { "name": "data_backup_restore", "value": "ಬ್ಯಾಕಪ್ ಮತ್ತು ಮರುಸ್ಥಾಪನೆ" },
+    { "name": "data_create_backup", "value": "ಬ್ಯಾಕಪ್ ರಚಿಸಿ" },
+    { "name": "data_restore_backup", "value": "ಬ್ಯಾಕಪ್ ಮರುಸ್ಥಾಪಿಸಿ" },
+    { "name": "data_backup_interval", "value": "ಬ್ಯಾಕಪ್ ಆವರ್ತನ" },
+    { "name": "data_backup_info", "value": "You should keep copies of backups in other places as well. Backups may contain sensitive data including any stored passwords; be careful if sharing." },
+    { "name": "data_last_auto_backup", "value": "Last automatically backed up: %s" },
+    { "name": "data_storage_usage", "value": "Storage usage" },
+    { "name": "data_available_space", "value": "Available: %s / Total: %s" },
+    { "name": "data_clear_chapter_cache", "value": "ಅಧ್ಯಾಯ ಸಂಗ್ರಹವನ್ನು ತೆರವುಗೊಳಿಸಿ" },
+    { "name": "data_used_cache", "value": "ಬಳಸಲಾಗಿದೆ: %s" },
+    { "name": "data_cache_deleted", "value": "ಸಂಗ್ರಹವನ್ನು ತೆರವುಗೊಳಿಸಲಾಗಿದೆ. %d ಫೈಲ್‌ಗಳನ್ನು ಅಳಿಸಲಾಗಿದೆ" },
+    { "name": "data_cache_delete_error", "value": "ಸಂಗ್ರಹವನ್ನು ತೆರವುಗೊಳಿಸುವಾಗ ದೋಷ ಸಂಭವಿಸಿದೆ" },
+    { "name": "data_auto_clear_cache", "value": "Clear chapter cache on app launch" },
+    { "name": "data_export", "value": "Export" },
+    { "name": "data_library_list", "value": "Library List" },
+    { "name": "data_library_exported", "value": "Library Exported" },
+    { "name": "data_export_include", "value": "ಸೇರಿಸಲು ಡೇಟಾವನ್ನು ಆಯ್ಕೆಮಾಡಿ" },
+    { "name": "data_column_title", "value": "ಶೀರ್ಷಿಕೆ" },
+    { "name": "data_column_author", "value": "Author" },
+    { "name": "data_interval_off", "value": "ಆಫ" },
+    { "name": "data_interval_6h", "value": "ಪ್ರತಿ 6 ಗಂಟೆಗಳಿಗೊಮ್ಮೆ" },
+    { "name": "data_interval_12h", "value": "ಪ್ರತಿ 12 ಗಂಟೆಗಳಿಗೊಮ್ಮೆ" },
+    { "name": "data_interval_24h", "value": "ಪ್ರತಿದಿನ" },
+    { "name": "data_interval_48h", "value": "ಪ್ರತಿ 2 ದಿನಗಳಿಗೊಮ್ಮೆ" },
+    { "name": "data_interval_weekly", "value": "ವಾರಕ್ಕೊಮ್ಮೆ" },
+    { "name": "data_storage_location_value", "value": "App private storage" },
+    { "name": "data_storage_name", "value": "Internal storage" },
+    { "name": "data_never_backed_up", "value": "Never" },
+    { "name": "data_export_canceled", "value": "Export canceled" },
+    { "name": "data_export_failed", "value": "Export failed" },
     {
       "name": "module_desc",
       "value": "module description"
@@ -222,15 +265,15 @@
     },
     {
       "name": "more_downloaded_only",
-      "value": "ಡೌನ್‌ಲೋಡ್ ಮಾತ್ರ (ಆಫ್‌ಲೈನ್ ಓದುವಿಕೆ)"
+      "value": "ಡೌನ್ಲೋಡ್ ಮಾಡಿದ"
     },
     {
       "name": "more_incognito",
-      "value": "ಗುಪ್ತ"
+      "value": "ಅಜ್ಞಾತ ಮೋಡ್"
     },
     {
       "name": "more_downloads",
-      "value": "ಡೌನ್‌ಲೋಡ್‌ಗಳು"
+      "value": "ಡೌನ್‌ಲೋಡ್ ಸಾಲು"
     },
     {
       "name": "more_categories",

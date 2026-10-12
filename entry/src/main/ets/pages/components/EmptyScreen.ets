@@ -18,7 +18,8 @@ const ERROR_FACES: string[] = [
 
 @Component
 export struct EmptyScreen {
-  message: Resource | string = '';
+  // @Prop：父组件就地更新 message 时需同步刷新（本地源配置后空态文案切换）
+  @Prop message: ResourceStr = '';
   @Prop compact: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State face: string = ERROR_FACES[0];

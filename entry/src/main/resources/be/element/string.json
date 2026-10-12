@@ -1,5 +1,48 @@
 {
   "string": [
+    { "name": "more_downloaded_only_summary", "value": "Фільтруе ўсе творы ў вашай бібліятэцы" },
+    { "name": "more_incognito_summary", "value": "Прыпыняе гісторыю чытання" },
+    { "name": "more_support", "value": "Падтрымайце нас" },
+    { "name": "more_help", "value": "Дапамога" },
+    { "name": "support_perks", "value": "Спонсары атрымліваюць доступ да эксклюзіўных каналаў, а наперадзе — больш бонусаў." },
+    { "name": "support_patreon", "value": "Patreon (рэкамендуецца)" },
+    { "name": "support_opencollective", "value": "OpenCollective" },
+    { "name": "support_supported_by", "value": "Зараз Mihon падтрымліваюць %d+ спонсараў. Мы ўдзячныя кожнаму з вас. Зробім Mihon яшчэ лепей разам." },
+    { "name": "support_contact_msg", "value": "Каб даведацца пра іншыя спосабы падтрымкі ці задаць пытанні, заглядайце ў наш Discord-сервер." },
+    { "name": "support_discord", "value": "Discord" },
+    { "name": "data_storage_title", "value": "Даныя і сховішча" },
+    { "name": "data_storage_location", "value": "Месца сховішча" },
+    { "name": "data_storage_location_info", "value": "Для аўтаматычных рэзервовак, спампоўвання раздзелаў і лакальных крыніц." },
+    { "name": "data_backup_restore", "value": "Рэзервоўка і аднаўленне" },
+    { "name": "data_create_backup", "value": "Зарэзерваваць" },
+    { "name": "data_restore_backup", "value": "Аднавіць з рэзервоўкі" },
+    { "name": "data_backup_interval", "value": "Частата аўтаматычнага рэзервавання" },
+    { "name": "data_backup_info", "value": "Варта захоўваць копіі рэзервовак таксама і ў іншых месцах. Рэзервоўкі могуць утрымліваць канфідэнцыйныя даныя, у тым ліку захаваныя паролі; будзьце асцярожныя, калі дзеліцеся імі." },
+    { "name": "data_last_auto_backup", "value": "Апошняе аўтаматычнае рэзерваванне: %s" },
+    { "name": "data_storage_usage", "value": "Выкарыстанне сховішча" },
+    { "name": "data_available_space", "value": "Даступна: %s / Усяго: %s" },
+    { "name": "data_clear_chapter_cache", "value": "Ачысціць кэш раздзелаў" },
+    { "name": "data_used_cache", "value": "Выкарыстана %s" },
+    { "name": "data_cache_deleted", "value": "Кэш ачышчаны, выдалена файлаў: %d" },
+    { "name": "data_cache_delete_error", "value": "Адбылася памылка падчас ачысткі" },
+    { "name": "data_auto_clear_cache", "value": "Ачышчаць кэш раздзелаў пры запуску праграмы" },
+    { "name": "data_export", "value": "Экспартаваць" },
+    { "name": "data_library_list", "value": "Спіс бібліятэкі" },
+    { "name": "data_library_exported", "value": "Бібліятэка экспартавана" },
+    { "name": "data_export_include", "value": "Абярыце даныя для ўключэння" },
+    { "name": "data_column_title", "value": "Загаловак" },
+    { "name": "data_column_author", "value": "Аўтар" },
+    { "name": "data_interval_off", "value": "Выключана" },
+    { "name": "data_interval_6h", "value": "Кожныя 6 гадзін" },
+    { "name": "data_interval_12h", "value": "Кожныя 12 гадзін" },
+    { "name": "data_interval_24h", "value": "Штодня" },
+    { "name": "data_interval_48h", "value": "Кожныя 2 дні" },
+    { "name": "data_interval_weekly", "value": "Штотыдзень" },
+    { "name": "data_storage_location_value", "value": "App private storage" },
+    { "name": "data_storage_name", "value": "Internal storage" },
+    { "name": "data_never_backed_up", "value": "Never" },
+    { "name": "data_export_canceled", "value": "Export canceled" },
+    { "name": "data_export_failed", "value": "Export failed" },
     {
       "name": "module_desc",
       "value": "module description"
@@ -222,15 +265,15 @@
     },
     {
       "name": "more_downloaded_only",
-      "value": "Толькі спампаванае (афлайн-чытанне)"
+      "value": "Толькі спампаваныя"
     },
     {
       "name": "more_incognito",
-      "value": "Інкогніта"
+      "value": "Рэжым інкогніта"
     },
     {
       "name": "more_downloads",
-      "value": "Спампоўкі"
+      "value": "Чарга памповак"
     },
     {
       "name": "more_categories",

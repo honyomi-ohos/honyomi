@@ -1,5 +1,48 @@
 {
   "string": [
+    { "name": "more_downloaded_only_summary", "value": "Filtrează toate intrările din bibliotecă" },
+    { "name": "more_incognito_summary", "value": "Întrerupe citirea istoricului" },
+    { "name": "more_support", "value": "Sustineti-ne" },
+    { "name": "more_help", "value": "Ajutor" },
+    { "name": "support_perks", "value": "Abonatii au acces la canale exclusive, iar in viitor vor beneficia de si mai multe beneficii." },
+    { "name": "support_patreon", "value": "Patreon (preferabil)" },
+    { "name": "support_opencollective", "value": "OpenCollective" },
+    { "name": "support_supported_by", "value": "Mihon este sustinut de %d+ contribuitori. Va multumim tuturor pentru sustinere. Haideti sa imbunatatim impreuna Mihon." },
+    { "name": "support_contact_msg", "value": "Pentru optiuni alternative, sau orice intrebare despre subiect, alatura-te serverului nostru de Discord." },
+    { "name": "support_discord", "value": "Discord" },
+    { "name": "data_storage_title", "value": "Date și stocare" },
+    { "name": "data_storage_location", "value": "Locație de stocare" },
+    { "name": "data_storage_location_info", "value": "Folosit pentru copii de rezervă automate, capitole descărcate, și surse locale." },
+    { "name": "data_backup_restore", "value": "Backup și restaurare" },
+    { "name": "data_create_backup", "value": "Crează copie de rezervă" },
+    { "name": "data_restore_backup", "value": "Restaurează un backup" },
+    { "name": "data_backup_interval", "value": "Frecvența de creare a backupurilor automate" },
+    { "name": "data_backup_info", "value": "Ar trebui să păstrați copii ale backupurilor și în alte locuri." },
+    { "name": "data_last_auto_backup", "value": "Ultima copie de rezervă creata la: %s" },
+    { "name": "data_storage_usage", "value": "Utilizarea spațiului de stocare" },
+    { "name": "data_available_space", "value": "Disponibil: %s / Total: %s" },
+    { "name": "data_clear_chapter_cache", "value": "Curățare capitole depozitate" },
+    { "name": "data_used_cache", "value": "Folosit: %s" },
+    { "name": "data_cache_deleted", "value": "Depozit curățat. %d fișiere au fost șterse" },
+    { "name": "data_cache_delete_error", "value": "A apărut o eroare în timpul ștergerii" },
+    { "name": "data_auto_clear_cache", "value": "Șterge memoria cache a capitolului la închiderea aplicației" },
+    { "name": "data_export", "value": "Exportă" },
+    { "name": "data_library_list", "value": "Listă biblioteci" },
+    { "name": "data_library_exported", "value": "Bibliotecă exportată" },
+    { "name": "data_export_include", "value": "Selectați ce date să fie incluse" },
+    { "name": "data_column_title", "value": "Titlu" },
+    { "name": "data_column_author", "value": "Autor" },
+    { "name": "data_interval_off", "value": "Oprit" },
+    { "name": "data_interval_6h", "value": "La fiecare 6 ore" },
+    { "name": "data_interval_12h", "value": "La fiecare 12 ore" },
+    { "name": "data_interval_24h", "value": "Zilnic" },
+    { "name": "data_interval_48h", "value": "La fiecare 2 zile" },
+    { "name": "data_interval_weekly", "value": "Săptămânal" },
+    { "name": "data_storage_location_value", "value": "App private storage" },
+    { "name": "data_storage_name", "value": "Internal storage" },
+    { "name": "data_never_backed_up", "value": "Never" },
+    { "name": "data_export_canceled", "value": "Export canceled" },
+    { "name": "data_export_failed", "value": "Export failed" },
     {
       "name": "module_desc",
       "value": "module description"
@@ -222,15 +265,15 @@
     },
     {
       "name": "more_downloaded_only",
-      "value": "Doar descărcate (citire offline)"
+      "value": "Doar descărcate"
     },
     {
       "name": "more_incognito",
-      "value": "Mod incognito"
+      "value": "Modul incognito"
     },
     {
       "name": "more_downloads",
-      "value": "Descărcări"
+      "value": "Coadă de descărcări"
     },
     {
       "name": "more_categories",

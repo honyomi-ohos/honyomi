@@ -36,6 +36,8 @@ import { LibrarySettingsPage } from './settings/LibrarySettingsPage';
 import { ReaderSettingsPage } from './settings/ReaderSettingsPage';
 import { DownloadsSettingsPage } from './settings/DownloadsSettingsPage';
 import { BrowseSettingsPage } from './settings/BrowseSettingsPage';
+import { DataStoragePage } from './settings/DataStoragePage';
+import { SupportPage } from './settings/SupportPage';
 import { AdvancedPage } from './settings/AdvancedPage';
 import { AboutPage } from './settings/AboutPage';
 import { AppIcon } from './components/AppIcon';
@@ -346,6 +348,24 @@ struct Index {
     this.currentTab = index;
   }
 
+  // 复刻 Mihon 底部导航快捷操作：再次点击已选中的页签触发 onReselect
+  // （HomeScreen.NavigationSuiteItem：已选中时调用 tab.onReselect(navigator)）
+  // - 书架: 打开筛选/显示设置弹层；更新: 下载队列；历史: 续读最近作品
+  // - 浏览: 全局搜索；更多: 设置页
+  private onTabReselect(index: number): void {
+    if (index === 0) {
+      AppStorage.setOrCreate('libReselect', (AppStorage.get<number>('libReselect') ?? 0) + 1);
+    } else if (index === 1) {
+      this.pathStack.pushPathByName('Downloads', null);
+    } else if (index === 2) {
+      AppStorage.setOrCreate('historyReselect', (AppStorage.get<number>('historyReselect') ?? 0) + 1);
+    } else if (index === 3) {
+      this.pathStack.pushPathByName('GlobalSearch', null);
+    } else if (index === 4) {
+      this.pathStack.pushPathByName('Settings', null);
+    }
+  }
+
   // 进入多选隐藏页签栏，退出多选恢复（HdsTabsController 官方隐藏/显示动效）；宽屏侧边栏常驻不参与
   private onLibSelectionChanged(): void {
     if (this.isWide()) {
@@ -522,6 +542,10 @@ struct Index {
       DownloadsSettingsPage()
     } else if (name === 'BrowseSettings') {
       BrowseSettingsPage()
+    } else if (name === 'DataStorage') {
+      DataStoragePage()
+    } else if (name === 'Support') {
+      SupportPage()
     } else if (name === 'Advanced') {
       AdvancedPage()
     } else if (name === 'About') {
@@ -539,6 +563,12 @@ struct Index {
     }
     .justifyContent(FlexAlign.Center)
     .height('100%')
+    .onClick(() => {
+      // 已选中时再次点击触发快捷操作；未选中时交由 HdsTabs 自行切换
+      if (this.currentTab === index) {
+        this.onTabReselect(index);
+      }
+    })
   }
 
   // 宽屏主界面：左侧固定导航栏 + 右侧内容区（页签首次访问时挂载、驻留保状态）
@@ -549,27 +579,27 @@ struct Index {
         RailItem({
           kind: 'library', title: $r('app.string.tab_library'),
           selected: this.currentTab === 0,
-          onTap: (): void => { this.switchTab(0); }
+          onTap: (): void => { this.currentTab === 0 ? this.onTabReselect(0) : this.switchTab(0); }
         })
         RailItem({
           kind: 'updates', title: $r('app.string.tab_updates'),
           selected: this.currentTab === 1,
-          onTap: (): void => { this.switchTab(1); }
+          onTap: (): void => { this.currentTab === 1 ? this.onTabReselect(1) : this.switchTab(1); }
         })
         RailItem({
           kind: 'history', title: $r('app.string.tab_history'),
           selected: this.currentTab === 2,
-          onTap: (): void => { this.switchTab(2); }
+          onTap: (): void => { this.currentTab === 2 ? this.onTabReselect(2) : this.switchTab(2); }
         })
         RailItem({
           kind: 'browse', title: $r('app.string.tab_browse'),
           selected: this.currentTab === 3,
-          onTap: (): void => { this.switchTab(3); }
+          onTap: (): void => { this.currentTab === 3 ? this.onTabReselect(3) : this.switchTab(3); }
         })
         RailItem({
           kind: 'more', title: $r('app.string.tab_more'),
           selected: this.currentTab === 4,
-          onTap: (): void => { this.switchTab(4); }
+          onTap: (): void => { this.currentTab === 4 ? this.onTabReselect(4) : this.switchTab(4); }
         })
       }
       .width(200)

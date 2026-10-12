@@ -87,6 +87,26 @@ export class Settings {
     Settings.setNum('novelLineHeight', v);
   }
 
+  // 小说阅读模式：scroll（滚动）| paged（翻页）| double（双页）
+  static getNovelReaderMode(): string {
+    const raw = Settings.getStr('novelReaderMode', 'scroll');
+    return raw === 'paged' || raw === 'double' ? raw : 'scroll';
+  }
+
+  static setNovelReaderMode(v: string): void {
+    Settings.setStr('novelReaderMode', v);
+  }
+
+  // 小说段间距（vp）
+  static getNovelParagraphSpacing(): number {
+    const n = Settings.getNum('novelParagraphSpacing', 0);
+    return n >= 0 && n <= 28 ? n : 0;
+  }
+
+  static setNovelParagraphSpacing(v: number): void {
+    Settings.setNum('novelParagraphSpacing', v);
+  }
+
   // 书架类型筛选：all | manga | novel | video
   static getLibraryContentFilter(): string {
     const raw = Settings.getStr('libContentFilter', 'all');
@@ -130,6 +150,34 @@ export class Settings {
 
   static setPluginRepoUrl(url: string): void {
     Settings.setStr('pluginRepoUrl', url);
+  }
+
+  // ---- 数据与存储（对齐 Mihon BackupPreferences / LibraryPreferences）----
+  // 自动备份频率（小时，0=关闭）
+  static getBackupInterval(): number {
+    return Settings.getNum('backupInterval', 0);
+  }
+
+  static setBackupInterval(v: number): void {
+    Settings.setNum('backupInterval', v);
+  }
+
+  // 上次自动备份时间戳（毫秒）
+  static getLastAutoBackupTimestamp(): number {
+    return Settings.getNum('lastAutoBackupTimestamp', 0);
+  }
+
+  static setLastAutoBackupTimestamp(v: number): void {
+    Settings.setNum('lastAutoBackupTimestamp', v);
+  }
+
+  // 启动时清除章节缓存
+  static getAutoClearChapterCache(): boolean {
+    return Settings.getBool('autoClearChapterCache', false);
+  }
+
+  static setAutoClearChapterCache(v: boolean): void {
+    Settings.setBool('autoClearChapterCache', v);
   }
 
   // ---- 主题 ----
@@ -545,6 +593,31 @@ export class Settings {
     }
     Settings.store.deleteSync('viewer_mode:' + mangaId);
     Settings.store.flush();
+  }
+
+  // ---- 本地源文件夹（Mihon local source：固定一个用户文件夹，同步进沙箱扫描）----
+  static getLocalFolderUri(): string {
+    return Settings.getStr('localFolderUri', '');
+  }
+
+  static setLocalFolderUri(v: string): void {
+    Settings.setStr('localFolderUri', v);
+  }
+
+  static getLocalFolderName(): string {
+    return Settings.getStr('localFolderName', '');
+  }
+
+  static setLocalFolderName(v: string): void {
+    Settings.setStr('localFolderName', v);
+  }
+
+  static getLastLocalSyncAt(): number {
+    return Settings.getNum('lastLocalSyncAt', 0);
+  }
+
+  static setLastLocalSyncAt(v: number): void {
+    Settings.setNum('lastLocalSyncAt', v);
   }
 
   // ---- 源 ----

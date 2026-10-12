@@ -84,6 +84,7 @@ export struct SwitchRow {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   title: Resource | string = '';
+  subtitle: Resource | string = '';
   @Prop icon: string = '';
   @Prop isOn: boolean = false;
   onChange: (value: boolean) => void = (value: boolean) => {};
@@ -94,18 +95,34 @@ export struct SwitchRow {
         AppIcon({ name: this.icon, iconSize: 22 })
           .margin({ right: 12 })
       }
-      Text(this.title)
-        .fontSize(16)
-        .fontColor(this.pal.text)
-        .layoutWeight(1)
-        .maxLines(1)
+      Column() {
+        Text(this.title)
+          .fontSize(16)
+          .fontColor(this.pal.text)
+          .maxLines(1)
+        if (this.subtitle !== '') {
+          Text(this.subtitle)
+            .fontSize(12)
+            .fontColor(this.pal.sub)
+            .maxLines(2)
+            .margin({ top: 2 })
+        }
+      }
+      .layoutWeight(1)
+      .alignItems(HorizontalAlign.Start)
       Toggle({ type: ToggleType.Switch, isOn: this.isOn })
         .selectedColor(this.pal.primary)
         .onChange((value: boolean) => this.onChange(value))
     }
     .width('100%')
-    .height(52)
-    .padding({ left: 16, right: 16 })
+    .constraintSize({ minHeight: 52 })
+    .padding({
+      left: 16,
+      right: 16,
+      top: this.subtitle !== '' ? 10 : 0,
+      bottom: this.subtitle !== '' ? 10 : 0
+    })
+    .alignItems(VerticalAlign.Center)
   }
 }
 

@@ -92,6 +92,14 @@ export struct SettingsPage {
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
               IconRow({
+                title: $r('app.string.data_storage_title'),
+                icon: 'storage',
+                onTap: (): void => {
+                  this.pathStack.pushPathByName('DataStorage', null);
+                }
+              })
+              Divider().color(this.pal.divider).margin({ left: 16 })
+              IconRow({
                 title: $r('app.string.settings_advanced'),
                 icon: 'settings',
                 onTap: (): void => {

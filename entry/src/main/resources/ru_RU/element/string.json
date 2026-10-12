@@ -1,5 +1,48 @@
 {
   "string": [
+    { "name": "more_downloaded_only_summary", "value": "Включает фильтр «Загружено» для всей библиотеки" },
+    { "name": "more_incognito_summary", "value": "Приостанавливает историю чтения" },
+    { "name": "more_support", "value": "Поддержите нас" },
+    { "name": "more_help", "value": "Помощь" },
+    { "name": "support_perks", "value": "Спонсоры получают доступ к эксклюзивным каналам с будущими привилегиями и возможностями." },
+    { "name": "support_patreon", "value": "Patreon (Предпочтительно)" },
+    { "name": "support_opencollective", "value": "OpenCollective" },
+    { "name": "support_supported_by", "value": "Mihon сейчас поддерживается %d+ спонсорами. Мы хотим поблагодарить каждого из вас. Давайте сделаем Mihon лучше." },
+    { "name": "support_contact_msg", "value": "Если у вас есть другие способы поддержки или вопросы по этому поводу, можете присоединиться к нашему Discord-серверу." },
+    { "name": "support_discord", "value": "Discord" },
+    { "name": "data_storage_title", "value": "Данные и хранение" },
+    { "name": "data_storage_location", "value": "Путь хранилища" },
+    { "name": "data_storage_location_info", "value": "Используется для автоматических резевных копии, загрузок глав и источнике на устройстве." },
+    { "name": "data_backup_restore", "value": "Резервная копия" },
+    { "name": "data_create_backup", "value": "Создать резервную копию" },
+    { "name": "data_restore_backup", "value": "Восстановить из резервной копии" },
+    { "name": "data_backup_interval", "value": "Частота автоматических резервных копий" },
+    { "name": "data_backup_info", "value": "Настоятельно рекомендуется хранить резервные копии в других местах или сервисах. Резервные копии могут содержать конфиденциальную информацию, как, например, пароли. Будьте осторожны при их отправке." },
+    { "name": "data_last_auto_backup", "value": "Последнее автоматическое резервное копирование: %s" },
+    { "name": "data_storage_usage", "value": "Использование хранилища" },
+    { "name": "data_available_space", "value": "Доступно: %s / Всего: %s" },
+    { "name": "data_clear_chapter_cache", "value": "Очистить кэш глав" },
+    { "name": "data_used_cache", "value": "Использовано: %s" },
+    { "name": "data_cache_deleted", "value": "Кэш очищен, %d файлов удалено" },
+    { "name": "data_cache_delete_error", "value": "Возникла ошибка при очистке" },
+    { "name": "data_auto_clear_cache", "value": "Очищать кэш глав при запуске приложения" },
+    { "name": "data_export", "value": "Экспортировать" },
+    { "name": "data_library_list", "value": "Список библиотеки" },
+    { "name": "data_library_exported", "value": "Библиотека экспортирована" },
+    { "name": "data_export_include", "value": "Какие данные перенести" },
+    { "name": "data_column_title", "value": "Название" },
+    { "name": "data_column_author", "value": "Автор" },
+    { "name": "data_interval_off", "value": "Выключено" },
+    { "name": "data_interval_6h", "value": "Каждые 6 часов" },
+    { "name": "data_interval_12h", "value": "Каждые 12 часов" },
+    { "name": "data_interval_24h", "value": "Ежедневно" },
+    { "name": "data_interval_48h", "value": "Каждые 2 дня" },
+    { "name": "data_interval_weekly", "value": "Еженедельно" },
+    { "name": "data_storage_location_value", "value": "App private storage" },
+    { "name": "data_storage_name", "value": "Internal storage" },
+    { "name": "data_never_backed_up", "value": "Never" },
+    { "name": "data_export_canceled", "value": "Export canceled" },
+    { "name": "data_export_failed", "value": "Export failed" },
     {
       "name": "module_desc",
       "value": "module description"
@@ -222,15 +265,15 @@
     },
     {
       "name": "more_downloaded_only",
-      "value": "Только скачанное (офлайн-чтение)"
+      "value": "Только загруженные главы"
     },
     {
       "name": "more_incognito",
-      "value": "Инкогнито"
+      "value": "Режим инкогнито"
     },
     {
       "name": "more_downloads",
-      "value": "Загрузки"
+      "value": "Очередь загрузки"
     },
     {
       "name": "more_categories",

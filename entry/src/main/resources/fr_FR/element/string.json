@@ -1,5 +1,48 @@
 {
   "string": [
+    { "name": "more_downloaded_only_summary", "value": "Filtrer toutes les séries dans la bibliothèque" },
+    { "name": "more_incognito_summary", "value": "Suspend l'historique de lecture" },
+    { "name": "more_support", "value": "Nous Soutenir" },
+    { "name": "more_help", "value": "Aide" },
+    { "name": "support_perks", "value": "Les donnateurs ont accès à des canaux exclusifs, avec plus d'avantages à venir." },
+    { "name": "support_patreon", "value": "Patreon (de préférence)" },
+    { "name": "support_opencollective", "value": "OpenCollective" },
+    { "name": "support_supported_by", "value": "Mihon est actuellement soutenu par %d+ donnateurs. Nous souhaitons remercier chacun d'entre vous. Rendons Mihon encore meilleur tous ensemble." },
+    { "name": "support_contact_msg", "value": "Pour d'autres options ou pour poser une question, rejoignez notre serveur Discord." },
+    { "name": "support_discord", "value": "Discord" },
+    { "name": "data_storage_title", "value": "Données et stockage" },
+    { "name": "data_storage_location", "value": "Emplacement de stockage" },
+    { "name": "data_storage_location_info", "value": "Utilisé pour les backups automatiques, téléchargements des chapitres et la source locale." },
+    { "name": "data_backup_restore", "value": "Sauvegarder et restaurer" },
+    { "name": "data_create_backup", "value": "Créer une sauvegarde" },
+    { "name": "data_restore_backup", "value": "Restaurer une sauvegarde" },
+    { "name": "data_backup_interval", "value": "Fréquence de sauvegarde" },
+    { "name": "data_backup_info", "value": "Vous devez également conserver des copies des sauvegardes à d'autres endroits." },
+    { "name": "data_last_auto_backup", "value": "Dernière sauvegarde automatique : %s" },
+    { "name": "data_storage_usage", "value": "Utilisation du stockage" },
+    { "name": "data_available_space", "value": "Disponible : %s / Total : %s" },
+    { "name": "data_clear_chapter_cache", "value": "Effacer le cache des chapitres" },
+    { "name": "data_used_cache", "value": "Utilisé : %s" },
+    { "name": "data_cache_deleted", "value": "Cache effacé, %d fichiers supprimés" },
+    { "name": "data_cache_delete_error", "value": "Une erreur est survenue lors de l'effacement du cache" },
+    { "name": "data_auto_clear_cache", "value": "Vider le cache de chapitre au lancement de l'application" },
+    { "name": "data_export", "value": "Export" },
+    { "name": "data_library_list", "value": "Liste des librairies" },
+    { "name": "data_library_exported", "value": "Librairie exportée" },
+    { "name": "data_export_include", "value": "Sélectionner les données à inclure" },
+    { "name": "data_column_title", "value": "Titre" },
+    { "name": "data_column_author", "value": "Auteur" },
+    { "name": "data_interval_off", "value": "Désactivé" },
+    { "name": "data_interval_6h", "value": "Toutes les 6 heures" },
+    { "name": "data_interval_12h", "value": "Toutes les 12 heures" },
+    { "name": "data_interval_24h", "value": "Tous les jours" },
+    { "name": "data_interval_48h", "value": "Tous les 2 jours" },
+    { "name": "data_interval_weekly", "value": "Chaque semaine" },
+    { "name": "data_storage_location_value", "value": "App private storage" },
+    { "name": "data_storage_name", "value": "Internal storage" },
+    { "name": "data_never_backed_up", "value": "Never" },
+    { "name": "data_export_canceled", "value": "Export canceled" },
+    { "name": "data_export_failed", "value": "Export failed" },
     {
       "name": "module_desc",
       "value": "module description"
@@ -222,15 +265,15 @@
     },
     {
       "name": "more_downloaded_only",
-      "value": "Téléchargés uniquement (lecture hors ligne)"
+      "value": "Téléchargés uniquement"
     },
     {
       "name": "more_incognito",
-      "value": "Navigation privée"
+      "value": "Mode navigation privée"
     },
     {
       "name": "more_downloads",
-      "value": "Téléchargements"
+      "value": "File de téléchargement"
     },
     {
       "name": "more_categories",

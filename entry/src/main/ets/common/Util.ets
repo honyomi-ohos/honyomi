@@ -1,5 +1,7 @@
 // 通用工具
 import { common, Want } from '@kit.AbilityKit';
+import { fileIo as fs } from '@kit.CoreFileKit';
+import { util } from '@kit.ArkTS';
 
 export class Util {
   static formatDate(ms: number): string {
@@ -12,6 +14,20 @@ export class Util {
     const mm: string = month < 10 ? `0${month}` : `${month}`;
     const dd: string = day < 10 ? `0${day}` : `${day}`;
     return `${d.getFullYear()}-${mm}-${dd}`;
+  }
+
+  // 字节数可读化（对齐 Android Formatter.formatFileSize 的近似展示）
+  static formatBytes(bytes: number): string {
+    if (bytes >= 1024 * 1024 * 1024) {
+      return `${(bytes / 1024 / 1024 / 1024).toFixed(1)} GB`;
+    }
+    if (bytes >= 1024 * 1024) {
+      return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+    }
+    if (bytes >= 1024) {
+      return `${Math.round(bytes / 1024)} KB`;
+    }
+    return `${bytes} B`;
   }
 
   // 紧凑时长（对齐 Mihon Duration.toDurationString）：
@@ -123,5 +139,65 @@ export class Util {
     const want: Want = { action: 'ohos.want.action.viewData', uri: url, entities: ['entity.system.browsable'] };
     context.startAbility(want).catch((_e: Error) => {
     });
+  }
+
+  // 智能读取文本文件：自动识别 UTF-8/UTF-16(BOM)/GB18030/GBK/Big5，避免中文乱码
+  static readTextAuto(path: string): string {
+    const file = fs.openSync(path, fs.OpenMode.READ_ONLY);
+    try {
+      const size: number = fs.statSync(file.fd).size;
+      if (size <= 0) {
+        return '';
+      }
+      const buf: ArrayBuffer = new ArrayBuffer(size);
+      const read: number = fs.readSync(file.fd, buf);
+      return Util.decodeBytes(new Uint8Array(buf, 0, read));
+    } finally {
+      fs.closeSync(file);
+    }
+  }
+
+  // 字节流解码：BOM 优先，随后依次以严格模式尝试 UTF-8/GB18030/GBK/Big5，全部失败回退宽松 UTF-8
+  static decodeBytes(bytes: Uint8Array): string {
+    if (bytes.length === 0) {
+      return '';
+    }
+    if (bytes.length >= 2 && bytes[0] === 0xFF && bytes[1] === 0xFE) {
+      return Util.cleanText(Util.decodeWith('utf-16le', bytes.subarray(2)));
+    }
+    if (bytes.length >= 2 && bytes[0] === 0xFE && bytes[1] === 0xFF) {
+      return Util.cleanText(Util.decodeWith('utf-16be', bytes.subarray(2)));
+    }
+    try {
+      return Util.cleanText(Util.decodeWith('utf-8', bytes));
+    } catch (e) {
+      // 非 UTF-8，继续尝试中文编码
+    }
+    try {
+      return Util.cleanText(Util.decodeWith('gb18030', bytes));
+    } catch (e) {
+      // 非 GB18030
+    }
+    try {
+      return Util.cleanText(Util.decodeWith('gbk', bytes));
+    } catch (e) {
+      // 非 GBK
+    }
+    try {
+      return Util.cleanText(Util.decodeWith('big5', bytes));
+    } catch (e) {
+      // 非 Big5
+    }
+    return Util.cleanText(Util.decodeWith('utf-8', bytes));
+  }
+
+  private static decodeWith(encoding: string, data: Uint8Array): string {
+    const options: util.TextDecoderOptions = { fatal: true, ignoreBOM: false };
+    return util.TextDecoder.create(encoding, options).decodeToString(data);
+  }
+
+  // 统一换行符为 \n，并去除解码残留的 BOM 字符
+  static cleanText(text: string): string {
+    return text.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
   }
 }

@@ -1,5 +1,48 @@
 {
   "string": [
+    { "name": "more_downloaded_only_summary", "value": "Filtrat totu sos elementos in sa biblioteca tua" },
+    { "name": "more_incognito_summary", "value": "Ponet in pàusa sa registratzione de sa cronologia de leghidura" },
+    { "name": "more_support", "value": "Support Us" },
+    { "name": "more_help", "value": "Agiudu" },
+    { "name": "support_perks", "value": "Patrons get access to exclusive channels, with more perks to come." },
+    { "name": "support_patreon", "value": "Patreon (preferred)" },
+    { "name": "support_opencollective", "value": "OpenCollective" },
+    { "name": "support_supported_by", "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together." },
+    { "name": "support_contact_msg", "value": "For alternative options or any related questions, join our Discord server." },
+    { "name": "support_discord", "value": "Discord" },
+    { "name": "data_storage_title", "value": "Datos e archiviatzione" },
+    { "name": "data_storage_location", "value": "Positzione de archiviatzione" },
+    { "name": "data_storage_location_info", "value": "Impreadu pro sas còpias de seguresa automàticas, sos iscarrigamentos de sos capìtulos e s'orìgine locale." },
+    { "name": "data_backup_restore", "value": "Còpia de seguresa e riprìstinu" },
+    { "name": "data_create_backup", "value": "Crea una còpia de seguresa" },
+    { "name": "data_restore_backup", "value": "Riprìstina una còpia de seguresa" },
+    { "name": "data_backup_interval", "value": "Frecuèntzia de sarvatàgiu de sas còpias de seguresa" },
+    { "name": "data_backup_info", "value": "Dias dèpere tènnere còpias de seguresa fintzas in àteros logos." },
+    { "name": "data_last_auto_backup", "value": "Ùrtima còpia de seguresa automàtica: %s" },
+    { "name": "data_storage_usage", "value": "Impreu de sa memòria" },
+    { "name": "data_available_space", "value": "A disponimentu: %s / Totale: %s" },
+    { "name": "data_clear_chapter_cache", "value": "Isbòida sa memòria temporànea de sos capìtulos" },
+    { "name": "data_used_cache", "value": "Impreados: %s" },
+    { "name": "data_cache_deleted", "value": "Memòria temporànea isbodiada. %d documentos sunt istados iscantzellados" },
+    { "name": "data_cache_delete_error", "value": "Errore durante s'isboidamentu" },
+    { "name": "data_auto_clear_cache", "value": "Isbòida sa memòria temporànea de sos capìtulos cando aberis s'aplicatzione" },
+    { "name": "data_export", "value": "Esporta" },
+    { "name": "data_library_list", "value": "Lista de sa biblioteca" },
+    { "name": "data_library_exported", "value": "Biblioteca esportada" },
+    { "name": "data_export_include", "value": "Ischerta sos datos de incluire" },
+    { "name": "data_column_title", "value": "Tìtulu" },
+    { "name": "data_column_author", "value": "Autore" },
+    { "name": "data_interval_off", "value": "Istudadu" },
+    { "name": "data_interval_6h", "value": "Cada 6 oras" },
+    { "name": "data_interval_12h", "value": "Cada 12 oras" },
+    { "name": "data_interval_24h", "value": "Cada die" },
+    { "name": "data_interval_48h", "value": "Cada 2 dies" },
+    { "name": "data_interval_weekly", "value": "Cada chida" },
+    { "name": "data_storage_location_value", "value": "App private storage" },
+    { "name": "data_storage_name", "value": "Internal storage" },
+    { "name": "data_never_backed_up", "value": "Never" },
+    { "name": "data_export_canceled", "value": "Export canceled" },
+    { "name": "data_export_failed", "value": "Export failed" },
     {
       "name": "module_desc",
       "value": "module description"
@@ -222,7 +265,7 @@
     },
     {
       "name": "more_downloaded_only",
-      "value": "Iscarrigados ebbia (letura offline)"
+      "value": "Iscarrigados ebbia"
     },
     {
       "name": "more_incognito",
@@ -230,7 +273,7 @@
     },
     {
       "name": "more_downloads",
-      "value": "Iscarrigamentos"
+      "value": "Fila de sos iscarrigamentos"
     },
     {
       "name": "more_categories",

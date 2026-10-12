@@ -1,22 +1,20 @@
 import { common } from '@kit.AbilityKit';
-import { picker } from '@kit.CoreFileKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
 import { SourceRegistry, Source } from '../source/Source';
-import { LocalSource } from '../source/LocalSource';
-import { LocalNovelSource } from '../source/LocalNovelSource';
-import { LocalVideoSource } from '../source/LocalVideoSource';
+import { LocalFolderManager } from '../source/LocalFolderManager';
 import { MangaRecord, SManga, MangasPage, ContentType } from '../model/Models';
 import { BrowseSourceParams, DetailParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { MangaCard } from './components/MangaCard';
 import { MangaSkeletonGrid } from './components/MangaSkeletonGrid';
-import { InputDialog } from './components/Dialogs';
 import { EmptyScreen } from './components/EmptyScreen';
 import { AppIcon } from './components/AppIcon';
+import { PickerSheet } from './components/PickerSheet';
 
 // 单源浏览页（图源 Tab 点进某个源）：顶栏返回 + 搜索 + 热门/最新模式 + 结果网格
+// 本地源：固定一个本地文件夹（授权持久化），同步进沙箱后按内容归类扫描
 @Component
 export struct BrowseSourcePage {
   pathStack: NavPathStack = new NavPathStack();
@@ -33,7 +31,9 @@ export struct BrowseSourcePage {
   @State hasNextPage: boolean = false;
   @State loadingMore: boolean = false;
   @State contentW: number = 0;
-  private pickedUris: string[] = [];
+  @State folderReady: boolean = false;
+  @State syncing: boolean = false;
+  @State showFolderSheet: boolean = false;
 
   currentSource(): Source | undefined {
     return SourceRegistry.get(this.sourceKey);
@@ -167,243 +167,292 @@ export struct BrowseSourcePage {
     return m;
   }
 
-  private importSuffixes(): string[] {
-    if (this.sourceKey === 'local_novel') {
-      return ['.txt'];
-    }
-    if (this.sourceKey === 'local_video') {
-      return ['.mp4', '.mkv', '.webm', '.mov', '.m4v'];
-    }
-    return ['.zip', '.cbz'];
-  }
-
   private localEmptyMessage(): Resource {
-    if (this.sourceKey === 'local') {
-      return $r('app.string.browse_local_empty');
-    }
-    if (this.sourceKey === 'local_novel' || this.sourceKey === 'local_video') {
-      return $r('app.string.browse_local_files_empty');
+    if (ContentType.isLocal(this.sourceKey)) {
+      if (!this.folderReady) {
+        return $r('app.string.browse_local_folder_empty');
+      }
+      if (this.sourceKey === 'local') {
+        return $r('app.string.browse_local_comic_empty');
+      }
+      if (this.sourceKey === 'local_novel') {
+        return $r('app.string.browse_local_novel_empty');
+      }
+      return $r('app.string.browse_local_anime_empty');
     }
     return $r('app.string.browse_no_results');
   }
 
-  private async importInto(source: Source, title: string): Promise<number> {
-    if (source instanceof LocalSource) {
-      return source.importFiles(this.pickedUris, title);
-    }
-    if (source instanceof LocalNovelSource) {
-      return source.importFiles(this.pickedUris, title);
-    }
-    if (source instanceof LocalVideoSource) {
-      return source.importFiles(this.pickedUris, title);
-    }
-    return 0;
+  // 设备是否支持文件夹选择（FOLDER 模式 Picker）
+  private folderSupported(): boolean {
+    return canIUse('SystemCapability.FileManagement.UserFileService.FolderSelection');
   }
 
-  async pickImportFiles(): Promise<void> {
+  // 选择本地源文件夹（授权持久化）并立即同步
+  private async chooseFolder(): Promise<void> {
+    if (!this.folderSupported()) {
+      Util.toastRes(this.getUIContext(), $r('app.string.browse_local_folder_unsupported'));
+      return;
+    }
     try {
-      const options = new picker.DocumentSelectOptions();
-      options.maxSelectNumber = 50;
-      options.fileSuffixFilters = this.importSuffixes();
-      const docPicker = new picker.DocumentViewPicker();
-      const uris: Array<string> = await docPicker.select(options);
-      if (uris.length === 0) {
+      const context = getContext(this) as common.UIAbilityContext;
+      const ok = await LocalFolderManager.chooseFolder(context);
+      if (!ok) {
         return;
       }
-      this.pickedUris = uris;
-      this.showImportDialog();
+      this.folderReady = true;
+      await this.syncNow();
     } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.browse_pick_file_failed'));
+      const msg = (e as Error).message;
+      if (msg === 'PERSIST') {
+        Util.toastRes(this.getUIContext(), $r('app.string.browse_local_persist_failed'));
+      } else {
+        Util.toastRes(this.getUIContext(), $r('app.string.browse_pick_folder_failed'));
+      }
     }
   }
 
-  private showImportDialog(): void {
-    const dialog = new CustomDialogController({
-      builder: InputDialog({
-        title: $r('app.string.browse_import_title', this.pickedUris.length),
-        placeholder: ContentType.isLocal(this.sourceKey) && this.sourceKey !== 'local'
-          ? $r('app.string.browse_work_name_hint') : $r('app.string.browse_manga_name_hint'),
-        onConfirm: (text: string): void => {
-          this.doImport(text.trim());
-        },
-      }),
-      autoCancel: true,
-    });
-    dialog.open();
-  }
-
-  private async doImport(title: string): Promise<void> {
-    if (title === '') {
-      Util.toastRes(this.getUIContext(), $r('app.string.browse_input_name'));
-      return;
-    }
-    const source = SourceRegistry.get(this.sourceKey);
-    if (source === undefined) {
-      return;
-    }
+  // 重新同步本地源文件夹（整树拷贝进沙箱后刷新列表）
+  private async syncNow(): Promise<void> {
+    this.syncing = true;
     try {
-      const count = await this.importInto(source, title);
-      Util.toastRes(this.getUIContext(), $r('app.string.browse_import_done'), [count]);
+      const context = getContext(this) as common.UIAbilityContext;
+      await LocalFolderManager.sync(context);
+      this.syncing = false;
+      Util.toastRes(this.getUIContext(), $r('app.string.browse_local_sync_done'));
       await this.loadFirst();
     } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.browse_import_failed'), [(e as Error).message]);
+      this.syncing = false;
+      const msg = (e as Error).message;
+      if (msg === 'ACCESS') {
+        Util.toastRes(this.getUIContext(), $r('app.string.browse_local_access_failed'));
+      } else {
+        Util.toastRes(this.getUIContext(), $r('app.string.browse_local_sync_failed'), [msg]);
+      }
     }
+  }
+
+  @Builder
+  folderSheetBuilder() {
+    PickerSheet({
+      options: [$r('app.string.browse_local_sync'), $r('app.string.browse_local_change')],
+      icons: ['refresh', 'folder'],
+      selectedIndex: -1,
+      onPick: (index: number): void => {
+        this.showFolderSheet = false;
+        if (index === 0) {
+          this.syncNow();
+        } else {
+          this.chooseFolder();
+        }
+      },
+    })
   }
 
   build() {
     NavDestination() {
-      Column() {
-        // 顶栏
-        Row() {
-          AppIcon({ name: 'arrow_back', iconSize: 24 })
-            .onClick(() => {
-              this.pathStack.pop();
-            })
-          Text(this.currentSource() !== undefined ? (this.currentSource() as Source).name : '')
-            .fontSize(18)
-            .fontWeight(FontWeight.Bold)
-            .fontColor(this.pal.text)
-            .margin({ left: 8 })
-            .layoutWeight(1)
-            .maxLines(1)
-            .textOverflow({ overflow: TextOverflow.Ellipsis })
+      Stack() {
+        Column() {
+          // 顶栏
+          Row() {
+            AppIcon({ name: 'arrow_back', iconSize: 24 })
+              .onClick(() => {
+                this.pathStack.pop();
+              })
+            Text(this.currentSource() !== undefined ? (this.currentSource() as Source).name : '')
+              .fontSize(18)
+              .fontWeight(FontWeight.Bold)
+              .fontColor(this.pal.text)
+              .margin({ left: 8 })
+              .layoutWeight(1)
+              .maxLines(1)
+              .textOverflow({ overflow: TextOverflow.Ellipsis })
 
-          if (ContentType.isLocal(this.sourceKey)) {
-            Text($r('app.string.browse_import'))
-              .fontSize(13)
-              .fontColor(this.pal.primary)
-              .padding({ left: 8, right: 8 })
-              .onClick(() => {
-                this.pickImportFiles();
+            if (ContentType.isLocal(this.sourceKey)) {
+              Text(this.folderReady ? $r('app.string.browse_local_sync') : $r('app.string.browse_local_setup'))
+                .fontSize(13)
+                .fontColor(this.pal.primary)
+                .padding({ left: 8, right: 8 })
+                .onClick(() => {
+                  if (this.folderReady) {
+                    this.showFolderSheet = true;
+                  } else {
+                    this.chooseFolder();
+                  }
+                })
+            } else if (this.searchOpen) {
+              AppIcon({ name: 'close', iconSize: 20 })
+                .padding({ left: 10, right: 10 })
+                .onClick(() => {
+                  this.searchOpen = false;
+                  this.query = '';
+                  this.loadFirst();
+                })
+            } else {
+              AppIcon({ name: 'search', iconSize: 20 })
+                .padding({ left: 10, right: 10 })
+                .onClick(() => {
+                  this.searchOpen = true;
+                })
+            }
+          }
+          .width('100%')
+          .padding({ left: 16, right: 16, top: this.statusBarH + 10, bottom: 8 })
+
+          // 搜索栏
+          if (this.searchOpen && this.sourceKey !== 'local') {
+            Row({ space: 8 }) {
+              TextInput({ placeholder: $r('app.string.browse_search_hint') })
+                .layoutWeight(1)
+                .height(38)
+                .backgroundColor(this.pal.card)
+                .enterKeyType(EnterKeyType.Search)
+                .onChange((value: string) => {
+                  this.query = value;
+                })
+                .onSubmit(() => {
+                  this.search();
+                })
+              Button($r('app.string.common_search'))
+                .fontSize(14)
+                .height(38)
+                .backgroundColor(this.pal.primary)
+                .onClick(() => {
+                  this.search();
+                })
+            }
+            .width('100%')
+            .padding({ left: 16, right: 16, bottom: 8 })
+          }
+
+          // 模式切换（仅支持最新更新的源显示）
+          if (this.sourceKey !== 'local' && this.currentSource()?.supportsLatest === true) {
+            Row({ space: 8 }) {
+              Text($r('app.string.browse_popular'))
+                .fontSize(13)
+                .fontColor(this.mode === 'popular' ? '#FFFFFF' : this.pal.sub)
+                .backgroundColor(this.mode === 'popular' ? this.pal.primary : this.pal.bg)
+                .borderRadius(12)
+                .padding({ left: 12, right: 12, top: 4, bottom: 4 })
+                .onClick(() => {
+                  if (this.mode !== 'popular') {
+                    this.mode = 'popular';
+                    this.loadFirst();
+                  }
+                })
+              Text($r('app.string.browse_latest'))
+                .fontSize(13)
+                .fontColor(this.mode === 'latest' ? '#FFFFFF' : this.pal.sub)
+                .backgroundColor(this.mode === 'latest' ? this.pal.primary : this.pal.bg)
+                .borderRadius(12)
+                .padding({ left: 12, right: 12, top: 4, bottom: 4 })
+                .onClick(() => {
+                  if (this.mode !== 'latest') {
+                    this.mode = 'latest';
+                    this.loadFirst();
+                  }
+                })
+            }
+            .width('100%')
+            .padding({ left: 16, right: 16, bottom: 8 })
+          }
+
+          // 结果网格
+          if (this.currentSource() === undefined) {
+            Column() {
+              EmptyScreen({ message: $r('app.string.browse_source_missing') })
+            }
+            .layoutWeight(1)
+            .justifyContent(FlexAlign.Center)
+          } else if (this.searching) {
+            // 首次加载骨架屏（与结果网格同布局的占位卡片）
+            MangaSkeletonGrid({ columns: this.gridColumns() })
+          } else if (this.results.length === 0) {
+            Column() {
+              EmptyScreen({
+                message: this.localEmptyMessage(),
               })
-          } else if (this.searchOpen) {
-            AppIcon({ name: 'close', iconSize: 20 })
-              .padding({ left: 10, right: 10 })
-              .onClick(() => {
-                this.searchOpen = false;
-                this.query = '';
-                this.loadFirst();
-              })
+              if (ContentType.isLocal(this.sourceKey) && !this.folderReady) {
+                Button($r('app.string.browse_local_setup'))
+                  .fontSize(14)
+                  .height(38)
+                  .padding({ left: 20, right: 20 })
+                  .backgroundColor(this.pal.primary)
+                  .borderRadius(19)
+                  .margin({ top: 20 })
+                  .onClick(() => {
+                    this.chooseFolder();
+                  })
+              }
+            }
+            .layoutWeight(1)
+            .justifyContent(FlexAlign.Center)
           } else {
-            AppIcon({ name: 'search', iconSize: 20 })
-              .padding({ left: 10, right: 10 })
-              .onClick(() => {
-                this.searchOpen = true;
-              })
+            Grid() {
+              ForEach(this.results, (record: MangaRecord) => {
+                GridItem() {
+                  MangaCard({
+                    record: record,
+                    onCardClick: (r: MangaRecord): void => {
+                      this.openDetail(r);
+                    },
+                  })
+                }
+              }, (record: MangaRecord) => `bs-${record.sourceKey}-${record.url}`)
+            }
+            .columnsTemplate(this.columnsTpl())
+            .columnsGap(12)
+            .rowsGap(16)
+            .padding({ left: 16, right: 16, top: 4 })
+            .contentEndOffset(this.navBarH + 16)
+            .layoutWeight(1)
+            .onReachEnd(() => {
+              this.loadMore();
+            })
           }
         }
         .width('100%')
-        .padding({ left: 16, right: 16, top: this.statusBarH + 10, bottom: 8 })
+        .height('100%')
+        .backgroundColor(this.pal.bg)
+        .bindSheet($$this.showFolderSheet, this.folderSheetBuilder(), {
+          title: { title: $r('app.string.browse_local_folder_title') },
+          detents: [SheetSize.FIT_CONTENT],
+          dragBar: true,
+          showClose: false,
+          blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
+        })
+        .onAreaChange((_old: Area, newArea: Area) => {
+          const w = newArea.width;
+          if (typeof w === 'number') {
+            this.contentW = w;
+          }
+        })
 
-        // 搜索栏
-        if (this.searchOpen && this.sourceKey !== 'local') {
-          Row({ space: 8 }) {
-            TextInput({ placeholder: $r('app.string.browse_search_hint') })
-              .layoutWeight(1)
-              .height(38)
-              .backgroundColor(this.pal.card)
-              .enterKeyType(EnterKeyType.Search)
-              .onChange((value: string) => {
-                this.query = value;
-              })
-              .onSubmit(() => {
-                this.search();
-              })
-            Button($r('app.string.common_search'))
-              .fontSize(14)
-              .height(38)
-              .backgroundColor(this.pal.primary)
-              .onClick(() => {
-                this.search();
-              })
+        // 同步中遮罩
+        if (this.syncing) {
+          Column() {
+            Column() {
+              LoadingProgress()
+                .width(44)
+                .height(44)
+                .color(this.pal.primary)
+              Text($r('app.string.browse_local_syncing'))
+                .fontSize(14)
+                .fontColor(this.pal.text)
+                .margin({ top: 12 })
+            }
+            .padding({ left: 36, right: 36, top: 28, bottom: 28 })
+            .borderRadius(20)
+            .backgroundColor(this.pal.card)
           }
           .width('100%')
-          .padding({ left: 16, right: 16, bottom: 8 })
-        }
-
-        // 模式切换（仅支持最新更新的源显示）
-        if (this.sourceKey !== 'local' && this.currentSource()?.supportsLatest === true) {
-          Row({ space: 8 }) {
-            Text($r('app.string.browse_popular'))
-              .fontSize(13)
-              .fontColor(this.mode === 'popular' ? '#FFFFFF' : this.pal.sub)
-              .backgroundColor(this.mode === 'popular' ? this.pal.primary : this.pal.bg)
-              .borderRadius(12)
-              .padding({ left: 12, right: 12, top: 4, bottom: 4 })
-              .onClick(() => {
-                if (this.mode !== 'popular') {
-                  this.mode = 'popular';
-                  this.loadFirst();
-                }
-              })
-            Text($r('app.string.browse_latest'))
-              .fontSize(13)
-              .fontColor(this.mode === 'latest' ? '#FFFFFF' : this.pal.sub)
-              .backgroundColor(this.mode === 'latest' ? this.pal.primary : this.pal.bg)
-              .borderRadius(12)
-              .padding({ left: 12, right: 12, top: 4, bottom: 4 })
-              .onClick(() => {
-                if (this.mode !== 'latest') {
-                  this.mode = 'latest';
-                  this.loadFirst();
-                }
-              })
-          }
-          .width('100%')
-          .padding({ left: 16, right: 16, bottom: 8 })
-        }
-
-        // 结果网格
-        if (this.currentSource() === undefined) {
-          Column() {
-            EmptyScreen({ message: $r('app.string.browse_source_missing') })
-          }
-          .layoutWeight(1)
+          .height('100%')
           .justifyContent(FlexAlign.Center)
-        } else if (this.searching) {
-          // 首次加载骨架屏（与结果网格同布局的占位卡片）
-          MangaSkeletonGrid({ columns: this.gridColumns() })
-        } else if (this.results.length === 0) {
-          Column() {
-            EmptyScreen({
-              message: this.localEmptyMessage(),
-            })
-          }
-          .layoutWeight(1)
-          .justifyContent(FlexAlign.Center)
-        } else {
-          Grid() {
-            ForEach(this.results, (record: MangaRecord) => {
-              GridItem() {
-                MangaCard({
-                  record: record,
-                  onCardClick: (r: MangaRecord): void => {
-                    this.openDetail(r);
-                  },
-                })
-              }
-            }, (record: MangaRecord) => `bs-${record.sourceKey}-${record.url}`)
-          }
-          .columnsTemplate(this.columnsTpl())
-          .columnsGap(12)
-          .rowsGap(16)
-          .padding({ left: 16, right: 16, top: 4 })
-          .contentEndOffset(this.navBarH + 16)
-          .layoutWeight(1)
-          .onReachEnd(() => {
-            this.loadMore();
-          })
+          .backgroundColor('rgba(0,0,0,0.45)')
         }
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
-      .onAreaChange((_old: Area, newArea: Area) => {
-        const w = newArea.width;
-        if (typeof w === 'number') {
-          this.contentW = w;
-        }
-      })
     }
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)
@@ -412,6 +461,7 @@ export struct BrowseSourcePage {
       const params = ctx.pathInfo.param as BrowseSourceParams;
       this.sourceKey = params !== undefined && params !== null ? params.sourceKey : '';
       this.mode = params !== undefined && params !== null && params.mode === 'latest' ? 'latest' : 'popular';
+      this.folderReady = LocalFolderManager.hasFolder();
       this.loadFirst();
     })
   }

@@ -1,5 +1,48 @@
 {
   "string": [
+    { "name": "more_downloaded_only_summary", "value": "Zure liburutegiko manga guztiak iragazten ditu" },
+    { "name": "more_incognito_summary", "value": "Irakurketa historia gelditu egiten du" },
+    { "name": "more_support", "value": "Lagun iezaguzu" },
+    { "name": "more_help", "value": "Laguntza" },
+    { "name": "support_perks", "value": "Mezenasek kanal esklusiboetarako sarbidea lortzen dute, abantaila gehiagorekin etorkizunean." },
+    { "name": "support_patreon", "value": "Patreon (hobetsia)" },
+    { "name": "support_opencollective", "value": "OpenCollective" },
+    { "name": "support_supported_by", "value": "Gaur egun %d+ mezenasek babesten dute Mihon. Eskerrak eman nahi dizkizuegu guztioi. Mihon are hobea egin dezagun elkarrekin." },
+    { "name": "support_contact_msg", "value": "Aukera alternatiboak edo lotutako edozein zalantza argitzeko, gure Discord zerbitzarian sartu." },
+    { "name": "support_discord", "value": "Discord" },
+    { "name": "data_storage_title", "value": "Datu eta memoria" },
+    { "name": "data_storage_location", "value": "Storage location" },
+    { "name": "data_storage_location_info", "value": "Used for automatic backups, chapter downloads, and local source." },
+    { "name": "data_backup_restore", "value": "Babeskopia egin eta leheneratu" },
+    { "name": "data_create_backup", "value": "Sortu babeskopia" },
+    { "name": "data_restore_backup", "value": "Babeskopia erabili" },
+    { "name": "data_backup_interval", "value": "Babeskopien maiztasuna" },
+    { "name": "data_backup_info", "value": "Babeskopia automatikoak oso gomendagarriak dira. Kopiak beste leku batzuetan ere gorde beharko zenituzke." },
+    { "name": "data_last_auto_backup", "value": "Last automatically backed up: %s" },
+    { "name": "data_storage_usage", "value": "Storage usage" },
+    { "name": "data_available_space", "value": "Available: %s / Total: %s" },
+    { "name": "data_clear_chapter_cache", "value": "Garbitu kapituluen cachea" },
+    { "name": "data_used_cache", "value": "Erabilia: %s" },
+    { "name": "data_cache_deleted", "value": "Cachea garbitu da. %d fitxategi ezabatu dira" },
+    { "name": "data_cache_delete_error", "value": "Errore bat gertatu da cachea garbitzean" },
+    { "name": "data_auto_clear_cache", "value": "Garbitu kapituluen cachea aplikazioa ixtean" },
+    { "name": "data_export", "value": "Export" },
+    { "name": "data_library_list", "value": "Library List" },
+    { "name": "data_library_exported", "value": "Library Exported" },
+    { "name": "data_export_include", "value": "Hautatu sartu nahi dituzun datuak" },
+    { "name": "data_column_title", "value": "Titulua" },
+    { "name": "data_column_author", "value": "Author" },
+    { "name": "data_interval_off", "value": "Itzali" },
+    { "name": "data_interval_6h", "value": "6 orduro" },
+    { "name": "data_interval_12h", "value": "12 orduro" },
+    { "name": "data_interval_24h", "value": "Egunero" },
+    { "name": "data_interval_48h", "value": "2 egunean behin" },
+    { "name": "data_interval_weekly", "value": "Astero" },
+    { "name": "data_storage_location_value", "value": "App private storage" },
+    { "name": "data_storage_name", "value": "Internal storage" },
+    { "name": "data_never_backed_up", "value": "Never" },
+    { "name": "data_export_canceled", "value": "Export canceled" },
+    { "name": "data_export_failed", "value": "Export failed" },
     {
       "name": "module_desc",
       "value": "module description"
@@ -222,7 +265,7 @@
     },
     {
       "name": "more_downloaded_only",
-      "value": "Deskargatuak soilik (lineaz kanpoko irakurketa)"
+      "value": "Deskargatuak bakarrik"
     },
     {
       "name": "more_incognito",
@@ -230,7 +273,7 @@
     },
     {
       "name": "more_downloads",
-      "value": "Deskargak"
+      "value": "Deskarga-ilara"
     },
     {
       "name": "more_categories",

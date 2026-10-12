@@ -1,5 +1,48 @@
 {
     "string":  [
+    { "name": "more_downloaded_only_summary", "value": "筛选书架里的全部作品" },
+    { "name": "more_incognito_summary", "value": "暂停记录阅读历史" },
+    { "name": "more_support", "value": "支持我们" },
+    { "name": "more_help", "value": "帮助" },
+    { "name": "support_perks", "value": "赞助者可访问专属频道，更多福利即将推出。" },
+    { "name": "support_patreon", "value": "Patreon（首选）" },
+    { "name": "support_opencollective", "value": "OpenCollective" },
+    { "name": "support_supported_by", "value": "目前 Mihon 已获得 %d+ 位赞助者的支持。我们衷心感谢大家。让我们携手把 Mihon 办得更出色。" },
+    { "name": "support_contact_msg", "value": "如需替代方案或有任何相关问题，请加入我们的 Discord 服务器。" },
+    { "name": "support_discord", "value": "Discord" },
+    { "name": "data_storage_title", "value": "数据与存储" },
+    { "name": "data_storage_location", "value": "存储位置" },
+    { "name": "data_storage_location_info", "value": "用于自动备份、章节下载、本地图源。" },
+    { "name": "data_backup_restore", "value": "备份与还原" },
+    { "name": "data_create_backup", "value": "创建备份" },
+    { "name": "data_restore_backup", "value": "还原备份" },
+    { "name": "data_backup_interval", "value": "自动备份频率" },
+    { "name": "data_backup_info", "value": "你应该将备份数据保存到多个地方。备份可能含有敏感数据（例如储存的密码），分享时请留意。" },
+    { "name": "data_last_auto_backup", "value": "上次自动备份时间：%s" },
+    { "name": "data_storage_usage", "value": "存储占用" },
+    { "name": "data_available_space", "value": "%s / %s" },
+    { "name": "data_clear_chapter_cache", "value": "清除章节缓存" },
+    { "name": "data_used_cache", "value": "已使用：%s" },
+    { "name": "data_cache_deleted", "value": "已清除缓存，删除了 %d 个文件" },
+    { "name": "data_cache_delete_error", "value": "清除时发生错误" },
+    { "name": "data_auto_clear_cache", "value": "启动时清除章节缓存" },
+    { "name": "data_export", "value": "导出" },
+    { "name": "data_library_list", "value": "书架列表" },
+    { "name": "data_library_exported", "value": "已导出列表" },
+    { "name": "data_export_include", "value": "选择需要迁移的数据" },
+    { "name": "data_column_title", "value": "标题" },
+    { "name": "data_column_author", "value": "作者" },
+    { "name": "data_interval_off", "value": "关闭" },
+    { "name": "data_interval_6h", "value": "每 6 小时" },
+    { "name": "data_interval_12h", "value": "每 12 小时" },
+    { "name": "data_interval_24h", "value": "每天" },
+    { "name": "data_interval_48h", "value": "每 2 天" },
+    { "name": "data_interval_weekly", "value": "每周" },
+    { "name": "data_storage_location_value", "value": "应用私有存储" },
+    { "name": "data_storage_name", "value": "内部存储" },
+    { "name": "data_never_backed_up", "value": "从未" },
+    { "name": "data_export_canceled", "value": "已取消导出" },
+    { "name": "data_export_failed", "value": "导出失败" },
                    {
                        "name":  "module_desc",
                        "value":  "module description"
@@ -222,15 +265,15 @@
                    },
                    {
                        "name":  "more_downloaded_only",
-                       "value":  "仅下载（离线阅读）"
+                       "value":  "仅限已下载内容"
                    },
                    {
                        "name":  "more_incognito",
-                       "value":  "无痕浏览"
+                       "value":  "无痕模式"
                    },
                    {
                        "name":  "more_downloads",
-                       "value":  "下载管理"
+                       "value":  "下载队列"
                    },
                    {
                        "name":  "more_categories",
@@ -480,86 +523,122 @@
                        "name":  "history_cleared",
                        "value":  "历史已清除"
                    },
-                   {
-                       "name":  "history_continue",
-                       "value":  "继续"
-                   },
-                   {
-                       "name":  "browse_title",
+                    {
+                        "name":  "history_continue",
+                        "value":  "继续"
+                    },
+                    {
+                        "name":  "history_no_next_chapter",
+                        "value":  "没有可继续的章节"
+                    },
+                    {
+                        "name":  "browse_title",
                        "value":  "浏览"
-                   },
-                   {
-                       "name":  "browse_import",
-                       "value":  "导入"
-                   },
-                   {
-                       "name":  "browse_plugins",
-                       "value":  "插件"
-                   },
-                   {
-                       "name":  "browse_local_source_name",
-                       "value":  "本地漫画"
-                   },
-                   {
-                       "name":  "browse_popular",
-                       "value":  "热门"
-                   },
-                   {
-                       "name":  "browse_latest",
-                       "value":  "最新"
-                   },
-                   {
-                       "name":  "browse_search_hint",
-                       "value":  "搜索漫画…"
-                   },
-                   {
-                       "name":  "browse_no_results",
-                       "value":  "没有找到漫画"
-                   },
-                   {
-                       "name":  "browse_local_empty",
-                       "value":  "还没有本地漫画，点击导入添加"
-                   },
-                   {
-                       "name":  "browse_load_failed",
-                       "value":  "加载失败：%s"
-                   },
-                   {
-                       "name":  "browse_search_failed",
-                       "value":  "搜索失败：%s"
-                   },
-                   {
-                       "name":  "browse_load_more_failed",
-                       "value":  "加载更多失败"
-                   },
-                   {
-                       "name":  "browse_open_detail_failed",
-                       "value":  "打开详情失败"
-                   },
-                   {
-                       "name":  "browse_pick_file_failed",
-                       "value":  "选择文件失败"
-                   },
-                   {
-                       "name":  "browse_import_title",
-                       "value":  "导入 %d 个文件"
-                   },
-                   {
-                       "name":  "browse_manga_name_hint",
-                       "value":  "漫画名称"
-                   },
-                   {
-                       "name":  "browse_input_name",
-                       "value":  "请输入名称"
-                   },
-                   {
-                       "name":  "browse_import_done",
-                       "value":  "已导入 %d 个文件"
-                   },
-                   {
-                       "name":  "browse_import_failed",
-                       "value":  "导入失败：%s"
-                   },
+                    },
+                    {
+                        "name":  "browse_plugins",
+                        "value":  "插件"
+                    },
+                    {
+                        "name":  "browse_local_source_name",
+                        "value":  "本地漫画"
+                    },
+                    {
+                        "name":  "browse_popular",
+                        "value":  "热门"
+                    },
+                    {
+                        "name":  "browse_latest",
+                        "value":  "最新"
+                    },
+                    {
+                        "name":  "browse_search_hint",
+                        "value":  "搜索漫画…"
+                    },
+                    {
+                        "name":  "browse_no_results",
+                        "value":  "没有找到漫画"
+                    },
+                    {
+                        "name":  "browse_load_failed",
+                        "value":  "加载失败：%s"
+                    },
+                    {
+                        "name":  "browse_search_failed",
+                        "value":  "搜索失败：%s"
+                    },
+                    {
+                        "name":  "browse_load_more_failed",
+                        "value":  "加载更多失败"
+                    },
+                    {
+                        "name":  "browse_open_detail_failed",
+                        "value":  "打开详情失败"
+                    },
+                     {
+                         "name":  "browse_pick_folder_failed",
+                         "value":  "选择文件夹失败"
+                     },
+                     {
+                         "name":  "browse_local_setup",
+                         "value":  "选择文件夹"
+                     },
+                     {
+                         "name":  "browse_local_sync",
+                         "value":  "同步"
+                     },
+                     {
+                         "name":  "browse_local_change",
+                         "value":  "更换文件夹"
+                     },
+                     {
+                         "name":  "browse_local_folder_title",
+                         "value":  "本地文件夹"
+                     },
+                     {
+                         "name":  "browse_local_syncing",
+                         "value":  "正在同步文件夹…"
+                     },
+                     {
+                         "name":  "browse_local_sync_done",
+                         "value":  "同步完成"
+                     },
+                     {
+                         "name":  "browse_local_sync_failed",
+                         "value":  "同步失败：%s"
+                     },
+                     {
+                         "name":  "browse_local_access_failed",
+                         "value":  "无法访问本地文件夹，请重新选择"
+                     },
+                     {
+                         "name":  "browse_local_persist_failed",
+                         "value":  "保存文件夹访问权限失败"
+                     },
+                     {
+                         "name":  "browse_local_folder_unsupported",
+                         "value":  "当前设备不支持选择文件夹"
+                     },
+                     {
+                         "name":  "browse_local_folder_empty",
+                         "value":  "还没有设置本地文件夹"
+                     },
+                      {
+                          "name":  "browse_local_synced_empty",
+                          "value":  "本地文件夹中未找到内容"
+                      },
+                      {
+                          "name":  "browse_local_comic_empty",
+                          "value":  "comic 子文件夹中未找到内容"
+                      },
+                      {
+                          "name":  "browse_local_novel_empty",
+                          "value":  "novel 子文件夹中未找到内容"
+                      },
+                      {
+                          "name":  "browse_local_anime_empty",
+                          "value":  "anime 子文件夹中未找到内容"
+                      },
                    {
                        "name":  "download_title",
                        "value":  "下载"
@@ -1564,8 +1643,6 @@
       { "name": "browse_type_empty", "value": "这个类型还没有图源" },
       { "name": "browse_local_novel_name", "value": "本地小说" },
       { "name": "browse_local_video_name", "value": "本地视频" },
-      { "name": "browse_local_files_empty", "value": "还没有本地文件，点导入添加" },
-      { "name": "browse_work_name_hint", "value": "名称" },
       { "name": "lib_filter_content", "value": "类型" },
       { "name": "lib_filter_type_all", "value": "全部" },
       { "name": "detail_start_playing", "value": "开始播放" },
@@ -1576,6 +1653,11 @@
       { "name": "novel_empty", "value": "这一章没有正文" },
       { "name": "novel_prev", "value": "上一章" },
       { "name": "novel_next", "value": "下一章" },
+      { "name": "novel_mode_scroll", "value": "滚动" },
+      { "name": "novel_mode_paged", "value": "翻页" },
+      { "name": "novel_mode_double", "value": "双页" },
+      { "name": "novel_paging_mode", "value": "翻页方式" },
+      { "name": "novel_paragraph_spacing", "value": "段间距" },
       { "name": "video_play", "value": "播放" },
       { "name": "video_pause", "value": "暂停" },
       { "name": "video_prev", "value": "上一集" },

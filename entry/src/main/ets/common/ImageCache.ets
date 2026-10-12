@@ -116,6 +116,14 @@ export class ImageCache {
     return total;
   }
 
+  // 缓存文件数量（清除章节缓存时用于提示删除了多少个文件）
+  static count(): number {
+    if (ImageCache.dir === '' || !fs.accessSync(ImageCache.dir)) {
+      return 0;
+    }
+    return fs.listFileSync(ImageCache.dir).length;
+  }
+
   // 清空缓存目录，返回清除的字节数
   static clearAll(): number {
     const total = ImageCache.size();

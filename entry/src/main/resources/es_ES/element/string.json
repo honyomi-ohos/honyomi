@@ -1,5 +1,48 @@
 {
   "string": [
+    { "name": "more_downloaded_only_summary", "value": "Filtra todos los elementos de tu biblioteca para ver solo los que estén disponibles sin conexión" },
+    { "name": "more_incognito_summary", "value": "Pausa el historial de lectura" },
+    { "name": "more_support", "value": "Apóyanos" },
+    { "name": "more_help", "value": "Ayuda" },
+    { "name": "support_perks", "value": "Las personas que contribuyan obtendrán acceso a canales exclusivos, y en el futuro tendréis muchas más ventajas." },
+    { "name": "support_patreon", "value": "Patreon (preferido)" },
+    { "name": "support_opencollective", "value": "OpenCollective" },
+    { "name": "support_supported_by", "value": "Mihon cuenta ahora mismo con el apoyo de %d+ personas. Os damos las gracias de corazón por hacer que Mihon mejore día a día." },
+    { "name": "support_contact_msg", "value": "Únete a nuestro servidor de Discord si tienes dudas u otras formas de pago." },
+    { "name": "support_discord", "value": "Discord" },
+    { "name": "data_storage_title", "value": "Datos y almacenamiento" },
+    { "name": "data_storage_location", "value": "Ubicación del almacenamiento" },
+    { "name": "data_storage_location_info", "value": "Se utiliza para las copias de seguridad automáticas, poder descargar capítulos y abrir los que ya tengas en tu dispositivo." },
+    { "name": "data_backup_restore", "value": "Copia de seguridad y restauración" },
+    { "name": "data_create_backup", "value": "Crear una copia de seguridad" },
+    { "name": "data_restore_backup", "value": "Restaurar copia de seguridad" },
+    { "name": "data_backup_interval", "value": "Frecuencia de respaldo automático" },
+    { "name": "data_backup_info", "value": "Es una buena idea tener copias de respaldo fuera de tu dispositivo. Ten en cuenta que incluyen contraseñas y otros datos privados que seguramente no quieras compartir." },
+    { "name": "data_last_auto_backup", "value": "Última copia automática: %s" },
+    { "name": "data_storage_usage", "value": "Almacenamiento utilizado" },
+    { "name": "data_available_space", "value": "Disponible: %s / Total: %s" },
+    { "name": "data_clear_chapter_cache", "value": "Limpiar la caché de capítulos" },
+    { "name": "data_used_cache", "value": "Usado: %s" },
+    { "name": "data_cache_deleted", "value": "Se vació la caché. Se han borrado %d archivos" },
+    { "name": "data_cache_delete_error", "value": "Se produjo un error al limpiar" },
+    { "name": "data_auto_clear_cache", "value": "Limpiar la caché de capítulos al abrir la aplicación" },
+    { "name": "data_export", "value": "Exportar" },
+    { "name": "data_library_list", "value": "Elementos en la biblioteca" },
+    { "name": "data_library_exported", "value": "La biblioteca se ha exportado" },
+    { "name": "data_export_include", "value": "Elige qué datos incluir" },
+    { "name": "data_column_title", "value": "Título" },
+    { "name": "data_column_author", "value": "Autor" },
+    { "name": "data_interval_off", "value": "No" },
+    { "name": "data_interval_6h", "value": "Cada 6 horas" },
+    { "name": "data_interval_12h", "value": "Cada 12 horas" },
+    { "name": "data_interval_24h", "value": "Diarias" },
+    { "name": "data_interval_48h", "value": "Cada 2 días" },
+    { "name": "data_interval_weekly", "value": "Semanales" },
+    { "name": "data_storage_location_value", "value": "App private storage" },
+    { "name": "data_storage_name", "value": "Internal storage" },
+    { "name": "data_never_backed_up", "value": "Never" },
+    { "name": "data_export_canceled", "value": "Export canceled" },
+    { "name": "data_export_failed", "value": "Export failed" },
     {
       "name": "module_desc",
       "value": "module description"
@@ -222,15 +265,15 @@
     },
     {
       "name": "more_downloaded_only",
-      "value": "Solo descargados (lectura sin conexión)"
+      "value": "Sólo ya descargados"
     },
     {
       "name": "more_incognito",
-      "value": "Incógnito"
+      "value": "Modo incógnito"
     },
     {
       "name": "more_downloads",
-      "value": "Descargas"
+      "value": "Cola de descargas"
     },
     {
       "name": "more_categories",

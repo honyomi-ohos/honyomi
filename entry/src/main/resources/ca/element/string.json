@@ -1,5 +1,48 @@
 {
   "string": [
+    { "name": "more_downloaded_only_summary", "value": "Filtra tots els elements de la vostra biblioteca" },
+    { "name": "more_incognito_summary", "value": "Pausa l’historial de lectura" },
+    { "name": "more_support", "value": "Doneu-nos suport" },
+    { "name": "more_help", "value": "Ajuda" },
+    { "name": "support_perks", "value": "Els mecenes tenen accés a canals exclusius, i en el futur tindran més avantatges." },
+    { "name": "support_patreon", "value": "Patreon (preferit)" },
+    { "name": "support_opencollective", "value": "OpenCollective" },
+    { "name": "support_supported_by", "value": "El Mihon rep el suport de més de %d mecenes. Volem donar-vos les gràcies a tots vosaltres. Junts, fem que el Mihon sigui encara millor." },
+    { "name": "support_contact_msg", "value": "Per a opcions alternatives o altres qüestions relacionades, uniu-vos al nostre servidor del Discord." },
+    { "name": "support_discord", "value": "Discord" },
+    { "name": "data_storage_title", "value": "Dades i emmagatzematge" },
+    { "name": "data_storage_location", "value": "Ubicació de l’emmagatzematge" },
+    { "name": "data_storage_location_info", "value": "S’utilitza per a les còpies de seguretat automàtiques, les baixades de capítols i la font local." },
+    { "name": "data_backup_restore", "value": "Còpia de seguretat i restauració" },
+    { "name": "data_create_backup", "value": "Crea una còpia de seguretat" },
+    { "name": "data_restore_backup", "value": "Restaura una còpia de seguretat" },
+    { "name": "data_backup_interval", "value": "Freqüència de la còpia de seguretat automàtica" },
+    { "name": "data_backup_info", "value": "També hauríeu de desar còpies de les còpies de seguretat en altres llocs. Les còpies de seguretat poden contenir dades sensibles, incloent-hi les contrasenyes desades; aneu amb compte si les compartiu." },
+    { "name": "data_last_auto_backup", "value": "Darrera còpia de seguretat automàtica: %s" },
+    { "name": "data_storage_usage", "value": "Ús de l’emmagatzematge" },
+    { "name": "data_available_space", "value": "Disponible: %s / Total: %s" },
+    { "name": "data_clear_chapter_cache", "value": "Buida la memòria cau de capítols" },
+    { "name": "data_used_cache", "value": "Ús: %s" },
+    { "name": "data_cache_deleted", "value": "S’ha buidat la memòria cau i s’han suprimit %d fitxers" },
+    { "name": "data_cache_delete_error", "value": "S’ha produït un error en netejar" },
+    { "name": "data_auto_clear_cache", "value": "Buida la memòria cau de capítols en obrir l’aplicació" },
+    { "name": "data_export", "value": "Exporta" },
+    { "name": "data_library_list", "value": "Llista de la biblioteca" },
+    { "name": "data_library_exported", "value": "S’ha exportat la biblioteca" },
+    { "name": "data_export_include", "value": "Seleccioneu les dades a incloure" },
+    { "name": "data_column_title", "value": "Títol" },
+    { "name": "data_column_author", "value": "Autor" },
+    { "name": "data_interval_off", "value": "Desactivat" },
+    { "name": "data_interval_6h", "value": "Cada 6 hores" },
+    { "name": "data_interval_12h", "value": "Cada 12 hores" },
+    { "name": "data_interval_24h", "value": "Cada dia" },
+    { "name": "data_interval_48h", "value": "Cada 2 dies" },
+    { "name": "data_interval_weekly", "value": "Cada setmana" },
+    { "name": "data_storage_location_value", "value": "App private storage" },
+    { "name": "data_storage_name", "value": "Internal storage" },
+    { "name": "data_never_backed_up", "value": "Never" },
+    { "name": "data_export_canceled", "value": "Export canceled" },
+    { "name": "data_export_failed", "value": "Export failed" },
     {
       "name": "module_desc",
       "value": "module description"
@@ -222,15 +265,15 @@
     },
     {
       "name": "more_downloaded_only",
-      "value": "Només baixats (lectura fora de línia)"
+      "value": "Només els baixats"
     },
     {
       "name": "more_incognito",
-      "value": "Mode d'incògnit"
+      "value": "Mode d’incògnit"
     },
     {
       "name": "more_downloads",
-      "value": "Baixades"
+      "value": "Cua de baixades"
     },
     {
       "name": "more_categories",

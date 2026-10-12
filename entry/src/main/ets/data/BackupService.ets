@@ -1,6 +1,7 @@
 import { picker, fileIo } from '@kit.CoreFileKit';
 import { common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { Settings } from '../common/Settings';
 import { MangaRepo, ChapterRepo, CategoryRepo } from './Repos';
 import { SManga, CategoryRecord, MangaRecord, ChapterRecord, ContentType } from '../model/Models';
 
@@ -175,5 +176,108 @@ export class BackupService {
     const dirty = AppStorage.get<number>('libDirty');
     AppStorage.setOrCreate('libDirty', (dirty !== undefined ? dirty : 0) + 1);
     return count;
+  }
+
+  // ---- 自动备份（对齐 Mihon BackupCreateJob 定时任务，应用启动时检查到期与否）----
+
+  // 自动备份到应用私有目录 backups/，保留最近 3 份；返回写入的文件路径
+  static async autoBackup(context: common.UIAbilityContext): Promise<string> {
+    const root: BackupRoot = await BackupService.buildBackup();
+    const text: string = JSON.stringify(root);
+    const dir: string = `${context.filesDir}/backups`;
+    if (!fileIo.accessSync(dir)) {
+      fileIo.mkdirSync(dir, true);
+    }
+    const path: string = `${dir}/honyomi_backup_${Date.now()}.json`;
+    const file = fileIo.openSync(path, fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE);
+    try {
+      fileIo.writeSync(file.fd, text);
+    } finally {
+      fileIo.closeSync(file);
+    }
+    BackupService.pruneBackups(dir);
+    return path;
+  }
+
+  // 到期则执行自动备份（频率 0 = 关闭；距上次备份超过频率间隔才触发）
+  static async runAutoBackupIfDue(context: common.UIAbilityContext): Promise<void> {
+    const intervalHours: number = Settings.getBackupInterval();
+    if (intervalHours <= 0) {
+      return;
+    }
+    const last: number = Settings.getLastAutoBackupTimestamp();
+    if (last > 0 && Date.now() - last < intervalHours * 3600 * 1000) {
+      return;
+    }
+    try {
+      await BackupService.autoBackup(context);
+      Settings.setLastAutoBackupTimestamp(Date.now());
+    } catch (e) {
+      hilog.error(0x0001, 'Backup', 'auto backup failed');
+    }
+  }
+
+  // 只保留最近 3 份自动备份（文件名含时间戳，字典序即时间序）
+  private static pruneBackups(dir: string): void {
+    const names: string[] = fileIo.listFileSync(dir);
+    const backups: string[] = [];
+    for (const name of names) {
+      if (name.indexOf('honyomi_backup_') === 0 && name.indexOf('.json') === name.length - 5) {
+        backups.push(name);
+      }
+    }
+    backups.sort();
+    while (backups.length > 3) {
+      const oldest: string | undefined = backups.shift();
+      if (oldest !== undefined) {
+        fileIo.unlinkSync(`${dir}/${oldest}`);
+      }
+    }
+  }
+
+  // ---- 书架列表 CSV 导出（对齐 Mihon LibraryExporter）----
+
+  // 返回 false 表示用户取消选择保存位置
+  static async exportLibraryCsv(context: common.UIAbilityContext,
+    includeTitle: boolean, includeAuthor: boolean): Promise<boolean> {
+    const library: MangaRecord[] = await MangaRepo.getLibrary();
+    const rows: string[] = [];
+    for (const m of library) {
+      const cols: string[] = [];
+      if (includeTitle) {
+        cols.push(BackupService.csvCell(m.title));
+      }
+      if (includeAuthor) {
+        cols.push(BackupService.csvCell(m.author));
+      }
+      rows.push(cols.join(','));
+    }
+    const text: string = rows.join('\r\n');
+    const options = new picker.DocumentSaveOptions();
+    options.newFileNames = ['honyomi_library.csv'];
+    const docPicker = new picker.DocumentViewPicker(context);
+    const uris: Array<string> = await docPicker.save(options);
+    if (uris.length === 0) {
+      return false;
+    }
+    const file = fileIo.openSync(uris[0], fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE);
+    try {
+      fileIo.writeSync(file.fd, text);
+    } finally {
+      fileIo.closeSync(file);
+    }
+    return true;
+  }
+
+  // CSV 单元格转义：包含换行/引号/逗号时用双引号包裹并双写内部引号
+  private static csvCell(value: string): string {
+    if (value === '') {
+      return '';
+    }
+    if (value.indexOf('\r') >= 0 || value.indexOf('\n') >= 0 ||
+      value.indexOf('"') >= 0 || value.indexOf(',') >= 0) {
+      return `"${value.replace(/"/g, '""')}"`;
+    }
+    return value;
   }
 }

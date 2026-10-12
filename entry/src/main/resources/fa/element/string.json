@@ -1,5 +1,48 @@
 {
   "string": [
+    { "name": "more_downloaded_only_summary", "value": "همه مانگاهای موجود در کتابخانه را فیلتر می کند" },
+    { "name": "more_incognito_summary", "value": "متوقف کردن تاریخچه خواندن" },
+    { "name": "more_support", "value": "از ما حمایت کنید" },
+    { "name": "more_help", "value": "راهنما" },
+    { "name": "support_perks", "value": "حامیان به کانال‌های اختصاصی دسترسی پیدا می‌کنند و مزایای بیشتری نیز در راه است." },
+    { "name": "support_patreon", "value": "پتریون (ترجیحی)" },
+    { "name": "support_opencollective", "value": "اوپن کالکتیو" },
+    { "name": "support_supported_by", "value": "میهون در حال حاضر از حمایت %d+ حامی برخوردار است. می‌خواهیم از تک‌تک شما تشکر کنیم. بیایید با هم میهون را حتی بهتر کنیم." },
+    { "name": "support_contact_msg", "value": "برای گزینه‌های جایگزین یا هرگونه سؤال مرتبط، به سرور دیسکورد ما بپیوندید." },
+    { "name": "support_discord", "value": "دیسکورد" },
+    { "name": "data_storage_title", "value": "داده های و ذخیره سازی" },
+    { "name": "data_storage_location", "value": "محل زخیره سازی" },
+    { "name": "data_storage_location_info", "value": "قابل استفاده برای به روز رسانی خودکار، بارگیری قسمت ها، و منابع محلی." },
+    { "name": "data_backup_restore", "value": "پشتیبان گیری و بازیابی" },
+    { "name": "data_create_backup", "value": "تهیه نسخه پشتیبان" },
+    { "name": "data_restore_backup", "value": "برگرداندن نسخه پشتیبان" },
+    { "name": "data_backup_interval", "value": "زمان پشتیبان گیری" },
+    { "name": "data_backup_info", "value": "شما باید از پشتیبانی ها در جا های دیگر هم کپی داشته باشید." },
+    { "name": "data_last_auto_backup", "value": "آخرین پشتیبان گیری خودکار: %s" },
+    { "name": "data_storage_usage", "value": "استفاده از فظای زخیره سازی" },
+    { "name": "data_available_space", "value": "در دسترس: %s / کل:%s" },
+    { "name": "data_clear_chapter_cache", "value": "پاک کردن حافظه پنهان قسمت‌ها" },
+    { "name": "data_used_cache", "value": "مصرف شده: %s" },
+    { "name": "data_cache_deleted", "value": "حافظه نهان پاک شد. %d فایل پاک شدند" },
+    { "name": "data_cache_delete_error", "value": "هنگام پاک کردن حافظه نهان خطایی روی داد" },
+    { "name": "data_auto_clear_cache", "value": "هنگام راه‌اندازی برنامه، حافظه پنهان قسمت را پاک کنید" },
+    { "name": "data_export", "value": "صادرات" },
+    { "name": "data_library_list", "value": "فهرست کتابخانه" },
+    { "name": "data_library_exported", "value": "کتابخانه صادر شد" },
+    { "name": "data_export_include", "value": "اطلاعاتی که می‌خواهید منتقل شود را انتخاب کنید" },
+    { "name": "data_column_title", "value": "عنوان" },
+    { "name": "data_column_author", "value": "نویسنده" },
+    { "name": "data_interval_off", "value": "خاموش" },
+    { "name": "data_interval_6h", "value": "هر ۶ ساعت یکبار" },
+    { "name": "data_interval_12h", "value": "هر ۱۲ ساعت یکبار" },
+    { "name": "data_interval_24h", "value": "هر ۲۴ ساعت یکبار" },
+    { "name": "data_interval_48h", "value": "هر ۴۸ ساعت یکبار" },
+    { "name": "data_interval_weekly", "value": "هفتگی" },
+    { "name": "data_storage_location_value", "value": "App private storage" },
+    { "name": "data_storage_name", "value": "Internal storage" },
+    { "name": "data_never_backed_up", "value": "Never" },
+    { "name": "data_export_canceled", "value": "Export canceled" },
+    { "name": "data_export_failed", "value": "Export failed" },
     {
       "name": "module_desc",
       "value": "module description"
@@ -222,15 +265,15 @@
     },
     {
       "name": "more_downloaded_only",
-      "value": "فقط دانلودشده‌ها (خواندن آفلاین)"
+      "value": "فقط دانلود شده ها"
     },
     {
       "name": "more_incognito",
-      "value": "ناشناس"
+      "value": "حالت ناشناس"
     },
     {
       "name": "more_downloads",
-      "value": "دانلودها"
+      "value": "صف دانلود"
     },
     {
       "name": "more_categories",
