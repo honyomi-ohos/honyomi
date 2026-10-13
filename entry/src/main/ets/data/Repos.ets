@@ -351,13 +351,18 @@ export class ChapterRepo {
     return result;
   }
 
-  // 用源返回的章节列表刷新本地记录，保留已读状态；返回新增章节数
+  // 用源返回的章节列表全量刷新本地记录：保留仍在源中的章节已读状态、
+  // 删除源已移除的章节（含历史，章节可能在源端被删除）；返回新增章节数
   static async syncFromSource(mangaId: number, chapters: SChapter[]): Promise<number> {
     const store = await AppDb.get();
     const existing = await ChapterRepo.listByManga(mangaId);
     const existingKeys = new Set<string>();
     for (const c of existing) {
       existingKeys.add(c.url);
+    }
+    const sourceKeys = new Set<string>();
+    for (const c of chapters) {
+      sourceKeys.add(c.key);
     }
     let newCount = 0;
     store.beginTransaction();
@@ -389,6 +394,17 @@ export class ChapterRepo {
           };
           await store.insert('chapter', values);
           newCount += 1;
+        }
+      }
+      // 移除源已删除的章节及其历史记录
+      for (const c of existing) {
+        if (!sourceKeys.has(c.url)) {
+          const chapterPred = new relationalStore.RdbPredicates('chapter');
+          chapterPred.equalTo('id', c.id);
+          await store.delete(chapterPred);
+          const historyPred = new relationalStore.RdbPredicates('history');
+          historyPred.equalTo('chapterId', c.id);
+          await store.delete(historyPred);
         }
       }
       store.commit();

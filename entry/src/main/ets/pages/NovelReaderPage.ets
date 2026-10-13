@@ -9,6 +9,7 @@ import { ReaderParams } from '../model/RouteParams';
 import { Theme, ThemePalette } from '../common/Theme';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
+import { NovelTts } from '../common/NovelTts';
 import { ReaderWindow } from '../common/ReaderWindow';
 import { ReaderChapterNav, ChapterNeighbors } from '../common/ReaderChapterNav';
 import { DownloadService } from '../data/DownloadService';
@@ -20,6 +21,35 @@ import { EmulationFlipView } from './components/PageFlip';
 const NOVEL_ORIENTATIONS: string[] = ['free', 'portrait', 'landscape', 'lock_portrait', 'lock_landscape'];
 const NOVEL_ORIENTATION_ICONS: string[] =
   ['screen_rotation', 'stay_current_portrait', 'stay_current_landscape', 'screen_lock_portrait', 'screen_lock_landscape'];
+// 翻页屏幕的 LazyForEach 数据源：按需构建当前屏及相邻屏，大章节不再一次性渲染全部页面
+class NovelScreenSource implements IDataSource {
+  private items: number[] = [];
+  private listeners: DataChangeListener[] = [];
+
+  setItems(items: number[]): void {
+    this.items = items;
+    for (const listener of this.listeners) {
+      listener.onDataReloaded();
+    }
+  }
+
+  totalCount(): number {
+    return this.items.length;
+  }
+
+  getData(index: number): number {
+    return this.items[index];
+  }
+
+  registerDataChangeListener(listener: DataChangeListener): void {
+    this.listeners.push(listener);
+  }
+
+  unregisterDataChangeListener(listener: DataChangeListener): void {
+    this.listeners = this.listeners.filter((l: DataChangeListener): boolean => l !== listener);
+  }
+}
+
 // 阅读模式的可选值（与模式选择 sheet 选项一一对应）
 const NOVEL_MODES: string[] = ['scroll', 'paged', 'paged_rtl', 'double'];
 const NOVEL_MODE_ICONS: string[] = ['reader_scroll', 'reader_ltr', 'reader_rtl', 'reader_double'];
@@ -64,6 +94,11 @@ export struct NovelReaderPage {
   @State showDisplaySheet: boolean = false;
   @State showTextSheet: boolean = false;
   @State brightLv: number = 0;
+  // 听书（系统 TTS）：播放中 / 当前朗读段 / 语速面板
+  @State ttsPlaying: boolean = false;
+  @State ttsParaIdx: number = -1;
+  @State showTtsSheet: boolean = false;
+  @State ttsSpeed: number = 1;
   // 正文配色：auto=跟随背景 light=浅色 dark=深色
   @State colorScheme: string = 'auto';
   @State pageMargin: number = 20;
@@ -89,14 +124,23 @@ export struct NovelReaderPage {
   private restored: boolean = false;
   private permille: number = 0;
   private swiperCtrl: SwiperController = new SwiperController();
+  private screenSource: NovelScreenSource = new NovelScreenSource();
   private contW: number = 0;
   private contH: number = 0;
   private pageW: number = 0;
   private pageH: number = 0;
   private pagSig: string = '';
 
-  // 屏幕物理像素密度（仿真翻转的透视距离按物理像素计）
   private screenDensity: number = 2;
+  // 段落 → 翻页页码映射（buildPages 填充，听书跟随翻页用）
+  private paraPage: number[] = [];
+  // 听书自动续播下一章标记
+  private ttsResume: boolean = false;
+  // 滚动模式视口宽度（听书跟随滚动测高用）
+  private scrollW: number = 0;
+  // 滚动模式段落纵向偏移缓存（签名变化时重算）
+  private paraOffsets: number[] = [];
+  private paraOffSig: string = '';
 
   aboutToAppear(): void {
     try {
@@ -116,11 +160,15 @@ export struct NovelReaderPage {
     this.pageMargin = Settings.getNovelMargin();
     this.fontFamily = Settings.getNovelFontFamily();
     this.brightLv = Settings.getReaderBrightness();
+    this.ttsSpeed = Settings.getNovelTtsSpeed();
     this.applyOrientation();
     this.applyBrightness();
+    this.wireTtsEvents();
   }
 
   aboutToDisappear(): void {
+    NovelTts.stop();
+    NovelTts.resetEvents();
     this.persist();
     ReadingStatsRepo.flush();
     // 还原窗口方向与亮度
@@ -142,8 +190,14 @@ export struct NovelReaderPage {
     this.body = '';
     this.pages = [];
     this.screenIdxs = [];
+    this.screenSource.setItems([]);
     this.pageIdx = 0;
     this.pagSig = '';
+    NovelTts.stop();
+    this.ttsPlaying = false;
+    this.ttsParaIdx = -1;
+    this.paraPage = [];
+    this.paraOffSig = '';
     this.mode = Settings.getNovelReaderMode();
     this.fontSize = Settings.getNovelFontSize();
     this.lineHeight = Settings.getNovelLineHeight();
@@ -189,10 +243,16 @@ export struct NovelReaderPage {
       await HistoryRepo.upsert(chapter.mangaId, chapter.id, this.permille);
       ReadingStatsRepo.begin(chapter.mangaId, chapter.id);
     } catch (e) {
+      this.ttsResume = false;
       Util.toastRes(this.getUIContext(), $r('app.string.reader_load_failed'), [(e as Error).message]);
     }
     this.loading = false;
     this.ensurePaginated();
+    // 听书自动续播：上一章播完自动加载下一章后从头继续朗读
+    if (this.ttsResume) {
+      this.ttsResume = false;
+      this.startTts(0);
+    }
   }
 
   private async loadNeighbors(): Promise<void> {
@@ -250,6 +310,201 @@ export struct NovelReaderPage {
     this.persist();
     this.chapterId = id;
     this.loadChapter();
+  }
+
+  // ---- 听书（系统 TTS）----
+
+  // 接管 NovelTts 事件：跟随滚动/翻页、播完自动下一章、错误提示
+  private wireTtsEvents(): void {
+    NovelTts.events.onParaStart = (idx: number): void => {
+      this.ttsParaIdx = idx;
+      this.followTtsPara(idx);
+    };
+    NovelTts.events.onAllDone = (): void => {
+      this.ttsPlaying = false;
+      this.ttsParaIdx = -1;
+      if (this.nextId > 0) {
+        this.ttsResume = true;
+        this.openChapter(this.nextId);
+      } else {
+        Util.toastRes(this.getUIContext(), $r('app.string.novel_tts_finish'));
+      }
+    };
+    NovelTts.events.onError = (message: string): void => {
+      this.ttsPlaying = false;
+      this.ttsParaIdx = -1;
+      Util.toastRes(this.getUIContext(), $r('app.string.novel_tts_error'), [message]);
+    };
+  }
+
+  // 听书文本段落：html 章节剥除标签，纯文本按行拆分
+  private ttsParas(): string[] {
+    if (this.html) {
+      const stripped = this.body
+        .replace(/<br\s*\/?>/gi, '\n')
+        .replace(/<\/p>/gi, '\n')
+        .replace(/<[^>]+>/g, '')
+        .replace(/&nbsp;/g, ' ')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&amp;/g, '&');
+      return stripped.split('\n');
+    }
+    return this.body.split('\n');
+  }
+
+  // 按开头若干段采样推断语种（ASCII 过半判英文）
+  private ttsLang(paras: string[]): string {
+    let ascii = 0;
+    let total = 0;
+    const sampleCount = Math.min(paras.length, 40);
+    for (let i = 0; i < sampleCount; i++) {
+      const s = paras[i];
+      for (let j = 0; j < s.length; j++) {
+        const c = s.charCodeAt(j);
+        if (c > 32) {
+          total++;
+          if (c < 128) {
+            ascii++;
+          }
+        }
+      }
+    }
+    if (total > 0 && ascii * 2 > total) {
+      return 'en-US';
+    }
+    return 'zh-CN';
+  }
+
+  // 起播段落：翻页/双页取当前页首段；滚动/html 按进度比例估算
+  private currentTtsPara(): number {
+    const paras = this.ttsParas();
+    if (paras.length === 0) {
+      return 0;
+    }
+    if (!this.html && this.mode !== 'scroll' && this.paraPage.length === paras.length) {
+      const total = this.pages.length;
+      if (total > 0) {
+        const logical = this.mode === 'double' ? this.pageIdx * 2 :
+          (this.mode === 'paged_rtl' ? total - 1 - this.pageIdx : this.pageIdx);
+        const page = Math.min(total - 1, Math.max(0, logical));
+        for (let i = 0; i < this.paraPage.length; i++) {
+          if (this.paraPage[i] >= page) {
+            return i;
+          }
+        }
+        return paras.length - 1;
+      }
+    }
+    return Math.min(paras.length - 1, Math.max(0, Math.round(this.permille * (paras.length - 1) / 1000)));
+  }
+
+  private async startTts(fromPara: number): Promise<void> {
+    if (this.body === '') {
+      return;
+    }
+    const paras = this.ttsParas();
+    if (paras.length === 0) {
+      return;
+    }
+    this.ttsPlaying = true;
+    const ok = await NovelTts.start(paras, fromPara, this.ttsLang(paras));
+    if (!ok) {
+      this.ttsPlaying = false;
+      this.ttsParaIdx = -1;
+      Util.toastRes(this.getUIContext(), $r('app.string.novel_tts_error'), ['engine']);
+    }
+  }
+
+  private toggleTts(): void {
+    if (NovelTts.isPlaying()) {
+      NovelTts.stop();
+      this.ttsPlaying = false;
+      this.ttsParaIdx = -1;
+      return;
+    }
+    this.startTts(this.currentTtsPara());
+  }
+
+  private setTtsSpeed(v: number): void {
+    this.ttsSpeed = v;
+    Settings.setNovelTtsSpeed(v);
+    // 播放中改语速：从当前朗读段以新语速续播
+    if (NovelTts.isPlaying()) {
+      const from = this.ttsParaIdx >= 0 ? this.ttsParaIdx : NovelTts.currentPara();
+      NovelTts.stop();
+      this.startTts(from);
+    }
+  }
+
+  // 跟随朗读进度：滚动模式滚到对应段落，翻页/双页翻到对应页
+  private followTtsPara(idx: number): void {
+    if (this.html) {
+      return;
+    }
+    if (this.mode === 'scroll') {
+      this.followTtsScroll(idx);
+    } else {
+      this.followTtsPaged(idx);
+    }
+  }
+
+  // 滚动跟随：按测量计算段落纵向偏移（带签名缓存），段落不在可视区时滚动过去
+  private followTtsScroll(idx: number): void {
+    const paras = this.body.split('\n');
+    const width = (this.scrollW > 0 ? this.scrollW : this.contW) - this.pageMargin * 2;
+    if (paras.length === 0 || width <= 0) {
+      return;
+    }
+    const sig = `${this.body.length}|${this.fontSize}|${this.lineHeight}|${this.paraSpacing}|${Math.round(width)}`;
+    if (sig !== this.paraOffSig) {
+      const offsets: number[] = [];
+      let y = this.statusBarH + 16;
+      for (let i = 0; i < paras.length; i++) {
+        offsets.push(y);
+        y += this.measureTextVp(paras[i] === '' ? ' ' : paras[i], width) + this.paraSpacing;
+      }
+      this.paraOffsets = offsets;
+      this.paraOffSig = sig;
+    }
+    if (idx < 0 || idx >= this.paraOffsets.length) {
+      return;
+    }
+    const top = this.paraOffsets[idx];
+    if (top >= this.scrollY + 24 && top <= this.scrollY + this.viewH - 72) {
+      return;
+    }
+    const target = Math.max(0, top - this.statusBarH - 16);
+    this.restored = true;
+    this.scroller.scrollTo({ xOffset: 0, yOffset: target, animation: true });
+  }
+
+  // 翻页/双页跟随：段落 → 页 → 屏，翻到朗读页（curl 模式经 index 属性同步）
+  private followTtsPaged(idx: number): void {
+    if (this.paraPage.length === 0 || idx < 0 || idx >= this.paraPage.length) {
+      return;
+    }
+    const total = this.pages.length;
+    if (total <= 0 || this.screenIdxs.length === 0) {
+      return;
+    }
+    const page = Math.min(total - 1, Math.max(0, this.paraPage[idx]));
+    let screen = page;
+    if (this.mode === 'double') {
+      screen = Math.floor(page / 2);
+    } else if (this.mode === 'paged_rtl') {
+      screen = total - 1 - page;
+    }
+    if (screen < 0) {
+      screen = 0;
+    }
+    if (screen >= this.screenIdxs.length) {
+      screen = this.screenIdxs.length - 1;
+    }
+    if (screen !== this.pageIdx) {
+      this.jumpScreen(screen);
+    }
   }
 
   private static looksLikeHtml(text: string): boolean {
@@ -310,6 +565,7 @@ export struct NovelReaderPage {
     this.pagSig = sig;
     this.pages = pages;
     this.screenIdxs = screens;
+    this.screenSource.setItems(screens);
     this.transX = NovelReaderPage.zeros(screenCount);
     this.transAngle = NovelReaderPage.zeros(screenCount);
     this.transZ = NovelReaderPage.zeros(screenCount);
@@ -333,8 +589,10 @@ export struct NovelReaderPage {
   }
 
   // 按段落贪心装页（段间计入 paraSpacing，与渲染端 Column({space}) 一致）；超长段落按测量二分切分
+  // 同时记录 paraPage[i]：第 i 段所在的页码（听书跟随翻页用）
   private buildPages(): string[][] {
     const pages: string[][] = [];
+    const paraPage: number[] = [];
     const maxH = this.pageH;
     const width = this.pageW;
     const gap = this.paraSpacing;
@@ -350,6 +608,7 @@ export struct NovelReaderPage {
       if (h <= maxH) {
         const extra = current.length > 0 ? gap : 0;
         if (used + extra + h <= maxH) {
+          paraPage[i] = pages.length;
           current.push(para);
           used += extra + h;
           continue;
@@ -358,6 +617,7 @@ export struct NovelReaderPage {
         if (current.length > 0) {
           pages.push(current);
         }
+        paraPage[i] = pages.length;
         current = [para];
         used = h;
         continue;
@@ -368,27 +628,42 @@ export struct NovelReaderPage {
         current = [];
         used = 0;
       }
+      paraPage[i] = pages.length;
       let rest = para;
+      // 每页可容纳字符数的先验（0=未知）：由上一次切点更新；
+      // 剩余不超过一页容量时才整段测量判断能否收尾，避免反复测量大段文本
+      let cap = 0;
       while (rest.length > 0) {
-        const hRest = this.measureTextVp(rest, width);
-        if (hRest <= maxH) {
+        if (rest.length <= cap) {
+          const hRest = this.measureTextVp(rest, width);
+          if (hRest <= maxH) {
+            current.push(rest);
+            used = hRest;
+            break;
+          }
+        }
+        const fit = this.fitPrefix(rest, width, maxH, cap);
+        if (fit <= 0) {
+          // 页高不足一行：整段放入避免死循环
           current.push(rest);
-          used = hRest;
+          used = maxH;
           break;
         }
-        const fit = this.fitPrefix(rest, width, maxH);
-        if (fit <= 0) {
+        if (fit >= rest.length) {
+          // 整个剩余部分一页内放得下：并入当前页，继续贪心装后续段落
           current.push(rest);
-          used = hRest;
+          used = this.measureTextVp(rest, width);
           break;
         }
         pages.push([rest.substring(0, fit)]);
         rest = rest.substring(fit);
+        cap = fit;
       }
     }
     if (current.length > 0) {
       pages.push(current);
     }
+    this.paraPage = paraPage;
     return pages;
   }
 
@@ -404,18 +679,61 @@ export struct NovelReaderPage {
     return this.getUIContext().px2vp(typeof h === 'number' ? h : 0);
   }
 
-  // 二分查找不超过页高的最长前缀长度
-  private fitPrefix(text: string, width: number, maxH: number): number {
-    let lo = 1;
-    let hi = text.length;
+  // 在超长段落中找切点：capHint 为上一页的字符容量先验（0=未知）。
+  // 先用实测行数按比例收敛切点，页面基本排满（剩余不足 0.08 行）即接受，
+  // 省去精确二分的十余次测量；未收敛时才在剩余区间精确二分兜底，结果与全量二分一致
+  private fitPrefix(text: string, width: number, maxH: number, capHint: number): number {
+    const len = text.length;
+    if (len <= 0) {
+      return 0;
+    }
+    const linesPerPage = maxH / this.lineHeight;
     let best = 0;
-    while (lo <= hi) {
-      const mid = Math.floor((lo + hi) / 2);
-      if (this.measureTextVp(text.substring(0, mid), width) <= maxH) {
-        best = mid;
-        lo = mid + 1;
+    let hiFail = len + 1;
+    let k = capHint > 0 ? Math.max(1, Math.min(len, Math.round(capHint))) : Math.ceil(len / 2);
+    let accepted = false;
+    for (let iter = 0; iter < 4 && !accepted && k > best && k < hiFail; iter++) {
+      const h = this.measureTextVp(text.substring(0, k), width);
+      if (h <= maxH) {
+        best = k;
+        if (k >= len) {
+          break;
+        }
+        const linesUsed = Math.max(1, h / this.lineHeight);
+        const linesLeft = linesPerPage - linesUsed;
+        if (linesLeft < 0.08) {
+          accepted = true;
+          break;
+        }
+        // 按剩余行数与每行字符数估算可再容纳的字符量
+        let nk = k + Math.max(1, Math.round(linesLeft * (k / linesUsed)));
+        if (nk >= hiFail) {
+          nk = hiFail - 1;
+        }
+        if (nk <= best) {
+          break;
+        }
+        k = nk;
       } else {
-        hi = mid - 1;
+        hiFail = k;
+        const linesUsed = Math.max(1, h / this.lineHeight);
+        const over = linesUsed - linesPerPage;
+        const nk = k - Math.max(1, Math.round(over * (k / linesUsed)));
+        if (nk <= best) {
+          break;
+        }
+        k = nk;
+      }
+    }
+    if (!accepted) {
+      // 未整页收敛：剩余区间精确二分，保证与全量二分结果一致
+      while (best + 1 < hiFail) {
+        const mid = Math.floor((best + hiFail) / 2);
+        if (this.measureTextVp(text.substring(0, mid), width) <= maxH) {
+          best = mid;
+        } else {
+          hiFail = mid;
+        }
       }
     }
     // 避免切开代理对（emoji 等）
@@ -464,7 +782,8 @@ export struct NovelReaderPage {
 
   // 任一设置 Sheet 打开时，内容区点击一律忽略（防止蒙层点击透传触发翻页/菜单）
   private anySheetOpen(): boolean {
-    return this.showModeSheet || this.showOrientationSheet || this.showDisplaySheet || this.showTextSheet;
+    return this.showModeSheet || this.showOrientationSheet || this.showDisplaySheet ||
+      this.showTextSheet || this.showTtsSheet;
   }
 
   // 关闭全部设置 Sheet（enableOutsideInteractive 模式下由页面点击主动接管关闭）
@@ -473,6 +792,7 @@ export struct NovelReaderPage {
     this.showOrientationSheet = false;
     this.showDisplaySheet = false;
     this.showTextSheet = false;
+    this.showTtsSheet = false;
   }
 
   // 打开指定 Sheet（互斥：先关其余，避免多个 bindSheet 叠加）
@@ -486,6 +806,8 @@ export struct NovelReaderPage {
       this.showDisplaySheet = true;
     } else if (which === 'text') {
       this.showTextSheet = true;
+    } else if (which === 'tts') {
+      this.showTtsSheet = true;
     }
   }
 
@@ -605,6 +927,7 @@ export struct NovelReaderPage {
     this.pagSig = '';
     this.pages = [];
     this.screenIdxs = [];
+    this.screenSource.setItems([]);
     this.transX = [];
     this.transAngle = [];
     this.transZ = [];
@@ -1127,6 +1450,8 @@ export struct NovelReaderPage {
             .fontFamily(this.fontFamilyVal())
             .fontColor(this.readerTextCol())
             .width('100%')
+            .backgroundColor(this.ttsParaIdx === i ? '#2E808080' : Color.Transparent)
+            .borderRadius(this.ttsParaIdx === i ? 4 : 0)
         }, (para: string, i: number) => `${this.body.length}#${i}#${para.length}`)
       }
       .width('100%')
@@ -1466,6 +1791,64 @@ export struct NovelReaderPage {
     .width('100%')
   }
 
+  // 听书：播放/停止 + 语速
+  @Builder
+  ttsSheetBuilder() {
+    Column({ space: 0 }) {
+      Button(this.ttsPlaying ? $r('app.string.novel_tts_stop') : $r('app.string.novel_tts_start'))
+        .fontSize(14)
+        .fontColor('#FFFFFF')
+        .type(ButtonType.Capsule)
+        .backgroundColor(this.ttsPlaying ? '#8A343434' : this.pal.primary)
+        .height(40)
+        .padding({ left: 28, right: 28 })
+        .margin({ top: 16 })
+        .onClick(() => {
+          this.toggleTts();
+        })
+
+      Divider()
+        .color(this.pal.divider)
+        .margin({ top: 16 })
+
+      Column({ space: 8 }) {
+        Text($r('app.string.novel_tts_speed'))
+          .fontSize(13)
+          .fontColor(this.pal.sub)
+          .width('100%')
+        Flex({ wrap: FlexWrap.Wrap }) {
+          this.ttsSpeedChip('0.5x', 0.5)
+          this.ttsSpeedChip('0.75x', 0.75)
+          this.ttsSpeedChip('1x', 1)
+          this.ttsSpeedChip('1.25x', 1.25)
+          this.ttsSpeedChip('1.5x', 1.5)
+          this.ttsSpeedChip('2x', 2)
+        }
+        .width('100%')
+      }
+      .width('100%')
+      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
+
+      Column().height(16)
+    }
+    .width('100%')
+  }
+
+  // 语速 chip（0.5x - 2x，播放中切换立即生效）
+  @Builder
+  ttsSpeedChip(label: string, value: number) {
+    Text(label)
+      .fontSize(13)
+      .fontColor(this.ttsSpeed === value ? '#FFFFFF' : this.pal.text)
+      .padding({ left: 14, right: 14, top: 6, bottom: 6 })
+      .borderRadius(16)
+      .backgroundColor(this.ttsSpeed === value ? this.pal.primary : this.pal.chip)
+      .margin({ right: 8, bottom: 8 })
+      .onClick(() => {
+        this.setTtsSpeed(value);
+      })
+  }
+
   build() {
     NavDestination() {
       Stack({ alignContent: Alignment.BottomEnd }) {
@@ -1514,7 +1897,11 @@ export struct NovelReaderPage {
           .height('100%')
           .scrollBar(BarState.Off)
           .onAreaChange((_old: Area, neu: Area) => {
+            const w = neu.width;
             const h = neu.height;
+            if (typeof w === 'number') {
+              this.scrollW = w;
+            }
             if (typeof h === 'number') {
               this.viewH = h;
               this.restoreOnce();
@@ -1560,7 +1947,7 @@ export struct NovelReaderPage {
                 .height('100%')
             } else {
             Swiper(this.swiperCtrl) {
-              ForEach(this.screenIdxs, (sIdx: number) => {
+              LazyForEach(this.screenSource, (sIdx: number) => {
                 // 每屏包一层容器：translate/zIndex 仅能挂在实体组件上；
                 // 双页模式容器透明（遮盖由左右半页承担），单页模式整屏不透明。
                 Stack() {
@@ -1845,6 +2232,20 @@ export struct NovelReaderPage {
                 .onClick(() => {
                   this.openSheet('text');
                 })
+
+                // 听书（系统 TTS）
+                Column() {
+                  Image(AppIconRes.get(this.ttsPlaying ? 'pause' : 'playlist_play'))
+                    .width(24)
+                    .height(24)
+                    .fillColor('#FFFFFF')
+                }
+                .width(48)
+                .height(44)
+                .justifyContent(FlexAlign.Center)
+                .onClick(() => {
+                  this.openSheet('tts');
+                })
               }
               .width('100%')
               .height(48)
@@ -1882,6 +2283,15 @@ export struct NovelReaderPage {
           .bindSheet($$this.showTextSheet, this.textSheetBuilder(), {
             preferType: SheetType.BOTTOM,
             title: { title: $r('app.string.novel_tab_text') },
+            detents: [SheetSize.FIT_CONTENT],
+            dragBar: true,
+            showClose: false,
+            blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
+            enableOutsideInteractive: true
+          })
+          .bindSheet($$this.showTtsSheet, this.ttsSheetBuilder(), {
+            preferType: SheetType.BOTTOM,
+            title: { title: $r('app.string.novel_tts') },
             detents: [SheetSize.FIT_CONTENT],
             dragBar: true,
             showClose: false,

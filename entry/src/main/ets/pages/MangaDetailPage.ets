@@ -115,7 +115,7 @@ struct DetailChapterRow {
   }
 }
 
-// 漫画详情页：信息 + 章节列表 + 收藏 + 下载 + AniList 追踪
+// 漫画详情页：整页滚动（头部随上滑收起）+ 下拉刷新全量更新章节 + 收藏 + 下载 + AniList 追踪
 @Component
 export struct MangaDetailPage {
   pathStack: NavPathStack = new NavPathStack();
@@ -129,11 +129,14 @@ export struct MangaDetailPage {
   @State sortAsc: boolean = false;
   @State descExpanded: boolean = false;
   @State syncing: boolean = false;
+  @State refreshing: boolean = false;
+  @State topBarProgress: number = 0;
   @State track: TrackRecord | undefined = undefined;
   @State alResults: ALMediaItem[] = [];
   @State alSearching: boolean = false;
   @State showCoverSheet: boolean = false;
   private mangaId: number = -1;
+  private listScroller: Scroller = new Scroller();
 
   onLibDirty(): void {
     this.reloadLocal();
@@ -174,6 +177,29 @@ export struct MangaDetailPage {
     }
     await this.reloadLocal();
     this.syncing = false;
+  }
+
+  // 下拉刷新：全量重新同步源数据（含源端已删除章节的移除）
+  private async refreshFromSource(): Promise<void> {
+    try {
+      await this.syncFromSource();
+    } finally {
+      this.refreshing = false;
+    }
+  }
+
+  // 头部总高度：保证封面信息在任意状态栏高度下完整展示
+  private headerHeight(): number {
+    return Math.max(280, this.statusBarH + 236);
+  }
+
+  // 吸顶栏渐显进度：随滚动偏移 0 → 1
+  private syncTopBar(): void {
+    const y = this.listScroller.currentOffset().yOffset;
+    const p = Math.min(1, Math.max(0, y / 180));
+    if (p !== this.topBarProgress) {
+      this.topBarProgress = p;
+    }
   }
 
   private shownChapters(): ChapterRecord[] {
@@ -256,7 +282,8 @@ export struct MangaDetailPage {
     })
   }
 
-  private continueChapter(): ChapterRecord | undefined {    if (this.chapters.length === 0) {
+  private continueChapter(): ChapterRecord | undefined {
+    if (this.chapters.length === 0) {
       return undefined;
     }
     for (const chapter of this.chapters) {
@@ -432,342 +459,401 @@ export struct MangaDetailPage {
 
   build() {
     NavDestination() {
-      Column() {
-        // 头部：封面背景 + 信息
-        Stack({ alignContent: Alignment.TopStart }) {
-          if (this.manga.thumbnailUrl !== '') {
-            SmartImage({ url: this.manga.thumbnailUrl, sourceKey: this.manga.sourceKey, fit: ImageFit.Cover, fill: true })
-              .width('100%')
-              .height(280)
-              .blur(30)
-          } else {
-            Column()
-              .width('100%')
-              .height(280)
-              .backgroundColor(this.pal.chip)
-          }
-          Column()
-            .width('100%')
-            .height(280)
-            .linearGradient({
-              angle: 180,
-              colors: [['#80000000', 0.0], [this.isDark ? '#F0101318' : '#F0F2F3F7', 1.0]],
-            })
-
-          Column() {
-            Row() {
-              AppIcon({ name: 'arrow_back', iconSize: 24, tint: '#FFFFFF' })
-                .padding({ left: 12, right: 12 })
-                .onClick(() => {
-                  this.pathStack.pop();
-                })
-              Row() {
-                if (this.syncing) {
-                  LoadingProgress()
-                    .width(18)
-                    .height(18)
-                    .color('#FFFFFF')
-                }
-              }
-              .layoutWeight(1)
-            }
-            .width('100%')
-            .padding({ top: this.statusBarH + 8 })
-
-            Row({ space: 14 }) {
-              // 封面（长按更换/恢复，对齐 Mihon）
-              Stack() {
+      Stack({ alignContent: Alignment.TopStart }) {
+        // 整页滚动 + 下拉刷新：头部随列表上滑收起，不再固定占位
+        Refresh({ refreshing: $$this.refreshing }) {
+          List({ scroller: this.listScroller }) {
+            // 头部：封面背景 + 信息
+            ListItem() {
+              Stack({ alignContent: Alignment.TopStart }) {
                 if (this.manga.thumbnailUrl !== '') {
                   SmartImage({ url: this.manga.thumbnailUrl, sourceKey: this.manga.sourceKey, fit: ImageFit.Cover, fill: true })
+                    .width('100%')
+                    .height(this.headerHeight())
+                    .blur(30)
                 } else {
-                  Column() {
-                    AppIcon({ name: 'photo', iconSize: 30 })
+                  Column()
+                    .width('100%')
+                    .height(this.headerHeight())
+                    .backgroundColor(this.pal.chip)
+                }
+                Column()
+                  .width('100%')
+                  .height(this.headerHeight())
+                  .linearGradient({
+                    angle: 180,
+                    colors: [['#80000000', 0.0], [this.isDark ? '#F0101318' : '#F0F2F3F7', 1.0]],
+                  })
+
+                Column() {
+                  // 吸顶栏占位（状态栏 + 返回/标题栏高度）
+                  Column()
+                    .height(this.statusBarH + 52)
+                  Row({ space: 14 }) {
+                    // 封面（长按更换/恢复，对齐 Mihon）
+                    Stack() {
+                      if (this.manga.thumbnailUrl !== '') {
+                        SmartImage({ url: this.manga.thumbnailUrl, sourceKey: this.manga.sourceKey, fit: ImageFit.Cover, fill: true })
+                      } else {
+                        Column() {
+                          AppIcon({ name: 'photo', iconSize: 30 })
+                        }
+                        .width('100%')
+                        .height('100%')
+                        .justifyContent(FlexAlign.Center)
+                      }
+                    }
+                    .width(110)
+                    .height(150)
+                    .borderRadius(10)
+                    .clip(true)
+                    .backgroundColor(this.pal.chip)
+                    .gesture(
+                      LongPressGesture()
+                        .onAction(() => {
+                          this.showCoverSheet = true;
+                        })
+                    )
+                    .bindSheet($$this.showCoverSheet, this.coverSheetBuilder(), {
+                      preferType: SheetType.BOTTOM,
+                      title: { title: $r('app.string.detail_cover_actions') },
+                      detents: [SheetSize.FIT_CONTENT],
+                      dragBar: true,
+                      showClose: false,
+                      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
+                    })
+                    Column({ space: 6 }) {
+                      Text(this.manga.title)
+                        .fontSize(20)
+                        .fontWeight(FontWeight.Bold)
+                        .fontColor(this.pal.text)
+                        .maxLines(3)
+                        .textOverflow({ overflow: TextOverflow.Ellipsis })
+                      if (this.manga.author !== '') {
+                        Text(this.manga.author)
+                          .fontSize(13)
+                          .fontColor(this.pal.sub)
+                          .maxLines(1)
+                      }
+                      Text(ContentType.isLocal(this.manga.sourceKey) ? $r('app.string.detail_status_local') : Util.statusLabel(this.manga.status))
+                        .fontSize(12)
+                        .fontColor(this.pal.primary)
+                        .backgroundColor(this.pal.chip)
+                        .borderRadius(8)
+                        .padding({ left: 8, right: 8, top: 3, bottom: 3 })
+                    }
+                    .alignItems(HorizontalAlign.Start)
+                    .layoutWeight(1)
                   }
                   .width('100%')
-                  .height('100%')
-                  .justifyContent(FlexAlign.Center)
+                  .padding({ left: 16, right: 16, top: 12 })
+                  .alignItems(VerticalAlign.Top)
+                }
+                .width('100%')
+                .alignItems(HorizontalAlign.Start)
+              }
+              .width('100%')
+              .height(this.headerHeight())
+            }
+
+            // 操作按钮
+            ListItem() {
+              Row({ space: 12 }) {
+                Button(this.manga.inLibrary ? $r('app.string.detail_in_library') : $r('app.string.detail_add_to_library'))
+                  .fontSize(14)
+                  .height(38)
+                  .layoutWeight(1)
+                  .backgroundColor(this.manga.inLibrary ? this.pal.chip : this.pal.primary)
+                  .fontColor(this.manga.inLibrary ? this.pal.text : '#FFFFFF')
+                  .onClick(() => {
+                    this.toggleLibrary();
+                  })
+                Button(this.actionLabel())
+                  .fontSize(14)
+                  .height(38)
+                  .layoutWeight(1)
+                  .backgroundColor(this.pal.chip)
+                  .fontColor(this.pal.text)
+                  .onClick(() => {
+                    const chapter = this.continueChapter();
+                    if (chapter !== undefined) {
+                      this.openReader(chapter.id);
+                    }
+                  })
+                if (this.manga.inLibrary) {
+                  Button($r('app.string.detail_add_to_desktop'))
+                    .fontSize(14)
+                    .height(38)
+                    .layoutWeight(1)
+                    .backgroundColor(this.pal.chip)
+                    .fontColor(this.pal.text)
+                    .onClick(() => {
+                      this.addToDesktop();
+                    })
                 }
               }
-              .width(110)
-              .height(150)
-              .borderRadius(10)
-              .clip(true)
-              .backgroundColor(this.pal.chip)
-              .gesture(
-                LongPressGesture()
-                  .onAction(() => {
-                    this.showCoverSheet = true;
-                  })
-              )
-              .bindSheet($$this.showCoverSheet, this.coverSheetBuilder(), {
-                preferType: SheetType.BOTTOM,
-                title: { title: $r('app.string.detail_cover_actions') },
-                detents: [SheetSize.FIT_CONTENT],
-                dragBar: true,
-                showClose: false,
-                blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
-              })
-              Column({ space: 6 }) {
-                Text(this.manga.title)
-                  .fontSize(20)
-                  .fontWeight(FontWeight.Bold)
-                  .fontColor(this.pal.text)
-                  .maxLines(3)
-                  .textOverflow({ overflow: TextOverflow.Ellipsis })
-                if (this.manga.author !== '') {
-                  Text(this.manga.author)
+              .width('100%')
+              .padding({ left: 16, right: 16, top: 12 })
+            }
+
+            // 简介
+            if (this.manga.description !== '') {
+              ListItem() {
+                Column() {
+                  Text(this.manga.description)
                     .fontSize(13)
                     .fontColor(this.pal.sub)
-                    .maxLines(1)
+                    .maxLines(this.descExpanded ? 999 : 3)
+                    .textOverflow({ overflow: TextOverflow.Ellipsis })
+                    .width('100%')
+                  Text(this.descExpanded ? $r('app.string.detail_collapse') : $r('app.string.detail_expand'))
+                    .fontSize(12)
+                    .fontColor(this.pal.primary)
+                    .margin({ top: 4 })
+                    .onClick(() => {
+                      this.descExpanded = !this.descExpanded;
+                    })
                 }
-                Text(ContentType.isLocal(this.manga.sourceKey) ? $r('app.string.detail_status_local') : Util.statusLabel(this.manga.status))
-                  .fontSize(12)
-                  .fontColor(this.pal.primary)
-                  .backgroundColor(this.pal.chip)
-                  .borderRadius(8)
-                  .padding({ left: 8, right: 8, top: 3, bottom: 3 })
+                .alignItems(HorizontalAlign.Start)
+                .width('100%')
+                .padding({ left: 16, right: 16, top: 10 })
               }
-              .alignItems(HorizontalAlign.Start)
-              .layoutWeight(1)
             }
-            .width('100%')
-            .padding({ left: 16, right: 16, top: 12 })
-            .alignItems(VerticalAlign.Top)
-          }
-        }
-        .width('100%')
-        .height(280)
 
-        // 头部以下内容
-        Column() {
-          // 操作按钮
-          Row({ space: 12 }) {
-          Button(this.manga.inLibrary ? $r('app.string.detail_in_library') : $r('app.string.detail_add_to_library'))
-            .fontSize(14)
-            .height(38)
-            .layoutWeight(1)
-            .backgroundColor(this.manga.inLibrary ? this.pal.chip : this.pal.primary)
-            .fontColor(this.manga.inLibrary ? this.pal.text : '#FFFFFF')
-            .onClick(() => {
-              this.toggleLibrary();
-            })
-          Button(this.actionLabel())
-            .fontSize(14)
-            .height(38)
-            .layoutWeight(1)
-            .backgroundColor(this.pal.chip)
-            .fontColor(this.pal.text)
-            .onClick(() => {
-              const chapter = this.continueChapter();
-              if (chapter !== undefined) {
-                this.openReader(chapter.id);
-              }
-            })
-          if (this.manga.inLibrary) {
-            Button($r('app.string.detail_add_to_desktop'))
-              .fontSize(14)
-              .height(38)
-              .layoutWeight(1)
-              .backgroundColor(this.pal.chip)
-              .fontColor(this.pal.text)
-              .onClick(() => {
-                this.addToDesktop();
-              })
-          }
-        }
-        .width('100%')
-        .padding({ left: 16, right: 16, top: 12 })
-
-        // 简介
-        if (this.manga.description !== '') {
-          Column() {
-            Text(this.manga.description)
-              .fontSize(13)
-              .fontColor(this.pal.sub)
-              .maxLines(this.descExpanded ? 999 : 3)
-              .textOverflow({ overflow: TextOverflow.Ellipsis })
-              .width('100%')
-            Text(this.descExpanded ? $r('app.string.detail_collapse') : $r('app.string.detail_expand'))
-              .fontSize(12)
-              .fontColor(this.pal.primary)
-              .margin({ top: 4 })
-              .onClick(() => {
-                this.descExpanded = !this.descExpanded;
-              })
-          }
-          .alignItems(HorizontalAlign.Start)
-          .width('100%')
-          .padding({ left: 16, right: 16, top: 10 })
-        }
-
-        // AniList 追踪
-        Column() {
-          Text($r('app.string.detail_anilist_tracking'))
-            .fontSize(15)
-            .fontWeight(FontWeight.Bold)
-            .fontColor(this.pal.text)
-            .width('100%')
-            .margin({ bottom: 8 })
-          if (Settings.getAnilistToken() === '') {
-            Text($r('app.string.detail_anilist_token_hint'))
-              .fontSize(12)
-              .fontColor(this.pal.sub)
-          } else if (this.track === undefined) {
-            if (this.alSearching) {
-              Row({ space: 8 }) {
-                LoadingProgress()
-                  .width(16)
-                  .height(16)
-                  .color(this.pal.primary)
-                Text($r('app.string.detail_searching'))
-                  .fontSize(12)
-                  .fontColor(this.pal.sub)
-              }
-            } else {
-              Text($r('app.string.detail_search_and_bind'))
-                .fontSize(13)
-                .fontColor('#FFFFFF')
-                .backgroundColor(this.pal.primary)
-                .borderRadius(14)
-                .padding({ left: 14, right: 14, top: 6, bottom: 6 })
-                .onClick(() => {
-                  this.showAlSearch();
-                })
-            }
-            ForEach(this.alResults, (item: ALMediaItem) => {
-              Row() {
-                Text(item.title)
-                  .fontSize(13)
+            // AniList 追踪
+            ListItem() {
+              Column() {
+                Text($r('app.string.detail_anilist_tracking'))
+                  .fontSize(15)
+                  .fontWeight(FontWeight.Bold)
                   .fontColor(this.pal.text)
-                  .maxLines(1)
-                  .textOverflow({ overflow: TextOverflow.Ellipsis })
+                  .width('100%')
+                  .margin({ bottom: 8 })
+                if (Settings.getAnilistToken() === '') {
+                  Text($r('app.string.detail_anilist_token_hint'))
+                    .fontSize(12)
+                    .fontColor(this.pal.sub)
+                } else if (this.track === undefined) {
+                  if (this.alSearching) {
+                    Row({ space: 8 }) {
+                      LoadingProgress()
+                        .width(16)
+                        .height(16)
+                        .color(this.pal.primary)
+                      Text($r('app.string.detail_searching'))
+                        .fontSize(12)
+                        .fontColor(this.pal.sub)
+                    }
+                  } else {
+                    Text($r('app.string.detail_search_and_bind'))
+                      .fontSize(13)
+                      .fontColor('#FFFFFF')
+                      .backgroundColor(this.pal.primary)
+                      .borderRadius(14)
+                      .padding({ left: 14, right: 14, top: 6, bottom: 6 })
+                      .onClick(() => {
+                        this.showAlSearch();
+                      })
+                  }
+                  ForEach(this.alResults, (item: ALMediaItem) => {
+                    Row() {
+                      Text(item.title)
+                        .fontSize(13)
+                        .fontColor(this.pal.text)
+                        .maxLines(1)
+                        .textOverflow({ overflow: TextOverflow.Ellipsis })
+                        .layoutWeight(1)
+                      Text($r('app.string.detail_bind'))
+                        .fontSize(12)
+                        .fontColor(this.pal.primary)
+                        .padding({ left: 8 })
+                        .onClick(() => {
+                          this.bindAl(item);
+                        })
+                    }
+                    .width('100%')
+                    .padding({ top: 8, bottom: 8 })
+                  }, (item: ALMediaItem) => `al-${item.id}`)
+                } else {
+                  Text(this.track.title)
+                    .fontSize(13)
+                    .fontColor(this.pal.text)
+                    .maxLines(1)
+                    .textOverflow({ overflow: TextOverflow.Ellipsis })
+                  Text($r('app.string.detail_synced_to_chapter', this.track.lastChapterRead))
+                    .fontSize(11)
+                    .fontColor(this.pal.sub)
+                    .margin({ top: 2 })
+                  Row({ space: 12 }) {
+                    Text($r('app.string.detail_sync_progress'))
+                      .fontSize(12)
+                      .fontColor(this.pal.primary)
+                      .backgroundColor(this.pal.chip)
+                      .borderRadius(12)
+                      .padding({ left: 10, right: 10, top: 4, bottom: 4 })
+                      .margin({ top: 8 })
+                      .onClick(() => {
+                        this.syncTrack();
+                      })
+                    Text($r('app.string.detail_unbind'))
+                      .fontSize(12)
+                      .fontColor('#E05252')
+                      .backgroundColor(this.pal.chip)
+                      .borderRadius(12)
+                      .padding({ left: 10, right: 10, top: 4, bottom: 4 })
+                      .margin({ top: 8 })
+                      .onClick(() => {
+                        this.unbindAl();
+                      })
+                  }
+                }
+              }
+              .width('100%')
+              .alignItems(HorizontalAlign.Start)
+              .padding(16)
+              .backgroundColor(this.pal.card)
+              .borderRadius(14)
+              .margin({ left: 16, right: 16, top: 12 })
+            }
+
+            // 章节标题栏
+            ListItem() {
+              Row() {
+                Text($r('app.string.detail_chapters_count', this.chapters.length))
+                  .fontSize(16)
+                  .fontWeight(FontWeight.Bold)
+                  .fontColor(this.pal.text)
                   .layoutWeight(1)
-                Text($r('app.string.detail_bind'))
-                  .fontSize(12)
+                Text(this.sortAsc ? $r('app.string.detail_sort_asc') : $r('app.string.detail_sort_desc'))
+                  .fontSize(13)
                   .fontColor(this.pal.primary)
-                  .padding({ left: 8 })
+                  .padding(6)
                   .onClick(() => {
-                    this.bindAl(item);
+                    this.sortAsc = !this.sortAsc;
+                  })
+                Text($r('app.string.detail_mark_all_read'))
+                  .fontSize(13)
+                  .fontColor(this.pal.primary)
+                  .padding(6)
+                  .onClick(() => {
+                    this.markAllRead();
                   })
               }
               .width('100%')
-              .padding({ top: 8, bottom: 8 })
-            }, (item: ALMediaItem) => `al-${item.id}`)
-          } else {
-            Text(this.track.title)
-              .fontSize(13)
+              .padding({ left: 16, right: 16, top: 14, bottom: 6 })
+            }
+
+            // 章节列表（分组承载分割线，随整页滚动）
+            if (this.loading) {
+              ListItem() {
+                Column() {
+                  LoadingProgress()
+                    .width(36)
+                    .height(36)
+                    .color(this.pal.primary)
+                }
+                .width('100%')
+                .padding({ top: 48, bottom: 48 })
+                .justifyContent(FlexAlign.Center)
+              }
+            } else if (this.chapters.length === 0) {
+              ListItem() {
+                Column() {
+                  EmptyScreen({ message: $r('app.string.detail_no_chapters') })
+                }
+                .width('100%')
+                .padding({ top: 32, bottom: 32 })
+              }
+            } else {
+              ListItemGroup() {
+                ForEach(this.shownChapters(), (chapter: ChapterRecord) => {
+                  ListItem() {
+                    DetailChapterRow({
+                      chapter: chapter,
+                      isLocalSource: ContentType.isLocal(this.manga.sourceKey),
+                      onTap: (c: ChapterRecord): void => {
+                        this.openReader(c.id);
+                      },
+                      onDownload: (c: ChapterRecord): void => {
+                        this.downloadChapter(c);
+                      },
+                    })
+                  }
+                }, (chapter: ChapterRecord) => `ch-${chapter.id}-${chapter.read}`)
+              }
+              .divider({
+                strokeWidth: 1,
+                color: this.pal.divider,
+                startMargin: 16,
+                endMargin: 16,
+              })
+            }
+          }
+          .width('100%')
+          .height('100%')
+          .scrollBar(BarState.Auto)
+          .onScroll((_scrollOffset: number, _state: ScrollState) => {
+            this.syncTopBar();
+          })
+          .onReachStart(() => {
+            this.syncTopBar();
+          })
+        }
+        .width('100%')
+        .height('100%')
+        .onRefreshing(() => {
+          this.refreshFromSource();
+        })
+
+        // 吸顶栏：背景/标题随滚动渐显，返回按钮常驻
+        Stack({ alignContent: Alignment.TopStart }) {
+          Column()
+            .width('100%')
+            .height(this.statusBarH + 52)
+            .backgroundColor(this.pal.bg)
+            .opacity(this.topBarProgress)
+          Row() {
+            Stack() {
+              AppIcon({ name: 'arrow_back', iconSize: 22, tint: '#FFFFFF' })
+                .opacity(1 - this.topBarProgress)
+              AppIcon({ name: 'arrow_back', iconSize: 22, tint: this.pal.text })
+                .opacity(this.topBarProgress)
+            }
+            .width(40)
+            .height(40)
+            .onClick(() => {
+              this.pathStack.pop();
+            })
+
+            Text(this.manga.title)
+              .fontSize(16)
+              .fontWeight(FontWeight.Bold)
               .fontColor(this.pal.text)
               .maxLines(1)
               .textOverflow({ overflow: TextOverflow.Ellipsis })
-            Text($r('app.string.detail_synced_to_chapter', this.track.lastChapterRead))
-              .fontSize(11)
-              .fontColor(this.pal.sub)
-              .margin({ top: 2 })
-            Row({ space: 12 }) {
-              Text($r('app.string.detail_sync_progress'))
-                .fontSize(12)
-                .fontColor(this.pal.primary)
-                .backgroundColor(this.pal.chip)
-                .borderRadius(12)
-                .padding({ left: 10, right: 10, top: 4, bottom: 4 })
-                .margin({ top: 8 })
-                .onClick(() => {
-                  this.syncTrack();
-                })
-              Text($r('app.string.detail_unbind'))
-                .fontSize(12)
-                .fontColor('#E05252')
-                .backgroundColor(this.pal.chip)
-                .borderRadius(12)
-                .padding({ left: 10, right: 10, top: 4, bottom: 4 })
-                .margin({ top: 8 })
-                .onClick(() => {
-                  this.unbindAl();
-                })
+              .layoutWeight(1)
+              .margin({ left: 4 })
+              .opacity(this.topBarProgress)
+
+            if (this.syncing) {
+              LoadingProgress()
+                .width(18)
+                .height(18)
+                .color(this.topBarProgress > 0.5 ? this.pal.text : '#FFFFFF')
+                .margin({ left: 8 })
             }
           }
+          .width('100%')
+          .height(this.statusBarH + 52)
+          .padding({ left: 8, right: 16, top: this.statusBarH })
+          .alignItems(VerticalAlign.Center)
+          .hitTestBehavior(HitTestMode.Transparent)
         }
         .width('100%')
-        .alignItems(HorizontalAlign.Start)
-        .padding(16)
-        .backgroundColor(this.pal.card)
-        .borderRadius(14)
-        .margin({ left: 16, right: 16, top: 12 })
-
-        // 章节标题栏
-        Row() {
-          Text($r('app.string.detail_chapters_count', this.chapters.length))
-            .fontSize(16)
-            .fontWeight(FontWeight.Bold)
-            .fontColor(this.pal.text)
-            .layoutWeight(1)
-          Text(this.sortAsc ? $r('app.string.detail_sort_asc') : $r('app.string.detail_sort_desc'))
-            .fontSize(13)
-            .fontColor(this.pal.primary)
-            .padding(6)
-            .onClick(() => {
-              this.sortAsc = !this.sortAsc;
-            })
-          Text($r('app.string.detail_mark_all_read'))
-            .fontSize(13)
-            .fontColor(this.pal.primary)
-            .padding(6)
-            .onClick(() => {
-              this.markAllRead();
-            })
-        }
-        .width('100%')
-        .padding({ left: 16, right: 16, top: 14, bottom: 6 })
-
-        // 章节列表
-        if (this.loading) {
-          Column() {
-            LoadingProgress()
-              .width(36)
-              .height(36)
-              .color(this.pal.primary)
-          }
-          .layoutWeight(1)
-          .justifyContent(FlexAlign.Center)
-        } else if (this.chapters.length === 0) {
-          Column() {
-            EmptyScreen({ message: $r('app.string.detail_no_chapters') })
-          }
-          .layoutWeight(1)
-          .justifyContent(FlexAlign.Center)
-        } else {
-          List({ space: 0 }) {
-            ForEach(this.shownChapters(), (chapter: ChapterRecord) => {
-              ListItem() {
-                DetailChapterRow({
-                  chapter: chapter,
-                  isLocalSource: ContentType.isLocal(this.manga.sourceKey),
-                  onTap: (c: ChapterRecord): void => {
-                    this.openReader(c.id);
-                  },
-                  onDownload: (c: ChapterRecord): void => {
-                    this.downloadChapter(c);
-                  },
-                })
-              }
-            }, (chapter: ChapterRecord) => `ch-${chapter.id}-${chapter.read}`)
-          }
-          .layoutWeight(1)
-          .scrollBar(BarState.Auto)
-          .divider({
-            strokeWidth: 1,
-            color: this.pal.divider,
-            startMargin: 16,
-            endMargin: 16,
-          })
-        }
-        }
-        .layoutWeight(1)
-        .width('100%')
+        .hitTestBehavior(HitTestMode.Transparent)
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)

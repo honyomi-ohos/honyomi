@@ -168,6 +168,16 @@ export class Settings {
     Settings.setNum('novelParagraphSpacing', v);
   }
 
+  // 听书语速（0.5 - 2.0，默认 1.0）
+  static getNovelTtsSpeed(): number {
+    const n = Settings.getNum('novelTtsSpeed', 1);
+    return n >= 0.5 && n <= 2 ? n : 1;
+  }
+
+  static setNovelTtsSpeed(v: number): void {
+    Settings.setNum('novelTtsSpeed', v);
+  }
+
   // 书架类型筛选：all | manga | novel | video
   static getLibraryContentFilter(): string {
     const raw = Settings.getStr('libContentFilter', 'all');
