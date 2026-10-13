@@ -68,6 +68,8 @@ export class MangaRecord {
   url: string = '';
   title: string = '';
   thumbnailUrl: string = '';
+  // 非空表示 thumbnailUrl 正在展示用户自定义封面，此字段保存源原封面地址
+  origThumbnail: string = '';
   author: string = '';
   description: string = '';
   genre: string = '';

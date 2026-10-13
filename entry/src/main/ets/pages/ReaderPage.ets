@@ -862,6 +862,7 @@ export struct ReaderPage {
             )
           )
            .bindSheet($$this.showSettings, this.settingsSheet(), {
+             preferType: SheetType.BOTTOM,
              title: { title: $r('app.string.reader_settings') },
              detents: [SheetSize.FIT_CONTENT],
              dragBar: true,
@@ -874,6 +875,7 @@ export struct ReaderPage {
       .height('100%')
       .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
       .bindSheet($$this.showModeSheet, this.modeSheetBuilder(), {
+        preferType: SheetType.BOTTOM,
         title: { title: $r('app.string.reader_reading_mode') },
         detents: [SheetSize.FIT_CONTENT],
         dragBar: true,
@@ -884,6 +886,7 @@ export struct ReaderPage {
     .hideTitleBar(true)
     .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
     .bindSheet($$this.showOrientationSheet, this.orientationSheetBuilder(), {
+      preferType: SheetType.BOTTOM,
       title: { title: $r('app.string.reader_screen_orientation') },
       detents: [SheetSize.FIT_CONTENT],
       dragBar: true,

@@ -177,6 +177,7 @@ export struct CategoriesPage {
       .height('100%')
       .backgroundColor(this.pal.bg)
       .bindSheet($$this.showItemSheet, this.itemSheetBuilder(), {
+        preferType: SheetType.BOTTOM,
         title: { title: this.menuCat === null ? '' : this.menuCat.name },
         detents: [SheetSize.FIT_CONTENT],
         dragBar: true,

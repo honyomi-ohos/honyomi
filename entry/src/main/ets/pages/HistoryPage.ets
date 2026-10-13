@@ -159,7 +159,7 @@ export struct HistoryPage {
                 ContentOpen.open(this.pathStack, item.mangaId, item.chapterId);
               })
             }
-          }, (item: HistoryItem) => `his-${item.chapterId}-${item.seenAt}`)
+          }, (item: HistoryItem) => `his-${item.chapterId}-${item.seenAt}-${item.coverUrl}`)
         }
         .layoutWeight(1)
         .scrollBar(BarState.Auto)

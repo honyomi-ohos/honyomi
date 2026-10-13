@@ -615,6 +615,10 @@
     { "name": "player_set_danmaku_area", "value": "Danmaku display area" },
     { "name": "player_set_danmaku_speed", "value": "Danmaku speed" },
     { "name": "player_set_danmaku_source", "value": "Danmaku data from dandanplay (network required)" },
+    { "name": "video_scale_mode", "value": "Screen scale mode" },
+    { "name": "video_scale_fit", "value": "Fit" },
+    { "name": "video_scale_fill", "value": "Fill" },
+    { "name": "video_scale_stretch", "value": "Stretch" },
     { "name": "danmaku_speed_slow", "value": "Slow" },
     { "name": "danmaku_speed_normal", "value": "Normal" },
     { "name": "danmaku_speed_fast", "value": "Fast" },
@@ -625,6 +629,12 @@
     { "name": "danmaku_area_full", "value": "Full screen" },
     { "name": "stats_duration_manga", "value": "Manga time" },
     { "name": "stats_duration_novel", "value": "Novel time" },
-    { "name": "stats_duration_video", "value": "Video time" }
+    { "name": "stats_duration_video", "value": "Video time" },
+    { "name": "detail_cover_actions", "value": "Cover" },
+    { "name": "detail_edit_cover", "value": "Edit cover" },
+    { "name": "detail_reset_cover", "value": "Reset cover" },
+    { "name": "detail_cover_updated", "value": "Cover updated" },
+    { "name": "detail_cover_reset", "value": "Cover restored" },
+    { "name": "detail_cover_save_failed", "value": "Couldn't update the cover" }
 ]
 }

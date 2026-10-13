@@ -1,5 +1,6 @@
 import { common, Want } from '@kit.AbilityKit';
 import { formProvider, formInfo } from '@kit.FormKit';
+import { photoAccessHelper } from '@kit.MediaLibraryKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo, ChapterRepo, TrackRepo } from '../data/Repos';
 import { SourceRegistry } from '../source/Source';
@@ -9,6 +10,7 @@ import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { Settings } from '../common/Settings';
+import { CoverStore } from '../common/CoverStore';
 import { DownloadService } from '../data/DownloadService';
 import { WidgetUpdater } from '../form/WidgetUpdater';
 import { AniListTracker } from '../data/AniListTracker';
@@ -16,6 +18,7 @@ import { InputDialog } from './components/Dialogs';
 import { SmartImage } from './components/SmartImage';
 import { EmptyScreen } from './components/EmptyScreen';
 import { AppIcon } from './components/AppIcon';
+import { PickerSheet } from './components/PickerSheet';
 
 // 漫画详情页：信息 + 章节列表 + 收藏 + 下载 + AniList 追踪
 @Component
@@ -35,6 +38,7 @@ export struct MangaDetailPage {
   @State alResults: ALMediaItem[] = [];
   @State alSearching: boolean = false;
   @State dlVersion: number = 0;
+  @State showCoverSheet: boolean = false;
   private mangaId: number = -1;
 
   private onDownloadChanged = (): void => {
@@ -105,8 +109,72 @@ export struct MangaDetailPage {
     Util.toastRes(this.getUIContext(), target ? $r('app.string.detail_added_to_library') : $r('app.string.detail_removed_from_library'));
   }
 
-  private continueChapter(): ChapterRecord | undefined {
-    if (this.chapters.length === 0) {
+  // 更换封面（对齐 Mihon Edit cover）：系统图库选图 → 复制为自定义封面 → 详情/书架同步生效
+  private async editCover(): Promise<void> {
+    try {
+      const picker = new photoAccessHelper.PhotoViewPicker();
+      const result = await picker.select({
+        MIMEType: photoAccessHelper.PhotoViewMIMETypes.IMAGE_TYPE,
+        maxSelectNumber: 1,
+      });
+      const uris = result.photoUris;
+      if (uris.length === 0) {
+        return;
+      }
+      const context = getContext(this) as common.UIAbilityContext;
+      const coverPath = await CoverStore.save(context, this.mangaId, uris[0]);
+      if (coverPath === '') {
+        Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_save_failed'));
+        return;
+      }
+      await MangaRepo.applyCustomCover(this.mangaId, coverPath);
+      await this.reloadLocal();
+      AppStorage.set('libDirty', this.libDirty + 1);
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_updated'));
+    } catch (e) {
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_save_failed'));
+    }
+  }
+
+  // 恢复原封面（对齐 Mihon Reset cover）：删除自定义封面文件，回退到源封面地址
+  private async resetCover(): Promise<void> {
+    const context = getContext(this) as common.UIAbilityContext;
+    CoverStore.remove(context, this.mangaId);
+    await MangaRepo.resetCover(this.mangaId);
+    await this.reloadLocal();
+    AppStorage.set('libDirty', this.libDirty + 1);
+    Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_reset'));
+  }
+
+  private coverSheetOptions(): ResourceStr[] {
+    const options: ResourceStr[] = [$r('app.string.detail_edit_cover')];
+    if (this.manga.origThumbnail !== '') {
+      options.push($r('app.string.detail_reset_cover'));
+    }
+    return options;
+  }
+
+  private coverSheetIcons(): string[] {
+    return this.manga.origThumbnail !== '' ? ['edit', 'refresh'] : ['edit'];
+  }
+
+  @Builder
+  coverSheetBuilder() {
+    PickerSheet({
+      options: this.coverSheetOptions(),
+      icons: this.coverSheetIcons(),
+      onPick: (index: number): void => {
+        this.showCoverSheet = false;
+        if (index === 0) {
+          this.editCover();
+        } else if (index === 1) {
+          this.resetCover();
+        }
+      }
+    })
+  }
+
+  private continueChapter(): ChapterRecord | undefined {    if (this.chapters.length === 0) {
       return undefined;
     }
     for (const chapter of this.chapters) {
@@ -326,7 +394,7 @@ export struct MangaDetailPage {
             .padding({ top: this.statusBarH + 8 })
 
             Row({ space: 14 }) {
-              // 封面
+              // 封面（长按更换/恢复，对齐 Mihon）
               Stack() {
                 if (this.manga.thumbnailUrl !== '') {
                   SmartImage({ url: this.manga.thumbnailUrl, sourceKey: this.manga.sourceKey, fit: ImageFit.Cover, fill: true })
@@ -344,6 +412,20 @@ export struct MangaDetailPage {
               .borderRadius(10)
               .clip(true)
               .backgroundColor(this.pal.chip)
+              .gesture(
+                LongPressGesture()
+                  .onAction(() => {
+                    this.showCoverSheet = true;
+                  })
+              )
+              .bindSheet($$this.showCoverSheet, this.coverSheetBuilder(), {
+                preferType: SheetType.BOTTOM,
+                title: { title: $r('app.string.detail_cover_actions') },
+                detents: [SheetSize.FIT_CONTENT],
+                dragBar: true,
+                showClose: false,
+                blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
+              })
               Column({ space: 6 }) {
                 Text(this.manga.title)
                   .fontSize(20)

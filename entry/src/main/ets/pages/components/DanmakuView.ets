@@ -1,4 +1,5 @@
 import { DanmakuItem } from '../../data/DanmakuService';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 
 // 活跃弹幕：含轨道、实测文本宽度与激活时的播放位置
 class ActiveDm {
@@ -49,6 +50,7 @@ export struct DanmakuView {
   private bottomEnds: number[] = [];
 
   aboutToAppear(): void {
+    hilog.info(0xDEAD, 'VP', 'DanmakuView aboutToAppear');
     this.controller.setItemsFn = (items: DanmakuItem[]): void => {
       this.items = items;
       this.resetTo(this.positionProvider());
@@ -63,6 +65,7 @@ export struct DanmakuView {
   }
 
   aboutToDisappear(): void {
+    hilog.info(0xDEAD, 'VP', 'DanmakuView aboutToDisappear');
     if (this.ticker >= 0) {
       clearInterval(this.ticker);
       this.ticker = -1;

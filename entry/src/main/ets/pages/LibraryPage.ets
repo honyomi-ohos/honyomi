@@ -630,6 +630,7 @@ export struct LibraryPage {
               this.showFilterSheet = true;
             })
             .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(), {
+              preferType: SheetType.BOTTOM,
               detents: ['70%', SheetSize.LARGE],
               showClose: false,
               dragBar: true,
@@ -724,7 +725,7 @@ export struct LibraryPage {
                   }
                 })
               }
-            }, (record: MangaRecord) => `lib-${record.id}-${record.inLibrary}`)
+            }, (record: MangaRecord) => `lib-${record.id}-${record.inLibrary}-${record.thumbnailUrl}`)
           }
           .scrollBar(BarState.Off)
           .contentEndOffset(this.navBarH + 76)
@@ -753,7 +754,7 @@ export struct LibraryPage {
                   }
                 })
               }
-            }, (record: MangaRecord) => `lib-${record.id}-${record.inLibrary}`)
+            }, (record: MangaRecord) => `lib-${record.id}-${record.inLibrary}-${record.thumbnailUrl}`)
           }
           .columnsTemplate(this.columnsTemplate())
           .columnsGap(8)

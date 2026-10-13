@@ -1704,6 +1704,10 @@
       { "name": "player_set_danmaku_area", "value": "弹幕显示区域" },
       { "name": "player_set_danmaku_speed", "value": "弹幕速度" },
       { "name": "player_set_danmaku_source", "value": "弹幕数据来自 dandanplay（需联网）" },
+      { "name": "video_scale_mode", "value": "画面显示" },
+      { "name": "video_scale_fit", "value": "适应" },
+      { "name": "video_scale_fill", "value": "填充" },
+      { "name": "video_scale_stretch", "value": "拉伸" },
       { "name": "danmaku_speed_slow", "value": "慢" },
       { "name": "danmaku_speed_normal", "value": "标准" },
       { "name": "danmaku_speed_fast", "value": "快" },
@@ -1714,6 +1718,12 @@
       { "name": "danmaku_area_full", "value": "全屏" },
       { "name": "stats_duration_manga", "value": "漫画时长" },
       { "name": "stats_duration_novel", "value": "小说时长" },
-      { "name": "stats_duration_video", "value": "视频时长" }
+      { "name": "stats_duration_video", "value": "视频时长" },
+      { "name": "detail_cover_actions", "value": "封面" },
+      { "name": "detail_edit_cover", "value": "更换封面" },
+      { "name": "detail_reset_cover", "value": "恢复原封面" },
+      { "name": "detail_cover_updated", "value": "封面已更新" },
+      { "name": "detail_cover_reset", "value": "封面已恢复" },
+      { "name": "detail_cover_save_failed", "value": "封面更新失败" }
 ]
 }

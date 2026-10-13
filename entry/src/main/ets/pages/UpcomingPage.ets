@@ -439,6 +439,7 @@ export struct UpcomingPage {
               this.showFilterSheet = true;
             })
             .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(), {
+              preferType: SheetType.BOTTOM,
               detents: ['60%', SheetSize.LARGE],
               showClose: false,
               dragBar: true,

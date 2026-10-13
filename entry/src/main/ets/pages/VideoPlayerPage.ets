@@ -1,4 +1,5 @@
 import { common } from '@kit.AbilityKit';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 import { media } from '@kit.MediaKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { window } from '@kit.ArkUI';
@@ -18,10 +19,12 @@ import { AppIcon } from './components/AppIcon';
 import { DanmakuView, DanmakuController } from './components/DanmakuView';
 
 const SPEEDS: number[] = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
+const SCALE_MODES: number[] = [0, 1, 2];
 const DM_FONT_VALUES: number[] = [12, 14, 16, 18, 20];
 const DM_OPACITY_VALUES: number[] = [30, 50, 80, 100];
 const DM_AREA_VALUES: number[] = [25, 50, 75, 100];
 const DM_DUR_VALUES: number[] = [12, 10, 8, 6];
+let vpSeq: number = 0;
 
 // 视频播放器（参考 AnymeX 播放器布局）：沉浸式全屏 + 顶部/中部/底部悬浮控制条，
 // 双击左右区域快退/快进 10s，控制条 4s 自动隐藏，支持锁定、倍速、画质、剧集列表与弹幕
@@ -57,6 +60,8 @@ export struct VideoPlayerPage {
   @State dmArea: number = 50;
   @State dmDur: number = 10;
   @State fullscreen: boolean = false;
+  @State boosting: boolean = false;
+  @State scaleMode: number = 0;
   private mangaId: number = -1;
   private chapterId: number = -1;
   private resumeMs: number = 0;
@@ -76,14 +81,23 @@ export struct VideoPlayerPage {
   private hideTimer: number = -1;
   private tapTimer: number = -1;
   private seekToastTimer: number = -1;
+  private boostTimer: number = -1;
+  private suppressClick: boolean = false;
   private win: window.Window | undefined = undefined;
   private dmCtrl: DanmakuController = new DanmakuController();
   private dmLoading: boolean = false;
   private dmChapterId: number = -1;
+  private instId: number = ++vpSeq;
+
+  private log(msg: string): void {
+    hilog.info(0xDEAD, 'VP', '[inst%{public}d] %{public}s', this.instId, msg);
+  }
 
   aboutToAppear(): void {
+    this.log('aboutToAppear');
     this.speed = Settings.getVideoSpeed();
     this.autoNext = Settings.getVideoAutoNext();
+    this.scaleMode = Settings.getVideoScaleMode();
     this.danmakuOn = Settings.getDanmakuEnabled();
     this.dmFont = Settings.getDanmakuFont();
     this.dmOpacity = Settings.getDanmakuOpacityPct();
@@ -99,6 +113,7 @@ export struct VideoPlayerPage {
   }
 
   aboutToDisappear(): void {
+    this.log('aboutToDisappear');
     this.persist(false);
     ReadingStatsRepo.flush();
     this.stopTicker();
@@ -138,6 +153,10 @@ export struct VideoPlayerPage {
     if (this.seekToastTimer >= 0) {
       clearTimeout(this.seekToastTimer);
       this.seekToastTimer = -1;
+    }
+    if (this.boostTimer >= 0) {
+      clearTimeout(this.boostTimer);
+      this.boostTimer = -1;
     }
   }
 
@@ -190,6 +209,8 @@ export struct VideoPlayerPage {
         this.loadDanmaku();
       }
     } catch (e) {
+      const em = (e as Error).message;
+      this.log(`loadChapter catch: ${em}`);
       this.errorText = (e as Error).message;
       this.buffering = false;
       Util.toastRes(this.getUIContext(), $r('app.string.reader_load_failed'), [this.errorText]);
@@ -252,6 +273,7 @@ export struct VideoPlayerPage {
   }
 
   private playFile(path: string): void {
+    this.log(`playFile: ${path}`);
     this.playGen += 1;
     const gen = this.playGen;
     this.releasePlayer();
@@ -267,12 +289,14 @@ export struct VideoPlayerPage {
       const fdSrc: media.AVFileDescriptor = { fd: file.fd, offset: 0, length: stat.size };
       player.fdSrc = fdSrc;
     }).catch((e: Error) => {
+      this.log(`playFile createAVPlayer catch: ${e.message}`);
       this.errorText = e.message;
       this.buffering = false;
     });
   }
 
   private playRemote(video: SVideo): void {
+    this.log(`playRemote: ${video.url}`);
     this.playGen += 1;
     const gen = this.playGen;
     this.releasePlayer();
@@ -287,15 +311,18 @@ export struct VideoPlayerPage {
       const strategy: media.PlaybackStrategy = { preferredWidth: 0, preferredHeight: 0 };
       player.setMediaSource(source, strategy);
     }).catch((e: Error) => {
+      this.log(`playRemote createAVPlayer catch: ${e.message}`);
       this.errorText = e.message;
       this.buffering = false;
     });
   }
 
   private bindPlayer(player: media.AVPlayer): void {
+    this.log(`bindPlayer`);
     this.player = player;
     this.buffering = true;
     player.on('stateChange', (state: media.AVPlayerState) => {
+      this.log(`stateChange: ${state}`);
       if (state === 'initialized') {
         // surfaceId 仅支持在 initialized 状态设置，须在 prepare() 之前完成
         player.surfaceId = this.surfaceId;
@@ -329,6 +356,7 @@ export struct VideoPlayerPage {
           this.showControls = true;
         }
       } else if (state === 'error') {
+        this.log(`stateChange error, native state: ${player.state}`);
         this.playing = false;
         this.buffering = false;
         this.errorText = '播放失败';
@@ -338,6 +366,11 @@ export struct VideoPlayerPage {
       this.buffering = false;
     });
     player.on('error', (_err: Error) => {
+      this.log(`player error cb: ${_err.message}, native state: ${player.state}`);
+      if (player.state !== 'error') {
+        this.log('non-fatal error ignored');
+        return;
+      }
       this.errorText = '播放失败';
       this.playing = false;
       this.buffering = false;
@@ -371,14 +404,24 @@ export struct VideoPlayerPage {
     }
   }
 
-  // Surface 显示区域按视频宽高比自适应（等比缩放并居中），避免画面被拉伸；SurfaceRect 单位为 px
+  // Surface 显示区域按画面显示模式计算：0=适应（等比缩放居中）1=填充（等比放大裁剪铺满）2=拉伸（无视宽高比铺满）；SurfaceRect 单位为 px
   private adjustSurface(): void {
     if (this.videoW <= 0 || this.videoH <= 0 || this.areaW <= 0 || this.areaH <= 0) {
       return;
     }
-    const scale = Math.min(this.areaW / this.videoW, this.areaH / this.videoH);
-    let w = Math.floor(this.videoW * scale);
-    let h = Math.floor(this.videoH * scale);
+    let w = 0;
+    let h = 0;
+    if (this.scaleMode === 2) {
+      // 拉伸：忽略视频宽高比，直接铺满显示区域
+      w = this.areaW;
+      h = this.areaH;
+    } else {
+      const scale = this.scaleMode === 1
+        ? Math.max(this.areaW / this.videoW, this.areaH / this.videoH)
+        : Math.min(this.areaW / this.videoW, this.areaH / this.videoH);
+      w = Math.floor(this.videoW * scale);
+      h = Math.floor(this.videoH * scale);
+    }
     if (w > 8192) {
       w = 8192;
     }
@@ -393,6 +436,7 @@ export struct VideoPlayerPage {
 
   private releasePlayer(): void {
     const player = this.player;
+    this.log(`releasePlayer, hadPlayer=${player !== undefined}`);
     this.player = undefined;
     this.playing = false;
     if (player !== undefined) {
@@ -441,6 +485,9 @@ export struct VideoPlayerPage {
 
   // 侧区单击：延迟执行以等待可能的第二次点击（双击快进/快退）
   private scheduleTap(): void {
+    if (this.boosting || this.suppressClick) {
+      return;
+    }
     if (this.locked) {
       this.pokeControls();
       return;
@@ -455,6 +502,9 @@ export struct VideoPlayerPage {
   }
 
   private onDoubleTap(side: number): void {
+    if (this.boosting || this.suppressClick) {
+      return;
+    }
     if (this.tapTimer >= 0) {
       clearTimeout(this.tapTimer);
       this.tapTimer = -1;
@@ -482,6 +532,62 @@ export struct VideoPlayerPage {
     }, 600);
   }
 
+  // ---- 长按加速（按住 ~0.5s 临时 2x，松开恢复） ----
+  private boostTouch(event: TouchEvent): void {
+    if (event.type === TouchType.Down) {
+      this.armBoost();
+    } else if (event.type === TouchType.Up || event.type === TouchType.Cancel) {
+      this.disarmBoost();
+    }
+  }
+
+  private armBoost(): void {
+    if (this.boostTimer >= 0) {
+      clearTimeout(this.boostTimer);
+      this.boostTimer = -1;
+    }
+    if (this.locked || !this.playing || this.speed >= 2.0) {
+      return;
+    }
+    this.boostTimer = setTimeout(() => {
+      this.boostTimer = -1;
+      this.startBoost();
+    }, 500);
+  }
+
+  private disarmBoost(): void {
+    if (this.boostTimer >= 0) {
+      clearTimeout(this.boostTimer);
+      this.boostTimer = -1;
+    }
+    if (this.boosting) {
+      this.endBoost();
+      this.suppressClick = true;
+      setTimeout(() => {
+        this.suppressClick = false;
+      }, 400);
+    }
+  }
+
+  private startBoost(): void {
+    const player = this.player;
+    if (player === undefined) {
+      return;
+    }
+    this.log('boost start 2x');
+    player.setSpeed(media.PlaybackSpeed.SPEED_FORWARD_2_00_X);
+    this.boosting = true;
+  }
+
+  private endBoost(): void {
+    this.boosting = false;
+    const player = this.player;
+    if (player !== undefined) {
+      this.log('boost end');
+      player.setSpeed(this.speedToEnum(this.speed));
+    }
+  }
+
   private togglePlay(): void {
     const player = this.player;
     if (player === undefined) {
@@ -501,6 +607,11 @@ export struct VideoPlayerPage {
   private seekTo(ms: number): void {
     const player = this.player;
     if (player === undefined) {
+      return;
+    }
+    const st = player.state;
+    if (st !== 'prepared' && st !== 'playing' && st !== 'paused' && st !== 'completed') {
+      this.log(`seekTo skipped, state=${st}`);
       return;
     }
     this.positionMs = ms;
@@ -643,6 +754,16 @@ export struct VideoPlayerPage {
     return s === 1.0 ? '1.0x' : `${s}x`;
   }
 
+  private scaleModeLabel(m: number): ResourceStr {
+    if (m === 1) {
+      return $r('app.string.video_scale_fill');
+    }
+    if (m === 2) {
+      return $r('app.string.video_scale_stretch');
+    }
+    return $r('app.string.video_scale_fit');
+  }
+
   private areaLabel(i: number): ResourceStr {
     const labels: ResourceStr[] = [
       $r('app.string.danmaku_area_quarter'),
@@ -726,19 +847,6 @@ export struct VideoPlayerPage {
           this.hideTimer = -1;
         }
         this.showControls = false;
-      })
-      Column() {
-        AppIcon({ name: 'tune', iconSize: 20, tint: Color.White })
-      }
-      .width(38)
-      .height(38)
-      .borderRadius(19)
-      .justifyContent(FlexAlign.Center)
-      .alignItems(HorizontalAlign.Center)
-      .backgroundColor('rgba(255,255,255,0.12)')
-      .margin({ left: 8 })
-      .onClick(() => {
-        this.openSheet(4);
       })
     }
     .width('100%')
@@ -828,8 +936,11 @@ export struct VideoPlayerPage {
               this.dragging = true;
               this.positionMs = v;
             } else {
+              const interactive = this.dragging || mode === SliderChangeMode.Click;
               this.dragging = false;
-              this.seekTo(v);
+              if (interactive && this.durationMs > 0) {
+                this.seekTo(v);
+              }
             }
           })
         Text(this.clock(this.durationMs))
@@ -1059,6 +1170,27 @@ export struct VideoPlayerPage {
       .width('100%')
       .height(48)
 
+      Text($r('app.string.video_scale_mode'))
+        .fontSize(13)
+        .fontColor(this.pal.sub)
+      Flex({ wrap: FlexWrap.Wrap }) {
+        ForEach(SCALE_MODES, (m: number) => {
+          Text(this.scaleModeLabel(m))
+            .fontSize(14)
+            .fontColor(this.scaleMode === m ? Color.White : this.pal.text)
+            .backgroundColor(this.scaleMode === m ? this.pal.primary : this.pal.chip)
+            .borderRadius(16)
+            .padding({ left: 16, right: 16, top: 8, bottom: 8 })
+            .margin({ right: 8, top: 8 })
+            .onClick(() => {
+              this.scaleMode = m;
+              Settings.setVideoScaleMode(m);
+              this.adjustSurface();
+            })
+        }, (m: number) => `scale-${m}`)
+      }
+      .width('100%')
+
       Divider().color(this.pal.divider)
 
       Row() {
@@ -1213,6 +1345,9 @@ export struct VideoPlayerPage {
           Column()
             .layoutWeight(1)
             .height('100%')
+            .onTouch((event: TouchEvent) => {
+              this.boostTouch(event);
+            })
             .gesture(TapGesture({ count: 2 })
               .onAction(() => {
                 this.onDoubleTap(-1);
@@ -1223,7 +1358,13 @@ export struct VideoPlayerPage {
           Column()
             .layoutWeight(1.2)
             .height('100%')
+            .onTouch((event: TouchEvent) => {
+              this.boostTouch(event);
+            })
             .onClick(() => {
+              if (this.boosting || this.suppressClick) {
+                return;
+              }
               if (this.locked) {
                 this.pokeControls();
               } else {
@@ -1233,6 +1374,9 @@ export struct VideoPlayerPage {
           Column()
             .layoutWeight(1)
             .height('100%')
+            .onTouch((event: TouchEvent) => {
+              this.boostTouch(event);
+            })
             .gesture(TapGesture({ count: 2 })
               .onAction(() => {
                 this.onDoubleTap(1);
@@ -1243,6 +1387,17 @@ export struct VideoPlayerPage {
         }
         .width('100%')
         .height('100%')
+
+        if (this.boosting) {
+          Text('2x')
+            .fontSize(15)
+            .fontWeight(FontWeight.Bold)
+            .fontColor(Color.White)
+            .padding({ left: 14, right: 14, top: 6, bottom: 6 })
+            .borderRadius(18)
+            .backgroundColor('rgba(0,0,0,0.6)')
+            .offset({ y: '-18%' })
+        }
 
         if (this.seekToast !== 0) {
           Row({ space: 6 }) {
@@ -1286,6 +1441,7 @@ export struct VideoPlayerPage {
       .height('100%')
       .backgroundColor('#000000')
       .bindSheet($$this.showSheet, this.sheetBuilder(), {
+        preferType: SheetType.BOTTOM,
         detents: [SheetSize.MEDIUM, SheetSize.LARGE],
         dragBar: true,
         showClose: false,
@@ -1309,6 +1465,7 @@ export struct VideoPlayerPage {
         this.mangaId = params.mangaId;
         this.chapterId = params.chapterId;
       }
+      this.log(`onReady manga=${this.mangaId} chapter=${this.chapterId}`);
       this.loadChapter();
     })
   }

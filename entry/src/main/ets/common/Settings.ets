@@ -676,6 +676,16 @@ export class Settings {
     Settings.setBool('videoAutoNext', v);
   }
 
+  // 画面显示模式（0=适应 1=填充 2=拉伸）
+  static getVideoScaleMode(): number {
+    const n = Settings.getNum('videoScaleMode', 0);
+    return n >= 0 && n <= 2 ? Math.floor(n) : 0;
+  }
+
+  static setVideoScaleMode(v: number): void {
+    Settings.setNum('videoScaleMode', v);
+  }
+
   // ---- 弹幕 ----
   static getDanmakuEnabled(): boolean {
     return Settings.getBool('danmakuEnabled', true);

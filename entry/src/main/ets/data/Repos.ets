@@ -9,11 +9,12 @@ export class MangaRepo {
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('sourceKey', sourceKey).and().equalTo('url', m.key);
     const rs = await store.query(pred,
-      ['id', 'inLibrary', 'title', 'thumbnailUrl', 'author', 'description', 'genre', 'status']);
+      ['id', 'inLibrary', 'title', 'thumbnailUrl', 'origThumbnail', 'author', 'description', 'genre', 'status']);
     let id = -1;
     let inLibrary = 0;
     let oldTitle = '';
     let oldThumb = '';
+    let oldOrigThumb = '';
     let oldAuthor = '';
     let oldDesc = '';
     let oldGenre = '';
@@ -23,6 +24,7 @@ export class MangaRepo {
       inLibrary = rs.getLong(rs.getColumnIndex('inLibrary'));
       oldTitle = rs.getString(rs.getColumnIndex('title'));
       oldThumb = rs.getString(rs.getColumnIndex('thumbnailUrl'));
+      oldOrigThumb = rs.getString(rs.getColumnIndex('origThumbnail'));
       oldAuthor = rs.getString(rs.getColumnIndex('author'));
       oldDesc = rs.getString(rs.getColumnIndex('description'));
       oldGenre = rs.getString(rs.getColumnIndex('genre'));
@@ -31,9 +33,18 @@ export class MangaRepo {
     rs.close();
     if (id >= 0) {
       // 源返回空字段时保留旧值，避免解析回退把已有信息清空
+      // 自定义封面生效中（origThumbnail 非空）不覆盖当前封面，只同步原封面地址
+      let newThumb = oldThumb;
+      let newOrig = oldOrigThumb;
+      if (oldOrigThumb !== '') {
+        newOrig = m.coverUrl !== '' ? m.coverUrl : oldOrigThumb;
+      } else {
+        newThumb = m.coverUrl !== '' ? m.coverUrl : oldThumb;
+      }
       const values: relationalStore.ValuesBucket = {
         'title': m.title !== '' ? m.title : oldTitle,
-        'thumbnailUrl': m.coverUrl !== '' ? m.coverUrl : oldThumb,
+        'thumbnailUrl': newThumb,
+        'origThumbnail': newOrig,
         'author': m.author !== '' ? m.author : oldAuthor,
         'description': m.description !== '' ? m.description : oldDesc,
         'genre': m.genre !== '' ? m.genre : oldGenre,
@@ -145,14 +156,32 @@ export class MangaRepo {
     return counts;
   }
 
-  // 迁移：切换源与地址并更新元数据，清空旧章节记录（进度不保留）
+  // 迁移：切换源与地址并更新元数据，清空旧章节记录（进度不保留）；自定义封面保留（对齐 Mihon）
   static async migrate(id: number, sourceKey: string, url: string, m: SManga, contentType: string): Promise<void> {
     const store = await AppDb.get();
+    const predOld = new relationalStore.RdbPredicates('manga');
+    predOld.equalTo('id', id);
+    const rsOld = await store.query(predOld, ['thumbnailUrl', 'origThumbnail']);
+    let oldThumb = '';
+    let oldOrigThumb = '';
+    if (rsOld.goToNextRow()) {
+      oldThumb = rsOld.getString(rsOld.getColumnIndex('thumbnailUrl'));
+      oldOrigThumb = rsOld.getString(rsOld.getColumnIndex('origThumbnail'));
+    }
+    rsOld.close();
+    let newThumb = m.coverUrl;
+    let newOrig = '';
+    if (oldOrigThumb !== '') {
+      // 自定义封面跟随迁移，新源封面地址顶替"原封面"待恢复地址
+      newThumb = oldThumb;
+      newOrig = m.coverUrl;
+    }
     const values: relationalStore.ValuesBucket = {
       'sourceKey': sourceKey,
       'url': url,
       'title': m.title !== '' ? m.title : ' ',
-      'thumbnailUrl': m.coverUrl,
+      'thumbnailUrl': newThumb,
+      'origThumbnail': newOrig,
       'author': m.author,
       'description': m.description,
       'genre': m.genre,
@@ -163,6 +192,33 @@ export class MangaRepo {
     pred.equalTo('id', id);
     await store.update(values, pred);
     await store.executeSql(`DELETE FROM chapter WHERE mangaId = ?`, [id]);
+  }
+
+  // 启用自定义封面：封面切到本地文件，原封面地址存入 origThumbnail（对齐 Mihon Edit cover）
+  static async applyCustomCover(id: number, coverPath: string): Promise<void> {
+    const store = await AppDb.get();
+    const pred = new relationalStore.RdbPredicates('manga');
+    pred.equalTo('id', id);
+    const rs = await store.query(pred, ['thumbnailUrl', 'origThumbnail']);
+    let oldThumb = '';
+    let oldOrigThumb = '';
+    if (rs.goToNextRow()) {
+      oldThumb = rs.getString(rs.getColumnIndex('thumbnailUrl'));
+      oldOrigThumb = rs.getString(rs.getColumnIndex('origThumbnail'));
+    }
+    rs.close();
+    const values: relationalStore.ValuesBucket = {
+      'thumbnailUrl': coverPath,
+      'origThumbnail': oldOrigThumb !== '' ? oldOrigThumb : oldThumb,
+    };
+    await store.update(values, pred);
+  }
+
+  // 恢复原封面：回退到源封面地址并清除自定义标记（对齐 Mihon Reset cover）
+  static async resetCover(id: number): Promise<void> {
+    const store = await AppDb.get();
+    await store.executeSql(
+      `UPDATE manga SET thumbnailUrl = origThumbnail, origThumbnail = '' WHERE id = ?`, [id]);
   }
 
   // 刷新完成时写入时间戳：fetchedAt 总是更新，有新章节时一并更新 lastUpdateAt
@@ -201,7 +257,7 @@ export class MangaRepo {
   }
 
   private static readonly COLUMNS: string[] = [
-    'id', 'sourceKey', 'url', 'title', 'thumbnailUrl', 'author',
+    'id', 'sourceKey', 'url', 'title', 'thumbnailUrl', 'origThumbnail', 'author',
     'description', 'genre', 'status', 'contentType', 'inLibrary', 'categoryId', 'addedAt',
     'lastUpdateAt', 'fetchedAt',
   ];
@@ -213,6 +269,7 @@ export class MangaRepo {
     m.url = rs.getString(rs.getColumnIndex('url'));
     m.title = rs.getString(rs.getColumnIndex('title'));
     m.thumbnailUrl = rs.getString(rs.getColumnIndex('thumbnailUrl'));
+    m.origThumbnail = rs.getString(rs.getColumnIndex('origThumbnail'));
     m.author = rs.getString(rs.getColumnIndex('author'));
     m.description = rs.getString(rs.getColumnIndex('description'));
     m.genre = rs.getString(rs.getColumnIndex('genre'));

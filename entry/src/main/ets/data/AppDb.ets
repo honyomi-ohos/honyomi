@@ -50,6 +50,12 @@ export class AppDb {
     } catch (e) {
       // 新库建表时已含该列，或旧库已经补过
     }
+    try {
+      // 自定义封面启用时保存原封面地址，恢复封面/同步源时用
+      await store.executeSql(`ALTER TABLE manga ADD COLUMN origThumbnail TEXT DEFAULT ''`);
+    } catch (e) {
+      // 新库未列出该列时补齐；旧库已补过
+    }
     await store.executeSql(`CREATE TABLE IF NOT EXISTS chapter (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       mangaId INTEGER NOT NULL,

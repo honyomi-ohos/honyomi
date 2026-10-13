@@ -415,6 +415,7 @@ export struct BrowseSourcePage {
         .height('100%')
         .backgroundColor(this.pal.bg)
         .bindSheet($$this.showFolderSheet, this.folderSheetBuilder(), {
+          preferType: SheetType.BOTTOM,
           title: { title: $r('app.string.browse_local_folder_title') },
           detents: [SheetSize.FIT_CONTENT],
           dragBar: true,

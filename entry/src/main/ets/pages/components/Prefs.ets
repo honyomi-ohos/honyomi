@@ -182,6 +182,7 @@ export struct SelectRow {
     .padding({ left: 16, right: 12 })
     .backgroundColor(this.hovered ? this.pal.chip : Color.Transparent)
     .bindSheet($$this.showPicker, this.pickerSheetBuilder(), {
+      preferType: SheetType.BOTTOM,
       title: { title: this.title },
       detents: [SheetSize.FIT_CONTENT],
       dragBar: true,

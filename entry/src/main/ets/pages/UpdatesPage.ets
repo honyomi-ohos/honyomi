@@ -170,6 +170,7 @@ export struct UpdatesPage {
             this.showFilterSheet = true;
           })
           .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(), {
+            preferType: SheetType.BOTTOM,
             detents: ['60%', SheetSize.LARGE],
             showClose: false,
             dragBar: true,
@@ -275,7 +276,7 @@ export struct UpdatesPage {
                 ContentOpen.open(this.pathStack, item.mangaId, item.chapterId);
               })
             }
-          }, (item: UpdateItem) => `upd-${item.chapterId}`)
+          }, (item: UpdateItem) => `upd-${item.chapterId}-${item.coverUrl}`)
         }
         .layoutWeight(1)
         .scrollBar(BarState.Auto)
