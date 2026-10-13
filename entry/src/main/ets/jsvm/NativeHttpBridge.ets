@@ -16,6 +16,7 @@ import { util } from '@kit.ArkTS';
 import jsvmEngine from 'libjsvmengine.so';
 import { CookieJar } from '../net/CookieJar';
 import { Http } from '../net/Http';
+import { Util } from '../common/Util';
 
 /** Bridge request as dispatched by the native engine (JSON-decoded). */
 export interface JsvmBridgeRequest {
@@ -168,11 +169,19 @@ export class NativeHttpBridge {
     } catch (e) {
       headers = {};
     }
-    const followed = await NativeHttpBridge.follow(url, req.method, headers, req.body, req.wantBytes);
+    // 统一以字节取回，再按 Content-Type charset 解码：修复 GBK/Big5 站点乱码
+    const followed = await NativeHttpBridge.follow(url, req.method, headers, req.body, true);
     const resp = followed.resp;
     const finalUrl = followed.url;
     const headersJson = JSON.stringify(NativeHttpBridge.flattenHeaders(resp.header));
-    if (NativeHttpBridge.isChallenge(resp, finalUrl)) {
+    const buffer = resp.result instanceof ArrayBuffer ? resp.result as ArrayBuffer : new ArrayBuffer(0);
+    let body = '';
+    if (req.wantBytes) {
+      body = NativeHttpBridge.toBase64(buffer);
+    } else {
+      body = NativeHttpBridge.decodeBody(buffer, resp.header);
+    }
+    if (NativeHttpBridge.isChallenge(resp, finalUrl, req.wantBytes ? '' : body)) {
       return {
         status: resp.responseCode,
         statusText: NativeHttpBridge.statusTextOf(resp.responseCode),
@@ -181,12 +190,6 @@ export class NativeHttpBridge {
         error: NativeHttpBridge.challengeError(finalUrl),
         url: finalUrl,
       };
-    }
-    let body = '';
-    if (req.wantBytes) {
-      body = NativeHttpBridge.toBase64(resp.result as ArrayBuffer);
-    } else {
-      body = resp.result as string;
     }
     return {
       status: resp.responseCode,
@@ -221,7 +224,7 @@ export class NativeHttpBridge {
     const resp = followed.resp;
     const finalUrl = followed.url;
     const headersJson = JSON.stringify(NativeHttpBridge.flattenHeaders(resp.header));
-    if (NativeHttpBridge.isChallenge(resp, finalUrl)) {
+    if (NativeHttpBridge.isChallenge(resp, finalUrl, '')) {
       return {
         status: resp.responseCode,
         statusText: NativeHttpBridge.statusTextOf(resp.responseCode),
@@ -500,8 +503,9 @@ export class NativeHttpBridge {
   }
 
   // Cloudflare bot challenge: 403/503 + cf-mitigated header or well-known
-  // challenge page markers (mirrors net/Http.ets detection).
-  private static isChallenge(resp: http.HttpResponse, url: string): boolean {
+  // challenge page markers (mirrors net/Http.ets detection). text is the
+  // decoded response body ('' when not available, e.g. bytes path).
+  private static isChallenge(resp: http.HttpResponse, url: string, text: string): boolean {
     if (resp.responseCode !== 401 && resp.responseCode !== 403 && resp.responseCode !== 503) {
       return false;
     }
@@ -515,11 +519,9 @@ export class NativeHttpBridge {
         }
       }
     }
-    if (typeof resp.result === 'string') {
-      const body = resp.result as string;
-      if (body.indexOf('challenge-platform') >= 0 || body.indexOf('Just a moment') >= 0) {
-        return true;
-      }
+    if (text !== '' &&
+      (text.indexOf('challenge-platform') >= 0 || text.indexOf('Just a moment') >= 0)) {
+      return true;
     }
     return false;
   }
@@ -527,5 +529,58 @@ export class NativeHttpBridge {
   private static toBase64(buffer: ArrayBuffer): string {
     const helper = new util.Base64Helper();
     return helper.encodeToStringSync(new Uint8Array(buffer));
+  }
+
+  // 按响应 Content-Type 声明的 charset 解码响应体；未声明或不受支持时
+  // 退回自动探测（BOM / UTF-8 / GB18030 / GBK / Big5），默认 UTF-8。
+  private static decodeBody(buffer: ArrayBuffer, header: Object): string {
+    const bytes = new Uint8Array(buffer);
+    if (bytes.length === 0) {
+      return '';
+    }
+    const charset = NativeHttpBridge.charsetOf(header);
+    if (charset !== '') {
+      try {
+        const options: util.TextDecoderOptions = { fatal: false, ignoreBOM: false };
+        return util.TextDecoder.create(charset, options).decodeToString(bytes);
+      } catch (e) {
+        // 声明的编码不受支持：转入自动探测
+      }
+    }
+    return Util.decodeBytes(bytes);
+  }
+
+  // 解析 Content-Type 中的 charset 并归一化为系统 TextDecoder 支持的名称；
+  // 无法识别时返回 ''（调用方走自动探测）。
+  private static charsetOf(header: Object): string {
+    const value = NativeHttpBridge.headerValue(header, 'Content-Type');
+    if (value === '') {
+      return '';
+    }
+    const match = /charset\s*=\s*"?([^";\s]+)"?/i.exec(value);
+    if (match === null) {
+      return '';
+    }
+    const raw = match[1].toLowerCase();
+    if (raw === 'utf-8' || raw === 'utf8' || raw === 'utf-8-sig') {
+      return 'utf-8';
+    }
+    if (raw === 'gbk' || raw === 'gb2312' || raw === 'gb' || raw === 'cn-gb' ||
+      raw === 'cp936' || raw === 'ms936' || raw === 'x-gbk') {
+      return 'gbk';
+    }
+    if (raw === 'gb18030' || raw === 'cp54936') {
+      return 'gb18030';
+    }
+    if (raw === 'big5' || raw === 'big-5' || raw === 'cp950' || raw === 'x-big5') {
+      return 'big5';
+    }
+    if (raw === 'utf-16le' || raw === 'utf-16' || raw === 'unicode') {
+      return 'utf-16le';
+    }
+    if (raw === 'utf-16be') {
+      return 'utf-16be';
+    }
+    return '';
   }
 }

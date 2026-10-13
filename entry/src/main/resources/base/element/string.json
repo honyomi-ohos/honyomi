@@ -641,6 +641,11 @@
     { "name": "detail_reset_cover", "value": "Reset cover" },
     { "name": "detail_cover_updated", "value": "Cover updated" },
     { "name": "detail_cover_reset", "value": "Cover restored" },
-    { "name": "detail_cover_save_failed", "value": "Couldn't update the cover" }
+    { "name": "detail_cover_save_failed", "value": "Couldn't update the cover" },
+    { "name": "detail_cover_saved", "value": "Cover saved" },
+    { "name": "detail_cover_save_gallery_failed", "value": "Error saving cover" },
+    { "name": "detail_cover_share_failed", "value": "Error sharing cover" },
+    { "name": "detail_edit", "value": "Edit" },
+    { "name": "detail_delete", "value": "Delete" }
 ]
 }

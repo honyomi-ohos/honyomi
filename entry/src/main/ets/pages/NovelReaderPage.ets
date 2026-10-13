@@ -50,6 +50,21 @@ class NovelScreenSource implements IDataSource {
   }
 }
 
+// 章节正文块：文本段或插图（插件正文里的 <img> 解析而来）
+interface NovelBlock {
+  isImage: boolean;
+  // 文本段内容；图片块的图片 URL
+  text: string;
+  // 文本段在听书段落序列中的序号（图片块为 -1）
+  ttsIdx: number;
+}
+
+// 翻页模式的单页：普通页为段落集合，插图页 imageUrl 非空、独占整页
+interface NovelPage {
+  texts: string[];
+  imageUrl: string;
+}
+
 // 阅读模式的可选值（与模式选择 sheet 选项一一对应）
 const NOVEL_MODES: string[] = ['scroll', 'paged', 'paged_rtl', 'double'];
 const NOVEL_MODE_ICONS: string[] = ['reader_scroll', 'reader_ltr', 'reader_rtl', 'reader_double'];
@@ -76,7 +91,9 @@ export struct NovelReaderPage {
   @State prevId: number = 0;
   @State nextId: number = 0;
   @State mode: string = 'scroll';
-  @State pages: string[][] = [];
+  @State pages: NovelPage[] = [];
+  // 章节含插图（html 正文解析出 <img>）：滚动模式内嵌渲染，翻页模式插图独占一页
+  @State hasImages: boolean = false;
   @State screenIdxs: number[] = [];
   @State pageIdx: number = 0;
   @State readerTheme: number = 3;
@@ -91,13 +108,14 @@ export struct NovelReaderPage {
   @State leafTurn: number = 0;
   @State orientation: string = 'free';
   @State showOrientationSheet: boolean = false;
-  @State showDisplaySheet: boolean = false;
-  @State showTextSheet: boolean = false;
+  // 底栏设置面板（画面/文本/听书）共用一个 bindSheet：同一节点链式绑定多个 bindSheet 时只有最后一个生效，
+  // 前面的会被立即关闭，故用单个 isShow + panelKind 切换内容
+  @State showPanelSheet: boolean = false;
+  @State panelKind: string = '';
   @State brightLv: number = 0;
   // 听书（系统 TTS）：播放中 / 当前朗读段 / 语速面板
   @State ttsPlaying: boolean = false;
   @State ttsParaIdx: number = -1;
-  @State showTtsSheet: boolean = false;
   @State ttsSpeed: number = 1;
   // 正文配色：auto=跟随背景 light=浅色 dark=深色
   @State colorScheme: string = 'auto';
@@ -141,6 +159,10 @@ export struct NovelReaderPage {
   // 滚动模式段落纵向偏移缓存（签名变化时重算）
   private paraOffsets: number[] = [];
   private paraOffSig: string = '';
+  // html 章节解析出的「文本段 + 插图」块序列（hasImages 时有效）
+  private blocks: NovelBlock[] = [];
+  // pushTextBlocks 递增的文本段序号（解析一章期间有效）
+  private blockTextSeq: number = 0;
 
   aboutToAppear(): void {
     try {
@@ -189,6 +211,8 @@ export struct NovelReaderPage {
     this.restored = false;
     this.body = '';
     this.pages = [];
+    this.blocks = [];
+    this.hasImages = false;
     this.screenIdxs = [];
     this.screenSource.setItems([]);
     this.pageIdx = 0;
@@ -239,6 +263,7 @@ export struct NovelReaderPage {
       }
       this.html = NovelReaderPage.looksLikeHtml(text);
       this.body = text;
+      this.parseChapterBlocks();
       await this.loadNeighbors();
       await HistoryRepo.upsert(chapter.mangaId, chapter.id, this.permille);
       ReadingStatsRepo.begin(chapter.mangaId, chapter.id);
@@ -339,6 +364,15 @@ export struct NovelReaderPage {
 
   // 听书文本段落：html 章节剥除标签，纯文本按行拆分
   private ttsParas(): string[] {
+    if (this.hasImages) {
+      const out: string[] = [];
+      for (const block of this.blocks) {
+        if (!block.isImage) {
+          out.push(block.text);
+        }
+      }
+      return out;
+    }
     if (this.html) {
       const stripped = this.body
         .replace(/<br\s*\/?>/gi, '\n')
@@ -383,7 +417,7 @@ export struct NovelReaderPage {
     if (paras.length === 0) {
       return 0;
     }
-    if (!this.html && this.mode !== 'scroll' && this.paraPage.length === paras.length) {
+    if ((!this.html || this.hasImages) && this.mode !== 'scroll' && this.paraPage.length === paras.length) {
       const total = this.pages.length;
       if (total > 0) {
         const logical = this.mode === 'double' ? this.pageIdx * 2 :
@@ -409,7 +443,8 @@ export struct NovelReaderPage {
       return;
     }
     this.ttsPlaying = true;
-    const ok = await NovelTts.start(paras, fromPara, this.ttsLang(paras));
+    const ok = await NovelTts.start(paras, fromPara, this.ttsLang(paras),
+      getContext(this) as common.UIAbilityContext);
     if (!ok) {
       this.ttsPlaying = false;
       this.ttsParaIdx = -1;
@@ -440,7 +475,11 @@ export struct NovelReaderPage {
 
   // 跟随朗读进度：滚动模式滚到对应段落，翻页/双页翻到对应页
   private followTtsPara(idx: number): void {
-    if (this.html) {
+    if (this.html && !this.hasImages) {
+      return;
+    }
+    // 插图高度不定，含插图章节的滚动模式不做听书跟随
+    if (this.hasImages && this.mode === 'scroll') {
       return;
     }
     if (this.mode === 'scroll') {
@@ -513,6 +552,76 @@ export struct NovelReaderPage {
       head.indexOf('<html') >= 0;
   }
 
+  // 解析 html 章节为「文本段 + 插图」块序列：正文以 <img> 标记插图，
+  // 滚动模式内嵌渲染、翻页模式插图独占一页；无插图时保持原有渲染路径
+  private parseChapterBlocks(): void {
+    this.blocks = [];
+    this.hasImages = false;
+    this.blockTextSeq = 0;
+    if (!this.html) {
+      return;
+    }
+    const imgRe = /<img\b[^>]*>/gi;
+    let idx = 0;
+    let match = imgRe.exec(this.body);
+    while (match !== null) {
+      this.pushTextBlocks(this.body.substring(idx, match.index));
+      const src = NovelReaderPage.imgSrcOf(match[0]);
+      if (src !== '') {
+        const image: NovelBlock = { isImage: true, text: src, ttsIdx: -1 };
+        this.blocks.push(image);
+        this.hasImages = true;
+      }
+      idx = match.index + match[0].length;
+      match = imgRe.exec(this.body);
+    }
+    this.pushTextBlocks(this.body.substring(idx));
+  }
+
+  // 把 <img> 之间的 html 片段剥成纯文本段落，追加为文本块（跳过空段）
+  private pushTextBlocks(segment: string): void {
+    const text = segment
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/p>/gi, '\n')
+      .replace(/<\/div>/gi, '\n')
+      .replace(/<[^>]+>/g, '')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&amp;/g, '&');
+    const lines = text.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line === '') {
+        continue;
+      }
+      const block: NovelBlock = { isImage: false, text: line, ttsIdx: this.blockTextSeq };
+      this.blocks.push(block);
+      this.blockTextSeq += 1;
+    }
+  }
+
+  // 提取 <img> 标签的 src 属性
+  private static imgSrcOf(tag: string): string {
+    const match = /\ssrc\s*=\s*["']([^"']+)["']/i.exec(tag);
+    if (match === null) {
+      return '';
+    }
+    return match[1].trim();
+  }
+
+  // 纯文本章节的块视图：每行一个文本块（与 body.split('\n') 等价）
+  private plainBlocks(): NovelBlock[] {
+    const paras = this.body.split('\n');
+    const out: NovelBlock[] = [];
+    for (let i = 0; i < paras.length; i++) {
+      const block: NovelBlock = { isImage: false, text: paras[i], ttsIdx: i };
+      out.push(block);
+    }
+    return out;
+  }
+
   private toggleMenu(): void {
     this.showMenu = !this.showMenu;
     if (this.showMenu) {
@@ -536,7 +645,7 @@ export struct NovelReaderPage {
 
   // 分页参数（正文/模式/字号/行距/段距/页面尺寸）变化时重新分页，并按千分比恢复到原位置附近
   private ensurePaginated(): void {
-    if (this.loading || this.body === '' || this.html || this.mode === 'scroll') {
+    if (this.loading || this.body === '' || (this.html && !this.hasImages) || this.mode === 'scroll') {
       return;
     }
     this.recalcPageBox();
@@ -588,19 +697,30 @@ export struct NovelReaderPage {
     return arr;
   }
 
-  // 按段落贪心装页（段间计入 paraSpacing，与渲染端 Column({space}) 一致）；超长段落按测量二分切分
-  // 同时记录 paraPage[i]：第 i 段所在的页码（听书跟随翻页用）
-  private buildPages(): string[][] {
-    const pages: string[][] = [];
+  // 按块贪心装页（段间计入 paraSpacing，与渲染端 Column({space}) 一致）；超长段落按测量二分切分；
+  // 插图块独占一页（imageUrl 非空）。同时记录 paraPage[i]：第 i 个文本段所在的页码（听书跟随翻页用）
+  private buildPages(): NovelPage[] {
+    const pages: NovelPage[] = [];
     const paraPage: number[] = [];
     const maxH = this.pageH;
     const width = this.pageW;
     const gap = this.paraSpacing;
-    const paras = this.body.split('\n');
+    const blocks: NovelBlock[] = this.hasImages ? this.blocks : this.plainBlocks();
     let current: string[] = [];
     let used = 0;
-    for (let i = 0; i < paras.length; i++) {
-      let para = paras[i];
+    for (let i = 0; i < blocks.length; i++) {
+      const block = blocks[i];
+      if (block.isImage) {
+        // 插图：收尾当前文本页，插图独占新页
+        if (current.length > 0) {
+          pages.push({ texts: current, imageUrl: '' });
+          current = [];
+          used = 0;
+        }
+        pages.push({ texts: [], imageUrl: block.text });
+        continue;
+      }
+      let para = block.text;
       if (para === '') {
         para = ' ';
       }
@@ -608,27 +728,27 @@ export struct NovelReaderPage {
       if (h <= maxH) {
         const extra = current.length > 0 ? gap : 0;
         if (used + extra + h <= maxH) {
-          paraPage[i] = pages.length;
+          paraPage[block.ttsIdx] = pages.length;
           current.push(para);
           used += extra + h;
           continue;
         }
         // 当前页放不下：整段放入新页
         if (current.length > 0) {
-          pages.push(current);
+          pages.push({ texts: current, imageUrl: '' });
         }
-        paraPage[i] = pages.length;
+        paraPage[block.ttsIdx] = pages.length;
         current = [para];
         used = h;
         continue;
       }
       // 整段超过一页：按字符切分
       if (current.length > 0) {
-        pages.push(current);
+        pages.push({ texts: current, imageUrl: '' });
         current = [];
         used = 0;
       }
-      paraPage[i] = pages.length;
+      paraPage[block.ttsIdx] = pages.length;
       let rest = para;
       // 每页可容纳字符数的先验（0=未知）：由上一次切点更新；
       // 剩余不超过一页容量时才整段测量判断能否收尾，避免反复测量大段文本
@@ -655,13 +775,13 @@ export struct NovelReaderPage {
           used = this.measureTextVp(rest, width);
           break;
         }
-        pages.push([rest.substring(0, fit)]);
+        pages.push({ texts: [rest.substring(0, fit)], imageUrl: '' });
         rest = rest.substring(fit);
         cap = fit;
       }
     }
     if (current.length > 0) {
-      pages.push(current);
+      pages.push({ texts: current, imageUrl: '' });
     }
     this.paraPage = paraPage;
     return pages;
@@ -746,11 +866,11 @@ export struct NovelReaderPage {
     return best;
   }
 
-  private pageAt(idx: number): string[] {
+  private pageAt(idx: number): NovelPage {
     if (idx >= 0 && idx < this.pages.length) {
       return this.pages[idx];
     }
-    return [];
+    return { texts: [], imageUrl: '' };
   }
 
   private scrollParas(): string[] {
@@ -782,17 +902,14 @@ export struct NovelReaderPage {
 
   // 任一设置 Sheet 打开时，内容区点击一律忽略（防止蒙层点击透传触发翻页/菜单）
   private anySheetOpen(): boolean {
-    return this.showModeSheet || this.showOrientationSheet || this.showDisplaySheet ||
-      this.showTextSheet || this.showTtsSheet;
+    return this.showModeSheet || this.showOrientationSheet || this.showPanelSheet;
   }
 
   // 关闭全部设置 Sheet（enableOutsideInteractive 模式下由页面点击主动接管关闭）
   private dismissSheets(): void {
     this.showModeSheet = false;
     this.showOrientationSheet = false;
-    this.showDisplaySheet = false;
-    this.showTextSheet = false;
-    this.showTtsSheet = false;
+    this.showPanelSheet = false;
   }
 
   // 打开指定 Sheet（互斥：先关其余，避免多个 bindSheet 叠加）
@@ -802,12 +919,9 @@ export struct NovelReaderPage {
       this.showModeSheet = true;
     } else if (which === 'orientation') {
       this.showOrientationSheet = true;
-    } else if (which === 'display') {
-      this.showDisplaySheet = true;
-    } else if (which === 'text') {
-      this.showTextSheet = true;
-    } else if (which === 'tts') {
-      this.showTtsSheet = true;
+    } else if (which === 'display' || which === 'text' || which === 'tts') {
+      this.panelKind = which;
+      this.showPanelSheet = true;
     }
   }
 
@@ -990,7 +1104,7 @@ export struct NovelReaderPage {
 
   // 右下角进度指示文案（从右到左按阅读顺序显示页码）
   private indicatorText(): string {
-    if (this.mode === 'scroll' || this.html) {
+    if (this.mode === 'scroll' || (this.html && !this.hasImages)) {
       return `${Math.round(this.permilleUi / 10)}%`;
     }
     if (this.screenIdxs.length > 0) {
@@ -1294,12 +1408,18 @@ export struct NovelReaderPage {
     .clip(true)
   }
 
-  // 单页正文：段间距为 0 时合并为单个 Text（大章节性能友好），>0 时按段落 Column({space}) 渲染
+  // 单页正文：插图页独占整页；文本页段间距为 0 时合并为单个 Text（大章节性能友好），
+  // >0 时按段落 Column({space}) 渲染
   @Builder
   PageText(pIdx: number) {
-    if (this.paraSpacing > 0) {
+    if (this.pageAt(pIdx).imageUrl !== '') {
+      Image(this.pageAt(pIdx).imageUrl)
+        .width('100%')
+        .height('100%')
+        .objectFit(ImageFit.Contain)
+    } else if (this.paraSpacing > 0) {
       Column({ space: this.paraSpacing }) {
-        ForEach(this.pageAt(pIdx), (para: string, i: number) => {
+        ForEach(this.pageAt(pIdx).texts, (para: string, i: number) => {
           Text(para)
             .fontSize(this.fontSize)
             .lineHeight(this.lineHeight)
@@ -1311,7 +1431,7 @@ export struct NovelReaderPage {
       .layoutWeight(1)
       .height('100%')
     } else {
-      Text(this.pageAt(pIdx).join('\n'))
+      Text(this.pageAt(pIdx).texts.join('\n'))
         .fontSize(this.fontSize)
         .lineHeight(this.lineHeight)
         .fontFamily(this.fontFamilyVal())
@@ -1435,10 +1555,34 @@ export struct NovelReaderPage {
     }
   }
 
-  // 滚动模式正文：html 用 RichText；纯文本按段间距设置选择整段 Text 或分段 Column
+  // 滚动模式正文：含插图 html 按块渲染（文本段 + 内嵌插图）；纯 html 用 RichText；
+  // 纯文本按段间距设置选择整段 Text 或分段 Column
   @Builder
   ScrollBody() {
-    if (this.html) {
+    if (this.hasImages) {
+      Column({ space: this.paraSpacing }) {
+        ForEach(this.blocks, (block: NovelBlock, i: number) => {
+          if (block.isImage) {
+            Image(block.text)
+              .width('100%')
+              .objectFit(ImageFit.Contain)
+              .borderRadius(6)
+              .constraintSize({ maxHeight: this.viewH > 0 ? this.viewH * 0.7 : 480 })
+              .margin({ top: 8, bottom: 8 })
+          } else {
+            Text(block.text)
+              .fontSize(this.fontSize)
+              .lineHeight(this.lineHeight)
+              .fontFamily(this.fontFamilyVal())
+              .fontColor(this.readerTextCol())
+              .width('100%')
+              .backgroundColor(this.ttsParaIdx === block.ttsIdx ? '#2E808080' : Color.Transparent)
+              .borderRadius(this.ttsParaIdx === block.ttsIdx ? 4 : 0)
+          }
+        }, (block: NovelBlock, i: number) => `${i}#${block.isImage}#${block.text.length}`)
+      }
+      .width('100%')
+    } else if (this.html) {
       RichText(this.body)
         .width('100%')
     } else if (this.paraSpacing > 0) {
@@ -1647,6 +1791,29 @@ export struct NovelReaderPage {
       Column().height(16)
     }
     .width('100%')
+  }
+
+  // 底栏设置面板标题（画面 / 文本 / 听书共用一个 bindSheet）
+  private panelTitleRes(): ResourceStr {
+    if (this.panelKind === 'text') {
+      return $r('app.string.novel_tab_text');
+    }
+    if (this.panelKind === 'tts') {
+      return $r('app.string.novel_tts');
+    }
+    return $r('app.string.novel_tab_display');
+  }
+
+  // 底栏设置面板内容：按 panelKind 切换（同一节点只允许一个生效的 bindSheet，多绑会互相顶掉）
+  @Builder
+  panelSheetBuilder() {
+    if (this.panelKind === 'display') {
+      this.displaySheetBuilder()
+    } else if (this.panelKind === 'text') {
+      this.textSheetBuilder()
+    } else {
+      this.ttsSheetBuilder()
+    }
   }
 
   // 画面：亮度 / 配色 / 背景
@@ -1878,7 +2045,7 @@ export struct NovelReaderPage {
           .onClick(() => {
             this.contentTap();
           })
-        } else if (this.mode === 'scroll' || this.html) {
+        } else if (this.mode === 'scroll' || (this.html && !this.hasImages)) {
           Scroll(this.scroller) {
             Column() {
               this.ScrollBody()
@@ -2085,7 +2252,7 @@ export struct NovelReaderPage {
                 })
 
                 // 进度胶囊：滚动=百分比 Slider，翻页/双页=页码 Slider
-                if (this.mode === 'scroll' || this.html) {
+                if (this.mode === 'scroll' || (this.html && !this.hasImages)) {
                   Row() {
                     Text(`${Math.round(this.permilleUi / 10)}%`)
                       .fontSize(13)
@@ -2271,27 +2438,9 @@ export struct NovelReaderPage {
               TransitionEffect.OPACITY.animation({ duration: 200, curve: Curve.Linear })
             )
           )
-          .bindSheet($$this.showDisplaySheet, this.displaySheetBuilder(), {
+          .bindSheet($$this.showPanelSheet, this.panelSheetBuilder(), {
             preferType: SheetType.BOTTOM,
-            title: { title: $r('app.string.novel_tab_display') },
-            detents: [SheetSize.FIT_CONTENT],
-            dragBar: true,
-            showClose: false,
-            blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
-            enableOutsideInteractive: true
-          })
-          .bindSheet($$this.showTextSheet, this.textSheetBuilder(), {
-            preferType: SheetType.BOTTOM,
-            title: { title: $r('app.string.novel_tab_text') },
-            detents: [SheetSize.FIT_CONTENT],
-            dragBar: true,
-            showClose: false,
-            blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
-            enableOutsideInteractive: true
-          })
-          .bindSheet($$this.showTtsSheet, this.ttsSheetBuilder(), {
-            preferType: SheetType.BOTTOM,
-            title: { title: $r('app.string.novel_tts') },
+            title: { title: this.panelTitleRes() },
             detents: [SheetSize.FIT_CONTENT],
             dragBar: true,
             showClose: false,

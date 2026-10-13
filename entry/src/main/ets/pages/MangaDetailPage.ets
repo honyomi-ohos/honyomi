@@ -18,7 +18,7 @@ import { InputDialog } from './components/Dialogs';
 import { SmartImage } from './components/SmartImage';
 import { EmptyScreen } from './components/EmptyScreen';
 import { AppIcon } from './components/AppIcon';
-import { PickerSheet } from './components/PickerSheet';
+import { CoverViewer } from './components/CoverViewer';
 
 // 章节行：自订阅 DownloadService 变化刷新下载角标，
 // 避免 ForEach key 携带全局版本号导致整个章节列表重建
@@ -134,7 +134,7 @@ export struct MangaDetailPage {
   @State track: TrackRecord | undefined = undefined;
   @State alResults: ALMediaItem[] = [];
   @State alSearching: boolean = false;
-  @State showCoverSheet: boolean = false;
+  @State showCoverViewer: boolean = false;
   private mangaId: number = -1;
   private listScroller: Scroller = new Scroller();
 
@@ -254,31 +254,24 @@ export struct MangaDetailPage {
     Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_reset'));
   }
 
-  private coverSheetOptions(): ResourceStr[] {
-    const options: ResourceStr[] = [$r('app.string.detail_edit_cover')];
-    if (this.manga.origThumbnail !== '') {
-      options.push($r('app.string.detail_reset_cover'));
-    }
-    return options;
-  }
-
-  private coverSheetIcons(): string[] {
-    return this.manga.origThumbnail !== '' ? ['edit', 'refresh'] : ['edit'];
-  }
-
+  // 封面查看器（对齐 Mihon MangaCoverDialog）：点击封面进入全屏查看，
+  // 底部提供关闭/分享/保存/编辑封面，编辑含恢复原封面入口
   @Builder
-  coverSheetBuilder() {
-    PickerSheet({
-      options: this.coverSheetOptions(),
-      icons: this.coverSheetIcons(),
-      onPick: (index: number): void => {
-        this.showCoverSheet = false;
-        if (index === 0) {
-          this.editCover();
-        } else if (index === 1) {
-          this.resetCover();
-        }
-      }
+  coverViewerBuilder() {
+    CoverViewer({
+      coverUrl: this.manga.thumbnailUrl,
+      sourceKey: this.manga.sourceKey,
+      isCustom: this.manga.origThumbnail !== '',
+      title: this.manga.title,
+      onClose: (): void => {
+        this.showCoverViewer = false;
+      },
+      onEdit: (): void => {
+        this.editCover();
+      },
+      onDelete: (): void => {
+        this.resetCover();
+      },
     })
   }
 
@@ -490,7 +483,7 @@ export struct MangaDetailPage {
                   Column()
                     .height(this.statusBarH + 52)
                   Row({ space: 14 }) {
-                    // 封面（长按更换/恢复，对齐 Mihon）
+                    // 封面：点击进入全屏查看器（对齐 Mihon onCoverClick）
                     Stack() {
                       if (this.manga.thumbnailUrl !== '') {
                         SmartImage({ url: this.manga.thumbnailUrl, sourceKey: this.manga.sourceKey, fit: ImageFit.Cover, fill: true })
@@ -508,19 +501,12 @@ export struct MangaDetailPage {
                     .borderRadius(10)
                     .clip(true)
                     .backgroundColor(this.pal.chip)
-                    .gesture(
-                      LongPressGesture()
-                        .onAction(() => {
-                          this.showCoverSheet = true;
-                        })
-                    )
-                    .bindSheet($$this.showCoverSheet, this.coverSheetBuilder(), {
-                      preferType: SheetType.BOTTOM,
-                      title: { title: $r('app.string.detail_cover_actions') },
-                      detents: [SheetSize.FIT_CONTENT],
-                      dragBar: true,
-                      showClose: false,
-                      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
+                    .onClick(() => {
+                      this.showCoverViewer = true;
+                    })
+                    .bindContentCover($$this.showCoverViewer, this.coverViewerBuilder(), {
+                      modalTransition: ModalTransition.ALPHA,
+                      backgroundColor: '#B3000000',
                     })
                     Column({ space: 6 }) {
                       Text(this.manga.title)

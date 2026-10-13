@@ -764,6 +764,12 @@ static const char *ADAPTER_JS = R"JS((function () {
     if (typeof obj.resetFilters === 'function') {
       api.resetFilters = function () { return obj.resetFilters(); };
     }
+    if (typeof obj.getChapterText === 'function') {
+      api.getChapterText = function (url) { return obj.getChapterText(url); };
+    }
+    if (typeof obj.getVideoList === 'function') {
+      api.getVideoList = function (url) { return obj.getVideoList(url); };
+    }
     if (typeof obj.fetchImage === 'function') {
       api.fetchImage = function (pageUrl, imageUrl) { return obj.fetchImage(pageUrl, imageUrl); };
     }
@@ -850,6 +856,18 @@ static const char *ADAPTER_JS = R"JS((function () {
         return unwrap(gen.getSettingsSchema(id));
       }
     };
+    if (typeof gen.getChapterText === 'function') {
+      api.getChapterText = function (a, b) {
+        if (arguments.length >= 2) { return unwrap(gen.getChapterText(sid(a), b)); }
+        return unwrap(gen.getChapterText(sourceId, a));
+      };
+    }
+    if (typeof gen.getVideoList === 'function') {
+      api.getVideoList = function (a, b) {
+        if (arguments.length >= 2) { return unwrap(gen.getVideoList(sid(a), b)); }
+        return unwrap(gen.getVideoList(sourceId, a));
+      };
+    }
   } else if (hostObj) {
     api = bindHost(hostObj, 'simple');
   } else if (simple) {

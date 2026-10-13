@@ -1730,6 +1730,11 @@
       { "name": "detail_reset_cover", "value": "恢复原封面" },
       { "name": "detail_cover_updated", "value": "封面已更新" },
       { "name": "detail_cover_reset", "value": "封面已恢复" },
-      { "name": "detail_cover_save_failed", "value": "封面更新失败" }
+      { "name": "detail_cover_save_failed", "value": "封面更新失败" },
+      { "name": "detail_cover_saved", "value": "封面已保存" },
+      { "name": "detail_cover_save_gallery_failed", "value": "保存封面时出错" },
+      { "name": "detail_cover_share_failed", "value": "分享封面时出错" },
+      { "name": "detail_edit", "value": "编辑" },
+      { "name": "detail_delete", "value": "删除" }
 ]
 }
