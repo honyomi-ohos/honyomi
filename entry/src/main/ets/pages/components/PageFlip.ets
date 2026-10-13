@@ -56,6 +56,9 @@ class FlipPoint {
 class FlipModel {
   viewWidth: number = 0;
   viewHeight: number = 0;
+  // 触摸点所在坐标系的宽高（组件 vp2px）。绘制时按画布实际尺寸换算，避免折线画到画布外。
+  srcW: number = 0;
+  srcH: number = 0;
   positionX: number = -1;
   positionY: number = -1;
   drawPosition: number = FlipDrawPos.NONE;
@@ -91,25 +94,37 @@ class FlipModel {
     }
   }
 
-  paint(canvas: drawing.Canvas): void {
+  paint(canvas: drawing.Canvas, canvasW: number, canvasH: number): void {
     if (!canIUse('SystemCapability.Graphics.Drawing')) {
       return;
     }
-    if (this.positionX < 0 || this.positionY < 0 || this.pixelMap === undefined) {
+    if ((this.positionX === -1 && this.positionY === -1) || this.pixelMap === undefined) {
       return;
     }
-    if (this.viewWidth <= 1 || this.viewHeight <= 1) {
+    if (canvasW <= 1 || canvasH <= 1) {
       return;
     }
+    const srcW = this.srcW > 1 ? this.srcW : canvasW;
+    const srcH = this.srcH > 1 ? this.srcH : canvasH;
+    const sx = canvasW / srcW;
+    const sy = canvasH / srcH;
+    const savedX = this.positionX;
+    const savedY = this.positionY;
+    const savedFlipY = this.flipPositionY;
+    this.positionX = savedX * sx;
+    this.positionY = savedY * sy;
+    this.viewWidth = canvasW;
+    this.viewHeight = canvasH;
     this.ensureBrushes();
     if (this.fromLeft) {
       canvas.save();
       const mirror = new drawing.Matrix();
-      const mv: number[] = [-1, 0, this.viewWidth, 0, 1, 0, 0, 0, 1];
+      const mv: number[] = [-1, 0, canvasW, 0, 1, 0, 0, 0, 1];
       mirror.setMatrix(mv);
       canvas.concatMatrix(mirror);
     }
     this.initGeometry();
+    this.flipPositionY = sy !== 0 ? this.pointA.y / sy : savedFlipY;
     if (this.ready) {
       this.drawPathBShadow(canvas);
       this.drawPathC(canvas);
@@ -119,6 +134,8 @@ class FlipModel {
     if (this.fromLeft) {
       canvas.restore();
     }
+    this.positionX = savedX;
+    this.positionY = savedY;
   }
 
   private ensureBrushes(): void {
@@ -186,10 +203,13 @@ class FlipModel {
     this.pointG.x = (a.x + f.x) / 2;
     this.pointG.y = (a.y + f.y) / 2;
     const g = this.pointG;
-    const denomX = f.x - g.x;
-    const denomY = f.y - g.y;
-    if (Math.abs(denomX) < 0.01 || Math.abs(denomY) < 0.01) {
-      return;
+    let denomX = f.x - g.x;
+    let denomY = f.y - g.y;
+    if (Math.abs(denomX) < 0.001) {
+      denomX = denomX < 0 ? -0.001 : 0.001;
+    }
+    if (Math.abs(denomY) < 0.001) {
+      denomY = denomY < 0 ? -0.001 : 0.001;
     }
     this.pointE.x = g.x - (f.y - g.y) * (f.y - g.y) / denomX;
     this.pointE.y = f.y;
@@ -534,13 +554,18 @@ class FlipRenderNode extends RenderNode {
   }
 
   draw(context: DrawContext): void {
-    this.model.paint(context.canvas);
+    // DrawContext.size 单位是 vp，而 drawing.Canvas 坐标是物理像素 px；
+    // 必须用 sizeInPixel，否则卷曲按 1/屏幕密度 绘制，动画比画面小一圈。
+    const canvasW = context.sizeInPixel.width > 1 ? context.sizeInPixel.width : this.model.viewWidth;
+    const canvasH = context.sizeInPixel.height > 1 ? context.sizeInPixel.height : this.model.viewHeight;
+    this.model.paint(context.canvas, canvasW, canvasH);
   }
 }
 
 class FlipNodeController extends NodeController {
   private root: FrameNode | null = null;
   private model: FlipModel | null = null;
+  private pageNode: FlipRenderNode | null = null;
   private viewWvp: number = 0;
   private viewHvp: number = 0;
 
@@ -552,11 +577,16 @@ class FlipNodeController extends NodeController {
     this.viewWvp = wvp;
     this.viewHvp = hvp;
     this.applyFrame();
+    if (this.pageNode !== null) {
+      this.pageNode.frame = { x: 0, y: 0, width: wvp, height: hvp };
+    }
   }
 
   makeNode(uiContext: UIContext): FrameNode | null {
-    this.root = new FrameNode(uiContext);
-    this.applyFrame();
+    if (this.root === null) {
+      this.root = new FrameNode(uiContext);
+      this.applyFrame();
+    }
     return this.root;
   }
 
@@ -568,13 +598,20 @@ class FlipNodeController extends NodeController {
     if (render === null) {
       return;
     }
-    render.clearChildren();
-    const node = new FlipRenderNode(this.model);
-    node.frame = { x: 0, y: 0, width: this.viewWvp, height: this.viewHvp };
-    render.appendChild(node);
+    if (this.pageNode === null) {
+      this.pageNode = new FlipRenderNode(this.model);
+      this.pageNode.frame = { x: 0, y: 0, width: this.viewWvp, height: this.viewHvp };
+      this.pageNode.pivot = { x: 0, y: 0 };
+      this.pageNode.scale = { x: 1, y: 1 };
+      this.pageNode.opacity = 1;
+      render.appendChild(this.pageNode);
+    }
+    this.pageNode.frame = { x: 0, y: 0, width: this.viewWvp, height: this.viewHvp };
+    this.pageNode.invalidate();
   }
 
   clear(): void {
+    this.pageNode = null;
     if (this.root === null) {
       return;
     }
@@ -591,6 +628,9 @@ class FlipNodeController extends NodeController {
     const render = this.root.getRenderNode();
     if (render !== null) {
       render.frame = { x: 0, y: 0, width: this.viewWvp, height: this.viewHvp };
+      render.pivot = { x: 0, y: 0 };
+      render.scale = { x: 1, y: 1 };
+      render.opacity = 1;
     }
   }
 }
@@ -730,6 +770,8 @@ export struct EmulationFlipView {
 
   private redraw(): void {
     this.model.fromLeft = this.fromLeft;
+    this.model.srcW = this.pxW;
+    this.model.srcH = this.pxH;
     this.model.viewWidth = this.pxW;
     this.model.viewHeight = this.pxH;
     this.controller.setSize(this.areaW, this.areaH);
@@ -1004,7 +1046,9 @@ export struct EmulationFlipView {
         .width('100%')
         .height('100%')
         .hitTestBehavior(HitTestMode.None)
-        .visibility(this.showCurl ? Visibility.Visible : Visibility.None)
+        .zIndex(10)
+        .opacity(this.showCurl ? 1 : 0)
+        .backgroundColor(Color.Transparent)
     }
     .width('100%')
     .height('100%')

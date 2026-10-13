@@ -789,7 +789,7 @@ export struct NovelReaderPage {
     return Math.abs(angle) > 90;
   }
 
-  // 单页仿真由 EmulationFlipView 接管。此处只服务滑动、覆盖，以及双页绕书脊翻转。
+  // 单页与双页的仿真卷曲均由 EmulationFlipView 接管。此处只服务滑动与覆盖。
   // proxy.position 为该页相对动画起始位置的位移比例（负=向左），默认位移=position*mainAxisLength，
   // 以负向 translate 抵消默认位移后叠加自定义变换。
   private onContentTransition(proxy: SwiperContentTransitionProxy): void {
@@ -866,8 +866,9 @@ export struct NovelReaderPage {
     return this.pageIdx;
   }
 
-  private singleCurl(): boolean {
-    return this.animMode === 'curl' && this.mode !== 'double' && this.mode !== 'scroll';
+  // 仿真卷曲（单页与双页均由 EmulationFlipView 接管；双页=整屏跨页一起卷曲）
+  private curlActive(): boolean {
+    return this.animMode === 'curl' && this.mode !== 'scroll';
   }
 
   private onCurlIndex(reading: number): void {
@@ -892,11 +893,15 @@ export struct NovelReaderPage {
 
   @Builder
   curlPageBody(index: number) {
-    Row() {
-      this.PageText(index)
+    if (this.mode === 'double') {
+      this.PageScreen(index)
+    } else {
+      Row() {
+        this.PageText(index)
+      }
+      .width('100%')
+      .height('100%')
     }
-    .width('100%')
-    .height('100%')
   }
 
   // 单页正文：段间距为 0 时合并为单个 Text（大章节性能友好），>0 时按段落 Column({space}) 渲染
@@ -1460,7 +1465,7 @@ export struct NovelReaderPage {
           })
         } else {
           Column() {
-            if (this.singleCurl()) {
+            if (this.curlActive()) {
               EmulationFlipView({
                 index: this.readingIndex(),
                 pageCount: this.screenIdxs.length,
@@ -1478,7 +1483,9 @@ export struct NovelReaderPage {
                 onOverscroll: (dir: number): void => {
                   this.onCurlOverscroll(dir);
                 },
-                pageContent: this.curlPageBody
+                pageContent: (index: number): void => {
+                  this.curlPageBody(index)
+                }
               })
                 .width('100%')
                 .height('100%')
@@ -1532,7 +1539,7 @@ export struct NovelReaderPage {
             }
           })
           .onClick((event: ClickEvent) => {
-            if (!this.singleCurl()) {
+            if (!this.curlActive()) {
               this.handleTap(event);
             }
           })

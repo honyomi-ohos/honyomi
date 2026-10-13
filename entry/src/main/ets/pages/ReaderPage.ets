@@ -840,7 +840,9 @@ export struct ReaderPage {
             onOverscroll: (dir: number): void => {
               this.onCurlOverscroll(dir);
             },
-            pageContent: this.curlPageBody
+            pageContent: (index: number): void => {
+              this.curlPageBody(index)
+            }
           })
             .width('100%')
             .height('100%')
