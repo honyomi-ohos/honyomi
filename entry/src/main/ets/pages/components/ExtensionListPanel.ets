@@ -112,7 +112,7 @@ export struct ExtensionListPanel {
       return;
     }
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       const options = new picker.DocumentSelectOptions();
       options.maxSelectNumber = 1;
       options.fileSuffixFilters = ['.honyomiplug', '.zip'];

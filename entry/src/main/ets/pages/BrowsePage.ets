@@ -399,7 +399,7 @@ export struct BrowsePage {
 
   private async loadMigrate(): Promise<void> {
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       await AppDb.ready(context);
       const counts = await MangaRepo.countBySource();
       const items: MigrateSourceCount[] = [];
@@ -714,7 +714,7 @@ export struct BrowsePage {
           AppIcon({ name: 'info', iconSize: 22 })
             .padding({ left: 12, right: 4 })
             .onClick(() => {
-              const context = getContext(this) as common.UIAbilityContext;
+              const context = Util.hostAbilityContext(this.getUIContext());
               Util.openUrl(context, 'https://mihon.app/docs/guides/source-migration');
             })
         }

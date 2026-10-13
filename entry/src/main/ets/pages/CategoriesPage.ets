@@ -3,6 +3,7 @@ import { AppDb } from '../data/AppDb';
 import { CategoryRepo } from '../data/Repos';
 import { CategoryRecord } from '../model/Models';
 import { ThemePalette } from '../common/Theme';
+import { Util } from '../common/Util';
 import { PageHeader } from './components/PageHeader';
 import { AppIcon } from './components/AppIcon';
 import { InputDialog } from './components/Dialogs';
@@ -19,7 +20,7 @@ export struct CategoriesPage {
   private menuCat: CategoryRecord | null = null;
 
   aboutToAppear(): void {
-    const context = getContext(this) as common.UIAbilityContext;
+    const context = Util.hostAbilityContext(this.getUIContext());
     AppDb.ready(context).then(() => {
       return CategoryRepo.list();
     }).then((list: CategoryRecord[]) => {

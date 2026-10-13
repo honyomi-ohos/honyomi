@@ -131,7 +131,7 @@ export struct CoverViewer {
 
   // 保存封面到图库（对齐 Mihon Save）：弹窗授权 → 复制沙箱图片到媒体库
   private async saveCover(): Promise<void> {
-    const context = getContext(this) as common.UIAbilityContext;
+    const context = Util.hostAbilityContext(this.getUIContext());
     const localPath = await this.ensureLocalPath(context);
     if (localPath === '') {
       Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_save_gallery_failed'));
@@ -167,7 +167,7 @@ export struct CoverViewer {
 
   // 分享封面（对齐 Mihon Share）：拉起系统分享面板分享图片
   private async shareCover(): Promise<void> {
-    const context = getContext(this) as common.UIAbilityContext;
+    const context = Util.hostAbilityContext(this.getUIContext());
     const localPath = await this.ensureLocalPath(context);
     if (localPath === '') {
       Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_share_failed'));

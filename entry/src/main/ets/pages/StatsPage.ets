@@ -73,7 +73,7 @@ export struct StatsPage {
   }
 
   private ctx(): common.UIAbilityContext {
-    return getContext(this) as common.UIAbilityContext;
+    return Util.hostAbilityContext(this.getUIContext());
   }
 
   async loadData(): Promise<void> {
@@ -200,7 +200,7 @@ export struct StatsPage {
     const res = this.chartMode === 0
       ? $r('app.string.stats_week_total', Util.formatDuration(this.ctx(), total))
       : $r('app.string.stats_month_total', Util.formatDuration(this.ctx(), total));
-    return this.ctx().resourceManager.getStringSync(res);
+    return this.ctx().resourceManager.getStringSync(res.id);
   }
 
   @Builder

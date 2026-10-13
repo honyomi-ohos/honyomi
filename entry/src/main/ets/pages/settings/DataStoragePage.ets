@@ -40,7 +40,7 @@ export struct DataStoragePage {
   // 磁盘占用：内部存储 已用/总量（filesDir 所在分区）
   private refreshStorageInfo(): void {
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       const total: number = statfs.getTotalSizeSync(context.filesDir);
       const free: number = statfs.getFreeSizeSync(context.filesDir);
       if (total > 0 && free >= 0) {
@@ -73,7 +73,7 @@ export struct DataStoragePage {
     }
     this.busy = true;
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       const ok = await BackupService.exportBackup(context);
       Util.toastRes(this.getUIContext(), ok ? $r('app.string.advanced_backup_exported') :
         $r('app.string.advanced_export_canceled'));
@@ -89,7 +89,7 @@ export struct DataStoragePage {
     }
     this.busy = true;
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       const count = await BackupService.importBackup(context);
       if (count === -1) {
         Util.toastRes(this.getUIContext(), $r('app.string.advanced_import_canceled'));
@@ -144,7 +144,7 @@ export struct DataStoragePage {
     }
     this.busy = true;
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       const ok = await BackupService.exportLibraryCsv(context, includeTitle, includeAuthor);
       Util.toastRes(this.getUIContext(), ok ? $r('app.string.data_library_exported') :
         $r('app.string.data_export_canceled'));
@@ -161,7 +161,7 @@ export struct DataStoragePage {
           AppIcon({ name: 'help', iconSize: 22 })
             .padding(8)
             .onClick(() => {
-              const context = getContext(this) as common.UIAbilityContext;
+              const context = Util.hostAbilityContext(this.getUIContext());
               Util.openUrl(context, HELP_URL);
             })
         }
@@ -173,7 +173,7 @@ export struct DataStoragePage {
                 title: $r('app.string.data_storage_location'),
                 value: $r('app.string.data_storage_location_value'),
                 onTap: (): void => {
-                  const context = getContext(this) as common.UIAbilityContext;
+                  const context = Util.hostAbilityContext(this.getUIContext());
                   Util.toast(this.getUIContext(), context.filesDir);
                 }
               })

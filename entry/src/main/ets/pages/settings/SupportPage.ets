@@ -16,7 +16,7 @@ export struct SupportPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   private openLink(url: string): void {
-    const context = getContext(this) as common.UIAbilityContext;
+    const context = Util.hostAbilityContext(this.getUIContext());
     Util.openUrl(context, url);
   }
 

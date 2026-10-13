@@ -50,7 +50,7 @@ export struct HistoryPage {
   }
 
   async loadData(): Promise<void> {
-    const context = getContext(this) as common.UIAbilityContext;
+    const context = Util.hostAbilityContext(this.getUIContext());
     await AppDb.ready(context);
     this.items = await HistoryRepo.recent(100);
     this.loading = false;

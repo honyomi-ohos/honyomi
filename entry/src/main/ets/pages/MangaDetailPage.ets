@@ -149,7 +149,7 @@ export struct MangaDetailPage {
   }
 
   private async reloadLocal(): Promise<void> {
-    const context = getContext(this) as common.UIAbilityContext;
+    const context = Util.hostAbilityContext(this.getUIContext());
     await AppDb.ready(context);
     const record = await MangaRepo.get(this.mangaId);
     if (record !== undefined) {
@@ -229,7 +229,7 @@ export struct MangaDetailPage {
       if (uris.length === 0) {
         return;
       }
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       const coverPath = await CoverStore.save(context, this.mangaId, uris[0]);
       if (coverPath === '') {
         Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_save_failed'));
@@ -246,7 +246,7 @@ export struct MangaDetailPage {
 
   // 恢复原封面（对齐 Mihon Reset cover）：删除自定义封面文件，回退到源封面地址
   private async resetCover(): Promise<void> {
-    const context = getContext(this) as common.UIAbilityContext;
+    const context = Util.hostAbilityContext(this.getUIContext());
     CoverStore.remove(context, this.mangaId);
     await MangaRepo.resetCover(this.mangaId);
     await this.reloadLocal();
@@ -304,7 +304,7 @@ export struct MangaDetailPage {
 
   // 添加漫画卡片到桌面：先写 pending mangaId（openFormManager 不携带自定义参数），再打开系统卡片管理页
   private addToDesktop(): void {
-    const context = getContext(this) as common.UIAbilityContext;
+    const context = Util.hostAbilityContext(this.getUIContext());
     WidgetUpdater.setPendingManga(context, this.mangaId).then((): void => {
       const params: Record<string, Object> = {};
       params[formInfo.FormParam.NAME_KEY] = 'MangaCard';

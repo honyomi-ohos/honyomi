@@ -110,7 +110,7 @@ export struct VideoPlayerPage {
     this.dmArea = Settings.getDanmakuAreaPct();
     this.dmDur = Settings.getDanmakuDurationSec();
     // 沉浸式：隐藏状态栏与导航栏
-    window.getLastWindow(getContext(this)).then((w: window.Window) => {
+    window.getLastWindow(Util.hostAbilityContext(this.getUIContext())).then((w: window.Window) => {
       this.win = w;
       w.setWindowSystemBarEnable([]).catch((): void => {
       });
@@ -131,7 +131,7 @@ export struct VideoPlayerPage {
       });
       this.win.setWindowSystemBarEnable(['status', 'navigation']).catch((): void => {
       });
-      Settings.applySystemBar(getContext(this));
+      Settings.applySystemBar(Util.hostAbilityContext(this.getUIContext()));
     }
   }
 
@@ -177,7 +177,7 @@ export struct VideoPlayerPage {
     this.dmChapterId = -1;
     this.dmCtrl.reset();
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       await AppDb.ready(context);
       const chapter = await ChapterRepo.getById(this.chapterId);
       if (chapter === undefined) {

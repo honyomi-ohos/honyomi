@@ -70,7 +70,7 @@ export struct BrowseSourcePage {
     this.results = [];
     this.page = 1;
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       await AppDb.ready(context);
       const result = await this.fetchPage(source, 1);
       this.results = await this.toRecords(source.key, result.mangas);
@@ -90,7 +90,7 @@ export struct BrowseSourcePage {
     this.results = [];
     this.page = 1;
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       await AppDb.ready(context);
       const q = this.query.trim();
       const result = q === '' ? await source.getPopularManga(1) : await source.getSearchManga(1, q);
@@ -144,7 +144,7 @@ export struct BrowseSourcePage {
 
   async openDetail(record: MangaRecord): Promise<void> {
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       await AppDb.ready(context);
       const id = await MangaRepo.upsertFromSource(record.sourceKey, this.toSManga(record), record.contentType);
       const params: DetailParams = { mangaId: id };
@@ -195,7 +195,7 @@ export struct BrowseSourcePage {
       return;
     }
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       const ok = await LocalFolderManager.chooseFolder(context);
       if (!ok) {
         return;
@@ -216,7 +216,7 @@ export struct BrowseSourcePage {
   private async syncNow(): Promise<void> {
     this.syncing = true;
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       await LocalFolderManager.sync(context);
       this.syncing = false;
       Util.toastRes(this.getUIContext(), $r('app.string.browse_local_sync_done'));

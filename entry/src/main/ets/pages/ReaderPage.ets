@@ -157,7 +157,7 @@ export struct ReaderPage {
     ReadingStatsRepo.flush();
     this.updateGripListener(false);
     // 还原窗口方向与亮度
-    ReaderWindow.restore(getContext(this) as common.UIAbilityContext);
+    ReaderWindow.restore(Util.hostAbilityContext(this.getUIContext()));
   }
 
   // 智感握姿：订阅/退订握持手感知（want=false 强制退订）
@@ -179,11 +179,11 @@ export struct ReaderPage {
   }
 
   private applyOrientation(): void {
-    ReaderWindow.applyOrientation(getContext(this) as common.UIAbilityContext, this.orientation);
+    ReaderWindow.applyOrientation(Util.hostAbilityContext(this.getUIContext()), this.orientation);
   }
 
   private applyBrightness(): void {
-    ReaderWindow.applyBrightness(getContext(this) as common.UIAbilityContext, this.brightLv);
+    ReaderWindow.applyBrightness(Util.hostAbilityContext(this.getUIContext()), this.brightLv);
   }
 
   private async loadChapter(): Promise<void> {
@@ -192,7 +192,7 @@ export struct ReaderPage {
     // 切章：先结算上一章的阅读会话
     ReadingStatsRepo.flush();
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       await AppDb.ready(context);
       const chapter = await ChapterRepo.getById(this.chapterId);
       if (chapter === undefined) {

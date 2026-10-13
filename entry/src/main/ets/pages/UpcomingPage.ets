@@ -1,5 +1,5 @@
 import { common } from '@kit.AbilityKit';
-import { i18n, intl } from '@kit.LocalizationKit';
+import { i18n } from '@kit.LocalizationKit';
 import { AppDb } from '../data/AppDb';
 import { CategoryRepo, UpcomingRepo } from '../data/Repos';
 import { UpcomingManga, CategoryRecord } from '../model/Models';
@@ -56,7 +56,7 @@ export struct UpcomingPage {
   private scroller: Scroller = new Scroller();
   private firstDayOfWeek: number = 1;
   private weekdayLabels: string[] = [];
-  private monthFmt: intl.DateTimeFormat | undefined = undefined;
+  private monthFmt: Intl.DateTimeFormat | undefined = undefined;
 
   aboutToAppear(): void {
     const now: Date = new Date();
@@ -69,7 +69,7 @@ export struct UpcomingPage {
       this.firstDayOfWeek = 1;
     }
     try {
-      this.monthFmt = new intl.DateTimeFormat(this.localeTag(), { year: 'numeric', month: 'long' });
+      this.monthFmt = new Intl.DateTimeFormat(this.localeTag(), { year: 'numeric', month: 'long' });
     } catch (e) {
       this.monthFmt = undefined;
     }
@@ -87,7 +87,7 @@ export struct UpcomingPage {
 
   // 星期短标签按本地一周首日排序（0=周日..6=周六 → stats_wd_*）
   private buildWeekdayLabels(): void {
-    const ctx = getContext(this) as common.Context;
+    const ctx = Util.hostAbilityContext(this.getUIContext());
     const firstJs: number = this.firstDayOfWeek % 7;
     this.weekdayLabels = [];
     for (let col = 0; col < 7; col++) {
@@ -96,7 +96,7 @@ export struct UpcomingPage {
   }
 
   async loadData(): Promise<void> {
-    const context = getContext(this) as common.UIAbilityContext;
+    const context = Util.hostAbilityContext(this.getUIContext());
     await AppDb.ready(context);
     this.categories = await CategoryRepo.list();
     this.includedCats = Settings.getUpcomingIncludedCategories();
@@ -448,7 +448,7 @@ export struct UpcomingPage {
           AppIcon({ name: 'help', iconSize: 22, tint: this.pal.text })
             .padding({ left: 12 })
             .onClick(() => {
-              const context = getContext(this) as common.UIAbilityContext;
+              const context = Util.hostAbilityContext(this.getUIContext());
               Util.openUrl(context, HELP_URL);
             })
         }

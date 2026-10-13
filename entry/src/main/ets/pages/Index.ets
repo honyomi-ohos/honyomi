@@ -405,7 +405,7 @@ struct Index {
       if (raw.contentType === 'novel' || raw.contentType === 'video' || raw.contentType === 'manga') {
         ContentOpen.push(this.pathStack, raw.contentType, raw.mangaId, raw.chapterId);
       } else {
-        const context = getContext(this) as common.UIAbilityContext;
+        const context = Util.hostAbilityContext(this.getUIContext());
         AppDb.ready(context).then(() => {
           ContentOpen.open(this.pathStack, raw.mangaId, raw.chapterId);
         }).catch(() => {
@@ -475,7 +475,7 @@ struct Index {
     }
     Settings.setLastRefreshAt(Date.now());
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       const newCount = await UpdateService.refreshLibrary(context);
       if (newCount > 0) {
         AppStorage.setOrCreate('libDirty', (AppStorage.get<number>('libDirty') ?? 0) + 1);

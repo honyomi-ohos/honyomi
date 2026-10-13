@@ -5,6 +5,7 @@ import { SourceRegistry, Source } from '../source/Source';
 import { MangaRecord } from '../model/Models';
 import { MigrateMangaParams, MigrateSearchParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
+import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
 import { SmartImage } from './components/SmartImage';
 import { AppIcon } from './components/AppIcon';
@@ -29,7 +30,7 @@ export struct MigrateMangaPage {
 
   private async load(): Promise<void> {
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       await AppDb.ready(context);
       const items = await MangaRepo.getLibraryBySource(this.sourceKey);
       this.items = items;

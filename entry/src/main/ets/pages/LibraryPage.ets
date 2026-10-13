@@ -133,7 +133,7 @@ export struct LibraryPage {
   }
 
   async loadData(): Promise<void> {
-    const context = getContext(this) as common.UIAbilityContext;
+    const context = Util.hostAbilityContext(this.getUIContext());
     await AppDb.ready(context);
     this.categories = await CategoryRepo.list();
     this.mangas = await MangaRepo.getLibrary();
@@ -191,7 +191,7 @@ export struct LibraryPage {
     }
     this.refreshing = true;
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       const newCount = await UpdateService.refreshLibrary(context);
       if (newCount > 0) {
         Util.toastRes(this.getUIContext(), $r('app.string.updates_found_new'), [newCount]);
@@ -212,7 +212,7 @@ export struct LibraryPage {
     }
     this.refreshing = true;
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       const newCount = await UpdateService.refreshCategory(context, this.selectedCategory);
       if (newCount > 0) {
         Util.toastRes(this.getUIContext(), $r('app.string.updates_found_new'), [newCount]);

@@ -50,7 +50,7 @@ export struct MigrateSearchPage {
 
   private async loadQueue(mangaIds: number[]): Promise<void> {
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       await AppDb.ready(context);
       const queue: MangaRecord[] = [];
       for (const id of mangaIds) {

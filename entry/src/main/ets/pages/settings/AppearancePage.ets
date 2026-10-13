@@ -2,6 +2,7 @@ import { common } from '@kit.AbilityKit';
 import { Theme, ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
 import { Languages } from '../../common/Languages';
+import { Util } from '../../common/Util';
 import { PageHeader } from '../components/PageHeader';
 import { PrefGroup, PrefSwitchRow, TextRow } from '../components/Prefs';
 
@@ -24,7 +25,7 @@ export struct AppearancePage {
     Settings.setThemeMode(mode);
     const systemDark = AppStorage.get<boolean>('isDarkSystem') ?? false;
     Settings.applyTheme(systemDark);
-    Settings.applyColorMode(getContext(this) as common.UIAbilityContext);
+    Settings.applyColorMode(Util.hostAbilityContext(this.getUIContext()));
   }
 
   @Builder

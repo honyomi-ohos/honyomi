@@ -65,15 +65,15 @@ export struct GlobalSearchPage {
   }
 
   private sourceTitle(s: Source): string {
-    const context = getContext(this) as common.UIAbilityContext;
+    const context = Util.hostAbilityContext(this.getUIContext());
     if (s.key === 'local') {
-      return context.resourceManager.getStringSync($r('app.string.browse_local_source_name'));
+      return context.resourceManager.getStringSync($r('app.string.browse_local_source_name').id);
     }
     if (s.key === 'local_novel') {
-      return context.resourceManager.getStringSync($r('app.string.browse_local_novel_name'));
+      return context.resourceManager.getStringSync($r('app.string.browse_local_novel_name').id);
     }
     if (s.key === 'local_video') {
-      return context.resourceManager.getStringSync($r('app.string.browse_local_video_name'));
+      return context.resourceManager.getStringSync($r('app.string.browse_local_video_name').id);
     }
     return s.name;
   }
@@ -93,7 +93,7 @@ export struct GlobalSearchPage {
     }
     this.sections = sections;
     this.searching = true;
-    const context = getContext(this) as common.UIAbilityContext;
+    const context = Util.hostAbilityContext(this.getUIContext());
     return AppDb.ready(context).then(() => {
       for (const s of sources) {
         this.searchOne(s, q);
@@ -105,7 +105,7 @@ export struct GlobalSearchPage {
 
   async openDetail(record: MangaRecord): Promise<void> {
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       await AppDb.ready(context);
       const m: SManga = {
         key: record.url,

@@ -194,15 +194,15 @@ export struct NovelReaderPage {
     this.persist();
     ReadingStatsRepo.flush();
     // 还原窗口方向与亮度
-    ReaderWindow.restore(getContext(this) as common.UIAbilityContext);
+    ReaderWindow.restore(Util.hostAbilityContext(this.getUIContext()));
   }
 
   private applyOrientation(): void {
-    ReaderWindow.applyOrientation(getContext(this) as common.UIAbilityContext, this.orientation);
+    ReaderWindow.applyOrientation(Util.hostAbilityContext(this.getUIContext()), this.orientation);
   }
 
   private applyBrightness(): void {
-    ReaderWindow.applyBrightness(getContext(this) as common.UIAbilityContext, this.brightLv);
+    ReaderWindow.applyBrightness(Util.hostAbilityContext(this.getUIContext()), this.brightLv);
   }
 
   private async loadChapter(): Promise<void> {
@@ -232,7 +232,7 @@ export struct NovelReaderPage {
     this.fontFamily = Settings.getNovelFontFamily();
     ReadingStatsRepo.flush();
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       await AppDb.ready(context);
       const chapter = await ChapterRepo.getById(this.chapterId);
       if (chapter === undefined) {
@@ -444,7 +444,7 @@ export struct NovelReaderPage {
     }
     this.ttsPlaying = true;
     const ok = await NovelTts.start(paras, fromPara, this.ttsLang(paras),
-      getContext(this) as common.UIAbilityContext);
+      Util.hostAbilityContext(this.getUIContext()));
     if (!ok) {
       this.ttsPlaying = false;
       this.ttsParaIdx = -1;
@@ -2074,7 +2074,7 @@ export struct NovelReaderPage {
               this.restoreOnce();
             }
           })
-          .onScroll((_x: number, y: number) => {
+          .onDidScroll((_x: number, y: number, _state: ScrollState) => {
             this.captureOffset(y);
           })
           .onScrollStop(() => {

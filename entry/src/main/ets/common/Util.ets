@@ -4,6 +4,11 @@ import { fileIo as fs } from '@kit.CoreFileKit';
 import { util } from '@kit.ArkTS';
 
 export class Util {
+  // the global getContext() helper is deprecated since API 18: use UIContext.getHostContext() instead
+  static hostAbilityContext(ui: UIContext): common.UIAbilityContext {
+    return ui.getHostContext() as common.UIAbilityContext;
+  }
+
   static formatDate(ms: number): string {
     if (ms <= 0) {
       return '';
@@ -34,7 +39,7 @@ export class Util {
   // "3天2小时" / "5小时30分" / "45分" / "30秒"
   static formatDuration(context: common.Context, seconds: number): string {
     if (seconds < 1) {
-      return context.resourceManager.getStringSync($r('app.string.stats_second_short'), 0);
+      return context.resourceManager.getStringSync($r('app.string.stats_second_short').id, 0);
     }
     const days: number = Math.floor(seconds / 86400);
     const hours: number = Math.floor((seconds % 86400) / 3600);
@@ -42,16 +47,16 @@ export class Util {
     const secs: number = seconds % 60;
     const parts: string[] = [];
     if (days > 0) {
-      parts.push(context.resourceManager.getStringSync($r('app.string.stats_day_short'), days));
+      parts.push(context.resourceManager.getStringSync($r('app.string.stats_day_short').id, days));
     }
     if (hours > 0) {
-      parts.push(context.resourceManager.getStringSync($r('app.string.stats_hour_short'), hours));
+      parts.push(context.resourceManager.getStringSync($r('app.string.stats_hour_short').id, hours));
     }
     if (minutes > 0 && (days === 0 || hours === 0)) {
-      parts.push(context.resourceManager.getStringSync($r('app.string.stats_minute_short'), minutes));
+      parts.push(context.resourceManager.getStringSync($r('app.string.stats_minute_short').id, minutes));
     }
     if (secs > 0 && days === 0 && hours === 0) {
-      parts.push(context.resourceManager.getStringSync($r('app.string.stats_second_short'), secs));
+      parts.push(context.resourceManager.getStringSync($r('app.string.stats_second_short').id, secs));
     }
     return parts.join(' ');
   }
@@ -72,7 +77,7 @@ export class Util {
     } else if (day === 6) {
       res = $r('app.string.stats_wd_sat');
     }
-    return context.resourceManager.getStringSync(res);
+    return context.resourceManager.getStringSync(res.id);
   }
 
 
@@ -123,7 +128,7 @@ export class Util {
     if (ctx === undefined) {
       return '';
     }
-    return ctx.resourceManager.getStringSync(res, ...args);
+    return ctx.resourceManager.getStringSync(res.id, ...args);
   }
 
   static toast(ui: UIContext, message: string): void {

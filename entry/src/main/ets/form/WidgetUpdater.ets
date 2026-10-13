@@ -258,7 +258,7 @@ export class WidgetUpdater {
       const items = await UpdatesRepo.unreadChapters(ROW_COUNT);
       const total = await UpdatesRepo.unreadCount();
       record['countText'] = total > 0
-        ? context.resourceManager.getStringSync($r('app.string.card_unread_count'), total)
+        ? context.resourceManager.getStringSync($r('app.string.card_unread_count').id, total)
         : '';
       for (let i = 0; i < ROW_COUNT; i++) {
         const item = i < items.length ? items[i] : undefined;
@@ -296,13 +296,13 @@ export class WidgetUpdater {
       'wide': wide,
       'empty': totalSeconds <= 0,
       'titleText': context.resourceManager.getStringSync(
-        week ? $r('app.string.card_stats_week_display') : $r('app.string.card_stats_month_display')),
+        week ? $r('app.string.card_stats_week_display').id : $r('app.string.card_stats_month_display').id),
       'rangeText': week
         ? `${range[0].substring(5)} ~ ${range[1].substring(5)}`
         : `${now.getFullYear()}-${WidgetUpdater.pad2(month)}`,
       'totalText': context.resourceManager.getStringSync(week
-        ? $r('app.string.stats_week_total')
-        : $r('app.string.stats_month_total'), Util.formatDuration(context, totalSeconds)),
+        ? $r('app.string.stats_week_total').id
+        : $r('app.string.stats_month_total').id, Util.formatDuration(context, totalSeconds)),
       'bars': '',
       'labels': '',
     };
@@ -374,13 +374,13 @@ export class WidgetUpdater {
     };
     const diff: number = Math.round((startOf(Date.now()) - startOf(ms)) / (24 * 60 * 60 * 1000));
     if (diff === 0) {
-      return context.resourceManager.getStringSync($r('app.string.relative_time_today'));
+      return context.resourceManager.getStringSync($r('app.string.relative_time_today').id);
     }
     if (diff > 0 && diff < 7) {
-      return context.resourceManager.getStringSync($r('app.string.relative_time_days_ago'), diff);
+      return context.resourceManager.getStringSync($r('app.string.relative_time_days_ago').id, diff);
     }
     if (diff < 0 && diff >= -7) {
-      return context.resourceManager.getStringSync($r('app.string.upcoming_relative_time_days'), -diff);
+      return context.resourceManager.getStringSync($r('app.string.upcoming_relative_time_days').id, -diff);
     }
     const d: Date = new Date(ms);
     const now: Date = new Date();

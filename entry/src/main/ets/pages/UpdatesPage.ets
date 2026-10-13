@@ -51,7 +51,7 @@ export struct UpdatesPage {
   }
 
   async loadCategories(): Promise<void> {
-    const context = getContext(this) as common.UIAbilityContext;
+    const context = Util.hostAbilityContext(this.getUIContext());
     await AppDb.ready(context);
     this.categories = await CategoryRepo.list();
   }
@@ -77,7 +77,7 @@ export struct UpdatesPage {
   }
 
   async loadData(): Promise<void> {
-    const context = getContext(this) as common.UIAbilityContext;
+    const context = Util.hostAbilityContext(this.getUIContext());
     await AppDb.ready(context);
     const query = new UpdatesQuery();
     query.downloaded = this.fDownloaded;
@@ -105,7 +105,7 @@ export struct UpdatesPage {
     }
     this.refreshing = true;
     try {
-      const context = getContext(this) as common.UIAbilityContext;
+      const context = Util.hostAbilityContext(this.getUIContext());
       const newCount = await UpdateService.refreshLibrary(context);
       if (newCount > 0) {
         Util.toastRes(this.getUIContext(), $r('app.string.updates_found_new'), [newCount]);

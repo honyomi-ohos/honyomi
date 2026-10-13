@@ -139,7 +139,7 @@ export struct MorePage {
               title: $r('app.string.more_help'),
               icon: 'help',
               onTap: (): void => {
-                const context = getContext(this) as common.UIAbilityContext;
+                const context = Util.hostAbilityContext(this.getUIContext());
                 Util.openUrl(context, HELP_URL);
               }
             })
