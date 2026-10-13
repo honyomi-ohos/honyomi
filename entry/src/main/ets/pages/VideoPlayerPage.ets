@@ -20,6 +20,8 @@ import { DanmakuView, DanmakuController } from './components/DanmakuView';
 
 const SPEEDS: number[] = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
 const SCALE_MODES: number[] = [0, 1, 2];
+// 长按快进档位（与画面顶部的速度胶囊一一对应）
+const BOOST_SPEEDS: number[] = [1.0, 1.5, 2.0, 3.0];
 const DM_FONT_VALUES: number[] = [12, 14, 16, 18, 20];
 const DM_OPACITY_VALUES: number[] = [30, 50, 80, 100];
 const DM_AREA_VALUES: number[] = [25, 50, 75, 100];
@@ -61,6 +63,7 @@ export struct VideoPlayerPage {
   @State dmDur: number = 10;
   @State fullscreen: boolean = false;
   @State boosting: boolean = false;
+  @State boostSpeedIndex: number = 2;
   @State scaleMode: number = 0;
   private mangaId: number = -1;
   private chapterId: number = -1;
@@ -82,6 +85,8 @@ export struct VideoPlayerPage {
   private tapTimer: number = -1;
   private seekToastTimer: number = -1;
   private boostTimer: number = -1;
+  private boostDownX: number = 0;
+  private boostAnchorX: number = 0;
   private suppressClick: boolean = false;
   private win: window.Window | undefined = undefined;
   private dmCtrl: DanmakuController = new DanmakuController();
@@ -532,10 +537,18 @@ export struct VideoPlayerPage {
     }, 600);
   }
 
-  // ---- 长按加速（按住 ~0.5s 临时 2x，松开恢复） ----
+  // ---- 长按快进（按住 ~0.5s 进入倍速快进，可左右滑动换档，松开恢复原速） ----
   private boostTouch(event: TouchEvent): void {
     if (event.type === TouchType.Down) {
+      if (event.touches.length > 0) {
+        // TouchObject.windowX 单位是 vp，转 px 后统一计算
+        this.boostDownX = this.getUIContext().vp2px(event.touches[0].windowX);
+      }
       this.armBoost();
+    } else if (event.type === TouchType.Move) {
+      if (this.boosting && event.touches.length > 0) {
+        this.boostSlide(this.getUIContext().vp2px(event.touches[0].windowX));
+      }
     } else if (event.type === TouchType.Up || event.type === TouchType.Cancel) {
       this.disarmBoost();
     }
@@ -546,7 +559,7 @@ export struct VideoPlayerPage {
       clearTimeout(this.boostTimer);
       this.boostTimer = -1;
     }
-    if (this.locked || !this.playing || this.speed >= 2.0) {
+    if (this.locked || !this.playing || this.speed >= 3.0) {
       return;
     }
     this.boostTimer = setTimeout(() => {
@@ -574,16 +587,60 @@ export struct VideoPlayerPage {
     if (player === undefined) {
       return;
     }
-    this.log('boost start 2x');
-    player.setSpeed(media.PlaybackSpeed.SPEED_FORWARD_2_00_X);
+    this.boostSpeedIndex = 2;
+    this.boostAnchorX = this.boostDownX;
+    this.log(`boost start ${BOOST_SPEEDS[this.boostSpeedIndex]}x pos=${this.positionMs}`);
+    player.setSpeed(this.boostSpeedToEnum(this.boostSpeedIndex));
     this.boosting = true;
+  }
+
+  // 长按期间滑动换档：以按下点为基准，相对每滑过一个步长升降一档（右增左减）
+  private boostSlide(x: number): void {
+    if (this.areaW <= 0) {
+      return;
+    }
+    const step = Math.max(this.areaW / 8, 80);
+    let idx = this.boostSpeedIndex;
+    if (x - this.boostAnchorX >= step && this.boostSpeedIndex < BOOST_SPEEDS.length - 1) {
+      idx = this.boostSpeedIndex + 1;
+    } else if (this.boostAnchorX - x >= step && this.boostSpeedIndex > 0) {
+      idx = this.boostSpeedIndex - 1;
+    }
+    if (idx !== this.boostSpeedIndex) {
+      this.boostAnchorX = x;
+      this.boostSpeedIndex = idx;
+      const player = this.player;
+      if (player !== undefined) {
+        this.log(`boost speed ${BOOST_SPEEDS[idx]}x`);
+        player.setSpeed(this.boostSpeedToEnum(idx));
+      }
+    }
+  }
+
+  private boostSpeedToEnum(i: number): media.PlaybackSpeed {
+    const s = BOOST_SPEEDS[i];
+    if (s === 1.5) {
+      return media.PlaybackSpeed.SPEED_FORWARD_1_50_X;
+    }
+    if (s === 2.0) {
+      return media.PlaybackSpeed.SPEED_FORWARD_2_00_X;
+    }
+    if (s === 3.0) {
+      return media.PlaybackSpeed.SPEED_FORWARD_3_00_X;
+    }
+    return media.PlaybackSpeed.SPEED_FORWARD_1_00_X;
+  }
+
+  private boostLabel(i: number): string {
+    const s = BOOST_SPEEDS[i];
+    return s === 1.0 ? '1x' : `${s}x`;
   }
 
   private endBoost(): void {
     this.boosting = false;
     const player = this.player;
     if (player !== undefined) {
-      this.log('boost end');
+      this.log(`boost end pos=${this.positionMs}`);
       player.setSpeed(this.speedToEnum(this.speed));
     }
   }
@@ -1389,14 +1446,22 @@ export struct VideoPlayerPage {
         .height('100%')
 
         if (this.boosting) {
-          Text('2x')
-            .fontSize(15)
-            .fontWeight(FontWeight.Bold)
-            .fontColor(Color.White)
-            .padding({ left: 14, right: 14, top: 6, bottom: 6 })
-            .borderRadius(18)
-            .backgroundColor('rgba(0,0,0,0.6)')
-            .offset({ y: '-18%' })
+          // 长按快进：页面顶部显示四个平行速度胶囊，当前档位轻微高亮
+          Row({ space: 8 }) {
+            ForEach(BOOST_SPEEDS, (s: number, i: number) => {
+              Text(this.boostLabel(i))
+                .fontSize(14)
+                .fontWeight(this.boostSpeedIndex === i ? FontWeight.Bold : FontWeight.Normal)
+                .fontColor(this.boostSpeedIndex === i ? Color.White : '#B3FFFFFF')
+                .backgroundColor(this.boostSpeedIndex === i ? 'rgba(255,255,255,0.32)' : 'rgba(255,255,255,0.08)')
+                .borderRadius(16)
+                .padding({ left: 18, right: 18, top: 6, bottom: 6 })
+            }, (s: number, i: number) => `boost-${i}-${s}`)
+          }
+          .padding(6)
+          .borderRadius(22)
+          .backgroundColor('rgba(0,0,0,0.4)')
+          .offset({ y: '-32%' })
         }
 
         if (this.seekToast !== 0) {

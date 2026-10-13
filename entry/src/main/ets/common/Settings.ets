@@ -621,6 +621,19 @@ export class Settings {
     Settings.setNum('readerSaturation', v);
   }
 
+  // 漫画翻页动画（横向分页）：curl（仿真）| slide（滑动）| cover（覆盖）。垂直滚动与条漫不使用仿真。
+  static getReaderPageAnim(): string {
+    const raw = Settings.getStr('readerPageAnim', 'slide');
+    if (raw === 'curl' || raw === 'cover') {
+      return raw;
+    }
+    return 'slide';
+  }
+
+  static setReaderPageAnim(v: string): void {
+    Settings.setStr('readerPageAnim', v);
+  }
+
   // ---- 阅读器导航/条漫 ----
   // 点击翻页区域：'default','ltr','rtl','vertical','edge','none'
   static getReaderNavMode(): string {

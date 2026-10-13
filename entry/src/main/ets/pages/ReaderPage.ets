@@ -17,6 +17,7 @@ import { ComicStripViewer } from './components/ComicStripViewer';
 import { AppIconRes, AppIcon } from './components/AppIcon';
 import { SwitchRow, TextRow } from './components/Prefs';
 import { PickerSheet } from './components/PickerSheet';
+import { EmulationFlipView } from './components/PageFlip';
 
 // 屏幕旋转的可选值（与下方 sheet 选项一一对应）
 const READER_ORIENTATIONS: string[] = ['free', 'portrait', 'landscape', 'lock_portrait', 'lock_landscape'];
@@ -97,6 +98,11 @@ export struct ReaderPage {
   @State dualPage: boolean = false;
   // 条漫侧边距（%）
   @State webtoonPadding: number = 0;
+  // 翻页动画：curl=仿真 slide=滑动 cover=覆盖（条漫与垂直模式不走仿真）
+  @State pageAnim: string = 'slide';
+  @State coverX: number[] = [];
+  @State coverY: number[] = [];
+  @State coverZ: number[] = [];
   // 智感握姿：握持侧即“下一页”热区（true=右手握持/右侧翻下一页）
   @State gripRight: boolean = true;
   // 设备是否支持智感握姿（不支持则隐藏该模式选项）
@@ -136,6 +142,7 @@ export struct ReaderPage {
     this.filterSaturationOn = Settings.getReaderSaturationEnabled();
     this.filterSaturation = Settings.getReaderSaturation();
     this.navMode = Settings.getReaderNavMode();
+    this.pageAnim = Settings.getReaderPageAnim();
     this.dualPage = Settings.getReaderDualPage();
     this.webtoonPadding = Settings.getReaderWebtoonPadding();
     this.applyOrientation();
@@ -272,8 +279,19 @@ export struct ReaderPage {
     this.hasNext = idx >= 0 && idx < all.length - 1;
   }
 
+  private static zeros(n: number): number[] {
+    const arr: number[] = [];
+    for (let i = 0; i < n; i++) {
+      arr.push(0);
+    }
+    return arr;
+  }
+
   // 根据模式构建展示页序并恢复进度
   private applyMode(scrollToResume: boolean): void {
+    this.coverX = ReaderPage.zeros(this.pages.length);
+    this.coverY = ReaderPage.zeros(this.pages.length);
+    this.coverZ = ReaderPage.zeros(this.pages.length);
     if (this.mode === 'rtl') {
       this.dataSource.setPages(this.pages.slice().reverse());
       this.displayIndex = this.pages.length - 1 - this.currentReal;
@@ -556,6 +574,205 @@ export struct ReaderPage {
     this.onSwipe(target);
   }
 
+  private useCurl(): boolean {
+    return this.pageAnim === 'curl' && this.mode !== 'webtoon' && this.mode !== 'vertical' && this.pages.length > 0;
+  }
+
+  private curlDual(): boolean {
+    return this.dualPage && this.mode !== 'vertical';
+  }
+
+  private curlCount(): number {
+    if (this.pages.length === 0) {
+      return 0;
+    }
+    if (this.curlDual()) {
+      return Math.ceil(this.pages.length / 2);
+    }
+    return this.pages.length;
+  }
+
+  private curlIndex(): number {
+    if (this.pages.length === 0) {
+      return 0;
+    }
+    if (this.curlDual()) {
+      return Math.min(this.curlCount() - 1, Math.floor(this.currentReal / 2));
+    }
+    return this.currentReal;
+  }
+
+  // 仿真卷曲从左缘翻出下一页：从右到左，或智感握姿左手（下一页在左侧）
+  private curlFromLeft(): boolean {
+    if (this.mode === 'rtl') {
+      return true;
+    }
+    if (this.mode === 'smart_grip' && !this.gripRight) {
+      return true;
+    }
+    return false;
+  }
+
+  private curlNextOnLeft(): boolean {
+    if (this.navMode === 'ltr') {
+      return false;
+    }
+    if (this.navMode === 'rtl') {
+      return true;
+    }
+    return this.curlFromLeft();
+  }
+
+  private curlTapMode(): string {
+    if (this.navMode === 'none') {
+      return 'none';
+    }
+    if (this.navMode === 'vertical') {
+      return 'vertical';
+    }
+    if (this.navMode === 'edge') {
+      return 'edge';
+    }
+    return 'horizontal';
+  }
+
+  private curlEnabled(): boolean {
+    return !this.showSettings && !this.showModeSheet && !this.showOrientationSheet;
+  }
+
+  private onCurlIndex(index: number): void {
+    const real = this.curlDual() ? Math.min(this.pages.length - 1, index * 2) : index;
+    if (real < 0 || real >= this.pages.length || real === this.currentReal) {
+      return;
+    }
+    this.currentReal = real;
+    this.displayIndex = this.realToDisplay(real);
+    this.persistProgress();
+  }
+
+  private onCurlOverscroll(dir: number): void {
+    Util.toastRes(this.getUIContext(),
+      dir < 0 ? $r('app.string.reader_first_page') : $r('app.string.reader_last_page'));
+  }
+
+  private setPageAnim(v: string): void {
+    if (v === this.pageAnim) {
+      return;
+    }
+    this.pageAnim = v;
+    Settings.setReaderPageAnim(v);
+    this.coverX = ReaderPage.zeros(this.pages.length);
+    this.coverY = ReaderPage.zeros(this.pages.length);
+    this.coverZ = ReaderPage.zeros(this.pages.length);
+  }
+
+  private coverAt(arr: number[], index: number): number {
+    if (this.pageAnim !== 'cover' || index < 0 || index >= arr.length) {
+      return 0;
+    }
+    return arr[index];
+  }
+
+  private setCover(i: number, x: number, y: number, z: number): void {
+    if (i < 0 || i >= this.coverX.length) {
+      return;
+    }
+    if (this.coverX[i] !== x) {
+      this.coverX[i] = x;
+    }
+    if (this.coverY[i] !== y) {
+      this.coverY[i] = y;
+    }
+    if (this.coverZ[i] !== z) {
+      this.coverZ[i] = z;
+    }
+  }
+
+  // 覆盖：新页滑入盖住静止的当前页。滑动模式不改位移，沿用 Swiper 默认滚动。
+  private onCoverTransition(proxy: SwiperContentTransitionProxy): void {
+    if (this.pageAnim !== 'cover') {
+      return;
+    }
+    const i = proxy.index;
+    if (i < 0 || i >= this.coverX.length) {
+      return;
+    }
+    const p = proxy.position;
+    if (Math.abs(p - Math.round(p)) < 0.001) {
+      this.setCover(i, 0, 0, 0);
+      return;
+    }
+    const span = proxy.mainAxisLength;
+    const selected = proxy.selectedIndex;
+    const vertical = this.mode === 'vertical';
+    const pinX = vertical ? 0 : -p * span;
+    const pinY = vertical ? -p * span : 0;
+    if (i === selected) {
+      if (p < 0) {
+        this.setCover(i, pinX, pinY, 0);
+      } else {
+        this.setCover(i, 0, 0, 2);
+      }
+    } else if (i === selected + 1) {
+      this.setCover(i, 0, 0, 2);
+    } else if (i === selected - 1) {
+      this.setCover(i, pinX, pinY, 0);
+    } else {
+      this.setCover(i, 0, 0, 0);
+    }
+  }
+
+  @Builder
+  curlFull(index: number) {
+    if (index >= 0 && index < this.pages.length) {
+      SmartImage({
+        url: this.pages[index].url,
+        sourceKey: this.manga.sourceKey,
+        fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
+        fill: true
+      })
+        .width('100%')
+        .height('100%')
+    }
+  }
+
+  @Builder
+  curlHalf(index: number) {
+    if (index >= 0 && index < this.pages.length) {
+      SmartImage({
+        url: this.pages[index].url,
+        sourceKey: this.manga.sourceKey,
+        fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
+        fill: true
+      })
+        .layoutWeight(1)
+        .height('100%')
+    } else {
+      Column()
+        .layoutWeight(1)
+        .height('100%')
+    }
+  }
+
+  @Builder
+  curlPageBody(index: number) {
+    if (this.curlDual()) {
+      Row() {
+        if (this.curlFromLeft()) {
+          this.curlHalf(index * 2 + 1)
+          this.curlHalf(index * 2)
+        } else {
+          this.curlHalf(index * 2)
+          this.curlHalf(index * 2 + 1)
+        }
+      }
+      .width('100%')
+      .height('100%')
+    } else {
+      this.curlFull(index)
+    }
+  }
+
   build() {
     NavDestination() {
       Stack({ alignContent: Alignment.BottomEnd }) {
@@ -602,17 +819,63 @@ export struct ReaderPage {
             .brightness(this.filterBrightnessOn ? this.filterBrightness / 100 : 1)
             .contrast(this.filterContrastOn ? this.filterContrast / 100 : 1)
             .saturate(this.filterSaturationOn ? this.filterSaturation / 100 : 1)
+        } else if (this.useCurl()) {
+          EmulationFlipView({
+            index: this.curlIndex(),
+            pageCount: this.curlCount(),
+            fromLeft: this.curlFromLeft(),
+            nextOnLeft: this.curlNextOnLeft(),
+            tapMode: this.curlTapMode(),
+            flipEnabled: this.curlEnabled(),
+            bgColor: Theme.readerBg(this.readerTheme, this.isDark),
+            onIndexChange: (index: number): void => {
+              this.onCurlIndex(index);
+            },
+            onCenterTap: (): void => {
+              if (this.showSettings || this.showModeSheet || this.showOrientationSheet) {
+                return;
+              }
+              this.showMenu = !this.showMenu;
+            },
+            onOverscroll: (dir: number): void => {
+              this.onCurlOverscroll(dir);
+            },
+            pageContent: this.curlPageBody
+          })
+            .width('100%')
+            .height('100%')
+            .grayscale(this.filterGrayscale ? 1 : 0)
+            .invert(this.filterInvert ? 1 : 0)
+            .brightness(this.filterBrightnessOn ? this.filterBrightness / 100 : 1)
+            .contrast(this.filterContrastOn ? this.filterContrast / 100 : 1)
+            .saturate(this.filterSaturationOn ? this.filterSaturation / 100 : 1)
+            .onAreaChange((_old: Area, newArea: Area) => {
+              const w = newArea.width;
+              if (typeof w === 'number' && w > 0) {
+                this.readerW = w;
+              }
+              const h = newArea.height;
+              if (typeof h === 'number' && h > 0) {
+                this.readerH = h;
+              }
+            })
         } else {
           Swiper() {
-            LazyForEach(this.dataSource, (page: SPage) => {
-              SmartImage({
-                url: page.url,
-                sourceKey: this.manga.sourceKey,
-                fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
-                fill: true
-              })
-                .width('100%')
-                .height('100%')
+            LazyForEach(this.dataSource, (page: SPage, index: number) => {
+              Stack() {
+                SmartImage({
+                  url: page.url,
+                  sourceKey: this.manga.sourceKey,
+                  fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
+                  fill: true
+                })
+                  .width('100%')
+                  .height('100%')
+              }
+              .width('100%')
+              .height('100%')
+              .translate({ x: this.coverAt(this.coverX, index), y: this.coverAt(this.coverY, index) })
+              .zIndex(this.coverAt(this.coverZ, index))
             }, (page: SPage) => page.url)
           }
           .width('100%')
@@ -627,6 +890,12 @@ export struct ReaderPage {
           .vertical(this.mode === 'vertical')
           .index(this.displayIndex)
           .indicator(false)
+          .customContentTransition({
+            timeout: 800,
+            transition: (proxy: SwiperContentTransitionProxy): void => {
+              this.onCoverTransition(proxy);
+            }
+          })
           .onChange((index: number) => {
             this.onSwipe(index);
           })
@@ -971,6 +1240,23 @@ export struct ReaderPage {
           }
         })
         Divider().color(this.pal.divider)
+        if (this.mode !== 'webtoon') {
+          Column({ space: 8 }) {
+            Text($r('app.string.novel_page_animation'))
+              .fontSize(13)
+              .fontColor(this.pal.sub)
+              .width('100%')
+            Flex({ wrap: FlexWrap.Wrap }) {
+              this.animChip($r('app.string.novel_anim_curl'), 'curl')
+              this.animChip($r('app.string.novel_anim_slide'), 'slide')
+              this.animChip($r('app.string.novel_anim_cover'), 'cover')
+            }
+            .width('100%')
+          }
+          .width('100%')
+          .padding({ left: 16, right: 16, top: 12, bottom: 8 })
+          Divider().color(this.pal.divider)
+        }
         if (this.mode === 'webtoon') {
           // 条漫：侧边距
           this.filterSliderRow($r('app.string.reader_webtoon_padding'), this.webtoonPadding, 0, 25,
@@ -1211,6 +1497,20 @@ export struct ReaderPage {
     .width('100%')
     .height(52)
     .padding({ left: 16, right: 16 })
+  }
+
+  @Builder
+  animChip(label: ResourceStr, value: string) {
+    Text(label)
+      .fontSize(13)
+      .fontColor(this.pageAnim === value ? '#FFFFFF' : this.pal.text)
+      .padding({ left: 12, right: 12, top: 6, bottom: 6 })
+      .borderRadius(14)
+      .backgroundColor(this.pageAnim === value ? this.pal.primary : this.pal.chip)
+      .margin({ right: 8, bottom: 8 })
+      .onClick(() => {
+        this.setPageAnim(value);
+      })
   }
 
   // 点击翻页区域导航 chip

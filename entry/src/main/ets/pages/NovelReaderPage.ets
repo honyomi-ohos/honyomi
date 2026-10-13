@@ -1,5 +1,5 @@
 import { common } from '@kit.AbilityKit';
-import { display, matrix4, window } from '@kit.ArkUI';
+import { display, window } from '@kit.ArkUI';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo, ChapterRepo, HistoryRepo } from '../data/Repos';
 import { ReadingStatsRepo } from '../data/ReadingStats';
@@ -12,6 +12,7 @@ import { Util } from '../common/Util';
 import { DownloadService } from '../data/DownloadService';
 import { AppIconRes, AppIcon } from './components/AppIcon';
 import { PickerSheet } from './components/PickerSheet';
+import { EmulationFlipView } from './components/PageFlip';
 
 // 屏幕方向的可选值（与方向选择 sheet 选项一一对应）
 const NOVEL_ORIENTATIONS: string[] = ['free', 'portrait', 'landscape', 'lock_portrait', 'lock_landscape'];
@@ -20,10 +21,6 @@ const NOVEL_ORIENTATION_ICONS: string[] =
 // 阅读模式的可选值（与模式选择 sheet 选项一一对应）
 const NOVEL_MODES: string[] = ['scroll', 'paged', 'paged_rtl', 'double'];
 const NOVEL_MODE_ICONS: string[] = ['reader_scroll', 'reader_ltr', 'reader_rtl', 'reader_double'];
-// 仿真翻页的条带数：页面按书脊方向切分为 N 条竖带，逐条沿贝塞尔曲线弯曲（参考 Page 项目网格变形）
-const STRIP_N = 10;
-
-const STRIP_IDX: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 // 小说阅读器：滚动 / 翻页 / 双页三种模式，交互对齐漫画阅读器——
 // 全屏正文，点击屏幕中间呼出菜单（顶栏+底栏），底部设置面板含
 // 翻页方式 / 字号 / 行间距 / 段间距 / 背景（背景与漫画阅读器共用 readerTheme）。
@@ -75,18 +72,6 @@ export struct NovelReaderPage {
   // 双页仿真：左右半页各自绕中线（书脊）的翻转角
   @State transAngleL: number[] = [];
   @State transAngleR: number[] = [];
-  // 仿真条带翻页：正在翻卷的屏索引 flipIdx（-1 表示无），flipAdj 为其相邻屏（纸背内容来源）。
-  // 每条带的：窗口宽 / 窗口左缘 x / 基线 y（上掀量+抓取弓高）/ 纵向剪切 / 阴影 / 内容压缩比 / 纸背标记 / 内容矩阵 x 偏移
-  @State flipIdx: number = -1;
-  @State flipAdj: number = -1;
-  @State stripWArr: number[] = NovelReaderPage.zeros(STRIP_N);
-  @State stripDX: number[] = NovelReaderPage.zeros(STRIP_N);
-  @State stripDY: number[] = NovelReaderPage.zeros(STRIP_N);
-  @State stripShear: number[] = NovelReaderPage.zeros(STRIP_N);
-  @State stripShade: number[] = NovelReaderPage.zeros(STRIP_N);
-  @State stripCq: number[] = NovelReaderPage.zeros(STRIP_N);
-  @State stripOff: number[] = NovelReaderPage.zeros(STRIP_N);
-  @State stripMirror: boolean[] = [false, false, false, false, false, false, false, false, false, false];
   // 双页仿真翻转半页的纵向倾斜（随抓取位置变化）
   @State halfTilt: number = 0;
   // 本次翻页的抓取纵向位置（0 顶部 ~ 1 底部，相对正文区），决定卷曲弓高与倾斜方向
@@ -361,8 +346,6 @@ export struct NovelReaderPage {
     this.transZ = NovelReaderPage.zeros(screenCount);
     this.transAngleL = NovelReaderPage.zeros(screenCount);
     this.transAngleR = NovelReaderPage.zeros(screenCount);
-    this.flipIdx = -1;
-    this.flipAdj = -1;
     this.halfTilt = 0;
     this.pageIdx = screenIdx;
     try {
@@ -797,150 +780,6 @@ export struct NovelReaderPage {
     return Math.max(0, 1 - (a - 90) / 90) * 0.18;
   }
 
-  // 三次贝塞尔曲线 x/y 分量（起点固定在书脊原点）
-  private bezierX(t: number, ex: number, c1x: number, c2x: number): number {
-    const u = 1 - t;
-    return 3 * t * u * u * c1x + 3 * u * t * t * c2x + t * t * t * ex;
-  }
-
-  private bezierY(t: number, ey: number, c1y: number, c2y: number): number {
-    const u = 1 - t;
-    return 3 * t * u * u * c1y + 3 * u * t * t * c2y + t * t * t * ey;
-  }
-
-  // 条带外层矩阵：平移到窗口位置并做纵向剪切（模拟参考项目四边形条带的连续折面，
-  // 相邻条带在共享折点处严丝合缝），列主序 [1 s 0 0; 0 1 0 0; 0 0 1 0; tx ty 0 1]
-  private stripMatrix(si: number): Matrix4Transit {
-    return matrix4.init([1, this.stripShear[si], 0, 0,
-      0, 1, 0, 0,
-      0, 0, 1, 0,
-      this.stripDX[si], this.stripDY[si], 0, 1]);
-  }
-
-  // 条带内容矩阵：把页面切片 [u0,u1]（弧长坐标）按压缩比映射进窗口；纸背条带镜像显示相邻屏内容
-  private stripContentMatrix(si: number): Matrix4Transit {
-    const q = this.stripCq[si];
-    const sx = this.stripMirror[si] ? -q : q;
-    return matrix4.init([sx, 0, 0, 0,
-      0, 1, 0, 0,
-      0, 0, 1, 0,
-      this.stripOff[si], 0, 0, 1]);
-  }
-
-  // 仿真条带逐帧几何——完整移植参考项目 bezier-assembler 的走线算法：
-  // 1. 控制点随翻转角按缓动函数移动（终点 InCubic/OutQuart，控制点线性），曲线起点钉在书脊；
-  // 2. 沿曲线按等参数取样，逐段量弦长，累计超过页宽的部分按 1.1 倍衰减，末段补齐使折线总长恒等于页宽
-  //    （_fixWidth：保证整页表面无损地铺在曲线上，UV 按弧长分配）；
-  // 3. 每条带矩形 + 剪切近似参考的四边形条带：整条带按曲线 y 全量上掀（最高页宽 1/4），
-  //    剪切量取窗口两端折点的 y 差 / 窗口宽，相邻条带在折点处连续；
-  // 4. 抓取位置叠加纵向弓高：顶部抓取向上弓、底部向下、中间对称，弓高线性作用于弧长方向。
-  private updateStrips(angle: number): void {
-    const w = this.contW;
-    if (w <= 0) {
-      return;
-    }
-    const rtl = this.mode === 'paged_rtl';
-    const per = Math.min(2, Math.max(0, Math.abs(angle) / 90));
-    let ex = 0;
-    let ey = 0;
-    let c1x = 0;
-    let c1y = 0;
-    let c2x = 0;
-    let c2y = 0;
-    if (per <= 1) {
-      ex = w * (1 - Math.pow(per, 3));
-      ey = w / 4 * (1 - Math.pow(1 - per, 4));
-      c1x = w * (1 - per / 4);
-      c2x = c1x;
-      c1y = w * per / 16;
-      c2y = w * 3 / 16 * per;
-    } else {
-      const q = per - 1;
-      ex = -w * (1 - Math.pow(1 - q, 3));
-      ey = w / 4 * (1 - Math.pow(q, 4));
-      c1x = w * 3 / 4 * (1 - q);
-      c2x = w * 3 / 4 * Math.pow(1 - q, 3);
-      c1y = w / 16 * (1 - q);
-      c2y = w * 3 / 16 * (1 - Math.pow(q, 4));
-    }
-    const g = Math.max(-1, Math.min(1, (this.flipGrabY - 0.5) * 2));
-    const bowAmp = 30 * Math.sin(Math.PI * per / 2);
-    const base = this.curlShade(angle);
-    // 沿曲线走线：px/py 为上一折点，realWidth 为已走过弦长，lastU 为弧长纹理坐标
-    let px = 0;
-    let py = 0;
-    let realWidth = 0;
-    let lastU = 0;
-    for (let si = 0; si < STRIP_N; si++) {
-      const isTail = si === STRIP_N - 1;
-      const t = (si + 1) / STRIP_N;
-      let nx = this.bezierX(t, ex, c1x, c2x);
-      let ny = this.bezierY(t, ey, c1y, c2y);
-      let dx = nx - px;
-      let dy = ny - py;
-      let gap = Math.sqrt(dx * dx + dy * dy);
-      const segLen = gap;
-      if (isTail) {
-        // 末段修正：折线总长补齐至页宽
-        gap = Math.max(0, w - realWidth);
-        if (segLen > 0.0001 && gap > 0) {
-          nx = px + dx / segLen * gap;
-          ny = py + dy / segLen * gap;
-        } else {
-          nx = px;
-          ny = py;
-        }
-      } else if (realWidth + gap > w) {
-        // 超宽衰减：超出部分收回 1.1 倍
-        gap = Math.max(0, gap - (realWidth + gap - w) * 1.1);
-        if (segLen > 0.0001) {
-          nx = px + dx / segLen * gap;
-          ny = py + dy / segLen * gap;
-        } else {
-          nx = px;
-          ny = py;
-        }
-      }
-      realWidth += gap;
-      const u0 = lastU;
-      const u1 = lastU + gap / w;
-      lastU = u1;
-      // 屏幕坐标窗口（从右到左：书脊在右，x 镜像）
-      const sx0 = rtl ? w - px : px;
-      const sx1 = rtl ? w - nx : nx;
-      const chord = nx - px;
-      const screenChord = sx1 - sx0;
-      const back = chord < 0;
-      const winW = Math.abs(screenChord);
-      const left = Math.min(sx0, sx1);
-      const cyLeft = screenChord >= 0 ? py : ny;
-      const cyRight = screenChord >= 0 ? ny : py;
-      // 内容切片映射：local 0 端对应的弧长坐标
-      const anchorU = screenChord > 0 ? u0 : u1;
-      const otherU = anchorU === u1 ? u0 : u1;
-      const gapSlice = Math.max(0.5, (u1 - u0) * w);
-      const qs = Math.min(2, winW / gapSlice);
-      const contentSx = back ? -qs : qs;
-      const anchorXc = rtl ? w - anchorU * w : anchorU * w;
-      const off = -contentSx * anchorXc;
-      // 纵向：曲线 y 全量上掀（屏幕 y 向下取负）+ 抓取弓高；剪切保证相邻条带折点连续
-      const dyBase = -cyLeft + g * bowAmp * anchorU;
-      const shear = winW > 0.01 ?
-        (cyLeft - cyRight + g * bowAmp * (otherU - anchorU)) / winW : 0;
-      const pad = 0.8 / (1 + Math.abs(shear));
-      this.stripWArr[si] = winW + pad;
-      this.stripDX[si] = left;
-      this.stripDY[si] = dyBase;
-      this.stripShear[si] = shear;
-      this.stripShade[si] = Math.min(0.5, base * (0.6 + 1.2 * Math.max(0, 1 - qs)));
-      this.stripCq[si] = qs;
-      this.stripOff[si] = off;
-      this.stripMirror[si] = back;
-      px = nx;
-      py = ny;
-    }
-  }
-
   // 双页仿真：半页翻转超过 90° 后显示真实纸背（对应相邻屏的页内容）
   private halfBackFace(i: number, left: boolean): boolean {
     if (this.animMode !== 'curl' || this.mode !== 'double') {
@@ -950,8 +789,7 @@ export struct NovelReaderPage {
     return Math.abs(angle) > 90;
   }
 
-  // 翻页动画逐帧回调：滑动=默认位移；覆盖=新页滑入覆盖静止当前页；
-  // 仿真单页=条带沿贝塞尔曲线卷曲（参考 Page 项目）；仿真双页=半页绕中线书脊翻转。
+  // 单页仿真由 EmulationFlipView 接管。此处只服务滑动、覆盖，以及双页绕书脊翻转。
   // proxy.position 为该页相对动画起始位置的位移比例（负=向左），默认位移=position*mainAxisLength，
   // 以负向 translate 抵消默认位移后叠加自定义变换。
   private onContentTransition(proxy: SwiperContentTransitionProxy): void {
@@ -960,10 +798,10 @@ export struct NovelReaderPage {
       return;
     }
     const p = proxy.position;
-    if (this.animMode === 'slide' || Math.abs(p - Math.round(p)) < 0.001) {
+    const settled = Math.abs(p - Math.round(p)) < 0.001;
+    if (this.animMode === 'slide' || settled || (this.animMode === 'curl' && this.mode !== 'double')) {
       this.setPageTransform(i, 0, 0, 0);
       this.setHalfAngle(i, 0, 0);
-      this.endStripFlip();
       if (this.halfTilt !== 0) {
         this.halfTilt = 0;
       }
@@ -974,24 +812,19 @@ export struct NovelReaderPage {
     const rtl = this.mode === 'paged_rtl';
     const isDouble = this.mode === 'double';
     if (i === S) {
-      // 当前屏
       const goingNext = rtl ? p > 0 : p < 0;
       if (this.animMode === 'cover') {
-        // 覆盖：前进时静止在下方，后退时滑开
         if (goingNext) {
           this.setPageTransform(i, -p * L, 0, 0);
         } else {
           this.setPageTransform(i, 0, 0, 2);
         }
-        this.endStripFlip();
         if (this.halfTilt !== 0) {
           this.halfTilt = 0;
         }
         return;
       }
-      // 仿真：当前屏位于相邻屏之上
       if (isDouble) {
-        // 双页：前进=右半页绕中线翻向左；后退=左半页绕中线从左翻回；半页随抓取位置纵向倾斜
         this.setPageTransform(i, -p * L, 0, 2);
         const tilt = Math.max(-1, Math.min(1, (this.flipGrabY - 0.5) * 2)) * 20 * Math.sin(Math.PI * Math.abs(p));
         if (goingNext) {
@@ -1000,55 +833,20 @@ export struct NovelReaderPage {
           this.setHalfAngle(i, 180 * Math.abs(p), 0);
         }
         this.halfTilt = tilt;
-        this.endStripFlip();
-      } else if (goingNext) {
-        // 单页前进：当前屏条带沿贝塞尔曲线卷离，纸背显示前进方向相邻屏
-        this.setPageTransform(i, -p * L, 0, 2);
-        this.beginStripFlip(i, 180 * Math.abs(p), rtl ? S - 1 : S + 1);
-        if (this.halfTilt !== 0) {
-          this.halfTilt = 0;
-        }
-      } else {
-        // 单页后退：当前屏静止在下方，由相邻屏条带翻回覆盖
-        this.setPageTransform(i, -p * L, 0, 0);
-        if (this.halfTilt !== 0) {
-          this.halfTilt = 0;
-        }
       }
     } else if (i === S + 1) {
-      // 索引相邻的下一屏
       if (this.animMode === 'cover') {
         this.setPageTransform(i, 0, 0, 2);
-        this.endStripFlip();
       } else if (isDouble) {
-        this.setPageTransform(i, -p * L, 0, 0);
-        this.setHalfAngle(i, 0, 0);
-      } else if (rtl) {
-        // 从右到左后退：该屏条带从翻过状态卷回覆盖当前屏
-        this.setPageTransform(i, -p * L, 0, 2);
-        this.beginStripFlip(i, 180 * Math.abs(p), S);
-      } else {
-        // 从左到右前进：静止在当前屏下方被揭出
         this.setPageTransform(i, -p * L, 0, 0);
         this.setHalfAngle(i, 0, 0);
       }
     } else if (i === S - 1) {
-      // 索引相邻的上一屏
       if (this.animMode === 'cover') {
         this.setPageTransform(i, -p * L, 0, 0);
-        this.endStripFlip();
       } else if (isDouble) {
-        // 双页：静止在当前屏下方，由当前屏左半页翻回盖住
         this.setPageTransform(i, -p * L, 0, 0);
         this.setHalfAngle(i, 0, 0);
-      } else if (rtl) {
-        // 从右到左前进：静止在当前屏下方被揭出
-        this.setPageTransform(i, -p * L, 0, 0);
-        this.setHalfAngle(i, 0, 0);
-      } else {
-        // 从左到右后退：上一屏条带从翻过状态卷回，覆盖当前屏
-        this.setPageTransform(i, -p * L, 0, 2);
-        this.beginStripFlip(i, 180 * Math.abs(p), S);
       }
     } else {
       this.setPageTransform(i, 0, 0, 0);
@@ -1056,25 +854,49 @@ export struct NovelReaderPage {
     }
   }
 
-  // 开始/更新某屏的条带仿真翻卷（angle 为 0~180 的翻卷角，adjIdx 为纸背显示的相邻屏）
-  private beginStripFlip(idx: number, angle: number, adjIdx: number): void {
-    if (this.flipIdx !== idx) {
-      this.flipIdx = idx;
+  // 单页仿真：阅读顺序页码（从右到左时与屏幕序相反）
+  private readingIndex(): number {
+    const count = this.screenIdxs.length;
+    if (count <= 0) {
+      return 0;
     }
-    if (this.flipAdj !== adjIdx) {
-      this.flipAdj = adjIdx;
+    if (this.mode === 'paged_rtl') {
+      return count - 1 - this.pageIdx;
     }
-    this.updateStrips(angle);
+    return this.pageIdx;
   }
 
-  // 结束条带翻卷（回到普通整页渲染）
-  private endStripFlip(): void {
-    if (this.flipIdx !== -1) {
-      this.flipIdx = -1;
+  private singleCurl(): boolean {
+    return this.animMode === 'curl' && this.mode !== 'double' && this.mode !== 'scroll';
+  }
+
+  private onCurlIndex(reading: number): void {
+    const count = this.screenIdxs.length;
+    if (count <= 0) {
+      return;
     }
-    if (this.flipAdj !== -1) {
-      this.flipAdj = -1;
+    const screen = this.mode === 'paged_rtl' ? count - 1 - reading : reading;
+    if (screen < 0 || screen >= count) {
+      return;
     }
+    this.onScreenChange(screen);
+  }
+
+  private onCurlOverscroll(dir: number): void {
+    if (this.anySheetOpen()) {
+      this.dismissSheets();
+      return;
+    }
+    this.openChapter(dir > 0 ? this.nextId : this.prevId);
+  }
+
+  @Builder
+  curlPageBody(index: number) {
+    Row() {
+      this.PageText(index)
+    }
+    .width('100%')
+    .height('100%')
   }
 
   // 单页正文：段间距为 0 时合并为单个 Text（大章节性能友好），>0 时按段落 Column({space}) 渲染
@@ -1638,41 +1460,35 @@ export struct NovelReaderPage {
           })
         } else {
           Column() {
+            if (this.singleCurl()) {
+              EmulationFlipView({
+                index: this.readingIndex(),
+                pageCount: this.screenIdxs.length,
+                fromLeft: this.mode === 'paged_rtl',
+                nextOnLeft: this.mode === 'paged_rtl',
+                tapMode: 'horizontal',
+                flipEnabled: !this.anySheetOpen(),
+                bgColor: Theme.readerBg(this.readerTheme, this.isDark),
+                onIndexChange: (index: number): void => {
+                  this.onCurlIndex(index);
+                },
+                onCenterTap: (): void => {
+                  this.contentTap();
+                },
+                onOverscroll: (dir: number): void => {
+                  this.onCurlOverscroll(dir);
+                },
+                pageContent: this.curlPageBody
+              })
+                .width('100%')
+                .height('100%')
+            } else {
             Swiper(this.swiperCtrl) {
               ForEach(this.screenIdxs, (sIdx: number) => {
                 // 每屏包一层容器：translate/zIndex 仅能挂在实体组件上；
                 // 双页模式容器透明（遮盖由左右半页承担），单页模式整屏不透明。
-                // 仿真翻卷时页面切成条带沿贝塞尔曲线卷动，静止时整页渲染。
                 Stack() {
-                  if (this.flipIdx === sIdx) {
-                    ForEach(STRIP_IDX, (si: number) => {
-                      Stack() {
-                        // 正面条带显示本屏内容切片；翻过折痕的纸背条带镜像显示相邻屏内容
-                        Column() {
-                          this.PageScreen(this.stripMirror[si] && this.flipAdj >= 0 ? this.flipAdj : sIdx)
-                        }
-                        .width(this.contW)
-                        .height('100%')
-                        .transform3D(this.stripContentMatrix(si))
-                        // 条带卷曲阴影：压缩越强（近折痕）越深
-                        Column()
-                          .width('100%')
-                          .height('100%')
-                          .backgroundColor('#000000')
-                          .opacity(this.stripShade[si])
-                          .hitTestBehavior(HitTestMode.None)
-                      }
-                      .width(this.stripWArr[si])
-                      .height('100%')
-                      .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
-                      .clip(true)
-                      .position({ x: 0, y: 0 })
-                      .transform3D(this.stripMatrix(si))
-                      .zIndex(si + 1)
-                    }, (si: number) => `strip#${si}`)
-                  } else {
                     this.PageScreen(sIdx)
-                  }
                 }
                 .width('100%')
                 .height('100%')
@@ -1701,6 +1517,7 @@ export struct NovelReaderPage {
                 this.updateGrabY(event.touches[0].y);
               }
             })
+            }
           }
           .width('100%')
           .height('100%')
@@ -1715,7 +1532,9 @@ export struct NovelReaderPage {
             }
           })
           .onClick((event: ClickEvent) => {
-            this.handleTap(event);
+            if (!this.singleCurl()) {
+              this.handleTap(event);
+            }
           })
         }
 
