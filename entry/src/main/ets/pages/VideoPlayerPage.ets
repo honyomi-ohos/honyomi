@@ -1477,7 +1477,8 @@ export struct VideoPlayerPage {
             .fontSize(13)
             .fontColor('#DDDDDD')
             .padding(16)
-        } else if (this.loading || this.buffering) {
+        } else if ((this.loading || this.buffering) && !(this.showControls && !this.locked)) {
+          // 控制条可见时由中央播放按钮展示加载状态，避免双 loading
           LoadingProgress()
             .width(44)
             .height(44)
