@@ -15,6 +15,7 @@ import { ReaderParams } from '../model/RouteParams';
 import { Settings } from '../common/Settings';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
+import { ReaderChapterNav, ChapterNeighbors } from '../common/ReaderChapterNav';
 import { AppIcon } from './components/AppIcon';
 import { DanmakuView, DanmakuController } from './components/DanmakuView';
 
@@ -224,16 +225,10 @@ export struct VideoPlayerPage {
   }
 
   private async loadNeighbors(): Promise<void> {
-    const list = await ChapterRepo.listByManga(this.mangaId);
-    this.chapters = list;
-    let idx = -1;
-    for (let i = 0; i < list.length; i++) {
-      if (list[i].id === this.chapterId) {
-        idx = i;
-      }
-    }
-    this.prevId = idx > 0 ? list[idx - 1].id : 0;
-    this.nextId = idx >= 0 && idx < list.length - 1 ? list[idx + 1].id : 0;
+    const n: ChapterNeighbors = await ReaderChapterNav.neighbors(this.mangaId, this.chapterId);
+    this.chapters = n.chapters;
+    this.prevId = n.prevId;
+    this.nextId = n.nextId;
   }
 
   // 弹幕加载（dandanplay 匹配失败静默提示，不阻塞播放）
@@ -1534,4 +1529,10 @@ export struct VideoPlayerPage {
       this.loadChapter();
     })
   }
+}
+
+// 系统路由表构建入口（router_map.json 注册）
+@Builder
+export function VideoPlayerBuilder() {
+  VideoPlayerPage()
 }

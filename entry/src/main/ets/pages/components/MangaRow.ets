@@ -6,7 +6,7 @@ import { AppIcon } from './AppIcon';
 // 漫画列表行：封面 + 标题（+ 副标题），可带尾部内容（迁移/全局搜索结果等）
 @Component
 export struct MangaRow {
-  @Prop record: MangaRecord = new MangaRecord();
+  @ObjectLink record: MangaRecord;
   @Prop subtitle: string = '';
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State hovered: boolean = false;

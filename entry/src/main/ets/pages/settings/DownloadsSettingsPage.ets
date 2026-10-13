@@ -1,18 +1,13 @@
 import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
 import { PageHeader } from '../components/PageHeader';
-import { PrefGroup, SwitchRow } from '../components/Prefs';
+import { PrefGroup, PrefSwitchRow } from '../components/Prefs';
 
 // 下载设置（仅 Wi-Fi 为占位，后续接入网络类型检测）
 @Component
 export struct DownloadsSettingsPage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @State wifiOnly: boolean = false;
-
-  aboutToAppear(): void {
-    this.wifiOnly = Settings.getDownloadWifiOnly();
-  }
 
   build() {
     NavDestination() {
@@ -21,11 +16,10 @@ export struct DownloadsSettingsPage {
         Scroll() {
           Column() {
             PrefGroup({ groupTitle: $r('app.string.dl_set_network') }) {
-              SwitchRow({
+              PrefSwitchRow({
                 title: $r('app.string.dl_set_wifi_only'),
-                isOn: this.wifiOnly,
-                onChange: (value: boolean): void => {
-                  this.wifiOnly = value;
+                initValue: Settings.getDownloadWifiOnly(),
+                apply: (value: boolean): void => {
                   Settings.setDownloadWifiOnly(value);
                 }
               })
@@ -50,4 +44,10 @@ export struct DownloadsSettingsPage {
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)
   }
+}
+
+// 系统路由表构建入口（router_map.json 注册）
+@Builder
+export function DownloadsSettingsBuilder() {
+  DownloadsSettingsPage()
 }

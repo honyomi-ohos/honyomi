@@ -6,7 +6,7 @@ import { AppIcon } from './AppIcon';
 // 漫画封面卡片（书架/浏览通用）
 @Component
 export struct MangaCard {
-  @Prop record: MangaRecord = new MangaRecord();
+  @ObjectLink record: MangaRecord;
   @Prop badge: string = '';
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();

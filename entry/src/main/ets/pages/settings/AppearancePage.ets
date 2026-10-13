@@ -3,7 +3,7 @@ import { Theme, ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
 import { Languages } from '../../common/Languages';
 import { PageHeader } from '../components/PageHeader';
-import { PrefGroup, SwitchRow, TextRow } from '../components/Prefs';
+import { PrefGroup, PrefSwitchRow, TextRow } from '../components/Prefs';
 
 // 外观设置：语言 / 主题模式 / 主题色 / AMOLED
 @Component
@@ -14,11 +14,9 @@ export struct AppearancePage {
   @StorageProp('accent') accent: string = 'blue';
   @StorageProp('appLanguage') appLanguage: string = 'auto';
   @State themeMode: string = 'auto';
-  @State amoled: boolean = false;
 
   aboutToAppear(): void {
     this.themeMode = Settings.getThemeMode();
-    this.amoled = Settings.getAmoledMode();
   }
 
   private applyTheme(mode: string): void {
@@ -108,11 +106,10 @@ export struct AppearancePage {
             }
 
             PrefGroup({ groupTitle: $r('app.string.appearance_other') }) {
-              SwitchRow({
+              PrefSwitchRow({
                 title: $r('app.string.appearance_amoled'),
-                isOn: this.amoled,
-                onChange: (value: boolean): void => {
-                  this.amoled = value;
+                initValue: Settings.getAmoledMode(),
+                apply: (value: boolean): void => {
                   Settings.setAmoledMode(value);
                   Settings.applyAccent();
                 }
@@ -133,4 +130,10 @@ export struct AppearancePage {
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)
   }
+}
+
+// 系统路由表构建入口（router_map.json 注册）
+@Builder
+export function AppearanceBuilder() {
+  AppearancePage()
 }

@@ -68,7 +68,28 @@ export class MangaRepo {
       'categoryId': 1,
       'addedAt': Date.now(),
     };
-    const rowId = await store.insert('manga', values);
+    const rowId = await store.insert('manga', values).catch(async (_e: Object): Promise<number> => {
+      // 并发插入撞 UNIQUE(sourceKey, url)：回查已存在行，按新源数据覆盖
+      const rs2 = await store.query(pred, ['id']);
+      let existingId = -1;
+      if (rs2.goToNextRow()) {
+        existingId = rs2.getLong(rs2.getColumnIndex('id'));
+      }
+      rs2.close();
+      if (existingId >= 0) {
+        const retry: relationalStore.ValuesBucket = {
+          'title': m.title !== '' ? m.title : ' ',
+          'thumbnailUrl': m.coverUrl,
+          'author': m.author,
+          'description': m.description,
+          'genre': m.genre,
+          'status': m.status,
+          'contentType': ContentType.normalize(contentType),
+        };
+        await store.update(retry, pred);
+      }
+      return existingId;
+    });
     return rowId;
   }
 
@@ -109,16 +130,17 @@ export class MangaRepo {
     return list;
   }
 
+  // 仅切换书架标记；首次加入时才落默认分类与 addedAt，
+  // 重新加入/移出不得抹掉用户已设置的 categoryId/addedAt
   static async setInLibrary(id: number, inLibrary: boolean): Promise<void> {
     const store = await AppDb.get();
-    const values: relationalStore.ValuesBucket = {
-      'inLibrary': inLibrary ? 1 : 0,
-      'categoryId': 1,
-      'addedAt': Date.now(),
-    };
-    const pred = new relationalStore.RdbPredicates('manga');
-    pred.equalTo('id', id);
-    await store.update(values, pred);
+    const flag = inLibrary ? 1 : 0;
+    await store.executeSql(
+      `UPDATE manga SET inLibrary = ?,` +
+      ` categoryId = CASE WHEN ? = 1 AND inLibrary = 0 THEN 1 ELSE categoryId END,` +
+      ` addedAt = CASE WHEN ? = 1 AND inLibrary = 0 THEN ? ELSE addedAt END` +
+      ` WHERE id = ?`,
+      [flag, flag, flag, Date.now(), id]);
   }
 
   static async setCategory(id: number, categoryId: number): Promise<void> {
@@ -190,8 +212,15 @@ export class MangaRepo {
     };
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('id', id);
-    await store.update(values, pred);
-    await store.executeSql(`DELETE FROM chapter WHERE mangaId = ?`, [id]);
+    store.beginTransaction();
+    try {
+      await store.update(values, pred);
+      await store.executeSql(`DELETE FROM chapter WHERE mangaId = ?`, [id]);
+      store.commit();
+    } catch (e) {
+      store.rollBack();
+      throw new Error(`migrate failed: ${e}`);
+    }
   }
 
   // 启用自定义封面：封面切到本地文件，原封面地址存入 origThumbnail（对齐 Mihon Edit cover）
@@ -331,34 +360,41 @@ export class ChapterRepo {
       existingKeys.add(c.url);
     }
     let newCount = 0;
-    for (const c of chapters) {
-      if (existingKeys.has(c.key)) {
-        const values: relationalStore.ValuesBucket = {
-          'name': c.name,
-          'chapterNumber': c.chapterNumber,
-          'dateUpload': c.dateUpload,
-          'pages': c.pages,
-          'sortOrder': c.sortOrder,
-        };
-        const pred = new relationalStore.RdbPredicates('chapter');
-        pred.equalTo('mangaId', mangaId).and().equalTo('url', c.key);
-        await store.update(values, pred);
-      } else {
-        const values: relationalStore.ValuesBucket = {
-          'mangaId': mangaId,
-          'url': c.key,
-          'name': c.name,
-          'chapterNumber': c.chapterNumber,
-          'dateUpload': c.dateUpload,
-          'pages': c.pages,
-          'sortOrder': c.sortOrder,
-          'read': 0,
-          'bookmark': 0,
-          'lastPageRead': 0,
-        };
-        await store.insert('chapter', values);
-        newCount += 1;
+    store.beginTransaction();
+    try {
+      for (const c of chapters) {
+        if (existingKeys.has(c.key)) {
+          const values: relationalStore.ValuesBucket = {
+            'name': c.name,
+            'chapterNumber': c.chapterNumber,
+            'dateUpload': c.dateUpload,
+            'pages': c.pages,
+            'sortOrder': c.sortOrder,
+          };
+          const pred = new relationalStore.RdbPredicates('chapter');
+          pred.equalTo('mangaId', mangaId).and().equalTo('url', c.key);
+          await store.update(values, pred);
+        } else {
+          const values: relationalStore.ValuesBucket = {
+            'mangaId': mangaId,
+            'url': c.key,
+            'name': c.name,
+            'chapterNumber': c.chapterNumber,
+            'dateUpload': c.dateUpload,
+            'pages': c.pages,
+            'sortOrder': c.sortOrder,
+            'read': 0,
+            'bookmark': 0,
+            'lastPageRead': 0,
+          };
+          await store.insert('chapter', values);
+          newCount += 1;
+        }
       }
+      store.commit();
+    } catch (e) {
+      store.rollBack();
+      throw new Error(`syncFromSource failed: ${e}`);
     }
     return newCount;
   }
@@ -411,36 +447,16 @@ export class ChapterRepo {
     await store.update(values, pred);
   }
 
-  // 备份恢复用：章节不存在则插入，存在则仅恢复阅读状态
+  // 备份恢复用：章节不存在则插入，存在则仅恢复阅读状态；
+  // chapter 表 UNIQUE(mangaId, url) 支撑单条 INSERT ON CONFLICT 原子完成
   static async upsertBackup(mangaId: number, url: string, name: string, chapterNumber: number,
     read: boolean, lastPageRead: number): Promise<void> {
     const store = await AppDb.get();
-    const pred = new relationalStore.RdbPredicates('chapter');
-    pred.equalTo('mangaId', mangaId).and().equalTo('url', url);
-    const rs = await store.query(pred, ['id']);
-    const exists = rs.goToNextRow();
-    rs.close();
-    if (exists) {
-      const values: relationalStore.ValuesBucket = {
-        'read': read ? 1 : 0,
-        'lastPageRead': lastPageRead,
-      };
-      await store.update(values, pred);
-      return;
-    }
-    const values: relationalStore.ValuesBucket = {
-      'mangaId': mangaId,
-      'url': url,
-      'name': name,
-      'chapterNumber': chapterNumber,
-      'dateUpload': 0,
-      'pages': 0,
-      'sortOrder': 0,
-      'read': read ? 1 : 0,
-      'bookmark': 0,
-      'lastPageRead': lastPageRead,
-    };
-    await store.insert('chapter', values);
+    await store.executeSql(
+      `INSERT INTO chapter (mangaId, url, name, chapterNumber, dateUpload, pages, sortOrder, read, bookmark, lastPageRead)
+       VALUES (?, ?, ?, ?, 0, 0, 0, ?, 0, ?)
+       ON CONFLICT(mangaId, url) DO UPDATE SET read = excluded.read, lastPageRead = excluded.lastPageRead`,
+      [mangaId, url, name, chapterNumber, read ? 1 : 0, lastPageRead]);
   }
 
   static async setPages(id: number, pages: number): Promise<void> {
@@ -519,14 +535,9 @@ export class CategoryRepo {
 
   static async add(name: string): Promise<void> {
     const store = await AppDb.get();
-    const rs = await store.querySql(`SELECT COUNT(*) AS cnt FROM category`);
-    let count = 0;
-    if (rs.goToNextRow()) {
-      count = rs.getLong(rs.getColumnIndex('cnt'));
-    }
-    rs.close();
-    const values: relationalStore.ValuesBucket = { 'name': name, 'sortOrder': count };
-    await store.insert('category', values);
+    // sortOrder 取当前总数，单条语句原子完成（消除查后写竞态）
+    await store.executeSql(
+      `INSERT INTO category (name, sortOrder) VALUES (?, (SELECT COUNT(*) FROM category))`, [name]);
   }
 
   static async rename(id: number, name: string): Promise<void> {
@@ -545,14 +556,21 @@ export class CategoryRepo {
       return;
     }
     const store = await AppDb.get();
-    // 该分类下的漫画移回默认分类
+    // 该分类下的漫画移回默认分类 + 删除分类，同一事务内完成
     const values: relationalStore.ValuesBucket = { 'categoryId': 1 };
     const predManga = new relationalStore.RdbPredicates('manga');
     predManga.equalTo('categoryId', id);
-    await store.update(values, predManga);
     const predCategory = new relationalStore.RdbPredicates('category');
     predCategory.equalTo('id', id);
-    await store.delete(predCategory);
+    store.beginTransaction();
+    try {
+      await store.update(values, predManga);
+      await store.delete(predCategory);
+      store.commit();
+    } catch (e) {
+      store.rollBack();
+      throw new Error(`category remove failed: ${e}`);
+    }
   }
 }
 
@@ -560,26 +578,11 @@ export class CategoryRepo {
 export class HistoryRepo {
   static async upsert(mangaId: number, chapterId: number, lastPageRead: number): Promise<void> {
     const store = await AppDb.get();
-    const pred = new relationalStore.RdbPredicates('history');
-    pred.equalTo('mangaId', mangaId).and().equalTo('chapterId', chapterId);
-    const rs = await store.query(pred, ['id']);
-    const exists = rs.goToNextRow();
-    rs.close();
-    if (exists) {
-      const values: relationalStore.ValuesBucket = {
-        'seenAt': Date.now(),
-        'lastPageRead': lastPageRead,
-      };
-      await store.update(values, pred);
-    } else {
-      const values: relationalStore.ValuesBucket = {
-        'mangaId': mangaId,
-        'chapterId': chapterId,
-        'seenAt': Date.now(),
-        'lastPageRead': lastPageRead,
-      };
-      await store.insert('history', values);
-    }
+    // v2 起有 UNIQUE(mangaId, chapterId) 索引，单条原子 upsert
+    await store.executeSql(
+      `INSERT INTO history (mangaId, chapterId, seenAt, lastPageRead) VALUES (?, ?, ?, ?)
+       ON CONFLICT(mangaId, chapterId) DO UPDATE SET seenAt = excluded.seenAt, lastPageRead = excluded.lastPageRead`,
+      [mangaId, chapterId, Date.now(), lastPageRead]);
   }
 
   static async recent(limit: number): Promise<HistoryItem[]> {

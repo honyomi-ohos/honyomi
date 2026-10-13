@@ -3,7 +3,7 @@ import { Settings } from '../../common/Settings';
 import { Util } from '../../common/Util';
 import { GripSupport } from '../../common/GripSupport';
 import { PageHeader } from '../components/PageHeader';
-import { PrefGroup, SelectRow, SwitchRow, TextRow } from '../components/Prefs';
+import { PrefGroup, PrefSelectRow, PrefSwitchRow, TextRow } from '../components/Prefs';
 
 const THEME_VALUES: number[] = [3, 0, 1, 2];
 
@@ -12,45 +12,36 @@ const THEME_VALUES: number[] = [3, 0, 1, 2];
 export struct ReaderSettingsPage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @State modeLabel: string = '';
-  @State dualPage: boolean = false;
-  @State showPageNumber: boolean = true;
-  @State themeLabel: string = '';
   @State brightnessLabel: string = '';
   private modeValues: string[] = [];
-  private modeLabels: string[] = [];
-  private themeLabels: string[] = [];
+  private modeOptions: ResourceStr[] = [];
 
   aboutToAppear(): void {
     this.modeValues = ['ltr', 'rtl', 'vertical', 'webtoon'];
-    this.modeLabels = [
-      Util.resStr(this.getUIContext(), $r('app.string.reader_set_mode_ltr')),
-      Util.resStr(this.getUIContext(), $r('app.string.reader_set_mode_rtl')),
-      Util.resStr(this.getUIContext(), $r('app.string.reader_set_mode_vertical')),
-      Util.resStr(this.getUIContext(), $r('app.string.reader_set_mode_webtoon'))
+    this.modeOptions = [
+      $r('app.string.reader_set_mode_ltr'),
+      $r('app.string.reader_set_mode_rtl'),
+      $r('app.string.reader_set_mode_vertical'),
+      $r('app.string.reader_set_mode_webtoon')
     ];
     // 智感握姿仅在支持的设备上提供
     if (GripSupport.isSupported()) {
       this.modeValues.push('smart_grip');
-      this.modeLabels.push(Util.resStr(this.getUIContext(), $r('app.string.reader_set_mode_smart_grip')));
+      this.modeOptions.push($r('app.string.reader_set_mode_smart_grip'));
     }
-    this.themeLabels = [
-      Util.resStr(this.getUIContext(), $r('app.string.reader_set_theme_follow')),
-      Util.resStr(this.getUIContext(), $r('app.string.reader_set_theme_white')),
-      Util.resStr(this.getUIContext(), $r('app.string.reader_set_theme_black')),
-      Util.resStr(this.getUIContext(), $r('app.string.reader_set_theme_gray'))
-    ];
-    const mode = Settings.getReaderMode();
-    const mi = this.modeValues.indexOf(mode);
-    this.modeLabel = mi >= 0 ? this.modeLabels[mi] : this.modeLabels[0];
-    this.dualPage = Settings.getReaderDualPage();
-    this.showPageNumber = Settings.getReaderShowPageNumber();
-    const theme = Settings.getReaderTheme();
-    const ti = THEME_VALUES.indexOf(theme);
-    this.themeLabel = ti >= 0 ? this.themeLabels[ti] : this.themeLabels[0];
     const b = Settings.getReaderBrightness();
     this.brightnessLabel = b === 0 ?
       Util.resStr(this.getUIContext(), $r('app.string.lang_follow_system')) : `${b}`;
+  }
+
+  private modeIndex(): number {
+    const i = this.modeValues.indexOf(Settings.getReaderMode());
+    return i >= 0 ? i : 0;
+  }
+
+  private themeIndex(): number {
+    const i = THEME_VALUES.indexOf(Settings.getReaderTheme());
+    return i >= 0 ? i : 0;
   }
 
   build() {
@@ -60,49 +51,44 @@ export struct ReaderSettingsPage {
         Scroll() {
           Column() {
             PrefGroup({ groupTitle: $r('app.string.reader_set_mode_group') }) {
-              SelectRow({
+              PrefSelectRow({
                 title: $r('app.string.reader_set_mode_default'),
-                value: this.modeLabel,
-                options: this.modeLabels,
-                onSelect: (value: string): void => {
-                  const i = this.modeLabels.indexOf(value);
-                  if (i >= 0) {
-                    Settings.setReaderMode(this.modeValues[i]);
-                    this.modeLabel = value;
-                  }
+                options: this.modeOptions,
+                selectedIndex: this.modeIndex(),
+                onSelectIndex: (index: number): void => {
+                  Settings.setReaderMode(this.modeValues[index]);
                 }
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
-              SwitchRow({
+              PrefSwitchRow({
                 title: $r('app.string.reader_set_dual_page'),
-                isOn: this.dualPage,
-                onChange: (value: boolean): void => {
-                  this.dualPage = value;
+                initValue: Settings.getReaderDualPage(),
+                apply: (value: boolean): void => {
                   Settings.setReaderDualPage(value);
                 }
               })
             }
 
             PrefGroup({ groupTitle: $r('app.string.reader_set_display_group') }) {
-              SwitchRow({
+              PrefSwitchRow({
                 title: $r('app.string.reader_set_show_page_number'),
-                isOn: this.showPageNumber,
-                onChange: (value: boolean): void => {
-                  this.showPageNumber = value;
+                initValue: Settings.getReaderShowPageNumber(),
+                apply: (value: boolean): void => {
                   Settings.setReaderShowPageNumber(value);
                 }
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
-              SelectRow({
+              PrefSelectRow({
                 title: $r('app.string.reader_set_bg_color'),
-                value: this.themeLabel,
-                options: this.themeLabels,
-                onSelect: (value: string): void => {
-                  const i = this.themeLabels.indexOf(value);
-                  if (i >= 0) {
-                    Settings.setReaderTheme(THEME_VALUES[i]);
-                    this.themeLabel = value;
-                  }
+                options: [
+                  $r('app.string.reader_set_theme_follow'),
+                  $r('app.string.reader_set_theme_white'),
+                  $r('app.string.reader_set_theme_black'),
+                  $r('app.string.reader_set_theme_gray')
+                ],
+                selectedIndex: this.themeIndex(),
+                onSelectIndex: (index: number): void => {
+                  Settings.setReaderTheme(THEME_VALUES[index]);
                 }
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
@@ -131,4 +117,10 @@ export struct ReaderSettingsPage {
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)
   }
+}
+
+// 系统路由表构建入口（router_map.json 注册）
+@Builder
+export function ReaderSettingsBuilder() {
+  ReaderSettingsPage()
 }

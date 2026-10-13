@@ -1,8 +1,7 @@
 import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
-import { Util } from '../../common/Util';
 import { PageHeader } from '../components/PageHeader';
-import { PrefGroup, SelectRow, SwitchRow } from '../components/Prefs';
+import { PrefGroup, PrefSelectRow, PrefSwitchRow } from '../components/Prefs';
 
 const SPEED_VALUES: number[] = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
 const DM_FONT_VALUES: number[] = [12, 14, 16, 18, 20];
@@ -15,59 +14,38 @@ const DM_DUR_VALUES: number[] = [12, 10, 8, 6];
 export struct PlayerSettingsPage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @State speedLabelVal: string = '';
-  @State autoNext: boolean = true;
-  @State danmakuOn: boolean = true;
-  @State dmFontLabel: string = '';
-  @State dmOpacityLabel: string = '';
-  @State dmAreaLabel: string = '';
-  @State dmDurLabel: string = '';
-  private speedLabels: string[] = [];
 
-  aboutToAppear(): void {
-    this.speedLabels = [];
+  private speedLabels(): string[] {
+    const labels: string[] = [];
     for (let i = 0; i < SPEED_VALUES.length; i++) {
-      this.speedLabels.push(SPEED_VALUES[i] === 1.0 ? '1.0x' : `${SPEED_VALUES[i]}x`);
+      labels.push(SPEED_VALUES[i] === 1.0 ? '1.0x' : `${SPEED_VALUES[i]}x`);
     }
-    this.autoNext = Settings.getVideoAutoNext();
-    this.danmakuOn = Settings.getDanmakuEnabled();
-    this.syncLabels();
+    return labels;
   }
 
-  private syncLabels(): void {
-    const sp = Settings.getVideoSpeed();
-    const si = SPEED_VALUES.indexOf(sp);
-    this.speedLabelVal = si >= 0 ? this.speedLabels[si] : this.speedLabels[2];
-    const font = Settings.getDanmakuFont();
-    const fi = DM_FONT_VALUES.indexOf(font);
-    this.dmFontLabel = fi >= 0 ? `${DM_FONT_VALUES[fi]}` : '16';
-    const op = Settings.getDanmakuOpacityPct();
-    const oi = DM_OPACITY_VALUES.indexOf(op);
-    this.dmOpacityLabel = oi >= 0 ? `${DM_OPACITY_VALUES[oi]}%` : '80%';
-    this.dmAreaLabel = this.areaText(Settings.getDanmakuAreaPct());
-    this.dmDurLabel = this.durText(Settings.getDanmakuDurationSec());
+  private speedIndex(): number {
+    const i = SPEED_VALUES.indexOf(Settings.getVideoSpeed());
+    return i >= 0 ? i : 2;
   }
 
-  private areaText(v: number): string {
-    const labels: string[] = [
-      Util.resStr(this.getUIContext(), $r('app.string.danmaku_area_quarter')),
-      Util.resStr(this.getUIContext(), $r('app.string.danmaku_area_half')),
-      Util.resStr(this.getUIContext(), $r('app.string.danmaku_area_three_quarters')),
-      Util.resStr(this.getUIContext(), $r('app.string.danmaku_area_full'))
-    ];
-    const i = DM_AREA_VALUES.indexOf(v);
-    return i >= 0 ? labels[i] : labels[1];
+  private fontIndex(): number {
+    const i = DM_FONT_VALUES.indexOf(Settings.getDanmakuFont());
+    return i >= 0 ? i : 2;
   }
 
-  private durText(v: number): string {
-    const labels: string[] = [
-      Util.resStr(this.getUIContext(), $r('app.string.danmaku_speed_slow')),
-      Util.resStr(this.getUIContext(), $r('app.string.danmaku_speed_normal')),
-      Util.resStr(this.getUIContext(), $r('app.string.danmaku_speed_fast')),
-      Util.resStr(this.getUIContext(), $r('app.string.danmaku_speed_fastest'))
-    ];
-    const i = DM_DUR_VALUES.indexOf(v);
-    return i >= 0 ? labels[i] : labels[1];
+  private opacityIndex(): number {
+    const i = DM_OPACITY_VALUES.indexOf(Settings.getDanmakuOpacityPct());
+    return i >= 0 ? i : 2;
+  }
+
+  private areaIndex(): number {
+    const i = DM_AREA_VALUES.indexOf(Settings.getDanmakuAreaPct());
+    return i >= 0 ? i : 1;
+  }
+
+  private durIndex(): number {
+    const i = DM_DUR_VALUES.indexOf(Settings.getDanmakuDurationSec());
+    return i >= 0 ? i : 1;
   }
 
   build() {
@@ -77,105 +55,77 @@ export struct PlayerSettingsPage {
         Scroll() {
           Column() {
             PrefGroup({ groupTitle: $r('app.string.player_set_playback') }) {
-              SelectRow({
+              PrefSelectRow({
                 title: $r('app.string.player_set_speed'),
-                value: this.speedLabelVal,
-                options: this.speedLabels,
-                onSelect: (value: string): void => {
-                  const i = this.speedLabels.indexOf(value);
-                  if (i >= 0) {
-                    Settings.setVideoSpeed(SPEED_VALUES[i]);
-                    this.speedLabelVal = value;
-                  }
+                options: this.speedLabels(),
+                selectedIndex: this.speedIndex(),
+                onSelectIndex: (index: number): void => {
+                  Settings.setVideoSpeed(SPEED_VALUES[index]);
                 }
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
-              SwitchRow({
+              PrefSwitchRow({
                 title: $r('app.string.player_set_auto_next'),
                 subtitle: $r('app.string.player_set_auto_next_sub'),
-                isOn: this.autoNext,
-                onChange: (value: boolean): void => {
-                  this.autoNext = value;
+                initValue: Settings.getVideoAutoNext(),
+                apply: (value: boolean): void => {
                   Settings.setVideoAutoNext(value);
                 }
               })
             }
 
             PrefGroup({ groupTitle: $r('app.string.player_set_danmaku') }) {
-              SwitchRow({
+              PrefSwitchRow({
                 title: $r('app.string.player_set_danmaku_enable'),
-                isOn: this.danmakuOn,
-                onChange: (value: boolean): void => {
-                  this.danmakuOn = value;
+                initValue: Settings.getDanmakuEnabled(),
+                apply: (value: boolean): void => {
                   Settings.setDanmakuEnabled(value);
                 }
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
-              SelectRow({
+              PrefSelectRow({
                 title: $r('app.string.player_set_danmaku_font'),
-                value: this.dmFontLabel,
                 options: ['12', '14', '16', '18', '20'],
-                onSelect: (value: string): void => {
-                  Settings.setDanmakuFont(Number(value));
-                  this.dmFontLabel = value;
+                selectedIndex: this.fontIndex(),
+                onSelectIndex: (index: number): void => {
+                  Settings.setDanmakuFont(DM_FONT_VALUES[index]);
                 }
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
-              SelectRow({
+              PrefSelectRow({
                 title: $r('app.string.player_set_danmaku_opacity'),
-                value: this.dmOpacityLabel,
                 options: ['30%', '50%', '80%', '100%'],
-                onSelect: (value: string): void => {
-                  Settings.setDanmakuOpacityPct(Number(value.replace('%', '')));
-                  this.dmOpacityLabel = value;
+                selectedIndex: this.opacityIndex(),
+                onSelectIndex: (index: number): void => {
+                  Settings.setDanmakuOpacityPct(DM_OPACITY_VALUES[index]);
                 }
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
-              SelectRow({
+              PrefSelectRow({
                 title: $r('app.string.player_set_danmaku_area'),
-                value: this.dmAreaLabel,
                 options: [
-                  Util.resStr(this.getUIContext(), $r('app.string.danmaku_area_quarter')),
-                  Util.resStr(this.getUIContext(), $r('app.string.danmaku_area_half')),
-                  Util.resStr(this.getUIContext(), $r('app.string.danmaku_area_three_quarters')),
-                  Util.resStr(this.getUIContext(), $r('app.string.danmaku_area_full'))
+                  $r('app.string.danmaku_area_quarter'),
+                  $r('app.string.danmaku_area_half'),
+                  $r('app.string.danmaku_area_three_quarters'),
+                  $r('app.string.danmaku_area_full')
                 ],
-                onSelect: (value: string): void => {
-                  const labels: string[] = [
-                    Util.resStr(this.getUIContext(), $r('app.string.danmaku_area_quarter')),
-                    Util.resStr(this.getUIContext(), $r('app.string.danmaku_area_half')),
-                    Util.resStr(this.getUIContext(), $r('app.string.danmaku_area_three_quarters')),
-                    Util.resStr(this.getUIContext(), $r('app.string.danmaku_area_full'))
-                  ];
-                  const i = labels.indexOf(value);
-                  if (i >= 0) {
-                    Settings.setDanmakuAreaPct(DM_AREA_VALUES[i]);
-                    this.dmAreaLabel = value;
-                  }
+                selectedIndex: this.areaIndex(),
+                onSelectIndex: (index: number): void => {
+                  Settings.setDanmakuAreaPct(DM_AREA_VALUES[index]);
                 }
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
-              SelectRow({
+              PrefSelectRow({
                 title: $r('app.string.player_set_danmaku_speed'),
-                value: this.dmDurLabel,
                 options: [
-                  Util.resStr(this.getUIContext(), $r('app.string.danmaku_speed_slow')),
-                  Util.resStr(this.getUIContext(), $r('app.string.danmaku_speed_normal')),
-                  Util.resStr(this.getUIContext(), $r('app.string.danmaku_speed_fast')),
-                  Util.resStr(this.getUIContext(), $r('app.string.danmaku_speed_fastest'))
+                  $r('app.string.danmaku_speed_slow'),
+                  $r('app.string.danmaku_speed_normal'),
+                  $r('app.string.danmaku_speed_fast'),
+                  $r('app.string.danmaku_speed_fastest')
                 ],
-                onSelect: (value: string): void => {
-                  const labels: string[] = [
-                    Util.resStr(this.getUIContext(), $r('app.string.danmaku_speed_slow')),
-                    Util.resStr(this.getUIContext(), $r('app.string.danmaku_speed_normal')),
-                    Util.resStr(this.getUIContext(), $r('app.string.danmaku_speed_fast')),
-                    Util.resStr(this.getUIContext(), $r('app.string.danmaku_speed_fastest'))
-                  ];
-                  const i = labels.indexOf(value);
-                  if (i >= 0) {
-                    Settings.setDanmakuDurationSec(DM_DUR_VALUES[i]);
-                    this.dmDurLabel = value;
-                  }
+                selectedIndex: this.durIndex(),
+                onSelectIndex: (index: number): void => {
+                  Settings.setDanmakuDurationSec(DM_DUR_VALUES[index]);
                 }
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
@@ -199,4 +149,10 @@ export struct PlayerSettingsPage {
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)
   }
+}
+
+// 系统路由表构建入口（router_map.json 注册）
+@Builder
+export function PlayerSettingsBuilder() {
+  PlayerSettingsPage()
 }

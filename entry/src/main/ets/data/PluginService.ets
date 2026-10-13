@@ -5,6 +5,7 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { util } from '@kit.ArkTS';
 import { PluginManifest, JsvmSource, CompiledSourceInfo } from '../source/JsvmSource';
 import { JsvmExtensionManager } from '../jsvm/JsvmExtensionManager';
+import { PluginPrefs } from '../jsvm/PluginPrefs';
 import { SourceRegistry } from '../source/Source';
 import { ContentType } from '../model/Models';
 import { Http } from '../net/Http';
@@ -477,7 +478,17 @@ export class PluginService {
   // tachiyomi 编译产物若包含多个源，共用一个引擎并各自注册。
   private static async reloadOne(manifest: PluginManifest, mainJs: string): Promise<void> {
     const script = PluginService.composeScript(manifest, mainJs);
-    const info = await JsvmExtensionManager.loadExtension(manifest.key, script);
+    // 插件偏好持久化：确保 Preferences 就绪，并把已存的 __PREFS_STORE__ 注回引擎
+    let seed = '';
+    if (PluginService.context !== undefined) {
+      try {
+        await PluginPrefs.ensureInit(PluginService.context);
+        seed = PluginPrefs.seedScript(manifest.key);
+      } catch (e) {
+        hilog.warn(DOMAIN, TAG, 'plugin prefs init failed: %{public}s', (e as Error).message);
+      }
+    }
+    const info = await JsvmExtensionManager.loadExtension(manifest.key, script, seed);
     PluginService.unregisterPackage(manifest.key);
     if (info.kind === 'tachiyomi' && info.methods.indexOf('getSources') >= 0) {
       const compiled = await PluginService.readCompiledSources(manifest.key);

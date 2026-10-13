@@ -16,34 +16,47 @@ import { CookieJar } from '../net/CookieJar';
 import { ImageCache } from '../common/ImageCache';
 import { WidgetUpdater } from '../form/WidgetUpdater';
 import { ReadingStatsRepo } from '../data/ReadingStats';
+import { AppKeys } from '../common/AppKeys';
 
 const DOMAIN = 0x0001;
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     hilog.info(DOMAIN, 'Mihon', '%{public}s', 'Ability onCreate');
-    // 初始化全局状态
-    AppStorage.setOrCreate('isDark', false);
-    AppStorage.setOrCreate('isDarkSystem', false);
-    AppStorage.setOrCreate('libDirty', 0);
-    AppStorage.setOrCreate('pluginsDirty', 0);
+    // ── 第0级（同步关键路径）：首帧渲染必需的全局状态、主题与插件宿主桥 ──
+    AppStorage.setOrCreate(AppKeys.IS_DARK, false);
+    AppStorage.setOrCreate(AppKeys.IS_DARK_SYSTEM, false);
+    AppStorage.setOrCreate(AppKeys.LIB_DIRTY, 0);
+    AppStorage.setOrCreate(AppKeys.PLUGINS_DIRTY, 0);
+    AppStorage.setOrCreate(AppKeys.CF_CHALLENGE_URL, '');
     Settings.init(this.context);
     // 应用语言偏好（跟随系统时由系统资源机制自动匹配）
     Settings.applyAppLanguage();
+    // 主题
+    const systemDark = this.context.config !== undefined &&
+      this.context.config.colorMode === ConfigurationConstant.ColorMode.COLOR_MODE_DARK;
+    AppStorage.set(AppKeys.IS_DARK_SYSTEM, systemDark);
+    Settings.applyTheme(systemDark);
+    Settings.applyColorMode(this.context);
     // 注册内置源（本地漫画 / 小说 / 视频；在线源全部通过插件动态安装）
     SourceRegistry.register(new LocalSource(this.context.filesDir, this.context.cacheDir));
     SourceRegistry.register(new LocalNovelSource(this.context.filesDir));
     SourceRegistry.register(new LocalVideoSource(this.context.filesDir));
-    // 插件宿主（JSVM 隔离引擎：安装主线程 HTTP 桥）
+    // 插件宿主（JSVM 隔离引擎）：HTTP 桥必须在首个插件网络请求前就绪，保持同步
     PluginService.init(this.context);
     JsvmExtensionManager.init();
-    // 主题
-    const systemDark = this.context.config !== undefined &&
-      this.context.config.colorMode === ConfigurationConstant.ColorMode.COLOR_MODE_DARK;
-    AppStorage.set('isDarkSystem', systemDark);
-    Settings.applyTheme(systemDark);
-    Settings.applyColorMode(this.context);
-    // 数据库
+    this.handleCardWant(want);
+    // ── 第1级（主线程空闲即执行，先于首帧内容挂载）：非首帧必需的服务初始化 ──
+    setTimeout((): void => {
+      DownloadService.init(this.context);
+      CookieJar.init(this.context);
+      ImageCache.init(this.context);
+      // 启动时清除章节缓存（数据与存储设置）
+      if (Settings.getAutoClearChapterCache()) {
+        ImageCache.clearAll();
+      }
+    }, 0);
+    // ── 第2级（异步，数据库就绪后）：后台维护任务 ──
     AppDb.ready(this.context).then(() => {
       // 数据库就绪后检查自动备份是否到期（数据与存储设置）
       BackupService.runAutoBackupIfDue(this.context).catch((e: Error) => {
@@ -52,22 +65,11 @@ export default class EntryAbility extends UIAbility {
     }).catch((e: Error) => {
       hilog.error(DOMAIN, 'Mihon', 'db init failed: %{public}s', e.message);
     });
-    // 下载服务
-    DownloadService.init(this.context);
-    // Cookie 存储与图片缓存
-    CookieJar.init(this.context);
-    ImageCache.init(this.context);
-    // 启动时清除章节缓存（数据与存储设置）
-    if (Settings.getAutoClearChapterCache()) {
-      ImageCache.clearAll();
-    }
-    AppStorage.setOrCreate('cfChallengeUrl', '');
-    this.handleCardWant(want);
   }
 
   onConfigurationUpdate(newConfig: Configuration): void {
     const systemDark = newConfig.colorMode === ConfigurationConstant.ColorMode.COLOR_MODE_DARK;
-    AppStorage.set('isDarkSystem', systemDark);
+    AppStorage.set(AppKeys.IS_DARK_SYSTEM, systemDark);
     Settings.applyTheme(systemDark);
     Settings.applySystemBar(this.context);
     Settings.initAvoidAreas(this.context);
@@ -152,6 +154,6 @@ export default class EntryAbility extends UIAbility {
       'chapterId': chapterId,
       'contentType': contentType
     };
-    AppStorage.setOrCreate('cardAction', JSON.stringify(payload));
+    AppStorage.setOrCreate(AppKeys.CARD_ACTION, JSON.stringify(payload));
   }
 }

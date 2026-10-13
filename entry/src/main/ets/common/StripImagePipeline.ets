@@ -3,22 +3,33 @@ import { fileIo as fs } from '@kit.CoreFileKit';
 import { ImageCache } from './ImageCache';
 import { Http } from '../net/Http';
 
+interface StripCacheEntry {
+  pm: image.PixelMap;
+  bytes: number;
+}
+
 // 条漫阅读图片管线（对齐 Mihon Coil 管线的内存层）：
 // 1. 防盗链字节获取：复用 ImageCache 磁盘缓存（带源声明的 Referer/Cookie/UA 请求头），
 //    未声明请求头的源直连取回
-// 2. 字节 -> PixelMap 解码（超宽图按上限等比缩放解码，控制内存）
-// 3. LRU 内存缓存：近 MAX_CACHE 张驻留，超出自动 release() 回收
+// 2. 字节 -> PixelMap 解码（超宽/超高图按上限等比缩放解码，限制单页内存）
+// 3. LRU 内存缓存：按字节预算（MAX_CACHE_BYTES）驻留，超出自动 release() 回收；
+//    条漫长图单张可达数十 MB，必须以字节而非张数计量，否则 OOM
 export class StripImagePipeline {
-  private static cache: Map<string, image.PixelMap> = new Map();
+  private static cache: Map<string, StripCacheEntry> = new Map();
   private static inflight: Map<string, Promise<image.PixelMap>> = new Map();
-  private static readonly MAX_CACHE: number = 14;
+  private static totalBytes: number = 0;
+  // 内存预算：默认 256MB；超大条漫章节由 LRU 按字节淘汰
+  private static readonly MAX_CACHE_BYTES: number = 256 * 1024 * 1024;
+  // 单张解码宽度上限（px）
   private static readonly MAX_DECODE_WIDTH: number = 1440;
+  // 单张解码总像素上限：条漫是"窄而极高"的长图，仅限宽不够
+  private static readonly MAX_DECODE_PIXELS: number = 16000000; // ≈64MB RGBA
 
   static async load(url: string, sourceKey: string, pageUrl: string = ''): Promise<image.PixelMap> {
     const hit = StripImagePipeline.cache.get(url);
     if (hit !== undefined) {
       StripImagePipeline.touch(url);
-      return hit;
+      return hit.pm;
     }
     const pending = StripImagePipeline.inflight.get(url);
     if (pending !== undefined) {
@@ -35,24 +46,33 @@ export class StripImagePipeline {
 
   // 立即回收单张（如章节关闭）
   static release(url: string): void {
-    const pm = StripImagePipeline.cache.get(url);
-    if (pm !== undefined) {
+    const entry = StripImagePipeline.cache.get(url);
+    if (entry !== undefined) {
       StripImagePipeline.cache.delete(url);
-      pm.release().catch((_e: Object) => {
+      StripImagePipeline.totalBytes -= entry.bytes;
+      if (StripImagePipeline.totalBytes < 0) {
+        StripImagePipeline.totalBytes = 0;
+      }
+      entry.pm.release().catch((_e: Object) => {
       });
     }
   }
 
   static clearAll(): void {
-    StripImagePipeline.cache.forEach((pm: image.PixelMap) => {
-      pm.release().catch((_e: Object) => {
+    StripImagePipeline.cache.forEach((entry: StripCacheEntry) => {
+      entry.pm.release().catch((_e: Object) => {
       });
     });
     StripImagePipeline.cache.clear();
+    StripImagePipeline.totalBytes = 0;
   }
 
   static cachedCount(): number {
     return StripImagePipeline.cache.size;
+  }
+
+  static cachedBytes(): number {
+    return StripImagePipeline.totalBytes;
   }
 
   // ---------------- 内部实现 ----------------
@@ -63,7 +83,8 @@ export class StripImagePipeline {
     try {
       const opts = await StripImagePipeline.decodeOptions(source);
       const pm = opts !== undefined ? await source.createPixelMap(opts) : await source.createPixelMap();
-      StripImagePipeline.put(url, pm);
+      const bytes = await StripImagePipeline.pixelBytes(pm);
+      StripImagePipeline.put(url, pm, bytes);
       return pm;
     } finally {
       source.release().catch((_e: Object) => {
@@ -92,19 +113,23 @@ export class StripImagePipeline {
     }
   }
 
-  // 超宽图等比缩放解码，限制单页内存占用
+  // 等比缩放解码：同时限制宽度与总像素数，控制单页内存占用
   private static async decodeOptions(source: image.ImageSource): Promise<image.DecodingOptions | undefined> {
     try {
       const info = await source.getImageInfo();
       const w = info.size.width;
       const h = info.size.height;
-      if (w <= StripImagePipeline.MAX_DECODE_WIDTH || w <= 0 || h <= 0) {
+      if (w <= 0 || h <= 0) {
         return undefined;
       }
-      const scaledW = StripImagePipeline.MAX_DECODE_WIDTH;
-      const scaledH = Math.round(h * scaledW / w);
+      const scale = Math.min(1,
+        StripImagePipeline.MAX_DECODE_WIDTH / w,
+        StripImagePipeline.MAX_DECODE_PIXELS / (w * h));
+      if (scale >= 1) {
+        return undefined;
+      }
       const opts: image.DecodingOptions = {
-        desiredSize: { width: scaledW, height: scaledH },
+        desiredSize: { width: Math.round(w * scale), height: Math.round(h * scale) },
       };
       return opts;
     } catch (_e) {
@@ -112,27 +137,49 @@ export class StripImagePipeline {
     }
   }
 
-  private static put(url: string, pm: image.PixelMap): void {
-    StripImagePipeline.cache.set(url, pm);
-    while (StripImagePipeline.cache.size > StripImagePipeline.MAX_CACHE) {
+  private static async pixelBytes(pm: image.PixelMap): Promise<number> {
+    try {
+      const info = await pm.getImageInfo();
+      return info.size.width * info.size.height * 4;
+    } catch (_e) {
+      return 0;
+    }
+  }
+
+  private static put(url: string, pm: image.PixelMap, bytes: number): void {
+    const entry: StripCacheEntry = { pm: pm, bytes: bytes };
+    StripImagePipeline.cache.set(url, entry);
+    StripImagePipeline.totalBytes += bytes;
+    while (StripImagePipeline.cache.size > 0) {
       const oldest = StripImagePipeline.cache.keys().next();
       if (oldest.done) {
+        break;
+      }
+      // 新放入的条目不参与本轮淘汰（单张超预算时至少保留本张）
+      if (oldest.value === url) {
+        break;
+      }
+      if (StripImagePipeline.totalBytes <= StripImagePipeline.MAX_CACHE_BYTES) {
         break;
       }
       const victim = StripImagePipeline.cache.get(oldest.value);
       StripImagePipeline.cache.delete(oldest.value);
       if (victim !== undefined) {
-        victim.release().catch((_e: Object) => {
+        StripImagePipeline.totalBytes -= victim.bytes;
+        if (StripImagePipeline.totalBytes < 0) {
+          StripImagePipeline.totalBytes = 0;
+        }
+        victim.pm.release().catch((_e: Object) => {
         });
       }
     }
   }
 
   private static touch(url: string): void {
-    const pm = StripImagePipeline.cache.get(url);
-    if (pm !== undefined) {
+    const entry = StripImagePipeline.cache.get(url);
+    if (entry !== undefined) {
       StripImagePipeline.cache.delete(url);
-      StripImagePipeline.cache.set(url, pm);
+      StripImagePipeline.cache.set(url, entry);
     }
   }
 }

@@ -1,8 +1,7 @@
 ﻿import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
-import { Util } from '../../common/Util';
 import { PageHeader } from '../components/PageHeader';
-import { PrefGroup, IconRow, SelectRow } from '../components/Prefs';
+import { PrefGroup, IconRow, PrefSelectRow } from '../components/Prefs';
 
 const TAB_COUNT: number = 5;
 
@@ -12,20 +11,6 @@ export struct SettingsPage {
   @Consume('navStack') pathStack: NavPathStack;
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @State tabLabels: string[] = [];
-  @State startTabLabel: string = '';
-
-  aboutToAppear(): void {
-    this.tabLabels = [
-      Util.resStr(this.getUIContext(), $r('app.string.settings_tab_library')),
-      Util.resStr(this.getUIContext(), $r('app.string.settings_tab_updates')),
-      Util.resStr(this.getUIContext(), $r('app.string.settings_tab_history')),
-      Util.resStr(this.getUIContext(), $r('app.string.settings_tab_browse')),
-      Util.resStr(this.getUIContext(), $r('app.string.settings_tab_more'))
-    ];
-    const idx = Settings.getStartTab();
-    this.startTabLabel = idx >= 0 && idx < this.tabLabels.length ? this.tabLabels[idx] : this.tabLabels[0];
-  }
 
   build() {
     NavDestination() {
@@ -34,16 +19,18 @@ export struct SettingsPage {
         Scroll() {
           Column({ space: 12 }) {
             PrefGroup({ groupTitle: $r('app.string.settings_general') }) {
-              SelectRow({
+              PrefSelectRow({
                 title: $r('app.string.settings_start_tab'),
-                value: this.startTabLabel,
-                options: this.tabLabels,
-                onSelect: (value: string): void => {
-                  const idx = this.tabLabels.indexOf(value);
-                  if (idx >= 0) {
-                    Settings.setStartTab(idx);
-                    this.startTabLabel = value;
-                  }
+                options: [
+                  $r('app.string.settings_tab_library'),
+                  $r('app.string.settings_tab_updates'),
+                  $r('app.string.settings_tab_history'),
+                  $r('app.string.settings_tab_browse'),
+                  $r('app.string.settings_tab_more')
+                ],
+                selectedIndex: Settings.getStartTab(),
+                onSelectIndex: (index: number): void => {
+                  Settings.setStartTab(index);
                 }
               })
             }
@@ -140,4 +127,10 @@ export struct SettingsPage {
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)
   }
+}
+
+// 系统路由表构建入口（router_map.json 注册）
+@Builder
+export function SettingsBuilder() {
+  SettingsPage()
 }

@@ -1,5 +1,5 @@
 import { common } from '@kit.AbilityKit';
-import { display, window } from '@kit.ArkUI';
+import { display } from '@kit.ArkUI';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo, ChapterRepo, HistoryRepo } from '../data/Repos';
 import { ReadingStatsRepo } from '../data/ReadingStats';
@@ -9,6 +9,8 @@ import { ReaderParams } from '../model/RouteParams';
 import { Theme, ThemePalette } from '../common/Theme';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
+import { ReaderWindow } from '../common/ReaderWindow';
+import { ReaderChapterNav, ChapterNeighbors } from '../common/ReaderChapterNav';
 import { DownloadService } from '../data/DownloadService';
 import { AppIconRes, AppIcon } from './components/AppIcon';
 import { PickerSheet } from './components/PickerSheet';
@@ -55,6 +57,8 @@ export struct NovelReaderPage {
   @State showModeSheet: boolean = false;
   // 翻页动画：curl=仿真 slide=滑动 cover=覆盖
   @State animMode: string = 'slide';
+  // 双页半页翻动的触发序号：正数下一页，负数上一页
+  @State leafTurn: number = 0;
   @State orientation: string = 'free';
   @State showOrientationSheet: boolean = false;
   @State showDisplaySheet: boolean = false;
@@ -120,44 +124,15 @@ export struct NovelReaderPage {
     this.persist();
     ReadingStatsRepo.flush();
     // 还原窗口方向与亮度
-    const ctx = getContext(this) as common.UIAbilityContext;
-    window.getLastWindow(ctx).then((win: window.Window) => {
-      win.setPreferredOrientation(window.Orientation.UNSPECIFIED).catch(() => {
-      });
-      win.setWindowBrightness(0).catch(() => {
-      });
-    }).catch(() => {
-    });
+    ReaderWindow.restore(getContext(this) as common.UIAbilityContext);
   }
 
   private applyOrientation(): void {
-    const ctx = getContext(this) as common.UIAbilityContext;
-    window.getLastWindow(ctx).then((win: window.Window) => {
-      // free=传感器自由旋转；portrait/landscape=跟随传感器(含倒置)；
-      // lock_portrait/lock_landscape=固定方向(不受传感器影响)
-      let target: window.Orientation = window.Orientation.AUTO_ROTATION;
-      if (this.orientation === 'portrait') {
-        target = window.Orientation.AUTO_ROTATION_PORTRAIT;
-      } else if (this.orientation === 'landscape') {
-        target = window.Orientation.AUTO_ROTATION_LANDSCAPE;
-      } else if (this.orientation === 'lock_portrait') {
-        target = window.Orientation.PORTRAIT;
-      } else if (this.orientation === 'lock_landscape') {
-        target = window.Orientation.LANDSCAPE;
-      }
-      win.setPreferredOrientation(target).catch(() => {
-      });
-    }).catch(() => {
-    });
+    ReaderWindow.applyOrientation(getContext(this) as common.UIAbilityContext, this.orientation);
   }
 
   private applyBrightness(): void {
-    const ctx = getContext(this) as common.UIAbilityContext;
-    window.getLastWindow(ctx).then((win: window.Window) => {
-      win.setWindowBrightness(this.brightLv).catch(() => {
-      });
-    }).catch(() => {
-    });
+    ReaderWindow.applyBrightness(getContext(this) as common.UIAbilityContext, this.brightLv);
   }
 
   private async loadChapter(): Promise<void> {
@@ -221,15 +196,9 @@ export struct NovelReaderPage {
   }
 
   private async loadNeighbors(): Promise<void> {
-    const list = await ChapterRepo.listByManga(this.mangaId);
-    let idx = -1;
-    for (let i = 0; i < list.length; i++) {
-      if (list[i].id === this.chapterId) {
-        idx = i;
-      }
-    }
-    this.prevId = idx > 0 ? list[idx - 1].id : 0;
-    this.nextId = idx >= 0 && idx < list.length - 1 ? list[idx + 1].id : 0;
+    const n: ChapterNeighbors = await ReaderChapterNav.neighbors(this.mangaId, this.chapterId);
+    this.prevId = n.prevId;
+    this.nextId = n.nextId;
   }
 
   private restoreOnce(): void {
@@ -866,9 +835,36 @@ export struct NovelReaderPage {
     return this.pageIdx;
   }
 
-  // 仿真卷曲（单页与双页均由 EmulationFlipView 接管；双页=整屏跨页一起卷曲）
+  // 仿真卷曲。双页只翻外侧半页（一页），另一半保持不动；纸背是下一页正文。
   private curlActive(): boolean {
     return this.animMode === 'curl' && this.mode !== 'scroll';
+  }
+
+  private requestLeaf(dir: number): void {
+    const next = dir > 0 ? Math.abs(this.leafTurn) + 1 : -(Math.abs(this.leafTurn) + 1);
+    this.leafTurn = next === 0 ? dir : next;
+  }
+
+  // onLeaf=false 时 localX 属于左侧静止页；true 时属于右侧翻动页（中缝 25vp）
+  private onSpreadTap(localX: number, onLeaf: boolean): void {
+    if (this.anySheetOpen()) {
+      this.dismissSheets();
+      return;
+    }
+    const inner = this.contW - this.pageMargin * 2;
+    if (inner <= 0) {
+      this.contentTap();
+      return;
+    }
+    const half = (inner - 25) / 2;
+    const globalX = onLeaf ? half + 25 + localX : localX;
+    if (globalX < inner * 0.3) {
+      this.requestLeaf(-1);
+    } else if (globalX > inner * 0.7) {
+      this.requestLeaf(1);
+    } else {
+      this.contentTap();
+    }
   }
 
   private onCurlIndex(reading: number): void {
@@ -893,15 +889,86 @@ export struct NovelReaderPage {
 
   @Builder
   curlPageBody(index: number) {
-    if (this.mode === 'double') {
-      this.PageScreen(index)
-    } else {
-      Row() {
-        this.PageText(index)
-      }
-      .width('100%')
-      .height('100%')
+    Row() {
+      this.PageText(index)
     }
+    .width('100%')
+    .height('100%')
+  }
+
+  // 双页右侧正在翻的那一页
+  @Builder
+  leafFront(index: number) {
+    this.PageText(index * 2 + 1)
+  }
+
+  // 这一页的背面：下一页正文（折痕镜像后显示在纸背）
+  @Builder
+  leafBack(index: number) {
+    this.PageText(index * 2 + 2)
+  }
+
+  @Builder
+  DoubleLeaf() {
+    Row() {
+      Column() {
+        this.PageText(this.pageIdx * 2)
+      }
+      .layoutWeight(1)
+      .height('100%')
+      .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
+      .onClick((event: ClickEvent) => {
+        this.onSpreadTap(event.x, false);
+      })
+
+      Column() {
+        Divider()
+          .vertical(true)
+          .strokeWidth(1)
+          .color('#66808080')
+          .height('70%')
+      }
+      .width(25)
+      .height('100%')
+      .justifyContent(FlexAlign.Center)
+      .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
+
+      EmulationFlipView({
+        index: this.pageIdx,
+        pageCount: this.screenIdxs.length,
+        fromLeft: false,
+        nextOnLeft: false,
+        tapMode: 'horizontal',
+        flipEnabled: !this.anySheetOpen(),
+        showBack: true,
+        ownTap: false,
+        turnToken: this.leafTurn,
+        bgColor: Theme.readerBg(this.readerTheme, this.isDark),
+        onIndexChange: (index: number): void => {
+          this.onCurlIndex(index);
+        },
+        onCenterTap: (): void => {
+          this.contentTap();
+        },
+        onOverscroll: (dir: number): void => {
+          this.onCurlOverscroll(dir);
+        },
+        onAreaTap: (x: number, _y: number): void => {
+          this.onSpreadTap(x, true);
+        },
+        pageContent: (index: number): void => {
+          this.leafFront(index);
+        },
+        backContent: (index: number): void => {
+          this.leafBack(index);
+        }
+      })
+        .layoutWeight(1)
+        .height('100%')
+    }
+    .width('100%')
+    .height('100%')
+    .clip(true)
   }
 
   // 单页正文：段间距为 0 时合并为单个 Text（大章节性能友好），>0 时按段落 Column({space}) 渲染
@@ -1465,7 +1532,9 @@ export struct NovelReaderPage {
           })
         } else {
           Column() {
-            if (this.curlActive()) {
+            if (this.curlActive() && this.mode === 'double') {
+              this.DoubleLeaf()
+            } else if (this.curlActive()) {
               EmulationFlipView({
                 index: this.readingIndex(),
                 pageCount: this.screenIdxs.length,
@@ -1855,4 +1924,10 @@ export struct NovelReaderPage {
       this.loadChapter();
     })
   }
+}
+
+// 系统路由表构建入口（router_map.json 注册）
+@Builder
+export function NovelReaderBuilder() {
+  NovelReaderPage()
 }

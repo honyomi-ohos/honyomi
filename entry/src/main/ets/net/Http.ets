@@ -3,6 +3,13 @@ import { request } from '@kit.BasicServicesKit';
 import { common } from '@kit.AbilityKit';
 import { CookieJar } from './CookieJar';
 
+// 下载句柄：promise 必然 settle；cancel 中断；setProgressCb 接收字节进度
+export interface DownloadHandle {
+  promise: Promise<void>;
+  cancel: () => void;
+  setProgressCb: (cb: (received: number, total: number) => void) => void;
+}
+
 // HTTP 客户端封装（对齐 Mihon NetworkHelper 的最小集）
 // - 统一 UA：CF 盾 cf_clearance 与 UA 绑定，http 层与验证 Web 必须一致
 // - CookieJar：自动附带请求 Cookie、回收响应 Set-Cookie
@@ -96,26 +103,93 @@ export class Http {
     return Http.buildHeaders(url, headers);
   }
 
-  // 流式下载到沙箱文件，避免把视频整段读进内存
+  // 流式下载到沙箱文件，避免把视频整段读进内存。
+  // 返回句柄：promise 结束（成功/失败/取消/停顿超时都会 settle，绝不悬挂）；
+  // cancel() 中断下载；setProgressCb 接收字节进度。
+  // stall 超时看门狗：连续 STALL_TIMEOUT_MS 无字节进展即失败并清理系统任务。
   static downloadToFile(context: common.Context, url: string, headers: Record<string, string> | undefined,
-    filePath: string): Promise<void> {
+    filePath: string, stallTimeoutMs: number = 60000): DownloadHandle {
     const config: request.DownloadConfig = {
       url: url,
       header: Http.buildHeaders(url, headers),
       filePath: filePath,
     };
-    return new Promise<void>((resolve: () => void, reject: (err: Error) => void) => {
-      request.downloadFile(context, config).then((task: request.DownloadTask) => {
-        task.on('complete', () => {
+    let taskRef: request.DownloadTask | undefined = undefined;
+    let settled = false;
+    let watchdog: number = -1;
+    let progressCb: ((received: number, total: number) => void) | undefined = undefined;
+    const promise = new Promise<void>((resolve: () => void, reject: (err: Error) => void) => {
+      const finish = (err: Error | undefined): void => {
+        if (settled) {
+          return;
+        }
+        settled = true;
+        if (watchdog >= 0) {
+          clearTimeout(watchdog);
+          watchdog = -1;
+        }
+        const task = taskRef;
+        taskRef = undefined;
+        if (task !== undefined) {
+          // 清理系统下载任务记录（幂等，失败可忽略）
+          task.delete().catch((_e: Error) => {
+          });
+        }
+        if (err !== undefined) {
+          reject(err);
+        } else {
           resolve();
+        }
+      };
+      const armWatchdog = (): void => {
+        if (watchdog >= 0) {
+          clearTimeout(watchdog);
+        }
+        watchdog = setTimeout(() => {
+          finish(new Error('下载超时（服务器长时间无响应）'));
+        }, stallTimeoutMs);
+      };
+      request.downloadFile(context, config).then((task: request.DownloadTask) => {
+        if (settled) {
+          task.delete().catch((_e: Error) => {
+          });
+          return;
+        }
+        taskRef = task;
+        task.on('progress', (received: number, total: number) => {
+          armWatchdog();
+          if (progressCb !== undefined) {
+            progressCb(received, total);
+          }
+        });
+        task.on('complete', () => {
+          finish(undefined);
         });
         task.on('fail', (err: number) => {
-          reject(new Error(`下载失败 (${err})`));
+          finish(new Error(`下载失败 (${err})`));
+        });
+        task.on('remove', () => {
+          finish(new Error('下载已取消'));
         });
       }).catch((e: Error) => {
-        reject(e);
+        finish(e);
       });
+      armWatchdog();
     });
+    const handle: DownloadHandle = {
+      promise: promise,
+      cancel: (): void => {
+        const task = taskRef;
+        if (task !== undefined && !settled) {
+          task.delete().catch((_e: Error) => {
+          });
+        }
+      },
+      setProgressCb: (cb: (received: number, total: number) => void): void => {
+        progressCb = cb;
+      },
+    };
+    return handle;
   }
 
   // ---------------- 内部实现 ----------------

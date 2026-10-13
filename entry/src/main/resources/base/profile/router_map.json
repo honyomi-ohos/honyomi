@@ -1,0 +1,129 @@
+﻿{
+  "routerMap": [
+    {
+      "buildFunction": "MangaDetailBuilder",
+      "name": "MangaDetail",
+      "pageSourceFile": "src/main/ets/pages/MangaDetailPage.ets"
+    },
+    {
+      "buildFunction": "ReaderBuilder",
+      "name": "Reader",
+      "pageSourceFile": "src/main/ets/pages/ReaderPage.ets"
+    },
+    {
+      "buildFunction": "NovelReaderBuilder",
+      "name": "NovelReader",
+      "pageSourceFile": "src/main/ets/pages/NovelReaderPage.ets"
+    },
+    {
+      "buildFunction": "VideoPlayerBuilder",
+      "name": "VideoPlayer",
+      "pageSourceFile": "src/main/ets/pages/VideoPlayerPage.ets"
+    },
+    {
+      "buildFunction": "DownloadsBuilder",
+      "name": "Downloads",
+      "pageSourceFile": "src/main/ets/pages/DownloadPage.ets"
+    },
+    {
+      "buildFunction": "BrowseSourceBuilder",
+      "name": "BrowseSource",
+      "pageSourceFile": "src/main/ets/pages/BrowseSourcePage.ets"
+    },
+    {
+      "buildFunction": "GlobalSearchBuilder",
+      "name": "GlobalSearch",
+      "pageSourceFile": "src/main/ets/pages/GlobalSearchPage.ets"
+    },
+    {
+      "buildFunction": "MigrateMangaBuilder",
+      "name": "MigrateManga",
+      "pageSourceFile": "src/main/ets/pages/MigrateMangaPage.ets"
+    },
+    {
+      "buildFunction": "MigrateSearchBuilder",
+      "name": "MigrateSearch",
+      "pageSourceFile": "src/main/ets/pages/MigrateSearchPage.ets"
+    },
+    {
+      "buildFunction": "ExtensionDetailBuilder",
+      "name": "ExtensionDetail",
+      "pageSourceFile": "src/main/ets/pages/ExtensionDetailPage.ets"
+    },
+    {
+      "buildFunction": "CategoriesBuilder",
+      "name": "Categories",
+      "pageSourceFile": "src/main/ets/pages/CategoriesPage.ets"
+    },
+    {
+      "buildFunction": "StatsBuilder",
+      "name": "Stats",
+      "pageSourceFile": "src/main/ets/pages/StatsPage.ets"
+    },
+    {
+      "buildFunction": "UpcomingBuilder",
+      "name": "Upcoming",
+      "pageSourceFile": "src/main/ets/pages/UpcomingPage.ets"
+    },
+    {
+      "buildFunction": "SettingsBuilder",
+      "name": "Settings",
+      "pageSourceFile": "src/main/ets/pages/settings/SettingsPage.ets"
+    },
+    {
+      "buildFunction": "AppearanceBuilder",
+      "name": "Appearance",
+      "pageSourceFile": "src/main/ets/pages/settings/AppearancePage.ets"
+    },
+    {
+      "buildFunction": "LanguageBuilder",
+      "name": "Language",
+      "pageSourceFile": "src/main/ets/pages/settings/LanguagePage.ets"
+    },
+    {
+      "buildFunction": "LibrarySettingsBuilder",
+      "name": "LibrarySettings",
+      "pageSourceFile": "src/main/ets/pages/settings/LibrarySettingsPage.ets"
+    },
+    {
+      "buildFunction": "ReaderSettingsBuilder",
+      "name": "ReaderSettings",
+      "pageSourceFile": "src/main/ets/pages/settings/ReaderSettingsPage.ets"
+    },
+    {
+      "buildFunction": "PlayerSettingsBuilder",
+      "name": "PlayerSettings",
+      "pageSourceFile": "src/main/ets/pages/settings/PlayerSettingsPage.ets"
+    },
+    {
+      "buildFunction": "DownloadsSettingsBuilder",
+      "name": "DownloadsSettings",
+      "pageSourceFile": "src/main/ets/pages/settings/DownloadsSettingsPage.ets"
+    },
+    {
+      "buildFunction": "BrowseSettingsBuilder",
+      "name": "BrowseSettings",
+      "pageSourceFile": "src/main/ets/pages/settings/BrowseSettingsPage.ets"
+    },
+    {
+      "buildFunction": "DataStorageBuilder",
+      "name": "DataStorage",
+      "pageSourceFile": "src/main/ets/pages/settings/DataStoragePage.ets"
+    },
+    {
+      "buildFunction": "SupportBuilder",
+      "name": "Support",
+      "pageSourceFile": "src/main/ets/pages/settings/SupportPage.ets"
+    },
+    {
+      "buildFunction": "AdvancedBuilder",
+      "name": "Advanced",
+      "pageSourceFile": "src/main/ets/pages/settings/AdvancedPage.ets"
+    },
+    {
+      "buildFunction": "AboutBuilder",
+      "name": "About",
+      "pageSourceFile": "src/main/ets/pages/settings/AboutPage.ets"
+    }
+  ]
+}

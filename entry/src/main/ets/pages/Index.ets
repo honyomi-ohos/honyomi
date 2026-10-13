@@ -12,35 +12,10 @@ import { CookieJar } from '../net/CookieJar';
 import { Util } from '../common/Util';
 import { LibraryPage } from './LibraryPage';
 import { UpdatesPage } from './UpdatesPage';
-import { UpcomingPage } from './UpcomingPage';
 import { HistoryPage } from './HistoryPage';
 import { BrowsePage } from './BrowsePage';
 import { MorePage } from './MorePage';
-import { MangaDetailPage } from './MangaDetailPage';
-import { ReaderPage } from './ReaderPage';
-import { NovelReaderPage } from './NovelReaderPage';
-import { VideoPlayerPage } from './VideoPlayerPage';
 import { ContentOpen } from './ContentOpen';
-import { DownloadPage } from './DownloadPage';
-import { BrowseSourcePage } from './BrowseSourcePage';
-import { GlobalSearchPage } from './GlobalSearchPage';
-import { MigrateMangaPage } from './MigrateMangaPage';
-import { MigrateSearchPage } from './MigrateSearchPage';
-import { ExtensionDetailPage } from './ExtensionDetailPage';
-import { CategoriesPage } from './CategoriesPage';
-import { StatsPage } from './StatsPage';
-import { SettingsPage } from './settings/SettingsPage';
-import { AppearancePage } from './settings/AppearancePage';
-import { LanguagePage } from './settings/LanguagePage';
-import { LibrarySettingsPage } from './settings/LibrarySettingsPage';
-import { ReaderSettingsPage } from './settings/ReaderSettingsPage';
-import { PlayerSettingsPage } from './settings/PlayerSettingsPage';
-import { DownloadsSettingsPage } from './settings/DownloadsSettingsPage';
-import { BrowseSettingsPage } from './settings/BrowseSettingsPage';
-import { DataStoragePage } from './settings/DataStoragePage';
-import { SupportPage } from './settings/SupportPage';
-import { AdvancedPage } from './settings/AdvancedPage';
-import { AboutPage } from './settings/AboutPage';
 import { AppIcon } from './components/AppIcon';
 import { UPDATES_MORPH, LIBRARY_MORPH, BROWSE_MORPH, PathMorph } from './components/PathMorph';
 import { DetailParams } from '../model/RouteParams';
@@ -397,8 +372,17 @@ struct Index {
     if (this.cardActionJson === '') {
       return;
     }
-    const raw = JSON.parse(this.cardActionJson) as CardActionPayload;
+    const json = this.cardActionJson;
     this.cardActionJson = '';
+    let raw: CardActionPayload;
+    try {
+      raw = JSON.parse(json) as CardActionPayload;
+    } catch (e) {
+      return;
+    }
+    if (raw === undefined || raw === null || raw.target === undefined) {
+      return;
+    }
     if (raw.target === 'updates') {
       this.switchTab(1);
       return;
@@ -498,61 +482,6 @@ struct Index {
       }
     } catch (e) {
       // 静默失败
-    }
-  }
-
-  @Builder
-  pageMap(name: string) {
-    if (name === 'MangaDetail') {
-      MangaDetailPage()
-    } else if (name === 'Reader') {
-      ReaderPage()
-    } else if (name === 'NovelReader') {
-      NovelReaderPage()
-    } else if (name === 'VideoPlayer') {
-      VideoPlayerPage()
-    } else if (name === 'Downloads') {
-      DownloadPage()
-    } else if (name === 'BrowseSource') {
-      BrowseSourcePage()
-    } else if (name === 'GlobalSearch') {
-      GlobalSearchPage()
-    } else if (name === 'MigrateManga') {
-      MigrateMangaPage()
-    } else if (name === 'MigrateSearch') {
-      MigrateSearchPage()
-    } else if (name === 'ExtensionDetail') {
-      ExtensionDetailPage()
-    } else if (name === 'Categories') {
-      CategoriesPage()
-    } else if (name === 'Stats') {
-      StatsPage()
-    } else if (name === 'Upcoming') {
-      UpcomingPage()
-    } else if (name === 'Settings') {
-      SettingsPage()
-    } else if (name === 'Appearance') {
-      AppearancePage()
-    } else if (name === 'Language') {
-      LanguagePage()
-    } else if (name === 'LibrarySettings') {
-      LibrarySettingsPage()
-    } else if (name === 'ReaderSettings') {
-      ReaderSettingsPage()
-    } else if (name === 'PlayerSettings') {
-      PlayerSettingsPage()
-    } else if (name === 'DownloadsSettings') {
-      DownloadsSettingsPage()
-    } else if (name === 'BrowseSettings') {
-      BrowseSettingsPage()
-    } else if (name === 'DataStorage') {
-      DataStoragePage()
-    } else if (name === 'Support') {
-      SupportPage()
-    } else if (name === 'Advanced') {
-      AdvancedPage()
-    } else if (name === 'About') {
-      AboutPage()
     }
   }
 
@@ -793,7 +722,6 @@ struct Index {
       .width('100%')
       .height('100%')
     }
-    .navDestination(this.pageMap)
     .hideTitleBar(true)
     .mode(NavigationMode.Stack)
     .backgroundColor(this.pal.bg)

@@ -62,6 +62,8 @@ export interface MangasPage {
 
 // 数据库记录模型
 
+// @Observed：配合列表条目组件的 @ObjectLink，避免 @Prop 对类对象逐条深拷贝
+@Observed
 export class MangaRecord {
   id: number = 0;
   sourceKey: string = '';

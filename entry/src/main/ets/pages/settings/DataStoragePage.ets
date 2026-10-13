@@ -6,7 +6,7 @@ import { Util } from '../../common/Util';
 import { ImageCache } from '../../common/ImageCache';
 import { BackupService } from '../../data/BackupService';
 import { PageHeader } from '../components/PageHeader';
-import { PrefGroup, TextRow, SwitchRow, SelectRow } from '../components/Prefs';
+import { PrefGroup, TextRow, PrefSelectRow, PrefSwitchRow } from '../components/Prefs';
 import { ExportColumnsDialog } from '../components/Dialogs';
 import { AppIcon } from '../components/AppIcon';
 
@@ -20,39 +20,16 @@ const INTERVAL_HOURS: number[] = [0, 6, 12, 24, 48, 168];
 export struct DataStoragePage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @State intervalLabels: string[] = [];
-  @State intervalLabel: string = '';
   @State cacheLabel: string = '';
-  @State autoClear: boolean = false;
   @State usedPercent: number = 0;
   @State spaceText: string = '—';
   @State lastBackupText: string = '';
   @State busy: boolean = false;
 
   aboutToAppear(): void {
-    const ui = this.getUIContext();
-    this.intervalLabels = [
-      Util.resStr(ui, $r('app.string.data_interval_off')),
-      Util.resStr(ui, $r('app.string.data_interval_6h')),
-      Util.resStr(ui, $r('app.string.data_interval_12h')),
-      Util.resStr(ui, $r('app.string.data_interval_24h')),
-      Util.resStr(ui, $r('app.string.data_interval_48h')),
-      Util.resStr(ui, $r('app.string.data_interval_weekly'))
-    ];
-    this.intervalLabel = this.labelForHours(Settings.getBackupInterval());
-    this.autoClear = Settings.getAutoClearChapterCache();
     this.refreshCacheLabel();
     this.refreshStorageInfo();
     this.refreshLastBackup();
-  }
-
-  private labelForHours(hours: number): string {
-    const idx = INTERVAL_HOURS.indexOf(hours);
-    if (idx >= 0 && idx < this.intervalLabels.length) {
-      return this.intervalLabels[idx];
-    }
-    const off: string | undefined = this.intervalLabels[0];
-    return off !== undefined ? off : '';
   }
 
   private refreshCacheLabel(): void {
@@ -128,13 +105,11 @@ export struct DataStoragePage {
     this.busy = false;
   }
 
-  private onIntervalSelect(value: string): void {
-    const idx = this.intervalLabels.indexOf(value);
-    if (idx < 0 || idx >= INTERVAL_HOURS.length) {
+  private onIntervalSelect(index: number): void {
+    if (index < 0 || index >= INTERVAL_HOURS.length) {
       return;
     }
-    Settings.setBackupInterval(INTERVAL_HOURS[idx]);
-    this.intervalLabel = value;
+    Settings.setBackupInterval(INTERVAL_HOURS[index]);
   }
 
   // ---- 存储占用 ----
@@ -238,12 +213,19 @@ export struct DataStoragePage {
 
               Divider().color(this.pal.divider).margin({ left: 16 })
 
-              SelectRow({
+              PrefSelectRow({
                 title: $r('app.string.data_backup_interval'),
-                value: this.intervalLabel,
-                options: this.intervalLabels,
-                onSelect: (value: string): void => {
-                  this.onIntervalSelect(value);
+                options: [
+                  $r('app.string.data_interval_off'),
+                  $r('app.string.data_interval_6h'),
+                  $r('app.string.data_interval_12h'),
+                  $r('app.string.data_interval_24h'),
+                  $r('app.string.data_interval_48h'),
+                  $r('app.string.data_interval_weekly')
+                ],
+                selectedIndex: INTERVAL_HOURS.indexOf(Settings.getBackupInterval()),
+                onSelectIndex: (index: number): void => {
+                  this.onIntervalSelect(index);
                 }
               })
 
@@ -289,11 +271,10 @@ export struct DataStoragePage {
                 }
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
-              SwitchRow({
+              PrefSwitchRow({
                 title: $r('app.string.data_auto_clear_cache'),
-                isOn: this.autoClear,
-                onChange: (value: boolean): void => {
-                  this.autoClear = value;
+                initValue: Settings.getAutoClearChapterCache(),
+                apply: (value: boolean): void => {
                   Settings.setAutoClearChapterCache(value);
                 }
               })
@@ -323,4 +304,10 @@ export struct DataStoragePage {
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)
   }
+}
+
+// 系统路由表构建入口（router_map.json 注册）
+@Builder
+export function DataStorageBuilder() {
+  DataStoragePage()
 }

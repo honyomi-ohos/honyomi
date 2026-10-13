@@ -3,13 +3,18 @@ import { common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 
 // RelationalStore 数据库（对齐 Mihon Room schema 的 P1 子集）
+// 迁移策略：PRAGMA user_version 版本号顺序迁移，失败即抛出（不吞真实错误）
 export class AppDb {
   private static store: relationalStore.RdbStore | undefined = undefined;
   private static initPromise: Promise<void> | undefined = undefined;
 
   static ready(context: common.Context): Promise<void> {
     if (AppDb.initPromise === undefined) {
-      AppDb.initPromise = AppDb.doInit(context);
+      // 初始化失败允许下次 ready() 重试（如首次启动磁盘瞬时异常）
+      AppDb.initPromise = AppDb.doInit(context).catch((e: Error) => {
+        AppDb.initPromise = undefined;
+        throw e;
+      });
     }
     return AppDb.initPromise;
   }
@@ -27,6 +32,18 @@ export class AppDb {
       securityLevel: relationalStore.SecurityLevel.S1,
     };
     const store = await relationalStore.getRdbStore(context, config);
+    await AppDb.createTables(store);
+    await AppDb.migrate(store);
+    await AppDb.createIndexes(store);
+    await store.executeSql(
+      `INSERT INTO category(id, name, sortOrder)
+       SELECT 1, '默认', 0
+       WHERE NOT EXISTS (SELECT 1 FROM category WHERE id = 1)`);
+    AppDb.store = store;
+    hilog.info(0x0001, 'AppDb', 'database ready');
+  }
+
+  private static async createTables(store: relationalStore.RdbStore): Promise<void> {
     await store.executeSql(`CREATE TABLE IF NOT EXISTS manga (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       sourceKey TEXT NOT NULL,
@@ -43,19 +60,9 @@ export class AppDb {
       lastUpdateAt INTEGER DEFAULT 0,
       fetchedAt INTEGER DEFAULT 0,
       contentType TEXT DEFAULT 'manga',
+      origThumbnail TEXT DEFAULT '',
       UNIQUE(sourceKey, url)
     )`);
-    try {
-      await store.executeSql(`ALTER TABLE manga ADD COLUMN contentType TEXT DEFAULT 'manga'`);
-    } catch (e) {
-      // 新库建表时已含该列，或旧库已经补过
-    }
-    try {
-      // 自定义封面启用时保存原封面地址，恢复封面/同步源时用
-      await store.executeSql(`ALTER TABLE manga ADD COLUMN origThumbnail TEXT DEFAULT ''`);
-    } catch (e) {
-      // 新库未列出该列时补齐；旧库已补过
-    }
     await store.executeSql(`CREATE TABLE IF NOT EXISTS chapter (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       mangaId INTEGER NOT NULL,
@@ -101,11 +108,55 @@ export class AppDb {
       score REAL DEFAULT 0,
       UNIQUE(mangaId, syncId)
     )`);
-    await store.executeSql(
-      `INSERT INTO category(id, name, sortOrder)
-       SELECT 1, '默认', 0
-       WHERE NOT EXISTS (SELECT 1 FROM category WHERE id = 1)`);
-    AppDb.store = store;
-    hilog.info(0x0001, 'AppDb', 'database ready');
+  }
+
+  // 版本号顺序迁移：0 = 无版本历史（全新库或 ALTER TABLE 时代的旧库）
+  private static async migrate(store: relationalStore.RdbStore): Promise<void> {
+    let version = 0;
+    const rs = await store.querySql(`PRAGMA user_version`);
+    if (rs.goToNextRow()) {
+      version = rs.getLong(rs.getColumnIndex('user_version'));
+    }
+    rs.close();
+    // v0 -> v1：早期旧库补列（新库建表已含，ALTER 失败按真实错误抛出前先校验列存在）
+    if (version < 1) {
+      const cols = new Set<string>();
+      const colRs = await store.querySql(`PRAGMA table_info(manga)`);
+      while (colRs.goToNextRow()) {
+        cols.add(colRs.getString(colRs.getColumnIndex('name')));
+      }
+      colRs.close();
+      if (!cols.has('contentType')) {
+        await store.executeSql(`ALTER TABLE manga ADD COLUMN contentType TEXT DEFAULT 'manga'`);
+      }
+      if (!cols.has('origThumbnail')) {
+        await store.executeSql(`ALTER TABLE manga ADD COLUMN origThumbnail TEXT DEFAULT ''`);
+      }
+      await store.executeSql(`PRAGMA user_version = 1`);
+      version = 1;
+      hilog.info(0x0001, 'AppDb', 'migrated schema to v1');
+    }
+    // v1 -> v2：history 按 (mangaId, chapterId) 去重后建唯一索引，
+    // 使 HistoryRepo.upsert 可用单条 INSERT ON CONFLICT 原子完成（消除查后写竞态）
+    if (version < 2) {
+      await store.executeSql(`DELETE FROM history WHERE id NOT IN (
+        SELECT h.id FROM history h
+        WHERE h.id = (
+          SELECT h2.id FROM history h2
+          WHERE h2.mangaId = h.mangaId AND h2.chapterId = h.chapterId
+          ORDER BY h2.seenAt DESC, h2.id DESC LIMIT 1))`);
+      await store.executeSql(`CREATE UNIQUE INDEX IF NOT EXISTS idx_history_unique ON history(mangaId, chapterId)`);
+      await store.executeSql(`PRAGMA user_version = 2`);
+      hilog.info(0x0001, 'AppDb', 'migrated schema to v2');
+    }
+  }
+
+  // 二级索引：书架/更新/历史/统计的高频查询列
+  private static async createIndexes(store: relationalStore.RdbStore): Promise<void> {
+    await store.executeSql(`CREATE INDEX IF NOT EXISTS idx_manga_inLibrary ON manga(inLibrary, categoryId)`);
+    await store.executeSql(`CREATE INDEX IF NOT EXISTS idx_chapter_read_upload ON chapter(read, dateUpload)`);
+    await store.executeSql(`CREATE INDEX IF NOT EXISTS idx_chapter_sortOrder ON chapter(mangaId, sortOrder)`);
+    await store.executeSql(`CREATE INDEX IF NOT EXISTS idx_history_mangaId ON history(mangaId, seenAt)`);
+    await store.executeSql(`CREATE INDEX IF NOT EXISTS idx_session_day ON readingSession(day)`);
   }
 }

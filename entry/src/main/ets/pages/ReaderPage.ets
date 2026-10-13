@@ -1,5 +1,4 @@
 import { common } from '@kit.AbilityKit';
-import { window } from '@kit.ArkUI';
 import { motion } from '@kit.MultimodalAwarenessKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo, ChapterRepo, HistoryRepo } from '../data/Repos';
@@ -11,6 +10,8 @@ import { Theme, ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { Settings } from '../common/Settings';
 import { GripSupport } from '../common/GripSupport';
+import { ReaderWindow } from '../common/ReaderWindow';
+import { ReaderChapterNav, ChapterNeighbors } from '../common/ReaderChapterNav';
 import { DownloadService } from '../data/DownloadService';
 import { SmartImage } from './components/SmartImage';
 import { ComicStripViewer } from './components/ComicStripViewer';
@@ -100,6 +101,8 @@ export struct ReaderPage {
   @State webtoonPadding: number = 0;
   // 翻页动画：curl=仿真 slide=滑动 cover=覆盖（条漫与垂直模式不走仿真）
   @State pageAnim: string = 'slide';
+  // 双页只翻一侧时的触发序号：正数下一页，负数上一页
+  @State leafTurn: number = 0;
   @State coverX: number[] = [];
   @State coverY: number[] = [];
   @State coverZ: number[] = [];
@@ -154,14 +157,7 @@ export struct ReaderPage {
     ReadingStatsRepo.flush();
     this.updateGripListener(false);
     // 还原窗口方向与亮度
-    const ctx = getContext(this) as common.UIAbilityContext;
-    window.getLastWindow(ctx).then((win: window.Window) => {
-      win.setPreferredOrientation(window.Orientation.UNSPECIFIED).catch(() => {
-      });
-      win.setWindowBrightness(0).catch(() => {
-      });
-    }).catch(() => {
-    });
+    ReaderWindow.restore(getContext(this) as common.UIAbilityContext);
   }
 
   // 智感握姿：订阅/退订握持手感知（want=false 强制退订）
@@ -183,33 +179,11 @@ export struct ReaderPage {
   }
 
   private applyOrientation(): void {
-    const ctx = getContext(this) as common.UIAbilityContext;
-    window.getLastWindow(ctx).then((win: window.Window) => {
-      // 对齐 Mihon：free=传感器自由旋转；portrait/landscape=跟随传感器(含倒置)；
-      // lock_portrait/lock_landscape=固定方向(不受传感器影响)
-      let target: window.Orientation = window.Orientation.AUTO_ROTATION;
-      if (this.orientation === 'portrait') {
-        target = window.Orientation.AUTO_ROTATION_PORTRAIT;
-      } else if (this.orientation === 'landscape') {
-        target = window.Orientation.AUTO_ROTATION_LANDSCAPE;
-      } else if (this.orientation === 'lock_portrait') {
-        target = window.Orientation.PORTRAIT;
-      } else if (this.orientation === 'lock_landscape') {
-        target = window.Orientation.LANDSCAPE;
-      }
-      win.setPreferredOrientation(target).catch(() => {
-      });
-    }).catch(() => {
-    });
+    ReaderWindow.applyOrientation(getContext(this) as common.UIAbilityContext, this.orientation);
   }
 
   private applyBrightness(): void {
-    const ctx = getContext(this) as common.UIAbilityContext;
-    window.getLastWindow(ctx).then((win: window.Window) => {
-      win.setWindowBrightness(this.brightLv).catch(() => {
-      });
-    }).catch(() => {
-    });
+    ReaderWindow.applyBrightness(getContext(this) as common.UIAbilityContext, this.brightLv);
   }
 
   private async loadChapter(): Promise<void> {
@@ -267,16 +241,9 @@ export struct ReaderPage {
   }
 
   private async refreshNeighbors(): Promise<void> {
-    const all = await ChapterRepo.listByManga(this.mangaId);
-    let idx = -1;
-    for (let i = 0; i < all.length; i++) {
-      if (all[i].id === this.chapterId) {
-        idx = i;
-        break;
-      }
-    }
-    this.hasPrev = idx > 0;
-    this.hasNext = idx >= 0 && idx < all.length - 1;
+    const n: ChapterNeighbors = await ReaderChapterNav.neighbors(this.mangaId, this.chapterId);
+    this.hasPrev = n.hasPrev;
+    this.hasNext = n.hasNext;
   }
 
   private static zeros(n: number): number[] {
@@ -470,23 +437,15 @@ export struct ReaderPage {
   }
 
   private async gotoChapter(next: boolean): Promise<void> {
-    const all = await ChapterRepo.listByManga(this.mangaId);
-    let idx = -1;
-    for (let i = 0; i < all.length; i++) {
-      if (all[i].id === this.chapterId) {
-        idx = i;
-        break;
-      }
-    }
-    const targetIdx = next ? idx + 1 : idx - 1;
-    if (targetIdx < 0 || targetIdx >= all.length) {
+    const targetId: number = await ReaderChapterNav.neighborChapterId(this.mangaId, this.chapterId, next);
+    if (targetId === 0) {
       Util.toastRes(this.getUIContext(), next ? $r('app.string.reader_last_chapter') : $r('app.string.reader_first_chapter'));
       return;
     }
     if (next && !this.chapter.read) {
       await ChapterRepo.setRead(this.chapterId, true);
     }
-    this.chapterId = all[targetIdx].id;
+    this.chapterId = targetId;
     await this.loadChapter();
   }
 
@@ -754,6 +713,140 @@ export struct ReaderPage {
     }
   }
 
+  private requestLeaf(dir: number): void {
+    const next = dir > 0 ? Math.abs(this.leafTurn) + 1 : -(Math.abs(this.leafTurn) + 1);
+    this.leafTurn = next === 0 ? dir : next;
+  }
+
+  // 双页热区按整屏计算。onLeaf 表示点击落在正在翻的那一半。
+  private onDualTap(localX: number, localY: number, onLeaf: boolean): void {
+    if (this.showSettings || this.showModeSheet || this.showOrientationSheet) {
+      return;
+    }
+    const fullW = this.readerW > 0 ? this.readerW : 1;
+    const fullH = this.readerH > 0 ? this.readerH : 1;
+    const globalX = this.curlFromLeft() ? (onLeaf ? localX : fullW / 2 + localX) :
+      (onLeaf ? fullW / 2 + localX : localX);
+    if (this.curlTapMode() === 'none') {
+      this.showMenu = !this.showMenu;
+      return;
+    }
+    if (this.curlTapMode() === 'vertical') {
+      const y = localY / fullH;
+      if (y < 0.3) {
+        this.requestLeaf(-1);
+      } else if (y > 0.7) {
+        this.requestLeaf(1);
+      } else {
+        this.showMenu = !this.showMenu;
+      }
+      return;
+    }
+    const edge = this.curlTapMode() === 'edge' ? 0.12 : 0.3;
+    const nextOnLeft = this.curlNextOnLeft();
+    let dir = 0;
+    if (globalX < fullW * edge) {
+      dir = nextOnLeft ? 1 : -1;
+    } else if (globalX > fullW * (1 - edge)) {
+      dir = nextOnLeft ? -1 : 1;
+    }
+    if (dir === 0) {
+      this.showMenu = !this.showMenu;
+    } else {
+      this.requestLeaf(dir);
+    }
+  }
+
+  @Builder
+  curlLeafPage(index: number) {
+    this.curlFull(index * 2 + 1)
+  }
+
+  @Builder
+  curlLeafBack(index: number) {
+    this.curlFull(index * 2 + 2)
+  }
+
+  @Builder
+  ComicStaticHalf() {
+    Column() {
+      this.curlFull(this.curlIndex() * 2)
+    }
+    .layoutWeight(1)
+    .height('100%')
+    .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
+    .onClick((event: ClickEvent) => {
+      this.onDualTap(event.x, event.y, false);
+    })
+  }
+
+  @Builder
+  ComicFlipLeaf() {
+    EmulationFlipView({
+      index: this.curlIndex(),
+      pageCount: this.curlCount(),
+      fromLeft: this.curlFromLeft(),
+      nextOnLeft: this.curlNextOnLeft(),
+      tapMode: this.curlTapMode(),
+      flipEnabled: this.curlEnabled(),
+      showBack: true,
+      ownTap: false,
+      turnToken: this.leafTurn,
+      bgColor: Theme.readerBg(this.readerTheme, this.isDark),
+      onIndexChange: (index: number): void => {
+        this.onCurlIndex(index);
+      },
+      onCenterTap: (): void => {
+        this.showMenu = !this.showMenu;
+      },
+      onOverscroll: (dir: number): void => {
+        this.onCurlOverscroll(dir);
+      },
+      onAreaTap: (x: number, y: number): void => {
+        this.onDualTap(x, y, true);
+      },
+      pageContent: (index: number): void => {
+        this.curlLeafPage(index);
+      },
+      backContent: (index: number): void => {
+        this.curlLeafBack(index);
+      }
+    })
+      .layoutWeight(1)
+      .height('100%')
+  }
+
+  @Builder
+  DualLeaf() {
+    Row() {
+      if (this.curlFromLeft()) {
+        this.ComicFlipLeaf()
+        this.ComicStaticHalf()
+      } else {
+        this.ComicStaticHalf()
+        this.ComicFlipLeaf()
+      }
+    }
+    .width('100%')
+    .height('100%')
+    .clip(true)
+    .grayscale(this.filterGrayscale ? 1 : 0)
+    .invert(this.filterInvert ? 1 : 0)
+    .brightness(this.filterBrightnessOn ? this.filterBrightness / 100 : 1)
+    .contrast(this.filterContrastOn ? this.filterContrast / 100 : 1)
+    .saturate(this.filterSaturationOn ? this.filterSaturation / 100 : 1)
+    .onAreaChange((_old: Area, newArea: Area) => {
+      const w = newArea.width;
+      if (typeof w === 'number' && w > 0) {
+        this.readerW = w;
+      }
+      const h = newArea.height;
+      if (typeof h === 'number' && h > 0) {
+        this.readerH = h;
+      }
+    })
+  }
+
   @Builder
   curlPageBody(index: number) {
     if (this.curlDual()) {
@@ -819,6 +912,8 @@ export struct ReaderPage {
             .brightness(this.filterBrightnessOn ? this.filterBrightness / 100 : 1)
             .contrast(this.filterContrastOn ? this.filterContrast / 100 : 1)
             .saturate(this.filterSaturationOn ? this.filterSaturation / 100 : 1)
+        } else if (this.useCurl() && this.curlDual()) {
+          this.DualLeaf()
         } else if (this.useCurl()) {
           EmulationFlipView({
             index: this.curlIndex(),
@@ -1544,4 +1639,10 @@ export struct ReaderPage {
         Settings.setReaderTheme(value);
       })
   }
+}
+
+// 系统路由表构建入口（router_map.json 注册）
+@Builder
+export function ReaderBuilder() {
+  ReaderPage()
 }

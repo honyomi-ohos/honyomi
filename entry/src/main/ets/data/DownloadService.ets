@@ -16,6 +16,10 @@ export class DownloadService {
   private static running: boolean = false;
   private static paused: boolean = false;
   private static listeners: Array<() => void> = [];
+  private static activeCancel: (() => void) | undefined = undefined;
+  // 已完成(done.mark)章节 id 内存索引：列表行高频查询 isDownloaded，
+  // 不能每次调用都做 O(N) 目录扫描；下载完成/删除章节时增量维护
+  private static doneIds: Set<number> | undefined = undefined;
 
   static init(context: common.UIAbilityContext): void {
     DownloadService.context = context;
@@ -66,12 +70,17 @@ export class DownloadService {
     DownloadService.pump();
   }
 
+  // 取消任务：排队中直接移除；下载中（如视频）中断当前传输
   static cancel(chapterId: number): void {
     for (const t of DownloadService.queue) {
       if (t.chapterId === chapterId && t.state !== 1) {
         t.state = 3;
         t.error = '已取消';
       }
+    }
+    const active = DownloadService.queue.find((t: DownloadTask) => t.chapterId === chapterId && t.state === 1);
+    if (active !== undefined && DownloadService.activeCancel !== undefined) {
+      DownloadService.activeCancel();
     }
     DownloadService.queue = DownloadService.queue.filter((t: DownloadTask) => t.state !== 3);
     DownloadService.notify();
@@ -143,11 +152,14 @@ export class DownloadService {
     DownloadService.running = true;
     DownloadService.process(next).then(() => {
       DownloadService.running = false;
+      DownloadService.activeCancel = undefined;
       DownloadService.notify();
       DownloadService.pump();
     }).catch((e: Error) => {
       hilog.error(0x0001, 'Download', 'process failed: %{public}s', e.message);
       DownloadService.running = false;
+      DownloadService.activeCancel = undefined;
+      DownloadService.notify();
       DownloadService.pump();
     });
   }
@@ -196,6 +208,9 @@ export class DownloadService {
       const markFd = fileIo.openSync(`${dir}/done.mark`,
         fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE).fd;
       fileIo.closeSync(markFd);
+      if (DownloadService.doneIds !== undefined) {
+        DownloadService.doneIds.add(task.chapterId);
+      }
       task.state = 2;
       if (task.total > 0) {
         ChapterRepo.setPages(task.chapterId, task.total).catch(() => {
@@ -227,6 +242,9 @@ export class DownloadService {
       fileIo.closeSync(fd);
     }
     DownloadService.markDone(dir);
+    if (DownloadService.doneIds !== undefined) {
+      DownloadService.doneIds.add(task.chapterId);
+    }
     task.total = 1;
     task.progress = 1;
     task.state = 2;
@@ -258,8 +276,25 @@ export class DownloadService {
     task.total = 1;
     task.progress = 0;
     DownloadService.notify();
-    await Http.downloadToFile(DownloadService.context, chosen.url, chosen.headers, path);
+    const handle = Http.downloadToFile(DownloadService.context, chosen.url, chosen.headers, path);
+    DownloadService.activeCancel = (): void => {
+      handle.cancel();
+    };
+    handle.setProgressCb((received: number, total: number): void => {
+      if (total > 0 && task.total !== total) {
+        task.total = total;
+        DownloadService.notify();
+      }
+    });
+    try {
+      await handle.promise;
+    } finally {
+      DownloadService.activeCancel = undefined;
+    }
     DownloadService.markDone(dir);
+    if (DownloadService.doneIds !== undefined) {
+      DownloadService.doneIds.add(task.chapterId);
+    }
     task.progress = 1;
     task.state = 2;
   }
@@ -302,11 +337,34 @@ export class DownloadService {
   }
 
   static isDownloaded(chapterId: number): boolean {
-    const mangaId = DownloadService.mangaIdOf(chapterId);
-    if (mangaId < 0) {
-      return false;
+    if (DownloadService.doneIds === undefined) {
+      DownloadService.rebuildDoneIndex();
     }
-    return fileIo.accessSync(`${DownloadService.chapterDir(mangaId, chapterId)}/done.mark`);
+    return DownloadService.doneIds !== undefined && DownloadService.doneIds.has(chapterId);
+  }
+
+  // 单次目录遍历构建 done.mark 索引
+  private static rebuildDoneIndex(): void {
+    const set = new Set<number>();
+    if (DownloadService.rootDir !== '' && fileIo.accessSync(DownloadService.rootDir)) {
+      const mangaDirs = fileIo.listFileSync(DownloadService.rootDir);
+      for (const md of mangaDirs) {
+        const mangaPath = `${DownloadService.rootDir}/${md}`;
+        if (!fileIo.accessSync(mangaPath)) {
+          continue;
+        }
+        const chapterDirs = fileIo.listFileSync(mangaPath);
+        for (const cd of chapterDirs) {
+          if (fileIo.accessSync(`${mangaPath}/${cd}/done.mark`)) {
+            const chapterId = parseInt(cd, 10);
+            if (chapterId > 0) {
+              set.add(chapterId);
+            }
+          }
+        }
+      }
+    }
+    DownloadService.doneIds = set;
   }
 
   // 每部漫画的已下载章节数（downloads/{mangaId}/ 下章节目录数），书架下载徽标用
@@ -326,27 +384,16 @@ export class DownloadService {
     return counts;
   }
 
-  // 已完成下载的章节 id 集合（一次遍历目录，更新页"已下载"筛选用）
+  // 已完成下载的章节 id 集合（复用 done 索引，更新页"已下载"筛选用）
   static downloadedChapterIdSet(): Set<number> {
-    const set = new Set<number>();
-    if (DownloadService.rootDir === '' || !fileIo.accessSync(DownloadService.rootDir)) {
-      return set;
+    if (DownloadService.doneIds === undefined) {
+      DownloadService.rebuildDoneIndex();
     }
-    const mangaDirs = fileIo.listFileSync(DownloadService.rootDir);
-    for (const md of mangaDirs) {
-      const mangaPath = `${DownloadService.rootDir}/${md}`;
-      if (!fileIo.accessSync(mangaPath)) {
-        continue;
-      }
-      const chapterDirs = fileIo.listFileSync(mangaPath);
-      for (const cd of chapterDirs) {
-        if (fileIo.accessSync(`${mangaPath}/${cd}/done.mark`)) {
-          const chapterId = parseInt(cd, 10);
-          if (chapterId > 0) {
-            set.add(chapterId);
-          }
-        }
-      }
+    const set = new Set<number>();
+    if (DownloadService.doneIds !== undefined) {
+      DownloadService.doneIds.forEach((id: number) => {
+        set.add(id);
+      });
     }
     return set;
   }
@@ -400,6 +447,9 @@ export class DownloadService {
     const dir = DownloadService.chapterDir(mangaId, chapterId);
     if (fileIo.accessSync(dir)) {
       DownloadService.rmdir(dir);
+    }
+    if (DownloadService.doneIds !== undefined) {
+      DownloadService.doneIds.delete(chapterId);
     }
     DownloadService.queue = DownloadService.queue.filter((t: DownloadTask) => t.chapterId !== chapterId);
     DownloadService.notify();

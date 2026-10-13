@@ -37,6 +37,7 @@ class StripDataSource implements IDataSource {
 struct StripItemView {
   @Prop url: string = '';
   @Prop sourceKey: string = '';
+  @Prop pageUrl: string = '';
   @Prop isDark: boolean = false;
   @State pixelMap: image.PixelMap | undefined = undefined;
   @State failed: boolean = false;
@@ -56,7 +57,7 @@ struct StripItemView {
     this.failed = false;
     this.loadToken += 1;
     const token = this.loadToken;
-    StripImagePipeline.load(this.url, this.sourceKey).then((pm: image.PixelMap) => {
+    StripImagePipeline.load(this.url, this.sourceKey, this.pageUrl).then((pm: image.PixelMap) => {
       if (token !== this.loadToken) {
         return;
       }
@@ -144,6 +145,11 @@ export struct ComicStripViewer {
     this.dataSource.setPages(this.pages);
   }
 
+  // 释放条漫解码内存（PixelMap 可达数十 MB/张，阅读器关闭/切模式必须回收）
+  aboutToDisappear(): void {
+    StripImagePipeline.clearAll();
+  }
+
   private onPagesChanged(): void {
     this.dataSource.setPages(this.pages);
     this.lastVisible = -1;
@@ -153,7 +159,7 @@ export struct ComicStripViewer {
     List({ scroller: this.scroller, initialIndex: this.initialIndex }) {
       LazyForEach(this.dataSource, (page: SPage) => {
         ListItem() {
-          StripItemView({ url: page.url, sourceKey: this.sourceKey, isDark: this.isDark, onTap: (): void => {
+          StripItemView({ url: page.url, sourceKey: this.sourceKey, pageUrl: page.pageUrl ?? '', isDark: this.isDark, onTap: (): void => {
             this.onTap();
           } })
         }

@@ -64,6 +64,8 @@ class FlipModel {
   drawPosition: number = FlipDrawPos.NONE;
   drawState: number = FlipDrawState.NONE;
   pixelMap: image.PixelMap | undefined = undefined;
+  // 纸背截图。有则画在卷曲背面（仍按折痕做镜像），没有则回退为正面截图的反射。
+  backPixelMap: image.PixelMap | undefined = undefined;
   isFinished: boolean = false;
   flipPositionY: number = 0;
   fromLeft: boolean = false;
@@ -91,6 +93,10 @@ class FlipModel {
     if (this.pixelMap !== undefined) {
       this.pixelMap.release();
       this.pixelMap = undefined;
+    }
+    if (this.backPixelMap !== undefined) {
+      this.backPixelMap.release();
+      this.backPixelMap = undefined;
     }
   }
 
@@ -140,7 +146,7 @@ class FlipModel {
 
   private ensureBrushes(): void {
     const paper: common2D.Color = { alpha: 255, red: 255, green: 235, blue: 195 };
-    const back: common2D.Color = { alpha: 120, red: 186, green: 172, blue: 145 };
+    const back: common2D.Color = { alpha: 72, red: 186, green: 172, blue: 145 };
     this.pathABrush.setColor(paper);
     this.pathCBrush.setColor(back);
   }
@@ -324,7 +330,8 @@ class FlipModel {
 
   private drawPathC(canvas: drawing.Canvas): void {
     const page = this.pixelMap;
-    if (page === undefined) {
+    const backFace = this.backPixelMap !== undefined ? this.backPixelMap : page;
+    if (page === undefined || backFace === undefined) {
       return;
     }
     canvas.attachBrush(this.pathABrush);
@@ -354,7 +361,7 @@ class FlipModel {
       canvas.concatMatrix(matrix);
     }
     const colors: number[] | null = null;
-    canvas.drawPixelMapMesh(page, 1, 1, this.meshVerts(), 0, colors, 0);
+    canvas.drawPixelMapMesh(backFace, 1, 1, this.meshVerts(), 0, colors, 0);
     canvas.restore();
     canvas.detachBrush();
     canvas.attachBrush(this.pathCBrush);
@@ -653,7 +660,15 @@ export struct EmulationFlipView {
   // horizontal | vertical | edge | none
   @Prop tapMode: string = 'horizontal';
   @Prop flipEnabled: boolean = true;
+  // 为 true 时，纸背使用 backContent 的截图（双页里半页的背面文字），否则反射正面。
+  @Prop showBack: boolean = false;
+  // 为 false 时点击交给 onAreaTap，由外层按整屏热区决定翻页（双页静态半侧与翻动半侧共用）。
+  @Prop ownTap: boolean = true;
+  // 非 0 且变化时触发一次自动翻页：正数下一页，负数上一页。
+  @Prop @Watch('onTurnToken') turnToken: number = 0;
   @Prop bgColor: ResourceColor = Color.Black;
+  onAreaTap: (x: number, y: number) => void = (_x: number, _y: number): void => {
+  };
   onIndexChange: (index: number) => void = (_index: number): void => {
   };
   onCenterTap: () => void = (): void => {
@@ -661,6 +676,7 @@ export struct EmulationFlipView {
   onOverscroll: (dir: number) => void = (_dir: number): void => {
   };
   @BuilderParam pageContent: (index: number) => void = emptyFlipPage;
+  @BuilderParam backContent: (index: number) => void = emptyFlipPage;
 
   @State page: number = 0;
   @State hideCurrent: boolean = false;
@@ -682,13 +698,18 @@ export struct EmulationFlipView {
   private midId: string = '';
   private prevId: string = '';
   private nextId: string = '';
+  private backCurId: string = '';
+  private backPrevId: string = '';
   private acceptExternal: boolean = true;
+  private lastTurn: number = 0;
 
   aboutToAppear(): void {
     flipSerial += 1;
     this.midId = `pfMid${flipSerial}`;
     this.prevId = `pfPrev${flipSerial}`;
     this.nextId = `pfNext${flipSerial}`;
+    this.backCurId = `pfBack${flipSerial}`;
+    this.backPrevId = `pfBackPrev${flipSerial}`;
     this.page = this.index;
     this.model.fromLeft = this.fromLeft;
     this.controller.setModel(this.model);
@@ -710,6 +731,14 @@ export struct EmulationFlipView {
 
   private syncFromLeft(): void {
     this.model.fromLeft = this.fromLeft;
+  }
+
+  private onTurnToken(): void {
+    if (this.turnToken === 0 || this.turnToken === this.lastTurn) {
+      return;
+    }
+    this.lastTurn = this.turnToken;
+    this.startTurn(this.turnToken > 0 ? 1 : -1);
   }
 
   private cancelAnim(): void {
@@ -766,6 +795,17 @@ export struct EmulationFlipView {
       return false;
     }
     return this.model.pixelMap !== undefined;
+  }
+
+  private captureBack(id: string): void {
+    if (!this.showBack) {
+      return;
+    }
+    try {
+      this.model.backPixelMap = this.getUIContext().getComponentSnapshot().getSync(id);
+    } catch (_error) {
+      this.model.backPixelMap = undefined;
+    }
   }
 
   private redraw(): void {
@@ -850,6 +890,7 @@ export struct EmulationFlipView {
       this.resetVisual();
       return false;
     }
+    this.captureBack(move === FlipMove.NEXT ? this.backCurId : this.backPrevId);
     if (move === FlipMove.NEXT) {
       this.hideCurrent = true;
     }
@@ -900,6 +941,7 @@ export struct EmulationFlipView {
           this.resetVisual();
           return;
         }
+        this.captureBack(this.backCurId);
         this.hideCurrent = true;
       } else {
         this.pageMove = FlipMove.PREV;
@@ -907,6 +949,7 @@ export struct EmulationFlipView {
           this.resetVisual();
           return;
         }
+        this.captureBack(this.backPrevId);
       }
       this.drawing = true;
       this.showCurl = true;
@@ -948,6 +991,31 @@ export struct EmulationFlipView {
     this.drawing = false;
   }
 
+  private startTurn(dir: number): void {
+    if (!this.flipEnabled || this.pxW <= 1 || this.timeID !== -1) {
+      return;
+    }
+    if (!this.canTurn(dir)) {
+      this.onOverscroll(dir);
+      return;
+    }
+    const move = dir > 0 ? FlipMove.NEXT : FlipMove.PREV;
+    const snap = dir > 0 ? this.midId : this.prevId;
+    const xVp = dir > 0 ? this.areaW * 0.92 : this.areaW * 0.08;
+    const xPx = this.algoX(xVp);
+    const yPx = this.pxH * 0.72;
+    if (!this.beginCurl(move, xPx, yPx, snap)) {
+      return;
+    }
+    if (move === FlipMove.PREV) {
+      const xDiff = (this.pxW - xPx) / FLIP_DISTANCE_FRACTION;
+      const yDiff = (0 - yPx) / FLIP_DISTANCE_FRACTION;
+      this.armAuto(xDiff, yDiff);
+    } else {
+      this.armAuto(FLIP_X_DIFF, 0);
+    }
+  }
+
   private onViewClick(event: ClickEvent): void {
     if (!this.flipEnabled) {
       this.onCenterTap();
@@ -955,6 +1023,10 @@ export struct EmulationFlipView {
     }
     if (this.timeID !== -1) {
       this.finishGesture(true);
+      return;
+    }
+    if (!this.ownTap) {
+      this.onAreaTap(event.x, event.y);
       return;
     }
     if (this.areaW <= 0 || this.pageCount <= 0) {
@@ -1020,6 +1092,19 @@ export struct EmulationFlipView {
     .id(slotId)
   }
 
+  @Builder
+  backSlot(index: number, slotId: string) {
+    Column() {
+      if (index >= 0 && index < this.pageCount) {
+        this.backContent(index)
+      }
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor(this.bgColor)
+    .id(slotId)
+  }
+
   build() {
     Stack() {
       this.pageSlot(this.page + 1, this.nextId)
@@ -1038,8 +1123,29 @@ export struct EmulationFlipView {
         }
         .width('100%')
         .height('100%')
-        .translate({ x: this.areaW > 0 ? -this.areaW : -2000 })
+        .translate({ x: this.areaW > 0 ? -this.areaW - 48 : -2000 })
         .hitTestBehavior(HitTestMode.None)
+      }
+
+      if (this.showBack) {
+        Column() {
+          this.backSlot(this.page, this.backCurId)
+        }
+        .width('100%')
+        .height('100%')
+        .position({ x: 0, y: 0 })
+        .translate({ y: this.areaH > 0 ? this.areaH + 4 : 4000 })
+        .hitTestBehavior(HitTestMode.None)
+
+        if (this.page > 0) {
+          Column() {
+            this.backSlot(this.page - 1, this.backPrevId)
+          }
+          .width('100%')
+          .height('100%')
+          .translate({ y: this.areaH > 0 ? (this.areaH + 4) * 2 : 8000 })
+          .hitTestBehavior(HitTestMode.None)
+        }
       }
 
       NodeContainer(this.controller)
@@ -1052,7 +1158,6 @@ export struct EmulationFlipView {
     }
     .width('100%')
     .height('100%')
-    .clip(true)
     .backgroundColor(this.bgColor)
     .onAreaChange((_old: Area, neu: Area) => {
       const w = neu.width;

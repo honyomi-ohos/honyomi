@@ -60,3 +60,9 @@ export struct AboutPage {
     .backgroundColor(this.pal.bg)
   }
 }
+
+// 系统路由表构建入口（router_map.json 注册）
+@Builder
+export function AboutBuilder() {
+  AboutPage()
+}

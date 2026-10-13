@@ -1,18 +1,13 @@
 import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
 import { PageHeader } from '../components/PageHeader';
-import { PrefGroup, SwitchRow } from '../components/Prefs';
+import { PrefGroup, PrefSwitchRow } from '../components/Prefs';
 
 // 浏览设置：NSFW 源显示
 @Component
 export struct BrowseSettingsPage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @State showNsfw: boolean = false;
-
-  aboutToAppear(): void {
-    this.showNsfw = Settings.getShowNsfw();
-  }
 
   build() {
     NavDestination() {
@@ -21,11 +16,10 @@ export struct BrowseSettingsPage {
         Scroll() {
           Column() {
             PrefGroup({ groupTitle: $r('app.string.browse_set_content') }) {
-              SwitchRow({
+              PrefSwitchRow({
                 title: $r('app.string.browse_set_show_nsfw'),
-                isOn: this.showNsfw,
-                onChange: (value: boolean): void => {
-                  this.showNsfw = value;
+                initValue: Settings.getShowNsfw(),
+                apply: (value: boolean): void => {
                   Settings.setShowNsfw(value);
                 }
               })
@@ -50,4 +44,10 @@ export struct BrowseSettingsPage {
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)
   }
+}
+
+// 系统路由表构建入口（router_map.json 注册）
+@Builder
+export function BrowseSettingsBuilder() {
+  BrowseSettingsPage()
 }

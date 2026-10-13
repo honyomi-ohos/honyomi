@@ -31,9 +31,10 @@ export struct LibBadge {
 }
 
 // 书架条目：紧凑/松散/封面网格 + 列表四种显示模式（对齐 Mihon CommonMangaItem）
+// record 用 @ObjectLink 引用共享（MangaRecord 为 @Observed 类），避免 @Prop 深拷贝
 @Component
 export struct LibraryMangaItem {
-  @Prop record: MangaRecord = new MangaRecord();
+  @ObjectLink record: MangaRecord;
   @Prop mode: string = 'compact'; // 'compact' | 'comfortable' | 'cover' | 'list'
   @Prop unreadCount: number = 0;
   @Prop downloadCount: number = 0;

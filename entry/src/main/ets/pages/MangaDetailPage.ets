@@ -20,6 +20,101 @@ import { EmptyScreen } from './components/EmptyScreen';
 import { AppIcon } from './components/AppIcon';
 import { PickerSheet } from './components/PickerSheet';
 
+// 章节行：自订阅 DownloadService 变化刷新下载角标，
+// 避免 ForEach key 携带全局版本号导致整个章节列表重建
+@Component
+struct DetailChapterRow {
+  @Prop chapter: ChapterRecord = new ChapterRecord();
+  @Prop isLocalSource: boolean = false;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @State downloaded: boolean = false;
+  @State queued: boolean = false;
+  onTap: (chapter: ChapterRecord) => void = (_c: ChapterRecord) => {
+  };
+  onDownload: (chapter: ChapterRecord) => void = (_c: ChapterRecord) => {
+  };
+  private onDlNotify = (): void => {
+    this.refreshDlState();
+  };
+
+  aboutToAppear(): void {
+    this.refreshDlState();
+    DownloadService.addListener(this.onDlNotify);
+  }
+
+  aboutToDisappear(): void {
+    DownloadService.removeListener(this.onDlNotify);
+  }
+
+  private refreshDlState(): void {
+    const d = DownloadService.isDownloaded(this.chapter.id);
+    const q = !d && DownloadService.isQueued(this.chapter.id);
+    if (d !== this.downloaded || q !== this.queued) {
+      this.downloaded = d;
+      this.queued = q;
+    }
+  }
+
+  build() {
+    Row() {
+      Column() {
+        Text(this.chapter.name)
+          .fontSize(14)
+          .fontColor(this.chapter.read ? this.pal.sub : this.pal.text)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+        Text(Util.formatDate(this.chapter.dateUpload))
+          .fontSize(11)
+          .fontColor(this.pal.sub)
+          .margin({ top: 2 })
+      }
+      .alignItems(HorizontalAlign.Start)
+      .layoutWeight(1)
+
+      if (this.chapter.read) {
+        Text($r('app.string.detail_read'))
+          .fontSize(11)
+          .fontColor(this.pal.sub)
+      } else {
+        Text('NEW')
+          .fontSize(10)
+          .fontColor('#FFFFFF')
+          .backgroundColor('#E05252')
+          .borderRadius(8)
+          .padding({ left: 6, right: 6, top: 2, bottom: 2 })
+      }
+
+      if (!this.isLocalSource) {
+        if (this.downloaded) {
+          Text($r('app.string.detail_downloaded'))
+            .fontSize(11)
+            .fontColor(this.pal.primary)
+            .margin({ left: 8 })
+        } else if (this.queued) {
+          Text($r('app.string.detail_in_queue'))
+            .fontSize(11)
+            .fontColor(this.pal.sub)
+            .margin({ left: 8 })
+        } else {
+          Text($r('app.string.detail_download'))
+            .fontSize(11)
+            .fontColor(this.pal.sub)
+            .margin({ left: 8 })
+            .padding(4)
+            .onClick(() => {
+              this.onDownload(this.chapter);
+            })
+        }
+      }
+    }
+    .width('100%')
+    .padding({ left: 16, right: 16, top: 10, bottom: 10 })
+    .onClick(() => {
+      this.onTap(this.chapter);
+    })
+  }
+}
+
 // 漫画详情页：信息 + 章节列表 + 收藏 + 下载 + AniList 追踪
 @Component
 export struct MangaDetailPage {
@@ -37,21 +132,8 @@ export struct MangaDetailPage {
   @State track: TrackRecord | undefined = undefined;
   @State alResults: ALMediaItem[] = [];
   @State alSearching: boolean = false;
-  @State dlVersion: number = 0;
   @State showCoverSheet: boolean = false;
   private mangaId: number = -1;
-
-  private onDownloadChanged = (): void => {
-    this.dlVersion += 1;
-  }
-
-  aboutToAppear(): void {
-    DownloadService.addListener(this.onDownloadChanged);
-  }
-
-  aboutToDisappear(): void {
-    DownloadService.removeListener(this.onDownloadChanged);
-  }
 
   onLibDirty(): void {
     this.reloadLocal();
@@ -267,7 +349,6 @@ export struct MangaDetailPage {
     task.mangaUrl = this.manga.url;
     task.chapterUrl = chapter.url;
     DownloadService.enqueue(task);
-    this.dlVersion += 1;
     Util.toastRes(this.getUIContext(), $r('app.string.detail_download_queued'));
   }
 
@@ -658,64 +739,18 @@ export struct MangaDetailPage {
           List({ space: 0 }) {
             ForEach(this.shownChapters(), (chapter: ChapterRecord) => {
               ListItem() {
-                Row() {
-                  Column() {
-                    Text(chapter.name)
-                      .fontSize(14)
-                      .fontColor(chapter.read ? this.pal.sub : this.pal.text)
-                      .maxLines(1)
-                      .textOverflow({ overflow: TextOverflow.Ellipsis })
-                    Text(Util.formatDate(chapter.dateUpload))
-                      .fontSize(11)
-                      .fontColor(this.pal.sub)
-                      .margin({ top: 2 })
-                  }
-                  .alignItems(HorizontalAlign.Start)
-                  .layoutWeight(1)
-
-                  if (chapter.read) {
-                    Text($r('app.string.detail_read'))
-                      .fontSize(11)
-                      .fontColor(this.pal.sub)
-                  } else {
-                    Text('NEW')
-                      .fontSize(10)
-                      .fontColor('#FFFFFF')
-                      .backgroundColor('#E05252')
-                      .borderRadius(8)
-                      .padding({ left: 6, right: 6, top: 2, bottom: 2 })
-                  }
-
-                  if (!ContentType.isLocal(this.manga.sourceKey)) {
-                    if (DownloadService.isDownloaded(chapter.id)) {
-                      Text($r('app.string.detail_downloaded'))
-                        .fontSize(11)
-                        .fontColor(this.pal.primary)
-                        .margin({ left: 8 })
-                    } else if (DownloadService.isQueued(chapter.id)) {
-                      Text($r('app.string.detail_in_queue'))
-                        .fontSize(11)
-                        .fontColor(this.pal.sub)
-                        .margin({ left: 8 })
-                    } else {
-                      Text($r('app.string.detail_download'))
-                        .fontSize(11)
-                        .fontColor(this.pal.sub)
-                        .margin({ left: 8 })
-                        .padding(4)
-                        .onClick(() => {
-                          this.downloadChapter(chapter);
-                        })
-                    }
-                  }
-                }
-                .width('100%')
-                .padding({ left: 16, right: 16, top: 10, bottom: 10 })
-                .onClick(() => {
-                  this.openReader(chapter.id);
+                DetailChapterRow({
+                  chapter: chapter,
+                  isLocalSource: ContentType.isLocal(this.manga.sourceKey),
+                  onTap: (c: ChapterRecord): void => {
+                    this.openReader(c.id);
+                  },
+                  onDownload: (c: ChapterRecord): void => {
+                    this.downloadChapter(c);
+                  },
                 })
               }
-            }, (chapter: ChapterRecord) => `ch-${chapter.id}-${chapter.read}-${this.dlVersion}`)
+            }, (chapter: ChapterRecord) => `ch-${chapter.id}-${chapter.read}`)
           }
           .layoutWeight(1)
           .scrollBar(BarState.Auto)
@@ -743,4 +778,10 @@ export struct MangaDetailPage {
       this.loadAll();
     })
   }
+}
+
+// 系统路由表构建入口（router_map.json 注册）
+@Builder
+export function MangaDetailBuilder() {
+  MangaDetailPage()
 }

@@ -15,6 +15,35 @@ import { AppIcon } from './components/AppIcon';
 import { LibraryMangaItem } from './components/LibraryItems';
 import { LibrarySettingsSheet } from './components/LibrarySettingsSheet';
 
+// LazyForEach 数据源：shownList 变化时 onDataReloaded 通知
+class LibMangaSource implements IDataSource {
+  private items: MangaRecord[] = [];
+  private listeners: DataChangeListener[] = [];
+
+  setItems(items: MangaRecord[]): void {
+    this.items = items;
+    for (const listener of this.listeners) {
+      listener.onDataReloaded();
+    }
+  }
+
+  totalCount(): number {
+    return this.items.length;
+  }
+
+  getData(index: number): MangaRecord {
+    return this.items[index];
+  }
+
+  registerDataChangeListener(listener: DataChangeListener): void {
+    this.listeners.push(listener);
+  }
+
+  unregisterDataChangeListener(listener: DataChangeListener): void {
+    this.listeners = this.listeners.filter((l: DataChangeListener): boolean => l !== listener);
+  }
+}
+
 // 书架页：分类 + 搜索/过滤弹层（筛选/排序/显示）/四种显示模式
 @Component
 export struct LibraryPage {
@@ -24,34 +53,33 @@ export struct LibraryPage {
   @StorageProp('navBarH') navBarH: number = 0;
   @State mangas: MangaRecord[] = [];
   @State categories: CategoryRecord[] = [];
-  @State selectedCategory: number = 0;
   @State loading: boolean = true;
   @State refreshing: boolean = false;
   @State searchOpen: boolean = false;
-  @State searchQuery: string = '';
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
   // 复刻 Mihon：再次点击书架页签打开筛选/显示设置弹层（LibraryTab.onReselect）
   @StorageLink('libReselect') @Watch('onLibReselect') libReselect: number = 0;
-  // 弹层状态（与 Settings 同步）
-  @State sortKey: string = 'alpha';
-  @State sortAsc: boolean = true;
-  @State fDownloaded: string = 'ignore';
-  @State fUnread: string = 'ignore';
-  @State fStarted: string = 'ignore';
-  @State fBookmarked: string = 'ignore';
-  @State fCompleted: string = 'ignore';
-  @State fTracked: string = 'ignore';
-  @State contentFilter: string = 'all';
+  // 弹层状态（与 Settings 同步）；筛选/排序输入变化时重算缓存列表
+  @State @Watch('refreshView') sortKey: string = 'alpha';
+  @State @Watch('refreshView') sortAsc: boolean = true;
+  @State @Watch('refreshView') fDownloaded: string = 'ignore';
+  @State @Watch('refreshView') fUnread: string = 'ignore';
+  @State @Watch('refreshView') fStarted: string = 'ignore';
+  @State @Watch('refreshView') fBookmarked: string = 'ignore';
+  @State @Watch('refreshView') fCompleted: string = 'ignore';
+  @State @Watch('refreshView') fTracked: string = 'ignore';
+  @State @Watch('refreshView') contentFilter: string = 'all';
+  @State @Watch('refreshView') selectedCategory: number = 0;
+  @State @Watch('refreshView') searchQuery: string = '';
   @State viewMode: string = 'compact';
   @State gridCols: number = 0;
   @State showUnreadBadge: boolean = true;
   @State showDownloadBadge: boolean = true;
   @State showLocalBadge: boolean = false;
   @State showLanguageBadge: boolean = false;
-  @State showCategoryTabs: boolean = true;
+  @State @Watch('refreshView') showCategoryTabs: boolean = true;
   @State showMangaCount: boolean = false;
-  @State showFilterSheet: boolean = false;
-  // 聚合数据
+  @State showFilterSheet: boolean = false;  // 聚合数据
   @State statsMap: Record<string, MangaStats> = {};
   @State downloadCounts: Record<string, number> = {};
   @State trackedIds: Set<number> = new Set<number>();
@@ -61,6 +89,11 @@ export struct LibraryPage {
   // 多选（长按触发，对齐 Mihon 书架选择模式）；变化同步全局计数，
   // Index 侧据此隐藏/恢复底部悬浮页签栏（HDS 多选交互规范）
   @State @Watch('onSelectionChanged') selection: Set<number> = new Set<number>();
+  // 视图缓存：shownList = 搜索/筛选/排序(+分类)后的列表，categoryCounts = 分类 chip 计数，
+  // 输入变化经 @Watch('refreshView') 一次性重算，build 内不做逐帧过滤排序
+  @State shownList: MangaRecord[] = [];
+  @State categoryCounts: Record<string, number> = {};
+  private libSource: LibMangaSource = new LibMangaSource();
 
   private onSelectionChanged(): void {
     AppStorage.setOrCreate('libSelectionCount', this.selection.size);
@@ -119,7 +152,23 @@ export struct LibraryPage {
     this.loading = false;
   }
 
-  // 随机排序洗牌（sortKey === 'random' 时生效）
+  // 输入（搜索词/筛选/排序/分类/洗牌/数据刷新）变化后重算视图缓存（O(M log M) 单次）
+  private refreshView(): void {
+    const filtered = this.filteredAll();
+    const counts: Record<string, number> = {};
+    for (const m of filtered) {
+      const key = `${m.categoryId}`;
+      counts[key] = (counts[key] || 0) + 1;
+    }
+    counts['0'] = filtered.length;
+    this.categoryCounts = counts;
+    const sorted = filtered.slice().sort((a: MangaRecord, b: MangaRecord): number => this.compareMangas(a, b));
+    this.shownList = this.selectedCategory > 0 && this.showCategoryTabs ?
+      sorted.filter((m: MangaRecord): boolean => m.categoryId === this.selectedCategory) : sorted;
+    this.libSource.setItems(this.shownList);
+  }
+
+  // 随机排序洗牌（sortKey === 'random' 时生效）；洗牌后需重算视图
   private reshuffle(): void {
     const ids: number[] = this.mangas.map((m: MangaRecord): number => m.id);
     for (let i = ids.length - 1; i > 0; i--) {
@@ -133,6 +182,7 @@ export struct LibraryPage {
       order[`${id}`] = i;
     });
     this.randomOrder = order;
+    this.refreshView();
   }
 
   async refreshLibrary(): Promise<void> {
@@ -177,7 +227,7 @@ export struct LibraryPage {
   }
 
   openRandomManga(): void {
-    const list = this.shownMangas();
+    const list = this.shownList;
     if (list.length === 0) {
       return;
     }
@@ -277,21 +327,12 @@ export struct LibraryPage {
   }
 
   shownMangas(): MangaRecord[] {
-    const filtered = this.filteredAll();
-    const sorted = filtered.slice().sort((a: MangaRecord, b: MangaRecord): number => this.compareMangas(a, b));
-    if (this.selectedCategory > 0 && this.showCategoryTabs) {
-      return sorted.filter((m: MangaRecord): boolean => m.categoryId === this.selectedCategory);
-    }
-    return sorted;
+    return this.shownList;
   }
 
-  // 分类 chip 数量（显示作品数开启时）
+  // 分类 chip 数量（显示作品数开启时），读缓存
   private categoryCount(categoryId: number): number {
-    const filtered = this.filteredAll();
-    if (categoryId === 0) {
-      return filtered.length;
-    }
-    return filtered.filter((m: MangaRecord): boolean => m.categoryId === categoryId).length;
+    return this.categoryCounts[`${categoryId}`] || 0;
   }
 
   private gridColsCount(): number {
@@ -378,10 +419,11 @@ export struct LibraryPage {
         onPick: (categoryId: number): void => {
           const ids: number[] = Array.from(this.selection);
           this.clearSelection();
-          ids.forEach((id: number): void => {
-            MangaRepo.setCategory(id, categoryId);
-          });
-          this.loadData();
+          Promise.all(ids.map((id: number): Promise<void> => MangaRepo.setCategory(id, categoryId)))
+            .then((): Promise<void> => this.loadData())
+            .catch((): void => {
+              this.loadData();
+            });
         },
         onClose: (): void => {
           dialog.close();
@@ -395,27 +437,30 @@ export struct LibraryPage {
   private async markSelectionRead(read: boolean): Promise<void> {
     const ids: number[] = Array.from(this.selection);
     this.clearSelection();
-    for (const id of ids) {
-      await ChapterRepo.markAllRead(id, read);
-    }
+    await Promise.all(ids.map((id: number): Promise<void> => ChapterRepo.markAllRead(id, read)));
     await this.loadData();
   }
 
-  // 下载选中漫画的全部未读章节（本地图源跳过）
+  // 下载选中漫画的全部未读章节（本地图源跳过）；章节列表并行加载，入队顺序保持
   private async downloadSelection(): Promise<void> {
     const ids: number[] = Array.from(this.selection);
     this.clearSelection();
-    let queued: number = 0;
+    const targets: MangaRecord[] = [];
     for (const id of ids) {
       const manga: MangaRecord | undefined = this.mangas.find((m: MangaRecord): boolean => m.id === id);
-      if (manga === undefined || ContentType.isLocal(manga.sourceKey)) {
-        continue;
+      if (manga !== undefined && !ContentType.isLocal(manga.sourceKey)) {
+        targets.push(manga);
       }
-      const chapters: ChapterRecord[] = await ChapterRepo.listByManga(id);
-      for (const ch of chapters) {
+    }
+    const chapterLists: ChapterRecord[][] =
+      await Promise.all(targets.map((manga: MangaRecord): Promise<ChapterRecord[]> => ChapterRepo.listByManga(manga.id)));
+    let queued: number = 0;
+    for (let i = 0; i < targets.length; i++) {
+      const manga: MangaRecord = targets[i];
+      for (const ch of chapterLists[i]) {
         if (!ch.read && !DownloadService.isQueued(ch.id)) {
           const task: DownloadTask = new DownloadTask();
-          task.mangaId = id;
+          task.mangaId = manga.id;
           task.mangaTitle = manga.title;
           task.chapterId = ch.id;
           task.chapterName = ch.name;
@@ -451,9 +496,7 @@ export struct LibraryPage {
   private async removeSelection(): Promise<void> {
     const ids: number[] = Array.from(this.selection);
     this.clearSelection();
-    for (const id of ids) {
-      await MangaRepo.setInLibrary(id, false);
-    }
+    await Promise.all(ids.map((id: number): Promise<void> => MangaRepo.setInLibrary(id, false)));
     AppStorage.set('libDirty', this.libDirty + 1);
     await this.loadData();
   }
@@ -692,7 +735,7 @@ export struct LibraryPage {
           }
           .layoutWeight(1)
           .justifyContent(FlexAlign.Center)
-        } else if (this.shownMangas().length === 0) {
+        } else if (this.shownList.length === 0) {
           Column() {
             EmptyScreen({
               message: this.searchQuery.trim() !== '' || this.filterActive()
@@ -703,7 +746,7 @@ export struct LibraryPage {
           .justifyContent(FlexAlign.Center)
         } else if (this.viewMode === 'list') {
           List({ space: 0 }) {
-            ForEach(this.shownMangas(), (record: MangaRecord) => {
+            LazyForEach(this.libSource, (record: MangaRecord) => {
               ListItem() {
                 LibraryMangaItem({
                   record: record,
@@ -725,14 +768,14 @@ export struct LibraryPage {
                   }
                 })
               }
-            }, (record: MangaRecord) => `lib-${record.id}-${record.inLibrary}-${record.thumbnailUrl}`)
+            }, (record: MangaRecord) => `lib-${record.id}`)
           }
           .scrollBar(BarState.Off)
           .contentEndOffset(this.navBarH + 76)
           .layoutWeight(1)
         } else {
           Grid() {
-            ForEach(this.shownMangas(), (record: MangaRecord) => {
+            LazyForEach(this.libSource, (record: MangaRecord) => {
               GridItem() {
                 LibraryMangaItem({
                   record: record,
@@ -754,7 +797,7 @@ export struct LibraryPage {
                   }
                 })
               }
-            }, (record: MangaRecord) => `lib-${record.id}-${record.inLibrary}-${record.thumbnailUrl}`)
+            }, (record: MangaRecord) => `lib-${record.id}`)
           }
           .columnsTemplate(this.columnsTemplate())
           .columnsGap(8)

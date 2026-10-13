@@ -1,8 +1,7 @@
 import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
-import { Util } from '../../common/Util';
 import { PageHeader } from '../components/PageHeader';
-import { PrefGroup, SelectRow, SwitchRow } from '../components/Prefs';
+import { PrefGroup, PrefSelectRow, PrefSwitchRow } from '../components/Prefs';
 
 const SORT_VALUES: string[] = [
   'alpha', 'total', 'lastRead', 'lastUpdate', 'unread', 'latestChapter', 'fetchDate', 'dateAdded', 'random'
@@ -15,58 +14,20 @@ const COLS_VALUES: number[] = [0, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 export struct LibrarySettingsPage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @State sortLabel: string = '';
-  @State sortAsc: boolean = true;
-  @State viewLabel: string = '';
-  @State colsLabel: string = '';
-  @State showUnreadBadge: boolean = true;
-  @State showDownloadBadge: boolean = true;
-  @State showLocalBadge: boolean = false;
-  @State showLanguageBadge: boolean = false;
-  @State showCategoryTabs: boolean = true;
-  @State showMangaCount: boolean = false;
-  private sortLabels: string[] = [];
-  private viewLabels: string[] = [];
-  private colsLabels: string[] = [];
 
-  aboutToAppear(): void {
-    this.sortLabels = [
-      Util.resStr(this.getUIContext(), $r('app.string.lib_sort_alpha')),
-      Util.resStr(this.getUIContext(), $r('app.string.lib_sort_total')),
-      Util.resStr(this.getUIContext(), $r('app.string.lib_sort_last_read')),
-      Util.resStr(this.getUIContext(), $r('app.string.lib_sort_last_update')),
-      Util.resStr(this.getUIContext(), $r('app.string.lib_sort_unread')),
-      Util.resStr(this.getUIContext(), $r('app.string.lib_sort_latest_chapter')),
-      Util.resStr(this.getUIContext(), $r('app.string.lib_sort_fetch_date')),
-      Util.resStr(this.getUIContext(), $r('app.string.lib_sort_date_added')),
-      Util.resStr(this.getUIContext(), $r('app.string.lib_sort_random'))
-    ];
-    this.viewLabels = [
-      Util.resStr(this.getUIContext(), $r('app.string.lib_display_compact')),
-      Util.resStr(this.getUIContext(), $r('app.string.lib_display_comfortable')),
-      Util.resStr(this.getUIContext(), $r('app.string.lib_display_cover')),
-      Util.resStr(this.getUIContext(), $r('app.string.lib_display_list'))
-    ];
-    this.colsLabels = [
-      Util.resStr(this.getUIContext(), $r('app.string.lib_display_grid_auto')),
-      '2', '3', '4', '5', '6', '7', '8', '9', '10'
-    ];
-    const sort = Settings.getLibrarySort();
-    const si = SORT_VALUES.indexOf(sort);
-    this.sortLabel = si >= 0 ? this.sortLabels[si] : this.sortLabels[0];
-    this.sortAsc = Settings.getLibrarySortAsc();
-    const view = Settings.getLibraryView();
-    const vi = VIEW_VALUES.indexOf(view);
-    this.viewLabel = vi >= 0 ? this.viewLabels[vi] : this.viewLabels[0];
-    const cols = Settings.getLibraryGridCols();
-    const ci = COLS_VALUES.indexOf(cols);
-    this.colsLabel = ci >= 0 ? this.colsLabels[ci] : this.colsLabels[0];
-    this.showUnreadBadge = Settings.getShowUnreadBadge();
-    this.showDownloadBadge = Settings.getShowDownloadBadge();
-    this.showLocalBadge = Settings.getShowLocalBadge();
-    this.showLanguageBadge = Settings.getShowLanguageBadge();
-    this.showCategoryTabs = Settings.getShowCategoryTabs();
-    this.showMangaCount = Settings.getShowMangaCount();
+  private sortIndex(): number {
+    const i = SORT_VALUES.indexOf(Settings.getLibrarySort());
+    return i >= 0 ? i : 0;
+  }
+
+  private viewIndex(): number {
+    const i = VIEW_VALUES.indexOf(Settings.getLibraryView());
+    return i >= 0 ? i : 0;
+  }
+
+  private colsIndex(): number {
+    const i = COLS_VALUES.indexOf(Settings.getLibraryGridCols());
+    return i >= 0 ? i : 0;
   }
 
   build() {
@@ -76,108 +37,100 @@ export struct LibrarySettingsPage {
         Scroll() {
           Column() {
             PrefGroup({ groupTitle: $r('app.string.lib_set_sort_group') }) {
-              SelectRow({
+              PrefSelectRow({
                 title: $r('app.string.lib_set_sort_default'),
-                value: this.sortLabel,
-                options: this.sortLabels,
-                onSelect: (value: string): void => {
-                  const i = this.sortLabels.indexOf(value);
-                  if (i >= 0) {
-                    Settings.setLibrarySort(SORT_VALUES[i]);
-                    this.sortLabel = value;
-                  }
+                options: [
+                  $r('app.string.lib_sort_alpha'), $r('app.string.lib_sort_total'),
+                  $r('app.string.lib_sort_last_read'), $r('app.string.lib_sort_last_update'),
+                  $r('app.string.lib_sort_unread'), $r('app.string.lib_sort_latest_chapter'),
+                  $r('app.string.lib_sort_fetch_date'), $r('app.string.lib_sort_date_added'),
+                  $r('app.string.lib_sort_random')
+                ],
+                selectedIndex: this.sortIndex(),
+                onSelectIndex: (index: number): void => {
+                  Settings.setLibrarySort(SORT_VALUES[index]);
                 }
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
-              SwitchRow({
+              PrefSwitchRow({
                 title: $r('app.string.lib_set_sort_asc'),
-                isOn: this.sortAsc,
-                onChange: (value: boolean): void => {
-                  this.sortAsc = value;
+                initValue: Settings.getLibrarySortAsc(),
+                apply: (value: boolean): void => {
                   Settings.setLibrarySortAsc(value);
                 }
               })
             }
 
             PrefGroup({ groupTitle: $r('app.string.lib_set_display_group') }) {
-              SelectRow({
+              PrefSelectRow({
                 title: $r('app.string.lib_set_view_default'),
-                value: this.viewLabel,
-                options: this.viewLabels,
-                onSelect: (value: string): void => {
-                  const i = this.viewLabels.indexOf(value);
-                  if (i >= 0) {
-                    Settings.setLibraryView(VIEW_VALUES[i]);
-                    this.viewLabel = value;
-                  }
+                options: [
+                  $r('app.string.lib_display_compact'), $r('app.string.lib_display_comfortable'),
+                  $r('app.string.lib_display_cover'), $r('app.string.lib_display_list')
+                ],
+                selectedIndex: this.viewIndex(),
+                onSelectIndex: (index: number): void => {
+                  Settings.setLibraryView(VIEW_VALUES[index]);
                 }
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
-              SelectRow({
+              PrefSelectRow({
                 title: $r('app.string.lib_set_grid_cols'),
-                value: this.colsLabel,
-                options: this.colsLabels,
-                onSelect: (value: string): void => {
-                  const i = this.colsLabels.indexOf(value);
-                  if (i >= 0) {
-                    Settings.setLibraryGridCols(COLS_VALUES[i]);
-                    this.colsLabel = value;
-                  }
+                options: [
+                  $r('app.string.lib_display_grid_auto'), '2', '3', '4', '5', '6', '7', '8', '9', '10'
+                ],
+                selectedIndex: this.colsIndex(),
+                onSelectIndex: (index: number): void => {
+                  Settings.setLibraryGridCols(COLS_VALUES[index]);
                 }
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
-              SwitchRow({
+              PrefSwitchRow({
                 title: $r('app.string.lib_set_unread_badge'),
-                isOn: this.showUnreadBadge,
-                onChange: (value: boolean): void => {
-                  this.showUnreadBadge = value;
+                initValue: Settings.getShowUnreadBadge(),
+                apply: (value: boolean): void => {
                   Settings.setShowUnreadBadge(value);
                 }
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
-              SwitchRow({
+              PrefSwitchRow({
                 title: $r('app.string.lib_set_download_badge'),
-                isOn: this.showDownloadBadge,
-                onChange: (value: boolean): void => {
-                  this.showDownloadBadge = value;
+                initValue: Settings.getShowDownloadBadge(),
+                apply: (value: boolean): void => {
                   Settings.setShowDownloadBadge(value);
                 }
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
-              SwitchRow({
+              PrefSwitchRow({
                 title: $r('app.string.lib_badge_local'),
-                isOn: this.showLocalBadge,
-                onChange: (value: boolean): void => {
-                  this.showLocalBadge = value;
+                initValue: Settings.getShowLocalBadge(),
+                apply: (value: boolean): void => {
                   Settings.setShowLocalBadge(value);
                 }
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
-              SwitchRow({
+              PrefSwitchRow({
                 title: $r('app.string.lib_badge_language'),
-                isOn: this.showLanguageBadge,
-                onChange: (value: boolean): void => {
-                  this.showLanguageBadge = value;
+                initValue: Settings.getShowLanguageBadge(),
+                apply: (value: boolean): void => {
                   Settings.setShowLanguageBadge(value);
                 }
               })
             }
 
             PrefGroup({ groupTitle: $r('app.string.lib_display_tabs_group') }) {
-              SwitchRow({
+              PrefSwitchRow({
                 title: $r('app.string.lib_show_category_tabs'),
-                isOn: this.showCategoryTabs,
-                onChange: (value: boolean): void => {
-                  this.showCategoryTabs = value;
+                initValue: Settings.getShowCategoryTabs(),
+                apply: (value: boolean): void => {
                   Settings.setShowCategoryTabs(value);
                 }
               })
               Divider().color(this.pal.divider).margin({ left: 16 })
-              SwitchRow({
+              PrefSwitchRow({
                 title: $r('app.string.lib_show_manga_count'),
-                isOn: this.showMangaCount,
-                onChange: (value: boolean): void => {
-                  this.showMangaCount = value;
+                initValue: Settings.getShowMangaCount(),
+                apply: (value: boolean): void => {
                   Settings.setShowMangaCount(value);
                 }
               })
@@ -197,4 +150,10 @@ export struct LibrarySettingsPage {
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)
   }
+}
+
+// 系统路由表构建入口（router_map.json 注册）
+@Builder
+export function LibrarySettingsBuilder() {
+  LibrarySettingsPage()
 }

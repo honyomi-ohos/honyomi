@@ -102,13 +102,15 @@ export class JsvmExtensionManager {
   /**
    * Loads an extension: spawns its dedicated worker, creates the isolated
    * JSVM_Context, executes the script and probes the adapter capabilities.
+   * `seed` is an optional JS prologue executed before the extension script
+   * (used to rehydrate the persisted plugin preferences store).
    */
-  static async loadExtension(key: string, code: string): Promise<JsvmExtensionInfo> {
+  static async loadExtension(key: string, code: string, seed: string = ''): Promise<JsvmExtensionInfo> {
     JsvmExtensionManager.init();
     await JsvmExtensionManager.unloadExtension(key);
     const entry = JsvmExtensionManager.spawnWorker(key);
     try {
-      const kind = await JsvmExtensionManager.waitReady(entry, code);
+      const kind = await JsvmExtensionManager.waitReady(entry, code, seed);
       entry.kind = kind;
       const methodsJson = await JsvmExtensionManager.callRaw(entry, '__methods', '[]');
       const methods = JsvmExtensionManager.unwrap<string[]>(methodsJson);
@@ -176,7 +178,6 @@ export class JsvmExtensionManager {
       broken: false
     };
     threadWorker.onmessage = (e: MessageEvents): void => {
-      console.info(`[JsvmExt] worker msg for ${key}: ${(e.data as string).slice(0, 400)}`);
       JsvmExtensionManager.onWorkerMessage(entry, e.data);
     };
     threadWorker.onerror = (err: ErrorEvent): void => {
@@ -191,6 +192,10 @@ export class JsvmExtensionManager {
     };
     threadWorker.onexit = (code: number): void => {
       console.info(`[JsvmExt] worker exit for ${key}: code=${code}`);
+      // Worker gone without an error event: fail any still-pending calls so
+      // callers do not hang until CALL_TIMEOUT_MS.
+      entry.broken = true;
+      JsvmExtensionManager.failAll(entry, new Error('worker exited unexpectedly'));
     };
     JsvmExtensionManager.extensions.set(key, entry);
     return entry;
@@ -242,7 +247,7 @@ export class JsvmExtensionManager {
     // 'ready' / 'destroyed' are consumed via callRaw, nothing to do here.
   }
 
-  private static waitReady(entry: ExtensionEntry, code: string): Promise<string> {
+  private static waitReady(entry: ExtensionEntry, code: string, seed: string): Promise<string> {
     const promise = new Promise<string>((resolve, reject) => {
       const timer = setTimeout(() => {
         entry.pending.delete(READY_SEQ);
@@ -258,7 +263,7 @@ export class JsvmExtensionManager {
         timer: timer
       });
     });
-    const initMessage: Record<string, Object> = { 'type': 'init', 'code': code };
+    const initMessage: Record<string, Object> = { 'type': 'init', 'code': seed + code };
     entry.worker.postMessage(JSON.stringify(initMessage));
     return promise;
   }

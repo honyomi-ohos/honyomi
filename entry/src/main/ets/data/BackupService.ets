@@ -2,10 +2,40 @@ import { picker, fileIo } from '@kit.CoreFileKit';
 import { common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { Settings } from '../common/Settings';
+import { AppDb } from './AppDb';
 import { MangaRepo, ChapterRepo, CategoryRepo } from './Repos';
 import { SManga, CategoryRecord, MangaRecord, ChapterRecord, ContentType } from '../model/Models';
 
 // 备份/恢复（对齐 Mihon BackupCreator / BackupRestore 的 JSON 子集）
+
+// JSON 解析的宽松原始模型（字段可缺失/类型不定），校验后拷入严格模型
+interface RawBackupChapter {
+  url?: string;
+  name?: string;
+  chapterNumber?: number;
+  read?: boolean;
+  lastPageRead?: number;
+}
+
+interface RawBackupManga {
+  sourceKey?: string;
+  url?: string;
+  title?: string;
+  thumbnailUrl?: string;
+  author?: string;
+  description?: string;
+  genre?: string;
+  status?: string;
+  category?: string;
+  contentType?: string;
+  chapters?: RawBackupChapter[];
+}
+
+interface RawBackupRoot {
+  version?: number;
+  categories?: string[];
+  manga?: RawBackupManga[];
+}
 
 export interface BackupChapter {
   url: string;
@@ -122,60 +152,112 @@ export class BackupService {
 
   // 返回恢复的漫画数；-1 表示未选择文件；-2 表示解析失败
   private static async restore(text: string): Promise<number> {
-    let root: BackupRoot;
+    let raw: RawBackupRoot;
     try {
-      root = JSON.parse(text) as BackupRoot;
+      raw = JSON.parse(text) as RawBackupRoot;
     } catch (e) {
       hilog.error(0x0001, 'Backup', 'parse backup json failed');
       return -2;
     }
-    if (root.manga === undefined || root.categories === undefined) {
+    if (raw === null || raw.manga === undefined || raw.categories === undefined) {
       return -2;
     }
-    // 分类按 name 映射，缺失则补建
-    const existing: CategoryRecord[] = await CategoryRepo.list();
-    const existingNames = new Set<string>();
-    for (const c of existing) {
-      existingNames.add(c.name);
-    }
-    for (const name of root.categories) {
-      if (!existingNames.has(name)) {
-        await CategoryRepo.add(name);
+    // 逐字段校验并拷入严格模型，坏条目跳过不中断整体恢复
+    const categories: string[] = [];
+    for (const item of raw.categories) {
+      if (typeof item === 'string' && item !== '') {
+        categories.push(item);
       }
     }
-    const mapped: CategoryRecord[] = await CategoryRepo.list();
-    const categoryIdByName = new Map<string, number>();
-    for (const c of mapped) {
-      categoryIdByName.set(c.name, c.id);
-    }
-    let count = 0;
-    for (const bm of root.manga) {
-      const sm: SManga = {
-        key: bm.url,
-        title: bm.title,
-        coverUrl: bm.thumbnailUrl,
-        author: bm.author,
-        description: bm.description,
-        genre: bm.genre,
-        status: bm.status,
-      };
-      const mangaId = await MangaRepo.upsertFromSource(bm.sourceKey, sm, ContentType.normalize(bm.contentType));
-      if (mangaId < 0) {
+    const mangaList: BackupManga[] = [];
+    for (const rm of raw.manga) {
+      if (rm === null || typeof rm.sourceKey !== 'string' || rm.sourceKey === '' ||
+        typeof rm.url !== 'string' || rm.url === '') {
         continue;
       }
-      await MangaRepo.setInLibrary(mangaId, true);
-      const categoryId = categoryIdByName.get(bm.category);
-      if (categoryId !== undefined && categoryId !== 1) {
-        await MangaRepo.setCategory(mangaId, categoryId);
+      const chapters: BackupChapter[] = [];
+      const rawChapters: RawBackupChapter[] = rm.chapters === undefined ? [] : rm.chapters;
+      for (const rc of rawChapters) {
+        if (rc === null || typeof rc.url !== 'string' || rc.url === '') {
+          continue;
+        }
+        const bc: BackupChapter = {
+          url: rc.url,
+          name: typeof rc.name === 'string' ? rc.name : '',
+          chapterNumber: typeof rc.chapterNumber === 'number' ? rc.chapterNumber : 0,
+          read: rc.read === true,
+          lastPageRead: typeof rc.lastPageRead === 'number' ? rc.lastPageRead : 0,
+        };
+        chapters.push(bc);
       }
-      for (const bc of bm.chapters) {
-        await ChapterRepo.upsertBackup(mangaId, bc.url, bc.name, bc.chapterNumber, bc.read, bc.lastPageRead);
-      }
-      count += 1;
+      const bm: BackupManga = {
+        sourceKey: rm.sourceKey,
+        url: rm.url,
+        title: typeof rm.title === 'string' ? rm.title : '',
+        thumbnailUrl: typeof rm.thumbnailUrl === 'string' ? rm.thumbnailUrl : '',
+        author: typeof rm.author === 'string' ? rm.author : '',
+        description: typeof rm.description === 'string' ? rm.description : '',
+        genre: typeof rm.genre === 'string' ? rm.genre : '',
+        status: typeof rm.status === 'string' ? rm.status : '',
+        category: typeof rm.category === 'string' ? rm.category : '默认',
+        contentType: typeof rm.contentType === 'string' ? rm.contentType : 'manga',
+        chapters: chapters,
+      };
+      mangaList.push(bm);
     }
-    const dirty = AppStorage.get<number>('libDirty');
-    AppStorage.setOrCreate('libDirty', (dirty !== undefined ? dirty : 0) + 1);
-    return count;
+    const store = await AppDb.get();
+    // 恢复全程单事务：任一环节失败整体回滚，书架保持恢复前状态
+    store.beginTransaction();
+    try {
+      // 分类按 name 映射，缺失则补建
+      const existing: CategoryRecord[] = await CategoryRepo.list();
+      const existingNames = new Set<string>();
+      for (const c of existing) {
+        existingNames.add(c.name);
+      }
+      for (const name of categories) {
+        if (!existingNames.has(name)) {
+          await CategoryRepo.add(name);
+        }
+      }
+      const mapped: CategoryRecord[] = await CategoryRepo.list();
+      const categoryIdByName = new Map<string, number>();
+      for (const c of mapped) {
+        categoryIdByName.set(c.name, c.id);
+      }
+      let count = 0;
+      for (const bm of mangaList) {
+        const sm: SManga = {
+          key: bm.url,
+          title: bm.title,
+          coverUrl: bm.thumbnailUrl,
+          author: bm.author,
+          description: bm.description,
+          genre: bm.genre,
+          status: bm.status,
+        };
+        const mangaId = await MangaRepo.upsertFromSource(bm.sourceKey, sm, ContentType.normalize(bm.contentType));
+        if (mangaId < 0) {
+          continue;
+        }
+        await MangaRepo.setInLibrary(mangaId, true);
+        const categoryId = categoryIdByName.get(bm.category);
+        if (categoryId !== undefined && categoryId !== 1) {
+          await MangaRepo.setCategory(mangaId, categoryId);
+        }
+        for (const bc of bm.chapters) {
+          await ChapterRepo.upsertBackup(mangaId, bc.url, bc.name, bc.chapterNumber, bc.read, bc.lastPageRead);
+        }
+        count += 1;
+      }
+      store.commit();
+      const dirty = AppStorage.get<number>('libDirty');
+      AppStorage.setOrCreate('libDirty', (dirty !== undefined ? dirty : 0) + 1);
+      return count;
+    } catch (e) {
+      store.rollBack();
+      throw new Error(`restore backup failed: ${e}`);
+    }
   }
 
   // ---- 自动备份（对齐 Mihon BackupCreateJob 定时任务，应用启动时检查到期与否）----
