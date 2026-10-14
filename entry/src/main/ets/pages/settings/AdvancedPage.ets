@@ -3,15 +3,18 @@ import { Settings } from '../../common/Settings';
 import { Util } from '../../common/Util';
 import { CookieJar } from '../../net/CookieJar';
 import { PageHeader } from '../components/PageHeader';
-import { PrefGroup, TextRow } from '../components/Prefs';
+import { PrefGroup, TextRow, IconRow } from '../components/Prefs';
 import { InputDialog } from '../components/Dialogs';
+import { OnboardingParams } from '../../model/RouteParams';
 
-// 高级设置内容：Cookie / AniList（备份、章节缓存清理已移至「数据与存储」）
+// 高级设置内容：新手引导 / Cookie / AniList（备份、章节缓存清理已移至「数据与存储」）
 @Component
 export struct AdvancedContent {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State tokenLabel: string = '';
+  // 打开新手引导（由宿主注入导航；lg 双栏与窄屏壳均 push Onboarding 路由）
+  onOpenOnboarding: () => void = () => {};
 
   aboutToAppear(): void {
     this.tokenLabel = Settings.getAnilistToken() === '' ?
@@ -46,6 +49,16 @@ export struct AdvancedContent {
     Scroll() {
       Column() {
         PrefGroup() {
+          IconRow({
+            title: $r('app.string.pref_onboarding_guide'),
+            icon: 'rocket_launch',
+            onTap: (): void => {
+              this.onOpenOnboarding();
+            }
+          })
+        }
+
+        PrefGroup() {
           TextRow({
             title: $r('app.string.advanced_clear_cookies'),
             onTap: (): void => {
@@ -79,12 +92,18 @@ export struct AdvancedContent {
 @Component
 export struct AdvancedPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @Consume('navStack') pathStack: NavPathStack;
 
   build() {
     NavDestination() {
       Column() {
         PageHeader({ title: $r('app.string.advanced_title') })
-        AdvancedContent()
+        AdvancedContent({
+          onOpenOnboarding: (): void => {
+            const params: OnboardingParams = { firstRun: false };
+            this.pathStack.pushPathByName('Onboarding', params);
+          }
+        })
           .layoutWeight(1)
       }
       .width('100%')

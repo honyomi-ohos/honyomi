@@ -136,7 +136,7 @@ export class BackupService {
         genre: m.genre,
         status: m.status,
         category: categoryById.get(m.categoryId) !== undefined ?
-          categoryById.get(m.categoryId) as string : '默认',
+          categoryById.get(m.categoryId) as string : ContentType.categoryName(m.contentType),
         contentType: ContentType.normalize(m.contentType),
         chapters: backupChapters,
       };
@@ -199,7 +199,8 @@ export class BackupService {
         description: typeof rm.description === 'string' ? rm.description : '',
         genre: typeof rm.genre === 'string' ? rm.genre : '',
         status: typeof rm.status === 'string' ? rm.status : '',
-        category: typeof rm.category === 'string' ? rm.category : '默认',
+        category: typeof rm.category === 'string' && rm.category !== '' ? rm.category :
+          ContentType.categoryName(typeof rm.contentType === 'string' ? rm.contentType : ContentType.MANGA),
         contentType: typeof rm.contentType === 'string' ? rm.contentType : 'manga',
         chapters: chapters,
       };

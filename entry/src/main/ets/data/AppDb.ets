@@ -1,6 +1,7 @@
 import { relationalStore } from '@kit.ArkData';
 import { common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { ContentType } from '../model/Models';
 
 // RelationalStore 数据库（对齐 Mihon Room schema 的 P1 子集）
 // 迁移策略：PRAGMA user_version 版本号顺序迁移，失败即抛出（不吞真实错误）
@@ -35,12 +36,33 @@ export class AppDb {
     await AppDb.createTables(store);
     await AppDb.migrate(store);
     await AppDb.createIndexes(store);
-    await store.executeSql(
-      `INSERT INTO category(id, name, sortOrder)
-       SELECT 1, '默认', 0
-       WHERE NOT EXISTS (SELECT 1 FROM category WHERE id = 1)`);
+    await AppDb.ensureDefaultCategories(store);
     AppDb.store = store;
     hilog.info(0x0001, 'AppDb', 'database ready');
+  }
+
+  // 初始分类：漫画 / 小说 / 动画（对应三种内容类型），每次启动幂等执行；
+  // 旧库「默认」更名为「漫画」（id = 1 为删除分类/入库缺省的回退分类），
+  // 另两类按名补建（用户已建同名分类则复用，不占固定 id）
+  private static async ensureDefaultCategories(store: relationalStore.RdbStore): Promise<void> {
+    await store.executeSql(
+      `INSERT INTO category(id, name, sortOrder)
+       SELECT 1, ?, 0
+       WHERE NOT EXISTS (SELECT 1 FROM category WHERE id = 1)`,
+      [ContentType.CATEGORY_MANGA]);
+    await store.executeSql(
+      `UPDATE category SET name = ? WHERE id = 1 AND name = '默认'`,
+      [ContentType.CATEGORY_MANGA]);
+    await store.executeSql(
+      `INSERT INTO category(name, sortOrder)
+       SELECT ?, (SELECT COUNT(*) FROM category)
+       WHERE NOT EXISTS (SELECT 1 FROM category WHERE name = ?)`,
+      [ContentType.CATEGORY_NOVEL, ContentType.CATEGORY_NOVEL]);
+    await store.executeSql(
+      `INSERT INTO category(name, sortOrder)
+       SELECT ?, (SELECT COUNT(*) FROM category)
+       WHERE NOT EXISTS (SELECT 1 FROM category WHERE name = ?)`,
+      [ContentType.CATEGORY_VIDEO, ContentType.CATEGORY_VIDEO]);
   }
 
   private static async createTables(store: relationalStore.RdbStore): Promise<void> {

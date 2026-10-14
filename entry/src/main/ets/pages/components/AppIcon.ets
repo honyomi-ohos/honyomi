@@ -107,7 +107,8 @@ const ICONS: Record<string, Resource> = {
   'fullscreen': $r('app.media.ic_fullscreen'),
   'fullscreen_exit': $r('app.media.ic_fullscreen_exit'),
   'forward_10': $r('app.media.ic_forward_10'),
-  'replay_10': $r('app.media.ic_replay_10')
+  'replay_10': $r('app.media.ic_replay_10'),
+  'rocket_launch': $r('app.media.ic_rocket_launch')
 };
 
 export class AppIconRes {

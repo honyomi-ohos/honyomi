@@ -317,6 +317,15 @@ export class Settings {
     Settings.setNum('startTab', v);
   }
 
+  // ---- 新手引导（对齐 Mihon shownOnboarding）----
+  static getShownOnboarding(): boolean {
+    return Settings.getBool('shownOnboarding', false);
+  }
+
+  static setShownOnboarding(v: boolean): void {
+    Settings.setBool('shownOnboarding', v);
+  }
+
   // ---- 应用语言 ----
   // 'auto' 跟随系统，否则为 BCP-47 语言标签（如 'zh-Hans' / 'en-US'）
   static getAppLanguage(): string {

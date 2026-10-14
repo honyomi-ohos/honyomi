@@ -176,8 +176,12 @@ lxb_status_t FindCallback(lxb_dom_node_t *node, lxb_css_selector_specificity_t s
     }
 
     SelectedElement element;
-    (void)lxb_html_serialize_cb(node, AppendSerialize, &element.outerHtml);
-    (void)lxb_html_serialize_tree_cb(node, AppendSerialize, &element.innerHtml);
+    // serialize semantics (lexbor):
+    //   serialize_cb(element)  -> open tag markup only
+    //   serialize_tree_cb(node) -> node + whole subtree (outerHTML)
+    //   serialize_deep_cb(node) -> children only (innerHTML)
+    (void)lxb_html_serialize_tree_cb(node, AppendSerialize, &element.outerHtml);
+    (void)lxb_html_serialize_deep_cb(node, AppendSerialize, &element.innerHtml);
     std::string rawText;
     CollectTextFrom(node, rawText);
     element.text = CollapseWhitespace(rawText);

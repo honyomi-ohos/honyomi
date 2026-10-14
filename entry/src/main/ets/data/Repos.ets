@@ -130,17 +130,25 @@ export class MangaRepo {
     return list;
   }
 
-  // 仅切换书架标记；首次加入时才落默认分类与 addedAt，
+  // 仅切换书架标记；首次加入时按内容类型落对应默认分类（小说→小说、视频→动画、
+  // 其余→漫画；同名分类被删/改名时回退 id = 1）与 addedAt，
   // 重新加入/移出不得抹掉用户已设置的 categoryId/addedAt
   static async setInLibrary(id: number, inLibrary: boolean): Promise<void> {
     const store = await AppDb.get();
     const flag = inLibrary ? 1 : 0;
     await store.executeSql(
       `UPDATE manga SET inLibrary = ?,` +
-      ` categoryId = CASE WHEN ? = 1 AND inLibrary = 0 THEN 1 ELSE categoryId END,` +
+      ` categoryId = CASE WHEN ? = 1 AND inLibrary = 0 THEN` +
+      ` COALESCE((SELECT c.id FROM category c WHERE c.name =` +
+      ` CASE manga.contentType WHEN ? THEN ? WHEN ? THEN ? ELSE ? END` +
+      ` ORDER BY c.sortOrder ASC, c.id ASC LIMIT 1), 1) ELSE categoryId END,` +
       ` addedAt = CASE WHEN ? = 1 AND inLibrary = 0 THEN ? ELSE addedAt END` +
       ` WHERE id = ?`,
-      [flag, flag, flag, Date.now(), id]);
+      [flag, flag,
+        ContentType.NOVEL, ContentType.CATEGORY_NOVEL,
+        ContentType.VIDEO, ContentType.CATEGORY_VIDEO,
+        ContentType.CATEGORY_MANGA,
+        flag, Date.now(), id]);
   }
 
   static async setCategory(id: number, categoryId: number): Promise<void> {

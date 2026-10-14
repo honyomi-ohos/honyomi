@@ -38,6 +38,22 @@ export class ContentType {
   static readonly NOVEL: string = 'novel';
   static readonly VIDEO: string = 'video';
 
+  // 各类型对应的默认分类名（书架初始三分类，首次入库时按类型落分类）
+  static readonly CATEGORY_MANGA: string = '漫画';
+  static readonly CATEGORY_NOVEL: string = '小说';
+  static readonly CATEGORY_VIDEO: string = '动画';
+
+  // 内容类型 → 默认分类名
+  static categoryName(raw: string | undefined): string {
+    if (raw === ContentType.NOVEL) {
+      return ContentType.CATEGORY_NOVEL;
+    }
+    if (raw === ContentType.VIDEO) {
+      return ContentType.CATEGORY_VIDEO;
+    }
+    return ContentType.CATEGORY_MANGA;
+  }
+
   static normalize(raw: string | undefined): string {
     if (raw === ContentType.NOVEL || raw === ContentType.VIDEO) {
       return raw;

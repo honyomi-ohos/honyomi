@@ -14,6 +14,7 @@ import { DataStorageContent } from './DataStoragePage';
 import { AdvancedContent } from './AdvancedPage';
 import { AboutContent } from './AboutPage';
 import { LanguageContent } from './LanguagePage';
+import { OnboardingParams } from '../../model/RouteParams';
 
 const TAB_COUNT: number = 5;
 // lg 双栏左栏分类（index 与 CAT_ICONS、catTitle() 一一对应）
@@ -201,7 +202,12 @@ export struct SettingsPage {
           DataStorageContent()
             .layoutWeight(1)
         } else if (this.selCat === 8) {
-          AdvancedContent()
+          AdvancedContent({
+            onOpenOnboarding: (): void => {
+              const params: OnboardingParams = { firstRun: false };
+              this.pathStack.pushPathByName('Onboarding', params);
+            }
+          })
             .layoutWeight(1)
         } else {
           AboutContent()

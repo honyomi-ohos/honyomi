@@ -635,6 +635,14 @@
     { "name": "detail_cover_save_gallery_failed", "value": "儲存封面時發生錯誤" },
     { "name": "detail_cover_share_failed", "value": "分享封面時發生錯誤" },
     { "name": "detail_edit", "value": "編輯" },
-    { "name": "detail_delete", "value": "刪除" }
+    { "name": "detail_delete", "value": "刪除" },
+    { "name": "onboarding_heading", "value": "歡迎！" },
+    { "name": "onboarding_description", "value": "先完成一些初始設定，之後可隨時在設定中變更。" },
+    { "name": "onboarding_action_next", "value": "下一步" },
+    { "name": "onboarding_action_finish", "value": "開始使用" },
+    { "name": "pref_onboarding_guide", "value": "新手引導" },
+    { "name": "getting_started_guide", "value": "入門指南" },
+    { "name": "onboarding_guides_new_user", "value": "第一次使用 %s？建議先閱讀入門指南。" },
+    { "name": "onboarding_guides_returning_user", "value": "重新安裝 %s？" }
 ]
 }

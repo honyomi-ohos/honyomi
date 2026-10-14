@@ -19,7 +19,7 @@ import { ContentOpen } from './ContentOpen';
 import { AppIcon } from './components/AppIcon';
 import { CfVerifySheet } from './components/CfVerifySheet';
 import { UPDATES_MORPH, LIBRARY_MORPH, BROWSE_MORPH, PathMorph } from './components/PathMorph';
-import { DetailParams } from '../model/RouteParams';
+import { DetailParams, OnboardingParams } from '../model/RouteParams';
 
 // 桌面卡片 router 事件载荷（由 EntryAbility.handleCardWant 写入 AppStorage）
 interface CardActionPayload {
@@ -306,6 +306,8 @@ struct Index {
   // 一多响应式：窗口宽度 + 已挂载页签位掩码（宽屏下按需挂载后驻留保状态）
   @State windowW: number = 0;
   @State mountedMask: number = 1;
+  // 首启引导只拉起一次（onPageShow 每次回前台都会触发，需防重复）
+  private onboardingLaunched: boolean = false;
   private tabsController: HdsTabsController = new HdsTabsController();
 
   // lg 断点（≥840vp）：底部页签切换为侧边导航栏（华为大屏导航规范）
@@ -361,6 +363,18 @@ struct Index {
     this.loadInstalledPlugins();
     this.autoRefresh();
     this.consumeCardAction();
+  }
+
+  // 首启未完成引导时拉起引导页（页面挂载完成后，对齐 Mihon ShowOnboarding）
+  onPageShow(): void {
+    if (this.onboardingLaunched) {
+      return;
+    }
+    this.onboardingLaunched = true;
+    if (!Settings.getShownOnboarding()) {
+      const params: OnboardingParams = { firstRun: true };
+      this.pathStack.pushPathByName('Onboarding', params);
+    }
   }
 
   // 桌面卡片点击导航：切页签或跳阅读器/详情页

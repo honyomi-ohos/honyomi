@@ -673,6 +673,14 @@
     { "name": "detail_cover_save_gallery_failed", "value": "Error saving cover" },
     { "name": "detail_cover_share_failed", "value": "Error sharing cover" },
     { "name": "detail_edit", "value": "Edit" },
-    { "name": "detail_delete", "value": "Delete" }
+    { "name": "detail_delete", "value": "Delete" },
+    { "name": "onboarding_heading", "value": "Welcome!" },
+    { "name": "onboarding_description", "value": "Let's set some things up first. You can always change these in the settings later too." },
+    { "name": "onboarding_action_next", "value": "Next" },
+    { "name": "onboarding_action_finish", "value": "Get started" },
+    { "name": "pref_onboarding_guide", "value": "Onboarding guide" },
+    { "name": "getting_started_guide", "value": "Getting started guide" },
+    { "name": "onboarding_guides_new_user", "value": "New to %s? We recommend checking out the getting started guide." },
+    { "name": "onboarding_guides_returning_user", "value": "Reinstalling %s?" }
 ]
 }

@@ -25,3 +25,8 @@ export interface MigrateSearchParams {
 export interface ExtensionDetailParams {
   pluginKey: string;
 }
+
+export interface OnboardingParams {
+  // true：首启自动拉起（未完成引导时拦截返回，防止跳过）
+  firstRun: boolean;
+}
