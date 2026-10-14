@@ -28,6 +28,8 @@ export class AppKeys {
   static readonly INCOGNITO: string = 'incognito';
   // 跨页通信
   static readonly CARD_ACTION: string = 'cardAction';
+  // 视频播放器外部快进/跳转指令（JSON 字符串，VideoPlayerPage 消费）
+  static readonly VIDEO_SEEK: string = 'videoSeek';
   static readonly CF_CHALLENGE_URL: string = 'cfChallengeUrl';
   // CF 质询通过信号（计数器递增代表验证完成，JsvmSource 轮询读取）
   static readonly CF_VERIFIED_TICK: string = 'cfVerifiedTick';

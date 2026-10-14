@@ -15,7 +15,7 @@ import { ReaderWindow } from '../common/ReaderWindow';
 import { ReaderChapterNav, ChapterNeighbors } from '../common/ReaderChapterNav';
 import { DownloadService } from '../data/DownloadService';
 import { SmartImage } from './components/SmartImage';
-import { ComicStripViewer } from './components/ComicStripViewer';
+import { ComicStripViewer, STRIP_LEAD_COUNT } from './components/ComicStripViewer';
 import { SwitchRow, TextRow } from './components/Prefs';
 import { PickerSheet } from './components/PickerSheet';
 import { EmulationFlipView } from './components/PageFlip';
@@ -27,9 +27,15 @@ import {
   ReaderMenuIconButton,
   ReaderIndicatorBadge,
   ReaderOrientationSheet,
-  ReaderFilterArea
+  ReaderFilterArea,
+  ReaderTransition
 } from './components/ReaderChrome';
 import { LoadingBackButton } from './components/LoadingBackButton';
+
+// 章节过渡标记页（PageDataSource 混入的伪页，url 为保留前缀，index 为负）：
+// 翻到章节边界时展示上一章/下一章过渡视图（对齐 Mihon ChapterTransition）
+const TRANS_PREV_URL: string = '@@transition/prev';
+const TRANS_NEXT_URL: string = '@@transition/next';
 
 // LazyForEach 数据源
 class PageDataSource implements IDataSource {
@@ -84,6 +90,11 @@ export struct ReaderPage {
   @State loading: boolean = true;
   @State hasPrev: boolean = false;
   @State hasNext: boolean = false;
+  // 相邻章节名（过渡视图展示；空串表示无相邻章节）
+  @State prevChapterName: string = '';
+  @State nextChapterName: string = '';
+  // 仿真翻页边界的章节过渡覆盖层：1=下一章过渡，-1=上一章过渡，0=无
+  @State transOverlay: number = 0;
   @State crop: boolean = false;
   @State readerTheme: number = 3;
   @State brightLv: number = 0;
@@ -139,6 +150,8 @@ export struct ReaderPage {
   private chapterId: number = -1;
   // 章节加载代次号：连续切章时旧 loadChapter 续体据此丢弃
   private loadGen: number = 0;
+  // 边界触发的切章落点：1=下一章落在首页，-1=上一章落在末页，0=按历史进度恢复
+  private gotoBoundary: number = 0;
   // 条漫续读定位定时器 id（aboutToDisappear 清除）
   private resumeTimerId: number = -1;
   // 内容区在窗口中的偏移（TouchObject.x/y 为窗口坐标，点击热区需换算为组件内坐标）
@@ -237,6 +250,7 @@ export struct ReaderPage {
     const gen = ++this.loadGen;
     this.loading = true;
     this.showMenu = false;
+    this.transOverlay = 0;
     // 切章：先结算上一章的阅读会话
     ReadingStatsRepo.flush();
     try {
@@ -287,8 +301,21 @@ export struct ReaderPage {
       if (this.mode === 'smart_grip' && !this.gripSupported) {
         this.mode = 'ltr';
       }
-      this.currentReal = chapter.lastPageRead > 0 && chapter.lastPageRead < pages.length
-        ? chapter.lastPageRead : 0;
+      // 边界切章落点：向前进下一章落在首页，向回退上一章落在末页（对齐 Mihon 无缝切换）；
+      // 菜单按钮切章按历史进度恢复
+      if (this.gotoBoundary < 0 && pages.length > 0) {
+        this.currentReal = pages.length - 1;
+      } else if (this.gotoBoundary > 0) {
+        this.currentReal = 0;
+      } else {
+        this.currentReal = chapter.lastPageRead > 0 && chapter.lastPageRead < pages.length
+          ? chapter.lastPageRead : 0;
+      }
+      this.gotoBoundary = 0;
+      await this.refreshNeighbors();
+      if (gen !== this.loadGen) {
+        return;
+      }
       this.applyMode(true);
       await HistoryRepo.upsert(chapter.mangaId, chapter.id, this.currentReal);
       if (gen !== this.loadGen) {
@@ -296,7 +323,6 @@ export struct ReaderPage {
       }
       // 开始本章的阅读时长计时
       ReadingStatsRepo.begin(chapter.mangaId, chapter.id);
-      await this.refreshNeighbors();
     } catch (e) {
       // 加载失败清空旧章页面，防止旧页码经 persistProgress 写入本章进度
       if (gen === this.loadGen) {
@@ -315,22 +341,50 @@ export struct ReaderPage {
     const n: ChapterNeighbors = await ReaderChapterNav.neighbors(this.mangaId, this.chapterId);
     this.hasPrev = n.hasPrev;
     this.hasNext = n.hasNext;
+    let prevName = '';
+    let nextName = '';
+    for (let i = 0; i < n.chapters.length; i++) {
+      const c: ChapterRecord = n.chapters[i];
+      if (n.prevId > 0 && c.id === n.prevId) {
+        prevName = c.name;
+      }
+      if (n.nextId > 0 && c.id === n.nextId) {
+        nextName = c.name;
+      }
+    }
+    this.prevChapterName = prevName;
+    this.nextChapterName = nextName;
   }
 
-  // 根据模式构建展示页序并恢复进度
+  // 根据模式构建展示页序（含章节边界过渡页）并恢复进度：
+  // 非 RTL：[上一章过渡, 页0..页N-1, 下一章过渡]；RTL 整体反转（阅读前进 = 索引递减）
   private applyMode(scrollToResume: boolean): void {
-    this.coverX = Util.zeros(this.pages.length);
-    this.coverY = Util.zeros(this.pages.length);
-    this.coverZ = Util.zeros(this.pages.length);
+    const cellCount = this.pages.length + 2;
+    this.coverX = Util.zeros(cellCount);
+    this.coverY = Util.zeros(cellCount);
+    this.coverZ = Util.zeros(cellCount);
+    const cells: SPage[] = [];
+    const prevT: SPage = { index: -1, url: TRANS_PREV_URL };
+    const nextT: SPage = { index: -2, url: TRANS_NEXT_URL };
     if (this.mode === 'rtl') {
-      this.dataSource.setPages(this.pages.slice().reverse());
-      this.displayIndex = this.pages.length - 1 - this.currentReal;
+      cells.push(nextT);
+      for (let i = this.pages.length - 1; i >= 0; i--) {
+        cells.push(this.pages[i]);
+      }
+      cells.push(prevT);
+      this.dataSource.setPages(cells);
+      this.displayIndex = this.pages.length - this.currentReal;
     } else {
-      this.dataSource.setPages(this.pages);
-      this.displayIndex = this.currentReal;
+      cells.push(prevT);
+      for (let i = 0; i < this.pages.length; i++) {
+        cells.push(this.pages[i]);
+      }
+      cells.push(nextT);
+      this.dataSource.setPages(cells);
+      this.displayIndex = this.currentReal + 1;
     }
     if (this.mode === 'webtoon' && scrollToResume) {
-      const target = this.currentReal;
+      const target = this.currentReal + STRIP_LEAD_COUNT;
       if (this.resumeTimerId !== -1) {
         clearTimeout(this.resumeTimerId);
       }
@@ -342,22 +396,45 @@ export struct ReaderPage {
     this.updateGripListener(true);
   }
 
+  // 展示单元格（含过渡页）→ 真实页序；过渡页换算结果越界由调用方校验
   private displayToReal(displayIdx: number): number {
     if (this.mode === 'rtl') {
-      return this.pages.length - 1 - displayIdx;
+      return this.pages.length - displayIdx;
     }
-    return displayIdx;
+    return displayIdx - 1;
   }
 
   private realToDisplay(realIdx: number): number {
     if (this.mode === 'rtl') {
-      return this.pages.length - 1 - realIdx;
+      return this.pages.length - realIdx;
     }
-    return realIdx;
+    return realIdx + 1;
+  }
+
+  // 展示单元格种类：'prev'/'next' 为过渡页，'' 为普通页（首尾单元格恒为过渡页）
+  private cellKind(cell: number): string {
+    if (cell === 0) {
+      return this.mode === 'rtl' ? 'next' : 'prev';
+    }
+    if (cell === this.pages.length + 1) {
+      return this.mode === 'rtl' ? 'prev' : 'next';
+    }
+    return '';
   }
 
   private async onSwipe(displayIdx: number): Promise<void> {
     this.displayIndex = displayIdx;
+    const kind = this.cellKind(displayIdx);
+    if (kind === 'next') {
+      // 落在“下一章”过渡页：没有下一章时呼出菜单（对齐 Mihon），有则等待继续前翻
+      if (!this.hasNext) {
+        this.showMenu = true;
+      }
+      return;
+    }
+    if (kind === 'prev') {
+      return;
+    }
     const real = this.displayToReal(displayIdx);
     if (real !== this.currentReal) {
       this.currentReal = real;
@@ -382,6 +459,7 @@ export struct ReaderPage {
 
   private setMode(mode: string): void {
     this.mode = mode;
+    this.transOverlay = 0;
     Settings.setReaderMode(mode);
     this.applyMode(true);
   }
@@ -501,7 +579,9 @@ export struct ReaderPage {
     }
   }
 
-  private async gotoChapter(next: boolean): Promise<void> {
+  // 切换相邻章节；fromBoundary=true 表示由阅读边界（过渡页）触发，
+  // 下一章落在首页、上一章落在末页；菜单按钮触发按历史进度恢复
+  private async gotoChapter(next: boolean, fromBoundary: boolean = false): Promise<void> {
     const targetId: number = await ReaderChapterNav.neighborChapterId(this.mangaId, this.chapterId, next);
     if (targetId === 0) {
       Util.toastRes(this.getUIContext(), next ? $r('app.string.reader_last_chapter') : $r('app.string.reader_first_chapter'));
@@ -510,6 +590,7 @@ export struct ReaderPage {
     if (next && !this.chapter.read) {
       await ChapterRepo.setRead(this.chapterId, true);
     }
+    this.gotoBoundary = fromBoundary ? (next ? 1 : -1) : 0;
     this.chapterId = targetId;
     await this.loadChapter();
   }
@@ -587,18 +668,41 @@ export struct ReaderPage {
     }
   }
 
+  // 点击热区翻页：delta 为阅读方向步进（+1 下一页，-1 上一页）。
+  // RTL 展示序与阅读序相反，展示索引步进方向需取反；章节首尾垫有过渡页，
+  // 在过渡页上继续前/后翻即切换章节（上一章落在末页，下一章落在首页）
   private step(delta: number): void {
-    const target = this.displayIndex + delta;
-    if (target < 0) {
-      Util.toastRes(this.getUIContext(), $r('app.string.reader_first_page'));
+    const ddelta = this.mode === 'rtl' ? -delta : delta;
+    const kind = this.cellKind(this.displayIndex);
+    if (kind === 'next') {
+      if (delta > 0) {
+        this.gotoChapter(true, true);
+      } else {
+        this.backFromTransition();
+      }
       return;
     }
-    if (target >= this.pages.length) {
-      Util.toastRes(this.getUIContext(), $r('app.string.reader_last_page'));
+    if (kind === 'prev') {
+      if (delta < 0) {
+        this.gotoChapter(false, true);
+      } else {
+        this.backFromTransition();
+      }
+      return;
+    }
+    const target = this.displayIndex + ddelta;
+    if (target < 0 || target > this.pages.length + 1) {
       return;
     }
     this.displayIndex = target;
     this.onSwipe(target);
+  }
+
+  // 从过渡页返回本章边界页（真实进度未变，仅回到当前页）
+  private backFromTransition(): void {
+    const back = this.realToDisplay(this.currentReal);
+    this.displayIndex = back;
+    this.onSwipe(back);
   }
 
   private useCurl(): boolean {
@@ -677,9 +781,60 @@ export struct ReaderPage {
     this.persistProgress();
   }
 
+  // 仿真翻页滑出边界：弹出章节过渡层（dir>0 越过末页，dir<0 越过首页）
   private onCurlOverscroll(dir: number): void {
-    Util.toastRes(this.getUIContext(),
-      dir < 0 ? $r('app.string.reader_first_page') : $r('app.string.reader_last_page'));
+    if (this.transOverlay !== 0) {
+      return;
+    }
+    this.transOverlay = dir > 0 ? 1 : -1;
+    // 没有下一章时呼出菜单（对齐 Mihon：落在无目标的 Next 过渡页）
+    if (dir > 0 && !this.hasNext) {
+      this.showMenu = true;
+    }
+  }
+
+  // 过渡层点击：按导航热区判定——继续前/后翻进入相邻章节，反向返回本章，中键呼出菜单
+  private onTransitionOverlayTap(x: number, y: number): void {
+    const kind = this.transOverlay > 0 ? 'next' : 'prev';
+    if (this.navMode === 'none') {
+      this.transOverlay = 0;
+      this.showMenu = !this.showMenu;
+      return;
+    }
+    let delta = 0;
+    if (this.navMode === 'vertical') {
+      const zoneY = y / (this.readerH > 0 ? this.readerH : 640);
+      if (zoneY < 0.3) {
+        delta = -1;
+      } else if (zoneY > 0.7) {
+        delta = 1;
+      }
+    } else {
+      // “下一页”是否在左侧：默认跟随阅读模式，可被导航模式覆盖
+      let nextOnLeft: boolean = this.mode === 'rtl' ||
+        (this.mode === 'smart_grip' && !this.gripRight);
+      if (this.navMode === 'ltr') {
+        nextOnLeft = false;
+      } else if (this.navMode === 'rtl') {
+        nextOnLeft = true;
+      }
+      const zone = x / (this.readerW > 0 ? this.readerW : 360);
+      if (zone < 0.3) {
+        delta = nextOnLeft ? 1 : -1;
+      } else if (zone > 0.7) {
+        delta = nextOnLeft ? -1 : 1;
+      }
+    }
+    this.transOverlay = 0;
+    if (delta === 0) {
+      this.showMenu = !this.showMenu;
+      return;
+    }
+    if (kind === 'next' && delta > 0) {
+      this.gotoChapter(true, true);
+    } else if (kind === 'prev' && delta < 0) {
+      this.gotoChapter(false, true);
+    }
   }
 
   private setPageAnim(v: string): void {
@@ -925,26 +1080,59 @@ export struct ReaderPage {
   // ---- 各阅读模式内容体（经 ReaderFilterArea 的 content 注入；@BuilderParam 传参
   // 只能调用 @Builder 方法，不能内联 UI 组件语法） ----
 
+  // 过渡视图文字色：白底深色字，灰/黑底浅色字（自动主题按系统深浅色）
+  private readerTextCol(): string {
+    const t = this.readerTheme === 3 ? (this.isDark ? 1 : 0) : this.readerTheme;
+    return t === 0 ? '#16181D' : '#ECEEF2';
+  }
+
+  private readerSubCol(): string {
+    const t = this.readerTheme === 3 ? (this.isDark ? 1 : 0) : this.readerTheme;
+    return t === 0 ? '#9916181D' : '#99ECEEF2';
+  }
+
   // 条漫模式内容体
   @Builder
   webtoonBody() {
     ComicStripViewer({
       pages: this.pages,
       sourceKey: this.manga.sourceKey,
-      initialIndex: this.currentReal,
+      initialIndex: this.currentReal + STRIP_LEAD_COUNT,
       isDark: this.isDark,
       sidePadding: this.webtoonPadding,
+      currentChapterName: this.chapter.name,
+      prevChapterName: this.prevChapterName,
+      nextChapterName: this.nextChapterName,
+      textCol: this.readerTextCol(),
+      subCol: this.readerSubCol(),
       scroller: this.scroller,
       onTap: (): void => {
         this.showMenu = !this.showMenu;
       },
       onPageVisible: (index: number): void => {
+        const kind = this.cellKind(index);
+        if (kind === 'next') {
+          // 滚动到“下一章”过渡页：没有下一章时呼出菜单（对齐 Mihon）
+          if (!this.hasNext) {
+            this.showMenu = true;
+          }
+          return;
+        }
+        if (kind === 'prev') {
+          return;
+        }
         this.displayIndex = index;
         const real = this.displayToReal(index);
         if (real !== this.currentReal && index >= 0) {
           this.currentReal = real;
           this.persistProgress();
         }
+      },
+      onPrevChapter: (): void => {
+        this.gotoChapter(false, true);
+      },
+      onNextChapter: (): void => {
+        this.gotoChapter(true, true);
       }
     })
       .width('100%')
@@ -985,20 +1173,37 @@ export struct ReaderPage {
       })
   }
 
-  // 普通翻页（Swiper）内容体
+  // 普通翻页（Swiper）内容体：首尾为章节过渡页，中间为正文页
   @Builder
   swiperBody() {
     Swiper() {
       LazyForEach(this.dataSource, (page: SPage, index: number) => {
         Stack() {
-          SmartImage({
-            url: page.url,
-            sourceKey: this.manga.sourceKey,
-            fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
-            fill: true
-          })
+          if (page.url === TRANS_PREV_URL || page.url === TRANS_NEXT_URL) {
+            // 章节过渡页（对齐 Mihon：越界展示上一章/下一章信息）
+            Column() {
+              ReaderTransition({
+                kind: page.url === TRANS_NEXT_URL ? 'next' : 'prev',
+                currentName: this.chapter.name,
+                targetName: page.url === TRANS_NEXT_URL ? this.nextChapterName : this.prevChapterName,
+                textCol: this.readerTextCol(),
+                subCol: this.readerSubCol()
+              })
+            }
             .width('100%')
             .height('100%')
+            .justifyContent(FlexAlign.Center)
+            .alignItems(HorizontalAlign.Center)
+          } else {
+            SmartImage({
+              url: page.url,
+              sourceKey: this.manga.sourceKey,
+              fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
+              fill: true
+            })
+            .width('100%')
+            .height('100%')
+          }
         }
         .width('100%')
         .height('100%')
@@ -1028,6 +1233,29 @@ export struct ReaderPage {
     .onAreaChange((_old: Area, newArea: Area) => {
       this.syncReaderArea(newArea);
     })
+  }
+
+  // 仿真翻页边界的章节过渡覆盖层（Swiper 单元格方案不适用于仿真翻页，改为全屏层）
+  @Builder
+  curlTransitionOverlay() {
+    if (this.transOverlay !== 0) {
+      Column() {
+        ReaderTransition({
+          kind: this.transOverlay > 0 ? 'next' : 'prev',
+          currentName: this.chapter.name,
+          targetName: this.transOverlay > 0 ? this.nextChapterName : this.prevChapterName,
+          textCol: this.readerTextCol(),
+          subCol: this.readerSubCol()
+        })
+      }
+      .width('100%')
+      .height('100%')
+      .justifyContent(FlexAlign.Center)
+      .alignItems(HorizontalAlign.Center)
+      .onClick((event: ClickEvent) => {
+        this.onTransitionOverlayTap(event.x, event.y);
+      })
+    }
   }
 
   // ---- 菜单（共享 ReaderChrome 骨架：顶栏+占位+底栏，样式与拆分前一致） ----
@@ -1203,6 +1431,9 @@ export struct ReaderPage {
             }
           })
         }
+
+        // 仿真翻页边界过渡层
+        this.curlTransitionOverlay()
 
         // 页码指示（菜单收起时）
         if (!this.showMenu && !this.loading && this.pages.length > 0 && this.showPageNumber) {

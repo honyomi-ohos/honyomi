@@ -2,6 +2,10 @@ import { image } from '@kit.ImageKit';
 import { SPage } from '../../model/Models';
 import { StripImagePipeline } from '../../common/StripImagePipeline';
 import { Theme } from '../../common/Theme';
+import { ReaderTransition } from './ReaderChrome';
+
+// 条漫(List)头部固定条目数（章节过渡页）：真实页 index = List index - STRIP_LEAD_COUNT
+export const STRIP_LEAD_COUNT: number = 1;
 
 // 条漫(Webtoon)模式数据源
 class StripDataSource implements IDataSource {
@@ -132,9 +136,10 @@ struct StripItemView {
 }
 
 // 条漫阅读器：List + LazyForEach 无限竖向滚动，PixelMap 由 StripImagePipeline 提供
-// - 初始位置由 initialIndex 指定（续读）
-// - onPageVisible 上报当前首可见页，供宿主持久化进度
-// - onTap 转发给宿主（切换菜单）
+// - 初始位置由 initialIndex 指定（续读，含头部过渡页偏移）
+// - 列表头部/尾部为章节过渡页（上一章/下一章，对齐 Mihon WebtoonViewer）
+// - onPageVisible 上报当前首可见 List 下标（含过渡页下标），供宿主持久化进度
+// - onTap 转发给宿主（切换菜单）；过渡页点击进入相邻章节（无目标时回落为 onTap）
 @Component
 export struct ComicStripViewer {
   @Prop @Watch('onPagesChanged') pages: SPage[] = [];
@@ -143,9 +148,18 @@ export struct ComicStripViewer {
   @Prop isDark: boolean = false;
   // 侧边距（百分比 0-25，对齐 Mihon pref_webtoon_side_padding）
   @Prop sidePadding: number = 0;
+  // 章节过渡页信息（当前章名 + 相邻章名，空串表示无相邻章节）
+  @Prop currentChapterName: string = '';
+  @Prop prevChapterName: string = '';
+  @Prop nextChapterName: string = '';
+  // 过渡页文字配色（宿主按阅读背景推导）
+  @Prop textCol: string = '#ECEEF2';
+  @Prop subCol: string = '#99ECEEF2';
   scroller: Scroller = new Scroller();
   onTap: () => void = () => {};
   onPageVisible: (index: number) => void = (_i: number) => {};
+  onPrevChapter: () => void = () => {};
+  onNextChapter: () => void = () => {};
   private dataSource: StripDataSource = new StripDataSource();
   private lastVisible: number = -1;
 
@@ -162,6 +176,29 @@ export struct ComicStripViewer {
 
   build() {
     List({ scroller: this.scroller, initialIndex: this.initialIndex }) {
+      // 头部：上一章过渡页
+      ListItem() {
+        Column() {
+          ReaderTransition({
+            kind: 'prev',
+            currentName: this.currentChapterName,
+            targetName: this.prevChapterName,
+            textCol: this.textCol,
+            subCol: this.subCol
+          })
+        }
+        .width('100%')
+        .constraintSize({ minHeight: 320 })
+        .justifyContent(FlexAlign.Center)
+        .padding({ top: 48, bottom: 24 })
+        .onClick(() => {
+          if (this.prevChapterName !== '') {
+            this.onPrevChapter();
+          } else {
+            this.onTap();
+          }
+        })
+      }
       LazyForEach(this.dataSource, (page: SPage) => {
         ListItem() {
           StripItemView({ url: page.url, sourceKey: this.sourceKey, pageUrl: page.pageUrl ?? '', isDark: this.isDark, onTap: (): void => {
@@ -169,6 +206,29 @@ export struct ComicStripViewer {
           } })
         }
       }, (page: SPage) => `${page.index}:${page.url}`)
+      // 尾部：下一章过渡页
+      ListItem() {
+        Column() {
+          ReaderTransition({
+            kind: 'next',
+            currentName: this.currentChapterName,
+            targetName: this.nextChapterName,
+            textCol: this.textCol,
+            subCol: this.subCol
+          })
+        }
+        .width('100%')
+        .constraintSize({ minHeight: 320 })
+        .justifyContent(FlexAlign.Center)
+        .padding({ top: 24, bottom: 48 })
+        .onClick(() => {
+          if (this.nextChapterName !== '') {
+            this.onNextChapter();
+          } else {
+            this.onTap();
+          }
+        })
+      }
     }
     .width('100%')
     .height('100%')

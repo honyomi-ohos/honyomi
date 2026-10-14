@@ -438,6 +438,91 @@ export class TtsPlaybackService {
     });
   }
 
+  // ---- 相对快进/快退 ----
+
+  // 秒级相对跳转（正为快进，负为快退）：TTS 无时间轨，
+  // 按 1x 约 4.5 字/秒、乘以当前语速折算目标段的累计字数估算
+  static seek(deltaSec: number): void {
+    const total = TtsPlaybackService.paras.length;
+    if (total === 0) {
+      return;
+    }
+    let base = TtsPlaybackService.playingState ?
+      (TtsPlaybackService.paraIdx >= 0 ? TtsPlaybackService.paraIdx : NovelTts.currentPara()) :
+      TtsPlaybackService.pausePara;
+    if (base < 0) {
+      base = 0;
+    }
+    if (base >= total) {
+      base = total - 1;
+    }
+    const speed = Settings.getNovelTtsSpeed();
+    const budget = Math.max(1, Math.round(Math.abs(deltaSec) * 4.5 * (speed > 0 ? speed : 1)));
+    let target = base;
+    let acc = 0;
+    if (deltaSec < 0) {
+      for (let i = base - 1; i >= 0; i--) {
+        acc += TtsPlaybackService.paraChars(i);
+        target = i;
+        if (acc >= budget) {
+          break;
+        }
+      }
+    } else if (deltaSec > 0) {
+      for (let i = base + 1; i < total; i++) {
+        acc += TtsPlaybackService.paraChars(i);
+        target = i;
+        if (acc >= budget) {
+          break;
+        }
+      }
+    }
+    if (target === base) {
+      return;
+    }
+    // 暂停态：仅移动续播点并同步 UI 进度
+    if (!TtsPlaybackService.playingState) {
+      if (!TtsPlaybackService.pausedState) {
+        return;
+      }
+      TtsPlaybackService.resumeNextChapterId = 0;
+      TtsPlaybackService.pausePara = target;
+      TtsPlaybackService.paraIdx = target;
+      TtsPlaybackService.events.emitPara(TtsPlaybackService.currentMangaId(),
+        TtsPlaybackService.currentChapterId(), target);
+      return;
+    }
+    // 播放中：从目标段重启引擎续播
+    const ctx = TtsPlaybackService.ctx;
+    if (ctx === undefined) {
+      return;
+    }
+    const paras = TtsPlaybackService.paras;
+    const lang = TtsPlaybackService.lang;
+    TtsPlaybackService.paraIdx = target;
+    NovelTts.stop();
+    NovelTts.start(paras, target, lang, ctx).then((ok: boolean) => {
+      if (!TtsPlaybackService.playingState) {
+        return;
+      }
+      if (!ok) {
+        TtsPlaybackService.playingState = false;
+        TtsAvSession.setPlaying(false);
+        TtsPlaybackService.events.emitError('tts_unavailable');
+        TtsPlaybackService.emitState();
+      }
+    });
+  }
+
+  // 段落有效字符数（去空白，用于秒级跳转估算）
+  private static paraChars(idx: number): number {
+    const p = TtsPlaybackService.paras[idx];
+    if (p === undefined) {
+      return 0;
+    }
+    return p.replace(/\s/g, '').length;
+  }
+
   // ---- 定时停止 ----
 
   // minutes<=0 取消定时；到点暂停朗读（可续播）

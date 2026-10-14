@@ -152,6 +152,10 @@ export struct NovelReaderPage {
   private blocks: NovelBlock[] = [];
   // 章节加载代次号：连续切章时旧 loadChapter 续体据此丢弃
   private loadGen: number = 0;
+  // 边界切章落点：true=上一章落在末尾（千分比 1000），false=按历史进度恢复
+  private gotoEnd: boolean = false;
+  // 滚动模式边界自动切章：拖动期间离开过末尾（permille<1000）后停在末尾才前进
+  private scrollDragArmed: boolean = false;
   // 页面销毁标志：loadChapter 各 await 后校验，防止退出后启动无人结算的会话
   private destroyed: boolean = false;
   // 进度持久化防抖：待落盘的快照（章节/漫画/千分比在调度时锁定，切章不串写）
@@ -212,6 +216,7 @@ export struct NovelReaderPage {
     this.loading = true;
     this.showMenu = false;
     this.restored = false;
+    this.scrollDragArmed = false;
     this.body = '';
     this.pages = [];
     this.blocks = [];
@@ -254,7 +259,13 @@ export struct NovelReaderPage {
       }
       this.chapter = chapter;
       this.mangaId = chapter.mangaId;
-      this.permille = chapter.lastPageRead > 0 && chapter.lastPageRead <= 1000 ? chapter.lastPageRead : 0;
+      // 边界向回退进入上一章落在末尾；其余按历史进度恢复
+      if (this.gotoEnd) {
+        this.permille = 1000;
+        this.gotoEnd = false;
+      } else {
+        this.permille = chapter.lastPageRead > 0 && chapter.lastPageRead <= 1000 ? chapter.lastPageRead : 0;
+      }
       const manga = await MangaRepo.get(chapter.mangaId);
       if (this.destroyed || gen !== this.loadGen) {
         return;
@@ -397,12 +408,15 @@ export struct NovelReaderPage {
     }
   }
 
-  private openChapter(id: number): void {
+  // 切换章节；fromEnd=true 表示由阅读边界向回退触发，新章落在末尾（千分比 1000），
+  // 菜单按钮/听书跟随触发按历史进度恢复
+  private openChapter(id: number, fromEnd: boolean = false): void {
     if (id <= 0) {
       return;
     }
     // 先把上一章的进度快照立即落盘，再切换章节，防止旧章 permille 写入新章
     this.flushPersist();
+    this.gotoEnd = fromEnd;
     this.chapterId = id;
     this.loadChapter();
   }
@@ -815,17 +829,18 @@ export struct NovelReaderPage {
     }
   }
 
-  // 翻页/双页：边界处跳上一章/下一章（dir 为阅读方向：+1 下一页，-1 上一页）
+  // 翻页/双页：边界处跳上一章/下一章（dir 为阅读方向：+1 下一页，-1 上一页）；
+  // 向回退越过本章起点进入上一章时落在上一章末尾
   private turnScreen(dir: number): void {
     const rtl = this.mode === 'paged_rtl';
     // 从右到左：屏幕序反转，阅读前进 = Swiper 索引递减
     const target = rtl ? this.pageIdx - dir : this.pageIdx + dir;
     if (target < 0) {
-      this.openChapter(rtl ? this.nextId : this.prevId);
+      this.openChapter(rtl ? this.nextId : this.prevId, !rtl);
       return;
     }
     if (target >= this.screenIdxs.length) {
-      this.openChapter(rtl ? this.prevId : this.nextId);
+      this.openChapter(rtl ? this.prevId : this.nextId, rtl);
       return;
     }
     // showNext/showPrevious 自带动效并触发自定义过渡回调（仿真/滑动/覆盖均有动画）；
@@ -867,6 +882,8 @@ export struct NovelReaderPage {
     this.permille = v;
     this.permilleUi = v;
     this.restored = true;
+    // 跳转不属于手势拖动：清掉武装标志，防止停稳时误触发边界切章
+    this.scrollDragArmed = false;
     const range = this.contentH - this.viewH;
     if (range > 0) {
       this.scroller.scrollTo({ xOffset: 0, yOffset: range * v / 1000, animation: false });
@@ -1164,7 +1181,8 @@ export struct NovelReaderPage {
       this.dismissSheets();
       return;
     }
-    this.openChapter(dir > 0 ? this.nextId : this.prevId);
+    // 越过末页向前进下一章；越过首页向回退上一章（落在末尾）
+    this.openChapter(dir > 0 ? this.nextId : this.prevId, dir < 0);
   }
 
   @Builder
@@ -1740,12 +1758,23 @@ export struct NovelReaderPage {
               this.restoreOnce();
             }
           })
-          .onDidScroll((_x: number, y: number, _state: ScrollState) => {
+          .onDidScroll((_x: number, y: number, state: ScrollState) => {
             this.captureOffset(y);
+            // 手势拖动期间离开过末尾（permille<1000）即武装边界切章：
+            // 只有真实读过末尾的拖动才在停稳于末尾时进入下一章
+            if (state === ScrollState.Scroll && this.permille < 1000) {
+              this.scrollDragArmed = true;
+            }
           })
           .onScrollStop(() => {
             this.permilleUi = this.permille;
             this.persist();
+            if (this.scrollDragArmed && this.permille >= 1000 && this.nextId > 0 && !this.loading) {
+              this.scrollDragArmed = false;
+              this.openChapter(this.nextId);
+              return;
+            }
+            this.scrollDragArmed = false;
           })
           .onClick(() => {
             this.contentTap();

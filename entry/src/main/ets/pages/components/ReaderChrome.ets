@@ -312,3 +312,131 @@ export struct ReaderFilterArea {
   emptyBuilder() {
   }
 }
+
+// 章节过渡视图（对齐 Mihon ChapterTransition）：
+// kind='next'：上方“已读完”当前章 + 下方“下一章”信息（无下一章时为提示卡片）
+// kind='prev'：上方“上一章”信息（无上一章时为提示卡片）+ 下方“当前”章
+// 组件自身不处理点击（点击由宿主容器/触摸热区接管），宿主负责全屏居中
+@Component
+export struct ReaderTransition {
+  @Prop kind: string = 'next';
+  @Prop currentName: string = '';
+  // 相邻章节名；空串表示没有相邻章节（显示“没有下一章/上一章”卡片）
+  @Prop targetName: string = '';
+  @Prop textCol: string = '#ECEEF2';
+  @Prop subCol: string = '#99ECEEF2';
+
+  build() {
+    Column() {
+      if (this.kind === 'next') {
+        // 已读完：当前章节
+        Column() {
+          Text($r('app.string.transition_finished'))
+            .fontSize(16)
+            .fontWeight(FontWeight.Medium)
+            .fontColor(this.textCol)
+            .maxLines(1)
+            .width('100%')
+          Text(this.currentName)
+            .fontSize(20)
+            .fontColor(this.textCol)
+            .maxLines(5)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+            .margin({ top: 4 })
+            .width('100%')
+        }
+        .alignItems(HorizontalAlign.Start)
+        .width('100%')
+
+        if (this.targetName !== '') {
+          // 下一章
+          Column() {
+            Text($r('app.string.transition_next'))
+              .fontSize(16)
+              .fontWeight(FontWeight.Medium)
+              .fontColor(this.textCol)
+              .maxLines(1)
+              .width('100%')
+            Text(this.targetName)
+              .fontSize(20)
+              .fontColor(this.textCol)
+              .maxLines(5)
+              .textOverflow({ overflow: TextOverflow.Ellipsis })
+              .margin({ top: 4 })
+              .width('100%')
+          }
+          .alignItems(HorizontalAlign.Start)
+          .width('100%')
+          .margin({ top: 24 })
+        } else {
+          // 没有下一章：提示卡片
+          Row({ space: 12 }) {
+            AppIcon({ name: 'info', iconSize: 20, tint: this.textCol })
+            Text($r('app.string.transition_no_next'))
+              .fontSize(14)
+              .fontColor(this.textCol)
+          }
+          .padding({ left: 16, right: 16, top: 12, bottom: 12 })
+          .borderRadius(12)
+          .border({ width: 1, color: this.subCol })
+          .margin({ top: 24 })
+        }
+      } else {
+        if (this.targetName !== '') {
+          // 上一章
+          Column() {
+            Text($r('app.string.transition_previous'))
+              .fontSize(16)
+              .fontWeight(FontWeight.Medium)
+              .fontColor(this.textCol)
+              .maxLines(1)
+              .width('100%')
+            Text(this.targetName)
+              .fontSize(20)
+              .fontColor(this.textCol)
+              .maxLines(5)
+              .textOverflow({ overflow: TextOverflow.Ellipsis })
+              .margin({ top: 4 })
+              .width('100%')
+          }
+          .alignItems(HorizontalAlign.Start)
+          .width('100%')
+        } else {
+          // 没有上一章：提示卡片
+          Row({ space: 12 }) {
+            AppIcon({ name: 'info', iconSize: 20, tint: this.textCol })
+            Text($r('app.string.transition_no_previous'))
+              .fontSize(14)
+              .fontColor(this.textCol)
+          }
+          .padding({ left: 16, right: 16, top: 12, bottom: 12 })
+          .borderRadius(12)
+          .border({ width: 1, color: this.subCol })
+        }
+
+        // 当前章节
+        Column() {
+          Text($r('app.string.transition_current'))
+            .fontSize(16)
+            .fontWeight(FontWeight.Medium)
+            .fontColor(this.textCol)
+            .maxLines(1)
+            .width('100%')
+          Text(this.currentName)
+            .fontSize(20)
+            .fontColor(this.textCol)
+            .maxLines(5)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+            .margin({ top: 4 })
+            .width('100%')
+        }
+        .alignItems(HorizontalAlign.Start)
+        .width('100%')
+        .margin({ top: 24 })
+      }
+    }
+    .constraintSize({ maxWidth: 460 })
+    .width('100%')
+    .alignItems(HorizontalAlign.Center)
+  }
+}

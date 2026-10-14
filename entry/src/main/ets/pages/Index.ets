@@ -765,9 +765,10 @@ struct Index {
         .width('100%')
         .height('100%')
         }
-        // 听书迷你条层：听书进行中悬浮于底部页签上方（空区域不拦截触摸）
+        // 听书迷你条层：听书进行中悬浮于底部页签上方（空区域不拦截触摸）；
+        // PC/宽屏锚定右下角，手机居中底部
         if (this.ttsActive) {
-          Stack({ alignContent: Alignment.Bottom }) {
+          Stack({ alignContent: this.isWide() ? Alignment.BottomEnd : Alignment.Bottom }) {
             TtsMiniBar({ navBarH: this.navBarH })
           }
           .width('100%')

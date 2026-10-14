@@ -321,8 +321,20 @@ export struct TtsPlayerPage {
           .fontSize(12)
           .fontColor(this.pal.sub)
 
-        // 控制区：上一章 / 播放暂停 / 下一章
-        Row({ space: 30 }) {
+        // 控制区：回退30秒 / 上一章 / 播放暂停 / 下一章 / 快进30秒
+        Row({ space: 8 }) {
+          Row() {
+            AppIcon({ name: 'replay_30', iconSize: 24 })
+          }
+          .width(44)
+          .height(44)
+          .borderRadius(22)
+          .justifyContent(FlexAlign.Center)
+          .backgroundColor(this.pal.chip)
+          .onClick(() => {
+            TtsPlaybackService.seek(-30);
+          })
+
           Row() {
             AppIcon({ name: 'skip_previous', iconSize: 26 })
           }
@@ -359,6 +371,18 @@ export struct TtsPlayerPage {
           .opacity(this.hasNext() ? 1 : 0.4)
           .onClick(() => {
             TtsPlaybackService.step(1);
+          })
+
+          Row() {
+            AppIcon({ name: 'forward_30', iconSize: 24 })
+          }
+          .width(44)
+          .height(44)
+          .borderRadius(22)
+          .justifyContent(FlexAlign.Center)
+          .backgroundColor(this.pal.chip)
+          .onClick(() => {
+            TtsPlaybackService.seek(30);
           })
         }
         .alignItems(VerticalAlign.Center)

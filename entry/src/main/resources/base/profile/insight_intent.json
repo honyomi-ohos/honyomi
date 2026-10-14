@@ -14,6 +14,12 @@
     },
     {
       "srcEntry": "./ets/entryability/RefreshLibraryIntent.ets"
+    },
+    {
+      "srcEntry": "./ets/entryability/OpenChapterIntent.ets"
+    },
+    {
+      "srcEntry": "./ets/entryability/VideoSeekIntent.ets"
     }
   ],
   "insightIntents": [

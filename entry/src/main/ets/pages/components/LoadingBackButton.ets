@@ -1,12 +1,10 @@
 // 加载态兜底返回：左上角浮动返回圆钮 + ESC 快捷键
 // PC/平板等无返回手势设备在章节加载中可随时退出，无需等待网络超时
 import { AppIcon } from './AppIcon';
-import { Bp } from '../../common/Breakpoint';
 
 @Component
 export struct LoadingBackButton {
   @StorageProp('statusBarH') statusBarH: number = 0;
-  @StorageProp('windowW') windowW: number = 0;
   onBack: () => void = (): void => {};
 
   build() {
@@ -26,16 +24,6 @@ export struct LoadingBackButton {
       .keyboardShortcut(FunctionKey.ESC, [], (): void => {
         this.onBack();
       })
-
-      // 宽屏（PC）提示可用 ESC 返回
-      if (Bp.isWide(this.windowW)) {
-        Text('ESC')
-          .fontSize(11)
-          .fontColor('#FFFFFF')
-          .padding({ left: 8, right: 8, top: 3, bottom: 3 })
-          .borderRadius(10)
-          .backgroundColor('#66000000')
-      }
     }
     .width('100%')
     .height('100%')

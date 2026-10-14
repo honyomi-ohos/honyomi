@@ -1119,10 +1119,34 @@
                        "name":  "reader_first_page",
                        "value":  "已经是第一页"
                    },
-                   {
-                       "name":  "reader_last_page",
-                       "value":  "已经是最后一页"
-                   },
+                    {
+                        "name":  "reader_last_page",
+                        "value":  "已经是最后一页"
+                    },
+                    {
+                        "name":  "transition_finished",
+                        "value":  "已完成："
+                    },
+                    {
+                        "name":  "transition_current",
+                        "value":  "当前："
+                    },
+                    {
+                        "name":  "transition_next",
+                        "value":  "下一章："
+                    },
+                    {
+                        "name":  "transition_previous",
+                        "value":  "上一章："
+                    },
+                    {
+                        "name":  "transition_no_next",
+                        "value":  "没有下一章了"
+                    },
+                    {
+                        "name":  "transition_no_previous",
+                        "value":  "没有上一章了"
+                    },
                    {
                        "name":  "reader_loading_chapter",
                        "value":  "正在加载章节…"

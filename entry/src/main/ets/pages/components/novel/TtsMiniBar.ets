@@ -1,4 +1,5 @@
 import { ThemePalette } from '../../../common/Theme';
+import { Bp } from '../../../common/Breakpoint';
 import { ChapterRecord, MangaRecord } from '../../../model/Models';
 import { TtsPlaybackService, TtsServiceStateHandler, TtsServiceChapterHandler } from '../../../common/TtsPlaybackService';
 import { AppIcon } from '../AppIcon';
@@ -9,6 +10,7 @@ import { AppIcon } from '../AppIcon';
 export struct TtsMiniBar {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @Prop navBarH: number = 0;
+  @StorageProp('windowW') windowW: number = 0;
   @Consume('navStack') pathStack: NavPathStack;
   @State active: boolean = false;
   @State playing: boolean = false;
@@ -42,6 +44,10 @@ export struct TtsMiniBar {
     const ch: ChapterRecord | undefined = TtsPlaybackService.getChapter();
     this.mangaTitle = m !== undefined ? m.title : '';
     this.chapterName = ch !== undefined ? ch.name : '';
+  }
+
+  private isWide(): boolean {
+    return Bp.isWide(this.windowW);
   }
 
   build() {
@@ -90,6 +96,7 @@ export struct TtsMiniBar {
         })
       }
       .alignItems(VerticalAlign.Center)
+      .width(this.isWide() ? 360 : '100%')
       .padding({ left: 14, right: 8, top: 6, bottom: 6 })
       .borderRadius(24)
       .backgroundColor(this.pal.card)

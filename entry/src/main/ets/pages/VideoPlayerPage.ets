@@ -30,6 +30,13 @@ const DM_AREA_VALUES: number[] = [25, 50, 75, 100];
 const DM_DUR_VALUES: number[] = [12, 10, 8, 6];
 let vpSeq: number = 0;
 
+// 意图框架快进指令载荷（AppStorage videoSeek 键，VideoSeekIntent 写入）
+interface VpSeekCommand {
+  mode: string; // delta 相对位移 | absolute 绝对位置 | end 片尾
+  ms: number;
+  ts: number;
+}
+
 // 视频播放器（参考 AnymeX 播放器布局）：沉浸式全屏 + 顶部/中部/底部悬浮控制条，
 // 双击左右区域快退/快进 10s，控制条 4s 自动隐藏，支持锁定、倍速、画质、剧集列表与弹幕
 @Component
@@ -39,6 +46,8 @@ export struct VideoPlayerPage {
   @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageProp('navBarH') navBarH: number = 0;
   @StorageProp('windowW') windowW: number = 0;
+  // 意图框架快进/跳转指令（仅栈顶最新实例消费）
+  @StorageLink('videoSeek') @Watch('onSeekCommand') seekCommand: string = '';
   @State manga: MangaRecord = new MangaRecord();
   @State chapter: ChapterRecord = new ChapterRecord();
   @State videos: SVideo[] = [];
@@ -89,6 +98,7 @@ export struct VideoPlayerPage {
   private hideTimer: number = -1;
   private tapTimer: number = -1;
   private seekToastTimer: number = -1;
+  private seekCmdTs: number = 0;
   private boostTimer: number = -1;
   private suppressTimer: number = -1;
   private boostDownX: number = 0;
@@ -738,6 +748,49 @@ export struct VideoPlayerPage {
       this.armAutoHide();
     }
     this.armAutoHide();
+  }
+
+  // 意图框架快进/跳转指令（VideoSeekIntent 写入）：仅栈顶最新实例、且时间戳递增时消费
+  private onSeekCommand(): void {
+    const raw: string = this.seekCommand;
+    if (raw === '' || this.destroyed) {
+      return;
+    }
+    let cmd: VpSeekCommand;
+    try {
+      cmd = JSON.parse(raw) as VpSeekCommand;
+    } catch (e) {
+      return;
+    }
+    if (cmd === undefined || cmd === null || cmd.ts <= this.seekCmdTs) {
+      return;
+    }
+    this.seekCmdTs = cmd.ts;
+    if (this.instId !== vpSeq) {
+      return;
+    }
+    let target: number = this.positionMs;
+    if (cmd.mode === 'delta') {
+      target = this.positionMs + cmd.ms;
+    } else if (cmd.mode === 'absolute') {
+      target = cmd.ms;
+    } else if (cmd.mode === 'end') {
+      if (this.durationMs <= 0) {
+        return;
+      }
+      target = this.durationMs - 1000;
+    } else {
+      return;
+    }
+    if (target < 0) {
+      target = 0;
+    }
+    if (this.durationMs > 0 && target > this.durationMs) {
+      target = this.durationMs;
+    }
+    this.log(`intent seek ${cmd.mode} ${cmd.ms} -> ${target}`);
+    this.seekTo(target);
+    this.pokeControls();
   }
 
   private seekTo(ms: number): void {
