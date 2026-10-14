@@ -251,10 +251,30 @@
                        "name":  "tab_cf_done",
                        "value":  "完成"
                    },
-                   {
-                       "name":  "tab_cf_saved",
-                       "value":  "已保存验证结果"
-                   },
+                    {
+                        "name":  "tab_cf_saved",
+                        "value":  "已保存验证结果"
+                    },
+                    {
+                        "name":  "tab_cf_refresh",
+                        "value":  "刷新"
+                    },
+                    {
+                        "name":  "tab_cf_open_browser",
+                        "value":  "在浏览器中打开"
+                    },
+                    {
+                        "name":  "tab_cf_open_failed",
+                        "value":  "无法打开浏览器"
+                    },
+                    {
+                        "name":  "tab_cf_copy_url",
+                        "value":  "复制链接"
+                    },
+                    {
+                        "name":  "tab_cf_url_copied",
+                        "value":  "链接已复制"
+                    },
                    {
                        "name":  "more_title",
                        "value":  "更多"

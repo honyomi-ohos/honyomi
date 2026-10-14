@@ -1,5 +1,6 @@
 // 閫氱敤鍋忓ソ/璁剧疆琛岀粍浠讹細PrefGroup / TextRow / SwitchRow / SelectRow / IconRow
 import { ThemePalette } from '../../common/Theme';
+import { Bp } from '../../common/Breakpoint';
 import { AppIcon } from './AppIcon';
 import { PickerSheet } from './PickerSheet';
 
@@ -130,6 +131,7 @@ export struct SwitchRow {
 export struct SelectRow {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @StorageProp('windowW') windowW: number = 0;
   @State hovered: boolean = false;
   title: Resource | string = '';
   value: Resource | string = '';
@@ -184,7 +186,9 @@ export struct SelectRow {
     .padding({ left: 16, right: 12 })
     .backgroundColor(this.hovered ? this.pal.chip : Color.Transparent)
     .bindSheet($$this.showPicker, this.pickerSheetBuilder(), {
-      preferType: SheetType.BOTTOM,
+      preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+      width: Bp.isWide(this.windowW) ? 560 : '100%',
+      height: SheetSize.FIT_CONTENT,
       title: { title: this.title },
       detents: [SheetSize.FIT_CONTENT],
       dragBar: true,
@@ -237,6 +241,7 @@ export struct IconRow {
 export struct PrefSelectRow {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @StorageProp('windowW') windowW: number = 0;
   @State hovered: boolean = false;
   @State showPicker: boolean = false;
   title: Resource | string = '';
@@ -284,7 +289,9 @@ export struct PrefSelectRow {
     .padding({ left: 16, right: 12 })
     .backgroundColor(this.hovered ? this.pal.chip : Color.Transparent)
     .bindSheet($$this.showPicker, this.pickerSheetBuilder(), {
-      preferType: SheetType.BOTTOM,
+      preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+      width: Bp.isWide(this.windowW) ? 560 : '100%',
+      height: SheetSize.FIT_CONTENT,
       title: { title: this.title },
       detents: [SheetSize.FIT_CONTENT],
       dragBar: true,

@@ -218,6 +218,25 @@ export struct ExtensionListPanel {
   @Builder
   repoRow(entry: RepoEntry) {
     Row() {
+      if (entry.icon !== '') {
+        Image(entry.icon)
+          .width(40)
+          .height(40)
+          .borderRadius(10)
+          .objectFit(ImageFit.Cover)
+          .clip(true)
+      } else {
+        Text(this.firstCharOf(entry.name))
+          .fontSize(17)
+          .fontWeight(FontWeight.Bold)
+          .fontColor('#FFFFFF')
+          .textAlign(TextAlign.Center)
+          .width(40)
+          .height(40)
+          .borderRadius(10)
+          .backgroundColor(this.pal.primary)
+      }
+
       Column() {
         Text(entry.name)
           .fontSize(14)
@@ -229,6 +248,7 @@ export struct ExtensionListPanel {
       }
       .alignItems(HorizontalAlign.Start)
       .layoutWeight(1)
+      .margin({ left: 12 })
 
       if (this.installedVersionOf(entry.key) < 0) {
         Text($r('app.string.common_install'))
@@ -324,7 +344,7 @@ export struct ExtensionListPanel {
           } else {
             ForEach(this.filteredRepoEntries(), (entry: RepoEntry) => {
               this.repoRow(entry)
-            }, (entry: RepoEntry) => `repo-${entry.key}-${entry.versionCode}`)
+            }, (entry: RepoEntry) => `repo-${entry.key}-${entry.versionCode}-${entry.icon}`)
           }
 
           if (this.repoUrl !== '') {
@@ -345,7 +365,6 @@ export struct ExtensionListPanel {
         .margin({ left: 16, right: 16, top: 12, bottom: 24 })
       }
       .width('100%')
-      .constraintSize({ maxWidth: 720 })
     }
     .layoutWeight(1)
     .scrollBar(BarState.Auto)

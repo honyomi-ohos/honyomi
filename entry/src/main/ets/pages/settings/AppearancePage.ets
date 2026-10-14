@@ -1,4 +1,3 @@
-import { common } from '@kit.AbilityKit';
 import { Theme, ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
 import { Languages } from '../../common/Languages';
@@ -6,15 +5,16 @@ import { Util } from '../../common/Util';
 import { PageHeader } from '../components/PageHeader';
 import { PrefGroup, PrefSwitchRow, TextRow } from '../components/Prefs';
 
-// 外观设置：语言 / 主题模式 / 主题色 / AMOLED
+// 外观设置内容（可嵌入 lg 设置双栏右栏）：语言 / 主题模式 / 主题色 / AMOLED
 @Component
-export struct AppearancePage {
-  @Consume('navStack') pathStack: NavPathStack;
+export struct AppearanceContent {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('accent') accent: string = 'blue';
   @StorageProp('appLanguage') appLanguage: string = 'auto';
   @State themeMode: string = 'auto';
+  // 二级页跳转：手机壳内为 push 路由；lg 双栏内为右栏切换
+  onNavigate: (route: string) => void = (route: string) => {};
 
   aboutToAppear(): void {
     this.themeMode = Settings.getThemeMode();
@@ -42,87 +42,104 @@ export struct AppearancePage {
   }
 
   build() {
+    Scroll() {
+      Column() {
+        PrefGroup({ groupTitle: $r('app.string.appearance_language') }) {
+          TextRow({
+            title: $r('app.string.appearance_language'),
+            value: this.appLanguage === 'auto'
+              ? $r('app.string.lang_follow_system')
+              : Languages.displayName(this.appLanguage),
+            onTap: (): void => {
+              this.onNavigate('Language');
+            }
+          })
+        }
+
+        PrefGroup({ groupTitle: $r('app.string.appearance_theme_mode') }) {
+          Row({ space: 8 }) {
+            this.modeChip($r('app.string.appearance_theme_auto'), 'auto')
+            this.modeChip($r('app.string.appearance_theme_light'), 'light')
+            this.modeChip($r('app.string.appearance_theme_dark'), 'dark')
+          }
+          .padding({ left: 16, right: 16, top: 12, bottom: 14 })
+        }
+
+        PrefGroup({ groupTitle: $r('app.string.appearance_accent_color') }) {
+          Row({ space: 18 }) {
+            ForEach(Theme.accentNames(), (name: string) => {
+              Column({ space: 4 }) {
+                Column() {
+                  if (this.accent === name) {
+                    Column()
+                      .width(12)
+                      .height(12)
+                      .borderRadius(6)
+                      .backgroundColor('#FFFFFF')
+                  }
+                }
+                .width(36)
+                .height(36)
+                .borderRadius(18)
+                .backgroundColor(Theme.accentDot(name))
+                .justifyContent(FlexAlign.Center)
+                .alignItems(HorizontalAlign.Center)
+                .border({
+                  width: this.accent === name ? 2 : 0,
+                  color: this.pal.text
+                })
+                .onClick(() => {
+                  this.accent = name;
+                  Settings.setAccentColor(name);
+                  Settings.applyAccent();
+                })
+                Text(Theme.accentLabel(name))
+                  .fontSize(11)
+                  .fontColor(this.pal.sub)
+              }
+              .alignItems(HorizontalAlign.Center)
+            }, (name: string) => `accent-${name}`)
+          }
+          .padding({ left: 16, right: 16, top: 14, bottom: 14 })
+        }
+
+        PrefGroup({ groupTitle: $r('app.string.appearance_other') }) {
+          PrefSwitchRow({
+            title: $r('app.string.appearance_amoled'),
+            initValue: Settings.getAmoledMode(),
+            apply: (value: boolean): void => {
+              Settings.setAmoledMode(value);
+              Settings.applyAccent();
+            }
+          })
+        }
+      }
+      .width('100%')
+      .padding({ left: 16, right: 16, bottom: 24 })
+    }
+    .width('100%')
+    .height('100%')
+    .scrollBar(BarState.Off)
+    .align(Alignment.TopStart)
+  }
+}
+
+// 外观设置路由壳（手机/平板窄屏 push 进入）
+@Component
+export struct AppearancePage {
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @Consume('navStack') pathStack: NavPathStack;
+
+  build() {
     NavDestination() {
       Column() {
         PageHeader({ title: $r('app.string.appearance_title') })
-        Scroll() {
-          Column() {
-            PrefGroup({ groupTitle: $r('app.string.appearance_language') }) {
-              TextRow({
-                title: $r('app.string.appearance_language'),
-                value: this.appLanguage === 'auto'
-                  ? $r('app.string.lang_follow_system')
-                  : Languages.displayName(this.appLanguage),
-                onTap: (): void => {
-                  this.pathStack.pushPathByName('Language', null);
-                }
-              })
-            }
-
-            PrefGroup({ groupTitle: $r('app.string.appearance_theme_mode') }) {
-              Row({ space: 8 }) {
-                this.modeChip($r('app.string.appearance_theme_auto'), 'auto')
-                this.modeChip($r('app.string.appearance_theme_light'), 'light')
-                this.modeChip($r('app.string.appearance_theme_dark'), 'dark')
-              }
-              .padding({ left: 16, right: 16, top: 12, bottom: 14 })
-            }
-
-            PrefGroup({ groupTitle: $r('app.string.appearance_accent_color') }) {
-              Row({ space: 18 }) {
-                ForEach(Theme.accentNames(), (name: string) => {
-                  Column({ space: 4 }) {
-                    Column() {
-                      if (this.accent === name) {
-                        Column()
-                          .width(12)
-                          .height(12)
-                          .borderRadius(6)
-                          .backgroundColor('#FFFFFF')
-                      }
-                    }
-                    .width(36)
-                    .height(36)
-                    .borderRadius(18)
-                    .backgroundColor(Theme.accentDot(name))
-                    .justifyContent(FlexAlign.Center)
-                    .alignItems(HorizontalAlign.Center)
-                    .border({
-                      width: this.accent === name ? 2 : 0,
-                      color: this.pal.text
-                    })
-                    .onClick(() => {
-                      this.accent = name;
-                      Settings.setAccentColor(name);
-                      Settings.applyAccent();
-                    })
-                    Text(Theme.accentLabel(name))
-                      .fontSize(11)
-                      .fontColor(this.pal.sub)
-                  }
-                  .alignItems(HorizontalAlign.Center)
-                }, (name: string) => `accent-${name}`)
-              }
-              .padding({ left: 16, right: 16, top: 14, bottom: 14 })
-            }
-
-            PrefGroup({ groupTitle: $r('app.string.appearance_other') }) {
-              PrefSwitchRow({
-                title: $r('app.string.appearance_amoled'),
-                initValue: Settings.getAmoledMode(),
-                apply: (value: boolean): void => {
-                  Settings.setAmoledMode(value);
-                  Settings.applyAccent();
-                }
-              })
-            }
+        AppearanceContent({
+          onNavigate: (route: string): void => {
+            this.pathStack.pushPathByName(route, null);
           }
-          .width('100%')
-          .padding({ left: 16, right: 16, bottom: 24 })
-        }
-        .layoutWeight(1)
-        .scrollBar(BarState.Off)
-        .align(Alignment.TopStart)
+        })
+          .layoutWeight(1)
       }
       .width('100%')
       .height('100%')

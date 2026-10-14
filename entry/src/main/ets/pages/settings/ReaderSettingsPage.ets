@@ -7,9 +7,9 @@ import { PrefGroup, PrefSelectRow, PrefSwitchRow, TextRow } from '../components/
 
 const THEME_VALUES: number[] = [3, 0, 1, 2];
 
-// 阅读器设置：默认模式/双页/页码/背景色/亮度
+// 阅读器设置内容：默认模式/双页/页码/背景色/亮度
 @Component
-export struct ReaderSettingsPage {
+export struct ReaderSettingsContent {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State brightnessLabel: string = '';
@@ -45,70 +45,82 @@ export struct ReaderSettingsPage {
   }
 
   build() {
+    Scroll() {
+      Column() {
+        PrefGroup({ groupTitle: $r('app.string.reader_set_mode_group') }) {
+          PrefSelectRow({
+            title: $r('app.string.reader_set_mode_default'),
+            options: this.modeOptions,
+            selectedIndex: this.modeIndex(),
+            onSelectIndex: (index: number): void => {
+              Settings.setReaderMode(this.modeValues[index]);
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          PrefSwitchRow({
+            title: $r('app.string.reader_set_dual_page'),
+            initValue: Settings.getReaderDualPage(),
+            apply: (value: boolean): void => {
+              Settings.setReaderDualPage(value);
+            }
+          })
+        }
+
+        PrefGroup({ groupTitle: $r('app.string.reader_set_display_group') }) {
+          PrefSwitchRow({
+            title: $r('app.string.reader_set_show_page_number'),
+            initValue: Settings.getReaderShowPageNumber(),
+            apply: (value: boolean): void => {
+              Settings.setReaderShowPageNumber(value);
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          PrefSelectRow({
+            title: $r('app.string.reader_set_bg_color'),
+            options: [
+              $r('app.string.reader_set_theme_follow'),
+              $r('app.string.reader_set_theme_white'),
+              $r('app.string.reader_set_theme_black'),
+              $r('app.string.reader_set_theme_gray')
+            ],
+            selectedIndex: this.themeIndex(),
+            onSelectIndex: (index: number): void => {
+              Settings.setReaderTheme(THEME_VALUES[index]);
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          TextRow({
+            title: $r('app.string.reader_set_reset_brightness'),
+            value: this.brightnessLabel,
+            onTap: (): void => {
+              Settings.setReaderBrightness(0);
+              this.brightnessLabel = Util.resStr(this.getUIContext(), $r('app.string.lang_follow_system'));
+              Util.toastRes(this.getUIContext(), $r('app.string.reader_set_brightness_reset'));
+            }
+          })
+        }
+      }
+      .width('100%')
+      .padding({ left: 16, right: 16, bottom: 24 })
+    }
+    .width('100%')
+    .height('100%')
+    .scrollBar(BarState.Off)
+    .align(Alignment.TopStart)
+  }
+}
+
+// 阅读器设置路由壳（手机/平板窄屏 push 进入）
+@Component
+export struct ReaderSettingsPage {
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+
+  build() {
     NavDestination() {
       Column() {
         PageHeader({ title: $r('app.string.reader_set_title') })
-        Scroll() {
-          Column() {
-            PrefGroup({ groupTitle: $r('app.string.reader_set_mode_group') }) {
-              PrefSelectRow({
-                title: $r('app.string.reader_set_mode_default'),
-                options: this.modeOptions,
-                selectedIndex: this.modeIndex(),
-                onSelectIndex: (index: number): void => {
-                  Settings.setReaderMode(this.modeValues[index]);
-                }
-              })
-              Divider().color(this.pal.divider).margin({ left: 16 })
-              PrefSwitchRow({
-                title: $r('app.string.reader_set_dual_page'),
-                initValue: Settings.getReaderDualPage(),
-                apply: (value: boolean): void => {
-                  Settings.setReaderDualPage(value);
-                }
-              })
-            }
-
-            PrefGroup({ groupTitle: $r('app.string.reader_set_display_group') }) {
-              PrefSwitchRow({
-                title: $r('app.string.reader_set_show_page_number'),
-                initValue: Settings.getReaderShowPageNumber(),
-                apply: (value: boolean): void => {
-                  Settings.setReaderShowPageNumber(value);
-                }
-              })
-              Divider().color(this.pal.divider).margin({ left: 16 })
-              PrefSelectRow({
-                title: $r('app.string.reader_set_bg_color'),
-                options: [
-                  $r('app.string.reader_set_theme_follow'),
-                  $r('app.string.reader_set_theme_white'),
-                  $r('app.string.reader_set_theme_black'),
-                  $r('app.string.reader_set_theme_gray')
-                ],
-                selectedIndex: this.themeIndex(),
-                onSelectIndex: (index: number): void => {
-                  Settings.setReaderTheme(THEME_VALUES[index]);
-                }
-              })
-              Divider().color(this.pal.divider).margin({ left: 16 })
-              TextRow({
-                title: $r('app.string.reader_set_reset_brightness'),
-                value: this.brightnessLabel,
-                onTap: (): void => {
-                  Settings.setReaderBrightness(0);
-                  this.brightnessLabel = Util.resStr(this.getUIContext(), $r('app.string.lang_follow_system'));
-                  Util.toastRes(this.getUIContext(), $r('app.string.reader_set_brightness_reset'));
-                }
-              })
-            }
-          }
-          .width('100%')
-          .padding({ left: 16, right: 16, bottom: 24 })
-        }
-        .layoutWeight(1)
-        .scrollBar(BarState.Off)
-        .align(Alignment.TopStart)
+        ReaderSettingsContent()
+          .layoutWeight(1)
       }
       .width('100%')
       .height('100%')

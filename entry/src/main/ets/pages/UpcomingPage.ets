@@ -5,6 +5,7 @@ import { CategoryRepo, UpcomingRepo } from '../data/Repos';
 import { UpcomingManga, CategoryRecord } from '../model/Models';
 import { DetailParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
+import { Bp } from '../common/Breakpoint';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
 import { PageHeader } from './components/PageHeader';
@@ -43,6 +44,7 @@ export struct UpcomingPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageProp('navBarH') navBarH: number = 0;
+  @StorageProp('windowW') windowW: number = 0;
   @State allManga: UpcomingManga[] = [];
   @State rows: UpcomingRow[] = [];
   @State events: Record<string, number> = {};
@@ -439,7 +441,9 @@ export struct UpcomingPage {
               this.showFilterSheet = true;
             })
             .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(), {
-              preferType: SheetType.BOTTOM,
+              preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+              width: Bp.isWide(this.windowW) ? 560 : '100%',
+              height: Bp.isWide(this.windowW) ? 560 : SheetSize.FIT_CONTENT,
               detents: ['60%', SheetSize.LARGE],
               showClose: false,
               dragBar: true,
@@ -452,7 +456,6 @@ export struct UpcomingPage {
               Util.openUrl(context, HELP_URL);
             })
         }
-        // 大屏（lg）限宽居中，避免日历与列表被拉伸过宽（华为一多内容栅格规范）
         Column() {
           List({ scroller: this.scroller }) {
             ListItem() {
@@ -474,7 +477,6 @@ export struct UpcomingPage {
         }
         .width('100%')
         .layoutWeight(1)
-        .constraintSize({ maxWidth: 720 })
       }
       .width('100%')
       .height('100%')

@@ -1,6 +1,6 @@
 // 一多断点工具：对齐华为设计规范（HarmonyOS Design）
 // sm：<600vp（手机竖屏） md：600~840vp（折叠屏展开/平板竖屏） lg：≥840vp（平板横屏/PC）
-// 大屏下内容需限宽居中，避免列表/表单被拉伸过宽
+// 当前仅用于：Index 侧边导航断点、半模态 sheet 大屏切 CENTER 居中弹窗
 export class Bp {
   static readonly MD_MIN: number = 600;
   static readonly LG_MIN: number = 840;

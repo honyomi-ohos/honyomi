@@ -562,7 +562,6 @@ export struct BrowsePage {
           }, (section: SourceSection) => this.sectionKey(section))
         }
         .width('100%')
-        .constraintSize({ maxWidth: 720 })
         .padding({ left: 16, right: 16, bottom: 16 })
       }
       .width('100%')
@@ -660,7 +659,6 @@ export struct BrowsePage {
             }, (item: MigrateSourceCount) => `mig-${item.key}-${item.count}`)
           }
           .width('100%')
-          .constraintSize({ maxWidth: 720 })
           .padding({ left: 16, right: 16, bottom: 16 })
         }
         .width('100%')

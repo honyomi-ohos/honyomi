@@ -511,7 +511,6 @@ export struct ExtensionDetailPage {
               }
             }
             .width('100%')
-            .constraintSize({ maxWidth: 720 })
           }
           .layoutWeight(1)
           .scrollBar(BarState.Auto)

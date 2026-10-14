@@ -6,6 +6,7 @@ import { LocalFolderManager } from '../source/LocalFolderManager';
 import { MangaRecord, SManga, MangasPage, ContentType } from '../model/Models';
 import { BrowseSourceParams, DetailParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
+import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { MangaCard } from './components/MangaCard';
 import { MangaSkeletonGrid } from './components/MangaSkeletonGrid';
@@ -20,6 +21,7 @@ export struct BrowseSourcePage {
   pathStack: NavPathStack = new NavPathStack();
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('statusBarH') statusBarH: number = 0;
+  @StorageProp('windowW') windowW: number = 0;
   @StorageProp('navBarH') navBarH: number = 0;
   @State sourceKey: string = '';
   @State mode: string = 'popular';
@@ -415,7 +417,9 @@ export struct BrowseSourcePage {
         .height('100%')
         .backgroundColor(this.pal.bg)
         .bindSheet($$this.showFolderSheet, this.folderSheetBuilder(), {
-          preferType: SheetType.BOTTOM,
+          preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+          width: Bp.isWide(this.windowW) ? 560 : '100%',
+          height: SheetSize.FIT_CONTENT,
           title: { title: $r('app.string.browse_local_folder_title') },
           detents: [SheetSize.FIT_CONTENT],
           dragBar: true,

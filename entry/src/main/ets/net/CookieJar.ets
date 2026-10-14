@@ -84,6 +84,28 @@ export class CookieJar {
     return parts.join('; ');
   }
 
+  // 判断 url 域下是否已存有指定名称的 Cookie（如 cf_clearance）
+  static hasCookie(url: string, name: string): boolean {
+    const host = CookieJar.hostOf(url);
+    if (host === '') {
+      return false;
+    }
+    let found = false;
+    CookieJar.jar.forEach((cookies: Record<string, string>, domain: string) => {
+      if (found || (host !== domain && !host.endsWith(`.${domain}`))) {
+        return;
+      }
+      const names = Object.keys(cookies);
+      for (const n of names) {
+        if (n === name) {
+          found = true;
+          return;
+        }
+      }
+    });
+    return found;
+  }
+
   // 解析 OHOS http 响应头对象中的 Set-Cookie（可能为 string 或 string[]）
   static storeFromResponse(url: string, header: Object): void {
     const h = header as Record<string, Object>;

@@ -9,9 +9,9 @@ const SORT_VALUES: string[] = [
 const VIEW_VALUES: string[] = ['compact', 'comfortable', 'cover', 'list'];
 const COLS_VALUES: number[] = [0, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-// 书架设置：默认排序/视图/列数/徽标（筛选与三态逻辑在书架过滤弹层中）
+// 书架设置内容：默认排序/视图/列数/徽标（筛选与三态逻辑在书架过滤弹层中）
 @Component
-export struct LibrarySettingsPage {
+export struct LibrarySettingsContent {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
@@ -31,117 +31,129 @@ export struct LibrarySettingsPage {
   }
 
   build() {
+    Scroll() {
+      Column() {
+        PrefGroup({ groupTitle: $r('app.string.lib_set_sort_group') }) {
+          PrefSelectRow({
+            title: $r('app.string.lib_set_sort_default'),
+            options: [
+              $r('app.string.lib_sort_alpha'), $r('app.string.lib_sort_total'),
+              $r('app.string.lib_sort_last_read'), $r('app.string.lib_sort_last_update'),
+              $r('app.string.lib_sort_unread'), $r('app.string.lib_sort_latest_chapter'),
+              $r('app.string.lib_sort_fetch_date'), $r('app.string.lib_sort_date_added'),
+              $r('app.string.lib_sort_random')
+            ],
+            selectedIndex: this.sortIndex(),
+            onSelectIndex: (index: number): void => {
+              Settings.setLibrarySort(SORT_VALUES[index]);
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          PrefSwitchRow({
+            title: $r('app.string.lib_set_sort_asc'),
+            initValue: Settings.getLibrarySortAsc(),
+            apply: (value: boolean): void => {
+              Settings.setLibrarySortAsc(value);
+            }
+          })
+        }
+
+        PrefGroup({ groupTitle: $r('app.string.lib_set_display_group') }) {
+          PrefSelectRow({
+            title: $r('app.string.lib_set_view_default'),
+            options: [
+              $r('app.string.lib_display_compact'), $r('app.string.lib_display_comfortable'),
+              $r('app.string.lib_display_cover'), $r('app.string.lib_display_list')
+            ],
+            selectedIndex: this.viewIndex(),
+            onSelectIndex: (index: number): void => {
+              Settings.setLibraryView(VIEW_VALUES[index]);
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          PrefSelectRow({
+            title: $r('app.string.lib_set_grid_cols'),
+            options: [
+              $r('app.string.lib_display_grid_auto'), '2', '3', '4', '5', '6', '7', '8', '9', '10'
+            ],
+            selectedIndex: this.colsIndex(),
+            onSelectIndex: (index: number): void => {
+              Settings.setLibraryGridCols(COLS_VALUES[index]);
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          PrefSwitchRow({
+            title: $r('app.string.lib_set_unread_badge'),
+            initValue: Settings.getShowUnreadBadge(),
+            apply: (value: boolean): void => {
+              Settings.setShowUnreadBadge(value);
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          PrefSwitchRow({
+            title: $r('app.string.lib_set_download_badge'),
+            initValue: Settings.getShowDownloadBadge(),
+            apply: (value: boolean): void => {
+              Settings.setShowDownloadBadge(value);
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          PrefSwitchRow({
+            title: $r('app.string.lib_badge_local'),
+            initValue: Settings.getShowLocalBadge(),
+            apply: (value: boolean): void => {
+              Settings.setShowLocalBadge(value);
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          PrefSwitchRow({
+            title: $r('app.string.lib_badge_language'),
+            initValue: Settings.getShowLanguageBadge(),
+            apply: (value: boolean): void => {
+              Settings.setShowLanguageBadge(value);
+            }
+          })
+        }
+
+        PrefGroup({ groupTitle: $r('app.string.lib_display_tabs_group') }) {
+          PrefSwitchRow({
+            title: $r('app.string.lib_show_category_tabs'),
+            initValue: Settings.getShowCategoryTabs(),
+            apply: (value: boolean): void => {
+              Settings.setShowCategoryTabs(value);
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          PrefSwitchRow({
+            title: $r('app.string.lib_show_manga_count'),
+            initValue: Settings.getShowMangaCount(),
+            apply: (value: boolean): void => {
+              Settings.setShowMangaCount(value);
+            }
+          })
+        }
+      }
+      .width('100%')
+      .padding({ left: 16, right: 16, bottom: 24 })
+    }
+    .width('100%')
+    .height('100%')
+    .scrollBar(BarState.Off)
+    .align(Alignment.TopStart)
+  }
+}
+
+// 书架设置路由壳（手机/平板窄屏 push 进入）
+@Component
+export struct LibrarySettingsPage {
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+
+  build() {
     NavDestination() {
       Column() {
         PageHeader({ title: $r('app.string.lib_set_title') })
-        Scroll() {
-          Column() {
-            PrefGroup({ groupTitle: $r('app.string.lib_set_sort_group') }) {
-              PrefSelectRow({
-                title: $r('app.string.lib_set_sort_default'),
-                options: [
-                  $r('app.string.lib_sort_alpha'), $r('app.string.lib_sort_total'),
-                  $r('app.string.lib_sort_last_read'), $r('app.string.lib_sort_last_update'),
-                  $r('app.string.lib_sort_unread'), $r('app.string.lib_sort_latest_chapter'),
-                  $r('app.string.lib_sort_fetch_date'), $r('app.string.lib_sort_date_added'),
-                  $r('app.string.lib_sort_random')
-                ],
-                selectedIndex: this.sortIndex(),
-                onSelectIndex: (index: number): void => {
-                  Settings.setLibrarySort(SORT_VALUES[index]);
-                }
-              })
-              Divider().color(this.pal.divider).margin({ left: 16 })
-              PrefSwitchRow({
-                title: $r('app.string.lib_set_sort_asc'),
-                initValue: Settings.getLibrarySortAsc(),
-                apply: (value: boolean): void => {
-                  Settings.setLibrarySortAsc(value);
-                }
-              })
-            }
-
-            PrefGroup({ groupTitle: $r('app.string.lib_set_display_group') }) {
-              PrefSelectRow({
-                title: $r('app.string.lib_set_view_default'),
-                options: [
-                  $r('app.string.lib_display_compact'), $r('app.string.lib_display_comfortable'),
-                  $r('app.string.lib_display_cover'), $r('app.string.lib_display_list')
-                ],
-                selectedIndex: this.viewIndex(),
-                onSelectIndex: (index: number): void => {
-                  Settings.setLibraryView(VIEW_VALUES[index]);
-                }
-              })
-              Divider().color(this.pal.divider).margin({ left: 16 })
-              PrefSelectRow({
-                title: $r('app.string.lib_set_grid_cols'),
-                options: [
-                  $r('app.string.lib_display_grid_auto'), '2', '3', '4', '5', '6', '7', '8', '9', '10'
-                ],
-                selectedIndex: this.colsIndex(),
-                onSelectIndex: (index: number): void => {
-                  Settings.setLibraryGridCols(COLS_VALUES[index]);
-                }
-              })
-              Divider().color(this.pal.divider).margin({ left: 16 })
-              PrefSwitchRow({
-                title: $r('app.string.lib_set_unread_badge'),
-                initValue: Settings.getShowUnreadBadge(),
-                apply: (value: boolean): void => {
-                  Settings.setShowUnreadBadge(value);
-                }
-              })
-              Divider().color(this.pal.divider).margin({ left: 16 })
-              PrefSwitchRow({
-                title: $r('app.string.lib_set_download_badge'),
-                initValue: Settings.getShowDownloadBadge(),
-                apply: (value: boolean): void => {
-                  Settings.setShowDownloadBadge(value);
-                }
-              })
-              Divider().color(this.pal.divider).margin({ left: 16 })
-              PrefSwitchRow({
-                title: $r('app.string.lib_badge_local'),
-                initValue: Settings.getShowLocalBadge(),
-                apply: (value: boolean): void => {
-                  Settings.setShowLocalBadge(value);
-                }
-              })
-              Divider().color(this.pal.divider).margin({ left: 16 })
-              PrefSwitchRow({
-                title: $r('app.string.lib_badge_language'),
-                initValue: Settings.getShowLanguageBadge(),
-                apply: (value: boolean): void => {
-                  Settings.setShowLanguageBadge(value);
-                }
-              })
-            }
-
-            PrefGroup({ groupTitle: $r('app.string.lib_display_tabs_group') }) {
-              PrefSwitchRow({
-                title: $r('app.string.lib_show_category_tabs'),
-                initValue: Settings.getShowCategoryTabs(),
-                apply: (value: boolean): void => {
-                  Settings.setShowCategoryTabs(value);
-                }
-              })
-              Divider().color(this.pal.divider).margin({ left: 16 })
-              PrefSwitchRow({
-                title: $r('app.string.lib_show_manga_count'),
-                initValue: Settings.getShowMangaCount(),
-                apply: (value: boolean): void => {
-                  Settings.setShowMangaCount(value);
-                }
-              })
-            }
-          }
-          .width('100%')
-          .padding({ left: 16, right: 16, bottom: 24 })
-        }
-        .layoutWeight(1)
-        .scrollBar(BarState.Off)
-        .align(Alignment.TopStart)
+        LibrarySettingsContent()
+          .layoutWeight(1)
       }
       .width('100%')
       .height('100%')

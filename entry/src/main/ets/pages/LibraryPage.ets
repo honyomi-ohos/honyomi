@@ -8,6 +8,7 @@ import { MangaRecord, CategoryRecord, MangaStats, ChapterRecord, DownloadTask, C
 import { DetailParams, MigrateSearchParams } from '../model/RouteParams';
 import { SourceRegistry } from '../source/Source';
 import { ThemePalette } from '../common/Theme';
+import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { CategoryDialog, ConfirmDialog } from './components/Dialogs';
 import { EmptyScreen } from './components/EmptyScreen';
@@ -51,6 +52,7 @@ export struct LibraryPage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('navBarH') navBarH: number = 0;
+  @StorageProp('windowW') windowW: number = 0;
   @State mangas: MangaRecord[] = [];
   @State categories: CategoryRecord[] = [];
   @State loading: boolean = true;
@@ -673,7 +675,9 @@ export struct LibraryPage {
               this.showFilterSheet = true;
             })
             .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(), {
-              preferType: SheetType.BOTTOM,
+              preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+              width: Bp.isWide(this.windowW) ? 560 : '100%',
+              height: Bp.isWide(this.windowW) ? 560 : SheetSize.FIT_CONTENT,
               detents: ['70%', SheetSize.LARGE],
               showClose: false,
               dragBar: true,
@@ -745,7 +749,6 @@ export struct LibraryPage {
           .layoutWeight(1)
           .justifyContent(FlexAlign.Center)
         } else if (this.viewMode === 'list') {
-          // 大屏（lg）限宽居中，避免列表行被拉伸过宽（华为一多内容栅格规范）
           Column() {
             List({ space: 0 }) {
               LazyForEach(this.libSource, (record: MangaRecord) => {
@@ -778,7 +781,6 @@ export struct LibraryPage {
           }
           .width('100%')
           .layoutWeight(1)
-          .constraintSize({ maxWidth: 720 })
         } else {
           Grid() {
             LazyForEach(this.libSource, (record: MangaRecord) => {

@@ -43,6 +43,7 @@ export interface RepoEntry {
   versionCode: number;
   file: string;
   nsfw: boolean;
+  icon: string;
 }
 
 interface RawRepoEntry {
@@ -53,6 +54,7 @@ interface RawRepoEntry {
   versionCode?: number;
   file?: string;
   nsfw?: boolean;
+  icon?: string;
 }
 
 interface RawRepoIndex {
@@ -276,6 +278,7 @@ export class PluginService {
           versionCode: item.versionCode ?? 0,
           file: PluginService.resolveRepoFile(url, file),
           nsfw: item.nsfw === true,
+          icon: item.icon !== undefined && item.icon !== '' ? PluginService.resolveRepoFile(url, item.icon) : '',
         };
         entries.push(entry);
       }
@@ -462,16 +465,26 @@ export class PluginService {
 
   private static registerCompiled(manifest: PluginManifest, methods: string[], compiled: CompiledSourceInfo[]): void {
     const used: string[] = [manifest.key];
+    const iconUrl = PluginService.iconUrlOf(manifest);
     for (let i = 0; i < compiled.length; i++) {
       const info = compiled[i];
       const key = i === 0 ? manifest.key : PluginService.childKey(manifest.key, info, used);
       used.push(key);
       const child = PluginService.manifestForSource(manifest, info, key);
       const sourceId = info.id !== undefined ? info.id : '';
-      const src = new JsvmSource(child, methods, manifest.key, sourceId);
+      const src = new JsvmSource(child, methods, manifest.key, sourceId, iconUrl);
       SourceRegistry.register(src);
       src.warmImageHeaders();
     }
+  }
+
+  // 插件图标 file:// 路径；包内无图标时返回空字符串
+  private static iconUrlOf(manifest: PluginManifest): string {
+    if (manifest.icon === '') {
+      return '';
+    }
+    const p = `${PluginService.pluginsDir}/${manifest.key}/${manifest.icon}`;
+    return fs.accessSync(p) ? `file://${p}` : '';
   }
 
   // 加载/替换插件：卸载旧引擎后重新拉起专属 Worker + 隔离 JSVM_Context。
@@ -499,7 +512,7 @@ export class PluginService {
         return;
       }
     }
-    const src = new JsvmSource(manifest, info.methods, manifest.key, '');
+    const src = new JsvmSource(manifest, info.methods, manifest.key, '', PluginService.iconUrlOf(manifest));
     SourceRegistry.register(src);
     // 插件可选导出 getHeaders：声明后图片经宿主 http 管线加载（支持 Referer/Cookie）
     src.warmImageHeaders();

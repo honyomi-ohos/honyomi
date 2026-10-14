@@ -105,7 +105,6 @@ export struct HistoryPage {
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)
       } else {
-        // 大屏（lg）限宽居中，避免列表行被拉伸过宽（华为一多内容栅格规范）
         Column() {
           List({ space: 0 }) {
             ForEach(this.items, (item: HistoryItem) => {
@@ -175,7 +174,6 @@ export struct HistoryPage {
         }
         .width('100%')
         .layoutWeight(1)
-        .constraintSize({ maxWidth: 720 })
       }
     }
     .width('100%')

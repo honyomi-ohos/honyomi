@@ -363,16 +363,25 @@ export class NativeHttpBridge {
   // Same policy as net/Http.ets: unified UA (cf_clearance binds UA + client),
   // extension header overrides, then CookieJar auto-attach. Form POSTs get a
   // default Content-Type when the extension omitted one (Madara ajax).
+  // 域名已有 cf_clearance 会话时忽略插件自定义 UA：cf_clearance 与验证
+  // WebView 的 UA（Http.USER_AGENT）绑定，混用其他 UA 会被 CF 拒绝。
   private static mergeHeaders(
     url: string,
     headers: Record<string, string>,
     method: http.RequestMethod,
     body: string
   ): Record<string, string> {
-    const merged: Record<string, string> = { 'User-Agent': Http.USER_AGENT };
+    const cfBound = CookieJar.hasCookie(url, 'cf_clearance');
+    const merged: Record<string, string> = {};
     const keys = Object.keys(headers);
     for (const key of keys) {
+      if (cfBound && key.toLowerCase() === 'user-agent') {
+        continue;
+      }
       merged[key] = headers[key];
+    }
+    if (!NativeHttpBridge.hasKey(merged, 'User-Agent')) {
+      merged['User-Agent'] = Http.USER_AGENT;
     }
     if (!NativeHttpBridge.hasKey(merged, 'Cookie')) {
       const cookie = CookieJar.headerFor(url);
@@ -552,8 +561,6 @@ export class NativeHttpBridge {
     return helper.encodeToStringSync(new Uint8Array(buffer));
   }
 
-  // 按响应 Content-Type 声明的 charset 解码响应体；未声明或不受支持时
-  // 退回自动探测（BOM / UTF-8 / GB18030 / GBK / Big5），默认 UTF-8。
   /** 用系统 TextEncoder('gbk') 将文本编码为 GBK 字节的 URL 百分号编码。 */
   private static encodeGbkUrl(text: string): string {
     const encoder = util.TextEncoder.create('gbk');
@@ -573,6 +580,8 @@ export class NativeHttpBridge {
     return out;
   }
 
+  // 按响应 Content-Type 声明的 charset 解码响应体；未声明或不受支持时
+  // 退回自动探测（BOM / UTF-8 / GB18030 / GBK / Big5），默认 UTF-8。
   private static decodeBody(buffer: ArrayBuffer, header: Object): string {
     const bytes = new Uint8Array(buffer);
     if (bytes.length === 0) {

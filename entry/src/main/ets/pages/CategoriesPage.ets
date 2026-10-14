@@ -3,6 +3,7 @@ import { AppDb } from '../data/AppDb';
 import { CategoryRepo } from '../data/Repos';
 import { CategoryRecord } from '../model/Models';
 import { ThemePalette } from '../common/Theme';
+import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { PageHeader } from './components/PageHeader';
 import { AppIcon } from './components/AppIcon';
@@ -15,6 +16,7 @@ export struct CategoriesPage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('navBarH') navBarH: number = 0;
+  @StorageProp('windowW') windowW: number = 0;
   @State categories: CategoryRecord[] = [];
   @State showItemSheet: boolean = false;
   private menuCat: CategoryRecord | null = null;
@@ -122,7 +124,6 @@ export struct CategoriesPage {
         PageHeader({ title: $r('app.string.categories_title') }) {
           this.headerRight()
         }
-        // 大屏（lg）限宽居中（华为一多内容栅格规范）
         Column() {
           List({ space: 0 }) {
             ForEach(this.categories, (cat: CategoryRecord) => {
@@ -171,7 +172,6 @@ export struct CategoriesPage {
         }
         .width('100%')
         .layoutWeight(1)
-        .constraintSize({ maxWidth: 720 })
 
         Text($r('app.string.categories_hint'))
           .fontSize(11)
@@ -184,7 +184,9 @@ export struct CategoriesPage {
       .height('100%')
       .backgroundColor(this.pal.bg)
       .bindSheet($$this.showItemSheet, this.itemSheetBuilder(), {
-        preferType: SheetType.BOTTOM,
+        preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+        width: Bp.isWide(this.windowW) ? 560 : '100%',
+        height: SheetSize.FIT_CONTENT,
         title: { title: this.menuCat === null ? '' : this.menuCat.name },
         detents: [SheetSize.FIT_CONTENT],
         dragBar: true,

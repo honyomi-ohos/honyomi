@@ -7,6 +7,7 @@ import { SourceRegistry } from '../source/Source';
 import { MangaRecord, ChapterRecord, SPage } from '../model/Models';
 import { ReaderParams } from '../model/RouteParams';
 import { Theme, ThemePalette } from '../common/Theme';
+import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { Settings } from '../common/Settings';
 import { GripSupport } from '../common/GripSupport';
@@ -63,6 +64,7 @@ export struct ReaderPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageProp('navBarH') navBarH: number = 0;
+  @StorageProp('windowW') windowW: number = 0;
   @StorageLink('libDirty') libDirty: number = 0;
   @State manga: MangaRecord = new MangaRecord();
   @State chapter: ChapterRecord = new ChapterRecord();
@@ -1233,21 +1235,25 @@ export struct ReaderPage {
               TransitionEffect.OPACITY.animation({ duration: 200, curve: Curve.Linear })
             )
           )
-           .bindSheet($$this.showSettings, this.settingsSheet(), {
-             preferType: SheetType.BOTTOM,
-             title: { title: $r('app.string.reader_settings') },
-             detents: [SheetSize.FIT_CONTENT],
-             dragBar: true,
-             showClose: false,
-             blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
-           })
+            .bindSheet($$this.showSettings, this.settingsSheet(), {
+              preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+              width: Bp.isWide(this.windowW) ? 560 : '100%',
+              height: SheetSize.FIT_CONTENT,
+              title: { title: $r('app.string.reader_settings') },
+              detents: [SheetSize.FIT_CONTENT],
+              dragBar: true,
+              showClose: false,
+              blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
+            })
         }
       }
       .width('100%')
       .height('100%')
       .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
       .bindSheet($$this.showModeSheet, this.modeSheetBuilder(), {
-        preferType: SheetType.BOTTOM,
+        preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+        width: Bp.isWide(this.windowW) ? 560 : '100%',
+        height: SheetSize.FIT_CONTENT,
         title: { title: $r('app.string.reader_reading_mode') },
         detents: [SheetSize.FIT_CONTENT],
         dragBar: true,
@@ -1258,7 +1264,9 @@ export struct ReaderPage {
     .hideTitleBar(true)
     .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
     .bindSheet($$this.showOrientationSheet, this.orientationSheetBuilder(), {
-      preferType: SheetType.BOTTOM,
+      preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+      width: Bp.isWide(this.windowW) ? 560 : '100%',
+      height: SheetSize.FIT_CONTENT,
       title: { title: $r('app.string.reader_screen_orientation') },
       detents: [SheetSize.FIT_CONTENT],
       dragBar: true,

@@ -196,13 +196,22 @@ export class Http {
   // ---------------- 内部实现 ----------------
 
   // 合并请求头：统一 UA + 调用方覆盖 + CookieJar 自动附带
+  // 域名已有 cf_clearance 会话时忽略调用方 UA：cf_clearance 与验证
+  // WebView 的 UA（Http.USER_AGENT）绑定，混用其他 UA 会被 CF 拒绝
   private static buildHeaders(url: string, headers: Record<string, string> | undefined): Record<string, string> {
-    const merged: Record<string, string> = { 'User-Agent': Http.USER_AGENT };
+    const cfBound = CookieJar.hasCookie(url, 'cf_clearance');
+    const merged: Record<string, string> = {};
     if (headers !== undefined) {
       const keys = Object.keys(headers);
       for (const k of keys) {
+        if (cfBound && k.toLowerCase() === 'user-agent') {
+          continue;
+        }
         merged[k] = headers[k];
       }
+    }
+    if (!Http.hasKey(merged, 'User-Agent')) {
+      merged['User-Agent'] = Http.USER_AGENT;
     }
     if (!Http.hasKey(merged, 'Cookie')) {
       const cookie = CookieJar.headerFor(url);

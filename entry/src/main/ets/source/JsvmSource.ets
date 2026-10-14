@@ -129,18 +129,22 @@ export class JsvmSource implements Source {
   readonly packageKey: string;
   // tachiyomi 编译产物的 source id；空字符串表示简单契约插件。
   readonly sourceId: string;
+  // 插件图标（file:// 路径）；空字符串表示包内无图标
+  readonly iconPath: string;
 
   private exportedMethods: string[] = [];
   private customImageHeaders: Record<string, string> | undefined = undefined;
   private imageViaHost: boolean = false;
 
-  constructor(manifest: PluginManifest, exportedMethods: string[] = [], packageKey: string = '', sourceId: string = '') {
+  constructor(manifest: PluginManifest, exportedMethods: string[] = [], packageKey: string = '',
+    sourceId: string = '', iconPath: string = '') {
     this.manifest = manifest;
     this.key = manifest.key;
     this.name = manifest.name;
     this.lang = manifest.lang;
     this.packageKey = packageKey !== '' ? packageKey : manifest.key;
     this.sourceId = sourceId;
+    this.iconPath = iconPath;
     this.exportedMethods = exportedMethods;
     this.supportsLatest = manifest.supportsLatest && exportedMethods.indexOf('getLatestManga') >= 0;
     this.contentType = ContentType.normalize(manifest.contentType);
@@ -429,9 +433,37 @@ export class JsvmSource implements Source {
     } catch (e) {
       if (e instanceof WebChallengeError) {
         AppStorage.setOrCreate('cfChallengeUrl', e.challengeUrl);
+        // 挂起等待用户在验证页完成质询：通过后 cfVerifiedTick 增长，携新
+        // cf_clearance 自动重试一次；用户放弃（验证页关闭未通过）则原样上抛
+        const solved = await JsvmSource.waitChallengeSolved();
+        if (solved) {
+          return await JsvmExtensionManager.callData<T>(this.packageKey, method, args);
+        }
       }
       throw e as Error;
     }
+  }
+
+  // 轮询等待 CF 验证结果：cfVerifiedTick 增长代表通过；cfChallengeUrl 复空代表放弃；
+  // 上限 2 分钟（验证页超时关闭后调用方收到原始错误）
+  private static waitChallengeSolved(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      const startTick = AppStorage.get<number>('cfVerifiedTick') ?? 0;
+      const deadline = Date.now() + 120000;
+      const timer = setInterval(() => {
+        const tick = AppStorage.get<number>('cfVerifiedTick') ?? 0;
+        if (tick > startTick) {
+          clearInterval(timer);
+          resolve(true);
+          return;
+        }
+        const url = AppStorage.get<string>('cfChallengeUrl') ?? '';
+        if (url === '' || Date.now() > deadline) {
+          clearInterval(timer);
+          resolve(false);
+        }
+      }, 500);
+    });
   }
 
   private static textFromRaw(raw: Object): string {

@@ -218,7 +218,6 @@ export struct GlobalSearchPage {
               }, (section: SearchSection) => `sec-${section.sourceKey}-${section.state}-${section.results.length}`)
             }
             .width('100%')
-            .constraintSize({ maxWidth: 720 })
             .padding({ bottom: this.navBarH + 24 })
           }
           .layoutWeight(1)

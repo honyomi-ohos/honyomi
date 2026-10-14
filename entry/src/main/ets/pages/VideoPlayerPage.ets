@@ -14,6 +14,7 @@ import { MangaRecord, ChapterRecord, SVideo } from '../model/Models';
 import { ReaderParams } from '../model/RouteParams';
 import { Settings } from '../common/Settings';
 import { ThemePalette } from '../common/Theme';
+import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { ReaderChapterNav, ChapterNeighbors } from '../common/ReaderChapterNav';
 import { AppIcon } from './components/AppIcon';
@@ -37,6 +38,7 @@ export struct VideoPlayerPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageProp('navBarH') navBarH: number = 0;
+  @StorageProp('windowW') windowW: number = 0;
   @State manga: MangaRecord = new MangaRecord();
   @State chapter: ChapterRecord = new ChapterRecord();
   @State videos: SVideo[] = [];
@@ -1524,7 +1526,9 @@ export struct VideoPlayerPage {
       .height('100%')
       .backgroundColor('#000000')
       .bindSheet($$this.showSheet, this.sheetBuilder(), {
-        preferType: SheetType.BOTTOM,
+        preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+        width: Bp.isWide(this.windowW) ? 560 : '100%',
+        height: Bp.isWide(this.windowW) ? 560 : SheetSize.FIT_CONTENT,
         detents: [SheetSize.MEDIUM, SheetSize.LARGE],
         dragBar: true,
         showClose: false,

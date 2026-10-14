@@ -7,6 +7,7 @@ import { UpdateItem, CategoryRecord } from '../model/Models';
 import { DetailParams } from '../model/RouteParams';
 import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
+import { Bp } from '../common/Breakpoint';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
@@ -21,6 +22,7 @@ export struct UpdatesPage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('navBarH') navBarH: number = 0;
+  @StorageProp('windowW') windowW: number = 0;
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
   @State items: UpdateItem[] = [];
   @State loading: boolean = true;
@@ -170,7 +172,9 @@ export struct UpdatesPage {
             this.showFilterSheet = true;
           })
           .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(), {
-            preferType: SheetType.BOTTOM,
+            preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+            width: Bp.isWide(this.windowW) ? 560 : '100%',
+            height: Bp.isWide(this.windowW) ? 560 : SheetSize.FIT_CONTENT,
             detents: ['60%', SheetSize.LARGE],
             showClose: false,
             dragBar: true,
@@ -206,7 +210,6 @@ export struct UpdatesPage {
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)
       } else {
-        // 大屏（lg）限宽居中，避免列表行被拉伸过宽（华为一多内容栅格规范）
         Column() {
           List({ space: 0 }) {
             ForEach(this.items, (item: UpdateItem) => {
@@ -292,7 +295,6 @@ export struct UpdatesPage {
         }
         .width('100%')
         .layoutWeight(1)
-        .constraintSize({ maxWidth: 720 })
       }
     }
     .width('100%')

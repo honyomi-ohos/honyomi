@@ -8,6 +8,7 @@ import { MangaRecord, ChapterRecord, TrackRecord, DownloadTask, ALMediaItem, Con
 import { DetailParams } from '../model/RouteParams';
 import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
+import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { Settings } from '../common/Settings';
 import { CoverStore } from '../common/CoverStore';
@@ -160,6 +161,7 @@ export struct MangaDetailPage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('statusBarH') statusBarH: number = 0;
+  @StorageProp('windowW') windowW: number = 0;
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
   @State manga: MangaRecord = new MangaRecord();
   @State chapters: ChapterRecord[] = [];
@@ -858,7 +860,6 @@ export struct MangaDetailPage {
   build() {
     NavDestination() {
       Stack({ alignContent: Alignment.Top }) {
-        // 大屏（lg）限宽居中：详情内容不超过 960vp，避免整页拉伸（华为一多内容栅格规范）
         Column() {
           // 整页滚动 + 下拉刷新：头部随列表上滑收起，不再固定占位
           Refresh({ refreshing: $$this.refreshing }) {
@@ -1138,7 +1139,9 @@ export struct MangaDetailPage {
                     this.showSettingsSheet = true;
                   })
                   .bindSheet($$this.showSettingsSheet, this.chapterSettingsSheetBuilder(), {
-                    preferType: SheetType.BOTTOM,
+                    preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+                    width: Bp.isWide(this.windowW) ? 560 : '100%',
+                    height: Bp.isWide(this.windowW) ? 560 : SheetSize.FIT_CONTENT,
                     detents: ['45%', SheetSize.LARGE],
                     showClose: false,
                     dragBar: true,
@@ -1229,7 +1232,6 @@ export struct MangaDetailPage {
         }
         .width('100%')
         .height('100%')
-        .constraintSize({ maxWidth: 960 })
 
         // 吸顶栏：背景/标题随滚动渐显，返回按钮常驻
         Stack({ alignContent: Alignment.TopStart }) {

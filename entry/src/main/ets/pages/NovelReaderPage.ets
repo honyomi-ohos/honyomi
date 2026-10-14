@@ -7,6 +7,7 @@ import { SourceRegistry } from '../source/Source';
 import { MangaRecord, ChapterRecord } from '../model/Models';
 import { ReaderParams } from '../model/RouteParams';
 import { Theme, ThemePalette } from '../common/Theme';
+import { Bp } from '../common/Breakpoint';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
 import { NovelTts } from '../common/NovelTts';
@@ -79,6 +80,7 @@ export struct NovelReaderPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageProp('navBarH') navBarH: number = 0;
+  @StorageProp('windowW') windowW: number = 0;
   @State manga: MangaRecord = new MangaRecord();
   @State chapter: ChapterRecord = new ChapterRecord();
   @State body: string = '';
@@ -2439,7 +2441,9 @@ export struct NovelReaderPage {
             )
           )
           .bindSheet($$this.showPanelSheet, this.panelSheetBuilder(), {
-            preferType: SheetType.BOTTOM,
+            preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+            width: Bp.isWide(this.windowW) ? 560 : '100%',
+            height: SheetSize.FIT_CONTENT,
             title: { title: this.panelTitleRes() },
             detents: [SheetSize.FIT_CONTENT],
             dragBar: true,
@@ -2453,7 +2457,9 @@ export struct NovelReaderPage {
       .height('100%')
       .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
       .bindSheet($$this.showModeSheet, this.modeSheetBuilder(), {
-        preferType: SheetType.BOTTOM,
+        preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+        width: Bp.isWide(this.windowW) ? 560 : '100%',
+        height: SheetSize.FIT_CONTENT,
         title: { title: $r('app.string.reader_reading_mode') },
         detents: [SheetSize.FIT_CONTENT],
         dragBar: true,
@@ -2465,7 +2471,9 @@ export struct NovelReaderPage {
     .hideTitleBar(true)
     .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
     .bindSheet($$this.showOrientationSheet, this.orientationSheetBuilder(), {
-      preferType: SheetType.BOTTOM,
+      preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+      width: Bp.isWide(this.windowW) ? 560 : '100%',
+      height: SheetSize.FIT_CONTENT,
       title: { title: $r('app.string.reader_screen_orientation') },
       detents: [SheetSize.FIT_CONTENT],
       dragBar: true,

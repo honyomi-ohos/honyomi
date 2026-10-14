@@ -4,9 +4,9 @@ import { ThemePalette } from '../../common/Theme';
 import { PageHeader } from '../components/PageHeader';
 import { AppIcon } from '../components/AppIcon';
 
-// 语言选择页：跟随系统 + 各语言自称单选列表（参考 Mihon App language）
+// 语言选择内容：跟随系统 + 各语言自称单选列表（参考 Mihon App language）
 @Component
-export struct LanguagePage {
+export struct LanguageContent {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('appLanguage') appLanguage: string = 'auto';
 
@@ -39,26 +39,37 @@ export struct LanguagePage {
   }
 
   build() {
+    Scroll() {
+      Column() {
+        this.langRow($r('app.string.lang_follow_system'), 'auto')
+        ForEach(Languages.all(), (lang: AppLanguage) => {
+          this.langRow(lang.nativeName, lang.tag)
+        }, (lang: AppLanguage) => `lang-${lang.tag}`)
+      }
+      .width('100%')
+      .backgroundColor(this.pal.card)
+      .borderRadius(16)
+      .clip(true)
+    }
+    .width('100%')
+    .height('100%')
+    .align(Alignment.Top)
+    .scrollBar(BarState.Auto)
+    .padding({ left: 16, right: 16, top: 4 })
+  }
+}
+
+// 语言选择路由壳（手机/平板窄屏 push 进入）
+@Component
+export struct LanguagePage {
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+
+  build() {
     NavDestination() {
       Column() {
         PageHeader({ title: $r('app.string.appearance_language') })
-        Scroll() {
-          Column() {
-            this.langRow($r('app.string.lang_follow_system'), 'auto')
-            ForEach(Languages.all(), (lang: AppLanguage) => {
-              this.langRow(lang.nativeName, lang.tag)
-            }, (lang: AppLanguage) => `lang-${lang.tag}`)
-          }
-          .width('100%')
-          .backgroundColor(this.pal.card)
-          .borderRadius(16)
-          .clip(true)
-          .constraintSize({ maxWidth: 720 })
-        }
-        .layoutWeight(1)
-        .align(Alignment.Top)
-        .scrollBar(BarState.Auto)
-        .padding({ left: 16, right: 16, top: 4 })
+        LanguageContent()
+          .layoutWeight(1)
       }
       .width('100%')
       .height('100%')

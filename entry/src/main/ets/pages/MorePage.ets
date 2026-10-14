@@ -146,7 +146,6 @@ export struct MorePage {
           }
         }
         .width('100%')
-        .constraintSize({ maxWidth: 720 })
         .padding({ left: 16, right: 16, bottom: 24 })
       }
       .layoutWeight(1)
