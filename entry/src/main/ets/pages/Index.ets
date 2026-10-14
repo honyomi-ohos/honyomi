@@ -1,5 +1,4 @@
 import { common } from '@kit.AbilityKit';
-import { webview } from '@kit.ArkWeb';
 import { curves, AnimatorResult, AnimatorOptions } from '@kit.ArkUI';
 import { HdsTabs, hdsMaterial, HdsTabsController, HdsAnimationMode } from '@kit.UIDesignKit';
 import { ThemePalette } from '../common/Theme';
@@ -8,8 +7,6 @@ import { Settings } from '../common/Settings';
 import { UpdateService } from '../data/UpdateService';
 import { AppDb } from '../data/AppDb';
 import { PluginService } from '../data/PluginService';
-import { Http } from '../net/Http';
-import { CookieJar } from '../net/CookieJar';
 import { Util } from '../common/Util';
 import { LibraryPage } from './LibraryPage';
 import { UpdatesPage } from './UpdatesPage';
@@ -302,11 +299,9 @@ struct Index {
   // 书架多选数：>0 时隐藏底部页签栏（HDS 官方多选交互：操作栏替换页签栏）
   @StorageLink('libSelectionCount') @Watch('onLibSelectionChanged') libSelectionCount: number = 0;
   @StorageLink('cardAction') @Watch('onCardActionChanged') cardActionJson: string = '';
-  @State cfStatus: ResourceStr = '';
   // 一多响应式：窗口宽度 + 已挂载页签位掩码（宽屏下按需挂载后驻留保状态）
   @State windowW: number = 0;
   @State mountedMask: number = 1;
-  private cfController: webview.WebviewController = new webview.WebviewController();
   private tabsController: HdsTabsController = new HdsTabsController();
 
   // lg 断点（≥840vp）：底部页签切换为侧边导航栏（华为大屏导航规范）
@@ -420,42 +415,16 @@ struct Index {
     }
   }
 
-  // CF 验证 URL 变化：打开验证页前把 CookieJar 已有会话注入 ArkWeb
+  // CF 验证 URL 变化：立即把验证页压到路由栈顶（独立 NavDestination，位于任何页面之上，
+  // 含插件浏览页；被盖住的内嵌遮罩既不可见、ArkWeb 也会暂停渲染导致白屏）
   private onCfUrlChanged(): void {
     if (this.cfChallengeUrl === '') {
       return;
     }
-    this.cfStatus = $r('app.string.tab_cf_waiting');
-    const jar = CookieJar.headerFor(this.cfChallengeUrl);
-    if (jar !== '') {
-      webview.WebCookieManager.configCookie(this.cfChallengeUrl, jar).catch((_e: Error) => {
-        // 忽略注入失败
-      });
+    // 防重复压栈：多个请求接连触发 challenge 时只保留一个验证页
+    if (this.pathStack.getParamByName('CfVerify').length === 0) {
+      this.pathStack.pushPathByName('CfVerify', null);
     }
-  }
-
-  // 每次页面加载完成后检查盾是否通过
-  private checkCfSolved(): void {
-    webview.WebCookieManager.fetchCookie(this.cfChallengeUrl).then((cookies: string) => {
-      if (cookies.indexOf('cf_clearance') >= 0) {
-        this.closeCf(true);
-        Util.toastRes(this.getUIContext(), $r('app.string.tab_cf_verified'));
-      }
-    }).catch((_e: Error) => {
-      // 忽略
-    });
-  }
-
-  private closeCf(importCookies: boolean): void {
-    if (importCookies) {
-      webview.WebCookieManager.fetchCookie(this.cfChallengeUrl).then((cookies: string) => {
-        CookieJar.importCookieString(this.cfChallengeUrl, cookies);
-      }).catch((_e: Error) => {
-        // 忽略
-      });
-    }
-    this.cfStatus = '';
-    this.cfChallengeUrl = '';
   }
 
   // 加载已安装插件并广播刷新（每个插件在专属 Worker 的隔离 JSVM 引擎中执行）
@@ -663,61 +632,6 @@ struct Index {
         })
         .width('100%')
         .height('100%')
-        }
-
-        // Cloudflare 盾验证页：Http 层检测到 challenge 时弹出
-        if (this.cfChallengeUrl !== '') {
-          Column() {
-            Row() {
-              AppIcon({ name: 'close', iconSize: 20, tint: '#FFFFFF' })
-                .padding({ left: 14, right: 14, top: 10, bottom: 10 })
-                .onClick(() => {
-                  this.closeCf(false);
-                })
-              Text($r('app.string.tab_cf_title'))
-                .fontSize(16)
-                .fontWeight(FontWeight.Bold)
-                .fontColor('#FFFFFF')
-                .layoutWeight(1)
-                .textAlign(TextAlign.Center)
-              Text($r('app.string.tab_cf_done'))
-                .fontSize(15)
-                .fontColor('#FFFFFF')
-                .padding({ left: 14, right: 14, top: 10, bottom: 10 })
-                .onClick(() => {
-                  this.closeCf(true);
-                  Util.toastRes(this.getUIContext(), $r('app.string.tab_cf_saved'));
-                })
-            }
-            .width('100%')
-            .backgroundColor('#CC000000')
-
-            Web({ src: 'about:blank', controller: this.cfController })
-              .javaScriptAccess(true)
-              .domStorageAccess(true)
-              .fileAccess(true)
-              .onlineImageAccess(true)
-              .onControllerAttached(() => {
-                // UA 必须在首次加载前设置（cf_clearance 与 UA 绑定）
-                this.cfController.setCustomUserAgent(Http.USER_AGENT);
-                this.cfController.loadUrl(this.cfChallengeUrl);
-              })
-              .onPageEnd(() => {
-                this.checkCfSolved();
-              })
-              .layoutWeight(1)
-
-            Text(this.cfStatus)
-              .fontSize(12)
-              .fontColor(this.pal.sub)
-              .width('100%')
-              .textAlign(TextAlign.Center)
-              .padding(8)
-          }
-          .width('100%')
-          .height('100%')
-          .padding({ top: this.statusBarH })
-          .backgroundColor(this.pal.bg)
         }
       }
       .width('100%')
