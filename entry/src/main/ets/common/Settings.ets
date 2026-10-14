@@ -16,7 +16,10 @@ export class Settings {
     Settings.appCtx = context;
     if (Settings.store === undefined) {
       const options: preferences.Options = { name: 'honyomi_settings' };
-      Settings.store = preferences.getPreferencesSync(context, options);
+      try {
+        Settings.store = preferences.getPreferencesSync(context, options);
+      } catch (_e) {
+      }
     }
   }
 
@@ -30,8 +33,12 @@ export class Settings {
     if (Settings.store === undefined) {
       return def;
     }
-    const v = Settings.store.getSync(key, def);
-    return typeof v === 'string' ? v as string : def;
+    try {
+      const v = Settings.store.getSync(key, def);
+      return typeof v === 'string' ? v as string : def;
+    } catch (e) {
+      return def;
+    }
   }
 
   // 写入保持 putSync（读己之写）+ 500ms 防抖批量 flush（高频写场景消除 I/O 放大）
@@ -39,7 +46,10 @@ export class Settings {
     if (Settings.store === undefined) {
       return;
     }
-    Settings.store.putSync(key, value);
+    try {
+      Settings.store.putSync(key, value);
+    } catch (_e) {
+    }
     Settings.scheduleFlush();
   }
 
@@ -47,15 +57,22 @@ export class Settings {
     if (Settings.store === undefined) {
       return def;
     }
-    const v = Settings.store.getSync(key, def);
-    return typeof v === 'boolean' ? v as boolean : def;
+    try {
+      const v = Settings.store.getSync(key, def);
+      return typeof v === 'boolean' ? v as boolean : def;
+    } catch (e) {
+      return def;
+    }
   }
 
   private static setBool(key: string, value: boolean): void {
     if (Settings.store === undefined) {
       return;
     }
-    Settings.store.putSync(key, value);
+    try {
+      Settings.store.putSync(key, value);
+    } catch (_e) {
+    }
     Settings.scheduleFlush();
   }
 
@@ -63,15 +80,22 @@ export class Settings {
     if (Settings.store === undefined) {
       return def;
     }
-    const v = Settings.store.getSync(key, def);
-    return typeof v === 'number' ? v as number : def;
+    try {
+      const v = Settings.store.getSync(key, def);
+      return typeof v === 'number' ? v as number : def;
+    } catch (e) {
+      return def;
+    }
   }
 
   private static setNum(key: string, value: number): void {
     if (Settings.store === undefined) {
       return;
     }
-    Settings.store.putSync(key, value);
+    try {
+      Settings.store.putSync(key, value);
+    } catch (_e) {
+    }
     Settings.scheduleFlush();
   }
 
@@ -95,7 +119,10 @@ export class Settings {
       Settings.flushTimer = -1;
     }
     if (Settings.store !== undefined) {
-      Settings.store.flush();
+      try {
+        Settings.store.flush();
+      } catch (_e) {
+      }
     }
   }
 
@@ -725,7 +752,10 @@ export class Settings {
     if (Settings.store === undefined) {
       return;
     }
-    Settings.store.deleteSync('viewer_mode:' + mangaId);
+    try {
+      Settings.store.deleteSync('viewer_mode:' + mangaId);
+    } catch (_e) {
+    }
     Settings.scheduleFlush();
   }
 
@@ -870,11 +900,23 @@ export class Settings {
   static applyColorMode(context: common.Context): void {
     const mode: string = Settings.getThemeMode();
     if (mode === 'dark') {
-      context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_DARK);
+      try {
+        context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_DARK);
+      } catch (e) {
+        throw new Error(`set color mode failed: ${e}`);
+      }
     } else if (mode === 'light') {
-      context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT);
+      try {
+        context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT);
+      } catch (e) {
+        throw new Error(`set color mode failed: ${e}`);
+      }
     } else {
-      context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);
+      try {
+        context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);
+      } catch (e) {
+        throw new Error(`set color mode failed: ${e}`);
+      }
     }
     Settings.applySystemBar(context);
   }

@@ -10,6 +10,7 @@ import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
 import { PageHeader } from './components/PageHeader';
 import { AppIcon } from './components/AppIcon';
+import { CoverPlaceholder } from './components/CoverPlaceholder';
 import { UpdatesFilterSheet } from './components/UpdatesFilterSheet';
 
 // 即将推出页帮助文档（对齐 Mihon Constants.URL_HELP_UPCOMING）
@@ -336,14 +337,11 @@ export struct UpcomingPage {
   mangaItem(m: UpcomingManga) {
     Row({ space: 16 }) {
       if (m.coverUrl === '') {
-        Column() {
-          AppIcon({ name: 'photo', iconSize: 24 })
-        }
-        .width(56)
-        .height(80)
-        .borderRadius(4)
-        .backgroundColor(this.pal.chip)
-        .justifyContent(FlexAlign.Center)
+        // 无封面：默认封面占位
+        CoverPlaceholder({ iconSize: 24 })
+          .width(56)
+          .height(80)
+          .borderRadius(4)
       } else {
         Image(m.coverUrl)
           .width(56)

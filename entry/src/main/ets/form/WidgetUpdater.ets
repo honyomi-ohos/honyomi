@@ -80,12 +80,17 @@ export class WidgetUpdater {
   }
 
   static async loadForms(context: common.Context): Promise<CardFormInfo[]> {
-    const prefs = await preferences.getPreferences(context, { name: PREFS_NAME });
-    const has = await prefs.has(PREFS_KEY);
-    if (!has) {
-      return [];
+    let raw: preferences.ValueType = '';
+    try {
+      const prefs = await preferences.getPreferences(context, { name: PREFS_NAME });
+      const has = await prefs.has(PREFS_KEY);
+      if (!has) {
+        return [];
+      }
+      raw = await prefs.get(PREFS_KEY, '');
+    } catch (e) {
+      throw new Error(`load widget forms failed: ${e}`);
     }
-    const raw = await prefs.get(PREFS_KEY, '');
     if (typeof raw !== 'string') {
       return [];
     }
@@ -115,9 +120,13 @@ export class WidgetUpdater {
   }
 
   private static async writeForms(context: common.Context, forms: CardFormInfo[]): Promise<void> {
-    const prefs = await preferences.getPreferences(context, { name: PREFS_NAME });
-    await prefs.put(PREFS_KEY, JSON.stringify(forms));
-    await prefs.flush();
+    try {
+      const prefs = await preferences.getPreferences(context, { name: PREFS_NAME });
+      await prefs.put(PREFS_KEY, JSON.stringify(forms));
+      await prefs.flush();
+    } catch (e) {
+      throw new Error(`write widget forms failed: ${e}`);
+    }
   }
 
   // ---------------- 漫画卡片 pending 机制 ----------------
@@ -257,8 +266,15 @@ export class WidgetUpdater {
     if (coverPath.indexOf('file://') === 0) {
       coverPath = coverPath.substring('file://'.length);
     }
-    if (coverPath !== '' && fs.accessSync(coverPath)) {
-      const file = fs.openSync(coverPath, fs.OpenMode.READ_ONLY);
+    let file: fs.File | undefined = undefined;
+    try {
+      if (coverPath !== '' && fs.accessSync(coverPath)) {
+        file = fs.openSync(coverPath, fs.OpenMode.READ_ONLY);
+      }
+    } catch (e) {
+      throw new Error(`open cover file failed: ${e}`);
+    }
+    if (file !== undefined) {
       record['hasCover'] = true;
       const formImages: Record<string, number> = { 'cover': file.fd };
       const payload: Record<string, Object> = {};
@@ -306,9 +322,15 @@ export class WidgetUpdater {
     } else {
       const items = await UpdatesRepo.unreadChapters(ROW_COUNT);
       const total = await UpdatesRepo.unreadCount();
-      record['countText'] = total > 0
-        ? context.resourceManager.getStringSync($r('app.string.card_unread_count').id, total)
-        : '';
+      let countText: string = '';
+      if (total > 0) {
+        try {
+          countText = context.resourceManager.getStringSync($r('app.string.card_unread_count').id, total);
+        } catch (e) {
+          throw new Error(`load unread count text failed: ${e}`);
+        }
+      }
+      record['countText'] = countText;
       for (let i = 0; i < ROW_COUNT; i++) {
         const item = i < items.length ? items[i] : undefined;
         record[`t${i}`] = item !== undefined ? item.mangaTitle : '';
@@ -341,17 +363,25 @@ export class WidgetUpdater {
       }
     }
     const month = now.getMonth() + 1;
+    let titleText: string = '';
+    let totalText: string = '';
+    try {
+      titleText = context.resourceManager.getStringSync(
+        week ? $r('app.string.card_stats_week_display').id : $r('app.string.card_stats_month_display').id);
+      totalText = context.resourceManager.getStringSync(week
+        ? $r('app.string.stats_week_total').id
+        : $r('app.string.stats_month_total').id, Util.formatDuration(context, totalSeconds));
+    } catch (e) {
+      throw new Error(`load stats card text failed: ${e}`);
+    }
     const record: Record<string, string | number | boolean> = {
       'wide': wide,
       'empty': totalSeconds <= 0,
-      'titleText': context.resourceManager.getStringSync(
-        week ? $r('app.string.card_stats_week_display').id : $r('app.string.card_stats_month_display').id),
+      'titleText': titleText,
       'rangeText': week
         ? `${range[0].substring(5)} ~ ${range[1].substring(5)}`
         : `${now.getFullYear()}-${WidgetUpdater.pad2(month)}`,
-      'totalText': context.resourceManager.getStringSync(week
-        ? $r('app.string.stats_week_total').id
-        : $r('app.string.stats_month_total').id, Util.formatDuration(context, totalSeconds)),
+      'totalText': totalText,
       'bars': '',
       'labels': '',
     };
@@ -434,13 +464,25 @@ export class WidgetUpdater {
     };
     const diff: number = Math.round((startOf(Date.now()) - startOf(ms)) / (24 * 60 * 60 * 1000));
     if (diff === 0) {
-      return context.resourceManager.getStringSync($r('app.string.relative_time_today').id);
+      try {
+        return context.resourceManager.getStringSync($r('app.string.relative_time_today').id);
+      } catch (e) {
+        throw new Error(`load upcoming date text failed: ${e}`);
+      }
     }
     if (diff > 0 && diff < 7) {
-      return context.resourceManager.getStringSync($r('app.string.relative_time_days_ago').id, diff);
+      try {
+        return context.resourceManager.getStringSync($r('app.string.relative_time_days_ago').id, diff);
+      } catch (e) {
+        throw new Error(`load upcoming date text failed: ${e}`);
+      }
     }
     if (diff < 0 && diff >= -7) {
-      return context.resourceManager.getStringSync($r('app.string.upcoming_relative_time_days').id, -diff);
+      try {
+        return context.resourceManager.getStringSync($r('app.string.upcoming_relative_time_days').id, -diff);
+      } catch (e) {
+        throw new Error(`load upcoming date text failed: ${e}`);
+      }
     }
     const d: Date = new Date(ms);
     const now: Date = new Date();

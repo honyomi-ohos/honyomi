@@ -1,22 +1,35 @@
-// 小说阅读器「听书」设置面板：播放/停止 + 语速
-// （从 NovelReaderPage 拆出，Wave 3I；行为与原 ttsSheetBuilder 一致）
+// 小说阅读器「听书」设置面板：播放/暂停/继续 + 语速 + 播放器入口
+// （从 NovelReaderPage 拆出，Wave 3I；播放控制经 TtsPlaybackService）
 import { ThemePalette } from '../../../common/Theme';
+import { AppIcon } from '../AppIcon';
 
 @Component
 export struct NovelTtsPanel {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @Prop ttsPlaying: boolean = false;
+  // playing / paused / idle
+  @Prop mode: string = 'idle';
   @Prop ttsSpeed: number = 1;
   onToggle: () => void = (): void => {};
   onSpeed: (v: number) => void = (v: number): void => {};
+  onOpenPlayer: () => void = (): void => {};
+
+  private toggleLabel(): ResourceStr {
+    if (this.mode === 'playing') {
+      return $r('app.string.novel_tts_pause');
+    }
+    if (this.mode === 'paused') {
+      return $r('app.string.novel_tts_resume');
+    }
+    return $r('app.string.novel_tts_start');
+  }
 
   build() {
     Column({ space: 0 }) {
-      Button(this.ttsPlaying ? $r('app.string.novel_tts_stop') : $r('app.string.novel_tts_start'))
+      Button(this.toggleLabel())
         .fontSize(14)
         .fontColor('#FFFFFF')
         .type(ButtonType.Capsule)
-        .backgroundColor(this.ttsPlaying ? '#8A343434' : this.pal.primary)
+        .backgroundColor(this.mode === 'idle' ? this.pal.primary : '#8A343434')
         .height(40)
         .padding({ left: 28, right: 28 })
         .margin({ top: 16 })
@@ -45,6 +58,22 @@ export struct NovelTtsPanel {
       }
       .width('100%')
       .padding({ left: 16, right: 16, top: 12, bottom: 4 })
+
+      // 听书播放器入口（后台续播、播控中心、定时停止）
+      Row({ space: 10 }) {
+        AppIcon({ name: 'playlist_play', iconSize: 20, tint: this.pal.primary })
+        Text($r('app.string.tts_open_player'))
+          .fontSize(14)
+          .fontColor(this.pal.text)
+          .layoutWeight(1)
+        AppIcon({ name: 'keyboard_arrow_right', iconSize: 20, tint: this.pal.sub })
+      }
+      .width('100%')
+      .height(48)
+      .padding({ left: 16, right: 16 })
+      .onClick(() => {
+        this.onOpenPlayer();
+      })
 
       Column().height(16)
     }

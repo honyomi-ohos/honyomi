@@ -2,6 +2,13 @@ import { relationalStore } from '@kit.ArkData';
 import { AppDb } from './AppDb';
 import { Util } from '../common/Util';
 
+function closeQuietly(rs: relationalStore.ResultSet): void {
+  try {
+    rs.close();
+  } catch (e) {
+  }
+}
+
 // 每日阅读时长（统计图数据点）
 export class DayDuration {
   day: string = ''; // YYYY-MM-DD
@@ -79,43 +86,55 @@ export class ReadingStatsRepo {
   // 按作品类型汇总阅读时长（秒）
   static async durationByType(): Promise<Record<string, number>> {
     const store = await AppDb.get();
-    const rs = await store.querySql(
-      `SELECT CASE WHEN m.contentType IN ('novel', 'video') THEN m.contentType ELSE 'manga' END AS kind,
-              COALESCE(SUM(s.duration), 0) AS total
-       FROM readingSession s LEFT JOIN manga m ON m.id = s.mangaId
-       GROUP BY kind`);
     const map: Record<string, number> = { 'manga': 0, 'novel': 0, 'video': 0 };
-    while (rs.goToNextRow()) {
-      map[rs.getString(rs.getColumnIndex('kind'))] = rs.getLong(rs.getColumnIndex('total'));
+    try {
+      const rs = await store.querySql(
+        `SELECT CASE WHEN m.contentType IN ('novel', 'video') THEN m.contentType ELSE 'manga' END AS kind,
+                COALESCE(SUM(s.duration), 0) AS total
+         FROM readingSession s LEFT JOIN manga m ON m.id = s.mangaId
+         GROUP BY kind`);
+      while (rs.goToNextRow()) {
+        map[rs.getString(rs.getColumnIndex('kind'))] = rs.getLong(rs.getColumnIndex('total'));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`durationByType failed: ${e}`);
     }
-    rs.close();
     return map;
   }
 
   // 总阅读时长（秒）
   static async totalDuration(): Promise<number> {
     const store = await AppDb.get();
-    const rs = await store.querySql(
-      `SELECT COALESCE(SUM(duration), 0) AS total FROM readingSession`);
     let total = 0;
-    if (rs.goToNextRow()) {
-      total = rs.getLong(rs.getColumnIndex('total'));
+    try {
+      const rs = await store.querySql(
+        `SELECT COALESCE(SUM(duration), 0) AS total FROM readingSession`);
+      if (rs.goToNextRow()) {
+        total = rs.getLong(rs.getColumnIndex('total'));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`totalDuration failed: ${e}`);
     }
-    rs.close();
     return total;
   }
 
   // [fromDay, toDay] 区间内每日阅读时长（秒），key 为 YYYY-MM-DD
   static async dailyTotals(fromDay: string, toDay: string): Promise<Record<string, number>> {
     const store = await AppDb.get();
-    const rs = await store.querySql(
-      `SELECT day, COALESCE(SUM(duration), 0) AS total FROM readingSession
-       WHERE day >= ? AND day <= ? GROUP BY day`, [fromDay, toDay]);
     const totals: Record<string, number> = {};
-    while (rs.goToNextRow()) {
-      totals[rs.getString(rs.getColumnIndex('day'))] = rs.getLong(rs.getColumnIndex('total'));
+    try {
+      const rs = await store.querySql(
+        `SELECT day, COALESCE(SUM(duration), 0) AS total FROM readingSession
+         WHERE day >= ? AND day <= ? GROUP BY day`, [fromDay, toDay]);
+      while (rs.goToNextRow()) {
+        totals[rs.getString(rs.getColumnIndex('day'))] = rs.getLong(rs.getColumnIndex('total'));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`dailyTotals failed: ${e}`);
     }
-    rs.close();
     return totals;
   }
 

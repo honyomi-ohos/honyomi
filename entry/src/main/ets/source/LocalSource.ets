@@ -52,7 +52,7 @@ export class LocalSource extends LocalFsSource {
 
   async getPageList(chapterKey: string): Promise<SPage[]> {
     const entryPath = this.entryPath(chapterKey);
-    if (entryPath === '' || !fs.accessSync(entryPath)) {
+    if (entryPath === '' || !this.fileExists(entryPath)) {
       throw new Error('chapter_missing');
     }
     const sepIdx = chapterKey.indexOf('::');
@@ -62,7 +62,13 @@ export class LocalSource extends LocalFsSource {
       const files = await this.extractArchive(mangaDir, entry);
       return this.urlsToPages(files);
     }
-    if (fs.statSync(entryPath).isDirectory()) {
+    let isDir = false;
+    try {
+      isDir = fs.statSync(entryPath).isDirectory();
+    } catch (e) {
+      throw new Error(`stat chapter failed: ${e}`);
+    }
+    if (isDir) {
       return this.urlsToPages(this.listImages(entryPath));
     }
     throw new Error('unsupported_format');
@@ -71,20 +77,33 @@ export class LocalSource extends LocalFsSource {
   // 递归收集章节条目相对路径：归档文件与含图片的目录为章节，
   // 无图片的目录视为卷（继续向下收集其归档/图片目录）
   private collectChapterEntries(dir: string, prefix: string, out: string[]): void {
-    if (!fs.accessSync(dir)) {
+    let entries: string[] = [];
+    try {
+      if (!fs.accessSync(dir)) {
+        return;
+      }
+      entries = fs.listFileSync(dir).sort((a: string, b: string): number => NaturalCompare.compare(a, b));
+    } catch (e) {
       return;
     }
-    const entries = fs.listFileSync(dir).sort((a: string, b: string): number => NaturalCompare.compare(a, b));
     for (const entry of entries) {
       const rel = prefix === '' ? entry : `${prefix}/${entry}`;
       const fullPath = `${dir}/${entry}`;
       if (this.isArchive(entry)) {
         out.push(rel);
-      } else if (fs.statSync(fullPath).isDirectory() && entry !== '.extracted') {
-        if (this.listImages(fullPath).length > 0) {
-          out.push(rel);
-        } else {
-          this.collectChapterEntries(fullPath, rel, out);
+      } else {
+        let isDir = false;
+        try {
+          isDir = fs.statSync(fullPath).isDirectory();
+        } catch (e) {
+          continue;
+        }
+        if (isDir && entry !== '.extracted') {
+          if (this.listImages(fullPath).length > 0) {
+            out.push(rel);
+          } else {
+            this.collectChapterEntries(fullPath, rel, out);
+          }
         }
       }
     }
@@ -98,7 +117,12 @@ export class LocalSource extends LocalFsSource {
   // 列出目录下的图片（自然排序）
   private listImages(dir: string): string[] {
     const files: string[] = [];
-    const entries = fs.listFileSync(dir);
+    let entries: string[] = [];
+    try {
+      entries = fs.listFileSync(dir);
+    } catch (e) {
+      return files;
+    }
     for (const entry of entries) {
       const lower = entry.toLowerCase();
       if (this.imageExts.some((ext: string): boolean => lower.endsWith(ext))) {
@@ -114,13 +138,19 @@ export class LocalSource extends LocalFsSource {
     const outDir = `${this.cacheDir}/local_extract/${mangaDir}/${safeEntry}`;
     // 已解压过则直接复用（通过标记文件判断）
     const doneFlag = `${outDir}/.extracted`;
-    if (!fs.accessSync(doneFlag)) {
+    let done = false;
+    try {
+      done = fs.accessSync(doneFlag);
+    } catch (e) {
+      done = false;
+    }
+    if (!done) {
       // 先清理可能存在的半成品目录（doneFlag 未写成功即视为未完成）
       LocalSource.removeDirQuietly(outDir);
       // 写入前容量管理：解压缓存总量超限时按目录 mtime 淘汰最旧
       this.ensureExtractBudget();
-      fs.mkdirSync(outDir, true);
       try {
+        fs.mkdirSync(outDir, true);
         await zlib.decompressFile(zipPath, outDir);
         const flagFile = fs.openSync(doneFlag, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
         fs.writeSync(flagFile.fd, 'ok');
@@ -140,23 +170,47 @@ export class LocalSource extends LocalFsSource {
   // local_extract 解压缓存容量管理：总量超上限（256MB）时按目录 mtime 淘汰最旧的解压目录
   private ensureExtractBudget(): void {
     const root = `${this.cacheDir}/local_extract`;
-    if (!fs.accessSync(root)) {
+    let mangaDirs: string[] = [];
+    try {
+      if (!fs.accessSync(root)) {
+        return;
+      }
+      mangaDirs = fs.listFileSync(root);
+    } catch (e) {
       return;
     }
     const dirs: ExtractCacheDir[] = [];
-    const mangaDirs = fs.listFileSync(root);
     for (const mangaDir of mangaDirs) {
       const mangaPath = `${root}/${mangaDir}`;
-      if (!fs.statSync(mangaPath).isDirectory()) {
+      let mangaIsDir = false;
+      try {
+        mangaIsDir = fs.statSync(mangaPath).isDirectory();
+      } catch (e) {
         continue;
       }
-      const entries = fs.listFileSync(mangaPath);
+      if (!mangaIsDir) {
+        continue;
+      }
+      let entries: string[] = [];
+      try {
+        entries = fs.listFileSync(mangaPath);
+      } catch (e) {
+        continue;
+      }
       for (const name of entries) {
         const p = `${mangaPath}/${name}`;
-        if (!fs.statSync(p).isDirectory()) {
+        let isDir = false;
+        let mtime = 0;
+        try {
+          isDir = fs.statSync(p).isDirectory();
+          mtime = fs.statSync(p).mtime;
+        } catch (e) {
           continue;
         }
-        const info: ExtractCacheDir = { path: p, mtime: fs.statSync(p).mtime, size: LocalSource.dirSize(p) };
+        if (!isDir) {
+          continue;
+        }
+        const info: ExtractCacheDir = { path: p, mtime: mtime, size: LocalSource.dirSize(p) };
         dirs.push(info);
       }
     }
@@ -178,14 +232,27 @@ export class LocalSource extends LocalFsSource {
 
   private static dirSize(dir: string): number {
     let total = 0;
-    const entries = fs.listFileSync(dir);
+    let entries: string[] = [];
+    try {
+      entries = fs.listFileSync(dir);
+    } catch (e) {
+      return total;
+    }
     for (const entry of entries) {
       const p = `${dir}/${entry}`;
-      const st = fs.statSync(p);
-      if (st.isDirectory()) {
+      let isDir = false;
+      let size = 0;
+      try {
+        const st = fs.statSync(p);
+        isDir = st.isDirectory();
+        size = st.size;
+      } catch (e) {
+        continue;
+      }
+      if (isDir) {
         total += LocalSource.dirSize(p);
       } else {
-        total += st.size;
+        total += size;
       }
     }
     return total;
@@ -202,14 +269,25 @@ export class LocalSource extends LocalFsSource {
   }
 
   private collectImages(dir: string, out: string[]): void {
-    const entries = fs.listFileSync(dir);
+    let entries: string[] = [];
+    try {
+      entries = fs.listFileSync(dir);
+    } catch (e) {
+      return;
+    }
     for (const entry of entries) {
       const fullPath = `${dir}/${entry}`;
       const lower = entry.toLowerCase();
       if (this.imageExts.some((ext: string): boolean => lower.endsWith(ext))) {
         out.push(fullPath);
-      } else if (fs.statSync(fullPath).isDirectory() && entry !== '.extracted') {
-        this.collectImages(fullPath, out);
+      } else {
+        try {
+          if (fs.statSync(fullPath).isDirectory() && entry !== '.extracted') {
+            this.collectImages(fullPath, out);
+          }
+        } catch (e) {
+          continue;
+        }
       }
     }
   }

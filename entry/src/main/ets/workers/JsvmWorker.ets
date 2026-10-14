@@ -47,7 +47,10 @@ interface CallEnvelope {
 }
 
 function post(json: string): void {
-  workerPort.postMessage(json);
+  try {
+    workerPort.postMessage(json);
+  } catch (e) {
+  }
 }
 
 function ready(ok: boolean, kind: string, error: string): void {
@@ -150,7 +153,10 @@ function handleDestroy(): void {
     engineId = -1;
   }
   post('{"type":"destroyed"}');
-  workerPort.close();
+  try {
+    workerPort.close();
+  } catch (e) {
+  }
 }
 
 workerPort.onmessage = (e: MessageEvents): void => {

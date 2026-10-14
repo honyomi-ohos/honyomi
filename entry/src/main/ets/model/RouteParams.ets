@@ -14,6 +14,11 @@ export interface BrowseSourceParams {
   mode: string; // 'popular' | 'latest'
 }
 
+export interface GlobalSearchParams {
+  // 进入页面即自动执行的初始搜索词（详情页标题/作者/标签点击跳转）
+  query: string;
+}
+
 export interface MigrateMangaParams {
   sourceKey: string;
 }

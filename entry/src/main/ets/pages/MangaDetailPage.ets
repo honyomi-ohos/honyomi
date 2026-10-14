@@ -1,4 +1,5 @@
 import { common, Want } from '@kit.AbilityKit';
+import { pasteboard, BusinessError } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { formProvider, formInfo } from '@kit.FormKit';
 import { photoAccessHelper } from '@kit.MediaLibraryKit';
@@ -6,7 +7,7 @@ import { AppDb } from '../data/AppDb';
 import { MangaRepo, ChapterRepo, TrackRepo } from '../data/Repos';
 import { SourceRegistry } from '../source/Source';
 import { MangaRecord, ChapterRecord, TrackRecord, DownloadTask, ALMediaItem, ContentType } from '../model/Models';
-import { DetailParams } from '../model/RouteParams';
+import { DetailParams, GlobalSearchParams } from '../model/RouteParams';
 import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
@@ -18,14 +19,15 @@ import { NaturalCompare } from '../common/NaturalCompare';
 import { DownloadService } from '../data/DownloadService';
 import { WidgetUpdater } from '../form/WidgetUpdater';
 import { AniListTracker } from '../data/AniListTracker';
-import { InputDialog } from './components/Dialogs';
+import { InputDialog, ConfirmDialog } from './components/Dialogs';
 import { SmartImage } from './components/SmartImage';
 import { EmptyScreen } from './components/EmptyScreen';
 import { AppIcon } from './components/AppIcon';
 import { CoverViewer } from './components/CoverViewer';
+import { CoverPlaceholder } from './components/CoverPlaceholder';
 import { ChapterSettingsSheet } from './components/ChapterSettingsSheet';
 
-// 章节行：自订阅 DownloadService 变化刷新下载角标，
+// 章节行：自订阅 DownloadService 变化刷新下载指示器，
 // 避免 ForEach key 携带全局版本号导致整个章节列表重建
 @Component
 struct DetailChapterRow {
@@ -36,12 +38,14 @@ struct DetailChapterRow {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State downloaded: boolean = false;
   @State queued: boolean = false;
-  @State downloading: string = '';
+  @State downloading: boolean = false;
+  @State dlPct: number = 0;
   onTap: (chapter: ChapterRecord) => void = (_c: ChapterRecord) => {
   };
   onLongPress: (chapter: ChapterRecord) => void = (_c: ChapterRecord) => {
   };
-  onDownload: (chapter: ChapterRecord) => void = (_c: ChapterRecord) => {
+  // 指示器点击：state 为行内当前下载状态（none/downloading/queued/downloaded）
+  onIndicatorTap: (chapter: ChapterRecord, state: string) => void = (_c: ChapterRecord, _s: string) => {
   };
   private onDlNotify = (): void => {
     this.refreshDlState();
@@ -59,18 +63,34 @@ struct DetailChapterRow {
   private refreshDlState(): void {
     const d = DownloadService.isDownloaded(this.chapter.id);
     const q = !d && DownloadService.isQueued(this.chapter.id);
-    let progress = '';
+    let downloading = false;
+    let dlPct = 0;
     if (q) {
-      const task = DownloadService.getQueue().find((t: DownloadTask) => t.chapterId === this.chapter.id);
+      const task = DownloadService.getQueue().find((t: DownloadTask): boolean => t.chapterId === this.chapter.id);
       if (task !== undefined && task.state === 1 && task.total > 0) {
-        progress = `${task.progress}/${task.total}`;
+        downloading = true;
+        dlPct = Math.round(task.progress * 100 / task.total);
       }
     }
-    if (d !== this.downloaded || q !== this.queued || progress !== this.downloading) {
+    if (d !== this.downloaded || q !== this.queued || downloading !== this.downloading || dlPct !== this.dlPct) {
       this.downloaded = d;
       this.queued = q;
-      this.downloading = progress;
+      this.downloading = downloading;
+      this.dlPct = dlPct;
     }
+  }
+
+  private dlState(): string {
+    if (this.downloaded) {
+      return 'downloaded';
+    }
+    if (this.downloading) {
+      return 'downloading';
+    }
+    if (this.queued) {
+      return 'queued';
+    }
+    return 'none';
   }
 
   build() {
@@ -83,73 +103,63 @@ struct DetailChapterRow {
         })
           .margin({ right: 10 })
       }
-      Column() {
-        Text(this.chapter.name)
-          .fontSize(14)
-          .fontColor(this.chapter.read ? this.pal.sub : this.pal.text)
-          .maxLines(1)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
+      Column({ space: 3 }) {
+        Row({ space: 5 }) {
+          // 未读圆点（对齐 Mihon MangaChapterListItem）
+          if (!this.chapter.read) {
+            Circle({ width: 6, height: 6 })
+              .fill(this.pal.primary)
+          }
+          Text(this.chapter.name)
+            .fontSize(14)
+            .fontColor(this.chapter.read ? this.pal.sub : this.pal.text)
+            .maxLines(1)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+            .layoutWeight(1)
+          if (this.chapter.bookmark) {
+            AppIcon({ name: 'bookmark_filled', iconSize: 14, tint: this.pal.primary })
+          }
+        }
+        .width('100%')
+
         Text(Util.formatDate(this.chapter.dateUpload))
           .fontSize(11)
           .fontColor(this.pal.sub)
-          .margin({ top: 2 })
       }
       .alignItems(HorizontalAlign.Start)
       .layoutWeight(1)
 
-      if (this.chapter.bookmark) {
-        AppIcon({ name: 'bookmark_filled', iconSize: 16, tint: this.pal.primary })
-          .margin({ left: 6 })
-      }
-
-      if (this.chapter.read) {
-        Text($r('app.string.detail_read'))
-          .fontSize(11)
-          .fontColor(this.pal.sub)
-      } else {
-        Text($r('app.string.chapter_badge_new'))
-          .fontSize(10)
-          .fontColor('#FFFFFF')
-          .backgroundColor('#E05252')
-          .borderRadius(8)
-          .padding({ left: 6, right: 6, top: 2, bottom: 2 })
-      }
-
+      // 下载指示器（对齐 Mihon ChapterDownloadIndicator）：未下载/进度环/排队/已下载
       if (!this.isLocalSource) {
-        if (this.downloaded) {
-          Text($r('app.string.detail_downloaded'))
-            .fontSize(11)
-            .fontColor(this.pal.primary)
-            .margin({ left: 8 })
-        } else if (this.downloading !== '') {
-          Text(this.downloading)
-            .fontSize(11)
-            .fontColor(this.pal.primary)
-            .margin({ left: 8 })
-        } else if (this.queued) {
-          Text($r('app.string.detail_in_queue'))
-            .fontSize(11)
-            .fontColor(this.pal.sub)
-            .margin({ left: 8 })
-        } else {
-          // 包裹容器设置 HitTestMode.Block 缩小命中区域并阻断冒泡，
-          // 避免同时触发整行 onClick（打开阅读器）
-          Row() {
-            Text($r('app.string.detail_download'))
-              .fontSize(11)
-              .fontColor(this.pal.sub)
-              .margin({ left: 8 })
-              .padding(4)
+        Row() {
+          if (this.downloaded) {
+            AppIcon({ name: 'check_circle', iconSize: 20, tint: this.pal.sub })
+          } else if (this.downloading) {
+            Progress({ value: this.dlPct, total: 100, type: ProgressType.Ring })
+              .width(18)
+              .height(18)
+              .color(this.pal.sub)
+              .style({ strokeWidth: 2 })
+          } else if (this.queued) {
+            LoadingProgress()
+              .width(16)
+              .height(16)
+              .color(this.pal.sub)
+          } else {
+            AppIcon({ name: 'download', iconSize: 20, tint: this.pal.sub })
           }
-          .hitTestBehavior(HitTestMode.Block)
-          .onClick(() => {
-            this.onDownload(this.chapter);
-          })
         }
+        .width(40)
+        .height(40)
+        .justifyContent(FlexAlign.End)
+        .hitTestBehavior(HitTestMode.Block)
+        .onClick(() => {
+          this.onIndicatorTap(this.chapter, this.dlState());
+        })
       }
     }
     .width('100%')
-    .padding({ left: 16, right: 16, top: 10, bottom: 10 })
+    .padding({ left: 16, right: 12, top: 10, bottom: 10 })
     .onClick(() => {
       this.onTap(this.chapter);
     })
@@ -214,6 +224,8 @@ export struct MangaDetailPage {
   @State alSearching: boolean = false;
   @State showCoverViewer: boolean = false;
   @State showSettingsSheet: boolean = false;
+  // AniList 追踪卡片：默认收起，由操作行"追踪"按钮展开（对齐 Mihon Tracking 按钮拉起追踪面板）
+  @State showTrackingCard: boolean = false;
   // 章节排序/筛选状态（持久化于 manga.chapterFlags，对齐 Mihon ChapterSettingsDialog）
   @State @Watch('onFilterStateChanged') sortMode: number = ChapterFlags.SORTING_SOURCE;
   @State @Watch('onFilterStateChanged') sortAscending: boolean = false;
@@ -246,6 +258,94 @@ export struct MangaDetailPage {
       this.rebuildShownChapters();
     }
   };
+
+  // ----- 头部信息（对齐 Mihon MangaContentInfo） -----
+
+  // 源显示名：内置本地源走本地化资源，其余取插件名
+  private sourceDisplayName(): string {
+    const source = SourceRegistry.get(this.manga.sourceKey);
+    if (source === undefined) {
+      return this.manga.sourceKey;
+    }
+    return Util.localSourceName(this.getUIContext(), this.manga.sourceKey, source.name);
+  }
+
+  // 状态图标（对齐 Mihon MangaContentInfo 状态图标映射）
+  private statusIconName(): string {
+    switch (this.manga.status) {
+      case 'ongoing':
+        return 'schedule';
+      case 'completed':
+        return 'done_all';
+      case 'licensed':
+        return 'public';
+      case 'hiatus':
+        return 'pause';
+      case 'cancelled':
+        return 'close';
+      case 'publication_complete':
+        return 'done';
+      default:
+        return 'info';
+    }
+  }
+
+  // 标签列表：genre 逗号分隔字符串 → 标签数组（对齐 Mihon tags chips）
+  private tagList(): string[] {
+    return this.manga.genre
+      .split(',')
+      .map((s: string): string => s.trim())
+      .filter((s: string): boolean => s !== '');
+  }
+
+  // 全局搜索跳转（标题/作者/标签点击，对齐 Mihon doSearch(query, global=true)）
+  private searchGlobal(query: string): void {
+    const params: GlobalSearchParams = { query: query };
+    this.pathStack.pushPathByName('GlobalSearch', params);
+  }
+
+  // 复制标签到剪贴板（对齐 Mihon onCopyTagToClipboard）
+  private copyTag(tag: string): void {
+    const data = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, tag);
+    pasteboard.getSystemPasteboard().setData(data).then((): void => {
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_tag_copied'));
+    }).catch((_e: BusinessError) => {
+      Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
+    });
+  }
+
+  // 章节行下载指示器点击（对齐 Mihon ChapterDownloadIndicator 交互）：
+  // 未下载→入队；下载中/排队→取消；已下载→确认后删除
+  private onChapterIndicatorTap(chapter: ChapterRecord, state: string): void {
+    if (state === 'downloaded') {
+      const dialog = new CustomDialogController({
+        builder: ConfirmDialog({
+          title: $r('app.string.detail_dl_delete_confirm'),
+          message: chapter.name,
+          confirmText: $r('app.string.common_delete'),
+          onConfirm: (): void => {
+            dialog.close();
+            this.runSafe((): Promise<void> => this.deleteChapterDownload(chapter));
+          },
+          onClose: (): void => {
+            dialog.close();
+          },
+        }),
+        autoCancel: true,
+      });
+      dialog.open();
+    } else if (state === 'downloading' || state === 'queued') {
+      DownloadService.cancel(chapter.id);
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_dl_cancelled'));
+    } else {
+      this.runSafe((): Promise<void> => this.downloadChapter(chapter));
+    }
+  }
+
+  private async deleteChapterDownload(chapter: ChapterRecord): Promise<void> {
+    await DownloadService.deleteChapter(this.mangaId, chapter.id);
+    Util.toastRes(this.getUIContext(), $r('app.string.detail_dl_deleted_one'));
+  }
 
   aboutToAppear(): void {
     DownloadService.addListener(this.onDlNotify);
@@ -1018,10 +1118,10 @@ export struct MangaDetailPage {
                     .height(this.headerHeight())
                     .blur(30)
                 } else {
-                  Column()
+                  CoverPlaceholder()
                     .width('100%')
                     .height(this.headerHeight())
-                    .backgroundColor(this.pal.chip)
+                    .blur(30)
                 }
                 Column()
                   .width('100%')
@@ -1041,12 +1141,7 @@ export struct MangaDetailPage {
                       if (this.manga.thumbnailUrl !== '') {
                         SmartImage({ url: this.manga.thumbnailUrl, sourceKey: this.manga.sourceKey, fit: ImageFit.Cover, fill: true })
                       } else {
-                        Column() {
-                          AppIcon({ name: 'photo', iconSize: 30 })
-                        }
-                        .width('100%')
-                        .height('100%')
-                        .justifyContent(FlexAlign.Center)
+                        CoverPlaceholder({ iconSize: 34 })
                       }
                     }
                     .width(110)
@@ -1061,25 +1156,51 @@ export struct MangaDetailPage {
                       modalTransition: ModalTransition.ALPHA,
                       backgroundColor: '#B3000000',
                     })
-                    Column({ space: 6 }) {
+                    // 标题/作者/状态+源名（对齐 Mihon MangaContentInfo）：
+                    // 标题、作者点击跳全局搜索；状态行 = 状态图标 + 状态文案 · 源名
+                    Column({ space: 5 }) {
                       Text(this.manga.title)
                         .fontSize(20)
                         .fontWeight(FontWeight.Bold)
                         .fontColor(this.pal.text)
                         .maxLines(3)
                         .textOverflow({ overflow: TextOverflow.Ellipsis })
+                        .onClick(() => {
+                          if (this.manga.title.trim() !== '') {
+                            this.searchGlobal(this.manga.title.trim());
+                          }
+                        })
                       if (this.manga.author !== '') {
                         Text(this.manga.author)
                           .fontSize(13)
                           .fontColor(this.pal.sub)
                           .maxLines(1)
+                          .textOverflow({ overflow: TextOverflow.Ellipsis })
+                          .onClick(() => {
+                            this.searchGlobal(this.manga.author);
+                          })
                       }
-                      Text(ContentType.isLocal(this.manga.sourceKey) ? $r('app.string.detail_status_local') : Util.statusLabel(this.manga.status))
-                        .fontSize(12)
-                        .fontColor(this.pal.primary)
-                        .backgroundColor(this.pal.chip)
-                        .borderRadius(8)
-                        .padding({ left: 8, right: 8, top: 3, bottom: 3 })
+                      Row({ space: 4 }) {
+                        AppIcon({
+                          name: this.statusIconName(),
+                          iconSize: 15,
+                          tint: this.pal.primary
+                        })
+                        Text(ContentType.isLocal(this.manga.sourceKey) ? $r('app.string.detail_status_local') : Util.statusLabel(this.manga.status))
+                          .fontSize(12)
+                          .fontColor(this.pal.primary)
+                          .maxLines(1)
+                        Text('·')
+                          .fontSize(12)
+                          .fontColor(this.pal.sub)
+                        Text(this.sourceDisplayName())
+                          .fontSize(12)
+                          .fontColor(this.pal.sub)
+                          .maxLines(1)
+                          .textOverflow({ overflow: TextOverflow.Ellipsis })
+                          .layoutWeight(1)
+                      }
+                      .width('100%')
                     }
                     .alignItems(HorizontalAlign.Start)
                     .layoutWeight(1)

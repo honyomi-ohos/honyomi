@@ -44,27 +44,31 @@ export class Util {
   // 紧凑时长（对齐 Mihon Duration.toDurationString）：
   // "3天2小时" / "5小时30分" / "45分" / "30秒"
   static formatDuration(context: common.Context, seconds: number): string {
-    if (seconds < 1) {
-      return context.resourceManager.getStringSync($r('app.string.stats_second_short').id, 0);
+    try {
+      if (seconds < 1) {
+        return context.resourceManager.getStringSync($r('app.string.stats_second_short').id, 0);
+      }
+      const days: number = Math.floor(seconds / 86400);
+      const hours: number = Math.floor((seconds % 86400) / 3600);
+      const minutes: number = Math.floor((seconds % 3600) / 60);
+      const secs: number = seconds % 60;
+      const parts: string[] = [];
+      if (days > 0) {
+        parts.push(context.resourceManager.getStringSync($r('app.string.stats_day_short').id, days));
+      }
+      if (hours > 0) {
+        parts.push(context.resourceManager.getStringSync($r('app.string.stats_hour_short').id, hours));
+      }
+      if (minutes > 0 && (days === 0 || hours === 0)) {
+        parts.push(context.resourceManager.getStringSync($r('app.string.stats_minute_short').id, minutes));
+      }
+      if (secs > 0 && days === 0 && hours === 0) {
+        parts.push(context.resourceManager.getStringSync($r('app.string.stats_second_short').id, secs));
+      }
+      return parts.join(' ');
+    } catch (e) {
+      throw new Error(`format duration failed: ${e}`);
     }
-    const days: number = Math.floor(seconds / 86400);
-    const hours: number = Math.floor((seconds % 86400) / 3600);
-    const minutes: number = Math.floor((seconds % 3600) / 60);
-    const secs: number = seconds % 60;
-    const parts: string[] = [];
-    if (days > 0) {
-      parts.push(context.resourceManager.getStringSync($r('app.string.stats_day_short').id, days));
-    }
-    if (hours > 0) {
-      parts.push(context.resourceManager.getStringSync($r('app.string.stats_hour_short').id, hours));
-    }
-    if (minutes > 0 && (days === 0 || hours === 0)) {
-      parts.push(context.resourceManager.getStringSync($r('app.string.stats_minute_short').id, minutes));
-    }
-    if (secs > 0 && days === 0 && hours === 0) {
-      parts.push(context.resourceManager.getStringSync($r('app.string.stats_second_short').id, secs));
-    }
-    return parts.join(' ');
   }
 
   // 星期短标签（周统计横轴）：day 0=周日 .. 6=周六
@@ -83,7 +87,11 @@ export class Util {
     } else if (day === 6) {
       res = $r('app.string.stats_wd_sat');
     }
-    return context.resourceManager.getStringSync(res.id);
+    try {
+      return context.resourceManager.getStringSync(res.id);
+    } catch (e) {
+      throw new Error(`weekday label failed: ${e}`);
+    }
   }
 
 
@@ -118,7 +126,11 @@ export class Util {
     if (ctx === undefined) {
       return fallback;
     }
-    return ctx.resourceManager.getStringSync(res.id, arg);
+    try {
+      return ctx.resourceManager.getStringSync(res.id, arg);
+    } catch (e) {
+      throw new Error(`resolve text failed: ${e}`);
+    }
   }
 
   static statusLabel(status: string): Resource {
@@ -202,11 +214,19 @@ export class Util {
     if (ctx === undefined) {
       return '';
     }
-    return ctx.resourceManager.getStringSync(res.id, ...args);
+    try {
+      return ctx.resourceManager.getStringSync(res.id, ...args);
+    } catch (e) {
+      throw new Error(`resolve string failed: ${e}`);
+    }
   }
 
   static toast(ui: UIContext, message: string): void {
-    ui.getPromptAction().showToast({ message: message });
+    try {
+      ui.getPromptAction().showToast({ message: message });
+    } catch (e) {
+      throw new Error(`show toast failed: ${e}`);
+    }
   }
 
   static toastRes(ui: UIContext, res: Resource, args: Array<string | number> = []): void {
@@ -387,17 +407,24 @@ export class Util {
 
   // 智能读取文本文件：自动识别 UTF-8/UTF-16(BOM)/GB18030/GBK/Big5，避免中文乱码
   static readTextAuto(path: string): string {
-    const file = fs.openSync(path, fs.OpenMode.READ_ONLY);
     try {
-      const size: number = fs.statSync(file.fd).size;
-      if (size <= 0) {
-        return '';
+      const file = fs.openSync(path, fs.OpenMode.READ_ONLY);
+      try {
+        const size: number = fs.statSync(file.fd).size;
+        if (size <= 0) {
+          return '';
+        }
+        const buf: ArrayBuffer = new ArrayBuffer(size);
+        const read: number = fs.readSync(file.fd, buf);
+        return Util.decodeBytes(new Uint8Array(buf, 0, read));
+      } finally {
+        try {
+          fs.closeSync(file);
+        } catch (_e) {
+        }
       }
-      const buf: ArrayBuffer = new ArrayBuffer(size);
-      const read: number = fs.readSync(file.fd, buf);
-      return Util.decodeBytes(new Uint8Array(buf, 0, read));
-    } finally {
-      fs.closeSync(file);
+    } catch (e) {
+      throw new Error(`read text file failed: ${e}`);
     }
   }
 

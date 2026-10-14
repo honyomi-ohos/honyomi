@@ -17,7 +17,7 @@ import { ImageCache } from '../common/ImageCache';
 import { AvifConverter } from '../common/AvifConverter';
 import { WidgetUpdater } from '../form/WidgetUpdater';
 import { ReadingStatsRepo } from '../data/ReadingStats';
-import { NovelTts } from '../common/NovelTts';
+import { TtsPlaybackService } from '../common/TtsPlaybackService';
 import { AppKeys } from '../common/AppKeys';
 
 const DOMAIN = 0x0001;
@@ -82,8 +82,8 @@ export default class EntryAbility extends UIAbility {
 
   onDestroy(): void {
     hilog.info(DOMAIN, 'Mihon', '%{public}s', 'Ability onDestroy');
-    // 退出前清理：停止 TTS 朗读、结算阅读统计、偏好设置落盘
-    NovelTts.stop();
+    // 退出前清理：停止听书播放（销毁 AVSession）、结算阅读统计、偏好设置落盘
+    TtsPlaybackService.stop();
     ReadingStatsRepo.flush();
     Settings.flushNow();
   }

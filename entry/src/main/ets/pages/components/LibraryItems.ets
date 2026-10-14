@@ -3,6 +3,7 @@ import { MangaRecord } from '../../model/Models';
 import { ThemePalette } from '../../common/Theme';
 import { SmartImage } from './SmartImage';
 import { AppIcon } from './AppIcon';
+import { CoverPlaceholder } from './CoverPlaceholder';
 
 // Mihon 式徽标：文字或图标 + 背景色，矩形无圆角（外层 BadgeGroup 统一裁切）
 @Component
@@ -53,8 +54,13 @@ export struct LibraryMangaItem {
   // 封面展示地址：自定义封面优先（origThumbnail 非空，thumbnailUrl 即 file:// 自定义路径），
   // 其次书架持久化封面（入库时落盘的 JPEG，文件存在才用），最后回退在线地址
   private coverDisplay(): string {
-    if (this.record.origThumbnail === '' && this.record.localCover !== '' && fs.accessSync(this.record.localCover)) {
-      return `file://${this.record.localCover}`;
+    if (this.record.origThumbnail === '' && this.record.localCover !== '') {
+      try {
+        if (fs.accessSync(this.record.localCover)) {
+          return `file://${this.record.localCover}`;
+        }
+      } catch (e) {
+      }
     }
     return this.record.thumbnailUrl;
   }
@@ -192,12 +198,7 @@ export struct LibraryMangaItem {
   coverGrid() {
     Stack() {
       if (this.coverDisplay() === '') {
-        Column() {
-          AppIcon({ name: 'photo', iconSize: 28 })
-        }
-        .width('100%')
-        .height('100%')
-        .justifyContent(FlexAlign.Center)
+        CoverPlaceholder({ iconSize: 32 })
       } else {
         SmartImage({ url: this.coverDisplay(), sourceKey: this.record.sourceKey, fit: ImageFit.Cover, fill: true })
       }
@@ -215,12 +216,7 @@ export struct LibraryMangaItem {
   coverSquare() {
     Stack() {
       if (this.coverDisplay() === '') {
-        Column() {
-          AppIcon({ name: 'photo', iconSize: 22 })
-        }
-        .width('100%')
-        .height('100%')
-        .justifyContent(FlexAlign.Center)
+        CoverPlaceholder({ iconSize: 22 })
       } else {
         SmartImage({ url: this.coverDisplay(), sourceKey: this.record.sourceKey, fit: ImageFit.Cover, fill: true })
       }

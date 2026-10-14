@@ -1,7 +1,6 @@
 import { MangaRecord } from '../../model/Models';
 import { ThemePalette } from '../../common/Theme';
 import { SmartImage } from './SmartImage';
-import { AppIcon } from './AppIcon';
 
 // 漫画列表行：封面 + 标题（+ 副标题），可带尾部内容（迁移/全局搜索结果等）
 @Component
@@ -19,18 +18,15 @@ export struct MangaRow {
 
   build() {
     Row() {
-      // 封面
+      // 封面（无封面时 SmartImage 内部渲染默认封面占位）
       Stack() {
-        if (this.record.thumbnailUrl === '') {
-          Column() {
-            AppIcon({ name: 'photo', iconSize: 18 })
-          }
-          .width('100%')
-          .height('100%')
-          .justifyContent(FlexAlign.Center)
-        } else {
-          SmartImage({ url: this.record.thumbnailUrl, sourceKey: this.record.sourceKey, fit: ImageFit.Cover, fill: true })
-        }
+        SmartImage({
+          url: this.record.thumbnailUrl,
+          sourceKey: this.record.sourceKey,
+          fit: ImageFit.Cover,
+          fill: true,
+          placeholderIconSize: 20
+        })
       }
       .width(44)
       .height(62)

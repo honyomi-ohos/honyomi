@@ -128,14 +128,27 @@ export class StripImagePipeline {
   }
 
   private static readFile(path: string): ArrayBuffer {
-    const stat = fs.statSync(path);
-    const file = fs.openSync(path, fs.OpenMode.READ_ONLY);
+    let stat: fs.Stat;
+    let file: fs.File;
+    try {
+      stat = fs.statSync(path);
+      file = fs.openSync(path, fs.OpenMode.READ_ONLY);
+    } catch (e) {
+      throw new Error(`open strip image file failed: ${e}`);
+    }
     try {
       const buffer = new ArrayBuffer(stat.size);
-      fs.readSync(file.fd, buffer);
+      try {
+        fs.readSync(file.fd, buffer);
+      } catch (e) {
+        throw new Error(`read strip image file failed: ${e}`);
+      }
       return buffer;
     } finally {
-      fs.closeSync(file);
+      try {
+        fs.closeSync(file);
+      } catch (e) {
+      }
     }
   }
 

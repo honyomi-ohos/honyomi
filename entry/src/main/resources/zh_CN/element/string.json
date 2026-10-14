@@ -963,6 +963,30 @@
                         "name":  "detail_deleted_n",
                         "value":  "已删除 %d 个下载"
                     },
+                    {
+                        "name":  "detail_action_tracking",
+                        "value":  "追踪"
+                    },
+                    {
+                        "name":  "detail_dl_cancel",
+                        "value":  "取消下载"
+                    },
+                    {
+                        "name":  "detail_dl_cancelled",
+                        "value":  "已取消下载"
+                    },
+                    {
+                        "name":  "detail_dl_delete_confirm",
+                        "value":  "删除已下载的该章节？"
+                    },
+                    {
+                        "name":  "detail_dl_deleted_one",
+                        "value":  "已删除下载"
+                    },
+                    {
+                        "name":  "detail_tag_copied",
+                        "value":  "已复制到剪贴板"
+                    },
                    {
                        "name":  "reader_chapter_not_found",
                        "value":  "章节不存在"
@@ -1789,6 +1813,18 @@
       { "name": "novel_tts_speed", "value": "朗读语速" },
       { "name": "novel_tts_finish", "value": "本章已朗读完毕" },
       { "name": "novel_tts_error", "value": "朗读失败：%s" },
+      { "name": "novel_tts_pause", "value": "暂停朗读" },
+      { "name": "novel_tts_resume", "value": "继续朗读" },
+      { "name": "tts_player_title", "value": "正在听书" },
+      { "name": "tts_para_progress", "value": "段落 %1$d / %2$d" },
+      { "name": "tts_sleep_timer", "value": "定时停止" },
+      { "name": "tts_sleep_off", "value": "关闭" },
+      { "name": "tts_sleep_minutes", "value": "%1$d 分钟" },
+      { "name": "tts_sleep_stop_after", "value": "%1$s后停止" },
+      { "name": "tts_no_content", "value": "暂无正在朗读的内容" },
+      { "name": "tts_open_player", "value": "打开播放器" },
+      { "name": "tts_chapters", "value": "章节列表" },
+      { "name": "keep_background_running_reason", "value": "小说听书朗读时保持应用在后台持续运行" },
       { "name": "video_play", "value": "播放" },
       { "name": "video_pause", "value": "暂停" },
       { "name": "video_prev", "value": "上一集" },

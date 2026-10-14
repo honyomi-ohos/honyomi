@@ -3,14 +3,19 @@ import { BusinessError } from '@kit.BasicServicesKit';
 import { AppDb } from './AppDb';
 import { SManga, SChapter, MangaRecord, ChapterRecord, CategoryRecord, UpdateItem, HistoryItem, TrackRecord, MangaStats, UpcomingManga, ContentType } from '../model/Models';
 
+function closeQuietly(rs: relationalStore.ResultSet): void {
+  try {
+    rs.close();
+  } catch (e) {
+  }
+}
+
 // 漫画仓库
 export class MangaRepo {
   static async upsertFromSource(sourceKey: string, m: SManga, contentType: string): Promise<number> {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('sourceKey', sourceKey).and().equalTo('url', m.key);
-    const rs = await store.query(pred,
-      ['id', 'inLibrary', 'title', 'thumbnailUrl', 'origThumbnail', 'author', 'description', 'genre', 'status']);
     let id = -1;
     let inLibrary = 0;
     let oldTitle = '';
@@ -20,18 +25,24 @@ export class MangaRepo {
     let oldDesc = '';
     let oldGenre = '';
     let oldStatus = '';
-    if (rs.goToNextRow()) {
-      id = rs.getLong(rs.getColumnIndex('id'));
-      inLibrary = rs.getLong(rs.getColumnIndex('inLibrary'));
-      oldTitle = rs.getString(rs.getColumnIndex('title'));
-      oldThumb = rs.getString(rs.getColumnIndex('thumbnailUrl'));
-      oldOrigThumb = rs.getString(rs.getColumnIndex('origThumbnail'));
-      oldAuthor = rs.getString(rs.getColumnIndex('author'));
-      oldDesc = rs.getString(rs.getColumnIndex('description'));
-      oldGenre = rs.getString(rs.getColumnIndex('genre'));
-      oldStatus = rs.getString(rs.getColumnIndex('status'));
+    try {
+      const rs = await store.query(pred,
+        ['id', 'inLibrary', 'title', 'thumbnailUrl', 'origThumbnail', 'author', 'description', 'genre', 'status']);
+      if (rs.goToNextRow()) {
+        id = rs.getLong(rs.getColumnIndex('id'));
+        inLibrary = rs.getLong(rs.getColumnIndex('inLibrary'));
+        oldTitle = rs.getString(rs.getColumnIndex('title'));
+        oldThumb = rs.getString(rs.getColumnIndex('thumbnailUrl'));
+        oldOrigThumb = rs.getString(rs.getColumnIndex('origThumbnail'));
+        oldAuthor = rs.getString(rs.getColumnIndex('author'));
+        oldDesc = rs.getString(rs.getColumnIndex('description'));
+        oldGenre = rs.getString(rs.getColumnIndex('genre'));
+        oldStatus = rs.getString(rs.getColumnIndex('status'));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`query manga failed: ${e}`);
     }
-    rs.close();
     if (id >= 0) {
       // 源返回空字段时保留旧值，避免解析回退把已有信息清空
       // 自定义封面生效中（origThumbnail 非空）不覆盖当前封面，只同步原封面地址
@@ -52,7 +63,11 @@ export class MangaRepo {
         'status': m.status !== '' ? m.status : oldStatus,
         'contentType': ContentType.normalize(contentType),
       };
-      await store.update(values, pred);
+      try {
+        await store.update(values, pred);
+      } catch (e) {
+        throw new Error(`update manga failed: ${e}`);
+      }
       return id;
     }
     const values: relationalStore.ValuesBucket = {
@@ -81,7 +96,7 @@ export class MangaRepo {
       if (rs2.goToNextRow()) {
         existingId = rs2.getLong(rs2.getColumnIndex('id'));
       }
-      rs2.close();
+      closeQuietly(rs2);
       if (existingId >= 0) {
         const retry: relationalStore.ValuesBucket = {
           'title': m.title,
@@ -103,22 +118,30 @@ export class MangaRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('id', id);
-    const rs = await store.query(pred, MangaRepo.COLUMNS);
-    const result: MangaRecord | undefined = rs.goToNextRow() ? MangaRepo.rowToManga(rs) : undefined;
-    rs.close();
-    return result;
+    try {
+      const rs = await store.query(pred, MangaRepo.COLUMNS);
+      const result: MangaRecord | undefined = rs.goToNextRow() ? MangaRepo.rowToManga(rs) : undefined;
+      closeQuietly(rs);
+      return result;
+    } catch (e) {
+      throw new Error(`get manga failed: ${e}`);
+    }
   }
 
   static async getLibrary(): Promise<MangaRecord[]> {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('inLibrary', 1).orderByAsc('categoryId').orderByAsc('id');
-    const rs = await store.query(pred, MangaRepo.COLUMNS);
     const list: MangaRecord[] = [];
-    while (rs.goToNextRow()) {
-      list.push(MangaRepo.rowToManga(rs));
+    try {
+      const rs = await store.query(pred, MangaRepo.COLUMNS);
+      while (rs.goToNextRow()) {
+        list.push(MangaRepo.rowToManga(rs));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`get library failed: ${e}`);
     }
-    rs.close();
     return list;
   }
 
@@ -127,12 +150,16 @@ export class MangaRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('inLibrary', 1).in('status', statuses).orderByAsc('title');
-    const rs = await store.query(pred, MangaRepo.COLUMNS);
     const list: MangaRecord[] = [];
-    while (rs.goToNextRow()) {
-      list.push(MangaRepo.rowToManga(rs));
+    try {
+      const rs = await store.query(pred, MangaRepo.COLUMNS);
+      while (rs.goToNextRow()) {
+        list.push(MangaRepo.rowToManga(rs));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`get library by status failed: ${e}`);
     }
-    rs.close();
     return list;
   }
 
@@ -142,19 +169,23 @@ export class MangaRepo {
   static async setInLibrary(id: number, inLibrary: boolean): Promise<void> {
     const store = await AppDb.get();
     const flag = inLibrary ? 1 : 0;
-    await store.executeSql(
-      `UPDATE manga SET inLibrary = ?,` +
-      ` categoryId = CASE WHEN ? = 1 AND inLibrary = 0 THEN` +
-      ` COALESCE((SELECT c.id FROM category c WHERE c.name =` +
-      ` CASE manga.contentType WHEN ? THEN ? WHEN ? THEN ? ELSE ? END` +
-      ` ORDER BY c.sortOrder ASC, c.id ASC LIMIT 1), 1) ELSE categoryId END,` +
-      ` addedAt = CASE WHEN ? = 1 AND inLibrary = 0 THEN ? ELSE addedAt END` +
-      ` WHERE id = ?`,
-      [flag, flag,
-        ContentType.NOVEL, ContentType.CATEGORY_NOVEL,
-        ContentType.VIDEO, ContentType.CATEGORY_VIDEO,
-        ContentType.CATEGORY_MANGA,
-        flag, Date.now(), id]);
+    try {
+      await store.executeSql(
+        `UPDATE manga SET inLibrary = ?,` +
+        ` categoryId = CASE WHEN ? = 1 AND inLibrary = 0 THEN` +
+        ` COALESCE((SELECT c.id FROM category c WHERE c.name =` +
+        ` CASE manga.contentType WHEN ? THEN ? WHEN ? THEN ? ELSE ? END` +
+        ` ORDER BY c.sortOrder ASC, c.id ASC LIMIT 1), 1) ELSE categoryId END,` +
+        ` addedAt = CASE WHEN ? = 1 AND inLibrary = 0 THEN ? ELSE addedAt END` +
+        ` WHERE id = ?`,
+        [flag, flag,
+          ContentType.NOVEL, ContentType.CATEGORY_NOVEL,
+          ContentType.VIDEO, ContentType.CATEGORY_VIDEO,
+          ContentType.CATEGORY_MANGA,
+          flag, Date.now(), id]);
+    } catch (e) {
+      throw new Error(`set inLibrary failed: ${e}`);
+    }
   }
 
   static async setCategory(id: number, categoryId: number): Promise<void> {
@@ -162,7 +193,11 @@ export class MangaRepo {
     const values: relationalStore.ValuesBucket = { 'categoryId': categoryId };
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('id', id);
-    await store.update(values, pred);
+    try {
+      await store.update(values, pred);
+    } catch (e) {
+      throw new Error(`set category failed: ${e}`);
+    }
   }
 
   // 章节列表排序/筛选标志位持久化（对齐 Mihon SetMangaChapterFlags）
@@ -171,7 +206,11 @@ export class MangaRepo {
     const values: relationalStore.ValuesBucket = { 'chapterFlags': flags };
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('id', id);
-    await store.update(values, pred);
+    try {
+      await store.update(values, pred);
+    } catch (e) {
+      throw new Error(`set chapter flags failed: ${e}`);
+    }
   }
 
   // 按源获取书架漫画（迁移选择列表）
@@ -179,25 +218,33 @@ export class MangaRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('inLibrary', 1).and().equalTo('sourceKey', sourceKey).orderByAsc('title');
-    const rs = await store.query(pred, MangaRepo.COLUMNS);
     const list: MangaRecord[] = [];
-    while (rs.goToNextRow()) {
-      list.push(MangaRepo.rowToManga(rs));
+    try {
+      const rs = await store.query(pred, MangaRepo.COLUMNS);
+      while (rs.goToNextRow()) {
+        list.push(MangaRepo.rowToManga(rs));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`get library by source failed: ${e}`);
     }
-    rs.close();
     return list;
   }
 
   // 书架内各源漫画数（迁移源列表）
   static async countBySource(): Promise<Record<string, number>> {
     const store = await AppDb.get();
-    const rs = await store.querySql(
-      `SELECT sourceKey, COUNT(*) AS cnt FROM manga WHERE inLibrary = 1 GROUP BY sourceKey`);
     const counts: Record<string, number> = {};
-    while (rs.goToNextRow()) {
-      counts[rs.getString(rs.getColumnIndex('sourceKey'))] = rs.getLong(rs.getColumnIndex('cnt'));
+    try {
+      const rs = await store.querySql(
+        `SELECT sourceKey, COUNT(*) AS cnt FROM manga WHERE inLibrary = 1 GROUP BY sourceKey`);
+      while (rs.goToNextRow()) {
+        counts[rs.getString(rs.getColumnIndex('sourceKey'))] = rs.getLong(rs.getColumnIndex('cnt'));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`count by source failed: ${e}`);
     }
-    rs.close();
     return counts;
   }
 
@@ -208,7 +255,11 @@ export class MangaRepo {
     predOld.equalTo('id', id);
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('id', id);
-    store.beginTransaction();
+    try {
+      store.beginTransaction();
+    } catch (e) {
+      throw new Error(`migrate failed: ${e}`);
+    }
     try {
       // 旧封面读取移入事务内，消除读-改-写间隙的 TOCTOU
       const rsOld = await store.query(predOld, ['thumbnailUrl', 'origThumbnail']);
@@ -218,7 +269,7 @@ export class MangaRepo {
         oldThumb = rsOld.getString(rsOld.getColumnIndex('thumbnailUrl'));
         oldOrigThumb = rsOld.getString(rsOld.getColumnIndex('origThumbnail'));
       }
-      rsOld.close();
+      closeQuietly(rsOld);
       let newThumb = m.coverUrl;
       let newOrig = '';
       if (oldOrigThumb !== '') {
@@ -245,7 +296,10 @@ export class MangaRepo {
       await store.executeSql(`DELETE FROM readingSession WHERE mangaId = ?`, [id]);
       store.commit();
     } catch (e) {
-      store.rollBack();
+      try {
+        store.rollBack();
+      } catch (e2) {
+      }
       throw new Error(`migrate failed: ${e}`);
     }
   }
@@ -255,26 +309,38 @@ export class MangaRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('id', id);
-    const rs = await store.query(pred, ['thumbnailUrl', 'origThumbnail']);
     let oldThumb = '';
     let oldOrigThumb = '';
-    if (rs.goToNextRow()) {
-      oldThumb = rs.getString(rs.getColumnIndex('thumbnailUrl'));
-      oldOrigThumb = rs.getString(rs.getColumnIndex('origThumbnail'));
+    try {
+      const rs = await store.query(pred, ['thumbnailUrl', 'origThumbnail']);
+      if (rs.goToNextRow()) {
+        oldThumb = rs.getString(rs.getColumnIndex('thumbnailUrl'));
+        oldOrigThumb = rs.getString(rs.getColumnIndex('origThumbnail'));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`query cover failed: ${e}`);
     }
-    rs.close();
     const values: relationalStore.ValuesBucket = {
       'thumbnailUrl': coverPath,
       'origThumbnail': oldOrigThumb !== '' ? oldOrigThumb : oldThumb,
     };
-    await store.update(values, pred);
+    try {
+      await store.update(values, pred);
+    } catch (e) {
+      throw new Error(`apply cover failed: ${e}`);
+    }
   }
 
   // 恢复原封面：回退到源封面地址并清除自定义标记（对齐 Mihon Reset cover）
   static async resetCover(id: number): Promise<void> {
     const store = await AppDb.get();
-    await store.executeSql(
-      `UPDATE manga SET thumbnailUrl = origThumbnail, origThumbnail = '' WHERE id = ?`, [id]);
+    try {
+      await store.executeSql(
+        `UPDATE manga SET thumbnailUrl = origThumbnail, origThumbnail = '' WHERE id = ?`, [id]);
+    } catch (e) {
+      throw new Error(`reset cover failed: ${e}`);
+    }
   }
 
   // 写入书架持久化封面（入库/回填时调用；srcUrl 为持久化时的源封面地址，用于变更检测）
@@ -286,7 +352,11 @@ export class MangaRepo {
     };
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('id', id);
-    await store.update(values, pred);
+    try {
+      await store.update(values, pred);
+    } catch (e) {
+      throw new Error(`set local cover failed: ${e}`);
+    }
   }
 
   // 刷新完成时写入时间戳：fetchedAt 总是更新，有新章节时一并更新 lastUpdateAt
@@ -297,30 +367,38 @@ export class MangaRepo {
       : { 'fetchedAt': Date.now() };
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('id', id);
-    await store.update(values, pred);
+    try {
+      await store.update(values, pred);
+    } catch (e) {
+      throw new Error(`touch manga failed: ${e}`);
+    }
   }
 
   // 章节/历史聚合统计（书架排序与筛选用），一次查询全部漫画
   static async stats(): Promise<Record<string, MangaStats>> {
     const store = await AppDb.get();
-    const rs = await store.querySql(
-      `SELECT c.mangaId AS mangaId, COUNT(*) AS total, SUM(c.read) AS readCnt,
-              SUM(c.bookmark) AS bookmarkCnt, MAX(c.dateUpload) AS latest,
-              (SELECT MAX(h.seenAt) FROM history h WHERE h.mangaId = c.mangaId) AS lastRead
-       FROM chapter c GROUP BY c.mangaId`);
     const map: Record<string, MangaStats> = {};
-    while (rs.goToNextRow()) {
-      const s = new MangaStats();
-      s.mangaId = rs.getLong(rs.getColumnIndex('mangaId'));
-      s.total = rs.getLong(rs.getColumnIndex('total'));
-      s.readCount = rs.getLong(rs.getColumnIndex('readCnt'));
-      s.bookmarkCount = rs.getLong(rs.getColumnIndex('bookmarkCnt'));
-      s.latest = rs.getLong(rs.getColumnIndex('latest'));
-      s.lastRead = rs.getLong(rs.getColumnIndex('lastRead'));
-      s.unread = s.total - s.readCount;
-      map[`${s.mangaId}`] = s;
+    try {
+      const rs = await store.querySql(
+        `SELECT c.mangaId AS mangaId, COUNT(*) AS total, SUM(c.read) AS readCnt,
+                SUM(c.bookmark) AS bookmarkCnt, MAX(c.dateUpload) AS latest,
+                (SELECT MAX(h.seenAt) FROM history h WHERE h.mangaId = c.mangaId) AS lastRead
+         FROM chapter c GROUP BY c.mangaId`);
+      while (rs.goToNextRow()) {
+        const s = new MangaStats();
+        s.mangaId = rs.getLong(rs.getColumnIndex('mangaId'));
+        s.total = rs.getLong(rs.getColumnIndex('total'));
+        s.readCount = rs.getLong(rs.getColumnIndex('readCnt'));
+        s.bookmarkCount = rs.getLong(rs.getColumnIndex('bookmarkCnt'));
+        s.latest = rs.getLong(rs.getColumnIndex('latest'));
+        s.lastRead = rs.getLong(rs.getColumnIndex('lastRead'));
+        s.unread = s.total - s.readCount;
+        map[`${s.mangaId}`] = s;
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`stats failed: ${e}`);
     }
-    rs.close();
     return map;
   }
 
@@ -331,27 +409,31 @@ export class MangaRepo {
   ];
 
   private static rowToManga(rs: relationalStore.ResultSet): MangaRecord {
-    const m = new MangaRecord();
-    m.id = rs.getLong(rs.getColumnIndex('id'));
-    m.sourceKey = rs.getString(rs.getColumnIndex('sourceKey'));
-    m.url = rs.getString(rs.getColumnIndex('url'));
-    m.title = rs.getString(rs.getColumnIndex('title'));
-    m.thumbnailUrl = rs.getString(rs.getColumnIndex('thumbnailUrl'));
-    m.origThumbnail = rs.getString(rs.getColumnIndex('origThumbnail'));
-    m.author = rs.getString(rs.getColumnIndex('author'));
-    m.description = rs.getString(rs.getColumnIndex('description'));
-    m.genre = rs.getString(rs.getColumnIndex('genre'));
-    m.status = rs.getString(rs.getColumnIndex('status'));
-    m.contentType = ContentType.normalize(rs.getString(rs.getColumnIndex('contentType')));
-    m.inLibrary = rs.getLong(rs.getColumnIndex('inLibrary')) === 1;
-    m.categoryId = rs.getLong(rs.getColumnIndex('categoryId'));
-    m.addedAt = rs.getLong(rs.getColumnIndex('addedAt'));
-    m.lastUpdateAt = rs.getLong(rs.getColumnIndex('lastUpdateAt'));
-    m.fetchedAt = rs.getLong(rs.getColumnIndex('fetchedAt'));
-    m.chapterFlags = rs.getLong(rs.getColumnIndex('chapterFlags'));
-    m.localCover = rs.getString(rs.getColumnIndex('localCover'));
-    m.localCoverUrl = rs.getString(rs.getColumnIndex('localCoverUrl'));
-    return m;
+    try {
+      const m = new MangaRecord();
+      m.id = rs.getLong(rs.getColumnIndex('id'));
+      m.sourceKey = rs.getString(rs.getColumnIndex('sourceKey'));
+      m.url = rs.getString(rs.getColumnIndex('url'));
+      m.title = rs.getString(rs.getColumnIndex('title'));
+      m.thumbnailUrl = rs.getString(rs.getColumnIndex('thumbnailUrl'));
+      m.origThumbnail = rs.getString(rs.getColumnIndex('origThumbnail'));
+      m.author = rs.getString(rs.getColumnIndex('author'));
+      m.description = rs.getString(rs.getColumnIndex('description'));
+      m.genre = rs.getString(rs.getColumnIndex('genre'));
+      m.status = rs.getString(rs.getColumnIndex('status'));
+      m.contentType = ContentType.normalize(rs.getString(rs.getColumnIndex('contentType')));
+      m.inLibrary = rs.getLong(rs.getColumnIndex('inLibrary')) === 1;
+      m.categoryId = rs.getLong(rs.getColumnIndex('categoryId'));
+      m.addedAt = rs.getLong(rs.getColumnIndex('addedAt'));
+      m.lastUpdateAt = rs.getLong(rs.getColumnIndex('lastUpdateAt'));
+      m.fetchedAt = rs.getLong(rs.getColumnIndex('fetchedAt'));
+      m.chapterFlags = rs.getLong(rs.getColumnIndex('chapterFlags'));
+      m.localCover = rs.getString(rs.getColumnIndex('localCover'));
+      m.localCoverUrl = rs.getString(rs.getColumnIndex('localCoverUrl'));
+      return m;
+    } catch (e) {
+      throw new Error(`map manga row failed: ${e}`);
+    }
   }
 }
 
@@ -361,22 +443,30 @@ export class ChapterRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('chapter');
     pred.equalTo('id', id);
-    const rs = await store.query(pred, ChapterRepo.COLUMNS);
-    const result: ChapterRecord | undefined = rs.goToNextRow() ? ChapterRepo.rowToChapter(rs) : undefined;
-    rs.close();
-    return result;
+    try {
+      const rs = await store.query(pred, ChapterRepo.COLUMNS);
+      const result: ChapterRecord | undefined = rs.goToNextRow() ? ChapterRepo.rowToChapter(rs) : undefined;
+      closeQuietly(rs);
+      return result;
+    } catch (e) {
+      throw new Error(`get chapter failed: ${e}`);
+    }
   }
 
   static async listByManga(mangaId: number): Promise<ChapterRecord[]> {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('chapter');
     pred.equalTo('mangaId', mangaId).orderByAsc('sortOrder').orderByAsc('id');
-    const rs = await store.query(pred, ChapterRepo.COLUMNS);
     const list: ChapterRecord[] = [];
-    while (rs.goToNextRow()) {
-      list.push(ChapterRepo.rowToChapter(rs));
+    try {
+      const rs = await store.query(pred, ChapterRepo.COLUMNS);
+      while (rs.goToNextRow()) {
+        list.push(ChapterRepo.rowToChapter(rs));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`list chapters failed: ${e}`);
     }
-    rs.close();
     return list;
   }
 
@@ -387,10 +477,14 @@ export class ChapterRepo {
     pred.equalTo('mangaId', mangaId).and().equalTo('read', 0)
       .orderByAsc('sortOrder').orderByAsc('id');
     pred.limitAs(1);
-    const rs = await store.query(pred, ChapterRepo.COLUMNS);
-    const result: ChapterRecord | undefined = rs.goToNextRow() ? ChapterRepo.rowToChapter(rs) : undefined;
-    rs.close();
-    return result;
+    try {
+      const rs = await store.query(pred, ChapterRepo.COLUMNS);
+      const result: ChapterRecord | undefined = rs.goToNextRow() ? ChapterRepo.rowToChapter(rs) : undefined;
+      closeQuietly(rs);
+      return result;
+    } catch (e) {
+      throw new Error(`first unread chapter failed: ${e}`);
+    }
   }
 
   // 用源返回的章节列表全量刷新本地记录：保留仍在源中的章节已读状态、
@@ -398,7 +492,11 @@ export class ChapterRepo {
   static async syncFromSource(mangaId: number, chapters: SChapter[]): Promise<number> {
     const store = await AppDb.get();
     let newCount = 0;
-    store.beginTransaction();
+    try {
+      store.beginTransaction();
+    } catch (e) {
+      throw new Error(`syncFromSource failed: ${e}`);
+    }
     try {
       // existing 读取移入事务内，避免读取与写入之间被并发更新插入竞态
       const existing = await ChapterRepo.listByManga(mangaId);
@@ -452,7 +550,10 @@ export class ChapterRepo {
       }
       store.commit();
     } catch (e) {
-      store.rollBack();
+      try {
+        store.rollBack();
+      } catch (e2) {
+      }
       throw new Error(`syncFromSource failed: ${e}`);
     }
     return newCount;
@@ -463,7 +564,11 @@ export class ChapterRepo {
     const values: relationalStore.ValuesBucket = { 'read': read ? 1 : 0 };
     const pred = new relationalStore.RdbPredicates('chapter');
     pred.equalTo('id', id);
-    await store.update(values, pred);
+    try {
+      await store.update(values, pred);
+    } catch (e) {
+      throw new Error(`set read failed: ${e}`);
+    }
   }
 
   static async setBookmark(id: number, bookmark: boolean): Promise<void> {
@@ -471,7 +576,11 @@ export class ChapterRepo {
     const values: relationalStore.ValuesBucket = { 'bookmark': bookmark ? 1 : 0 };
     const pred = new relationalStore.RdbPredicates('chapter');
     pred.equalTo('id', id);
-    await store.update(values, pred);
+    try {
+      await store.update(values, pred);
+    } catch (e) {
+      throw new Error(`set bookmark failed: ${e}`);
+    }
   }
 
   // 批量设置已读状态（章节多选"标为已读/未读"，单条 IN 谓词一次提交）
@@ -483,7 +592,11 @@ export class ChapterRepo {
     const values: relationalStore.ValuesBucket = { 'read': read ? 1 : 0 };
     const pred = new relationalStore.RdbPredicates('chapter');
     pred.in('id', ids);
-    await store.update(values, pred);
+    try {
+      await store.update(values, pred);
+    } catch (e) {
+      throw new Error(`set read for ids failed: ${e}`);
+    }
   }
 
   // 批量设置书签（章节多选"添加/移除书签"，单条 IN 谓词一次提交）
@@ -495,7 +608,11 @@ export class ChapterRepo {
     const values: relationalStore.ValuesBucket = { 'bookmark': bookmark ? 1 : 0 };
     const pred = new relationalStore.RdbPredicates('chapter');
     pred.in('id', ids);
-    await store.update(values, pred);
+    try {
+      await store.update(values, pred);
+    } catch (e) {
+      throw new Error(`set bookmark for ids failed: ${e}`);
+    }
   }
 
   static async setLastPageRead(id: number, page: number): Promise<void> {
@@ -503,7 +620,11 @@ export class ChapterRepo {
     const values: relationalStore.ValuesBucket = { 'lastPageRead': page };
     const pred = new relationalStore.RdbPredicates('chapter');
     pred.equalTo('id', id);
-    await store.update(values, pred);
+    try {
+      await store.update(values, pred);
+    } catch (e) {
+      throw new Error(`set last page read failed: ${e}`);
+    }
   }
 
   static async markAllRead(mangaId: number, read: boolean): Promise<void> {
@@ -511,18 +632,26 @@ export class ChapterRepo {
     const values: relationalStore.ValuesBucket = { 'read': read ? 1 : 0 };
     const pred = new relationalStore.RdbPredicates('chapter');
     pred.equalTo('mangaId', mangaId);
-    await store.update(values, pred);
+    try {
+      await store.update(values, pred);
+    } catch (e) {
+      throw new Error(`mark all read failed: ${e}`);
+    }
   }
 
   static async unreadCount(mangaId: number): Promise<number> {
     const store = await AppDb.get();
-    const rs = await store.querySql(
-      `SELECT COUNT(*) AS cnt FROM chapter WHERE mangaId = ? AND read = 0`, [mangaId]);
     let count = 0;
-    if (rs.goToNextRow()) {
-      count = rs.getLong(rs.getColumnIndex('cnt'));
+    try {
+      const rs = await store.querySql(
+        `SELECT COUNT(*) AS cnt FROM chapter WHERE mangaId = ? AND read = 0`, [mangaId]);
+      if (rs.goToNextRow()) {
+        count = rs.getLong(rs.getColumnIndex('cnt'));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`unread count failed: ${e}`);
     }
-    rs.close();
     return count;
   }
 
@@ -535,7 +664,11 @@ export class ChapterRepo {
     };
     const pred = new relationalStore.RdbPredicates('chapter');
     pred.equalTo('mangaId', mangaId).and().equalTo('url', url);
-    await store.update(values, pred);
+    try {
+      await store.update(values, pred);
+    } catch (e) {
+      throw new Error(`apply state failed: ${e}`);
+    }
   }
 
   // 备份恢复用：章节不存在则插入，存在则仅恢复阅读状态；
@@ -543,11 +676,15 @@ export class ChapterRepo {
   static async upsertBackup(mangaId: number, url: string, name: string, chapterNumber: number,
     read: boolean, lastPageRead: number): Promise<void> {
     const store = await AppDb.get();
-    await store.executeSql(
-      `INSERT INTO chapter (mangaId, url, name, chapterNumber, dateUpload, pages, sortOrder, read, bookmark, lastPageRead)
-       VALUES (?, ?, ?, ?, 0, 0, 0, ?, 0, ?)
-       ON CONFLICT(mangaId, url) DO UPDATE SET read = excluded.read, lastPageRead = excluded.lastPageRead`,
-      [mangaId, url, name, chapterNumber, read ? 1 : 0, lastPageRead]);
+    try {
+      await store.executeSql(
+        `INSERT INTO chapter (mangaId, url, name, chapterNumber, dateUpload, pages, sortOrder, read, bookmark, lastPageRead)
+         VALUES (?, ?, ?, ?, 0, 0, 0, ?, 0, ?)
+         ON CONFLICT(mangaId, url) DO UPDATE SET read = excluded.read, lastPageRead = excluded.lastPageRead`,
+        [mangaId, url, name, chapterNumber, read ? 1 : 0, lastPageRead]);
+    } catch (e) {
+      throw new Error(`upsert backup failed: ${e}`);
+    }
   }
 
   static async setPages(id: number, pages: number): Promise<void> {
@@ -555,31 +692,43 @@ export class ChapterRepo {
     const values: relationalStore.ValuesBucket = { 'pages': pages };
     const pred = new relationalStore.RdbPredicates('chapter');
     pred.equalTo('id', id);
-    await store.update(values, pred);
+    try {
+      await store.update(values, pred);
+    } catch (e) {
+      throw new Error(`set pages failed: ${e}`);
+    }
   }
 
   // 第一个未读章节 id（无未读返回 -1），供"继续阅读"按钮
   static async firstUnread(mangaId: number): Promise<number> {
     const store = await AppDb.get();
-    const rs = await store.querySql(
-      `SELECT id FROM chapter WHERE mangaId = ? AND read = 0 ORDER BY sortOrder ASC, id ASC LIMIT 1`, [mangaId]);
     let id = -1;
-    if (rs.goToNextRow()) {
-      id = rs.getLong(rs.getColumnIndex('id'));
+    try {
+      const rs = await store.querySql(
+        `SELECT id FROM chapter WHERE mangaId = ? AND read = 0 ORDER BY sortOrder ASC, id ASC LIMIT 1`, [mangaId]);
+      if (rs.goToNextRow()) {
+        id = rs.getLong(rs.getColumnIndex('id'));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`first unread failed: ${e}`);
     }
-    rs.close();
     return id;
   }
 
   static async countRead(mangaId: number): Promise<number> {
     const store = await AppDb.get();
-    const rs = await store.querySql(
-      `SELECT COUNT(*) AS cnt FROM chapter WHERE mangaId = ? AND read = 1`, [mangaId]);
     let count = 0;
-    if (rs.goToNextRow()) {
-      count = rs.getLong(rs.getColumnIndex('cnt'));
+    try {
+      const rs = await store.querySql(
+        `SELECT COUNT(*) AS cnt FROM chapter WHERE mangaId = ? AND read = 1`, [mangaId]);
+      if (rs.goToNextRow()) {
+        count = rs.getLong(rs.getColumnIndex('cnt'));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`count read failed: ${e}`);
     }
-    rs.close();
     return count;
   }
 
@@ -589,19 +738,23 @@ export class ChapterRepo {
   ];
 
   private static rowToChapter(rs: relationalStore.ResultSet): ChapterRecord {
-    const c = new ChapterRecord();
-    c.id = rs.getLong(rs.getColumnIndex('id'));
-    c.mangaId = rs.getLong(rs.getColumnIndex('mangaId'));
-    c.url = rs.getString(rs.getColumnIndex('url'));
-    c.name = rs.getString(rs.getColumnIndex('name'));
-    c.chapterNumber = rs.getDouble(rs.getColumnIndex('chapterNumber'));
-    c.dateUpload = rs.getLong(rs.getColumnIndex('dateUpload'));
-    c.pages = rs.getLong(rs.getColumnIndex('pages'));
-    c.sortOrder = rs.getLong(rs.getColumnIndex('sortOrder'));
-    c.read = rs.getLong(rs.getColumnIndex('read')) === 1;
-    c.bookmark = rs.getLong(rs.getColumnIndex('bookmark')) === 1;
-    c.lastPageRead = rs.getLong(rs.getColumnIndex('lastPageRead'));
-    return c;
+    try {
+      const c = new ChapterRecord();
+      c.id = rs.getLong(rs.getColumnIndex('id'));
+      c.mangaId = rs.getLong(rs.getColumnIndex('mangaId'));
+      c.url = rs.getString(rs.getColumnIndex('url'));
+      c.name = rs.getString(rs.getColumnIndex('name'));
+      c.chapterNumber = rs.getDouble(rs.getColumnIndex('chapterNumber'));
+      c.dateUpload = rs.getLong(rs.getColumnIndex('dateUpload'));
+      c.pages = rs.getLong(rs.getColumnIndex('pages'));
+      c.sortOrder = rs.getLong(rs.getColumnIndex('sortOrder'));
+      c.read = rs.getLong(rs.getColumnIndex('read')) === 1;
+      c.bookmark = rs.getLong(rs.getColumnIndex('bookmark')) === 1;
+      c.lastPageRead = rs.getLong(rs.getColumnIndex('lastPageRead'));
+      return c;
+    } catch (e) {
+      throw new Error(`map chapter row failed: ${e}`);
+    }
   }
 }
 
@@ -611,24 +764,32 @@ export class CategoryRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('category');
     pred.orderByAsc('sortOrder').orderByAsc('id');
-    const rs = await store.query(pred, ['id', 'name', 'sortOrder']);
     const list: CategoryRecord[] = [];
-    while (rs.goToNextRow()) {
-      const c = new CategoryRecord();
-      c.id = rs.getLong(rs.getColumnIndex('id'));
-      c.name = rs.getString(rs.getColumnIndex('name'));
-      c.sortOrder = rs.getLong(rs.getColumnIndex('sortOrder'));
-      list.push(c);
+    try {
+      const rs = await store.query(pred, ['id', 'name', 'sortOrder']);
+      while (rs.goToNextRow()) {
+        const c = new CategoryRecord();
+        c.id = rs.getLong(rs.getColumnIndex('id'));
+        c.name = rs.getString(rs.getColumnIndex('name'));
+        c.sortOrder = rs.getLong(rs.getColumnIndex('sortOrder'));
+        list.push(c);
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`list categories failed: ${e}`);
     }
-    rs.close();
     return list;
   }
 
   static async add(name: string): Promise<void> {
     const store = await AppDb.get();
     // sortOrder 取当前总数，单条语句原子完成（消除查后写竞态）
-    await store.executeSql(
-      `INSERT INTO category (name, sortOrder) VALUES (?, (SELECT COUNT(*) FROM category))`, [name]);
+    try {
+      await store.executeSql(
+        `INSERT INTO category (name, sortOrder) VALUES (?, (SELECT COUNT(*) FROM category))`, [name]);
+    } catch (e) {
+      throw new Error(`add category failed: ${e}`);
+    }
   }
 
   static async rename(id: number, name: string): Promise<void> {
@@ -639,7 +800,11 @@ export class CategoryRepo {
     const values: relationalStore.ValuesBucket = { 'name': name };
     const pred = new relationalStore.RdbPredicates('category');
     pred.equalTo('id', id);
-    await store.update(values, pred);
+    try {
+      await store.update(values, pred);
+    } catch (e) {
+      throw new Error(`rename category failed: ${e}`);
+    }
   }
 
   static async remove(id: number): Promise<void> {
@@ -653,13 +818,20 @@ export class CategoryRepo {
     predManga.equalTo('categoryId', id);
     const predCategory = new relationalStore.RdbPredicates('category');
     predCategory.equalTo('id', id);
-    store.beginTransaction();
+    try {
+      store.beginTransaction();
+    } catch (e) {
+      throw new Error(`category remove failed: ${e}`);
+    }
     try {
       await store.update(values, predManga);
       await store.delete(predCategory);
       store.commit();
     } catch (e) {
-      store.rollBack();
+      try {
+        store.rollBack();
+      } catch (e2) {
+      }
       throw new Error(`category remove failed: ${e}`);
     }
   }
@@ -670,79 +842,103 @@ export class HistoryRepo {
   static async upsert(mangaId: number, chapterId: number, lastPageRead: number): Promise<void> {
     const store = await AppDb.get();
     // v2 起有 UNIQUE(mangaId, chapterId) 索引，单条原子 upsert
-    await store.executeSql(
-      `INSERT INTO history (mangaId, chapterId, seenAt, lastPageRead) VALUES (?, ?, ?, ?)
-       ON CONFLICT(mangaId, chapterId) DO UPDATE SET seenAt = excluded.seenAt, lastPageRead = excluded.lastPageRead`,
-      [mangaId, chapterId, Date.now(), lastPageRead]);
+    try {
+      await store.executeSql(
+        `INSERT INTO history (mangaId, chapterId, seenAt, lastPageRead) VALUES (?, ?, ?, ?)
+         ON CONFLICT(mangaId, chapterId) DO UPDATE SET seenAt = excluded.seenAt, lastPageRead = excluded.lastPageRead`,
+        [mangaId, chapterId, Date.now(), lastPageRead]);
+    } catch (e) {
+      throw new Error(`upsert history failed: ${e}`);
+    }
   }
 
   static async recent(limit: number): Promise<HistoryItem[]> {
     const store = await AppDb.get();
-    const rs = await store.querySql(
-      `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
-              h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
-              m.thumbnailUrl AS coverUrl, c.name AS chapterName
-       FROM history h
-       JOIN manga m ON m.id = h.mangaId
-       JOIN chapter c ON c.id = h.chapterId
-       ORDER BY h.seenAt DESC LIMIT ?`, [limit]);
     const list: HistoryItem[] = [];
-    while (rs.goToNextRow()) {
-      list.push(HistoryRepo.rowToItem(rs));
+    try {
+      const rs = await store.querySql(
+        `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
+                h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
+                m.thumbnailUrl AS coverUrl, c.name AS chapterName
+         FROM history h
+         JOIN manga m ON m.id = h.mangaId
+         JOIN chapter c ON c.id = h.chapterId
+         ORDER BY h.seenAt DESC LIMIT ?`, [limit]);
+      while (rs.goToNextRow()) {
+        list.push(HistoryRepo.rowToItem(rs));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`recent history failed: ${e}`);
     }
-    rs.close();
     return list;
   }
 
   // 行 → HistoryItem 统一映射（recent/lastForManga/lastInLibrary 共用）
   private static rowToItem(rs: relationalStore.ResultSet): HistoryItem {
-    return HistoryItem.of(
-      rs.getLong(rs.getColumnIndex('mangaId')),
-      rs.getLong(rs.getColumnIndex('chapterId')),
-      rs.getString(rs.getColumnIndex('mangaTitle')),
-      rs.getString(rs.getColumnIndex('coverUrl')),
-      rs.getString(rs.getColumnIndex('chapterName')),
-      rs.getLong(rs.getColumnIndex('seenAt')),
-      rs.getLong(rs.getColumnIndex('lastPageRead')));
+    try {
+      return HistoryItem.of(
+        rs.getLong(rs.getColumnIndex('mangaId')),
+        rs.getLong(rs.getColumnIndex('chapterId')),
+        rs.getString(rs.getColumnIndex('mangaTitle')),
+        rs.getString(rs.getColumnIndex('coverUrl')),
+        rs.getString(rs.getColumnIndex('chapterName')),
+        rs.getLong(rs.getColumnIndex('seenAt')),
+        rs.getLong(rs.getColumnIndex('lastPageRead')));
+    } catch (e) {
+      throw new Error(`map history row failed: ${e}`);
+    }
   }
 
   // 某部漫画最近一条阅读记录（漫画卡片续读章节）
   static async lastForManga(mangaId: number): Promise<HistoryItem | undefined> {
     const store = await AppDb.get();
-    const rs = await store.querySql(
-      `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
-              h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
-              m.thumbnailUrl AS coverUrl, c.name AS chapterName
-       FROM history h
-       JOIN manga m ON m.id = h.mangaId
-       JOIN chapter c ON c.id = h.chapterId
-       WHERE h.mangaId = ?
-       ORDER BY h.seenAt DESC LIMIT 1`, [mangaId]);
-    const item: HistoryItem | undefined = rs.goToNextRow() ? HistoryRepo.rowToItem(rs) : undefined;
-    rs.close();
-    return item;
+    try {
+      const rs = await store.querySql(
+        `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
+                h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
+                m.thumbnailUrl AS coverUrl, c.name AS chapterName
+         FROM history h
+         JOIN manga m ON m.id = h.mangaId
+         JOIN chapter c ON c.id = h.chapterId
+         WHERE h.mangaId = ?
+         ORDER BY h.seenAt DESC LIMIT 1`, [mangaId]);
+      const item: HistoryItem | undefined = rs.goToNextRow() ? HistoryRepo.rowToItem(rs) : undefined;
+      closeQuietly(rs);
+      return item;
+    } catch (e) {
+      throw new Error(`last for manga failed: ${e}`);
+    }
   }
 
   // 最近阅读的书架内漫画（漫画卡片默认绑定）
   static async lastInLibrary(): Promise<HistoryItem | undefined> {
     const store = await AppDb.get();
-    const rs = await store.querySql(
-      `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
-              h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
-              m.thumbnailUrl AS coverUrl, c.name AS chapterName
-       FROM history h
-       JOIN manga m ON m.id = h.mangaId
-       JOIN chapter c ON c.id = h.chapterId
-       WHERE m.inLibrary = 1
-       ORDER BY h.seenAt DESC LIMIT 1`, []);
-    const item: HistoryItem | undefined = rs.goToNextRow() ? HistoryRepo.rowToItem(rs) : undefined;
-    rs.close();
-    return item;
+    try {
+      const rs = await store.querySql(
+        `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
+                h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
+                m.thumbnailUrl AS coverUrl, c.name AS chapterName
+         FROM history h
+         JOIN manga m ON m.id = h.mangaId
+         JOIN chapter c ON c.id = h.chapterId
+         WHERE m.inLibrary = 1
+         ORDER BY h.seenAt DESC LIMIT 1`, []);
+      const item: HistoryItem | undefined = rs.goToNextRow() ? HistoryRepo.rowToItem(rs) : undefined;
+      closeQuietly(rs);
+      return item;
+    } catch (e) {
+      throw new Error(`last in library failed: ${e}`);
+    }
   }
 
   static async clear(): Promise<void> {
     const store = await AppDb.get();
-    await store.delete(new relationalStore.RdbPredicates('history'));
+    try {
+      await store.delete(new relationalStore.RdbPredicates('history'));
+    } catch (e) {
+      throw new Error(`clear history failed: ${e}`);
+    }
   }
 }
 
@@ -750,43 +946,51 @@ export class HistoryRepo {
 export class UpdatesRepo {
   static async unreadChapters(limit: number): Promise<UpdateItem[]> {
     const store = await AppDb.get();
-    const rs = await store.querySql(
-      `SELECT c.id AS chapterId, c.mangaId AS mangaId, c.name AS chapterName,
-              c.dateUpload AS dateUpload, c.read AS readFlag, c.bookmark AS bookmarkFlag,
-              m.title AS mangaTitle, m.thumbnailUrl AS coverUrl
-       FROM chapter c
-       JOIN manga m ON m.id = c.mangaId
-       WHERE m.inLibrary = 1 AND c.read = 0
-       ORDER BY c.dateUpload DESC LIMIT ?`, [limit]);
     const list: UpdateItem[] = [];
-    while (rs.goToNextRow()) {
-      list.push(UpdateItem.of(
-        rs.getLong(rs.getColumnIndex('mangaId')),
-        rs.getLong(rs.getColumnIndex('chapterId')),
-        rs.getString(rs.getColumnIndex('mangaTitle')),
-        rs.getString(rs.getColumnIndex('coverUrl')),
-        rs.getString(rs.getColumnIndex('chapterName')),
-        rs.getLong(rs.getColumnIndex('dateUpload')),
-        rs.getLong(rs.getColumnIndex('readFlag')) === 1,
-        rs.getLong(rs.getColumnIndex('bookmarkFlag')) === 1));
+    try {
+      const rs = await store.querySql(
+        `SELECT c.id AS chapterId, c.mangaId AS mangaId, c.name AS chapterName,
+                c.dateUpload AS dateUpload, c.read AS readFlag, c.bookmark AS bookmarkFlag,
+                m.title AS mangaTitle, m.thumbnailUrl AS coverUrl
+         FROM chapter c
+         JOIN manga m ON m.id = c.mangaId
+         WHERE m.inLibrary = 1 AND c.read = 0
+         ORDER BY c.dateUpload DESC LIMIT ?`, [limit]);
+      while (rs.goToNextRow()) {
+        list.push(UpdateItem.of(
+          rs.getLong(rs.getColumnIndex('mangaId')),
+          rs.getLong(rs.getColumnIndex('chapterId')),
+          rs.getString(rs.getColumnIndex('mangaTitle')),
+          rs.getString(rs.getColumnIndex('coverUrl')),
+          rs.getString(rs.getColumnIndex('chapterName')),
+          rs.getLong(rs.getColumnIndex('dateUpload')),
+          rs.getLong(rs.getColumnIndex('readFlag')) === 1,
+          rs.getLong(rs.getColumnIndex('bookmarkFlag')) === 1));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`unread chapters failed: ${e}`);
     }
-    rs.close();
     return list;
   }
 
   // 未读章节总数（更新卡片角标）
   static async unreadCount(): Promise<number> {
     const store = await AppDb.get();
-    const rs = await store.querySql(
-      `SELECT COUNT(*) AS n
-       FROM chapter c
-       JOIN manga m ON m.id = c.mangaId
-       WHERE m.inLibrary = 1 AND c.read = 0`);
     let n = 0;
-    if (rs.goToNextRow()) {
-      n = rs.getLong(rs.getColumnIndex('n'));
+    try {
+      const rs = await store.querySql(
+        `SELECT COUNT(*) AS n
+         FROM chapter c
+         JOIN manga m ON m.id = c.mangaId
+         WHERE m.inLibrary = 1 AND c.read = 0`);
+      if (rs.goToNextRow()) {
+        n = rs.getLong(rs.getColumnIndex('n'));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`updates unread count failed: ${e}`);
     }
-    rs.close();
     return n;
   }
 
@@ -834,20 +1038,24 @@ export class UpdatesRepo {
     }
     sql += ' ORDER BY c.dateUpload DESC LIMIT ?';
     args.push(limit);
-    const rs = await store.querySql(sql, args);
     const list: UpdateItem[] = [];
-    while (rs.goToNextRow()) {
-      list.push(UpdateItem.of(
-        rs.getLong(rs.getColumnIndex('mangaId')),
-        rs.getLong(rs.getColumnIndex('chapterId')),
-        rs.getString(rs.getColumnIndex('mangaTitle')),
-        rs.getString(rs.getColumnIndex('coverUrl')),
-        rs.getString(rs.getColumnIndex('chapterName')),
-        rs.getLong(rs.getColumnIndex('dateUpload')),
-        rs.getLong(rs.getColumnIndex('readFlag')) === 1,
-        rs.getLong(rs.getColumnIndex('bookmarkFlag')) === 1));
+    try {
+      const rs = await store.querySql(sql, args);
+      while (rs.goToNextRow()) {
+        list.push(UpdateItem.of(
+          rs.getLong(rs.getColumnIndex('mangaId')),
+          rs.getLong(rs.getColumnIndex('chapterId')),
+          rs.getString(rs.getColumnIndex('mangaTitle')),
+          rs.getString(rs.getColumnIndex('coverUrl')),
+          rs.getString(rs.getColumnIndex('chapterName')),
+          rs.getLong(rs.getColumnIndex('dateUpload')),
+          rs.getLong(rs.getColumnIndex('readFlag')) === 1,
+          rs.getLong(rs.getColumnIndex('bookmarkFlag')) === 1));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`filtered chapters failed: ${e}`);
     }
-    rs.close();
     return list;
   }
 }
@@ -896,25 +1104,29 @@ export class UpcomingRepo {
   // 各书架漫画的章节上传时间（降序，每部限量 200 条供间隔推算：批量更新时也能取满去重天数）
   static async chapterUploadDates(): Promise<Record<string, number[]>> {
     const store = await AppDb.get();
-    const rs = await store.querySql(
-      `SELECT c.mangaId AS mangaId, c.dateUpload AS dateUpload
-       FROM chapter c
-       JOIN manga m ON m.id = c.mangaId
-       WHERE m.inLibrary = 1 AND c.dateUpload > 0
-       ORDER BY c.dateUpload DESC`);
     const map: Record<string, number[]> = {};
-    while (rs.goToNextRow()) {
-      const key: string = `${rs.getLong(rs.getColumnIndex('mangaId'))}`;
-      let list: number[] | undefined = map[key];
-      if (list === undefined) {
-        list = [];
-        map[key] = list;
+    try {
+      const rs = await store.querySql(
+        `SELECT c.mangaId AS mangaId, c.dateUpload AS dateUpload
+         FROM chapter c
+         JOIN manga m ON m.id = c.mangaId
+         WHERE m.inLibrary = 1 AND c.dateUpload > 0
+         ORDER BY c.dateUpload DESC`);
+      while (rs.goToNextRow()) {
+        const key: string = `${rs.getLong(rs.getColumnIndex('mangaId'))}`;
+        let list: number[] | undefined = map[key];
+        if (list === undefined) {
+          list = [];
+          map[key] = list;
+        }
+        if (list.length < 200) {
+          list.push(rs.getLong(rs.getColumnIndex('dateUpload')));
+        }
       }
-      if (list.length < 200) {
-        list.push(rs.getLong(rs.getColumnIndex('dateUpload')));
-      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`chapter upload dates failed: ${e}`);
     }
-    rs.close();
     return map;
   }
 
@@ -993,24 +1205,32 @@ export class TrackRepo {
   // 已绑定追踪的漫画 id 集合（书架"已追踪"筛选用）
   static async trackedMangaIds(): Promise<Set<number>> {
     const store = await AppDb.get();
-    const rs = await store.querySql(`SELECT DISTINCT mangaId FROM track`);
     const ids = new Set<number>();
-    while (rs.goToNextRow()) {
-      ids.add(rs.getLong(rs.getColumnIndex('mangaId')));
+    try {
+      const rs = await store.querySql(`SELECT DISTINCT mangaId FROM track`);
+      while (rs.goToNextRow()) {
+        ids.add(rs.getLong(rs.getColumnIndex('mangaId')));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`tracked manga ids failed: ${e}`);
     }
-    rs.close();
     return ids;
   }
 
   // 全部已评分记录的分数（统计页平均评分用）
   static async allScores(): Promise<number[]> {
     const store = await AppDb.get();
-    const rs = await store.querySql(`SELECT score FROM track WHERE score > 0`);
     const list: number[] = [];
-    while (rs.goToNextRow()) {
-      list.push(rs.getDouble(rs.getColumnIndex('score')));
+    try {
+      const rs = await store.querySql(`SELECT score FROM track WHERE score > 0`);
+      while (rs.goToNextRow()) {
+        list.push(rs.getDouble(rs.getColumnIndex('score')));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`all scores failed: ${e}`);
     }
-    rs.close();
     return list;
   }
 
@@ -1018,10 +1238,14 @@ export class TrackRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('track');
     pred.equalTo('mangaId', mangaId).and().equalTo('syncId', 1);
-    const rs = await store.query(pred, TrackRepo.COLUMNS);
-    const result: TrackRecord | undefined = rs.goToNextRow() ? TrackRepo.rowToTrack(rs) : undefined;
-    rs.close();
-    return result;
+    try {
+      const rs = await store.query(pred, TrackRepo.COLUMNS);
+      const result: TrackRecord | undefined = rs.goToNextRow() ? TrackRepo.rowToTrack(rs) : undefined;
+      closeQuietly(rs);
+      return result;
+    } catch (e) {
+      throw new Error(`get track failed: ${e}`);
+    }
   }
 
   static async bind(mangaId: number, remoteId: number, title: string): Promise<void> {
@@ -1034,7 +1258,11 @@ export class TrackRepo {
       };
       const pred = new relationalStore.RdbPredicates('track');
       pred.equalTo('id', existing.id);
-      await store.update(values, pred);
+      try {
+        await store.update(values, pred);
+      } catch (e) {
+        throw new Error(`update track failed: ${e}`);
+      }
       return;
     }
     const values: relationalStore.ValuesBucket = {
@@ -1046,14 +1274,22 @@ export class TrackRepo {
       'lastChapterRead': 0,
       'score': 0,
     };
-    await store.insert('track', values);
+    try {
+      await store.insert('track', values);
+    } catch (e) {
+      throw new Error(`insert track failed: ${e}`);
+    }
   }
 
   static async unbind(mangaId: number): Promise<void> {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('track');
     pred.equalTo('mangaId', mangaId).and().equalTo('syncId', 1);
-    await store.delete(pred);
+    try {
+      await store.delete(pred);
+    } catch (e) {
+      throw new Error(`unbind track failed: ${e}`);
+    }
   }
 
   static async setLastChapterRead(mangaId: number, lastChapterRead: number): Promise<void> {
@@ -1061,19 +1297,27 @@ export class TrackRepo {
     const values: relationalStore.ValuesBucket = { 'lastChapterRead': lastChapterRead };
     const pred = new relationalStore.RdbPredicates('track');
     pred.equalTo('mangaId', mangaId).and().equalTo('syncId', 1);
-    await store.update(values, pred);
+    try {
+      await store.update(values, pred);
+    } catch (e) {
+      throw new Error(`set last chapter read failed: ${e}`);
+    }
   }
 
   private static rowToTrack(rs: relationalStore.ResultSet): TrackRecord {
-    const t = new TrackRecord();
-    t.id = rs.getLong(rs.getColumnIndex('id'));
-    t.mangaId = rs.getLong(rs.getColumnIndex('mangaId'));
-    t.syncId = rs.getLong(rs.getColumnIndex('syncId'));
-    t.remoteId = rs.getLong(rs.getColumnIndex('remoteId'));
-    t.title = rs.getString(rs.getColumnIndex('title'));
-    t.status = rs.getString(rs.getColumnIndex('status'));
-    t.lastChapterRead = rs.getLong(rs.getColumnIndex('lastChapterRead'));
-    t.score = rs.getDouble(rs.getColumnIndex('score'));
-    return t;
+    try {
+      const t = new TrackRecord();
+      t.id = rs.getLong(rs.getColumnIndex('id'));
+      t.mangaId = rs.getLong(rs.getColumnIndex('mangaId'));
+      t.syncId = rs.getLong(rs.getColumnIndex('syncId'));
+      t.remoteId = rs.getLong(rs.getColumnIndex('remoteId'));
+      t.title = rs.getString(rs.getColumnIndex('title'));
+      t.status = rs.getString(rs.getColumnIndex('status'));
+      t.lastChapterRead = rs.getLong(rs.getColumnIndex('lastChapterRead'));
+      t.score = rs.getDouble(rs.getColumnIndex('score'));
+      return t;
+    } catch (e) {
+      throw new Error(`map track row failed: ${e}`);
+    }
   }
 }

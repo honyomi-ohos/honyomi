@@ -133,12 +133,23 @@ export class AvifConverter {
       AvifConverter.failAll(new Error('avif_worker_exited'));
     };
     // 1) 转换脚本（rawfile，经典脚本）注入 worker 的 JSVM
-    const scriptBytes = rm.getRawFileContentSync('avif/avif_converter.js');
+    let scriptBytes: Uint8Array;
+    try {
+      scriptBytes = rm.getRawFileContentSync('avif/avif_converter.js');
+    } catch (e) {
+      throw new Error(`read avif converter script failed: ${e}`);
+    }
     const script = util.TextDecoder.create('utf-8').decodeToString(scriptBytes);
     await AvifConverter.waitReady(script);
     // 2) wasm 字节 base64 注入（经 __initWasm 逃生舱调用）
-    const avifWasm = rm.getRawFileContentSync('avif/avif_dec.wasm');
-    const jpegWasm = rm.getRawFileContentSync('avif/mozjpeg_enc.wasm');
+    let avifWasm: Uint8Array;
+    let jpegWasm: Uint8Array;
+    try {
+      avifWasm = rm.getRawFileContentSync('avif/avif_dec.wasm');
+      jpegWasm = rm.getRawFileContentSync('avif/mozjpeg_enc.wasm');
+    } catch (e) {
+      throw new Error(`read avif wasm failed: ${e}`);
+    }
     const initArgs = JSON.stringify([
       AvifConverter.b64Helper.encodeToStringSync(avifWasm),
       AvifConverter.b64Helper.encodeToStringSync(jpegWasm)

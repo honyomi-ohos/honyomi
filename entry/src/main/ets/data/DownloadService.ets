@@ -26,8 +26,12 @@ export class DownloadService {
   static init(context: common.UIAbilityContext): void {
     DownloadService.context = context;
     DownloadService.rootDir = `${context.filesDir}/downloads`;
-    if (!fileIo.accessSync(DownloadService.rootDir)) {
-      fileIo.mkdirSync(DownloadService.rootDir, true);
+    try {
+      if (!fileIo.accessSync(DownloadService.rootDir)) {
+        fileIo.mkdirSync(DownloadService.rootDir, true);
+      }
+    } catch (e) {
+      throw new Error(`init download dir failed: ${e}`);
     }
   }
 
@@ -262,18 +266,22 @@ export class DownloadService {
       throw new Error('no_content');
     }
     const dir = DownloadService.chapterDir(task.mangaId, task.chapterId);
-    if (!fileIo.accessSync(dir)) {
-      fileIo.mkdirSync(dir, true);
-    }
-    const path = `${dir}/chapter.txt`;
-    if (fileIo.accessSync(path)) {
-      fileIo.unlinkSync(path);
-    }
-    const fd = fileIo.openSync(path, fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE).fd;
     try {
-      fileIo.writeSync(fd, text);
-    } finally {
-      fileIo.closeSync(fd);
+      if (!fileIo.accessSync(dir)) {
+        fileIo.mkdirSync(dir, true);
+      }
+      const path = `${dir}/chapter.txt`;
+      if (fileIo.accessSync(path)) {
+        fileIo.unlinkSync(path);
+      }
+      const fd = fileIo.openSync(path, fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE).fd;
+      try {
+        fileIo.writeSync(fd, text);
+      } finally {
+        fileIo.closeSync(fd);
+      }
+    } catch (e) {
+      throw new Error(`write novel file failed: ${e}`);
     }
     DownloadService.markDone(dir);
     if (DownloadService.doneIds !== undefined) {
@@ -303,12 +311,16 @@ export class DownloadService {
       throw new Error('download_not_ready');
     }
     const dir = DownloadService.chapterDir(task.mangaId, task.chapterId);
-    if (!fileIo.accessSync(dir)) {
-      fileIo.mkdirSync(dir, true);
-    }
     const path = `${dir}/video.mp4`;
-    if (fileIo.accessSync(path)) {
-      fileIo.unlinkSync(path);
+    try {
+      if (!fileIo.accessSync(dir)) {
+        fileIo.mkdirSync(dir, true);
+      }
+      if (fileIo.accessSync(path)) {
+        fileIo.unlinkSync(path);
+      }
+    } catch (e) {
+      throw new Error(`prepare video file failed: ${e}`);
     }
     task.total = 1;
     task.progress = 0;
@@ -337,8 +349,12 @@ export class DownloadService {
   }
 
   private static markDone(dir: string): void {
-    const markFd = fileIo.openSync(`${dir}/done.mark`, fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE).fd;
-    fileIo.closeSync(markFd);
+    try {
+      const markFd = fileIo.openSync(`${dir}/done.mark`, fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE).fd;
+      fileIo.closeSync(markFd);
+    } catch (e) {
+      throw new Error(`mark done failed: ${e}`);
+    }
   }
 
   // 清理未完成章节的部分下载文件（无 done.mark 时整目录删除，重试从头开始）
@@ -347,8 +363,11 @@ export class DownloadService {
       return;
     }
     const dir = DownloadService.chapterDir(mangaId, chapterId);
-    if (fileIo.accessSync(dir) && !fileIo.accessSync(`${dir}/done.mark`)) {
-      DownloadService.rmdir(dir);
+    try {
+      if (fileIo.accessSync(dir) && !fileIo.accessSync(`${dir}/done.mark`)) {
+        DownloadService.rmdir(dir);
+      }
+    } catch (e) {
     }
   }
 
@@ -371,15 +390,19 @@ export class DownloadService {
   // 已下载漫画的 id 列表（downloads/{mangaId}/ 目录存在即算）
   static downloadedMangaIds(): number[] {
     const ids: number[] = [];
-    if (DownloadService.rootDir === '' || !fileIo.accessSync(DownloadService.rootDir)) {
-      return ids;
-    }
-    const mangaDirs = fileIo.listFileSync(DownloadService.rootDir);
-    for (const md of mangaDirs) {
-      const id = parseInt(md, 10);
-      if (id >= 0) {
-        ids.push(id);
+    try {
+      if (DownloadService.rootDir === '' || !fileIo.accessSync(DownloadService.rootDir)) {
+        return ids;
       }
+      const mangaDirs = fileIo.listFileSync(DownloadService.rootDir);
+      for (const md of mangaDirs) {
+        const id = parseInt(md, 10);
+        if (id >= 0) {
+          ids.push(id);
+        }
+      }
+    } catch (e) {
+      throw new Error(`list downloaded manga ids failed: ${e}`);
     }
     return ids;
   }
@@ -394,23 +417,27 @@ export class DownloadService {
   // 单次目录遍历构建 done.mark 索引
   private static rebuildDoneIndex(): void {
     const set = new Set<number>();
-    if (DownloadService.rootDir !== '' && fileIo.accessSync(DownloadService.rootDir)) {
-      const mangaDirs = fileIo.listFileSync(DownloadService.rootDir);
-      for (const md of mangaDirs) {
-        const mangaPath = `${DownloadService.rootDir}/${md}`;
-        if (!fileIo.accessSync(mangaPath)) {
-          continue;
-        }
-        const chapterDirs = fileIo.listFileSync(mangaPath);
-        for (const cd of chapterDirs) {
-          if (fileIo.accessSync(`${mangaPath}/${cd}/done.mark`)) {
-            const chapterId = parseInt(cd, 10);
-            if (chapterId > 0) {
-              set.add(chapterId);
+    try {
+      if (DownloadService.rootDir !== '' && fileIo.accessSync(DownloadService.rootDir)) {
+        const mangaDirs = fileIo.listFileSync(DownloadService.rootDir);
+        for (const md of mangaDirs) {
+          const mangaPath = `${DownloadService.rootDir}/${md}`;
+          if (!fileIo.accessSync(mangaPath)) {
+            continue;
+          }
+          const chapterDirs = fileIo.listFileSync(mangaPath);
+          for (const cd of chapterDirs) {
+            if (fileIo.accessSync(`${mangaPath}/${cd}/done.mark`)) {
+              const chapterId = parseInt(cd, 10);
+              if (chapterId > 0) {
+                set.add(chapterId);
+              }
             }
           }
         }
       }
+    } catch (e) {
+      throw new Error(`rebuild done index failed: ${e}`);
     }
     DownloadService.doneIds = set;
   }
@@ -418,24 +445,28 @@ export class DownloadService {
   // 每部漫画的已下载章节数（与 rebuildDoneIndex 口径一致：仅统计带 done.mark 的章节），书架下载徽标用
   static downloadedChapterCounts(): Record<string, number> {
     const counts: Record<string, number> = {};
-    if (DownloadService.rootDir === '' || !fileIo.accessSync(DownloadService.rootDir)) {
-      return counts;
-    }
-    const mangaDirs = fileIo.listFileSync(DownloadService.rootDir);
-    for (const md of mangaDirs) {
-      const id = parseInt(md, 10);
-      if (id >= 0) {
-        const chapterDirs = fileIo.listFileSync(`${DownloadService.rootDir}/${md}`);
-        let done = 0;
-        for (const cd of chapterDirs) {
-          if (fileIo.accessSync(`${DownloadService.rootDir}/${md}/${cd}/done.mark`)) {
-            done += 1;
-          }
-        }
-        counts[`${id}`] = done;
+    try {
+      if (DownloadService.rootDir === '' || !fileIo.accessSync(DownloadService.rootDir)) {
+        return counts;
       }
+      const mangaDirs = fileIo.listFileSync(DownloadService.rootDir);
+      for (const md of mangaDirs) {
+        const id = parseInt(md, 10);
+        if (id >= 0) {
+          const chapterDirs = fileIo.listFileSync(`${DownloadService.rootDir}/${md}`);
+          let done = 0;
+          for (const cd of chapterDirs) {
+            if (fileIo.accessSync(`${DownloadService.rootDir}/${md}/${cd}/done.mark`)) {
+              done += 1;
+            }
+          }
+          counts[`${id}`] = done;
+        }
+      }
+      return counts;
+    } catch (e) {
+      throw new Error(`count downloaded chapters failed: ${e}`);
     }
-    return counts;
   }
 
   // 已完成下载的章节 id 集合（复用 done 索引，更新页"已下载"筛选用）
@@ -454,47 +485,63 @@ export class DownloadService {
 
   // 从目录结构反查 mangaId（downloads/{mangaId}/{chapterId}/）
   static mangaIdOf(chapterId: number): number {
-    if (DownloadService.rootDir === '' || !fileIo.accessSync(DownloadService.rootDir)) {
-      return -1;
-    }
-    const mangaDirs = fileIo.listFileSync(DownloadService.rootDir);
-    for (const md of mangaDirs) {
-      const chapterPath = `${DownloadService.rootDir}/${md}/${chapterId}`;
-      if (fileIo.accessSync(chapterPath)) {
-        return parseInt(md, 10);
+    try {
+      if (DownloadService.rootDir === '' || !fileIo.accessSync(DownloadService.rootDir)) {
+        return -1;
       }
+      const mangaDirs = fileIo.listFileSync(DownloadService.rootDir);
+      for (const md of mangaDirs) {
+        const chapterPath = `${DownloadService.rootDir}/${md}/${chapterId}`;
+        if (fileIo.accessSync(chapterPath)) {
+          return parseInt(md, 10);
+        }
+      }
+    } catch (e) {
+      throw new Error(`find manga id failed: ${e}`);
     }
     return -1;
   }
 
   static localText(mangaId: number, chapterId: number): string {
     const path = `${DownloadService.chapterDir(mangaId, chapterId)}/chapter.txt`;
-    if (DownloadService.rootDir !== '' && fileIo.accessSync(path)) {
-      return path;
+    try {
+      if (DownloadService.rootDir !== '' && fileIo.accessSync(path)) {
+        return path;
+      }
+    } catch (e) {
+      throw new Error(`check local text failed: ${e}`);
     }
     return '';
   }
 
   static localVideo(mangaId: number, chapterId: number): string {
     const path = `${DownloadService.chapterDir(mangaId, chapterId)}/video.mp4`;
-    if (DownloadService.rootDir !== '' && fileIo.accessSync(path)) {
-      return path;
+    try {
+      if (DownloadService.rootDir !== '' && fileIo.accessSync(path)) {
+        return path;
+      }
+    } catch (e) {
+      throw new Error(`check local video failed: ${e}`);
     }
     return '';
   }
 
   static localPages(mangaId: number, chapterId: number): string[] {
     const dir = DownloadService.chapterDir(mangaId, chapterId);
-    if (!fileIo.accessSync(dir)) {
-      return [];
+    try {
+      if (!fileIo.accessSync(dir)) {
+        return [];
+      }
+      const files = fileIo.listFileSync(dir);
+      const pages = files.filter((f: string) => f !== 'done.mark' && f !== 'chapter.txt' && f !== 'video.mp4').sort();
+      const result: string[] = [];
+      for (const f of pages) {
+        result.push(`${dir}/${f}`);
+      }
+      return result;
+    } catch (e) {
+      throw new Error(`list local pages failed: ${e}`);
     }
-    const files = fileIo.listFileSync(dir);
-    const pages = files.filter((f: string) => f !== 'done.mark' && f !== 'chapter.txt' && f !== 'video.mp4').sort();
-    const result: string[] = [];
-    for (const f of pages) {
-      result.push(`${dir}/${f}`);
-    }
-    return result;
   }
 
   // 删除章节本地文件：先取消并等待活动下载任务退出，避免删除与写入并发产生半截文件
@@ -512,8 +559,12 @@ export class DownloadService {
       });
     }
     const dir = DownloadService.chapterDir(mangaId, chapterId);
-    if (fileIo.accessSync(dir)) {
-      DownloadService.rmdir(dir);
+    try {
+      if (fileIo.accessSync(dir)) {
+        DownloadService.rmdir(dir);
+      }
+    } catch (e) {
+      throw new Error(`delete chapter files failed: ${e}`);
     }
     if (DownloadService.doneIds !== undefined) {
       DownloadService.doneIds.delete(chapterId);
@@ -523,52 +574,60 @@ export class DownloadService {
   }
 
   private static rmdir(path: string): void {
-    if (!fileIo.accessSync(path)) {
-      return;
-    }
-    const stat = fileIo.statSync(path);
-    if (stat.isDirectory()) {
-      const children = fileIo.listFileSync(path);
-      for (const c of children) {
-        DownloadService.rmdir(`${path}/${c}`);
+    try {
+      if (!fileIo.accessSync(path)) {
+        return;
       }
-      fileIo.rmdirSync(path);
-    } else {
-      fileIo.unlinkSync(path);
+      const stat = fileIo.statSync(path);
+      if (stat.isDirectory()) {
+        const children = fileIo.listFileSync(path);
+        for (const c of children) {
+          DownloadService.rmdir(`${path}/${c}`);
+        }
+        fileIo.rmdirSync(path);
+      } else {
+        fileIo.unlinkSync(path);
+      }
+    } catch (e) {
+      throw new Error(`rmdir ${path} failed: ${e}`);
     }
   }
 
   static async listDownloaded(): Promise<DownloadedManga[]> {
     const result: DownloadedManga[] = [];
-    if (DownloadService.rootDir === '' || !fileIo.accessSync(DownloadService.rootDir)) {
-      return result;
-    }
-    const mangaDirs = fileIo.listFileSync(DownloadService.rootDir).sort();
-    for (const md of mangaDirs) {
-      const mangaId = parseInt(md, 10);
-      const mangaPath = `${DownloadService.rootDir}/${md}`;
-      const chapterDirs = fileIo.listFileSync(mangaPath).sort((a: string, b: string) => {
-        return parseInt(a, 10) - parseInt(b, 10);
-      });
-      const chapters: DownloadedChapter[] = [];
-      for (const cd of chapterDirs) {
-        if (!fileIo.accessSync(`${mangaPath}/${cd}/done.mark`)) {
-          continue;
+    try {
+      if (DownloadService.rootDir === '' || !fileIo.accessSync(DownloadService.rootDir)) {
+        return result;
+      }
+      const mangaDirs = fileIo.listFileSync(DownloadService.rootDir).sort();
+      for (const md of mangaDirs) {
+        const mangaId = parseInt(md, 10);
+        const mangaPath = `${DownloadService.rootDir}/${md}`;
+        const chapterDirs = fileIo.listFileSync(mangaPath).sort((a: string, b: string) => {
+          return parseInt(a, 10) - parseInt(b, 10);
+        });
+        const chapters: DownloadedChapter[] = [];
+        for (const cd of chapterDirs) {
+          if (!fileIo.accessSync(`${mangaPath}/${cd}/done.mark`)) {
+            continue;
+          }
+          const chapterId = parseInt(cd, 10);
+          const names = await DownloadService.chapterNames(mangaId, chapterId);
+          chapters.push(DownloadedChapter.of(mangaId, names[0], chapterId, names[1]));
         }
-        const chapterId = parseInt(cd, 10);
-        const names = await DownloadService.chapterNames(mangaId, chapterId);
-        chapters.push(DownloadedChapter.of(mangaId, names[0], chapterId, names[1]));
+        if (chapters.length > 0) {
+          const manga = await MangaRepo.get(mangaId);
+          const group = new DownloadedManga();
+          group.mangaId = mangaId;
+          group.mangaTitle = manga !== undefined ? manga.title : `#${mangaId}`;
+          group.chapters = chapters;
+          result.push(group);
+        }
       }
-      if (chapters.length > 0) {
-        const manga = await MangaRepo.get(mangaId);
-        const group = new DownloadedManga();
-        group.mangaId = mangaId;
-        group.mangaTitle = manga !== undefined ? manga.title : `#${mangaId}`;
-        group.chapters = chapters;
-        result.push(group);
-      }
+      return result;
+    } catch (e) {
+      throw new Error(`list downloaded failed: ${e}`);
     }
-    return result;
   }
 
   private static async chapterNames(mangaId: number, chapterId: number): Promise<string[]> {

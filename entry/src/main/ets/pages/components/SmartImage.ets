@@ -1,5 +1,6 @@
 import { ImageCache } from '../../common/ImageCache';
 import { AppIcon } from './AppIcon';
+import { CoverPlaceholder } from './CoverPlaceholder';
 
 // 智能图片：源需要请求头时经 ImageCache 管线加载（Referer/UA/Cookie），
 // 本地文件与未声明请求头的源保持系统 Image 直连行为
@@ -9,6 +10,8 @@ export struct SmartImage {
   @Prop sourceKey: string = '';
   @Prop fit: ImageFit = ImageFit.Cover;
   @Prop fill: boolean = true;
+  // 无封面时默认封面占位的图标尺寸（小尺寸列表封面传小值）
+  @Prop placeholderIconSize: number = 30;
   @State display: string = '';
   @State failed: boolean = false;
   @State imgReady: boolean = false;
@@ -70,7 +73,12 @@ export struct SmartImage {
 
   build() {
     Stack() {
-      if (this.display !== '') {
+      if (this.url === '') {
+        // 无封面（本地资源等）：显示默认封面占位
+        CoverPlaceholder({ iconSize: this.placeholderIconSize })
+          .width('100%')
+          .height(this.fill ? '100%' : 120)
+      } else if (this.display !== '') {
         if (!this.failed) {
           Image(this.display)
             .width('100%')

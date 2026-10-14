@@ -28,8 +28,12 @@ export class ImageCache {
 
   static init(context: common.Context): void {
     ImageCache.dir = `${context.cacheDir}/image_file_cache`;
-    if (!fs.accessSync(ImageCache.dir)) {
-      fs.mkdirSync(ImageCache.dir, true);
+    try {
+      if (!fs.accessSync(ImageCache.dir)) {
+        fs.mkdirSync(ImageCache.dir, true);
+      }
+    } catch (e) {
+      throw new Error(`init cache dir failed: ${e}`);
     }
     // 启动路径不做同步全量统计：延后一拍在后台累计字节数
     setTimeout((): void => {
@@ -39,18 +43,22 @@ export class ImageCache {
 
   // 全量统计目录字节数（作为超预算判定的基准）
   private static rescanBytes(): void {
-    if (ImageCache.dir === '' || !fs.accessSync(ImageCache.dir)) {
-      return;
-    }
-    let total: number = 0;
-    const names = fs.listFileSync(ImageCache.dir);
-    for (let i = 0; i < names.length; i++) {
-      try {
-        total += fs.statSync(`${ImageCache.dir}/${names[i]}`).size;
-      } catch (_e) {
+    try {
+      if (ImageCache.dir === '' || !fs.accessSync(ImageCache.dir)) {
+        return;
       }
+      let total: number = 0;
+      const names = fs.listFileSync(ImageCache.dir);
+      for (let i = 0; i < names.length; i++) {
+        try {
+          total += fs.statSync(`${ImageCache.dir}/${names[i]}`).size;
+        } catch (_e) {
+        }
+      }
+      ImageCache.totalBytes = total;
+    } catch (e) {
+      throw new Error(`rescan cache bytes failed: ${e}`);
     }
-    ImageCache.totalBytes = total;
   }
 
   // 解析展示地址：http(s) 且源需要请求头 → file:// 本地缓存；其余原样返回
@@ -64,7 +72,13 @@ export class ImageCache {
     }
     // 缓存命中优先（不依赖源注册状态，历史/更新页等无 sourceKey 场景同样本地服务）
     const path = await ImageCache.cachedPath(url);
-    if (fs.accessSync(path)) {
+    let exists: boolean = false;
+    try {
+      exists = fs.accessSync(path);
+    } catch (e) {
+      throw new Error(`access cache file failed: ${e}`);
+    }
+    if (exists) {
       await ImageCache.upgradeAvif(path);
       return `file://${path}`;
     }
@@ -119,7 +133,13 @@ export class ImageCache {
     const srcHeaders = source !== undefined ? source.imageRequestHeaders() : undefined;
     const headers: Record<string, string> = srcHeaders !== undefined ? srcHeaders : {};
     const path = await ImageCache.cachedPath(url);
-    if (fs.accessSync(path)) {
+    let exists: boolean = false;
+    try {
+      exists = fs.accessSync(path);
+    } catch (e) {
+      throw new Error(`access cache file failed: ${e}`);
+    }
+    if (exists) {
       await ImageCache.upgradeAvif(path);
       return path;
     }
@@ -163,24 +183,32 @@ export class ImageCache {
 
   // 缓存目录占用字节数
   static size(): number {
-    if (ImageCache.dir === '' || !fs.accessSync(ImageCache.dir)) {
-      return 0;
+    try {
+      if (ImageCache.dir === '' || !fs.accessSync(ImageCache.dir)) {
+        return 0;
+      }
+      let total = 0;
+      const names = fs.listFileSync(ImageCache.dir);
+      for (let i = 0; i < names.length; i++) {
+        const stat = fs.statSync(`${ImageCache.dir}/${names[i]}`);
+        total += stat.size;
+      }
+      return total;
+    } catch (e) {
+      throw new Error(`measure cache size failed: ${e}`);
     }
-    let total = 0;
-    const names = fs.listFileSync(ImageCache.dir);
-    for (let i = 0; i < names.length; i++) {
-      const stat = fs.statSync(`${ImageCache.dir}/${names[i]}`);
-      total += stat.size;
-    }
-    return total;
   }
 
   // 缓存文件数量（清除章节缓存时用于提示删除了多少个文件）
   static count(): number {
-    if (ImageCache.dir === '' || !fs.accessSync(ImageCache.dir)) {
-      return 0;
+    try {
+      if (ImageCache.dir === '' || !fs.accessSync(ImageCache.dir)) {
+        return 0;
+      }
+      return fs.listFileSync(ImageCache.dir).length;
+    } catch (e) {
+      throw new Error(`count cache files failed: ${e}`);
     }
-    return fs.listFileSync(ImageCache.dir).length;
   }
 
   // 清空缓存目录，返回清除的字节数
@@ -188,12 +216,16 @@ export class ImageCache {
   static clearAll(): number {
     const total: number = ImageCache.size();
     ImageCache.totalBytes = 0;
-    if (ImageCache.dir !== '' && fs.accessSync(ImageCache.dir)) {
-      const names = fs.listFileSync(ImageCache.dir);
-      for (let i = 0; i < names.length; i++) {
-        fs.unlink(`${ImageCache.dir}/${names[i]}`).catch((_e: BusinessError): void => {
-        });
+    try {
+      if (ImageCache.dir !== '' && fs.accessSync(ImageCache.dir)) {
+        const names = fs.listFileSync(ImageCache.dir);
+        for (let i = 0; i < names.length; i++) {
+          fs.unlink(`${ImageCache.dir}/${names[i]}`).catch((_e: BusinessError): void => {
+          });
+        }
       }
+    } catch (e) {
+      throw new Error(`clear cache failed: ${e}`);
     }
     return total;
   }
@@ -325,32 +357,36 @@ export class ImageCache {
 
   // 超预算时按 mtime 淘汰最旧文件，直到回到预算内
   private static evictOldest(): void {
-    if (ImageCache.dir === '' || !fs.accessSync(ImageCache.dir)) {
-      return;
-    }
-    const names = fs.listFileSync(ImageCache.dir);
-    const metas: CacheFileMeta[] = [];
-    for (let i = 0; i < names.length; i++) {
-      try {
-        const stat = fs.statSync(`${ImageCache.dir}/${names[i]}`);
-        const meta: CacheFileMeta = { name: names[i], mtime: stat.mtime, size: stat.size };
-        metas.push(meta);
-      } catch (_e) {
+    try {
+      if (ImageCache.dir === '' || !fs.accessSync(ImageCache.dir)) {
+        return;
       }
-    }
-    metas.sort((a: CacheFileMeta, b: CacheFileMeta): number => a.mtime - b.mtime);
-    for (let i = 0; i < metas.length; i++) {
-      if (ImageCache.totalBytes <= ImageCache.MAX_DISK_BYTES) {
-        break;
-      }
-      try {
-        fs.unlinkSync(`${ImageCache.dir}/${metas[i].name}`);
-        ImageCache.totalBytes -= metas[i].size;
-        if (ImageCache.totalBytes < 0) {
-          ImageCache.totalBytes = 0;
+      const names = fs.listFileSync(ImageCache.dir);
+      const metas: CacheFileMeta[] = [];
+      for (let i = 0; i < names.length; i++) {
+        try {
+          const stat = fs.statSync(`${ImageCache.dir}/${names[i]}`);
+          const meta: CacheFileMeta = { name: names[i], mtime: stat.mtime, size: stat.size };
+          metas.push(meta);
+        } catch (_e) {
         }
-      } catch (_e) {
       }
+      metas.sort((a: CacheFileMeta, b: CacheFileMeta): number => a.mtime - b.mtime);
+      for (let i = 0; i < metas.length; i++) {
+        if (ImageCache.totalBytes <= ImageCache.MAX_DISK_BYTES) {
+          break;
+        }
+        try {
+          fs.unlinkSync(`${ImageCache.dir}/${metas[i].name}`);
+          ImageCache.totalBytes -= metas[i].size;
+          if (ImageCache.totalBytes < 0) {
+            ImageCache.totalBytes = 0;
+          }
+        } catch (_e) {
+        }
+      }
+    } catch (e) {
+      throw new Error(`evict cache failed: ${e}`);
     }
   }
 
@@ -370,18 +406,22 @@ export class ImageCache {
   }
 
   private static async md5(text: string): Promise<string> {
-    // @SuppressWarnings syscap
-    const md = cryptoFramework.createMd('MD5');
-    const input: cryptoFramework.DataBlob = { data: new util.TextEncoder().encodeInto(text) };
-    // @SuppressWarnings syscap
-    await md.update(input);
-    // @SuppressWarnings syscap
-    const output = await md.digest();
-    let hex = '';
-    for (let i = 0; i < output.data.length; i++) {
-      const b = output.data[i];
-      hex += b < 16 ? `0${b.toString(16)}` : b.toString(16);
+    try {
+      // @SuppressWarnings syscap
+      const md = cryptoFramework.createMd('MD5');
+      const input: cryptoFramework.DataBlob = { data: new util.TextEncoder().encodeInto(text) };
+      // @SuppressWarnings syscap
+      await md.update(input);
+      // @SuppressWarnings syscap
+      const output = await md.digest();
+      let hex = '';
+      for (let i = 0; i < output.data.length; i++) {
+        const b = output.data[i];
+        hex += b < 16 ? `0${b.toString(16)}` : b.toString(16);
+      }
+      return hex;
+    } catch (e) {
+      throw new Error(`md5 failed: ${e}`);
     }
-    return hex;
   }
 }

@@ -42,7 +42,12 @@ export class PluginPrefs {
     if (PluginPrefs.store === undefined) {
       return '';
     }
-    const raw = PluginPrefs.store.getSync(`__extprefs:${key}`, '') as string;
+    let raw: string = '';
+    try {
+      raw = PluginPrefs.store.getSync(`__extprefs:${key}`, '') as string;
+    } catch (e) {
+      throw new Error(`read plugin prefs failed: ${e}`);
+    }
     if (raw === '') {
       return '';
     }
@@ -81,7 +86,11 @@ export class PluginPrefs {
     }
     const store = PluginPrefs.store;
     if (store !== undefined) {
-      await store.flush();
+      try {
+        await store.flush();
+      } catch (e) {
+        throw new Error(`flush plugin prefs failed: ${e}`);
+      }
     }
   }
 
@@ -94,6 +103,9 @@ export class PluginPrefs {
       store.putSync(`__extprefs:${key}`, json);
     });
     PluginPrefs.pending.clear();
-    store.flush();
+    try {
+      store.flush();
+    } catch (e) {
+    }
   }
 }

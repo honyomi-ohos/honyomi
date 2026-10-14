@@ -6,7 +6,6 @@ import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
-import { AppIcon } from './components/AppIcon';
 import { SmartImage } from './components/SmartImage';
 
 // 历史页：最近阅读记录
@@ -114,23 +113,18 @@ export struct HistoryPage {
             ForEach(this.items, (item: HistoryItem) => {
               ListItem() {
                 Row({ space: 12 }) {
-                  if (item.coverUrl === '') {
-                    Column() {
-                      AppIcon({ name: 'photo', iconSize: 20 })
-                    }
+                  // 封面（无封面时 SmartImage 内部渲染默认封面占位）；
+                  // HistoryItem 不含 sourceKey，传空串走网络/缓存通用路径
+                  SmartImage({
+                    url: item.coverUrl,
+                    sourceKey: '',
+                    fit: ImageFit.Cover,
+                    placeholderIconSize: 20
+                  })
                     .width(44)
                     .height(60)
                     .borderRadius(6)
                     .backgroundColor(this.pal.chip)
-                    .justifyContent(FlexAlign.Center)
-                  } else {
-                    // HistoryItem 不含 sourceKey，传空串走网络/缓存通用路径
-                    SmartImage({ url: item.coverUrl, sourceKey: '', fit: ImageFit.Cover })
-                      .width(44)
-                      .height(60)
-                      .borderRadius(6)
-                      .backgroundColor(this.pal.chip)
-                  }
                   Column() {
                     Text(item.mangaTitle)
                       .fontSize(14)

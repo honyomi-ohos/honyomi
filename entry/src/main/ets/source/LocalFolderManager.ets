@@ -244,10 +244,15 @@ export class LocalFolderManager {
   private static readonly MAX_SCAN_DEPTH: number = 16;
 
   private static hasFileWithExtsInner(dir: string, exts: string[], depth: number): boolean {
-    if (depth > LocalFolderManager.MAX_SCAN_DEPTH || !fs.accessSync(dir)) {
+    let entries: string[] = [];
+    try {
+      if (depth > LocalFolderManager.MAX_SCAN_DEPTH || !fs.accessSync(dir)) {
+        return false;
+      }
+      entries = fs.listFileSync(dir);
+    } catch (e) {
       return false;
     }
-    const entries = fs.listFileSync(dir);
     for (const entry of entries) {
       if (entry === '.extracted' || entry.startsWith('.staging_')) {
         continue;
@@ -256,7 +261,13 @@ export class LocalFolderManager {
       if (LocalFolderManager.matchesExt(entry, exts)) {
         return true;
       }
-      if (fs.statSync(fullPath).isDirectory() &&
+      let isDir = false;
+      try {
+        isDir = fs.statSync(fullPath).isDirectory();
+      } catch (e) {
+        continue;
+      }
+      if (isDir &&
         LocalFolderManager.hasFileWithExtsInner(fullPath, exts, depth + 1)) {
         return true;
       }

@@ -149,25 +149,20 @@ export struct MigrateMangaPage {
                         this.toggle(m.id);
                       }
                     })
-                  if (m.thumbnailUrl === '') {
-                    Column() {
-                      AppIcon({ name: 'photo', iconSize: 18 })
-                    }
+                  // 封面（无封面时 SmartImage 内部渲染默认封面占位）
+                  SmartImage({
+                    url: m.thumbnailUrl,
+                    sourceKey: m.sourceKey,
+                    fit: ImageFit.Cover,
+                    fill: true,
+                    placeholderIconSize: 20
+                  })
                     .width(44)
                     .height(62)
                     .borderRadius(6)
+                    .clip(true)
                     .backgroundColor(this.pal.chip)
-                    .justifyContent(FlexAlign.Center)
                     .margin({ left: 12 })
-                  } else {
-                    SmartImage({ url: m.thumbnailUrl, sourceKey: m.sourceKey, fit: ImageFit.Cover, fill: true })
-                      .width(44)
-                      .height(62)
-                      .borderRadius(6)
-                      .clip(true)
-                      .backgroundColor(this.pal.chip)
-                      .margin({ left: 12 })
-                  }
                   Text(m.title)
                     .fontSize(14)
                     .fontColor(this.pal.text)

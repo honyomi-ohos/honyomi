@@ -89,8 +89,11 @@ export class PluginService {
     } catch (e) {
       PluginService.appVersionCode = 1;
     }
-    if (!fs.accessSync(PluginService.pluginsDir)) {
-      fs.mkdirSync(PluginService.pluginsDir, true);
+    try {
+      if (!fs.accessSync(PluginService.pluginsDir)) {
+        fs.mkdirSync(PluginService.pluginsDir, true);
+      }
+    } catch (e) {
     }
     PluginService.cleanStaleTemp();
     PluginService.cleanStaleStaging();
@@ -98,10 +101,15 @@ export class PluginService {
 
   // 清理上次崩溃/失败安装遗留的 staging/备份目录（.staging_*/.old_*，含 manifest.json 会被误识别为插件）
   private static cleanStaleStaging(): void {
-    if (!fs.accessSync(PluginService.pluginsDir)) {
+    let names: string[] = [];
+    try {
+      if (!fs.accessSync(PluginService.pluginsDir)) {
+        return;
+      }
+      names = fs.listFileSync(PluginService.pluginsDir);
+    } catch (e) {
       return;
     }
-    const names: string[] = fs.listFileSync(PluginService.pluginsDir);
     for (const name of names) {
       if (!name.startsWith('.staging_') && !name.startsWith('.old_')) {
         continue;
@@ -118,10 +126,15 @@ export class PluginService {
 
   // 清理历史失败安装遗留的临时文件/目录（plugin_extract_*/plugin_install_*/plugin_repo_*）
   private static cleanStaleTemp(): void {
-    if (!fs.accessSync(PluginService.cacheDir)) {
+    let names: string[] = [];
+    try {
+      if (!fs.accessSync(PluginService.cacheDir)) {
+        return;
+      }
+      names = fs.listFileSync(PluginService.cacheDir);
+    } catch (e) {
       return;
     }
-    const names: string[] = fs.listFileSync(PluginService.cacheDir);
     for (const name of names) {
       if (!name.startsWith('plugin_extract_') && !name.startsWith('plugin_install_') &&
         !name.startsWith('plugin_repo_')) {
@@ -196,16 +209,21 @@ export class PluginService {
 
   static listInstalled(): InstalledPlugin[] {
     const result: InstalledPlugin[] = [];
-    if (!fs.accessSync(PluginService.pluginsDir)) {
+    let names: string[] = [];
+    try {
+      if (!fs.accessSync(PluginService.pluginsDir)) {
+        return result;
+      }
+      names = fs.listFileSync(PluginService.pluginsDir);
+    } catch (e) {
       return result;
     }
-    const names: string[] = fs.listFileSync(PluginService.pluginsDir);
     for (const dir of names) {
       const manifestPath = `${PluginService.pluginsDir}/${dir}/manifest.json`;
-      if (!fs.accessSync(manifestPath)) {
-        continue;
-      }
       try {
+        if (!fs.accessSync(manifestPath)) {
+          continue;
+        }
         const manifest = PluginService.parseManifest(fs.readTextSync(manifestPath));
         const iconPath = `${PluginService.pluginsDir}/${dir}/${manifest.icon}`;
         const item: InstalledPlugin = {
@@ -236,8 +254,11 @@ export class PluginService {
     try {
       return await PluginService.installZip(zipPath);
     } finally {
-      if (fs.accessSync(zipPath)) {
-        fs.unlinkSync(zipPath);
+      try {
+        if (fs.accessSync(zipPath)) {
+          fs.unlinkSync(zipPath);
+        }
+      } catch (e) {
       }
     }
   }
@@ -255,17 +276,27 @@ export class PluginService {
       }
     }
     const zipPath = `${PluginService.cacheDir}/plugin_repo_${entry.key}_${Date.now()}_${util.generateRandomUUID()}.honyomiplug`;
-    const file = fs.openSync(zipPath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
     try {
-      fs.writeSync(file.fd, buffer);
-    } finally {
-      fs.closeSync(file);
+      const file = fs.openSync(zipPath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+      try {
+        fs.writeSync(file.fd, buffer);
+      } finally {
+        try {
+          fs.closeSync(file);
+        } catch (e2) {
+        }
+      }
+    } catch (e) {
+      throw new Error(`plugin_write_failed|${e}`);
     }
     try {
       return await PluginService.installZip(zipPath);
     } finally {
-      if (fs.accessSync(zipPath)) {
-        fs.unlinkSync(zipPath);
+      try {
+        if (fs.accessSync(zipPath)) {
+          fs.unlinkSync(zipPath);
+        }
+      } catch (e) {
       }
     }
   }
@@ -275,8 +306,12 @@ export class PluginService {
     PluginService.unregisterPackage(packageKey);
     await JsvmExtensionManager.unloadExtension(packageKey);
     const dir = `${PluginService.pluginsDir}/${packageKey}`;
-    if (fs.accessSync(dir)) {
-      fs.rmdirSync(dir);
+    try {
+      if (fs.accessSync(dir)) {
+        fs.rmdirSync(dir);
+      }
+    } catch (e) {
+      throw new Error(`plugin_uninstall_failed|${e}`);
     }
     // 注意：数据库中该源的漫画数据保留，重装同 key 插件后自动恢复
   }
@@ -381,83 +416,130 @@ export class PluginService {
   }
 
   private static async sha256Hex(data: ArrayBuffer): Promise<string> {
-    const md: cryptoFramework.Md = cryptoFramework.createMd('SHA256');
-    await md.update({ data: new Uint8Array(data) });
-    const digest: cryptoFramework.DataBlob = await md.digest();
-    let out = '';
-    for (let i = 0; i < digest.data.length; i++) {
-      const byte: number = digest.data[i];
-      out += byte < 16 ? `0${byte.toString(16)}` : byte.toString(16);
+    try {
+      const md: cryptoFramework.Md = cryptoFramework.createMd('SHA256');
+      await md.update({ data: new Uint8Array(data) });
+      const digest: cryptoFramework.DataBlob = await md.digest();
+      let out = '';
+      for (let i = 0; i < digest.data.length; i++) {
+        const byte: number = digest.data[i];
+        out += byte < 16 ? `0${byte.toString(16)}` : byte.toString(16);
+      }
+      return out;
+    } catch (e) {
+      throw new Error(`plugin_checksum_failed|${e}`);
     }
-    return out;
   }
 
   // 先解压/复制到临时目录，全部成功后再原子替换旧插件目录，失败保留旧插件
   private static async installZip(zipPath: string): Promise<string> {
     const extractDir = `${PluginService.cacheDir}/plugin_extract_${Date.now()}_${util.generateRandomUUID()}`;
-    if (!fs.accessSync(extractDir)) {
-      fs.mkdirSync(extractDir, true);
+    try {
+      if (!fs.accessSync(extractDir)) {
+        fs.mkdirSync(extractDir, true);
+      }
+      await zlib.decompressFile(zipPath, extractDir);
+    } catch (e) {
+      throw new Error(`plugin_extract_failed|${e}`);
     }
-    await zlib.decompressFile(zipPath, extractDir);
     let stagingDir = '';
     try {
       const rootDir = PluginService.findPluginRoot(extractDir);
-      const manifest = PluginService.parseManifest(fs.readTextSync(`${rootDir}/manifest.json`));
-      if (!fs.accessSync(`${rootDir}/main.js`)) {
+      let manifestText = '';
+      try {
+        manifestText = fs.readTextSync(`${rootDir}/manifest.json`);
+      } catch (e) {
+        throw new Error(`plugin_manifest_read_failed|${e}`);
+      }
+      const manifest = PluginService.parseManifest(manifestText);
+      let mainExists = false;
+      try {
+        mainExists = fs.accessSync(`${rootDir}/main.js`);
+      } catch (e) {
+      }
+      if (!mainExists) {
         throw new Error('plugin_missing_main');
       }
       // 先完整复制到 staging 目录，成功后再删除旧目录并 rename 新目录
       stagingDir = `${PluginService.pluginsDir}/.staging_${manifest.key}_${Date.now()}_${util.generateRandomUUID()}`;
-      fs.mkdirSync(stagingDir, true);
-      fs.copyFileSync(`${rootDir}/manifest.json`, `${stagingDir}/manifest.json`);
-      fs.copyFileSync(`${rootDir}/main.js`, `${stagingDir}/main.js`);
-      if (manifest.icon !== '' && fs.accessSync(`${rootDir}/${manifest.icon}`)) {
-        fs.copyFileSync(`${rootDir}/${manifest.icon}`, `${stagingDir}/${manifest.icon}`);
+      try {
+        fs.mkdirSync(stagingDir, true);
+        fs.copyFileSync(`${rootDir}/manifest.json`, `${stagingDir}/manifest.json`);
+        fs.copyFileSync(`${rootDir}/main.js`, `${stagingDir}/main.js`);
+        if (manifest.icon !== '' && fs.accessSync(`${rootDir}/${manifest.icon}`)) {
+          fs.copyFileSync(`${rootDir}/${manifest.icon}`, `${stagingDir}/${manifest.icon}`);
+        }
+      } catch (e) {
+        throw new Error(`plugin_stage_failed|${e}`);
       }
       const destDir = `${PluginService.pluginsDir}/${manifest.key}`;
       const backupDir = `${PluginService.pluginsDir}/.old_${manifest.key}_${util.generateRandomUUID()}`;
       let swapped = false;
-      if (fs.accessSync(destDir)) {
-        fs.renameSync(destDir, backupDir);
-        swapped = true;
+      try {
+        if (fs.accessSync(destDir)) {
+          fs.renameSync(destDir, backupDir);
+          swapped = true;
+        }
+      } catch (e) {
+        throw new Error(`plugin_replace_failed|${e}`);
       }
       try {
         fs.renameSync(stagingDir, destDir);
         stagingDir = '';
       } catch (e) {
         if (swapped) {
-          fs.renameSync(backupDir, destDir);
+          try {
+            fs.renameSync(backupDir, destDir);
+          } catch (e2) {
+          }
         }
         throw new Error(`plugin_replace_failed|${(e as Error).message}`);
       }
-      if (swapped && fs.accessSync(backupDir)) {
-        fs.rmdirSync(backupDir);
+      try {
+        if (swapped && fs.accessSync(backupDir)) {
+          fs.rmdirSync(backupDir);
+        }
+      } catch (e) {
       }
-      const scriptText = fs.readTextSync(`${destDir}/main.js`);
+      let scriptText = '';
+      try {
+        scriptText = fs.readTextSync(`${destDir}/main.js`);
+      } catch (e) {
+        throw new Error(`plugin_read_failed|${e}`);
+      }
       await PluginService.reloadOne(manifest, scriptText);
       hilog.info(DOMAIN, TAG, 'plugin installed: %{public}s', manifest.key);
       return manifest.key;
     } finally {
-      if (stagingDir !== '' && fs.accessSync(stagingDir)) {
-        fs.rmdirSync(stagingDir);
+      try {
+        if (stagingDir !== '' && fs.accessSync(stagingDir)) {
+          fs.rmdirSync(stagingDir);
+        }
+      } catch (e) {
       }
-      if (fs.accessSync(extractDir)) {
-        fs.rmdirSync(extractDir);
+      try {
+        if (fs.accessSync(extractDir)) {
+          fs.rmdirSync(extractDir);
+        }
+      } catch (e) {
       }
     }
   }
 
   private static findPluginRoot(extractDir: string): string {
-    if (fs.accessSync(`${extractDir}/manifest.json`)) {
-      return extractDir;
-    }
-    const names: string[] = fs.listFileSync(extractDir);
-    for (const name of names) {
-      const sub = `${extractDir}/${name}`;
-      const stat = fs.statSync(sub);
-      if (stat.isDirectory() && fs.accessSync(`${sub}/manifest.json`)) {
-        return sub;
+    try {
+      if (fs.accessSync(`${extractDir}/manifest.json`)) {
+        return extractDir;
       }
+      const names: string[] = fs.listFileSync(extractDir);
+      for (const name of names) {
+        const sub = `${extractDir}/${name}`;
+        const stat = fs.statSync(sub);
+        if (stat.isDirectory() && fs.accessSync(`${sub}/manifest.json`)) {
+          return sub;
+        }
+      }
+    } catch (e) {
     }
     throw new Error('plugin_no_manifest');
   }
@@ -601,7 +683,11 @@ export class PluginService {
       return '';
     }
     const p = `${PluginService.pluginsDir}/${manifest.key}/${manifest.icon}`;
-    return fs.accessSync(p) ? `file://${p}` : '';
+    try {
+      return fs.accessSync(p) ? `file://${p}` : '';
+    } catch (e) {
+      return '';
+    }
   }
 
   // 加载/替换插件：卸载旧引擎后重新拉起专属 Worker + 隔离 JSVM_Context。

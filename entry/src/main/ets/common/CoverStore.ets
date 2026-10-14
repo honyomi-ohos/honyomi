@@ -110,20 +110,28 @@ export class CoverStore {
 
   private static ensureDir(context: common.Context): string {
     const dir = `${context.filesDir}/custom_covers`;
-    if (!fs.accessSync(dir)) {
-      fs.mkdirSync(dir, true);
+    try {
+      if (!fs.accessSync(dir)) {
+        fs.mkdirSync(dir, true);
+      }
+    } catch (e) {
+      throw new Error(`ensure cover dir failed: ${e}`);
     }
     return dir;
   }
 
   // 清掉该漫画旧的自定义封面（扩展名可能不同）
   private static purge(dir: string, mangaId: number): void {
-    const prefix = `${mangaId}.`;
-    const names = fs.listFileSync(dir);
-    for (let i = 0; i < names.length; i++) {
-      if (names[i].lastIndexOf(prefix, 0) === 0) {
-        fs.unlinkSync(`${dir}/${names[i]}`);
+    try {
+      const prefix = `${mangaId}.`;
+      const names = fs.listFileSync(dir);
+      for (let i = 0; i < names.length; i++) {
+        if (names[i].lastIndexOf(prefix, 0) === 0) {
+          fs.unlinkSync(`${dir}/${names[i]}`);
+        }
       }
+    } catch (e) {
+      throw new Error(`purge covers failed: ${e}`);
     }
   }
 }

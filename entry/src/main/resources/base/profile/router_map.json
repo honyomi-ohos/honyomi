@@ -16,6 +16,11 @@
       "pageSourceFile": "src/main/ets/pages/NovelReaderPage.ets"
     },
     {
+      "buildFunction": "TtsPlayerBuilder",
+      "name": "TtsPlayer",
+      "pageSourceFile": "src/main/ets/pages/TtsPlayerPage.ets"
+    },
+    {
       "buildFunction": "VideoPlayerBuilder",
       "name": "VideoPlayer",
       "pageSourceFile": "src/main/ets/pages/VideoPlayerPage.ets"

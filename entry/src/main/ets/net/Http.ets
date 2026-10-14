@@ -54,7 +54,12 @@ export class Http {
         connectTimeout: 15000,
         readTimeout: 20000,
       };
-      const resp: http.HttpResponse = await client.request(url, options);
+      let resp: http.HttpResponse;
+      try {
+        resp = await client.request(url, options);
+      } catch (e) {
+        throw new Error(`HTTP POST failed: ${e}`);
+      }
       CookieJar.storeFromResponse(url, resp.header);
       const respBody: string = Http.bodyText(resp.result);
       if (CfChallenge.isCfChallenge(resp.responseCode, respBody, resp.header)) {
@@ -193,7 +198,12 @@ export class Http {
         connectTimeout: 15000,
         readTimeout: 20000,
       };
-      const resp: http.HttpResponse = await client.request(url, options);
+      let resp: http.HttpResponse;
+      try {
+        resp = await client.request(url, options);
+      } catch (e) {
+        throw new Error(`HTTP GET failed: ${e}`);
+      }
       CookieJar.storeFromResponse(url, resp.header);
       const respBody: string = Http.bodyText(resp.result);
       if (CfChallenge.isCfChallenge(resp.responseCode, respBody, resp.header)) {
@@ -219,7 +229,12 @@ export class Http {
         connectTimeout: 15000,
         readTimeout: 60000,
       };
-      const resp: http.HttpResponse = await client.request(url, options);
+      let resp: http.HttpResponse;
+      try {
+        resp = await client.request(url, options);
+      } catch (e) {
+        throw new Error(`HTTP GET failed: ${e}`);
+      }
       CookieJar.storeFromResponse(url, resp.header);
       if (CfChallenge.isCfChallenge(resp.responseCode, '', resp.header)) {
         AppStorage.setOrCreate('cfChallengeUrl', url);

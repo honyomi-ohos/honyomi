@@ -69,7 +69,12 @@ export interface BackupRoot {
 export class BackupService {
   // 校验写入字节数与文本字节长度一致，防止超大备份部分写入
   private static writeTextSync(fd: number, text: string): void {
-    const written: number = fileIo.writeSync(fd, text);
+    let written: number = 0;
+    try {
+      written = fileIo.writeSync(fd, text);
+    } catch (e) {
+      throw new Error(`write backup file failed: ${e}`);
+    }
     const expected: number = util.TextEncoder.create('utf-8').encodeInto(text).length;
     if (written !== expected) {
       throw new Error(`备份写入不完整（${written}/${expected} 字节）`);
@@ -86,11 +91,19 @@ export class BackupService {
     if (uris.length === 0) {
       return false;
     }
-    const file = fileIo.openSync(uris[0], fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE);
+    let file: fileIo.File;
+    try {
+      file = fileIo.openSync(uris[0], fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE);
+    } catch (e) {
+      throw new Error(`open backup file failed: ${e}`);
+    }
     try {
       BackupService.writeTextSync(file.fd, text);
     } finally {
-      fileIo.closeSync(file);
+      try {
+        fileIo.closeSync(file);
+      } catch (e) {
+      }
     }
     return true;
   }
@@ -105,14 +118,19 @@ export class BackupService {
       return -1;
     }
     const cachePath = `${context.cacheDir}/backup_import.json`;
-    if (fileIo.accessSync(cachePath)) {
-      fileIo.unlinkSync(cachePath);
-    }
-    fileIo.copyFileSync(uris[0], cachePath);
-    const text: string = fileIo.readTextSync(cachePath);
-    // 读取完成后立即删除 cache 副本，避免残留
-    if (fileIo.accessSync(cachePath)) {
-      fileIo.unlinkSync(cachePath);
+    let text: string;
+    try {
+      if (fileIo.accessSync(cachePath)) {
+        fileIo.unlinkSync(cachePath);
+      }
+      fileIo.copyFileSync(uris[0], cachePath);
+      text = fileIo.readTextSync(cachePath);
+      // 读取完成后立即删除 cache 副本，避免残留
+      if (fileIo.accessSync(cachePath)) {
+        fileIo.unlinkSync(cachePath);
+      }
+    } catch (e) {
+      throw new Error(`import backup file failed: ${e}`);
     }
     return BackupService.restore(text);
   }
@@ -258,7 +276,11 @@ export class BackupService {
     }
     const store = await AppDb.get();
     // 恢复全程单事务：任一环节失败整体回滚，书架保持恢复前状态
-    store.beginTransaction();
+    try {
+      store.beginTransaction();
+    } catch (e) {
+      throw new Error(`restore backup failed: ${e}`);
+    }
     try {
       // 分类按 name 映射，缺失则补建
       const existing: CategoryRecord[] = await CategoryRepo.list();
@@ -306,7 +328,10 @@ export class BackupService {
       AppStorage.setOrCreate('libDirty', (dirty !== undefined ? dirty : 0) + 1);
       return count;
     } catch (e) {
-      store.rollBack();
+      try {
+        store.rollBack();
+      } catch (e2) {
+      }
       throw new Error(`restore backup failed: ${e}`);
     }
   }
@@ -318,15 +343,27 @@ export class BackupService {
     const root: BackupRoot = await BackupService.buildBackup();
     const text: string = JSON.stringify(root);
     const dir: string = `${context.filesDir}/backups`;
-    if (!fileIo.accessSync(dir)) {
-      fileIo.mkdirSync(dir, true);
+    try {
+      if (!fileIo.accessSync(dir)) {
+        fileIo.mkdirSync(dir, true);
+      }
+    } catch (e) {
+      throw new Error(`create backup dir failed: ${e}`);
     }
     const path: string = `${dir}/honyomi_backup_${Date.now()}.json`;
-    const file = fileIo.openSync(path, fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE);
+    let file: fileIo.File;
+    try {
+      file = fileIo.openSync(path, fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE);
+    } catch (e) {
+      throw new Error(`open backup file failed: ${e}`);
+    }
     try {
       BackupService.writeTextSync(file.fd, text);
     } finally {
-      fileIo.closeSync(file);
+      try {
+        fileIo.closeSync(file);
+      } catch (e) {
+      }
     }
     BackupService.pruneBackups(dir);
     return path;
@@ -355,19 +392,22 @@ export class BackupService {
 
   // 只保留最近 3 份自动备份（文件名含时间戳，字典序即时间序）
   private static pruneBackups(dir: string): void {
-    const names: string[] = fileIo.listFileSync(dir);
-    const backups: string[] = [];
-    for (const name of names) {
-      if (name.indexOf('honyomi_backup_') === 0 && name.indexOf('.json') === name.length - 5) {
-        backups.push(name);
+    try {
+      const names: string[] = fileIo.listFileSync(dir);
+      const backups: string[] = [];
+      for (const name of names) {
+        if (name.indexOf('honyomi_backup_') === 0 && name.indexOf('.json') === name.length - 5) {
+          backups.push(name);
+        }
       }
-    }
-    backups.sort();
-    while (backups.length > 3) {
-      const oldest: string | undefined = backups.shift();
-      if (oldest !== undefined) {
-        fileIo.unlinkSync(`${dir}/${oldest}`);
+      backups.sort();
+      while (backups.length > 3) {
+        const oldest: string | undefined = backups.shift();
+        if (oldest !== undefined) {
+          fileIo.unlinkSync(`${dir}/${oldest}`);
+        }
       }
+    } catch (e) {
     }
   }
 
@@ -396,11 +436,19 @@ export class BackupService {
     if (uris.length === 0) {
       return false;
     }
-    const file = fileIo.openSync(uris[0], fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE);
+    let file: fileIo.File;
+    try {
+      file = fileIo.openSync(uris[0], fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE);
+    } catch (e) {
+      throw new Error(`open csv file failed: ${e}`);
+    }
     try {
       BackupService.writeTextSync(file.fd, text);
     } finally {
-      fileIo.closeSync(file);
+      try {
+        fileIo.closeSync(file);
+      } catch (e) {
+      }
     }
     return true;
   }

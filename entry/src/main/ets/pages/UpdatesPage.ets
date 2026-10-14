@@ -216,32 +216,23 @@ export struct UpdatesPage {
             ForEach(this.items, (item: UpdateItem) => {
               ListItem() {
                 Row({ space: 12 }) {
-                  if (item.coverUrl === '') {
-                    Column() {
-                      AppIcon({ name: 'photo', iconSize: 20 })
-                    }
+                  // 封面（无封面时 SmartImage 内部渲染默认封面占位）；
+                  // UpdateItem 不含 sourceKey，传空串走网络/缓存通用路径
+                  SmartImage({
+                    url: item.coverUrl,
+                    sourceKey: '',
+                    fit: ImageFit.Cover,
+                    placeholderIconSize: 20
+                  })
                     .width(44)
                     .height(60)
                     .borderRadius(6)
                     .backgroundColor(this.pal.chip)
-                    .justifyContent(FlexAlign.Center)
                     // HitTestMode.Block 阻断冒泡：避免同时触发整行 onClick（直接打开阅读器）
                     .hitTestBehavior(HitTestMode.Block)
                     .onClick(() => {
                       this.openDetail(item.mangaId);
                     })
-                  } else {
-                    // UpdateItem 不含 sourceKey，传空串走网络/缓存通用路径
-                    SmartImage({ url: item.coverUrl, sourceKey: '', fit: ImageFit.Cover })
-                      .width(44)
-                      .height(60)
-                      .borderRadius(6)
-                      .backgroundColor(this.pal.chip)
-                      .hitTestBehavior(HitTestMode.Block)
-                      .onClick(() => {
-                        this.openDetail(item.mangaId);
-                      })
-                  }
                   Column() {
                     Text(item.mangaTitle)
                       .fontSize(14)

@@ -1,9 +1,13 @@
 // 封面查看器（对齐 Mihon MangaCoverDialog）：
 // 点击封面进入全屏查看，底部左侧关闭、右侧分享/保存/编辑封面；
-// 支持双击缩放、捏合缩放与平移，点击图片关闭；
-// 兼容 PC/2in1：鼠标拖拽平移（PanGesture 响应鼠标左键）、双击缩放、
+// 缩放/平移实现参考 PicturePreview：读取图片原始宽高按容器适配，
+// matrix4 矩阵缩放 + translate 平移 + 真实边界约束，
+// 捏合缩放以捏合中心为锚点，双击动画缩放/复位；
+// 兼容 PC/2in1：鼠标拖拽平移（PanGesture 响应鼠标左键）、
 // 滚轮缩放与触控板双指捏合（轴事件 onAxisEvent）
 import { common } from '@kit.AbilityKit';
+import { matrix4 } from '@kit.ArkUI';
+import { image } from '@kit.ImageKit';
 import { photoAccessHelper } from '@kit.MediaLibraryKit';
 import { systemShare } from '@kit.ShareKit';
 import { uniformTypeDescriptor as utd } from '@kit.ArkData';
@@ -11,8 +15,11 @@ import { fileIo as fs, fileUri } from '@kit.CoreFileKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { Util } from '../../common/Util';
 import { ImageCache } from '../../common/ImageCache';
-import { SmartImage } from './SmartImage';
 import { AppIcon } from './AppIcon';
+import { CoverPlaceholder } from './CoverPlaceholder';
+
+// 最大缩放倍数（对齐 PicturePreview calcFitScaleRatio 的上限思路，封面场景固定 5x）
+const MAX_ZOOM: number = 5;
 
 @Component
 export struct CoverViewer {
@@ -21,50 +28,247 @@ export struct CoverViewer {
   @Prop isCustom: boolean = false;
   @Prop title: string = '';
   @StorageProp('navBarH') navBarH: number = 0;
-  @State zoom: number = 1;
-  @State panX: number = 0;
-  @State panY: number = 0;
+  // 图片展示：先解析本地路径并读取原始宽高，再按容器适配出实际显示宽高
+  // localPath 为裸沙箱路径（save/share 用），displayPath 为渲染地址：
+  // Image 组件不能直接传入应用沙箱路径，须转为 file:// 沙箱 URI（faqs-arkui-154）
+  @State localPath: string = '';
+  @State displayPath: string = '';
+  @State loadFailed: boolean = false;
+  @State imageWidth: number = 0;
+  @State imageHeight: number = 0;
+  // 缩放/平移状态（参考 PicturePreview ImageModel）
+  @State matrix: matrix4.Matrix4Transit = matrix4.identity().copy();
+  @State curScale: number = 1;
+  @State curOffsetX: number = 0;
+  @State curOffsetY: number = 0;
+  // 已放大时收紧平移触发距离，未放大时放宽，避免抢占捏合/双击
+  @State panDistance: number = 50;
   onClose: () => void = () => {
   };
   onEdit: () => void = () => {
   };
   onDelete: () => void = () => {
   };
-  private pinchStartZoom: number = 1;
-  private panStartX: number = 0;
-  private panStartY: number = 0;
+  private lastScale: number = 1;
+  private lastOffsetX: number = 0;
+  private lastOffsetY: number = 0;
+  private maxOffsetX: number = 0;
+  private minOffsetX: number = 0;
+  private maxOffsetY: number = 0;
+  private minOffsetY: number = 0;
+  private centerX: number = 0.5;
+  private centerY: number = 0.5;
+  private naturalWidth: number = 0;
+  private naturalHeight: number = 0;
+  private componentWidth: number = 0;
+  private componentHeight: number = 0;
   private axisPinchActive: boolean = false;
-  private axisPinchStartZoom: number = 1;
 
-  // ---------------- 缩放与关闭 ----------------
+  aboutToAppear(): void {
+    // 无封面（本地资源等）：跳过解析，直接显示默认封面占位
+    if (this.coverUrl !== '') {
+      this.initImage();
+    }
+  }
+
+  // ---------------- 图片初始化 ----------------
+
+  // 解析本地路径并读取原始宽高（参考 PicturePreview initCurrentImageInfo）
+  private async initImage(): Promise<void> {
+    const context = Util.hostAbilityContext(this.getUIContext());
+    try {
+      const path = await this.ensureLocalPath(context);
+      if (path === '') {
+        // 下载落盘失败：回退原始地址直连显示（与旧 SmartImage 行为一致）
+        this.localPath = '';
+        this.displayPath = this.coverUrl;
+        this.fitImage();
+        return;
+      }
+      this.localPath = path;
+      this.displayPath = path.indexOf('/') === 0 ? `file://${path}` : path;
+      try {
+        const source = image.createImageSource(path);
+        const info = await source.getImageInfo();
+        source.release();
+        this.naturalWidth = info.size.width;
+        this.naturalHeight = info.size.height;
+      } catch (e) {
+        // 读取宽高失败：退化为容器尺寸 + Contain 展示
+        this.naturalWidth = 0;
+        this.naturalHeight = 0;
+      }
+      this.fitImage();
+    } catch (e) {
+      this.loadFailed = true;
+    }
+  }
+
+  // 按容器与图片原始宽高计算适配后的显示尺寸（完整可见）
+  private fitImage(): void {
+    if (this.componentWidth <= 0 || this.componentHeight <= 0) {
+      return;
+    }
+    if (this.naturalWidth <= 0 || this.naturalHeight <= 0) {
+      this.imageWidth = this.componentWidth;
+      this.imageHeight = this.componentHeight;
+      return;
+    }
+    const ratio = Math.min(this.componentWidth / this.naturalWidth, this.componentHeight / this.naturalHeight);
+    this.imageWidth = this.naturalWidth * ratio;
+    this.imageHeight = this.naturalHeight * ratio;
+  }
+
+  // ---------------- 缩放与平移（参考 PicturePreview） ----------------
 
   private closeViewer(): void {
-    this.zoom = 1;
-    this.panX = 0;
-    this.panY = 0;
     this.onClose();
   }
 
-  private resetZoom(): void {
-    this.zoom = 1;
-    this.panX = 0;
-    this.panY = 0;
+  // 通用矩阵缩放（参考 PicturePreview pictureScaling）
+  private pictureScaling(scale: number): void {
+    this.matrix = matrix4.identity().scale({ x: scale, y: scale }).copy();
   }
 
-  // 应用缩放（1x~5x）并同步收拢平移边界；回落到 1x 时复位平移
-  private applyZoom(nextZoom: number): void {
-    this.zoom = Math.min(5, Math.max(1, nextZoom));
-    if (this.zoom <= 1) {
-      this.panX = 0;
-      this.panY = 0;
+  // 偏移复位（参考 PicturePreview offsetReset）
+  private offsetReset(): void {
+    this.curOffsetX = 0;
+    this.curOffsetY = 0;
+    this.lastOffsetX = 0;
+    this.lastOffsetY = 0;
+  }
+
+  // 手势结束：固化当前缩放/偏移（参考 PicturePreview gestureEnd）
+  private gestureEnd(): void {
+    this.lastScale = this.curScale;
+    this.lastOffsetX = this.curOffsetX;
+    this.lastOffsetY = this.curOffsetY;
+    this.panDistance = this.curScale > 1.01 ? 3 : 50;
+  }
+
+  // 计算图片可平移的边界范围（参考 PicturePreview evaluateOffsetRange）
+  private evaluateOffsetRange(): void {
+    const scaledWidth = this.imageWidth * this.curScale;
+    const scaledHeight = this.imageHeight * this.curScale;
+    if (scaledWidth > this.componentWidth) {
+      const limit = (scaledWidth - this.componentWidth) / 2;
+      this.maxOffsetX = limit;
+      this.minOffsetX = -limit;
+    } else {
+      this.maxOffsetX = 0;
+      this.minOffsetX = 0;
+    }
+    if (scaledHeight > this.componentHeight) {
+      const limit = (scaledHeight - this.componentHeight) / 2;
+      this.maxOffsetY = limit;
+      this.minOffsetY = -limit;
+    } else {
+      this.maxOffsetY = 0;
+      this.minOffsetY = 0;
+    }
+  }
+
+  // 平移越界约束：超界夹回边界，图片小于容器时强制居中（参考 PicturePreview pictureBoundaryRestriction）
+  private pictureBoundaryRestriction(): void {
+    if (this.curOffsetX > this.maxOffsetX) {
+      this.curOffsetX = this.maxOffsetX;
+    } else if (this.curOffsetX < this.minOffsetX) {
+      this.curOffsetX = this.minOffsetX;
+    }
+    if (this.curOffsetY > this.maxOffsetY) {
+      this.curOffsetY = this.maxOffsetY;
+    } else if (this.curOffsetY < this.minOffsetY) {
+      this.curOffsetY = this.minOffsetY;
+    }
+    const scaledWidth = this.imageWidth * this.curScale;
+    const scaledHeight = this.imageHeight * this.curScale;
+    if (scaledWidth <= this.componentWidth) {
+      this.curOffsetX = 0;
+    }
+    if (scaledHeight <= this.componentHeight) {
+      this.curOffsetY = 0;
+    }
+  }
+
+  // 计算缩放锚点相对图片的百分比位置（入参为容器内局部坐标，参考 PicturePreview evaluateCenter）
+  private evaluateCenter(posX: number, posY: number): void {
+    const displayWidth = this.imageWidth * this.lastScale;
+    const displayHeight = this.imageHeight * this.lastScale;
+    const imgX = (this.componentWidth - displayWidth) / 2 + this.lastOffsetX;
+    const imgY = (this.componentHeight - displayHeight) / 2 + this.lastOffsetY;
+    const cX = Math.max((posX - imgX) / displayWidth, 0);
+    const cY = Math.max((posY - imgY) / displayHeight, 0);
+    this.centerX = 1 - cX;
+    this.centerY = 1 - cY;
+  }
+
+  // 计算当前偏移与缩放（参考 PicturePreview onScale）：锚点补偿 + 上下限夹取
+  private onScale(scale: number, offX: number, offY: number): void {
+    const next = this.lastScale * scale;
+    if (next > MAX_ZOOM) {
+      this.curScale = MAX_ZOOM;
+    } else if (next < 1) {
+      this.curScale = 1;
+    } else {
+      this.curScale = next;
+    }
+    // 恰好到达上限时略微回退，保证上限附近偏移仍可更新（参考 PicturePreview）
+    if (next >= MAX_ZOOM) {
+      this.curScale = MAX_ZOOM - 0.001;
+    }
+    this.evaluateOffsetRange();
+    this.curOffsetY = (this.lastOffsetY + offY) + (0.5 - this.centerY) * this.imageHeight * (1 - scale) * this.lastScale;
+    this.curOffsetX = (this.lastOffsetX + offX) + (0.5 - this.centerX) * this.imageWidth * (1 - scale) * this.lastScale;
+  }
+
+  // 捏合开始：以双指中点为缩放锚点（参考 PicturePreview pinchGestureStart）
+  private pinchStart(event: GestureEvent): void {
+    const fingers = event.fingerList;
+    if (fingers.length < 2) {
+      this.centerX = 0.5;
+      this.centerY = 0.5;
       return;
     }
-    const limit = 160 * (this.zoom - 1);
-    this.panX = Math.min(limit, Math.max(-limit, this.panX));
-    this.panY = Math.min(limit, Math.max(-limit, this.panY));
+    const midX = ((fingers[0].localX ?? 0) + (fingers[1].localX ?? 0)) / 2;
+    const midY = ((fingers[0].localY ?? 0) + (fingers[1].localY ?? 0)) / 2;
+    this.evaluateCenter(midX, midY);
   }
 
-  // PC/2in1 交互（轴事件）：鼠标滚轮缩放、触控板双指捏合缩放
+  // 捏合结束：低于 1x 动画复位，达到上限略回弹（参考 PicturePreview pinchGestureEnd）
+  private pinchEnd(): void {
+    this.getUIContext().animateTo({ duration: 300, curve: Curve.Smooth }, () => {
+      if (this.curScale <= 1) {
+        this.curScale = 1;
+        this.pictureScaling(1);
+        this.offsetReset();
+      } else if (this.curScale >= MAX_ZOOM) {
+        this.curScale = MAX_ZOOM - 0.1;
+        this.pictureScaling(this.curScale);
+        this.evaluateOffsetRange();
+      }
+      this.gestureEnd();
+    });
+  }
+
+  // 双击：已放大则动画复位，否则动画放大到上限（参考 PicturePreview doubleTapGesture）
+  private doubleTap(): void {
+    const reset = this.lastScale > 1;
+    this.getUIContext().animateTo({ duration: 300, curve: Curve.Smooth }, () => {
+      if (reset) {
+        this.curScale = 1;
+        this.pictureScaling(1);
+        this.offsetReset();
+      } else {
+        this.curScale = MAX_ZOOM - 0.001;
+        this.pictureScaling(this.curScale);
+        this.offsetReset();
+      }
+      this.evaluateOffsetRange();
+      this.gestureEnd();
+    });
+  }
+
+  // PC/2in1 交互（轴事件）：鼠标滚轮缩放、触控板双指捏合缩放（居中锚点）
   private handleAxisEvent(event?: AxisEvent): void {
     if (!event) {
       return;
@@ -72,20 +276,31 @@ export struct CoverViewer {
     if (event.hasAxis(AxisType.PINCH_AXIS)) {
       if (!this.axisPinchActive) {
         this.axisPinchActive = true;
-        this.axisPinchStartZoom = this.zoom;
+        this.gestureEnd();
+        this.centerX = 0.5;
+        this.centerY = 0.5;
       }
       const ratio = event.getPinchAxisScaleValue();
       if (ratio > 0) {
-        this.applyZoom(this.axisPinchStartZoom * ratio);
+        this.onScale(ratio, 0, 0);
+        this.pictureScaling(this.curScale);
+        this.pictureBoundaryRestriction();
       }
       if (event.action === AxisAction.END || event.action === AxisAction.CANCEL) {
         this.axisPinchActive = false;
+        this.gestureEnd();
       }
       return;
     }
     const delta = event.getVerticalAxisValue();
     if (delta !== 0) {
-      this.applyZoom(this.zoom * Math.exp(-delta * 0.005));
+      this.gestureEnd();
+      this.centerX = 0.5;
+      this.centerY = 0.5;
+      this.onScale(Math.exp(-delta * 0.005), 0, 0);
+      this.pictureScaling(this.curScale);
+      this.pictureBoundaryRestriction();
+      this.gestureEnd();
     }
   }
 
@@ -199,6 +414,30 @@ export struct CoverViewer {
     }
   }
 
+  // ---------------- 占位 ----------------
+
+  @Builder
+  loadingPlaceholder() {
+    Column() {
+      LoadingProgress()
+        .width(28)
+        .height(28)
+    }
+    .width('100%')
+    .height('100%')
+    .justifyContent(FlexAlign.Center)
+  }
+
+  @Builder
+  failedPlaceholder() {
+    Column() {
+      AppIcon({ name: 'error', iconSize: 24 })
+    }
+    .width('100%')
+    .height('100%')
+    .justifyContent(FlexAlign.Center)
+  }
+
   // ---------------- 操作栏 ----------------
 
   @Builder
@@ -287,65 +526,75 @@ export struct CoverViewer {
 
   build() {
     Column() {
-      // 图片区域：Contain 展示，双击/捏合缩放，拖拽平移，单击关闭
+      // 图片区域：参考 PicturePreview，按容器适配尺寸，矩阵缩放 + 平移 + 边界约束
       Stack() {
-        SmartImage({ url: this.coverUrl, sourceKey: this.sourceKey, fit: ImageFit.Contain, fill: true })
-          .scale({ x: this.zoom, y: this.zoom })
-          .translate({ x: this.panX, y: this.panY })
+        if (this.coverUrl === '') {
+          // 无封面：默认封面占位（点击仍可关闭）
+          CoverPlaceholder({ iconSize: 56 })
+            .width('100%')
+            .height('100%')
+        } else if (this.displayPath !== '' && !this.loadFailed) {
+          Image(this.displayPath)
+            .width(this.imageWidth)
+            .height(this.imageHeight)
+            .objectFit(ImageFit.Contain)
+            .transform(this.matrix)
+            .translate({ x: this.curOffsetX, y: this.curOffsetY })
+            .onError(() => {
+              this.loadFailed = true;
+            })
+        } else if (this.loadFailed) {
+          this.failedPlaceholder()
+        } else {
+          this.loadingPlaceholder()
+        }
       }
       .width('100%')
       .layoutWeight(1)
-      .gesture(
+      .onAreaChange((_oldValue: Area, newValue: Area) => {
+        const w = newValue.width;
+        const h = newValue.height;
+        if (typeof w === 'number' && typeof h === 'number') {
+          this.componentWidth = w;
+          this.componentHeight = h;
+          this.fitImage();
+        }
+      })
+      .parallelGesture(
         GestureGroup(GestureMode.Exclusive,
+          // 单指平移（含鼠标拖拽）：参考 PicturePreview pan_gesture
+          PanGesture({ fingers: 1, distance: this.panDistance })
+            .onActionUpdate((event: GestureEvent) => {
+              this.onScale(1, event.offsetX, event.offsetY);
+              this.pictureBoundaryRestriction();
+            })
+            .onActionEnd(() => {
+              this.gestureEnd();
+            }),
+          // 双指捏合缩放：以捏合中点为锚点（参考 PicturePreview pinch）
+          PinchGesture({ fingers: 2, distance: 1 })
+            .onActionStart((event: GestureEvent) => {
+              this.pinchStart(event);
+            })
+            .onActionUpdate((event: GestureEvent) => {
+              this.onScale(event.scale, event.offsetX, event.offsetY);
+              this.pictureScaling(this.curScale);
+              this.pictureBoundaryRestriction();
+            })
+            .onActionEnd(() => {
+              this.pinchEnd();
+            }),
+          // 双击动画缩放/复位
           TapGesture({ count: 2 })
             .onAction(() => {
-              if (this.zoom > 1) {
-                this.resetZoom();
-              } else {
-                this.applyZoom(2.5);
-              }
+              this.doubleTap();
             }),
+          // 单击关闭
           TapGesture({ count: 1 })
             .onAction(() => {
               this.closeViewer();
             })
-        )
-      )
-      .gesture(
-        PinchGesture()
-          .onActionStart(() => {
-            this.pinchStartZoom = this.zoom;
-          })
-          .onActionUpdate((event: GestureEvent) => {
-            this.applyZoom(this.pinchStartZoom * event.scale);
-          })
-          .onActionEnd(() => {
-            if (this.zoom < 1.05) {
-              this.resetZoom();
-            }
-          })
-      )
-      .gesture(
-        PanGesture({ fingers: 1 })
-          .onActionStart(() => {
-            this.panStartX = this.panX;
-            this.panStartY = this.panY;
-          })
-          .onActionUpdate((event: GestureEvent) => {
-            if (this.zoom <= 1) {
-              return;
-            }
-            const limit = 160 * (this.zoom - 1);
-            this.panX = Math.min(limit, Math.max(-limit, this.panStartX + event.offsetX));
-            this.panY = Math.min(limit, Math.max(-limit, this.panStartY + event.offsetY));
-          })
-          .onActionEnd(() => {
-            if (this.zoom <= 1) {
-              this.panX = 0;
-              this.panY = 0;
-            }
-          })
-      )
+        ), GestureMask.Normal)
       // PC/2in1：滚轮/触控板捏合缩放
       .onAxisEvent((event?: AxisEvent) => {
         this.handleAxisEvent(event);

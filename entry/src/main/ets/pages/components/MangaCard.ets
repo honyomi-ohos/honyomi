@@ -2,7 +2,6 @@ import { MangaRecord, CategoryRecord } from '../../model/Models';
 import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
 import { SmartImage } from './SmartImage';
-import { AppIcon } from './AppIcon';
 
 // 漫画封面卡片（书架/浏览通用）
 @Component
@@ -18,18 +17,9 @@ export struct MangaCard {
   build() {
     Column() {
       Stack({ alignContent: Alignment.BottomEnd }) {
-        // 封面
+        // 封面（无封面时 SmartImage 内部渲染默认封面占位）
         Stack() {
-          if (this.record.thumbnailUrl === '') {
-            Column() {
-              AppIcon({ name: 'photo', iconSize: 28 })
-            }
-            .width('100%')
-            .height('100%')
-            .justifyContent(FlexAlign.Center)
-          } else {
-            SmartImage({ url: this.record.thumbnailUrl, sourceKey: this.record.sourceKey, fit: ImageFit.Cover, fill: true })
-          }
+          SmartImage({ url: this.record.thumbnailUrl, sourceKey: this.record.sourceKey, fit: ImageFit.Cover, fill: true })
         }
         .width('100%')
         .aspectRatio(0.7)

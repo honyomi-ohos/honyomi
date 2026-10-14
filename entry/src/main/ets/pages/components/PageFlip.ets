@@ -638,7 +638,11 @@ class FlipNodeController extends NodeController {
       this.pageNode.pivot = { x: 0, y: 0 };
       this.pageNode.scale = { x: 1, y: 1 };
       this.pageNode.opacity = 1;
-      render.appendChild(this.pageNode);
+      try {
+        render.appendChild(this.pageNode);
+      } catch (e) {
+        return;
+      }
     }
     this.pageNode.frame = { x: 0, y: 0, width: this.viewWvp, height: this.viewHvp };
     this.pageNode.invalidate();

@@ -200,7 +200,11 @@ export struct StatsPage {
     const res = this.chartMode === 0
       ? $r('app.string.stats_week_total', Util.formatDuration(this.ctx(), total))
       : $r('app.string.stats_month_total', Util.formatDuration(this.ctx(), total));
-    return this.ctx().resourceManager.getStringSync(res.id);
+    try {
+      return this.ctx().resourceManager.getStringSync(res.id);
+    } catch (e) {
+      throw new Error(`chart total text failed: ${e}`);
+    }
   }
 
   @Builder

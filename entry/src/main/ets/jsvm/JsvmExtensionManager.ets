@@ -292,7 +292,11 @@ export class JsvmExtensionManager {
       });
     });
     const initMessage: Record<string, Object> = { 'type': 'init', 'code': seed + code };
-    entry.worker.postMessage(JSON.stringify(initMessage));
+    try {
+      entry.worker.postMessage(JSON.stringify(initMessage));
+    } catch (e) {
+      throw new Error(`post init message failed: ${e}`);
+    }
     return promise;
   }
 
@@ -331,7 +335,11 @@ export class JsvmExtensionManager {
       // 可能写插件偏好的调用才要求 worker dump prefs，其余沿用上次快照
       'prefsDirty': JsvmExtensionManager.prefsWritingMethod(method)
     };
-    entry.worker.postMessage(JSON.stringify(message));
+    try {
+      entry.worker.postMessage(JSON.stringify(message));
+    } catch (e) {
+      throw new Error(`post call message failed: ${e}`);
+    }
     return promise;
   }
 

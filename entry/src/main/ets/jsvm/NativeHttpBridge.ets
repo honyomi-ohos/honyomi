@@ -357,7 +357,13 @@ export class NativeHttpBridge {
       if (body !== '' && method !== http.RequestMethod.GET && method !== http.RequestMethod.HEAD) {
         options.extraData = body;
       }
-      return await client.request(url, options);
+      let resp: http.HttpResponse;
+      try {
+        resp = await client.request(url, options);
+      } catch (e) {
+        throw new Error(`HTTP request failed: ${e}`);
+      }
+      return resp;
     } finally {
       client.destroy();
     }

@@ -3,7 +3,7 @@ import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
 import { SourceRegistry, Source } from '../source/Source';
 import { MangaRecord, SManga, MangasPage } from '../model/Models';
-import { DetailParams } from '../model/RouteParams';
+import { DetailParams, GlobalSearchParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
@@ -66,14 +66,18 @@ export struct GlobalSearchPage {
 
   private sourceTitle(s: Source): string {
     const context = Util.hostAbilityContext(this.getUIContext());
-    if (s.key === 'local') {
-      return context.resourceManager.getStringSync($r('app.string.browse_local_source_name').id);
-    }
-    if (s.key === 'local_novel') {
-      return context.resourceManager.getStringSync($r('app.string.browse_local_novel_name').id);
-    }
-    if (s.key === 'local_video') {
-      return context.resourceManager.getStringSync($r('app.string.browse_local_video_name').id);
+    try {
+      if (s.key === 'local') {
+        return context.resourceManager.getStringSync($r('app.string.browse_local_source_name').id);
+      }
+      if (s.key === 'local_novel') {
+        return context.resourceManager.getStringSync($r('app.string.browse_local_novel_name').id);
+      }
+      if (s.key === 'local_video') {
+        return context.resourceManager.getStringSync($r('app.string.browse_local_video_name').id);
+      }
+    } catch (e) {
+      throw new Error(`source title failed: ${e}`);
     }
     return s.name;
   }
@@ -233,6 +237,13 @@ export struct GlobalSearchPage {
     .backgroundColor(this.pal.bg)
     .onReady((ctx: NavDestinationContext) => {
       this.pathStack = ctx.pathStack;
+      // 详情页跳转携带初始搜索词：进入即自动执行搜索
+      const params = ctx.pathInfo.param as GlobalSearchParams;
+      if (params !== undefined && params !== null && params.query.trim() !== '') {
+        this.query = params.query.trim();
+        this.startSearch().catch((_e: Error) => {
+        });
+      }
     })
   }
 }

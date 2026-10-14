@@ -10,7 +10,8 @@ import { Theme, ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
-import { NovelTts, TtsParaStartHandler, TtsDoneHandler, TtsErrorHandler } from '../common/NovelTts';
+import { TtsPlaybackService, TtsServiceStateHandler, TtsServiceParaHandler, TtsServiceChapterHandler, TtsServiceErrorHandler, TtsServiceFinishHandler } from '../common/TtsPlaybackService';
+import { TtsText } from '../common/TtsText';
 import { ReaderWindow } from '../common/ReaderWindow';
 import { ReaderChapterNav, ChapterNeighbors } from '../common/ReaderChapterNav';
 import { DownloadService } from '../data/DownloadService';
@@ -143,8 +144,6 @@ export struct NovelReaderPage {
   private screenDensity: number = 2;
   // 段落 → 翻页页码映射（buildPages 填充，听书跟随翻页用）
   private paraPage: number[] = [];
-  // 听书自动续播下一章标记
-  private ttsResume: boolean = false;
   // 滚动模式视口宽度（听书跟随滚动测高用）
   private scrollW: number = 0;
   // 滚动模式段落纵向偏移缓存（签名变化时重算）
@@ -190,11 +189,12 @@ export struct NovelReaderPage {
   aboutToDisappear(): void {
     this.destroyed = true;
     this.loadGen += 1;
-    NovelTts.stop();
-    // 退订本实例的回调（不清空全局订阅表，避免影响叠加的其它阅读器实例）
-    NovelTts.events.offParaStart(this.ttsOnParaStart);
-    NovelTts.events.offAllDone(this.ttsOnAllDone);
-    NovelTts.events.offError(this.ttsOnError);
+    // 听书播放与页面生命周期解耦：离开阅读器不停止朗读，仅退订本实例回调
+    TtsPlaybackService.events.offState(this.ttsOnState);
+    TtsPlaybackService.events.offPara(this.ttsOnPara);
+    TtsPlaybackService.events.offChapter(this.ttsOnChapter);
+    TtsPlaybackService.events.offError(this.ttsOnError);
+    TtsPlaybackService.events.offFinish(this.ttsOnFinish);
     this.flushPersist();
     ReadingStatsRepo.flush();
     // 还原窗口方向与亮度
@@ -222,8 +222,10 @@ export struct NovelReaderPage {
     this.screenSource.setItems([]);
     this.pageIdx = 0;
     this.pagSig = '';
-    NovelTts.stop();
-    this.ttsPlaying = false;
+    // 打开其它章节时停止听书；听书服务正在朗读本章（跟随切章/重新进入）不打断
+    if (TtsPlaybackService.currentChapterId() !== this.chapterId) {
+      TtsPlaybackService.stop();
+    }
     this.ttsParaIdx = -1;
     this.paraPage = [];
     this.paraOffSig = '';
@@ -293,7 +295,6 @@ export struct NovelReaderPage {
       ReadingStatsRepo.begin(chapter.mangaId, chapter.id);
     } catch (e) {
       if (gen === this.loadGen) {
-        this.ttsResume = false;
         Util.toastRes(this.getUIContext(), $r('app.string.reader_load_failed'),
           [Util.errText(this.getUIContext(), e instanceof Error ? e.message : String(e))]);
       }
@@ -303,11 +304,8 @@ export struct NovelReaderPage {
     }
     this.loading = false;
     this.ensurePaginated();
-    // 听书自动续播：上一章播完自动加载下一章后从头继续朗读
-    if (this.ttsResume) {
-      this.ttsResume = false;
-      this.startTts(0);
-    }
+    // 听书服务若正在朗读本章（跟随切章/重新进入），同步播放态与朗读高亮
+    this.syncTtsUi();
   }
 
   private async loadNeighbors(): Promise<void> {
@@ -404,87 +402,80 @@ export struct NovelReaderPage {
     this.loadChapter();
   }
 
-  // ---- 听书（系统 TTS）----
+  // ---- 听书（系统 TTS，经 TtsPlaybackService 与页面生命周期解耦）----
 
-  // 订阅模型的稳定回调引用：aboutToAppear 订阅、aboutToDisappear 退订（勿用 resetEvents
-  // 清空全局订阅，以免影响叠加的其它阅读器实例）
-  private readonly ttsOnParaStart: TtsParaStartHandler = (idx: number): void => {
-    this.ttsParaIdx = idx;
-    this.followTtsPara(idx);
-  };
+  // 订阅模型的稳定回调引用：aboutToAppear 订阅、aboutToDisappear 退订
+  private readonly ttsOnState: TtsServiceStateHandler =
+    (_playing: boolean, _paused: boolean, _mangaId: number, _chapterId: number): void => {
+      this.syncTtsUi();
+    };
 
-  private readonly ttsOnAllDone: TtsDoneHandler = (): void => {
-    this.ttsPlaying = false;
-    this.ttsParaIdx = -1;
-    if (this.nextId > 0) {
-      this.ttsResume = true;
-      this.openChapter(this.nextId);
-    } else {
-      Util.toastRes(this.getUIContext(), $r('app.string.novel_tts_finish'));
+  private readonly ttsOnPara: TtsServiceParaHandler =
+    (_mangaId: number, chapterId: number, paraIdx: number): void => {
+      if (chapterId !== this.chapterId) {
+        return;
+      }
+      this.ttsParaIdx = paraIdx;
+      // 章节加载中不跟随（分页/滚动映射仍是旧章内容）
+      if (!this.loading) {
+        this.followTtsPara(paraIdx);
+      }
+    };
+
+  private readonly ttsOnChapter: TtsServiceChapterHandler = (mangaId: number, chapterId: number): void => {
+    if (mangaId !== this.mangaId) {
+      return;
     }
+    if (chapterId === this.chapterId) {
+      this.syncTtsUi();
+      return;
+    }
+    // 听书自动进入下一章：阅读器跟随加载（不打断朗读）
+    this.openChapter(chapterId);
   };
 
-  private readonly ttsOnError: TtsErrorHandler = (message: string): void => {
-    this.ttsPlaying = false;
-    this.ttsParaIdx = -1;
+  private readonly ttsOnError: TtsServiceErrorHandler = (message: string): void => {
     Util.toastRes(this.getUIContext(), $r('app.string.novel_tts_error'),
       [Util.errText(this.getUIContext(), message)]);
+    this.syncTtsUi();
   };
 
-  // 接管 NovelTts 事件：跟随滚动/翻页、播完自动下一章、错误提示
+  private readonly ttsOnFinish: TtsServiceFinishHandler = (): void => {
+    Util.toastRes(this.getUIContext(), $r('app.string.novel_tts_finish'));
+    this.syncTtsUi();
+  };
+
+  // 接管听书服务事件：跟随滚动/翻页、跟随切章、错误/播完提示
   private wireTtsEvents(): void {
-    NovelTts.events.onParaStart(this.ttsOnParaStart);
-    NovelTts.events.onAllDone(this.ttsOnAllDone);
-    NovelTts.events.onError(this.ttsOnError);
+    TtsPlaybackService.events.onState(this.ttsOnState);
+    TtsPlaybackService.events.onPara(this.ttsOnPara);
+    TtsPlaybackService.events.onChapter(this.ttsOnChapter);
+    TtsPlaybackService.events.onError(this.ttsOnError);
+    TtsPlaybackService.events.onFinish(this.ttsOnFinish);
   }
 
-  // 听书文本段落：html 章节剥除标签，纯文本按行拆分
+  // 同步听书 UI：仅当服务正在朗读当前章节时显示播放态
+  private syncTtsUi(): void {
+    this.ttsPlaying = TtsPlaybackService.isPlaying() && TtsPlaybackService.currentChapterId() === this.chapterId;
+    if (!this.ttsPlaying) {
+      this.ttsParaIdx = -1;
+    }
+  }
+
+  // 听书面板模式：playing / paused / idle
+  private ttsPanelMode(): string {
+    if (TtsPlaybackService.isPlaying() && TtsPlaybackService.currentChapterId() === this.chapterId) {
+      return 'playing';
+    }
+    if (TtsPlaybackService.isPaused() && TtsPlaybackService.currentChapterId() === this.chapterId) {
+      return 'paused';
+    }
+    return 'idle';
+  }
+
+  // 听书文本段落：html 章节剥除标签，纯文本按行拆分（与 TtsPlaybackService 共用算法）
   private ttsParas(): string[] {
-    if (this.hasImages) {
-      const out: string[] = [];
-      for (const block of this.blocks) {
-        if (!block.isImage) {
-          out.push(block.text);
-        }
-      }
-      return out;
-    }
-    if (this.html) {
-      const stripped = this.body
-        .replace(/<br\s*\/?>/gi, '\n')
-        .replace(/<\/p>/gi, '\n')
-        .replace(/<[^>]+>/g, '')
-        .replace(/&nbsp;/g, ' ')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        .replace(/&quot;/g, '"')
-        .replace(/&amp;/g, '&');
-      return stripped.split('\n');
-    }
-    return this.body.split('\n');
-  }
-
-  // 按开头若干段采样推断语种（ASCII 过半判英文）
-  private ttsLang(paras: string[]): string {
-    let ascii = 0;
-    let total = 0;
-    const sampleCount = Math.min(paras.length, 40);
-    for (let i = 0; i < sampleCount; i++) {
-      const s = paras[i];
-      for (let j = 0; j < s.length; j++) {
-        const c = s.charCodeAt(j);
-        if (c > 32) {
-          total++;
-          if (c < 128) {
-            ascii++;
-          }
-        }
-      }
-    }
-    if (total > 0 && ascii * 2 > total) {
-      return 'en-US';
-    }
-    return 'zh-CN';
+    return TtsText.chapterParas(this.body);
   }
 
   // 起播段落：翻页/双页取当前页首段；滚动/html 按进度比例估算
@@ -519,7 +510,7 @@ export struct NovelReaderPage {
       return;
     }
     this.ttsPlaying = true;
-    const ok = await NovelTts.start(paras, fromPara, this.ttsLang(paras),
+    const ok = await TtsPlaybackService.start(this.mangaId, this.chapterId, fromPara,
       Util.hostAbilityContext(this.getUIContext()));
     if (!ok) {
       this.ttsPlaying = false;
@@ -530,10 +521,12 @@ export struct NovelReaderPage {
   }
 
   private toggleTts(): void {
-    if (NovelTts.isPlaying()) {
-      NovelTts.stop();
-      this.ttsPlaying = false;
-      this.ttsParaIdx = -1;
+    if (TtsPlaybackService.isPlaying()) {
+      TtsPlaybackService.pause();
+      return;
+    }
+    if (TtsPlaybackService.isPaused() && TtsPlaybackService.currentChapterId() === this.chapterId) {
+      TtsPlaybackService.resume();
       return;
     }
     this.startTts(this.currentTtsPara());
@@ -541,13 +534,7 @@ export struct NovelReaderPage {
 
   private setTtsSpeed(v: number): void {
     this.ttsSpeed = v;
-    Settings.setNovelTtsSpeed(v);
-    // 播放中改语速：从当前朗读段以新语速续播
-    if (NovelTts.isPlaying()) {
-      const from = this.ttsParaIdx >= 0 ? this.ttsParaIdx : NovelTts.currentPara();
-      NovelTts.stop();
-      this.startTts(from);
-    }
+    TtsPlaybackService.setSpeed(v);
   }
 
   // 跟随朗读进度：滚动模式滚到对应段落，翻页/双页翻到对应页
@@ -1709,13 +1696,17 @@ export struct NovelReaderPage {
       })
     } else {
       NovelTtsPanel({
-        ttsPlaying: this.ttsPlaying,
+        mode: this.ttsPanelMode(),
         ttsSpeed: this.ttsSpeed,
         onToggle: (): void => {
           this.toggleTts();
         },
         onSpeed: (v: number): void => {
           this.setTtsSpeed(v);
+        },
+        onOpenPlayer: (): void => {
+          this.showPanelSheet = false;
+          this.pathStack.pushPathByName('TtsPlayer', null);
         }
       })
     }

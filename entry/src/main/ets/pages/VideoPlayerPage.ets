@@ -502,7 +502,11 @@ export struct VideoPlayerPage {
     this.player = undefined;
     this.playing = false;
     if (player !== undefined) {
-      player.release();
+      try {
+        player.release();
+      } catch (e) {
+        this.log(`releasePlayer catch: ${e}`);
+      }
     }
     if (this.mediaFile !== undefined) {
       try {
@@ -717,10 +721,20 @@ export struct VideoPlayerPage {
       return;
     }
     if (this.playing) {
-      player.pause();
+      try {
+        player.pause();
+      } catch (e) {
+        this.log(`togglePlay pause catch: ${e}`);
+        return;
+      }
       this.persist(false);
     } else {
-      player.play();
+      try {
+        player.play();
+      } catch (e) {
+        this.log(`togglePlay play catch: ${e}`);
+        return;
+      }
       this.armAutoHide();
     }
     this.armAutoHide();

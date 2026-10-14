@@ -1,4 +1,5 @@
 import { common } from '@kit.AbilityKit';
+import { fileIo as fs } from '@kit.CoreFileKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { curves, AnimatorResult, AnimatorOptions } from '@kit.ArkUI';
 import { webview } from '@kit.ArkWeb';
@@ -9,8 +10,10 @@ import { Settings } from '../common/Settings';
 import { UpdateService } from '../data/UpdateService';
 import { AppDb } from '../data/AppDb';
 import { PluginService } from '../data/PluginService';
+import { MangaRepo } from '../data/Repos';
 import { Util } from '../common/Util';
 import { CookieJar } from '../net/CookieJar';
+import { CoverStore } from '../common/CoverStore';
 import { LibraryPage } from './LibraryPage';
 import { UpdatesPage } from './UpdatesPage';
 import { HistoryPage } from './HistoryPage';
@@ -19,8 +22,10 @@ import { MorePage } from './MorePage';
 import { ContentOpen } from './ContentOpen';
 import { AppIcon } from './components/AppIcon';
 import { CfVerifySheet } from './components/CfVerifySheet';
+import { TtsMiniBar } from './components/novel/TtsMiniBar';
 import { UPDATES_MORPH, LIBRARY_MORPH, BROWSE_MORPH, PathMorph } from './components/PathMorph';
 import { DetailParams, OnboardingParams } from '../model/RouteParams';
+import { MangaRecord } from '../model/Models';
 
 // 桌面卡片 router 事件载荷（由 EntryAbility.handleCardWant 写入 AppStorage）
 interface CardActionPayload {
@@ -122,7 +127,11 @@ struct TabIcon {
       begin: this.morphT,
       end: target
     };
-    an.reset(opts);
+    try {
+      an.reset(opts);
+    } catch (e) {
+      return;
+    }
     an.onFrame = (value: number): void => {
       this.morphT = value;
     };
@@ -453,6 +462,40 @@ struct Index {
       // 加载失败不阻塞主界面
     }
     PluginService.markDirty();
+    // 插件注册完成后回填书架持久化封面（旧条目/封面变更/文件缺失）
+    this.backfillLibraryCovers();
+  }
+
+  // 回填书架持久化封面：localCover 缺失、文件被清或源封面已变更时重新持久化；
+  // 逐条串行落盘（下载+AVIF→JPEG 转码），完成后统一写 libDirty 刷新书架
+  private async backfillLibraryCovers(): Promise<void> {
+    try {
+      const context = Util.hostAbilityContext(this.getUIContext());
+      await AppDb.ready(context);
+      const list: MangaRecord[] = await MangaRepo.getLibrary();
+      let changed = 0;
+      for (const m of list) {
+        const url = m.origThumbnail !== '' ? m.origThumbnail : m.thumbnailUrl;
+        if (url.indexOf('http://') !== 0 && url.indexOf('https://') !== 0) {
+          continue;
+        }
+        const stale = m.localCover === '' || !fs.accessSync(m.localCover) || m.localCoverUrl !== url;
+        if (!stale) {
+          continue;
+        }
+        const path = await CoverStore.persistFromUrl(context, m.id, url, m.sourceKey);
+        if (path !== '') {
+          await MangaRepo.setLocalCover(m.id, path, url);
+          changed++;
+        }
+      }
+      if (changed > 0) {
+        AppStorage.set('libDirty', (AppStorage.get<number>('libDirty') ?? 0) + 1);
+        hilog.info(0x0001, 'Index', 'backfill covers done: %{public}d', changed);
+      }
+    } catch (e) {
+      hilog.warn(0x0001, 'Index', 'backfill covers failed: %{public}s', `${e}`);
+    }
   }
 
   // 静默自动刷新：距上次刷新超过 12 小时才触发
@@ -664,6 +707,12 @@ struct Index {
         .width('100%')
         .height('100%')
         }
+        // 听书迷你条层：听书进行中悬浮于底部页签上方（空区域不拦截触摸）
+        Stack({ alignContent: Alignment.Bottom }) {
+          TtsMiniBar({ navBarH: this.navBarH })
+        }
+        .width('100%')
+        .height('100%')
       }
       .width('100%')
       .height('100%')

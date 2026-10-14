@@ -35,7 +35,13 @@ export abstract class LocalFsSource implements Source {
   protected abstract mangaDescription(): string;
 
   protected rootDir(): string {
-    if (fs.accessSync(this.syncRoot)) {
+    let synced = false;
+    try {
+      synced = fs.accessSync(this.syncRoot);
+    } catch (e) {
+      synced = false;
+    }
+    if (synced) {
       return `${this.syncRoot}/${this.syncSubDir()}`;
     }
     return this.legacyDir;
@@ -97,17 +103,28 @@ export abstract class LocalFsSource implements Source {
 
   // 仅列出含指定类型内容文件的目录（本地源文件夹内其他类型自动排除）
   protected listDirs(): string[] {
-    if (!fs.accessSync(this.rootDir())) {
+    let entries: string[] = [];
+    try {
+      if (!fs.accessSync(this.rootDir())) {
+        return [];
+      }
+      entries = fs.listFileSync(this.rootDir());
+    } catch (e) {
       return [];
     }
     const names: string[] = [];
-    const entries = fs.listFileSync(this.rootDir());
     for (const entry of entries) {
       if (entry.startsWith('.')) {
         continue;
       }
       const fullPath = `${this.rootDir()}/${entry}`;
-      if (fs.statSync(fullPath).isDirectory() &&
+      let isDir = false;
+      try {
+        isDir = fs.statSync(fullPath).isDirectory();
+      } catch (e) {
+        continue;
+      }
+      if (isDir &&
         LocalFolderManager.hasFileWithExts(fullPath, this.contentExts())) {
         names.push(entry);
       }
@@ -177,14 +194,25 @@ export abstract class LocalFsSource implements Source {
   // 递归收集扩展名匹配的文件相对路径（含卷级子目录），每层按自然顺序排序
   // （阿拉伯数字与中文数字均按数值比较，"第十章"排在"第二章"之后）
   protected collectEntriesByExts(dir: string, prefix: string, out: string[], exts: string[]): void {
-    if (!fs.accessSync(dir)) {
+    let entries: string[] = [];
+    try {
+      if (!fs.accessSync(dir)) {
+        return;
+      }
+      entries = fs.listFileSync(dir).sort((a: string, b: string): number => NaturalCompare.compare(a, b));
+    } catch (e) {
       return;
     }
-    const entries = fs.listFileSync(dir).sort((a: string, b: string): number => NaturalCompare.compare(a, b));
     for (const entry of entries) {
       const rel = prefix === '' ? entry : `${prefix}/${entry}`;
       const fullPath = `${dir}/${entry}`;
-      if (fs.statSync(fullPath).isDirectory()) {
+      let isDir = false;
+      try {
+        isDir = fs.statSync(fullPath).isDirectory();
+      } catch (e) {
+        continue;
+      }
+      if (isDir) {
         this.collectEntriesByExts(fullPath, rel, out, exts);
       } else if (this.hasExt(entry, exts)) {
         out.push(rel);
@@ -203,6 +231,10 @@ export abstract class LocalFsSource implements Source {
   }
 
   protected fileExists(path: string): boolean {
-    return fs.accessSync(path);
+    try {
+      return fs.accessSync(path);
+    } catch (e) {
+      return false;
+    }
   }
 }
