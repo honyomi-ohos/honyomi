@@ -52,13 +52,18 @@ export class MigrateSourceCount {
   name: string = '';
   lang: string = '';
   count: number = 0;
+  iconPath: string = '';
+  contentType: string = '';
 
-  static of(key: string, name: string, lang: string, count: number): MigrateSourceCount {
+  static of(key: string, name: string, lang: string, count: number,
+    iconPath: string = '', contentType: string = ''): MigrateSourceCount {
     const m = new MigrateSourceCount();
     m.key = key;
     m.name = name;
     m.lang = lang;
     m.count = count;
+    m.iconPath = iconPath;
+    m.contentType = contentType;
     return m;
   }
 }
@@ -521,7 +526,7 @@ export struct BrowsePage {
       for (const s of SourceRegistry.all()) {
         const c: number | undefined = counts[s.key];
         if (c !== undefined && c > 0) {
-          items.push(MigrateSourceCount.of(s.key, this.sourceNameText(s), s.lang, c));
+          items.push(MigrateSourceCount.of(s.key, this.sourceNameText(s), s.lang, c, s.iconPath, s.contentType));
         }
       }
       this.migrateItems = this.sortMigrate(items);
@@ -731,15 +736,14 @@ export struct BrowsePage {
           Column() {
             ForEach(this.migrateItems, (item: MigrateSourceCount) => {
               Row() {
-                Text(item.name.substring(0, 1).toUpperCase())
-                  .fontSize(16)
-                  .fontWeight(FontWeight.Bold)
-                  .fontColor('#FFFFFF')
-                  .textAlign(TextAlign.Center)
-                  .width(40)
-                  .height(40)
-                  .borderRadius(20)
-                  .backgroundColor(this.pal.primary)
+                TypeBadgedIcon({
+                  iconPath: item.iconPath,
+                  fallbackChar: item.name.substring(0, 1).toUpperCase(),
+                  iconSize: 40,
+                  cornerRadius: 20,
+                  contentType: item.contentType,
+                  badgeBorder: this.pal.bg,
+                })
                 Column() {
                   Text(item.name)
                     .fontSize(15)
@@ -767,7 +771,7 @@ export struct BrowsePage {
               .onClick(() => {
                 this.openMigrateSource(item);
               })
-            }, (item: MigrateSourceCount) => `mig-${item.key}-${item.count}`)
+            }, (item: MigrateSourceCount) => `mig-${item.key}-${item.count}-${item.iconPath}-${item.contentType}`)
           }
           .width('100%')
           .padding({ left: 16, right: 16, bottom: 16 })

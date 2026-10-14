@@ -10,7 +10,6 @@ import { OnboardingParams } from '../../model/RouteParams';
 // 高级设置内容：新手引导 / Cookie / AniList（备份、章节缓存清理已移至「数据与存储」）
 @Component
 export struct AdvancedContent {
-  @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State tokenLabel: string = '';
   // 打开新手引导（由宿主注入导航；lg 双栏与窄屏壳均 push Onboarding 路由）

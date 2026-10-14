@@ -1,5 +1,6 @@
 import { CategoryRecord } from '../../model/Models';
 import { ThemePalette } from '../../common/Theme';
+import { Util } from '../../common/Util';
 
 // 文本输入弹窗（新建分类 / 导入漫画命名）
 @CustomDialog
@@ -83,7 +84,7 @@ export struct CategoryDialog {
         .fontColor(this.pal.text)
         .margin({ bottom: 8 })
       ForEach(this.categories, (cat: CategoryRecord) => {
-        Text(cat.name)
+        Text(Util.categoryLabel(cat.name))
           .fontSize(15)
           .fontColor(this.pal.text)
           .width('100%')

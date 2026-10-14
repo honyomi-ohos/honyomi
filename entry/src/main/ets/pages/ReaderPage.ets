@@ -1,4 +1,3 @@
-import { common } from '@kit.AbilityKit';
 import { motion } from '@kit.MultimodalAwarenessKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppDb } from '../data/AppDb';
@@ -17,15 +16,20 @@ import { ReaderChapterNav, ChapterNeighbors } from '../common/ReaderChapterNav';
 import { DownloadService } from '../data/DownloadService';
 import { SmartImage } from './components/SmartImage';
 import { ComicStripViewer } from './components/ComicStripViewer';
-import { AppIconRes, AppIcon } from './components/AppIcon';
 import { SwitchRow, TextRow } from './components/Prefs';
 import { PickerSheet } from './components/PickerSheet';
 import { EmulationFlipView } from './components/PageFlip';
-
-// 屏幕旋转的可选值（与下方 sheet 选项一一对应）
-const READER_ORIENTATIONS: string[] = ['free', 'portrait', 'landscape', 'lock_portrait', 'lock_landscape'];
-const READER_ORIENTATION_ICONS: string[] =
-  ['screen_rotation', 'stay_current_portrait', 'stay_current_landscape', 'screen_lock_portrait', 'screen_lock_landscape'];
+import {
+  READER_ORIENTATIONS,
+  ReaderMenu,
+  ReaderBottomBar,
+  ReaderNavRow,
+  ReaderPagePill,
+  ReaderMenuIconButton,
+  ReaderIndicatorBadge,
+  ReaderOrientationSheet,
+  ReaderFilterArea
+} from './components/ReaderChrome';
 
 // LazyForEach 数据源
 class PageDataSource implements IDataSource {
@@ -270,7 +274,7 @@ export struct ReaderPage {
       } else {
         const source = SourceRegistry.get(this.manga.sourceKey);
         if (source === undefined) {
-          throw new Error('源不可用');
+          throw new Error('source_unavailable');
         }
         pages = await source.getPageList(chapter.url);
       }
@@ -298,7 +302,7 @@ export struct ReaderPage {
       if (gen === this.loadGen) {
         this.pages = [];
         Util.toastRes(this.getUIContext(), $r('app.string.reader_load_failed'),
-          [e instanceof Error ? e.message : String(e)]);
+          [Util.errText(this.getUIContext(), e instanceof Error ? e.message : String(e))]);
       }
     }
     if (gen !== this.loadGen) {
@@ -313,19 +317,11 @@ export struct ReaderPage {
     this.hasNext = n.hasNext;
   }
 
-  private static zeros(n: number): number[] {
-    const arr: number[] = [];
-    for (let i = 0; i < n; i++) {
-      arr.push(0);
-    }
-    return arr;
-  }
-
   // 根据模式构建展示页序并恢复进度
   private applyMode(scrollToResume: boolean): void {
-    this.coverX = ReaderPage.zeros(this.pages.length);
-    this.coverY = ReaderPage.zeros(this.pages.length);
-    this.coverZ = ReaderPage.zeros(this.pages.length);
+    this.coverX = Util.zeros(this.pages.length);
+    this.coverY = Util.zeros(this.pages.length);
+    this.coverZ = Util.zeros(this.pages.length);
     if (this.mode === 'rtl') {
       this.dataSource.setPages(this.pages.slice().reverse());
       this.displayIndex = this.pages.length - 1 - this.currentReal;
@@ -463,20 +459,13 @@ export struct ReaderPage {
 
   @Builder
   orientationSheetBuilder() {
-    PickerSheet({
-      options: [$r('app.string.reader_orientation_free'), $r('app.string.reader_orientation_portrait'),
-        $r('app.string.reader_orientation_landscape'), $r('app.string.reader_orientation_lock_portrait'),
-        $r('app.string.reader_orientation_lock_landscape')],
-      icons: READER_ORIENTATION_ICONS,
-      selectedIndex: READER_ORIENTATIONS.indexOf(this.orientation),
-      onPick: (index: number): void => {
+    ReaderOrientationSheet({
+      selected: this.orientation,
+      onPick: (v: string): void => {
         this.showOrientationSheet = false;
-        const v: string | undefined = READER_ORIENTATIONS[index];
-        if (v !== undefined) {
-          this.orientation = v;
-          Settings.setReaderOrientation(v);
-          this.applyOrientation();
-        }
+        this.orientation = v;
+        Settings.setReaderOrientation(v);
+        this.applyOrientation();
       }
     })
   }
@@ -699,9 +688,9 @@ export struct ReaderPage {
     }
     this.pageAnim = v;
     Settings.setReaderPageAnim(v);
-    this.coverX = ReaderPage.zeros(this.pages.length);
-    this.coverY = ReaderPage.zeros(this.pages.length);
-    this.coverZ = ReaderPage.zeros(this.pages.length);
+    this.coverX = Util.zeros(this.pages.length);
+    this.coverY = Util.zeros(this.pages.length);
+    this.coverZ = Util.zeros(this.pages.length);
   }
 
   private coverAt(arr: number[], index: number): number {

@@ -25,7 +25,8 @@ export struct MigrateMangaPage {
 
   sourceName(): string {
     const source: Source | undefined = SourceRegistry.get(this.sourceKey);
-    return source !== undefined ? source.name : this.sourceKey;
+    return source !== undefined ?
+      Util.localSourceName(this.getUIContext(), source.key, source.name) : this.sourceKey;
   }
 
   private async load(): Promise<void> {

@@ -16,6 +16,19 @@ const PREFS_NAME = 'widget_forms';
 const PREFS_KEY = 'forms';
 const PREFS_KEY_PENDING = 'pending_manga';
 const ROW_COUNT = 3;
+// refreshAll 总超时（毫秒）：超时后不再阻塞调用方，余下卡片在后台继续推送
+const REFRESH_ALL_TIMEOUT_MS: number = 8000;
+
+// forms 注册表写操作串行化：UIAbility 与 FormExtensionAbility 可能并发
+// 读-改-写同一 preferences，模块级 Promise 链保证写操作互斥，避免丢失更新
+let formChain: Promise<void> = Promise.resolve();
+
+function runSerialFormOp<T>(op: () => Promise<T>): Promise<T> {
+  const run: Promise<T> = formChain.then((): Promise<T> => op());
+  // 无论成功失败都续链，避免一次失败卡死后续写操作
+  formChain = run.then((): void => {}, (_e: Error): void => {});
+  return run;
+}
 
 // 桌面卡片实例信息（持久化到 preferences，供应用侧主动刷新）
 export class CardFormInfo {
@@ -36,30 +49,34 @@ export class MangaCardData {
 // - onAddForm 同步返回默认数据后异步补数据；应用退后台/书架刷新后 refreshAll 推送最新内容
 export class WidgetUpdater {
   static async saveForm(context: common.Context, info: CardFormInfo): Promise<void> {
-    const forms = await WidgetUpdater.loadForms(context);
-    let found = false;
-    for (let i = 0; i < forms.length; i++) {
-      if (forms[i].formId === info.formId) {
-        forms[i] = info;
-        found = true;
-        break;
+    await runSerialFormOp(async (): Promise<void> => {
+      const forms = await WidgetUpdater.loadForms(context);
+      let found = false;
+      for (let i = 0; i < forms.length; i++) {
+        if (forms[i].formId === info.formId) {
+          forms[i] = info;
+          found = true;
+          break;
+        }
       }
-    }
-    if (!found) {
-      forms.push(info);
-    }
-    await WidgetUpdater.writeForms(context, forms);
+      if (!found) {
+        forms.push(info);
+      }
+      await WidgetUpdater.writeForms(context, forms);
+    });
   }
 
   static async removeForm(context: common.Context, formId: string): Promise<void> {
-    const forms = await WidgetUpdater.loadForms(context);
-    const filtered: CardFormInfo[] = [];
-    for (let i = 0; i < forms.length; i++) {
-      if (forms[i].formId !== formId) {
-        filtered.push(forms[i]);
+    await runSerialFormOp(async (): Promise<void> => {
+      const forms = await WidgetUpdater.loadForms(context);
+      const filtered: CardFormInfo[] = [];
+      for (let i = 0; i < forms.length; i++) {
+        if (forms[i].formId !== formId) {
+          filtered.push(forms[i]);
+        }
       }
-    }
-    await WidgetUpdater.writeForms(context, filtered);
+      await WidgetUpdater.writeForms(context, filtered);
+    });
   }
 
   static async loadForms(context: common.Context): Promise<CardFormInfo[]> {
@@ -79,9 +96,17 @@ export class WidgetUpdater {
       const list = JSON.parse(raw) as CardFormInfo[];
       const forms: CardFormInfo[] = [];
       for (let i = 0; i < list.length; i++) {
-        if (list[i].formId !== undefined && list[i].name !== undefined) {
-          forms.push(list[i]);
+        const f = list[i];
+        // 逐字段规范化：旧记录可能缺字段/类型漂移（mangaId 为 undefined 而非 0 等）
+        if (typeof f.formId !== 'string' || f.formId === '') {
+          continue;
         }
+        const info = new CardFormInfo();
+        info.formId = f.formId;
+        info.name = typeof f.name === 'string' ? f.name : '';
+        info.wide = f.wide === true;
+        info.mangaId = Number(f.mangaId) || 0;
+        forms.push(info);
       }
       return forms;
     } catch (_e) {
@@ -99,26 +124,30 @@ export class WidgetUpdater {
   // 详情页发起 requestPublishForm 前写入 mangaId；onAddForm 必读必清（系统可能不转发自定义 want 参数）
 
   static async setPendingManga(context: common.Context, mangaId: number): Promise<void> {
-    const prefs = await preferences.getPreferences(context, { name: PREFS_NAME });
-    await prefs.put(PREFS_KEY_PENDING, `${mangaId}`);
-    await prefs.flush();
+    await runSerialFormOp(async (): Promise<void> => {
+      const prefs = await preferences.getPreferences(context, { name: PREFS_NAME });
+      await prefs.put(PREFS_KEY_PENDING, `${mangaId}`);
+      await prefs.flush();
+    });
   }
 
   // 读取并清除 pending mangaId；无则返回 0
   static async takePendingManga(context: common.Context): Promise<number> {
-    const prefs = await preferences.getPreferences(context, { name: PREFS_NAME });
-    const has = await prefs.has(PREFS_KEY_PENDING);
-    if (!has) {
-      return 0;
-    }
-    const raw = await prefs.get(PREFS_KEY_PENDING, '');
-    await prefs.delete(PREFS_KEY_PENDING);
-    await prefs.flush();
-    if (typeof raw !== 'string' || raw === '') {
-      return 0;
-    }
-    const id = Number(raw);
-    return id > 0 ? Math.floor(id) : 0;
+    return await runSerialFormOp(async (): Promise<number> => {
+      const prefs = await preferences.getPreferences(context, { name: PREFS_NAME });
+      const has = await prefs.has(PREFS_KEY_PENDING);
+      if (!has) {
+        return 0;
+      }
+      const raw = await prefs.get(PREFS_KEY_PENDING, '');
+      await prefs.delete(PREFS_KEY_PENDING);
+      await prefs.flush();
+      if (typeof raw !== 'string' || raw === '') {
+        return 0;
+      }
+      const id = Number(raw);
+      return id > 0 ? Math.floor(id) : 0;
+    });
   }
 
   // 刷新单个卡片（按表单名分发；漫画卡片需在 updateForm 完成后关闭封面 fd）
@@ -142,12 +171,25 @@ export class WidgetUpdater {
     }
   }
 
-  // 刷新全部已注册卡片（应用退后台 / 书架刷新完成后调用）
+  // 刷新全部已注册卡片（应用退后台 / 书架刷新完成后调用）；
+  // 8 秒总超时保护：超时后调用方继续执行，余下卡片在后台继续推送
   static async refreshAll(context: common.Context): Promise<void> {
     const forms = await WidgetUpdater.loadForms(context);
-    for (let i = 0; i < forms.length; i++) {
-      await WidgetUpdater.refreshOne(context, forms[i]);
+    if (forms.length === 0) {
+      return;
     }
+    const total: Promise<void> = (async (): Promise<void> => {
+      for (let i = 0; i < forms.length; i++) {
+        await WidgetUpdater.refreshOne(context, forms[i]);
+      }
+    })();
+    const timeout: Promise<void> = new Promise<void>((resolve: () => void) => {
+      setTimeout((): void => {
+        resolve();
+      }, REFRESH_ALL_TIMEOUT_MS);
+    });
+    const racers: Array<Promise<void>> = [total, timeout];
+    await Promise.race(racers);
   }
 
   // ---------------- 漫画卡片 ----------------
@@ -165,7 +207,14 @@ export class WidgetUpdater {
         info.mangaId = last.mangaId;
       }
     }
-    await WidgetUpdater.saveForm(context, info);
+    try {
+      await WidgetUpdater.saveForm(context, info);
+    } catch (e) {
+      // 注册表保存失败不阻断内容推送：卡片本次仍可显示，
+      // 但注册表缺失该条目，后续主动刷新（refreshAll/onUpdateForm）将无法覆盖此卡片
+      hilog.warn(DOMAIN, TAG,
+        'saveForm failed: form registry missing but card content still pushed: %{public}s', `${e}`);
+    }
     await WidgetUpdater.refreshOne(context, info);
   }
 
@@ -347,7 +396,18 @@ export class WidgetUpdater {
     return list;
   }
 
-  // 语言无关的紧凑时间：当天 HH:mm，同年 MM-dd，跨年 YYYY-MM-dd
+  // 按系统语言格式化的短日期（月-日）/ 全日期（年-月-日），替代硬编码 MM-dd / yyyy-MM-dd
+  private static formatShortDate(d: Date): string {
+    const fmt = new Intl.DateTimeFormat(undefined, { month: '2-digit', day: '2-digit' });
+    return fmt.format(d);
+  }
+
+  private static formatFullDate(d: Date): string {
+    const fmt = new Intl.DateTimeFormat(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' });
+    return fmt.format(d);
+  }
+
+  // 语言无关的紧凑时间：当天 HH:mm，同年/跨年按系统语言经 Intl 格式化日期
   private static timeText(ms: number): string {
     if (ms <= 0) {
       return '';
@@ -361,9 +421,9 @@ export class WidgetUpdater {
       return `${pad(d.getHours())}:${pad(d.getMinutes())}`;
     }
     if (d.getFullYear() === now.getFullYear()) {
-      return `${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+      return WidgetUpdater.formatShortDate(d);
     }
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    return WidgetUpdater.formatFullDate(d);
   }
 
   // 即将推出日期文本（与页面 relativeDate 一致）：今天 / N 天前 / N 天后 / 同年 MM-dd / 跨年 YYYY-MM-dd
@@ -384,11 +444,10 @@ export class WidgetUpdater {
     }
     const d: Date = new Date(ms);
     const now: Date = new Date();
-    const pad = (n: number): string => n < 10 ? `0${n}` : `${n}`;
     if (d.getFullYear() === now.getFullYear()) {
-      return `${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+      return WidgetUpdater.formatShortDate(d);
     }
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    return WidgetUpdater.formatFullDate(d);
   }
 
   // 行首徽标字符：标题首字符（拉丁转大写）

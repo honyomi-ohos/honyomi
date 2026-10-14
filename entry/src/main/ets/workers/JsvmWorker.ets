@@ -98,13 +98,13 @@ function handleInit(req: WorkerRequest): void {
     console.info('[JsvmWorker] init start');
     engineId = jsvmEngine.createEngine();
     if (engineId < 0) {
-      ready(false, '', 'JSVM 引擎创建失败');
+      ready(false, '', 'engine_create_failed');
       return;
     }
     const envelopeJson = jsvmEngine.runScript(engineId, req.code ?? '');
     const envelope = JSON.parse(envelopeJson) as CallEnvelope;
     if (envelope.ok !== true) {
-      const error = envelope.error ?? '插件脚本执行失败';
+      const error = envelope.error ?? 'script_failed';
       jsvmEngine.destroyEngine(engineId);
       engineId = -1;
       ready(false, '', error);

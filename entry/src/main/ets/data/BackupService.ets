@@ -164,6 +164,42 @@ export class BackupService {
     return root;
   }
 
+  // 旧备份分类名（中文历史值）→ 内容类型 code；新备份/自建分类原样
+  private static mapCategoryName(name: string): string {
+    if (name === '漫画' || name === '默认') {
+      return 'manga';
+    }
+    if (name === '小说') {
+      return 'novel';
+    }
+    if (name === '动画') {
+      return 'video';
+    }
+    return name;
+  }
+
+  // 旧备份连载状态（中文历史值）→ 状态 code；其余原样
+  private static mapStatus(status: string): string {
+    switch (status) {
+      case '连载中':
+        return 'ongoing';
+      case '已完结':
+        return 'completed';
+      case '已授权':
+        return 'licensed';
+      case '出版完毕':
+        return 'publication_complete';
+      case '已取消':
+        return 'cancelled';
+      case '休刊':
+        return 'hiatus';
+      case '未知':
+        return 'unknown';
+      default:
+        return status;
+    }
+  }
+
   // 返回恢复的漫画数；-1 表示未选择文件；-2 表示解析失败
   private static async restore(text: string): Promise<number> {
     let raw: RawBackupRoot;
@@ -180,7 +216,7 @@ export class BackupService {
     const categories: string[] = [];
     for (const item of raw.categories) {
       if (typeof item === 'string' && item !== '') {
-        categories.push(item);
+        categories.push(BackupService.mapCategoryName(item));
       }
     }
     const mangaList: BackupManga[] = [];
@@ -212,7 +248,7 @@ export class BackupService {
         author: typeof rm.author === 'string' ? rm.author : '',
         description: typeof rm.description === 'string' ? rm.description : '',
         genre: typeof rm.genre === 'string' ? rm.genre : '',
-        status: typeof rm.status === 'string' ? rm.status : '',
+        status: typeof rm.status === 'string' ? BackupService.mapStatus(rm.status) : '',
         category: typeof rm.category === 'string' && rm.category !== '' ? rm.category :
           ContentType.categoryName(typeof rm.contentType === 'string' ? rm.contentType : ContentType.MANGA),
         contentType: typeof rm.contentType === 'string' ? rm.contentType : 'manga',

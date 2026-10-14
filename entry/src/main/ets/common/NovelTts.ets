@@ -8,14 +8,73 @@ import { Settings } from './Settings';
 // 后台长任务申请/撤销串行化队列（Promise 链）：消除申请-撤销交错时序下的长任务残留
 let taskChain: Promise<void> = Promise.resolve();
 
-// 听书事件回调集合（页面在 aboutToAppear 中接管，aboutToDisappear 中复位）
+// 听书事件回调签名
+export type TtsParaStartHandler = (paraIdx: number) => void;
+export type TtsDoneHandler = () => void;
+export type TtsErrorHandler = (message: string) => void;
+
+// 听书事件订阅表（订阅列表模型）：多个阅读器实例可同时订阅、互不覆盖，
+// 叠入第二个实例不再清除前实例回调，销毁实例退订自己的回调不影响存活实例。
+// 消费端在 aboutToAppear 中 on 订阅、aboutToDisappear 中 off 退订。
 export class TtsEvents {
-  onParaStart: (paraIdx: number) => void = (_paraIdx: number): void => {
-  };
-  onAllDone: () => void = (): void => {
-  };
-  onError: (message: string) => void = (_message: string): void => {
-  };
+  private paraStartHandlers: TtsParaStartHandler[] = [];
+  private allDoneHandlers: TtsDoneHandler[] = [];
+  private errorHandlers: TtsErrorHandler[] = [];
+
+  onParaStart(handler: TtsParaStartHandler): void {
+    this.paraStartHandlers.push(handler);
+  }
+
+  offParaStart(handler: TtsParaStartHandler): void {
+    this.paraStartHandlers =
+      this.paraStartHandlers.filter((h: TtsParaStartHandler): boolean => h !== handler);
+  }
+
+  onAllDone(handler: TtsDoneHandler): void {
+    this.allDoneHandlers.push(handler);
+  }
+
+  offAllDone(handler: TtsDoneHandler): void {
+    this.allDoneHandlers = this.allDoneHandlers.filter((h: TtsDoneHandler): boolean => h !== handler);
+  }
+
+  onError(handler: TtsErrorHandler): void {
+    this.errorHandlers.push(handler);
+  }
+
+  offError(handler: TtsErrorHandler): void {
+    this.errorHandlers = this.errorHandlers.filter((h: TtsErrorHandler): boolean => h !== handler);
+  }
+
+  // 清空全部订阅（保持 events 实例不变，订阅方持有的引用继续有效；
+  // 页面级退出只应 off 自己的回调，勿调用以免影响叠加实例）
+  clearAll(): void {
+    this.paraStartHandlers = [];
+    this.allDoneHandlers = [];
+    this.errorHandlers = [];
+  }
+
+  // 通知遍历副本，允许回调内安全退订
+  emitParaStart(paraIdx: number): void {
+    const handlers = this.paraStartHandlers.slice();
+    for (let i = 0; i < handlers.length; i++) {
+      handlers[i](paraIdx);
+    }
+  }
+
+  emitAllDone(): void {
+    const handlers = this.allDoneHandlers.slice();
+    for (let i = 0; i < handlers.length; i++) {
+      handlers[i]();
+    }
+  }
+
+  emitError(message: string): void {
+    const handlers = this.errorHandlers.slice();
+    for (let i = 0; i < handlers.length; i++) {
+      handlers[i](message);
+    }
+  }
 }
 
 // 引擎回调（转交 NovelTts 静态方法处理）
@@ -80,9 +139,9 @@ export class NovelTts {
     return !NovelTts.stopped;
   }
 
-  // 页面销毁时复位回调，避免向已卸载页面派发事件
+  // 清空全部事件订阅（保持 events 实例引用不变；页面级退出请用 off* 退订自己的回调）
   static resetEvents(): void {
-    NovelTts.events = new TtsEvents();
+    NovelTts.events.clearAll();
   }
 
   // 从 startPara 段开始顺序播报 paras（空段自动跳过）
@@ -245,7 +304,7 @@ export class NovelTts {
       NovelTts.stopped = true;
       NovelTts.clearKeepAlive();
       NovelTts.stopTtsTask();
-      NovelTts.events.onAllDone();
+      NovelTts.events.emitAllDone();
       return;
     }
     const text = NovelTts.chunks[NovelTts.pos];
@@ -254,7 +313,7 @@ export class NovelTts {
       NovelTts.speakCurrent();
       return;
     }
-    NovelTts.events.onParaStart(NovelTts.chunkPara[NovelTts.pos]);
+    NovelTts.events.emitParaStart(NovelTts.chunkPara[NovelTts.pos]);
     const reqId = `novelTts-${++NovelTts.reqSeq}`;
     NovelTts.activeReq = reqId;
     NovelTts.startReceived = false;
@@ -290,7 +349,7 @@ export class NovelTts {
         NovelTts.stopTtsTask();
         // 引擎可能已失效，丢弃以便下次重建
         NovelTts.killEngine();
-        NovelTts.events.onError('engine busy');
+        NovelTts.events.emitError('tts_busy');
       }
       return;
     }
@@ -343,7 +402,7 @@ export class NovelTts {
     NovelTts.stopTtsTask();
     // 出错后引擎状态不可信，丢弃以便下次重建
     NovelTts.killEngine();
-    NovelTts.events.onError(message);
+    NovelTts.events.emitError(message);
   }
 
   // 看门狗：每 2s 检查一次当前块是否仍在正常播报
@@ -404,7 +463,7 @@ export class NovelTts {
       NovelTts.clearKeepAlive();
       NovelTts.stopTtsTask();
       NovelTts.killEngine();
-      NovelTts.events.onError('engine stalled');
+      NovelTts.events.emitError('tts_stalled');
       return;
     }
     NovelTts.engineRetries += 1;
@@ -423,7 +482,7 @@ export class NovelTts {
         NovelTts.stopped = true;
         NovelTts.activeReq = '';
         NovelTts.stopTtsTask();
-        NovelTts.events.onError('engine unavailable');
+        NovelTts.events.emitError('tts_unavailable');
       }
     });
   }

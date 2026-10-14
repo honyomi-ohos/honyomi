@@ -24,7 +24,7 @@ export class LocalNovelSource extends LocalFsSource {
   }
 
   protected mangaDescription(): string {
-    return '本地导入的小说';
+    return 'local_desc_novel';
   }
 
   async getChapterList(mangaKey: string): Promise<SChapter[]> {
@@ -37,7 +37,7 @@ export class LocalNovelSource extends LocalFsSource {
   async getChapterText(chapterKey: string): Promise<string> {
     const path = this.entryPath(chapterKey);
     if (path === '' || !this.fileExists(path)) {
-      throw new Error('章节文件不存在');
+      throw new Error('chapter_missing');
     }
     // 本地 txt 可能为 UTF-8/GBK 等编码，智能识别解码避免乱码
     return Util.readTextAuto(path);

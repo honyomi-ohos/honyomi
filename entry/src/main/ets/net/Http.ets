@@ -59,7 +59,7 @@ export class Http {
       const respBody: string = Http.bodyText(resp.result);
       if (CfChallenge.isCfChallenge(resp.responseCode, respBody, resp.header)) {
         AppStorage.setOrCreate('cfChallengeUrl', url);
-        throw new HttpCfError('站点需要人机验证，请在弹出的验证页完成后重试');
+        throw new HttpCfError('cf_required');
       }
       if (resp.responseCode < 200 || resp.responseCode >= 300) {
         throw new HttpStatusError(`HTTP ${resp.responseCode}: ${url}`);
@@ -134,7 +134,7 @@ export class Http {
           clearTimeout(watchdog);
         }
         watchdog = setTimeout(() => {
-          finish(new Error('下载超时（服务器长时间无响应）'));
+          finish(new Error('download_timeout'));
         }, stallTimeoutMs);
       };
       // @SuppressWarnings syscap
@@ -155,10 +155,10 @@ export class Http {
           finish(undefined);
         });
         task.on('fail', (err: number) => {
-          finish(new Error(`下载失败 (${err})`));
+          finish(new Error(`download_fail|${err}`));
         });
         task.on('remove', () => {
-          finish(new Error('下载已取消'));
+          finish(new Error('download_cancelled'));
         });
       }).catch((e: Error) => {
         finish(e);
@@ -198,7 +198,7 @@ export class Http {
       const respBody: string = Http.bodyText(resp.result);
       if (CfChallenge.isCfChallenge(resp.responseCode, respBody, resp.header)) {
         AppStorage.setOrCreate('cfChallengeUrl', url);
-        throw new HttpCfError('站点需要人机验证，请在弹出的验证页完成后重试');
+        throw new HttpCfError('cf_required');
       }
       if (resp.responseCode < 200 || resp.responseCode >= 300) {
         throw new HttpStatusError(`HTTP ${resp.responseCode}: ${url}`);
@@ -223,7 +223,7 @@ export class Http {
       CookieJar.storeFromResponse(url, resp.header);
       if (CfChallenge.isCfChallenge(resp.responseCode, '', resp.header)) {
         AppStorage.setOrCreate('cfChallengeUrl', url);
-        throw new HttpCfError('站点需要人机验证，请在弹出的验证页完成后重试');
+        throw new HttpCfError('cf_required');
       }
       if (resp.responseCode < 200 || resp.responseCode >= 300) {
         throw new HttpStatusError(`HTTP ${resp.responseCode}: ${url}`);

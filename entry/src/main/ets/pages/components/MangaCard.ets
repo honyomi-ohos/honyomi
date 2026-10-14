@@ -1,5 +1,6 @@
 import { MangaRecord, CategoryRecord } from '../../model/Models';
 import { ThemePalette } from '../../common/Theme';
+import { Util } from '../../common/Util';
 import { SmartImage } from './SmartImage';
 import { AppIcon } from './AppIcon';
 
@@ -83,7 +84,7 @@ export struct CategoryChip {
   onChipClick: (category: CategoryRecord) => void = (_c: CategoryRecord) => {};
 
   build() {
-    Text(this.category.name)
+    Text(Util.categoryLabel(this.category.name))
       .fontSize(13)
       .fontColor(this.selected ? '#FFFFFF' : this.pal.text)
       .backgroundColor(this.selected ? this.pal.primary : this.pal.chip)

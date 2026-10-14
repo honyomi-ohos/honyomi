@@ -68,7 +68,7 @@ export struct CategoriesPage {
     const dialog = new CustomDialogController({
       builder: InputDialog({
         title: $r('app.string.categories_rename_category'),
-        placeholder: cat.name,
+        placeholder: Util.categoryLabel(cat.name),
         onConfirm: (text: string): void => {
           if (text.trim() !== '') {
             CategoryRepo.rename(cat.id, text.trim()).then(() => {
@@ -140,7 +140,7 @@ export struct CategoriesPage {
               ListItem() {
                 Row() {
                   AppIcon({ name: 'label', iconSize: 20 })
-                  Text(cat.name)
+                  Text(Util.categoryLabel(cat.name))
                     .fontSize(16)
                     .fontColor(this.pal.text)
                     .layoutWeight(1)
@@ -197,7 +197,7 @@ export struct CategoriesPage {
         preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
         width: Bp.isWide(this.windowW) ? 560 : '100%',
         height: SheetSize.FIT_CONTENT,
-        title: { title: this.menuCat === null ? '' : this.menuCat.name },
+        title: { title: this.menuCat === null ? '' : Util.categoryLabel(this.menuCat.name) },
         detents: [SheetSize.FIT_CONTENT],
         dragBar: true,
         showClose: false,

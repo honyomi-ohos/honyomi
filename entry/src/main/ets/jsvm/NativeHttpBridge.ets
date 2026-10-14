@@ -66,7 +66,7 @@ export class WebChallengeError extends Error {
   readonly challengeUrl: string;
 
   constructor(url: string) {
-    super(`站点需要人机验证：${url}`);
+    super('cf_required');
     this.challengeUrl = url;
   }
 }
@@ -307,7 +307,7 @@ export class NativeHttpBridge {
       }
       // https 起始禁止降级：目标非 https（降级 http 或其他协议）即终止并返回错误
       if (httpsStart && next.indexOf('https://') !== 0) {
-        throw new Error(`重定向降级被拒绝: ${next}`);
+        throw new Error(`redirect_blocked|${next}`);
       }
       // 跨源跳转剥离敏感头，凭证明文不外送
       if (NativeHttpBridge.originOf(next) !== NativeHttpBridge.originOf(url)) {
@@ -320,7 +320,7 @@ export class NativeHttpBridge {
       }
       url = next;
     }
-    throw new Error(`too many redirects: ${startUrl}`);
+    throw new Error(`too_many_redirects|${startUrl}`);
   }
 
   // 跨源重定向时剥离插件自定义的敏感头（大小写不敏感），返回净化后的新表

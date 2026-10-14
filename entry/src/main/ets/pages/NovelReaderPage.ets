@@ -1,4 +1,3 @@
-import { common } from '@kit.AbilityKit';
 import { display } from '@kit.ArkUI';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppDb } from '../data/AppDb';
@@ -11,18 +10,21 @@ import { Theme, ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
-import { NovelTts } from '../common/NovelTts';
+import { NovelTts, TtsParaStartHandler, TtsDoneHandler, TtsErrorHandler } from '../common/NovelTts';
 import { ReaderWindow } from '../common/ReaderWindow';
 import { ReaderChapterNav, ChapterNeighbors } from '../common/ReaderChapterNav';
 import { DownloadService } from '../data/DownloadService';
-import { AppIconRes, AppIcon } from './components/AppIcon';
-import { PickerSheet } from './components/PickerSheet';
 import { EmulationFlipView } from './components/PageFlip';
+import { NovelBlock, NovelPage, SPINE_W, EMPTY_NOVEL_PAGE, NovelPaginator, NovelChapterText } from './components/novel/NovelPaginator';
+import { NovelModeSheet } from './components/novel/NovelModeSheet';
+import { NovelDisplayPanel } from './components/novel/NovelDisplayPanel';
+import { NovelTextPanel } from './components/novel/NovelTextPanel';
+import { NovelTtsPanel } from './components/novel/NovelTtsPanel';
+import { ReaderMenu, ReaderBottomBar, ReaderNavRow, ReaderPagePill, ReaderMenuIconButton, ReaderIndicatorBadge, ReaderOrientationSheet } from './components/ReaderChrome';
 
-// 屏幕方向的可选值（与方向选择 sheet 选项一一对应）
-const NOVEL_ORIENTATIONS: string[] = ['free', 'portrait', 'landscape', 'lock_portrait', 'lock_landscape'];
-const NOVEL_ORIENTATION_ICONS: string[] =
-  ['screen_rotation', 'stay_current_portrait', 'stay_current_landscape', 'screen_lock_portrait', 'screen_lock_landscape'];
+// 翻屏进度持久化防抖间隔（毫秒）
+const PERSIST_DEBOUNCE_MS: number = 2000;
+
 // 翻页屏幕的 LazyForEach 数据源：按需构建当前屏及相邻屏，大章节不再一次性渲染全部页面
 class NovelScreenSource implements IDataSource {
   private items: number[] = [];
@@ -52,31 +54,7 @@ class NovelScreenSource implements IDataSource {
   }
 }
 
-// 章节正文块：文本段或插图（插件正文里的 <img> 解析而来）
-interface NovelBlock {
-  isImage: boolean;
-  // 文本段内容；图片块的图片 URL
-  text: string;
-  // 文本段在听书段落序列中的序号（图片块为 -1）
-  ttsIdx: number;
-}
-
-// 翻页模式的单页：普通页为段落集合，插图页 imageUrl 非空、独占整页
-interface NovelPage {
-  texts: string[];
-  imageUrl: string;
-}
-
-// 双页中缝宽度（Divider 两侧 margin 12 + 1 线宽）
-const SPINE_W: number = 25;
-// pageAt 越界时共享的空页对象（避免每次调用新建对象字面量）
-const EMPTY_NOVEL_PAGE: NovelPage = { texts: [], imageUrl: '' };
-// 翻屏进度持久化防抖间隔（毫秒）
-const PERSIST_DEBOUNCE_MS: number = 2000;
-
-// 阅读模式的可选值（与模式选择 sheet 选项一一对应）
-const NOVEL_MODES: string[] = ['scroll', 'paged', 'paged_rtl', 'double'];
-const NOVEL_MODE_ICONS: string[] = ['reader_scroll', 'reader_ltr', 'reader_rtl', 'reader_double'];
+// 章节加载与分页：正文解析/分页引擎在 NovelPaginator，页面只保留状态与渲染
 // 小说阅读器：滚动 / 翻页 / 双页三种模式，交互对齐漫画阅读器——
 // 全屏正文，点击屏幕中间呼出菜单（顶栏+底栏），底部设置面板含
 // 翻页方式 / 字号 / 行间距 / 段间距 / 背景（背景与漫画阅读器共用 readerTheme）。
@@ -153,6 +131,9 @@ export struct NovelReaderPage {
   private permille: number = 0;
   private swiperCtrl: SwiperController = new SwiperController();
   private screenSource: NovelScreenSource = new NovelScreenSource();
+  // 分页引擎（测量函数注入：与渲染端 fontSize/lineHeight 一致的 vp 高度）
+  private paginator: NovelPaginator =
+    new NovelPaginator((text: string, widthVp: number): number => this.measureTextVp(text, widthVp));
   private contW: number = 0;
   private contH: number = 0;
   private pageW: number = 0;
@@ -171,8 +152,6 @@ export struct NovelReaderPage {
   private paraOffSig: string = '';
   // html 章节解析出的「文本段 + 插图」块序列（hasImages 时有效）
   private blocks: NovelBlock[] = [];
-  // pushTextBlocks 递增的文本段序号（解析一章期间有效）
-  private blockTextSeq: number = 0;
   // 章节加载代次号：连续切章时旧 loadChapter 续体据此丢弃
   private loadGen: number = 0;
   // 页面销毁标志：loadChapter 各 await 后校验，防止退出后启动无人结算的会话
@@ -212,7 +191,10 @@ export struct NovelReaderPage {
     this.destroyed = true;
     this.loadGen += 1;
     NovelTts.stop();
-    NovelTts.resetEvents();
+    // 退订本实例的回调（不清空全局订阅表，避免影响叠加的其它阅读器实例）
+    NovelTts.events.offParaStart(this.ttsOnParaStart);
+    NovelTts.events.offAllDone(this.ttsOnAllDone);
+    NovelTts.events.offError(this.ttsOnError);
     this.flushPersist();
     ReadingStatsRepo.flush();
     // 还原窗口方向与亮度
@@ -287,7 +269,7 @@ export struct NovelReaderPage {
       } else {
         const source = SourceRegistry.get(this.manga.sourceKey);
         if (source === undefined) {
-          throw new Error('源不可用');
+          throw new Error('source_unavailable');
         }
         text = await source.getChapterText(chapter.url);
       }
@@ -295,9 +277,9 @@ export struct NovelReaderPage {
         return;
       }
       if (text === '') {
-        throw new Error('章节没有正文');
+        throw new Error('no_content');
       }
-      this.html = NovelReaderPage.looksLikeHtml(text);
+      this.html = NovelChapterText.looksLikeHtml(text);
       this.body = text;
       this.parseChapterBlocks();
       await this.loadNeighbors();
@@ -313,7 +295,7 @@ export struct NovelReaderPage {
       if (gen === this.loadGen) {
         this.ttsResume = false;
         Util.toastRes(this.getUIContext(), $r('app.string.reader_load_failed'),
-          [e instanceof Error ? e.message : String(e)]);
+          [Util.errText(this.getUIContext(), e instanceof Error ? e.message : String(e))]);
       }
     }
     if (this.destroyed || gen !== this.loadGen) {
@@ -424,27 +406,36 @@ export struct NovelReaderPage {
 
   // ---- 听书（系统 TTS）----
 
+  // 订阅模型的稳定回调引用：aboutToAppear 订阅、aboutToDisappear 退订（勿用 resetEvents
+  // 清空全局订阅，以免影响叠加的其它阅读器实例）
+  private readonly ttsOnParaStart: TtsParaStartHandler = (idx: number): void => {
+    this.ttsParaIdx = idx;
+    this.followTtsPara(idx);
+  };
+
+  private readonly ttsOnAllDone: TtsDoneHandler = (): void => {
+    this.ttsPlaying = false;
+    this.ttsParaIdx = -1;
+    if (this.nextId > 0) {
+      this.ttsResume = true;
+      this.openChapter(this.nextId);
+    } else {
+      Util.toastRes(this.getUIContext(), $r('app.string.novel_tts_finish'));
+    }
+  };
+
+  private readonly ttsOnError: TtsErrorHandler = (message: string): void => {
+    this.ttsPlaying = false;
+    this.ttsParaIdx = -1;
+    Util.toastRes(this.getUIContext(), $r('app.string.novel_tts_error'),
+      [Util.errText(this.getUIContext(), message)]);
+  };
+
   // 接管 NovelTts 事件：跟随滚动/翻页、播完自动下一章、错误提示
   private wireTtsEvents(): void {
-    NovelTts.events.onParaStart = (idx: number): void => {
-      this.ttsParaIdx = idx;
-      this.followTtsPara(idx);
-    };
-    NovelTts.events.onAllDone = (): void => {
-      this.ttsPlaying = false;
-      this.ttsParaIdx = -1;
-      if (this.nextId > 0) {
-        this.ttsResume = true;
-        this.openChapter(this.nextId);
-      } else {
-        Util.toastRes(this.getUIContext(), $r('app.string.novel_tts_finish'));
-      }
-    };
-    NovelTts.events.onError = (message: string): void => {
-      this.ttsPlaying = false;
-      this.ttsParaIdx = -1;
-      Util.toastRes(this.getUIContext(), $r('app.string.novel_tts_error'), [message]);
-    };
+    NovelTts.events.onParaStart(this.ttsOnParaStart);
+    NovelTts.events.onAllDone(this.ttsOnAllDone);
+    NovelTts.events.onError(this.ttsOnError);
   }
 
   // 听书文本段落：html 章节剥除标签，纯文本按行拆分
@@ -533,7 +524,8 @@ export struct NovelReaderPage {
     if (!ok) {
       this.ttsPlaying = false;
       this.ttsParaIdx = -1;
-      Util.toastRes(this.getUIContext(), $r('app.string.novel_tts_error'), ['engine']);
+      Util.toastRes(this.getUIContext(), $r('app.string.novel_tts_error'),
+        [Util.errText(this.getUIContext(), 'tts_unavailable')]);
     }
   }
 
@@ -631,80 +623,17 @@ export struct NovelReaderPage {
     }
   }
 
-  private static looksLikeHtml(text: string): boolean {
-    const head = text.substring(0, 240).toLowerCase();
-    return head.indexOf('<p') >= 0 || head.indexOf('<br') >= 0 || head.indexOf('<div') >= 0 ||
-      head.indexOf('<html') >= 0;
-  }
-
-  // 解析 html 章节为「文本段 + 插图」块序列：正文以 <img> 标记插图，
-  // 滚动模式内嵌渲染、翻页模式插图独占一页；无插图时保持原有渲染路径
+  // 解析 html 章节为「文本段 + 插图」块序列（NovelChapterText.parseBlocks），
+  // 同时标记 hasImages 供渲染路径分流；无插图时保持原有渲染路径
   private parseChapterBlocks(): void {
-    this.blocks = [];
+    this.blocks = NovelChapterText.parseBlocks(this.html, this.body);
     this.hasImages = false;
-    this.blockTextSeq = 0;
-    if (!this.html) {
-      return;
-    }
-    const imgRe = /<img\b[^>]*>/gi;
-    let idx = 0;
-    let match = imgRe.exec(this.body);
-    while (match !== null) {
-      this.pushTextBlocks(this.body.substring(idx, match.index));
-      const src = NovelReaderPage.imgSrcOf(match[0]);
-      if (src !== '') {
-        const image: NovelBlock = { isImage: true, text: src, ttsIdx: -1 };
-        this.blocks.push(image);
+    for (let i = 0; i < this.blocks.length; i++) {
+      if (this.blocks[i].isImage) {
         this.hasImages = true;
+        break;
       }
-      idx = match.index + match[0].length;
-      match = imgRe.exec(this.body);
     }
-    this.pushTextBlocks(this.body.substring(idx));
-  }
-
-  // 把 <img> 之间的 html 片段剥成纯文本段落，追加为文本块（跳过空段）
-  private pushTextBlocks(segment: string): void {
-    const text = segment
-      .replace(/<br\s*\/?>/gi, '\n')
-      .replace(/<\/p>/gi, '\n')
-      .replace(/<\/div>/gi, '\n')
-      .replace(/<[^>]+>/g, '')
-      .replace(/&nbsp;/g, ' ')
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"')
-      .replace(/&amp;/g, '&');
-    const lines = text.split('\n');
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
-      if (line === '') {
-        continue;
-      }
-      const block: NovelBlock = { isImage: false, text: line, ttsIdx: this.blockTextSeq };
-      this.blocks.push(block);
-      this.blockTextSeq += 1;
-    }
-  }
-
-  // 提取 <img> 标签的 src 属性
-  private static imgSrcOf(tag: string): string {
-    const match = /\ssrc\s*=\s*["']([^"']+)["']/i.exec(tag);
-    if (match === null) {
-      return '';
-    }
-    return match[1].trim();
-  }
-
-  // 纯文本章节的块视图：每行一个文本块（与 body.split('\n') 等价）
-  private plainBlocks(): NovelBlock[] {
-    const paras = this.body.split('\n');
-    const out: NovelBlock[] = [];
-    for (let i = 0; i < paras.length; i++) {
-      const block: NovelBlock = { isImage: false, text: paras[i], ttsIdx: i };
-      out.push(block);
-    }
-    return out;
   }
 
   private toggleMenu(): void {
@@ -742,7 +671,14 @@ export struct NovelReaderPage {
     if (sig === this.pagSig) {
       return;
     }
-    const pages = this.buildPages();
+    // 同步分页引擎参数后重建页面（分页/切点算法在 NovelPaginator）
+    this.paginator.pageW = this.pageW;
+    this.paginator.pageH = this.pageH;
+    this.paginator.paraSpacing = this.paraSpacing;
+    this.paginator.lineHeight = this.lineHeight;
+    const blocks: NovelBlock[] = this.hasImages ? this.blocks : NovelChapterText.plainBlocks(this.body);
+    const pages = this.paginator.buildPages(blocks);
+    this.paraPage = this.paginator.paraPage;
     const total = pages.length;
     let logical = 0;
     if (total > 1) {
@@ -760,11 +696,11 @@ export struct NovelReaderPage {
     this.pages = pages;
     this.screenIdxs = screens;
     this.screenSource.setItems(screens);
-    this.transX = NovelReaderPage.zeros(screenCount);
-    this.transAngle = NovelReaderPage.zeros(screenCount);
-    this.transZ = NovelReaderPage.zeros(screenCount);
-    this.transAngleL = NovelReaderPage.zeros(screenCount);
-    this.transAngleR = NovelReaderPage.zeros(screenCount);
+    this.transX = Util.zeros(screenCount);
+    this.transAngle = Util.zeros(screenCount);
+    this.transZ = Util.zeros(screenCount);
+    this.transAngleL = Util.zeros(screenCount);
+    this.transAngleR = Util.zeros(screenCount);
     this.halfTilt = 0;
     this.pageIdx = screenIdx;
     try {
@@ -772,104 +708,6 @@ export struct NovelReaderPage {
     } catch (e) {
       // Swiper 尚未挂载时忽略，首次渲染由 .index() 指定
     }
-  }
-
-  private static zeros(n: number): number[] {
-    const arr: number[] = [];
-    for (let i = 0; i < n; i++) {
-      arr.push(0);
-    }
-    return arr;
-  }
-
-  // 按块贪心装页（段间计入 paraSpacing，与渲染端 Column({space}) 一致）；超长段落按测量二分切分；
-  // 插图块独占一页（imageUrl 非空）。同时记录 paraPage[i]：第 i 个文本段所在的页码（听书跟随翻页用）
-  private buildPages(): NovelPage[] {
-    const pages: NovelPage[] = [];
-    const paraPage: number[] = [];
-    const maxH = this.pageH;
-    const width = this.pageW;
-    const gap = this.paraSpacing;
-    const blocks: NovelBlock[] = this.hasImages ? this.blocks : this.plainBlocks();
-    let current: string[] = [];
-    let used = 0;
-    for (let i = 0; i < blocks.length; i++) {
-      const block = blocks[i];
-      if (block.isImage) {
-        // 插图：收尾当前文本页，插图独占新页
-        if (current.length > 0) {
-          pages.push({ texts: current, imageUrl: '' });
-          current = [];
-          used = 0;
-        }
-        pages.push({ texts: [], imageUrl: block.text });
-        continue;
-      }
-      let para = block.text;
-      if (para === '') {
-        para = ' ';
-      }
-      const h = this.measureTextVp(para, width);
-      if (h <= maxH) {
-        const extra = current.length > 0 ? gap : 0;
-        if (used + extra + h <= maxH) {
-          paraPage[block.ttsIdx] = pages.length;
-          current.push(para);
-          used += extra + h;
-          continue;
-        }
-        // 当前页放不下：整段放入新页
-        if (current.length > 0) {
-          pages.push({ texts: current, imageUrl: '' });
-        }
-        paraPage[block.ttsIdx] = pages.length;
-        current = [para];
-        used = h;
-        continue;
-      }
-      // 整段超过一页：按字符切分
-      if (current.length > 0) {
-        pages.push({ texts: current, imageUrl: '' });
-        current = [];
-        used = 0;
-      }
-      paraPage[block.ttsIdx] = pages.length;
-      let rest = para;
-      // 每页可容纳字符数的先验（0=未知）：由上一次切点更新；
-      // 剩余不超过一页容量时才整段测量判断能否收尾，避免反复测量大段文本
-      let cap = 0;
-      while (rest.length > 0) {
-        if (rest.length <= cap) {
-          const hRest = this.measureTextVp(rest, width);
-          if (hRest <= maxH) {
-            current.push(rest);
-            used = hRest;
-            break;
-          }
-        }
-        const fit = this.fitPrefix(rest, width, maxH, cap);
-        if (fit <= 0) {
-          // 页高不足一行：整段放入避免死循环
-          current.push(rest);
-          used = maxH;
-          break;
-        }
-        if (fit >= rest.length) {
-          // 整个剩余部分一页内放得下：并入当前页，继续贪心装后续段落
-          current.push(rest);
-          used = this.measureTextVp(rest, width);
-          break;
-        }
-        pages.push({ texts: [rest.substring(0, fit)], imageUrl: '' });
-        rest = rest.substring(fit);
-        cap = fit;
-      }
-    }
-    if (current.length > 0) {
-      pages.push({ texts: current, imageUrl: '' });
-    }
-    this.paraPage = paraPage;
-    return pages;
   }
 
   // 测量文本在指定宽度下的渲染高度（vp），与 Text 的 fontSize/lineHeight 设置一致
@@ -882,73 +720,6 @@ export struct NovelReaderPage {
     });
     const h = size.height;
     return this.getUIContext().px2vp(typeof h === 'number' ? h : 0);
-  }
-
-  // 在超长段落中找切点：capHint 为上一页的字符容量先验（0=未知）。
-  // 先用实测行数按比例收敛切点，页面基本排满（剩余不足 0.08 行）即接受，
-  // 省去精确二分的十余次测量；未收敛时才在剩余区间精确二分兜底，结果与全量二分一致
-  private fitPrefix(text: string, width: number, maxH: number, capHint: number): number {
-    const len = text.length;
-    if (len <= 0) {
-      return 0;
-    }
-    const linesPerPage = maxH / this.lineHeight;
-    let best = 0;
-    let hiFail = len + 1;
-    let k = capHint > 0 ? Math.max(1, Math.min(len, Math.round(capHint))) : Math.ceil(len / 2);
-    let accepted = false;
-    for (let iter = 0; iter < 4 && !accepted && k > best && k < hiFail; iter++) {
-      const h = this.measureTextVp(text.substring(0, k), width);
-      if (h <= maxH) {
-        best = k;
-        if (k >= len) {
-          break;
-        }
-        const linesUsed = Math.max(1, h / this.lineHeight);
-        const linesLeft = linesPerPage - linesUsed;
-        if (linesLeft < 0.08) {
-          accepted = true;
-          break;
-        }
-        // 按剩余行数与每行字符数估算可再容纳的字符量
-        let nk = k + Math.max(1, Math.round(linesLeft * (k / linesUsed)));
-        if (nk >= hiFail) {
-          nk = hiFail - 1;
-        }
-        if (nk <= best) {
-          break;
-        }
-        k = nk;
-      } else {
-        hiFail = k;
-        const linesUsed = Math.max(1, h / this.lineHeight);
-        const over = linesUsed - linesPerPage;
-        const nk = k - Math.max(1, Math.round(over * (k / linesUsed)));
-        if (nk <= best) {
-          break;
-        }
-        k = nk;
-      }
-    }
-    if (!accepted) {
-      // 未整页收敛：剩余区间精确二分，保证与全量二分结果一致
-      while (best + 1 < hiFail) {
-        const mid = Math.floor((best + hiFail) / 2);
-        if (this.measureTextVp(text.substring(0, mid), width) <= maxH) {
-          best = mid;
-        } else {
-          hiFail = mid;
-        }
-      }
-    }
-    // 避免切开代理对（emoji 等）
-    if (best > 0 && best < text.length) {
-      const code = text.charCodeAt(best - 1);
-      if (code >= 0xD800 && code <= 0xDBFF) {
-        best -= 1;
-      }
-    }
-    return best;
   }
 
   // 越界返回共享的空页常量（不新建对象字面量）
@@ -1703,132 +1474,143 @@ export struct NovelReaderPage {
     }
   }
 
-  // 阅读模式 chip（滚动 / 单页式从左到右 / 单页式从右到左 / 双页）
+  // ---- 菜单（共享 ReaderChrome 骨架：顶栏+占位+底栏，样式与拆分前一致） ----
+
   @Builder
-  modeChip(label: ResourceStr, value: string) {
-    Text(label)
-      .fontSize(13)
-      .fontColor(this.mode === value ? '#FFFFFF' : this.pal.text)
-      .padding({ left: 14, right: 14, top: 6, bottom: 6 })
-      .borderRadius(16)
-      .backgroundColor(this.mode === value ? this.pal.primary : this.pal.chip)
-      .margin({ right: 8, bottom: 8 })
-      .onClick(() => {
-        this.setMode(value);
-      })
+  menuBottomBar() {
+    ReaderBottomBar({
+      navBarH: this.navBarH,
+      navRow: (): void => {
+        this.menuNavRow();
+      },
+      settingsRow: (): void => {
+        this.menuSettingsRow();
+      }
+    })
   }
 
-  // 翻页动画 chip（仿真 / 滑动 / 覆盖）
+  // 章节导航行：上一章 / 进度胶囊 / 下一章（guard 保留在回调内）
   @Builder
-  animChip(label: ResourceStr, value: string) {
-    Text(label)
-      .fontSize(13)
-      .fontColor(this.animMode === value ? '#FFFFFF' : this.pal.text)
-      .padding({ left: 14, right: 14, top: 6, bottom: 6 })
-      .borderRadius(16)
-      .backgroundColor(this.animMode === value ? this.pal.primary : this.pal.chip)
-      .margin({ right: 8, bottom: 8 })
-      .onClick(() => {
-        this.setAnimMode(value);
-      })
+  menuNavRow() {
+    ReaderNavRow({
+      prevActive: this.prevId > 0,
+      nextActive: this.nextId > 0,
+      pill: (): void => {
+        this.menuNavPill();
+      },
+      onPrev: (): void => {
+        if (this.prevId > 0) {
+          this.openChapter(this.prevId);
+        }
+      },
+      onNext: (): void => {
+        if (this.nextId > 0) {
+          this.openChapter(this.nextId);
+        }
+      }
+    })
   }
 
-  // 配色 chip（自动 / 浅色 / 深色）
+  // 进度胶囊：滚动=百分比 Slider，翻页/双页=页码胶囊（ReaderPagePill），无屏=空占位
   @Builder
-  schemeChip(label: ResourceStr, value: string) {
-    Text(label)
-      .fontSize(13)
-      .fontColor(this.colorScheme === value ? '#FFFFFF' : this.pal.text)
-      .padding({ left: 14, right: 14, top: 6, bottom: 6 })
-      .borderRadius(16)
-      .backgroundColor(this.colorScheme === value ? this.pal.primary : this.pal.chip)
-      .margin({ right: 8, bottom: 8 })
-      .onClick(() => {
-        this.colorScheme = value;
-        Settings.setNovelColorScheme(value);
-      })
-  }
-
-  // 字体 chip（默认 / 宋体 / 黑体 / 等宽）
-  @Builder
-  fontChip(label: ResourceStr, value: string) {
-    Text(label)
-      .fontSize(13)
-      .fontColor(this.fontFamily === value ? '#FFFFFF' : this.pal.text)
-      .padding({ left: 14, right: 14, top: 6, bottom: 6 })
-      .borderRadius(16)
-      .backgroundColor(this.fontFamily === value ? this.pal.primary : this.pal.chip)
-      .margin({ right: 8, bottom: 8 })
-      .onClick(() => {
-        this.fontFamily = value;
-        Settings.setNovelFontFamily(value);
-        this.ensurePaginated();
-      })
-  }
-
-  // 背景 chip（与漫画阅读器共用 readerTheme：自动/白/灰/黑）
-  @Builder
-  themeChip(label: ResourceStr, value: number) {
-    Text(label)
-      .fontSize(13)
-      .fontColor(this.readerTheme === value ? '#FFFFFF' : this.pal.text)
-      .padding({ left: 14, right: 14, top: 6, bottom: 6 })
-      .borderRadius(16)
-      .backgroundColor(this.readerTheme === value ? this.pal.primary : this.pal.chip)
-      .margin({ right: 8, bottom: 8 })
-      .onClick(() => {
-        this.readerTheme = value;
-        Settings.setReaderTheme(value);
-      })
-  }
-
-  // 设置面板滑杆行：label 在上、Slider + 数值在下（对齐面板内其他分组的排版）
-  @Builder
-  novelSliderRow(label: ResourceStr, value: number, min: number, max: number,
-    onChange: (value: number, done: boolean) => void) {
-    Column({ space: 8 }) {
-      Text(label)
-        .fontSize(13)
-        .fontColor(this.pal.sub)
-        .width('100%')
+  menuNavPill() {
+    if (this.mode === 'scroll' || (this.html && !this.hasImages)) {
       Row() {
-        Slider({ value: value, min: min, max: max, step: 1 })
-          .layoutWeight(1)
-          .blockColor(this.pal.primary)
-          .selectedColor(this.pal.primary)
-          .trackColor(this.pal.divider)
-          .onChange((sliderValue: number, mode: SliderChangeMode) => {
-            onChange(Math.round(sliderValue),
-              mode === SliderChangeMode.End || mode === SliderChangeMode.Click);
-          })
-        Text(`${value}`)
+        Text(`${Math.round(this.permilleUi / 10)}%`)
           .fontSize(13)
-          .fontColor(this.pal.text)
+          .fontColor('#FFFFFF')
           .width(44)
           .textAlign(TextAlign.End)
+        Slider({
+          value: this.permilleUi,
+          min: 0,
+          max: 1000,
+          step: 1,
+          style: SliderStyle.OutSet
+        })
+          .layoutWeight(1)
+          .blockColor('#FFFFFF')
+          .selectedColor('#88FFFFFF')
+          .trackColor('#33FFFFFF')
+          .margin({ left: 8, right: 8 })
+          .onChange((value: number, mode: SliderChangeMode) => {
+            if (mode === SliderChangeMode.End || mode === SliderChangeMode.Click) {
+              this.scrollToPermille(Math.round(value));
+            }
+          })
+        Text('100%')
+          .fontSize(13)
+          .fontColor('#FFFFFF')
+          .width(44)
       }
-      .width('100%')
+      .layoutWeight(1)
+      .height(44)
+      .borderRadius(22)
+      .backgroundColor('#33FFFFFF')
+      .padding({ left: 14, right: 14 })
+    } else if (this.screenIdxs.length > 0) {
+      ReaderPagePill({
+        pos: this.pagedSliderPos(),
+        total: this.screenIdxs.length,
+        onSeek: (value: number): void => {
+          this.jumpScreen(this.pagedScreenFromSlider(value));
+        }
+      })
+    } else {
+      Column().layoutWeight(1)
+    }
+  }
+
+  // 设置行：阅读模式 / 屏幕方向 / 画面 / 文本 / 听书
+  @Builder
+  menuSettingsRow() {
+    Row() {
+      ReaderMenuIconButton({
+        icon: this.novelModeIcon(),
+        onTap: (): void => {
+          this.openSheet('mode');
+        }
+      })
+      ReaderMenuIconButton({
+        icon: 'screen_rotation',
+        onTap: (): void => {
+          this.openSheet('orientation');
+        }
+      })
+      ReaderMenuIconButton({
+        icon: 'palette',
+        onTap: (): void => {
+          this.openSheet('display');
+        }
+      })
+      ReaderMenuIconButton({
+        icon: 'format_size',
+        onTap: (): void => {
+          this.openSheet('text');
+        }
+      })
+      ReaderMenuIconButton({
+        icon: this.ttsPlaying ? 'pause' : 'playlist_play',
+        onTap: (): void => {
+          this.openSheet('tts');
+        }
+      })
     }
     .width('100%')
-    .padding({ left: 16, right: 16, top: 10, bottom: 6 })
+    .height(48)
+    .justifyContent(FlexAlign.SpaceEvenly)
+    .backgroundColor('#CC000000')
   }
 
   @Builder
   orientationSheetBuilder() {
-    PickerSheet({
-      options: [$r('app.string.reader_orientation_free'), $r('app.string.reader_orientation_portrait'),
-        $r('app.string.reader_orientation_landscape'), $r('app.string.reader_orientation_lock_portrait'),
-        $r('app.string.reader_orientation_lock_landscape')],
-      icons: NOVEL_ORIENTATION_ICONS,
-      selectedIndex: NOVEL_ORIENTATIONS.indexOf(this.orientation),
-      onPick: (index: number): void => {
+    ReaderOrientationSheet({
+      selected: this.orientation,
+      onPick: (v: string): void => {
         this.showOrientationSheet = false;
-        const v: string | undefined = NOVEL_ORIENTATIONS[index];
-        if (v !== undefined) {
-          this.orientation = v;
-          Settings.setNovelOrientation(v);
-          this.applyOrientation();
-        }
+        this.orientation = v;
+        Settings.setNovelOrientation(v);
+        this.applyOrientation();
       }
     })
   }
@@ -1850,41 +1632,17 @@ export struct NovelReaderPage {
   // 阅读模式选择 + 翻页动画
   @Builder
   modeSheetBuilder() {
-    Column({ space: 0 }) {
-      PickerSheet({
-        options: [$r('app.string.novel_mode_scroll'), $r('app.string.novel_mode_single_ltr'),
-          $r('app.string.novel_mode_single_rtl'), $r('app.string.novel_mode_double')],
-        icons: NOVEL_MODE_ICONS,
-        selectedIndex: NOVEL_MODES.indexOf(this.mode),
-        onPick: (index: number): void => {
-          this.showModeSheet = false;
-          const v: string | undefined = NOVEL_MODES[index];
-          if (v !== undefined) {
-            this.setMode(v);
-          }
-        }
-      })
-
-      Divider().color(this.pal.divider)
-
-      Column({ space: 8 }) {
-        Text($r('app.string.novel_page_animation'))
-          .fontSize(13)
-          .fontColor(this.pal.sub)
-          .width('100%')
-        Flex({ wrap: FlexWrap.Wrap }) {
-          this.animChip($r('app.string.novel_anim_curl'), 'curl')
-          this.animChip($r('app.string.novel_anim_slide'), 'slide')
-          this.animChip($r('app.string.novel_anim_cover'), 'cover')
-        }
-        .width('100%')
+    NovelModeSheet({
+      mode: this.mode,
+      animMode: this.animMode,
+      onMode: (v: string): void => {
+        this.showModeSheet = false;
+        this.setMode(v);
+      },
+      onAnim: (v: string): void => {
+        this.setAnimMode(v);
       }
-      .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
-
-      Column().height(16)
-    }
-    .width('100%')
+    })
   }
 
   // 底栏设置面板标题（画面 / 文本 / 听书共用一个 bindSheet）
@@ -1902,212 +1660,65 @@ export struct NovelReaderPage {
   @Builder
   panelSheetBuilder() {
     if (this.panelKind === 'display') {
-      this.displaySheetBuilder()
-    } else if (this.panelKind === 'text') {
-      this.textSheetBuilder()
-    } else {
-      this.ttsSheetBuilder()
-    }
-  }
-
-  // 画面：亮度 / 配色 / 背景
-  @Builder
-  displaySheetBuilder() {
-    Column({ space: 0 }) {
-      Column({ space: 8 }) {
-        Text($r('app.string.reader_brightness'))
-          .fontSize(13)
-          .fontColor(this.pal.sub)
-          .width('100%')
-        Row() {
-          Slider({ value: this.brightLv, min: 0, max: 1, step: 0.05 })
-            .layoutWeight(1)
-            .blockColor(this.pal.primary)
-            .selectedColor(this.pal.primary)
-            .trackColor(this.pal.divider)
-            .onChange((value: number, mode: SliderChangeMode) => {
-              if (mode === SliderChangeMode.End || mode === SliderChangeMode.Click) {
-                this.brightLv = Math.round(value * 20) / 20;
-                Settings.setReaderBrightness(this.brightLv);
-                this.applyBrightness();
-              }
-            })
-          Text(this.brightLv === 0 ? $r('app.string.reader_auto') : `${Math.round(this.brightLv * 100)}%`)
-            .fontSize(13)
-            .fontColor(this.pal.text)
-            .width(52)
-            .textAlign(TextAlign.End)
+      NovelDisplayPanel({
+        brightLv: this.brightLv,
+        colorScheme: this.colorScheme,
+        readerTheme: this.readerTheme,
+        onBrightness: (v: number): void => {
+          this.brightLv = v;
+          Settings.setReaderBrightness(v);
+          this.applyBrightness();
+        },
+        onColorScheme: (v: string): void => {
+          this.colorScheme = v;
+          Settings.setNovelColorScheme(v);
+        },
+        onTheme: (v: number): void => {
+          this.readerTheme = v;
+          Settings.setReaderTheme(v);
         }
-        .width('100%')
-      }
-      .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
-
-      Divider().color(this.pal.divider)
-
-      Column({ space: 8 }) {
-        Text($r('app.string.novel_color_scheme'))
-          .fontSize(13)
-          .fontColor(this.pal.sub)
-          .width('100%')
-        Flex({ wrap: FlexWrap.Wrap }) {
-          this.schemeChip($r('app.string.reader_auto'), 'auto')
-          this.schemeChip($r('app.string.novel_color_light'), 'light')
-          this.schemeChip($r('app.string.novel_color_dark'), 'dark')
-        }
-        .width('100%')
-      }
-      .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
-
-      Divider().color(this.pal.divider)
-
-      Column({ space: 8 }) {
-        Text($r('app.string.reader_background'))
-          .fontSize(13)
-          .fontColor(this.pal.sub)
-          .width('100%')
-        Flex({ wrap: FlexWrap.Wrap }) {
-          this.themeChip($r('app.string.reader_theme_auto'), 3)
-          this.themeChip($r('app.string.reader_theme_white'), 0)
-          this.themeChip($r('app.string.reader_theme_gray'), 2)
-          this.themeChip($r('app.string.reader_theme_black'), 1)
-        }
-        .width('100%')
-      }
-      .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
-
-      Column().height(16)
-    }
-    .width('100%')
-  }
-
-  // 文本设置：字号 / 边距 / 段间距 / 行间距 / 字体
-  @Builder
-  textSheetBuilder() {
-    Column({ space: 0 }) {
-      this.novelSliderRow($r('app.string.novel_font_size'), this.fontSize, 14, 32,
-        (value: number, done: boolean): void => {
-          this.fontSize = value;
-          if (done) {
-            Settings.setNovelFontSize(value);
-            this.ensurePaginated();
-          }
-        })
-
-      Divider().color(this.pal.divider)
-
-      this.novelSliderRow($r('app.string.novel_margin'), this.pageMargin, 8, 48,
-        (value: number, done: boolean): void => {
-          this.pageMargin = value;
-          if (done) {
-            Settings.setNovelMargin(value);
-            this.ensurePaginated();
-          }
-        })
-
-      Divider().color(this.pal.divider)
-
-      this.novelSliderRow($r('app.string.novel_paragraph_spacing'), this.paraSpacing, 0, 28,
-        (value: number, done: boolean): void => {
-          this.paraSpacing = value;
-          if (done) {
-            Settings.setNovelParagraphSpacing(value);
-            this.ensurePaginated();
-          }
-        })
-
-      Divider().color(this.pal.divider)
-
-      this.novelSliderRow($r('app.string.novel_line_height'), this.lineHeight, 20, 56,
-        (value: number, done: boolean): void => {
-          this.lineHeight = value;
-          if (done) {
-            Settings.setNovelLineHeight(value);
-            this.ensurePaginated();
-          }
-        })
-
-      Divider().color(this.pal.divider)
-
-      Column({ space: 8 }) {
-        Text($r('app.string.novel_font_family'))
-          .fontSize(13)
-          .fontColor(this.pal.sub)
-          .width('100%')
-        Flex({ wrap: FlexWrap.Wrap }) {
-          this.fontChip($r('app.string.novel_font_default'), 'default')
-          this.fontChip($r('app.string.novel_font_serif'), 'serif')
-          this.fontChip($r('app.string.novel_font_sans'), 'sans')
-          this.fontChip($r('app.string.novel_font_mono'), 'mono')
-        }
-        .width('100%')
-      }
-      .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
-
-      Column().height(16)
-    }
-    .width('100%')
-  }
-
-  // 听书：播放/停止 + 语速
-  @Builder
-  ttsSheetBuilder() {
-    Column({ space: 0 }) {
-      Button(this.ttsPlaying ? $r('app.string.novel_tts_stop') : $r('app.string.novel_tts_start'))
-        .fontSize(14)
-        .fontColor('#FFFFFF')
-        .type(ButtonType.Capsule)
-        .backgroundColor(this.ttsPlaying ? '#8A343434' : this.pal.primary)
-        .height(40)
-        .padding({ left: 28, right: 28 })
-        .margin({ top: 16 })
-        .onClick(() => {
-          this.toggleTts();
-        })
-
-      Divider()
-        .color(this.pal.divider)
-        .margin({ top: 16 })
-
-      Column({ space: 8 }) {
-        Text($r('app.string.novel_tts_speed'))
-          .fontSize(13)
-          .fontColor(this.pal.sub)
-          .width('100%')
-        Flex({ wrap: FlexWrap.Wrap }) {
-          this.ttsSpeedChip('0.5x', 0.5)
-          this.ttsSpeedChip('0.75x', 0.75)
-          this.ttsSpeedChip('1x', 1)
-          this.ttsSpeedChip('1.25x', 1.25)
-          this.ttsSpeedChip('1.5x', 1.5)
-          this.ttsSpeedChip('2x', 2)
-        }
-        .width('100%')
-      }
-      .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
-
-      Column().height(16)
-    }
-    .width('100%')
-  }
-
-  // 语速 chip（0.5x - 2x，播放中切换立即生效）
-  @Builder
-  ttsSpeedChip(label: string, value: number) {
-    Text(label)
-      .fontSize(13)
-      .fontColor(this.ttsSpeed === value ? '#FFFFFF' : this.pal.text)
-      .padding({ left: 14, right: 14, top: 6, bottom: 6 })
-      .borderRadius(16)
-      .backgroundColor(this.ttsSpeed === value ? this.pal.primary : this.pal.chip)
-      .margin({ right: 8, bottom: 8 })
-      .onClick(() => {
-        this.setTtsSpeed(value);
       })
+    } else if (this.panelKind === 'text') {
+      NovelTextPanel({
+        fontSize: this.fontSize,
+        pageMargin: this.pageMargin,
+        paraSpacing: this.paraSpacing,
+        lineHeight: this.lineHeight,
+        fontFamily: this.fontFamily,
+        onFontSizeDone: (v: number): void => {
+          Settings.setNovelFontSize(v);
+          this.ensurePaginated();
+        },
+        onMarginDone: (v: number): void => {
+          Settings.setNovelMargin(v);
+          this.ensurePaginated();
+        },
+        onParaSpacingDone: (v: number): void => {
+          Settings.setNovelParagraphSpacing(v);
+          this.ensurePaginated();
+        },
+        onLineHeightDone: (v: number): void => {
+          Settings.setNovelLineHeight(v);
+          this.ensurePaginated();
+        },
+        onFontFamily: (v: string): void => {
+          this.fontFamily = v;
+          Settings.setNovelFontFamily(v);
+          this.ensurePaginated();
+        }
+      })
+    } else {
+      NovelTtsPanel({
+        ttsPlaying: this.ttsPlaying,
+        ttsSpeed: this.ttsSpeed,
+        onToggle: (): void => {
+          this.toggleTts();
+        },
+        onSpeed: (v: number): void => {
+          this.setTtsSpeed(v);
+        }
+      })
+    }
   }
 
   build() {
@@ -2265,273 +1876,32 @@ export struct NovelReaderPage {
         // 进度/页码指示（菜单收起时）
         if (!this.showMenu && !this.loading && this.body !== '' && this.showPageNumber &&
           this.indicatorText() !== '') {
-          Text(this.indicatorText())
-            .fontSize(11)
-            .fontColor('#FFFFFF')
-            .padding({ left: 8, right: 8, top: 3, bottom: 3 })
-            .borderRadius(10)
-            .backgroundColor('#66000000')
-            .margin({ left: 16, top: 16, right: 16, bottom: this.navBarH + 16 })
+          ReaderIndicatorBadge({
+            text: this.indicatorText(),
+            navBarH: this.navBarH
+          })
         }
 
         // 菜单：顶栏 + 点击关闭占位 + 底栏（章节导航行 + 设置行）
         if (this.showMenu) {
-          Column() {
-            // 顶栏
-            Row() {
-              AppIcon({ name: 'arrow_back', iconSize: 24, tint: '#FFFFFF' })
-                .padding({ left: 12, right: 12 })
-                .onClick(() => {
-                  this.pathStack.pop();
-                })
-              Column() {
-                Text(this.manga.title)
-                  .fontSize(14)
-                  .fontColor('#FFFFFF')
-                  .maxLines(1)
-                  .textOverflow({ overflow: TextOverflow.Ellipsis })
-                Text(this.chapter.name)
-                  .fontSize(11)
-                  .fontColor('#CCCCCC')
-                  .maxLines(1)
-                  .textOverflow({ overflow: TextOverflow.Ellipsis })
-                  .margin({ top: 2 })
+          ReaderMenu({
+            title: this.manga.title,
+            subtitle: this.chapter.name,
+            statusBarH: this.statusBarH,
+            onBack: (): void => {
+              this.pathStack.pop();
+            },
+            onBackdrop: (): void => {
+              if (this.anySheetOpen()) {
+                this.dismissSheets();
+                return;
               }
-              .alignItems(HorizontalAlign.Start)
-              .layoutWeight(1)
+              this.showMenu = false;
+            },
+            bottomBar: (): void => {
+              this.menuBottomBar();
             }
-            .width('100%')
-            .padding({ left: 4, right: 16, top: this.statusBarH + 10, bottom: 10 })
-            .backgroundColor('#CC000000')
-            // 对齐漫画阅读器：顶栏从屏幕上方滑入/滑出 + 渐隐
-            .transition(
-              TransitionEffect.translate({ y: -120 })
-                .animation({ duration: 200, curve: Curve.Linear })
-                .combine(TransitionEffect.OPACITY.animation({ duration: 150, curve: Curve.Linear }))
-            )
-
-            // 占位（空 Column 宽度默认自适应内容为 0，必须显式撑满才能接收点击关闭菜单）
-            Column()
-              .layoutWeight(1)
-              .width('100%')
-              .onClick(() => {
-                if (this.anySheetOpen()) {
-                  this.dismissSheets();
-                  return;
-                }
-                this.showMenu = false;
-              })
-
-            // 底栏
-            Column({ space: 8 }) {
-              // 章节导航行
-              Row({ space: 12 }) {
-                // 上一章
-                Column() {
-                  Image(AppIconRes.get('skip_previous'))
-                    .width(24)
-                    .height(24)
-                    .fillColor('#FFFFFF')
-                }
-                .width(44)
-                .height(44)
-                .borderRadius(22)
-                .justifyContent(FlexAlign.Center)
-                .backgroundColor('#33FFFFFF')
-                .opacity(this.prevId > 0 ? 1 : 0.4)
-                .onClick(() => {
-                  if (this.prevId > 0) {
-                    this.openChapter(this.prevId);
-                  }
-                })
-
-                // 进度胶囊：滚动=百分比 Slider，翻页/双页=页码 Slider
-                if (this.mode === 'scroll' || (this.html && !this.hasImages)) {
-                  Row() {
-                    Text(`${Math.round(this.permilleUi / 10)}%`)
-                      .fontSize(13)
-                      .fontColor('#FFFFFF')
-                      .width(44)
-                      .textAlign(TextAlign.End)
-                    Slider({
-                      value: this.permilleUi,
-                      min: 0,
-                      max: 1000,
-                      step: 1,
-                      style: SliderStyle.OutSet
-                    })
-                      .layoutWeight(1)
-                      .blockColor('#FFFFFF')
-                      .selectedColor('#88FFFFFF')
-                      .trackColor('#33FFFFFF')
-                      .margin({ left: 8, right: 8 })
-                      .onChange((value: number, mode: SliderChangeMode) => {
-                        if (mode === SliderChangeMode.End || mode === SliderChangeMode.Click) {
-                          this.scrollToPermille(Math.round(value));
-                        }
-                      })
-                    Text('100%')
-                      .fontSize(13)
-                      .fontColor('#FFFFFF')
-                      .width(44)
-                  }
-                  .layoutWeight(1)
-                  .height(44)
-                  .borderRadius(22)
-                  .backgroundColor('#33FFFFFF')
-                  .padding({ left: 14, right: 14 })
-                } else if (this.screenIdxs.length > 0) {
-                  Row() {
-                    Text(`${this.pagedSliderPos()}`)
-                      .fontSize(13)
-                      .fontColor('#FFFFFF')
-                      .width(24)
-                      .textAlign(TextAlign.End)
-                    Slider({
-                      value: this.pagedSliderPos(),
-                      min: 1,
-                      max: this.screenIdxs.length > 1 ? this.screenIdxs.length : 2,
-                      step: 1,
-                      style: SliderStyle.OutSet
-                    })
-                      .layoutWeight(1)
-                      .blockColor('#FFFFFF')
-                      .selectedColor('#88FFFFFF')
-                      .trackColor('#33FFFFFF')
-                      .margin({ left: 8, right: 8 })
-                      .onChange((value: number, mode: SliderChangeMode) => {
-                        if (mode === SliderChangeMode.End || mode === SliderChangeMode.Click) {
-                          this.jumpScreen(this.pagedScreenFromSlider(Math.round(value)));
-                        }
-                      })
-                    Text(`${this.screenIdxs.length}`)
-                      .fontSize(13)
-                      .fontColor('#FFFFFF')
-                      .width(24)
-                  }
-                  .layoutWeight(1)
-                  .height(44)
-                  .borderRadius(22)
-                  .backgroundColor('#33FFFFFF')
-                  .padding({ left: 14, right: 14 })
-                } else {
-                  Column().layoutWeight(1)
-                }
-
-                // 下一章
-                Column() {
-                  Image(AppIconRes.get('skip_next'))
-                    .width(24)
-                    .height(24)
-                    .fillColor('#FFFFFF')
-                }
-                .width(44)
-                .height(44)
-                .borderRadius(22)
-                .justifyContent(FlexAlign.Center)
-                .backgroundColor('#33FFFFFF')
-                .opacity(this.nextId > 0 ? 1 : 0.4)
-                .onClick(() => {
-                  if (this.nextId > 0) {
-                    this.openChapter(this.nextId);
-                  }
-                })
-              }
-              .width('100%')
-              .padding({ left: 16, right: 16 })
-
-              // 设置行：阅读模式 / 屏幕方向 / 画面 / 文本设置（对齐漫画阅读器：多个入口图标）
-              Row() {
-                Column() {
-                  Image(AppIconRes.get(this.novelModeIcon()))
-                    .width(24)
-                    .height(24)
-                    .fillColor('#FFFFFF')
-                }
-                .width(48)
-                .height(44)
-                .justifyContent(FlexAlign.Center)
-                .onClick(() => {
-                  this.openSheet('mode');
-                })
-
-                Column() {
-                  Image(AppIconRes.get('screen_rotation'))
-                    .width(24)
-                    .height(24)
-                    .fillColor('#FFFFFF')
-                }
-                .width(48)
-                .height(44)
-                .justifyContent(FlexAlign.Center)
-                .onClick(() => {
-                  this.openSheet('orientation');
-                })
-
-                Column() {
-                  Image(AppIconRes.get('palette'))
-                    .width(24)
-                    .height(24)
-                    .fillColor('#FFFFFF')
-                }
-                .width(48)
-                .height(44)
-                .justifyContent(FlexAlign.Center)
-                .onClick(() => {
-                  this.openSheet('display');
-                })
-
-                Column() {
-                  Image(AppIconRes.get('format_size'))
-                    .width(24)
-                    .height(24)
-                    .fillColor('#FFFFFF')
-                }
-                .width(48)
-                .height(44)
-                .justifyContent(FlexAlign.Center)
-                .onClick(() => {
-                  this.openSheet('text');
-                })
-
-                // 听书（系统 TTS）
-                Column() {
-                  Image(AppIconRes.get(this.ttsPlaying ? 'pause' : 'playlist_play'))
-                    .width(24)
-                    .height(24)
-                    .fillColor('#FFFFFF')
-                }
-                .width(48)
-                .height(44)
-                .justifyContent(FlexAlign.Center)
-                .onClick(() => {
-                  this.openSheet('tts');
-                })
-              }
-              .width('100%')
-              .height(48)
-              .justifyContent(FlexAlign.SpaceEvenly)
-              .backgroundColor('#CC000000')
-            }
-            .width('100%')
-            .padding({ top: 8, bottom: this.navBarH + 8 })
-            .backgroundColor('#CC000000')
-            // 对齐漫画阅读器：底栏从屏幕下方滑入/滑出 + 渐隐
-            .transition(
-              TransitionEffect.translate({ y: 240 })
-                .animation({ duration: 200, curve: Curve.Linear })
-                .combine(TransitionEffect.OPACITY.animation({ duration: 150, curve: Curve.Linear }))
-            )
-          }
-          .width('100%')
-          .height('100%')
-          // 整棵子树删除时根组件需有消失转场时间，保证子组件的退出动画完整播放
-          .transition(
-            TransitionEffect.asymmetric(
-              TransitionEffect.IDENTITY,
-              TransitionEffect.OPACITY.animation({ duration: 200, curve: Curve.Linear })
-            )
-          )
+          })
         }
 
         // 设置面板 bindSheet 常驻宿主：挂 if(showMenu) 条件节点时菜单收起即销毁宿主，弹层不可靠；

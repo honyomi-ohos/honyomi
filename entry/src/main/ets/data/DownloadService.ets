@@ -85,7 +85,7 @@ export class DownloadService {
       }
       if (t.state !== 3) {
         t.state = 3;
-        t.error = '已取消';
+        t.error = 'download_cancelled';
       }
     }
     if (hasActive && DownloadService.activeCancel !== undefined) {
@@ -184,13 +184,13 @@ export class DownloadService {
     // cancel() 置状态后由下载循环/await 续体每轮检查 task.state 中止
     DownloadService.activeCancel = (): void => {
       task.state = 3;
-      task.error = '已取消';
+      task.error = 'download_cancelled';
     };
     DownloadService.notify();
     try {
       const source = SourceRegistry.get(task.sourceKey);
       if (source === undefined) {
-        throw new Error(`source not found: ${task.sourceKey}`);
+        throw new Error(`source_not_found|${task.sourceKey}`);
       }
       if (source.contentType === ContentType.NOVEL) {
         await DownloadService.downloadNovel(task, source);
@@ -202,7 +202,7 @@ export class DownloadService {
       }
       const pages: SPage[] = await source.getPageList(task.chapterUrl);
       if (task.state === 3) {
-        throw new Error('已取消');
+        throw new Error('download_cancelled');
       }
       task.total = pages.length;
       DownloadService.notify();
@@ -217,7 +217,7 @@ export class DownloadService {
       }
       for (const p of pages) {
         if (task.state === 3) {
-          throw new Error('已取消');
+          throw new Error('download_cancelled');
         }
         const fileName = DownloadService.pad(p.index);
         const filePath = `${dir}/${fileName}.jpg`;
@@ -247,7 +247,7 @@ export class DownloadService {
       }
     } catch (e) {
       task.state = 3;
-      task.error = e instanceof Error ? e.message : '下载失败';
+      task.error = e instanceof Error ? e.message : 'download_failed';
       // 失败/取消时清理部分下载文件，保证重试从头开始
       DownloadService.cleanupPartial(task.mangaId, task.chapterId);
     }
@@ -256,10 +256,10 @@ export class DownloadService {
   private static async downloadNovel(task: DownloadTask, source: Source): Promise<void> {
     const text = await source.getChapterText(task.chapterUrl);
     if (task.state === 3) {
-      throw new Error('已取消');
+      throw new Error('download_cancelled');
     }
     if (text === '') {
-      throw new Error('章节没有正文');
+      throw new Error('no_content');
     }
     const dir = DownloadService.chapterDir(task.mangaId, task.chapterId);
     if (!fileIo.accessSync(dir)) {
@@ -287,7 +287,7 @@ export class DownloadService {
   private static async downloadVideo(task: DownloadTask, source: Source): Promise<void> {
     const videos: SVideo[] = await source.getVideoList(task.chapterUrl);
     if (task.state === 3) {
-      throw new Error('已取消');
+      throw new Error('download_cancelled');
     }
     let chosen: SVideo | undefined = undefined;
     for (let i = 0; i < videos.length; i++) {
@@ -297,10 +297,10 @@ export class DownloadService {
       }
     }
     if (chosen === undefined) {
-      throw new Error('该视频是在线串流，不能下载');
+      throw new Error('stream_only');
     }
     if (DownloadService.context === undefined) {
-      throw new Error('下载服务未初始化');
+      throw new Error('download_not_ready');
     }
     const dir = DownloadService.chapterDir(task.mangaId, task.chapterId);
     if (!fileIo.accessSync(dir)) {

@@ -95,7 +95,8 @@ export struct MigrateSearchPage {
       const result: MangasPage = await source.getSearchManga(1, this.query.trim());
       this.results = await this.toRecords(source, result.mangas);
     } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.browse_search_failed'), [(e as Error).message]);
+      Util.toastRes(this.getUIContext(), $r('app.string.browse_search_failed'),
+        [Util.errText(this.getUIContext(), (e as Error).message)]);
     }
     this.searching = false;
   }
@@ -144,7 +145,8 @@ export struct MigrateSearchPage {
       Util.toastRes(this.getUIContext(), $r('app.string.migrate_item_done'), [cur.title]);
       this.advance();
     } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.migrate_failed'), [(e as Error).message]);
+      Util.toastRes(this.getUIContext(), $r('app.string.migrate_failed'),
+        [Util.errText(this.getUIContext(), (e as Error).message)]);
     }
     this.busy = false;
   }
@@ -247,7 +249,7 @@ export struct MigrateSearchPage {
           Scroll() {
             Row({ space: 8 }) {
               ForEach(this.targetSources(), (s: Source) => {
-                Text(s.name)
+                Text(Util.localSourceName(this.getUIContext(), s.key, s.name))
                   .fontSize(13)
                   .fontColor(this.targetKey === s.key ? '#FFFFFF' : this.pal.text)
                   .backgroundColor(this.targetKey === s.key ? this.pal.primary : this.pal.chip)

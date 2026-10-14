@@ -346,7 +346,7 @@ export class JsvmSource implements Source {
     const raw = await this.call<RawManga | undefined>('getMangaDetail', this.callArgs([mangaKey]));
     const manga = JsvmSource.toSManga(raw);
     if (manga === undefined) {
-      throw new Error('插件详情返回无效');
+      throw new Error('plugin_invalid_detail');
     }
     return manga;
   }
@@ -395,7 +395,7 @@ export class JsvmSource implements Source {
   async getChapterText(chapterKey: string): Promise<string> {
     if (this.exportedMethods.indexOf('getChapterText') < 0) {
       if (this.contentType === ContentType.NOVEL) {
-        throw new Error('插件未导出 getChapterText');
+        throw new Error('plugin_no_chapter_text');
       }
       return '';
     }
@@ -406,7 +406,7 @@ export class JsvmSource implements Source {
   async getVideoList(chapterKey: string): Promise<SVideo[]> {
     if (this.exportedMethods.indexOf('getVideoList') < 0) {
       if (this.contentType === ContentType.VIDEO) {
-        throw new Error('插件未导出 getVideoList');
+        throw new Error('plugin_no_video_list');
       }
       return [];
     }
@@ -629,7 +629,7 @@ export class JsvmSource implements Source {
     return genre as string;
   }
 
-  // tachiyomi MangaStatus 枚举 -> 展示文本
+  // tachiyomi MangaStatus 枚举 -> 状态 code（显示层经 Util.statusLabel 资源映射）
   private static toStatus(status: number | string | undefined): string {
     if (status === undefined) {
       return '';
@@ -639,19 +639,19 @@ export class JsvmSource implements Source {
     }
     switch (status as number) {
       case 1:
-        return '连载中';
+        return 'ongoing';
       case 2:
-        return '已完结';
+        return 'completed';
       case 3:
-        return '已授权';
+        return 'licensed';
       case 4:
-        return '出版完毕';
+        return 'publication_complete';
       case 5:
-        return '已取消';
+        return 'cancelled';
       case 6:
-        return '休刊';
+        return 'hiatus';
       default:
-        return '未知';
+        return 'unknown';
     }
   }
 }

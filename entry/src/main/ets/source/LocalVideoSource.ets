@@ -25,7 +25,7 @@ export class LocalVideoSource extends LocalFsSource {
   }
 
   protected mangaDescription(): string {
-    return '本地导入的视频';
+    return 'local_desc_video';
   }
 
   async getChapterList(mangaKey: string): Promise<SChapter[]> {
@@ -38,9 +38,9 @@ export class LocalVideoSource extends LocalFsSource {
   async getVideoList(chapterKey: string): Promise<SVideo[]> {
     const path = this.entryPath(chapterKey);
     if (path === '' || !this.fileExists(path)) {
-      throw new Error('视频文件不存在');
+      throw new Error('video_missing');
     }
-    const video: SVideo = { url: `file://${path}`, quality: '本地', headers: {} };
+    const video: SVideo = { url: `file://${path}`, quality: 'local', headers: {} };
     return [video];
   }
 }

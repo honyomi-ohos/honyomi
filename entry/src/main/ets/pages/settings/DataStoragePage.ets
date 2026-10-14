@@ -18,18 +18,25 @@ const INTERVAL_HOURS: number[] = [0, 6, 12, 24, 48, 168];
 // 存储位置 / 备份与还原（手动+自动）/ 存储占用（磁盘信息+章节缓存）/ 导出（书架列表 CSV）
 @Component
 export struct DataStorageContent {
-  @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  // 自动备份失败状态（BackupService 写入）：true 时展示失败提示条
+  @StorageProp('lastBackupFailed') lastBackupFailed: boolean = false;
   @State cacheLabel: string = '';
   @State usedPercent: number = 0;
   @State spaceText: string = '—';
   @State lastBackupText: string = '';
   @State busy: boolean = false;
+  // 页面销毁标志：异步续体据此跳过 toast/写状态
+  private disposed: boolean = false;
 
   aboutToAppear(): void {
     this.refreshCacheLabel();
     this.refreshStorageInfo();
     this.refreshLastBackup();
+  }
+
+  aboutToDisappear(): void {
+    this.disposed = true;
   }
 
   private refreshCacheLabel(): void {
@@ -75,12 +82,20 @@ export struct DataStorageContent {
     try {
       const context = Util.hostAbilityContext(this.getUIContext());
       const ok = await BackupService.exportBackup(context);
+      if (this.disposed) {
+        return;
+      }
       Util.toastRes(this.getUIContext(), ok ? $r('app.string.advanced_backup_exported') :
         $r('app.string.advanced_export_canceled'));
     } catch (e) {
+      if (this.disposed) {
+        return;
+      }
       Util.toastRes(this.getUIContext(), $r('app.string.advanced_export_failed'));
     }
-    this.busy = false;
+    if (!this.disposed) {
+      this.busy = false;
+    }
   }
 
   private async doRestoreBackup(): Promise<void> {
@@ -91,6 +106,9 @@ export struct DataStorageContent {
     try {
       const context = Util.hostAbilityContext(this.getUIContext());
       const count = await BackupService.importBackup(context);
+      if (this.disposed) {
+        return;
+      }
       if (count === -1) {
         Util.toastRes(this.getUIContext(), $r('app.string.advanced_import_canceled'));
       } else if (count === -2) {
@@ -100,9 +118,14 @@ export struct DataStorageContent {
         AppStorage.setOrCreate('libDirty', (AppStorage.get<number>('libDirty') ?? 0) + 1);
       }
     } catch (e) {
+      if (this.disposed) {
+        return;
+      }
       Util.toastRes(this.getUIContext(), $r('app.string.advanced_import_failed'));
     }
-    this.busy = false;
+    if (!this.disposed) {
+      this.busy = false;
+    }
   }
 
   private onIntervalSelect(index: number): void {
@@ -220,6 +243,14 @@ export struct DataStorageContent {
           })
 
           Divider().color(this.pal.divider).margin({ left: 16 })
+
+          // 上次自动备份失败提示条
+          if (this.lastBackupFailed) {
+            Text($r('app.string.last_backup_failed_hint'))
+              .fontSize(12)
+              .fontColor('#D32F2F')
+              .padding({ left: 16, right: 16, top: 10 })
+          }
 
           Text($r('app.string.data_backup_info'))
             .fontSize(12)

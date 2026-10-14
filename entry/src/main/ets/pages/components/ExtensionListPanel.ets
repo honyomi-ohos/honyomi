@@ -147,7 +147,8 @@ export struct ExtensionListPanel {
       if (this.disposed) {
         return;
       }
-      Util.toastRes(this.getUIContext(), $r('app.string.plugin_repo_load_failed'), [(e as Error).message]);
+      Util.toastRes(this.getUIContext(), $r('app.string.plugin_repo_load_failed'),
+        [Util.errText(this.getUIContext(), (e as Error).message)]);
     }
     if (!this.disposed) {
       this.loadingRepo = false;
@@ -191,7 +192,8 @@ export struct ExtensionListPanel {
       if (this.disposed) {
         return;
       }
-      Util.toastRes(this.getUIContext(), $r('app.string.plugin_install_failed'), [(e as Error).message]);
+      Util.toastRes(this.getUIContext(), $r('app.string.plugin_install_failed'),
+        [Util.errText(this.getUIContext(), (e as Error).message)]);
     }
     if (!this.disposed) {
       this.busy = false;
@@ -215,7 +217,8 @@ export struct ExtensionListPanel {
       if (this.disposed) {
         return;
       }
-      Util.toastRes(this.getUIContext(), $r('app.string.plugin_install_failed'), [(e as Error).message]);
+      Util.toastRes(this.getUIContext(), $r('app.string.plugin_install_failed'),
+        [Util.errText(this.getUIContext(), (e as Error).message)]);
     }
     if (!this.disposed) {
       this.busy = false;

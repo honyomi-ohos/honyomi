@@ -132,7 +132,7 @@ struct DetailChapterRow {
             .fontColor(this.pal.sub)
             .margin({ left: 8 })
         } else {
-          // 包裹容器设置 HitTestMode.Block 缩小命中区域；stopPropagation 阻断冒泡，
+          // 包裹容器设置 HitTestMode.Block 缩小命中区域并阻断冒泡，
           // 避免同时触发整行 onClick（打开阅读器）
           Row() {
             Text($r('app.string.detail_download'))
@@ -142,8 +142,7 @@ struct DetailChapterRow {
               .padding(4)
           }
           .hitTestBehavior(HitTestMode.Block)
-          .onClick((event: ClickEvent) => {
-            event.stopPropagation();
+          .onClick(() => {
             this.onDownload(this.chapter);
           })
         }
@@ -1117,7 +1116,7 @@ export struct MangaDetailPage {
             if (this.manga.description !== '') {
               ListItem() {
                 Column() {
-                  Text(this.manga.description)
+                  Text(Util.localDescriptionLabel(this.getUIContext(), this.manga.description))
                     .fontSize(13)
                     .fontColor(this.pal.sub)
                     .maxLines(this.descExpanded ? 999 : 3)

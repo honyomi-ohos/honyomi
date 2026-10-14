@@ -78,7 +78,8 @@ export struct BrowseSourcePage {
       this.results = await this.toRecords(source.key, result.mangas);
       this.hasNextPage = result.hasNextPage;
     } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.browse_load_failed'), [(e as Error).message]);
+      Util.toastRes(this.getUIContext(), $r('app.string.browse_load_failed'),
+        [Util.errText(this.getUIContext(), (e as Error).message)]);
     }
     this.searching = false;
   }
@@ -99,7 +100,8 @@ export struct BrowseSourcePage {
       this.results = await this.toRecords(source.key, result.mangas);
       this.hasNextPage = result.hasNextPage;
     } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.browse_search_failed'), [(e as Error).message]);
+      Util.toastRes(this.getUIContext(), $r('app.string.browse_search_failed'),
+        [Util.errText(this.getUIContext(), (e as Error).message)]);
     }
     this.searching = false;
   }
@@ -229,7 +231,8 @@ export struct BrowseSourcePage {
       if (msg === 'ACCESS') {
         Util.toastRes(this.getUIContext(), $r('app.string.browse_local_access_failed'));
       } else {
-        Util.toastRes(this.getUIContext(), $r('app.string.browse_local_sync_failed'), [msg]);
+        Util.toastRes(this.getUIContext(), $r('app.string.browse_local_sync_failed'),
+          [Util.errText(this.getUIContext(), msg)]);
       }
     }
   }
@@ -261,7 +264,8 @@ export struct BrowseSourcePage {
               .onClick(() => {
                 this.pathStack.pop();
               })
-            Text(this.currentSource() !== undefined ? (this.currentSource() as Source).name : '')
+            Text(this.currentSource() !== undefined ?
+              Util.localSourceName(this.getUIContext(), this.sourceKey, (this.currentSource() as Source).name) : '')
               .fontSize(18)
               .fontWeight(FontWeight.Bold)
               .fontColor(this.pal.text)

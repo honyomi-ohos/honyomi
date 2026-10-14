@@ -40,7 +40,7 @@ export class LocalSource extends LocalFsSource {
   }
 
   protected mangaDescription(): string {
-    return '本地导入的漫画';
+    return 'local_desc_manga';
   }
 
   async getChapterList(mangaKey: string): Promise<SChapter[]> {
@@ -53,7 +53,7 @@ export class LocalSource extends LocalFsSource {
   async getPageList(chapterKey: string): Promise<SPage[]> {
     const entryPath = this.entryPath(chapterKey);
     if (entryPath === '' || !fs.accessSync(entryPath)) {
-      throw new Error('章节文件不存在');
+      throw new Error('chapter_missing');
     }
     const sepIdx = chapterKey.indexOf('::');
     const mangaDir = chapterKey.substring(0, sepIdx);
@@ -65,7 +65,7 @@ export class LocalSource extends LocalFsSource {
     if (fs.statSync(entryPath).isDirectory()) {
       return this.urlsToPages(this.listImages(entryPath));
     }
-    throw new Error('不支持的章节格式');
+    throw new Error('unsupported_format');
   }
 
   // 递归收集章节条目相对路径：归档文件与含图片的目录为章节，

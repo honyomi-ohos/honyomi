@@ -167,10 +167,10 @@ export class JsvmExtensionManager {
   static async callMethod(key: string, method: string, args: Array<string | number | boolean | object>): Promise<string> {
     const entry = JsvmExtensionManager.extensions.get(key);
     if (entry === undefined) {
-      throw new Error(`扩展未加载: ${key}`);
+      throw new Error('ext_not_loaded');
     }
     if (entry.broken) {
-      throw new Error(`扩展已损坏，请重新加载: ${key}`);
+      throw new Error('ext_broken');
     }
     return JsvmExtensionManager.callRaw(entry, method, JSON.stringify(args));
   }
@@ -244,7 +244,7 @@ export class JsvmExtensionManager {
       if (event.ok === true) {
         pending.resolve(event.kind ?? '');
       } else {
-        pending.reject(new Error(event.error ?? 'JSVM 扩展初始化失败'));
+        pending.reject(new Error(event.error ?? 'ext_init_failed'));
       }
       if (event.prefs !== undefined && event.prefs !== '' && event.prefs !== entry.lastPrefsJson) {
         entry.lastPrefsJson = event.prefs;
@@ -269,7 +269,7 @@ export class JsvmExtensionManager {
       if (event.ok === true) {
         pending.resolve(event.json ?? '{"ok":false,"error":"empty result"}');
       } else {
-        pending.reject(new Error(event.json ?? '调用失败'));
+        pending.reject(new Error(event.json ?? 'ext_call_failed'));
       }
     }
     // 'ready' / 'destroyed' are consumed via callRaw, nothing else to do here.
@@ -279,7 +279,7 @@ export class JsvmExtensionManager {
     const promise = new Promise<string>((resolve, reject) => {
       const timer = setTimeout(() => {
         entry.pending.delete(READY_SEQ);
-        reject(new Error('JSVM 扩展初始化超时'));
+        reject(new Error('ext_init_timeout'));
       }, READY_TIMEOUT_MS);
       entry.pending.set(READY_SEQ, {
         resolve: (json: string): void => {
@@ -305,7 +305,7 @@ export class JsvmExtensionManager {
           entry.pending.delete(seq);
           // 调用超时：标记 broken 并强杀 worker，避免后续调用继续挂在死 worker 上
           entry.broken = true;
-          JsvmExtensionManager.failAll(entry, new Error(`扩展调用超时: ${method}`));
+          JsvmExtensionManager.failAll(entry, new Error(`ext_call_timeout|${method}`));
           try {
             entry.worker.terminate();
           } catch (e) {
@@ -346,10 +346,10 @@ export class JsvmExtensionManager {
     try {
       envelope = JSON.parse(envelopeJson) as CallEnvelope;
     } catch (e) {
-      throw new Error('扩展返回无效 JSON');
+      throw new Error('ext_invalid_json');
     }
     if (envelope.ok !== true) {
-      const error = envelope.error ?? '未知扩展错误';
+      const error = envelope.error ?? 'ext_unknown';
       if (NativeHttpBridge.isChallengeError(error)) {
         throw new WebChallengeError(NativeHttpBridge.challengeUrlOf(error));
       }

@@ -951,6 +951,29 @@ static const char *ADAPTER_JS = R"JS((function () {
       if (name === '__prefsDump') {
         return okJson(typeof g.__prefsDump === 'function' ? g.__prefsDump() : (g.__PREFS_STORE__ || {}));
       }
+      // Escape hatch: "__"-prefixed global functions registered by the loaded
+      // script itself (e.g. the AVIF WASM converter's __initWasm/__convertAvif)
+      // are callable even when no extension api was found.
+      if (name.length > 2 && name.indexOf('__') === 0 && typeof g[name] === 'function') {
+        var fnArgs = [];
+        if (typeof argsJson === 'string') {
+          if (argsJson !== '') { fnArgs = JSON.parse(argsJson); }
+        } else if (argsJson && typeof argsJson === 'object' && typeof argsJson.length === 'number') {
+          fnArgs = argsJson;
+        }
+        var fnResult = g[name].apply(null, fnArgs);
+        if (fnResult && typeof fnResult.then === 'function') {
+          fnResult.then(function (v) {
+            state.done = true;
+            state.json = okJson(v);
+          }, function (e) {
+            state.done = true;
+            state.json = errJson(e && e.message ? e.message : String(e));
+          });
+          return '__PENDING__';
+        }
+        return okJson(fnResult);
+      }
       if (!api) {
         return errJson('no extension exports found (expected tachiyomi.generated, module.exports, or globalThis.extension)');
       }

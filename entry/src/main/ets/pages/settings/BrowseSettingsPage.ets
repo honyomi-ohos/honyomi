@@ -6,7 +6,6 @@ import { PrefGroup, PrefSwitchRow } from '../components/Prefs';
 // 浏览设置内容：NSFW 源显示
 @Component
 export struct BrowseSettingsContent {
-  @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   build() {

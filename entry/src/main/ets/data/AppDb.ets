@@ -209,6 +209,31 @@ export class AppDb {
       version = 3;
       hilog.info(0x0001, 'AppDb', 'migrated schema to v3');
     }
+    // v3 -> v4：内置数据 code 化（分类名/连载状态改存 code，显示层经资源映射多语言）
+    if (version < 4) {
+      store.beginTransaction();
+      try {
+        // 分类名：内置默认分类的中文历史值 → 内容类型 code（用户自建/改名分类不动）
+        await store.executeSql(`UPDATE category SET name = 'manga' WHERE name IN ('漫画', '默认')`);
+        await store.executeSql(`UPDATE category SET name = 'novel' WHERE name = '小说'`);
+        await store.executeSql(`UPDATE category SET name = 'video' WHERE name = '动画'`);
+        // 连载状态：中文历史值 → tachiyomi 状态 code
+        await store.executeSql(`UPDATE manga SET status = 'ongoing' WHERE status = '连载中'`);
+        await store.executeSql(`UPDATE manga SET status = 'completed' WHERE status = '已完结'`);
+        await store.executeSql(`UPDATE manga SET status = 'licensed' WHERE status = '已授权'`);
+        await store.executeSql(`UPDATE manga SET status = 'publication_complete' WHERE status = '出版完毕'`);
+        await store.executeSql(`UPDATE manga SET status = 'cancelled' WHERE status = '已取消'`);
+        await store.executeSql(`UPDATE manga SET status = 'hiatus' WHERE status = '休刊'`);
+        await store.executeSql(`UPDATE manga SET status = 'unknown' WHERE status = '未知'`);
+        await store.executeSql(`PRAGMA user_version = 4`);
+        store.commit();
+      } catch (e) {
+        store.rollBack();
+        throw new Error(`migrate to v4 failed: ${e}`);
+      }
+      version = 4;
+      hilog.info(0x0001, 'AppDb', 'migrated schema to v4');
+    }
   }
 
   // 二级索引：书架/更新/历史/统计的高频查询列

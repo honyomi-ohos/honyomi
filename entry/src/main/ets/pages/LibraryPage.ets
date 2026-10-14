@@ -738,7 +738,9 @@ export struct LibraryPage {
                 this.selectedCategory = 0;
               })
             ForEach(this.categories, (cat: CategoryRecord) => {
-              Text(this.showMangaCount ? `${cat.name} ${this.categoryCount(cat.id)}` : cat.name)
+              Text(this.showMangaCount ?
+                `${Util.categoryLabelStr(this.getUIContext(), cat.name)} ${this.categoryCount(cat.id)}` :
+                Util.categoryLabel(cat.name))
                 .fontSize(13)
                 .fontColor(this.selectedCategory === cat.id ? '#FFFFFF' : this.pal.text)
                 .backgroundColor(this.selectedCategory === cat.id ? this.pal.primary : this.pal.chip)

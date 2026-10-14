@@ -5,6 +5,7 @@ import { cryptoFramework } from '@kit.CryptoArchitectureKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { Http } from '../net/Http';
 import { SourceRegistry } from '../source/Source';
+import { AvifConverter } from './AvifConverter';
 
 // 磁盘缓存文件元信息（超预算时按 mtime 淘汰最旧文件）
 interface CacheFileMeta {
@@ -70,6 +71,7 @@ export class ImageCache {
     }
     const path = await ImageCache.cachedPath(url);
     if (fs.accessSync(path)) {
+      await ImageCache.upgradeAvif(path);
       return `file://${path}`;
     }
     const pending = ImageCache.inflight.get(url);
@@ -99,6 +101,7 @@ export class ImageCache {
     const headers: Record<string, string> = srcHeaders !== undefined ? srcHeaders : {};
     const path = await ImageCache.cachedPath(url);
     if (fs.accessSync(path)) {
+      await ImageCache.upgradeAvif(path);
       return path;
     }
     try {
@@ -179,7 +182,16 @@ export class ImageCache {
   // ---------------- 内部实现 ----------------
 
   private static async fetch(url: string, headers: Record<string, string>, path: string): Promise<string> {
-    const buffer = await Http.getBuffer(url, headers);
+    const raw = await Http.getBuffer(url, headers);
+    let buffer = raw;
+    // AVIF 落盘前转 JPEG：系统解码器不支持 AVIF（且失败时 Promise 挂死）
+    if (AvifConverter.isAvif(new Uint8Array(raw))) {
+      try {
+        buffer = await AvifConverter.convert(new Uint8Array(raw));
+      } catch (e) {
+        // 转换失败：保留原始 AVIF 字节（支持 AVIF 的设备仍可显示）
+      }
+    }
     // 原子落盘：先写临时文件再改名，避免应用进程与表单进程并发写坏同一封面
     const tmp = `${path}.tmp`;
     let existed = false;
@@ -210,6 +222,71 @@ export class ImageCache {
       ImageCache.noteWrite(buffer.byteLength);
     }
     return `file://${path}`;
+  }
+
+  // ---------------- AVIF 惰性升级 ----------------
+  // 旧版本构建落盘的 .avif 缓存文件：命中时嗅探内容，AVIF 则经 WASM 转换器
+  // 原位替换为 JPEG（同名文件，系统 Image 按内容嗅探解码）
+
+  private static upgrading: Map<string, Promise<void>> = new Map();
+
+  private static upgradeAvif(path: string): Promise<void> {
+    // 仅 .avif 后缀可能存有未转换内容（fetch 路径已对所有下载做过转换）
+    if (!path.endsWith('.avif')) {
+      return Promise.resolve();
+    }
+    const pending = ImageCache.upgrading.get(path);
+    if (pending !== undefined) {
+      return pending;
+    }
+    const task = ImageCache.doUpgradeAvif(path);
+    ImageCache.upgrading.set(path, task);
+    return task.finally((): void => {
+      ImageCache.upgrading.delete(path);
+    });
+  }
+
+  private static async doUpgradeAvif(path: string): Promise<void> {
+    try {
+      if (!fs.accessSync(path)) {
+        return;
+      }
+      const stat = fs.statSync(path);
+      const file = fs.openSync(path, fs.OpenMode.READ_ONLY);
+      let src: Uint8Array;
+      try {
+        const body = new ArrayBuffer(stat.size);
+        fs.readSync(file.fd, body);
+        src = new Uint8Array(body);
+      } finally {
+        fs.closeSync(file);
+      }
+      if (!AvifConverter.isAvif(src)) {
+        return;
+      }
+      const jpeg = await AvifConverter.convert(src);
+      const tmp = `${path}.tmp`;
+      try {
+        const out = fs.openSync(tmp, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE | fs.OpenMode.TRUNC);
+        try {
+          fs.writeSync(out.fd, jpeg);
+        } finally {
+          fs.closeSync(out);
+        }
+        fs.renameSync(tmp, path);
+      } catch (e) {
+        try {
+          if (fs.accessSync(tmp)) {
+            fs.unlinkSync(tmp);
+          }
+        } catch (_e) {
+        }
+        return;
+      }
+      ImageCache.noteWrite(jpeg.byteLength - src.byteLength);
+    } catch (e) {
+      // 升级失败保留原文件
+    }
   }
 
   // 写入成功后增量累计字节，超预算时延后一拍触发 LRU 淘汰

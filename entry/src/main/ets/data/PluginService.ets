@@ -146,28 +146,28 @@ export class PluginService {
     const key = raw.key ?? '';
     const name = raw.name ?? '';
     if (!new RegExp('^[a-z0-9_]+$').test(key)) {
-      throw new Error('manifest.key 无效（仅小写字母/数字/下划线）');
+      throw new Error('plugin_bad_key');
     }
     if (name === '') {
-      throw new Error('manifest.name 缺失');
+      throw new Error('plugin_missing_name');
     }
     const versionCode = raw.versionCode ?? 0;
     if (versionCode <= 0) {
-      throw new Error('manifest.versionCode 无效');
+      throw new Error('plugin_bad_version_code');
     }
     // 引擎门禁：唯一支持的执行引擎是 jsvm
     const engine = raw.engine ?? 'jsvm';
     if (engine !== 'jsvm') {
-      throw new Error(`不支持的插件引擎: ${engine}（本应用仅支持 jsvm）`);
+      throw new Error(`plugin_bad_engine|${engine}`);
     }
     // 版本门禁：DSL 版本过高或要求的应用版本过高时拒绝加载，给出可理解的错误
     const dslVersion = raw.dslVersion ?? 1;
     if (dslVersion > PluginService.HOST_DSL_VERSION) {
-      throw new Error(`插件需要新版应用（DSL v${dslVersion} > v${PluginService.HOST_DSL_VERSION}），请先升级应用`);
+      throw new Error(`plugin_dsl_too_new|DSL v${dslVersion} > v${PluginService.HOST_DSL_VERSION}`);
     }
     const minAppVersion = raw.minAppVersion ?? 1;
     if (minAppVersion > PluginService.appVersionCode) {
-      throw new Error(`插件需要应用版本号 ≥ ${minAppVersion}，请先升级应用`);
+      throw new Error(`plugin_app_too_old|${minAppVersion}`);
     }
     // icon 仅允许简单文件名（禁止 /、\、.. 等路径穿越），非法时忽略
     let icon = raw.icon ?? '';
@@ -231,7 +231,7 @@ export class PluginService {
         fs.closeSync(srcFile);
       }
     } catch (e) {
-      throw new Error(`读取所选文件失败：${(e as Error).message}`);
+      throw new Error(`plugin_read_failed|${(e as Error).message}`);
     }
     try {
       return await PluginService.installZip(zipPath);
@@ -245,13 +245,13 @@ export class PluginService {
   // 从仓库条目下载并安装：强制 https，索引声明 checksum（sha256）时校验完整性
   static async installFromRepo(entry: RepoEntry): Promise<string> {
     if (entry.file.startsWith('http://')) {
-      throw new Error('插件包地址必须使用 https，已拒绝明文下载');
+      throw new Error('plugin_repo_not_https');
     }
     const buffer: ArrayBuffer = await Http.getBuffer(entry.file, undefined);
     if (entry.checksum !== '') {
       const actual: string = await PluginService.sha256Hex(buffer);
       if (actual !== entry.checksum.toLowerCase()) {
-        throw new Error('插件包完整性校验失败（sha256 不匹配），已取消安装');
+        throw new Error('plugin_checksum_mismatch');
       }
     }
     const zipPath = `${PluginService.cacheDir}/plugin_repo_${entry.key}_${Date.now()}_${util.generateRandomUUID()}.honyomiplug`;
@@ -350,7 +350,7 @@ export class PluginService {
     }
     if (!new RegExp('^[a-z0-9_]+$').test(name) || PluginService.context === undefined) {
       hilog.warn(DOMAIN, TAG, 'invalid plugin runtime name: %{public}s', name);
-      throw new Error(`插件 runtime 名称无效: ${name}`);
+      throw new Error(`plugin_runtime_invalid|${name}`);
     }
     try {
       const data = PluginService.context.resourceManager
@@ -360,7 +360,7 @@ export class PluginService {
       return text;
     } catch (e) {
       hilog.warn(DOMAIN, TAG, 'load plugin runtime %{public}s failed: %{public}s', name, (e as Error).message);
-      throw new Error(`插件运行时组件缺失: plugin_runtime_${name}.js`);
+      throw new Error(`plugin_runtime_missing|${name}`);
     }
   }
 
@@ -388,7 +388,7 @@ export class PluginService {
       const rootDir = PluginService.findPluginRoot(extractDir);
       const manifest = PluginService.parseManifest(fs.readTextSync(`${rootDir}/manifest.json`));
       if (!fs.accessSync(`${rootDir}/main.js`)) {
-        throw new Error('插件包缺少 main.js');
+        throw new Error('plugin_missing_main');
       }
       // 先完整复制到 staging 目录，成功后再删除旧目录并 rename 新目录
       stagingDir = `${PluginService.pluginsDir}/.staging_${manifest.key}_${Date.now()}_${util.generateRandomUUID()}`;
@@ -412,7 +412,7 @@ export class PluginService {
         if (swapped) {
           fs.renameSync(backupDir, destDir);
         }
-        throw new Error(`替换插件目录失败：${(e as Error).message}`);
+        throw new Error(`plugin_replace_failed|${(e as Error).message}`);
       }
       if (swapped && fs.accessSync(backupDir)) {
         fs.rmdirSync(backupDir);
@@ -443,14 +443,14 @@ export class PluginService {
         return sub;
       }
     }
-    throw new Error('插件包中未找到 manifest.json');
+    throw new Error('plugin_no_manifest');
   }
 
   // 仓库索引里的 file 可以是绝对 URL，也可以相对 index.json 所在目录；强制 https。
   private static resolveRepoFile(indexUrl: string, file: string): string {
     if (file.startsWith('http://')) {
       // 明文 http 分发插件包等同远程代码注入面，一律拒绝
-      throw new Error('插件仓库地址必须使用 https，已拒绝 http:// 条目');
+      throw new Error('plugin_repo_entry_not_https');
     }
     if (file.startsWith('https://')) {
       return file;

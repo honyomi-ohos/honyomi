@@ -225,9 +225,9 @@ export struct UpdatesPage {
                     .borderRadius(6)
                     .backgroundColor(this.pal.chip)
                     .justifyContent(FlexAlign.Center)
-                    .onClick((event: ClickEvent) => {
-                      // 阻断冒泡：避免同时触发整行 onClick（打开阅读器）
-                      event.stopPropagation();
+                    // HitTestMode.Block 阻断冒泡：避免同时触发整行 onClick（直接打开阅读器）
+                    .hitTestBehavior(HitTestMode.Block)
+                    .onClick(() => {
                       this.openDetail(item.mangaId);
                     })
                   } else {
@@ -237,8 +237,8 @@ export struct UpdatesPage {
                       .height(60)
                       .borderRadius(6)
                       .backgroundColor(this.pal.chip)
-                      .onClick((event: ClickEvent) => {
-                        event.stopPropagation();
+                      .hitTestBehavior(HitTestMode.Block)
+                      .onClick(() => {
                         this.openDetail(item.mangaId);
                       })
                   }

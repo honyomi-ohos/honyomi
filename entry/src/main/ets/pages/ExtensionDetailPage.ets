@@ -121,7 +121,8 @@ export struct ExtensionDetailPage {
     } catch (e) {
       this.schema = [];
       if (!this.destroyed) {
-        Util.toastRes(this.getUIContext(), $r('app.string.ext_pref_failed'), [(e as Error).message]);
+        Util.toastRes(this.getUIContext(), $r('app.string.ext_pref_failed'),
+          [Util.errText(this.getUIContext(), (e as Error).message)]);
       }
     }
     this.loadingSchema = false;
@@ -142,7 +143,8 @@ export struct ExtensionDetailPage {
       await this.loadSchema();
     } catch (e) {
       if (!this.destroyed) {
-        Util.toastRes(this.getUIContext(), $r('app.string.ext_pref_failed'), [(e as Error).message]);
+        Util.toastRes(this.getUIContext(), $r('app.string.ext_pref_failed'),
+          [Util.errText(this.getUIContext(), (e as Error).message)]);
       }
     }
     this.busy = false;

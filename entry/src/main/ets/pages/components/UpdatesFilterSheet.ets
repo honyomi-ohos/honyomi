@@ -1,5 +1,6 @@
 import { ThemePalette } from '../../common/Theme';
 import { CategoryRecord } from '../../model/Models';
+import { Util } from '../../common/Util';
 import { AppIcon } from './AppIcon';
 
 // 三态筛选键（对齐 Mihon UpdatesFilterDialog 顺序：已下载/未读/阅读过/已添加书签）
@@ -192,7 +193,7 @@ export struct UpdatesFilterSheet {
               tint: this.triTint(this.catState(cat.id))
             })
               .margin({ right: 16 })
-            Text(cat.name)
+            Text(Util.categoryLabel(cat.name))
               .fontSize(15)
               .fontColor(this.pal.text)
           }

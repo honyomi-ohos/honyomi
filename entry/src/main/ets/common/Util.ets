@@ -5,6 +5,11 @@ import { util } from '@kit.ArkTS';
 import { Settings } from './Settings';
 
 export class Util {
+  // 长度为 n 的零数组（阅读器翻页变换数组初始化）
+  static zeros(n: number): number[] {
+    return new Array<number>(n).fill(0);
+  }
+
   // the global getContext() helper is deprecated since API 18: use UIContext.getHostContext() instead
   static hostAbilityContext(ui: UIContext): common.UIAbilityContext {
     return ui.getHostContext() as common.UIAbilityContext;
@@ -122,6 +127,8 @@ export class Util {
         return $r('app.string.util_status_ongoing');
       case 'completed':
         return $r('app.string.util_status_completed');
+      case 'licensed':
+        return $r('app.string.util_status_licensed');
       case 'hiatus':
         return $r('app.string.util_status_hiatus');
       case 'cancelled':
@@ -131,6 +138,62 @@ export class Util {
       default:
         return $r('app.string.util_status_unknown');
     }
+  }
+
+  // 分类名 → 本地化标签：内置分类（内容类型 code）走资源，用户自建/改名分类原样显示
+  static categoryLabel(name: string): ResourceStr {
+    if (name === 'manga') {
+      return $r('app.string.category_manga');
+    }
+    if (name === 'novel') {
+      return $r('app.string.category_novel');
+    }
+    if (name === 'video') {
+      return $r('app.string.category_video');
+    }
+    return name;
+  }
+
+  // 同 categoryLabel，返回 string（用于插值拼接场景）
+  static categoryLabelStr(ui: UIContext, name: string): string {
+    if (name === 'manga') {
+      return Util.resStr(ui, $r('app.string.category_manga'));
+    }
+    if (name === 'novel') {
+      return Util.resStr(ui, $r('app.string.category_novel'));
+    }
+    if (name === 'video') {
+      return Util.resStr(ui, $r('app.string.category_video'));
+    }
+    return name;
+  }
+
+  // 本地源名称显示：内置三源走资源，其余源原样
+  static localSourceName(ui: UIContext, key: string, name: string): string {
+    if (key === 'local') {
+      return Util.resStr(ui, $r('app.string.browse_local_source_name'));
+    }
+    if (key === 'local_novel') {
+      return Util.resStr(ui, $r('app.string.browse_local_novel_name'));
+    }
+    if (key === 'local_video') {
+      return Util.resStr(ui, $r('app.string.browse_local_video_name'));
+    }
+    return name;
+  }
+
+  // 本地源作品简介：描述字段为内置 code（或历史中文值）时转本地化文案，真实简介原样
+  static localDescriptionLabel(ui: UIContext, description: string): string {
+    if (description === 'local_desc_manga' || description === '本地导入的漫画') {
+      return Util.resStr(ui, $r('app.string.local_desc_manga'));
+    }
+    if (description === 'local_desc_novel' || description === '本地导入的小说') {
+      return Util.resStr(ui, $r('app.string.local_desc_novel'));
+    }
+    if (description === 'local_desc_video' || description === '本地导入的视频') {
+      return Util.resStr(ui, $r('app.string.local_desc_video'));
+    }
+    return description;
   }
 
   // 从资源取字符串（用于 toast / 非组件上下文）；args 对应资源中的 %d/%s 占位
@@ -148,6 +211,171 @@ export class Util {
 
   static toastRes(ui: UIContext, res: Resource, args: Array<string | number> = []): void {
     Util.toast(ui, Util.resStr(ui, res, args));
+  }
+
+  // 错误码 → 本地化文案：服务层业务错误统一为 "code" 或 "code|arg" 格式，
+  // 未识别内容（插件自抛消息/引擎透传/系统错误）原样返回
+  static errText(ui: UIContext, raw: string): string {
+    let code: string = raw;
+    let arg: string = '';
+    const sep: number = raw.indexOf('|');
+    if (sep >= 0) {
+      code = raw.substring(0, sep);
+      arg = raw.substring(sep + 1);
+    }
+    let res: Resource | undefined = undefined;
+    switch (code) {
+      case 'cf_required':
+        res = $r('app.string.cf_retry_hint');
+        break;
+      case 'source_unavailable':
+        res = $r('app.string.reader_source_unavailable');
+        break;
+      case 'no_content':
+        res = $r('app.string.reader_no_content');
+        break;
+      case 'play_failed':
+        res = $r('app.string.video_play_failed');
+        break;
+      case 'video_no_streams':
+        res = $r('app.string.video_no_streams');
+        break;
+      case 'download_cancelled':
+        res = $r('app.string.download_error_cancelled');
+        break;
+      case 'download_failed':
+        res = $r('app.string.download_error_failed');
+        break;
+      case 'download_timeout':
+        res = $r('app.string.download_error_timeout');
+        break;
+      case 'download_fail':
+        res = $r('app.string.download_error_fail');
+        break;
+      case 'stream_only':
+        res = $r('app.string.download_error_stream_only');
+        break;
+      case 'download_not_ready':
+        res = $r('app.string.download_error_not_ready');
+        break;
+      case 'source_not_found':
+        res = $r('app.string.download_error_source_missing');
+        break;
+      case 'chapter_missing':
+        res = $r('app.string.local_error_chapter_missing');
+        break;
+      case 'unsupported_format':
+        res = $r('app.string.local_error_unsupported_format');
+        break;
+      case 'video_missing':
+        res = $r('app.string.local_error_video_missing');
+        break;
+      case 'redirect_blocked':
+        res = $r('app.string.net_redirect_blocked');
+        break;
+      case 'too_many_redirects':
+        res = $r('app.string.net_too_many_redirects');
+        break;
+      case 'tts_busy':
+        res = $r('app.string.tts_error_busy');
+        break;
+      case 'tts_stalled':
+        res = $r('app.string.tts_error_stalled');
+        break;
+      case 'tts_unavailable':
+        res = $r('app.string.tts_error_unavailable');
+        break;
+      case 'engine_create_failed':
+        res = $r('app.string.jsvm_error_engine_create');
+        break;
+      case 'script_failed':
+        res = $r('app.string.jsvm_error_script_failed');
+        break;
+      case 'ext_not_loaded':
+        res = $r('app.string.ext_error_not_loaded');
+        break;
+      case 'ext_broken':
+        res = $r('app.string.ext_error_broken');
+        break;
+      case 'ext_init_failed':
+        res = $r('app.string.ext_error_init_failed');
+        break;
+      case 'ext_init_timeout':
+        res = $r('app.string.ext_error_init_timeout');
+        break;
+      case 'ext_call_timeout':
+        res = $r('app.string.ext_error_call_timeout');
+        break;
+      case 'ext_call_failed':
+        res = $r('app.string.ext_error_call_failed');
+        break;
+      case 'ext_invalid_json':
+        res = $r('app.string.ext_error_invalid_json');
+        break;
+      case 'ext_unknown':
+        res = $r('app.string.ext_error_unknown');
+        break;
+      case 'plugin_bad_key':
+        res = $r('app.string.plugin_error_bad_key');
+        break;
+      case 'plugin_missing_name':
+        res = $r('app.string.plugin_error_missing_name');
+        break;
+      case 'plugin_bad_version_code':
+        res = $r('app.string.plugin_error_bad_version_code');
+        break;
+      case 'plugin_bad_engine':
+        res = $r('app.string.plugin_error_bad_engine');
+        break;
+      case 'plugin_dsl_too_new':
+        res = $r('app.string.plugin_error_dsl_too_new');
+        break;
+      case 'plugin_app_too_old':
+        res = $r('app.string.plugin_error_app_too_old');
+        break;
+      case 'plugin_read_failed':
+        res = $r('app.string.plugin_error_read_failed');
+        break;
+      case 'plugin_repo_not_https':
+        res = $r('app.string.plugin_error_repo_not_https');
+        break;
+      case 'plugin_checksum_mismatch':
+        res = $r('app.string.plugin_error_checksum_mismatch');
+        break;
+      case 'plugin_missing_main':
+        res = $r('app.string.plugin_error_missing_main');
+        break;
+      case 'plugin_replace_failed':
+        res = $r('app.string.plugin_error_replace_failed');
+        break;
+      case 'plugin_no_manifest':
+        res = $r('app.string.plugin_error_no_manifest');
+        break;
+      case 'plugin_repo_entry_not_https':
+        res = $r('app.string.plugin_error_repo_entry_not_https');
+        break;
+      case 'plugin_runtime_invalid':
+        res = $r('app.string.plugin_error_runtime_invalid');
+        break;
+      case 'plugin_runtime_missing':
+        res = $r('app.string.plugin_error_runtime_missing');
+        break;
+      case 'plugin_invalid_detail':
+        res = $r('app.string.plugin_error_invalid_detail');
+        break;
+      case 'plugin_no_chapter_text':
+        res = $r('app.string.plugin_error_no_chapter_text');
+        break;
+      case 'plugin_no_video_list':
+        res = $r('app.string.plugin_error_no_video_list');
+        break;
+      default:
+        break;
+    }
+    if (res === undefined) {
+      return raw;
+    }
+    return arg === '' ? Util.resStr(ui, res) : Util.resStr(ui, res, [arg]);
   }
 
   // 用系统浏览器打开链接

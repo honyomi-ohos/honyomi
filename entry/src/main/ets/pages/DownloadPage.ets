@@ -78,7 +78,7 @@ struct QueueTaskRow {
             .margin({ top: 6 })
         }
         if (this.state === 3 && this.error !== '') {
-          Text(this.error)
+          Text(Util.errText(this.getUIContext(), this.error))
             .fontSize(11)
             .fontColor('#E05252')
             .maxLines(1)

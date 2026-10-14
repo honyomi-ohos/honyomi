@@ -229,14 +229,14 @@ export struct VideoPlayerPage {
       if (this.localPath === '') {
         const source = SourceRegistry.get(this.manga.sourceKey);
         if (source === undefined) {
-          throw new Error('源不可用');
+          throw new Error('source_unavailable');
         }
         this.videos = await source.getVideoList(chapter.url);
         if (gen !== this.loadGen) {
           return;
         }
         if (this.videos.length === 0) {
-          throw new Error('没有可播放的视频');
+          throw new Error('video_no_streams');
         }
       }
       this.qualityIndex = 0;
@@ -262,7 +262,8 @@ export struct VideoPlayerPage {
       this.log(`loadChapter catch: ${em}`);
       this.errorText = (e as Error).message;
       this.buffering = false;
-      Util.toastRes(this.getUIContext(), $r('app.string.reader_load_failed'), [this.errorText]);
+      Util.toastRes(this.getUIContext(), $r('app.string.reader_load_failed'),
+        [Util.errText(this.getUIContext(), this.errorText)]);
       this.loading = false;
     }
   }
@@ -420,7 +421,7 @@ export struct VideoPlayerPage {
         this.log(`stateChange error, native state: ${player.state}`);
         this.playing = false;
         this.buffering = false;
-        this.errorText = '播放失败';
+        this.errorText = 'play_failed';
       }
     });
     player.on('seekDone', () => {
@@ -432,7 +433,7 @@ export struct VideoPlayerPage {
         this.log('non-fatal error ignored');
         return;
       }
-      this.errorText = '播放失败';
+      this.errorText = 'play_failed';
       this.playing = false;
       this.buffering = false;
     });
@@ -1225,7 +1226,7 @@ export struct VideoPlayerPage {
     Column() {
       ForEach(this.videos, (video: SVideo, index: number) => {
         Row() {
-          Text(video.quality)
+          Text(video.quality === 'local' ? $r('app.string.video_quality_local') : video.quality)
             .fontSize(15)
             .fontColor(index === this.qualityIndex ? this.pal.primary : this.pal.text)
             .layoutWeight(1)
@@ -1556,7 +1557,7 @@ export struct VideoPlayerPage {
         }
 
         if (this.errorText !== '') {
-          Text(this.errorText)
+          Text(Util.errText(this.getUIContext(), this.errorText))
             .fontSize(13)
             .fontColor('#DDDDDD')
             .padding(16)
