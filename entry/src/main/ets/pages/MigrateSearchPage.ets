@@ -320,11 +320,12 @@ export struct MigrateSearchPage {
                 }, (record: MangaRecord) => `ms-${record.sourceKey}-${record.url}`)
               }
               .width('100%')
+              .constraintSize({ maxWidth: 720 })
               .padding({ left: 16, right: 16, bottom: this.navBarH + 24 })
             }
             .layoutWeight(1)
-            .scrollBar(BarState.Off)
-            .align(Alignment.TopStart)
+            .scrollBar(BarState.Auto)
+            .align(Alignment.Top)
           }
         }
       }

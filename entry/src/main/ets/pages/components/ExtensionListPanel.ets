@@ -16,6 +16,7 @@ export struct ExtensionListPanel {
   @StorageProp('navBarH') navBarH: number = 0;
   @StorageProp('extRepoRefresh') @Watch('onRepoRefresh') extRepoRefresh: number = 0;
   @StorageProp('extLocalInstall') @Watch('onLocalInstall') extLocalInstall: number = 0;
+  @StorageProp('pluginsDirty') @Watch('onPluginsDirty') pluginsDirty: number = 0;
   @Prop searchQuery: string = '';
   onOpenPlugin: (pluginKey: string) => void = (_k: string) => {};
   @State installed: InstalledPlugin[] = [];
@@ -44,6 +45,11 @@ export struct ExtensionListPanel {
   // 宿主溢出菜单“从本地安装”触发
   private onLocalInstall(): void {
     this.pickPluginFile();
+  }
+
+  // 插件安装/卸载/重载后同步刷新已安装列表
+  private onPluginsDirty(): void {
+    this.refreshInstalled();
   }
 
   private refreshInstalled(): void {
@@ -339,10 +345,11 @@ export struct ExtensionListPanel {
         .margin({ left: 16, right: 16, top: 12, bottom: 24 })
       }
       .width('100%')
+      .constraintSize({ maxWidth: 720 })
     }
     .layoutWeight(1)
-    .scrollBar(BarState.Off)
-    .align(Alignment.TopStart)
+    .scrollBar(BarState.Auto)
+    .align(Alignment.Top)
     .contentEndOffset(this.navBarH + 76)
     .width('100%')
     .height('100%')

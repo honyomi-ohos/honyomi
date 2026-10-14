@@ -3,6 +3,7 @@ import { webview } from '@kit.ArkWeb';
 import { curves, AnimatorResult, AnimatorOptions } from '@kit.ArkUI';
 import { HdsTabs, hdsMaterial, HdsTabsController, HdsAnimationMode } from '@kit.UIDesignKit';
 import { ThemePalette } from '../common/Theme';
+import { Bp } from '../common/Breakpoint';
 import { Settings } from '../common/Settings';
 import { UpdateService } from '../data/UpdateService';
 import { AppDb } from '../data/AppDb';
@@ -310,7 +311,7 @@ struct Index {
 
   // lg 断点（≥840vp）：底部页签切换为侧边导航栏（华为大屏导航规范）
   private isWide(): boolean {
-    return this.windowW >= 840;
+    return Bp.isWide(this.windowW);
   }
 
   private tabMounted(index: number): boolean {
@@ -725,11 +726,13 @@ struct Index {
     .hideTitleBar(true)
     .mode(NavigationMode.Stack)
     .backgroundColor(this.pal.bg)
-    // 一多断点跟踪：窗口宽度变化驱动 底部页签/侧边导航 切换
+    // 一多断点跟踪：窗口宽度变化驱动 底部页签/侧边导航 切换；
+    // 同步发布到 AppStorage，供各页面按断点做限宽/边距适配
     .onAreaChange((_old: Area, newArea: Area) => {
       const w = newArea.width;
       if (typeof w === 'number') {
         this.windowW = w;
+        AppStorage.setOrCreate('windowW', w);
       }
     })
   }

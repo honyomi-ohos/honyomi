@@ -511,10 +511,11 @@ export struct ExtensionDetailPage {
               }
             }
             .width('100%')
+            .constraintSize({ maxWidth: 720 })
           }
           .layoutWeight(1)
-          .scrollBar(BarState.Off)
-          .align(Alignment.TopStart)
+          .scrollBar(BarState.Auto)
+          .align(Alignment.Top)
           .contentEndOffset(this.navBarH + 16)
           .width('100%')
         }

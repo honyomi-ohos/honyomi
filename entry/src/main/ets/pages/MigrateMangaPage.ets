@@ -184,11 +184,12 @@ export struct MigrateMangaPage {
               }, (m: MangaRecord) => `mm-${m.id}-${this.isSelected(m.id)}`)
             }
             .width('100%')
+            .constraintSize({ maxWidth: 720 })
             .padding({ left: 16, right: 16, bottom: 12 })
           }
           .layoutWeight(1)
-          .scrollBar(BarState.Off)
-          .align(Alignment.TopStart)
+          .scrollBar(BarState.Auto)
+          .align(Alignment.Top)
         }
 
         // 底部迁移按钮

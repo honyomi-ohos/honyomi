@@ -97,7 +97,9 @@ export struct DownloadPage {
         .width('100%')
         .padding({ left: 4, right: 16, top: this.statusBarH + 8, bottom: 8 })
 
-        List({ space: 0 }) {
+        // 大屏（lg）限宽居中，避免列表行被拉伸过宽（华为一多内容栅格规范）
+        Column() {
+          List({ space: 0 }) {
           // 下载队列
           if (this.queue.length > 0) {
             ListItem() {
@@ -252,6 +254,10 @@ export struct DownloadPage {
           startMargin: 16,
           endMargin: 16,
         })
+        }
+        .width('100%')
+        .layoutWeight(1)
+        .constraintSize({ maxWidth: 720 })
       }
       .width('100%')
       .height('100%')

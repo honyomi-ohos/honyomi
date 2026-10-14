@@ -122,50 +122,56 @@ export struct CategoriesPage {
         PageHeader({ title: $r('app.string.categories_title') }) {
           this.headerRight()
         }
-        List({ space: 0 }) {
-          ForEach(this.categories, (cat: CategoryRecord) => {
-            ListItem() {
-              Row() {
-                AppIcon({ name: 'label', iconSize: 20 })
-                Text(cat.name)
-                  .fontSize(16)
-                  .fontColor(this.pal.text)
-                  .layoutWeight(1)
-                  .margin({ left: 14 })
-                  .maxLines(1)
-                if (cat.id === 1) {
-                  Text($r('app.string.common_default'))
-                    .fontSize(11)
-                    .fontColor(this.pal.sub)
-                    .backgroundColor(this.pal.chip)
-                    .borderRadius(8)
-                    .padding({ left: 8, right: 8, top: 3, bottom: 3 })
-                } else {
-                  AppIcon({ name: 'expand_more', iconSize: 20 })
+        // 大屏（lg）限宽居中（华为一多内容栅格规范）
+        Column() {
+          List({ space: 0 }) {
+            ForEach(this.categories, (cat: CategoryRecord) => {
+              ListItem() {
+                Row() {
+                  AppIcon({ name: 'label', iconSize: 20 })
+                  Text(cat.name)
+                    .fontSize(16)
+                    .fontColor(this.pal.text)
+                    .layoutWeight(1)
+                    .margin({ left: 14 })
+                    .maxLines(1)
+                  if (cat.id === 1) {
+                    Text($r('app.string.common_default'))
+                      .fontSize(11)
+                      .fontColor(this.pal.sub)
+                      .backgroundColor(this.pal.chip)
+                      .borderRadius(8)
+                      .padding({ left: 8, right: 8, top: 3, bottom: 3 })
+                  } else {
+                    AppIcon({ name: 'expand_more', iconSize: 20 })
+                  }
                 }
+                .width('100%')
+                .padding({ left: 16, right: 16, top: 14, bottom: 14 })
+                .onClick(() => {
+                  this.showItemMenu(cat);
+                })
+                .gesture(
+                  LongPressGesture({ repeat: false })
+                    .onAction((event: GestureEvent) => {
+                      this.showItemMenu(cat);
+                    })
+                )
               }
-              .width('100%')
-              .padding({ left: 16, right: 16, top: 14, bottom: 14 })
-              .onClick(() => {
-                this.showItemMenu(cat);
-              })
-              .gesture(
-                LongPressGesture({ repeat: false })
-                  .onAction((event: GestureEvent) => {
-                    this.showItemMenu(cat);
-                  })
-              )
-            }
-          }, (cat: CategoryRecord) => `cat-${cat.id}-${cat.name}`)
+            }, (cat: CategoryRecord) => `cat-${cat.id}-${cat.name}`)
+          }
+          .layoutWeight(1)
+          .scrollBar(BarState.Auto)
+          .divider({
+            strokeWidth: 1,
+            color: this.pal.divider,
+            startMargin: 16,
+            endMargin: 16,
+          })
         }
+        .width('100%')
         .layoutWeight(1)
-        .scrollBar(BarState.Off)
-        .divider({
-          strokeWidth: 1,
-          color: this.pal.divider,
-          startMargin: 16,
-          endMargin: 16,
-        })
+        .constraintSize({ maxWidth: 720 })
 
         Text($r('app.string.categories_hint'))
           .fontSize(11)

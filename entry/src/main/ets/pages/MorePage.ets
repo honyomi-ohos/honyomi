@@ -146,11 +146,12 @@ export struct MorePage {
           }
         }
         .width('100%')
+        .constraintSize({ maxWidth: 720 })
         .padding({ left: 16, right: 16, bottom: 24 })
       }
       .layoutWeight(1)
-      .scrollBar(BarState.Off)
-      .align(Alignment.TopStart)
+      .scrollBar(BarState.Auto)
+      .align(Alignment.Top)
       .contentEndOffset(this.navBarH + 76)
     }
     .width('100%')

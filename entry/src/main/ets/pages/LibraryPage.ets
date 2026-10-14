@@ -745,34 +745,40 @@ export struct LibraryPage {
           .layoutWeight(1)
           .justifyContent(FlexAlign.Center)
         } else if (this.viewMode === 'list') {
-          List({ space: 0 }) {
-            LazyForEach(this.libSource, (record: MangaRecord) => {
-              ListItem() {
-                LibraryMangaItem({
-                  record: record,
-                  mode: 'list',
-                  unreadCount: this.unreadOf(record.id),
-                  downloadCount: this.downloadCounts[`${record.id}`] || 0,
-                  langLabel: ContentType.isLocal(record.sourceKey) ? '' : this.langMap[record.sourceKey] || '',
-                  isLocal: ContentType.isLocal(record.sourceKey),
-                  showUnreadBadge: this.showUnreadBadge,
-                  showDownloadBadge: this.showDownloadBadge,
-                  showLocalBadge: this.showLocalBadge,
-                  showLanguageBadge: this.showLanguageBadge,
-                  isSelected: this.selection.has(record.id),
-                  onItemClick: (r: MangaRecord): void => {
-                    this.onItemTap(r);
-                  },
-                  onItemLongPress: (r: MangaRecord): void => {
-                    this.onItemLongPress(r);
-                  }
-                })
-              }
-            }, (record: MangaRecord) => `lib-${record.id}`)
+          // 大屏（lg）限宽居中，避免列表行被拉伸过宽（华为一多内容栅格规范）
+          Column() {
+            List({ space: 0 }) {
+              LazyForEach(this.libSource, (record: MangaRecord) => {
+                ListItem() {
+                  LibraryMangaItem({
+                    record: record,
+                    mode: 'list',
+                    unreadCount: this.unreadOf(record.id),
+                    downloadCount: this.downloadCounts[`${record.id}`] || 0,
+                    langLabel: ContentType.isLocal(record.sourceKey) ? '' : this.langMap[record.sourceKey] || '',
+                    isLocal: ContentType.isLocal(record.sourceKey),
+                    showUnreadBadge: this.showUnreadBadge,
+                    showDownloadBadge: this.showDownloadBadge,
+                    showLocalBadge: this.showLocalBadge,
+                    showLanguageBadge: this.showLanguageBadge,
+                    isSelected: this.selection.has(record.id),
+                    onItemClick: (r: MangaRecord): void => {
+                      this.onItemTap(r);
+                    },
+                    onItemLongPress: (r: MangaRecord): void => {
+                      this.onItemLongPress(r);
+                    }
+                  })
+                }
+              }, (record: MangaRecord) => `lib-${record.id}`)
+            }
+            .scrollBar(BarState.Off)
+            .contentEndOffset(this.navBarH + 76)
+            .layoutWeight(1)
           }
-          .scrollBar(BarState.Off)
-          .contentEndOffset(this.navBarH + 76)
+          .width('100%')
           .layoutWeight(1)
+          .constraintSize({ maxWidth: 720 })
         } else {
           Grid() {
             LazyForEach(this.libSource, (record: MangaRecord) => {

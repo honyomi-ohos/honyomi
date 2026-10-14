@@ -452,23 +452,29 @@ export struct UpcomingPage {
               Util.openUrl(context, HELP_URL);
             })
         }
-        List({ scroller: this.scroller }) {
-          ListItem() {
-            this.calendarBlock()
-          }
-          ForEach(this.rows, (row: UpcomingRow, idx: number) => {
+        // 大屏（lg）限宽居中，避免日历与列表被拉伸过宽（华为一多内容栅格规范）
+        Column() {
+          List({ scroller: this.scroller }) {
             ListItem() {
-              if (row.isHeader) {
-                this.dateHeader(row)
-              } else if (row.manga !== undefined) {
-                this.mangaItem(row.manga)
-              }
+              this.calendarBlock()
             }
-          }, (row: UpcomingRow, idx: number) => row.isHeader ? `uh-${row.dateMs}` : `ui-${row.manga?.mangaId ?? idx}`)
+            ForEach(this.rows, (row: UpcomingRow, idx: number) => {
+              ListItem() {
+                if (row.isHeader) {
+                  this.dateHeader(row)
+                } else if (row.manga !== undefined) {
+                  this.mangaItem(row.manga)
+                }
+              }
+            }, (row: UpcomingRow, idx: number) => row.isHeader ? `uh-${row.dateMs}` : `ui-${row.manga?.mangaId ?? idx}`)
+          }
+          .layoutWeight(1)
+          .scrollBar(BarState.Auto)
+          .contentEndOffset(this.navBarH + 16)
         }
+        .width('100%')
         .layoutWeight(1)
-        .scrollBar(BarState.Auto)
-        .contentEndOffset(this.navBarH + 16)
+        .constraintSize({ maxWidth: 720 })
       }
       .width('100%')
       .height('100%')

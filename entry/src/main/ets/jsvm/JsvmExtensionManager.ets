@@ -137,7 +137,13 @@ export class JsvmExtensionManager {
     }
     const workerRef = entry.worker;
     setTimeout(() => {
-      workerRef.terminate();
+      try {
+        workerRef.terminate();
+      } catch (e) {
+        // terminate() throws BusinessError 1003 "worker is not running"
+        // when the worker has already self-terminated via workerPort.close();
+        // an uncaught throw here crashes the whole app (jscrash).
+      }
     }, 3000);
     // The worker self-terminates via workerPort.close(); the timer above is
     // only a safety net for wedged engines.

@@ -857,9 +857,11 @@ export struct MangaDetailPage {
 
   build() {
     NavDestination() {
-      Stack({ alignContent: Alignment.TopStart }) {
-        // 整页滚动 + 下拉刷新：头部随列表上滑收起，不再固定占位
-        Refresh({ refreshing: $$this.refreshing }) {
+      Stack({ alignContent: Alignment.Top }) {
+        // 大屏（lg）限宽居中：详情内容不超过 960vp，避免整页拉伸（华为一多内容栅格规范）
+        Column() {
+          // 整页滚动 + 下拉刷新：头部随列表上滑收起，不再固定占位
+          Refresh({ refreshing: $$this.refreshing }) {
           List({ scroller: this.listScroller }) {
             // 头部：封面背景 + 信息
             ListItem() {
@@ -1224,6 +1226,10 @@ export struct MangaDetailPage {
         .onRefreshing(() => {
           this.refreshFromSource();
         })
+        }
+        .width('100%')
+        .height('100%')
+        .constraintSize({ maxWidth: 960 })
 
         // 吸顶栏：背景/标题随滚动渐显，返回按钮常驻
         Stack({ alignContent: Alignment.TopStart }) {

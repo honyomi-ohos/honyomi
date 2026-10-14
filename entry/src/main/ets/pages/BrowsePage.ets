@@ -234,7 +234,8 @@ export struct BrowsePage {
   }
 
   private refreshSources(): void {
-    this.sources = SourceRegistry.all();
+    // slice() 强制生成新数组引用，确保 @State 检测到变化并触发重绘
+    this.sources = SourceRegistry.all().slice();
   }
 
   private loadPins(): void {
@@ -330,6 +331,16 @@ export struct BrowsePage {
       }
     }
     return sections;
+  }
+
+  // 分节键需包含成员源 key：ForEach 按 key 复用组件，若 key 只含语言标识，
+  // 运行中新增/移除源时分节被原样复用，列表不会重建（新装插件源不显示）
+  private sectionKey(section: SourceSection): string {
+    let fp: string = section.key;
+    for (const s of section.sources) {
+      fp += `|${s.key}`;
+    }
+    return fp;
   }
 
   private showSourceOptions(s: Source): void {
@@ -548,15 +559,16 @@ export struct BrowsePage {
             ForEach(section.sources, (s: Source) => {
               this.sourceRow(s)
             }, (s: Source) => `src-${s.key}-${this.isPinned(s.key)}`)
-          }, (section: SourceSection) => section.key)
+          }, (section: SourceSection) => this.sectionKey(section))
         }
         .width('100%')
+        .constraintSize({ maxWidth: 720 })
         .padding({ left: 16, right: 16, bottom: 16 })
       }
       .width('100%')
       .height('100%')
-      .scrollBar(BarState.Off)
-      .align(Alignment.TopStart)
+      .scrollBar(BarState.Auto)
+      .align(Alignment.Top)
       .contentEndOffset(this.navBarH + 76)
     }
   }
@@ -648,12 +660,13 @@ export struct BrowsePage {
             }, (item: MigrateSourceCount) => `mig-${item.key}-${item.count}`)
           }
           .width('100%')
+          .constraintSize({ maxWidth: 720 })
           .padding({ left: 16, right: 16, bottom: 16 })
         }
         .width('100%')
         .layoutWeight(1)
-        .scrollBar(BarState.Off)
-        .align(Alignment.TopStart)
+        .scrollBar(BarState.Auto)
+        .align(Alignment.Top)
         .contentEndOffset(this.navBarH + 76)
       }
       .width('100%')

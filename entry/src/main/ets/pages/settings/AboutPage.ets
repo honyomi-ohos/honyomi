@@ -46,11 +46,12 @@ export struct AboutPage {
             .margin({ left: 16, right: 16, top: 24 })
           }
           .width('100%')
+          .constraintSize({ maxWidth: 720 })
           .padding({ bottom: 24 })
         }
         .layoutWeight(1)
-        .scrollBar(BarState.Off)
-        .align(Alignment.TopStart)
+        .scrollBar(BarState.Auto)
+        .align(Alignment.Top)
       }
       .width('100%')
       .height('100%')

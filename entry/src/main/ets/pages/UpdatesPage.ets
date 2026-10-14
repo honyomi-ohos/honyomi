@@ -206,87 +206,93 @@ export struct UpdatesPage {
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)
       } else {
-        List({ space: 0 }) {
-          ForEach(this.items, (item: UpdateItem) => {
-            ListItem() {
-              Row({ space: 12 }) {
-                if (item.coverUrl === '') {
-                  Column() {
-                    AppIcon({ name: 'photo', iconSize: 20 })
-                  }
-                  .width(44)
-                  .height(60)
-                  .borderRadius(6)
-                  .backgroundColor(this.pal.chip)
-                  .justifyContent(FlexAlign.Center)
-                  .onClick(() => {
-                    this.openDetail(item.mangaId);
-                  })
-                } else {
-                  Image(item.coverUrl)
+        // 大屏（lg）限宽居中，避免列表行被拉伸过宽（华为一多内容栅格规范）
+        Column() {
+          List({ space: 0 }) {
+            ForEach(this.items, (item: UpdateItem) => {
+              ListItem() {
+                Row({ space: 12 }) {
+                  if (item.coverUrl === '') {
+                    Column() {
+                      AppIcon({ name: 'photo', iconSize: 20 })
+                    }
                     .width(44)
                     .height(60)
-                    .objectFit(ImageFit.Cover)
                     .borderRadius(6)
                     .backgroundColor(this.pal.chip)
+                    .justifyContent(FlexAlign.Center)
                     .onClick(() => {
                       this.openDetail(item.mangaId);
                     })
-                }
-                Column() {
-                  Text(item.mangaTitle)
-                    .fontSize(14)
-                    .fontWeight(FontWeight.Medium)
-                    .fontColor(this.pal.text)
-                    .maxLines(1)
-                    .textOverflow({ overflow: TextOverflow.Ellipsis })
-                    .opacity(item.read ? 0.38 : 1)
-                  Row({ space: 4 }) {
-                    if (!item.read) {
-                      Circle()
-                        .width(8)
-                        .height(8)
-                        .fill(this.pal.primary)
-                    }
-                    if (item.bookmark) {
-                      AppIcon({ name: 'bookmark_filled', iconSize: 12, tint: this.pal.primary })
-                    }
-                    Text(item.chapterName)
-                      .fontSize(13)
-                      .fontColor(this.pal.sub)
+                  } else {
+                    Image(item.coverUrl)
+                      .width(44)
+                      .height(60)
+                      .objectFit(ImageFit.Cover)
+                      .borderRadius(6)
+                      .backgroundColor(this.pal.chip)
+                      .onClick(() => {
+                        this.openDetail(item.mangaId);
+                      })
+                  }
+                  Column() {
+                    Text(item.mangaTitle)
+                      .fontSize(14)
+                      .fontWeight(FontWeight.Medium)
+                      .fontColor(this.pal.text)
                       .maxLines(1)
                       .textOverflow({ overflow: TextOverflow.Ellipsis })
-                      .layoutWeight(1)
+                      .opacity(item.read ? 0.38 : 1)
+                    Row({ space: 4 }) {
+                      if (!item.read) {
+                        Circle()
+                          .width(8)
+                          .height(8)
+                          .fill(this.pal.primary)
+                      }
+                      if (item.bookmark) {
+                        AppIcon({ name: 'bookmark_filled', iconSize: 12, tint: this.pal.primary })
+                      }
+                      Text(item.chapterName)
+                        .fontSize(13)
+                        .fontColor(this.pal.sub)
+                        .maxLines(1)
+                        .textOverflow({ overflow: TextOverflow.Ellipsis })
+                        .layoutWeight(1)
+                        .opacity(item.read ? 0.38 : 1)
+                    }
+                    .margin({ top: 4 })
+                    .alignItems(VerticalAlign.Center)
+                    Text(Util.timeAgo(item.dateUpload))
+                      .fontSize(11)
+                      .fontColor(this.pal.sub)
+                      .margin({ top: 4 })
                       .opacity(item.read ? 0.38 : 1)
                   }
-                  .margin({ top: 4 })
-                  .alignItems(VerticalAlign.Center)
-                  Text(Util.timeAgo(item.dateUpload))
-                    .fontSize(11)
-                    .fontColor(this.pal.sub)
-                    .margin({ top: 4 })
-                    .opacity(item.read ? 0.38 : 1)
+                  .alignItems(HorizontalAlign.Start)
+                  .layoutWeight(1)
                 }
-                .alignItems(HorizontalAlign.Start)
-                .layoutWeight(1)
+                .width('100%')
+                .padding({ left: 16, right: 16, top: 10, bottom: 10 })
+                .onClick(() => {
+                  ContentOpen.open(this.pathStack, item.mangaId, item.chapterId);
+                })
               }
-              .width('100%')
-              .padding({ left: 16, right: 16, top: 10, bottom: 10 })
-              .onClick(() => {
-                ContentOpen.open(this.pathStack, item.mangaId, item.chapterId);
-              })
-            }
-          }, (item: UpdateItem) => `upd-${item.chapterId}-${item.coverUrl}`)
+            }, (item: UpdateItem) => `upd-${item.chapterId}-${item.coverUrl}`)
+          }
+          .layoutWeight(1)
+          .scrollBar(BarState.Auto)
+          .contentEndOffset(this.navBarH + 76)
+          .divider({
+            strokeWidth: 1,
+            color: this.pal.divider,
+            startMargin: 72,
+            endMargin: 16,
+          })
         }
+        .width('100%')
         .layoutWeight(1)
-        .scrollBar(BarState.Auto)
-        .contentEndOffset(this.navBarH + 76)
-        .divider({
-          strokeWidth: 1,
-          color: this.pal.divider,
-          startMargin: 72,
-          endMargin: 16,
-        })
+        .constraintSize({ maxWidth: 720 })
       }
     }
     .width('100%')

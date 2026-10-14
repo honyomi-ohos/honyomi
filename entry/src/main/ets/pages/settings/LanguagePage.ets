@@ -53,10 +53,11 @@ export struct LanguagePage {
           .backgroundColor(this.pal.card)
           .borderRadius(16)
           .clip(true)
+          .constraintSize({ maxWidth: 720 })
         }
         .layoutWeight(1)
-        .align(Alignment.TopStart)
-        .scrollBar(BarState.Off)
+        .align(Alignment.Top)
+        .scrollBar(BarState.Auto)
         .padding({ left: 16, right: 16, top: 4 })
       }
       .width('100%')
