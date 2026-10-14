@@ -11,6 +11,7 @@ import { EmptyScreen } from './components/EmptyScreen';
 import { ExtensionListPanel } from './components/ExtensionListPanel';
 import { InputDialog } from './components/Dialogs';
 import { AppIcon } from './components/AppIcon';
+import { TypeBadgedIcon } from './components/TypeBadgedIcon';
 
 // 语言显示名（对齐 Mihon 源列表的语言分组头）
 const LANG_NAMES: Record<string, string> = {
@@ -479,24 +480,14 @@ export struct BrowsePage {
   @Builder
   sourceRow(s: Source) {
     Row() {
-      if (s.iconPath !== '') {
-        Image(s.iconPath)
-          .width(40)
-          .height(40)
-          .borderRadius(20)
-          .objectFit(ImageFit.Cover)
-          .clip(true)
-      } else {
-        Text(s.name.substring(0, 1).toUpperCase())
-          .fontSize(16)
-          .fontWeight(FontWeight.Bold)
-          .fontColor('#FFFFFF')
-          .textAlign(TextAlign.Center)
-          .width(40)
-          .height(40)
-          .borderRadius(20)
-          .backgroundColor(this.pal.primary)
-      }
+      TypeBadgedIcon({
+        iconPath: s.iconPath,
+        fallbackChar: s.name.substring(0, 1).toUpperCase(),
+        iconSize: 40,
+        cornerRadius: 20,
+        contentType: s.contentType,
+        badgeBorder: this.pal.bg,
+      })
 
       Column() {
         Text(this.sourceDisplayName(s))

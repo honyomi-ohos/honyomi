@@ -44,6 +44,8 @@ export interface RepoEntry {
   file: string;
   nsfw: boolean;
   icon: string;
+  // manga | novel | video；仓库索引未声明时为空字符串（UI 不显示类型角标）
+  contentType: string;
 }
 
 interface RawRepoEntry {
@@ -55,6 +57,7 @@ interface RawRepoEntry {
   file?: string;
   nsfw?: boolean;
   icon?: string;
+  contentType?: string;
 }
 
 interface RawRepoIndex {
@@ -279,6 +282,8 @@ export class PluginService {
           file: PluginService.resolveRepoFile(url, file),
           nsfw: item.nsfw === true,
           icon: item.icon !== undefined && item.icon !== '' ? PluginService.resolveRepoFile(url, item.icon) : '',
+          contentType: item.contentType !== undefined && item.contentType !== null ?
+            ContentType.normalize(item.contentType) : '',
         };
         entries.push(entry);
       }

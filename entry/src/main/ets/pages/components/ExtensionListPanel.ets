@@ -6,6 +6,7 @@ import { Util } from '../../common/Util';
 import { Settings } from '../../common/Settings';
 import { EmptyScreen } from './EmptyScreen';
 import { AppIcon } from './AppIcon';
+import { TypeBadgedIcon } from './TypeBadgedIcon';
 
 // 插件列表面板（浏览页“插件”Tab 内嵌）：已安装 / 在线仓库
 // 对齐 Mihon：整行点击进入插件详情页；从本地安装/仓库配置/刷新由宿主（BrowsePage 菜单）
@@ -168,24 +169,14 @@ export struct ExtensionListPanel {
   @Builder
   pluginRow(item: InstalledPlugin) {
     Row() {
-      if (item.iconPath !== '') {
-        Image(item.iconPath)
-          .width(40)
-          .height(40)
-          .borderRadius(10)
-          .objectFit(ImageFit.Cover)
-          .clip(true)
-      } else {
-        Text(this.firstCharOf(item.manifest.name))
-          .fontSize(17)
-          .fontWeight(FontWeight.Bold)
-          .fontColor('#FFFFFF')
-          .textAlign(TextAlign.Center)
-          .width(40)
-          .height(40)
-          .borderRadius(10)
-          .backgroundColor(this.pal.primary)
-      }
+      TypeBadgedIcon({
+        iconPath: item.iconPath,
+        fallbackChar: this.firstCharOf(item.manifest.name),
+        iconSize: 40,
+        cornerRadius: 10,
+        contentType: item.manifest.contentType,
+        badgeBorder: this.pal.card,
+      })
 
       Column() {
         Text(item.manifest.name)
@@ -218,24 +209,14 @@ export struct ExtensionListPanel {
   @Builder
   repoRow(entry: RepoEntry) {
     Row() {
-      if (entry.icon !== '') {
-        Image(entry.icon)
-          .width(40)
-          .height(40)
-          .borderRadius(10)
-          .objectFit(ImageFit.Cover)
-          .clip(true)
-      } else {
-        Text(this.firstCharOf(entry.name))
-          .fontSize(17)
-          .fontWeight(FontWeight.Bold)
-          .fontColor('#FFFFFF')
-          .textAlign(TextAlign.Center)
-          .width(40)
-          .height(40)
-          .borderRadius(10)
-          .backgroundColor(this.pal.primary)
-      }
+      TypeBadgedIcon({
+        iconPath: entry.icon,
+        fallbackChar: this.firstCharOf(entry.name),
+        iconSize: 40,
+        cornerRadius: 10,
+        contentType: entry.contentType,
+        badgeBorder: this.pal.card,
+      })
 
       Column() {
         Text(entry.name)

@@ -7,6 +7,7 @@ import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
 import { InputDialog, ConfirmDialog } from './components/Dialogs';
 import { AppIcon } from './components/AppIcon';
+import { TypeBadgedIcon } from './components/TypeBadgedIcon';
 
 // 语言显示名（与 BrowsePage 保持一致的精简版）
 const LANG_NAMES: Record<string, string> = {
@@ -358,26 +359,15 @@ export struct ExtensionDetailPage {
             Column() {
               // 头部：图标 + 名称 + 版本/语言 + 卸载
               Column() {
-                if (this.plugin.iconPath !== '') {
-                  Image(this.plugin.iconPath)
-                    .width(72)
-                    .height(72)
-                    .borderRadius(16)
-                    .objectFit(ImageFit.Cover)
-                    .clip(true)
-                    .margin({ top: 8 })
-                } else {
-                  Text(this.plugin.manifest.name.substring(0, 1).toUpperCase())
-                    .fontSize(30)
-                    .fontWeight(FontWeight.Bold)
-                    .fontColor('#FFFFFF')
-                    .textAlign(TextAlign.Center)
-                    .width(72)
-                    .height(72)
-                    .borderRadius(16)
-                    .backgroundColor(this.pal.primary)
-                    .margin({ top: 8 })
-                }
+                TypeBadgedIcon({
+                  iconPath: this.plugin.iconPath,
+                  fallbackChar: this.plugin.manifest.name.substring(0, 1).toUpperCase(),
+                  iconSize: 72,
+                  cornerRadius: 16,
+                  contentType: this.plugin.manifest.contentType,
+                  badgeBorder: this.pal.card,
+                })
+                  .margin({ top: 8 })
 
                 Text(this.plugin.manifest.name)
                   .fontSize(20)
