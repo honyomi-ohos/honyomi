@@ -851,10 +851,98 @@
                        "name":  "detail_in_queue",
                        "value":  "队列中"
                    },
-                   {
-                       "name":  "detail_download",
-                       "value":  "下载"
-                   },
+                    {
+                        "name":  "detail_download",
+                        "value":  "下载"
+                    },
+                    {
+                        "name":  "detail_sort_tab",
+                        "value":  "排序"
+                    },
+                    {
+                        "name":  "detail_filter_tab",
+                        "value":  "筛选"
+                    },
+                    {
+                        "name":  "detail_sort_by_source",
+                        "value":  "按源顺序"
+                    },
+                    {
+                        "name":  "detail_sort_by_number",
+                        "value":  "按章节号"
+                    },
+                    {
+                        "name":  "detail_sort_by_date",
+                        "value":  "按上传日期"
+                    },
+                    {
+                        "name":  "detail_sort_by_name",
+                        "value":  "按名称"
+                    },
+                    {
+                        "name":  "detail_filter_reset",
+                        "value":  "重置"
+                    },
+                    {
+                        "name":  "detail_filter_downloaded",
+                        "value":  "已下载"
+                    },
+                    {
+                        "name":  "detail_filter_unread",
+                        "value":  "未读"
+                    },
+                    {
+                        "name":  "detail_filter_bookmarked",
+                        "value":  "已书签"
+                    },
+                    {
+                        "name":  "detail_selected_count",
+                        "value":  "已选 %d 项"
+                    },
+                    {
+                        "name":  "detail_action_mark_read",
+                        "value":  "标为已读"
+                    },
+                    {
+                        "name":  "detail_action_mark_unread",
+                        "value":  "标为未读"
+                    },
+                    {
+                        "name":  "detail_action_bookmark",
+                        "value":  "添加书签"
+                    },
+                    {
+                        "name":  "detail_action_delete",
+                        "value":  "删除下载"
+                    },
+                    {
+                        "name":  "detail_dl_next_n",
+                        "value":  "下载下 %d 个未读"
+                    },
+                    {
+                        "name":  "detail_dl_unread",
+                        "value":  "下载全部未读"
+                    },
+                    {
+                        "name":  "detail_dl_bookmarked",
+                        "value":  "下载书签章节"
+                    },
+                    {
+                        "name":  "detail_dl_queued_n",
+                        "value":  "已加入下载队列：%d 章"
+                    },
+                    {
+                        "name":  "detail_no_unread",
+                        "value":  "没有未读章节"
+                    },
+                    {
+                        "name":  "detail_no_downloads",
+                        "value":  "没有可删除的下载"
+                    },
+                    {
+                        "name":  "detail_deleted_n",
+                        "value":  "已删除 %d 个下载"
+                    },
                    {
                        "name":  "reader_chapter_not_found",
                        "value":  "章节不存在"

@@ -2,6 +2,7 @@ import { fileIo as fs } from '@kit.CoreFileKit';
 import { SManga, SChapter, SPage, SVideo, MangasPage } from '../model/Models';
 import { Source } from './Source';
 import { LocalFolderManager } from './LocalFolderManager';
+import { NaturalCompare } from '../common/NaturalCompare';
 
 // 本地文件源基类：三个本地图源（漫画/小说/视频）共用
 // 扫描根 = 本地源文件夹同步副本下的子目录，未同步时回退旧导入目录
@@ -110,7 +111,7 @@ export abstract class LocalFsSource implements Source {
         names.push(entry);
       }
     }
-    return names.sort((a: string, b: string): number => a.localeCompare(b, 'zh'));
+    return names.sort((a: string, b: string): number => NaturalCompare.compare(a, b));
   }
 
   protected buildManga(dirName: string): SManga {
@@ -158,12 +159,13 @@ export abstract class LocalFsSource implements Source {
     return `${this.rootDir()}/${mangaDir}/${entry}`;
   }
 
-  // 递归收集扩展名匹配的文件相对路径（含卷级子目录），每层按中文数字习惯排序
+  // 递归收集扩展名匹配的文件相对路径（含卷级子目录），每层按自然顺序排序
+  // （阿拉伯数字与中文数字均按数值比较，"第十章"排在"第二章"之后）
   protected collectEntriesByExts(dir: string, prefix: string, out: string[], exts: string[]): void {
     if (!fs.accessSync(dir)) {
       return;
     }
-    const entries = fs.listFileSync(dir).sort((a: string, b: string): number => a.localeCompare(b, 'zh', { numeric: true }));
+    const entries = fs.listFileSync(dir).sort((a: string, b: string): number => NaturalCompare.compare(a, b));
     for (const entry of entries) {
       const rel = prefix === '' ? entry : `${prefix}/${entry}`;
       const fullPath = `${dir}/${entry}`;

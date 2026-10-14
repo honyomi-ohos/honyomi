@@ -112,8 +112,10 @@ export struct VideoPlayerPage {
     // 沉浸式：隐藏状态栏与导航栏
     window.getLastWindow(Util.hostAbilityContext(this.getUIContext())).then((w: window.Window) => {
       this.win = w;
-      w.setWindowSystemBarEnable([]).catch((): void => {
-      });
+      if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
+        w.setWindowSystemBarEnable([]).catch((): void => {
+        });
+      }
     }).catch((): void => {
     });
   }
@@ -127,10 +129,12 @@ export struct VideoPlayerPage {
     this.releasePlayer();
     if (this.win !== undefined) {
       // 还原系统栏与窗口方向
-      this.win.setPreferredOrientation(window.Orientation.UNSPECIFIED).catch((): void => {
-      });
-      this.win.setWindowSystemBarEnable(['status', 'navigation']).catch((): void => {
-      });
+      if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
+        this.win.setPreferredOrientation(window.Orientation.UNSPECIFIED).catch((): void => {
+        });
+        this.win.setWindowSystemBarEnable(['status', 'navigation']).catch((): void => {
+        });
+      }
       Settings.applySystemBar(Util.hostAbilityContext(this.getUIContext()));
     }
   }
@@ -139,10 +143,12 @@ export struct VideoPlayerPage {
   private toggleFullscreen(): void {
     this.fullscreen = !this.fullscreen;
     if (this.win !== undefined) {
-      const target: window.Orientation = this.fullscreen ?
-        window.Orientation.AUTO_ROTATION_LANDSCAPE : window.Orientation.AUTO_ROTATION_PORTRAIT;
-      this.win.setPreferredOrientation(target).catch((): void => {
-      });
+      if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
+        const target: window.Orientation = this.fullscreen ?
+          window.Orientation.AUTO_ROTATION_LANDSCAPE : window.Orientation.AUTO_ROTATION_PORTRAIT;
+        this.win.setPreferredOrientation(target).catch((): void => {
+        });
+      }
     }
     this.pokeControls();
   }
@@ -277,6 +283,7 @@ export struct VideoPlayerPage {
     this.playGen += 1;
     const gen = this.playGen;
     this.releasePlayer();
+    // @SuppressWarnings syscap
     media.createAVPlayer().then((player: media.AVPlayer) => {
       if (gen !== this.playGen) {
         player.release();
@@ -300,6 +307,7 @@ export struct VideoPlayerPage {
     this.playGen += 1;
     const gen = this.playGen;
     this.releasePlayer();
+    // @SuppressWarnings syscap
     media.createAVPlayer().then((player: media.AVPlayer) => {
       if (gen !== this.playGen) {
         player.release();
@@ -307,6 +315,7 @@ export struct VideoPlayerPage {
       }
       this.bindPlayer(player);
       const headers = Http.headersFor(video.url, video.headers);
+      // @SuppressWarnings syscap
       const source = media.createMediaSourceWithUrl(video.url, headers);
       const strategy: media.PlaybackStrategy = { preferredWidth: 0, preferredHeight: 0 };
       player.setMediaSource(source, strategy);
@@ -333,6 +342,7 @@ export struct VideoPlayerPage {
         this.videoH = player.height > 0 ? player.height : 0;
         this.adjustSurface();
         if (this.resumeMs > 0 && (this.durationMs === 0 || this.resumeMs < this.durationMs)) {
+          // @SuppressWarnings syscap
           player.seek(this.resumeMs, media.SeekMode.SEEK_PREV_SYNC);
         }
         player.play();
@@ -615,14 +625,18 @@ export struct VideoPlayerPage {
   private boostSpeedToEnum(i: number): media.PlaybackSpeed {
     const s = BOOST_SPEEDS[i];
     if (s === 1.5) {
+      // @SuppressWarnings syscap
       return media.PlaybackSpeed.SPEED_FORWARD_1_50_X;
     }
     if (s === 2.0) {
+      // @SuppressWarnings syscap
       return media.PlaybackSpeed.SPEED_FORWARD_2_00_X;
     }
     if (s === 3.0) {
+      // @SuppressWarnings syscap
       return media.PlaybackSpeed.SPEED_FORWARD_3_00_X;
     }
+    // @SuppressWarnings syscap
     return media.PlaybackSpeed.SPEED_FORWARD_1_00_X;
   }
 
@@ -668,6 +682,7 @@ export struct VideoPlayerPage {
     }
     this.positionMs = ms;
     this.buffering = true;
+    // @SuppressWarnings syscap
     player.seek(ms, media.SeekMode.SEEK_PREV_SYNC);
     this.persist(false);
   }
@@ -710,23 +725,30 @@ export struct VideoPlayerPage {
   // ---- 倍速 / 弹幕 ----
   private speedToEnum(v: number): media.PlaybackSpeed {
     if (v === 0.5) {
+      // @SuppressWarnings syscap
       return media.PlaybackSpeed.SPEED_FORWARD_0_50_X;
     }
     if (v === 0.75) {
+      // @SuppressWarnings syscap
       return media.PlaybackSpeed.SPEED_FORWARD_0_75_X;
     }
     if (v === 1.25) {
+      // @SuppressWarnings syscap
       return media.PlaybackSpeed.SPEED_FORWARD_1_25_X;
     }
     if (v === 1.5) {
+      // @SuppressWarnings syscap
       return media.PlaybackSpeed.SPEED_FORWARD_1_50_X;
     }
     if (v === 1.75) {
+      // @SuppressWarnings syscap
       return media.PlaybackSpeed.SPEED_FORWARD_1_75_X;
     }
     if (v === 2.0) {
+      // @SuppressWarnings syscap
       return media.PlaybackSpeed.SPEED_FORWARD_2_00_X;
     }
+    // @SuppressWarnings syscap
     return media.PlaybackSpeed.SPEED_FORWARD_1_00_X;
   }
 

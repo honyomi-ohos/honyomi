@@ -30,6 +30,8 @@ export interface JsvmBridgeRequest {
   shared?: boolean;
   /** Present only on release messages: '{"type":"release","callId":N}'. */
   type?: string;
+  /** Present only on encodeGbk messages: text to encode as GBK URL bytes. */
+  text?: string;
 }
 
 /** KotlinHttpResult shape expected by the extension runtime. */
@@ -127,6 +129,25 @@ export class NativeHttpBridge {
     // response buffer; drop its native pin.
     if (msg.type === 'release') {
       jsvmEngine.releaseHttpBuffer(msg.callId);
+      return;
+    }
+    // GBK URL 编码桥：系统 TextEncoder('gbk') 编码后同步 resolve
+    if (msg.type === 'encodeGbk') {
+      try {
+        const encoded = NativeHttpBridge.encodeGbkUrl(msg.text ?? '');
+        const ok: JsvmHttpResult = {
+          status: 200,
+          statusText: '',
+          headersJson: '{}',
+          body: encoded,
+          error: null,
+          url: '',
+        };
+        jsvmEngine.resolveHttp(msg.callId, JSON.stringify(ok));
+      } catch (e) {
+        jsvmEngine.resolveHttp(msg.callId,
+          JSON.stringify(NativeHttpBridge.error(0, 'GBK 编码失败', '')));
+      }
       return;
     }
     const req = msg;
@@ -533,6 +554,25 @@ export class NativeHttpBridge {
 
   // 按响应 Content-Type 声明的 charset 解码响应体；未声明或不受支持时
   // 退回自动探测（BOM / UTF-8 / GB18030 / GBK / Big5），默认 UTF-8。
+  /** 用系统 TextEncoder('gbk') 将文本编码为 GBK 字节的 URL 百分号编码。 */
+  private static encodeGbkUrl(text: string): string {
+    const encoder = util.TextEncoder.create('gbk');
+    const bytes = encoder.encodeInto(text);
+    let out = '';
+    for (let i = 0; i < bytes.length; i++) {
+      const b = bytes[i];
+      const unreserved: boolean = (b >= 0x41 && b <= 0x5A) || (b >= 0x61 && b <= 0x7A) ||
+        (b >= 0x30 && b <= 0x39) || b === 0x2D || b === 0x2E || b === 0x5F || b === 0x7E;
+      if (unreserved) {
+        out += String.fromCharCode(b);
+      } else {
+        const h = b.toString(16).toUpperCase();
+        out += '%' + (h.length < 2 ? '0' + h : h);
+      }
+    }
+    return out;
+  }
+
   private static decodeBody(buffer: ArrayBuffer, header: Object): string {
     const bytes = new Uint8Array(buffer);
     if (bytes.length === 0) {

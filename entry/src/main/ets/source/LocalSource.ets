@@ -3,6 +3,7 @@ import zlib from '@ohos.zlib';
 import { SChapter, SPage, ContentType } from '../model/Models';
 import { LocalFolderManager } from './LocalFolderManager';
 import { LocalFsSource } from './LocalFsSource';
+import { NaturalCompare } from '../common/NaturalCompare';
 
 // 本地漫画源：扫描固定本地源文件夹的同步副本（filesDir/local_root，未设置时回退 filesDir/local）
 // 目录结构：<系列名>/<章节名>.zip|.cbz 或 <章节名>/图片；
@@ -63,7 +64,7 @@ export class LocalSource extends LocalFsSource {
     if (!fs.accessSync(dir)) {
       return;
     }
-    const entries = fs.listFileSync(dir).sort((a: string, b: string): number => a.localeCompare(b, 'zh', { numeric: true }));
+    const entries = fs.listFileSync(dir).sort((a: string, b: string): number => NaturalCompare.compare(a, b));
     for (const entry of entries) {
       const rel = prefix === '' ? entry : `${prefix}/${entry}`;
       const fullPath = `${dir}/${entry}`;
@@ -94,7 +95,7 @@ export class LocalSource extends LocalFsSource {
         files.push(`${dir}/${entry}`);
       }
     }
-    return files.sort((a: string, b: string): number => a.localeCompare(b, 'zh', { numeric: true }));
+    return files.sort((a: string, b: string): number => NaturalCompare.compare(a, b));
   }
 
   private async extractArchive(mangaDir: string, entry: string): Promise<string[]> {
@@ -115,7 +116,7 @@ export class LocalSource extends LocalFsSource {
     // 递归收集图片
     const result: string[] = [];
     this.collectImages(outDir, result);
-    return result.sort((a: string, b: string): number => a.localeCompare(b, 'zh', { numeric: true }));
+    return result.sort((a: string, b: string): number => NaturalCompare.compare(a, b));
   }
 
   private collectImages(dir: string, out: string[]): void {

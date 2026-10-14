@@ -15,21 +15,21 @@ export class GripSupport {
   }
 
   private static probe(): boolean {
-    if (!canIUse('SystemCapability.MultimodalAwareness.Motion')) {
-      return false;
-    }
     const noop: (status: motion.HoldingHandStatus) => void =
       (_status: motion.HoldingHandStatus): void => {
       };
-    try {
-      motion.on('holdingHandChanged', noop);
-    } catch (error) {
-      return false;
+    if (canIUse('SystemCapability.MultimodalAwareness.Motion')) {
+      try {
+        motion.on('holdingHandChanged', noop);
+      } catch (error) {
+        return false;
+      }
+      try {
+        motion.off('holdingHandChanged', noop);
+      } catch (error) {
+      }
+      return true;
     }
-    try {
-      motion.off('holdingHandChanged', noop);
-    } catch (error) {
-    }
-    return true;
+    return false;
   }
 }

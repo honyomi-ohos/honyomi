@@ -149,6 +149,7 @@ export class Http {
           finish(new Error('下载超时（服务器长时间无响应）'));
         }, stallTimeoutMs);
       };
+      // @SuppressWarnings syscap
       request.downloadFile(context, config).then((task: request.DownloadTask) => {
         if (settled) {
           task.delete().catch((_e: Error) => {

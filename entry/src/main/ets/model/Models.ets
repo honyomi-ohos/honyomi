@@ -82,6 +82,8 @@ export class MangaRecord {
   addedAt: number = 0;
   lastUpdateAt: number = 0;
   fetchedAt: number = 0;
+  // 章节列表排序/筛选标志位（位常量见 common/ChapterFlags，对齐 Mihon chapterFlags）
+  chapterFlags: number = 0;
 }
 
 // 书架统计（章节/历史聚合查询结果）

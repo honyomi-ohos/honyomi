@@ -23,8 +23,10 @@ export class ReaderWindow {
 
   static applyOrientation(ctx: common.UIAbilityContext, name: string): void {
     window.getLastWindow(ctx).then((win: window.Window) => {
-      win.setPreferredOrientation(ReaderWindow.orientationTarget(name)).catch(() => {
-      });
+      if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
+        win.setPreferredOrientation(ReaderWindow.orientationTarget(name)).catch(() => {
+        });
+      }
     }).catch(() => {
     });
   }
@@ -40,8 +42,10 @@ export class ReaderWindow {
   // 退出阅读页：还原窗口方向与亮度
   static restore(ctx: common.UIAbilityContext): void {
     window.getLastWindow(ctx).then((win: window.Window) => {
-      win.setPreferredOrientation(window.Orientation.UNSPECIFIED).catch(() => {
-      });
+      if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
+        win.setPreferredOrientation(window.Orientation.UNSPECIFIED).catch(() => {
+        });
+      }
       win.setWindowBrightness(0).catch(() => {
       });
     }).catch(() => {

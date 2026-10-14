@@ -835,15 +835,17 @@ export class Settings {
     window.getLastWindow(context).then((win: window.Window) => {
       const dark: boolean = AppStorage.get<boolean>('isDark') ?? false;
       const content: string = dark ? '#ECEEF2' : '#16181D';
-      win.setWindowSystemBarProperties({
-        statusBarColor: '#00000000',
-        statusBarContentColor: content,
-        isStatusBarLightIcon: dark,
-        navigationBarColor: '#00000000',
-        navigationBarContentColor: content,
-        isNavigationBarLightIcon: dark
-      }).catch((_e: Error) => {
-      });
+      if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
+        win.setWindowSystemBarProperties({
+          statusBarColor: '#00000000',
+          statusBarContentColor: content,
+          isStatusBarLightIcon: dark,
+          navigationBarColor: '#00000000',
+          navigationBarContentColor: content,
+          isNavigationBarLightIcon: dark
+        }).catch((_e: Error) => {
+        });
+      }
     }).catch((_e: Error) => {
     });
   }

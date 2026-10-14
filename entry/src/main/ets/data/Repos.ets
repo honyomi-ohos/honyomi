@@ -151,6 +151,15 @@ export class MangaRepo {
     await store.update(values, pred);
   }
 
+  // 章节列表排序/筛选标志位持久化（对齐 Mihon SetMangaChapterFlags）
+  static async setChapterFlags(id: number, flags: number): Promise<void> {
+    const store = await AppDb.get();
+    const values: relationalStore.ValuesBucket = { 'chapterFlags': flags };
+    const pred = new relationalStore.RdbPredicates('manga');
+    pred.equalTo('id', id);
+    await store.update(values, pred);
+  }
+
   // 按源获取书架漫画（迁移选择列表）
   static async getLibraryBySource(sourceKey: string): Promise<MangaRecord[]> {
     const store = await AppDb.get();
@@ -288,7 +297,7 @@ export class MangaRepo {
   private static readonly COLUMNS: string[] = [
     'id', 'sourceKey', 'url', 'title', 'thumbnailUrl', 'origThumbnail', 'author',
     'description', 'genre', 'status', 'contentType', 'inLibrary', 'categoryId', 'addedAt',
-    'lastUpdateAt', 'fetchedAt',
+    'lastUpdateAt', 'fetchedAt', 'chapterFlags',
   ];
 
   private static rowToManga(rs: relationalStore.ResultSet): MangaRecord {
@@ -309,6 +318,7 @@ export class MangaRepo {
     m.addedAt = rs.getLong(rs.getColumnIndex('addedAt'));
     m.lastUpdateAt = rs.getLong(rs.getColumnIndex('lastUpdateAt'));
     m.fetchedAt = rs.getLong(rs.getColumnIndex('fetchedAt'));
+    m.chapterFlags = rs.getLong(rs.getColumnIndex('chapterFlags'));
     return m;
   }
 }
@@ -421,6 +431,50 @@ export class ChapterRepo {
     const pred = new relationalStore.RdbPredicates('chapter');
     pred.equalTo('id', id);
     await store.update(values, pred);
+  }
+
+  static async setBookmark(id: number, bookmark: boolean): Promise<void> {
+    const store = await AppDb.get();
+    const values: relationalStore.ValuesBucket = { 'bookmark': bookmark ? 1 : 0 };
+    const pred = new relationalStore.RdbPredicates('chapter');
+    pred.equalTo('id', id);
+    await store.update(values, pred);
+  }
+
+  // 批量设置已读状态（章节多选"标为已读/未读"，单事务提交）
+  static async setReadForIds(ids: number[], read: boolean): Promise<void> {
+    const store = await AppDb.get();
+    const values: relationalStore.ValuesBucket = { 'read': read ? 1 : 0 };
+    store.beginTransaction();
+    try {
+      for (const id of ids) {
+        const pred = new relationalStore.RdbPredicates('chapter');
+        pred.equalTo('id', id);
+        await store.update(values, pred);
+      }
+      store.commit();
+    } catch (e) {
+      store.rollBack();
+      throw new Error(`setReadForIds failed: ${e}`);
+    }
+  }
+
+  // 批量设置书签（章节多选"添加/移除书签"，单事务提交）
+  static async setBookmarkForIds(ids: number[], bookmark: boolean): Promise<void> {
+    const store = await AppDb.get();
+    const values: relationalStore.ValuesBucket = { 'bookmark': bookmark ? 1 : 0 };
+    store.beginTransaction();
+    try {
+      for (const id of ids) {
+        const pred = new relationalStore.RdbPredicates('chapter');
+        pred.equalTo('id', id);
+        await store.update(values, pred);
+      }
+      store.commit();
+    } catch (e) {
+      store.rollBack();
+      throw new Error(`setBookmarkForIds failed: ${e}`);
+    }
   }
 
   static async setLastPageRead(id: number, page: number): Promise<void> {

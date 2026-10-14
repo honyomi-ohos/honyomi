@@ -113,10 +113,12 @@ export struct ReaderPage {
   private gripListening: boolean = false;
   private handleHoldingHandChange: (status: motion.HoldingHandStatus) => void =
     (status: motion.HoldingHandStatus): void => {
-      if (status === motion.HoldingHandStatus.LEFT_HAND_HELD) {
-        this.gripRight = false;
-      } else if (status === motion.HoldingHandStatus.RIGHT_HAND_HELD) {
-        this.gripRight = true;
+      if (canIUse('SystemCapability.MultimodalAwareness.Motion')) {
+        if (status === motion.HoldingHandStatus.LEFT_HAND_HELD) {
+          this.gripRight = false;
+        } else if (status === motion.HoldingHandStatus.RIGHT_HAND_HELD) {
+          this.gripRight = true;
+        }
       }
     };
   private dataSource: PageDataSource = new PageDataSource();
@@ -164,15 +166,19 @@ export struct ReaderPage {
   private updateGripListener(want: boolean): void {
     const shouldListen: boolean = want && this.mode === 'smart_grip' && this.gripSupported;
     if (shouldListen && !this.gripListening) {
-      try {
-        motion.on('holdingHandChanged', this.handleHoldingHandChange);
-        this.gripListening = true;
-      } catch (error) {
+      if (canIUse('SystemCapability.MultimodalAwareness.Motion')) {
+        try {
+          motion.on('holdingHandChanged', this.handleHoldingHandChange);
+          this.gripListening = true;
+        } catch (error) {
+        }
       }
     } else if (!shouldListen && this.gripListening) {
-      try {
-        motion.off('holdingHandChanged', this.handleHoldingHandChange);
-      } catch (error) {
+      if (canIUse('SystemCapability.MultimodalAwareness.Motion')) {
+        try {
+          motion.off('holdingHandChanged', this.handleHoldingHandChange);
+        } catch (error) {
+        }
       }
       this.gripListening = false;
     }

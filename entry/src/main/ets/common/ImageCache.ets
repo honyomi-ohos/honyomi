@@ -172,9 +172,12 @@ export class ImageCache {
   }
 
   private static async md5(text: string): Promise<string> {
+    // @SuppressWarnings syscap
     const md = cryptoFramework.createMd('MD5');
     const input: cryptoFramework.DataBlob = { data: new util.TextEncoder().encodeInto(text) };
+    // @SuppressWarnings syscap
     await md.update(input);
+    // @SuppressWarnings syscap
     const output = await md.digest();
     let hex = '';
     for (let i = 0; i < output.data.length; i++) {

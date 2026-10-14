@@ -61,6 +61,7 @@ export class AppDb {
       fetchedAt INTEGER DEFAULT 0,
       contentType TEXT DEFAULT 'manga',
       origThumbnail TEXT DEFAULT '',
+      chapterFlags INTEGER DEFAULT 0,
       UNIQUE(sourceKey, url)
     )`);
     await store.executeSql(`CREATE TABLE IF NOT EXISTS chapter (
@@ -148,6 +149,22 @@ export class AppDb {
       await store.executeSql(`CREATE UNIQUE INDEX IF NOT EXISTS idx_history_unique ON history(mangaId, chapterId)`);
       await store.executeSql(`PRAGMA user_version = 2`);
       hilog.info(0x0001, 'AppDb', 'migrated schema to v2');
+    }
+    // v2 -> v3：manga 增加章节排序/筛选标志位（对齐 Mihon chapterFlags，
+    // 详情页排序模式/方向与三态筛选按部持久化）
+    if (version < 3) {
+      const cols3 = new Set<string>();
+      const colRs3 = await store.querySql(`PRAGMA table_info(manga)`);
+      while (colRs3.goToNextRow()) {
+        cols3.add(colRs3.getString(colRs3.getColumnIndex('name')));
+      }
+      colRs3.close();
+      if (!cols3.has('chapterFlags')) {
+        await store.executeSql(`ALTER TABLE manga ADD COLUMN chapterFlags INTEGER DEFAULT 0`);
+      }
+      await store.executeSql(`PRAGMA user_version = 3`);
+      version = 3;
+      hilog.info(0x0001, 'AppDb', 'migrated schema to v3');
     }
   }
 

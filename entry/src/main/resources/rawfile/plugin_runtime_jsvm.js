@@ -790,6 +790,20 @@
     html: function (html, baseUrl) {
       return wrapDocument(html, baseUrl);
     },
+    // GBK URL 编码桥：宿主系统 TextEncoder('gbk') 编码文本并做百分号编码
+    // （NativeHttpBridge.encodeGbkUrl）。桥不可用或编码失败时抛错，插件自行降级。
+    urlEncodeGbk: function (text) {
+      if (typeof g.__nativeUrlEncodeGbk !== 'function') {
+        throw new Error('urlEncodeGbk: bridge not available');
+      }
+      var raw = g.__nativeUrlEncodeGbk(String(text == null ? '' : text));
+      var r;
+      try { r = JSON.parse(raw); } catch (e) {
+        throw new Error('urlEncodeGbk: bridge result parse failed');
+      }
+      if (r.error) { throw new Error(String(r.error)); }
+      return String(r.body == null ? '' : r.body);
+    },
     crypto: {
       base64Encode: function (s) { return g.btoa(s); },
       base64Decode: function (s) { return g.atob(s); },

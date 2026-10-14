@@ -819,10 +819,98 @@
                        "name":  "detail_in_queue",
                        "value":  "In queue"
                    },
-                   {
-                       "name":  "detail_download",
-                       "value":  "Download"
-                   },
+                    {
+                        "name":  "detail_download",
+                        "value":  "Download"
+                    },
+                    {
+                        "name":  "detail_sort_tab",
+                        "value":  "Sort"
+                    },
+                    {
+                        "name":  "detail_filter_tab",
+                        "value":  "Filter"
+                    },
+                    {
+                        "name":  "detail_sort_by_source",
+                        "value":  "By source"
+                    },
+                    {
+                        "name":  "detail_sort_by_number",
+                        "value":  "By chapter number"
+                    },
+                    {
+                        "name":  "detail_sort_by_date",
+                        "value":  "By upload date"
+                    },
+                    {
+                        "name":  "detail_sort_by_name",
+                        "value":  "By name"
+                    },
+                    {
+                        "name":  "detail_filter_reset",
+                        "value":  "Reset"
+                    },
+                    {
+                        "name":  "detail_filter_downloaded",
+                        "value":  "Downloaded"
+                    },
+                    {
+                        "name":  "detail_filter_unread",
+                        "value":  "Unread"
+                    },
+                    {
+                        "name":  "detail_filter_bookmarked",
+                        "value":  "Bookmarked"
+                    },
+                    {
+                        "name":  "detail_selected_count",
+                        "value":  "%d selected"
+                    },
+                    {
+                        "name":  "detail_action_mark_read",
+                        "value":  "Mark read"
+                    },
+                    {
+                        "name":  "detail_action_mark_unread",
+                        "value":  "Mark unread"
+                    },
+                    {
+                        "name":  "detail_action_bookmark",
+                        "value":  "Bookmark"
+                    },
+                    {
+                        "name":  "detail_action_delete",
+                        "value":  "Delete"
+                    },
+                    {
+                        "name":  "detail_dl_next_n",
+                        "value":  "Next %d unread"
+                    },
+                    {
+                        "name":  "detail_dl_unread",
+                        "value":  "All unread"
+                    },
+                    {
+                        "name":  "detail_dl_bookmarked",
+                        "value":  "Bookmarked chapters"
+                    },
+                    {
+                        "name":  "detail_dl_queued_n",
+                        "value":  "%d chapters queued"
+                    },
+                    {
+                        "name":  "detail_no_unread",
+                        "value":  "No unread chapters"
+                    },
+                    {
+                        "name":  "detail_no_downloads",
+                        "value":  "No downloads to delete"
+                    },
+                    {
+                        "name":  "detail_deleted_n",
+                        "value":  "Deleted %d downloads"
+                    },
                    {
                        "name":  "reader_chapter_not_found",
                        "value":  "Chapter not found"

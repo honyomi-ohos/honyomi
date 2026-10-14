@@ -387,6 +387,61 @@ static JSVM_Value NativeHttpRequest(JSVM_Env env, JSVM_CallbackInfo info)
     return ToJsString(env, resultJson);
 }
 
+// Blocking bridge to the ArkTS side: URL-encodes text as GBK bytes via the
+// system TextEncoder (NativeHttpBridge.encodeGbkUrl). Reuses the HTTP task
+// channel with reqJson == {"type":"encodeGbk","callId":N,"text":"..."}; the
+// answer arrives as a JsvmHttpResult envelope with the encoded string in
+// `body` (resolved through resolveHttp).
+static JSVM_Value NativeUrlEncodeGbk(JSVM_Env env, JSVM_CallbackInfo info)
+{
+    size_t argc = 1;
+    JSVM_Value args[1] = {nullptr};
+    OH_JSVM_GetCbInfo(env, info, &argc, args, nullptr, nullptr);
+    std::string text = argc > 0 ? ToStdString(env, args[0]) : "";
+
+    const uint64_t callId = g_nextCallId.fetch_add(1);
+    auto pending = std::make_shared<PendingHttp>();
+    {
+        std::lock_guard<std::mutex> lock(g_pendingLock);
+        g_pending[callId] = pending;
+    }
+
+    std::string reqJson = std::string("{\"callId\":") + std::to_string(callId) +
+        ",\"type\":\"encodeGbk\",\"text\":\"" + JsonEscape(text) + "\"}";
+
+    bool dispatched = false;
+    {
+        std::lock_guard<std::mutex> lock(g_tsfLock);
+        if (g_httpTsf != nullptr) {
+            HttpTask *task = new HttpTask{callId, reqJson};
+            if (napi_call_threadsafe_function(g_httpTsf, task, napi_tsfn_nonblocking) == napi_ok) {
+                dispatched = true;
+            } else {
+                delete task;
+            }
+        }
+    }
+
+    std::string resultJson;
+    if (!dispatched) {
+        resultJson = HttpErrResult("http bridge not initialized");
+        std::lock_guard<std::mutex> lock(g_pendingLock);
+        g_pending.erase(callId);
+    } else {
+        std::unique_lock<std::mutex> lock(pending->mtx);
+        bool woke = pending->cv.wait_for(lock, std::chrono::seconds(HTTP_BRIDGE_TIMEOUT_S),
+                                         [&pending]() { return pending->done; });
+        if (!woke) {
+            resultJson = HttpErrResult("http bridge timeout");
+            std::lock_guard<std::mutex> plock(g_pendingLock);
+            g_pending.erase(callId);
+        } else {
+            resultJson = pending->resultJson;
+        }
+    }
+    return ToJsString(env, resultJson);
+}
+
 static JSVM_Value NativeSelector(JSVM_Env env, JSVM_CallbackInfo info)
 {
     size_t argc = 2;
@@ -561,6 +616,7 @@ static JSVM_Value NativeLog(JSVM_Env env, JSVM_CallbackInfo info)
 // Static callback structs: must outlive the env (keep as globals, never free).
 static JSVM_CallbackStruct g_httpCb = {NativeHttpRequest, nullptr};
 static JSVM_CallbackStruct g_httpSharedCb = {NativeHttpRequestShared, nullptr};
+static JSVM_CallbackStruct g_encodeGbkCb = {NativeUrlEncodeGbk, nullptr};
 static JSVM_CallbackStruct g_selectorCb = {NativeSelector, nullptr};
 static JSVM_CallbackStruct g_selectorBufferCb = {NativeSelectorBuffer, nullptr};
 static JSVM_CallbackStruct g_logCb = {NativeLog, nullptr};
@@ -982,6 +1038,7 @@ static napi_value CreateEngine(napi_env env, napi_callback_info info)
     JSVM_PropertyDescriptor descriptors[] = {
         { "__nativeHttpRequest", nullptr, &g_httpCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
         { "__nativeHttpRequestShared", nullptr, &g_httpSharedCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
+        { "__nativeUrlEncodeGbk", nullptr, &g_encodeGbkCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
         { "nativeSelector", nullptr, &g_selectorCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
         { "nativeSelectorBuffer", nullptr, &g_selectorBufferCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
         { "__nativeLog", nullptr, &g_logCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
