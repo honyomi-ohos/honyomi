@@ -1,6 +1,7 @@
 import { common } from '@kit.AbilityKit';
 import { picker } from '@kit.CoreFileKit';
 import { PluginService, InstalledPlugin, RepoEntry } from '../../data/PluginService';
+import { ContentType } from '../../model/Models';
 import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
 import { Settings } from '../../common/Settings';
@@ -19,6 +20,8 @@ export struct ExtensionListPanel {
   @StorageProp('extLocalInstall') @Watch('onLocalInstall') extLocalInstall: number = 0;
   @StorageProp('pluginsDirty') @Watch('onPluginsDirty') pluginsDirty: number = 0;
   @Prop searchQuery: string = '';
+  // 内容类型过滤（宿主过滤弹窗下发）；空数组 = 全部类型
+  @Prop typeFilter: string[] = [];
   onOpenPlugin: (pluginKey: string) => void = (_k: string) => {};
   @State installed: InstalledPlugin[] = [];
   @State repoEntries: RepoEntry[] = [];
@@ -72,10 +75,23 @@ export struct ExtensionListPanel {
     return name.toLowerCase().indexOf(q) >= 0 || key.toLowerCase().indexOf(q) >= 0;
   }
 
+  // 仓库索引未声明 contentType 的条目按宿主约定视为漫画
+  private effectiveType(contentType: string): string {
+    return contentType === '' ? ContentType.MANGA : contentType;
+  }
+
+  private matchesType(contentType: string): boolean {
+    if (this.typeFilter.length === 0) {
+      return true;
+    }
+    return this.typeFilter.indexOf(this.effectiveType(contentType)) >= 0;
+  }
+
   filteredInstalled(): InstalledPlugin[] {
     const list: InstalledPlugin[] = [];
     for (const item of this.installed) {
-      if (this.matchesQuery(item.manifest.name, item.manifest.key)) {
+      if (this.matchesQuery(item.manifest.name, item.manifest.key) &&
+        this.matchesType(item.manifest.contentType)) {
         list.push(item);
       }
     }
@@ -85,7 +101,7 @@ export struct ExtensionListPanel {
   filteredRepoEntries(): RepoEntry[] {
     const list: RepoEntry[] = [];
     for (const entry of this.repoEntries) {
-      if (this.matchesQuery(entry.name, entry.key)) {
+      if (this.matchesQuery(entry.name, entry.key) && this.matchesType(entry.contentType)) {
         list.push(entry);
       }
     }
@@ -272,7 +288,8 @@ export struct ExtensionListPanel {
 
           if (this.filteredInstalled().length === 0) {
             EmptyScreen({
-              message: this.searchQuery.trim() !== '' ? $r('app.string.ext_search_no_match') :
+              message: this.searchQuery.trim() !== '' || this.typeFilter.length > 0 ?
+                $r('app.string.ext_search_no_match') :
                 $r('app.string.plugin_empty'),
               compact: true,
             })

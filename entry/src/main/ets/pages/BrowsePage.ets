@@ -4,6 +4,7 @@ import { MangaRepo } from '../data/Repos';
 import { PluginService } from '../data/PluginService';
 import { SourceRegistry, Source } from '../source/Source';
 import { BrowseSourceParams, MigrateMangaParams, ExtensionDetailParams } from '../model/RouteParams';
+import { ContentType } from '../model/Models';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { Settings } from '../common/Settings';
@@ -104,25 +105,41 @@ struct SourceOptionsDialog {
   }
 }
 
-// 源语言过滤弹窗
+// 内容类型过滤项（漫画/小说/动画）
+const FILTER_TYPES: string[] = [ContentType.MANGA, ContentType.NOVEL, ContentType.VIDEO];
+
+function typeDisplayName(t: string): Resource {
+  if (t === ContentType.NOVEL) {
+    return $r('app.string.browse_type_novel');
+  }
+  if (t === ContentType.VIDEO) {
+    return $r('app.string.browse_type_video');
+  }
+  return $r('app.string.browse_type_manga');
+}
+
+// 源/插件过滤弹窗：语言（langs 非空时显示）+ 内容类型（漫画/小说/动画）
 @CustomDialog
-struct LangFilterDialog {
+struct SourceFilterDialog {
   controller?: CustomDialogController;
   langs: string[] = [];
-  initialSelected: string[] = [];
-  onApply: (langs: string[]) => void = (_l: string[]) => {};
+  initialLangs: string[] = [];
+  initialTypes: string[] = [];
+  onApply: (langs: string[], types: string[]) => void = (_l: string[], _t: string[]) => {};
   onClose: () => void = () => {};
-  @State checked: string[] = [];
+  @State checkedLangs: string[] = [];
+  @State checkedTypes: string[] = [];
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   aboutToAppear(): void {
-    this.checked = this.initialSelected.length > 0 ? this.initialSelected.slice() : this.langs.slice();
+    this.checkedLangs = this.initialLangs.length > 0 ? this.initialLangs.slice() : this.langs.slice();
+    this.checkedTypes = this.initialTypes.length > 0 ? this.initialTypes.slice() : FILTER_TYPES.slice();
   }
 
-  private toggle(lang: string): void {
+  private toggleLang(lang: string): void {
     const next: string[] = [];
     let removed = false;
-    for (const l of this.checked) {
+    for (const l of this.checkedLangs) {
       if (l === lang) {
         removed = true;
       } else {
@@ -132,7 +149,23 @@ struct LangFilterDialog {
     if (!removed) {
       next.push(lang);
     }
-    this.checked = next;
+    this.checkedLangs = next;
+  }
+
+  private toggleType(t: string): void {
+    const next: string[] = [];
+    let removed = false;
+    for (const item of this.checkedTypes) {
+      if (item === t) {
+        removed = true;
+      } else {
+        next.push(item);
+      }
+    }
+    if (!removed) {
+      next.push(t);
+    }
+    this.checkedTypes = next;
   }
 
   private dismiss(): void {
@@ -144,7 +177,7 @@ struct LangFilterDialog {
 
   build() {
     Column() {
-      Text($r('app.string.browse_filter_langs'))
+      Text($r('app.string.action_filter'))
         .fontSize(16)
         .fontWeight(FontWeight.Bold)
         .fontColor(this.pal.text)
@@ -153,29 +186,65 @@ struct LangFilterDialog {
 
       Scroll() {
         Column() {
-          ForEach(this.langs, (lang: string) => {
+          if (this.langs.length > 0) {
+            Text($r('app.string.browse_filter_langs'))
+              .fontSize(13)
+              .fontWeight(FontWeight.Bold)
+              .fontColor(this.pal.sub)
+              .width('100%')
+              .padding({ top: 8, bottom: 4 })
+
+            ForEach(this.langs, (lang: string) => {
+              Row() {
+                Text(langDisplayName(lang))
+                  .fontSize(14)
+                  .fontColor(this.pal.text)
+                  .layoutWeight(1)
+                Toggle({ type: ToggleType.Checkbox, isOn: this.checkedLangs.indexOf(lang) >= 0 })
+                  .onChange((on: boolean) => {
+                    if (on !== (this.checkedLangs.indexOf(lang) >= 0)) {
+                      this.toggleLang(lang);
+                    }
+                  })
+              }
+              .width('100%')
+              .padding({ top: 10, bottom: 10 })
+              .onClick(() => {
+                this.toggleLang(lang);
+              })
+            }, (lang: string) => `lf-${lang}`)
+          }
+
+          Text($r('app.string.lib_filter_content'))
+            .fontSize(13)
+            .fontWeight(FontWeight.Bold)
+            .fontColor(this.pal.sub)
+            .width('100%')
+            .padding({ top: 8, bottom: 4 })
+
+          ForEach(FILTER_TYPES, (t: string) => {
             Row() {
-              Text(langDisplayName(lang))
+              Text(typeDisplayName(t))
                 .fontSize(14)
                 .fontColor(this.pal.text)
                 .layoutWeight(1)
-              Toggle({ type: ToggleType.Checkbox, isOn: this.checked.indexOf(lang) >= 0 })
+              Toggle({ type: ToggleType.Checkbox, isOn: this.checkedTypes.indexOf(t) >= 0 })
                 .onChange((on: boolean) => {
-                  if (on !== (this.checked.indexOf(lang) >= 0)) {
-                    this.toggle(lang);
+                  if (on !== (this.checkedTypes.indexOf(t) >= 0)) {
+                    this.toggleType(t);
                   }
                 })
             }
             .width('100%')
             .padding({ top: 10, bottom: 10 })
             .onClick(() => {
-              this.toggle(lang);
+              this.toggleType(t);
             })
-          }, (lang: string) => `lf-${lang}`)
+          }, (t: string) => `tf-${t}`)
         }
         .width('100%')
       }
-      .constraintSize({ maxHeight: 260 })
+      .constraintSize({ maxHeight: 300 })
       .scrollBar(BarState.Off)
 
       Row({ space: 12 }) {
@@ -184,14 +253,15 @@ struct LangFilterDialog {
           .backgroundColor(this.pal.chip)
           .fontColor(this.pal.text)
           .onClick(() => {
-            this.checked = this.langs.slice();
+            this.checkedLangs = this.langs.slice();
+            this.checkedTypes = FILTER_TYPES.slice();
           })
         Button($r('app.string.common_ok'))
           .layoutWeight(1)
           .backgroundColor(this.pal.primary)
           .onClick(() => {
             this.dismiss();
-            this.onApply(this.checked.slice());
+            this.onApply(this.checkedLangs.slice(), this.checkedTypes.slice());
           })
       }
       .width('100%')
@@ -215,9 +285,11 @@ export struct BrowsePage {
   @State sources: Source[] = [];
   @State pinnedKeys: string[] = [];
   @State enabledLangs: string[] = []; // 空数组 = 全部语言
+  @State enabledTypes: string[] = []; // 空数组 = 全部内容类型
   // 插件 Tab
   @State extSearchOpen: boolean = false;
   @State extQuery: string = '';
+  @State extTypes: string[] = []; // 空数组 = 全部内容类型
   // 迁移 Tab
   @State migrateItems: MigrateSourceCount[] = [];
   @State migrateLoaded: boolean = false;
@@ -310,6 +382,9 @@ export struct BrowsePage {
       if (this.enabledLangs.length > 0 && this.enabledLangs.indexOf(s.lang) < 0) {
         continue;
       }
+      if (this.enabledTypes.length > 0 && this.enabledTypes.indexOf(s.contentType) < 0) {
+        continue;
+      }
       if (this.isPinned(s.key)) {
         pinned.push(s);
         continue;
@@ -361,13 +436,34 @@ export struct BrowsePage {
     dialog.open();
   }
 
-  private showLangFilter(): void {
+  private showSourceFilter(): void {
     const dialog = new CustomDialogController({
-      builder: LangFilterDialog({
+      builder: SourceFilterDialog({
         langs: this.allLangs(),
-        initialSelected: this.enabledLangs,
-        onApply: (langs: string[]): void => {
+        initialLangs: this.enabledLangs,
+        initialTypes: this.enabledTypes,
+        onApply: (langs: string[], types: string[]): void => {
           this.enabledLangs = langs.length === this.allLangs().length ? [] : langs;
+          this.enabledTypes = types.length === FILTER_TYPES.length ? [] : types;
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  // 插件 Tab：仅按内容类型过滤（语言沿用仓库声明，不提供过滤）
+  private showExtTypeFilter(): void {
+    const dialog = new CustomDialogController({
+      builder: SourceFilterDialog({
+        langs: [],
+        initialLangs: [],
+        initialTypes: this.extTypes,
+        onApply: (_langs: string[], types: string[]): void => {
+          this.extTypes = types.length === FILTER_TYPES.length ? [] : types;
         },
         onClose: (): void => {
           dialog.close();
@@ -546,6 +642,14 @@ export struct BrowsePage {
       .width('100%')
       .height('100%')
       .justifyContent(FlexAlign.Center)
+    } else if (this.sourceSections().length === 0) {
+      // 有源但被语言/类型过滤后为空
+      Column() {
+        EmptyScreen({ message: $r('app.string.browse_type_empty') })
+      }
+      .width('100%')
+      .height('100%')
+      .justifyContent(FlexAlign.Center)
     } else {
       Scroll() {
         Column() {
@@ -699,7 +803,7 @@ export struct BrowsePage {
         }
 
         if (this.currentTab === 0) {
-          // 图源：全局搜索 + 语言过滤
+          // 图源：全局搜索 + 过滤（语言/内容类型）
           AppIcon({ name: 'travel_explore', iconSize: 22 })
             .padding({ left: 12, right: 12 })
             .onClick(() => {
@@ -708,14 +812,19 @@ export struct BrowsePage {
           AppIcon({ name: 'filter_list', iconSize: 22 })
             .padding({ left: 0, right: 4 })
             .onClick(() => {
-              this.showLangFilter();
+              this.showSourceFilter();
             })
         } else if (this.currentTab === 1) {
-          // 插件：搜索 + 溢出菜单
+          // 插件：搜索 + 类型过滤 + 溢出菜单
           AppIcon({ name: 'search', iconSize: 22 })
             .padding({ left: 12, right: 12 })
             .onClick(() => {
               this.extSearchOpen = true;
+            })
+          AppIcon({ name: 'filter_list', iconSize: 22 })
+            .padding({ left: 0, right: 12 })
+            .onClick(() => {
+              this.showExtTypeFilter();
             })
           AppIcon({ name: 'more_vert', iconSize: 22 })
             .padding({ left: 0, right: 4 })
@@ -743,6 +852,7 @@ export struct BrowsePage {
         TabContent() {
           ExtensionListPanel({
             searchQuery: this.extQuery,
+            typeFilter: this.extTypes,
             onOpenPlugin: (pluginKey: string): void => {
               const params: ExtensionDetailParams = { pluginKey: pluginKey };
               this.pathStack.pushPathByName('ExtensionDetail', params);
