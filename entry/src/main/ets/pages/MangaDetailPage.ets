@@ -107,7 +107,9 @@ struct DetailChapterRow {
         Row({ space: 5 }) {
           // 未读圆点（对齐 Mihon MangaChapterListItem）
           if (!this.chapter.read) {
-            Circle({ width: 6, height: 6 })
+            Circle()
+              .width(6)
+              .height(6)
               .fill(this.pal.primary)
           }
           Text(this.chapter.name)
@@ -606,6 +608,25 @@ export struct MangaDetailPage {
     await MangaRepo.resetCover(this.mangaId);
     AppStorage.set('libDirty', this.libDirty + 1);
     Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_reset'));
+  }
+
+  // 标签 chip（对齐 Mihon TagsChip）：点击跳全局搜索，长按复制
+  @Builder
+  TagChip(tag: string) {
+    Text(tag)
+      .fontSize(12)
+      .fontColor(this.pal.text)
+      .backgroundColor(this.pal.chip)
+      .borderRadius(14)
+      .padding({ left: 12, right: 12, top: 5, bottom: 5 })
+      .margin({ right: 6, top: 6 })
+      .onClick(() => {
+        this.searchGlobal(tag);
+      })
+      .gesture(LongPressGesture({ repeat: false })
+        .onAction(() => {
+          this.copyTag(tag);
+        }))
   }
 
   // 封面查看器（对齐 Mihon MangaCoverDialog）：点击封面进入全屏查看，
@@ -1216,63 +1237,118 @@ export struct MangaDetailPage {
               .height(this.headerHeight())
             }
 
-            // 操作按钮
+            // 操作按钮行（对齐 Mihon MangaActionRow）：收藏 / 续读 / 追踪 / 桌面卡片
             ListItem() {
-              Row({ space: 12 }) {
-                Button(this.manga.inLibrary ? $r('app.string.detail_in_library') : $r('app.string.detail_add_to_library'))
-                  .fontSize(14)
-                  .height(38)
-                  .layoutWeight(1)
-                  .backgroundColor(this.manga.inLibrary ? this.pal.chip : this.pal.primary)
-                  .fontColor(this.manga.inLibrary ? this.pal.text : '#FFFFFF')
-                  .onClick(() => {
-                    this.runSafe((): Promise<void> => this.toggleLibrary());
+              Row() {
+                Column({ space: 5 }) {
+                  AppIcon({
+                    name: 'favorite',
+                    iconSize: 22,
+                    tint: this.manga.inLibrary ? this.pal.primary : this.pal.sub
                   })
-                Button(this.actionLabel())
-                  .fontSize(14)
-                  .height(38)
-                  .layoutWeight(1)
-                  .backgroundColor(this.pal.chip)
-                  .fontColor(this.pal.text)
-                  .onClick(() => {
-                    const chapter = this.continueChapter();
-                    if (chapter !== undefined) {
-                      this.openReader(chapter.id);
-                    }
+                  Text(this.manga.inLibrary ? $r('app.string.detail_in_library') : $r('app.string.detail_add_to_library'))
+                    .fontSize(11)
+                    .maxLines(2)
+                    .textAlign(TextAlign.Center)
+                    .fontColor(this.manga.inLibrary ? this.pal.primary : this.pal.sub)
+                }
+                .layoutWeight(1)
+                .onClick(() => {
+                  this.runSafe((): Promise<void> => this.toggleLibrary());
+                })
+
+                Column({ space: 5 }) {
+                  AppIcon({ name: 'play_arrow', iconSize: 22, tint: this.pal.sub })
+                  Text(this.actionLabel())
+                    .fontSize(11)
+                    .maxLines(2)
+                    .textAlign(TextAlign.Center)
+                    .fontColor(this.pal.sub)
+                }
+                .layoutWeight(1)
+                .onClick(() => {
+                  const chapter = this.continueChapter();
+                  if (chapter !== undefined) {
+                    this.openReader(chapter.id);
+                  }
+                })
+
+                Column({ space: 5 }) {
+                  AppIcon({
+                    name: 'sync',
+                    iconSize: 22,
+                    tint: this.track !== undefined ? this.pal.primary : this.pal.sub
                   })
+                  Text($r('app.string.detail_action_tracking'))
+                    .fontSize(11)
+                    .maxLines(2)
+                    .textAlign(TextAlign.Center)
+                    .fontColor(this.track !== undefined ? this.pal.primary : this.pal.sub)
+                }
+                .layoutWeight(1)
+                .onClick(() => {
+                  this.showTrackingCard = !this.showTrackingCard;
+                })
+
                 if (this.manga.inLibrary) {
-                  Button($r('app.string.detail_add_to_desktop'))
-                    .fontSize(14)
-                    .height(38)
-                    .layoutWeight(1)
-                    .backgroundColor(this.pal.chip)
-                    .fontColor(this.pal.text)
-                    .onClick(() => {
-                      this.addToDesktop();
-                    })
+                  Column({ space: 5 }) {
+                    AppIcon({ name: 'collections_bookmark', iconSize: 22, tint: this.pal.sub })
+                    Text($r('app.string.detail_add_to_desktop'))
+                      .fontSize(11)
+                      .maxLines(2)
+                      .textAlign(TextAlign.Center)
+                      .fontColor(this.pal.sub)
+                  }
+                  .layoutWeight(1)
+                  .onClick(() => {
+                    this.addToDesktop();
+                  })
                 }
               }
               .width('100%')
-              .padding({ left: 16, right: 16, top: 12 })
+              .padding({ left: 8, right: 8, top: 14 })
             }
 
-            // 简介
-            if (this.manga.description !== '') {
+            // 简介 + 标签（对齐 Mihon ExpandableMangaDescription）
+            if (this.manga.description !== '' || this.tagList().length > 0) {
               ListItem() {
                 Column() {
-                  Text(Util.localDescriptionLabel(this.getUIContext(), this.manga.description))
-                    .fontSize(13)
-                    .fontColor(this.pal.sub)
-                    .maxLines(this.descExpanded ? 999 : 3)
-                    .textOverflow({ overflow: TextOverflow.Ellipsis })
-                    .width('100%')
-                  Text(this.descExpanded ? $r('app.string.detail_collapse') : $r('app.string.detail_expand'))
-                    .fontSize(12)
-                    .fontColor(this.pal.primary)
-                    .margin({ top: 4 })
-                    .onClick(() => {
-                      this.descExpanded = !this.descExpanded;
-                    })
+                  if (this.manga.description !== '') {
+                    Text(Util.localDescriptionLabel(this.getUIContext(), this.manga.description))
+                      .fontSize(13)
+                      .fontColor(this.pal.sub)
+                      .maxLines(this.descExpanded ? 999 : 3)
+                      .textOverflow({ overflow: TextOverflow.Ellipsis })
+                      .width('100%')
+                    Text(this.descExpanded ? $r('app.string.detail_collapse') : $r('app.string.detail_expand'))
+                      .fontSize(12)
+                      .fontColor(this.pal.primary)
+                      .margin({ top: 4 })
+                      .onClick(() => {
+                        this.descExpanded = !this.descExpanded;
+                      })
+                  }
+                  // 标签：展开时流式换行，收起时单行横向滚动（对齐 Mihon tags chips）
+                  if (this.tagList().length > 0) {
+                    if (this.descExpanded) {
+                      Flex({ wrap: FlexWrap.Wrap }) {
+                        ForEach(this.tagList(), (tag: string) => {
+                          this.TagChip(tag)
+                        }, (tag: string, idx: number) => `tag-${idx}-${tag}`)
+                      }
+                    } else {
+                      Scroll() {
+                        Row() {
+                          ForEach(this.tagList(), (tag: string) => {
+                            this.TagChip(tag)
+                          }, (tag: string, idx: number) => `tag-${idx}-${tag}`)
+                        }
+                      }
+                      .scrollable(ScrollDirection.Horizontal)
+                      .scrollBar(BarState.Off)
+                      .edgeEffect(EdgeEffect.None)
+                    }
+                  }
                 }
                 .alignItems(HorizontalAlign.Start)
                 .width('100%')
@@ -1280,8 +1356,9 @@ export struct MangaDetailPage {
               }
             }
 
-            // AniList 追踪
-            ListItem() {
+            // AniList 追踪（操作行"追踪"按钮控制显隐）
+            if (this.showTrackingCard) {
+              ListItem() {
               Column() {
                 Text($r('app.string.detail_anilist_tracking'))
                   .fontSize(15)
@@ -1368,12 +1445,13 @@ export struct MangaDetailPage {
                   }
                 }
               }
-              .width('100%')
-              .alignItems(HorizontalAlign.Start)
-              .padding(16)
-              .backgroundColor(this.pal.card)
-              .borderRadius(14)
-              .margin({ left: 16, right: 16, top: 12 })
+               .width('100%')
+               .alignItems(HorizontalAlign.Start)
+               .padding(16)
+               .backgroundColor(this.pal.card)
+               .borderRadius(14)
+               .margin({ left: 16, right: 16, top: 12 })
+              }
             }
 
             // 章节标题栏：标题/排序/筛选入口 + 批量下载 + 全部已读（对齐 Mihon ChapterHeader）
@@ -1465,8 +1543,8 @@ export struct MangaDetailPage {
                       onLongPress: (c: ChapterRecord): void => {
                         this.toggleSelected(c.id);
                       },
-                      onDownload: (c: ChapterRecord): void => {
-                        this.runSafe((): Promise<void> => this.downloadChapter(c));
+                      onIndicatorTap: (c: ChapterRecord, state: string): void => {
+                        this.onChapterIndicatorTap(c, state);
                       },
                     })
                   }

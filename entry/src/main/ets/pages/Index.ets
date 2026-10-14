@@ -14,6 +14,7 @@ import { MangaRepo } from '../data/Repos';
 import { Util } from '../common/Util';
 import { CookieJar } from '../net/CookieJar';
 import { CoverStore } from '../common/CoverStore';
+import { TtsPlaybackService, TtsServiceStateHandler } from '../common/TtsPlaybackService';
 import { LibraryPage } from './LibraryPage';
 import { UpdatesPage } from './UpdatesPage';
 import { HistoryPage } from './HistoryPage';
@@ -319,6 +320,12 @@ struct Index {
   // 首启引导只拉起一次（onPageShow 每次回前台都会触发，需防重复）
   private onboardingLaunched: boolean = false;
   private tabsController: HdsTabsController = new HdsTabsController();
+  // 听书进行中才挂载迷你条覆盖层（避免空覆盖层拦截整页触摸）
+  @State ttsActive: boolean = false;
+  private readonly onTtsState: TtsServiceStateHandler =
+    (_playing: boolean, _paused: boolean, _mangaId: number, _chapterId: number): void => {
+      this.ttsActive = TtsPlaybackService.isActive();
+    };
 
   // lg 断点（≥840vp）：底部页签切换为侧边导航栏（华为大屏导航规范）
   private isWide(): boolean {
@@ -369,10 +376,17 @@ struct Index {
   aboutToAppear(): void {
     this.currentTab = Settings.getStartTab();
     this.mountedMask = 1 << this.currentTab;
+    // 订阅听书状态：仅听书进行中才挂载迷你条覆盖层
+    TtsPlaybackService.events.onState(this.onTtsState);
+    this.ttsActive = TtsPlaybackService.isActive();
     // 插件直接运行于 JSVM 隔离引擎（无 Web 沙箱依赖），启动即加载
     this.loadInstalledPlugins();
     this.autoRefresh();
     this.consumeCardAction();
+  }
+
+  aboutToDisappear(): void {
+    TtsPlaybackService.events.offState(this.onTtsState);
   }
 
   // 首启未完成引导时拉起引导页（页面挂载完成后，对齐 Mihon ShowOnboarding）
@@ -708,11 +722,14 @@ struct Index {
         .height('100%')
         }
         // 听书迷你条层：听书进行中悬浮于底部页签上方（空区域不拦截触摸）
-        Stack({ alignContent: Alignment.Bottom }) {
-          TtsMiniBar({ navBarH: this.navBarH })
+        if (this.ttsActive) {
+          Stack({ alignContent: Alignment.Bottom }) {
+            TtsMiniBar({ navBarH: this.navBarH })
+          }
+          .width('100%')
+          .height('100%')
+          .hitTestBehavior(HitTestMode.Transparent)
         }
-        .width('100%')
-        .height('100%')
       }
       .width('100%')
       .height('100%')
