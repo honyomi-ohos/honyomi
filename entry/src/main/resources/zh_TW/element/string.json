@@ -643,6 +643,15 @@
     { "name": "pref_onboarding_guide", "value": "新手引導" },
     { "name": "getting_started_guide", "value": "入門指南" },
     { "name": "onboarding_guides_new_user", "value": "第一次使用 %s？建議先閱讀入門指南。" },
-    { "name": "onboarding_guides_returning_user", "value": "重新安裝 %s？" }
+    { "name": "onboarding_guides_returning_user", "value": "重新安裝 %s？" },
+    { "name": "chapter_badge_new", "value": "NEW" },
+    { "name": "detail_sync_in_progress", "value": "同步進行中，請稍候" },
+    { "name": "detail_download_failed", "value": "下載失敗" },
+    { "name": "detail_load_failed", "value": "詳情載入失敗" },
+    { "name": "detail_invalid_params", "value": "頁面參數無效" },
+    { "name": "detail_dl_preparing", "value": "正在準備下載…" },
+    { "name": "library_move_failed", "value": "移動分類失敗" },
+    { "name": "migrate_load_failed", "value": "遷移列表載入失敗" },
+    { "name": "common_op_failed", "value": "操作失敗" }
 ]
 }

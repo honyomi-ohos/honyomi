@@ -1,5 +1,6 @@
 import { common } from '@kit.AbilityKit';
 import { motion } from '@kit.MultimodalAwarenessKit';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo, ChapterRepo, HistoryRepo } from '../data/Repos';
 import { ReadingStatsRepo } from '../data/ReadingStats';
@@ -132,6 +133,13 @@ export struct ReaderPage {
   private readerH: number = 640;
   private mangaId: number = -1;
   private chapterId: number = -1;
+  // 章节加载代次号：连续切章时旧 loadChapter 续体据此丢弃
+  private loadGen: number = 0;
+  // 条漫续读定位定时器 id（aboutToDisappear 清除）
+  private resumeTimerId: number = -1;
+  // 内容区在窗口中的偏移（TouchObject.x/y 为窗口坐标，点击热区需换算为组件内坐标）
+  private readerOffX: number = 0;
+  private readerOffY: number = 0;
 
   aboutToAppear(): void {
     this.gripSupported = GripSupport.isSupported();
@@ -160,6 +168,10 @@ export struct ReaderPage {
     this.libDirty += 1;
     ReadingStatsRepo.flush();
     this.updateGripListener(false);
+    if (this.resumeTimerId !== -1) {
+      clearTimeout(this.resumeTimerId);
+      this.resumeTimerId = -1;
+    }
     // 还原窗口方向与亮度
     ReaderWindow.restore(Util.hostAbilityContext(this.getUIContext()));
   }
@@ -173,6 +185,7 @@ export struct ReaderPage {
           motion.on('holdingHandChanged', this.handleHoldingHandChange);
           this.gripListening = true;
         } catch (error) {
+          hilog.warn(0x0001, 'Reader', 'subscribe holdingHandChanged failed: %{public}s', `${error}`);
         }
       }
     } else if (!shouldListen && this.gripListening) {
@@ -180,6 +193,7 @@ export struct ReaderPage {
         try {
           motion.off('holdingHandChanged', this.handleHoldingHandChange);
         } catch (error) {
+          hilog.warn(0x0001, 'Reader', 'unsubscribe holdingHandChanged failed: %{public}s', `${error}`);
         }
       }
       this.gripListening = false;
@@ -194,7 +208,29 @@ export struct ReaderPage {
     ReaderWindow.applyBrightness(Util.hostAbilityContext(this.getUIContext()), this.brightLv);
   }
 
+  // 记录内容区尺寸与组件在窗口中的全局偏移（globalPosition），供点击热区换算
+  private syncReaderArea(newArea: Area): void {
+    const w = newArea.width;
+    if (typeof w === 'number' && w > 0) {
+      this.readerW = w;
+    }
+    const h = newArea.height;
+    if (typeof h === 'number' && h > 0) {
+      this.readerH = h;
+    }
+    const gp = newArea.globalPosition;
+    const gx = gp.x;
+    if (typeof gx === 'number') {
+      this.readerOffX = gx;
+    }
+    const gy = gp.y;
+    if (typeof gy === 'number') {
+      this.readerOffY = gy;
+    }
+  }
+
   private async loadChapter(): Promise<void> {
+    const gen = ++this.loadGen;
     this.loading = true;
     this.showMenu = false;
     // 切章：先结算上一章的阅读会话
@@ -202,7 +238,13 @@ export struct ReaderPage {
     try {
       const context = Util.hostAbilityContext(this.getUIContext());
       await AppDb.ready(context);
+      if (gen !== this.loadGen) {
+        return;
+      }
       const chapter = await ChapterRepo.getById(this.chapterId);
+      if (gen !== this.loadGen) {
+        return;
+      }
       if (chapter === undefined) {
         Util.toastRes(this.getUIContext(), $r('app.string.reader_chapter_not_found'));
         this.pathStack.pop();
@@ -211,6 +253,9 @@ export struct ReaderPage {
       this.chapter = chapter;
       this.mangaId = chapter.mangaId;
       const manga = await MangaRepo.get(chapter.mangaId);
+      if (gen !== this.loadGen) {
+        return;
+      }
       if (manga !== undefined) {
         this.manga = manga;
       }
@@ -229,6 +274,9 @@ export struct ReaderPage {
         }
         pages = await source.getPageList(chapter.url);
       }
+      if (gen !== this.loadGen) {
+        return;
+      }
       this.pages = pages;
       this.mode = Settings.getReaderMode();
       // 历史保存的智感握姿在当前设备不支持时，静默回退为从左到右
@@ -239,11 +287,22 @@ export struct ReaderPage {
         ? chapter.lastPageRead : 0;
       this.applyMode(true);
       await HistoryRepo.upsert(chapter.mangaId, chapter.id, this.currentReal);
+      if (gen !== this.loadGen) {
+        return;
+      }
       // 开始本章的阅读时长计时
       ReadingStatsRepo.begin(chapter.mangaId, chapter.id);
       await this.refreshNeighbors();
     } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.reader_load_failed'), [(e as Error).message]);
+      // 加载失败清空旧章页面，防止旧页码经 persistProgress 写入本章进度
+      if (gen === this.loadGen) {
+        this.pages = [];
+        Util.toastRes(this.getUIContext(), $r('app.string.reader_load_failed'),
+          [e instanceof Error ? e.message : String(e)]);
+      }
+    }
+    if (gen !== this.loadGen) {
+      return;
     }
     this.loading = false;
   }
@@ -276,7 +335,11 @@ export struct ReaderPage {
     }
     if (this.mode === 'webtoon' && scrollToResume) {
       const target = this.currentReal;
-      setTimeout(() => {
+      if (this.resumeTimerId !== -1) {
+        clearTimeout(this.resumeTimerId);
+      }
+      this.resumeTimerId = setTimeout(() => {
+        this.resumeTimerId = -1;
         this.scroller.scrollToIndex(target, false, ScrollAlign.START);
       }, 200);
     }
@@ -307,12 +370,17 @@ export struct ReaderPage {
   }
 
   private async persistProgress(): Promise<void> {
-    ReadingStatsRepo.tick();
-    await ChapterRepo.setLastPageRead(this.chapterId, this.currentReal);
-    await HistoryRepo.upsert(this.mangaId, this.chapterId, this.currentReal);
-    if (this.currentReal >= this.pages.length - 1 && !this.chapter.read) {
-      this.chapter.read = true;
-      await ChapterRepo.setRead(this.chapterId, true);
+    try {
+      ReadingStatsRepo.tick();
+      await ChapterRepo.setLastPageRead(this.chapterId, this.currentReal);
+      await HistoryRepo.upsert(this.mangaId, this.chapterId, this.currentReal);
+      if (this.currentReal >= this.pages.length - 1 && !this.chapter.read) {
+        this.chapter.read = true;
+        await ChapterRepo.setRead(this.chapterId, true);
+      }
+    } catch (e) {
+      hilog.warn(0x0001, 'Reader', 'persistProgress failed: %{public}s',
+        e instanceof Error ? e.message : String(e));
     }
   }
 
@@ -464,15 +532,18 @@ export struct ReaderPage {
         return;
       }
       const down: TouchObject = event.touches[0];
-      this.touchDownX = down.x;
-      this.touchDownY = down.y;
+      // TouchObject.x/y 为窗口坐标，减去组件在窗口中的偏移得到组件内坐标
+      this.touchDownX = down.x - this.readerOffX;
+      this.touchDownY = down.y - this.readerOffY;
     } else if (event.type === TouchType.Up) {
       if (this.touchDownX < 0 || event.changedTouches.length === 0) {
         return;
       }
       const up: TouchObject = event.changedTouches[0];
-      const dx = Math.abs(up.x - this.touchDownX);
-      const dy = Math.abs(up.y - this.touchDownY);
+      const upX = up.x - this.readerOffX;
+      const upY = up.y - this.readerOffY;
+      const dx = Math.abs(upX - this.touchDownX);
+      const dy = Math.abs(upY - this.touchDownY);
       this.touchDownX = -1;
       if (dx > 20 || dy > 20) {
         return; // 滑动，忽略
@@ -485,7 +556,7 @@ export struct ReaderPage {
         return;
       }
       if (this.navMode === 'vertical') {
-        const zoneY = up.y / (this.readerH > 0 ? this.readerH : 640);
+        const zoneY = upY / (this.readerH > 0 ? this.readerH : 640);
         if (zoneY < 0.3) {
           this.step(-1);
         } else if (zoneY > 0.7) {
@@ -495,7 +566,7 @@ export struct ReaderPage {
         }
         return;
       }
-      const zone = up.x / (this.readerW > 0 ? this.readerW : 360);
+      const zone = upX / (this.readerW > 0 ? this.readerW : 360);
       // “下一页”是否在左侧：默认跟随阅读模式（RTL；智感握姿下左手握持时握持侧为下一页），可被导航模式覆盖
       let nextOnLeft: boolean = this.mode === 'rtl' ||
         (this.mode === 'smart_grip' && !this.gripRight);
@@ -844,14 +915,7 @@ export struct ReaderPage {
     .contrast(this.filterContrastOn ? this.filterContrast / 100 : 1)
     .saturate(this.filterSaturationOn ? this.filterSaturation / 100 : 1)
     .onAreaChange((_old: Area, newArea: Area) => {
-      const w = newArea.width;
-      if (typeof w === 'number' && w > 0) {
-        this.readerW = w;
-      }
-      const h = newArea.height;
-      if (typeof h === 'number' && h > 0) {
-        this.readerH = h;
-      }
+      this.syncReaderArea(newArea);
     })
   }
 
@@ -955,14 +1019,7 @@ export struct ReaderPage {
             .contrast(this.filterContrastOn ? this.filterContrast / 100 : 1)
             .saturate(this.filterSaturationOn ? this.filterSaturation / 100 : 1)
             .onAreaChange((_old: Area, newArea: Area) => {
-              const w = newArea.width;
-              if (typeof w === 'number' && w > 0) {
-                this.readerW = w;
-              }
-              const h = newArea.height;
-              if (typeof h === 'number' && h > 0) {
-                this.readerH = h;
-              }
+              this.syncReaderArea(newArea);
             })
         } else {
           Swiper() {
@@ -1008,14 +1065,7 @@ export struct ReaderPage {
             this.handleTouch(event);
           })
           .onAreaChange((_old: Area, newArea: Area) => {
-            const w = newArea.width;
-            if (typeof w === 'number' && w > 0) {
-              this.readerW = w;
-            }
-            const h = newArea.height;
-            if (typeof h === 'number' && h > 0) {
-              this.readerH = h;
-            }
+            this.syncReaderArea(newArea);
           })
         }
 
@@ -1235,17 +1285,24 @@ export struct ReaderPage {
               TransitionEffect.OPACITY.animation({ duration: 200, curve: Curve.Linear })
             )
           )
-            .bindSheet($$this.showSettings, this.settingsSheet(), {
-              preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
-              width: Bp.isWide(this.windowW) ? 560 : '100%',
-              height: SheetSize.FIT_CONTENT,
-              title: { title: $r('app.string.reader_settings') },
-              detents: [SheetSize.FIT_CONTENT],
-              dragBar: true,
-              showClose: false,
-              blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
-            })
         }
+
+        // 设置面板 bindSheet 常驻宿主：挂 if(showMenu) 条件节点时菜单收起即销毁宿主，弹层不可靠；
+        // 同一节点链式绑定多个 bindSheet 只有最后一个生效，故用独立常驻节点承载
+        Column()
+          .width(0)
+          .height(0)
+          .hitTestBehavior(HitTestMode.None)
+          .bindSheet($$this.showSettings, this.settingsSheet(), {
+            preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+            width: Bp.isWide(this.windowW) ? 560 : '100%',
+            height: SheetSize.FIT_CONTENT,
+            title: { title: $r('app.string.reader_settings') },
+            detents: [SheetSize.FIT_CONTENT],
+            dragBar: true,
+            showClose: false,
+            blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
+          })
       }
       .width('100%')
       .height('100%')

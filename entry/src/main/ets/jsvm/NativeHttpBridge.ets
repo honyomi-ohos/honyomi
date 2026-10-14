@@ -16,6 +16,7 @@ import { util } from '@kit.ArkTS';
 import jsvmEngine from 'libjsvmengine.so';
 import { CookieJar } from '../net/CookieJar';
 import { Http } from '../net/Http';
+import { CfChallenge } from '../net/CfChallenge';
 import { Util } from '../common/Util';
 
 /** Bridge request as dispatched by the native engine (JSON-decoded). */
@@ -123,7 +124,13 @@ export class NativeHttpBridge {
     try {
       msg = JSON.parse(reqJson) as JsvmBridgeRequest;
     } catch (e) {
-      return; // malformed dispatch: nothing to resolve
+      // 畸形分发消息也必须兜底 resolve（尽力从原文提取 callId），避免 native 侧永久悬挂
+      const match = /"callId"\s*:\s*(-?\d+)/.exec(reqJson);
+      if (match !== null) {
+        jsvmEngine.resolveHttp(parseInt(match[1], 10),
+          JSON.stringify(NativeHttpBridge.error(0, '请求解析失败', '')));
+      }
+      return;
     }
     // Zero-copy body release: the JSVM side garbage-collected a shared
     // response buffer; drop its native pin.
@@ -196,13 +203,17 @@ export class NativeHttpBridge {
     const finalUrl = followed.url;
     const headersJson = JSON.stringify(NativeHttpBridge.flattenHeaders(resp.header));
     const buffer = resp.result instanceof ArrayBuffer ? resp.result as ArrayBuffer : new ArrayBuffer(0);
+    // wantBytes 整包 base64（≈1.33× 内存）：响应体超过 32MB 上限直接报错
+    if (req.wantBytes && buffer.byteLength > NativeHttpBridge.MAX_WANT_BYTES) {
+      return NativeHttpBridge.error(0, `响应体超过 32MB 上限: ${finalUrl}`, finalUrl);
+    }
     let body = '';
     if (req.wantBytes) {
       body = NativeHttpBridge.toBase64(buffer);
     } else {
       body = NativeHttpBridge.decodeBody(buffer, resp.header);
     }
-    if (NativeHttpBridge.isChallenge(resp, finalUrl, req.wantBytes ? '' : body)) {
+    if (CfChallenge.isCfChallenge(resp.responseCode, req.wantBytes ? '' : body, resp.header)) {
       return {
         status: resp.responseCode,
         statusText: NativeHttpBridge.statusTextOf(resp.responseCode),
@@ -245,7 +256,7 @@ export class NativeHttpBridge {
     const resp = followed.resp;
     const finalUrl = followed.url;
     const headersJson = JSON.stringify(NativeHttpBridge.flattenHeaders(resp.header));
-    if (NativeHttpBridge.isChallenge(resp, finalUrl, '')) {
+    if (CfChallenge.isCfChallenge(resp.responseCode, '', resp.header)) {
       return {
         status: resp.responseCode,
         statusText: NativeHttpBridge.statusTextOf(resp.responseCode),
@@ -267,6 +278,9 @@ export class NativeHttpBridge {
     };
   }
 
+  // 手动重定向链：https 起始的请求禁止降级到 http；
+  // 跨源跳转剥离插件自定义的敏感头（Authorization/Referer/Cookie），
+  // CookieJar 会为新目标域自动附带其自身 cookie。
   private static async follow(
     startUrl: string,
     methodName: string,
@@ -277,6 +291,7 @@ export class NativeHttpBridge {
     let url = startUrl;
     let method = NativeHttpBridge.methodOf(methodName);
     let extra = body;
+    const httpsStart = startUrl.indexOf('https://') === 0;
     for (let hop = 0; hop < 8; hop++) {
       const resp = await NativeHttpBridge.requestOnce(url, method, headers, extra, wantBytes);
       CookieJar.storeFromResponse(url, resp.header);
@@ -290,6 +305,14 @@ export class NativeHttpBridge {
         const followed: NativeHttpFollowed = { url: url, resp: resp };
         return followed;
       }
+      // https 起始禁止降级：目标非 https（降级 http 或其他协议）即终止并返回错误
+      if (httpsStart && next.indexOf('https://') !== 0) {
+        throw new Error(`重定向降级被拒绝: ${next}`);
+      }
+      // 跨源跳转剥离敏感头，凭证明文不外送
+      if (NativeHttpBridge.originOf(next) !== NativeHttpBridge.originOf(url)) {
+        headers = NativeHttpBridge.stripSensitiveHeaders(headers);
+      }
       if (resp.responseCode === 303 ||
         ((resp.responseCode === 301 || resp.responseCode === 302) && method === http.RequestMethod.POST)) {
         method = http.RequestMethod.GET;
@@ -298,6 +321,20 @@ export class NativeHttpBridge {
       url = next;
     }
     throw new Error(`too many redirects: ${startUrl}`);
+  }
+
+  // 跨源重定向时剥离插件自定义的敏感头（大小写不敏感），返回净化后的新表
+  private static stripSensitiveHeaders(headers: Record<string, string>): Record<string, string> {
+    const kept: Record<string, string> = {};
+    const keys = Object.keys(headers);
+    for (const key of keys) {
+      const lower = key.toLowerCase();
+      if (lower === 'authorization' || lower === 'referer' || lower === 'referrer' || lower === 'cookie') {
+        continue;
+      }
+      kept[key] = headers[key];
+    }
+    return kept;
   }
 
   private static async requestOnce(
@@ -532,29 +569,11 @@ export class NativeHttpBridge {
     return flat;
   }
 
-  // Cloudflare bot challenge: 403/503 + cf-mitigated header or well-known
-  // challenge page markers (mirrors net/Http.ets detection). text is the
-  // decoded response body ('' when not available, e.g. bytes path).
-  private static isChallenge(resp: http.HttpResponse, url: string, text: string): boolean {
-    if (resp.responseCode !== 401 && resp.responseCode !== 403 && resp.responseCode !== 503) {
-      return false;
-    }
-    const headers = resp.header as Record<string, Object>;
-    const keys = Object.keys(headers);
-    for (const key of keys) {
-      if (key.toLowerCase() === 'cf-mitigated') {
-        const value = headers[key];
-        if (typeof value === 'string' && value.toLowerCase() === 'challenge') {
-          return true;
-        }
-      }
-    }
-    if (text !== '' &&
-      (text.indexOf('challenge-platform') >= 0 || text.indexOf('Just a moment') >= 0)) {
-      return true;
-    }
-    return false;
-  }
+  // Cloudflare bot challenge detection is centralized in net/CfChallenge.ets
+  // (401/403/503 + cf-mitigated header or challenge page markers).
+
+  /** wantBytes 响应体大小上限（base64 编码前），防内存放大 */
+  private static readonly MAX_WANT_BYTES: number = 32 * 1024 * 1024;
 
   private static toBase64(buffer: ArrayBuffer): string {
     const helper = new util.Base64Helper();

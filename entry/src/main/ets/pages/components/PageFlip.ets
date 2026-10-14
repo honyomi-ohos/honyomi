@@ -23,6 +23,8 @@ const FLIP_DISTANCE_FRACTION: number = 20;
 const FLIP_X_DIFF: number = -100;
 const FLIP_TICK_MS: number = 16;
 const FLIP_SIXTY: number = 0.6;
+// 自动回弹动画的 tick 次数上限：极端边界（PREV 分支无 isFinished 终止条件）兜底强制结束
+const FLIP_MAX_AUTO_TICKS: number = 120;
 
 enum FlipDrawPos {
   NONE = 1,
@@ -68,10 +70,20 @@ class FlipModel {
   backPixelMap: image.PixelMap | undefined = undefined;
   isFinished: boolean = false;
   flipPositionY: number = 0;
+  // 最近一次绘制的折痕纵坐标（触摸坐标系），显式交接给 armAuto（不依赖 paint 副作用）
+  lastFoldY: number = 0;
   fromLeft: boolean = false;
 
   private pathABrush: drawing.Brush = new drawing.Brush();
   private pathCBrush: drawing.Brush = new drawing.Brush();
+  // 每帧复用的绘制资源：避免逐帧 new Brush/Path/Matrix 分配
+  private shadowBrush: drawing.Brush = new drawing.Brush();
+  private leftShadowPath: drawing.Path = new drawing.Path();
+  private rightShadowPath: drawing.Path = new drawing.Path();
+  private mirrorMatrix: drawing.Matrix = new drawing.Matrix();
+  private mirrorVals: number[] = [-1, 0, 0, 0, 1, 0, 0, 0, 1];
+  private reflectMatrix: drawing.Matrix = new drawing.Matrix();
+  private reflectVals: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 1];
   private pathA: drawing.Path = new drawing.Path();
   private pathC: drawing.Path = new drawing.Path();
   private pointA: FlipPoint = new FlipPoint(-1, -1);
@@ -85,6 +97,7 @@ class FlipModel {
   private pointI: FlipPoint = new FlipPoint(0, 0);
   private pointJ: FlipPoint = new FlipPoint(0, 0);
   private pointK: FlipPoint = new FlipPoint(0, 0);
+  private touchPoint: FlipPoint = new FlipPoint(0, 0);
   private lPathAShadowDis: number = 0;
   private rPathAShadowDis: number = 0;
   private ready: boolean = false;
@@ -124,13 +137,12 @@ class FlipModel {
     this.ensureBrushes();
     if (this.fromLeft) {
       canvas.save();
-      const mirror = new drawing.Matrix();
-      const mv: number[] = [-1, 0, canvasW, 0, 1, 0, 0, 0, 1];
-      mirror.setMatrix(mv);
-      canvas.concatMatrix(mirror);
+      this.mirrorVals[2] = canvasW;
+      this.mirrorMatrix.setMatrix(this.mirrorVals);
+      canvas.concatMatrix(this.mirrorMatrix);
     }
     this.initGeometry();
-    this.flipPositionY = sy !== 0 ? this.pointA.y / sy : savedFlipY;
+    this.lastFoldY = sy !== 0 ? this.pointA.y / sy : this.lastFoldY;
     if (this.ready) {
       this.drawPathBShadow(canvas);
       this.drawPathC(canvas);
@@ -142,6 +154,8 @@ class FlipModel {
     }
     this.positionX = savedX;
     this.positionY = savedY;
+    // 绘制只读语义：恢复进入 paint 前的抓取纵坐标，消除绘制副作用
+    this.flipPositionY = savedFlipY;
   }
 
   private ensureBrushes(): void {
@@ -151,30 +165,36 @@ class FlipModel {
     this.pathCBrush.setColor(back);
   }
 
+  // 复用预分配的 FlipPoint 字段（每帧重算只改坐标，不新建对象）
   private initGeometry(): void {
     this.ready = false;
     const x = this.positionX;
     const y = this.positionY;
     const viewWidth = this.viewWidth;
     const viewHeight = this.viewHeight;
-    this.pointA = new FlipPoint(x, y);
+    this.pointA.x = x;
+    this.pointA.y = y;
     if (x === -1 && y === -1) {
       return;
     }
-    const touch = new FlipPoint(x, y);
+    this.touchPoint.x = x;
+    this.touchPoint.y = y;
     if (FlipDrawPos.TOP === this.drawPosition) {
-      this.pointF = new FlipPoint(viewWidth, 0);
+      this.pointF.x = viewWidth;
+      this.pointF.y = 0;
       if (this.drawState !== FlipDrawState.RELEASE) {
-        this.calcPointAByTouch(touch);
+        this.calcPointAByTouch(this.touchPoint);
       }
     } else if (FlipDrawPos.BOTTOM === this.drawPosition) {
-      this.pointF = new FlipPoint(viewWidth, viewHeight);
+      this.pointF.x = viewWidth;
+      this.pointF.y = viewHeight;
       if (this.drawState !== FlipDrawState.RELEASE) {
-        this.calcPointAByTouch(touch);
+        this.calcPointAByTouch(this.touchPoint);
       }
     } else {
       this.pointA.y = viewHeight - 1;
-      this.pointF = new FlipPoint(viewWidth, viewHeight);
+      this.pointF.x = viewWidth;
+      this.pointF.y = viewHeight;
     }
     this.flipPositionY = this.pointA.y;
     this.calcPoints();
@@ -225,8 +245,8 @@ class FlipModel {
     this.pointC.y = f.y;
     this.pointJ.x = f.x;
     this.pointJ.y = this.pointH.y - (f.y - this.pointH.y) / 2;
-    this.pointB = this.intersect(a, this.pointE, this.pointC, this.pointJ);
-    this.pointK = this.intersect(a, this.pointH, this.pointC, this.pointJ);
+    this.intersectInto(this.pointB, a, this.pointE, this.pointC, this.pointJ);
+    this.intersectInto(this.pointK, a, this.pointH, this.pointC, this.pointJ);
     this.pointD.x = (this.pointC.x + 2 * this.pointE.x + this.pointB.x) / 4;
     this.pointD.y = (2 * this.pointE.y + this.pointC.y + this.pointB.y) / 4;
     this.pointI.x = (this.pointJ.x + 2 * this.pointH.x + this.pointK.x) / 4;
@@ -248,15 +268,18 @@ class FlipModel {
     this.ready = true;
   }
 
+  // 逐字段校验（原实现每帧新建 10 元素数组）
   private pointsFinite(): boolean {
-    const pts: FlipPoint[] = [this.pointA, this.pointB, this.pointC, this.pointD, this.pointE,
-      this.pointF, this.pointH, this.pointI, this.pointJ, this.pointK];
-    for (let i = 0; i < pts.length; i++) {
-      if (!Number.isFinite(pts[i].x) || !Number.isFinite(pts[i].y)) {
-        return false;
-      }
-    }
-    return true;
+    return Number.isFinite(this.pointA.x) && Number.isFinite(this.pointA.y) &&
+      Number.isFinite(this.pointB.x) && Number.isFinite(this.pointB.y) &&
+      Number.isFinite(this.pointC.x) && Number.isFinite(this.pointC.y) &&
+      Number.isFinite(this.pointD.x) && Number.isFinite(this.pointD.y) &&
+      Number.isFinite(this.pointE.x) && Number.isFinite(this.pointE.y) &&
+      Number.isFinite(this.pointF.x) && Number.isFinite(this.pointF.y) &&
+      Number.isFinite(this.pointH.x) && Number.isFinite(this.pointH.y) &&
+      Number.isFinite(this.pointI.x) && Number.isFinite(this.pointI.y) &&
+      Number.isFinite(this.pointJ.x) && Number.isFinite(this.pointJ.y) &&
+      Number.isFinite(this.pointK.x) && Number.isFinite(this.pointK.y);
   }
 
   private areaInWindow(): boolean {
@@ -273,7 +296,8 @@ class FlipModel {
     return true;
   }
 
-  private intersect(p1: FlipPoint, p2: FlipPoint, p3: FlipPoint, p4: FlipPoint): FlipPoint {
+  // 求线段交点并写入 out（复用预分配的 FlipPoint，不新建对象）
+  private intersectInto(out: FlipPoint, p1: FlipPoint, p2: FlipPoint, p3: FlipPoint, p4: FlipPoint): void {
     const x1 = p1.x;
     const y1 = p1.y;
     const x2 = p2.x;
@@ -284,12 +308,15 @@ class FlipModel {
     const y4 = p4.y;
     const denom = (x3 - x4) * (y1 - y2) - (x1 - x2) * (y3 - y4);
     if (Math.abs(denom) < 0.01) {
-      return new FlipPoint(p1.x, p1.y);
+      out.x = p1.x;
+      out.y = p1.y;
+      return;
     }
     const px = ((x1 - x2) * (x3 * y4 - x4 * y3) - (x3 - x4) * (x1 * y2 - x2 * y1)) / denom;
     const py = ((y1 - y2) * (x3 * y4 - x4 * y3) - (x1 * y2 - x2 * y1) * (y3 - y4)) /
       ((y1 - y2) * (x3 - x4) - (x1 - x2) * (y3 - y4));
-    return new FlipPoint(px, py);
+    out.x = px;
+    out.y = py;
   }
 
   private buildPathA(): void {
@@ -349,16 +376,15 @@ class FlipModel {
     if (eh > 0.01) {
       const sin0 = (this.pointF.x - this.pointE.x) / eh;
       const cos0 = (this.pointH.y - this.pointF.y) / eh;
-      const value: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 1];
+      const value: number[] = this.reflectVals;
       value[0] = -(1 - 2 * sin0 * sin0);
       value[1] = 2 * sin0 * cos0;
       value[3] = 2 * sin0 * cos0;
       value[4] = 1 - 2 * sin0 * sin0;
-      const matrix = new drawing.Matrix();
-      matrix.setMatrix(value);
-      matrix.preTranslate(-this.pointE.x, -this.pointE.y);
-      matrix.postTranslate(this.pointE.x, this.pointE.y);
-      canvas.concatMatrix(matrix);
+      this.reflectMatrix.setMatrix(value);
+      this.reflectMatrix.preTranslate(-this.pointE.x, -this.pointE.y);
+      this.reflectMatrix.postTranslate(this.pointE.x, this.pointE.y);
+      canvas.concatMatrix(this.reflectMatrix);
     }
     const colors: number[] | null = null;
     canvas.drawPixelMapMesh(backFace, 1, 1, this.meshVerts(), 0, colors, 0);
@@ -475,7 +501,8 @@ class FlipModel {
     const startPt: common2D.Point = { x: this.pointF.y === this.viewHeight ? left : right, y: top };
     const endPt: common2D.Point = { x: this.pointF.y === this.viewHeight ? right : left, y: top };
     const shader = drawing.ShaderEffect.createLinearGradient(endPt, startPt, gradientColors, drawing.TileMode.MIRROR);
-    const tmp = new drawing.Path();
+    const tmp = this.leftShadowPath;
+    tmp.reset();
     const inset = Math.max(this.rPathAShadowDis, this.lPathAShadowDis) / 2;
     tmp.moveTo(this.pointA.x - inset, this.pointA.y);
     tmp.lineTo(this.pointD.x, this.pointD.y);
@@ -512,7 +539,8 @@ class FlipModel {
     const startPt: common2D.Point = { x: left, y: this.pointF.y === this.viewHeight ? bottom : top };
     const endPt: common2D.Point = { x: left, y: this.pointF.y === this.viewHeight ? top : bottom };
     const shader = drawing.ShaderEffect.createLinearGradient(endPt, startPt, gradientColors, drawing.TileMode.MIRROR);
-    const tmp = new drawing.Path();
+    const tmp = this.rightShadowPath;
+    tmp.reset();
     const inset = Math.max(this.rPathAShadowDis, this.lPathAShadowDis) / 2;
     tmp.moveTo(this.pointA.x - inset, this.pointA.y);
     tmp.lineTo(this.pointH.x, this.pointH.y);
@@ -543,9 +571,8 @@ class FlipModel {
   }
 
   private drawShadow(canvas: drawing.Canvas, shader: drawing.ShaderEffect, rect: common2D.Rect): void {
-    const brush = new drawing.Brush();
-    brush.setShaderEffect(shader);
-    canvas.attachBrush(brush);
+    this.shadowBrush.setShaderEffect(shader);
+    canvas.attachBrush(this.shadowBrush);
     canvas.drawRect(rect.left, rect.top, rect.right, rect.bottom);
     canvas.detachBrush();
     canvas.restore();
@@ -700,7 +727,6 @@ export struct EmulationFlipView {
   private nextId: string = '';
   private backCurId: string = '';
   private backPrevId: string = '';
-  private acceptExternal: boolean = true;
   private lastTurn: number = 0;
 
   aboutToAppear(): void {
@@ -722,7 +748,7 @@ export struct EmulationFlipView {
   }
 
   private syncIndex(): void {
-    if (!this.acceptExternal || this.index === this.page) {
+    if (this.index === this.page) {
       return;
     }
     this.cancelAnim();
@@ -842,20 +868,20 @@ export struct EmulationFlipView {
     if (next < 0 || next >= this.pageCount) {
       return;
     }
-    this.acceptExternal = false;
     this.page = next;
     this.onIndexChange(next);
-    this.acceptExternal = true;
   }
 
   private armAuto(xDiff: number, yDiff: number): void {
     this.model.drawState = FlipDrawState.RELEASE;
-    this.model.positionY = this.model.flipPositionY;
+    this.model.positionY = this.model.lastFoldY;
     if (this.gestureMove === FlipMove.PREV) {
+      let ticks = 0;
       this.timeID = setInterval((): void => {
+        ticks += 1;
         const x = this.model.positionX + xDiff;
         const y = this.model.positionY + yDiff;
-        if (x >= this.pxW - 1 || y >= this.pxH || y <= 0) {
+        if (x >= this.pxW - 1 || y >= this.pxH || y <= 0 || ticks >= FLIP_MAX_AUTO_TICKS) {
           this.finishGesture(true);
         } else {
           this.model.positionX = x;
@@ -884,7 +910,7 @@ export struct EmulationFlipView {
     this.model.drawState = FlipDrawState.RELEASE;
     this.model.positionX = xPx;
     this.model.positionY = yPx;
-    this.model.flipPositionY = this.pxH - 1;
+    this.model.lastFoldY = this.pxH - 1;
     this.model.isFinished = false;
     if (!this.capture(snapId)) {
       this.resetVisual();

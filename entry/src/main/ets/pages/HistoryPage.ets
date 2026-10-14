@@ -7,6 +7,7 @@ import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
 import { AppIcon } from './components/AppIcon';
+import { SmartImage } from './components/SmartImage';
 
 // 历史页：最近阅读记录
 @Component
@@ -50,10 +51,13 @@ export struct HistoryPage {
   }
 
   async loadData(): Promise<void> {
-    const context = Util.hostAbilityContext(this.getUIContext());
-    await AppDb.ready(context);
-    this.items = await HistoryRepo.recent(100);
-    this.loading = false;
+    try {
+      const context = Util.hostAbilityContext(this.getUIContext());
+      await AppDb.ready(context);
+      this.items = await HistoryRepo.recent(100);
+    } finally {
+      this.loading = false;
+    }
   }
 
   async clearHistory(): Promise<void> {
@@ -120,10 +124,10 @@ export struct HistoryPage {
                     .backgroundColor(this.pal.chip)
                     .justifyContent(FlexAlign.Center)
                   } else {
-                    Image(item.coverUrl)
+                    // HistoryItem 不含 sourceKey，传空串走网络/缓存通用路径
+                    SmartImage({ url: item.coverUrl, sourceKey: '', fit: ImageFit.Cover })
                       .width(44)
                       .height(60)
-                      .objectFit(ImageFit.Cover)
                       .borderRadius(6)
                       .backgroundColor(this.pal.chip)
                   }

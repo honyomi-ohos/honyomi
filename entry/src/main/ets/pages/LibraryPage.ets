@@ -23,6 +23,11 @@ class LibMangaSource implements IDataSource {
 
   setItems(items: MangaRecord[]): void {
     this.items = items;
+    this.notifyReload();
+  }
+
+  // 选中集合变化时通知 LazyForEach 重跑行生成器（刷新 isSelected 勾选态）
+  notifyReload(): void {
     for (const listener of this.listeners) {
       listener.onDataReloaded();
     }
@@ -72,7 +77,8 @@ export struct LibraryPage {
   @State @Watch('refreshView') fTracked: string = 'ignore';
   @State @Watch('refreshView') contentFilter: string = 'all';
   @State @Watch('refreshView') selectedCategory: number = 0;
-  @State @Watch('refreshView') searchQuery: string = '';
+  // 搜索词单独防抖刷新（见 TextInput onChange），不挂 @Watch 避免逐键全量重算
+  @State searchQuery: string = '';
   @State viewMode: string = 'compact';
   @State gridCols: number = 0;
   @State showUnreadBadge: boolean = true;
@@ -96,14 +102,23 @@ export struct LibraryPage {
   @State shownList: MangaRecord[] = [];
   @State categoryCounts: Record<string, number> = {};
   private libSource: LibMangaSource = new LibMangaSource();
+  private searchTimer: number = -1;
 
   private onSelectionChanged(): void {
     AppStorage.setOrCreate('libSelectionCount', this.selection.size);
+    this.libSource.notifyReload();
   }
 
   aboutToAppear(): void {
     this.applySettings();
     this.loadData();
+  }
+
+  aboutToDisappear(): void {
+    if (this.searchTimer >= 0) {
+      clearTimeout(this.searchTimer);
+      this.searchTimer = -1;
+    }
   }
 
   onLibDirty(): void {
@@ -423,7 +438,8 @@ export struct LibraryPage {
           this.clearSelection();
           Promise.all(ids.map((id: number): Promise<void> => MangaRepo.setCategory(id, categoryId)))
             .then((): Promise<void> => this.loadData())
-            .catch((): void => {
+            .catch((_e: Error): void => {
+              Util.toastRes(this.getUIContext(), $r('app.string.library_move_failed'));
               this.loadData();
             });
         },
@@ -499,8 +515,8 @@ export struct LibraryPage {
     const ids: number[] = Array.from(this.selection);
     this.clearSelection();
     await Promise.all(ids.map((id: number): Promise<void> => MangaRepo.setInLibrary(id, false)));
+    // libDirty 的 @Watch(onLibDirty) 会统一触发 loadData，无需手动重复加载
     AppStorage.set('libDirty', this.libDirty + 1);
-    await this.loadData();
   }
 
   // 迁移选中漫画（复用迁移搜索页）
@@ -643,12 +659,25 @@ export struct LibraryPage {
             .padding({ left: 16, right: 16 })
             .onChange((value: string) => {
               this.searchQuery = value;
+              // 200ms 防抖：停止输入后再全量重算视图缓存
+              if (this.searchTimer >= 0) {
+                clearTimeout(this.searchTimer);
+              }
+              this.searchTimer = setTimeout((): void => {
+                this.searchTimer = -1;
+                this.refreshView();
+              }, 200);
             })
           AppIcon({ name: 'close', iconSize: 22, tint: this.pal.text })
             .padding({ left: 12 })
             .onClick(() => {
+              if (this.searchTimer >= 0) {
+                clearTimeout(this.searchTimer);
+                this.searchTimer = -1;
+              }
               this.searchOpen = false;
               this.searchQuery = '';
+              this.refreshView();
             })
         } else {
           Text($r('app.string.library_title'))

@@ -143,48 +143,69 @@ export class AppDb {
     rs.close();
     // v0 -> v1：早期旧库补列（新库建表已含，ALTER 失败按真实错误抛出前先校验列存在）
     if (version < 1) {
-      const cols = new Set<string>();
-      const colRs = await store.querySql(`PRAGMA table_info(manga)`);
-      while (colRs.goToNextRow()) {
-        cols.add(colRs.getString(colRs.getColumnIndex('name')));
+      store.beginTransaction();
+      try {
+        const cols = new Set<string>();
+        const colRs = await store.querySql(`PRAGMA table_info(manga)`);
+        while (colRs.goToNextRow()) {
+          cols.add(colRs.getString(colRs.getColumnIndex('name')));
+        }
+        colRs.close();
+        if (!cols.has('contentType')) {
+          await store.executeSql(`ALTER TABLE manga ADD COLUMN contentType TEXT DEFAULT 'manga'`);
+        }
+        if (!cols.has('origThumbnail')) {
+          await store.executeSql(`ALTER TABLE manga ADD COLUMN origThumbnail TEXT DEFAULT ''`);
+        }
+        await store.executeSql(`PRAGMA user_version = 1`);
+        store.commit();
+      } catch (e) {
+        store.rollBack();
+        throw new Error(`migrate to v1 failed: ${e}`);
       }
-      colRs.close();
-      if (!cols.has('contentType')) {
-        await store.executeSql(`ALTER TABLE manga ADD COLUMN contentType TEXT DEFAULT 'manga'`);
-      }
-      if (!cols.has('origThumbnail')) {
-        await store.executeSql(`ALTER TABLE manga ADD COLUMN origThumbnail TEXT DEFAULT ''`);
-      }
-      await store.executeSql(`PRAGMA user_version = 1`);
       version = 1;
       hilog.info(0x0001, 'AppDb', 'migrated schema to v1');
     }
     // v1 -> v2：history 按 (mangaId, chapterId) 去重后建唯一索引，
     // 使 HistoryRepo.upsert 可用单条 INSERT ON CONFLICT 原子完成（消除查后写竞态）
     if (version < 2) {
-      await store.executeSql(`DELETE FROM history WHERE id NOT IN (
-        SELECT h.id FROM history h
-        WHERE h.id = (
-          SELECT h2.id FROM history h2
-          WHERE h2.mangaId = h.mangaId AND h2.chapterId = h.chapterId
-          ORDER BY h2.seenAt DESC, h2.id DESC LIMIT 1))`);
-      await store.executeSql(`CREATE UNIQUE INDEX IF NOT EXISTS idx_history_unique ON history(mangaId, chapterId)`);
-      await store.executeSql(`PRAGMA user_version = 2`);
+      store.beginTransaction();
+      try {
+        await store.executeSql(`DELETE FROM history WHERE id NOT IN (
+          SELECT h.id FROM history h
+          WHERE h.id = (
+            SELECT h2.id FROM history h2
+            WHERE h2.mangaId = h.mangaId AND h2.chapterId = h.chapterId
+            ORDER BY h2.seenAt DESC, h2.id DESC LIMIT 1))`);
+        await store.executeSql(`CREATE UNIQUE INDEX IF NOT EXISTS idx_history_unique ON history(mangaId, chapterId)`);
+        await store.executeSql(`PRAGMA user_version = 2`);
+        store.commit();
+      } catch (e) {
+        store.rollBack();
+        throw new Error(`migrate to v2 failed: ${e}`);
+      }
       hilog.info(0x0001, 'AppDb', 'migrated schema to v2');
     }
     // v2 -> v3：manga 增加章节排序/筛选标志位（对齐 Mihon chapterFlags，
     // 详情页排序模式/方向与三态筛选按部持久化）
     if (version < 3) {
-      const cols3 = new Set<string>();
-      const colRs3 = await store.querySql(`PRAGMA table_info(manga)`);
-      while (colRs3.goToNextRow()) {
-        cols3.add(colRs3.getString(colRs3.getColumnIndex('name')));
+      store.beginTransaction();
+      try {
+        const cols3 = new Set<string>();
+        const colRs3 = await store.querySql(`PRAGMA table_info(manga)`);
+        while (colRs3.goToNextRow()) {
+          cols3.add(colRs3.getString(colRs3.getColumnIndex('name')));
+        }
+        colRs3.close();
+        if (!cols3.has('chapterFlags')) {
+          await store.executeSql(`ALTER TABLE manga ADD COLUMN chapterFlags INTEGER DEFAULT 0`);
+        }
+        await store.executeSql(`PRAGMA user_version = 3`);
+        store.commit();
+      } catch (e) {
+        store.rollBack();
+        throw new Error(`migrate to v3 failed: ${e}`);
       }
-      colRs3.close();
-      if (!cols3.has('chapterFlags')) {
-        await store.executeSql(`ALTER TABLE manga ADD COLUMN chapterFlags INTEGER DEFAULT 0`);
-      }
-      await store.executeSql(`PRAGMA user_version = 3`);
       version = 3;
       hilog.info(0x0001, 'AppDb', 'migrated schema to v3');
     }

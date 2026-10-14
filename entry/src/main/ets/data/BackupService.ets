@@ -1,6 +1,7 @@
 import { picker, fileIo } from '@kit.CoreFileKit';
 import { common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { util } from '@kit.ArkTS';
 import { Settings } from '../common/Settings';
 import { AppDb } from './AppDb';
 import { MangaRepo, ChapterRepo, CategoryRepo } from './Repos';
@@ -66,6 +67,15 @@ export interface BackupRoot {
 }
 
 export class BackupService {
+  // 校验写入字节数与文本字节长度一致，防止超大备份部分写入
+  private static writeTextSync(fd: number, text: string): void {
+    const written: number = fileIo.writeSync(fd, text);
+    const expected: number = util.TextEncoder.create('utf-8').encodeInto(text).length;
+    if (written !== expected) {
+      throw new Error(`备份写入不完整（${written}/${expected} 字节）`);
+    }
+  }
+
   static async exportBackup(context: common.UIAbilityContext): Promise<boolean> {
     const root: BackupRoot = await BackupService.buildBackup();
     const text: string = JSON.stringify(root);
@@ -78,7 +88,7 @@ export class BackupService {
     }
     const file = fileIo.openSync(uris[0], fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE);
     try {
-      fileIo.writeSync(file.fd, text);
+      BackupService.writeTextSync(file.fd, text);
     } finally {
       fileIo.closeSync(file);
     }
@@ -100,6 +110,10 @@ export class BackupService {
     }
     fileIo.copyFileSync(uris[0], cachePath);
     const text: string = fileIo.readTextSync(cachePath);
+    // 读取完成后立即删除 cache 副本，避免残留
+    if (fileIo.accessSync(cachePath)) {
+      fileIo.unlinkSync(cachePath);
+    }
     return BackupService.restore(text);
   }
 
@@ -274,7 +288,7 @@ export class BackupService {
     const path: string = `${dir}/honyomi_backup_${Date.now()}.json`;
     const file = fileIo.openSync(path, fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE);
     try {
-      fileIo.writeSync(file.fd, text);
+      BackupService.writeTextSync(file.fd, text);
     } finally {
       fileIo.closeSync(file);
     }
@@ -295,8 +309,11 @@ export class BackupService {
     try {
       await BackupService.autoBackup(context);
       Settings.setLastAutoBackupTimestamp(Date.now());
+      AppStorage.setOrCreate('lastBackupFailed', false);
     } catch (e) {
-      hilog.error(0x0001, 'Backup', 'auto backup failed');
+      // 失败状态经 AppStorage 上报供设置页提示
+      AppStorage.setOrCreate('lastBackupFailed', true);
+      hilog.error(0x0001, 'Backup', 'auto backup failed: %{public}s', (e as Error).message);
     }
   }
 
@@ -345,7 +362,7 @@ export class BackupService {
     }
     const file = fileIo.openSync(uris[0], fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE);
     try {
-      fileIo.writeSync(file.fd, text);
+      BackupService.writeTextSync(file.fd, text);
     } finally {
       fileIo.closeSync(file);
     }

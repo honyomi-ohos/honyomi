@@ -5,6 +5,141 @@ import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
 import { AppIcon } from './components/AppIcon';
 
+// 队列行子组件：ForEach key 固定为章节 id 后同 key 行会被复用而不重跑生成器，
+// 进度/状态改由本组件自订阅 DownloadService 通知刷新（DownloadTask 非 @Observed）
+@Component
+struct QueueTaskRow {
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  task: DownloadTask = new DownloadTask();
+  @State state: number = 0;
+  @State progress: number = 0;
+  @State total: number = 0;
+  @State error: string = '';
+
+  private onQueueChanged = (): void => {
+    this.refreshState();
+  }
+
+  aboutToAppear(): void {
+    this.state = this.task.state;
+    this.progress = this.task.progress;
+    this.total = this.task.total;
+    this.error = this.task.error;
+    DownloadService.addListener(this.onQueueChanged);
+  }
+
+  aboutToDisappear(): void {
+    DownloadService.removeListener(this.onQueueChanged);
+  }
+
+  private refreshState(): void {
+    const queue: DownloadTask[] = DownloadService.getQueue();
+    for (const t of queue) {
+      if (t.chapterId === this.task.chapterId) {
+        this.state = t.state;
+        this.progress = t.progress;
+        this.total = t.total;
+        this.error = t.error;
+        return;
+      }
+    }
+  }
+
+  private stateLabel(state: number): Resource {
+    switch (state) {
+      case 0:
+        return $r('app.string.download_state_queued');
+      case 1:
+        return $r('app.string.download_state_downloading');
+      case 2:
+        return $r('app.string.download_state_done');
+      default:
+        return $r('app.string.download_state_failed');
+    }
+  }
+
+  build() {
+    Row({ space: 12 }) {
+      Column() {
+        Text(this.task.chapterName)
+          .fontSize(14)
+          .fontColor(this.pal.text)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+        Text(this.task.mangaTitle)
+          .fontSize(11)
+          .fontColor(this.pal.sub)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+          .margin({ top: 2 })
+        if (this.total > 0) {
+          Progress({ value: this.progress, total: this.total, type: ProgressType.Linear })
+            .color(this.pal.primary)
+            .margin({ top: 6 })
+        }
+        if (this.state === 3 && this.error !== '') {
+          Text(this.error)
+            .fontSize(11)
+            .fontColor('#E05252')
+            .maxLines(1)
+            .margin({ top: 2 })
+        }
+      }
+      .alignItems(HorizontalAlign.Start)
+      .layoutWeight(1)
+
+      Text(this.stateLabel(this.state))
+        .fontSize(11)
+        .fontColor(this.state === 2 ? this.pal.primary :
+          (this.state === 3 ? '#E05252' : this.pal.sub))
+      if (this.state === 0) {
+        Row({ space: 2 }) {
+          Text($r('app.string.download_move_top'))
+            .fontSize(12)
+            .fontColor(this.pal.primary)
+            .padding({ left: 6 })
+            .onClick(() => {
+              DownloadService.moveToTop(this.task.chapterId);
+            })
+          Text($r('app.string.download_move_bottom'))
+            .fontSize(12)
+            .fontColor(this.pal.primary)
+            .padding({ left: 6 })
+            .onClick(() => {
+              DownloadService.moveToBottom(this.task.chapterId);
+            })
+          Text($r('app.string.common_cancel'))
+            .fontSize(12)
+            .fontColor('#E05252')
+            .padding({ left: 6 })
+            .onClick(() => {
+              DownloadService.cancel(this.task.chapterId);
+            })
+        }
+      } else if (this.state === 3) {
+        Row({ space: 2 }) {
+          Text($r('app.string.common_retry'))
+            .fontSize(12)
+            .fontColor(this.pal.primary)
+            .padding({ left: 6 })
+            .onClick(() => {
+              DownloadService.retry(this.task.chapterId);
+            })
+          Text($r('app.string.common_cancel'))
+            .fontSize(12)
+            .fontColor('#E05252')
+            .padding({ left: 6 })
+            .onClick(() => {
+              DownloadService.cancel(this.task.chapterId);
+            })
+        }
+      }
+    }
+    .width('100%')
+    .padding({ left: 16, right: 16, top: 10, bottom: 10 })
+  }
+}
+
 // 下载管理页：下载队列 + 已下载章节
 @Component
 export struct DownloadPage {
@@ -37,19 +172,6 @@ export struct DownloadPage {
   private async loadDownloaded(): Promise<void> {
     this.downloaded = await DownloadService.listDownloaded();
     this.loading = false;
-  }
-
-  private stateLabel(state: number): Resource {
-    switch (state) {
-      case 0:
-        return $r('app.string.download_state_queued');
-      case 1:
-        return $r('app.string.download_state_downloading');
-      case 2:
-        return $r('app.string.download_state_done');
-      default:
-        return $r('app.string.download_state_failed');
-    }
   }
 
   private deleteChapter(item: DownloadedChapter): void {
@@ -111,86 +233,9 @@ export struct DownloadPage {
             }
             ForEach(this.queue, (task: DownloadTask) => {
               ListItem() {
-                Row({ space: 12 }) {
-                  Column() {
-                    Text(task.chapterName)
-                      .fontSize(14)
-                      .fontColor(this.pal.text)
-                      .maxLines(1)
-                      .textOverflow({ overflow: TextOverflow.Ellipsis })
-                    Text(task.mangaTitle)
-                      .fontSize(11)
-                      .fontColor(this.pal.sub)
-                      .maxLines(1)
-                      .textOverflow({ overflow: TextOverflow.Ellipsis })
-                      .margin({ top: 2 })
-                    if (task.total > 0) {
-                      Progress({ value: task.progress, total: task.total, type: ProgressType.Linear })
-                        .color(this.pal.primary)
-                        .margin({ top: 6 })
-                    }
-                    if (task.state === 3 && task.error !== '') {
-                      Text(task.error)
-                        .fontSize(11)
-                        .fontColor('#E05252')
-                        .maxLines(1)
-                        .margin({ top: 2 })
-                    }
-                  }
-                  .alignItems(HorizontalAlign.Start)
-                  .layoutWeight(1)
-
-                  Text(this.stateLabel(task.state))
-                    .fontSize(11)
-                    .fontColor(task.state === 2 ? this.pal.primary :
-                      (task.state === 3 ? '#E05252' : this.pal.sub))
-                  if (task.state === 0) {
-                    Row({ space: 2 }) {
-                      Text($r('app.string.download_move_top'))
-                        .fontSize(12)
-                        .fontColor(this.pal.primary)
-                        .padding({ left: 6 })
-                        .onClick(() => {
-                          DownloadService.moveToTop(task.chapterId);
-                        })
-                      Text($r('app.string.download_move_bottom'))
-                        .fontSize(12)
-                        .fontColor(this.pal.primary)
-                        .padding({ left: 6 })
-                        .onClick(() => {
-                          DownloadService.moveToBottom(task.chapterId);
-                        })
-                      Text($r('app.string.common_cancel'))
-                        .fontSize(12)
-                        .fontColor('#E05252')
-                        .padding({ left: 6 })
-                        .onClick(() => {
-                          DownloadService.cancel(task.chapterId);
-                        })
-                    }
-                  } else if (task.state === 3) {
-                    Row({ space: 2 }) {
-                      Text($r('app.string.common_retry'))
-                        .fontSize(12)
-                        .fontColor(this.pal.primary)
-                        .padding({ left: 6 })
-                        .onClick(() => {
-                          DownloadService.retry(task.chapterId);
-                        })
-                      Text($r('app.string.common_cancel'))
-                        .fontSize(12)
-                        .fontColor('#E05252')
-                        .padding({ left: 6 })
-                        .onClick(() => {
-                          DownloadService.cancel(task.chapterId);
-                        })
-                    }
-                  }
-                }
-                .width('100%')
-                .padding({ left: 16, right: 16, top: 10, bottom: 10 })
+                QueueTaskRow({ task: task })
               }
-            }, (task: DownloadTask) => `q-${task.chapterId}-${task.state}-${task.progress}`)
+            }, (task: DownloadTask) => `q-${task.chapterId}`)
           }
 
           // 已下载

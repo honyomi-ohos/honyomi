@@ -201,11 +201,7 @@ struct SourceFilterDialog {
                   .fontColor(this.pal.text)
                   .layoutWeight(1)
                 Toggle({ type: ToggleType.Checkbox, isOn: this.checkedLangs.indexOf(lang) >= 0 })
-                  .onChange((on: boolean) => {
-                    if (on !== (this.checkedLangs.indexOf(lang) >= 0)) {
-                      this.toggleLang(lang);
-                    }
-                  })
+                  .hitTestBehavior(HitTestMode.None)
               }
               .width('100%')
               .padding({ top: 10, bottom: 10 })
@@ -229,11 +225,7 @@ struct SourceFilterDialog {
                 .fontColor(this.pal.text)
                 .layoutWeight(1)
               Toggle({ type: ToggleType.Checkbox, isOn: this.checkedTypes.indexOf(t) >= 0 })
-                .onChange((on: boolean) => {
-                  if (on !== (this.checkedTypes.indexOf(t) >= 0)) {
-                    this.toggleType(t);
-                  }
-                })
+                .hitTestBehavior(HitTestMode.None)
             }
             .width('100%')
             .padding({ top: 10, bottom: 10 })
@@ -315,7 +307,8 @@ export struct BrowsePage {
     let keys: string[] = [];
     try {
       const parsed = JSON.parse(Settings.getPinnedSources()) as string[];
-      if (parsed !== null && parsed !== undefined) {
+      // 存储值可能被写坏为非数组（旧版本/手改），Array.isArray 防护
+      if (Array.isArray(parsed)) {
         keys = parsed;
       }
     } catch (_e) {
@@ -443,7 +436,7 @@ export struct BrowsePage {
         initialLangs: this.enabledLangs,
         initialTypes: this.enabledTypes,
         onApply: (langs: string[], types: string[]): void => {
-          this.enabledLangs = langs.length === this.allLangs().length ? [] : langs;
+          this.enabledLangs = langs.length === 0 || langs.length === this.allLangs().length ? [] : langs;
           this.enabledTypes = types.length === FILTER_TYPES.length ? [] : types;
         },
         onClose: (): void => {
@@ -505,6 +498,20 @@ export struct BrowsePage {
 
   // ---- 迁移 Tab ----
 
+  // 本地源名称本地化：MigrateSourceCount.name 为 string，需在此把 Resource 解析为字符串
+  private sourceNameText(s: Source): string {
+    if (s.key === 'local') {
+      return Util.resStr(this.getUIContext(), $r('app.string.browse_local_source_name'));
+    }
+    if (s.key === 'local_novel') {
+      return Util.resStr(this.getUIContext(), $r('app.string.browse_local_novel_name'));
+    }
+    if (s.key === 'local_video') {
+      return Util.resStr(this.getUIContext(), $r('app.string.browse_local_video_name'));
+    }
+    return s.name;
+  }
+
   private async loadMigrate(): Promise<void> {
     try {
       const context = Util.hostAbilityContext(this.getUIContext());
@@ -514,13 +521,13 @@ export struct BrowsePage {
       for (const s of SourceRegistry.all()) {
         const c: number | undefined = counts[s.key];
         if (c !== undefined && c > 0) {
-          items.push(MigrateSourceCount.of(s.key,
-            s.key === 'local' ? 'Local' : s.name, s.lang, c));
+          items.push(MigrateSourceCount.of(s.key, this.sourceNameText(s), s.lang, c));
         }
       }
       this.migrateItems = this.sortMigrate(items);
     } catch (_e) {
       this.migrateItems = [];
+      Util.toastRes(this.getUIContext(), $r('app.string.migrate_load_failed'));
     }
     this.migrateLoaded = true;
   }

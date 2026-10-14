@@ -6,7 +6,6 @@ import { PrefGroup, PrefSwitchRow } from '../components/Prefs';
 // 下载设置内容（仅 Wi-Fi 为占位，后续接入网络类型检测）
 @Component
 export struct DownloadsSettingsContent {
-  @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   build() {

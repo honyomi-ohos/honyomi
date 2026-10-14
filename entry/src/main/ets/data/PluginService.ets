@@ -3,6 +3,7 @@ import { fileIo as fs } from '@kit.CoreFileKit';
 import zlib from '@ohos.zlib';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { util } from '@kit.ArkTS';
+import { cryptoFramework } from '@kit.CryptoArchitectureKit';
 import { PluginManifest, JsvmSource, CompiledSourceInfo } from '../source/JsvmSource';
 import { JsvmExtensionManager } from '../jsvm/JsvmExtensionManager';
 import { PluginPrefs } from '../jsvm/PluginPrefs';
@@ -46,6 +47,8 @@ export interface RepoEntry {
   icon: string;
   // manga | novel | video；仓库索引未声明时为空字符串（UI 不显示类型角标）
   contentType: string;
+  // 仓库索引声明的 sha256（可选），下载后校验插件包完整性
+  checksum: string;
 }
 
 interface RawRepoEntry {
@@ -58,6 +61,7 @@ interface RawRepoEntry {
   nsfw?: boolean;
   icon?: string;
   contentType?: string;
+  checksum?: string;
 }
 
 interface RawRepoIndex {
@@ -89,6 +93,27 @@ export class PluginService {
       fs.mkdirSync(PluginService.pluginsDir, true);
     }
     PluginService.cleanStaleTemp();
+    PluginService.cleanStaleStaging();
+  }
+
+  // 清理上次崩溃/失败安装遗留的 staging/备份目录（.staging_*/.old_*，含 manifest.json 会被误识别为插件）
+  private static cleanStaleStaging(): void {
+    if (!fs.accessSync(PluginService.pluginsDir)) {
+      return;
+    }
+    const names: string[] = fs.listFileSync(PluginService.pluginsDir);
+    for (const name of names) {
+      if (!name.startsWith('.staging_') && !name.startsWith('.old_')) {
+        continue;
+      }
+      const path = `${PluginService.pluginsDir}/${name}`;
+      try {
+        fs.rmdirSync(path);
+        hilog.info(DOMAIN, TAG, 'cleaned stale staging: %{public}s', name);
+      } catch (e) {
+        hilog.warn(DOMAIN, TAG, 'clean stale staging failed: %{public}s %{public}s', name, (e as Error).message);
+      }
+    }
   }
 
   // 清理历史失败安装遗留的临时文件/目录（plugin_extract_*/plugin_install_*/plugin_repo_*）
@@ -144,6 +169,12 @@ export class PluginService {
     if (minAppVersion > PluginService.appVersionCode) {
       throw new Error(`插件需要应用版本号 ≥ ${minAppVersion}，请先升级应用`);
     }
+    // icon 仅允许简单文件名（禁止 /、\、.. 等路径穿越），非法时忽略
+    let icon = raw.icon ?? '';
+    if (icon !== '' && (icon.indexOf('/') >= 0 || icon.indexOf('\\') >= 0 || icon.indexOf('..') >= 0 ||
+      !new RegExp('^[A-Za-z0-9_.-]+$').test(icon))) {
+      icon = '';
+    }
     const manifest: PluginManifest = {
       key: key,
       name: name,
@@ -155,7 +186,7 @@ export class PluginService {
       supportsLatest: raw.supportsLatest !== false,
       minAppVersion: minAppVersion,
       dslVersion: dslVersion,
-      icon: raw.icon ?? '',
+      icon: icon,
       runtime: raw.runtime ?? '',
       engine: engine,
       contentType: ContentType.normalize(raw.contentType),
@@ -191,7 +222,7 @@ export class PluginService {
 
   // 从文件选择器 URI 安装插件包
   static async installFromFile(uri: string): Promise<string> {
-    const zipPath = `${PluginService.cacheDir}/plugin_install_${Date.now()}.honyomiplug`;
+    const zipPath = `${PluginService.cacheDir}/plugin_install_${Date.now()}_${util.generateRandomUUID()}.honyomiplug`;
     try {
       const srcFile = fs.openSync(uri, fs.OpenMode.READ_ONLY);
       try {
@@ -211,10 +242,19 @@ export class PluginService {
     }
   }
 
-  // 从仓库条目下载并安装
+  // 从仓库条目下载并安装：强制 https，索引声明 checksum（sha256）时校验完整性
   static async installFromRepo(entry: RepoEntry): Promise<string> {
-    const buffer = await Http.getBuffer(entry.file, undefined);
-    const zipPath = `${PluginService.cacheDir}/plugin_repo_${entry.key}_${Date.now()}.honyomiplug`;
+    if (entry.file.startsWith('http://')) {
+      throw new Error('插件包地址必须使用 https，已拒绝明文下载');
+    }
+    const buffer: ArrayBuffer = await Http.getBuffer(entry.file, undefined);
+    if (entry.checksum !== '') {
+      const actual: string = await PluginService.sha256Hex(buffer);
+      if (actual !== entry.checksum.toLowerCase()) {
+        throw new Error('插件包完整性校验失败（sha256 不匹配），已取消安装');
+      }
+    }
+    const zipPath = `${PluginService.cacheDir}/plugin_repo_${entry.key}_${Date.now()}_${util.generateRandomUUID()}.honyomiplug`;
     const file = fs.openSync(zipPath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
     try {
       fs.writeSync(file.fd, buffer);
@@ -281,9 +321,11 @@ export class PluginService {
           versionCode: item.versionCode ?? 0,
           file: PluginService.resolveRepoFile(url, file),
           nsfw: item.nsfw === true,
-          icon: item.icon !== undefined && item.icon !== '' ? PluginService.resolveRepoFile(url, item.icon) : '',
+          icon: item.icon !== undefined && item.icon !== '' ?
+            PluginService.resolveRepoIcon(url, item.icon) : '',
           contentType: item.contentType !== undefined && item.contentType !== null ?
             ContentType.normalize(item.contentType) : '',
+          checksum: item.checksum ?? '',
         };
         entries.push(entry);
       }
@@ -307,42 +349,82 @@ export class PluginService {
       return cached;
     }
     if (!new RegExp('^[a-z0-9_]+$').test(name) || PluginService.context === undefined) {
-      return '';
+      hilog.warn(DOMAIN, TAG, 'invalid plugin runtime name: %{public}s', name);
+      throw new Error(`插件 runtime 名称无效: ${name}`);
     }
-    const data = PluginService.context.resourceManager
-      .getRawFileContentSync(`plugin_runtime_${name}.js`);
-    const text = util.TextDecoder.create('utf-8').decodeToString(data);
-    PluginService.runtimeCache.set(name, text);
-    return text;
+    try {
+      const data = PluginService.context.resourceManager
+        .getRawFileContentSync(`plugin_runtime_${name}.js`);
+      const text = util.TextDecoder.create('utf-8').decodeToString(data);
+      PluginService.runtimeCache.set(name, text);
+      return text;
+    } catch (e) {
+      hilog.warn(DOMAIN, TAG, 'load plugin runtime %{public}s failed: %{public}s', name, (e as Error).message);
+      throw new Error(`插件运行时组件缺失: plugin_runtime_${name}.js`);
+    }
   }
 
+  private static async sha256Hex(data: ArrayBuffer): Promise<string> {
+    const md: cryptoFramework.Md = cryptoFramework.createMd('SHA256');
+    await md.update({ data: new Uint8Array(data) });
+    const digest: cryptoFramework.DataBlob = await md.digest();
+    let out = '';
+    for (let i = 0; i < digest.data.length; i++) {
+      const byte: number = digest.data[i];
+      out += byte < 16 ? `0${byte.toString(16)}` : byte.toString(16);
+    }
+    return out;
+  }
+
+  // 先解压/复制到临时目录，全部成功后再原子替换旧插件目录，失败保留旧插件
   private static async installZip(zipPath: string): Promise<string> {
-    const extractDir = `${PluginService.cacheDir}/plugin_extract_${Date.now()}`;
+    const extractDir = `${PluginService.cacheDir}/plugin_extract_${Date.now()}_${util.generateRandomUUID()}`;
     if (!fs.accessSync(extractDir)) {
       fs.mkdirSync(extractDir, true);
     }
     await zlib.decompressFile(zipPath, extractDir);
+    let stagingDir = '';
     try {
       const rootDir = PluginService.findPluginRoot(extractDir);
       const manifest = PluginService.parseManifest(fs.readTextSync(`${rootDir}/manifest.json`));
       if (!fs.accessSync(`${rootDir}/main.js`)) {
         throw new Error('插件包缺少 main.js');
       }
-      const destDir = `${PluginService.pluginsDir}/${manifest.key}`;
-      if (fs.accessSync(destDir)) {
-        fs.rmdirSync(destDir);
-      }
-      fs.mkdirSync(destDir, true);
-      fs.copyFileSync(`${rootDir}/manifest.json`, `${destDir}/manifest.json`);
-      fs.copyFileSync(`${rootDir}/main.js`, `${destDir}/main.js`);
+      // 先完整复制到 staging 目录，成功后再删除旧目录并 rename 新目录
+      stagingDir = `${PluginService.pluginsDir}/.staging_${manifest.key}_${Date.now()}_${util.generateRandomUUID()}`;
+      fs.mkdirSync(stagingDir, true);
+      fs.copyFileSync(`${rootDir}/manifest.json`, `${stagingDir}/manifest.json`);
+      fs.copyFileSync(`${rootDir}/main.js`, `${stagingDir}/main.js`);
       if (manifest.icon !== '' && fs.accessSync(`${rootDir}/${manifest.icon}`)) {
-        fs.copyFileSync(`${rootDir}/${manifest.icon}`, `${destDir}/${manifest.icon}`);
+        fs.copyFileSync(`${rootDir}/${manifest.icon}`, `${stagingDir}/${manifest.icon}`);
+      }
+      const destDir = `${PluginService.pluginsDir}/${manifest.key}`;
+      const backupDir = `${PluginService.pluginsDir}/.old_${manifest.key}_${util.generateRandomUUID()}`;
+      let swapped = false;
+      if (fs.accessSync(destDir)) {
+        fs.renameSync(destDir, backupDir);
+        swapped = true;
+      }
+      try {
+        fs.renameSync(stagingDir, destDir);
+        stagingDir = '';
+      } catch (e) {
+        if (swapped) {
+          fs.renameSync(backupDir, destDir);
+        }
+        throw new Error(`替换插件目录失败：${(e as Error).message}`);
+      }
+      if (swapped && fs.accessSync(backupDir)) {
+        fs.rmdirSync(backupDir);
       }
       const scriptText = fs.readTextSync(`${destDir}/main.js`);
       await PluginService.reloadOne(manifest, scriptText);
       hilog.info(DOMAIN, TAG, 'plugin installed: %{public}s', manifest.key);
       return manifest.key;
     } finally {
+      if (stagingDir !== '' && fs.accessSync(stagingDir)) {
+        fs.rmdirSync(stagingDir);
+      }
       if (fs.accessSync(extractDir)) {
         fs.rmdirSync(extractDir);
       }
@@ -364,9 +446,13 @@ export class PluginService {
     throw new Error('插件包中未找到 manifest.json');
   }
 
-  // 仓库索引里的 file 可以是绝对 URL，也可以相对 index.json 所在目录。
+  // 仓库索引里的 file 可以是绝对 URL，也可以相对 index.json 所在目录；强制 https。
   private static resolveRepoFile(indexUrl: string, file: string): string {
-    if (file.startsWith('http://') || file.startsWith('https://')) {
+    if (file.startsWith('http://')) {
+      // 明文 http 分发插件包等同远程代码注入面，一律拒绝
+      throw new Error('插件仓库地址必须使用 https，已拒绝 http:// 条目');
+    }
+    if (file.startsWith('https://')) {
       return file;
     }
     const slash = indexUrl.lastIndexOf('/');
@@ -376,6 +462,16 @@ export class PluginService {
       rel = rel.substring(2);
     }
     return `${base}${rel}`;
+  }
+
+  // 图标地址解析失败（非 https）时降级为无图标，不中断整个仓库列表
+  private static resolveRepoIcon(indexUrl: string, icon: string): string {
+    try {
+      return PluginService.resolveRepoFile(indexUrl, icon);
+    } catch (e) {
+      hilog.warn(DOMAIN, TAG, 'skip non-https repo icon: %{public}s', icon);
+      return '';
+    }
   }
 
   private static packageKeyOf(key: string): string {

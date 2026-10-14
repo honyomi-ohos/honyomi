@@ -132,12 +132,12 @@ export struct CoverViewer {
   // 保存封面到图库（对齐 Mihon Save）：弹窗授权 → 复制沙箱图片到媒体库
   private async saveCover(): Promise<void> {
     const context = Util.hostAbilityContext(this.getUIContext());
-    const localPath = await this.ensureLocalPath(context);
-    if (localPath === '') {
-      Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_save_gallery_failed'));
-      return;
-    }
     try {
+      const localPath = await this.ensureLocalPath(context);
+      if (localPath === '') {
+        Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_save_gallery_failed'));
+        return;
+      }
       const helper = photoAccessHelper.getPhotoAccessHelper(context);
       const configs: photoAccessHelper.PhotoCreationConfig[] = [
         {
@@ -151,13 +151,19 @@ export struct CoverViewer {
       if (destUris.length === 0 || destUris[0] === '') {
         return;
       }
-      const dest = await fs.open(destUris[0], fs.OpenMode.WRITE_ONLY);
-      const src = await fs.open(localPath, fs.OpenMode.READ_ONLY);
+      let dest: fs.File | undefined = undefined;
+      let src: fs.File | undefined = undefined;
       try {
+        dest = await fs.open(destUris[0], fs.OpenMode.WRITE_ONLY);
+        src = await fs.open(localPath, fs.OpenMode.READ_ONLY);
         await fs.copyFile(src.fd, dest.fd);
       } finally {
-        fs.closeSync(src);
-        fs.closeSync(dest);
+        if (src !== undefined) {
+          fs.closeSync(src);
+        }
+        if (dest !== undefined) {
+          fs.closeSync(dest);
+        }
       }
       Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_saved'));
     } catch (e) {
@@ -168,12 +174,12 @@ export struct CoverViewer {
   // 分享封面（对齐 Mihon Share）：拉起系统分享面板分享图片
   private async shareCover(): Promise<void> {
     const context = Util.hostAbilityContext(this.getUIContext());
-    const localPath = await this.ensureLocalPath(context);
-    if (localPath === '') {
-      Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_share_failed'));
-      return;
-    }
     try {
+      const localPath = await this.ensureLocalPath(context);
+      if (localPath === '') {
+        Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_share_failed'));
+        return;
+      }
       const utdTypeId = utd.getUniformDataTypeByFilenameExtension('.' + this.fileExtOf(localPath),
         utd.UniformDataType.IMAGE);
       const data: systemShare.SharedData = new systemShare.SharedData({

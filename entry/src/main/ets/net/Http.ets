@@ -2,6 +2,7 @@ import { http } from '@kit.NetworkKit';
 import { request } from '@kit.BasicServicesKit';
 import { common } from '@kit.AbilityKit';
 import { CookieJar } from './CookieJar';
+import { CfChallenge } from './CfChallenge';
 
 // 下载句柄：promise 必然 settle；cancel 中断；setProgressCb 接收字节进度
 export interface DownloadHandle {
@@ -10,36 +11,33 @@ export interface DownloadHandle {
   setProgressCb: (cb: (received: number, total: number) => void) => void;
 }
 
+// CF 盾挑战错误：检测到盾页（需验证后重试），不参与网络错误重试
+class HttpCfError extends Error {
+}
+
+// HTTP 非 2xx 状态错误：不属于网络类错误，不重试
+class HttpStatusError extends Error {
+}
+
 // HTTP 客户端封装（对齐 Mihon NetworkHelper 的最小集）
 // - 统一 UA：CF 盾 cf_clearance 与 UA 绑定，http 层与验证 Web 必须一致
 // - CookieJar：自动附带请求 Cookie、回收响应 Set-Cookie
-// - CF challenge：检测到 403/503 盾页时置 AppStorage.cfChallengeUrl，由 Index 弹验证页
+// - CF challenge：检测到盾页时置 AppStorage.cfChallengeUrl，由 Index 弹验证页
+// - 幂等 GET：网络类错误（非 CF 挑战）退避 500ms 后重试一次
 export class Http {
   static readonly USER_AGENT: string = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +
     '(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
 
   static async get(url: string, headers: Record<string, string> | undefined): Promise<string> {
-    const client: http.HttpRequest = http.createHttp();
     try {
-      const options: http.HttpRequestOptions = {
-        method: http.RequestMethod.GET,
-        header: Http.buildHeaders(url, headers),
-        expectDataType: http.HttpDataType.STRING,
-        connectTimeout: 15000,
-        readTimeout: 20000,
-      };
-      const resp: http.HttpResponse = await client.request(url, options);
-      CookieJar.storeFromResponse(url, resp.header);
-      if (Http.isCfChallenge(resp, resp.result as string, url)) {
-        throw new Error('站点需要人机验证，请在弹出的验证页完成后重试');
+      return await Http.getOnce(url, headers);
+    } catch (e) {
+      if (e instanceof HttpCfError || e instanceof HttpStatusError) {
+        throw e as Error;
       }
-      if (resp.responseCode < 200 || resp.responseCode >= 300) {
-        throw new Error(`HTTP ${resp.responseCode}: ${url}`);
-      }
-      return resp.result as string;
-    } finally {
-      client.destroy();
     }
+    await Http.delay(500);
+    return Http.getOnce(url, headers);
   }
 
   static async post(url: string, body: string, headers: Record<string, string> | undefined): Promise<string> {
@@ -58,40 +56,30 @@ export class Http {
       };
       const resp: http.HttpResponse = await client.request(url, options);
       CookieJar.storeFromResponse(url, resp.header);
-      if (Http.isCfChallenge(resp, resp.result as string, url)) {
-        throw new Error('站点需要人机验证，请在弹出的验证页完成后重试');
+      const respBody: string = Http.bodyText(resp.result);
+      if (CfChallenge.isCfChallenge(resp.responseCode, respBody, resp.header)) {
+        AppStorage.setOrCreate('cfChallengeUrl', url);
+        throw new HttpCfError('站点需要人机验证，请在弹出的验证页完成后重试');
       }
       if (resp.responseCode < 200 || resp.responseCode >= 300) {
-        throw new Error(`HTTP ${resp.responseCode}: ${url}`);
+        throw new HttpStatusError(`HTTP ${resp.responseCode}: ${url}`);
       }
-      return resp.result as string;
+      return respBody;
     } finally {
       client.destroy();
     }
   }
 
   static async getBuffer(url: string, headers: Record<string, string> | undefined): Promise<ArrayBuffer> {
-    const client: http.HttpRequest = http.createHttp();
     try {
-      const options: http.HttpRequestOptions = {
-        method: http.RequestMethod.GET,
-        header: Http.buildHeaders(url, headers),
-        expectDataType: http.HttpDataType.ARRAY_BUFFER,
-        connectTimeout: 15000,
-        readTimeout: 60000,
-      };
-      const resp: http.HttpResponse = await client.request(url, options);
-      CookieJar.storeFromResponse(url, resp.header);
-      if (Http.isCfChallenge(resp, '', url)) {
-        throw new Error('站点需要人机验证，请在弹出的验证页完成后重试');
+      return await Http.getBufferOnce(url, headers);
+    } catch (e) {
+      if (e instanceof HttpCfError || e instanceof HttpStatusError) {
+        throw e as Error;
       }
-      if (resp.responseCode < 200 || resp.responseCode >= 300) {
-        throw new Error(`HTTP ${resp.responseCode}: ${url}`);
-      }
-      return resp.result as ArrayBuffer;
-    } finally {
-      client.destroy();
     }
+    await Http.delay(500);
+    return Http.getBufferOnce(url, headers);
   }
 
   static defaultHeaders(): Record<string, string> {
@@ -195,6 +183,70 @@ export class Http {
 
   // ---------------- 内部实现 ----------------
 
+  private static async getOnce(url: string, headers: Record<string, string> | undefined): Promise<string> {
+    const client: http.HttpRequest = http.createHttp();
+    try {
+      const options: http.HttpRequestOptions = {
+        method: http.RequestMethod.GET,
+        header: Http.buildHeaders(url, headers),
+        expectDataType: http.HttpDataType.STRING,
+        connectTimeout: 15000,
+        readTimeout: 20000,
+      };
+      const resp: http.HttpResponse = await client.request(url, options);
+      CookieJar.storeFromResponse(url, resp.header);
+      const respBody: string = Http.bodyText(resp.result);
+      if (CfChallenge.isCfChallenge(resp.responseCode, respBody, resp.header)) {
+        AppStorage.setOrCreate('cfChallengeUrl', url);
+        throw new HttpCfError('站点需要人机验证，请在弹出的验证页完成后重试');
+      }
+      if (resp.responseCode < 200 || resp.responseCode >= 300) {
+        throw new HttpStatusError(`HTTP ${resp.responseCode}: ${url}`);
+      }
+      return respBody;
+    } finally {
+      client.destroy();
+    }
+  }
+
+  private static async getBufferOnce(url: string, headers: Record<string, string> | undefined): Promise<ArrayBuffer> {
+    const client: http.HttpRequest = http.createHttp();
+    try {
+      const options: http.HttpRequestOptions = {
+        method: http.RequestMethod.GET,
+        header: Http.buildHeaders(url, headers),
+        expectDataType: http.HttpDataType.ARRAY_BUFFER,
+        connectTimeout: 15000,
+        readTimeout: 60000,
+      };
+      const resp: http.HttpResponse = await client.request(url, options);
+      CookieJar.storeFromResponse(url, resp.header);
+      if (CfChallenge.isCfChallenge(resp.responseCode, '', resp.header)) {
+        AppStorage.setOrCreate('cfChallengeUrl', url);
+        throw new HttpCfError('站点需要人机验证，请在弹出的验证页完成后重试');
+      }
+      if (resp.responseCode < 200 || resp.responseCode >= 300) {
+        throw new HttpStatusError(`HTTP ${resp.responseCode}: ${url}`);
+      }
+      return resp.result as ArrayBuffer;
+    } finally {
+      client.destroy();
+    }
+  }
+
+  // resp.result null/undefined 防护：非字符串一律按空串参与挑战检测
+  private static bodyText(result: string | Object | ArrayBuffer | undefined): string {
+    return typeof result === 'string' ? result : '';
+  }
+
+  private static delay(ms: number): Promise<void> {
+    return new Promise<void>((resolve: () => void) => {
+      setTimeout(() => {
+        resolve();
+      }, ms);
+    });
+  }
+
   // 合并请求头：统一 UA + 调用方覆盖 + CookieJar 自动附带
   // 域名已有 cf_clearance 会话时忽略调用方 UA：cf_clearance 与验证
   // WebView 的 UA（Http.USER_AGENT）绑定，混用其他 UA 会被 CF 拒绝
@@ -230,31 +282,5 @@ export class Http {
       }
     }
     return false;
-  }
-
-  // Cloudflare 盾页检测：403/503 + cf-mitigated 响应头或盾页特征文案
-  private static isCfChallenge(resp: http.HttpResponse, body: string, url: string): boolean {
-    if (resp.responseCode !== 403 && resp.responseCode !== 503) {
-      return false;
-    }
-    const h = resp.header as Record<string, Object>;
-    const keys = Object.keys(h);
-    let challenged = false;
-    for (const k of keys) {
-      if (k.toLowerCase() === 'cf-mitigated') {
-        const v = h[k];
-        if (typeof v === 'string' && v.toLowerCase() === 'challenge') {
-          challenged = true;
-        }
-      }
-    }
-    if (!challenged &&
-      (body.indexOf('challenge-platform') >= 0 || body.indexOf('Just a moment') >= 0)) {
-      challenged = true;
-    }
-    if (challenged) {
-      AppStorage.setOrCreate('cfChallengeUrl', url);
-    }
-    return challenged;
   }
 }

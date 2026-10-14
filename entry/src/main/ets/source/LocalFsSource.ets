@@ -149,7 +149,8 @@ export abstract class LocalFsSource implements Source {
     return chapter;
   }
 
-  // chapterKey（<作品目录>::<章节条目>）转绝对路径；无效返回空串
+  // chapterKey（<作品目录>::<章节条目>）转绝对路径；无效返回空串。
+  // 路径穿越防护：mangaDir / entry 任一含 ".." 路径段即拒绝（备份导入可注入构造 key）
   protected entryPath(chapterKey: string): string {
     const sepIdx = chapterKey.indexOf('::');
     if (sepIdx < 0) {
@@ -157,7 +158,20 @@ export abstract class LocalFsSource implements Source {
     }
     const mangaDir = chapterKey.substring(0, sepIdx);
     const entry = chapterKey.substring(sepIdx + 2);
+    if (LocalFsSource.hasDotDotSegment(mangaDir) || LocalFsSource.hasDotDotSegment(entry)) {
+      return '';
+    }
     return `${this.rootDir()}/${mangaDir}/${entry}`;
+  }
+
+  private static hasDotDotSegment(path: string): boolean {
+    const segs = path.split('/');
+    for (const seg of segs) {
+      if (seg === '..') {
+        return true;
+      }
+    }
+    return false;
   }
 
   // 递归收集扩展名匹配的文件相对路径（含卷级子目录），每层按自然顺序排序

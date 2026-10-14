@@ -12,7 +12,6 @@ const COLS_VALUES: number[] = [0, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 // 书架设置内容：默认排序/视图/列数/徽标（筛选与三态逻辑在书架过滤弹层中）
 @Component
 export struct LibrarySettingsContent {
-  @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   private sortIndex(): number {

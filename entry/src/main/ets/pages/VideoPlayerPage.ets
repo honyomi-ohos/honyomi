@@ -80,6 +80,8 @@ export struct VideoPlayerPage {
   private dragging: boolean = false;
   private localPath: string = '';
   private playGen: number = 0;
+  private loadGen: number = 0;
+  private destroyed: boolean = false;
   private videoW: number = 0;
   private videoH: number = 0;
   private areaW: number = 0;
@@ -88,6 +90,7 @@ export struct VideoPlayerPage {
   private tapTimer: number = -1;
   private seekToastTimer: number = -1;
   private boostTimer: number = -1;
+  private suppressTimer: number = -1;
   private boostDownX: number = 0;
   private boostAnchorX: number = 0;
   private suppressClick: boolean = false;
@@ -111,8 +114,11 @@ export struct VideoPlayerPage {
     this.dmOpacity = Settings.getDanmakuOpacityPct();
     this.dmArea = Settings.getDanmakuAreaPct();
     this.dmDur = Settings.getDanmakuDurationSec();
-    // 沉浸式：隐藏状态栏与导航栏
+    // 沉浸式：隐藏状态栏与导航栏（页面已销毁则放弃，避免销毁后隐藏系统栏且无法还原）
     window.getLastWindow(Util.hostAbilityContext(this.getUIContext())).then((w: window.Window) => {
+      if (this.destroyed) {
+        return;
+      }
       this.win = w;
       if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
         w.setWindowSystemBarEnable([]).catch((): void => {
@@ -124,6 +130,8 @@ export struct VideoPlayerPage {
 
   aboutToDisappear(): void {
     this.log('aboutToDisappear');
+    this.destroyed = true;
+    this.loadGen += 1;
     this.persist(false);
     ReadingStatsRepo.flush();
     this.stopTicker();
@@ -143,14 +151,15 @@ export struct VideoPlayerPage {
 
   // 全屏横屏切换
   private toggleFullscreen(): void {
+    if (this.win === undefined) {
+      return;
+    }
     this.fullscreen = !this.fullscreen;
-    if (this.win !== undefined) {
-      if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
-        const target: window.Orientation = this.fullscreen ?
-          window.Orientation.AUTO_ROTATION_LANDSCAPE : window.Orientation.AUTO_ROTATION_PORTRAIT;
-        this.win.setPreferredOrientation(target).catch((): void => {
-        });
-      }
+    if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
+      const target: window.Orientation = this.fullscreen ?
+        window.Orientation.AUTO_ROTATION_LANDSCAPE : window.Orientation.AUTO_ROTATION_PORTRAIT;
+      this.win.setPreferredOrientation(target).catch((): void => {
+      });
     }
     this.pokeControls();
   }
@@ -172,9 +181,14 @@ export struct VideoPlayerPage {
       clearTimeout(this.boostTimer);
       this.boostTimer = -1;
     }
+    if (this.suppressTimer >= 0) {
+      clearTimeout(this.suppressTimer);
+      this.suppressTimer = -1;
+    }
   }
 
   private async loadChapter(): Promise<void> {
+    const gen: number = ++this.loadGen;
     this.loading = true;
     this.buffering = true;
     this.errorText = '';
@@ -187,7 +201,13 @@ export struct VideoPlayerPage {
     try {
       const context = Util.hostAbilityContext(this.getUIContext());
       await AppDb.ready(context);
+      if (gen !== this.loadGen) {
+        return;
+      }
       const chapter = await ChapterRepo.getById(this.chapterId);
+      if (gen !== this.loadGen) {
+        return;
+      }
       if (chapter === undefined) {
         Util.toastRes(this.getUIContext(), $r('app.string.reader_chapter_not_found'));
         this.pathStack.pop();
@@ -199,6 +219,9 @@ export struct VideoPlayerPage {
       this.positionMs = this.resumeMs;
       this.savedMs = this.resumeMs;
       const manga = await MangaRepo.get(chapter.mangaId);
+      if (gen !== this.loadGen) {
+        return;
+      }
       if (manga !== undefined) {
         this.manga = manga;
       }
@@ -209,13 +232,22 @@ export struct VideoPlayerPage {
           throw new Error('源不可用');
         }
         this.videos = await source.getVideoList(chapter.url);
+        if (gen !== this.loadGen) {
+          return;
+        }
         if (this.videos.length === 0) {
           throw new Error('没有可播放的视频');
         }
       }
       this.qualityIndex = 0;
-      await this.loadNeighbors();
+      await this.loadNeighbors(gen);
+      if (gen !== this.loadGen) {
+        return;
+      }
       await HistoryRepo.upsert(chapter.mangaId, chapter.id, this.resumeMs);
+      if (gen !== this.loadGen) {
+        return;
+      }
       ReadingStatsRepo.begin(chapter.mangaId, chapter.id);
       this.loading = false;
       this.startCurrent();
@@ -223,6 +255,9 @@ export struct VideoPlayerPage {
         this.loadDanmaku();
       }
     } catch (e) {
+      if (gen !== this.loadGen) {
+        return;
+      }
       const em = (e as Error).message;
       this.log(`loadChapter catch: ${em}`);
       this.errorText = (e as Error).message;
@@ -232,8 +267,11 @@ export struct VideoPlayerPage {
     }
   }
 
-  private async loadNeighbors(): Promise<void> {
+  private async loadNeighbors(gen: number): Promise<void> {
     const n: ChapterNeighbors = await ReaderChapterNav.neighbors(this.mangaId, this.chapterId);
+    if (gen !== this.loadGen) {
+      return;
+    }
     this.chapters = n.chapters;
     this.prevId = n.prevId;
     this.nextId = n.nextId;
@@ -286,18 +324,29 @@ export struct VideoPlayerPage {
     const gen = this.playGen;
     this.releasePlayer();
     // @SuppressWarnings syscap
-    media.createAVPlayer().then((player: media.AVPlayer) => {
+    media.createAVPlayer().then(async (player: media.AVPlayer): Promise<void> => {
       if (gen !== this.playGen) {
         player.release();
         return;
       }
       this.bindPlayer(player);
-      const file = fs.openSync(path, fs.OpenMode.READ_ONLY);
-      const stat = fs.statSync(path);
+      const file: fs.File = await fs.open(path, fs.OpenMode.READ_ONLY);
+      const stat: fs.Stat = await fs.stat(path);
+      if (gen !== this.playGen) {
+        try {
+          fs.closeSync(file);
+        } catch (_e) {
+          // 已关闭
+        }
+        return;
+      }
       this.mediaFile = file;
       const fdSrc: media.AVFileDescriptor = { fd: file.fd, offset: 0, length: stat.size };
       player.fdSrc = fdSrc;
     }).catch((e: Error) => {
+      if (gen !== this.playGen) {
+        return;
+      }
       this.log(`playFile createAVPlayer catch: ${e.message}`);
       this.errorText = e.message;
       this.buffering = false;
@@ -583,7 +632,11 @@ export struct VideoPlayerPage {
     if (this.boosting) {
       this.endBoost();
       this.suppressClick = true;
-      setTimeout(() => {
+      if (this.suppressTimer >= 0) {
+        clearTimeout(this.suppressTimer);
+      }
+      this.suppressTimer = setTimeout(() => {
+        this.suppressTimer = -1;
         this.suppressClick = false;
       }, 400);
     }
@@ -695,12 +748,18 @@ export struct VideoPlayerPage {
     }
     const pos = finished && this.durationMs > 0 ? this.durationMs : Math.floor(this.positionMs);
     this.savedMs = pos;
-    ChapterRepo.setLastPageRead(this.chapterId, pos).catch(() => {
+    ChapterRepo.setLastPageRead(this.chapterId, pos).catch((e: Error): void => {
+      hilog.warn(0xDEAD, 'VP', 'persist setLastPageRead failed, chapter=%{public}d, err=%{public}s',
+        this.chapterId, `${e}`);
     });
-    HistoryRepo.upsert(this.mangaId, this.chapterId, pos).catch(() => {
+    HistoryRepo.upsert(this.mangaId, this.chapterId, pos).catch((e: Error): void => {
+      hilog.warn(0xDEAD, 'VP', 'persist history upsert failed, chapter=%{public}d, err=%{public}s',
+        this.chapterId, `${e}`);
     });
     if (finished || (this.durationMs > 0 && pos >= this.durationMs * 0.9)) {
-      ChapterRepo.setRead(this.chapterId, true).catch(() => {
+      ChapterRepo.setRead(this.chapterId, true).catch((e: Error): void => {
+        hilog.warn(0xDEAD, 'VP', 'persist setRead failed, chapter=%{public}d, err=%{public}s',
+          this.chapterId, `${e}`);
       });
     }
   }

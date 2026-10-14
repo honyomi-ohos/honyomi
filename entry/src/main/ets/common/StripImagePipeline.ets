@@ -1,5 +1,6 @@
 import { image } from '@kit.ImageKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
+import { hidebug } from '@kit.PerformanceAnalysisKit';
 import { ImageCache } from './ImageCache';
 import { Http } from '../net/Http';
 
@@ -17,9 +18,12 @@ interface StripCacheEntry {
 export class StripImagePipeline {
   private static cache: Map<string, StripCacheEntry> = new Map();
   private static inflight: Map<string, Promise<image.PixelMap>> = new Map();
+  // 已被 release 的 url：解码完成后不再入缓存（防"复活"）
+  private static released: Set<string> = new Set<string>();
   private static totalBytes: number = 0;
-  // 内存预算：默认 256MB；超大条漫章节由 LRU 按字节淘汰
-  private static readonly MAX_CACHE_BYTES: number = 256 * 1024 * 1024;
+  // 内存预算：设备总内存的 15%，上限 256MB、下限 64MB（中低端设备避免触发 LMK）；
+  // 超大条漫章节由 LRU 按字节淘汰
+  private static readonly MAX_CACHE_BYTES: number = StripImagePipeline.computeBudget();
   // 单张解码宽度上限（px）
   private static readonly MAX_DECODE_WIDTH: number = 1440;
   // 单张解码总像素上限：条漫是"窄而极高"的长图，仅限宽不够
@@ -35,6 +39,8 @@ export class StripImagePipeline {
     if (pending !== undefined) {
       return pending;
     }
+    // 新一轮加载视作新会话：清掉历史的 release 标记
+    StripImagePipeline.released.delete(url);
     const task = StripImagePipeline.fetchAndDecode(url, sourceKey, pageUrl);
     StripImagePipeline.inflight.set(url, task);
     try {
@@ -46,6 +52,9 @@ export class StripImagePipeline {
 
   // 立即回收单张（如章节关闭）
   static release(url: string): void {
+    // 同时撤销 inflight 任务并标记已释放：解码完成后不再 put 回缓存，防止条目"复活"
+    StripImagePipeline.released.add(url);
+    StripImagePipeline.inflight.delete(url);
     const entry = StripImagePipeline.cache.get(url);
     if (entry !== undefined) {
       StripImagePipeline.cache.delete(url);
@@ -77,12 +86,29 @@ export class StripImagePipeline {
 
   // ---------------- 内部实现 ----------------
 
+  // 按设备总内存计算预算：hidebug.getSystemMemInfo().totalMem（bigint，单位 KB），无权限要求；
+  // 读取失败（低版本/syscap 缺失）回退 128MB 中等预算
+  private static computeBudget(): number {
+    try {
+      const totalBytes: number = Number(hidebug.getSystemMemInfo().totalMem) * 1024;
+      return Math.max(64 * 1024 * 1024, Math.min(256 * 1024 * 1024, Math.floor(totalBytes * 0.15)));
+    } catch (_e) {
+      return 128 * 1024 * 1024;
+    }
+  }
+
   private static async fetchAndDecode(url: string, sourceKey: string, pageUrl: string): Promise<image.PixelMap> {
     const buffer = await StripImagePipeline.fetchBytes(url, sourceKey, pageUrl);
     const source: image.ImageSource = image.createImageSource(buffer);
     try {
       const opts = await StripImagePipeline.decodeOptions(source);
       const pm = opts !== undefined ? await source.createPixelMap(opts) : await source.createPixelMap();
+      // 解码期间被 release：不入缓存直接失败，调用方按加载错误兜底
+      if (StripImagePipeline.released.has(url)) {
+        pm.release().catch((_e: Object) => {
+        });
+        throw new Error('strip image released before decode finished');
+      }
       const bytes = await StripImagePipeline.pixelBytes(pm);
       StripImagePipeline.put(url, pm, bytes);
       return pm;
@@ -169,8 +195,12 @@ export class StripImagePipeline {
         if (StripImagePipeline.totalBytes < 0) {
           StripImagePipeline.totalBytes = 0;
         }
-        victim.pm.release().catch((_e: Object) => {
-        });
+        // 仅从 Map 移除、延迟一拍 release：可能仍有页面正在渲染该 PixelMap，立即回收会闪灰/崩溃
+        const pmToRelease: image.PixelMap = victim.pm;
+        setTimeout((): void => {
+          pmToRelease.release().catch((_e: Object) => {
+          });
+        }, 0);
       }
     }
   }

@@ -12,6 +12,7 @@ import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
 import { AppIcon } from './components/AppIcon';
+import { SmartImage } from './components/SmartImage';
 import { UpdatesFilterSheet } from './components/UpdatesFilterSheet';
 
 // 更新页：书架最新章节（对齐 Mihon UpdatesScreen）
@@ -224,17 +225,20 @@ export struct UpdatesPage {
                     .borderRadius(6)
                     .backgroundColor(this.pal.chip)
                     .justifyContent(FlexAlign.Center)
-                    .onClick(() => {
+                    .onClick((event: ClickEvent) => {
+                      // 阻断冒泡：避免同时触发整行 onClick（打开阅读器）
+                      event.stopPropagation();
                       this.openDetail(item.mangaId);
                     })
                   } else {
-                    Image(item.coverUrl)
+                    // UpdateItem 不含 sourceKey，传空串走网络/缓存通用路径
+                    SmartImage({ url: item.coverUrl, sourceKey: '', fit: ImageFit.Cover })
                       .width(44)
                       .height(60)
-                      .objectFit(ImageFit.Cover)
                       .borderRadius(6)
                       .backgroundColor(this.pal.chip)
-                      .onClick(() => {
+                      .onClick((event: ClickEvent) => {
+                        event.stopPropagation();
                         this.openDetail(item.mangaId);
                       })
                   }
@@ -281,7 +285,7 @@ export struct UpdatesPage {
                   ContentOpen.open(this.pathStack, item.mangaId, item.chapterId);
                 })
               }
-            }, (item: UpdateItem) => `upd-${item.chapterId}-${item.coverUrl}`)
+            }, (item: UpdateItem) => `upd-${item.chapterId}-${item.coverUrl}-${item.read}-${item.bookmark}`)
           }
           .layoutWeight(1)
           .scrollBar(BarState.Auto)

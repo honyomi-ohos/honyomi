@@ -3,38 +3,52 @@ import { common, ConfigurationConstant } from '@kit.AbilityKit';
 import { window, UIContext } from '@kit.ArkUI';
 import { i18n } from '@kit.LocalizationKit';
 import { Theme } from './Theme';
+import { AppKeys } from './AppKeys';
 
 // 轻量设置存储（阅读/主题/书架/阅读器/浏览/全局开关等）
 export class Settings {
   private static store: preferences.Preferences | undefined = undefined;
+  private static appCtx: common.UIAbilityContext | undefined = undefined;
+  // flush 防抖定时器（500ms 批量落盘）
+  private static flushTimer: number = -1;
 
   static init(context: common.UIAbilityContext): void {
+    Settings.appCtx = context;
     if (Settings.store === undefined) {
       const options: preferences.Options = { name: 'honyomi_settings' };
       Settings.store = preferences.getPreferencesSync(context, options);
     }
   }
 
+  // 供无 context 入参的工具层解析资源字符串（Util.timeAgo 等）
+  static appContext(): common.UIAbilityContext | undefined {
+    return Settings.appCtx;
+  }
+
+  // 取值后 typeof 校验：跨版本类型变更时回退默认值，避免静默返回错误类型
   private static getStr(key: string, def: string): string {
     if (Settings.store === undefined) {
       return def;
     }
-    return Settings.store.getSync(key, def) as string;
+    const v = Settings.store.getSync(key, def);
+    return typeof v === 'string' ? v as string : def;
   }
 
+  // 写入保持 putSync（读己之写）+ 500ms 防抖批量 flush（高频写场景消除 I/O 放大）
   private static setStr(key: string, value: string): void {
     if (Settings.store === undefined) {
       return;
     }
     Settings.store.putSync(key, value);
-    Settings.store.flush();
+    Settings.scheduleFlush();
   }
 
   private static getBool(key: string, def: boolean): boolean {
     if (Settings.store === undefined) {
       return def;
     }
-    return Settings.store.getSync(key, def) as boolean;
+    const v = Settings.store.getSync(key, def);
+    return typeof v === 'boolean' ? v as boolean : def;
   }
 
   private static setBool(key: string, value: boolean): void {
@@ -42,14 +56,15 @@ export class Settings {
       return;
     }
     Settings.store.putSync(key, value);
-    Settings.store.flush();
+    Settings.scheduleFlush();
   }
 
   private static getNum(key: string, def: number): number {
     if (Settings.store === undefined) {
       return def;
     }
-    return Settings.store.getSync(key, def) as number;
+    const v = Settings.store.getSync(key, def);
+    return typeof v === 'number' ? v as number : def;
   }
 
   private static setNum(key: string, value: number): void {
@@ -57,7 +72,31 @@ export class Settings {
       return;
     }
     Settings.store.putSync(key, value);
-    Settings.store.flush();
+    Settings.scheduleFlush();
+  }
+
+  // 防抖批量落盘：500ms 内的连续写只触发一次 flush
+  private static scheduleFlush(): void {
+    if (Settings.flushTimer !== -1) {
+      clearTimeout(Settings.flushTimer);
+    }
+    Settings.flushTimer = setTimeout((): void => {
+      Settings.flushTimer = -1;
+      if (Settings.store !== undefined) {
+        Settings.store.flush();
+      }
+    }, 500);
+  }
+
+  // 立即 flush 并取消防抖定时器（应用退后台/销毁时调用）
+  static flushNow(): void {
+    if (Settings.flushTimer !== -1) {
+      clearTimeout(Settings.flushTimer);
+      Settings.flushTimer = -1;
+    }
+    if (Settings.store !== undefined) {
+      Settings.store.flush();
+    }
   }
 
   // ---- 既有键 ----
@@ -275,7 +314,7 @@ export class Settings {
 
   static setDownloadedOnly(v: boolean): void {
     Settings.setBool('downloadedOnly', v);
-    AppStorage.setOrCreate('downloadedOnly', v);
+    AppStorage.setOrCreate(AppKeys.DOWNLOADED_ONLY, v);
   }
 
   static getIncognito(): boolean {
@@ -284,7 +323,7 @@ export class Settings {
 
   static setIncognito(v: boolean): void {
     Settings.setBool('incognito', v);
-    AppStorage.setOrCreate('incognito', v);
+    AppStorage.setOrCreate(AppKeys.INCOGNITO, v);
   }
 
   static getShowNsfw(): boolean {
@@ -304,8 +343,8 @@ export class Settings {
   }
 
   static pushGlobalFlags(): void {
-    AppStorage.setOrCreate('downloadedOnly', Settings.getDownloadedOnly());
-    AppStorage.setOrCreate('incognito', Settings.getIncognito());
+    AppStorage.setOrCreate(AppKeys.DOWNLOADED_ONLY, Settings.getDownloadedOnly());
+    AppStorage.setOrCreate(AppKeys.INCOGNITO, Settings.getIncognito());
   }
 
   // ---- 通用 ----
@@ -347,7 +386,7 @@ export class Settings {
   // 应用语言偏好到系统（立即生效并持久化；'default' 跟随系统需冷启动生效）
   static applyAppLanguage(): void {
     const lang: string = Settings.getAppLanguage();
-    AppStorage.setOrCreate('appLanguage', lang);
+    AppStorage.setOrCreate(AppKeys.APP_LANGUAGE, lang);
     const tag: string = lang === 'auto' ? 'default' : lang;
     try {
       i18n.System.setAppPreferredLanguage(tag);
@@ -552,7 +591,9 @@ export class Settings {
   }
 
   static getReaderBrightness(): number {
-    return Settings.getNum('readerBrightness', 0);
+    const n: number = Settings.getNum('readerBrightness', 0);
+    // 钳制到 [0,1]：越界值传给 setWindowBrightness 会静默失败，导致亮度调节永久失效
+    return n >= 0 && n <= 1 ? n : 0;
   }
 
   static setReaderBrightness(v: number): void {
@@ -685,7 +726,7 @@ export class Settings {
       return;
     }
     Settings.store.deleteSync('viewer_mode:' + mangaId);
-    Settings.store.flush();
+    Settings.scheduleFlush();
   }
 
   // ---- 视频播放器 ----
@@ -806,22 +847,22 @@ export class Settings {
   static applyTheme(systemDark: boolean): void {
     const mode: string = Settings.getThemeMode();
     const dark: boolean = mode === 'dark' || (mode === 'auto' && systemDark);
-    AppStorage.setOrCreate('isDark', dark);
-    AppStorage.setOrCreate('accent', Settings.getAccentColor());
-    AppStorage.setOrCreate('amoled', Settings.getAmoledMode());
+    AppStorage.setOrCreate(AppKeys.IS_DARK, dark);
+    AppStorage.setOrCreate(AppKeys.ACCENT, Settings.getAccentColor());
+    AppStorage.setOrCreate(AppKeys.AMOLED, Settings.getAmoledMode());
     Settings.pushPalette();
   }
 
   static applyAccent(): void {
-    AppStorage.setOrCreate('accent', Settings.getAccentColor());
-    AppStorage.setOrCreate('amoled', Settings.getAmoledMode());
+    AppStorage.setOrCreate(AppKeys.ACCENT, Settings.getAccentColor());
+    AppStorage.setOrCreate(AppKeys.AMOLED, Settings.getAmoledMode());
     Settings.pushPalette();
   }
 
   // 重建色板并写入 AppStorage 'palette'（组件经 @StorageProp 绑定）
   static pushPalette(): void {
-    const dark: boolean = AppStorage.get<boolean>('isDark') ?? false;
-    AppStorage.setOrCreate('palette',
+    const dark: boolean = AppStorage.get<boolean>(AppKeys.IS_DARK) ?? false;
+    AppStorage.setOrCreate(AppKeys.PALETTE,
       Theme.buildPalette(dark, Settings.getAmoledMode(), Settings.getAccentColor()));
   }
 
@@ -838,12 +879,13 @@ export class Settings {
     Settings.applySystemBar(context);
   }
 
-  // 系统栏：透明背景（沉浸式，光感效果由系统渲染），内容色与应用文本色一致
-  // 文本色与 color.json 的 honyomi_text 对应（浅 #16181D / 深 #ECEEF2）
+  // 系统栏：透明背景（沉浸式，光感效果由系统渲染），内容色与文本色资源保持一致
   static applySystemBar(context: common.Context): void {
     window.getLastWindow(context).then((win: window.Window) => {
-      const dark: boolean = AppStorage.get<boolean>('isDark') ?? false;
-      const content: string = dark ? '#ECEEF2' : '#16181D';
+      const dark: boolean = AppStorage.get<boolean>(AppKeys.IS_DARK) ?? false;
+      // 内容色从 color.json 资源取（honyomi_text：浅 #16181D / 深 #ECEEF2），避免硬编码双份维护
+      const colorNum: number = context.resourceManager.getColorSync($r('app.color.honyomi_text').id);
+      const content: string = `#${(colorNum & 0xFFFFFF).toString(16).padStart(6, '0')}`;
       if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
         win.setWindowSystemBarProperties({
           statusBarColor: '#00000000',
@@ -860,13 +902,28 @@ export class Settings {
   }
 
   // 避让区高度（vp）写入 AppStorage，供页面上下 padding 避让状态栏/导航栏
+  private static avoidSubscribed: boolean = false;
+
   static initAvoidAreas(context: common.Context): void {
     window.getLastWindow(context).then((win: window.Window) => {
       const ui: UIContext = win.getUIContext();
-      const sb: window.AvoidArea = win.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM);
-      const nb: window.AvoidArea = win.getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR);
-      AppStorage.setOrCreate('statusBarH', ui.px2vp(sb.topRect.height));
-      AppStorage.setOrCreate('navBarH', ui.px2vp(nb.bottomRect.height));
+      const sync = (): void => {
+        const sb: window.AvoidArea = win.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM);
+        const nb: window.AvoidArea = win.getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR);
+        AppStorage.setOrCreate(AppKeys.STATUS_BAR_H, ui.px2vp(sb.topRect.height));
+        AppStorage.setOrCreate(AppKeys.NAV_BAR_H, ui.px2vp(nb.bottomRect.height));
+      };
+      sync();
+      // 动态订阅避让区变化：折叠/旋转后高度随之更新，避免只取一次快照导致避让区过期
+      if (!Settings.avoidSubscribed) {
+        try {
+          win.on('avoidAreaChange', (_data: window.AvoidAreaOptions): void => {
+            sync();
+          });
+          Settings.avoidSubscribed = true;
+        } catch (_e) {
+        }
+      }
     }).catch((_e: Error) => {
     });
   }

@@ -1851,6 +1851,15 @@
       { "name": "pref_onboarding_guide", "value": "新手引导" },
       { "name": "getting_started_guide", "value": "入门指南" },
       { "name": "onboarding_guides_new_user", "value": "第一次使用 %s？建议先阅读入门指南。" },
-      { "name": "onboarding_guides_returning_user", "value": "重新安装 %s？" }
+      { "name": "onboarding_guides_returning_user", "value": "重新安装 %s？" },
+      { "name": "chapter_badge_new", "value": "NEW" },
+      { "name": "detail_sync_in_progress", "value": "同步进行中，请稍候" },
+      { "name": "detail_download_failed", "value": "下载失败" },
+      { "name": "detail_load_failed", "value": "详情加载失败" },
+      { "name": "detail_invalid_params", "value": "页面参数无效" },
+      { "name": "detail_dl_preparing", "value": "正在准备下载…" },
+      { "name": "library_move_failed", "value": "移动分类失败" },
+      { "name": "migrate_load_failed", "value": "迁移列表加载失败" },
+      { "name": "common_op_failed", "value": "操作失败" }
 ]
 }

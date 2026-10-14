@@ -529,6 +529,15 @@
     { "name": "card_upcoming_display", "value": "更新予定" },
     { "name": "card_upcoming_desc", "value": "本棚の漫画の更新予定カレンダー" },
     { "name": "card_upcoming_header", "value": "更新予定" },
-    { "name": "card_empty_upcoming", "value": "本棚に連載中の漫画がありません" }
+    { "name": "card_empty_upcoming", "value": "本棚に連載中の漫画がありません" },
+    { "name": "chapter_badge_new", "value": "NEW" },
+    { "name": "detail_sync_in_progress", "value": "同期中です。しばらくお待ちください" },
+    { "name": "detail_download_failed", "value": "ダウンロードに失敗しました" },
+    { "name": "detail_load_failed", "value": "詳細の読み込みに失敗しました" },
+    { "name": "detail_invalid_params", "value": "ページのパラメータが無効です" },
+    { "name": "detail_dl_preparing", "value": "ダウンロードを準備しています…" },
+    { "name": "library_move_failed", "value": "カテゴリーの移動に失敗しました" },
+    { "name": "migrate_load_failed", "value": "移行リストの読み込みに失敗しました" },
+    { "name": "common_op_failed", "value": "操作に失敗しました" }
 ]
 }

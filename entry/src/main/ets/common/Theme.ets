@@ -4,6 +4,9 @@
 // palette 由 Settings.applyTheme / applyAccent / pushPalette 重建并写入 AppStorage，
 // 深浅色值引用 color.json 资源（随应用颜色模式自动解析），AMOLED/accent 由构建时选取。
 
+// 说明：以下默认色值仅为占位兜底，正常链路下 Settings.pushPalette → Theme.buildPalette
+// 会对全部字段逐一覆盖为 color.json 资源引用（或 AMOLED/accent 变体），默认值不参与实际渲染；
+// 资源化默认值需 context 参与（收益低，暂维持现状，新增字段务必同步 buildPalette 全量覆盖）。
 export class ThemePalette {
   bg: ResourceColor = '#F2F3F7';
   card: ResourceColor = '#FFFFFF';

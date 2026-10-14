@@ -2,25 +2,62 @@ import { fileIo as fs } from '@kit.CoreFileKit';
 import { common } from '@kit.AbilityKit';
 import { util } from '@kit.ArkTS';
 import { cryptoFramework } from '@kit.CryptoArchitectureKit';
+import { BusinessError } from '@kit.BasicServicesKit';
 import { Http } from '../net/Http';
 import { SourceRegistry } from '../source/Source';
+
+// 磁盘缓存文件元信息（超预算时按 mtime 淘汰最旧文件）
+interface CacheFileMeta {
+  name: string;
+  mtime: number;
+  size: number;
+}
 
 // 远程图片落盘缓存（对齐 Mihon Coil 图片管线中"按源请求头"的部分）
 // 源声明了 imageRequestHeaders 时走宿主 http 管线并缓存到本地，否则交由系统 Image 直连
 export class ImageCache {
+  // 磁盘缓存预算：超出后按 mtime 淘汰最旧文件直到回到预算内
+  private static readonly MAX_DISK_BYTES: number = 256 * 1024 * 1024;
   private static dir: string = '';
   private static inflight: Map<string, Promise<string>> = new Map();
+  // 目录累计字节数（init 时延后一拍统计一次，写入增量维护）
+  private static totalBytes: number = 0;
+  private static evicting: boolean = false;
 
   static init(context: common.Context): void {
     ImageCache.dir = `${context.cacheDir}/image_file_cache`;
     if (!fs.accessSync(ImageCache.dir)) {
       fs.mkdirSync(ImageCache.dir, true);
     }
+    // 启动路径不做同步全量统计：延后一拍在后台累计字节数
+    setTimeout((): void => {
+      ImageCache.rescanBytes();
+    }, 0);
+  }
+
+  // 全量统计目录字节数（作为超预算判定的基准）
+  private static rescanBytes(): void {
+    if (ImageCache.dir === '' || !fs.accessSync(ImageCache.dir)) {
+      return;
+    }
+    let total: number = 0;
+    const names = fs.listFileSync(ImageCache.dir);
+    for (let i = 0; i < names.length; i++) {
+      try {
+        total += fs.statSync(`${ImageCache.dir}/${names[i]}`).size;
+      } catch (_e) {
+      }
+    }
+    ImageCache.totalBytes = total;
   }
 
   // 解析展示地址：http(s) 且源需要请求头 → file:// 本地缓存；其余原样返回
   static async resolve(url: string, sourceKey: string, pageUrl?: string): Promise<string> {
     if (url.indexOf('http://') !== 0 && url.indexOf('https://') !== 0) {
+      return url;
+    }
+    // 自初始化防护：早于 EntryAbility 初始化时直接返回原 url，避免拼出 "/hash.jpg" 根路径
+    if (ImageCache.dir === '') {
       return url;
     }
     const source = SourceRegistry.get(sourceKey);
@@ -125,12 +162,15 @@ export class ImageCache {
   }
 
   // 清空缓存目录，返回清除的字节数
+  // 枚举仍同步（仅读目录项+元信息），真正的文件删除走异步 unlink，不再阻塞启动路径
   static clearAll(): number {
-    const total = ImageCache.size();
+    const total: number = ImageCache.size();
+    ImageCache.totalBytes = 0;
     if (ImageCache.dir !== '' && fs.accessSync(ImageCache.dir)) {
       const names = fs.listFileSync(ImageCache.dir);
       for (let i = 0; i < names.length; i++) {
-        fs.unlinkSync(`${ImageCache.dir}/${names[i]}`);
+        fs.unlink(`${ImageCache.dir}/${names[i]}`).catch((_e: BusinessError): void => {
+        });
       }
     }
     return total;
@@ -142,18 +182,80 @@ export class ImageCache {
     const buffer = await Http.getBuffer(url, headers);
     // 原子落盘：先写临时文件再改名，避免应用进程与表单进程并发写坏同一封面
     const tmp = `${path}.tmp`;
-    const file = fs.openSync(tmp, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE | fs.OpenMode.TRUNC);
+    let existed = false;
     try {
-      fs.writeSync(file.fd, buffer);
-    } finally {
-      fs.closeSync(file);
+      const file = fs.openSync(tmp, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE | fs.OpenMode.TRUNC);
+      try {
+        fs.writeSync(file.fd, buffer);
+      } finally {
+        fs.closeSync(file);
+      }
+      if (!fs.accessSync(path)) {
+        fs.renameSync(tmp, path);
+      } else {
+        fs.unlinkSync(tmp);
+        existed = true;
+      }
+    } catch (e) {
+      // 失败/异常路径清理 .tmp 残留
+      try {
+        if (fs.accessSync(tmp)) {
+          fs.unlinkSync(tmp);
+        }
+      } catch (_e) {
+      }
+      throw new Error((e as Error).message);
     }
-    if (!fs.accessSync(path)) {
-      fs.renameSync(tmp, path);
-    } else {
-      fs.unlinkSync(tmp);
+    if (!existed) {
+      ImageCache.noteWrite(buffer.byteLength);
     }
     return `file://${path}`;
+  }
+
+  // 写入成功后增量累计字节，超预算时延后一拍触发 LRU 淘汰
+  private static noteWrite(bytes: number): void {
+    ImageCache.totalBytes += bytes;
+    if (ImageCache.totalBytes > ImageCache.MAX_DISK_BYTES && !ImageCache.evicting) {
+      ImageCache.evicting = true;
+      setTimeout((): void => {
+        try {
+          ImageCache.evictOldest();
+        } finally {
+          ImageCache.evicting = false;
+        }
+      }, 0);
+    }
+  }
+
+  // 超预算时按 mtime 淘汰最旧文件，直到回到预算内
+  private static evictOldest(): void {
+    if (ImageCache.dir === '' || !fs.accessSync(ImageCache.dir)) {
+      return;
+    }
+    const names = fs.listFileSync(ImageCache.dir);
+    const metas: CacheFileMeta[] = [];
+    for (let i = 0; i < names.length; i++) {
+      try {
+        const stat = fs.statSync(`${ImageCache.dir}/${names[i]}`);
+        const meta: CacheFileMeta = { name: names[i], mtime: stat.mtime, size: stat.size };
+        metas.push(meta);
+      } catch (_e) {
+      }
+    }
+    metas.sort((a: CacheFileMeta, b: CacheFileMeta): number => a.mtime - b.mtime);
+    for (let i = 0; i < metas.length; i++) {
+      if (ImageCache.totalBytes <= ImageCache.MAX_DISK_BYTES) {
+        break;
+      }
+      try {
+        fs.unlinkSync(`${ImageCache.dir}/${metas[i].name}`);
+        ImageCache.totalBytes -= metas[i].size;
+        if (ImageCache.totalBytes < 0) {
+          ImageCache.totalBytes = 0;
+        }
+      } catch (_e) {
+      }
+    }
   }
 
   private static async cachedPath(url: string): Promise<string> {

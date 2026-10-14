@@ -45,6 +45,10 @@ interface ExtensionEntry {
   pending: Map<number, PendingCall>;
   lastMemoryBytes: number;
   broken: boolean;
+  /** unload 后的 terminate 安全网定时器 id（-1 表示未挂） */
+  terminateTimer: number;
+  /** 最近一次持久化的 prefs JSON，内容未变化时跳过 persist */
+  lastPrefsJson: string;
 }
 
 interface WorkerEvent {
@@ -136,7 +140,8 @@ export class JsvmExtensionManager {
       // worker already gone
     }
     const workerRef = entry.worker;
-    setTimeout(() => {
+    entry.terminateTimer = setTimeout(() => {
+      entry.terminateTimer = -1;
       try {
         workerRef.terminate();
       } catch (e) {
@@ -181,7 +186,9 @@ export class JsvmExtensionManager {
       worker: threadWorker,
       pending: new Map<number, PendingCall>(),
       lastMemoryBytes: -1,
-      broken: false
+      broken: false,
+      terminateTimer: -1,
+      lastPrefsJson: ''
     };
     threadWorker.onmessage = (e: MessageEvents): void => {
       JsvmExtensionManager.onWorkerMessage(entry, e.data);
@@ -198,6 +205,11 @@ export class JsvmExtensionManager {
     };
     threadWorker.onexit = (code: number): void => {
       console.info(`[JsvmExt] worker exit for ${key}: code=${code}`);
+      // worker 已退出：清除 terminate 安全网定时器
+      if (entry.terminateTimer >= 0) {
+        clearTimeout(entry.terminateTimer);
+        entry.terminateTimer = -1;
+      }
       // Worker gone without an error event: fail any still-pending calls so
       // callers do not hang until CALL_TIMEOUT_MS.
       entry.broken = true;
@@ -214,6 +226,14 @@ export class JsvmExtensionManager {
     } catch (e) {
       return;
     }
+    if (event.type === 'destroyed') {
+      // worker 即将自行退出：清除 terminate 安全网定时器
+      if (entry.terminateTimer >= 0) {
+        clearTimeout(entry.terminateTimer);
+        entry.terminateTimer = -1;
+      }
+      return;
+    }
     if (event.type === 'ready') {
       const pending = entry.pending.get(READY_SEQ);
       if (pending === undefined) {
@@ -226,7 +246,8 @@ export class JsvmExtensionManager {
       } else {
         pending.reject(new Error(event.error ?? 'JSVM 扩展初始化失败'));
       }
-      if (event.prefs !== undefined && event.prefs !== '') {
+      if (event.prefs !== undefined && event.prefs !== '' && event.prefs !== entry.lastPrefsJson) {
+        entry.lastPrefsJson = event.prefs;
         PluginPrefs.persist(entry.key, event.prefs);
       }
       return;
@@ -241,7 +262,8 @@ export class JsvmExtensionManager {
       if (event.mem !== undefined && event.mem >= 0) {
         entry.lastMemoryBytes = event.mem;
       }
-      if (event.prefs !== undefined && event.prefs !== '') {
+      if (event.prefs !== undefined && event.prefs !== '' && event.prefs !== entry.lastPrefsJson) {
+        entry.lastPrefsJson = event.prefs;
         PluginPrefs.persist(entry.key, event.prefs);
       }
       if (event.ok === true) {
@@ -250,7 +272,7 @@ export class JsvmExtensionManager {
         pending.reject(new Error(event.json ?? '调用失败'));
       }
     }
-    // 'ready' / 'destroyed' are consumed via callRaw, nothing to do here.
+    // 'ready' / 'destroyed' are consumed via callRaw, nothing else to do here.
   }
 
   private static waitReady(entry: ExtensionEntry, code: string, seed: string): Promise<string> {
@@ -281,7 +303,14 @@ export class JsvmExtensionManager {
       const timer = setTimeout(() => {
         if (entry.pending.has(seq)) {
           entry.pending.delete(seq);
-          reject(new Error(`扩展调用超时: ${method}`));
+          // 调用超时：标记 broken 并强杀 worker，避免后续调用继续挂在死 worker 上
+          entry.broken = true;
+          JsvmExtensionManager.failAll(entry, new Error(`扩展调用超时: ${method}`));
+          try {
+            entry.worker.terminate();
+          } catch (e) {
+            // worker 可能已自行退出（BusinessError 1003）
+          }
         }
       }, CALL_TIMEOUT_MS);
       entry.pending.set(seq, {
@@ -298,10 +327,18 @@ export class JsvmExtensionManager {
       'type': 'call',
       'seq': seq,
       'name': method,
-      'argsJson': argsJson
+      'argsJson': argsJson,
+      // 可能写插件偏好的调用才要求 worker dump prefs，其余沿用上次快照
+      'prefsDirty': JsvmExtensionManager.prefsWritingMethod(method)
     };
     entry.worker.postMessage(JSON.stringify(message));
     return promise;
+  }
+
+  // 可能写入插件偏好的方法（设置/过滤类）：仅这些调用标记 prefsDirty
+  private static prefsWritingMethod(method: string): boolean {
+    const lower = method.toLowerCase();
+    return lower.indexOf('pref') >= 0 || lower.indexOf('filter') >= 0;
   }
 
   private static unwrap<T>(envelopeJson: string): T {

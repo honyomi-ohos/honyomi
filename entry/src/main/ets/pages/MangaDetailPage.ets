@@ -1,4 +1,5 @@
 import { common, Want } from '@kit.AbilityKit';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 import { formProvider, formInfo } from '@kit.FormKit';
 import { photoAccessHelper } from '@kit.MediaLibraryKit';
 import { AppDb } from '../data/AppDb';
@@ -106,7 +107,7 @@ struct DetailChapterRow {
           .fontSize(11)
           .fontColor(this.pal.sub)
       } else {
-        Text('NEW')
+        Text($r('app.string.chapter_badge_new'))
           .fontSize(10)
           .fontColor('#FFFFFF')
           .backgroundColor('#E05252')
@@ -131,14 +132,20 @@ struct DetailChapterRow {
             .fontColor(this.pal.sub)
             .margin({ left: 8 })
         } else {
-          Text($r('app.string.detail_download'))
-            .fontSize(11)
-            .fontColor(this.pal.sub)
-            .margin({ left: 8 })
-            .padding(4)
-            .onClick(() => {
-              this.onDownload(this.chapter);
-            })
+          // 包裹容器设置 HitTestMode.Block 缩小命中区域；stopPropagation 阻断冒泡，
+          // 避免同时触发整行 onClick（打开阅读器）
+          Row() {
+            Text($r('app.string.detail_download'))
+              .fontSize(11)
+              .fontColor(this.pal.sub)
+              .margin({ left: 8 })
+              .padding(4)
+          }
+          .hitTestBehavior(HitTestMode.Block)
+          .onClick((event: ClickEvent) => {
+            event.stopPropagation();
+            this.onDownload(this.chapter);
+          })
         }
       }
     }
@@ -151,6 +158,39 @@ struct DetailChapterRow {
       .onAction(() => {
         this.onLongPress(this.chapter);
       }))
+  }
+}
+
+// LazyForEach 数据源：章节列表展示结果缓存变化时 onDataReloaded 通知
+class ChapterDataSource implements IDataSource {
+  private items: ChapterRecord[] = [];
+  private listeners: DataChangeListener[] = [];
+
+  setItems(items: ChapterRecord[]): void {
+    this.items = items;
+    this.notifyReload();
+  }
+
+  notifyReload(): void {
+    for (const listener of this.listeners) {
+      listener.onDataReloaded();
+    }
+  }
+
+  totalCount(): number {
+    return this.items.length;
+  }
+
+  getData(index: number): ChapterRecord {
+    return this.items[index];
+  }
+
+  registerDataChangeListener(listener: DataChangeListener): void {
+    this.listeners.push(listener);
+  }
+
+  unregisterDataChangeListener(listener: DataChangeListener): void {
+    this.listeners = this.listeners.filter((l: DataChangeListener): boolean => l !== listener);
   }
 }
 
@@ -176,24 +216,61 @@ export struct MangaDetailPage {
   @State showCoverViewer: boolean = false;
   @State showSettingsSheet: boolean = false;
   // 章节排序/筛选状态（持久化于 manga.chapterFlags，对齐 Mihon ChapterSettingsDialog）
-  @State sortMode: number = ChapterFlags.SORTING_SOURCE;
-  @State sortAscending: boolean = false;
-  @State fUnread: string = 'ignore';
-  @State fDownloaded: string = 'ignore';
-  @State fBookmarked: string = 'ignore';
-  // 多选章节 id 集合（非空即处于选择模式）
-  @State selectedIds: Set<number> = new Set<number>();
+  @State @Watch('onFilterStateChanged') sortMode: number = ChapterFlags.SORTING_SOURCE;
+  @State @Watch('onFilterStateChanged') sortAscending: boolean = false;
+  @State @Watch('onFilterStateChanged') fUnread: string = 'ignore';
+  @State @Watch('onFilterStateChanged') fDownloaded: string = 'ignore';
+  @State @Watch('onFilterStateChanged') fBookmarked: string = 'ignore';
+  // 多选章节 id 集合（非空即处于选择模式）；变化时通知 LazyForEach 重跑行生成器刷新勾选态
+  @State @Watch('onSelectedIdsChanged') selectedIds: Set<number> = new Set<number>();
+  // 章节列表展示缓存：filter+sort 结果仅在 章节数据/筛选/排序 变化时重算，
+  // 滚动（onScroll → syncTopBar）不再触发全量重算
+  @State shownChapterCache: ChapterRecord[] = [];
   private mangaId: number = -1;
   private listScroller: Scroller = new Scroller();
+  private chapterSource: ChapterDataSource = new ChapterDataSource();
+  private alSearchId: number = 0;
+  private applyingFlags: boolean = false;
+
+  // fire-and-forget 异步处理器统一包装：捕获异常 + 日志 + toast，替代裸调用
+  private runSafe(fn: () => Promise<void>): void {
+    fn().catch((e: Error) => {
+      const msg = e instanceof Error ? e.message : `${e}`;
+      hilog.warn(0x0001, 'MangaDetail', 'async handler failed: %{public}s', msg);
+      Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
+    });
+  }
+
+  // 下载完成/删除影响"已下载"筛选结果时重算展示缓存
+  private onDlNotify = (): void => {
+    if (this.fDownloaded !== 'ignore') {
+      this.rebuildShownChapters();
+    }
+  };
+
+  aboutToAppear(): void {
+    DownloadService.addListener(this.onDlNotify);
+  }
+
+  aboutToDisappear(): void {
+    DownloadService.removeListener(this.onDlNotify);
+  }
 
   onLibDirty(): void {
-    this.reloadLocal();
+    this.runSafe((): Promise<void> => this.reloadLocal());
   }
 
   private async loadAll(): Promise<void> {
-    await this.reloadLocal();
-    await this.syncFromSource();
-    this.track = await TrackRepo.get(this.mangaId);
+    try {
+      await this.syncFromSource();
+      this.track = await TrackRepo.get(this.mangaId);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : `${e}`;
+      hilog.warn(0x0001, 'MangaDetail', 'loadAll failed: %{public}s', msg);
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_load_failed'));
+    } finally {
+      this.loading = false;
+    }
   }
 
   private async reloadLocal(): Promise<void> {
@@ -205,27 +282,37 @@ export struct MangaDetailPage {
       this.applyChapterFlags();
     }
     this.chapters = await ChapterRepo.listByManga(this.mangaId);
+    this.rebuildShownChapters();
     this.loading = false;
   }
 
   private async syncFromSource(): Promise<void> {
     if (this.syncing) {
+      // 下拉刷新在同步进行中时明确提示，而不是静默失效
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_sync_in_progress'));
       return;
     }
     this.syncing = true;
-    const source = SourceRegistry.get(this.manga.sourceKey);
-    if (source !== undefined) {
-      try {
-        const chapters = await source.getChapterList(this.manga.url);
-        await ChapterRepo.syncFromSource(this.mangaId, chapters);
-        const detail = await source.getMangaDetail(this.manga.url);
-        await MangaRepo.upsertFromSource(this.manga.sourceKey, detail, source.contentType);
-      } catch (e) {
-        Util.toastRes(this.getUIContext(), $r('app.string.detail_sync_failed_local'));
+    try {
+      if (this.manga.id !== this.mangaId) {
+        // 首次进入：先载入本地数据（取 sourceKey/url）再同步
+        await this.reloadLocal();
       }
+      const source = SourceRegistry.get(this.manga.sourceKey);
+      if (source !== undefined) {
+        try {
+          const chapters = await source.getChapterList(this.manga.url);
+          await ChapterRepo.syncFromSource(this.mangaId, chapters);
+          const detail = await source.getMangaDetail(this.manga.url);
+          await MangaRepo.upsertFromSource(this.manga.sourceKey, detail, source.contentType);
+        } catch (e) {
+          Util.toastRes(this.getUIContext(), $r('app.string.detail_sync_failed_local'));
+        }
+        await this.reloadLocal();
+      }
+    } finally {
+      this.syncing = false;
     }
-    await this.reloadLocal();
-    this.syncing = false;
   }
 
   // 下拉刷新：全量重新同步源数据（含源端已删除章节的移除）
@@ -235,6 +322,24 @@ export struct MangaDetailPage {
     } finally {
       this.refreshing = false;
     }
+  }
+
+  // 排序/筛选状态变化（弹层回调或本地数据应用）时重算展示缓存
+  private onFilterStateChanged(): void {
+    if (!this.applyingFlags) {
+      this.rebuildShownChapters();
+    }
+  }
+
+  // 多选集合变化：通知 LazyForEach 重跑行生成器，刷新勾选框与选择模式角标
+  private onSelectedIdsChanged(): void {
+    this.chapterSource.notifyReload();
+  }
+
+  // 重算 filter+sort 展示缓存并推给 LazyForEach 数据源
+  private rebuildShownChapters(): void {
+    this.shownChapterCache = this.shownChapters();
+    this.chapterSource.setItems(this.shownChapterCache);
   }
 
   // 头部总高度：保证封面信息在任意状态栏高度下完整展示
@@ -252,13 +357,16 @@ export struct MangaDetailPage {
   }
 
   // 从持久化标志位解码排序/筛选状态（对齐 Mihon Manga.chapterFlags 解码）
+  // applyingFlags 标志避免批量赋值触发多次重算，由调用方统一 rebuild
   private applyChapterFlags(): void {
+    this.applyingFlags = true;
     const flags = this.manga.chapterFlags;
     this.sortMode = ChapterFlags.sortingMode(flags);
     this.sortAscending = ChapterFlags.isAscending(flags);
     this.fUnread = ChapterFlags.unreadFilter(flags);
     this.fDownloaded = ChapterFlags.downloadedFilter(flags);
     this.fBookmarked = ChapterFlags.bookmarkedFilter(flags);
+    this.applyingFlags = false;
   }
 
   // 当前状态编码回标志位并持久化
@@ -338,7 +446,7 @@ export struct MangaDetailPage {
   private async toggleLibrary(): Promise<void> {
     const target = !this.manga.inLibrary;
     await MangaRepo.setInLibrary(this.manga.id, target);
-    await this.reloadLocal();
+    // 只写 libDirty，由 @Watch onLibDirty 统一刷新（避免手动 reload 双重加载）
     AppStorage.set('libDirty', this.libDirty + 1);
     Util.toastRes(this.getUIContext(), target ? $r('app.string.detail_added_to_library') : $r('app.string.detail_removed_from_library'));
   }
@@ -362,7 +470,6 @@ export struct MangaDetailPage {
         return;
       }
       await MangaRepo.applyCustomCover(this.mangaId, coverPath);
-      await this.reloadLocal();
       AppStorage.set('libDirty', this.libDirty + 1);
       Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_updated'));
     } catch (e) {
@@ -375,7 +482,6 @@ export struct MangaDetailPage {
     const context = Util.hostAbilityContext(this.getUIContext());
     CoverStore.remove(context, this.mangaId);
     await MangaRepo.resetCover(this.mangaId);
-    await this.reloadLocal();
     AppStorage.set('libDirty', this.libDirty + 1);
     Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_reset'));
   }
@@ -393,24 +499,26 @@ export struct MangaDetailPage {
         this.showCoverViewer = false;
       },
       onEdit: (): void => {
-        this.editCover();
+        this.runSafe((): Promise<void> => this.editCover());
       },
       onDelete: (): void => {
-        this.resetCover();
+        this.runSafe((): Promise<void> => this.resetCover());
       },
     })
   }
 
+  // 续读章节：基于用户排序/筛选后的展示顺序（缓存结果），而非 DB 原始顺序
   private continueChapter(): ChapterRecord | undefined {
-    if (this.chapters.length === 0) {
+    const shown = this.shownChapterCache;
+    if (shown.length === 0) {
       return undefined;
     }
-    for (const chapter of this.chapters) {
+    for (const chapter of shown) {
       if (!chapter.read) {
         return chapter;
       }
     }
-    return this.chapters[this.chapters.length - 1];
+    return shown[shown.length - 1];
   }
 
   private openReader(chapterId: number): void {
@@ -453,20 +561,20 @@ export struct MangaDetailPage {
 
   private async markAllRead(): Promise<void> {
     await ChapterRepo.markAllRead(this.mangaId, true);
-    await this.reloadLocal();
     AppStorage.set('libDirty', this.libDirty + 1);
     Util.toastRes(this.getUIContext(), $r('app.string.detail_all_marked_read'));
   }
 
-  // 单章入队校验（视频源先检查是否有直链可下载），返回是否成功入队
-  private async enqueueDownload(chapter: ChapterRecord): Promise<boolean> {
+  // 单章入队校验（视频源先检查是否有直链可下载）
+  // 返回：'ok' 已入队 | 'no_direct' 仅流媒体无直链 | 'failed' 校验/入队失败
+  private async enqueueDownload(chapter: ChapterRecord): Promise<string> {
     if (ContentType.isLocal(this.manga.sourceKey)) {
-      return false;
+      return 'failed';
     }
     if (this.manga.contentType === ContentType.VIDEO) {
       const source = SourceRegistry.get(this.manga.sourceKey);
       if (source === undefined) {
-        return false;
+        return 'failed';
       }
       try {
         const videos = await source.getVideoList(chapter.url);
@@ -478,10 +586,10 @@ export struct MangaDetailPage {
           }
         }
         if (!direct) {
-          return false;
+          return 'no_direct';
         }
-      } catch (e) {
-        return false;
+      } catch (_e) {
+        return 'failed';
       }
     }
     const task = new DownloadTask();
@@ -493,30 +601,45 @@ export struct MangaDetailPage {
     task.mangaUrl = this.manga.url;
     task.chapterUrl = chapter.url;
     DownloadService.enqueue(task);
-    return true;
+    return 'ok';
   }
 
   private async downloadChapter(chapter: ChapterRecord): Promise<void> {
     if (ContentType.isLocal(this.manga.sourceKey)) {
       return;
     }
-    const ok = await this.enqueueDownload(chapter);
-    Util.toastRes(this.getUIContext(), ok
-      ? $r('app.string.detail_download_queued')
-      : $r('app.string.detail_download_stream_only'));
+    const status = await this.enqueueDownload(chapter);
+    if (status === 'ok') {
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_download_queued'));
+    } else if (status === 'no_direct') {
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_download_stream_only'));
+    } else {
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_download_failed'));
+    }
   }
 
-  // 批量入队（多选下载 / 下载菜单），完成后统一提示入队数量
+  // 批量入队（多选下载 / 下载菜单）：两个 worker 共享递增游标实现 2 并发，
+  // 完成后统一提示入队数量；视频源批量需逐章请求解析接口，先提示准备中
   private async downloadChapters(list: ChapterRecord[]): Promise<void> {
     if (ContentType.isLocal(this.manga.sourceKey) || list.length === 0) {
       return;
     }
-    let count = 0;
-    for (const chapter of list) {
-      if (await this.enqueueDownload(chapter)) {
-        count += 1;
-      }
+    if (this.manga.contentType === ContentType.VIDEO) {
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_dl_preparing'));
     }
+    let index = 0;
+    let count = 0;
+    const worker = async (): Promise<void> => {
+      while (index < list.length) {
+        const chapter = list[index];
+        index += 1;
+        const status = await this.enqueueDownload(chapter);
+        if (status === 'ok') {
+          count += 1;
+        }
+      }
+    };
+    await Promise.all([worker(), worker()]);
     if (count > 0) {
       Util.toastRes(this.getUIContext(), $r('app.string.detail_dl_queued_n'), [count]);
     } else {
@@ -534,14 +657,14 @@ export struct MangaDetailPage {
     if (count === -2) {
       list = this.chapters.filter((c: ChapterRecord): boolean => c.bookmark);
     } else {
-      const unread = this.shownChapters().filter((c: ChapterRecord): boolean => !c.read);
+      const unread = this.shownChapterCache.filter((c: ChapterRecord): boolean => !c.read);
       list = count > 0 ? unread.slice(0, count) : unread;
     }
     if (list.length === 0) {
       Util.toastRes(this.getUIContext(), $r('app.string.detail_no_unread'));
       return;
     }
-    this.downloadChapters(list);
+    this.runSafe((): Promise<void> => this.downloadChapters(list));
   }
 
   // ----- 多选操作（对齐 Mihon 章节多选底部动作菜单） -----
@@ -562,7 +685,7 @@ export struct MangaDetailPage {
 
   // 全选/取消全选（针对当前展示顺序的全部章节）
   private toggleSelectAll(): void {
-    const shown = this.shownChapters();
+    const shown = this.shownChapterCache;
     let allSelected = true;
     for (const c of shown) {
       if (!this.selectedIds.has(c.id)) {
@@ -591,7 +714,6 @@ export struct MangaDetailPage {
       return;
     }
     await ChapterRepo.setReadForIds(ids, read);
-    await this.reloadLocal();
     AppStorage.set('libDirty', this.libDirty + 1);
     this.clearSelection();
   }
@@ -611,7 +733,8 @@ export struct MangaDetailPage {
     }
     const ids = Array.from(this.selectedIds);
     await ChapterRepo.setBookmarkForIds(ids, !allBookmarked);
-    await this.reloadLocal();
+    // 书签影响展示筛选结果，写 libDirty 统一触发 reloadLocal 重算展示缓存
+    AppStorage.set('libDirty', this.libDirty + 1);
     this.clearSelection();
   }
 
@@ -626,7 +749,7 @@ export struct MangaDetailPage {
     let count = 0;
     for (const c of this.selectedChapters()) {
       if (DownloadService.isDownloaded(c.id)) {
-        DownloadService.deleteChapter(this.mangaId, c.id);
+        this.runSafe((): Promise<void> => DownloadService.deleteChapter(this.mangaId, c.id));
         count += 1;
       }
     }
@@ -648,7 +771,7 @@ export struct MangaDetailPage {
         title: $r('app.string.detail_search_anilist'),
         placeholder: $r('app.string.detail_manga_title_hint'),
         onConfirm: (text: string): void => {
-          this.doAlSearch(text);
+          this.runSafe((): Promise<void> => this.doAlSearch(text));
         },
         onClose: (): void => {
           dialog.close();
@@ -728,13 +851,13 @@ export struct MangaDetailPage {
       onSortChanged: (mode: number, ascending: boolean): void => {
         this.sortMode = mode;
         this.sortAscending = ascending;
-        this.persistChapterFlags();
+        this.runSafe((): Promise<void> => this.persistChapterFlags());
       },
       onFilterChanged: (unread: string, downloaded: string, bookmarked: string): void => {
         this.fUnread = unread;
         this.fDownloaded = downloaded;
         this.fBookmarked = bookmarked;
-        this.persistChapterFlags();
+        this.runSafe((): Promise<void> => this.persistChapterFlags());
       }
     })
   }
@@ -802,7 +925,7 @@ export struct MangaDetailPage {
             .fontColor(this.pal.text)
         }
         .onClick(() => {
-          this.markSelectedRead(true);
+          this.runSafe((): Promise<void> => this.markSelectedRead(true));
         })
 
         Column({ space: 4 }) {
@@ -812,7 +935,7 @@ export struct MangaDetailPage {
             .fontColor(this.pal.text)
         }
         .onClick(() => {
-          this.markSelectedRead(false);
+          this.runSafe((): Promise<void> => this.markSelectedRead(false));
         })
 
         Column({ space: 4 }) {
@@ -822,7 +945,7 @@ export struct MangaDetailPage {
             .fontColor(this.pal.text)
         }
         .onClick(() => {
-          this.toggleSelectedBookmark();
+          this.runSafe((): Promise<void> => this.toggleSelectedBookmark());
         })
 
         if (!ContentType.isLocal(this.manga.sourceKey)) {
@@ -833,7 +956,7 @@ export struct MangaDetailPage {
               .fontColor(this.pal.text)
           }
           .onClick(() => {
-            this.downloadSelected();
+            this.runSafe((): Promise<void> => this.downloadSelected());
           })
 
           Column({ space: 4 }) {
@@ -960,7 +1083,7 @@ export struct MangaDetailPage {
                   .backgroundColor(this.manga.inLibrary ? this.pal.chip : this.pal.primary)
                   .fontColor(this.manga.inLibrary ? this.pal.text : '#FFFFFF')
                   .onClick(() => {
-                    this.toggleLibrary();
+                    this.runSafe((): Promise<void> => this.toggleLibrary());
                   })
                 Button(this.actionLabel())
                   .fontSize(14)
@@ -1061,9 +1184,9 @@ export struct MangaDetailPage {
                         .fontSize(12)
                         .fontColor(this.pal.primary)
                         .padding({ left: 8 })
-                        .onClick(() => {
-                          this.bindAl(item);
-                        })
+                      .onClick(() => {
+                        this.runSafe((): Promise<void> => this.bindAl(item));
+                      })
                     }
                     .width('100%')
                     .padding({ top: 8, bottom: 8 })
@@ -1087,7 +1210,7 @@ export struct MangaDetailPage {
                       .padding({ left: 10, right: 10, top: 4, bottom: 4 })
                       .margin({ top: 8 })
                       .onClick(() => {
-                        this.syncTrack();
+                        this.runSafe((): Promise<void> => this.syncTrack());
                       })
                     Text($r('app.string.detail_unbind'))
                       .fontSize(12)
@@ -1097,7 +1220,7 @@ export struct MangaDetailPage {
                       .padding({ left: 10, right: 10, top: 4, bottom: 4 })
                       .margin({ top: 8 })
                       .onClick(() => {
-                        this.unbindAl();
+                        this.runSafe((): Promise<void> => this.unbindAl());
                       })
                   }
                 }
@@ -1151,9 +1274,9 @@ export struct MangaDetailPage {
                   .fontSize(13)
                   .fontColor(this.pal.primary)
                   .padding({ left: 10, right: 6, top: 6, bottom: 6 })
-                  .onClick(() => {
-                    this.markAllRead();
-                  })
+                   .onClick(() => {
+                     this.runSafe((): Promise<void> => this.markAllRead());
+                   })
               }
               .width('100%')
               .padding({ left: 16, right: 16, top: 14, bottom: 6 })
@@ -1182,7 +1305,7 @@ export struct MangaDetailPage {
               }
             } else {
               ListItemGroup() {
-                ForEach(this.shownChapters(), (chapter: ChapterRecord) => {
+                LazyForEach(this.chapterSource, (chapter: ChapterRecord) => {
                   ListItem() {
                     DetailChapterRow({
                       chapter: chapter,
@@ -1200,11 +1323,11 @@ export struct MangaDetailPage {
                         this.toggleSelected(c.id);
                       },
                       onDownload: (c: ChapterRecord): void => {
-                        this.downloadChapter(c);
+                        this.runSafe((): Promise<void> => this.downloadChapter(c));
                       },
                     })
                   }
-                }, (chapter: ChapterRecord) => `ch-${chapter.id}-${chapter.read}-${chapter.bookmark}`)
+                }, (chapter: ChapterRecord) => `ch-${chapter.id}`)
               }
               .divider({
                 strokeWidth: 1,
@@ -1226,9 +1349,9 @@ export struct MangaDetailPage {
         }
         .width('100%')
         .height('100%')
-        .onRefreshing(() => {
-          this.refreshFromSource();
-        })
+         .onRefreshing(() => {
+           this.runSafe((): Promise<void> => this.refreshFromSource());
+         })
         }
         .width('100%')
         .height('100%')
@@ -1298,7 +1421,14 @@ export struct MangaDetailPage {
     .onReady((ctx: NavDestinationContext) => {
       this.pathStack = ctx.pathStack;
       const params = ctx.pathInfo.param as DetailParams;
-      this.mangaId = params !== undefined && params !== null ? params.mangaId : -1;
+      const mangaId = params !== undefined && params !== null ? params.mangaId : -1;
+      if (!(mangaId > 0)) {
+        // 参数缺失/非法：提示后退出页面，避免以 -1 继续加载产生脏数据
+        Util.toastRes(this.getUIContext(), $r('app.string.detail_invalid_params'));
+        this.pathStack.pop();
+        return;
+      }
+      this.mangaId = mangaId;
       this.loadAll();
     })
   }

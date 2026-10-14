@@ -54,7 +54,7 @@ export struct PickerSheet {
               }
             })
           }
-        }, (opt: ResourceStr, index: number): string => `opt-${index}`)
+        }, (opt: ResourceStr, index: number): string => typeof opt === 'string' ? `opt-${index}-${opt}` : `opt-${index}`)
       }
       .width('100%')
       .padding({ left: 12, right: 12, bottom: 16 })

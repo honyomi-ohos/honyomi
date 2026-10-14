@@ -1,5 +1,6 @@
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { common } from '@kit.AbilityKit';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 
 // 自定义封面文件管理（对齐 Mihon custom cover 目录）：
 // 选中图片复制到 filesDir/custom_covers/{mangaId}.{ext}，路径以 file:// 写入 manga.thumbnailUrl
@@ -24,7 +25,9 @@ export class CoverStore {
         fs.closeSync(src);
       }
       return `file://${dest}`;
-    } catch (e) {
+    } catch (_e) {
+      // 复制失败（源文件被删/URI 失效等）：告警便于排障，调用方按返回 '' 判定失败
+      hilog.warn(0x0000, 'CoverStore', 'save custom cover failed: %{public}s', `${_e}`);
       return '';
     }
   }

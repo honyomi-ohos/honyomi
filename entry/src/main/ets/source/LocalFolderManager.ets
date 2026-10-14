@@ -144,8 +144,23 @@ export class LocalFolderManager {
       // fs.copy 目录语义兼容：源目录可能整体落在中转目录之下
       const nested = `${staging}/${LocalFolderManager.uriName(uri)}`;
       const contentRoot = fs.accessSync(nested) ? nested : staging;
-      LocalFolderManager.removeQuietly(rootPath);
-      fs.renameSync(contentRoot, rootPath);
+      // 安全替换顺序：旧 root 先挪到临时名，staging 再就位，最后才删旧目录；
+      // 任一步失败数据仍在（local_root 与 staging 绝不同时删除）
+      const backupPath = `${filesDir}/.local_root_old`;
+      LocalFolderManager.removeQuietly(backupPath);
+      if (fs.accessSync(rootPath)) {
+        fs.renameSync(rootPath, backupPath);
+      }
+      try {
+        fs.renameSync(contentRoot, rootPath);
+      } catch (e) {
+        // 就位失败：恢复旧 root，保留数据
+        if (fs.accessSync(backupPath)) {
+          fs.renameSync(backupPath, rootPath);
+        }
+        throw e as Error;
+      }
+      LocalFolderManager.removeQuietly(backupPath);
       Settings.setLastLocalSyncAt(Date.now());
     } catch (e) {
       LocalFolderManager.removeQuietly(staging);
@@ -220,9 +235,16 @@ export class LocalFolderManager {
     }
   }
 
-  // 目录内（递归）是否存在符合后缀的文件（提前返回，用于作品目录内容归类）
+  // 目录内（递归，最大深度 16）是否存在符合后缀的文件（提前返回，用于作品目录内容归类）
   static hasFileWithExts(dir: string, exts: string[]): boolean {
-    if (!fs.accessSync(dir)) {
+    return LocalFolderManager.hasFileWithExtsInner(dir, exts, 0);
+  }
+
+  // hasFileWithExts 的最大递归深度（防符号链接/深层嵌套导致的失控递归）
+  private static readonly MAX_SCAN_DEPTH: number = 16;
+
+  private static hasFileWithExtsInner(dir: string, exts: string[], depth: number): boolean {
+    if (depth > LocalFolderManager.MAX_SCAN_DEPTH || !fs.accessSync(dir)) {
       return false;
     }
     const entries = fs.listFileSync(dir);
@@ -234,7 +256,8 @@ export class LocalFolderManager {
       if (LocalFolderManager.matchesExt(entry, exts)) {
         return true;
       }
-      if (fs.statSync(fullPath).isDirectory() && LocalFolderManager.hasFileWithExts(fullPath, exts)) {
+      if (fs.statSync(fullPath).isDirectory() &&
+        LocalFolderManager.hasFileWithExtsInner(fullPath, exts, depth + 1)) {
         return true;
       }
     }

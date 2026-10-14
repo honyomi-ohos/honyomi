@@ -2,6 +2,7 @@
 import { common, Want } from '@kit.AbilityKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { util } from '@kit.ArkTS';
+import { Settings } from './Settings';
 
 export class Util {
   // the global getContext() helper is deprecated since API 18: use UIContext.getHostContext() instead
@@ -81,7 +82,8 @@ export class Util {
   }
 
 
-  static timeAgo(ms: number): Resource | string {
+  // 相对时间（"N 分钟前"等）：统一返回 string，拼接处不再出现 [object Object]
+  static timeAgo(ms: number): string {
     if (ms <= 0) {
       return '';
     }
@@ -94,15 +96,24 @@ export class Util {
     }
     if (diff < hour) {
       const m: number = Math.max(1, Math.floor(diff / minute));
-      return $r('app.string.util_time_minutes_ago', m);
+      return Util.resText($r('app.string.util_time_minutes_ago'), m, Util.formatDate(ms));
     }
     if (diff < day) {
-      return $r('app.string.util_time_hours_ago', Math.floor(diff / hour));
+      return Util.resText($r('app.string.util_time_hours_ago'), Math.floor(diff / hour), Util.formatDate(ms));
     }
     if (diff < 30 * day) {
-      return $r('app.string.util_time_days_ago', Math.floor(diff / day));
+      return Util.resText($r('app.string.util_time_days_ago'), Math.floor(diff / day), Util.formatDate(ms));
     }
     return Util.formatDate(ms);
+  }
+
+  // 资源字符串解析：context 取 Settings.init 登记的应用上下文；不可得时回退 fallback
+  private static resText(res: Resource, arg: number, fallback: string): string {
+    const ctx = Settings.appContext();
+    if (ctx === undefined) {
+      return fallback;
+    }
+    return ctx.resourceManager.getStringSync(res.id, arg);
   }
 
   static statusLabel(status: string): Resource {

@@ -27,12 +27,16 @@ export struct CategoriesPage {
       return CategoryRepo.list();
     }).then((list: CategoryRecord[]) => {
       this.categories = list;
+    }).catch((_e: Error): void => {
+      Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
     });
   }
 
   private reload(): void {
     CategoryRepo.list().then((list: CategoryRecord[]) => {
       this.categories = list;
+    }).catch((_e: Error): void => {
+      Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
     });
     AppStorage.setOrCreate('libDirty', (AppStorage.get<number>('libDirty') ?? 0) + 1);
   }
@@ -46,6 +50,8 @@ export struct CategoriesPage {
           if (text.trim() !== '') {
             CategoryRepo.add(text.trim()).then(() => {
               this.reload();
+            }).catch((_e: Error): void => {
+              Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
             });
           }
         },
@@ -67,6 +73,8 @@ export struct CategoriesPage {
           if (text.trim() !== '') {
             CategoryRepo.rename(cat.id, text.trim()).then(() => {
               this.reload();
+            }).catch((_e: Error): void => {
+              Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
             });
           }
         },
@@ -103,6 +111,8 @@ export struct CategoriesPage {
         } else if (index === 1) {
           CategoryRepo.remove(cat.id).then(() => {
             this.reload();
+          }).catch((_e: Error): void => {
+            Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
           });
         }
       }

@@ -16,7 +16,6 @@ import { AboutContent } from './AboutPage';
 import { LanguageContent } from './LanguagePage';
 import { OnboardingParams } from '../../model/RouteParams';
 
-const TAB_COUNT: number = 5;
 // lg 双栏左栏分类（index 与 CAT_ICONS、catTitle() 一一对应）
 const CAT_ICONS: string[] = [
   'tune', 'palette', 'collections_bookmark', 'image', 'play_arrow',
@@ -30,7 +29,6 @@ const CAT_DEFAULT: number = 1;
 @Component
 export struct SettingsPage {
   @Consume('navStack') pathStack: NavPathStack;
-  @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('windowW') windowW: number = 0;
   @State selCat: number = CAT_DEFAULT;

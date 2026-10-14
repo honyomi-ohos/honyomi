@@ -1,4 +1,4 @@
-// 閫氱敤鍋忓ソ/璁剧疆琛岀粍浠讹細PrefGroup / TextRow / SwitchRow / SelectRow / IconRow
+// 通用偏好设置行组件：PrefGroup / TextRow / SwitchRow / IconRow / PrefSelectRow / PrefSwitchRow
 import { ThemePalette } from '../../common/Theme';
 import { Bp } from '../../common/Breakpoint';
 import { AppIcon } from './AppIcon';
@@ -14,7 +14,6 @@ function emptyContent() {
 
 @Component
 export struct PrefGroup {
-  @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   groupTitle: Resource | string = '';
   @BuilderParam content: () => void = emptyContent;
@@ -44,7 +43,6 @@ export struct PrefGroup {
 
 @Component
 export struct TextRow {
-  @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State hovered: boolean = false;
   title: Resource | string = '';
@@ -82,7 +80,6 @@ export struct TextRow {
 
 @Component
 export struct SwitchRow {
-  @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   title: Resource | string = '';
   subtitle: Resource | string = '';
@@ -128,85 +125,7 @@ export struct SwitchRow {
 }
 
 @Component
-export struct SelectRow {
-  @StorageProp('isDark') isDark: boolean = false;
-  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @StorageProp('windowW') windowW: number = 0;
-  @State hovered: boolean = false;
-  title: Resource | string = '';
-  value: Resource | string = '';
-  @Prop options: ResourceStr[] = [];
-  onSelect: (value: string) => void = (value: string) => {};
-  @State showPicker: boolean = false;
-
-  @Builder
-  pickerSheetBuilder() {
-    PickerSheet({
-      options: this.options,
-      selectedIndex: this.currentValueIndex(),
-      onPick: (index: number): void => {
-        this.showPicker = false;
-        if (index < this.options.length) {
-          const opt: ResourceStr = this.options[index];
-          if (typeof opt === 'string') {
-            this.onSelect(opt);
-          }
-        }
-      }
-    })
-  }
-
-  private currentValueIndex(): number {
-    for (let i = 0; i < this.options.length; i++) {
-      if (this.options[i] === this.value) {
-        return i;
-      }
-    }
-    return -1;
-  }
-
-  build() {
-    Row() {
-      Text(this.title)
-        .fontSize(16)
-        .fontColor(this.pal.text)
-        .layoutWeight(1)
-        .maxLines(1)
-      Text(this.value)
-        .fontSize(14)
-        .fontColor(this.pal.sub)
-        .maxLines(1)
-        .textOverflow({ overflow: TextOverflow.Ellipsis })
-        .constraintSize({ maxWidth: '50%' })
-      AppIcon({ name: 'keyboard_arrow_right', iconSize: 20 })
-        .margin({ left: 4 })
-    }
-    .width('100%')
-    .height(52)
-    .padding({ left: 16, right: 12 })
-    .backgroundColor(this.hovered ? this.pal.chip : Color.Transparent)
-    .bindSheet($$this.showPicker, this.pickerSheetBuilder(), {
-      preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
-      width: Bp.isWide(this.windowW) ? 560 : '100%',
-      height: SheetSize.FIT_CONTENT,
-      title: { title: this.title },
-      detents: [SheetSize.FIT_CONTENT],
-      dragBar: true,
-      showClose: false,
-      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
-    })
-    .onClick(() => {
-      this.showPicker = true;
-    })
-    .onHover((isHover: boolean) => {
-      this.hovered = isHover;
-    })
-  }
-}
-
-@Component
 export struct IconRow {
-  @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State hovered: boolean = false;
   title: Resource | string = '';
@@ -236,10 +155,11 @@ export struct IconRow {
 }
 
 // 声明式偏好选择行：options 直接收 ResourceStr[]（含 $r 资源），按索引回调，
-// 页面无需预解析资源字符串、维护 label 镜像状态或 indexOf 反查
+// 页面无需预解析资源字符串、维护 label 镜像状态或 indexOf 反查。
+// 组件自持选中索引（@State currentIdx，初始化自 selectedIndex），
+// 选中后行尾显示值即时刷新，页面只需在 onSelectIndex 中落库
 @Component
 export struct PrefSelectRow {
-  @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('windowW') windowW: number = 0;
   @State hovered: boolean = false;
@@ -247,23 +167,29 @@ export struct PrefSelectRow {
   title: Resource | string = '';
   options: ResourceStr[] = [];
   selectedIndex: number = -1;
+  @State currentIdx: number = -1;
   onSelectIndex: (index: number) => void = (index: number) => {};
+
+  aboutToAppear(): void {
+    this.currentIdx = this.selectedIndex;
+  }
 
   @Builder
   pickerSheetBuilder() {
     PickerSheet({
       options: this.options,
-      selectedIndex: this.selectedIndex,
+      selectedIndex: this.currentIdx,
       onPick: (index: number): void => {
         this.showPicker = false;
+        this.currentIdx = index;
         this.onSelectIndex(index);
       }
     })
   }
 
   private valueText(): ResourceStr {
-    if (this.selectedIndex >= 0 && this.selectedIndex < this.options.length) {
-      return this.options[this.selectedIndex];
+    if (this.currentIdx >= 0 && this.currentIdx < this.options.length) {
+      return this.options[this.currentIdx];
     }
     return '';
   }
@@ -311,7 +237,6 @@ export struct PrefSelectRow {
 // 免去页面级 @State 镜像 + aboutToAppear 同步样板
 @Component
 export struct PrefSwitchRow {
-  @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   title: Resource | string = '';
   subtitle: Resource | string = '';

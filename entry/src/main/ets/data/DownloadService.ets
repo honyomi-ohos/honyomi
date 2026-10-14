@@ -20,6 +20,8 @@ export class DownloadService {
   // 已完成(done.mark)章节 id 内存索引：列表行高频查询 isDownloaded，
   // 不能每次调用都做 O(N) 目录扫描；下载完成/删除章节时增量维护
   private static doneIds: Set<number> | undefined = undefined;
+  // 当前正在 process 的任务（deleteChapter 等待其退出用）
+  private static activeTask: DownloadTask | undefined = undefined;
 
   static init(context: common.UIAbilityContext): void {
     DownloadService.context = context;
@@ -48,7 +50,8 @@ export class DownloadService {
   }
 
   static getQueue(): DownloadTask[] {
-    return DownloadService.queue;
+    // 返回快照，避免调用方持有内部数组引用
+    return DownloadService.queue.slice();
   }
 
   static isQueued(chapterId: number): boolean {
@@ -70,16 +73,22 @@ export class DownloadService {
     DownloadService.pump();
   }
 
-  // 取消任务：排队中直接移除；下载中（如视频）中断当前传输
+  // 取消任务：排队中直接移除；下载中（视频中断传输，图片/小说置状态后由下载循环检查中止）
   static cancel(chapterId: number): void {
+    let hasActive = false;
     for (const t of DownloadService.queue) {
-      if (t.chapterId === chapterId && t.state !== 1) {
+      if (t.chapterId !== chapterId) {
+        continue;
+      }
+      if (t.state === 1) {
+        hasActive = true;
+      }
+      if (t.state !== 3) {
         t.state = 3;
         t.error = '已取消';
       }
     }
-    const active = DownloadService.queue.find((t: DownloadTask) => t.chapterId === chapterId && t.state === 1);
-    if (active !== undefined && DownloadService.activeCancel !== undefined) {
+    if (hasActive && DownloadService.activeCancel !== undefined) {
       DownloadService.activeCancel();
     }
     DownloadService.queue = DownloadService.queue.filter((t: DownloadTask) => t.state !== 3);
@@ -150,14 +159,17 @@ export class DownloadService {
       return;
     }
     DownloadService.running = true;
+    DownloadService.activeTask = next;
     DownloadService.process(next).then(() => {
       DownloadService.running = false;
+      DownloadService.activeTask = undefined;
       DownloadService.activeCancel = undefined;
       DownloadService.notify();
       DownloadService.pump();
     }).catch((e: Error) => {
       hilog.error(0x0001, 'Download', 'process failed: %{public}s', e.message);
       DownloadService.running = false;
+      DownloadService.activeTask = undefined;
       DownloadService.activeCancel = undefined;
       DownloadService.notify();
       DownloadService.pump();
@@ -168,6 +180,12 @@ export class DownloadService {
     task.state = 1;
     task.progress = 0;
     task.error = '';
+    // 图片/文本下载也注册取消回调（对齐 downloadVideo 的 activeCancel 模式）：
+    // cancel() 置状态后由下载循环/await 续体每轮检查 task.state 中止
+    DownloadService.activeCancel = (): void => {
+      task.state = 3;
+      task.error = '已取消';
+    };
     DownloadService.notify();
     try {
       const source = SourceRegistry.get(task.sourceKey);
@@ -183,14 +201,24 @@ export class DownloadService {
         return;
       }
       const pages: SPage[] = await source.getPageList(task.chapterUrl);
+      if (task.state === 3) {
+        throw new Error('已取消');
+      }
       task.total = pages.length;
       DownloadService.notify();
       const imageHeaders = source.imageRequestHeaders();
       const dir = DownloadService.chapterDir(task.mangaId, task.chapterId);
+      // 上次失败残留的部分页文件会被误判为已完成，先清理保证从头下载
+      if (fileIo.accessSync(dir) && !fileIo.accessSync(`${dir}/done.mark`)) {
+        DownloadService.rmdir(dir);
+      }
       if (!fileIo.accessSync(dir)) {
         fileIo.mkdirSync(dir, true);
       }
       for (const p of pages) {
+        if (task.state === 3) {
+          throw new Error('已取消');
+        }
         const fileName = DownloadService.pad(p.index);
         const filePath = `${dir}/${fileName}.jpg`;
         if (!fileIo.accessSync(filePath)) {
@@ -213,17 +241,23 @@ export class DownloadService {
       }
       task.state = 2;
       if (task.total > 0) {
-        ChapterRepo.setPages(task.chapterId, task.total).catch(() => {
+        ChapterRepo.setPages(task.chapterId, task.total).catch((e: Error) => {
+          hilog.warn(0x0001, 'Download', 'setPages failed for %{public}d: %{public}s', task.chapterId, e.message);
         });
       }
     } catch (e) {
       task.state = 3;
       task.error = e instanceof Error ? e.message : '下载失败';
+      // 失败/取消时清理部分下载文件，保证重试从头开始
+      DownloadService.cleanupPartial(task.mangaId, task.chapterId);
     }
   }
 
   private static async downloadNovel(task: DownloadTask, source: Source): Promise<void> {
     const text = await source.getChapterText(task.chapterUrl);
+    if (task.state === 3) {
+      throw new Error('已取消');
+    }
     if (text === '') {
       throw new Error('章节没有正文');
     }
@@ -252,6 +286,9 @@ export class DownloadService {
 
   private static async downloadVideo(task: DownloadTask, source: Source): Promise<void> {
     const videos: SVideo[] = await source.getVideoList(task.chapterUrl);
+    if (task.state === 3) {
+      throw new Error('已取消');
+    }
     let chosen: SVideo | undefined = undefined;
     for (let i = 0; i < videos.length; i++) {
       if (!ContentType.isPlaylist(videos[i].url)) {
@@ -302,6 +339,17 @@ export class DownloadService {
   private static markDone(dir: string): void {
     const markFd = fileIo.openSync(`${dir}/done.mark`, fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE).fd;
     fileIo.closeSync(markFd);
+  }
+
+  // 清理未完成章节的部分下载文件（无 done.mark 时整目录删除，重试从头开始）
+  private static cleanupPartial(mangaId: number, chapterId: number): void {
+    if (DownloadService.rootDir === '') {
+      return;
+    }
+    const dir = DownloadService.chapterDir(mangaId, chapterId);
+    if (fileIo.accessSync(dir) && !fileIo.accessSync(`${dir}/done.mark`)) {
+      DownloadService.rmdir(dir);
+    }
   }
 
   private static pad(index: number): string {
@@ -367,7 +415,7 @@ export class DownloadService {
     DownloadService.doneIds = set;
   }
 
-  // 每部漫画的已下载章节数（downloads/{mangaId}/ 下章节目录数），书架下载徽标用
+  // 每部漫画的已下载章节数（与 rebuildDoneIndex 口径一致：仅统计带 done.mark 的章节），书架下载徽标用
   static downloadedChapterCounts(): Record<string, number> {
     const counts: Record<string, number> = {};
     if (DownloadService.rootDir === '' || !fileIo.accessSync(DownloadService.rootDir)) {
@@ -378,7 +426,13 @@ export class DownloadService {
       const id = parseInt(md, 10);
       if (id >= 0) {
         const chapterDirs = fileIo.listFileSync(`${DownloadService.rootDir}/${md}`);
-        counts[`${id}`] = chapterDirs.length;
+        let done = 0;
+        for (const cd of chapterDirs) {
+          if (fileIo.accessSync(`${DownloadService.rootDir}/${md}/${cd}/done.mark`)) {
+            done += 1;
+          }
+        }
+        counts[`${id}`] = done;
       }
     }
     return counts;
@@ -443,7 +497,20 @@ export class DownloadService {
     return result;
   }
 
-  static deleteChapter(mangaId: number, chapterId: number): void {
+  // 删除章节本地文件：先取消并等待活动下载任务退出，避免删除与写入并发产生半截文件
+  static async deleteChapter(mangaId: number, chapterId: number): Promise<void> {
+    const active = DownloadService.queue.find((t: DownloadTask) => t.chapterId === chapterId && t.state === 1);
+    DownloadService.cancel(chapterId);
+    if (active !== undefined) {
+      await new Promise<void>((resolve: () => void) => {
+        const timer = setInterval((): void => {
+          if (DownloadService.activeTask !== active) {
+            clearInterval(timer);
+            resolve();
+          }
+        }, 50);
+      });
+    }
     const dir = DownloadService.chapterDir(mangaId, chapterId);
     if (fileIo.accessSync(dir)) {
       DownloadService.rmdir(dir);

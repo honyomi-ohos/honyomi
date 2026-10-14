@@ -1,7 +1,9 @@
 import { AbilityConstant, UIAbility, Want, Configuration, ConfigurationConstant } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
-import { deviceInfo } from '@kit.BasicServicesKit';
+import { deviceInfo, BusinessError } from '@kit.BasicServicesKit';
+import { fileIo as fs } from '@kit.CoreFileKit';
+import { image } from '@kit.ImageKit';
 import { Settings } from '../common/Settings';
 import { AppDb } from '../data/AppDb';
 import { SourceRegistry } from '../source/Source';
@@ -48,9 +50,13 @@ export default class EntryAbility extends UIAbility {
     this.handleCardWant(want);
     // ── 第1级（主线程空闲即执行，先于首帧内容挂载）：非首帧必需的服务初始化 ──
     setTimeout((): void => {
+      hilog.info(DOMAIN, 'Mihon', 'AVIF PROBE: callback entered');
       DownloadService.init(this.context);
       CookieJar.init(this.context);
       ImageCache.init(this.context);
+      hilog.info(DOMAIN, 'Mihon', 'AVIF PROBE: pre probe');
+      // TEMP PROBE: AVIF 解码能力实测（诊断 photos18 图片问题，验证后移除）
+      this.probeAvifDecode();
       // 启动时清除章节缓存（数据与存储设置）
       if (Settings.getAutoClearChapterCache()) {
         ImageCache.clearAll();
@@ -65,6 +71,44 @@ export default class EntryAbility extends UIAbility {
     }).catch((e: Error) => {
       hilog.error(DOMAIN, 'Mihon', 'db init failed: %{public}s', e.message);
     });
+  }
+
+  // TEMP PROBE: 读取缓存中的 .avif 文件实测系统解码能力（验证后移除）
+  private probeAvifDecode(): void {
+    try {
+      const dir = `${this.context.cacheDir}/image_file_cache`;
+      const names = fs.listFileSync(dir);
+      let avif = '';
+      for (let i = 0; i < names.length; i++) {
+        if (names[i].endsWith('.avif')) {
+          avif = names[i];
+          break;
+        }
+      }
+      if (avif === '') {
+        hilog.warn(DOMAIN, 'Mihon', 'AVIF PROBE: no cached avif file');
+        return;
+      }
+      const file = fs.openSync(`${dir}/${avif}`, fs.OpenMode.READ_ONLY);
+      const imgSrc = image.createImageSource(file.fd);
+      imgSrc.createPixelMap({ desiredSize: { width: 64, height: 64 } }).then((pm: image.PixelMap) => {
+        pm.getImageInfo().then((info: image.ImageInfo) => {
+          hilog.info(DOMAIN, 'Mihon', 'AVIF PROBE OK: %{public}dx%{public}d %{public}s',
+            info.size.width, info.size.height, avif);
+          pm.release();
+          imgSrc.release();
+          fs.closeSync(file);
+        }).catch((e: BusinessError) => {
+          hilog.error(DOMAIN, 'Mihon', 'AVIF PROBE getImageInfo fail: %{public}s', e.message);
+        });
+      }).catch((e: BusinessError) => {
+        hilog.error(DOMAIN, 'Mihon', 'AVIF PROBE DECODE FAIL: %{public}s %{public}s', e.code.toString(), e.message);
+        imgSrc.release();
+        fs.closeSync(file);
+      });
+    } catch (e) {
+      hilog.error(DOMAIN, 'Mihon', 'AVIF PROBE throw: %{public}s', (e as Error).message);
+    }
   }
 
   onConfigurationUpdate(newConfig: Configuration): void {

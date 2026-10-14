@@ -1,5 +1,6 @@
 import { common } from '@kit.AbilityKit';
 import { display } from '@kit.ArkUI';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo, ChapterRepo, HistoryRepo } from '../data/Repos';
 import { ReadingStatsRepo } from '../data/ReadingStats';
@@ -65,6 +66,13 @@ interface NovelPage {
   texts: string[];
   imageUrl: string;
 }
+
+// 双页中缝宽度（Divider 两侧 margin 12 + 1 线宽）
+const SPINE_W: number = 25;
+// pageAt 越界时共享的空页对象（避免每次调用新建对象字面量）
+const EMPTY_NOVEL_PAGE: NovelPage = { texts: [], imageUrl: '' };
+// 翻屏进度持久化防抖间隔（毫秒）
+const PERSIST_DEBOUNCE_MS: number = 2000;
 
 // 阅读模式的可选值（与模式选择 sheet 选项一一对应）
 const NOVEL_MODES: string[] = ['scroll', 'paged', 'paged_rtl', 'double'];
@@ -165,6 +173,16 @@ export struct NovelReaderPage {
   private blocks: NovelBlock[] = [];
   // pushTextBlocks 递增的文本段序号（解析一章期间有效）
   private blockTextSeq: number = 0;
+  // 章节加载代次号：连续切章时旧 loadChapter 续体据此丢弃
+  private loadGen: number = 0;
+  // 页面销毁标志：loadChapter 各 await 后校验，防止退出后启动无人结算的会话
+  private destroyed: boolean = false;
+  // 进度持久化防抖：待落盘的快照（章节/漫画/千分比在调度时锁定，切章不串写）
+  private persistPending: boolean = false;
+  private persistTimerId: number = -1;
+  private persistSnapChapterId: number = -1;
+  private persistSnapMangaId: number = -1;
+  private persistSnapPermille: number = 0;
 
   aboutToAppear(): void {
     try {
@@ -191,9 +209,11 @@ export struct NovelReaderPage {
   }
 
   aboutToDisappear(): void {
+    this.destroyed = true;
+    this.loadGen += 1;
     NovelTts.stop();
     NovelTts.resetEvents();
-    this.persist();
+    this.flushPersist();
     ReadingStatsRepo.flush();
     // 还原窗口方向与亮度
     ReaderWindow.restore(Util.hostAbilityContext(this.getUIContext()));
@@ -208,6 +228,7 @@ export struct NovelReaderPage {
   }
 
   private async loadChapter(): Promise<void> {
+    const gen = ++this.loadGen;
     this.loading = true;
     this.showMenu = false;
     this.restored = false;
@@ -236,8 +257,15 @@ export struct NovelReaderPage {
     try {
       const context = Util.hostAbilityContext(this.getUIContext());
       await AppDb.ready(context);
+      if (this.destroyed || gen !== this.loadGen) {
+        return;
+      }
       const chapter = await ChapterRepo.getById(this.chapterId);
+      if (this.destroyed || gen !== this.loadGen) {
+        return;
+      }
       if (chapter === undefined) {
+        this.loading = false;
         Util.toastRes(this.getUIContext(), $r('app.string.reader_chapter_not_found'));
         this.pathStack.pop();
         return;
@@ -246,6 +274,9 @@ export struct NovelReaderPage {
       this.mangaId = chapter.mangaId;
       this.permille = chapter.lastPageRead > 0 && chapter.lastPageRead <= 1000 ? chapter.lastPageRead : 0;
       const manga = await MangaRepo.get(chapter.mangaId);
+      if (this.destroyed || gen !== this.loadGen) {
+        return;
+      }
       if (manga !== undefined) {
         this.manga = manga;
       }
@@ -260,6 +291,9 @@ export struct NovelReaderPage {
         }
         text = await source.getChapterText(chapter.url);
       }
+      if (this.destroyed || gen !== this.loadGen) {
+        return;
+      }
       if (text === '') {
         throw new Error('章节没有正文');
       }
@@ -267,11 +301,23 @@ export struct NovelReaderPage {
       this.body = text;
       this.parseChapterBlocks();
       await this.loadNeighbors();
+      if (this.destroyed || gen !== this.loadGen) {
+        return;
+      }
       await HistoryRepo.upsert(chapter.mangaId, chapter.id, this.permille);
+      if (this.destroyed || gen !== this.loadGen) {
+        return;
+      }
       ReadingStatsRepo.begin(chapter.mangaId, chapter.id);
     } catch (e) {
-      this.ttsResume = false;
-      Util.toastRes(this.getUIContext(), $r('app.string.reader_load_failed'), [(e as Error).message]);
+      if (gen === this.loadGen) {
+        this.ttsResume = false;
+        Util.toastRes(this.getUIContext(), $r('app.string.reader_load_failed'),
+          [e instanceof Error ? e.message : String(e)]);
+      }
+    }
+    if (this.destroyed || gen !== this.loadGen) {
+      return;
     }
     this.loading = false;
     this.ensurePaginated();
@@ -316,16 +362,52 @@ export struct NovelReaderPage {
     this.permille = value;
   }
 
+  // 翻屏高频持久化防抖：2 秒内合并为一次落盘；快照在调度时锁定，
+  // 切章/退出经 flushPersist 立即写盘，旧章 permille 不会写入新章
   private persist(): void {
     if (this.chapterId <= 0) {
       return;
     }
-    ChapterRepo.setLastPageRead(this.chapterId, this.permille).catch(() => {
+    if (this.persistTimerId !== -1) {
+      clearTimeout(this.persistTimerId);
+    }
+    this.persistSnapChapterId = this.chapterId;
+    this.persistSnapMangaId = this.mangaId;
+    this.persistSnapPermille = this.permille;
+    this.persistPending = true;
+    this.persistTimerId = setTimeout((): void => {
+      this.persistTimerId = -1;
+      if (!this.persistPending) {
+        return;
+      }
+      this.persistPending = false;
+      this.persistWrite(this.persistSnapChapterId, this.persistSnapMangaId, this.persistSnapPermille);
+    }, PERSIST_DEBOUNCE_MS);
+  }
+
+  // 立即落盘待写的进度快照（切章/退出时调用）
+  private flushPersist(): void {
+    if (this.persistTimerId !== -1) {
+      clearTimeout(this.persistTimerId);
+      this.persistTimerId = -1;
+    }
+    if (!this.persistPending) {
+      return;
+    }
+    this.persistPending = false;
+    this.persistWrite(this.persistSnapChapterId, this.persistSnapMangaId, this.persistSnapPermille);
+  }
+
+  private persistWrite(chapterId: number, mangaId: number, permille: number): void {
+    ChapterRepo.setLastPageRead(chapterId, permille).catch((e: Object): void => {
+      hilog.warn(0x0001, 'NovelReader', 'setLastPageRead failed: %{public}s', `${e}`);
     });
-    HistoryRepo.upsert(this.mangaId, this.chapterId, this.permille).catch(() => {
+    HistoryRepo.upsert(mangaId, chapterId, permille).catch((e: Object): void => {
+      hilog.warn(0x0001, 'NovelReader', 'history upsert failed: %{public}s', `${e}`);
     });
-    if (this.permille >= 950) {
-      ChapterRepo.setRead(this.chapterId, true).catch(() => {
+    if (permille >= 950) {
+      ChapterRepo.setRead(chapterId, true).catch((e: Object): void => {
+        hilog.warn(0x0001, 'NovelReader', 'setRead failed: %{public}s', `${e}`);
       });
     }
   }
@@ -334,7 +416,8 @@ export struct NovelReaderPage {
     if (id <= 0) {
       return;
     }
-    this.persist();
+    // 先把上一章的进度快照立即落盘，再切换章节，防止旧章 permille 写入新章
+    this.flushPersist();
     this.chapterId = id;
     this.loadChapter();
   }
@@ -637,8 +720,8 @@ export struct NovelReaderPage {
   // 内容区为全屏，已预留状态栏/导航栏内边距，此处从整高中扣除
   private recalcPageBox(): void {
     if (this.mode === 'double') {
-      // 双页：左右各半，扣除左右边距与中缝 25（Divider 两侧 margin 12 + 1 线宽）
-      this.pageW = Math.floor((this.contW - this.pageMargin * 2 - 25) / 2);
+      // 双页：左右各半，扣除左右边距与中缝宽度
+      this.pageW = Math.floor((this.contW - this.pageMargin * 2 - SPINE_W) / 2);
     } else {
       this.pageW = Math.floor(this.contW - this.pageMargin * 2);
     }
@@ -868,11 +951,21 @@ export struct NovelReaderPage {
     return best;
   }
 
+  // 越界返回共享的空页常量（不新建对象字面量）
   private pageAt(idx: number): NovelPage {
     if (idx >= 0 && idx < this.pages.length) {
       return this.pages[idx];
     }
-    return { texts: [], imageUrl: '' };
+    return EMPTY_NOVEL_PAGE;
+  }
+
+  // 供 @Builder 使用的单值访问器（@Builder 内禁止局部变量，避免多次 pageAt 调用）
+  private pageImageUrl(idx: number): string {
+    return this.pageAt(idx).imageUrl;
+  }
+
+  private pageTexts(idx: number): string[] {
+    return this.pageAt(idx).texts;
   }
 
   private scrollParas(): string[] {
@@ -1280,11 +1373,10 @@ export struct NovelReaderPage {
   }
 
   private requestLeaf(dir: number): void {
-    const next = dir > 0 ? Math.abs(this.leafTurn) + 1 : -(Math.abs(this.leafTurn) + 1);
-    this.leafTurn = next === 0 ? dir : next;
+    this.leafTurn = dir > 0 ? Math.abs(this.leafTurn) + 1 : -(Math.abs(this.leafTurn) + 1);
   }
 
-  // onLeaf=false 时 localX 属于左侧静止页；true 时属于右侧翻动页（中缝 25vp）
+  // onLeaf=false 时 localX 属于左侧静止页；true 时属于右侧翻动页（中缝 SPINE_W vp）
   private onSpreadTap(localX: number, onLeaf: boolean): void {
     if (this.anySheetOpen()) {
       this.dismissSheets();
@@ -1295,8 +1387,8 @@ export struct NovelReaderPage {
       this.contentTap();
       return;
     }
-    const half = (inner - 25) / 2;
-    const globalX = onLeaf ? half + 25 + localX : localX;
+    const half = (inner - SPINE_W) / 2;
+    const globalX = onLeaf ? half + SPINE_W + localX : localX;
     if (globalX < inner * 0.3) {
       this.requestLeaf(-1);
     } else if (globalX > inner * 0.7) {
@@ -1367,7 +1459,7 @@ export struct NovelReaderPage {
           .color('#66808080')
           .height('70%')
       }
-      .width(25)
+      .width(SPINE_W)
       .height('100%')
       .justifyContent(FlexAlign.Center)
       .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
@@ -1414,14 +1506,14 @@ export struct NovelReaderPage {
   // >0 时按段落 Column({space}) 渲染
   @Builder
   PageText(pIdx: number) {
-    if (this.pageAt(pIdx).imageUrl !== '') {
-      Image(this.pageAt(pIdx).imageUrl)
+    if (this.pageImageUrl(pIdx) !== '') {
+      Image(this.pageImageUrl(pIdx))
         .width('100%')
         .height('100%')
         .objectFit(ImageFit.Contain)
     } else if (this.paraSpacing > 0) {
       Column({ space: this.paraSpacing }) {
-        ForEach(this.pageAt(pIdx).texts, (para: string, i: number) => {
+        ForEach(this.pageTexts(pIdx), (para: string, i: number) => {
           Text(para)
             .fontSize(this.fontSize)
             .lineHeight(this.lineHeight)
@@ -1433,7 +1525,7 @@ export struct NovelReaderPage {
       .layoutWeight(1)
       .height('100%')
     } else {
-      Text(this.pageAt(pIdx).texts.join('\n'))
+      Text(this.pageTexts(pIdx).join('\n'))
         .fontSize(this.fontSize)
         .lineHeight(this.lineHeight)
         .fontFamily(this.fontFamilyVal())
@@ -1495,7 +1587,7 @@ export struct NovelReaderPage {
             .color('#66808080')
             .height('70%')
         }
-        .width(25)
+        .width(SPINE_W)
         .height('100%')
         .justifyContent(FlexAlign.Center)
         .alignItems(HorizontalAlign.Center)
@@ -1900,8 +1992,8 @@ export struct NovelReaderPage {
           this.fontSize = value;
           if (done) {
             Settings.setNovelFontSize(value);
+            this.ensurePaginated();
           }
-          this.ensurePaginated();
         })
 
       Divider().color(this.pal.divider)
@@ -1911,8 +2003,8 @@ export struct NovelReaderPage {
           this.pageMargin = value;
           if (done) {
             Settings.setNovelMargin(value);
+            this.ensurePaginated();
           }
-          this.ensurePaginated();
         })
 
       Divider().color(this.pal.divider)
@@ -1922,8 +2014,8 @@ export struct NovelReaderPage {
           this.paraSpacing = value;
           if (done) {
             Settings.setNovelParagraphSpacing(value);
+            this.ensurePaginated();
           }
-          this.ensurePaginated();
         })
 
       Divider().color(this.pal.divider)
@@ -1933,8 +2025,8 @@ export struct NovelReaderPage {
           this.lineHeight = value;
           if (done) {
             Settings.setNovelLineHeight(value);
+            this.ensurePaginated();
           }
-          this.ensurePaginated();
         })
 
       Divider().color(this.pal.divider)
@@ -2440,6 +2532,14 @@ export struct NovelReaderPage {
               TransitionEffect.OPACITY.animation({ duration: 200, curve: Curve.Linear })
             )
           )
+        }
+
+        // 设置面板 bindSheet 常驻宿主：挂 if(showMenu) 条件节点时菜单收起即销毁宿主，弹层不可靠；
+        // 同一节点链式绑定多个 bindSheet 只有最后一个生效，故用独立常驻节点承载
+        Column()
+          .width(0)
+          .height(0)
+          .hitTestBehavior(HitTestMode.None)
           .bindSheet($$this.showPanelSheet, this.panelSheetBuilder(), {
             preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
             width: Bp.isWide(this.windowW) ? 560 : '100%',
@@ -2451,7 +2551,6 @@ export struct NovelReaderPage {
             blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
             enableOutsideInteractive: true
           })
-        }
       }
       .width('100%')
       .height('100%')

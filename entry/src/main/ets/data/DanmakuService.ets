@@ -39,13 +39,39 @@ interface DdpCommentRootRaw {
 // 弹幕数据服务：按作品标题 + 集数匹配 dandanplay 剧集并拉取弹幕池
 export class DanmakuService {
   private static cache: Map<number, DanmakuItem[]> = new Map();
+  // 同章并发调用去重：在途请求复用同一 Promise
+  private static inflight: Map<number, Promise<DanmakuItem[]>> = new Map();
   private static readonly MAX_ITEMS: number = 5000;
+  // 缓存 LRU 上限：最多保留 10 章弹幕，超出淘汰最旧
+  private static readonly MAX_CHAPTERS: number = 10;
 
   static async loadForChapter(manga: MangaRecord, chapter: ChapterRecord): Promise<DanmakuItem[]> {
     const cached: DanmakuItem[] | undefined = DanmakuService.cache.get(chapter.id);
     if (cached !== undefined) {
+      // 命中缓存时刷新 LRU 顺序
+      DanmakuService.cache.delete(chapter.id);
+      DanmakuService.cache.set(chapter.id, cached);
       return cached;
     }
+    const pending: Promise<DanmakuItem[]> | undefined = DanmakuService.inflight.get(chapter.id);
+    if (pending !== undefined) {
+      return pending;
+    }
+    const task: Promise<DanmakuItem[]> = DanmakuService.fetchDanmaku(manga, chapter).then(
+      (items: DanmakuItem[]): DanmakuItem[] => {
+        DanmakuService.putCache(chapter.id, items);
+        DanmakuService.inflight.delete(chapter.id);
+        return items;
+      },
+      (e: Object): DanmakuItem[] => {
+        DanmakuService.inflight.delete(chapter.id);
+        throw new Error(e instanceof Error ? e.message : String(e));
+      });
+    DanmakuService.inflight.set(chapter.id, task);
+    return task;
+  }
+
+  private static async fetchDanmaku(manga: MangaRecord, chapter: ChapterRecord): Promise<DanmakuItem[]> {
     const title: string = DanmakuService.cleanTitle(manga.title);
     if (title === '') {
       return [];
@@ -54,7 +80,12 @@ export class DanmakuService {
     const searchUrl: string =
       `https://api.dandanplay.net/api/v2/search/episodes?anime=${encodeURIComponent(title)}&withRelated=true`;
     const searchRaw: string = await Http.get(searchUrl, Http.defaultHeaders());
-    const parsed: DdpSearchRaw = JSON.parse(searchRaw) as DdpSearchRaw;
+    let parsed: DdpSearchRaw;
+    try {
+      parsed = JSON.parse(searchRaw) as DdpSearchRaw;
+    } catch (e) {
+      return [];
+    }
     const episodeId: number = DanmakuService.pickEpisodeId(parsed, chapter);
     if (episodeId <= 0) {
       return [];
@@ -63,9 +94,14 @@ export class DanmakuService {
     const commentUrl: string =
       `https://api.dandanplay.net/api/v2/comment/${episodeId}?withRelated=true&chConvert=1`;
     const commentRaw: string = await Http.get(commentUrl, Http.defaultHeaders());
-    const parsedComments: DdpCommentRootRaw = JSON.parse(commentRaw) as DdpCommentRootRaw;
+    let parsedComments: DdpCommentRootRaw;
+    try {
+      parsedComments = JSON.parse(commentRaw) as DdpCommentRootRaw;
+    } catch (e) {
+      return [];
+    }
     const items: DanmakuItem[] = [];
-    const comments: DdpCommentRaw[] = parsedComments.comments;
+    const comments: DdpCommentRaw[] = parsedComments.comments === undefined ? [] : parsedComments.comments;
     for (let i = 0; i < comments.length; i++) {
       const item: DanmakuItem | undefined = DanmakuService.parseComment(comments[i]);
       if (item !== undefined) {
@@ -76,8 +112,25 @@ export class DanmakuService {
       }
     }
     items.sort((a: DanmakuItem, b: DanmakuItem): number => a.timeMs - b.timeMs);
-    DanmakuService.cache.set(chapter.id, items);
     return items;
+  }
+
+  // 写入缓存并维持 LRU 上限（Map 迭代序即最近使用序，淘汰首个即最旧）
+  private static putCache(chapterId: number, items: DanmakuItem[]): void {
+    DanmakuService.cache.delete(chapterId);
+    DanmakuService.cache.set(chapterId, items);
+    while (DanmakuService.cache.size > DanmakuService.MAX_CHAPTERS) {
+      let oldest: number = -1;
+      DanmakuService.cache.forEach((_items: DanmakuItem[], key: number) => {
+        if (oldest === -1) {
+          oldest = key;
+        }
+      });
+      if (oldest === -1) {
+        break;
+      }
+      DanmakuService.cache.delete(oldest);
+    }
   }
 
   // 解析 dandanplay 弹幕条目，p = "时间秒,模式,颜色,来源"
@@ -113,14 +166,17 @@ export class DanmakuService {
 
   // 集数匹配：优先按集号精确匹配集标题，退化为序号/首集
   private static pickEpisodeId(parsed: DdpSearchRaw, chapter: ChapterRecord): number {
-    const matches: DdpMatchRaw[] = parsed.matches;
-    if (matches.length === 0) {
+    const matches: DdpMatchRaw[] | undefined = parsed.matches;
+    if (matches === undefined || matches === null || matches.length === 0) {
       return -1;
     }
     const wantNum: number = chapter.chapterNumber > 0 ?
       Math.floor(chapter.chapterNumber) : DanmakuService.extractNumber(chapter.name);
     for (let mi = 0; mi < matches.length; mi++) {
-      const episodes: DdpEpisodeRaw[] = matches[mi].episodes;
+      const episodes: DdpEpisodeRaw[] | undefined = matches[mi].episodes;
+      if (episodes === undefined || episodes === null) {
+        continue;
+      }
       for (let ei = 0; ei < episodes.length; ei++) {
         const epNum: number = DanmakuService.extractNumber(episodes[ei].episodeTitle);
         if (wantNum > 0 && epNum === wantNum) {
@@ -128,14 +184,13 @@ export class DanmakuService {
         }
       }
     }
+    const firstEpisodes: DdpEpisodeRaw[] | undefined = matches[0].episodes;
     if (wantNum > 0) {
-      const first: DdpMatchRaw = matches[0];
-      if (wantNum <= first.episodes.length) {
-        return first.episodes[wantNum - 1].episodeId;
+      if (firstEpisodes !== undefined && firstEpisodes !== null && wantNum <= firstEpisodes.length) {
+        return firstEpisodes[wantNum - 1].episodeId;
       }
-    }
-    if (wantNum <= 0 && matches[0].episodes.length > 0) {
-      return matches[0].episodes[0].episodeId;
+    } else if (firstEpisodes !== undefined && firstEpisodes !== null && firstEpisodes.length > 0) {
+      return firstEpisodes[0].episodeId;
     }
     return -1;
   }

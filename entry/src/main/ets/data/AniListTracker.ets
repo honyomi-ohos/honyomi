@@ -44,21 +44,26 @@ interface ALTitle {
   native: string;
 }
 
+interface ALError {
+  message: string;
+}
+
 interface ALMediaNode {
   id: number;
   title: ALTitle;
 }
 
 interface ALPageData {
-  media: ALMediaNode[];
+  media?: ALMediaNode[];
 }
 
 interface ALSearchData {
-  Page: ALPageData;
+  Page?: ALPageData;
 }
 
 interface ALSearchResponse {
-  data: ALSearchData;
+  data?: ALSearchData;
+  errors?: ALError[];
 }
 
 interface ALSaveData {
@@ -66,7 +71,8 @@ interface ALSaveData {
 }
 
 interface ALSaveResponse {
-  data: ALSaveData;
+  data?: ALSaveData;
+  errors?: ALError[];
 }
 
 interface ALSearchVars {
@@ -79,6 +85,20 @@ interface ALProgressVars {
 }
 
 export class AniListTracker {
+  // GraphQL errors 字段拼接为可读错误信息，无错误返回空串
+  private static errorsText(errors: ALError[] | undefined): string {
+    if (errors === undefined || errors === null || errors.length === 0) {
+      return '';
+    }
+    const messages: string[] = [];
+    for (const e of errors) {
+      if (e !== undefined && e !== null && typeof e.message === 'string' && e.message !== '') {
+        messages.push(e.message);
+      }
+    }
+    return messages.join('; ');
+  }
+
   // 搜索 AniList 漫画条目（需 access token）
   static async search(query: string, token: string, contentType: string): Promise<ALMediaItem[]> {
     const vars: ALSearchVars = { search: query };
@@ -94,11 +114,16 @@ export class AniListTracker {
     };
     const text: string = await Http.post(AL_ENDPOINT, JSON.stringify(body), headers);
     const resp = JSON.parse(text) as ALSearchResponse;
+    const errText: string = AniListTracker.errorsText(resp.errors);
+    if (errText !== '') {
+      throw new Error(`AniList 请求失败: ${errText}`);
+    }
     const result: ALMediaItem[] = [];
-    const media = resp.data.Page.media;
-    if (media === undefined) {
+    // 错误响应可能缺 data/Page/media，判空防护后降级为空结果
+    if (resp.data === undefined || resp.data.Page === undefined || resp.data.Page.media === undefined) {
       return result;
     }
+    const media: ALMediaNode[] = resp.data.Page.media;
     for (const node of media) {
       const item = new ALMediaItem();
       item.id = node.id;
@@ -120,7 +145,11 @@ export class AniListTracker {
     };
     const text: string = await Http.post(AL_ENDPOINT, JSON.stringify(body), headers);
     const resp = JSON.parse(text) as ALSaveResponse;
-    if (resp.data.SaveMediaListEntry === undefined) {
+    const errText: string = AniListTracker.errorsText(resp.errors);
+    if (errText !== '') {
+      throw new Error(`AniList 请求失败: ${errText}`);
+    }
+    if (resp.data === undefined || resp.data.SaveMediaListEntry === undefined) {
       hilog.error(0x0001, 'AniList', 'save progress failed for media %{public}d', mediaId);
       throw new Error('AniList save failed');
     }

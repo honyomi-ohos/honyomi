@@ -92,6 +92,12 @@ export struct ExtensionDetailPage {
   @State schema: SourcePrefItem[] = [];
   @State loadingSchema: boolean = false;
   @State busy: boolean = false;
+  // 页面已销毁标志：await 返回后组件可能已析构，禁止再访问 UIContext/执行导航
+  private destroyed: boolean = false;
+
+  aboutToDisappear(): void {
+    this.destroyed = true;
+  }
 
   private currentSource(): Source | undefined {
     return SourceRegistry.get(this.pluginKey);
@@ -114,7 +120,9 @@ export struct ExtensionDetailPage {
       this.schema = await src.getSettingsSchema();
     } catch (e) {
       this.schema = [];
-      Util.toastRes(this.getUIContext(), $r('app.string.ext_pref_failed'), [(e as Error).message]);
+      if (!this.destroyed) {
+        Util.toastRes(this.getUIContext(), $r('app.string.ext_pref_failed'), [(e as Error).message]);
+      }
     }
     this.loadingSchema = false;
   }
@@ -133,7 +141,9 @@ export struct ExtensionDetailPage {
       await src.setPreference(item.key, value);
       await this.loadSchema();
     } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.ext_pref_failed'), [(e as Error).message]);
+      if (!this.destroyed) {
+        Util.toastRes(this.getUIContext(), $r('app.string.ext_pref_failed'), [(e as Error).message]);
+      }
     }
     this.busy = false;
   }
@@ -174,10 +184,14 @@ export struct ExtensionDetailPage {
     try {
       await PluginService.uninstall(this.pluginKey);
       PluginService.markDirty();
-      Util.toastRes(this.getUIContext(), $r('app.string.plugin_uninstalled'), [this.pluginKey]);
-      this.pathStack.pop();
+      if (!this.destroyed) {
+        Util.toastRes(this.getUIContext(), $r('app.string.plugin_uninstalled'), [this.pluginKey]);
+        this.pathStack.pop();
+      }
     } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.plugin_uninstall_failed'));
+      if (!this.destroyed) {
+        Util.toastRes(this.getUIContext(), $r('app.string.plugin_uninstall_failed'));
+      }
     }
     this.busy = false;
   }
@@ -518,7 +532,12 @@ export struct ExtensionDetailPage {
     .onReady((ctx: NavDestinationContext) => {
       this.pathStack = ctx.pathStack;
       const params = ctx.pathInfo.param as ExtensionDetailParams;
-      this.pluginKey = params !== undefined && params !== null ? params.pluginKey : '';
+      const key = params !== undefined && params !== null ? params.pluginKey : '';
+      if (key === '') {
+        // 参数缺失：保持 plugin undefined，走"插件不存在"占位展示
+        return;
+      }
+      this.pluginKey = key;
       const installed = PluginService.listInstalled();
       for (const item of installed) {
         if (item.manifest.key === this.pluginKey) {

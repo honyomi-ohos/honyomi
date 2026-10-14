@@ -16,8 +16,12 @@ export class ReadingStatsRepo {
   private static activeChapterId: number = -1;
   private static activeStartAt: number = 0;
 
-  // 开始/重启一段阅读会话计时
+  // 开始/重启一段阅读会话计时；已有活动会话先落库再开始新会话
   static begin(mangaId: number, chapterId: number): void {
+    if (ReadingStatsRepo.activeStartAt !== 0) {
+      // flush 的状态快照在首个 await 前同步完成，此处无需等待
+      ReadingStatsRepo.flush();
+    }
     ReadingStatsRepo.activeMangaId = mangaId;
     ReadingStatsRepo.activeChapterId = chapterId;
     ReadingStatsRepo.activeStartAt = Date.now();
@@ -36,8 +40,8 @@ export class ReadingStatsRepo {
     }
   }
 
-  // 结束当前会话并落库（无痕浏览不记录）
-  static flush(): void {
+  // 结束当前会话并落库（无痕浏览不记录）；状态快照同步完成，落库 await 完成
+  static async flush(): Promise<void> {
     if (ReadingStatsRepo.activeStartAt === 0) {
       return;
     }
@@ -49,7 +53,7 @@ export class ReadingStatsRepo {
     if (seconds < 1) {
       return;
     }
-    ReadingStatsRepo.insertSession(mangaId, chapterId, startAt, seconds);
+    await ReadingStatsRepo.insertSession(mangaId, chapterId, startAt, seconds);
   }
 
   private static async insertSession(mangaId: number, chapterId: number,

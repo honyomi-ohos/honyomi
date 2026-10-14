@@ -14,6 +14,12 @@ export class GripSupport {
     return GripSupport.supported;
   }
 
+  // 清除探测缓存：用户在系统设置中后开"智感握姿"开关后，本进程内可重新探测生效
+  static invalidate(): void {
+    GripSupport.probed = false;
+    GripSupport.supported = false;
+  }
+
   private static probe(): boolean {
     const noop: (status: motion.HoldingHandStatus) => void =
       (_status: motion.HoldingHandStatus): void => {

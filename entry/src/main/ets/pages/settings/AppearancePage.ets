@@ -8,7 +8,6 @@ import { PrefGroup, PrefSwitchRow, TextRow } from '../components/Prefs';
 // 外观设置内容（可嵌入 lg 设置双栏右栏）：语言 / 主题模式 / 主题色 / AMOLED
 @Component
 export struct AppearanceContent {
-  @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('accent') accent: string = 'blue';
   @StorageProp('appLanguage') appLanguage: string = 'auto';

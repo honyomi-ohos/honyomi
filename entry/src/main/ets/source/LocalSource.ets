@@ -5,6 +5,13 @@ import { LocalFolderManager } from './LocalFolderManager';
 import { LocalFsSource } from './LocalFsSource';
 import { NaturalCompare } from '../common/NaturalCompare';
 
+// local_extract 解压缓存条目（容量管理用）
+interface ExtractCacheDir {
+  path: string;
+  mtime: number;
+  size: number;
+}
+
 // 本地漫画源：扫描固定本地源文件夹的同步副本（filesDir/local_root，未设置时回退 filesDir/local）
 // 目录结构：<系列名>/<章节名>.zip|.cbz 或 <章节名>/图片；
 // 支持子目录分层（卷/章），章节名按相对路径显示为“卷 / 章”
@@ -12,6 +19,9 @@ export class LocalSource extends LocalFsSource {
   readonly key = 'local';
   readonly name = '本地漫画';
   readonly contentType = ContentType.MANGA;
+
+  // 解压缓存总量上限：超限时按目录 mtime 淘汰最旧的解压目录
+  private static readonly EXTRACT_CACHE_LIMIT: number = 256 * 1024 * 1024;
 
   private readonly cacheDir: string;
   private readonly imageExts: string[] = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.bmp', '.avif'];
@@ -102,21 +112,93 @@ export class LocalSource extends LocalFsSource {
     const zipPath = `${this.rootDir()}/${mangaDir}/${entry}`;
     const safeEntry = entry.replace(new RegExp('\\.(zip|cbz)$', 'i'), '');
     const outDir = `${this.cacheDir}/local_extract/${mangaDir}/${safeEntry}`;
-    if (!fs.accessSync(outDir)) {
-      fs.mkdirSync(outDir, true);
-    }
     // 已解压过则直接复用（通过标记文件判断）
     const doneFlag = `${outDir}/.extracted`;
     if (!fs.accessSync(doneFlag)) {
-      await zlib.decompressFile(zipPath, outDir);
-      const flagFile = fs.openSync(doneFlag, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
-      fs.writeSync(flagFile.fd, 'ok');
-      fs.closeSync(flagFile);
+      // 先清理可能存在的半成品目录（doneFlag 未写成功即视为未完成）
+      LocalSource.removeDirQuietly(outDir);
+      // 写入前容量管理：解压缓存总量超限时按目录 mtime 淘汰最旧
+      this.ensureExtractBudget();
+      fs.mkdirSync(outDir, true);
+      try {
+        await zlib.decompressFile(zipPath, outDir);
+        const flagFile = fs.openSync(doneFlag, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+        fs.writeSync(flagFile.fd, 'ok');
+        fs.closeSync(flagFile);
+      } catch (e) {
+        // 解压失败：清理半成品目录，下次重新解压
+        LocalSource.removeDirQuietly(outDir);
+        throw new Error((e instanceof Error ? e.message : String(e)));
+      }
     }
     // 递归收集图片
     const result: string[] = [];
     this.collectImages(outDir, result);
     return result.sort((a: string, b: string): number => NaturalCompare.compare(a, b));
+  }
+
+  // local_extract 解压缓存容量管理：总量超上限（256MB）时按目录 mtime 淘汰最旧的解压目录
+  private ensureExtractBudget(): void {
+    const root = `${this.cacheDir}/local_extract`;
+    if (!fs.accessSync(root)) {
+      return;
+    }
+    const dirs: ExtractCacheDir[] = [];
+    const mangaDirs = fs.listFileSync(root);
+    for (const mangaDir of mangaDirs) {
+      const mangaPath = `${root}/${mangaDir}`;
+      if (!fs.statSync(mangaPath).isDirectory()) {
+        continue;
+      }
+      const entries = fs.listFileSync(mangaPath);
+      for (const name of entries) {
+        const p = `${mangaPath}/${name}`;
+        if (!fs.statSync(p).isDirectory()) {
+          continue;
+        }
+        const info: ExtractCacheDir = { path: p, mtime: fs.statSync(p).mtime, size: LocalSource.dirSize(p) };
+        dirs.push(info);
+      }
+    }
+    let total = 0;
+    for (const d of dirs) {
+      total += d.size;
+    }
+    if (total <= LocalSource.EXTRACT_CACHE_LIMIT) {
+      return;
+    }
+    dirs.sort((a: ExtractCacheDir, b: ExtractCacheDir): number => a.mtime - b.mtime);
+    let i = 0;
+    while (total > LocalSource.EXTRACT_CACHE_LIMIT && i < dirs.length) {
+      LocalSource.removeDirQuietly(dirs[i].path);
+      total -= dirs[i].size;
+      i += 1;
+    }
+  }
+
+  private static dirSize(dir: string): number {
+    let total = 0;
+    const entries = fs.listFileSync(dir);
+    for (const entry of entries) {
+      const p = `${dir}/${entry}`;
+      const st = fs.statSync(p);
+      if (st.isDirectory()) {
+        total += LocalSource.dirSize(p);
+      } else {
+        total += st.size;
+      }
+    }
+    return total;
+  }
+
+  private static removeDirQuietly(path: string): void {
+    try {
+      if (fs.accessSync(path)) {
+        fs.rmdirSync(path);
+      }
+    } catch (e) {
+      // 忽略清理失败
+    }
   }
 
   private collectImages(dir: string, out: string[]): void {

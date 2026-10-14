@@ -46,7 +46,8 @@ export class SourceRegistry {
   }
 
   static all(): Source[] {
-    return SourceRegistry.sources;
+    // 返回拷贝，防止调用方破坏注册表内部数组
+    return SourceRegistry.sources.slice();
   }
 
   static get(key: string): Source | undefined {

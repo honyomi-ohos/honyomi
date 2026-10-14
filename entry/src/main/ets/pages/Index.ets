@@ -1,4 +1,5 @@
 import { common } from '@kit.AbilityKit';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 import { curves, AnimatorResult, AnimatorOptions } from '@kit.ArkUI';
 import { webview } from '@kit.ArkWeb';
 import { HdsTabs, hdsMaterial, HdsTabsController, HdsAnimationMode } from '@kit.UIDesignKit';
@@ -422,7 +423,9 @@ struct Index {
         const context = Util.hostAbilityContext(this.getUIContext());
         AppDb.ready(context).then(() => {
           ContentOpen.open(this.pathStack, raw.mangaId, raw.chapterId);
-        }).catch(() => {
+        }).catch((e: Error) => {
+          hilog.warn(0x0001, 'Index', 'card action db ready failed: %{public}s', `${e}`);
+          Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
         });
       }
       return;
@@ -458,15 +461,17 @@ struct Index {
     if (Date.now() - last < 12 * 60 * 60 * 1000) {
       return;
     }
-    Settings.setLastRefreshAt(Date.now());
     try {
       const context = Util.hostAbilityContext(this.getUIContext());
       const newCount = await UpdateService.refreshLibrary(context);
+      // 刷新成功才推进时间戳：失败时下次启动仍会重试
+      Settings.setLastRefreshAt(Date.now());
       if (newCount > 0) {
         AppStorage.setOrCreate('libDirty', (AppStorage.get<number>('libDirty') ?? 0) + 1);
       }
     } catch (e) {
-      // 静默失败
+      // 静默失败：不更新时间戳，仅记录日志
+      hilog.warn(0x0001, 'Index', 'autoRefresh failed: %{public}s', `${e}`);
     }
   }
 

@@ -15,14 +15,14 @@ export struct TypeBadgedIcon {
   // 角标描边色：传所在行背景色使角标与背景自然衔接（默认 '' 无描边）
   @Prop badgeBorder: ResourceColor = '';
 
-  private badgeChar(): string {
+  private badgeChar(): Resource {
     if (this.contentType === ContentType.NOVEL) {
-      return '文';
+      return $r('app.string.badge_type_text');
     }
     if (this.contentType === ContentType.VIDEO) {
-      return '动';
+      return $r('app.string.badge_type_video');
     }
-    return '漫';
+    return $r('app.string.badge_type_manga');
   }
 
   private badgeColor(): string {

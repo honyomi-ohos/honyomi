@@ -10,7 +10,6 @@ const THEME_VALUES: number[] = [3, 0, 1, 2];
 // 阅读器设置内容：默认模式/双页/页码/背景色/亮度
 @Component
 export struct ReaderSettingsContent {
-  @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State brightnessLabel: string = '';
   private modeValues: string[] = [];

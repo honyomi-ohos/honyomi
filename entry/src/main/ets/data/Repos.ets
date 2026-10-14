@@ -1,4 +1,5 @@
 import { relationalStore } from '@kit.ArkData';
+import { BusinessError } from '@kit.BasicServicesKit';
 import { AppDb } from './AppDb';
 import { SManga, SChapter, MangaRecord, ChapterRecord, CategoryRecord, UpdateItem, HistoryItem, TrackRecord, MangaStats, UpcomingManga, ContentType } from '../model/Models';
 
@@ -68,7 +69,12 @@ export class MangaRepo {
       'categoryId': 1,
       'addedAt': Date.now(),
     };
-    const rowId = await store.insert('manga', values).catch(async (_e: Object): Promise<number> => {
+    const rowId = await store.insert('manga', values).catch(async (e: Object): Promise<number> => {
+      const err = e as BusinessError;
+      // 仅 UNIQUE(sourceKey, url) 冲突（错误码 1480009）才走回查覆盖，其余错误如实上抛
+      if (err.code !== 1480009) {
+        throw new Error(`manga insert failed: ${err.message}`);
+      }
       // 并发插入撞 UNIQUE(sourceKey, url)：回查已存在行，按新源数据覆盖
       const rs2 = await store.query(pred, ['id']);
       let existingId = -1;
@@ -78,7 +84,7 @@ export class MangaRepo {
       rs2.close();
       if (existingId >= 0) {
         const retry: relationalStore.ValuesBucket = {
-          'title': m.title !== '' ? m.title : ' ',
+          'title': m.title,
           'thumbnailUrl': m.coverUrl,
           'author': m.author,
           'description': m.description,
@@ -195,44 +201,48 @@ export class MangaRepo {
     return counts;
   }
 
-  // 迁移：切换源与地址并更新元数据，清空旧章节记录（进度不保留）；自定义封面保留（对齐 Mihon）
+  // 迁移：切换源与地址并更新元数据，清空旧章节/历史/阅读时长记录（进度不保留）；自定义封面保留（对齐 Mihon）
   static async migrate(id: number, sourceKey: string, url: string, m: SManga, contentType: string): Promise<void> {
     const store = await AppDb.get();
     const predOld = new relationalStore.RdbPredicates('manga');
     predOld.equalTo('id', id);
-    const rsOld = await store.query(predOld, ['thumbnailUrl', 'origThumbnail']);
-    let oldThumb = '';
-    let oldOrigThumb = '';
-    if (rsOld.goToNextRow()) {
-      oldThumb = rsOld.getString(rsOld.getColumnIndex('thumbnailUrl'));
-      oldOrigThumb = rsOld.getString(rsOld.getColumnIndex('origThumbnail'));
-    }
-    rsOld.close();
-    let newThumb = m.coverUrl;
-    let newOrig = '';
-    if (oldOrigThumb !== '') {
-      // 自定义封面跟随迁移，新源封面地址顶替"原封面"待恢复地址
-      newThumb = oldThumb;
-      newOrig = m.coverUrl;
-    }
-    const values: relationalStore.ValuesBucket = {
-      'sourceKey': sourceKey,
-      'url': url,
-      'title': m.title !== '' ? m.title : ' ',
-      'thumbnailUrl': newThumb,
-      'origThumbnail': newOrig,
-      'author': m.author,
-      'description': m.description,
-      'genre': m.genre,
-      'status': m.status,
-      'contentType': ContentType.normalize(contentType),
-    };
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('id', id);
     store.beginTransaction();
     try {
+      // 旧封面读取移入事务内，消除读-改-写间隙的 TOCTOU
+      const rsOld = await store.query(predOld, ['thumbnailUrl', 'origThumbnail']);
+      let oldThumb = '';
+      let oldOrigThumb = '';
+      if (rsOld.goToNextRow()) {
+        oldThumb = rsOld.getString(rsOld.getColumnIndex('thumbnailUrl'));
+        oldOrigThumb = rsOld.getString(rsOld.getColumnIndex('origThumbnail'));
+      }
+      rsOld.close();
+      let newThumb = m.coverUrl;
+      let newOrig = '';
+      if (oldOrigThumb !== '') {
+        // 自定义封面跟随迁移，新源封面地址顶替"原封面"待恢复地址
+        newThumb = oldThumb;
+        newOrig = m.coverUrl;
+      }
+      const values: relationalStore.ValuesBucket = {
+        'sourceKey': sourceKey,
+        'url': url,
+        'title': m.title !== '' ? m.title : ' ',
+        'thumbnailUrl': newThumb,
+        'origThumbnail': newOrig,
+        'author': m.author,
+        'description': m.description,
+        'genre': m.genre,
+        'status': m.status,
+        'contentType': ContentType.normalize(contentType),
+      };
       await store.update(values, pred);
       await store.executeSql(`DELETE FROM chapter WHERE mangaId = ?`, [id]);
+      // 同步清理旧章节对应的历史与阅读时长记录，避免永久孤儿
+      await store.executeSql(`DELETE FROM history WHERE mangaId = ?`, [id]);
+      await store.executeSql(`DELETE FROM readingSession WHERE mangaId = ?`, [id]);
       store.commit();
     } catch (e) {
       store.rollBack();
@@ -373,18 +383,19 @@ export class ChapterRepo {
   // 删除源已移除的章节（含历史，章节可能在源端被删除）；返回新增章节数
   static async syncFromSource(mangaId: number, chapters: SChapter[]): Promise<number> {
     const store = await AppDb.get();
-    const existing = await ChapterRepo.listByManga(mangaId);
-    const existingKeys = new Set<string>();
-    for (const c of existing) {
-      existingKeys.add(c.url);
-    }
-    const sourceKeys = new Set<string>();
-    for (const c of chapters) {
-      sourceKeys.add(c.key);
-    }
     let newCount = 0;
     store.beginTransaction();
     try {
+      // existing 读取移入事务内，避免读取与写入之间被并发更新插入竞态
+      const existing = await ChapterRepo.listByManga(mangaId);
+      const existingKeys = new Set<string>();
+      for (const c of existing) {
+        existingKeys.add(c.url);
+      }
+      const sourceKeys = new Set<string>();
+      for (const c of chapters) {
+        sourceKeys.add(c.key);
+      }
       for (const c of chapters) {
         if (existingKeys.has(c.key)) {
           const values: relationalStore.ValuesBucket = {
@@ -449,40 +460,28 @@ export class ChapterRepo {
     await store.update(values, pred);
   }
 
-  // 批量设置已读状态（章节多选"标为已读/未读"，单事务提交）
+  // 批量设置已读状态（章节多选"标为已读/未读"，单条 IN 谓词一次提交）
   static async setReadForIds(ids: number[], read: boolean): Promise<void> {
+    if (ids.length === 0) {
+      return;
+    }
     const store = await AppDb.get();
     const values: relationalStore.ValuesBucket = { 'read': read ? 1 : 0 };
-    store.beginTransaction();
-    try {
-      for (const id of ids) {
-        const pred = new relationalStore.RdbPredicates('chapter');
-        pred.equalTo('id', id);
-        await store.update(values, pred);
-      }
-      store.commit();
-    } catch (e) {
-      store.rollBack();
-      throw new Error(`setReadForIds failed: ${e}`);
-    }
+    const pred = new relationalStore.RdbPredicates('chapter');
+    pred.in('id', ids);
+    await store.update(values, pred);
   }
 
-  // 批量设置书签（章节多选"添加/移除书签"，单事务提交）
+  // 批量设置书签（章节多选"添加/移除书签"，单条 IN 谓词一次提交）
   static async setBookmarkForIds(ids: number[], bookmark: boolean): Promise<void> {
+    if (ids.length === 0) {
+      return;
+    }
     const store = await AppDb.get();
     const values: relationalStore.ValuesBucket = { 'bookmark': bookmark ? 1 : 0 };
-    store.beginTransaction();
-    try {
-      for (const id of ids) {
-        const pred = new relationalStore.RdbPredicates('chapter');
-        pred.equalTo('id', id);
-        await store.update(values, pred);
-      }
-      store.commit();
-    } catch (e) {
-      store.rollBack();
-      throw new Error(`setBookmarkForIds failed: ${e}`);
-    }
+    const pred = new relationalStore.RdbPredicates('chapter');
+    pred.in('id', ids);
+    await store.update(values, pred);
   }
 
   static async setLastPageRead(id: number, page: number): Promise<void> {
@@ -675,17 +674,22 @@ export class HistoryRepo {
        ORDER BY h.seenAt DESC LIMIT ?`, [limit]);
     const list: HistoryItem[] = [];
     while (rs.goToNextRow()) {
-      list.push(HistoryItem.of(
-        rs.getLong(rs.getColumnIndex('mangaId')),
-        rs.getLong(rs.getColumnIndex('chapterId')),
-        rs.getString(rs.getColumnIndex('mangaTitle')),
-        rs.getString(rs.getColumnIndex('coverUrl')),
-        rs.getString(rs.getColumnIndex('chapterName')),
-        rs.getLong(rs.getColumnIndex('seenAt')),
-        rs.getLong(rs.getColumnIndex('lastPageRead'))));
+      list.push(HistoryRepo.rowToItem(rs));
     }
     rs.close();
     return list;
+  }
+
+  // 行 → HistoryItem 统一映射（recent/lastForManga/lastInLibrary 共用）
+  private static rowToItem(rs: relationalStore.ResultSet): HistoryItem {
+    return HistoryItem.of(
+      rs.getLong(rs.getColumnIndex('mangaId')),
+      rs.getLong(rs.getColumnIndex('chapterId')),
+      rs.getString(rs.getColumnIndex('mangaTitle')),
+      rs.getString(rs.getColumnIndex('coverUrl')),
+      rs.getString(rs.getColumnIndex('chapterName')),
+      rs.getLong(rs.getColumnIndex('seenAt')),
+      rs.getLong(rs.getColumnIndex('lastPageRead')));
   }
 
   // 某部漫画最近一条阅读记录（漫画卡片续读章节）
@@ -700,14 +704,7 @@ export class HistoryRepo {
        JOIN chapter c ON c.id = h.chapterId
        WHERE h.mangaId = ?
        ORDER BY h.seenAt DESC LIMIT 1`, [mangaId]);
-    const item: HistoryItem | undefined = rs.goToNextRow() ? HistoryItem.of(
-      rs.getLong(rs.getColumnIndex('mangaId')),
-      rs.getLong(rs.getColumnIndex('chapterId')),
-      rs.getString(rs.getColumnIndex('mangaTitle')),
-      rs.getString(rs.getColumnIndex('coverUrl')),
-      rs.getString(rs.getColumnIndex('chapterName')),
-      rs.getLong(rs.getColumnIndex('seenAt')),
-      rs.getLong(rs.getColumnIndex('lastPageRead'))) : undefined;
+    const item: HistoryItem | undefined = rs.goToNextRow() ? HistoryRepo.rowToItem(rs) : undefined;
     rs.close();
     return item;
   }
@@ -724,14 +721,7 @@ export class HistoryRepo {
        JOIN chapter c ON c.id = h.chapterId
        WHERE m.inLibrary = 1
        ORDER BY h.seenAt DESC LIMIT 1`, []);
-    const item: HistoryItem | undefined = rs.goToNextRow() ? HistoryItem.of(
-      rs.getLong(rs.getColumnIndex('mangaId')),
-      rs.getLong(rs.getColumnIndex('chapterId')),
-      rs.getString(rs.getColumnIndex('mangaTitle')),
-      rs.getString(rs.getColumnIndex('coverUrl')),
-      rs.getString(rs.getColumnIndex('chapterName')),
-      rs.getLong(rs.getColumnIndex('seenAt')),
-      rs.getLong(rs.getColumnIndex('lastPageRead'))) : undefined;
+    const item: HistoryItem | undefined = rs.goToNextRow() ? HistoryRepo.rowToItem(rs) : undefined;
     rs.close();
     return item;
   }
@@ -965,13 +955,18 @@ export class UpcomingRepo {
     return delta;
   }
 
-  // 预计下次更新时间（对齐 FetchInterval.calculateNextUpdate，返回当日零点时间戳）
+  // 预计下次更新时间（对齐 FetchInterval.calculateNextUpdate，返回当日零点时间戳）；
+  // 倍增后的 adjusted 全程统一使用，确保不返回过去的时间
   static nextUpdate(lastUpdateAt: number, interval: number, now: number): number {
     const latest: number = UpcomingRepo.startOfDay(lastUpdateAt > 0 ? lastUpdateAt : now);
-    const daysSince: number = Math.floor((now - latest) / UpcomingRepo.DAY_MS);
+    const daysSince: number = Math.max(0, Math.floor((now - latest) / UpcomingRepo.DAY_MS));
     const adjusted: number = UpcomingRepo.increaseInterval(interval, daysSince);
     const cycle: number = Math.floor(daysSince / adjusted);
-    return latest + (cycle + 1) * interval * UpcomingRepo.DAY_MS;
+    let next: number = latest + (cycle + 1) * adjusted * UpcomingRepo.DAY_MS;
+    if (next <= now) {
+      next = latest + (cycle + 2) * adjusted * UpcomingRepo.DAY_MS;
+    }
+    return next;
   }
 }
 

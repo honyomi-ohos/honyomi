@@ -12,7 +12,6 @@ const DM_DUR_VALUES: number[] = [12, 10, 8, 6];
 // 播放器设置内容：默认倍速/自动连播 + 弹幕开关/字号/透明度/显示区域/速度
 @Component
 export struct PlayerSettingsContent {
-  @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   private speedLabels(): string[] {

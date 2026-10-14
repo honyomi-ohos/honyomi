@@ -362,11 +362,15 @@ export struct LibrarySettingsSheet {
                     .blockColor(this.pal.primary)
                     .width('100%')
                     .margin({ top: 4 })
-                    .onChange((v: number, _mode: SliderChangeMode) => {
+                    .onChange((v: number, mode: SliderChangeMode) => {
                       const n: number = Math.floor(v);
                       if (n !== this.gridCols) {
                         this.gridCols = n;
-                        Settings.setLibraryGridCols(n);
+                        // 拖动中仅更新 UI（@Link 联动书架实时预览），
+                        // 松手/点击时才落库，避免逐 tick 写 preferences
+                        if (mode === SliderChangeMode.End || mode === SliderChangeMode.Click) {
+                          Settings.setLibraryGridCols(n);
+                        }
                       }
                     })
                 }

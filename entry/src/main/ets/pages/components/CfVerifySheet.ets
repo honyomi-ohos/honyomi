@@ -6,6 +6,7 @@ import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
 import { Http } from '../../net/Http';
 import { CookieJar } from '../../net/CookieJar';
+import { AppKeys } from '../../common/AppKeys';
 import { AppIcon, AppIconRes } from './AppIcon';
 
 // CF 盾人机验证半模态弹层（液态玻璃质感，底部弹出）：
@@ -30,6 +31,8 @@ export struct CfVerifySheet {
   private currentUrl: string = '';
   private loadedUrl: string = '';
   private attached: boolean = false;
+  // 弹层内容销毁标志：异步回调（fetchCookie 等）续体据此跳过 toast/onClose
+  private disposed: boolean = false;
   private controller: webview.WebviewController = new webview.WebviewController();
 
   aboutToAppear(): void {
@@ -40,10 +43,14 @@ export struct CfVerifySheet {
     // 把 CookieJar 已有会话预注入 ArkWeb（cf_clearance 与 UA/Cookie 绑定）
     const jar = CookieJar.headerFor(this.challengeUrl);
     if (this.challengeUrl !== '' && jar !== '') {
-      webview.WebCookieManager.configCookie(this.challengeUrl, jar).catch((_e: Error) => {
+      webview.WebCookieManager.configCookie(this.challengeUrl, jar).catch((_e: BusinessError) => {
         // 注入失败不阻塞验证
       });
     }
+  }
+
+  aboutToDisappear(): void {
+    this.disposed = true;
   }
 
   // 弹层内容存活期间 challenge URL 变化（重新触发/换地址）：热切换加载新地址；
@@ -71,10 +78,16 @@ export struct CfVerifySheet {
     webview.WebCookieManager.fetchCookie(this.challengeUrl).then((cookies: string) => {
       if (cookies.indexOf('cf_clearance') >= 0) {
         CookieJar.importCookieString(this.challengeUrl, cookies);
+        // 通知等待 CF 验证结果的插件请求重试（JsvmSource 轮询此计数器）
+        AppStorage.setOrCreate(AppKeys.CF_VERIFIED_TICK,
+          (AppStorage.get<number>(AppKeys.CF_VERIFIED_TICK) ?? 0) + 1);
+        if (this.disposed) {
+          return;
+        }
         Util.toastRes(this.getUIContext(), $r('app.string.tab_cf_verified'));
         this.onClose();
       }
-    }).catch((_e: Error) => {
+    }).catch((_e: BusinessError) => {
       // 忽略
     });
   }
@@ -115,7 +128,7 @@ export struct CfVerifySheet {
     const data = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, url);
     pasteboard.getSystemPasteboard().setData(data).then(() => {
       Util.toastRes(this.getUIContext(), $r('app.string.tab_cf_url_copied'));
-    }).catch((_e: Error) => {
+    }).catch((_e: BusinessError) => {
       // 复制失败静默
     });
   }
@@ -162,7 +175,7 @@ export struct CfVerifySheet {
       Web({ src: this.challengeUrl, controller: this.controller })
         .javaScriptAccess(true)
         .domStorageAccess(true)
-        .fileAccess(true)
+        .fileAccess(false)
         .onlineImageAccess(true)
         .onControllerAttached(() => {
           this.attached = true;
@@ -176,13 +189,14 @@ export struct CfVerifySheet {
             const err = e as BusinessError;
             hilog.error(0x0C0F, 'CfVerify', 'attach failed: %{public}d %{public}s',
               err.code, err.message);
-            this.cfStatus = `Load error: ${err.code} ${err.message}`;
+            this.cfStatus = Util.resStr(this.getUIContext(), $r('app.string.cf_load_error'),
+              [`${err.code} ${err.message}`]);
           }
         })
         .onPageBegin((event: OnPageBeginEvent) => {
           this.currentUrl = event?.url ?? this.challengeUrl;
           hilog.info(0x0C0F, 'CfVerify', 'pageBegin url=%{public}s', this.currentUrl);
-          this.cfStatus = 'Loading…';
+          this.cfStatus = $r('app.string.cf_loading');
         })
         .onTitleReceive((event: OnTitleReceiveEvent) => {
           this.pageTitle = event?.title ?? '';
@@ -195,7 +209,8 @@ export struct CfVerifySheet {
           if (event && event.request.isMainFrame()) {
             hilog.error(0x0C0F, 'CfVerify', 'errorReceive(main) url=%{public}s info=%{public}s',
               event.request.getRequestUrl(), event.error.getErrorInfo());
-            this.cfStatus = `Load failed: ${event.error.getErrorInfo()}`;
+            this.cfStatus = Util.resStr(this.getUIContext(), $r('app.string.cf_load_failed'),
+              [event.error.getErrorInfo()]);
           }
         })
         .onHttpErrorReceive((event: OnHttpErrorReceiveEvent) => {
@@ -203,13 +218,15 @@ export struct CfVerifySheet {
             hilog.info(0x0C0F, 'CfVerify', 'httpError(main) url=%{public}s code=%{public}d %{public}s',
               event.request.getRequestUrl(), event.response.getResponseCode(),
               event.response.getReasonMessage());
-            this.cfStatus = `HTTP ${event.response.getResponseCode()}`;
+            this.cfStatus = Util.resStr(this.getUIContext(), $r('app.string.cf_http_prefix'),
+              [event.response.getResponseCode()]);
           }
         })
         .onRenderExited((event: OnRenderExitedEvent) => {
           hilog.error(0x0C0F, 'CfVerify', 'renderExited reason=%{public}d', event?.renderExitReason ?? -1);
           if (event) {
-            this.cfStatus = `Render exited (${event.renderExitReason})`;
+            this.cfStatus = Util.resStr(this.getUIContext(), $r('app.string.cf_render_exited'),
+              [event.renderExitReason]);
           }
         })
         .onPageEnd((event: OnPageEndEvent) => {

@@ -46,6 +46,28 @@ export struct SmartImage {
     });
   }
 
+  @Builder
+  failedPlaceholder() {
+    Column() {
+      AppIcon({ name: 'error', iconSize: 20 })
+    }
+    .width('100%')
+    .height(this.fill ? '100%' : 120)
+    .justifyContent(FlexAlign.Center)
+  }
+
+  @Builder
+  loadingPlaceholder() {
+    Column() {
+      LoadingProgress()
+        .width(22)
+        .height(22)
+    }
+    .width('100%')
+    .height(this.fill ? '100%' : 120)
+    .justifyContent(FlexAlign.Center)
+  }
+
   build() {
     Stack() {
       if (this.display !== '') {
@@ -62,38 +84,14 @@ export struct SmartImage {
             })
         }
         if (this.failed) {
-          Column() {
-            AppIcon({ name: 'error', iconSize: 20 })
-          }
-          .width('100%')
-          .height(this.fill ? '100%' : 120)
-          .justifyContent(FlexAlign.Center)
+          this.failedPlaceholder()
         } else if (!this.imgReady) {
-          Column() {
-            LoadingProgress()
-              .width(22)
-              .height(22)
-          }
-          .width('100%')
-          .height(this.fill ? '100%' : 120)
-          .justifyContent(FlexAlign.Center)
+          this.loadingPlaceholder()
         }
       } else if (this.failed) {
-        Column() {
-          AppIcon({ name: 'error', iconSize: 20 })
-        }
-        .width('100%')
-        .height(this.fill ? '100%' : 120)
-        .justifyContent(FlexAlign.Center)
+        this.failedPlaceholder()
       } else {
-        Column() {
-          LoadingProgress()
-            .width(22)
-            .height(22)
-        }
-        .width('100%')
-        .height(this.fill ? '100%' : 120)
-        .justifyContent(FlexAlign.Center)
+        this.loadingPlaceholder()
       }
     }
     .width('100%')

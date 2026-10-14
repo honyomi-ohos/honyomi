@@ -19,15 +19,19 @@ export struct ExtensionListPanel {
   @StorageProp('extRepoRefresh') @Watch('onRepoRefresh') extRepoRefresh: number = 0;
   @StorageProp('extLocalInstall') @Watch('onLocalInstall') extLocalInstall: number = 0;
   @StorageProp('pluginsDirty') @Watch('onPluginsDirty') pluginsDirty: number = 0;
-  @Prop searchQuery: string = '';
+  @Prop @Watch('onFilterChanged') searchQuery: string = '';
   // 内容类型过滤（宿主过滤弹窗下发）；空数组 = 全部类型
-  @Prop typeFilter: string[] = [];
+  @Prop @Watch('onFilterChanged') typeFilter: string[] = [];
   onOpenPlugin: (pluginKey: string) => void = (_k: string) => {};
   @State installed: InstalledPlugin[] = [];
   @State repoEntries: RepoEntry[] = [];
+  // filteredInstalled 结果缓存（build 内多处使用，避免同一 build 重复重建数组）
+  @State shownInstalled: InstalledPlugin[] = [];
   @State repoUrl: string = '';
   @State loadingRepo: boolean = false;
   @State busy: boolean = false;
+  // 面板销毁标志：异步续体据此跳过 toast/写状态
+  private disposed: boolean = false;
 
   aboutToAppear(): void {
     this.refreshInstalled();
@@ -35,6 +39,10 @@ export struct ExtensionListPanel {
     if (this.repoUrl !== '') {
       this.refreshRepo();
     }
+  }
+
+  aboutToDisappear(): void {
+    this.disposed = true;
   }
 
   // 宿主改仓库地址或手动刷新后触发
@@ -58,6 +66,12 @@ export struct ExtensionListPanel {
 
   private refreshInstalled(): void {
     this.installed = PluginService.listInstalled();
+    this.recomputeShownInstalled();
+  }
+
+  // 宿主搜索词或类型过滤变化时重算已安装过滤缓存
+  private onFilterChanged(): void {
+    this.recomputeShownInstalled();
   }
 
   private firstCharOf(name: string): string {
@@ -87,7 +101,8 @@ export struct ExtensionListPanel {
     return this.typeFilter.indexOf(this.effectiveType(contentType)) >= 0;
   }
 
-  filteredInstalled(): InstalledPlugin[] {
+  // 已安装过滤结果缓存计算（installed/searchQuery/typeFilter 任一变化时调用）
+  private recomputeShownInstalled(): void {
     const list: InstalledPlugin[] = [];
     for (const item of this.installed) {
       if (this.matchesQuery(item.manifest.name, item.manifest.key) &&
@@ -95,7 +110,7 @@ export struct ExtensionListPanel {
         list.push(item);
       }
     }
-    return list;
+    this.shownInstalled = list;
   }
 
   filteredRepoEntries(): RepoEntry[] {
@@ -123,11 +138,20 @@ export struct ExtensionListPanel {
     }
     this.loadingRepo = true;
     try {
-      this.repoEntries = await PluginService.fetchRepo(this.repoUrl);
+      const entries = await PluginService.fetchRepo(this.repoUrl);
+      if (this.disposed) {
+        return;
+      }
+      this.repoEntries = entries;
     } catch (e) {
+      if (this.disposed) {
+        return;
+      }
       Util.toastRes(this.getUIContext(), $r('app.string.plugin_repo_load_failed'), [(e as Error).message]);
     }
-    this.loadingRepo = false;
+    if (!this.disposed) {
+      this.loadingRepo = false;
+    }
   }
 
   private async pickPluginFile(): Promise<void> {
@@ -157,13 +181,21 @@ export struct ExtensionListPanel {
     this.busy = true;
     try {
       const key = await PluginService.installFromFile(uri);
+      if (this.disposed) {
+        return;
+      }
       this.refreshInstalled();
       PluginService.markDirty();
       Util.toastRes(this.getUIContext(), $r('app.string.plugin_installed'), [key]);
     } catch (e) {
+      if (this.disposed) {
+        return;
+      }
       Util.toastRes(this.getUIContext(), $r('app.string.plugin_install_failed'), [(e as Error).message]);
     }
-    this.busy = false;
+    if (!this.disposed) {
+      this.busy = false;
+    }
   }
 
   private async installFromRepo(entry: RepoEntry): Promise<void> {
@@ -173,13 +205,21 @@ export struct ExtensionListPanel {
     this.busy = true;
     try {
       await PluginService.installFromRepo(entry);
+      if (this.disposed) {
+        return;
+      }
       this.refreshInstalled();
       PluginService.markDirty();
       Util.toastRes(this.getUIContext(), $r('app.string.plugin_installed_name'), [entry.name]);
     } catch (e) {
+      if (this.disposed) {
+        return;
+      }
       Util.toastRes(this.getUIContext(), $r('app.string.plugin_install_failed'), [(e as Error).message]);
     }
-    this.busy = false;
+    if (!this.disposed) {
+      this.busy = false;
+    }
   }
 
   @Builder
@@ -286,7 +326,7 @@ export struct ExtensionListPanel {
             .width('100%')
             .margin({ bottom: 4 })
 
-          if (this.filteredInstalled().length === 0) {
+          if (this.shownInstalled.length === 0) {
             EmptyScreen({
               message: this.searchQuery.trim() !== '' || this.typeFilter.length > 0 ?
                 $r('app.string.ext_search_no_match') :
@@ -294,7 +334,7 @@ export struct ExtensionListPanel {
               compact: true,
             })
           } else {
-            ForEach(this.filteredInstalled(), (item: InstalledPlugin) => {
+            ForEach(this.shownInstalled, (item: InstalledPlugin) => {
               this.pluginRow(item)
             }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}`)
           }

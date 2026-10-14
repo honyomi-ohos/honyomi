@@ -681,6 +681,15 @@
     { "name": "pref_onboarding_guide", "value": "Onboarding guide" },
     { "name": "getting_started_guide", "value": "Getting started guide" },
     { "name": "onboarding_guides_new_user", "value": "New to %s? We recommend checking out the getting started guide." },
-    { "name": "onboarding_guides_returning_user", "value": "Reinstalling %s?" }
+    { "name": "onboarding_guides_returning_user", "value": "Reinstalling %s?" },
+    { "name": "chapter_badge_new", "value": "NEW" },
+    { "name": "detail_sync_in_progress", "value": "Sync in progress, please wait" },
+    { "name": "detail_download_failed", "value": "Download failed" },
+    { "name": "detail_load_failed", "value": "Failed to load details" },
+    { "name": "detail_invalid_params", "value": "Invalid page parameters" },
+    { "name": "detail_dl_preparing", "value": "Preparing downloads…" },
+    { "name": "library_move_failed", "value": "Failed to move to category" },
+    { "name": "migrate_load_failed", "value": "Failed to load the migration list" },
+    { "name": "common_op_failed", "value": "Operation failed" }
 ]
 }

@@ -135,6 +135,8 @@ export class JsvmSource implements Source {
   private exportedMethods: string[] = [];
   private customImageHeaders: Record<string, string> | undefined = undefined;
   private imageViaHost: boolean = false;
+  // getHeaders 预热的 Promise 缓存：并发去重，调用方可 await 保证首图带 Referer/Cookie
+  private warmHeadersPromise: Promise<void> | undefined = undefined;
 
   constructor(manifest: PluginManifest, exportedMethods: string[] = [], packageKey: string = '',
     sourceId: string = '', iconPath: string = '') {
@@ -445,8 +447,18 @@ export class JsvmSource implements Source {
   }
 
   // 轮询等待 CF 验证结果：cfVerifiedTick 增长代表通过；cfChallengeUrl 复空代表放弃；
-  // 上限 2 分钟（验证页超时关闭后调用方收到原始错误）
+  // 上限 2 分钟（验证页超时关闭后调用方收到原始错误）。
+  // 并发去重：模块级共享同一轮询/等待 promise，多处调用同时挂起时只跑一个轮询。
+  private static challengeWait: Promise<boolean> | undefined = undefined;
+
   private static waitChallengeSolved(): Promise<boolean> {
+    if (JsvmSource.challengeWait === undefined) {
+      JsvmSource.challengeWait = JsvmSource.pollChallengeSolved();
+    }
+    return JsvmSource.challengeWait;
+  }
+
+  private static pollChallengeSolved(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       const startTick = AppStorage.get<number>('cfVerifiedTick') ?? 0;
       const deadline = Date.now() + 120000;
@@ -454,12 +466,14 @@ export class JsvmSource implements Source {
         const tick = AppStorage.get<number>('cfVerifiedTick') ?? 0;
         if (tick > startTick) {
           clearInterval(timer);
+          JsvmSource.challengeWait = undefined;
           resolve(true);
           return;
         }
         const url = AppStorage.get<string>('cfChallengeUrl') ?? '';
         if (url === '' || Date.now() > deadline) {
           clearInterval(timer);
+          JsvmSource.challengeWait = undefined;
           resolve(false);
         }
       }, 500);
@@ -473,15 +487,16 @@ export class JsvmSource implements Source {
     if (raw === null || raw === undefined) {
       return '';
     }
-    const parsed = JSON.parse(JSON.stringify(raw)) as RawTextBody;
-    if (parsed === undefined || parsed === null) {
-      return '';
-    }
-    return parsed.text ?? parsed.content ?? '';
+    // 已是反序列化对象：直接按字段取，避免 JSON 双重往返
+    const body = raw as RawTextBody;
+    return body.text ?? body.content ?? '';
   }
 
   private static videosFromRaw(raw: Object): SVideo[] {
-    const parsed = JSON.parse(JSON.stringify(raw)) as RawVideo[];
+    if (raw === null || raw === undefined) {
+      return [];
+    }
+    const parsed = raw as RawVideo[];
     const videos: SVideo[] = [];
     if (!Array.isArray(parsed)) {
       return videos;
@@ -517,13 +532,22 @@ export class JsvmSource implements Source {
     return headers;
   }
 
-  // 插件可选导出 getHeaders：声明后图片经宿主 http 管线加载（Referer/Cookie）
-  warmImageHeaders(): void {
-    if (this.exportedMethods.indexOf('getHeaders') < 0) {
-      return;
+  // 插件可选导出 getHeaders：声明后图片经宿主 http 管线加载（Referer/Cookie）。
+  // 可等待 + 并发去重：Promise 缓存使多次调用共享同一次 getHeaders 请求，
+  // 调用方 await 后可保证图片首请求带上 Referer/Cookie。
+  warmImageHeaders(): Promise<void> {
+    if (this.warmHeadersPromise === undefined) {
+      this.warmHeadersPromise = this.doWarmImageHeaders();
     }
-    JsvmExtensionManager.callData<Record<string, Object>>(this.packageKey, 'getHeaders', this.callArgs([]))
-      .then((raw: Record<string, Object>) => {
+    return this.warmHeadersPromise;
+  }
+
+  private doWarmImageHeaders(): Promise<void> {
+    if (this.exportedMethods.indexOf('getHeaders') < 0) {
+      return Promise.resolve();
+    }
+    return JsvmExtensionManager.callData<Record<string, Object>>(this.packageKey, 'getHeaders', this.callArgs([]))
+      .then((raw: Record<string, Object>): void => {
         const keys = Object.keys(raw);
         const headers: Record<string, string> = {};
         for (const k of keys) {
@@ -534,7 +558,7 @@ export class JsvmSource implements Source {
         }
         this.setImageHeaders(headers);
       })
-      .catch((_e: Error) => {
+      .catch((_e: Error): void => {
         // 插件未有效导出 getHeaders：直连加载
       });
   }

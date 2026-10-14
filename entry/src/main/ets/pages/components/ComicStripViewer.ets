@@ -44,9 +44,17 @@ struct StripItemView {
   @State loading: boolean = false;
   onTap: () => void = () => {};
   private loadToken: number = 0;
+  // 条目销毁标记：回调内校验后再写 @State
+  private destroyed: boolean = false;
 
   aboutToAppear(): void {
     this.load();
+  }
+
+  // 销毁时仅释放本条目加载过的 url（宿主关闭/切模式/换数据时逐条回收，不清空全局缓存）
+  aboutToDisappear(): void {
+    this.destroyed = true;
+    StripImagePipeline.release(this.url);
   }
 
   private load(): void {
@@ -58,13 +66,13 @@ struct StripItemView {
     this.loadToken += 1;
     const token = this.loadToken;
     StripImagePipeline.load(this.url, this.sourceKey, this.pageUrl).then((pm: image.PixelMap) => {
-      if (token !== this.loadToken) {
+      if (this.destroyed || token !== this.loadToken) {
         return;
       }
       this.pixelMap = pm;
       this.loading = false;
     }).catch((_e: Object) => {
-      if (token !== this.loadToken) {
+      if (this.destroyed || token !== this.loadToken) {
         return;
       }
       this.failed = true;
@@ -145,14 +153,11 @@ export struct ComicStripViewer {
     this.dataSource.setPages(this.pages);
   }
 
-  // 释放条漫解码内存（PixelMap 可达数十 MB/张，阅读器关闭/切模式必须回收）
-  aboutToDisappear(): void {
-    StripImagePipeline.clearAll();
-  }
-
   private onPagesChanged(): void {
     this.dataSource.setPages(this.pages);
     this.lastVisible = -1;
+    // 换数据后重新定位到宿主指定的起始页
+    this.scroller.scrollToIndex(this.initialIndex);
   }
 
   build() {

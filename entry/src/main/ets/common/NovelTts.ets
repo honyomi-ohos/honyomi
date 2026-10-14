@@ -5,6 +5,9 @@ import { backgroundTaskManager } from '@kit.BackgroundTasksKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { Settings } from './Settings';
 
+// 后台长任务申请/撤销串行化队列（Promise 链）：消除申请-撤销交错时序下的长任务残留
+let taskChain: Promise<void> = Promise.resolve();
+
 // 听书事件回调集合（页面在 aboutToAppear 中接管，aboutToDisappear 中复位）
 export class TtsEvents {
   onParaStart: (paraIdx: number) => void = (_paraIdx: number): void => {
@@ -65,6 +68,8 @@ export class NovelTts {
   private static issueAt: number = 0;
   private static busyFalseStreak: number = 0;
   private static engineRetries: number = 0;
+  // 会话代次号：start()/stop() 均自增，使 await 期间的旧续体失效（防 start/stop 竞态）
+  private static session: number = 0;
   // 后台长任务
   private static ctx: common.UIAbilityContext | undefined = undefined;
   private static taskRequested: boolean = false;
@@ -87,6 +92,8 @@ export class NovelTts {
       return false;
     }
     NovelTts.starting = true;
+    // 会话代次号：await 期间若发生 stop()（或新的 start() 接管），session 变化使本次续体失效
+    const sid: number = ++NovelTts.session;
     try {
       NovelTts.lang = lang;
       NovelTts.ctx = context;
@@ -94,15 +101,24 @@ export class NovelTts {
       if (NovelTts.chunks.length === 0) {
         return false;
       }
-      NovelTts.pos = 0;
+      let pos: number = -1;
       for (let i = 0; i < NovelTts.chunkPara.length; i++) {
         if (NovelTts.chunkPara[i] >= startPara) {
-          NovelTts.pos = i;
+          pos = i;
           break;
         }
       }
+      // startPara 超出最后一块时钳制到最后一块，避免从头重播
+      if (pos < 0) {
+        pos = NovelTts.chunks.length - 1;
+      }
+      NovelTts.pos = pos;
       const ready = await NovelTts.ensureEngine();
       if (!ready) {
+        return false;
+      }
+      // await 期间用户已点 stop：不恢复 stopped，避免"UI 显示已停止但 TTS 继续朗读"
+      if (sid !== NovelTts.session) {
         return false;
       }
       NovelTts.stopped = false;
@@ -115,6 +131,8 @@ export class NovelTts {
   }
 
   static stop(): void {
+    // 自增会话号使进行中 start() 的 await 续体失效
+    NovelTts.session += 1;
     NovelTts.stopped = true;
     NovelTts.activeReq = '';
     NovelTts.clearKeepAlive();
@@ -297,10 +315,11 @@ export class NovelTts {
 
   // 播报结束（type=1）：推进下一块
   static onChunkDone(requestId: string): void {
-    NovelTts.clearKeepAlive();
+    // 先校验请求归属再清看门狗：迟到回调（旧请求）不得杀掉活请求的看门狗定时器
     if (NovelTts.stopped || requestId !== NovelTts.activeReq) {
       return;
     }
+    NovelTts.clearKeepAlive();
     NovelTts.activeReq = '';
     NovelTts.pos += 1;
     NovelTts.speakCurrent();
@@ -379,6 +398,7 @@ export class NovelTts {
   // 引擎失效自愈：销毁后重建，并从当前块重发（不改变 pos）
   private static recoverEngine(): void {
     if (NovelTts.engineRetries >= 2) {
+      NovelTts.session += 1;
       NovelTts.stopped = true;
       NovelTts.activeReq = '';
       NovelTts.clearKeepAlive();
@@ -390,13 +410,16 @@ export class NovelTts {
     NovelTts.engineRetries += 1;
     NovelTts.clearKeepAlive();
     NovelTts.killEngine();
+    const sid: number = NovelTts.session;
     NovelTts.ensureEngine().then((ok: boolean) => {
-      if (NovelTts.stopped) {
+      // 自愈期间会话已切换（stop/新 start）：放弃旧续体
+      if (sid !== NovelTts.session) {
         return;
       }
       if (ok) {
         NovelTts.speakCurrent();
       } else {
+        NovelTts.session += 1;
         NovelTts.stopped = true;
         NovelTts.activeReq = '';
         NovelTts.stopTtsTask();
@@ -406,7 +429,20 @@ export class NovelTts {
   }
 
   // 后台长任务（AUDIO_PLAYBACK）：听书期间避免应用退后台/锁屏后被挂起导致播报被系统中断
+  // 申请/撤销经模块级 Promise 链串行化：申请-撤销交错时序下不再产生长任务残留
   private static startTtsTask(): void {
+    taskChain = taskChain.then((): Promise<void> => {
+      return NovelTts.requestTtsTask();
+    });
+  }
+
+  private static stopTtsTask(): void {
+    taskChain = taskChain.then((): Promise<void> => {
+      return NovelTts.releaseTtsTask();
+    });
+  }
+
+  private static async requestTtsTask(): Promise<void> {
     const ctx = NovelTts.ctx;
     if (NovelTts.taskRequested || ctx === undefined) {
       return;
@@ -422,23 +458,25 @@ export class NovelTts {
       operationType: wantAgent.OperationType.START_ABILITY,
       requestCode: 0
     };
-    wantAgent.getWantAgent(info).then((agent: WantAgent): Promise<void> => {
-      return backgroundTaskManager.startBackgroundRunning(ctx, backgroundTaskManager.BackgroundMode.AUDIO_PLAYBACK, agent);
-    }).then((): void => {
+    try {
+      const agent: WantAgent = await wantAgent.getWantAgent(info);
+      await backgroundTaskManager.startBackgroundRunning(ctx, backgroundTaskManager.BackgroundMode.AUDIO_PLAYBACK, agent);
       if (NovelTts.stopped) {
         // 申请期间用户已停止：立即撤销，避免残留长任务
-        backgroundTaskManager.stopBackgroundRunning(ctx).catch((_e: BusinessError): void => {
+        NovelTts.taskRequested = false;
+        NovelTts.taskRunning = false;
+        await backgroundTaskManager.stopBackgroundRunning(ctx).catch((_e: BusinessError): void => {
         });
         return;
       }
       NovelTts.taskRunning = true;
-    }).catch((_e: BusinessError): void => {
+    } catch (_e) {
       // 长任务申请失败不阻断前台听书
       NovelTts.taskRequested = false;
-    });
+    }
   }
 
-  private static stopTtsTask(): void {
+  private static async releaseTtsTask(): Promise<void> {
     const ctx = NovelTts.ctx;
     if (!NovelTts.taskRequested || ctx === undefined) {
       return;
@@ -448,8 +486,9 @@ export class NovelTts {
       return;
     }
     NovelTts.taskRunning = false;
-    backgroundTaskManager.stopBackgroundRunning(ctx).then((): void => {
-    }).catch((_e: BusinessError): void => {
-    });
+    try {
+      await backgroundTaskManager.stopBackgroundRunning(ctx);
+    } catch (_e) {
+    }
   }
 }

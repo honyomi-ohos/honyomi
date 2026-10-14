@@ -12,7 +12,7 @@
  *
  * Message protocol (JSON strings, both directions):
  *   host -> worker: {"type":"init","code":"<extension js>"}
- *                   {"type":"call","seq":N,"name":"method","argsJson":"[...]"}
+ *                   {"type":"call","seq":N,"name":"method","argsJson":"[...]","prefsDirty":bool}
  *                   {"type":"destroy"}
  *   worker -> host: {"type":"ready","ok":true,"kind":"tachiyomi|simple"}
  *                   {"type":"result","seq":N,"ok":true,"json":"{...}","mem":N}
@@ -27,6 +27,8 @@ const workerPort: ThreadWorkerGlobalScope = worker.workerPort;
 console.info('[JsvmWorker] module loaded');
 
 let engineId: number = -1;
+// 上一次 dump 的 prefs 快照：仅 prefsDirty 调用或无快照时才重新 dump
+let prefsSnapshot: string = '';
 
 interface WorkerRequest {
   type?: string;
@@ -34,6 +36,8 @@ interface WorkerRequest {
   name?: string;
   argsJson?: string;
   code?: string;
+  /** 宿主标记：该调用可能写入插件偏好（true 时才 dump prefs） */
+  prefsDirty?: boolean;
 }
 
 interface CallEnvelope {
@@ -47,12 +51,16 @@ function post(json: string): void {
 }
 
 function ready(ok: boolean, kind: string, error: string): void {
+  const prefs = dumpPrefs();
+  if (prefs !== '') {
+    prefsSnapshot = prefs;
+  }
   const shape: Record<string, Object> = {
     'type': 'ready',
     'ok': ok,
     'kind': kind,
     'error': error,
-    'prefs': dumpPrefs()
+    'prefs': prefs
   };
   post(JSON.stringify(shape));
 }
@@ -122,7 +130,15 @@ function handleCall(req: WorkerRequest): void {
   try {
     const json = jsvmEngine.callFunction(engineId, req.name ?? '', req.argsJson ?? '[]');
     const mem = jsvmEngine.engineMemoryBytes(engineId);
-    result(seq, true, json, mem, dumpPrefs());
+    // 仅当调用可能写偏好（宿主 prefsDirty 标志）或尚无快照时才 dumpPrefs，
+    // 否则沿用上次快照，消除每次调用的引擎往返
+    if (req.prefsDirty === true || prefsSnapshot === '') {
+      const fresh = dumpPrefs();
+      if (fresh !== '') {
+        prefsSnapshot = fresh;
+      }
+    }
+    result(seq, true, json, mem, prefsSnapshot);
   } catch (e) {
     result(seq, false, JSON.stringify({ 'ok': false, 'error': (e as Error).message }), -1, '');
   }
