@@ -9,6 +9,7 @@ import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
 import { MangaRow } from './components/MangaRow';
 import { AppIcon } from './components/AppIcon';
+import { Settings } from '../common/Settings';
 
 // 全局搜索结果分节（每源一节）
 export class SearchSection {
@@ -87,7 +88,14 @@ export struct GlobalSearchPage {
     if (q === '') {
       return Promise.resolve();
     }
-    const sources: Source[] = SourceRegistry.all();
+    // 关闭“显示 NSFW 源”时全局搜索跳过 NSFW 源
+    const all: Source[] = SourceRegistry.all();
+    const sources: Source[] = [];
+    for (const s of all) {
+      if (!s.nsfw || Settings.getShowNsfw()) {
+        sources.push(s);
+      }
+    }
     const sections: SearchSection[] = [];
     for (const s of sources) {
       const section: SearchSection = new SearchSection();

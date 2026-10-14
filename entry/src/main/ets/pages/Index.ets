@@ -3,7 +3,7 @@ import { fileIo as fs } from '@kit.CoreFileKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { curves, AnimatorResult, AnimatorOptions } from '@kit.ArkUI';
 import { webview } from '@kit.ArkWeb';
-import { HdsTabs, hdsMaterial, HdsTabsController, HdsAnimationMode } from '@kit.UIDesignKit';
+import { HdsTabs, hdsMaterial, HdsTabsController, HdsAnimationMode, HdsTabsMiniBar } from '@kit.UIDesignKit';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Settings } from '../common/Settings';
@@ -576,6 +576,28 @@ struct Index {
     }
   }
 
+  // 听书迷你条：听书进行中挂入 HdsTabs 浮动条 miniBar（对齐 MusicHome 手机端）
+  @Builder
+  ttsMiniBar() {
+    TtsMiniBar({
+      onOpenPlayer: (): void => {
+        this.pathStack.pushPathByName('TtsPlayer', null);
+      }
+    })
+  }
+
+  // 听书未进行时不配置 miniBar，避免空胶囊
+  private ttsMiniBarOptions(): HdsTabsMiniBar | undefined {
+    if (!this.ttsActive) {
+      return undefined;
+    }
+    return {
+      miniBarBuilder: (): void => {
+        this.ttsMiniBar();
+      }
+    };
+  }
+
   @Builder
   tabBuilder(kind: string, title: ResourceStr, index: number) {
     Column({ space: 2 }) {
@@ -753,7 +775,10 @@ struct Index {
           systemMaterialEffect: {
             materialType: hdsMaterial.MaterialType.IMMERSIVE,
             materialLevel: hdsMaterial.MaterialLevel.ADAPTIVE
-          }
+          },
+          // 听书迷你条（对齐 MusicHome）：听书进行中由 HDS 绘制胶囊背景，
+          // 与浮动页签条堆叠悬浮于导航条上方（barBottomMargin 控制）
+          miniBar: this.ttsMiniBarOptions()
         })
         // onSelected 在切换动画开始时触发，让图标动画与 Mihon 一样即刻起播（onChange 在切换完成后才触发）
         .onSelected((index: number) => {
@@ -765,11 +790,24 @@ struct Index {
         .width('100%')
         .height('100%')
         }
-        // 听书迷你条层：听书进行中悬浮于底部页签上方（空区域不拦截触摸）；
-        // PC/宽屏锚定右下角，手机居中底部
-        if (this.ttsActive) {
-          Stack({ alignContent: this.isWide() ? Alignment.BottomEnd : Alignment.Bottom }) {
-            TtsMiniBar({ navBarH: this.navBarH })
+        // 听书迷你条（PC/宽屏无底部页签条）：MusicHome 风格胶囊悬于右下角
+        // （28 圆角 + 1px 描边 + 卡片底色，无阴影）
+        if (this.isWide() && this.ttsActive) {
+          Stack({ alignContent: Alignment.BottomEnd }) {
+            Column() {
+              TtsMiniBar({
+                onOpenPlayer: (): void => {
+                  this.pathStack.pushPathByName('TtsPlayer', null);
+                }
+              })
+            }
+            .width(360)
+            .height(56)
+            .justifyContent(FlexAlign.Center)
+            .borderRadius(28)
+            .backgroundColor(this.pal.card)
+            .border({ width: 1, color: this.pal.divider })
+            .margin({ right: 24, bottom: 16 })
           }
           .width('100%')
           .height('100%')

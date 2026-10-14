@@ -3,6 +3,7 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { media } from '@kit.MediaKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { window } from '@kit.ArkUI';
+import { CacheListener } from '@ohos/video-cache';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo, ChapterRepo, HistoryRepo } from '../data/Repos';
 import { ReadingStatsRepo } from '../data/ReadingStats';
@@ -16,6 +17,7 @@ import { Settings } from '../common/Settings';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
+import { VideoCacheServer } from '../common/VideoCacheServer';
 import { ReaderChapterNav, ChapterNeighbors } from '../common/ReaderChapterNav';
 import { AppIcon } from './components/AppIcon';
 import { DanmakuView, DanmakuController } from './components/DanmakuView';
@@ -35,6 +37,19 @@ interface VpSeekCommand {
   mode: string; // delta 相对位移 | absolute 绝对位置 | end 片尾
   ms: number;
   ts: number;
+}
+
+// 代理缓存进度监听：把 OhosVideoCache 下载百分比同步到页面状态
+class VpCacheListener implements CacheListener {
+  private onPct: (pct: number) => void;
+
+  constructor(onPct: (pct: number) => void) {
+    this.onPct = onPct;
+  }
+
+  onCacheAvailable(_cacheFilePath: string, _url: string, percentsAvailable: number): void {
+    this.onPct(percentsAvailable);
+  }
 }
 
 // 视频播放器（参考 AnymeX 播放器布局）：沉浸式全屏 + 顶部/中部/底部悬浮控制条，
@@ -77,6 +92,7 @@ export struct VideoPlayerPage {
   @State boosting: boolean = false;
   @State boostSpeedIndex: number = 2;
   @State scaleMode: number = 0;
+  @State cachePercent: number = 0;
   private mangaId: number = -1;
   private chapterId: number = -1;
   private resumeMs: number = 0;
@@ -84,6 +100,8 @@ export struct VideoPlayerPage {
   private surfaceId: string = '';
   private player: media.AVPlayer | undefined = undefined;
   private mediaFile: fs.File | undefined = undefined;
+  private cacheListener: CacheListener | undefined = undefined;
+  private cacheUrl: string = '';
   private xCtrl: XComponentController = new XComponentController();
   private ticker: number = -1;
   private dragging: boolean = false;
@@ -364,11 +382,36 @@ export struct VideoPlayerPage {
     });
   }
 
-  private playRemote(video: SVideo): void {
+  // 远程播放：直链先经 VideoCacheServer 代理（边下边播，快进命中缓存即刻起播）；
+  // m3u8 或代理失败时回退直连播放
+  private async playRemote(video: SVideo): Promise<void> {
     this.log(`playRemote: ${video.url}`);
     this.playGen += 1;
     const gen = this.playGen;
     this.releasePlayer();
+    let playUrl: string = video.url;
+    let viaProxy: boolean = false;
+    if (VideoCacheServer.isProxyEligible(video.url)) {
+      try {
+        playUrl = await VideoCacheServer.getProxyUrl(
+          Util.hostAbilityContext(this.getUIContext()), video.url, video.headers);
+        viaProxy = playUrl !== video.url;
+      } catch (e) {
+        this.log(`getProxyUrl catch: ${e}`);
+      }
+    }
+    if (gen !== this.playGen) {
+      return;
+    }
+    if (viaProxy && playUrl.indexOf('http') !== 0) {
+      // 已完整缓存：直接按本地文件播放
+      this.cachePercent = 100;
+      this.playFile(playUrl);
+      return;
+    }
+    if (viaProxy) {
+      this.attachCacheListener(video.url);
+    }
     // @SuppressWarnings syscap
     media.createAVPlayer().then((player: media.AVPlayer) => {
       if (gen !== this.playGen) {
@@ -376,9 +419,10 @@ export struct VideoPlayerPage {
         return;
       }
       this.bindPlayer(player);
-      const headers = Http.headersFor(video.url, video.headers);
+      // 本地代理地址无需透传源站请求头（由 HeaderInjector 注入），直连时保留原逻辑
+      const headers = viaProxy ? undefined : Http.headersFor(video.url, video.headers);
       // @SuppressWarnings syscap
-      const source = media.createMediaSourceWithUrl(video.url, headers);
+      const source = media.createMediaSourceWithUrl(playUrl, headers);
       const strategy: media.PlaybackStrategy = { preferredWidth: 0, preferredHeight: 0 };
       player.setMediaSource(source, strategy);
     }).catch((e: Error) => {
@@ -386,6 +430,28 @@ export struct VideoPlayerPage {
       this.errorText = e.message;
       this.buffering = false;
     });
+  }
+
+  // 注册当前直链的缓存进度监听（进度的百分比用于进度条缓存区显示）
+  private attachCacheListener(url: string): void {
+    this.detachCacheListener();
+    this.cachePercent = 0;
+    this.cacheUrl = url;
+    const listener = new VpCacheListener((pct: number): void => {
+      this.cachePercent = pct;
+    });
+    this.cacheListener = listener;
+    VideoCacheServer.registerCacheListener(listener, url);
+  }
+
+  private detachCacheListener(): void {
+    const listener = this.cacheListener;
+    if (listener !== undefined && this.cacheUrl !== '') {
+      VideoCacheServer.unregisterCacheListener(listener, this.cacheUrl);
+    }
+    this.cacheListener = undefined;
+    this.cacheUrl = '';
+    this.cachePercent = 0;
   }
 
   private bindPlayer(player: media.AVPlayer): void {
@@ -511,6 +577,7 @@ export struct VideoPlayerPage {
     this.log(`releasePlayer, hadPlayer=${player !== undefined}`);
     this.player = undefined;
     this.playing = false;
+    this.detachCacheListener();
     if (player !== undefined) {
       try {
         player.release();
@@ -1124,28 +1191,42 @@ export struct VideoPlayerPage {
           .fontSize(13)
           .fontColor('#FFFFFF')
           .width(58)
-        Slider({
-          value: this.positionMs,
-          min: 0,
-          max: this.durationMs > 0 ? this.durationMs : 1,
-          step: 1000
-        })
-          .layoutWeight(1)
-          .selectedColor(this.pal.primary)
-          .trackColor('rgba(255,255,255,0.3)')
-          .blockColor(Color.White)
-          .onChange((v: number, mode: SliderChangeMode) => {
-            if (mode === SliderChangeMode.Begin || mode === SliderChangeMode.Moving) {
-              this.dragging = true;
-              this.positionMs = v;
-            } else {
-              const interactive = this.dragging || mode === SliderChangeMode.Click;
-              this.dragging = false;
-              if (interactive && this.durationMs > 0) {
-                this.seekTo(v);
-              }
-            }
+        Stack({ alignContent: Alignment.Center }) {
+          // 缓存进度条：代理下载百分比（0-100），显示在播放进度条下方
+          Progress({
+            value: this.cachePercent,
+            total: 100,
+            type: ProgressType.Linear
           })
+            .height(2)
+            .width('100%')
+            .color('rgba(255,255,255,0.45)')
+            .backgroundColor(Color.Transparent)
+            .offset({ y: 6 })
+          Slider({
+            value: this.positionMs,
+            min: 0,
+            max: this.durationMs > 0 ? this.durationMs : 1,
+            step: 1000
+          })
+            .width('100%')
+            .selectedColor(this.pal.primary)
+            .trackColor('rgba(255,255,255,0.3)')
+            .blockColor(Color.White)
+            .onChange((v: number, mode: SliderChangeMode) => {
+              if (mode === SliderChangeMode.Begin || mode === SliderChangeMode.Moving) {
+                this.dragging = true;
+                this.positionMs = v;
+              } else {
+                const interactive = this.dragging || mode === SliderChangeMode.Click;
+                this.dragging = false;
+                if (interactive && this.durationMs > 0) {
+                  this.seekTo(v);
+                }
+              }
+            })
+        }
+        .layoutWeight(1)
         Text(this.clock(this.durationMs))
           .fontSize(13)
           .fontColor('#E0E0E0')

@@ -13,6 +13,7 @@ import { ExtensionListPanel } from './components/ExtensionListPanel';
 import { InputDialog } from './components/Dialogs';
 import { AppIcon } from './components/AppIcon';
 import { TypeBadgedIcon } from './components/TypeBadgedIcon';
+import { NsfwTag } from './components/NsfwTag';
 
 // 语言显示名（对齐 Mihon 源列表的语言分组头）
 const LANG_NAMES: Record<string, string> = {
@@ -277,6 +278,8 @@ export struct BrowsePage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('navBarH') navBarH: number = 0;
   @StorageProp('pluginsDirty') @Watch('onPluginsChanged') pluginsDirty: number = 0;
+  // NSFW 源显示开关（浏览设置页写入 AppStorage）
+  @StorageProp('showNsfw') showNsfw: boolean = false;
   @State currentTab: number = 0;
   // 图源 Tab
   @State sources: Source[] = [];
@@ -381,6 +384,10 @@ export struct BrowsePage {
         continue;
       }
       if (this.enabledTypes.length > 0 && this.enabledTypes.indexOf(s.contentType) < 0) {
+        continue;
+      }
+      // 关闭“显示 NSFW 源”时隐藏 NSFW 源
+      if (s.nsfw && !this.showNsfw) {
         continue;
       }
       if (this.isPinned(s.key)) {
@@ -603,10 +610,17 @@ export struct BrowsePage {
           .fontColor(this.pal.text)
           .maxLines(1)
           .textOverflow({ overflow: TextOverflow.Ellipsis })
-        Text(langDisplayName(s.lang))
-          .fontSize(11)
-          .fontColor(this.pal.sub)
-          .margin({ top: 2 })
+        Row() {
+          Text(langDisplayName(s.lang))
+            .fontSize(11)
+            .fontColor(this.pal.sub)
+            .margin({ top: 2 })
+          if (s.nsfw) {
+            NsfwTag()
+              .margin({ left: 6, top: 2 })
+          }
+        }
+        .alignItems(VerticalAlign.Center)
       }
       .alignItems(HorizontalAlign.Start)
       .layoutWeight(1)

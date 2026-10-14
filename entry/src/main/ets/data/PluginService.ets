@@ -636,7 +636,8 @@ export class PluginService {
       version: base.version,
       versionCode: base.versionCode,
       baseUrl: src.baseUrl !== undefined && src.baseUrl !== '' ? src.baseUrl : base.baseUrl,
-      nsfw: base.nsfw,
+      // 单源声明 nsfw 时优先生效，否则继承包级 manifest.nsfw
+      nsfw: src.nsfw !== undefined ? src.nsfw : base.nsfw,
       supportsLatest: supports,
       minAppVersion: base.minAppVersion,
       dslVersion: base.dslVersion,

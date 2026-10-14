@@ -108,13 +108,15 @@ interface RawPrefItem {
   titles?: string[];
 }
 
-// tachiyomi-js getManifest() 里的单个源
+// tachiyomi-js getManifest()/getSources() 里的单个源
 export interface CompiledSourceInfo {
   id?: string;
   name?: string;
   lang?: string;
   baseUrl?: string;
   supportsLatest?: boolean;
+  // 单源级 NSFW 声明（可选）；未声明时继承包级 manifest.nsfw
+  nsfw?: boolean;
 }
 
 // JSVM 插件适配器：实现 Source 接口，方法经专属 Worker 转发到隔离 JSVM 引擎
@@ -124,6 +126,7 @@ export class JsvmSource implements Source {
   readonly lang: string;
   readonly supportsLatest: boolean;
   readonly contentType: string;
+  readonly nsfw: boolean;
   readonly manifest: PluginManifest;
   // 插件包目录名。多语言扩展共用一个 JSVM 引擎，浏览列表里每个语言各有自己的 key。
   readonly packageKey: string;
@@ -150,6 +153,7 @@ export class JsvmSource implements Source {
     this.exportedMethods = exportedMethods;
     this.supportsLatest = manifest.supportsLatest && exportedMethods.indexOf('getLatestManga') >= 0;
     this.contentType = ContentType.normalize(manifest.contentType);
+    this.nsfw = manifest.nsfw;
   }
 
   setImageHeaders(headers: Record<string, string> | undefined): void {

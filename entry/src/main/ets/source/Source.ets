@@ -8,6 +8,8 @@ export interface Source {
   readonly lang: string;
   readonly supportsLatest: boolean;
   readonly contentType: string;
+  // NSFW 源标记（插件 manifest 声明）；关闭“显示 NSFW 源”时在浏览/搜索中隐藏
+  readonly nsfw: boolean;
   // 源图标（file:// 路径或网络 URL）；空字符串表示无图标，由 UI 回退首字母
   readonly iconPath: string;
 

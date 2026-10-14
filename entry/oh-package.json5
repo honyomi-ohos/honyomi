@@ -6,6 +6,7 @@
   "author": "",
   "license": "",
   "dependencies": {
+    "@ohos/video-cache": "^1.0.0",
     "libjsvmengine.so": "file:./src/main/cpp/types/libjsvmengine"
   }
 }

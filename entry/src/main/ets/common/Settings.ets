@@ -359,6 +359,7 @@ export class Settings {
 
   static setShowNsfw(v: boolean): void {
     Settings.setBool('showNsfw', v);
+    AppStorage.setOrCreate(AppKeys.SHOW_NSFW, v);
   }
 
   static getDownloadWifiOnly(): boolean {
@@ -372,6 +373,7 @@ export class Settings {
   static pushGlobalFlags(): void {
     AppStorage.setOrCreate(AppKeys.DOWNLOADED_ONLY, Settings.getDownloadedOnly());
     AppStorage.setOrCreate(AppKeys.INCOGNITO, Settings.getIncognito());
+    AppStorage.setOrCreate(AppKeys.SHOW_NSFW, Settings.getShowNsfw());
   }
 
   // ---- 通用 ----

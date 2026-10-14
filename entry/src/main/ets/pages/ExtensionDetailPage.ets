@@ -8,6 +8,7 @@ import { EmptyScreen } from './components/EmptyScreen';
 import { InputDialog, ConfirmDialog } from './components/Dialogs';
 import { AppIcon } from './components/AppIcon';
 import { TypeBadgedIcon } from './components/TypeBadgedIcon';
+import { NsfwTag } from './components/NsfwTag';
 
 // 语言显示名（与 BrowsePage 保持一致的精简版）
 const LANG_NAMES: Record<string, string> = {
@@ -385,13 +386,20 @@ export struct ExtensionDetailPage {
                 })
                   .margin({ top: 8 })
 
-                Text(this.plugin.manifest.name)
-                  .fontSize(20)
-                  .fontWeight(FontWeight.Bold)
-                  .fontColor(this.pal.text)
-                  .margin({ top: 12 })
-                  .maxLines(2)
-                  .textAlign(TextAlign.Center)
+                Row() {
+                  Text(this.plugin.manifest.name)
+                    .fontSize(20)
+                    .fontWeight(FontWeight.Bold)
+                    .fontColor(this.pal.text)
+                    .maxLines(2)
+                    .textAlign(TextAlign.Center)
+                  if (this.plugin.manifest.nsfw) {
+                    NsfwTag()
+                      .margin({ left: 6 })
+                  }
+                }
+                .alignItems(VerticalAlign.Center)
+                .margin({ top: 12 })
 
                 Text(this.plugin.manifest.key)
                   .fontSize(12)
@@ -451,10 +459,17 @@ export struct ExtensionDetailPage {
                           .fontColor(this.pal.text)
                           .maxLines(1)
                           .textOverflow({ overflow: TextOverflow.Ellipsis })
-                        Text(langDisplayName(source.lang))
-                          .fontSize(11)
-                          .fontColor(this.pal.sub)
-                          .margin({ top: 2 })
+                        Row() {
+                          Text(langDisplayName(source.lang))
+                            .fontSize(11)
+                            .fontColor(this.pal.sub)
+                          if (source.nsfw) {
+                            NsfwTag()
+                              .margin({ left: 6 })
+                          }
+                        }
+                        .alignItems(VerticalAlign.Center)
+                        .margin({ top: 2 })
                       }
                       .alignItems(HorizontalAlign.Start)
                       .layoutWeight(1)

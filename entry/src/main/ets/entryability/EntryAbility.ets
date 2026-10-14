@@ -36,6 +36,8 @@ export default class EntryAbility extends UIAbility {
     AppStorage.setOrCreate(AppKeys.PLUGINS_DIRTY, 0);
     AppStorage.setOrCreate(AppKeys.CF_CHALLENGE_URL, '');
     Settings.init(this.context);
+    // 全局功能开关从持久化偏好恢复（NSFW 源显示等）
+    Settings.pushGlobalFlags();
     // 应用语言偏好（跟随系统时由系统资源机制自动匹配）
     Settings.applyAppLanguage();
     // 主题

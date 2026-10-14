@@ -41,6 +41,12 @@ export struct BrowseSourcePage {
     return SourceRegistry.get(this.sourceKey);
   }
 
+  // NSFW 源内的漫画卡片角标（MangaCard 右下红标）
+  private nsfwBadge(): string {
+    const source = this.currentSource();
+    return source !== undefined && source.nsfw ? 'NSFW' : '';
+  }
+
   // 结果网格列数：手机双列，平板/横屏按约 160vp 一卡自适应增加列数
   private gridColumns(): number {
     const w = this.contentW > 0 ? this.contentW : 360;
@@ -399,6 +405,7 @@ export struct BrowseSourcePage {
                 GridItem() {
                   MangaCard({
                     record: record,
+                    badge: this.nsfwBadge(),
                     onCardClick: (r: MangaRecord): void => {
                       this.openDetail(r);
                     },

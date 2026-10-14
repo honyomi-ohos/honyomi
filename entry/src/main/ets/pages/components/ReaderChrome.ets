@@ -326,117 +326,89 @@ export struct ReaderTransition {
   @Prop textCol: string = '#ECEEF2';
   @Prop subCol: string = '#99ECEEF2';
 
+  // 章节信息块：小号次要色标签 + 中号章节名（多行省略）
+  @Builder
+  chapterBlock(label: ResourceStr, name: string) {
+    Column({ space: 6 }) {
+      Text(label)
+        .fontSize(13)
+        .fontColor(this.subCol)
+        .maxLines(1)
+        .width('100%')
+      Text(name)
+        .fontSize(18)
+        .fontWeight(FontWeight.Medium)
+        .lineHeight(26)
+        .fontColor(this.textCol)
+        .maxLines(5)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .width('100%')
+    }
+    .alignItems(HorizontalAlign.Start)
+    .width('100%')
+  }
+
+  // 无相邻章节提示卡片（描边卡片 + info 图标）
+  @Builder
+  noChapterCard(label: ResourceStr) {
+    Row({ space: 12 }) {
+      AppIcon({ name: 'info', iconSize: 20, tint: this.textCol })
+      Text(label)
+        .fontSize(14)
+        .lineHeight(20)
+        .fontColor(this.textCol)
+    }
+    .alignItems(VerticalAlign.Center)
+    .padding({ left: 16, right: 16, top: 12, bottom: 12 })
+    .borderRadius(12)
+    .border({ width: 1, color: this.subCol })
+  }
+
   build() {
     Column() {
       if (this.kind === 'next') {
         // 已读完：当前章节
-        Column() {
-          Text($r('app.string.transition_finished'))
-            .fontSize(16)
-            .fontWeight(FontWeight.Medium)
-            .fontColor(this.textCol)
-            .maxLines(1)
-            .width('100%')
-          Text(this.currentName)
-            .fontSize(20)
-            .fontColor(this.textCol)
-            .maxLines(5)
-            .textOverflow({ overflow: TextOverflow.Ellipsis })
-            .margin({ top: 4 })
-            .width('100%')
-        }
-        .alignItems(HorizontalAlign.Start)
-        .width('100%')
-
+        this.chapterBlock($r('app.string.transition_finished'), this.currentName)
+        // 下一章信息 / 无下一章提示卡片
         if (this.targetName !== '') {
-          // 下一章
           Column() {
-            Text($r('app.string.transition_next'))
-              .fontSize(16)
-              .fontWeight(FontWeight.Medium)
-              .fontColor(this.textCol)
-              .maxLines(1)
-              .width('100%')
-            Text(this.targetName)
-              .fontSize(20)
-              .fontColor(this.textCol)
-              .maxLines(5)
-              .textOverflow({ overflow: TextOverflow.Ellipsis })
-              .margin({ top: 4 })
-              .width('100%')
+            this.chapterBlock($r('app.string.transition_next'), this.targetName)
           }
-          .alignItems(HorizontalAlign.Start)
           .width('100%')
-          .margin({ top: 24 })
+          .margin({ top: 32 })
         } else {
-          // 没有下一章：提示卡片
-          Row({ space: 12 }) {
-            AppIcon({ name: 'info', iconSize: 20, tint: this.textCol })
-            Text($r('app.string.transition_no_next'))
-              .fontSize(14)
-              .fontColor(this.textCol)
+          Column() {
+            this.noChapterCard($r('app.string.transition_no_next'))
           }
-          .padding({ left: 16, right: 16, top: 12, bottom: 12 })
-          .borderRadius(12)
-          .border({ width: 1, color: this.subCol })
-          .margin({ top: 24 })
+          .width('100%')
+          .alignItems(HorizontalAlign.Start)
+          .margin({ top: 32 })
         }
       } else {
+        // 上一章信息 / 无上一章提示卡片
         if (this.targetName !== '') {
-          // 上一章
           Column() {
-            Text($r('app.string.transition_previous'))
-              .fontSize(16)
-              .fontWeight(FontWeight.Medium)
-              .fontColor(this.textCol)
-              .maxLines(1)
-              .width('100%')
-            Text(this.targetName)
-              .fontSize(20)
-              .fontColor(this.textCol)
-              .maxLines(5)
-              .textOverflow({ overflow: TextOverflow.Ellipsis })
-              .margin({ top: 4 })
-              .width('100%')
+            this.chapterBlock($r('app.string.transition_previous'), this.targetName)
           }
-          .alignItems(HorizontalAlign.Start)
           .width('100%')
         } else {
-          // 没有上一章：提示卡片
-          Row({ space: 12 }) {
-            AppIcon({ name: 'info', iconSize: 20, tint: this.textCol })
-            Text($r('app.string.transition_no_previous'))
-              .fontSize(14)
-              .fontColor(this.textCol)
+          Column() {
+            this.noChapterCard($r('app.string.transition_no_previous'))
           }
-          .padding({ left: 16, right: 16, top: 12, bottom: 12 })
-          .borderRadius(12)
-          .border({ width: 1, color: this.subCol })
+          .width('100%')
+          .alignItems(HorizontalAlign.Start)
         }
-
         // 当前章节
         Column() {
-          Text($r('app.string.transition_current'))
-            .fontSize(16)
-            .fontWeight(FontWeight.Medium)
-            .fontColor(this.textCol)
-            .maxLines(1)
-            .width('100%')
-          Text(this.currentName)
-            .fontSize(20)
-            .fontColor(this.textCol)
-            .maxLines(5)
-            .textOverflow({ overflow: TextOverflow.Ellipsis })
-            .margin({ top: 4 })
-            .width('100%')
+          this.chapterBlock($r('app.string.transition_current'), this.currentName)
         }
-        .alignItems(HorizontalAlign.Start)
         .width('100%')
-        .margin({ top: 24 })
+        .margin({ top: 32 })
       }
     }
-    .constraintSize({ maxWidth: 460 })
+    .constraintSize({ maxWidth: 520 })
     .width('100%')
+    .padding({ left: 32, right: 32, top: 16, bottom: 16 })
     .alignItems(HorizontalAlign.Center)
   }
 }

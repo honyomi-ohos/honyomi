@@ -8,6 +8,7 @@ import { Settings } from '../../common/Settings';
 import { EmptyScreen } from './EmptyScreen';
 import { AppIcon } from './AppIcon';
 import { TypeBadgedIcon } from './TypeBadgedIcon';
+import { NsfwTag } from './NsfwTag';
 
 // 插件列表面板（浏览页“插件”Tab 内嵌）：已安装 / 在线仓库
 // 对齐 Mihon：整行点击进入插件详情页；从本地安装/仓库配置/刷新由宿主（BrowsePage 菜单）
@@ -22,6 +23,8 @@ export struct ExtensionListPanel {
   @Prop @Watch('onFilterChanged') searchQuery: string = '';
   // 内容类型过滤（宿主过滤弹窗下发）；空数组 = 全部类型
   @Prop @Watch('onFilterChanged') typeFilter: string[] = [];
+  // NSFW 显示开关：关闭时隐藏仓库与已安装列表中的 NSFW 插件
+  @StorageProp('showNsfw') @Watch('onFilterChanged') showNsfw: boolean = false;
   onOpenPlugin: (pluginKey: string) => void = (_k: string) => {};
   @State installed: InstalledPlugin[] = [];
   @State repoEntries: RepoEntry[] = [];
@@ -101,10 +104,13 @@ export struct ExtensionListPanel {
     return this.typeFilter.indexOf(this.effectiveType(contentType)) >= 0;
   }
 
-  // 已安装过滤结果缓存计算（installed/searchQuery/typeFilter 任一变化时调用）
+  // 已安装过滤结果缓存计算（installed/searchQuery/typeFilter/showNsfw 任一变化时调用）
   private recomputeShownInstalled(): void {
     const list: InstalledPlugin[] = [];
     for (const item of this.installed) {
+      if (item.manifest.nsfw && !this.showNsfw) {
+        continue;
+      }
       if (this.matchesQuery(item.manifest.name, item.manifest.key) &&
         this.matchesType(item.manifest.contentType)) {
         list.push(item);
@@ -116,6 +122,9 @@ export struct ExtensionListPanel {
   filteredRepoEntries(): RepoEntry[] {
     const list: RepoEntry[] = [];
     for (const entry of this.repoEntries) {
+      if (entry.nsfw && !this.showNsfw) {
+        continue;
+      }
       if (this.matchesQuery(entry.name, entry.key) && this.matchesType(entry.contentType)) {
         list.push(entry);
       }
@@ -244,12 +253,19 @@ export struct ExtensionListPanel {
           .fontColor(this.pal.text)
           .maxLines(1)
           .textOverflow({ overflow: TextOverflow.Ellipsis })
-        Text(`${item.manifest.key} · v${item.manifest.version} · ${item.manifest.lang}`)
-          .fontSize(11)
-          .fontColor(this.pal.sub)
-          .margin({ top: 2 })
-          .maxLines(1)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
+        Row() {
+          Text(`${item.manifest.key} · v${item.manifest.version} · ${item.manifest.lang}`)
+            .fontSize(11)
+            .fontColor(this.pal.sub)
+            .maxLines(1)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+          if (item.manifest.nsfw) {
+            NsfwTag()
+              .margin({ left: 6 })
+          }
+        }
+        .alignItems(VerticalAlign.Center)
+        .margin({ top: 2 })
       }
       .alignItems(HorizontalAlign.Start)
       .layoutWeight(1)
@@ -281,10 +297,17 @@ export struct ExtensionListPanel {
         Text(entry.name)
           .fontSize(14)
           .fontColor(this.pal.text)
-        Text(`v${entry.version} · ${entry.lang}`)
-          .fontSize(11)
-          .fontColor(this.pal.sub)
-          .margin({ top: 2 })
+        Row() {
+          Text(`v${entry.version} · ${entry.lang}`)
+            .fontSize(11)
+            .fontColor(this.pal.sub)
+          if (entry.nsfw) {
+            NsfwTag()
+              .margin({ left: 6 })
+          }
+        }
+        .alignItems(VerticalAlign.Center)
+        .margin({ top: 2 })
       }
       .alignItems(HorizontalAlign.Start)
       .layoutWeight(1)

@@ -13,6 +13,7 @@ export abstract class LocalFsSource implements Source {
   readonly lang = 'zh';
   readonly supportsLatest = false;
   readonly iconPath = '';
+  readonly nsfw = false;
   abstract readonly contentType: string;
 
   private readonly syncRoot: string;

@@ -26,6 +26,7 @@ export class AppKeys {
   // 全局功能开关
   static readonly DOWNLOADED_ONLY: string = 'downloadedOnly';
   static readonly INCOGNITO: string = 'incognito';
+  static readonly SHOW_NSFW: string = 'showNsfw';
   // 跨页通信
   static readonly CARD_ACTION: string = 'cardAction';
   // 视频播放器外部快进/跳转指令（JSON 字符串，VideoPlayerPage 消费）
