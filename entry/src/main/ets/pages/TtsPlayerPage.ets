@@ -108,6 +108,7 @@ export struct TtsPlayerPage {
     this.speed = Settings.getNovelTtsSpeed();
     this.sleepRemainingMs = -1;
     this.sleepMinutes = TtsPlaybackService.sleepTimerMinutes();
+    this.sleepChaptersLeft = TtsPlaybackService.sleepChaptersLeftCount();
     const m: MangaRecord | undefined = TtsPlaybackService.getManga();
     const ch: ChapterRecord | undefined = TtsPlaybackService.getChapter();
     this.mangaTitle = m !== undefined ? m.title : '';
@@ -146,13 +147,27 @@ export struct TtsPlayerPage {
     return `${m}:${r < 10 ? `0${r}` : `${r}`}`;
   }
 
-  // 定时入口文案：倒计时中显示剩余时间，已设定显示分钟数，否则显示“关闭”
+  // 当前语速在选项中的下标（未命中回落 1x）
+  private speedIndex(): number {
+    const idx = SPEED_OPTIONS.indexOf(this.speed);
+    return idx >= 0 ? idx : SPEED_OPTIONS.indexOf(1);
+  }
+
+  // 定时是否生效（时长或章数任一）
+  private sleepActive(): boolean {
+    return this.sleepRemainingMs > 0 || this.sleepMinutes > 0 || this.sleepChaptersLeft > 0;
+  }
+
+  // 定时入口文案：倒计时中显示剩余时间，时长定时显示分钟数，章数定时显示剩余章数，否则显示“关闭”
   private sleepEntryLabel(): ResourceStr {
     if (this.sleepRemainingMs > 0) {
       return this.sleepRemainingText();
     }
     if (this.sleepMinutes > 0) {
       return $r('app.string.tts_sleep_minutes', this.sleepMinutes);
+    }
+    if (this.sleepChaptersLeft > 0) {
+      return $r('app.string.tts_sleep_chapters_short', this.sleepChaptersLeft);
     }
     return $r('app.string.tts_sleep_off');
   }
@@ -349,8 +364,21 @@ export struct TtsPlayerPage {
         .alignItems(VerticalAlign.Center)
         .margin({ top: 22 })
 
-        // 功能入口：倍速 / 定时 / 目录（各自打开 Sheet 选择）
+        // 功能入口：目录 / 倍速 / 定时（各自打开 Sheet 选择）
         Row() {
+          Column({ space: 6 }) {
+            AppIcon({ name: 'sort', iconSize: 22 })
+            Text($r('app.string.tts_chapters'))
+              .fontSize(12)
+              .fontColor(this.pal.text)
+          }
+          .layoutWeight(1)
+          .padding({ top: 12, bottom: 12 })
+          .alignItems(HorizontalAlign.Center)
+          .onClick(() => {
+            this.showChapters = true;
+          })
+
           Column({ space: 6 }) {
             AppIcon({ name: 'speed', iconSize: 22 })
             Text(`${this.speed}x`)
@@ -368,30 +396,17 @@ export struct TtsPlayerPage {
             AppIcon({
               name: 'schedule',
               iconSize: 22,
-              tint: this.sleepRemainingMs > 0 || this.sleepMinutes > 0 ? this.pal.primary : ''
+              tint: this.sleepActive() ? this.pal.primary : ''
             })
             Text(this.sleepEntryLabel())
               .fontSize(12)
-              .fontColor(this.sleepRemainingMs > 0 || this.sleepMinutes > 0 ? this.pal.primary : this.pal.text)
+              .fontColor(this.sleepActive() ? this.pal.primary : this.pal.text)
           }
           .layoutWeight(1)
           .padding({ top: 12, bottom: 12 })
           .alignItems(HorizontalAlign.Center)
           .onClick(() => {
             this.showSleep = true;
-          })
-
-          Column({ space: 6 }) {
-            AppIcon({ name: 'view_list', iconSize: 22 })
-            Text($r('app.string.tts_chapters'))
-              .fontSize(12)
-              .fontColor(this.pal.text)
-          }
-          .layoutWeight(1)
-          .padding({ top: 12, bottom: 12 })
-          .alignItems(HorizontalAlign.Center)
-          .onClick(() => {
-            this.showChapters = true;
           })
         }
         .width(Bp.isWide(this.windowW) ? 400 : '88%')
@@ -411,35 +426,58 @@ export struct TtsPlayerPage {
     .align(Alignment.Center)
   }
 
-  // 倍速面板（0.5x - 2x，切换立即生效）
+  // 倍速面板：带步进的滑动输入（0.5x - 2x，松手生效）
   @Builder
   speedSheetBuilder() {
-    Column() {
-      Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.Center }) {
-        ForEach(SPEED_OPTIONS, (v: number) => {
-          Text(`${v}x`)
-            .fontSize(14)
-            .fontColor(this.speed === v ? '#FFFFFF' : this.pal.text)
-            .padding({ left: 18, right: 18, top: 8, bottom: 8 })
-            .borderRadius(18)
-            .backgroundColor(this.speed === v ? this.pal.primary : this.pal.chip)
-            .margin({ left: 5, right: 5, bottom: 10 })
-            .onClick(() => {
-              this.speed = v;
-              TtsPlaybackService.setSpeed(v);
-            })
-        }, (v: number) => `${v}`)
+    Column({ space: 8 }) {
+      Text(`${this.speed}x`)
+        .fontSize(22)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+
+      Slider({
+        value: this.speedIndex(),
+        min: 0,
+        max: SPEED_OPTIONS.length - 1,
+        step: 1,
+        style: SliderStyle.OutSet
+      })
+        .selectedColor(this.pal.primary)
+        .trackColor(this.pal.chip)
+        .blockColor(this.pal.primary)
+        .width('100%')
+        .onChange((value: number, mode: SliderChangeMode) => {
+          const idx = Math.round(value);
+          if (idx < 0 || idx >= SPEED_OPTIONS.length) {
+            return;
+          }
+          this.speed = SPEED_OPTIONS[idx];
+          if (mode === SliderChangeMode.End || mode === SliderChangeMode.Click) {
+            TtsPlaybackService.setSpeed(this.speed);
+          }
+        })
+
+      // 两端刻度
+      Row() {
+        Text('0.5x')
+          .fontSize(12)
+          .fontColor(this.pal.sub)
+        Text('2x')
+          .fontSize(12)
+          .fontColor(this.pal.sub)
       }
       .width('100%')
+      .justifyContent(FlexAlign.SpaceBetween)
     }
     .width('100%')
     .padding({ left: 16, right: 16, top: 8, bottom: 20 })
   }
 
-  // 定时面板（到点暂停，可继续播放）
+  // 定时面板：按时长（到点暂停）或按章数（播完指定章数停在下一章开头）
   @Builder
   sleepSheetBuilder() {
     Column() {
+      // 状态行
       if (this.sleepRemainingMs > 0) {
         Row({ space: 6 }) {
           AppIcon({ name: 'schedule', iconSize: 16, tint: this.pal.primary })
@@ -448,18 +486,33 @@ export struct TtsPlayerPage {
             .fontColor(this.pal.primary)
         }
         .margin({ bottom: 12 })
+      } else if (this.sleepChaptersLeft > 0) {
+        Row({ space: 6 }) {
+          AppIcon({ name: 'schedule', iconSize: 16, tint: this.pal.primary })
+          Text(this.sleepChaptersStatus())
+            .fontSize(13)
+            .fontColor(this.pal.primary)
+        }
+        .margin({ bottom: 12 })
       }
+
+      // 按时长
+      Text($r('app.string.tts_sleep_by_time'))
+        .fontSize(13)
+        .fontColor(this.pal.sub)
+        .width('100%')
       Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.Center }) {
         // 关闭
         Text($r('app.string.tts_sleep_off'))
           .fontSize(14)
-          .fontColor(this.sleepMinutes === 0 ? '#FFFFFF' : this.pal.text)
+          .fontColor(!this.sleepActive() ? '#FFFFFF' : this.pal.text)
           .padding({ left: 18, right: 18, top: 8, bottom: 8 })
           .borderRadius(18)
-          .backgroundColor(this.sleepMinutes === 0 ? this.pal.primary : this.pal.chip)
-          .margin({ left: 5, right: 5, bottom: 10 })
+          .backgroundColor(!this.sleepActive() ? this.pal.primary : this.pal.chip)
+          .margin({ left: 5, right: 5, top: 6, bottom: 10 })
           .onClick(() => {
             this.sleepMinutes = 0;
+            this.sleepChaptersLeft = 0;
             TtsPlaybackService.setSleepTimer(0);
           })
         ForEach(SLEEP_OPTIONS, (v: number) => {
@@ -469,7 +522,7 @@ export struct TtsPlayerPage {
             .padding({ left: 18, right: 18, top: 8, bottom: 8 })
             .borderRadius(18)
             .backgroundColor(this.sleepMinutes === v ? this.pal.primary : this.pal.chip)
-            .margin({ left: 5, right: 5, bottom: 10 })
+            .margin({ left: 5, right: 5, top: 6, bottom: 10 })
             .onClick(() => {
               this.sleepMinutes = v;
               TtsPlaybackService.setSleepTimer(v);
@@ -477,9 +530,51 @@ export struct TtsPlayerPage {
         }, (v: number) => `${v}`)
       }
       .width('100%')
+
+      Divider()
+        .color(this.pal.divider)
+        .margin({ top: 4, bottom: 8 })
+
+      // 按章数
+      Text($r('app.string.tts_sleep_by_chapters'))
+        .fontSize(13)
+        .fontColor(this.pal.sub)
+        .width('100%')
+      Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.Center }) {
+        ForEach(SLEEP_CHAPTER_OPTIONS, (v: number) => {
+          Text(this.sleepChapterOptionLabel(v))
+            .fontSize(14)
+            .fontColor(this.sleepChaptersLeft === v ? '#FFFFFF' : this.pal.text)
+            .padding({ left: 18, right: 18, top: 8, bottom: 8 })
+            .borderRadius(18)
+            .backgroundColor(this.sleepChaptersLeft === v ? this.pal.primary : this.pal.chip)
+            .margin({ left: 5, right: 5, top: 6, bottom: 10 })
+            .onClick(() => {
+              this.sleepChaptersLeft = v;
+              TtsPlaybackService.setSleepChapters(v);
+            })
+        }, (v: number) => `${v}`)
+      }
+      .width('100%')
     }
     .width('100%')
     .padding({ left: 16, right: 16, top: 8, bottom: 20 })
+  }
+
+  // 章数定时选项文案：1=播完本章，其余=播完 N 章
+  private sleepChapterOptionLabel(v: number): ResourceStr {
+    if (v === 1) {
+      return $r('app.string.tts_sleep_after_this_chapter');
+    }
+    return $r('app.string.tts_sleep_after_n_chapters', v);
+  }
+
+  // 章数定时状态行文案：剩 1 章显示“播完本章后停止”，其余显示“播完 N 章后停止”
+  private sleepChaptersStatus(): ResourceStr {
+    if (this.sleepChaptersLeft === 1) {
+      return $r('app.string.tts_sleep_will_stop_this_chapter');
+    }
+    return $r('app.string.tts_sleep_will_stop_n_chapters', this.sleepChaptersLeft);
   }
 
   // 章节列表面板

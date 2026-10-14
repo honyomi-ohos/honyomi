@@ -2,6 +2,18 @@
   "insightIntentsSrcEntry": [
     {
       "srcEntry": "./ets/entryability/SearchAndAddMangaIntent.ets"
+    },
+    {
+      "srcEntry": "./ets/entryability/ContinueReadingIntent.ets"
+    },
+    {
+      "srcEntry": "./ets/entryability/OpenMangaIntent.ets"
+    },
+    {
+      "srcEntry": "./ets/entryability/ContinueListeningIntent.ets"
+    },
+    {
+      "srcEntry": "./ets/entryability/RefreshLibraryIntent.ets"
     }
   ],
   "insightIntents": [

@@ -5,6 +5,7 @@ import { MangaRepo } from '../data/Repos';
 import { SourceRegistry, Source } from '../source/Source';
 import { SManga, MangasPage } from '../model/Models';
 import { AppKeys } from '../common/AppKeys';
+import { TitleMatch } from '../common/TitleMatch';
 import EntryAbility from './EntryAbility';
 
 const DOMAIN = 0x0001;
@@ -84,7 +85,7 @@ export default class SearchAndAddMangaImpl extends InsightIntentEntryExecutor<Se
     let bestScore: number = 0;
     for (let i: number = 0; i < allResults.length; i++) {
       for (const m of allResults[i]) {
-        const score: number = SearchAndAddMangaImpl.scoreTitle(query, m.title);
+        const score: number = TitleMatch.score(query, m.title);
         if (score > bestScore) {
           bestScore = score;
           best = m;
@@ -149,33 +150,6 @@ export default class SearchAndAddMangaImpl extends InsightIntentEntryExecutor<Se
         finish([]);
       });
     });
-  }
-
-  // 标题相似度评分（归一化小写）：完全相等 > 前缀 > 包含 > 分词重叠
-  private static scoreTitle(query: string, title: string): number {
-    const q: string = query.toLowerCase().trim();
-    const t: string = title.toLowerCase().trim();
-    if (q === '' || t === '') {
-      return 0;
-    }
-    if (t === q) {
-      return 1000;
-    }
-    const lenDiff: number = Math.abs(t.length - q.length);
-    if (t.startsWith(q) || q.startsWith(t)) {
-      return 800 - lenDiff;
-    }
-    if (t.includes(q) || q.includes(t)) {
-      return 600 - lenDiff;
-    }
-    const tokens: string[] = q.split(/[\s:：·・\-—,，、.。!！?？]+/);
-    let overlap: number = 0;
-    for (const tok of tokens) {
-      if (tok.length > 0 && t.includes(tok)) {
-        overlap++;
-      }
-    }
-    return overlap > 0 ? 200 + overlap * 50 : 0;
   }
 
   // 跳转作品详情页（复用 cardAction 通道，Index 统一消费）

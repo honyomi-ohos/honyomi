@@ -932,6 +932,27 @@ export class HistoryRepo {
     }
   }
 
+  // 最近一次听读的小说记录（意图"继续听书"：按小说类型过滤最近历史）
+  static async lastNovel(): Promise<HistoryItem | undefined> {
+    const store = await AppDb.get();
+    try {
+      const rs = await store.querySql(
+        `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
+                h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
+                m.thumbnailUrl AS coverUrl, c.name AS chapterName
+         FROM history h
+         JOIN manga m ON m.id = h.mangaId
+         JOIN chapter c ON c.id = h.chapterId
+         WHERE m.contentType = 'novel'
+         ORDER BY h.seenAt DESC LIMIT 1`, []);
+      const item: HistoryItem | undefined = rs.goToNextRow() ? HistoryRepo.rowToItem(rs) : undefined;
+      closeQuietly(rs);
+      return item;
+    } catch (e) {
+      throw new Error(`last novel failed: ${e}`);
+    }
+  }
+
   static async clear(): Promise<void> {
     const store = await AppDb.get();
     try {

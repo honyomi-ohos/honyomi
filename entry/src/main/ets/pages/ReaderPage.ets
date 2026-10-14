@@ -29,6 +29,7 @@ import {
   ReaderOrientationSheet,
   ReaderFilterArea
 } from './components/ReaderChrome';
+import { LoadingBackButton } from './components/LoadingBackButton';
 
 // LazyForEach 数据源
 class PageDataSource implements IDataSource {
@@ -1190,6 +1191,15 @@ export struct ReaderPage {
             satPct: this.filterSaturation / 100,
             content: (): void => {
               this.swiperBody()
+            }
+          })
+        }
+
+        // 加载中：PC 无返回手势，左上角返回 + ESC 兜底退出，避免卡在加载页等网络超时
+        if (this.loading) {
+          LoadingBackButton({
+            onBack: (): void => {
+              this.pathStack.pop();
             }
           })
         }

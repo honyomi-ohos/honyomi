@@ -435,6 +435,10 @@ struct Index {
       this.switchTab(2);
       return;
     }
+    if (raw.target === 'ttsplayer') {
+      this.pathStack.pushPathByName('TtsPlayer', null);
+      return;
+    }
     // 意图框架（功能一步达）目标：直达功能页
     if (raw.target === 'library') {
       this.switchTab(0);

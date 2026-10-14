@@ -21,6 +21,7 @@ import { NovelModeSheet } from './components/novel/NovelModeSheet';
 import { NovelDisplayPanel } from './components/novel/NovelDisplayPanel';
 import { NovelTextPanel } from './components/novel/NovelTextPanel';
 import { ReaderMenu, ReaderBottomBar, ReaderNavRow, ReaderPagePill, ReaderMenuIconButton, ReaderIndicatorBadge, ReaderOrientationSheet } from './components/ReaderChrome';
+import { LoadingBackButton } from './components/LoadingBackButton';
 
 // 翻屏进度持久化防抖间隔（毫秒）
 const PERSIST_DEBOUNCE_MS: number = 2000;
@@ -1829,6 +1830,15 @@ export struct NovelReaderPage {
           .onClick((event: ClickEvent) => {
             if (!this.curlActive()) {
               this.handleTap(event);
+            }
+          })
+        }
+
+        // 加载中：PC 无返回手势，左上角返回 + ESC 兜底退出，避免卡在加载页等网络超时
+        if (this.loading) {
+          LoadingBackButton({
+            onBack: (): void => {
+              this.pathStack.pop();
             }
           })
         }
