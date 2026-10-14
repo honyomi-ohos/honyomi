@@ -21,6 +21,7 @@ export type TtsServiceChapterHandler = (mangaId: number, chapterId: number) => v
 export type TtsServiceErrorHandler = (message: string) => void;
 export type TtsServiceFinishHandler = () => void;
 export type TtsServiceSleepHandler = (remainingMs: number) => void;
+export type TtsServiceSleepChaptersHandler = (chaptersLeft: number) => void;
 
 // 订阅列表模型：阅读器、播放器页、迷你条等多个实例可同时订阅、互不覆盖；
 // 消费端 aboutToAppear 订阅、aboutToDisappear 退订自己的回调。
@@ -31,6 +32,7 @@ export class TtsServiceEvents {
   private errorHandlers: TtsServiceErrorHandler[] = [];
   private finishHandlers: TtsServiceFinishHandler[] = [];
   private sleepHandlers: TtsServiceSleepHandler[] = [];
+  private sleepChaptersHandlers: TtsServiceSleepChaptersHandler[] = [];
 
   onState(handler: TtsServiceStateHandler): void {
     this.stateHandlers.push(handler);
@@ -80,6 +82,15 @@ export class TtsServiceEvents {
     this.sleepHandlers = this.sleepHandlers.filter((h: TtsServiceSleepHandler): boolean => h !== handler);
   }
 
+  onSleepChapters(handler: TtsServiceSleepChaptersHandler): void {
+    this.sleepChaptersHandlers.push(handler);
+  }
+
+  offSleepChapters(handler: TtsServiceSleepChaptersHandler): void {
+    this.sleepChaptersHandlers =
+      this.sleepChaptersHandlers.filter((h: TtsServiceSleepChaptersHandler): boolean => h !== handler);
+  }
+
   // 通知遍历副本，允许回调内安全退订
   emitState(playing: boolean, paused: boolean, mangaId: number, chapterId: number): void {
     const handlers = this.stateHandlers.slice();
@@ -122,6 +133,13 @@ export class TtsServiceEvents {
       handlers[i](remainingMs);
     }
   }
+
+  emitSleepChapters(chaptersLeft: number): void {
+    const handlers = this.sleepChaptersHandlers.slice();
+    for (let i = 0; i < handlers.length; i++) {
+      handlers[i](chaptersLeft);
+    }
+  }
 }
 
 // 小说听书播放编排服务（参考 AudioBook 示例 AudioControlCenter）：
@@ -148,6 +166,10 @@ export class TtsPlaybackService {
   // 定时停止
   private static sleepMinutes: number = 0;
   private static sleepTicker: number = -1;
+  // 按章数定时：剩余待播章数（0 未启用）；到点后停在下一章开头（可续播）
+  private static sleepChaptersLeft: number = 0;
+  // 章数定时到点后待续播的下一章 id（0 无）
+  private static resumeNextChapterId: number = 0;
   static events: TtsServiceEvents = new TtsServiceEvents();
 
   // ---- 状态查询 ----
@@ -198,6 +220,10 @@ export class TtsPlaybackService {
     return TtsPlaybackService.sleepMinutes;
   }
 
+  static sleepChaptersLeftCount(): number {
+    return TtsPlaybackService.sleepChaptersLeft;
+  }
+
   // ---- 播放控制 ----
 
   // 从指定章节/段落开始朗读（加载正文并接管 AVSession）
@@ -239,6 +265,7 @@ export class TtsPlaybackService {
       TtsPlaybackService.paraIdx = -1;
       TtsPlaybackService.pausedState = false;
       TtsPlaybackService.pausePara = 0;
+      TtsPlaybackService.resumeNextChapterId = 0;
       TtsPlaybackService.wireEngine();
       TtsPlaybackService.events.emitChapter(mangaId, chapterId);
       TtsPlaybackService.updateSession();
@@ -278,6 +305,20 @@ export class TtsPlaybackService {
   static resume(): void {
     if (!TtsPlaybackService.pausedState) {
       return;
+    }
+    // 章数定时到点后的续播：直接从下一章开头朗读
+    if (TtsPlaybackService.resumeNextChapterId > 0) {
+      const m = TtsPlaybackService.manga;
+      const ctx = TtsPlaybackService.ctx;
+      const nextId = TtsPlaybackService.resumeNextChapterId;
+      TtsPlaybackService.resumeNextChapterId = 0;
+      if (m !== undefined && ctx !== undefined) {
+        TtsPlaybackService.pausedState = false;
+        TtsPlaybackService.start(m.id, nextId, 0, ctx).catch((e: Object): void => {
+          hilog.warn(DOMAIN, TAG, 'resume next chapter failed: %{public}s', `${e}`);
+        });
+        return;
+      }
     }
     const ctx = TtsPlaybackService.ctx;
     const ch = TtsPlaybackService.chapter;
@@ -322,6 +363,7 @@ export class TtsPlaybackService {
     TtsPlaybackService.paras = [];
     TtsPlaybackService.paraIdx = -1;
     TtsPlaybackService.pausePara = 0;
+    TtsPlaybackService.resumeNextChapterId = 0;
     TtsPlaybackService.manga = undefined;
     TtsPlaybackService.chapter = undefined;
     TtsPlaybackService.chapters = [];
@@ -401,6 +443,11 @@ export class TtsPlaybackService {
   // minutes<=0 取消定时；到点暂停朗读（可续播）
   static setSleepTimer(minutes: number): void {
     TtsPlaybackService.cancelSleepTicker();
+    // 切换为时长定时时取消章数定时
+    if (TtsPlaybackService.sleepChaptersLeft !== 0) {
+      TtsPlaybackService.sleepChaptersLeft = 0;
+      TtsPlaybackService.events.emitSleepChapters(0);
+    }
     TtsPlaybackService.sleepMinutes = minutes > 0 ? minutes : 0;
     if (minutes <= 0) {
       TtsPlaybackService.events.emitSleep(-1);
@@ -428,7 +475,23 @@ export class TtsPlaybackService {
     if (TtsPlaybackService.sleepMinutes !== 0) {
       TtsPlaybackService.sleepMinutes = 0;
     }
+    if (TtsPlaybackService.sleepChaptersLeft !== 0) {
+      TtsPlaybackService.sleepChaptersLeft = 0;
+    }
     TtsPlaybackService.events.emitSleep(-1);
+    TtsPlaybackService.events.emitSleepChapters(0);
+  }
+
+  // 按章数定时：播完 count 章后停在下一章开头（count>=1；count<=0 取消）
+  static setSleepChapters(count: number): void {
+    TtsPlaybackService.cancelSleepTicker();
+    // 切换为章数定时时取消时长定时
+    if (TtsPlaybackService.sleepMinutes !== 0) {
+      TtsPlaybackService.sleepMinutes = 0;
+    }
+    TtsPlaybackService.sleepChaptersLeft = count > 0 ? count : 0;
+    TtsPlaybackService.events.emitSleep(-1);
+    TtsPlaybackService.events.emitSleepChapters(TtsPlaybackService.sleepChaptersLeft);
   }
 
   private static cancelSleepTicker(): void {
@@ -494,6 +557,25 @@ export class TtsPlaybackService {
       if (TtsPlaybackService.chapters[i].id === ch.id && i < TtsPlaybackService.chapters.length - 1) {
         nextId = TtsPlaybackService.chapters[i + 1].id;
         break;
+      }
+    }
+    // 章数定时递减：播完设定章数后不再自动续播，停在下一章开头（可续播）
+    if (TtsPlaybackService.sleepChaptersLeft > 0) {
+      TtsPlaybackService.sleepChaptersLeft -= 1;
+      if (TtsPlaybackService.sleepChaptersLeft === 0) {
+        TtsPlaybackService.playingState = false;
+        if (nextId > 0) {
+          TtsPlaybackService.pausedState = true;
+          TtsPlaybackService.pausePara = 0;
+          TtsPlaybackService.resumeNextChapterId = nextId;
+          TtsAvSession.setPlaying(false);
+          TtsPlaybackService.emitState();
+          TtsPlaybackService.events.emitSleepChapters(0);
+          return;
+        }
+        // 无下一章：走全书播完
+      } else {
+        TtsPlaybackService.events.emitSleepChapters(TtsPlaybackService.sleepChaptersLeft);
       }
     }
     if (nextId > 0 && TtsPlaybackService.ctx !== undefined) {

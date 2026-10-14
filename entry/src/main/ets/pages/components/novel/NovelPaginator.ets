@@ -233,10 +233,10 @@ export class NovelChapterText {
     return blocks;
   }
 
-  // 把 <img> 之间的 html 片段剥成纯文本段落，追加为文本块（跳过空段）；
-  // 返回递增后的文本段序号
-  private static pushTextBlocks(segment: string, blocks: NovelBlock[], ttsSeq: number): number {
-    const text = segment
+  // html 片段剥成纯文本：块级标签（br/p/div）转换行、去其余标签、还原常见实体；
+  // 首尾空白一并去除。无插图 html 正文经此归一为纯文本，走统一的分页/渲染路径
+  static htmlToPlain(segment: string): string {
+    return segment
       .replace(/<br\s*\/?>/gi, '\n')
       .replace(/<\/p>/gi, '\n')
       .replace(/<\/div>/gi, '\n')
@@ -245,8 +245,14 @@ export class NovelChapterText {
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
       .replace(/&quot;/g, '"')
-      .replace(/&amp;/g, '&');
-    const lines = text.split('\n');
+      .replace(/&amp;/g, '&')
+      .trim();
+  }
+
+  // 把 <img> 之间的 html 片段剥成纯文本段落，追加为文本块（跳过空段）；
+  // 返回递增后的文本段序号
+  private static pushTextBlocks(segment: string, blocks: NovelBlock[], ttsSeq: number): number {
+    const lines = NovelChapterText.htmlToPlain(segment).split('\n');
     let seq = ttsSeq;
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();

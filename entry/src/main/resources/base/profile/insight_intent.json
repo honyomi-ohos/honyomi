@@ -1,0 +1,109 @@
+{
+  "insightIntentsSrcEntry": [
+    {
+      "srcEntry": "./ets/entryability/SearchAndAddMangaIntent.ets"
+    }
+  ],
+  "insightIntents": [
+    {
+      "intentName": "JumpFunctionPage",
+      "domain": "ToolsDomain",
+      "intentVersion": "1.0.1",
+      "srcEntry": "./ets/entryability/InsightIntentExecutorImpl.ets",
+      "uiAbility": {
+        "ability": "EntryAbility",
+        "executeMode": [
+          "foreground"
+        ]
+      },
+      "inputParams": [
+        {
+          "properties": {
+            "pageId": {
+              "type": "string",
+              "enum": [
+                {
+                  "value": "library",
+                  "displayName": "书库",
+                  "keywords": ["书架", "收藏", "我的漫画", "漫画收藏"],
+                  "displayDescription": "查看收藏的漫画书库",
+                  "icon": ""
+                },
+                {
+                  "value": "updates",
+                  "displayName": "更新",
+                  "keywords": ["最新章节", "漫画更新", "章节更新"],
+                  "displayDescription": "查看收藏漫画的最新更新章节",
+                  "icon": ""
+                },
+                {
+                  "value": "history",
+                  "displayName": "历史",
+                  "keywords": ["阅读历史", "浏览记录", "最近阅读", "阅读记录"],
+                  "displayDescription": "查看阅读历史记录",
+                  "icon": ""
+                },
+                {
+                  "value": "browse",
+                  "displayName": "浏览",
+                  "keywords": ["找书", "找漫画", "书源", "探索", "发现漫画"],
+                  "displayDescription": "浏览书源发现漫画",
+                  "icon": ""
+                },
+                {
+                  "value": "more",
+                  "displayName": "更多",
+                  "keywords": ["更多功能", "工具", "功能列表"],
+                  "displayDescription": "打开更多功能页面",
+                  "icon": ""
+                },
+                {
+                  "value": "downloads",
+                  "displayName": "下载管理",
+                  "keywords": ["下载", "下载队列", "离线漫画", "已下载"],
+                  "displayDescription": "查看和管理漫画下载队列",
+                  "icon": ""
+                },
+                {
+                  "value": "globalsearch",
+                  "displayName": "全局搜索",
+                  "keywords": ["搜索漫画", "搜书", "查找漫画", "搜索"],
+                  "displayDescription": "在所有书源中全局搜索漫画",
+                  "icon": ""
+                },
+                {
+                  "value": "stats",
+                  "displayName": "阅读统计",
+                  "keywords": ["统计", "阅读数据", "阅读时长", "阅读报告"],
+                  "displayDescription": "查看阅读统计数据",
+                  "icon": ""
+                },
+                {
+                  "value": "categories",
+                  "displayName": "分类管理",
+                  "keywords": ["分类", "收藏分类", "编辑分类"],
+                  "displayDescription": "管理书库收藏分类",
+                  "icon": ""
+                },
+                {
+                  "value": "upcoming",
+                  "displayName": "即将更新",
+                  "keywords": ["即将上线", "新书预告", "待更新"],
+                  "displayDescription": "查看即将更新的漫画",
+                  "icon": ""
+                },
+                {
+                  "value": "settings",
+                  "displayName": "设置",
+                  "keywords": ["应用设置", "偏好设置", "软件设置"],
+                  "displayDescription": "打开应用设置页面",
+                  "icon": ""
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -55,6 +55,13 @@ export class ContentType {
     return ContentType.CATEGORY_MANGA;
   }
 
+  // 是否内置默认分类（漫画/小说/视频三种内容类型 code）；用户自建/改名分类返回 false
+  static isBuiltinCategory(name: string): boolean {
+    return name === ContentType.CATEGORY_MANGA ||
+      name === ContentType.CATEGORY_NOVEL ||
+      name === ContentType.CATEGORY_VIDEO;
+  }
+
   static normalize(raw: string | undefined): string {
     if (raw === ContentType.NOVEL || raw === ContentType.VIDEO) {
       return raw;

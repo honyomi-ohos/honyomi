@@ -64,6 +64,8 @@ export struct InputDialog {
 export struct CategoryDialog {
   controller?: CustomDialogController;
   categories: CategoryRecord[] = [];
+  // 当前分类 id（快速改分类/入库选分类时高亮，-1 表示不高亮）
+  selectedId: number = -1;
   onPick: (categoryId: number) => void = (_id: number) => {};
   onClose: () => void = () => {};
   @StorageProp('isDark') isDark: boolean = false;
@@ -86,12 +88,12 @@ export struct CategoryDialog {
       ForEach(this.categories, (cat: CategoryRecord) => {
         Text(Util.categoryLabel(cat.name))
           .fontSize(15)
-          .fontColor(this.pal.text)
+          .fontColor(cat.id === this.selectedId ? '#FFFFFF' : this.pal.text)
           .width('100%')
           .textAlign(TextAlign.Center)
           .padding(12)
           .borderRadius(10)
-          .backgroundColor(this.pal.chip)
+          .backgroundColor(cat.id === this.selectedId ? this.pal.primary : this.pal.chip)
           .onClick(() => {
             this.dismiss();
             this.onPick(cat.id);

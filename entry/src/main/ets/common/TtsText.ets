@@ -33,16 +33,9 @@ export class TtsText {
       }
       return out;
     }
-    const stripped = text
-      .replace(/<br\s*\/?>/gi, '\n')
-      .replace(/<\/p>/gi, '\n')
-      .replace(/<[^>]+>/g, '')
-      .replace(/&nbsp;/g, ' ')
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"')
-      .replace(/&amp;/g, '&');
-    return stripped.split('\n');
+    // html 纯文本：剥成纯文本按行拆分（与阅读器对无插图 html 的正文归一一致，
+    // 保证听书段落下标与阅读器渲染段落对齐）
+    return NovelChapterText.htmlToPlain(text).split('\n');
   }
 
   // 按开头若干段采样推断语种（ASCII 过半判英文）

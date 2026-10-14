@@ -4,9 +4,9 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { formProvider, formInfo } from '@kit.FormKit';
 import { photoAccessHelper } from '@kit.MediaLibraryKit';
 import { AppDb } from '../data/AppDb';
-import { MangaRepo, ChapterRepo, TrackRepo } from '../data/Repos';
+import { MangaRepo, ChapterRepo, TrackRepo, CategoryRepo } from '../data/Repos';
 import { SourceRegistry } from '../source/Source';
-import { MangaRecord, ChapterRecord, TrackRecord, DownloadTask, ALMediaItem, ContentType } from '../model/Models';
+import { MangaRecord, ChapterRecord, TrackRecord, DownloadTask, ALMediaItem, CategoryRecord, ContentType } from '../model/Models';
 import { DetailParams, GlobalSearchParams } from '../model/RouteParams';
 import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
@@ -19,7 +19,7 @@ import { NaturalCompare } from '../common/NaturalCompare';
 import { DownloadService } from '../data/DownloadService';
 import { WidgetUpdater } from '../form/WidgetUpdater';
 import { AniListTracker } from '../data/AniListTracker';
-import { InputDialog, ConfirmDialog } from './components/Dialogs';
+import { InputDialog, ConfirmDialog, CategoryDialog } from './components/Dialogs';
 import { SmartImage } from './components/SmartImage';
 import { EmptyScreen } from './components/EmptyScreen';
 import { AppIcon } from './components/AppIcon';
@@ -545,15 +545,52 @@ export struct MangaDetailPage {
   }
 
   private async toggleLibrary(): Promise<void> {
-    const target = !this.manga.inLibrary;
-    await MangaRepo.setInLibrary(this.manga.id, target);
-    // 只写 libDirty，由 @Watch onLibDirty 统一刷新（避免手动 reload 双重加载）
-    AppStorage.set('libDirty', this.libDirty + 1);
-    if (target) {
-      // 入库即持久化封面（AVIF 经图片管线转码为 JPEG 落盘），书架离线可显、无插件注册竞态
-      this.persistCover();
+    if (this.manga.inLibrary) {
+      // 移出书架：直接执行
+      await MangaRepo.setInLibrary(this.manga.id, false);
+      AppStorage.set('libDirty', this.libDirty + 1);
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_removed_from_library'));
+      return;
     }
-    Util.toastRes(this.getUIContext(), target ? $r('app.string.detail_added_to_library') : $r('app.string.detail_removed_from_library'));
+    // 加入书架：存在用户自建（非默认）分类时，先弹分类选择，确定后再入库
+    const context = Util.hostAbilityContext(this.getUIContext());
+    await AppDb.ready(context);
+    const categories: CategoryRecord[] = await CategoryRepo.list();
+    const hasCustom = categories.some((c: CategoryRecord): boolean => !ContentType.isBuiltinCategory(c.name));
+    if (hasCustom) {
+      this.showAddCategoryDialog(categories);
+      return;
+    }
+    await this.addToLibrary(-1);
+  }
+
+  // 入库（categoryId >= 0 时覆盖默认分类），只写 libDirty 由 @Watch 统一刷新书架
+  private async addToLibrary(categoryId: number): Promise<void> {
+    await MangaRepo.setInLibrary(this.manga.id, true);
+    if (categoryId >= 0) {
+      await MangaRepo.setCategory(this.manga.id, categoryId);
+    }
+    AppStorage.set('libDirty', this.libDirty + 1);
+    // 入库即持久化封面（AVIF 经图片管线转码为 JPEG 落盘），书架离线可显、无插件注册竞态
+    this.persistCover();
+    Util.toastRes(this.getUIContext(), $r('app.string.detail_added_to_library'));
+  }
+
+  // 入库前分类选择弹窗（存在非默认分类时），选中分类即确认入库
+  private showAddCategoryDialog(categories: CategoryRecord[]): void {
+    const dialog = new CustomDialogController({
+      builder: CategoryDialog({
+        categories: categories,
+        onPick: (categoryId: number): void => {
+          this.runSafe((): Promise<void> => this.addToLibrary(categoryId));
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
   }
 
   // 封面持久化（fire-and-forget）：完成后再写 libDirty 刷新书架显示

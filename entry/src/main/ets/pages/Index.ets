@@ -25,7 +25,7 @@ import { AppIcon } from './components/AppIcon';
 import { CfVerifySheet } from './components/CfVerifySheet';
 import { TtsMiniBar } from './components/novel/TtsMiniBar';
 import { UPDATES_MORPH, LIBRARY_MORPH, BROWSE_MORPH, PathMorph } from './components/PathMorph';
-import { DetailParams, OnboardingParams } from '../model/RouteParams';
+import { DetailParams, GlobalSearchParams, OnboardingParams } from '../model/RouteParams';
 import { MangaRecord } from '../model/Models';
 
 // 桌面卡片 router 事件载荷（由 EntryAbility.handleCardWant 写入 AppStorage）
@@ -34,6 +34,7 @@ interface CardActionPayload {
   mangaId: number;
   chapterId: number;
   contentType: string;
+  query?: string;
 }
 
 // 底部导航图标：逐 Tab 复刻 Mihon 的 AnimatedImageVector 动画
@@ -401,7 +402,7 @@ struct Index {
     }
   }
 
-  // 桌面卡片点击导航：切页签或跳阅读器/详情页
+  // 桌面卡片点击 / 意图框架（小艺）导航：切页签或跳阅读器/详情页
   private onCardActionChanged(): void {
     this.consumeCardAction();
   }
@@ -432,6 +433,45 @@ struct Index {
     }
     if (raw.target === 'history') {
       this.switchTab(2);
+      return;
+    }
+    // 意图框架（功能一步达）目标：直达功能页
+    if (raw.target === 'library') {
+      this.switchTab(0);
+      return;
+    }
+    if (raw.target === 'browse') {
+      this.switchTab(3);
+      return;
+    }
+    if (raw.target === 'more') {
+      this.switchTab(4);
+      return;
+    }
+    if (raw.target === 'downloads') {
+      this.switchTab(1);
+      this.pathStack.pushPathByName('Downloads', null);
+      return;
+    }
+    if (raw.target === 'globalsearch') {
+      this.switchTab(3);
+      const q: string = raw.query !== undefined ? raw.query.trim() : '';
+      if (q !== '') {
+        const searchParams: GlobalSearchParams = { query: q };
+        this.pathStack.pushPathByName('GlobalSearch', searchParams);
+      } else {
+        this.pathStack.pushPathByName('GlobalSearch', null);
+      }
+      return;
+    }
+    if (raw.target === 'settings') {
+      this.switchTab(4);
+      this.pathStack.pushPathByName('Settings', null);
+      return;
+    }
+    if (raw.target === 'categories') {
+      this.switchTab(0);
+      this.pathStack.pushPathByName('Categories', null);
       return;
     }
     if (raw.target === 'stats') {

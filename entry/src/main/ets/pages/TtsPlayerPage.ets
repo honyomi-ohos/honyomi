@@ -3,7 +3,8 @@ import { Bp } from '../common/Breakpoint';
 import { Settings } from '../common/Settings';
 import { ChapterRecord, MangaRecord } from '../model/Models';
 import { TtsPlaybackService, TtsServiceStateHandler, TtsServiceParaHandler, TtsServiceChapterHandler,
-  TtsServiceErrorHandler, TtsServiceFinishHandler, TtsServiceSleepHandler } from '../common/TtsPlaybackService';
+  TtsServiceErrorHandler, TtsServiceFinishHandler, TtsServiceSleepHandler,
+  TtsServiceSleepChaptersHandler } from '../common/TtsPlaybackService';
 import { SmartImage } from './components/SmartImage';
 import { CoverPlaceholder } from './components/CoverPlaceholder';
 import { AppIcon } from './components/AppIcon';
@@ -12,6 +13,8 @@ import { AppIcon } from './components/AppIcon';
 const SPEED_OPTIONS: number[] = [0.5, 0.75, 1, 1.25, 1.5, 2];
 // 定时停止选项（分钟）
 const SLEEP_OPTIONS: number[] = [5, 10, 15, 30, 60];
+// 按章数定时选项（1=播完本章）
+const SLEEP_CHAPTER_OPTIONS: number[] = [1, 3, 5];
 
 // 听书播放器页（参考 AudioBook 示例播放器布局）：
 // 封面/书名/章节 + 段落进度 + 播放控制（上一章/播放暂停/下一章）+
@@ -39,7 +42,10 @@ export struct TtsPlayerPage {
   @State chapters: ChapterRecord[] = [];
   @State sleepRemainingMs: number = -1;
   @State sleepMinutes: number = 0;
+  @State sleepChaptersLeft: number = 0;
   @State showChapters: boolean = false;
+  @State showSpeed: boolean = false;
+  @State showSleep: boolean = false;
 
   private readonly onState: TtsServiceStateHandler =
     (_playing: boolean, _paused: boolean, _mangaId: number, _chapterId: number): void => {
@@ -68,6 +74,10 @@ export struct TtsPlayerPage {
       this.sleepMinutes = TtsPlaybackService.sleepTimerMinutes();
     };
 
+  private readonly onSleepChapters: TtsServiceSleepChaptersHandler = (chaptersLeft: number): void => {
+      this.sleepChaptersLeft = chaptersLeft;
+    };
+
   aboutToAppear(): void {
     TtsPlaybackService.events.onState(this.onState);
     TtsPlaybackService.events.onPara(this.onPara);
@@ -75,6 +85,7 @@ export struct TtsPlayerPage {
     TtsPlaybackService.events.onError(this.onError);
     TtsPlaybackService.events.onFinish(this.onFinish);
     TtsPlaybackService.events.onSleep(this.onSleep);
+    TtsPlaybackService.events.onSleepChapters(this.onSleepChapters);
     this.sync();
   }
 
@@ -85,6 +96,7 @@ export struct TtsPlayerPage {
     TtsPlaybackService.events.offError(this.onError);
     TtsPlaybackService.events.offFinish(this.onFinish);
     TtsPlaybackService.events.offSleep(this.onSleep);
+    TtsPlaybackService.events.offSleepChapters(this.onSleepChapters);
   }
 
   // 从全局服务同步播放状态
@@ -134,6 +146,17 @@ export struct TtsPlayerPage {
     return `${m}:${r < 10 ? `0${r}` : `${r}`}`;
   }
 
+  // 定时入口文案：倒计时中显示剩余时间，已设定显示分钟数，否则显示“关闭”
+  private sleepEntryLabel(): ResourceStr {
+    if (this.sleepRemainingMs > 0) {
+      return this.sleepRemainingText();
+    }
+    if (this.sleepMinutes > 0) {
+      return $r('app.string.tts_sleep_minutes', this.sleepMinutes);
+    }
+    return $r('app.string.tts_sleep_off');
+  }
+
   build() {
     NavDestination() {
       Column() {
@@ -174,6 +197,40 @@ export struct TtsPlayerPage {
           .layoutWeight(1)
           .justifyContent(FlexAlign.Center)
         }
+
+        // 倍速/定时面板 bindSheet 常驻宿主：同一节点链式绑定多个 bindSheet 只有最后一个生效，
+        // 故各用独立 0x0 节点承载
+        Column()
+          .width(0)
+          .height(0)
+          .hitTestBehavior(HitTestMode.None)
+          .bindSheet($$this.showSpeed, this.speedSheetBuilder(), {
+            preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+            width: Bp.isWide(this.windowW) ? 480 : '100%',
+            height: SheetSize.FIT_CONTENT,
+            title: { title: $r('app.string.novel_tts_speed') },
+            detents: [SheetSize.FIT_CONTENT],
+            dragBar: true,
+            showClose: true,
+            blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
+            enableOutsideInteractive: true
+          })
+
+        Column()
+          .width(0)
+          .height(0)
+          .hitTestBehavior(HitTestMode.None)
+          .bindSheet($$this.showSleep, this.sleepSheetBuilder(), {
+            preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+            width: Bp.isWide(this.windowW) ? 480 : '100%',
+            height: SheetSize.FIT_CONTENT,
+            title: { title: $r('app.string.tts_sleep_timer') },
+            detents: [SheetSize.FIT_CONTENT],
+            dragBar: true,
+            showClose: true,
+            blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
+            enableOutsideInteractive: true
+          })
       }
       .width('100%')
       .height('100%')
@@ -292,29 +349,56 @@ export struct TtsPlayerPage {
         .alignItems(VerticalAlign.Center)
         .margin({ top: 22 })
 
-        // 语速
-        this.speedSection()
-        // 定时停止
-        this.sleepSection()
+        // 功能入口：倍速 / 定时 / 目录（各自打开 Sheet 选择）
+        Row() {
+          Column({ space: 6 }) {
+            AppIcon({ name: 'speed', iconSize: 22 })
+            Text(`${this.speed}x`)
+              .fontSize(12)
+              .fontColor(this.pal.text)
+          }
+          .layoutWeight(1)
+          .padding({ top: 12, bottom: 12 })
+          .alignItems(HorizontalAlign.Center)
+          .onClick(() => {
+            this.showSpeed = true;
+          })
 
-        // 章节列表入口
-        Row({ space: 8 }) {
-          AppIcon({ name: 'view_list', iconSize: 20, tint: this.pal.sub })
-          Text($r('app.string.tts_chapters'))
-            .fontSize(14)
-            .fontColor(this.pal.text)
-            .layoutWeight(1)
-          AppIcon({ name: 'expand_more', iconSize: 20, tint: this.pal.sub })
+          Column({ space: 6 }) {
+            AppIcon({
+              name: 'schedule',
+              iconSize: 22,
+              tint: this.sleepRemainingMs > 0 || this.sleepMinutes > 0 ? this.pal.primary : ''
+            })
+            Text(this.sleepEntryLabel())
+              .fontSize(12)
+              .fontColor(this.sleepRemainingMs > 0 || this.sleepMinutes > 0 ? this.pal.primary : this.pal.text)
+          }
+          .layoutWeight(1)
+          .padding({ top: 12, bottom: 12 })
+          .alignItems(HorizontalAlign.Center)
+          .onClick(() => {
+            this.showSleep = true;
+          })
+
+          Column({ space: 6 }) {
+            AppIcon({ name: 'view_list', iconSize: 22 })
+            Text($r('app.string.tts_chapters'))
+              .fontSize(12)
+              .fontColor(this.pal.text)
+          }
+          .layoutWeight(1)
+          .padding({ top: 12, bottom: 12 })
+          .alignItems(HorizontalAlign.Center)
+          .onClick(() => {
+            this.showChapters = true;
+          })
         }
         .width(Bp.isWide(this.windowW) ? 400 : '88%')
-        .padding({ left: 16, right: 16 })
-        .height(48)
-        .borderRadius(12)
+        .borderRadius(16)
         .backgroundColor(this.pal.card)
-        .margin({ top: 20, bottom: 24 })
-        .onClick(() => {
-          this.showChapters = true;
-        })
+        .margin({ top: 24, bottom: 24 })
+        .alignItems(VerticalAlign.Center)
       }
       .width('100%')
       .constraintSize({ maxWidth: 560 })
@@ -327,22 +411,19 @@ export struct TtsPlayerPage {
     .align(Alignment.Center)
   }
 
-  // 语速选择（0.5x - 2x，切换立即生效）
+  // 倍速面板（0.5x - 2x，切换立即生效）
   @Builder
-  speedSection() {
-    Column({ space: 8 }) {
-      Text($r('app.string.novel_tts_speed'))
-        .fontSize(13)
-        .fontColor(this.pal.sub)
+  speedSheetBuilder() {
+    Column() {
       Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.Center }) {
         ForEach(SPEED_OPTIONS, (v: number) => {
           Text(`${v}x`)
-            .fontSize(13)
+            .fontSize(14)
             .fontColor(this.speed === v ? '#FFFFFF' : this.pal.text)
-            .padding({ left: 14, right: 14, top: 6, bottom: 6 })
-            .borderRadius(16)
+            .padding({ left: 18, right: 18, top: 8, bottom: 8 })
+            .borderRadius(18)
             .backgroundColor(this.speed === v ? this.pal.primary : this.pal.chip)
-            .margin({ right: 8, bottom: 8 })
+            .margin({ left: 5, right: 5, bottom: 10 })
             .onClick(() => {
               this.speed = v;
               TtsPlaybackService.setSpeed(v);
@@ -351,46 +432,44 @@ export struct TtsPlayerPage {
       }
       .width('100%')
     }
-    .width(Bp.isWide(this.windowW) ? 400 : '88%')
-    .margin({ top: 20 })
+    .width('100%')
+    .padding({ left: 16, right: 16, top: 8, bottom: 20 })
   }
 
-  // 定时停止（到点暂停，可继续播放）
+  // 定时面板（到点暂停，可继续播放）
   @Builder
-  sleepSection() {
-    Column({ space: 8 }) {
-      Row({ space: 6 }) {
-        AppIcon({ name: 'schedule', iconSize: 16, tint: this.pal.sub })
-        Text($r('app.string.tts_sleep_timer'))
-          .fontSize(13)
-          .fontColor(this.pal.sub)
-        if (this.sleepRemainingMs > 0) {
+  sleepSheetBuilder() {
+    Column() {
+      if (this.sleepRemainingMs > 0) {
+        Row({ space: 6 }) {
+          AppIcon({ name: 'schedule', iconSize: 16, tint: this.pal.primary })
           Text($r('app.string.tts_sleep_stop_after', this.sleepRemainingText()))
             .fontSize(13)
             .fontColor(this.pal.primary)
         }
+        .margin({ bottom: 12 })
       }
       Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.Center }) {
         // 关闭
         Text($r('app.string.tts_sleep_off'))
-          .fontSize(13)
+          .fontSize(14)
           .fontColor(this.sleepMinutes === 0 ? '#FFFFFF' : this.pal.text)
-          .padding({ left: 14, right: 14, top: 6, bottom: 6 })
-          .borderRadius(16)
+          .padding({ left: 18, right: 18, top: 8, bottom: 8 })
+          .borderRadius(18)
           .backgroundColor(this.sleepMinutes === 0 ? this.pal.primary : this.pal.chip)
-          .margin({ right: 8, bottom: 8 })
+          .margin({ left: 5, right: 5, bottom: 10 })
           .onClick(() => {
             this.sleepMinutes = 0;
             TtsPlaybackService.setSleepTimer(0);
           })
         ForEach(SLEEP_OPTIONS, (v: number) => {
           Text($r('app.string.tts_sleep_minutes', v))
-            .fontSize(13)
+            .fontSize(14)
             .fontColor(this.sleepMinutes === v ? '#FFFFFF' : this.pal.text)
-            .padding({ left: 14, right: 14, top: 6, bottom: 6 })
-            .borderRadius(16)
+            .padding({ left: 18, right: 18, top: 8, bottom: 8 })
+            .borderRadius(18)
             .backgroundColor(this.sleepMinutes === v ? this.pal.primary : this.pal.chip)
-            .margin({ right: 8, bottom: 8 })
+            .margin({ left: 5, right: 5, bottom: 10 })
             .onClick(() => {
               this.sleepMinutes = v;
               TtsPlaybackService.setSleepTimer(v);
@@ -399,8 +478,8 @@ export struct TtsPlayerPage {
       }
       .width('100%')
     }
-    .width(Bp.isWide(this.windowW) ? 400 : '88%')
-    .margin({ top: 16 })
+    .width('100%')
+    .padding({ left: 16, right: 16, top: 8, bottom: 20 })
   }
 
   // 章节列表面板

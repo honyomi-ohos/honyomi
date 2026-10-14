@@ -20,7 +20,6 @@ import { NovelBlock, NovelPage, SPINE_W, EMPTY_NOVEL_PAGE, NovelPaginator, Novel
 import { NovelModeSheet } from './components/novel/NovelModeSheet';
 import { NovelDisplayPanel } from './components/novel/NovelDisplayPanel';
 import { NovelTextPanel } from './components/novel/NovelTextPanel';
-import { NovelTtsPanel } from './components/novel/NovelTtsPanel';
 import { ReaderMenu, ReaderBottomBar, ReaderNavRow, ReaderPagePill, ReaderMenuIconButton, ReaderIndicatorBadge, ReaderOrientationSheet } from './components/ReaderChrome';
 
 // 翻屏进度持久化防抖间隔（毫秒）
@@ -97,15 +96,14 @@ export struct NovelReaderPage {
   @State leafTurn: number = 0;
   @State orientation: string = 'free';
   @State showOrientationSheet: boolean = false;
-  // 底栏设置面板（画面/文本/听书）共用一个 bindSheet：同一节点链式绑定多个 bindSheet 时只有最后一个生效，
+  // 底栏设置面板（画面/文本）共用一个 bindSheet：同一节点链式绑定多个 bindSheet 时只有最后一个生效，
   // 前面的会被立即关闭，故用单个 isShow + panelKind 切换内容
   @State showPanelSheet: boolean = false;
   @State panelKind: string = '';
   @State brightLv: number = 0;
-  // 听书（系统 TTS）：播放中 / 当前朗读段 / 语速面板
+  // 听书（系统 TTS）：播放中 / 当前朗读段
   @State ttsPlaying: boolean = false;
   @State ttsParaIdx: number = -1;
-  @State ttsSpeed: number = 1;
   // 正文配色：auto=跟随背景 light=浅色 dark=深色
   @State colorScheme: string = 'auto';
   @State pageMargin: number = 20;
@@ -180,7 +178,6 @@ export struct NovelReaderPage {
     this.pageMargin = Settings.getNovelMargin();
     this.fontFamily = Settings.getNovelFontFamily();
     this.brightLv = Settings.getReaderBrightness();
-    this.ttsSpeed = Settings.getNovelTtsSpeed();
     this.applyOrientation();
     this.applyBrightness();
     this.wireTtsEvents();
@@ -284,6 +281,13 @@ export struct NovelReaderPage {
       this.html = NovelChapterText.looksLikeHtml(text);
       this.body = text;
       this.parseChapterBlocks();
+      // 插件返回的无插图 html 正文：剥成纯文本走统一的分页/渲染路径，
+      // 翻页/双页分页与字号/行距/字体设置才能生效（原 RichText 路径两者均不支持）
+      if (this.html && !this.hasImages) {
+        this.body = NovelChapterText.htmlToPlain(text);
+        this.html = false;
+        this.parseChapterBlocks();
+      }
       await this.loadNeighbors();
       if (this.destroyed || gen !== this.loadGen) {
         return;
@@ -462,29 +466,18 @@ export struct NovelReaderPage {
     }
   }
 
-  // 听书面板模式：playing / paused / idle
-  private ttsPanelMode(): string {
-    if (TtsPlaybackService.isPlaying() && TtsPlaybackService.currentChapterId() === this.chapterId) {
-      return 'playing';
-    }
-    if (TtsPlaybackService.isPaused() && TtsPlaybackService.currentChapterId() === this.chapterId) {
-      return 'paused';
-    }
-    return 'idle';
-  }
-
   // 听书文本段落：html 章节剥除标签，纯文本按行拆分（与 TtsPlaybackService 共用算法）
   private ttsParas(): string[] {
     return TtsText.chapterParas(this.body);
   }
 
-  // 起播段落：翻页/双页取当前页首段；滚动/html 按进度比例估算
+  // 起播段落：翻页/双页取当前页首段；滚动按进度比例估算
   private currentTtsPara(): number {
     const paras = this.ttsParas();
     if (paras.length === 0) {
       return 0;
     }
-    if ((!this.html || this.hasImages) && this.mode !== 'scroll' && this.paraPage.length === paras.length) {
+    if (this.mode !== 'scroll' && this.paraPage.length === paras.length) {
       const total = this.pages.length;
       if (total > 0) {
         const logical = this.mode === 'double' ? this.pageIdx * 2 :
@@ -520,28 +513,25 @@ export struct NovelReaderPage {
     }
   }
 
-  private toggleTts(): void {
+  // 听书按钮：直接起播/续播并进入播放器（不弹听书设置面板）；播放中点击则暂停
+  private async startTtsAndOpenPlayer(): Promise<void> {
     if (TtsPlaybackService.isPlaying()) {
       TtsPlaybackService.pause();
       return;
     }
     if (TtsPlaybackService.isPaused() && TtsPlaybackService.currentChapterId() === this.chapterId) {
       TtsPlaybackService.resume();
+      this.pathStack.pushPathByName('TtsPlayer', null);
       return;
     }
-    this.startTts(this.currentTtsPara());
-  }
-
-  private setTtsSpeed(v: number): void {
-    this.ttsSpeed = v;
-    TtsPlaybackService.setSpeed(v);
+    await this.startTts(this.currentTtsPara());
+    if (TtsPlaybackService.isActive()) {
+      this.pathStack.pushPathByName('TtsPlayer', null);
+    }
   }
 
   // 跟随朗读进度：滚动模式滚到对应段落，翻页/双页翻到对应页
   private followTtsPara(idx: number): void {
-    if (this.html && !this.hasImages) {
-      return;
-    }
     // 插图高度不定，含插图章节的滚动模式不做听书跟随
     if (this.hasImages && this.mode === 'scroll') {
       return;
@@ -646,7 +636,7 @@ export struct NovelReaderPage {
 
   // 分页参数（正文/模式/字号/行距/段距/页面尺寸）变化时重新分页，并按千分比恢复到原位置附近
   private ensurePaginated(): void {
-    if (this.loading || this.body === '' || (this.html && !this.hasImages) || this.mode === 'scroll') {
+    if (this.loading || this.body === '' || this.mode === 'scroll') {
       return;
     }
     this.recalcPageBox();
@@ -772,7 +762,7 @@ export struct NovelReaderPage {
       this.showModeSheet = true;
     } else if (which === 'orientation') {
       this.showOrientationSheet = true;
-    } else if (which === 'display' || which === 'text' || which === 'tts') {
+    } else if (which === 'display' || which === 'text') {
       this.panelKind = which;
       this.showPanelSheet = true;
     }
@@ -957,7 +947,7 @@ export struct NovelReaderPage {
 
   // 右下角进度指示文案（从右到左按阅读顺序显示页码）
   private indicatorText(): string {
-    if (this.mode === 'scroll' || (this.html && !this.hasImages)) {
+    if (this.mode === 'scroll') {
       return `${Math.round(this.permilleUi / 10)}%`;
     }
     if (this.screenIdxs.length > 0) {
@@ -1407,7 +1397,7 @@ export struct NovelReaderPage {
     }
   }
 
-  // 滚动模式正文：含插图 html 按块渲染（文本段 + 内嵌插图）；纯 html 用 RichText；
+  // 滚动模式正文：含插图 html 按块渲染（文本段 + 内嵌插图）；
   // 纯文本按段间距设置选择整段 Text 或分段 Column
   @Builder
   ScrollBody() {
@@ -1434,9 +1424,6 @@ export struct NovelReaderPage {
         }, (block: NovelBlock, i: number) => `${i}#${block.isImage}#${block.text.length}`)
       }
       .width('100%')
-    } else if (this.html) {
-      RichText(this.body)
-        .width('100%')
     } else if (this.paraSpacing > 0) {
       Column({ space: this.paraSpacing }) {
         ForEach(this.scrollParas(), (para: string, i: number) => {
@@ -1501,7 +1488,7 @@ export struct NovelReaderPage {
   // 进度胶囊：滚动=百分比 Slider，翻页/双页=页码胶囊（ReaderPagePill），无屏=空占位
   @Builder
   menuNavPill() {
-    if (this.mode === 'scroll' || (this.html && !this.hasImages)) {
+    if (this.mode === 'scroll') {
       Row() {
         Text(`${Math.round(this.permilleUi / 10)}%`)
           .fontSize(13)
@@ -1579,7 +1566,7 @@ export struct NovelReaderPage {
       ReaderMenuIconButton({
         icon: this.ttsPlaying ? 'pause' : 'playlist_play',
         onTap: (): void => {
-          this.openSheet('tts');
+          this.startTtsAndOpenPlayer();
         }
       })
     }
@@ -1632,13 +1619,10 @@ export struct NovelReaderPage {
     })
   }
 
-  // 底栏设置面板标题（画面 / 文本 / 听书共用一个 bindSheet）
+  // 底栏设置面板标题（画面 / 文本共用一个 bindSheet）
   private panelTitleRes(): ResourceStr {
     if (this.panelKind === 'text') {
       return $r('app.string.novel_tab_text');
-    }
-    if (this.panelKind === 'tts') {
-      return $r('app.string.novel_tts');
     }
     return $r('app.string.novel_tab_display');
   }
@@ -1694,21 +1678,6 @@ export struct NovelReaderPage {
           this.ensurePaginated();
         }
       })
-    } else {
-      NovelTtsPanel({
-        mode: this.ttsPanelMode(),
-        ttsSpeed: this.ttsSpeed,
-        onToggle: (): void => {
-          this.toggleTts();
-        },
-        onSpeed: (v: number): void => {
-          this.setTtsSpeed(v);
-        },
-        onOpenPlayer: (): void => {
-          this.showPanelSheet = false;
-          this.pathStack.pushPathByName('TtsPlayer', null);
-        }
-      })
     }
   }
 
@@ -1741,7 +1710,7 @@ export struct NovelReaderPage {
           .onClick(() => {
             this.contentTap();
           })
-        } else if (this.mode === 'scroll' || (this.html && !this.hasImages)) {
+        } else if (this.mode === 'scroll') {
           Scroll(this.scroller) {
             Column() {
               this.ScrollBody()

@@ -423,9 +423,43 @@ export struct LibraryPage {
     }
   }
 
-  // 长按：进入/切换多选
+  // 长按：进入/切换多选；从非选择态长按单个条目时顺带弹出快速改分类弹窗，
+  // 取消弹窗仍保持选中（保留原多选入口），选中分类则应用到该条目
   private onItemLongPress(record: MangaRecord): void {
+    const wasEmpty = this.selection.size === 0;
     this.toggleSelection(record.id);
+    if (wasEmpty) {
+      this.showQuickCategoryMenu(record);
+    }
+  }
+
+  // 长按快速修改分类：弹分类选择（高亮当前分类），确认后落库刷新
+  private showQuickCategoryMenu(record: MangaRecord): void {
+    const dialog = new CustomDialogController({
+      builder: CategoryDialog({
+        categories: this.categories,
+        selectedId: record.categoryId,
+        onPick: (categoryId: number): void => {
+          if (categoryId === record.categoryId) {
+            return;
+          }
+          MangaRepo.setCategory(record.id, categoryId)
+            .then((): Promise<void> => {
+              this.clearSelection();
+              return this.loadData();
+            })
+            .catch((_e: Error): void => {
+              Util.toastRes(this.getUIContext(), $r('app.string.library_move_failed'));
+              this.loadData();
+            });
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
   }
 
   // 移动分类（对选中集合批量应用）

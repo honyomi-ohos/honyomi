@@ -1,4 +1,4 @@
-import { AbilityConstant, UIAbility, Want, Configuration, ConfigurationConstant } from '@kit.AbilityKit';
+import { AbilityConstant, UIAbility, Want, Configuration, ConfigurationConstant, common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
 import { deviceInfo } from '@kit.BasicServicesKit';
@@ -23,8 +23,12 @@ import { AppKeys } from '../common/AppKeys';
 const DOMAIN = 0x0001;
 
 export default class EntryAbility extends UIAbility {
+  // 供意图执行器等非组件环境获取应用 context（onCreate 即赋值，先于任意意图执行）
+  static appContext: common.UIAbilityContext | undefined = undefined;
+
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     hilog.info(DOMAIN, 'Mihon', '%{public}s', 'Ability onCreate');
+    EntryAbility.appContext = this.context;
     // ── 第0级（同步关键路径）：首帧渲染必需的全局状态、主题与插件宿主桥 ──
     AppStorage.setOrCreate(AppKeys.IS_DARK, false);
     AppStorage.setOrCreate(AppKeys.IS_DARK_SYSTEM, false);
