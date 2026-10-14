@@ -281,8 +281,24 @@ export class PluginService {
     // 注意：数据库中该源的漫画数据保留，重装同 key 插件后自动恢复
   }
 
-  // 加载全部插件（每个插件在其专属 Worker 的隔离 JSVM 引擎中执行）
+  private static loadAllPromise: Promise<void> | undefined = undefined;
+
+  // 等待全部插件加载完成（尚未开始加载时立即返回）；
+  // 供 ImageCache 等消费方在冷启动竞态下等待插件源注册完成
+  static ready(): Promise<void> {
+    return PluginService.loadAllPromise ?? Promise.resolve();
+  }
+
+  // 加载全部插件（每个插件在其专属 Worker 的隔离 JSVM 引擎中执行）；
+  // 记忆化：并发/重复调用共享同一次加载，避免重复起 Worker
   static async loadAll(): Promise<void> {
+    if (PluginService.loadAllPromise === undefined) {
+      PluginService.loadAllPromise = PluginService.doLoadAll();
+    }
+    return PluginService.loadAllPromise;
+  }
+
+  private static async doLoadAll(): Promise<void> {
     const installed = PluginService.listInstalled();
     for (const item of installed) {
       try {

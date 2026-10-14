@@ -49,6 +49,8 @@ export default class EntryAbility extends UIAbility {
     JsvmExtensionManager.init();
     this.handleCardWant(want);
     // ── 第1级（主线程空闲即执行，先于首帧内容挂载）：非首帧必需的服务初始化 ──
+    // 契约：此处初始化的服务允许在回调执行前被访问——各服务必须容忍“未 init 先使用”
+    // （内部空安全/延迟就绪），不得假设构造期已完成初始化；首帧路径严禁依赖本级服务。
     setTimeout((): void => {
       DownloadService.init(this.context);
       CookieJar.init(this.context);

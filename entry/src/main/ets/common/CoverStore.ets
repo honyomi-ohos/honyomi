@@ -1,10 +1,71 @@
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { ImageCache } from './ImageCache';
+import { PluginService } from '../data/PluginService';
 
 // 自定义封面文件管理（对齐 Mihon custom cover 目录）：
 // 选中图片复制到 filesDir/custom_covers/{mangaId}.{ext}，路径以 file:// 写入 manga.thumbnailUrl
 export class CoverStore {
+  // 书架持久化封面进行中的任务（按 mangaId 去重，避免回填与入库并发重复落盘）
+  private static persisting: Map<number, Promise<string>> = new Map();
+
+  // 持久化书架封面：经 ImageCache 管线下载（AVIF→JPEG 转码）后复制到 files/covers/{mangaId}.jpg
+  // 返回裸绝对路径；非 http(s) 源或失败返回 ''
+  static persistFromUrl(context: common.Context, mangaId: number, url: string, sourceKey: string): Promise<string> {
+    const running = CoverStore.persisting.get(mangaId);
+    if (running !== undefined) {
+      return running;
+    }
+    const task = CoverStore.doPersistFromUrl(context, mangaId, url, sourceKey);
+    CoverStore.persisting.set(mangaId, task);
+    task.then((): void => {
+      CoverStore.persisting.delete(mangaId);
+    }, (): void => {
+      CoverStore.persisting.delete(mangaId);
+    });
+    return task;
+  }
+
+  private static async doPersistFromUrl(context: common.Context, mangaId: number, url: string,
+    sourceKey: string): Promise<string> {
+    if (url.indexOf('http://') !== 0 && url.indexOf('https://') !== 0) {
+      return '';
+    }
+    try {
+      // 冷启动竞态：插件源可能尚未注册（无请求头下载会失败/拿错内容），限时等待注册完成
+      await Promise.race([
+        PluginService.ready(),
+        new Promise<void>((resolve: (value: void) => void): void => {
+          setTimeout((): void => {
+            resolve();
+          }, 10000);
+        })
+      ]);
+      const cached = await ImageCache.ensureLocal(context, url, sourceKey);
+      if (cached === '') {
+        return '';
+      }
+      const srcPath = cached.indexOf('file://') === 0 ? cached.substring('file://'.length) : cached;
+      const dir = `${context.filesDir}/covers`;
+      if (!fs.accessSync(dir)) {
+        fs.mkdirSync(dir, true);
+      }
+      const dest = `${dir}/${mangaId}.jpg`;
+      const src = fs.openSync(srcPath, fs.OpenMode.READ_ONLY);
+      try {
+        fs.copyFileSync(src.fd, dest);
+      } finally {
+        fs.closeSync(src);
+      }
+      return dest;
+    } catch (e) {
+      hilog.warn(0x0000, 'CoverStore', 'persist cover failed mangaId=%{public}d: %{public}s',
+        mangaId, `${e}`);
+      return '';
+    }
+  }
+
   // 复制选中的图片为自定义封面，返回 file:// 路径；失败返回 ''
   static async save(context: common.Context, mangaId: number, uri: string): Promise<string> {
     try {

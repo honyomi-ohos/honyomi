@@ -5,6 +5,7 @@ import { cryptoFramework } from '@kit.CryptoArchitectureKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { Http } from '../net/Http';
 import { SourceRegistry } from '../source/Source';
+import { PluginService } from '../data/PluginService';
 import { AvifConverter } from './AvifConverter';
 
 // 磁盘缓存文件元信息（超预算时按 mtime 淘汰最旧文件）
@@ -61,18 +62,24 @@ export class ImageCache {
     if (ImageCache.dir === '') {
       return url;
     }
-    const source = SourceRegistry.get(sourceKey);
+    // 缓存命中优先（不依赖源注册状态，历史/更新页等无 sourceKey 场景同样本地服务）
+    const path = await ImageCache.cachedPath(url);
+    if (fs.accessSync(path)) {
+      await ImageCache.upgradeAvif(path);
+      return `file://${path}`;
+    }
+    let source = SourceRegistry.get(sourceKey);
+    if (source === undefined && sourceKey !== '') {
+      // 冷启动竞态：书架封面先于插件源注册渲染，限时等待插件加载完成后再查一次
+      await ImageCache.waitPluginsLoaded();
+      source = SourceRegistry.get(sourceKey);
+    }
     if (source === undefined) {
       return url;
     }
     const headers = source.imageRequestHeaders();
     if (headers === undefined) {
       return url;
-    }
-    const path = await ImageCache.cachedPath(url);
-    if (fs.accessSync(path)) {
-      await ImageCache.upgradeAvif(path);
-      return `file://${path}`;
     }
     const pending = ImageCache.inflight.get(url);
     if (pending !== undefined) {
@@ -85,6 +92,18 @@ export class ImageCache {
     } finally {
       ImageCache.inflight.delete(url);
     }
+  }
+
+  // 限时等待插件加载完成（加载挂死时 8s 超时回落直连）
+  private static waitPluginsLoaded(): Promise<void> {
+    return Promise.race([
+      PluginService.ready(),
+      new Promise<void>((resolve: (value: void) => void): void => {
+        setTimeout((): void => {
+          resolve();
+        }, 8000);
+      })
+    ]);
   }
 
   // 确保本地文件存在并返回裸绝对路径（桌面卡片等需要 fd 的场景）：

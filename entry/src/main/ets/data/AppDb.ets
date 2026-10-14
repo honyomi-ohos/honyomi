@@ -84,6 +84,8 @@ export class AppDb {
       contentType TEXT DEFAULT 'manga',
       origThumbnail TEXT DEFAULT '',
       chapterFlags INTEGER DEFAULT 0,
+      localCover TEXT DEFAULT '',
+      localCoverUrl TEXT DEFAULT '',
       UNIQUE(sourceKey, url)
     )`);
     await store.executeSql(`CREATE TABLE IF NOT EXISTS chapter (
@@ -233,6 +235,32 @@ export class AppDb {
       }
       version = 4;
       hilog.info(0x0001, 'AppDb', 'migrated schema to v4');
+    }
+    // v4 -> v5：manga 增加书架持久化封面（入库时经图片管线落盘 files/covers，
+    // AVIF 同步转码为 JPEG），localCoverUrl 记录持久化时的源地址用于检测封面变更
+    if (version < 5) {
+      store.beginTransaction();
+      try {
+        const cols5 = new Set<string>();
+        const colRs5 = await store.querySql(`PRAGMA table_info(manga)`);
+        while (colRs5.goToNextRow()) {
+          cols5.add(colRs5.getString(colRs5.getColumnIndex('name')));
+        }
+        colRs5.close();
+        if (!cols5.has('localCover')) {
+          await store.executeSql(`ALTER TABLE manga ADD COLUMN localCover TEXT DEFAULT ''`);
+        }
+        if (!cols5.has('localCoverUrl')) {
+          await store.executeSql(`ALTER TABLE manga ADD COLUMN localCoverUrl TEXT DEFAULT ''`);
+        }
+        await store.executeSql(`PRAGMA user_version = 5`);
+        store.commit();
+      } catch (e) {
+        store.rollBack();
+        throw new Error(`migrate to v5 failed: ${e}`);
+      }
+      version = 5;
+      hilog.info(0x0001, 'AppDb', 'migrated schema to v5');
     }
   }
 

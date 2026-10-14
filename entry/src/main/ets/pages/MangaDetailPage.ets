@@ -447,7 +447,30 @@ export struct MangaDetailPage {
     await MangaRepo.setInLibrary(this.manga.id, target);
     // 只写 libDirty，由 @Watch onLibDirty 统一刷新（避免手动 reload 双重加载）
     AppStorage.set('libDirty', this.libDirty + 1);
+    if (target) {
+      // 入库即持久化封面（AVIF 经图片管线转码为 JPEG 落盘），书架离线可显、无插件注册竞态
+      this.persistCover();
+    }
     Util.toastRes(this.getUIContext(), target ? $r('app.string.detail_added_to_library') : $r('app.string.detail_removed_from_library'));
+  }
+
+  // 封面持久化（fire-and-forget）：完成后再写 libDirty 刷新书架显示
+  private async persistCover(): Promise<void> {
+    try {
+      const url = this.manga.origThumbnail !== '' ? this.manga.origThumbnail : this.manga.thumbnailUrl;
+      if (url.indexOf('http://') !== 0 && url.indexOf('https://') !== 0) {
+        return;
+      }
+      const context = Util.hostAbilityContext(this.getUIContext());
+      const path = await CoverStore.persistFromUrl(context, this.manga.id, url, this.manga.sourceKey);
+      if (path === '') {
+        return;
+      }
+      await MangaRepo.setLocalCover(this.manga.id, path, url);
+      AppStorage.set('libDirty', this.libDirty + 1);
+    } catch (_e) {
+      // 持久化失败不阻塞入库，书架回退在线封面路径
+    }
   }
 
   // 更换封面（对齐 Mihon Edit cover）：系统图库选图 → 复制为自定义封面 → 详情/书架同步生效

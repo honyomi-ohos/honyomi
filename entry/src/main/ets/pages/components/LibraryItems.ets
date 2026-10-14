@@ -1,3 +1,4 @@
+import { fileIo as fs } from '@kit.CoreFileKit';
 import { MangaRecord } from '../../model/Models';
 import { ThemePalette } from '../../common/Theme';
 import { SmartImage } from './SmartImage';
@@ -48,6 +49,15 @@ export struct LibraryMangaItem {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   onItemClick: (record: MangaRecord) => void = (_r: MangaRecord) => {};
   onItemLongPress: (record: MangaRecord) => void = (_r: MangaRecord) => {};
+
+  // 封面展示地址：自定义封面优先（origThumbnail 非空，thumbnailUrl 即 file:// 自定义路径），
+  // 其次书架持久化封面（入库时落盘的 JPEG，文件存在才用），最后回退在线地址
+  private coverDisplay(): string {
+    if (this.record.origThumbnail === '' && this.record.localCover !== '' && fs.accessSync(this.record.localCover)) {
+      return `file://${this.record.localCover}`;
+    }
+    return this.record.thumbnailUrl;
+  }
 
   @Builder
   startBadges() {
@@ -181,7 +191,7 @@ export struct LibraryMangaItem {
   @Builder
   coverGrid() {
     Stack() {
-      if (this.record.thumbnailUrl === '') {
+      if (this.coverDisplay() === '') {
         Column() {
           AppIcon({ name: 'photo', iconSize: 28 })
         }
@@ -189,7 +199,7 @@ export struct LibraryMangaItem {
         .height('100%')
         .justifyContent(FlexAlign.Center)
       } else {
-        SmartImage({ url: this.record.thumbnailUrl, sourceKey: this.record.sourceKey, fit: ImageFit.Cover, fill: true })
+        SmartImage({ url: this.coverDisplay(), sourceKey: this.record.sourceKey, fit: ImageFit.Cover, fill: true })
       }
     }
     .width('100%')
@@ -204,7 +214,7 @@ export struct LibraryMangaItem {
   @Builder
   coverSquare() {
     Stack() {
-      if (this.record.thumbnailUrl === '') {
+      if (this.coverDisplay() === '') {
         Column() {
           AppIcon({ name: 'photo', iconSize: 22 })
         }
@@ -212,7 +222,7 @@ export struct LibraryMangaItem {
         .height('100%')
         .justifyContent(FlexAlign.Center)
       } else {
-        SmartImage({ url: this.record.thumbnailUrl, sourceKey: this.record.sourceKey, fit: ImageFit.Cover, fill: true })
+        SmartImage({ url: this.coverDisplay(), sourceKey: this.record.sourceKey, fit: ImageFit.Cover, fill: true })
       }
     }
     .width(48)

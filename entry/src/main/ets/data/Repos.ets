@@ -277,6 +277,18 @@ export class MangaRepo {
       `UPDATE manga SET thumbnailUrl = origThumbnail, origThumbnail = '' WHERE id = ?`, [id]);
   }
 
+  // 写入书架持久化封面（入库/回填时调用；srcUrl 为持久化时的源封面地址，用于变更检测）
+  static async setLocalCover(id: number, path: string, srcUrl: string): Promise<void> {
+    const store = await AppDb.get();
+    const values: relationalStore.ValuesBucket = {
+      'localCover': path,
+      'localCoverUrl': srcUrl,
+    };
+    const pred = new relationalStore.RdbPredicates('manga');
+    pred.equalTo('id', id);
+    await store.update(values, pred);
+  }
+
   // 刷新完成时写入时间戳：fetchedAt 总是更新，有新章节时一并更新 lastUpdateAt
   static async touch(id: number, updated: boolean): Promise<void> {
     const store = await AppDb.get();
@@ -315,7 +327,7 @@ export class MangaRepo {
   private static readonly COLUMNS: string[] = [
     'id', 'sourceKey', 'url', 'title', 'thumbnailUrl', 'origThumbnail', 'author',
     'description', 'genre', 'status', 'contentType', 'inLibrary', 'categoryId', 'addedAt',
-    'lastUpdateAt', 'fetchedAt', 'chapterFlags',
+    'lastUpdateAt', 'fetchedAt', 'chapterFlags', 'localCover', 'localCoverUrl',
   ];
 
   private static rowToManga(rs: relationalStore.ResultSet): MangaRecord {
@@ -337,6 +349,8 @@ export class MangaRepo {
     m.lastUpdateAt = rs.getLong(rs.getColumnIndex('lastUpdateAt'));
     m.fetchedAt = rs.getLong(rs.getColumnIndex('fetchedAt'));
     m.chapterFlags = rs.getLong(rs.getColumnIndex('chapterFlags'));
+    m.localCover = rs.getString(rs.getColumnIndex('localCover'));
+    m.localCoverUrl = rs.getString(rs.getColumnIndex('localCoverUrl'));
     return m;
   }
 }

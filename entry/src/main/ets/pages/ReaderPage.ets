@@ -20,7 +20,6 @@ import { SwitchRow, TextRow } from './components/Prefs';
 import { PickerSheet } from './components/PickerSheet';
 import { EmulationFlipView } from './components/PageFlip';
 import {
-  READER_ORIENTATIONS,
   ReaderMenu,
   ReaderBottomBar,
   ReaderNavRow,
@@ -898,11 +897,6 @@ export struct ReaderPage {
     .width('100%')
     .height('100%')
     .clip(true)
-    .grayscale(this.filterGrayscale ? 1 : 0)
-    .invert(this.filterInvert ? 1 : 0)
-    .brightness(this.filterBrightnessOn ? this.filterBrightness / 100 : 1)
-    .contrast(this.filterContrastOn ? this.filterContrast / 100 : 1)
-    .saturate(this.filterSaturationOn ? this.filterSaturation / 100 : 1)
     .onAreaChange((_old: Area, newArea: Area) => {
       this.syncReaderArea(newArea);
     })
@@ -927,6 +921,202 @@ export struct ReaderPage {
     }
   }
 
+  // ---- 各阅读模式内容体（经 ReaderFilterArea 的 content 注入；@BuilderParam 传参
+  // 只能调用 @Builder 方法，不能内联 UI 组件语法） ----
+
+  // 条漫模式内容体
+  @Builder
+  webtoonBody() {
+    ComicStripViewer({
+      pages: this.pages,
+      sourceKey: this.manga.sourceKey,
+      initialIndex: this.currentReal,
+      isDark: this.isDark,
+      sidePadding: this.webtoonPadding,
+      scroller: this.scroller,
+      onTap: (): void => {
+        this.showMenu = !this.showMenu;
+      },
+      onPageVisible: (index: number): void => {
+        this.displayIndex = index;
+        const real = this.displayToReal(index);
+        if (real !== this.currentReal && index >= 0) {
+          this.currentReal = real;
+          this.persistProgress();
+        }
+      }
+    })
+      .width('100%')
+      .height('100%')
+  }
+
+  // 单仿真翻页内容体
+  @Builder
+  curlSingleBody() {
+    EmulationFlipView({
+      index: this.curlIndex(),
+      pageCount: this.curlCount(),
+      fromLeft: this.curlFromLeft(),
+      nextOnLeft: this.curlNextOnLeft(),
+      tapMode: this.curlTapMode(),
+      flipEnabled: this.curlEnabled(),
+      bgColor: Theme.readerBg(this.readerTheme, this.isDark),
+      onIndexChange: (index: number): void => {
+        this.onCurlIndex(index);
+      },
+      onCenterTap: (): void => {
+        if (this.showSettings || this.showModeSheet || this.showOrientationSheet) {
+          return;
+        }
+        this.showMenu = !this.showMenu;
+      },
+      onOverscroll: (dir: number): void => {
+        this.onCurlOverscroll(dir);
+      },
+      pageContent: (index: number): void => {
+        this.curlPageBody(index)
+      }
+    })
+      .width('100%')
+      .height('100%')
+      .onAreaChange((_old: Area, newArea: Area) => {
+        this.syncReaderArea(newArea);
+      })
+  }
+
+  // 普通翻页（Swiper）内容体
+  @Builder
+  swiperBody() {
+    Swiper() {
+      LazyForEach(this.dataSource, (page: SPage, index: number) => {
+        Stack() {
+          SmartImage({
+            url: page.url,
+            sourceKey: this.manga.sourceKey,
+            fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
+            fill: true
+          })
+            .width('100%')
+            .height('100%')
+        }
+        .width('100%')
+        .height('100%')
+        .translate({ x: this.coverAt(this.coverX, index), y: this.coverAt(this.coverY, index) })
+        .zIndex(this.coverAt(this.coverZ, index))
+      }, (page: SPage) => page.url)
+    }
+    .width('100%')
+    .height('100%')
+    .displayCount(this.dualPageActive() ? 2 : 1)
+    .loop(false)
+    .vertical(this.mode === 'vertical')
+    .index(this.displayIndex)
+    .indicator(false)
+    .customContentTransition({
+      timeout: 800,
+      transition: (proxy: SwiperContentTransitionProxy): void => {
+        this.onCoverTransition(proxy);
+      }
+    })
+    .onChange((index: number) => {
+      this.onSwipe(index);
+    })
+    .onTouch((event: TouchEvent) => {
+      this.handleTouch(event);
+    })
+    .onAreaChange((_old: Area, newArea: Area) => {
+      this.syncReaderArea(newArea);
+    })
+  }
+
+  // ---- 菜单（共享 ReaderChrome 骨架：顶栏+占位+底栏，样式与拆分前一致） ----
+
+  @Builder
+  menuBottomBar() {
+    ReaderBottomBar({
+      navBarH: this.navBarH,
+      navRow: (): void => {
+        this.menuNavRow();
+      },
+      settingsRow: (): void => {
+        this.menuSettingsRow();
+      }
+    })
+  }
+
+  // 章节导航行：上一章 / 页码胶囊 / 下一章（guard 保留在回调内）
+  @Builder
+  menuNavRow() {
+    ReaderNavRow({
+      prevActive: this.hasPrev,
+      nextActive: this.hasNext,
+      pill: (): void => {
+        this.menuNavPill();
+      },
+      onPrev: (): void => {
+        if (this.hasPrev) {
+          this.gotoChapter(false);
+        }
+      },
+      onNext: (): void => {
+        if (this.hasNext) {
+          this.gotoChapter(true);
+        }
+      }
+    })
+  }
+
+  // 页码胶囊：当前页 + Slider + 总页数（无页时空占位）
+  @Builder
+  menuNavPill() {
+    if (this.pages.length > 0) {
+      ReaderPagePill({
+        pos: this.currentReal + 1,
+        total: this.pages.length,
+        onSeek: (value: number): void => {
+          this.jumpToReal(value - 1);
+        }
+      })
+    } else {
+      Column().layoutWeight(1)
+    }
+  }
+
+  // 设置行：阅读模式 / 旋转 / 裁边 / 设置
+  @Builder
+  menuSettingsRow() {
+    Row() {
+      ReaderMenuIconButton({
+        icon: this.modeIcon(),
+        onTap: (): void => {
+          this.selectMode();
+        }
+      })
+      ReaderMenuIconButton({
+        icon: 'screen_rotation',
+        onTap: (): void => {
+          this.selectOrientation();
+        }
+      })
+      ReaderMenuIconButton({
+        icon: this.crop ? 'crop' : 'crop_off',
+        onTap: (): void => {
+          this.toggleCrop();
+        }
+      })
+      ReaderMenuIconButton({
+        icon: 'settings',
+        onTap: (): void => {
+          this.showSettings = true;
+        }
+      })
+    }
+    .width('100%')
+    .height(48)
+    .justifyContent(FlexAlign.SpaceEvenly)
+    .backgroundColor('#CC000000')
+  }
+
   build() {
     NavDestination() {
       Stack({ alignContent: Alignment.BottomEnd }) {
@@ -947,333 +1137,87 @@ export struct ReaderPage {
           .justifyContent(FlexAlign.Center)
         } else if (this.mode === 'webtoon') {
           // 条漫模式：PixelMap 直绘的无限竖向滚动（防防盗链拦截 + 内存受控）
-          ComicStripViewer({
-            pages: this.pages,
-            sourceKey: this.manga.sourceKey,
-            initialIndex: this.currentReal,
-            isDark: this.isDark,
-            sidePadding: this.webtoonPadding,
-            scroller: this.scroller,
-            onTap: (): void => {
-              this.showMenu = !this.showMenu;
-            },
-            onPageVisible: (index: number): void => {
-              this.displayIndex = index;
-              const real = this.displayToReal(index);
-              if (real !== this.currentReal && index >= 0) {
-                this.currentReal = real;
-                this.persistProgress();
-              }
+          ReaderFilterArea({
+            grayOn: this.filterGrayscale,
+            invOn: this.filterInvert,
+            brightOn: this.filterBrightnessOn,
+            brightPct: this.filterBrightness / 100,
+            contrOn: this.filterContrastOn,
+            contrPct: this.filterContrast / 100,
+            satOn: this.filterSaturationOn,
+            satPct: this.filterSaturation / 100,
+            content: (): void => {
+              this.webtoonBody()
             }
           })
-            .width('100%')
-            .height('100%')
-            .grayscale(this.filterGrayscale ? 1 : 0)
-            .invert(this.filterInvert ? 1 : 0)
-            .brightness(this.filterBrightnessOn ? this.filterBrightness / 100 : 1)
-            .contrast(this.filterContrastOn ? this.filterContrast / 100 : 1)
-            .saturate(this.filterSaturationOn ? this.filterSaturation / 100 : 1)
         } else if (this.useCurl() && this.curlDual()) {
-          this.DualLeaf()
+          ReaderFilterArea({
+            grayOn: this.filterGrayscale,
+            invOn: this.filterInvert,
+            brightOn: this.filterBrightnessOn,
+            brightPct: this.filterBrightness / 100,
+            contrOn: this.filterContrastOn,
+            contrPct: this.filterContrast / 100,
+            satOn: this.filterSaturationOn,
+            satPct: this.filterSaturation / 100,
+            content: (): void => {
+              this.DualLeaf()
+            }
+          })
         } else if (this.useCurl()) {
-          EmulationFlipView({
-            index: this.curlIndex(),
-            pageCount: this.curlCount(),
-            fromLeft: this.curlFromLeft(),
-            nextOnLeft: this.curlNextOnLeft(),
-            tapMode: this.curlTapMode(),
-            flipEnabled: this.curlEnabled(),
-            bgColor: Theme.readerBg(this.readerTheme, this.isDark),
-            onIndexChange: (index: number): void => {
-              this.onCurlIndex(index);
-            },
-            onCenterTap: (): void => {
-              if (this.showSettings || this.showModeSheet || this.showOrientationSheet) {
-                return;
-              }
-              this.showMenu = !this.showMenu;
-            },
-            onOverscroll: (dir: number): void => {
-              this.onCurlOverscroll(dir);
-            },
-            pageContent: (index: number): void => {
-              this.curlPageBody(index)
+          ReaderFilterArea({
+            grayOn: this.filterGrayscale,
+            invOn: this.filterInvert,
+            brightOn: this.filterBrightnessOn,
+            brightPct: this.filterBrightness / 100,
+            contrOn: this.filterContrastOn,
+            contrPct: this.filterContrast / 100,
+            satOn: this.filterSaturationOn,
+            satPct: this.filterSaturation / 100,
+            content: (): void => {
+              this.curlSingleBody()
             }
           })
-            .width('100%')
-            .height('100%')
-            .grayscale(this.filterGrayscale ? 1 : 0)
-            .invert(this.filterInvert ? 1 : 0)
-            .brightness(this.filterBrightnessOn ? this.filterBrightness / 100 : 1)
-            .contrast(this.filterContrastOn ? this.filterContrast / 100 : 1)
-            .saturate(this.filterSaturationOn ? this.filterSaturation / 100 : 1)
-            .onAreaChange((_old: Area, newArea: Area) => {
-              this.syncReaderArea(newArea);
-            })
         } else {
-          Swiper() {
-            LazyForEach(this.dataSource, (page: SPage, index: number) => {
-              Stack() {
-                SmartImage({
-                  url: page.url,
-                  sourceKey: this.manga.sourceKey,
-                  fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
-                  fill: true
-                })
-                  .width('100%')
-                  .height('100%')
-              }
-              .width('100%')
-              .height('100%')
-              .translate({ x: this.coverAt(this.coverX, index), y: this.coverAt(this.coverY, index) })
-              .zIndex(this.coverAt(this.coverZ, index))
-            }, (page: SPage) => page.url)
-          }
-          .width('100%')
-          .height('100%')
-          .grayscale(this.filterGrayscale ? 1 : 0)
-          .invert(this.filterInvert ? 1 : 0)
-          .brightness(this.filterBrightnessOn ? this.filterBrightness / 100 : 1)
-          .contrast(this.filterContrastOn ? this.filterContrast / 100 : 1)
-          .saturate(this.filterSaturationOn ? this.filterSaturation / 100 : 1)
-          .displayCount(this.dualPageActive() ? 2 : 1)
-          .loop(false)
-          .vertical(this.mode === 'vertical')
-          .index(this.displayIndex)
-          .indicator(false)
-          .customContentTransition({
-            timeout: 800,
-            transition: (proxy: SwiperContentTransitionProxy): void => {
-              this.onCoverTransition(proxy);
+          ReaderFilterArea({
+            grayOn: this.filterGrayscale,
+            invOn: this.filterInvert,
+            brightOn: this.filterBrightnessOn,
+            brightPct: this.filterBrightness / 100,
+            contrOn: this.filterContrastOn,
+            contrPct: this.filterContrast / 100,
+            satOn: this.filterSaturationOn,
+            satPct: this.filterSaturation / 100,
+            content: (): void => {
+              this.swiperBody()
             }
-          })
-          .onChange((index: number) => {
-            this.onSwipe(index);
-          })
-          .onTouch((event: TouchEvent) => {
-            this.handleTouch(event);
-          })
-          .onAreaChange((_old: Area, newArea: Area) => {
-            this.syncReaderArea(newArea);
           })
         }
 
         // 页码指示（菜单收起时）
         if (!this.showMenu && !this.loading && this.pages.length > 0 && this.showPageNumber) {
-          Text(`${this.currentReal + 1}/${this.pages.length}`)
-            .fontSize(11)
-            .fontColor('#FFFFFF')
-            .padding({ left: 8, right: 8, top: 3, bottom: 3 })
-            .borderRadius(10)
-            .backgroundColor('#66000000')
-            .margin({ left: 16, top: 16, right: 16, bottom: this.navBarH + 16 })
+          ReaderIndicatorBadge({
+            text: `${this.currentReal + 1}/${this.pages.length}`,
+            navBarH: this.navBarH
+          })
         }
 
         // 菜单
         if (this.showMenu) {
-          Column() {
-            // 顶栏
-            Row() {
-              AppIcon({ name: 'arrow_back', iconSize: 24, tint: '#FFFFFF' })
-                .padding({ left: 12, right: 12 })
-                .onClick(() => {
-                  this.pathStack.pop();
-                })
-              Column() {
-                Text(this.manga.title)
-                  .fontSize(14)
-                  .fontColor('#FFFFFF')
-                  .maxLines(1)
-                  .textOverflow({ overflow: TextOverflow.Ellipsis })
-                Text(this.chapter.name)
-                  .fontSize(11)
-                  .fontColor('#CCCCCC')
-                  .maxLines(1)
-                  .margin({ top: 2 })
-              }
-              .alignItems(HorizontalAlign.Start)
-              .layoutWeight(1)
+          ReaderMenu({
+            title: this.manga.title,
+            subtitle: this.chapter.name,
+            statusBarH: this.statusBarH,
+            onBack: (): void => {
+              this.pathStack.pop();
+            },
+            onBackdrop: (): void => {
+              this.showMenu = false;
+            },
+            bottomBar: (): void => {
+              this.menuBottomBar();
             }
-            .width('100%')
-            .padding({ left: 4, right: 16, top: this.statusBarH + 10, bottom: 10 })
-            .backgroundColor('#CC000000')
-            // 对齐 Mihon ReaderAppBars：顶栏从屏幕上方滑入/滑出 + 渐隐（滑移 200ms、渐隐 150ms）
-            .transition(
-              TransitionEffect.translate({ y: -120 })
-                .animation({ duration: 200, curve: Curve.Linear })
-                .combine(TransitionEffect.OPACITY.animation({ duration: 150, curve: Curve.Linear }))
-            )
-
-            // 占位（空 Column 宽度默认自适应内容为 0，必须显式撑满才能接收点击关闭菜单）
-            Column()
-              .layoutWeight(1)
-              .width('100%')
-              .onClick(() => {
-                this.showMenu = false;
-              })
-
-            // 底栏：章节导航行 + 设置行（对齐 Mihon ReaderAppBars）
-            Column({ space: 8 }) {
-              // 章节导航行
-              Row({ space: 12 }) {
-                // 上一章
-                Column() {
-                  Image(AppIconRes.get('skip_previous'))
-                    .width(24)
-                    .height(24)
-                    .fillColor('#FFFFFF')
-                }
-                .width(44)
-                .height(44)
-                .borderRadius(22)
-                .justifyContent(FlexAlign.Center)
-                .backgroundColor('#33FFFFFF')
-                .opacity(this.hasPrev ? 1 : 0.4)
-                .onClick(() => {
-                  if (this.hasPrev) {
-                    this.gotoChapter(false);
-                  }
-                })
-
-                // 页码胶囊：当前页 + Slider + 总页数
-                if (this.pages.length > 0) {
-                  Row() {
-                    Text(`${this.currentReal + 1}`)
-                      .fontSize(13)
-                      .fontColor('#FFFFFF')
-                      .width(24)
-                      .textAlign(TextAlign.End)
-                    Slider({
-                      value: this.currentReal + 1,
-                      min: 1,
-                      max: this.pages.length > 1 ? this.pages.length : 2,
-                      step: 1,
-                      style: SliderStyle.OutSet
-                    })
-                      .layoutWeight(1)
-                      .blockColor('#FFFFFF')
-                      .selectedColor('#88FFFFFF')
-                      .trackColor('#33FFFFFF')
-                      .margin({ left: 8, right: 8 })
-                      .onChange((value: number, mode: SliderChangeMode) => {
-                        if (mode === SliderChangeMode.End || mode === SliderChangeMode.Click) {
-                          this.jumpToReal(Math.round(value) - 1);
-                        }
-                      })
-                    Text(`${this.pages.length}`)
-                      .fontSize(13)
-                      .fontColor('#FFFFFF')
-                      .width(24)
-                  }
-                  .layoutWeight(1)
-                  .height(44)
-                  .borderRadius(22)
-                  .backgroundColor('#33FFFFFF')
-                  .padding({ left: 14, right: 14 })
-                } else {
-                  Column().layoutWeight(1)
-                }
-
-                // 下一章
-                Column() {
-                  Image(AppIconRes.get('skip_next'))
-                    .width(24)
-                    .height(24)
-                    .fillColor('#FFFFFF')
-                }
-                .width(44)
-                .height(44)
-                .borderRadius(22)
-                .justifyContent(FlexAlign.Center)
-                .backgroundColor('#33FFFFFF')
-                .opacity(this.hasNext ? 1 : 0.4)
-                .onClick(() => {
-                  if (this.hasNext) {
-                    this.gotoChapter(true);
-                  }
-                })
-              }
-              .width('100%')
-              .padding({ left: 16, right: 16 })
-
-              // 设置行：阅读模式 / 旋转 / 裁边 / 设置
-              Row() {
-                Column() {
-                  Image(AppIconRes.get(this.modeIcon()))
-                    .width(24)
-                    .height(24)
-                    .fillColor('#FFFFFF')
-                }
-                .width(48)
-                .height(44)
-                .justifyContent(FlexAlign.Center)
-                .onClick(() => {
-                  this.selectMode();
-                })
-
-                Column() {
-                  Image(AppIconRes.get('screen_rotation'))
-                    .width(24)
-                    .height(24)
-                    .fillColor('#FFFFFF')
-                }
-                .width(48)
-                .height(44)
-                .justifyContent(FlexAlign.Center)
-                .onClick(() => {
-                  this.selectOrientation();
-                })
-
-                Column() {
-                  Image(AppIconRes.get(this.crop ? 'crop' : 'crop_off'))
-                    .width(24)
-                    .height(24)
-                    .fillColor('#FFFFFF')
-                }
-                .width(48)
-                .height(44)
-                .justifyContent(FlexAlign.Center)
-                .onClick(() => {
-                  this.toggleCrop();
-                })
-
-                Column() {
-                  Image(AppIconRes.get('settings'))
-                    .width(24)
-                    .height(24)
-                    .fillColor('#FFFFFF')
-                }
-                .width(48)
-                .height(44)
-                .justifyContent(FlexAlign.Center)
-                .onClick(() => {
-                  this.showSettings = true;
-                })
-              }
-              .width('100%')
-              .height(48)
-              .justifyContent(FlexAlign.SpaceEvenly)
-              .backgroundColor('#CC000000')
-            }
-            .width('100%')
-            .padding({ top: 8, bottom: this.navBarH + 8 })
-            .backgroundColor('#CC000000')
-            // 对齐 Mihon ReaderAppBars：底栏从屏幕下方滑入/滑出 + 渐隐
-            .transition(
-              TransitionEffect.translate({ y: 240 })
-                .animation({ duration: 200, curve: Curve.Linear })
-                .combine(TransitionEffect.OPACITY.animation({ duration: 150, curve: Curve.Linear }))
-            )
-          }
-          .width('100%')
-          .height('100%')
-          // 整棵子树删除时根组件需有消失转场时间，保证子组件的退出动画完整播放
-          .transition(
-            TransitionEffect.asymmetric(
-              TransitionEffect.IDENTITY,
-              TransitionEffect.OPACITY.animation({ duration: 200, curve: Curve.Linear })
-            )
-          )
+          })
         }
 
         // 设置面板 bindSheet 常驻宿主：挂 if(showMenu) 条件节点时菜单收起即销毁宿主，弹层不可靠；

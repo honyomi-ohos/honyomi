@@ -89,6 +89,10 @@ export class MangaRecord {
   thumbnailUrl: string = '';
   // 非空表示 thumbnailUrl 正在展示用户自定义封面，此字段保存源原封面地址
   origThumbnail: string = '';
+  // 书架持久化封面：入库时经图片管线下载（AVIF→JPEG 转码）复制到 files/covers 的裸绝对路径
+  localCover: string = '';
+  // localCover 持久化时的源封面地址（变更检测：与当前源封面不一致时回填流程重新持久化）
+  localCoverUrl: string = '';
   author: string = '';
   description: string = '';
   genre: string = '';
