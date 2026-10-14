@@ -1,5 +1,6 @@
 import { common } from '@kit.AbilityKit';
 import { curves, AnimatorResult, AnimatorOptions } from '@kit.ArkUI';
+import { webview } from '@kit.ArkWeb';
 import { HdsTabs, hdsMaterial, HdsTabsController, HdsAnimationMode } from '@kit.UIDesignKit';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
@@ -8,6 +9,7 @@ import { UpdateService } from '../data/UpdateService';
 import { AppDb } from '../data/AppDb';
 import { PluginService } from '../data/PluginService';
 import { Util } from '../common/Util';
+import { CookieJar } from '../net/CookieJar';
 import { LibraryPage } from './LibraryPage';
 import { UpdatesPage } from './UpdatesPage';
 import { HistoryPage } from './HistoryPage';
@@ -15,6 +17,7 @@ import { BrowsePage } from './BrowsePage';
 import { MorePage } from './MorePage';
 import { ContentOpen } from './ContentOpen';
 import { AppIcon } from './components/AppIcon';
+import { CfVerifySheet } from './components/CfVerifySheet';
 import { UPDATES_MORPH, LIBRARY_MORPH, BROWSE_MORPH, PathMorph } from './components/PathMorph';
 import { DetailParams } from '../model/RouteParams';
 
@@ -296,6 +299,7 @@ struct Index {
   @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageProp('navBarH') navBarH: number = 0;
   @StorageLink('cfChallengeUrl') @Watch('onCfUrlChanged') cfChallengeUrl: string = '';
+  @State cfSheetShow: boolean = false;
   // 书架多选数：>0 时隐藏底部页签栏（HDS 官方多选交互：操作栏替换页签栏）
   @StorageLink('libSelectionCount') @Watch('onLibSelectionChanged') libSelectionCount: number = 0;
   @StorageLink('cardAction') @Watch('onCardActionChanged') cardActionJson: string = '';
@@ -415,16 +419,13 @@ struct Index {
     }
   }
 
-  // CF 验证 URL 变化：立即把验证页压到路由栈顶（独立 NavDestination，位于任何页面之上，
-  // 含插件浏览页；被盖住的内嵌遮罩既不可见、ArkWeb 也会暂停渲染导致白屏）
+  // CF 验证 URL 变化：弹出底部半模态验证弹层（液态玻璃）。弹层位于窗口 popup 层，
+  // 压在任意 NavDestination（含插件浏览页）之上；弹层存活期间 URL 再变化由其内部热切换
   private onCfUrlChanged(): void {
     if (this.cfChallengeUrl === '') {
       return;
     }
-    // 防重复压栈：多个请求接连触发 challenge 时只保留一个验证页
-    if (this.pathStack.getParamByName('CfVerify').length === 0) {
-      this.pathStack.pushPathByName('CfVerify', null);
-    }
+    this.cfSheetShow = true;
   }
 
   // 加载已安装插件并广播刷新（每个插件在专属 Worker 的隔离 JSVM 引擎中执行）
@@ -560,6 +561,17 @@ struct Index {
     .height('100%')
   }
 
+  // CF 人机验证半模态内容：Mihon 风格工具栏 + 验证网页
+  @Builder
+  cfSheetBuilder() {
+    CfVerifySheet({
+      challengeUrl: this.cfChallengeUrl,
+      onClose: (): void => {
+        this.cfSheetShow = false;
+      }
+    })
+  }
+
   build() {
     Navigation(this.pathStack) {
       Stack({ alignContent: Alignment.TopStart }) {
@@ -636,6 +648,27 @@ struct Index {
       }
       .width('100%')
       .height('100%')
+      .bindSheet($$this.cfSheetShow, this.cfSheetBuilder(), {
+        height: SheetSize.LARGE,
+        detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+        dragBar: true,
+        showClose: false,
+        preferType: this.isWide() ? SheetType.CENTER : SheetType.BOTTOM,
+        width: this.isWide() ? 560 : '100%',
+        blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
+        maskColor: 'rgba(0,0,0,0.45)',
+        onDisappear: (): void => {
+          // 弹层关闭：回写 ArkWeb 会话 Cookie 到 CookieJar，并复位 challenge 标记
+          const url = this.cfChallengeUrl;
+          if (url !== '') {
+            this.cfChallengeUrl = '';
+            webview.WebCookieManager.fetchCookie(url).then((cookies: string) => {
+              CookieJar.importCookieString(url, cookies);
+            }).catch((_e: Error) => {
+            });
+          }
+        }
+      })
     }
     .hideTitleBar(true)
     .mode(NavigationMode.Stack)

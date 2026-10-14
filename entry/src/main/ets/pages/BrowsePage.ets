@@ -479,15 +479,24 @@ export struct BrowsePage {
   @Builder
   sourceRow(s: Source) {
     Row() {
-      Text(s.name.substring(0, 1).toUpperCase())
-        .fontSize(16)
-        .fontWeight(FontWeight.Bold)
-        .fontColor('#FFFFFF')
-        .textAlign(TextAlign.Center)
-        .width(40)
-        .height(40)
-        .borderRadius(20)
-        .backgroundColor(this.pal.primary)
+      if (s.iconPath !== '') {
+        Image(s.iconPath)
+          .width(40)
+          .height(40)
+          .borderRadius(20)
+          .objectFit(ImageFit.Cover)
+          .clip(true)
+      } else {
+        Text(s.name.substring(0, 1).toUpperCase())
+          .fontSize(16)
+          .fontWeight(FontWeight.Bold)
+          .fontColor('#FFFFFF')
+          .textAlign(TextAlign.Center)
+          .width(40)
+          .height(40)
+          .borderRadius(20)
+          .backgroundColor(this.pal.primary)
+      }
 
       Column() {
         Text(this.sourceDisplayName(s))

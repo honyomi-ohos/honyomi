@@ -26,11 +26,6 @@
       "pageSourceFile": "src/main/ets/pages/DownloadPage.ets"
     },
     {
-      "buildFunction": "CfVerifyBuilder",
-      "name": "CfVerify",
-      "pageSourceFile": "src/main/ets/pages/CfVerifyPage.ets"
-    },
-    {
       "buildFunction": "BrowseSourceBuilder",
       "name": "BrowseSource",
       "pageSourceFile": "src/main/ets/pages/BrowseSourcePage.ets"

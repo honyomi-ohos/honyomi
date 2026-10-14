@@ -8,6 +8,8 @@ export interface Source {
   readonly lang: string;
   readonly supportsLatest: boolean;
   readonly contentType: string;
+  // 源图标（file:// 路径或网络 URL）；空字符串表示无图标，由 UI 回退首字母
+  readonly iconPath: string;
 
   getPopularManga(page: number): Promise<MangasPage>;
   // 最新更新（supportsLatest 为 false 时宿主不会调用）
