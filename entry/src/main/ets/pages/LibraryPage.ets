@@ -801,7 +801,7 @@ export struct LibraryPage {
               `${Util.resStr(this.getUIContext(), $r('app.string.common_all'))} ${this.categoryCount(0)}` :
               Util.resStr(this.getUIContext(), $r('app.string.common_all')))
               .fontSize(13)
-              .fontColor(this.selectedCategory === 0 ? '#FFFFFF' : this.pal.text)
+              .fontColor(this.selectedCategory === 0 ? this.pal.onPrimary : this.pal.text)
               .backgroundColor(this.selectedCategory === 0 ? this.pal.primary : this.pal.chip)
               .borderRadius(14)
               .padding({ left: 14, right: 14, top: 6, bottom: 6 })
@@ -813,7 +813,7 @@ export struct LibraryPage {
                 `${Util.categoryLabelStr(this.getUIContext(), cat.name)} ${this.categoryCount(cat.id)}` :
                 Util.categoryLabel(cat.name))
                 .fontSize(13)
-                .fontColor(this.selectedCategory === cat.id ? '#FFFFFF' : this.pal.text)
+                .fontColor(this.selectedCategory === cat.id ? this.pal.onPrimary : this.pal.text)
                 .backgroundColor(this.selectedCategory === cat.id ? this.pal.primary : this.pal.chip)
                 .borderRadius(14)
                 .padding({ left: 14, right: 14, top: 6, bottom: 6 })

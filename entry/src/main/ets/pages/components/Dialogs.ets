@@ -162,7 +162,7 @@ export struct CategoryDialog {
       ForEach(this.categories, (cat: CategoryRecord) => {
         Text(Util.categoryLabel(cat.name))
           .fontSize(15)
-          .fontColor(cat.id === this.selectedId ? '#FFFFFF' : this.pal.text)
+          .fontColor(cat.id === this.selectedId ? this.pal.onPrimary : this.pal.text)
           .width('100%')
           .textAlign(TextAlign.Center)
           .padding(12)

@@ -84,7 +84,7 @@ export struct NovelTextPanel {
   fontChip(label: ResourceStr, value: string) {
     Text(label)
       .fontSize(13)
-      .fontColor(this.fontFamily === value ? '#FFFFFF' : this.pal.text)
+      .fontColor(this.fontFamily === value ? this.pal.onPrimary : this.pal.text)
       .padding({ left: 14, right: 14, top: 6, bottom: 6 })
       .borderRadius(16)
       .backgroundColor(this.fontFamily === value ? this.pal.primary : this.pal.chip)

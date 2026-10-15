@@ -76,7 +76,7 @@ export struct CategoryChip {
   build() {
     Text(Util.categoryLabel(this.category.name))
       .fontSize(13)
-      .fontColor(this.selected ? '#FFFFFF' : this.pal.text)
+      .fontColor(this.selected ? this.pal.onPrimary : this.pal.text)
       .backgroundColor(this.selected ? this.pal.primary : this.pal.chip)
       .borderRadius(14)
       .padding({ left: 14, right: 14, top: 6, bottom: 6 })

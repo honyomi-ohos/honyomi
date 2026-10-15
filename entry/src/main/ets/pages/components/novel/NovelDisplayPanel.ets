@@ -86,7 +86,7 @@ export struct NovelDisplayPanel {
   schemeChip(label: ResourceStr, value: string) {
     Text(label)
       .fontSize(13)
-      .fontColor(this.colorScheme === value ? '#FFFFFF' : this.pal.text)
+      .fontColor(this.colorScheme === value ? this.pal.onPrimary : this.pal.text)
       .padding({ left: 14, right: 14, top: 6, bottom: 6 })
       .borderRadius(16)
       .backgroundColor(this.colorScheme === value ? this.pal.primary : this.pal.chip)
@@ -101,7 +101,7 @@ export struct NovelDisplayPanel {
   themeChip(label: ResourceStr, value: number) {
     Text(label)
       .fontSize(13)
-      .fontColor(this.readerTheme === value ? '#FFFFFF' : this.pal.text)
+      .fontColor(this.readerTheme === value ? this.pal.onPrimary : this.pal.text)
       .padding({ left: 14, right: 14, top: 6, bottom: 6 })
       .borderRadius(16)
       .backgroundColor(this.readerTheme === value ? this.pal.primary : this.pal.chip)

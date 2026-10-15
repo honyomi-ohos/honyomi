@@ -529,7 +529,7 @@ export struct TtsPlayerPage {
         // 关闭
         Text($r('app.string.tts_sleep_off'))
           .fontSize(14)
-          .fontColor(!this.sleepActive() ? '#FFFFFF' : this.pal.text)
+          .fontColor(!this.sleepActive() ? this.pal.onPrimary : this.pal.text)
           .padding({ left: 18, right: 18, top: 8, bottom: 8 })
           .borderRadius(18)
           .backgroundColor(!this.sleepActive() ? this.pal.primary : this.pal.chip)
@@ -542,7 +542,7 @@ export struct TtsPlayerPage {
         ForEach(SLEEP_OPTIONS, (v: number) => {
           Text($r('app.string.tts_sleep_minutes', v))
             .fontSize(14)
-            .fontColor(this.sleepMinutes === v ? '#FFFFFF' : this.pal.text)
+            .fontColor(this.sleepMinutes === v ? this.pal.onPrimary : this.pal.text)
             .padding({ left: 18, right: 18, top: 8, bottom: 8 })
             .borderRadius(18)
             .backgroundColor(this.sleepMinutes === v ? this.pal.primary : this.pal.chip)
@@ -568,7 +568,7 @@ export struct TtsPlayerPage {
         ForEach(SLEEP_CHAPTER_OPTIONS, (v: number) => {
           Text(this.sleepChapterOptionLabel(v))
             .fontSize(14)
-            .fontColor(this.sleepChaptersLeft === v ? '#FFFFFF' : this.pal.text)
+            .fontColor(this.sleepChaptersLeft === v ? this.pal.onPrimary : this.pal.text)
             .padding({ left: 18, right: 18, top: 8, bottom: 8 })
             .borderRadius(18)
             .backgroundColor(this.sleepChaptersLeft === v ? this.pal.primary : this.pal.chip)

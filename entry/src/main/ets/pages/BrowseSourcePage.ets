@@ -464,8 +464,8 @@ export struct BrowseSourcePage {
             Row({ space: 8 }) {
               Text($r('app.string.browse_popular'))
                 .fontSize(13)
-                .fontColor(this.mode === 'popular' ? '#FFFFFF' : this.pal.sub)
-                .backgroundColor(this.mode === 'popular' ? this.pal.primary : this.pal.bg)
+                .fontColor(this.mode === 'popular' ? this.pal.onPrimary : this.pal.sub)
+                .backgroundColor(this.mode === 'popular' ? this.pal.primary : this.pal.chip)
                 .borderRadius(12)
                 .padding({ left: 12, right: 12, top: 4, bottom: 4 })
                 .onClick(() => {
@@ -476,8 +476,8 @@ export struct BrowseSourcePage {
                 })
               Text($r('app.string.browse_latest'))
                 .fontSize(13)
-                .fontColor(this.mode === 'latest' ? '#FFFFFF' : this.pal.sub)
-                .backgroundColor(this.mode === 'latest' ? this.pal.primary : this.pal.bg)
+                .fontColor(this.mode === 'latest' ? this.pal.onPrimary : this.pal.sub)
+                .backgroundColor(this.mode === 'latest' ? this.pal.primary : this.pal.chip)
                 .borderRadius(12)
                 .padding({ left: 12, right: 12, top: 4, bottom: 4 })
                 .onClick(() => {

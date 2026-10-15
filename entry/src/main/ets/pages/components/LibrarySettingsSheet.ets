@@ -217,7 +217,7 @@ export struct LibrarySettingsSheet {
   typeChip(type: string, label: Resource) {
     Text(label)
       .fontSize(13)
-      .fontColor(this.contentFilter === type ? '#FFFFFF' : this.pal.text)
+      .fontColor(this.contentFilter === type ? this.pal.onPrimary : this.pal.text)
       .backgroundColor(this.contentFilter === type ? this.pal.primary : this.pal.chip)
       .borderRadius(14)
       .padding({ left: 12, right: 12, top: 6, bottom: 6 })
@@ -326,7 +326,7 @@ export struct LibrarySettingsSheet {
                 ForEach(VIEW_MODES, (mode: string) => {
                   Text(this.viewLabel(mode))
                     .fontSize(13)
-                    .fontColor(this.viewMode === mode ? '#FFFFFF' : this.pal.text)
+                    .fontColor(this.viewMode === mode ? this.pal.onPrimary : this.pal.text)
                     .backgroundColor(this.viewMode === mode ? this.pal.primary : this.pal.chip)
                     .borderRadius(14)
                     .padding({ left: 14, right: 14, top: 8, bottom: 8 })

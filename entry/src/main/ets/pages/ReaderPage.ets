@@ -1849,7 +1849,7 @@ export struct ReaderPage {
   animChip(label: ResourceStr, value: string) {
     Text(label)
       .fontSize(13)
-      .fontColor(this.pageAnim === value ? '#FFFFFF' : this.pal.text)
+      .fontColor(this.pageAnim === value ? this.pal.onPrimary : this.pal.text)
       .padding({ left: 12, right: 12, top: 6, bottom: 6 })
       .borderRadius(14)
       .backgroundColor(this.pageAnim === value ? this.pal.primary : this.pal.chip)
@@ -1864,7 +1864,7 @@ export struct ReaderPage {
   navChip(label: ResourceStr, value: string) {
     Text(label)
       .fontSize(13)
-      .fontColor(this.navMode === value ? '#FFFFFF' : this.pal.text)
+      .fontColor(this.navMode === value ? this.pal.onPrimary : this.pal.text)
       .padding({ left: 12, right: 12, top: 6, bottom: 6 })
       .borderRadius(14)
       .backgroundColor(this.navMode === value ? this.pal.primary : this.pal.chip)
@@ -1879,7 +1879,7 @@ export struct ReaderPage {
   themeChip(label: ResourceStr, value: number) {
     Text(label)
       .fontSize(13)
-      .fontColor(this.readerTheme === value ? '#FFFFFF' : this.pal.text)
+      .fontColor(this.readerTheme === value ? this.pal.onPrimary : this.pal.text)
       .padding({ left: 14, right: 14, top: 6, bottom: 6 })
       .borderRadius(16)
       .backgroundColor(this.readerTheme === value ? this.pal.primary : this.pal.chip)

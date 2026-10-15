@@ -251,7 +251,7 @@ export struct MigrateSearchPage {
               ForEach(this.targetSources(), (s: Source) => {
                 Text(Util.localSourceName(this.getUIContext(), s.key, s.name))
                   .fontSize(13)
-                  .fontColor(this.targetKey === s.key ? '#FFFFFF' : this.pal.text)
+                  .fontColor(this.targetKey === s.key ? this.pal.onPrimary : this.pal.text)
                   .backgroundColor(this.targetKey === s.key ? this.pal.primary : this.pal.chip)
                   .borderRadius(14)
                   .padding({ left: 14, right: 14, top: 6, bottom: 6 })
