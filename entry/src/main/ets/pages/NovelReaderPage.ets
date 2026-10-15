@@ -1543,7 +1543,9 @@ export struct NovelReaderPage {
       .layoutWeight(1)
       .height(44)
       .borderRadius(22)
-      .backgroundColor('#33FFFFFF')
+      // 玻璃内嵌胶囊：半透明填充 + 发丝高光描边
+      .backgroundColor('#1AFFFFFF')
+      .border({ width: 1, color: '#14FFFFFF' })
       .padding({ left: 14, right: 14 })
     } else if (this.screenIdxs.length > 0) {
       ReaderPagePill({
@@ -1596,7 +1598,6 @@ export struct NovelReaderPage {
     .width('100%')
     .height(48)
     .justifyContent(FlexAlign.SpaceEvenly)
-    .backgroundColor('#CC000000')
   }
 
   @Builder

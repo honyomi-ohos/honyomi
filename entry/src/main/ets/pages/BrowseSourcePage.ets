@@ -18,7 +18,7 @@ import { CategoryDialog } from './components/Dialogs';
 import { AppKeys } from '../common/AppKeys';
 import { CoverStore } from '../common/CoverStore';
 
-// 单源浏览页（图源 Tab 点进某个源）：顶栏返回 + 搜索 + 热门/最新模式 + 结果网格
+// 单源浏览页（图源 Tab 点进某个源）：顶栏返回 + 搜索 + 热门/最新/过滤切换行 + 结果网格
 // 本地源：固定一个本地文件夹（授权持久化），同步进沙箱后按内容归类扫描
 @Component
 export struct BrowseSourcePage {
@@ -222,7 +222,78 @@ export struct BrowseSourcePage {
     return false;
   }
 
-  // ---- 插件自定义过滤器面板（对齐 Mihon 源过滤器 Sheet） ----
+  // ---- 过滤器面板 Builder（对齐 Mihon SourceFilterDialog：下拉/整行切换，不用胶囊） ----
+
+  // select 过滤器：标签 + 下拉框（点击展开选项列表）
+  @Builder
+  filterSelectBuilder(filter: RawFilter) {
+    Column() {
+      Text(filter.name ?? '')
+        .fontSize(14)
+        .fontColor(this.pal.text)
+        .margin({ top: 8, bottom: 4 })
+      Select(this.selectOptions(filter))
+        .selected(this.selectIndex(filter))
+        .value(this.selectValueText(filter))
+        .width('100%')
+        .height(42)
+        .font({ size: 14 })
+        .fontColor(this.pal.text)
+        .backgroundColor(this.pal.chip)
+        .borderRadius(8)
+        .onSelect((index: number, _text?: string) => {
+          this.setFilterSelect(filter, index);
+        })
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+  }
+
+  // checkbox 过滤器：图标 + 名称整行，点击勾选/取消（对齐 Mihon CheckboxItem）
+  @Builder
+  filterCheckboxBuilder(filter: RawFilter) {
+    Row() {
+      AppIcon({
+        name: filter.state === true ? 'check_box' : 'check_box_outline_blank',
+        iconSize: 22,
+        tint: filter.state === true ? this.pal.primary : this.pal.sub,
+      })
+      Text(filter.name ?? '')
+        .fontSize(15)
+        .fontColor(this.pal.text)
+        .layoutWeight(1)
+        .maxLines(1)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+    }
+    .width('100%')
+    .padding({ top: 8, bottom: 8 })
+    .onClick(() => {
+      this.toggleFilterCheckbox(filter);
+    })
+  }
+
+  // tri-state 过滤器：图标 + 名称整行，点击循环 忽略→包含→排除（对齐 Mihon TriStateItem）
+  @Builder
+  filterTristateBuilder(filter: RawFilter) {
+    Row() {
+      AppIcon({
+        name: this.filterTriIcon(this.filterNumberState(filter, 0)),
+        iconSize: 22,
+        tint: this.filterNumberState(filter, 0) === 0 ? this.pal.sub : this.pal.primary,
+      })
+      Text(filter.name ?? '')
+        .fontSize(15)
+        .fontColor(this.pal.text)
+        .layoutWeight(1)
+        .maxLines(1)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+    }
+    .width('100%')
+    .padding({ top: 8, bottom: 8 })
+    .onClick(() => {
+      this.cycleFilterTristate(filter);
+    })
+  }
 
   // 源是否支持自定义过滤器（插件导出 getFilterList + applyFilterState）
   private sourceSupportsFilters(): boolean {
@@ -290,26 +361,57 @@ export struct BrowseSourcePage {
     this.filterRev++;
   }
 
-  private setFilterTristate(filter: RawFilter, state: number): void {
-    filter.state = state;
+  // tri-state 点击循环：0 忽略 → 1 包含 → 2 排除 → 0（对齐 Mihon TriStateItem）
+  private cycleFilterTristate(filter: RawFilter): void {
+    const cur = this.filterNumberState(filter, 0);
+    filter.state = cur === 0 ? 1 : (cur === 1 ? 2 : 0);
     this.filterRev++;
+  }
+
+  // tri-state 图标：0 空心 / 1 勾选 / 2 禁用（对齐 Mihon TriState 图标）
+  private filterTriIcon(state: number): string {
+    if (state === 1) {
+      return 'check_box';
+    }
+    if (state === 2) {
+      return 'disabled_by_default';
+    }
+    return 'check_box_outline_blank';
   }
 
   private filterNumberState(filter: RawFilter, fallback: number): number {
     return typeof filter.state === 'number' ? filter.state as number : fallback;
   }
 
-  // group 子项是否全为 checkbox（决定 chips 流式布局）
-  private isCheckboxGroup(group: RawFilter): boolean {
-    if (group.filters === undefined || group.filters.length === 0) {
-      return false;
+  // select 过滤器选中下标（越界钳制到有效范围）
+  private selectIndex(filter: RawFilter): number {
+    const len = (filter.values ?? []).length;
+    if (len === 0) {
+      return 0;
     }
-    for (let i = 0; i < group.filters.length; i++) {
-      if (group.filters[i].type !== 'checkbox') {
-        return false;
-      }
+    const idx = this.filterNumberState(filter, 0);
+    return Math.min(Math.max(idx, 0), len - 1);
+  }
+
+  // select 过滤器下拉选项（对齐 Mihon SelectItem 的 ExposedDropdownMenu）
+  private selectOptions(filter: RawFilter): SelectOption[] {
+    const options: SelectOption[] = [];
+    const values = filter.values ?? [];
+    for (let i = 0; i < values.length; i++) {
+      const opt: SelectOption = { value: String(values[i]) };
+      options.push(opt);
     }
-    return true;
+    return options;
+  }
+
+  // select 过滤器当前选中值文本
+  private selectValueText(filter: RawFilter): string {
+    const values = filter.values ?? [];
+    const idx = this.selectIndex(filter);
+    if (idx < values.length) {
+      return String(values[idx]);
+    }
+    return '';
   }
 
   async loadMore(): Promise<void> {
@@ -533,95 +635,6 @@ export struct BrowseSourcePage {
     }
   }
 
-  // ---- 过滤器面板 Builder ----
-
-  // select 过滤器：标签 + 值 chips（点击切换选中下标）
-  @Builder
-  filterSelectBuilder(filter: RawFilter, idPrefix: string) {
-    Column() {
-      Text(filter.name ?? '')
-        .fontSize(14)
-        .fontColor(this.pal.text)
-        .margin({ top: 6, bottom: 6 })
-      Flex({ wrap: FlexWrap.Wrap }) {
-        ForEach(filter.values ?? [], (v: Object, i: number) => {
-          Text(String(v))
-            .fontSize(13)
-            .fontColor(i === this.filterNumberState(filter, -1) ? this.pal.onPrimary : this.pal.sub)
-            .backgroundColor(i === this.filterNumberState(filter, -1) ? this.pal.primary : this.pal.chip)
-            .borderRadius(12)
-            .padding({ left: 12, right: 12, top: 6, bottom: 6 })
-            .margin({ right: 8, bottom: 8 })
-            .onClick(() => {
-              this.setFilterSelect(filter, i);
-            })
-        }, (v: Object, i: number): string => `${idPrefix}-v${i}-${this.filterRev}`)
-      }
-      .width('100%')
-    }
-    .width('100%')
-    .alignItems(HorizontalAlign.Start)
-  }
-
-  // checkbox 过滤器：可勾选 chip
-  @Builder
-  filterCheckboxBuilder(filter: RawFilter) {
-    Text(filter.name ?? '')
-      .fontSize(13)
-      .fontColor(filter.state === true ? this.pal.onPrimary : this.pal.sub)
-      .backgroundColor(filter.state === true ? this.pal.primary : this.pal.chip)
-      .borderRadius(12)
-      .padding({ left: 12, right: 12, top: 6, bottom: 6 })
-      .margin({ right: 8, bottom: 8 })
-      .onClick(() => {
-        this.toggleFilterCheckbox(filter);
-      })
-  }
-
-  // tri-state 过滤器：忽略 / 包含 / 排除 三段切换
-  @Builder
-  filterTristateBuilder(filter: RawFilter) {
-    Row() {
-      Text(filter.name ?? '')
-        .fontSize(14)
-        .fontColor(this.pal.text)
-        .layoutWeight(1)
-        .maxLines(1)
-        .textOverflow({ overflow: TextOverflow.Ellipsis })
-      Row({ space: 4 }) {
-        Text($r('app.string.browse_filter_ignore'))
-          .fontSize(12)
-          .fontColor(this.filterNumberState(filter, 0) === 0 ? this.pal.onPrimary : this.pal.sub)
-          .backgroundColor(this.filterNumberState(filter, 0) === 0 ? this.pal.primary : this.pal.chip)
-          .borderRadius(10)
-          .padding({ left: 8, right: 8, top: 4, bottom: 4 })
-          .onClick(() => {
-            this.setFilterTristate(filter, 0);
-          })
-        Text($r('app.string.browse_filter_include'))
-          .fontSize(12)
-          .fontColor(this.filterNumberState(filter, 0) === 1 ? this.pal.onPrimary : this.pal.sub)
-          .backgroundColor(this.filterNumberState(filter, 0) === 1 ? this.pal.primary : this.pal.chip)
-          .borderRadius(10)
-          .padding({ left: 8, right: 8, top: 4, bottom: 4 })
-          .onClick(() => {
-            this.setFilterTristate(filter, 1);
-          })
-        Text($r('app.string.browse_filter_exclude'))
-          .fontSize(12)
-          .fontColor(this.filterNumberState(filter, 0) === 2 ? this.pal.onPrimary : this.pal.sub)
-          .backgroundColor(this.filterNumberState(filter, 0) === 2 ? this.pal.primary : this.pal.chip)
-          .borderRadius(10)
-          .padding({ left: 8, right: 8, top: 4, bottom: 4 })
-          .onClick(() => {
-            this.setFilterTristate(filter, 2);
-          })
-      }
-    }
-    .width('100%')
-    .margin({ top: 4, bottom: 8 })
-  }
-
   // text 过滤器：标签 + 输入框
   @Builder
   filterTextBuilder(filter: RawFilter) {
@@ -644,10 +657,10 @@ export struct BrowseSourcePage {
 
   // 单个过滤器分发（未知类型不渲染）
   @Builder
-  filterLeafBuilder(filter: RawFilter, idPrefix: string) {
+  filterLeafBuilder(filter: RawFilter) {
     Column() {
       if (filter.type === 'select') {
-        this.filterSelectBuilder(filter, idPrefix)
+        this.filterSelectBuilder(filter)
       } else if (filter.type === 'checkbox') {
         this.filterCheckboxBuilder(filter)
       } else if (filter.type === 'tristate' || filter.type === 'tri-state') {
@@ -660,74 +673,41 @@ export struct BrowseSourcePage {
     .alignItems(HorizontalAlign.Start)
   }
 
-  // group 过滤器：全 checkbox 子项以换行 chips 流式展示，其余逐项分发
+  // group 过滤器：组名标题 + 子项逐行展示（对齐 Mihon Filter.Group）
   @Builder
   filterGroupBuilder(group: RawFilter, idPrefix: string) {
     Column() {
       if ((group.name ?? '') !== '') {
         Text(group.name)
           .fontSize(13)
+          .fontWeight(FontWeight.Bold)
           .fontColor(this.pal.sub)
-          .margin({ top: 10, bottom: 6 })
+          .margin({ top: 10, bottom: 4 })
       }
-      if (this.isCheckboxGroup(group)) {
-        Flex({ wrap: FlexWrap.Wrap }) {
-          ForEach(group.filters ?? [], (sub: RawFilter, subIndex: number) => {
-            this.filterCheckboxBuilder(sub)
-          }, (sub: RawFilter, subIndex: number): string => `${idPrefix}-c${subIndex}-${this.filterRev}`)
-        }
-        .width('100%')
-      } else {
-        ForEach(group.filters ?? [], (sub: RawFilter, subIndex: number) => {
-          this.filterLeafBuilder(sub, `${idPrefix}-s${subIndex}`)
-        }, (sub: RawFilter, subIndex: number): string => `${idPrefix}-g${subIndex}-${this.filterRev}`)
-      }
+      ForEach(group.filters ?? [], (sub: RawFilter, subIndex: number) => {
+        this.filterLeafBuilder(sub)
+      }, (sub: RawFilter, subIndex: number): string => `${idPrefix}-g${subIndex}-${this.filterRev}`)
     }
     .width('100%')
     .alignItems(HorizontalAlign.Start)
   }
 
-  // 过滤器面板：过滤器列表 + 重置/过滤按钮
+  // 过滤器面板：顶部 重置|过滤 操作行 + 过滤器列表（对齐 Mihon SourceFilterDialog stickyHeader）
   @Builder
   filterSheetBuilder() {
     Column() {
-      if (this.filters.length === 0) {
-        Text($r('app.string.browse_filter_empty'))
+      Row() {
+        Text($r('app.string.browse_filter_reset'))
           .fontSize(14)
-          .fontColor(this.pal.sub)
-          .margin({ top: 32, bottom: 32 })
-      } else {
-        Scroll() {
-          Column() {
-            ForEach(this.filters, (filter: RawFilter, index: number) => {
-              if (filter.type === 'group') {
-                this.filterGroupBuilder(filter, `f${index}`)
-              } else {
-                this.filterLeafBuilder(filter, `f${index}`)
-              }
-            }, (filter: RawFilter, index: number): string => `flt-${index}-${this.filterRev}`)
-          }
-          .width('100%')
-          .padding({ left: 16, right: 16, top: 4, bottom: 8 })
-        }
-        .layoutWeight(1)
-        .width('100%')
-        .scrollBar(BarState.Off)
-      }
-      Row({ space: 12 }) {
-        Button($r('app.string.browse_filter_reset'))
-          .fontSize(14)
-          .height(40)
-          .layoutWeight(1)
-          .backgroundColor(this.pal.chip)
-          .fontColor(this.pal.text)
+          .fontColor(this.pal.primary)
+          .padding({ left: 8, right: 8, top: 10, bottom: 10 })
           .onClick(() => {
             this.resetFilterSheet();
           })
         Button($r('app.string.action_filter'))
           .fontSize(14)
-          .height(40)
-          .layoutWeight(1)
+          .height(36)
+          .padding({ left: 20, right: 20 })
           .backgroundColor(this.pal.primary)
           .fontColor(this.pal.onPrimary)
           .onClick(() => {
@@ -735,7 +715,41 @@ export struct BrowseSourcePage {
           })
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 8, bottom: 16 })
+      .padding({ left: 16, right: 16 })
+      .justifyContent(FlexAlign.SpaceBetween)
+
+      Divider()
+        .color(this.pal.divider)
+        .margin({ left: 16, right: 16 })
+
+      if (this.filters.length === 0) {
+        Column() {
+          Text($r('app.string.browse_filter_empty'))
+            .fontSize(14)
+            .fontColor(this.pal.sub)
+            .margin({ top: 32, bottom: 32 })
+        }
+        .layoutWeight(1)
+        .width('100%')
+        .justifyContent(FlexAlign.Center)
+      } else {
+        Scroll() {
+          Column() {
+            ForEach(this.filters, (filter: RawFilter, index: number) => {
+              if (filter.type === 'group') {
+                this.filterGroupBuilder(filter, `f${index}`)
+              } else {
+                this.filterLeafBuilder(filter)
+              }
+            }, (filter: RawFilter, index: number): string => `flt-${index}-${this.filterRev}`)
+          }
+          .width('100%')
+          .padding({ left: 16, right: 16, top: 4, bottom: 16 })
+        }
+        .layoutWeight(1)
+        .width('100%')
+        .scrollBar(BarState.Off)
+      }
     }
     .width('100%')
     .height('100%')
@@ -791,18 +805,6 @@ export struct BrowseSourcePage {
                   }
                 })
             } else {
-              // 插件自定义过滤器入口（过滤器激活时高亮）
-              if (this.sourceSupportsFilters()) {
-                AppIcon({
-                  name: 'filter_list',
-                  iconSize: 20,
-                  tint: this.filterSearch ? this.pal.primary : this.pal.text,
-                })
-                  .padding({ left: 10, right: 10 })
-                  .onClick(() => {
-                    this.openFilterSheet();
-                  })
-              }
               if (this.searchOpen) {
                 AppIcon({ name: 'close', iconSize: 20 })
                   .padding({ left: 10, right: 10 })
@@ -850,33 +852,48 @@ export struct BrowseSourcePage {
             .padding({ left: 16, right: 16, bottom: 8 })
           }
 
-          // 模式切换（仅支持最新更新的源显示）
-          if (this.sourceKey !== 'local' && this.currentSource()?.supportsLatest === true) {
+          // 模式切换行：热门 / 最近更新 / 过滤 同行（对齐 Mihon BrowseSourceScreen FilterChip 行）
+          if (!ContentType.isLocal(this.sourceKey) &&
+            (this.currentSource()?.supportsLatest === true || this.sourceSupportsFilters())) {
             Row({ space: 8 }) {
               Text($r('app.string.browse_popular'))
                 .fontSize(13)
-                .fontColor(this.mode === 'popular' ? this.pal.onPrimary : this.pal.sub)
-                .backgroundColor(this.mode === 'popular' ? this.pal.primary : this.pal.chip)
+                .fontColor(!this.filterSearch && this.mode === 'popular' ? this.pal.onPrimary : this.pal.sub)
+                .backgroundColor(!this.filterSearch && this.mode === 'popular' ? this.pal.primary : this.pal.chip)
                 .borderRadius(12)
                 .padding({ left: 12, right: 12, top: 4, bottom: 4 })
                 .onClick(() => {
-                  if (this.mode !== 'popular') {
+                  if (this.mode !== 'popular' || this.filterSearch) {
                     this.mode = 'popular';
                     this.loadFirst();
                   }
                 })
-              Text($r('app.string.browse_latest'))
-                .fontSize(13)
-                .fontColor(this.mode === 'latest' ? this.pal.onPrimary : this.pal.sub)
-                .backgroundColor(this.mode === 'latest' ? this.pal.primary : this.pal.chip)
-                .borderRadius(12)
-                .padding({ left: 12, right: 12, top: 4, bottom: 4 })
-                .onClick(() => {
-                  if (this.mode !== 'latest') {
-                    this.mode = 'latest';
-                    this.loadFirst();
-                  }
-                })
+              if (this.currentSource()?.supportsLatest === true) {
+                Text($r('app.string.browse_latest'))
+                  .fontSize(13)
+                  .fontColor(!this.filterSearch && this.mode === 'latest' ? this.pal.onPrimary : this.pal.sub)
+                  .backgroundColor(!this.filterSearch && this.mode === 'latest' ? this.pal.primary : this.pal.chip)
+                  .borderRadius(12)
+                  .padding({ left: 12, right: 12, top: 4, bottom: 4 })
+                  .onClick(() => {
+                    if (this.mode !== 'latest' || this.filterSearch) {
+                      this.mode = 'latest';
+                      this.loadFirst();
+                    }
+                  })
+              }
+              // 插件自定义过滤器入口（过滤器激活时高亮）
+              if (this.sourceSupportsFilters()) {
+                Text($r('app.string.action_filter'))
+                  .fontSize(13)
+                  .fontColor(this.filterSearch ? this.pal.onPrimary : this.pal.sub)
+                  .backgroundColor(this.filterSearch ? this.pal.primary : this.pal.chip)
+                  .borderRadius(12)
+                  .padding({ left: 12, right: 12, top: 4, bottom: 4 })
+                  .onClick(() => {
+                    this.openFilterSheet();
+                  })
+              }
             }
             .width('100%')
             .padding({ left: 16, right: 16, bottom: 8 })

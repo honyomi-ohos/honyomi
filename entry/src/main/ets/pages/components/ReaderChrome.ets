@@ -49,7 +49,10 @@ export struct ReaderMenu {
       }
       .width('100%')
       .padding({ left: 4, right: 16, top: this.statusBarH + 10, bottom: 10 })
-      .backgroundColor('#CC000000')
+      // 液态玻璃顶栏（对齐沉浸光感材质规范）：内容相关的材质模糊 + 半透明深色叠层 + 底缘高光描边
+      .backgroundBlurStyle(BlurStyle.COMPONENT_ULTRA_THIN)
+      .backgroundColor('#66000000')
+      .border({ width: { bottom: 0.5 }, color: { bottom: '#1FFFFFFF' } })
       // 对齐 Mihon ReaderAppBars：顶栏从屏幕上方滑入/滑出 + 渐隐（滑移 200ms、渐隐 150ms）
       .transition(
         TransitionEffect.translate({ y: -120 })
@@ -83,21 +86,52 @@ export struct ReaderMenu {
   }
 }
 
-// 阅读器底栏：章节导航行 + 设置行（各自经 BuilderParam 注入），从屏幕下方滑入/滑出
+// 阅读器底栏（液态玻璃设计，参考华为阅读底栏布局）：
+// 进度（章节导航行）与设置行拆为两个独立的悬浮玻璃胶囊
+// （材质模糊 + 半透明叠层 + 高光描边 + 柔和投影），从屏幕下方滑入/滑出
 @Component
 export struct ReaderBottomBar {
   @Prop navBarH: number = 0;
   @BuilderParam navRow: () => void = this.emptyBuilder;
   @BuilderParam settingsRow: () => void = this.emptyBuilder;
 
-  build() {
-    Column({ space: 8 }) {
+  // 进度组：章节导航行（上一章 / 进度胶囊 / 下一章）独占一个液态玻璃胶囊
+  @Builder
+  progressGroup() {
+    Column() {
       this.navRow()
+    }
+    .width('100%')
+    .padding({ top: 10, bottom: 10, left: 8, right: 8 })
+    .borderRadius(28)
+    .backgroundBlurStyle(BlurStyle.COMPONENT_ULTRA_THIN)
+    .backgroundColor('#59000000')
+    .border({ width: 1, color: '#1FFFFFFF' })
+    .shadow({ radius: 32, color: '#66000000', offsetY: 12 })
+  }
+
+  // 设置组：功能图标行独占一个液态玻璃胶囊
+  @Builder
+  settingsGroup() {
+    Column() {
       this.settingsRow()
     }
     .width('100%')
-    .padding({ top: 8, bottom: this.navBarH + 8 })
-    .backgroundColor('#CC000000')
+    .padding({ top: 4, bottom: 4, left: 6, right: 6 })
+    .borderRadius(28)
+    .backgroundBlurStyle(BlurStyle.COMPONENT_ULTRA_THIN)
+    .backgroundColor('#59000000')
+    .border({ width: 1, color: '#1FFFFFFF' })
+    .shadow({ radius: 32, color: '#66000000', offsetY: 12 })
+  }
+
+  build() {
+    Column({ space: 10 }) {
+      this.progressGroup()
+      this.settingsGroup()
+    }
+    .width('100%')
+    .margin({ left: 16, right: 16, bottom: this.navBarH + 12 })
     // 对齐 Mihon ReaderAppBars：底栏从屏幕下方滑入/滑出 + 渐隐
     .transition(
       TransitionEffect.translate({ y: 240 })
@@ -167,7 +201,9 @@ export struct ReaderChapterButton {
     .height(44)
     .borderRadius(22)
     .justifyContent(FlexAlign.Center)
-    .backgroundColor('#33FFFFFF')
+    // 玻璃内嵌控件：半透明填充 + 发丝高光描边
+    .backgroundColor('#26FFFFFF')
+    .border({ width: 1, color: '#1AFFFFFF' })
     .opacity(this.isActive ? 1 : 0.4)
     .onClick(() => {
       this.onTap();
@@ -236,7 +272,9 @@ export struct ReaderPagePill {
     .layoutWeight(1)
     .height(44)
     .borderRadius(22)
-    .backgroundColor('#33FFFFFF')
+    // 玻璃内嵌胶囊：半透明填充 + 发丝高光描边
+    .backgroundColor('#1AFFFFFF')
+    .border({ width: 1, color: '#14FFFFFF' })
     .padding({ left: 14, right: 14 })
   }
 }
@@ -253,7 +291,10 @@ export struct ReaderIndicatorBadge {
       .fontColor('#FFFFFF')
       .padding({ left: 8, right: 8, top: 3, bottom: 3 })
       .borderRadius(10)
-      .backgroundColor('#66000000')
+      // 液态玻璃悬浮徽标：材质模糊 + 半透明叠层 + 高光描边
+      .backgroundBlurStyle(BlurStyle.COMPONENT_ULTRA_THIN)
+      .backgroundColor('#4D000000')
+      .border({ width: 0.5, color: '#1AFFFFFF' })
       .margin({ left: 16, top: 16, right: 16, bottom: this.navBarH + 16 })
   }
 }

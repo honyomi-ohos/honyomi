@@ -1307,6 +1307,18 @@
                         "name":  "plugin_site_preview_title",
                         "value":  "网站"
                     },
+                    {
+                        "name":  "ext_updates_pending",
+                        "value":  "待更新"
+                    },
+                    {
+                        "name":  "ext_update_all",
+                        "value":  "全部更新"
+                    },
+                    {
+                        "name":  "ext_multi_lang",
+                        "value":  "多语言"
+                    },
                    {
                        "name":  "plugin_repo_config",
                        "value":  "配置仓库"

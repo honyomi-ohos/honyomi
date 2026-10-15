@@ -1,4 +1,3 @@
-import { common } from '@kit.AbilityKit';
 import { picker } from '@kit.CoreFileKit';
 import { PluginService, InstalledPlugin, RepoEntry } from '../../data/PluginService';
 import { ContentType } from '../../model/Models';
@@ -10,11 +9,36 @@ import { EmptyScreen } from './EmptyScreen';
 import { AppIcon } from './AppIcon';
 import { TypeBadgedIcon } from './TypeBadgedIcon';
 import { NsfwTag } from './NsfwTag';
+import { ConfirmDialog } from './Dialogs';
 import { SitePreviewSheet } from './SitePreviewSheet';
 
-// 插件列表面板（浏览页“插件”Tab 内嵌）：已安装 / 在线仓库
-// 对齐 Mihon：整行点击进入插件详情页；从本地安装/仓库配置/刷新由宿主（BrowsePage 菜单）
-// 通过 AppStorage 计数器驱动（'extLocalInstall' / 'extRepoRefresh'）
+// 语言显示名（与 BrowsePage / ExtensionDetailPage 保持一致的精简版）
+const LANG_NAMES: Record<string, string> = {
+  'en': 'English',
+  'ja': '日本語',
+  'zh': '中文',
+  'zh-Hans': '中文',
+  'zh-Hant': '中文（繁）',
+  'ko': '한국어',
+  'multi': 'Multi',
+  'all': 'Multi',
+};
+
+// 在线插件语言分组（对齐 Mihon available 按语言分组）
+class LangGroup {
+  lang: string = '';
+  label: ResourceStr = '';
+  sortKey: string = '';
+  entries: RepoEntry[] = [];
+}
+
+// 插件列表面板（浏览页“插件”Tab 内嵌），完全对齐 Mihon ExtensionsScreen：
+// - 分组结构：待更新（含“全部更新”按钮）→ 已安装 → 在线可用（按语言分组，组内按名称排序）
+// - 已安装插件有新版本时归入“待更新”分组，行尾显示更新（下载）按钮
+// - 在线插件行：地球按钮预览站点（安装前查看网站交互与设计）+ 下载按钮安装；整行点击即安装
+// - 已安装插件行：设置按钮进详情；整行点击进详情；长按弹卸载确认（Mihon 同款交互）
+// - 下拉刷新仓库；从本地安装/仓库配置/刷新由宿主（BrowsePage 菜单）通过 AppStorage
+//   计数器驱动（'extLocalInstall' / 'extRepoRefresh'）
 @Component
 export struct ExtensionListPanel {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
@@ -32,9 +56,14 @@ export struct ExtensionListPanel {
   onOpenPlugin: (pluginKey: string) => void = (_k: string) => {};
   @State installed: InstalledPlugin[] = [];
   @State repoEntries: RepoEntry[] = [];
-  // filteredInstalled 结果缓存（build 内多处使用，避免同一 build 重复重建数组）
+  // 已安装且有新版本（对齐 Mihon hasUpdate，归入“待更新”分组）
+  @State pendingUpdates: InstalledPlugin[] = [];
+  // 已安装且无新版本
   @State shownInstalled: InstalledPlugin[] = [];
+  // 在线可用插件按语言分组
+  @State availableGroups: LangGroup[] = [];
   @State repoUrl: string = '';
+  // 下拉刷新 spinner 状态（Refresh 双向绑定）
   @State loadingRepo: boolean = false;
   @State busy: boolean = false;
   // 安装前站点预览弹层（在线插件行地球按钮触发）
@@ -42,6 +71,10 @@ export struct ExtensionListPanel {
   @State previewSiteUrl: string = '';
   @State previewName: string = '';
   @StorageProp('windowW') windowW: number = 0;
+  // 仓库 key → entry 映射（更新检查/单项更新用），随 recomputeLists 重建
+  private repoByKey: Map<string, RepoEntry> = new Map();
+  // 仓库请求并发防抖标志（与下拉 spinner 状态分离）
+  private repoFetching: boolean = false;
   // 面板销毁标志：异步续体据此跳过 toast/写状态
   private disposed: boolean = false;
 
@@ -61,6 +94,7 @@ export struct ExtensionListPanel {
   private onRepoRefresh(): void {
     this.repoUrl = Settings.getPluginRepoUrl();
     this.repoEntries = [];
+    this.recomputeLists();
     if (this.repoUrl !== '') {
       this.refreshRepo();
     }
@@ -76,18 +110,18 @@ export struct ExtensionListPanel {
     this.refreshInstalled();
   }
 
-  // 已安装列表来自 DB 元数据索引（异步），刷新后重算过滤缓存
+  // 已安装列表来自 DB 元数据索引（异步），刷新后重算分组
   private async refreshInstalled(): Promise<void> {
     this.installed = await PluginService.listInstalled();
     if (this.disposed) {
       return;
     }
-    this.recomputeShownInstalled();
+    this.recomputeLists();
   }
 
-  // 宿主搜索词或类型过滤变化时重算已安装过滤缓存
+  // 宿主搜索词/类型过滤/NSFW 开关变化时重算分组
   private onFilterChanged(): void {
-    this.recomputeShownInstalled();
+    this.recomputeLists();
   }
 
   private firstCharOf(name: string): string {
@@ -117,63 +151,123 @@ export struct ExtensionListPanel {
     return this.typeFilter.indexOf(this.effectiveType(contentType)) >= 0;
   }
 
-  // 已安装过滤结果缓存计算（installed/searchQuery/typeFilter/showNsfw 任一变化时调用）
-  private recomputeShownInstalled(): void {
-    const list: InstalledPlugin[] = [];
+  // 语言显示名（all/multi 用本地化“多语言”，对齐 Mihon multi_lang）
+  private langLabel(lang: string): ResourceStr {
+    if (lang === '' || lang === 'all' || lang === 'multi') {
+      return $r('app.string.ext_multi_lang');
+    }
+    const name: string | undefined = LANG_NAMES[lang];
+    return name !== undefined ? name : lang.toUpperCase();
+  }
+
+  // 语言分组排序键（纯字符串，供 localeCompare）
+  private sortKeyOf(lang: string): string {
+    if (lang === '' || lang === 'all' || lang === 'multi') {
+      return 'Multi';
+    }
+    const name: string | undefined = LANG_NAMES[lang];
+    return name !== undefined ? name : lang.toUpperCase();
+  }
+
+  // 分组重算（对齐 Mihon ExtensionsViewModel.items）：
+  // 待更新（已安装且仓库版本更高）→ 已安装（无更新）→ 在线可用（未安装）按语言分组
+  private recomputeLists(): void {
+    const byKey = new Map<string, RepoEntry>();
+    for (const entry of this.repoEntries) {
+      byKey.set(entry.key, entry);
+    }
+    this.repoByKey = byKey;
+
+    const installedKeys = new Set<string>();
+    const pending: InstalledPlugin[] = [];
+    const current: InstalledPlugin[] = [];
     for (const item of this.installed) {
+      installedKeys.add(item.manifest.key);
       if (item.manifest.nsfw && !this.showNsfw) {
         continue;
       }
-      if (this.matchesQuery(item.manifest.name, item.manifest.key) &&
-        this.matchesType(item.manifest.contentType)) {
-        list.push(item);
+      if (!this.matchesQuery(item.manifest.name, item.manifest.key) ||
+        !this.matchesType(item.manifest.contentType)) {
+        continue;
+      }
+      const entry: RepoEntry | undefined = byKey.get(item.manifest.key);
+      if (entry !== undefined && entry.versionCode > item.manifest.versionCode) {
+        pending.push(item);
+      } else {
+        current.push(item);
       }
     }
-    this.shownInstalled = list;
-  }
+    this.pendingUpdates = pending;
+    this.shownInstalled = current;
 
-  filteredRepoEntries(): RepoEntry[] {
-    const list: RepoEntry[] = [];
+    // 在线可用：未安装且通过过滤，按语言分组（组内按名称排序，组间按语言显示名排序）
+    const groups: LangGroup[] = [];
     for (const entry of this.repoEntries) {
+      if (installedKeys.has(entry.key)) {
+        continue;
+      }
       if (entry.nsfw && !this.showNsfw) {
         continue;
       }
-      if (this.matchesQuery(entry.name, entry.key) && this.matchesType(entry.contentType)) {
-        list.push(entry);
+      if (!this.matchesQuery(entry.name, entry.key) || !this.matchesType(entry.contentType)) {
+        continue;
       }
+      let group: LangGroup | undefined = undefined;
+      for (const g of groups) {
+        if (g.lang === entry.lang) {
+          group = g;
+          break;
+        }
+      }
+      if (group === undefined) {
+        group = new LangGroup();
+        group.lang = entry.lang;
+        group.label = this.langLabel(entry.lang);
+        group.sortKey = this.sortKeyOf(entry.lang);
+        groups.push(group);
+      }
+      group.entries.push(entry);
     }
-    return list;
+    const entrySorter = (a: RepoEntry, b: RepoEntry): number => a.name.localeCompare(b.name);
+    const groupSorter = (a: LangGroup, b: LangGroup): number => a.sortKey.localeCompare(b.sortKey);
+    for (const g of groups) {
+      g.entries.sort(entrySorter);
+    }
+    groups.sort(groupSorter);
+    this.availableGroups = groups;
   }
 
-  private installedVersionOf(key: string): number {
-    for (const item of this.installed) {
-      if (item.manifest.key === key) {
-        return item.manifest.versionCode;
-      }
-    }
-    return -1;
+  // 当前是否有搜索/类型过滤（空态文案切换用）
+  private hasActiveFilter(): boolean {
+    return this.searchQuery.trim() !== '' || this.typeFilter.length > 0;
   }
 
   private async refreshRepo(): Promise<void> {
-    if (this.repoUrl === '' || this.loadingRepo) {
+    if (this.repoUrl === '' || this.repoFetching) {
+      // 未配置仓库时收起下拉 spinner
+      if (this.repoUrl === '') {
+        this.loadingRepo = false;
+      }
       return;
     }
+    this.repoFetching = true;
     this.loadingRepo = true;
     try {
       const entries = await PluginService.fetchRepo(this.repoUrl);
-      if (this.disposed) {
-        return;
+      if (!this.disposed) {
+        this.repoEntries = entries;
+        this.recomputeLists();
       }
-      this.repoEntries = entries;
     } catch (e) {
-      if (this.disposed) {
-        return;
+      if (!this.disposed) {
+        Util.toastRes(this.getUIContext(), $r('app.string.plugin_repo_load_failed'),
+          [Util.errText(this.getUIContext(), (e as Error).message)]);
       }
-      Util.toastRes(this.getUIContext(), $r('app.string.plugin_repo_load_failed'),
-        [Util.errText(this.getUIContext(), (e as Error).message)]);
-    }
-    if (!this.disposed) {
-      this.loadingRepo = false;
+    } finally {
+      if (!this.disposed) {
+        this.loadingRepo = false;
+      }
+      this.repoFetching = false;
     }
   }
 
@@ -222,11 +316,8 @@ export struct ExtensionListPanel {
     }
   }
 
-  private async installFromRepo(entry: RepoEntry): Promise<void> {
-    if (this.busy) {
-      return;
-    }
-    this.busy = true;
+  // 单次仓库安装/更新核心（不含 busy 门控，供单项安装与“全部更新”复用）
+  private async performRepoInstall(entry: RepoEntry): Promise<void> {
     try {
       await PluginService.installFromRepo(entry);
       if (this.disposed) {
@@ -242,13 +333,127 @@ export struct ExtensionListPanel {
       Util.toastRes(this.getUIContext(), $r('app.string.plugin_install_failed'),
         [Util.errText(this.getUIContext(), (e as Error).message)]);
     }
+  }
+
+  private async installFromRepo(entry: RepoEntry): Promise<void> {
+    if (this.busy) {
+      return;
+    }
+    this.busy = true;
+    await this.performRepoInstall(entry);
     if (!this.disposed) {
       this.busy = false;
     }
   }
 
+  // “待更新”分组行尾更新按钮：按已安装插件 key 找仓库条目更新
+  private async updateOne(key: string): Promise<void> {
+    const entry: RepoEntry | undefined = this.repoByKey.get(key);
+    if (entry === undefined) {
+      return;
+    }
+    await this.installFromRepo(entry);
+  }
+
+  // Mihon ext_update_all：按快照顺序逐个更新“待更新”分组插件
+  private async updateAllPending(): Promise<void> {
+    if (this.busy) {
+      return;
+    }
+    const snapshot: RepoEntry[] = [];
+    for (const item of this.pendingUpdates) {
+      const entry: RepoEntry | undefined = this.repoByKey.get(item.manifest.key);
+      if (entry !== undefined) {
+        snapshot.push(entry);
+      }
+    }
+    if (snapshot.length === 0) {
+      return;
+    }
+    this.busy = true;
+    for (const entry of snapshot) {
+      await this.performRepoInstall(entry);
+    }
+    if (!this.disposed) {
+      this.busy = false;
+    }
+  }
+
+  // 长按已安装插件 → 卸载确认（Mihon onLongClickItem 同款交互）
+  private confirmUninstall(item: InstalledPlugin): void {
+    const dialog = new CustomDialogController({
+      builder: ConfirmDialog({
+        title: $r('app.string.ext_uninstall_title'),
+        message: Util.resStr(this.getUIContext(), $r('app.string.ext_uninstall_msg'),
+          [item.manifest.name]),
+        confirmText: $r('app.string.common_uninstall'),
+        onConfirm: (): void => {
+          this.uninstallPlugin(item.manifest.key);
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  private async uninstallPlugin(key: string): Promise<void> {
+    if (this.busy) {
+      return;
+    }
+    this.busy = true;
+    try {
+      await PluginService.uninstall(key);
+      PluginService.markDirty();
+      if (!this.disposed) {
+        Util.toastRes(this.getUIContext(), $r('app.string.plugin_uninstalled'), [key]);
+      }
+    } catch (e) {
+      if (!this.disposed) {
+        Util.toastRes(this.getUIContext(), $r('app.string.plugin_uninstall_failed'));
+      }
+    }
+    if (!this.disposed) {
+      this.busy = false;
+    }
+  }
+
+  // 分组头（对齐 Mihon ExtensionHeader）：标题 + 可选“全部更新”按钮
   @Builder
-  pluginRow(item: InstalledPlugin) {
+  sectionHeader(title: ResourceStr, showUpdateAll: boolean) {
+    Row() {
+      Text(title)
+        .fontSize(14)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+        .layoutWeight(1)
+        .maxLines(1)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+      if (showUpdateAll) {
+        Button($r('app.string.ext_update_all'))
+          .fontSize(13)
+          .fontWeight(FontWeight.Medium)
+          .fontColor(this.pal.onPrimary)
+          .backgroundColor(this.pal.primary)
+          .height(30)
+          .padding({ left: 14, right: 14 })
+          .margin({ left: 8 })
+          .onClick(() => {
+            this.updateAllPending();
+          })
+      }
+    }
+    .width('100%')
+    .alignItems(VerticalAlign.Center)
+    .padding({ left: 16, right: 16, top: 14, bottom: 6 })
+  }
+
+  // 已安装插件行（待更新/已安装分组共用）：图标 + 名称 + 语言·版本(+NSFW) + 操作
+  // 整行点击进详情；长按弹卸载确认；有更新时行尾显示更新按钮
+  @Builder
+  installedRow(item: InstalledPlugin, updatable: boolean) {
     Row() {
       TypeBadgedIcon({
         iconPath: item.iconPath,
@@ -256,22 +461,24 @@ export struct ExtensionListPanel {
         iconSize: 40,
         cornerRadius: 10,
         contentType: item.manifest.contentType,
-        badgeBorder: this.pal.card,
+        badgeBorder: this.pal.bg,
       })
 
       Column() {
         Text(item.manifest.name)
           .fontSize(15)
-          .fontWeight(FontWeight.Bold)
           .fontColor(this.pal.text)
           .maxLines(1)
           .textOverflow({ overflow: TextOverflow.Ellipsis })
         Row() {
-          Text(`${item.manifest.key} · v${item.manifest.version} · ${item.manifest.lang}`)
-            .fontSize(11)
+          Text(this.langLabel(item.manifest.lang))
+            .fontSize(12)
             .fontColor(this.pal.sub)
             .maxLines(1)
-            .textOverflow({ overflow: TextOverflow.Ellipsis })
+          Text(` · ${item.manifest.version}`)
+            .fontSize(12)
+            .fontColor(this.pal.sub)
+            .maxLines(1)
           if (item.manifest.nsfw) {
             NsfwTag()
               .margin({ left: 6 })
@@ -282,20 +489,41 @@ export struct ExtensionListPanel {
       }
       .alignItems(HorizontalAlign.Start)
       .layoutWeight(1)
-      .margin({ left: 12 })
+      .margin({ left: 16 })
 
-      AppIcon({ name: 'keyboard_arrow_right', iconSize: 20, tint: this.pal.sub })
+      // 设置按钮进插件详情（Mihon Loaded 行同款）
+      AppIcon({ name: 'settings', iconSize: 22, tint: this.pal.sub })
+        .padding({ left: 8, right: updatable ? 0 : 8, top: 10, bottom: 10 })
+        .onClick(() => {
+          this.onOpenPlugin(item.manifest.key);
+        })
+
+      // 有新版本时显示更新按钮（对齐 Mihon hasUpdate → Download 图标）
+      if (updatable) {
+        AppIcon({ name: 'download', iconSize: 22, tint: this.pal.primary })
+          .padding({ left: 8, right: 8, top: 10, bottom: 10 })
+          .onClick(() => {
+            this.updateOne(item.manifest.key);
+          })
+      }
     }
     .width('100%')
     .alignItems(VerticalAlign.Center)
-    .padding({ top: 10, bottom: 10 })
+    .padding({ left: 16, right: 16, top: 8, bottom: 8 })
     .onClick(() => {
       this.onOpenPlugin(item.manifest.key);
     })
+    .gesture(
+      LongPressGesture({ repeat: false, duration: 500 })
+        .onAction((_e: GestureEvent) => {
+          this.confirmUninstall(item);
+        })
+    )
   }
 
+  // 在线可用插件行：地球按钮预览站点 + 下载按钮安装；整行点击即安装（Mihon Available 行同款）
   @Builder
-  repoRow(entry: RepoEntry) {
+  availableRow(entry: RepoEntry) {
     Row() {
       TypeBadgedIcon({
         iconPath: entry.icon,
@@ -303,17 +531,24 @@ export struct ExtensionListPanel {
         iconSize: 40,
         cornerRadius: 10,
         contentType: entry.contentType,
-        badgeBorder: this.pal.card,
+        badgeBorder: this.pal.bg,
       })
 
       Column() {
         Text(entry.name)
-          .fontSize(14)
+          .fontSize(15)
           .fontColor(this.pal.text)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
         Row() {
-          Text(`v${entry.version} · ${entry.lang}`)
-            .fontSize(11)
+          Text(this.langLabel(entry.lang))
+            .fontSize(12)
             .fontColor(this.pal.sub)
+            .maxLines(1)
+          Text(` · ${entry.version}`)
+            .fontSize(12)
+            .fontColor(this.pal.sub)
+            .maxLines(1)
           if (entry.nsfw) {
             NsfwTag()
               .margin({ left: 6 })
@@ -324,12 +559,12 @@ export struct ExtensionListPanel {
       }
       .alignItems(HorizontalAlign.Start)
       .layoutWeight(1)
-      .margin({ left: 12 })
+      .margin({ left: 16 })
 
       // 安装前预览插件对应网站（仓库索引声明 site 时显示）
       if (entry.site !== '') {
-        AppIcon({ name: 'public', iconSize: 20, tint: this.pal.sub })
-          .padding({ left: 8, right: 4, top: 8, bottom: 8 })
+        AppIcon({ name: 'public', iconSize: 22, tint: this.pal.sub })
+          .padding({ left: 8, right: 8, top: 10, bottom: 10 })
           .onClick(() => {
             this.previewSiteUrl = entry.site;
             this.previewName = entry.name;
@@ -337,31 +572,18 @@ export struct ExtensionListPanel {
           })
       }
 
-      if (this.installedVersionOf(entry.key) < 0) {
-        Text($r('app.string.common_install'))
-          .fontSize(13)
-          .fontColor(this.pal.primary)
-          .padding(4)
-          .onClick(() => {
-            this.installFromRepo(entry);
-          })
-      } else if (this.installedVersionOf(entry.key) < entry.versionCode) {
-        Text($r('app.string.common_update'))
-          .fontSize(13)
-          .fontColor('#E08A3C')
-          .padding(4)
-          .onClick(() => {
-            this.installFromRepo(entry);
-          })
-      } else {
-        Text($r('app.string.plugin_up_to_date'))
-          .fontSize(12)
-          .fontColor(this.pal.sub)
-          .padding(4)
-      }
+      AppIcon({ name: 'download', iconSize: 22, tint: this.pal.primary })
+        .padding({ left: 8, right: 8, top: 10, bottom: 10 })
+        .onClick(() => {
+          this.installFromRepo(entry);
+        })
     }
     .width('100%')
-    .padding({ top: 8, bottom: 8 })
+    .alignItems(VerticalAlign.Center)
+    .padding({ left: 16, right: 16, top: 8, bottom: 8 })
+    .onClick(() => {
+      this.installFromRepo(entry);
+    })
   }
 
   // 站点预览半模态弹层内容（SitePreviewSheet 承载，样式对齐 Mihon WebView）
@@ -377,53 +599,43 @@ export struct ExtensionListPanel {
   }
 
   build() {
-    Scroll() {
-      Column() {
-        // 已安装
+    Refresh({ refreshing: $$this.loadingRepo }) {
+      Scroll() {
         Column() {
-          Text($r('app.string.plugin_installed_section'))
-            .fontSize(15)
-            .fontWeight(FontWeight.Bold)
-            .fontColor(this.pal.text)
-            .width('100%')
-            .margin({ bottom: 4 })
-
-          if (this.shownInstalled.length === 0) {
-            EmptyScreen({
-              message: this.searchQuery.trim() !== '' || this.typeFilter.length > 0 ?
-                $r('app.string.ext_search_no_match') :
-                $r('app.string.plugin_empty'),
-              compact: true,
-            })
-          } else {
-            ForEach(this.shownInstalled, (item: InstalledPlugin) => {
-              this.pluginRow(item)
+          // 待更新分组（对齐 Mihon ext_updates_pending，含“全部更新”按钮）
+          if (this.pendingUpdates.length > 0) {
+            this.sectionHeader($r('app.string.ext_updates_pending'), true)
+            ForEach(this.pendingUpdates, (item: InstalledPlugin) => {
+              this.installedRow(item, true)
             }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}`)
           }
-        }
-        .width('100%')
-        .alignItems(HorizontalAlign.Start)
-        .padding(16)
-        .backgroundColor(this.pal.card)
-        .borderRadius(14)
-        .margin({ left: 16, right: 16, top: 4 })
 
-        // 在线仓库
-        Column() {
-          Text($r('app.string.plugin_repo'))
-            .fontSize(15)
-            .fontWeight(FontWeight.Bold)
-            .fontColor(this.pal.text)
-            .width('100%')
-            .margin({ bottom: 4 })
+          // 已安装分组（无新版本）
+          if (this.shownInstalled.length > 0) {
+            this.sectionHeader($r('app.string.plugin_installed_section'), false)
+            ForEach(this.shownInstalled, (item: InstalledPlugin) => {
+              this.installedRow(item, false)
+            }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}`)
+          }
 
           if (this.repoUrl === '') {
-            Text($r('app.string.plugin_repo_hint'))
-              .fontSize(12)
-              .fontColor(this.pal.sub)
-              .width('100%')
-              .padding({ top: 8, bottom: 8 })
-          } else if (this.loadingRepo) {
+            // 未配置仓库：提示 + 已安装为空时给空态
+            this.sectionHeader($r('app.string.plugin_repo'), false)
+            if (this.pendingUpdates.length === 0 && this.shownInstalled.length === 0) {
+              EmptyScreen({
+                message: $r('app.string.plugin_repo_hint'),
+                compact: true,
+              })
+            } else {
+              Text($r('app.string.plugin_repo_hint'))
+                .fontSize(12)
+                .fontColor(this.pal.sub)
+                .width('100%')
+                .padding({ left: 16, right: 16, top: 8, bottom: 8 })
+            }
+          } else if (this.loadingRepo && this.repoEntries.length === 0) {
+            // 首次加载仓库
+            this.sectionHeader($r('app.string.plugin_repo'), false)
             Row({ space: 8 }) {
               LoadingProgress()
                 .width(18)
@@ -434,42 +646,40 @@ export struct ExtensionListPanel {
                 .fontColor(this.pal.sub)
             }
             .width('100%')
-            .padding({ top: 10, bottom: 10 })
-          } else if (this.filteredRepoEntries().length === 0) {
-            Text($r('app.string.ext_search_no_match'))
-              .fontSize(12)
-              .fontColor(this.pal.sub)
-              .width('100%')
-              .padding({ top: 8, bottom: 8 })
+            .justifyContent(FlexAlign.Center)
+            .padding({ top: 16, bottom: 16 })
+          } else if (this.availableGroups.length === 0) {
+            // 仓库无匹配：全部为空时空态，否则静默（有已安装内容即可）
+            if (this.pendingUpdates.length === 0 && this.shownInstalled.length === 0) {
+              EmptyScreen({
+                message: this.hasActiveFilter() ?
+                  $r('app.string.ext_search_no_match') :
+                  $r('app.string.plugin_empty'),
+                compact: true,
+              })
+            }
           } else {
-            ForEach(this.filteredRepoEntries(), (entry: RepoEntry) => {
-              this.repoRow(entry)
-            }, (entry: RepoEntry) => `repo-${entry.key}-${entry.versionCode}-${entry.icon}`)
-          }
-
-          if (this.repoUrl !== '') {
-            Text(this.repoUrl)
-              .fontSize(10)
-              .fontColor(this.pal.sub)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Ellipsis })
-              .width('100%')
-              .margin({ top: 6 })
+            // 在线可用：按语言分组展示（对齐 Mihon available 按语言分组）
+            ForEach(this.availableGroups, (g: LangGroup) => {
+              this.sectionHeader(g.label, false)
+              ForEach(g.entries, (entry: RepoEntry) => {
+                this.availableRow(entry)
+              }, (entry: RepoEntry) => `repo-${entry.key}-${entry.versionCode}-${entry.icon}`)
+            }, (g: LangGroup) => `grp-${g.lang}`)
           }
         }
         .width('100%')
-        .alignItems(HorizontalAlign.Start)
-        .padding(16)
-        .backgroundColor(this.pal.card)
-        .borderRadius(14)
-        .margin({ left: 16, right: 16, top: 12, bottom: 24 })
       }
+      .scrollBar(BarState.Auto)
+      .align(Alignment.Top)
+      .contentEndOffset(this.navBarH + this.tabPadH)
       .width('100%')
+      .height('100%')
     }
+    .onRefreshing(() => {
+      this.refreshRepo();
+    })
     .layoutWeight(1)
-    .scrollBar(BarState.Auto)
-    .align(Alignment.Top)
-    .contentEndOffset(this.navBarH + this.tabPadH)
     .width('100%')
     .height('100%')
     .bindSheet($$this.showSitePreview, this.sitePreviewBuilder(), {

@@ -1347,7 +1347,6 @@ export struct ReaderPage {
     .width('100%')
     .height(48)
     .justifyContent(FlexAlign.SpaceEvenly)
-    .backgroundColor('#CC000000')
   }
 
   build() {
