@@ -358,6 +358,7 @@
     { "name": "browse_filter_include", "value": "Include" },
     { "name": "browse_filter_exclude", "value": "Exclude" },
     { "name": "browse_pick_folder_failed", "value": "Failed to pick folder" },
+    { "name": "browse_pick_not_folder", "value": "A folder is required, not a file" },
     { "name": "browse_local_setup", "value": "Choose folder" },
     { "name": "browse_local_sync", "value": "Sync" },
     { "name": "browse_local_change", "value": "Change folder" },

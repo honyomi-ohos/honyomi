@@ -54,10 +54,13 @@ export class LocalFolderManager {
   }
 
   // 选择文件夹并持久化授权；返回 false 表示用户取消。
-  // 失败时抛出 message 为 'PICK'（选择器失败）或 'PERSIST'（授权持久化失败）的 Error。
+  // 失败时抛出 message 为 'PICK'（选择器失败）、'NOT_FOLDER'（选中的不是文件夹）
+  // 或 'PERSIST'（授权持久化失败）的 Error。
+  // selectMode 用 MIXED 而非 FOLDER：模拟器等环境下 FOLDER 模式的浏览页
+  // 无文件夹选择入口，MIXED 覆盖面更广；文件由下方目录校验兜底拒绝。
   static async chooseFolder(context: common.UIAbilityContext): Promise<boolean> {
     const options = new picker.DocumentSelectOptions();
-    options.selectMode = picker.DocumentSelectMode.FOLDER;
+    options.selectMode = picker.DocumentSelectMode.MIXED;
     options.maxSelectNumber = 1;
     // 必须传入 UIAbilityContext 构造：无参构造为不推荐用法，概率性拉起异常
     const docPicker = new picker.DocumentViewPicker(context);
@@ -71,6 +74,17 @@ export class LocalFolderManager {
       return false;
     }
     const uri = uris[0];
+    // MIXED 允许选中文件：校验必须为目录，避免把文件持久化为本地源
+    let isDir = false;
+    try {
+      isDir = fs.statSync(uri).isDirectory();
+    } catch (e) {
+      // statSync 失败（URI 不可达等）同样按非目录处理
+      isDir = false;
+    }
+    if (!isDir) {
+      throw new Error('NOT_FOLDER');
+    }
     try {
       const policy: fileShare.PolicyInfo = {
         uri: uri,

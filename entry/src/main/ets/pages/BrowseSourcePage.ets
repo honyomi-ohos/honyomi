@@ -608,6 +608,8 @@ export struct BrowseSourcePage {
       const msg = (e as Error).message;
       if (msg === 'PERSIST') {
         Util.toastRes(this.getUIContext(), $r('app.string.browse_local_persist_failed'));
+      } else if (msg === 'NOT_FOLDER') {
+        Util.toastRes(this.getUIContext(), $r('app.string.browse_pick_not_folder'));
       } else {
         Util.toastRes(this.getUIContext(), $r('app.string.browse_pick_folder_failed'));
       }

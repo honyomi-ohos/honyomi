@@ -1,4 +1,4 @@
-import { display } from '@kit.ArkUI';
+import { display, uiMaterial } from '@kit.ArkUI';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo, ChapterRepo, HistoryRepo } from '../data/Repos';
@@ -1922,6 +1922,8 @@ export struct NovelReaderPage {
             detents: [SheetSize.FIT_CONTENT],
             dragBar: true,
             showClose: false,
+            // 沉浸光感（液态玻璃）：支持设备上启用系统材质，低版本自动回退模糊样式
+            systemMaterial: new uiMaterial.ImmersiveMaterial(),
             blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
             enableOutsideInteractive: true
           })
@@ -1937,6 +1939,7 @@ export struct NovelReaderPage {
         detents: [SheetSize.FIT_CONTENT],
         dragBar: true,
         showClose: false,
+        systemMaterial: new uiMaterial.ImmersiveMaterial(),
         blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
         enableOutsideInteractive: true
       })
@@ -1951,6 +1954,7 @@ export struct NovelReaderPage {
       detents: [SheetSize.FIT_CONTENT],
       dragBar: true,
       showClose: false,
+      systemMaterial: new uiMaterial.ImmersiveMaterial(),
       blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
       enableOutsideInteractive: true
     })

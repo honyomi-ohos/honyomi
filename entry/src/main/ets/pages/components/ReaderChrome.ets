@@ -49,9 +49,12 @@ export struct ReaderMenu {
       }
       .width('100%')
       .padding({ left: 4, right: 16, top: this.statusBarH + 10, bottom: 10 })
-      // 液态玻璃顶栏（对齐沉浸光感材质规范）：内容相关的材质模糊 + 半透明深色叠层 + 底缘高光描边
+      // 液态玻璃顶栏（对齐沉浸光感材质规范）：内容相关的材质模糊 + 流光渐变叠层 + 底缘高光描边
       .backgroundBlurStyle(BlurStyle.COMPONENT_ULTRA_THIN)
-      .backgroundColor('#66000000')
+      .linearGradient({
+        angle: 180,
+        colors: [['#4D0E1420', 0], ['#66000000', 1]]
+      })
       .border({ width: { bottom: 0.5 }, color: { bottom: '#1FFFFFFF' } })
       // 对齐 Mihon ReaderAppBars：顶栏从屏幕上方滑入/滑出 + 渐隐（滑移 200ms、渐隐 150ms）
       .transition(
@@ -88,7 +91,7 @@ export struct ReaderMenu {
 
 // 阅读器底栏（液态玻璃设计，参考华为阅读底栏布局）：
 // 进度（章节导航行）与设置行拆为两个独立的悬浮玻璃胶囊
-// （材质模糊 + 半透明叠层 + 高光描边 + 柔和投影），从屏幕下方滑入/滑出
+// （材质模糊 + 上缘流光渐变 + 高光描边 + 柔和投影），从屏幕下方滑入/滑出
 @Component
 export struct ReaderBottomBar {
   @Prop navBarH: number = 0;
@@ -104,10 +107,14 @@ export struct ReaderBottomBar {
     .width('100%')
     .padding({ top: 10, bottom: 10, left: 8, right: 8 })
     .borderRadius(28)
+    // 液态玻璃：内容材质模糊打底 + 上缘流光渐变（上亮下暗）+ 高光描边 + 柔和投影
     .backgroundBlurStyle(BlurStyle.COMPONENT_ULTRA_THIN)
-    .backgroundColor('#59000000')
-    .border({ width: 1, color: '#1FFFFFFF' })
-    .shadow({ radius: 32, color: '#66000000', offsetY: 12 })
+    .linearGradient({
+      angle: 180,
+      colors: [['#331C222E', 0], ['#2E000000', 0.4], ['#52000000', 1]]
+    })
+    .border({ width: 1, color: '#2EFFFFFF' })
+    .shadow({ radius: 28, color: '#4D000000', offsetY: 10 })
   }
 
   // 设置组：功能图标行独占一个液态玻璃胶囊
@@ -119,25 +126,35 @@ export struct ReaderBottomBar {
     .width('100%')
     .padding({ top: 4, bottom: 4, left: 6, right: 6 })
     .borderRadius(28)
+    // 液态玻璃：内容材质模糊打底 + 上缘流光渐变（上亮下暗）+ 高光描边 + 柔和投影
     .backgroundBlurStyle(BlurStyle.COMPONENT_ULTRA_THIN)
-    .backgroundColor('#59000000')
-    .border({ width: 1, color: '#1FFFFFFF' })
-    .shadow({ radius: 32, color: '#66000000', offsetY: 12 })
+    .linearGradient({
+      angle: 180,
+      colors: [['#331C222E', 0], ['#2E000000', 0.4], ['#52000000', 1]]
+    })
+    .border({ width: 1, color: '#2EFFFFFF' })
+    .shadow({ radius: 28, color: '#4D000000', offsetY: 10 })
   }
 
   build() {
-    Column({ space: 10 }) {
-      this.progressGroup()
-      this.settingsGroup()
+    // 外层全宽透明容器：用 padding 留出左右屏幕边距
+    // （内层 width('100%') 按去 padding 后的内容区解析；若用 margin 会与 100% 宽度叠加溢出，导致胶囊贴边）
+    Column() {
+      Column({ space: 10 }) {
+        this.progressGroup()
+        this.settingsGroup()
+      }
+      .width('100%')
+      .margin({ bottom: Math.max(this.navBarH, 12) })
+      // 对齐 Mihon ReaderAppBars：底栏从屏幕下方滑入/滑出 + 渐隐
+      .transition(
+        TransitionEffect.translate({ y: 240 })
+          .animation({ duration: 200, curve: Curve.Linear })
+          .combine(TransitionEffect.OPACITY.animation({ duration: 150, curve: Curve.Linear }))
+      )
     }
     .width('100%')
-    .margin({ left: 16, right: 16, bottom: this.navBarH + 12 })
-    // 对齐 Mihon ReaderAppBars：底栏从屏幕下方滑入/滑出 + 渐隐
-    .transition(
-      TransitionEffect.translate({ y: 240 })
-        .animation({ duration: 200, curve: Curve.Linear })
-        .combine(TransitionEffect.OPACITY.animation({ duration: 150, curve: Curve.Linear }))
-    )
+    .padding({ left: 16, right: 16 })
   }
 
   @Builder

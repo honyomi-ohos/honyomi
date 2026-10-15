@@ -659,10 +659,14 @@
                          "name":  "browse_filter_exclude",
                          "value":  "排除"
                      },
-                     {
-                         "name":  "browse_pick_folder_failed",
-                         "value":  "选择文件夹失败"
-                     },
+                      {
+                          "name":  "browse_pick_folder_failed",
+                          "value":  "选择文件夹失败"
+                      },
+                      {
+                          "name":  "browse_pick_not_folder",
+                          "value":  "请选择文件夹而不是文件"
+                      },
                      {
                          "name":  "browse_local_setup",
                          "value":  "选择文件夹"

@@ -1,5 +1,6 @@
 import { motion } from '@kit.MultimodalAwarenessKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { uiMaterial } from '@kit.ArkUI';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo, ChapterRepo, HistoryRepo } from '../data/Repos';
 import { ReadingStatsRepo } from '../data/ReadingStats';
@@ -1478,6 +1479,8 @@ export struct ReaderPage {
             detents: [SheetSize.FIT_CONTENT],
             dragBar: true,
             showClose: false,
+            // 沉浸光感（液态玻璃）：支持设备上启用系统材质，低版本自动回退模糊样式
+            systemMaterial: new uiMaterial.ImmersiveMaterial(),
             blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
           })
       }
@@ -1492,6 +1495,7 @@ export struct ReaderPage {
         detents: [SheetSize.FIT_CONTENT],
         dragBar: true,
         showClose: false,
+        systemMaterial: new uiMaterial.ImmersiveMaterial(),
         blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
       })
     }
@@ -1505,6 +1509,7 @@ export struct ReaderPage {
       detents: [SheetSize.FIT_CONTENT],
       dragBar: true,
       showClose: false,
+      systemMaterial: new uiMaterial.ImmersiveMaterial(),
       blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
     })
     .onReady((ctx: NavDestinationContext) => {
