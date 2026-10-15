@@ -17,6 +17,8 @@ import { NsfwTag } from './NsfwTag';
 export struct ExtensionListPanel {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('navBarH') navBarH: number = 0;
+  // 页签浮动条避让高度：宽屏无页签条时为 0（Index 按断点发布）
+  @StorageProp('tabPadH') tabPadH: number = 76;
   @StorageProp('extRepoRefresh') @Watch('onRepoRefresh') extRepoRefresh: number = 0;
   @StorageProp('extLocalInstall') @Watch('onLocalInstall') extLocalInstall: number = 0;
   @StorageProp('pluginsDirty') @Watch('onPluginsDirty') pluginsDirty: number = 0;
@@ -437,7 +439,7 @@ export struct ExtensionListPanel {
     .layoutWeight(1)
     .scrollBar(BarState.Auto)
     .align(Alignment.Top)
-    .contentEndOffset(this.navBarH + 76)
+    .contentEndOffset(this.navBarH + this.tabPadH)
     .width('100%')
     .height('100%')
   }

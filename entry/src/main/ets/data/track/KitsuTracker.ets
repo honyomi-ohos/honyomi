@@ -388,9 +388,13 @@ export class KitsuTracker extends Tracker {
       ? `query Query($query: ID!) { findMangaById(id: $query) { ${KITSU_COMMON_MANGA} } }`
       : `query Query($query: String!) { findMangaBySlug(slug: $query) { ${KITSU_COMMON_MANGA} } }`;
     const resp = await this.sendGql(gql, `{"query":${JSON.stringify(idOrSlug)}}`);
+    // 解析一次为 raw 模型再按分支取字段（避免同响应重复 parse + 链式深取）
+    const raw = byId
+      ? JSON.parse(resp) as KitsuFindByIdRaw
+      : JSON.parse(resp) as KitsuFindBySlugRaw;
     const manga = byId
-      ? (JSON.parse(resp) as KitsuFindByIdRaw).data?.findMangaById
-      : (JSON.parse(resp) as KitsuFindBySlugRaw).data?.findMangaBySlug;
+      ? (raw as KitsuFindByIdRaw).data?.findMangaById
+      : (raw as KitsuFindBySlugRaw).data?.findMangaBySlug;
     return manga !== undefined ? this.mangaToSearch(manga) : undefined;
   }
 

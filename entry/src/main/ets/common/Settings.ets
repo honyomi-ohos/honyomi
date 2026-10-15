@@ -2,8 +2,12 @@ import { preferences } from '@kit.ArkData';
 import { common, ConfigurationConstant } from '@kit.AbilityKit';
 import { window, UIContext } from '@kit.ArkUI';
 import { i18n } from '@kit.LocalizationKit';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 import { Theme, ThemePalette } from './Theme';
 import { AppKeys } from './AppKeys';
+
+const DOMAIN = 0x0000;
+const TAG = 'Settings';
 
 // 轻量设置存储（阅读/主题/书架/阅读器/浏览/全局开关等）
 export class Settings {
@@ -107,7 +111,10 @@ export class Settings {
     Settings.flushTimer = setTimeout((): void => {
       Settings.flushTimer = -1;
       if (Settings.store !== undefined) {
-        Settings.store.flush();
+        // flush() 返回 Promise：必须挂 catch，否则异步落盘失败成为未处理 rejection
+        Settings.store.flush().catch((e: Object): void => {
+          hilog.warn(DOMAIN, TAG, 'debounced settings flush failed: %{public}s', `${e}`);
+        });
       }
     }, 500);
   }
@@ -120,7 +127,10 @@ export class Settings {
     }
     if (Settings.store !== undefined) {
       try {
-        Settings.store.flush();
+        // 同步 try/catch 只能捕获 flush() 同步抛错；Promise 化的落盘失败需 catch 兜底
+        Settings.store.flush().catch((e: Object): void => {
+          hilog.warn(DOMAIN, TAG, 'settings flushNow failed: %{public}s', `${e}`);
+        });
       } catch (_e) {
       }
     }

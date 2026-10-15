@@ -87,11 +87,18 @@ export class NativeHttpBridge {
   // ------------------------------------------------------------------ private
 
   private static onRequest(reqJson: string): void {
-    let msg: JsvmBridgeRequest;
+    let msg: JsvmBridgeRequest | null = null;
     try {
-      msg = JSON.parse(reqJson) as JsvmBridgeRequest;
+      const parsed = JSON.parse(reqJson) as JsvmBridgeRequest;
+      if (parsed !== null && parsed !== undefined && typeof parsed === 'object' &&
+        typeof parsed.callId === 'number') {
+        msg = parsed;
+      }
     } catch (e) {
-      // 畸形分发消息也必须兜底 resolve（尽力从原文提取 callId），避免 native 侧永久悬挂
+      msg = null;
+    }
+    if (msg === null) {
+      // 畸形/非对象分发消息也必须兜底 resolve（尽力从原文提取 callId），避免 native 侧永久悬挂
       const match = /"callId"\s*:\s*(-?\d+)/.exec(reqJson);
       if (match !== null) {
         jsvmEngine.resolveHttp(parseInt(match[1], 10),
@@ -328,7 +335,7 @@ export class NativeHttpBridge {
       try {
         resp = await client.request(url, options);
       } catch (e) {
-        throw new Error(`HTTP request failed: ${e}`);
+        throw new Error(Util.netErrOf(e));
       }
       return resp;
     } finally {

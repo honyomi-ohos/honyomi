@@ -1,6 +1,7 @@
 import { relationalStore } from '@kit.ArkData';
 import { AppDb } from './AppDb';
 import { Util } from '../common/Util';
+import { AppKeys } from '../common/AppKeys';
 
 function closeQuietly(rs: relationalStore.ResultSet): void {
   try {
@@ -65,7 +66,7 @@ export class ReadingStatsRepo {
 
   private static async insertSession(mangaId: number, chapterId: number,
     startAt: number, seconds: number): Promise<void> {
-    if (AppStorage.get<boolean>('incognito') ?? false) {
+    if (AppStorage.get<boolean>(AppKeys.INCOGNITO) ?? false) {
       return;
     }
     try {

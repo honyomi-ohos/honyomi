@@ -1,6 +1,10 @@
 import { common } from '@kit.AbilityKit';
 import { preferences } from '@kit.ArkData';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 import { SecureStore } from '../common/SecureStore';
+
+const DOMAIN = 0x0000;
+const TAG = 'PluginPrefs';
 
 /**
  * Per-extension SharedPreferences persistence for JSVM plugins.
@@ -81,7 +85,9 @@ export class PluginPrefs {
     }
     try {
       store.putSync(`__extsecure:${pkgKey}`, JSON.stringify(keys));
-      store.flush();
+      store.flush().catch((e: Object): void => {
+        hilog.warn(DOMAIN, TAG, 'flush sensitive-key registry failed: %{public}s', `${e}`);
+      });
     } catch (_e) {
     }
   }
@@ -98,7 +104,9 @@ export class PluginPrefs {
     }
     try {
       store.deleteSync(`__extsecure:${pkgKey}`);
-      store.flush();
+      store.flush().catch((e: Object): void => {
+        hilog.warn(DOMAIN, TAG, 'flush after sensitive-key removal failed: %{public}s', `${e}`);
+      });
     } catch (_e) {
     }
   }
@@ -119,7 +127,11 @@ export class PluginPrefs {
     if (raw !== '') {
       try {
         const parsed = JSON.parse(raw) as Record<string, Object>;
-        merged = parsed;
+        // 仅接受对象载荷：JSON.parse('null')/'5' 等合法非对象 JSON 直接丢弃，
+        // 否则后续 merged[k] = v 写入 null 会抛错
+        if (parsed !== null && parsed !== undefined && typeof parsed === 'object') {
+          merged = parsed;
+        }
       } catch (e) {
         // Corrupt persisted payload: drop it instead of poisoning the engine script.
       }
@@ -217,7 +229,9 @@ export class PluginPrefs {
     });
     PluginPrefs.pending.clear();
     try {
-      store.flush();
+      store.flush().catch((e: Object): void => {
+        hilog.warn(DOMAIN, TAG, 'flush pending plugin prefs failed: %{public}s', `${e}`);
+      });
     } catch (e) {
     }
   }

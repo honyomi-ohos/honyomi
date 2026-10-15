@@ -17,6 +17,8 @@ export struct HistoryPage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('navBarH') navBarH: number = 0;
+  // 页签浮动条避让高度：宽屏无页签条时为 0（Index 按断点发布）
+  @StorageProp('tabPadH') tabPadH: number = 76;
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
   // 复刻 Mihon：再次点击历史页签续读最近作品的下一未读章节（HistoryTab.onReselect）
   @StorageLink('historyReselect') @Watch('onHistoryReselect') historyReselect: number = 0;
@@ -184,7 +186,7 @@ export struct HistoryPage {
           }
           .layoutWeight(1)
           .scrollBar(BarState.Auto)
-          .contentEndOffset(this.navBarH + 76)
+          .contentEndOffset(this.navBarH + this.tabPadH)
           .divider({
             strokeWidth: 1,
             color: this.pal.divider,

@@ -340,6 +340,15 @@ export class TtsPlaybackService {
         TtsPlaybackService.events.emitError('tts_unavailable');
         TtsPlaybackService.emitState();
       }
+    }).catch((e: Object): void => {
+      // NovelTts.start 为 async：启动异常同样回落到停止态，避免悬挂的播放中状态
+      hilog.warn(DOMAIN, TAG, 'resume start failed: %{public}s', `${e}`);
+      if (!TtsPlaybackService.pausedState) {
+        TtsPlaybackService.playingState = false;
+        TtsAvSession.setPlaying(false);
+        TtsPlaybackService.events.emitError('tts_unavailable');
+        TtsPlaybackService.emitState();
+      }
     });
   }
 
@@ -435,6 +444,14 @@ export class TtsPlaybackService {
         TtsPlaybackService.events.emitError('tts_unavailable');
         TtsPlaybackService.emitState();
       }
+    }).catch((e: Object): void => {
+      hilog.warn(DOMAIN, TAG, 'restart after speed change failed: %{public}s', `${e}`);
+      if (TtsPlaybackService.playingState) {
+        TtsPlaybackService.playingState = false;
+        TtsAvSession.setPlaying(false);
+        TtsPlaybackService.events.emitError('tts_unavailable');
+        TtsPlaybackService.emitState();
+      }
     });
   }
 
@@ -506,6 +523,14 @@ export class TtsPlaybackService {
         return;
       }
       if (!ok) {
+        TtsPlaybackService.playingState = false;
+        TtsAvSession.setPlaying(false);
+        TtsPlaybackService.events.emitError('tts_unavailable');
+        TtsPlaybackService.emitState();
+      }
+    }).catch((e: Object): void => {
+      hilog.warn(DOMAIN, TAG, 'restart after seek failed: %{public}s', `${e}`);
+      if (TtsPlaybackService.playingState) {
         TtsPlaybackService.playingState = false;
         TtsAvSession.setPlaying(false);
         TtsPlaybackService.events.emitError('tts_unavailable');

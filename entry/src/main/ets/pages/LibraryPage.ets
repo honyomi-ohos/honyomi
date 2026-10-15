@@ -10,6 +10,7 @@ import { SourceRegistry, Source } from '../source/Source';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
+import { AppKeys } from '../common/AppKeys';
 import { CategoryDialog, ConfirmDialog } from './components/Dialogs';
 import { EmptyScreen } from './components/EmptyScreen';
 import { AppIcon } from './components/AppIcon';
@@ -57,6 +58,8 @@ export struct LibraryPage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('navBarH') navBarH: number = 0;
+  // 页签浮动条避让高度：宽屏无页签条时为 0（Index 按断点发布）
+  @StorageProp('tabPadH') tabPadH: number = 76;
   @StorageProp('windowW') windowW: number = 0;
   @State mangas: MangaRecord[] = [];
   @State categories: CategoryRecord[] = [];
@@ -110,7 +113,7 @@ export struct LibraryPage {
   private searchTimer: number = -1;
 
   private onSelectionChanged(): void {
-    AppStorage.setOrCreate('libSelectionCount', this.selection.size);
+    AppStorage.setOrCreate(AppKeys.LIB_SELECTION_COUNT, this.selection.size);
     this.libSource.notifyReload();
   }
 
@@ -137,11 +140,11 @@ export struct LibraryPage {
 
   // 消费详情页回退书架的搜索请求（已挂载时由 @Watch 触发；未挂载时由 aboutToAppear 兜底）
   private takePendingLibSearch(): void {
-    const q = AppStorage.get<string>('libSearchQuery') ?? '';
+    const q = AppStorage.get<string>(AppKeys.LIB_SEARCH_QUERY) ?? '';
     if (q === '') {
       return;
     }
-    AppStorage.setOrCreate('libSearchQuery', '');
+    AppStorage.setOrCreate(AppKeys.LIB_SEARCH_QUERY, '');
     if (this.searchTimer >= 0) {
       clearTimeout(this.searchTimer);
       this.searchTimer = -1;
@@ -584,7 +587,7 @@ export struct LibraryPage {
     this.clearSelection();
     await Promise.all(ids.map((id: number): Promise<void> => MangaRepo.setInLibrary(id, false)));
     // libDirty 的 @Watch(onLibDirty) 会统一触发 loadData，无需手动重复加载
-    AppStorage.set('libDirty', this.libDirty + 1);
+    AppStorage.set(AppKeys.LIB_DIRTY, this.libDirty + 1);
   }
 
   // 迁移选中漫画（复用迁移搜索页）
@@ -875,7 +878,7 @@ export struct LibraryPage {
               }, (record: MangaRecord) => `lib-${record.id}`)
             }
             .scrollBar(BarState.Off)
-            .contentEndOffset(this.navBarH + 76)
+            .contentEndOffset(this.navBarH + this.tabPadH)
             .layoutWeight(1)
           }
           .width('100%')
@@ -910,7 +913,7 @@ export struct LibraryPage {
           .columnsGap(8)
           .rowsGap(12)
           .padding({ left: 8, right: 8, top: 4 })
-          .contentEndOffset(this.navBarH + 76)
+          .contentEndOffset(this.navBarH + this.tabPadH)
           .layoutWeight(1)
         }
       }

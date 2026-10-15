@@ -5,6 +5,7 @@ import { MangaRepo, ChapterRepo } from './Repos';
 import { SourceRegistry, Source } from '../source/Source';
 import { MangaRecord, ContentType } from '../model/Models';
 import { WidgetUpdater } from '../form/WidgetUpdater';
+import { AppKeys } from '../common/AppKeys';
 
 // 书架更新服务：按源分组刷新最新章节（组内串行、组间最多 3 组并发）
 export class UpdateService {
@@ -73,7 +74,7 @@ export class UpdateService {
     }
     await Promise.all(workers);
     // 失败计数经 AppStorage 暴露给上层（设置/刷新入口提示）
-    AppStorage.setOrCreate('updateFailedCount', failedCount);
+    AppStorage.setOrCreate(AppKeys.UPDATE_FAILED_COUNT, failedCount);
     WidgetUpdater.refreshAll(context).catch((_e: Error) => {
       // 卡片刷新失败不影响主流程
     });

@@ -3,6 +3,8 @@ import { request } from '@kit.BasicServicesKit';
 import { common } from '@kit.AbilityKit';
 import { CookieJar } from './CookieJar';
 import { CfChallenge } from './CfChallenge';
+import { Util } from '../common/Util';
+import { AppKeys } from '../common/AppKeys';
 
 // 原始响应：状态码 + 响应体（追踪器需要区分 404 等非 2xx 状态）
 export interface RawResponse {
@@ -63,7 +65,7 @@ export class Http {
     const resp = followed.resp;
     const respBody: string = Http.bodyText(resp.result);
     if (CfChallenge.isCfChallenge(resp.responseCode, respBody, resp.header)) {
-      AppStorage.setOrCreate('cfChallengeUrl', followed.url);
+      AppStorage.setOrCreate(AppKeys.CF_CHALLENGE_URL, followed.url);
       throw new HttpCfError('cf_required');
     }
     if (resp.responseCode < 200 || resp.responseCode >= 300) {
@@ -77,12 +79,14 @@ export class Http {
   // Content-Type 由调用方通过 headers 指定（JSON / x-www-form-urlencoded）
   static async requestRaw(method: string, url: string, body: string,
     headers: Record<string, string> | undefined): Promise<RawResponse> {
-    const followed = await Http.follow(url, Http.parseMethod(method), Http.copyHeaders(headers), body,
-      http.HttpDataType.STRING, 20000);
+    // RequestMethod.PATCH 枚举成员 API 26 才有：PATCH 走 customMethod（@since 23，优先级高于 method）
+    const isPatch = method === 'PATCH';
+    const followed = await Http.follow(url, isPatch ? http.RequestMethod.POST : Http.parseMethod(method),
+      Http.copyHeaders(headers), body, http.HttpDataType.STRING, 20000, isPatch ? 'PATCH' : '');
     const resp = followed.resp;
     const respBody: string = Http.bodyText(resp.result);
     if (CfChallenge.isCfChallenge(resp.responseCode, respBody, resp.header)) {
-      AppStorage.setOrCreate('cfChallengeUrl', followed.url);
+      AppStorage.setOrCreate(AppKeys.CF_CHALLENGE_URL, followed.url);
       throw new HttpCfError('cf_required');
     }
     const raw: RawResponse = { code: resp.responseCode, body: respBody };
@@ -95,8 +99,6 @@ export class Http {
         return http.RequestMethod.POST;
       case 'PUT':
         return http.RequestMethod.PUT;
-      case 'PATCH':
-        return http.RequestMethod.PATCH;
       case 'DELETE':
         return http.RequestMethod.DELETE;
       case 'HEAD':
@@ -225,7 +227,7 @@ export class Http {
     const resp = followed.resp;
     const respBody: string = Http.bodyText(resp.result);
     if (CfChallenge.isCfChallenge(resp.responseCode, respBody, resp.header)) {
-      AppStorage.setOrCreate('cfChallengeUrl', followed.url);
+      AppStorage.setOrCreate(AppKeys.CF_CHALLENGE_URL, followed.url);
       throw new HttpCfError('cf_required');
     }
     if (resp.responseCode < 200 || resp.responseCode >= 300) {
@@ -239,7 +241,7 @@ export class Http {
       http.HttpDataType.ARRAY_BUFFER, 60000);
     const resp = followed.resp;
     if (CfChallenge.isCfChallenge(resp.responseCode, '', resp.header)) {
-      AppStorage.setOrCreate('cfChallengeUrl', followed.url);
+      AppStorage.setOrCreate(AppKeys.CF_CHALLENGE_URL, followed.url);
       throw new HttpCfError('cf_required');
     }
     if (resp.responseCode < 200 || resp.responseCode >= 300) {
@@ -261,16 +263,18 @@ export class Http {
     headers: Record<string, string>,
     body: string,
     expectDataType: http.HttpDataType,
-    readTimeout: number
+    readTimeout: number,
+    customMethod: string = ''
   ): Promise<HttpFollowed> {
     let url = startUrl;
     let currentMethod = method;
     let currentHeaders = headers;
     let currentBody = body;
+    let currentCustomMethod = customMethod;
     const httpsStart = startUrl.indexOf('https://') === 0;
     for (let hop = 0; hop < 8; hop++) {
       const resp = await Http.requestOnce(url, currentMethod, currentHeaders, currentBody, expectDataType,
-        readTimeout);
+        readTimeout, currentCustomMethod);
       CookieJar.storeFromResponse(url, resp.header);
       if (!Http.isRedirect(resp.responseCode)) {
         const followed: HttpFollowed = { url: url, resp: resp };
@@ -290,10 +294,12 @@ export class Http {
       if (Http.originOf(next) !== Http.originOf(url)) {
         currentHeaders = Http.stripSensitiveHeaders(currentHeaders);
       }
+      // 303 或（301/302 且真实 POST）转 GET 并丢弃请求体；customMethod 请求（如 PATCH）仅在 303 时转换
       if (resp.responseCode === 303 ||
         ((resp.responseCode === 301 || resp.responseCode === 302) &&
-          currentMethod === http.RequestMethod.POST)) {
+          currentMethod === http.RequestMethod.POST && currentCustomMethod === '')) {
         currentMethod = http.RequestMethod.GET;
+        currentCustomMethod = '';
         currentBody = '';
       }
       url = next;
@@ -307,7 +313,8 @@ export class Http {
     headers: Record<string, string>,
     body: string,
     expectDataType: http.HttpDataType,
-    readTimeout: number
+    readTimeout: number,
+    customMethod: string = ''
   ): Promise<http.HttpResponse> {
     const client: http.HttpRequest = http.createHttp();
     try {
@@ -318,6 +325,9 @@ export class Http {
         connectTimeout: 15000,
         readTimeout: readTimeout,
       };
+      if (customMethod !== '') {
+        options.customMethod = customMethod;
+      }
       if (body !== '' && method !== http.RequestMethod.GET && method !== http.RequestMethod.HEAD) {
         options.extraData = body;
       }
@@ -325,7 +335,7 @@ export class Http {
       try {
         resp = await client.request(url, options);
       } catch (e) {
-        throw new Error(`HTTP request failed: ${e}`);
+        throw new Error(Util.netErrOf(e));
       }
       return resp;
     } finally {

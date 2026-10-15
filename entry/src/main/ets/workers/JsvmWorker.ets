@@ -20,11 +20,14 @@
  */
 
 import { worker, MessageEvents, ThreadWorkerGlobalScope } from '@kit.ArkTS';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 import jsvmEngine from 'libjsvmengine.so';
 
+const DOMAIN = 0x0000;
+const TAG = 'JsvmWorker';
 const workerPort: ThreadWorkerGlobalScope = worker.workerPort;
 
-console.info('[JsvmWorker] module loaded');
+hilog.info(DOMAIN, TAG, 'module loaded');
 
 let engineId: number = -1;
 // 上一次 dump 的 prefs 快照：仅 prefsDirty 调用或无快照时才重新 dump
@@ -44,6 +47,19 @@ interface CallEnvelope {
   ok?: boolean;
   data?: object;
   error?: string;
+}
+
+// 解析引擎返回的调用信封：畸形/非对象 JSON 回退为空信封，避免后续字段读取崩溃
+function parseEnvelope(json: string): CallEnvelope {
+  try {
+    const parsed = JSON.parse(json) as CallEnvelope;
+    if (parsed === undefined || parsed === null || typeof parsed !== 'object') {
+      return {};
+    }
+    return parsed;
+  } catch (_e) {
+    return {};
+  }
 }
 
 function post(json: string): void {
@@ -86,7 +102,7 @@ function dumpPrefs(): string {
   }
   try {
     const envelopeJson = jsvmEngine.callFunction(engineId, '__prefsDump', '[]');
-    const envelope = JSON.parse(envelopeJson) as CallEnvelope;
+    const envelope = parseEnvelope(envelopeJson);
     if (envelope.ok === true && envelope.data !== undefined) {
       return JSON.stringify(envelope.data);
     }
@@ -98,14 +114,14 @@ function dumpPrefs(): string {
 
 function handleInit(req: WorkerRequest): void {
   try {
-    console.info('[JsvmWorker] init start');
+    hilog.info(DOMAIN, TAG, 'init start');
     engineId = jsvmEngine.createEngine();
     if (engineId < 0) {
       ready(false, '', 'engine_create_failed');
       return;
     }
     const envelopeJson = jsvmEngine.runScript(engineId, req.code ?? '');
-    const envelope = JSON.parse(envelopeJson) as CallEnvelope;
+    const envelope = parseEnvelope(envelopeJson);
     if (envelope.ok !== true) {
       const error = envelope.error ?? 'script_failed';
       jsvmEngine.destroyEngine(engineId);
@@ -162,7 +178,11 @@ function handleDestroy(): void {
 workerPort.onmessage = (e: MessageEvents): void => {
   let req: WorkerRequest;
   try {
-    req = (typeof e.data === 'string' ? JSON.parse(e.data as string) : e.data) as WorkerRequest;
+    const parsed = (typeof e.data === 'string' ? JSON.parse(e.data as string) : e.data) as WorkerRequest;
+    if (parsed === undefined || parsed === null || typeof parsed !== 'object') {
+      return;
+    }
+    req = parsed;
   } catch (err) {
     return;
   }
@@ -179,5 +199,6 @@ workerPort.onmessage = (e: MessageEvents): void => {
 };
 
 workerPort.onmessageerror = (): void => {
-  // Unserialization failure: nothing sensible to recover; ignore.
+  // Unserialization failure: nothing sensible to recover; log and ignore.
+  hilog.warn(DOMAIN, TAG, 'host message deserialization failed');
 };

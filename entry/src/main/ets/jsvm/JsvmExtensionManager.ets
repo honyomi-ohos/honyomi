@@ -16,9 +16,13 @@
  */
 
 import { worker, MessageEvents, ErrorEvent } from '@kit.ArkTS';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 import { NativeHttpBridge } from './NativeHttpBridge';
 import { WebChallengeError, isChallengeError, challengeUrlOf, JsvmExtensionInfo } from './EngineGateway';
 import { PluginPrefs } from './PluginPrefs';
+
+const DOMAIN = 0x0000;
+const TAG = 'JsvmExt';
 
 /** Per-extension JSVM heap budget (bytes) — see architecture spec. */
 export const JSVM_HEAP_BUDGET_BYTES: number = 2 * 1024 * 1024;
@@ -201,7 +205,7 @@ export class JsvmExtensionManager {
   // ------------------------------------------------------------------ private
 
   private static spawnWorker(key: string): ExtensionEntry {
-    console.info(`[JsvmExt] spawning worker for ${key}`);
+    hilog.info(DOMAIN, TAG, 'spawning worker for %{public}s', key);
     const threadWorker = new worker.ThreadWorker('entry/ets/workers/JsvmWorker.ets');
     const entry: ExtensionEntry = {
       key: key,
@@ -219,17 +223,17 @@ export class JsvmExtensionManager {
       JsvmExtensionManager.onWorkerMessage(entry, e.data);
     };
     threadWorker.onerror = (err: ErrorEvent): void => {
-      console.error(`[JsvmExt] worker error for ${key}: ${err.message}`);
+      hilog.error(DOMAIN, TAG, 'worker error for %{public}s: %{public}s', key, err.message);
       entry.broken = true;
       JsvmExtensionManager.failAll(entry, new Error(err.message));
     };
     threadWorker.onAllErrors = (err: ErrorEvent): void => {
-      console.error(`[JsvmExt] worker allErrors for ${key}: ${err.message}`);
+      hilog.error(DOMAIN, TAG, 'worker allErrors for %{public}s: %{public}s', key, err.message);
       entry.broken = true;
       JsvmExtensionManager.failAll(entry, new Error(err.message));
     };
     threadWorker.onexit = (code: number): void => {
-      console.info(`[JsvmExt] worker exit for ${key}: code=${code}`);
+      hilog.info(DOMAIN, TAG, 'worker exit for %{public}s: code=%{public}d', key, code);
       // worker 已退出：清除 terminate 安全网定时器
       if (entry.terminateTimer >= 0) {
         clearTimeout(entry.terminateTimer);
@@ -247,7 +251,11 @@ export class JsvmExtensionManager {
   private static onWorkerMessage(entry: ExtensionEntry, data: Object): void {
     let event: WorkerEvent;
     try {
-      event = (typeof data === 'string' ? JSON.parse(data as string) : data) as WorkerEvent;
+      const parsed = (typeof data === 'string' ? JSON.parse(data as string) : data) as WorkerEvent;
+      if (parsed === undefined || parsed === null || typeof parsed !== 'object') {
+        return;
+      }
+      event = parsed;
     } catch (e) {
       return;
     }
@@ -375,10 +383,16 @@ export class JsvmExtensionManager {
   }
 
   private static unwrap<T>(envelopeJson: string): T {
-    let envelope: CallEnvelope;
+    let envelope: CallEnvelope | null = null;
     try {
-      envelope = JSON.parse(envelopeJson) as CallEnvelope;
+      const parsed = JSON.parse(envelopeJson) as CallEnvelope;
+      if (parsed !== null && parsed !== undefined && typeof parsed === 'object') {
+        envelope = parsed;
+      }
     } catch (e) {
+      envelope = null;
+    }
+    if (envelope === null) {
       throw new Error('ext_invalid_json');
     }
     if (envelope.ok !== true) {
@@ -437,7 +451,7 @@ export class JsvmExtensionManager {
         break;
       }
       const victimKey = entries[victimIdx].key;
-      console.info(`[JsvmExt] LRU evicting engine ${victimKey} (cap ${MAX_LIVE_ENGINES})`);
+      hilog.info(DOMAIN, TAG, 'LRU evicting engine %{public}s (cap %{public}d)', victimKey, MAX_LIVE_ENGINES);
       await JsvmExtensionManager.unloadExtension(victimKey);
     }
   }

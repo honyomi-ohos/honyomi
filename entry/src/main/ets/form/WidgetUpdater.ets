@@ -48,6 +48,17 @@ export class MangaCardData {
 // - EntryFormAbility 与 UIAbility 共用（同 bundle 同模块，preferences/rdb 路径一致）
 // - onAddForm 同步返回默认数据后异步补数据；应用退后台/书架刷新后 refreshAll 推送最新内容
 export class WidgetUpdater {
+  // 缓存的 widget_forms Preferences 实例：官方建议获取一次后复用，
+  // 避免每次读写都走 getPreferences 重复打开
+  private static prefs: preferences.Preferences | null = null;
+
+  private static async getPrefs(context: common.Context): Promise<preferences.Preferences> {
+    if (WidgetUpdater.prefs === null) {
+      WidgetUpdater.prefs = await preferences.getPreferences(context, { name: PREFS_NAME });
+    }
+    return WidgetUpdater.prefs;
+  }
+
   static async saveForm(context: common.Context, info: CardFormInfo): Promise<void> {
     await runSerialFormOp(async (): Promise<void> => {
       const forms = await WidgetUpdater.loadForms(context);
@@ -82,7 +93,7 @@ export class WidgetUpdater {
   static async loadForms(context: common.Context): Promise<CardFormInfo[]> {
     let raw: preferences.ValueType = '';
     try {
-      const prefs = await preferences.getPreferences(context, { name: PREFS_NAME });
+      const prefs = await WidgetUpdater.getPrefs(context);
       const has = await prefs.has(PREFS_KEY);
       if (!has) {
         return [];
@@ -121,7 +132,7 @@ export class WidgetUpdater {
 
   private static async writeForms(context: common.Context, forms: CardFormInfo[]): Promise<void> {
     try {
-      const prefs = await preferences.getPreferences(context, { name: PREFS_NAME });
+      const prefs = await WidgetUpdater.getPrefs(context);
       await prefs.put(PREFS_KEY, JSON.stringify(forms));
       await prefs.flush();
     } catch (e) {
@@ -134,7 +145,7 @@ export class WidgetUpdater {
 
   static async setPendingManga(context: common.Context, mangaId: number): Promise<void> {
     await runSerialFormOp(async (): Promise<void> => {
-      const prefs = await preferences.getPreferences(context, { name: PREFS_NAME });
+      const prefs = await WidgetUpdater.getPrefs(context);
       await prefs.put(PREFS_KEY_PENDING, `${mangaId}`);
       await prefs.flush();
     });
@@ -143,7 +154,7 @@ export class WidgetUpdater {
   // 读取并清除 pending mangaId；无则返回 0
   static async takePendingManga(context: common.Context): Promise<number> {
     return await runSerialFormOp(async (): Promise<number> => {
-      const prefs = await preferences.getPreferences(context, { name: PREFS_NAME });
+      const prefs = await WidgetUpdater.getPrefs(context);
       const has = await prefs.has(PREFS_KEY_PENDING);
       if (!has) {
         return 0;

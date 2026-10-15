@@ -2,6 +2,7 @@
 import { common, Want } from '@kit.AbilityKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { util } from '@kit.ArkTS';
+import { BusinessError } from '@kit.BasicServicesKit';
 import { Settings } from './Settings';
 
 export class Util {
@@ -233,6 +234,46 @@ export class Util {
     Util.toast(ui, Util.resStr(ui, res, args));
   }
 
+  // 捕获的异常 → 可读摘要：BusinessError 取 "code: message"，普通 Error 取 message，
+  // 字符串原样返回；避免模板插值把整个对象格式化成 [object Object]
+  static errSummary(e: Object | string): string {
+    if (typeof e === 'string') {
+      return e;
+    }
+    const be = e as BusinessError;
+    const message: string = typeof be.message === 'string' && be.message !== '' ? be.message : 'unknown error';
+    if (typeof be.code === 'number') {
+      return `${be.code}: ${message}`;
+    }
+    return message;
+  }
+
+  // 网络层 BusinessError（@ohos.net.http 返回 curl 系错误码，基数 2300000）→ 稳定错误码：
+  // 常见网络原因归组为独立码（errText 本地化展示），未识别的保留原始 code + message
+  static netErrOf(e: Object | string): string {
+    const be = e as BusinessError;
+    const code: number = typeof be.code === 'number' ? be.code : -1;
+    if (code === 2300006) {
+      return 'net_host_resolve_failed';
+    }
+    if (code === 2300007) {
+      return 'net_connect_failed';
+    }
+    if (code === 2300028) {
+      return 'net_timeout';
+    }
+    if (code === 2300056) {
+      return 'net_interrupted';
+    }
+    const curl: number = code - 2300000;
+    if (curl === 35 || curl === 51 || curl === 53 || curl === 54 || curl === 58 || curl === 59 ||
+      curl === 60 || curl === 64 || curl === 66 || curl === 77 || curl === 80 || curl === 82 ||
+      curl === 83 || curl === 90 || curl === 91) {
+      return 'net_ssl_failed';
+    }
+    return `net_request_failed|${Util.errSummary(e)}`;
+  }
+
   // 错误码 → 本地化文案：服务层业务错误统一为 "code" 或 "code|arg" 格式，
   // 未识别内容（插件自抛消息/引擎透传/系统错误）原样返回
   static errText(ui: UIContext, raw: string): string {
@@ -295,6 +336,24 @@ export class Util {
         break;
       case 'too_many_redirects':
         res = $r('app.string.net_too_many_redirects');
+        break;
+      case 'net_host_resolve_failed':
+        res = $r('app.string.net_host_resolve_failed');
+        break;
+      case 'net_connect_failed':
+        res = $r('app.string.net_connect_failed');
+        break;
+      case 'net_timeout':
+        res = $r('app.string.net_timeout');
+        break;
+      case 'net_ssl_failed':
+        res = $r('app.string.net_ssl_failed');
+        break;
+      case 'net_interrupted':
+        res = $r('app.string.net_interrupted');
+        break;
+      case 'net_request_failed':
+        res = $r('app.string.net_request_failed');
         break;
       case 'tts_busy':
         res = $r('app.string.tts_error_busy');
@@ -388,6 +447,27 @@ export class Util {
         break;
       case 'plugin_no_video_list':
         res = $r('app.string.plugin_error_no_video_list');
+        break;
+      case 'plugin_write_failed':
+        res = $r('app.string.plugin_error_write_failed');
+        break;
+      case 'plugin_uninstall_failed':
+        res = $r('app.string.plugin_error_uninstall_failed');
+        break;
+      case 'plugin_start_read_failed':
+        res = $r('app.string.plugin_error_start_read_failed');
+        break;
+      case 'plugin_checksum_failed':
+        res = $r('app.string.plugin_error_checksum_failed');
+        break;
+      case 'plugin_extract_failed':
+        res = $r('app.string.plugin_error_extract_failed');
+        break;
+      case 'plugin_manifest_read_failed':
+        res = $r('app.string.plugin_error_manifest_read_failed');
+        break;
+      case 'plugin_stage_failed':
+        res = $r('app.string.plugin_error_stage_failed');
         break;
       default:
         break;

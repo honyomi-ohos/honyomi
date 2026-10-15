@@ -25,6 +25,8 @@ export struct UpdatesPage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('navBarH') navBarH: number = 0;
+  // 页签浮动条避让高度：宽屏无页签条时为 0（Index 按断点发布）
+  @StorageProp('tabPadH') tabPadH: number = 76;
   @StorageProp('windowW') windowW: number = 0;
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
   // 关闭“显示 NSFW 源”时隐藏 NSFW 插件源的更新；插件注册完成后（pluginsDirty）重算过滤
@@ -302,7 +304,7 @@ export struct UpdatesPage {
           }
           .layoutWeight(1)
           .scrollBar(BarState.Auto)
-          .contentEndOffset(this.navBarH + 76)
+          .contentEndOffset(this.navBarH + this.tabPadH)
           .divider({
             strokeWidth: 1,
             color: this.pal.divider,

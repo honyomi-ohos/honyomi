@@ -3,6 +3,7 @@ import { statfs } from '@kit.CoreFileKit';
 import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
 import { Util } from '../../common/Util';
+import { AppKeys } from '../../common/AppKeys';
 import { ImageCache } from '../../common/ImageCache';
 import { BackupService } from '../../data/BackupService';
 import { PageHeader } from '../components/PageHeader';
@@ -115,7 +116,7 @@ export struct DataStorageContent {
         Util.toastRes(this.getUIContext(), $r('app.string.advanced_backup_invalid'));
       } else {
         Util.toastRes(this.getUIContext(), $r('app.string.advanced_restored_manga'), [count]);
-        AppStorage.setOrCreate('libDirty', (AppStorage.get<number>('libDirty') ?? 0) + 1);
+        AppStorage.setOrCreate(AppKeys.LIB_DIRTY, (AppStorage.get<number>(AppKeys.LIB_DIRTY) ?? 0) + 1);
       }
     } catch (e) {
       if (this.disposed) {

@@ -23,6 +23,9 @@ export class AppKeys {
   // 页签重复点击信号（计数器递增）
   static readonly LIB_RESELECT: string = 'libReselect';
   static readonly HISTORY_RESELECT: string = 'historyReselect';
+  // 详情页回退书架/主页的搜索请求（计数触发，查询词经 libSearchQuery 传递）
+  static readonly LIB_SEARCH_REQ: string = 'libSearchReq';
+  static readonly LIB_SEARCH_QUERY: string = 'libSearchQuery';
   // 全局功能开关
   static readonly DOWNLOADED_ONLY: string = 'downloadedOnly';
   static readonly INCOGNITO: string = 'incognito';
@@ -35,4 +38,10 @@ export class AppKeys {
   // CF 质询通过信号（计数器递增代表验证完成，JsvmSource 轮询读取）
   static readonly CF_VERIFIED_TICK: string = 'cfVerifiedTick';
   static readonly LIB_SELECTION_COUNT: string = 'libSelectionCount';
+  // 更新抓取失败章节数（UpdatesPage 徽标）
+  static readonly UPDATE_FAILED_COUNT: string = 'updateFailedCount';
+  // 备份结果标记（设置页展示上次备份是否失败）
+  static readonly LAST_BACKUP_FAILED: string = 'lastBackupFailed';
+  // 主页底部页签区高度（px，Index 窗口测量写入）
+  static readonly TAB_PAD_H: string = 'tabPadH';
 }

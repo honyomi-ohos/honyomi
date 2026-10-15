@@ -2,6 +2,7 @@ import { SManga, SChapter, SPage, SVideo, MangasPage, ContentType } from '../mod
 import { Source } from './Source';
 import { EngineGateway, EngineBackend, WebChallengeError } from '../jsvm/EngineGateway';
 import { Http } from '../net/Http';
+import { AppKeys } from '../common/AppKeys';
 import { util } from '@kit.ArkTS';
 
 // 插件包 manifest.json 模型（宽松字段，解析时校验必填项）
@@ -502,7 +503,7 @@ export class JsvmSource implements Source {
       return await JsvmSource.engine().callData<T>(this.packageKey, method, args);
     } catch (e) {
       if (e instanceof WebChallengeError) {
-        AppStorage.setOrCreate('cfChallengeUrl', e.challengeUrl);
+        AppStorage.setOrCreate(AppKeys.CF_CHALLENGE_URL, e.challengeUrl);
         // 挂起等待用户在验证页完成质询：通过后 cfVerifiedTick 增长，携新
         // cf_clearance 自动重试一次；用户放弃（验证页关闭未通过）则原样上抛
         const solved = await JsvmSource.waitChallengeSolved();
@@ -528,17 +529,17 @@ export class JsvmSource implements Source {
 
   private static pollChallengeSolved(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      const startTick = AppStorage.get<number>('cfVerifiedTick') ?? 0;
+      const startTick = AppStorage.get<number>(AppKeys.CF_VERIFIED_TICK) ?? 0;
       const deadline = Date.now() + 120000;
       const timer = setInterval(() => {
-        const tick = AppStorage.get<number>('cfVerifiedTick') ?? 0;
+        const tick = AppStorage.get<number>(AppKeys.CF_VERIFIED_TICK) ?? 0;
         if (tick > startTick) {
           clearInterval(timer);
           JsvmSource.challengeWait = undefined;
           resolve(true);
           return;
         }
-        const url = AppStorage.get<string>('cfChallengeUrl') ?? '';
+        const url = AppStorage.get<string>(AppKeys.CF_CHALLENGE_URL) ?? '';
         if (url === '' || Date.now() > deadline) {
           clearInterval(timer);
           JsvmSource.challengeWait = undefined;

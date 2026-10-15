@@ -262,7 +262,10 @@ export class MangaUpdatesTracker extends Tracker {
     try {
       const ratingResp = await TrackHttp.send('GET', `${MU_BASE_URL}/v1/series/${track.remoteId}/rating`,
         await this.authHeaders(), '');
-      track.score = (JSON.parse(ratingResp) as MuRatingRaw).rating ?? 0;
+      // 先解析为 raw 模型再逐字段校验：非对象 JSON（null/基元）回退 0 分
+      const rating = JSON.parse(ratingResp) as MuRatingRaw;
+      track.score = rating !== null && rating !== undefined && typeof rating.rating === 'number'
+        ? rating.rating : 0;
     } catch (_e) {
       track.score = 0;
     }

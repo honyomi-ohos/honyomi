@@ -2,6 +2,7 @@ import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
 import { Languages } from '../../common/Languages';
 import { Util } from '../../common/Util';
+import { AppKeys } from '../../common/AppKeys';
 import { PageHeader } from '../components/PageHeader';
 import { PrefGroup, PrefSwitchRow, TextRow } from '../components/Prefs';
 import { ThemePicker } from '../components/ThemePicker';
@@ -24,7 +25,7 @@ export struct AppearanceContent {
   private applyMode(mode: string): void {
     this.themeMode = mode;
     Settings.setThemeMode(mode);
-    const systemDark = AppStorage.get<boolean>('isDarkSystem') ?? false;
+    const systemDark = AppStorage.get<boolean>(AppKeys.IS_DARK_SYSTEM) ?? false;
     Settings.applyTheme(systemDark);
     Settings.applyColorMode(Util.hostAbilityContext(this.getUIContext()));
   }

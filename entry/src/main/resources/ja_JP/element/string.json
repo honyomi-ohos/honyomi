@@ -576,6 +576,12 @@
     { "name": "local_desc_video", "value": "ローカルから取り込んだ動画" },
     { "name": "net_redirect_blocked", "value": "非 https へのリダイレクトをブロックしました：%s" },
     { "name": "net_too_many_redirects", "value": "リダイレクトが多すぎます：%s" },
+    { "name": "net_host_resolve_failed", "value": "サーバーアドレスを解決できませんでした。ネットワークを確認して再試行してください" },
+    { "name": "net_connect_failed", "value": "サーバーに接続できませんでした。ネットワークを確認して再試行してください" },
+    { "name": "net_timeout", "value": "リクエストがタイムアウトしました。しばらくしてから再試行してください" },
+    { "name": "net_ssl_failed", "value": "セキュア接続に失敗しました（SSL エラー）。しばらくしてから再試行してください" },
+    { "name": "net_interrupted", "value": "接続が中断されました。再試行してください" },
+    { "name": "net_request_failed", "value": "ネットワークリクエストに失敗しました：%s" },
     { "name": "jsvm_error_engine_create", "value": "JSVM エンジンの作成に失敗しました" },
     { "name": "jsvm_error_script_failed", "value": "プラグインスクリプトの実行に失敗しました" },
     { "name": "ext_error_not_loaded", "value": "拡張機能が読み込まれていません" },
@@ -603,6 +609,13 @@
     { "name": "plugin_error_runtime_missing", "value": "プラグインのランタイムコンポーネントが見つかりません：plugin_runtime_%s.js" },
     { "name": "plugin_error_invalid_detail", "value": "プラグインの詳細情報が無効です" },
     { "name": "plugin_error_no_chapter_text", "value": "プラグインが getChapterText をエクスポートしていません" },
-    { "name": "plugin_error_no_video_list", "value": "プラグインが getVideoList をエクスポートしていません" }
+    { "name": "plugin_error_no_video_list", "value": "プラグインが getVideoList をエクスポートしていません" },
+    { "name": "plugin_error_write_failed", "value": "プラグインパッケージの保存に失敗しました：%s" },
+    { "name": "plugin_error_uninstall_failed", "value": "プラグインディレクトリの削除に失敗しました：%s" },
+    { "name": "plugin_error_start_read_failed", "value": "インストール済みプラグインファイルの読み込みに失敗しました：%s" },
+    { "name": "plugin_error_checksum_failed", "value": "プラグインパッケージの整合性検証に失敗しました：%s" },
+    { "name": "plugin_error_extract_failed", "value": "プラグインパッケージの展開に失敗しました：%s" },
+    { "name": "plugin_error_manifest_read_failed", "value": "プラグインパッケージ内の manifest.json の読み込みに失敗しました：%s" },
+    { "name": "plugin_error_stage_failed", "value": "プラグインファイルのステージングに失敗しました：%s" }
 ]
 }

@@ -1,6 +1,6 @@
 import { common, bundleManager } from '@kit.AbilityKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
-import zlib from '@ohos.zlib';
+import { zlib } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { util } from '@kit.ArkTS';
 import { cryptoFramework } from '@kit.CryptoArchitectureKit';
@@ -10,6 +10,8 @@ import { PluginPrefs } from '../jsvm/PluginPrefs';
 import { SourceRegistry } from '../source/Source';
 import { ContentType, PluginRecord } from '../model/Models';
 import { Http } from '../net/Http';
+import { Util } from '../common/Util';
+import { AppKeys } from '../common/AppKeys';
 import { AppDb } from './AppDb';
 import { PluginRepo, MangaRepo } from './Repos';
 
@@ -340,7 +342,7 @@ export class PluginService {
         }
       }
     } catch (e) {
-      throw new Error(`plugin_write_failed|${e}`);
+      throw new Error(`plugin_write_failed|${Util.errSummary(e)}`);
     }
     try {
       return await PluginService.installZip(zipPath);
@@ -386,7 +388,7 @@ export class PluginService {
         fs.rmdirSync(dir);
       }
     } catch (e) {
-      throw new Error(`plugin_uninstall_failed|${e}`);
+      throw new Error(`plugin_uninstall_failed|${Util.errSummary(e)}`);
     }
     // 注意：数据库中该源的漫画数据保留，重装同 key 插件后自动恢复
   }
@@ -510,7 +512,7 @@ export class PluginService {
       manifestText = fs.readTextSync(`${dir}/manifest.json`);
       scriptText = fs.readTextSync(`${dir}/main.js`);
     } catch (e) {
-      throw new Error(`plugin_start_read_failed|${e}`);
+      throw new Error(`plugin_start_read_failed|${Util.errSummary(e)}`);
     }
     const manifest = PluginService.parseManifest(manifestText);
     const script = PluginService.composeScript(manifest, scriptText);
@@ -578,7 +580,7 @@ export class PluginService {
   }
 
   static markDirty(): void {
-    AppStorage.setOrCreate('pluginsDirty', (AppStorage.get<number>('pluginsDirty') ?? 0) + 1);
+    AppStorage.setOrCreate(AppKeys.PLUGINS_DIRTY, (AppStorage.get<number>(AppKeys.PLUGINS_DIRTY) ?? 0) + 1);
   }
 
   // ---------------- 仓库索引 ----------------
@@ -661,7 +663,7 @@ export class PluginService {
       }
       throw new Error('crypto unavailable');
     } catch (e) {
-      throw new Error(`plugin_checksum_failed|${e}`);
+      throw new Error(`plugin_checksum_failed|${Util.errSummary(e)}`);
     }
   }
 
@@ -674,7 +676,7 @@ export class PluginService {
       }
       await zlib.decompressFile(zipPath, extractDir);
     } catch (e) {
-      throw new Error(`plugin_extract_failed|${e}`);
+      throw new Error(`plugin_extract_failed|${Util.errSummary(e)}`);
     }
     let stagingDir = '';
     try {
@@ -683,7 +685,7 @@ export class PluginService {
       try {
         manifestText = fs.readTextSync(`${rootDir}/manifest.json`);
       } catch (e) {
-        throw new Error(`plugin_manifest_read_failed|${e}`);
+        throw new Error(`plugin_manifest_read_failed|${Util.errSummary(e)}`);
       }
       const manifest = PluginService.parseManifest(manifestText);
       let mainExists = false;
@@ -704,7 +706,7 @@ export class PluginService {
           fs.copyFileSync(`${rootDir}/${manifest.icon}`, `${stagingDir}/${manifest.icon}`);
         }
       } catch (e) {
-        throw new Error(`plugin_stage_failed|${e}`);
+        throw new Error(`plugin_stage_failed|${Util.errSummary(e)}`);
       }
       const destDir = `${PluginService.pluginsDir}/${manifest.key}`;
       const backupDir = `${PluginService.pluginsDir}/.old_${manifest.key}_${util.generateRandomUUID()}`;

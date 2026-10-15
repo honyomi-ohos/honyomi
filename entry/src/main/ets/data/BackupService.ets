@@ -3,6 +3,7 @@ import { common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { util } from '@kit.ArkTS';
 import { Settings } from '../common/Settings';
+import { AppKeys } from '../common/AppKeys';
 import { AppDb } from './AppDb';
 import { MangaRepo, ChapterRepo, CategoryRepo } from './Repos';
 import { SManga, CategoryRecord, MangaRecord, ChapterRecord, ContentType } from '../model/Models';
@@ -324,8 +325,8 @@ export class BackupService {
         count += 1;
       }
       store.commit();
-      const dirty = AppStorage.get<number>('libDirty');
-      AppStorage.setOrCreate('libDirty', (dirty !== undefined ? dirty : 0) + 1);
+      const dirty = AppStorage.get<number>(AppKeys.LIB_DIRTY);
+      AppStorage.setOrCreate(AppKeys.LIB_DIRTY, (dirty !== undefined ? dirty : 0) + 1);
       return count;
     } catch (e) {
       try {
@@ -382,10 +383,10 @@ export class BackupService {
     try {
       await BackupService.autoBackup(context);
       Settings.setLastAutoBackupTimestamp(Date.now());
-      AppStorage.setOrCreate('lastBackupFailed', false);
+      AppStorage.setOrCreate(AppKeys.LAST_BACKUP_FAILED, false);
     } catch (e) {
       // 失败状态经 AppStorage 上报供设置页提示
-      AppStorage.setOrCreate('lastBackupFailed', true);
+      AppStorage.setOrCreate(AppKeys.LAST_BACKUP_FAILED, true);
       hilog.error(0x0001, 'Backup', 'auto backup failed: %{public}s', (e as Error).message);
     }
   }

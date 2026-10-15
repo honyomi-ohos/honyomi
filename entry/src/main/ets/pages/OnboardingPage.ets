@@ -5,6 +5,7 @@
 import { ThemePalette } from '../common/Theme';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
+import { AppKeys } from '../common/AppKeys';
 import { BackupService } from '../data/BackupService';
 import { OnboardingParams } from '../model/RouteParams';
 import { AppIcon } from './components/AppIcon';
@@ -30,7 +31,7 @@ struct OnboardingThemeStep {
   private applyThemeMode(mode: string): void {
     this.themeMode = mode;
     Settings.setThemeMode(mode);
-    const systemDark = AppStorage.get<boolean>('isDarkSystem') ?? false;
+    const systemDark = AppStorage.get<boolean>(AppKeys.IS_DARK_SYSTEM) ?? false;
     Settings.applyTheme(systemDark);
     Settings.applyColorMode(Util.hostAbilityContext(this.getUIContext()));
   }
@@ -220,7 +221,7 @@ export struct OnboardingPage {
         return;
       }
       Util.toastRes(this.getUIContext(), $r('app.string.advanced_restored_manga'), [count]);
-      AppStorage.setOrCreate('libDirty', (AppStorage.get<number>('libDirty') ?? 0) + 1);
+      AppStorage.setOrCreate(AppKeys.LIB_DIRTY, (AppStorage.get<number>(AppKeys.LIB_DIRTY) ?? 0) + 1);
       this.finish();
     } catch (e) {
       Util.toastRes(this.getUIContext(), $r('app.string.advanced_import_failed'));

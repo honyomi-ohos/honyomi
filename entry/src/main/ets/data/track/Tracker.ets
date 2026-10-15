@@ -8,6 +8,7 @@ import { cryptoFramework } from '@kit.CryptoArchitectureKit';
 import { util } from '@kit.ArkTS';
 import { TrackRecord, TrackSearchResult } from '../../model/Models';
 import { Settings } from '../../common/Settings';
+import { Util } from '../../common/Util';
 import { SecureStore } from '../../common/SecureStore';
 import { TrackRepo } from '../Repos';
 import { Http, RawResponse } from '../../net/Http';
@@ -92,7 +93,7 @@ export class Pkce {
         const digest = await md.digest();
         return Pkce.b64Url(digest.data).replace(/=/g, '');
       } catch (e) {
-        throw new Error(`pkce_failed|${e}`);
+        throw new Error(`pkce_failed|${Util.errSummary(e)}`);
       }
     }
     throw new Error('pkce_unsupported');

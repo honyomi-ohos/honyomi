@@ -12,6 +12,7 @@ import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
+import { AppKeys } from '../common/AppKeys';
 import { CoverStore } from '../common/CoverStore';
 import { ChapterFlags } from '../common/ChapterFlags';
 import { NaturalCompare } from '../common/NaturalCompare';
@@ -319,8 +320,8 @@ export struct MangaDetailPage {
     }
     if (names.length === 1) {
       // 详情页直接位于主页之上：切书架页签并以文本搜索（对齐 Mihon HomeScreen.search → LibraryTab）
-      AppStorage.setOrCreate('libSearchQuery', q);
-      AppStorage.setOrCreate('libSearchReq', (AppStorage.get<number>('libSearchReq') ?? 0) + 1);
+      AppStorage.setOrCreate(AppKeys.LIB_SEARCH_QUERY, q);
+      AppStorage.setOrCreate(AppKeys.LIB_SEARCH_REQ, (AppStorage.get<number>(AppKeys.LIB_SEARCH_REQ) ?? 0) + 1);
       this.pathStack.pop();
     }
   }
@@ -595,7 +596,7 @@ export struct MangaDetailPage {
     if (this.manga.inLibrary) {
       // 移出书架：直接执行
       await MangaRepo.setInLibrary(this.manga.id, false);
-      AppStorage.set('libDirty', this.libDirty + 1);
+      AppStorage.set(AppKeys.LIB_DIRTY, this.libDirty + 1);
       Util.toastRes(this.getUIContext(), $r('app.string.detail_removed_from_library'));
       return;
     }
@@ -617,7 +618,7 @@ export struct MangaDetailPage {
     if (categoryId >= 0) {
       await MangaRepo.setCategory(this.manga.id, categoryId);
     }
-    AppStorage.set('libDirty', this.libDirty + 1);
+    AppStorage.set(AppKeys.LIB_DIRTY, this.libDirty + 1);
     // 入库即持久化封面（AVIF 经图片管线转码为 JPEG 落盘），书架离线可显、无插件注册竞态
     this.persistCover();
     Util.toastRes(this.getUIContext(), $r('app.string.detail_added_to_library'));
@@ -653,7 +654,7 @@ export struct MangaDetailPage {
         return;
       }
       await MangaRepo.setLocalCover(this.manga.id, path, url);
-      AppStorage.set('libDirty', this.libDirty + 1);
+      AppStorage.set(AppKeys.LIB_DIRTY, this.libDirty + 1);
     } catch (_e) {
       // 持久化失败不阻塞入库，书架回退在线封面路径
     }
@@ -678,7 +679,7 @@ export struct MangaDetailPage {
         return;
       }
       await MangaRepo.applyCustomCover(this.mangaId, coverPath);
-      AppStorage.set('libDirty', this.libDirty + 1);
+      AppStorage.set(AppKeys.LIB_DIRTY, this.libDirty + 1);
       Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_updated'));
     } catch (e) {
       Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_save_failed'));
@@ -690,7 +691,7 @@ export struct MangaDetailPage {
     const context = Util.hostAbilityContext(this.getUIContext());
     CoverStore.remove(context, this.mangaId);
     await MangaRepo.resetCover(this.mangaId);
-    AppStorage.set('libDirty', this.libDirty + 1);
+    AppStorage.set(AppKeys.LIB_DIRTY, this.libDirty + 1);
     Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_reset'));
   }
 
@@ -800,7 +801,7 @@ export struct MangaDetailPage {
 
   private async markAllRead(): Promise<void> {
     await ChapterRepo.markAllRead(this.mangaId, true);
-    AppStorage.set('libDirty', this.libDirty + 1);
+    AppStorage.set(AppKeys.LIB_DIRTY, this.libDirty + 1);
     Util.toastRes(this.getUIContext(), $r('app.string.detail_all_marked_read'));
   }
 
@@ -953,7 +954,7 @@ export struct MangaDetailPage {
       return;
     }
     await ChapterRepo.setReadForIds(ids, read);
-    AppStorage.set('libDirty', this.libDirty + 1);
+    AppStorage.set(AppKeys.LIB_DIRTY, this.libDirty + 1);
     this.clearSelection();
   }
 
@@ -973,7 +974,7 @@ export struct MangaDetailPage {
     const ids = Array.from(this.selectedIds);
     await ChapterRepo.setBookmarkForIds(ids, !allBookmarked);
     // 书签影响展示筛选结果，写 libDirty 统一触发 reloadLocal 重算展示缓存
-    AppStorage.set('libDirty', this.libDirty + 1);
+    AppStorage.set(AppKeys.LIB_DIRTY, this.libDirty + 1);
     this.clearSelection();
   }
 

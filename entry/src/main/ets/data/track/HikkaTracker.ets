@@ -288,19 +288,31 @@ export class HikkaTracker extends Tracker {
     if (resp === undefined) {
       return undefined;
     }
-    return this.mangaToSearch(JSON.parse(resp) as HikkaMangaRaw);
+    const raw = JSON.parse(resp) as HikkaMangaRaw;
+    if (raw === null || raw === undefined || typeof raw !== 'object') {
+      return undefined;
+    }
+    return this.mangaToSearch(raw);
   }
 
   private async getManga(track: TrackRecord): Promise<HikkaMangaRaw> {
     const resp = await TrackHttp.send('GET', `${HIKKA_API_URL}/manga/${this.slugOf(track)}`,
       await this.authHeaders(), '');
-    return JSON.parse(resp) as HikkaMangaRaw;
+    const raw = JSON.parse(resp) as HikkaMangaRaw;
+    if (raw === null || raw === undefined || typeof raw !== 'object') {
+      throw new Error('Hikka: invalid manga response');
+    }
+    return raw;
   }
 
   private async getRead(track: TrackRecord): Promise<HikkaReadRaw | undefined> {
     const resp = await TrackHttp.sendOptional('GET', `${HIKKA_API_URL}/read/manga/${this.slugOf(track)}`,
       await this.authHeaders(), '');
-    return resp === undefined ? undefined : JSON.parse(resp) as HikkaReadRaw;
+    if (resp === undefined) {
+      return undefined;
+    }
+    const raw = JSON.parse(resp) as HikkaReadRaw;
+    return raw === null || raw === undefined || typeof raw !== 'object' ? undefined : raw;
   }
 
   private async updateUserManga(track: TrackRecord): Promise<void> {

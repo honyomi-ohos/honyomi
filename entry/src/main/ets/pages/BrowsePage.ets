@@ -7,6 +7,7 @@ import { BrowseSourceParams, MigrateMangaParams, ExtensionDetailParams } from '.
 import { ContentType } from '../model/Models';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
+import { AppKeys } from '../common/AppKeys';
 import { Settings } from '../common/Settings';
 import { EmptyScreen } from './components/EmptyScreen';
 import { ExtensionListPanel } from './components/ExtensionListPanel';
@@ -279,6 +280,8 @@ export struct BrowsePage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('navBarH') navBarH: number = 0;
+  // 页签浮动条避让高度：宽屏无页签条时为 0（Index 按断点发布）
+  @StorageProp('tabPadH') tabPadH: number = 76;
   @StorageProp('pluginsDirty') @Watch('onPluginsChanged') pluginsDirty: number = 0;
   // NSFW 源显示开关（浏览设置页写入 AppStorage）
   @StorageProp('showNsfw') showNsfw: boolean = false;
@@ -495,7 +498,7 @@ export struct BrowsePage {
         placeholder: $r('app.string.plugin_repo_url_hint'),
         onConfirm: (text: string): void => {
           Settings.setPluginRepoUrl(text.trim());
-          AppStorage.setOrCreate('extRepoRefresh', (AppStorage.get<number>('extRepoRefresh') ?? 0) + 1);
+          AppStorage.setOrCreate(AppKeys.EXT_REPO_REFRESH, (AppStorage.get<number>(AppKeys.EXT_REPO_REFRESH) ?? 0) + 1);
         },
         onClose: (): void => {
           dialog.close();
@@ -507,7 +510,7 @@ export struct BrowsePage {
   }
 
   private refreshRepo(): void {
-    AppStorage.setOrCreate('extRepoRefresh', (AppStorage.get<number>('extRepoRefresh') ?? 0) + 1);
+    AppStorage.setOrCreate(AppKeys.EXT_REPO_REFRESH, (AppStorage.get<number>(AppKeys.EXT_REPO_REFRESH) ?? 0) + 1);
   }
 
   // ---- 迁移 Tab ----
@@ -581,7 +584,7 @@ export struct BrowsePage {
     Menu() {
       MenuItem({ content: $r('app.string.ext_install_local') })
         .onClick(() => {
-          AppStorage.setOrCreate('extLocalInstall', (AppStorage.get<number>('extLocalInstall') ?? 0) + 1);
+          AppStorage.setOrCreate(AppKeys.EXT_LOCAL_INSTALL, (AppStorage.get<number>(AppKeys.EXT_LOCAL_INSTALL) ?? 0) + 1);
         })
       MenuItem({ content: $r('app.string.ext_repo_settings') })
         .onClick(() => {
@@ -700,7 +703,7 @@ export struct BrowsePage {
       .height('100%')
       .scrollBar(BarState.Auto)
       .align(Alignment.Top)
-      .contentEndOffset(this.navBarH + 76)
+      .contentEndOffset(this.navBarH + this.tabPadH)
     }
   }
 
@@ -796,7 +799,7 @@ export struct BrowsePage {
         .layoutWeight(1)
         .scrollBar(BarState.Auto)
         .align(Alignment.Top)
-        .contentEndOffset(this.navBarH + 76)
+        .contentEndOffset(this.navBarH + this.tabPadH)
       }
       .width('100%')
       .height('100%')

@@ -12,6 +12,7 @@ import { AppDb } from '../data/AppDb';
 import { PluginService } from '../data/PluginService';
 import { MangaRepo } from '../data/Repos';
 import { Util } from '../common/Util';
+import { AppKeys } from '../common/AppKeys';
 import { CookieJar } from '../net/CookieJar';
 import { CoverStore } from '../common/CoverStore';
 import { TtsPlaybackService, TtsServiceStateHandler } from '../common/TtsPlaybackService';
@@ -403,11 +404,11 @@ struct Index {
   // - 浏览: 全局搜索；更多: 设置页
   private onTabReselect(index: number): void {
     if (index === 0) {
-      AppStorage.setOrCreate('libReselect', (AppStorage.get<number>('libReselect') ?? 0) + 1);
+      AppStorage.setOrCreate(AppKeys.LIB_RESELECT, (AppStorage.get<number>(AppKeys.LIB_RESELECT) ?? 0) + 1);
     } else if (index === 1) {
       this.pathStack.pushPathByName('Downloads', null);
     } else if (index === 2) {
-      AppStorage.setOrCreate('historyReselect', (AppStorage.get<number>('historyReselect') ?? 0) + 1);
+      AppStorage.setOrCreate(AppKeys.HISTORY_RESELECT, (AppStorage.get<number>(AppKeys.HISTORY_RESELECT) ?? 0) + 1);
     } else if (index === 3) {
       this.pathStack.pushPathByName('GlobalSearch', null);
     } else if (index === 4) {
@@ -612,7 +613,7 @@ struct Index {
         }
       }
       if (changed > 0) {
-        AppStorage.set('libDirty', (AppStorage.get<number>('libDirty') ?? 0) + 1);
+        AppStorage.set(AppKeys.LIB_DIRTY, (AppStorage.get<number>(AppKeys.LIB_DIRTY) ?? 0) + 1);
         hilog.info(0x0001, 'Index', 'backfill covers done: %{public}d', changed);
       }
     } catch (e) {
@@ -632,7 +633,7 @@ struct Index {
       // 刷新成功才推进时间戳：失败时下次启动仍会重试
       Settings.setLastRefreshAt(Date.now());
       if (newCount > 0) {
-        AppStorage.setOrCreate('libDirty', (AppStorage.get<number>('libDirty') ?? 0) + 1);
+        AppStorage.setOrCreate(AppKeys.LIB_DIRTY, (AppStorage.get<number>(AppKeys.LIB_DIRTY) ?? 0) + 1);
       }
     } catch (e) {
       // 静默失败：不更新时间戳，仅记录日志
@@ -996,7 +997,9 @@ struct Index {
       const w = newArea.width;
       if (typeof w === 'number') {
         this.windowW = w;
-        AppStorage.setOrCreate('windowW', w);
+        AppStorage.setOrCreate(AppKeys.WINDOW_W, w);
+        // 页签浮动条避让高度：宽屏无底部页签条时为 0，页签页不再预留大片底部空白
+        AppStorage.setOrCreate(AppKeys.TAB_PAD_H, Bp.isWide(w) ? 0 : 76);
       }
     })
   }

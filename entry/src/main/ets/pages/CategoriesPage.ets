@@ -6,6 +6,7 @@ import { CategoryRecord, ContentType } from '../model/Models';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
+import { AppKeys } from '../common/AppKeys';
 import { PageHeader } from './components/PageHeader';
 import { AppIcon } from './components/AppIcon';
 import { InputDialog } from './components/Dialogs';
@@ -48,7 +49,7 @@ export struct CategoriesPage {
     }).catch((_e: Error): void => {
       Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
     });
-    AppStorage.setOrCreate('libDirty', (AppStorage.get<number>('libDirty') ?? 0) + 1);
+    AppStorage.setOrCreate(AppKeys.LIB_DIRTY, (AppStorage.get<number>(AppKeys.LIB_DIRTY) ?? 0) + 1);
   }
 
   private showAdd(): void {
@@ -140,7 +141,7 @@ export struct CategoriesPage {
       ids.push(cat.id);
     }
     CategoryRepo.reorder(ids).then(() => {
-      AppStorage.setOrCreate('libDirty', (AppStorage.get<number>('libDirty') ?? 0) + 1);
+      AppStorage.setOrCreate(AppKeys.LIB_DIRTY, (AppStorage.get<number>(AppKeys.LIB_DIRTY) ?? 0) + 1);
     }).catch((_e: Error): void => {
       this.reload();
       Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));

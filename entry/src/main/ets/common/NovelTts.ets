@@ -484,6 +484,16 @@ export class NovelTts {
         NovelTts.stopTtsTask();
         NovelTts.events.emitError('tts_unavailable');
       }
+    }).catch((_e: Object): void => {
+      // ensureEngine 异步异常（引擎创建抛错等）：与重建失败同等处理，避免悬挂续体
+      if (sid !== NovelTts.session) {
+        return;
+      }
+      NovelTts.session += 1;
+      NovelTts.stopped = true;
+      NovelTts.activeReq = '';
+      NovelTts.stopTtsTask();
+      NovelTts.events.emitError('tts_unavailable');
     });
   }
 

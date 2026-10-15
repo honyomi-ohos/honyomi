@@ -50,6 +50,19 @@ interface CallEnvelope {
   error?: string;
 }
 
+// 解析调用信封：畸形/非对象 JSON 一律回退为失败信封
+function parseEnvelope(json: string): CallEnvelope {
+  try {
+    const parsed = JSON.parse(json) as CallEnvelope;
+    if (parsed === undefined || parsed === null || typeof parsed !== 'object') {
+      return { ok: false, error: 'invalid_envelope' };
+    }
+    return parsed;
+  } catch (_e) {
+    return { ok: false, error: 'invalid_envelope' };
+  }
+}
+
 export class AvifConverter {
   private static context: common.Context | null = null;
   private static worker: worker.ThreadWorker | null = null;
@@ -86,7 +99,7 @@ export class AvifConverter {
     await AvifConverter.ensureReady();
     const srcB64 = AvifConverter.b64Helper.encodeToStringSync(src);
     const envelopeJson = await AvifConverter.call('__convertAvif', JSON.stringify([srcB64]), CALL_TIMEOUT_MS);
-    const envelope = JSON.parse(envelopeJson) as CallEnvelope;
+    const envelope = parseEnvelope(envelopeJson);
     if (envelope.ok !== true || envelope.data === undefined) {
       throw new Error(envelope.error ?? 'avif_convert_failed');
     }
@@ -107,7 +120,13 @@ export class AvifConverter {
     if (AvifConverter.broken) {
       return Promise.reject(new Error('avif_converter_broken'));
     }
-    AvifConverter.ready = AvifConverter.bootstrap();
+    AvifConverter.ready = AvifConverter.bootstrap().catch((e: Error): Promise<void> => {
+      // bootstrap 失败不缓存 rejected promise：清掉 worker 并复位缓存，
+      // 下次 convert() 用新 worker 重试（原实现会永久复用失败结果）
+      AvifConverter.ready = null;
+      AvifConverter.killWorker();
+      throw new Error(`${e}`);
+    });
     return AvifConverter.ready;
   }
 
@@ -155,7 +174,7 @@ export class AvifConverter {
       AvifConverter.b64Helper.encodeToStringSync(jpegWasm)
     ]);
     const envelopeJson = await AvifConverter.call('__initWasm', initArgs, INIT_TIMEOUT_MS);
-    const envelope = JSON.parse(envelopeJson) as CallEnvelope;
+    const envelope = parseEnvelope(envelopeJson);
     if (envelope.ok !== true) {
       throw new Error(envelope.error ?? 'avif_wasm_init_failed');
     }
@@ -221,7 +240,11 @@ export class AvifConverter {
   private static onWorkerMessage(data: Object): void {
     let event: WorkerEvent;
     try {
-      event = (typeof data === 'string' ? JSON.parse(data as string) : data) as WorkerEvent;
+      const parsed = (typeof data === 'string' ? JSON.parse(data as string) : data) as WorkerEvent;
+      if (parsed === undefined || parsed === null || typeof parsed !== 'object') {
+        return;
+      }
+      event = parsed;
     } catch (e) {
       return;
     }

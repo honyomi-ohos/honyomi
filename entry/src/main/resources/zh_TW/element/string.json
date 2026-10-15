@@ -716,6 +716,12 @@
     { "name": "local_desc_video", "value": "本地匯入的影片" },
     { "name": "net_redirect_blocked", "value": "已阻止降級到非 https 的重新導向：%s" },
     { "name": "net_too_many_redirects", "value": "重新導向次數過多：%s" },
+    { "name": "net_host_resolve_failed", "value": "無法解析伺服器位址，請檢查網路連線後重試" },
+    { "name": "net_connect_failed", "value": "無法連線到伺服器，請檢查網路後重試" },
+    { "name": "net_timeout", "value": "請求逾時，請稍後重試" },
+    { "name": "net_ssl_failed", "value": "安全連線失敗（SSL 異常），請稍後重試" },
+    { "name": "net_interrupted", "value": "網路連線中斷，請重試" },
+    { "name": "net_request_failed", "value": "網路請求失敗：%s" },
     { "name": "jsvm_error_engine_create", "value": "JSVM 引擎建立失敗" },
     { "name": "jsvm_error_script_failed", "value": "外掛腳本執行失敗" },
     { "name": "ext_error_not_loaded", "value": "擴充功能未載入" },
@@ -743,6 +749,13 @@
     { "name": "plugin_error_runtime_missing", "value": "外掛執行時元件缺失：plugin_runtime_%s.js" },
     { "name": "plugin_error_invalid_detail", "value": "外掛詳情回傳無效" },
     { "name": "plugin_error_no_chapter_text", "value": "外掛未匯出 getChapterText" },
-    { "name": "plugin_error_no_video_list", "value": "外掛未匯出 getVideoList" }
+    { "name": "plugin_error_no_video_list", "value": "外掛未匯出 getVideoList" },
+    { "name": "plugin_error_write_failed", "value": "儲存外掛包失敗：%s" },
+    { "name": "plugin_error_uninstall_failed", "value": "刪除外掛目錄失敗：%s" },
+    { "name": "plugin_error_start_read_failed", "value": "讀取已安裝的外掛檔案失敗：%s" },
+    { "name": "plugin_error_checksum_failed", "value": "校驗外掛包完整性失敗：%s" },
+    { "name": "plugin_error_extract_failed", "value": "解壓外掛包失敗：%s" },
+    { "name": "plugin_error_manifest_read_failed", "value": "讀取外掛包內 manifest.json 失敗：%s" },
+    { "name": "plugin_error_stage_failed", "value": "暫存外掛檔案失敗：%s" }
 ]
 }

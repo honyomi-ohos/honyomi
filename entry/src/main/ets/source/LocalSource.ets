@@ -1,5 +1,5 @@
 import { fileIo as fs } from '@kit.CoreFileKit';
-import zlib from '@ohos.zlib';
+import { zlib } from '@kit.BasicServicesKit';
 import { SChapter, SPage, ContentType } from '../model/Models';
 import { LocalFolderManager } from './LocalFolderManager';
 import { LocalFsSource } from './LocalFsSource';
