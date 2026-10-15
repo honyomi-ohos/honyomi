@@ -2,6 +2,7 @@
 // - 8 个追踪器登录/登出（OAuth WebView / 账密弹窗，与 TrackSheet 流程一致）
 // - 阅读进度自动同步开关
 import { ThemePalette } from '../../common/Theme';
+import { Bp } from '../../common/Breakpoint';
 import { Settings } from '../../common/Settings';
 import { Util } from '../../common/Util';
 import { Tracker } from '../../data/track/Tracker';
@@ -268,8 +269,13 @@ export struct TrackingContent {
     .height('100%')
     .scrollBar(BarState.Off)
     .align(Alignment.TopStart)
-    .bindContentCover($$this.showOAuth, this.oauthBuilder(), {
-      modalTransition: ModalTransition.DEFAULT,
+    .bindSheet($$this.showOAuth, this.oauthBuilder(), {
+      height: SheetSize.LARGE,
+      detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+      dragBar: true,
+      showClose: false,
+      preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+      width: Bp.isWide(this.windowW) ? 560 : '100%',
       backgroundColor: this.pal.bg
     })
   }

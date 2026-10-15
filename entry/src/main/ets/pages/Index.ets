@@ -891,8 +891,9 @@ struct Index {
         .barOverlap(true)
         .barPosition(BarPosition.End)
         .vertical(false)
-        .barFloatingStyle({
-          barBottomMargin: this.navBarH + 2,
+         .barFloatingStyle({
+          // PC 无小白条避让区（navBarH=0）时钳制最小窗口底边距，避免页签条贴边
+          barBottomMargin: Math.max(this.navBarH + 2, 8),
           systemMaterialEffect: {
             materialType: hdsMaterial.MaterialType.IMMERSIVE,
             materialLevel: hdsMaterial.MaterialLevel.ADAPTIVE

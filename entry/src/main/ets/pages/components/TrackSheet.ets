@@ -953,8 +953,13 @@ export struct TrackSheet {
     .width('100%')
     .height('100%')
     .alignItems(HorizontalAlign.Start)
-    .bindContentCover($$this.showOAuth, this.oauthBuilder(), {
-      modalTransition: ModalTransition.DEFAULT,
+    .bindSheet($$this.showOAuth, this.oauthBuilder(), {
+      height: SheetSize.LARGE,
+      detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+      dragBar: true,
+      showClose: false,
+      preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
+      width: Bp.isWide(this.windowW) ? 560 : '100%',
       backgroundColor: this.pal.bg
     })
   }

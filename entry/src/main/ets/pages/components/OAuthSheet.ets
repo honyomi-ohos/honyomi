@@ -1,7 +1,9 @@
-// OAuth 授权 WebView 弹层（全屏 bindContentCover 承载）：
+// OAuth 授权 WebView 弹层（bindSheet 半模态承载）：
 // - 各追踪器授权完成后统一重定向 mihon://<tracker>-auth，携带 query 或 fragment 参数
 // - onLoadIntercept 拦截 mihon:// 跳转并解析参数，回传发起方完成登录
 // - 对齐 Mihon TrackLoginActivity：query 优先，缺失时取 fragment
+// - 网页明暗跟随应用：darkMode(On/Off) 让适配深色的站点按 prefers-color-scheme 渲染，
+//   forceDarkAccess 强制未适配的站点反转配色（应用深色时两者同时开启）
 import { webview } from '@kit.ArkWeb';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { BusinessError } from '@kit.BasicServicesKit';
@@ -73,7 +75,7 @@ export struct OAuthSheet {
   build() {
     Column() {
       Row() {
-        AppIcon({ name: 'close', iconSize: 20, tint: '#FFFFFF' })
+        AppIcon({ name: 'close', iconSize: 20, tint: this.pal.text })
           .padding({ left: 14, right: 14, top: 10, bottom: 10 })
           .onClick(() => {
             this.onClose();
@@ -81,13 +83,13 @@ export struct OAuthSheet {
         Text(this.sheetTitle)
           .fontSize(16)
           .fontWeight(FontWeight.Bold)
-          .fontColor('#FFFFFF')
+          .fontColor(this.pal.text)
           .layoutWeight(1)
           .maxLines(1)
           .textOverflow({ overflow: TextOverflow.Ellipsis })
       }
       .width('100%')
-      .backgroundColor('#CC000000')
+      .backgroundColor(this.pal.bg)
 
       if (this.loadProgress > 0 && this.loadProgress < 100) {
         Progress({ value: this.loadProgress, total: 100, type: ProgressType.Linear })
@@ -102,6 +104,8 @@ export struct OAuthSheet {
         .domStorageAccess(true)
         .fileAccess(false)
         .onlineImageAccess(true)
+        .darkMode(this.isDark ? WebDarkMode.On : WebDarkMode.Off)
+        .forceDarkAccess(this.isDark)
         .onControllerAttached(() => {
           try {
             this.controller.setCustomUserAgent(Http.USER_AGENT);

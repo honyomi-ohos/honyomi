@@ -177,6 +177,8 @@ export struct CfVerifySheet {
         .domStorageAccess(true)
         .fileAccess(false)
         .onlineImageAccess(true)
+        .darkMode(this.isDark ? WebDarkMode.On : WebDarkMode.Off)
+        .forceDarkAccess(this.isDark)
         .onControllerAttached(() => {
           this.attached = true;
           hilog.info(0x0C0F, 'CfVerify', 'controller attached, src=%{public}s', this.challengeUrl);

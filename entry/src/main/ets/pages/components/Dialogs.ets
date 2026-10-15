@@ -33,6 +33,7 @@ export struct InputDialog {
         .fontWeight(FontWeight.Bold)
         .fontColor(this.pal.text)
       TextInput({ placeholder: this.placeholder, text: this.inputText })
+        .defaultFocus(true)
         .onChange((value: string) => {
           this.inputText = value;
         })
