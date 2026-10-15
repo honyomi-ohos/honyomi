@@ -1,534 +1,2124 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Filters all entries in your library" },
-    { "name": "more_incognito_summary", "value": "Pauses reading history" },
-    { "name": "more_support", "value": "Support Us" },
-    { "name": "more_help", "value": "အကူအညီ" },
-    { "name": "support_perks", "value": "Patrons get access to exclusive channels, with more perks to come." },
-    { "name": "support_patreon", "value": "Patreon (preferred)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together." },
-    { "name": "support_contact_msg", "value": "For alternative options or any related questions, join our Discord server." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "ဒေတာနှင့် သိမ်းဆည်းမှု" },
-    { "name": "data_storage_location", "value": "Storage location" },
-    { "name": "data_storage_location_info", "value": "Used for automatic backups, chapter downloads, and local source." },
-    { "name": "data_backup_restore", "value": "အရံသိမ်းဆည်းခြင်းနှင့် ပြန်လည်ရယူခြင်း" },
-    { "name": "data_create_backup", "value": "Create backup" },
-    { "name": "data_restore_backup", "value": "Restore backup" },
-    { "name": "data_backup_interval", "value": "Automatic backup frequency" },
-    { "name": "data_backup_info", "value": "You should keep copies of backups in other places as well. Backups may contain sensitive data including any stored passwords; be careful if sharing." },
-    { "name": "data_last_auto_backup", "value": "Last automatically backed up: %s" },
-    { "name": "data_storage_usage", "value": "Storage usage" },
-    { "name": "data_available_space", "value": "Available: %s / Total: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Clear chapter cache" },
-    { "name": "data_used_cache", "value": "Used: %s" },
-    { "name": "data_cache_deleted", "value": "Cache cleared, %d files deleted" },
-    { "name": "data_cache_delete_error", "value": "Error occurred while clearing" },
-    { "name": "data_auto_clear_cache", "value": "Clear chapter cache on app launch" },
-    { "name": "data_export", "value": "Export" },
-    { "name": "data_library_list", "value": "Library List" },
-    { "name": "data_library_exported", "value": "Library Exported" },
-    { "name": "data_export_include", "value": "Select data to include" },
-    { "name": "data_column_title", "value": "Title" },
-    { "name": "data_column_author", "value": "Author" },
-    { "name": "data_interval_off", "value": "ပိတ်သည်။" },
-    { "name": "data_interval_6h", "value": "၆နာရီတိုင်း" },
-    { "name": "data_interval_12h", "value": "၁၂နာရီတိုင်း" },
-    { "name": "data_interval_24h", "value": "နေ့စဥ်" },
-    { "name": "data_interval_48h", "value": "နှစ်ရက်ခြား" },
-    { "name": "data_interval_weekly", "value": "အပတ်စဥ်" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "အိုကေ" },
-    { "name": "common_cancel", "value": "ပယ်ဖျက်" },
-    { "name": "common_confirm", "value": "အတည်ပြု" },
-    { "name": "common_delete", "value": "ဖျက်" },
-    { "name": "common_retry", "value": "ပြန်ကြိုးစား" },
-    { "name": "common_search", "value": "ရှာဖွေ" },
-    { "name": "common_all", "value": "အားလုံး" },
-    { "name": "common_close", "value": "ပိတ်" },
-    { "name": "common_save", "value": "သိမ်း" },
-    { "name": "common_install", "value": "ထည့်သွင်း" },
-    { "name": "common_uninstall", "value": "ဖယ်ရှား" },
-    { "name": "common_update", "value": "အပ်ဒိတ်" },
-    { "name": "common_none", "value": "မရှိ" },
-    { "name": "common_default", "value": "ပုံသေ" },
-    { "name": "appearance_title", "value": "အသွင်အပြင်" },
-    { "name": "appearance_language", "value": "ဘာသာစကား" },
-    { "name": "lang_follow_system", "value": "စနစ်အတိုင်း" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "အပြင်အဆင်မုဒ်" },
-    { "name": "appearance_theme_auto", "value": "စနစ်အတိုင်း" },
-    { "name": "appearance_theme_light", "value": "အလင်း" },
-    { "name": "appearance_theme_dark", "value": "အမှောင်" },
-    { "name": "appearance_accent_color", "value": "အသားပေးအရောင်" },
-    { "name": "appearance_other", "value": "အခြား" },
-    { "name": "appearance_amoled", "value": "AMOLED အနက်ရောင်နောက်ခံ" },
-    { "name": "theme_accent_blue", "value": "အပြာ" },
-    { "name": "theme_accent_green", "value": "အစိမ်း" },
-    { "name": "theme_accent_pink", "value": "ပန်းရောင်" },
-    { "name": "theme_accent_purple", "value": "ခရမ်း" },
-    { "name": "theme_accent_orange", "value": "လိမ္မော်" },
-    { "name": "util_time_minutes_ago", "value": "%d မိနစ်အကြာက" },
-    { "name": "util_time_hours_ago", "value": "%d နာရီအကြာက" },
-    { "name": "util_time_days_ago", "value": "%d ရက်အကြာက" },
-    { "name": "util_status_ongoing", "value": "ဆက်လက်ထုတ်ဝေနေဆဲ" },
-    { "name": "util_status_completed", "value": "ပြီးဆုံး" },
-    { "name": "util_status_hiatus", "value": "ခေတ္တရပ်နား" },
-    { "name": "util_status_cancelled", "value": "ပယ်ဖျက်ပြီး" },
-    { "name": "util_status_publication_complete", "value": "ထုတ်ဝေမှုပြီး" },
-    { "name": "util_status_unknown", "value": "မသိ" },
-    { "name": "tab_library", "value": "စာအုပ်စင်" },
-    { "name": "tab_updates", "value": "အပ်ဒိတ်များ" },
-    { "name": "tab_history", "value": "မှတ်တမ်း" },
-    { "name": "tab_browse", "value": "ကြည့်ရှု" },
-    { "name": "tab_more", "value": "ပိုမို၍" },
-    { "name": "tab_cf_waiting", "value": "အတည်ပြုရန် စောင့်နေသည်…" },
-    { "name": "tab_cf_verified", "value": "အတည်ပြုပြီး" },
-    { "name": "tab_cf_title", "value": "လူသားအတည်ပြုခြင်း" },
-    { "name": "tab_cf_done", "value": "ပြီးပြီ" },
-    { "name": "tab_cf_saved", "value": "အတည်ပြုရလဒ်ကို သိမ်းပြီး" },
-    { "name": "more_title", "value": "ပိုမို၍" },
-    { "name": "more_version", "value": "ဗားရှင်း %s" },
-    { "name": "more_downloaded_only", "value": "Downloaded only" },
-    { "name": "more_incognito", "value": "Incognito mode" },
-    { "name": "more_downloads", "value": "ဒေါင်းလုဒ် စာရင်း" },
-    { "name": "more_categories", "value": "အမျိုးအစားများ" },
-    { "name": "more_settings", "value": "ဆက်တင်များ" },
-    { "name": "more_about", "value": "အကြောင်း" },
-    { "name": "more_plugins", "value": "တိုးချဲ့မှုများ" },
-    { "name": "categories_title", "value": "အမျိုးအစားများ" },
-    { "name": "categories_add", "value": "အမျိုးအစားအသစ်" },
-    { "name": "categories_name_placeholder", "value": "အမျိုးအစားအမည်" },
-    { "name": "categories_rename_category", "value": "အမျိုးအစားအမည်ပြောင်း" },
-    { "name": "categories_rename", "value": "အမည်ပြောင်း" },
-    { "name": "categories_hint", "value": "အမျိုးအစားကို ကြာကြာနှိပ်၍ အမည်ပြောင်း သို့မဟုတ် ဖျက်နိုင်သည်။ ဖျက်ထားသော အမျိုးအစားရှိ မန်ဂါများသည် ပုံသေသို့ ပြန်သွားသည်" },
-    { "name": "dialog_pick_category", "value": "အမျိုးအစားရွေးပါ" },
-    { "name": "viewer_loading", "value": "ဖွင့်နေသည်…" },
-    { "name": "viewer_load_failed", "value": "ပုံဖွင့်မရပါ" },
-    { "name": "viewer_tap_retry", "value": "နှိပ်၍ ပြန်ကြိုးစားပါ" },
-    { "name": "library_title", "value": "စာအုပ်စင်" },
-    { "name": "library_empty", "value": "စာအုပ်စင် ဗလာဖြစ်နေသည်၊ ကြည့်ရှုမှ မန်ဂါထည့်ပါ" },
-    { "name": "library_new_category", "value": "အမျိုးအစားအသစ်" },
-    { "name": "library_category_name", "value": "အမျိုးအစားအမည်" },
-    { "name": "updates_title", "value": "အပ်ဒိတ်များ" },
-    { "name": "updates_empty", "value": "လတ်တလော အပ်ဒိတ်မရှိပါ" },
-    { "name": "updates_found_new", "value": "အခန်းသစ် %d ခန်း တွေ့ရှိ" },
-    { "name": "updates_no_new", "value": "အခန်းသစ်မရှိပါ" },
-    { "name": "updates_refresh_failed", "value": "ပြန်လည်စတင်မရပါ" },
-    { "name": "updates_refreshing", "value": "ပြန်လည်စတင်နေသည်…" },
-    { "name": "history_title", "value": "မှတ်တမ်း" },
-    { "name": "history_clear", "value": "ရှင်းလင်း" },
-    { "name": "history_confirm_clear", "value": "ရှင်းလင်းမည်မှာ သေချာသလား?" },
-    { "name": "history_empty", "value": "ဖတ်ရှုမှတ်တမ်း မရှိသေးပါ" },
-    { "name": "history_cleared", "value": "မှတ်တမ်းကို ရှင်းပြီး" },
-    { "name": "history_continue", "value": "ဆက်လက်" },
-    { "name": "browse_title", "value": "ကြည့်ရှု" },
-    { "name": "browse_import", "value": "ထည့်သွင်း" },
-    { "name": "browse_plugins", "value": "ပလက်ဂင်များ" },
-    { "name": "browse_local_source_name", "value": "စက်တွင်း မန်ဂါ" },
-    { "name": "browse_popular", "value": "လူကြိုက်များ" },
-    { "name": "browse_latest", "value": "နောက်ဆုံး" },
-    { "name": "browse_search_hint", "value": "မန်ဂါ ရှာဖွေ…" },
-    { "name": "browse_no_results", "value": "မန်ဂါ မတွေ့ပါ" },
-    { "name": "browse_local_empty", "value": "စက်တွင်း မန်ဂါ မရှိသေးပါ၊ ထည့်သွင်းကို နှိပ်၍ ထည့်ပါ" },
-    { "name": "browse_load_failed", "value": "ဖွင့်မရပါ: %s" },
-    { "name": "browse_search_failed", "value": "ရှာဖွေမရပါ: %s" },
-    { "name": "browse_load_more_failed", "value": "ပိုမိုဖွင့်မရပါ" },
-    { "name": "browse_open_detail_failed", "value": "အသေးစိတ် ဖွင့်မရပါ" },
-    { "name": "browse_pick_file_failed", "value": "ဖိုင်ရွေးမရပါ" },
-    { "name": "browse_import_title", "value": "ဖိုင် %d ခု ထည့်သွင်း" },
-    { "name": "browse_manga_name_hint", "value": "မန်ဂါအမည်" },
-    { "name": "browse_input_name", "value": "အမည်ထည့်ပါ" },
-    { "name": "browse_import_done", "value": "ဖိုင် %d ခု ထည့်သွင်းပြီး" },
-    { "name": "browse_import_failed", "value": "ထည့်သွင်းမရပါ: %s" },
-    { "name": "download_title", "value": "ဒေါင်းလုဒ်များ" },
-    { "name": "download_resume", "value": "ဆက်လုပ်" },
-    { "name": "download_pause", "value": "ခေတ္တရပ်" },
-    { "name": "download_clear_finished", "value": "ပြီးဆုံးသည်များကို ရှင်း" },
-    { "name": "download_queue", "value": "ဒေါင်းလုဒ်တန်းစီ" },
-    { "name": "download_state_queued", "value": "တန်းစီထား" },
-    { "name": "download_state_downloading", "value": "ဒေါင်းလုဒ်လုပ်နေ" },
-    { "name": "download_state_done", "value": "ပြီးပြီ" },
-    { "name": "download_state_failed", "value": "မအောင်မြင်" },
-    { "name": "download_move_top", "value": "အပေါ်ဆုံးသို့" },
-    { "name": "download_move_bottom", "value": "အောက်ဆုံးသို့" },
-    { "name": "download_deleted", "value": "ဖျက်ပြီး" },
-    { "name": "download_empty", "value": "ဒေါင်းလုဒ် မရှိသေးပါ" },
-    { "name": "download_status_downloaded", "value": "ဒေါင်းလုဒ်ပြီး" },
-    { "name": "download_chapter_count", "value": "%d အခန်း" },
-    { "name": "detail_no_chapters", "value": "အခန်းမရှိပါ" },
-    { "name": "detail_sync_failed_local", "value": "စင့်ခ်မရ၍ စက်တွင်းဒေတာ ပြသနေသည်" },
-    { "name": "detail_added_to_library", "value": "စာအုပ်စင်သို့ ထည့်ပြီး" },
-    { "name": "detail_removed_from_library", "value": "စာအုပ်စင်မှ ဖယ်ပြီး" },
-    { "name": "detail_all_marked_read", "value": "အခန်းအားလုံးကို ဖတ်ပြီးဟု မှတ်သား" },
-    { "name": "detail_download_queued", "value": "ဒေါင်းလုဒ်တန်းစီသို့ ထည့်ပြီး" },
-    { "name": "detail_config_anilist_token", "value": "AniList တိုကင်ကို အရင်သတ်မှတ်ပါ" },
-    { "name": "detail_search_anilist", "value": "AniList ရှာဖွေ" },
-    { "name": "detail_manga_title_hint", "value": "မန်ဂါခေါင်းစဉ်" },
-    { "name": "detail_no_search_results", "value": "ရှာဖွေရလဒ် မရှိပါ" },
-    { "name": "detail_anilist_search_failed", "value": "AniList ရှာဖွေ မအောင်မြင်" },
-    { "name": "detail_anilist_bound", "value": "AniList နှင့်ချိတ်ပြီး" },
-    { "name": "detail_anilist_unbound", "value": "AniList ချိတ်ဖြုတ်ပြီး" },
-    { "name": "detail_synced_progress", "value": "တိုးတက်မှုကို အခန်း %d အထိ စင့်ခ်ပြီး" },
-    { "name": "detail_anilist_sync_failed", "value": "AniList စင့်ခ် မအောင်မြင်" },
-    { "name": "detail_status_local", "value": "စက်တွင်း" },
-    { "name": "detail_in_library", "value": "စာအုပ်စင်တွင်ရှိ" },
-    { "name": "detail_add_to_library", "value": "စာအုပ်စင်သို့ ထည့်" },
-    { "name": "detail_continue_reading", "value": "ဆက်ဖတ်" },
-    { "name": "detail_start_reading", "value": "စတင်ဖတ်" },
-    { "name": "detail_no_chapters_yet", "value": "အခန်း မရှိသေးပါ" },
-    { "name": "detail_collapse", "value": "ခေါက်သိမ်း" },
-    { "name": "detail_expand", "value": "ချဲ့" },
-    { "name": "detail_anilist_tracking", "value": "AniList ခြေရာခံ" },
-    { "name": "detail_anilist_token_hint", "value": "AniList တိုကင် မသတ်မှတ်ရသေး" },
-    { "name": "detail_searching", "value": "ရှာဖွေနေသည်…" },
-    { "name": "detail_search_and_bind", "value": "ရှာပြီး ချိတ်" },
-    { "name": "detail_bind", "value": "ချိတ်" },
-    { "name": "detail_synced_to_chapter", "value": "အခန်း %d အထိ စင့်ခ်ပြီး" },
-    { "name": "detail_sync_progress", "value": "တိုးတက်မှု စင့်ခ်" },
-    { "name": "detail_unbind", "value": "ချိတ်ဖြုတ်" },
-    { "name": "detail_chapters_count", "value": "အခန်းများ (%d)" },
-    { "name": "detail_sort_asc", "value": "ငယ်စဉ်ကြီးလိုက်" },
-    { "name": "detail_sort_desc", "value": "ကြီးစဉ်ငယ်လိုက်" },
-    { "name": "detail_mark_all_read", "value": "အားလုံး ဖတ်ပြီးဟု မှတ်" },
-    { "name": "detail_read", "value": "ဖတ်ပြီး" },
-    { "name": "detail_downloaded", "value": "ဒေါင်းလုဒ်ပြီး" },
-    { "name": "detail_in_queue", "value": "တန်းစီတွင်ရှိ" },
-    { "name": "detail_download", "value": "ဒေါင်းလုဒ်" },
-    { "name": "reader_chapter_not_found", "value": "အခန်း မတွေ့ပါ" },
-    { "name": "reader_load_failed", "value": "ဖွင့်မရပါ: %s" },
-    { "name": "reader_mode_ltr", "value": "ဘယ်မှညာ" },
-    { "name": "reader_mode_rtl", "value": "ညာမှဘယ်" },
-    { "name": "reader_mode_webtoon", "value": "ဝဘ်တုန်း" },
-    { "name": "reader_reading_mode", "value": "ဖတ်ရှုမုဒ်" },
-    { "name": "reader_orientation_free", "value": "လွတ်လပ်" },
-    { "name": "reader_orientation_portrait", "value": "ဒေါင်လိုက်" },
-    { "name": "reader_orientation_landscape", "value": "အလျားလိုက်" },
-    { "name": "reader_screen_orientation", "value": "စခရင်ဦးတည်ချက်" },
-    { "name": "reader_last_chapter", "value": "နောက်ဆုံးအခန်းတွင် ရှိနေပြီ" },
-    { "name": "reader_first_chapter", "value": "ပထမအခန်းတွင် ရှိနေပြီ" },
-    { "name": "reader_first_page", "value": "ပထမစာမျက်နှာတွင် ရှိနေပြီ" },
-    { "name": "reader_last_page", "value": "နောက်ဆုံးစာမျက်နှာတွင် ရှိနေပြီ" },
-    { "name": "reader_loading_chapter", "value": "အခန်းဖွင့်နေသည်…" },
-    { "name": "reader_settings", "value": "ဖတ်ရှုဆက်တင်" },
-    { "name": "reader_background", "value": "နောက်ခံ" },
-    { "name": "reader_theme_auto", "value": "အလိုအလျောက်" },
-    { "name": "reader_theme_white", "value": "အဖြူ" },
-    { "name": "reader_theme_gray", "value": "မီးခိုး" },
-    { "name": "reader_theme_black", "value": "အနက်" },
-    { "name": "reader_show_page_number", "value": "စာမျက်နှာနံပါတ် ပြ" },
-    { "name": "reader_brightness", "value": "တောက်ပမှု" },
-    { "name": "reader_auto", "value": "အလိုအလျောက်" },
-    { "name": "plugin_title", "value": "တိုးချဲ့မှုများ" },
-    { "name": "plugin_installed_section", "value": "ထည့်သွင်းပြီး" },
-    { "name": "plugin_empty", "value": "တိုးချဲ့မှု မရှိသေးပါ၊ အောက်မှ ထည့်သွင်းပါ" },
-    { "name": "plugin_disable_hint", "value": "ပိတ်ထားသော တိုးချဲ့မှုများကို အချိန်မရွေး ပြန်ဖွင့်နိုင်သည်" },
-    { "name": "plugin_up_to_date", "value": "နောက်ဆုံးဗားရှင်းဖြစ်သည်" },
-    { "name": "plugin_local_install", "value": "ဖိုင်မှ ထည့်သွင်း" },
-    { "name": "plugin_install_from_file", "value": "ထည့်သွင်းရန် ဖိုင်ရွေးပါ" },
-    { "name": "plugin_processing", "value": "လုပ်ဆောင်နေသည်…" },
-    { "name": "plugin_package_hint", "value": ".honyomiplug / .zip တိုးချဲ့မှုပက်ကေ့ချ်များကို ပံ့ပိုးသည်" },
-    { "name": "plugin_repo", "value": "အွန်လိုင်းသိုလှောင်ရုံ" },
-    { "name": "plugin_repo_config", "value": "သိုလှောင်ရုံ သတ်မှတ်" },
-    { "name": "plugin_repo_refresh", "value": "ပြန်လည်စတင်" },
-    { "name": "plugin_repo_hint", "value": "တိုးချဲ့မှု သိုလှောင်ရုံ မသတ်မှတ်ရသေး" },
-    { "name": "plugin_repo_loading", "value": "သိုလှောင်ရုံ ဖွင့်နေသည်…" },
-    { "name": "plugin_repo_url_title", "value": "တိုးချဲ့မှု သိုလှောင်ရုံ URL" },
-    { "name": "plugin_repo_url_hint", "value": "တိုးချဲ့မှု သိုလှောင်ရုံ URL ထည့်ပါ" },
-    { "name": "plugin_repo_load_failed", "value": "သိုလှောင်ရုံ ဖွင့်မရပါ: %s" },
-    { "name": "plugin_pick_file_failed", "value": "ဖိုင်ရွေးမရပါ" },
-    { "name": "plugin_installed", "value": "ထည့်သွင်းပြီး: %s" },
-    { "name": "plugin_installed_name", "value": "%s ကို ထည့်သွင်းပြီး" },
-    { "name": "plugin_install_failed", "value": "ထည့်သွင်းမရပါ: %s" },
-    { "name": "plugin_action_failed", "value": "လုပ်ဆောင်ချက် မအောင်မြင်" },
-    { "name": "plugin_uninstalled", "value": "ဖယ်ရှားပြီး: %s" },
-    { "name": "plugin_uninstall_failed", "value": "ဖယ်ရှားမရပါ" },
-    { "name": "settings_title", "value": "ဆက်တင်များ" },
-    { "name": "settings_general", "value": "အထွေထွေ" },
-    { "name": "settings_start_tab", "value": "စတင်မျက်နှာပြင်" },
-    { "name": "settings_personalization", "value": "ကိုယ်ပိုင်ပြင်ဆင်မှု" },
-    { "name": "settings_library", "value": "စာအုပ်စင်" },
-    { "name": "settings_reader", "value": "ဖတ်ရှုကိရိယာ" },
-    { "name": "settings_data", "value": "ဒေတာ" },
-    { "name": "settings_downloads", "value": "ဒေါင်းလုဒ်များ" },
-    { "name": "settings_browse", "value": "ကြည့်ရှု" },
-    { "name": "settings_advanced", "value": "အဆင့်မြင့်" },
-    { "name": "settings_about", "value": "အကြောင်း" },
-    { "name": "settings_tab_library", "value": "စာအုပ်စင်" },
-    { "name": "settings_tab_updates", "value": "အပ်ဒိတ်များ" },
-    { "name": "settings_tab_history", "value": "မှတ်တမ်း" },
-    { "name": "settings_tab_browse", "value": "ကြည့်ရှု" },
-    { "name": "settings_tab_more", "value": "ပိုမို၍" },
-    { "name": "advanced_title", "value": "အဆင့်မြင့်" },
-    { "name": "advanced_calculating", "value": "တွက်ချက်နေသည်…" },
-    { "name": "advanced_storage", "value": "သိုလှောင်မှု" },
-    { "name": "advanced_clear_image_cache", "value": "ပုံကက်ရှ် ရှင်းလင်း" },
-    { "name": "advanced_image_cache_cleared", "value": "ပုံကက်ရှ် ရှင်းပြီး" },
-    { "name": "advanced_clear_cookies", "value": "ကွတ်ကီး ရှင်းလင်း" },
-    { "name": "advanced_cookies_cleared", "value": "ကွတ်ကီးအားလုံး ရှင်းပြီး" },
-    { "name": "advanced_backup_restore", "value": "အရန်သိမ်းနှင့် ပြန်ယူ" },
-    { "name": "advanced_export_backup", "value": "အရန်သိမ်း ထုတ်ယူ" },
-    { "name": "advanced_import_backup", "value": "အရန်သိမ်း ထည့်သွင်း" },
-    { "name": "advanced_tracking", "value": "ခြေရာခံခြင်း" },
-    { "name": "advanced_anilist_token", "value": "AniList တိုကင်" },
-    { "name": "advanced_token_title", "value": "AniList ဝင်ရောက်ခွင့် တိုကင်" },
-    { "name": "advanced_token_hint", "value": "ဝင်ရောက်ခွင့် တိုကင် ကူးထည့်ပါ (ရှင်းရန် ဗလာထား)" },
-    { "name": "advanced_token_not_set", "value": "မသတ်မှတ်ရသေး" },
-    { "name": "advanced_token_set", "value": "သတ်မှတ်ပြီး" },
-    { "name": "advanced_token_saved", "value": "တိုကင် သိမ်းပြီး" },
-    { "name": "advanced_token_cleared", "value": "တိုကင် ရှင်းပြီး" },
-    { "name": "advanced_backup_exported", "value": "အရန်သိမ်း ထုတ်ယူပြီး" },
-    { "name": "advanced_export_canceled", "value": "ထုတ်ယူမှု ပယ်ဖျက်" },
-    { "name": "advanced_export_failed", "value": "ထုတ်ယူမရပါ" },
-    { "name": "advanced_import_canceled", "value": "ထည့်သွင်းမှု ပယ်ဖျက်" },
-    { "name": "advanced_backup_invalid", "value": "အရန်သိမ်းဖိုင် မမှန်ကန်ပါ" },
-    { "name": "advanced_restored_manga", "value": "မန်ဂါ %d ပုဒ် ပြန်ယူပြီး" },
-    { "name": "advanced_import_failed", "value": "ထည့်သွင်းမရပါ" },
-    { "name": "about_title", "value": "အကြောင်း" },
-    { "name": "about_version", "value": "ဗားရှင်း 1.0.0" },
-    { "name": "about_desc", "value": "ဗိသုကာကို Mihon (Apache-2.0) မှ အားထားသည်။ အွန်လိုင်းရင်းမြစ်များကို တိုးချဲ့မှုအဖြစ် တက်ကြွစွာ ထည့်သွင်းပြီး စက်တွင်းရင်းမြစ်များသည် ပါရှိပြီးသားဖြစ်သည်။" },
-    { "name": "about_ack", "value": "ပွင့်လင်းအရင်းအမြစ် ကျေးဇူးတင်လွှာ:\n· Mihon / Tachiyomi — အက်ပ်ဗိသုကာနှင့် အပြန်အလှန်ဒီဇိုင်း (Apache-2.0)\n· Material Symbols — အက်ပ်အတွင်း သင်္ကေတများ (Apache-2.0)\n· MangaDex — စမ်းသပ်ဒေတာရင်းမြစ်" },
-    { "name": "browse_set_title", "value": "ကြည့်ရှု" },
-    { "name": "browse_set_content", "value": "အကြောင်းအရာ" },
-    { "name": "browse_set_show_nsfw", "value": "NSFW ရင်းမြစ်များ ပြ" },
-    { "name": "browse_set_nsfw_hint", "value": "ဖွင့်ထားလျှင် တိုးချဲ့မှုက NSFW ဟု သတ်မှတ်သော ရင်းမြစ်များသည် ကြည့်ရှုတွင် ပေါ်မည်" },
-    { "name": "dl_set_title", "value": "ဒေါင်းလုဒ်များ" },
-    { "name": "dl_set_network", "value": "ကွန်ရက်" },
-    { "name": "dl_set_wifi_only", "value": "Wi-Fi တွင်သာ ဒေါင်းလုဒ်" },
-    { "name": "dl_set_wifi_only_hint", "value": "မှတ်ချက်: ဤခလုတ်သည် လက်ရှိဗားရှင်းတွင် နေရာယူထားခြင်းသာဖြစ်ပြီး ကွန်ရက်အမျိုးအစား စစ်ဆေးမှုကို နောင်ဗားရှင်းတွင် ပေးမည်" },
-    { "name": "lib_set_title", "value": "စာအုပ်စင်" },
-    { "name": "lib_set_sort_group", "value": "စစ်ထုတ်နှင့် စီရန်" },
-    { "name": "lib_set_sort_default", "value": "ပုံသေစီခြင်း" },
-    { "name": "lib_set_sort_title", "value": "ခေါင်းစဉ်" },
-    { "name": "lib_set_sort_last_update", "value": "နောက်ဆုံးအခန်း" },
-    { "name": "lib_set_sort_added", "value": "ထည့်သည့်ရက်" },
-    { "name": "lib_set_sort_unread", "value": "မဖတ်ရသေးသော အရေအတွက်" },
-    { "name": "lib_set_sort_asc", "value": "ခေါင်းစဉ် ငယ်စဉ်ကြီးလိုက်" },
-    { "name": "lib_set_filter_default", "value": "ပုံသေစစ်ထုတ်" },
-    { "name": "lib_set_filter_unread", "value": "မဖတ်ရသေး" },
-    { "name": "lib_set_filter_downloaded", "value": "ဒေါင်းလုဒ်ပြီး" },
-    { "name": "lib_set_filter_uncompleted", "value": "မပြီးဆုံးသေး" },
-    { "name": "lib_set_display_group", "value": "ပြသမှု" },
-    { "name": "lib_set_view_default", "value": "ပုံသေမြင်ကွင်း" },
-    { "name": "lib_set_view_grid", "value": "ဇယားကွက်" },
-    { "name": "lib_set_view_cover", "value": "ကာဗာဇယားကွက်" },
-    { "name": "lib_set_view_list", "value": "စာရင်း" },
-    { "name": "lib_set_grid_cols", "value": "ဇယားကွက်ကော်လံ" },
-    { "name": "lib_set_cols_auto", "value": "အလိုအလျောက်" },
-    { "name": "lib_set_cols_2", "value": "၂ ကော်လံ" },
-    { "name": "lib_set_cols_3", "value": "၃ ကော်လံ" },
-    { "name": "lib_set_cols_4", "value": "၄ ကော်လံ" },
-    { "name": "lib_set_unread_badge", "value": "မဖတ်ရသေး တံဆိပ်" },
-    { "name": "lib_set_download_badge", "value": "ဒေါင်းလုဒ် တံဆိပ်" },
-    { "name": "reader_set_title", "value": "ဖတ်ရှုကိရိယာ" },
-    { "name": "reader_set_mode_group", "value": "ဖတ်ရှုမုဒ်" },
-    { "name": "reader_set_mode_default", "value": "ပုံသေမုဒ်" },
-    { "name": "reader_set_mode_ltr", "value": "ဘယ်မှညာ" },
-    { "name": "reader_set_mode_rtl", "value": "ညာမှဘယ်" },
-    { "name": "reader_set_mode_vertical", "value": "ဒေါင်လိုက် စာမျက်နှာလှန်" },
-    { "name": "reader_set_mode_webtoon", "value": "ဝဘ်တုန်း" },
-    { "name": "reader_set_dual_page", "value": "နှစ်မျက်နှာ (အလျားလိုက်)" },
-    { "name": "reader_set_display_group", "value": "ပြသမှု" },
-    { "name": "reader_set_show_page_number", "value": "စာမျက်နှာနံပါတ် ပြ" },
-    { "name": "reader_set_bg_color", "value": "ဖတ်ရှုနောက်ခံ" },
-    { "name": "reader_set_theme_follow", "value": "အပြင်အဆင်အတိုင်း" },
-    { "name": "reader_set_theme_white", "value": "အဖြူ" },
-    { "name": "reader_set_theme_black", "value": "အနက်" },
-    { "name": "reader_set_theme_gray", "value": "မီးခိုး" },
-    { "name": "reader_set_reset_brightness", "value": "ဖတ်ရှုတောက်ပမှု ပြန်သတ်မှတ်" },
-    { "name": "reader_set_brightness_reset", "value": "တောက်ပမှုကို စနစ်အတိုင်း သတ်မှတ်ပြီး" },
-    { "name": "browse_tab_sources", "value": "ရင်းမြစ်များ" },
-    { "name": "browse_tab_extensions", "value": "တိုးချဲ့မှုများ" },
-    { "name": "browse_tab_migrate", "value": "ပြောင်းရွှေ့" },
-    { "name": "browse_pin", "value": "ပင်လုပ်" },
-    { "name": "browse_unpin", "value": "ပင်ဖြုတ်" },
-    { "name": "browse_disable_source", "value": "ရင်းမြစ်ပိတ်" },
-    { "name": "browse_source_disabled", "value": "ရင်းမြစ်ပိတ်ထားသည်" },
-    { "name": "browse_pinned", "value": "ပင်လုပ်ပြီး" },
-    { "name": "browse_sources_empty", "value": "ရင်းမြစ်မရှိပါ။ တိုးချဲ့မှုများ တဘ်မှ ထည့်သွင်းပါ" },
-    { "name": "browse_filter_langs", "value": "ဘာသာစကား စစ်ထုတ်" },
-    { "name": "browse_filter_all", "value": "အားလုံး" },
-    { "name": "browse_source_missing", "value": "ရင်းမြစ် မရနိုင်ပါ။ တိုးချဲ့မှု ပိတ်ထားနိုင်သည်" },
-    { "name": "global_search_hint", "value": "ရင်းမြစ်အားလုံးတွင် ရှာဖွေ" },
-    { "name": "global_search_failed", "value": "ရှာဖွေမှု မအောင်မြင်" },
-    { "name": "ext_search_hint", "value": "တိုးချဲ့မှုများ ရှာဖွေ" },
-    { "name": "ext_search_no_match", "value": "ကိုက်ညီမှု မရှိ" },
-    { "name": "ext_repo_settings", "value": "သိုလှောင်ရုံ ဆက်တင်များ" },
-    { "name": "ext_refresh_repo", "value": "သိုလှောင်ရုံ ပြန်လည်စတင်" },
-    { "name": "migrate_pick_source", "value": "ပြောင်းရွှေ့မည့် ရင်းမြစ် ရွေးပါ" },
-    { "name": "migrate_empty_library", "value": "စာအုပ်စင် ဗလာဖြစ်နေသည်" },
-    { "name": "migrate_select_all", "value": "အားလုံး ရွေး" },
-    { "name": "migrate_deselect_all", "value": "ရွေးချယ်မှု ဖယ်" },
-    { "name": "migrate_action", "value": "ပြောင်းရွှေ့ (%d)" },
-    { "name": "migrate_title", "value": "ပြောင်းရွှေ့" },
-    { "name": "migrate_skip", "value": "ကျော်" },
-    { "name": "migrate_progress", "value": "%d / %d" },
-    { "name": "migrate_target_source", "value": "ပစ်မှတ် ရင်းမြစ်" },
-    { "name": "migrate_search_hint", "value": "ပစ်မှတ် ရင်းမြစ်တွင် မန်ဂါ ရှာဖွေ" },
-    { "name": "migrate_confirm_title", "value": "ဤမန်ဂါသို့ ပြောင်းရွှေ့မလား?" },
-    { "name": "migrate_item_done", "value": "ပြောင်းရွှေ့ပြီး: %s" },
-    { "name": "migrate_failed", "value": "ပြောင်းရွှေ့ မအောင်မြင်: %s" },
-    { "name": "migrate_done", "value": "ပြောင်းရွှေ့ ပြီးဆုံး" },
-    { "name": "migrate_no_target", "value": "ပစ်မှတ် ရင်းမြစ် မရှိ" },
-    { "name": "stats_title", "value": "စာရင်းအင်း" },
-    { "name": "stats_overview_section", "value": "အကျဉ်းချုပ်" },
-    { "name": "stats_in_library", "value": "စာအုပ်စင်တွင်" },
-    { "name": "stats_read_duration", "value": "ဖတ်ချိန်" },
-    { "name": "stats_completed_titles", "value": "ပြီးဆုံး" },
-    { "name": "stats_titles_section", "value": "လက်ရာများ" },
-    { "name": "stats_started_titles", "value": "စဖတ်ပြီး" },
-    { "name": "stats_local_titles", "value": "စက်တွင်း" },
-    { "name": "stats_chapters_section", "value": "အခန်းများ" },
-    { "name": "stats_total_chapters", "value": "စုစုပေါင်း" },
-    { "name": "stats_read_chapters", "value": "ဖတ်ပြီး" },
-    { "name": "stats_downloaded_chapters", "value": "ဒေါင်းလုဒ်ပြီး" },
-    { "name": "stats_tracker_section", "value": "ခြေရာခံခြင်း" },
-    { "name": "stats_tracked_titles", "value": "ခြေရာခံထားသော လက်ရာ" },
-    { "name": "stats_mean_score", "value": "ပျမ်းမျှအမှတ်" },
-    { "name": "stats_used", "value": "သုံးပြီး" },
-    { "name": "stats_not_applicable", "value": "မသက်ဆိုင်" },
-    { "name": "stats_week", "value": "ရက်သတ္တပတ်" },
-    { "name": "stats_month", "value": "လ" },
-    { "name": "stats_week_total", "value": "ဒီအပတ် %s" },
-    { "name": "stats_month_total", "value": "ဒီလ %s" },
-    { "name": "stats_no_reading", "value": "ဤကာလတွင် ဖတ်ရှုမှုမရှိ" },
-    { "name": "stats_day_short", "value": "%dရက်" },
-    { "name": "stats_hour_short", "value": "%dနာ" },
-    { "name": "stats_minute_short", "value": "%dမိ" },
-    { "name": "stats_second_short", "value": "%dစက္" },
-    { "name": "stats_wd_sun", "value": "နွေ" },
-    { "name": "stats_wd_mon", "value": "လာ" },
-    { "name": "stats_wd_tue", "value": "ဂါ" },
-    { "name": "stats_wd_wed", "value": "ဟူး" },
-    { "name": "stats_wd_thu", "value": "ကြာ" },
-    { "name": "stats_wd_fri", "value": "သော" },
-    { "name": "stats_wd_sat", "value": "နေ" },
-    { "name": "reader_mode_vertical", "value": "ဒေါင်လိုက်" },
-    { "name": "reader_mode_smart_grip", "value": "လက်ကိုင်အာရုံ" },
-    { "name": "reader_orientation_lock_portrait", "value": "ဒေါင်လိုက် သော့ခတ်" },
-    { "name": "reader_orientation_lock_landscape", "value": "အလျားလိုက် သော့ခတ်" },
-    { "name": "reader_tab_general", "value": "အထွေထွေ" },
-    { "name": "reader_tab_filter", "value": "အရောင်စစ်" },
-    { "name": "reader_filter_grayscale", "value": "မီးခိုးရောင်" },
-    { "name": "reader_filter_invert", "value": "အရောင်ပြောင်းပြန်" },
-    { "name": "reader_filter_contrast", "value": "ခြားနားချက်" },
-    { "name": "reader_filter_saturation", "value": "ပြည့်ဝမှု" },
-    { "name": "reader_crop_borders", "value": "အနားဖြတ်" },
-    { "name": "reader_nav_tap_zones", "value": "ထိနှိပ်ဇုန်" },
-    { "name": "reader_nav_default", "value": "ပုံသေ" },
-    { "name": "reader_nav_ltr", "value": "ဘယ်မှညာ" },
-    { "name": "reader_nav_rtl", "value": "ညာမှဘယ်" },
-    { "name": "reader_nav_vertical", "value": "ဒေါင်လိုက်" },
-    { "name": "reader_nav_edge", "value": "အနား" },
-    { "name": "reader_nav_none", "value": "မရှိ" },
-    { "name": "reader_dual_page", "value": "နှစ်မျက်နှာ မြင်ကွင်း" },
-    { "name": "reader_webtoon_padding", "value": "ဝဘ်တုန်း ဘေးအကွာ" },
-    { "name": "reader_set_mode_smart_grip", "value": "လက်ကိုင်အာရုံ" },
-    { "name": "ext_install_local", "value": "စက်တွင်းမှ ထည့်သွင်း" },
-    { "name": "ext_detail_title", "value": "တိုးချဲ့မှု အချက်အလက်" },
-    { "name": "ext_info_version", "value": "ဗားရှင်း" },
-    { "name": "ext_info_language", "value": "ဘာသာစကား" },
-    { "name": "ext_uninstall_title", "value": "တိုးချဲ့မှု ဖယ်ရှား" },
-    { "name": "ext_uninstall_msg", "value": "“%s” ကို ဖယ်ရှားမလား? စာအုပ်စင် မန်ဂါဒေတာ ကျန်မည်" },
-    { "name": "ext_detail_sources", "value": "ရင်းမြစ်များ" },
-    { "name": "ext_detail_settings", "value": "ဆက်တင်များ" },
-    { "name": "ext_pref_loading", "value": "ဖွင့်နေသည်…" },
-    { "name": "ext_pref_failed", "value": "ဆက်တင်များ သုံး၍မရ" },
-    { "name": "ext_detail_missing", "value": "တိုးချဲ့မှု မရှိပါ သို့မဟုတ် မဖွင့်ရသေး" },
-    { "name": "action_filter", "value": "စစ်ထုတ်" },
-    { "name": "action_update_library", "value": "စာအုပ်စင် အပ်ဒိတ်" },
-    { "name": "action_update_category", "value": "အမျိုးအစား အပ်ဒိတ်" },
-    { "name": "action_open_random_manga", "value": "ကျပန်းလက်ရာ ဖွင့်" },
-    { "name": "action_select_all", "value": "အားလုံး ရွေး" },
-    { "name": "action_select_inverse", "value": "ရွေးချယ်မှု ပြောင်းပြန်" },
-    { "name": "action_move_category", "value": "အမျိုးအစားသို့ ရွှေ့" },
-    { "name": "action_mark_as_read", "value": "ဖတ်ပြီးဟု မှတ်" },
-    { "name": "action_mark_as_unread", "value": "မဖတ်ရသေးဟု မှတ်" },
-    { "name": "action_download", "value": "ဒေါင်းလုဒ်" },
-    { "name": "action_delete", "value": "ဖျက်" },
-    { "name": "action_migrate", "value": "ပြောင်းရွှေ့" },
-    { "name": "action_remove_from_library", "value": "စာအုပ်စင်မှ ဖယ်" },
-    { "name": "action_remove_from_library_msg", "value": "ရွေးထားသော %d မန်ဂါကို စာအုပ်စင်မှ ဖယ်မလား?" },
-    { "name": "action_download_queued", "value": "ဒေါင်းလုဒ် %d ခု တန်းစီထည့်ပြီး" },
-    { "name": "library_search_hint", "value": "စာအုပ်စင် ရှာဖွေ" },
-    { "name": "library_no_match", "value": "ကိုက်ညီသော မန်ဂါမရှိ" },
-    { "name": "lib_sheet_tab_filter", "value": "စစ်ထုတ်" },
-    { "name": "lib_sheet_tab_sort", "value": "စီစဉ်" },
-    { "name": "lib_sheet_tab_display", "value": "ပြသမှု" },
-    { "name": "lib_filter_downloaded", "value": "ဒေါင်းလုဒ်ပြီး" },
-    { "name": "lib_filter_unread", "value": "မဖတ်ရသေး" },
-    { "name": "lib_filter_started", "value": "ဖတ်ဖူးသည်" },
-    { "name": "lib_filter_bookmarked", "value": "မှတ်သားပြီး" },
-    { "name": "lib_filter_completed", "value": "ပြီးဆုံး" },
-    { "name": "lib_filter_tracked", "value": "ခြေရာခံပြီး" },
-    { "name": "lib_sort_alpha", "value": "ခေါင်းစဉ်" },
-    { "name": "lib_sort_total", "value": "အခန်းအရေအတွက်" },
-    { "name": "lib_sort_last_read", "value": "နောက်ဆုံးဖတ်" },
-    { "name": "lib_sort_last_update", "value": "အပ်ဒိတ်စစ်ချိန်" },
-    { "name": "lib_sort_unread", "value": "မဖတ်ရသေးသော အရေအတွက်" },
-    { "name": "lib_sort_latest_chapter", "value": "လက်ရာအပ်ဒိတ်အချိန်" },
-    { "name": "lib_sort_fetch_date", "value": "အခန်းရယူချိန်" },
-    { "name": "lib_sort_date_added", "value": "ထည့်သည့်ရက်" },
-    { "name": "lib_sort_random", "value": "ကျပန်း" },
-    { "name": "lib_display_compact", "value": "ကျစ်လစ်ဇယားကွက်" },
-    { "name": "lib_display_comfortable", "value": "ကျဲဇယားကွက်" },
-    { "name": "lib_display_cover", "value": "ကာဗာဇယားကွက်" },
-    { "name": "lib_display_list", "value": "စာရင်း" },
-    { "name": "lib_display_grid_size", "value": "တစ်တန်းအရေအတွက်" },
-    { "name": "lib_display_grid_auto", "value": "အလိုအလျောက်" },
-    { "name": "lib_display_badges_group", "value": "တံဆိပ်နှင့် ခလုတ်" },
-    { "name": "lib_badge_downloaded", "value": "ဒေါင်းလုဒ်အခန်းအရေအတွက်" },
-    { "name": "lib_badge_unread", "value": "မဖတ်ရသေးသော အခန်း" },
-    { "name": "lib_badge_local", "value": "စက်တွင်း ရင်းမြစ်" },
-    { "name": "lib_badge_language", "value": "ဘာသာစကား" },
-    { "name": "lib_badge_continue", "value": "ဆက်ဖတ် ခလုတ်" },
-    { "name": "lib_display_tabs_group", "value": "တက်ဘ်" },
-    { "name": "lib_show_category_tabs", "value": "အမျိုးအစားတက်ဘ် ပြ" },
-    { "name": "lib_show_manga_count", "value": "လက်ရာအရေအတွက် ပြ" },
-    { "name": "EntryFormAbility_label", "value": "MihonHarmony ကတ်" },
-    { "name": "EntryFormAbility_desc", "value": "ဒက်စ်တော့ကတ် ပံ့ပိုးသူ" },
-    { "name": "card_recent_display", "value": "ဆက်ဖတ်" },
-    { "name": "card_recent_desc", "value": "မကြာမီက ဖတ်သော မန်ဂါကို မြန်ဆက်ဖတ်" },
-    { "name": "card_updates_display", "value": "အပ်ဒိတ်များ" },
-    { "name": "card_updates_desc", "value": "စာအုပ်စင်၏ နောက်ဆုံးမဖတ်ရသေးသော အခန်း" },
-    { "name": "card_recent_header", "value": "ဆက်ဖတ်" },
-    { "name": "card_updates_header", "value": "အပ်ဒိတ်များ" },
-    { "name": "card_unread_count", "value": "%d အခန်း မဖတ်ရသေး" },
-    { "name": "card_empty_recent", "value": "ဖတ်ရှုမှတ်တမ်း မရှိသေးပါ" },
-    { "name": "card_empty_updates", "value": "မဖတ်ရသေးသော အခန်းမရှိ" },
-    { "name": "card_open_hint", "value": "အက်ပ်ဖွင့်ရန် နှိပ်ပါ" },
-    { "name": "card_manga_display", "value": "မန်ဂါကတ်" },
-    { "name": "card_manga_desc", "value": "အသေးစိတ်စာမျက်နှာမှ ထည့်၊ ကာဗာနှိပ်ပြီး ဖတ်" },
-    { "name": "card_manga_empty", "value": "မန်ဂါအသေးစိတ်စာမျက်နှာမှ ဒက်စ်တော့သို့ ထည့်" },
-    { "name": "detail_add_to_desktop", "value": "ဒက်စ်တော့သို့ ထည့်" },
-    { "name": "detail_card_added", "value": "ဒက်စ်တော့သို့ ထည့်ပြီး" },
-    { "name": "detail_card_add_failed", "value": "ကတ်ထည့်၍မရ" },
-    { "name": "card_stats_week_display", "value": "အပတ်စဉ်စာရင်း" },
-    { "name": "card_stats_week_desc", "value": "ဒီအပတ် နေ့စဉ်ဖတ်ချိန်" },
-    { "name": "card_stats_month_display", "value": "လစဉ်စာရင်း" },
-    { "name": "card_stats_month_desc", "value": "ဒီလ နေ့စဉ်ဖတ်ချိန်" },
-    { "name": "card_stats_empty", "value": "ဖတ်ရှုမှုမရှိသေး" },
-    { "name": "action_view_upcoming", "value": "လာမည့်အပ်ဒိတ်များ ပြ" },
-    { "name": "label_upcoming", "value": "လာမည့်" },
-    { "name": "upcoming_guide", "value": "လာမည့်လမ်းညွှန်" },
-    { "name": "upcoming_calendar_prev", "value": "ပြီးခဲ့သည့်လ" },
-    { "name": "upcoming_calendar_next", "value": "နောက်လ" },
-    { "name": "pref_filter_update_categories_details", "value": "ထည့်သွင်းနှင့် ဖယ်ထုတ် အမျိုးအစားနှစ်ခုလုံးရှိ လက်ရာများကို မပြပါ။" },
-    { "name": "relative_time_today", "value": "ယနေ့" },
-    { "name": "relative_time_days_ago", "value": "%d ရက်အကြာက" },
-    { "name": "upcoming_relative_time_days", "value": "%d ရက်အတွင်း" },
-    { "name": "card_upcoming_display", "value": "လာမည့်" },
-    { "name": "card_upcoming_desc", "value": "စာအုပ်စင် မန်ဂါ၏ မျှော်မှန်းအပ်ဒိတ်ပြက္ခဒိန်" },
-    { "name": "card_upcoming_header", "value": "လာမည့်" },
-    { "name": "card_empty_upcoming", "value": "စာအုပ်စင်တွင် ဆက်လက်ထုတ်ဝေနေဆဲ မန်ဂါမရှိ" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Filters all entries in your library"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Pauses reading history"
+    },
+    {
+      "name": "more_support",
+      "value": "Support Us"
+    },
+    {
+      "name": "more_help",
+      "value": "အကူအညီ"
+    },
+    {
+      "name": "support_perks",
+      "value": "Patrons get access to exclusive channels, with more perks to come."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (preferred)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "For alternative options or any related questions, join our Discord server."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "ဒေတာနှင့် သိမ်းဆည်းမှု"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Storage location"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Used for automatic backups, chapter downloads, and local source."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "အရံသိမ်းဆည်းခြင်းနှင့် ပြန်လည်ရယူခြင်း"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Create backup"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Restore backup"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Automatic backup frequency"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "You should keep copies of backups in other places as well. Backups may contain sensitive data including any stored passwords; be careful if sharing."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Last automatically backed up: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Storage usage"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Available: %s / Total: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Clear chapter cache"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Used: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Cache cleared, %d files deleted"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Error occurred while clearing"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Clear chapter cache on app launch"
+    },
+    {
+      "name": "data_export",
+      "value": "Export"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Library List"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Library Exported"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Select data to include"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Title"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Author"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "ပိတ်သည်။"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "၆နာရီတိုင်း"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "၁၂နာရီတိုင်း"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "နေ့စဥ်"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "နှစ်ရက်ခြား"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "အပတ်စဥ်"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "အိုကေ"
+    },
+    {
+      "name": "common_cancel",
+      "value": "ပယ်ဖျက်"
+    },
+    {
+      "name": "common_confirm",
+      "value": "အတည်ပြု"
+    },
+    {
+      "name": "common_delete",
+      "value": "ဖျက်"
+    },
+    {
+      "name": "common_retry",
+      "value": "ပြန်ကြိုးစား"
+    },
+    {
+      "name": "common_search",
+      "value": "ရှာဖွေ"
+    },
+    {
+      "name": "common_all",
+      "value": "အားလုံး"
+    },
+    {
+      "name": "common_close",
+      "value": "ပိတ်"
+    },
+    {
+      "name": "common_save",
+      "value": "သိမ်း"
+    },
+    {
+      "name": "common_install",
+      "value": "ထည့်သွင်း"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "ဖယ်ရှား"
+    },
+    {
+      "name": "common_update",
+      "value": "အပ်ဒိတ်"
+    },
+    {
+      "name": "common_none",
+      "value": "မရှိ"
+    },
+    {
+      "name": "common_default",
+      "value": "ပုံသေ"
+    },
+    {
+      "name": "appearance_title",
+      "value": "အသွင်အပြင်"
+    },
+    {
+      "name": "appearance_language",
+      "value": "ဘာသာစကား"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "စနစ်အတိုင်း"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "အပြင်အဆင်မုဒ်"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "စနစ်အတိုင်း"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "အလင်း"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "အမှောင်"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "အသားပေးအရောင်"
+    },
+    {
+      "name": "appearance_other",
+      "value": "အခြား"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED အနက်ရောင်နောက်ခံ"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "အပြာ"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "အစိမ်း"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "ပန်းရောင်"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "ခရမ်း"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "လိမ္မော်"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d မိနစ်အကြာက"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d နာရီအကြာက"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d ရက်အကြာက"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "ဆက်လက်ထုတ်ဝေနေဆဲ"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "ပြီးဆုံး"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "ခေတ္တရပ်နား"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "ပယ်ဖျက်ပြီး"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "ထုတ်ဝေမှုပြီး"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "မသိ"
+    },
+    {
+      "name": "tab_library",
+      "value": "စာအုပ်စင်"
+    },
+    {
+      "name": "tab_updates",
+      "value": "အပ်ဒိတ်များ"
+    },
+    {
+      "name": "tab_history",
+      "value": "မှတ်တမ်း"
+    },
+    {
+      "name": "tab_browse",
+      "value": "ကြည့်ရှု"
+    },
+    {
+      "name": "tab_more",
+      "value": "ပိုမို၍"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "အတည်ပြုရန် စောင့်နေသည်…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "အတည်ပြုပြီး"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "လူသားအတည်ပြုခြင်း"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "ပြီးပြီ"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "အတည်ပြုရလဒ်ကို သိမ်းပြီး"
+    },
+    {
+      "name": "more_title",
+      "value": "ပိုမို၍"
+    },
+    {
+      "name": "more_version",
+      "value": "ဗားရှင်း %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Downloaded only"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Incognito mode"
+    },
+    {
+      "name": "more_downloads",
+      "value": "ဒေါင်းလုဒ် စာရင်း"
+    },
+    {
+      "name": "more_categories",
+      "value": "အမျိုးအစားများ"
+    },
+    {
+      "name": "more_settings",
+      "value": "ဆက်တင်များ"
+    },
+    {
+      "name": "more_about",
+      "value": "အကြောင်း"
+    },
+    {
+      "name": "more_plugins",
+      "value": "တိုးချဲ့မှုများ"
+    },
+    {
+      "name": "categories_title",
+      "value": "အမျိုးအစားများ"
+    },
+    {
+      "name": "categories_add",
+      "value": "အမျိုးအစားအသစ်"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "အမျိုးအစားအမည်"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "အမျိုးအစားအမည်ပြောင်း"
+    },
+    {
+      "name": "categories_rename",
+      "value": "အမည်ပြောင်း"
+    },
+    {
+      "name": "categories_hint",
+      "value": "အမျိုးအစားကို ကြာကြာနှိပ်၍ အမည်ပြောင်း သို့မဟုတ် ဖျက်နိုင်သည်။ ဖျက်ထားသော အမျိုးအစားရှိ မန်ဂါများသည် ပုံသေသို့ ပြန်သွားသည်"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "အမျိုးအစားရွေးပါ"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "ဖွင့်နေသည်…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "ပုံဖွင့်မရပါ"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "နှိပ်၍ ပြန်ကြိုးစားပါ"
+    },
+    {
+      "name": "library_title",
+      "value": "စာအုပ်စင်"
+    },
+    {
+      "name": "library_empty",
+      "value": "စာအုပ်စင် ဗလာဖြစ်နေသည်၊ ကြည့်ရှုမှ မန်ဂါထည့်ပါ"
+    },
+    {
+      "name": "library_new_category",
+      "value": "အမျိုးအစားအသစ်"
+    },
+    {
+      "name": "library_category_name",
+      "value": "အမျိုးအစားအမည်"
+    },
+    {
+      "name": "updates_title",
+      "value": "အပ်ဒိတ်များ"
+    },
+    {
+      "name": "updates_empty",
+      "value": "လတ်တလော အပ်ဒိတ်မရှိပါ"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "အခန်းသစ် %d ခန်း တွေ့ရှိ"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "အခန်းသစ်မရှိပါ"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "ပြန်လည်စတင်မရပါ"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "ပြန်လည်စတင်နေသည်…"
+    },
+    {
+      "name": "history_title",
+      "value": "မှတ်တမ်း"
+    },
+    {
+      "name": "history_clear",
+      "value": "ရှင်းလင်း"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "ရှင်းလင်းမည်မှာ သေချာသလား?"
+    },
+    {
+      "name": "history_empty",
+      "value": "ဖတ်ရှုမှတ်တမ်း မရှိသေးပါ"
+    },
+    {
+      "name": "history_cleared",
+      "value": "မှတ်တမ်းကို ရှင်းပြီး"
+    },
+    {
+      "name": "history_continue",
+      "value": "ဆက်လက်"
+    },
+    {
+      "name": "browse_title",
+      "value": "ကြည့်ရှု"
+    },
+    {
+      "name": "browse_import",
+      "value": "ထည့်သွင်း"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "ပလက်ဂင်များ"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "စက်တွင်း မန်ဂါ"
+    },
+    {
+      "name": "browse_popular",
+      "value": "လူကြိုက်များ"
+    },
+    {
+      "name": "browse_latest",
+      "value": "နောက်ဆုံး"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "မန်ဂါ ရှာဖွေ…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "မန်ဂါ မတွေ့ပါ"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "စက်တွင်း မန်ဂါ မရှိသေးပါ၊ ထည့်သွင်းကို နှိပ်၍ ထည့်ပါ"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "ဖွင့်မရပါ: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "ရှာဖွေမရပါ: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "ပိုမိုဖွင့်မရပါ"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "အသေးစိတ် ဖွင့်မရပါ"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "ဖိုင်ရွေးမရပါ"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "ဖိုင် %d ခု ထည့်သွင်း"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "မန်ဂါအမည်"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "အမည်ထည့်ပါ"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "ဖိုင် %d ခု ထည့်သွင်းပြီး"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "ထည့်သွင်းမရပါ: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "ဒေါင်းလုဒ်များ"
+    },
+    {
+      "name": "download_resume",
+      "value": "ဆက်လုပ်"
+    },
+    {
+      "name": "download_pause",
+      "value": "ခေတ္တရပ်"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "ပြီးဆုံးသည်များကို ရှင်း"
+    },
+    {
+      "name": "download_queue",
+      "value": "ဒေါင်းလုဒ်တန်းစီ"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "တန်းစီထား"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "ဒေါင်းလုဒ်လုပ်နေ"
+    },
+    {
+      "name": "download_state_done",
+      "value": "ပြီးပြီ"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "မအောင်မြင်"
+    },
+    {
+      "name": "download_move_top",
+      "value": "အပေါ်ဆုံးသို့"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "အောက်ဆုံးသို့"
+    },
+    {
+      "name": "download_deleted",
+      "value": "ဖျက်ပြီး"
+    },
+    {
+      "name": "download_empty",
+      "value": "ဒေါင်းလုဒ် မရှိသေးပါ"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "ဒေါင်းလုဒ်ပြီး"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d အခန်း"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "အခန်းမရှိပါ"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "စင့်ခ်မရ၍ စက်တွင်းဒေတာ ပြသနေသည်"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "စာအုပ်စင်သို့ ထည့်ပြီး"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "စာအုပ်စင်မှ ဖယ်ပြီး"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "အခန်းအားလုံးကို ဖတ်ပြီးဟု မှတ်သား"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "ဒေါင်းလုဒ်တန်းစီသို့ ထည့်ပြီး"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "AniList တိုကင်ကို အရင်သတ်မှတ်ပါ"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "AniList ရှာဖွေ"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "မန်ဂါခေါင်းစဉ်"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "ရှာဖွေရလဒ် မရှိပါ"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "AniList ရှာဖွေ မအောင်မြင်"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "AniList နှင့်ချိတ်ပြီး"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "AniList ချိတ်ဖြုတ်ပြီး"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "တိုးတက်မှုကို အခန်း %d အထိ စင့်ခ်ပြီး"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "AniList စင့်ခ် မအောင်မြင်"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "စက်တွင်း"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "စာအုပ်စင်တွင်ရှိ"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "စာအုပ်စင်သို့ ထည့်"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "ဆက်ဖတ်"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "စတင်ဖတ်"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "အခန်း မရှိသေးပါ"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "ခေါက်သိမ်း"
+    },
+    {
+      "name": "detail_expand",
+      "value": "ချဲ့"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList ခြေရာခံ"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList တိုကင် မသတ်မှတ်ရသေး"
+    },
+    {
+      "name": "detail_searching",
+      "value": "ရှာဖွေနေသည်…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "ရှာပြီး ချိတ်"
+    },
+    {
+      "name": "detail_bind",
+      "value": "ချိတ်"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "အခန်း %d အထိ စင့်ခ်ပြီး"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "တိုးတက်မှု စင့်ခ်"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "ချိတ်ဖြုတ်"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "အခန်းများ (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "ငယ်စဉ်ကြီးလိုက်"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "ကြီးစဉ်ငယ်လိုက်"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "အားလုံး ဖတ်ပြီးဟု မှတ်"
+    },
+    {
+      "name": "detail_read",
+      "value": "ဖတ်ပြီး"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "ဒေါင်းလုဒ်ပြီး"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "တန်းစီတွင်ရှိ"
+    },
+    {
+      "name": "detail_download",
+      "value": "ဒေါင်းလုဒ်"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "အခန်း မတွေ့ပါ"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "ဖွင့်မရပါ: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "ဘယ်မှညာ"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "ညာမှဘယ်"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "ဝဘ်တုန်း"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "ဖတ်ရှုမုဒ်"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "လွတ်လပ်"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "ဒေါင်လိုက်"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "အလျားလိုက်"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "စခရင်ဦးတည်ချက်"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "နောက်ဆုံးအခန်းတွင် ရှိနေပြီ"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "ပထမအခန်းတွင် ရှိနေပြီ"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "ပထမစာမျက်နှာတွင် ရှိနေပြီ"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "နောက်ဆုံးစာမျက်နှာတွင် ရှိနေပြီ"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "အခန်းဖွင့်နေသည်…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "ဖတ်ရှုဆက်တင်"
+    },
+    {
+      "name": "reader_background",
+      "value": "နောက်ခံ"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "အလိုအလျောက်"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "အဖြူ"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "မီးခိုး"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "အနက်"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "စာမျက်နှာနံပါတ် ပြ"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "တောက်ပမှု"
+    },
+    {
+      "name": "reader_auto",
+      "value": "အလိုအလျောက်"
+    },
+    {
+      "name": "plugin_title",
+      "value": "တိုးချဲ့မှုများ"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "ထည့်သွင်းပြီး"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "တိုးချဲ့မှု မရှိသေးပါ၊ အောက်မှ ထည့်သွင်းပါ"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "ပိတ်ထားသော တိုးချဲ့မှုများကို အချိန်မရွေး ပြန်ဖွင့်နိုင်သည်"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "နောက်ဆုံးဗားရှင်းဖြစ်သည်"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "ဖိုင်မှ ထည့်သွင်း"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "ထည့်သွင်းရန် ဖိုင်ရွေးပါ"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "လုပ်ဆောင်နေသည်…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": ".honyomiplug / .zip တိုးချဲ့မှုပက်ကေ့ချ်များကို ပံ့ပိုးသည်"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "အွန်လိုင်းသိုလှောင်ရုံ"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "သိုလှောင်ရုံ သတ်မှတ်"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "ပြန်လည်စတင်"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "တိုးချဲ့မှု သိုလှောင်ရုံ မသတ်မှတ်ရသေး"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "သိုလှောင်ရုံ ဖွင့်နေသည်…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "တိုးချဲ့မှု သိုလှောင်ရုံ URL"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "တိုးချဲ့မှု သိုလှောင်ရုံ URL ထည့်ပါ"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "သိုလှောင်ရုံ ဖွင့်မရပါ: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "ဖိုင်ရွေးမရပါ"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "ထည့်သွင်းပြီး: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "%s ကို ထည့်သွင်းပြီး"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "ထည့်သွင်းမရပါ: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "လုပ်ဆောင်ချက် မအောင်မြင်"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "ဖယ်ရှားပြီး: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "ဖယ်ရှားမရပါ"
+    },
+    {
+      "name": "settings_title",
+      "value": "ဆက်တင်များ"
+    },
+    {
+      "name": "settings_general",
+      "value": "အထွေထွေ"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "စတင်မျက်နှာပြင်"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "ကိုယ်ပိုင်ပြင်ဆင်မှု"
+    },
+    {
+      "name": "settings_library",
+      "value": "စာအုပ်စင်"
+    },
+    {
+      "name": "settings_reader",
+      "value": "ဖတ်ရှုကိရိယာ"
+    },
+    {
+      "name": "settings_data",
+      "value": "ဒေတာ"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "ဒေါင်းလုဒ်များ"
+    },
+    {
+      "name": "settings_browse",
+      "value": "ကြည့်ရှု"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "အဆင့်မြင့်"
+    },
+    {
+      "name": "settings_about",
+      "value": "အကြောင်း"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "စာအုပ်စင်"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "အပ်ဒိတ်များ"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "မှတ်တမ်း"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "ကြည့်ရှု"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "ပိုမို၍"
+    },
+    {
+      "name": "advanced_title",
+      "value": "အဆင့်မြင့်"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "တွက်ချက်နေသည်…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "သိုလှောင်မှု"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "ပုံကက်ရှ် ရှင်းလင်း"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "ပုံကက်ရှ် ရှင်းပြီး"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "ကွတ်ကီး ရှင်းလင်း"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "ကွတ်ကီးအားလုံး ရှင်းပြီး"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "အရန်သိမ်းနှင့် ပြန်ယူ"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "အရန်သိမ်း ထုတ်ယူ"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "အရန်သိမ်း ထည့်သွင်း"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "ခြေရာခံခြင်း"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList တိုကင်"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList ဝင်ရောက်ခွင့် တိုကင်"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "ဝင်ရောက်ခွင့် တိုကင် ကူးထည့်ပါ (ရှင်းရန် ဗလာထား)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "မသတ်မှတ်ရသေး"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "သတ်မှတ်ပြီး"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "တိုကင် သိမ်းပြီး"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "တိုကင် ရှင်းပြီး"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "အရန်သိမ်း ထုတ်ယူပြီး"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "ထုတ်ယူမှု ပယ်ဖျက်"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "ထုတ်ယူမရပါ"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "ထည့်သွင်းမှု ပယ်ဖျက်"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "အရန်သိမ်းဖိုင် မမှန်ကန်ပါ"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "မန်ဂါ %d ပုဒ် ပြန်ယူပြီး"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "ထည့်သွင်းမရပါ"
+    },
+    {
+      "name": "about_title",
+      "value": "အကြောင်း"
+    },
+    {
+      "name": "about_version",
+      "value": "ဗားရှင်း 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "ဗိသုကာကို Mihon (Apache-2.0) မှ အားထားသည်။ အွန်လိုင်းရင်းမြစ်များကို တိုးချဲ့မှုအဖြစ် တက်ကြွစွာ ထည့်သွင်းပြီး စက်တွင်းရင်းမြစ်များသည် ပါရှိပြီးသားဖြစ်သည်။"
+    },
+    {
+      "name": "about_ack",
+      "value": "ပွင့်လင်းအရင်းအမြစ် ကျေးဇူးတင်လွှာ:\n· Mihon / Tachiyomi — အက်ပ်ဗိသုကာနှင့် အပြန်အလှန်ဒီဇိုင်း (Apache-2.0)\n· Material Symbols — အက်ပ်အတွင်း သင်္ကေတများ (Apache-2.0)\n· MangaDex — စမ်းသပ်ဒေတာရင်းမြစ်"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "ကြည့်ရှု"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "အကြောင်းအရာ"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "NSFW ရင်းမြစ်များ ပြ"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "ဖွင့်ထားလျှင် တိုးချဲ့မှုက NSFW ဟု သတ်မှတ်သော ရင်းမြစ်များသည် ကြည့်ရှုတွင် ပေါ်မည်"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "ဒေါင်းလုဒ်များ"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "ကွန်ရက်"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Wi-Fi တွင်သာ ဒေါင်းလုဒ်"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "မှတ်ချက်: ဤခလုတ်သည် လက်ရှိဗားရှင်းတွင် နေရာယူထားခြင်းသာဖြစ်ပြီး ကွန်ရက်အမျိုးအစား စစ်ဆေးမှုကို နောင်ဗားရှင်းတွင် ပေးမည်"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "စာအုပ်စင်"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "စစ်ထုတ်နှင့် စီရန်"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "ပုံသေစီခြင်း"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "ခေါင်းစဉ်"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "နောက်ဆုံးအခန်း"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "ထည့်သည့်ရက်"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "မဖတ်ရသေးသော အရေအတွက်"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "ခေါင်းစဉ် ငယ်စဉ်ကြီးလိုက်"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "ပုံသေစစ်ထုတ်"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "မဖတ်ရသေး"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "ဒေါင်းလုဒ်ပြီး"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "မပြီးဆုံးသေး"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "ပြသမှု"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "ပုံသေမြင်ကွင်း"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "ဇယားကွက်"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "ကာဗာဇယားကွက်"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "စာရင်း"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "ဇယားကွက်ကော်လံ"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "အလိုအလျောက်"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "၂ ကော်လံ"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "၃ ကော်လံ"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "၄ ကော်လံ"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "မဖတ်ရသေး တံဆိပ်"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "ဒေါင်းလုဒ် တံဆိပ်"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "ဖတ်ရှုကိရိယာ"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "ဖတ်ရှုမုဒ်"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "ပုံသေမုဒ်"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "ဘယ်မှညာ"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "ညာမှဘယ်"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "ဒေါင်လိုက် စာမျက်နှာလှန်"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "ဝဘ်တုန်း"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "နှစ်မျက်နှာ (အလျားလိုက်)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "ပြသမှု"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "စာမျက်နှာနံပါတ် ပြ"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "ဖတ်ရှုနောက်ခံ"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "အပြင်အဆင်အတိုင်း"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "အဖြူ"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "အနက်"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "မီးခိုး"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "ဖတ်ရှုတောက်ပမှု ပြန်သတ်မှတ်"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "တောက်ပမှုကို စနစ်အတိုင်း သတ်မှတ်ပြီး"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "ရင်းမြစ်များ"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "တိုးချဲ့မှုများ"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "ပြောင်းရွှေ့"
+    },
+    {
+      "name": "browse_pin",
+      "value": "ပင်လုပ်"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "ပင်ဖြုတ်"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "ရင်းမြစ်ပိတ်"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "ရင်းမြစ်ပိတ်ထားသည်"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "ပင်လုပ်ပြီး"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "ရင်းမြစ်မရှိပါ။ တိုးချဲ့မှုများ တဘ်မှ ထည့်သွင်းပါ"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "ဘာသာစကား စစ်ထုတ်"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "အားလုံး"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "ရင်းမြစ် မရနိုင်ပါ။ တိုးချဲ့မှု ပိတ်ထားနိုင်သည်"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "ရင်းမြစ်အားလုံးတွင် ရှာဖွေ"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "ရှာဖွေမှု မအောင်မြင်"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "တိုးချဲ့မှုများ ရှာဖွေ"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "ကိုက်ညီမှု မရှိ"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "သိုလှောင်ရုံ ဆက်တင်များ"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "သိုလှောင်ရုံ ပြန်လည်စတင်"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "ပြောင်းရွှေ့မည့် ရင်းမြစ် ရွေးပါ"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "စာအုပ်စင် ဗလာဖြစ်နေသည်"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "အားလုံး ရွေး"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "ရွေးချယ်မှု ဖယ်"
+    },
+    {
+      "name": "migrate_action",
+      "value": "ပြောင်းရွှေ့ (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "ပြောင်းရွှေ့"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "ကျော်"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d / %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "ပစ်မှတ် ရင်းမြစ်"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "ပစ်မှတ် ရင်းမြစ်တွင် မန်ဂါ ရှာဖွေ"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "ဤမန်ဂါသို့ ပြောင်းရွှေ့မလား?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "ပြောင်းရွှေ့ပြီး: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "ပြောင်းရွှေ့ မအောင်မြင်: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "ပြောင်းရွှေ့ ပြီးဆုံး"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "ပစ်မှတ် ရင်းမြစ် မရှိ"
+    },
+    {
+      "name": "stats_title",
+      "value": "စာရင်းအင်း"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "အကျဉ်းချုပ်"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "စာအုပ်စင်တွင်"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "ဖတ်ချိန်"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "ပြီးဆုံး"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "လက်ရာများ"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "စဖတ်ပြီး"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "စက်တွင်း"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "အခန်းများ"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "စုစုပေါင်း"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "ဖတ်ပြီး"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "ဒေါင်းလုဒ်ပြီး"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "ခြေရာခံခြင်း"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "ခြေရာခံထားသော လက်ရာ"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "ပျမ်းမျှအမှတ်"
+    },
+    {
+      "name": "stats_used",
+      "value": "သုံးပြီး"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "မသက်ဆိုင်"
+    },
+    {
+      "name": "stats_week",
+      "value": "ရက်သတ္တပတ်"
+    },
+    {
+      "name": "stats_month",
+      "value": "လ"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "ဒီအပတ် %s"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "ဒီလ %s"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "ဤကာလတွင် ဖတ်ရှုမှုမရှိ"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%dရက်"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dနာ"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dမိ"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%dစက္"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "နွေ"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "လာ"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "ဂါ"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "ဟူး"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "ကြာ"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "သော"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "နေ"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "ဒေါင်လိုက်"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "လက်ကိုင်အာရုံ"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "ဒေါင်လိုက် သော့ခတ်"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "အလျားလိုက် သော့ခတ်"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "အထွေထွေ"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "အရောင်စစ်"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "မီးခိုးရောင်"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "အရောင်ပြောင်းပြန်"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "ခြားနားချက်"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "ပြည့်ဝမှု"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "အနားဖြတ်"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "ထိနှိပ်ဇုန်"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "ပုံသေ"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "ဘယ်မှညာ"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "ညာမှဘယ်"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "ဒေါင်လိုက်"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "အနား"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "မရှိ"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "နှစ်မျက်နှာ မြင်ကွင်း"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "ဝဘ်တုန်း ဘေးအကွာ"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "လက်ကိုင်အာရုံ"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "စက်တွင်းမှ ထည့်သွင်း"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "တိုးချဲ့မှု အချက်အလက်"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "ဗားရှင်း"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "ဘာသာစကား"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "တိုးချဲ့မှု ဖယ်ရှား"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "“%s” ကို ဖယ်ရှားမလား? စာအုပ်စင် မန်ဂါဒေတာ ကျန်မည်"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "ရင်းမြစ်များ"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "ဆက်တင်များ"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "ဖွင့်နေသည်…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "ဆက်တင်များ သုံး၍မရ"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "တိုးချဲ့မှု မရှိပါ သို့မဟုတ် မဖွင့်ရသေး"
+    },
+    {
+      "name": "action_filter",
+      "value": "စစ်ထုတ်"
+    },
+    {
+      "name": "action_update_library",
+      "value": "စာအုပ်စင် အပ်ဒိတ်"
+    },
+    {
+      "name": "action_update_category",
+      "value": "အမျိုးအစား အပ်ဒိတ်"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "ကျပန်းလက်ရာ ဖွင့်"
+    },
+    {
+      "name": "action_select_all",
+      "value": "အားလုံး ရွေး"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "ရွေးချယ်မှု ပြောင်းပြန်"
+    },
+    {
+      "name": "action_move_category",
+      "value": "အမျိုးအစားသို့ ရွှေ့"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "ဖတ်ပြီးဟု မှတ်"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "မဖတ်ရသေးဟု မှတ်"
+    },
+    {
+      "name": "action_download",
+      "value": "ဒေါင်းလုဒ်"
+    },
+    {
+      "name": "action_delete",
+      "value": "ဖျက်"
+    },
+    {
+      "name": "action_migrate",
+      "value": "ပြောင်းရွှေ့"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "စာအုပ်စင်မှ ဖယ်"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "ရွေးထားသော %d မန်ဂါကို စာအုပ်စင်မှ ဖယ်မလား?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "ဒေါင်းလုဒ် %d ခု တန်းစီထည့်ပြီး"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "စာအုပ်စင် ရှာဖွေ"
+    },
+    {
+      "name": "library_no_match",
+      "value": "ကိုက်ညီသော မန်ဂါမရှိ"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "စစ်ထုတ်"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "စီစဉ်"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "ပြသမှု"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "ဒေါင်းလုဒ်ပြီး"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "မဖတ်ရသေး"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "ဖတ်ဖူးသည်"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "မှတ်သားပြီး"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "ပြီးဆုံး"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "ခြေရာခံပြီး"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "ခေါင်းစဉ်"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "အခန်းအရေအတွက်"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "နောက်ဆုံးဖတ်"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "အပ်ဒိတ်စစ်ချိန်"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "မဖတ်ရသေးသော အရေအတွက်"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "လက်ရာအပ်ဒိတ်အချိန်"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "အခန်းရယူချိန်"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "ထည့်သည့်ရက်"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "ကျပန်း"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "ကျစ်လစ်ဇယားကွက်"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "ကျဲဇယားကွက်"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "ကာဗာဇယားကွက်"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "စာရင်း"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "တစ်တန်းအရေအတွက်"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "အလိုအလျောက်"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "တံဆိပ်နှင့် ခလုတ်"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "ဒေါင်းလုဒ်အခန်းအရေအတွက်"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "မဖတ်ရသေးသော အခန်း"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "စက်တွင်း ရင်းမြစ်"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "ဘာသာစကား"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "ဆက်ဖတ် ခလုတ်"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "တက်ဘ်"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "အမျိုးအစားတက်ဘ် ပြ"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "လက်ရာအရေအတွက် ပြ"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "MihonHarmony ကတ်"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "ဒက်စ်တော့ကတ် ပံ့ပိုးသူ"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "ဆက်ဖတ်"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "မကြာမီက ဖတ်သော မန်ဂါကို မြန်ဆက်ဖတ်"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "အပ်ဒိတ်များ"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "စာအုပ်စင်၏ နောက်ဆုံးမဖတ်ရသေးသော အခန်း"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "ဆက်ဖတ်"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "အပ်ဒိတ်များ"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d အခန်း မဖတ်ရသေး"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "ဖတ်ရှုမှတ်တမ်း မရှိသေးပါ"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "မဖတ်ရသေးသော အခန်းမရှိ"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "အက်ပ်ဖွင့်ရန် နှိပ်ပါ"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "မန်ဂါကတ်"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "အသေးစိတ်စာမျက်နှာမှ ထည့်၊ ကာဗာနှိပ်ပြီး ဖတ်"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "မန်ဂါအသေးစိတ်စာမျက်နှာမှ ဒက်စ်တော့သို့ ထည့်"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "ဒက်စ်တော့သို့ ထည့်"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "ဒက်စ်တော့သို့ ထည့်ပြီး"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "ကတ်ထည့်၍မရ"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "အပတ်စဉ်စာရင်း"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "ဒီအပတ် နေ့စဉ်ဖတ်ချိန်"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "လစဉ်စာရင်း"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "ဒီလ နေ့စဉ်ဖတ်ချိန်"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "ဖတ်ရှုမှုမရှိသေး"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "လာမည့်အပ်ဒိတ်များ ပြ"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "လာမည့်"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "လာမည့်လမ်းညွှန်"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "ပြီးခဲ့သည့်လ"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "နောက်လ"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "ထည့်သွင်းနှင့် ဖယ်ထုတ် အမျိုးအစားနှစ်ခုလုံးရှိ လက်ရာများကို မပြပါ။"
+    },
+    {
+      "name": "relative_time_today",
+      "value": "ယနေ့"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d ရက်အကြာက"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "%d ရက်အတွင်း"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "လာမည့်"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "စာအုပ်စင် မန်ဂါ၏ မျှော်မှန်းအပ်ဒိတ်ပြက္ခဒိန်"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "လာမည့်"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "စာအုပ်စင်တွင် ဆက်လက်ထုတ်ဝေနေဆဲ မန်ဂါမရှိ"
+    }
+  ]
 }

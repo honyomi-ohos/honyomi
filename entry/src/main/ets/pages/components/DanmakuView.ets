@@ -34,7 +34,6 @@ export struct DanmakuView {
   @Prop @Watch('onDmSettingChanged') areaPct: number = 50;
   @Prop @Watch('onDmSettingChanged') durSec: number = 10;
   controller: DanmakuController = new DanmakuController();
-  positionProvider: () => number = (): number => 0;
   private renderSettings: RenderingContextSettings = new RenderingContextSettings(true);
   private ctx: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.renderSettings);
   private items: DanmakuItem[] = [];
@@ -48,6 +47,26 @@ export struct DanmakuView {
   private scrollLast: ActiveDm[] = [];
   private topEnds: number[] = [];
   private bottomEnds: number[] = [];
+
+  private static firstIndexAfter(items: DanmakuItem[], pos: number): number {
+    let lo: number = 0;
+    let hi: number = items.length;
+    while (lo < hi) {
+      const mid: number = (lo + hi) >> 1;
+      if (items[mid].timeMs <= pos) {
+        lo = mid + 1;
+      } else {
+        hi = mid;
+      }
+    }
+    return lo;
+  }
+
+  private static hexColor(color: number): string {
+    return `#${(color & 0xFFFFFF).toString(16).toUpperCase().padStart(6, '0')}`;
+  }
+
+  positionProvider: () => number = (): number => 0;
 
   aboutToAppear(): void {
     hilog.info(0xDEAD, 'VP', 'DanmakuView aboutToAppear');
@@ -72,6 +91,23 @@ export struct DanmakuView {
     }
   }
 
+  build() {
+    Canvas(this.ctx)
+      .width('100%')
+      .height('100%')
+      .onAreaChange((_old: Area, newArea: Area) => {
+        const w: Length = newArea.width;
+        const h: Length = newArea.height;
+        const pxW: number = typeof w === 'number' ? Math.floor(this.getUIContext().vp2px(w)) : 0;
+        const pxH: number = typeof h === 'number' ? Math.floor(this.getUIContext().vp2px(h)) : 0;
+        if (pxW !== this.canvasW || pxH !== this.canvasH) {
+          this.canvasW = pxW;
+          this.canvasH = pxH;
+          this.softReset();
+        }
+      })
+  }
+
   private onDmSettingChanged(): void {
     this.fontPx = Math.max(9, Math.floor(this.getUIContext().vp2px(this.fontVp)));
     this.softReset();
@@ -88,20 +124,6 @@ export struct DanmakuView {
   private resetTo(pos: number): void {
     this.softReset();
     this.cursor = DanmakuView.firstIndexAfter(this.items, pos);
-  }
-
-  private static firstIndexAfter(items: DanmakuItem[], pos: number): number {
-    let lo: number = 0;
-    let hi: number = items.length;
-    while (lo < hi) {
-      const mid: number = (lo + hi) >> 1;
-      if (items[mid].timeMs <= pos) {
-        lo = mid + 1;
-      } else {
-        hi = mid;
-      }
-    }
-    return lo;
   }
 
   private tick(): void {
@@ -214,26 +236,5 @@ export struct DanmakuView {
     this.ctx.strokeText(item.text, x, y);
     this.ctx.fillStyle = DanmakuView.hexColor(item.color);
     this.ctx.fillText(item.text, x, y);
-  }
-
-  private static hexColor(color: number): string {
-    return `#${(color & 0xFFFFFF).toString(16).toUpperCase().padStart(6, '0')}`;
-  }
-
-  build() {
-    Canvas(this.ctx)
-      .width('100%')
-      .height('100%')
-      .onAreaChange((_old: Area, newArea: Area) => {
-        const w: Length = newArea.width;
-        const h: Length = newArea.height;
-        const pxW: number = typeof w === 'number' ? Math.floor(this.getUIContext().vp2px(w)) : 0;
-        const pxH: number = typeof h === 'number' ? Math.floor(this.getUIContext().vp2px(h)) : 0;
-        if (pxW !== this.canvasW || pxH !== this.canvasH) {
-          this.canvasW = pxW;
-          this.canvasH = pxH;
-          this.softReset();
-        }
-      })
   }
 }

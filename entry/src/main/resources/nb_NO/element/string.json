@@ -1,534 +1,2124 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Filtrerer alle oppføringer i biblioteket ditt" },
-    { "name": "more_incognito_summary", "value": "Setter lesehistorikken på pause" },
-    { "name": "more_support", "value": "Support Us" },
-    { "name": "more_help", "value": "Hjelp" },
-    { "name": "support_perks", "value": "Patrons get access to exclusive channels, with more perks to come." },
-    { "name": "support_patreon", "value": "Patreon (preferred)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together." },
-    { "name": "support_contact_msg", "value": "For alternative options or any related questions, join our Discord server." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "Data og lagring" },
-    { "name": "data_storage_location", "value": "Lagringsplass" },
-    { "name": "data_storage_location_info", "value": "Brukt for automatiske sikkerhetskopier, nedlastede kapitler og lokal kilde." },
-    { "name": "data_backup_restore", "value": "Sikkerhetskopier og gjenopprett" },
-    { "name": "data_create_backup", "value": "Opprett sikkerhetskopi" },
-    { "name": "data_restore_backup", "value": "Gjenopprett sikkerhetskopi" },
-    { "name": "data_backup_interval", "value": "Sikkerhetskopieringsfrekvens" },
-    { "name": "data_backup_info", "value": "Du bør oppbevare ekstra kopier av sikkershetskopier andre steder også. Sikkerhetskopier kan inneholde sensitiv data, inkludert eventuelle lagrede passord. Vær forsiktig ved deling." },
-    { "name": "data_last_auto_backup", "value": "Siste automatisk sikkerhetskopi: %s" },
-    { "name": "data_storage_usage", "value": "Lagringsbruk" },
-    { "name": "data_available_space", "value": "Tilgjengelig: %s / Totalt: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Tøm kapittelhurtigbuffer" },
-    { "name": "data_used_cache", "value": "Brukt: %s" },
-    { "name": "data_cache_deleted", "value": "Hurtigbuffer tømt. %d filer slettet" },
-    { "name": "data_cache_delete_error", "value": "Feil oppstod under opprensing" },
-    { "name": "data_auto_clear_cache", "value": "Tøm kapittel hurtigbufferen ved oppstart av appen" },
-    { "name": "data_export", "value": "Export" },
-    { "name": "data_library_list", "value": "Library List" },
-    { "name": "data_library_exported", "value": "Library Exported" },
-    { "name": "data_export_include", "value": "Velg data å inkludere" },
-    { "name": "data_column_title", "value": "Tittel" },
-    { "name": "data_column_author", "value": "Author" },
-    { "name": "data_interval_off", "value": "Av" },
-    { "name": "data_interval_6h", "value": "Hver sjette time" },
-    { "name": "data_interval_12h", "value": "Hver tolvte time" },
-    { "name": "data_interval_24h", "value": "Daglig" },
-    { "name": "data_interval_48h", "value": "Annenhver dag" },
-    { "name": "data_interval_weekly", "value": "Ukentlig" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "OK" },
-    { "name": "common_cancel", "value": "Avbryt" },
-    { "name": "common_confirm", "value": "Bekreft" },
-    { "name": "common_delete", "value": "Slett" },
-    { "name": "common_retry", "value": "Prøv igjen" },
-    { "name": "common_search", "value": "Søk" },
-    { "name": "common_all", "value": "Alle" },
-    { "name": "common_close", "value": "Lukk" },
-    { "name": "common_save", "value": "Lagre" },
-    { "name": "common_install", "value": "Installer" },
-    { "name": "common_uninstall", "value": "Avinstaller" },
-    { "name": "common_update", "value": "Oppdater" },
-    { "name": "common_none", "value": "Ingen" },
-    { "name": "common_default", "value": "Standard" },
-    { "name": "appearance_title", "value": "Utseende" },
-    { "name": "appearance_language", "value": "Språk" },
-    { "name": "lang_follow_system", "value": "Følg systemet" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "Temamodus" },
-    { "name": "appearance_theme_auto", "value": "Følg systemet" },
-    { "name": "appearance_theme_light", "value": "Lys" },
-    { "name": "appearance_theme_dark", "value": "Mørk" },
-    { "name": "appearance_accent_color", "value": "Aksentfarge" },
-    { "name": "appearance_other", "value": "Annet" },
-    { "name": "appearance_amoled", "value": "AMOLED helt svart bakgrunn" },
-    { "name": "theme_accent_blue", "value": "Blå" },
-    { "name": "theme_accent_green", "value": "Grønn" },
-    { "name": "theme_accent_pink", "value": "Rosa" },
-    { "name": "theme_accent_purple", "value": "Lilla" },
-    { "name": "theme_accent_orange", "value": "Oransje" },
-    { "name": "util_time_minutes_ago", "value": "%d min siden" },
-    { "name": "util_time_hours_ago", "value": "%d t siden" },
-    { "name": "util_time_days_ago", "value": "%d d siden" },
-    { "name": "util_status_ongoing", "value": "Pågående" },
-    { "name": "util_status_completed", "value": "Fullført" },
-    { "name": "util_status_hiatus", "value": "På pause" },
-    { "name": "util_status_cancelled", "value": "Avbrutt" },
-    { "name": "util_status_publication_complete", "value": "Utgivelse fullført" },
-    { "name": "util_status_unknown", "value": "Ukjent" },
-    { "name": "tab_library", "value": "Bibliotek" },
-    { "name": "tab_updates", "value": "Oppdateringer" },
-    { "name": "tab_history", "value": "Historikk" },
-    { "name": "tab_browse", "value": "Utforsk" },
-    { "name": "tab_more", "value": "Mer" },
-    { "name": "tab_cf_waiting", "value": "Venter på bekreftelse…" },
-    { "name": "tab_cf_verified", "value": "Bekreftelse fullført" },
-    { "name": "tab_cf_title", "value": "Menneskelig bekreftelse" },
-    { "name": "tab_cf_done", "value": "Ferdig" },
-    { "name": "tab_cf_saved", "value": "Bekreftelsesresultat lagret" },
-    { "name": "more_title", "value": "Mer" },
-    { "name": "more_version", "value": "Versjon %s" },
-    { "name": "more_downloaded_only", "value": "Kun nedlastet" },
-    { "name": "more_incognito", "value": "Inkognitomodus" },
-    { "name": "more_downloads", "value": "Nedlastingskø" },
-    { "name": "more_categories", "value": "Kategorier" },
-    { "name": "more_settings", "value": "Innstillinger" },
-    { "name": "more_about", "value": "Om" },
-    { "name": "more_plugins", "value": "Utvidelser" },
-    { "name": "categories_title", "value": "Kategorier" },
-    { "name": "categories_add", "value": "Ny kategori" },
-    { "name": "categories_name_placeholder", "value": "Kategorinavn" },
-    { "name": "categories_rename_category", "value": "Gi nytt navn til kategori" },
-    { "name": "categories_rename", "value": "Gi nytt navn" },
-    { "name": "categories_hint", "value": "Trykk lenge på en kategori for å gi den nytt navn eller slette den; manga i en slettet kategori flyttes tilbake til Standard" },
-    { "name": "dialog_pick_category", "value": "Velg kategori" },
-    { "name": "viewer_loading", "value": "Laster…" },
-    { "name": "viewer_load_failed", "value": "Kunne ikke laste bildet" },
-    { "name": "viewer_tap_retry", "value": "Trykk for å prøve igjen" },
-    { "name": "library_title", "value": "Bibliotek" },
-    { "name": "library_empty", "value": "Biblioteket ditt er tomt, utforsk for å legge til manga" },
-    { "name": "library_new_category", "value": "Ny kategori" },
-    { "name": "library_category_name", "value": "Kategorinavn" },
-    { "name": "updates_title", "value": "Oppdateringer" },
-    { "name": "updates_empty", "value": "Ingen nylige oppdateringer" },
-    { "name": "updates_found_new", "value": "%d nye kapitler funnet" },
-    { "name": "updates_no_new", "value": "Ingen nye kapitler" },
-    { "name": "updates_refresh_failed", "value": "Oppdatering mislyktes" },
-    { "name": "updates_refreshing", "value": "Oppdaterer…" },
-    { "name": "history_title", "value": "Historikk" },
-    { "name": "history_clear", "value": "Tøm" },
-    { "name": "history_confirm_clear", "value": "Bekreft tømming?" },
-    { "name": "history_empty", "value": "Ingen lesehistorikk ennå" },
-    { "name": "history_cleared", "value": "Historikken er tømt" },
-    { "name": "history_continue", "value": "Fortsett" },
-    { "name": "browse_title", "value": "Utforsk" },
-    { "name": "browse_import", "value": "Importer" },
-    { "name": "browse_plugins", "value": "Programtillegg" },
-    { "name": "browse_local_source_name", "value": "Lokal manga" },
-    { "name": "browse_popular", "value": "Populært" },
-    { "name": "browse_latest", "value": "Nyeste" },
-    { "name": "browse_search_hint", "value": "Søk etter manga…" },
-    { "name": "browse_no_results", "value": "Ingen manga funnet" },
-    { "name": "browse_local_empty", "value": "Ingen lokal manga ennå, trykk på Importer for å legge til" },
-    { "name": "browse_load_failed", "value": "Kunne ikke laste: %s" },
-    { "name": "browse_search_failed", "value": "Søk mislyktes: %s" },
-    { "name": "browse_load_more_failed", "value": "Kunne ikke laste mer" },
-    { "name": "browse_open_detail_failed", "value": "Kunne ikke åpne detaljer" },
-    { "name": "browse_pick_file_failed", "value": "Kunne ikke velge filer" },
-    { "name": "browse_import_title", "value": "Importer %d filer" },
-    { "name": "browse_manga_name_hint", "value": "Manganavn" },
-    { "name": "browse_input_name", "value": "Skriv inn et navn" },
-    { "name": "browse_import_done", "value": "Importerte %d filer" },
-    { "name": "browse_import_failed", "value": "Import mislyktes: %s" },
-    { "name": "download_title", "value": "Nedlastinger" },
-    { "name": "download_resume", "value": "Fortsett" },
-    { "name": "download_pause", "value": "Pause" },
-    { "name": "download_clear_finished", "value": "Fjern ferdige" },
-    { "name": "download_queue", "value": "Nedlastingskø" },
-    { "name": "download_state_queued", "value": "I kø" },
-    { "name": "download_state_downloading", "value": "Laster ned" },
-    { "name": "download_state_done", "value": "Ferdig" },
-    { "name": "download_state_failed", "value": "Mislyktes" },
-    { "name": "download_move_top", "value": "Flytt øverst" },
-    { "name": "download_move_bottom", "value": "Flytt nederst" },
-    { "name": "download_deleted", "value": "Slettet" },
-    { "name": "download_empty", "value": "Ingen nedlastinger ennå" },
-    { "name": "download_status_downloaded", "value": "Lastet ned" },
-    { "name": "download_chapter_count", "value": "%d kapitler" },
-    { "name": "detail_no_chapters", "value": "Ingen kapitler" },
-    { "name": "detail_sync_failed_local", "value": "Synkronisering mislyktes, viser lokale data" },
-    { "name": "detail_added_to_library", "value": "Lagt til i biblioteket" },
-    { "name": "detail_removed_from_library", "value": "Fjernet fra biblioteket" },
-    { "name": "detail_all_marked_read", "value": "Alle kapitler merket som lest" },
-    { "name": "detail_download_queued", "value": "Nedlasting lagt i kø" },
-    { "name": "detail_config_anilist_token", "value": "Konfigurer AniList-tokenet ditt først" },
-    { "name": "detail_search_anilist", "value": "Søk på AniList" },
-    { "name": "detail_manga_title_hint", "value": "Mangatittel" },
-    { "name": "detail_no_search_results", "value": "Ingen søkeresultater" },
-    { "name": "detail_anilist_search_failed", "value": "AniList-søk mislyktes" },
-    { "name": "detail_anilist_bound", "value": "Knyttet til AniList" },
-    { "name": "detail_anilist_unbound", "value": "Fjernet fra AniList" },
-    { "name": "detail_synced_progress", "value": "Fremdrift synkronisert til kapittel %d" },
-    { "name": "detail_anilist_sync_failed", "value": "AniList-synkronisering mislyktes" },
-    { "name": "detail_status_local", "value": "Lokal" },
-    { "name": "detail_in_library", "value": "I biblioteket" },
-    { "name": "detail_add_to_library", "value": "Legg til i biblioteket" },
-    { "name": "detail_continue_reading", "value": "Fortsett å lese" },
-    { "name": "detail_start_reading", "value": "Begynn å lese" },
-    { "name": "detail_no_chapters_yet", "value": "Ingen kapitler ennå" },
-    { "name": "detail_collapse", "value": "Skjul" },
-    { "name": "detail_expand", "value": "Utvid" },
-    { "name": "detail_anilist_tracking", "value": "AniList-sporing" },
-    { "name": "detail_anilist_token_hint", "value": "AniList-token er ikke konfigurert ennå" },
-    { "name": "detail_searching", "value": "Søker…" },
-    { "name": "detail_search_and_bind", "value": "Søk og knytt" },
-    { "name": "detail_bind", "value": "Knytt" },
-    { "name": "detail_synced_to_chapter", "value": "Synkronisert til kapittel %d" },
-    { "name": "detail_sync_progress", "value": "Synkroniser fremdrift" },
-    { "name": "detail_unbind", "value": "Fjern tilknytning" },
-    { "name": "detail_chapters_count", "value": "Kapitler (%d)" },
-    { "name": "detail_sort_asc", "value": "Stigende" },
-    { "name": "detail_sort_desc", "value": "Synkende" },
-    { "name": "detail_mark_all_read", "value": "Merk alle som lest" },
-    { "name": "detail_read", "value": "Lest" },
-    { "name": "detail_downloaded", "value": "Lastet ned" },
-    { "name": "detail_in_queue", "value": "I kø" },
-    { "name": "detail_download", "value": "Last ned" },
-    { "name": "reader_chapter_not_found", "value": "Kapittel ikke funnet" },
-    { "name": "reader_load_failed", "value": "Kunne ikke laste: %s" },
-    { "name": "reader_mode_ltr", "value": "Venstre mot høyre" },
-    { "name": "reader_mode_rtl", "value": "Høyre mot venstre" },
-    { "name": "reader_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_reading_mode", "value": "Lesemodus" },
-    { "name": "reader_orientation_free", "value": "Fri" },
-    { "name": "reader_orientation_portrait", "value": "Stående" },
-    { "name": "reader_orientation_landscape", "value": "Liggende" },
-    { "name": "reader_screen_orientation", "value": "Skjermretning" },
-    { "name": "reader_last_chapter", "value": "Allerede på siste kapittel" },
-    { "name": "reader_first_chapter", "value": "Allerede på første kapittel" },
-    { "name": "reader_first_page", "value": "Allerede på første side" },
-    { "name": "reader_last_page", "value": "Allerede på siste side" },
-    { "name": "reader_loading_chapter", "value": "Laster kapittel…" },
-    { "name": "reader_settings", "value": "Leserinnstillinger" },
-    { "name": "reader_background", "value": "Bakgrunn" },
-    { "name": "reader_theme_auto", "value": "Auto" },
-    { "name": "reader_theme_white", "value": "Hvit" },
-    { "name": "reader_theme_gray", "value": "Grå" },
-    { "name": "reader_theme_black", "value": "Svart" },
-    { "name": "reader_show_page_number", "value": "Vis sidetall" },
-    { "name": "reader_brightness", "value": "Lysstyrke" },
-    { "name": "reader_auto", "value": "Auto" },
-    { "name": "plugin_title", "value": "Utvidelser" },
-    { "name": "plugin_installed_section", "value": "Installert" },
-    { "name": "plugin_empty", "value": "Ingen utvidelser ennå, installer nedenfor" },
-    { "name": "plugin_disable_hint", "value": "Deaktiverte utvidelser kan slås på igjen når som helst" },
-    { "name": "plugin_up_to_date", "value": "Oppdatert" },
-    { "name": "plugin_local_install", "value": "Installer fra fil" },
-    { "name": "plugin_install_from_file", "value": "Velg en fil å installere" },
-    { "name": "plugin_processing", "value": "Behandler…" },
-    { "name": "plugin_package_hint", "value": "Støtter .honyomiplug- / .zip-programtilleggspakker" },
-    { "name": "plugin_repo", "value": "Nettarkiv" },
-    { "name": "plugin_repo_config", "value": "Sett opp arkiv" },
-    { "name": "plugin_repo_refresh", "value": "Oppdater" },
-    { "name": "plugin_repo_hint", "value": "Ingen plugin-arkiv er konfigurert ennå" },
-    { "name": "plugin_repo_loading", "value": "Laster arkiv…" },
-    { "name": "plugin_repo_url_title", "value": "URL til plugin-arkiv" },
-    { "name": "plugin_repo_url_hint", "value": "Skriv inn URL-en til plugin-arkivet" },
-    { "name": "plugin_repo_load_failed", "value": "Kunne ikke laste arkiv: %s" },
-    { "name": "plugin_pick_file_failed", "value": "Kunne ikke velge fil" },
-    { "name": "plugin_installed", "value": "Installert: %s" },
-    { "name": "plugin_installed_name", "value": "Installerte %s" },
-    { "name": "plugin_install_failed", "value": "Installasjon mislyktes: %s" },
-    { "name": "plugin_action_failed", "value": "Handling mislyktes" },
-    { "name": "plugin_uninstalled", "value": "Avinstallert: %s" },
-    { "name": "plugin_uninstall_failed", "value": "Avinstallasjon mislyktes" },
-    { "name": "settings_title", "value": "Innstillinger" },
-    { "name": "settings_general", "value": "Generelt" },
-    { "name": "settings_start_tab", "value": "Startskjerm" },
-    { "name": "settings_personalization", "value": "Tilpassing" },
-    { "name": "settings_library", "value": "Bibliotek" },
-    { "name": "settings_reader", "value": "Leser" },
-    { "name": "settings_data", "value": "Data" },
-    { "name": "settings_downloads", "value": "Nedlastinger" },
-    { "name": "settings_browse", "value": "Utforsk" },
-    { "name": "settings_advanced", "value": "Avansert" },
-    { "name": "settings_about", "value": "Om" },
-    { "name": "settings_tab_library", "value": "Bibliotek" },
-    { "name": "settings_tab_updates", "value": "Oppdateringer" },
-    { "name": "settings_tab_history", "value": "Historikk" },
-    { "name": "settings_tab_browse", "value": "Utforsk" },
-    { "name": "settings_tab_more", "value": "Mer" },
-    { "name": "advanced_title", "value": "Avansert" },
-    { "name": "advanced_calculating", "value": "Beregner…" },
-    { "name": "advanced_storage", "value": "Lagring" },
-    { "name": "advanced_clear_image_cache", "value": "Tøm bildebuffer" },
-    { "name": "advanced_image_cache_cleared", "value": "Bildebuffer tømt" },
-    { "name": "advanced_clear_cookies", "value": "Tøm informasjonskapsler" },
-    { "name": "advanced_cookies_cleared", "value": "Alle informasjonskapsler tømt" },
-    { "name": "advanced_backup_restore", "value": "Sikkerhetskopi og gjenoppretting" },
-    { "name": "advanced_export_backup", "value": "Eksporter sikkerhetskopi" },
-    { "name": "advanced_import_backup", "value": "Importer sikkerhetskopi" },
-    { "name": "advanced_tracking", "value": "Sporing" },
-    { "name": "advanced_anilist_token", "value": "AniList-token" },
-    { "name": "advanced_token_title", "value": "AniList-tilgangstoken" },
-    { "name": "advanced_token_hint", "value": "Lim inn tilgangstokenet (la stå tomt for å tømme)" },
-    { "name": "advanced_token_not_set", "value": "Ikke angitt" },
-    { "name": "advanced_token_set", "value": "Angitt" },
-    { "name": "advanced_token_saved", "value": "Token lagret" },
-    { "name": "advanced_token_cleared", "value": "Token tømt" },
-    { "name": "advanced_backup_exported", "value": "Sikkerhetskopi eksportert" },
-    { "name": "advanced_export_canceled", "value": "Eksport avbrutt" },
-    { "name": "advanced_export_failed", "value": "Eksport mislyktes" },
-    { "name": "advanced_import_canceled", "value": "Import avbrutt" },
-    { "name": "advanced_backup_invalid", "value": "Ugyldig sikkerhetskopifil" },
-    { "name": "advanced_restored_manga", "value": "Gjenopprettet %d manga" },
-    { "name": "advanced_import_failed", "value": "Import mislyktes" },
-    { "name": "about_title", "value": "Om" },
-    { "name": "about_version", "value": "Versjon 1.0.0" },
-    { "name": "about_desc", "value": "Arkitektur inspirert av Mihon (Apache-2.0). Nettkilder installeres dynamisk som utvidelser, mens lokale kilder er innebygd." },
-    { "name": "about_ack", "value": "Anerkjennelser for åpen kildekode:\n· Mihon / Tachiyomi — appens arkitektur og interaksjonsdesign (Apache-2.0)\n· Material Symbols — ikoner i appen (Apache-2.0)\n· MangaDex — testdatakilde" },
-    { "name": "browse_set_title", "value": "Utforsk" },
-    { "name": "browse_set_content", "value": "Innhold" },
-    { "name": "browse_set_show_nsfw", "value": "Vis NSFW-kilder" },
-    { "name": "browse_set_nsfw_hint", "value": "Når dette er slått på, vises kilder som er merket som NSFW av utvidelsene, under Utforsk" },
-    { "name": "dl_set_title", "value": "Nedlastinger" },
-    { "name": "dl_set_network", "value": "Nettverk" },
-    { "name": "dl_set_wifi_only", "value": "Last kun ned via Wi-Fi" },
-    { "name": "dl_set_wifi_only_hint", "value": "Merk: denne bryteren er en plassholder i gjeldende versjon; gjenkjenning av nettverkstype kommer i en senere utgave" },
-    { "name": "lib_set_title", "value": "Bibliotek" },
-    { "name": "lib_set_sort_group", "value": "Filtrer og sorter" },
-    { "name": "lib_set_sort_default", "value": "Standardsortering" },
-    { "name": "lib_set_sort_title", "value": "Tittel" },
-    { "name": "lib_set_sort_last_update", "value": "Nyeste kapittel" },
-    { "name": "lib_set_sort_added", "value": "Dato lagt til" },
-    { "name": "lib_set_sort_unread", "value": "Antall uleste" },
-    { "name": "lib_set_sort_asc", "value": "Sorter etter tittel stigende" },
-    { "name": "lib_set_filter_default", "value": "Standardfilter" },
-    { "name": "lib_set_filter_unread", "value": "Ulest" },
-    { "name": "lib_set_filter_downloaded", "value": "Lastet ned" },
-    { "name": "lib_set_filter_uncompleted", "value": "Ufullført" },
-    { "name": "lib_set_display_group", "value": "Visning" },
-    { "name": "lib_set_view_default", "value": "Standardvisning" },
-    { "name": "lib_set_view_grid", "value": "Rutenett" },
-    { "name": "lib_set_view_cover", "value": "Omslagsrutenett" },
-    { "name": "lib_set_view_list", "value": "Liste" },
-    { "name": "lib_set_grid_cols", "value": "Rutenettkolonner" },
-    { "name": "lib_set_cols_auto", "value": "Auto" },
-    { "name": "lib_set_cols_2", "value": "2 kolonner" },
-    { "name": "lib_set_cols_3", "value": "3 kolonner" },
-    { "name": "lib_set_cols_4", "value": "4 kolonner" },
-    { "name": "lib_set_unread_badge", "value": "Ulest-merker" },
-    { "name": "lib_set_download_badge", "value": "Nedlastingsmerker" },
-    { "name": "reader_set_title", "value": "Leser" },
-    { "name": "reader_set_mode_group", "value": "Lesemodus" },
-    { "name": "reader_set_mode_default", "value": "Standardmodus" },
-    { "name": "reader_set_mode_ltr", "value": "Venstre mot høyre" },
-    { "name": "reader_set_mode_rtl", "value": "Høyre mot venstre" },
-    { "name": "reader_set_mode_vertical", "value": "Vertikal bladning" },
-    { "name": "reader_set_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_set_dual_page", "value": "Dobbeltside (liggende)" },
-    { "name": "reader_set_display_group", "value": "Visning" },
-    { "name": "reader_set_show_page_number", "value": "Vis sidetall" },
-    { "name": "reader_set_bg_color", "value": "Leserbakgrunn" },
-    { "name": "reader_set_theme_follow", "value": "Følg tema" },
-    { "name": "reader_set_theme_white", "value": "Hvit" },
-    { "name": "reader_set_theme_black", "value": "Svart" },
-    { "name": "reader_set_theme_gray", "value": "Grå" },
-    { "name": "reader_set_reset_brightness", "value": "Tilbakestill leserens lysstyrke" },
-    { "name": "reader_set_brightness_reset", "value": "Lysstyrken følger nå systemet" },
-    { "name": "browse_tab_sources", "value": "Kilder" },
-    { "name": "browse_tab_extensions", "value": "Utvidelser" },
-    { "name": "browse_tab_migrate", "value": "Migrer" },
-    { "name": "browse_pin", "value": "Fest" },
-    { "name": "browse_unpin", "value": "Løsne" },
-    { "name": "browse_disable_source", "value": "Deaktiver kilde" },
-    { "name": "browse_source_disabled", "value": "Kilde deaktivert" },
-    { "name": "browse_pinned", "value": "Festet" },
-    { "name": "browse_sources_empty", "value": "Ingen kilder. Installer fra fanen Utvidelser" },
-    { "name": "browse_filter_langs", "value": "Filtrer språk" },
-    { "name": "browse_filter_all", "value": "Alle" },
-    { "name": "browse_source_missing", "value": "Kilden er utilgjengelig. Utvidelsen kan være deaktivert" },
-    { "name": "global_search_hint", "value": "Søk i alle kilder" },
-    { "name": "global_search_failed", "value": "Søket mislyktes" },
-    { "name": "ext_search_hint", "value": "Søk i utvidelser" },
-    { "name": "ext_search_no_match", "value": "Ingen treff" },
-    { "name": "ext_repo_settings", "value": "Arkivinnstillinger" },
-    { "name": "ext_refresh_repo", "value": "Oppdater arkiv" },
-    { "name": "migrate_pick_source", "value": "Velg en kilde å migrere" },
-    { "name": "migrate_empty_library", "value": "Biblioteket er tomt" },
-    { "name": "migrate_select_all", "value": "Velg alle" },
-    { "name": "migrate_deselect_all", "value": "Fjern merking" },
-    { "name": "migrate_action", "value": "Migrer (%d)" },
-    { "name": "migrate_title", "value": "Migrer" },
-    { "name": "migrate_skip", "value": "Hopp over" },
-    { "name": "migrate_progress", "value": "%d av %d" },
-    { "name": "migrate_target_source", "value": "Målkilde" },
-    { "name": "migrate_search_hint", "value": "Søk etter manga i målkilden" },
-    { "name": "migrate_confirm_title", "value": "Migrere til denne mangaen?" },
-    { "name": "migrate_item_done", "value": "Migrert: %s" },
-    { "name": "migrate_failed", "value": "Migrering mislyktes: %s" },
-    { "name": "migrate_done", "value": "Migrering fullført" },
-    { "name": "migrate_no_target", "value": "Ingen målkilde tilgjengelig" },
-    { "name": "stats_title", "value": "Statistikk" },
-    { "name": "stats_overview_section", "value": "Oversikt" },
-    { "name": "stats_in_library", "value": "I biblioteket" },
-    { "name": "stats_read_duration", "value": "Lesetid" },
-    { "name": "stats_completed_titles", "value": "Fullført" },
-    { "name": "stats_titles_section", "value": "Oppføringer" },
-    { "name": "stats_started_titles", "value": "Startet" },
-    { "name": "stats_local_titles", "value": "Lokal" },
-    { "name": "stats_chapters_section", "value": "Kapitler" },
-    { "name": "stats_total_chapters", "value": "Totalt" },
-    { "name": "stats_read_chapters", "value": "Lest" },
-    { "name": "stats_downloaded_chapters", "value": "Lastet ned" },
-    { "name": "stats_tracker_section", "value": "Sporing" },
-    { "name": "stats_tracked_titles", "value": "Sporede oppføringer" },
-    { "name": "stats_mean_score", "value": "Gjennomsnittsscore" },
-    { "name": "stats_used", "value": "I bruk" },
-    { "name": "stats_not_applicable", "value": "i.r." },
-    { "name": "stats_week", "value": "Uke" },
-    { "name": "stats_month", "value": "Måned" },
-    { "name": "stats_week_total", "value": "%s denne uken" },
-    { "name": "stats_month_total", "value": "%s denne måneden" },
-    { "name": "stats_no_reading", "value": "Ingen lesing i denne perioden" },
-    { "name": "stats_day_short", "value": "%d d" },
-    { "name": "stats_hour_short", "value": "%d t" },
-    { "name": "stats_minute_short", "value": "%d min" },
-    { "name": "stats_second_short", "value": "%d sek" },
-    { "name": "stats_wd_sun", "value": "Sø" },
-    { "name": "stats_wd_mon", "value": "Ma" },
-    { "name": "stats_wd_tue", "value": "Ti" },
-    { "name": "stats_wd_wed", "value": "On" },
-    { "name": "stats_wd_thu", "value": "To" },
-    { "name": "stats_wd_fri", "value": "Fr" },
-    { "name": "stats_wd_sat", "value": "Lø" },
-    { "name": "reader_mode_vertical", "value": "Vertikal" },
-    { "name": "reader_mode_smart_grip", "value": "Greptilpasset" },
-    { "name": "reader_orientation_lock_portrait", "value": "Lås stående" },
-    { "name": "reader_orientation_lock_landscape", "value": "Lås liggende" },
-    { "name": "reader_tab_general", "value": "Generelt" },
-    { "name": "reader_tab_filter", "value": "Fargefilter" },
-    { "name": "reader_filter_grayscale", "value": "Gråtoner" },
-    { "name": "reader_filter_invert", "value": "Inverterte farger" },
-    { "name": "reader_filter_contrast", "value": "Kontrast" },
-    { "name": "reader_filter_saturation", "value": "Metning" },
-    { "name": "reader_crop_borders", "value": "Beskjær kanter" },
-    { "name": "reader_nav_tap_zones", "value": "Trykksoner" },
-    { "name": "reader_nav_default", "value": "Standard" },
-    { "name": "reader_nav_ltr", "value": "Venstre mot høyre" },
-    { "name": "reader_nav_rtl", "value": "Høyre mot venstre" },
-    { "name": "reader_nav_vertical", "value": "Vertikal" },
-    { "name": "reader_nav_edge", "value": "Kant" },
-    { "name": "reader_nav_none", "value": "Ingen" },
-    { "name": "reader_dual_page", "value": "Dobbeltsidevisning" },
-    { "name": "reader_webtoon_padding", "value": "Webtoon-sidemarg" },
-    { "name": "reader_set_mode_smart_grip", "value": "Greptilpasset" },
-    { "name": "ext_install_local", "value": "Installer lokalt" },
-    { "name": "ext_detail_title", "value": "Utvidelsesinfo" },
-    { "name": "ext_info_version", "value": "Versjon" },
-    { "name": "ext_info_language", "value": "Språk" },
-    { "name": "ext_uninstall_title", "value": "Avinstaller utvidelse" },
-    { "name": "ext_uninstall_msg", "value": "Avinstallere %s? Manga i biblioteket beholdes." },
-    { "name": "ext_detail_sources", "value": "Kilder" },
-    { "name": "ext_detail_settings", "value": "Innstillinger" },
-    { "name": "ext_pref_loading", "value": "Laster…" },
-    { "name": "ext_pref_failed", "value": "Kunne ikke bruke innstillingene" },
-    { "name": "ext_detail_missing", "value": "Utvidelsen finnes ikke eller er ikke lastet" },
-    { "name": "action_filter", "value": "Filtrer" },
-    { "name": "action_update_library", "value": "Oppdater biblioteket" },
-    { "name": "action_update_category", "value": "Oppdater kategori" },
-    { "name": "action_open_random_manga", "value": "Åpne tilfeldig manga" },
-    { "name": "action_select_all", "value": "Velg alle" },
-    { "name": "action_select_inverse", "value": "Inverter utvalg" },
-    { "name": "action_move_category", "value": "Flytt til kategori" },
-    { "name": "action_mark_as_read", "value": "Merk som lest" },
-    { "name": "action_mark_as_unread", "value": "Merk som ulest" },
-    { "name": "action_download", "value": "Last ned" },
-    { "name": "action_delete", "value": "Slett" },
-    { "name": "action_migrate", "value": "Migrer" },
-    { "name": "action_remove_from_library", "value": "Fjern fra biblioteket" },
-    { "name": "action_remove_from_library_msg", "value": "Fjerne %d valgte manga fra biblioteket?" },
-    { "name": "action_download_queued", "value": "%d nedlastinger lagt i køen" },
-    { "name": "library_search_hint", "value": "Søk i biblioteket" },
-    { "name": "library_no_match", "value": "Ingen samsvarende manga" },
-    { "name": "lib_sheet_tab_filter", "value": "Filtrer" },
-    { "name": "lib_sheet_tab_sort", "value": "Sorter" },
-    { "name": "lib_sheet_tab_display", "value": "Visning" },
-    { "name": "lib_filter_downloaded", "value": "Lastet ned" },
-    { "name": "lib_filter_unread", "value": "Ulest" },
-    { "name": "lib_filter_started", "value": "Startet" },
-    { "name": "lib_filter_bookmarked", "value": "Bokmerker" },
-    { "name": "lib_filter_completed", "value": "Fullført" },
-    { "name": "lib_filter_tracked", "value": "Sporet" },
-    { "name": "lib_sort_alpha", "value": "Tittel" },
-    { "name": "lib_sort_total", "value": "Antall kapitler" },
-    { "name": "lib_sort_last_read", "value": "Sist lest" },
-    { "name": "lib_sort_last_update", "value": "Sist sjekket" },
-    { "name": "lib_sort_unread", "value": "Antall uleste" },
-    { "name": "lib_sort_latest_chapter", "value": "Sist oppdatert" },
-    { "name": "lib_sort_fetch_date", "value": "Kapitler hentet" },
-    { "name": "lib_sort_date_added", "value": "Dato lagt til" },
-    { "name": "lib_sort_random", "value": "Tilfeldig" },
-    { "name": "lib_display_compact", "value": "Kompakt rutenett" },
-    { "name": "lib_display_comfortable", "value": "Luftig rutenett" },
-    { "name": "lib_display_cover", "value": "Omslagsrutenett" },
-    { "name": "lib_display_list", "value": "Liste" },
-    { "name": "lib_display_grid_size", "value": "Per rad" },
-    { "name": "lib_display_grid_auto", "value": "Auto" },
-    { "name": "lib_display_badges_group", "value": "Merker og knapper" },
-    { "name": "lib_badge_downloaded", "value": "Nedlastede kapitler" },
-    { "name": "lib_badge_unread", "value": "Uleste kapitler" },
-    { "name": "lib_badge_local", "value": "Lokal kilde" },
-    { "name": "lib_badge_language", "value": "Språk" },
-    { "name": "lib_badge_continue", "value": "Knapp Fortsett å lese" },
-    { "name": "lib_display_tabs_group", "value": "Faner" },
-    { "name": "lib_show_category_tabs", "value": "Vis kategorifanene" },
-    { "name": "lib_show_manga_count", "value": "Vis antall" },
-    { "name": "EntryFormAbility_label", "value": "Honyomi-widget" },
-    { "name": "EntryFormAbility_desc", "value": "Leverandør av startskjermwidgeter" },
-    { "name": "card_recent_display", "value": "Fortsett å lese" },
-    { "name": "card_recent_desc", "value": "Fortsett raskt med nylig lest manga" },
-    { "name": "card_updates_display", "value": "Oppdateringer" },
-    { "name": "card_updates_desc", "value": "Nyeste uleste kapitler i biblioteket" },
-    { "name": "card_recent_header", "value": "Fortsett å lese" },
-    { "name": "card_updates_header", "value": "Oppdateringer" },
-    { "name": "card_unread_count", "value": "%d uleste kapitler" },
-    { "name": "card_empty_recent", "value": "Ingen lesehistorikk ennå" },
-    { "name": "card_empty_updates", "value": "Ingen uleste kapitler" },
-    { "name": "card_open_hint", "value": "Trykk for å åpne appen" },
-    { "name": "card_manga_display", "value": "Manga-widget" },
-    { "name": "card_manga_desc", "value": "Legg til fra detaljsiden, trykk på omslaget for å lese" },
-    { "name": "card_manga_empty", "value": "Legg til på startskjermen fra mangadetaljene" },
-    { "name": "detail_add_to_desktop", "value": "Legg til på startskjermen" },
-    { "name": "detail_card_added", "value": "Lagt til på startskjermen" },
-    { "name": "detail_card_add_failed", "value": "Kunne ikke legge til widgeten" },
-    { "name": "card_stats_week_display", "value": "Ukestatistikk" },
-    { "name": "card_stats_week_desc", "value": "Daglig lesetid denne uken" },
-    { "name": "card_stats_month_display", "value": "Månedsstatistikk" },
-    { "name": "card_stats_month_desc", "value": "Daglig lesetid denne måneden" },
-    { "name": "card_stats_empty", "value": "Ingen lesing ennå" },
-    { "name": "action_view_upcoming", "value": "Vis kommende oppdateringer" },
-    { "name": "label_upcoming", "value": "Kommende" },
-    { "name": "upcoming_guide", "value": "Veiledning for kommende oppdateringer" },
-    { "name": "upcoming_calendar_prev", "value": "Forrige måned" },
-    { "name": "upcoming_calendar_next", "value": "Neste måned" },
-    { "name": "pref_filter_update_categories_details", "value": "Titler som er i både inkluderte og ekskluderte kategorier, vises ikke." },
-    { "name": "relative_time_today", "value": "I dag" },
-    { "name": "relative_time_days_ago", "value": "%d dager siden" },
-    { "name": "upcoming_relative_time_days", "value": "Om %d dager" },
-    { "name": "card_upcoming_display", "value": "Kommende" },
-    { "name": "card_upcoming_desc", "value": "Forventet oppdateringskalender for manga i biblioteket" },
-    { "name": "card_upcoming_header", "value": "Kommende" },
-    { "name": "card_empty_upcoming", "value": "Ingen pågående manga i biblioteket ditt" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Filtrerer alle oppføringer i biblioteket ditt"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Setter lesehistorikken på pause"
+    },
+    {
+      "name": "more_support",
+      "value": "Support Us"
+    },
+    {
+      "name": "more_help",
+      "value": "Hjelp"
+    },
+    {
+      "name": "support_perks",
+      "value": "Patrons get access to exclusive channels, with more perks to come."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (preferred)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "For alternative options or any related questions, join our Discord server."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "Data og lagring"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Lagringsplass"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Brukt for automatiske sikkerhetskopier, nedlastede kapitler og lokal kilde."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "Sikkerhetskopier og gjenopprett"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Opprett sikkerhetskopi"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Gjenopprett sikkerhetskopi"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Sikkerhetskopieringsfrekvens"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "Du bør oppbevare ekstra kopier av sikkershetskopier andre steder også. Sikkerhetskopier kan inneholde sensitiv data, inkludert eventuelle lagrede passord. Vær forsiktig ved deling."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Siste automatisk sikkerhetskopi: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Lagringsbruk"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Tilgjengelig: %s / Totalt: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Tøm kapittelhurtigbuffer"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Brukt: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Hurtigbuffer tømt. %d filer slettet"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Feil oppstod under opprensing"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Tøm kapittel hurtigbufferen ved oppstart av appen"
+    },
+    {
+      "name": "data_export",
+      "value": "Export"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Library List"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Library Exported"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Velg data å inkludere"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Tittel"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Author"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "Av"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "Hver sjette time"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "Hver tolvte time"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "Daglig"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "Annenhver dag"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "Ukentlig"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "OK"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Avbryt"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Bekreft"
+    },
+    {
+      "name": "common_delete",
+      "value": "Slett"
+    },
+    {
+      "name": "common_retry",
+      "value": "Prøv igjen"
+    },
+    {
+      "name": "common_search",
+      "value": "Søk"
+    },
+    {
+      "name": "common_all",
+      "value": "Alle"
+    },
+    {
+      "name": "common_close",
+      "value": "Lukk"
+    },
+    {
+      "name": "common_save",
+      "value": "Lagre"
+    },
+    {
+      "name": "common_install",
+      "value": "Installer"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "Avinstaller"
+    },
+    {
+      "name": "common_update",
+      "value": "Oppdater"
+    },
+    {
+      "name": "common_none",
+      "value": "Ingen"
+    },
+    {
+      "name": "common_default",
+      "value": "Standard"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Utseende"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Språk"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Følg systemet"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Temamodus"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Følg systemet"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Lys"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Mørk"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Aksentfarge"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Annet"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED helt svart bakgrunn"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Blå"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "Grønn"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Rosa"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Lilla"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "Oransje"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d min siden"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d t siden"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d d siden"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "Pågående"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Fullført"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "På pause"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Avbrutt"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Utgivelse fullført"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Ukjent"
+    },
+    {
+      "name": "tab_library",
+      "value": "Bibliotek"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Oppdateringer"
+    },
+    {
+      "name": "tab_history",
+      "value": "Historikk"
+    },
+    {
+      "name": "tab_browse",
+      "value": "Utforsk"
+    },
+    {
+      "name": "tab_more",
+      "value": "Mer"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "Venter på bekreftelse…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "Bekreftelse fullført"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "Menneskelig bekreftelse"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "Ferdig"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "Bekreftelsesresultat lagret"
+    },
+    {
+      "name": "more_title",
+      "value": "Mer"
+    },
+    {
+      "name": "more_version",
+      "value": "Versjon %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Kun nedlastet"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Inkognitomodus"
+    },
+    {
+      "name": "more_downloads",
+      "value": "Nedlastingskø"
+    },
+    {
+      "name": "more_categories",
+      "value": "Kategorier"
+    },
+    {
+      "name": "more_settings",
+      "value": "Innstillinger"
+    },
+    {
+      "name": "more_about",
+      "value": "Om"
+    },
+    {
+      "name": "more_plugins",
+      "value": "Utvidelser"
+    },
+    {
+      "name": "categories_title",
+      "value": "Kategorier"
+    },
+    {
+      "name": "categories_add",
+      "value": "Ny kategori"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "Kategorinavn"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "Gi nytt navn til kategori"
+    },
+    {
+      "name": "categories_rename",
+      "value": "Gi nytt navn"
+    },
+    {
+      "name": "categories_hint",
+      "value": "Trykk lenge på en kategori for å gi den nytt navn eller slette den; manga i en slettet kategori flyttes tilbake til Standard"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "Velg kategori"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "Laster…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "Kunne ikke laste bildet"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "Trykk for å prøve igjen"
+    },
+    {
+      "name": "library_title",
+      "value": "Bibliotek"
+    },
+    {
+      "name": "library_empty",
+      "value": "Biblioteket ditt er tomt, utforsk for å legge til manga"
+    },
+    {
+      "name": "library_new_category",
+      "value": "Ny kategori"
+    },
+    {
+      "name": "library_category_name",
+      "value": "Kategorinavn"
+    },
+    {
+      "name": "updates_title",
+      "value": "Oppdateringer"
+    },
+    {
+      "name": "updates_empty",
+      "value": "Ingen nylige oppdateringer"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%d nye kapitler funnet"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "Ingen nye kapitler"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "Oppdatering mislyktes"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "Oppdaterer…"
+    },
+    {
+      "name": "history_title",
+      "value": "Historikk"
+    },
+    {
+      "name": "history_clear",
+      "value": "Tøm"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "Bekreft tømming?"
+    },
+    {
+      "name": "history_empty",
+      "value": "Ingen lesehistorikk ennå"
+    },
+    {
+      "name": "history_cleared",
+      "value": "Historikken er tømt"
+    },
+    {
+      "name": "history_continue",
+      "value": "Fortsett"
+    },
+    {
+      "name": "browse_title",
+      "value": "Utforsk"
+    },
+    {
+      "name": "browse_import",
+      "value": "Importer"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "Programtillegg"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "Lokal manga"
+    },
+    {
+      "name": "browse_popular",
+      "value": "Populært"
+    },
+    {
+      "name": "browse_latest",
+      "value": "Nyeste"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "Søk etter manga…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "Ingen manga funnet"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "Ingen lokal manga ennå, trykk på Importer for å legge til"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "Kunne ikke laste: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "Søk mislyktes: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "Kunne ikke laste mer"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "Kunne ikke åpne detaljer"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "Kunne ikke velge filer"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "Importer %d filer"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "Manganavn"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "Skriv inn et navn"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "Importerte %d filer"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "Import mislyktes: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "Nedlastinger"
+    },
+    {
+      "name": "download_resume",
+      "value": "Fortsett"
+    },
+    {
+      "name": "download_pause",
+      "value": "Pause"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "Fjern ferdige"
+    },
+    {
+      "name": "download_queue",
+      "value": "Nedlastingskø"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "I kø"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "Laster ned"
+    },
+    {
+      "name": "download_state_done",
+      "value": "Ferdig"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "Mislyktes"
+    },
+    {
+      "name": "download_move_top",
+      "value": "Flytt øverst"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "Flytt nederst"
+    },
+    {
+      "name": "download_deleted",
+      "value": "Slettet"
+    },
+    {
+      "name": "download_empty",
+      "value": "Ingen nedlastinger ennå"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "Lastet ned"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d kapitler"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "Ingen kapitler"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "Synkronisering mislyktes, viser lokale data"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "Lagt til i biblioteket"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "Fjernet fra biblioteket"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "Alle kapitler merket som lest"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "Nedlasting lagt i kø"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "Konfigurer AniList-tokenet ditt først"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "Søk på AniList"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "Mangatittel"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "Ingen søkeresultater"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "AniList-søk mislyktes"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "Knyttet til AniList"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "Fjernet fra AniList"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "Fremdrift synkronisert til kapittel %d"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "AniList-synkronisering mislyktes"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "Lokal"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "I biblioteket"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "Legg til i biblioteket"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "Fortsett å lese"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "Begynn å lese"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "Ingen kapitler ennå"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "Skjul"
+    },
+    {
+      "name": "detail_expand",
+      "value": "Utvid"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList-sporing"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList-token er ikke konfigurert ennå"
+    },
+    {
+      "name": "detail_searching",
+      "value": "Søker…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "Søk og knytt"
+    },
+    {
+      "name": "detail_bind",
+      "value": "Knytt"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "Synkronisert til kapittel %d"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "Synkroniser fremdrift"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "Fjern tilknytning"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "Kapitler (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "Stigende"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "Synkende"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "Merk alle som lest"
+    },
+    {
+      "name": "detail_read",
+      "value": "Lest"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "Lastet ned"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "I kø"
+    },
+    {
+      "name": "detail_download",
+      "value": "Last ned"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "Kapittel ikke funnet"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "Kunne ikke laste: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "Venstre mot høyre"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "Høyre mot venstre"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "Lesemodus"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "Fri"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "Stående"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "Liggende"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "Skjermretning"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "Allerede på siste kapittel"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "Allerede på første kapittel"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "Allerede på første side"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "Allerede på siste side"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "Laster kapittel…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "Leserinnstillinger"
+    },
+    {
+      "name": "reader_background",
+      "value": "Bakgrunn"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "Hvit"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "Grå"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "Svart"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "Vis sidetall"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "Lysstyrke"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "plugin_title",
+      "value": "Utvidelser"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "Installert"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "Ingen utvidelser ennå, installer nedenfor"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "Deaktiverte utvidelser kan slås på igjen når som helst"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "Oppdatert"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "Installer fra fil"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "Velg en fil å installere"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "Behandler…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "Støtter .honyomiplug- / .zip-programtilleggspakker"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "Nettarkiv"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "Sett opp arkiv"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "Oppdater"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "Ingen plugin-arkiv er konfigurert ennå"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "Laster arkiv…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "URL til plugin-arkiv"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "Skriv inn URL-en til plugin-arkivet"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "Kunne ikke laste arkiv: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "Kunne ikke velge fil"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "Installert: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "Installerte %s"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "Installasjon mislyktes: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "Handling mislyktes"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "Avinstallert: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "Avinstallasjon mislyktes"
+    },
+    {
+      "name": "settings_title",
+      "value": "Innstillinger"
+    },
+    {
+      "name": "settings_general",
+      "value": "Generelt"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Startskjerm"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "Tilpassing"
+    },
+    {
+      "name": "settings_library",
+      "value": "Bibliotek"
+    },
+    {
+      "name": "settings_reader",
+      "value": "Leser"
+    },
+    {
+      "name": "settings_data",
+      "value": "Data"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Nedlastinger"
+    },
+    {
+      "name": "settings_browse",
+      "value": "Utforsk"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Avansert"
+    },
+    {
+      "name": "settings_about",
+      "value": "Om"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "Bibliotek"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Oppdateringer"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "Historikk"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "Utforsk"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "Mer"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Avansert"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "Beregner…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "Lagring"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "Tøm bildebuffer"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "Bildebuffer tømt"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "Tøm informasjonskapsler"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "Alle informasjonskapsler tømt"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "Sikkerhetskopi og gjenoppretting"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "Eksporter sikkerhetskopi"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "Importer sikkerhetskopi"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "Sporing"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList-token"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList-tilgangstoken"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "Lim inn tilgangstokenet (la stå tomt for å tømme)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "Ikke angitt"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "Angitt"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "Token lagret"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "Token tømt"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "Sikkerhetskopi eksportert"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "Eksport avbrutt"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "Eksport mislyktes"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "Import avbrutt"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "Ugyldig sikkerhetskopifil"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "Gjenopprettet %d manga"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "Import mislyktes"
+    },
+    {
+      "name": "about_title",
+      "value": "Om"
+    },
+    {
+      "name": "about_version",
+      "value": "Versjon 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "Arkitektur inspirert av Mihon (Apache-2.0). Nettkilder installeres dynamisk som utvidelser, mens lokale kilder er innebygd."
+    },
+    {
+      "name": "about_ack",
+      "value": "Anerkjennelser for åpen kildekode:\n· Mihon / Tachiyomi — appens arkitektur og interaksjonsdesign (Apache-2.0)\n· Material Symbols — ikoner i appen (Apache-2.0)\n· MangaDex — testdatakilde"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "Utforsk"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "Innhold"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "Vis NSFW-kilder"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "Når dette er slått på, vises kilder som er merket som NSFW av utvidelsene, under Utforsk"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Nedlastinger"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Nettverk"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Last kun ned via Wi-Fi"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "Merk: denne bryteren er en plassholder i gjeldende versjon; gjenkjenning av nettverkstype kommer i en senere utgave"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "Bibliotek"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "Filtrer og sorter"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "Standardsortering"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "Tittel"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "Nyeste kapittel"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "Dato lagt til"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "Antall uleste"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "Sorter etter tittel stigende"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "Standardfilter"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "Ulest"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "Lastet ned"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "Ufullført"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Visning"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "Standardvisning"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "Rutenett"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "Omslagsrutenett"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "Liste"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "Rutenettkolonner"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 kolonner"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 kolonner"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 kolonner"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "Ulest-merker"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "Nedlastingsmerker"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "Leser"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "Lesemodus"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "Standardmodus"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "Venstre mot høyre"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "Høyre mot venstre"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "Vertikal bladning"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "Dobbeltside (liggende)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Visning"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "Vis sidetall"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "Leserbakgrunn"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "Følg tema"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "Hvit"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "Svart"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "Grå"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "Tilbakestill leserens lysstyrke"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "Lysstyrken følger nå systemet"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "Kilder"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "Utvidelser"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "Migrer"
+    },
+    {
+      "name": "browse_pin",
+      "value": "Fest"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "Løsne"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "Deaktiver kilde"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "Kilde deaktivert"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "Festet"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "Ingen kilder. Installer fra fanen Utvidelser"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "Filtrer språk"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "Alle"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "Kilden er utilgjengelig. Utvidelsen kan være deaktivert"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "Søk i alle kilder"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "Søket mislyktes"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "Søk i utvidelser"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "Ingen treff"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "Arkivinnstillinger"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "Oppdater arkiv"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "Velg en kilde å migrere"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "Biblioteket er tomt"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "Velg alle"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "Fjern merking"
+    },
+    {
+      "name": "migrate_action",
+      "value": "Migrer (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "Migrer"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "Hopp over"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d av %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "Målkilde"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "Søk etter manga i målkilden"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "Migrere til denne mangaen?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "Migrert: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "Migrering mislyktes: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "Migrering fullført"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "Ingen målkilde tilgjengelig"
+    },
+    {
+      "name": "stats_title",
+      "value": "Statistikk"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "Oversikt"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "I biblioteket"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "Lesetid"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "Fullført"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "Oppføringer"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "Startet"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "Lokal"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "Kapitler"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "Totalt"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "Lest"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "Lastet ned"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "Sporing"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "Sporede oppføringer"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "Gjennomsnittsscore"
+    },
+    {
+      "name": "stats_used",
+      "value": "I bruk"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "i.r."
+    },
+    {
+      "name": "stats_week",
+      "value": "Uke"
+    },
+    {
+      "name": "stats_month",
+      "value": "Måned"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "%s denne uken"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "%s denne måneden"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "Ingen lesing i denne perioden"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%d d"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%d t"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%d min"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%d sek"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "Sø"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "Ma"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "Ti"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "On"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "To"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "Fr"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "Lø"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "Vertikal"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "Greptilpasset"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "Lås stående"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "Lås liggende"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "Generelt"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "Fargefilter"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "Gråtoner"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "Inverterte farger"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "Kontrast"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "Metning"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "Beskjær kanter"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "Trykksoner"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "Standard"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "Venstre mot høyre"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "Høyre mot venstre"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "Vertikal"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "Kant"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "Ingen"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Dobbeltsidevisning"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "Webtoon-sidemarg"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "Greptilpasset"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "Installer lokalt"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "Utvidelsesinfo"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "Versjon"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "Språk"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "Avinstaller utvidelse"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "Avinstallere %s? Manga i biblioteket beholdes."
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "Kilder"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "Innstillinger"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "Laster…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "Kunne ikke bruke innstillingene"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "Utvidelsen finnes ikke eller er ikke lastet"
+    },
+    {
+      "name": "action_filter",
+      "value": "Filtrer"
+    },
+    {
+      "name": "action_update_library",
+      "value": "Oppdater biblioteket"
+    },
+    {
+      "name": "action_update_category",
+      "value": "Oppdater kategori"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "Åpne tilfeldig manga"
+    },
+    {
+      "name": "action_select_all",
+      "value": "Velg alle"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "Inverter utvalg"
+    },
+    {
+      "name": "action_move_category",
+      "value": "Flytt til kategori"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "Merk som lest"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "Merk som ulest"
+    },
+    {
+      "name": "action_download",
+      "value": "Last ned"
+    },
+    {
+      "name": "action_delete",
+      "value": "Slett"
+    },
+    {
+      "name": "action_migrate",
+      "value": "Migrer"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "Fjern fra biblioteket"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "Fjerne %d valgte manga fra biblioteket?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "%d nedlastinger lagt i køen"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "Søk i biblioteket"
+    },
+    {
+      "name": "library_no_match",
+      "value": "Ingen samsvarende manga"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "Filtrer"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "Sorter"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "Visning"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "Lastet ned"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "Ulest"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "Startet"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "Bokmerker"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "Fullført"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "Sporet"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "Tittel"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "Antall kapitler"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "Sist lest"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "Sist sjekket"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "Antall uleste"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "Sist oppdatert"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "Kapitler hentet"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "Dato lagt til"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "Tilfeldig"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "Kompakt rutenett"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "Luftig rutenett"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "Omslagsrutenett"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "Liste"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "Per rad"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "Merker og knapper"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "Nedlastede kapitler"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "Uleste kapitler"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "Lokal kilde"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "Språk"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "Knapp Fortsett å lese"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "Faner"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "Vis kategorifanene"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "Vis antall"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "Honyomi-widget"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "Leverandør av startskjermwidgeter"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "Fortsett å lese"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "Fortsett raskt med nylig lest manga"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "Oppdateringer"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "Nyeste uleste kapitler i biblioteket"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "Fortsett å lese"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "Oppdateringer"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d uleste kapitler"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "Ingen lesehistorikk ennå"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "Ingen uleste kapitler"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "Trykk for å åpne appen"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "Manga-widget"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "Legg til fra detaljsiden, trykk på omslaget for å lese"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "Legg til på startskjermen fra mangadetaljene"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "Legg til på startskjermen"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "Lagt til på startskjermen"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "Kunne ikke legge til widgeten"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "Ukestatistikk"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "Daglig lesetid denne uken"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "Månedsstatistikk"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "Daglig lesetid denne måneden"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "Ingen lesing ennå"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "Vis kommende oppdateringer"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "Kommende"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "Veiledning for kommende oppdateringer"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "Forrige måned"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "Neste måned"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "Titler som er i både inkluderte og ekskluderte kategorier, vises ikke."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "I dag"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d dager siden"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "Om %d dager"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "Kommende"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "Forventet oppdateringskalender for manga i biblioteket"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "Kommende"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "Ingen pågående manga i biblioteket ditt"
+    }
+  ]
 }

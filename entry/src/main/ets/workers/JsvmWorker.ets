@@ -19,7 +19,7 @@
  *                   {"type":"destroyed"}
  */
 
-import { worker, MessageEvents, ThreadWorkerGlobalScope } from '@kit.ArkTS';
+import { MessageEvents, ThreadWorkerGlobalScope, worker } from '@kit.ArkTS';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import jsvmEngine from 'libjsvmengine.so';
 
@@ -39,6 +39,7 @@ interface WorkerRequest {
   name?: string;
   argsJson?: string;
   code?: string;
+
   /** 宿主标记：该调用可能写入插件偏好（true 时才 dump prefs） */
   prefsDirty?: boolean;
 }

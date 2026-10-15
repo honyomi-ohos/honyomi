@@ -33,16 +33,6 @@ export struct ReaderSettingsContent {
       Util.resStr(this.getUIContext(), $r('app.string.lang_follow_system')) : `${b}`;
   }
 
-  private modeIndex(): number {
-    const i = this.modeValues.indexOf(Settings.getReaderMode());
-    return i >= 0 ? i : 0;
-  }
-
-  private themeIndex(): number {
-    const i = THEME_VALUES.indexOf(Settings.getReaderTheme());
-    return i >= 0 ? i : 0;
-  }
-
   build() {
     Scroll() {
       Column({ space: 12 }) {
@@ -106,6 +96,16 @@ export struct ReaderSettingsContent {
     .height('100%')
     .scrollBar(BarState.Off)
     .align(Alignment.TopStart)
+  }
+
+  private modeIndex(): number {
+    const i = this.modeValues.indexOf(Settings.getReaderMode());
+    return i >= 0 ? i : 0;
+  }
+
+  private themeIndex(): number {
+    const i = THEME_VALUES.indexOf(Settings.getReaderTheme());
+    return i >= 0 ? i : 0;
   }
 }
 

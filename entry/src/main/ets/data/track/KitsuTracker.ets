@@ -1,7 +1,7 @@
 // Kitsu 追踪器（syncId=3）：GraphQL API + 用户名密码登录（password grant）
 import { TrackRecord, TrackSearchResult } from '../../model/Models';
 import { Settings } from '../../common/Settings';
-import { Tracker, TrackHttp, OAuthToken, TrackDate } from './Tracker';
+import { OAuthToken, TrackDate, Tracker, TrackHttp } from './Tracker';
 import { Http } from '../../net/Http';
 
 const KITSU_CLIENT_ID = 'dd031b32d2f56c990b1425efe6c42ad847e7fe3ab46bf1299f05ecd856bdb7dd';
@@ -166,6 +166,67 @@ export class KitsuTracker extends Tracker {
     this.supportsPrivateTracking = true;
   }
 
+  private static parseToken(resp: string): OAuthToken {
+    const raw = JSON.parse(resp) as KitsuTokenRaw;
+    if (typeof raw.access_token !== 'string' || raw.access_token === '') {
+      throw new Error('Kitsu: token response invalid');
+    }
+    const t = new OAuthToken();
+    t.accessToken = raw.access_token;
+    t.refreshToken = typeof raw.refresh_token === 'string' ? raw.refresh_token : '';
+    t.createdAt = typeof raw.created_at === 'number' ? raw.created_at : TrackDate.nowSec();
+    t.expiresIn = typeof raw.expires_in === 'number' ? raw.expires_in : 0;
+    return t;
+  }
+
+  private static toLocalStatus(api: string): number {
+    switch (api) {
+      case 'CURRENT':
+        return KitsuTracker.READING;
+      case 'COMPLETED':
+        return KitsuTracker.COMPLETED;
+      case 'ON_HOLD':
+        return KitsuTracker.ON_HOLD;
+      case 'DROPPED':
+        return KitsuTracker.DROPPED;
+      case 'PLANNED':
+        return KitsuTracker.PLAN_TO_READ;
+      default:
+        throw new Error(`Unknown status: ${api}`);
+    }
+  }
+
+  private static isoToEpoch(iso: string | undefined): number {
+    if (typeof iso !== 'string' || iso === '') {
+      return 0;
+    }
+    const ms = Date.parse(iso);
+    return isNaN(ms) ? 0 : ms;
+  }
+
+  private static epochToIsoVar(epochMs: number): string {
+    return epochMs > 0 ? `"${new Date(epochMs).toISOString()}"` : 'null';
+  }
+
+  private static prettyStatus(status: string): string {
+    if (status === 'TBA') {
+      return 'TBA';
+    }
+    if (status === 'CURRENT') {
+      return 'Publishing';
+    }
+    const lower = status.toLowerCase();
+    return lower.charAt(0).toUpperCase() + lower.substring(1);
+  }
+
+  private static prettyType(subtype: string): string {
+    if (subtype === 'OEL') {
+      return subtype;
+    }
+    const lower = subtype.toLowerCase();
+    return lower.charAt(0).toUpperCase() + lower.substring(1);
+  }
+
   getStatusList(): number[] {
     return [KitsuTracker.READING, KitsuTracker.COMPLETED, KitsuTracker.ON_HOLD,
       KitsuTracker.DROPPED, KitsuTracker.PLAN_TO_READ];
@@ -228,6 +289,8 @@ export class KitsuTracker extends Tracker {
   async loginWithCode(_code: string): Promise<void> {
     throw new Error('Kitsu only supports username/password login');
   }
+
+  // ---- 内部实现 ----
 
   async loginWithCredentials(username: string, password: string): Promise<void> {
     const form: Record<string, string> = {
@@ -332,8 +395,6 @@ export class KitsuTracker extends Tracker {
     this.checkMutation(raw, 'delete');
   }
 
-  // ---- 内部实现 ----
-
   private async authHeaders(): Promise<Record<string, string>> {
     const token = await this.ensureToken((t: OAuthToken) => this.refreshToken(t));
     const headers = TrackHttp.bearer(token.accessToken);
@@ -352,19 +413,6 @@ export class KitsuTracker extends Tracker {
     const headers: Record<string, string> = { 'Content-Type': 'application/x-www-form-urlencoded' };
     const resp = await TrackHttp.send('POST', KITSU_LOGIN_URL, headers, TrackHttp.formEncode(form));
     return KitsuTracker.parseToken(resp);
-  }
-
-  private static parseToken(resp: string): OAuthToken {
-    const raw = JSON.parse(resp) as KitsuTokenRaw;
-    if (typeof raw.access_token !== 'string' || raw.access_token === '') {
-      throw new Error('Kitsu: token response invalid');
-    }
-    const t = new OAuthToken();
-    t.accessToken = raw.access_token;
-    t.refreshToken = typeof raw.refresh_token === 'string' ? raw.refresh_token : '';
-    t.createdAt = typeof raw.created_at === 'number' ? raw.created_at : TrackDate.nowSec();
-    t.expiresIn = typeof raw.expires_in === 'number' ? raw.expires_in : 0;
-    return t;
   }
 
   private async sendGql(query: string, variables: string): Promise<string> {
@@ -541,54 +589,6 @@ export class KitsuTracker extends Tracker {
       default:
         throw new Error(`Unknown status: ${status}`);
     }
-  }
-
-  private static toLocalStatus(api: string): number {
-    switch (api) {
-      case 'CURRENT':
-        return KitsuTracker.READING;
-      case 'COMPLETED':
-        return KitsuTracker.COMPLETED;
-      case 'ON_HOLD':
-        return KitsuTracker.ON_HOLD;
-      case 'DROPPED':
-        return KitsuTracker.DROPPED;
-      case 'PLANNED':
-        return KitsuTracker.PLAN_TO_READ;
-      default:
-        throw new Error(`Unknown status: ${api}`);
-    }
-  }
-
-  private static isoToEpoch(iso: string | undefined): number {
-    if (typeof iso !== 'string' || iso === '') {
-      return 0;
-    }
-    const ms = Date.parse(iso);
-    return isNaN(ms) ? 0 : ms;
-  }
-
-  private static epochToIsoVar(epochMs: number): string {
-    return epochMs > 0 ? `"${new Date(epochMs).toISOString()}"` : 'null';
-  }
-
-  private static prettyStatus(status: string): string {
-    if (status === 'TBA') {
-      return 'TBA';
-    }
-    if (status === 'CURRENT') {
-      return 'Publishing';
-    }
-    const lower = status.toLowerCase();
-    return lower.charAt(0).toUpperCase() + lower.substring(1);
-  }
-
-  private static prettyType(subtype: string): string {
-    if (subtype === 'OEL') {
-      return subtype;
-    }
-    const lower = subtype.toLowerCase();
-    return lower.charAt(0).toUpperCase() + lower.substring(1);
   }
 
   private checkMutation(raw: KitsuMutationRaw, action: string): void {

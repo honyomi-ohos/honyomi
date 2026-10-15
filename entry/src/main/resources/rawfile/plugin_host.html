@@ -1,420 +1,420 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>honyomi-plugin-host</title>
+  <meta charset="utf-8">
+  <title>honyomi-plugin-host</title>
 </head>
 <body>
 <script>
-'use strict';
-// ============================================================
-// Honyomi 插件宿主沙箱
-// - 插件脚本通过 new Function 注入，唯一宿主 API 是 $ 命名空间
-// - 唯一网络出口：__hostBridge.request -> ArkTS Http
-// - 协议：JS/ArkTS 双向均为「发起即返回 + callId 回调回填」
-// ============================================================
-(function () {
-  var bridgeSeq = 0;            // JS -> ArkTS 调用序号
-  var bridgePending = {};       // callId -> {resolve, reject, timer}
-  var plugins = {};             // pluginKey -> exports
-  var PLUGIN_METHODS = ['getPopularManga', 'getSearchManga', 'getMangaDetail', 'getChapterList', 'getPageList'];
+  'use strict';
+  // ============================================================
+  // Honyomi 插件宿主沙箱
+  // - 插件脚本通过 new Function 注入，唯一宿主 API 是 $ 命名空间
+  // - 唯一网络出口：__hostBridge.request -> ArkTS Http
+  // - 协议：JS/ArkTS 双向均为「发起即返回 + callId 回调回填」
+  // ============================================================
+  (function () {
+    var bridgeSeq = 0;            // JS -> ArkTS 调用序号
+    var bridgePending = {};       // callId -> {resolve, reject, timer}
+    var plugins = {};             // pluginKey -> exports
+    var PLUGIN_METHODS = ['getPopularManga', 'getSearchManga', 'getMangaDetail', 'getChapterList', 'getPageList'];
 
-  function settleBridge(id, ok, raw) {
-    var p = bridgePending[id];
-    if (!p) { return; }
-    delete bridgePending[id];
-    clearTimeout(p.timer);
-    if (ok) {
-      try { p.resolve(JSON.parse(raw)); } catch (e) { p.reject(new Error('桥响应解析失败')); }
-    } else {
-      var msg = raw;
-      try { msg = JSON.parse(raw); } catch (e) { /* keep raw */ }
-      p.reject(new Error(String(msg)));
-    }
-  }
-
-  // ArkTS 完成桥请求后通过 runJavaScript 回填
-  window.__bridgeResolve = function (callId, ok, resultJson) {
-    settleBridge(String(callId), !!ok, String(resultJson));
-  };
-
-  // JS -> ArkTS：method + payload(JSON)，返回 Promise(JSON 值)
-  function callHost(method, payload) {
-    return new Promise(function (resolve, reject) {
-      var id = String(++bridgeSeq);
-      bridgePending[id] = {
-        resolve: resolve,
-        reject: reject,
-        timer: setTimeout(function () {
-          settleBridge(id, false, JSON.stringify('bridge timeout: ' + method));
-        }, 60000)
-      };
-      try {
-        __hostBridge.request(id, method, JSON.stringify(payload || {}));
-      } catch (e) {
-        settleBridge(id, false, JSON.stringify(String(e && e.message ? e.message : e)));
+    function settleBridge(id, ok, raw) {
+      var p = bridgePending[id];
+      if (!p) { return; }
+      delete bridgePending[id];
+      clearTimeout(p.timer);
+      if (ok) {
+        try { p.resolve(JSON.parse(raw)); } catch (e) { p.reject(new Error('桥响应解析失败')); }
+      } else {
+        var msg = raw;
+        try { msg = JSON.parse(raw); } catch (e) { /* keep raw */ }
+        p.reject(new Error(String(msg)));
       }
-    });
-  }
-
-  function pickStr(obj, key) {
-    return (obj && typeof obj[key] === 'string') ? obj[key] : '';
-  }
-
-  // ---------------- $ 命名空间（按插件实例化） ----------------
-  function makeDollar(manifest) {
-    var baseUrl = pickStr(manifest, 'baseUrl');
-    var pluginKey = pickStr(manifest, 'key');
-
-    function mergedHeaders(headers) {
-      // 与宿主 Http.USER_AGENT 保持一致（cf_clearance 与 UA 绑定）
-      var h = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36' };
-      if (baseUrl) {
-        try { h['Referer'] = new URL(baseUrl).origin + '/'; } catch (e) { /* ignore */ }
-      }
-      if (headers) {
-        for (var k in headers) {
-          if (Object.prototype.hasOwnProperty.call(headers, k)) { h[k] = String(headers[k]); }
-        }
-      }
-      return h;
     }
 
-    var http = {
-      get: function (url, headers) {
-        return callHost('http.get', { url: String(url), headers: mergedHeaders(headers) });
-      },
-      post: function (url, body, headers) {
-        return callHost('http.post', { url: String(url), body: String(body), headers: mergedHeaders(headers) });
-      }
+    // ArkTS 完成桥请求后通过 runJavaScript 回填
+    window.__bridgeResolve = function (callId, ok, resultJson) {
+      settleBridge(String(callId), !!ok, String(resultJson));
     };
 
-    // HTML 解析：DOMParser + 最小 Jsoup 风格包装
-    function wrapNode(node, base) {
-      return {
-        select: function (css) {
-          var list = node.querySelectorAll(css);
-          var out = [];
-          for (var i = 0; i < list.length; i++) { out.push(wrapNode(list[i], base)); }
-          return out;
-        },
-        selectFirst: function (css) {
-          var el = node.querySelector(css);
-          return el ? wrapNode(el, base) : null;
-        },
-        attr: function (name) {
-          var v = node.getAttribute && node.getAttribute(name);
-          return (v === null || v === undefined) ? '' : String(v);
-        },
-        text: function () {
-          return node.textContent ? String(node.textContent).trim() : '';
-        },
-        html: function () {
-          return node.innerHTML ? String(node.innerHTML) : '';
-        },
-        absUrl: function (name) {
-          var v = node.getAttribute && node.getAttribute(name);
-          if (!v) { return ''; }
-          try { return new URL(v, base).href; } catch (e) {
-            return /^https?:\/\//.test(v) ? v : '';
+    // JS -> ArkTS：method + payload(JSON)，返回 Promise(JSON 值)
+    function callHost(method, payload) {
+      return new Promise(function (resolve, reject) {
+        var id = String(++bridgeSeq);
+        bridgePending[id] = {
+          resolve: resolve,
+          reject: reject,
+          timer: setTimeout(function () {
+            settleBridge(id, false, JSON.stringify('bridge timeout: ' + method));
+          }, 60000)
+        };
+        try {
+          __hostBridge.request(id, method, JSON.stringify(payload || {}));
+        } catch (e) {
+          settleBridge(id, false, JSON.stringify(String(e && e.message ? e.message : e)));
+        }
+      });
+    }
+
+    function pickStr(obj, key) {
+      return (obj && typeof obj[key] === 'string') ? obj[key] : '';
+    }
+
+    // ---------------- $ 命名空间（按插件实例化） ----------------
+    function makeDollar(manifest) {
+      var baseUrl = pickStr(manifest, 'baseUrl');
+      var pluginKey = pickStr(manifest, 'key');
+
+      function mergedHeaders(headers) {
+        // 与宿主 Http.USER_AGENT 保持一致（cf_clearance 与 UA 绑定）
+        var h = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36' };
+        if (baseUrl) {
+          try { h['Referer'] = new URL(baseUrl).origin + '/'; } catch (e) { /* ignore */ }
+        }
+        if (headers) {
+          for (var k in headers) {
+            if (Object.prototype.hasOwnProperty.call(headers, k)) { h[k] = String(headers[k]); }
           }
         }
+        return h;
+      }
+
+      var http = {
+        get: function (url, headers) {
+          return callHost('http.get', { url: String(url), headers: mergedHeaders(headers) });
+        },
+        post: function (url, body, headers) {
+          return callHost('http.post', { url: String(url), body: String(body), headers: mergedHeaders(headers) });
+        }
       };
-    }
 
-    var htmlApi = {
-      parse: function (text, base) {
-        var doc = new DOMParser().parseFromString(String(text), 'text/html');
-        return wrapNode(doc, base || baseUrl);
+      // HTML 解析：DOMParser + 最小 Jsoup 风格包装
+      function wrapNode(node, base) {
+        return {
+          select: function (css) {
+            var list = node.querySelectorAll(css);
+            var out = [];
+            for (var i = 0; i < list.length; i++) { out.push(wrapNode(list[i], base)); }
+            return out;
+          },
+          selectFirst: function (css) {
+            var el = node.querySelector(css);
+            return el ? wrapNode(el, base) : null;
+          },
+          attr: function (name) {
+            var v = node.getAttribute && node.getAttribute(name);
+            return (v === null || v === undefined) ? '' : String(v);
+          },
+          text: function () {
+            return node.textContent ? String(node.textContent).trim() : '';
+          },
+          html: function () {
+            return node.innerHTML ? String(node.innerHTML) : '';
+          },
+          absUrl: function (name) {
+            var v = node.getAttribute && node.getAttribute(name);
+            if (!v) { return ''; }
+            try { return new URL(v, base).href; } catch (e) {
+              return /^https?:\/\//.test(v) ? v : '';
+            }
+          }
+        };
       }
-    };
 
-    var logApi = {
-      info: function (msg) { __hostBridge.log('info', '[' + pluginKey + '] ' + String(msg)); },
-      error: function (msg) { __hostBridge.log('error', '[' + pluginKey + '] ' + String(msg)); }
-    };
-
-    var prefsApi = {
-      get: function (name, def) {
-        return callHost('prefs.get', { plugin: pluginKey, name: String(name), def: def === undefined ? '' : String(def) });
-      },
-      set: function (name, value) {
-        return callHost('prefs.set', { plugin: pluginKey, name: String(name), value: String(value) });
-      }
-    };
-
-    // ---------------- crypto 工具 ----------------
-    // md5：Joseph Myers 公有领域实现（WebCrypto 不支持 MD5，需纯 JS）
-    var md5hex = (function () {
-      function add32(a, b) { return (a + b) & 0xFFFFFFFF; }
-      function cmn(q, a, b, x, s, t) {
-        a = add32(add32(a, q), add32(x, t));
-        return add32((a << s) | (a >>> (32 - s)), b);
-      }
-      function ff(a, b, c, d, x, s, t) { return cmn((b & c) | ((~b) & d), a, b, x, s, t); }
-      function gg(a, b, c, d, x, s, t) { return cmn((b & d) | (c & (~d)), a, b, x, s, t); }
-      function hh(a, b, c, d, x, s, t) { return cmn(b ^ c ^ d, a, b, x, s, t); }
-      function ii(a, b, c, d, x, s, t) { return cmn(c ^ (b | (~d)), a, b, x, s, t); }
-      function cycle(x, k) {
-        var a = x[0], b = x[1], c = x[2], d = x[3];
-        a = ff(a, b, c, d, k[0], 7, -680876936);
-        d = ff(d, a, b, c, k[1], 12, -389564586);
-        c = ff(c, d, a, b, k[2], 17, 606105819);
-        b = ff(b, c, d, a, k[3], 22, -1044525330);
-        a = ff(a, b, c, d, k[4], 7, -176418897);
-        d = ff(d, a, b, c, k[5], 12, 1200080426);
-        c = ff(c, d, a, b, k[6], 17, -1473231341);
-        b = ff(b, c, d, a, k[7], 22, -45705983);
-        a = ff(a, b, c, d, k[8], 7, 1770035416);
-        d = ff(d, a, b, c, k[9], 12, -1958414417);
-        c = ff(c, d, a, b, k[10], 17, -42063);
-        b = ff(b, c, d, a, k[11], 22, -1990404162);
-        a = ff(a, b, c, d, k[12], 7, 1804603682);
-        d = ff(d, a, b, c, k[13], 12, -40341101);
-        c = ff(c, d, a, b, k[14], 17, -1502002290);
-        b = ff(b, c, d, a, k[15], 22, 1236535329);
-        a = gg(a, b, c, d, k[1], 5, -165796510);
-        d = gg(d, a, b, c, k[6], 9, -1069501632);
-        c = gg(c, d, a, b, k[11], 14, 643717713);
-        b = gg(b, c, d, a, k[0], 20, -373897302);
-        a = gg(a, b, c, d, k[5], 5, -701558691);
-        d = gg(d, a, b, c, k[10], 9, 38016083);
-        c = gg(c, d, a, b, k[15], 14, -660478335);
-        b = gg(b, c, d, a, k[4], 20, -405537848);
-        a = gg(a, b, c, d, k[9], 5, 568446438);
-        d = gg(d, a, b, c, k[14], 9, -1019803690);
-        c = gg(c, d, a, b, k[3], 14, -187363961);
-        b = gg(b, c, d, a, k[8], 20, 1163531501);
-        a = gg(a, b, c, d, k[13], 5, -1444681467);
-        d = gg(d, a, b, c, k[2], 9, -51403784);
-        c = gg(c, d, a, b, k[7], 14, 1735328473);
-        b = gg(b, c, d, a, k[12], 20, -1926607734);
-        a = hh(a, b, c, d, k[5], 4, -378558);
-        d = hh(d, a, b, c, k[8], 11, -2022574463);
-        c = hh(c, d, a, b, k[11], 16, 1839030562);
-        b = hh(b, c, d, a, k[14], 23, -35309556);
-        a = hh(a, b, c, d, k[1], 4, -1530992060);
-        d = hh(d, a, b, c, k[4], 11, 1272893353);
-        c = hh(c, d, a, b, k[7], 16, -155497632);
-        b = hh(b, c, d, a, k[10], 23, -1094730640);
-        a = hh(a, b, c, d, k[13], 4, 681279174);
-        d = hh(d, a, b, c, k[0], 11, -358537222);
-        c = hh(c, d, a, b, k[3], 16, -722521979);
-        b = hh(b, c, d, a, k[6], 23, 76029189);
-        a = hh(a, b, c, d, k[9], 4, -640364487);
-        d = hh(d, a, b, c, k[12], 11, -421815835);
-        c = hh(c, d, a, b, k[15], 16, 530742520);
-        b = hh(b, c, d, a, k[2], 23, -995338651);
-        a = ii(a, b, c, d, k[0], 6, -198630844);
-        d = ii(d, a, b, c, k[7], 10, 1126891415);
-        c = ii(c, d, a, b, k[14], 15, -1416354905);
-        b = ii(b, c, d, a, k[5], 21, -57434055);
-        a = ii(a, b, c, d, k[12], 6, 1700485571);
-        d = ii(d, a, b, c, k[3], 10, -1894986606);
-        c = ii(c, d, a, b, k[10], 15, -1051523);
-        b = ii(b, c, d, a, k[1], 21, -2054922799);
-        a = ii(a, b, c, d, k[8], 6, 1873313359);
-        d = ii(d, a, b, c, k[15], 10, -30611744);
-        c = ii(c, d, a, b, k[6], 15, -1560198380);
-        b = ii(b, c, d, a, k[13], 21, 1309151649);
-        a = ii(a, b, c, d, k[4], 6, -145523070);
-        d = ii(d, a, b, c, k[11], 10, -1120210379);
-        c = ii(c, d, a, b, k[2], 15, 718787259);
-        b = ii(b, c, d, a, k[9], 21, -343485551);
-        x[0] = add32(a, x[0]);
-        x[1] = add32(b, x[1]);
-        x[2] = add32(c, x[2]);
-        x[3] = add32(d, x[3]);
-      }
-      function blk(s) {
-        var blocks = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        for (var i = 0; i < 64; i += 4) {
-          blocks[i >> 2] = s.charCodeAt(i) + (s.charCodeAt(i + 1) << 8) +
-            (s.charCodeAt(i + 2) << 16) + (s.charCodeAt(i + 3) << 24);
+      var htmlApi = {
+        parse: function (text, base) {
+          var doc = new DOMParser().parseFromString(String(text), 'text/html');
+          return wrapNode(doc, base || baseUrl);
         }
-        return blocks;
-      }
-      var hexChars = '0123456789abcdef';
-      function rhex(n) {
-        var s = '';
-        for (var j = 0; j < 4; j++) {
-          s += hexChars.charAt((n >> (j * 8 + 4)) & 0x0F) + hexChars.charAt((n >> (j * 8)) & 0x0F);
+      };
+
+      var logApi = {
+        info: function (msg) { __hostBridge.log('info', '[' + pluginKey + '] ' + String(msg)); },
+        error: function (msg) { __hostBridge.log('error', '[' + pluginKey + '] ' + String(msg)); }
+      };
+
+      var prefsApi = {
+        get: function (name, def) {
+          return callHost('prefs.get', { plugin: pluginKey, name: String(name), def: def === undefined ? '' : String(def) });
+        },
+        set: function (name, value) {
+          return callHost('prefs.set', { plugin: pluginKey, name: String(name), value: String(value) });
         }
-        return s;
-      }
-      function toHex(x) {
-        var s = '';
-        for (var i = 0; i < x.length; i++) { s += rhex(x[i]); }
-        return s;
-      }
-      return function (input) {
-        // 先转 UTF-8 字节串（charCodeAt < 256，保证多字节正确性）
-        var enc = new TextEncoder().encode(String(input));
-        var s = '';
-        for (var i = 0; i < enc.length; i++) { s += String.fromCharCode(enc[i]); }
-        var n = s.length;
-        var state = [1732584193, -271733879, -1732584194, 271733878];
-        var j;
-        for (j = 64; j <= n; j += 64) { cycle(state, blk(s.substring(j - 64, j))); }
-        s = s.substring(j - 64);
-        var tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        for (j = 0; j < s.length; j++) { tail[j >> 2] |= s.charCodeAt(j) << ((j % 4) << 3); }
-        tail[j >> 2] |= 0x80 << ((j % 4) << 3);
-        if (j > 55) {
+      };
+
+      // ---------------- crypto 工具 ----------------
+      // md5：Joseph Myers 公有领域实现（WebCrypto 不支持 MD5，需纯 JS）
+      var md5hex = (function () {
+        function add32(a, b) { return (a + b) & 0xFFFFFFFF; }
+        function cmn(q, a, b, x, s, t) {
+          a = add32(add32(a, q), add32(x, t));
+          return add32((a << s) | (a >>> (32 - s)), b);
+        }
+        function ff(a, b, c, d, x, s, t) { return cmn((b & c) | ((~b) & d), a, b, x, s, t); }
+        function gg(a, b, c, d, x, s, t) { return cmn((b & d) | (c & (~d)), a, b, x, s, t); }
+        function hh(a, b, c, d, x, s, t) { return cmn(b ^ c ^ d, a, b, x, s, t); }
+        function ii(a, b, c, d, x, s, t) { return cmn(c ^ (b | (~d)), a, b, x, s, t); }
+        function cycle(x, k) {
+          var a = x[0], b = x[1], c = x[2], d = x[3];
+          a = ff(a, b, c, d, k[0], 7, -680876936);
+          d = ff(d, a, b, c, k[1], 12, -389564586);
+          c = ff(c, d, a, b, k[2], 17, 606105819);
+          b = ff(b, c, d, a, k[3], 22, -1044525330);
+          a = ff(a, b, c, d, k[4], 7, -176418897);
+          d = ff(d, a, b, c, k[5], 12, 1200080426);
+          c = ff(c, d, a, b, k[6], 17, -1473231341);
+          b = ff(b, c, d, a, k[7], 22, -45705983);
+          a = ff(a, b, c, d, k[8], 7, 1770035416);
+          d = ff(d, a, b, c, k[9], 12, -1958414417);
+          c = ff(c, d, a, b, k[10], 17, -42063);
+          b = ff(b, c, d, a, k[11], 22, -1990404162);
+          a = ff(a, b, c, d, k[12], 7, 1804603682);
+          d = ff(d, a, b, c, k[13], 12, -40341101);
+          c = ff(c, d, a, b, k[14], 17, -1502002290);
+          b = ff(b, c, d, a, k[15], 22, 1236535329);
+          a = gg(a, b, c, d, k[1], 5, -165796510);
+          d = gg(d, a, b, c, k[6], 9, -1069501632);
+          c = gg(c, d, a, b, k[11], 14, 643717713);
+          b = gg(b, c, d, a, k[0], 20, -373897302);
+          a = gg(a, b, c, d, k[5], 5, -701558691);
+          d = gg(d, a, b, c, k[10], 9, 38016083);
+          c = gg(c, d, a, b, k[15], 14, -660478335);
+          b = gg(b, c, d, a, k[4], 20, -405537848);
+          a = gg(a, b, c, d, k[9], 5, 568446438);
+          d = gg(d, a, b, c, k[14], 9, -1019803690);
+          c = gg(c, d, a, b, k[3], 14, -187363961);
+          b = gg(b, c, d, a, k[8], 20, 1163531501);
+          a = gg(a, b, c, d, k[13], 5, -1444681467);
+          d = gg(d, a, b, c, k[2], 9, -51403784);
+          c = gg(c, d, a, b, k[7], 14, 1735328473);
+          b = gg(b, c, d, a, k[12], 20, -1926607734);
+          a = hh(a, b, c, d, k[5], 4, -378558);
+          d = hh(d, a, b, c, k[8], 11, -2022574463);
+          c = hh(c, d, a, b, k[11], 16, 1839030562);
+          b = hh(b, c, d, a, k[14], 23, -35309556);
+          a = hh(a, b, c, d, k[1], 4, -1530992060);
+          d = hh(d, a, b, c, k[4], 11, 1272893353);
+          c = hh(c, d, a, b, k[7], 16, -155497632);
+          b = hh(b, c, d, a, k[10], 23, -1094730640);
+          a = hh(a, b, c, d, k[13], 4, 681279174);
+          d = hh(d, a, b, c, k[0], 11, -358537222);
+          c = hh(c, d, a, b, k[3], 16, -722521979);
+          b = hh(b, c, d, a, k[6], 23, 76029189);
+          a = hh(a, b, c, d, k[9], 4, -640364487);
+          d = hh(d, a, b, c, k[12], 11, -421815835);
+          c = hh(c, d, a, b, k[15], 16, 530742520);
+          b = hh(b, c, d, a, k[2], 23, -995338651);
+          a = ii(a, b, c, d, k[0], 6, -198630844);
+          d = ii(d, a, b, c, k[7], 10, 1126891415);
+          c = ii(c, d, a, b, k[14], 15, -1416354905);
+          b = ii(b, c, d, a, k[5], 21, -57434055);
+          a = ii(a, b, c, d, k[12], 6, 1700485571);
+          d = ii(d, a, b, c, k[3], 10, -1894986606);
+          c = ii(c, d, a, b, k[10], 15, -1051523);
+          b = ii(b, c, d, a, k[1], 21, -2054922799);
+          a = ii(a, b, c, d, k[8], 6, 1873313359);
+          d = ii(d, a, b, c, k[15], 10, -30611744);
+          c = ii(c, d, a, b, k[6], 15, -1560198380);
+          b = ii(b, c, d, a, k[13], 21, 1309151649);
+          a = ii(a, b, c, d, k[4], 6, -145523070);
+          d = ii(d, a, b, c, k[11], 10, -1120210379);
+          c = ii(c, d, a, b, k[2], 15, 718787259);
+          b = ii(b, c, d, a, k[9], 21, -343485551);
+          x[0] = add32(a, x[0]);
+          x[1] = add32(b, x[1]);
+          x[2] = add32(c, x[2]);
+          x[3] = add32(d, x[3]);
+        }
+        function blk(s) {
+          var blocks = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+          for (var i = 0; i < 64; i += 4) {
+            blocks[i >> 2] = s.charCodeAt(i) + (s.charCodeAt(i + 1) << 8) +
+              (s.charCodeAt(i + 2) << 16) + (s.charCodeAt(i + 3) << 24);
+          }
+          return blocks;
+        }
+        var hexChars = '0123456789abcdef';
+        function rhex(n) {
+          var s = '';
+          for (var j = 0; j < 4; j++) {
+            s += hexChars.charAt((n >> (j * 8 + 4)) & 0x0F) + hexChars.charAt((n >> (j * 8)) & 0x0F);
+          }
+          return s;
+        }
+        function toHex(x) {
+          var s = '';
+          for (var i = 0; i < x.length; i++) { s += rhex(x[i]); }
+          return s;
+        }
+        return function (input) {
+          // 先转 UTF-8 字节串（charCodeAt < 256，保证多字节正确性）
+          var enc = new TextEncoder().encode(String(input));
+          var s = '';
+          for (var i = 0; i < enc.length; i++) { s += String.fromCharCode(enc[i]); }
+          var n = s.length;
+          var state = [1732584193, -271733879, -1732584194, 271733878];
+          var j;
+          for (j = 64; j <= n; j += 64) { cycle(state, blk(s.substring(j - 64, j))); }
+          s = s.substring(j - 64);
+          var tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+          for (j = 0; j < s.length; j++) { tail[j >> 2] |= s.charCodeAt(j) << ((j % 4) << 3); }
+          tail[j >> 2] |= 0x80 << ((j % 4) << 3);
+          if (j > 55) {
+            cycle(state, tail);
+            for (j = 0; j < 16; j++) { tail[j] = 0; }
+          }
+          tail[14] = n * 8;
           cycle(state, tail);
-          for (j = 0; j < 16; j++) { tail[j] = 0; }
-        }
-        tail[14] = n * 8;
-        cycle(state, tail);
-        return toHex(state);
-      };
-    })();
+          return toHex(state);
+        };
+      })();
 
-    function te(s) { return new TextEncoder().encode(String(s)); }
-    function bytesToHex(bytes) {
-      var out = '';
-      for (var i = 0; i < bytes.length; i++) { out += ('0' + bytes[i].toString(16)).slice(-2); }
-      return out;
-    }
-    function bytesToB64(bytes) {
-      var s = '';
-      for (var i = 0; i < bytes.length; i++) { s += String.fromCharCode(bytes[i]); }
-      return btoa(s);
-    }
-    function b64ToBytes(b64) {
-      var s = atob(String(b64));
-      var out = new Uint8Array(s.length);
-      for (var i = 0; i < s.length; i++) { out[i] = s.charCodeAt(i); }
-      return out;
-    }
-    function requireSubtle() {
-      if (!window.crypto || !crypto.subtle) { throw new Error('当前环境不支持 WebCrypto'); }
-      return crypto.subtle;
-    }
-    function digestHex(algo, data) {
-      return requireSubtle().digest(algo, te(data)).then(function (buf) {
-        return bytesToHex(new Uint8Array(buf));
-      });
-    }
-
-    var cryptoApi = {
-      // 同步 MD5（hex 小写）
-      md5: function (s) { return md5hex(s); },
-      // 异步 SHA（hex 小写）
-      sha1: function (s) { return digestHex('SHA-1', s); },
-      sha256: function (s) { return digestHex('SHA-256', s); },
-      sha512: function (s) { return digestHex('SHA-512', s); },
-      // HMAC-SHA256（hex）
-      hmacSha256: function (key, msg) {
-        var subtle = requireSubtle();
-        return subtle.importKey('raw', te(key), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign'])
-          .then(function (k) { return subtle.sign('HMAC', k, te(msg)); })
-          .then(function (buf) { return bytesToHex(new Uint8Array(buf)); });
-      },
-      // AES-CBC（key/iv 为 UTF-8 字符串）
-      aesCbcEncrypt: function (key, iv, plain) {
-        var subtle = requireSubtle();
-        return subtle.importKey('raw', te(key), { name: 'AES-CBC' }, false, ['encrypt'])
-          .then(function (k) { return subtle.encrypt({ name: 'AES-CBC', iv: te(iv) }, k, te(plain)); })
-          .then(function (buf) { return bytesToB64(new Uint8Array(buf)); });
-      },
-      aesCbcDecrypt: function (key, iv, dataB64) {
-        var subtle = requireSubtle();
-        return subtle.importKey('raw', te(key), { name: 'AES-CBC' }, false, ['decrypt'])
-          .then(function (k) { return subtle.decrypt({ name: 'AES-CBC', iv: te(iv) }, k, b64ToBytes(dataB64)); })
-          .then(function (buf) { return new TextDecoder('utf-8').decode(buf); });
-      },
-      base64Encode: function (s) { return bytesToB64(te(s)); },
-      base64Decode: function (b64) { return new TextDecoder('utf-8').decode(b64ToBytes(b64)); },
-      randomUUID: function () {
-        if (window.crypto && crypto.randomUUID) { return crypto.randomUUID(); }
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-          var r = Math.random() * 16 | 0;
-          return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+      function te(s) { return new TextEncoder().encode(String(s)); }
+      function bytesToHex(bytes) {
+        var out = '';
+        for (var i = 0; i < bytes.length; i++) { out += ('0' + bytes[i].toString(16)).slice(-2); }
+        return out;
+      }
+      function bytesToB64(bytes) {
+        var s = '';
+        for (var i = 0; i < bytes.length; i++) { s += String.fromCharCode(bytes[i]); }
+        return btoa(s);
+      }
+      function b64ToBytes(b64) {
+        var s = atob(String(b64));
+        var out = new Uint8Array(s.length);
+        for (var i = 0; i < s.length; i++) { out[i] = s.charCodeAt(i); }
+        return out;
+      }
+      function requireSubtle() {
+        if (!window.crypto || !crypto.subtle) { throw new Error('当前环境不支持 WebCrypto'); }
+        return crypto.subtle;
+      }
+      function digestHex(algo, data) {
+        return requireSubtle().digest(algo, te(data)).then(function (buf) {
+          return bytesToHex(new Uint8Array(buf));
         });
       }
-    };
 
-    return { http: http, html: htmlApi, json: JSON, log: logApi, prefs: prefsApi, crypto: cryptoApi, manifest: manifest };
-  }
-
-  function errMsg(e) {
-    return String(e && e.message ? e.message : e);
-  }
-
-  // ---------------- ArkTS -> JS 入口 ----------------
-  // 握手探测
-  window.__ping = function (callId) {
-    __hostBridge.result(String(callId), true, JSON.stringify('pong'));
-  };
-
-  // 加载/替换插件
-  window.__loadPlugin = function (callId, pluginKey, manifestJson, scriptText) {
-    try {
-      var manifest = {};
-      try { manifest = JSON.parse(manifestJson) || {}; } catch (e) { /* ignore */ }
-      if (plugins[pluginKey]) { delete plugins[pluginKey]; }
-      var moduleObj = { exports: {} };
-      var dollar = makeDollar(manifest);
-      var factory = new Function('$', 'module', scriptText);
-      factory(dollar, moduleObj);
-      var ex = moduleObj.exports;
-      if (!ex || typeof ex !== 'object') { throw new Error('插件未导出对象'); }
-      for (var i = 0; i < PLUGIN_METHODS.length; i++) {
-        if (typeof ex[PLUGIN_METHODS[i]] !== 'function') {
-          throw new Error('插件缺少方法: ' + PLUGIN_METHODS[i]);
+      var cryptoApi = {
+        // 同步 MD5（hex 小写）
+        md5: function (s) { return md5hex(s); },
+        // 异步 SHA（hex 小写）
+        sha1: function (s) { return digestHex('SHA-1', s); },
+        sha256: function (s) { return digestHex('SHA-256', s); },
+        sha512: function (s) { return digestHex('SHA-512', s); },
+        // HMAC-SHA256（hex）
+        hmacSha256: function (key, msg) {
+          var subtle = requireSubtle();
+          return subtle.importKey('raw', te(key), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign'])
+            .then(function (k) { return subtle.sign('HMAC', k, te(msg)); })
+            .then(function (buf) { return bytesToHex(new Uint8Array(buf)); });
+        },
+        // AES-CBC（key/iv 为 UTF-8 字符串）
+        aesCbcEncrypt: function (key, iv, plain) {
+          var subtle = requireSubtle();
+          return subtle.importKey('raw', te(key), { name: 'AES-CBC' }, false, ['encrypt'])
+            .then(function (k) { return subtle.encrypt({ name: 'AES-CBC', iv: te(iv) }, k, te(plain)); })
+            .then(function (buf) { return bytesToB64(new Uint8Array(buf)); });
+        },
+        aesCbcDecrypt: function (key, iv, dataB64) {
+          var subtle = requireSubtle();
+          return subtle.importKey('raw', te(key), { name: 'AES-CBC' }, false, ['decrypt'])
+            .then(function (k) { return subtle.decrypt({ name: 'AES-CBC', iv: te(iv) }, k, b64ToBytes(dataB64)); })
+            .then(function (buf) { return new TextDecoder('utf-8').decode(buf); });
+        },
+        base64Encode: function (s) { return bytesToB64(te(s)); },
+        base64Decode: function (b64) { return new TextDecoder('utf-8').decode(b64ToBytes(b64)); },
+        randomUUID: function () {
+          if (window.crypto && crypto.randomUUID) { return crypto.randomUUID(); }
+          return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0;
+            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+          });
         }
-      }
-      plugins[pluginKey] = ex;
-      __hostBridge.result(String(callId), true, JSON.stringify({ 'ok': true }));
-    } catch (e) {
-      __hostBridge.result(String(callId), false, JSON.stringify(errMsg(e)));
-    }
-  };
+      };
 
-  // 卸载插件
-  window.__unloadPlugin = function (callId, pluginKey) {
-    delete plugins[pluginKey];
-    __hostBridge.result(String(callId), true, JSON.stringify({ 'ok': true }));
-  };
-
-  // 调用插件方法（异步，完成后回填）
-  window.__callPlugin = function (callId, pluginKey, method, argsJson) {
-    var ex = plugins[pluginKey];
-    if (!ex) {
-      __hostBridge.result(String(callId), false, JSON.stringify('插件未加载: ' + pluginKey));
-      return;
+      return { http: http, html: htmlApi, json: JSON, log: logApi, prefs: prefsApi, crypto: cryptoApi, manifest: manifest };
     }
-    var fn = ex[method];
-    if (typeof fn !== 'function') {
-      __hostBridge.result(String(callId), false, JSON.stringify('插件不支持方法: ' + method));
-      return;
-    }
-    var args = [];
-    try { args = JSON.parse(argsJson) || []; } catch (e) { /* ignore */ }
-    Promise.resolve()
-      .then(function () { return fn.apply(ex, args); })
-      .then(function (r) {
-        __hostBridge.result(String(callId), true, JSON.stringify(r === undefined ? null : r));
-      })
-      .catch(function (e) {
-        __hostBridge.result(String(callId), false, JSON.stringify(errMsg(e)));
-      });
-  };
 
-  // 沙箱环境自检：$.crypto 依赖的运行时能力
-  try {
-    var envOk = {
-      subtle: !!(window.crypto && crypto.subtle),
-      b64: typeof btoa === 'function' && typeof atob === 'function',
-      codec: typeof TextEncoder === 'function' && typeof TextDecoder === 'function',
-      domParser: typeof DOMParser === 'function'
+    function errMsg(e) {
+      return String(e && e.message ? e.message : e);
+    }
+
+    // ---------------- ArkTS -> JS 入口 ----------------
+    // 握手探测
+    window.__ping = function (callId) {
+      __hostBridge.result(String(callId), true, JSON.stringify('pong'));
     };
-    __hostBridge.log('info', 'sandbox env: ' + JSON.stringify(envOk));
-  } catch (e) {
-    __hostBridge.log('error', 'sandbox env selftest failed: ' + errMsg(e));
-  }
-})();
+
+    // 加载/替换插件
+    window.__loadPlugin = function (callId, pluginKey, manifestJson, scriptText) {
+      try {
+        var manifest = {};
+        try { manifest = JSON.parse(manifestJson) || {}; } catch (e) { /* ignore */ }
+        if (plugins[pluginKey]) { delete plugins[pluginKey]; }
+        var moduleObj = { exports: {} };
+        var dollar = makeDollar(manifest);
+        var factory = new Function('$', 'module', scriptText);
+        factory(dollar, moduleObj);
+        var ex = moduleObj.exports;
+        if (!ex || typeof ex !== 'object') { throw new Error('插件未导出对象'); }
+        for (var i = 0; i < PLUGIN_METHODS.length; i++) {
+          if (typeof ex[PLUGIN_METHODS[i]] !== 'function') {
+            throw new Error('插件缺少方法: ' + PLUGIN_METHODS[i]);
+          }
+        }
+        plugins[pluginKey] = ex;
+        __hostBridge.result(String(callId), true, JSON.stringify({ 'ok': true }));
+      } catch (e) {
+        __hostBridge.result(String(callId), false, JSON.stringify(errMsg(e)));
+      }
+    };
+
+    // 卸载插件
+    window.__unloadPlugin = function (callId, pluginKey) {
+      delete plugins[pluginKey];
+      __hostBridge.result(String(callId), true, JSON.stringify({ 'ok': true }));
+    };
+
+    // 调用插件方法（异步，完成后回填）
+    window.__callPlugin = function (callId, pluginKey, method, argsJson) {
+      var ex = plugins[pluginKey];
+      if (!ex) {
+        __hostBridge.result(String(callId), false, JSON.stringify('插件未加载: ' + pluginKey));
+        return;
+      }
+      var fn = ex[method];
+      if (typeof fn !== 'function') {
+        __hostBridge.result(String(callId), false, JSON.stringify('插件不支持方法: ' + method));
+        return;
+      }
+      var args = [];
+      try { args = JSON.parse(argsJson) || []; } catch (e) { /* ignore */ }
+      Promise.resolve()
+        .then(function () { return fn.apply(ex, args); })
+        .then(function (r) {
+          __hostBridge.result(String(callId), true, JSON.stringify(r === undefined ? null : r));
+        })
+        .catch(function (e) {
+          __hostBridge.result(String(callId), false, JSON.stringify(errMsg(e)));
+        });
+    };
+
+    // 沙箱环境自检：$.crypto 依赖的运行时能力
+    try {
+      var envOk = {
+        subtle: !!(window.crypto && crypto.subtle),
+        b64: typeof btoa === 'function' && typeof atob === 'function',
+        codec: typeof TextEncoder === 'function' && typeof TextDecoder === 'function',
+        domParser: typeof DOMParser === 'function'
+      };
+      __hostBridge.log('info', 'sandbox env: ' + JSON.stringify(envOk));
+    } catch (e) {
+      __hostBridge.log('error', 'sandbox env selftest failed: ' + errMsg(e));
+    }
+  })();
 </script>
 </body>
 </html>

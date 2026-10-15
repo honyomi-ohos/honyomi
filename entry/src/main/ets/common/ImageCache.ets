@@ -25,6 +25,7 @@ export class ImageCache {
   // 目录累计字节数（init 时延后一拍统计一次，写入增量维护）
   private static totalBytes: number = 0;
   private static evicting: boolean = false;
+  private static upgrading: Map<string, Promise<void>> = new Map();
 
   static init(context: common.Context): void {
     ImageCache.dir = `${context.cacheDir}/image_file_cache`;
@@ -39,26 +40,6 @@ export class ImageCache {
     setTimeout((): void => {
       ImageCache.rescanBytes();
     }, 0);
-  }
-
-  // 全量统计目录字节数（作为超预算判定的基准）
-  private static rescanBytes(): void {
-    try {
-      if (ImageCache.dir === '' || !fs.accessSync(ImageCache.dir)) {
-        return;
-      }
-      let total: number = 0;
-      const names = fs.listFileSync(ImageCache.dir);
-      for (let i = 0; i < names.length; i++) {
-        try {
-          total += fs.statSync(`${ImageCache.dir}/${names[i]}`).size;
-        } catch (_e) {
-        }
-      }
-      ImageCache.totalBytes = total;
-    } catch (e) {
-      throw new Error(`rescan cache bytes failed: ${e}`);
-    }
   }
 
   // 解析展示地址：http(s) 且源需要请求头 → file:// 本地缓存；其余原样返回
@@ -109,31 +90,7 @@ export class ImageCache {
   }
 
   // 限时等待插件加载完成（加载挂死时 8s 超时回落直连）；
-  // 插件就绪后清掉超时定时器，不留下空转计时器
-  private static waitPluginsLoaded(): Promise<void> {
-    return new Promise<void>((resolve: (value: void) => void): void => {
-      let timerId: number = -1;
-      PluginService.ready().then((): void => {
-        if (timerId >= 0) {
-          clearTimeout(timerId);
-          timerId = -1;
-        }
-        resolve();
-      }).catch((_e: Object): void => {
-        if (timerId >= 0) {
-          clearTimeout(timerId);
-          timerId = -1;
-        }
-        resolve();
-      });
-      timerId = setTimeout((): void => {
-        timerId = -1;
-        resolve();
-      }, 8000);
-    });
-  }
 
-  // 确保本地文件存在并返回裸绝对路径（桌面卡片等需要 fd 的场景）：
   // 命中缓存直接返回；未命中无论源是否声明请求头都下载落盘；失败返回 ''
   static async ensureLocal(context: common.Context, url: string, sourceKey: string): Promise<string> {
     if (url.indexOf('http://') !== 0 && url.indexOf('https://') !== 0) {
@@ -175,24 +132,7 @@ export class ImageCache {
     }
   }
 
-  // 防盗链：源请求头未声明 Referer 时回退为章节页地址
-  private static withReferer(headers: Record<string, string>, pageUrl?: string): Record<string, string> {
-    if (pageUrl === undefined || pageUrl === '') {
-      return headers;
-    }
-    const keys = Object.keys(headers);
-    for (let i = 0; i < keys.length; i++) {
-      if (keys[i].toLowerCase() === 'referer') {
-        return headers;
-      }
-    }
-    const merged: Record<string, string> = {};
-    for (let i = 0; i < keys.length; i++) {
-      merged[keys[i]] = headers[keys[i]];
-    }
-    merged['Referer'] = pageUrl;
-    return merged;
-  }
+  // 确保本地文件存在并返回裸绝对路径（桌面卡片等需要 fd 的场景）：
 
   // 缓存目录占用字节数
   static size(): number {
@@ -224,7 +164,6 @@ export class ImageCache {
     }
   }
 
-  // 清空缓存目录，返回清除的字节数
   // 枚举仍同步（仅读目录项+元信息），真正的文件删除走异步 unlink，不再阻塞启动路径
   static clearAll(): number {
     const total: number = ImageCache.size();
@@ -243,7 +182,76 @@ export class ImageCache {
     return total;
   }
 
+  // 全量统计目录字节数（作为超预算判定的基准）
+  private static rescanBytes(): void {
+    try {
+      if (ImageCache.dir === '' || !fs.accessSync(ImageCache.dir)) {
+        return;
+      }
+      let total: number = 0;
+      const names = fs.listFileSync(ImageCache.dir);
+      for (let i = 0; i < names.length; i++) {
+        try {
+          total += fs.statSync(`${ImageCache.dir}/${names[i]}`).size;
+        } catch (_e) {
+        }
+      }
+      ImageCache.totalBytes = total;
+    } catch (e) {
+      throw new Error(`rescan cache bytes failed: ${e}`);
+    }
+  }
+
+  // 清空缓存目录，返回清除的字节数
+
+  // 插件就绪后清掉超时定时器，不留下空转计时器
+  private static waitPluginsLoaded(): Promise<void> {
+    return new Promise<void>((resolve: (value: void) => void): void => {
+      let timerId: number = -1;
+      PluginService.ready().then((): void => {
+        if (timerId >= 0) {
+          clearTimeout(timerId);
+          timerId = -1;
+        }
+        resolve();
+      }).catch((_e: Object): void => {
+        if (timerId >= 0) {
+          clearTimeout(timerId);
+          timerId = -1;
+        }
+        resolve();
+      });
+      timerId = setTimeout((): void => {
+        timerId = -1;
+        resolve();
+      }, 8000);
+    });
+  }
+
   // ---------------- 内部实现 ----------------
+
+  // 防盗链：源请求头未声明 Referer 时回退为章节页地址
+  private static withReferer(headers: Record<string, string>, pageUrl?: string): Record<string, string> {
+    if (pageUrl === undefined || pageUrl === '') {
+      return headers;
+    }
+    const keys = Object.keys(headers);
+    for (let i = 0; i < keys.length; i++) {
+      if (keys[i].toLowerCase() === 'referer') {
+        return headers;
+      }
+    }
+    const merged: Record<string, string> = {};
+    for (let i = 0; i < keys.length; i++) {
+      merged[keys[i]] = headers[keys[i]];
+    }
+    merged['Referer'] = pageUrl;
+    return merged;
+  }
+
+  // ---------------- AVIF 惰性升级 ----------------
+  // 旧版本构建落盘的 .avif 缓存文件：命中时嗅探内容，AVIF 则经 WASM 转换器
+  // 原位替换为 JPEG（同名文件，系统 Image 按内容嗅探解码）
 
   private static async fetch(url: string, headers: Record<string, string>, path: string): Promise<string> {
     const raw = await Http.getBuffer(url, headers);
@@ -287,12 +295,6 @@ export class ImageCache {
     }
     return `file://${path}`;
   }
-
-  // ---------------- AVIF 惰性升级 ----------------
-  // 旧版本构建落盘的 .avif 缓存文件：命中时嗅探内容，AVIF 则经 WASM 转换器
-  // 原位替换为 JPEG（同名文件，系统 Image 按内容嗅探解码）
-
-  private static upgrading: Map<string, Promise<void>> = new Map();
 
   private static upgradeAvif(path: string): Promise<void> {
     // 仅 .avif 后缀可能存有未转换内容（fetch 路径已对所有下载做过转换）

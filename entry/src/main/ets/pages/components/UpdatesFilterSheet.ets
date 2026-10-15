@@ -24,9 +24,6 @@ export struct UpdatesFilterSheet {
   initExcluded: number[] = [];
   categories: CategoryRecord[] = [];
   showFilterTab: boolean = true;
-  onTriStateChanged: (key: string, v: string) => void = (_key: string, _v: string) => {};
-  onCategoriesChanged: (included: number[], excluded: number[]) => void =
-    (_included: number[], _excluded: number[]) => {};
   // 内部可变副本
   @State fDownloaded: string = 'ignore';
   @State fUnread: string = 'ignore';
@@ -35,6 +32,13 @@ export struct UpdatesFilterSheet {
   @State includedCats: number[] = [];
   @State excludedCats: number[] = [];
 
+  onTriStateChanged: (key: string, v: string) => void = (_key: string, _v: string) => {
+  };
+
+  onCategoriesChanged: (included: number[], excluded: number[]) => void =
+    (_included: number[], _excluded: number[]) => {
+    };
+
   aboutToAppear(): void {
     this.fDownloaded = this.initDownloaded;
     this.fUnread = this.initUnread;
@@ -42,6 +46,134 @@ export struct UpdatesFilterSheet {
     this.fBookmarked = this.initBookmarked;
     this.includedCats = this.initIncluded.slice();
     this.excludedCats = this.initExcluded.slice();
+  }
+
+  @Builder
+  tabBarLabel(index: number, label: Resource) {
+    Column() {
+      Text(label)
+        .fontSize(14)
+        .fontWeight(this.sheetTab === index ? FontWeight.Bold : FontWeight.Normal)
+        .fontColor(this.sheetTab === index ? this.pal.primary : this.pal.text)
+        .maxLines(1)
+    }
+    .height(48)
+    .width('100%')
+    .justifyContent(FlexAlign.Center)
+  }
+
+  @Builder
+  filterTabContent() {
+    Scroll() {
+      Column() {
+        ForEach(UPD_FILTER_KEYS, (key: string) => {
+          Row() {
+            AppIcon({
+              name: this.triIcon(this.triValue(key)),
+              iconSize: 24,
+              tint: this.triTint(this.triValue(key))
+            })
+              .margin({ right: 16 })
+            Text(this.filterLabel(key))
+              .fontSize(15)
+              .fontColor(this.pal.text)
+          }
+          .width('100%')
+          .padding({
+            left: 24,
+            right: 24,
+            top: 10,
+            bottom: 10
+          })
+          .onClick(() => {
+            this.applyFilter(key);
+          })
+        }, (key: string) => `updfilter-${key}`)
+      }
+      .width('100%')
+      .padding({ top: 8, bottom: 16 })
+      .alignItems(HorizontalAlign.Start)
+    }
+    .height('100%')
+    .scrollBar(BarState.Off)
+    .align(Alignment.TopStart)
+  }
+
+  @Builder
+  categoryTabContent() {
+    Scroll() {
+      Column() {
+        Text($r('app.string.pref_filter_update_categories_details'))
+          .fontSize(13)
+          .fontColor(this.pal.sub)
+          .width('100%')
+          .padding({
+            left: 24,
+            right: 24,
+            top: 12,
+            bottom: 8
+          })
+        ForEach(this.categories, (cat: CategoryRecord) => {
+          Row() {
+            AppIcon({
+              name: this.triIcon(this.catState(cat.id)),
+              iconSize: 24,
+              tint: this.triTint(this.catState(cat.id))
+            })
+              .margin({ right: 16 })
+            Text(Util.categoryLabel(cat.name))
+              .fontSize(15)
+              .fontColor(this.pal.text)
+          }
+          .width('100%')
+          .padding({
+            left: 24,
+            right: 24,
+            top: 10,
+            bottom: 10
+          })
+          .onClick(() => {
+            this.cycleCategory(cat.id);
+          })
+        }, (cat: CategoryRecord) => `updcat-${cat.id}`)
+      }
+      .width('100%')
+      .padding({ bottom: 24 })
+      .alignItems(HorizontalAlign.Start)
+    }
+    .height('100%')
+    .scrollBar(BarState.Off)
+    .align(Alignment.TopStart)
+  }
+
+  build() {
+    Column() {
+      Tabs({ barPosition: BarPosition.Start, index: this.sheetTab }) {
+        if (this.showFilterTab) {
+          TabContent() {
+            this.filterTabContent()
+          }
+          .tabBar(this.tabBarLabel(0, $r('app.string.lib_sheet_tab_filter')))
+        }
+        TabContent() {
+          this.categoryTabContent()
+        }
+        .tabBar(this.tabBarLabel(this.showFilterTab ? 1 : 0, $r('app.string.categories_title')))
+      }
+      .layoutWeight(1)
+      .barHeight(48)
+      .barWidth('100%')
+      .barMode(BarMode.Fixed)
+      .scrollable(true)
+      .vertical(false)
+      .divider({ strokeWidth: 1, color: this.pal.divider })
+      .onChange((index: number) => {
+        this.sheetTab = index;
+      })
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor(this.pal.bg)
   }
 
   private triValue(key: string): string {
@@ -128,118 +260,5 @@ export struct UpdatesFilterSheet {
 
   private triTint(v: string): ResourceColor {
     return v === 'ignore' ? this.pal.sub : this.pal.primary;
-  }
-
-  @Builder
-  tabBarLabel(index: number, label: Resource) {
-    Column() {
-      Text(label)
-        .fontSize(14)
-        .fontWeight(this.sheetTab === index ? FontWeight.Bold : FontWeight.Normal)
-        .fontColor(this.sheetTab === index ? this.pal.primary : this.pal.text)
-        .maxLines(1)
-    }
-    .height(48)
-    .width('100%')
-    .justifyContent(FlexAlign.Center)
-  }
-
-  @Builder
-  filterTabContent() {
-    Scroll() {
-      Column() {
-        ForEach(UPD_FILTER_KEYS, (key: string) => {
-          Row() {
-            AppIcon({
-              name: this.triIcon(this.triValue(key)),
-              iconSize: 24,
-              tint: this.triTint(this.triValue(key))
-            })
-              .margin({ right: 16 })
-            Text(this.filterLabel(key))
-              .fontSize(15)
-              .fontColor(this.pal.text)
-          }
-          .width('100%')
-          .padding({ left: 24, right: 24, top: 10, bottom: 10 })
-          .onClick(() => {
-            this.applyFilter(key);
-          })
-        }, (key: string) => `updfilter-${key}`)
-      }
-      .width('100%')
-      .padding({ top: 8, bottom: 16 })
-      .alignItems(HorizontalAlign.Start)
-    }
-    .height('100%')
-    .scrollBar(BarState.Off)
-    .align(Alignment.TopStart)
-  }
-
-  @Builder
-  categoryTabContent() {
-    Scroll() {
-      Column() {
-        Text($r('app.string.pref_filter_update_categories_details'))
-          .fontSize(13)
-          .fontColor(this.pal.sub)
-          .width('100%')
-          .padding({ left: 24, right: 24, top: 12, bottom: 8 })
-        ForEach(this.categories, (cat: CategoryRecord) => {
-          Row() {
-            AppIcon({
-              name: this.triIcon(this.catState(cat.id)),
-              iconSize: 24,
-              tint: this.triTint(this.catState(cat.id))
-            })
-              .margin({ right: 16 })
-            Text(Util.categoryLabel(cat.name))
-              .fontSize(15)
-              .fontColor(this.pal.text)
-          }
-          .width('100%')
-          .padding({ left: 24, right: 24, top: 10, bottom: 10 })
-          .onClick(() => {
-            this.cycleCategory(cat.id);
-          })
-        }, (cat: CategoryRecord) => `updcat-${cat.id}`)
-      }
-      .width('100%')
-      .padding({ bottom: 24 })
-      .alignItems(HorizontalAlign.Start)
-    }
-    .height('100%')
-    .scrollBar(BarState.Off)
-    .align(Alignment.TopStart)
-  }
-
-  build() {
-    Column() {
-      Tabs({ barPosition: BarPosition.Start, index: this.sheetTab }) {
-        if (this.showFilterTab) {
-          TabContent() {
-            this.filterTabContent()
-          }
-          .tabBar(this.tabBarLabel(0, $r('app.string.lib_sheet_tab_filter')))
-        }
-        TabContent() {
-          this.categoryTabContent()
-        }
-        .tabBar(this.tabBarLabel(this.showFilterTab ? 1 : 0, $r('app.string.categories_title')))
-      }
-      .layoutWeight(1)
-      .barHeight(48)
-      .barWidth('100%')
-      .barMode(BarMode.Fixed)
-      .scrollable(true)
-      .vertical(false)
-      .divider({ strokeWidth: 1, color: this.pal.divider })
-      .onChange((index: number) => {
-        this.sheetTab = index;
-      })
-    }
-    .width('100%')
-    .height('100%')
-    .backgroundColor(this.pal.bg)
   }
 }

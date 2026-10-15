@@ -10,11 +10,16 @@ export struct NovelTextPanel {
   @Link paraSpacing: number;
   @Link lineHeight: number;
   @Prop fontFamily: string = 'default';
-  onFontSizeDone: (v: number) => void = (v: number): void => {};
-  onMarginDone: (v: number) => void = (v: number): void => {};
-  onParaSpacingDone: (v: number) => void = (v: number): void => {};
-  onLineHeightDone: (v: number) => void = (v: number): void => {};
-  onFontFamily: (v: string) => void = (v: string): void => {};
+  onFontSizeDone: (v: number) => void = (v: number): void => {
+  };
+  onMarginDone: (v: number) => void = (v: number): void => {
+  };
+  onParaSpacingDone: (v: number) => void = (v: number): void => {
+  };
+  onLineHeightDone: (v: number) => void = (v: number): void => {
+  };
+  onFontFamily: (v: string) => void = (v: string): void => {
+  };
 
   build() {
     Column({ space: 0 }) {
@@ -72,7 +77,12 @@ export struct NovelTextPanel {
         .width('100%')
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
+      .padding({
+        left: 16,
+        right: 16,
+        top: 12,
+        bottom: 4
+      })
 
       Column().height(16)
     }
@@ -85,7 +95,12 @@ export struct NovelTextPanel {
     Text(label)
       .fontSize(13)
       .fontColor(this.fontFamily === value ? this.pal.onPrimary : this.pal.text)
-      .padding({ left: 14, right: 14, top: 6, bottom: 6 })
+      .padding({
+        left: 14,
+        right: 14,
+        top: 6,
+        bottom: 6
+      })
       .borderRadius(16)
       .backgroundColor(this.fontFamily === value ? this.pal.primary : this.pal.chip)
       .margin({ right: 8, bottom: 8 })
@@ -104,7 +119,12 @@ export struct NovelTextPanel {
         .fontColor(this.pal.sub)
         .width('100%')
       Row() {
-        Slider({ value: value, min: min, max: max, step: 1 })
+        Slider({
+          value: value,
+          min: min,
+          max: max,
+          step: 1
+        })
           .layoutWeight(1)
           .blockColor(this.pal.primary)
           .selectedColor(this.pal.primary)
@@ -122,6 +142,11 @@ export struct NovelTextPanel {
       .width('100%')
     }
     .width('100%')
-    .padding({ left: 16, right: 16, top: 10, bottom: 6 })
+    .padding({
+      left: 16,
+      right: 16,
+      top: 10,
+      bottom: 6
+    })
   }
 }

@@ -1,8 +1,7 @@
-import { common } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
-import { SourceRegistry, Source } from '../source/Source';
-import { MangaRecord, SManga, MangasPage, ContentType } from '../model/Models';
+import { Source, SourceRegistry } from '../source/Source';
+import { ContentType, MangaRecord, MangasPage, SManga } from '../model/Models';
 import { MigrateSearchParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
@@ -48,28 +47,6 @@ export struct MigrateSearchPage {
     return list;
   }
 
-  private async loadQueue(mangaIds: number[]): Promise<void> {
-    try {
-      const context = Util.hostAbilityContext(this.getUIContext());
-      await AppDb.ready(context);
-      const queue: MangaRecord[] = [];
-      for (const id of mangaIds) {
-        const m = await MangaRepo.get(id);
-        if (m !== undefined && m.inLibrary) {
-          queue.push(m);
-        }
-      }
-      this.queue = queue;
-      const cur = this.current();
-      if (cur !== undefined) {
-        this.query = cur.title;
-      }
-    } catch (_e) {
-      this.queue = [];
-    }
-    this.loading = false;
-  }
-
   async toRecords(source: Source, mangas: SManga[]): Promise<MangaRecord[]> {
     const records: MangaRecord[] = [];
     for (const m of mangas) {
@@ -101,37 +78,6 @@ export struct MigrateSearchPage {
     this.searching = false;
   }
 
-  private pickTarget(key: string): void {
-    if (this.targetKey === key) {
-      return;
-    }
-    this.targetKey = key;
-    this.results = [];
-    const cur = this.current();
-    if (cur !== undefined && this.query.trim() === '') {
-      this.query = cur.title;
-    }
-    this.searchNow();
-  }
-
-  private showConfirm(record: MangaRecord): void {
-    const dialog = new CustomDialogController({
-      builder: ConfirmDialog({
-        title: $r('app.string.migrate_confirm_title'),
-        message: record.title,
-        confirmText: $r('app.string.migrate_action', 1),
-        onConfirm: (): void => {
-          this.migrate(record);
-        },
-        onClose: (): void => {
-          dialog.close();
-        },
-      }),
-      autoCancel: true,
-    });
-    dialog.open();
-  }
-
   async migrate(record: MangaRecord): Promise<void> {
     const cur = this.current();
     const target = SourceRegistry.get(this.targetKey);
@@ -149,34 +95,6 @@ export struct MigrateSearchPage {
         [Util.errText(this.getUIContext(), (e as Error).message)]);
     }
     this.busy = false;
-  }
-
-  private skip(): void {
-    if (this.busy) {
-      return;
-    }
-    this.advance();
-  }
-
-  private advance(): void {
-    const next = this.idx + 1;
-    if (next >= this.queue.length) {
-      Util.toastRes(this.getUIContext(), $r('app.string.migrate_done'));
-      this.pathStack.pop();
-      return;
-    }
-    this.idx = next;
-    this.results = [];
-    const cur = this.current();
-    if (cur !== undefined) {
-      this.query = cur.title;
-      const target = SourceRegistry.get(this.targetKey);
-      if (target === undefined || target.contentType !== cur.contentType) {
-        this.targetKey = '';
-        return;
-      }
-    }
-    this.searchNow();
   }
 
   build() {
@@ -203,7 +121,12 @@ export struct MigrateSearchPage {
             })
         }
         .width('100%')
-        .padding({ left: 16, right: 16, top: this.statusBarH + 10, bottom: 8 })
+        .padding({
+          left: 16,
+          right: 16,
+          top: this.statusBarH + 10,
+          bottom: 8
+        })
 
         if (this.loading) {
           Column() {
@@ -238,7 +161,12 @@ export struct MigrateSearchPage {
           }
           .width('100%')
           .alignItems(HorizontalAlign.Start)
-          .padding({ left: 16, right: 16, top: 4, bottom: 8 })
+          .padding({
+            left: 16,
+            right: 16,
+            top: 4,
+            bottom: 8
+          })
 
           // 目标源
           Text($r('app.string.migrate_target_source'))
@@ -254,7 +182,12 @@ export struct MigrateSearchPage {
                   .fontColor(this.targetKey === s.key ? this.pal.onPrimary : this.pal.text)
                   .backgroundColor(this.targetKey === s.key ? this.pal.primary : this.pal.chip)
                   .borderRadius(14)
-                  .padding({ left: 14, right: 14, top: 6, bottom: 6 })
+                  .padding({
+                    left: 14,
+                    right: 14,
+                    top: 6,
+                    bottom: 6
+                  })
                   .onClick(() => {
                     this.pickTarget(s.key);
                   })
@@ -291,7 +224,12 @@ export struct MigrateSearchPage {
               })
           }
           .width('100%')
-          .padding({ left: 16, right: 16, top: 8, bottom: 8 })
+          .padding({
+            left: 16,
+            right: 16,
+            top: 8,
+            bottom: 8
+          })
 
           // 搜索结果
           if (this.searching) {
@@ -343,6 +281,87 @@ export struct MigrateSearchPage {
       const ids: number[] = params !== undefined && params !== null ? params.mangaIds : [];
       this.loadQueue(ids);
     })
+  }
+
+  private async loadQueue(mangaIds: number[]): Promise<void> {
+    try {
+      const context = Util.hostAbilityContext(this.getUIContext());
+      await AppDb.ready(context);
+      const queue: MangaRecord[] = [];
+      for (const id of mangaIds) {
+        const m = await MangaRepo.get(id);
+        if (m !== undefined && m.inLibrary) {
+          queue.push(m);
+        }
+      }
+      this.queue = queue;
+      const cur = this.current();
+      if (cur !== undefined) {
+        this.query = cur.title;
+      }
+    } catch (_e) {
+      this.queue = [];
+    }
+    this.loading = false;
+  }
+
+  private pickTarget(key: string): void {
+    if (this.targetKey === key) {
+      return;
+    }
+    this.targetKey = key;
+    this.results = [];
+    const cur = this.current();
+    if (cur !== undefined && this.query.trim() === '') {
+      this.query = cur.title;
+    }
+    this.searchNow();
+  }
+
+  private showConfirm(record: MangaRecord): void {
+    const dialog = new CustomDialogController({
+      builder: ConfirmDialog({
+        title: $r('app.string.migrate_confirm_title'),
+        message: record.title,
+        confirmText: $r('app.string.migrate_action', 1),
+        onConfirm: (): void => {
+          this.migrate(record);
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  private skip(): void {
+    if (this.busy) {
+      return;
+    }
+    this.advance();
+  }
+
+  private advance(): void {
+    const next = this.idx + 1;
+    if (next >= this.queue.length) {
+      Util.toastRes(this.getUIContext(), $r('app.string.migrate_done'));
+      this.pathStack.pop();
+      return;
+    }
+    this.idx = next;
+    this.results = [];
+    const cur = this.current();
+    if (cur !== undefined) {
+      this.query = cur.title;
+      const target = SourceRegistry.get(this.targetKey);
+      if (target === undefined || target.contentType !== cur.contentType) {
+        this.targetKey = '';
+        return;
+      }
+    }
+    this.searchNow();
   }
 }
 

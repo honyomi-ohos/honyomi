@@ -13,16 +13,6 @@ const VIEW_VALUES: string[] = ['compact', 'comfortable', 'cover', 'list'];
 export struct LibrarySettingsContent {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
-  private sortIndex(): number {
-    const i = SORT_VALUES.indexOf(Settings.getLibrarySort());
-    return i >= 0 ? i : 0;
-  }
-
-  private viewIndex(): number {
-    const i = VIEW_VALUES.indexOf(Settings.getLibraryView());
-    return i >= 0 ? i : 0;
-  }
-
   build() {
     Scroll() {
       Column({ space: 12 }) {
@@ -134,6 +124,16 @@ export struct LibrarySettingsContent {
     .height('100%')
     .scrollBar(BarState.Off)
     .align(Alignment.TopStart)
+  }
+
+  private sortIndex(): number {
+    const i = SORT_VALUES.indexOf(Settings.getLibrarySort());
+    return i >= 0 ? i : 0;
+  }
+
+  private viewIndex(): number {
+    const i = VIEW_VALUES.indexOf(Settings.getLibraryView());
+    return i >= 0 ? i : 0;
   }
 }
 

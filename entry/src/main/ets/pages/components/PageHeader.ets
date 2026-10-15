@@ -22,7 +22,12 @@ export struct PageHeader {
   build() {
     Row() {
       AppIcon({ name: 'arrow_back', iconSize: 24 })
-        .padding({ left: 8, right: 8, top: 8, bottom: 8 })
+        .padding({
+          left: 8,
+          right: 8,
+          top: 8,
+          bottom: 8
+        })
         .onClick(() => {
           this.pathStack.pop();
         })

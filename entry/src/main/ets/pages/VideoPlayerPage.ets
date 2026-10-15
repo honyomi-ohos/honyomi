@@ -1,26 +1,25 @@
-import { common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { media } from '@kit.MediaKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { window } from '@kit.ArkUI';
 import { CacheListener } from '@ohos/video-cache';
 import { AppDb } from '../data/AppDb';
-import { MangaRepo, ChapterRepo, HistoryRepo } from '../data/Repos';
+import { ChapterRepo, HistoryRepo, MangaRepo } from '../data/Repos';
 import { ReadingStatsRepo } from '../data/ReadingStats';
 import { DownloadService } from '../data/DownloadService';
-import { DanmakuService, DanmakuItem } from '../data/DanmakuService';
+import { DanmakuItem, DanmakuService } from '../data/DanmakuService';
 import { SourceRegistry } from '../source/Source';
 import { Http } from '../net/Http';
-import { MangaRecord, ChapterRecord, SVideo } from '../model/Models';
+import { ChapterRecord, MangaRecord, SVideo } from '../model/Models';
 import { ReaderParams } from '../model/RouteParams';
 import { Settings } from '../common/Settings';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { VideoCacheServer } from '../common/VideoCacheServer';
-import { ReaderChapterNav, ChapterNeighbors } from '../common/ReaderChapterNav';
+import { ChapterNeighbors, ReaderChapterNav } from '../common/ReaderChapterNav';
 import { AppIcon } from './components/AppIcon';
-import { DanmakuView, DanmakuController } from './components/DanmakuView';
+import { DanmakuController, DanmakuView } from './components/DanmakuView';
 
 const SPEEDS: number[] = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
 const SCALE_MODES: number[] = [0, 1, 2];
@@ -128,10 +127,6 @@ export struct VideoPlayerPage {
   private dmChapterId: number = -1;
   private instId: number = ++vpSeq;
 
-  private log(msg: string): void {
-    hilog.info(0xDEAD, 'VP', '[inst%{public}d] %{public}s', this.instId, msg);
-  }
-
   aboutToAppear(): void {
     this.log('aboutToAppear');
     this.speed = Settings.getVideoSpeed();
@@ -175,6 +170,780 @@ export struct VideoPlayerPage {
       }
       Settings.applySystemBar(Util.hostAbilityContext(this.getUIContext()));
     }
+  }
+
+  // ---- 悬浮控制条 ----
+  @Builder
+  topBar() {
+    Row() {
+      AppIcon({ name: 'arrow_back', iconSize: 24, tint: Color.White })
+        .onClick(() => {
+          this.pathStack.pop();
+        })
+      Column({ space: 2 }) {
+        Text(this.manga.title)
+          .fontSize(16)
+          .fontWeight(FontWeight.Medium)
+          .fontColor(Color.White)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+        Text(this.chapter.name)
+          .fontSize(12)
+          .fontColor('#DDDDDD')
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+      }
+      .alignItems(HorizontalAlign.Start)
+      .layoutWeight(1)
+      .margin({ left: 10 })
+
+      if (this.resLabel() !== '') {
+        Text(this.resLabel())
+          .fontSize(11)
+          .fontColor(Color.White)
+          .backgroundColor('rgba(255,255,255,0.2)')
+          .borderRadius(8)
+          .padding({
+            left: 8,
+            right: 8,
+            top: 3,
+            bottom: 3
+          })
+          .margin({ right: 8 })
+      }
+      Column() {
+        AppIcon({ name: 'lock', iconSize: 20, tint: Color.White })
+      }
+      .width(38)
+      .height(38)
+      .borderRadius(19)
+      .justifyContent(FlexAlign.Center)
+      .alignItems(HorizontalAlign.Center)
+      .backgroundColor('rgba(255,255,255,0.12)')
+      .onClick(() => {
+        this.locked = true;
+        Util.toastRes(this.getUIContext(), $r('app.string.video_locked'));
+        if (this.hideTimer >= 0) {
+          clearTimeout(this.hideTimer);
+          this.hideTimer = -1;
+        }
+        this.showControls = false;
+      })
+    }
+    .width('100%')
+    .padding({
+      left: 10,
+      right: 12,
+      top: this.fullscreen ? 10 : this.statusBarH + 4,
+      bottom: 12
+    })
+    .linearGradient({ angle: 180, colors: [['rgba(0,0,0,0.65)', 0], [Color.Transparent, 1]] })
+    .position({ x: 0, y: 0 })
+    .transition(TransitionEffect.OPACITY.animation({ duration: 180 }))
+  }
+
+  @Builder
+  centerBar() {
+    Row({ space: 26 }) {
+      AppIcon({ name: 'skip_previous', iconSize: 32, tint: this.prevId > 0 ? Color.White : 'rgba(255,255,255,0.3)' })
+        .onClick(() => {
+          this.openChapter(this.prevId);
+        })
+      AppIcon({ name: 'replay_10', iconSize: 30, tint: Color.White })
+        .onClick(() => {
+          this.onDoubleTap(-1);
+        })
+      Column() {
+        if (this.loading || this.buffering) {
+          LoadingProgress().width(40).height(40).color(Color.White)
+        } else {
+          AppIcon({ name: this.playing ? 'pause' : 'play_arrow', iconSize: 40, tint: Color.White })
+        }
+      }
+      .width(68)
+      .height(68)
+      .borderRadius(34)
+      .justifyContent(FlexAlign.Center)
+      .alignItems(HorizontalAlign.Center)
+      .backgroundColor('rgba(255,255,255,0.14)')
+      .onClick(() => {
+        this.togglePlay();
+      })
+
+      AppIcon({ name: 'forward_10', iconSize: 30, tint: Color.White })
+        .onClick(() => {
+          this.onDoubleTap(1);
+        })
+      AppIcon({ name: 'skip_next', iconSize: 32, tint: this.nextId > 0 ? Color.White : 'rgba(255,255,255,0.3)' })
+        .onClick(() => {
+          this.openChapter(this.nextId);
+        })
+    }
+    .alignItems(VerticalAlign.Center)
+    .offset({ y: 20 })
+    .transition(TransitionEffect.OPACITY.animation({ duration: 180 }))
+  }
+
+  @Builder
+  ctrlBtn(icon: string, onTap: () => void) {
+    Column() {
+      AppIcon({ name: icon, iconSize: 20, tint: Color.White })
+    }
+    .width(38)
+    .height(38)
+    .borderRadius(19)
+    .justifyContent(FlexAlign.Center)
+    .alignItems(HorizontalAlign.Center)
+    .backgroundColor('rgba(255,255,255,0.12)')
+    .onClick(() => {
+      onTap();
+    })
+  }
+
+  @Builder
+  bottomBar() {
+    Column() {
+      Row() {
+        Text(this.clock(this.positionMs))
+          .fontSize(13)
+          .fontColor('#FFFFFF')
+          .width(58)
+        Stack({ alignContent: Alignment.Center }) {
+          // 缓存进度条：代理下载百分比（0-100），显示在播放进度条下方
+          Progress({
+            value: this.cachePercent,
+            total: 100,
+            type: ProgressType.Linear
+          })
+            .height(2)
+            .width('100%')
+            .color('rgba(255,255,255,0.45)')
+            .backgroundColor(Color.Transparent)
+            .offset({ y: 6 })
+          Slider({
+            value: this.positionMs,
+            min: 0,
+            max: this.durationMs > 0 ? this.durationMs : 1,
+            step: 1000
+          })
+            .width('100%')
+            .selectedColor(this.pal.primary)
+            .trackColor('rgba(255,255,255,0.3)')
+            .blockColor(Color.White)
+            .onChange((v: number, mode: SliderChangeMode) => {
+              if (mode === SliderChangeMode.Begin || mode === SliderChangeMode.Moving) {
+                this.dragging = true;
+                this.positionMs = v;
+              } else {
+                const interactive = this.dragging || mode === SliderChangeMode.Click;
+                this.dragging = false;
+                if (interactive && this.durationMs > 0) {
+                  this.seekTo(v);
+                }
+              }
+            })
+        }
+        .layoutWeight(1)
+
+        Text(this.clock(this.durationMs))
+          .fontSize(13)
+          .fontColor('#E0E0E0')
+          .width(58)
+          .textAlign(TextAlign.End)
+      }
+      .width('100%')
+
+      Row({ space: 8 }) {
+        this.ctrlBtn('playlist_play', (): void => {
+          this.openSheet(1);
+        })
+        if (this.videos.length > 1) {
+          this.ctrlBtn('high_quality', (): void => {
+            this.openSheet(2);
+          })
+        }
+        this.ctrlBtn('speed', (): void => {
+          this.openSheet(3);
+        })
+        Column() {
+          AppIcon({ name: 'forum', iconSize: 20, tint: this.danmakuOn ? Color.White : 'rgba(255,255,255,0.35)' })
+        }
+        .width(38)
+        .height(38)
+        .borderRadius(19)
+        .justifyContent(FlexAlign.Center)
+        .alignItems(HorizontalAlign.Center)
+        .backgroundColor('rgba(255,255,255,0.12)')
+        .onClick(() => {
+          this.toggleDanmaku();
+        })
+
+        this.ctrlBtn('tune', (): void => {
+          this.openSheet(4);
+        })
+        this.ctrlBtn(this.fullscreen ? 'fullscreen_exit' : 'fullscreen', (): void => {
+          this.toggleFullscreen();
+        })
+      }
+      .justifyContent(FlexAlign.Center)
+      .width('100%')
+      .margin({ top: 4 })
+    }
+    .width('100%')
+    .padding({
+      left: 14,
+      right: 14,
+      top: 10,
+      bottom: this.fullscreen ? 14 : this.navBarH + 10
+    })
+    .linearGradient({ angle: 180, colors: [[Color.Transparent, 0], ['rgba(0,0,0,0.65)', 1]] })
+    .position({ x: 0, y: '100%' })
+    .markAnchor({ x: 0, y: '100%' })
+    .transition(TransitionEffect.OPACITY.animation({ duration: 180 }))
+  }
+
+  @Builder
+  unlockBtn() {
+    Column() {
+      AppIcon({ name: 'lock_open', iconSize: 22, tint: Color.White })
+    }
+    .width(46)
+    .height(46)
+    .borderRadius(23)
+    .justifyContent(FlexAlign.Center)
+    .alignItems(HorizontalAlign.Center)
+    .backgroundColor('rgba(0,0,0,0.55)')
+    .border({ width: 1, color: 'rgba(255,255,255,0.4)' })
+    .position({ x: '86%', y: '44%' })
+    .onClick(() => {
+      this.locked = false;
+      Util.toastRes(this.getUIContext(), $r('app.string.video_unlocked'));
+      this.pokeControls();
+    })
+  }
+
+  // ---- 底部弹层（剧集 / 画质 / 倍速 / 播放设置）----
+  @Builder
+  sheetBuilder() {
+    Column() {
+      Row() {
+        Text(this.sheetTitle())
+          .fontSize(18)
+          .fontWeight(FontWeight.Bold)
+          .fontColor(this.pal.text)
+        Blank()
+        AppIcon({ name: 'close', iconSize: 22 })
+          .onClick(() => {
+            this.showSheet = false;
+          })
+      }
+      .width('100%')
+      .padding({
+        left: 20,
+        right: 16,
+        top: 14,
+        bottom: 8
+      })
+
+      Scroll() {
+        Column() {
+          if (this.sheetMode === 1) {
+            this.episodesPane()
+          } else if (this.sheetMode === 2) {
+            this.qualityPane()
+          } else if (this.sheetMode === 3) {
+            this.speedPane()
+          } else {
+            this.settingsPane()
+          }
+        }
+        .width('100%')
+        .padding({ left: 16, right: 16, bottom: 30 })
+      }
+      .layoutWeight(1)
+      .scrollBar(BarState.Off)
+      .align(Alignment.TopStart)
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor(this.pal.bg)
+    .borderRadius({ topLeft: 24, topRight: 24 })
+  }
+
+  @Builder
+  episodesPane() {
+    List() {
+      ForEach(this.chapters, (c: ChapterRecord) => {
+        ListItem() {
+          Row() {
+            Text(c.name)
+              .fontSize(15)
+              .fontColor(c.id === this.chapterId ? this.pal.primary : this.pal.text)
+              .layoutWeight(1)
+              .maxLines(1)
+              .textOverflow({ overflow: TextOverflow.Ellipsis })
+            if (c.read) {
+              AppIcon({ name: 'done', iconSize: 18, tint: this.pal.primary })
+            }
+          }
+          .width('100%')
+          .height(48)
+          .padding({ left: 8, right: 4 })
+          .onClick(() => {
+            this.showSheet = false;
+            this.openChapter(c.id);
+          })
+        }
+      }, (c: ChapterRecord) => `ep-${c.id}`)
+    }
+    .width('100%')
+  }
+
+  @Builder
+  qualityPane() {
+    Column() {
+      ForEach(this.videos, (video: SVideo, index: number) => {
+        Row() {
+          Text(video.quality === 'local' ? $r('app.string.video_quality_local') : video.quality)
+            .fontSize(15)
+            .fontColor(index === this.qualityIndex ? this.pal.primary : this.pal.text)
+            .layoutWeight(1)
+          if (index === this.qualityIndex) {
+            AppIcon({ name: 'done', iconSize: 18, tint: this.pal.primary })
+          }
+        }
+        .width('100%')
+        .height(48)
+        .padding({ left: 8, right: 4 })
+        .onClick(() => {
+          this.showSheet = false;
+          this.pickQuality(index);
+        })
+      }, (video: SVideo, index: number) => `q-${index}-${video.quality}`)
+    }
+    .width('100%')
+  }
+
+  // 远程播放：直链先经 VideoCacheServer 代理（边下边播，快进命中缓存即刻起播）；
+
+  @Builder
+  speedPane() {
+    Column() {
+      Flex({ wrap: FlexWrap.Wrap }) {
+        ForEach(SPEEDS, (s: number) => {
+          Text(this.speedLabel(s))
+            .fontSize(14)
+            .fontColor(this.speed === s ? Color.White : this.pal.text)
+            .backgroundColor(this.speed === s ? this.pal.primary : this.pal.chip)
+            .borderRadius(16)
+            .padding({
+              left: 16,
+              right: 16,
+              top: 8,
+              bottom: 8
+            })
+            .margin({ right: 8, top: 8 })
+            .onClick(() => {
+              this.applySpeed(s);
+            })
+        }, (s: number) => `spd-${s}`)
+      }
+      .width('100%')
+    }
+    .width('100%')
+  }
+
+  @Builder
+  settingsPane() {
+    Column({ space: 10 }) {
+      Text($r('app.string.video_speed'))
+        .fontSize(13)
+        .fontColor(this.pal.sub)
+        .margin({ top: 4 })
+      Flex({ wrap: FlexWrap.Wrap }) {
+        ForEach(SPEEDS, (s: number) => {
+          Text(this.speedLabel(s))
+            .fontSize(14)
+            .fontColor(this.speed === s ? Color.White : this.pal.text)
+            .backgroundColor(this.speed === s ? this.pal.primary : this.pal.chip)
+            .borderRadius(16)
+            .padding({
+              left: 16,
+              right: 16,
+              top: 8,
+              bottom: 8
+            })
+            .margin({ right: 8, top: 8 })
+            .onClick(() => {
+              this.applySpeed(s);
+            })
+        }, (s: number) => `set-spd-${s}`)
+      }
+      .width('100%')
+
+      Row() {
+        Text($r('app.string.player_set_auto_next'))
+          .fontSize(15)
+          .fontColor(this.pal.text)
+          .layoutWeight(1)
+        Toggle({ type: ToggleType.Switch, isOn: this.autoNext })
+          .selectedColor(this.pal.primary)
+          .onChange((value: boolean) => {
+            this.autoNext = value;
+            Settings.setVideoAutoNext(value);
+          })
+      }
+      .width('100%')
+      .height(48)
+
+      Text($r('app.string.video_scale_mode'))
+        .fontSize(13)
+        .fontColor(this.pal.sub)
+      Flex({ wrap: FlexWrap.Wrap }) {
+        ForEach(SCALE_MODES, (m: number) => {
+          Text(this.scaleModeLabel(m))
+            .fontSize(14)
+            .fontColor(this.scaleMode === m ? Color.White : this.pal.text)
+            .backgroundColor(this.scaleMode === m ? this.pal.primary : this.pal.chip)
+            .borderRadius(16)
+            .padding({
+              left: 16,
+              right: 16,
+              top: 8,
+              bottom: 8
+            })
+            .margin({ right: 8, top: 8 })
+            .onClick(() => {
+              this.scaleMode = m;
+              Settings.setVideoScaleMode(m);
+              this.adjustSurface();
+            })
+        }, (m: number) => `scale-${m}`)
+      }
+      .width('100%')
+
+      Divider().color(this.pal.divider)
+
+      Row() {
+        Text($r('app.string.player_set_danmaku_enable'))
+          .fontSize(15)
+          .fontColor(this.pal.text)
+          .layoutWeight(1)
+        Toggle({ type: ToggleType.Switch, isOn: this.danmakuOn })
+          .selectedColor(this.pal.primary)
+          .onChange((value: boolean) => {
+            this.danmakuOn = value;
+            Settings.setDanmakuEnabled(value);
+            if (value) {
+              this.loadDanmaku();
+            }
+          })
+      }
+      .width('100%')
+      .height(48)
+
+      Text($r('app.string.player_set_danmaku_font'))
+        .fontSize(13)
+        .fontColor(this.pal.sub)
+      Flex({ wrap: FlexWrap.Wrap }) {
+        ForEach(DM_FONT_VALUES, (v: number) => {
+          Text(`${v}`)
+            .fontSize(14)
+            .fontColor(this.dmFont === v ? Color.White : this.pal.text)
+            .backgroundColor(this.dmFont === v ? this.pal.primary : this.pal.chip)
+            .borderRadius(16)
+            .padding({
+              left: 16,
+              right: 16,
+              top: 8,
+              bottom: 8
+            })
+            .margin({ right: 8, top: 8 })
+            .onClick(() => {
+              this.dmFont = v;
+              Settings.setDanmakuFont(v);
+            })
+        }, (v: number) => `dm-font-${v}`)
+      }
+      .width('100%')
+
+      Text($r('app.string.player_set_danmaku_opacity'))
+        .fontSize(13)
+        .fontColor(this.pal.sub)
+      Flex({ wrap: FlexWrap.Wrap }) {
+        ForEach(DM_OPACITY_VALUES, (v: number) => {
+          Text(`${v}%`)
+            .fontSize(14)
+            .fontColor(this.dmOpacity === v ? Color.White : this.pal.text)
+            .backgroundColor(this.dmOpacity === v ? this.pal.primary : this.pal.chip)
+            .borderRadius(16)
+            .padding({
+              left: 16,
+              right: 16,
+              top: 8,
+              bottom: 8
+            })
+            .margin({ right: 8, top: 8 })
+            .onClick(() => {
+              this.dmOpacity = v;
+              Settings.setDanmakuOpacityPct(v);
+            })
+        }, (v: number) => `dm-op-${v}`)
+      }
+      .width('100%')
+
+      Text($r('app.string.player_set_danmaku_area'))
+        .fontSize(13)
+        .fontColor(this.pal.sub)
+      Flex({ wrap: FlexWrap.Wrap }) {
+        ForEach(DM_AREA_VALUES, (v: number, i: number) => {
+          Text(this.areaLabel(i))
+            .fontSize(14)
+            .fontColor(this.dmArea === v ? Color.White : this.pal.text)
+            .backgroundColor(this.dmArea === v ? this.pal.primary : this.pal.chip)
+            .borderRadius(16)
+            .padding({
+              left: 16,
+              right: 16,
+              top: 8,
+              bottom: 8
+            })
+            .margin({ right: 8, top: 8 })
+            .onClick(() => {
+              this.dmArea = v;
+              Settings.setDanmakuAreaPct(v);
+            })
+        }, (v: number) => `dm-area-${v}`)
+      }
+      .width('100%')
+
+      Text($r('app.string.player_set_danmaku_speed'))
+        .fontSize(13)
+        .fontColor(this.pal.sub)
+      Flex({ wrap: FlexWrap.Wrap }) {
+        ForEach(DM_DUR_VALUES, (v: number, i: number) => {
+          Text(this.durLabel(i))
+            .fontSize(14)
+            .fontColor(this.dmDur === v ? Color.White : this.pal.text)
+            .backgroundColor(this.dmDur === v ? this.pal.primary : this.pal.chip)
+            .borderRadius(16)
+            .padding({
+              left: 16,
+              right: 16,
+              top: 8,
+              bottom: 8
+            })
+            .margin({ right: 8, top: 8 })
+            .onClick(() => {
+              this.dmDur = v;
+              Settings.setDanmakuDurationSec(v);
+            })
+        }, (v: number) => `dm-dur-${v}`)
+      }
+      .width('100%')
+
+      Text($r('app.string.player_set_danmaku_source'))
+        .fontSize(12)
+        .fontColor(this.pal.sub)
+        .margin({ top: 6 })
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+  }
+
+  build() {
+    NavDestination() {
+      Stack() {
+        XComponent({
+          id: 'videoSurface',
+          type: XComponentType.SURFACE,
+          controller: this.xCtrl
+        })
+          .width('100%')
+          .height('100%')
+          .onLoad(() => {
+            this.surfaceId = this.xCtrl.getXComponentSurfaceId();
+            if (!this.loading && this.errorText === '' && this.player === undefined) {
+              this.startCurrent();
+            }
+          })
+          .onAreaChange((_old: Area, newArea: Area) => {
+            const w = newArea.width;
+            if (typeof w === 'number' && w > 0) {
+              this.areaW = Math.floor(this.getUIContext().vp2px(w));
+            }
+            const h = newArea.height;
+            if (typeof h === 'number' && h > 0) {
+              this.areaH = Math.floor(this.getUIContext().vp2px(h));
+            }
+            this.adjustSurface();
+          })
+
+        DanmakuView({
+          controller: this.dmCtrl,
+          positionProvider: (): number => this.currentPlayPos(),
+          dmEnabled: this.danmakuOn,
+          fontVp: this.dmFont,
+          opacityPct: this.dmOpacity,
+          areaPct: this.dmArea,
+          durSec: this.dmDur
+        })
+          .width('100%')
+          .height('100%')
+
+        // 手势分区：左右双击快退/快进，中间单击切换控制条
+        Row() {
+          Column()
+            .layoutWeight(1)
+            .height('100%')
+            .onTouch((event: TouchEvent) => {
+              this.boostTouch(event);
+            })
+            .gesture(TapGesture({ count: 2 })
+              .onAction(() => {
+                this.onDoubleTap(-1);
+              }))
+            .onClick(() => {
+              this.scheduleTap();
+            })
+          Column()
+            .layoutWeight(1.2)
+            .height('100%')
+            .onTouch((event: TouchEvent) => {
+              this.boostTouch(event);
+            })
+            .onClick(() => {
+              if (this.boosting || this.suppressClick) {
+                return;
+              }
+              if (this.locked) {
+                this.pokeControls();
+              } else {
+                this.toggleControls();
+              }
+            })
+          Column()
+            .layoutWeight(1)
+            .height('100%')
+            .onTouch((event: TouchEvent) => {
+              this.boostTouch(event);
+            })
+            .gesture(TapGesture({ count: 2 })
+              .onAction(() => {
+                this.onDoubleTap(1);
+              }))
+            .onClick(() => {
+              this.scheduleTap();
+            })
+        }
+        .width('100%')
+        .height('100%')
+
+        if (this.boosting) {
+          // 长按快进：页面顶部显示四个平行速度胶囊，当前档位轻微高亮
+          Row({ space: 8 }) {
+            ForEach(BOOST_SPEEDS, (s: number, i: number) => {
+              Text(this.boostLabel(i))
+                .fontSize(14)
+                .fontWeight(this.boostSpeedIndex === i ? FontWeight.Bold : FontWeight.Normal)
+                .fontColor(this.boostSpeedIndex === i ? Color.White : '#B3FFFFFF')
+                .backgroundColor(this.boostSpeedIndex === i ? 'rgba(255,255,255,0.32)' : 'rgba(255,255,255,0.08)')
+                .borderRadius(16)
+                .padding({
+                  left: 18,
+                  right: 18,
+                  top: 6,
+                  bottom: 6
+                })
+            }, (s: number, i: number) => `boost-${i}-${s}`)
+          }
+          .padding(6)
+          .borderRadius(22)
+          .backgroundColor('rgba(0,0,0,0.4)')
+          .offset({ y: '-32%' })
+        }
+
+        if (this.seekToast !== 0) {
+          Row({ space: 6 }) {
+            AppIcon({ name: this.seekToast < 0 ? 'replay_10' : 'forward_10', iconSize: 24, tint: Color.White })
+            Text(`${this.seekToast < 0 ? '-10s' : '+10s'}`)
+              .fontSize(15)
+              .fontColor(Color.White)
+          }
+          .padding({
+            left: 16,
+            right: 16,
+            top: 8,
+            bottom: 8
+          })
+          .borderRadius(20)
+          .backgroundColor('rgba(0,0,0,0.6)')
+          .offset({ x: this.seekToast < 0 ? '-22%' : '22%', y: '-10%' })
+        }
+
+        if (this.errorText !== '') {
+          Text(Util.errText(this.getUIContext(), this.errorText))
+            .fontSize(13)
+            .fontColor('#DDDDDD')
+            .padding(16)
+        } else if ((this.loading || this.buffering) && !(this.showControls && !this.locked)) {
+          // 控制条可见时由中央播放按钮展示加载状态，避免双 loading
+          LoadingProgress()
+            .width(44)
+            .height(44)
+            .color(Color.White)
+        }
+
+        if (this.showControls && !this.locked) {
+          this.topBar()
+        }
+        if (this.showControls && !this.locked) {
+          this.centerBar()
+        }
+        if (this.showControls && !this.locked) {
+          this.bottomBar()
+        }
+        if (this.locked && this.showControls) {
+          this.unlockBtn()
+        }
+      }
+      .width('100%')
+      .height('100%')
+      .backgroundColor('#000000')
+      .bindSheet($$this.showSheet, this.sheetBuilder(), {
+        preferType: Bp.sheetType(this.windowW),
+        width: Bp.sheetWidth(this.windowW),
+        height: Bp.sheetHeight(this.windowW),
+        detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+        dragBar: true,
+        showClose: false,
+        blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
+      })
+    }
+    .hideTitleBar(true)
+    .backgroundColor('#000000')
+    .onBackPressed((): boolean => {
+      // 全屏时返回键先退出全屏，再次返回才退出播放页
+      if (this.fullscreen) {
+        this.toggleFullscreen();
+        return true;
+      }
+      return false;
+    })
+    .onReady((ctx: NavDestinationContext) => {
+      this.pathStack = ctx.pathStack;
+      const params = ctx.pathInfo.param as ReaderParams;
+      if (params !== undefined && params !== null) {
+        this.mangaId = params.mangaId;
+        this.chapterId = params.chapterId;
+      }
+      this.log(`onReady manga=${this.mangaId} chapter=${this.chapterId}`);
+      this.loadChapter();
+    })
+  }
+
+  private log(msg: string): void {
+    hilog.info(0xDEAD, 'VP', '[inst%{public}d] %{public}s', this.instId, msg);
   }
 
   // 全屏横屏切换
@@ -382,7 +1151,6 @@ export struct VideoPlayerPage {
     });
   }
 
-  // 远程播放：直链先经 VideoCacheServer 代理（边下边播，快进命中缓存即刻起播）；
   // m3u8 或代理失败时回退直连播放
   private async playRemote(video: SVideo): Promise<void> {
     this.log(`playRemote: ${video.url}`);
@@ -1065,704 +1833,6 @@ export struct VideoPlayerPage {
       return $r('app.string.video_speed');
     }
     return $r('app.string.video_settings');
-  }
-
-  // ---- 悬浮控制条 ----
-  @Builder
-  topBar() {
-    Row() {
-      AppIcon({ name: 'arrow_back', iconSize: 24, tint: Color.White })
-        .onClick(() => {
-          this.pathStack.pop();
-        })
-      Column({ space: 2 }) {
-        Text(this.manga.title)
-          .fontSize(16)
-          .fontWeight(FontWeight.Medium)
-          .fontColor(Color.White)
-          .maxLines(1)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
-        Text(this.chapter.name)
-          .fontSize(12)
-          .fontColor('#DDDDDD')
-          .maxLines(1)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
-      }
-      .alignItems(HorizontalAlign.Start)
-      .layoutWeight(1)
-      .margin({ left: 10 })
-      if (this.resLabel() !== '') {
-        Text(this.resLabel())
-          .fontSize(11)
-          .fontColor(Color.White)
-          .backgroundColor('rgba(255,255,255,0.2)')
-          .borderRadius(8)
-          .padding({ left: 8, right: 8, top: 3, bottom: 3 })
-          .margin({ right: 8 })
-      }
-      Column() {
-        AppIcon({ name: 'lock', iconSize: 20, tint: Color.White })
-      }
-      .width(38)
-      .height(38)
-      .borderRadius(19)
-      .justifyContent(FlexAlign.Center)
-      .alignItems(HorizontalAlign.Center)
-      .backgroundColor('rgba(255,255,255,0.12)')
-      .onClick(() => {
-        this.locked = true;
-        Util.toastRes(this.getUIContext(), $r('app.string.video_locked'));
-        if (this.hideTimer >= 0) {
-          clearTimeout(this.hideTimer);
-          this.hideTimer = -1;
-        }
-        this.showControls = false;
-      })
-    }
-    .width('100%')
-    .padding({ left: 10, right: 12, top: this.fullscreen ? 10 : this.statusBarH + 4, bottom: 12 })
-    .linearGradient({ angle: 180, colors: [['rgba(0,0,0,0.65)', 0], [Color.Transparent, 1]] })
-    .position({ x: 0, y: 0 })
-    .transition(TransitionEffect.OPACITY.animation({ duration: 180 }))
-  }
-
-  @Builder
-  centerBar() {
-    Row({ space: 26 }) {
-      AppIcon({ name: 'skip_previous', iconSize: 32, tint: this.prevId > 0 ? Color.White : 'rgba(255,255,255,0.3)' })
-        .onClick(() => {
-          this.openChapter(this.prevId);
-        })
-      AppIcon({ name: 'replay_10', iconSize: 30, tint: Color.White })
-        .onClick(() => {
-          this.onDoubleTap(-1);
-        })
-      Column() {
-        if (this.loading || this.buffering) {
-          LoadingProgress().width(40).height(40).color(Color.White)
-        } else {
-          AppIcon({ name: this.playing ? 'pause' : 'play_arrow', iconSize: 40, tint: Color.White })
-        }
-      }
-      .width(68)
-      .height(68)
-      .borderRadius(34)
-      .justifyContent(FlexAlign.Center)
-      .alignItems(HorizontalAlign.Center)
-      .backgroundColor('rgba(255,255,255,0.14)')
-      .onClick(() => {
-        this.togglePlay();
-      })
-      AppIcon({ name: 'forward_10', iconSize: 30, tint: Color.White })
-        .onClick(() => {
-          this.onDoubleTap(1);
-        })
-      AppIcon({ name: 'skip_next', iconSize: 32, tint: this.nextId > 0 ? Color.White : 'rgba(255,255,255,0.3)' })
-        .onClick(() => {
-          this.openChapter(this.nextId);
-        })
-    }
-    .alignItems(VerticalAlign.Center)
-    .offset({ y: 20 })
-    .transition(TransitionEffect.OPACITY.animation({ duration: 180 }))
-  }
-
-  @Builder
-  ctrlBtn(icon: string, onTap: () => void) {
-    Column() {
-      AppIcon({ name: icon, iconSize: 20, tint: Color.White })
-    }
-    .width(38)
-    .height(38)
-    .borderRadius(19)
-    .justifyContent(FlexAlign.Center)
-    .alignItems(HorizontalAlign.Center)
-    .backgroundColor('rgba(255,255,255,0.12)')
-    .onClick(() => {
-      onTap();
-    })
-  }
-
-  @Builder
-  bottomBar() {
-    Column() {
-      Row() {
-        Text(this.clock(this.positionMs))
-          .fontSize(13)
-          .fontColor('#FFFFFF')
-          .width(58)
-        Stack({ alignContent: Alignment.Center }) {
-          // 缓存进度条：代理下载百分比（0-100），显示在播放进度条下方
-          Progress({
-            value: this.cachePercent,
-            total: 100,
-            type: ProgressType.Linear
-          })
-            .height(2)
-            .width('100%')
-            .color('rgba(255,255,255,0.45)')
-            .backgroundColor(Color.Transparent)
-            .offset({ y: 6 })
-          Slider({
-            value: this.positionMs,
-            min: 0,
-            max: this.durationMs > 0 ? this.durationMs : 1,
-            step: 1000
-          })
-            .width('100%')
-            .selectedColor(this.pal.primary)
-            .trackColor('rgba(255,255,255,0.3)')
-            .blockColor(Color.White)
-            .onChange((v: number, mode: SliderChangeMode) => {
-              if (mode === SliderChangeMode.Begin || mode === SliderChangeMode.Moving) {
-                this.dragging = true;
-                this.positionMs = v;
-              } else {
-                const interactive = this.dragging || mode === SliderChangeMode.Click;
-                this.dragging = false;
-                if (interactive && this.durationMs > 0) {
-                  this.seekTo(v);
-                }
-              }
-            })
-        }
-        .layoutWeight(1)
-        Text(this.clock(this.durationMs))
-          .fontSize(13)
-          .fontColor('#E0E0E0')
-          .width(58)
-          .textAlign(TextAlign.End)
-      }
-      .width('100%')
-
-      Row({ space: 8 }) {
-        this.ctrlBtn('playlist_play', (): void => {
-          this.openSheet(1);
-        })
-        if (this.videos.length > 1) {
-          this.ctrlBtn('high_quality', (): void => {
-            this.openSheet(2);
-          })
-        }
-        this.ctrlBtn('speed', (): void => {
-          this.openSheet(3);
-        })
-        Column() {
-          AppIcon({ name: 'forum', iconSize: 20, tint: this.danmakuOn ? Color.White : 'rgba(255,255,255,0.35)' })
-        }
-        .width(38)
-        .height(38)
-        .borderRadius(19)
-        .justifyContent(FlexAlign.Center)
-        .alignItems(HorizontalAlign.Center)
-        .backgroundColor('rgba(255,255,255,0.12)')
-        .onClick(() => {
-          this.toggleDanmaku();
-        })
-        this.ctrlBtn('tune', (): void => {
-          this.openSheet(4);
-        })
-        this.ctrlBtn(this.fullscreen ? 'fullscreen_exit' : 'fullscreen', (): void => {
-          this.toggleFullscreen();
-        })
-      }
-      .justifyContent(FlexAlign.Center)
-      .width('100%')
-      .margin({ top: 4 })
-    }
-    .width('100%')
-    .padding({ left: 14, right: 14, top: 10, bottom: this.fullscreen ? 14 : this.navBarH + 10 })
-    .linearGradient({ angle: 180, colors: [[Color.Transparent, 0], ['rgba(0,0,0,0.65)', 1]] })
-    .position({ x: 0, y: '100%' })
-    .markAnchor({ x: 0, y: '100%' })
-    .transition(TransitionEffect.OPACITY.animation({ duration: 180 }))
-  }
-
-  @Builder
-  unlockBtn() {
-    Column() {
-      AppIcon({ name: 'lock_open', iconSize: 22, tint: Color.White })
-    }
-    .width(46)
-    .height(46)
-    .borderRadius(23)
-    .justifyContent(FlexAlign.Center)
-    .alignItems(HorizontalAlign.Center)
-    .backgroundColor('rgba(0,0,0,0.55)')
-    .border({ width: 1, color: 'rgba(255,255,255,0.4)' })
-    .position({ x: '86%', y: '44%' })
-    .onClick(() => {
-      this.locked = false;
-      Util.toastRes(this.getUIContext(), $r('app.string.video_unlocked'));
-      this.pokeControls();
-    })
-  }
-
-  // ---- 底部弹层（剧集 / 画质 / 倍速 / 播放设置）----
-  @Builder
-  sheetBuilder() {
-    Column() {
-      Row() {
-        Text(this.sheetTitle())
-          .fontSize(18)
-          .fontWeight(FontWeight.Bold)
-          .fontColor(this.pal.text)
-        Blank()
-        AppIcon({ name: 'close', iconSize: 22 })
-          .onClick(() => {
-            this.showSheet = false;
-          })
-      }
-      .width('100%')
-      .padding({ left: 20, right: 16, top: 14, bottom: 8 })
-      Scroll() {
-        Column() {
-          if (this.sheetMode === 1) {
-            this.episodesPane()
-          } else if (this.sheetMode === 2) {
-            this.qualityPane()
-          } else if (this.sheetMode === 3) {
-            this.speedPane()
-          } else {
-            this.settingsPane()
-          }
-        }
-        .width('100%')
-        .padding({ left: 16, right: 16, bottom: 30 })
-      }
-      .layoutWeight(1)
-      .scrollBar(BarState.Off)
-      .align(Alignment.TopStart)
-    }
-    .width('100%')
-    .height('100%')
-    .backgroundColor(this.pal.bg)
-    .borderRadius({ topLeft: 24, topRight: 24 })
-  }
-
-  @Builder
-  episodesPane() {
-    List() {
-      ForEach(this.chapters, (c: ChapterRecord) => {
-        ListItem() {
-          Row() {
-            Text(c.name)
-              .fontSize(15)
-              .fontColor(c.id === this.chapterId ? this.pal.primary : this.pal.text)
-              .layoutWeight(1)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Ellipsis })
-            if (c.read) {
-              AppIcon({ name: 'done', iconSize: 18, tint: this.pal.primary })
-            }
-          }
-          .width('100%')
-          .height(48)
-          .padding({ left: 8, right: 4 })
-          .onClick(() => {
-            this.showSheet = false;
-            this.openChapter(c.id);
-          })
-        }
-      }, (c: ChapterRecord) => `ep-${c.id}`)
-    }
-    .width('100%')
-  }
-
-  @Builder
-  qualityPane() {
-    Column() {
-      ForEach(this.videos, (video: SVideo, index: number) => {
-        Row() {
-          Text(video.quality === 'local' ? $r('app.string.video_quality_local') : video.quality)
-            .fontSize(15)
-            .fontColor(index === this.qualityIndex ? this.pal.primary : this.pal.text)
-            .layoutWeight(1)
-          if (index === this.qualityIndex) {
-            AppIcon({ name: 'done', iconSize: 18, tint: this.pal.primary })
-          }
-        }
-        .width('100%')
-        .height(48)
-        .padding({ left: 8, right: 4 })
-        .onClick(() => {
-          this.showSheet = false;
-          this.pickQuality(index);
-        })
-      }, (video: SVideo, index: number) => `q-${index}-${video.quality}`)
-    }
-    .width('100%')
-  }
-
-  @Builder
-  speedPane() {
-    Column() {
-      Flex({ wrap: FlexWrap.Wrap }) {
-        ForEach(SPEEDS, (s: number) => {
-          Text(this.speedLabel(s))
-            .fontSize(14)
-            .fontColor(this.speed === s ? Color.White : this.pal.text)
-            .backgroundColor(this.speed === s ? this.pal.primary : this.pal.chip)
-            .borderRadius(16)
-            .padding({ left: 16, right: 16, top: 8, bottom: 8 })
-            .margin({ right: 8, top: 8 })
-            .onClick(() => {
-              this.applySpeed(s);
-            })
-        }, (s: number) => `spd-${s}`)
-      }
-      .width('100%')
-    }
-    .width('100%')
-  }
-
-  @Builder
-  settingsPane() {
-    Column({ space: 10 }) {
-      Text($r('app.string.video_speed'))
-        .fontSize(13)
-        .fontColor(this.pal.sub)
-        .margin({ top: 4 })
-      Flex({ wrap: FlexWrap.Wrap }) {
-        ForEach(SPEEDS, (s: number) => {
-          Text(this.speedLabel(s))
-            .fontSize(14)
-            .fontColor(this.speed === s ? Color.White : this.pal.text)
-            .backgroundColor(this.speed === s ? this.pal.primary : this.pal.chip)
-            .borderRadius(16)
-            .padding({ left: 16, right: 16, top: 8, bottom: 8 })
-            .margin({ right: 8, top: 8 })
-            .onClick(() => {
-              this.applySpeed(s);
-            })
-        }, (s: number) => `set-spd-${s}`)
-      }
-      .width('100%')
-
-      Row() {
-        Text($r('app.string.player_set_auto_next'))
-          .fontSize(15)
-          .fontColor(this.pal.text)
-          .layoutWeight(1)
-        Toggle({ type: ToggleType.Switch, isOn: this.autoNext })
-          .selectedColor(this.pal.primary)
-          .onChange((value: boolean) => {
-            this.autoNext = value;
-            Settings.setVideoAutoNext(value);
-          })
-      }
-      .width('100%')
-      .height(48)
-
-      Text($r('app.string.video_scale_mode'))
-        .fontSize(13)
-        .fontColor(this.pal.sub)
-      Flex({ wrap: FlexWrap.Wrap }) {
-        ForEach(SCALE_MODES, (m: number) => {
-          Text(this.scaleModeLabel(m))
-            .fontSize(14)
-            .fontColor(this.scaleMode === m ? Color.White : this.pal.text)
-            .backgroundColor(this.scaleMode === m ? this.pal.primary : this.pal.chip)
-            .borderRadius(16)
-            .padding({ left: 16, right: 16, top: 8, bottom: 8 })
-            .margin({ right: 8, top: 8 })
-            .onClick(() => {
-              this.scaleMode = m;
-              Settings.setVideoScaleMode(m);
-              this.adjustSurface();
-            })
-        }, (m: number) => `scale-${m}`)
-      }
-      .width('100%')
-
-      Divider().color(this.pal.divider)
-
-      Row() {
-        Text($r('app.string.player_set_danmaku_enable'))
-          .fontSize(15)
-          .fontColor(this.pal.text)
-          .layoutWeight(1)
-        Toggle({ type: ToggleType.Switch, isOn: this.danmakuOn })
-          .selectedColor(this.pal.primary)
-          .onChange((value: boolean) => {
-            this.danmakuOn = value;
-            Settings.setDanmakuEnabled(value);
-            if (value) {
-              this.loadDanmaku();
-            }
-          })
-      }
-      .width('100%')
-      .height(48)
-
-      Text($r('app.string.player_set_danmaku_font'))
-        .fontSize(13)
-        .fontColor(this.pal.sub)
-      Flex({ wrap: FlexWrap.Wrap }) {
-        ForEach(DM_FONT_VALUES, (v: number) => {
-          Text(`${v}`)
-            .fontSize(14)
-            .fontColor(this.dmFont === v ? Color.White : this.pal.text)
-            .backgroundColor(this.dmFont === v ? this.pal.primary : this.pal.chip)
-            .borderRadius(16)
-            .padding({ left: 16, right: 16, top: 8, bottom: 8 })
-            .margin({ right: 8, top: 8 })
-            .onClick(() => {
-              this.dmFont = v;
-              Settings.setDanmakuFont(v);
-            })
-        }, (v: number) => `dm-font-${v}`)
-      }
-      .width('100%')
-
-      Text($r('app.string.player_set_danmaku_opacity'))
-        .fontSize(13)
-        .fontColor(this.pal.sub)
-      Flex({ wrap: FlexWrap.Wrap }) {
-        ForEach(DM_OPACITY_VALUES, (v: number) => {
-          Text(`${v}%`)
-            .fontSize(14)
-            .fontColor(this.dmOpacity === v ? Color.White : this.pal.text)
-            .backgroundColor(this.dmOpacity === v ? this.pal.primary : this.pal.chip)
-            .borderRadius(16)
-            .padding({ left: 16, right: 16, top: 8, bottom: 8 })
-            .margin({ right: 8, top: 8 })
-            .onClick(() => {
-              this.dmOpacity = v;
-              Settings.setDanmakuOpacityPct(v);
-            })
-        }, (v: number) => `dm-op-${v}`)
-      }
-      .width('100%')
-
-      Text($r('app.string.player_set_danmaku_area'))
-        .fontSize(13)
-        .fontColor(this.pal.sub)
-      Flex({ wrap: FlexWrap.Wrap }) {
-        ForEach(DM_AREA_VALUES, (v: number, i: number) => {
-          Text(this.areaLabel(i))
-            .fontSize(14)
-            .fontColor(this.dmArea === v ? Color.White : this.pal.text)
-            .backgroundColor(this.dmArea === v ? this.pal.primary : this.pal.chip)
-            .borderRadius(16)
-            .padding({ left: 16, right: 16, top: 8, bottom: 8 })
-            .margin({ right: 8, top: 8 })
-            .onClick(() => {
-              this.dmArea = v;
-              Settings.setDanmakuAreaPct(v);
-            })
-        }, (v: number) => `dm-area-${v}`)
-      }
-      .width('100%')
-
-      Text($r('app.string.player_set_danmaku_speed'))
-        .fontSize(13)
-        .fontColor(this.pal.sub)
-      Flex({ wrap: FlexWrap.Wrap }) {
-        ForEach(DM_DUR_VALUES, (v: number, i: number) => {
-          Text(this.durLabel(i))
-            .fontSize(14)
-            .fontColor(this.dmDur === v ? Color.White : this.pal.text)
-            .backgroundColor(this.dmDur === v ? this.pal.primary : this.pal.chip)
-            .borderRadius(16)
-            .padding({ left: 16, right: 16, top: 8, bottom: 8 })
-            .margin({ right: 8, top: 8 })
-            .onClick(() => {
-              this.dmDur = v;
-              Settings.setDanmakuDurationSec(v);
-            })
-        }, (v: number) => `dm-dur-${v}`)
-      }
-      .width('100%')
-
-      Text($r('app.string.player_set_danmaku_source'))
-        .fontSize(12)
-        .fontColor(this.pal.sub)
-        .margin({ top: 6 })
-    }
-    .width('100%')
-    .alignItems(HorizontalAlign.Start)
-  }
-
-  build() {
-    NavDestination() {
-      Stack() {
-        XComponent({
-          id: 'videoSurface',
-          type: XComponentType.SURFACE,
-          controller: this.xCtrl
-        })
-          .width('100%')
-          .height('100%')
-          .onLoad(() => {
-            this.surfaceId = this.xCtrl.getXComponentSurfaceId();
-            if (!this.loading && this.errorText === '' && this.player === undefined) {
-              this.startCurrent();
-            }
-          })
-          .onAreaChange((_old: Area, newArea: Area) => {
-            const w = newArea.width;
-            if (typeof w === 'number' && w > 0) {
-              this.areaW = Math.floor(this.getUIContext().vp2px(w));
-            }
-            const h = newArea.height;
-            if (typeof h === 'number' && h > 0) {
-              this.areaH = Math.floor(this.getUIContext().vp2px(h));
-            }
-            this.adjustSurface();
-          })
-
-        DanmakuView({
-          controller: this.dmCtrl,
-          positionProvider: (): number => this.currentPlayPos(),
-          dmEnabled: this.danmakuOn,
-          fontVp: this.dmFont,
-          opacityPct: this.dmOpacity,
-          areaPct: this.dmArea,
-          durSec: this.dmDur
-        })
-          .width('100%')
-          .height('100%')
-
-        // 手势分区：左右双击快退/快进，中间单击切换控制条
-        Row() {
-          Column()
-            .layoutWeight(1)
-            .height('100%')
-            .onTouch((event: TouchEvent) => {
-              this.boostTouch(event);
-            })
-            .gesture(TapGesture({ count: 2 })
-              .onAction(() => {
-                this.onDoubleTap(-1);
-              }))
-            .onClick(() => {
-              this.scheduleTap();
-            })
-          Column()
-            .layoutWeight(1.2)
-            .height('100%')
-            .onTouch((event: TouchEvent) => {
-              this.boostTouch(event);
-            })
-            .onClick(() => {
-              if (this.boosting || this.suppressClick) {
-                return;
-              }
-              if (this.locked) {
-                this.pokeControls();
-              } else {
-                this.toggleControls();
-              }
-            })
-          Column()
-            .layoutWeight(1)
-            .height('100%')
-            .onTouch((event: TouchEvent) => {
-              this.boostTouch(event);
-            })
-            .gesture(TapGesture({ count: 2 })
-              .onAction(() => {
-                this.onDoubleTap(1);
-              }))
-            .onClick(() => {
-              this.scheduleTap();
-            })
-        }
-        .width('100%')
-        .height('100%')
-
-        if (this.boosting) {
-          // 长按快进：页面顶部显示四个平行速度胶囊，当前档位轻微高亮
-          Row({ space: 8 }) {
-            ForEach(BOOST_SPEEDS, (s: number, i: number) => {
-              Text(this.boostLabel(i))
-                .fontSize(14)
-                .fontWeight(this.boostSpeedIndex === i ? FontWeight.Bold : FontWeight.Normal)
-                .fontColor(this.boostSpeedIndex === i ? Color.White : '#B3FFFFFF')
-                .backgroundColor(this.boostSpeedIndex === i ? 'rgba(255,255,255,0.32)' : 'rgba(255,255,255,0.08)')
-                .borderRadius(16)
-                .padding({ left: 18, right: 18, top: 6, bottom: 6 })
-            }, (s: number, i: number) => `boost-${i}-${s}`)
-          }
-          .padding(6)
-          .borderRadius(22)
-          .backgroundColor('rgba(0,0,0,0.4)')
-          .offset({ y: '-32%' })
-        }
-
-        if (this.seekToast !== 0) {
-          Row({ space: 6 }) {
-            AppIcon({ name: this.seekToast < 0 ? 'replay_10' : 'forward_10', iconSize: 24, tint: Color.White })
-            Text(`${this.seekToast < 0 ? '-10s' : '+10s'}`)
-              .fontSize(15)
-              .fontColor(Color.White)
-          }
-          .padding({ left: 16, right: 16, top: 8, bottom: 8 })
-          .borderRadius(20)
-          .backgroundColor('rgba(0,0,0,0.6)')
-          .offset({ x: this.seekToast < 0 ? '-22%' : '22%', y: '-10%' })
-        }
-
-        if (this.errorText !== '') {
-          Text(Util.errText(this.getUIContext(), this.errorText))
-            .fontSize(13)
-            .fontColor('#DDDDDD')
-            .padding(16)
-        } else if ((this.loading || this.buffering) && !(this.showControls && !this.locked)) {
-          // 控制条可见时由中央播放按钮展示加载状态，避免双 loading
-          LoadingProgress()
-            .width(44)
-            .height(44)
-            .color(Color.White)
-        }
-
-        if (this.showControls && !this.locked) {
-          this.topBar()
-        }
-        if (this.showControls && !this.locked) {
-          this.centerBar()
-        }
-        if (this.showControls && !this.locked) {
-          this.bottomBar()
-        }
-        if (this.locked && this.showControls) {
-          this.unlockBtn()
-        }
-      }
-      .width('100%')
-      .height('100%')
-      .backgroundColor('#000000')
-      .bindSheet($$this.showSheet, this.sheetBuilder(), {
-        preferType: Bp.sheetType(this.windowW),
-        width: Bp.sheetWidth(this.windowW),
-        height: Bp.sheetHeight(this.windowW),
-        detents: [SheetSize.MEDIUM, SheetSize.LARGE],
-        dragBar: true,
-        showClose: false,
-        blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
-      })
-    }
-    .hideTitleBar(true)
-    .backgroundColor('#000000')
-    .onBackPressed((): boolean => {
-      // 全屏时返回键先退出全屏，再次返回才退出播放页
-      if (this.fullscreen) {
-        this.toggleFullscreen();
-        return true;
-      }
-      return false;
-    })
-    .onReady((ctx: NavDestinationContext) => {
-      this.pathStack = ctx.pathStack;
-      const params = ctx.pathInfo.param as ReaderParams;
-      if (params !== undefined && params !== null) {
-        this.mangaId = params.mangaId;
-        this.chapterId = params.chapterId;
-      }
-      this.log(`onReady manga=${this.mangaId} chapter=${this.chapterId}`);
-      this.loadChapter();
-    })
   }
 }
 

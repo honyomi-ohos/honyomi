@@ -1,6 +1,5 @@
-import { common } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
-import { HistoryRepo, ChapterRepo } from '../data/Repos';
+import { ChapterRepo, HistoryRepo } from '../data/Repos';
 import { HistoryItem } from '../model/Models';
 import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
@@ -44,25 +43,6 @@ export struct HistoryPage {
 
   onLibDirty(): void {
     this.loadData();
-  }
-
-  private onHistoryReselect(): void {
-    this.resumeLastRead();
-  }
-
-  // 续读最近一部作品：取最近记录的漫画，打开其第一个未读章节；无可读时提示
-  private async resumeLastRead(): Promise<void> {
-    if (this.items.length === 0) {
-      Util.toastRes(this.getUIContext(), $r('app.string.history_no_next_chapter'));
-      return;
-    }
-    const last: HistoryItem = this.items[0];
-    const nextId = await ChapterRepo.firstUnread(last.mangaId);
-    if (nextId > 0) {
-      ContentOpen.open(this.pathStack, last.mangaId, nextId);
-    } else {
-      Util.toastRes(this.getUIContext(), $r('app.string.history_no_next_chapter'));
-    }
   }
 
   async loadData(): Promise<void> {
@@ -124,7 +104,12 @@ export struct HistoryPage {
           })
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 8 })
+      .padding({
+        left: 16,
+        right: 16,
+        top: 12,
+        bottom: 8
+      })
 
       if (this.loading) {
         Column() {
@@ -179,15 +164,26 @@ export struct HistoryPage {
                   }
                   .alignItems(HorizontalAlign.Start)
                   .layoutWeight(1)
-                    Text($r('app.string.history_continue'))
-                      .fontSize(12)
+
+                  Text($r('app.string.history_continue'))
+                    .fontSize(12)
                     .fontColor(this.pal.primary)
                     .backgroundColor(this.pal.chip)
                     .borderRadius(12)
-                    .padding({ left: 10, right: 10, top: 4, bottom: 4 })
+                    .padding({
+                      left: 10,
+                      right: 10,
+                      top: 4,
+                      bottom: 4
+                    })
                 }
                 .width('100%')
-                .padding({ left: 16, right: 16, top: 10, bottom: 10 })
+                .padding({
+                  left: 16,
+                  right: 16,
+                  top: 10,
+                  bottom: 10
+                })
                 .onClick(() => {
                   ContentOpen.open(this.pathStack, item.mangaId, item.chapterId);
                 })
@@ -211,5 +207,24 @@ export struct HistoryPage {
     .width('100%')
     .height('100%')
     .backgroundColor(this.pal.bg)
+  }
+
+  private onHistoryReselect(): void {
+    this.resumeLastRead();
+  }
+
+  // 续读最近一部作品：取最近记录的漫画，打开其第一个未读章节；无可读时提示
+  private async resumeLastRead(): Promise<void> {
+    if (this.items.length === 0) {
+      Util.toastRes(this.getUIContext(), $r('app.string.history_no_next_chapter'));
+      return;
+    }
+    const last: HistoryItem = this.items[0];
+    const nextId = await ChapterRepo.firstUnread(last.mangaId);
+    if (nextId > 0) {
+      ContentOpen.open(this.pathStack, last.mangaId, nextId);
+    } else {
+      Util.toastRes(this.getUIContext(), $r('app.string.history_no_next_chapter'));
+    }
   }
 }

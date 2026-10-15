@@ -25,10 +25,6 @@ struct UpdatesCard {
   @LocalStorageProp('b1') b1: string = '';
   @LocalStorageProp('b2') b2: string = '';
 
-  private hasData(): boolean {
-    return this.t0 !== '' || this.t1 !== '' || this.t2 !== '';
-  }
-
   build() {
     Column() {
       // 标题栏：更新 + 未读数角标 + 跳转更新页签
@@ -43,7 +39,12 @@ struct UpdatesCard {
             .fontColor($r('app.color.honyomi_primary_blue'))
             .backgroundColor($r('app.color.honyomi_primary_soft_blue'))
             .borderRadius(8)
-            .padding({ left: 6, right: 6, top: 2, bottom: 2 })
+            .padding({
+              left: 6,
+              right: 6,
+              top: 2,
+              bottom: 2
+            })
             .margin({ left: 8 })
         }
         Text('›')
@@ -53,7 +54,12 @@ struct UpdatesCard {
       }
       .justifyContent(FlexAlign.Start)
       .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
+      .padding({
+        left: 16,
+        right: 16,
+        top: 12,
+        bottom: 4
+      })
       .onClick(() => {
         postCardAction(this, {
           'action': 'router',
@@ -141,7 +147,12 @@ struct UpdatesCard {
       }
     }
     .width('100%')
-    .padding({ left: 16, right: 16, top: 6, bottom: 6 })
+    .padding({
+      left: 16,
+      right: 16,
+      top: 6,
+      bottom: 6
+    })
     .onClick(() => {
       postCardAction(this, {
         'action': 'router',
@@ -155,39 +166,67 @@ struct UpdatesCard {
     })
   }
 
+  private hasData(): boolean {
+    return this.t0 !== '' || this.t1 !== '' || this.t2 !== '';
+  }
+
   private badgeOf(index: number): string {
-    if (index === 0) { return this.b0; }
-    if (index === 1) { return this.b1; }
+    if (index === 0) {
+      return this.b0;
+    }
+    if (index === 1) {
+      return this.b1;
+    }
     return this.b2;
   }
 
   private titleOf(index: number): string {
-    if (index === 0) { return this.t0; }
-    if (index === 1) { return this.t1; }
+    if (index === 0) {
+      return this.t0;
+    }
+    if (index === 1) {
+      return this.t1;
+    }
     return this.t2;
   }
 
   private chapterOf(index: number): string {
-    if (index === 0) { return this.c0; }
-    if (index === 1) { return this.c1; }
+    if (index === 0) {
+      return this.c0;
+    }
+    if (index === 1) {
+      return this.c1;
+    }
     return this.c2;
   }
 
   private timeOf(index: number): string {
-    if (index === 0) { return this.time0; }
-    if (index === 1) { return this.time1; }
+    if (index === 0) {
+      return this.time0;
+    }
+    if (index === 1) {
+      return this.time1;
+    }
     return this.time2;
   }
 
   private mangaIdOf(index: number): string {
-    if (index === 0) { return this.m0; }
-    if (index === 1) { return this.m1; }
+    if (index === 0) {
+      return this.m0;
+    }
+    if (index === 1) {
+      return this.m1;
+    }
     return this.m2;
   }
 
   private chapterIdOf(index: number): string {
-    if (index === 0) { return this.ch0; }
-    if (index === 1) { return this.ch1; }
+    if (index === 0) {
+      return this.ch0;
+    }
+    if (index === 1) {
+      return this.ch1;
+    }
     return this.ch2;
   }
 }

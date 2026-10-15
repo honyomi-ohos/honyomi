@@ -1,5 +1,5 @@
 import { fileIo as fs } from '@kit.CoreFileKit';
-import { SManga, SChapter, SPage, SVideo, MangasPage } from '../model/Models';
+import { MangasPage, SChapter, SManga, SPage, SVideo } from '../model/Models';
 import { Source } from './Source';
 import { LocalFolderManager } from './LocalFolderManager';
 import { NaturalCompare } from '../common/NaturalCompare';
@@ -15,9 +15,8 @@ export abstract class LocalFsSource implements Source {
   readonly iconPath = '';
   readonly nsfw = false;
   abstract readonly contentType: string;
-
-  private readonly syncRoot: string;
   protected readonly legacyDir: string;
+  private readonly syncRoot: string;
 
   protected constructor(filesDir: string, legacyName: string) {
     this.legacyDir = `${filesDir}/${legacyName}`;
@@ -27,25 +26,14 @@ export abstract class LocalFsSource implements Source {
     }
   }
 
-  // 同步副本下的子目录名（comic / novel / anime）
-  protected abstract syncSubDir(): string;
-
-  // 列作品目录时的内容文件扩展名过滤
-  protected abstract contentExts(): string[];
-
-  protected abstract mangaDescription(): string;
-
-  protected rootDir(): string {
-    let synced = false;
-    try {
-      synced = fs.accessSync(this.syncRoot);
-    } catch (e) {
-      synced = false;
+  private static hasDotDotSegment(path: string): boolean {
+    const segs = path.split('/');
+    for (const seg of segs) {
+      if (seg === '..') {
+        return true;
+      }
     }
-    if (synced) {
-      return `${this.syncRoot}/${this.syncSubDir()}`;
-    }
-    return this.legacyDir;
+    return false;
   }
 
   async getPopularManga(page: number): Promise<MangasPage> {
@@ -83,6 +71,27 @@ export abstract class LocalFsSource implements Source {
 
   imageRequestHeaders(): Record<string, string> | undefined {
     return undefined;
+  }
+
+  // 同步副本下的子目录名（comic / novel / anime）
+  protected abstract syncSubDir(): string;
+
+  // 列作品目录时的内容文件扩展名过滤
+  protected abstract contentExts(): string[];
+
+  protected abstract mangaDescription(): string;
+
+  protected rootDir(): string {
+    let synced = false;
+    try {
+      synced = fs.accessSync(this.syncRoot);
+    } catch (e) {
+      synced = false;
+    }
+    if (synced) {
+      return `${this.syncRoot}/${this.syncSubDir()}`;
+    }
+    return this.legacyDir;
   }
 
   protected namesToMangas(names: string[]): MangasPage {
@@ -146,6 +155,8 @@ export abstract class LocalFsSource implements Source {
     return manga;
   }
 
+  // chapterKey（<作品目录>::<章节条目>）转绝对路径；无效返回空串。
+
   // 相对路径条目（可含"卷/章"层级）转章节，名称显示为"卷 / 章"
   protected buildChapter(mangaDir: string, entry: string, order: number): SChapter {
     let dateUpload = 0;
@@ -167,7 +178,6 @@ export abstract class LocalFsSource implements Source {
     return chapter;
   }
 
-  // chapterKey（<作品目录>::<章节条目>）转绝对路径；无效返回空串。
   // 路径穿越防护：mangaDir / entry 任一含 ".." 路径段即拒绝（备份导入可注入构造 key）
   protected entryPath(chapterKey: string): string {
     const sepIdx = chapterKey.indexOf('::');
@@ -182,17 +192,8 @@ export abstract class LocalFsSource implements Source {
     return `${this.rootDir()}/${mangaDir}/${entry}`;
   }
 
-  private static hasDotDotSegment(path: string): boolean {
-    const segs = path.split('/');
-    for (const seg of segs) {
-      if (seg === '..') {
-        return true;
-      }
-    }
-    return false;
-  }
-
   // 递归收集扩展名匹配的文件相对路径（含卷级子目录），每层按自然顺序排序
+
   // （阿拉伯数字与中文数字均按数值比较，"第十章"排在"第二章"之后）
   protected collectEntriesByExts(dir: string, prefix: string, out: string[], exts: string[]): void {
     let entries: string[] = [];

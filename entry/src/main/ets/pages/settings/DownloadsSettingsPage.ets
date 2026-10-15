@@ -20,6 +20,7 @@ export struct DownloadsSettingsContent {
             }
           })
         }
+
         Text($r('app.string.dl_set_wifi_only_hint'))
           .fontSize(12)
           .fontColor(this.pal.sub)

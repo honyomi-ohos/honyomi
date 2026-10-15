@@ -1,8 +1,7 @@
-import { common } from '@kit.AbilityKit';
 import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
 import { PageHeader } from '../components/PageHeader';
-import { PrefGroup, IconRow } from '../components/Prefs';
+import { IconRow, PrefGroup } from '../components/Prefs';
 
 const DONATE_PATREON_URL: string = 'https://patreon.com/mihon/membership';
 const DONATE_OPENCOLLECTIVE_URL: string = 'https://opencollective.com/mihon/contribute';
@@ -14,11 +13,6 @@ const DISCORD_URL: string = 'https://discord.gg/mihon';
 export struct SupportPage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-
-  private openLink(url: string): void {
-    const context = Util.hostAbilityContext(this.getUIContext());
-    Util.openUrl(context, url);
-  }
 
   build() {
     NavDestination() {
@@ -87,6 +81,11 @@ export struct SupportPage {
     }
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)
+  }
+
+  private openLink(url: string): void {
+    const context = Util.hostAbilityContext(this.getUIContext());
+    Util.openUrl(context, url);
   }
 }
 

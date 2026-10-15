@@ -1,48 +1,177 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Включает фильтр «Загружено» для всей библиотеки" },
-    { "name": "more_incognito_summary", "value": "Приостанавливает историю чтения" },
-    { "name": "more_support", "value": "Поддержите нас" },
-    { "name": "more_help", "value": "Помощь" },
-    { "name": "support_perks", "value": "Спонсоры получают доступ к эксклюзивным каналам с будущими привилегиями и возможностями." },
-    { "name": "support_patreon", "value": "Patreon (Предпочтительно)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon сейчас поддерживается %d+ спонсорами. Мы хотим поблагодарить каждого из вас. Давайте сделаем Mihon лучше." },
-    { "name": "support_contact_msg", "value": "Если у вас есть другие способы поддержки или вопросы по этому поводу, можете присоединиться к нашему Discord-серверу." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "Данные и хранение" },
-    { "name": "data_storage_location", "value": "Путь хранилища" },
-    { "name": "data_storage_location_info", "value": "Используется для автоматических резевных копии, загрузок глав и источнике на устройстве." },
-    { "name": "data_backup_restore", "value": "Резервная копия" },
-    { "name": "data_create_backup", "value": "Создать резервную копию" },
-    { "name": "data_restore_backup", "value": "Восстановить из резервной копии" },
-    { "name": "data_backup_interval", "value": "Частота автоматических резервных копий" },
-    { "name": "data_backup_info", "value": "Настоятельно рекомендуется хранить резервные копии в других местах или сервисах. Резервные копии могут содержать конфиденциальную информацию, как, например, пароли. Будьте осторожны при их отправке." },
-    { "name": "data_last_auto_backup", "value": "Последнее автоматическое резервное копирование: %s" },
-    { "name": "data_storage_usage", "value": "Использование хранилища" },
-    { "name": "data_available_space", "value": "Доступно: %s / Всего: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Очистить кэш глав" },
-    { "name": "data_used_cache", "value": "Использовано: %s" },
-    { "name": "data_cache_deleted", "value": "Кэш очищен, %d файлов удалено" },
-    { "name": "data_cache_delete_error", "value": "Возникла ошибка при очистке" },
-    { "name": "data_auto_clear_cache", "value": "Очищать кэш глав при запуске приложения" },
-    { "name": "data_export", "value": "Экспортировать" },
-    { "name": "data_library_list", "value": "Список библиотеки" },
-    { "name": "data_library_exported", "value": "Библиотека экспортирована" },
-    { "name": "data_export_include", "value": "Какие данные перенести" },
-    { "name": "data_column_title", "value": "Название" },
-    { "name": "data_column_author", "value": "Автор" },
-    { "name": "data_interval_off", "value": "Выключено" },
-    { "name": "data_interval_6h", "value": "Каждые 6 часов" },
-    { "name": "data_interval_12h", "value": "Каждые 12 часов" },
-    { "name": "data_interval_24h", "value": "Ежедневно" },
-    { "name": "data_interval_48h", "value": "Каждые 2 дня" },
-    { "name": "data_interval_weekly", "value": "Еженедельно" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Включает фильтр «Загружено» для всей библиотеки"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Приостанавливает историю чтения"
+    },
+    {
+      "name": "more_support",
+      "value": "Поддержите нас"
+    },
+    {
+      "name": "more_help",
+      "value": "Помощь"
+    },
+    {
+      "name": "support_perks",
+      "value": "Спонсоры получают доступ к эксклюзивным каналам с будущими привилегиями и возможностями."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (Предпочтительно)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon сейчас поддерживается %d+ спонсорами. Мы хотим поблагодарить каждого из вас. Давайте сделаем Mihon лучше."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "Если у вас есть другие способы поддержки или вопросы по этому поводу, можете присоединиться к нашему Discord-серверу."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "Данные и хранение"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Путь хранилища"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Используется для автоматических резевных копии, загрузок глав и источнике на устройстве."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "Резервная копия"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Создать резервную копию"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Восстановить из резервной копии"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Частота автоматических резервных копий"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "Настоятельно рекомендуется хранить резервные копии в других местах или сервисах. Резервные копии могут содержать конфиденциальную информацию, как, например, пароли. Будьте осторожны при их отправке."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Последнее автоматическое резервное копирование: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Использование хранилища"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Доступно: %s / Всего: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Очистить кэш глав"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Использовано: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Кэш очищен, %d файлов удалено"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Возникла ошибка при очистке"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Очищать кэш глав при запуске приложения"
+    },
+    {
+      "name": "data_export",
+      "value": "Экспортировать"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Список библиотеки"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Библиотека экспортирована"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Какие данные перенести"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Название"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Автор"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "Выключено"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "Каждые 6 часов"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "Каждые 12 часов"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "Ежедневно"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "Каждые 2 дня"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "Еженедельно"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
     {
       "name": "module_desc",
       "value": "module description"
@@ -1255,189 +1384,741 @@
       "name": "reader_set_brightness_reset",
       "value": "Яркость снова следует за системой"
     },
-    { "name": "browse_tab_sources", "value": "Источники" },
-    { "name": "browse_tab_extensions", "value": "Расширения" },
-    { "name": "browse_tab_migrate", "value": "Перенести" },
-    { "name": "browse_pin", "value": "Закрепить" },
-    { "name": "browse_unpin", "value": "Открепить" },
-    { "name": "browse_disable_source", "value": "Отключить источник" },
-    { "name": "browse_source_disabled", "value": "Источник отключён" },
-    { "name": "browse_pinned", "value": "Закреплено" },
-    { "name": "browse_sources_empty", "value": "Нет источников. Установите их на вкладке Расширения" },
-    { "name": "browse_filter_langs", "value": "Фильтр языков" },
-    { "name": "browse_filter_all", "value": "Все" },
-    { "name": "browse_source_missing", "value": "Источник недоступен. Возможно, расширение отключено" },
-    { "name": "global_search_hint", "value": "Поиск по всем источникам" },
-    { "name": "global_search_failed", "value": "Ошибка поиска" },
-    { "name": "ext_search_hint", "value": "Поиск расширений" },
-    { "name": "ext_search_no_match", "value": "Совпадений нет" },
-    { "name": "ext_repo_settings", "value": "Настройки репозитория" },
-    { "name": "ext_refresh_repo", "value": "Обновить репозиторий" },
-    { "name": "migrate_pick_source", "value": "Выберите источник для переноса" },
-    { "name": "migrate_empty_library", "value": "Библиотека пуста" },
-    { "name": "migrate_select_all", "value": "Выбрать все" },
-    { "name": "migrate_deselect_all", "value": "Снять выбор" },
-    { "name": "migrate_action", "value": "Перенести (%d)" },
-    { "name": "migrate_title", "value": "Перенести" },
-    { "name": "migrate_skip", "value": "Пропустить" },
-    { "name": "migrate_progress", "value": "%d из %d" },
-    { "name": "migrate_target_source", "value": "Целевой источник" },
-    { "name": "migrate_search_hint", "value": "Искать мангу в целевом источнике" },
-    { "name": "migrate_confirm_title", "value": "Перенести в эту мангу?" },
-    { "name": "migrate_item_done", "value": "Перенесено: %s" },
-    { "name": "migrate_failed", "value": "Ошибка переноса: %s" },
-    { "name": "migrate_done", "value": "Перенос завершён" },
-    { "name": "migrate_no_target", "value": "Нет целевого источника" },
-    { "name": "stats_title", "value": "Статистика" },
-    { "name": "stats_overview_section", "value": "Обзор" },
-    { "name": "stats_in_library", "value": "В библиотеке" },
-    { "name": "stats_read_duration", "value": "Время чтения" },
-    { "name": "stats_completed_titles", "value": "Завершено" },
-    { "name": "stats_titles_section", "value": "Произведения" },
-    { "name": "stats_started_titles", "value": "Начато" },
-    { "name": "stats_local_titles", "value": "Локально" },
-    { "name": "stats_chapters_section", "value": "Главы" },
-    { "name": "stats_total_chapters", "value": "Всего" },
-    { "name": "stats_read_chapters", "value": "Прочитано" },
-    { "name": "stats_downloaded_chapters", "value": "Скачано" },
-    { "name": "stats_tracker_section", "value": "Трекеры" },
-    { "name": "stats_tracked_titles", "value": "Отслеживаемые произведения" },
-    { "name": "stats_mean_score", "value": "Средняя оценка" },
-    { "name": "stats_used", "value": "Используется" },
-    { "name": "stats_not_applicable", "value": "н/д" },
-    { "name": "stats_week", "value": "Неделя" },
-    { "name": "stats_month", "value": "Месяц" },
-    { "name": "stats_week_total", "value": "%s за эту неделю" },
-    { "name": "stats_month_total", "value": "%s за этот месяц" },
-    { "name": "stats_no_reading", "value": "В этом периоде нет чтения" },
-    { "name": "stats_day_short", "value": "%dд" },
-    { "name": "stats_hour_short", "value": "%dч" },
-    { "name": "stats_minute_short", "value": "%dм" },
-    { "name": "stats_second_short", "value": "%dс" },
-    { "name": "stats_wd_sun", "value": "Вс" },
-    { "name": "stats_wd_mon", "value": "Пн" },
-    { "name": "stats_wd_tue", "value": "Вт" },
-    { "name": "stats_wd_wed", "value": "Ср" },
-    { "name": "stats_wd_thu", "value": "Чт" },
-    { "name": "stats_wd_fri", "value": "Пт" },
-    { "name": "stats_wd_sat", "value": "Сб" },
-    { "name": "reader_mode_vertical", "value": "Вертикально" },
-    { "name": "reader_mode_smart_grip", "value": "Умный хват" },
-    { "name": "reader_orientation_lock_portrait", "value": "Блокировка портретной" },
-    { "name": "reader_orientation_lock_landscape", "value": "Блокировка альбомной" },
-    { "name": "reader_tab_general", "value": "Основные" },
-    { "name": "reader_tab_filter", "value": "Цветовой фильтр" },
-    { "name": "reader_filter_grayscale", "value": "Оттенки серого" },
-    { "name": "reader_filter_invert", "value": "Инверсия цветов" },
-    { "name": "reader_filter_contrast", "value": "Контраст" },
-    { "name": "reader_filter_saturation", "value": "Насыщенность" },
-    { "name": "reader_crop_borders", "value": "Обрезать края" },
-    { "name": "reader_nav_tap_zones", "value": "Зоны нажатия" },
-    { "name": "reader_nav_default", "value": "По умолчанию" },
-    { "name": "reader_nav_ltr", "value": "Слева направо" },
-    { "name": "reader_nav_rtl", "value": "Справа налево" },
-    { "name": "reader_nav_vertical", "value": "Вертикально" },
-    { "name": "reader_nav_edge", "value": "Край" },
-    { "name": "reader_nav_none", "value": "Нет" },
-    { "name": "reader_dual_page", "value": "Две страницы" },
-    { "name": "reader_webtoon_padding", "value": "Боковой отступ вебтуна" },
-    { "name": "reader_set_mode_smart_grip", "value": "Умный хват" },
-    { "name": "ext_install_local", "value": "Установить локально" },
-    { "name": "ext_detail_title", "value": "Сведения о расширении" },
-    { "name": "ext_info_version", "value": "Версия" },
-    { "name": "ext_info_language", "value": "Язык" },
-    { "name": "ext_uninstall_title", "value": "Удалить расширение" },
-    { "name": "ext_uninstall_msg", "value": "Удалить расширение «%s»? Манга в библиотеке сохранится" },
-    { "name": "ext_detail_sources", "value": "Источники" },
-    { "name": "ext_detail_settings", "value": "Настройки" },
-    { "name": "ext_pref_loading", "value": "Загрузка…" },
-    { "name": "ext_pref_failed", "value": "Не удалось применить настройки" },
-    { "name": "ext_detail_missing", "value": "Расширение отсутствует или не загружено" },
-    { "name": "action_filter", "value": "Фильтр" },
-    { "name": "action_update_library", "value": "Обновить библиотеку" },
-    { "name": "action_update_category", "value": "Обновить категорию" },
-    { "name": "action_open_random_manga", "value": "Открыть случайное произведение" },
-    { "name": "action_select_all", "value": "Выбрать всё" },
-    { "name": "action_select_inverse", "value": "Инвертировать выбор" },
-    { "name": "action_move_category", "value": "Переместить в категорию" },
-    { "name": "action_mark_as_read", "value": "Отметить прочитанным" },
-    { "name": "action_mark_as_unread", "value": "Отметить непрочитанным" },
-    { "name": "action_download", "value": "Скачать" },
-    { "name": "action_delete", "value": "Удалить" },
-    { "name": "action_migrate", "value": "Перенести" },
-    { "name": "action_remove_from_library", "value": "Убрать из библиотеки" },
-    { "name": "action_remove_from_library_msg", "value": "Убрать из библиотеки выбранные манги (%d)?" },
-    { "name": "action_download_queued", "value": "В очередь добавлено задач загрузки: %d" },
-    { "name": "library_search_hint", "value": "Поиск в библиотеке" },
-    { "name": "library_no_match", "value": "Нет подходящей манги" },
-    { "name": "lib_sheet_tab_filter", "value": "Фильтр" },
-    { "name": "lib_sheet_tab_sort", "value": "Сортировка" },
-    { "name": "lib_sheet_tab_display", "value": "Отображение" },
-    { "name": "lib_filter_downloaded", "value": "Скачанное" },
-    { "name": "lib_filter_unread", "value": "Непрочитанное" },
-    { "name": "lib_filter_started", "value": "Начатые" },
-    { "name": "lib_filter_bookmarked", "value": "В закладках" },
-    { "name": "lib_filter_completed", "value": "Завершено" },
-    { "name": "lib_filter_tracked", "value": "Отслеживается" },
-    { "name": "lib_sort_alpha", "value": "Название" },
-    { "name": "lib_sort_total", "value": "Число глав" },
-    { "name": "lib_sort_last_read", "value": "Недавнее чтение" },
-    { "name": "lib_sort_last_update", "value": "Время проверки обновлений" },
-    { "name": "lib_sort_unread", "value": "Число непрочитанных" },
-    { "name": "lib_sort_latest_chapter", "value": "Время обновления произведения" },
-    { "name": "lib_sort_fetch_date", "value": "Время получения глав" },
-    { "name": "lib_sort_date_added", "value": "Дата добавления" },
-    { "name": "lib_sort_random", "value": "Случайно" },
-    { "name": "lib_display_compact", "value": "Плотная сетка" },
-    { "name": "lib_display_comfortable", "value": "Свободная сетка" },
-    { "name": "lib_display_cover", "value": "Сетка обложек" },
-    { "name": "lib_display_list", "value": "Список" },
-    { "name": "lib_display_grid_size", "value": "Число в ряду" },
-    { "name": "lib_display_grid_auto", "value": "Авто" },
-    { "name": "lib_display_badges_group", "value": "Значки и кнопки" },
-    { "name": "lib_badge_downloaded", "value": "Число скачанных глав" },
-    { "name": "lib_badge_unread", "value": "Непрочитанные главы" },
-    { "name": "lib_badge_local", "value": "Локальный источник" },
-    { "name": "lib_badge_language", "value": "Язык" },
-    { "name": "lib_badge_continue", "value": "Кнопка «Продолжить чтение»" },
-    { "name": "lib_display_tabs_group", "value": "Вкладки" },
-    { "name": "lib_show_category_tabs", "value": "Показывать вкладки категорий" },
-    { "name": "lib_show_manga_count", "value": "Показывать число произведений" },
-    { "name": "EntryFormAbility_label", "value": "Карточки Honyomi" },
-    { "name": "EntryFormAbility_desc", "value": "Поставщик карточек рабочего стола" },
-    { "name": "card_recent_display", "value": "Продолжить чтение" },
-    { "name": "card_recent_desc", "value": "Быстро продолжить недавно читанную мангу" },
-    { "name": "card_updates_display", "value": "Обновления" },
-    { "name": "card_updates_desc", "value": "Новые непрочитанные главы в библиотеке" },
-    { "name": "card_recent_header", "value": "Продолжить чтение" },
-    { "name": "card_updates_header", "value": "Обновления" },
-    { "name": "card_unread_count", "value": "Непрочитано глав: %d" },
-    { "name": "card_empty_recent", "value": "Истории чтения пока нет" },
-    { "name": "card_empty_updates", "value": "Нет непрочитанных глав" },
-    { "name": "card_open_hint", "value": "Нажмите, чтобы открыть приложение" },
-    { "name": "card_manga_display", "value": "Карточка манги" },
-    { "name": "card_manga_desc", "value": "Добавьте на странице сведений: обложка открывает чтение" },
-    { "name": "card_manga_empty", "value": "Добавьте со страницы сведений о манге" },
-    { "name": "detail_add_to_desktop", "value": "Добавить на рабочий стол" },
-    { "name": "detail_card_added", "value": "Добавлено на рабочий стол" },
-    { "name": "detail_card_add_failed", "value": "Не удалось добавить карточку" },
-    { "name": "card_stats_week_display", "value": "Статистика за неделю" },
-    { "name": "card_stats_week_desc", "value": "Время чтения по дням за эту неделю" },
-    { "name": "card_stats_month_display", "value": "Статистика за месяц" },
-    { "name": "card_stats_month_desc", "value": "Время чтения по дням за этот месяц" },
-    { "name": "card_stats_empty", "value": "Чтения пока нет" },
-    { "name": "action_view_upcoming", "value": "Показать предстоящие обновления" },
-    { "name": "label_upcoming", "value": "Предстоящие" },
-    { "name": "upcoming_guide", "value": "Справка о предстоящих" },
-    { "name": "upcoming_calendar_prev", "value": "Предыдущий месяц" },
-    { "name": "upcoming_calendar_next", "value": "Следующий месяц" },
-    { "name": "pref_filter_update_categories_details", "value": "Произведения, входящие одновременно во включённые и исключённые категории, не отображаются." },
-    { "name": "relative_time_today", "value": "Сегодня" },
-    { "name": "relative_time_days_ago", "value": "%d дн. назад" },
-    { "name": "upcoming_relative_time_days", "value": "Через %d дн." },
-    { "name": "card_upcoming_display", "value": "Предстоящие" },
-    { "name": "card_upcoming_desc", "value": "Календарь ожидаемых обновлений манги в библиотеке" },
-    { "name": "card_upcoming_header", "value": "Предстоящие" },
-    { "name": "card_empty_upcoming", "value": "В библиотеке нет выпускаемой манги" }
-]
+    {
+      "name": "browse_tab_sources",
+      "value": "Источники"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "Расширения"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "Перенести"
+    },
+    {
+      "name": "browse_pin",
+      "value": "Закрепить"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "Открепить"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "Отключить источник"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "Источник отключён"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "Закреплено"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "Нет источников. Установите их на вкладке Расширения"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "Фильтр языков"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "Все"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "Источник недоступен. Возможно, расширение отключено"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "Поиск по всем источникам"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "Ошибка поиска"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "Поиск расширений"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "Совпадений нет"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "Настройки репозитория"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "Обновить репозиторий"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "Выберите источник для переноса"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "Библиотека пуста"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "Выбрать все"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "Снять выбор"
+    },
+    {
+      "name": "migrate_action",
+      "value": "Перенести (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "Перенести"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "Пропустить"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d из %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "Целевой источник"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "Искать мангу в целевом источнике"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "Перенести в эту мангу?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "Перенесено: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "Ошибка переноса: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "Перенос завершён"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "Нет целевого источника"
+    },
+    {
+      "name": "stats_title",
+      "value": "Статистика"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "Обзор"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "В библиотеке"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "Время чтения"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "Завершено"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "Произведения"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "Начато"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "Локально"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "Главы"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "Всего"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "Прочитано"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "Скачано"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "Трекеры"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "Отслеживаемые произведения"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "Средняя оценка"
+    },
+    {
+      "name": "stats_used",
+      "value": "Используется"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "н/д"
+    },
+    {
+      "name": "stats_week",
+      "value": "Неделя"
+    },
+    {
+      "name": "stats_month",
+      "value": "Месяц"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "%s за эту неделю"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "%s за этот месяц"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "В этом периоде нет чтения"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%dд"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dч"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dм"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%dс"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "Вс"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "Пн"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "Вт"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "Ср"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "Чт"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "Пт"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "Сб"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "Вертикально"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "Умный хват"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "Блокировка портретной"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "Блокировка альбомной"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "Основные"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "Цветовой фильтр"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "Оттенки серого"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "Инверсия цветов"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "Контраст"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "Насыщенность"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "Обрезать края"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "Зоны нажатия"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "По умолчанию"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "Слева направо"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "Справа налево"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "Вертикально"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "Край"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "Нет"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Две страницы"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "Боковой отступ вебтуна"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "Умный хват"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "Установить локально"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "Сведения о расширении"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "Версия"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "Язык"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "Удалить расширение"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "Удалить расширение «%s»? Манга в библиотеке сохранится"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "Источники"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "Настройки"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "Загрузка…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "Не удалось применить настройки"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "Расширение отсутствует или не загружено"
+    },
+    {
+      "name": "action_filter",
+      "value": "Фильтр"
+    },
+    {
+      "name": "action_update_library",
+      "value": "Обновить библиотеку"
+    },
+    {
+      "name": "action_update_category",
+      "value": "Обновить категорию"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "Открыть случайное произведение"
+    },
+    {
+      "name": "action_select_all",
+      "value": "Выбрать всё"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "Инвертировать выбор"
+    },
+    {
+      "name": "action_move_category",
+      "value": "Переместить в категорию"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "Отметить прочитанным"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "Отметить непрочитанным"
+    },
+    {
+      "name": "action_download",
+      "value": "Скачать"
+    },
+    {
+      "name": "action_delete",
+      "value": "Удалить"
+    },
+    {
+      "name": "action_migrate",
+      "value": "Перенести"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "Убрать из библиотеки"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "Убрать из библиотеки выбранные манги (%d)?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "В очередь добавлено задач загрузки: %d"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "Поиск в библиотеке"
+    },
+    {
+      "name": "library_no_match",
+      "value": "Нет подходящей манги"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "Фильтр"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "Сортировка"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "Отображение"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "Скачанное"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "Непрочитанное"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "Начатые"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "В закладках"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "Завершено"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "Отслеживается"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "Название"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "Число глав"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "Недавнее чтение"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "Время проверки обновлений"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "Число непрочитанных"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "Время обновления произведения"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "Время получения глав"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "Дата добавления"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "Случайно"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "Плотная сетка"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "Свободная сетка"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "Сетка обложек"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "Список"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "Число в ряду"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "Авто"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "Значки и кнопки"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "Число скачанных глав"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "Непрочитанные главы"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "Локальный источник"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "Язык"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "Кнопка «Продолжить чтение»"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "Вкладки"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "Показывать вкладки категорий"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "Показывать число произведений"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "Карточки Honyomi"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "Поставщик карточек рабочего стола"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "Продолжить чтение"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "Быстро продолжить недавно читанную мангу"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "Обновления"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "Новые непрочитанные главы в библиотеке"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "Продолжить чтение"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "Обновления"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "Непрочитано глав: %d"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "Истории чтения пока нет"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "Нет непрочитанных глав"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "Нажмите, чтобы открыть приложение"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "Карточка манги"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "Добавьте на странице сведений: обложка открывает чтение"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "Добавьте со страницы сведений о манге"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "Добавить на рабочий стол"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "Добавлено на рабочий стол"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "Не удалось добавить карточку"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "Статистика за неделю"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "Время чтения по дням за эту неделю"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "Статистика за месяц"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "Время чтения по дням за этот месяц"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "Чтения пока нет"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "Показать предстоящие обновления"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "Предстоящие"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "Справка о предстоящих"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "Предыдущий месяц"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "Следующий месяц"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "Произведения, входящие одновременно во включённые и исключённые категории, не отображаются."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "Сегодня"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d дн. назад"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "Через %d дн."
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "Предстоящие"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "Календарь ожидаемых обновлений манги в библиотеке"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "Предстоящие"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "В библиотеке нет выпускаемой манги"
+    }
+  ]
 }

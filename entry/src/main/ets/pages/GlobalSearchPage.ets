@@ -1,8 +1,7 @@
-import { common } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
-import { SourceRegistry, Source } from '../source/Source';
-import { MangaRecord, SManga, MangasPage } from '../model/Models';
+import { Source, SourceRegistry } from '../source/Source';
+import { MangaRecord, MangasPage, SManga } from '../model/Models';
 import { DetailParams, GlobalSearchParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
@@ -30,6 +29,160 @@ export struct GlobalSearchPage {
   @State query: string = '';
   @State sections: SearchSection[] = [];
   @State searching: boolean = false;
+
+  async openDetail(record: MangaRecord): Promise<void> {
+    try {
+      const context = Util.hostAbilityContext(this.getUIContext());
+      await AppDb.ready(context);
+      const m: SManga = {
+        key: record.url,
+        title: record.title,
+        coverUrl: record.thumbnailUrl,
+        author: record.author,
+        description: record.description,
+        genre: record.genre,
+        status: record.status,
+      };
+      const id = await MangaRepo.upsertFromSource(record.sourceKey, m, record.contentType);
+      const params: DetailParams = { mangaId: id };
+      this.pathStack.pushPathByName('MangaDetail', params);
+    } catch (e) {
+      Util.toastRes(this.getUIContext(), $r('app.string.browse_open_detail_failed'));
+    }
+  }
+
+  build() {
+    NavDestination() {
+      LimitedBody({ maxWidth: 960 }) {
+        this.bodyContent()
+      }
+    }
+    .hideTitleBar(true)
+    .backgroundColor(this.pal.bg)
+    .onReady((ctx: NavDestinationContext) => {
+      this.pathStack = ctx.pathStack;
+      // 详情页跳转携带初始搜索词：进入即自动执行搜索
+      const params = ctx.pathInfo.param as GlobalSearchParams;
+      if (params !== undefined && params !== null && params.query.trim() !== '') {
+        this.query = params.query.trim();
+        this.startSearch().catch((_e: Error) => {
+        });
+      }
+    })
+  }
+
+  // 页面主体：LimitedBody 承载，大屏限宽居中，窄屏全宽
+  @Builder
+  bodyContent() {
+    Column() {
+      // 顶栏
+      Row() {
+        AppIcon({ name: 'arrow_back', iconSize: 24 })
+          .onClick(() => {
+            this.pathStack.pop();
+          })
+        TextInput({ placeholder: $r('app.string.global_search_hint') })
+          .layoutWeight(1)
+          .height(38)
+          .backgroundColor(this.pal.card)
+          .enterKeyType(EnterKeyType.Search)
+          .onChange((value: string) => {
+            this.query = value;
+          })
+          .onSubmit(() => {
+            this.startSearch();
+          })
+        Button($r('app.string.common_search'))
+          .fontSize(14)
+          .height(38)
+          .backgroundColor(this.pal.primary)
+          .fontColor(this.pal.onPrimary)
+          .margin({ left: 8 })
+          .onClick(() => {
+            this.startSearch();
+          })
+      }
+      .width('100%')
+      .padding({
+        left: 16,
+        right: 16,
+        top: this.statusBarH + 10,
+        bottom: 10
+      })
+
+      // 结果
+      if (this.sections.length === 0) {
+        Column() {
+          EmptyScreen({ message: $r('app.string.global_search_hint') })
+        }
+        .layoutWeight(1)
+        .justifyContent(FlexAlign.Center)
+      } else {
+        Scroll() {
+          Column() {
+            ForEach(this.sections, (section: SearchSection) => {
+              Column() {
+                Row() {
+                  Text(section.name)
+                    .fontSize(14)
+                    .fontWeight(FontWeight.Bold)
+                    .fontColor(this.pal.text)
+                    .layoutWeight(1)
+                  if (section.state === 'loading') {
+                    LoadingProgress()
+                      .width(16)
+                      .height(16)
+                      .color(this.pal.primary)
+                  } else if (section.state === 'error') {
+                    Text($r('app.string.global_search_failed'))
+                      .fontSize(12)
+                      .fontColor('#E05252')
+                  } else {
+                    Text(`${section.results.length}`)
+                      .fontSize(12)
+                      .fontColor(this.pal.sub)
+                  }
+                }
+                .width('100%')
+                .margin({ bottom: 4 })
+
+                if (section.state === 'done' && section.results.length === 0) {
+                  Text($r('app.string.browse_no_results'))
+                    .fontSize(12)
+                    .fontColor(this.pal.sub)
+                    .width('100%')
+                    .padding({ top: 4, bottom: 4 })
+                } else {
+                  ForEach(section.results, (record: MangaRecord) => {
+                    MangaRow({
+                      record: record,
+                      onRowClick: (r: MangaRecord): void => {
+                        this.openDetail(r);
+                      },
+                    })
+                  }, (record: MangaRecord) => `gs-${section.sourceKey}-${record.url}`)
+                }
+              }
+              .width('100%')
+              .alignItems(HorizontalAlign.Start)
+              .padding(16)
+              .backgroundColor(this.pal.card)
+              .borderRadius(14)
+              .margin({ left: 16, right: 16, top: 8 })
+            }, (section: SearchSection) => `sec-${section.sourceKey}-${section.state}-${section.results.length}`)
+          }
+          .width('100%')
+          .padding({ bottom: this.navBarH + 24 })
+        }
+        .layoutWeight(1)
+        .scrollBar(BarState.Auto)
+        .align(Alignment.Top)
+      }
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor(this.pal.bg)
+  }
 
   private updateSection(sourceKey: string, results: MangaRecord[], state: string): void {
     const next: SearchSection[] = [];
@@ -114,155 +267,6 @@ export struct GlobalSearchPage {
     }).catch((_e: Error) => {
       this.searching = false;
     });
-  }
-
-  async openDetail(record: MangaRecord): Promise<void> {
-    try {
-      const context = Util.hostAbilityContext(this.getUIContext());
-      await AppDb.ready(context);
-      const m: SManga = {
-        key: record.url,
-        title: record.title,
-        coverUrl: record.thumbnailUrl,
-        author: record.author,
-        description: record.description,
-        genre: record.genre,
-        status: record.status,
-      };
-      const id = await MangaRepo.upsertFromSource(record.sourceKey, m, record.contentType);
-      const params: DetailParams = { mangaId: id };
-      this.pathStack.pushPathByName('MangaDetail', params);
-    } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.browse_open_detail_failed'));
-    }
-  }
-
-  build() {
-    NavDestination() {
-      LimitedBody({ maxWidth: 960 }) {
-        this.bodyContent()
-      }
-    }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
-    .onReady((ctx: NavDestinationContext) => {
-      this.pathStack = ctx.pathStack;
-      // 详情页跳转携带初始搜索词：进入即自动执行搜索
-      const params = ctx.pathInfo.param as GlobalSearchParams;
-      if (params !== undefined && params !== null && params.query.trim() !== '') {
-        this.query = params.query.trim();
-        this.startSearch().catch((_e: Error) => {
-        });
-      }
-    })
-  }
-
-  // 页面主体：LimitedBody 承载，大屏限宽居中，窄屏全宽
-  @Builder
-  bodyContent() {
-      Column() {
-        // 顶栏
-        Row() {
-          AppIcon({ name: 'arrow_back', iconSize: 24 })
-            .onClick(() => {
-              this.pathStack.pop();
-            })
-          TextInput({ placeholder: $r('app.string.global_search_hint') })
-            .layoutWeight(1)
-            .height(38)
-            .backgroundColor(this.pal.card)
-            .enterKeyType(EnterKeyType.Search)
-            .onChange((value: string) => {
-              this.query = value;
-            })
-            .onSubmit(() => {
-              this.startSearch();
-            })
-          Button($r('app.string.common_search'))
-            .fontSize(14)
-            .height(38)
-            .backgroundColor(this.pal.primary)
-            .fontColor(this.pal.onPrimary)
-            .margin({ left: 8 })
-            .onClick(() => {
-              this.startSearch();
-            })
-        }
-        .width('100%')
-        .padding({ left: 16, right: 16, top: this.statusBarH + 10, bottom: 10 })
-
-        // 结果
-        if (this.sections.length === 0) {
-          Column() {
-            EmptyScreen({ message: $r('app.string.global_search_hint') })
-          }
-          .layoutWeight(1)
-          .justifyContent(FlexAlign.Center)
-        } else {
-          Scroll() {
-            Column() {
-              ForEach(this.sections, (section: SearchSection) => {
-                Column() {
-                  Row() {
-                    Text(section.name)
-                      .fontSize(14)
-                      .fontWeight(FontWeight.Bold)
-                      .fontColor(this.pal.text)
-                      .layoutWeight(1)
-                    if (section.state === 'loading') {
-                      LoadingProgress()
-                        .width(16)
-                        .height(16)
-                        .color(this.pal.primary)
-                    } else if (section.state === 'error') {
-                      Text($r('app.string.global_search_failed'))
-                        .fontSize(12)
-                        .fontColor('#E05252')
-                    } else {
-                      Text(`${section.results.length}`)
-                        .fontSize(12)
-                        .fontColor(this.pal.sub)
-                    }
-                  }
-                  .width('100%')
-                  .margin({ bottom: 4 })
-
-                  if (section.state === 'done' && section.results.length === 0) {
-                    Text($r('app.string.browse_no_results'))
-                      .fontSize(12)
-                      .fontColor(this.pal.sub)
-                      .width('100%')
-                      .padding({ top: 4, bottom: 4 })
-                  } else {
-                    ForEach(section.results, (record: MangaRecord) => {
-                        MangaRow({
-                          record: record,
-                          onRowClick: (r: MangaRecord): void => {
-                           this.openDetail(r);
-                         },
-                       })
-                    }, (record: MangaRecord) => `gs-${section.sourceKey}-${record.url}`)
-                  }
-                }
-                .width('100%')
-                .alignItems(HorizontalAlign.Start)
-                .padding(16)
-                .backgroundColor(this.pal.card)
-                .borderRadius(14)
-                .margin({ left: 16, right: 16, top: 8 })
-              }, (section: SearchSection) => `sec-${section.sourceKey}-${section.state}-${section.results.length}`)
-            }
-            .width('100%')
-            .padding({ bottom: this.navBarH + 24 })
-          }
-          .layoutWeight(1)
-          .scrollBar(BarState.Auto)
-          .align(Alignment.Top)
-        }
-      }
-      .width('100%')
-      .height('100%')
-      .backgroundColor(this.pal.bg)
   }
 }
 

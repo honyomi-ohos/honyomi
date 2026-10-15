@@ -1,5 +1,5 @@
 import { DownloadService } from '../data/DownloadService';
-import { DownloadTask, DownloadedManga, DownloadedChapter } from '../model/Models';
+import { DownloadedChapter, DownloadedManga, DownloadTask } from '../model/Models';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
@@ -18,10 +18,6 @@ struct QueueTaskRow {
   @State total: number = 0;
   @State error: string = '';
 
-  private onQueueChanged = (): void => {
-    this.refreshState();
-  }
-
   aboutToAppear(): void {
     this.state = this.task.state;
     this.progress = this.task.progress;
@@ -32,19 +28,6 @@ struct QueueTaskRow {
 
   aboutToDisappear(): void {
     DownloadService.removeListener(this.onQueueChanged);
-  }
-
-  private refreshState(): void {
-    const queue: DownloadTask[] = DownloadService.getQueue();
-    for (const t of queue) {
-      if (t.chapterId === this.task.chapterId) {
-        this.state = t.state;
-        this.progress = t.progress;
-        this.total = t.total;
-        this.error = t.error;
-        return;
-      }
-    }
   }
 
   // 行溢出菜单（对齐 Mihon download_single.xml：置顶/移底/重试/取消）
@@ -96,6 +79,7 @@ struct QueueTaskRow {
           }
         }
         .width('100%')
+
         Text(this.task.chapterName)
           .fontSize(12)
           .fontColor(this.pal.sub)
@@ -125,7 +109,29 @@ struct QueueTaskRow {
         .padding({ left: 6, right: 2 })
     }
     .width('100%')
-    .padding({ left: 12, right: 12, top: 10, bottom: 10 })
+    .padding({
+      left: 12,
+      right: 12,
+      top: 10,
+      bottom: 10
+    })
+  }
+
+  private onQueueChanged = (): void => {
+    this.refreshState();
+  }
+
+  private refreshState(): void {
+    const queue: DownloadTask[] = DownloadService.getQueue();
+    for (const t of queue) {
+      if (t.chapterId === this.task.chapterId) {
+        this.state = t.state;
+        this.progress = t.progress;
+        this.total = t.total;
+        this.error = t.error;
+        return;
+      }
+    }
   }
 }
 
@@ -143,12 +149,6 @@ export struct DownloadPage {
   @State paused: boolean = false;
   @State fabExpanded: boolean = true;
 
-  private onQueueChanged = (): void => {
-    this.queue = DownloadService.getQueue().slice();
-    this.paused = DownloadService.isPaused();
-    this.loadDownloaded();
-  }
-
   aboutToAppear(): void {
     DownloadService.addListener(this.onQueueChanged);
     this.queue = DownloadService.getQueue().slice();
@@ -158,16 +158,6 @@ export struct DownloadPage {
 
   aboutToDisappear(): void {
     DownloadService.removeListener(this.onQueueChanged);
-  }
-
-  private async loadDownloaded(): Promise<void> {
-    this.downloaded = await DownloadService.listDownloaded();
-    this.loading = false;
-  }
-
-  private deleteChapter(item: DownloadedChapter): void {
-    DownloadService.deleteChapter(item.mangaId, item.chapterId);
-    Util.toastRes(this.getUIContext(), $r('app.string.download_deleted'));
   }
 
   // 排序菜单（对齐 Mihon "Order by chapter number" 的升/降序）
@@ -237,7 +227,12 @@ export struct DownloadPage {
               .fontColor(this.pal.text)
               .backgroundColor(this.isDark ? this.pal.text + '1F' : this.pal.text + '14')
               .borderRadius(11)
-              .padding({ left: 7, right: 7, top: 2, bottom: 2 })
+              .padding({
+                left: 7,
+                right: 7,
+                top: 2,
+                bottom: 2
+              })
               .margin({ left: 8 })
           }
         }
@@ -253,7 +248,12 @@ export struct DownloadPage {
         }
       }
       .width('100%')
-      .padding({ left: 4, right: 8, top: this.statusBarH + 8, bottom: 8 })
+      .padding({
+        left: 4,
+        right: 8,
+        top: this.statusBarH + 8,
+        bottom: 8
+      })
 
       Stack({ alignContent: Alignment.BottomEnd }) {
         List({ space: 0 }) {
@@ -265,8 +265,14 @@ export struct DownloadPage {
                 .fontWeight(FontWeight.Bold)
                 .fontColor(this.pal.sub)
                 .width('100%')
-                .padding({ left: 16, right: 16, top: 10, bottom: 6 })
+                .padding({
+                  left: 16,
+                  right: 16,
+                  top: 10,
+                  bottom: 6
+                })
             }
+
             ForEach(this.queue, (task: DownloadTask) => {
               ListItem() {
                 QueueTaskRow({ task: task })
@@ -327,7 +333,12 @@ export struct DownloadPage {
                         })
                     }
                     .width('100%')
-                    .padding({ left: 16, right: 6, top: 6, bottom: 6 })
+                    .padding({
+                      left: 16,
+                      right: 6,
+                      top: 6,
+                      bottom: 6
+                    })
                   }
                 }, (item: DownloadedChapter) => `d-${item.chapterId}`)
               }
@@ -409,8 +420,29 @@ export struct DownloadPage {
         .fontColor(this.pal.sub)
     }
     .width('100%')
-    .padding({ left: 16, right: 16, top: 14, bottom: 8 })
+    .padding({
+      left: 16,
+      right: 16,
+      top: 14,
+      bottom: 8
+    })
     .backgroundColor(this.pal.bg)
+  }
+
+  private onQueueChanged = (): void => {
+    this.queue = DownloadService.getQueue().slice();
+    this.paused = DownloadService.isPaused();
+    this.loadDownloaded();
+  }
+
+  private async loadDownloaded(): Promise<void> {
+    this.downloaded = await DownloadService.listDownloaded();
+    this.loading = false;
+  }
+
+  private deleteChapter(item: DownloadedChapter): void {
+    DownloadService.deleteChapter(item.mangaId, item.chapterId);
+    Util.toastRes(this.getUIContext(), $r('app.string.download_deleted'));
   }
 }
 

@@ -1,9 +1,8 @@
-import { common } from '@kit.AbilityKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
-import { curves, AnimatorResult, AnimatorOptions } from '@kit.ArkUI';
+import { AnimatorOptions, AnimatorResult, curves } from '@kit.ArkUI';
 import { webview } from '@kit.ArkWeb';
-import { HdsTabs, hdsMaterial, HdsTabsController, HdsAnimationMode, HdsTabsMiniBar } from '@kit.UIDesignKit';
+import { HdsAnimationMode, hdsMaterial, HdsTabs, HdsTabsController, HdsTabsMiniBar } from '@kit.UIDesignKit';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Settings } from '../common/Settings';
@@ -25,7 +24,7 @@ import { ContentOpen } from './ContentOpen';
 import { AppIcon } from './components/AppIcon';
 import { CfVerifySheet } from './components/CfVerifySheet';
 import { TtsMiniBar } from './components/novel/TtsMiniBar';
-import { UPDATES_MORPH, LIBRARY_MORPH, BROWSE_MORPH, PathMorph } from './components/PathMorph';
+import { BROWSE_MORPH, LIBRARY_MORPH, PathMorph, UPDATES_MORPH } from './components/PathMorph';
 import { DetailParams, GlobalSearchParams, OnboardingParams } from '../model/RouteParams';
 import { MangaRecord } from '../model/Models';
 
@@ -74,6 +73,73 @@ struct TabIcon {
   aboutToDisappear(): void {
     this.morphAnimator?.finish();
     this.morphAnimator = undefined;
+  }
+
+  build() {
+    if (this.kind === 'more') {
+      Row({ space: 2 }) {
+        Column()
+          .width(4)
+          .height(4)
+          .borderRadius(2)
+          .backgroundColor(this.iconTint())
+          .translate({ y: this.moreY0 })
+        Column()
+          .width(4)
+          .height(4)
+          .borderRadius(2)
+          .backgroundColor(this.iconTint())
+          .translate({ y: this.moreY1 })
+        Column()
+          .width(4)
+          .height(4)
+          .borderRadius(2)
+          .backgroundColor(this.iconTint())
+          .translate({ y: this.moreY2 })
+      }
+      .width(24)
+      .height(24)
+      .justifyContent(FlexAlign.Center)
+    } else if (this.kind === 'history') {
+      Stack() {
+        AppIcon({ name: 'tab_history_hands', iconSize: 24, tint: this.iconTint() })
+        AppIcon({ name: 'tab_history_arrow', iconSize: 24, tint: this.iconTint() })
+          .rotate({ angle: this.histAngle, centerX: '54.2%', centerY: '50%' })
+      }
+      .width(24)
+      .height(24)
+    } else if (this.kind === 'browse') {
+      Stack() {
+        AppIcon({ name: 'tab_browse_ring', iconSize: 24, tint: this.iconTint() })
+        Path()
+          .width(24)
+          .height(24)
+          .commands(BROWSE_MORPH.valueAt(this.morphT, this.morphScale()))
+          .fill(this.iconTint())
+          .stroke(Color.Transparent)
+          .strokeWidth(0)
+        AppIcon({ name: 'tab_browse_dot', iconSize: 24, tint: this.iconTint() })
+          .scale({ x: this.browseDotScale, y: this.browseDotScale })
+      }
+      .width(24)
+      .height(24)
+      .rotate({ angle: 180 * this.morphT })
+    } else {
+      Stack() {
+        if (this.kind === 'library') {
+          AppIcon({ name: 'tab_library_angle', iconSize: 24, tint: this.iconTint() })
+        }
+        Path()
+          .width(24)
+          .height(24)
+          .commands(this.morphOf().valueAt(this.morphT, this.morphScale()))
+          .fill(this.iconTint())
+          .stroke(Color.Transparent)
+          .strokeWidth(0)
+      }
+      .width(24)
+      .height(24)
+    }
   }
 
   private iconTint(): ResourceColor {
@@ -199,75 +265,71 @@ struct TabIcon {
     const end = sel ? 0.8 : -2.84;
     const cb = curves.cubicBezierCurve(0.5, 0, 0.5, 1);
     this.getUIContext().keyframeAnimateTo({ iterations: 1 }, [
-      { duration: 83, curve: cb, event: (): void => { this.moreY0 = 0; } },
-      { duration: 100, curve: cb, event: (): void => { this.moreY0 = mid; } },
-      { duration: 133, curve: cb, event: (): void => { this.moreY0 = end; } },
-      { duration: 67, curve: cb, event: (): void => { this.moreY0 = 0; } },
+      {
+        duration: 83, curve: cb, event: (): void => {
+        this.moreY0 = 0;
+      }
+      },
+      {
+        duration: 100, curve: cb, event: (): void => {
+        this.moreY0 = mid;
+      }
+      },
+      {
+        duration: 133, curve: cb, event: (): void => {
+        this.moreY0 = end;
+      }
+      },
+      {
+        duration: 67, curve: cb, event: (): void => {
+        this.moreY0 = 0;
+      }
+      },
     ]);
     this.getUIContext().keyframeAnimateTo({ iterations: 1 }, [
-      { duration: 150, curve: cb, event: (): void => { this.moreY1 = 0; } },
-      { duration: 100, curve: cb, event: (): void => { this.moreY1 = mid; } },
-      { duration: 133, curve: cb, event: (): void => { this.moreY1 = end; } },
-      { duration: 67, curve: cb, event: (): void => { this.moreY1 = 0; } },
+      {
+        duration: 150, curve: cb, event: (): void => {
+        this.moreY1 = 0;
+      }
+      },
+      {
+        duration: 100, curve: cb, event: (): void => {
+        this.moreY1 = mid;
+      }
+      },
+      {
+        duration: 133, curve: cb, event: (): void => {
+        this.moreY1 = end;
+      }
+      },
+      {
+        duration: 67, curve: cb, event: (): void => {
+        this.moreY1 = 0;
+      }
+      },
     ]);
     this.getUIContext().keyframeAnimateTo({ iterations: 1 }, [
-      { duration: 217, curve: cb, event: (): void => { this.moreY2 = 0; } },
-      { duration: 100, curve: cb, event: (): void => { this.moreY2 = mid; } },
-      { duration: 133, curve: cb, event: (): void => { this.moreY2 = end; } },
-      { duration: 67, curve: cb, event: (): void => { this.moreY2 = 0; } },
+      {
+        duration: 217, curve: cb, event: (): void => {
+        this.moreY2 = 0;
+      }
+      },
+      {
+        duration: 100, curve: cb, event: (): void => {
+        this.moreY2 = mid;
+      }
+      },
+      {
+        duration: 133, curve: cb, event: (): void => {
+        this.moreY2 = end;
+      }
+      },
+      {
+        duration: 67, curve: cb, event: (): void => {
+        this.moreY2 = 0;
+      }
+      },
     ]);
-  }
-
-  build() {
-    if (this.kind === 'more') {
-      Row({ space: 2 }) {
-        Column().width(4).height(4).borderRadius(2).backgroundColor(this.iconTint()).translate({ y: this.moreY0 })
-        Column().width(4).height(4).borderRadius(2).backgroundColor(this.iconTint()).translate({ y: this.moreY1 })
-        Column().width(4).height(4).borderRadius(2).backgroundColor(this.iconTint()).translate({ y: this.moreY2 })
-      }
-      .width(24)
-      .height(24)
-      .justifyContent(FlexAlign.Center)
-    } else if (this.kind === 'history') {
-      Stack() {
-        AppIcon({ name: 'tab_history_hands', iconSize: 24, tint: this.iconTint() })
-        AppIcon({ name: 'tab_history_arrow', iconSize: 24, tint: this.iconTint() })
-          .rotate({ angle: this.histAngle, centerX: '54.2%', centerY: '50%' })
-      }
-      .width(24)
-      .height(24)
-    } else if (this.kind === 'browse') {
-      Stack() {
-        AppIcon({ name: 'tab_browse_ring', iconSize: 24, tint: this.iconTint() })
-        Path()
-          .width(24)
-          .height(24)
-          .commands(BROWSE_MORPH.valueAt(this.morphT, this.morphScale()))
-          .fill(this.iconTint())
-          .stroke(Color.Transparent)
-          .strokeWidth(0)
-        AppIcon({ name: 'tab_browse_dot', iconSize: 24, tint: this.iconTint() })
-          .scale({ x: this.browseDotScale, y: this.browseDotScale })
-      }
-      .width(24)
-      .height(24)
-      .rotate({ angle: 180 * this.morphT })
-    } else {
-      Stack() {
-        if (this.kind === 'library') {
-          AppIcon({ name: 'tab_library_angle', iconSize: 24, tint: this.iconTint() })
-        }
-        Path()
-          .width(24)
-          .height(24)
-          .commands(this.morphOf().valueAt(this.morphT, this.morphScale()))
-          .fill(this.iconTint())
-          .stroke(Color.Transparent)
-          .strokeWidth(0)
-      }
-      .width(24)
-      .height(24)
-    }
   }
 }
 
@@ -281,7 +343,8 @@ struct RailItem {
   title: ResourceStr = '';
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State hovered: boolean = false;
-  onTap: () => void = () => {};
+  onTap: () => void = () => {
+  };
 
   build() {
     Row() {
@@ -333,103 +396,18 @@ struct Index {
   @State mountedMask: number = 1;
   // 栈顶路由名：'' = 首页；仅设置页（自带左侧分类导航，避免双栏）时外层导航收窄为图标栏，其余路由页均显示完整导航
   @State topRouteName: string = '';
+  // 听书进行中才挂载迷你条覆盖层（避免空覆盖层拦截整页触摸）
+  @State ttsActive: boolean = false;
   // 首启引导只拉起一次（onPageShow 每次回前台都会触发，需防重复）
   private onboardingLaunched: boolean = false;
   // 返回首页兜底同步的 450ms 延迟定时器：销毁时清理，防对已销毁组件执行 animateTo
   private navSyncTimerId: number = -1;
   private tabsController: HdsTabsController = new HdsTabsController();
+  // HDS 组件（@kit.UIDesignKit）由系统 HDS 运行时注册，预览器环境 HdsTabs 为
   // 无 HDS 运行时环境（预览器）的标准 Tabs 回退控制器
   private fallbackTabsController: TabsController = new TabsController();
-  // HDS 组件（@kit.UIDesignKit）由系统 HDS 运行时注册，预览器环境 HdsTabs 为
   // null；探测失败时回退标准 Tabs，保证预览器可正常渲染（真机走 HdsTabs 不变）
   private hdsAvailable: boolean = HdsTabs !== null && HdsTabs !== undefined;
-  // 听书进行中才挂载迷你条覆盖层（避免空覆盖层拦截整页触摸）
-  @State ttsActive: boolean = false;
-  private readonly onTtsState: TtsServiceStateHandler =
-    (_playing: boolean, _paused: boolean, _mangaId: number, _chapterId: number): void => {
-      this.ttsActive = TtsPlaybackService.isActive();
-    };
-
-  // lg 断点（≥840vp）：底部页签切换为侧边导航栏（华为大屏导航规范）
-  private isWide(): boolean {
-    return Bp.isWide(this.windowW);
-  }
-
-  private tabMounted(index: number): boolean {
-    return (this.mountedMask & (1 << index)) !== 0;
-  }
-
-  private switchTab(index: number): void {
-    if (!this.tabMounted(index)) {
-      this.mountedMask = this.mountedMask | (1 << index);
-    }
-    this.currentTab = index;
-  }
-
-  // 路由切换后同步栈顶路由名（驱动外层导航 完整栏 ↔ 图标栏）。
-  // 仅在转场结束后（didShow）触发，且宽度变化放入动画：若在转场中途切换
-  // 导航宽度，内容区会跟着重排，出现首页透出到推入页下层、页面闪白等问题
-  private syncTopRoute(): void {
-    const names: string[] = this.pathStack.getAllPathName();
-    const top: string = names.length > 0 ? names[names.length - 1] : '';
-    if (top === this.topRouteName) {
-      return;
-    }
-    this.getUIContext().animateTo({ duration: 250, curve: Curve.EaseOut }, (): void => {
-      this.topRouteName = top;
-    });
-  }
-
-  // 侧边导航点击：首页内切换页签/触发快捷操作；路由页内点击先清栈回首页再切换
-  private railTap(index: number): void {
-    if (this.topRouteName !== '') {
-      this.pathStack.clear();
-      this.switchTab(index);
-      return;
-    }
-    if (this.currentTab === index) {
-      this.onTabReselect(index);
-    } else {
-      this.switchTab(index);
-    }
-  }
-
-  // 沉浸式路由（阅读器/听书/视频播放器/新手引导）：全屏体验，宽屏下不显示左侧导航
-  private isImmersiveRoute(name: string): boolean {
-    return name === 'Reader' || name === 'NovelReader'
-      || name === 'TtsPlayer' || name === 'VideoPlayer'
-      || name === 'Onboarding';
-  }
-
-  // 复刻 Mihon 底部导航快捷操作：再次点击已选中的页签触发 onReselect
-  // （HomeScreen.NavigationSuiteItem：已选中时调用 tab.onReselect(navigator)）
-  // - 书架: 打开筛选/显示设置弹层；更新: 下载队列；历史: 续读最近作品
-  // - 浏览: 全局搜索；更多: 设置页
-  private onTabReselect(index: number): void {
-    if (index === 0) {
-      AppStorage.setOrCreate(AppKeys.LIB_RESELECT, (AppStorage.get<number>(AppKeys.LIB_RESELECT) ?? 0) + 1);
-    } else if (index === 1) {
-      this.pathStack.pushPathByName('Downloads', null);
-    } else if (index === 2) {
-      AppStorage.setOrCreate(AppKeys.HISTORY_RESELECT, (AppStorage.get<number>(AppKeys.HISTORY_RESELECT) ?? 0) + 1);
-    } else if (index === 3) {
-      this.pathStack.pushPathByName('GlobalSearch', null);
-    } else if (index === 4) {
-      this.pathStack.pushPathByName('Settings', null);
-    }
-  }
-
-  // 进入多选隐藏页签栏，退出多选恢复（HdsTabsController 官方隐藏/显示动效）；宽屏侧边栏常驻不参与
-  private onLibSelectionChanged(): void {
-    if (this.isWide() || !this.hdsAvailable) {
-      return;
-    }
-    if (this.libSelectionCount > 0) {
-      this.tabsController.applyHideAnimation(HdsAnimationMode.CLICK_ANIMATION);
-    } else {
-      this.tabsController.applyShowAnimation(HdsAnimationMode.CLICK_ANIMATION);
-    }
-  }
 
   aboutToAppear(): void {
     this.currentTab = Settings.getStartTab();
@@ -466,6 +444,495 @@ struct Index {
     if (!Settings.getShownOnboarding()) {
       const params: OnboardingParams = { firstRun: true };
       this.pathStack.pushPathByName('Onboarding', params);
+    }
+  }
+
+  // 听书迷你条：听书进行中挂入 HdsTabs 浮动条 miniBar（对齐 MusicHome 手机端）
+  @Builder
+  ttsMiniBar() {
+    TtsMiniBar({
+      onOpenPlayer: (): void => {
+        this.pathStack.pushPathByName('TtsPlayer', null);
+      }
+    })
+  }
+
+  // 路由切换后同步栈顶路由名（驱动外层导航 完整栏 ↔ 图标栏）。
+  // 仅在转场结束后（didShow）触发，且宽度变化放入动画：若在转场中途切换
+
+  @Builder
+  tabBuilder(kind: string, title: ResourceStr, index: number) {
+    Column({ space: 2 }) {
+      TabIcon({ kind: kind, selected: this.currentTab === index })
+      Text(title)
+        .fontSize(11)
+        .fontColor(this.currentTab === index ? this.pal.primary : this.pal.sub)
+    }
+    .justifyContent(FlexAlign.Center)
+    .height('100%')
+    .onClick(() => {
+      // 已选中时再次点击触发快捷操作；未选中时交由 HdsTabs 自行切换
+      if (this.currentTab === index) {
+        this.onTabReselect(index);
+      }
+    })
+  }
+
+  // 手机端五个页签内容（HdsTabs 与标准 Tabs 回退共用）
+  @Builder
+  phoneTabContents() {
+    TabContent() {
+      Column() {
+        LibraryPage()
+      }
+      .height('100%')
+      .padding({ top: this.statusBarH })
+    }
+    .tabBar(this.tabBuilder('library', $r('app.string.tab_library'), 0))
+
+    TabContent() {
+      Column() {
+        UpdatesPage()
+      }
+      .height('100%')
+      .padding({ top: this.statusBarH })
+    }
+    .tabBar(this.tabBuilder('updates', $r('app.string.tab_updates'), 1))
+
+    TabContent() {
+      Column() {
+        HistoryPage()
+      }
+      .height('100%')
+      .padding({ top: this.statusBarH })
+    }
+    .tabBar(this.tabBuilder('history', $r('app.string.tab_history'), 2))
+
+    TabContent() {
+      Column() {
+        BrowsePage()
+      }
+      .height('100%')
+      .padding({ top: this.statusBarH })
+    }
+    .tabBar(this.tabBuilder('browse', $r('app.string.tab_browse'), 3))
+
+    TabContent() {
+      Column() {
+        MorePage()
+      }
+      .height('100%')
+      .padding({ top: this.statusBarH })
+    }
+    .tabBar(this.tabBuilder('more', $r('app.string.tab_more'), 4))
+  }
+
+  // 宽屏常驻左侧导航（置于 Navigation 之外）：推入任意路由页（分类/下载/设置等）均不遮挡，PC 上随时切页签
+  @Builder
+  wideRail() {
+    Column({ space: 4 }) {
+      RailItem({
+        kind: 'library',
+        title: $r('app.string.tab_library'),
+        selected: this.currentTab === 0,
+        onTap: (): void => {
+          this.railTap(0);
+        }
+      })
+      RailItem({
+        kind: 'updates',
+        title: $r('app.string.tab_updates'),
+        selected: this.currentTab === 1,
+        onTap: (): void => {
+          this.railTap(1);
+        }
+      })
+      RailItem({
+        kind: 'history',
+        title: $r('app.string.tab_history'),
+        selected: this.currentTab === 2,
+        onTap: (): void => {
+          this.railTap(2);
+        }
+      })
+      RailItem({
+        kind: 'browse',
+        title: $r('app.string.tab_browse'),
+        selected: this.currentTab === 3,
+        onTap: (): void => {
+          this.railTap(3);
+        }
+      })
+      RailItem({
+        kind: 'more',
+        title: $r('app.string.tab_more'),
+        selected: this.currentTab === 4,
+        onTap: (): void => {
+          this.railTap(4);
+        }
+      })
+    }
+    .width(200)
+    .height('100%')
+    .padding({
+      top: this.statusBarH + 8,
+      left: 12,
+      right: 12,
+      bottom: 8
+    })
+    .backgroundColor(this.pal.bg)
+    .border({ width: { right: 1 }, color: this.pal.divider })
+    // 渲染在 Navigation（Row 中靠后的兄弟节点）之上：推入路由页时首页向左平移
+    // 让位，Rail 不被平移中的首页内容盖住
+    .zIndex(1)
+  }
+
+  // 复刻 Mihon 底部导航快捷操作：再次点击已选中的页签触发 onReselect
+  // （HomeScreen.NavigationSuiteItem：已选中时调用 tab.onReselect(navigator)）
+  // - 书架: 打开筛选/显示设置弹层；更新: 下载队列；历史: 续读最近作品
+
+  // 宽屏路由页（设置等）内的收窄图标栏：仅图标无文本，避免与设置页自身左侧分类导航形成双栏
+  @Builder
+  wideRailMini() {
+    Column({ space: 4 }) {
+      RailItem({
+        kind: 'library',
+        compact: true,
+        selected: this.currentTab === 0,
+        onTap: (): void => {
+          this.railTap(0);
+        }
+      })
+      RailItem({
+        kind: 'updates',
+        compact: true,
+        selected: this.currentTab === 1,
+        onTap: (): void => {
+          this.railTap(1);
+        }
+      })
+      RailItem({
+        kind: 'history',
+        compact: true,
+        selected: this.currentTab === 2,
+        onTap: (): void => {
+          this.railTap(2);
+        }
+      })
+      RailItem({
+        kind: 'browse',
+        compact: true,
+        selected: this.currentTab === 3,
+        onTap: (): void => {
+          this.railTap(3);
+        }
+      })
+      RailItem({
+        kind: 'more',
+        compact: true,
+        selected: this.currentTab === 4,
+        onTap: (): void => {
+          this.railTap(4);
+        }
+      })
+    }
+    .width(72)
+    .height('100%')
+    .padding({
+      top: this.statusBarH + 8,
+      left: 8,
+      right: 8,
+      bottom: 8
+    })
+    .backgroundColor(this.pal.bg)
+    .border({ width: { right: 1 }, color: this.pal.divider })
+    .zIndex(1)
+  }
+
+  // 宽屏内容区：页签首次访问时挂载、驻留保状态（无页签栏，导航由左侧 Rail 承担）
+  @Builder
+  wideContent() {
+    Stack() {
+      if (this.tabMounted(0)) {
+        Column() {
+          LibraryPage()
+        }
+        .height('100%')
+        .padding({ top: this.statusBarH })
+        .visibility(this.currentTab === 0 ? Visibility.Visible : Visibility.None)
+      }
+      if (this.tabMounted(1)) {
+        Column() {
+          UpdatesPage()
+        }
+        .height('100%')
+        .padding({ top: this.statusBarH })
+        .visibility(this.currentTab === 1 ? Visibility.Visible : Visibility.None)
+      }
+      if (this.tabMounted(2)) {
+        Column() {
+          HistoryPage()
+        }
+        .height('100%')
+        .padding({ top: this.statusBarH })
+        .visibility(this.currentTab === 2 ? Visibility.Visible : Visibility.None)
+      }
+      if (this.tabMounted(3)) {
+        Column() {
+          BrowsePage()
+        }
+        .height('100%')
+        .padding({ top: this.statusBarH })
+        .visibility(this.currentTab === 3 ? Visibility.Visible : Visibility.None)
+      }
+      if (this.tabMounted(4)) {
+        Column() {
+          MorePage()
+        }
+        .height('100%')
+        .padding({ top: this.statusBarH })
+        .visibility(this.currentTab === 4 ? Visibility.Visible : Visibility.None)
+      }
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor(this.pal.bg)
+  }
+
+  // CF 人机验证半模态内容：Mihon 风格工具栏 + 验证网页
+  @Builder
+  cfSheetBuilder() {
+    CfVerifySheet({
+      challengeUrl: this.cfChallengeUrl,
+      onClose: (): void => {
+        this.cfSheetShow = false;
+      }
+    })
+  }
+
+  build() {
+    Row() {
+      // 宽屏常驻左侧导航：置于 Navigation 之外，推入任意路由页（分类/下载/设置等）均不遮挡；
+      // 仅设置页（自带左侧分类导航，避免双栏）收窄为图标栏；沉浸式页（阅读器/播放器）全屏隐藏
+      if (this.isWide() && !this.isImmersiveRoute(this.topRouteName)) {
+        if (this.topRouteName === 'Settings') {
+          this.wideRailMini()
+        } else {
+          this.wideRail()
+        }
+      }
+      Navigation(this.pathStack) {
+        Stack({ alignContent: Alignment.TopStart }) {
+          if (this.isWide()) {
+            this.wideContent()
+          } else if (this.hdsAvailable) {
+            HdsTabs({ barPosition: BarPosition.End, index: this.currentTab, controller: this.tabsController }) {
+              this.phoneTabContents()
+            }
+            .scrollable(true)
+            .barOverlap(true)
+            .barPosition(BarPosition.End)
+            .vertical(false)
+            .barFloatingStyle({
+              // PC 无小白条避让区（navBarH=0）时钳制最小窗口底边距，避免页签条贴边
+              barBottomMargin: Math.max(this.navBarH + 2, 8),
+              systemMaterialEffect: {
+                materialType: hdsMaterial.MaterialType.IMMERSIVE,
+                materialLevel: hdsMaterial.MaterialLevel.ADAPTIVE
+              },
+              // 听书迷你条（对齐 MusicHome）：听书进行中由 HDS 绘制胶囊背景，
+              // 与浮动页签条堆叠悬浮于导航条上方（barBottomMargin 控制）
+              miniBar: this.ttsMiniBarOptions()
+            })
+            // onSelected 在切换动画开始时触发，让图标动画与 Mihon 一样即刻起播（onChange 在切换完成后才触发）
+            .onSelected((index: number) => {
+              this.currentTab = index;
+            })
+            .onChange((index: number) => {
+              this.currentTab = index;
+            })
+            .width('100%')
+            .height('100%')
+          } else {
+            // 无 HDS 运行时（预览器等）：回退标准 Tabs，保证页面可渲染
+            Tabs({ barPosition: BarPosition.End, index: this.currentTab, controller: this.fallbackTabsController }) {
+              this.phoneTabContents()
+            }
+            .scrollable(true)
+            .vertical(false)
+            .onChange((index: number) => {
+              this.currentTab = index;
+            })
+            .width('100%')
+            .height('100%')
+          }
+          // 听书迷你条（PC/宽屏无底部页签条）：MusicHome 风格胶囊悬于右下角
+          // （28 圆角 + 1px 描边 + 卡片底色，无阴影）
+          if (this.isWide() && this.ttsActive) {
+            Stack({ alignContent: Alignment.BottomEnd }) {
+              Column() {
+                TtsMiniBar({
+                  onOpenPlayer: (): void => {
+                    this.pathStack.pushPathByName('TtsPlayer', null);
+                  }
+                })
+              }
+              .width(360)
+              .height(56)
+              .justifyContent(FlexAlign.Center)
+              .borderRadius(28)
+              .backgroundColor(this.pal.card)
+              .border({ width: 1, color: this.pal.divider })
+              .margin({ right: 24, bottom: 16 })
+            }
+            .width('100%')
+            .height('100%')
+            .hitTestBehavior(HitTestMode.Transparent)
+          }
+        }
+        .width('100%')
+        .height('100%')
+        .bindSheet($$this.cfSheetShow, this.cfSheetBuilder(), {
+          height: SheetSize.LARGE,
+          detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+          dragBar: true,
+          showClose: false,
+          preferType: this.isWide() ? SheetType.CENTER : SheetType.BOTTOM,
+          width: this.isWide() ? 560 : '100%',
+          blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
+          maskColor: 'rgba(0,0,0,0.45)',
+          onDisappear: (): void => {
+            // 弹层关闭：回写 ArkWeb 会话 Cookie 到 CookieJar，并复位 challenge 标记
+            const url = this.cfChallengeUrl;
+            if (url !== '') {
+              this.cfChallengeUrl = '';
+              webview.WebCookieManager.fetchCookie(url).then((cookies: string) => {
+                CookieJar.importCookieString(url, cookies);
+              }).catch((_e: Error) => {
+              });
+            }
+          }
+        })
+      }
+      .layoutWeight(1)
+      .hideTitleBar(true)
+      .mode(NavigationMode.Stack)
+      .backgroundColor(this.pal.bg)
+      // 裁剪内容到自身边界：Stack 模式推入路由页时首页向左平移让位，
+      // 不裁剪会溢出画到左侧 Rail 区域上（Rail 被"挤压"至不可见）
+      .clip(true)
+      // 返回首页时兜底同步（didShow 正常覆盖此场景，此处仅防极端未触发导致
+      // 导航卡在图标栏）；延迟到转场结束后执行，避免导航宽度在动画中途跳变
+      .onNavBarStateChange((isVisible: boolean) => {
+        if (isVisible) {
+          if (this.navSyncTimerId >= 0) {
+            clearTimeout(this.navSyncTimerId);
+          }
+          this.navSyncTimerId = setTimeout((): void => {
+            this.navSyncTimerId = -1;
+            this.syncTopRoute();
+          }, 450);
+        }
+      })
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor(this.pal.bg)
+    // 一多断点跟踪：外层 Row = 整窗宽度（含 Rail），避免 840vp 临界值来回抖动；
+    // 同步发布到 AppStorage，供各页面按断点做限宽/边距适配
+    .onAreaChange((_old: Area, newArea: Area) => {
+      const w = newArea.width;
+      if (typeof w === 'number') {
+        this.windowW = w;
+        AppStorage.setOrCreate(AppKeys.WINDOW_W, w);
+        // 页签浮动条避让高度：宽屏无底部页签条时为 0，页签页不再预留大片底部空白
+        AppStorage.setOrCreate(AppKeys.TAB_PAD_H, Bp.isWide(w) ? 0 : 76);
+      }
+    })
+  }
+
+  private readonly onTtsState: TtsServiceStateHandler =
+    (_playing: boolean, _paused: boolean, _mangaId: number, _chapterId: number): void => {
+      this.ttsActive = TtsPlaybackService.isActive();
+    };
+
+  // lg 断点（≥840vp）：底部页签切换为侧边导航栏（华为大屏导航规范）
+  private isWide(): boolean {
+    return Bp.isWide(this.windowW);
+  }
+
+  private tabMounted(index: number): boolean {
+    return (this.mountedMask & (1 << index)) !== 0;
+  }
+
+  private switchTab(index: number): void {
+    if (!this.tabMounted(index)) {
+      this.mountedMask = this.mountedMask | (1 << index);
+    }
+    this.currentTab = index;
+  }
+
+  // CF 验证 URL 变化：弹出底部半模态验证弹层（液态玻璃）。弹层位于窗口 popup 层，
+
+  // 导航宽度，内容区会跟着重排，出现首页透出到推入页下层、页面闪白等问题
+  private syncTopRoute(): void {
+    const names: string[] = this.pathStack.getAllPathName();
+    const top: string = names.length > 0 ? names[names.length - 1] : '';
+    if (top === this.topRouteName) {
+      return;
+    }
+    this.getUIContext().animateTo({ duration: 250, curve: Curve.EaseOut }, (): void => {
+      this.topRouteName = top;
+    });
+  }
+
+  // 侧边导航点击：首页内切换页签/触发快捷操作；路由页内点击先清栈回首页再切换
+  private railTap(index: number): void {
+    if (this.topRouteName !== '') {
+      this.pathStack.clear();
+      this.switchTab(index);
+      return;
+    }
+    if (this.currentTab === index) {
+      this.onTabReselect(index);
+    } else {
+      this.switchTab(index);
+    }
+  }
+
+  // 回填书架持久化封面：localCover 缺失、文件被清或源封面已变更时重新持久化；
+
+  // 沉浸式路由（阅读器/听书/视频播放器/新手引导）：全屏体验，宽屏下不显示左侧导航
+  private isImmersiveRoute(name: string): boolean {
+    return name === 'Reader' || name === 'NovelReader'
+      || name === 'TtsPlayer' || name === 'VideoPlayer'
+      || name === 'Onboarding';
+  }
+
+  // - 浏览: 全局搜索；更多: 设置页
+  private onTabReselect(index: number): void {
+    if (index === 0) {
+      AppStorage.setOrCreate(AppKeys.LIB_RESELECT, (AppStorage.get<number>(AppKeys.LIB_RESELECT) ?? 0) + 1);
+    } else if (index === 1) {
+      this.pathStack.pushPathByName('Downloads', null);
+    } else if (index === 2) {
+      AppStorage.setOrCreate(AppKeys.HISTORY_RESELECT, (AppStorage.get<number>(AppKeys.HISTORY_RESELECT) ?? 0) + 1);
+    } else if (index === 3) {
+      this.pathStack.pushPathByName('GlobalSearch', null);
+    } else if (index === 4) {
+      this.pathStack.pushPathByName('Settings', null);
+    }
+  }
+
+  // 进入多选隐藏页签栏，退出多选恢复（HdsTabsController 官方隐藏/显示动效）；宽屏侧边栏常驻不参与
+  private onLibSelectionChanged(): void {
+    if (this.isWide() || !this.hdsAvailable) {
+      return;
+    }
+    if (this.libSelectionCount > 0) {
+      this.tabsController.applyHideAnimation(HdsAnimationMode.CLICK_ANIMATION);
+    } else {
+      this.tabsController.applyShowAnimation(HdsAnimationMode.CLICK_ANIMATION);
     }
   }
 
@@ -575,7 +1042,6 @@ struct Index {
     }
   }
 
-  // CF 验证 URL 变化：弹出底部半模态验证弹层（液态玻璃）。弹层位于窗口 popup 层，
   // 压在任意 NavDestination（含插件浏览页）之上；弹层存活期间 URL 再变化由其内部热切换
   private onCfUrlChanged(): void {
     if (this.cfChallengeUrl === '') {
@@ -596,7 +1062,6 @@ struct Index {
     this.backfillLibraryCovers();
   }
 
-  // 回填书架持久化封面：localCover 缺失、文件被清或源封面已变更时重新持久化；
   // 逐条串行落盘（下载+AVIF→JPEG 转码），完成后统一写 libDirty 刷新书架
   private async backfillLibraryCovers(): Promise<void> {
     try {
@@ -648,16 +1113,6 @@ struct Index {
     }
   }
 
-  // 听书迷你条：听书进行中挂入 HdsTabs 浮动条 miniBar（对齐 MusicHome 手机端）
-  @Builder
-  ttsMiniBar() {
-    TtsMiniBar({
-      onOpenPlayer: (): void => {
-        this.pathStack.pushPathByName('TtsPlayer', null);
-      }
-    })
-  }
-
   // 听书未进行时不配置 miniBar，避免空胶囊
   private ttsMiniBarOptions(): HdsTabsMiniBar | undefined {
     if (!this.ttsActive) {
@@ -668,352 +1123,5 @@ struct Index {
         this.ttsMiniBar();
       }
     };
-  }
-
-  @Builder
-  tabBuilder(kind: string, title: ResourceStr, index: number) {
-    Column({ space: 2 }) {
-      TabIcon({ kind: kind, selected: this.currentTab === index })
-      Text(title)
-        .fontSize(11)
-        .fontColor(this.currentTab === index ? this.pal.primary : this.pal.sub)
-    }
-    .justifyContent(FlexAlign.Center)
-    .height('100%')
-    .onClick(() => {
-      // 已选中时再次点击触发快捷操作；未选中时交由 HdsTabs 自行切换
-      if (this.currentTab === index) {
-        this.onTabReselect(index);
-      }
-    })
-  }
-
-  // 手机端五个页签内容（HdsTabs 与标准 Tabs 回退共用）
-  @Builder
-  phoneTabContents() {
-    TabContent() {
-      Column() {
-        LibraryPage()
-      }
-      .height('100%')
-      .padding({ top: this.statusBarH })
-    }
-    .tabBar(this.tabBuilder('library', $r('app.string.tab_library'), 0))
-
-    TabContent() {
-      Column() {
-        UpdatesPage()
-      }
-      .height('100%')
-      .padding({ top: this.statusBarH })
-    }
-    .tabBar(this.tabBuilder('updates', $r('app.string.tab_updates'), 1))
-
-    TabContent() {
-      Column() {
-        HistoryPage()
-      }
-      .height('100%')
-      .padding({ top: this.statusBarH })
-    }
-    .tabBar(this.tabBuilder('history', $r('app.string.tab_history'), 2))
-
-    TabContent() {
-      Column() {
-        BrowsePage()
-      }
-      .height('100%')
-      .padding({ top: this.statusBarH })
-    }
-    .tabBar(this.tabBuilder('browse', $r('app.string.tab_browse'), 3))
-
-    TabContent() {
-      Column() {
-        MorePage()
-      }
-      .height('100%')
-      .padding({ top: this.statusBarH })
-    }
-    .tabBar(this.tabBuilder('more', $r('app.string.tab_more'), 4))
-  }
-
-  // 宽屏常驻左侧导航（置于 Navigation 之外）：推入任意路由页（分类/下载/设置等）均不遮挡，PC 上随时切页签
-  @Builder
-  wideRail() {
-    Column({ space: 4 }) {
-      RailItem({
-        kind: 'library', title: $r('app.string.tab_library'),
-        selected: this.currentTab === 0,
-        onTap: (): void => { this.railTap(0); }
-      })
-      RailItem({
-        kind: 'updates', title: $r('app.string.tab_updates'),
-        selected: this.currentTab === 1,
-        onTap: (): void => { this.railTap(1); }
-      })
-      RailItem({
-        kind: 'history', title: $r('app.string.tab_history'),
-        selected: this.currentTab === 2,
-        onTap: (): void => { this.railTap(2); }
-      })
-      RailItem({
-        kind: 'browse', title: $r('app.string.tab_browse'),
-        selected: this.currentTab === 3,
-        onTap: (): void => { this.railTap(3); }
-      })
-      RailItem({
-        kind: 'more', title: $r('app.string.tab_more'),
-        selected: this.currentTab === 4,
-        onTap: (): void => { this.railTap(4); }
-      })
-    }
-    .width(200)
-    .height('100%')
-    .padding({ top: this.statusBarH + 8, left: 12, right: 12, bottom: 8 })
-    .backgroundColor(this.pal.bg)
-    .border({ width: { right: 1 }, color: this.pal.divider })
-    // 渲染在 Navigation（Row 中靠后的兄弟节点）之上：推入路由页时首页向左平移
-    // 让位，Rail 不被平移中的首页内容盖住
-    .zIndex(1)
-  }
-
-  // 宽屏路由页（设置等）内的收窄图标栏：仅图标无文本，避免与设置页自身左侧分类导航形成双栏
-  @Builder
-  wideRailMini() {
-    Column({ space: 4 }) {
-      RailItem({
-        kind: 'library', compact: true,
-        selected: this.currentTab === 0,
-        onTap: (): void => { this.railTap(0); }
-      })
-      RailItem({
-        kind: 'updates', compact: true,
-        selected: this.currentTab === 1,
-        onTap: (): void => { this.railTap(1); }
-      })
-      RailItem({
-        kind: 'history', compact: true,
-        selected: this.currentTab === 2,
-        onTap: (): void => { this.railTap(2); }
-      })
-      RailItem({
-        kind: 'browse', compact: true,
-        selected: this.currentTab === 3,
-        onTap: (): void => { this.railTap(3); }
-      })
-      RailItem({
-        kind: 'more', compact: true,
-        selected: this.currentTab === 4,
-        onTap: (): void => { this.railTap(4); }
-      })
-    }
-    .width(72)
-    .height('100%')
-    .padding({ top: this.statusBarH + 8, left: 8, right: 8, bottom: 8 })
-    .backgroundColor(this.pal.bg)
-    .border({ width: { right: 1 }, color: this.pal.divider })
-    .zIndex(1)
-  }
-
-  // 宽屏内容区：页签首次访问时挂载、驻留保状态（无页签栏，导航由左侧 Rail 承担）
-  @Builder
-  wideContent() {
-    Stack() {
-      if (this.tabMounted(0)) {
-        Column() {
-          LibraryPage()
-        }
-        .height('100%')
-        .padding({ top: this.statusBarH })
-        .visibility(this.currentTab === 0 ? Visibility.Visible : Visibility.None)
-      }
-      if (this.tabMounted(1)) {
-        Column() {
-          UpdatesPage()
-        }
-        .height('100%')
-        .padding({ top: this.statusBarH })
-        .visibility(this.currentTab === 1 ? Visibility.Visible : Visibility.None)
-      }
-      if (this.tabMounted(2)) {
-        Column() {
-          HistoryPage()
-        }
-        .height('100%')
-        .padding({ top: this.statusBarH })
-        .visibility(this.currentTab === 2 ? Visibility.Visible : Visibility.None)
-      }
-      if (this.tabMounted(3)) {
-        Column() {
-          BrowsePage()
-        }
-        .height('100%')
-        .padding({ top: this.statusBarH })
-        .visibility(this.currentTab === 3 ? Visibility.Visible : Visibility.None)
-      }
-      if (this.tabMounted(4)) {
-        Column() {
-          MorePage()
-        }
-        .height('100%')
-        .padding({ top: this.statusBarH })
-        .visibility(this.currentTab === 4 ? Visibility.Visible : Visibility.None)
-      }
-    }
-    .width('100%')
-    .height('100%')
-    .backgroundColor(this.pal.bg)
-  }
-
-  // CF 人机验证半模态内容：Mihon 风格工具栏 + 验证网页
-  @Builder
-  cfSheetBuilder() {
-    CfVerifySheet({
-      challengeUrl: this.cfChallengeUrl,
-      onClose: (): void => {
-        this.cfSheetShow = false;
-      }
-    })
-  }
-
-  build() {
-    Row() {
-      // 宽屏常驻左侧导航：置于 Navigation 之外，推入任意路由页（分类/下载/设置等）均不遮挡；
-      // 仅设置页（自带左侧分类导航，避免双栏）收窄为图标栏；沉浸式页（阅读器/播放器）全屏隐藏
-      if (this.isWide() && !this.isImmersiveRoute(this.topRouteName)) {
-        if (this.topRouteName === 'Settings') {
-          this.wideRailMini()
-        } else {
-          this.wideRail()
-        }
-      }
-      Navigation(this.pathStack) {
-      Stack({ alignContent: Alignment.TopStart }) {
-        if (this.isWide()) {
-          this.wideContent()
-        } else if (this.hdsAvailable) {
-        HdsTabs({ barPosition: BarPosition.End, index: this.currentTab, controller: this.tabsController }) {
-          this.phoneTabContents()
-        }
-        .scrollable(true)
-        .barOverlap(true)
-        .barPosition(BarPosition.End)
-        .vertical(false)
-         .barFloatingStyle({
-          // PC 无小白条避让区（navBarH=0）时钳制最小窗口底边距，避免页签条贴边
-          barBottomMargin: Math.max(this.navBarH + 2, 8),
-          systemMaterialEffect: {
-            materialType: hdsMaterial.MaterialType.IMMERSIVE,
-            materialLevel: hdsMaterial.MaterialLevel.ADAPTIVE
-          },
-          // 听书迷你条（对齐 MusicHome）：听书进行中由 HDS 绘制胶囊背景，
-          // 与浮动页签条堆叠悬浮于导航条上方（barBottomMargin 控制）
-          miniBar: this.ttsMiniBarOptions()
-        })
-        // onSelected 在切换动画开始时触发，让图标动画与 Mihon 一样即刻起播（onChange 在切换完成后才触发）
-        .onSelected((index: number) => {
-          this.currentTab = index;
-        })
-        .onChange((index: number) => {
-          this.currentTab = index;
-        })
-        .width('100%')
-        .height('100%')
-        } else {
-        // 无 HDS 运行时（预览器等）：回退标准 Tabs，保证页面可渲染
-        Tabs({ barPosition: BarPosition.End, index: this.currentTab, controller: this.fallbackTabsController }) {
-          this.phoneTabContents()
-        }
-        .scrollable(true)
-        .vertical(false)
-        .onChange((index: number) => {
-          this.currentTab = index;
-        })
-        .width('100%')
-        .height('100%')
-        }
-        // 听书迷你条（PC/宽屏无底部页签条）：MusicHome 风格胶囊悬于右下角
-        // （28 圆角 + 1px 描边 + 卡片底色，无阴影）
-        if (this.isWide() && this.ttsActive) {
-          Stack({ alignContent: Alignment.BottomEnd }) {
-            Column() {
-              TtsMiniBar({
-                onOpenPlayer: (): void => {
-                  this.pathStack.pushPathByName('TtsPlayer', null);
-                }
-              })
-            }
-            .width(360)
-            .height(56)
-            .justifyContent(FlexAlign.Center)
-            .borderRadius(28)
-            .backgroundColor(this.pal.card)
-            .border({ width: 1, color: this.pal.divider })
-            .margin({ right: 24, bottom: 16 })
-          }
-          .width('100%')
-          .height('100%')
-          .hitTestBehavior(HitTestMode.Transparent)
-        }
-      }
-      .width('100%')
-      .height('100%')
-      .bindSheet($$this.cfSheetShow, this.cfSheetBuilder(), {
-        height: SheetSize.LARGE,
-        detents: [SheetSize.MEDIUM, SheetSize.LARGE],
-        dragBar: true,
-        showClose: false,
-        preferType: this.isWide() ? SheetType.CENTER : SheetType.BOTTOM,
-        width: this.isWide() ? 560 : '100%',
-        blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
-        maskColor: 'rgba(0,0,0,0.45)',
-        onDisappear: (): void => {
-          // 弹层关闭：回写 ArkWeb 会话 Cookie 到 CookieJar，并复位 challenge 标记
-          const url = this.cfChallengeUrl;
-          if (url !== '') {
-            this.cfChallengeUrl = '';
-            webview.WebCookieManager.fetchCookie(url).then((cookies: string) => {
-              CookieJar.importCookieString(url, cookies);
-            }).catch((_e: Error) => {
-            });
-          }
-        }
-      })
-      }
-      .layoutWeight(1)
-      .hideTitleBar(true)
-      .mode(NavigationMode.Stack)
-      .backgroundColor(this.pal.bg)
-      // 裁剪内容到自身边界：Stack 模式推入路由页时首页向左平移让位，
-      // 不裁剪会溢出画到左侧 Rail 区域上（Rail 被"挤压"至不可见）
-      .clip(true)
-      // 返回首页时兜底同步（didShow 正常覆盖此场景，此处仅防极端未触发导致
-      // 导航卡在图标栏）；延迟到转场结束后执行，避免导航宽度在动画中途跳变
-      .onNavBarStateChange((isVisible: boolean) => {
-        if (isVisible) {
-          if (this.navSyncTimerId >= 0) {
-            clearTimeout(this.navSyncTimerId);
-          }
-          this.navSyncTimerId = setTimeout((): void => {
-            this.navSyncTimerId = -1;
-            this.syncTopRoute();
-          }, 450);
-        }
-      })
-      }
-    .width('100%')
-    .height('100%')
-    .backgroundColor(this.pal.bg)
-    // 一多断点跟踪：外层 Row = 整窗宽度（含 Rail），避免 840vp 临界值来回抖动；
-    // 同步发布到 AppStorage，供各页面按断点做限宽/边距适配
-    .onAreaChange((_old: Area, newArea: Area) => {
-      const w = newArea.width;
-      if (typeof w === 'number') {
-        this.windowW = w;
-        AppStorage.setOrCreate(AppKeys.WINDOW_W, w);
-        // 页签浮动条避让高度：宽屏无底部页签条时为 0，页签页不再预留大片底部空白
-        AppStorage.setOrCreate(AppKeys.TAB_PAD_H, Bp.isWide(w) ? 0 : 76);
-      }
-    })
   }
 }

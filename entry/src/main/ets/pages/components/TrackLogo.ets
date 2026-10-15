@@ -1,5 +1,4 @@
 // 追踪器品牌徽标：使用 mihon 官方品牌图标资源，未知追踪器回退为文字占位
-import { ThemePalette } from '../../common/Theme';
 
 @Component
 export struct TrackLogo {
@@ -7,6 +6,26 @@ export struct TrackLogo {
   @Prop logoName: string = '';
   @Prop color: string = '#888888';
   @Prop logoSize: number = 28;
+
+  build() {
+    if (this.hasIcon()) {
+      Image(this.iconRes())
+        .width(this.logoSize)
+        .height(this.logoSize)
+        .borderRadius(Math.round(this.logoSize * 0.22))
+        .interpolation(ImageInterpolation.Medium)
+    } else {
+      Text(this.initials())
+        .fontSize(Math.max(9, Math.round(this.logoSize * 0.36)))
+        .fontWeight(FontWeight.Bold)
+        .fontColor('#FFFFFF')
+        .textAlign(TextAlign.Center)
+        .width(this.logoSize)
+        .height(this.logoSize)
+        .borderRadius(Math.round(this.logoSize * 0.28))
+        .backgroundColor(this.color)
+    }
+  }
 
   private hasIcon(): boolean {
     return this.syncId === 1 || this.syncId === 2 || this.syncId === 3 || this.syncId === 4 ||
@@ -44,25 +63,5 @@ export struct TrackLogo {
       return `${a}${b}`.toUpperCase();
     }
     return this.logoName.substring(0, 2).toUpperCase();
-  }
-
-  build() {
-    if (this.hasIcon()) {
-      Image(this.iconRes())
-        .width(this.logoSize)
-        .height(this.logoSize)
-        .borderRadius(Math.round(this.logoSize * 0.22))
-        .interpolation(ImageInterpolation.Medium)
-    } else {
-      Text(this.initials())
-        .fontSize(Math.max(9, Math.round(this.logoSize * 0.36)))
-        .fontWeight(FontWeight.Bold)
-        .fontColor('#FFFFFF')
-        .textAlign(TextAlign.Center)
-        .width(this.logoSize)
-        .height(this.logoSize)
-        .borderRadius(Math.round(this.logoSize * 0.28))
-        .backgroundColor(this.color)
-    }
   }
 }

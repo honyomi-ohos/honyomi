@@ -8,6 +8,11 @@ export struct NsfwTag {
       .fontColor('#FFFFFF')
       .backgroundColor('#E05252')
       .borderRadius(4)
-      .padding({ left: 4, right: 4, top: 1, bottom: 1 })
+      .padding({
+        left: 4,
+        right: 4,
+        top: 1,
+        bottom: 1
+      })
   }
 }

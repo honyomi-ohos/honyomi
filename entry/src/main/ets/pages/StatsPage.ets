@@ -2,7 +2,7 @@ import { common } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo, TrackRepo } from '../data/Repos';
 import { ContentType } from '../model/Models';
-import { ReadingStatsRepo, DayDuration } from '../data/ReadingStats';
+import { DayDuration, ReadingStatsRepo } from '../data/ReadingStats';
 import { DownloadService } from '../data/DownloadService';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
@@ -72,10 +72,6 @@ export struct StatsPage {
     this.loadData();
   }
 
-  private ctx(): common.UIAbilityContext {
-    return Util.hostAbilityContext(this.getUIContext());
-  }
-
   async loadData(): Promise<void> {
     try {
       await AppDb.ready(this.ctx());
@@ -143,70 +139,6 @@ export struct StatsPage {
     this.loading = false;
   }
 
-  private chartDays(): DayDuration[] {
-    return this.chartMode === 0 ? this.weekDays : this.monthDays;
-  }
-
-  private chartTotal(): number {
-    const days = this.chartDays();
-    let total = 0;
-    for (let i = 0; i < days.length; i++) {
-      total += days[i].seconds;
-    }
-    return total;
-  }
-
-  private chartMax(): number {
-    const days = this.chartDays();
-    let maxV = 0;
-    for (let i = 0; i < days.length; i++) {
-      if (days[i].seconds > maxV) {
-        maxV = days[i].seconds;
-      }
-    }
-    return maxV;
-  }
-
-  private barHeight(d: DayDuration): number {
-    const maxV = this.chartMax();
-    if (d.seconds <= 0 || maxV <= 0) {
-      return 2;
-    }
-    return Math.max(6, Math.round(d.seconds / maxV * 96));
-  }
-
-  private barColor(d: DayDuration): ResourceColor {
-    return d.seconds > 0 ? this.pal.primary : this.pal.chip;
-  }
-
-  // 周模式横轴的星期短标签
-  private dayLabel(d: DayDuration): string {
-    return Util.weekdayShort(this.ctx(), ReadingStatsRepo.dayOfWeek(d.day));
-  }
-
-  private totalDurationText(): string {
-    return Util.formatDuration(this.ctx(), this.summary.totalReadSeconds);
-  }
-
-  private meanScoreText(): Resource | string {
-    if (this.summary.meanScore > 0) {
-      return `${this.summary.meanScore.toFixed(2)} ★`;
-    }
-    return $r('app.string.stats_not_applicable');
-  }
-
-  private chartTotalText(): string {
-    const total = this.chartTotal();
-    const res = this.chartMode === 0
-      ? $r('app.string.stats_week_total', Util.formatDuration(this.ctx(), total))
-      : $r('app.string.stats_month_total', Util.formatDuration(this.ctx(), total));
-    try {
-      return this.ctx().resourceManager.getStringSync(res.id);
-    } catch (e) {
-      throw new Error(`chart total text failed: ${e}`);
-    }
-  }
-
   @Builder
   chartToggle() {
     Row() {
@@ -215,7 +147,12 @@ export struct StatsPage {
         .fontColor(this.chartMode === 0 ? this.pal.primary : this.pal.sub)
         .backgroundColor(this.chartMode === 0 ? this.pal.card : Color.Transparent)
         .borderRadius(10)
-        .padding({ left: 12, right: 12, top: 4, bottom: 4 })
+        .padding({
+          left: 12,
+          right: 12,
+          top: 4,
+          bottom: 4
+        })
         .onClick(() => {
           this.chartMode = 0;
         })
@@ -224,7 +161,12 @@ export struct StatsPage {
         .fontColor(this.chartMode === 1 ? this.pal.primary : this.pal.sub)
         .backgroundColor(this.chartMode === 1 ? this.pal.card : Color.Transparent)
         .borderRadius(10)
-        .padding({ left: 12, right: 12, top: 4, bottom: 4 })
+        .padding({
+          left: 12,
+          right: 12,
+          top: 4,
+          bottom: 4
+        })
         .margin({ left: 2 })
         .onClick(() => {
           this.chartMode = 1;
@@ -249,7 +191,12 @@ export struct StatsPage {
           this.chartToggle()
         }
         .width('100%')
-        .padding({ left: 16, right: 12, top: 14, bottom: 4 })
+        .padding({
+          left: 16,
+          right: 12,
+          top: 14,
+          bottom: 4
+        })
 
         if (this.chartTotal() <= 0) {
           Text($r('app.string.stats_no_reading'))
@@ -337,6 +284,7 @@ export struct StatsPage {
                       value: `${this.summary.completedCount}`
                     })
                   }
+
                   Row() {
                     StatsItem({
                       title: $r('app.string.stats_duration_manga'),
@@ -421,6 +369,74 @@ export struct StatsPage {
     }
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)
+  }
+
+  private ctx(): common.UIAbilityContext {
+    return Util.hostAbilityContext(this.getUIContext());
+  }
+
+  private chartDays(): DayDuration[] {
+    return this.chartMode === 0 ? this.weekDays : this.monthDays;
+  }
+
+  private chartTotal(): number {
+    const days = this.chartDays();
+    let total = 0;
+    for (let i = 0; i < days.length; i++) {
+      total += days[i].seconds;
+    }
+    return total;
+  }
+
+  private chartMax(): number {
+    const days = this.chartDays();
+    let maxV = 0;
+    for (let i = 0; i < days.length; i++) {
+      if (days[i].seconds > maxV) {
+        maxV = days[i].seconds;
+      }
+    }
+    return maxV;
+  }
+
+  private barHeight(d: DayDuration): number {
+    const maxV = this.chartMax();
+    if (d.seconds <= 0 || maxV <= 0) {
+      return 2;
+    }
+    return Math.max(6, Math.round(d.seconds / maxV * 96));
+  }
+
+  private barColor(d: DayDuration): ResourceColor {
+    return d.seconds > 0 ? this.pal.primary : this.pal.chip;
+  }
+
+  // 周模式横轴的星期短标签
+  private dayLabel(d: DayDuration): string {
+    return Util.weekdayShort(this.ctx(), ReadingStatsRepo.dayOfWeek(d.day));
+  }
+
+  private totalDurationText(): string {
+    return Util.formatDuration(this.ctx(), this.summary.totalReadSeconds);
+  }
+
+  private meanScoreText(): Resource | string {
+    if (this.summary.meanScore > 0) {
+      return `${this.summary.meanScore.toFixed(2)} ★`;
+    }
+    return $r('app.string.stats_not_applicable');
+  }
+
+  private chartTotalText(): string {
+    const total = this.chartTotal();
+    const res = this.chartMode === 0
+      ? $r('app.string.stats_week_total', Util.formatDuration(this.ctx(), total))
+      : $r('app.string.stats_month_total', Util.formatDuration(this.ctx(), total));
+    try {
+      return this.ctx().resourceManager.getStringSync(res.id);
+    } catch (e) {
+      throw new Error(`chart total text failed: ${e}`);
+    }
   }
 }
 

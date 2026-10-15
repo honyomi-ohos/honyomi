@@ -8,9 +8,12 @@ export struct NovelDisplayPanel {
   @Prop brightLv: number = 0;
   @Prop colorScheme: string = 'auto';
   @Prop readerTheme: number = 3;
-  onBrightness: (v: number) => void = (v: number): void => {};
-  onColorScheme: (v: string) => void = (v: string): void => {};
-  onTheme: (v: number) => void = (v: number): void => {};
+  onBrightness: (v: number) => void = (v: number): void => {
+  };
+  onColorScheme: (v: string) => void = (v: string): void => {
+  };
+  onTheme: (v: number) => void = (v: number): void => {
+  };
 
   build() {
     Column({ space: 0 }) {
@@ -20,7 +23,12 @@ export struct NovelDisplayPanel {
           .fontColor(this.pal.sub)
           .width('100%')
         Row() {
-          Slider({ value: this.brightLv, min: 0, max: 1, step: 0.05 })
+          Slider({
+            value: this.brightLv,
+            min: 0,
+            max: 1,
+            step: 0.05
+          })
             .layoutWeight(1)
             .blockColor(this.pal.primary)
             .selectedColor(this.pal.primary)
@@ -39,7 +47,12 @@ export struct NovelDisplayPanel {
         .width('100%')
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
+      .padding({
+        left: 16,
+        right: 16,
+        top: 12,
+        bottom: 4
+      })
 
       Divider().color(this.pal.divider)
 
@@ -56,7 +69,12 @@ export struct NovelDisplayPanel {
         .width('100%')
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
+      .padding({
+        left: 16,
+        right: 16,
+        top: 12,
+        bottom: 4
+      })
 
       Divider().color(this.pal.divider)
 
@@ -74,7 +92,12 @@ export struct NovelDisplayPanel {
         .width('100%')
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
+      .padding({
+        left: 16,
+        right: 16,
+        top: 12,
+        bottom: 4
+      })
 
       Column().height(16)
     }
@@ -87,7 +110,12 @@ export struct NovelDisplayPanel {
     Text(label)
       .fontSize(13)
       .fontColor(this.colorScheme === value ? this.pal.onPrimary : this.pal.text)
-      .padding({ left: 14, right: 14, top: 6, bottom: 6 })
+      .padding({
+        left: 14,
+        right: 14,
+        top: 6,
+        bottom: 6
+      })
       .borderRadius(16)
       .backgroundColor(this.colorScheme === value ? this.pal.primary : this.pal.chip)
       .margin({ right: 8, bottom: 8 })
@@ -102,7 +130,12 @@ export struct NovelDisplayPanel {
     Text(label)
       .fontSize(13)
       .fontColor(this.readerTheme === value ? this.pal.onPrimary : this.pal.text)
-      .padding({ left: 14, right: 14, top: 6, bottom: 6 })
+      .padding({
+        left: 14,
+        right: 14,
+        top: 6,
+        bottom: 6
+      })
       .borderRadius(16)
       .backgroundColor(this.readerTheme === value ? this.pal.primary : this.pal.chip)
       .margin({ right: 8, bottom: 8 })

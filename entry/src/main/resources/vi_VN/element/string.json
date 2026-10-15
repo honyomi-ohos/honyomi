@@ -1,534 +1,2124 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Lọc tất cả truyện trong thư viện" },
-    { "name": "more_incognito_summary", "value": "Dừng lưu giữ lịch sử đọc" },
-    { "name": "more_support", "value": "Hỗ trợ chúng tôi" },
-    { "name": "more_help", "value": "Trợ giúp" },
-    { "name": "support_perks", "value": "Người hỗ trợ có quyền truy cập vào các kênh độc quyền và nhận được nhiều đặc quyền hơn." },
-    { "name": "support_patreon", "value": "Patreon (ưu tiên)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon hiện được hỗ trợ bởi %d+ người hỗ trợ. Chúng tôi muốn cảm ơn tất cả các bạn. Hãy cùng nhau làm cho Mihon trở nên tốt hơn nữa." },
-    { "name": "support_contact_msg", "value": "Để biết các lựa chọn thay thế hoặc bất kỳ câu hỏi liên quan nào, hãy tham gia máy chủ Discord của chúng tôi." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "Dữ liệu và kho chứa" },
-    { "name": "data_storage_location", "value": "Vị trí lưu trữ" },
-    { "name": "data_storage_location_info", "value": "Được sử dụng để sao lưu tự động, tải chương và nguồn cục bộ." },
-    { "name": "data_backup_restore", "value": "Sao lưu và khôi phục" },
-    { "name": "data_create_backup", "value": "Tạo bản sao lưu" },
-    { "name": "data_restore_backup", "value": "Khôi phục sao lưu" },
-    { "name": "data_backup_interval", "value": "Tần suất sao lưu tự động" },
-    { "name": "data_backup_info", "value": "Bạn nên giữ lại nhiều bản sao của sao lưu ở các nơi khác nữa. Bản sao lưu có thể chứa các thông tin nhạy cảm như mật khẩu đã lưu; hãy cẩn thận khi chia sẻ với người khác." },
-    { "name": "data_last_auto_backup", "value": "Lần sao lưu tự động cuối cùng: %s" },
-    { "name": "data_storage_usage", "value": "Số liệu sử dụng kho lưu trữ" },
-    { "name": "data_available_space", "value": "Hiện có: %s / Tổng cộng: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Dọn dẹp bộ nhớ chương đệm" },
-    { "name": "data_used_cache", "value": "Đã sử dụng: %s" },
-    { "name": "data_cache_deleted", "value": "Bộ nhớ đệm đã được dọn dẹp, đã xoá %d tập tin" },
-    { "name": "data_cache_delete_error", "value": "Lỗi xảy ra trong khi dọn dẹp" },
-    { "name": "data_auto_clear_cache", "value": "Xóa bộ nhớ chương đệm khi chạy ứng dụng" },
-    { "name": "data_export", "value": "Xuất" },
-    { "name": "data_library_list", "value": "Danh sách thư viện" },
-    { "name": "data_library_exported", "value": "Đã Xuất Thư viện" },
-    { "name": "data_export_include", "value": "Chọn dữ liệu để bao gồm" },
-    { "name": "data_column_title", "value": "Tiêu đề" },
-    { "name": "data_column_author", "value": "Tác giả" },
-    { "name": "data_interval_off", "value": "Tắt" },
-    { "name": "data_interval_6h", "value": "Mỗi 6 tiếng" },
-    { "name": "data_interval_12h", "value": "Mỗi 12 tiếng" },
-    { "name": "data_interval_24h", "value": "Mỗi ngày" },
-    { "name": "data_interval_48h", "value": "Mỗi 2 ngày" },
-    { "name": "data_interval_weekly", "value": "Mỗi tuần" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "OK" },
-    { "name": "common_cancel", "value": "Hủy" },
-    { "name": "common_confirm", "value": "Xác nhận" },
-    { "name": "common_delete", "value": "Xóa" },
-    { "name": "common_retry", "value": "Thử lại" },
-    { "name": "common_search", "value": "Tìm kiếm" },
-    { "name": "common_all", "value": "Tất cả" },
-    { "name": "common_close", "value": "Đóng" },
-    { "name": "common_save", "value": "Lưu" },
-    { "name": "common_install", "value": "Cài đặt" },
-    { "name": "common_uninstall", "value": "Gỡ cài đặt" },
-    { "name": "common_update", "value": "Cập nhật" },
-    { "name": "common_none", "value": "Không" },
-    { "name": "common_default", "value": "Mặc định" },
-    { "name": "appearance_title", "value": "Giao diện" },
-    { "name": "appearance_language", "value": "Ngôn ngữ" },
-    { "name": "lang_follow_system", "value": "Theo hệ thống" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "Chế độ chủ đề" },
-    { "name": "appearance_theme_auto", "value": "Theo hệ thống" },
-    { "name": "appearance_theme_light", "value": "Sáng" },
-    { "name": "appearance_theme_dark", "value": "Tối" },
-    { "name": "appearance_accent_color", "value": "Màu nhấn" },
-    { "name": "appearance_other", "value": "Khác" },
-    { "name": "appearance_amoled", "value": "Nền đen thuần AMOLED" },
-    { "name": "theme_accent_blue", "value": "Xanh dương" },
-    { "name": "theme_accent_green", "value": "Xanh lá" },
-    { "name": "theme_accent_pink", "value": "Hồng" },
-    { "name": "theme_accent_purple", "value": "Tím" },
-    { "name": "theme_accent_orange", "value": "Cam" },
-    { "name": "util_time_minutes_ago", "value": "%d phút trước" },
-    { "name": "util_time_hours_ago", "value": "%d giờ trước" },
-    { "name": "util_time_days_ago", "value": "%d ngày trước" },
-    { "name": "util_status_ongoing", "value": "Đang ra" },
-    { "name": "util_status_completed", "value": "Hoàn thành" },
-    { "name": "util_status_hiatus", "value": "Tạm ngưng" },
-    { "name": "util_status_cancelled", "value": "Đã hủy" },
-    { "name": "util_status_publication_complete", "value": "Xuất bản xong" },
-    { "name": "util_status_unknown", "value": "Không rõ" },
-    { "name": "tab_library", "value": "Giá sách" },
-    { "name": "tab_updates", "value": "Cập nhật" },
-    { "name": "tab_history", "value": "Lịch sử" },
-    { "name": "tab_browse", "value": "Duyệt" },
-    { "name": "tab_more", "value": "Thêm" },
-    { "name": "tab_cf_waiting", "value": "Đang chờ xác minh…" },
-    { "name": "tab_cf_verified", "value": "Xác minh xong" },
-    { "name": "tab_cf_title", "value": "Xác minh con người" },
-    { "name": "tab_cf_done", "value": "Xong" },
-    { "name": "tab_cf_saved", "value": "Đã lưu kết quả xác minh" },
-    { "name": "more_title", "value": "Thêm" },
-    { "name": "more_version", "value": "Phiên bản %s" },
-    { "name": "more_downloaded_only", "value": "Chỉ hiện truyện đã tải" },
-    { "name": "more_incognito", "value": "Chế độ ẩn danh" },
-    { "name": "more_downloads", "value": "Hàng chờ tải xuống" },
-    { "name": "more_categories", "value": "Danh mục" },
-    { "name": "more_settings", "value": "Cài đặt" },
-    { "name": "more_about", "value": "Giới thiệu" },
-    { "name": "more_plugins", "value": "Tiện ích mở rộng" },
-    { "name": "categories_title", "value": "Danh mục" },
-    { "name": "categories_add", "value": "Danh mục mới" },
-    { "name": "categories_name_placeholder", "value": "Tên danh mục" },
-    { "name": "categories_rename_category", "value": "Đổi tên danh mục" },
-    { "name": "categories_rename", "value": "Đổi tên" },
-    { "name": "categories_hint", "value": "Nhấn giữ danh mục để đổi tên hoặc xóa; truyện trong danh mục đã xóa sẽ về Mặc định" },
-    { "name": "dialog_pick_category", "value": "Chọn danh mục" },
-    { "name": "viewer_loading", "value": "Đang tải…" },
-    { "name": "viewer_load_failed", "value": "Không tải được ảnh" },
-    { "name": "viewer_tap_retry", "value": "Chạm để thử lại" },
-    { "name": "library_title", "value": "Giá sách" },
-    { "name": "library_empty", "value": "Giá sách trống, hãy duyệt để thêm manga" },
-    { "name": "library_new_category", "value": "Danh mục mới" },
-    { "name": "library_category_name", "value": "Tên danh mục" },
-    { "name": "updates_title", "value": "Cập nhật" },
-    { "name": "updates_empty", "value": "Không có cập nhật gần đây" },
-    { "name": "updates_found_new", "value": "Tìm thấy %d chương mới" },
-    { "name": "updates_no_new", "value": "Không có chương mới" },
-    { "name": "updates_refresh_failed", "value": "Làm mới thất bại" },
-    { "name": "updates_refreshing", "value": "Đang làm mới…" },
-    { "name": "history_title", "value": "Lịch sử" },
-    { "name": "history_clear", "value": "Xóa" },
-    { "name": "history_confirm_clear", "value": "Xác nhận xóa?" },
-    { "name": "history_empty", "value": "Chưa có lịch sử đọc" },
-    { "name": "history_cleared", "value": "Đã xóa lịch sử" },
-    { "name": "history_continue", "value": "Tiếp tục" },
-    { "name": "browse_title", "value": "Duyệt" },
-    { "name": "browse_import", "value": "Nhập" },
-    { "name": "browse_plugins", "value": "Tiện ích" },
-    { "name": "browse_local_source_name", "value": "Manga nội bộ" },
-    { "name": "browse_popular", "value": "Phổ biến" },
-    { "name": "browse_latest", "value": "Mới nhất" },
-    { "name": "browse_search_hint", "value": "Tìm manga…" },
-    { "name": "browse_no_results", "value": "Không tìm thấy manga" },
-    { "name": "browse_local_empty", "value": "Chưa có manga nội bộ, nhấn Nhập để thêm" },
-    { "name": "browse_load_failed", "value": "Tải thất bại: %s" },
-    { "name": "browse_search_failed", "value": "Tìm kiếm thất bại: %s" },
-    { "name": "browse_load_more_failed", "value": "Không tải thêm được" },
-    { "name": "browse_open_detail_failed", "value": "Không mở được chi tiết" },
-    { "name": "browse_pick_file_failed", "value": "Không chọn được tệp" },
-    { "name": "browse_import_title", "value": "Nhập %d tệp" },
-    { "name": "browse_manga_name_hint", "value": "Tên manga" },
-    { "name": "browse_input_name", "value": "Vui lòng nhập tên" },
-    { "name": "browse_import_done", "value": "Đã nhập %d tệp" },
-    { "name": "browse_import_failed", "value": "Nhập thất bại: %s" },
-    { "name": "download_title", "value": "Tải xuống" },
-    { "name": "download_resume", "value": "Tiếp tục" },
-    { "name": "download_pause", "value": "Tạm dừng" },
-    { "name": "download_clear_finished", "value": "Xóa mục đã xong" },
-    { "name": "download_queue", "value": "Hàng đợi tải" },
-    { "name": "download_state_queued", "value": "Trong hàng đợi" },
-    { "name": "download_state_downloading", "value": "Đang tải" },
-    { "name": "download_state_done", "value": "Xong" },
-    { "name": "download_state_failed", "value": "Thất bại" },
-    { "name": "download_move_top", "value": "Chuyển lên đầu" },
-    { "name": "download_move_bottom", "value": "Chuyển xuống cuối" },
-    { "name": "download_deleted", "value": "Đã xóa" },
-    { "name": "download_empty", "value": "Chưa có mục tải xuống" },
-    { "name": "download_status_downloaded", "value": "Đã tải" },
-    { "name": "download_chapter_count", "value": "%d chương" },
-    { "name": "detail_no_chapters", "value": "Không có chương" },
-    { "name": "detail_sync_failed_local", "value": "Đồng bộ thất bại, đang hiện dữ liệu nội bộ" },
-    { "name": "detail_added_to_library", "value": "Đã thêm vào giá sách" },
-    { "name": "detail_removed_from_library", "value": "Đã gỡ khỏi giá sách" },
-    { "name": "detail_all_marked_read", "value": "Đã đánh dấu tất cả chương là đã đọc" },
-    { "name": "detail_download_queued", "value": "Đã đưa vào hàng đợi tải" },
-    { "name": "detail_config_anilist_token", "value": "Hãy cấu hình token AniList trước" },
-    { "name": "detail_search_anilist", "value": "Tìm AniList" },
-    { "name": "detail_manga_title_hint", "value": "Tiêu đề manga" },
-    { "name": "detail_no_search_results", "value": "Không có kết quả tìm kiếm" },
-    { "name": "detail_anilist_search_failed", "value": "Tìm AniList thất bại" },
-    { "name": "detail_anilist_bound", "value": "Đã liên kết AniList" },
-    { "name": "detail_anilist_unbound", "value": "Đã hủy liên kết AniList" },
-    { "name": "detail_synced_progress", "value": "Đã đồng bộ tiến độ tới chương %d" },
-    { "name": "detail_anilist_sync_failed", "value": "Đồng bộ AniList thất bại" },
-    { "name": "detail_status_local", "value": "Nội bộ" },
-    { "name": "detail_in_library", "value": "Trong giá sách" },
-    { "name": "detail_add_to_library", "value": "Thêm vào giá sách" },
-    { "name": "detail_continue_reading", "value": "Đọc tiếp" },
-    { "name": "detail_start_reading", "value": "Bắt đầu đọc" },
-    { "name": "detail_no_chapters_yet", "value": "Chưa có chương" },
-    { "name": "detail_collapse", "value": "Thu gọn" },
-    { "name": "detail_expand", "value": "Mở rộng" },
-    { "name": "detail_anilist_tracking", "value": "Theo dõi AniList" },
-    { "name": "detail_anilist_token_hint", "value": "Chưa cấu hình token AniList" },
-    { "name": "detail_searching", "value": "Đang tìm…" },
-    { "name": "detail_search_and_bind", "value": "Tìm và liên kết" },
-    { "name": "detail_bind", "value": "Liên kết" },
-    { "name": "detail_synced_to_chapter", "value": "Đã đồng bộ tới chương %d" },
-    { "name": "detail_sync_progress", "value": "Đồng bộ tiến độ" },
-    { "name": "detail_unbind", "value": "Hủy liên kết" },
-    { "name": "detail_chapters_count", "value": "Chương (%d)" },
-    { "name": "detail_sort_asc", "value": "Tăng dần" },
-    { "name": "detail_sort_desc", "value": "Giảm dần" },
-    { "name": "detail_mark_all_read", "value": "Đánh dấu đã đọc hết" },
-    { "name": "detail_read", "value": "Đã đọc" },
-    { "name": "detail_downloaded", "value": "Đã tải" },
-    { "name": "detail_in_queue", "value": "Trong hàng đợi" },
-    { "name": "detail_download", "value": "Tải xuống" },
-    { "name": "reader_chapter_not_found", "value": "Không tìm thấy chương" },
-    { "name": "reader_load_failed", "value": "Tải thất bại: %s" },
-    { "name": "reader_mode_ltr", "value": "Trái sang phải" },
-    { "name": "reader_mode_rtl", "value": "Phải sang trái" },
-    { "name": "reader_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_reading_mode", "value": "Chế độ đọc" },
-    { "name": "reader_orientation_free", "value": "Tự do" },
-    { "name": "reader_orientation_portrait", "value": "Dọc" },
-    { "name": "reader_orientation_landscape", "value": "Ngang" },
-    { "name": "reader_screen_orientation", "value": "Hướng màn hình" },
-    { "name": "reader_last_chapter", "value": "Đã ở chương cuối" },
-    { "name": "reader_first_chapter", "value": "Đã ở chương đầu" },
-    { "name": "reader_first_page", "value": "Đã ở trang đầu" },
-    { "name": "reader_last_page", "value": "Đã ở trang cuối" },
-    { "name": "reader_loading_chapter", "value": "Đang tải chương…" },
-    { "name": "reader_settings", "value": "Cài đặt trình đọc" },
-    { "name": "reader_background", "value": "Nền" },
-    { "name": "reader_theme_auto", "value": "Tự động" },
-    { "name": "reader_theme_white", "value": "Trắng" },
-    { "name": "reader_theme_gray", "value": "Xám" },
-    { "name": "reader_theme_black", "value": "Đen" },
-    { "name": "reader_show_page_number", "value": "Hiện số trang" },
-    { "name": "reader_brightness", "value": "Độ sáng" },
-    { "name": "reader_auto", "value": "Tự động" },
-    { "name": "plugin_title", "value": "Tiện ích mở rộng" },
-    { "name": "plugin_installed_section", "value": "Đã cài" },
-    { "name": "plugin_empty", "value": "Chưa có tiện ích, cài bên dưới" },
-    { "name": "plugin_disable_hint", "value": "Tiện ích đã tắt có thể bật lại bất cứ lúc nào" },
-    { "name": "plugin_up_to_date", "value": "Đã mới nhất" },
-    { "name": "plugin_local_install", "value": "Cài từ tệp" },
-    { "name": "plugin_install_from_file", "value": "Chọn tệp để cài" },
-    { "name": "plugin_processing", "value": "Đang xử lý…" },
-    { "name": "plugin_package_hint", "value": "Hỗ trợ gói tiện ích .honyomiplug / .zip" },
-    { "name": "plugin_repo", "value": "Kho trực tuyến" },
-    { "name": "plugin_repo_config", "value": "Thiết lập kho" },
-    { "name": "plugin_repo_refresh", "value": "Làm mới" },
-    { "name": "plugin_repo_hint", "value": "Chưa cấu hình kho tiện ích" },
-    { "name": "plugin_repo_loading", "value": "Đang tải kho…" },
-    { "name": "plugin_repo_url_title", "value": "URL kho tiện ích" },
-    { "name": "plugin_repo_url_hint", "value": "Nhập URL kho tiện ích" },
-    { "name": "plugin_repo_load_failed", "value": "Tải kho thất bại: %s" },
-    { "name": "plugin_pick_file_failed", "value": "Không chọn được tệp" },
-    { "name": "plugin_installed", "value": "Đã cài: %s" },
-    { "name": "plugin_installed_name", "value": "Đã cài %s" },
-    { "name": "plugin_install_failed", "value": "Cài thất bại: %s" },
-    { "name": "plugin_action_failed", "value": "Thao tác thất bại" },
-    { "name": "plugin_uninstalled", "value": "Đã gỡ: %s" },
-    { "name": "plugin_uninstall_failed", "value": "Gỡ cài đặt thất bại" },
-    { "name": "settings_title", "value": "Cài đặt" },
-    { "name": "settings_general", "value": "Chung" },
-    { "name": "settings_start_tab", "value": "Màn hình khởi động" },
-    { "name": "settings_personalization", "value": "Cá nhân hóa" },
-    { "name": "settings_library", "value": "Giá sách" },
-    { "name": "settings_reader", "value": "Trình đọc" },
-    { "name": "settings_data", "value": "Dữ liệu" },
-    { "name": "settings_downloads", "value": "Tải xuống" },
-    { "name": "settings_browse", "value": "Duyệt" },
-    { "name": "settings_advanced", "value": "Nâng cao" },
-    { "name": "settings_about", "value": "Giới thiệu" },
-    { "name": "settings_tab_library", "value": "Giá sách" },
-    { "name": "settings_tab_updates", "value": "Cập nhật" },
-    { "name": "settings_tab_history", "value": "Lịch sử" },
-    { "name": "settings_tab_browse", "value": "Duyệt" },
-    { "name": "settings_tab_more", "value": "Thêm" },
-    { "name": "advanced_title", "value": "Nâng cao" },
-    { "name": "advanced_calculating", "value": "Đang tính…" },
-    { "name": "advanced_storage", "value": "Lưu trữ" },
-    { "name": "advanced_clear_image_cache", "value": "Xóa bộ nhớ đệm ảnh" },
-    { "name": "advanced_image_cache_cleared", "value": "Đã xóa bộ nhớ đệm ảnh" },
-    { "name": "advanced_clear_cookies", "value": "Xóa cookie" },
-    { "name": "advanced_cookies_cleared", "value": "Đã xóa mọi cookie" },
-    { "name": "advanced_backup_restore", "value": "Sao lưu và khôi phục" },
-    { "name": "advanced_export_backup", "value": "Xuất bản sao" },
-    { "name": "advanced_import_backup", "value": "Nhập bản sao" },
-    { "name": "advanced_tracking", "value": "Theo dõi" },
-    { "name": "advanced_anilist_token", "value": "Token AniList" },
-    { "name": "advanced_token_title", "value": "Token truy cập AniList" },
-    { "name": "advanced_token_hint", "value": "Dán access token (để trống để xóa)" },
-    { "name": "advanced_token_not_set", "value": "Chưa đặt" },
-    { "name": "advanced_token_set", "value": "Đã đặt" },
-    { "name": "advanced_token_saved", "value": "Đã lưu token" },
-    { "name": "advanced_token_cleared", "value": "Đã xóa token" },
-    { "name": "advanced_backup_exported", "value": "Đã xuất bản sao" },
-    { "name": "advanced_export_canceled", "value": "Đã hủy xuất" },
-    { "name": "advanced_export_failed", "value": "Xuất thất bại" },
-    { "name": "advanced_import_canceled", "value": "Đã hủy nhập" },
-    { "name": "advanced_backup_invalid", "value": "Tệp sao lưu không hợp lệ" },
-    { "name": "advanced_restored_manga", "value": "Đã khôi phục %d manga" },
-    { "name": "advanced_import_failed", "value": "Nhập thất bại" },
-    { "name": "about_title", "value": "Giới thiệu" },
-    { "name": "about_version", "value": "Phiên bản 1.0.0" },
-    { "name": "about_desc", "value": "Kiến trúc lấy cảm hứng từ Mihon (Apache-2.0). Nguồn trực tuyến được cài động dưới dạng tiện ích mở rộng, nguồn nội bộ có sẵn trong ứng dụng." },
-    { "name": "about_ack", "value": "Lời cảm ơn mã nguồn mở:\n· Mihon / Tachiyomi — kiến trúc ứng dụng và thiết kế tương tác (Apache-2.0)\n· Material Symbols — biểu tượng trong ứng dụng (Apache-2.0)\n· MangaDex — nguồn dữ liệu thử nghiệm" },
-    { "name": "browse_set_title", "value": "Duyệt" },
-    { "name": "browse_set_content", "value": "Nội dung" },
-    { "name": "browse_set_show_nsfw", "value": "Hiện nguồn NSFW" },
-    { "name": "browse_set_nsfw_hint", "value": "Khi bật, nguồn được tiện ích đánh dấu NSFW sẽ hiện trong Duyệt" },
-    { "name": "dl_set_title", "value": "Tải xuống" },
-    { "name": "dl_set_network", "value": "Mạng" },
-    { "name": "dl_set_wifi_only", "value": "Chỉ tải qua Wi-Fi" },
-    { "name": "dl_set_wifi_only_hint", "value": "Lưu ý: công tắc này là chỗ dành sẵn ở phiên bản hiện tại; phát hiện loại mạng sẽ có ở bản sau" },
-    { "name": "lib_set_title", "value": "Giá sách" },
-    { "name": "lib_set_sort_group", "value": "Lọc và sắp xếp" },
-    { "name": "lib_set_sort_default", "value": "Sắp xếp mặc định" },
-    { "name": "lib_set_sort_title", "value": "Tiêu đề" },
-    { "name": "lib_set_sort_last_update", "value": "Chương mới nhất" },
-    { "name": "lib_set_sort_added", "value": "Ngày thêm" },
-    { "name": "lib_set_sort_unread", "value": "Số chưa đọc" },
-    { "name": "lib_set_sort_asc", "value": "Sắp xếp tiêu đề tăng dần" },
-    { "name": "lib_set_filter_default", "value": "Bộ lọc mặc định" },
-    { "name": "lib_set_filter_unread", "value": "Chưa đọc" },
-    { "name": "lib_set_filter_downloaded", "value": "Đã tải" },
-    { "name": "lib_set_filter_uncompleted", "value": "Chưa hoàn thành" },
-    { "name": "lib_set_display_group", "value": "Hiển thị" },
-    { "name": "lib_set_view_default", "value": "Chế độ xem mặc định" },
-    { "name": "lib_set_view_grid", "value": "Lưới" },
-    { "name": "lib_set_view_cover", "value": "Lưới bìa" },
-    { "name": "lib_set_view_list", "value": "Danh sách" },
-    { "name": "lib_set_grid_cols", "value": "Số cột lưới" },
-    { "name": "lib_set_cols_auto", "value": "Tự động" },
-    { "name": "lib_set_cols_2", "value": "2 cột" },
-    { "name": "lib_set_cols_3", "value": "3 cột" },
-    { "name": "lib_set_cols_4", "value": "4 cột" },
-    { "name": "lib_set_unread_badge", "value": "Huy hiệu chưa đọc" },
-    { "name": "lib_set_download_badge", "value": "Huy hiệu tải xuống" },
-    { "name": "reader_set_title", "value": "Trình đọc" },
-    { "name": "reader_set_mode_group", "value": "Chế độ đọc" },
-    { "name": "reader_set_mode_default", "value": "Chế độ mặc định" },
-    { "name": "reader_set_mode_ltr", "value": "Trái sang phải" },
-    { "name": "reader_set_mode_rtl", "value": "Phải sang trái" },
-    { "name": "reader_set_mode_vertical", "value": "Lật trang dọc" },
-    { "name": "reader_set_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_set_dual_page", "value": "Hai trang (ngang)" },
-    { "name": "reader_set_display_group", "value": "Hiển thị" },
-    { "name": "reader_set_show_page_number", "value": "Hiện số trang" },
-    { "name": "reader_set_bg_color", "value": "Nền trình đọc" },
-    { "name": "reader_set_theme_follow", "value": "Theo chủ đề" },
-    { "name": "reader_set_theme_white", "value": "Trắng" },
-    { "name": "reader_set_theme_black", "value": "Đen" },
-    { "name": "reader_set_theme_gray", "value": "Xám" },
-    { "name": "reader_set_reset_brightness", "value": "Đặt lại độ sáng trình đọc" },
-    { "name": "reader_set_brightness_reset", "value": "Đã đặt độ sáng theo hệ thống" },
-    { "name": "browse_tab_sources", "value": "Nguồn" },
-    { "name": "browse_tab_extensions", "value": "Tiện ích mở rộng" },
-    { "name": "browse_tab_migrate", "value": "Chuyển" },
-    { "name": "browse_pin", "value": "Ghim" },
-    { "name": "browse_unpin", "value": "Bỏ ghim" },
-    { "name": "browse_disable_source", "value": "Tắt nguồn" },
-    { "name": "browse_source_disabled", "value": "Đã tắt nguồn" },
-    { "name": "browse_pinned", "value": "Đã ghim" },
-    { "name": "browse_sources_empty", "value": "Không có nguồn. Cài từ tab Tiện ích mở rộng" },
-    { "name": "browse_filter_langs", "value": "Lọc ngôn ngữ" },
-    { "name": "browse_filter_all", "value": "Tất cả" },
-    { "name": "browse_source_missing", "value": "Nguồn không khả dụng. Tiện ích mở rộng có thể đã bị tắt" },
-    { "name": "global_search_hint", "value": "Tìm trên tất cả nguồn" },
-    { "name": "global_search_failed", "value": "Tìm kiếm thất bại" },
-    { "name": "ext_search_hint", "value": "Tìm tiện ích mở rộng" },
-    { "name": "ext_search_no_match", "value": "Không có kết quả" },
-    { "name": "ext_repo_settings", "value": "Cài đặt kho" },
-    { "name": "ext_refresh_repo", "value": "Làm mới kho" },
-    { "name": "migrate_pick_source", "value": "Chọn nguồn cần chuyển" },
-    { "name": "migrate_empty_library", "value": "Giá sách trống" },
-    { "name": "migrate_select_all", "value": "Chọn tất cả" },
-    { "name": "migrate_deselect_all", "value": "Bỏ chọn tất cả" },
-    { "name": "migrate_action", "value": "Chuyển (%d)" },
-    { "name": "migrate_title", "value": "Chuyển" },
-    { "name": "migrate_skip", "value": "Bỏ qua" },
-    { "name": "migrate_progress", "value": "%d / %d" },
-    { "name": "migrate_target_source", "value": "Nguồn đích" },
-    { "name": "migrate_search_hint", "value": "Tìm manga trong nguồn đích" },
-    { "name": "migrate_confirm_title", "value": "Chuyển sang manga này?" },
-    { "name": "migrate_item_done", "value": "Đã chuyển: %s" },
-    { "name": "migrate_failed", "value": "Chuyển thất bại: %s" },
-    { "name": "migrate_done", "value": "Đã chuyển xong" },
-    { "name": "migrate_no_target", "value": "Không có nguồn đích" },
-    { "name": "stats_title", "value": "Thống kê" },
-    { "name": "stats_overview_section", "value": "Tổng quan" },
-    { "name": "stats_in_library", "value": "Trong giá sách" },
-    { "name": "stats_read_duration", "value": "Thời gian đọc" },
-    { "name": "stats_completed_titles", "value": "Hoàn thành" },
-    { "name": "stats_titles_section", "value": "Tác phẩm" },
-    { "name": "stats_started_titles", "value": "Đã bắt đầu" },
-    { "name": "stats_local_titles", "value": "Nội bộ" },
-    { "name": "stats_chapters_section", "value": "Chương" },
-    { "name": "stats_total_chapters", "value": "Tổng" },
-    { "name": "stats_read_chapters", "value": "Đã đọc" },
-    { "name": "stats_downloaded_chapters", "value": "Đã tải" },
-    { "name": "stats_tracker_section", "value": "Theo dõi" },
-    { "name": "stats_tracked_titles", "value": "Tác phẩm đã theo dõi" },
-    { "name": "stats_mean_score", "value": "Điểm trung bình" },
-    { "name": "stats_used", "value": "Đang dùng" },
-    { "name": "stats_not_applicable", "value": "Không áp dụng" },
-    { "name": "stats_week", "value": "Tuần" },
-    { "name": "stats_month", "value": "Tháng" },
-    { "name": "stats_week_total", "value": "%s tuần này" },
-    { "name": "stats_month_total", "value": "%s tháng này" },
-    { "name": "stats_no_reading", "value": "Không có lượt đọc trong khoảng này" },
-    { "name": "stats_day_short", "value": "%dng" },
-    { "name": "stats_hour_short", "value": "%dg" },
-    { "name": "stats_minute_short", "value": "%dph" },
-    { "name": "stats_second_short", "value": "%dgi" },
-    { "name": "stats_wd_sun", "value": "CN" },
-    { "name": "stats_wd_mon", "value": "T2" },
-    { "name": "stats_wd_tue", "value": "T3" },
-    { "name": "stats_wd_wed", "value": "T4" },
-    { "name": "stats_wd_thu", "value": "T5" },
-    { "name": "stats_wd_fri", "value": "T6" },
-    { "name": "stats_wd_sat", "value": "T7" },
-    { "name": "reader_mode_vertical", "value": "Lật trang dọc" },
-    { "name": "reader_mode_smart_grip", "value": "Cầm thông minh" },
-    { "name": "reader_orientation_lock_portrait", "value": "Khóa dọc" },
-    { "name": "reader_orientation_lock_landscape", "value": "Khóa ngang" },
-    { "name": "reader_tab_general", "value": "Chung" },
-    { "name": "reader_tab_filter", "value": "Bộ lọc màu" },
-    { "name": "reader_filter_grayscale", "value": "Thang xám" },
-    { "name": "reader_filter_invert", "value": "Đảo màu" },
-    { "name": "reader_filter_contrast", "value": "Độ tương phản" },
-    { "name": "reader_filter_saturation", "value": "Độ bão hòa" },
-    { "name": "reader_crop_borders", "value": "Cắt viền" },
-    { "name": "reader_nav_tap_zones", "value": "Vùng chạm" },
-    { "name": "reader_nav_default", "value": "Mặc định" },
-    { "name": "reader_nav_ltr", "value": "Trái sang phải" },
-    { "name": "reader_nav_rtl", "value": "Phải sang trái" },
-    { "name": "reader_nav_vertical", "value": "Dọc" },
-    { "name": "reader_nav_edge", "value": "Cạnh" },
-    { "name": "reader_nav_none", "value": "Không" },
-    { "name": "reader_dual_page", "value": "Xem hai trang" },
-    { "name": "reader_webtoon_padding", "value": "Lề bên Webtoon" },
-    { "name": "reader_set_mode_smart_grip", "value": "Cầm thông minh" },
-    { "name": "ext_install_local", "value": "Cài đặt từ nội bộ" },
-    { "name": "ext_detail_title", "value": "Thông tin tiện ích mở rộng" },
-    { "name": "ext_info_version", "value": "Phiên bản" },
-    { "name": "ext_info_language", "value": "Ngôn ngữ" },
-    { "name": "ext_uninstall_title", "value": "Gỡ cài đặt tiện ích mở rộng" },
-    { "name": "ext_uninstall_msg", "value": "Gỡ cài đặt \"%s\"? Manga trong giá sách sẽ được giữ lại" },
-    { "name": "ext_detail_sources", "value": "Nguồn" },
-    { "name": "ext_detail_settings", "value": "Cài đặt" },
-    { "name": "ext_pref_loading", "value": "Đang tải…" },
-    { "name": "ext_pref_failed", "value": "Không áp dụng được cài đặt" },
-    { "name": "ext_detail_missing", "value": "Tiện ích mở rộng không có hoặc chưa được tải" },
-    { "name": "action_filter", "value": "Lọc" },
-    { "name": "action_update_library", "value": "Cập nhật giá sách" },
-    { "name": "action_update_category", "value": "Cập nhật danh mục" },
-    { "name": "action_open_random_manga", "value": "Mở tác phẩm ngẫu nhiên" },
-    { "name": "action_select_all", "value": "Chọn tất cả" },
-    { "name": "action_select_inverse", "value": "Đảo lựa chọn" },
-    { "name": "action_move_category", "value": "Chuyển danh mục" },
-    { "name": "action_mark_as_read", "value": "Đánh dấu đã đọc" },
-    { "name": "action_mark_as_unread", "value": "Đánh dấu chưa đọc" },
-    { "name": "action_download", "value": "Tải xuống" },
-    { "name": "action_delete", "value": "Xóa" },
-    { "name": "action_migrate", "value": "Chuyển" },
-    { "name": "action_remove_from_library", "value": "Gỡ khỏi giá sách" },
-    { "name": "action_remove_from_library_msg", "value": "Gỡ %d manga đã chọn khỏi giá sách?" },
-    { "name": "action_download_queued", "value": "Đã thêm %d mục tải xuống" },
-    { "name": "library_search_hint", "value": "Tìm trong giá sách" },
-    { "name": "library_no_match", "value": "Không có manga phù hợp" },
-    { "name": "lib_sheet_tab_filter", "value": "Lọc" },
-    { "name": "lib_sheet_tab_sort", "value": "Sắp xếp" },
-    { "name": "lib_sheet_tab_display", "value": "Hiển thị" },
-    { "name": "lib_filter_downloaded", "value": "Đã tải" },
-    { "name": "lib_filter_unread", "value": "Chưa đọc" },
-    { "name": "lib_filter_started", "value": "Đã đọc qua" },
-    { "name": "lib_filter_bookmarked", "value": "Đã đánh dấu" },
-    { "name": "lib_filter_completed", "value": "Hoàn thành" },
-    { "name": "lib_filter_tracked", "value": "Đã theo dõi" },
-    { "name": "lib_sort_alpha", "value": "Tiêu đề" },
-    { "name": "lib_sort_total", "value": "Số chương" },
-    { "name": "lib_sort_last_read", "value": "Đọc gần đây" },
-    { "name": "lib_sort_last_update", "value": "Lần kiểm tra cập nhật" },
-    { "name": "lib_sort_unread", "value": "Số chưa đọc" },
-    { "name": "lib_sort_latest_chapter", "value": "Cập nhật tác phẩm" },
-    { "name": "lib_sort_fetch_date", "value": "Thời gian lấy chương" },
-    { "name": "lib_sort_date_added", "value": "Ngày thêm" },
-    { "name": "lib_sort_random", "value": "Ngẫu nhiên" },
-    { "name": "lib_display_compact", "value": "Lưới gọn" },
-    { "name": "lib_display_comfortable", "value": "Lưới thoáng" },
-    { "name": "lib_display_cover", "value": "Lưới bìa" },
-    { "name": "lib_display_list", "value": "Danh sách" },
-    { "name": "lib_display_grid_size", "value": "Số mục mỗi hàng" },
-    { "name": "lib_display_grid_auto", "value": "Tự động" },
-    { "name": "lib_display_badges_group", "value": "Huy hiệu và nút" },
-    { "name": "lib_badge_downloaded", "value": "Số chương đã tải" },
-    { "name": "lib_badge_unread", "value": "Chương chưa đọc" },
-    { "name": "lib_badge_local", "value": "Nguồn nội bộ" },
-    { "name": "lib_badge_language", "value": "Ngôn ngữ" },
-    { "name": "lib_badge_continue", "value": "Nút đọc tiếp" },
-    { "name": "lib_display_tabs_group", "value": "Thẻ" },
-    { "name": "lib_show_category_tabs", "value": "Hiện thẻ danh mục" },
-    { "name": "lib_show_manga_count", "value": "Hiện số tác phẩm" },
-    { "name": "EntryFormAbility_label", "value": "Thẻ Honyomi" },
-    { "name": "EntryFormAbility_desc", "value": "Nhà cung cấp thẻ màn hình nền" },
-    { "name": "card_recent_display", "value": "Đọc tiếp" },
-    { "name": "card_recent_desc", "value": "Đọc tiếp nhanh manga vừa xem" },
-    { "name": "card_updates_display", "value": "Cập nhật" },
-    { "name": "card_updates_desc", "value": "Chương chưa đọc mới nhất trong giá sách" },
-    { "name": "card_recent_header", "value": "Đọc tiếp" },
-    { "name": "card_updates_header", "value": "Cập nhật" },
-    { "name": "card_unread_count", "value": "%d chương chưa đọc" },
-    { "name": "card_empty_recent", "value": "Chưa có lịch sử đọc" },
-    { "name": "card_empty_updates", "value": "Không có chương chưa đọc" },
-    { "name": "card_open_hint", "value": "Chạm để mở ứng dụng" },
-    { "name": "card_manga_display", "value": "Thẻ manga" },
-    { "name": "card_manga_desc", "value": "Thêm từ trang chi tiết, chạm bìa để đọc" },
-    { "name": "card_manga_empty", "value": "Thêm từ trang chi tiết manga vào màn hình nền" },
-    { "name": "detail_add_to_desktop", "value": "Thêm vào màn hình nền" },
-    { "name": "detail_card_added", "value": "Đã thêm vào màn hình nền" },
-    { "name": "detail_card_add_failed", "value": "Không thêm được thẻ" },
-    { "name": "card_stats_week_display", "value": "Thống kê tuần" },
-    { "name": "card_stats_week_desc", "value": "Thời gian đọc mỗi ngày trong tuần này" },
-    { "name": "card_stats_month_display", "value": "Thống kê tháng" },
-    { "name": "card_stats_month_desc", "value": "Thời gian đọc mỗi ngày trong tháng này" },
-    { "name": "card_stats_empty", "value": "Chưa có lượt đọc" },
-    { "name": "action_view_upcoming", "value": "Hiện cập nhật sắp tới" },
-    { "name": "label_upcoming", "value": "Sắp cập nhật" },
-    { "name": "upcoming_guide", "value": "Hướng dẫn sắp cập nhật" },
-    { "name": "upcoming_calendar_prev", "value": "Tháng trước" },
-    { "name": "upcoming_calendar_next", "value": "Tháng sau" },
-    { "name": "pref_filter_update_categories_details", "value": "Tác phẩm thuộc cả danh mục đưa vào và loại trừ sẽ không được hiển thị." },
-    { "name": "relative_time_today", "value": "Hôm nay" },
-    { "name": "relative_time_days_ago", "value": "%d ngày trước" },
-    { "name": "upcoming_relative_time_days", "value": "%d ngày nữa" },
-    { "name": "card_upcoming_display", "value": "Sắp cập nhật" },
-    { "name": "card_upcoming_desc", "value": "Lịch cập nhật dự kiến của manga trong giá sách" },
-    { "name": "card_upcoming_header", "value": "Sắp cập nhật" },
-    { "name": "card_empty_upcoming", "value": "Không có manga đang ra trong giá sách" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Lọc tất cả truyện trong thư viện"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Dừng lưu giữ lịch sử đọc"
+    },
+    {
+      "name": "more_support",
+      "value": "Hỗ trợ chúng tôi"
+    },
+    {
+      "name": "more_help",
+      "value": "Trợ giúp"
+    },
+    {
+      "name": "support_perks",
+      "value": "Người hỗ trợ có quyền truy cập vào các kênh độc quyền và nhận được nhiều đặc quyền hơn."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (ưu tiên)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon hiện được hỗ trợ bởi %d+ người hỗ trợ. Chúng tôi muốn cảm ơn tất cả các bạn. Hãy cùng nhau làm cho Mihon trở nên tốt hơn nữa."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "Để biết các lựa chọn thay thế hoặc bất kỳ câu hỏi liên quan nào, hãy tham gia máy chủ Discord của chúng tôi."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "Dữ liệu và kho chứa"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Vị trí lưu trữ"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Được sử dụng để sao lưu tự động, tải chương và nguồn cục bộ."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "Sao lưu và khôi phục"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Tạo bản sao lưu"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Khôi phục sao lưu"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Tần suất sao lưu tự động"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "Bạn nên giữ lại nhiều bản sao của sao lưu ở các nơi khác nữa. Bản sao lưu có thể chứa các thông tin nhạy cảm như mật khẩu đã lưu; hãy cẩn thận khi chia sẻ với người khác."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Lần sao lưu tự động cuối cùng: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Số liệu sử dụng kho lưu trữ"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Hiện có: %s / Tổng cộng: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Dọn dẹp bộ nhớ chương đệm"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Đã sử dụng: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Bộ nhớ đệm đã được dọn dẹp, đã xoá %d tập tin"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Lỗi xảy ra trong khi dọn dẹp"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Xóa bộ nhớ chương đệm khi chạy ứng dụng"
+    },
+    {
+      "name": "data_export",
+      "value": "Xuất"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Danh sách thư viện"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Đã Xuất Thư viện"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Chọn dữ liệu để bao gồm"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Tiêu đề"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Tác giả"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "Tắt"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "Mỗi 6 tiếng"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "Mỗi 12 tiếng"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "Mỗi ngày"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "Mỗi 2 ngày"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "Mỗi tuần"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "OK"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Hủy"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Xác nhận"
+    },
+    {
+      "name": "common_delete",
+      "value": "Xóa"
+    },
+    {
+      "name": "common_retry",
+      "value": "Thử lại"
+    },
+    {
+      "name": "common_search",
+      "value": "Tìm kiếm"
+    },
+    {
+      "name": "common_all",
+      "value": "Tất cả"
+    },
+    {
+      "name": "common_close",
+      "value": "Đóng"
+    },
+    {
+      "name": "common_save",
+      "value": "Lưu"
+    },
+    {
+      "name": "common_install",
+      "value": "Cài đặt"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "Gỡ cài đặt"
+    },
+    {
+      "name": "common_update",
+      "value": "Cập nhật"
+    },
+    {
+      "name": "common_none",
+      "value": "Không"
+    },
+    {
+      "name": "common_default",
+      "value": "Mặc định"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Giao diện"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Ngôn ngữ"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Theo hệ thống"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Chế độ chủ đề"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Theo hệ thống"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Sáng"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Tối"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Màu nhấn"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Khác"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "Nền đen thuần AMOLED"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Xanh dương"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "Xanh lá"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Hồng"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Tím"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "Cam"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d phút trước"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d giờ trước"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d ngày trước"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "Đang ra"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Hoàn thành"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "Tạm ngưng"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Đã hủy"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Xuất bản xong"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Không rõ"
+    },
+    {
+      "name": "tab_library",
+      "value": "Giá sách"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Cập nhật"
+    },
+    {
+      "name": "tab_history",
+      "value": "Lịch sử"
+    },
+    {
+      "name": "tab_browse",
+      "value": "Duyệt"
+    },
+    {
+      "name": "tab_more",
+      "value": "Thêm"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "Đang chờ xác minh…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "Xác minh xong"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "Xác minh con người"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "Xong"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "Đã lưu kết quả xác minh"
+    },
+    {
+      "name": "more_title",
+      "value": "Thêm"
+    },
+    {
+      "name": "more_version",
+      "value": "Phiên bản %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Chỉ hiện truyện đã tải"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Chế độ ẩn danh"
+    },
+    {
+      "name": "more_downloads",
+      "value": "Hàng chờ tải xuống"
+    },
+    {
+      "name": "more_categories",
+      "value": "Danh mục"
+    },
+    {
+      "name": "more_settings",
+      "value": "Cài đặt"
+    },
+    {
+      "name": "more_about",
+      "value": "Giới thiệu"
+    },
+    {
+      "name": "more_plugins",
+      "value": "Tiện ích mở rộng"
+    },
+    {
+      "name": "categories_title",
+      "value": "Danh mục"
+    },
+    {
+      "name": "categories_add",
+      "value": "Danh mục mới"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "Tên danh mục"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "Đổi tên danh mục"
+    },
+    {
+      "name": "categories_rename",
+      "value": "Đổi tên"
+    },
+    {
+      "name": "categories_hint",
+      "value": "Nhấn giữ danh mục để đổi tên hoặc xóa; truyện trong danh mục đã xóa sẽ về Mặc định"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "Chọn danh mục"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "Đang tải…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "Không tải được ảnh"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "Chạm để thử lại"
+    },
+    {
+      "name": "library_title",
+      "value": "Giá sách"
+    },
+    {
+      "name": "library_empty",
+      "value": "Giá sách trống, hãy duyệt để thêm manga"
+    },
+    {
+      "name": "library_new_category",
+      "value": "Danh mục mới"
+    },
+    {
+      "name": "library_category_name",
+      "value": "Tên danh mục"
+    },
+    {
+      "name": "updates_title",
+      "value": "Cập nhật"
+    },
+    {
+      "name": "updates_empty",
+      "value": "Không có cập nhật gần đây"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "Tìm thấy %d chương mới"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "Không có chương mới"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "Làm mới thất bại"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "Đang làm mới…"
+    },
+    {
+      "name": "history_title",
+      "value": "Lịch sử"
+    },
+    {
+      "name": "history_clear",
+      "value": "Xóa"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "Xác nhận xóa?"
+    },
+    {
+      "name": "history_empty",
+      "value": "Chưa có lịch sử đọc"
+    },
+    {
+      "name": "history_cleared",
+      "value": "Đã xóa lịch sử"
+    },
+    {
+      "name": "history_continue",
+      "value": "Tiếp tục"
+    },
+    {
+      "name": "browse_title",
+      "value": "Duyệt"
+    },
+    {
+      "name": "browse_import",
+      "value": "Nhập"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "Tiện ích"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "Manga nội bộ"
+    },
+    {
+      "name": "browse_popular",
+      "value": "Phổ biến"
+    },
+    {
+      "name": "browse_latest",
+      "value": "Mới nhất"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "Tìm manga…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "Không tìm thấy manga"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "Chưa có manga nội bộ, nhấn Nhập để thêm"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "Tải thất bại: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "Tìm kiếm thất bại: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "Không tải thêm được"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "Không mở được chi tiết"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "Không chọn được tệp"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "Nhập %d tệp"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "Tên manga"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "Vui lòng nhập tên"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "Đã nhập %d tệp"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "Nhập thất bại: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "Tải xuống"
+    },
+    {
+      "name": "download_resume",
+      "value": "Tiếp tục"
+    },
+    {
+      "name": "download_pause",
+      "value": "Tạm dừng"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "Xóa mục đã xong"
+    },
+    {
+      "name": "download_queue",
+      "value": "Hàng đợi tải"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "Trong hàng đợi"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "Đang tải"
+    },
+    {
+      "name": "download_state_done",
+      "value": "Xong"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "Thất bại"
+    },
+    {
+      "name": "download_move_top",
+      "value": "Chuyển lên đầu"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "Chuyển xuống cuối"
+    },
+    {
+      "name": "download_deleted",
+      "value": "Đã xóa"
+    },
+    {
+      "name": "download_empty",
+      "value": "Chưa có mục tải xuống"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "Đã tải"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d chương"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "Không có chương"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "Đồng bộ thất bại, đang hiện dữ liệu nội bộ"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "Đã thêm vào giá sách"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "Đã gỡ khỏi giá sách"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "Đã đánh dấu tất cả chương là đã đọc"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "Đã đưa vào hàng đợi tải"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "Hãy cấu hình token AniList trước"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "Tìm AniList"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "Tiêu đề manga"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "Không có kết quả tìm kiếm"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "Tìm AniList thất bại"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "Đã liên kết AniList"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "Đã hủy liên kết AniList"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "Đã đồng bộ tiến độ tới chương %d"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "Đồng bộ AniList thất bại"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "Nội bộ"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "Trong giá sách"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "Thêm vào giá sách"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "Đọc tiếp"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "Bắt đầu đọc"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "Chưa có chương"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "Thu gọn"
+    },
+    {
+      "name": "detail_expand",
+      "value": "Mở rộng"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "Theo dõi AniList"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "Chưa cấu hình token AniList"
+    },
+    {
+      "name": "detail_searching",
+      "value": "Đang tìm…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "Tìm và liên kết"
+    },
+    {
+      "name": "detail_bind",
+      "value": "Liên kết"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "Đã đồng bộ tới chương %d"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "Đồng bộ tiến độ"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "Hủy liên kết"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "Chương (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "Tăng dần"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "Giảm dần"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "Đánh dấu đã đọc hết"
+    },
+    {
+      "name": "detail_read",
+      "value": "Đã đọc"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "Đã tải"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "Trong hàng đợi"
+    },
+    {
+      "name": "detail_download",
+      "value": "Tải xuống"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "Không tìm thấy chương"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "Tải thất bại: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "Trái sang phải"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "Phải sang trái"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "Chế độ đọc"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "Tự do"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "Dọc"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "Ngang"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "Hướng màn hình"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "Đã ở chương cuối"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "Đã ở chương đầu"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "Đã ở trang đầu"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "Đã ở trang cuối"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "Đang tải chương…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "Cài đặt trình đọc"
+    },
+    {
+      "name": "reader_background",
+      "value": "Nền"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Tự động"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "Trắng"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "Xám"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "Đen"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "Hiện số trang"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "Độ sáng"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Tự động"
+    },
+    {
+      "name": "plugin_title",
+      "value": "Tiện ích mở rộng"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "Đã cài"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "Chưa có tiện ích, cài bên dưới"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "Tiện ích đã tắt có thể bật lại bất cứ lúc nào"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "Đã mới nhất"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "Cài từ tệp"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "Chọn tệp để cài"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "Đang xử lý…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "Hỗ trợ gói tiện ích .honyomiplug / .zip"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "Kho trực tuyến"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "Thiết lập kho"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "Làm mới"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "Chưa cấu hình kho tiện ích"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "Đang tải kho…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "URL kho tiện ích"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "Nhập URL kho tiện ích"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "Tải kho thất bại: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "Không chọn được tệp"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "Đã cài: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "Đã cài %s"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "Cài thất bại: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "Thao tác thất bại"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "Đã gỡ: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "Gỡ cài đặt thất bại"
+    },
+    {
+      "name": "settings_title",
+      "value": "Cài đặt"
+    },
+    {
+      "name": "settings_general",
+      "value": "Chung"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Màn hình khởi động"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "Cá nhân hóa"
+    },
+    {
+      "name": "settings_library",
+      "value": "Giá sách"
+    },
+    {
+      "name": "settings_reader",
+      "value": "Trình đọc"
+    },
+    {
+      "name": "settings_data",
+      "value": "Dữ liệu"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Tải xuống"
+    },
+    {
+      "name": "settings_browse",
+      "value": "Duyệt"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Nâng cao"
+    },
+    {
+      "name": "settings_about",
+      "value": "Giới thiệu"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "Giá sách"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Cập nhật"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "Lịch sử"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "Duyệt"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "Thêm"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Nâng cao"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "Đang tính…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "Lưu trữ"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "Xóa bộ nhớ đệm ảnh"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "Đã xóa bộ nhớ đệm ảnh"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "Xóa cookie"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "Đã xóa mọi cookie"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "Sao lưu và khôi phục"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "Xuất bản sao"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "Nhập bản sao"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "Theo dõi"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "Token AniList"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "Token truy cập AniList"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "Dán access token (để trống để xóa)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "Chưa đặt"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "Đã đặt"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "Đã lưu token"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "Đã xóa token"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "Đã xuất bản sao"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "Đã hủy xuất"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "Xuất thất bại"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "Đã hủy nhập"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "Tệp sao lưu không hợp lệ"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "Đã khôi phục %d manga"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "Nhập thất bại"
+    },
+    {
+      "name": "about_title",
+      "value": "Giới thiệu"
+    },
+    {
+      "name": "about_version",
+      "value": "Phiên bản 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "Kiến trúc lấy cảm hứng từ Mihon (Apache-2.0). Nguồn trực tuyến được cài động dưới dạng tiện ích mở rộng, nguồn nội bộ có sẵn trong ứng dụng."
+    },
+    {
+      "name": "about_ack",
+      "value": "Lời cảm ơn mã nguồn mở:\n· Mihon / Tachiyomi — kiến trúc ứng dụng và thiết kế tương tác (Apache-2.0)\n· Material Symbols — biểu tượng trong ứng dụng (Apache-2.0)\n· MangaDex — nguồn dữ liệu thử nghiệm"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "Duyệt"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "Nội dung"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "Hiện nguồn NSFW"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "Khi bật, nguồn được tiện ích đánh dấu NSFW sẽ hiện trong Duyệt"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Tải xuống"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Mạng"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Chỉ tải qua Wi-Fi"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "Lưu ý: công tắc này là chỗ dành sẵn ở phiên bản hiện tại; phát hiện loại mạng sẽ có ở bản sau"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "Giá sách"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "Lọc và sắp xếp"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "Sắp xếp mặc định"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "Tiêu đề"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "Chương mới nhất"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "Ngày thêm"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "Số chưa đọc"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "Sắp xếp tiêu đề tăng dần"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "Bộ lọc mặc định"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "Chưa đọc"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "Đã tải"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "Chưa hoàn thành"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Hiển thị"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "Chế độ xem mặc định"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "Lưới"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "Lưới bìa"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "Danh sách"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "Số cột lưới"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "Tự động"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 cột"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 cột"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 cột"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "Huy hiệu chưa đọc"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "Huy hiệu tải xuống"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "Trình đọc"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "Chế độ đọc"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "Chế độ mặc định"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "Trái sang phải"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "Phải sang trái"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "Lật trang dọc"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "Hai trang (ngang)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Hiển thị"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "Hiện số trang"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "Nền trình đọc"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "Theo chủ đề"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "Trắng"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "Đen"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "Xám"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "Đặt lại độ sáng trình đọc"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "Đã đặt độ sáng theo hệ thống"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "Nguồn"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "Tiện ích mở rộng"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "Chuyển"
+    },
+    {
+      "name": "browse_pin",
+      "value": "Ghim"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "Bỏ ghim"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "Tắt nguồn"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "Đã tắt nguồn"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "Đã ghim"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "Không có nguồn. Cài từ tab Tiện ích mở rộng"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "Lọc ngôn ngữ"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "Tất cả"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "Nguồn không khả dụng. Tiện ích mở rộng có thể đã bị tắt"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "Tìm trên tất cả nguồn"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "Tìm kiếm thất bại"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "Tìm tiện ích mở rộng"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "Không có kết quả"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "Cài đặt kho"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "Làm mới kho"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "Chọn nguồn cần chuyển"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "Giá sách trống"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "Chọn tất cả"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "Bỏ chọn tất cả"
+    },
+    {
+      "name": "migrate_action",
+      "value": "Chuyển (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "Chuyển"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "Bỏ qua"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d / %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "Nguồn đích"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "Tìm manga trong nguồn đích"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "Chuyển sang manga này?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "Đã chuyển: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "Chuyển thất bại: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "Đã chuyển xong"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "Không có nguồn đích"
+    },
+    {
+      "name": "stats_title",
+      "value": "Thống kê"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "Tổng quan"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "Trong giá sách"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "Thời gian đọc"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "Hoàn thành"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "Tác phẩm"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "Đã bắt đầu"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "Nội bộ"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "Chương"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "Tổng"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "Đã đọc"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "Đã tải"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "Theo dõi"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "Tác phẩm đã theo dõi"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "Điểm trung bình"
+    },
+    {
+      "name": "stats_used",
+      "value": "Đang dùng"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "Không áp dụng"
+    },
+    {
+      "name": "stats_week",
+      "value": "Tuần"
+    },
+    {
+      "name": "stats_month",
+      "value": "Tháng"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "%s tuần này"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "%s tháng này"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "Không có lượt đọc trong khoảng này"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%dng"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dg"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dph"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%dgi"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "CN"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "T2"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "T3"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "T4"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "T5"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "T6"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "T7"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "Lật trang dọc"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "Cầm thông minh"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "Khóa dọc"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "Khóa ngang"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "Chung"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "Bộ lọc màu"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "Thang xám"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "Đảo màu"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "Độ tương phản"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "Độ bão hòa"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "Cắt viền"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "Vùng chạm"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "Mặc định"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "Trái sang phải"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "Phải sang trái"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "Dọc"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "Cạnh"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "Không"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Xem hai trang"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "Lề bên Webtoon"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "Cầm thông minh"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "Cài đặt từ nội bộ"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "Thông tin tiện ích mở rộng"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "Phiên bản"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "Ngôn ngữ"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "Gỡ cài đặt tiện ích mở rộng"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "Gỡ cài đặt \"%s\"? Manga trong giá sách sẽ được giữ lại"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "Nguồn"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "Cài đặt"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "Đang tải…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "Không áp dụng được cài đặt"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "Tiện ích mở rộng không có hoặc chưa được tải"
+    },
+    {
+      "name": "action_filter",
+      "value": "Lọc"
+    },
+    {
+      "name": "action_update_library",
+      "value": "Cập nhật giá sách"
+    },
+    {
+      "name": "action_update_category",
+      "value": "Cập nhật danh mục"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "Mở tác phẩm ngẫu nhiên"
+    },
+    {
+      "name": "action_select_all",
+      "value": "Chọn tất cả"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "Đảo lựa chọn"
+    },
+    {
+      "name": "action_move_category",
+      "value": "Chuyển danh mục"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "Đánh dấu đã đọc"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "Đánh dấu chưa đọc"
+    },
+    {
+      "name": "action_download",
+      "value": "Tải xuống"
+    },
+    {
+      "name": "action_delete",
+      "value": "Xóa"
+    },
+    {
+      "name": "action_migrate",
+      "value": "Chuyển"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "Gỡ khỏi giá sách"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "Gỡ %d manga đã chọn khỏi giá sách?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "Đã thêm %d mục tải xuống"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "Tìm trong giá sách"
+    },
+    {
+      "name": "library_no_match",
+      "value": "Không có manga phù hợp"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "Lọc"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "Sắp xếp"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "Hiển thị"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "Đã tải"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "Chưa đọc"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "Đã đọc qua"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "Đã đánh dấu"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "Hoàn thành"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "Đã theo dõi"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "Tiêu đề"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "Số chương"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "Đọc gần đây"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "Lần kiểm tra cập nhật"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "Số chưa đọc"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "Cập nhật tác phẩm"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "Thời gian lấy chương"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "Ngày thêm"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "Ngẫu nhiên"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "Lưới gọn"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "Lưới thoáng"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "Lưới bìa"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "Danh sách"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "Số mục mỗi hàng"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "Tự động"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "Huy hiệu và nút"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "Số chương đã tải"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "Chương chưa đọc"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "Nguồn nội bộ"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "Ngôn ngữ"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "Nút đọc tiếp"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "Thẻ"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "Hiện thẻ danh mục"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "Hiện số tác phẩm"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "Thẻ Honyomi"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "Nhà cung cấp thẻ màn hình nền"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "Đọc tiếp"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "Đọc tiếp nhanh manga vừa xem"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "Cập nhật"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "Chương chưa đọc mới nhất trong giá sách"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "Đọc tiếp"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "Cập nhật"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d chương chưa đọc"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "Chưa có lịch sử đọc"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "Không có chương chưa đọc"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "Chạm để mở ứng dụng"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "Thẻ manga"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "Thêm từ trang chi tiết, chạm bìa để đọc"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "Thêm từ trang chi tiết manga vào màn hình nền"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "Thêm vào màn hình nền"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "Đã thêm vào màn hình nền"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "Không thêm được thẻ"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "Thống kê tuần"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "Thời gian đọc mỗi ngày trong tuần này"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "Thống kê tháng"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "Thời gian đọc mỗi ngày trong tháng này"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "Chưa có lượt đọc"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "Hiện cập nhật sắp tới"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "Sắp cập nhật"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "Hướng dẫn sắp cập nhật"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "Tháng trước"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "Tháng sau"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "Tác phẩm thuộc cả danh mục đưa vào và loại trừ sẽ không được hiển thị."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "Hôm nay"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d ngày trước"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "%d ngày nữa"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "Sắp cập nhật"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "Lịch cập nhật dự kiến của manga trong giá sách"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "Sắp cập nhật"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "Không có manga đang ra trong giá sách"
+    }
+  ]
 }

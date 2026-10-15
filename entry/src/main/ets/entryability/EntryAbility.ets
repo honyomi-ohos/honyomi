@@ -1,4 +1,4 @@
-import { AbilityConstant, UIAbility, Want, Configuration, ConfigurationConstant, common } from '@kit.AbilityKit';
+import { AbilityConstant, common, Configuration, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
 import { deviceInfo } from '@kit.BasicServicesKit';

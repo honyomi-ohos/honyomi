@@ -1,7 +1,7 @@
 import { common } from '@kit.AbilityKit';
 import { HashMap } from '@kit.ArkTS';
 import { hilog } from '@kit.PerformanceAnalysisKit';
-import { HttpProxyCacheServer, HttpProxyCacheServerBuilder, HeaderInjector, CacheListener } from '@ohos/video-cache';
+import { CacheListener, HeaderInjector, HttpProxyCacheServer, HttpProxyCacheServerBuilder } from '@ohos/video-cache';
 import { Http } from '../net/Http';
 
 // 按 URL 附加源站请求头的注入器：播放前经 VideoCacheServer.setUrlHeaders 注册

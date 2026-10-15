@@ -1,7 +1,7 @@
-import { FormExtensionAbility, formBindingData, formInfo, formProvider } from '@kit.FormKit';
+import { formBindingData, FormExtensionAbility, formInfo } from '@kit.FormKit';
 import { Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
-import { WidgetUpdater, CardFormInfo } from './WidgetUpdater';
+import { CardFormInfo, WidgetUpdater } from './WidgetUpdater';
 
 const DOMAIN = 0x0001;
 const TAG = 'EntryFormAbility';

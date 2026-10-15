@@ -15,10 +15,10 @@
  *   - Tracks per-extension JS heap usage (2MB budget watchdog).
  */
 
-import { worker, MessageEvents, ErrorEvent } from '@kit.ArkTS';
+import { ErrorEvent, MessageEvents, worker } from '@kit.ArkTS';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { NativeHttpBridge } from './NativeHttpBridge';
-import { WebChallengeError, isChallengeError, challengeUrlOf, JsvmExtensionInfo } from './EngineGateway';
+import { challengeUrlOf, isChallengeError, JsvmExtensionInfo, WebChallengeError } from './EngineGateway';
 import { PluginPrefs } from './PluginPrefs';
 
 const DOMAIN = 0x0000;
@@ -52,12 +52,16 @@ interface ExtensionEntry {
   pending: Map<number, PendingCall>;
   lastMemoryBytes: number;
   broken: boolean;
+
   /** unload 后的 terminate 安全网定时器 id（-1 表示未挂） */
   terminateTimer: number;
+
   /** 最近一次持久化的 prefs JSON，内容未变化时跳过 persist */
   lastPrefsJson: string;
+
   /** 最近使用时间（LRU 淘汰依据） */
   lastUsedAt: number;
+
   /** 进行中的调用数（含加载过程；> 0 的引擎不被 LRU 淘汰） */
   activeCalls: number;
 }
@@ -185,7 +189,8 @@ export class JsvmExtensionManager {
   }
 
   /** Calls a normalized extension method, returning the raw envelope JSON. */
-  static async callMethod(key: string, method: string, args: Array<string | number | boolean | object>): Promise<string> {
+  static async callMethod(key: string, method: string,
+    args: Array<string | number | boolean | object>): Promise<string> {
     const entry = JsvmExtensionManager.extensions.get(key);
     if (entry === undefined) {
       throw new Error('ext_not_loaded');

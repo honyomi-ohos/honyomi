@@ -9,15 +9,6 @@ export struct MangaSkeletonGrid {
   private shimmerStarted: boolean = false;
   private placeholders: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  private columnsTpl(): string {
-    const cols = this.columns > 0 ? this.columns : 2;
-    let tpl = '';
-    for (let i = 0; i < cols; i++) {
-      tpl += '1fr ';
-    }
-    return tpl.trim();
-  }
-
   startShimmer(): void {
     if (this.shimmerStarted) {
       return;
@@ -72,5 +63,14 @@ export struct MangaSkeletonGrid {
     .onAppear(() => {
       this.startShimmer();
     })
+  }
+
+  private columnsTpl(): string {
+    const cols = this.columns > 0 ? this.columns : 2;
+    let tpl = '';
+    for (let i = 0; i < cols; i++) {
+      tpl += '1fr ';
+    }
+    return tpl.trim();
   }
 }

@@ -1,4 +1,4 @@
-import { InsightIntentEntryExecutor, insightIntent, InsightIntentEntry } from '@kit.AbilityKit';
+import { insightIntent, InsightIntentEntry, InsightIntentEntryExecutor } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
 import { MangaRecord } from '../model/Models';
@@ -33,6 +33,10 @@ import EntryAbility from './EntryAbility';
 })
 export default class OpenMangaImpl extends InsightIntentEntryExecutor<string> {
   public mangaTitle: string = '';
+
+  private static result(code: number, msg: string): insightIntent.IntentResult<string> {
+    return { code: code, result: msg };
+  }
 
   onExecute(): Promise<insightIntent.IntentResult<string>> {
     const query: string = this.mangaTitle.trim();
@@ -90,9 +94,5 @@ export default class OpenMangaImpl extends InsightIntentEntryExecutor<string> {
       'query': query
     };
     AppStorage.setOrCreate(AppKeys.CARD_ACTION, JSON.stringify(payload));
-  }
-
-  private static result(code: number, msg: string): insightIntent.IntentResult<string> {
-    return { code: code, result: msg };
   }
 }

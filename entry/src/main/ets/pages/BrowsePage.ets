@@ -1,9 +1,7 @@
-import { common } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
-import { PluginService } from '../data/PluginService';
-import { SourceRegistry, Source } from '../source/Source';
-import { BrowseSourceParams, MigrateMangaParams, ExtensionDetailParams } from '../model/RouteParams';
+import { Source, SourceRegistry } from '../source/Source';
+import { BrowseSourceParams, ExtensionDetailParams, MigrateMangaParams } from '../model/RouteParams';
 import { ContentType } from '../model/Models';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
@@ -77,16 +75,13 @@ struct SourceOptionsDialog {
   controller?: CustomDialogController;
   sourceName: Resource | string = '';
   isPinned: boolean = false;
-  onPin: () => void = () => {};
-  onClose: () => void = () => {};
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
-  private dismiss(): void {
-    if (this.controller !== undefined) {
-      this.controller.close();
-    }
-    this.onClose();
-  }
+  onPin: () => void = () => {
+  };
+
+  onClose: () => void = () => {
+  };
 
   build() {
     Column() {
@@ -111,6 +106,13 @@ struct SourceOptionsDialog {
     .padding(20)
     .width('100%')
   }
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
+  }
 }
 
 // 内容类型过滤项（漫画/小说/动画）
@@ -133,54 +135,19 @@ struct SourceFilterDialog {
   langs: string[] = [];
   initialLangs: string[] = [];
   initialTypes: string[] = [];
-  onApply: (langs: string[], types: string[]) => void = (_l: string[], _t: string[]) => {};
-  onClose: () => void = () => {};
   @State checkedLangs: string[] = [];
   @State checkedTypes: string[] = [];
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
+  onApply: (langs: string[], types: string[]) => void = (_l: string[], _t: string[]) => {
+  };
+
+  onClose: () => void = () => {
+  };
+
   aboutToAppear(): void {
     this.checkedLangs = this.initialLangs.length > 0 ? this.initialLangs.slice() : this.langs.slice();
     this.checkedTypes = this.initialTypes.length > 0 ? this.initialTypes.slice() : FILTER_TYPES.slice();
-  }
-
-  private toggleLang(lang: string): void {
-    const next: string[] = [];
-    let removed = false;
-    for (const l of this.checkedLangs) {
-      if (l === lang) {
-        removed = true;
-      } else {
-        next.push(l);
-      }
-    }
-    if (!removed) {
-      next.push(lang);
-    }
-    this.checkedLangs = next;
-  }
-
-  private toggleType(t: string): void {
-    const next: string[] = [];
-    let removed = false;
-    for (const item of this.checkedTypes) {
-      if (item === t) {
-        removed = true;
-      } else {
-        next.push(item);
-      }
-    }
-    if (!removed) {
-      next.push(t);
-    }
-    this.checkedTypes = next;
-  }
-
-  private dismiss(): void {
-    if (this.controller !== undefined) {
-      this.controller.close();
-    }
-    this.onClose();
   }
 
   build() {
@@ -271,6 +238,45 @@ struct SourceFilterDialog {
     .padding(20)
     .width('100%')
   }
+
+  private toggleLang(lang: string): void {
+    const next: string[] = [];
+    let removed = false;
+    for (const l of this.checkedLangs) {
+      if (l === lang) {
+        removed = true;
+      } else {
+        next.push(l);
+      }
+    }
+    if (!removed) {
+      next.push(lang);
+    }
+    this.checkedLangs = next;
+  }
+
+  private toggleType(t: string): void {
+    const next: string[] = [];
+    let removed = false;
+    for (const item of this.checkedTypes) {
+      if (item === t) {
+        removed = true;
+      } else {
+        next.push(item);
+      }
+    }
+    if (!removed) {
+      next.push(t);
+    }
+    this.checkedTypes = next;
+  }
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
+  }
 }
 
 // 浏览页：图源 / 插件 / 迁移 三 Tab（对齐原版 Mihon BrowseTab）
@@ -309,73 +315,6 @@ export struct BrowsePage {
   // 插件安装/启停后刷新源列表
   onPluginsChanged(): void {
     this.refreshSources();
-  }
-
-  private refreshSources(): void {
-    // slice() 强制生成新数组引用，确保 @State 检测到变化并触发重绘
-    this.sources = SourceRegistry.all().slice();
-  }
-
-  private loadPins(): void {
-    let keys: string[] = [];
-    try {
-      const parsed = JSON.parse(Settings.getPinnedSources()) as string[];
-      // 存储值可能被写坏为非数组（旧版本/手改），Array.isArray 防护
-      if (Array.isArray(parsed)) {
-        keys = parsed;
-      }
-    } catch (_e) {
-      keys = [];
-    }
-    this.pinnedKeys = keys;
-  }
-
-  private savePins(): void {
-    Settings.setPinnedSources(JSON.stringify(this.pinnedKeys));
-  }
-
-  private isPinned(key: string): boolean {
-    return this.pinnedKeys.indexOf(key) >= 0;
-  }
-
-  private togglePin(key: string): void {
-    const next: string[] = [];
-    let removed = false;
-    for (const k of this.pinnedKeys) {
-      if (k === key) {
-        removed = true;
-      } else {
-        next.push(k);
-      }
-    }
-    if (!removed) {
-      next.push(key);
-    }
-    this.pinnedKeys = next;
-    this.savePins();
-  }
-
-  private allLangs(): string[] {
-    const langs: string[] = [];
-    for (const s of this.sources) {
-      if (langs.indexOf(s.lang) < 0) {
-        langs.push(s.lang);
-      }
-    }
-    return langs;
-  }
-
-  private sourceDisplayName(s: Source): Resource | string {
-    if (s.key === 'local') {
-      return $r('app.string.browse_local_source_name');
-    }
-    if (s.key === 'local_novel') {
-      return $r('app.string.browse_local_novel_name');
-    }
-    if (s.key === 'local_video') {
-      return $r('app.string.browse_local_video_name');
-    }
-    return s.name;
   }
 
   // 源列表分节：已置顶在前，其后按语言分组
@@ -419,154 +358,6 @@ export struct BrowsePage {
     return sections;
   }
 
-  // 分节键需包含成员源 key：ForEach 按 key 复用组件，若 key 只含语言标识，
-  // 运行中新增/移除源时分节被原样复用，列表不会重建（新装插件源不显示）
-  private sectionKey(section: SourceSection): string {
-    let fp: string = section.key;
-    for (const s of section.sources) {
-      fp += `|${s.key}`;
-    }
-    return fp;
-  }
-
-  private showSourceOptions(s: Source): void {
-    const dialog = new CustomDialogController({
-      builder: SourceOptionsDialog({
-        sourceName: this.sourceDisplayName(s),
-        isPinned: this.isPinned(s.key),
-        onPin: (): void => {
-          this.togglePin(s.key);
-        },
-        onClose: (): void => {
-          dialog.close();
-        },
-      }),
-      autoCancel: true,
-    });
-    dialog.open();
-  }
-
-  private showSourceFilter(): void {
-    const dialog = new CustomDialogController({
-      builder: SourceFilterDialog({
-        langs: this.allLangs(),
-        initialLangs: this.enabledLangs,
-        initialTypes: this.enabledTypes,
-        onApply: (langs: string[], types: string[]): void => {
-          this.enabledLangs = langs.length === 0 || langs.length === this.allLangs().length ? [] : langs;
-          this.enabledTypes = types.length === FILTER_TYPES.length ? [] : types;
-        },
-        onClose: (): void => {
-          dialog.close();
-        },
-      }),
-      autoCancel: true,
-    });
-    dialog.open();
-  }
-
-  // 插件 Tab：仅按内容类型过滤（语言沿用仓库声明，不提供过滤）
-  private showExtTypeFilter(): void {
-    const dialog = new CustomDialogController({
-      builder: SourceFilterDialog({
-        langs: [],
-        initialLangs: [],
-        initialTypes: this.extTypes,
-        onApply: (_langs: string[], types: string[]): void => {
-          this.extTypes = types.length === FILTER_TYPES.length ? [] : types;
-        },
-        onClose: (): void => {
-          dialog.close();
-        },
-      }),
-      autoCancel: true,
-    });
-    dialog.open();
-  }
-
-  private openBrowseSource(s: Source, mode: string): void {
-    const params: BrowseSourceParams = { sourceKey: s.key, mode: mode };
-    this.pathStack.pushPathByName('BrowseSource', params);
-  }
-
-  // ---- 插件 Tab 菜单 ----
-
-  private showRepoUrlDialog(): void {
-    const dialog = new CustomDialogController({
-      builder: InputDialog({
-        title: $r('app.string.plugin_repo_url_title'),
-        placeholder: $r('app.string.plugin_repo_url_hint'),
-        onConfirm: (text: string): void => {
-          Settings.setPluginRepoUrl(text.trim());
-          AppStorage.setOrCreate(AppKeys.EXT_REPO_REFRESH, (AppStorage.get<number>(AppKeys.EXT_REPO_REFRESH) ?? 0) + 1);
-        },
-        onClose: (): void => {
-          dialog.close();
-        },
-      }),
-      autoCancel: true,
-    });
-    dialog.open();
-  }
-
-  private refreshRepo(): void {
-    AppStorage.setOrCreate(AppKeys.EXT_REPO_REFRESH, (AppStorage.get<number>(AppKeys.EXT_REPO_REFRESH) ?? 0) + 1);
-  }
-
-  // ---- 迁移 Tab ----
-
-  // 本地源名称本地化：MigrateSourceCount.name 为 string，需在此把 Resource 解析为字符串
-  private sourceNameText(s: Source): string {
-    if (s.key === 'local') {
-      return Util.resStr(this.getUIContext(), $r('app.string.browse_local_source_name'));
-    }
-    if (s.key === 'local_novel') {
-      return Util.resStr(this.getUIContext(), $r('app.string.browse_local_novel_name'));
-    }
-    if (s.key === 'local_video') {
-      return Util.resStr(this.getUIContext(), $r('app.string.browse_local_video_name'));
-    }
-    return s.name;
-  }
-
-  private async loadMigrate(): Promise<void> {
-    try {
-      const context = Util.hostAbilityContext(this.getUIContext());
-      await AppDb.ready(context);
-      const counts = await MangaRepo.countBySource();
-      const items: MigrateSourceCount[] = [];
-      for (const s of SourceRegistry.all()) {
-        const c: number | undefined = counts[s.key];
-        if (c !== undefined && c > 0) {
-          items.push(MigrateSourceCount.of(s.key, this.sourceNameText(s), s.lang, c, s.iconPath, s.contentType));
-        }
-      }
-      this.migrateItems = this.sortMigrate(items);
-    } catch (_e) {
-      this.migrateItems = [];
-      Util.toastRes(this.getUIContext(), $r('app.string.migrate_load_failed'));
-    }
-    this.migrateLoaded = true;
-  }
-
-  private sortMigrate(items: MigrateSourceCount[]): MigrateSourceCount[] {
-    const list = items.slice();
-    list.sort((a: MigrateSourceCount, b: MigrateSourceCount): number => {
-      const byCount: number = a.count - b.count;
-      const byName: number = a.name.localeCompare(b.name);
-      const result = this.migrateSortByCount ? byCount : byName;
-      return this.migrateSortAsc ? result : -result;
-    });
-    return list;
-  }
-
-  private openMigrateSource(item: MigrateSourceCount): void {
-    const params: MigrateMangaParams = { sourceKey: item.key };
-    this.pathStack.pushPathByName('MigrateManga', params);
-  }
-
-  // ---- UI ----
-
   @Builder
   tabLabel(title: ResourceStr, index: number) {
     Column() {
@@ -584,7 +375,8 @@ export struct BrowsePage {
     Menu() {
       MenuItem({ content: $r('app.string.ext_install_local') })
         .onClick(() => {
-          AppStorage.setOrCreate(AppKeys.EXT_LOCAL_INSTALL, (AppStorage.get<number>(AppKeys.EXT_LOCAL_INSTALL) ?? 0) + 1);
+          AppStorage.setOrCreate(AppKeys.EXT_LOCAL_INSTALL,
+            (AppStorage.get<number>(AppKeys.EXT_LOCAL_INSTALL) ?? 0) + 1);
         })
       MenuItem({ content: $r('app.string.ext_repo_settings') })
         .onClick(() => {
@@ -635,7 +427,12 @@ export struct BrowsePage {
         Text($r('app.string.browse_latest'))
           .fontSize(13)
           .fontColor(this.pal.primary)
-          .padding({ left: 8, right: 4, top: 6, bottom: 6 })
+          .padding({
+            left: 8,
+            right: 4,
+            top: 6,
+            bottom: 6
+          })
           .onClick(() => {
             this.openBrowseSource(s, 'latest');
           })
@@ -749,7 +546,12 @@ export struct BrowsePage {
             })
         }
         .width('100%')
-        .padding({ left: 16, right: 16, top: 10, bottom: 4 })
+        .padding({
+          left: 16,
+          right: 16,
+          top: 10,
+          bottom: 4
+        })
 
         Scroll() {
           Column() {
@@ -777,12 +579,18 @@ export struct BrowsePage {
                 .alignItems(HorizontalAlign.Start)
                 .layoutWeight(1)
                 .margin({ left: 12 })
+
                 Text(`${item.count}`)
                   .fontSize(11)
                   .fontColor(this.pal.onPrimary)
                   .backgroundColor(this.pal.primary)
                   .borderRadius(10)
-                  .padding({ left: 8, right: 8, top: 2, bottom: 2 })
+                  .padding({
+                    left: 8,
+                    right: 8,
+                    top: 2,
+                    bottom: 2
+                  })
               }
               .width('100%')
               .alignItems(VerticalAlign.Center)
@@ -878,7 +686,12 @@ export struct BrowsePage {
         }
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
+      .padding({
+        left: 16,
+        right: 16,
+        top: 12,
+        bottom: 4
+      })
 
       // 三页签 + 可滑动内容
       Tabs({ barPosition: BarPosition.Start, index: this.currentTab }) {
@@ -916,5 +729,221 @@ export struct BrowsePage {
     .width('100%')
     .height('100%')
     .backgroundColor(this.pal.bg)
+  }
+
+  // 分节键需包含成员源 key：ForEach 按 key 复用组件，若 key 只含语言标识，
+
+  private refreshSources(): void {
+    // slice() 强制生成新数组引用，确保 @State 检测到变化并触发重绘
+    this.sources = SourceRegistry.all().slice();
+  }
+
+  private loadPins(): void {
+    let keys: string[] = [];
+    try {
+      const parsed = JSON.parse(Settings.getPinnedSources()) as string[];
+      // 存储值可能被写坏为非数组（旧版本/手改），Array.isArray 防护
+      if (Array.isArray(parsed)) {
+        keys = parsed;
+      }
+    } catch (_e) {
+      keys = [];
+    }
+    this.pinnedKeys = keys;
+  }
+
+  private savePins(): void {
+    Settings.setPinnedSources(JSON.stringify(this.pinnedKeys));
+  }
+
+  private isPinned(key: string): boolean {
+    return this.pinnedKeys.indexOf(key) >= 0;
+  }
+
+  private togglePin(key: string): void {
+    const next: string[] = [];
+    let removed = false;
+    for (const k of this.pinnedKeys) {
+      if (k === key) {
+        removed = true;
+      } else {
+        next.push(k);
+      }
+    }
+    if (!removed) {
+      next.push(key);
+    }
+    this.pinnedKeys = next;
+    this.savePins();
+  }
+
+  // ---- 插件 Tab 菜单 ----
+
+  private allLangs(): string[] {
+    const langs: string[] = [];
+    for (const s of this.sources) {
+      if (langs.indexOf(s.lang) < 0) {
+        langs.push(s.lang);
+      }
+    }
+    return langs;
+  }
+
+  private sourceDisplayName(s: Source): Resource | string {
+    if (s.key === 'local') {
+      return $r('app.string.browse_local_source_name');
+    }
+    if (s.key === 'local_novel') {
+      return $r('app.string.browse_local_novel_name');
+    }
+    if (s.key === 'local_video') {
+      return $r('app.string.browse_local_video_name');
+    }
+    return s.name;
+  }
+
+  // ---- 迁移 Tab ----
+
+  // 运行中新增/移除源时分节被原样复用，列表不会重建（新装插件源不显示）
+  private sectionKey(section: SourceSection): string {
+    let fp: string = section.key;
+    for (const s of section.sources) {
+      fp += `|${s.key}`;
+    }
+    return fp;
+  }
+
+  private showSourceOptions(s: Source): void {
+    const dialog = new CustomDialogController({
+      builder: SourceOptionsDialog({
+        sourceName: this.sourceDisplayName(s),
+        isPinned: this.isPinned(s.key),
+        onPin: (): void => {
+          this.togglePin(s.key);
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  private showSourceFilter(): void {
+    const dialog = new CustomDialogController({
+      builder: SourceFilterDialog({
+        langs: this.allLangs(),
+        initialLangs: this.enabledLangs,
+        initialTypes: this.enabledTypes,
+        onApply: (langs: string[], types: string[]): void => {
+          this.enabledLangs = langs.length === 0 || langs.length === this.allLangs().length ? [] : langs;
+          this.enabledTypes = types.length === FILTER_TYPES.length ? [] : types;
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  // 插件 Tab：仅按内容类型过滤（语言沿用仓库声明，不提供过滤）
+  private showExtTypeFilter(): void {
+    const dialog = new CustomDialogController({
+      builder: SourceFilterDialog({
+        langs: [],
+        initialLangs: [],
+        initialTypes: this.extTypes,
+        onApply: (_langs: string[], types: string[]): void => {
+          this.extTypes = types.length === FILTER_TYPES.length ? [] : types;
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  // ---- UI ----
+
+  private openBrowseSource(s: Source, mode: string): void {
+    const params: BrowseSourceParams = { sourceKey: s.key, mode: mode };
+    this.pathStack.pushPathByName('BrowseSource', params);
+  }
+
+  private showRepoUrlDialog(): void {
+    const dialog = new CustomDialogController({
+      builder: InputDialog({
+        title: $r('app.string.plugin_repo_url_title'),
+        placeholder: $r('app.string.plugin_repo_url_hint'),
+        onConfirm: (text: string): void => {
+          Settings.setPluginRepoUrl(text.trim());
+          AppStorage.setOrCreate(AppKeys.EXT_REPO_REFRESH, (AppStorage.get<number>(AppKeys.EXT_REPO_REFRESH) ?? 0) + 1);
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  private refreshRepo(): void {
+    AppStorage.setOrCreate(AppKeys.EXT_REPO_REFRESH, (AppStorage.get<number>(AppKeys.EXT_REPO_REFRESH) ?? 0) + 1);
+  }
+
+  // 本地源名称本地化：MigrateSourceCount.name 为 string，需在此把 Resource 解析为字符串
+  private sourceNameText(s: Source): string {
+    if (s.key === 'local') {
+      return Util.resStr(this.getUIContext(), $r('app.string.browse_local_source_name'));
+    }
+    if (s.key === 'local_novel') {
+      return Util.resStr(this.getUIContext(), $r('app.string.browse_local_novel_name'));
+    }
+    if (s.key === 'local_video') {
+      return Util.resStr(this.getUIContext(), $r('app.string.browse_local_video_name'));
+    }
+    return s.name;
+  }
+
+  private async loadMigrate(): Promise<void> {
+    try {
+      const context = Util.hostAbilityContext(this.getUIContext());
+      await AppDb.ready(context);
+      const counts = await MangaRepo.countBySource();
+      const items: MigrateSourceCount[] = [];
+      for (const s of SourceRegistry.all()) {
+        const c: number | undefined = counts[s.key];
+        if (c !== undefined && c > 0) {
+          items.push(MigrateSourceCount.of(s.key, this.sourceNameText(s), s.lang, c, s.iconPath, s.contentType));
+        }
+      }
+      this.migrateItems = this.sortMigrate(items);
+    } catch (_e) {
+      this.migrateItems = [];
+      Util.toastRes(this.getUIContext(), $r('app.string.migrate_load_failed'));
+    }
+    this.migrateLoaded = true;
+  }
+
+  private sortMigrate(items: MigrateSourceCount[]): MigrateSourceCount[] {
+    const list = items.slice();
+    list.sort((a: MigrateSourceCount, b: MigrateSourceCount): number => {
+      const byCount: number = a.count - b.count;
+      const byName: number = a.name.localeCompare(b.name);
+      const result = this.migrateSortByCount ? byCount : byName;
+      return this.migrateSortAsc ? result : -result;
+    });
+    return list;
+  }
+
+  private openMigrateSource(item: MigrateSourceCount): void {
+    const params: MigrateMangaParams = { sourceKey: item.key };
+    this.pathStack.pushPathByName('MigrateManga', params);
   }
 }

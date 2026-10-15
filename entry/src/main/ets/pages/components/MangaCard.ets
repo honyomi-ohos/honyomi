@@ -1,4 +1,4 @@
-import { MangaRecord, CategoryRecord } from '../../model/Models';
+import { CategoryRecord, MangaRecord } from '../../model/Models';
 import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
 import { SmartImage } from './SmartImage';
@@ -11,28 +11,41 @@ export struct MangaCard {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State hovered: boolean = false;
-  onCardClick: (record: MangaRecord) => void = (_r: MangaRecord) => {};
-  onCardLongPress: (record: MangaRecord) => void = (_r: MangaRecord) => {};
+  onCardClick: (record: MangaRecord) => void = (_r: MangaRecord) => {
+  };
+  onCardLongPress: (record: MangaRecord) => void = (_r: MangaRecord) => {
+  };
 
   build() {
     Column() {
       Stack({ alignContent: Alignment.BottomEnd }) {
         // 封面（无封面时 SmartImage 内部渲染默认封面占位）
         Stack() {
-          SmartImage({ url: this.record.thumbnailUrl, sourceKey: this.record.sourceKey, fit: ImageFit.Cover, fill: true })
+          SmartImage({
+            url: this.record.thumbnailUrl,
+            sourceKey: this.record.sourceKey,
+            fit: ImageFit.Cover,
+            fill: true
+          })
         }
         .width('100%')
         .aspectRatio(0.7)
         .borderRadius(8)
         .clip(true)
         .backgroundColor(this.pal.chip)
+
         if (this.badge !== '') {
           Text(this.badge)
             .fontSize(10)
             .fontColor('#FFFFFF')
             .backgroundColor('#E05252')
             .borderRadius(9)
-            .padding({ left: 6, right: 6, top: 2, bottom: 2 })
+            .padding({
+              left: 6,
+              right: 6,
+              top: 2,
+              bottom: 2
+            })
             .margin(4)
         }
       }
@@ -71,7 +84,8 @@ export struct CategoryChip {
   @Prop selected: boolean = false;
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  onChipClick: (category: CategoryRecord) => void = (_c: CategoryRecord) => {};
+  onChipClick: (category: CategoryRecord) => void = (_c: CategoryRecord) => {
+  };
 
   build() {
     Text(Util.categoryLabel(this.category.name))
@@ -79,7 +93,12 @@ export struct CategoryChip {
       .fontColor(this.selected ? this.pal.onPrimary : this.pal.text)
       .backgroundColor(this.selected ? this.pal.primary : this.pal.chip)
       .borderRadius(14)
-      .padding({ left: 14, right: 14, top: 6, bottom: 6 })
+      .padding({
+        left: 14,
+        right: 14,
+        top: 6,
+        bottom: 6
+      })
       .onClick(() => {
         this.onChipClick(this.category);
       })

@@ -1,48 +1,177 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Filters all entries in your library" },
-    { "name": "more_incognito_summary", "value": "Pauses reading history" },
-    { "name": "more_support", "value": "Support Us" },
-    { "name": "more_help", "value": "సహాయము" },
-    { "name": "support_perks", "value": "Patrons get access to exclusive channels, with more perks to come." },
-    { "name": "support_patreon", "value": "Patreon (preferred)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together." },
-    { "name": "support_contact_msg", "value": "For alternative options or any related questions, join our Discord server." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "Data and storage" },
-    { "name": "data_storage_location", "value": "Storage location" },
-    { "name": "data_storage_location_info", "value": "Used for automatic backups, chapter downloads, and local source." },
-    { "name": "data_backup_restore", "value": "భద్రపరచడము మరియు పునరుద్ధారణ" },
-    { "name": "data_create_backup", "value": "Create backup" },
-    { "name": "data_restore_backup", "value": "Restore backup" },
-    { "name": "data_backup_interval", "value": "Automatic backup frequency" },
-    { "name": "data_backup_info", "value": "You should keep copies of backups in other places as well. Backups may contain sensitive data including any stored passwords; be careful if sharing." },
-    { "name": "data_last_auto_backup", "value": "Last automatically backed up: %s" },
-    { "name": "data_storage_usage", "value": "Storage usage" },
-    { "name": "data_available_space", "value": "Available: %s / Total: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Clear chapter cache" },
-    { "name": "data_used_cache", "value": "Used: %s" },
-    { "name": "data_cache_deleted", "value": "Cache cleared, %d files deleted" },
-    { "name": "data_cache_delete_error", "value": "Error occurred while clearing" },
-    { "name": "data_auto_clear_cache", "value": "Clear chapter cache on app launch" },
-    { "name": "data_export", "value": "Export" },
-    { "name": "data_library_list", "value": "Library List" },
-    { "name": "data_library_exported", "value": "Library Exported" },
-    { "name": "data_export_include", "value": "Select data to include" },
-    { "name": "data_column_title", "value": "శీర్షిక" },
-    { "name": "data_column_author", "value": "Author" },
-    { "name": "data_interval_off", "value": "ఆఫ్" },
-    { "name": "data_interval_6h", "value": "Every 6 hours" },
-    { "name": "data_interval_12h", "value": "Every 12 hours" },
-    { "name": "data_interval_24h", "value": "Daily" },
-    { "name": "data_interval_48h", "value": "Every 2 days" },
-    { "name": "data_interval_weekly", "value": "Weekly" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Filters all entries in your library"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Pauses reading history"
+    },
+    {
+      "name": "more_support",
+      "value": "Support Us"
+    },
+    {
+      "name": "more_help",
+      "value": "సహాయము"
+    },
+    {
+      "name": "support_perks",
+      "value": "Patrons get access to exclusive channels, with more perks to come."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (preferred)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "For alternative options or any related questions, join our Discord server."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "Data and storage"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Storage location"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Used for automatic backups, chapter downloads, and local source."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "భద్రపరచడము మరియు పునరుద్ధారణ"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Create backup"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Restore backup"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Automatic backup frequency"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "You should keep copies of backups in other places as well. Backups may contain sensitive data including any stored passwords; be careful if sharing."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Last automatically backed up: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Storage usage"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Available: %s / Total: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Clear chapter cache"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Used: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Cache cleared, %d files deleted"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Error occurred while clearing"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Clear chapter cache on app launch"
+    },
+    {
+      "name": "data_export",
+      "value": "Export"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Library List"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Library Exported"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Select data to include"
+    },
+    {
+      "name": "data_column_title",
+      "value": "శీర్షిక"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Author"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "ఆఫ్"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "Every 6 hours"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "Every 12 hours"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "Daily"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "Every 2 days"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "Weekly"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
     {
       "name": "module_desc",
       "value": "module description"
@@ -1255,189 +1384,741 @@
       "name": "reader_set_brightness_reset",
       "value": "కాంతి పరికరాన్ని అనుసరించేలా అమర్చబడింది"
     },
-    { "name": "browse_tab_sources", "value": "మూలాలు" },
-    { "name": "browse_tab_extensions", "value": "పొడిగింపులు" },
-    { "name": "browse_tab_migrate", "value": "మైగ్రేట్" },
-    { "name": "browse_pin", "value": "పిన్ చేయి" },
-    { "name": "browse_unpin", "value": "పిన్ తీసివేయి" },
-    { "name": "browse_disable_source", "value": "మూలాన్ని నిలిపివేయి" },
-    { "name": "browse_source_disabled", "value": "మూలం నిలిపివేయబడింది" },
-    { "name": "browse_pinned", "value": "పిన్ చేయబడింది" },
-    { "name": "browse_sources_empty", "value": "మూలాలు లేవు. పొడిగింపులు ట్యాబ్ నుండి ఇన్‌స్టాల్ చేయండి" },
-    { "name": "browse_filter_langs", "value": "భాషలను ఫిల్టర్ చేయి" },
-    { "name": "browse_filter_all", "value": "అన్నీ" },
-    { "name": "browse_source_missing", "value": "మూలం అందుబాటులో లేదు. పొడిగింపు నిలిపివేయబడి ఉండవచ్చు" },
-    { "name": "global_search_hint", "value": "అన్ని మూలాల్లో వెతకండి" },
-    { "name": "global_search_failed", "value": "శోధన విఫలమైంది" },
-    { "name": "ext_search_hint", "value": "పొడిగింపులను వెతకండి" },
-    { "name": "ext_search_no_match", "value": "సరిపోలికలు లేవు" },
-    { "name": "ext_repo_settings", "value": "రిపోజిటరీ సెట్టింగ్‌లు" },
-    { "name": "ext_refresh_repo", "value": "రిపోజిటరీని నవీకరించు" },
-    { "name": "migrate_pick_source", "value": "మైగ్రేట్ చేయడానికి మూలాన్ని ఎంచుకోండి" },
-    { "name": "migrate_empty_library", "value": "గ్రంథాలయం ఖాళీగా ఉంది" },
-    { "name": "migrate_select_all", "value": "అన్నీ ఎంచుకో" },
-    { "name": "migrate_deselect_all", "value": "ఎంపిక తీసివేయి" },
-    { "name": "migrate_action", "value": "మైగ్రేట్ (%d)" },
-    { "name": "migrate_title", "value": "మైగ్రేట్" },
-    { "name": "migrate_skip", "value": "దాటవేయి" },
-    { "name": "migrate_progress", "value": "%d / %d" },
-    { "name": "migrate_target_source", "value": "లక్ష్య మూలం" },
-    { "name": "migrate_search_hint", "value": "లక్ష్య మూలంలో మంగా వెతకండి" },
-    { "name": "migrate_confirm_title", "value": "ఈ మంగాకు మైగ్రేట్ చేయాలా?" },
-    { "name": "migrate_item_done", "value": "మైగ్రేట్ అయింది: %s" },
-    { "name": "migrate_failed", "value": "మైగ్రేషన్ విఫలమైంది: %s" },
-    { "name": "migrate_done", "value": "మైగ్రేషన్ పూర్తయింది" },
-    { "name": "migrate_no_target", "value": "లక్ష్య మూలం లేదు" },
-    { "name": "stats_title", "value": "గణాంకాలు" },
-    { "name": "stats_overview_section", "value": "అవలోకనం" },
-    { "name": "stats_in_library", "value": "గ్రంథాలయంలో" },
-    { "name": "stats_read_duration", "value": "చదివిన వ్యవధి" },
-    { "name": "stats_completed_titles", "value": "పూర్తయింది" },
-    { "name": "stats_titles_section", "value": "రచనలు" },
-    { "name": "stats_started_titles", "value": "ప్రారంభించినవి" },
-    { "name": "stats_local_titles", "value": "స్థానిక" },
-    { "name": "stats_chapters_section", "value": "అధ్యాయాలు" },
-    { "name": "stats_total_chapters", "value": "మొత్తం" },
-    { "name": "stats_read_chapters", "value": "చదివినవి" },
-    { "name": "stats_downloaded_chapters", "value": "దిగుమతి అయింది" },
-    { "name": "stats_tracker_section", "value": "ట్రాకింగ్" },
-    { "name": "stats_tracked_titles", "value": "ట్రాక్ చేసిన రచనలు" },
-    { "name": "stats_mean_score", "value": "సగటు మార్కు" },
-    { "name": "stats_used", "value": "ఉపయోగించినది" },
-    { "name": "stats_not_applicable", "value": "వర్తించదు" },
-    { "name": "stats_week", "value": "వారం" },
-    { "name": "stats_month", "value": "నెల" },
-    { "name": "stats_week_total", "value": "ఈ వారం %s" },
-    { "name": "stats_month_total", "value": "ఈ నెల %s" },
-    { "name": "stats_no_reading", "value": "ఈ కాలంలో చదవడం లేదు" },
-    { "name": "stats_day_short", "value": "%dరో" },
-    { "name": "stats_hour_short", "value": "%dగం" },
-    { "name": "stats_minute_short", "value": "%dని" },
-    { "name": "stats_second_short", "value": "%dసె" },
-    { "name": "stats_wd_sun", "value": "ఆ" },
-    { "name": "stats_wd_mon", "value": "సో" },
-    { "name": "stats_wd_tue", "value": "మం" },
-    { "name": "stats_wd_wed", "value": "బు" },
-    { "name": "stats_wd_thu", "value": "గు" },
-    { "name": "stats_wd_fri", "value": "శు" },
-    { "name": "stats_wd_sat", "value": "శ" },
-    { "name": "reader_mode_vertical", "value": "నిలువు" },
-    { "name": "reader_mode_smart_grip", "value": "పట్టు అనుకూలం" },
-    { "name": "reader_orientation_lock_portrait", "value": "నిలువును బంధించు" },
-    { "name": "reader_orientation_lock_landscape", "value": "అడ్డాన్ని బంధించు" },
-    { "name": "reader_tab_general", "value": "సామాన్యం" },
-    { "name": "reader_tab_filter", "value": "రంగు వడపోత" },
-    { "name": "reader_filter_grayscale", "value": "బూడిద" },
-    { "name": "reader_filter_invert", "value": "రంగులు తిరగబడ్డాయి" },
-    { "name": "reader_filter_contrast", "value": "వ్యత్యాసం" },
-    { "name": "reader_filter_saturation", "value": "సంతృప్తి" },
-    { "name": "reader_crop_borders", "value": "అంచులు కత్తిరించు" },
-    { "name": "reader_nav_tap_zones", "value": "తాకే ప్రాంతాలు" },
-    { "name": "reader_nav_default", "value": "ప్రమాణం" },
-    { "name": "reader_nav_ltr", "value": "ఎడమ నుండి కుడికి" },
-    { "name": "reader_nav_rtl", "value": "కుడి నుండి ఎడమకు" },
-    { "name": "reader_nav_vertical", "value": "నిలువు" },
-    { "name": "reader_nav_edge", "value": "అంచు" },
-    { "name": "reader_nav_none", "value": "ఏదీ కాదు" },
-    { "name": "reader_dual_page", "value": "రెండు పేజీల వీక్షణ" },
-    { "name": "reader_webtoon_padding", "value": "వెబ్‌టూన్ పక్క ఖాళీ" },
-    { "name": "reader_set_mode_smart_grip", "value": "పట్టు అనుకూలం" },
-    { "name": "ext_install_local", "value": "స్థానికం నుండి ఇన్‌స్టాల్" },
-    { "name": "ext_detail_title", "value": "పొడిగింపు సమాచారం" },
-    { "name": "ext_info_version", "value": "వెర్షన్" },
-    { "name": "ext_info_language", "value": "భాష" },
-    { "name": "ext_uninstall_title", "value": "పొడిగింపు అన్‌ఇన్‌స్టాల్" },
-    { "name": "ext_uninstall_msg", "value": "“%s” అన్‌ఇన్‌స్టాల్ చేయాలా? గ్రంథాలయపు మంగా డేటా ఉంటుంది" },
-    { "name": "ext_detail_sources", "value": "మూలాలు" },
-    { "name": "ext_detail_settings", "value": "అమరికలు" },
-    { "name": "ext_pref_loading", "value": "లోడ్ అవుతుంది…" },
-    { "name": "ext_pref_failed", "value": "అమరికలు వర్తింపజేయడం విఫలమైంది" },
-    { "name": "ext_detail_missing", "value": "పొడిగింపు లేదు లేదా లోడ్ కాలేదు" },
-    { "name": "action_filter", "value": "వడపోత" },
-    { "name": "action_update_library", "value": "గ్రంథాలయాన్ని నవీకరించు" },
-    { "name": "action_update_category", "value": "విభాగాన్ని నవీకరించు" },
-    { "name": "action_open_random_manga", "value": "యాదృచ్ఛిక రచన తెరువు" },
-    { "name": "action_select_all", "value": "అన్నీ ఎంచుకో" },
-    { "name": "action_select_inverse", "value": "ఎంపికను తిరగవేయి" },
-    { "name": "action_move_category", "value": "విభాగానికి తరలించు" },
-    { "name": "action_mark_as_read", "value": "చదివినట్లు గుర్తించు" },
-    { "name": "action_mark_as_unread", "value": "చదవనట్లు గుర్తించు" },
-    { "name": "action_download", "value": "దిగుమతి" },
-    { "name": "action_delete", "value": "తొలగించు" },
-    { "name": "action_migrate", "value": "మైగ్రేట్" },
-    { "name": "action_remove_from_library", "value": "గ్రంథాలయం నుండి తొలగించు" },
-    { "name": "action_remove_from_library_msg", "value": "ఎంచుకున్న %d మంగాను గ్రంథాలయం నుండి తొలగించాలా?" },
-    { "name": "action_download_queued", "value": "%d దిగుమతులు వరుసలో చేర్చబడ్డాయి" },
-    { "name": "library_search_hint", "value": "గ్రంథాలయం వెతకండి" },
-    { "name": "library_no_match", "value": "సరిపోలే మంగా లేదు" },
-    { "name": "lib_sheet_tab_filter", "value": "వడపోత" },
-    { "name": "lib_sheet_tab_sort", "value": "క్రమబద్ధం" },
-    { "name": "lib_sheet_tab_display", "value": "ప్రదర్శన" },
-    { "name": "lib_filter_downloaded", "value": "దిగుమతి అయింది" },
-    { "name": "lib_filter_unread", "value": "చదవనివి" },
-    { "name": "lib_filter_started", "value": "చదివినవి" },
-    { "name": "lib_filter_bookmarked", "value": "గుర్తు పెట్టినవి" },
-    { "name": "lib_filter_completed", "value": "పూర్తయింది" },
-    { "name": "lib_filter_tracked", "value": "ట్రాక్ చేసినవి" },
-    { "name": "lib_sort_alpha", "value": "పేరు" },
-    { "name": "lib_sort_total", "value": "అధ్యాయాల సంఖ్య" },
-    { "name": "lib_sort_last_read", "value": "ఇటీవల చదివినది" },
-    { "name": "lib_sort_last_update", "value": "నవీకరణ తనిఖీ సమయం" },
-    { "name": "lib_sort_unread", "value": "చదవని సంఖ్య" },
-    { "name": "lib_sort_latest_chapter", "value": "రచన నవీకరణ సమయం" },
-    { "name": "lib_sort_fetch_date", "value": "అధ్యాయం తెచ్చిన సమయం" },
-    { "name": "lib_sort_date_added", "value": "జోడించిన తేదీ" },
-    { "name": "lib_sort_random", "value": "యాదృచ్ఛికం" },
-    { "name": "lib_display_compact", "value": "దట్టమైన గ్రిడ్" },
-    { "name": "lib_display_comfortable", "value": "వదులైన గ్రిడ్" },
-    { "name": "lib_display_cover", "value": "కవర్ గ్రిడ్" },
-    { "name": "lib_display_list", "value": "జాబితా" },
-    { "name": "lib_display_grid_size", "value": "వరుసకు సంఖ్య" },
-    { "name": "lib_display_grid_auto", "value": "స్వయంచాలకం" },
-    { "name": "lib_display_badges_group", "value": "బ్యాడ్జ్‌లు మరియు బటన్లు" },
-    { "name": "lib_badge_downloaded", "value": "దిగుమతి అధ్యాయాల సంఖ్య" },
-    { "name": "lib_badge_unread", "value": "చదవని అధ్యాయాలు" },
-    { "name": "lib_badge_local", "value": "స్థానిక మూలం" },
-    { "name": "lib_badge_language", "value": "భాష" },
-    { "name": "lib_badge_continue", "value": "చదవడం కొనసాగించు బటన్" },
-    { "name": "lib_display_tabs_group", "value": "ట్యాబ్‌లు" },
-    { "name": "lib_show_category_tabs", "value": "విభాగ ట్యాబ్‌లు చూపు" },
-    { "name": "lib_show_manga_count", "value": "రచనల సంఖ్య చూపు" },
-    { "name": "EntryFormAbility_label", "value": "MihonHarmony కార్డ్" },
-    { "name": "EntryFormAbility_desc", "value": "డెస్క్‌టాప్ కార్డ్ అందించేది" },
-    { "name": "card_recent_display", "value": "చదవడం కొనసాగించు" },
-    { "name": "card_recent_desc", "value": "ఇటీవల చదివిన మంగాను త్వరగా కొనసాగించు" },
-    { "name": "card_updates_display", "value": "నవీకరణలు" },
-    { "name": "card_updates_desc", "value": "గ్రంథాలయంలోని కొత్త చదవని అధ్యాయాలు" },
-    { "name": "card_recent_header", "value": "చదవడం కొనసాగించు" },
-    { "name": "card_updates_header", "value": "నవీకరణలు" },
-    { "name": "card_unread_count", "value": "%d అధ్యాయాలు చదవనివి" },
-    { "name": "card_empty_recent", "value": "ఇంకా చదివిన చరిత్ర లేదు" },
-    { "name": "card_empty_updates", "value": "చదవని అధ్యాయాలు లేవు" },
-    { "name": "card_open_hint", "value": "అనువర్తనం తెరవడానికి నొక్కండి" },
-    { "name": "card_manga_display", "value": "మంగా కార్డ్" },
-    { "name": "card_manga_desc", "value": "వివరాల పేజీ నుండి జోడించు, కవర్ నొక్కి చదువు" },
-    { "name": "card_manga_empty", "value": "మంగా వివరాల పేజీ నుండి డెస్క్‌టాప్‌కు జోడించు" },
-    { "name": "detail_add_to_desktop", "value": "డెస్క్‌టాప్‌కు జోడించు" },
-    { "name": "detail_card_added", "value": "డెస్క్‌టాప్‌కు జోడించబడింది" },
-    { "name": "detail_card_add_failed", "value": "కార్డ్ జోడించడం విఫలమైంది" },
-    { "name": "card_stats_week_display", "value": "వారపు గణాంకాలు" },
-    { "name": "card_stats_week_desc", "value": "ఈ వారం రోజువారీ చదివిన వ్యవధి" },
-    { "name": "card_stats_month_display", "value": "నెలవారీ గణాంకాలు" },
-    { "name": "card_stats_month_desc", "value": "ఈ నెల రోజువారీ చదివిన వ్యవధి" },
-    { "name": "card_stats_empty", "value": "ఇంకా చదవడం లేదు" },
-    { "name": "action_view_upcoming", "value": "రాబోయే నవీకరణలు చూపు" },
-    { "name": "label_upcoming", "value": "రాబోయేది" },
-    { "name": "upcoming_guide", "value": "రాబోయే దాని మార్గదర్శి" },
-    { "name": "upcoming_calendar_prev", "value": "మునుపటి నెల" },
-    { "name": "upcoming_calendar_next", "value": "తర్వాతి నెల" },
-    { "name": "pref_filter_update_categories_details", "value": "చేర్చిన మరియు మినహాయించిన రెండు విభాగాల్లోనూ ఉన్న రచనలు చూపబడవు." },
-    { "name": "relative_time_today", "value": "ఈరోజు" },
-    { "name": "relative_time_days_ago", "value": "%d రోజుల క్రితం" },
-    { "name": "upcoming_relative_time_days", "value": "%d రోజుల్లో" },
-    { "name": "card_upcoming_display", "value": "రాబోయేది" },
-    { "name": "card_upcoming_desc", "value": "గ్రంథాలయ మంగా యొక్క అంచనా నవీకరణ క్యాలెండర్" },
-    { "name": "card_upcoming_header", "value": "రాబోయేది" },
-    { "name": "card_empty_upcoming", "value": "గ్రంథాలయంలో కొనసాగుతున్న మంగా లేదు" }
-]
+    {
+      "name": "browse_tab_sources",
+      "value": "మూలాలు"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "పొడిగింపులు"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "మైగ్రేట్"
+    },
+    {
+      "name": "browse_pin",
+      "value": "పిన్ చేయి"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "పిన్ తీసివేయి"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "మూలాన్ని నిలిపివేయి"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "మూలం నిలిపివేయబడింది"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "పిన్ చేయబడింది"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "మూలాలు లేవు. పొడిగింపులు ట్యాబ్ నుండి ఇన్‌స్టాల్ చేయండి"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "భాషలను ఫిల్టర్ చేయి"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "అన్నీ"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "మూలం అందుబాటులో లేదు. పొడిగింపు నిలిపివేయబడి ఉండవచ్చు"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "అన్ని మూలాల్లో వెతకండి"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "శోధన విఫలమైంది"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "పొడిగింపులను వెతకండి"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "సరిపోలికలు లేవు"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "రిపోజిటరీ సెట్టింగ్‌లు"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "రిపోజిటరీని నవీకరించు"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "మైగ్రేట్ చేయడానికి మూలాన్ని ఎంచుకోండి"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "గ్రంథాలయం ఖాళీగా ఉంది"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "అన్నీ ఎంచుకో"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "ఎంపిక తీసివేయి"
+    },
+    {
+      "name": "migrate_action",
+      "value": "మైగ్రేట్ (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "మైగ్రేట్"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "దాటవేయి"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d / %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "లక్ష్య మూలం"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "లక్ష్య మూలంలో మంగా వెతకండి"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "ఈ మంగాకు మైగ్రేట్ చేయాలా?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "మైగ్రేట్ అయింది: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "మైగ్రేషన్ విఫలమైంది: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "మైగ్రేషన్ పూర్తయింది"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "లక్ష్య మూలం లేదు"
+    },
+    {
+      "name": "stats_title",
+      "value": "గణాంకాలు"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "అవలోకనం"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "గ్రంథాలయంలో"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "చదివిన వ్యవధి"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "పూర్తయింది"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "రచనలు"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "ప్రారంభించినవి"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "స్థానిక"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "అధ్యాయాలు"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "మొత్తం"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "చదివినవి"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "దిగుమతి అయింది"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "ట్రాకింగ్"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "ట్రాక్ చేసిన రచనలు"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "సగటు మార్కు"
+    },
+    {
+      "name": "stats_used",
+      "value": "ఉపయోగించినది"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "వర్తించదు"
+    },
+    {
+      "name": "stats_week",
+      "value": "వారం"
+    },
+    {
+      "name": "stats_month",
+      "value": "నెల"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "ఈ వారం %s"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "ఈ నెల %s"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "ఈ కాలంలో చదవడం లేదు"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%dరో"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dగం"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dని"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%dసె"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "ఆ"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "సో"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "మం"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "బు"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "గు"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "శు"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "శ"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "నిలువు"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "పట్టు అనుకూలం"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "నిలువును బంధించు"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "అడ్డాన్ని బంధించు"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "సామాన్యం"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "రంగు వడపోత"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "బూడిద"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "రంగులు తిరగబడ్డాయి"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "వ్యత్యాసం"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "సంతృప్తి"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "అంచులు కత్తిరించు"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "తాకే ప్రాంతాలు"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "ప్రమాణం"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "ఎడమ నుండి కుడికి"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "కుడి నుండి ఎడమకు"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "నిలువు"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "అంచు"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "ఏదీ కాదు"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "రెండు పేజీల వీక్షణ"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "వెబ్‌టూన్ పక్క ఖాళీ"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "పట్టు అనుకూలం"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "స్థానికం నుండి ఇన్‌స్టాల్"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "పొడిగింపు సమాచారం"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "వెర్షన్"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "భాష"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "పొడిగింపు అన్‌ఇన్‌స్టాల్"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "“%s” అన్‌ఇన్‌స్టాల్ చేయాలా? గ్రంథాలయపు మంగా డేటా ఉంటుంది"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "మూలాలు"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "అమరికలు"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "లోడ్ అవుతుంది…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "అమరికలు వర్తింపజేయడం విఫలమైంది"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "పొడిగింపు లేదు లేదా లోడ్ కాలేదు"
+    },
+    {
+      "name": "action_filter",
+      "value": "వడపోత"
+    },
+    {
+      "name": "action_update_library",
+      "value": "గ్రంథాలయాన్ని నవీకరించు"
+    },
+    {
+      "name": "action_update_category",
+      "value": "విభాగాన్ని నవీకరించు"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "యాదృచ్ఛిక రచన తెరువు"
+    },
+    {
+      "name": "action_select_all",
+      "value": "అన్నీ ఎంచుకో"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "ఎంపికను తిరగవేయి"
+    },
+    {
+      "name": "action_move_category",
+      "value": "విభాగానికి తరలించు"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "చదివినట్లు గుర్తించు"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "చదవనట్లు గుర్తించు"
+    },
+    {
+      "name": "action_download",
+      "value": "దిగుమతి"
+    },
+    {
+      "name": "action_delete",
+      "value": "తొలగించు"
+    },
+    {
+      "name": "action_migrate",
+      "value": "మైగ్రేట్"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "గ్రంథాలయం నుండి తొలగించు"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "ఎంచుకున్న %d మంగాను గ్రంథాలయం నుండి తొలగించాలా?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "%d దిగుమతులు వరుసలో చేర్చబడ్డాయి"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "గ్రంథాలయం వెతకండి"
+    },
+    {
+      "name": "library_no_match",
+      "value": "సరిపోలే మంగా లేదు"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "వడపోత"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "క్రమబద్ధం"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "ప్రదర్శన"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "దిగుమతి అయింది"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "చదవనివి"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "చదివినవి"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "గుర్తు పెట్టినవి"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "పూర్తయింది"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "ట్రాక్ చేసినవి"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "పేరు"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "అధ్యాయాల సంఖ్య"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "ఇటీవల చదివినది"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "నవీకరణ తనిఖీ సమయం"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "చదవని సంఖ్య"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "రచన నవీకరణ సమయం"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "అధ్యాయం తెచ్చిన సమయం"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "జోడించిన తేదీ"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "యాదృచ్ఛికం"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "దట్టమైన గ్రిడ్"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "వదులైన గ్రిడ్"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "కవర్ గ్రిడ్"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "జాబితా"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "వరుసకు సంఖ్య"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "స్వయంచాలకం"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "బ్యాడ్జ్‌లు మరియు బటన్లు"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "దిగుమతి అధ్యాయాల సంఖ్య"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "చదవని అధ్యాయాలు"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "స్థానిక మూలం"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "భాష"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "చదవడం కొనసాగించు బటన్"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "ట్యాబ్‌లు"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "విభాగ ట్యాబ్‌లు చూపు"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "రచనల సంఖ్య చూపు"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "MihonHarmony కార్డ్"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "డెస్క్‌టాప్ కార్డ్ అందించేది"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "చదవడం కొనసాగించు"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "ఇటీవల చదివిన మంగాను త్వరగా కొనసాగించు"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "నవీకరణలు"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "గ్రంథాలయంలోని కొత్త చదవని అధ్యాయాలు"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "చదవడం కొనసాగించు"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "నవీకరణలు"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d అధ్యాయాలు చదవనివి"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "ఇంకా చదివిన చరిత్ర లేదు"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "చదవని అధ్యాయాలు లేవు"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "అనువర్తనం తెరవడానికి నొక్కండి"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "మంగా కార్డ్"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "వివరాల పేజీ నుండి జోడించు, కవర్ నొక్కి చదువు"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "మంగా వివరాల పేజీ నుండి డెస్క్‌టాప్‌కు జోడించు"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "డెస్క్‌టాప్‌కు జోడించు"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "డెస్క్‌టాప్‌కు జోడించబడింది"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "కార్డ్ జోడించడం విఫలమైంది"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "వారపు గణాంకాలు"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "ఈ వారం రోజువారీ చదివిన వ్యవధి"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "నెలవారీ గణాంకాలు"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "ఈ నెల రోజువారీ చదివిన వ్యవధి"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "ఇంకా చదవడం లేదు"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "రాబోయే నవీకరణలు చూపు"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "రాబోయేది"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "రాబోయే దాని మార్గదర్శి"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "మునుపటి నెల"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "తర్వాతి నెల"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "చేర్చిన మరియు మినహాయించిన రెండు విభాగాల్లోనూ ఉన్న రచనలు చూపబడవు."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "ఈరోజు"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d రోజుల క్రితం"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "%d రోజుల్లో"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "రాబోయేది"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "గ్రంథాలయ మంగా యొక్క అంచనా నవీకరణ క్యాలెండర్"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "రాబోయేది"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "గ్రంథాలయంలో కొనసాగుతున్న మంగా లేదు"
+    }
+  ]
 }

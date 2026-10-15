@@ -11,7 +11,8 @@ export struct PickerSheet {
   @Prop options: ResourceStr[] = [];
   @Prop icons: string[] = [];
   @Prop selectedIndex: number = -1;
-  onPick: (index: number) => void = (index: number) => {};
+  onPick: (index: number) => void = (index: number) => {
+  };
 
   build() {
     Column() {
@@ -54,7 +55,8 @@ export struct PickerSheet {
               }
             })
           }
-        }, (opt: ResourceStr, index: number): string => typeof opt === 'string' ? `opt-${index}-${opt}` : `opt-${index}`)
+        },
+          (opt: ResourceStr, index: number): string => typeof opt === 'string' ? `opt-${index}-${opt}` : `opt-${index}`)
       }
       .width('100%')
       .padding({ left: 12, right: 12, bottom: 16 })

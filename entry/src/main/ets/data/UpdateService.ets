@@ -1,9 +1,9 @@
 import { common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppDb } from './AppDb';
-import { MangaRepo, ChapterRepo } from './Repos';
-import { SourceRegistry, Source } from '../source/Source';
-import { MangaRecord, ContentType } from '../model/Models';
+import { ChapterRepo, MangaRepo } from './Repos';
+import { Source, SourceRegistry } from '../source/Source';
+import { ContentType, MangaRecord } from '../model/Models';
 import { WidgetUpdater } from '../form/WidgetUpdater';
 import { AppKeys } from '../common/AppKeys';
 

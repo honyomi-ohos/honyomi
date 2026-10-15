@@ -1,6 +1,6 @@
 import { textToSpeech } from '@kit.CoreSpeechKit';
-import { common, wantAgent } from '@kit.AbilityKit';
 import type { WantAgent } from '@kit.AbilityKit';
+import { common, wantAgent } from '@kit.AbilityKit';
 import { backgroundTaskManager } from '@kit.BackgroundTasksKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { Settings } from './Settings';
@@ -10,7 +10,9 @@ let taskChain: Promise<void> = Promise.resolve();
 
 // 听书事件回调签名
 export type TtsParaStartHandler = (paraIdx: number) => void;
+
 export type TtsDoneHandler = () => void;
+
 export type TtsErrorHandler = (message: string) => void;
 
 // 听书事件订阅表（订阅列表模型）：多个阅读器实例可同时订阅、互不覆盖，
@@ -110,6 +112,7 @@ class TtsListener implements textToSpeech.SpeakListener {
 // 播报期间申请 AUDIO_PLAYBACK 长时任务避免应用退后台被挂起（否则播报十几分钟后会被系统中断）；
 // 另有看门狗：迟迟未开始播报则重建引擎重发；播完但未收到结束回调则按 isBusy 兜底推进。
 export class NovelTts {
+  static events: TtsEvents = new TtsEvents();
   private static engine: textToSpeech.TextToSpeechEngine | undefined = undefined;
   private static engineLang: string = '';
   private static chunks: string[] = [];
@@ -135,7 +138,6 @@ export class NovelTts {
   private static ctx: common.UIAbilityContext | undefined = undefined;
   private static taskRequested: boolean = false;
   private static taskRunning: boolean = false;
-  static events: TtsEvents = new TtsEvents();
 
   static isPlaying(): boolean {
     return !NovelTts.stopped;
@@ -219,6 +221,47 @@ export class NovelTts {
     return 0;
   }
 
+  // 播报真正开始：看门狗据此区分"尚未开始"与"播报中"
+  static onSpeakStart(requestId: string): void {
+    if (requestId === NovelTts.activeReq) {
+      NovelTts.startReceived = true;
+      NovelTts.engineRetries = 0;
+    }
+  }
+
+  // 播报结束（type=1）：推进下一块
+  static onChunkDone(requestId: string): void {
+    // 先校验请求归属再清看门狗：迟到回调（旧请求）不得杀掉活请求的看门狗定时器
+    if (NovelTts.stopped || requestId !== NovelTts.activeReq) {
+      return;
+    }
+    NovelTts.clearKeepAlive();
+    NovelTts.activeReq = '';
+    NovelTts.pos += 1;
+    NovelTts.speakCurrent();
+  }
+
+  // 合成结束（type=0）：播报仍在进行，仅标记请求存活（允许看门狗按 isBusy 判定完成）
+  static onChunkSynthDone(requestId: string): void {
+    if (NovelTts.stopped || requestId !== NovelTts.activeReq) {
+      return;
+    }
+    NovelTts.startReceived = true;
+  }
+
+  static onSpeakError(requestId: string, message: string): void {
+    if (NovelTts.stopped) {
+      return;
+    }
+    NovelTts.stopped = true;
+    NovelTts.activeReq = '';
+    NovelTts.clearKeepAlive();
+    NovelTts.stopTtsTask();
+    // 出错后引擎状态不可信，丢弃以便下次重建
+    NovelTts.killEngine();
+    NovelTts.events.emitError(message);
+  }
+
   private static async ensureEngine(): Promise<boolean> {
     if (NovelTts.engine !== undefined && NovelTts.engineLang === NovelTts.lang) {
       return true;
@@ -251,6 +294,8 @@ export class NovelTts {
     }
     return false;
   }
+
+  // 引擎回调入口（TtsListener 转交，包内可见）
 
   // 丢弃当前引擎实例（引擎失效/出错时调用，下次 ensureEngine 重建全新实例）
   private static killEngine(): void {
@@ -371,48 +416,6 @@ export class NovelTts {
       return;
     }
     NovelTts.speakCurrent();
-  }
-
-  // 引擎回调入口（TtsListener 转交，包内可见）
-  // 播报真正开始：看门狗据此区分"尚未开始"与"播报中"
-  static onSpeakStart(requestId: string): void {
-    if (requestId === NovelTts.activeReq) {
-      NovelTts.startReceived = true;
-      NovelTts.engineRetries = 0;
-    }
-  }
-
-  // 播报结束（type=1）：推进下一块
-  static onChunkDone(requestId: string): void {
-    // 先校验请求归属再清看门狗：迟到回调（旧请求）不得杀掉活请求的看门狗定时器
-    if (NovelTts.stopped || requestId !== NovelTts.activeReq) {
-      return;
-    }
-    NovelTts.clearKeepAlive();
-    NovelTts.activeReq = '';
-    NovelTts.pos += 1;
-    NovelTts.speakCurrent();
-  }
-
-  // 合成结束（type=0）：播报仍在进行，仅标记请求存活（允许看门狗按 isBusy 判定完成）
-  static onChunkSynthDone(requestId: string): void {
-    if (NovelTts.stopped || requestId !== NovelTts.activeReq) {
-      return;
-    }
-    NovelTts.startReceived = true;
-  }
-
-  static onSpeakError(requestId: string, message: string): void {
-    if (NovelTts.stopped) {
-      return;
-    }
-    NovelTts.stopped = true;
-    NovelTts.activeReq = '';
-    NovelTts.clearKeepAlive();
-    NovelTts.stopTtsTask();
-    // 出错后引擎状态不可信，丢弃以便下次重建
-    NovelTts.killEngine();
-    NovelTts.events.emitError(message);
   }
 
   // 看门狗：每 2s 检查一次当前块是否仍在正常播报
@@ -539,7 +542,8 @@ export class NovelTts {
     };
     try {
       const agent: WantAgent = await wantAgent.getWantAgent(info);
-      await backgroundTaskManager.startBackgroundRunning(ctx, backgroundTaskManager.BackgroundMode.AUDIO_PLAYBACK, agent);
+      await backgroundTaskManager.startBackgroundRunning(ctx, backgroundTaskManager.BackgroundMode.AUDIO_PLAYBACK,
+        agent);
       if (NovelTts.stopped) {
         // 申请期间用户已停止：立即撤销，避免残留长任务
         NovelTts.taskRequested = false;

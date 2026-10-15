@@ -1,48 +1,177 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "تصفية جميع الإدخالات في مكتبتك" },
-    { "name": "more_incognito_summary", "value": "إيقاف سجل القراءة" },
-    { "name": "more_support", "value": "إدعمنا" },
-    { "name": "more_help", "value": "المساعدة" },
-    { "name": "support_perks", "value": "يحصل الداعمون على إمكانية الوصول إلى قنوات حصرية، مع المزيد من الامتيازات القادمة." },
-    { "name": "support_patreon", "value": "داعم على باتريون (مستحسنة)" },
-    { "name": "support_opencollective", "value": "منصة « OpenCollective»" },
-    { "name": "support_supported_by", "value": "ميهون مدعوم حاليًا بواسطة %d+ داعم. نشكركم جميعًا لدعمكم . معًا لجعل ميهون مكانًا أفضل." },
-    { "name": "support_contact_msg", "value": "للحصول على خيارات بديلة أو أي أسئلة ذات صلة، انضم إلى خادم ديسكورد الخاص بنا." },
-    { "name": "support_discord", "value": "ديسكورد" },
-    { "name": "data_storage_title", "value": "البيانات والتخزين" },
-    { "name": "data_storage_location", "value": "مكان التخزين" },
-    { "name": "data_storage_location_info", "value": "يُستخدَم في الاحتياط وتنزيل الفصول والمصدر المحليِّ." },
-    { "name": "data_backup_restore", "value": "النسخ الاحتياطي والاستعادة" },
-    { "name": "data_create_backup", "value": "إنشاء نسخة إحتياطية" },
-    { "name": "data_restore_backup", "value": "إستعادة النسخة الإحتياطية" },
-    { "name": "data_backup_interval", "value": "معدل النسخ الاحتياطي التلقائي" },
-    { "name": "data_backup_info", "value": "زد على ذلك حفظ الاحتياط في غير هذا المكان، وتنبَّه لوجود الخطير فيها ككلمات السر، وتحفَّظ من مشاركتها." },
-    { "name": "data_last_auto_backup", "value": "آخر احتياط تلقائي: %s" },
-    { "name": "data_storage_usage", "value": "التخزين" },
-    { "name": "data_available_space", "value": "متاح: %s / الكل: %s" },
-    { "name": "data_clear_chapter_cache", "value": "مسح الذاكرة المؤقتة للفصول" },
-    { "name": "data_used_cache", "value": "المستخدمة: %s" },
-    { "name": "data_cache_deleted", "value": "تم محو الذاكرة المؤقتة. %d ملف تم محوه" },
-    { "name": "data_cache_delete_error", "value": "حدث خطأ أثناء محو ذاكرة التخزين المؤقت" },
-    { "name": "data_auto_clear_cache", "value": "امسح ملفات التخزين المؤقت عند فتح التطبيق" },
-    { "name": "data_export", "value": "يصدّر" },
-    { "name": "data_library_list", "value": "قائمة المكتبات" },
-    { "name": "data_library_exported", "value": "تم تصدير المكتبة" },
-    { "name": "data_export_include", "value": "اختر بيانات لتضمينها" },
-    { "name": "data_column_title", "value": "العنوان" },
-    { "name": "data_column_author", "value": "الكاتب" },
-    { "name": "data_interval_off", "value": "إيقاف" },
-    { "name": "data_interval_6h", "value": "كل ٦ ساعات" },
-    { "name": "data_interval_12h", "value": "كل ١٢ ساعة" },
-    { "name": "data_interval_24h", "value": "يومياً" },
-    { "name": "data_interval_48h", "value": "كل يومان" },
-    { "name": "data_interval_weekly", "value": "أسبوعياً" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "تصفية جميع الإدخالات في مكتبتك"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "إيقاف سجل القراءة"
+    },
+    {
+      "name": "more_support",
+      "value": "إدعمنا"
+    },
+    {
+      "name": "more_help",
+      "value": "المساعدة"
+    },
+    {
+      "name": "support_perks",
+      "value": "يحصل الداعمون على إمكانية الوصول إلى قنوات حصرية، مع المزيد من الامتيازات القادمة."
+    },
+    {
+      "name": "support_patreon",
+      "value": "داعم على باتريون (مستحسنة)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "منصة « OpenCollective»"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "ميهون مدعوم حاليًا بواسطة %d+ داعم. نشكركم جميعًا لدعمكم . معًا لجعل ميهون مكانًا أفضل."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "للحصول على خيارات بديلة أو أي أسئلة ذات صلة، انضم إلى خادم ديسكورد الخاص بنا."
+    },
+    {
+      "name": "support_discord",
+      "value": "ديسكورد"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "البيانات والتخزين"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "مكان التخزين"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "يُستخدَم في الاحتياط وتنزيل الفصول والمصدر المحليِّ."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "النسخ الاحتياطي والاستعادة"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "إنشاء نسخة إحتياطية"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "إستعادة النسخة الإحتياطية"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "معدل النسخ الاحتياطي التلقائي"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "زد على ذلك حفظ الاحتياط في غير هذا المكان، وتنبَّه لوجود الخطير فيها ككلمات السر، وتحفَّظ من مشاركتها."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "آخر احتياط تلقائي: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "التخزين"
+    },
+    {
+      "name": "data_available_space",
+      "value": "متاح: %s / الكل: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "مسح الذاكرة المؤقتة للفصول"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "المستخدمة: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "تم محو الذاكرة المؤقتة. %d ملف تم محوه"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "حدث خطأ أثناء محو ذاكرة التخزين المؤقت"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "امسح ملفات التخزين المؤقت عند فتح التطبيق"
+    },
+    {
+      "name": "data_export",
+      "value": "يصدّر"
+    },
+    {
+      "name": "data_library_list",
+      "value": "قائمة المكتبات"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "تم تصدير المكتبة"
+    },
+    {
+      "name": "data_export_include",
+      "value": "اختر بيانات لتضمينها"
+    },
+    {
+      "name": "data_column_title",
+      "value": "العنوان"
+    },
+    {
+      "name": "data_column_author",
+      "value": "الكاتب"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "إيقاف"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "كل ٦ ساعات"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "كل ١٢ ساعة"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "يومياً"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "كل يومان"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "أسبوعياً"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
     {
       "name": "module_desc",
       "value": "module description"
@@ -1255,189 +1384,741 @@
       "name": "reader_set_brightness_reset",
       "value": "أُعيد السطوع ليتبع النظام"
     },
-    { "name": "browse_tab_sources", "value": "المصادر" },
-    { "name": "browse_tab_extensions", "value": "الإضافات" },
-    { "name": "browse_tab_migrate", "value": "نقل" },
-    { "name": "browse_pin", "value": "تثبيت" },
-    { "name": "browse_unpin", "value": "إلغاء التثبيت" },
-    { "name": "browse_disable_source", "value": "تعطيل المصدر" },
-    { "name": "browse_source_disabled", "value": "تم تعطيل المصدر" },
-    { "name": "browse_pinned", "value": "مثبّت" },
-    { "name": "browse_sources_empty", "value": "لا توجد مصادر. ثبّتها من تبويب الإضافات" },
-    { "name": "browse_filter_langs", "value": "تصفية اللغات" },
-    { "name": "browse_filter_all", "value": "الكل" },
-    { "name": "browse_source_missing", "value": "المصدر غير متاح. ربما تكون الإضافة معطّلة" },
-    { "name": "global_search_hint", "value": "البحث في كل المصادر" },
-    { "name": "global_search_failed", "value": "فشل البحث" },
-    { "name": "ext_search_hint", "value": "البحث في الإضافات" },
-    { "name": "ext_search_no_match", "value": "لا توجد نتائج" },
-    { "name": "ext_repo_settings", "value": "إعدادات المستودع" },
-    { "name": "ext_refresh_repo", "value": "تحديث المستودع" },
-    { "name": "migrate_pick_source", "value": "اختر مصدرًا للنقل" },
-    { "name": "migrate_empty_library", "value": "المكتبة فارغة" },
-    { "name": "migrate_select_all", "value": "تحديد الكل" },
-    { "name": "migrate_deselect_all", "value": "إلغاء تحديد الكل" },
-    { "name": "migrate_action", "value": "نقل (%d)" },
-    { "name": "migrate_title", "value": "نقل" },
-    { "name": "migrate_skip", "value": "تخطي" },
-    { "name": "migrate_progress", "value": "%d من %d" },
-    { "name": "migrate_target_source", "value": "المصدر الهدف" },
-    { "name": "migrate_search_hint", "value": "ابحث عن مانغا في المصدر الهدف" },
-    { "name": "migrate_confirm_title", "value": "النقل إلى هذه المانغا؟" },
-    { "name": "migrate_item_done", "value": "تم النقل: %s" },
-    { "name": "migrate_failed", "value": "فشل النقل: %s" },
-    { "name": "migrate_done", "value": "اكتمل النقل" },
-    { "name": "migrate_no_target", "value": "لا يوجد مصدر هدف" },
-    { "name": "stats_title", "value": "الإحصاءات" },
-    { "name": "stats_overview_section", "value": "نظرة عامة" },
-    { "name": "stats_in_library", "value": "في المكتبة" },
-    { "name": "stats_read_duration", "value": "مدة القراءة" },
-    { "name": "stats_completed_titles", "value": "مكتمل" },
-    { "name": "stats_titles_section", "value": "الأعمال" },
-    { "name": "stats_started_titles", "value": "بدأ" },
-    { "name": "stats_local_titles", "value": "محلي" },
-    { "name": "stats_chapters_section", "value": "الفصول" },
-    { "name": "stats_total_chapters", "value": "الإجمالي" },
-    { "name": "stats_read_chapters", "value": "مقروء" },
-    { "name": "stats_downloaded_chapters", "value": "تم التنزيل" },
-    { "name": "stats_tracker_section", "value": "المتتبعات" },
-    { "name": "stats_tracked_titles", "value": "أعمال متتبعة" },
-    { "name": "stats_mean_score", "value": "متوسط التقييم" },
-    { "name": "stats_used", "value": "قيد الاستخدام" },
-    { "name": "stats_not_applicable", "value": "غير متاح" },
-    { "name": "stats_week", "value": "أسبوع" },
-    { "name": "stats_month", "value": "شهر" },
-    { "name": "stats_week_total", "value": "%s هذا الأسبوع" },
-    { "name": "stats_month_total", "value": "%s هذا الشهر" },
-    { "name": "stats_no_reading", "value": "لا قراءة في هذه الفترة" },
-    { "name": "stats_day_short", "value": "%dي" },
-    { "name": "stats_hour_short", "value": "%dس" },
-    { "name": "stats_minute_short", "value": "%dد" },
-    { "name": "stats_second_short", "value": "%dث" },
-    { "name": "stats_wd_sun", "value": "ح" },
-    { "name": "stats_wd_mon", "value": "ن" },
-    { "name": "stats_wd_tue", "value": "ث" },
-    { "name": "stats_wd_wed", "value": "ر" },
-    { "name": "stats_wd_thu", "value": "خ" },
-    { "name": "stats_wd_fri", "value": "ج" },
-    { "name": "stats_wd_sat", "value": "س" },
-    { "name": "reader_mode_vertical", "value": "عمودي" },
-    { "name": "reader_mode_smart_grip", "value": "قبضة ذكية" },
-    { "name": "reader_orientation_lock_portrait", "value": "قفل الاتجاه العمودي" },
-    { "name": "reader_orientation_lock_landscape", "value": "قفل الاتجاه الأفقي" },
-    { "name": "reader_tab_general", "value": "عام" },
-    { "name": "reader_tab_filter", "value": "مرشح الألوان" },
-    { "name": "reader_filter_grayscale", "value": "تدرج رمادي" },
-    { "name": "reader_filter_invert", "value": "ألوان معكوسة" },
-    { "name": "reader_filter_contrast", "value": "التباين" },
-    { "name": "reader_filter_saturation", "value": "التشبع" },
-    { "name": "reader_crop_borders", "value": "قص الحواف" },
-    { "name": "reader_nav_tap_zones", "value": "مناطق النقر" },
-    { "name": "reader_nav_default", "value": "افتراضي" },
-    { "name": "reader_nav_ltr", "value": "من اليسار إلى اليمين" },
-    { "name": "reader_nav_rtl", "value": "من اليمين إلى اليسار" },
-    { "name": "reader_nav_vertical", "value": "عمودي" },
-    { "name": "reader_nav_edge", "value": "الحافة" },
-    { "name": "reader_nav_none", "value": "بدون" },
-    { "name": "reader_dual_page", "value": "عرض صفحتين" },
-    { "name": "reader_webtoon_padding", "value": "هامش جانبي للويبتون" },
-    { "name": "reader_set_mode_smart_grip", "value": "قبضة ذكية" },
-    { "name": "ext_install_local", "value": "تثبيت محلي" },
-    { "name": "ext_detail_title", "value": "معلومات الإضافة" },
-    { "name": "ext_info_version", "value": "الإصدار" },
-    { "name": "ext_info_language", "value": "اللغة" },
-    { "name": "ext_uninstall_title", "value": "إلغاء تثبيت الإضافة" },
-    { "name": "ext_uninstall_msg", "value": "إلغاء تثبيت الإضافة «%s»؟ ستبقى بيانات المانغا في المكتبة" },
-    { "name": "ext_detail_sources", "value": "المصادر" },
-    { "name": "ext_detail_settings", "value": "الإعدادات" },
-    { "name": "ext_pref_loading", "value": "جارٍ التحميل…" },
-    { "name": "ext_pref_failed", "value": "فشل تطبيق الإعدادات" },
-    { "name": "ext_detail_missing", "value": "الإضافة غير موجودة أو لم تُحمَّل" },
-    { "name": "action_filter", "value": "تصفية" },
-    { "name": "action_update_library", "value": "تحديث المكتبة" },
-    { "name": "action_update_category", "value": "تحديث الفئة" },
-    { "name": "action_open_random_manga", "value": "فتح عمل عشوائي" },
-    { "name": "action_select_all", "value": "تحديد الكل" },
-    { "name": "action_select_inverse", "value": "عكس التحديد" },
-    { "name": "action_move_category", "value": "نقل إلى فئة" },
-    { "name": "action_mark_as_read", "value": "تعليم كمقروء" },
-    { "name": "action_mark_as_unread", "value": "تعليم كغير مقروء" },
-    { "name": "action_download", "value": "تنزيل" },
-    { "name": "action_delete", "value": "حذف" },
-    { "name": "action_migrate", "value": "نقل" },
-    { "name": "action_remove_from_library", "value": "إزالة من المكتبة" },
-    { "name": "action_remove_from_library_msg", "value": "إزالة %d مانغا محددة من المكتبة؟" },
-    { "name": "action_download_queued", "value": "أُضيفت %d مهام تنزيل" },
-    { "name": "library_search_hint", "value": "البحث في المكتبة" },
-    { "name": "library_no_match", "value": "لا توجد مانغا مطابقة" },
-    { "name": "lib_sheet_tab_filter", "value": "تصفية" },
-    { "name": "lib_sheet_tab_sort", "value": "فرز" },
-    { "name": "lib_sheet_tab_display", "value": "العرض" },
-    { "name": "lib_filter_downloaded", "value": "تم التنزيل" },
-    { "name": "lib_filter_unread", "value": "غير مقروء" },
-    { "name": "lib_filter_started", "value": "بدأ" },
-    { "name": "lib_filter_bookmarked", "value": "عليها إشارة" },
-    { "name": "lib_filter_completed", "value": "مكتمل" },
-    { "name": "lib_filter_tracked", "value": "متتبَّع" },
-    { "name": "lib_sort_alpha", "value": "العنوان" },
-    { "name": "lib_sort_total", "value": "عدد الفصول" },
-    { "name": "lib_sort_last_read", "value": "آخر قراءة" },
-    { "name": "lib_sort_last_update", "value": "وقت فحص التحديثات" },
-    { "name": "lib_sort_unread", "value": "عدد غير المقروء" },
-    { "name": "lib_sort_latest_chapter", "value": "وقت تحديث العمل" },
-    { "name": "lib_sort_fetch_date", "value": "وقت جلب الفصول" },
-    { "name": "lib_sort_date_added", "value": "تاريخ الإضافة" },
-    { "name": "lib_sort_random", "value": "عشوائي" },
-    { "name": "lib_display_compact", "value": "شبكة مضغوطة" },
-    { "name": "lib_display_comfortable", "value": "شبكة مريحة" },
-    { "name": "lib_display_cover", "value": "شبكة الأغلفة" },
-    { "name": "lib_display_list", "value": "قائمة" },
-    { "name": "lib_display_grid_size", "value": "العدد في كل صف" },
-    { "name": "lib_display_grid_auto", "value": "تلقائي" },
-    { "name": "lib_display_badges_group", "value": "الشارات والأزرار" },
-    { "name": "lib_badge_downloaded", "value": "عدد الفصول المنزّلة" },
-    { "name": "lib_badge_unread", "value": "فصول غير مقروءة" },
-    { "name": "lib_badge_local", "value": "مصدر محلي" },
-    { "name": "lib_badge_language", "value": "اللغة" },
-    { "name": "lib_badge_continue", "value": "زر متابعة القراءة" },
-    { "name": "lib_display_tabs_group", "value": "علامات التبويب" },
-    { "name": "lib_show_category_tabs", "value": "إظهار علامات تبويب الفئات" },
-    { "name": "lib_show_manga_count", "value": "إظهار عدد الأعمال" },
-    { "name": "EntryFormAbility_label", "value": "بطاقات Honyomi" },
-    { "name": "EntryFormAbility_desc", "value": "موفّر بطاقات الشاشة الرئيسية" },
-    { "name": "card_recent_display", "value": "متابعة القراءة" },
-    { "name": "card_recent_desc", "value": "متابعة سريعة للمانغا المقروءة مؤخرًا" },
-    { "name": "card_updates_display", "value": "التحديثات" },
-    { "name": "card_updates_desc", "value": "أحدث الفصول غير المقروءة في المكتبة" },
-    { "name": "card_recent_header", "value": "متابعة القراءة" },
-    { "name": "card_updates_header", "value": "التحديثات" },
-    { "name": "card_unread_count", "value": "%d فصول غير مقروءة" },
-    { "name": "card_empty_recent", "value": "لا يوجد سجل قراءة بعد" },
-    { "name": "card_empty_updates", "value": "لا توجد فصول غير مقروءة" },
-    { "name": "card_open_hint", "value": "انقر لفتح التطبيق" },
-    { "name": "card_manga_display", "value": "بطاقة مانغا" },
-    { "name": "card_manga_desc", "value": "أضفها من صفحة التفاصيل، والغلاف يفتح القراءة" },
-    { "name": "card_manga_empty", "value": "أضف من صفحة تفاصيل المانغا" },
-    { "name": "detail_add_to_desktop", "value": "إضافة إلى الشاشة الرئيسية" },
-    { "name": "detail_card_added", "value": "أُضيف إلى الشاشة الرئيسية" },
-    { "name": "detail_card_add_failed", "value": "فشلت إضافة البطاقة" },
-    { "name": "card_stats_week_display", "value": "إحصاءات الأسبوع" },
-    { "name": "card_stats_week_desc", "value": "مدة القراءة اليومية هذا الأسبوع" },
-    { "name": "card_stats_month_display", "value": "إحصاءات الشهر" },
-    { "name": "card_stats_month_desc", "value": "مدة القراءة اليومية هذا الشهر" },
-    { "name": "card_stats_empty", "value": "لا توجد قراءة بعد" },
-    { "name": "action_view_upcoming", "value": "عرض التحديثات القادمة" },
-    { "name": "label_upcoming", "value": "القادم" },
-    { "name": "upcoming_guide", "value": "دليل القادم" },
-    { "name": "upcoming_calendar_prev", "value": "الشهر السابق" },
-    { "name": "upcoming_calendar_next", "value": "الشهر التالي" },
-    { "name": "pref_filter_update_categories_details", "value": "لن تُعرض الأعمال التي تنتمي إلى فئات مضمّنة ومستبعدة معًا." },
-    { "name": "relative_time_today", "value": "اليوم" },
-    { "name": "relative_time_days_ago", "value": "قبل %d يومًا" },
-    { "name": "upcoming_relative_time_days", "value": "بعد %d يوم" },
-    { "name": "card_upcoming_display", "value": "القادم" },
-    { "name": "card_upcoming_desc", "value": "تقويم التحديثات المتوقعة لمانغا المكتبة" },
-    { "name": "card_upcoming_header", "value": "القادم" },
-    { "name": "card_empty_upcoming", "value": "لا توجد مانغا مستمرة في المكتبة" }
-]
+    {
+      "name": "browse_tab_sources",
+      "value": "المصادر"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "الإضافات"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "نقل"
+    },
+    {
+      "name": "browse_pin",
+      "value": "تثبيت"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "إلغاء التثبيت"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "تعطيل المصدر"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "تم تعطيل المصدر"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "مثبّت"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "لا توجد مصادر. ثبّتها من تبويب الإضافات"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "تصفية اللغات"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "الكل"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "المصدر غير متاح. ربما تكون الإضافة معطّلة"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "البحث في كل المصادر"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "فشل البحث"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "البحث في الإضافات"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "لا توجد نتائج"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "إعدادات المستودع"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "تحديث المستودع"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "اختر مصدرًا للنقل"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "المكتبة فارغة"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "تحديد الكل"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "إلغاء تحديد الكل"
+    },
+    {
+      "name": "migrate_action",
+      "value": "نقل (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "نقل"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "تخطي"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d من %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "المصدر الهدف"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "ابحث عن مانغا في المصدر الهدف"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "النقل إلى هذه المانغا؟"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "تم النقل: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "فشل النقل: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "اكتمل النقل"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "لا يوجد مصدر هدف"
+    },
+    {
+      "name": "stats_title",
+      "value": "الإحصاءات"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "نظرة عامة"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "في المكتبة"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "مدة القراءة"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "مكتمل"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "الأعمال"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "بدأ"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "محلي"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "الفصول"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "الإجمالي"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "مقروء"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "تم التنزيل"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "المتتبعات"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "أعمال متتبعة"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "متوسط التقييم"
+    },
+    {
+      "name": "stats_used",
+      "value": "قيد الاستخدام"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "غير متاح"
+    },
+    {
+      "name": "stats_week",
+      "value": "أسبوع"
+    },
+    {
+      "name": "stats_month",
+      "value": "شهر"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "%s هذا الأسبوع"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "%s هذا الشهر"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "لا قراءة في هذه الفترة"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%dي"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dس"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dد"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%dث"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "ح"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "ن"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "ث"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "ر"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "خ"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "ج"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "س"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "عمودي"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "قبضة ذكية"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "قفل الاتجاه العمودي"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "قفل الاتجاه الأفقي"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "عام"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "مرشح الألوان"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "تدرج رمادي"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "ألوان معكوسة"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "التباين"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "التشبع"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "قص الحواف"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "مناطق النقر"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "افتراضي"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "من اليسار إلى اليمين"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "من اليمين إلى اليسار"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "عمودي"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "الحافة"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "بدون"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "عرض صفحتين"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "هامش جانبي للويبتون"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "قبضة ذكية"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "تثبيت محلي"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "معلومات الإضافة"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "الإصدار"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "اللغة"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "إلغاء تثبيت الإضافة"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "إلغاء تثبيت الإضافة «%s»؟ ستبقى بيانات المانغا في المكتبة"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "المصادر"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "الإعدادات"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "جارٍ التحميل…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "فشل تطبيق الإعدادات"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "الإضافة غير موجودة أو لم تُحمَّل"
+    },
+    {
+      "name": "action_filter",
+      "value": "تصفية"
+    },
+    {
+      "name": "action_update_library",
+      "value": "تحديث المكتبة"
+    },
+    {
+      "name": "action_update_category",
+      "value": "تحديث الفئة"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "فتح عمل عشوائي"
+    },
+    {
+      "name": "action_select_all",
+      "value": "تحديد الكل"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "عكس التحديد"
+    },
+    {
+      "name": "action_move_category",
+      "value": "نقل إلى فئة"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "تعليم كمقروء"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "تعليم كغير مقروء"
+    },
+    {
+      "name": "action_download",
+      "value": "تنزيل"
+    },
+    {
+      "name": "action_delete",
+      "value": "حذف"
+    },
+    {
+      "name": "action_migrate",
+      "value": "نقل"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "إزالة من المكتبة"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "إزالة %d مانغا محددة من المكتبة؟"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "أُضيفت %d مهام تنزيل"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "البحث في المكتبة"
+    },
+    {
+      "name": "library_no_match",
+      "value": "لا توجد مانغا مطابقة"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "تصفية"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "فرز"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "العرض"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "تم التنزيل"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "غير مقروء"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "بدأ"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "عليها إشارة"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "مكتمل"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "متتبَّع"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "العنوان"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "عدد الفصول"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "آخر قراءة"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "وقت فحص التحديثات"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "عدد غير المقروء"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "وقت تحديث العمل"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "وقت جلب الفصول"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "تاريخ الإضافة"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "عشوائي"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "شبكة مضغوطة"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "شبكة مريحة"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "شبكة الأغلفة"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "قائمة"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "العدد في كل صف"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "تلقائي"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "الشارات والأزرار"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "عدد الفصول المنزّلة"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "فصول غير مقروءة"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "مصدر محلي"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "اللغة"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "زر متابعة القراءة"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "علامات التبويب"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "إظهار علامات تبويب الفئات"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "إظهار عدد الأعمال"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "بطاقات Honyomi"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "موفّر بطاقات الشاشة الرئيسية"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "متابعة القراءة"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "متابعة سريعة للمانغا المقروءة مؤخرًا"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "التحديثات"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "أحدث الفصول غير المقروءة في المكتبة"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "متابعة القراءة"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "التحديثات"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d فصول غير مقروءة"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "لا يوجد سجل قراءة بعد"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "لا توجد فصول غير مقروءة"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "انقر لفتح التطبيق"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "بطاقة مانغا"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "أضفها من صفحة التفاصيل، والغلاف يفتح القراءة"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "أضف من صفحة تفاصيل المانغا"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "إضافة إلى الشاشة الرئيسية"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "أُضيف إلى الشاشة الرئيسية"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "فشلت إضافة البطاقة"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "إحصاءات الأسبوع"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "مدة القراءة اليومية هذا الأسبوع"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "إحصاءات الشهر"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "مدة القراءة اليومية هذا الشهر"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "لا توجد قراءة بعد"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "عرض التحديثات القادمة"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "القادم"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "دليل القادم"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "الشهر السابق"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "الشهر التالي"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "لن تُعرض الأعمال التي تنتمي إلى فئات مضمّنة ومستبعدة معًا."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "اليوم"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "قبل %d يومًا"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "بعد %d يوم"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "القادم"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "تقويم التحديثات المتوقعة لمانغا المكتبة"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "القادم"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "لا توجد مانغا مستمرة في المكتبة"
+    }
+  ]
 }

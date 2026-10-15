@@ -3,7 +3,7 @@
 //   嵌套在外层纵向 Scroll 内时滚轮会被外层拦截、隐藏滚动条下鼠标拖拽不生效，见 faqs-arkui-860）；
 // 宽屏（lg ≥840vp，PC/平板横屏）：Flex 换行网格平铺全部主题，无需滚动。
 // 选中卡片描边高亮并带对勾标记；点击回调主题 id。
-import { Theme, ThemePalette, ThemeScheme, AppThemeDef } from '../../common/Theme';
+import { AppThemeDef, Theme, ThemePalette, ThemeScheme } from '../../common/Theme';
 import { Bp } from '../../common/Breakpoint';
 import { AppIcon } from './AppIcon';
 
@@ -15,12 +15,8 @@ export struct ThemePreviewCard {
   @Prop isDark: boolean = false;
   @Prop amoled: boolean = false;
   @Prop selected: boolean = false;
-  onPick: (id: string) => void = (id: string) => {};
-
-  // 当前模式下的预览色板（随 isDark/amoled 变化重新求值）
-  private scheme(): ThemeScheme {
-    return Theme.colorsFor(this.themeId, this.isDark, this.amoled);
-  }
+  onPick: (id: string) => void = (id: string) => {
+  };
 
   build() {
     Column({ space: 6 }) {
@@ -67,7 +63,12 @@ export struct ThemePreviewCard {
         }
         .width('100%')
         .alignItems(HorizontalAlign.Start)
-        .padding({ left: 8, right: 8, top: 9, bottom: 9 })
+        .padding({
+          left: 8,
+          right: 8,
+          top: 9,
+          bottom: 9
+        })
         .layoutWeight(1)
       }
       .width(104)
@@ -98,6 +99,11 @@ export struct ThemePreviewCard {
       this.onPick(this.themeId);
     })
   }
+
+  // 当前模式下的预览色板（随 isDark/amoled 变化重新求值）
+  private scheme(): ThemeScheme {
+    return Theme.colorsFor(this.themeId, this.isDark, this.amoled);
+  }
 }
 
 // 主题选择器：窄屏横向滚动 / 宽屏换行网格（预览随当前深浅/AMOLED 模式渲染）
@@ -108,22 +114,12 @@ export struct ThemePicker {
   @StorageProp('amoled') amoled: boolean = false;
   @StorageProp('windowW') windowW: number = 0;
   @Prop selectedTheme: string = 'default';
-  onPick: (id: string) => void = (id: string) => {};
   private scroller: Scroller = new Scroller();
   // PanGesture 偏移为累计值，记录上次值换算单次增量
   private lastPanX: number = 0;
 
-  // 鼠标左键拖拽滚动（触屏/触摸板走内置滚动手势，仅鼠标拖拽在内置滚动下不生效）
-  private onMousePan(event: GestureEvent): void {
-    if (event.sourceTool !== SourceTool.MOUSE) {
-      return;
-    }
-    const delta: number = event.offsetX - this.lastPanX;
-    this.lastPanX = event.offsetX;
-    if (delta !== 0) {
-      this.scroller.scrollBy(-delta, 0);
-    }
-  }
+  onPick: (id: string) => void = (id: string) => {
+  };
 
   build() {
     if (Bp.isWide(this.windowW)) {
@@ -143,7 +139,12 @@ export struct ThemePicker {
         }, (t: AppThemeDef) => `${t.id}-${this.selectedTheme === t.id ? 1 : 0}`)
       }
       .width('100%')
-      .padding({ left: 11, right: 11, top: 7, bottom: 1 })
+      .padding({
+        left: 11,
+        right: 11,
+        top: 7,
+        bottom: 1
+      })
     } else {
       // 窄屏：横向滚动列表
       Scroll(this.scroller) {
@@ -160,7 +161,12 @@ export struct ThemePicker {
             })
           }, (t: AppThemeDef) => `${t.id}-${this.selectedTheme === t.id ? 1 : 0}`)
         }
-        .padding({ left: 16, right: 16, top: 12, bottom: 6 })
+        .padding({
+          left: 16,
+          right: 16,
+          top: 12,
+          bottom: 6
+        })
       }
       .scrollable(ScrollDirection.Horizontal)
       .scrollBar(BarState.Auto)
@@ -174,6 +180,18 @@ export struct ThemePicker {
             this.onMousePan(event);
           })
       )
+    }
+  }
+
+  // 鼠标左键拖拽滚动（触屏/触摸板走内置滚动手势，仅鼠标拖拽在内置滚动下不生效）
+  private onMousePan(event: GestureEvent): void {
+    if (event.sourceTool !== SourceTool.MOUSE) {
+      return;
+    }
+    const delta: number = event.offsetX - this.lastPanX;
+    this.lastPanX = event.offsetX;
+    if (delta !== 0) {
+      this.scroller.scrollBy(-delta, 0);
     }
   }
 }

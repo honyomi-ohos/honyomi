@@ -1,7 +1,7 @@
 // Bangumi 追踪器（syncId=5）：OAuth code 授权 + bgm.tv v0 API
 import { TrackRecord, TrackSearchResult } from '../../model/Models';
 import { Settings } from '../../common/Settings';
-import { Tracker, TrackHttp, OAuthToken, TrackDate } from './Tracker';
+import { OAuthToken, TrackDate, Tracker, TrackHttp } from './Tracker';
 import { Http } from '../../net/Http';
 
 const BGM_API_URL = 'https://api.bgm.tv';
@@ -75,6 +75,41 @@ export class BangumiTracker extends Tracker {
   constructor() {
     super(5, 'Bangumi', '#F09199');
     this.supportsPrivateTracking = true;
+  }
+
+  private static parseToken(resp: string): OAuthToken {
+    const raw = JSON.parse(resp) as BgmTokenRaw;
+    if (typeof raw.access_token !== 'string' || raw.access_token === '') {
+      throw new Error('Bangumi: token response invalid');
+    }
+    const t = new OAuthToken();
+    t.accessToken = raw.access_token;
+    t.refreshToken = typeof raw.refresh_token === 'string' ? raw.refresh_token : '';
+    t.createdAt = typeof raw.created_at === 'number' ? raw.created_at : TrackDate.nowSec();
+    t.expiresIn = typeof raw.expires_in === 'number' ? raw.expires_in : 0;
+    return t;
+  }
+
+  private static fromApiType(type: number): number {
+    switch (type) {
+      case 1:
+        return BangumiTracker.PLAN_TO_READ;
+      case 2:
+        return BangumiTracker.COMPLETED;
+      case 3:
+        return BangumiTracker.READING;
+      case 4:
+        return BangumiTracker.ON_HOLD;
+      case 5:
+        return BangumiTracker.DROPPED;
+      default:
+        throw new Error(`Unknown status: ${type}`);
+    }
+  }
+
+  private static clampScore(score: number): number {
+    const v = Math.round(score);
+    return v < 0 ? 0 : (v > 10 ? 10 : v);
   }
 
   getStatusList(): number[] {
@@ -181,6 +216,8 @@ export class BangumiTracker extends Tracker {
     return results;
   }
 
+  // ---- 内部实现 ----
+
   async bind(track: TrackRecord, hasReadChapters: boolean): Promise<TrackRecord> {
     const status = await this.statusLibManga(track);
     if (status !== undefined) {
@@ -215,8 +252,6 @@ export class BangumiTracker extends Tracker {
     return track;
   }
 
-  // ---- 内部实现 ----
-
   private async authHeaders(): Promise<Record<string, string>> {
     const token = await this.ensureToken((t: OAuthToken) => this.refreshToken(t));
     const headers = TrackHttp.bearer(token.accessToken);
@@ -235,19 +270,6 @@ export class BangumiTracker extends Tracker {
     const headers: Record<string, string> = { 'Content-Type': 'application/x-www-form-urlencoded' };
     const resp = await TrackHttp.send('POST', BGM_OAUTH_URL, headers, TrackHttp.formEncode(form));
     return BangumiTracker.parseToken(resp);
-  }
-
-  private static parseToken(resp: string): OAuthToken {
-    const raw = JSON.parse(resp) as BgmTokenRaw;
-    if (typeof raw.access_token !== 'string' || raw.access_token === '') {
-      throw new Error('Bangumi: token response invalid');
-    }
-    const t = new OAuthToken();
-    t.accessToken = raw.access_token;
-    t.refreshToken = typeof raw.refresh_token === 'string' ? raw.refresh_token : '';
-    t.createdAt = typeof raw.created_at === 'number' ? raw.created_at : TrackDate.nowSec();
-    t.expiresIn = typeof raw.expires_in === 'number' ? raw.expires_in : 0;
-    return t;
   }
 
   private async getCurrentUser(): Promise<BgmUserRaw> {
@@ -352,27 +374,5 @@ export class BangumiTracker extends Tracker {
       default:
         throw new Error(`Unknown status: ${status}`);
     }
-  }
-
-  private static fromApiType(type: number): number {
-    switch (type) {
-      case 1:
-        return BangumiTracker.PLAN_TO_READ;
-      case 2:
-        return BangumiTracker.COMPLETED;
-      case 3:
-        return BangumiTracker.READING;
-      case 4:
-        return BangumiTracker.ON_HOLD;
-      case 5:
-        return BangumiTracker.DROPPED;
-      default:
-        throw new Error(`Unknown status: ${type}`);
-    }
-  }
-
-  private static clampScore(score: number): number {
-    const v = Math.round(score);
-    return v < 0 ? 0 : (v > 10 ? 10 : v);
   }
 }

@@ -1,7 +1,7 @@
 // Shikimori 追踪器（syncId=4）：OAuth code 授权 + REST(v2) / GraphQL 混合 API
 import { TrackRecord, TrackSearchResult } from '../../model/Models';
 import { Settings } from '../../common/Settings';
-import { Tracker, TrackHttp, OAuthToken, TrackDate } from './Tracker';
+import { OAuthToken, TrackDate, Tracker, TrackHttp } from './Tracker';
 
 const SM_BASE_URL = 'https://shikimori.one';
 const SM_API_URL = `${SM_BASE_URL}/api`;
@@ -110,6 +110,38 @@ export class ShikimoriTracker extends Tracker {
 
   constructor() {
     super(4, 'Shikimori', '#343434');
+  }
+
+  private static parseToken(resp: string): OAuthToken {
+    const raw = JSON.parse(resp) as SmTokenRaw;
+    if (typeof raw.access_token !== 'string' || raw.access_token === '') {
+      throw new Error('Shikimori: token response invalid');
+    }
+    const t = new OAuthToken();
+    t.accessToken = raw.access_token;
+    t.refreshToken = typeof raw.refresh_token === 'string' ? raw.refresh_token : '';
+    t.createdAt = typeof raw.created_at === 'number' ? raw.created_at : TrackDate.nowSec();
+    t.expiresIn = typeof raw.expires_in === 'number' ? raw.expires_in : 0;
+    return t;
+  }
+
+  private static toLocalStatus(api: string): number {
+    switch (api) {
+      case 'watching':
+        return ShikimoriTracker.READING;
+      case 'completed':
+        return ShikimoriTracker.COMPLETED;
+      case 'on_hold':
+        return ShikimoriTracker.ON_HOLD;
+      case 'dropped':
+        return ShikimoriTracker.DROPPED;
+      case 'planned':
+        return ShikimoriTracker.PLAN_TO_READ;
+      case 'rewatching':
+        return ShikimoriTracker.REREADING;
+      default:
+        throw new Error(`Unknown status: ${api}`);
+    }
   }
 
   getStatusList(): number[] {
@@ -243,6 +275,8 @@ export class ShikimoriTracker extends Tracker {
     return await this.updateLibManga(track);
   }
 
+  // ---- 内部实现 ----
+
   async refresh(track: TrackRecord): Promise<TrackRecord> {
     const remote = await this.findLibManga(track);
     if (remote === undefined) {
@@ -257,8 +291,6 @@ export class ShikimoriTracker extends Tracker {
   async deleteRemote(track: TrackRecord): Promise<void> {
     await TrackHttp.send('DELETE', `${SM_API_URL}/v2/user_rates/${track.libraryId}`, await this.authHeaders(), '');
   }
-
-  // ---- 内部实现 ----
 
   private async authHeaders(): Promise<Record<string, string>> {
     const token = await this.ensureToken((t: OAuthToken) => this.refreshToken(t));
@@ -277,19 +309,6 @@ export class ShikimoriTracker extends Tracker {
     const headers: Record<string, string> = { 'Content-Type': 'application/x-www-form-urlencoded' };
     const resp = await TrackHttp.send('POST', SM_OAUTH_URL, headers, TrackHttp.formEncode(form));
     return ShikimoriTracker.parseToken(resp);
-  }
-
-  private static parseToken(resp: string): OAuthToken {
-    const raw = JSON.parse(resp) as SmTokenRaw;
-    if (typeof raw.access_token !== 'string' || raw.access_token === '') {
-      throw new Error('Shikimori: token response invalid');
-    }
-    const t = new OAuthToken();
-    t.accessToken = raw.access_token;
-    t.refreshToken = typeof raw.refresh_token === 'string' ? raw.refresh_token : '';
-    t.createdAt = typeof raw.created_at === 'number' ? raw.created_at : TrackDate.nowSec();
-    t.expiresIn = typeof raw.expires_in === 'number' ? raw.expires_in : 0;
-    return t;
   }
 
   private async sendGql(query: string, variables: string): Promise<string> {
@@ -422,25 +441,6 @@ export class ShikimoriTracker extends Tracker {
         return 'rewatching';
       default:
         throw new Error(`Unknown status: ${status}`);
-    }
-  }
-
-  private static toLocalStatus(api: string): number {
-    switch (api) {
-      case 'watching':
-        return ShikimoriTracker.READING;
-      case 'completed':
-        return ShikimoriTracker.COMPLETED;
-      case 'on_hold':
-        return ShikimoriTracker.ON_HOLD;
-      case 'dropped':
-        return ShikimoriTracker.DROPPED;
-      case 'planned':
-        return ShikimoriTracker.PLAN_TO_READ;
-      case 'rewatching':
-        return ShikimoriTracker.REREADING;
-      default:
-        throw new Error(`Unknown status: ${api}`);
     }
   }
 }

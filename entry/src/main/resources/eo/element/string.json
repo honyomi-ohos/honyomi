@@ -1,534 +1,2124 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Filtras ĉiujn elementojn en via biblioteko" },
-    { "name": "more_incognito_summary", "value": "Paŭzigas legadan historion" },
-    { "name": "more_support", "value": "Subtenu nin" },
-    { "name": "more_help", "value": "Helpo" },
-    { "name": "support_perks", "value": "Donacantoj ricevas aliron al ekskluzivaj kanaloj, kaj pli da avantaĝoj poste." },
-    { "name": "support_patreon", "value": "Patreon (preferata)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon estas nun finance subtenata de %d+ patronoj. Ni volas danki ĉiun el vi. Ni plibonigu Mihon eĉ pli kune." },
-    { "name": "support_contact_msg", "value": "Por alternativaj opcioj aŭ iaj ajn rilataj demandoj, aniĝu al nia Discord-servilo." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "Datumoj kaj konservejo" },
-    { "name": "data_storage_location", "value": "Konserveja loko" },
-    { "name": "data_storage_location_info", "value": "Uzata por aŭtomataj savkopioj, ĉapitraj elŝutoj kaj lokaj fontoj." },
-    { "name": "data_backup_restore", "value": "Savkopii kaj restaŭri" },
-    { "name": "data_create_backup", "value": "Krei savkopion" },
-    { "name": "data_restore_backup", "value": "Restaŭri savkopion" },
-    { "name": "data_backup_interval", "value": "Ofteco de aŭtomata savkopio" },
-    { "name": "data_backup_info", "value": "Vi konservu kopiojn de savkopioj ankaŭ en aliaj lokoj. Savkopioj povas enhavi konfidencajn datumojn inkluzive konservitajn pasvortojn; atentu se vi konigos ilin." },
-    { "name": "data_last_auto_backup", "value": "Lasta aŭtomata ĝisdatigo: %s" },
-    { "name": "data_storage_usage", "value": "Konserveja uzo" },
-    { "name": "data_available_space", "value": "Disponebla: %s / Tuta: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Viŝi ĉapitran kaŝmemoron" },
-    { "name": "data_used_cache", "value": "Uzata: %s" },
-    { "name": "data_cache_deleted", "value": "Kaŝmemoro viŝita, %d dosieroj forigitaj" },
-    { "name": "data_cache_delete_error", "value": "Eraro okazis dum viŝado" },
-    { "name": "data_auto_clear_cache", "value": "Viŝi ĉapitran kaŝmemoron je apa lanĉo" },
-    { "name": "data_export", "value": "Eksporti" },
-    { "name": "data_library_list", "value": "Biblioteka listo" },
-    { "name": "data_library_exported", "value": "Biblioteko eksportita" },
-    { "name": "data_export_include", "value": "Elekti datumojn por inkluzivi" },
-    { "name": "data_column_title", "value": "Titolo" },
-    { "name": "data_column_author", "value": "Aŭtoro" },
-    { "name": "data_interval_off", "value": "Malŝaltita" },
-    { "name": "data_interval_6h", "value": "Ĉiun 6-an horon" },
-    { "name": "data_interval_12h", "value": "Ĉiun 12-an horon" },
-    { "name": "data_interval_24h", "value": "Ĉiutage" },
-    { "name": "data_interval_48h", "value": "Ĉiun 2-an tagon" },
-    { "name": "data_interval_weekly", "value": "Ĉiusemajne" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "Bone" },
-    { "name": "common_cancel", "value": "Nuligi" },
-    { "name": "common_confirm", "value": "Konfirmi" },
-    { "name": "common_delete", "value": "Forigi" },
-    { "name": "common_retry", "value": "Reprovi" },
-    { "name": "common_search", "value": "Serĉi" },
-    { "name": "common_all", "value": "Ĉio" },
-    { "name": "common_close", "value": "Fermi" },
-    { "name": "common_save", "value": "Konservi" },
-    { "name": "common_install", "value": "Instali" },
-    { "name": "common_uninstall", "value": "Malinstali" },
-    { "name": "common_update", "value": "Ĝisdatigi" },
-    { "name": "common_none", "value": "Neniu" },
-    { "name": "common_default", "value": "Defaŭlta" },
-    { "name": "appearance_title", "value": "Aspekto" },
-    { "name": "appearance_language", "value": "Lingvo" },
-    { "name": "lang_follow_system", "value": "Sekvi la sistemon" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "Etosa reĝimo" },
-    { "name": "appearance_theme_auto", "value": "Sekvi la sistemon" },
-    { "name": "appearance_theme_light", "value": "Hela" },
-    { "name": "appearance_theme_dark", "value": "Malhela" },
-    { "name": "appearance_accent_color", "value": "Emfaza koloro" },
-    { "name": "appearance_other", "value": "Aliaj" },
-    { "name": "appearance_amoled", "value": "AMOLED pure nigra fono" },
-    { "name": "theme_accent_blue", "value": "Blua" },
-    { "name": "theme_accent_green", "value": "Verda" },
-    { "name": "theme_accent_pink", "value": "Rozkolora" },
-    { "name": "theme_accent_purple", "value": "Purpura" },
-    { "name": "theme_accent_orange", "value": "Oranĝa" },
-    { "name": "util_time_minutes_ago", "value": "antaŭ %d min" },
-    { "name": "util_time_hours_ago", "value": "antaŭ %d h" },
-    { "name": "util_time_days_ago", "value": "antaŭ %d t" },
-    { "name": "util_status_ongoing", "value": "Daŭranta" },
-    { "name": "util_status_completed", "value": "Finita" },
-    { "name": "util_status_hiatus", "value": "Paŭzanta" },
-    { "name": "util_status_cancelled", "value": "Nuligita" },
-    { "name": "util_status_publication_complete", "value": "Eldonado finita" },
-    { "name": "util_status_unknown", "value": "Nekonata" },
-    { "name": "tab_library", "value": "Biblioteko" },
-    { "name": "tab_updates", "value": "Ĝisdatigoj" },
-    { "name": "tab_history", "value": "Historio" },
-    { "name": "tab_browse", "value": "Foliumi" },
-    { "name": "tab_more", "value": "Pli" },
-    { "name": "tab_cf_waiting", "value": "Atendante konfirmon…" },
-    { "name": "tab_cf_verified", "value": "Konfirmo finita" },
-    { "name": "tab_cf_title", "value": "Homa konfirmo" },
-    { "name": "tab_cf_done", "value": "Farita" },
-    { "name": "tab_cf_saved", "value": "Konfirma rezulto konservita" },
-    { "name": "more_title", "value": "Pli" },
-    { "name": "more_version", "value": "Versio %s" },
-    { "name": "more_downloaded_only", "value": "Nur elŝutitaj" },
-    { "name": "more_incognito", "value": "Inkognita reĝimo" },
-    { "name": "more_downloads", "value": "Elŝutvico" },
-    { "name": "more_categories", "value": "Kategorioj" },
-    { "name": "more_settings", "value": "Agordoj" },
-    { "name": "more_about", "value": "Pri" },
-    { "name": "more_plugins", "value": "Etendaĵoj" },
-    { "name": "categories_title", "value": "Kategorioj" },
-    { "name": "categories_add", "value": "Nova kategorio" },
-    { "name": "categories_name_placeholder", "value": "Kategoria nomo" },
-    { "name": "categories_rename_category", "value": "Alinomi kategorion" },
-    { "name": "categories_rename", "value": "Alinomi" },
-    { "name": "categories_hint", "value": "Longpremu kategorion por alinomi aŭ forigi ĝin; mangao en forigita kategorio revenas al Defaŭlta" },
-    { "name": "dialog_pick_category", "value": "Elekti kategorion" },
-    { "name": "viewer_loading", "value": "Ŝargas…" },
-    { "name": "viewer_load_failed", "value": "Malsukcesis ŝargi bildon" },
-    { "name": "viewer_tap_retry", "value": "Frapu por reprovi" },
-    { "name": "library_title", "value": "Biblioteko" },
-    { "name": "library_empty", "value": "Via biblioteko estas malplena, foliumu por aldoni mangaon" },
-    { "name": "library_new_category", "value": "Nova kategorio" },
-    { "name": "library_category_name", "value": "Kategoria nomo" },
-    { "name": "updates_title", "value": "Ĝisdatigoj" },
-    { "name": "updates_empty", "value": "Neniuj lastatempaj ĝisdatigoj" },
-    { "name": "updates_found_new", "value": "%d novaj ĉapitroj trovitaj" },
-    { "name": "updates_no_new", "value": "Neniuj novaj ĉapitroj" },
-    { "name": "updates_refresh_failed", "value": "Aktualigo malsukcesis" },
-    { "name": "updates_refreshing", "value": "Aktualigas…" },
-    { "name": "history_title", "value": "Historio" },
-    { "name": "history_clear", "value": "Viŝi" },
-    { "name": "history_confirm_clear", "value": "Ĉu konfirmi viŝon?" },
-    { "name": "history_empty", "value": "Ankoraŭ neniu lega historio" },
-    { "name": "history_cleared", "value": "Historio viŝita" },
-    { "name": "history_continue", "value": "Daŭrigi" },
-    { "name": "browse_title", "value": "Foliumi" },
-    { "name": "browse_import", "value": "Importi" },
-    { "name": "browse_plugins", "value": "Kromprogramoj" },
-    { "name": "browse_local_source_name", "value": "Loka mangao" },
-    { "name": "browse_popular", "value": "Popularaj" },
-    { "name": "browse_latest", "value": "Lastaj" },
-    { "name": "browse_search_hint", "value": "Serĉi mangaon…" },
-    { "name": "browse_no_results", "value": "Neniu mangao trovita" },
-    { "name": "browse_local_empty", "value": "Ankoraŭ neniu loka mangao, frapu Importi por aldoni" },
-    { "name": "browse_load_failed", "value": "Ŝargo malsukcesis: %s" },
-    { "name": "browse_search_failed", "value": "Serĉo malsukcesis: %s" },
-    { "name": "browse_load_more_failed", "value": "Malsukcesis ŝargi pli" },
-    { "name": "browse_open_detail_failed", "value": "Malsukcesis malfermi detalojn" },
-    { "name": "browse_pick_file_failed", "value": "Malsukcesis elekti dosierojn" },
-    { "name": "browse_import_title", "value": "Importi %d dosierojn" },
-    { "name": "browse_manga_name_hint", "value": "Mangaonomo" },
-    { "name": "browse_input_name", "value": "Bonvolu enigi nomon" },
-    { "name": "browse_import_done", "value": "Importis %d dosierojn" },
-    { "name": "browse_import_failed", "value": "Importo malsukcesis: %s" },
-    { "name": "download_title", "value": "Elŝutoj" },
-    { "name": "download_resume", "value": "Daŭrigi" },
-    { "name": "download_pause", "value": "Paŭzigi" },
-    { "name": "download_clear_finished", "value": "Viŝi finitajn" },
-    { "name": "download_queue", "value": "Elŝuta vico" },
-    { "name": "download_state_queued", "value": "En vico" },
-    { "name": "download_state_downloading", "value": "Elŝutas" },
-    { "name": "download_state_done", "value": "Farita" },
-    { "name": "download_state_failed", "value": "Malsukcesis" },
-    { "name": "download_move_top", "value": "Movi supren" },
-    { "name": "download_move_bottom", "value": "Movi malsupren" },
-    { "name": "download_deleted", "value": "Forigita" },
-    { "name": "download_empty", "value": "Ankoraŭ neniuj elŝutoj" },
-    { "name": "download_status_downloaded", "value": "Elŝutita" },
-    { "name": "download_chapter_count", "value": "%d ĉapitroj" },
-    { "name": "detail_no_chapters", "value": "Neniuj ĉapitroj" },
-    { "name": "detail_sync_failed_local", "value": "Sinkronigo malsukcesis, montras lokajn datumojn" },
-    { "name": "detail_added_to_library", "value": "Aldonita al biblioteko" },
-    { "name": "detail_removed_from_library", "value": "Forigita el biblioteko" },
-    { "name": "detail_all_marked_read", "value": "Ĉiuj ĉapitroj markitaj kiel legitaj" },
-    { "name": "detail_download_queued", "value": "Aldonita al elŝuta vico" },
-    { "name": "detail_config_anilist_token", "value": "Bonvolu unue agordi vian AniList-ĵetonon" },
-    { "name": "detail_search_anilist", "value": "Serĉi AniList" },
-    { "name": "detail_manga_title_hint", "value": "Mangaotitolo" },
-    { "name": "detail_no_search_results", "value": "Neniuj serĉrezultoj" },
-    { "name": "detail_anilist_search_failed", "value": "AniList-serĉo malsukcesis" },
-    { "name": "detail_anilist_bound", "value": "Ligita al AniList" },
-    { "name": "detail_anilist_unbound", "value": "Malligita de AniList" },
-    { "name": "detail_synced_progress", "value": "Progreso sinkronigita al ĉapitro %d" },
-    { "name": "detail_anilist_sync_failed", "value": "AniList-sinkronigo malsukcesis" },
-    { "name": "detail_status_local", "value": "Loka" },
-    { "name": "detail_in_library", "value": "En biblioteko" },
-    { "name": "detail_add_to_library", "value": "Aldoni al biblioteko" },
-    { "name": "detail_continue_reading", "value": "Daŭrigi legadon" },
-    { "name": "detail_start_reading", "value": "Komenci legadon" },
-    { "name": "detail_no_chapters_yet", "value": "Ankoraŭ neniuj ĉapitroj" },
-    { "name": "detail_collapse", "value": "Faldi" },
-    { "name": "detail_expand", "value": "Malfaldi" },
-    { "name": "detail_anilist_tracking", "value": "AniList-spurado" },
-    { "name": "detail_anilist_token_hint", "value": "AniList-ĵetono ankoraŭ ne agordita" },
-    { "name": "detail_searching", "value": "Serĉas…" },
-    { "name": "detail_search_and_bind", "value": "Serĉi kaj ligi" },
-    { "name": "detail_bind", "value": "Ligi" },
-    { "name": "detail_synced_to_chapter", "value": "Sinkronigita al ĉapitro %d" },
-    { "name": "detail_sync_progress", "value": "Sinkronigi progreson" },
-    { "name": "detail_unbind", "value": "Malligi" },
-    { "name": "detail_chapters_count", "value": "Ĉapitroj (%d)" },
-    { "name": "detail_sort_asc", "value": "Kreskante" },
-    { "name": "detail_sort_desc", "value": "Malkreskante" },
-    { "name": "detail_mark_all_read", "value": "Marki ĉion legita" },
-    { "name": "detail_read", "value": "Legita" },
-    { "name": "detail_downloaded", "value": "Elŝutita" },
-    { "name": "detail_in_queue", "value": "En vico" },
-    { "name": "detail_download", "value": "Elŝuti" },
-    { "name": "reader_chapter_not_found", "value": "Ĉapitro ne trovita" },
-    { "name": "reader_load_failed", "value": "Ŝargo malsukcesis: %s" },
-    { "name": "reader_mode_ltr", "value": "Maldekstre dekstren" },
-    { "name": "reader_mode_rtl", "value": "Dekstre maldekstren" },
-    { "name": "reader_mode_webtoon", "value": "Guldraĵo" },
-    { "name": "reader_reading_mode", "value": "Lega reĝimo" },
-    { "name": "reader_orientation_free", "value": "Libera" },
-    { "name": "reader_orientation_portrait", "value": "Vertikala" },
-    { "name": "reader_orientation_landscape", "value": "Horizontala" },
-    { "name": "reader_screen_orientation", "value": "Ekrana orientiĝo" },
-    { "name": "reader_last_chapter", "value": "Jam ĉe la lasta ĉapitro" },
-    { "name": "reader_first_chapter", "value": "Jam ĉe la unua ĉapitro" },
-    { "name": "reader_first_page", "value": "Jam ĉe la unua paĝo" },
-    { "name": "reader_last_page", "value": "Jam ĉe la lasta paĝo" },
-    { "name": "reader_loading_chapter", "value": "Ŝargas ĉapitron…" },
-    { "name": "reader_settings", "value": "Legilaj agordoj" },
-    { "name": "reader_background", "value": "Fono" },
-    { "name": "reader_theme_auto", "value": "Aŭtomata" },
-    { "name": "reader_theme_white", "value": "Blanka" },
-    { "name": "reader_theme_gray", "value": "Griza" },
-    { "name": "reader_theme_black", "value": "Nigra" },
-    { "name": "reader_show_page_number", "value": "Montri paĝnumeron" },
-    { "name": "reader_brightness", "value": "Heleco" },
-    { "name": "reader_auto", "value": "Aŭtomata" },
-    { "name": "plugin_title", "value": "Etendaĵoj" },
-    { "name": "plugin_installed_section", "value": "Instalitaj" },
-    { "name": "plugin_empty", "value": "Ankoraŭ neniuj etendaĵoj, instalu sube" },
-    { "name": "plugin_disable_hint", "value": "Malebligitaj etendaĵoj povas esti reebligitaj iam ajn" },
-    { "name": "plugin_up_to_date", "value": "Ĝisdata" },
-    { "name": "plugin_local_install", "value": "Instali el dosiero" },
-    { "name": "plugin_install_from_file", "value": "Elektu dosieron por instali" },
-    { "name": "plugin_processing", "value": "Prilaboras…" },
-    { "name": "plugin_package_hint", "value": "Subtenas .honyomiplug / .zip kromprogramajn pakaĵojn" },
-    { "name": "plugin_repo", "value": "Reta deponejo" },
-    { "name": "plugin_repo_config", "value": "Agordi deponejon" },
-    { "name": "plugin_repo_refresh", "value": "Aktualigi" },
-    { "name": "plugin_repo_hint", "value": "Ankoraŭ neniu kromprograma deponejo agordita" },
-    { "name": "plugin_repo_loading", "value": "Ŝargas deponejon…" },
-    { "name": "plugin_repo_url_title", "value": "URL de kromprograma deponejo" },
-    { "name": "plugin_repo_url_hint", "value": "Enigu la URL de la kromprograma deponejo" },
-    { "name": "plugin_repo_load_failed", "value": "Malsukcesis ŝargi deponejon: %s" },
-    { "name": "plugin_pick_file_failed", "value": "Malsukcesis elekti dosieron" },
-    { "name": "plugin_installed", "value": "Instalita: %s" },
-    { "name": "plugin_installed_name", "value": "Instalis %s" },
-    { "name": "plugin_install_failed", "value": "Instalo malsukcesis: %s" },
-    { "name": "plugin_action_failed", "value": "Ago malsukcesis" },
-    { "name": "plugin_uninstalled", "value": "Malinstalita: %s" },
-    { "name": "plugin_uninstall_failed", "value": "Malinstalo malsukcesis" },
-    { "name": "settings_title", "value": "Agordoj" },
-    { "name": "settings_general", "value": "Ĝeneralaj" },
-    { "name": "settings_start_tab", "value": "Komenca ekrano" },
-    { "name": "settings_personalization", "value": "Personigo" },
-    { "name": "settings_library", "value": "Biblioteko" },
-    { "name": "settings_reader", "value": "Legilo" },
-    { "name": "settings_data", "value": "Datumoj" },
-    { "name": "settings_downloads", "value": "Elŝutoj" },
-    { "name": "settings_browse", "value": "Foliumi" },
-    { "name": "settings_advanced", "value": "Altnivelaj" },
-    { "name": "settings_about", "value": "Pri" },
-    { "name": "settings_tab_library", "value": "Biblioteko" },
-    { "name": "settings_tab_updates", "value": "Ĝisdatigoj" },
-    { "name": "settings_tab_history", "value": "Historio" },
-    { "name": "settings_tab_browse", "value": "Foliumi" },
-    { "name": "settings_tab_more", "value": "Pli" },
-    { "name": "advanced_title", "value": "Altnivelaj" },
-    { "name": "advanced_calculating", "value": "Kalkulas…" },
-    { "name": "advanced_storage", "value": "Memoro" },
-    { "name": "advanced_clear_image_cache", "value": "Viŝi bildan kaŝmemoron" },
-    { "name": "advanced_image_cache_cleared", "value": "Bilda kaŝmemoro viŝita" },
-    { "name": "advanced_clear_cookies", "value": "Viŝi kuketojn" },
-    { "name": "advanced_cookies_cleared", "value": "Ĉiuj kuketoj viŝitaj" },
-    { "name": "advanced_backup_restore", "value": "Savkopio kaj restarigo" },
-    { "name": "advanced_export_backup", "value": "Eksporti savkopion" },
-    { "name": "advanced_import_backup", "value": "Importi savkopion" },
-    { "name": "advanced_tracking", "value": "Spurado" },
-    { "name": "advanced_anilist_token", "value": "AniList-ĵetono" },
-    { "name": "advanced_token_title", "value": "AniList-alirĵetono" },
-    { "name": "advanced_token_hint", "value": "Algluu vian alirĵetonon (lasu malplena por viŝi)" },
-    { "name": "advanced_token_not_set", "value": "Ne agordita" },
-    { "name": "advanced_token_set", "value": "Agordita" },
-    { "name": "advanced_token_saved", "value": "Ĵetono konservita" },
-    { "name": "advanced_token_cleared", "value": "Ĵetono viŝita" },
-    { "name": "advanced_backup_exported", "value": "Savkopio eksportita" },
-    { "name": "advanced_export_canceled", "value": "Eksporto nuligita" },
-    { "name": "advanced_export_failed", "value": "Eksporto malsukcesis" },
-    { "name": "advanced_import_canceled", "value": "Importo nuligita" },
-    { "name": "advanced_backup_invalid", "value": "Nevalida savkopia dosiero" },
-    { "name": "advanced_restored_manga", "value": "Restarigis %d mangaajn" },
-    { "name": "advanced_import_failed", "value": "Importo malsukcesis" },
-    { "name": "about_title", "value": "Pri" },
-    { "name": "about_version", "value": "Versio 1.0.0" },
-    { "name": "about_desc", "value": "Arkitekturo inspirita de Mihon (Apache-2.0). Retaj fontoj instaliĝas dinamike kiel etendaĵoj, dum lokaj fontoj estas enkonstruitaj." },
-    { "name": "about_ack", "value": "Agnoskoj pri malfermita kodo:\n· Mihon / Tachiyomi — aplika arkitekturo kaj interaga dezajno (Apache-2.0)\n· Material Symbols — en-aplikaj piktogramoj (Apache-2.0)\n· MangaDex — testa datumfonto" },
-    { "name": "browse_set_title", "value": "Foliumi" },
-    { "name": "browse_set_content", "value": "Enhavo" },
-    { "name": "browse_set_show_nsfw", "value": "Montri NSFW-fontojn" },
-    { "name": "browse_set_nsfw_hint", "value": "Kiam ŝaltite, fontoj markitaj NSFW de etendaĵoj aperos en Foliumi" },
-    { "name": "dl_set_title", "value": "Elŝutoj" },
-    { "name": "dl_set_network", "value": "Reto" },
-    { "name": "dl_set_wifi_only", "value": "Elŝuti nur per Wi-Fi" },
-    { "name": "dl_set_wifi_only_hint", "value": "Noto: ĉi tiu ŝaltilo estas lokokupilo en la nuna versio; detekto de reta tipo venos en estonta eldono" },
-    { "name": "lib_set_title", "value": "Biblioteko" },
-    { "name": "lib_set_sort_group", "value": "Filtri kaj ordigi" },
-    { "name": "lib_set_sort_default", "value": "Defaŭlta ordo" },
-    { "name": "lib_set_sort_title", "value": "Titolo" },
-    { "name": "lib_set_sort_last_update", "value": "Lasta ĉapitro" },
-    { "name": "lib_set_sort_added", "value": "Aldona dato" },
-    { "name": "lib_set_sort_unread", "value": "Nelegita nombro" },
-    { "name": "lib_set_sort_asc", "value": "Ordigi laŭ titolo kreskante" },
-    { "name": "lib_set_filter_default", "value": "Defaŭlta filtrilo" },
-    { "name": "lib_set_filter_unread", "value": "Nelegitaj" },
-    { "name": "lib_set_filter_downloaded", "value": "Elŝutitaj" },
-    { "name": "lib_set_filter_uncompleted", "value": "Nefinitaj" },
-    { "name": "lib_set_display_group", "value": "Montrado" },
-    { "name": "lib_set_view_default", "value": "Defaŭlta vido" },
-    { "name": "lib_set_view_grid", "value": "Krado" },
-    { "name": "lib_set_view_cover", "value": "Kovrila krado" },
-    { "name": "lib_set_view_list", "value": "Listo" },
-    { "name": "lib_set_grid_cols", "value": "Kradaj kolumnoj" },
-    { "name": "lib_set_cols_auto", "value": "Aŭtomata" },
-    { "name": "lib_set_cols_2", "value": "2 kolumnoj" },
-    { "name": "lib_set_cols_3", "value": "3 kolumnoj" },
-    { "name": "lib_set_cols_4", "value": "4 kolumnoj" },
-    { "name": "lib_set_unread_badge", "value": "Nelegitaj insignoj" },
-    { "name": "lib_set_download_badge", "value": "Elŝutaj insignoj" },
-    { "name": "reader_set_title", "value": "Legilo" },
-    { "name": "reader_set_mode_group", "value": "Lega reĝimo" },
-    { "name": "reader_set_mode_default", "value": "Defaŭlta reĝimo" },
-    { "name": "reader_set_mode_ltr", "value": "Maldekstre dekstren" },
-    { "name": "reader_set_mode_rtl", "value": "Dekstre maldekstren" },
-    { "name": "reader_set_mode_vertical", "value": "Vertikala paĝigo" },
-    { "name": "reader_set_mode_webtoon", "value": "Guldraĵo" },
-    { "name": "reader_set_dual_page", "value": "Duopa paĝo (horizontala)" },
-    { "name": "reader_set_display_group", "value": "Montrado" },
-    { "name": "reader_set_show_page_number", "value": "Montri paĝnumeron" },
-    { "name": "reader_set_bg_color", "value": "Legila fono" },
-    { "name": "reader_set_theme_follow", "value": "Sekvi etoson" },
-    { "name": "reader_set_theme_white", "value": "Blanka" },
-    { "name": "reader_set_theme_black", "value": "Nigra" },
-    { "name": "reader_set_theme_gray", "value": "Griza" },
-    { "name": "reader_set_reset_brightness", "value": "Restarigi legilan helecon" },
-    { "name": "reader_set_brightness_reset", "value": "Heleco agordita por sekvi la sistemon" },
-    { "name": "browse_tab_sources", "value": "Fontoj" },
-    { "name": "browse_tab_extensions", "value": "Etendaĵoj" },
-    { "name": "browse_tab_migrate", "value": "Migri" },
-    { "name": "browse_pin", "value": "Alpingli" },
-    { "name": "browse_unpin", "value": "Malpingli" },
-    { "name": "browse_disable_source", "value": "Malebligi fonton" },
-    { "name": "browse_source_disabled", "value": "Fonto malebligita" },
-    { "name": "browse_pinned", "value": "Alpinglita" },
-    { "name": "browse_sources_empty", "value": "Neniu fonto havebla. Instalu el la langeto Etendaĵoj" },
-    { "name": "browse_filter_langs", "value": "Filtri lingvojn" },
-    { "name": "browse_filter_all", "value": "Ĉio" },
-    { "name": "browse_source_missing", "value": "Fonto ne havebla. La etendaĵo eble estas malebligita" },
-    { "name": "global_search_hint", "value": "Serĉi en ĉiuj fontoj" },
-    { "name": "global_search_failed", "value": "Serĉo malsukcesis" },
-    { "name": "ext_search_hint", "value": "Serĉi etendaĵojn" },
-    { "name": "ext_search_no_match", "value": "Neniu trefo" },
-    { "name": "ext_repo_settings", "value": "Agordoj de deponejo" },
-    { "name": "ext_refresh_repo", "value": "Aktualigi deponejon" },
-    { "name": "migrate_pick_source", "value": "Elektu fonton por migri" },
-    { "name": "migrate_empty_library", "value": "Biblioteko estas malplena" },
-    { "name": "migrate_select_all", "value": "Elekti ĉion" },
-    { "name": "migrate_deselect_all", "value": "Malelekti ĉion" },
-    { "name": "migrate_action", "value": "Migri (%d)" },
-    { "name": "migrate_title", "value": "Migri" },
-    { "name": "migrate_skip", "value": "Preterpasi" },
-    { "name": "migrate_progress", "value": "%d el %d" },
-    { "name": "migrate_target_source", "value": "Cela fonto" },
-    { "name": "migrate_search_hint", "value": "Serĉi mangaon en la cela fonto" },
-    { "name": "migrate_confirm_title", "value": "Ĉu migri al ĉi tiu mangao?" },
-    { "name": "migrate_item_done", "value": "Migris: %s" },
-    { "name": "migrate_failed", "value": "Migrado malsukcesis: %s" },
-    { "name": "migrate_done", "value": "Migrado finite" },
-    { "name": "migrate_no_target", "value": "Neniu cela fonto havebla" },
-    { "name": "stats_title", "value": "Statistikoj" },
-    { "name": "stats_overview_section", "value": "Superrigardo" },
-    { "name": "stats_in_library", "value": "En biblioteko" },
-    { "name": "stats_read_duration", "value": "Daŭro de legado" },
-    { "name": "stats_completed_titles", "value": "Finita" },
-    { "name": "stats_titles_section", "value": "Verkoj" },
-    { "name": "stats_started_titles", "value": "Komencita" },
-    { "name": "stats_local_titles", "value": "Loka" },
-    { "name": "stats_chapters_section", "value": "Ĉapitroj" },
-    { "name": "stats_total_chapters", "value": "Summe" },
-    { "name": "stats_read_chapters", "value": "Legita" },
-    { "name": "stats_downloaded_chapters", "value": "Elŝutita" },
-    { "name": "stats_tracker_section", "value": "Spuriloj" },
-    { "name": "stats_tracked_titles", "value": "Spuritaj verkoj" },
-    { "name": "stats_mean_score", "value": "Meza poentaro" },
-    { "name": "stats_used", "value": "Uzata" },
-    { "name": "stats_not_applicable", "value": "mankas" },
-    { "name": "stats_week", "value": "Semajno" },
-    { "name": "stats_month", "value": "Monato" },
-    { "name": "stats_week_total", "value": "%s ĉi-semajne" },
-    { "name": "stats_month_total", "value": "%s ĉi-monate" },
-    { "name": "stats_no_reading", "value": "Neniu legado en ĉi tiu periodo" },
-    { "name": "stats_day_short", "value": "%dt" },
-    { "name": "stats_hour_short", "value": "%dh" },
-    { "name": "stats_minute_short", "value": "%dm" },
-    { "name": "stats_second_short", "value": "%ds" },
-    { "name": "stats_wd_sun", "value": "di" },
-    { "name": "stats_wd_mon", "value": "lu" },
-    { "name": "stats_wd_tue", "value": "ma" },
-    { "name": "stats_wd_wed", "value": "me" },
-    { "name": "stats_wd_thu", "value": "ĵa" },
-    { "name": "stats_wd_fri", "value": "ve" },
-    { "name": "stats_wd_sat", "value": "sa" },
-    { "name": "reader_mode_vertical", "value": "Vertikala" },
-    { "name": "reader_mode_smart_grip", "value": "Lerta teno" },
-    { "name": "reader_orientation_lock_portrait", "value": "Ŝlosi vertikale" },
-    { "name": "reader_orientation_lock_landscape", "value": "Ŝlosi horizontale" },
-    { "name": "reader_tab_general", "value": "Ĝeneralaj" },
-    { "name": "reader_tab_filter", "value": "Kolorfiltrilo" },
-    { "name": "reader_filter_grayscale", "value": "Grizoskalo" },
-    { "name": "reader_filter_invert", "value": "Inversaj koloroj" },
-    { "name": "reader_filter_contrast", "value": "Kontrasto" },
-    { "name": "reader_filter_saturation", "value": "Satureco" },
-    { "name": "reader_crop_borders", "value": "Stuci randojn" },
-    { "name": "reader_nav_tap_zones", "value": "Frapzonoj" },
-    { "name": "reader_nav_default", "value": "Defaŭlta" },
-    { "name": "reader_nav_ltr", "value": "Maldekstre dekstren" },
-    { "name": "reader_nav_rtl", "value": "Dekstre maldekstren" },
-    { "name": "reader_nav_vertical", "value": "Vertikala" },
-    { "name": "reader_nav_edge", "value": "Rando" },
-    { "name": "reader_nav_none", "value": "Neniu" },
-    { "name": "reader_dual_page", "value": "Duopa paĝo" },
-    { "name": "reader_webtoon_padding", "value": "Flanka plenigo de guldraĵo" },
-    { "name": "reader_set_mode_smart_grip", "value": "Lerta teno" },
-    { "name": "ext_install_local", "value": "Instali loke" },
-    { "name": "ext_detail_title", "value": "Informoj pri etendaĵo" },
-    { "name": "ext_info_version", "value": "Versio" },
-    { "name": "ext_info_language", "value": "Lingvo" },
-    { "name": "ext_uninstall_title", "value": "Malinstali etendaĵon" },
-    { "name": "ext_uninstall_msg", "value": "Ĉu malinstali etendaĵon „%s“? La mangao en la biblioteko konserviĝos" },
-    { "name": "ext_detail_sources", "value": "Fontoj" },
-    { "name": "ext_detail_settings", "value": "Agordoj" },
-    { "name": "ext_pref_loading", "value": "Ŝargas…" },
-    { "name": "ext_pref_failed", "value": "Apliko de agordoj malsukcesis" },
-    { "name": "ext_detail_missing", "value": "Etendaĵo mankas aŭ ne estas ŝargita" },
-    { "name": "action_filter", "value": "Filtrilo" },
-    { "name": "action_update_library", "value": "Ĝisdatigi bibliotekon" },
-    { "name": "action_update_category", "value": "Ĝisdatigi kategorion" },
-    { "name": "action_open_random_manga", "value": "Malfermi hazardan verkon" },
-    { "name": "action_select_all", "value": "Elekti ĉion" },
-    { "name": "action_select_inverse", "value": "Inversigi elekton" },
-    { "name": "action_move_category", "value": "Movi al kategorio" },
-    { "name": "action_mark_as_read", "value": "Marki kiel legita" },
-    { "name": "action_mark_as_unread", "value": "Marki kiel nelegita" },
-    { "name": "action_download", "value": "Elŝuti" },
-    { "name": "action_delete", "value": "Forigi" },
-    { "name": "action_migrate", "value": "Migri" },
-    { "name": "action_remove_from_library", "value": "Forigi el biblioteko" },
-    { "name": "action_remove_from_library_msg", "value": "Ĉu forigi la elektitajn %d mangaojn el la biblioteko?" },
-    { "name": "action_download_queued", "value": "Aldoniĝis %d elŝutaj taskoj" },
-    { "name": "library_search_hint", "value": "Serĉi en biblioteko" },
-    { "name": "library_no_match", "value": "Neniu kongrua mangao" },
-    { "name": "lib_sheet_tab_filter", "value": "Filtrilo" },
-    { "name": "lib_sheet_tab_sort", "value": "Ordigo" },
-    { "name": "lib_sheet_tab_display", "value": "Montrado" },
-    { "name": "lib_filter_downloaded", "value": "Elŝutitaj" },
-    { "name": "lib_filter_unread", "value": "Nelegitaj" },
-    { "name": "lib_filter_started", "value": "Komencitaj" },
-    { "name": "lib_filter_bookmarked", "value": "Legosignita" },
-    { "name": "lib_filter_completed", "value": "Finita" },
-    { "name": "lib_filter_tracked", "value": "Spurate" },
-    { "name": "lib_sort_alpha", "value": "Titolo" },
-    { "name": "lib_sort_total", "value": "Nombro de ĉapitroj" },
-    { "name": "lib_sort_last_read", "value": "Lasta legado" },
-    { "name": "lib_sort_last_update", "value": "Tempo de kontrolo de ĝisdatigo" },
-    { "name": "lib_sort_unread", "value": "Nelegita nombro" },
-    { "name": "lib_sort_latest_chapter", "value": "Tempo de ĝisdatigo de verko" },
-    { "name": "lib_sort_fetch_date", "value": "Tempo de ricevo de ĉapitroj" },
-    { "name": "lib_sort_date_added", "value": "Aldona dato" },
-    { "name": "lib_sort_random", "value": "Hazarde" },
-    { "name": "lib_display_compact", "value": "Kompakta krado" },
-    { "name": "lib_display_comfortable", "value": "Komforta krado" },
-    { "name": "lib_display_cover", "value": "Kovrila krado" },
-    { "name": "lib_display_list", "value": "Listo" },
-    { "name": "lib_display_grid_size", "value": "Nombro en vico" },
-    { "name": "lib_display_grid_auto", "value": "Aŭtomata" },
-    { "name": "lib_display_badges_group", "value": "Insignoj kaj butonoj" },
-    { "name": "lib_badge_downloaded", "value": "Nombro de elŝutitaj ĉapitroj" },
-    { "name": "lib_badge_unread", "value": "Nelegitaj ĉapitroj" },
-    { "name": "lib_badge_local", "value": "Loka fonto" },
-    { "name": "lib_badge_language", "value": "Lingvo" },
-    { "name": "lib_badge_continue", "value": "Butono „Daŭrigi legadon“" },
-    { "name": "lib_display_tabs_group", "value": "Langetoj" },
-    { "name": "lib_show_category_tabs", "value": "Montri kategoriajn langetojn" },
-    { "name": "lib_show_manga_count", "value": "Montri nombron de verkoj" },
-    { "name": "EntryFormAbility_label", "value": "Kartoj de Honyomi" },
-    { "name": "EntryFormAbility_desc", "value": "Provizanto de hejmekranaj kartoj" },
-    { "name": "card_recent_display", "value": "Daŭrigi legadon" },
-    { "name": "card_recent_desc", "value": "Rapide daŭrigi lastatempe legitan mangaon" },
-    { "name": "card_updates_display", "value": "Ĝisdatigoj" },
-    { "name": "card_updates_desc", "value": "Plej novaj nelegitaj ĉapitroj en la biblioteko" },
-    { "name": "card_recent_header", "value": "Daŭrigi legadon" },
-    { "name": "card_updates_header", "value": "Ĝisdatigoj" },
-    { "name": "card_unread_count", "value": "%d nelegitaj ĉapitroj" },
-    { "name": "card_empty_recent", "value": "Ankoraŭ neniu legado-historio" },
-    { "name": "card_empty_updates", "value": "Neniuj nelegitaj ĉapitroj" },
-    { "name": "card_open_hint", "value": "Frapu por malfermi la aplikaĵon" },
-    { "name": "card_manga_display", "value": "Mangaokarto" },
-    { "name": "card_manga_desc", "value": "Aldonu el la detala paĝo; la kovrilo malfermas legadon" },
-    { "name": "card_manga_empty", "value": "Aldonu el la detala paĝo de la mangao" },
-    { "name": "detail_add_to_desktop", "value": "Aldoni al hejmekrano" },
-    { "name": "detail_card_added", "value": "Aldonita al la hejmekrano" },
-    { "name": "detail_card_add_failed", "value": "Aldono de karto malsukcesis" },
-    { "name": "card_stats_week_display", "value": "Semajna statistiko" },
-    { "name": "card_stats_week_desc", "value": "Ĉiutaga legado-daŭro ĉi-semajne" },
-    { "name": "card_stats_month_display", "value": "Monata statistiko" },
-    { "name": "card_stats_month_desc", "value": "Ĉiutaga legado-daŭro ĉi-monate" },
-    { "name": "card_stats_empty", "value": "Ankoraŭ neniu legado" },
-    { "name": "action_view_upcoming", "value": "Montri venontajn ĝisdatigojn" },
-    { "name": "label_upcoming", "value": "Venontaj" },
-    { "name": "upcoming_guide", "value": "Gvidilo pri venontaj" },
-    { "name": "upcoming_calendar_prev", "value": "Antaŭa monato" },
-    { "name": "upcoming_calendar_next", "value": "Sekva monato" },
-    { "name": "pref_filter_update_categories_details", "value": "Verkoj, kiuj apartenas kaj al inkluzivitaj kaj al ekskluzivitaj kategorioj, ne montriĝos." },
-    { "name": "relative_time_today", "value": "Hodiaŭ" },
-    { "name": "relative_time_days_ago", "value": "Antaŭ %d tagoj" },
-    { "name": "upcoming_relative_time_days", "value": "Post %d tagoj" },
-    { "name": "card_upcoming_display", "value": "Venontaj" },
-    { "name": "card_upcoming_desc", "value": "Kalendaro de atendataj ĝisdatigoj de biblioteka mangao" },
-    { "name": "card_upcoming_header", "value": "Venontaj" },
-    { "name": "card_empty_upcoming", "value": "Neniu daŭranta mangao en la biblioteko" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Filtras ĉiujn elementojn en via biblioteko"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Paŭzigas legadan historion"
+    },
+    {
+      "name": "more_support",
+      "value": "Subtenu nin"
+    },
+    {
+      "name": "more_help",
+      "value": "Helpo"
+    },
+    {
+      "name": "support_perks",
+      "value": "Donacantoj ricevas aliron al ekskluzivaj kanaloj, kaj pli da avantaĝoj poste."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (preferata)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon estas nun finance subtenata de %d+ patronoj. Ni volas danki ĉiun el vi. Ni plibonigu Mihon eĉ pli kune."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "Por alternativaj opcioj aŭ iaj ajn rilataj demandoj, aniĝu al nia Discord-servilo."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "Datumoj kaj konservejo"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Konserveja loko"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Uzata por aŭtomataj savkopioj, ĉapitraj elŝutoj kaj lokaj fontoj."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "Savkopii kaj restaŭri"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Krei savkopion"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Restaŭri savkopion"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Ofteco de aŭtomata savkopio"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "Vi konservu kopiojn de savkopioj ankaŭ en aliaj lokoj. Savkopioj povas enhavi konfidencajn datumojn inkluzive konservitajn pasvortojn; atentu se vi konigos ilin."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Lasta aŭtomata ĝisdatigo: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Konserveja uzo"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Disponebla: %s / Tuta: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Viŝi ĉapitran kaŝmemoron"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Uzata: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Kaŝmemoro viŝita, %d dosieroj forigitaj"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Eraro okazis dum viŝado"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Viŝi ĉapitran kaŝmemoron je apa lanĉo"
+    },
+    {
+      "name": "data_export",
+      "value": "Eksporti"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Biblioteka listo"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Biblioteko eksportita"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Elekti datumojn por inkluzivi"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Titolo"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Aŭtoro"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "Malŝaltita"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "Ĉiun 6-an horon"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "Ĉiun 12-an horon"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "Ĉiutage"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "Ĉiun 2-an tagon"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "Ĉiusemajne"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "Bone"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Nuligi"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Konfirmi"
+    },
+    {
+      "name": "common_delete",
+      "value": "Forigi"
+    },
+    {
+      "name": "common_retry",
+      "value": "Reprovi"
+    },
+    {
+      "name": "common_search",
+      "value": "Serĉi"
+    },
+    {
+      "name": "common_all",
+      "value": "Ĉio"
+    },
+    {
+      "name": "common_close",
+      "value": "Fermi"
+    },
+    {
+      "name": "common_save",
+      "value": "Konservi"
+    },
+    {
+      "name": "common_install",
+      "value": "Instali"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "Malinstali"
+    },
+    {
+      "name": "common_update",
+      "value": "Ĝisdatigi"
+    },
+    {
+      "name": "common_none",
+      "value": "Neniu"
+    },
+    {
+      "name": "common_default",
+      "value": "Defaŭlta"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Aspekto"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Lingvo"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Sekvi la sistemon"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Etosa reĝimo"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Sekvi la sistemon"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Hela"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Malhela"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Emfaza koloro"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Aliaj"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED pure nigra fono"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Blua"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "Verda"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Rozkolora"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Purpura"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "Oranĝa"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "antaŭ %d min"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "antaŭ %d h"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "antaŭ %d t"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "Daŭranta"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Finita"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "Paŭzanta"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Nuligita"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Eldonado finita"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Nekonata"
+    },
+    {
+      "name": "tab_library",
+      "value": "Biblioteko"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Ĝisdatigoj"
+    },
+    {
+      "name": "tab_history",
+      "value": "Historio"
+    },
+    {
+      "name": "tab_browse",
+      "value": "Foliumi"
+    },
+    {
+      "name": "tab_more",
+      "value": "Pli"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "Atendante konfirmon…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "Konfirmo finita"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "Homa konfirmo"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "Farita"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "Konfirma rezulto konservita"
+    },
+    {
+      "name": "more_title",
+      "value": "Pli"
+    },
+    {
+      "name": "more_version",
+      "value": "Versio %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Nur elŝutitaj"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Inkognita reĝimo"
+    },
+    {
+      "name": "more_downloads",
+      "value": "Elŝutvico"
+    },
+    {
+      "name": "more_categories",
+      "value": "Kategorioj"
+    },
+    {
+      "name": "more_settings",
+      "value": "Agordoj"
+    },
+    {
+      "name": "more_about",
+      "value": "Pri"
+    },
+    {
+      "name": "more_plugins",
+      "value": "Etendaĵoj"
+    },
+    {
+      "name": "categories_title",
+      "value": "Kategorioj"
+    },
+    {
+      "name": "categories_add",
+      "value": "Nova kategorio"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "Kategoria nomo"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "Alinomi kategorion"
+    },
+    {
+      "name": "categories_rename",
+      "value": "Alinomi"
+    },
+    {
+      "name": "categories_hint",
+      "value": "Longpremu kategorion por alinomi aŭ forigi ĝin; mangao en forigita kategorio revenas al Defaŭlta"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "Elekti kategorion"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "Ŝargas…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "Malsukcesis ŝargi bildon"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "Frapu por reprovi"
+    },
+    {
+      "name": "library_title",
+      "value": "Biblioteko"
+    },
+    {
+      "name": "library_empty",
+      "value": "Via biblioteko estas malplena, foliumu por aldoni mangaon"
+    },
+    {
+      "name": "library_new_category",
+      "value": "Nova kategorio"
+    },
+    {
+      "name": "library_category_name",
+      "value": "Kategoria nomo"
+    },
+    {
+      "name": "updates_title",
+      "value": "Ĝisdatigoj"
+    },
+    {
+      "name": "updates_empty",
+      "value": "Neniuj lastatempaj ĝisdatigoj"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%d novaj ĉapitroj trovitaj"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "Neniuj novaj ĉapitroj"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "Aktualigo malsukcesis"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "Aktualigas…"
+    },
+    {
+      "name": "history_title",
+      "value": "Historio"
+    },
+    {
+      "name": "history_clear",
+      "value": "Viŝi"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "Ĉu konfirmi viŝon?"
+    },
+    {
+      "name": "history_empty",
+      "value": "Ankoraŭ neniu lega historio"
+    },
+    {
+      "name": "history_cleared",
+      "value": "Historio viŝita"
+    },
+    {
+      "name": "history_continue",
+      "value": "Daŭrigi"
+    },
+    {
+      "name": "browse_title",
+      "value": "Foliumi"
+    },
+    {
+      "name": "browse_import",
+      "value": "Importi"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "Kromprogramoj"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "Loka mangao"
+    },
+    {
+      "name": "browse_popular",
+      "value": "Popularaj"
+    },
+    {
+      "name": "browse_latest",
+      "value": "Lastaj"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "Serĉi mangaon…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "Neniu mangao trovita"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "Ankoraŭ neniu loka mangao, frapu Importi por aldoni"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "Ŝargo malsukcesis: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "Serĉo malsukcesis: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "Malsukcesis ŝargi pli"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "Malsukcesis malfermi detalojn"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "Malsukcesis elekti dosierojn"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "Importi %d dosierojn"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "Mangaonomo"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "Bonvolu enigi nomon"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "Importis %d dosierojn"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "Importo malsukcesis: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "Elŝutoj"
+    },
+    {
+      "name": "download_resume",
+      "value": "Daŭrigi"
+    },
+    {
+      "name": "download_pause",
+      "value": "Paŭzigi"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "Viŝi finitajn"
+    },
+    {
+      "name": "download_queue",
+      "value": "Elŝuta vico"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "En vico"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "Elŝutas"
+    },
+    {
+      "name": "download_state_done",
+      "value": "Farita"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "Malsukcesis"
+    },
+    {
+      "name": "download_move_top",
+      "value": "Movi supren"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "Movi malsupren"
+    },
+    {
+      "name": "download_deleted",
+      "value": "Forigita"
+    },
+    {
+      "name": "download_empty",
+      "value": "Ankoraŭ neniuj elŝutoj"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "Elŝutita"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d ĉapitroj"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "Neniuj ĉapitroj"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "Sinkronigo malsukcesis, montras lokajn datumojn"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "Aldonita al biblioteko"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "Forigita el biblioteko"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "Ĉiuj ĉapitroj markitaj kiel legitaj"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "Aldonita al elŝuta vico"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "Bonvolu unue agordi vian AniList-ĵetonon"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "Serĉi AniList"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "Mangaotitolo"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "Neniuj serĉrezultoj"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "AniList-serĉo malsukcesis"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "Ligita al AniList"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "Malligita de AniList"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "Progreso sinkronigita al ĉapitro %d"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "AniList-sinkronigo malsukcesis"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "Loka"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "En biblioteko"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "Aldoni al biblioteko"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "Daŭrigi legadon"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "Komenci legadon"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "Ankoraŭ neniuj ĉapitroj"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "Faldi"
+    },
+    {
+      "name": "detail_expand",
+      "value": "Malfaldi"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList-spurado"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList-ĵetono ankoraŭ ne agordita"
+    },
+    {
+      "name": "detail_searching",
+      "value": "Serĉas…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "Serĉi kaj ligi"
+    },
+    {
+      "name": "detail_bind",
+      "value": "Ligi"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "Sinkronigita al ĉapitro %d"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "Sinkronigi progreson"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "Malligi"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "Ĉapitroj (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "Kreskante"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "Malkreskante"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "Marki ĉion legita"
+    },
+    {
+      "name": "detail_read",
+      "value": "Legita"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "Elŝutita"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "En vico"
+    },
+    {
+      "name": "detail_download",
+      "value": "Elŝuti"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "Ĉapitro ne trovita"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "Ŝargo malsukcesis: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "Maldekstre dekstren"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "Dekstre maldekstren"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Guldraĵo"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "Lega reĝimo"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "Libera"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "Vertikala"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "Horizontala"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "Ekrana orientiĝo"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "Jam ĉe la lasta ĉapitro"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "Jam ĉe la unua ĉapitro"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "Jam ĉe la unua paĝo"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "Jam ĉe la lasta paĝo"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "Ŝargas ĉapitron…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "Legilaj agordoj"
+    },
+    {
+      "name": "reader_background",
+      "value": "Fono"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Aŭtomata"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "Blanka"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "Griza"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "Nigra"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "Montri paĝnumeron"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "Heleco"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Aŭtomata"
+    },
+    {
+      "name": "plugin_title",
+      "value": "Etendaĵoj"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "Instalitaj"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "Ankoraŭ neniuj etendaĵoj, instalu sube"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "Malebligitaj etendaĵoj povas esti reebligitaj iam ajn"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "Ĝisdata"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "Instali el dosiero"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "Elektu dosieron por instali"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "Prilaboras…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "Subtenas .honyomiplug / .zip kromprogramajn pakaĵojn"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "Reta deponejo"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "Agordi deponejon"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "Aktualigi"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "Ankoraŭ neniu kromprograma deponejo agordita"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "Ŝargas deponejon…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "URL de kromprograma deponejo"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "Enigu la URL de la kromprograma deponejo"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "Malsukcesis ŝargi deponejon: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "Malsukcesis elekti dosieron"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "Instalita: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "Instalis %s"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "Instalo malsukcesis: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "Ago malsukcesis"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "Malinstalita: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "Malinstalo malsukcesis"
+    },
+    {
+      "name": "settings_title",
+      "value": "Agordoj"
+    },
+    {
+      "name": "settings_general",
+      "value": "Ĝeneralaj"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Komenca ekrano"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "Personigo"
+    },
+    {
+      "name": "settings_library",
+      "value": "Biblioteko"
+    },
+    {
+      "name": "settings_reader",
+      "value": "Legilo"
+    },
+    {
+      "name": "settings_data",
+      "value": "Datumoj"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Elŝutoj"
+    },
+    {
+      "name": "settings_browse",
+      "value": "Foliumi"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Altnivelaj"
+    },
+    {
+      "name": "settings_about",
+      "value": "Pri"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "Biblioteko"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Ĝisdatigoj"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "Historio"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "Foliumi"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "Pli"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Altnivelaj"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "Kalkulas…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "Memoro"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "Viŝi bildan kaŝmemoron"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "Bilda kaŝmemoro viŝita"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "Viŝi kuketojn"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "Ĉiuj kuketoj viŝitaj"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "Savkopio kaj restarigo"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "Eksporti savkopion"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "Importi savkopion"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "Spurado"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList-ĵetono"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList-alirĵetono"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "Algluu vian alirĵetonon (lasu malplena por viŝi)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "Ne agordita"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "Agordita"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "Ĵetono konservita"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "Ĵetono viŝita"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "Savkopio eksportita"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "Eksporto nuligita"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "Eksporto malsukcesis"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "Importo nuligita"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "Nevalida savkopia dosiero"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "Restarigis %d mangaajn"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "Importo malsukcesis"
+    },
+    {
+      "name": "about_title",
+      "value": "Pri"
+    },
+    {
+      "name": "about_version",
+      "value": "Versio 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "Arkitekturo inspirita de Mihon (Apache-2.0). Retaj fontoj instaliĝas dinamike kiel etendaĵoj, dum lokaj fontoj estas enkonstruitaj."
+    },
+    {
+      "name": "about_ack",
+      "value": "Agnoskoj pri malfermita kodo:\n· Mihon / Tachiyomi — aplika arkitekturo kaj interaga dezajno (Apache-2.0)\n· Material Symbols — en-aplikaj piktogramoj (Apache-2.0)\n· MangaDex — testa datumfonto"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "Foliumi"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "Enhavo"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "Montri NSFW-fontojn"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "Kiam ŝaltite, fontoj markitaj NSFW de etendaĵoj aperos en Foliumi"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Elŝutoj"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Reto"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Elŝuti nur per Wi-Fi"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "Noto: ĉi tiu ŝaltilo estas lokokupilo en la nuna versio; detekto de reta tipo venos en estonta eldono"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "Biblioteko"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "Filtri kaj ordigi"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "Defaŭlta ordo"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "Titolo"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "Lasta ĉapitro"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "Aldona dato"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "Nelegita nombro"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "Ordigi laŭ titolo kreskante"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "Defaŭlta filtrilo"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "Nelegitaj"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "Elŝutitaj"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "Nefinitaj"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Montrado"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "Defaŭlta vido"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "Krado"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "Kovrila krado"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "Listo"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "Kradaj kolumnoj"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "Aŭtomata"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 kolumnoj"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 kolumnoj"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 kolumnoj"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "Nelegitaj insignoj"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "Elŝutaj insignoj"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "Legilo"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "Lega reĝimo"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "Defaŭlta reĝimo"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "Maldekstre dekstren"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "Dekstre maldekstren"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "Vertikala paĝigo"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Guldraĵo"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "Duopa paĝo (horizontala)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Montrado"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "Montri paĝnumeron"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "Legila fono"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "Sekvi etoson"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "Blanka"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "Nigra"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "Griza"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "Restarigi legilan helecon"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "Heleco agordita por sekvi la sistemon"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "Fontoj"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "Etendaĵoj"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "Migri"
+    },
+    {
+      "name": "browse_pin",
+      "value": "Alpingli"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "Malpingli"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "Malebligi fonton"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "Fonto malebligita"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "Alpinglita"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "Neniu fonto havebla. Instalu el la langeto Etendaĵoj"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "Filtri lingvojn"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "Ĉio"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "Fonto ne havebla. La etendaĵo eble estas malebligita"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "Serĉi en ĉiuj fontoj"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "Serĉo malsukcesis"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "Serĉi etendaĵojn"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "Neniu trefo"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "Agordoj de deponejo"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "Aktualigi deponejon"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "Elektu fonton por migri"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "Biblioteko estas malplena"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "Elekti ĉion"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "Malelekti ĉion"
+    },
+    {
+      "name": "migrate_action",
+      "value": "Migri (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "Migri"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "Preterpasi"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d el %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "Cela fonto"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "Serĉi mangaon en la cela fonto"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "Ĉu migri al ĉi tiu mangao?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "Migris: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "Migrado malsukcesis: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "Migrado finite"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "Neniu cela fonto havebla"
+    },
+    {
+      "name": "stats_title",
+      "value": "Statistikoj"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "Superrigardo"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "En biblioteko"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "Daŭro de legado"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "Finita"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "Verkoj"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "Komencita"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "Loka"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "Ĉapitroj"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "Summe"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "Legita"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "Elŝutita"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "Spuriloj"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "Spuritaj verkoj"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "Meza poentaro"
+    },
+    {
+      "name": "stats_used",
+      "value": "Uzata"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "mankas"
+    },
+    {
+      "name": "stats_week",
+      "value": "Semajno"
+    },
+    {
+      "name": "stats_month",
+      "value": "Monato"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "%s ĉi-semajne"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "%s ĉi-monate"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "Neniu legado en ĉi tiu periodo"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%dt"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dh"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dm"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%ds"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "di"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "lu"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "ma"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "me"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "ĵa"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "ve"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "sa"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "Vertikala"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "Lerta teno"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "Ŝlosi vertikale"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "Ŝlosi horizontale"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "Ĝeneralaj"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "Kolorfiltrilo"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "Grizoskalo"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "Inversaj koloroj"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "Kontrasto"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "Satureco"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "Stuci randojn"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "Frapzonoj"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "Defaŭlta"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "Maldekstre dekstren"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "Dekstre maldekstren"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "Vertikala"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "Rando"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "Neniu"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Duopa paĝo"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "Flanka plenigo de guldraĵo"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "Lerta teno"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "Instali loke"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "Informoj pri etendaĵo"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "Versio"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "Lingvo"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "Malinstali etendaĵon"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "Ĉu malinstali etendaĵon „%s“? La mangao en la biblioteko konserviĝos"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "Fontoj"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "Agordoj"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "Ŝargas…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "Apliko de agordoj malsukcesis"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "Etendaĵo mankas aŭ ne estas ŝargita"
+    },
+    {
+      "name": "action_filter",
+      "value": "Filtrilo"
+    },
+    {
+      "name": "action_update_library",
+      "value": "Ĝisdatigi bibliotekon"
+    },
+    {
+      "name": "action_update_category",
+      "value": "Ĝisdatigi kategorion"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "Malfermi hazardan verkon"
+    },
+    {
+      "name": "action_select_all",
+      "value": "Elekti ĉion"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "Inversigi elekton"
+    },
+    {
+      "name": "action_move_category",
+      "value": "Movi al kategorio"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "Marki kiel legita"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "Marki kiel nelegita"
+    },
+    {
+      "name": "action_download",
+      "value": "Elŝuti"
+    },
+    {
+      "name": "action_delete",
+      "value": "Forigi"
+    },
+    {
+      "name": "action_migrate",
+      "value": "Migri"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "Forigi el biblioteko"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "Ĉu forigi la elektitajn %d mangaojn el la biblioteko?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "Aldoniĝis %d elŝutaj taskoj"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "Serĉi en biblioteko"
+    },
+    {
+      "name": "library_no_match",
+      "value": "Neniu kongrua mangao"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "Filtrilo"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "Ordigo"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "Montrado"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "Elŝutitaj"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "Nelegitaj"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "Komencitaj"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "Legosignita"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "Finita"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "Spurate"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "Titolo"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "Nombro de ĉapitroj"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "Lasta legado"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "Tempo de kontrolo de ĝisdatigo"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "Nelegita nombro"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "Tempo de ĝisdatigo de verko"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "Tempo de ricevo de ĉapitroj"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "Aldona dato"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "Hazarde"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "Kompakta krado"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "Komforta krado"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "Kovrila krado"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "Listo"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "Nombro en vico"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "Aŭtomata"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "Insignoj kaj butonoj"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "Nombro de elŝutitaj ĉapitroj"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "Nelegitaj ĉapitroj"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "Loka fonto"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "Lingvo"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "Butono „Daŭrigi legadon“"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "Langetoj"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "Montri kategoriajn langetojn"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "Montri nombron de verkoj"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "Kartoj de Honyomi"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "Provizanto de hejmekranaj kartoj"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "Daŭrigi legadon"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "Rapide daŭrigi lastatempe legitan mangaon"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "Ĝisdatigoj"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "Plej novaj nelegitaj ĉapitroj en la biblioteko"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "Daŭrigi legadon"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "Ĝisdatigoj"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d nelegitaj ĉapitroj"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "Ankoraŭ neniu legado-historio"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "Neniuj nelegitaj ĉapitroj"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "Frapu por malfermi la aplikaĵon"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "Mangaokarto"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "Aldonu el la detala paĝo; la kovrilo malfermas legadon"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "Aldonu el la detala paĝo de la mangao"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "Aldoni al hejmekrano"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "Aldonita al la hejmekrano"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "Aldono de karto malsukcesis"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "Semajna statistiko"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "Ĉiutaga legado-daŭro ĉi-semajne"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "Monata statistiko"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "Ĉiutaga legado-daŭro ĉi-monate"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "Ankoraŭ neniu legado"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "Montri venontajn ĝisdatigojn"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "Venontaj"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "Gvidilo pri venontaj"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "Antaŭa monato"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "Sekva monato"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "Verkoj, kiuj apartenas kaj al inkluzivitaj kaj al ekskluzivitaj kategorioj, ne montriĝos."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "Hodiaŭ"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "Antaŭ %d tagoj"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "Post %d tagoj"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "Venontaj"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "Kalendaro de atendataj ĝisdatigoj de biblioteka mangao"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "Venontaj"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "Neniu daŭranta mangao en la biblioteko"
+    }
+  ]
 }

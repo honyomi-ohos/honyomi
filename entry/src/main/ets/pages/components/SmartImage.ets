@@ -21,34 +21,6 @@ export struct SmartImage {
     this.resolve();
   }
 
-  private onUrlChanged(): void {
-    this.resolve();
-  }
-
-  private resolve(): void {
-    const u = this.url;
-    if (u === '' || u === this.resolving) {
-      return;
-    }
-    this.resolving = u;
-    this.display = '';
-    this.failed = false;
-    this.imgReady = false;
-    if (u.indexOf('http://') !== 0 && u.indexOf('https://') !== 0) {
-      this.display = u;
-      return;
-    }
-    ImageCache.resolve(u, this.sourceKey).then((p: string) => {
-      if (this.resolving === u) {
-        this.display = p;
-      }
-    }).catch((_e: Error) => {
-      if (this.resolving === u) {
-        this.failed = true;
-      }
-    });
-  }
-
   @Builder
   failedPlaceholder() {
     Column() {
@@ -104,5 +76,33 @@ export struct SmartImage {
     }
     .width('100%')
     .height(this.fill ? '100%' : 'auto')
+  }
+
+  private onUrlChanged(): void {
+    this.resolve();
+  }
+
+  private resolve(): void {
+    const u = this.url;
+    if (u === '' || u === this.resolving) {
+      return;
+    }
+    this.resolving = u;
+    this.display = '';
+    this.failed = false;
+    this.imgReady = false;
+    if (u.indexOf('http://') !== 0 && u.indexOf('https://') !== 0) {
+      this.display = u;
+      return;
+    }
+    ImageCache.resolve(u, this.sourceKey).then((p: string) => {
+      if (this.resolving === u) {
+        this.display = p;
+      }
+    }).catch((_e: Error) => {
+      if (this.resolving === u) {
+        this.failed = true;
+      }
+    });
   }
 }

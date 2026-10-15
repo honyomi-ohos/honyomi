@@ -15,30 +15,6 @@ export struct TypeBadgedIcon {
   // 角标描边色：传所在行背景色使角标与背景自然衔接（默认 '' 无描边）
   @Prop badgeBorder: ResourceColor = '';
 
-  private badgeChar(): Resource {
-    if (this.contentType === ContentType.NOVEL) {
-      return $r('app.string.badge_type_text');
-    }
-    if (this.contentType === ContentType.VIDEO) {
-      return $r('app.string.badge_type_video');
-    }
-    return $r('app.string.badge_type_manga');
-  }
-
-  private badgeColor(): string {
-    if (this.contentType === ContentType.NOVEL) {
-      return '#2E7D32';
-    }
-    if (this.contentType === ContentType.VIDEO) {
-      return '#E65100';
-    }
-    return '#3949AB';
-  }
-
-  private badgeSize(): number {
-    return Math.max(14, Math.round(this.iconSize * 0.42));
-  }
-
   build() {
     Stack({ alignContent: Alignment.BottomEnd }) {
       if (this.iconPath !== '') {
@@ -77,5 +53,29 @@ export struct TypeBadgedIcon {
     }
     .width(this.iconSize)
     .height(this.iconSize)
+  }
+
+  private badgeChar(): Resource {
+    if (this.contentType === ContentType.NOVEL) {
+      return $r('app.string.badge_type_text');
+    }
+    if (this.contentType === ContentType.VIDEO) {
+      return $r('app.string.badge_type_video');
+    }
+    return $r('app.string.badge_type_manga');
+  }
+
+  private badgeColor(): string {
+    if (this.contentType === ContentType.NOVEL) {
+      return '#2E7D32';
+    }
+    if (this.contentType === ContentType.VIDEO) {
+      return '#E65100';
+    }
+    return '#3949AB';
+  }
+
+  private badgeSize(): number {
+    return Math.max(14, Math.round(this.iconSize * 0.42));
   }
 }

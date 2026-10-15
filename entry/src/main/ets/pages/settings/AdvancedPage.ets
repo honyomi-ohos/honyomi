@@ -2,7 +2,7 @@ import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
 import { CookieJar } from '../../net/CookieJar';
 import { PageHeader } from '../components/PageHeader';
-import { PrefGroup, TextRow, IconRow } from '../components/Prefs';
+import { IconRow, PrefGroup, TextRow } from '../components/Prefs';
 import { OnboardingParams } from '../../model/RouteParams';
 
 // 高级设置内容：新手引导 / Cookie（备份、章节缓存清理已移至「数据与存储」，追踪已移至「追踪」页）
@@ -10,7 +10,8 @@ import { OnboardingParams } from '../../model/RouteParams';
 export struct AdvancedContent {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   // 打开新手引导（由宿主注入导航；lg 双栏与窄屏壳均 push Onboarding 路由）
-  onOpenOnboarding: () => void = () => {};
+  onOpenOnboarding: () => void = () => {
+  };
 
   build() {
     Scroll() {

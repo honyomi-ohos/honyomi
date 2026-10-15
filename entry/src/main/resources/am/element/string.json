@@ -1,48 +1,177 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Filters all entries in your library" },
-    { "name": "more_incognito_summary", "value": "Pauses reading history" },
-    { "name": "more_support", "value": "Support Us" },
-    { "name": "more_help", "value": "እገዛ" },
-    { "name": "support_perks", "value": "Patrons get access to exclusive channels, with more perks to come." },
-    { "name": "support_patreon", "value": "Patreon (preferred)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together." },
-    { "name": "support_contact_msg", "value": "For alternative options or any related questions, join our Discord server." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "Data and storage" },
-    { "name": "data_storage_location", "value": "Storage location" },
-    { "name": "data_storage_location_info", "value": "Used for automatic backups, chapter downloads, and local source." },
-    { "name": "data_backup_restore", "value": "ምትኬ" },
-    { "name": "data_create_backup", "value": "ምትኬን ይፍጠሩ" },
-    { "name": "data_restore_backup", "value": "ምትኬ ወደነበረበት" },
-    { "name": "data_backup_interval", "value": "የመጠባበቂያ ድግግሞሽ" },
-    { "name": "data_backup_info", "value": "You should keep copies of backups in other places as well. Backups may contain sensitive data including any stored passwords; be careful if sharing." },
-    { "name": "data_last_auto_backup", "value": "Last automatically backed up: %s" },
-    { "name": "data_storage_usage", "value": "Storage usage" },
-    { "name": "data_available_space", "value": "Available: %s / Total: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Clear chapter cache" },
-    { "name": "data_used_cache", "value": "Used: %s" },
-    { "name": "data_cache_deleted", "value": "Cache cleared, %d files deleted" },
-    { "name": "data_cache_delete_error", "value": "Error occurred while clearing" },
-    { "name": "data_auto_clear_cache", "value": "Clear chapter cache on app launch" },
-    { "name": "data_export", "value": "Export" },
-    { "name": "data_library_list", "value": "Library List" },
-    { "name": "data_library_exported", "value": "Library Exported" },
-    { "name": "data_export_include", "value": "Select data to include" },
-    { "name": "data_column_title", "value": "Title" },
-    { "name": "data_column_author", "value": "Author" },
-    { "name": "data_interval_off", "value": "Off" },
-    { "name": "data_interval_6h", "value": "በየ 6 ሰዓቱ" },
-    { "name": "data_interval_12h", "value": "በየ 12 ሰዓቱ" },
-    { "name": "data_interval_24h", "value": "በየቀኑ" },
-    { "name": "data_interval_48h", "value": "በየ 2 ቀኑ" },
-    { "name": "data_interval_weekly", "value": "ሳምንታዊ" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Filters all entries in your library"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Pauses reading history"
+    },
+    {
+      "name": "more_support",
+      "value": "Support Us"
+    },
+    {
+      "name": "more_help",
+      "value": "እገዛ"
+    },
+    {
+      "name": "support_perks",
+      "value": "Patrons get access to exclusive channels, with more perks to come."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (preferred)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "For alternative options or any related questions, join our Discord server."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "Data and storage"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Storage location"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Used for automatic backups, chapter downloads, and local source."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "ምትኬ"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "ምትኬን ይፍጠሩ"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "ምትኬ ወደነበረበት"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "የመጠባበቂያ ድግግሞሽ"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "You should keep copies of backups in other places as well. Backups may contain sensitive data including any stored passwords; be careful if sharing."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Last automatically backed up: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Storage usage"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Available: %s / Total: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Clear chapter cache"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Used: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Cache cleared, %d files deleted"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Error occurred while clearing"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Clear chapter cache on app launch"
+    },
+    {
+      "name": "data_export",
+      "value": "Export"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Library List"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Library Exported"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Select data to include"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Title"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Author"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "Off"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "በየ 6 ሰዓቱ"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "በየ 12 ሰዓቱ"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "በየቀኑ"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "በየ 2 ቀኑ"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "ሳምንታዊ"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
     {
       "name": "module_desc",
       "value": "module description"
@@ -1255,189 +1384,741 @@
       "name": "reader_set_brightness_reset",
       "value": "ብሩህነት ስርዓቱን እንዲከተል ተዘጋጅቷል"
     },
-    { "name": "browse_tab_sources", "value": "ምንጮች" },
-    { "name": "browse_tab_extensions", "value": "ቅጥያዎች" },
-    { "name": "browse_tab_migrate", "value": "አዛውር" },
-    { "name": "browse_pin", "value": "ሰካ" },
-    { "name": "browse_unpin", "value": "ንቀል" },
-    { "name": "browse_disable_source", "value": "ምንጭ አሰናክል" },
-    { "name": "browse_source_disabled", "value": "ምንጩ ተሰናክሏል" },
-    { "name": "browse_pinned", "value": "ተሰክቷል" },
-    { "name": "browse_sources_empty", "value": "ምንም ምንጭ የለም። ከቅጥያዎች ትር ይጫኑ" },
-    { "name": "browse_filter_langs", "value": "ቋንቋዎችን አጣራ" },
-    { "name": "browse_filter_all", "value": "ሁሉም" },
-    { "name": "browse_source_missing", "value": "ምንጩ አይገኝም። ቅጥያው ተሰናክሎ ሊሆን ይችላል" },
-    { "name": "global_search_hint", "value": "ሁሉንም ምንጮች ፈልግ" },
-    { "name": "global_search_failed", "value": "ፍለጋ አልተሳካም" },
-    { "name": "ext_search_hint", "value": "ቅጥያዎችን ፈልግ" },
-    { "name": "ext_search_no_match", "value": "ምንም አልተገኘም" },
-    { "name": "ext_repo_settings", "value": "የማከማቻ ቅንብሮች" },
-    { "name": "ext_refresh_repo", "value": "ማከማቻ አድስ" },
-    { "name": "migrate_pick_source", "value": "ለማዛወር ምንጭ ይምረጡ" },
-    { "name": "migrate_empty_library", "value": "ቤተ-መጻሕፍት ባዶ ነው" },
-    { "name": "migrate_select_all", "value": "ሁሉንም ምረጥ" },
-    { "name": "migrate_deselect_all", "value": "ሁሉንም አንሳ" },
-    { "name": "migrate_action", "value": "አዛውር (%d)" },
-    { "name": "migrate_title", "value": "አዛውር" },
-    { "name": "migrate_skip", "value": "ዝለል" },
-    { "name": "migrate_progress", "value": "%d ከ %d" },
-    { "name": "migrate_target_source", "value": "የመድረሻ ምንጭ" },
-    { "name": "migrate_search_hint", "value": "በመድረሻ ምንጭ ውስጥ ማንጋ ፈልግ" },
-    { "name": "migrate_confirm_title", "value": "ወደዚህ ማንጋ ይዛወር?" },
-    { "name": "migrate_item_done", "value": "ተዛውሯል፦ %s" },
-    { "name": "migrate_failed", "value": "ማዛወር አልተሳካም፦ %s" },
-    { "name": "migrate_done", "value": "ማዛወር ተጠናቋል" },
-    { "name": "migrate_no_target", "value": "ምንም የመድረሻ ምንጭ የለም" },
-    { "name": "stats_title", "value": "ስታቲስቲክስ" },
-    { "name": "stats_overview_section", "value": "አጠቃላይ እይታ" },
-    { "name": "stats_in_library", "value": "በቤተ-መጻሕፍት" },
-    { "name": "stats_read_duration", "value": "የንባብ ጊዜ" },
-    { "name": "stats_completed_titles", "value": "ተጠናቋል" },
-    { "name": "stats_titles_section", "value": "ሥራዎች" },
-    { "name": "stats_started_titles", "value": "የተጀመረ" },
-    { "name": "stats_local_titles", "value": "አካባቢያዊ" },
-    { "name": "stats_chapters_section", "value": "ምዕራፎች" },
-    { "name": "stats_total_chapters", "value": "ጠቅላላ" },
-    { "name": "stats_read_chapters", "value": "ተነብቧል" },
-    { "name": "stats_downloaded_chapters", "value": "ወርዷል" },
-    { "name": "stats_tracker_section", "value": "ክትትል" },
-    { "name": "stats_tracked_titles", "value": "የተከታተሉ ሥራዎች" },
-    { "name": "stats_mean_score", "value": "አማካይ ነጥብ" },
-    { "name": "stats_used", "value": "ያገለገለ" },
-    { "name": "stats_not_applicable", "value": "አይሠራም" },
-    { "name": "stats_week", "value": "ሳምንት" },
-    { "name": "stats_month", "value": "ወር" },
-    { "name": "stats_week_total", "value": "በዚህ ሳምንት %s" },
-    { "name": "stats_month_total", "value": "በዚህ ወር %s" },
-    { "name": "stats_no_reading", "value": "በዚህ ጊዜ ንባብ የለም" },
-    { "name": "stats_day_short", "value": "%dቀ" },
-    { "name": "stats_hour_short", "value": "%dሰ" },
-    { "name": "stats_minute_short", "value": "%dደ" },
-    { "name": "stats_second_short", "value": "%dሴ" },
-    { "name": "stats_wd_sun", "value": "እሑ" },
-    { "name": "stats_wd_mon", "value": "ሰኞ" },
-    { "name": "stats_wd_tue", "value": "ማክ" },
-    { "name": "stats_wd_wed", "value": "ረቡ" },
-    { "name": "stats_wd_thu", "value": "ሐሙ" },
-    { "name": "stats_wd_fri", "value": "ዓር" },
-    { "name": "stats_wd_sat", "value": "ቅዳ" },
-    { "name": "reader_mode_vertical", "value": "ቁመታዊ" },
-    { "name": "reader_mode_smart_grip", "value": "መያዣ ግንዛቤ" },
-    { "name": "reader_orientation_lock_portrait", "value": "ቁም ቆልፍ" },
-    { "name": "reader_orientation_lock_landscape", "value": "አግድም ቆልፍ" },
-    { "name": "reader_tab_general", "value": "አጠቃላይ" },
-    { "name": "reader_tab_filter", "value": "የቀለም ማጣሪያ" },
-    { "name": "reader_filter_grayscale", "value": "ግራጫ" },
-    { "name": "reader_filter_invert", "value": "የተገለበጠ ቀለም" },
-    { "name": "reader_filter_contrast", "value": "ንፅፅር" },
-    { "name": "reader_filter_saturation", "value": "ሙሌት" },
-    { "name": "reader_crop_borders", "value": "ጠርዝ ቁረጥ" },
-    { "name": "reader_nav_tap_zones", "value": "የንክኪ ክልል" },
-    { "name": "reader_nav_default", "value": "ነባሪ" },
-    { "name": "reader_nav_ltr", "value": "ከግራ ወደ ቀኝ" },
-    { "name": "reader_nav_rtl", "value": "ከቀኝ ወደ ግራ" },
-    { "name": "reader_nav_vertical", "value": "ቁመታዊ" },
-    { "name": "reader_nav_edge", "value": "ጠርዝ" },
-    { "name": "reader_nav_none", "value": "ምንም" },
-    { "name": "reader_dual_page", "value": "ድርብ ገጽ እይታ" },
-    { "name": "reader_webtoon_padding", "value": "የዌብቱን የጎን ክፍተት" },
-    { "name": "reader_set_mode_smart_grip", "value": "መያዣ ግንዛቤ" },
-    { "name": "ext_install_local", "value": "ከአካባቢ ጫን" },
-    { "name": "ext_detail_title", "value": "የቅጥያ መረጃ" },
-    { "name": "ext_info_version", "value": "ስሪት" },
-    { "name": "ext_info_language", "value": "ቋንቋ" },
-    { "name": "ext_uninstall_title", "value": "ቅጥያ አራግፍ" },
-    { "name": "ext_uninstall_msg", "value": "“%s” ይራገፍ? የቤተ-መጻሕፍት ማንጋ መረጃ ይቆያል" },
-    { "name": "ext_detail_sources", "value": "ምንጮች" },
-    { "name": "ext_detail_settings", "value": "ማስተካከያዎች" },
-    { "name": "ext_pref_loading", "value": "በመጫን ላይ…" },
-    { "name": "ext_pref_failed", "value": "ማስተካከያዎችን መተግበር አልተሳካም" },
-    { "name": "ext_detail_missing", "value": "ቅጥያ የለም ወይም አልተጫነም" },
-    { "name": "action_filter", "value": "አጣራ" },
-    { "name": "action_update_library", "value": "ቤተ-መጻሕፍት አዘምን" },
-    { "name": "action_update_category", "value": "ምድብ አዘምን" },
-    { "name": "action_open_random_manga", "value": "በዘፈቀደ ሥራ ክፈት" },
-    { "name": "action_select_all", "value": "ሁሉንም ምረጥ" },
-    { "name": "action_select_inverse", "value": "ምርጫን ገልብጥ" },
-    { "name": "action_move_category", "value": "ወደ ምድብ አንቀሳቅስ" },
-    { "name": "action_mark_as_read", "value": "እንደተነበበ ምልክት አድርግ" },
-    { "name": "action_mark_as_unread", "value": "እንዳልተነበበ ምልክት አድርግ" },
-    { "name": "action_download", "value": "አውርድ" },
-    { "name": "action_delete", "value": "ሰርዝ" },
-    { "name": "action_migrate", "value": "አዛውር" },
-    { "name": "action_remove_from_library", "value": "ከቤተ-መጻሕፍት አስወግድ" },
-    { "name": "action_remove_from_library_msg", "value": "የተመረጡት %d ማንጋ ከቤተ-መጻሕፍት ይወገዱ?" },
-    { "name": "action_download_queued", "value": "%d ውርዶች ወደ ወረፋ ታክለዋል" },
-    { "name": "library_search_hint", "value": "ቤተ-መጻሕፍት ፈልግ" },
-    { "name": "library_no_match", "value": "የሚዛመድ ማንጋ የለም" },
-    { "name": "lib_sheet_tab_filter", "value": "አጣራ" },
-    { "name": "lib_sheet_tab_sort", "value": "ደርድር" },
-    { "name": "lib_sheet_tab_display", "value": "ማሳያ" },
-    { "name": "lib_filter_downloaded", "value": "ወርዷል" },
-    { "name": "lib_filter_unread", "value": "ያልተነበበ" },
-    { "name": "lib_filter_started", "value": "ተነቦ የተጀመረ" },
-    { "name": "lib_filter_bookmarked", "value": "ዕልባት" },
-    { "name": "lib_filter_completed", "value": "ተጠናቋል" },
-    { "name": "lib_filter_tracked", "value": "የተከታተለ" },
-    { "name": "lib_sort_alpha", "value": "ርዕስ" },
-    { "name": "lib_sort_total", "value": "የምዕራፍ ብዛት" },
-    { "name": "lib_sort_last_read", "value": "በቅርቡ የተነበበ" },
-    { "name": "lib_sort_last_update", "value": "የዝመና ፍተሻ ጊዜ" },
-    { "name": "lib_sort_unread", "value": "ያልተነበበ ቁጥር" },
-    { "name": "lib_sort_latest_chapter", "value": "የሥራ ዝመና ጊዜ" },
-    { "name": "lib_sort_fetch_date", "value": "ምዕራፍ የተገኘበት ጊዜ" },
-    { "name": "lib_sort_date_added", "value": "የታከለበት ቀን" },
-    { "name": "lib_sort_random", "value": "በዘፈቀደ" },
-    { "name": "lib_display_compact", "value": "ጥቅጥቅ ፍርግርግ" },
-    { "name": "lib_display_comfortable", "value": "ልል ፍርግርግ" },
-    { "name": "lib_display_cover", "value": "የሽፋን ፍርግርግ" },
-    { "name": "lib_display_list", "value": "ዝርዝር" },
-    { "name": "lib_display_grid_size", "value": "በየረድፉ ብዛት" },
-    { "name": "lib_display_grid_auto", "value": "ራስ-ሰር" },
-    { "name": "lib_display_badges_group", "value": "ምልክቶች እና ቁልፎች" },
-    { "name": "lib_badge_downloaded", "value": "የወረዱ ምዕራፎች ብዛት" },
-    { "name": "lib_badge_unread", "value": "ያልተነበቡ ምዕራፎች" },
-    { "name": "lib_badge_local", "value": "አካባቢያዊ ምንጭ" },
-    { "name": "lib_badge_language", "value": "ቋንቋ" },
-    { "name": "lib_badge_continue", "value": "ንባብ ቀጥል ቁልፍ" },
-    { "name": "lib_display_tabs_group", "value": "ትሮች" },
-    { "name": "lib_show_category_tabs", "value": "የምድብ ትሮች አሳይ" },
-    { "name": "lib_show_manga_count", "value": "የሥራ ብዛት አሳይ" },
-    { "name": "EntryFormAbility_label", "value": "MihonHarmony ካርድ" },
-    { "name": "EntryFormAbility_desc", "value": "የመነሻ ካርድ አቅራቢ" },
-    { "name": "card_recent_display", "value": "ንባብ ቀጥል" },
-    { "name": "card_recent_desc", "value": "በቅርቡ የተነበበ ማንጋ በፍጥነት ቀጥል" },
-    { "name": "card_updates_display", "value": "ዝመናዎች" },
-    { "name": "card_updates_desc", "value": "በቤተ-መጻሕፍት አዲስ ያልተነበቡ ምዕራፎች" },
-    { "name": "card_recent_header", "value": "ንባብ ቀጥል" },
-    { "name": "card_updates_header", "value": "ዝመናዎች" },
-    { "name": "card_unread_count", "value": "%d ምዕራፎች ያልተነበቡ" },
-    { "name": "card_empty_recent", "value": "እስካሁን የንባብ ታሪክ የለም" },
-    { "name": "card_empty_updates", "value": "ያልተነበበ ምዕራፍ የለም" },
-    { "name": "card_open_hint", "value": "መተግበሪያውን ለመክፈት ነካ" },
-    { "name": "card_manga_display", "value": "ማንጋ ካርድ" },
-    { "name": "card_manga_desc", "value": "ከዝርዝር ገጽ ጨምር፣ ሽፋኑን ነክተህ አንብብ" },
-    { "name": "card_manga_empty", "value": "ከማንጋ ዝርዝር ገጽ ወደ መነሻ ጨምር" },
-    { "name": "detail_add_to_desktop", "value": "ወደ መነሻ ጨምር" },
-    { "name": "detail_card_added", "value": "ወደ መነሻ ታክሏል" },
-    { "name": "detail_card_add_failed", "value": "ካርድ መጨመር አልተሳካም" },
-    { "name": "card_stats_week_display", "value": "ሳምንታዊ ስታቲስቲክስ" },
-    { "name": "card_stats_week_desc", "value": "በዚህ ሳምንት ዕለታዊ የንባብ ጊዜ" },
-    { "name": "card_stats_month_display", "value": "ወርሃዊ ስታቲስቲክስ" },
-    { "name": "card_stats_month_desc", "value": "በዚህ ወር ዕለታዊ የንባብ ጊዜ" },
-    { "name": "card_stats_empty", "value": "እስካሁን ንባብ የለም" },
-    { "name": "action_view_upcoming", "value": "የሚመጡ ዝመናዎችን አሳይ" },
-    { "name": "label_upcoming", "value": "የሚመጣ" },
-    { "name": "upcoming_guide", "value": "የሚመጣ መመሪያ" },
-    { "name": "upcoming_calendar_prev", "value": "ያለፈው ወር" },
-    { "name": "upcoming_calendar_next", "value": "ቀጣዩ ወር" },
-    { "name": "pref_filter_update_categories_details", "value": "በተካተተም በተገለለም ምድብ ውስጥ ያሉ ሥራዎች አይታዩም።" },
-    { "name": "relative_time_today", "value": "ዛሬ" },
-    { "name": "relative_time_days_ago", "value": "ከ%d ቀናት በፊት" },
-    { "name": "upcoming_relative_time_days", "value": "በ%d ቀናት ውስጥ" },
-    { "name": "card_upcoming_display", "value": "የሚመጣ" },
-    { "name": "card_upcoming_desc", "value": "የቤተ-መጻሕፍት ማንጋ የሚጠበቅ ዝመና ቀን መቁጠሪያ" },
-    { "name": "card_upcoming_header", "value": "የሚመጣ" },
-    { "name": "card_empty_upcoming", "value": "በቤተ-መጻሕፍትዎ በሂደት ላይ ያለ ማንጋ የለም" }
-]
+    {
+      "name": "browse_tab_sources",
+      "value": "ምንጮች"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "ቅጥያዎች"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "አዛውር"
+    },
+    {
+      "name": "browse_pin",
+      "value": "ሰካ"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "ንቀል"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "ምንጭ አሰናክል"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "ምንጩ ተሰናክሏል"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "ተሰክቷል"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "ምንም ምንጭ የለም። ከቅጥያዎች ትር ይጫኑ"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "ቋንቋዎችን አጣራ"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "ሁሉም"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "ምንጩ አይገኝም። ቅጥያው ተሰናክሎ ሊሆን ይችላል"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "ሁሉንም ምንጮች ፈልግ"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "ፍለጋ አልተሳካም"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "ቅጥያዎችን ፈልግ"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "ምንም አልተገኘም"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "የማከማቻ ቅንብሮች"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "ማከማቻ አድስ"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "ለማዛወር ምንጭ ይምረጡ"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "ቤተ-መጻሕፍት ባዶ ነው"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "ሁሉንም ምረጥ"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "ሁሉንም አንሳ"
+    },
+    {
+      "name": "migrate_action",
+      "value": "አዛውር (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "አዛውር"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "ዝለል"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d ከ %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "የመድረሻ ምንጭ"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "በመድረሻ ምንጭ ውስጥ ማንጋ ፈልግ"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "ወደዚህ ማንጋ ይዛወር?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "ተዛውሯል፦ %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "ማዛወር አልተሳካም፦ %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "ማዛወር ተጠናቋል"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "ምንም የመድረሻ ምንጭ የለም"
+    },
+    {
+      "name": "stats_title",
+      "value": "ስታቲስቲክስ"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "አጠቃላይ እይታ"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "በቤተ-መጻሕፍት"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "የንባብ ጊዜ"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "ተጠናቋል"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "ሥራዎች"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "የተጀመረ"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "አካባቢያዊ"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "ምዕራፎች"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "ጠቅላላ"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "ተነብቧል"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "ወርዷል"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "ክትትል"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "የተከታተሉ ሥራዎች"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "አማካይ ነጥብ"
+    },
+    {
+      "name": "stats_used",
+      "value": "ያገለገለ"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "አይሠራም"
+    },
+    {
+      "name": "stats_week",
+      "value": "ሳምንት"
+    },
+    {
+      "name": "stats_month",
+      "value": "ወር"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "በዚህ ሳምንት %s"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "በዚህ ወር %s"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "በዚህ ጊዜ ንባብ የለም"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%dቀ"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dሰ"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dደ"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%dሴ"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "እሑ"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "ሰኞ"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "ማክ"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "ረቡ"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "ሐሙ"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "ዓር"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "ቅዳ"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "ቁመታዊ"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "መያዣ ግንዛቤ"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "ቁም ቆልፍ"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "አግድም ቆልፍ"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "አጠቃላይ"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "የቀለም ማጣሪያ"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "ግራጫ"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "የተገለበጠ ቀለም"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "ንፅፅር"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "ሙሌት"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "ጠርዝ ቁረጥ"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "የንክኪ ክልል"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "ነባሪ"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "ከግራ ወደ ቀኝ"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "ከቀኝ ወደ ግራ"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "ቁመታዊ"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "ጠርዝ"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "ምንም"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "ድርብ ገጽ እይታ"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "የዌብቱን የጎን ክፍተት"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "መያዣ ግንዛቤ"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "ከአካባቢ ጫን"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "የቅጥያ መረጃ"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "ስሪት"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "ቋንቋ"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "ቅጥያ አራግፍ"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "“%s” ይራገፍ? የቤተ-መጻሕፍት ማንጋ መረጃ ይቆያል"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "ምንጮች"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "ማስተካከያዎች"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "በመጫን ላይ…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "ማስተካከያዎችን መተግበር አልተሳካም"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "ቅጥያ የለም ወይም አልተጫነም"
+    },
+    {
+      "name": "action_filter",
+      "value": "አጣራ"
+    },
+    {
+      "name": "action_update_library",
+      "value": "ቤተ-መጻሕፍት አዘምን"
+    },
+    {
+      "name": "action_update_category",
+      "value": "ምድብ አዘምን"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "በዘፈቀደ ሥራ ክፈት"
+    },
+    {
+      "name": "action_select_all",
+      "value": "ሁሉንም ምረጥ"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "ምርጫን ገልብጥ"
+    },
+    {
+      "name": "action_move_category",
+      "value": "ወደ ምድብ አንቀሳቅስ"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "እንደተነበበ ምልክት አድርግ"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "እንዳልተነበበ ምልክት አድርግ"
+    },
+    {
+      "name": "action_download",
+      "value": "አውርድ"
+    },
+    {
+      "name": "action_delete",
+      "value": "ሰርዝ"
+    },
+    {
+      "name": "action_migrate",
+      "value": "አዛውር"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "ከቤተ-መጻሕፍት አስወግድ"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "የተመረጡት %d ማንጋ ከቤተ-መጻሕፍት ይወገዱ?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "%d ውርዶች ወደ ወረፋ ታክለዋል"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "ቤተ-መጻሕፍት ፈልግ"
+    },
+    {
+      "name": "library_no_match",
+      "value": "የሚዛመድ ማንጋ የለም"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "አጣራ"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "ደርድር"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "ማሳያ"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "ወርዷል"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "ያልተነበበ"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "ተነቦ የተጀመረ"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "ዕልባት"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "ተጠናቋል"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "የተከታተለ"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "ርዕስ"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "የምዕራፍ ብዛት"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "በቅርቡ የተነበበ"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "የዝመና ፍተሻ ጊዜ"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "ያልተነበበ ቁጥር"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "የሥራ ዝመና ጊዜ"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "ምዕራፍ የተገኘበት ጊዜ"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "የታከለበት ቀን"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "በዘፈቀደ"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "ጥቅጥቅ ፍርግርግ"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "ልል ፍርግርግ"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "የሽፋን ፍርግርግ"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "ዝርዝር"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "በየረድፉ ብዛት"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "ራስ-ሰር"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "ምልክቶች እና ቁልፎች"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "የወረዱ ምዕራፎች ብዛት"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "ያልተነበቡ ምዕራፎች"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "አካባቢያዊ ምንጭ"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "ቋንቋ"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "ንባብ ቀጥል ቁልፍ"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "ትሮች"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "የምድብ ትሮች አሳይ"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "የሥራ ብዛት አሳይ"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "MihonHarmony ካርድ"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "የመነሻ ካርድ አቅራቢ"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "ንባብ ቀጥል"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "በቅርቡ የተነበበ ማንጋ በፍጥነት ቀጥል"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "ዝመናዎች"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "በቤተ-መጻሕፍት አዲስ ያልተነበቡ ምዕራፎች"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "ንባብ ቀጥል"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "ዝመናዎች"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d ምዕራፎች ያልተነበቡ"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "እስካሁን የንባብ ታሪክ የለም"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "ያልተነበበ ምዕራፍ የለም"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "መተግበሪያውን ለመክፈት ነካ"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "ማንጋ ካርድ"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "ከዝርዝር ገጽ ጨምር፣ ሽፋኑን ነክተህ አንብብ"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "ከማንጋ ዝርዝር ገጽ ወደ መነሻ ጨምር"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "ወደ መነሻ ጨምር"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "ወደ መነሻ ታክሏል"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "ካርድ መጨመር አልተሳካም"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "ሳምንታዊ ስታቲስቲክስ"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "በዚህ ሳምንት ዕለታዊ የንባብ ጊዜ"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "ወርሃዊ ስታቲስቲክስ"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "በዚህ ወር ዕለታዊ የንባብ ጊዜ"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "እስካሁን ንባብ የለም"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "የሚመጡ ዝመናዎችን አሳይ"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "የሚመጣ"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "የሚመጣ መመሪያ"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "ያለፈው ወር"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "ቀጣዩ ወር"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "በተካተተም በተገለለም ምድብ ውስጥ ያሉ ሥራዎች አይታዩም።"
+    },
+    {
+      "name": "relative_time_today",
+      "value": "ዛሬ"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "ከ%d ቀናት በፊት"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "በ%d ቀናት ውስጥ"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "የሚመጣ"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "የቤተ-መጻሕፍት ማንጋ የሚጠበቅ ዝመና ቀን መቁጠሪያ"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "የሚመጣ"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "በቤተ-መጻሕፍትዎ በሂደት ላይ ያለ ማንጋ የለም"
+    }
+  ]
 }

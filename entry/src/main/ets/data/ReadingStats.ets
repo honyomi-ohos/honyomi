@@ -64,26 +64,6 @@ export class ReadingStatsRepo {
     await ReadingStatsRepo.insertSession(mangaId, chapterId, startAt, seconds);
   }
 
-  private static async insertSession(mangaId: number, chapterId: number,
-    startAt: number, seconds: number): Promise<void> {
-    if (AppStorage.get<boolean>(AppKeys.INCOGNITO) ?? false) {
-      return;
-    }
-    try {
-      const store = await AppDb.get();
-      const values: relationalStore.ValuesBucket = {
-        'mangaId': mangaId,
-        'chapterId': chapterId,
-        'day': Util.formatDate(startAt),
-        'startTime': startAt,
-        'duration': seconds,
-      };
-      await store.insert('readingSession', values);
-    } catch (_e) {
-      // 落库失败不影响阅读
-    }
-  }
-
   // 按作品类型汇总阅读时长（秒）
   static async durationByType(): Promise<Record<string, number>> {
     const store = await AppDb.get();
@@ -178,6 +158,26 @@ export class ReadingStatsRepo {
   static dayOfWeek(day: string): number {
     const d = ReadingStatsRepo.parseDay(day);
     return d === undefined ? -1 : d.getDay();
+  }
+
+  private static async insertSession(mangaId: number, chapterId: number,
+    startAt: number, seconds: number): Promise<void> {
+    if (AppStorage.get<boolean>(AppKeys.INCOGNITO) ?? false) {
+      return;
+    }
+    try {
+      const store = await AppDb.get();
+      const values: relationalStore.ValuesBucket = {
+        'mangaId': mangaId,
+        'chapterId': chapterId,
+        'day': Util.formatDate(startAt),
+        'startTime': startAt,
+        'duration': seconds,
+      };
+      await store.insert('readingSession', values);
+    } catch (_e) {
+      // 落库失败不影响阅读
+    }
   }
 
   private static parseDay(day: string): Date | undefined {

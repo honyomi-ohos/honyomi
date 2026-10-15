@@ -93,21 +93,6 @@ export class Http {
     return raw;
   }
 
-  private static parseMethod(method: string): http.RequestMethod {
-    switch (method) {
-      case 'POST':
-        return http.RequestMethod.POST;
-      case 'PUT':
-        return http.RequestMethod.PUT;
-      case 'DELETE':
-        return http.RequestMethod.DELETE;
-      case 'HEAD':
-        return http.RequestMethod.HEAD;
-      default:
-        return http.RequestMethod.GET;
-    }
-  }
-
   static async getBuffer(url: string, headers: Record<string, string> | undefined): Promise<ArrayBuffer> {
     try {
       return await Http.getBufferOnce(url, headers);
@@ -129,9 +114,6 @@ export class Http {
     return Http.buildHeaders(url, headers);
   }
 
-  // 流式下载到沙箱文件，避免把视频整段读进内存。
-  // 返回句柄：promise 结束（成功/失败/取消/停顿超时都会 settle，绝不悬挂）；
-  // cancel() 中断下载；setProgressCb 接收字节进度。
   // stall 超时看门狗：连续 STALL_TIMEOUT_MS 无字节进展即失败并清理系统任务。
   static downloadToFile(context: common.Context, url: string, headers: Record<string, string> | undefined,
     filePath: string, stallTimeoutMs: number = 60000): DownloadHandle {
@@ -217,6 +199,25 @@ export class Http {
       },
     };
     return handle;
+  }
+
+  // 流式下载到沙箱文件，避免把视频整段读进内存。
+  // 返回句柄：promise 结束（成功/失败/取消/停顿超时都会 settle，绝不悬挂）；
+  // cancel() 中断下载；setProgressCb 接收字节进度。
+
+  private static parseMethod(method: string): http.RequestMethod {
+    switch (method) {
+      case 'POST':
+        return http.RequestMethod.POST;
+      case 'PUT':
+        return http.RequestMethod.PUT;
+      case 'DELETE':
+        return http.RequestMethod.DELETE;
+      case 'HEAD':
+        return http.RequestMethod.HEAD;
+      default:
+        return http.RequestMethod.GET;
+    }
   }
 
   // ---------------- 内部实现 ----------------

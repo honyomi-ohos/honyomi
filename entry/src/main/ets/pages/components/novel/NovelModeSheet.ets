@@ -12,8 +12,10 @@ export struct NovelModeSheet {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @Prop mode: string = 'scroll';
   @Prop animMode: string = 'slide';
-  onMode: (mode: string) => void = (mode: string): void => {};
-  onAnim: (anim: string) => void = (anim: string): void => {};
+  onMode: (mode: string) => void = (mode: string): void => {
+  };
+  onAnim: (anim: string) => void = (anim: string): void => {
+  };
 
   build() {
     Column({ space: 0 }) {
@@ -45,7 +47,12 @@ export struct NovelModeSheet {
         .width('100%')
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
+      .padding({
+        left: 16,
+        right: 16,
+        top: 12,
+        bottom: 4
+      })
 
       Column().height(16)
     }
@@ -58,7 +65,12 @@ export struct NovelModeSheet {
     Text(label)
       .fontSize(13)
       .fontColor(this.animMode === value ? this.pal.onPrimary : this.pal.text)
-      .padding({ left: 14, right: 14, top: 6, bottom: 6 })
+      .padding({
+        left: 14,
+        right: 14,
+        top: 6,
+        bottom: 6
+      })
       .borderRadius(16)
       .backgroundColor(this.animMode === value ? this.pal.primary : this.pal.chip)
       .margin({ right: 8, bottom: 8 })

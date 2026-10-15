@@ -20,7 +20,12 @@ export struct LibBadge {
         AppIcon({ name: this.icon, iconSize: 12, tint: this.fgColor })
       }
       .backgroundColor(this.bgColor)
-      .padding({ left: 4, right: 4, top: 2, bottom: 2 })
+      .padding({
+        left: 4,
+        right: 4,
+        top: 2,
+        bottom: 2
+      })
       .justifyContent(FlexAlign.Center)
     } else {
       Text(this.text)
@@ -29,7 +34,12 @@ export struct LibBadge {
         .fontWeight(FontWeight.Medium)
         .maxLines(1)
         .backgroundColor(this.bgColor)
-        .padding({ left: 4, right: 4, top: 1, bottom: 1 })
+        .padding({
+          left: 4,
+          right: 4,
+          top: 1,
+          bottom: 1
+        })
     }
   }
 }
@@ -50,22 +60,12 @@ export struct LibraryMangaItem {
   @Prop showLanguageBadge: boolean = false;
   @Prop isSelected: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  onItemClick: (record: MangaRecord) => void = (_r: MangaRecord) => {};
-  onItemLongPress: (record: MangaRecord) => void = (_r: MangaRecord) => {};
+  onItemClick: (record: MangaRecord) => void = (_r: MangaRecord) => {
+  };
+  onItemLongPress: (record: MangaRecord) => void = (_r: MangaRecord) => {
+  };
 
   // 封面展示地址：自定义封面优先（origThumbnail 非空，thumbnailUrl 即 file:// 自定义路径），
-  // 其次书架持久化封面（入库时落盘的 JPEG，文件存在才用），最后回退在线地址
-  private coverDisplay(): string {
-    if (this.record.origThumbnail === '' && this.record.localCover !== '') {
-      try {
-        if (fs.accessSync(this.record.localCover)) {
-          return `file://${this.record.localCover}`;
-        }
-      } catch (e) {
-      }
-    }
-    return this.record.thumbnailUrl;
-  }
 
   @Builder
   startBadges() {
@@ -109,11 +109,17 @@ export struct LibraryMangaItem {
         }
         .layoutWeight(1)
         .alignItems(HorizontalAlign.Start)
+
         this.startBadges()
       }
       .width('100%')
       .height(56)
-      .padding({ left: 16, right: 16, top: 4, bottom: 4 })
+      .padding({
+        left: 16,
+        right: 16,
+        top: 4,
+        bottom: 4
+      })
       .alignItems(VerticalAlign.Center)
       .backgroundColor(this.isSelected ? this.pal.primarySoft : Color.Transparent)
       .onClick(() => {
@@ -135,12 +141,13 @@ export struct LibraryMangaItem {
                 Row() {
                   this.startBadges()
                 }
-                  .margin(4)
+                .margin(4)
               }
               .width('100%')
               .height('100%')
               .backgroundColor(this.isSelected ? this.pal.primary : Color.Transparent)
               .borderRadius(4)
+
               if (this.mode === 'compact') {
                 Column() {
                   Blank()
@@ -149,7 +156,12 @@ export struct LibraryMangaItem {
                     .fontColor('#FFFFFF')
                     .maxLines(2)
                     .textOverflow({ overflow: TextOverflow.Ellipsis })
-                    .padding({ left: 8, right: 8, top: 20, bottom: 8 })
+                    .padding({
+                      left: 8,
+                      right: 8,
+                      top: 20,
+                      bottom: 8
+                    })
                 }
                 .width('100%')
                 .height('100%')
@@ -164,10 +176,11 @@ export struct LibraryMangaItem {
           }
           .width('100%')
           .height('100%')
+
           Row() {
             this.endBadges()
           }
-            .margin(4)
+          .margin(4)
         }
         .width('100%')
         .aspectRatio(2 / 3)
@@ -202,7 +215,12 @@ export struct LibraryMangaItem {
       if (this.coverDisplay() === '') {
         CoverPlaceholder({ iconSize: 32 })
       } else {
-        SmartImage({ url: this.coverDisplay(), sourceKey: this.record.sourceKey, fit: ImageFit.Cover, fill: true })
+        SmartImage({
+          url: this.coverDisplay(),
+          sourceKey: this.record.sourceKey,
+          fit: ImageFit.Cover,
+          fill: true
+        })
       }
     }
     .width('100%')
@@ -220,7 +238,12 @@ export struct LibraryMangaItem {
       if (this.coverDisplay() === '') {
         CoverPlaceholder({ iconSize: 22 })
       } else {
-        SmartImage({ url: this.coverDisplay(), sourceKey: this.record.sourceKey, fit: ImageFit.Cover, fill: true })
+        SmartImage({
+          url: this.coverDisplay(),
+          sourceKey: this.record.sourceKey,
+          fit: ImageFit.Cover,
+          fill: true
+        })
       }
     }
     .width(48)
@@ -228,5 +251,18 @@ export struct LibraryMangaItem {
     .borderRadius(4)
     .clip(true)
     .backgroundColor(this.pal.chip)
+  }
+
+  // 其次书架持久化封面（入库时落盘的 JPEG，文件存在才用），最后回退在线地址
+  private coverDisplay(): string {
+    if (this.record.origThumbnail === '' && this.record.localCover !== '') {
+      try {
+        if (fs.accessSync(this.record.localCover)) {
+          return `file://${this.record.localCover}`;
+        }
+      } catch (e) {
+      }
+    }
+    return this.record.thumbnailUrl;
   }
 }

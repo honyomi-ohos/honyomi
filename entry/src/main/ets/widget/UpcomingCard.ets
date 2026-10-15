@@ -18,10 +18,6 @@ struct UpcomingCard {
   @LocalStorageProp('b1') b1: string = '';
   @LocalStorageProp('b2') b2: string = '';
 
-  private hasData(): boolean {
-    return this.t0 !== '' || this.t1 !== '' || this.t2 !== '';
-  }
-
   build() {
     Column() {
       // 标题栏：即将推出 + 跳转日历页
@@ -37,7 +33,12 @@ struct UpcomingCard {
       }
       .justifyContent(FlexAlign.Start)
       .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
+      .padding({
+        left: 16,
+        right: 16,
+        top: 12,
+        bottom: 4
+      })
       .onClick(() => {
         postCardAction(this, {
           'action': 'router',
@@ -115,7 +116,12 @@ struct UpcomingCard {
         .margin({ left: 8 })
     }
     .width('100%')
-    .padding({ left: 16, right: 16, top: 6, bottom: 6 })
+    .padding({
+      left: 16,
+      right: 16,
+      top: 6,
+      bottom: 6
+    })
     .onClick(() => {
       postCardAction(this, {
         'action': 'router',
@@ -128,27 +134,47 @@ struct UpcomingCard {
     })
   }
 
+  private hasData(): boolean {
+    return this.t0 !== '' || this.t1 !== '' || this.t2 !== '';
+  }
+
   private badgeOf(index: number): string {
-    if (index === 0) { return this.b0; }
-    if (index === 1) { return this.b1; }
+    if (index === 0) {
+      return this.b0;
+    }
+    if (index === 1) {
+      return this.b1;
+    }
     return this.b2;
   }
 
   private titleOf(index: number): string {
-    if (index === 0) { return this.t0; }
-    if (index === 1) { return this.t1; }
+    if (index === 0) {
+      return this.t0;
+    }
+    if (index === 1) {
+      return this.t1;
+    }
     return this.t2;
   }
 
   private dateOf(index: number): string {
-    if (index === 0) { return this.d0; }
-    if (index === 1) { return this.d1; }
+    if (index === 0) {
+      return this.d0;
+    }
+    if (index === 1) {
+      return this.d1;
+    }
     return this.d2;
   }
 
   private mangaIdOf(index: number): string {
-    if (index === 0) { return this.m0; }
-    if (index === 1) { return this.m1; }
+    if (index === 0) {
+      return this.m0;
+    }
+    if (index === 1) {
+      return this.m1;
+    }
     return this.m2;
   }
 }

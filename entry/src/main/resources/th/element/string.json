@@ -1,534 +1,2124 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "กรองรายการทั้งหมดในคลังของคุณ" },
-    { "name": "more_incognito_summary", "value": "หยุดประวัติการอ่านชั่วคราว" },
-    { "name": "more_support", "value": "Support Us" },
-    { "name": "more_help", "value": "ช่วยเหลือ" },
-    { "name": "support_perks", "value": "Patrons get access to exclusive channels, with more perks to come." },
-    { "name": "support_patreon", "value": "Patreon (preferred)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together." },
-    { "name": "support_contact_msg", "value": "For alternative options or any related questions, join our Discord server." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "ข้อมูลและการจัดเก็บข้อมูล" },
-    { "name": "data_storage_location", "value": "ตำแหน่งที่จัดเก็บ" },
-    { "name": "data_storage_location_info", "value": "ใช้สำหรับการสำรองข้อมูลอัตโนมัติ การดาวน์โหลดตอน และแหล่งที่มาในเครื่อง" },
-    { "name": "data_backup_restore", "value": "สำรองข้อมูลและการเรียกคืน" },
-    { "name": "data_create_backup", "value": "สำรองข้อมูล" },
-    { "name": "data_restore_backup", "value": "เรียกคืนค่าการสำรองข้อมูล" },
-    { "name": "data_backup_interval", "value": "ความถี่ในการสำรองข้อมูลอัตโนมัติ" },
-    { "name": "data_backup_info", "value": "ควรเก็บสำเนาของข้อมูลสำรองไว้ที่อื่นด้วยเช่นกัน การสำรองข้อมูลอาจมีข้อมูลที่ละเอียดอ่อนรวมถึงรหัสผ่านที่เก็บไว้ ควรระวังหากแบ่งปันสำเนา" },
-    { "name": "data_last_auto_backup", "value": "สำรองข้อมูลอัตโนมัติครั้งล่าสุด: %s" },
-    { "name": "data_storage_usage", "value": "การใช้พื้นที่เก็บข้อมูล" },
-    { "name": "data_available_space", "value": "พร้อมใช้งาน: %s / ทั้งหมด: %s" },
-    { "name": "data_clear_chapter_cache", "value": "ล้างแคชตอน" },
-    { "name": "data_used_cache", "value": "ใช้ไปแล้ว: %s" },
-    { "name": "data_cache_deleted", "value": "ล้างแคชแล้ว %d แฟ้มถูกลบ" },
-    { "name": "data_cache_delete_error", "value": "เกิดข้อผิดพลาดขณะกำลังล้าง" },
-    { "name": "data_auto_clear_cache", "value": "ล้างแคชตอนในเมื่อเปิดแอพ" },
-    { "name": "data_export", "value": "ส่งออก" },
-    { "name": "data_library_list", "value": "รายการคลัง" },
-    { "name": "data_library_exported", "value": "ส่งออกคลังแล้ว" },
-    { "name": "data_export_include", "value": "เลือกข้อมูลที่จะรวมไว้" },
-    { "name": "data_column_title", "value": "ชื่อเรื่อง" },
-    { "name": "data_column_author", "value": "Author" },
-    { "name": "data_interval_off", "value": "ปิด" },
-    { "name": "data_interval_6h", "value": "ทุก 6 ชั่วโมง" },
-    { "name": "data_interval_12h", "value": "ทุก 12 ชั่วโมง" },
-    { "name": "data_interval_24h", "value": "ทุกวัน" },
-    { "name": "data_interval_48h", "value": "ทุก 2 วัน" },
-    { "name": "data_interval_weekly", "value": "ทุกสัปดาห์" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "ตกลง" },
-    { "name": "common_cancel", "value": "ยกเลิก" },
-    { "name": "common_confirm", "value": "ยืนยัน" },
-    { "name": "common_delete", "value": "ลบ" },
-    { "name": "common_retry", "value": "ลองอีกครั้ง" },
-    { "name": "common_search", "value": "ค้นหา" },
-    { "name": "common_all", "value": "ทั้งหมด" },
-    { "name": "common_close", "value": "ปิด" },
-    { "name": "common_save", "value": "บันทึก" },
-    { "name": "common_install", "value": "ติดตั้ง" },
-    { "name": "common_uninstall", "value": "ถอนการติดตั้ง" },
-    { "name": "common_update", "value": "อัปเดต" },
-    { "name": "common_none", "value": "ไม่มี" },
-    { "name": "common_default", "value": "ค่าเริ่มต้น" },
-    { "name": "appearance_title", "value": "ลักษณะ" },
-    { "name": "appearance_language", "value": "ภาษา" },
-    { "name": "lang_follow_system", "value": "ตามระบบ" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "โหมดธีม" },
-    { "name": "appearance_theme_auto", "value": "ตามระบบ" },
-    { "name": "appearance_theme_light", "value": "สว่าง" },
-    { "name": "appearance_theme_dark", "value": "มืด" },
-    { "name": "appearance_accent_color", "value": "สีเน้น" },
-    { "name": "appearance_other", "value": "อื่นๆ" },
-    { "name": "appearance_amoled", "value": "พื้นหลังดำสนิท AMOLED" },
-    { "name": "theme_accent_blue", "value": "น้ำเงิน" },
-    { "name": "theme_accent_green", "value": "เขียว" },
-    { "name": "theme_accent_pink", "value": "ชมพู" },
-    { "name": "theme_accent_purple", "value": "ม่วง" },
-    { "name": "theme_accent_orange", "value": "ส้ม" },
-    { "name": "util_time_minutes_ago", "value": "%d นาทีที่แล้ว" },
-    { "name": "util_time_hours_ago", "value": "%d ชั่วโมงที่แล้ว" },
-    { "name": "util_time_days_ago", "value": "%d วันที่แล้ว" },
-    { "name": "util_status_ongoing", "value": "กำลังลง" },
-    { "name": "util_status_completed", "value": "จบแล้ว" },
-    { "name": "util_status_hiatus", "value": "พักลง" },
-    { "name": "util_status_cancelled", "value": "ยกเลิกแล้ว" },
-    { "name": "util_status_publication_complete", "value": "จัดพิมพ์ครบ" },
-    { "name": "util_status_unknown", "value": "ไม่ทราบ" },
-    { "name": "tab_library", "value": "ชั้นหนังสือ" },
-    { "name": "tab_updates", "value": "อัปเดต" },
-    { "name": "tab_history", "value": "ประวัติ" },
-    { "name": "tab_browse", "value": "เรียกดู" },
-    { "name": "tab_more", "value": "เพิ่มเติม" },
-    { "name": "tab_cf_waiting", "value": "กำลังรอการยืนยัน…" },
-    { "name": "tab_cf_verified", "value": "ยืนยันเสร็จแล้ว" },
-    { "name": "tab_cf_title", "value": "ยืนยันว่าเป็นมนุษย์" },
-    { "name": "tab_cf_done", "value": "เสร็จ" },
-    { "name": "tab_cf_saved", "value": "บันทึกผลการยืนยันแล้ว" },
-    { "name": "more_title", "value": "เพิ่มเติม" },
-    { "name": "more_version", "value": "เวอร์ชัน %s" },
-    { "name": "more_downloaded_only", "value": "ดาวน์โหลดแล้วเท่านั้น" },
-    { "name": "more_incognito", "value": "โหมดไม่ระบุตัวตน" },
-    { "name": "more_downloads", "value": "คิวดาวน์โหลด" },
-    { "name": "more_categories", "value": "หมวดหมู่" },
-    { "name": "more_settings", "value": "การตั้งค่า" },
-    { "name": "more_about", "value": "เกี่ยวกับ" },
-    { "name": "more_plugins", "value": "ส่วนขยาย" },
-    { "name": "categories_title", "value": "หมวดหมู่" },
-    { "name": "categories_add", "value": "หมวดหมู่ใหม่" },
-    { "name": "categories_name_placeholder", "value": "ชื่อหมวดหมู่" },
-    { "name": "categories_rename_category", "value": "เปลี่ยนชื่อหมวดหมู่" },
-    { "name": "categories_rename", "value": "เปลี่ยนชื่อ" },
-    { "name": "categories_hint", "value": "กดค้างที่หมวดหมู่เพื่อเปลี่ยนชื่อหรือลบ มังงะในหมวดที่ลบจะกลับไปที่ค่าเริ่มต้น" },
-    { "name": "dialog_pick_category", "value": "เลือกหมวดหมู่" },
-    { "name": "viewer_loading", "value": "กำลังโหลด…" },
-    { "name": "viewer_load_failed", "value": "โหลดรูปไม่สำเร็จ" },
-    { "name": "viewer_tap_retry", "value": "แตะเพื่อลองอีกครั้ง" },
-    { "name": "library_title", "value": "ชั้นหนังสือ" },
-    { "name": "library_empty", "value": "ชั้นหนังสือว่าง ไปเรียกดูเพื่อเพิ่มมังงะ" },
-    { "name": "library_new_category", "value": "หมวดหมู่ใหม่" },
-    { "name": "library_category_name", "value": "ชื่อหมวดหมู่" },
-    { "name": "updates_title", "value": "อัปเดต" },
-    { "name": "updates_empty", "value": "ไม่มีอัปเดตล่าสุด" },
-    { "name": "updates_found_new", "value": "พบตอนใหม่ %d ตอน" },
-    { "name": "updates_no_new", "value": "ไม่มีตอนใหม่" },
-    { "name": "updates_refresh_failed", "value": "รีเฟรชไม่สำเร็จ" },
-    { "name": "updates_refreshing", "value": "กำลังรีเฟรช…" },
-    { "name": "history_title", "value": "ประวัติ" },
-    { "name": "history_clear", "value": "ล้าง" },
-    { "name": "history_confirm_clear", "value": "ยืนยันล้าง?" },
-    { "name": "history_empty", "value": "ยังไม่มีประวัติการอ่าน" },
-    { "name": "history_cleared", "value": "ล้างประวัติแล้ว" },
-    { "name": "history_continue", "value": "อ่านต่อ" },
-    { "name": "browse_title", "value": "เรียกดู" },
-    { "name": "browse_import", "value": "นำเข้า" },
-    { "name": "browse_plugins", "value": "ส่วนขยาย" },
-    { "name": "browse_local_source_name", "value": "มังงะในเครื่อง" },
-    { "name": "browse_popular", "value": "ยอดนิยม" },
-    { "name": "browse_latest", "value": "ล่าสุด" },
-    { "name": "browse_search_hint", "value": "ค้นหามังงะ…" },
-    { "name": "browse_no_results", "value": "ไม่พบมังงะ" },
-    { "name": "browse_local_empty", "value": "ยังไม่มีมังงะในเครื่อง แตะนำเข้าเพื่อเพิ่ม" },
-    { "name": "browse_load_failed", "value": "โหลดไม่สำเร็จ: %s" },
-    { "name": "browse_search_failed", "value": "ค้นหาไม่สำเร็จ: %s" },
-    { "name": "browse_load_more_failed", "value": "โหลดเพิ่มไม่สำเร็จ" },
-    { "name": "browse_open_detail_failed", "value": "เปิดรายละเอียดไม่สำเร็จ" },
-    { "name": "browse_pick_file_failed", "value": "เลือกไฟล์ไม่สำเร็จ" },
-    { "name": "browse_import_title", "value": "นำเข้า %d ไฟล์" },
-    { "name": "browse_manga_name_hint", "value": "ชื่อมังงะ" },
-    { "name": "browse_input_name", "value": "กรุณาใส่ชื่อ" },
-    { "name": "browse_import_done", "value": "นำเข้าแล้ว %d ไฟล์" },
-    { "name": "browse_import_failed", "value": "นำเข้าไม่สำเร็จ: %s" },
-    { "name": "download_title", "value": "การดาวน์โหลด" },
-    { "name": "download_resume", "value": "ทำต่อ" },
-    { "name": "download_pause", "value": "หยุดชั่วคราว" },
-    { "name": "download_clear_finished", "value": "ล้างรายการที่เสร็จ" },
-    { "name": "download_queue", "value": "คิวดาวน์โหลด" },
-    { "name": "download_state_queued", "value": "อยู่ในคิว" },
-    { "name": "download_state_downloading", "value": "กำลังดาวน์โหลด" },
-    { "name": "download_state_done", "value": "เสร็จ" },
-    { "name": "download_state_failed", "value": "ล้มเหลว" },
-    { "name": "download_move_top", "value": "ย้ายขึ้นบนสุด" },
-    { "name": "download_move_bottom", "value": "ย้ายลงล่างสุด" },
-    { "name": "download_deleted", "value": "ลบแล้ว" },
-    { "name": "download_empty", "value": "ยังไม่มีการดาวน์โหลด" },
-    { "name": "download_status_downloaded", "value": "ดาวน์โหลดแล้ว" },
-    { "name": "download_chapter_count", "value": "%d ตอน" },
-    { "name": "detail_no_chapters", "value": "ไม่มีตอน" },
-    { "name": "detail_sync_failed_local", "value": "ซิงก์ไม่สำเร็จ แสดงข้อมูลในเครื่อง" },
-    { "name": "detail_added_to_library", "value": "เพิ่มลงชั้นหนังสือแล้ว" },
-    { "name": "detail_removed_from_library", "value": "นำออกจากชั้นหนังสือแล้ว" },
-    { "name": "detail_all_marked_read", "value": "ทำเครื่องหมายทุกตอนว่าอ่านแล้ว" },
-    { "name": "detail_download_queued", "value": "ใส่คิวดาวน์โหลดแล้ว" },
-    { "name": "detail_config_anilist_token", "value": "กรุณาตั้งค่าโทเค็น AniList ก่อน" },
-    { "name": "detail_search_anilist", "value": "ค้นหา AniList" },
-    { "name": "detail_manga_title_hint", "value": "ชื่อเรื่องมังงะ" },
-    { "name": "detail_no_search_results", "value": "ไม่พบผลการค้นหา" },
-    { "name": "detail_anilist_search_failed", "value": "ค้นหา AniList ไม่สำเร็จ" },
-    { "name": "detail_anilist_bound", "value": "ผูกกับ AniList แล้ว" },
-    { "name": "detail_anilist_unbound", "value": "ยกเลิกผูก AniList แล้ว" },
-    { "name": "detail_synced_progress", "value": "ซิงก์ความคืบหน้าถึงตอนที่ %d" },
-    { "name": "detail_anilist_sync_failed", "value": "ซิงก์ AniList ไม่สำเร็จ" },
-    { "name": "detail_status_local", "value": "ในเครื่อง" },
-    { "name": "detail_in_library", "value": "อยู่ในชั้นหนังสือ" },
-    { "name": "detail_add_to_library", "value": "เพิ่มลงชั้นหนังสือ" },
-    { "name": "detail_continue_reading", "value": "อ่านต่อ" },
-    { "name": "detail_start_reading", "value": "เริ่มอ่าน" },
-    { "name": "detail_no_chapters_yet", "value": "ยังไม่มีตอน" },
-    { "name": "detail_collapse", "value": "ย่อ" },
-    { "name": "detail_expand", "value": "ขยาย" },
-    { "name": "detail_anilist_tracking", "value": "ติดตาม AniList" },
-    { "name": "detail_anilist_token_hint", "value": "ยังไม่ได้ตั้งค่าโทเค็น AniList" },
-    { "name": "detail_searching", "value": "กำลังค้นหา…" },
-    { "name": "detail_search_and_bind", "value": "ค้นหาแล้วผูก" },
-    { "name": "detail_bind", "value": "ผูก" },
-    { "name": "detail_synced_to_chapter", "value": "ซิงก์ถึงตอนที่ %d" },
-    { "name": "detail_sync_progress", "value": "ซิงก์ความคืบหน้า" },
-    { "name": "detail_unbind", "value": "ยกเลิกผูก" },
-    { "name": "detail_chapters_count", "value": "ตอน (%d)" },
-    { "name": "detail_sort_asc", "value": "น้อยไปมาก" },
-    { "name": "detail_sort_desc", "value": "มากไปน้อย" },
-    { "name": "detail_mark_all_read", "value": "อ่านทั้งหมด" },
-    { "name": "detail_read", "value": "อ่านแล้ว" },
-    { "name": "detail_downloaded", "value": "ดาวน์โหลดแล้ว" },
-    { "name": "detail_in_queue", "value": "อยู่ในคิว" },
-    { "name": "detail_download", "value": "ดาวน์โหลด" },
-    { "name": "reader_chapter_not_found", "value": "ไม่พบตอน" },
-    { "name": "reader_load_failed", "value": "โหลดไม่สำเร็จ: %s" },
-    { "name": "reader_mode_ltr", "value": "ซ้ายไปขวา" },
-    { "name": "reader_mode_rtl", "value": "ขวาไปซ้าย" },
-    { "name": "reader_mode_webtoon", "value": "เว็บตูน" },
-    { "name": "reader_reading_mode", "value": "โหมดการอ่าน" },
-    { "name": "reader_orientation_free", "value": "อิสระ" },
-    { "name": "reader_orientation_portrait", "value": "แนวตั้ง" },
-    { "name": "reader_orientation_landscape", "value": "แนวนอน" },
-    { "name": "reader_screen_orientation", "value": "ทิศทางหน้าจอ" },
-    { "name": "reader_last_chapter", "value": "อยู่ตอนสุดท้ายแล้ว" },
-    { "name": "reader_first_chapter", "value": "อยู่ตอนแรกแล้ว" },
-    { "name": "reader_first_page", "value": "อยู่หน้าแรกแล้ว" },
-    { "name": "reader_last_page", "value": "อยู่หน้าสุดท้ายแล้ว" },
-    { "name": "reader_loading_chapter", "value": "กำลังโหลดตอน…" },
-    { "name": "reader_settings", "value": "ตั้งค่าตัวอ่าน" },
-    { "name": "reader_background", "value": "พื้นหลัง" },
-    { "name": "reader_theme_auto", "value": "อัตโนมัติ" },
-    { "name": "reader_theme_white", "value": "ขาว" },
-    { "name": "reader_theme_gray", "value": "เทา" },
-    { "name": "reader_theme_black", "value": "ดำ" },
-    { "name": "reader_show_page_number", "value": "แสดงเลขหน้า" },
-    { "name": "reader_brightness", "value": "ความสว่าง" },
-    { "name": "reader_auto", "value": "อัตโนมัติ" },
-    { "name": "plugin_title", "value": "ส่วนขยาย" },
-    { "name": "plugin_installed_section", "value": "ติดตั้งแล้ว" },
-    { "name": "plugin_empty", "value": "ยังไม่มีส่วนขยาย ติดตั้งด้านล่าง" },
-    { "name": "plugin_disable_hint", "value": "ส่วนขยายที่ปิดใช้สามารถเปิดใหม่ได้ทุกเมื่อ" },
-    { "name": "plugin_up_to_date", "value": "เป็นเวอร์ชันล่าสุด" },
-    { "name": "plugin_local_install", "value": "ติดตั้งจากไฟล์" },
-    { "name": "plugin_install_from_file", "value": "เลือกไฟล์เพื่อติดตั้ง" },
-    { "name": "plugin_processing", "value": "กำลังประมวลผล…" },
-    { "name": "plugin_package_hint", "value": "รองรับแพ็กเกจส่วนขยาย .honyomiplug / .zip" },
-    { "name": "plugin_repo", "value": "ที่เก็บออนไลน์" },
-    { "name": "plugin_repo_config", "value": "ตั้งค่าที่เก็บ" },
-    { "name": "plugin_repo_refresh", "value": "รีเฟรช" },
-    { "name": "plugin_repo_hint", "value": "ยังไม่ได้ตั้งค่าที่เก็บส่วนขยาย" },
-    { "name": "plugin_repo_loading", "value": "กำลังโหลดที่เก็บ…" },
-    { "name": "plugin_repo_url_title", "value": "URL ที่เก็บส่วนขยาย" },
-    { "name": "plugin_repo_url_hint", "value": "ใส่ URL ที่เก็บส่วนขยาย" },
-    { "name": "plugin_repo_load_failed", "value": "โหลดที่เก็บไม่สำเร็จ: %s" },
-    { "name": "plugin_pick_file_failed", "value": "เลือกไฟล์ไม่สำเร็จ" },
-    { "name": "plugin_installed", "value": "ติดตั้งแล้ว: %s" },
-    { "name": "plugin_installed_name", "value": "ติดตั้ง %s แล้ว" },
-    { "name": "plugin_install_failed", "value": "ติดตั้งไม่สำเร็จ: %s" },
-    { "name": "plugin_action_failed", "value": "ดำเนินการไม่สำเร็จ" },
-    { "name": "plugin_uninstalled", "value": "ถอนการติดตั้งแล้ว: %s" },
-    { "name": "plugin_uninstall_failed", "value": "ถอนการติดตั้งไม่สำเร็จ" },
-    { "name": "settings_title", "value": "การตั้งค่า" },
-    { "name": "settings_general", "value": "ทั่วไป" },
-    { "name": "settings_start_tab", "value": "หน้าจอเริ่มต้น" },
-    { "name": "settings_personalization", "value": "ปรับแต่ง" },
-    { "name": "settings_library", "value": "ชั้นหนังสือ" },
-    { "name": "settings_reader", "value": "ตัวอ่าน" },
-    { "name": "settings_data", "value": "ข้อมูล" },
-    { "name": "settings_downloads", "value": "การดาวน์โหลด" },
-    { "name": "settings_browse", "value": "เรียกดู" },
-    { "name": "settings_advanced", "value": "ขั้นสูง" },
-    { "name": "settings_about", "value": "เกี่ยวกับ" },
-    { "name": "settings_tab_library", "value": "ชั้นหนังสือ" },
-    { "name": "settings_tab_updates", "value": "อัปเดต" },
-    { "name": "settings_tab_history", "value": "ประวัติ" },
-    { "name": "settings_tab_browse", "value": "เรียกดู" },
-    { "name": "settings_tab_more", "value": "เพิ่มเติม" },
-    { "name": "advanced_title", "value": "ขั้นสูง" },
-    { "name": "advanced_calculating", "value": "กำลังคำนวณ…" },
-    { "name": "advanced_storage", "value": "ที่เก็บข้อมูล" },
-    { "name": "advanced_clear_image_cache", "value": "ล้างแคชรูปภาพ" },
-    { "name": "advanced_image_cache_cleared", "value": "ล้างแคชรูปภาพแล้ว" },
-    { "name": "advanced_clear_cookies", "value": "ล้างคุกกี้" },
-    { "name": "advanced_cookies_cleared", "value": "ล้างคุกกี้ทั้งหมดแล้ว" },
-    { "name": "advanced_backup_restore", "value": "สำรองและกู้คืน" },
-    { "name": "advanced_export_backup", "value": "ส่งออกข้อมูลสำรอง" },
-    { "name": "advanced_import_backup", "value": "นำเข้าข้อมูลสำรอง" },
-    { "name": "advanced_tracking", "value": "การติดตาม" },
-    { "name": "advanced_anilist_token", "value": "โทเค็น AniList" },
-    { "name": "advanced_token_title", "value": "โทเค็นเข้าถึง AniList" },
-    { "name": "advanced_token_hint", "value": "วางโทเค็นเข้าถึง (เว้นว่างเพื่อล้าง)" },
-    { "name": "advanced_token_not_set", "value": "ยังไม่ตั้งค่า" },
-    { "name": "advanced_token_set", "value": "ตั้งค่าแล้ว" },
-    { "name": "advanced_token_saved", "value": "บันทึกโทเค็นแล้ว" },
-    { "name": "advanced_token_cleared", "value": "ล้างโทเค็นแล้ว" },
-    { "name": "advanced_backup_exported", "value": "ส่งออกข้อมูลสำรองแล้ว" },
-    { "name": "advanced_export_canceled", "value": "ยกเลิกการส่งออก" },
-    { "name": "advanced_export_failed", "value": "ส่งออกไม่สำเร็จ" },
-    { "name": "advanced_import_canceled", "value": "ยกเลิกการนำเข้า" },
-    { "name": "advanced_backup_invalid", "value": "ไฟล์สำรองไม่ถูกต้อง" },
-    { "name": "advanced_restored_manga", "value": "กู้คืนมังงะ %d เรื่อง" },
-    { "name": "advanced_import_failed", "value": "นำเข้าไม่สำเร็จ" },
-    { "name": "about_title", "value": "เกี่ยวกับ" },
-    { "name": "about_version", "value": "เวอร์ชัน 1.0.0" },
-    { "name": "about_desc", "value": "สถาปัตยกรรมได้รับแรงบันดาลใจจาก Mihon (Apache-2.0) แหล่งออนไลน์ติดตั้งแบบไดนามิกเป็นส่วนขยาย ส่วนแหล่งในเครื่องมีมาให้ในตัว" },
-    { "name": "about_ack", "value": "คำขอบคุณโอเพนซอร์ส:\n· Mihon / Tachiyomi — สถาปัตยกรรมแอปและการออกแบบการโต้ตอบ (Apache-2.0)\n· Material Symbols — ไอคอนในแอป (Apache-2.0)\n· MangaDex — แหล่งข้อมูลทดสอบ" },
-    { "name": "browse_set_title", "value": "เรียกดู" },
-    { "name": "browse_set_content", "value": "เนื้อหา" },
-    { "name": "browse_set_show_nsfw", "value": "แสดงแหล่ง NSFW" },
-    { "name": "browse_set_nsfw_hint", "value": "เมื่อเปิด แหล่งที่ส่วนขยายระบุว่า NSFW จะปรากฏในเรียกดู" },
-    { "name": "dl_set_title", "value": "การดาวน์โหลด" },
-    { "name": "dl_set_network", "value": "เครือข่าย" },
-    { "name": "dl_set_wifi_only", "value": "ดาวน์โหลดเฉพาะเมื่อใช้ Wi-Fi" },
-    { "name": "dl_set_wifi_only_hint", "value": "หมายเหตุ: สวิตช์นี้เป็นตัวยึดตำแหน่งในเวอร์ชันปัจจุบัน การตรวจจับประเภทเครือข่ายจะมาในรุ่นถัดไป" },
-    { "name": "lib_set_title", "value": "ชั้นหนังสือ" },
-    { "name": "lib_set_sort_group", "value": "กรองและเรียง" },
-    { "name": "lib_set_sort_default", "value": "การเรียงเริ่มต้น" },
-    { "name": "lib_set_sort_title", "value": "ชื่อเรื่อง" },
-    { "name": "lib_set_sort_last_update", "value": "ตอนล่าสุด" },
-    { "name": "lib_set_sort_added", "value": "วันที่เพิ่ม" },
-    { "name": "lib_set_sort_unread", "value": "จำนวนยังไม่อ่าน" },
-    { "name": "lib_set_sort_asc", "value": "เรียงชื่อเรื่องน้อยไปมาก" },
-    { "name": "lib_set_filter_default", "value": "ตัวกรองเริ่มต้น" },
-    { "name": "lib_set_filter_unread", "value": "ยังไม่อ่าน" },
-    { "name": "lib_set_filter_downloaded", "value": "ดาวน์โหลดแล้ว" },
-    { "name": "lib_set_filter_uncompleted", "value": "ยังไม่จบ" },
-    { "name": "lib_set_display_group", "value": "การแสดงผล" },
-    { "name": "lib_set_view_default", "value": "มุมมองเริ่มต้น" },
-    { "name": "lib_set_view_grid", "value": "ตาราง" },
-    { "name": "lib_set_view_cover", "value": "ตารางปก" },
-    { "name": "lib_set_view_list", "value": "รายการ" },
-    { "name": "lib_set_grid_cols", "value": "จำนวนคอลัมน์ตาราง" },
-    { "name": "lib_set_cols_auto", "value": "อัตโนมัติ" },
-    { "name": "lib_set_cols_2", "value": "2 คอลัมน์" },
-    { "name": "lib_set_cols_3", "value": "3 คอลัมน์" },
-    { "name": "lib_set_cols_4", "value": "4 คอลัมน์" },
-    { "name": "lib_set_unread_badge", "value": "ป้ายยังไม่อ่าน" },
-    { "name": "lib_set_download_badge", "value": "ป้ายดาวน์โหลด" },
-    { "name": "reader_set_title", "value": "ตัวอ่าน" },
-    { "name": "reader_set_mode_group", "value": "โหมดการอ่าน" },
-    { "name": "reader_set_mode_default", "value": "โหมดเริ่มต้น" },
-    { "name": "reader_set_mode_ltr", "value": "ซ้ายไปขวา" },
-    { "name": "reader_set_mode_rtl", "value": "ขวาไปซ้าย" },
-    { "name": "reader_set_mode_vertical", "value": "พลิกหน้าแนวตั้ง" },
-    { "name": "reader_set_mode_webtoon", "value": "เว็บตูน" },
-    { "name": "reader_set_dual_page", "value": "สองหน้า (แนวนอน)" },
-    { "name": "reader_set_display_group", "value": "การแสดงผล" },
-    { "name": "reader_set_show_page_number", "value": "แสดงเลขหน้า" },
-    { "name": "reader_set_bg_color", "value": "พื้นหลังตัวอ่าน" },
-    { "name": "reader_set_theme_follow", "value": "ตามธีม" },
-    { "name": "reader_set_theme_white", "value": "ขาว" },
-    { "name": "reader_set_theme_black", "value": "ดำ" },
-    { "name": "reader_set_theme_gray", "value": "เทา" },
-    { "name": "reader_set_reset_brightness", "value": "รีเซ็ตความสว่างตัวอ่าน" },
-    { "name": "reader_set_brightness_reset", "value": "ตั้งความสว่างให้ตามระบบแล้ว" },
-    { "name": "browse_tab_sources", "value": "แหล่ง" },
-    { "name": "browse_tab_extensions", "value": "ส่วนขยาย" },
-    { "name": "browse_tab_migrate", "value": "ย้าย" },
-    { "name": "browse_pin", "value": "ปักหมุด" },
-    { "name": "browse_unpin", "value": "เลิกปักหมุด" },
-    { "name": "browse_disable_source", "value": "ปิดแหล่ง" },
-    { "name": "browse_source_disabled", "value": "ปิดแหล่งแล้ว" },
-    { "name": "browse_pinned", "value": "ปักหมุดแล้ว" },
-    { "name": "browse_sources_empty", "value": "ไม่มีแหล่ง ติดตั้งจากแท็บส่วนขยาย" },
-    { "name": "browse_filter_langs", "value": "กรองภาษา" },
-    { "name": "browse_filter_all", "value": "ทั้งหมด" },
-    { "name": "browse_source_missing", "value": "แหล่งใช้ไม่ได้ ส่วนขยายอาจถูกปิดไว้" },
-    { "name": "global_search_hint", "value": "ค้นหาทุกแหล่ง" },
-    { "name": "global_search_failed", "value": "ค้นหาไม่สำเร็จ" },
-    { "name": "ext_search_hint", "value": "ค้นหาส่วนขยาย" },
-    { "name": "ext_search_no_match", "value": "ไม่พบรายการที่ตรงกัน" },
-    { "name": "ext_repo_settings", "value": "การตั้งค่าที่เก็บ" },
-    { "name": "ext_refresh_repo", "value": "รีเฟรชที่เก็บ" },
-    { "name": "migrate_pick_source", "value": "เลือกแหล่งที่จะย้าย" },
-    { "name": "migrate_empty_library", "value": "ชั้นหนังสือว่าง" },
-    { "name": "migrate_select_all", "value": "เลือกทั้งหมด" },
-    { "name": "migrate_deselect_all", "value": "ยกเลิกการเลือกทั้งหมด" },
-    { "name": "migrate_action", "value": "ย้าย (%d)" },
-    { "name": "migrate_title", "value": "ย้าย" },
-    { "name": "migrate_skip", "value": "ข้าม" },
-    { "name": "migrate_progress", "value": "%d จาก %d" },
-    { "name": "migrate_target_source", "value": "แหล่งปลายทาง" },
-    { "name": "migrate_search_hint", "value": "ค้นหามังงะในแหล่งปลายทาง" },
-    { "name": "migrate_confirm_title", "value": "ย้ายไปมังงะนี้หรือไม่?" },
-    { "name": "migrate_item_done", "value": "ย้ายแล้ว: %s" },
-    { "name": "migrate_failed", "value": "ย้ายไม่สำเร็จ: %s" },
-    { "name": "migrate_done", "value": "ย้ายเสร็จแล้ว" },
-    { "name": "migrate_no_target", "value": "ไม่มีแหล่งปลายทาง" },
-    { "name": "stats_title", "value": "สถิติ" },
-    { "name": "stats_overview_section", "value": "ภาพรวม" },
-    { "name": "stats_in_library", "value": "ในชั้นหนังสือ" },
-    { "name": "stats_read_duration", "value": "เวลาอ่าน" },
-    { "name": "stats_completed_titles", "value": "จบแล้ว" },
-    { "name": "stats_titles_section", "value": "เรื่อง" },
-    { "name": "stats_started_titles", "value": "เริ่มอ่านแล้ว" },
-    { "name": "stats_local_titles", "value": "ในเครื่อง" },
-    { "name": "stats_chapters_section", "value": "ตอน" },
-    { "name": "stats_total_chapters", "value": "ทั้งหมด" },
-    { "name": "stats_read_chapters", "value": "อ่านแล้ว" },
-    { "name": "stats_downloaded_chapters", "value": "ดาวน์โหลดแล้ว" },
-    { "name": "stats_tracker_section", "value": "การติดตาม" },
-    { "name": "stats_tracked_titles", "value": "เรื่องที่ติดตาม" },
-    { "name": "stats_mean_score", "value": "คะแนนเฉลี่ย" },
-    { "name": "stats_used", "value": "ใช้งานอยู่" },
-    { "name": "stats_not_applicable", "value": "ไม่มี" },
-    { "name": "stats_week", "value": "สัปดาห์" },
-    { "name": "stats_month", "value": "เดือน" },
-    { "name": "stats_week_total", "value": "%s สัปดาห์นี้" },
-    { "name": "stats_month_total", "value": "%s เดือนนี้" },
-    { "name": "stats_no_reading", "value": "ไม่มีการอ่านในช่วงนี้" },
-    { "name": "stats_day_short", "value": "%dว." },
-    { "name": "stats_hour_short", "value": "%dชม." },
-    { "name": "stats_minute_short", "value": "%dน." },
-    { "name": "stats_second_short", "value": "%dวิ" },
-    { "name": "stats_wd_sun", "value": "อา" },
-    { "name": "stats_wd_mon", "value": "จ" },
-    { "name": "stats_wd_tue", "value": "อ" },
-    { "name": "stats_wd_wed", "value": "พ" },
-    { "name": "stats_wd_thu", "value": "พฤ" },
-    { "name": "stats_wd_fri", "value": "ศ" },
-    { "name": "stats_wd_sat", "value": "ส" },
-    { "name": "reader_mode_vertical", "value": "พลิกหน้าแนวตั้ง" },
-    { "name": "reader_mode_smart_grip", "value": "จับอัจฉริยะ" },
-    { "name": "reader_orientation_lock_portrait", "value": "ล็อกแนวตั้ง" },
-    { "name": "reader_orientation_lock_landscape", "value": "ล็อกแนวนอน" },
-    { "name": "reader_tab_general", "value": "ทั่วไป" },
-    { "name": "reader_tab_filter", "value": "ฟิลเตอร์สี" },
-    { "name": "reader_filter_grayscale", "value": "ระดับเทา" },
-    { "name": "reader_filter_invert", "value": "กลับสี" },
-    { "name": "reader_filter_contrast", "value": "คอนทราสต์" },
-    { "name": "reader_filter_saturation", "value": "ความอิ่มสี" },
-    { "name": "reader_crop_borders", "value": "ตัดขอบ" },
-    { "name": "reader_nav_tap_zones", "value": "โซนแตะ" },
-    { "name": "reader_nav_default", "value": "ค่าเริ่มต้น" },
-    { "name": "reader_nav_ltr", "value": "ซ้ายไปขวา" },
-    { "name": "reader_nav_rtl", "value": "ขวาไปซ้าย" },
-    { "name": "reader_nav_vertical", "value": "แนวตั้ง" },
-    { "name": "reader_nav_edge", "value": "ขอบ" },
-    { "name": "reader_nav_none", "value": "ไม่มี" },
-    { "name": "reader_dual_page", "value": "แสดงสองหน้า" },
-    { "name": "reader_webtoon_padding", "value": "ระยะขอบข้างเว็บตูน" },
-    { "name": "reader_set_mode_smart_grip", "value": "จับอัจฉริยะ" },
-    { "name": "ext_install_local", "value": "ติดตั้งจากในเครื่อง" },
-    { "name": "ext_detail_title", "value": "ข้อมูลส่วนขยาย" },
-    { "name": "ext_info_version", "value": "เวอร์ชัน" },
-    { "name": "ext_info_language", "value": "ภาษา" },
-    { "name": "ext_uninstall_title", "value": "ถอนการติดตั้งส่วนขยาย" },
-    { "name": "ext_uninstall_msg", "value": "ถอนการติดตั้ง \"%s\" หรือไม่? ข้อมูลมังงะในชั้นหนังสือจะยังอยู่" },
-    { "name": "ext_detail_sources", "value": "แหล่ง" },
-    { "name": "ext_detail_settings", "value": "การตั้งค่า" },
-    { "name": "ext_pref_loading", "value": "กำลังโหลด…" },
-    { "name": "ext_pref_failed", "value": "ใช้การตั้งค่าไม่สำเร็จ" },
-    { "name": "ext_detail_missing", "value": "ไม่มีส่วนขยายหรือยังไม่ได้โหลด" },
-    { "name": "action_filter", "value": "กรอง" },
-    { "name": "action_update_library", "value": "อัปเดตชั้นหนังสือ" },
-    { "name": "action_update_category", "value": "อัปเดตหมวดหมู่" },
-    { "name": "action_open_random_manga", "value": "เปิดเรื่องแบบสุ่ม" },
-    { "name": "action_select_all", "value": "เลือกทั้งหมด" },
-    { "name": "action_select_inverse", "value": "สลับการเลือก" },
-    { "name": "action_move_category", "value": "ย้ายหมวดหมู่" },
-    { "name": "action_mark_as_read", "value": "ทำเครื่องหมายว่าอ่านแล้ว" },
-    { "name": "action_mark_as_unread", "value": "ทำเครื่องหมายว่ายังไม่อ่าน" },
-    { "name": "action_download", "value": "ดาวน์โหลด" },
-    { "name": "action_delete", "value": "ลบ" },
-    { "name": "action_migrate", "value": "ย้าย" },
-    { "name": "action_remove_from_library", "value": "นำออกจากชั้นหนังสือ" },
-    { "name": "action_remove_from_library_msg", "value": "นำมังงะที่เลือก %d เรื่องออกจากชั้นหนังสือหรือไม่?" },
-    { "name": "action_download_queued", "value": "เพิ่มงานดาวน์โหลด %d รายการแล้ว" },
-    { "name": "library_search_hint", "value": "ค้นชั้นหนังสือ" },
-    { "name": "library_no_match", "value": "ไม่มีมังงะที่ตรงกัน" },
-    { "name": "lib_sheet_tab_filter", "value": "กรอง" },
-    { "name": "lib_sheet_tab_sort", "value": "จัดเรียง" },
-    { "name": "lib_sheet_tab_display", "value": "การแสดงผล" },
-    { "name": "lib_filter_downloaded", "value": "ดาวน์โหลดแล้ว" },
-    { "name": "lib_filter_unread", "value": "ยังไม่อ่าน" },
-    { "name": "lib_filter_started", "value": "เคยอ่าน" },
-    { "name": "lib_filter_bookmarked", "value": "บุ๊กมาร์กแล้ว" },
-    { "name": "lib_filter_completed", "value": "จบแล้ว" },
-    { "name": "lib_filter_tracked", "value": "ติดตามแล้ว" },
-    { "name": "lib_sort_alpha", "value": "ชื่อเรื่อง" },
-    { "name": "lib_sort_total", "value": "จำนวนตอน" },
-    { "name": "lib_sort_last_read", "value": "อ่านล่าสุด" },
-    { "name": "lib_sort_last_update", "value": "เวลาตรวจอัปเดต" },
-    { "name": "lib_sort_unread", "value": "จำนวนยังไม่อ่าน" },
-    { "name": "lib_sort_latest_chapter", "value": "เวลาอัปเดตเรื่อง" },
-    { "name": "lib_sort_fetch_date", "value": "เวลาดึงตอน" },
-    { "name": "lib_sort_date_added", "value": "วันที่เพิ่ม" },
-    { "name": "lib_sort_random", "value": "สุ่ม" },
-    { "name": "lib_display_compact", "value": "ตารางแน่น" },
-    { "name": "lib_display_comfortable", "value": "ตารางห่าง" },
-    { "name": "lib_display_cover", "value": "ตารางปก" },
-    { "name": "lib_display_list", "value": "รายการ" },
-    { "name": "lib_display_grid_size", "value": "จำนวนต่อแถว" },
-    { "name": "lib_display_grid_auto", "value": "อัตโนมัติ" },
-    { "name": "lib_display_badges_group", "value": "ป้ายและปุ่ม" },
-    { "name": "lib_badge_downloaded", "value": "จำนวนตอนที่ดาวน์โหลด" },
-    { "name": "lib_badge_unread", "value": "ตอนที่ยังไม่อ่าน" },
-    { "name": "lib_badge_local", "value": "แหล่งในเครื่อง" },
-    { "name": "lib_badge_language", "value": "ภาษา" },
-    { "name": "lib_badge_continue", "value": "ปุ่มอ่านต่อ" },
-    { "name": "lib_display_tabs_group", "value": "แท็บ" },
-    { "name": "lib_show_category_tabs", "value": "แสดงแท็บหมวดหมู่" },
-    { "name": "lib_show_manga_count", "value": "แสดงจำนวนเรื่อง" },
-    { "name": "EntryFormAbility_label", "value": "การ์ด Honyomi" },
-    { "name": "EntryFormAbility_desc", "value": "ผู้ให้บริการการ์ดหน้าเดสก์ท็อป" },
-    { "name": "card_recent_display", "value": "อ่านต่อ" },
-    { "name": "card_recent_desc", "value": "อ่านมังงะล่าสุดต่อได้อย่างรวดเร็ว" },
-    { "name": "card_updates_display", "value": "อัปเดต" },
-    { "name": "card_updates_desc", "value": "ตอนที่ยังไม่อ่านล่าสุดในชั้นหนังสือ" },
-    { "name": "card_recent_header", "value": "อ่านต่อ" },
-    { "name": "card_updates_header", "value": "อัปเดต" },
-    { "name": "card_unread_count", "value": "ยังไม่อ่าน %d ตอน" },
-    { "name": "card_empty_recent", "value": "ยังไม่มีประวัติการอ่าน" },
-    { "name": "card_empty_updates", "value": "ไม่มีตอนที่ยังไม่อ่าน" },
-    { "name": "card_open_hint", "value": "แตะเพื่อเปิดแอป" },
-    { "name": "card_manga_display", "value": "การ์ดมังงะ" },
-    { "name": "card_manga_desc", "value": "เพิ่มจากหน้ารายละเอียด แตะปกเพื่ออ่าน" },
-    { "name": "card_manga_empty", "value": "เพิ่มจากหน้ารายละเอียดมังงะไปยังหน้าเดสก์ท็อป" },
-    { "name": "detail_add_to_desktop", "value": "เพิ่มไปยังหน้าเดสก์ท็อป" },
-    { "name": "detail_card_added", "value": "เพิ่มไปยังหน้าเดสก์ท็อปแล้ว" },
-    { "name": "detail_card_add_failed", "value": "เพิ่มการ์ดไม่สำเร็จ" },
-    { "name": "card_stats_week_display", "value": "สถิติรายสัปดาห์" },
-    { "name": "card_stats_week_desc", "value": "เวลาอ่านรายวันในสัปดาห์นี้" },
-    { "name": "card_stats_month_display", "value": "สถิติรายเดือน" },
-    { "name": "card_stats_month_desc", "value": "เวลาอ่านรายวันในเดือนนี้" },
-    { "name": "card_stats_empty", "value": "ยังไม่มีการอ่าน" },
-    { "name": "action_view_upcoming", "value": "แสดงอัปเดตที่จะมา" },
-    { "name": "label_upcoming", "value": "อัปเดตที่จะมา" },
-    { "name": "upcoming_guide", "value": "คู่มืออัปเดตที่จะมา" },
-    { "name": "upcoming_calendar_prev", "value": "เดือนก่อน" },
-    { "name": "upcoming_calendar_next", "value": "เดือนถัดไป" },
-    { "name": "pref_filter_update_categories_details", "value": "เรื่องที่อยู่ในทั้งหมวดที่รวมและหมวดที่ยกเว้นจะไม่แสดง" },
-    { "name": "relative_time_today", "value": "วันนี้" },
-    { "name": "relative_time_days_ago", "value": "%d วันที่แล้ว" },
-    { "name": "upcoming_relative_time_days", "value": "อีก %d วัน" },
-    { "name": "card_upcoming_display", "value": "อัปเดตที่จะมา" },
-    { "name": "card_upcoming_desc", "value": "ปฏิทินอัปเดตที่คาดไว้ของมังงะในชั้นหนังสือ" },
-    { "name": "card_upcoming_header", "value": "อัปเดตที่จะมา" },
-    { "name": "card_empty_upcoming", "value": "ไม่มีมังงะที่กำลังลงในชั้นหนังสือ" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "กรองรายการทั้งหมดในคลังของคุณ"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "หยุดประวัติการอ่านชั่วคราว"
+    },
+    {
+      "name": "more_support",
+      "value": "Support Us"
+    },
+    {
+      "name": "more_help",
+      "value": "ช่วยเหลือ"
+    },
+    {
+      "name": "support_perks",
+      "value": "Patrons get access to exclusive channels, with more perks to come."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (preferred)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "For alternative options or any related questions, join our Discord server."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "ข้อมูลและการจัดเก็บข้อมูล"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "ตำแหน่งที่จัดเก็บ"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "ใช้สำหรับการสำรองข้อมูลอัตโนมัติ การดาวน์โหลดตอน และแหล่งที่มาในเครื่อง"
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "สำรองข้อมูลและการเรียกคืน"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "สำรองข้อมูล"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "เรียกคืนค่าการสำรองข้อมูล"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "ความถี่ในการสำรองข้อมูลอัตโนมัติ"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "ควรเก็บสำเนาของข้อมูลสำรองไว้ที่อื่นด้วยเช่นกัน การสำรองข้อมูลอาจมีข้อมูลที่ละเอียดอ่อนรวมถึงรหัสผ่านที่เก็บไว้ ควรระวังหากแบ่งปันสำเนา"
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "สำรองข้อมูลอัตโนมัติครั้งล่าสุด: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "การใช้พื้นที่เก็บข้อมูล"
+    },
+    {
+      "name": "data_available_space",
+      "value": "พร้อมใช้งาน: %s / ทั้งหมด: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "ล้างแคชตอน"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "ใช้ไปแล้ว: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "ล้างแคชแล้ว %d แฟ้มถูกลบ"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "เกิดข้อผิดพลาดขณะกำลังล้าง"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "ล้างแคชตอนในเมื่อเปิดแอพ"
+    },
+    {
+      "name": "data_export",
+      "value": "ส่งออก"
+    },
+    {
+      "name": "data_library_list",
+      "value": "รายการคลัง"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "ส่งออกคลังแล้ว"
+    },
+    {
+      "name": "data_export_include",
+      "value": "เลือกข้อมูลที่จะรวมไว้"
+    },
+    {
+      "name": "data_column_title",
+      "value": "ชื่อเรื่อง"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Author"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "ปิด"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "ทุก 6 ชั่วโมง"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "ทุก 12 ชั่วโมง"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "ทุกวัน"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "ทุก 2 วัน"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "ทุกสัปดาห์"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "ตกลง"
+    },
+    {
+      "name": "common_cancel",
+      "value": "ยกเลิก"
+    },
+    {
+      "name": "common_confirm",
+      "value": "ยืนยัน"
+    },
+    {
+      "name": "common_delete",
+      "value": "ลบ"
+    },
+    {
+      "name": "common_retry",
+      "value": "ลองอีกครั้ง"
+    },
+    {
+      "name": "common_search",
+      "value": "ค้นหา"
+    },
+    {
+      "name": "common_all",
+      "value": "ทั้งหมด"
+    },
+    {
+      "name": "common_close",
+      "value": "ปิด"
+    },
+    {
+      "name": "common_save",
+      "value": "บันทึก"
+    },
+    {
+      "name": "common_install",
+      "value": "ติดตั้ง"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "ถอนการติดตั้ง"
+    },
+    {
+      "name": "common_update",
+      "value": "อัปเดต"
+    },
+    {
+      "name": "common_none",
+      "value": "ไม่มี"
+    },
+    {
+      "name": "common_default",
+      "value": "ค่าเริ่มต้น"
+    },
+    {
+      "name": "appearance_title",
+      "value": "ลักษณะ"
+    },
+    {
+      "name": "appearance_language",
+      "value": "ภาษา"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "ตามระบบ"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "โหมดธีม"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "ตามระบบ"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "สว่าง"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "มืด"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "สีเน้น"
+    },
+    {
+      "name": "appearance_other",
+      "value": "อื่นๆ"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "พื้นหลังดำสนิท AMOLED"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "น้ำเงิน"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "เขียว"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "ชมพู"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "ม่วง"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "ส้ม"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d นาทีที่แล้ว"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d ชั่วโมงที่แล้ว"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d วันที่แล้ว"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "กำลังลง"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "จบแล้ว"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "พักลง"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "ยกเลิกแล้ว"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "จัดพิมพ์ครบ"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "ไม่ทราบ"
+    },
+    {
+      "name": "tab_library",
+      "value": "ชั้นหนังสือ"
+    },
+    {
+      "name": "tab_updates",
+      "value": "อัปเดต"
+    },
+    {
+      "name": "tab_history",
+      "value": "ประวัติ"
+    },
+    {
+      "name": "tab_browse",
+      "value": "เรียกดู"
+    },
+    {
+      "name": "tab_more",
+      "value": "เพิ่มเติม"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "กำลังรอการยืนยัน…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "ยืนยันเสร็จแล้ว"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "ยืนยันว่าเป็นมนุษย์"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "เสร็จ"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "บันทึกผลการยืนยันแล้ว"
+    },
+    {
+      "name": "more_title",
+      "value": "เพิ่มเติม"
+    },
+    {
+      "name": "more_version",
+      "value": "เวอร์ชัน %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "ดาวน์โหลดแล้วเท่านั้น"
+    },
+    {
+      "name": "more_incognito",
+      "value": "โหมดไม่ระบุตัวตน"
+    },
+    {
+      "name": "more_downloads",
+      "value": "คิวดาวน์โหลด"
+    },
+    {
+      "name": "more_categories",
+      "value": "หมวดหมู่"
+    },
+    {
+      "name": "more_settings",
+      "value": "การตั้งค่า"
+    },
+    {
+      "name": "more_about",
+      "value": "เกี่ยวกับ"
+    },
+    {
+      "name": "more_plugins",
+      "value": "ส่วนขยาย"
+    },
+    {
+      "name": "categories_title",
+      "value": "หมวดหมู่"
+    },
+    {
+      "name": "categories_add",
+      "value": "หมวดหมู่ใหม่"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "ชื่อหมวดหมู่"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "เปลี่ยนชื่อหมวดหมู่"
+    },
+    {
+      "name": "categories_rename",
+      "value": "เปลี่ยนชื่อ"
+    },
+    {
+      "name": "categories_hint",
+      "value": "กดค้างที่หมวดหมู่เพื่อเปลี่ยนชื่อหรือลบ มังงะในหมวดที่ลบจะกลับไปที่ค่าเริ่มต้น"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "เลือกหมวดหมู่"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "กำลังโหลด…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "โหลดรูปไม่สำเร็จ"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "แตะเพื่อลองอีกครั้ง"
+    },
+    {
+      "name": "library_title",
+      "value": "ชั้นหนังสือ"
+    },
+    {
+      "name": "library_empty",
+      "value": "ชั้นหนังสือว่าง ไปเรียกดูเพื่อเพิ่มมังงะ"
+    },
+    {
+      "name": "library_new_category",
+      "value": "หมวดหมู่ใหม่"
+    },
+    {
+      "name": "library_category_name",
+      "value": "ชื่อหมวดหมู่"
+    },
+    {
+      "name": "updates_title",
+      "value": "อัปเดต"
+    },
+    {
+      "name": "updates_empty",
+      "value": "ไม่มีอัปเดตล่าสุด"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "พบตอนใหม่ %d ตอน"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "ไม่มีตอนใหม่"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "รีเฟรชไม่สำเร็จ"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "กำลังรีเฟรช…"
+    },
+    {
+      "name": "history_title",
+      "value": "ประวัติ"
+    },
+    {
+      "name": "history_clear",
+      "value": "ล้าง"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "ยืนยันล้าง?"
+    },
+    {
+      "name": "history_empty",
+      "value": "ยังไม่มีประวัติการอ่าน"
+    },
+    {
+      "name": "history_cleared",
+      "value": "ล้างประวัติแล้ว"
+    },
+    {
+      "name": "history_continue",
+      "value": "อ่านต่อ"
+    },
+    {
+      "name": "browse_title",
+      "value": "เรียกดู"
+    },
+    {
+      "name": "browse_import",
+      "value": "นำเข้า"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "ส่วนขยาย"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "มังงะในเครื่อง"
+    },
+    {
+      "name": "browse_popular",
+      "value": "ยอดนิยม"
+    },
+    {
+      "name": "browse_latest",
+      "value": "ล่าสุด"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "ค้นหามังงะ…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "ไม่พบมังงะ"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "ยังไม่มีมังงะในเครื่อง แตะนำเข้าเพื่อเพิ่ม"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "โหลดไม่สำเร็จ: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "ค้นหาไม่สำเร็จ: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "โหลดเพิ่มไม่สำเร็จ"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "เปิดรายละเอียดไม่สำเร็จ"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "เลือกไฟล์ไม่สำเร็จ"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "นำเข้า %d ไฟล์"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "ชื่อมังงะ"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "กรุณาใส่ชื่อ"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "นำเข้าแล้ว %d ไฟล์"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "นำเข้าไม่สำเร็จ: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "การดาวน์โหลด"
+    },
+    {
+      "name": "download_resume",
+      "value": "ทำต่อ"
+    },
+    {
+      "name": "download_pause",
+      "value": "หยุดชั่วคราว"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "ล้างรายการที่เสร็จ"
+    },
+    {
+      "name": "download_queue",
+      "value": "คิวดาวน์โหลด"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "อยู่ในคิว"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "กำลังดาวน์โหลด"
+    },
+    {
+      "name": "download_state_done",
+      "value": "เสร็จ"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "ล้มเหลว"
+    },
+    {
+      "name": "download_move_top",
+      "value": "ย้ายขึ้นบนสุด"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "ย้ายลงล่างสุด"
+    },
+    {
+      "name": "download_deleted",
+      "value": "ลบแล้ว"
+    },
+    {
+      "name": "download_empty",
+      "value": "ยังไม่มีการดาวน์โหลด"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "ดาวน์โหลดแล้ว"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d ตอน"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "ไม่มีตอน"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "ซิงก์ไม่สำเร็จ แสดงข้อมูลในเครื่อง"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "เพิ่มลงชั้นหนังสือแล้ว"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "นำออกจากชั้นหนังสือแล้ว"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "ทำเครื่องหมายทุกตอนว่าอ่านแล้ว"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "ใส่คิวดาวน์โหลดแล้ว"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "กรุณาตั้งค่าโทเค็น AniList ก่อน"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "ค้นหา AniList"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "ชื่อเรื่องมังงะ"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "ไม่พบผลการค้นหา"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "ค้นหา AniList ไม่สำเร็จ"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "ผูกกับ AniList แล้ว"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "ยกเลิกผูก AniList แล้ว"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "ซิงก์ความคืบหน้าถึงตอนที่ %d"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "ซิงก์ AniList ไม่สำเร็จ"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "ในเครื่อง"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "อยู่ในชั้นหนังสือ"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "เพิ่มลงชั้นหนังสือ"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "อ่านต่อ"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "เริ่มอ่าน"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "ยังไม่มีตอน"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "ย่อ"
+    },
+    {
+      "name": "detail_expand",
+      "value": "ขยาย"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "ติดตาม AniList"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "ยังไม่ได้ตั้งค่าโทเค็น AniList"
+    },
+    {
+      "name": "detail_searching",
+      "value": "กำลังค้นหา…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "ค้นหาแล้วผูก"
+    },
+    {
+      "name": "detail_bind",
+      "value": "ผูก"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "ซิงก์ถึงตอนที่ %d"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "ซิงก์ความคืบหน้า"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "ยกเลิกผูก"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "ตอน (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "น้อยไปมาก"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "มากไปน้อย"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "อ่านทั้งหมด"
+    },
+    {
+      "name": "detail_read",
+      "value": "อ่านแล้ว"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "ดาวน์โหลดแล้ว"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "อยู่ในคิว"
+    },
+    {
+      "name": "detail_download",
+      "value": "ดาวน์โหลด"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "ไม่พบตอน"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "โหลดไม่สำเร็จ: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "ซ้ายไปขวา"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "ขวาไปซ้าย"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "เว็บตูน"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "โหมดการอ่าน"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "อิสระ"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "แนวตั้ง"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "แนวนอน"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "ทิศทางหน้าจอ"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "อยู่ตอนสุดท้ายแล้ว"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "อยู่ตอนแรกแล้ว"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "อยู่หน้าแรกแล้ว"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "อยู่หน้าสุดท้ายแล้ว"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "กำลังโหลดตอน…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "ตั้งค่าตัวอ่าน"
+    },
+    {
+      "name": "reader_background",
+      "value": "พื้นหลัง"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "อัตโนมัติ"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "ขาว"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "เทา"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "ดำ"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "แสดงเลขหน้า"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "ความสว่าง"
+    },
+    {
+      "name": "reader_auto",
+      "value": "อัตโนมัติ"
+    },
+    {
+      "name": "plugin_title",
+      "value": "ส่วนขยาย"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "ติดตั้งแล้ว"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "ยังไม่มีส่วนขยาย ติดตั้งด้านล่าง"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "ส่วนขยายที่ปิดใช้สามารถเปิดใหม่ได้ทุกเมื่อ"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "เป็นเวอร์ชันล่าสุด"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "ติดตั้งจากไฟล์"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "เลือกไฟล์เพื่อติดตั้ง"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "กำลังประมวลผล…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "รองรับแพ็กเกจส่วนขยาย .honyomiplug / .zip"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "ที่เก็บออนไลน์"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "ตั้งค่าที่เก็บ"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "รีเฟรช"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "ยังไม่ได้ตั้งค่าที่เก็บส่วนขยาย"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "กำลังโหลดที่เก็บ…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "URL ที่เก็บส่วนขยาย"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "ใส่ URL ที่เก็บส่วนขยาย"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "โหลดที่เก็บไม่สำเร็จ: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "เลือกไฟล์ไม่สำเร็จ"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "ติดตั้งแล้ว: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "ติดตั้ง %s แล้ว"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "ติดตั้งไม่สำเร็จ: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "ดำเนินการไม่สำเร็จ"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "ถอนการติดตั้งแล้ว: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "ถอนการติดตั้งไม่สำเร็จ"
+    },
+    {
+      "name": "settings_title",
+      "value": "การตั้งค่า"
+    },
+    {
+      "name": "settings_general",
+      "value": "ทั่วไป"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "หน้าจอเริ่มต้น"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "ปรับแต่ง"
+    },
+    {
+      "name": "settings_library",
+      "value": "ชั้นหนังสือ"
+    },
+    {
+      "name": "settings_reader",
+      "value": "ตัวอ่าน"
+    },
+    {
+      "name": "settings_data",
+      "value": "ข้อมูล"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "การดาวน์โหลด"
+    },
+    {
+      "name": "settings_browse",
+      "value": "เรียกดู"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "ขั้นสูง"
+    },
+    {
+      "name": "settings_about",
+      "value": "เกี่ยวกับ"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "ชั้นหนังสือ"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "อัปเดต"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "ประวัติ"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "เรียกดู"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "เพิ่มเติม"
+    },
+    {
+      "name": "advanced_title",
+      "value": "ขั้นสูง"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "กำลังคำนวณ…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "ที่เก็บข้อมูล"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "ล้างแคชรูปภาพ"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "ล้างแคชรูปภาพแล้ว"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "ล้างคุกกี้"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "ล้างคุกกี้ทั้งหมดแล้ว"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "สำรองและกู้คืน"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "ส่งออกข้อมูลสำรอง"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "นำเข้าข้อมูลสำรอง"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "การติดตาม"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "โทเค็น AniList"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "โทเค็นเข้าถึง AniList"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "วางโทเค็นเข้าถึง (เว้นว่างเพื่อล้าง)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "ยังไม่ตั้งค่า"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "ตั้งค่าแล้ว"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "บันทึกโทเค็นแล้ว"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "ล้างโทเค็นแล้ว"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "ส่งออกข้อมูลสำรองแล้ว"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "ยกเลิกการส่งออก"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "ส่งออกไม่สำเร็จ"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "ยกเลิกการนำเข้า"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "ไฟล์สำรองไม่ถูกต้อง"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "กู้คืนมังงะ %d เรื่อง"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "นำเข้าไม่สำเร็จ"
+    },
+    {
+      "name": "about_title",
+      "value": "เกี่ยวกับ"
+    },
+    {
+      "name": "about_version",
+      "value": "เวอร์ชัน 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "สถาปัตยกรรมได้รับแรงบันดาลใจจาก Mihon (Apache-2.0) แหล่งออนไลน์ติดตั้งแบบไดนามิกเป็นส่วนขยาย ส่วนแหล่งในเครื่องมีมาให้ในตัว"
+    },
+    {
+      "name": "about_ack",
+      "value": "คำขอบคุณโอเพนซอร์ส:\n· Mihon / Tachiyomi — สถาปัตยกรรมแอปและการออกแบบการโต้ตอบ (Apache-2.0)\n· Material Symbols — ไอคอนในแอป (Apache-2.0)\n· MangaDex — แหล่งข้อมูลทดสอบ"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "เรียกดู"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "เนื้อหา"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "แสดงแหล่ง NSFW"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "เมื่อเปิด แหล่งที่ส่วนขยายระบุว่า NSFW จะปรากฏในเรียกดู"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "การดาวน์โหลด"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "เครือข่าย"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "ดาวน์โหลดเฉพาะเมื่อใช้ Wi-Fi"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "หมายเหตุ: สวิตช์นี้เป็นตัวยึดตำแหน่งในเวอร์ชันปัจจุบัน การตรวจจับประเภทเครือข่ายจะมาในรุ่นถัดไป"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "ชั้นหนังสือ"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "กรองและเรียง"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "การเรียงเริ่มต้น"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "ชื่อเรื่อง"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "ตอนล่าสุด"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "วันที่เพิ่ม"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "จำนวนยังไม่อ่าน"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "เรียงชื่อเรื่องน้อยไปมาก"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "ตัวกรองเริ่มต้น"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "ยังไม่อ่าน"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "ดาวน์โหลดแล้ว"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "ยังไม่จบ"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "การแสดงผล"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "มุมมองเริ่มต้น"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "ตาราง"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "ตารางปก"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "รายการ"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "จำนวนคอลัมน์ตาราง"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "อัตโนมัติ"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 คอลัมน์"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 คอลัมน์"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 คอลัมน์"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "ป้ายยังไม่อ่าน"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "ป้ายดาวน์โหลด"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "ตัวอ่าน"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "โหมดการอ่าน"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "โหมดเริ่มต้น"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "ซ้ายไปขวา"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "ขวาไปซ้าย"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "พลิกหน้าแนวตั้ง"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "เว็บตูน"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "สองหน้า (แนวนอน)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "การแสดงผล"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "แสดงเลขหน้า"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "พื้นหลังตัวอ่าน"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "ตามธีม"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "ขาว"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "ดำ"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "เทา"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "รีเซ็ตความสว่างตัวอ่าน"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "ตั้งความสว่างให้ตามระบบแล้ว"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "แหล่ง"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "ส่วนขยาย"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "ย้าย"
+    },
+    {
+      "name": "browse_pin",
+      "value": "ปักหมุด"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "เลิกปักหมุด"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "ปิดแหล่ง"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "ปิดแหล่งแล้ว"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "ปักหมุดแล้ว"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "ไม่มีแหล่ง ติดตั้งจากแท็บส่วนขยาย"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "กรองภาษา"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "ทั้งหมด"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "แหล่งใช้ไม่ได้ ส่วนขยายอาจถูกปิดไว้"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "ค้นหาทุกแหล่ง"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "ค้นหาไม่สำเร็จ"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "ค้นหาส่วนขยาย"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "ไม่พบรายการที่ตรงกัน"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "การตั้งค่าที่เก็บ"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "รีเฟรชที่เก็บ"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "เลือกแหล่งที่จะย้าย"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "ชั้นหนังสือว่าง"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "เลือกทั้งหมด"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "ยกเลิกการเลือกทั้งหมด"
+    },
+    {
+      "name": "migrate_action",
+      "value": "ย้าย (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "ย้าย"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "ข้าม"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d จาก %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "แหล่งปลายทาง"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "ค้นหามังงะในแหล่งปลายทาง"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "ย้ายไปมังงะนี้หรือไม่?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "ย้ายแล้ว: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "ย้ายไม่สำเร็จ: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "ย้ายเสร็จแล้ว"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "ไม่มีแหล่งปลายทาง"
+    },
+    {
+      "name": "stats_title",
+      "value": "สถิติ"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "ภาพรวม"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "ในชั้นหนังสือ"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "เวลาอ่าน"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "จบแล้ว"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "เรื่อง"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "เริ่มอ่านแล้ว"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "ในเครื่อง"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "ตอน"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "ทั้งหมด"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "อ่านแล้ว"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "ดาวน์โหลดแล้ว"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "การติดตาม"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "เรื่องที่ติดตาม"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "คะแนนเฉลี่ย"
+    },
+    {
+      "name": "stats_used",
+      "value": "ใช้งานอยู่"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "ไม่มี"
+    },
+    {
+      "name": "stats_week",
+      "value": "สัปดาห์"
+    },
+    {
+      "name": "stats_month",
+      "value": "เดือน"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "%s สัปดาห์นี้"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "%s เดือนนี้"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "ไม่มีการอ่านในช่วงนี้"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%dว."
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dชม."
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dน."
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%dวิ"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "อา"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "จ"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "อ"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "พ"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "พฤ"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "ศ"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "ส"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "พลิกหน้าแนวตั้ง"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "จับอัจฉริยะ"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "ล็อกแนวตั้ง"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "ล็อกแนวนอน"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "ทั่วไป"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "ฟิลเตอร์สี"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "ระดับเทา"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "กลับสี"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "คอนทราสต์"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "ความอิ่มสี"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "ตัดขอบ"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "โซนแตะ"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "ค่าเริ่มต้น"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "ซ้ายไปขวา"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "ขวาไปซ้าย"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "แนวตั้ง"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "ขอบ"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "ไม่มี"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "แสดงสองหน้า"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "ระยะขอบข้างเว็บตูน"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "จับอัจฉริยะ"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "ติดตั้งจากในเครื่อง"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "ข้อมูลส่วนขยาย"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "เวอร์ชัน"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "ภาษา"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "ถอนการติดตั้งส่วนขยาย"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "ถอนการติดตั้ง \"%s\" หรือไม่? ข้อมูลมังงะในชั้นหนังสือจะยังอยู่"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "แหล่ง"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "การตั้งค่า"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "กำลังโหลด…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "ใช้การตั้งค่าไม่สำเร็จ"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "ไม่มีส่วนขยายหรือยังไม่ได้โหลด"
+    },
+    {
+      "name": "action_filter",
+      "value": "กรอง"
+    },
+    {
+      "name": "action_update_library",
+      "value": "อัปเดตชั้นหนังสือ"
+    },
+    {
+      "name": "action_update_category",
+      "value": "อัปเดตหมวดหมู่"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "เปิดเรื่องแบบสุ่ม"
+    },
+    {
+      "name": "action_select_all",
+      "value": "เลือกทั้งหมด"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "สลับการเลือก"
+    },
+    {
+      "name": "action_move_category",
+      "value": "ย้ายหมวดหมู่"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "ทำเครื่องหมายว่าอ่านแล้ว"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "ทำเครื่องหมายว่ายังไม่อ่าน"
+    },
+    {
+      "name": "action_download",
+      "value": "ดาวน์โหลด"
+    },
+    {
+      "name": "action_delete",
+      "value": "ลบ"
+    },
+    {
+      "name": "action_migrate",
+      "value": "ย้าย"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "นำออกจากชั้นหนังสือ"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "นำมังงะที่เลือก %d เรื่องออกจากชั้นหนังสือหรือไม่?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "เพิ่มงานดาวน์โหลด %d รายการแล้ว"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "ค้นชั้นหนังสือ"
+    },
+    {
+      "name": "library_no_match",
+      "value": "ไม่มีมังงะที่ตรงกัน"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "กรอง"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "จัดเรียง"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "การแสดงผล"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "ดาวน์โหลดแล้ว"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "ยังไม่อ่าน"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "เคยอ่าน"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "บุ๊กมาร์กแล้ว"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "จบแล้ว"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "ติดตามแล้ว"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "ชื่อเรื่อง"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "จำนวนตอน"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "อ่านล่าสุด"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "เวลาตรวจอัปเดต"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "จำนวนยังไม่อ่าน"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "เวลาอัปเดตเรื่อง"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "เวลาดึงตอน"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "วันที่เพิ่ม"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "สุ่ม"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "ตารางแน่น"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "ตารางห่าง"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "ตารางปก"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "รายการ"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "จำนวนต่อแถว"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "อัตโนมัติ"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "ป้ายและปุ่ม"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "จำนวนตอนที่ดาวน์โหลด"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "ตอนที่ยังไม่อ่าน"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "แหล่งในเครื่อง"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "ภาษา"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "ปุ่มอ่านต่อ"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "แท็บ"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "แสดงแท็บหมวดหมู่"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "แสดงจำนวนเรื่อง"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "การ์ด Honyomi"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "ผู้ให้บริการการ์ดหน้าเดสก์ท็อป"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "อ่านต่อ"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "อ่านมังงะล่าสุดต่อได้อย่างรวดเร็ว"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "อัปเดต"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "ตอนที่ยังไม่อ่านล่าสุดในชั้นหนังสือ"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "อ่านต่อ"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "อัปเดต"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "ยังไม่อ่าน %d ตอน"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "ยังไม่มีประวัติการอ่าน"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "ไม่มีตอนที่ยังไม่อ่าน"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "แตะเพื่อเปิดแอป"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "การ์ดมังงะ"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "เพิ่มจากหน้ารายละเอียด แตะปกเพื่ออ่าน"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "เพิ่มจากหน้ารายละเอียดมังงะไปยังหน้าเดสก์ท็อป"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "เพิ่มไปยังหน้าเดสก์ท็อป"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "เพิ่มไปยังหน้าเดสก์ท็อปแล้ว"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "เพิ่มการ์ดไม่สำเร็จ"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "สถิติรายสัปดาห์"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "เวลาอ่านรายวันในสัปดาห์นี้"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "สถิติรายเดือน"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "เวลาอ่านรายวันในเดือนนี้"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "ยังไม่มีการอ่าน"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "แสดงอัปเดตที่จะมา"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "อัปเดตที่จะมา"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "คู่มืออัปเดตที่จะมา"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "เดือนก่อน"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "เดือนถัดไป"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "เรื่องที่อยู่ในทั้งหมวดที่รวมและหมวดที่ยกเว้นจะไม่แสดง"
+    },
+    {
+      "name": "relative_time_today",
+      "value": "วันนี้"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d วันที่แล้ว"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "อีก %d วัน"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "อัปเดตที่จะมา"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "ปฏิทินอัปเดตที่คาดไว้ของมังงะในชั้นหนังสือ"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "อัปเดตที่จะมา"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "ไม่มีมังงะที่กำลังลงในชั้นหนังสือ"
+    }
+  ]
 }

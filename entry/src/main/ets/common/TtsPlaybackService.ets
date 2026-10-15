@@ -1,7 +1,7 @@
 import { common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
-import { MangaRepo, ChapterRepo, HistoryRepo } from '../data/Repos';
-import { MangaRecord, ChapterRecord } from '../model/Models';
+import { ChapterRepo, HistoryRepo, MangaRepo } from '../data/Repos';
+import { ChapterRecord, MangaRecord } from '../model/Models';
 import { SourceRegistry } from '../source/Source';
 import { DownloadService } from '../data/DownloadService';
 import { Util } from './Util';
@@ -16,11 +16,17 @@ const TAG = 'TtsService';
 // ---- 事件回调签名 ----
 export type TtsServiceStateHandler =
   (playing: boolean, paused: boolean, mangaId: number, chapterId: number) => void;
+
 export type TtsServiceParaHandler = (mangaId: number, chapterId: number, paraIdx: number) => void;
+
 export type TtsServiceChapterHandler = (mangaId: number, chapterId: number) => void;
+
 export type TtsServiceErrorHandler = (message: string) => void;
+
 export type TtsServiceFinishHandler = () => void;
+
 export type TtsServiceSleepHandler = (remainingMs: number) => void;
+
 export type TtsServiceSleepChaptersHandler = (chaptersLeft: number) => void;
 
 // 订阅列表模型：阅读器、播放器页、迷你条等多个实例可同时订阅、互不覆盖；
@@ -148,6 +154,7 @@ export class TtsServiceEvents {
 // 集成 AVSession（播控中心/锁屏媒体控制），朗读与阅读器页面生命周期解耦，
 // 离开阅读器后可持续后台朗读。
 export class TtsPlaybackService {
+  static events: TtsServiceEvents = new TtsServiceEvents();
   private static ctx: common.UIAbilityContext | undefined = undefined;
   private static manga: MangaRecord | undefined = undefined;
   private static chapter: ChapterRecord | undefined = undefined;
@@ -170,7 +177,6 @@ export class TtsPlaybackService {
   private static sleepChaptersLeft: number = 0;
   // 章数定时到点后待续播的下一章 id（0 无）
   private static resumeNextChapterId: number = 0;
-  static events: TtsServiceEvents = new TtsServiceEvents();
 
   // ---- 状态查询 ----
 
@@ -539,17 +545,6 @@ export class TtsPlaybackService {
     });
   }
 
-  // 段落有效字符数（去空白，用于秒级跳转估算）
-  private static paraChars(idx: number): number {
-    const p = TtsPlaybackService.paras[idx];
-    if (p === undefined) {
-      return 0;
-    }
-    return p.replace(/\s/g, '').length;
-  }
-
-  // ---- 定时停止 ----
-
   // minutes<=0 取消定时；到点暂停朗读（可续播）
   static setSleepTimer(minutes: number): void {
     TtsPlaybackService.cancelSleepTicker();
@@ -580,6 +575,8 @@ export class TtsPlaybackService {
     TtsPlaybackService.events.emitSleep(minutes * 60000);
   }
 
+  // ---- 定时停止 ----
+
   static cancelSleepTimer(): void {
     TtsPlaybackService.cancelSleepTicker();
     if (TtsPlaybackService.sleepMinutes !== 0) {
@@ -602,6 +599,15 @@ export class TtsPlaybackService {
     TtsPlaybackService.sleepChaptersLeft = count > 0 ? count : 0;
     TtsPlaybackService.events.emitSleep(-1);
     TtsPlaybackService.events.emitSleepChapters(TtsPlaybackService.sleepChaptersLeft);
+  }
+
+  // 段落有效字符数（去空白，用于秒级跳转估算）
+  private static paraChars(idx: number): number {
+    const p = TtsPlaybackService.paras[idx];
+    if (p === undefined) {
+      return 0;
+    }
+    return p.replace(/\s/g, '').length;
   }
 
   private static cancelSleepTicker(): void {

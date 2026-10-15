@@ -5,7 +5,7 @@
 // 指定文件夹后会自动创建 comic/novel/anime 三个预置子文件夹（尽力而为）。
 // 授权通过 fileShare.persistPermission 持久化（ohos.permission.FILE_ACCESS_PERSIST，
 // normal 级系统授权），应用/设备重启后经 activatePermission 重新激活。
-import { fileIo as fs, fileUri, picker, fileShare } from '@kit.CoreFileKit';
+import { fileIo as fs, fileShare, fileUri, picker } from '@kit.CoreFileKit';
 import { common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { BusinessError } from '@kit.BasicServicesKit';
@@ -18,6 +18,8 @@ export class LocalFolderManager {
   static readonly COMIC_SUBDIR = 'comic';
   static readonly NOVEL_SUBDIR = 'novel';
   static readonly ANIME_SUBDIR = 'anime';
+  // hasFileWithExts 的最大递归深度（防符号链接/深层嵌套导致的失控递归）
+  private static readonly MAX_SCAN_DEPTH: number = 16;
 
   static localSubDirs(): string[] {
     return [LocalFolderManager.COMIC_SUBDIR, LocalFolderManager.NOVEL_SUBDIR, LocalFolderManager.ANIME_SUBDIR];
@@ -37,6 +39,11 @@ export class LocalFolderManager {
     return name !== '' ? name : 'local';
   }
 
+  // 选择文件夹并持久化授权；返回 false 表示用户取消。
+  // 失败时抛出 message 为 'PICK'（选择器失败）、'NOT_FOLDER'（选中的不是文件夹）
+  // 或 'PERSIST'（授权持久化失败）的 Error。
+  // selectMode 用 MIXED 而非 FOLDER：模拟器等环境下 FOLDER 模式的浏览页
+
   // 从 picker 返回的 URI 提取最后一段作为名称（文件夹名/文件名）
   static uriName(uri: string): string {
     const segs = uri.split('/');
@@ -53,10 +60,8 @@ export class LocalFolderManager {
     return name;
   }
 
-  // 选择文件夹并持久化授权；返回 false 表示用户取消。
-  // 失败时抛出 message 为 'PICK'（选择器失败）、'NOT_FOLDER'（选中的不是文件夹）
-  // 或 'PERSIST'（授权持久化失败）的 Error。
-  // selectMode 用 MIXED 而非 FOLDER：模拟器等环境下 FOLDER 模式的浏览页
+  // 同步本地源文件夹：激活授权 → 补建预置子文件夹 → 整树拷贝到中转目录 → 原子替换 local_root。
+
   // 无文件夹选择入口，MIXED 覆盖面更广；文件由下方目录校验兜底拒绝。
   static async chooseFolder(context: common.UIAbilityContext): Promise<boolean> {
     const options = new picker.DocumentSelectOptions();
@@ -121,7 +126,8 @@ export class LocalFolderManager {
     return true;
   }
 
-  // 同步本地源文件夹：激活授权 → 补建预置子文件夹 → 整树拷贝到中转目录 → 原子替换 local_root。
+  // 在用户文件夹内创建预置子文件夹（尽力而为）：文件夹只读或接口不支持时静默跳过，
+
   // 失败时抛出 message 为 'ACCESS'（授权失效，需重新选择）或其他错误的 Error。
   static async sync(context: common.UIAbilityContext): Promise<void> {
     const uri = Settings.getLocalFolderUri();
@@ -183,12 +189,26 @@ export class LocalFolderManager {
     LocalFolderManager.removeQuietly(staging);
   }
 
-  // 在用户文件夹内创建预置子文件夹（尽力而为）：文件夹只读或接口不支持时静默跳过，
   // 各本地源扫描时按空目录处理，空态会提示对应的子文件夹名。
   static async ensureSubDirs(context: common.UIAbilityContext, folderUri: string): Promise<void> {
     for (const name of LocalFolderManager.localSubDirs()) {
       await LocalFolderManager.ensureSubDir(context, folderUri, name);
     }
+  }
+
+  // 目录内（递归，最大深度 16）是否存在符合后缀的文件（提前返回，用于作品目录内容归类）
+  static hasFileWithExts(dir: string, exts: string[]): boolean {
+    return LocalFolderManager.hasFileWithExtsInner(dir, exts, 0);
+  }
+
+  static matchesExt(name: string, exts: string[]): boolean {
+    const lower = name.toLowerCase();
+    for (const ext of exts) {
+      if (lower.endsWith(ext)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private static async ensureSubDir(context: common.UIAbilityContext, folderUri: string, name: string): Promise<void> {
@@ -249,14 +269,6 @@ export class LocalFolderManager {
     }
   }
 
-  // 目录内（递归，最大深度 16）是否存在符合后缀的文件（提前返回，用于作品目录内容归类）
-  static hasFileWithExts(dir: string, exts: string[]): boolean {
-    return LocalFolderManager.hasFileWithExtsInner(dir, exts, 0);
-  }
-
-  // hasFileWithExts 的最大递归深度（防符号链接/深层嵌套导致的失控递归）
-  private static readonly MAX_SCAN_DEPTH: number = 16;
-
   private static hasFileWithExtsInner(dir: string, exts: string[], depth: number): boolean {
     let entries: string[] = [];
     try {
@@ -283,16 +295,6 @@ export class LocalFolderManager {
       }
       if (isDir &&
         LocalFolderManager.hasFileWithExtsInner(fullPath, exts, depth + 1)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  static matchesExt(name: string, exts: string[]): boolean {
-    const lower = name.toLowerCase();
-    for (const ext of exts) {
-      if (lower.endsWith(ext)) {
         return true;
       }
     }

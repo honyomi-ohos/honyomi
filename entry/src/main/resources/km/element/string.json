@@ -1,534 +1,2124 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Filters all entries in your library" },
-    { "name": "more_incognito_summary", "value": "Pauses reading history" },
-    { "name": "more_support", "value": "Support Us" },
-    { "name": "more_help", "value": "ជំនួយ" },
-    { "name": "support_perks", "value": "Patrons get access to exclusive channels, with more perks to come." },
-    { "name": "support_patreon", "value": "Patreon (preferred)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together." },
-    { "name": "support_contact_msg", "value": "For alternative options or any related questions, join our Discord server." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "ទិន្នន័យ និងអង្គផ្ទុក" },
-    { "name": "data_storage_location", "value": "Storage location" },
-    { "name": "data_storage_location_info", "value": "Used for automatic backups, chapter downloads, and local source." },
-    { "name": "data_backup_restore", "value": "បម្រុងទុក និងស្ដារឡើងវិញ" },
-    { "name": "data_create_backup", "value": "Create backup" },
-    { "name": "data_restore_backup", "value": "Restore backup" },
-    { "name": "data_backup_interval", "value": "Automatic backup frequency" },
-    { "name": "data_backup_info", "value": "You should keep copies of backups in other places as well. Backups may contain sensitive data including any stored passwords; be careful if sharing." },
-    { "name": "data_last_auto_backup", "value": "Last automatically backed up: %s" },
-    { "name": "data_storage_usage", "value": "Storage usage" },
-    { "name": "data_available_space", "value": "Available: %s / Total: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Clear chapter cache" },
-    { "name": "data_used_cache", "value": "Used: %s" },
-    { "name": "data_cache_deleted", "value": "Cache cleared, %d files deleted" },
-    { "name": "data_cache_delete_error", "value": "Error occurred while clearing" },
-    { "name": "data_auto_clear_cache", "value": "Clear chapter cache on app launch" },
-    { "name": "data_export", "value": "Export" },
-    { "name": "data_library_list", "value": "Library List" },
-    { "name": "data_library_exported", "value": "Library Exported" },
-    { "name": "data_export_include", "value": "Select data to include" },
-    { "name": "data_column_title", "value": "ចំណងជើង" },
-    { "name": "data_column_author", "value": "Author" },
-    { "name": "data_interval_off", "value": "បិទ" },
-    { "name": "data_interval_6h", "value": "រាល់៦ម៉ោងម្ដង" },
-    { "name": "data_interval_12h", "value": "រាល់១២ម៉ោងម្ដង" },
-    { "name": "data_interval_24h", "value": "រាល់ថ្ងៃ" },
-    { "name": "data_interval_48h", "value": "រាល់២ថ្ងៃម្ដង" },
-    { "name": "data_interval_weekly", "value": "រាល់សប្ដាហ៍" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "យល់ព្រម" },
-    { "name": "common_cancel", "value": "បោះបង់" },
-    { "name": "common_confirm", "value": "បញ្ជាក់" },
-    { "name": "common_delete", "value": "លុប" },
-    { "name": "common_retry", "value": "ព្យាយាមម្តងទៀត" },
-    { "name": "common_search", "value": "ស្វែងរក" },
-    { "name": "common_all", "value": "ទាំងអស់" },
-    { "name": "common_close", "value": "បិទ" },
-    { "name": "common_save", "value": "រក្សាទុក" },
-    { "name": "common_install", "value": "ដំឡើង" },
-    { "name": "common_uninstall", "value": "លុបការដំឡើង" },
-    { "name": "common_update", "value": "ធ្វើបច្ចុប្បន្នភាព" },
-    { "name": "common_none", "value": "គ្មាន" },
-    { "name": "common_default", "value": "លំនាំដើម" },
-    { "name": "appearance_title", "value": "រូបរាង" },
-    { "name": "appearance_language", "value": "ភាសា" },
-    { "name": "lang_follow_system", "value": "តាមប្រព័ន្ធ" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "ម៉ូដស្បែក" },
-    { "name": "appearance_theme_auto", "value": "តាមប្រព័ន្ធ" },
-    { "name": "appearance_theme_light", "value": "ភ្លឺ" },
-    { "name": "appearance_theme_dark", "value": "ងងឹត" },
-    { "name": "appearance_accent_color", "value": "ពណ៌សង្កត់" },
-    { "name": "appearance_other", "value": "ផ្សេងទៀត" },
-    { "name": "appearance_amoled", "value": "ផ្ទៃខាងក្រោយខ្មៅសុទ្ធ AMOLED" },
-    { "name": "theme_accent_blue", "value": "ខៀវ" },
-    { "name": "theme_accent_green", "value": "បៃតង" },
-    { "name": "theme_accent_pink", "value": "ផ្កាឈូក" },
-    { "name": "theme_accent_purple", "value": "ស្វាយ" },
-    { "name": "theme_accent_orange", "value": "ទឹកក្រូច" },
-    { "name": "util_time_minutes_ago", "value": "%d នាទីមុន" },
-    { "name": "util_time_hours_ago", "value": "%d ម៉ោងមុន" },
-    { "name": "util_time_days_ago", "value": "%d ថ្ងៃមុន" },
-    { "name": "util_status_ongoing", "value": "កំពុងចេញ" },
-    { "name": "util_status_completed", "value": "បានបញ្ចប់" },
-    { "name": "util_status_hiatus", "value": "ផ្អាក" },
-    { "name": "util_status_cancelled", "value": "បានលុបចោល" },
-    { "name": "util_status_publication_complete", "value": "បោះពុម្ពរួច" },
-    { "name": "util_status_unknown", "value": "មិនស្គាល់" },
-    { "name": "tab_library", "value": "ធ្នើរសៀវភៅ" },
-    { "name": "tab_updates", "value": "បច្ចុប្បន្នភាព" },
-    { "name": "tab_history", "value": "ប្រវត្តិ" },
-    { "name": "tab_browse", "value": "រកមើល" },
-    { "name": "tab_more", "value": "ច្រើនទៀត" },
-    { "name": "tab_cf_waiting", "value": "កំពុងរង់ចាំការផ្ទៀងផ្ទាត់…" },
-    { "name": "tab_cf_verified", "value": "ផ្ទៀងផ្ទាត់រួច" },
-    { "name": "tab_cf_title", "value": "ផ្ទៀងផ្ទាត់មនុស្ស" },
-    { "name": "tab_cf_done", "value": "រួច" },
-    { "name": "tab_cf_saved", "value": "បានរក្សាទុកលទ្ធផលផ្ទៀងផ្ទាត់" },
-    { "name": "more_title", "value": "ច្រើនទៀត" },
-    { "name": "more_version", "value": "កំណែ %s" },
-    { "name": "more_downloaded_only", "value": "Downloaded only" },
-    { "name": "more_incognito", "value": "Incognito mode" },
-    { "name": "more_downloads", "value": "កំពុងទាញយក" },
-    { "name": "more_categories", "value": "ប្រភេទ" },
-    { "name": "more_settings", "value": "ការកំណត់" },
-    { "name": "more_about", "value": "អំពី" },
-    { "name": "more_plugins", "value": "ផ្នែកបន្ថែម" },
-    { "name": "categories_title", "value": "ប្រភេទ" },
-    { "name": "categories_add", "value": "ប្រភេទថ្មី" },
-    { "name": "categories_name_placeholder", "value": "ឈ្មោះប្រភេទ" },
-    { "name": "categories_rename_category", "value": "ប្តូរឈ្មោះប្រភេទ" },
-    { "name": "categories_rename", "value": "ប្តូរឈ្មោះ" },
-    { "name": "categories_hint", "value": "ចុចយូរលើប្រភេទដើម្បីប្តូរឈ្មោះ ឬលុប។ ម៉ាងហ្គាក្នុងប្រភេទដែលលុបនឹងត្រឡប់ទៅលំនាំដើម" },
-    { "name": "dialog_pick_category", "value": "ជ្រើសប្រភេទ" },
-    { "name": "viewer_loading", "value": "កំពុងផ្ទុក…" },
-    { "name": "viewer_load_failed", "value": "ផ្ទុករូបភាពមិនបាន" },
-    { "name": "viewer_tap_retry", "value": "ចុចដើម្បីព្យាយាមម្តងទៀត" },
-    { "name": "library_title", "value": "ធ្នើរសៀវភៅ" },
-    { "name": "library_empty", "value": "ធ្នើរសៀវភៅទទេ សូមរកមើលដើម្បីបន្ថែមម៉ាងហ្គា" },
-    { "name": "library_new_category", "value": "ប្រភេទថ្មី" },
-    { "name": "library_category_name", "value": "ឈ្មោះប្រភេទ" },
-    { "name": "updates_title", "value": "បច្ចុប្បន្នភាព" },
-    { "name": "updates_empty", "value": "គ្មានបច្ចុប្បន្នភាពថ្មីៗ" },
-    { "name": "updates_found_new", "value": "រកឃើញជំពូកថ្មី %d" },
-    { "name": "updates_no_new", "value": "គ្មានជំពូកថ្មី" },
-    { "name": "updates_refresh_failed", "value": "ផ្ទុកឡើងវិញមិនបាន" },
-    { "name": "updates_refreshing", "value": "កំពុងផ្ទុកឡើងវិញ…" },
-    { "name": "history_title", "value": "ប្រវត្តិ" },
-    { "name": "history_clear", "value": "សម្អាត" },
-    { "name": "history_confirm_clear", "value": "បញ្ជាក់សម្អាត?" },
-    { "name": "history_empty", "value": "មិនទាន់មានប្រវត្តិអាន" },
-    { "name": "history_cleared", "value": "បានសម្អាតប្រវត្តិ" },
-    { "name": "history_continue", "value": "បន្ត" },
-    { "name": "browse_title", "value": "រកមើល" },
-    { "name": "browse_import", "value": "នាំចូល" },
-    { "name": "browse_plugins", "value": "ផ្នែកបន្ថែម" },
-    { "name": "browse_local_source_name", "value": "ម៉ាងហ្គាក្នុងឧបករណ៍" },
-    { "name": "browse_popular", "value": "ពេញនិយម" },
-    { "name": "browse_latest", "value": "ថ្មីបំផុត" },
-    { "name": "browse_search_hint", "value": "ស្វែងរកម៉ាងហ្គា…" },
-    { "name": "browse_no_results", "value": "រកមិនឃើញម៉ាងហ្គា" },
-    { "name": "browse_local_empty", "value": "មិនទាន់មានម៉ាងហ្គាក្នុងឧបករណ៍ ចុចនាំចូលដើម្បីបន្ថែម" },
-    { "name": "browse_load_failed", "value": "ផ្ទុកមិនបាន: %s" },
-    { "name": "browse_search_failed", "value": "ស្វែងរកមិនបាន: %s" },
-    { "name": "browse_load_more_failed", "value": "ផ្ទុកបន្ថែមមិនបាន" },
-    { "name": "browse_open_detail_failed", "value": "បើកព័ត៌មានលម្អិតមិនបាន" },
-    { "name": "browse_pick_file_failed", "value": "ជ្រើសឯកសារមិនបាន" },
-    { "name": "browse_import_title", "value": "នាំចូលឯកសារ %d" },
-    { "name": "browse_manga_name_hint", "value": "ឈ្មោះម៉ាងហ្គា" },
-    { "name": "browse_input_name", "value": "សូមបញ្ចូលឈ្មោះ" },
-    { "name": "browse_import_done", "value": "បាននាំចូលឯកសារ %d" },
-    { "name": "browse_import_failed", "value": "នាំចូលមិនបាន: %s" },
-    { "name": "download_title", "value": "ការទាញយក" },
-    { "name": "download_resume", "value": "បន្ត" },
-    { "name": "download_pause", "value": "ផ្អាក" },
-    { "name": "download_clear_finished", "value": "សម្អាតអ្វីដែលរួច" },
-    { "name": "download_queue", "value": "ជួរទាញយក" },
-    { "name": "download_state_queued", "value": "នៅក្នុងជួរ" },
-    { "name": "download_state_downloading", "value": "កំពុងទាញយក" },
-    { "name": "download_state_done", "value": "រួច" },
-    { "name": "download_state_failed", "value": "បរាជ័យ" },
-    { "name": "download_move_top", "value": "ផ្លាស់ទៅកំពូល" },
-    { "name": "download_move_bottom", "value": "ផ្លាស់ទៅបាត" },
-    { "name": "download_deleted", "value": "បានលុប" },
-    { "name": "download_empty", "value": "មិនទាន់មានការទាញយក" },
-    { "name": "download_status_downloaded", "value": "បានទាញយក" },
-    { "name": "download_chapter_count", "value": "%d ជំពូក" },
-    { "name": "detail_no_chapters", "value": "គ្មានជំពូក" },
-    { "name": "detail_sync_failed_local", "value": "ធ្វើសមកាលមិនបាន កំពុងបង្ហាញទិន្នន័យក្នុងឧបករណ៍" },
-    { "name": "detail_added_to_library", "value": "បានបន្ថែមទៅធ្នើរសៀវភៅ" },
-    { "name": "detail_removed_from_library", "value": "បានដកចេញពីធ្នើរសៀវភៅ" },
-    { "name": "detail_all_marked_read", "value": "បានសម្គាល់ជំពូកទាំងអស់ថាអានរួច" },
-    { "name": "detail_download_queued", "value": "បានដាក់ក្នុងជួរទាញយក" },
-    { "name": "detail_config_anilist_token", "value": "សូមកំណត់និមិត្តសញ្ញា AniList ជាមុន" },
-    { "name": "detail_search_anilist", "value": "ស្វែងរក AniList" },
-    { "name": "detail_manga_title_hint", "value": "ចំណងជើងម៉ាងហ្គា" },
-    { "name": "detail_no_search_results", "value": "គ្មានលទ្ធផលស្វែងរក" },
-    { "name": "detail_anilist_search_failed", "value": "ស្វែងរក AniList មិនបាន" },
-    { "name": "detail_anilist_bound", "value": "បានភ្ជាប់ AniList" },
-    { "name": "detail_anilist_unbound", "value": "បានផ្តាច់ AniList" },
-    { "name": "detail_synced_progress", "value": "បានធ្វើសមកាលវឌ្ឍនភាពដល់ជំពូក %d" },
-    { "name": "detail_anilist_sync_failed", "value": "ធ្វើសមកាល AniList មិនបាន" },
-    { "name": "detail_status_local", "value": "ក្នុងឧបករណ៍" },
-    { "name": "detail_in_library", "value": "នៅក្នុងធ្នើរសៀវភៅ" },
-    { "name": "detail_add_to_library", "value": "បន្ថែមទៅធ្នើរសៀវភៅ" },
-    { "name": "detail_continue_reading", "value": "អានបន្ត" },
-    { "name": "detail_start_reading", "value": "ចាប់ផ្តើមអាន" },
-    { "name": "detail_no_chapters_yet", "value": "មិនទាន់មានជំពូក" },
-    { "name": "detail_collapse", "value": "បង្រួម" },
-    { "name": "detail_expand", "value": "ពង្រីក" },
-    { "name": "detail_anilist_tracking", "value": "តាមដាន AniList" },
-    { "name": "detail_anilist_token_hint", "value": "មិនទាន់កំណត់និមិត្តសញ្ញា AniList" },
-    { "name": "detail_searching", "value": "កំពុងស្វែងរក…" },
-    { "name": "detail_search_and_bind", "value": "ស្វែងរកហើយភ្ជាប់" },
-    { "name": "detail_bind", "value": "ភ្ជាប់" },
-    { "name": "detail_synced_to_chapter", "value": "បានធ្វើសមកាលដល់ជំពូក %d" },
-    { "name": "detail_sync_progress", "value": "ធ្វើសមកាលវឌ្ឍនភាព" },
-    { "name": "detail_unbind", "value": "ផ្តាច់" },
-    { "name": "detail_chapters_count", "value": "ជំពូក (%d)" },
-    { "name": "detail_sort_asc", "value": "តូចទៅធំ" },
-    { "name": "detail_sort_desc", "value": "ធំទៅតូច" },
-    { "name": "detail_mark_all_read", "value": "សម្គាល់អានទាំងអស់" },
-    { "name": "detail_read", "value": "អានរួច" },
-    { "name": "detail_downloaded", "value": "បានទាញយក" },
-    { "name": "detail_in_queue", "value": "នៅក្នុងជួរ" },
-    { "name": "detail_download", "value": "ទាញយក" },
-    { "name": "reader_chapter_not_found", "value": "រកមិនឃើញជំពូក" },
-    { "name": "reader_load_failed", "value": "ផ្ទុកមិនបាន: %s" },
-    { "name": "reader_mode_ltr", "value": "ឆ្វេងទៅស្តាំ" },
-    { "name": "reader_mode_rtl", "value": "ស្តាំទៅឆ្វេង" },
-    { "name": "reader_mode_webtoon", "value": "វេបទូន" },
-    { "name": "reader_reading_mode", "value": "ម៉ូដអាន" },
-    { "name": "reader_orientation_free", "value": "សេរី" },
-    { "name": "reader_orientation_portrait", "value": "បញ្ឈរ" },
-    { "name": "reader_orientation_landscape", "value": "ផ្តេក" },
-    { "name": "reader_screen_orientation", "value": "ទិសអេក្រង់" },
-    { "name": "reader_last_chapter", "value": "នៅជំពូកចុងក្រោយហើយ" },
-    { "name": "reader_first_chapter", "value": "នៅជំពូកដំបូងហើយ" },
-    { "name": "reader_first_page", "value": "នៅទំព័រដំបូងហើយ" },
-    { "name": "reader_last_page", "value": "នៅទំព័រចុងក្រោយហើយ" },
-    { "name": "reader_loading_chapter", "value": "កំពុងផ្ទុកជំពូក…" },
-    { "name": "reader_settings", "value": "ការកំណត់អ្នកអាន" },
-    { "name": "reader_background", "value": "ផ្ទៃខាងក្រោយ" },
-    { "name": "reader_theme_auto", "value": "ស្វ័យប្រវត្តិ" },
-    { "name": "reader_theme_white", "value": "ស" },
-    { "name": "reader_theme_gray", "value": "ប្រផេះ" },
-    { "name": "reader_theme_black", "value": "ខ្មៅ" },
-    { "name": "reader_show_page_number", "value": "បង្ហាញលេខទំព័រ" },
-    { "name": "reader_brightness", "value": "ពន្លឺ" },
-    { "name": "reader_auto", "value": "ស្វ័យប្រវត្តិ" },
-    { "name": "plugin_title", "value": "ផ្នែកបន្ថែម" },
-    { "name": "plugin_installed_section", "value": "បានដំឡើង" },
-    { "name": "plugin_empty", "value": "មិនទាន់មានផ្នែកបន្ថែម ដំឡើងខាងក្រោម" },
-    { "name": "plugin_disable_hint", "value": "ផ្នែកបន្ថែមដែលបិទអាចបើកឡើងវិញបានគ្រប់ពេល" },
-    { "name": "plugin_up_to_date", "value": "ជាកំណែថ្មីបំផុត" },
-    { "name": "plugin_local_install", "value": "ដំឡើងពីឯកសារ" },
-    { "name": "plugin_install_from_file", "value": "ជ្រើសឯកសារដើម្បីដំឡើង" },
-    { "name": "plugin_processing", "value": "កំពុងដំណើរការ…" },
-    { "name": "plugin_package_hint", "value": "គាំទ្រកញ្ចប់ផ្នែកបន្ថែម .honyomiplug / .zip" },
-    { "name": "plugin_repo", "value": "ឃ្លាំងអនឡាញ" },
-    { "name": "plugin_repo_config", "value": "កំណត់ឃ្លាំង" },
-    { "name": "plugin_repo_refresh", "value": "ផ្ទុកឡើងវិញ" },
-    { "name": "plugin_repo_hint", "value": "មិនទាន់កំណត់ឃ្លាំងផ្នែកបន្ថែម" },
-    { "name": "plugin_repo_loading", "value": "កំពុងផ្ទុកឃ្លាំង…" },
-    { "name": "plugin_repo_url_title", "value": "URL ឃ្លាំងផ្នែកបន្ថែម" },
-    { "name": "plugin_repo_url_hint", "value": "បញ្ចូល URL ឃ្លាំងផ្នែកបន្ថែម" },
-    { "name": "plugin_repo_load_failed", "value": "ផ្ទុកឃ្លាំងមិនបាន: %s" },
-    { "name": "plugin_pick_file_failed", "value": "ជ្រើសឯកសារមិនបាន" },
-    { "name": "plugin_installed", "value": "បានដំឡើង: %s" },
-    { "name": "plugin_installed_name", "value": "បានដំឡើង %s" },
-    { "name": "plugin_install_failed", "value": "ដំឡើងមិនបាន: %s" },
-    { "name": "plugin_action_failed", "value": "សកម្មភាពមិនបាន" },
-    { "name": "plugin_uninstalled", "value": "បានលុបការដំឡើង: %s" },
-    { "name": "plugin_uninstall_failed", "value": "លុបការដំឡើងមិនបាន" },
-    { "name": "settings_title", "value": "ការកំណត់" },
-    { "name": "settings_general", "value": "ទូទៅ" },
-    { "name": "settings_start_tab", "value": "អេក្រង់ចាប់ផ្តើម" },
-    { "name": "settings_personalization", "value": "ប្ដូរតាមបុគ្គល" },
-    { "name": "settings_library", "value": "ធ្នើរសៀវភៅ" },
-    { "name": "settings_reader", "value": "អ្នកអាន" },
-    { "name": "settings_data", "value": "ទិន្នន័យ" },
-    { "name": "settings_downloads", "value": "ការទាញយក" },
-    { "name": "settings_browse", "value": "រកមើល" },
-    { "name": "settings_advanced", "value": "កម្រិតខ្ពស់" },
-    { "name": "settings_about", "value": "អំពី" },
-    { "name": "settings_tab_library", "value": "ធ្នើរសៀវភៅ" },
-    { "name": "settings_tab_updates", "value": "បច្ចុប្បន្នភាព" },
-    { "name": "settings_tab_history", "value": "ប្រវត្តិ" },
-    { "name": "settings_tab_browse", "value": "រកមើល" },
-    { "name": "settings_tab_more", "value": "ច្រើនទៀត" },
-    { "name": "advanced_title", "value": "កម្រិតខ្ពស់" },
-    { "name": "advanced_calculating", "value": "កំពុងគណនា…" },
-    { "name": "advanced_storage", "value": "ទំហំផ្ទុក" },
-    { "name": "advanced_clear_image_cache", "value": "សម្អាតឃ្លាំងរូបភាព" },
-    { "name": "advanced_image_cache_cleared", "value": "បានសម្អាតឃ្លាំងរូបភាព" },
-    { "name": "advanced_clear_cookies", "value": "សម្អាតខូគី" },
-    { "name": "advanced_cookies_cleared", "value": "បានសម្អាតខូគីទាំងអស់" },
-    { "name": "advanced_backup_restore", "value": "បម្រុងទុក និងស្តារ" },
-    { "name": "advanced_export_backup", "value": "នាំចេញការបម្រុងទុក" },
-    { "name": "advanced_import_backup", "value": "នាំចូលការបម្រុងទុក" },
-    { "name": "advanced_tracking", "value": "ការតាមដាន" },
-    { "name": "advanced_anilist_token", "value": "និមិត្តសញ្ញា AniList" },
-    { "name": "advanced_token_title", "value": "និមិត្តសញ្ញាចូលប្រើ AniList" },
-    { "name": "advanced_token_hint", "value": "បិទភ្ជាប់និមិត្តសញ្ញាចូលប្រើ (ទុកទទេដើម្បីសម្អាត)" },
-    { "name": "advanced_token_not_set", "value": "មិនទាន់កំណត់" },
-    { "name": "advanced_token_set", "value": "បានកំណត់" },
-    { "name": "advanced_token_saved", "value": "បានរក្សាទុកនិមិត្តសញ្ញា" },
-    { "name": "advanced_token_cleared", "value": "បានសម្អាតនិមិត្តសញ្ញា" },
-    { "name": "advanced_backup_exported", "value": "បាននាំចេញការបម្រុងទុក" },
-    { "name": "advanced_export_canceled", "value": "បានបោះបង់ការនាំចេញ" },
-    { "name": "advanced_export_failed", "value": "នាំចេញមិនបាន" },
-    { "name": "advanced_import_canceled", "value": "បានបោះបង់ការនាំចូល" },
-    { "name": "advanced_backup_invalid", "value": "ឯកសារបម្រុងទុកមិនត្រឹមត្រូវ" },
-    { "name": "advanced_restored_manga", "value": "បានស្តារម៉ាងហ្គា %d" },
-    { "name": "advanced_import_failed", "value": "នាំចូលមិនបាន" },
-    { "name": "about_title", "value": "អំពី" },
-    { "name": "about_version", "value": "កំណែ 1.0.0" },
-    { "name": "about_desc", "value": "ស្ថាបត្យកម្មបានយកគំរូពី Mihon (Apache-2.0)។ ប្រភពអនឡាញត្រូវបានដំឡើងជាផ្នែកបន្ថែម ខណៈប្រភពក្នុងឧបករណ៍មានស្រាប់។" },
-    { "name": "about_ack", "value": "ការអរគុណប្រភពបើកចំហ:\n· Mihon / Tachiyomi — ស្ថាបត្យកម្មកម្មវិធី និងការរចនាអន្តរកម្ម (Apache-2.0)\n· Material Symbols — រូបតំណាងក្នុងកម្មវិធី (Apache-2.0)\n· MangaDex — ប្រភពទិន្នន័យសាកល្បង" },
-    { "name": "browse_set_title", "value": "រកមើល" },
-    { "name": "browse_set_content", "value": "មាតិកា" },
-    { "name": "browse_set_show_nsfw", "value": "បង្ហាញប្រភព NSFW" },
-    { "name": "browse_set_nsfw_hint", "value": "ពេលបើក ប្រភពដែលផ្នែកបន្ថែមសម្គាល់ថា NSFW នឹងបង្ហាញក្នុងរកមើល" },
-    { "name": "dl_set_title", "value": "ការទាញយក" },
-    { "name": "dl_set_network", "value": "បណ្តាញ" },
-    { "name": "dl_set_wifi_only", "value": "ទាញយកតែតាម Wi-Fi" },
-    { "name": "dl_set_wifi_only_hint", "value": "ចំណាំ: កុងតាក់នេះជាកន្លែងរង់ចាំក្នុងកំណែបច្ចុប្បន្ន ការរកឃើញប្រភេទបណ្តាញនឹងមាននៅកំណែក្រោយ" },
-    { "name": "lib_set_title", "value": "ធ្នើរសៀវភៅ" },
-    { "name": "lib_set_sort_group", "value": "ត្រង និងតម្រៀប" },
-    { "name": "lib_set_sort_default", "value": "តម្រៀបលំនាំដើម" },
-    { "name": "lib_set_sort_title", "value": "ចំណងជើង" },
-    { "name": "lib_set_sort_last_update", "value": "ជំពូកថ្មីបំផុត" },
-    { "name": "lib_set_sort_added", "value": "កាលបរិច្ឆេទបន្ថែម" },
-    { "name": "lib_set_sort_unread", "value": "ចំនួនមិនទាន់អាន" },
-    { "name": "lib_set_sort_asc", "value": "តម្រៀបចំណងជើងតូចទៅធំ" },
-    { "name": "lib_set_filter_default", "value": "តម្រងលំនាំដើម" },
-    { "name": "lib_set_filter_unread", "value": "មិនទាន់អាន" },
-    { "name": "lib_set_filter_downloaded", "value": "បានទាញយក" },
-    { "name": "lib_set_filter_uncompleted", "value": "មិនទាន់ចប់" },
-    { "name": "lib_set_display_group", "value": "ការបង្ហាញ" },
-    { "name": "lib_set_view_default", "value": "ទិដ្ឋភាពលំនាំដើម" },
-    { "name": "lib_set_view_grid", "value": "ក្រឡា" },
-    { "name": "lib_set_view_cover", "value": "ក្រឡាគម្រប" },
-    { "name": "lib_set_view_list", "value": "បញ្ជី" },
-    { "name": "lib_set_grid_cols", "value": "ជួរឈរក្រឡា" },
-    { "name": "lib_set_cols_auto", "value": "ស្វ័យប្រវត្តិ" },
-    { "name": "lib_set_cols_2", "value": "២ ជួរឈរ" },
-    { "name": "lib_set_cols_3", "value": "៣ ជួរឈរ" },
-    { "name": "lib_set_cols_4", "value": "៤ ជួរឈរ" },
-    { "name": "lib_set_unread_badge", "value": "ផ្លាកមិនទាន់អាន" },
-    { "name": "lib_set_download_badge", "value": "ផ្លាកទាញយក" },
-    { "name": "reader_set_title", "value": "អ្នកអាន" },
-    { "name": "reader_set_mode_group", "value": "ម៉ូដអាន" },
-    { "name": "reader_set_mode_default", "value": "ម៉ូដលំនាំដើម" },
-    { "name": "reader_set_mode_ltr", "value": "ឆ្វេងទៅស្តាំ" },
-    { "name": "reader_set_mode_rtl", "value": "ស្តាំទៅឆ្វេង" },
-    { "name": "reader_set_mode_vertical", "value": "បើកទំព័របញ្ឈរ" },
-    { "name": "reader_set_mode_webtoon", "value": "វេបទូន" },
-    { "name": "reader_set_dual_page", "value": "ពីរទំព័រ (ផ្តេក)" },
-    { "name": "reader_set_display_group", "value": "ការបង្ហាញ" },
-    { "name": "reader_set_show_page_number", "value": "បង្ហាញលេខទំព័រ" },
-    { "name": "reader_set_bg_color", "value": "ផ្ទៃខាងក្រោយអ្នកអាន" },
-    { "name": "reader_set_theme_follow", "value": "តាមស្បែក" },
-    { "name": "reader_set_theme_white", "value": "ស" },
-    { "name": "reader_set_theme_black", "value": "ខ្មៅ" },
-    { "name": "reader_set_theme_gray", "value": "ប្រផេះ" },
-    { "name": "reader_set_reset_brightness", "value": "កំណត់ពន្លឺអ្នកអានឡើងវិញ" },
-    { "name": "reader_set_brightness_reset", "value": "បានកំណត់ពន្លឺតាមប្រព័ន្ធ" },
-    { "name": "browse_tab_sources", "value": "ប្រភព" },
-    { "name": "browse_tab_extensions", "value": "ផ្នែកបន្ថែម" },
-    { "name": "browse_tab_migrate", "value": "ផ្ទេរ" },
-    { "name": "browse_pin", "value": "ខ្ទាស់" },
-    { "name": "browse_unpin", "value": "ដកខ្ទាស់" },
-    { "name": "browse_disable_source", "value": "បិទប្រភព" },
-    { "name": "browse_source_disabled", "value": "បានបិទប្រភព" },
-    { "name": "browse_pinned", "value": "បានខ្ទាស់" },
-    { "name": "browse_sources_empty", "value": "គ្មានប្រភព។ សូមដំឡើងពីផ្ទាំងផ្នែកបន្ថែម" },
-    { "name": "browse_filter_langs", "value": "ត្រងភាសា" },
-    { "name": "browse_filter_all", "value": "ទាំងអស់" },
-    { "name": "browse_source_missing", "value": "ប្រភពមិនអាចប្រើបាន។ ផ្នែកបន្ថែមអាចត្រូវបានបិទ" },
-    { "name": "global_search_hint", "value": "ស្វែងរកគ្រប់ប្រភព" },
-    { "name": "global_search_failed", "value": "ការស្វែងរកបរាជ័យ" },
-    { "name": "ext_search_hint", "value": "ស្វែងរកផ្នែកបន្ថែម" },
-    { "name": "ext_search_no_match", "value": "គ្មានការផ្គូផ្គង" },
-    { "name": "ext_repo_settings", "value": "ការកំណត់ឃ្លាំង" },
-    { "name": "ext_refresh_repo", "value": "ផ្ទុកឃ្លាំងឡើងវិញ" },
-    { "name": "migrate_pick_source", "value": "ជ្រើសប្រភពដើម្បីផ្ទេរ" },
-    { "name": "migrate_empty_library", "value": "ធ្នើរសៀវភៅទទេ" },
-    { "name": "migrate_select_all", "value": "ជ្រើសទាំងអស់" },
-    { "name": "migrate_deselect_all", "value": "ដកការជ្រើសទាំងអស់" },
-    { "name": "migrate_action", "value": "ផ្ទេរ (%d)" },
-    { "name": "migrate_title", "value": "ផ្ទេរ" },
-    { "name": "migrate_skip", "value": "រំលង" },
-    { "name": "migrate_progress", "value": "%d នៃ %d" },
-    { "name": "migrate_target_source", "value": "ប្រភពគោលដៅ" },
-    { "name": "migrate_search_hint", "value": "ស្វែងរកម៉ាងហ្គាក្នុងប្រភពគោលដៅ" },
-    { "name": "migrate_confirm_title", "value": "ផ្ទេរទៅម៉ាងហ្គានេះ?" },
-    { "name": "migrate_item_done", "value": "បានផ្ទេរ៖ %s" },
-    { "name": "migrate_failed", "value": "ការផ្ទេរបរាជ័យ៖ %s" },
-    { "name": "migrate_done", "value": "ការផ្ទេរបានបញ្ចប់" },
-    { "name": "migrate_no_target", "value": "គ្មានប្រភពគោលដៅ" },
-    { "name": "stats_title", "value": "ស្ថិតិ" },
-    { "name": "stats_overview_section", "value": "ទិដ្ឋភាព" },
-    { "name": "stats_in_library", "value": "ក្នុងធ្នើរសៀវភៅ" },
-    { "name": "stats_read_duration", "value": "រយៈពេលអាន" },
-    { "name": "stats_completed_titles", "value": "បានបញ្ចប់" },
-    { "name": "stats_titles_section", "value": "ស្នាដៃ" },
-    { "name": "stats_started_titles", "value": "បានចាប់ផ្ដើម" },
-    { "name": "stats_local_titles", "value": "ក្នុងឧបករណ៍" },
-    { "name": "stats_chapters_section", "value": "ជំពូក" },
-    { "name": "stats_total_chapters", "value": "សរុប" },
-    { "name": "stats_read_chapters", "value": "អានរួច" },
-    { "name": "stats_downloaded_chapters", "value": "បានទាញយក" },
-    { "name": "stats_tracker_section", "value": "ការតាមដាន" },
-    { "name": "stats_tracked_titles", "value": "ស្នាដៃបានតាមដាន" },
-    { "name": "stats_mean_score", "value": "ពិន្ទុមធ្យម" },
-    { "name": "stats_used", "value": "បានប្រើ" },
-    { "name": "stats_not_applicable", "value": "មិនអនុវត្ត" },
-    { "name": "stats_week", "value": "សប្តាហ៍" },
-    { "name": "stats_month", "value": "ខែ" },
-    { "name": "stats_week_total", "value": "សប្តាហ៍នេះ %s" },
-    { "name": "stats_month_total", "value": "ខែនេះ %s" },
-    { "name": "stats_no_reading", "value": "គ្មានការអានក្នុងរយៈពេលនេះ" },
-    { "name": "stats_day_short", "value": "%dថ" },
-    { "name": "stats_hour_short", "value": "%dម៉" },
-    { "name": "stats_minute_short", "value": "%dន" },
-    { "name": "stats_second_short", "value": "%dវិ" },
-    { "name": "stats_wd_sun", "value": "អា" },
-    { "name": "stats_wd_mon", "value": "ច" },
-    { "name": "stats_wd_tue", "value": "អង" },
-    { "name": "stats_wd_wed", "value": "ពុ" },
-    { "name": "stats_wd_thu", "value": "ព្រ" },
-    { "name": "stats_wd_fri", "value": "សុ" },
-    { "name": "stats_wd_sat", "value": "សៅ" },
-    { "name": "reader_mode_vertical", "value": "បញ្ឈរ" },
-    { "name": "reader_mode_smart_grip", "value": "ចាប់តាមដៃ" },
-    { "name": "reader_orientation_lock_portrait", "value": "ចាក់សោបញ្ឈរ" },
-    { "name": "reader_orientation_lock_landscape", "value": "ចាក់សោផ្តេក" },
-    { "name": "reader_tab_general", "value": "ទូទៅ" },
-    { "name": "reader_tab_filter", "value": "តម្រងពណ៌" },
-    { "name": "reader_filter_grayscale", "value": "ប្រផេះ" },
-    { "name": "reader_filter_invert", "value": "បញ្ច្រាសពណ៌" },
-    { "name": "reader_filter_contrast", "value": "កម្រិតពណ៌" },
-    { "name": "reader_filter_saturation", "value": "តិត្ថិភាព" },
-    { "name": "reader_crop_borders", "value": "កាត់គែម" },
-    { "name": "reader_nav_tap_zones", "value": "តំបន់ប៉ះ" },
-    { "name": "reader_nav_default", "value": "លំនាំដើម" },
-    { "name": "reader_nav_ltr", "value": "ឆ្វេងទៅស្តាំ" },
-    { "name": "reader_nav_rtl", "value": "ស្តាំទៅឆ្វេង" },
-    { "name": "reader_nav_vertical", "value": "បញ្ឈរ" },
-    { "name": "reader_nav_edge", "value": "គែម" },
-    { "name": "reader_nav_none", "value": "គ្មាន" },
-    { "name": "reader_dual_page", "value": "ទិដ្ឋភាពពីរទំព័រ" },
-    { "name": "reader_webtoon_padding", "value": "គម្លាតចំហៀងវេបទូន" },
-    { "name": "reader_set_mode_smart_grip", "value": "ចាប់តាមដៃ" },
-    { "name": "ext_install_local", "value": "ដំឡើងពីក្នុងឧបករណ៍" },
-    { "name": "ext_detail_title", "value": "ព័ត៌មានផ្នែកបន្ថែម" },
-    { "name": "ext_info_version", "value": "កំណែ" },
-    { "name": "ext_info_language", "value": "ភាសា" },
-    { "name": "ext_uninstall_title", "value": "លុបការដំឡើងផ្នែកបន្ថែម" },
-    { "name": "ext_uninstall_msg", "value": "លុបការដំឡើង “%s”? ទិន្នន័យម៉ាងហ្គាក្នុងធ្នើរសៀវភៅនឹងនៅ" },
-    { "name": "ext_detail_sources", "value": "ប្រភព" },
-    { "name": "ext_detail_settings", "value": "ការកំណត់" },
-    { "name": "ext_pref_loading", "value": "កំពុងផ្ទុក…" },
-    { "name": "ext_pref_failed", "value": "អនុវត្តការកំណត់បរាជ័យ" },
-    { "name": "ext_detail_missing", "value": "ផ្នែកបន្ថែមគ្មាន ឬមិនទាន់ផ្ទុក" },
-    { "name": "action_filter", "value": "ត្រង" },
-    { "name": "action_update_library", "value": "ធ្វើបច្ចុប្បន្នភាពធ្នើរសៀវភៅ" },
-    { "name": "action_update_category", "value": "ធ្វើបច្ចុប្បន្នភាពប្រភេទ" },
-    { "name": "action_open_random_manga", "value": "បើកស្នាដៃចៃដន្យ" },
-    { "name": "action_select_all", "value": "ជ្រើសទាំងអស់" },
-    { "name": "action_select_inverse", "value": "បញ្ច្រាសការជ្រើស" },
-    { "name": "action_move_category", "value": "ផ្លាស់ទៅប្រភេទ" },
-    { "name": "action_mark_as_read", "value": "សម្គាល់ថាអានរួច" },
-    { "name": "action_mark_as_unread", "value": "សម្គាល់ថាមិនទាន់អាន" },
-    { "name": "action_download", "value": "ទាញយក" },
-    { "name": "action_delete", "value": "លុប" },
-    { "name": "action_migrate", "value": "ផ្ទេរ" },
-    { "name": "action_remove_from_library", "value": "ដកចេញពីធ្នើរសៀវភៅ" },
-    { "name": "action_remove_from_library_msg", "value": "ដកម៉ាងហ្គា %d ដែលបានជ្រើសចេញពីធ្នើរសៀវភៅ?" },
-    { "name": "action_download_queued", "value": "បានបន្ថែមការទាញយក %d ទៅជួរ" },
-    { "name": "library_search_hint", "value": "ស្វែងរកធ្នើរសៀវភៅ" },
-    { "name": "library_no_match", "value": "គ្មានម៉ាងហ្គាដែលត្រូវ" },
-    { "name": "lib_sheet_tab_filter", "value": "ត្រង" },
-    { "name": "lib_sheet_tab_sort", "value": "តម្រៀប" },
-    { "name": "lib_sheet_tab_display", "value": "ការបង្ហាញ" },
-    { "name": "lib_filter_downloaded", "value": "បានទាញយក" },
-    { "name": "lib_filter_unread", "value": "មិនទាន់អាន" },
-    { "name": "lib_filter_started", "value": "បានអាន" },
-    { "name": "lib_filter_bookmarked", "value": "បានចំណាំ" },
-    { "name": "lib_filter_completed", "value": "បានបញ្ចប់" },
-    { "name": "lib_filter_tracked", "value": "បានតាមដាន" },
-    { "name": "lib_sort_alpha", "value": "ចំណងជើង" },
-    { "name": "lib_sort_total", "value": "ចំនួនជំពូក" },
-    { "name": "lib_sort_last_read", "value": "អានចុងក្រោយ" },
-    { "name": "lib_sort_last_update", "value": "ពេលពិនិត្យបច្ចុប្បន្នភាព" },
-    { "name": "lib_sort_unread", "value": "ចំនួនមិនទាន់អាន" },
-    { "name": "lib_sort_latest_chapter", "value": "ពេលធ្វើបច្ចុប្បន្នភាពស្នាដៃ" },
-    { "name": "lib_sort_fetch_date", "value": "ពេលទាញជំពូក" },
-    { "name": "lib_sort_date_added", "value": "កាលបរិច្ឆេទបន្ថែម" },
-    { "name": "lib_sort_random", "value": "ចៃដន្យ" },
-    { "name": "lib_display_compact", "value": "ក្រឡាណែន" },
-    { "name": "lib_display_comfortable", "value": "ក្រឡារលុង" },
-    { "name": "lib_display_cover", "value": "ក្រឡាគម្រប" },
-    { "name": "lib_display_list", "value": "បញ្ជី" },
-    { "name": "lib_display_grid_size", "value": "ចំនួនក្នុងមួយជួរ" },
-    { "name": "lib_display_grid_auto", "value": "ស្វ័យប្រវត្តិ" },
-    { "name": "lib_display_badges_group", "value": "ផ្លាកនិងប៊ូតុង" },
-    { "name": "lib_badge_downloaded", "value": "ចំនួនជំពូកបានទាញយក" },
-    { "name": "lib_badge_unread", "value": "ជំពូកមិនទាន់អាន" },
-    { "name": "lib_badge_local", "value": "ប្រភពក្នុងឧបករណ៍" },
-    { "name": "lib_badge_language", "value": "ភាសា" },
-    { "name": "lib_badge_continue", "value": "ប៊ូតុងអានបន្ត" },
-    { "name": "lib_display_tabs_group", "value": "ផ្ទាំង" },
-    { "name": "lib_show_category_tabs", "value": "បង្ហាញផ្ទាំងប្រភេទ" },
-    { "name": "lib_show_manga_count", "value": "បង្ហាញចំនួនស្នាដៃ" },
-    { "name": "EntryFormAbility_label", "value": "MihonHarmony កាត" },
-    { "name": "EntryFormAbility_desc", "value": "អ្នកផ្តល់កាតផ្ទៃតុ" },
-    { "name": "card_recent_display", "value": "អានបន្ត" },
-    { "name": "card_recent_desc", "value": "បន្តម៉ាងហ្គាដែលទើបអានបានលឿន" },
-    { "name": "card_updates_display", "value": "បច្ចុប្បន្នភាព" },
-    { "name": "card_updates_desc", "value": "ជំពូកមិនទាន់អានថ្មីក្នុងធ្នើរសៀវភៅ" },
-    { "name": "card_recent_header", "value": "អានបន្ត" },
-    { "name": "card_updates_header", "value": "បច្ចុប្បន្នភាព" },
-    { "name": "card_unread_count", "value": "%d ជំពូកមិនទាន់អាន" },
-    { "name": "card_empty_recent", "value": "មិនទាន់មានប្រវត្តិអាន" },
-    { "name": "card_empty_updates", "value": "គ្មានជំពូកមិនទាន់អាន" },
-    { "name": "card_open_hint", "value": "ប៉ះដើម្បីបើកកម្មវិធី" },
-    { "name": "card_manga_display", "value": "កាតម៉ាងហ្គា" },
-    { "name": "card_manga_desc", "value": "បន្ថែមពីទំព័រលម្អិត ចុចគម្របដើម្បីអាន" },
-    { "name": "card_manga_empty", "value": "បន្ថែមទៅផ្ទៃតុពីទំព័រលម្អិតម៉ាងហ្គា" },
-    { "name": "detail_add_to_desktop", "value": "បន្ថែមទៅផ្ទៃតុ" },
-    { "name": "detail_card_added", "value": "បានបន្ថែមទៅផ្ទៃតុ" },
-    { "name": "detail_card_add_failed", "value": "បន្ថែមកាតបរាជ័យ" },
-    { "name": "card_stats_week_display", "value": "ស្ថិតិប្រចាំសប្តាហ៍" },
-    { "name": "card_stats_week_desc", "value": "រយៈពេលអានប្រចាំថ្ងៃសប្តាហ៍នេះ" },
-    { "name": "card_stats_month_display", "value": "ស្ថិតិប្រចាំខែ" },
-    { "name": "card_stats_month_desc", "value": "រយៈពេលអានប្រចាំថ្ងៃខែនេះ" },
-    { "name": "card_stats_empty", "value": "មិនទាន់មានការអាន" },
-    { "name": "action_view_upcoming", "value": "បង្ហាញបច្ចុប្បន្នភាពនឹងមកដល់" },
-    { "name": "label_upcoming", "value": "នឹងមកដល់" },
-    { "name": "upcoming_guide", "value": "មគ្គុទ្ទេសក៍នឹងមកដល់" },
-    { "name": "upcoming_calendar_prev", "value": "ខែមុន" },
-    { "name": "upcoming_calendar_next", "value": "ខែក្រោយ" },
-    { "name": "pref_filter_update_categories_details", "value": "ស្នាដៃដែលស្ថិតក្នុងទាំងប្រភេទរួមនិងប្រភេទដកចេញ នឹងមិនបង្ហាញទេ។" },
-    { "name": "relative_time_today", "value": "ថ្ងៃនេះ" },
-    { "name": "relative_time_days_ago", "value": "%d ថ្ងៃមុន" },
-    { "name": "upcoming_relative_time_days", "value": "ក្នុង %d ថ្ងៃ" },
-    { "name": "card_upcoming_display", "value": "នឹងមកដល់" },
-    { "name": "card_upcoming_desc", "value": "ប្រតិទិនបច្ចុប្បន្នភាពរំពឹងទុកនៃម៉ាងហ្គាក្នុងធ្នើរសៀវភៅ" },
-    { "name": "card_upcoming_header", "value": "នឹងមកដល់" },
-    { "name": "card_empty_upcoming", "value": "គ្មានម៉ាងហ្គាកំពុងចេញក្នុងធ្នើរសៀវភៅ" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Filters all entries in your library"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Pauses reading history"
+    },
+    {
+      "name": "more_support",
+      "value": "Support Us"
+    },
+    {
+      "name": "more_help",
+      "value": "ជំនួយ"
+    },
+    {
+      "name": "support_perks",
+      "value": "Patrons get access to exclusive channels, with more perks to come."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (preferred)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "For alternative options or any related questions, join our Discord server."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "ទិន្នន័យ និងអង្គផ្ទុក"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Storage location"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Used for automatic backups, chapter downloads, and local source."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "បម្រុងទុក និងស្ដារឡើងវិញ"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Create backup"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Restore backup"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Automatic backup frequency"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "You should keep copies of backups in other places as well. Backups may contain sensitive data including any stored passwords; be careful if sharing."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Last automatically backed up: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Storage usage"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Available: %s / Total: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Clear chapter cache"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Used: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Cache cleared, %d files deleted"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Error occurred while clearing"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Clear chapter cache on app launch"
+    },
+    {
+      "name": "data_export",
+      "value": "Export"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Library List"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Library Exported"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Select data to include"
+    },
+    {
+      "name": "data_column_title",
+      "value": "ចំណងជើង"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Author"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "បិទ"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "រាល់៦ម៉ោងម្ដង"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "រាល់១២ម៉ោងម្ដង"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "រាល់ថ្ងៃ"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "រាល់២ថ្ងៃម្ដង"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "រាល់សប្ដាហ៍"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "យល់ព្រម"
+    },
+    {
+      "name": "common_cancel",
+      "value": "បោះបង់"
+    },
+    {
+      "name": "common_confirm",
+      "value": "បញ្ជាក់"
+    },
+    {
+      "name": "common_delete",
+      "value": "លុប"
+    },
+    {
+      "name": "common_retry",
+      "value": "ព្យាយាមម្តងទៀត"
+    },
+    {
+      "name": "common_search",
+      "value": "ស្វែងរក"
+    },
+    {
+      "name": "common_all",
+      "value": "ទាំងអស់"
+    },
+    {
+      "name": "common_close",
+      "value": "បិទ"
+    },
+    {
+      "name": "common_save",
+      "value": "រក្សាទុក"
+    },
+    {
+      "name": "common_install",
+      "value": "ដំឡើង"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "លុបការដំឡើង"
+    },
+    {
+      "name": "common_update",
+      "value": "ធ្វើបច្ចុប្បន្នភាព"
+    },
+    {
+      "name": "common_none",
+      "value": "គ្មាន"
+    },
+    {
+      "name": "common_default",
+      "value": "លំនាំដើម"
+    },
+    {
+      "name": "appearance_title",
+      "value": "រូបរាង"
+    },
+    {
+      "name": "appearance_language",
+      "value": "ភាសា"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "តាមប្រព័ន្ធ"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "ម៉ូដស្បែក"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "តាមប្រព័ន្ធ"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "ភ្លឺ"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "ងងឹត"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "ពណ៌សង្កត់"
+    },
+    {
+      "name": "appearance_other",
+      "value": "ផ្សេងទៀត"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "ផ្ទៃខាងក្រោយខ្មៅសុទ្ធ AMOLED"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "ខៀវ"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "បៃតង"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "ផ្កាឈូក"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "ស្វាយ"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "ទឹកក្រូច"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d នាទីមុន"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d ម៉ោងមុន"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d ថ្ងៃមុន"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "កំពុងចេញ"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "បានបញ្ចប់"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "ផ្អាក"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "បានលុបចោល"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "បោះពុម្ពរួច"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "មិនស្គាល់"
+    },
+    {
+      "name": "tab_library",
+      "value": "ធ្នើរសៀវភៅ"
+    },
+    {
+      "name": "tab_updates",
+      "value": "បច្ចុប្បន្នភាព"
+    },
+    {
+      "name": "tab_history",
+      "value": "ប្រវត្តិ"
+    },
+    {
+      "name": "tab_browse",
+      "value": "រកមើល"
+    },
+    {
+      "name": "tab_more",
+      "value": "ច្រើនទៀត"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "កំពុងរង់ចាំការផ្ទៀងផ្ទាត់…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "ផ្ទៀងផ្ទាត់រួច"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "ផ្ទៀងផ្ទាត់មនុស្ស"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "រួច"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "បានរក្សាទុកលទ្ធផលផ្ទៀងផ្ទាត់"
+    },
+    {
+      "name": "more_title",
+      "value": "ច្រើនទៀត"
+    },
+    {
+      "name": "more_version",
+      "value": "កំណែ %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Downloaded only"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Incognito mode"
+    },
+    {
+      "name": "more_downloads",
+      "value": "កំពុងទាញយក"
+    },
+    {
+      "name": "more_categories",
+      "value": "ប្រភេទ"
+    },
+    {
+      "name": "more_settings",
+      "value": "ការកំណត់"
+    },
+    {
+      "name": "more_about",
+      "value": "អំពី"
+    },
+    {
+      "name": "more_plugins",
+      "value": "ផ្នែកបន្ថែម"
+    },
+    {
+      "name": "categories_title",
+      "value": "ប្រភេទ"
+    },
+    {
+      "name": "categories_add",
+      "value": "ប្រភេទថ្មី"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "ឈ្មោះប្រភេទ"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "ប្តូរឈ្មោះប្រភេទ"
+    },
+    {
+      "name": "categories_rename",
+      "value": "ប្តូរឈ្មោះ"
+    },
+    {
+      "name": "categories_hint",
+      "value": "ចុចយូរលើប្រភេទដើម្បីប្តូរឈ្មោះ ឬលុប។ ម៉ាងហ្គាក្នុងប្រភេទដែលលុបនឹងត្រឡប់ទៅលំនាំដើម"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "ជ្រើសប្រភេទ"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "កំពុងផ្ទុក…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "ផ្ទុករូបភាពមិនបាន"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "ចុចដើម្បីព្យាយាមម្តងទៀត"
+    },
+    {
+      "name": "library_title",
+      "value": "ធ្នើរសៀវភៅ"
+    },
+    {
+      "name": "library_empty",
+      "value": "ធ្នើរសៀវភៅទទេ សូមរកមើលដើម្បីបន្ថែមម៉ាងហ្គា"
+    },
+    {
+      "name": "library_new_category",
+      "value": "ប្រភេទថ្មី"
+    },
+    {
+      "name": "library_category_name",
+      "value": "ឈ្មោះប្រភេទ"
+    },
+    {
+      "name": "updates_title",
+      "value": "បច្ចុប្បន្នភាព"
+    },
+    {
+      "name": "updates_empty",
+      "value": "គ្មានបច្ចុប្បន្នភាពថ្មីៗ"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "រកឃើញជំពូកថ្មី %d"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "គ្មានជំពូកថ្មី"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "ផ្ទុកឡើងវិញមិនបាន"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "កំពុងផ្ទុកឡើងវិញ…"
+    },
+    {
+      "name": "history_title",
+      "value": "ប្រវត្តិ"
+    },
+    {
+      "name": "history_clear",
+      "value": "សម្អាត"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "បញ្ជាក់សម្អាត?"
+    },
+    {
+      "name": "history_empty",
+      "value": "មិនទាន់មានប្រវត្តិអាន"
+    },
+    {
+      "name": "history_cleared",
+      "value": "បានសម្អាតប្រវត្តិ"
+    },
+    {
+      "name": "history_continue",
+      "value": "បន្ត"
+    },
+    {
+      "name": "browse_title",
+      "value": "រកមើល"
+    },
+    {
+      "name": "browse_import",
+      "value": "នាំចូល"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "ផ្នែកបន្ថែម"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "ម៉ាងហ្គាក្នុងឧបករណ៍"
+    },
+    {
+      "name": "browse_popular",
+      "value": "ពេញនិយម"
+    },
+    {
+      "name": "browse_latest",
+      "value": "ថ្មីបំផុត"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "ស្វែងរកម៉ាងហ្គា…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "រកមិនឃើញម៉ាងហ្គា"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "មិនទាន់មានម៉ាងហ្គាក្នុងឧបករណ៍ ចុចនាំចូលដើម្បីបន្ថែម"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "ផ្ទុកមិនបាន: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "ស្វែងរកមិនបាន: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "ផ្ទុកបន្ថែមមិនបាន"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "បើកព័ត៌មានលម្អិតមិនបាន"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "ជ្រើសឯកសារមិនបាន"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "នាំចូលឯកសារ %d"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "ឈ្មោះម៉ាងហ្គា"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "សូមបញ្ចូលឈ្មោះ"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "បាននាំចូលឯកសារ %d"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "នាំចូលមិនបាន: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "ការទាញយក"
+    },
+    {
+      "name": "download_resume",
+      "value": "បន្ត"
+    },
+    {
+      "name": "download_pause",
+      "value": "ផ្អាក"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "សម្អាតអ្វីដែលរួច"
+    },
+    {
+      "name": "download_queue",
+      "value": "ជួរទាញយក"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "នៅក្នុងជួរ"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "កំពុងទាញយក"
+    },
+    {
+      "name": "download_state_done",
+      "value": "រួច"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "បរាជ័យ"
+    },
+    {
+      "name": "download_move_top",
+      "value": "ផ្លាស់ទៅកំពូល"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "ផ្លាស់ទៅបាត"
+    },
+    {
+      "name": "download_deleted",
+      "value": "បានលុប"
+    },
+    {
+      "name": "download_empty",
+      "value": "មិនទាន់មានការទាញយក"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "បានទាញយក"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d ជំពូក"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "គ្មានជំពូក"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "ធ្វើសមកាលមិនបាន កំពុងបង្ហាញទិន្នន័យក្នុងឧបករណ៍"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "បានបន្ថែមទៅធ្នើរសៀវភៅ"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "បានដកចេញពីធ្នើរសៀវភៅ"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "បានសម្គាល់ជំពូកទាំងអស់ថាអានរួច"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "បានដាក់ក្នុងជួរទាញយក"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "សូមកំណត់និមិត្តសញ្ញា AniList ជាមុន"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "ស្វែងរក AniList"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "ចំណងជើងម៉ាងហ្គា"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "គ្មានលទ្ធផលស្វែងរក"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "ស្វែងរក AniList មិនបាន"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "បានភ្ជាប់ AniList"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "បានផ្តាច់ AniList"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "បានធ្វើសមកាលវឌ្ឍនភាពដល់ជំពូក %d"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "ធ្វើសមកាល AniList មិនបាន"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "ក្នុងឧបករណ៍"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "នៅក្នុងធ្នើរសៀវភៅ"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "បន្ថែមទៅធ្នើរសៀវភៅ"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "អានបន្ត"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "ចាប់ផ្តើមអាន"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "មិនទាន់មានជំពូក"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "បង្រួម"
+    },
+    {
+      "name": "detail_expand",
+      "value": "ពង្រីក"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "តាមដាន AniList"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "មិនទាន់កំណត់និមិត្តសញ្ញា AniList"
+    },
+    {
+      "name": "detail_searching",
+      "value": "កំពុងស្វែងរក…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "ស្វែងរកហើយភ្ជាប់"
+    },
+    {
+      "name": "detail_bind",
+      "value": "ភ្ជាប់"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "បានធ្វើសមកាលដល់ជំពូក %d"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "ធ្វើសមកាលវឌ្ឍនភាព"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "ផ្តាច់"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "ជំពូក (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "តូចទៅធំ"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "ធំទៅតូច"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "សម្គាល់អានទាំងអស់"
+    },
+    {
+      "name": "detail_read",
+      "value": "អានរួច"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "បានទាញយក"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "នៅក្នុងជួរ"
+    },
+    {
+      "name": "detail_download",
+      "value": "ទាញយក"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "រកមិនឃើញជំពូក"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "ផ្ទុកមិនបាន: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "ឆ្វេងទៅស្តាំ"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "ស្តាំទៅឆ្វេង"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "វេបទូន"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "ម៉ូដអាន"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "សេរី"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "បញ្ឈរ"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "ផ្តេក"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "ទិសអេក្រង់"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "នៅជំពូកចុងក្រោយហើយ"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "នៅជំពូកដំបូងហើយ"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "នៅទំព័រដំបូងហើយ"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "នៅទំព័រចុងក្រោយហើយ"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "កំពុងផ្ទុកជំពូក…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "ការកំណត់អ្នកអាន"
+    },
+    {
+      "name": "reader_background",
+      "value": "ផ្ទៃខាងក្រោយ"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "ស្វ័យប្រវត្តិ"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "ស"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "ប្រផេះ"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "ខ្មៅ"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "បង្ហាញលេខទំព័រ"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "ពន្លឺ"
+    },
+    {
+      "name": "reader_auto",
+      "value": "ស្វ័យប្រវត្តិ"
+    },
+    {
+      "name": "plugin_title",
+      "value": "ផ្នែកបន្ថែម"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "បានដំឡើង"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "មិនទាន់មានផ្នែកបន្ថែម ដំឡើងខាងក្រោម"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "ផ្នែកបន្ថែមដែលបិទអាចបើកឡើងវិញបានគ្រប់ពេល"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "ជាកំណែថ្មីបំផុត"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "ដំឡើងពីឯកសារ"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "ជ្រើសឯកសារដើម្បីដំឡើង"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "កំពុងដំណើរការ…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "គាំទ្រកញ្ចប់ផ្នែកបន្ថែម .honyomiplug / .zip"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "ឃ្លាំងអនឡាញ"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "កំណត់ឃ្លាំង"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "ផ្ទុកឡើងវិញ"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "មិនទាន់កំណត់ឃ្លាំងផ្នែកបន្ថែម"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "កំពុងផ្ទុកឃ្លាំង…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "URL ឃ្លាំងផ្នែកបន្ថែម"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "បញ្ចូល URL ឃ្លាំងផ្នែកបន្ថែម"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "ផ្ទុកឃ្លាំងមិនបាន: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "ជ្រើសឯកសារមិនបាន"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "បានដំឡើង: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "បានដំឡើង %s"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "ដំឡើងមិនបាន: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "សកម្មភាពមិនបាន"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "បានលុបការដំឡើង: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "លុបការដំឡើងមិនបាន"
+    },
+    {
+      "name": "settings_title",
+      "value": "ការកំណត់"
+    },
+    {
+      "name": "settings_general",
+      "value": "ទូទៅ"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "អេក្រង់ចាប់ផ្តើម"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "ប្ដូរតាមបុគ្គល"
+    },
+    {
+      "name": "settings_library",
+      "value": "ធ្នើរសៀវភៅ"
+    },
+    {
+      "name": "settings_reader",
+      "value": "អ្នកអាន"
+    },
+    {
+      "name": "settings_data",
+      "value": "ទិន្នន័យ"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "ការទាញយក"
+    },
+    {
+      "name": "settings_browse",
+      "value": "រកមើល"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "កម្រិតខ្ពស់"
+    },
+    {
+      "name": "settings_about",
+      "value": "អំពី"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "ធ្នើរសៀវភៅ"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "បច្ចុប្បន្នភាព"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "ប្រវត្តិ"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "រកមើល"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "ច្រើនទៀត"
+    },
+    {
+      "name": "advanced_title",
+      "value": "កម្រិតខ្ពស់"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "កំពុងគណនា…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "ទំហំផ្ទុក"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "សម្អាតឃ្លាំងរូបភាព"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "បានសម្អាតឃ្លាំងរូបភាព"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "សម្អាតខូគី"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "បានសម្អាតខូគីទាំងអស់"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "បម្រុងទុក និងស្តារ"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "នាំចេញការបម្រុងទុក"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "នាំចូលការបម្រុងទុក"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "ការតាមដាន"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "និមិត្តសញ្ញា AniList"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "និមិត្តសញ្ញាចូលប្រើ AniList"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "បិទភ្ជាប់និមិត្តសញ្ញាចូលប្រើ (ទុកទទេដើម្បីសម្អាត)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "មិនទាន់កំណត់"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "បានកំណត់"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "បានរក្សាទុកនិមិត្តសញ្ញា"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "បានសម្អាតនិមិត្តសញ្ញា"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "បាននាំចេញការបម្រុងទុក"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "បានបោះបង់ការនាំចេញ"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "នាំចេញមិនបាន"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "បានបោះបង់ការនាំចូល"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "ឯកសារបម្រុងទុកមិនត្រឹមត្រូវ"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "បានស្តារម៉ាងហ្គា %d"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "នាំចូលមិនបាន"
+    },
+    {
+      "name": "about_title",
+      "value": "អំពី"
+    },
+    {
+      "name": "about_version",
+      "value": "កំណែ 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "ស្ថាបត្យកម្មបានយកគំរូពី Mihon (Apache-2.0)។ ប្រភពអនឡាញត្រូវបានដំឡើងជាផ្នែកបន្ថែម ខណៈប្រភពក្នុងឧបករណ៍មានស្រាប់។"
+    },
+    {
+      "name": "about_ack",
+      "value": "ការអរគុណប្រភពបើកចំហ:\n· Mihon / Tachiyomi — ស្ថាបត្យកម្មកម្មវិធី និងការរចនាអន្តរកម្ម (Apache-2.0)\n· Material Symbols — រូបតំណាងក្នុងកម្មវិធី (Apache-2.0)\n· MangaDex — ប្រភពទិន្នន័យសាកល្បង"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "រកមើល"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "មាតិកា"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "បង្ហាញប្រភព NSFW"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "ពេលបើក ប្រភពដែលផ្នែកបន្ថែមសម្គាល់ថា NSFW នឹងបង្ហាញក្នុងរកមើល"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "ការទាញយក"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "បណ្តាញ"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "ទាញយកតែតាម Wi-Fi"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "ចំណាំ: កុងតាក់នេះជាកន្លែងរង់ចាំក្នុងកំណែបច្ចុប្បន្ន ការរកឃើញប្រភេទបណ្តាញនឹងមាននៅកំណែក្រោយ"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "ធ្នើរសៀវភៅ"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "ត្រង និងតម្រៀប"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "តម្រៀបលំនាំដើម"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "ចំណងជើង"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "ជំពូកថ្មីបំផុត"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "កាលបរិច្ឆេទបន្ថែម"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "ចំនួនមិនទាន់អាន"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "តម្រៀបចំណងជើងតូចទៅធំ"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "តម្រងលំនាំដើម"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "មិនទាន់អាន"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "បានទាញយក"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "មិនទាន់ចប់"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "ការបង្ហាញ"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "ទិដ្ឋភាពលំនាំដើម"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "ក្រឡា"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "ក្រឡាគម្រប"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "បញ្ជី"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "ជួរឈរក្រឡា"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "ស្វ័យប្រវត្តិ"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "២ ជួរឈរ"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "៣ ជួរឈរ"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "៤ ជួរឈរ"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "ផ្លាកមិនទាន់អាន"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "ផ្លាកទាញយក"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "អ្នកអាន"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "ម៉ូដអាន"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "ម៉ូដលំនាំដើម"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "ឆ្វេងទៅស្តាំ"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "ស្តាំទៅឆ្វេង"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "បើកទំព័របញ្ឈរ"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "វេបទូន"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "ពីរទំព័រ (ផ្តេក)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "ការបង្ហាញ"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "បង្ហាញលេខទំព័រ"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "ផ្ទៃខាងក្រោយអ្នកអាន"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "តាមស្បែក"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "ស"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "ខ្មៅ"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "ប្រផេះ"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "កំណត់ពន្លឺអ្នកអានឡើងវិញ"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "បានកំណត់ពន្លឺតាមប្រព័ន្ធ"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "ប្រភព"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "ផ្នែកបន្ថែម"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "ផ្ទេរ"
+    },
+    {
+      "name": "browse_pin",
+      "value": "ខ្ទាស់"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "ដកខ្ទាស់"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "បិទប្រភព"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "បានបិទប្រភព"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "បានខ្ទាស់"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "គ្មានប្រភព។ សូមដំឡើងពីផ្ទាំងផ្នែកបន្ថែម"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "ត្រងភាសា"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "ទាំងអស់"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "ប្រភពមិនអាចប្រើបាន។ ផ្នែកបន្ថែមអាចត្រូវបានបិទ"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "ស្វែងរកគ្រប់ប្រភព"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "ការស្វែងរកបរាជ័យ"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "ស្វែងរកផ្នែកបន្ថែម"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "គ្មានការផ្គូផ្គង"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "ការកំណត់ឃ្លាំង"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "ផ្ទុកឃ្លាំងឡើងវិញ"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "ជ្រើសប្រភពដើម្បីផ្ទេរ"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "ធ្នើរសៀវភៅទទេ"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "ជ្រើសទាំងអស់"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "ដកការជ្រើសទាំងអស់"
+    },
+    {
+      "name": "migrate_action",
+      "value": "ផ្ទេរ (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "ផ្ទេរ"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "រំលង"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d នៃ %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "ប្រភពគោលដៅ"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "ស្វែងរកម៉ាងហ្គាក្នុងប្រភពគោលដៅ"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "ផ្ទេរទៅម៉ាងហ្គានេះ?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "បានផ្ទេរ៖ %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "ការផ្ទេរបរាជ័យ៖ %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "ការផ្ទេរបានបញ្ចប់"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "គ្មានប្រភពគោលដៅ"
+    },
+    {
+      "name": "stats_title",
+      "value": "ស្ថិតិ"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "ទិដ្ឋភាព"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "ក្នុងធ្នើរសៀវភៅ"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "រយៈពេលអាន"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "បានបញ្ចប់"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "ស្នាដៃ"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "បានចាប់ផ្ដើម"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "ក្នុងឧបករណ៍"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "ជំពូក"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "សរុប"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "អានរួច"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "បានទាញយក"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "ការតាមដាន"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "ស្នាដៃបានតាមដាន"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "ពិន្ទុមធ្យម"
+    },
+    {
+      "name": "stats_used",
+      "value": "បានប្រើ"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "មិនអនុវត្ត"
+    },
+    {
+      "name": "stats_week",
+      "value": "សប្តាហ៍"
+    },
+    {
+      "name": "stats_month",
+      "value": "ខែ"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "សប្តាហ៍នេះ %s"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "ខែនេះ %s"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "គ្មានការអានក្នុងរយៈពេលនេះ"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%dថ"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dម៉"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dន"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%dវិ"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "អា"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "ច"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "អង"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "ពុ"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "ព្រ"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "សុ"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "សៅ"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "បញ្ឈរ"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "ចាប់តាមដៃ"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "ចាក់សោបញ្ឈរ"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "ចាក់សោផ្តេក"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "ទូទៅ"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "តម្រងពណ៌"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "ប្រផេះ"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "បញ្ច្រាសពណ៌"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "កម្រិតពណ៌"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "តិត្ថិភាព"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "កាត់គែម"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "តំបន់ប៉ះ"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "លំនាំដើម"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "ឆ្វេងទៅស្តាំ"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "ស្តាំទៅឆ្វេង"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "បញ្ឈរ"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "គែម"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "គ្មាន"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "ទិដ្ឋភាពពីរទំព័រ"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "គម្លាតចំហៀងវេបទូន"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "ចាប់តាមដៃ"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "ដំឡើងពីក្នុងឧបករណ៍"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "ព័ត៌មានផ្នែកបន្ថែម"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "កំណែ"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "ភាសា"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "លុបការដំឡើងផ្នែកបន្ថែម"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "លុបការដំឡើង “%s”? ទិន្នន័យម៉ាងហ្គាក្នុងធ្នើរសៀវភៅនឹងនៅ"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "ប្រភព"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "ការកំណត់"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "កំពុងផ្ទុក…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "អនុវត្តការកំណត់បរាជ័យ"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "ផ្នែកបន្ថែមគ្មាន ឬមិនទាន់ផ្ទុក"
+    },
+    {
+      "name": "action_filter",
+      "value": "ត្រង"
+    },
+    {
+      "name": "action_update_library",
+      "value": "ធ្វើបច្ចុប្បន្នភាពធ្នើរសៀវភៅ"
+    },
+    {
+      "name": "action_update_category",
+      "value": "ធ្វើបច្ចុប្បន្នភាពប្រភេទ"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "បើកស្នាដៃចៃដន្យ"
+    },
+    {
+      "name": "action_select_all",
+      "value": "ជ្រើសទាំងអស់"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "បញ្ច្រាសការជ្រើស"
+    },
+    {
+      "name": "action_move_category",
+      "value": "ផ្លាស់ទៅប្រភេទ"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "សម្គាល់ថាអានរួច"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "សម្គាល់ថាមិនទាន់អាន"
+    },
+    {
+      "name": "action_download",
+      "value": "ទាញយក"
+    },
+    {
+      "name": "action_delete",
+      "value": "លុប"
+    },
+    {
+      "name": "action_migrate",
+      "value": "ផ្ទេរ"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "ដកចេញពីធ្នើរសៀវភៅ"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "ដកម៉ាងហ្គា %d ដែលបានជ្រើសចេញពីធ្នើរសៀវភៅ?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "បានបន្ថែមការទាញយក %d ទៅជួរ"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "ស្វែងរកធ្នើរសៀវភៅ"
+    },
+    {
+      "name": "library_no_match",
+      "value": "គ្មានម៉ាងហ្គាដែលត្រូវ"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "ត្រង"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "តម្រៀប"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "ការបង្ហាញ"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "បានទាញយក"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "មិនទាន់អាន"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "បានអាន"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "បានចំណាំ"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "បានបញ្ចប់"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "បានតាមដាន"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "ចំណងជើង"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "ចំនួនជំពូក"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "អានចុងក្រោយ"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "ពេលពិនិត្យបច្ចុប្បន្នភាព"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "ចំនួនមិនទាន់អាន"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "ពេលធ្វើបច្ចុប្បន្នភាពស្នាដៃ"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "ពេលទាញជំពូក"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "កាលបរិច្ឆេទបន្ថែម"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "ចៃដន្យ"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "ក្រឡាណែន"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "ក្រឡារលុង"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "ក្រឡាគម្រប"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "បញ្ជី"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "ចំនួនក្នុងមួយជួរ"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "ស្វ័យប្រវត្តិ"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "ផ្លាកនិងប៊ូតុង"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "ចំនួនជំពូកបានទាញយក"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "ជំពូកមិនទាន់អាន"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "ប្រភពក្នុងឧបករណ៍"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "ភាសា"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "ប៊ូតុងអានបន្ត"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "ផ្ទាំង"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "បង្ហាញផ្ទាំងប្រភេទ"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "បង្ហាញចំនួនស្នាដៃ"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "MihonHarmony កាត"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "អ្នកផ្តល់កាតផ្ទៃតុ"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "អានបន្ត"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "បន្តម៉ាងហ្គាដែលទើបអានបានលឿន"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "បច្ចុប្បន្នភាព"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "ជំពូកមិនទាន់អានថ្មីក្នុងធ្នើរសៀវភៅ"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "អានបន្ត"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "បច្ចុប្បន្នភាព"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d ជំពូកមិនទាន់អាន"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "មិនទាន់មានប្រវត្តិអាន"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "គ្មានជំពូកមិនទាន់អាន"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "ប៉ះដើម្បីបើកកម្មវិធី"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "កាតម៉ាងហ្គា"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "បន្ថែមពីទំព័រលម្អិត ចុចគម្របដើម្បីអាន"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "បន្ថែមទៅផ្ទៃតុពីទំព័រលម្អិតម៉ាងហ្គា"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "បន្ថែមទៅផ្ទៃតុ"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "បានបន្ថែមទៅផ្ទៃតុ"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "បន្ថែមកាតបរាជ័យ"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "ស្ថិតិប្រចាំសប្តាហ៍"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "រយៈពេលអានប្រចាំថ្ងៃសប្តាហ៍នេះ"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "ស្ថិតិប្រចាំខែ"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "រយៈពេលអានប្រចាំថ្ងៃខែនេះ"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "មិនទាន់មានការអាន"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "បង្ហាញបច្ចុប្បន្នភាពនឹងមកដល់"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "នឹងមកដល់"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "មគ្គុទ្ទេសក៍នឹងមកដល់"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "ខែមុន"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "ខែក្រោយ"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "ស្នាដៃដែលស្ថិតក្នុងទាំងប្រភេទរួមនិងប្រភេទដកចេញ នឹងមិនបង្ហាញទេ។"
+    },
+    {
+      "name": "relative_time_today",
+      "value": "ថ្ងៃនេះ"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d ថ្ងៃមុន"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "ក្នុង %d ថ្ងៃ"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "នឹងមកដល់"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "ប្រតិទិនបច្ចុប្បន្នភាពរំពឹងទុកនៃម៉ាងហ្គាក្នុងធ្នើរសៀវភៅ"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "នឹងមកដល់"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "គ្មានម៉ាងហ្គាកំពុងចេញក្នុងធ្នើរសៀវភៅ"
+    }
+  ]
 }

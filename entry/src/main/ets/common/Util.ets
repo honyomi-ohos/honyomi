@@ -121,19 +121,6 @@ export class Util {
     return Util.formatDate(ms);
   }
 
-  // 资源字符串解析：context 取 Settings.init 登记的应用上下文；不可得时回退 fallback
-  private static resText(res: Resource, arg: number, fallback: string): string {
-    const ctx = Settings.appContext();
-    if (ctx === undefined) {
-      return fallback;
-    }
-    try {
-      return ctx.resourceManager.getStringSync(res.id, arg);
-    } catch (e) {
-      throw new Error(`resolve text failed: ${e}`);
-    }
-  }
-
   static statusLabel(status: string): Resource {
     switch (status) {
       case 'ongoing':
@@ -234,7 +221,6 @@ export class Util {
     Util.toast(ui, Util.resStr(ui, res, args));
   }
 
-  // 捕获的异常 → 可读摘要：BusinessError 取 "code: message"，普通 Error 取 message，
   // 字符串原样返回；避免模板插值把整个对象格式化成 [object Object]
   static errSummary(e: Object | string): string {
     if (typeof e === 'string') {
@@ -248,7 +234,8 @@ export class Util {
     return message;
   }
 
-  // 网络层 BusinessError（@ohos.net.http 返回 curl 系错误码，基数 2300000）→ 稳定错误码：
+  // 捕获的异常 → 可读摘要：BusinessError 取 "code: message"，普通 Error 取 message，
+
   // 常见网络原因归组为独立码（errText 本地化展示），未识别的保留原始 code + message
   static netErrOf(e: Object | string): string {
     const be = e as BusinessError;
@@ -274,7 +261,8 @@ export class Util {
     return `net_request_failed|${Util.errSummary(e)}`;
   }
 
-  // 错误码 → 本地化文案：服务层业务错误统一为 "code" 或 "code|arg" 格式，
+  // 网络层 BusinessError（@ohos.net.http 返回 curl 系错误码，基数 2300000）→ 稳定错误码：
+
   // 未识别内容（插件自抛消息/引擎透传/系统错误）原样返回
   static errText(ui: UIContext, raw: string): string {
     let code: string = raw;
@@ -478,6 +466,8 @@ export class Util {
     return arg === '' ? Util.resStr(ui, res) : Util.resStr(ui, res, [arg]);
   }
 
+  // 错误码 → 本地化文案：服务层业务错误统一为 "code" 或 "code|arg" 格式，
+
   // 用系统浏览器打开链接
   static openUrl(context: common.UIAbilityContext, url: string): void {
     const want: Want = { action: 'ohos.want.action.viewData', uri: url, entities: ['entity.system.browsable'] };
@@ -542,13 +532,26 @@ export class Util {
     return Util.cleanText(Util.decodeWith('utf-8', bytes));
   }
 
-  private static decodeWith(encoding: string, data: Uint8Array): string {
-    const options: util.TextDecoderOptions = { fatal: true, ignoreBOM: false };
-    return util.TextDecoder.create(encoding, options).decodeToString(data);
-  }
-
   // 统一换行符为 \n，并去除解码残留的 BOM 字符
   static cleanText(text: string): string {
     return text.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  }
+
+  // 资源字符串解析：context 取 Settings.init 登记的应用上下文；不可得时回退 fallback
+  private static resText(res: Resource, arg: number, fallback: string): string {
+    const ctx = Settings.appContext();
+    if (ctx === undefined) {
+      return fallback;
+    }
+    try {
+      return ctx.resourceManager.getStringSync(res.id, arg);
+    } catch (e) {
+      throw new Error(`resolve text failed: ${e}`);
+    }
+  }
+
+  private static decodeWith(encoding: string, data: Uint8Array): string {
+    const options: util.TextDecoderOptions = { fatal: true, ignoreBOM: false };
+    return util.TextDecoder.create(encoding, options).decodeToString(data);
   }
 }

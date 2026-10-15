@@ -1,534 +1,2124 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Tapis semua entri di dalam pustaka anda" },
-    { "name": "more_incognito_summary", "value": "Menjeda sejarah membaca" },
-    { "name": "more_support", "value": "Bantu Kami" },
-    { "name": "more_help", "value": "Bantuan" },
-    { "name": "support_perks", "value": "Patron mendapat akses ke saluran eksklusif, dengan lebih faedah akan datang." },
-    { "name": "support_patreon", "value": "Patreon (diutamakan)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon sedang disokong oleh %d+ penaung. Kami mahu berterima kasih kepada setiap anda semua. Marilah kita membuat Mihon lebih bagus bersama-sama." },
-    { "name": "support_contact_msg", "value": "Untuk pilihan alternatif ataupun soalan berkaitan, sertai pelayan Discord kami." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "Data dan storan" },
-    { "name": "data_storage_location", "value": "Lokasi storan" },
-    { "name": "data_storage_location_info", "value": "Digunakan untuk sandaran automatik, muat turun bab, dan sumber lokal." },
-    { "name": "data_backup_restore", "value": "Sandaran dan pemulihan" },
-    { "name": "data_create_backup", "value": "Buat sandaran" },
-    { "name": "data_restore_backup", "value": "Pulihkan sandaran" },
-    { "name": "data_backup_interval", "value": "Kekerapan sandaran automatik" },
-    { "name": "data_backup_info", "value": "Anda patut simpan salinan sandaran di tempat lain juga. Sandaran mungkin mengandungi data sulit termasuk kata laluan tersimpan; hati-hati jika berkongsi." },
-    { "name": "data_last_auto_backup", "value": "Sandaran automatik terakhir:%s" },
-    { "name": "data_storage_usage", "value": "Penggunaan storan" },
-    { "name": "data_available_space", "value": "Tersedia:%s/Jumlah:%s" },
-    { "name": "data_clear_chapter_cache", "value": "Hapus cache bab" },
-    { "name": "data_used_cache", "value": "%s digunakan" },
-    { "name": "data_cache_deleted", "value": "Cache dihapuskan, %d fail dipadam" },
-    { "name": "data_cache_delete_error", "value": "Ralat berlaku ketika menghapus" },
-    { "name": "data_auto_clear_cache", "value": "Hapus cache bab ketika membuka apl" },
-    { "name": "data_export", "value": "Eksport" },
-    { "name": "data_library_list", "value": "Senarai Pustaka" },
-    { "name": "data_library_exported", "value": "Pustaka Dieksport" },
-    { "name": "data_export_include", "value": "Pilih data untuk disertakan" },
-    { "name": "data_column_title", "value": "Tajuk" },
-    { "name": "data_column_author", "value": "Pengarang" },
-    { "name": "data_interval_off", "value": "Mati" },
-    { "name": "data_interval_6h", "value": "Setiap 6 jam" },
-    { "name": "data_interval_12h", "value": "Setiap 12 jam" },
-    { "name": "data_interval_24h", "value": "Setiap hari" },
-    { "name": "data_interval_48h", "value": "Setiap 2 hari" },
-    { "name": "data_interval_weekly", "value": "Setiap minggu" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "OK" },
-    { "name": "common_cancel", "value": "Batal" },
-    { "name": "common_confirm", "value": "Sahkan" },
-    { "name": "common_delete", "value": "Padam" },
-    { "name": "common_retry", "value": "Cuba lagi" },
-    { "name": "common_search", "value": "Cari" },
-    { "name": "common_all", "value": "Semua" },
-    { "name": "common_close", "value": "Tutup" },
-    { "name": "common_save", "value": "Simpan" },
-    { "name": "common_install", "value": "Pasang" },
-    { "name": "common_uninstall", "value": "Nyahpasang" },
-    { "name": "common_update", "value": "Kemas kini" },
-    { "name": "common_none", "value": "Tiada" },
-    { "name": "common_default", "value": "Lalai" },
-    { "name": "appearance_title", "value": "Penampilan" },
-    { "name": "appearance_language", "value": "Bahasa" },
-    { "name": "lang_follow_system", "value": "Ikuti sistem" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "Mod tema" },
-    { "name": "appearance_theme_auto", "value": "Ikuti sistem" },
-    { "name": "appearance_theme_light", "value": "Cerah" },
-    { "name": "appearance_theme_dark", "value": "Gelap" },
-    { "name": "appearance_accent_color", "value": "Warna aksen" },
-    { "name": "appearance_other", "value": "Lain-lain" },
-    { "name": "appearance_amoled", "value": "Latar hitam tulen AMOLED" },
-    { "name": "theme_accent_blue", "value": "Biru" },
-    { "name": "theme_accent_green", "value": "Hijau" },
-    { "name": "theme_accent_pink", "value": "Merah jambu" },
-    { "name": "theme_accent_purple", "value": "Ungu" },
-    { "name": "theme_accent_orange", "value": "Oren" },
-    { "name": "util_time_minutes_ago", "value": "%d min lalu" },
-    { "name": "util_time_hours_ago", "value": "%d j lalu" },
-    { "name": "util_time_days_ago", "value": "%d h lalu" },
-    { "name": "util_status_ongoing", "value": "Sedang berjalan" },
-    { "name": "util_status_completed", "value": "Selesai" },
-    { "name": "util_status_hiatus", "value": "Rehat" },
-    { "name": "util_status_cancelled", "value": "Dibatalkan" },
-    { "name": "util_status_publication_complete", "value": "Penerbitan selesai" },
-    { "name": "util_status_unknown", "value": "Tidak diketahui" },
-    { "name": "tab_library", "value": "Rak buku" },
-    { "name": "tab_updates", "value": "Kemas kini" },
-    { "name": "tab_history", "value": "Sejarah" },
-    { "name": "tab_browse", "value": "Layari" },
-    { "name": "tab_more", "value": "Lagi" },
-    { "name": "tab_cf_waiting", "value": "Menunggu pengesahan…" },
-    { "name": "tab_cf_verified", "value": "Pengesahan selesai" },
-    { "name": "tab_cf_title", "value": "Pengesahan manusia" },
-    { "name": "tab_cf_done", "value": "Selesai" },
-    { "name": "tab_cf_saved", "value": "Keputusan pengesahan disimpan" },
-    { "name": "more_title", "value": "Lagi" },
-    { "name": "more_version", "value": "Versi %s" },
-    { "name": "more_downloaded_only", "value": "Dimuat turun sahaja" },
-    { "name": "more_incognito", "value": "Mod inkognito" },
-    { "name": "more_downloads", "value": "Giliran muat turun" },
-    { "name": "more_categories", "value": "Kategori" },
-    { "name": "more_settings", "value": "Tetapan" },
-    { "name": "more_about", "value": "Perihal" },
-    { "name": "more_plugins", "value": "Sambungan" },
-    { "name": "categories_title", "value": "Kategori" },
-    { "name": "categories_add", "value": "Kategori baharu" },
-    { "name": "categories_name_placeholder", "value": "Nama kategori" },
-    { "name": "categories_rename_category", "value": "Namakan semula kategori" },
-    { "name": "categories_rename", "value": "Namakan semula" },
-    { "name": "categories_hint", "value": "Tekan lama kategori untuk namakan semula atau padam; manga dalam kategori dipadam dipindah kembali ke Lalai" },
-    { "name": "dialog_pick_category", "value": "Pilih kategori" },
-    { "name": "viewer_loading", "value": "Memuatkan…" },
-    { "name": "viewer_load_failed", "value": "Gagal memuatkan imej" },
-    { "name": "viewer_tap_retry", "value": "Ketik untuk cuba lagi" },
-    { "name": "library_title", "value": "Rak buku" },
-    { "name": "library_empty", "value": "Rak buku kosong, layari untuk menambah manga" },
-    { "name": "library_new_category", "value": "Kategori baharu" },
-    { "name": "library_category_name", "value": "Nama kategori" },
-    { "name": "updates_title", "value": "Kemas kini" },
-    { "name": "updates_empty", "value": "Tiada kemas kini terkini" },
-    { "name": "updates_found_new", "value": "%d bab baharu dijumpai" },
-    { "name": "updates_no_new", "value": "Tiada bab baharu" },
-    { "name": "updates_refresh_failed", "value": "Gagal menyegar" },
-    { "name": "updates_refreshing", "value": "Menyegar…" },
-    { "name": "history_title", "value": "Sejarah" },
-    { "name": "history_clear", "value": "Kosongkan" },
-    { "name": "history_confirm_clear", "value": "Sahkan kosongkan?" },
-    { "name": "history_empty", "value": "Belum ada sejarah bacaan" },
-    { "name": "history_cleared", "value": "Sejarah dikosongkan" },
-    { "name": "history_continue", "value": "Teruskan" },
-    { "name": "browse_title", "value": "Layari" },
-    { "name": "browse_import", "value": "Import" },
-    { "name": "browse_plugins", "value": "Sambungan" },
-    { "name": "browse_local_source_name", "value": "Manga tempatan" },
-    { "name": "browse_popular", "value": "Popular" },
-    { "name": "browse_latest", "value": "Terkini" },
-    { "name": "browse_search_hint", "value": "Cari manga…" },
-    { "name": "browse_no_results", "value": "Manga tidak dijumpai" },
-    { "name": "browse_local_empty", "value": "Belum ada manga tempatan, ketik Import untuk menambah" },
-    { "name": "browse_load_failed", "value": "Gagal memuatkan: %s" },
-    { "name": "browse_search_failed", "value": "Carian gagal: %s" },
-    { "name": "browse_load_more_failed", "value": "Gagal memuatkan lagi" },
-    { "name": "browse_open_detail_failed", "value": "Gagal membuka butiran" },
-    { "name": "browse_pick_file_failed", "value": "Gagal memilih fail" },
-    { "name": "browse_import_title", "value": "Import %d fail" },
-    { "name": "browse_manga_name_hint", "value": "Nama manga" },
-    { "name": "browse_input_name", "value": "Sila masukkan nama" },
-    { "name": "browse_import_done", "value": "%d fail diimport" },
-    { "name": "browse_import_failed", "value": "Import gagal: %s" },
-    { "name": "download_title", "value": "Muat turun" },
-    { "name": "download_resume", "value": "Sambung" },
-    { "name": "download_pause", "value": "Jeda" },
-    { "name": "download_clear_finished", "value": "Kosongkan yang siap" },
-    { "name": "download_queue", "value": "Baris gilir muat turun" },
-    { "name": "download_state_queued", "value": "Dalam baris gilir" },
-    { "name": "download_state_downloading", "value": "Memuat turun" },
-    { "name": "download_state_done", "value": "Selesai" },
-    { "name": "download_state_failed", "value": "Gagal" },
-    { "name": "download_move_top", "value": "Alih ke atas" },
-    { "name": "download_move_bottom", "value": "Alih ke bawah" },
-    { "name": "download_deleted", "value": "Dipadam" },
-    { "name": "download_empty", "value": "Belum ada muat turun" },
-    { "name": "download_status_downloaded", "value": "Dimuat turun" },
-    { "name": "download_chapter_count", "value": "%d bab" },
-    { "name": "detail_no_chapters", "value": "Tiada bab" },
-    { "name": "detail_sync_failed_local", "value": "Segerak gagal, menunjukkan data tempatan" },
-    { "name": "detail_added_to_library", "value": "Ditambah ke rak buku" },
-    { "name": "detail_removed_from_library", "value": "Dibuang dari rak buku" },
-    { "name": "detail_all_marked_read", "value": "Semua bab ditanda sudah dibaca" },
-    { "name": "detail_download_queued", "value": "Dimasukkan ke baris gilir muat turun" },
-    { "name": "detail_config_anilist_token", "value": "Sila tetapkan token AniList dahulu" },
-    { "name": "detail_search_anilist", "value": "Cari AniList" },
-    { "name": "detail_manga_title_hint", "value": "Tajuk manga" },
-    { "name": "detail_no_search_results", "value": "Tiada hasil carian" },
-    { "name": "detail_anilist_search_failed", "value": "Carian AniList gagal" },
-    { "name": "detail_anilist_bound", "value": "Dihubung ke AniList" },
-    { "name": "detail_anilist_unbound", "value": "Diputus dari AniList" },
-    { "name": "detail_synced_progress", "value": "Kemajuan disegerakkan ke bab %d" },
-    { "name": "detail_anilist_sync_failed", "value": "Segerak AniList gagal" },
-    { "name": "detail_status_local", "value": "Tempatan" },
-    { "name": "detail_in_library", "value": "Dalam rak buku" },
-    { "name": "detail_add_to_library", "value": "Tambah ke rak buku" },
-    { "name": "detail_continue_reading", "value": "Teruskan baca" },
-    { "name": "detail_start_reading", "value": "Mula baca" },
-    { "name": "detail_no_chapters_yet", "value": "Belum ada bab" },
-    { "name": "detail_collapse", "value": "Runtuhkan" },
-    { "name": "detail_expand", "value": "Kembangkan" },
-    { "name": "detail_anilist_tracking", "value": "Penjejakan AniList" },
-    { "name": "detail_anilist_token_hint", "value": "Token AniList belum ditetapkan" },
-    { "name": "detail_searching", "value": "Mencari…" },
-    { "name": "detail_search_and_bind", "value": "Cari dan hubung" },
-    { "name": "detail_bind", "value": "Hubung" },
-    { "name": "detail_synced_to_chapter", "value": "Disegerakkan ke bab %d" },
-    { "name": "detail_sync_progress", "value": "Segerak kemajuan" },
-    { "name": "detail_unbind", "value": "Putuskan" },
-    { "name": "detail_chapters_count", "value": "Bab (%d)" },
-    { "name": "detail_sort_asc", "value": "Menaik" },
-    { "name": "detail_sort_desc", "value": "Menurun" },
-    { "name": "detail_mark_all_read", "value": "Tanda semua dibaca" },
-    { "name": "detail_read", "value": "Dibaca" },
-    { "name": "detail_downloaded", "value": "Dimuat turun" },
-    { "name": "detail_in_queue", "value": "Dalam baris gilir" },
-    { "name": "detail_download", "value": "Muat turun" },
-    { "name": "reader_chapter_not_found", "value": "Bab tidak dijumpai" },
-    { "name": "reader_load_failed", "value": "Gagal memuatkan: %s" },
-    { "name": "reader_mode_ltr", "value": "Kiri ke kanan" },
-    { "name": "reader_mode_rtl", "value": "Kanan ke kiri" },
-    { "name": "reader_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_reading_mode", "value": "Mod bacaan" },
-    { "name": "reader_orientation_free", "value": "Bebas" },
-    { "name": "reader_orientation_portrait", "value": "Potret" },
-    { "name": "reader_orientation_landscape", "value": "Rentang" },
-    { "name": "reader_screen_orientation", "value": "Orientasi skrin" },
-    { "name": "reader_last_chapter", "value": "Sudah di bab terakhir" },
-    { "name": "reader_first_chapter", "value": "Sudah di bab pertama" },
-    { "name": "reader_first_page", "value": "Sudah di halaman pertama" },
-    { "name": "reader_last_page", "value": "Sudah di halaman terakhir" },
-    { "name": "reader_loading_chapter", "value": "Memuatkan bab…" },
-    { "name": "reader_settings", "value": "Tetapan pembaca" },
-    { "name": "reader_background", "value": "Latar" },
-    { "name": "reader_theme_auto", "value": "Auto" },
-    { "name": "reader_theme_white", "value": "Putih" },
-    { "name": "reader_theme_gray", "value": "Kelabu" },
-    { "name": "reader_theme_black", "value": "Hitam" },
-    { "name": "reader_show_page_number", "value": "Tunjukkan nombor halaman" },
-    { "name": "reader_brightness", "value": "Kecerahan" },
-    { "name": "reader_auto", "value": "Auto" },
-    { "name": "plugin_title", "value": "Sambungan" },
-    { "name": "plugin_installed_section", "value": "Dipasang" },
-    { "name": "plugin_empty", "value": "Belum ada sambungan, pasang di bawah" },
-    { "name": "plugin_disable_hint", "value": "Sambungan dilumpuhkan boleh dihidupkan semula bila-bila masa" },
-    { "name": "plugin_up_to_date", "value": "Terkini" },
-    { "name": "plugin_local_install", "value": "Pasang dari fail" },
-    { "name": "plugin_install_from_file", "value": "Pilih fail untuk dipasang" },
-    { "name": "plugin_processing", "value": "Memproses…" },
-    { "name": "plugin_package_hint", "value": "Menyokong pakej sambungan .honyomiplug / .zip" },
-    { "name": "plugin_repo", "value": "Repositori dalam talian" },
-    { "name": "plugin_repo_config", "value": "Tetapkan repositori" },
-    { "name": "plugin_repo_refresh", "value": "Segar semula" },
-    { "name": "plugin_repo_hint", "value": "Repositori sambungan belum ditetapkan" },
-    { "name": "plugin_repo_loading", "value": "Memuatkan repositori…" },
-    { "name": "plugin_repo_url_title", "value": "URL repositori sambungan" },
-    { "name": "plugin_repo_url_hint", "value": "Masukkan URL repositori sambungan" },
-    { "name": "plugin_repo_load_failed", "value": "Gagal memuatkan repositori: %s" },
-    { "name": "plugin_pick_file_failed", "value": "Gagal memilih fail" },
-    { "name": "plugin_installed", "value": "Dipasang: %s" },
-    { "name": "plugin_installed_name", "value": "%s dipasang" },
-    { "name": "plugin_install_failed", "value": "Pemasangan gagal: %s" },
-    { "name": "plugin_action_failed", "value": "Tindakan gagal" },
-    { "name": "plugin_uninstalled", "value": "Dinyahpasang: %s" },
-    { "name": "plugin_uninstall_failed", "value": "Gagal nyahpasang" },
-    { "name": "settings_title", "value": "Tetapan" },
-    { "name": "settings_general", "value": "Umum" },
-    { "name": "settings_start_tab", "value": "Skrin mula" },
-    { "name": "settings_personalization", "value": "Pemperibadian" },
-    { "name": "settings_library", "value": "Rak buku" },
-    { "name": "settings_reader", "value": "Pembaca" },
-    { "name": "settings_data", "value": "Data" },
-    { "name": "settings_downloads", "value": "Muat turun" },
-    { "name": "settings_browse", "value": "Layari" },
-    { "name": "settings_advanced", "value": "Lanjutan" },
-    { "name": "settings_about", "value": "Perihal" },
-    { "name": "settings_tab_library", "value": "Rak buku" },
-    { "name": "settings_tab_updates", "value": "Kemas kini" },
-    { "name": "settings_tab_history", "value": "Sejarah" },
-    { "name": "settings_tab_browse", "value": "Layari" },
-    { "name": "settings_tab_more", "value": "Lagi" },
-    { "name": "advanced_title", "value": "Lanjutan" },
-    { "name": "advanced_calculating", "value": "Mengira…" },
-    { "name": "advanced_storage", "value": "Storan" },
-    { "name": "advanced_clear_image_cache", "value": "Kosongkan cache imej" },
-    { "name": "advanced_image_cache_cleared", "value": "Cache imej dikosongkan" },
-    { "name": "advanced_clear_cookies", "value": "Kosongkan kuki" },
-    { "name": "advanced_cookies_cleared", "value": "Semua kuki dikosongkan" },
-    { "name": "advanced_backup_restore", "value": "Sandaran dan pulih" },
-    { "name": "advanced_export_backup", "value": "Eksport sandaran" },
-    { "name": "advanced_import_backup", "value": "Import sandaran" },
-    { "name": "advanced_tracking", "value": "Penjejakan" },
-    { "name": "advanced_anilist_token", "value": "Token AniList" },
-    { "name": "advanced_token_title", "value": "Token akses AniList" },
-    { "name": "advanced_token_hint", "value": "Tampal token akses (biarkan kosong untuk padam)" },
-    { "name": "advanced_token_not_set", "value": "Belum ditetapkan" },
-    { "name": "advanced_token_set", "value": "Telah ditetapkan" },
-    { "name": "advanced_token_saved", "value": "Token disimpan" },
-    { "name": "advanced_token_cleared", "value": "Token dikosongkan" },
-    { "name": "advanced_backup_exported", "value": "Sandaran dieksport" },
-    { "name": "advanced_export_canceled", "value": "Eksport dibatalkan" },
-    { "name": "advanced_export_failed", "value": "Eksport gagal" },
-    { "name": "advanced_import_canceled", "value": "Import dibatalkan" },
-    { "name": "advanced_backup_invalid", "value": "Fail sandaran tidak sah" },
-    { "name": "advanced_restored_manga", "value": "%d manga dipulihkan" },
-    { "name": "advanced_import_failed", "value": "Import gagal" },
-    { "name": "about_title", "value": "Perihal" },
-    { "name": "about_version", "value": "Versi 1.0.0" },
-    { "name": "about_desc", "value": "Seni bina diilhamkan daripada Mihon (Apache-2.0). Sumber dalam talian dipasang secara dinamik sebagai sambungan, manakala sumber tempatan terbina dalam." },
-    { "name": "about_ack", "value": "Penghargaan sumber terbuka:\n· Mihon / Tachiyomi — seni bina aplikasi dan reka bentuk interaksi (Apache-2.0)\n· Material Symbols — ikon dalam aplikasi (Apache-2.0)\n· MangaDex — sumber data ujian" },
-    { "name": "browse_set_title", "value": "Layari" },
-    { "name": "browse_set_content", "value": "Kandungan" },
-    { "name": "browse_set_show_nsfw", "value": "Tunjukkan sumber NSFW" },
-    { "name": "browse_set_nsfw_hint", "value": "Apabila diaktifkan, sumber yang ditanda NSFW oleh sambungannya akan muncul dalam Layari" },
-    { "name": "dl_set_title", "value": "Muat turun" },
-    { "name": "dl_set_network", "value": "Rangkaian" },
-    { "name": "dl_set_wifi_only", "value": "Muat turun melalui Wi-Fi sahaja" },
-    { "name": "dl_set_wifi_only_hint", "value": "Nota: suis ini ialah pemegang tempat dalam versi semasa; pengesanan jenis rangkaian akan datang dalam keluaran akan datang" },
-    { "name": "lib_set_title", "value": "Rak buku" },
-    { "name": "lib_set_sort_group", "value": "Tapis dan isih" },
-    { "name": "lib_set_sort_default", "value": "Isihan lalai" },
-    { "name": "lib_set_sort_title", "value": "Tajuk" },
-    { "name": "lib_set_sort_last_update", "value": "Bab terkini" },
-    { "name": "lib_set_sort_added", "value": "Tarikh ditambah" },
-    { "name": "lib_set_sort_unread", "value": "Bilangan belum dibaca" },
-    { "name": "lib_set_sort_asc", "value": "Isih tajuk menaik" },
-    { "name": "lib_set_filter_default", "value": "Tapisan lalai" },
-    { "name": "lib_set_filter_unread", "value": "Belum dibaca" },
-    { "name": "lib_set_filter_downloaded", "value": "Dimuat turun" },
-    { "name": "lib_set_filter_uncompleted", "value": "Belum selesai" },
-    { "name": "lib_set_display_group", "value": "Paparan" },
-    { "name": "lib_set_view_default", "value": "Paparan lalai" },
-    { "name": "lib_set_view_grid", "value": "Grid" },
-    { "name": "lib_set_view_cover", "value": "Grid kulit" },
-    { "name": "lib_set_view_list", "value": "Senarai" },
-    { "name": "lib_set_grid_cols", "value": "Lajur grid" },
-    { "name": "lib_set_cols_auto", "value": "Auto" },
-    { "name": "lib_set_cols_2", "value": "2 lajur" },
-    { "name": "lib_set_cols_3", "value": "3 lajur" },
-    { "name": "lib_set_cols_4", "value": "4 lajur" },
-    { "name": "lib_set_unread_badge", "value": "Lencana belum dibaca" },
-    { "name": "lib_set_download_badge", "value": "Lencana muat turun" },
-    { "name": "reader_set_title", "value": "Pembaca" },
-    { "name": "reader_set_mode_group", "value": "Mod bacaan" },
-    { "name": "reader_set_mode_default", "value": "Mod lalai" },
-    { "name": "reader_set_mode_ltr", "value": "Kiri ke kanan" },
-    { "name": "reader_set_mode_rtl", "value": "Kanan ke kiri" },
-    { "name": "reader_set_mode_vertical", "value": "Lungsur halaman menegak" },
-    { "name": "reader_set_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_set_dual_page", "value": "Dua halaman (rentang)" },
-    { "name": "reader_set_display_group", "value": "Paparan" },
-    { "name": "reader_set_show_page_number", "value": "Tunjukkan nombor halaman" },
-    { "name": "reader_set_bg_color", "value": "Latar pembaca" },
-    { "name": "reader_set_theme_follow", "value": "Ikuti tema" },
-    { "name": "reader_set_theme_white", "value": "Putih" },
-    { "name": "reader_set_theme_black", "value": "Hitam" },
-    { "name": "reader_set_theme_gray", "value": "Kelabu" },
-    { "name": "reader_set_reset_brightness", "value": "Tetap semula kecerahan pembaca" },
-    { "name": "reader_set_brightness_reset", "value": "Kecerahan ditetapkan mengikut sistem" },
-    { "name": "browse_tab_sources", "value": "Sumber" },
-    { "name": "browse_tab_extensions", "value": "Sambungan" },
-    { "name": "browse_tab_migrate", "value": "Hijrah" },
-    { "name": "browse_pin", "value": "Semat" },
-    { "name": "browse_unpin", "value": "Nyahsemat" },
-    { "name": "browse_disable_source", "value": "Lumpuhkan sumber" },
-    { "name": "browse_source_disabled", "value": "Sumber dilumpuhkan" },
-    { "name": "browse_pinned", "value": "Disemat" },
-    { "name": "browse_sources_empty", "value": "Tiada sumber. Pasang dari tab Sambungan" },
-    { "name": "browse_filter_langs", "value": "Tapis bahasa" },
-    { "name": "browse_filter_all", "value": "Semua" },
-    { "name": "browse_source_missing", "value": "Sumber tidak tersedia. Sambungan mungkin dilumpuhkan" },
-    { "name": "global_search_hint", "value": "Cari semua sumber" },
-    { "name": "global_search_failed", "value": "Carian gagal" },
-    { "name": "ext_search_hint", "value": "Cari sambungan" },
-    { "name": "ext_search_no_match", "value": "Tiada padanan" },
-    { "name": "ext_repo_settings", "value": "Tetapan repositori" },
-    { "name": "ext_refresh_repo", "value": "Segar semula repositori" },
-    { "name": "migrate_pick_source", "value": "Pilih sumber untuk dihijrahkan" },
-    { "name": "migrate_empty_library", "value": "Rak buku kosong" },
-    { "name": "migrate_select_all", "value": "Pilih semua" },
-    { "name": "migrate_deselect_all", "value": "Nyahpilih semua" },
-    { "name": "migrate_action", "value": "Hijrah (%d)" },
-    { "name": "migrate_title", "value": "Hijrah" },
-    { "name": "migrate_skip", "value": "Langkau" },
-    { "name": "migrate_progress", "value": "%d daripada %d" },
-    { "name": "migrate_target_source", "value": "Sumber sasaran" },
-    { "name": "migrate_search_hint", "value": "Cari manga dalam sumber sasaran" },
-    { "name": "migrate_confirm_title", "value": "Hijrah ke manga ini?" },
-    { "name": "migrate_item_done", "value": "Dihijrahkan: %s" },
-    { "name": "migrate_failed", "value": "Penghijrahan gagal: %s" },
-    { "name": "migrate_done", "value": "Penghijrahan selesai" },
-    { "name": "migrate_no_target", "value": "Tiada sumber sasaran" },
-    { "name": "stats_title", "value": "Statistik" },
-    { "name": "stats_overview_section", "value": "Gambaran keseluruhan" },
-    { "name": "stats_in_library", "value": "Dalam rak buku" },
-    { "name": "stats_read_duration", "value": "Tempoh baca" },
-    { "name": "stats_completed_titles", "value": "Selesai" },
-    { "name": "stats_titles_section", "value": "Karya" },
-    { "name": "stats_started_titles", "value": "Sudah bermula" },
-    { "name": "stats_local_titles", "value": "Tempatan" },
-    { "name": "stats_chapters_section", "value": "Bab" },
-    { "name": "stats_total_chapters", "value": "Jumlah" },
-    { "name": "stats_read_chapters", "value": "Dibaca" },
-    { "name": "stats_downloaded_chapters", "value": "Dimuat turun" },
-    { "name": "stats_tracker_section", "value": "Penjejakan" },
-    { "name": "stats_tracked_titles", "value": "Karya dijejaki" },
-    { "name": "stats_mean_score", "value": "Skor purata" },
-    { "name": "stats_used", "value": "Digunakan" },
-    { "name": "stats_not_applicable", "value": "Tidak berkenaan" },
-    { "name": "stats_week", "value": "Minggu" },
-    { "name": "stats_month", "value": "Bulan" },
-    { "name": "stats_week_total", "value": "%s minggu ini" },
-    { "name": "stats_month_total", "value": "%s bulan ini" },
-    { "name": "stats_no_reading", "value": "Tiada bacaan dalam tempoh ini" },
-    { "name": "stats_day_short", "value": "%dh" },
-    { "name": "stats_hour_short", "value": "%dj" },
-    { "name": "stats_minute_short", "value": "%dmin" },
-    { "name": "stats_second_short", "value": "%ds" },
-    { "name": "stats_wd_sun", "value": "Ahd" },
-    { "name": "stats_wd_mon", "value": "Isn" },
-    { "name": "stats_wd_tue", "value": "Sel" },
-    { "name": "stats_wd_wed", "value": "Rab" },
-    { "name": "stats_wd_thu", "value": "Kha" },
-    { "name": "stats_wd_fri", "value": "Jum" },
-    { "name": "stats_wd_sat", "value": "Sab" },
-    { "name": "reader_mode_vertical", "value": "Lungsur halaman menegak" },
-    { "name": "reader_mode_smart_grip", "value": "Genggaman pintar" },
-    { "name": "reader_orientation_lock_portrait", "value": "Kunci potret" },
-    { "name": "reader_orientation_lock_landscape", "value": "Kunci rentang" },
-    { "name": "reader_tab_general", "value": "Umum" },
-    { "name": "reader_tab_filter", "value": "Penapis warna" },
-    { "name": "reader_filter_grayscale", "value": "Skala kelabu" },
-    { "name": "reader_filter_invert", "value": "Warna songsang" },
-    { "name": "reader_filter_contrast", "value": "Kontras" },
-    { "name": "reader_filter_saturation", "value": "Ketepuan" },
-    { "name": "reader_crop_borders", "value": "Pangkas sempadan" },
-    { "name": "reader_nav_tap_zones", "value": "Zon ketik" },
-    { "name": "reader_nav_default", "value": "Lalai" },
-    { "name": "reader_nav_ltr", "value": "Kiri ke kanan" },
-    { "name": "reader_nav_rtl", "value": "Kanan ke kiri" },
-    { "name": "reader_nav_vertical", "value": "Menegak" },
-    { "name": "reader_nav_edge", "value": "Tepi" },
-    { "name": "reader_nav_none", "value": "Tiada" },
-    { "name": "reader_dual_page", "value": "Paparan dua halaman" },
-    { "name": "reader_webtoon_padding", "value": "Jarak tepi Webtoon" },
-    { "name": "reader_set_mode_smart_grip", "value": "Genggaman pintar" },
-    { "name": "ext_install_local", "value": "Pasang dari tempatan" },
-    { "name": "ext_detail_title", "value": "Maklumat sambungan" },
-    { "name": "ext_info_version", "value": "Versi" },
-    { "name": "ext_info_language", "value": "Bahasa" },
-    { "name": "ext_uninstall_title", "value": "Nyahpasang sambungan" },
-    { "name": "ext_uninstall_msg", "value": "Nyahpasang \"%s\"? Manga dalam rak buku akan dikekalkan" },
-    { "name": "ext_detail_sources", "value": "Sumber" },
-    { "name": "ext_detail_settings", "value": "Tetapan" },
-    { "name": "ext_pref_loading", "value": "Memuatkan…" },
-    { "name": "ext_pref_failed", "value": "Gagal menggunakan tetapan" },
-    { "name": "ext_detail_missing", "value": "Sambungan tidak wujud atau belum dimuatkan" },
-    { "name": "action_filter", "value": "Tapis" },
-    { "name": "action_update_library", "value": "Kemas kini rak buku" },
-    { "name": "action_update_category", "value": "Kemas kini kategori" },
-    { "name": "action_open_random_manga", "value": "Buka karya rawak" },
-    { "name": "action_select_all", "value": "Pilih semua" },
-    { "name": "action_select_inverse", "value": "Songsang pilihan" },
-    { "name": "action_move_category", "value": "Alih kategori" },
-    { "name": "action_mark_as_read", "value": "Tanda sebagai dibaca" },
-    { "name": "action_mark_as_unread", "value": "Tanda sebagai belum dibaca" },
-    { "name": "action_download", "value": "Muat turun" },
-    { "name": "action_delete", "value": "Padam" },
-    { "name": "action_migrate", "value": "Hijrah" },
-    { "name": "action_remove_from_library", "value": "Buang dari rak buku" },
-    { "name": "action_remove_from_library_msg", "value": "Buang %d manga terpilih dari rak buku?" },
-    { "name": "action_download_queued", "value": "Menambah %d muat turun" },
-    { "name": "library_search_hint", "value": "Cari rak buku" },
-    { "name": "library_no_match", "value": "Tiada manga yang sepadan" },
-    { "name": "lib_sheet_tab_filter", "value": "Tapis" },
-    { "name": "lib_sheet_tab_sort", "value": "Isih" },
-    { "name": "lib_sheet_tab_display", "value": "Paparan" },
-    { "name": "lib_filter_downloaded", "value": "Dimuat turun" },
-    { "name": "lib_filter_unread", "value": "Belum dibaca" },
-    { "name": "lib_filter_started", "value": "Pernah dibaca" },
-    { "name": "lib_filter_bookmarked", "value": "Ditanda buku" },
-    { "name": "lib_filter_completed", "value": "Selesai" },
-    { "name": "lib_filter_tracked", "value": "Dijejaki" },
-    { "name": "lib_sort_alpha", "value": "Tajuk" },
-    { "name": "lib_sort_total", "value": "Bilangan bab" },
-    { "name": "lib_sort_last_read", "value": "Bacaan terkini" },
-    { "name": "lib_sort_last_update", "value": "Semakan kemas kini" },
-    { "name": "lib_sort_unread", "value": "Bilangan belum dibaca" },
-    { "name": "lib_sort_latest_chapter", "value": "Kemas kini karya" },
-    { "name": "lib_sort_fetch_date", "value": "Masa bab diperoleh" },
-    { "name": "lib_sort_date_added", "value": "Tarikh ditambah" },
-    { "name": "lib_sort_random", "value": "Rawak" },
-    { "name": "lib_display_compact", "value": "Grid padat" },
-    { "name": "lib_display_comfortable", "value": "Grid longgar" },
-    { "name": "lib_display_cover", "value": "Grid kulit" },
-    { "name": "lib_display_list", "value": "Senarai" },
-    { "name": "lib_display_grid_size", "value": "Bilangan sebaris" },
-    { "name": "lib_display_grid_auto", "value": "Auto" },
-    { "name": "lib_display_badges_group", "value": "Lencana dan butang" },
-    { "name": "lib_badge_downloaded", "value": "Bilangan bab dimuat turun" },
-    { "name": "lib_badge_unread", "value": "Bab belum dibaca" },
-    { "name": "lib_badge_local", "value": "Sumber tempatan" },
-    { "name": "lib_badge_language", "value": "Bahasa" },
-    { "name": "lib_badge_continue", "value": "Butang teruskan baca" },
-    { "name": "lib_display_tabs_group", "value": "Tab" },
-    { "name": "lib_show_category_tabs", "value": "Tunjuk tab kategori" },
-    { "name": "lib_show_manga_count", "value": "Tunjuk bilangan karya" },
-    { "name": "EntryFormAbility_label", "value": "Kad Honyomi" },
-    { "name": "EntryFormAbility_desc", "value": "Pembekal kad desktop" },
-    { "name": "card_recent_display", "value": "Teruskan baca" },
-    { "name": "card_recent_desc", "value": "Teruskan baca manga yang baru dibaca" },
-    { "name": "card_updates_display", "value": "Kemas kini" },
-    { "name": "card_updates_desc", "value": "Bab belum dibaca terkini dalam rak buku" },
-    { "name": "card_recent_header", "value": "Teruskan baca" },
-    { "name": "card_updates_header", "value": "Kemas kini" },
-    { "name": "card_unread_count", "value": "%d bab belum dibaca" },
-    { "name": "card_empty_recent", "value": "Belum ada sejarah bacaan" },
-    { "name": "card_empty_updates", "value": "Tiada bab yang belum dibaca" },
-    { "name": "card_open_hint", "value": "Ketik untuk membuka aplikasi" },
-    { "name": "card_manga_display", "value": "Kad manga" },
-    { "name": "card_manga_desc", "value": "Tambah dari halaman butiran, ketik kulit untuk membaca" },
-    { "name": "card_manga_empty", "value": "Tambah dari halaman butiran manga ke desktop" },
-    { "name": "detail_add_to_desktop", "value": "Tambah ke desktop" },
-    { "name": "detail_card_added", "value": "Ditambah ke desktop" },
-    { "name": "detail_card_add_failed", "value": "Tidak dapat menambah kad" },
-    { "name": "card_stats_week_display", "value": "Statistik mingguan" },
-    { "name": "card_stats_week_desc", "value": "Masa baca harian minggu ini" },
-    { "name": "card_stats_month_display", "value": "Statistik bulanan" },
-    { "name": "card_stats_month_desc", "value": "Masa baca harian bulan ini" },
-    { "name": "card_stats_empty", "value": "Belum ada bacaan" },
-    { "name": "action_view_upcoming", "value": "Tunjuk kemas kini akan datang" },
-    { "name": "label_upcoming", "value": "Akan datang" },
-    { "name": "upcoming_guide", "value": "Panduan akan datang" },
-    { "name": "upcoming_calendar_prev", "value": "Bulan lepas" },
-    { "name": "upcoming_calendar_next", "value": "Bulan hadapan" },
-    { "name": "pref_filter_update_categories_details", "value": "Tajuk yang ada dalam kategori disertakan dan dikecualikan serentak tidak dipaparkan." },
-    { "name": "relative_time_today", "value": "Hari ini" },
-    { "name": "relative_time_days_ago", "value": "%d h lalu" },
-    { "name": "upcoming_relative_time_days", "value": "%d h lagi" },
-    { "name": "card_upcoming_display", "value": "Akan datang" },
-    { "name": "card_upcoming_desc", "value": "Kalendar anggaran kemas kini manga dalam rak buku" },
-    { "name": "card_upcoming_header", "value": "Akan datang" },
-    { "name": "card_empty_upcoming", "value": "Tiada manga sedang berjalan dalam rak buku" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Tapis semua entri di dalam pustaka anda"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Menjeda sejarah membaca"
+    },
+    {
+      "name": "more_support",
+      "value": "Bantu Kami"
+    },
+    {
+      "name": "more_help",
+      "value": "Bantuan"
+    },
+    {
+      "name": "support_perks",
+      "value": "Patron mendapat akses ke saluran eksklusif, dengan lebih faedah akan datang."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (diutamakan)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon sedang disokong oleh %d+ penaung. Kami mahu berterima kasih kepada setiap anda semua. Marilah kita membuat Mihon lebih bagus bersama-sama."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "Untuk pilihan alternatif ataupun soalan berkaitan, sertai pelayan Discord kami."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "Data dan storan"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Lokasi storan"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Digunakan untuk sandaran automatik, muat turun bab, dan sumber lokal."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "Sandaran dan pemulihan"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Buat sandaran"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Pulihkan sandaran"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Kekerapan sandaran automatik"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "Anda patut simpan salinan sandaran di tempat lain juga. Sandaran mungkin mengandungi data sulit termasuk kata laluan tersimpan; hati-hati jika berkongsi."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Sandaran automatik terakhir:%s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Penggunaan storan"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Tersedia:%s/Jumlah:%s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Hapus cache bab"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "%s digunakan"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Cache dihapuskan, %d fail dipadam"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Ralat berlaku ketika menghapus"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Hapus cache bab ketika membuka apl"
+    },
+    {
+      "name": "data_export",
+      "value": "Eksport"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Senarai Pustaka"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Pustaka Dieksport"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Pilih data untuk disertakan"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Tajuk"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Pengarang"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "Mati"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "Setiap 6 jam"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "Setiap 12 jam"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "Setiap hari"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "Setiap 2 hari"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "Setiap minggu"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "OK"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Batal"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Sahkan"
+    },
+    {
+      "name": "common_delete",
+      "value": "Padam"
+    },
+    {
+      "name": "common_retry",
+      "value": "Cuba lagi"
+    },
+    {
+      "name": "common_search",
+      "value": "Cari"
+    },
+    {
+      "name": "common_all",
+      "value": "Semua"
+    },
+    {
+      "name": "common_close",
+      "value": "Tutup"
+    },
+    {
+      "name": "common_save",
+      "value": "Simpan"
+    },
+    {
+      "name": "common_install",
+      "value": "Pasang"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "Nyahpasang"
+    },
+    {
+      "name": "common_update",
+      "value": "Kemas kini"
+    },
+    {
+      "name": "common_none",
+      "value": "Tiada"
+    },
+    {
+      "name": "common_default",
+      "value": "Lalai"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Penampilan"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Bahasa"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Ikuti sistem"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Mod tema"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Ikuti sistem"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Cerah"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Gelap"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Warna aksen"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Lain-lain"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "Latar hitam tulen AMOLED"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Biru"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "Hijau"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Merah jambu"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Ungu"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "Oren"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d min lalu"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d j lalu"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d h lalu"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "Sedang berjalan"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Selesai"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "Rehat"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Dibatalkan"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Penerbitan selesai"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Tidak diketahui"
+    },
+    {
+      "name": "tab_library",
+      "value": "Rak buku"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Kemas kini"
+    },
+    {
+      "name": "tab_history",
+      "value": "Sejarah"
+    },
+    {
+      "name": "tab_browse",
+      "value": "Layari"
+    },
+    {
+      "name": "tab_more",
+      "value": "Lagi"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "Menunggu pengesahan…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "Pengesahan selesai"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "Pengesahan manusia"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "Selesai"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "Keputusan pengesahan disimpan"
+    },
+    {
+      "name": "more_title",
+      "value": "Lagi"
+    },
+    {
+      "name": "more_version",
+      "value": "Versi %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Dimuat turun sahaja"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Mod inkognito"
+    },
+    {
+      "name": "more_downloads",
+      "value": "Giliran muat turun"
+    },
+    {
+      "name": "more_categories",
+      "value": "Kategori"
+    },
+    {
+      "name": "more_settings",
+      "value": "Tetapan"
+    },
+    {
+      "name": "more_about",
+      "value": "Perihal"
+    },
+    {
+      "name": "more_plugins",
+      "value": "Sambungan"
+    },
+    {
+      "name": "categories_title",
+      "value": "Kategori"
+    },
+    {
+      "name": "categories_add",
+      "value": "Kategori baharu"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "Nama kategori"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "Namakan semula kategori"
+    },
+    {
+      "name": "categories_rename",
+      "value": "Namakan semula"
+    },
+    {
+      "name": "categories_hint",
+      "value": "Tekan lama kategori untuk namakan semula atau padam; manga dalam kategori dipadam dipindah kembali ke Lalai"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "Pilih kategori"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "Memuatkan…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "Gagal memuatkan imej"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "Ketik untuk cuba lagi"
+    },
+    {
+      "name": "library_title",
+      "value": "Rak buku"
+    },
+    {
+      "name": "library_empty",
+      "value": "Rak buku kosong, layari untuk menambah manga"
+    },
+    {
+      "name": "library_new_category",
+      "value": "Kategori baharu"
+    },
+    {
+      "name": "library_category_name",
+      "value": "Nama kategori"
+    },
+    {
+      "name": "updates_title",
+      "value": "Kemas kini"
+    },
+    {
+      "name": "updates_empty",
+      "value": "Tiada kemas kini terkini"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%d bab baharu dijumpai"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "Tiada bab baharu"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "Gagal menyegar"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "Menyegar…"
+    },
+    {
+      "name": "history_title",
+      "value": "Sejarah"
+    },
+    {
+      "name": "history_clear",
+      "value": "Kosongkan"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "Sahkan kosongkan?"
+    },
+    {
+      "name": "history_empty",
+      "value": "Belum ada sejarah bacaan"
+    },
+    {
+      "name": "history_cleared",
+      "value": "Sejarah dikosongkan"
+    },
+    {
+      "name": "history_continue",
+      "value": "Teruskan"
+    },
+    {
+      "name": "browse_title",
+      "value": "Layari"
+    },
+    {
+      "name": "browse_import",
+      "value": "Import"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "Sambungan"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "Manga tempatan"
+    },
+    {
+      "name": "browse_popular",
+      "value": "Popular"
+    },
+    {
+      "name": "browse_latest",
+      "value": "Terkini"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "Cari manga…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "Manga tidak dijumpai"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "Belum ada manga tempatan, ketik Import untuk menambah"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "Gagal memuatkan: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "Carian gagal: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "Gagal memuatkan lagi"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "Gagal membuka butiran"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "Gagal memilih fail"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "Import %d fail"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "Nama manga"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "Sila masukkan nama"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "%d fail diimport"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "Import gagal: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "Muat turun"
+    },
+    {
+      "name": "download_resume",
+      "value": "Sambung"
+    },
+    {
+      "name": "download_pause",
+      "value": "Jeda"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "Kosongkan yang siap"
+    },
+    {
+      "name": "download_queue",
+      "value": "Baris gilir muat turun"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "Dalam baris gilir"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "Memuat turun"
+    },
+    {
+      "name": "download_state_done",
+      "value": "Selesai"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "Gagal"
+    },
+    {
+      "name": "download_move_top",
+      "value": "Alih ke atas"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "Alih ke bawah"
+    },
+    {
+      "name": "download_deleted",
+      "value": "Dipadam"
+    },
+    {
+      "name": "download_empty",
+      "value": "Belum ada muat turun"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "Dimuat turun"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d bab"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "Tiada bab"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "Segerak gagal, menunjukkan data tempatan"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "Ditambah ke rak buku"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "Dibuang dari rak buku"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "Semua bab ditanda sudah dibaca"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "Dimasukkan ke baris gilir muat turun"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "Sila tetapkan token AniList dahulu"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "Cari AniList"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "Tajuk manga"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "Tiada hasil carian"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "Carian AniList gagal"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "Dihubung ke AniList"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "Diputus dari AniList"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "Kemajuan disegerakkan ke bab %d"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "Segerak AniList gagal"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "Tempatan"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "Dalam rak buku"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "Tambah ke rak buku"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "Teruskan baca"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "Mula baca"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "Belum ada bab"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "Runtuhkan"
+    },
+    {
+      "name": "detail_expand",
+      "value": "Kembangkan"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "Penjejakan AniList"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "Token AniList belum ditetapkan"
+    },
+    {
+      "name": "detail_searching",
+      "value": "Mencari…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "Cari dan hubung"
+    },
+    {
+      "name": "detail_bind",
+      "value": "Hubung"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "Disegerakkan ke bab %d"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "Segerak kemajuan"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "Putuskan"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "Bab (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "Menaik"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "Menurun"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "Tanda semua dibaca"
+    },
+    {
+      "name": "detail_read",
+      "value": "Dibaca"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "Dimuat turun"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "Dalam baris gilir"
+    },
+    {
+      "name": "detail_download",
+      "value": "Muat turun"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "Bab tidak dijumpai"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "Gagal memuatkan: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "Kiri ke kanan"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "Kanan ke kiri"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "Mod bacaan"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "Bebas"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "Potret"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "Rentang"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "Orientasi skrin"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "Sudah di bab terakhir"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "Sudah di bab pertama"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "Sudah di halaman pertama"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "Sudah di halaman terakhir"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "Memuatkan bab…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "Tetapan pembaca"
+    },
+    {
+      "name": "reader_background",
+      "value": "Latar"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "Putih"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "Kelabu"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "Hitam"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "Tunjukkan nombor halaman"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "Kecerahan"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "plugin_title",
+      "value": "Sambungan"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "Dipasang"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "Belum ada sambungan, pasang di bawah"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "Sambungan dilumpuhkan boleh dihidupkan semula bila-bila masa"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "Terkini"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "Pasang dari fail"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "Pilih fail untuk dipasang"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "Memproses…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "Menyokong pakej sambungan .honyomiplug / .zip"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "Repositori dalam talian"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "Tetapkan repositori"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "Segar semula"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "Repositori sambungan belum ditetapkan"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "Memuatkan repositori…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "URL repositori sambungan"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "Masukkan URL repositori sambungan"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "Gagal memuatkan repositori: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "Gagal memilih fail"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "Dipasang: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "%s dipasang"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "Pemasangan gagal: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "Tindakan gagal"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "Dinyahpasang: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "Gagal nyahpasang"
+    },
+    {
+      "name": "settings_title",
+      "value": "Tetapan"
+    },
+    {
+      "name": "settings_general",
+      "value": "Umum"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Skrin mula"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "Pemperibadian"
+    },
+    {
+      "name": "settings_library",
+      "value": "Rak buku"
+    },
+    {
+      "name": "settings_reader",
+      "value": "Pembaca"
+    },
+    {
+      "name": "settings_data",
+      "value": "Data"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Muat turun"
+    },
+    {
+      "name": "settings_browse",
+      "value": "Layari"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Lanjutan"
+    },
+    {
+      "name": "settings_about",
+      "value": "Perihal"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "Rak buku"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Kemas kini"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "Sejarah"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "Layari"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "Lagi"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Lanjutan"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "Mengira…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "Storan"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "Kosongkan cache imej"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "Cache imej dikosongkan"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "Kosongkan kuki"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "Semua kuki dikosongkan"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "Sandaran dan pulih"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "Eksport sandaran"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "Import sandaran"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "Penjejakan"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "Token AniList"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "Token akses AniList"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "Tampal token akses (biarkan kosong untuk padam)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "Belum ditetapkan"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "Telah ditetapkan"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "Token disimpan"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "Token dikosongkan"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "Sandaran dieksport"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "Eksport dibatalkan"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "Eksport gagal"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "Import dibatalkan"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "Fail sandaran tidak sah"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "%d manga dipulihkan"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "Import gagal"
+    },
+    {
+      "name": "about_title",
+      "value": "Perihal"
+    },
+    {
+      "name": "about_version",
+      "value": "Versi 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "Seni bina diilhamkan daripada Mihon (Apache-2.0). Sumber dalam talian dipasang secara dinamik sebagai sambungan, manakala sumber tempatan terbina dalam."
+    },
+    {
+      "name": "about_ack",
+      "value": "Penghargaan sumber terbuka:\n· Mihon / Tachiyomi — seni bina aplikasi dan reka bentuk interaksi (Apache-2.0)\n· Material Symbols — ikon dalam aplikasi (Apache-2.0)\n· MangaDex — sumber data ujian"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "Layari"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "Kandungan"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "Tunjukkan sumber NSFW"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "Apabila diaktifkan, sumber yang ditanda NSFW oleh sambungannya akan muncul dalam Layari"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Muat turun"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Rangkaian"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Muat turun melalui Wi-Fi sahaja"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "Nota: suis ini ialah pemegang tempat dalam versi semasa; pengesanan jenis rangkaian akan datang dalam keluaran akan datang"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "Rak buku"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "Tapis dan isih"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "Isihan lalai"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "Tajuk"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "Bab terkini"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "Tarikh ditambah"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "Bilangan belum dibaca"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "Isih tajuk menaik"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "Tapisan lalai"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "Belum dibaca"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "Dimuat turun"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "Belum selesai"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Paparan"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "Paparan lalai"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "Grid"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "Grid kulit"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "Senarai"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "Lajur grid"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 lajur"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 lajur"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 lajur"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "Lencana belum dibaca"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "Lencana muat turun"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "Pembaca"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "Mod bacaan"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "Mod lalai"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "Kiri ke kanan"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "Kanan ke kiri"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "Lungsur halaman menegak"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "Dua halaman (rentang)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Paparan"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "Tunjukkan nombor halaman"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "Latar pembaca"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "Ikuti tema"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "Putih"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "Hitam"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "Kelabu"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "Tetap semula kecerahan pembaca"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "Kecerahan ditetapkan mengikut sistem"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "Sumber"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "Sambungan"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "Hijrah"
+    },
+    {
+      "name": "browse_pin",
+      "value": "Semat"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "Nyahsemat"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "Lumpuhkan sumber"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "Sumber dilumpuhkan"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "Disemat"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "Tiada sumber. Pasang dari tab Sambungan"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "Tapis bahasa"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "Semua"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "Sumber tidak tersedia. Sambungan mungkin dilumpuhkan"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "Cari semua sumber"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "Carian gagal"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "Cari sambungan"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "Tiada padanan"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "Tetapan repositori"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "Segar semula repositori"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "Pilih sumber untuk dihijrahkan"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "Rak buku kosong"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "Pilih semua"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "Nyahpilih semua"
+    },
+    {
+      "name": "migrate_action",
+      "value": "Hijrah (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "Hijrah"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "Langkau"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d daripada %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "Sumber sasaran"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "Cari manga dalam sumber sasaran"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "Hijrah ke manga ini?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "Dihijrahkan: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "Penghijrahan gagal: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "Penghijrahan selesai"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "Tiada sumber sasaran"
+    },
+    {
+      "name": "stats_title",
+      "value": "Statistik"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "Gambaran keseluruhan"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "Dalam rak buku"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "Tempoh baca"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "Selesai"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "Karya"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "Sudah bermula"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "Tempatan"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "Bab"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "Jumlah"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "Dibaca"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "Dimuat turun"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "Penjejakan"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "Karya dijejaki"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "Skor purata"
+    },
+    {
+      "name": "stats_used",
+      "value": "Digunakan"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "Tidak berkenaan"
+    },
+    {
+      "name": "stats_week",
+      "value": "Minggu"
+    },
+    {
+      "name": "stats_month",
+      "value": "Bulan"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "%s minggu ini"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "%s bulan ini"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "Tiada bacaan dalam tempoh ini"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%dh"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dj"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dmin"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%ds"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "Ahd"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "Isn"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "Sel"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "Rab"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "Kha"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "Jum"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "Sab"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "Lungsur halaman menegak"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "Genggaman pintar"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "Kunci potret"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "Kunci rentang"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "Umum"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "Penapis warna"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "Skala kelabu"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "Warna songsang"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "Kontras"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "Ketepuan"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "Pangkas sempadan"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "Zon ketik"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "Lalai"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "Kiri ke kanan"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "Kanan ke kiri"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "Menegak"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "Tepi"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "Tiada"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Paparan dua halaman"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "Jarak tepi Webtoon"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "Genggaman pintar"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "Pasang dari tempatan"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "Maklumat sambungan"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "Versi"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "Bahasa"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "Nyahpasang sambungan"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "Nyahpasang \"%s\"? Manga dalam rak buku akan dikekalkan"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "Sumber"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "Tetapan"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "Memuatkan…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "Gagal menggunakan tetapan"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "Sambungan tidak wujud atau belum dimuatkan"
+    },
+    {
+      "name": "action_filter",
+      "value": "Tapis"
+    },
+    {
+      "name": "action_update_library",
+      "value": "Kemas kini rak buku"
+    },
+    {
+      "name": "action_update_category",
+      "value": "Kemas kini kategori"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "Buka karya rawak"
+    },
+    {
+      "name": "action_select_all",
+      "value": "Pilih semua"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "Songsang pilihan"
+    },
+    {
+      "name": "action_move_category",
+      "value": "Alih kategori"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "Tanda sebagai dibaca"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "Tanda sebagai belum dibaca"
+    },
+    {
+      "name": "action_download",
+      "value": "Muat turun"
+    },
+    {
+      "name": "action_delete",
+      "value": "Padam"
+    },
+    {
+      "name": "action_migrate",
+      "value": "Hijrah"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "Buang dari rak buku"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "Buang %d manga terpilih dari rak buku?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "Menambah %d muat turun"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "Cari rak buku"
+    },
+    {
+      "name": "library_no_match",
+      "value": "Tiada manga yang sepadan"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "Tapis"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "Isih"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "Paparan"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "Dimuat turun"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "Belum dibaca"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "Pernah dibaca"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "Ditanda buku"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "Selesai"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "Dijejaki"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "Tajuk"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "Bilangan bab"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "Bacaan terkini"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "Semakan kemas kini"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "Bilangan belum dibaca"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "Kemas kini karya"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "Masa bab diperoleh"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "Tarikh ditambah"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "Rawak"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "Grid padat"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "Grid longgar"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "Grid kulit"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "Senarai"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "Bilangan sebaris"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "Lencana dan butang"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "Bilangan bab dimuat turun"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "Bab belum dibaca"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "Sumber tempatan"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "Bahasa"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "Butang teruskan baca"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "Tab"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "Tunjuk tab kategori"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "Tunjuk bilangan karya"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "Kad Honyomi"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "Pembekal kad desktop"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "Teruskan baca"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "Teruskan baca manga yang baru dibaca"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "Kemas kini"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "Bab belum dibaca terkini dalam rak buku"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "Teruskan baca"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "Kemas kini"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d bab belum dibaca"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "Belum ada sejarah bacaan"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "Tiada bab yang belum dibaca"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "Ketik untuk membuka aplikasi"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "Kad manga"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "Tambah dari halaman butiran, ketik kulit untuk membaca"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "Tambah dari halaman butiran manga ke desktop"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "Tambah ke desktop"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "Ditambah ke desktop"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "Tidak dapat menambah kad"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "Statistik mingguan"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "Masa baca harian minggu ini"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "Statistik bulanan"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "Masa baca harian bulan ini"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "Belum ada bacaan"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "Tunjuk kemas kini akan datang"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "Akan datang"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "Panduan akan datang"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "Bulan lepas"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "Bulan hadapan"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "Tajuk yang ada dalam kategori disertakan dan dikecualikan serentak tidak dipaparkan."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "Hari ini"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d h lalu"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "%d h lagi"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "Akan datang"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "Kalendar anggaran kemas kini manga dalam rak buku"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "Akan datang"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "Tiada manga sedang berjalan dalam rak buku"
+    }
+  ]
 }

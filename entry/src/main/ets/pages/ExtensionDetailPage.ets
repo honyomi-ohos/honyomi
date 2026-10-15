@@ -1,11 +1,11 @@
-import { PluginService, InstalledPlugin } from '../data/PluginService';
-import { SourceRegistry, Source } from '../source/Source';
+import { InstalledPlugin, PluginService } from '../data/PluginService';
+import { Source, SourceRegistry } from '../source/Source';
 import { JsvmSource, SourcePrefItem, SourcePrefOption } from '../source/JsvmSource';
-import { ExtensionDetailParams, BrowseSourceParams } from '../model/RouteParams';
+import { BrowseSourceParams, ExtensionDetailParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
-import { InputDialog, ConfirmDialog } from './components/Dialogs';
+import { ConfirmDialog, InputDialog } from './components/Dialogs';
 import { AppIcon } from './components/AppIcon';
 import { TypeBadgedIcon } from './components/TypeBadgedIcon';
 import { NsfwTag } from './components/NsfwTag';
@@ -33,16 +33,13 @@ struct PrefSelectDialog {
   controller?: CustomDialogController;
   title: Resource | string = '';
   options: SourcePrefOption[] = [];
-  onPick: (value: string) => void = (_v: string) => {};
-  onClose: () => void = () => {};
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
-  private dismiss(): void {
-    if (this.controller !== undefined) {
-      this.controller.close();
-    }
-    this.onClose();
-  }
+  onPick: (value: string) => void = (_v: string) => {
+  };
+
+  onClose: () => void = () => {
+  };
 
   build() {
     Column({ space: 8 }) {
@@ -78,6 +75,13 @@ struct PrefSelectDialog {
     .padding(20)
     .width('100%')
   }
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
+  }
 }
 
 // 插件详情/设置页（对齐 Mihon ExtensionDetailsScreen）：
@@ -98,6 +102,327 @@ export struct ExtensionDetailPage {
 
   aboutToDisappear(): void {
     this.destroyed = true;
+  }
+
+  @Builder
+  infoCell(primary: string, secondary: ResourceStr) {
+    Column() {
+      Text(primary)
+        .fontSize(14)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+        .maxLines(1)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+      Text(secondary)
+        .fontSize(11)
+        .fontColor(this.pal.sub)
+        .margin({ top: 2 })
+    }
+    .layoutWeight(1)
+    .alignItems(HorizontalAlign.Center)
+  }
+
+  @Builder
+  prefRow(item: SourcePrefItem) {
+    if (item.type === 'switch') {
+      Row() {
+        Column() {
+          Text(item.title)
+            .fontSize(15)
+            .fontColor(this.pal.text)
+          if (item.summary !== '') {
+            Text(item.summary)
+              .fontSize(11)
+              .fontColor(this.pal.sub)
+              .margin({ top: 2 })
+          }
+        }
+        .alignItems(HorizontalAlign.Start)
+        .layoutWeight(1)
+
+        Toggle({ type: ToggleType.Switch, isOn: item.value === 'true' })
+          .onChange((on: boolean) => {
+            if (on !== (item.value === 'true')) {
+              this.applyPref(item, on ? 'true' : 'false');
+            }
+          })
+      }
+      .width('100%')
+      .alignItems(VerticalAlign.Center)
+      .padding({ top: 10, bottom: 10 })
+    } else if (item.type === 'select') {
+      Row() {
+        Column() {
+          Text(item.title)
+            .fontSize(15)
+            .fontColor(this.pal.text)
+          Text(this.currentLabelOf(item))
+            .fontSize(11)
+            .fontColor(this.pal.sub)
+            .margin({ top: 2 })
+        }
+        .alignItems(HorizontalAlign.Start)
+        .layoutWeight(1)
+
+        AppIcon({ name: 'keyboard_arrow_right', iconSize: 20, tint: this.pal.sub })
+      }
+      .width('100%')
+      .alignItems(VerticalAlign.Center)
+      .padding({ top: 10, bottom: 10 })
+      .onClick(() => {
+        this.showSelectPrefDialog(item);
+      })
+    } else {
+      Row() {
+        Column() {
+          Text(item.title)
+            .fontSize(15)
+            .fontColor(this.pal.text)
+          // 敏感项已设值时掩码显示（不回显明文）
+          Text(item.value !== '' ? (item.sensitive ? '••••••••' : item.value) : item.summary)
+            .fontSize(11)
+            .fontColor(this.pal.sub)
+            .margin({ top: 2 })
+            .maxLines(1)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+        }
+        .alignItems(HorizontalAlign.Start)
+        .layoutWeight(1)
+
+        AppIcon({ name: 'keyboard_arrow_right', iconSize: 20, tint: this.pal.sub })
+      }
+      .width('100%')
+      .alignItems(VerticalAlign.Center)
+      .padding({ top: 10, bottom: 10 })
+      .onClick(() => {
+        this.showEditPrefDialog(item);
+      })
+    }
+  }
+
+  build() {
+    NavDestination() {
+      Column() {
+        // 顶栏
+        Row() {
+          AppIcon({ name: 'arrow_back', iconSize: 24 })
+            .onClick(() => {
+              this.pathStack.pop();
+            })
+          Text($r('app.string.ext_detail_title'))
+            .fontSize(18)
+            .fontWeight(FontWeight.Bold)
+            .fontColor(this.pal.text)
+            .margin({ left: 8 })
+            .layoutWeight(1)
+        }
+        .width('100%')
+        .padding({
+          left: 16,
+          right: 16,
+          top: this.statusBarH + 10,
+          bottom: 8
+        })
+
+        if (this.plugin === undefined) {
+          Column() {
+            EmptyScreen({ message: $r('app.string.ext_detail_missing') })
+          }
+          .layoutWeight(1)
+          .justifyContent(FlexAlign.Center)
+        } else {
+          Scroll() {
+            Column() {
+              // 头部：图标 + 名称 + 版本/语言 + 卸载
+              Column() {
+                TypeBadgedIcon({
+                  iconPath: this.plugin.iconPath,
+                  fallbackChar: this.plugin.manifest.name.substring(0, 1)
+                    .toUpperCase(),
+                  iconSize: 72,
+                  cornerRadius: 16,
+                  contentType: this.plugin.manifest.contentType,
+                  badgeBorder: this.pal.card,
+                })
+                  .margin({ top: 8 })
+
+                Row() {
+                  Text(this.plugin.manifest.name)
+                    .fontSize(20)
+                    .fontWeight(FontWeight.Bold)
+                    .fontColor(this.pal.text)
+                    .maxLines(2)
+                    .textAlign(TextAlign.Center)
+                  if (this.plugin.manifest.nsfw) {
+                    NsfwTag()
+                      .margin({ left: 6 })
+                  }
+                }
+                .alignItems(VerticalAlign.Center)
+                .margin({ top: 12 })
+
+                Text(this.plugin.manifest.key)
+                  .fontSize(12)
+                  .fontColor(this.pal.sub)
+                  .margin({ top: 2 })
+
+                Row() {
+                  this.infoCell(`v${this.plugin.manifest.version}`, $r('app.string.ext_info_version'))
+                  Divider()
+                    .vertical(true)
+                    .height(24)
+                    .color(this.pal.divider)
+                  this.infoCell(langDisplayName(this.plugin.manifest.lang), $r('app.string.ext_info_language'))
+                }
+                .width('100%')
+                .margin({ top: 16 })
+
+                Button($r('app.string.common_uninstall'))
+                  .fontSize(14)
+                  .width('100%')
+                  .backgroundColor(this.pal.card)
+                  .fontColor('#E05252')
+                  .border({ width: 1, color: '#E05252', radius: 20 })
+                  .margin({ top: 16 })
+                  .onClick(() => {
+                    this.confirmUninstall();
+                  })
+              }
+              .width('100%')
+              .alignItems(HorizontalAlign.Center)
+              .padding(20)
+              .backgroundColor(this.pal.card)
+              .borderRadius(14)
+              .margin({ left: 16, right: 16, top: 4 })
+
+              // 源入口
+              Column() {
+                Text($r('app.string.ext_detail_sources'))
+                  .fontSize(15)
+                  .fontWeight(FontWeight.Bold)
+                  .fontColor(this.pal.text)
+                  .width('100%')
+                  .margin({ bottom: 4 })
+
+                if (this.packageSources().length === 0) {
+                  Text($r('app.string.ext_detail_missing'))
+                    .fontSize(12)
+                    .fontColor(this.pal.sub)
+                    .width('100%')
+                    .padding({ top: 8, bottom: 8 })
+                } else {
+                  ForEach(this.packageSources(), (source: Source) => {
+                    Row() {
+                      Column() {
+                        Text(source.name)
+                          .fontSize(15)
+                          .fontColor(this.pal.text)
+                          .maxLines(1)
+                          .textOverflow({ overflow: TextOverflow.Ellipsis })
+                        Row() {
+                          Text(langDisplayName(source.lang))
+                            .fontSize(11)
+                            .fontColor(this.pal.sub)
+                          if (source.nsfw) {
+                            NsfwTag()
+                              .margin({ left: 6 })
+                          }
+                        }
+                        .alignItems(VerticalAlign.Center)
+                        .margin({ top: 2 })
+                      }
+                      .alignItems(HorizontalAlign.Start)
+                      .layoutWeight(1)
+
+                      AppIcon({ name: 'keyboard_arrow_right', iconSize: 20, tint: this.pal.sub })
+                    }
+                    .width('100%')
+                    .alignItems(VerticalAlign.Center)
+                    .padding({ top: 10, bottom: 10 })
+                    .onClick(() => {
+                      this.openSource(source.key);
+                    })
+                  }, (source: Source) => `src-${source.key}`)
+                }
+              }
+              .width('100%')
+              .alignItems(HorizontalAlign.Start)
+              .padding(16)
+              .backgroundColor(this.pal.card)
+              .borderRadius(14)
+              .margin({ left: 16, right: 16, top: 12 })
+
+              // 插件设置（getSettingsSchema 声明时显示）
+              if (this.isConfigurable()) {
+                Column() {
+                  Text($r('app.string.ext_detail_settings'))
+                    .fontSize(15)
+                    .fontWeight(FontWeight.Bold)
+                    .fontColor(this.pal.text)
+                    .width('100%')
+                    .margin({ bottom: 4 })
+
+                  if (this.loadingSchema) {
+                    Row({ space: 8 }) {
+                      LoadingProgress()
+                        .width(18)
+                        .height(18)
+                        .color(this.pal.primary)
+                      Text($r('app.string.ext_pref_loading'))
+                        .fontSize(12)
+                        .fontColor(this.pal.sub)
+                    }
+                    .width('100%')
+                    .padding({ top: 10, bottom: 10 })
+                  } else {
+                    ForEach(this.schema, (item: SourcePrefItem) => {
+                      this.prefRow(item)
+                    }, (item: SourcePrefItem) => `pref-${item.key}-${item.value}`)
+                  }
+                }
+                .width('100%')
+                .alignItems(HorizontalAlign.Start)
+                .padding(16)
+                .backgroundColor(this.pal.card)
+                .borderRadius(14)
+                .margin({
+                  left: 16,
+                  right: 16,
+                  top: 12,
+                  bottom: 24
+                })
+              } else {
+                Column()
+                  .height(24)
+              }
+            }
+            .width('100%')
+          }
+          .layoutWeight(1)
+          .scrollBar(BarState.Auto)
+          .align(Alignment.Top)
+          .contentEndOffset(this.navBarH + 16)
+          .width('100%')
+        }
+      }
+      .width('100%')
+      .height('100%')
+      .backgroundColor(this.pal.bg)
+    }
+    .hideTitleBar(true)
+    .backgroundColor(this.pal.bg)
+    .onReady((ctx: NavDestinationContext) => {
+      this.pathStack = ctx.pathStack;
+      const params = ctx.pathInfo.param as ExtensionDetailParams;
+      const key = params !== undefined && params !== null ? params.pluginKey : '';
+      if (key === '') {
+        // 参数缺失：保持 plugin undefined，走"插件不存在"占位展示
+        return;
+      }
+      this.pluginKey = key;
+      this.loadPlugin();
+      this.loadSchema();
+    })
   }
 
   private currentSource(): Source | undefined {
@@ -266,316 +591,6 @@ export struct ExtensionDetailPage {
   private openSource(key: string): void {
     const params: BrowseSourceParams = { sourceKey: key, mode: 'popular' };
     this.pathStack.pushPathByName('BrowseSource', params);
-  }
-
-  @Builder
-  infoCell(primary: string, secondary: ResourceStr) {
-    Column() {
-      Text(primary)
-        .fontSize(14)
-        .fontWeight(FontWeight.Bold)
-        .fontColor(this.pal.text)
-        .maxLines(1)
-        .textOverflow({ overflow: TextOverflow.Ellipsis })
-      Text(secondary)
-        .fontSize(11)
-        .fontColor(this.pal.sub)
-        .margin({ top: 2 })
-    }
-    .layoutWeight(1)
-    .alignItems(HorizontalAlign.Center)
-  }
-
-  @Builder
-  prefRow(item: SourcePrefItem) {
-    if (item.type === 'switch') {
-      Row() {
-        Column() {
-          Text(item.title)
-            .fontSize(15)
-            .fontColor(this.pal.text)
-          if (item.summary !== '') {
-            Text(item.summary)
-              .fontSize(11)
-              .fontColor(this.pal.sub)
-              .margin({ top: 2 })
-          }
-        }
-        .alignItems(HorizontalAlign.Start)
-        .layoutWeight(1)
-
-        Toggle({ type: ToggleType.Switch, isOn: item.value === 'true' })
-          .onChange((on: boolean) => {
-            if (on !== (item.value === 'true')) {
-              this.applyPref(item, on ? 'true' : 'false');
-            }
-          })
-      }
-      .width('100%')
-      .alignItems(VerticalAlign.Center)
-      .padding({ top: 10, bottom: 10 })
-    } else if (item.type === 'select') {
-      Row() {
-        Column() {
-          Text(item.title)
-            .fontSize(15)
-            .fontColor(this.pal.text)
-          Text(this.currentLabelOf(item))
-            .fontSize(11)
-            .fontColor(this.pal.sub)
-            .margin({ top: 2 })
-        }
-        .alignItems(HorizontalAlign.Start)
-        .layoutWeight(1)
-
-        AppIcon({ name: 'keyboard_arrow_right', iconSize: 20, tint: this.pal.sub })
-      }
-      .width('100%')
-      .alignItems(VerticalAlign.Center)
-      .padding({ top: 10, bottom: 10 })
-      .onClick(() => {
-        this.showSelectPrefDialog(item);
-      })
-    } else {
-      Row() {
-        Column() {
-          Text(item.title)
-            .fontSize(15)
-            .fontColor(this.pal.text)
-          // 敏感项已设值时掩码显示（不回显明文）
-          Text(item.value !== '' ? (item.sensitive ? '••••••••' : item.value) : item.summary)
-            .fontSize(11)
-            .fontColor(this.pal.sub)
-            .margin({ top: 2 })
-            .maxLines(1)
-            .textOverflow({ overflow: TextOverflow.Ellipsis })
-        }
-        .alignItems(HorizontalAlign.Start)
-        .layoutWeight(1)
-
-        AppIcon({ name: 'keyboard_arrow_right', iconSize: 20, tint: this.pal.sub })
-      }
-      .width('100%')
-      .alignItems(VerticalAlign.Center)
-      .padding({ top: 10, bottom: 10 })
-      .onClick(() => {
-        this.showEditPrefDialog(item);
-      })
-    }
-  }
-
-  build() {
-    NavDestination() {
-      Column() {
-        // 顶栏
-        Row() {
-          AppIcon({ name: 'arrow_back', iconSize: 24 })
-            .onClick(() => {
-              this.pathStack.pop();
-            })
-          Text($r('app.string.ext_detail_title'))
-            .fontSize(18)
-            .fontWeight(FontWeight.Bold)
-            .fontColor(this.pal.text)
-            .margin({ left: 8 })
-            .layoutWeight(1)
-        }
-        .width('100%')
-        .padding({ left: 16, right: 16, top: this.statusBarH + 10, bottom: 8 })
-
-        if (this.plugin === undefined) {
-          Column() {
-            EmptyScreen({ message: $r('app.string.ext_detail_missing') })
-          }
-          .layoutWeight(1)
-          .justifyContent(FlexAlign.Center)
-        } else {
-          Scroll() {
-            Column() {
-              // 头部：图标 + 名称 + 版本/语言 + 卸载
-              Column() {
-                TypeBadgedIcon({
-                  iconPath: this.plugin.iconPath,
-                  fallbackChar: this.plugin.manifest.name.substring(0, 1).toUpperCase(),
-                  iconSize: 72,
-                  cornerRadius: 16,
-                  contentType: this.plugin.manifest.contentType,
-                  badgeBorder: this.pal.card,
-                })
-                  .margin({ top: 8 })
-
-                Row() {
-                  Text(this.plugin.manifest.name)
-                    .fontSize(20)
-                    .fontWeight(FontWeight.Bold)
-                    .fontColor(this.pal.text)
-                    .maxLines(2)
-                    .textAlign(TextAlign.Center)
-                  if (this.plugin.manifest.nsfw) {
-                    NsfwTag()
-                      .margin({ left: 6 })
-                  }
-                }
-                .alignItems(VerticalAlign.Center)
-                .margin({ top: 12 })
-
-                Text(this.plugin.manifest.key)
-                  .fontSize(12)
-                  .fontColor(this.pal.sub)
-                  .margin({ top: 2 })
-
-                Row() {
-                  this.infoCell(`v${this.plugin.manifest.version}`, $r('app.string.ext_info_version'))
-                  Divider()
-                    .vertical(true)
-                    .height(24)
-                    .color(this.pal.divider)
-                  this.infoCell(langDisplayName(this.plugin.manifest.lang), $r('app.string.ext_info_language'))
-                }
-                .width('100%')
-                .margin({ top: 16 })
-
-                Button($r('app.string.common_uninstall'))
-                  .fontSize(14)
-                  .width('100%')
-                  .backgroundColor(this.pal.card)
-                  .fontColor('#E05252')
-                  .border({ width: 1, color: '#E05252', radius: 20 })
-                  .margin({ top: 16 })
-                  .onClick(() => {
-                    this.confirmUninstall();
-                  })
-              }
-              .width('100%')
-              .alignItems(HorizontalAlign.Center)
-              .padding(20)
-              .backgroundColor(this.pal.card)
-              .borderRadius(14)
-              .margin({ left: 16, right: 16, top: 4 })
-
-              // 源入口
-              Column() {
-                Text($r('app.string.ext_detail_sources'))
-                  .fontSize(15)
-                  .fontWeight(FontWeight.Bold)
-                  .fontColor(this.pal.text)
-                  .width('100%')
-                  .margin({ bottom: 4 })
-
-                if (this.packageSources().length === 0) {
-                  Text($r('app.string.ext_detail_missing'))
-                    .fontSize(12)
-                    .fontColor(this.pal.sub)
-                    .width('100%')
-                    .padding({ top: 8, bottom: 8 })
-                } else {
-                  ForEach(this.packageSources(), (source: Source) => {
-                    Row() {
-                      Column() {
-                        Text(source.name)
-                          .fontSize(15)
-                          .fontColor(this.pal.text)
-                          .maxLines(1)
-                          .textOverflow({ overflow: TextOverflow.Ellipsis })
-                        Row() {
-                          Text(langDisplayName(source.lang))
-                            .fontSize(11)
-                            .fontColor(this.pal.sub)
-                          if (source.nsfw) {
-                            NsfwTag()
-                              .margin({ left: 6 })
-                          }
-                        }
-                        .alignItems(VerticalAlign.Center)
-                        .margin({ top: 2 })
-                      }
-                      .alignItems(HorizontalAlign.Start)
-                      .layoutWeight(1)
-
-                      AppIcon({ name: 'keyboard_arrow_right', iconSize: 20, tint: this.pal.sub })
-                    }
-                    .width('100%')
-                    .alignItems(VerticalAlign.Center)
-                    .padding({ top: 10, bottom: 10 })
-                    .onClick(() => {
-                      this.openSource(source.key);
-                    })
-                  }, (source: Source) => `src-${source.key}`)
-                }
-              }
-              .width('100%')
-              .alignItems(HorizontalAlign.Start)
-              .padding(16)
-              .backgroundColor(this.pal.card)
-              .borderRadius(14)
-              .margin({ left: 16, right: 16, top: 12 })
-
-              // 插件设置（getSettingsSchema 声明时显示）
-              if (this.isConfigurable()) {
-                Column() {
-                  Text($r('app.string.ext_detail_settings'))
-                    .fontSize(15)
-                    .fontWeight(FontWeight.Bold)
-                    .fontColor(this.pal.text)
-                    .width('100%')
-                    .margin({ bottom: 4 })
-
-                  if (this.loadingSchema) {
-                    Row({ space: 8 }) {
-                      LoadingProgress()
-                        .width(18)
-                        .height(18)
-                        .color(this.pal.primary)
-                      Text($r('app.string.ext_pref_loading'))
-                        .fontSize(12)
-                        .fontColor(this.pal.sub)
-                    }
-                    .width('100%')
-                    .padding({ top: 10, bottom: 10 })
-                  } else {
-                    ForEach(this.schema, (item: SourcePrefItem) => {
-                      this.prefRow(item)
-                    }, (item: SourcePrefItem) => `pref-${item.key}-${item.value}`)
-                  }
-                }
-                .width('100%')
-                .alignItems(HorizontalAlign.Start)
-                .padding(16)
-                .backgroundColor(this.pal.card)
-                .borderRadius(14)
-                .margin({ left: 16, right: 16, top: 12, bottom: 24 })
-              } else {
-                Column()
-                  .height(24)
-              }
-            }
-            .width('100%')
-          }
-          .layoutWeight(1)
-          .scrollBar(BarState.Auto)
-          .align(Alignment.Top)
-          .contentEndOffset(this.navBarH + 16)
-          .width('100%')
-        }
-      }
-      .width('100%')
-      .height('100%')
-      .backgroundColor(this.pal.bg)
-    }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
-    .onReady((ctx: NavDestinationContext) => {
-      this.pathStack = ctx.pathStack;
-      const params = ctx.pathInfo.param as ExtensionDetailParams;
-      const key = params !== undefined && params !== null ? params.pluginKey : '';
-      if (key === '') {
-        // 参数缺失：保持 plugin undefined，走"插件不存在"占位展示
-        return;
-      }
-      this.pluginKey = key;
-      this.loadPlugin();
-      this.loadSchema();
-    })
   }
 }
 

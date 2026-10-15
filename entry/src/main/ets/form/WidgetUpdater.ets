@@ -4,7 +4,7 @@ import { formBindingData, formProvider } from '@kit.FormKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppDb } from '../data/AppDb';
-import { HistoryRepo, UpdatesRepo, MangaRepo, ChapterRepo, UpcomingRepo } from '../data/Repos';
+import { ChapterRepo, HistoryRepo, MangaRepo, UpcomingRepo, UpdatesRepo } from '../data/Repos';
 import { ReadingStatsRepo } from '../data/ReadingStats';
 import { HistoryItem, MangaRecord, UpcomingManga } from '../model/Models';
 import { ImageCache } from '../common/ImageCache';
@@ -26,7 +26,9 @@ let formChain: Promise<void> = Promise.resolve();
 function runSerialFormOp<T>(op: () => Promise<T>): Promise<T> {
   const run: Promise<T> = formChain.then((): Promise<T> => op());
   // 无论成功失败都续链，避免一次失败卡死后续写操作
-  formChain = run.then((): void => {}, (_e: Error): void => {});
+  formChain = run.then((): void => {
+  }, (_e: Error): void => {
+  });
   return run;
 }
 
@@ -51,13 +53,6 @@ export class WidgetUpdater {
   // 缓存的 widget_forms Preferences 实例：官方建议获取一次后复用，
   // 避免每次读写都走 getPreferences 重复打开
   private static prefs: preferences.Preferences | null = null;
-
-  private static async getPrefs(context: common.Context): Promise<preferences.Preferences> {
-    if (WidgetUpdater.prefs === null) {
-      WidgetUpdater.prefs = await preferences.getPreferences(context, { name: PREFS_NAME });
-    }
-    return WidgetUpdater.prefs;
-  }
 
   static async saveForm(context: common.Context, info: CardFormInfo): Promise<void> {
     await runSerialFormOp(async (): Promise<void> => {
@@ -130,19 +125,6 @@ export class WidgetUpdater {
     }
   }
 
-  private static async writeForms(context: common.Context, forms: CardFormInfo[]): Promise<void> {
-    try {
-      const prefs = await WidgetUpdater.getPrefs(context);
-      await prefs.put(PREFS_KEY, JSON.stringify(forms));
-      await prefs.flush();
-    } catch (e) {
-      throw new Error(`write widget forms failed: ${e}`);
-    }
-  }
-
-  // ---------------- 漫画卡片 pending 机制 ----------------
-  // 详情页发起 requestPublishForm 前写入 mangaId；onAddForm 必读必清（系统可能不转发自定义 want 参数）
-
   static async setPendingManga(context: common.Context, mangaId: number): Promise<void> {
     await runSerialFormOp(async (): Promise<void> => {
       const prefs = await WidgetUpdater.getPrefs(context);
@@ -170,6 +152,9 @@ export class WidgetUpdater {
     });
   }
 
+  // ---------------- 漫画卡片 pending 机制 ----------------
+  // 详情页发起 requestPublishForm 前写入 mangaId；onAddForm 必读必清（系统可能不转发自定义 want 参数）
+
   // 刷新单个卡片（按表单名分发；漫画卡片需在 updateForm 完成后关闭封面 fd）
   static async refreshOne(context: common.Context, info: CardFormInfo): Promise<void> {
     try {
@@ -191,7 +176,6 @@ export class WidgetUpdater {
     }
   }
 
-  // 刷新全部已注册卡片（应用退后台 / 书架刷新完成后调用）；
   // 8 秒总超时保护：超时后调用方继续执行，余下卡片在后台继续推送
   static async refreshAll(context: common.Context): Promise<void> {
     const forms = await WidgetUpdater.loadForms(context);
@@ -211,8 +195,6 @@ export class WidgetUpdater {
     const racers: Array<Promise<void>> = [total, timeout];
     await Promise.race(racers);
   }
-
-  // ---------------- 漫画卡片 ----------------
 
   // 漫画卡片添加：mangaId 解析（want 参数 → pending → 书架内最近阅读回退）→ 保存注册 → 刷新
   static async addMangaCard(context: common.Context, info: CardFormInfo): Promise<void> {
@@ -238,12 +220,20 @@ export class WidgetUpdater {
     await WidgetUpdater.refreshOne(context, info);
   }
 
+  // 刷新全部已注册卡片（应用退后台 / 书架刷新完成后调用）；
+
   // 构建漫画卡片数据：封面（formImages fd）+ 标题 + 续读章节（最近阅读 → 第一条未读）
   static async buildMangaData(context: common.Context, mangaId: number): Promise<MangaCardData> {
     const built = new MangaCardData();
     const record: Record<string, string | number | boolean> = {
-      'empty': true, 'hasCover': false, 'hasChapter': false,
-      'title': '', 'chapter': '', 'mangaId': '', 'chapterId': '', 'contentType': 'manga'
+      'empty': true,
+      'hasCover': false,
+      'hasChapter': false,
+      'title': '',
+      'chapter': '',
+      'mangaId': '',
+      'chapterId': '',
+      'contentType': 'manga'
     };
     await AppDb.ready(context);
     const manga: MangaRecord | undefined = mangaId > 0 ? await MangaRepo.get(mangaId) : undefined;
@@ -302,6 +292,8 @@ export class WidgetUpdater {
     return built;
   }
 
+  // ---------------- 漫画卡片 ----------------
+
   // 构建卡片数据：RecentCard / UpdatesCard / UpcomingCard，行内容平铺为 t{i}/c{i}/m{i}/ch{i}/time{i}/b{i}
   static async buildData(context: common.Context, name: string, wide: boolean):
     Promise<formBindingData.FormBindingData> {
@@ -355,7 +347,25 @@ export class WidgetUpdater {
     return formBindingData.createFormBindingData(record);
   }
 
+  private static async getPrefs(context: common.Context): Promise<preferences.Preferences> {
+    if (WidgetUpdater.prefs === null) {
+      WidgetUpdater.prefs = await preferences.getPreferences(context, { name: PREFS_NAME });
+    }
+    return WidgetUpdater.prefs;
+  }
+
+  private static async writeForms(context: common.Context, forms: CardFormInfo[]): Promise<void> {
+    try {
+      const prefs = await WidgetUpdater.getPrefs(context);
+      await prefs.put(PREFS_KEY, JSON.stringify(forms));
+      await prefs.flush();
+    } catch (e) {
+      throw new Error(`write widget forms failed: ${e}`);
+    }
+  }
+
   // 构建统计卡片数据：周（周一~周日）/ 月（1 日~月末）每日阅读时长柱状图
+
   // 柱高预计算为 vp 数值，平铺为逗号串（卡片侧 ForEach 渲染）；周卡片附带星期标签
   private static async buildStatsData(context: common.Context, name: string, wide: boolean):
     Promise<formBindingData.FormBindingData> {

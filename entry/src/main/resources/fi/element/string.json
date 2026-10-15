@@ -1,534 +1,2124 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Suodattaa kaikki sarjat kirjastossasi" },
-    { "name": "more_incognito_summary", "value": "Keskeyttää lukuhistorian" },
-    { "name": "more_support", "value": "Support Us" },
-    { "name": "more_help", "value": "Apu" },
-    { "name": "support_perks", "value": "Patrons get access to exclusive channels, with more perks to come." },
-    { "name": "support_patreon", "value": "Patreon (preferred)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together." },
-    { "name": "support_contact_msg", "value": "For alternative options or any related questions, join our Discord server." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "Data ja tallennustila" },
-    { "name": "data_storage_location", "value": "Storage location" },
-    { "name": "data_storage_location_info", "value": "Käytetään automaattisille varmuuskopioille, lukujen latauksille ja paikallisille lähteille." },
-    { "name": "data_backup_restore", "value": "Varmuuskopiointi ja palautus" },
-    { "name": "data_create_backup", "value": "Luo varmuuskopio" },
-    { "name": "data_restore_backup", "value": "Palauta varmuuskopio" },
-    { "name": "data_backup_interval", "value": "Varmuuskopioinnin tiheys" },
-    { "name": "data_backup_info", "value": "Varmuuskopioita kannattaa säilyttää myös muissa paikoissa." },
-    { "name": "data_last_auto_backup", "value": "Last automatically backed up: %s" },
-    { "name": "data_storage_usage", "value": "Storage usage" },
-    { "name": "data_available_space", "value": "Available: %s / Total: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Tyhjennä lukujen välimuisti" },
-    { "name": "data_used_cache", "value": "Käytössä: %s" },
-    { "name": "data_cache_deleted", "value": "Välimuisti tyhjennetty. %d tiedostoa poistettu" },
-    { "name": "data_cache_delete_error", "value": "Virhe tapahtui välimuistia tyhjentäessä" },
-    { "name": "data_auto_clear_cache", "value": "Clear chapter cache on app launch" },
-    { "name": "data_export", "value": "Export" },
-    { "name": "data_library_list", "value": "Library List" },
-    { "name": "data_library_exported", "value": "Library Exported" },
-    { "name": "data_export_include", "value": "Valitse sisällytettävä tieto" },
-    { "name": "data_column_title", "value": "Nimike" },
-    { "name": "data_column_author", "value": "Author" },
-    { "name": "data_interval_off", "value": "Pois päältä" },
-    { "name": "data_interval_6h", "value": "Kuuden tunnin välein" },
-    { "name": "data_interval_12h", "value": "12 tunnin välein" },
-    { "name": "data_interval_24h", "value": "Päivittäin" },
-    { "name": "data_interval_48h", "value": "Kahden päivän välein" },
-    { "name": "data_interval_weekly", "value": "Viikoittain" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "OK" },
-    { "name": "common_cancel", "value": "Peruuta" },
-    { "name": "common_confirm", "value": "Vahvista" },
-    { "name": "common_delete", "value": "Poista" },
-    { "name": "common_retry", "value": "Yritä uudelleen" },
-    { "name": "common_search", "value": "Hae" },
-    { "name": "common_all", "value": "Kaikki" },
-    { "name": "common_close", "value": "Sulje" },
-    { "name": "common_save", "value": "Tallenna" },
-    { "name": "common_install", "value": "Asenna" },
-    { "name": "common_uninstall", "value": "Poista asennus" },
-    { "name": "common_update", "value": "Päivitä" },
-    { "name": "common_none", "value": "Ei mitään" },
-    { "name": "common_default", "value": "Oletus" },
-    { "name": "appearance_title", "value": "Ulkoasu" },
-    { "name": "appearance_language", "value": "Kieli" },
-    { "name": "lang_follow_system", "value": "Seuraa järjestelmää" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "Teematila" },
-    { "name": "appearance_theme_auto", "value": "Seuraa järjestelmää" },
-    { "name": "appearance_theme_light", "value": "Vaalea" },
-    { "name": "appearance_theme_dark", "value": "Tumma" },
-    { "name": "appearance_accent_color", "value": "Korostusväri" },
-    { "name": "appearance_other", "value": "Muut" },
-    { "name": "appearance_amoled", "value": "AMOLED-puhdas musta tausta" },
-    { "name": "theme_accent_blue", "value": "Sininen" },
-    { "name": "theme_accent_green", "value": "Vihreä" },
-    { "name": "theme_accent_pink", "value": "Pinkki" },
-    { "name": "theme_accent_purple", "value": "Violetti" },
-    { "name": "theme_accent_orange", "value": "Oranssi" },
-    { "name": "util_time_minutes_ago", "value": "%d min sitten" },
-    { "name": "util_time_hours_ago", "value": "%d t sitten" },
-    { "name": "util_time_days_ago", "value": "%d pv sitten" },
-    { "name": "util_status_ongoing", "value": "Jatkuva" },
-    { "name": "util_status_completed", "value": "Päättynyt" },
-    { "name": "util_status_hiatus", "value": "Tauolla" },
-    { "name": "util_status_cancelled", "value": "Peruttu" },
-    { "name": "util_status_publication_complete", "value": "Julkaisu valmis" },
-    { "name": "util_status_unknown", "value": "Tuntematon" },
-    { "name": "tab_library", "value": "Kirjasto" },
-    { "name": "tab_updates", "value": "Päivitykset" },
-    { "name": "tab_history", "value": "Historia" },
-    { "name": "tab_browse", "value": "Selaa" },
-    { "name": "tab_more", "value": "Lisää" },
-    { "name": "tab_cf_waiting", "value": "Odotetaan vahvistusta…" },
-    { "name": "tab_cf_verified", "value": "Vahvistus valmis" },
-    { "name": "tab_cf_title", "value": "Ihmisvahvistus" },
-    { "name": "tab_cf_done", "value": "Valmis" },
-    { "name": "tab_cf_saved", "value": "Vahvistustulos tallennettu" },
-    { "name": "more_title", "value": "Lisää" },
-    { "name": "more_version", "value": "Versio %s" },
-    { "name": "more_downloaded_only", "value": "Ladatut" },
-    { "name": "more_incognito", "value": "Incognito-tila" },
-    { "name": "more_downloads", "value": "Latausjono" },
-    { "name": "more_categories", "value": "Kategoriat" },
-    { "name": "more_settings", "value": "Asetukset" },
-    { "name": "more_about", "value": "Tietoja" },
-    { "name": "more_plugins", "value": "Laajennukset" },
-    { "name": "categories_title", "value": "Kategoriat" },
-    { "name": "categories_add", "value": "Uusi kategoria" },
-    { "name": "categories_name_placeholder", "value": "Kategorian nimi" },
-    { "name": "categories_rename_category", "value": "Nimeä kategoria uudelleen" },
-    { "name": "categories_rename", "value": "Nimeä uudelleen" },
-    { "name": "categories_hint", "value": "Paina kategoriaa pitkään nimetäksesi sen uudelleen tai poistaaksesi sen; poistetun kategorian mangat siirtyvät takaisin Oletus-kategoriaan" },
-    { "name": "dialog_pick_category", "value": "Valitse kategoria" },
-    { "name": "viewer_loading", "value": "Ladataan…" },
-    { "name": "viewer_load_failed", "value": "Kuvan lataus epäonnistui" },
-    { "name": "viewer_tap_retry", "value": "Napauta yrittääksesi uudelleen" },
-    { "name": "library_title", "value": "Kirjasto" },
-    { "name": "library_empty", "value": "Kirjastosi on tyhjä, selaa lisätäksesi mangaa" },
-    { "name": "library_new_category", "value": "Uusi kategoria" },
-    { "name": "library_category_name", "value": "Kategorian nimi" },
-    { "name": "updates_title", "value": "Päivitykset" },
-    { "name": "updates_empty", "value": "Ei tuoreita päivityksiä" },
-    { "name": "updates_found_new", "value": "%d uutta lukua löytyi" },
-    { "name": "updates_no_new", "value": "Ei uusia lukuja" },
-    { "name": "updates_refresh_failed", "value": "Päivitys epäonnistui" },
-    { "name": "updates_refreshing", "value": "Päivitetään…" },
-    { "name": "history_title", "value": "Historia" },
-    { "name": "history_clear", "value": "Tyhjennä" },
-    { "name": "history_confirm_clear", "value": "Vahvista tyhjennys?" },
-    { "name": "history_empty", "value": "Ei vielä lukuhistoriaa" },
-    { "name": "history_cleared", "value": "Historia tyhjennetty" },
-    { "name": "history_continue", "value": "Jatka" },
-    { "name": "browse_title", "value": "Selaa" },
-    { "name": "browse_import", "value": "Tuo" },
-    { "name": "browse_plugins", "value": "Lisäosat" },
-    { "name": "browse_local_source_name", "value": "Paikallinen manga" },
-    { "name": "browse_popular", "value": "Suositut" },
-    { "name": "browse_latest", "value": "Uusimmat" },
-    { "name": "browse_search_hint", "value": "Hae mangaa…" },
-    { "name": "browse_no_results", "value": "Mangaa ei löytynyt" },
-    { "name": "browse_local_empty", "value": "Ei vielä paikallista mangaa, napauta Tuo lisätäksesi" },
-    { "name": "browse_load_failed", "value": "Lataus epäonnistui: %s" },
-    { "name": "browse_search_failed", "value": "Haku epäonnistui: %s" },
-    { "name": "browse_load_more_failed", "value": "Lisää lataaminen epäonnistui" },
-    { "name": "browse_open_detail_failed", "value": "Tietojen avaaminen epäonnistui" },
-    { "name": "browse_pick_file_failed", "value": "Tiedostojen valinta epäonnistui" },
-    { "name": "browse_import_title", "value": "Tuo %d tiedostoa" },
-    { "name": "browse_manga_name_hint", "value": "Mangan nimi" },
-    { "name": "browse_input_name", "value": "Anna nimi" },
-    { "name": "browse_import_done", "value": "Tuotiin %d tiedostoa" },
-    { "name": "browse_import_failed", "value": "Tuonti epäonnistui: %s" },
-    { "name": "download_title", "value": "Lataukset" },
-    { "name": "download_resume", "value": "Jatka" },
-    { "name": "download_pause", "value": "Keskeytä" },
-    { "name": "download_clear_finished", "value": "Tyhjennä valmiit" },
-    { "name": "download_queue", "value": "Latausjono" },
-    { "name": "download_state_queued", "value": "Jonossa" },
-    { "name": "download_state_downloading", "value": "Ladataan" },
-    { "name": "download_state_done", "value": "Valmis" },
-    { "name": "download_state_failed", "value": "Epäonnistui" },
-    { "name": "download_move_top", "value": "Siirrä ylimmäksi" },
-    { "name": "download_move_bottom", "value": "Siirrä alimmaiseksi" },
-    { "name": "download_deleted", "value": "Poistettu" },
-    { "name": "download_empty", "value": "Ei vielä latauksia" },
-    { "name": "download_status_downloaded", "value": "Ladattu" },
-    { "name": "download_chapter_count", "value": "%d lukua" },
-    { "name": "detail_no_chapters", "value": "Ei lukuja" },
-    { "name": "detail_sync_failed_local", "value": "Synkronointi epäonnistui, näytetään paikalliset tiedot" },
-    { "name": "detail_added_to_library", "value": "Lisätty kirjastoon" },
-    { "name": "detail_removed_from_library", "value": "Poistettu kirjastosta" },
-    { "name": "detail_all_marked_read", "value": "Kaikki luvut merkitty luetuiksi" },
-    { "name": "detail_download_queued", "value": "Lataus lisätty jonoon" },
-    { "name": "detail_config_anilist_token", "value": "Määritä AniList-tunnuksesi ensin" },
-    { "name": "detail_search_anilist", "value": "Hae AniLististä" },
-    { "name": "detail_manga_title_hint", "value": "Mangan otsikko" },
-    { "name": "detail_no_search_results", "value": "Ei hakutuloksia" },
-    { "name": "detail_anilist_search_failed", "value": "AniList-haku epäonnistui" },
-    { "name": "detail_anilist_bound", "value": "Sidottu AniListiin" },
-    { "name": "detail_anilist_unbound", "value": "Irrotettu AniLististä" },
-    { "name": "detail_synced_progress", "value": "Edistyminen synkronoitu lukuun %d" },
-    { "name": "detail_anilist_sync_failed", "value": "AniList-synkronointi epäonnistui" },
-    { "name": "detail_status_local", "value": "Paikallinen" },
-    { "name": "detail_in_library", "value": "Kirjastossa" },
-    { "name": "detail_add_to_library", "value": "Lisää kirjastoon" },
-    { "name": "detail_continue_reading", "value": "Jatka lukemista" },
-    { "name": "detail_start_reading", "value": "Aloita lukeminen" },
-    { "name": "detail_no_chapters_yet", "value": "Ei vielä lukuja" },
-    { "name": "detail_collapse", "value": "Tiivistä" },
-    { "name": "detail_expand", "value": "Laajenna" },
-    { "name": "detail_anilist_tracking", "value": "AniList-seuranta" },
-    { "name": "detail_anilist_token_hint", "value": "AniList-tunnusta ei ole vielä määritetty" },
-    { "name": "detail_searching", "value": "Haetaan…" },
-    { "name": "detail_search_and_bind", "value": "Hae ja sido" },
-    { "name": "detail_bind", "value": "Sido" },
-    { "name": "detail_synced_to_chapter", "value": "Synkronoitu lukuun %d" },
-    { "name": "detail_sync_progress", "value": "Synkronoi edistyminen" },
-    { "name": "detail_unbind", "value": "Irrota" },
-    { "name": "detail_chapters_count", "value": "Luvut (%d)" },
-    { "name": "detail_sort_asc", "value": "Nouseva" },
-    { "name": "detail_sort_desc", "value": "Laskeva" },
-    { "name": "detail_mark_all_read", "value": "Merkitse kaikki luetuiksi" },
-    { "name": "detail_read", "value": "Luettu" },
-    { "name": "detail_downloaded", "value": "Ladattu" },
-    { "name": "detail_in_queue", "value": "Jonossa" },
-    { "name": "detail_download", "value": "Lataa" },
-    { "name": "reader_chapter_not_found", "value": "Lukua ei löytynyt" },
-    { "name": "reader_load_failed", "value": "Lataus epäonnistui: %s" },
-    { "name": "reader_mode_ltr", "value": "Vasemmalta oikealle" },
-    { "name": "reader_mode_rtl", "value": "Oikealta vasemmalle" },
-    { "name": "reader_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_reading_mode", "value": "Lukutila" },
-    { "name": "reader_orientation_free", "value": "Vapaa" },
-    { "name": "reader_orientation_portrait", "value": "Pysty" },
-    { "name": "reader_orientation_landscape", "value": "Vaaka" },
-    { "name": "reader_screen_orientation", "value": "Näytön suunta" },
-    { "name": "reader_last_chapter", "value": "Olet jo viimeisessä luvussa" },
-    { "name": "reader_first_chapter", "value": "Olet jo ensimmäisessä luvussa" },
-    { "name": "reader_first_page", "value": "Olet jo ensimmäisellä sivulla" },
-    { "name": "reader_last_page", "value": "Olet jo viimeisellä sivulla" },
-    { "name": "reader_loading_chapter", "value": "Ladataan lukua…" },
-    { "name": "reader_settings", "value": "Lukijan asetukset" },
-    { "name": "reader_background", "value": "Tausta" },
-    { "name": "reader_theme_auto", "value": "Automaattinen" },
-    { "name": "reader_theme_white", "value": "Valkoinen" },
-    { "name": "reader_theme_gray", "value": "Harmaa" },
-    { "name": "reader_theme_black", "value": "Musta" },
-    { "name": "reader_show_page_number", "value": "Näytä sivunumero" },
-    { "name": "reader_brightness", "value": "Kirkkaus" },
-    { "name": "reader_auto", "value": "Automaattinen" },
-    { "name": "plugin_title", "value": "Laajennukset" },
-    { "name": "plugin_installed_section", "value": "Asennetut" },
-    { "name": "plugin_empty", "value": "Ei vielä laajennuksia, asenna alta" },
-    { "name": "plugin_disable_hint", "value": "Pois käytöstä olevat laajennukset voi ottaa uudelleen käyttöön milloin tahansa" },
-    { "name": "plugin_up_to_date", "value": "Ajantasalla" },
-    { "name": "plugin_local_install", "value": "Asenna tiedostosta" },
-    { "name": "plugin_install_from_file", "value": "Valitse asennettava tiedosto" },
-    { "name": "plugin_processing", "value": "Käsitellään…" },
-    { "name": "plugin_package_hint", "value": "Tukee .honyomiplug- / .zip-lisäosapaketteja" },
-    { "name": "plugin_repo", "value": "Verkkoarkisto" },
-    { "name": "plugin_repo_config", "value": "Määritä arkisto" },
-    { "name": "plugin_repo_refresh", "value": "Päivitä" },
-    { "name": "plugin_repo_hint", "value": "Lisäosa-arkistoa ei ole vielä määritetty" },
-    { "name": "plugin_repo_loading", "value": "Ladataan arkistoa…" },
-    { "name": "plugin_repo_url_title", "value": "Lisäosa-arkiston URL" },
-    { "name": "plugin_repo_url_hint", "value": "Anna lisäosa-arkiston URL" },
-    { "name": "plugin_repo_load_failed", "value": "Arkiston lataus epäonnistui: %s" },
-    { "name": "plugin_pick_file_failed", "value": "Tiedoston valinta epäonnistui" },
-    { "name": "plugin_installed", "value": "Asennettu: %s" },
-    { "name": "plugin_installed_name", "value": "Asennettiin %s" },
-    { "name": "plugin_install_failed", "value": "Asennus epäonnistui: %s" },
-    { "name": "plugin_action_failed", "value": "Toiminto epäonnistui" },
-    { "name": "plugin_uninstalled", "value": "Asennus poistettu: %s" },
-    { "name": "plugin_uninstall_failed", "value": "Asennuksen poisto epäonnistui" },
-    { "name": "settings_title", "value": "Asetukset" },
-    { "name": "settings_general", "value": "Yleiset" },
-    { "name": "settings_start_tab", "value": "Aloitusnäyttö" },
-    { "name": "settings_personalization", "value": "Mukautus" },
-    { "name": "settings_library", "value": "Kirjasto" },
-    { "name": "settings_reader", "value": "Lukija" },
-    { "name": "settings_data", "value": "Tiedot" },
-    { "name": "settings_downloads", "value": "Lataukset" },
-    { "name": "settings_browse", "value": "Selaa" },
-    { "name": "settings_advanced", "value": "Lisäasetukset" },
-    { "name": "settings_about", "value": "Tietoja" },
-    { "name": "settings_tab_library", "value": "Kirjasto" },
-    { "name": "settings_tab_updates", "value": "Päivitykset" },
-    { "name": "settings_tab_history", "value": "Historia" },
-    { "name": "settings_tab_browse", "value": "Selaa" },
-    { "name": "settings_tab_more", "value": "Lisää" },
-    { "name": "advanced_title", "value": "Lisäasetukset" },
-    { "name": "advanced_calculating", "value": "Lasketaan…" },
-    { "name": "advanced_storage", "value": "Tallennustila" },
-    { "name": "advanced_clear_image_cache", "value": "Tyhjennä kuvavälimuisti" },
-    { "name": "advanced_image_cache_cleared", "value": "Kuvavälimuisti tyhjennetty" },
-    { "name": "advanced_clear_cookies", "value": "Tyhjennä evästeet" },
-    { "name": "advanced_cookies_cleared", "value": "Kaikki evästeet tyhjennetty" },
-    { "name": "advanced_backup_restore", "value": "Varmuuskopiointi ja palautus" },
-    { "name": "advanced_export_backup", "value": "Vie varmuuskopio" },
-    { "name": "advanced_import_backup", "value": "Tuo varmuuskopio" },
-    { "name": "advanced_tracking", "value": "Seuranta" },
-    { "name": "advanced_anilist_token", "value": "AniList-tunnus" },
-    { "name": "advanced_token_title", "value": "AniList-käyttötunnus" },
-    { "name": "advanced_token_hint", "value": "Liitä käyttötunnus (jätä tyhjäksi tyhjentääksesi)" },
-    { "name": "advanced_token_not_set", "value": "Ei asetettu" },
-    { "name": "advanced_token_set", "value": "Asetettu" },
-    { "name": "advanced_token_saved", "value": "Tunnus tallennettu" },
-    { "name": "advanced_token_cleared", "value": "Tunnus tyhjennetty" },
-    { "name": "advanced_backup_exported", "value": "Varmuuskopio viety" },
-    { "name": "advanced_export_canceled", "value": "Vienti peruttu" },
-    { "name": "advanced_export_failed", "value": "Vienti epäonnistui" },
-    { "name": "advanced_import_canceled", "value": "Tuonti peruttu" },
-    { "name": "advanced_backup_invalid", "value": "Virheellinen varmuuskopiotiedosto" },
-    { "name": "advanced_restored_manga", "value": "Palautettiin %d mangaa" },
-    { "name": "advanced_import_failed", "value": "Tuonti epäonnistui" },
-    { "name": "about_title", "value": "Tietoja" },
-    { "name": "about_version", "value": "Versio 1.0.0" },
-    { "name": "about_desc", "value": "Arkkitehtuuri inspiroitunut Mihonista (Apache-2.0). Verkkolähteet asennetaan dynaamisesti laajennuksina, paikalliset lähteet ovat sisäänrakennettuja." },
-    { "name": "about_ack", "value": "Avoimen lähdekoodin kiitokset:\n· Mihon / Tachiyomi — sovelluksen arkkitehtuuri ja vuorovaikutussuunnittelu (Apache-2.0)\n· Material Symbols — sovelluksen kuvakkeet (Apache-2.0)\n· MangaDex — testidatalähde" },
-    { "name": "browse_set_title", "value": "Selaa" },
-    { "name": "browse_set_content", "value": "Sisältö" },
-    { "name": "browse_set_show_nsfw", "value": "Näytä NSFW-lähteet" },
-    { "name": "browse_set_nsfw_hint", "value": "Kun käytössä, laajennusten NSFW-merkityt lähteet näkyvät Selaa-näkymässä" },
-    { "name": "dl_set_title", "value": "Lataukset" },
-    { "name": "dl_set_network", "value": "Verkko" },
-    { "name": "dl_set_wifi_only", "value": "Lataa vain Wi-Fin kautta" },
-    { "name": "dl_set_wifi_only_hint", "value": "Huom: tämä kytkin on paikkamerkki nykyisessä versiossa; verkkotyypin tunnistus tulee myöhemmässä julkaisussa" },
-    { "name": "lib_set_title", "value": "Kirjasto" },
-    { "name": "lib_set_sort_group", "value": "Suodata ja lajittele" },
-    { "name": "lib_set_sort_default", "value": "Oletuslajittelu" },
-    { "name": "lib_set_sort_title", "value": "Otsikko" },
-    { "name": "lib_set_sort_last_update", "value": "Uusin luku" },
-    { "name": "lib_set_sort_added", "value": "Lisäyspäivä" },
-    { "name": "lib_set_sort_unread", "value": "Lukemattomien määrä" },
-    { "name": "lib_set_sort_asc", "value": "Lajittele otsikon mukaan nousevasti" },
-    { "name": "lib_set_filter_default", "value": "Oletussuodatin" },
-    { "name": "lib_set_filter_unread", "value": "Lukematon" },
-    { "name": "lib_set_filter_downloaded", "value": "Ladattu" },
-    { "name": "lib_set_filter_uncompleted", "value": "Kesken" },
-    { "name": "lib_set_display_group", "value": "Näyttö" },
-    { "name": "lib_set_view_default", "value": "Oletusnäkymä" },
-    { "name": "lib_set_view_grid", "value": "Ruudukko" },
-    { "name": "lib_set_view_cover", "value": "Kansiruudukko" },
-    { "name": "lib_set_view_list", "value": "Luettelo" },
-    { "name": "lib_set_grid_cols", "value": "Ruudukon sarakkeet" },
-    { "name": "lib_set_cols_auto", "value": "Automaattinen" },
-    { "name": "lib_set_cols_2", "value": "2 saraketta" },
-    { "name": "lib_set_cols_3", "value": "3 saraketta" },
-    { "name": "lib_set_cols_4", "value": "4 saraketta" },
-    { "name": "lib_set_unread_badge", "value": "Lukemattomien merkit" },
-    { "name": "lib_set_download_badge", "value": "Latausmerkit" },
-    { "name": "reader_set_title", "value": "Lukija" },
-    { "name": "reader_set_mode_group", "value": "Lukutila" },
-    { "name": "reader_set_mode_default", "value": "Oletustila" },
-    { "name": "reader_set_mode_ltr", "value": "Vasemmalta oikealle" },
-    { "name": "reader_set_mode_rtl", "value": "Oikealta vasemmalle" },
-    { "name": "reader_set_mode_vertical", "value": "Pystysuuntainen sivuutus" },
-    { "name": "reader_set_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_set_dual_page", "value": "Kaksoissivu (vaaka)" },
-    { "name": "reader_set_display_group", "value": "Näyttö" },
-    { "name": "reader_set_show_page_number", "value": "Näytä sivunumero" },
-    { "name": "reader_set_bg_color", "value": "Lukijan tausta" },
-    { "name": "reader_set_theme_follow", "value": "Seuraa teemaa" },
-    { "name": "reader_set_theme_white", "value": "Valkoinen" },
-    { "name": "reader_set_theme_black", "value": "Musta" },
-    { "name": "reader_set_theme_gray", "value": "Harmaa" },
-    { "name": "reader_set_reset_brightness", "value": "Palauta lukijan kirkkaus" },
-    { "name": "reader_set_brightness_reset", "value": "Kirkkaus seuraa nyt järjestelmää" },
-    { "name": "browse_tab_sources", "value": "Lähteet" },
-    { "name": "browse_tab_extensions", "value": "Laajennukset" },
-    { "name": "browse_tab_migrate", "value": "Siirrä" },
-    { "name": "browse_pin", "value": "Kiinnitä" },
-    { "name": "browse_unpin", "value": "Irrota" },
-    { "name": "browse_disable_source", "value": "Poista lähde käytöstä" },
-    { "name": "browse_source_disabled", "value": "Lähde poistettu käytöstä" },
-    { "name": "browse_pinned", "value": "Kiinnitetty" },
-    { "name": "browse_sources_empty", "value": "Ei lähteitä. Asenna Laajennukset-välilehdeltä" },
-    { "name": "browse_filter_langs", "value": "Suodata kielet" },
-    { "name": "browse_filter_all", "value": "Kaikki" },
-    { "name": "browse_source_missing", "value": "Lähde ei ole käytettävissä. Laajennus voi olla poissa käytöstä" },
-    { "name": "global_search_hint", "value": "Hae kaikista lähteistä" },
-    { "name": "global_search_failed", "value": "Haku epäonnistui" },
-    { "name": "ext_search_hint", "value": "Hae laajennuksia" },
-    { "name": "ext_search_no_match", "value": "Ei osumia" },
-    { "name": "ext_repo_settings", "value": "Arkiston asetukset" },
-    { "name": "ext_refresh_repo", "value": "Päivitä arkisto" },
-    { "name": "migrate_pick_source", "value": "Valitse siirrettävä lähde" },
-    { "name": "migrate_empty_library", "value": "Kirjasto on tyhjä" },
-    { "name": "migrate_select_all", "value": "Valitse kaikki" },
-    { "name": "migrate_deselect_all", "value": "Poista valinnat" },
-    { "name": "migrate_action", "value": "Siirrä (%d)" },
-    { "name": "migrate_title", "value": "Siirrä" },
-    { "name": "migrate_skip", "value": "Ohita" },
-    { "name": "migrate_progress", "value": "%d / %d" },
-    { "name": "migrate_target_source", "value": "Kohdelähde" },
-    { "name": "migrate_search_hint", "value": "Hae mangaa kohdelähteestä" },
-    { "name": "migrate_confirm_title", "value": "Siirretäänkö tähän mangaan?" },
-    { "name": "migrate_item_done", "value": "Siirretty: %s" },
-    { "name": "migrate_failed", "value": "Siirto epäonnistui: %s" },
-    { "name": "migrate_done", "value": "Siirto valmis" },
-    { "name": "migrate_no_target", "value": "Kohdelähdettä ei ole" },
-    { "name": "stats_title", "value": "Tilastot" },
-    { "name": "stats_overview_section", "value": "Yleiskatsaus" },
-    { "name": "stats_in_library", "value": "Kirjastossa" },
-    { "name": "stats_read_duration", "value": "Lukuaika" },
-    { "name": "stats_completed_titles", "value": "Päättynyt" },
-    { "name": "stats_titles_section", "value": "Merkinnät" },
-    { "name": "stats_started_titles", "value": "Aloitetut" },
-    { "name": "stats_local_titles", "value": "Paikallinen" },
-    { "name": "stats_chapters_section", "value": "Luvut" },
-    { "name": "stats_total_chapters", "value": "Yhteensä" },
-    { "name": "stats_read_chapters", "value": "Luettu" },
-    { "name": "stats_downloaded_chapters", "value": "Ladattu" },
-    { "name": "stats_tracker_section", "value": "Seuranta" },
-    { "name": "stats_tracked_titles", "value": "Seuratut merkinnät" },
-    { "name": "stats_mean_score", "value": "Keskiarvo" },
-    { "name": "stats_used", "value": "Käytössä" },
-    { "name": "stats_not_applicable", "value": "e.s." },
-    { "name": "stats_week", "value": "Viikko" },
-    { "name": "stats_month", "value": "Kuukausi" },
-    { "name": "stats_week_total", "value": "%s tällä viikolla" },
-    { "name": "stats_month_total", "value": "%s tässä kuussa" },
-    { "name": "stats_no_reading", "value": "Ei lukemista tällä jaksolla" },
-    { "name": "stats_day_short", "value": "%d pv" },
-    { "name": "stats_hour_short", "value": "%d t" },
-    { "name": "stats_minute_short", "value": "%d min" },
-    { "name": "stats_second_short", "value": "%d s" },
-    { "name": "stats_wd_sun", "value": "Su" },
-    { "name": "stats_wd_mon", "value": "Ma" },
-    { "name": "stats_wd_tue", "value": "Ti" },
-    { "name": "stats_wd_wed", "value": "Ke" },
-    { "name": "stats_wd_thu", "value": "To" },
-    { "name": "stats_wd_fri", "value": "Pe" },
-    { "name": "stats_wd_sat", "value": "La" },
-    { "name": "reader_mode_vertical", "value": "Pystysuunta" },
-    { "name": "reader_mode_smart_grip", "value": "Älykäs ote" },
-    { "name": "reader_orientation_lock_portrait", "value": "Lukitse pystyyn" },
-    { "name": "reader_orientation_lock_landscape", "value": "Lukitse vaakaan" },
-    { "name": "reader_tab_general", "value": "Yleiset" },
-    { "name": "reader_tab_filter", "value": "Värisuodatin" },
-    { "name": "reader_filter_grayscale", "value": "Harmaasävy" },
-    { "name": "reader_filter_invert", "value": "Käänteiset värit" },
-    { "name": "reader_filter_contrast", "value": "Kontrasti" },
-    { "name": "reader_filter_saturation", "value": "Kylläisyys" },
-    { "name": "reader_crop_borders", "value": "Rajaa reunat" },
-    { "name": "reader_nav_tap_zones", "value": "Napautusalueet" },
-    { "name": "reader_nav_default", "value": "Oletus" },
-    { "name": "reader_nav_ltr", "value": "Vasemmalta oikealle" },
-    { "name": "reader_nav_rtl", "value": "Oikealta vasemmalle" },
-    { "name": "reader_nav_vertical", "value": "Pystysuunta" },
-    { "name": "reader_nav_edge", "value": "Reuna" },
-    { "name": "reader_nav_none", "value": "Ei mitään" },
-    { "name": "reader_dual_page", "value": "Kaksoissivunäkymä" },
-    { "name": "reader_webtoon_padding", "value": "Webtoon-sivureunus" },
-    { "name": "reader_set_mode_smart_grip", "value": "Älykäs ote" },
-    { "name": "ext_install_local", "value": "Asenna paikallisesti" },
-    { "name": "ext_detail_title", "value": "Laajennuksen tiedot" },
-    { "name": "ext_info_version", "value": "Versio" },
-    { "name": "ext_info_language", "value": "Kieli" },
-    { "name": "ext_uninstall_title", "value": "Poista laajennuksen asennus" },
-    { "name": "ext_uninstall_msg", "value": "Poistetaanko %s? Kirjaston mangatiedot säilyvät." },
-    { "name": "ext_detail_sources", "value": "Lähteet" },
-    { "name": "ext_detail_settings", "value": "Asetukset" },
-    { "name": "ext_pref_loading", "value": "Ladataan…" },
-    { "name": "ext_pref_failed", "value": "Asetusten käyttö epäonnistui" },
-    { "name": "ext_detail_missing", "value": "Laajennusta ei ole tai sitä ei ole ladattu" },
-    { "name": "action_filter", "value": "Suodata" },
-    { "name": "action_update_library", "value": "Päivitä kirjasto" },
-    { "name": "action_update_category", "value": "Päivitä kategoria" },
-    { "name": "action_open_random_manga", "value": "Avaa satunnainen manga" },
-    { "name": "action_select_all", "value": "Valitse kaikki" },
-    { "name": "action_select_inverse", "value": "Käänteinen valinta" },
-    { "name": "action_move_category", "value": "Siirrä kategoriaan" },
-    { "name": "action_mark_as_read", "value": "Merkitse luetuksi" },
-    { "name": "action_mark_as_unread", "value": "Merkitse lukemattomaksi" },
-    { "name": "action_download", "value": "Lataa" },
-    { "name": "action_delete", "value": "Poista" },
-    { "name": "action_migrate", "value": "Siirrä" },
-    { "name": "action_remove_from_library", "value": "Poista kirjastosta" },
-    { "name": "action_remove_from_library_msg", "value": "Poistetaanko %d valittua mangaa kirjastosta?" },
-    { "name": "action_download_queued", "value": "%d latausta lisätty jonoon" },
-    { "name": "library_search_hint", "value": "Hae kirjastosta" },
-    { "name": "library_no_match", "value": "Ei vastaavaa mangaa" },
-    { "name": "lib_sheet_tab_filter", "value": "Suodata" },
-    { "name": "lib_sheet_tab_sort", "value": "Lajittele" },
-    { "name": "lib_sheet_tab_display", "value": "Näyttö" },
-    { "name": "lib_filter_downloaded", "value": "Ladattu" },
-    { "name": "lib_filter_unread", "value": "Lukematon" },
-    { "name": "lib_filter_started", "value": "Aloitetut" },
-    { "name": "lib_filter_bookmarked", "value": "Kirjanmerkit" },
-    { "name": "lib_filter_completed", "value": "Päättynyt" },
-    { "name": "lib_filter_tracked", "value": "Seuratut" },
-    { "name": "lib_sort_alpha", "value": "Otsikko" },
-    { "name": "lib_sort_total", "value": "Lukujen määrä" },
-    { "name": "lib_sort_last_read", "value": "Viimeksi luettu" },
-    { "name": "lib_sort_last_update", "value": "Viimeksi tarkistettu" },
-    { "name": "lib_sort_unread", "value": "Lukemattomien määrä" },
-    { "name": "lib_sort_latest_chapter", "value": "Viimeksi päivitetty" },
-    { "name": "lib_sort_fetch_date", "value": "Luvut haettu" },
-    { "name": "lib_sort_date_added", "value": "Lisäyspäivä" },
-    { "name": "lib_sort_random", "value": "Satunnainen" },
-    { "name": "lib_display_compact", "value": "Tiivis ruudukko" },
-    { "name": "lib_display_comfortable", "value": "Väljä ruudukko" },
-    { "name": "lib_display_cover", "value": "Kansiruudukko" },
-    { "name": "lib_display_list", "value": "Luettelo" },
-    { "name": "lib_display_grid_size", "value": "Riviä kohden" },
-    { "name": "lib_display_grid_auto", "value": "Automaattinen" },
-    { "name": "lib_display_badges_group", "value": "Merkit ja painikkeet" },
-    { "name": "lib_badge_downloaded", "value": "Ladatut luvut" },
-    { "name": "lib_badge_unread", "value": "Lukemattomat luvut" },
-    { "name": "lib_badge_local", "value": "Paikallinen lähde" },
-    { "name": "lib_badge_language", "value": "Kieli" },
-    { "name": "lib_badge_continue", "value": "Jatka lukemista -painike" },
-    { "name": "lib_display_tabs_group", "value": "Välilehdet" },
-    { "name": "lib_show_category_tabs", "value": "Näytä kategoria-välilehdet" },
-    { "name": "lib_show_manga_count", "value": "Näytä määrä" },
-    { "name": "EntryFormAbility_label", "value": "Honyomi-widget" },
-    { "name": "EntryFormAbility_desc", "value": "Aloitusnäytön widgetien tarjoaja" },
-    { "name": "card_recent_display", "value": "Jatka lukemista" },
-    { "name": "card_recent_desc", "value": "Jatka nopeasti äskettäin luettua mangaa" },
-    { "name": "card_updates_display", "value": "Päivitykset" },
-    { "name": "card_updates_desc", "value": "Kirjaston uusimmat lukemattomat luvut" },
-    { "name": "card_recent_header", "value": "Jatka lukemista" },
-    { "name": "card_updates_header", "value": "Päivitykset" },
-    { "name": "card_unread_count", "value": "%d lukematonta lukua" },
-    { "name": "card_empty_recent", "value": "Ei vielä lukuhistoriaa" },
-    { "name": "card_empty_updates", "value": "Ei lukemattomia lukuja" },
-    { "name": "card_open_hint", "value": "Napauta avataksesi sovelluksen" },
-    { "name": "card_manga_display", "value": "Manga-widget" },
-    { "name": "card_manga_desc", "value": "Lisää tietosivulla, napauta kantta lukeaksesi" },
-    { "name": "card_manga_empty", "value": "Lisää aloitusnäytölle mangasivulta" },
-    { "name": "detail_add_to_desktop", "value": "Lisää aloitusnäytölle" },
-    { "name": "detail_card_added", "value": "Lisätty aloitusnäytölle" },
-    { "name": "detail_card_add_failed", "value": "Widgetin lisääminen epäonnistui" },
-    { "name": "card_stats_week_display", "value": "Viikkotilastot" },
-    { "name": "card_stats_week_desc", "value": "Päivittäinen lukuaika tällä viikolla" },
-    { "name": "card_stats_month_display", "value": "Kuukausitilastot" },
-    { "name": "card_stats_month_desc", "value": "Päivittäinen lukuaika tässä kuussa" },
-    { "name": "card_stats_empty", "value": "Ei vielä lukemista" },
-    { "name": "action_view_upcoming", "value": "Näytä tulevat päivitykset" },
-    { "name": "label_upcoming", "value": "Tulevat" },
-    { "name": "upcoming_guide", "value": "Opas tuleviin päivityksiin" },
-    { "name": "upcoming_calendar_prev", "value": "Edellinen kuukausi" },
-    { "name": "upcoming_calendar_next", "value": "Seuraava kuukausi" },
-    { "name": "pref_filter_update_categories_details", "value": "Nimikkeitä, jotka ovat sekä sisällytetyissä että ohitetuissa kategorioissa, ei näytetä." },
-    { "name": "relative_time_today", "value": "Tänään" },
-    { "name": "relative_time_days_ago", "value": "%d päivää sitten" },
-    { "name": "upcoming_relative_time_days", "value": "%d päivän päästä" },
-    { "name": "card_upcoming_display", "value": "Tulevat" },
-    { "name": "card_upcoming_desc", "value": "Kirjaston mangojen arvioitu päivityskalenteri" },
-    { "name": "card_upcoming_header", "value": "Tulevat" },
-    { "name": "card_empty_upcoming", "value": "Kirjastossasi ei ole jatkuvia mangoja" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Suodattaa kaikki sarjat kirjastossasi"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Keskeyttää lukuhistorian"
+    },
+    {
+      "name": "more_support",
+      "value": "Support Us"
+    },
+    {
+      "name": "more_help",
+      "value": "Apu"
+    },
+    {
+      "name": "support_perks",
+      "value": "Patrons get access to exclusive channels, with more perks to come."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (preferred)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "For alternative options or any related questions, join our Discord server."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "Data ja tallennustila"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Storage location"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Käytetään automaattisille varmuuskopioille, lukujen latauksille ja paikallisille lähteille."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "Varmuuskopiointi ja palautus"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Luo varmuuskopio"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Palauta varmuuskopio"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Varmuuskopioinnin tiheys"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "Varmuuskopioita kannattaa säilyttää myös muissa paikoissa."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Last automatically backed up: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Storage usage"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Available: %s / Total: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Tyhjennä lukujen välimuisti"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Käytössä: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Välimuisti tyhjennetty. %d tiedostoa poistettu"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Virhe tapahtui välimuistia tyhjentäessä"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Clear chapter cache on app launch"
+    },
+    {
+      "name": "data_export",
+      "value": "Export"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Library List"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Library Exported"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Valitse sisällytettävä tieto"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Nimike"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Author"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "Pois päältä"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "Kuuden tunnin välein"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "12 tunnin välein"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "Päivittäin"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "Kahden päivän välein"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "Viikoittain"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "OK"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Peruuta"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Vahvista"
+    },
+    {
+      "name": "common_delete",
+      "value": "Poista"
+    },
+    {
+      "name": "common_retry",
+      "value": "Yritä uudelleen"
+    },
+    {
+      "name": "common_search",
+      "value": "Hae"
+    },
+    {
+      "name": "common_all",
+      "value": "Kaikki"
+    },
+    {
+      "name": "common_close",
+      "value": "Sulje"
+    },
+    {
+      "name": "common_save",
+      "value": "Tallenna"
+    },
+    {
+      "name": "common_install",
+      "value": "Asenna"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "Poista asennus"
+    },
+    {
+      "name": "common_update",
+      "value": "Päivitä"
+    },
+    {
+      "name": "common_none",
+      "value": "Ei mitään"
+    },
+    {
+      "name": "common_default",
+      "value": "Oletus"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Ulkoasu"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Kieli"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Seuraa järjestelmää"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Teematila"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Seuraa järjestelmää"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Vaalea"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Tumma"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Korostusväri"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Muut"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED-puhdas musta tausta"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Sininen"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "Vihreä"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Pinkki"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Violetti"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "Oranssi"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d min sitten"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d t sitten"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d pv sitten"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "Jatkuva"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Päättynyt"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "Tauolla"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Peruttu"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Julkaisu valmis"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Tuntematon"
+    },
+    {
+      "name": "tab_library",
+      "value": "Kirjasto"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Päivitykset"
+    },
+    {
+      "name": "tab_history",
+      "value": "Historia"
+    },
+    {
+      "name": "tab_browse",
+      "value": "Selaa"
+    },
+    {
+      "name": "tab_more",
+      "value": "Lisää"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "Odotetaan vahvistusta…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "Vahvistus valmis"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "Ihmisvahvistus"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "Valmis"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "Vahvistustulos tallennettu"
+    },
+    {
+      "name": "more_title",
+      "value": "Lisää"
+    },
+    {
+      "name": "more_version",
+      "value": "Versio %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Ladatut"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Incognito-tila"
+    },
+    {
+      "name": "more_downloads",
+      "value": "Latausjono"
+    },
+    {
+      "name": "more_categories",
+      "value": "Kategoriat"
+    },
+    {
+      "name": "more_settings",
+      "value": "Asetukset"
+    },
+    {
+      "name": "more_about",
+      "value": "Tietoja"
+    },
+    {
+      "name": "more_plugins",
+      "value": "Laajennukset"
+    },
+    {
+      "name": "categories_title",
+      "value": "Kategoriat"
+    },
+    {
+      "name": "categories_add",
+      "value": "Uusi kategoria"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "Kategorian nimi"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "Nimeä kategoria uudelleen"
+    },
+    {
+      "name": "categories_rename",
+      "value": "Nimeä uudelleen"
+    },
+    {
+      "name": "categories_hint",
+      "value": "Paina kategoriaa pitkään nimetäksesi sen uudelleen tai poistaaksesi sen; poistetun kategorian mangat siirtyvät takaisin Oletus-kategoriaan"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "Valitse kategoria"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "Ladataan…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "Kuvan lataus epäonnistui"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "Napauta yrittääksesi uudelleen"
+    },
+    {
+      "name": "library_title",
+      "value": "Kirjasto"
+    },
+    {
+      "name": "library_empty",
+      "value": "Kirjastosi on tyhjä, selaa lisätäksesi mangaa"
+    },
+    {
+      "name": "library_new_category",
+      "value": "Uusi kategoria"
+    },
+    {
+      "name": "library_category_name",
+      "value": "Kategorian nimi"
+    },
+    {
+      "name": "updates_title",
+      "value": "Päivitykset"
+    },
+    {
+      "name": "updates_empty",
+      "value": "Ei tuoreita päivityksiä"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%d uutta lukua löytyi"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "Ei uusia lukuja"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "Päivitys epäonnistui"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "Päivitetään…"
+    },
+    {
+      "name": "history_title",
+      "value": "Historia"
+    },
+    {
+      "name": "history_clear",
+      "value": "Tyhjennä"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "Vahvista tyhjennys?"
+    },
+    {
+      "name": "history_empty",
+      "value": "Ei vielä lukuhistoriaa"
+    },
+    {
+      "name": "history_cleared",
+      "value": "Historia tyhjennetty"
+    },
+    {
+      "name": "history_continue",
+      "value": "Jatka"
+    },
+    {
+      "name": "browse_title",
+      "value": "Selaa"
+    },
+    {
+      "name": "browse_import",
+      "value": "Tuo"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "Lisäosat"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "Paikallinen manga"
+    },
+    {
+      "name": "browse_popular",
+      "value": "Suositut"
+    },
+    {
+      "name": "browse_latest",
+      "value": "Uusimmat"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "Hae mangaa…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "Mangaa ei löytynyt"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "Ei vielä paikallista mangaa, napauta Tuo lisätäksesi"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "Lataus epäonnistui: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "Haku epäonnistui: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "Lisää lataaminen epäonnistui"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "Tietojen avaaminen epäonnistui"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "Tiedostojen valinta epäonnistui"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "Tuo %d tiedostoa"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "Mangan nimi"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "Anna nimi"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "Tuotiin %d tiedostoa"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "Tuonti epäonnistui: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "Lataukset"
+    },
+    {
+      "name": "download_resume",
+      "value": "Jatka"
+    },
+    {
+      "name": "download_pause",
+      "value": "Keskeytä"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "Tyhjennä valmiit"
+    },
+    {
+      "name": "download_queue",
+      "value": "Latausjono"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "Jonossa"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "Ladataan"
+    },
+    {
+      "name": "download_state_done",
+      "value": "Valmis"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "Epäonnistui"
+    },
+    {
+      "name": "download_move_top",
+      "value": "Siirrä ylimmäksi"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "Siirrä alimmaiseksi"
+    },
+    {
+      "name": "download_deleted",
+      "value": "Poistettu"
+    },
+    {
+      "name": "download_empty",
+      "value": "Ei vielä latauksia"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "Ladattu"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d lukua"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "Ei lukuja"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "Synkronointi epäonnistui, näytetään paikalliset tiedot"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "Lisätty kirjastoon"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "Poistettu kirjastosta"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "Kaikki luvut merkitty luetuiksi"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "Lataus lisätty jonoon"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "Määritä AniList-tunnuksesi ensin"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "Hae AniLististä"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "Mangan otsikko"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "Ei hakutuloksia"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "AniList-haku epäonnistui"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "Sidottu AniListiin"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "Irrotettu AniLististä"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "Edistyminen synkronoitu lukuun %d"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "AniList-synkronointi epäonnistui"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "Paikallinen"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "Kirjastossa"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "Lisää kirjastoon"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "Jatka lukemista"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "Aloita lukeminen"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "Ei vielä lukuja"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "Tiivistä"
+    },
+    {
+      "name": "detail_expand",
+      "value": "Laajenna"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList-seuranta"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList-tunnusta ei ole vielä määritetty"
+    },
+    {
+      "name": "detail_searching",
+      "value": "Haetaan…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "Hae ja sido"
+    },
+    {
+      "name": "detail_bind",
+      "value": "Sido"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "Synkronoitu lukuun %d"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "Synkronoi edistyminen"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "Irrota"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "Luvut (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "Nouseva"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "Laskeva"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "Merkitse kaikki luetuiksi"
+    },
+    {
+      "name": "detail_read",
+      "value": "Luettu"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "Ladattu"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "Jonossa"
+    },
+    {
+      "name": "detail_download",
+      "value": "Lataa"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "Lukua ei löytynyt"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "Lataus epäonnistui: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "Vasemmalta oikealle"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "Oikealta vasemmalle"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "Lukutila"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "Vapaa"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "Pysty"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "Vaaka"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "Näytön suunta"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "Olet jo viimeisessä luvussa"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "Olet jo ensimmäisessä luvussa"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "Olet jo ensimmäisellä sivulla"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "Olet jo viimeisellä sivulla"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "Ladataan lukua…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "Lukijan asetukset"
+    },
+    {
+      "name": "reader_background",
+      "value": "Tausta"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Automaattinen"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "Valkoinen"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "Harmaa"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "Musta"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "Näytä sivunumero"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "Kirkkaus"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Automaattinen"
+    },
+    {
+      "name": "plugin_title",
+      "value": "Laajennukset"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "Asennetut"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "Ei vielä laajennuksia, asenna alta"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "Pois käytöstä olevat laajennukset voi ottaa uudelleen käyttöön milloin tahansa"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "Ajantasalla"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "Asenna tiedostosta"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "Valitse asennettava tiedosto"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "Käsitellään…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "Tukee .honyomiplug- / .zip-lisäosapaketteja"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "Verkkoarkisto"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "Määritä arkisto"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "Päivitä"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "Lisäosa-arkistoa ei ole vielä määritetty"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "Ladataan arkistoa…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "Lisäosa-arkiston URL"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "Anna lisäosa-arkiston URL"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "Arkiston lataus epäonnistui: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "Tiedoston valinta epäonnistui"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "Asennettu: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "Asennettiin %s"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "Asennus epäonnistui: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "Toiminto epäonnistui"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "Asennus poistettu: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "Asennuksen poisto epäonnistui"
+    },
+    {
+      "name": "settings_title",
+      "value": "Asetukset"
+    },
+    {
+      "name": "settings_general",
+      "value": "Yleiset"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Aloitusnäyttö"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "Mukautus"
+    },
+    {
+      "name": "settings_library",
+      "value": "Kirjasto"
+    },
+    {
+      "name": "settings_reader",
+      "value": "Lukija"
+    },
+    {
+      "name": "settings_data",
+      "value": "Tiedot"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Lataukset"
+    },
+    {
+      "name": "settings_browse",
+      "value": "Selaa"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Lisäasetukset"
+    },
+    {
+      "name": "settings_about",
+      "value": "Tietoja"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "Kirjasto"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Päivitykset"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "Historia"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "Selaa"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "Lisää"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Lisäasetukset"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "Lasketaan…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "Tallennustila"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "Tyhjennä kuvavälimuisti"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "Kuvavälimuisti tyhjennetty"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "Tyhjennä evästeet"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "Kaikki evästeet tyhjennetty"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "Varmuuskopiointi ja palautus"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "Vie varmuuskopio"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "Tuo varmuuskopio"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "Seuranta"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList-tunnus"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList-käyttötunnus"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "Liitä käyttötunnus (jätä tyhjäksi tyhjentääksesi)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "Ei asetettu"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "Asetettu"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "Tunnus tallennettu"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "Tunnus tyhjennetty"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "Varmuuskopio viety"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "Vienti peruttu"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "Vienti epäonnistui"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "Tuonti peruttu"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "Virheellinen varmuuskopiotiedosto"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "Palautettiin %d mangaa"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "Tuonti epäonnistui"
+    },
+    {
+      "name": "about_title",
+      "value": "Tietoja"
+    },
+    {
+      "name": "about_version",
+      "value": "Versio 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "Arkkitehtuuri inspiroitunut Mihonista (Apache-2.0). Verkkolähteet asennetaan dynaamisesti laajennuksina, paikalliset lähteet ovat sisäänrakennettuja."
+    },
+    {
+      "name": "about_ack",
+      "value": "Avoimen lähdekoodin kiitokset:\n· Mihon / Tachiyomi — sovelluksen arkkitehtuuri ja vuorovaikutussuunnittelu (Apache-2.0)\n· Material Symbols — sovelluksen kuvakkeet (Apache-2.0)\n· MangaDex — testidatalähde"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "Selaa"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "Sisältö"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "Näytä NSFW-lähteet"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "Kun käytössä, laajennusten NSFW-merkityt lähteet näkyvät Selaa-näkymässä"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Lataukset"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Verkko"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Lataa vain Wi-Fin kautta"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "Huom: tämä kytkin on paikkamerkki nykyisessä versiossa; verkkotyypin tunnistus tulee myöhemmässä julkaisussa"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "Kirjasto"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "Suodata ja lajittele"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "Oletuslajittelu"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "Otsikko"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "Uusin luku"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "Lisäyspäivä"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "Lukemattomien määrä"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "Lajittele otsikon mukaan nousevasti"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "Oletussuodatin"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "Lukematon"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "Ladattu"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "Kesken"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Näyttö"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "Oletusnäkymä"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "Ruudukko"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "Kansiruudukko"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "Luettelo"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "Ruudukon sarakkeet"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "Automaattinen"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 saraketta"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 saraketta"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 saraketta"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "Lukemattomien merkit"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "Latausmerkit"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "Lukija"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "Lukutila"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "Oletustila"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "Vasemmalta oikealle"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "Oikealta vasemmalle"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "Pystysuuntainen sivuutus"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "Kaksoissivu (vaaka)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Näyttö"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "Näytä sivunumero"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "Lukijan tausta"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "Seuraa teemaa"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "Valkoinen"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "Musta"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "Harmaa"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "Palauta lukijan kirkkaus"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "Kirkkaus seuraa nyt järjestelmää"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "Lähteet"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "Laajennukset"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "Siirrä"
+    },
+    {
+      "name": "browse_pin",
+      "value": "Kiinnitä"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "Irrota"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "Poista lähde käytöstä"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "Lähde poistettu käytöstä"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "Kiinnitetty"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "Ei lähteitä. Asenna Laajennukset-välilehdeltä"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "Suodata kielet"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "Kaikki"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "Lähde ei ole käytettävissä. Laajennus voi olla poissa käytöstä"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "Hae kaikista lähteistä"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "Haku epäonnistui"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "Hae laajennuksia"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "Ei osumia"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "Arkiston asetukset"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "Päivitä arkisto"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "Valitse siirrettävä lähde"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "Kirjasto on tyhjä"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "Valitse kaikki"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "Poista valinnat"
+    },
+    {
+      "name": "migrate_action",
+      "value": "Siirrä (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "Siirrä"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "Ohita"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d / %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "Kohdelähde"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "Hae mangaa kohdelähteestä"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "Siirretäänkö tähän mangaan?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "Siirretty: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "Siirto epäonnistui: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "Siirto valmis"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "Kohdelähdettä ei ole"
+    },
+    {
+      "name": "stats_title",
+      "value": "Tilastot"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "Yleiskatsaus"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "Kirjastossa"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "Lukuaika"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "Päättynyt"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "Merkinnät"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "Aloitetut"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "Paikallinen"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "Luvut"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "Yhteensä"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "Luettu"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "Ladattu"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "Seuranta"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "Seuratut merkinnät"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "Keskiarvo"
+    },
+    {
+      "name": "stats_used",
+      "value": "Käytössä"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "e.s."
+    },
+    {
+      "name": "stats_week",
+      "value": "Viikko"
+    },
+    {
+      "name": "stats_month",
+      "value": "Kuukausi"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "%s tällä viikolla"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "%s tässä kuussa"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "Ei lukemista tällä jaksolla"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%d pv"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%d t"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%d min"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%d s"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "Su"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "Ma"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "Ti"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "Ke"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "To"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "Pe"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "La"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "Pystysuunta"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "Älykäs ote"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "Lukitse pystyyn"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "Lukitse vaakaan"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "Yleiset"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "Värisuodatin"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "Harmaasävy"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "Käänteiset värit"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "Kontrasti"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "Kylläisyys"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "Rajaa reunat"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "Napautusalueet"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "Oletus"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "Vasemmalta oikealle"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "Oikealta vasemmalle"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "Pystysuunta"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "Reuna"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "Ei mitään"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Kaksoissivunäkymä"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "Webtoon-sivureunus"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "Älykäs ote"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "Asenna paikallisesti"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "Laajennuksen tiedot"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "Versio"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "Kieli"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "Poista laajennuksen asennus"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "Poistetaanko %s? Kirjaston mangatiedot säilyvät."
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "Lähteet"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "Asetukset"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "Ladataan…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "Asetusten käyttö epäonnistui"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "Laajennusta ei ole tai sitä ei ole ladattu"
+    },
+    {
+      "name": "action_filter",
+      "value": "Suodata"
+    },
+    {
+      "name": "action_update_library",
+      "value": "Päivitä kirjasto"
+    },
+    {
+      "name": "action_update_category",
+      "value": "Päivitä kategoria"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "Avaa satunnainen manga"
+    },
+    {
+      "name": "action_select_all",
+      "value": "Valitse kaikki"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "Käänteinen valinta"
+    },
+    {
+      "name": "action_move_category",
+      "value": "Siirrä kategoriaan"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "Merkitse luetuksi"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "Merkitse lukemattomaksi"
+    },
+    {
+      "name": "action_download",
+      "value": "Lataa"
+    },
+    {
+      "name": "action_delete",
+      "value": "Poista"
+    },
+    {
+      "name": "action_migrate",
+      "value": "Siirrä"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "Poista kirjastosta"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "Poistetaanko %d valittua mangaa kirjastosta?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "%d latausta lisätty jonoon"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "Hae kirjastosta"
+    },
+    {
+      "name": "library_no_match",
+      "value": "Ei vastaavaa mangaa"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "Suodata"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "Lajittele"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "Näyttö"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "Ladattu"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "Lukematon"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "Aloitetut"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "Kirjanmerkit"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "Päättynyt"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "Seuratut"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "Otsikko"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "Lukujen määrä"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "Viimeksi luettu"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "Viimeksi tarkistettu"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "Lukemattomien määrä"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "Viimeksi päivitetty"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "Luvut haettu"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "Lisäyspäivä"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "Satunnainen"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "Tiivis ruudukko"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "Väljä ruudukko"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "Kansiruudukko"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "Luettelo"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "Riviä kohden"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "Automaattinen"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "Merkit ja painikkeet"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "Ladatut luvut"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "Lukemattomat luvut"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "Paikallinen lähde"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "Kieli"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "Jatka lukemista -painike"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "Välilehdet"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "Näytä kategoria-välilehdet"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "Näytä määrä"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "Honyomi-widget"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "Aloitusnäytön widgetien tarjoaja"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "Jatka lukemista"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "Jatka nopeasti äskettäin luettua mangaa"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "Päivitykset"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "Kirjaston uusimmat lukemattomat luvut"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "Jatka lukemista"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "Päivitykset"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d lukematonta lukua"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "Ei vielä lukuhistoriaa"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "Ei lukemattomia lukuja"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "Napauta avataksesi sovelluksen"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "Manga-widget"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "Lisää tietosivulla, napauta kantta lukeaksesi"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "Lisää aloitusnäytölle mangasivulta"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "Lisää aloitusnäytölle"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "Lisätty aloitusnäytölle"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "Widgetin lisääminen epäonnistui"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "Viikkotilastot"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "Päivittäinen lukuaika tällä viikolla"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "Kuukausitilastot"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "Päivittäinen lukuaika tässä kuussa"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "Ei vielä lukemista"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "Näytä tulevat päivitykset"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "Tulevat"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "Opas tuleviin päivityksiin"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "Edellinen kuukausi"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "Seuraava kuukausi"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "Nimikkeitä, jotka ovat sekä sisällytetyissä että ohitetuissa kategorioissa, ei näytetä."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "Tänään"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d päivää sitten"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "%d päivän päästä"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "Tulevat"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "Kirjaston mangojen arvioitu päivityskalenteri"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "Tulevat"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "Kirjastossasi ei ole jatkuvia mangoja"
+    }
+  ]
 }

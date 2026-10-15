@@ -14,7 +14,7 @@
  */
 
 import { common2D, drawing } from '@kit.ArkGraphics2D';
-import { NodeController, FrameNode, RenderNode, DrawContext, UIContext } from '@kit.ArkUI';
+import { DrawContext, FrameNode, NodeController, RenderNode, UIContext } from '@kit.ArkUI';
 import { image } from '@kit.ImageKit';
 
 // 仿真翻页（移植官方 PageFlip 示例的截图 + RenderNode 绘制）。
@@ -73,7 +73,6 @@ class FlipModel {
   // 最近一次绘制的折痕纵坐标（触摸坐标系），显式交接给 armAuto（不依赖 paint 副作用）
   lastFoldY: number = 0;
   fromLeft: boolean = false;
-
   private pathABrush: drawing.Brush = new drawing.Brush();
   private pathCBrush: drawing.Brush = new drawing.Brush();
   // 每帧复用的绘制资源：避免逐帧 new Brush/Path/Matrix 分配
@@ -159,8 +158,18 @@ class FlipModel {
   }
 
   private ensureBrushes(): void {
-    const paper: common2D.Color = { alpha: 255, red: 255, green: 235, blue: 195 };
-    const back: common2D.Color = { alpha: 72, red: 186, green: 172, blue: 145 };
+    const paper: common2D.Color = {
+      alpha: 255,
+      red: 255,
+      green: 235,
+      blue: 195
+    };
+    const back: common2D.Color = {
+      alpha: 72,
+      red: 186,
+      green: 172,
+      blue: 145
+    };
     this.pathABrush.setColor(paper);
     this.pathCBrush.setColor(back);
   }
@@ -445,7 +454,12 @@ class FlipModel {
     const endPt: common2D.Point = { x: this.pointF.y === 0 ? left : right, y: top };
     const shader = drawing.ShaderEffect.createLinearGradient(endPt, startPt, gradientColors, drawing.TileMode.MIRROR);
     canvas.rotate(rotateDegrees, this.pointC.x, this.pointC.y);
-    const rect: common2D.Rect = { left: left, top: top, right: right, bottom: bottom };
+    const rect: common2D.Rect = {
+      left: left,
+      top: top,
+      right: right,
+      bottom: bottom
+    };
     this.drawShadow(canvas, shader, rect);
   }
 
@@ -476,7 +490,12 @@ class FlipModel {
     const endPt: common2D.Point = { x: this.pointF.y === 0 ? left : right, y: top };
     const shader = drawing.ShaderEffect.createLinearGradient(endPt, startPt, gradientColors, drawing.TileMode.MIRROR);
     canvas.rotate(rotateDegrees, this.pointC.x, this.pointC.y);
-    const rect: common2D.Rect = { left: left, top: top, right: right, bottom: bottom };
+    const rect: common2D.Rect = {
+      left: left,
+      top: top,
+      right: right,
+      bottom: bottom
+    };
     this.drawShadow(canvas, shader, rect);
   }
 
@@ -512,7 +531,12 @@ class FlipModel {
     canvas.clipPath(this.pathA);
     canvas.clipPath(tmp, drawing.ClipOp.INTERSECT);
     canvas.rotate(rotateDegrees, this.pointE.x, this.pointE.y);
-    const rect: common2D.Rect = { left: left, top: top, right: right, bottom: bottom };
+    const rect: common2D.Rect = {
+      left: left,
+      top: top,
+      right: right,
+      bottom: bottom
+    };
     this.drawShadow(canvas, shader, rect);
   }
 
@@ -549,7 +573,12 @@ class FlipModel {
     canvas.clipPath(this.pathA);
     canvas.clipPath(tmp, drawing.ClipOp.INTERSECT);
     canvas.rotate(rotateDegrees, this.pointH.x, this.pointH.y);
-    const rect: common2D.Rect = { left: left, top: top, right: right, bottom: bottom };
+    const rect: common2D.Rect = {
+      left: left,
+      top: top,
+      right: right,
+      bottom: bottom
+    };
     this.drawShadow(canvas, shader, rect);
   }
 
@@ -566,7 +595,12 @@ class FlipModel {
     const startPt: common2D.Point = { x: right, y: top };
     const endPt: common2D.Point = { x: left, y: top };
     const shader = drawing.ShaderEffect.createLinearGradient(endPt, startPt, gradientColors, drawing.TileMode.MIRROR);
-    const rect: common2D.Rect = { left: left, top: top, right: right, bottom: bottom };
+    const rect: common2D.Rect = {
+      left: left,
+      top: top,
+      right: right,
+      bottom: bottom
+    };
     this.drawShadow(canvas, shader, rect);
   }
 
@@ -612,7 +646,12 @@ class FlipNodeController extends NodeController {
     this.viewHvp = hvp;
     this.applyFrame();
     if (this.pageNode !== null) {
-      this.pageNode.frame = { x: 0, y: 0, width: wvp, height: hvp };
+      this.pageNode.frame = {
+        x: 0,
+        y: 0,
+        width: wvp,
+        height: hvp
+      };
     }
   }
 
@@ -634,7 +673,12 @@ class FlipNodeController extends NodeController {
     }
     if (this.pageNode === null) {
       this.pageNode = new FlipRenderNode(this.model);
-      this.pageNode.frame = { x: 0, y: 0, width: this.viewWvp, height: this.viewHvp };
+      this.pageNode.frame = {
+        x: 0,
+        y: 0,
+        width: this.viewWvp,
+        height: this.viewHvp
+      };
       this.pageNode.pivot = { x: 0, y: 0 };
       this.pageNode.scale = { x: 1, y: 1 };
       this.pageNode.opacity = 1;
@@ -644,7 +688,12 @@ class FlipNodeController extends NodeController {
         return;
       }
     }
-    this.pageNode.frame = { x: 0, y: 0, width: this.viewWvp, height: this.viewHvp };
+    this.pageNode.frame = {
+      x: 0,
+      y: 0,
+      width: this.viewWvp,
+      height: this.viewHvp
+    };
     this.pageNode.invalidate();
   }
 
@@ -665,7 +714,12 @@ class FlipNodeController extends NodeController {
     }
     const render = this.root.getRenderNode();
     if (render !== null) {
-      render.frame = { x: 0, y: 0, width: this.viewWvp, height: this.viewHvp };
+      render.frame = {
+        x: 0,
+        y: 0,
+        width: this.viewWvp,
+        height: this.viewHvp
+      };
       render.pivot = { x: 0, y: 0 };
       render.scale = { x: 1, y: 1 };
       render.opacity = 1;
@@ -698,17 +752,8 @@ export struct EmulationFlipView {
   // 非 0 且变化时触发一次自动翻页：正数下一页，负数上一页。
   @Prop @Watch('onTurnToken') turnToken: number = 0;
   @Prop bgColor: ResourceColor = Color.Black;
-  onAreaTap: (x: number, y: number) => void = (_x: number, _y: number): void => {
-  };
-  onIndexChange: (index: number) => void = (_index: number): void => {
-  };
-  onCenterTap: () => void = (): void => {
-  };
-  onOverscroll: (dir: number) => void = (_dir: number): void => {
-  };
   @BuilderParam pageContent: (index: number) => void = emptyFlipPage;
   @BuilderParam backContent: (index: number) => void = emptyFlipPage;
-
   @State page: number = 0;
   @State hideCurrent: boolean = false;
   @State showCurl: boolean = false;
@@ -733,6 +778,18 @@ export struct EmulationFlipView {
   private backPrevId: string = '';
   private lastTurn: number = 0;
 
+  onAreaTap: (x: number, y: number) => void = (_x: number, _y: number): void => {
+  };
+
+  onIndexChange: (index: number) => void = (_index: number): void => {
+  };
+
+  onCenterTap: () => void = (): void => {
+  };
+
+  onOverscroll: (dir: number) => void = (_dir: number): void => {
+  };
+
   aboutToAppear(): void {
     flipSerial += 1;
     this.midId = `pfMid${flipSerial}`;
@@ -749,6 +806,122 @@ export struct EmulationFlipView {
     this.cancelAnim();
     this.model.releaseMap();
     this.controller.clear();
+  }
+
+  @Builder
+  pageSlot(index: number, slotId: string) {
+    Column() {
+      if (index >= 0 && index < this.pageCount) {
+        this.pageContent(index)
+      }
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor(this.bgColor)
+    .id(slotId)
+  }
+
+  @Builder
+  backSlot(index: number, slotId: string) {
+    Column() {
+      if (index >= 0 && index < this.pageCount) {
+        this.backContent(index)
+      }
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor(this.bgColor)
+    .id(slotId)
+  }
+
+  build() {
+    Stack() {
+      this.pageSlot(this.page + 1, this.nextId)
+
+      Column() {
+        if (!this.hideCurrent) {
+          this.pageSlot(this.page, this.midId)
+        }
+      }
+      .width('100%')
+      .height('100%')
+
+      if (this.page > 0) {
+        Column() {
+          this.pageSlot(this.page - 1, this.prevId)
+        }
+        .width('100%')
+        .height('100%')
+        .translate({ x: this.areaW > 0 ? -this.areaW - 48 : -2000 })
+        .hitTestBehavior(HitTestMode.None)
+      }
+
+      if (this.showBack) {
+        Column() {
+          this.backSlot(this.page, this.backCurId)
+        }
+        .width('100%')
+        .height('100%')
+        .position({ x: 0, y: 0 })
+        .translate({ y: this.areaH > 0 ? this.areaH + 4 : 4000 })
+        .hitTestBehavior(HitTestMode.None)
+
+        if (this.page > 0) {
+          Column() {
+            this.backSlot(this.page - 1, this.backPrevId)
+          }
+          .width('100%')
+          .height('100%')
+          .translate({ y: this.areaH > 0 ? (this.areaH + 4) * 2 : 8000 })
+          .hitTestBehavior(HitTestMode.None)
+        }
+      }
+
+      NodeContainer(this.controller)
+        .width('100%')
+        .height('100%')
+        .hitTestBehavior(HitTestMode.None)
+        .zIndex(10)
+        .opacity(this.showCurl ? 1 : 0)
+        .backgroundColor(Color.Transparent)
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor(this.bgColor)
+    .clip(true)
+    .onAreaChange((_old: Area, neu: Area) => {
+      const w = neu.width;
+      const h = neu.height;
+      if (typeof w === 'number' && typeof h === 'number' && w > 0 && h > 0) {
+        this.areaW = w;
+        this.areaH = h;
+        this.pxW = this.getUIContext().vp2px(w);
+        this.pxH = this.getUIContext().vp2px(h);
+        this.controller.setSize(w, h);
+        if (this.timeID !== -1 || this.drawing) {
+          this.finishGesture(false);
+        }
+      }
+    })
+    .gesture(
+      PanGesture({ fingers: 1 })
+        .onActionUpdate((event: GestureEvent) => {
+          if (event.fingerList.length <= 0) {
+            return;
+          }
+          const finger = event.fingerList[0];
+          this.onFinger(finger.localX, finger.localY);
+        })
+        .onActionEnd(() => {
+          this.onPanEnd();
+        })
+        .onActionCancel(() => {
+          this.finishGesture(false);
+        })
+    )
+    .onClick((event: ClickEvent) => {
+      this.onViewClick(event);
+    })
   }
 
   private syncIndex(): void {
@@ -1107,121 +1280,5 @@ export struct EmulationFlipView {
     } else {
       this.armAuto(FLIP_X_DIFF, 0);
     }
-  }
-
-  @Builder
-  pageSlot(index: number, slotId: string) {
-    Column() {
-      if (index >= 0 && index < this.pageCount) {
-        this.pageContent(index)
-      }
-    }
-    .width('100%')
-    .height('100%')
-    .backgroundColor(this.bgColor)
-    .id(slotId)
-  }
-
-  @Builder
-  backSlot(index: number, slotId: string) {
-    Column() {
-      if (index >= 0 && index < this.pageCount) {
-        this.backContent(index)
-      }
-    }
-    .width('100%')
-    .height('100%')
-    .backgroundColor(this.bgColor)
-    .id(slotId)
-  }
-
-  build() {
-    Stack() {
-      this.pageSlot(this.page + 1, this.nextId)
-
-      Column() {
-        if (!this.hideCurrent) {
-          this.pageSlot(this.page, this.midId)
-        }
-      }
-      .width('100%')
-      .height('100%')
-
-      if (this.page > 0) {
-        Column() {
-          this.pageSlot(this.page - 1, this.prevId)
-        }
-        .width('100%')
-        .height('100%')
-        .translate({ x: this.areaW > 0 ? -this.areaW - 48 : -2000 })
-        .hitTestBehavior(HitTestMode.None)
-      }
-
-      if (this.showBack) {
-        Column() {
-          this.backSlot(this.page, this.backCurId)
-        }
-        .width('100%')
-        .height('100%')
-        .position({ x: 0, y: 0 })
-        .translate({ y: this.areaH > 0 ? this.areaH + 4 : 4000 })
-        .hitTestBehavior(HitTestMode.None)
-
-        if (this.page > 0) {
-          Column() {
-            this.backSlot(this.page - 1, this.backPrevId)
-          }
-          .width('100%')
-          .height('100%')
-          .translate({ y: this.areaH > 0 ? (this.areaH + 4) * 2 : 8000 })
-          .hitTestBehavior(HitTestMode.None)
-        }
-      }
-
-      NodeContainer(this.controller)
-        .width('100%')
-        .height('100%')
-        .hitTestBehavior(HitTestMode.None)
-        .zIndex(10)
-        .opacity(this.showCurl ? 1 : 0)
-        .backgroundColor(Color.Transparent)
-    }
-    .width('100%')
-    .height('100%')
-    .backgroundColor(this.bgColor)
-    .clip(true)
-    .onAreaChange((_old: Area, neu: Area) => {
-      const w = neu.width;
-      const h = neu.height;
-      if (typeof w === 'number' && typeof h === 'number' && w > 0 && h > 0) {
-        this.areaW = w;
-        this.areaH = h;
-        this.pxW = this.getUIContext().vp2px(w);
-        this.pxH = this.getUIContext().vp2px(h);
-        this.controller.setSize(w, h);
-        if (this.timeID !== -1 || this.drawing) {
-          this.finishGesture(false);
-        }
-      }
-    })
-    .gesture(
-      PanGesture({ fingers: 1 })
-        .onActionUpdate((event: GestureEvent) => {
-          if (event.fingerList.length <= 0) {
-            return;
-          }
-          const finger = event.fingerList[0];
-          this.onFinger(finger.localX, finger.localY);
-        })
-        .onActionEnd(() => {
-          this.onPanEnd();
-        })
-        .onActionCancel(() => {
-          this.finishGesture(false);
-        })
-    )
-    .onClick((event: ClickEvent) => {
-      this.onViewClick(event);
-    })
   }
 }

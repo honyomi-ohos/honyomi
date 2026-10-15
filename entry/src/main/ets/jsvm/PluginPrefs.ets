@@ -174,6 +174,26 @@ export class PluginPrefs {
   }
 
   // 敏感分流：把快照 JSON 拆为“敏感值 → SecureStore / 其余 → 明文偏好”，
+
+  // 立即落盘全部待写偏好并等待 flush 完成（供退出/销毁路径 await）
+  static async flushAll(): Promise<void> {
+    if (PluginPrefs.debounceTimer >= 0) {
+      clearTimeout(PluginPrefs.debounceTimer);
+      PluginPrefs.debounceTimer = -1;
+    }
+    if (PluginPrefs.pending.size > 0) {
+      PluginPrefs.writePending();
+    }
+    const store = PluginPrefs.store;
+    if (store !== undefined) {
+      try {
+        await store.flush();
+      } catch (e) {
+        throw new Error(`flush plugin prefs failed: ${e}`);
+      }
+    }
+  }
+
   // 返回应写入明文偏好的 JSON（无敏感键时原样返回）
   private static splitSecure(pkgKey: string, storeJson: string): string {
     const secureKeys = PluginPrefs.secureKeysOf(pkgKey);
@@ -198,25 +218,6 @@ export class PluginPrefs {
       }
     }
     return JSON.stringify(plain);
-  }
-
-  // 立即落盘全部待写偏好并等待 flush 完成（供退出/销毁路径 await）
-  static async flushAll(): Promise<void> {
-    if (PluginPrefs.debounceTimer >= 0) {
-      clearTimeout(PluginPrefs.debounceTimer);
-      PluginPrefs.debounceTimer = -1;
-    }
-    if (PluginPrefs.pending.size > 0) {
-      PluginPrefs.writePending();
-    }
-    const store = PluginPrefs.store;
-    if (store !== undefined) {
-      try {
-        await store.flush();
-      } catch (e) {
-        throw new Error(`flush plugin prefs failed: ${e}`);
-      }
-    }
   }
 
   private static writePending(): void {

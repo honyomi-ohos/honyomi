@@ -9,8 +9,10 @@ export struct MangaRow {
   @Prop subtitle: string = '';
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State hovered: boolean = false;
-  onRowClick: (record: MangaRecord) => void = (_r: MangaRecord) => {};
   @BuilderParam trailing: () => void = this.emptyTrailing;
+
+  onRowClick: (record: MangaRecord) => void = (_r: MangaRecord) => {
+  };
 
   @Builder
   emptyTrailing() {

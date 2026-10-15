@@ -1,6 +1,10 @@
 import { ThemePalette } from '../../../common/Theme';
 import { ChapterRecord, MangaRecord } from '../../../model/Models';
-import { TtsPlaybackService, TtsServiceStateHandler, TtsServiceChapterHandler } from '../../../common/TtsPlaybackService';
+import {
+  TtsPlaybackService,
+  TtsServiceChapterHandler,
+  TtsServiceStateHandler
+} from '../../../common/TtsPlaybackService';
 import { AppIcon } from '../AppIcon';
 import { SmartImage } from '../SmartImage';
 
@@ -17,16 +21,8 @@ export struct TtsMiniBar {
   @State mangaTitle: string = '';
   @State coverUrl: string = '';
   @State coverSource: string = '';
-  onOpenPlayer: () => void = (): void => {};
-
-  private readonly onState: TtsServiceStateHandler =
-    (_playing: boolean, _paused: boolean, _mangaId: number, _chapterId: number): void => {
-      this.sync();
-    };
-
-  private readonly onChapter: TtsServiceChapterHandler = (_mangaId: number, _chapterId: number): void => {
-      this.sync();
-    };
+  onOpenPlayer: () => void = (): void => {
+  };
 
   aboutToAppear(): void {
     TtsPlaybackService.events.onState(this.onState);
@@ -37,17 +33,6 @@ export struct TtsMiniBar {
   aboutToDisappear(): void {
     TtsPlaybackService.events.offState(this.onState);
     TtsPlaybackService.events.offChapter(this.onChapter);
-  }
-
-  private sync(): void {
-    this.active = TtsPlaybackService.isActive();
-    this.playing = TtsPlaybackService.isPlaying();
-    const m: MangaRecord | undefined = TtsPlaybackService.getManga();
-    const ch: ChapterRecord | undefined = TtsPlaybackService.getChapter();
-    this.mangaTitle = m !== undefined ? m.title : '';
-    this.coverUrl = m !== undefined ? m.thumbnailUrl : '';
-    this.coverSource = m !== undefined ? m.sourceKey : '';
-    this.chapterName = ch !== undefined ? ch.name : '';
   }
 
   build() {
@@ -98,12 +83,37 @@ export struct TtsMiniBar {
       .alignItems(VerticalAlign.Center)
       .height(56)
       // 收起态胶囊较窄：左边距 8 让封面在最小状态下居中
-      .padding({ left: 8, right: 16, top: 6, bottom: 6 })
+      .padding({
+        left: 8,
+        right: 16,
+        top: 6,
+        bottom: 6
+      })
     } else {
       Column()
         .width(0)
         .height(0)
         .hitTestBehavior(HitTestMode.None)
     }
+  }
+
+  private readonly onState: TtsServiceStateHandler =
+    (_playing: boolean, _paused: boolean, _mangaId: number, _chapterId: number): void => {
+      this.sync();
+    };
+
+  private readonly onChapter: TtsServiceChapterHandler = (_mangaId: number, _chapterId: number): void => {
+    this.sync();
+  };
+
+  private sync(): void {
+    this.active = TtsPlaybackService.isActive();
+    this.playing = TtsPlaybackService.isPlaying();
+    const m: MangaRecord | undefined = TtsPlaybackService.getManga();
+    const ch: ChapterRecord | undefined = TtsPlaybackService.getChapter();
+    this.mangaTitle = m !== undefined ? m.title : '';
+    this.coverUrl = m !== undefined ? m.thumbnailUrl : '';
+    this.coverSource = m !== undefined ? m.sourceKey : '';
+    this.chapterName = ch !== undefined ? ch.name : '';
   }
 }

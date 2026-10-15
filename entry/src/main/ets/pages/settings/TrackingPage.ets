@@ -11,7 +11,7 @@ import { PageHeader } from '../components/PageHeader';
 import { PrefGroup, SwitchRow } from '../components/Prefs';
 import { TrackLogo } from '../components/TrackLogo';
 import { OAuthSheet } from '../components/OAuthSheet';
-import { CredentialsDialog, ConfirmDialog } from '../components/Dialogs';
+import { ConfirmDialog, CredentialsDialog } from '../components/Dialogs';
 import { AppIcon } from '../components/AppIcon';
 
 // 追踪设置内容
@@ -35,128 +35,15 @@ export struct TrackingContent {
 
   // ----- 登录 -----
 
-  private startLogin(t: Tracker): void {
-    if (this.busy) {
-      return;
-    }
-    // 账密登录型：Kitsu / MangaUpdates
-    if (t.syncId === TrackerManager.kitsu.syncId || t.syncId === TrackerManager.mangaUpdates.syncId) {
-      this.showCredentialsLogin(t);
-      return;
-    }
-    this.oauthSyncId = t.syncId;
-    this.oauthTitle = t.name;
-    this.busy = true;
-    t.getAuthUrl().then((url: string): void => {
-      this.busy = false;
-      this.oauthUrl = url;
-      this.showOAuth = true;
-    }).catch((): void => {
-      this.busy = false;
-      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
-    });
-  }
-
-  // OAuth 回调参数 → 登录调用（各追踪器参数名不同，对齐 TrackLoginActivity）
-  private oauthLoginCall(t: Tracker, params: Record<string, string>): Promise<void> {
-    if (t.syncId === TrackerManager.aniList.syncId) {
-      // AniList 隐式授权：token 在 fragment
-      return t.loginWithCode(params['access_token'] ?? '');
-    }
-    if (t.syncId === TrackerManager.hikka.syncId) {
-      // Hikka：reference code 经账密通道换取
-      return t.loginWithCredentials('', params['reference'] ?? '');
-    }
-    return t.loginWithCode(params['code'] ?? '');
-  }
-
-  private onOAuthResult(params: Record<string, string>): void {
-    this.showOAuth = false;
-    const t = TrackerManager.get(this.oauthSyncId);
-    if (t === undefined) {
-      return;
-    }
-    this.busy = true;
-    this.oauthLoginCall(t, params).then((): void => {
-      this.busy = false;
-      this.loginTick += 1;
-      Util.toastRes(this.getUIContext(), $r('app.string.track_logged_in'), [t.name]);
-    }).catch((): void => {
-      this.busy = false;
-      t.logout();
-      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
-    });
-  }
-
-  // 账密登录：用户名 + 密码同弹窗一次输入
-  private showCredentialsLogin(t: Tracker): void {
-    const dialog = new CustomDialogController({
-      builder: CredentialsDialog({
-        title: t.name,
-        usernamePlaceholder: $r('app.string.track_username'),
-        passwordPlaceholder: $r('app.string.track_password'),
-        onConfirm: (username: string, password: string): void => {
-          this.doCredentialsLogin(t, username, password);
-        },
-        onClose: (): void => {
-          dialog.close();
-        },
-      }),
-      autoCancel: true,
-    });
-    dialog.open();
-  }
-
-  private doCredentialsLogin(t: Tracker, username: string, password: string): void {
-    if (username === '' || password === '') {
-      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
-      return;
-    }
-    this.busy = true;
-    t.loginWithCredentials(username, password).then((): void => {
-      this.busy = false;
-      this.loginTick += 1;
-      Util.toastRes(this.getUIContext(), $r('app.string.track_logged_in'), [t.name]);
-    }).catch((): void => {
-      this.busy = false;
-      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
-    });
-  }
-
-  // ----- 登出 -----
-
-  private confirmLogout(t: Tracker): void {
-    const dialog = new CustomDialogController({
-      builder: ConfirmDialog({
-        title: $r('app.string.track_logout'),
-        message: Util.resStr(this.getUIContext(), $r('app.string.track_logout_confirm'), [t.name]),
-        onConfirm: (): void => {
-          t.logout();
-          this.loginTick += 1;
-          Util.toastRes(this.getUIContext(), $r('app.string.track_logged_out'));
-          dialog.close();
-        },
-        onClose: (): void => {
-          dialog.close();
-        },
-      }),
-      autoCancel: true,
-    });
-    dialog.open();
-  }
-
-  private onTrackerTap(t: Tracker): void {
-    if (t.isLoggedIn()) {
-      this.confirmLogout(t);
-    } else {
-      this.startLogin(t);
-    }
-  }
-
   @Builder
   trackerRow(t: Tracker) {
     Row() {
-      TrackLogo({ syncId: t.syncId, logoName: t.name, color: t.brandColor, logoSize: 30 })
+      TrackLogo({
+        syncId: t.syncId,
+        logoName: t.name,
+        color: t.brandColor,
+        logoSize: 30
+      })
         .margin({ right: 14 })
       Column() {
         Text(t.name)
@@ -194,7 +81,12 @@ export struct TrackingContent {
     }
     .width('100%')
     .constraintSize({ minHeight: 56 })
-    .padding({ left: 16, right: 12, top: 8, bottom: 8 })
+    .padding({
+      left: 16,
+      right: 12,
+      top: 8,
+      bottom: 8
+    })
     .onClick(() => {
       this.onTrackerTap(t);
     })
@@ -256,6 +148,124 @@ export struct TrackingContent {
       blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
       maskColor: 'rgba(0,0,0,0.45)'
     })
+  }
+
+  private startLogin(t: Tracker): void {
+    if (this.busy) {
+      return;
+    }
+    // 账密登录型：Kitsu / MangaUpdates
+    if (t.syncId === TrackerManager.kitsu.syncId || t.syncId === TrackerManager.mangaUpdates.syncId) {
+      this.showCredentialsLogin(t);
+      return;
+    }
+    this.oauthSyncId = t.syncId;
+    this.oauthTitle = t.name;
+    this.busy = true;
+    t.getAuthUrl().then((url: string): void => {
+      this.busy = false;
+      this.oauthUrl = url;
+      this.showOAuth = true;
+    }).catch((): void => {
+      this.busy = false;
+      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
+    });
+  }
+
+  // OAuth 回调参数 → 登录调用（各追踪器参数名不同，对齐 TrackLoginActivity）
+  private oauthLoginCall(t: Tracker, params: Record<string, string>): Promise<void> {
+    if (t.syncId === TrackerManager.aniList.syncId) {
+      // AniList 隐式授权：token 在 fragment
+      return t.loginWithCode(params['access_token'] ?? '');
+    }
+    if (t.syncId === TrackerManager.hikka.syncId) {
+      // Hikka：reference code 经账密通道换取
+      return t.loginWithCredentials('', params['reference'] ?? '');
+    }
+    return t.loginWithCode(params['code'] ?? '');
+  }
+
+  // ----- 登出 -----
+
+  private onOAuthResult(params: Record<string, string>): void {
+    this.showOAuth = false;
+    const t = TrackerManager.get(this.oauthSyncId);
+    if (t === undefined) {
+      return;
+    }
+    this.busy = true;
+    this.oauthLoginCall(t, params).then((): void => {
+      this.busy = false;
+      this.loginTick += 1;
+      Util.toastRes(this.getUIContext(), $r('app.string.track_logged_in'), [t.name]);
+    }).catch((): void => {
+      this.busy = false;
+      t.logout();
+      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
+    });
+  }
+
+  // 账密登录：用户名 + 密码同弹窗一次输入
+  private showCredentialsLogin(t: Tracker): void {
+    const dialog = new CustomDialogController({
+      builder: CredentialsDialog({
+        title: t.name,
+        usernamePlaceholder: $r('app.string.track_username'),
+        passwordPlaceholder: $r('app.string.track_password'),
+        onConfirm: (username: string, password: string): void => {
+          this.doCredentialsLogin(t, username, password);
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  private doCredentialsLogin(t: Tracker, username: string, password: string): void {
+    if (username === '' || password === '') {
+      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
+      return;
+    }
+    this.busy = true;
+    t.loginWithCredentials(username, password).then((): void => {
+      this.busy = false;
+      this.loginTick += 1;
+      Util.toastRes(this.getUIContext(), $r('app.string.track_logged_in'), [t.name]);
+    }).catch((): void => {
+      this.busy = false;
+      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
+    });
+  }
+
+  private confirmLogout(t: Tracker): void {
+    const dialog = new CustomDialogController({
+      builder: ConfirmDialog({
+        title: $r('app.string.track_logout'),
+        message: Util.resStr(this.getUIContext(), $r('app.string.track_logout_confirm'), [t.name]),
+        onConfirm: (): void => {
+          t.logout();
+          this.loginTick += 1;
+          Util.toastRes(this.getUIContext(), $r('app.string.track_logged_out'));
+          dialog.close();
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  private onTrackerTap(t: Tracker): void {
+    if (t.isLoggedIn()) {
+      this.confirmLogout(t);
+    } else {
+      this.startLogin(t);
+    }
   }
 }
 

@@ -1,7 +1,7 @@
 // Hikka 追踪器（syncId=10）：网页授权得到 reference code 换取 token（auth 头）
 import { TrackRecord, TrackSearchResult } from '../../model/Models';
 import { Settings } from '../../common/Settings';
-import { Tracker, TrackHttp, OAuthToken, TrackDate } from './Tracker';
+import { OAuthToken, TrackDate, Tracker, TrackHttp } from './Tracker';
 import { cryptoFramework } from '@kit.CryptoArchitectureKit';
 import { util } from '@kit.ArkTS';
 
@@ -69,6 +69,44 @@ export class HikkaTracker extends Tracker {
   constructor() {
     super(10, 'Hikka', '#EC407A');
     this.supportsReadingDates = true;
+  }
+
+  // slug → 48 位稳定数字 ID（对齐 Mihon 的 UUID.nameUUIDFromBytes，避免 64 位精度丢失）
+  private static slugToId(slug: string): number {
+    if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest')) {
+      try {
+        const bytes: Uint8Array = new util.TextEncoder().encodeInto(slug);
+        const md = cryptoFramework.createMd('MD5');
+        md.updateSync({ data: bytes });
+        const digest = md.digestSync();
+        const d = digest.data;
+        let v = d[0] & 0x7f;
+        for (let i = 1; i <= 5; i++) {
+          v = v * 256 + d[i];
+        }
+        return v;
+      } catch (_e) {
+        return 0;
+      }
+    }
+    return 0;
+  }
+
+  private static toLocalStatus(status: string): number {
+    switch (status) {
+      case 'reading':
+        return HikkaTracker.READING;
+      case 'completed':
+        return HikkaTracker.COMPLETED;
+      case 'on_hold':
+        return HikkaTracker.ON_HOLD;
+      case 'dropped':
+        return HikkaTracker.DROPPED;
+      case 'planned':
+        return HikkaTracker.PLAN_TO_READ;
+      default:
+        throw new Error(`Unknown status: ${status}`);
+    }
   }
 
   getStatusList(): number[] {
@@ -221,6 +259,8 @@ export class HikkaTracker extends Tracker {
     return track;
   }
 
+  // ---- 内部实现 ----
+
   async refresh(track: TrackRecord): Promise<TrackRecord> {
     const manga = await this.getManga(track);
     const remoteTrack = this.mangaToRemote(manga);
@@ -242,8 +282,6 @@ export class HikkaTracker extends Tracker {
     await TrackHttp.send('DELETE', `${HIKKA_API_URL}/read/manga/${this.slugOf(track)}`,
       await this.authHeaders(), '');
   }
-
-  // ---- 内部实现 ----
 
   private async authHeaders(): Promise<Record<string, string>> {
     const token = await this.ensureToken((t: OAuthToken) => this.refreshToken(t));
@@ -377,27 +415,6 @@ export class HikkaTracker extends Tracker {
     return remote;
   }
 
-  // slug → 48 位稳定数字 ID（对齐 Mihon 的 UUID.nameUUIDFromBytes，避免 64 位精度丢失）
-  private static slugToId(slug: string): number {
-    if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest')) {
-      try {
-        const bytes: Uint8Array = new util.TextEncoder().encodeInto(slug);
-        const md = cryptoFramework.createMd('MD5');
-        md.updateSync({ data: bytes });
-        const digest = md.digestSync();
-        const d = digest.data;
-        let v = d[0] & 0x7f;
-        for (let i = 1; i <= 5; i++) {
-          v = v * 256 + d[i];
-        }
-        return v;
-      } catch (_e) {
-        return 0;
-      }
-    }
-    return 0;
-  }
-
   private toApiStatus(status: number): string {
     switch (status) {
       case HikkaTracker.READING:
@@ -412,23 +429,6 @@ export class HikkaTracker extends Tracker {
         return 'planned';
       case HikkaTracker.REREADING:
         return 'reading';
-      default:
-        throw new Error(`Unknown status: ${status}`);
-    }
-  }
-
-  private static toLocalStatus(status: string): number {
-    switch (status) {
-      case 'reading':
-        return HikkaTracker.READING;
-      case 'completed':
-        return HikkaTracker.COMPLETED;
-      case 'on_hold':
-        return HikkaTracker.ON_HOLD;
-      case 'dropped':
-        return HikkaTracker.DROPPED;
-      case 'planned':
-        return HikkaTracker.PLAN_TO_READ;
       default:
         throw new Error(`Unknown status: ${status}`);
     }

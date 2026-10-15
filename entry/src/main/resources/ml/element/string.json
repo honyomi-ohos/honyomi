@@ -1,48 +1,177 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Filters all entries in your library" },
-    { "name": "more_incognito_summary", "value": "Pauses reading history" },
-    { "name": "more_support", "value": "ഞങ്ങളെ സഹായിക്കു" },
-    { "name": "more_help", "value": "സഹായം" },
-    { "name": "support_perks", "value": "Patrons get access to exclusive channels, with more perks to come." },
-    { "name": "support_patreon", "value": "Patreon (preferred)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together." },
-    { "name": "support_contact_msg", "value": "For alternative options or any related questions, join our Discord server." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "ഡാറ്റാ ആന്റ് സ്റ്റോറേജ്" },
-    { "name": "data_storage_location", "value": "Storage location" },
-    { "name": "data_storage_location_info", "value": "Used for automatic backups, chapter downloads, and local source." },
-    { "name": "data_backup_restore", "value": "ബാക്കപ്പും റിസ്റ്റോറും" },
-    { "name": "data_create_backup", "value": "Create backup" },
-    { "name": "data_restore_backup", "value": "Restore backup" },
-    { "name": "data_backup_interval", "value": "Automatic backup frequency" },
-    { "name": "data_backup_info", "value": "You should keep copies of backups in other places as well. Backups may contain sensitive data including any stored passwords; be careful if sharing." },
-    { "name": "data_last_auto_backup", "value": "Last automatically backed up: %s" },
-    { "name": "data_storage_usage", "value": "Storage usage" },
-    { "name": "data_available_space", "value": "Available: %s / Total: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Clear chapter cache" },
-    { "name": "data_used_cache", "value": "Used: %s" },
-    { "name": "data_cache_deleted", "value": "Cache cleared, %d files deleted" },
-    { "name": "data_cache_delete_error", "value": "Error occurred while clearing" },
-    { "name": "data_auto_clear_cache", "value": "Clear chapter cache on app launch" },
-    { "name": "data_export", "value": "Export" },
-    { "name": "data_library_list", "value": "Library List" },
-    { "name": "data_library_exported", "value": "Library Exported" },
-    { "name": "data_export_include", "value": "Select data to include" },
-    { "name": "data_column_title", "value": "Title" },
-    { "name": "data_column_author", "value": "Author" },
-    { "name": "data_interval_off", "value": "ഓഫ്" },
-    { "name": "data_interval_6h", "value": "ഓരോ 6 മണിക്കൂറിലും" },
-    { "name": "data_interval_12h", "value": "ഓരോ 12 മണിക്കൂറിലും" },
-    { "name": "data_interval_24h", "value": "എല്ലാ ദിവസവും" },
-    { "name": "data_interval_48h", "value": "എല്ലാ 2 ദിവസവും" },
-    { "name": "data_interval_weekly", "value": "ആഴ്ചയിൽ ഒരിക്കൽ" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Filters all entries in your library"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Pauses reading history"
+    },
+    {
+      "name": "more_support",
+      "value": "ഞങ്ങളെ സഹായിക്കു"
+    },
+    {
+      "name": "more_help",
+      "value": "സഹായം"
+    },
+    {
+      "name": "support_perks",
+      "value": "Patrons get access to exclusive channels, with more perks to come."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (preferred)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "For alternative options or any related questions, join our Discord server."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "ഡാറ്റാ ആന്റ് സ്റ്റോറേജ്"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Storage location"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Used for automatic backups, chapter downloads, and local source."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "ബാക്കപ്പും റിസ്റ്റോറും"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Create backup"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Restore backup"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Automatic backup frequency"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "You should keep copies of backups in other places as well. Backups may contain sensitive data including any stored passwords; be careful if sharing."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Last automatically backed up: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Storage usage"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Available: %s / Total: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Clear chapter cache"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Used: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Cache cleared, %d files deleted"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Error occurred while clearing"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Clear chapter cache on app launch"
+    },
+    {
+      "name": "data_export",
+      "value": "Export"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Library List"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Library Exported"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Select data to include"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Title"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Author"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "ഓഫ്"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "ഓരോ 6 മണിക്കൂറിലും"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "ഓരോ 12 മണിക്കൂറിലും"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "എല്ലാ ദിവസവും"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "എല്ലാ 2 ദിവസവും"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "ആഴ്ചയിൽ ഒരിക്കൽ"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
     {
       "name": "module_desc",
       "value": "module description"
@@ -1255,189 +1384,741 @@
       "name": "reader_set_brightness_reset",
       "value": "തെളിച്ചം സിസ്റ്റം പിന്തുടരാൻ സജ്ജമാക്കി"
     },
-    { "name": "browse_tab_sources", "value": "സ്രോതസ്സുകൾ" },
-    { "name": "browse_tab_extensions", "value": "വിപുലീകരണങ്ങൾ" },
-    { "name": "browse_tab_migrate", "value": "മൈഗ്രേറ്റ്" },
-    { "name": "browse_pin", "value": "പിൻ ചെയ്യുക" },
-    { "name": "browse_unpin", "value": "പിൻ നീക്കുക" },
-    { "name": "browse_disable_source", "value": "സ്രോതസ്സ് പ്രവർത്തനരഹിതമാക്കുക" },
-    { "name": "browse_source_disabled", "value": "സ്രോതസ്സ് പ്രവർത്തനരഹിതമാക്കി" },
-    { "name": "browse_pinned", "value": "പിൻ ചെയ്തു" },
-    { "name": "browse_sources_empty", "value": "സ്രോതസ്സുകളില്ല. വിപുലീകരണങ്ങൾ ടാബിൽ നിന്ന് ഇൻസ്റ്റാൾ ചെയ്യുക" },
-    { "name": "browse_filter_langs", "value": "ഭാഷകൾ ഫിൽട്ടർ ചെയ്യുക" },
-    { "name": "browse_filter_all", "value": "എല്ലാം" },
-    { "name": "browse_source_missing", "value": "സ്രോതസ്സ് ലഭ്യമല്ല. വിപുലീകരണം പ്രവർത്തനരഹിതമായിരിക്കാം" },
-    { "name": "global_search_hint", "value": "എല്ലാ സ്രോതസ്സുകളിലും തിരയുക" },
-    { "name": "global_search_failed", "value": "തിരച്ചിൽ പരാജയപ്പെട്ടു" },
-    { "name": "ext_search_hint", "value": "വിപുലീകരണങ്ങൾ തിരയുക" },
-    { "name": "ext_search_no_match", "value": "പൊരുത്തങ്ങളില്ല" },
-    { "name": "ext_repo_settings", "value": "റെപ്പോസിറ്ററി ക്രമീകരണങ്ങൾ" },
-    { "name": "ext_refresh_repo", "value": "റെപ്പോസിറ്ററി പുതുക്കുക" },
-    { "name": "migrate_pick_source", "value": "മൈഗ്രേറ്റ് ചെയ്യാനുള്ള സ്രോതസ്സ് തിരഞ്ഞെടുക്കുക" },
-    { "name": "migrate_empty_library", "value": "ലൈബ്രറി ശൂന്യമാണ്" },
-    { "name": "migrate_select_all", "value": "എല്ലാം തിരഞ്ഞെടുക്കുക" },
-    { "name": "migrate_deselect_all", "value": "തിരഞ്ഞെടുപ്പ് നീക്കുക" },
-    { "name": "migrate_action", "value": "മൈഗ്രേറ്റ് (%d)" },
-    { "name": "migrate_title", "value": "മൈഗ്രേറ്റ്" },
-    { "name": "migrate_skip", "value": "ഒഴിവാക്കുക" },
-    { "name": "migrate_progress", "value": "%d / %d" },
-    { "name": "migrate_target_source", "value": "ലക്ഷ്യ സ്രോതസ്സ്" },
-    { "name": "migrate_search_hint", "value": "ലക്ഷ്യ സ്രോതസ്സിൽ മംഗ തിരയുക" },
-    { "name": "migrate_confirm_title", "value": "ഈ മംഗയിലേക്ക് മൈഗ്രേറ്റ് ചെയ്യണോ?" },
-    { "name": "migrate_item_done", "value": "മൈഗ്രേറ്റ് ചെയ്തു: %s" },
-    { "name": "migrate_failed", "value": "മൈഗ്രേഷൻ പരാജയപ്പെട്ടു: %s" },
-    { "name": "migrate_done", "value": "മൈഗ്രേഷൻ പൂർത്തിയായി" },
-    { "name": "migrate_no_target", "value": "ലക്ഷ്യ സ്രോതസ്സില്ല" },
-    { "name": "stats_title", "value": "സ്ഥിതിവിവരം" },
-    { "name": "stats_overview_section", "value": "അവലോകനം" },
-    { "name": "stats_in_library", "value": "ലൈബ്രറിയിൽ" },
-    { "name": "stats_read_duration", "value": "വായനാ ദൈർഘ്യം" },
-    { "name": "stats_completed_titles", "value": "പൂർത്തിയായി" },
-    { "name": "stats_titles_section", "value": "കൃതികൾ" },
-    { "name": "stats_started_titles", "value": "തുടങ്ങിയവ" },
-    { "name": "stats_local_titles", "value": "പ്രാദേശികം" },
-    { "name": "stats_chapters_section", "value": "അധ്യായങ്ങൾ" },
-    { "name": "stats_total_chapters", "value": "ആകെ" },
-    { "name": "stats_read_chapters", "value": "വായിച്ചത്" },
-    { "name": "stats_downloaded_chapters", "value": "ഡൗൺലോഡ് ചെയ്തു" },
-    { "name": "stats_tracker_section", "value": "ട്രാക്കിംഗ്" },
-    { "name": "stats_tracked_titles", "value": "ട്രാക്ക് ചെയ്ത കൃതികൾ" },
-    { "name": "stats_mean_score", "value": "ശരാശരി മാർക്ക്" },
-    { "name": "stats_used", "value": "ഉപയോഗിച്ചത്" },
-    { "name": "stats_not_applicable", "value": "ബാധകമല്ല" },
-    { "name": "stats_week", "value": "ആഴ്ച" },
-    { "name": "stats_month", "value": "മാസം" },
-    { "name": "stats_week_total", "value": "ഈ ആഴ്ച %s" },
-    { "name": "stats_month_total", "value": "ഈ മാസം %s" },
-    { "name": "stats_no_reading", "value": "ഈ കാലയളവിൽ വായനയില്ല" },
-    { "name": "stats_day_short", "value": "%dദി" },
-    { "name": "stats_hour_short", "value": "%dമ" },
-    { "name": "stats_minute_short", "value": "%dമി" },
-    { "name": "stats_second_short", "value": "%dസെ" },
-    { "name": "stats_wd_sun", "value": "ഞാ" },
-    { "name": "stats_wd_mon", "value": "തി" },
-    { "name": "stats_wd_tue", "value": "ചൊ" },
-    { "name": "stats_wd_wed", "value": "ബു" },
-    { "name": "stats_wd_thu", "value": "വ്യാ" },
-    { "name": "stats_wd_fri", "value": "വെ" },
-    { "name": "stats_wd_sat", "value": "ശ" },
-    { "name": "reader_mode_vertical", "value": "ലംബം" },
-    { "name": "reader_mode_smart_grip", "value": "പിടി ബോധം" },
-    { "name": "reader_orientation_lock_portrait", "value": "ലംബം പൂട്ടുക" },
-    { "name": "reader_orientation_lock_landscape", "value": "തിരശ്ചീനം പൂട്ടുക" },
-    { "name": "reader_tab_general", "value": "പൊതു" },
-    { "name": "reader_tab_filter", "value": "നിറ അരിപ്പ" },
-    { "name": "reader_filter_grayscale", "value": "ചാരനിറം" },
-    { "name": "reader_filter_invert", "value": "നിറം തിരിച്ച്" },
-    { "name": "reader_filter_contrast", "value": "വൈരുദ്ധ്യം" },
-    { "name": "reader_filter_saturation", "value": "പൂരിതത്വം" },
-    { "name": "reader_crop_borders", "value": "അരിക് മുറിക്കുക" },
-    { "name": "reader_nav_tap_zones", "value": "സ്പർശ മേഖല" },
-    { "name": "reader_nav_default", "value": "സ്ഥിരസ്ഥിതി" },
-    { "name": "reader_nav_ltr", "value": "ഇടത്തുനിന്ന് വലത്തോട്ട്" },
-    { "name": "reader_nav_rtl", "value": "വലത്തുനിന്ന് ഇടത്തോട്ട്" },
-    { "name": "reader_nav_vertical", "value": "ലംബം" },
-    { "name": "reader_nav_edge", "value": "അരിക്" },
-    { "name": "reader_nav_none", "value": "ഒന്നുമില്ല" },
-    { "name": "reader_dual_page", "value": "രണ്ട് പേജ് കാഴ്ച" },
-    { "name": "reader_webtoon_padding", "value": "വെബ്‌ടൂൺ വശ ഇടം" },
-    { "name": "reader_set_mode_smart_grip", "value": "പിടി ബോധം" },
-    { "name": "ext_install_local", "value": "പ്രാദേശികത്തിൽ നിന്ന് ഇൻസ്റ്റാൾ" },
-    { "name": "ext_detail_title", "value": "വിപുലീകരണ വിവരം" },
-    { "name": "ext_info_version", "value": "പതിപ്പ്" },
-    { "name": "ext_info_language", "value": "ഭാഷ" },
-    { "name": "ext_uninstall_title", "value": "വിപുലീകരണം അൺഇൻസ്റ്റാൾ" },
-    { "name": "ext_uninstall_msg", "value": "“%s” അൺഇൻസ്റ്റാൾ ചെയ്യണോ? ലൈബ്രറിയിലെ മംഗ ഡാറ്റ നിലനിൽക്കും" },
-    { "name": "ext_detail_sources", "value": "സ്രോതസ്സുകൾ" },
-    { "name": "ext_detail_settings", "value": "ക്രമീകരണങ്ങൾ" },
-    { "name": "ext_pref_loading", "value": "ലോഡ് ചെയ്യുന്നു…" },
-    { "name": "ext_pref_failed", "value": "ക്രമീകരണങ്ങൾ പ്രയോഗിക്കാനായില്ല" },
-    { "name": "ext_detail_missing", "value": "വിപുലീകരണം ഇല്ല അല്ലെങ്കിൽ ലോഡ് ആയിട്ടില്ല" },
-    { "name": "action_filter", "value": "അരിക്കുക" },
-    { "name": "action_update_library", "value": "ലൈബ്രറി അപ്ഡേറ്റ് ചെയ്യുക" },
-    { "name": "action_update_category", "value": "വിഭാഗം അപ്ഡേറ്റ് ചെയ്യുക" },
-    { "name": "action_open_random_manga", "value": "ക്രമരഹിത കൃതി തുറക്കുക" },
-    { "name": "action_select_all", "value": "എല്ലാം തിരഞ്ഞെടുക്കുക" },
-    { "name": "action_select_inverse", "value": "തിരഞ്ഞെടുപ്പ് തിരിക്കുക" },
-    { "name": "action_move_category", "value": "വിഭാഗത്തിലേക്ക് നീക്കുക" },
-    { "name": "action_mark_as_read", "value": "വായിച്ചതായി അടയാളപ്പെടുത്തുക" },
-    { "name": "action_mark_as_unread", "value": "വായിക്കാത്തതായി അടയാളപ്പെടുത്തുക" },
-    { "name": "action_download", "value": "ഡൗൺലോഡ്" },
-    { "name": "action_delete", "value": "ഇല്ലാതാക്കുക" },
-    { "name": "action_migrate", "value": "മൈഗ്രേറ്റ്" },
-    { "name": "action_remove_from_library", "value": "ലൈബ്രറിയിൽ നിന്ന് നീക്കം ചെയ്യുക" },
-    { "name": "action_remove_from_library_msg", "value": "തിരഞ്ഞെടുത്ത %d മംഗ ലൈബ്രറിയിൽ നിന്ന് നീക്കം ചെയ്യണോ?" },
-    { "name": "action_download_queued", "value": "%d ഡൗൺലോഡുകൾ വരിയിൽ ചേർത്തു" },
-    { "name": "library_search_hint", "value": "ലൈബ്രറി തിരയുക" },
-    { "name": "library_no_match", "value": "പൊരുത്തമുള്ള മംഗയില്ല" },
-    { "name": "lib_sheet_tab_filter", "value": "അരിക്കുക" },
-    { "name": "lib_sheet_tab_sort", "value": "ക്രമം" },
-    { "name": "lib_sheet_tab_display", "value": "പ്രദർശനം" },
-    { "name": "lib_filter_downloaded", "value": "ഡൗൺലോഡ് ചെയ്തു" },
-    { "name": "lib_filter_unread", "value": "വായിക്കാത്തത്" },
-    { "name": "lib_filter_started", "value": "വായിച്ചത്" },
-    { "name": "lib_filter_bookmarked", "value": "അടയാളം" },
-    { "name": "lib_filter_completed", "value": "പൂർത്തിയായി" },
-    { "name": "lib_filter_tracked", "value": "ട്രാക്ക് ചെയ്തത്" },
-    { "name": "lib_sort_alpha", "value": "ശീർഷകം" },
-    { "name": "lib_sort_total", "value": "അധ്യായങ്ങളുടെ എണ്ണം" },
-    { "name": "lib_sort_last_read", "value": "അവസാനം വായിച്ചത്" },
-    { "name": "lib_sort_last_update", "value": "അപ്ഡേറ്റ് പരിശോധന സമയം" },
-    { "name": "lib_sort_unread", "value": "വായിക്കാത്ത എണ്ണം" },
-    { "name": "lib_sort_latest_chapter", "value": "കൃതി അപ്ഡേറ്റ് സമയം" },
-    { "name": "lib_sort_fetch_date", "value": "അധ്യായം എടുത്ത സമയം" },
-    { "name": "lib_sort_date_added", "value": "ചേർത്ത തീയതി" },
-    { "name": "lib_sort_random", "value": "ക്രമരഹിതം" },
-    { "name": "lib_display_compact", "value": "ഒതുക്ക ഗ്രിഡ്" },
-    { "name": "lib_display_comfortable", "value": "അയഞ്ഞ ഗ്രിഡ്" },
-    { "name": "lib_display_cover", "value": "കവർ ഗ്രിഡ്" },
-    { "name": "lib_display_list", "value": "ലിസ്റ്റ്" },
-    { "name": "lib_display_grid_size", "value": "വരിയിലെ എണ്ണം" },
-    { "name": "lib_display_grid_auto", "value": "സ്വയം" },
-    { "name": "lib_display_badges_group", "value": "ബാഡ്ജുകളും ബട്ടണുകളും" },
-    { "name": "lib_badge_downloaded", "value": "ഡൗൺലോഡ് അധ്യായങ്ങളുടെ എണ്ണം" },
-    { "name": "lib_badge_unread", "value": "വായിക്കാത്ത അധ്യായങ്ങൾ" },
-    { "name": "lib_badge_local", "value": "പ്രാദേശിക സ്രോതസ്സ്" },
-    { "name": "lib_badge_language", "value": "ഭാഷ" },
-    { "name": "lib_badge_continue", "value": "വായന തുടരുക ബട്ടൺ" },
-    { "name": "lib_display_tabs_group", "value": "ടാബുകൾ" },
-    { "name": "lib_show_category_tabs", "value": "വിഭാഗ ടാബുകൾ കാണിക്കുക" },
-    { "name": "lib_show_manga_count", "value": "കൃതികളുടെ എണ്ണം കാണിക്കുക" },
-    { "name": "EntryFormAbility_label", "value": "MihonHarmony കാർഡ്" },
-    { "name": "EntryFormAbility_desc", "value": "ഡെസ്ക്‌ടോപ്പ് കാർഡ് ദാതാവ്" },
-    { "name": "card_recent_display", "value": "വായന തുടരുക" },
-    { "name": "card_recent_desc", "value": "അടുത്തിടെ വായിച്ച മംഗ വേഗം തുടരുക" },
-    { "name": "card_updates_display", "value": "അപ്ഡേറ്റുകൾ" },
-    { "name": "card_updates_desc", "value": "ലൈബ്രറിയിലെ പുതിയ വായിക്കാത്ത അധ്യായങ്ങൾ" },
-    { "name": "card_recent_header", "value": "വായന തുടരുക" },
-    { "name": "card_updates_header", "value": "അപ്ഡേറ്റുകൾ" },
-    { "name": "card_unread_count", "value": "%d അധ്യായങ്ങൾ വായിക്കാത്തത്" },
-    { "name": "card_empty_recent", "value": "ഇതുവരെ വായനാ ചരിത്രമില്ല" },
-    { "name": "card_empty_updates", "value": "വായിക്കാത്ത അധ്യായങ്ങളില്ല" },
-    { "name": "card_open_hint", "value": "ആപ്പ് തുറക്കാൻ തട്ടുക" },
-    { "name": "card_manga_display", "value": "മംഗ കാർഡ്" },
-    { "name": "card_manga_desc", "value": "വിവര പേജിൽ നിന്ന് ചേർക്കുക, കവർ തട്ടി വായിക്കുക" },
-    { "name": "card_manga_empty", "value": "മംഗ വിവര പേജിൽ നിന്ന് ഡെസ്ക്‌ടോപ്പിലേക്ക് ചേർക്കുക" },
-    { "name": "detail_add_to_desktop", "value": "ഡെസ്ക്‌ടോപ്പിലേക്ക് ചേർക്കുക" },
-    { "name": "detail_card_added", "value": "ഡെസ്ക്‌ടോപ്പിൽ ചേർത്തു" },
-    { "name": "detail_card_add_failed", "value": "കാർഡ് ചേർക്കാനായില്ല" },
-    { "name": "card_stats_week_display", "value": "ആഴ്ചയിലെ സ്ഥിതിവിവരം" },
-    { "name": "card_stats_week_desc", "value": "ഈ ആഴ്ചയിലെ ദൈനംദിന വായനാ ദൈർഘ്യം" },
-    { "name": "card_stats_month_display", "value": "മാസത്തിലെ സ്ഥിതിവിവരം" },
-    { "name": "card_stats_month_desc", "value": "ഈ മാസത്തിലെ ദൈനംദിന വായനാ ദൈർഘ്യം" },
-    { "name": "card_stats_empty", "value": "ഇതുവരെ വായനയില്ല" },
-    { "name": "action_view_upcoming", "value": "വരാനിരിക്കുന്ന അപ്ഡേറ്റുകൾ കാണിക്കുക" },
-    { "name": "label_upcoming", "value": "വരാനിരിക്കുന്നത്" },
-    { "name": "upcoming_guide", "value": "വരാനിരിക്കുന്നതിന്റെ വഴികാട്ടി" },
-    { "name": "upcoming_calendar_prev", "value": "മുൻ മാസം" },
-    { "name": "upcoming_calendar_next", "value": "അടുത്ത മാസം" },
-    { "name": "pref_filter_update_categories_details", "value": "ഉൾപ്പെടുത്തിയതും ഒഴിവാക്കിയതും ആയ വിഭാഗങ്ങളിൽ ഒരേസമയം ഉള്ള കൃതികൾ കാണിക്കില്ല." },
-    { "name": "relative_time_today", "value": "ഇന്ന്" },
-    { "name": "relative_time_days_ago", "value": "%d ദിവസം മുമ്പ്" },
-    { "name": "upcoming_relative_time_days", "value": "%d ദിവസത്തിനുള്ളിൽ" },
-    { "name": "card_upcoming_display", "value": "വരാനിരിക്കുന്നത്" },
-    { "name": "card_upcoming_desc", "value": "ലൈബ്രറി മംഗയുടെ പ്രതീക്ഷിക്കുന്ന അപ്ഡേറ്റ് കലണ്ടർ" },
-    { "name": "card_upcoming_header", "value": "വരാനിരിക്കുന്നത്" },
-    { "name": "card_empty_upcoming", "value": "ലൈബ്രറിയിൽ തുടരുന്ന മംഗയില്ല" }
-]
+    {
+      "name": "browse_tab_sources",
+      "value": "സ്രോതസ്സുകൾ"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "വിപുലീകരണങ്ങൾ"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "മൈഗ്രേറ്റ്"
+    },
+    {
+      "name": "browse_pin",
+      "value": "പിൻ ചെയ്യുക"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "പിൻ നീക്കുക"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "സ്രോതസ്സ് പ്രവർത്തനരഹിതമാക്കുക"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "സ്രോതസ്സ് പ്രവർത്തനരഹിതമാക്കി"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "പിൻ ചെയ്തു"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "സ്രോതസ്സുകളില്ല. വിപുലീകരണങ്ങൾ ടാബിൽ നിന്ന് ഇൻസ്റ്റാൾ ചെയ്യുക"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "ഭാഷകൾ ഫിൽട്ടർ ചെയ്യുക"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "എല്ലാം"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "സ്രോതസ്സ് ലഭ്യമല്ല. വിപുലീകരണം പ്രവർത്തനരഹിതമായിരിക്കാം"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "എല്ലാ സ്രോതസ്സുകളിലും തിരയുക"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "തിരച്ചിൽ പരാജയപ്പെട്ടു"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "വിപുലീകരണങ്ങൾ തിരയുക"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "പൊരുത്തങ്ങളില്ല"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "റെപ്പോസിറ്ററി ക്രമീകരണങ്ങൾ"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "റെപ്പോസിറ്ററി പുതുക്കുക"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "മൈഗ്രേറ്റ് ചെയ്യാനുള്ള സ്രോതസ്സ് തിരഞ്ഞെടുക്കുക"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "ലൈബ്രറി ശൂന്യമാണ്"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "എല്ലാം തിരഞ്ഞെടുക്കുക"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "തിരഞ്ഞെടുപ്പ് നീക്കുക"
+    },
+    {
+      "name": "migrate_action",
+      "value": "മൈഗ്രേറ്റ് (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "മൈഗ്രേറ്റ്"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "ഒഴിവാക്കുക"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d / %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "ലക്ഷ്യ സ്രോതസ്സ്"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "ലക്ഷ്യ സ്രോതസ്സിൽ മംഗ തിരയുക"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "ഈ മംഗയിലേക്ക് മൈഗ്രേറ്റ് ചെയ്യണോ?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "മൈഗ്രേറ്റ് ചെയ്തു: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "മൈഗ്രേഷൻ പരാജയപ്പെട്ടു: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "മൈഗ്രേഷൻ പൂർത്തിയായി"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "ലക്ഷ്യ സ്രോതസ്സില്ല"
+    },
+    {
+      "name": "stats_title",
+      "value": "സ്ഥിതിവിവരം"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "അവലോകനം"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "ലൈബ്രറിയിൽ"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "വായനാ ദൈർഘ്യം"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "പൂർത്തിയായി"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "കൃതികൾ"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "തുടങ്ങിയവ"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "പ്രാദേശികം"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "അധ്യായങ്ങൾ"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "ആകെ"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "വായിച്ചത്"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "ഡൗൺലോഡ് ചെയ്തു"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "ട്രാക്കിംഗ്"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "ട്രാക്ക് ചെയ്ത കൃതികൾ"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "ശരാശരി മാർക്ക്"
+    },
+    {
+      "name": "stats_used",
+      "value": "ഉപയോഗിച്ചത്"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "ബാധകമല്ല"
+    },
+    {
+      "name": "stats_week",
+      "value": "ആഴ്ച"
+    },
+    {
+      "name": "stats_month",
+      "value": "മാസം"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "ഈ ആഴ്ച %s"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "ഈ മാസം %s"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "ഈ കാലയളവിൽ വായനയില്ല"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%dദി"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dമ"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dമി"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%dസെ"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "ഞാ"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "തി"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "ചൊ"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "ബു"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "വ്യാ"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "വെ"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "ശ"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "ലംബം"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "പിടി ബോധം"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "ലംബം പൂട്ടുക"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "തിരശ്ചീനം പൂട്ടുക"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "പൊതു"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "നിറ അരിപ്പ"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "ചാരനിറം"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "നിറം തിരിച്ച്"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "വൈരുദ്ധ്യം"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "പൂരിതത്വം"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "അരിക് മുറിക്കുക"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "സ്പർശ മേഖല"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "സ്ഥിരസ്ഥിതി"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "ഇടത്തുനിന്ന് വലത്തോട്ട്"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "വലത്തുനിന്ന് ഇടത്തോട്ട്"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "ലംബം"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "അരിക്"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "ഒന്നുമില്ല"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "രണ്ട് പേജ് കാഴ്ച"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "വെബ്‌ടൂൺ വശ ഇടം"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "പിടി ബോധം"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "പ്രാദേശികത്തിൽ നിന്ന് ഇൻസ്റ്റാൾ"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "വിപുലീകരണ വിവരം"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "പതിപ്പ്"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "ഭാഷ"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "വിപുലീകരണം അൺഇൻസ്റ്റാൾ"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "“%s” അൺഇൻസ്റ്റാൾ ചെയ്യണോ? ലൈബ്രറിയിലെ മംഗ ഡാറ്റ നിലനിൽക്കും"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "സ്രോതസ്സുകൾ"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "ക്രമീകരണങ്ങൾ"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "ലോഡ് ചെയ്യുന്നു…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "ക്രമീകരണങ്ങൾ പ്രയോഗിക്കാനായില്ല"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "വിപുലീകരണം ഇല്ല അല്ലെങ്കിൽ ലോഡ് ആയിട്ടില്ല"
+    },
+    {
+      "name": "action_filter",
+      "value": "അരിക്കുക"
+    },
+    {
+      "name": "action_update_library",
+      "value": "ലൈബ്രറി അപ്ഡേറ്റ് ചെയ്യുക"
+    },
+    {
+      "name": "action_update_category",
+      "value": "വിഭാഗം അപ്ഡേറ്റ് ചെയ്യുക"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "ക്രമരഹിത കൃതി തുറക്കുക"
+    },
+    {
+      "name": "action_select_all",
+      "value": "എല്ലാം തിരഞ്ഞെടുക്കുക"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "തിരഞ്ഞെടുപ്പ് തിരിക്കുക"
+    },
+    {
+      "name": "action_move_category",
+      "value": "വിഭാഗത്തിലേക്ക് നീക്കുക"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "വായിച്ചതായി അടയാളപ്പെടുത്തുക"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "വായിക്കാത്തതായി അടയാളപ്പെടുത്തുക"
+    },
+    {
+      "name": "action_download",
+      "value": "ഡൗൺലോഡ്"
+    },
+    {
+      "name": "action_delete",
+      "value": "ഇല്ലാതാക്കുക"
+    },
+    {
+      "name": "action_migrate",
+      "value": "മൈഗ്രേറ്റ്"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "ലൈബ്രറിയിൽ നിന്ന് നീക്കം ചെയ്യുക"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "തിരഞ്ഞെടുത്ത %d മംഗ ലൈബ്രറിയിൽ നിന്ന് നീക്കം ചെയ്യണോ?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "%d ഡൗൺലോഡുകൾ വരിയിൽ ചേർത്തു"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "ലൈബ്രറി തിരയുക"
+    },
+    {
+      "name": "library_no_match",
+      "value": "പൊരുത്തമുള്ള മംഗയില്ല"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "അരിക്കുക"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "ക്രമം"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "പ്രദർശനം"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "ഡൗൺലോഡ് ചെയ്തു"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "വായിക്കാത്തത്"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "വായിച്ചത്"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "അടയാളം"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "പൂർത്തിയായി"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "ട്രാക്ക് ചെയ്തത്"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "ശീർഷകം"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "അധ്യായങ്ങളുടെ എണ്ണം"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "അവസാനം വായിച്ചത്"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "അപ്ഡേറ്റ് പരിശോധന സമയം"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "വായിക്കാത്ത എണ്ണം"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "കൃതി അപ്ഡേറ്റ് സമയം"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "അധ്യായം എടുത്ത സമയം"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "ചേർത്ത തീയതി"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "ക്രമരഹിതം"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "ഒതുക്ക ഗ്രിഡ്"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "അയഞ്ഞ ഗ്രിഡ്"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "കവർ ഗ്രിഡ്"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "ലിസ്റ്റ്"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "വരിയിലെ എണ്ണം"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "സ്വയം"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "ബാഡ്ജുകളും ബട്ടണുകളും"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "ഡൗൺലോഡ് അധ്യായങ്ങളുടെ എണ്ണം"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "വായിക്കാത്ത അധ്യായങ്ങൾ"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "പ്രാദേശിക സ്രോതസ്സ്"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "ഭാഷ"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "വായന തുടരുക ബട്ടൺ"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "ടാബുകൾ"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "വിഭാഗ ടാബുകൾ കാണിക്കുക"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "കൃതികളുടെ എണ്ണം കാണിക്കുക"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "MihonHarmony കാർഡ്"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "ഡെസ്ക്‌ടോപ്പ് കാർഡ് ദാതാവ്"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "വായന തുടരുക"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "അടുത്തിടെ വായിച്ച മംഗ വേഗം തുടരുക"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "അപ്ഡേറ്റുകൾ"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "ലൈബ്രറിയിലെ പുതിയ വായിക്കാത്ത അധ്യായങ്ങൾ"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "വായന തുടരുക"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "അപ്ഡേറ്റുകൾ"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d അധ്യായങ്ങൾ വായിക്കാത്തത്"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "ഇതുവരെ വായനാ ചരിത്രമില്ല"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "വായിക്കാത്ത അധ്യായങ്ങളില്ല"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "ആപ്പ് തുറക്കാൻ തട്ടുക"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "മംഗ കാർഡ്"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "വിവര പേജിൽ നിന്ന് ചേർക്കുക, കവർ തട്ടി വായിക്കുക"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "മംഗ വിവര പേജിൽ നിന്ന് ഡെസ്ക്‌ടോപ്പിലേക്ക് ചേർക്കുക"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "ഡെസ്ക്‌ടോപ്പിലേക്ക് ചേർക്കുക"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "ഡെസ്ക്‌ടോപ്പിൽ ചേർത്തു"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "കാർഡ് ചേർക്കാനായില്ല"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "ആഴ്ചയിലെ സ്ഥിതിവിവരം"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "ഈ ആഴ്ചയിലെ ദൈനംദിന വായനാ ദൈർഘ്യം"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "മാസത്തിലെ സ്ഥിതിവിവരം"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "ഈ മാസത്തിലെ ദൈനംദിന വായനാ ദൈർഘ്യം"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "ഇതുവരെ വായനയില്ല"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "വരാനിരിക്കുന്ന അപ്ഡേറ്റുകൾ കാണിക്കുക"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "വരാനിരിക്കുന്നത്"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "വരാനിരിക്കുന്നതിന്റെ വഴികാട്ടി"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "മുൻ മാസം"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "അടുത്ത മാസം"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "ഉൾപ്പെടുത്തിയതും ഒഴിവാക്കിയതും ആയ വിഭാഗങ്ങളിൽ ഒരേസമയം ഉള്ള കൃതികൾ കാണിക്കില്ല."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "ഇന്ന്"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d ദിവസം മുമ്പ്"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "%d ദിവസത്തിനുള്ളിൽ"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "വരാനിരിക്കുന്നത്"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "ലൈബ്രറി മംഗയുടെ പ്രതീക്ഷിക്കുന്ന അപ്ഡേറ്റ് കലണ്ടർ"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "വരാനിരിക്കുന്നത്"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "ലൈബ്രറിയിൽ തുടരുന്ന മംഗയില്ല"
+    }
+  ]
 }

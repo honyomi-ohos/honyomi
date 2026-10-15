@@ -1,9 +1,8 @@
-import { common } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
-import { UpdatesRepo, UpdatesQuery, CategoryRepo } from '../data/Repos';
+import { CategoryRepo, UpdatesQuery, UpdatesRepo } from '../data/Repos';
 import { DownloadService } from '../data/DownloadService';
 import { UpdateService } from '../data/UpdateService';
-import { UpdateItem, CategoryRecord } from '../model/Models';
+import { CategoryRecord, UpdateItem } from '../model/Models';
 import { DetailParams } from '../model/RouteParams';
 import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
@@ -66,26 +65,6 @@ export struct UpdatesPage {
     this.categories = await CategoryRepo.list();
   }
 
-  private filterActive(): boolean {
-    return this.fDownloaded !== 'ignore' || this.fUnread !== 'ignore' ||
-      this.fStarted !== 'ignore' || this.fBookmarked !== 'ignore' ||
-      this.includedCats.length > 0 || this.excludedCats.length > 0;
-  }
-
-  private applyTriState(key: string, v: string): void {
-    if (key === 'downloaded') {
-      this.fDownloaded = v;
-    } else if (key === 'unread') {
-      this.fUnread = v;
-    } else if (key === 'started') {
-      this.fStarted = v;
-    } else {
-      this.fBookmarked = v;
-    }
-    Settings.setUpdatesTriState(key, v);
-    this.loadData();
-  }
-
   async loadData(): Promise<void> {
     const context = Util.hostAbilityContext(this.getUIContext());
     await AppDb.ready(context);
@@ -135,11 +114,6 @@ export struct UpdatesPage {
     }
     this.refreshing = false;
     await this.loadData();
-  }
-
-  private openDetail(mangaId: number): void {
-    const params: DetailParams = { mangaId: mangaId };
-    this.pathStack.pushPathByName('MangaDetail', params);
   }
 
   @Builder
@@ -216,7 +190,12 @@ export struct UpdatesPage {
           })
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 8 })
+      .padding({
+        left: 16,
+        right: 16,
+        top: 12,
+        bottom: 8
+      })
 
       if (this.loading) {
         Column() {
@@ -285,6 +264,7 @@ export struct UpdatesPage {
                     }
                     .margin({ top: 4 })
                     .alignItems(VerticalAlign.Center)
+
                     Text(Util.timeAgo(item.dateUpload))
                       .fontSize(11)
                       .fontColor(this.pal.sub)
@@ -295,7 +275,12 @@ export struct UpdatesPage {
                   .layoutWeight(1)
                 }
                 .width('100%')
-                .padding({ left: 16, right: 16, top: 10, bottom: 10 })
+                .padding({
+                  left: 16,
+                  right: 16,
+                  top: 10,
+                  bottom: 10
+                })
                 .onClick(() => {
                   ContentOpen.open(this.pathStack, item.mangaId, item.chapterId);
                 })
@@ -319,5 +304,30 @@ export struct UpdatesPage {
     .width('100%')
     .height('100%')
     .backgroundColor(this.pal.bg)
+  }
+
+  private filterActive(): boolean {
+    return this.fDownloaded !== 'ignore' || this.fUnread !== 'ignore' ||
+      this.fStarted !== 'ignore' || this.fBookmarked !== 'ignore' ||
+      this.includedCats.length > 0 || this.excludedCats.length > 0;
+  }
+
+  private applyTriState(key: string, v: string): void {
+    if (key === 'downloaded') {
+      this.fDownloaded = v;
+    } else if (key === 'unread') {
+      this.fUnread = v;
+    } else if (key === 'started') {
+      this.fStarted = v;
+    } else {
+      this.fBookmarked = v;
+    }
+    Settings.setUpdatesTriState(key, v);
+    this.loadData();
+  }
+
+  private openDetail(mangaId: number): void {
+    const params: DetailParams = { mangaId: mangaId };
+    this.pathStack.pushPathByName('MangaDetail', params);
   }
 }

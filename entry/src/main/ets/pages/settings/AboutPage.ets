@@ -66,7 +66,12 @@ export struct AboutContent {
           .fontSize(12)
           .fontWeight(FontWeight.Medium)
           .fontColor(this.pal.onPrimarySoft)
-          .padding({ left: 12, right: 12, top: 4, bottom: 4 })
+          .padding({
+            left: 12,
+            right: 12,
+            top: 4,
+            bottom: 4
+          })
           .backgroundColor(this.pal.primarySoft)
           .borderRadius(999)
           .margin({ top: 10 })

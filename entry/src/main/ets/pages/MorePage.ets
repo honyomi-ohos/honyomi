@@ -1,8 +1,7 @@
-import { common } from '@kit.AbilityKit';
 import { ThemePalette } from '../common/Theme';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
-import { PrefGroup, SwitchRow, IconRow } from './components/Prefs';
+import { IconRow, PrefGroup, SwitchRow } from './components/Prefs';
 import { LimitedBody } from './components/LimitedBody';
 
 const HELP_URL: string = 'https://mihon.app/docs/guides/troubleshooting/';
@@ -36,7 +35,12 @@ export struct MorePage {
         .fontWeight(FontWeight.Bold)
         .fontColor(this.pal.text)
         .width('100%')
-        .padding({ left: 16, right: 16, top: 12, bottom: 12 })
+        .padding({
+          left: 16,
+          right: 16,
+          top: 12,
+          bottom: 12
+        })
 
       Scroll() {
         Column({ space: 12 }) {

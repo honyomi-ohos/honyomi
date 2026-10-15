@@ -66,90 +66,6 @@ export class CookieJar {
     }
   }
 
-  // 加载/生成 AES-256 密钥：优先从 Asset Store 恢复，缺失则生成并持久化
-  private static loadKey(): void {
-    try {
-      const stored = SecureStore.getSync(KEY_ALIAS);
-      if (stored !== '') {
-        const gen = cryptoFramework.createSymKeyGenerator('AES256');
-        CookieJar.key = gen.convertKeySync({ data: CookieJar.b64Decode(stored) });
-        CookieJar.keyPersisted = true;
-        return;
-      }
-      const gen = cryptoFramework.createSymKeyGenerator('AES256');
-      const key = gen.generateSymKeySync();
-      const encoded = key.getEncoded();
-      // 密钥持久化失败（Asset Store 不可用）：仅内存会话，不回退明文落盘
-      CookieJar.keyPersisted = SecureStore.putSync(KEY_ALIAS, CookieJar.b64Encode(encoded.data));
-      CookieJar.key = key;
-      if (!CookieJar.keyPersisted) {
-        hilog.warn(DOMAIN, TAG, 'cookie key not persisted: asset store unavailable, session-only cookies');
-      }
-    } catch (e) {
-      hilog.warn(DOMAIN, TAG, 'load key failed: %{public}s', (e as Error).message);
-    }
-  }
-
-  // 解密并解析 cookies.bin（IV || 密文+tag）：解密失败（密钥变更/文件损坏）按空 jar 处理
-  private static loadEncrypted(bytes: Uint8Array): void {
-    const key = CookieJar.key;
-    if (key === undefined || bytes.length <= GCM_IV_BYTES + GCM_TAG_BYTES) {
-      return;
-    }
-    try {
-      const iv = bytes.slice(0, GCM_IV_BYTES);
-      const tag = bytes.slice(bytes.length - GCM_TAG_BYTES);
-      const cipherText = bytes.slice(GCM_IV_BYTES, bytes.length - GCM_TAG_BYTES);
-      const cipher = cryptoFramework.createCipher('AES256|GCM|NoPadding');
-      const params: cryptoFramework.GcmParamsSpec = {
-        algName: 'GcmParamsSpec',
-        iv: { data: iv },
-        aad: { data: new Uint8Array(0) },
-        authTag: { data: tag },
-      };
-      cipher.initSync(cryptoFramework.CryptoMode.DECRYPT_MODE, key, params);
-      const plain = cipher.doFinalSync({ data: cipherText });
-      const raw = JSON.parse(util.TextDecoder.create('utf-8').decodeToString(plain.data)) as PersistShape;
-      const domains = raw.domains;
-      if (domains !== undefined) {
-        const keys = Object.keys(domains);
-        for (const d of keys) {
-          const rawEntries = domains[d] as Record<string, Object>;
-          if (rawEntries === undefined || rawEntries === null) {
-            continue;
-          }
-          CookieJar.jar.set(d, CookieJar.normalizeEntries(rawEntries));
-        }
-      }
-    } catch (e) {
-      hilog.warn(DOMAIN, TAG, 'decrypt failed: %{public}s', (e as Error).message);
-    }
-  }
-
-  // 兼容旧持久化格式（cookie 值为纯字符串）与新格式（CookieEntry）
-  private static normalizeEntries(rawEntries: Record<string, Object>): Record<string, CookieEntry> {
-    const out: Record<string, CookieEntry> = {};
-    const names = Object.keys(rawEntries);
-    for (const n of names) {
-      const v = rawEntries[n];
-      if (typeof v === 'string') {
-        const legacy: CookieEntry = { value: v as string, expires: 0, secure: false };
-        out[n] = legacy;
-      } else if (v !== undefined && v !== null) {
-        const entry = v as CookieEntry;
-        if (typeof entry.value === 'string') {
-          const normalized: CookieEntry = {
-            value: entry.value,
-            expires: typeof entry.expires === 'number' ? entry.expires : 0,
-            secure: entry.secure === true,
-          };
-          out[n] = normalized;
-        }
-      }
-    }
-    return out;
-  }
-
   // 提取 url 的 host（小写、去端口）
   static hostOf(url: string): string {
     const i = url.indexOf('://');
@@ -182,7 +98,6 @@ export class CookieJar {
     return host;
   }
 
-  // 汇总适用于 url 的 Cookie 请求头（host 精确匹配或父域后缀匹配；
   // 过滤已过期条目，Secure cookie 仅经 https 携带）
   static headerFor(url: string): string {
     const host = CookieJar.hostOf(url);
@@ -257,6 +172,8 @@ export class CookieJar {
     }
   }
 
+  // 汇总适用于 url 的 Cookie 请求头（host 精确匹配或父域后缀匹配；
+
   // 导入 ArkWeb cookie 字符串（"a=1; b=2" 形态，如 CF 验证页收割）
   static importCookieString(url: string, cookieStr: string): void {
     const host = CookieJar.hostOf(url);
@@ -280,8 +197,6 @@ export class CookieJar {
     }
   }
 
-  // 解析并保存单个 Set-Cookie 值（识别 Domain / Max-Age / Expires / Secure 属性）。
-  // Domain 归属校验：仅当 Domain 等于请求 host 或其父域（且非公共后缀本身）时接受，
   // 否则丢弃该 cookie，防止任意站点跨域种植/污染 cf_clearance 等凭证。
   static storeOne(url: string, setCookie: string): void {
     const segments = setCookie.split(';');
@@ -357,7 +272,121 @@ export class CookieJar {
     CookieJar.put(domain, name, entry);
   }
 
+  static clear(): void {
+    CookieJar.jar.clear();
+    if (!CookieJar.keyPersisted) {
+      // 无法重写加密文件时直接删除文件，保证清除语义完整
+      try {
+        if (CookieJar.filePath !== '' && fs.accessSync(CookieJar.filePath)) {
+          fs.unlinkSync(CookieJar.filePath);
+        }
+      } catch (e) {
+      }
+      return;
+    }
+    CookieJar.save();
+  }
+
+  // 退出/销毁场景：取消防抖定时器并立即落盘，防最后一次写入随进程结束丢失
+  static flushNow(): void {
+    if (CookieJar.saveTimer >= 0) {
+      clearTimeout(CookieJar.saveTimer);
+      CookieJar.saveTimer = -1;
+    }
+    CookieJar.save();
+  }
+
+  // 解析并保存单个 Set-Cookie 值（识别 Domain / Max-Age / Expires / Secure 属性）。
+  // Domain 归属校验：仅当 Domain 等于请求 host 或其父域（且非公共后缀本身）时接受，
+
+  // 加载/生成 AES-256 密钥：优先从 Asset Store 恢复，缺失则生成并持久化
+  private static loadKey(): void {
+    try {
+      const stored = SecureStore.getSync(KEY_ALIAS);
+      if (stored !== '') {
+        const gen = cryptoFramework.createSymKeyGenerator('AES256');
+        CookieJar.key = gen.convertKeySync({ data: CookieJar.b64Decode(stored) });
+        CookieJar.keyPersisted = true;
+        return;
+      }
+      const gen = cryptoFramework.createSymKeyGenerator('AES256');
+      const key = gen.generateSymKeySync();
+      const encoded = key.getEncoded();
+      // 密钥持久化失败（Asset Store 不可用）：仅内存会话，不回退明文落盘
+      CookieJar.keyPersisted = SecureStore.putSync(KEY_ALIAS, CookieJar.b64Encode(encoded.data));
+      CookieJar.key = key;
+      if (!CookieJar.keyPersisted) {
+        hilog.warn(DOMAIN, TAG, 'cookie key not persisted: asset store unavailable, session-only cookies');
+      }
+    } catch (e) {
+      hilog.warn(DOMAIN, TAG, 'load key failed: %{public}s', (e as Error).message);
+    }
+  }
+
   // 极简公共后缀判定：单标签域名与常见多标签公共后缀视为公共后缀
+
+  // 解密并解析 cookies.bin（IV || 密文+tag）：解密失败（密钥变更/文件损坏）按空 jar 处理
+  private static loadEncrypted(bytes: Uint8Array): void {
+    const key = CookieJar.key;
+    if (key === undefined || bytes.length <= GCM_IV_BYTES + GCM_TAG_BYTES) {
+      return;
+    }
+    try {
+      const iv = bytes.slice(0, GCM_IV_BYTES);
+      const tag = bytes.slice(bytes.length - GCM_TAG_BYTES);
+      const cipherText = bytes.slice(GCM_IV_BYTES, bytes.length - GCM_TAG_BYTES);
+      const cipher = cryptoFramework.createCipher('AES256|GCM|NoPadding');
+      const params: cryptoFramework.GcmParamsSpec = {
+        algName: 'GcmParamsSpec',
+        iv: { data: iv },
+        aad: { data: new Uint8Array(0) },
+        authTag: { data: tag },
+      };
+      cipher.initSync(cryptoFramework.CryptoMode.DECRYPT_MODE, key, params);
+      const plain = cipher.doFinalSync({ data: cipherText });
+      const raw = JSON.parse(util.TextDecoder.create('utf-8').decodeToString(plain.data)) as PersistShape;
+      const domains = raw.domains;
+      if (domains !== undefined) {
+        const keys = Object.keys(domains);
+        for (const d of keys) {
+          const rawEntries = domains[d] as Record<string, Object>;
+          if (rawEntries === undefined || rawEntries === null) {
+            continue;
+          }
+          CookieJar.jar.set(d, CookieJar.normalizeEntries(rawEntries));
+        }
+      }
+    } catch (e) {
+      hilog.warn(DOMAIN, TAG, 'decrypt failed: %{public}s', (e as Error).message);
+    }
+  }
+
+  // 兼容旧持久化格式（cookie 值为纯字符串）与新格式（CookieEntry）
+  private static normalizeEntries(rawEntries: Record<string, Object>): Record<string, CookieEntry> {
+    const out: Record<string, CookieEntry> = {};
+    const names = Object.keys(rawEntries);
+    for (const n of names) {
+      const v = rawEntries[n];
+      if (typeof v === 'string') {
+        const legacy: CookieEntry = { value: v as string, expires: 0, secure: false };
+        out[n] = legacy;
+      } else if (v !== undefined && v !== null) {
+        const entry = v as CookieEntry;
+        if (typeof entry.value === 'string') {
+          const normalized: CookieEntry = {
+            value: entry.value,
+            expires: typeof entry.expires === 'number' ? entry.expires : 0,
+            secure: entry.secure === true,
+          };
+          out[n] = normalized;
+        }
+      }
+    }
+    return out;
+  }
+
+  // ---------------- 内部实现 ----------------
+
   // （完整 PSL 过重，此处覆盖典型滥用路径即可）
   private static isPublicSuffix(domain: string): boolean {
     if (domain.indexOf('.') < 0) {
@@ -375,23 +404,6 @@ export class CookieJar {
     ];
     return suffixes.indexOf(domain) >= 0;
   }
-
-  static clear(): void {
-    CookieJar.jar.clear();
-    if (!CookieJar.keyPersisted) {
-      // 无法重写加密文件时直接删除文件，保证清除语义完整
-      try {
-        if (CookieJar.filePath !== '' && fs.accessSync(CookieJar.filePath)) {
-          fs.unlinkSync(CookieJar.filePath);
-        }
-      } catch (e) {
-      }
-      return;
-    }
-    CookieJar.save();
-  }
-
-  // ---------------- 内部实现 ----------------
 
   private static put(domain: string, name: string, entry: CookieEntry): void {
     let cookies = CookieJar.jar.get(domain);
@@ -432,15 +444,6 @@ export class CookieJar {
       CookieJar.saveTimer = -1;
       CookieJar.save();
     }, 500);
-  }
-
-  // 退出/销毁场景：取消防抖定时器并立即落盘，防最后一次写入随进程结束丢失
-  static flushNow(): void {
-    if (CookieJar.saveTimer >= 0) {
-      clearTimeout(CookieJar.saveTimer);
-      CookieJar.saveTimer = -1;
-    }
-    CookieJar.save();
   }
 
   // AES-256-GCM 加密：返回 IV || 密文+tag；失败返回 undefined（调用方放弃本次落盘）

@@ -28,25 +28,6 @@ struct OnboardingThemeStep {
     this.amoled = Settings.getAmoledMode();
   }
 
-  private applyThemeMode(mode: string): void {
-    this.themeMode = mode;
-    Settings.setThemeMode(mode);
-    const systemDark = AppStorage.get<boolean>(AppKeys.IS_DARK_SYSTEM) ?? false;
-    Settings.applyTheme(systemDark);
-    Settings.applyColorMode(Util.hostAbilityContext(this.getUIContext()));
-  }
-
-  private pickTheme(id: string): void {
-    Settings.setAppThemeId(id);
-    Settings.applyAppTheme(Util.hostAbilityContext(this.getUIContext()));
-  }
-
-  private toggleAmoled(value: boolean): void {
-    this.amoled = value;
-    Settings.setAmoledMode(value);
-    Settings.applyAppTheme(Util.hostAbilityContext(this.getUIContext()));
-  }
-
   @Builder
   modeChip(label: Resource | string, mode: string) {
     Text(label)
@@ -54,7 +35,12 @@ struct OnboardingThemeStep {
       .fontColor(this.themeMode === mode ? this.pal.onPrimary : this.pal.text)
       .backgroundColor(this.themeMode === mode ? this.pal.primary : this.pal.chip)
       .borderRadius(16)
-      .padding({ left: 16, right: 16, top: 7, bottom: 7 })
+      .padding({
+        left: 16,
+        right: 16,
+        top: 7,
+        bottom: 7
+      })
       .onClick(() => {
         this.applyThemeMode(mode);
       })
@@ -104,6 +90,25 @@ struct OnboardingThemeStep {
     .width('100%')
     .alignItems(HorizontalAlign.Start)
   }
+
+  private applyThemeMode(mode: string): void {
+    this.themeMode = mode;
+    Settings.setThemeMode(mode);
+    const systemDark = AppStorage.get<boolean>(AppKeys.IS_DARK_SYSTEM) ?? false;
+    Settings.applyTheme(systemDark);
+    Settings.applyColorMode(Util.hostAbilityContext(this.getUIContext()));
+  }
+
+  private pickTheme(id: string): void {
+    Settings.setAppThemeId(id);
+    Settings.applyAppTheme(Util.hostAbilityContext(this.getUIContext()));
+  }
+
+  private toggleAmoled(value: boolean): void {
+    this.amoled = value;
+    Settings.setAmoledMode(value);
+    Settings.applyAppTheme(Util.hostAbilityContext(this.getUIContext()));
+  }
 }
 
 // 步骤 2：指南（新用户入门指南 / 老用户还原备份，对齐 Mihon GuidesStep）
@@ -112,8 +117,10 @@ struct OnboardingGuidesStep {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State newUserText: string = '';
   @State returningUserText: string = '';
-  onOpenGuide: () => void = () => {};
-  onRestoreBackup: () => void = () => {};
+  onOpenGuide: () => void = () => {
+  };
+  onRestoreBackup: () => void = () => {
+  };
 
   aboutToAppear(): void {
     this.newUserText =
@@ -175,58 +182,7 @@ export struct OnboardingPage {
   @State currentStep: number = 0;
   pathStack: NavPathStack = new NavPathStack();
   private firstRun: boolean = false;
-
   private readonly stepCount: number = 2;
-
-  private isLastStep(): boolean {
-    return this.currentStep === this.stepCount - 1;
-  }
-
-  // 完成引导：落库 + 返回上一页
-  private finish(): void {
-    Settings.setShownOnboarding(true);
-    this.pathStack.pop();
-  }
-
-  private goStep(target: number): void {
-    this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
-      this.currentStep = target;
-    });
-  }
-
-  private onAccept(): void {
-    if (this.isLastStep()) {
-      this.finish();
-      return;
-    }
-    this.goStep(this.currentStep + 1);
-  }
-
-  private openGuide(): void {
-    const context = Util.hostAbilityContext(this.getUIContext());
-    Util.openUrl(context, GETTING_STARTED_URL);
-  }
-
-  // 还原备份（复用 BackupService；成功后视同完成引导，对齐 Mihon onRestoreBackup 行为）
-  private async doRestoreBackup(): Promise<void> {
-    try {
-      const context = Util.hostAbilityContext(this.getUIContext());
-      const count = await BackupService.importBackup(context);
-      if (count === -1) {
-        // 用户取消选择
-        return;
-      }
-      if (count === -2) {
-        Util.toastRes(this.getUIContext(), $r('app.string.advanced_backup_invalid'));
-        return;
-      }
-      Util.toastRes(this.getUIContext(), $r('app.string.advanced_restored_manga'), [count]);
-      AppStorage.setOrCreate(AppKeys.LIB_DIRTY, (AppStorage.get<number>(AppKeys.LIB_DIRTY) ?? 0) + 1);
-      this.finish();
-    } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.advanced_import_failed'));
-    }
-  }
 
   build() {
     NavDestination() {
@@ -347,6 +303,56 @@ export struct OnboardingPage {
       const params = ctx.pathInfo.param as OnboardingParams;
       this.firstRun = params !== undefined && params !== null ? params.firstRun : false;
     })
+  }
+
+  private isLastStep(): boolean {
+    return this.currentStep === this.stepCount - 1;
+  }
+
+  // 完成引导：落库 + 返回上一页
+  private finish(): void {
+    Settings.setShownOnboarding(true);
+    this.pathStack.pop();
+  }
+
+  private goStep(target: number): void {
+    this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
+      this.currentStep = target;
+    });
+  }
+
+  private onAccept(): void {
+    if (this.isLastStep()) {
+      this.finish();
+      return;
+    }
+    this.goStep(this.currentStep + 1);
+  }
+
+  private openGuide(): void {
+    const context = Util.hostAbilityContext(this.getUIContext());
+    Util.openUrl(context, GETTING_STARTED_URL);
+  }
+
+  // 还原备份（复用 BackupService；成功后视同完成引导，对齐 Mihon onRestoreBackup 行为）
+  private async doRestoreBackup(): Promise<void> {
+    try {
+      const context = Util.hostAbilityContext(this.getUIContext());
+      const count = await BackupService.importBackup(context);
+      if (count === -1) {
+        // 用户取消选择
+        return;
+      }
+      if (count === -2) {
+        Util.toastRes(this.getUIContext(), $r('app.string.advanced_backup_invalid'));
+        return;
+      }
+      Util.toastRes(this.getUIContext(), $r('app.string.advanced_restored_manga'), [count]);
+      AppStorage.setOrCreate(AppKeys.LIB_DIRTY, (AppStorage.get<number>(AppKeys.LIB_DIRTY) ?? 0) + 1);
+      this.finish();
+    } catch (e) {
+      Util.toastRes(this.getUIContext(), $r('app.string.advanced_import_failed'));
+    }
   }
 }
 

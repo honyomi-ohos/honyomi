@@ -43,12 +43,6 @@ export struct CoverViewer {
   @State curOffsetY: number = 0;
   // 已放大时收紧平移触发距离，未放大时放宽，避免抢占捏合/双击
   @State panDistance: number = 50;
-  onClose: () => void = () => {
-  };
-  onEdit: () => void = () => {
-  };
-  onDelete: () => void = () => {
-  };
   private lastScale: number = 1;
   private lastOffsetX: number = 0;
   private lastOffsetY: number = 0;
@@ -64,6 +58,15 @@ export struct CoverViewer {
   private componentHeight: number = 0;
   private axisPinchActive: boolean = false;
 
+  onClose: () => void = () => {
+  };
+
+  onEdit: () => void = () => {
+  };
+
+  onDelete: () => void = () => {
+  };
+
   aboutToAppear(): void {
     // 无封面（本地资源等）：跳过解析，直接显示默认封面占位
     if (this.coverUrl !== '') {
@@ -72,355 +75,6 @@ export struct CoverViewer {
   }
 
   // ---------------- 图片初始化 ----------------
-
-  // 解析本地路径并读取原始宽高（参考 PicturePreview initCurrentImageInfo）
-  private async initImage(): Promise<void> {
-    const context = Util.hostAbilityContext(this.getUIContext());
-    try {
-      const path = await this.ensureLocalPath(context);
-      if (path === '') {
-        // 下载落盘失败：回退原始地址直连显示（与旧 SmartImage 行为一致）
-        this.localPath = '';
-        this.displayPath = this.coverUrl;
-        this.fitImage();
-        return;
-      }
-      this.localPath = path;
-      this.displayPath = path.indexOf('/') === 0 ? `file://${path}` : path;
-      // ImageSource 解码完成后必须 release（失败路径经 finally 同样释放）
-      let source: image.ImageSource | undefined = undefined;
-      try {
-        source = image.createImageSource(path);
-        const info = await source.getImageInfo();
-        this.naturalWidth = info.size.width;
-        this.naturalHeight = info.size.height;
-      } catch (e) {
-        // 读取宽高失败：退化为容器尺寸 + Contain 展示
-        this.naturalWidth = 0;
-        this.naturalHeight = 0;
-      } finally {
-        if (source !== undefined) {
-          source.release().catch((_e: BusinessError): void => {
-          });
-        }
-      }
-      this.fitImage();
-    } catch (e) {
-      this.loadFailed = true;
-    }
-  }
-
-  // 按容器与图片原始宽高计算适配后的显示尺寸（完整可见）
-  private fitImage(): void {
-    if (this.componentWidth <= 0 || this.componentHeight <= 0) {
-      return;
-    }
-    if (this.naturalWidth <= 0 || this.naturalHeight <= 0) {
-      this.imageWidth = this.componentWidth;
-      this.imageHeight = this.componentHeight;
-      return;
-    }
-    const ratio = Math.min(this.componentWidth / this.naturalWidth, this.componentHeight / this.naturalHeight);
-    this.imageWidth = this.naturalWidth * ratio;
-    this.imageHeight = this.naturalHeight * ratio;
-  }
-
-  // ---------------- 缩放与平移（参考 PicturePreview） ----------------
-
-  private closeViewer(): void {
-    this.onClose();
-  }
-
-  // 通用矩阵缩放（参考 PicturePreview pictureScaling）
-  private pictureScaling(scale: number): void {
-    this.matrix = matrix4.identity().scale({ x: scale, y: scale }).copy();
-  }
-
-  // 偏移复位（参考 PicturePreview offsetReset）
-  private offsetReset(): void {
-    this.curOffsetX = 0;
-    this.curOffsetY = 0;
-    this.lastOffsetX = 0;
-    this.lastOffsetY = 0;
-  }
-
-  // 手势结束：固化当前缩放/偏移（参考 PicturePreview gestureEnd）
-  private gestureEnd(): void {
-    this.lastScale = this.curScale;
-    this.lastOffsetX = this.curOffsetX;
-    this.lastOffsetY = this.curOffsetY;
-    this.panDistance = this.curScale > 1.01 ? 3 : 50;
-  }
-
-  // 计算图片可平移的边界范围（参考 PicturePreview evaluateOffsetRange）
-  private evaluateOffsetRange(): void {
-    const scaledWidth = this.imageWidth * this.curScale;
-    const scaledHeight = this.imageHeight * this.curScale;
-    if (scaledWidth > this.componentWidth) {
-      const limit = (scaledWidth - this.componentWidth) / 2;
-      this.maxOffsetX = limit;
-      this.minOffsetX = -limit;
-    } else {
-      this.maxOffsetX = 0;
-      this.minOffsetX = 0;
-    }
-    if (scaledHeight > this.componentHeight) {
-      const limit = (scaledHeight - this.componentHeight) / 2;
-      this.maxOffsetY = limit;
-      this.minOffsetY = -limit;
-    } else {
-      this.maxOffsetY = 0;
-      this.minOffsetY = 0;
-    }
-  }
-
-  // 平移越界约束：超界夹回边界，图片小于容器时强制居中（参考 PicturePreview pictureBoundaryRestriction）
-  private pictureBoundaryRestriction(): void {
-    if (this.curOffsetX > this.maxOffsetX) {
-      this.curOffsetX = this.maxOffsetX;
-    } else if (this.curOffsetX < this.minOffsetX) {
-      this.curOffsetX = this.minOffsetX;
-    }
-    if (this.curOffsetY > this.maxOffsetY) {
-      this.curOffsetY = this.maxOffsetY;
-    } else if (this.curOffsetY < this.minOffsetY) {
-      this.curOffsetY = this.minOffsetY;
-    }
-    const scaledWidth = this.imageWidth * this.curScale;
-    const scaledHeight = this.imageHeight * this.curScale;
-    if (scaledWidth <= this.componentWidth) {
-      this.curOffsetX = 0;
-    }
-    if (scaledHeight <= this.componentHeight) {
-      this.curOffsetY = 0;
-    }
-  }
-
-  // 计算缩放锚点相对图片的百分比位置（入参为容器内局部坐标，参考 PicturePreview evaluateCenter）
-  private evaluateCenter(posX: number, posY: number): void {
-    const displayWidth = this.imageWidth * this.lastScale;
-    const displayHeight = this.imageHeight * this.lastScale;
-    const imgX = (this.componentWidth - displayWidth) / 2 + this.lastOffsetX;
-    const imgY = (this.componentHeight - displayHeight) / 2 + this.lastOffsetY;
-    const cX = Math.max((posX - imgX) / displayWidth, 0);
-    const cY = Math.max((posY - imgY) / displayHeight, 0);
-    this.centerX = 1 - cX;
-    this.centerY = 1 - cY;
-  }
-
-  // 计算当前偏移与缩放（参考 PicturePreview onScale）：锚点补偿 + 上下限夹取
-  private onScale(scale: number, offX: number, offY: number): void {
-    const next = this.lastScale * scale;
-    if (next > MAX_ZOOM) {
-      this.curScale = MAX_ZOOM;
-    } else if (next < 1) {
-      this.curScale = 1;
-    } else {
-      this.curScale = next;
-    }
-    // 恰好到达上限时略微回退，保证上限附近偏移仍可更新（参考 PicturePreview）
-    if (next >= MAX_ZOOM) {
-      this.curScale = MAX_ZOOM - 0.001;
-    }
-    this.evaluateOffsetRange();
-    this.curOffsetY = (this.lastOffsetY + offY) + (0.5 - this.centerY) * this.imageHeight * (1 - scale) * this.lastScale;
-    this.curOffsetX = (this.lastOffsetX + offX) + (0.5 - this.centerX) * this.imageWidth * (1 - scale) * this.lastScale;
-  }
-
-  // 捏合开始：以双指中点为缩放锚点（参考 PicturePreview pinchGestureStart）
-  private pinchStart(event: GestureEvent): void {
-    const fingers = event.fingerList;
-    if (fingers.length < 2) {
-      this.centerX = 0.5;
-      this.centerY = 0.5;
-      return;
-    }
-    const midX = ((fingers[0].localX ?? 0) + (fingers[1].localX ?? 0)) / 2;
-    const midY = ((fingers[0].localY ?? 0) + (fingers[1].localY ?? 0)) / 2;
-    this.evaluateCenter(midX, midY);
-  }
-
-  // 捏合结束：低于 1x 动画复位，达到上限略回弹（参考 PicturePreview pinchGestureEnd）
-  private pinchEnd(): void {
-    this.getUIContext().animateTo({ duration: 300, curve: Curve.Smooth }, () => {
-      if (this.curScale <= 1) {
-        this.curScale = 1;
-        this.pictureScaling(1);
-        this.offsetReset();
-      } else if (this.curScale >= MAX_ZOOM) {
-        this.curScale = MAX_ZOOM - 0.1;
-        this.pictureScaling(this.curScale);
-        this.evaluateOffsetRange();
-      }
-      this.gestureEnd();
-    });
-  }
-
-  // 双击：已放大则动画复位，否则动画放大到上限（参考 PicturePreview doubleTapGesture）
-  private doubleTap(): void {
-    const reset = this.lastScale > 1;
-    this.getUIContext().animateTo({ duration: 300, curve: Curve.Smooth }, () => {
-      if (reset) {
-        this.curScale = 1;
-        this.pictureScaling(1);
-        this.offsetReset();
-      } else {
-        this.curScale = MAX_ZOOM - 0.001;
-        this.pictureScaling(this.curScale);
-        this.offsetReset();
-      }
-      this.evaluateOffsetRange();
-      this.gestureEnd();
-    });
-  }
-
-  // PC/2in1 交互（轴事件）：鼠标滚轮缩放、触控板双指捏合缩放（居中锚点）
-  private handleAxisEvent(event?: AxisEvent): void {
-    if (!event) {
-      return;
-    }
-    if (event.hasAxis(AxisType.PINCH_AXIS)) {
-      if (!this.axisPinchActive) {
-        this.axisPinchActive = true;
-        this.gestureEnd();
-        this.centerX = 0.5;
-        this.centerY = 0.5;
-      }
-      const ratio = event.getPinchAxisScaleValue();
-      if (ratio > 0) {
-        this.onScale(ratio, 0, 0);
-        this.pictureScaling(this.curScale);
-        this.pictureBoundaryRestriction();
-      }
-      if (event.action === AxisAction.END || event.action === AxisAction.CANCEL) {
-        this.axisPinchActive = false;
-        this.gestureEnd();
-      }
-      return;
-    }
-    const delta = event.getVerticalAxisValue();
-    if (delta !== 0) {
-      this.gestureEnd();
-      this.centerX = 0.5;
-      this.centerY = 0.5;
-      this.onScale(Math.exp(-delta * 0.005), 0, 0);
-      this.pictureScaling(this.curScale);
-      this.pictureBoundaryRestriction();
-      this.gestureEnd();
-    }
-  }
-
-  // ---------------- 文件路径辅助 ----------------
-
-  // 保证拿到应用沙箱内可读的裸路径（file:// 去前缀；远程地址经 ImageCache 下载落盘）
-  private async ensureLocalPath(context: common.UIAbilityContext): Promise<string> {
-    const url = this.coverUrl;
-    if (url.indexOf('file://') === 0) {
-      return url.substring('file://'.length);
-    }
-    return await ImageCache.ensureLocal(context, url, this.sourceKey);
-  }
-
-  private fileExtOf(path: string): string {
-    const q = path.indexOf('?');
-    const p = q >= 0 ? path.substring(0, q) : path;
-    const dot = p.lastIndexOf('.');
-    if (dot >= 0 && p.length - dot <= 6) {
-      return p.substring(dot + 1).toLowerCase();
-    }
-    return 'jpg';
-  }
-
-  private safeTitle(): string {
-    let t = this.title.trim();
-    if (t === '') {
-      t = 'cover';
-    }
-    let out = '';
-    for (let i = 0; i < t.length; i++) {
-      const ch = t.charAt(i);
-      if ('\\/:*?"<>|'.indexOf(ch) >= 0) {
-        out += '_';
-      } else {
-        out += ch;
-      }
-    }
-    return out;
-  }
-
-  // ---------------- 保存 / 分享 ----------------
-
-  // 保存封面到图库（对齐 Mihon Save）：弹窗授权 → 复制沙箱图片到媒体库
-  private async saveCover(): Promise<void> {
-    const context = Util.hostAbilityContext(this.getUIContext());
-    try {
-      const localPath = await this.ensureLocalPath(context);
-      if (localPath === '') {
-        Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_save_gallery_failed'));
-        return;
-      }
-      const helper = photoAccessHelper.getPhotoAccessHelper(context);
-      const configs: photoAccessHelper.PhotoCreationConfig[] = [
-        {
-          title: this.safeTitle(),
-          fileNameExtension: this.fileExtOf(localPath),
-          photoType: photoAccessHelper.PhotoType.IMAGE,
-          subtype: photoAccessHelper.PhotoSubtype.DEFAULT,
-        }
-      ];
-      const destUris: Array<string> = await helper.showAssetsCreationDialog([localPath], configs);
-      if (destUris.length === 0 || destUris[0] === '') {
-        return;
-      }
-      let dest: fs.File | undefined = undefined;
-      let src: fs.File | undefined = undefined;
-      try {
-        dest = await fs.open(destUris[0], fs.OpenMode.WRITE_ONLY);
-        src = await fs.open(localPath, fs.OpenMode.READ_ONLY);
-        await fs.copyFile(src.fd, dest.fd);
-      } finally {
-        if (src !== undefined) {
-          fs.closeSync(src);
-        }
-        if (dest !== undefined) {
-          fs.closeSync(dest);
-        }
-      }
-      Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_saved'));
-    } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_save_gallery_failed'));
-    }
-  }
-
-  // 分享封面（对齐 Mihon Share）：拉起系统分享面板分享图片
-  private async shareCover(): Promise<void> {
-    const context = Util.hostAbilityContext(this.getUIContext());
-    try {
-      const localPath = await this.ensureLocalPath(context);
-      if (localPath === '') {
-        Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_share_failed'));
-        return;
-      }
-      const utdTypeId = utd.getUniformDataTypeByFilenameExtension('.' + this.fileExtOf(localPath),
-        utd.UniformDataType.IMAGE);
-      const data: systemShare.SharedData = new systemShare.SharedData({
-        utd: utdTypeId,
-        uri: fileUri.getUriFromPath(localPath),
-        title: this.title,
-      });
-      const controller = new systemShare.ShareController(data);
-      controller.show(context, {
-        selectionMode: systemShare.SelectionMode.SINGLE,
-        previewMode: systemShare.SharePreviewMode.DETAIL,
-      }).catch((error: BusinessError) => {
-        Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_share_failed'));
-      });
-    } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_share_failed'));
-    }
-  }
-
-  // ---------------- 占位 ----------------
 
   @Builder
   loadingPlaceholder() {
@@ -444,7 +98,7 @@ export struct CoverViewer {
     .justifyContent(FlexAlign.Center)
   }
 
-  // ---------------- 操作栏 ----------------
+  // ---------------- 缩放与平移（参考 PicturePreview） ----------------
 
   @Builder
   actionIcon(iconName: string, onTap: () => void) {
@@ -610,5 +264,355 @@ export struct CoverViewer {
     }
     .width('100%')
     .height('100%')
+  }
+
+  // 解析本地路径并读取原始宽高（参考 PicturePreview initCurrentImageInfo）
+  private async initImage(): Promise<void> {
+    const context = Util.hostAbilityContext(this.getUIContext());
+    try {
+      const path = await this.ensureLocalPath(context);
+      if (path === '') {
+        // 下载落盘失败：回退原始地址直连显示（与旧 SmartImage 行为一致）
+        this.localPath = '';
+        this.displayPath = this.coverUrl;
+        this.fitImage();
+        return;
+      }
+      this.localPath = path;
+      this.displayPath = path.indexOf('/') === 0 ? `file://${path}` : path;
+      // ImageSource 解码完成后必须 release（失败路径经 finally 同样释放）
+      let source: image.ImageSource | undefined = undefined;
+      try {
+        source = image.createImageSource(path);
+        const info = await source.getImageInfo();
+        this.naturalWidth = info.size.width;
+        this.naturalHeight = info.size.height;
+      } catch (e) {
+        // 读取宽高失败：退化为容器尺寸 + Contain 展示
+        this.naturalWidth = 0;
+        this.naturalHeight = 0;
+      } finally {
+        if (source !== undefined) {
+          source.release().catch((_e: BusinessError): void => {
+          });
+        }
+      }
+      this.fitImage();
+    } catch (e) {
+      this.loadFailed = true;
+    }
+  }
+
+  // 按容器与图片原始宽高计算适配后的显示尺寸（完整可见）
+  private fitImage(): void {
+    if (this.componentWidth <= 0 || this.componentHeight <= 0) {
+      return;
+    }
+    if (this.naturalWidth <= 0 || this.naturalHeight <= 0) {
+      this.imageWidth = this.componentWidth;
+      this.imageHeight = this.componentHeight;
+      return;
+    }
+    const ratio = Math.min(this.componentWidth / this.naturalWidth, this.componentHeight / this.naturalHeight);
+    this.imageWidth = this.naturalWidth * ratio;
+    this.imageHeight = this.naturalHeight * ratio;
+  }
+
+  private closeViewer(): void {
+    this.onClose();
+  }
+
+  // 通用矩阵缩放（参考 PicturePreview pictureScaling）
+  private pictureScaling(scale: number): void {
+    this.matrix = matrix4.identity().scale({ x: scale, y: scale }).copy();
+  }
+
+  // 偏移复位（参考 PicturePreview offsetReset）
+  private offsetReset(): void {
+    this.curOffsetX = 0;
+    this.curOffsetY = 0;
+    this.lastOffsetX = 0;
+    this.lastOffsetY = 0;
+  }
+
+  // 手势结束：固化当前缩放/偏移（参考 PicturePreview gestureEnd）
+  private gestureEnd(): void {
+    this.lastScale = this.curScale;
+    this.lastOffsetX = this.curOffsetX;
+    this.lastOffsetY = this.curOffsetY;
+    this.panDistance = this.curScale > 1.01 ? 3 : 50;
+  }
+
+  // 计算图片可平移的边界范围（参考 PicturePreview evaluateOffsetRange）
+  private evaluateOffsetRange(): void {
+    const scaledWidth = this.imageWidth * this.curScale;
+    const scaledHeight = this.imageHeight * this.curScale;
+    if (scaledWidth > this.componentWidth) {
+      const limit = (scaledWidth - this.componentWidth) / 2;
+      this.maxOffsetX = limit;
+      this.minOffsetX = -limit;
+    } else {
+      this.maxOffsetX = 0;
+      this.minOffsetX = 0;
+    }
+    if (scaledHeight > this.componentHeight) {
+      const limit = (scaledHeight - this.componentHeight) / 2;
+      this.maxOffsetY = limit;
+      this.minOffsetY = -limit;
+    } else {
+      this.maxOffsetY = 0;
+      this.minOffsetY = 0;
+    }
+  }
+
+  // 平移越界约束：超界夹回边界，图片小于容器时强制居中（参考 PicturePreview pictureBoundaryRestriction）
+  private pictureBoundaryRestriction(): void {
+    if (this.curOffsetX > this.maxOffsetX) {
+      this.curOffsetX = this.maxOffsetX;
+    } else if (this.curOffsetX < this.minOffsetX) {
+      this.curOffsetX = this.minOffsetX;
+    }
+    if (this.curOffsetY > this.maxOffsetY) {
+      this.curOffsetY = this.maxOffsetY;
+    } else if (this.curOffsetY < this.minOffsetY) {
+      this.curOffsetY = this.minOffsetY;
+    }
+    const scaledWidth = this.imageWidth * this.curScale;
+    const scaledHeight = this.imageHeight * this.curScale;
+    if (scaledWidth <= this.componentWidth) {
+      this.curOffsetX = 0;
+    }
+    if (scaledHeight <= this.componentHeight) {
+      this.curOffsetY = 0;
+    }
+  }
+
+  // ---------------- 文件路径辅助 ----------------
+
+  // 计算缩放锚点相对图片的百分比位置（入参为容器内局部坐标，参考 PicturePreview evaluateCenter）
+  private evaluateCenter(posX: number, posY: number): void {
+    const displayWidth = this.imageWidth * this.lastScale;
+    const displayHeight = this.imageHeight * this.lastScale;
+    const imgX = (this.componentWidth - displayWidth) / 2 + this.lastOffsetX;
+    const imgY = (this.componentHeight - displayHeight) / 2 + this.lastOffsetY;
+    const cX = Math.max((posX - imgX) / displayWidth, 0);
+    const cY = Math.max((posY - imgY) / displayHeight, 0);
+    this.centerX = 1 - cX;
+    this.centerY = 1 - cY;
+  }
+
+  // 计算当前偏移与缩放（参考 PicturePreview onScale）：锚点补偿 + 上下限夹取
+  private onScale(scale: number, offX: number, offY: number): void {
+    const next = this.lastScale * scale;
+    if (next > MAX_ZOOM) {
+      this.curScale = MAX_ZOOM;
+    } else if (next < 1) {
+      this.curScale = 1;
+    } else {
+      this.curScale = next;
+    }
+    // 恰好到达上限时略微回退，保证上限附近偏移仍可更新（参考 PicturePreview）
+    if (next >= MAX_ZOOM) {
+      this.curScale = MAX_ZOOM - 0.001;
+    }
+    this.evaluateOffsetRange();
+    this.curOffsetY =
+      (this.lastOffsetY + offY) + (0.5 - this.centerY) * this.imageHeight * (1 - scale) * this.lastScale;
+    this.curOffsetX = (this.lastOffsetX + offX) + (0.5 - this.centerX) * this.imageWidth * (1 - scale) * this.lastScale;
+  }
+
+  // 捏合开始：以双指中点为缩放锚点（参考 PicturePreview pinchGestureStart）
+  private pinchStart(event: GestureEvent): void {
+    const fingers = event.fingerList;
+    if (fingers.length < 2) {
+      this.centerX = 0.5;
+      this.centerY = 0.5;
+      return;
+    }
+    const midX = ((fingers[0].localX ?? 0) + (fingers[1].localX ?? 0)) / 2;
+    const midY = ((fingers[0].localY ?? 0) + (fingers[1].localY ?? 0)) / 2;
+    this.evaluateCenter(midX, midY);
+  }
+
+  // ---------------- 保存 / 分享 ----------------
+
+  // 捏合结束：低于 1x 动画复位，达到上限略回弹（参考 PicturePreview pinchGestureEnd）
+  private pinchEnd(): void {
+    this.getUIContext().animateTo({ duration: 300, curve: Curve.Smooth }, () => {
+      if (this.curScale <= 1) {
+        this.curScale = 1;
+        this.pictureScaling(1);
+        this.offsetReset();
+      } else if (this.curScale >= MAX_ZOOM) {
+        this.curScale = MAX_ZOOM - 0.1;
+        this.pictureScaling(this.curScale);
+        this.evaluateOffsetRange();
+      }
+      this.gestureEnd();
+    });
+  }
+
+  // 双击：已放大则动画复位，否则动画放大到上限（参考 PicturePreview doubleTapGesture）
+  private doubleTap(): void {
+    const reset = this.lastScale > 1;
+    this.getUIContext().animateTo({ duration: 300, curve: Curve.Smooth }, () => {
+      if (reset) {
+        this.curScale = 1;
+        this.pictureScaling(1);
+        this.offsetReset();
+      } else {
+        this.curScale = MAX_ZOOM - 0.001;
+        this.pictureScaling(this.curScale);
+        this.offsetReset();
+      }
+      this.evaluateOffsetRange();
+      this.gestureEnd();
+    });
+  }
+
+  // ---------------- 占位 ----------------
+
+  // PC/2in1 交互（轴事件）：鼠标滚轮缩放、触控板双指捏合缩放（居中锚点）
+  private handleAxisEvent(event?: AxisEvent): void {
+    if (!event) {
+      return;
+    }
+    if (event.hasAxis(AxisType.PINCH_AXIS)) {
+      if (!this.axisPinchActive) {
+        this.axisPinchActive = true;
+        this.gestureEnd();
+        this.centerX = 0.5;
+        this.centerY = 0.5;
+      }
+      const ratio = event.getPinchAxisScaleValue();
+      if (ratio > 0) {
+        this.onScale(ratio, 0, 0);
+        this.pictureScaling(this.curScale);
+        this.pictureBoundaryRestriction();
+      }
+      if (event.action === AxisAction.END || event.action === AxisAction.CANCEL) {
+        this.axisPinchActive = false;
+        this.gestureEnd();
+      }
+      return;
+    }
+    const delta = event.getVerticalAxisValue();
+    if (delta !== 0) {
+      this.gestureEnd();
+      this.centerX = 0.5;
+      this.centerY = 0.5;
+      this.onScale(Math.exp(-delta * 0.005), 0, 0);
+      this.pictureScaling(this.curScale);
+      this.pictureBoundaryRestriction();
+      this.gestureEnd();
+    }
+  }
+
+  // 保证拿到应用沙箱内可读的裸路径（file:// 去前缀；远程地址经 ImageCache 下载落盘）
+  private async ensureLocalPath(context: common.UIAbilityContext): Promise<string> {
+    const url = this.coverUrl;
+    if (url.indexOf('file://') === 0) {
+      return url.substring('file://'.length);
+    }
+    return await ImageCache.ensureLocal(context, url, this.sourceKey);
+  }
+
+  // ---------------- 操作栏 ----------------
+
+  private fileExtOf(path: string): string {
+    const q = path.indexOf('?');
+    const p = q >= 0 ? path.substring(0, q) : path;
+    const dot = p.lastIndexOf('.');
+    if (dot >= 0 && p.length - dot <= 6) {
+      return p.substring(dot + 1).toLowerCase();
+    }
+    return 'jpg';
+  }
+
+  private safeTitle(): string {
+    let t = this.title.trim();
+    if (t === '') {
+      t = 'cover';
+    }
+    let out = '';
+    for (let i = 0; i < t.length; i++) {
+      const ch = t.charAt(i);
+      if ('\\/:*?"<>|'.indexOf(ch) >= 0) {
+        out += '_';
+      } else {
+        out += ch;
+      }
+    }
+    return out;
+  }
+
+  // 保存封面到图库（对齐 Mihon Save）：弹窗授权 → 复制沙箱图片到媒体库
+  private async saveCover(): Promise<void> {
+    const context = Util.hostAbilityContext(this.getUIContext());
+    try {
+      const localPath = await this.ensureLocalPath(context);
+      if (localPath === '') {
+        Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_save_gallery_failed'));
+        return;
+      }
+      const helper = photoAccessHelper.getPhotoAccessHelper(context);
+      const configs: photoAccessHelper.PhotoCreationConfig[] = [
+        {
+          title: this.safeTitle(),
+          fileNameExtension: this.fileExtOf(localPath),
+          photoType: photoAccessHelper.PhotoType.IMAGE,
+          subtype: photoAccessHelper.PhotoSubtype.DEFAULT,
+        }
+      ];
+      const destUris: Array<string> = await helper.showAssetsCreationDialog([localPath], configs);
+      if (destUris.length === 0 || destUris[0] === '') {
+        return;
+      }
+      let dest: fs.File | undefined = undefined;
+      let src: fs.File | undefined = undefined;
+      try {
+        dest = await fs.open(destUris[0], fs.OpenMode.WRITE_ONLY);
+        src = await fs.open(localPath, fs.OpenMode.READ_ONLY);
+        await fs.copyFile(src.fd, dest.fd);
+      } finally {
+        if (src !== undefined) {
+          fs.closeSync(src);
+        }
+        if (dest !== undefined) {
+          fs.closeSync(dest);
+        }
+      }
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_saved'));
+    } catch (e) {
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_save_gallery_failed'));
+    }
+  }
+
+  // 分享封面（对齐 Mihon Share）：拉起系统分享面板分享图片
+  private async shareCover(): Promise<void> {
+    const context = Util.hostAbilityContext(this.getUIContext());
+    try {
+      const localPath = await this.ensureLocalPath(context);
+      if (localPath === '') {
+        Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_share_failed'));
+        return;
+      }
+      const utdTypeId = utd.getUniformDataTypeByFilenameExtension('.' + this.fileExtOf(localPath),
+        utd.UniformDataType.IMAGE);
+      const data: systemShare.SharedData = new systemShare.SharedData({
+        utd: utdTypeId,
+        uri: fileUri.getUriFromPath(localPath),
+        title: this.title,
+      });
+      const controller = new systemShare.ShareController(data);
+      controller.show(context, {
+        selectionMode: systemShare.SelectionMode.SINGLE,
+        previewMode: systemShare.SharePreviewMode.DETAIL,
+      }).catch((error: BusinessError) => {
+        Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_share_failed'));
+      });
+    } catch (e) {
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_share_failed'));
+    }
   }
 }

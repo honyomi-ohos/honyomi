@@ -1,48 +1,177 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Фільтруе ўсе творы ў вашай бібліятэцы" },
-    { "name": "more_incognito_summary", "value": "Прыпыняе гісторыю чытання" },
-    { "name": "more_support", "value": "Падтрымайце нас" },
-    { "name": "more_help", "value": "Дапамога" },
-    { "name": "support_perks", "value": "Спонсары атрымліваюць доступ да эксклюзіўных каналаў, а наперадзе — больш бонусаў." },
-    { "name": "support_patreon", "value": "Patreon (рэкамендуецца)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Зараз Mihon падтрымліваюць %d+ спонсараў. Мы ўдзячныя кожнаму з вас. Зробім Mihon яшчэ лепей разам." },
-    { "name": "support_contact_msg", "value": "Каб даведацца пра іншыя спосабы падтрымкі ці задаць пытанні, заглядайце ў наш Discord-сервер." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "Даныя і сховішча" },
-    { "name": "data_storage_location", "value": "Месца сховішча" },
-    { "name": "data_storage_location_info", "value": "Для аўтаматычных рэзервовак, спампоўвання раздзелаў і лакальных крыніц." },
-    { "name": "data_backup_restore", "value": "Рэзервоўка і аднаўленне" },
-    { "name": "data_create_backup", "value": "Зарэзерваваць" },
-    { "name": "data_restore_backup", "value": "Аднавіць з рэзервоўкі" },
-    { "name": "data_backup_interval", "value": "Частата аўтаматычнага рэзервавання" },
-    { "name": "data_backup_info", "value": "Варта захоўваць копіі рэзервовак таксама і ў іншых месцах. Рэзервоўкі могуць утрымліваць канфідэнцыйныя даныя, у тым ліку захаваныя паролі; будзьце асцярожныя, калі дзеліцеся імі." },
-    { "name": "data_last_auto_backup", "value": "Апошняе аўтаматычнае рэзерваванне: %s" },
-    { "name": "data_storage_usage", "value": "Выкарыстанне сховішча" },
-    { "name": "data_available_space", "value": "Даступна: %s / Усяго: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Ачысціць кэш раздзелаў" },
-    { "name": "data_used_cache", "value": "Выкарыстана %s" },
-    { "name": "data_cache_deleted", "value": "Кэш ачышчаны, выдалена файлаў: %d" },
-    { "name": "data_cache_delete_error", "value": "Адбылася памылка падчас ачысткі" },
-    { "name": "data_auto_clear_cache", "value": "Ачышчаць кэш раздзелаў пры запуску праграмы" },
-    { "name": "data_export", "value": "Экспартаваць" },
-    { "name": "data_library_list", "value": "Спіс бібліятэкі" },
-    { "name": "data_library_exported", "value": "Бібліятэка экспартавана" },
-    { "name": "data_export_include", "value": "Абярыце даныя для ўключэння" },
-    { "name": "data_column_title", "value": "Загаловак" },
-    { "name": "data_column_author", "value": "Аўтар" },
-    { "name": "data_interval_off", "value": "Выключана" },
-    { "name": "data_interval_6h", "value": "Кожныя 6 гадзін" },
-    { "name": "data_interval_12h", "value": "Кожныя 12 гадзін" },
-    { "name": "data_interval_24h", "value": "Штодня" },
-    { "name": "data_interval_48h", "value": "Кожныя 2 дні" },
-    { "name": "data_interval_weekly", "value": "Штотыдзень" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Фільтруе ўсе творы ў вашай бібліятэцы"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Прыпыняе гісторыю чытання"
+    },
+    {
+      "name": "more_support",
+      "value": "Падтрымайце нас"
+    },
+    {
+      "name": "more_help",
+      "value": "Дапамога"
+    },
+    {
+      "name": "support_perks",
+      "value": "Спонсары атрымліваюць доступ да эксклюзіўных каналаў, а наперадзе — больш бонусаў."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (рэкамендуецца)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Зараз Mihon падтрымліваюць %d+ спонсараў. Мы ўдзячныя кожнаму з вас. Зробім Mihon яшчэ лепей разам."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "Каб даведацца пра іншыя спосабы падтрымкі ці задаць пытанні, заглядайце ў наш Discord-сервер."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "Даныя і сховішча"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Месца сховішча"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Для аўтаматычных рэзервовак, спампоўвання раздзелаў і лакальных крыніц."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "Рэзервоўка і аднаўленне"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Зарэзерваваць"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Аднавіць з рэзервоўкі"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Частата аўтаматычнага рэзервавання"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "Варта захоўваць копіі рэзервовак таксама і ў іншых месцах. Рэзервоўкі могуць утрымліваць канфідэнцыйныя даныя, у тым ліку захаваныя паролі; будзьце асцярожныя, калі дзеліцеся імі."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Апошняе аўтаматычнае рэзерваванне: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Выкарыстанне сховішча"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Даступна: %s / Усяго: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Ачысціць кэш раздзелаў"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Выкарыстана %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Кэш ачышчаны, выдалена файлаў: %d"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Адбылася памылка падчас ачысткі"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Ачышчаць кэш раздзелаў пры запуску праграмы"
+    },
+    {
+      "name": "data_export",
+      "value": "Экспартаваць"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Спіс бібліятэкі"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Бібліятэка экспартавана"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Абярыце даныя для ўключэння"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Загаловак"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Аўтар"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "Выключана"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "Кожныя 6 гадзін"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "Кожныя 12 гадзін"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "Штодня"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "Кожныя 2 дні"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "Штотыдзень"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
     {
       "name": "module_desc",
       "value": "module description"
@@ -1255,189 +1384,741 @@
       "name": "reader_set_brightness_reset",
       "value": "Яркасць зноў адпавядае сістэме"
     },
-    { "name": "browse_tab_sources", "value": "Крыніцы" },
-    { "name": "browse_tab_extensions", "value": "Пашырэнні" },
-    { "name": "browse_tab_migrate", "value": "Перанесці" },
-    { "name": "browse_pin", "value": "Замацаваць" },
-    { "name": "browse_unpin", "value": "Адмацаваць" },
-    { "name": "browse_disable_source", "value": "Адключыць крыніцу" },
-    { "name": "browse_source_disabled", "value": "Крыніца адключана" },
-    { "name": "browse_pinned", "value": "Замацавана" },
-    { "name": "browse_sources_empty", "value": "Няма крыніц. Усталюйце іх на ўкладцы Пашырэнні" },
-    { "name": "browse_filter_langs", "value": "Фільтр моў" },
-    { "name": "browse_filter_all", "value": "Усе" },
-    { "name": "browse_source_missing", "value": "Крыніца недаступная. Магчыма, пашырэнне адключана" },
-    { "name": "global_search_hint", "value": "Пошук ва ўсіх крыніцах" },
-    { "name": "global_search_failed", "value": "Пошук не ўдаўся" },
-    { "name": "ext_search_hint", "value": "Пошук пашырэнняў" },
-    { "name": "ext_search_no_match", "value": "Няма супадзенняў" },
-    { "name": "ext_repo_settings", "value": "Налады рэпазіторыя" },
-    { "name": "ext_refresh_repo", "value": "Абнавіць рэпазіторый" },
-    { "name": "migrate_pick_source", "value": "Выберыце крыніцу для пераносу" },
-    { "name": "migrate_empty_library", "value": "Бібліятэка пустая" },
-    { "name": "migrate_select_all", "value": "Выбраць усе" },
-    { "name": "migrate_deselect_all", "value": "Зняць выбар" },
-    { "name": "migrate_action", "value": "Перанесці (%d)" },
-    { "name": "migrate_title", "value": "Перанесці" },
-    { "name": "migrate_skip", "value": "Прапусціць" },
-    { "name": "migrate_progress", "value": "%d з %d" },
-    { "name": "migrate_target_source", "value": "Мэтавая крыніца" },
-    { "name": "migrate_search_hint", "value": "Шукаць мангу ў мэтавай крыніцы" },
-    { "name": "migrate_confirm_title", "value": "Перанесці ў гэтую мангу?" },
-    { "name": "migrate_item_done", "value": "Перанесена: %s" },
-    { "name": "migrate_failed", "value": "Перанос не ўдаўся: %s" },
-    { "name": "migrate_done", "value": "Перанос завершаны" },
-    { "name": "migrate_no_target", "value": "Няма мэтавай крыніцы" },
-    { "name": "stats_title", "value": "Статыстыка" },
-    { "name": "stats_overview_section", "value": "Агляд" },
-    { "name": "stats_in_library", "value": "У бібліятэцы" },
-    { "name": "stats_read_duration", "value": "Час чытання" },
-    { "name": "stats_completed_titles", "value": "Завершана" },
-    { "name": "stats_titles_section", "value": "Творы" },
-    { "name": "stats_started_titles", "value": "Пачата" },
-    { "name": "stats_local_titles", "value": "Лакальна" },
-    { "name": "stats_chapters_section", "value": "Раздзелы" },
-    { "name": "stats_total_chapters", "value": "Усяго" },
-    { "name": "stats_read_chapters", "value": "Прачытана" },
-    { "name": "stats_downloaded_chapters", "value": "Спампавана" },
-    { "name": "stats_tracker_section", "value": "Трэкеры" },
-    { "name": "stats_tracked_titles", "value": "Адсочваныя творы" },
-    { "name": "stats_mean_score", "value": "Сярэдняя адзнака" },
-    { "name": "stats_used", "value": "Выкарыстоўваецца" },
-    { "name": "stats_not_applicable", "value": "н/д" },
-    { "name": "stats_week", "value": "Тыдзень" },
-    { "name": "stats_month", "value": "Месяц" },
-    { "name": "stats_week_total", "value": "%s за гэты тыдзень" },
-    { "name": "stats_month_total", "value": "%s за гэты месяц" },
-    { "name": "stats_no_reading", "value": "У гэтым перыядзе няма чытання" },
-    { "name": "stats_day_short", "value": "%dд" },
-    { "name": "stats_hour_short", "value": "%dг" },
-    { "name": "stats_minute_short", "value": "%dхв" },
-    { "name": "stats_second_short", "value": "%dс" },
-    { "name": "stats_wd_sun", "value": "Нд" },
-    { "name": "stats_wd_mon", "value": "Пн" },
-    { "name": "stats_wd_tue", "value": "Аў" },
-    { "name": "stats_wd_wed", "value": "Ср" },
-    { "name": "stats_wd_thu", "value": "Чц" },
-    { "name": "stats_wd_fri", "value": "Пт" },
-    { "name": "stats_wd_sat", "value": "Сб" },
-    { "name": "reader_mode_vertical", "value": "Вертыкальна" },
-    { "name": "reader_mode_smart_grip", "value": "Разумны хват" },
-    { "name": "reader_orientation_lock_portrait", "value": "Заблакіраваць партрэтную" },
-    { "name": "reader_orientation_lock_landscape", "value": "Заблакіраваць альбомную" },
-    { "name": "reader_tab_general", "value": "Асноўныя" },
-    { "name": "reader_tab_filter", "value": "Каляровы фільтр" },
-    { "name": "reader_filter_grayscale", "value": "Адценні шэрага" },
-    { "name": "reader_filter_invert", "value": "Інверсія колераў" },
-    { "name": "reader_filter_contrast", "value": "Кантраст" },
-    { "name": "reader_filter_saturation", "value": "Насычанасць" },
-    { "name": "reader_crop_borders", "value": "Абрэзаць краі" },
-    { "name": "reader_nav_tap_zones", "value": "Зоны націску" },
-    { "name": "reader_nav_default", "value": "Па змаўчанні" },
-    { "name": "reader_nav_ltr", "value": "Злева направа" },
-    { "name": "reader_nav_rtl", "value": "Справа налева" },
-    { "name": "reader_nav_vertical", "value": "Вертыкальна" },
-    { "name": "reader_nav_edge", "value": "Край" },
-    { "name": "reader_nav_none", "value": "Няма" },
-    { "name": "reader_dual_page", "value": "Дзве старонкі" },
-    { "name": "reader_webtoon_padding", "value": "Бакавы водступ вэбтуна" },
-    { "name": "reader_set_mode_smart_grip", "value": "Разумны хват" },
-    { "name": "ext_install_local", "value": "Усталяваць лакальна" },
-    { "name": "ext_detail_title", "value": "Звесткі пра пашырэнне" },
-    { "name": "ext_info_version", "value": "Версія" },
-    { "name": "ext_info_language", "value": "Мова" },
-    { "name": "ext_uninstall_title", "value": "Выдаліць пашырэнне" },
-    { "name": "ext_uninstall_msg", "value": "Выдаліць пашырэнне «%s»? Манга ў бібліятэцы застанецца" },
-    { "name": "ext_detail_sources", "value": "Крыніцы" },
-    { "name": "ext_detail_settings", "value": "Налады" },
-    { "name": "ext_pref_loading", "value": "Загрузка…" },
-    { "name": "ext_pref_failed", "value": "Не ўдалося ўжыць налады" },
-    { "name": "ext_detail_missing", "value": "Пашырэнне адсутнічае або не загружана" },
-    { "name": "action_filter", "value": "Фільтр" },
-    { "name": "action_update_library", "value": "Абнавіць бібліятэку" },
-    { "name": "action_update_category", "value": "Абнавіць катэгорыю" },
-    { "name": "action_open_random_manga", "value": "Адкрыць выпадковы твор" },
-    { "name": "action_select_all", "value": "Выбраць усё" },
-    { "name": "action_select_inverse", "value": "Інвертаваць выбар" },
-    { "name": "action_move_category", "value": "Перамясціць у катэгорыю" },
-    { "name": "action_mark_as_read", "value": "Пазначыць прачытаным" },
-    { "name": "action_mark_as_unread", "value": "Пазначыць непрачытаным" },
-    { "name": "action_download", "value": "Спампаваць" },
-    { "name": "action_delete", "value": "Выдаліць" },
-    { "name": "action_migrate", "value": "Перанесці" },
-    { "name": "action_remove_from_library", "value": "Прыбраць з бібліятэкі" },
-    { "name": "action_remove_from_library_msg", "value": "Прыбраць з бібліятэкі выбраныя мангі (%d)?" },
-    { "name": "action_download_queued", "value": "У чаргу дададзена задач спампоўкі: %d" },
-    { "name": "library_search_hint", "value": "Пошук у бібліятэцы" },
-    { "name": "library_no_match", "value": "Няма адпаведнай мангі" },
-    { "name": "lib_sheet_tab_filter", "value": "Фільтр" },
-    { "name": "lib_sheet_tab_sort", "value": "Сартаванне" },
-    { "name": "lib_sheet_tab_display", "value": "Адлюстраванне" },
-    { "name": "lib_filter_downloaded", "value": "Спампаванае" },
-    { "name": "lib_filter_unread", "value": "Непрачытанае" },
-    { "name": "lib_filter_started", "value": "Пачатыя" },
-    { "name": "lib_filter_bookmarked", "value": "У закладках" },
-    { "name": "lib_filter_completed", "value": "Завершана" },
-    { "name": "lib_filter_tracked", "value": "Адсочваецца" },
-    { "name": "lib_sort_alpha", "value": "Назва" },
-    { "name": "lib_sort_total", "value": "Колькасць раздзелаў" },
-    { "name": "lib_sort_last_read", "value": "Нядаўняе чытанне" },
-    { "name": "lib_sort_last_update", "value": "Час праверкі абнаўленняў" },
-    { "name": "lib_sort_unread", "value": "Колькасць непрачытаных" },
-    { "name": "lib_sort_latest_chapter", "value": "Час абнаўлення твора" },
-    { "name": "lib_sort_fetch_date", "value": "Час атрымання раздзелаў" },
-    { "name": "lib_sort_date_added", "value": "Дата дадання" },
-    { "name": "lib_sort_random", "value": "Выпадкова" },
-    { "name": "lib_display_compact", "value": "Шчыльная сетка" },
-    { "name": "lib_display_comfortable", "value": "Свабодная сетка" },
-    { "name": "lib_display_cover", "value": "Сетка вокладак" },
-    { "name": "lib_display_list", "value": "Спіс" },
-    { "name": "lib_display_grid_size", "value": "Колькасць у радку" },
-    { "name": "lib_display_grid_auto", "value": "Аўта" },
-    { "name": "lib_display_badges_group", "value": "Значкі і кнопкі" },
-    { "name": "lib_badge_downloaded", "value": "Колькасць спампаваных раздзелаў" },
-    { "name": "lib_badge_unread", "value": "Непрачытаныя раздзелы" },
-    { "name": "lib_badge_local", "value": "Лакальная крыніца" },
-    { "name": "lib_badge_language", "value": "Мова" },
-    { "name": "lib_badge_continue", "value": "Кнопка «Працягнуць чытанне»" },
-    { "name": "lib_display_tabs_group", "value": "Укладкі" },
-    { "name": "lib_show_category_tabs", "value": "Паказваць укладкі катэгорый" },
-    { "name": "lib_show_manga_count", "value": "Паказваць колькасць твораў" },
-    { "name": "EntryFormAbility_label", "value": "Карткі Honyomi" },
-    { "name": "EntryFormAbility_desc", "value": "Пастаўшчык картак працоўнага стала" },
-    { "name": "card_recent_display", "value": "Працягнуць чытанне" },
-    { "name": "card_recent_desc", "value": "Хутка працягнуць нядаўна чытаную мангу" },
-    { "name": "card_updates_display", "value": "Абнаўленні" },
-    { "name": "card_updates_desc", "value": "Новыя непрачытаныя раздзелы ў бібліятэцы" },
-    { "name": "card_recent_header", "value": "Працягнуць чытанне" },
-    { "name": "card_updates_header", "value": "Абнаўленні" },
-    { "name": "card_unread_count", "value": "Непрачытаных раздзелаў: %d" },
-    { "name": "card_empty_recent", "value": "Гісторыі чытання пакуль няма" },
-    { "name": "card_empty_updates", "value": "Няма непрачытаных раздзелаў" },
-    { "name": "card_open_hint", "value": "Націсніце, каб адкрыць праграму" },
-    { "name": "card_manga_display", "value": "Картка мангі" },
-    { "name": "card_manga_desc", "value": "Дадайце на старонцы звестак: вокладка адкрывае чытанне" },
-    { "name": "card_manga_empty", "value": "Дадайце са старонкі звестак пра мангу" },
-    { "name": "detail_add_to_desktop", "value": "Дадаць на працоўны стол" },
-    { "name": "detail_card_added", "value": "Дададзена на працоўны стол" },
-    { "name": "detail_card_add_failed", "value": "Не ўдалося дадаць картку" },
-    { "name": "card_stats_week_display", "value": "Статыстыка за тыдзень" },
-    { "name": "card_stats_week_desc", "value": "Час чытання па днях за гэты тыдзень" },
-    { "name": "card_stats_month_display", "value": "Статыстыка за месяц" },
-    { "name": "card_stats_month_desc", "value": "Час чытання па днях за гэты месяц" },
-    { "name": "card_stats_empty", "value": "Чытання пакуль няма" },
-    { "name": "action_view_upcoming", "value": "Паказаць надыходзячыя абнаўленні" },
-    { "name": "label_upcoming", "value": "Надыходзячыя" },
-    { "name": "upcoming_guide", "value": "Даведка пра надыходзячыя" },
-    { "name": "upcoming_calendar_prev", "value": "Папярэдні месяц" },
-    { "name": "upcoming_calendar_next", "value": "Наступны месяц" },
-    { "name": "pref_filter_update_categories_details", "value": "Творы, якія адначасова ўваходзяць ва ўключаныя і выключаныя катэгорыі, не паказваюцца." },
-    { "name": "relative_time_today", "value": "Сёння" },
-    { "name": "relative_time_days_ago", "value": "%d дз. таму" },
-    { "name": "upcoming_relative_time_days", "value": "Праз %d дз." },
-    { "name": "card_upcoming_display", "value": "Надыходзячыя" },
-    { "name": "card_upcoming_desc", "value": "Каляндар чаканых абнаўленняў мангі ў бібліятэцы" },
-    { "name": "card_upcoming_header", "value": "Надыходзячыя" },
-    { "name": "card_empty_upcoming", "value": "У бібліятэцы няма мангі, што выпускаецца" }
-]
+    {
+      "name": "browse_tab_sources",
+      "value": "Крыніцы"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "Пашырэнні"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "Перанесці"
+    },
+    {
+      "name": "browse_pin",
+      "value": "Замацаваць"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "Адмацаваць"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "Адключыць крыніцу"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "Крыніца адключана"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "Замацавана"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "Няма крыніц. Усталюйце іх на ўкладцы Пашырэнні"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "Фільтр моў"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "Усе"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "Крыніца недаступная. Магчыма, пашырэнне адключана"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "Пошук ва ўсіх крыніцах"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "Пошук не ўдаўся"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "Пошук пашырэнняў"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "Няма супадзенняў"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "Налады рэпазіторыя"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "Абнавіць рэпазіторый"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "Выберыце крыніцу для пераносу"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "Бібліятэка пустая"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "Выбраць усе"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "Зняць выбар"
+    },
+    {
+      "name": "migrate_action",
+      "value": "Перанесці (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "Перанесці"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "Прапусціць"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d з %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "Мэтавая крыніца"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "Шукаць мангу ў мэтавай крыніцы"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "Перанесці ў гэтую мангу?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "Перанесена: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "Перанос не ўдаўся: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "Перанос завершаны"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "Няма мэтавай крыніцы"
+    },
+    {
+      "name": "stats_title",
+      "value": "Статыстыка"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "Агляд"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "У бібліятэцы"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "Час чытання"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "Завершана"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "Творы"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "Пачата"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "Лакальна"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "Раздзелы"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "Усяго"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "Прачытана"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "Спампавана"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "Трэкеры"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "Адсочваныя творы"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "Сярэдняя адзнака"
+    },
+    {
+      "name": "stats_used",
+      "value": "Выкарыстоўваецца"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "н/д"
+    },
+    {
+      "name": "stats_week",
+      "value": "Тыдзень"
+    },
+    {
+      "name": "stats_month",
+      "value": "Месяц"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "%s за гэты тыдзень"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "%s за гэты месяц"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "У гэтым перыядзе няма чытання"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%dд"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dг"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dхв"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%dс"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "Нд"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "Пн"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "Аў"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "Ср"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "Чц"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "Пт"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "Сб"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "Вертыкальна"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "Разумны хват"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "Заблакіраваць партрэтную"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "Заблакіраваць альбомную"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "Асноўныя"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "Каляровы фільтр"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "Адценні шэрага"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "Інверсія колераў"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "Кантраст"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "Насычанасць"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "Абрэзаць краі"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "Зоны націску"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "Па змаўчанні"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "Злева направа"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "Справа налева"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "Вертыкальна"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "Край"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "Няма"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Дзве старонкі"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "Бакавы водступ вэбтуна"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "Разумны хват"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "Усталяваць лакальна"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "Звесткі пра пашырэнне"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "Версія"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "Мова"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "Выдаліць пашырэнне"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "Выдаліць пашырэнне «%s»? Манга ў бібліятэцы застанецца"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "Крыніцы"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "Налады"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "Загрузка…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "Не ўдалося ўжыць налады"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "Пашырэнне адсутнічае або не загружана"
+    },
+    {
+      "name": "action_filter",
+      "value": "Фільтр"
+    },
+    {
+      "name": "action_update_library",
+      "value": "Абнавіць бібліятэку"
+    },
+    {
+      "name": "action_update_category",
+      "value": "Абнавіць катэгорыю"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "Адкрыць выпадковы твор"
+    },
+    {
+      "name": "action_select_all",
+      "value": "Выбраць усё"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "Інвертаваць выбар"
+    },
+    {
+      "name": "action_move_category",
+      "value": "Перамясціць у катэгорыю"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "Пазначыць прачытаным"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "Пазначыць непрачытаным"
+    },
+    {
+      "name": "action_download",
+      "value": "Спампаваць"
+    },
+    {
+      "name": "action_delete",
+      "value": "Выдаліць"
+    },
+    {
+      "name": "action_migrate",
+      "value": "Перанесці"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "Прыбраць з бібліятэкі"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "Прыбраць з бібліятэкі выбраныя мангі (%d)?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "У чаргу дададзена задач спампоўкі: %d"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "Пошук у бібліятэцы"
+    },
+    {
+      "name": "library_no_match",
+      "value": "Няма адпаведнай мангі"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "Фільтр"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "Сартаванне"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "Адлюстраванне"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "Спампаванае"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "Непрачытанае"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "Пачатыя"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "У закладках"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "Завершана"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "Адсочваецца"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "Назва"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "Колькасць раздзелаў"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "Нядаўняе чытанне"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "Час праверкі абнаўленняў"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "Колькасць непрачытаных"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "Час абнаўлення твора"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "Час атрымання раздзелаў"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "Дата дадання"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "Выпадкова"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "Шчыльная сетка"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "Свабодная сетка"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "Сетка вокладак"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "Спіс"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "Колькасць у радку"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "Аўта"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "Значкі і кнопкі"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "Колькасць спампаваных раздзелаў"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "Непрачытаныя раздзелы"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "Лакальная крыніца"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "Мова"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "Кнопка «Працягнуць чытанне»"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "Укладкі"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "Паказваць укладкі катэгорый"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "Паказваць колькасць твораў"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "Карткі Honyomi"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "Пастаўшчык картак працоўнага стала"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "Працягнуць чытанне"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "Хутка працягнуць нядаўна чытаную мангу"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "Абнаўленні"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "Новыя непрачытаныя раздзелы ў бібліятэцы"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "Працягнуць чытанне"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "Абнаўленні"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "Непрачытаных раздзелаў: %d"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "Гісторыі чытання пакуль няма"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "Няма непрачытаных раздзелаў"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "Націсніце, каб адкрыць праграму"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "Картка мангі"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "Дадайце на старонцы звестак: вокладка адкрывае чытанне"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "Дадайце са старонкі звестак пра мангу"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "Дадаць на працоўны стол"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "Дададзена на працоўны стол"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "Не ўдалося дадаць картку"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "Статыстыка за тыдзень"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "Час чытання па днях за гэты тыдзень"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "Статыстыка за месяц"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "Час чытання па днях за гэты месяц"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "Чытання пакуль няма"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "Паказаць надыходзячыя абнаўленні"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "Надыходзячыя"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "Даведка пра надыходзячыя"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "Папярэдні месяц"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "Наступны месяц"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "Творы, якія адначасова ўваходзяць ва ўключаныя і выключаныя катэгорыі, не паказваюцца."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "Сёння"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d дз. таму"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "Праз %d дз."
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "Надыходзячыя"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "Каляндар чаканых абнаўленняў мангі ў бібліятэцы"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "Надыходзячыя"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "У бібліятэцы няма мангі, што выпускаецца"
+    }
+  ]
 }

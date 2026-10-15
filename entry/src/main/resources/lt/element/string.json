@@ -1,534 +1,2124 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Filtruoja visus įrašus jūsų bibliotekoje" },
-    { "name": "more_incognito_summary", "value": "Pristabdo skaitymo istoriją" },
-    { "name": "more_support", "value": "Support Us" },
-    { "name": "more_help", "value": "Pagalba" },
-    { "name": "support_perks", "value": "Patrons get access to exclusive channels, with more perks to come." },
-    { "name": "support_patreon", "value": "Patreon (preferred)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together." },
-    { "name": "support_contact_msg", "value": "For alternative options or any related questions, join our Discord server." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "Data and storage" },
-    { "name": "data_storage_location", "value": "Storage location" },
-    { "name": "data_storage_location_info", "value": "Used for automatic backups, chapter downloads, and local source." },
-    { "name": "data_backup_restore", "value": "Atsarginė kopija ir atkūrimas" },
-    { "name": "data_create_backup", "value": "Kurti atsarginę kopiją" },
-    { "name": "data_restore_backup", "value": "Atkurti atsarginę kopiją" },
-    { "name": "data_backup_interval", "value": "Atsarginių kopijų kūrimo dažnis" },
-    { "name": "data_backup_info", "value": "Atsargines kopijas turėtumėte laikyti ir kitose vietose." },
-    { "name": "data_last_auto_backup", "value": "Last automatically backed up: %s" },
-    { "name": "data_storage_usage", "value": "Storage usage" },
-    { "name": "data_available_space", "value": "Available: %s / Total: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Išvalyti skyriaus talpyklą" },
-    { "name": "data_used_cache", "value": "Naudota: %s" },
-    { "name": "data_cache_deleted", "value": "Talpykla išvalyta. %d failai buvo ištrinti" },
-    { "name": "data_cache_delete_error", "value": "Valymo metu įvyko klaida" },
-    { "name": "data_auto_clear_cache", "value": "Išvalyti skyriaus talpyklą uždarius programą" },
-    { "name": "data_export", "value": "Export" },
-    { "name": "data_library_list", "value": "Library List" },
-    { "name": "data_library_exported", "value": "Library Exported" },
-    { "name": "data_export_include", "value": "Pasirinkite duomenis, kuriuos norite įtraukti" },
-    { "name": "data_column_title", "value": "Pavadinimas" },
-    { "name": "data_column_author", "value": "Author" },
-    { "name": "data_interval_off", "value": "Išjungta" },
-    { "name": "data_interval_6h", "value": "Kas 6 valandas" },
-    { "name": "data_interval_12h", "value": "Kas 12 valandų" },
-    { "name": "data_interval_24h", "value": "Kasdien" },
-    { "name": "data_interval_48h", "value": "Kas 2 dienas" },
-    { "name": "data_interval_weekly", "value": "Kas savaitę" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "Gerai" },
-    { "name": "common_cancel", "value": "Atšaukti" },
-    { "name": "common_confirm", "value": "Patvirtinti" },
-    { "name": "common_delete", "value": "Ištrinti" },
-    { "name": "common_retry", "value": "Bandyti dar kartą" },
-    { "name": "common_search", "value": "Ieškoti" },
-    { "name": "common_all", "value": "Visi" },
-    { "name": "common_close", "value": "Uždaryti" },
-    { "name": "common_save", "value": "Išsaugoti" },
-    { "name": "common_install", "value": "Diegti" },
-    { "name": "common_uninstall", "value": "Pašalinti" },
-    { "name": "common_update", "value": "Atnaujinti" },
-    { "name": "common_none", "value": "Nėra" },
-    { "name": "common_default", "value": "Numatyta" },
-    { "name": "appearance_title", "value": "Išvaizda" },
-    { "name": "appearance_language", "value": "Kalba" },
-    { "name": "lang_follow_system", "value": "Kaip sistemoje" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "Temos režimas" },
-    { "name": "appearance_theme_auto", "value": "Kaip sistemoje" },
-    { "name": "appearance_theme_light", "value": "Šviesi" },
-    { "name": "appearance_theme_dark", "value": "Tamsi" },
-    { "name": "appearance_accent_color", "value": "Akcento spalva" },
-    { "name": "appearance_other", "value": "Kita" },
-    { "name": "appearance_amoled", "value": "AMOLED gryna juoda fono spalva" },
-    { "name": "theme_accent_blue", "value": "Mėlyna" },
-    { "name": "theme_accent_green", "value": "Žalia" },
-    { "name": "theme_accent_pink", "value": "Rožinė" },
-    { "name": "theme_accent_purple", "value": "Violetinė" },
-    { "name": "theme_accent_orange", "value": "Oranžinė" },
-    { "name": "util_time_minutes_ago", "value": "prieš %d min." },
-    { "name": "util_time_hours_ago", "value": "prieš %d val." },
-    { "name": "util_time_days_ago", "value": "prieš %d d." },
-    { "name": "util_status_ongoing", "value": "Vykdoma" },
-    { "name": "util_status_completed", "value": "Užbaigta" },
-    { "name": "util_status_hiatus", "value": "Pristabdyta" },
-    { "name": "util_status_cancelled", "value": "Atšaukta" },
-    { "name": "util_status_publication_complete", "value": "Leidyba baigta" },
-    { "name": "util_status_unknown", "value": "Nežinoma" },
-    { "name": "tab_library", "value": "Biblioteka" },
-    { "name": "tab_updates", "value": "Naujienos" },
-    { "name": "tab_history", "value": "Istorija" },
-    { "name": "tab_browse", "value": "Naršyti" },
-    { "name": "tab_more", "value": "Daugiau" },
-    { "name": "tab_cf_waiting", "value": "Laukiama patvirtinimo…" },
-    { "name": "tab_cf_verified", "value": "Patvirtinimas baigtas" },
-    { "name": "tab_cf_title", "value": "Žmogaus patvirtinimas" },
-    { "name": "tab_cf_done", "value": "Atlikta" },
-    { "name": "tab_cf_saved", "value": "Patvirtinimo rezultatas išsaugotas" },
-    { "name": "more_title", "value": "Daugiau" },
-    { "name": "more_version", "value": "Versija %s" },
-    { "name": "more_downloaded_only", "value": "Rodyti tik atsisiųstus" },
-    { "name": "more_incognito", "value": "Inkognito režimas" },
-    { "name": "more_downloads", "value": "Atsisiuntimų eilė" },
-    { "name": "more_categories", "value": "Kategorijos" },
-    { "name": "more_settings", "value": "Nustatymai" },
-    { "name": "more_about", "value": "Apie" },
-    { "name": "more_plugins", "value": "Plėtiniai" },
-    { "name": "categories_title", "value": "Kategorijos" },
-    { "name": "categories_add", "value": "Nauja kategorija" },
-    { "name": "categories_name_placeholder", "value": "Kategorijos pavadinimas" },
-    { "name": "categories_rename_category", "value": "Pervadinti kategoriją" },
-    { "name": "categories_rename", "value": "Pervadinti" },
-    { "name": "categories_hint", "value": "Ilgai paspauskite kategoriją, kad pervadintumėte arba ištrintumėte; ištrintos kategorijos manga grąžinama į Numatyta" },
-    { "name": "dialog_pick_category", "value": "Pasirinkti kategoriją" },
-    { "name": "viewer_loading", "value": "Įkeliama…" },
-    { "name": "viewer_load_failed", "value": "Nepavyko įkelti vaizdo" },
-    { "name": "viewer_tap_retry", "value": "Bakstelėkite, kad bandytumėte dar kartą" },
-    { "name": "library_title", "value": "Biblioteka" },
-    { "name": "library_empty", "value": "Biblioteka tuščia, naršykite ir pridėkite mangos" },
-    { "name": "library_new_category", "value": "Nauja kategorija" },
-    { "name": "library_category_name", "value": "Kategorijos pavadinimas" },
-    { "name": "updates_title", "value": "Naujienos" },
-    { "name": "updates_empty", "value": "Nėra naujausių atnaujinimų" },
-    { "name": "updates_found_new", "value": "Rasta %d naujų skyrių" },
-    { "name": "updates_no_new", "value": "Nėra naujų skyrių" },
-    { "name": "updates_refresh_failed", "value": "Atnaujinti nepavyko" },
-    { "name": "updates_refreshing", "value": "Atnaujinama…" },
-    { "name": "history_title", "value": "Istorija" },
-    { "name": "history_clear", "value": "Išvalyti" },
-    { "name": "history_confirm_clear", "value": "Patvirtinti išvalymą?" },
-    { "name": "history_empty", "value": "Dar nėra skaitymo istorijos" },
-    { "name": "history_cleared", "value": "Istorija išvalyta" },
-    { "name": "history_continue", "value": "Tęsti" },
-    { "name": "browse_title", "value": "Naršyti" },
-    { "name": "browse_import", "value": "Importuoti" },
-    { "name": "browse_plugins", "value": "Papildiniai" },
-    { "name": "browse_local_source_name", "value": "Vietinė manga" },
-    { "name": "browse_popular", "value": "Populiaru" },
-    { "name": "browse_latest", "value": "Naujausi" },
-    { "name": "browse_search_hint", "value": "Ieškoti mangos…" },
-    { "name": "browse_no_results", "value": "Mangos nerasta" },
-    { "name": "browse_local_empty", "value": "Dar nėra vietinės mangos, bakstelėkite Importuoti" },
-    { "name": "browse_load_failed", "value": "Įkelti nepavyko: %s" },
-    { "name": "browse_search_failed", "value": "Paieška nepavyko: %s" },
-    { "name": "browse_load_more_failed", "value": "Nepavyko įkelti daugiau" },
-    { "name": "browse_open_detail_failed", "value": "Nepavyko atidaryti išsamios informacijos" },
-    { "name": "browse_pick_file_failed", "value": "Nepavyko pasirinkti failų" },
-    { "name": "browse_import_title", "value": "Importuoti %d failus" },
-    { "name": "browse_manga_name_hint", "value": "Mangos pavadinimas" },
-    { "name": "browse_input_name", "value": "Įveskite pavadinimą" },
-    { "name": "browse_import_done", "value": "Importuota %d failų" },
-    { "name": "browse_import_failed", "value": "Importuoti nepavyko: %s" },
-    { "name": "download_title", "value": "Atsisiuntimai" },
-    { "name": "download_resume", "value": "Tęsti" },
-    { "name": "download_pause", "value": "Pristabdyti" },
-    { "name": "download_clear_finished", "value": "Išvalyti baigtus" },
-    { "name": "download_queue", "value": "Atsisiuntimų eilė" },
-    { "name": "download_state_queued", "value": "Eilėje" },
-    { "name": "download_state_downloading", "value": "Atsisiunčiama" },
-    { "name": "download_state_done", "value": "Atlikta" },
-    { "name": "download_state_failed", "value": "Nepavyko" },
-    { "name": "download_move_top", "value": "Perkelti į viršų" },
-    { "name": "download_move_bottom", "value": "Perkelti į apačią" },
-    { "name": "download_deleted", "value": "Ištrinta" },
-    { "name": "download_empty", "value": "Dar nėra atsisiuntimų" },
-    { "name": "download_status_downloaded", "value": "Atsisiųsta" },
-    { "name": "download_chapter_count", "value": "%d skyriai" },
-    { "name": "detail_no_chapters", "value": "Nėra skyrių" },
-    { "name": "detail_sync_failed_local", "value": "Sinchronizuoti nepavyko, rodomi vietiniai duomenys" },
-    { "name": "detail_added_to_library", "value": "Pridėta į biblioteką" },
-    { "name": "detail_removed_from_library", "value": "Pašalinta iš bibliotekos" },
-    { "name": "detail_all_marked_read", "value": "Visi skyriai pažymėti kaip skaityti" },
-    { "name": "detail_download_queued", "value": "Atsisiuntimas įtrauktas į eilę" },
-    { "name": "detail_config_anilist_token", "value": "Pirmiausia sukonfigūruokite AniList prieigos raktą" },
-    { "name": "detail_search_anilist", "value": "Ieškoti AniList" },
-    { "name": "detail_manga_title_hint", "value": "Mangos pavadinimas" },
-    { "name": "detail_no_search_results", "value": "Paieškos rezultatų nėra" },
-    { "name": "detail_anilist_search_failed", "value": "AniList paieška nepavyko" },
-    { "name": "detail_anilist_bound", "value": "Susieta su AniList" },
-    { "name": "detail_anilist_unbound", "value": "Atsieta nuo AniList" },
-    { "name": "detail_synced_progress", "value": "Eiga sinchronizuota iki %d skyriaus" },
-    { "name": "detail_anilist_sync_failed", "value": "AniList sinchronizacija nepavyko" },
-    { "name": "detail_status_local", "value": "Vietinė" },
-    { "name": "detail_in_library", "value": "Bibliotekoje" },
-    { "name": "detail_add_to_library", "value": "Pridėti į biblioteką" },
-    { "name": "detail_continue_reading", "value": "Tęsti skaitymą" },
-    { "name": "detail_start_reading", "value": "Pradėti skaityti" },
-    { "name": "detail_no_chapters_yet", "value": "Dar nėra skyrių" },
-    { "name": "detail_collapse", "value": "Sutraukti" },
-    { "name": "detail_expand", "value": "Išskleisti" },
-    { "name": "detail_anilist_tracking", "value": "AniList sekimas" },
-    { "name": "detail_anilist_token_hint", "value": "AniList prieigos raktas dar nesukonfigūruotas" },
-    { "name": "detail_searching", "value": "Ieškoma…" },
-    { "name": "detail_search_and_bind", "value": "Ieškoti ir susieti" },
-    { "name": "detail_bind", "value": "Susieti" },
-    { "name": "detail_synced_to_chapter", "value": "Sinchronizuota iki %d skyriaus" },
-    { "name": "detail_sync_progress", "value": "Sinchronizuoti eigą" },
-    { "name": "detail_unbind", "value": "Atsieti" },
-    { "name": "detail_chapters_count", "value": "Skyriai (%d)" },
-    { "name": "detail_sort_asc", "value": "Didėjančiai" },
-    { "name": "detail_sort_desc", "value": "Mažėjančiai" },
-    { "name": "detail_mark_all_read", "value": "Pažymėti visus kaip skaitytus" },
-    { "name": "detail_read", "value": "Skaityta" },
-    { "name": "detail_downloaded", "value": "Atsisiųsta" },
-    { "name": "detail_in_queue", "value": "Eilėje" },
-    { "name": "detail_download", "value": "Atsisiųsti" },
-    { "name": "reader_chapter_not_found", "value": "Skyrius nerastas" },
-    { "name": "reader_load_failed", "value": "Įkelti nepavyko: %s" },
-    { "name": "reader_mode_ltr", "value": "Iš kairės į dešinę" },
-    { "name": "reader_mode_rtl", "value": "Iš dešinės į kairę" },
-    { "name": "reader_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_reading_mode", "value": "Skaitymo režimas" },
-    { "name": "reader_orientation_free", "value": "Laisva" },
-    { "name": "reader_orientation_portrait", "value": "Stačias" },
-    { "name": "reader_orientation_landscape", "value": "Gulsčias" },
-    { "name": "reader_screen_orientation", "value": "Ekrano orientacija" },
-    { "name": "reader_last_chapter", "value": "Jau esate paskutiniame skyriuje" },
-    { "name": "reader_first_chapter", "value": "Jau esate pirmajame skyriuje" },
-    { "name": "reader_first_page", "value": "Jau esate pirmajame puslapyje" },
-    { "name": "reader_last_page", "value": "Jau esate paskutiniame puslapyje" },
-    { "name": "reader_loading_chapter", "value": "Įkeliamas skyrius…" },
-    { "name": "reader_settings", "value": "Skaitytuvo nustatymai" },
-    { "name": "reader_background", "value": "Fonas" },
-    { "name": "reader_theme_auto", "value": "Automatiškai" },
-    { "name": "reader_theme_white", "value": "Balta" },
-    { "name": "reader_theme_gray", "value": "Pilka" },
-    { "name": "reader_theme_black", "value": "Juoda" },
-    { "name": "reader_show_page_number", "value": "Rodyti puslapio numerį" },
-    { "name": "reader_brightness", "value": "Šviesumas" },
-    { "name": "reader_auto", "value": "Automatiškai" },
-    { "name": "plugin_title", "value": "Plėtiniai" },
-    { "name": "plugin_installed_section", "value": "Įdiegta" },
-    { "name": "plugin_empty", "value": "Dar nėra plėtinių, diekite žemiau" },
-    { "name": "plugin_disable_hint", "value": "Išjungtus plėtinius bet kada galima vėl įjungti" },
-    { "name": "plugin_up_to_date", "value": "Naujausia" },
-    { "name": "plugin_local_install", "value": "Diegti iš failo" },
-    { "name": "plugin_install_from_file", "value": "Pasirinkite diegiamą failą" },
-    { "name": "plugin_processing", "value": "Apdorojama…" },
-    { "name": "plugin_package_hint", "value": "Palaiko .honyomiplug / .zip papildinių paketus" },
-    { "name": "plugin_repo", "value": "Internetinė saugykla" },
-    { "name": "plugin_repo_config", "value": "Nustatyti saugyklą" },
-    { "name": "plugin_repo_refresh", "value": "Atnaujinti" },
-    { "name": "plugin_repo_hint", "value": "Papildinių saugykla dar nesukonfigūruota" },
-    { "name": "plugin_repo_loading", "value": "Įkeliama saugykla…" },
-    { "name": "plugin_repo_url_title", "value": "Papildinių saugyklos URL" },
-    { "name": "plugin_repo_url_hint", "value": "Įveskite papildinių saugyklos URL" },
-    { "name": "plugin_repo_load_failed", "value": "Saugyklos įkelti nepavyko: %s" },
-    { "name": "plugin_pick_file_failed", "value": "Nepavyko pasirinkti failo" },
-    { "name": "plugin_installed", "value": "Įdiegta: %s" },
-    { "name": "plugin_installed_name", "value": "Įdiegta %s" },
-    { "name": "plugin_install_failed", "value": "Diegti nepavyko: %s" },
-    { "name": "plugin_action_failed", "value": "Veiksmas nepavyko" },
-    { "name": "plugin_uninstalled", "value": "Pašalinta: %s" },
-    { "name": "plugin_uninstall_failed", "value": "Pašalinti nepavyko" },
-    { "name": "settings_title", "value": "Nustatymai" },
-    { "name": "settings_general", "value": "Bendra" },
-    { "name": "settings_start_tab", "value": "Pradžios ekranas" },
-    { "name": "settings_personalization", "value": "Pritaikymas" },
-    { "name": "settings_library", "value": "Biblioteka" },
-    { "name": "settings_reader", "value": "Skaitytuvas" },
-    { "name": "settings_data", "value": "Duomenys" },
-    { "name": "settings_downloads", "value": "Atsisiuntimai" },
-    { "name": "settings_browse", "value": "Naršyti" },
-    { "name": "settings_advanced", "value": "Išplėstiniai" },
-    { "name": "settings_about", "value": "Apie" },
-    { "name": "settings_tab_library", "value": "Biblioteka" },
-    { "name": "settings_tab_updates", "value": "Naujienos" },
-    { "name": "settings_tab_history", "value": "Istorija" },
-    { "name": "settings_tab_browse", "value": "Naršyti" },
-    { "name": "settings_tab_more", "value": "Daugiau" },
-    { "name": "advanced_title", "value": "Išplėstiniai" },
-    { "name": "advanced_calculating", "value": "Skaičiuojama…" },
-    { "name": "advanced_storage", "value": "Saugykla" },
-    { "name": "advanced_clear_image_cache", "value": "Išvalyti vaizdų podėlį" },
-    { "name": "advanced_image_cache_cleared", "value": "Vaizdų podėlis išvalytas" },
-    { "name": "advanced_clear_cookies", "value": "Išvalyti slapukus" },
-    { "name": "advanced_cookies_cleared", "value": "Visi slapukai išvalyti" },
-    { "name": "advanced_backup_restore", "value": "Atsarginė kopija ir atkūrimas" },
-    { "name": "advanced_export_backup", "value": "Eksportuoti atsarginę kopiją" },
-    { "name": "advanced_import_backup", "value": "Importuoti atsarginę kopiją" },
-    { "name": "advanced_tracking", "value": "Sekimas" },
-    { "name": "advanced_anilist_token", "value": "AniList prieigos raktas" },
-    { "name": "advanced_token_title", "value": "AniList prieigos raktas" },
-    { "name": "advanced_token_hint", "value": "Įklijuokite prieigos raktą (palikite tuščią, kad išvalytumėte)" },
-    { "name": "advanced_token_not_set", "value": "Nenustatyta" },
-    { "name": "advanced_token_set", "value": "Nustatyta" },
-    { "name": "advanced_token_saved", "value": "Raktas išsaugotas" },
-    { "name": "advanced_token_cleared", "value": "Raktas išvalytas" },
-    { "name": "advanced_backup_exported", "value": "Atsarginė kopija eksportuota" },
-    { "name": "advanced_export_canceled", "value": "Eksportas atšauktas" },
-    { "name": "advanced_export_failed", "value": "Eksportuoti nepavyko" },
-    { "name": "advanced_import_canceled", "value": "Importas atšauktas" },
-    { "name": "advanced_backup_invalid", "value": "Netinkamas atsarginės kopijos failas" },
-    { "name": "advanced_restored_manga", "value": "Atkurta %d mangos" },
-    { "name": "advanced_import_failed", "value": "Importuoti nepavyko" },
-    { "name": "about_title", "value": "Apie" },
-    { "name": "about_version", "value": "Versija 1.0.0" },
-    { "name": "about_desc", "value": "Architektūra įkvėpta Mihon (Apache-2.0). Internetiniai šaltiniai diegiami dinamiškai kaip plėtiniai, o vietiniai šaltiniai yra įtaisyti." },
-    { "name": "about_ack", "value": "Atvirojo kodo padėkos:\n· Mihon / Tachiyomi — programos architektūra ir sąveikos dizainas (Apache-2.0)\n· Material Symbols — programos piktogramos (Apache-2.0)\n· MangaDex — bandymų duomenų šaltinis" },
-    { "name": "browse_set_title", "value": "Naršyti" },
-    { "name": "browse_set_content", "value": "Turinys" },
-    { "name": "browse_set_show_nsfw", "value": "Rodyti NSFW šaltinius" },
-    { "name": "browse_set_nsfw_hint", "value": "Įjungus, plėtinių kaip NSFW pažymėti šaltiniai bus rodomi skiltyje Naršyti" },
-    { "name": "dl_set_title", "value": "Atsisiuntimai" },
-    { "name": "dl_set_network", "value": "Tinklas" },
-    { "name": "dl_set_wifi_only", "value": "Atsisiųsti tik per „Wi-Fi“" },
-    { "name": "dl_set_wifi_only_hint", "value": "Pastaba: šis jungiklis dabartinėje versijoje yra rezervuotas; tinklo tipo nustatymas bus vėlesnėje laidoje" },
-    { "name": "lib_set_title", "value": "Biblioteka" },
-    { "name": "lib_set_sort_group", "value": "Filtruoti ir rikiuoti" },
-    { "name": "lib_set_sort_default", "value": "Numatytasis rikiavimas" },
-    { "name": "lib_set_sort_title", "value": "Pavadinimas" },
-    { "name": "lib_set_sort_last_update", "value": "Naujausias skyrius" },
-    { "name": "lib_set_sort_added", "value": "Pridėjimo data" },
-    { "name": "lib_set_sort_unread", "value": "Neskaitytų skaičius" },
-    { "name": "lib_set_sort_asc", "value": "Rikiuoti pagal pavadinimą didėjančiai" },
-    { "name": "lib_set_filter_default", "value": "Numatytasis filtras" },
-    { "name": "lib_set_filter_unread", "value": "Neskaityta" },
-    { "name": "lib_set_filter_downloaded", "value": "Atsisiųsta" },
-    { "name": "lib_set_filter_uncompleted", "value": "Nebaigta" },
-    { "name": "lib_set_display_group", "value": "Rodymas" },
-    { "name": "lib_set_view_default", "value": "Numatytasis vaizdas" },
-    { "name": "lib_set_view_grid", "value": "Tinklelis" },
-    { "name": "lib_set_view_cover", "value": "Viršelių tinklelis" },
-    { "name": "lib_set_view_list", "value": "Sąrašas" },
-    { "name": "lib_set_grid_cols", "value": "Tinklelio stulpeliai" },
-    { "name": "lib_set_cols_auto", "value": "Automatiškai" },
-    { "name": "lib_set_cols_2", "value": "2 stulpeliai" },
-    { "name": "lib_set_cols_3", "value": "3 stulpeliai" },
-    { "name": "lib_set_cols_4", "value": "4 stulpeliai" },
-    { "name": "lib_set_unread_badge", "value": "Neskaitytų ženkleliai" },
-    { "name": "lib_set_download_badge", "value": "Atsisiuntimų ženkleliai" },
-    { "name": "reader_set_title", "value": "Skaitytuvas" },
-    { "name": "reader_set_mode_group", "value": "Skaitymo režimas" },
-    { "name": "reader_set_mode_default", "value": "Numatytasis režimas" },
-    { "name": "reader_set_mode_ltr", "value": "Iš kairės į dešinę" },
-    { "name": "reader_set_mode_rtl", "value": "Iš dešinės į kairę" },
-    { "name": "reader_set_mode_vertical", "value": "Vertikalus lapistymas" },
-    { "name": "reader_set_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_set_dual_page", "value": "Dvigubas puslapis (gulsčias)" },
-    { "name": "reader_set_display_group", "value": "Rodymas" },
-    { "name": "reader_set_show_page_number", "value": "Rodyti puslapio numerį" },
-    { "name": "reader_set_bg_color", "value": "Skaitytuvo fonas" },
-    { "name": "reader_set_theme_follow", "value": "Kaip tema" },
-    { "name": "reader_set_theme_white", "value": "Balta" },
-    { "name": "reader_set_theme_black", "value": "Juoda" },
-    { "name": "reader_set_theme_gray", "value": "Pilka" },
-    { "name": "reader_set_reset_brightness", "value": "Atkurti skaitytuvo šviesumą" },
-    { "name": "reader_set_brightness_reset", "value": "Šviesumas dabar seka sistemą" },
-    { "name": "browse_tab_sources", "value": "Šaltiniai" },
-    { "name": "browse_tab_extensions", "value": "Plėtiniai" },
-    { "name": "browse_tab_migrate", "value": "Perkelti" },
-    { "name": "browse_pin", "value": "Prisegti" },
-    { "name": "browse_unpin", "value": "Atsegti" },
-    { "name": "browse_disable_source", "value": "Išjungti šaltinį" },
-    { "name": "browse_source_disabled", "value": "Šaltinis išjungtas" },
-    { "name": "browse_pinned", "value": "Prisegta" },
-    { "name": "browse_sources_empty", "value": "Nėra šaltinių. Įdiekite skirtuke Plėtiniai" },
-    { "name": "browse_filter_langs", "value": "Filtruoti kalbas" },
-    { "name": "browse_filter_all", "value": "Visi" },
-    { "name": "browse_source_missing", "value": "Šaltinis nepasiekiamas. Plėtinys gali būti išjungtas" },
-    { "name": "global_search_hint", "value": "Ieškoti visuose šaltiniuose" },
-    { "name": "global_search_failed", "value": "Paieška nepavyko" },
-    { "name": "ext_search_hint", "value": "Ieškoti plėtinių" },
-    { "name": "ext_search_no_match", "value": "Nėra atitikčių" },
-    { "name": "ext_repo_settings", "value": "Saugyklos nustatymai" },
-    { "name": "ext_refresh_repo", "value": "Atnaujinti saugyklą" },
-    { "name": "migrate_pick_source", "value": "Pasirinkite šaltinį perkėlimui" },
-    { "name": "migrate_empty_library", "value": "Biblioteka tuščia" },
-    { "name": "migrate_select_all", "value": "Pasirinkti visus" },
-    { "name": "migrate_deselect_all", "value": "Panaikinti pasirinkimą" },
-    { "name": "migrate_action", "value": "Perkelti (%d)" },
-    { "name": "migrate_title", "value": "Perkelti" },
-    { "name": "migrate_skip", "value": "Praleisti" },
-    { "name": "migrate_progress", "value": "%d iš %d" },
-    { "name": "migrate_target_source", "value": "Paskirties šaltinis" },
-    { "name": "migrate_search_hint", "value": "Ieškoti mangos paskirties šaltinyje" },
-    { "name": "migrate_confirm_title", "value": "Perkelti į šią mangą?" },
-    { "name": "migrate_item_done", "value": "Perkelta: %s" },
-    { "name": "migrate_failed", "value": "Perkėlimas nepavyko: %s" },
-    { "name": "migrate_done", "value": "Perkėlimas baigtas" },
-    { "name": "migrate_no_target", "value": "Nėra paskirties šaltinio" },
-    { "name": "stats_title", "value": "Statistika" },
-    { "name": "stats_overview_section", "value": "Apžvalga" },
-    { "name": "stats_in_library", "value": "Bibliotekoje" },
-    { "name": "stats_read_duration", "value": "Skaitymo trukmė" },
-    { "name": "stats_completed_titles", "value": "Užbaigta" },
-    { "name": "stats_titles_section", "value": "Kūriniai" },
-    { "name": "stats_started_titles", "value": "Pradėta" },
-    { "name": "stats_local_titles", "value": "Vietinė" },
-    { "name": "stats_chapters_section", "value": "Skyriai" },
-    { "name": "stats_total_chapters", "value": "Iš viso" },
-    { "name": "stats_read_chapters", "value": "Skaityta" },
-    { "name": "stats_downloaded_chapters", "value": "Atsisiųsta" },
-    { "name": "stats_tracker_section", "value": "Sekimas" },
-    { "name": "stats_tracked_titles", "value": "Sekami kūriniai" },
-    { "name": "stats_mean_score", "value": "Vidutinis balas" },
-    { "name": "stats_used", "value": "Naudota" },
-    { "name": "stats_not_applicable", "value": "Netaikoma" },
-    { "name": "stats_week", "value": "Savaitė" },
-    { "name": "stats_month", "value": "Mėnuo" },
-    { "name": "stats_week_total", "value": "%s šią savaitę" },
-    { "name": "stats_month_total", "value": "%s šį mėnesį" },
-    { "name": "stats_no_reading", "value": "Šiuo laikotarpiu neskaityta" },
-    { "name": "stats_day_short", "value": "%d d." },
-    { "name": "stats_hour_short", "value": "%d val." },
-    { "name": "stats_minute_short", "value": "%d min." },
-    { "name": "stats_second_short", "value": "%d sek." },
-    { "name": "stats_wd_sun", "value": "Sk" },
-    { "name": "stats_wd_mon", "value": "Pr" },
-    { "name": "stats_wd_tue", "value": "An" },
-    { "name": "stats_wd_wed", "value": "Tr" },
-    { "name": "stats_wd_thu", "value": "Kt" },
-    { "name": "stats_wd_fri", "value": "Pn" },
-    { "name": "stats_wd_sat", "value": "Št" },
-    { "name": "reader_mode_vertical", "value": "Vertikaliai" },
-    { "name": "reader_mode_smart_grip", "value": "Pagal suėmimą" },
-    { "name": "reader_orientation_lock_portrait", "value": "Užrakinti stačiai" },
-    { "name": "reader_orientation_lock_landscape", "value": "Užrakinti gulsčiai" },
-    { "name": "reader_tab_general", "value": "Bendra" },
-    { "name": "reader_tab_filter", "value": "Spalvų filtras" },
-    { "name": "reader_filter_grayscale", "value": "Pilkumo" },
-    { "name": "reader_filter_invert", "value": "Apverstos spalvos" },
-    { "name": "reader_filter_contrast", "value": "Kontrastas" },
-    { "name": "reader_filter_saturation", "value": "Sodrumas" },
-    { "name": "reader_crop_borders", "value": "Kirpti kraštus" },
-    { "name": "reader_nav_tap_zones", "value": "Lietimo zonos" },
-    { "name": "reader_nav_default", "value": "Numatyta" },
-    { "name": "reader_nav_ltr", "value": "Iš kairės į dešinę" },
-    { "name": "reader_nav_rtl", "value": "Iš dešinės į kairę" },
-    { "name": "reader_nav_vertical", "value": "Vertikaliai" },
-    { "name": "reader_nav_edge", "value": "Kraštas" },
-    { "name": "reader_nav_none", "value": "Nėra" },
-    { "name": "reader_dual_page", "value": "Dviejų puslapių rodinys" },
-    { "name": "reader_webtoon_padding", "value": "Webtoon šoninė paraštė" },
-    { "name": "reader_set_mode_smart_grip", "value": "Pagal suėmimą" },
-    { "name": "ext_install_local", "value": "Diegti iš vietinių" },
-    { "name": "ext_detail_title", "value": "Plėtinio informacija" },
-    { "name": "ext_info_version", "value": "Versija" },
-    { "name": "ext_info_language", "value": "Kalba" },
-    { "name": "ext_uninstall_title", "value": "Pašalinti plėtinį" },
-    { "name": "ext_uninstall_msg", "value": "Pašalinti „%s“? Bibliotekos mangos duomenys išliks" },
-    { "name": "ext_detail_sources", "value": "Šaltiniai" },
-    { "name": "ext_detail_settings", "value": "Nustatymai" },
-    { "name": "ext_pref_loading", "value": "Įkeliama…" },
-    { "name": "ext_pref_failed", "value": "Nepavyko pritaikyti nustatymų" },
-    { "name": "ext_detail_missing", "value": "Plėtinio nėra arba jis neįkeltas" },
-    { "name": "action_filter", "value": "Filtruoti" },
-    { "name": "action_update_library", "value": "Atnaujinti biblioteką" },
-    { "name": "action_update_category", "value": "Atnaujinti kategoriją" },
-    { "name": "action_open_random_manga", "value": "Atidaryti atsitiktinį kūrinį" },
-    { "name": "action_select_all", "value": "Pasirinkti visus" },
-    { "name": "action_select_inverse", "value": "Apversti žymėjimą" },
-    { "name": "action_move_category", "value": "Perkelti į kategoriją" },
-    { "name": "action_mark_as_read", "value": "Pažymėti kaip skaitytą" },
-    { "name": "action_mark_as_unread", "value": "Pažymėti kaip neskaitytą" },
-    { "name": "action_download", "value": "Atsisiųsti" },
-    { "name": "action_delete", "value": "Ištrinti" },
-    { "name": "action_migrate", "value": "Perkelti" },
-    { "name": "action_remove_from_library", "value": "Pašalinti iš bibliotekos" },
-    { "name": "action_remove_from_library_msg", "value": "Pašalinti pasirinktą mangą (%d) iš bibliotekos?" },
-    { "name": "action_download_queued", "value": "Į eilę įtraukta atsisiuntimų: %d" },
-    { "name": "library_search_hint", "value": "Ieškoti bibliotekoje" },
-    { "name": "library_no_match", "value": "Nėra atitinkančios mangos" },
-    { "name": "lib_sheet_tab_filter", "value": "Filtruoti" },
-    { "name": "lib_sheet_tab_sort", "value": "Rikiuoti" },
-    { "name": "lib_sheet_tab_display", "value": "Rodymas" },
-    { "name": "lib_filter_downloaded", "value": "Atsisiųsta" },
-    { "name": "lib_filter_unread", "value": "Neskaityta" },
-    { "name": "lib_filter_started", "value": "Pradėta skaityti" },
-    { "name": "lib_filter_bookmarked", "value": "Pažymėta žyme" },
-    { "name": "lib_filter_completed", "value": "Užbaigta" },
-    { "name": "lib_filter_tracked", "value": "Sekama" },
-    { "name": "lib_sort_alpha", "value": "Pavadinimas" },
-    { "name": "lib_sort_total", "value": "Skyrių skaičius" },
-    { "name": "lib_sort_last_read", "value": "Paskutinį kartą skaityta" },
-    { "name": "lib_sort_last_update", "value": "Paskutinė atnaujinimo patikra" },
-    { "name": "lib_sort_unread", "value": "Neskaitytų skaičius" },
-    { "name": "lib_sort_latest_chapter", "value": "Kūrinio atnaujinimo laikas" },
-    { "name": "lib_sort_fetch_date", "value": "Skyrių gavimo laikas" },
-    { "name": "lib_sort_date_added", "value": "Pridėjimo data" },
-    { "name": "lib_sort_random", "value": "Atsitiktinai" },
-    { "name": "lib_display_compact", "value": "Glaustas tinklelis" },
-    { "name": "lib_display_comfortable", "value": "Erdvus tinklelis" },
-    { "name": "lib_display_cover", "value": "Viršelių tinklelis" },
-    { "name": "lib_display_list", "value": "Sąrašas" },
-    { "name": "lib_display_grid_size", "value": "Skaičius eilutėje" },
-    { "name": "lib_display_grid_auto", "value": "Automatiškai" },
-    { "name": "lib_display_badges_group", "value": "Ženkleliai ir mygtukai" },
-    { "name": "lib_badge_downloaded", "value": "Atsisiųstų skyrių skaičius" },
-    { "name": "lib_badge_unread", "value": "Neskaityti skyriai" },
-    { "name": "lib_badge_local", "value": "Vietinis šaltinis" },
-    { "name": "lib_badge_language", "value": "Kalba" },
-    { "name": "lib_badge_continue", "value": "Tęsti skaitymą mygtukas" },
-    { "name": "lib_display_tabs_group", "value": "Skirtukai" },
-    { "name": "lib_show_category_tabs", "value": "Rodyti kategorijų skirtukus" },
-    { "name": "lib_show_manga_count", "value": "Rodyti kūrinių skaičių" },
-    { "name": "EntryFormAbility_label", "value": "MihonHarmony kortelės" },
-    { "name": "EntryFormAbility_desc", "value": "Darbalaukio kortelių teikėjas" },
-    { "name": "card_recent_display", "value": "Tęsti skaitymą" },
-    { "name": "card_recent_desc", "value": "Greitai tęsti neseniai skaitytą mangą" },
-    { "name": "card_updates_display", "value": "Naujienos" },
-    { "name": "card_updates_desc", "value": "Naujausi neskaityti bibliotekos skyriai" },
-    { "name": "card_recent_header", "value": "Tęsti skaitymą" },
-    { "name": "card_updates_header", "value": "Naujienos" },
-    { "name": "card_unread_count", "value": "%d neskaityti skyriai" },
-    { "name": "card_empty_recent", "value": "Dar nėra skaitymo istorijos" },
-    { "name": "card_empty_updates", "value": "Nėra neskaitytų skyrių" },
-    { "name": "card_open_hint", "value": "Bakstelėkite, kad atidarytumėte programą" },
-    { "name": "card_manga_display", "value": "Mangos kortelė" },
-    { "name": "card_manga_desc", "value": "Pridėkite iš išsamios informacijos, bakstelėkite viršelį ir skaitykite" },
-    { "name": "card_manga_empty", "value": "Pridėkite į darbalaukį iš mangos išsamios informacijos" },
-    { "name": "detail_add_to_desktop", "value": "Pridėti į darbalaukį" },
-    { "name": "detail_card_added", "value": "Pridėta į darbalaukį" },
-    { "name": "detail_card_add_failed", "value": "Nepavyko pridėti kortelės" },
-    { "name": "card_stats_week_display", "value": "Savaitės statistika" },
-    { "name": "card_stats_week_desc", "value": "Kasdienė skaitymo trukmė šią savaitę" },
-    { "name": "card_stats_month_display", "value": "Mėnesio statistika" },
-    { "name": "card_stats_month_desc", "value": "Kasdienė skaitymo trukmė šį mėnesį" },
-    { "name": "card_stats_empty", "value": "Dar neskaityta" },
-    { "name": "action_view_upcoming", "value": "Rodyti būsimus atnaujinimus" },
-    { "name": "label_upcoming", "value": "Būsima" },
-    { "name": "upcoming_guide", "value": "Būsimų vadovas" },
-    { "name": "upcoming_calendar_prev", "value": "Ankstesnis mėnuo" },
-    { "name": "upcoming_calendar_next", "value": "Kitas mėnuo" },
-    { "name": "pref_filter_update_categories_details", "value": "Kūriniai, esantys ir įtrauktoje, ir neįtrauktoje kategorijoje, nerodomi." },
-    { "name": "relative_time_today", "value": "Šiandien" },
-    { "name": "relative_time_days_ago", "value": "prieš %d dienas" },
-    { "name": "upcoming_relative_time_days", "value": "Po %d dienų" },
-    { "name": "card_upcoming_display", "value": "Būsima" },
-    { "name": "card_upcoming_desc", "value": "Numatomas bibliotekos mangos atnaujinimų kalendorius" },
-    { "name": "card_upcoming_header", "value": "Būsima" },
-    { "name": "card_empty_upcoming", "value": "Bibliotekoje nėra leidžiamos mangos" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Filtruoja visus įrašus jūsų bibliotekoje"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Pristabdo skaitymo istoriją"
+    },
+    {
+      "name": "more_support",
+      "value": "Support Us"
+    },
+    {
+      "name": "more_help",
+      "value": "Pagalba"
+    },
+    {
+      "name": "support_perks",
+      "value": "Patrons get access to exclusive channels, with more perks to come."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (preferred)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "For alternative options or any related questions, join our Discord server."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "Data and storage"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Storage location"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Used for automatic backups, chapter downloads, and local source."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "Atsarginė kopija ir atkūrimas"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Kurti atsarginę kopiją"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Atkurti atsarginę kopiją"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Atsarginių kopijų kūrimo dažnis"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "Atsargines kopijas turėtumėte laikyti ir kitose vietose."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Last automatically backed up: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Storage usage"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Available: %s / Total: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Išvalyti skyriaus talpyklą"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Naudota: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Talpykla išvalyta. %d failai buvo ištrinti"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Valymo metu įvyko klaida"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Išvalyti skyriaus talpyklą uždarius programą"
+    },
+    {
+      "name": "data_export",
+      "value": "Export"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Library List"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Library Exported"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Pasirinkite duomenis, kuriuos norite įtraukti"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Pavadinimas"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Author"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "Išjungta"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "Kas 6 valandas"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "Kas 12 valandų"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "Kasdien"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "Kas 2 dienas"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "Kas savaitę"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "Gerai"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Atšaukti"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Patvirtinti"
+    },
+    {
+      "name": "common_delete",
+      "value": "Ištrinti"
+    },
+    {
+      "name": "common_retry",
+      "value": "Bandyti dar kartą"
+    },
+    {
+      "name": "common_search",
+      "value": "Ieškoti"
+    },
+    {
+      "name": "common_all",
+      "value": "Visi"
+    },
+    {
+      "name": "common_close",
+      "value": "Uždaryti"
+    },
+    {
+      "name": "common_save",
+      "value": "Išsaugoti"
+    },
+    {
+      "name": "common_install",
+      "value": "Diegti"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "Pašalinti"
+    },
+    {
+      "name": "common_update",
+      "value": "Atnaujinti"
+    },
+    {
+      "name": "common_none",
+      "value": "Nėra"
+    },
+    {
+      "name": "common_default",
+      "value": "Numatyta"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Išvaizda"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Kalba"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Kaip sistemoje"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Temos režimas"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Kaip sistemoje"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Šviesi"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Tamsi"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Akcento spalva"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Kita"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED gryna juoda fono spalva"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Mėlyna"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "Žalia"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Rožinė"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Violetinė"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "Oranžinė"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "prieš %d min."
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "prieš %d val."
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "prieš %d d."
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "Vykdoma"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Užbaigta"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "Pristabdyta"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Atšaukta"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Leidyba baigta"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Nežinoma"
+    },
+    {
+      "name": "tab_library",
+      "value": "Biblioteka"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Naujienos"
+    },
+    {
+      "name": "tab_history",
+      "value": "Istorija"
+    },
+    {
+      "name": "tab_browse",
+      "value": "Naršyti"
+    },
+    {
+      "name": "tab_more",
+      "value": "Daugiau"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "Laukiama patvirtinimo…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "Patvirtinimas baigtas"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "Žmogaus patvirtinimas"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "Atlikta"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "Patvirtinimo rezultatas išsaugotas"
+    },
+    {
+      "name": "more_title",
+      "value": "Daugiau"
+    },
+    {
+      "name": "more_version",
+      "value": "Versija %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Rodyti tik atsisiųstus"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Inkognito režimas"
+    },
+    {
+      "name": "more_downloads",
+      "value": "Atsisiuntimų eilė"
+    },
+    {
+      "name": "more_categories",
+      "value": "Kategorijos"
+    },
+    {
+      "name": "more_settings",
+      "value": "Nustatymai"
+    },
+    {
+      "name": "more_about",
+      "value": "Apie"
+    },
+    {
+      "name": "more_plugins",
+      "value": "Plėtiniai"
+    },
+    {
+      "name": "categories_title",
+      "value": "Kategorijos"
+    },
+    {
+      "name": "categories_add",
+      "value": "Nauja kategorija"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "Kategorijos pavadinimas"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "Pervadinti kategoriją"
+    },
+    {
+      "name": "categories_rename",
+      "value": "Pervadinti"
+    },
+    {
+      "name": "categories_hint",
+      "value": "Ilgai paspauskite kategoriją, kad pervadintumėte arba ištrintumėte; ištrintos kategorijos manga grąžinama į Numatyta"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "Pasirinkti kategoriją"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "Įkeliama…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "Nepavyko įkelti vaizdo"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "Bakstelėkite, kad bandytumėte dar kartą"
+    },
+    {
+      "name": "library_title",
+      "value": "Biblioteka"
+    },
+    {
+      "name": "library_empty",
+      "value": "Biblioteka tuščia, naršykite ir pridėkite mangos"
+    },
+    {
+      "name": "library_new_category",
+      "value": "Nauja kategorija"
+    },
+    {
+      "name": "library_category_name",
+      "value": "Kategorijos pavadinimas"
+    },
+    {
+      "name": "updates_title",
+      "value": "Naujienos"
+    },
+    {
+      "name": "updates_empty",
+      "value": "Nėra naujausių atnaujinimų"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "Rasta %d naujų skyrių"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "Nėra naujų skyrių"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "Atnaujinti nepavyko"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "Atnaujinama…"
+    },
+    {
+      "name": "history_title",
+      "value": "Istorija"
+    },
+    {
+      "name": "history_clear",
+      "value": "Išvalyti"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "Patvirtinti išvalymą?"
+    },
+    {
+      "name": "history_empty",
+      "value": "Dar nėra skaitymo istorijos"
+    },
+    {
+      "name": "history_cleared",
+      "value": "Istorija išvalyta"
+    },
+    {
+      "name": "history_continue",
+      "value": "Tęsti"
+    },
+    {
+      "name": "browse_title",
+      "value": "Naršyti"
+    },
+    {
+      "name": "browse_import",
+      "value": "Importuoti"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "Papildiniai"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "Vietinė manga"
+    },
+    {
+      "name": "browse_popular",
+      "value": "Populiaru"
+    },
+    {
+      "name": "browse_latest",
+      "value": "Naujausi"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "Ieškoti mangos…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "Mangos nerasta"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "Dar nėra vietinės mangos, bakstelėkite Importuoti"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "Įkelti nepavyko: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "Paieška nepavyko: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "Nepavyko įkelti daugiau"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "Nepavyko atidaryti išsamios informacijos"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "Nepavyko pasirinkti failų"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "Importuoti %d failus"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "Mangos pavadinimas"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "Įveskite pavadinimą"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "Importuota %d failų"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "Importuoti nepavyko: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "Atsisiuntimai"
+    },
+    {
+      "name": "download_resume",
+      "value": "Tęsti"
+    },
+    {
+      "name": "download_pause",
+      "value": "Pristabdyti"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "Išvalyti baigtus"
+    },
+    {
+      "name": "download_queue",
+      "value": "Atsisiuntimų eilė"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "Eilėje"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "Atsisiunčiama"
+    },
+    {
+      "name": "download_state_done",
+      "value": "Atlikta"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "Nepavyko"
+    },
+    {
+      "name": "download_move_top",
+      "value": "Perkelti į viršų"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "Perkelti į apačią"
+    },
+    {
+      "name": "download_deleted",
+      "value": "Ištrinta"
+    },
+    {
+      "name": "download_empty",
+      "value": "Dar nėra atsisiuntimų"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "Atsisiųsta"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d skyriai"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "Nėra skyrių"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "Sinchronizuoti nepavyko, rodomi vietiniai duomenys"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "Pridėta į biblioteką"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "Pašalinta iš bibliotekos"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "Visi skyriai pažymėti kaip skaityti"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "Atsisiuntimas įtrauktas į eilę"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "Pirmiausia sukonfigūruokite AniList prieigos raktą"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "Ieškoti AniList"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "Mangos pavadinimas"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "Paieškos rezultatų nėra"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "AniList paieška nepavyko"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "Susieta su AniList"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "Atsieta nuo AniList"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "Eiga sinchronizuota iki %d skyriaus"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "AniList sinchronizacija nepavyko"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "Vietinė"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "Bibliotekoje"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "Pridėti į biblioteką"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "Tęsti skaitymą"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "Pradėti skaityti"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "Dar nėra skyrių"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "Sutraukti"
+    },
+    {
+      "name": "detail_expand",
+      "value": "Išskleisti"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList sekimas"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList prieigos raktas dar nesukonfigūruotas"
+    },
+    {
+      "name": "detail_searching",
+      "value": "Ieškoma…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "Ieškoti ir susieti"
+    },
+    {
+      "name": "detail_bind",
+      "value": "Susieti"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "Sinchronizuota iki %d skyriaus"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "Sinchronizuoti eigą"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "Atsieti"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "Skyriai (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "Didėjančiai"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "Mažėjančiai"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "Pažymėti visus kaip skaitytus"
+    },
+    {
+      "name": "detail_read",
+      "value": "Skaityta"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "Atsisiųsta"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "Eilėje"
+    },
+    {
+      "name": "detail_download",
+      "value": "Atsisiųsti"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "Skyrius nerastas"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "Įkelti nepavyko: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "Iš kairės į dešinę"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "Iš dešinės į kairę"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "Skaitymo režimas"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "Laisva"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "Stačias"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "Gulsčias"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "Ekrano orientacija"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "Jau esate paskutiniame skyriuje"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "Jau esate pirmajame skyriuje"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "Jau esate pirmajame puslapyje"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "Jau esate paskutiniame puslapyje"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "Įkeliamas skyrius…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "Skaitytuvo nustatymai"
+    },
+    {
+      "name": "reader_background",
+      "value": "Fonas"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Automatiškai"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "Balta"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "Pilka"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "Juoda"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "Rodyti puslapio numerį"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "Šviesumas"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Automatiškai"
+    },
+    {
+      "name": "plugin_title",
+      "value": "Plėtiniai"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "Įdiegta"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "Dar nėra plėtinių, diekite žemiau"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "Išjungtus plėtinius bet kada galima vėl įjungti"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "Naujausia"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "Diegti iš failo"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "Pasirinkite diegiamą failą"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "Apdorojama…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "Palaiko .honyomiplug / .zip papildinių paketus"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "Internetinė saugykla"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "Nustatyti saugyklą"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "Atnaujinti"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "Papildinių saugykla dar nesukonfigūruota"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "Įkeliama saugykla…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "Papildinių saugyklos URL"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "Įveskite papildinių saugyklos URL"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "Saugyklos įkelti nepavyko: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "Nepavyko pasirinkti failo"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "Įdiegta: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "Įdiegta %s"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "Diegti nepavyko: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "Veiksmas nepavyko"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "Pašalinta: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "Pašalinti nepavyko"
+    },
+    {
+      "name": "settings_title",
+      "value": "Nustatymai"
+    },
+    {
+      "name": "settings_general",
+      "value": "Bendra"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Pradžios ekranas"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "Pritaikymas"
+    },
+    {
+      "name": "settings_library",
+      "value": "Biblioteka"
+    },
+    {
+      "name": "settings_reader",
+      "value": "Skaitytuvas"
+    },
+    {
+      "name": "settings_data",
+      "value": "Duomenys"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Atsisiuntimai"
+    },
+    {
+      "name": "settings_browse",
+      "value": "Naršyti"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Išplėstiniai"
+    },
+    {
+      "name": "settings_about",
+      "value": "Apie"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "Biblioteka"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Naujienos"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "Istorija"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "Naršyti"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "Daugiau"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Išplėstiniai"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "Skaičiuojama…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "Saugykla"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "Išvalyti vaizdų podėlį"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "Vaizdų podėlis išvalytas"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "Išvalyti slapukus"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "Visi slapukai išvalyti"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "Atsarginė kopija ir atkūrimas"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "Eksportuoti atsarginę kopiją"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "Importuoti atsarginę kopiją"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "Sekimas"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList prieigos raktas"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList prieigos raktas"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "Įklijuokite prieigos raktą (palikite tuščią, kad išvalytumėte)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "Nenustatyta"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "Nustatyta"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "Raktas išsaugotas"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "Raktas išvalytas"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "Atsarginė kopija eksportuota"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "Eksportas atšauktas"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "Eksportuoti nepavyko"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "Importas atšauktas"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "Netinkamas atsarginės kopijos failas"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "Atkurta %d mangos"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "Importuoti nepavyko"
+    },
+    {
+      "name": "about_title",
+      "value": "Apie"
+    },
+    {
+      "name": "about_version",
+      "value": "Versija 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "Architektūra įkvėpta Mihon (Apache-2.0). Internetiniai šaltiniai diegiami dinamiškai kaip plėtiniai, o vietiniai šaltiniai yra įtaisyti."
+    },
+    {
+      "name": "about_ack",
+      "value": "Atvirojo kodo padėkos:\n· Mihon / Tachiyomi — programos architektūra ir sąveikos dizainas (Apache-2.0)\n· Material Symbols — programos piktogramos (Apache-2.0)\n· MangaDex — bandymų duomenų šaltinis"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "Naršyti"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "Turinys"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "Rodyti NSFW šaltinius"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "Įjungus, plėtinių kaip NSFW pažymėti šaltiniai bus rodomi skiltyje Naršyti"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Atsisiuntimai"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Tinklas"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Atsisiųsti tik per „Wi-Fi“"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "Pastaba: šis jungiklis dabartinėje versijoje yra rezervuotas; tinklo tipo nustatymas bus vėlesnėje laidoje"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "Biblioteka"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "Filtruoti ir rikiuoti"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "Numatytasis rikiavimas"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "Pavadinimas"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "Naujausias skyrius"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "Pridėjimo data"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "Neskaitytų skaičius"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "Rikiuoti pagal pavadinimą didėjančiai"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "Numatytasis filtras"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "Neskaityta"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "Atsisiųsta"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "Nebaigta"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Rodymas"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "Numatytasis vaizdas"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "Tinklelis"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "Viršelių tinklelis"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "Sąrašas"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "Tinklelio stulpeliai"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "Automatiškai"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 stulpeliai"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 stulpeliai"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 stulpeliai"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "Neskaitytų ženkleliai"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "Atsisiuntimų ženkleliai"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "Skaitytuvas"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "Skaitymo režimas"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "Numatytasis režimas"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "Iš kairės į dešinę"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "Iš dešinės į kairę"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "Vertikalus lapistymas"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "Dvigubas puslapis (gulsčias)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Rodymas"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "Rodyti puslapio numerį"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "Skaitytuvo fonas"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "Kaip tema"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "Balta"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "Juoda"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "Pilka"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "Atkurti skaitytuvo šviesumą"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "Šviesumas dabar seka sistemą"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "Šaltiniai"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "Plėtiniai"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "Perkelti"
+    },
+    {
+      "name": "browse_pin",
+      "value": "Prisegti"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "Atsegti"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "Išjungti šaltinį"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "Šaltinis išjungtas"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "Prisegta"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "Nėra šaltinių. Įdiekite skirtuke Plėtiniai"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "Filtruoti kalbas"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "Visi"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "Šaltinis nepasiekiamas. Plėtinys gali būti išjungtas"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "Ieškoti visuose šaltiniuose"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "Paieška nepavyko"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "Ieškoti plėtinių"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "Nėra atitikčių"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "Saugyklos nustatymai"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "Atnaujinti saugyklą"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "Pasirinkite šaltinį perkėlimui"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "Biblioteka tuščia"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "Pasirinkti visus"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "Panaikinti pasirinkimą"
+    },
+    {
+      "name": "migrate_action",
+      "value": "Perkelti (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "Perkelti"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "Praleisti"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d iš %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "Paskirties šaltinis"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "Ieškoti mangos paskirties šaltinyje"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "Perkelti į šią mangą?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "Perkelta: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "Perkėlimas nepavyko: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "Perkėlimas baigtas"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "Nėra paskirties šaltinio"
+    },
+    {
+      "name": "stats_title",
+      "value": "Statistika"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "Apžvalga"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "Bibliotekoje"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "Skaitymo trukmė"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "Užbaigta"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "Kūriniai"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "Pradėta"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "Vietinė"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "Skyriai"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "Iš viso"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "Skaityta"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "Atsisiųsta"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "Sekimas"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "Sekami kūriniai"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "Vidutinis balas"
+    },
+    {
+      "name": "stats_used",
+      "value": "Naudota"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "Netaikoma"
+    },
+    {
+      "name": "stats_week",
+      "value": "Savaitė"
+    },
+    {
+      "name": "stats_month",
+      "value": "Mėnuo"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "%s šią savaitę"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "%s šį mėnesį"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "Šiuo laikotarpiu neskaityta"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%d d."
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%d val."
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%d min."
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%d sek."
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "Sk"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "Pr"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "An"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "Tr"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "Kt"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "Pn"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "Št"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "Vertikaliai"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "Pagal suėmimą"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "Užrakinti stačiai"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "Užrakinti gulsčiai"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "Bendra"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "Spalvų filtras"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "Pilkumo"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "Apverstos spalvos"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "Kontrastas"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "Sodrumas"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "Kirpti kraštus"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "Lietimo zonos"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "Numatyta"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "Iš kairės į dešinę"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "Iš dešinės į kairę"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "Vertikaliai"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "Kraštas"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "Nėra"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Dviejų puslapių rodinys"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "Webtoon šoninė paraštė"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "Pagal suėmimą"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "Diegti iš vietinių"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "Plėtinio informacija"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "Versija"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "Kalba"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "Pašalinti plėtinį"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "Pašalinti „%s“? Bibliotekos mangos duomenys išliks"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "Šaltiniai"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "Nustatymai"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "Įkeliama…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "Nepavyko pritaikyti nustatymų"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "Plėtinio nėra arba jis neįkeltas"
+    },
+    {
+      "name": "action_filter",
+      "value": "Filtruoti"
+    },
+    {
+      "name": "action_update_library",
+      "value": "Atnaujinti biblioteką"
+    },
+    {
+      "name": "action_update_category",
+      "value": "Atnaujinti kategoriją"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "Atidaryti atsitiktinį kūrinį"
+    },
+    {
+      "name": "action_select_all",
+      "value": "Pasirinkti visus"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "Apversti žymėjimą"
+    },
+    {
+      "name": "action_move_category",
+      "value": "Perkelti į kategoriją"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "Pažymėti kaip skaitytą"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "Pažymėti kaip neskaitytą"
+    },
+    {
+      "name": "action_download",
+      "value": "Atsisiųsti"
+    },
+    {
+      "name": "action_delete",
+      "value": "Ištrinti"
+    },
+    {
+      "name": "action_migrate",
+      "value": "Perkelti"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "Pašalinti iš bibliotekos"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "Pašalinti pasirinktą mangą (%d) iš bibliotekos?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "Į eilę įtraukta atsisiuntimų: %d"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "Ieškoti bibliotekoje"
+    },
+    {
+      "name": "library_no_match",
+      "value": "Nėra atitinkančios mangos"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "Filtruoti"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "Rikiuoti"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "Rodymas"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "Atsisiųsta"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "Neskaityta"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "Pradėta skaityti"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "Pažymėta žyme"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "Užbaigta"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "Sekama"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "Pavadinimas"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "Skyrių skaičius"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "Paskutinį kartą skaityta"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "Paskutinė atnaujinimo patikra"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "Neskaitytų skaičius"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "Kūrinio atnaujinimo laikas"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "Skyrių gavimo laikas"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "Pridėjimo data"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "Atsitiktinai"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "Glaustas tinklelis"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "Erdvus tinklelis"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "Viršelių tinklelis"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "Sąrašas"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "Skaičius eilutėje"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "Automatiškai"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "Ženkleliai ir mygtukai"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "Atsisiųstų skyrių skaičius"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "Neskaityti skyriai"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "Vietinis šaltinis"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "Kalba"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "Tęsti skaitymą mygtukas"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "Skirtukai"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "Rodyti kategorijų skirtukus"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "Rodyti kūrinių skaičių"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "MihonHarmony kortelės"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "Darbalaukio kortelių teikėjas"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "Tęsti skaitymą"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "Greitai tęsti neseniai skaitytą mangą"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "Naujienos"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "Naujausi neskaityti bibliotekos skyriai"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "Tęsti skaitymą"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "Naujienos"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d neskaityti skyriai"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "Dar nėra skaitymo istorijos"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "Nėra neskaitytų skyrių"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "Bakstelėkite, kad atidarytumėte programą"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "Mangos kortelė"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "Pridėkite iš išsamios informacijos, bakstelėkite viršelį ir skaitykite"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "Pridėkite į darbalaukį iš mangos išsamios informacijos"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "Pridėti į darbalaukį"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "Pridėta į darbalaukį"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "Nepavyko pridėti kortelės"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "Savaitės statistika"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "Kasdienė skaitymo trukmė šią savaitę"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "Mėnesio statistika"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "Kasdienė skaitymo trukmė šį mėnesį"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "Dar neskaityta"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "Rodyti būsimus atnaujinimus"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "Būsima"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "Būsimų vadovas"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "Ankstesnis mėnuo"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "Kitas mėnuo"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "Kūriniai, esantys ir įtrauktoje, ir neįtrauktoje kategorijoje, nerodomi."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "Šiandien"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "prieš %d dienas"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "Po %d dienų"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "Būsima"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "Numatomas bibliotekos mangos atnaujinimų kalendorius"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "Būsima"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "Bibliotekoje nėra leidžiamos mangos"
+    }
+  ]
 }

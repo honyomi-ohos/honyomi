@@ -1,7 +1,7 @@
 // AniList 追踪器（syncId=2）：GraphQL API + implicit OAuth（token 位于重定向 URL fragment）
 import { TrackRecord, TrackSearchResult } from '../../model/Models';
 import { Settings } from '../../common/Settings';
-import { Tracker, TrackHttp, OAuthToken, TrackDate, GraphqlErrorRaw } from './Tracker';
+import { GraphqlErrorRaw, OAuthToken, TrackDate, Tracker, TrackHttp } from './Tracker';
 
 const AL_API_URL = 'https://graphql.anilist.co/';
 const AL_AUTH_URL = 'https://anilist.co/api/v2/oauth/authorize?client_id=16329&response_type=token';

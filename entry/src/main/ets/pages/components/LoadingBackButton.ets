@@ -5,7 +5,8 @@ import { AppIcon } from './AppIcon';
 @Component
 export struct LoadingBackButton {
   @StorageProp('statusBarH') statusBarH: number = 0;
-  onBack: () => void = (): void => {};
+  onBack: () => void = (): void => {
+  };
 
   build() {
     Row({ space: 8 }) {

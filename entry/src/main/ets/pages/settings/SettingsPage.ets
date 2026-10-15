@@ -2,7 +2,7 @@
 import { Settings } from '../../common/Settings';
 import { Bp } from '../../common/Breakpoint';
 import { PageHeader } from '../components/PageHeader';
-import { PrefGroup, IconRow, PrefSelectRow } from '../components/Prefs';
+import { IconRow, PrefGroup, PrefSelectRow } from '../components/Prefs';
 import { AppIcon } from '../components/AppIcon';
 import { AppearanceContent } from './AppearancePage';
 import { LibrarySettingsContent } from './LibrarySettingsPage';
@@ -40,35 +40,6 @@ export struct SettingsPage {
   // 右栏二级页：'' 分类内容本身；'Language' 外观分类内的语言选择
   @State rightSub: string = '';
 
-  private catTitle(index: number): ResourceStr {
-    switch (index) {
-      case 0:
-        return $r('app.string.settings_general');
-      case 1:
-        return $r('app.string.appearance_title');
-      case 2:
-        return $r('app.string.settings_library');
-      case 3:
-        return $r('app.string.settings_reader');
-      case 4:
-        return $r('app.string.player_set_title');
-      case 5:
-        return $r('app.string.settings_downloads');
-      case 6:
-        return $r('app.string.settings_browse');
-      case 7:
-        return $r('app.string.track_title');
-      case 8:
-        return $r('app.string.data_storage_title');
-      case 9:
-        return $r('app.string.settings_advanced');
-      default:
-        return $r('app.string.settings_about');
-    }
-  }
-
-  // ---- lg 双栏：左栏分类导航 ----
-
   @Builder
   railItem(index: number) {
     Row({ space: 12 }) {
@@ -95,9 +66,8 @@ export struct SettingsPage {
     })
   }
 
-  // ---- lg 双栏：右栏 ----
+  // ---- lg 双栏：左栏分类导航 ----
 
-  // lg 双栏右栏头：仅二级页（语言）保留返回键 + 标题；分类内容不重复分类
   // 标题（左栏已高亮当前分类，重复显示冗余），顶部由外层补少量内边距
   @Builder
   paneHeader() {
@@ -113,9 +83,18 @@ export struct SettingsPage {
           .fontColor(this.pal.text)
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 10, bottom: 6 })
+      .padding({
+        left: 16,
+        right: 16,
+        top: 10,
+        bottom: 6
+      })
     }
   }
+
+  // ---- lg 双栏：右栏 ----
+
+  // lg 双栏右栏头：仅二级页（语言）保留返回键 + 标题；分类内容不重复分类
 
   // 常规分类内容（仅 lg 双栏右栏使用；窄屏展示在主页列表顶部）
   @Builder
@@ -148,7 +127,6 @@ export struct SettingsPage {
     .align(Alignment.TopStart)
   }
 
-  // lg 双栏主体：左分类导航（顶部自带「设置」标题）+ 竖分割线（通到窗口顶端）
   // + 右内容面板（自行避开状态栏）；标题不再通栏压在双栏之上，避免分割线顶端缺一段
   @Builder
   wideBody() {
@@ -162,7 +140,12 @@ export struct SettingsPage {
             }, (icon: string, index: number) => `cat-${index}`)
           }
           .width('100%')
-          .padding({ left: 12, right: 12, top: 8, bottom: 8 })
+          .padding({
+            left: 12,
+            right: 12,
+            top: 8,
+            bottom: 8
+          })
         }
         .width('100%')
         .layoutWeight(1)
@@ -242,6 +225,8 @@ export struct SettingsPage {
     .width('100%')
     .layoutWeight(1)
   }
+
+  // lg 双栏主体：左分类导航（顶部自带「设置」标题）+ 竖分割线（通到窗口顶端）
 
   // 窄屏（sm/md）分类入口列表
   @Builder
@@ -379,6 +364,33 @@ export struct SettingsPage {
       this.pathStack = ctx.pathStack;
     })
     .backgroundColor(this.pal.bg)
+  }
+
+  private catTitle(index: number): ResourceStr {
+    switch (index) {
+      case 0:
+        return $r('app.string.settings_general');
+      case 1:
+        return $r('app.string.appearance_title');
+      case 2:
+        return $r('app.string.settings_library');
+      case 3:
+        return $r('app.string.settings_reader');
+      case 4:
+        return $r('app.string.player_set_title');
+      case 5:
+        return $r('app.string.settings_downloads');
+      case 6:
+        return $r('app.string.settings_browse');
+      case 7:
+        return $r('app.string.track_title');
+      case 8:
+        return $r('app.string.data_storage_title');
+      case 9:
+        return $r('app.string.settings_advanced');
+      default:
+        return $r('app.string.settings_about');
+    }
   }
 }
 

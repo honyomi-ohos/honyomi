@@ -13,28 +13,6 @@ struct StatsWeekCard {
   @LocalStorageProp('labels') labels: string = '';
   @LocalStorageProp('empty') empty: boolean = false;
 
-  private barList(): string[] {
-    if (this.bars === '') {
-      return [];
-    }
-    return this.bars.split(',');
-  }
-
-  private labelList(): string[] {
-    if (this.labels === '') {
-      return [];
-    }
-    return this.labels.split(',');
-  }
-
-  private barHeight(h: string): number {
-    return Number(h);
-  }
-
-  private barColor(h: string): ResourceColor {
-    return Number(h) > 2 ? $r('app.color.honyomi_primary_blue') : $r('app.color.honyomi_chip');
-  }
-
   build() {
     Column() {
       // 标题栏：周统计 + 日期区间
@@ -51,7 +29,12 @@ struct StatsWeekCard {
           .maxLines(1)
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
+      .padding({
+        left: 16,
+        right: 16,
+        top: 12,
+        bottom: 4
+      })
 
       if (this.empty) {
         // 空状态
@@ -123,5 +106,27 @@ struct StatsWeekCard {
         'params': { 'cardTarget': 'stats' }
       });
     })
+  }
+
+  private barList(): string[] {
+    if (this.bars === '') {
+      return [];
+    }
+    return this.bars.split(',');
+  }
+
+  private labelList(): string[] {
+    if (this.labels === '') {
+      return [];
+    }
+    return this.labels.split(',');
+  }
+
+  private barHeight(h: string): number {
+    return Number(h);
+  }
+
+  private barColor(h: string): ResourceColor {
+    return Number(h) > 2 ? $r('app.color.honyomi_primary_blue') : $r('app.color.honyomi_chip');
   }
 }

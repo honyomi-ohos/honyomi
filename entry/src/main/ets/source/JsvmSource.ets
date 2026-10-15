@@ -1,6 +1,6 @@
-import { SManga, SChapter, SPage, SVideo, MangasPage, ContentType } from '../model/Models';
+import { ContentType, MangasPage, SChapter, SManga, SPage, SVideo } from '../model/Models';
 import { Source } from './Source';
-import { EngineGateway, EngineBackend, WebChallengeError } from '../jsvm/EngineGateway';
+import { EngineBackend, EngineGateway, WebChallengeError } from '../jsvm/EngineGateway';
 import { Http } from '../net/Http';
 import { AppKeys } from '../common/AppKeys';
 import { util } from '@kit.ArkTS';
@@ -17,12 +17,16 @@ export interface PluginManifest {
   supportsLatest: boolean;
   minAppVersion: number;
   dslVersion: number;
+
   // 可选：插件包内图标文件名（如 icon.png）
   icon: string;
+
   // 可选：共享运行时名（如 'wp'）——非空时 App 在 main.js 前拼接 rawfile plugin_runtime_<name>.js
   runtime: string;
+
   // 执行引擎：唯一合法值 'jsvm'（纯 JSVM 隔离引擎，本机 C++ JSVM + Worker）
   engine: string;
+
   // manga | novel | video，缺省 manga
   contentType: string;
 }
@@ -88,9 +92,11 @@ export interface SourcePrefItem {
   summary: string;
   value: string;
   options: SourcePrefOption[];
+
   // 插件声明的敏感项（密码/Token 等）：值经 SecureStore（Asset Store）加密存储，
   // 不落明文 preferences；声明方式：sensitive: true 或 type: 'password'
   sensitive: boolean;
+
   // 隐藏项：仅作敏感键声明（如登录后程序化写入的 token），设置页不渲染
   hidden: boolean;
 }
@@ -120,11 +126,14 @@ interface RawPrefItem {
 export interface RawFilter {
   type?: string;
   name?: string;
+
   // tri-state: 0 忽略/1 包含/2 排除；checkbox: boolean；select: 选中下标；group: 无
   state?: Object;
   values?: Object[];
+
   // group 子过滤器
   filters?: RawFilter[];
+
   // applyFilterState 使用的顶层序号（宿主回传前写入）
   index?: number;
 }
@@ -136,6 +145,7 @@ export interface CompiledSourceInfo {
   lang?: string;
   baseUrl?: string;
   supportsLatest?: boolean;
+
   // 单源级 NSFW 声明（可选）；未声明时继承包级 manifest.nsfw
   nsfw?: boolean;
 }
@@ -144,6 +154,8 @@ export interface CompiledSourceInfo {
 // 千级插件规模下先以“占位源”注册（仅元数据），首次调用经 engineStarter 惰性拉起引擎；
 // 引擎被 LRU 淘汰后再次调用会自动重新拉起。
 export class JsvmSource implements Source {
+  // 并发去重：模块级共享同一轮询/等待 promise，多处调用同时挂起时只跑一个轮询。
+  private static challengeWait: Promise<boolean> | undefined = undefined;
   readonly key: string;
   name: string;
   lang: string;
@@ -157,7 +169,6 @@ export class JsvmSource implements Source {
   readonly sourceId: string;
   // 插件图标（file:// 路径）；空字符串表示包内无图标
   readonly iconPath: string;
-
   private exportedMethods: string[] = [];
   private customImageHeaders: Record<string, string> | undefined = undefined;
   private imageViaHost: boolean = false;
@@ -181,118 +192,6 @@ export class JsvmSource implements Source {
     this.nsfw = manifest.nsfw;
   }
 
-  // 注入惰性引擎启动器：call/getHeaders 首次执行前先等待引擎就绪
-  setEngineStarter(starter: () => Promise<void>): void {
-    this.engineStarter = starter;
-  }
-
-  private async ensureEngineStarted(): Promise<void> {
-    if (this.engineStarter !== undefined) {
-      await this.engineStarter();
-    }
-  }
-
-  // 引擎就绪后就地升级（同 key 源不换实例）：刷新 manifest/方法表/supportsLatest/nsfw；
-  // 版本可能更换了图片头，清空预热缓存待下次 warm 重新拉取
-  upgrade(manifest: PluginManifest, exportedMethods: string[]): void {
-    this.manifest = manifest;
-    this.name = manifest.name;
-    this.lang = manifest.lang;
-    this.supportsLatest = manifest.supportsLatest && exportedMethods.indexOf('getLatestManga') >= 0;
-    this.contentType = ContentType.normalize(manifest.contentType);
-    this.nsfw = manifest.nsfw;
-    this.exportedMethods = exportedMethods;
-    this.warmHeadersPromise = undefined;
-  }
-
-  setImageHeaders(headers: Record<string, string> | undefined): void {
-    if (headers === undefined) {
-      this.imageViaHost = false;
-      this.customImageHeaders = undefined;
-    } else {
-      this.imageViaHost = true;
-      this.customImageHeaders = headers;
-    }
-  }
-
-  imageRequestHeaders(): Record<string, string> | undefined {
-    if (!this.imageViaHost) {
-      return undefined;
-    }
-    const merged: Record<string, string> = { 'User-Agent': Http.USER_AGENT };
-    if (this.customImageHeaders !== undefined) {
-      const keys = Object.keys(this.customImageHeaders);
-      for (const k of keys) {
-        merged[k] = this.customImageHeaders[k];
-      }
-    }
-    return merged;
-  }
-
-  async fetchPageImage(pageUrl: string, imageUrl: string): Promise<ArrayBuffer | undefined> {
-    if (this.exportedMethods.indexOf('fetchImage') < 0) {
-      return undefined;
-    }
-    const raw = await this.call<string>('fetchImage', this.callArgs([pageUrl, imageUrl]));
-    if (raw === undefined || raw === '') {
-      return undefined;
-    }
-    const helper = new util.Base64Helper();
-    const bytes = helper.decodeSync(raw);
-    return bytes.buffer;
-  }
-
-  async getFilterList(): Promise<RawFilter[]> {
-    if (this.exportedMethods.indexOf('getFilterList') < 0) {
-      return [];
-    }
-    const raw = await this.call<RawFilter[]>('getFilterList', this.callArgs([]));
-    return Array.isArray(raw) ? raw : [];
-  }
-
-  async applyFilterState(state: RawFilter[]): Promise<void> {
-    if (this.exportedMethods.indexOf('applyFilterState') < 0) {
-      return;
-    }
-    await this.call<object>('applyFilterState', this.callArgs([JSON.stringify(state)]));
-  }
-
-  async resetFilters(): Promise<void> {
-    if (this.exportedMethods.indexOf('resetFilters') < 0) {
-      return;
-    }
-    await this.call<object>('resetFilters', this.callArgs([]));
-  }
-
-  async setPreference(key: string, value: string): Promise<void> {
-    if (this.exportedMethods.indexOf('setPreference') < 0) {
-      return;
-    }
-    await this.call<object>('setPreference', this.callArgs([key, value]));
-  }
-
-  // 插件是否导出某方法（用于设置页判断源是否可配置）
-  hasMethod(name: string): boolean {
-    return this.exportedMethods.indexOf(name) >= 0;
-  }
-
-  // 插件设置声明（getSettingsSchema）：设置页据此渲染 switch/select/edit 行
-  async getSettingsSchema(): Promise<SourcePrefItem[]> {
-    if (this.exportedMethods.indexOf('getSettingsSchema') < 0) {
-      return [];
-    }
-    const raw = await this.call<object>('getSettingsSchema', this.callArgs([]));
-    const list = JsvmSource.prefListOf(raw);
-    const items: SourcePrefItem[] = [];
-    for (const r of list) {
-      const item = JsvmSource.toPrefItem(r);
-      if (item !== undefined) {
-        items.push(item);
-      }
-    }
-    return items;
-  }
-
   private static prefValueToString(v: string | boolean | number | undefined): string {
     if (v === undefined) {
       return '';
@@ -302,6 +201,8 @@ export class JsvmSource implements Source {
     }
     return `${v}`;
   }
+
+  // 引擎就绪后就地升级（同 key 源不换实例）：刷新 manifest/方法表/supportsLatest/nsfw；
 
   // tachiyomi-js 把 schema 再包成 JSON 字符串，字段是 type/values/titles/default。
   private static prefListOf(raw: object): RawPrefItem[] {
@@ -385,140 +286,10 @@ export class JsvmSource implements Source {
     return item;
   }
 
-  async getPopularManga(page: number): Promise<MangasPage> {
-    const raw = await this.call<RawMangasPage>('getPopularManga', this.callArgs([page]));
-    return JsvmSource.toMangasPage(raw);
-  }
-
-  async getLatestManga(page: number): Promise<MangasPage> {
-    if (this.supportsLatest) {
-      const raw = await this.call<RawMangasPage>('getLatestManga', this.callArgs([page]));
-      return JsvmSource.toMangasPage(raw);
-    }
-    return this.getPopularManga(page);
-  }
-
-  async getSearchManga(page: number, query: string): Promise<MangasPage> {
-    const raw = await this.call<RawMangasPage>('getSearchManga', this.callArgs([page, query]));
-    return JsvmSource.toMangasPage(raw);
-  }
-
-  async getMangaDetail(mangaKey: string): Promise<SManga> {
-    const raw = await this.call<RawManga | undefined>('getMangaDetail', this.callArgs([mangaKey]));
-    const manga = JsvmSource.toSManga(raw);
-    if (manga === undefined) {
-      throw new Error('plugin_invalid_detail');
-    }
-    return manga;
-  }
-
-  async getChapterList(mangaKey: string): Promise<SChapter[]> {
-    const raw = await this.call<RawChapter[]>('getChapterList', this.callArgs([mangaKey]));
-    const chapters: SChapter[] = [];
-    if (!Array.isArray(raw)) {
-      return chapters;
-    }
-    for (let i = 0; i < raw.length; i++) {
-      const c = JsvmSource.toSChapter(raw[i], i);
-      if (c !== undefined) {
-        chapters.push(c);
-      }
-    }
-    return chapters;
-  }
-
-  async getPageList(chapterKey: string): Promise<SPage[]> {
-    const raw = await this.call<RawPage[]>('getPageList', this.callArgs([chapterKey]));
-    const pages: SPage[] = [];
-    if (!Array.isArray(raw)) {
-      return pages;
-    }
-    for (let i = 0; i < raw.length; i++) {
-      const item = raw[i];
-      const imageUrl = item.imageUrl ?? item.url ?? '';
-      if (imageUrl === '') {
-        continue;
-      }
-      let chapterUrl = item.pageUrl ?? '';
-      if (chapterUrl === '' && item.imageUrl !== undefined && item.imageUrl !== '') {
-        chapterUrl = item.url ?? '';
-      }
-      const page: SPage = {
-        index: item.index ?? i,
-        url: imageUrl,
-        pageUrl: chapterUrl,
-      };
-      pages.push(page);
-    }
-    return pages;
-  }
-
-  async getChapterText(chapterKey: string): Promise<string> {
-    if (this.exportedMethods.indexOf('getChapterText') < 0) {
-      if (this.contentType === ContentType.NOVEL) {
-        throw new Error('plugin_no_chapter_text');
-      }
-      return '';
-    }
-    const raw: Object = await this.call<Object>('getChapterText', this.callArgs([chapterKey]));
-    return JsvmSource.textFromRaw(raw);
-  }
-
-  async getVideoList(chapterKey: string): Promise<SVideo[]> {
-    if (this.exportedMethods.indexOf('getVideoList') < 0) {
-      if (this.contentType === ContentType.VIDEO) {
-        throw new Error('plugin_no_video_list');
-      }
-      return [];
-    }
-    const raw: Object = await this.call<Object>('getVideoList', this.callArgs([chapterKey]));
-    return JsvmSource.videosFromRaw(raw);
-  }
-
-  // ---------------- 内部实现 ----------------
-
-  // 引擎后端访问：经 EngineGateway 间接获取，保持本模块（及全部 UI 导入链）
   // native-free；后端未注册（预览器等场景）时抛 engine_unavailable。
   private static engine(): EngineBackend {
     return EngineGateway.require();
   }
-
-  // 统一调用入口：CF 盾挑战异常上抛前触发全局验证页
-  // 编译产物按 sourceId 选源；简单契约插件不传这个前缀参数。
-  private callArgs(args: Array<string | number | boolean | object>): Array<string | number | boolean | object> {
-    if (this.sourceId === '') {
-      return args;
-    }
-    const next: Array<string | number | boolean | object> = [this.sourceId];
-    for (const item of args) {
-      next.push(item);
-    }
-    return next;
-  }
-
-  private async call<T>(method: string, args: Array<string | number | boolean | object>): Promise<T> {
-    // 占位源首调：先等待引擎惰性拉起（引擎已加载时立即返回）
-    await this.ensureEngineStarted();
-    try {
-      return await JsvmSource.engine().callData<T>(this.packageKey, method, args);
-    } catch (e) {
-      if (e instanceof WebChallengeError) {
-        AppStorage.setOrCreate(AppKeys.CF_CHALLENGE_URL, e.challengeUrl);
-        // 挂起等待用户在验证页完成质询：通过后 cfVerifiedTick 增长，携新
-        // cf_clearance 自动重试一次；用户放弃（验证页关闭未通过）则原样上抛
-        const solved = await JsvmSource.waitChallengeSolved();
-        if (solved) {
-          return await JsvmSource.engine().callData<T>(this.packageKey, method, args);
-        }
-      }
-      throw e as Error;
-    }
-  }
-
-  // 轮询等待 CF 验证结果：cfVerifiedTick 增长代表通过；cfChallengeUrl 复空代表放弃；
-  // 上限 2 分钟（验证页超时关闭后调用方收到原始错误）。
-  // 并发去重：模块级共享同一轮询/等待 promise，多处调用同时挂起时只跑一个轮询。
-  private static challengeWait: Promise<boolean> | undefined = undefined;
 
   private static waitChallengeSolved(): Promise<boolean> {
     if (JsvmSource.challengeWait === undefined) {
@@ -599,40 +370,6 @@ export class JsvmSource implements Source {
       }
     }
     return headers;
-  }
-
-  // 插件可选导出 getHeaders：声明后图片经宿主 http 管线加载（Referer/Cookie）。
-  // 可等待 + 并发去重：Promise 缓存使多次调用共享同一次 getHeaders 请求，
-  // 调用方 await 后可保证图片首请求带上 Referer/Cookie。
-  warmImageHeaders(): Promise<void> {
-    if (this.warmHeadersPromise === undefined) {
-      this.warmHeadersPromise = this.doWarmImageHeaders();
-    }
-    return this.warmHeadersPromise;
-  }
-
-  private doWarmImageHeaders(): Promise<void> {
-    if (this.exportedMethods.indexOf('getHeaders') < 0) {
-      return Promise.resolve();
-    }
-    // 占位源：getHeaders 前先等待引擎惰性拉起
-    return this.ensureEngineStarted()
-      .then((): Promise<Record<string, Object>> =>
-        JsvmSource.engine().callData<Record<string, Object>>(this.packageKey, 'getHeaders', this.callArgs([])))
-      .then((raw: Record<string, Object>): void => {
-        const keys = Object.keys(raw);
-        const headers: Record<string, string> = {};
-        for (const k of keys) {
-          const v = raw[k];
-          if (typeof v === 'string') {
-            headers[k] = v;
-          }
-        }
-        this.setImageHeaders(headers);
-      })
-      .catch((_e: Error): void => {
-        // 插件未有效导出 getHeaders：直连加载
-      });
   }
 
   private static toMangasPage(raw: RawMangasPage | undefined): MangasPage {
@@ -725,5 +462,281 @@ export class JsvmSource implements Source {
       default:
         return 'unknown';
     }
+  }
+
+  // 注入惰性引擎启动器：call/getHeaders 首次执行前先等待引擎就绪
+  setEngineStarter(starter: () => Promise<void>): void {
+    this.engineStarter = starter;
+  }
+
+  // 版本可能更换了图片头，清空预热缓存待下次 warm 重新拉取
+  upgrade(manifest: PluginManifest, exportedMethods: string[]): void {
+    this.manifest = manifest;
+    this.name = manifest.name;
+    this.lang = manifest.lang;
+    this.supportsLatest = manifest.supportsLatest && exportedMethods.indexOf('getLatestManga') >= 0;
+    this.contentType = ContentType.normalize(manifest.contentType);
+    this.nsfw = manifest.nsfw;
+    this.exportedMethods = exportedMethods;
+    this.warmHeadersPromise = undefined;
+  }
+
+  setImageHeaders(headers: Record<string, string> | undefined): void {
+    if (headers === undefined) {
+      this.imageViaHost = false;
+      this.customImageHeaders = undefined;
+    } else {
+      this.imageViaHost = true;
+      this.customImageHeaders = headers;
+    }
+  }
+
+  imageRequestHeaders(): Record<string, string> | undefined {
+    if (!this.imageViaHost) {
+      return undefined;
+    }
+    const merged: Record<string, string> = { 'User-Agent': Http.USER_AGENT };
+    if (this.customImageHeaders !== undefined) {
+      const keys = Object.keys(this.customImageHeaders);
+      for (const k of keys) {
+        merged[k] = this.customImageHeaders[k];
+      }
+    }
+    return merged;
+  }
+
+  async fetchPageImage(pageUrl: string, imageUrl: string): Promise<ArrayBuffer | undefined> {
+    if (this.exportedMethods.indexOf('fetchImage') < 0) {
+      return undefined;
+    }
+    const raw = await this.call<string>('fetchImage', this.callArgs([pageUrl, imageUrl]));
+    if (raw === undefined || raw === '') {
+      return undefined;
+    }
+    const helper = new util.Base64Helper();
+    const bytes = helper.decodeSync(raw);
+    return bytes.buffer;
+  }
+
+  async getFilterList(): Promise<RawFilter[]> {
+    if (this.exportedMethods.indexOf('getFilterList') < 0) {
+      return [];
+    }
+    const raw = await this.call<RawFilter[]>('getFilterList', this.callArgs([]));
+    return Array.isArray(raw) ? raw : [];
+  }
+
+  async applyFilterState(state: RawFilter[]): Promise<void> {
+    if (this.exportedMethods.indexOf('applyFilterState') < 0) {
+      return;
+    }
+    await this.call<object>('applyFilterState', this.callArgs([JSON.stringify(state)]));
+  }
+
+  async resetFilters(): Promise<void> {
+    if (this.exportedMethods.indexOf('resetFilters') < 0) {
+      return;
+    }
+    await this.call<object>('resetFilters', this.callArgs([]));
+  }
+
+  // ---------------- 内部实现 ----------------
+
+  // 引擎后端访问：经 EngineGateway 间接获取，保持本模块（及全部 UI 导入链）
+
+  async setPreference(key: string, value: string): Promise<void> {
+    if (this.exportedMethods.indexOf('setPreference') < 0) {
+      return;
+    }
+    await this.call<object>('setPreference', this.callArgs([key, value]));
+  }
+
+  // 统一调用入口：CF 盾挑战异常上抛前触发全局验证页
+
+  // 插件是否导出某方法（用于设置页判断源是否可配置）
+  hasMethod(name: string): boolean {
+    return this.exportedMethods.indexOf(name) >= 0;
+  }
+
+  // 插件设置声明（getSettingsSchema）：设置页据此渲染 switch/select/edit 行
+  async getSettingsSchema(): Promise<SourcePrefItem[]> {
+    if (this.exportedMethods.indexOf('getSettingsSchema') < 0) {
+      return [];
+    }
+    const raw = await this.call<object>('getSettingsSchema', this.callArgs([]));
+    const list = JsvmSource.prefListOf(raw);
+    const items: SourcePrefItem[] = [];
+    for (const r of list) {
+      const item = JsvmSource.toPrefItem(r);
+      if (item !== undefined) {
+        items.push(item);
+      }
+    }
+    return items;
+  }
+
+  // 轮询等待 CF 验证结果：cfVerifiedTick 增长代表通过；cfChallengeUrl 复空代表放弃；
+  // 上限 2 分钟（验证页超时关闭后调用方收到原始错误）。
+
+  async getPopularManga(page: number): Promise<MangasPage> {
+    const raw = await this.call<RawMangasPage>('getPopularManga', this.callArgs([page]));
+    return JsvmSource.toMangasPage(raw);
+  }
+
+  async getLatestManga(page: number): Promise<MangasPage> {
+    if (this.supportsLatest) {
+      const raw = await this.call<RawMangasPage>('getLatestManga', this.callArgs([page]));
+      return JsvmSource.toMangasPage(raw);
+    }
+    return this.getPopularManga(page);
+  }
+
+  async getSearchManga(page: number, query: string): Promise<MangasPage> {
+    const raw = await this.call<RawMangasPage>('getSearchManga', this.callArgs([page, query]));
+    return JsvmSource.toMangasPage(raw);
+  }
+
+  async getMangaDetail(mangaKey: string): Promise<SManga> {
+    const raw = await this.call<RawManga | undefined>('getMangaDetail', this.callArgs([mangaKey]));
+    const manga = JsvmSource.toSManga(raw);
+    if (manga === undefined) {
+      throw new Error('plugin_invalid_detail');
+    }
+    return manga;
+  }
+
+  async getChapterList(mangaKey: string): Promise<SChapter[]> {
+    const raw = await this.call<RawChapter[]>('getChapterList', this.callArgs([mangaKey]));
+    const chapters: SChapter[] = [];
+    if (!Array.isArray(raw)) {
+      return chapters;
+    }
+    for (let i = 0; i < raw.length; i++) {
+      const c = JsvmSource.toSChapter(raw[i], i);
+      if (c !== undefined) {
+        chapters.push(c);
+      }
+    }
+    return chapters;
+  }
+
+  async getPageList(chapterKey: string): Promise<SPage[]> {
+    const raw = await this.call<RawPage[]>('getPageList', this.callArgs([chapterKey]));
+    const pages: SPage[] = [];
+    if (!Array.isArray(raw)) {
+      return pages;
+    }
+    for (let i = 0; i < raw.length; i++) {
+      const item = raw[i];
+      const imageUrl = item.imageUrl ?? item.url ?? '';
+      if (imageUrl === '') {
+        continue;
+      }
+      let chapterUrl = item.pageUrl ?? '';
+      if (chapterUrl === '' && item.imageUrl !== undefined && item.imageUrl !== '') {
+        chapterUrl = item.url ?? '';
+      }
+      const page: SPage = {
+        index: item.index ?? i,
+        url: imageUrl,
+        pageUrl: chapterUrl,
+      };
+      pages.push(page);
+    }
+    return pages;
+  }
+
+  // 插件可选导出 getHeaders：声明后图片经宿主 http 管线加载（Referer/Cookie）。
+  // 可等待 + 并发去重：Promise 缓存使多次调用共享同一次 getHeaders 请求，
+
+  async getChapterText(chapterKey: string): Promise<string> {
+    if (this.exportedMethods.indexOf('getChapterText') < 0) {
+      if (this.contentType === ContentType.NOVEL) {
+        throw new Error('plugin_no_chapter_text');
+      }
+      return '';
+    }
+    const raw: Object = await this.call<Object>('getChapterText', this.callArgs([chapterKey]));
+    return JsvmSource.textFromRaw(raw);
+  }
+
+  async getVideoList(chapterKey: string): Promise<SVideo[]> {
+    if (this.exportedMethods.indexOf('getVideoList') < 0) {
+      if (this.contentType === ContentType.VIDEO) {
+        throw new Error('plugin_no_video_list');
+      }
+      return [];
+    }
+    const raw: Object = await this.call<Object>('getVideoList', this.callArgs([chapterKey]));
+    return JsvmSource.videosFromRaw(raw);
+  }
+
+  // 调用方 await 后可保证图片首请求带上 Referer/Cookie。
+  warmImageHeaders(): Promise<void> {
+    if (this.warmHeadersPromise === undefined) {
+      this.warmHeadersPromise = this.doWarmImageHeaders();
+    }
+    return this.warmHeadersPromise;
+  }
+
+  private async ensureEngineStarted(): Promise<void> {
+    if (this.engineStarter !== undefined) {
+      await this.engineStarter();
+    }
+  }
+
+  // 编译产物按 sourceId 选源；简单契约插件不传这个前缀参数。
+  private callArgs(args: Array<string | number | boolean | object>): Array<string | number | boolean | object> {
+    if (this.sourceId === '') {
+      return args;
+    }
+    const next: Array<string | number | boolean | object> = [this.sourceId];
+    for (const item of args) {
+      next.push(item);
+    }
+    return next;
+  }
+
+  private async call<T>(method: string, args: Array<string | number | boolean | object>): Promise<T> {
+    // 占位源首调：先等待引擎惰性拉起（引擎已加载时立即返回）
+    await this.ensureEngineStarted();
+    try {
+      return await JsvmSource.engine().callData<T>(this.packageKey, method, args);
+    } catch (e) {
+      if (e instanceof WebChallengeError) {
+        AppStorage.setOrCreate(AppKeys.CF_CHALLENGE_URL, e.challengeUrl);
+        // 挂起等待用户在验证页完成质询：通过后 cfVerifiedTick 增长，携新
+        // cf_clearance 自动重试一次；用户放弃（验证页关闭未通过）则原样上抛
+        const solved = await JsvmSource.waitChallengeSolved();
+        if (solved) {
+          return await JsvmSource.engine().callData<T>(this.packageKey, method, args);
+        }
+      }
+      throw e as Error;
+    }
+  }
+
+  private doWarmImageHeaders(): Promise<void> {
+    if (this.exportedMethods.indexOf('getHeaders') < 0) {
+      return Promise.resolve();
+    }
+    // 占位源：getHeaders 前先等待引擎惰性拉起
+    return this.ensureEngineStarted()
+      .then((): Promise<Record<string, Object>> =>
+      JsvmSource.engine().callData<Record<string, Object>>(this.packageKey, 'getHeaders', this.callArgs([])))
+      .then((raw: Record<string, Object>): void => {
+        const keys = Object.keys(raw);
+        const headers: Record<string, string> = {};
+        for (const k of keys) {
+          const v = raw[k];
+          if (typeof v === 'string') {
+            headers[k] = v;
+          }
+        }
+        this.setImageHeaders(headers);
+      })
+      .catch((_e: Error): void => {
+        // 插件未有效导出 getHeaders：直连加载
+      });
   }
 }

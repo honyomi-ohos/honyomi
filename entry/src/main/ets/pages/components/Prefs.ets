@@ -47,7 +47,8 @@ export struct TextRow {
   @State hovered: boolean = false;
   title: Resource | string = '';
   value: Resource | string = '';
-  onTap: () => void = () => {};
+  onTap: () => void = () => {
+  };
 
   build() {
     Row() {
@@ -85,7 +86,8 @@ export struct SwitchRow {
   subtitle: Resource | string = '';
   @Prop icon: string = '';
   @Prop isOn: boolean = false;
-  onChange: (value: boolean) => void = (value: boolean) => {};
+  onChange: (value: boolean) => void = (value: boolean) => {
+  };
 
   build() {
     Row() {
@@ -108,6 +110,7 @@ export struct SwitchRow {
       }
       .layoutWeight(1)
       .alignItems(HorizontalAlign.Start)
+
       Toggle({ type: ToggleType.Switch, isOn: this.isOn })
         .selectedColor(this.pal.primary)
         .onChange((value: boolean) => this.onChange(value))
@@ -130,7 +133,8 @@ export struct IconRow {
   @State hovered: boolean = false;
   title: Resource | string = '';
   @Prop icon: string = '';
-  onTap: () => void = () => {};
+  onTap: () => void = () => {
+  };
 
   build() {
     Row() {
@@ -168,7 +172,8 @@ export struct PrefSelectRow {
   options: ResourceStr[] = [];
   selectedIndex: number = -1;
   @State currentIdx: number = -1;
-  onSelectIndex: (index: number) => void = (index: number) => {};
+  onSelectIndex: (index: number) => void = (index: number) => {
+  };
 
   aboutToAppear(): void {
     this.currentIdx = this.selectedIndex;
@@ -185,13 +190,6 @@ export struct PrefSelectRow {
         this.onSelectIndex(index);
       }
     })
-  }
-
-  private valueText(): ResourceStr {
-    if (this.currentIdx >= 0 && this.currentIdx < this.options.length) {
-      return this.options[this.currentIdx];
-    }
-    return '';
   }
 
   build() {
@@ -231,6 +229,13 @@ export struct PrefSelectRow {
       this.hovered = isHover;
     })
   }
+
+  private valueText(): ResourceStr {
+    if (this.currentIdx >= 0 && this.currentIdx < this.options.length) {
+      return this.options[this.currentIdx];
+    }
+    return '';
+  }
 }
 
 // 声明式偏好滑条行：标题 + 行尾值 + 步进 Slider，
@@ -243,11 +248,14 @@ export struct PrefSliderRow {
   minValue: number = 0;
   maxValue: number = 10;
   stepValue: number = 1;
-  valueText: (v: number) => ResourceStr = (v: number): ResourceStr => `${v}`;
-  apply: (value: number) => void = (value: number) => {};
   @State currentVal: number = 0;
   private savedVal: number = 0;
   private inited: boolean = false;
+
+  valueText: (v: number) => ResourceStr = (v: number): ResourceStr => `${v}`;
+
+  apply: (value: number) => void = (value: number) => {
+  };
 
   build() {
     Column() {
@@ -264,6 +272,7 @@ export struct PrefSliderRow {
           .margin({ left: 8 })
       }
       .width('100%')
+
       Slider({
         value: this.currentVal,
         min: this.minValue,
@@ -287,7 +296,12 @@ export struct PrefSliderRow {
     }
     .width('100%')
     .constraintSize({ minHeight: 52 })
-    .padding({ left: 16, right: 16, top: 10, bottom: 10 })
+    .padding({
+      left: 16,
+      right: 16,
+      top: 10,
+      bottom: 10
+    })
     .alignItems(HorizontalAlign.Start)
     .onAppear(() => {
       if (!this.inited) {
@@ -311,9 +325,11 @@ export struct PrefSwitchRow {
   // 开关可用性（false 时行内开关禁用并降低不透明度，如浅色模式下的 AMOLED）；
   // 命名避开通用属性 enabled()
   @Prop switchEnabled: boolean = true;
-  apply: (value: boolean) => void = (value: boolean) => {};
   @State isOn: boolean = false;
   private inited: boolean = false;
+
+  apply: (value: boolean) => void = (value: boolean) => {
+  };
 
   build() {
     Row() {
@@ -336,6 +352,7 @@ export struct PrefSwitchRow {
       }
       .layoutWeight(1)
       .alignItems(HorizontalAlign.Start)
+
       Toggle({ type: ToggleType.Switch, isOn: this.isOn })
         .selectedColor(this.pal.primary)
         .enabled(this.switchEnabled)

@@ -1,534 +1,2124 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Filtrēt visus ierakstus bibliotēkā" },
-    { "name": "more_incognito_summary", "value": "Pauzē lasīšanas vēsturi" },
-    { "name": "more_support", "value": "Support Us" },
-    { "name": "more_help", "value": "Palīdzība" },
-    { "name": "support_perks", "value": "Patrons get access to exclusive channels, with more perks to come." },
-    { "name": "support_patreon", "value": "Patreon (preferred)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together." },
-    { "name": "support_contact_msg", "value": "For alternative options or any related questions, join our Discord server." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "Dati un uzglabāšana" },
-    { "name": "data_storage_location", "value": "Krātuves atrašanās vieta" },
-    { "name": "data_storage_location_info", "value": "Izmanto automātiskajām dublējumkopijām, nodaļu lejupielādei un vietējam avotam." },
-    { "name": "data_backup_restore", "value": "Dublēšana un atjaunošana" },
-    { "name": "data_create_backup", "value": "Izveidot dublējumu" },
-    { "name": "data_restore_backup", "value": "Atjaunot dublējumu" },
-    { "name": "data_backup_interval", "value": "Dublējumu biežums" },
-    { "name": "data_backup_info", "value": "Kopijas vajadzētu glabāt arī citās vietās." },
-    { "name": "data_last_auto_backup", "value": "Pēdējā automātiskā dublēšana: %s" },
-    { "name": "data_storage_usage", "value": "Krātuves izmantošana" },
-    { "name": "data_available_space", "value": "Available: %s / Total: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Notīrīt nodaļas kešatmiņu" },
-    { "name": "data_used_cache", "value": "Izmantots: %s" },
-    { "name": "data_cache_deleted", "value": "Kešatmiņa nodzēsta. %d faili ir izdzēsti" },
-    { "name": "data_cache_delete_error", "value": "Tīrīšanas laikā radās kļūda" },
-    { "name": "data_auto_clear_cache", "value": "Notīriet nodaļu kešatmiņu, atverot lietotni" },
-    { "name": "data_export", "value": "Export" },
-    { "name": "data_library_list", "value": "Library List" },
-    { "name": "data_library_exported", "value": "Library Exported" },
-    { "name": "data_export_include", "value": "Atlasīt iekļaujamos datus" },
-    { "name": "data_column_title", "value": "Nosaukums" },
-    { "name": "data_column_author", "value": "Author" },
-    { "name": "data_interval_off", "value": "Izslēgts" },
-    { "name": "data_interval_6h", "value": "Ik pēc 6 stundām" },
-    { "name": "data_interval_12h", "value": "Ik pēc 12 stundām" },
-    { "name": "data_interval_24h", "value": "Katru dienu" },
-    { "name": "data_interval_48h", "value": "Ik pēc 2 dienam" },
-    { "name": "data_interval_weekly", "value": "Katru nedēļu" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "Labi" },
-    { "name": "common_cancel", "value": "Atcelt" },
-    { "name": "common_confirm", "value": "Apstiprināt" },
-    { "name": "common_delete", "value": "Dzēst" },
-    { "name": "common_retry", "value": "Mēģināt vēlreiz" },
-    { "name": "common_search", "value": "Meklēt" },
-    { "name": "common_all", "value": "Visi" },
-    { "name": "common_close", "value": "Aizvērt" },
-    { "name": "common_save", "value": "Saglabāt" },
-    { "name": "common_install", "value": "Instalēt" },
-    { "name": "common_uninstall", "value": "Atinstalēt" },
-    { "name": "common_update", "value": "Atjaunināt" },
-    { "name": "common_none", "value": "Nav" },
-    { "name": "common_default", "value": "Noklusējums" },
-    { "name": "appearance_title", "value": "Izskats" },
-    { "name": "appearance_language", "value": "Valoda" },
-    { "name": "lang_follow_system", "value": "Saskaņā ar sistēmu" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "Tēmas režīms" },
-    { "name": "appearance_theme_auto", "value": "Saskaņā ar sistēmu" },
-    { "name": "appearance_theme_light", "value": "Gaišs" },
-    { "name": "appearance_theme_dark", "value": "Tumšs" },
-    { "name": "appearance_accent_color", "value": "Akcenta krāsa" },
-    { "name": "appearance_other", "value": "Cits" },
-    { "name": "appearance_amoled", "value": "AMOLED tīri melns fons" },
-    { "name": "theme_accent_blue", "value": "Zils" },
-    { "name": "theme_accent_green", "value": "Zaļš" },
-    { "name": "theme_accent_pink", "value": "Rozā" },
-    { "name": "theme_accent_purple", "value": "Violets" },
-    { "name": "theme_accent_orange", "value": "Oranžs" },
-    { "name": "util_time_minutes_ago", "value": "pirms %d min" },
-    { "name": "util_time_hours_ago", "value": "pirms %d h" },
-    { "name": "util_time_days_ago", "value": "pirms %d d" },
-    { "name": "util_status_ongoing", "value": "Turpinās" },
-    { "name": "util_status_completed", "value": "Pabeigts" },
-    { "name": "util_status_hiatus", "value": "Pauzē" },
-    { "name": "util_status_cancelled", "value": "Atcelts" },
-    { "name": "util_status_publication_complete", "value": "Publicēšana pabeigta" },
-    { "name": "util_status_unknown", "value": "Nezināms" },
-    { "name": "tab_library", "value": "Bibliotēka" },
-    { "name": "tab_updates", "value": "Atjauninājumi" },
-    { "name": "tab_history", "value": "Vēsture" },
-    { "name": "tab_browse", "value": "Pārlūkot" },
-    { "name": "tab_more", "value": "Vairāk" },
-    { "name": "tab_cf_waiting", "value": "Gaida verifikāciju…" },
-    { "name": "tab_cf_verified", "value": "Verifikācija pabeigta" },
-    { "name": "tab_cf_title", "value": "Cilvēka verifikācija" },
-    { "name": "tab_cf_done", "value": "Gatavs" },
-    { "name": "tab_cf_saved", "value": "Verifikācijas rezultāts saglabāts" },
-    { "name": "more_title", "value": "Vairāk" },
-    { "name": "more_version", "value": "Versija %s" },
-    { "name": "more_downloaded_only", "value": "Tikai lejupielādētie" },
-    { "name": "more_incognito", "value": "Inkognito režīms" },
-    { "name": "more_downloads", "value": "Lejupielādes rinda" },
-    { "name": "more_categories", "value": "Kategorijas" },
-    { "name": "more_settings", "value": "Iestatījumi" },
-    { "name": "more_about", "value": "Par programmu" },
-    { "name": "more_plugins", "value": "Paplašinājumi" },
-    { "name": "categories_title", "value": "Kategorijas" },
-    { "name": "categories_add", "value": "Jauna kategorija" },
-    { "name": "categories_name_placeholder", "value": "Kategorijas nosaukums" },
-    { "name": "categories_rename_category", "value": "Pārdēvēt kategoriju" },
-    { "name": "categories_rename", "value": "Pārdēvēt" },
-    { "name": "categories_hint", "value": "Ilgi nospiediet kategoriju, lai pārdēvētu vai dzēstu; manga no dzēstās kategorijas tiek pārvietota atpakaļ uz Noklusējums" },
-    { "name": "dialog_pick_category", "value": "Izvēlēties kategoriju" },
-    { "name": "viewer_loading", "value": "Ielādē…" },
-    { "name": "viewer_load_failed", "value": "Neizdevās ielādēt attēlu" },
-    { "name": "viewer_tap_retry", "value": "Pieskarieties, lai mēģinātu vēlreiz" },
-    { "name": "library_title", "value": "Bibliotēka" },
-    { "name": "library_empty", "value": "Bibliotēka ir tukša, pārlūkojiet, lai pievienotu mangu" },
-    { "name": "library_new_category", "value": "Jauna kategorija" },
-    { "name": "library_category_name", "value": "Kategorijas nosaukums" },
-    { "name": "updates_title", "value": "Atjauninājumi" },
-    { "name": "updates_empty", "value": "Nav nesenu atjauninājumu" },
-    { "name": "updates_found_new", "value": "Atrastas %d jaunas nodaļas" },
-    { "name": "updates_no_new", "value": "Nav jaunu nodaļu" },
-    { "name": "updates_refresh_failed", "value": "Atsvaidzināšana neizdevās" },
-    { "name": "updates_refreshing", "value": "Atsvaidzina…" },
-    { "name": "history_title", "value": "Vēsture" },
-    { "name": "history_clear", "value": "Notīrīt" },
-    { "name": "history_confirm_clear", "value": "Apstiprināt notīrīšanu?" },
-    { "name": "history_empty", "value": "Vēl nav lasīšanas vēstures" },
-    { "name": "history_cleared", "value": "Vēsture notīrīta" },
-    { "name": "history_continue", "value": "Turpināt" },
-    { "name": "browse_title", "value": "Pārlūkot" },
-    { "name": "browse_import", "value": "Importēt" },
-    { "name": "browse_plugins", "value": "Spraudņi" },
-    { "name": "browse_local_source_name", "value": "Vietējā manga" },
-    { "name": "browse_popular", "value": "Populāri" },
-    { "name": "browse_latest", "value": "Jaunākais" },
-    { "name": "browse_search_hint", "value": "Meklēt mangu…" },
-    { "name": "browse_no_results", "value": "Manga nav atrasta" },
-    { "name": "browse_local_empty", "value": "Vēl nav vietējās mangas, pieskarieties Importēt, lai pievienotu" },
-    { "name": "browse_load_failed", "value": "Ielāde neizdevās: %s" },
-    { "name": "browse_search_failed", "value": "Meklēšana neizdevās: %s" },
-    { "name": "browse_load_more_failed", "value": "Neizdevās ielādēt vairāk" },
-    { "name": "browse_open_detail_failed", "value": "Neizdevās atvērt informāciju" },
-    { "name": "browse_pick_file_failed", "value": "Neizdevās izvēlēties failus" },
-    { "name": "browse_import_title", "value": "Importēt %d failus" },
-    { "name": "browse_manga_name_hint", "value": "Mangas nosaukums" },
-    { "name": "browse_input_name", "value": "Ievadiet nosaukumu" },
-    { "name": "browse_import_done", "value": "Importēti %d faili" },
-    { "name": "browse_import_failed", "value": "Imports neizdevās: %s" },
-    { "name": "download_title", "value": "Lejupielādes" },
-    { "name": "download_resume", "value": "Turpināt" },
-    { "name": "download_pause", "value": "Pauzēt" },
-    { "name": "download_clear_finished", "value": "Notīrīt pabeigtos" },
-    { "name": "download_queue", "value": "Lejupielāžu rinda" },
-    { "name": "download_state_queued", "value": "Rindā" },
-    { "name": "download_state_downloading", "value": "Lejupielādē" },
-    { "name": "download_state_done", "value": "Gatavs" },
-    { "name": "download_state_failed", "value": "Neizdevās" },
-    { "name": "download_move_top", "value": "Pārvietot uz augšu" },
-    { "name": "download_move_bottom", "value": "Pārvietot uz leju" },
-    { "name": "download_deleted", "value": "Dzēsts" },
-    { "name": "download_empty", "value": "Vēl nav lejupielāžu" },
-    { "name": "download_status_downloaded", "value": "Lejupielādēts" },
-    { "name": "download_chapter_count", "value": "%d nodaļas" },
-    { "name": "detail_no_chapters", "value": "Nav nodaļu" },
-    { "name": "detail_sync_failed_local", "value": "Sinhronizācija neizdevās, rāda vietējos datus" },
-    { "name": "detail_added_to_library", "value": "Pievienots bibliotēkai" },
-    { "name": "detail_removed_from_library", "value": "Noņemts no bibliotēkas" },
-    { "name": "detail_all_marked_read", "value": "Visas nodaļas atzīmētas kā izlasītas" },
-    { "name": "detail_download_queued", "value": "Lejupielāde ievietota rindā" },
-    { "name": "detail_config_anilist_token", "value": "Vispirms konfigurējiet AniList marķieri" },
-    { "name": "detail_search_anilist", "value": "Meklēt AniList" },
-    { "name": "detail_manga_title_hint", "value": "Mangas nosaukums" },
-    { "name": "detail_no_search_results", "value": "Nav meklēšanas rezultātu" },
-    { "name": "detail_anilist_search_failed", "value": "AniList meklēšana neizdevās" },
-    { "name": "detail_anilist_bound", "value": "Sasaistīts ar AniList" },
-    { "name": "detail_anilist_unbound", "value": "Atsaistīts no AniList" },
-    { "name": "detail_synced_progress", "value": "Progress sinhronizēts līdz %d. nodaļai" },
-    { "name": "detail_anilist_sync_failed", "value": "AniList sinhronizācija neizdevās" },
-    { "name": "detail_status_local", "value": "Vietējais" },
-    { "name": "detail_in_library", "value": "Bibliotēkā" },
-    { "name": "detail_add_to_library", "value": "Pievienot bibliotēkai" },
-    { "name": "detail_continue_reading", "value": "Turpināt lasīt" },
-    { "name": "detail_start_reading", "value": "Sākt lasīt" },
-    { "name": "detail_no_chapters_yet", "value": "Vēl nav nodaļu" },
-    { "name": "detail_collapse", "value": "Sakļaut" },
-    { "name": "detail_expand", "value": "Izvērst" },
-    { "name": "detail_anilist_tracking", "value": "AniList izsekošana" },
-    { "name": "detail_anilist_token_hint", "value": "AniList marķieris vēl nav konfigurēts" },
-    { "name": "detail_searching", "value": "Meklē…" },
-    { "name": "detail_search_and_bind", "value": "Meklēt un sasaistīt" },
-    { "name": "detail_bind", "value": "Sasaistīt" },
-    { "name": "detail_synced_to_chapter", "value": "Sinhronizēts līdz %d. nodaļai" },
-    { "name": "detail_sync_progress", "value": "Sinhronizēt progresu" },
-    { "name": "detail_unbind", "value": "Atsaistīt" },
-    { "name": "detail_chapters_count", "value": "Nodaļas (%d)" },
-    { "name": "detail_sort_asc", "value": "Augoši" },
-    { "name": "detail_sort_desc", "value": "Dilstoši" },
-    { "name": "detail_mark_all_read", "value": "Atzīmēt visus kā izlasītus" },
-    { "name": "detail_read", "value": "Izlasīts" },
-    { "name": "detail_downloaded", "value": "Lejupielādēts" },
-    { "name": "detail_in_queue", "value": "Rindā" },
-    { "name": "detail_download", "value": "Lejupielādēt" },
-    { "name": "reader_chapter_not_found", "value": "Nodaļa nav atrasta" },
-    { "name": "reader_load_failed", "value": "Ielāde neizdevās: %s" },
-    { "name": "reader_mode_ltr", "value": "No kreisās uz labo" },
-    { "name": "reader_mode_rtl", "value": "No labās uz kreiso" },
-    { "name": "reader_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_reading_mode", "value": "Lasīšanas režīms" },
-    { "name": "reader_orientation_free", "value": "Brīva" },
-    { "name": "reader_orientation_portrait", "value": "Portrets" },
-    { "name": "reader_orientation_landscape", "value": "Ainava" },
-    { "name": "reader_screen_orientation", "value": "Ekrāna orientācija" },
-    { "name": "reader_last_chapter", "value": "Jau pēdējā nodaļā" },
-    { "name": "reader_first_chapter", "value": "Jau pirmajā nodaļā" },
-    { "name": "reader_first_page", "value": "Jau pirmajā lapā" },
-    { "name": "reader_last_page", "value": "Jau pēdējā lapā" },
-    { "name": "reader_loading_chapter", "value": "Ielādē nodaļu…" },
-    { "name": "reader_settings", "value": "Lasītāja iestatījumi" },
-    { "name": "reader_background", "value": "Fons" },
-    { "name": "reader_theme_auto", "value": "Automātiski" },
-    { "name": "reader_theme_white", "value": "Balts" },
-    { "name": "reader_theme_gray", "value": "Pelēks" },
-    { "name": "reader_theme_black", "value": "Melns" },
-    { "name": "reader_show_page_number", "value": "Rādīt lapas numuru" },
-    { "name": "reader_brightness", "value": "Spilgtums" },
-    { "name": "reader_auto", "value": "Automātiski" },
-    { "name": "plugin_title", "value": "Paplašinājumi" },
-    { "name": "plugin_installed_section", "value": "Instalēts" },
-    { "name": "plugin_empty", "value": "Vēl nav paplašinājumu, instalējiet zemāk" },
-    { "name": "plugin_disable_hint", "value": "Atspējotos paplašinājumus jebkurā laikā var atkal iespējot" },
-    { "name": "plugin_up_to_date", "value": "Aktuāls" },
-    { "name": "plugin_local_install", "value": "Instalēt no faila" },
-    { "name": "plugin_install_from_file", "value": "Izvēlieties instalējamo failu" },
-    { "name": "plugin_processing", "value": "Apstrādā…" },
-    { "name": "plugin_package_hint", "value": "Atbalsta .honyomiplug / .zip spraudņu pakotnes" },
-    { "name": "plugin_repo", "value": "Tiešsaistes krātuve" },
-    { "name": "plugin_repo_config", "value": "Iestatīt krātuvi" },
-    { "name": "plugin_repo_refresh", "value": "Atsvaidzināt" },
-    { "name": "plugin_repo_hint", "value": "Spraudņu krātuve vēl nav konfigurēta" },
-    { "name": "plugin_repo_loading", "value": "Ielādē krātuvi…" },
-    { "name": "plugin_repo_url_title", "value": "Spraudņu krātuves URL" },
-    { "name": "plugin_repo_url_hint", "value": "Ievadiet spraudņu krātuves URL" },
-    { "name": "plugin_repo_load_failed", "value": "Neizdevās ielādēt krātuvi: %s" },
-    { "name": "plugin_pick_file_failed", "value": "Neizdevās izvēlēties failu" },
-    { "name": "plugin_installed", "value": "Instalēts: %s" },
-    { "name": "plugin_installed_name", "value": "Instalēts %s" },
-    { "name": "plugin_install_failed", "value": "Instalācija neizdevās: %s" },
-    { "name": "plugin_action_failed", "value": "Darbība neizdevās" },
-    { "name": "plugin_uninstalled", "value": "Atinstalēts: %s" },
-    { "name": "plugin_uninstall_failed", "value": "Atinstalēšana neizdevās" },
-    { "name": "settings_title", "value": "Iestatījumi" },
-    { "name": "settings_general", "value": "Vispārīgi" },
-    { "name": "settings_start_tab", "value": "Sākuma ekrāns" },
-    { "name": "settings_personalization", "value": "Pielāgošana" },
-    { "name": "settings_library", "value": "Bibliotēka" },
-    { "name": "settings_reader", "value": "Lasītājs" },
-    { "name": "settings_data", "value": "Dati" },
-    { "name": "settings_downloads", "value": "Lejupielādes" },
-    { "name": "settings_browse", "value": "Pārlūkot" },
-    { "name": "settings_advanced", "value": "Papildu" },
-    { "name": "settings_about", "value": "Par programmu" },
-    { "name": "settings_tab_library", "value": "Bibliotēka" },
-    { "name": "settings_tab_updates", "value": "Atjauninājumi" },
-    { "name": "settings_tab_history", "value": "Vēsture" },
-    { "name": "settings_tab_browse", "value": "Pārlūkot" },
-    { "name": "settings_tab_more", "value": "Vairāk" },
-    { "name": "advanced_title", "value": "Papildu" },
-    { "name": "advanced_calculating", "value": "Aprēķina…" },
-    { "name": "advanced_storage", "value": "Krātuve" },
-    { "name": "advanced_clear_image_cache", "value": "Notīrīt attēlu kešatmiņu" },
-    { "name": "advanced_image_cache_cleared", "value": "Attēlu kešatmiņa notīrīta" },
-    { "name": "advanced_clear_cookies", "value": "Notīrīt sīkfailus" },
-    { "name": "advanced_cookies_cleared", "value": "Visi sīkfaili notīrīti" },
-    { "name": "advanced_backup_restore", "value": "Dublējums un atjaunošana" },
-    { "name": "advanced_export_backup", "value": "Eksportēt dublējumu" },
-    { "name": "advanced_import_backup", "value": "Importēt dublējumu" },
-    { "name": "advanced_tracking", "value": "Izsekošana" },
-    { "name": "advanced_anilist_token", "value": "AniList marķieris" },
-    { "name": "advanced_token_title", "value": "AniList piekļuves marķieris" },
-    { "name": "advanced_token_hint", "value": "Ielīmējiet piekļuves marķieri (atstājiet tukšu, lai notīrītu)" },
-    { "name": "advanced_token_not_set", "value": "Nav iestatīts" },
-    { "name": "advanced_token_set", "value": "Iestatīts" },
-    { "name": "advanced_token_saved", "value": "Marķieris saglabāts" },
-    { "name": "advanced_token_cleared", "value": "Marķieris notīrīts" },
-    { "name": "advanced_backup_exported", "value": "Dublējums eksportēts" },
-    { "name": "advanced_export_canceled", "value": "Eksports atcelts" },
-    { "name": "advanced_export_failed", "value": "Eksports neizdevās" },
-    { "name": "advanced_import_canceled", "value": "Imports atcelts" },
-    { "name": "advanced_backup_invalid", "value": "Nederīgs dublējuma fails" },
-    { "name": "advanced_restored_manga", "value": "Atjaunotas %d mangas" },
-    { "name": "advanced_import_failed", "value": "Imports neizdevās" },
-    { "name": "about_title", "value": "Par programmu" },
-    { "name": "about_version", "value": "Versija 1.0.0" },
-    { "name": "about_desc", "value": "Arhitektūra iedvesmota no Mihon (Apache-2.0). Tiešsaistes avoti tiek dinamiski instalēti kā paplašinājumi, bet vietējie avoti ir iebūvēti." },
-    { "name": "about_ack", "value": "Atklātā pirmkoda atzinības:\n· Mihon / Tachiyomi — lietotnes arhitektūra un mijiedarbības dizains (Apache-2.0)\n· Material Symbols — ikonas lietotnē (Apache-2.0)\n· MangaDex — testa datu avots" },
-    { "name": "browse_set_title", "value": "Pārlūkot" },
-    { "name": "browse_set_content", "value": "Saturs" },
-    { "name": "browse_set_show_nsfw", "value": "Rādīt NSFW avotus" },
-    { "name": "browse_set_nsfw_hint", "value": "Ja ir ieslēgts, avoti, ko paplašinājumi atzīmējuši kā NSFW, parādīsies sadaļā Pārlūkot" },
-    { "name": "dl_set_title", "value": "Lejupielādes" },
-    { "name": "dl_set_network", "value": "Tīkls" },
-    { "name": "dl_set_wifi_only", "value": "Lejupielādēt tikai, izmantojot Wi-Fi" },
-    { "name": "dl_set_wifi_only_hint", "value": "Piezīme: šis slēdzis pašreizējā versijā ir vietturs; tīkla veida noteikšana būs pieejama vēlākā laidienā" },
-    { "name": "lib_set_title", "value": "Bibliotēka" },
-    { "name": "lib_set_sort_group", "value": "Filtrēt un kārtot" },
-    { "name": "lib_set_sort_default", "value": "Noklusējuma kārtošana" },
-    { "name": "lib_set_sort_title", "value": "Nosaukums" },
-    { "name": "lib_set_sort_last_update", "value": "Jaunākā nodaļa" },
-    { "name": "lib_set_sort_added", "value": "Pievienošanas datums" },
-    { "name": "lib_set_sort_unread", "value": "Nelasīto skaits" },
-    { "name": "lib_set_sort_asc", "value": "Kārtot pēc nosaukuma augoši" },
-    { "name": "lib_set_filter_default", "value": "Noklusējuma filtrs" },
-    { "name": "lib_set_filter_unread", "value": "Nelasīts" },
-    { "name": "lib_set_filter_downloaded", "value": "Lejupielādēts" },
-    { "name": "lib_set_filter_uncompleted", "value": "Nepabeigts" },
-    { "name": "lib_set_display_group", "value": "Attēlojums" },
-    { "name": "lib_set_view_default", "value": "Noklusējuma skats" },
-    { "name": "lib_set_view_grid", "value": "Režģis" },
-    { "name": "lib_set_view_cover", "value": "Vāku režģis" },
-    { "name": "lib_set_view_list", "value": "Saraksts" },
-    { "name": "lib_set_grid_cols", "value": "Režģa kolonnas" },
-    { "name": "lib_set_cols_auto", "value": "Automātiski" },
-    { "name": "lib_set_cols_2", "value": "2 kolonnas" },
-    { "name": "lib_set_cols_3", "value": "3 kolonnas" },
-    { "name": "lib_set_cols_4", "value": "4 kolonnas" },
-    { "name": "lib_set_unread_badge", "value": "Nelasīto nozīmītes" },
-    { "name": "lib_set_download_badge", "value": "Lejupielāžu nozīmītes" },
-    { "name": "reader_set_title", "value": "Lasītājs" },
-    { "name": "reader_set_mode_group", "value": "Lasīšanas režīms" },
-    { "name": "reader_set_mode_default", "value": "Noklusējuma režīms" },
-    { "name": "reader_set_mode_ltr", "value": "No kreisās uz labo" },
-    { "name": "reader_set_mode_rtl", "value": "No labās uz kreiso" },
-    { "name": "reader_set_mode_vertical", "value": "Vertikāla lapošana" },
-    { "name": "reader_set_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_set_dual_page", "value": "Dubultlapa (ainava)" },
-    { "name": "reader_set_display_group", "value": "Attēlojums" },
-    { "name": "reader_set_show_page_number", "value": "Rādīt lapas numuru" },
-    { "name": "reader_set_bg_color", "value": "Lasītāja fons" },
-    { "name": "reader_set_theme_follow", "value": "Saskaņā ar tēmu" },
-    { "name": "reader_set_theme_white", "value": "Balts" },
-    { "name": "reader_set_theme_black", "value": "Melns" },
-    { "name": "reader_set_theme_gray", "value": "Pelēks" },
-    { "name": "reader_set_reset_brightness", "value": "Atiestatīt lasītāja spilgtumu" },
-    { "name": "reader_set_brightness_reset", "value": "Spilgtums tagad seko sistēmai" },
-    { "name": "browse_tab_sources", "value": "Avoti" },
-    { "name": "browse_tab_extensions", "value": "Paplašinājumi" },
-    { "name": "browse_tab_migrate", "value": "Pārcelt" },
-    { "name": "browse_pin", "value": "Piespraust" },
-    { "name": "browse_unpin", "value": "Atspraust" },
-    { "name": "browse_disable_source", "value": "Atspējot avotu" },
-    { "name": "browse_source_disabled", "value": "Avots atspējots" },
-    { "name": "browse_pinned", "value": "Piesprausts" },
-    { "name": "browse_sources_empty", "value": "Nav avotu. Instalējiet cilnē Paplašinājumi" },
-    { "name": "browse_filter_langs", "value": "Filtrēt valodas" },
-    { "name": "browse_filter_all", "value": "Visi" },
-    { "name": "browse_source_missing", "value": "Avots nav pieejams. Paplašinājums, iespējams, ir atspējots" },
-    { "name": "global_search_hint", "value": "Meklēt visos avotos" },
-    { "name": "global_search_failed", "value": "Meklēšana neizdevās" },
-    { "name": "ext_search_hint", "value": "Meklēt paplašinājumus" },
-    { "name": "ext_search_no_match", "value": "Nav atbilstību" },
-    { "name": "ext_repo_settings", "value": "Krātuves iestatījumi" },
-    { "name": "ext_refresh_repo", "value": "Atsvaidzināt krātuvi" },
-    { "name": "migrate_pick_source", "value": "Izvēlieties avotu pārcelšanai" },
-    { "name": "migrate_empty_library", "value": "Bibliotēka ir tukša" },
-    { "name": "migrate_select_all", "value": "Atlasīt visus" },
-    { "name": "migrate_deselect_all", "value": "Noņemt atlasi" },
-    { "name": "migrate_action", "value": "Pārcelt (%d)" },
-    { "name": "migrate_title", "value": "Pārcelt" },
-    { "name": "migrate_skip", "value": "Izlaist" },
-    { "name": "migrate_progress", "value": "%d no %d" },
-    { "name": "migrate_target_source", "value": "Mērķa avots" },
-    { "name": "migrate_search_hint", "value": "Meklēt mangu mērķa avotā" },
-    { "name": "migrate_confirm_title", "value": "Pārcelt uz šo mangu?" },
-    { "name": "migrate_item_done", "value": "Pārcelts: %s" },
-    { "name": "migrate_failed", "value": "Pārcelšana neizdevās: %s" },
-    { "name": "migrate_done", "value": "Pārcelšana pabeigta" },
-    { "name": "migrate_no_target", "value": "Nav mērķa avota" },
-    { "name": "stats_title", "value": "Statistika" },
-    { "name": "stats_overview_section", "value": "Pārskats" },
-    { "name": "stats_in_library", "value": "Bibliotēkā" },
-    { "name": "stats_read_duration", "value": "Lasīšanas ilgums" },
-    { "name": "stats_completed_titles", "value": "Pabeigts" },
-    { "name": "stats_titles_section", "value": "Darbi" },
-    { "name": "stats_started_titles", "value": "Sākts" },
-    { "name": "stats_local_titles", "value": "Vietējais" },
-    { "name": "stats_chapters_section", "value": "Nodaļas" },
-    { "name": "stats_total_chapters", "value": "Kopā" },
-    { "name": "stats_read_chapters", "value": "Izlasīts" },
-    { "name": "stats_downloaded_chapters", "value": "Lejupielādēts" },
-    { "name": "stats_tracker_section", "value": "Izsekošana" },
-    { "name": "stats_tracked_titles", "value": "Izsekotie darbi" },
-    { "name": "stats_mean_score", "value": "Vidējais vērtējums" },
-    { "name": "stats_used", "value": "Lietots" },
-    { "name": "stats_not_applicable", "value": "Nav piemērojams" },
-    { "name": "stats_week", "value": "Nedēļa" },
-    { "name": "stats_month", "value": "Mēnesis" },
-    { "name": "stats_week_total", "value": "%s šonedēļ" },
-    { "name": "stats_month_total", "value": "%s šomēnes" },
-    { "name": "stats_no_reading", "value": "Šajā periodā nav lasīšanas" },
-    { "name": "stats_day_short", "value": "%d d." },
-    { "name": "stats_hour_short", "value": "%d st." },
-    { "name": "stats_minute_short", "value": "%d min." },
-    { "name": "stats_second_short", "value": "%d sek." },
-    { "name": "stats_wd_sun", "value": "Sv" },
-    { "name": "stats_wd_mon", "value": "Pr" },
-    { "name": "stats_wd_tue", "value": "Ot" },
-    { "name": "stats_wd_wed", "value": "Tr" },
-    { "name": "stats_wd_thu", "value": "Ce" },
-    { "name": "stats_wd_fri", "value": "Pk" },
-    { "name": "stats_wd_sat", "value": "Se" },
-    { "name": "reader_mode_vertical", "value": "Vertikāli" },
-    { "name": "reader_mode_smart_grip", "value": "Pēc satvēriena" },
-    { "name": "reader_orientation_lock_portrait", "value": "Fiksēt portretu" },
-    { "name": "reader_orientation_lock_landscape", "value": "Fiksēt ainavu" },
-    { "name": "reader_tab_general", "value": "Vispārīgi" },
-    { "name": "reader_tab_filter", "value": "Krāsu filtrs" },
-    { "name": "reader_filter_grayscale", "value": "Pelēktoņi" },
-    { "name": "reader_filter_invert", "value": "Apgrieztas krāsas" },
-    { "name": "reader_filter_contrast", "value": "Kontrasts" },
-    { "name": "reader_filter_saturation", "value": "Piesātinājums" },
-    { "name": "reader_crop_borders", "value": "Apgriezt malas" },
-    { "name": "reader_nav_tap_zones", "value": "Pieskāriena zonas" },
-    { "name": "reader_nav_default", "value": "Noklusējums" },
-    { "name": "reader_nav_ltr", "value": "No kreisās uz labo" },
-    { "name": "reader_nav_rtl", "value": "No labās uz kreiso" },
-    { "name": "reader_nav_vertical", "value": "Vertikāli" },
-    { "name": "reader_nav_edge", "value": "Mala" },
-    { "name": "reader_nav_none", "value": "Nav" },
-    { "name": "reader_dual_page", "value": "Dubultlapas skats" },
-    { "name": "reader_webtoon_padding", "value": "Webtoon sānu atstarpe" },
-    { "name": "reader_set_mode_smart_grip", "value": "Pēc satvēriena" },
-    { "name": "ext_install_local", "value": "Instalēt no vietējā" },
-    { "name": "ext_detail_title", "value": "Paplašinājuma informācija" },
-    { "name": "ext_info_version", "value": "Versija" },
-    { "name": "ext_info_language", "value": "Valoda" },
-    { "name": "ext_uninstall_title", "value": "Atinstalēt paplašinājumu" },
-    { "name": "ext_uninstall_msg", "value": "Atinstalēt „%s“? Bibliotēkas mangas dati paliks" },
-    { "name": "ext_detail_sources", "value": "Avoti" },
-    { "name": "ext_detail_settings", "value": "Iestatījumi" },
-    { "name": "ext_pref_loading", "value": "Ielādē…" },
-    { "name": "ext_pref_failed", "value": "Neizdevās lietot iestatījumus" },
-    { "name": "ext_detail_missing", "value": "Paplašinājuma nav vai tas nav ielādēts" },
-    { "name": "action_filter", "value": "Filtrēt" },
-    { "name": "action_update_library", "value": "Atjaunināt bibliotēku" },
-    { "name": "action_update_category", "value": "Atjaunināt kategoriju" },
-    { "name": "action_open_random_manga", "value": "Atvērt nejaušu darbu" },
-    { "name": "action_select_all", "value": "Atlasīt visus" },
-    { "name": "action_select_inverse", "value": "Apgriezt atlasi" },
-    { "name": "action_move_category", "value": "Pārvietot uz kategoriju" },
-    { "name": "action_mark_as_read", "value": "Atzīmēt kā izlasītu" },
-    { "name": "action_mark_as_unread", "value": "Atzīmēt kā nelasītu" },
-    { "name": "action_download", "value": "Lejupielādēt" },
-    { "name": "action_delete", "value": "Dzēst" },
-    { "name": "action_migrate", "value": "Pārcelt" },
-    { "name": "action_remove_from_library", "value": "Noņemt no bibliotēkas" },
-    { "name": "action_remove_from_library_msg", "value": "Noņemt atlasīto mangu (%d) no bibliotēkas?" },
-    { "name": "action_download_queued", "value": "Rindai pievienotas %d lejupielādes" },
-    { "name": "library_search_hint", "value": "Meklēt bibliotēkā" },
-    { "name": "library_no_match", "value": "Nav atbilstošas mangas" },
-    { "name": "lib_sheet_tab_filter", "value": "Filtrēt" },
-    { "name": "lib_sheet_tab_sort", "value": "Kārtot" },
-    { "name": "lib_sheet_tab_display", "value": "Attēlojums" },
-    { "name": "lib_filter_downloaded", "value": "Lejupielādēts" },
-    { "name": "lib_filter_unread", "value": "Nelasīts" },
-    { "name": "lib_filter_started", "value": "Lasīts" },
-    { "name": "lib_filter_bookmarked", "value": "Grāmatzīme" },
-    { "name": "lib_filter_completed", "value": "Pabeigts" },
-    { "name": "lib_filter_tracked", "value": "Izsekots" },
-    { "name": "lib_sort_alpha", "value": "Nosaukums" },
-    { "name": "lib_sort_total", "value": "Nodaļu skaits" },
-    { "name": "lib_sort_last_read", "value": "Pēdējoreiz lasīts" },
-    { "name": "lib_sort_last_update", "value": "Pēdējā atjauninājumu pārbaude" },
-    { "name": "lib_sort_unread", "value": "Nelasīto skaits" },
-    { "name": "lib_sort_latest_chapter", "value": "Darba atjaunināšanas laiks" },
-    { "name": "lib_sort_fetch_date", "value": "Nodaļu iegūšanas laiks" },
-    { "name": "lib_sort_date_added", "value": "Pievienošanas datums" },
-    { "name": "lib_sort_random", "value": "Nejauši" },
-    { "name": "lib_display_compact", "value": "Blīvs režģis" },
-    { "name": "lib_display_comfortable", "value": "Brīvs režģis" },
-    { "name": "lib_display_cover", "value": "Vāku režģis" },
-    { "name": "lib_display_list", "value": "Saraksts" },
-    { "name": "lib_display_grid_size", "value": "Skaits rindā" },
-    { "name": "lib_display_grid_auto", "value": "Automātiski" },
-    { "name": "lib_display_badges_group", "value": "Nozīmītes un pogas" },
-    { "name": "lib_badge_downloaded", "value": "Lejupielādēto nodaļu skaits" },
-    { "name": "lib_badge_unread", "value": "Nelasītās nodaļas" },
-    { "name": "lib_badge_local", "value": "Vietējais avots" },
-    { "name": "lib_badge_language", "value": "Valoda" },
-    { "name": "lib_badge_continue", "value": "Poga Turpināt lasīt" },
-    { "name": "lib_display_tabs_group", "value": "Cilnes" },
-    { "name": "lib_show_category_tabs", "value": "Rādīt kategoriju cilnes" },
-    { "name": "lib_show_manga_count", "value": "Rādīt darbu skaitu" },
-    { "name": "EntryFormAbility_label", "value": "MihonHarmony kartītes" },
-    { "name": "EntryFormAbility_desc", "value": "Darbvirsmas kartīšu nodrošinātājs" },
-    { "name": "card_recent_display", "value": "Turpināt lasīt" },
-    { "name": "card_recent_desc", "value": "Ātri turpināt nesen lasīto mangu" },
-    { "name": "card_updates_display", "value": "Atjauninājumi" },
-    { "name": "card_updates_desc", "value": "Jaunākās nelasītās bibliotēkas nodaļas" },
-    { "name": "card_recent_header", "value": "Turpināt lasīt" },
-    { "name": "card_updates_header", "value": "Atjauninājumi" },
-    { "name": "card_unread_count", "value": "%d nelasītas nodaļas" },
-    { "name": "card_empty_recent", "value": "Vēl nav lasīšanas vēstures" },
-    { "name": "card_empty_updates", "value": "Nav nelasītu nodaļu" },
-    { "name": "card_open_hint", "value": "Pieskarieties, lai atvērtu lietotni" },
-    { "name": "card_manga_display", "value": "Mangas kartīte" },
-    { "name": "card_manga_desc", "value": "Pievienojiet no detaļām, pieskarieties vākam un lasiet" },
-    { "name": "card_manga_empty", "value": "Pievienojiet darbvirsmai no mangas detaļām" },
-    { "name": "detail_add_to_desktop", "value": "Pievienot darbvirsmai" },
-    { "name": "detail_card_added", "value": "Pievienots darbvirsmai" },
-    { "name": "detail_card_add_failed", "value": "Neizdevās pievienot kartīti" },
-    { "name": "card_stats_week_display", "value": "Nedēļas statistika" },
-    { "name": "card_stats_week_desc", "value": "Šīs nedēļas ikdienas lasīšanas laiks" },
-    { "name": "card_stats_month_display", "value": "Mēneša statistika" },
-    { "name": "card_stats_month_desc", "value": "Šī mēneša ikdienas lasīšanas laiks" },
-    { "name": "card_stats_empty", "value": "Vēl nav lasīšanas" },
-    { "name": "action_view_upcoming", "value": "Rādīt gaidāmos atjauninājumus" },
-    { "name": "label_upcoming", "value": "Gaidāmais" },
-    { "name": "upcoming_guide", "value": "Gaidāmā ceļvedis" },
-    { "name": "upcoming_calendar_prev", "value": "Iepriekšējais mēnesis" },
-    { "name": "upcoming_calendar_next", "value": "Nākamais mēnesis" },
-    { "name": "pref_filter_update_categories_details", "value": "Darbi, kas ir gan iekļautā, gan izslēgtā kategorijā, netiek rādīti." },
-    { "name": "relative_time_today", "value": "Šodien" },
-    { "name": "relative_time_days_ago", "value": "pirms %d dienām" },
-    { "name": "upcoming_relative_time_days", "value": "Pēc %d dienām" },
-    { "name": "card_upcoming_display", "value": "Gaidāmais" },
-    { "name": "card_upcoming_desc", "value": "Bibliotēkas mangas gaidāmo atjauninājumu kalendārs" },
-    { "name": "card_upcoming_header", "value": "Gaidāmais" },
-    { "name": "card_empty_upcoming", "value": "Bibliotēkā nav turpinātas mangas" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Filtrēt visus ierakstus bibliotēkā"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Pauzē lasīšanas vēsturi"
+    },
+    {
+      "name": "more_support",
+      "value": "Support Us"
+    },
+    {
+      "name": "more_help",
+      "value": "Palīdzība"
+    },
+    {
+      "name": "support_perks",
+      "value": "Patrons get access to exclusive channels, with more perks to come."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (preferred)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "For alternative options or any related questions, join our Discord server."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "Dati un uzglabāšana"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Krātuves atrašanās vieta"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Izmanto automātiskajām dublējumkopijām, nodaļu lejupielādei un vietējam avotam."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "Dublēšana un atjaunošana"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Izveidot dublējumu"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Atjaunot dublējumu"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Dublējumu biežums"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "Kopijas vajadzētu glabāt arī citās vietās."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Pēdējā automātiskā dublēšana: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Krātuves izmantošana"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Available: %s / Total: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Notīrīt nodaļas kešatmiņu"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Izmantots: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Kešatmiņa nodzēsta. %d faili ir izdzēsti"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Tīrīšanas laikā radās kļūda"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Notīriet nodaļu kešatmiņu, atverot lietotni"
+    },
+    {
+      "name": "data_export",
+      "value": "Export"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Library List"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Library Exported"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Atlasīt iekļaujamos datus"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Nosaukums"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Author"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "Izslēgts"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "Ik pēc 6 stundām"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "Ik pēc 12 stundām"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "Katru dienu"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "Ik pēc 2 dienam"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "Katru nedēļu"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "Labi"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Atcelt"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Apstiprināt"
+    },
+    {
+      "name": "common_delete",
+      "value": "Dzēst"
+    },
+    {
+      "name": "common_retry",
+      "value": "Mēģināt vēlreiz"
+    },
+    {
+      "name": "common_search",
+      "value": "Meklēt"
+    },
+    {
+      "name": "common_all",
+      "value": "Visi"
+    },
+    {
+      "name": "common_close",
+      "value": "Aizvērt"
+    },
+    {
+      "name": "common_save",
+      "value": "Saglabāt"
+    },
+    {
+      "name": "common_install",
+      "value": "Instalēt"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "Atinstalēt"
+    },
+    {
+      "name": "common_update",
+      "value": "Atjaunināt"
+    },
+    {
+      "name": "common_none",
+      "value": "Nav"
+    },
+    {
+      "name": "common_default",
+      "value": "Noklusējums"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Izskats"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Valoda"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Saskaņā ar sistēmu"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Tēmas režīms"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Saskaņā ar sistēmu"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Gaišs"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Tumšs"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Akcenta krāsa"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Cits"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED tīri melns fons"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Zils"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "Zaļš"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Rozā"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Violets"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "Oranžs"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "pirms %d min"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "pirms %d h"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "pirms %d d"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "Turpinās"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Pabeigts"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "Pauzē"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Atcelts"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Publicēšana pabeigta"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Nezināms"
+    },
+    {
+      "name": "tab_library",
+      "value": "Bibliotēka"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Atjauninājumi"
+    },
+    {
+      "name": "tab_history",
+      "value": "Vēsture"
+    },
+    {
+      "name": "tab_browse",
+      "value": "Pārlūkot"
+    },
+    {
+      "name": "tab_more",
+      "value": "Vairāk"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "Gaida verifikāciju…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "Verifikācija pabeigta"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "Cilvēka verifikācija"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "Gatavs"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "Verifikācijas rezultāts saglabāts"
+    },
+    {
+      "name": "more_title",
+      "value": "Vairāk"
+    },
+    {
+      "name": "more_version",
+      "value": "Versija %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Tikai lejupielādētie"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Inkognito režīms"
+    },
+    {
+      "name": "more_downloads",
+      "value": "Lejupielādes rinda"
+    },
+    {
+      "name": "more_categories",
+      "value": "Kategorijas"
+    },
+    {
+      "name": "more_settings",
+      "value": "Iestatījumi"
+    },
+    {
+      "name": "more_about",
+      "value": "Par programmu"
+    },
+    {
+      "name": "more_plugins",
+      "value": "Paplašinājumi"
+    },
+    {
+      "name": "categories_title",
+      "value": "Kategorijas"
+    },
+    {
+      "name": "categories_add",
+      "value": "Jauna kategorija"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "Kategorijas nosaukums"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "Pārdēvēt kategoriju"
+    },
+    {
+      "name": "categories_rename",
+      "value": "Pārdēvēt"
+    },
+    {
+      "name": "categories_hint",
+      "value": "Ilgi nospiediet kategoriju, lai pārdēvētu vai dzēstu; manga no dzēstās kategorijas tiek pārvietota atpakaļ uz Noklusējums"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "Izvēlēties kategoriju"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "Ielādē…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "Neizdevās ielādēt attēlu"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "Pieskarieties, lai mēģinātu vēlreiz"
+    },
+    {
+      "name": "library_title",
+      "value": "Bibliotēka"
+    },
+    {
+      "name": "library_empty",
+      "value": "Bibliotēka ir tukša, pārlūkojiet, lai pievienotu mangu"
+    },
+    {
+      "name": "library_new_category",
+      "value": "Jauna kategorija"
+    },
+    {
+      "name": "library_category_name",
+      "value": "Kategorijas nosaukums"
+    },
+    {
+      "name": "updates_title",
+      "value": "Atjauninājumi"
+    },
+    {
+      "name": "updates_empty",
+      "value": "Nav nesenu atjauninājumu"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "Atrastas %d jaunas nodaļas"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "Nav jaunu nodaļu"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "Atsvaidzināšana neizdevās"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "Atsvaidzina…"
+    },
+    {
+      "name": "history_title",
+      "value": "Vēsture"
+    },
+    {
+      "name": "history_clear",
+      "value": "Notīrīt"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "Apstiprināt notīrīšanu?"
+    },
+    {
+      "name": "history_empty",
+      "value": "Vēl nav lasīšanas vēstures"
+    },
+    {
+      "name": "history_cleared",
+      "value": "Vēsture notīrīta"
+    },
+    {
+      "name": "history_continue",
+      "value": "Turpināt"
+    },
+    {
+      "name": "browse_title",
+      "value": "Pārlūkot"
+    },
+    {
+      "name": "browse_import",
+      "value": "Importēt"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "Spraudņi"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "Vietējā manga"
+    },
+    {
+      "name": "browse_popular",
+      "value": "Populāri"
+    },
+    {
+      "name": "browse_latest",
+      "value": "Jaunākais"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "Meklēt mangu…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "Manga nav atrasta"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "Vēl nav vietējās mangas, pieskarieties Importēt, lai pievienotu"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "Ielāde neizdevās: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "Meklēšana neizdevās: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "Neizdevās ielādēt vairāk"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "Neizdevās atvērt informāciju"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "Neizdevās izvēlēties failus"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "Importēt %d failus"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "Mangas nosaukums"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "Ievadiet nosaukumu"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "Importēti %d faili"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "Imports neizdevās: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "Lejupielādes"
+    },
+    {
+      "name": "download_resume",
+      "value": "Turpināt"
+    },
+    {
+      "name": "download_pause",
+      "value": "Pauzēt"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "Notīrīt pabeigtos"
+    },
+    {
+      "name": "download_queue",
+      "value": "Lejupielāžu rinda"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "Rindā"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "Lejupielādē"
+    },
+    {
+      "name": "download_state_done",
+      "value": "Gatavs"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "Neizdevās"
+    },
+    {
+      "name": "download_move_top",
+      "value": "Pārvietot uz augšu"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "Pārvietot uz leju"
+    },
+    {
+      "name": "download_deleted",
+      "value": "Dzēsts"
+    },
+    {
+      "name": "download_empty",
+      "value": "Vēl nav lejupielāžu"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "Lejupielādēts"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d nodaļas"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "Nav nodaļu"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "Sinhronizācija neizdevās, rāda vietējos datus"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "Pievienots bibliotēkai"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "Noņemts no bibliotēkas"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "Visas nodaļas atzīmētas kā izlasītas"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "Lejupielāde ievietota rindā"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "Vispirms konfigurējiet AniList marķieri"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "Meklēt AniList"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "Mangas nosaukums"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "Nav meklēšanas rezultātu"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "AniList meklēšana neizdevās"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "Sasaistīts ar AniList"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "Atsaistīts no AniList"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "Progress sinhronizēts līdz %d. nodaļai"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "AniList sinhronizācija neizdevās"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "Vietējais"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "Bibliotēkā"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "Pievienot bibliotēkai"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "Turpināt lasīt"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "Sākt lasīt"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "Vēl nav nodaļu"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "Sakļaut"
+    },
+    {
+      "name": "detail_expand",
+      "value": "Izvērst"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList izsekošana"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList marķieris vēl nav konfigurēts"
+    },
+    {
+      "name": "detail_searching",
+      "value": "Meklē…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "Meklēt un sasaistīt"
+    },
+    {
+      "name": "detail_bind",
+      "value": "Sasaistīt"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "Sinhronizēts līdz %d. nodaļai"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "Sinhronizēt progresu"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "Atsaistīt"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "Nodaļas (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "Augoši"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "Dilstoši"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "Atzīmēt visus kā izlasītus"
+    },
+    {
+      "name": "detail_read",
+      "value": "Izlasīts"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "Lejupielādēts"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "Rindā"
+    },
+    {
+      "name": "detail_download",
+      "value": "Lejupielādēt"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "Nodaļa nav atrasta"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "Ielāde neizdevās: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "No kreisās uz labo"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "No labās uz kreiso"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "Lasīšanas režīms"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "Brīva"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "Portrets"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "Ainava"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "Ekrāna orientācija"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "Jau pēdējā nodaļā"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "Jau pirmajā nodaļā"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "Jau pirmajā lapā"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "Jau pēdējā lapā"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "Ielādē nodaļu…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "Lasītāja iestatījumi"
+    },
+    {
+      "name": "reader_background",
+      "value": "Fons"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Automātiski"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "Balts"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "Pelēks"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "Melns"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "Rādīt lapas numuru"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "Spilgtums"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Automātiski"
+    },
+    {
+      "name": "plugin_title",
+      "value": "Paplašinājumi"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "Instalēts"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "Vēl nav paplašinājumu, instalējiet zemāk"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "Atspējotos paplašinājumus jebkurā laikā var atkal iespējot"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "Aktuāls"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "Instalēt no faila"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "Izvēlieties instalējamo failu"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "Apstrādā…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "Atbalsta .honyomiplug / .zip spraudņu pakotnes"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "Tiešsaistes krātuve"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "Iestatīt krātuvi"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "Atsvaidzināt"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "Spraudņu krātuve vēl nav konfigurēta"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "Ielādē krātuvi…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "Spraudņu krātuves URL"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "Ievadiet spraudņu krātuves URL"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "Neizdevās ielādēt krātuvi: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "Neizdevās izvēlēties failu"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "Instalēts: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "Instalēts %s"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "Instalācija neizdevās: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "Darbība neizdevās"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "Atinstalēts: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "Atinstalēšana neizdevās"
+    },
+    {
+      "name": "settings_title",
+      "value": "Iestatījumi"
+    },
+    {
+      "name": "settings_general",
+      "value": "Vispārīgi"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Sākuma ekrāns"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "Pielāgošana"
+    },
+    {
+      "name": "settings_library",
+      "value": "Bibliotēka"
+    },
+    {
+      "name": "settings_reader",
+      "value": "Lasītājs"
+    },
+    {
+      "name": "settings_data",
+      "value": "Dati"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Lejupielādes"
+    },
+    {
+      "name": "settings_browse",
+      "value": "Pārlūkot"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Papildu"
+    },
+    {
+      "name": "settings_about",
+      "value": "Par programmu"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "Bibliotēka"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Atjauninājumi"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "Vēsture"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "Pārlūkot"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "Vairāk"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Papildu"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "Aprēķina…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "Krātuve"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "Notīrīt attēlu kešatmiņu"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "Attēlu kešatmiņa notīrīta"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "Notīrīt sīkfailus"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "Visi sīkfaili notīrīti"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "Dublējums un atjaunošana"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "Eksportēt dublējumu"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "Importēt dublējumu"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "Izsekošana"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList marķieris"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList piekļuves marķieris"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "Ielīmējiet piekļuves marķieri (atstājiet tukšu, lai notīrītu)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "Nav iestatīts"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "Iestatīts"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "Marķieris saglabāts"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "Marķieris notīrīts"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "Dublējums eksportēts"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "Eksports atcelts"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "Eksports neizdevās"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "Imports atcelts"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "Nederīgs dublējuma fails"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "Atjaunotas %d mangas"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "Imports neizdevās"
+    },
+    {
+      "name": "about_title",
+      "value": "Par programmu"
+    },
+    {
+      "name": "about_version",
+      "value": "Versija 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "Arhitektūra iedvesmota no Mihon (Apache-2.0). Tiešsaistes avoti tiek dinamiski instalēti kā paplašinājumi, bet vietējie avoti ir iebūvēti."
+    },
+    {
+      "name": "about_ack",
+      "value": "Atklātā pirmkoda atzinības:\n· Mihon / Tachiyomi — lietotnes arhitektūra un mijiedarbības dizains (Apache-2.0)\n· Material Symbols — ikonas lietotnē (Apache-2.0)\n· MangaDex — testa datu avots"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "Pārlūkot"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "Saturs"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "Rādīt NSFW avotus"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "Ja ir ieslēgts, avoti, ko paplašinājumi atzīmējuši kā NSFW, parādīsies sadaļā Pārlūkot"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Lejupielādes"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Tīkls"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Lejupielādēt tikai, izmantojot Wi-Fi"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "Piezīme: šis slēdzis pašreizējā versijā ir vietturs; tīkla veida noteikšana būs pieejama vēlākā laidienā"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "Bibliotēka"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "Filtrēt un kārtot"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "Noklusējuma kārtošana"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "Nosaukums"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "Jaunākā nodaļa"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "Pievienošanas datums"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "Nelasīto skaits"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "Kārtot pēc nosaukuma augoši"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "Noklusējuma filtrs"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "Nelasīts"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "Lejupielādēts"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "Nepabeigts"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Attēlojums"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "Noklusējuma skats"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "Režģis"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "Vāku režģis"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "Saraksts"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "Režģa kolonnas"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "Automātiski"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 kolonnas"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 kolonnas"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 kolonnas"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "Nelasīto nozīmītes"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "Lejupielāžu nozīmītes"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "Lasītājs"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "Lasīšanas režīms"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "Noklusējuma režīms"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "No kreisās uz labo"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "No labās uz kreiso"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "Vertikāla lapošana"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "Dubultlapa (ainava)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Attēlojums"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "Rādīt lapas numuru"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "Lasītāja fons"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "Saskaņā ar tēmu"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "Balts"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "Melns"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "Pelēks"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "Atiestatīt lasītāja spilgtumu"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "Spilgtums tagad seko sistēmai"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "Avoti"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "Paplašinājumi"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "Pārcelt"
+    },
+    {
+      "name": "browse_pin",
+      "value": "Piespraust"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "Atspraust"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "Atspējot avotu"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "Avots atspējots"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "Piesprausts"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "Nav avotu. Instalējiet cilnē Paplašinājumi"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "Filtrēt valodas"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "Visi"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "Avots nav pieejams. Paplašinājums, iespējams, ir atspējots"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "Meklēt visos avotos"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "Meklēšana neizdevās"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "Meklēt paplašinājumus"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "Nav atbilstību"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "Krātuves iestatījumi"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "Atsvaidzināt krātuvi"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "Izvēlieties avotu pārcelšanai"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "Bibliotēka ir tukša"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "Atlasīt visus"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "Noņemt atlasi"
+    },
+    {
+      "name": "migrate_action",
+      "value": "Pārcelt (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "Pārcelt"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "Izlaist"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d no %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "Mērķa avots"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "Meklēt mangu mērķa avotā"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "Pārcelt uz šo mangu?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "Pārcelts: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "Pārcelšana neizdevās: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "Pārcelšana pabeigta"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "Nav mērķa avota"
+    },
+    {
+      "name": "stats_title",
+      "value": "Statistika"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "Pārskats"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "Bibliotēkā"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "Lasīšanas ilgums"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "Pabeigts"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "Darbi"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "Sākts"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "Vietējais"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "Nodaļas"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "Kopā"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "Izlasīts"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "Lejupielādēts"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "Izsekošana"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "Izsekotie darbi"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "Vidējais vērtējums"
+    },
+    {
+      "name": "stats_used",
+      "value": "Lietots"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "Nav piemērojams"
+    },
+    {
+      "name": "stats_week",
+      "value": "Nedēļa"
+    },
+    {
+      "name": "stats_month",
+      "value": "Mēnesis"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "%s šonedēļ"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "%s šomēnes"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "Šajā periodā nav lasīšanas"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%d d."
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%d st."
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%d min."
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%d sek."
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "Sv"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "Pr"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "Ot"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "Tr"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "Ce"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "Pk"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "Se"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "Vertikāli"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "Pēc satvēriena"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "Fiksēt portretu"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "Fiksēt ainavu"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "Vispārīgi"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "Krāsu filtrs"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "Pelēktoņi"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "Apgrieztas krāsas"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "Kontrasts"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "Piesātinājums"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "Apgriezt malas"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "Pieskāriena zonas"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "Noklusējums"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "No kreisās uz labo"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "No labās uz kreiso"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "Vertikāli"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "Mala"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "Nav"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Dubultlapas skats"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "Webtoon sānu atstarpe"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "Pēc satvēriena"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "Instalēt no vietējā"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "Paplašinājuma informācija"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "Versija"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "Valoda"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "Atinstalēt paplašinājumu"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "Atinstalēt „%s“? Bibliotēkas mangas dati paliks"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "Avoti"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "Iestatījumi"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "Ielādē…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "Neizdevās lietot iestatījumus"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "Paplašinājuma nav vai tas nav ielādēts"
+    },
+    {
+      "name": "action_filter",
+      "value": "Filtrēt"
+    },
+    {
+      "name": "action_update_library",
+      "value": "Atjaunināt bibliotēku"
+    },
+    {
+      "name": "action_update_category",
+      "value": "Atjaunināt kategoriju"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "Atvērt nejaušu darbu"
+    },
+    {
+      "name": "action_select_all",
+      "value": "Atlasīt visus"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "Apgriezt atlasi"
+    },
+    {
+      "name": "action_move_category",
+      "value": "Pārvietot uz kategoriju"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "Atzīmēt kā izlasītu"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "Atzīmēt kā nelasītu"
+    },
+    {
+      "name": "action_download",
+      "value": "Lejupielādēt"
+    },
+    {
+      "name": "action_delete",
+      "value": "Dzēst"
+    },
+    {
+      "name": "action_migrate",
+      "value": "Pārcelt"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "Noņemt no bibliotēkas"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "Noņemt atlasīto mangu (%d) no bibliotēkas?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "Rindai pievienotas %d lejupielādes"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "Meklēt bibliotēkā"
+    },
+    {
+      "name": "library_no_match",
+      "value": "Nav atbilstošas mangas"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "Filtrēt"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "Kārtot"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "Attēlojums"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "Lejupielādēts"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "Nelasīts"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "Lasīts"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "Grāmatzīme"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "Pabeigts"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "Izsekots"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "Nosaukums"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "Nodaļu skaits"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "Pēdējoreiz lasīts"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "Pēdējā atjauninājumu pārbaude"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "Nelasīto skaits"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "Darba atjaunināšanas laiks"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "Nodaļu iegūšanas laiks"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "Pievienošanas datums"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "Nejauši"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "Blīvs režģis"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "Brīvs režģis"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "Vāku režģis"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "Saraksts"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "Skaits rindā"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "Automātiski"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "Nozīmītes un pogas"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "Lejupielādēto nodaļu skaits"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "Nelasītās nodaļas"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "Vietējais avots"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "Valoda"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "Poga Turpināt lasīt"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "Cilnes"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "Rādīt kategoriju cilnes"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "Rādīt darbu skaitu"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "MihonHarmony kartītes"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "Darbvirsmas kartīšu nodrošinātājs"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "Turpināt lasīt"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "Ātri turpināt nesen lasīto mangu"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "Atjauninājumi"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "Jaunākās nelasītās bibliotēkas nodaļas"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "Turpināt lasīt"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "Atjauninājumi"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d nelasītas nodaļas"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "Vēl nav lasīšanas vēstures"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "Nav nelasītu nodaļu"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "Pieskarieties, lai atvērtu lietotni"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "Mangas kartīte"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "Pievienojiet no detaļām, pieskarieties vākam un lasiet"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "Pievienojiet darbvirsmai no mangas detaļām"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "Pievienot darbvirsmai"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "Pievienots darbvirsmai"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "Neizdevās pievienot kartīti"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "Nedēļas statistika"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "Šīs nedēļas ikdienas lasīšanas laiks"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "Mēneša statistika"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "Šī mēneša ikdienas lasīšanas laiks"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "Vēl nav lasīšanas"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "Rādīt gaidāmos atjauninājumus"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "Gaidāmais"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "Gaidāmā ceļvedis"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "Iepriekšējais mēnesis"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "Nākamais mēnesis"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "Darbi, kas ir gan iekļautā, gan izslēgtā kategorijā, netiek rādīti."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "Šodien"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "pirms %d dienām"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "Pēc %d dienām"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "Gaidāmais"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "Bibliotēkas mangas gaidāmo atjauninājumu kalendārs"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "Gaidāmais"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "Bibliotēkā nav turpinātas mangas"
+    }
+  ]
 }

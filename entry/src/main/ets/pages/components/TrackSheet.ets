@@ -13,7 +13,7 @@ import { TrackLogo } from './TrackLogo';
 import { OAuthSheet } from './OAuthSheet';
 import { PickerSheet } from './PickerSheet';
 import { SmartImage } from './SmartImage';
-import { InputDialog, CredentialsDialog } from './Dialogs';
+import { CredentialsDialog, InputDialog } from './Dialogs';
 import { AppIcon } from './AppIcon';
 
 // 弹层模式
@@ -33,8 +33,6 @@ export struct TrackSheet {
   mangaId: number = -1;
   mangaTitle: string = '';
   hasReadChapters: boolean = false;
-  onChanged: () => void = () => {};
-  onClose: () => void = () => {};
   // 模式
   @State mode: number = MODE_LIST;
   // 当前漫画的追踪记录
@@ -62,377 +60,27 @@ export struct TrackSheet {
   private oauthSyncId: number = 0;
   private dateTarget: number = DATE_START;
 
+  onChanged: () => void = () => {
+  };
+
+  onClose: () => void = () => {
+  };
+
   aboutToAppear(): void {
     this.refreshTracks();
   }
 
   // ----- 数据 -----
 
-  private async refreshTracks(): Promise<void> {
-    try {
-      this.tracks = await TrackRepo.listByManga(this.mangaId);
-    } catch (_e) {
-      this.tracks = [];
-    }
-    this.syncSelTrack();
-  }
-
-  // 详情模式记录与 DB 刷新结果保持同步
-  private syncSelTrack(): void {
-    const t = this.trackOf(this.selSyncId);
-    this.selTrackRec = t !== undefined ? t : new TrackRecord();
-  }
-
-  private trackOf(syncId: number): TrackRecord | undefined {
-    for (const t of this.tracks) {
-      if (t.syncId === syncId) {
-        return t;
-      }
-    }
-    return undefined;
-  }
-
-  // 统一更新：busy 包装 + 落库后刷新
-  private async runTrackUpdate(fn: () => Promise<TrackRecord>): Promise<void> {
-    if (this.busy) {
-      return;
-    }
-    this.busy = true;
-    try {
-      await fn();
-      await this.refreshTracks();
-      this.onChanged();
-    } catch (_e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.track_update_failed'));
-    }
-    this.busy = false;
-  }
-
-  // ----- 列表模式：追踪器行点击 -----
-
-  private onTrackerTap(t: Tracker): void {
-    if (!t.isLoggedIn()) {
-      this.startLogin(t);
-      return;
-    }
-    this.selTrackerInst = t;
-    this.selSyncId = t.syncId;
-    const track = this.trackOf(t.syncId);
-    if (track !== undefined) {
-      this.selTrackRec = track;
-      this.mode = MODE_DETAIL;
-    } else {
-      this.selTrackRec = new TrackRecord();
-      this.mode = MODE_SEARCH;
-      this.searchQuery = this.mangaTitle;
-      this.searchResults = [];
-      this.doSearch(this.mangaTitle);
-    }
-  }
-
-  // ----- 登录 -----
-
-  private startLogin(t: Tracker): void {
-    // 账密登录型：Kitsu / MangaUpdates
-    if (t.syncId === TrackerManager.kitsu.syncId || t.syncId === TrackerManager.mangaUpdates.syncId) {
-      this.showCredentialsLogin(t);
-      return;
-    }
-    this.oauthSyncId = t.syncId;
-    this.oauthTitle = t.name;
-    this.busy = true;
-    t.getAuthUrl().then((url: string): void => {
-      this.busy = false;
-      this.oauthUrl = url;
-      this.showOAuth = true;
-    }).catch((): void => {
-      this.busy = false;
-      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
-    });
-  }
-
-  // OAuth 回调参数 → 登录调用（各追踪器参数名不同，对齐 TrackLoginActivity）
-  private oauthLoginCall(t: Tracker, params: Record<string, string>): Promise<void> {
-    if (t.syncId === TrackerManager.aniList.syncId) {
-      // AniList 隐式授权：token 在 fragment
-      return t.loginWithCode(params['access_token'] ?? '');
-    }
-    if (t.syncId === TrackerManager.hikka.syncId) {
-      // Hikka：reference code 经账密通道换取
-      return t.loginWithCredentials('', params['reference'] ?? '');
-    }
-    return t.loginWithCode(params['code'] ?? '');
-  }
-
-  private onOAuthResult(params: Record<string, string>): void {
-    this.showOAuth = false;
-    const t = TrackerManager.get(this.oauthSyncId);
-    if (t === undefined) {
-      return;
-    }
-    this.busy = true;
-    this.oauthLoginCall(t, params).then((): void => {
-      this.busy = false;
-      this.loginTick += 1;
-      this.refreshTracks();
-      Util.toastRes(this.getUIContext(), $r('app.string.track_logged_in'), [t.name]);
-    }).catch((): void => {
-      this.busy = false;
-      t.logout();
-      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
-    });
-  }
-
-  // 账密登录：用户名 + 密码同弹窗一次输入
-  private showCredentialsLogin(t: Tracker): void {
-    const dialog = new CustomDialogController({
-      builder: CredentialsDialog({
-        title: t.name,
-        usernamePlaceholder: $r('app.string.track_username'),
-        passwordPlaceholder: $r('app.string.track_password'),
-        onConfirm: (username: string, password: string): void => {
-          this.doCredentialsLogin(t, username, password);
-        },
-        onClose: (): void => {
-          dialog.close();
-        },
-      }),
-      autoCancel: true,
-    });
-    dialog.open();
-  }
-
-  private doCredentialsLogin(t: Tracker, username: string, password: string): void {
-    if (username === '' || password === '') {
-      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
-      return;
-    }
-    this.busy = true;
-    t.loginWithCredentials(username, password).then((): void => {
-      this.busy = false;
-      this.loginTick += 1;
-      this.refreshTracks();
-      Util.toastRes(this.getUIContext(), $r('app.string.track_logged_in'), [t.name]);
-    }).catch((): void => {
-      this.busy = false;
-      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
-    });
-  }
-
-  // ----- 搜索模式 -----
-
-  private doSearch(query: string): void {
-    const q = query.trim();
-    if (q === '') {
-      return;
-    }
-    this.searching = true;
-    this.selTrackerInst.search(q).then((items: TrackSearchResult[]): void => {
-      this.searchResults = items;
-      this.searching = false;
-      if (items.length === 0) {
-        Util.toastRes(this.getUIContext(), $r('app.string.track_no_results'));
-      }
-    }).catch((): void => {
-      this.searching = false;
-      Util.toastRes(this.getUIContext(), $r('app.string.track_search_failed'));
-    });
-  }
-
-  private registerItem(item: TrackSearchResult): void {
-    if (this.busy) {
-      return;
-    }
-    this.busy = true;
-    this.selTrackerInst.register(item, this.mangaId, this.hasReadChapters).then((): void => {
-      this.busy = false;
-      this.refreshTracks();
-      this.onChanged();
-      this.mode = MODE_DETAIL;
-      Util.toastRes(this.getUIContext(), $r('app.string.track_added'));
-    }).catch((): void => {
-      this.busy = false;
-      Util.toastRes(this.getUIContext(), $r('app.string.track_add_failed'));
-    });
-  }
-
-  // 搜索结果元信息行：类型 · 状态 · 站点评分 · 开始日期
-  private searchItemMeta(item: TrackSearchResult): string {
-    const parts: string[] = [];
-    if (item.publishingType !== '') {
-      parts.push(item.publishingType);
-    }
-    if (item.publishingStatus !== '') {
-      parts.push(item.publishingStatus);
-    }
-    if (item.score > 0) {
-      parts.push(`${item.score}`);
-    }
-    if (item.startDate !== '') {
-      parts.push(item.startDate);
-    }
-    return parts.join(' · ');
-  }
-
-  // ----- 详情模式编辑 -----
-
-  private statusOptions(): ResourceStr[] {
-    const options: ResourceStr[] = [];
-    for (const s of this.selTrackerInst.getStatusList()) {
-      options.push(this.selTrackerInst.getStatusLabel(s));
-    }
-    return options;
-  }
-
-  private scoreOptions(): ResourceStr[] {
-    const options: ResourceStr[] = [];
-    for (const s of this.selTrackerInst.getScoreList()) {
-      options.push(s);
-    }
-    return options;
-  }
-
-  private statusOptionsIndexOf(): number {
-    return this.selTrackerInst.getStatusList().indexOf(this.selTrackRec.status);
-  }
-
-  private scoreOptionsIndexOf(): number {
-    return this.selTrackerInst.scoreIndex(this.selTrackRec.score);
-  }
-
-  private applyStatus(index: number): void {
-    const statusList = this.selTrackerInst.getStatusList();
-    if (index < 0 || index >= statusList.length) {
-      return;
-    }
-    const status = statusList[index];
-    this.runTrackUpdate((): Promise<TrackRecord> => this.selTrackerInst.setRemoteStatus(this.selTrackRec, status));
-  }
-
-  private applyScore(index: number): void {
-    this.runTrackUpdate((): Promise<TrackRecord> => this.selTrackerInst.setRemoteScore(this.selTrackRec, index));
-  }
-
-  private editChapters(): void {
-    const dialog = new CustomDialogController({
-      builder: InputDialog({
-        title: $r('app.string.track_chapters'),
-        placeholder: '',
-        initialText: `${this.selTrackRec.lastChapterRead}`,
-        onConfirm: (text: string): void => {
-          const n = parseFloat(text.trim());
-          if (isNaN(n) || n < 0) {
-            Util.toastRes(this.getUIContext(), $r('app.string.track_invalid_chapters'));
-            return;
-          }
-          this.runTrackUpdate((): Promise<TrackRecord> =>
-            this.selTrackerInst.setRemoteLastChapterRead(this.selTrackRec, n));
-        },
-        onClose: (): void => {
-          dialog.close();
-        },
-      }),
-      autoCancel: true,
-    });
-    dialog.open();
-  }
-
-  private pickDate(target: number): void {
-    this.dateTarget = target;
-    const current = target === DATE_START ? this.selTrackRec.startDate : this.selTrackRec.finishDate;
-    this.getUIContext().showDatePickerDialog({
-      selected: new Date(current > 0 ? current : Date.now()),
-      onDateAccept: (date: Date): void => {
-        this.applyDate(date.getTime());
-      },
-    });
-  }
-
-  private applyDate(epochMs: number): void {
-    if (this.dateTarget === DATE_START) {
-      this.runTrackUpdate((): Promise<TrackRecord> =>
-        this.selTrackerInst.setRemoteStartDate(this.selTrackRec, epochMs));
-    } else {
-      this.runTrackUpdate((): Promise<TrackRecord> =>
-        this.selTrackerInst.setRemoteFinishDate(this.selTrackRec, epochMs));
-    }
-  }
-
-  private applyPrivate(value: boolean): void {
-    this.runTrackUpdate((): Promise<TrackRecord> => this.selTrackerInst.setRemotePrivate(this.selTrackRec, value));
-  }
-
-  private refreshTrack(): void {
-    if (this.busy) {
-      return;
-    }
-    this.busy = true;
-    this.selTrackerInst.refresh(this.selTrackRec)
-      .then((remote: TrackRecord): Promise<void> => TrackRepo.upsert(remote))
-      .then((): void => {
-        this.busy = false;
-        this.refreshTracks();
-        this.onChanged();
-      })
-      .catch((): void => {
-        this.busy = false;
-        Util.toastRes(this.getUIContext(), $r('app.string.track_update_failed'));
-      });
-  }
-
-  // 解绑选项：0 仅解除本地绑定；1 远端删除 + 本地解除
-  private applyRemove(index: number): void {
-    if (index === 0) {
-      TrackRepo.delete(this.mangaId, this.selTrackerInst.syncId).then((): void => {
-        this.mode = MODE_LIST;
-        this.refreshTracks();
-        this.onChanged();
-      }).catch((): void => {
-        Util.toastRes(this.getUIContext(), $r('app.string.track_update_failed'));
-      });
-    } else if (index === 1) {
-      if (this.busy) {
-        return;
-      }
-      this.busy = true;
-      this.selTrackerInst.deleteRemote(this.selTrackRec)
-        .then((): Promise<void> => TrackRepo.delete(this.mangaId, this.selTrackerInst.syncId))
-        .then((): void => {
-          this.busy = false;
-          this.mode = MODE_LIST;
-          this.refreshTracks();
-          this.onChanged();
-        })
-        .catch((): void => {
-          this.busy = false;
-          Util.toastRes(this.getUIContext(), $r('app.string.track_remove_failed'));
-        });
-    }
-  }
-
-  // ----- 视图 -----
-
-  // 追踪行右侧摘要：进度 + 评分
-  private trackSummaryText(t: Tracker, track: TrackRecord): string {
-    const score = t.displayScore(track);
-    const parts: string[] = [];
-    if (track.lastChapterRead > 0) {
-      parts.push(`${track.lastChapterRead}`);
-    }
-    if (score !== '' && score !== '-' && score !== '0') {
-      parts.push(score);
-    }
-    return parts.join(' · ');
-  }
-
-  private dateText(epochMs: number): string {
-    return epochMs > 0 ? Util.formatDate(epochMs) : '-';
-  }
-
   @Builder
   trackerRow(t: Tracker, track: TrackRecord | undefined) {
     Row() {
-      TrackLogo({ syncId: t.syncId, logoName: t.name, color: t.brandColor, logoSize: 30 })
+      TrackLogo({
+        syncId: t.syncId,
+        logoName: t.name,
+        color: t.brandColor,
+        logoSize: 30
+      })
         .margin({ right: 14 })
       Column() {
         Text(t.name)
@@ -471,7 +119,12 @@ export struct TrackSheet {
     }
     .width('100%')
     .constraintSize({ minHeight: 56 })
-    .padding({ left: 16, right: 12, top: 8, bottom: 8 })
+    .padding({
+      left: 16,
+      right: 12,
+      top: 8,
+      bottom: 8
+    })
     .onClick(() => {
       this.onTrackerTap(t);
     })
@@ -535,6 +188,7 @@ export struct TrackSheet {
       .layoutWeight(1)
       .alignItems(HorizontalAlign.Start)
       .margin({ left: 12, right: 8 })
+
       AppIcon({ name: 'add', iconSize: 22, tint: this.pal.primary })
         .onClick(() => {
           this.registerItem(item);
@@ -542,7 +196,12 @@ export struct TrackSheet {
     }
     .width('100%')
     .alignItems(VerticalAlign.Center)
-    .padding({ left: 16, right: 16, top: 8, bottom: 8 })
+    .padding({
+      left: 16,
+      right: 16,
+      top: 8,
+      bottom: 8
+    })
   }
 
   @Builder
@@ -576,7 +235,12 @@ export struct TrackSheet {
         }
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 4, bottom: 10 })
+      .padding({
+        left: 16,
+        right: 16,
+        top: 4,
+        bottom: 10
+      })
 
       if (this.searching) {
         Column() {
@@ -610,6 +274,8 @@ export struct TrackSheet {
     .width('100%')
     .height('100%')
   }
+
+  // ----- 列表模式：追踪器行点击 -----
 
   @Builder
   detailBody() {
@@ -814,7 +480,12 @@ export struct TrackSheet {
         })
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 4, bottom: 24 })
+      .padding({
+        left: 16,
+        right: 16,
+        top: 4,
+        bottom: 24
+      })
       .constraintSize({ maxWidth: 720 })
     }
     .width('100%')
@@ -822,6 +493,8 @@ export struct TrackSheet {
     .scrollBar(BarState.Auto)
     .align(Alignment.Top)
   }
+
+  // ----- 登录 -----
 
   @Builder
   statusPickerBuilder() {
@@ -915,7 +588,12 @@ export struct TrackSheet {
           })
       }
       .width('100%')
-      .padding({ left: 16, right: 8, top: 6, bottom: 8 })
+      .padding({
+        left: 16,
+        right: 8,
+        top: 6,
+        bottom: 8
+      })
 
       // 内容
       if (this.mode === MODE_LIST) {
@@ -939,5 +617,362 @@ export struct TrackSheet {
       blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
       maskColor: 'rgba(0,0,0,0.45)'
     })
+  }
+
+  // ----- 搜索模式 -----
+
+  private async refreshTracks(): Promise<void> {
+    try {
+      this.tracks = await TrackRepo.listByManga(this.mangaId);
+    } catch (_e) {
+      this.tracks = [];
+    }
+    this.syncSelTrack();
+  }
+
+  // 详情模式记录与 DB 刷新结果保持同步
+  private syncSelTrack(): void {
+    const t = this.trackOf(this.selSyncId);
+    this.selTrackRec = t !== undefined ? t : new TrackRecord();
+  }
+
+  private trackOf(syncId: number): TrackRecord | undefined {
+    for (const t of this.tracks) {
+      if (t.syncId === syncId) {
+        return t;
+      }
+    }
+    return undefined;
+  }
+
+  // ----- 详情模式编辑 -----
+
+  // 统一更新：busy 包装 + 落库后刷新
+  private async runTrackUpdate(fn: () => Promise<TrackRecord>): Promise<void> {
+    if (this.busy) {
+      return;
+    }
+    this.busy = true;
+    try {
+      await fn();
+      await this.refreshTracks();
+      this.onChanged();
+    } catch (_e) {
+      Util.toastRes(this.getUIContext(), $r('app.string.track_update_failed'));
+    }
+    this.busy = false;
+  }
+
+  private onTrackerTap(t: Tracker): void {
+    if (!t.isLoggedIn()) {
+      this.startLogin(t);
+      return;
+    }
+    this.selTrackerInst = t;
+    this.selSyncId = t.syncId;
+    const track = this.trackOf(t.syncId);
+    if (track !== undefined) {
+      this.selTrackRec = track;
+      this.mode = MODE_DETAIL;
+    } else {
+      this.selTrackRec = new TrackRecord();
+      this.mode = MODE_SEARCH;
+      this.searchQuery = this.mangaTitle;
+      this.searchResults = [];
+      this.doSearch(this.mangaTitle);
+    }
+  }
+
+  private startLogin(t: Tracker): void {
+    // 账密登录型：Kitsu / MangaUpdates
+    if (t.syncId === TrackerManager.kitsu.syncId || t.syncId === TrackerManager.mangaUpdates.syncId) {
+      this.showCredentialsLogin(t);
+      return;
+    }
+    this.oauthSyncId = t.syncId;
+    this.oauthTitle = t.name;
+    this.busy = true;
+    t.getAuthUrl().then((url: string): void => {
+      this.busy = false;
+      this.oauthUrl = url;
+      this.showOAuth = true;
+    }).catch((): void => {
+      this.busy = false;
+      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
+    });
+  }
+
+  // OAuth 回调参数 → 登录调用（各追踪器参数名不同，对齐 TrackLoginActivity）
+  private oauthLoginCall(t: Tracker, params: Record<string, string>): Promise<void> {
+    if (t.syncId === TrackerManager.aniList.syncId) {
+      // AniList 隐式授权：token 在 fragment
+      return t.loginWithCode(params['access_token'] ?? '');
+    }
+    if (t.syncId === TrackerManager.hikka.syncId) {
+      // Hikka：reference code 经账密通道换取
+      return t.loginWithCredentials('', params['reference'] ?? '');
+    }
+    return t.loginWithCode(params['code'] ?? '');
+  }
+
+  private onOAuthResult(params: Record<string, string>): void {
+    this.showOAuth = false;
+    const t = TrackerManager.get(this.oauthSyncId);
+    if (t === undefined) {
+      return;
+    }
+    this.busy = true;
+    this.oauthLoginCall(t, params).then((): void => {
+      this.busy = false;
+      this.loginTick += 1;
+      this.refreshTracks();
+      Util.toastRes(this.getUIContext(), $r('app.string.track_logged_in'), [t.name]);
+    }).catch((): void => {
+      this.busy = false;
+      t.logout();
+      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
+    });
+  }
+
+  // 账密登录：用户名 + 密码同弹窗一次输入
+  private showCredentialsLogin(t: Tracker): void {
+    const dialog = new CustomDialogController({
+      builder: CredentialsDialog({
+        title: t.name,
+        usernamePlaceholder: $r('app.string.track_username'),
+        passwordPlaceholder: $r('app.string.track_password'),
+        onConfirm: (username: string, password: string): void => {
+          this.doCredentialsLogin(t, username, password);
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  private doCredentialsLogin(t: Tracker, username: string, password: string): void {
+    if (username === '' || password === '') {
+      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
+      return;
+    }
+    this.busy = true;
+    t.loginWithCredentials(username, password).then((): void => {
+      this.busy = false;
+      this.loginTick += 1;
+      this.refreshTracks();
+      Util.toastRes(this.getUIContext(), $r('app.string.track_logged_in'), [t.name]);
+    }).catch((): void => {
+      this.busy = false;
+      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
+    });
+  }
+
+  private doSearch(query: string): void {
+    const q = query.trim();
+    if (q === '') {
+      return;
+    }
+    this.searching = true;
+    this.selTrackerInst.search(q).then((items: TrackSearchResult[]): void => {
+      this.searchResults = items;
+      this.searching = false;
+      if (items.length === 0) {
+        Util.toastRes(this.getUIContext(), $r('app.string.track_no_results'));
+      }
+    }).catch((): void => {
+      this.searching = false;
+      Util.toastRes(this.getUIContext(), $r('app.string.track_search_failed'));
+    });
+  }
+
+  private registerItem(item: TrackSearchResult): void {
+    if (this.busy) {
+      return;
+    }
+    this.busy = true;
+    this.selTrackerInst.register(item, this.mangaId, this.hasReadChapters).then((): void => {
+      this.busy = false;
+      this.refreshTracks();
+      this.onChanged();
+      this.mode = MODE_DETAIL;
+      Util.toastRes(this.getUIContext(), $r('app.string.track_added'));
+    }).catch((): void => {
+      this.busy = false;
+      Util.toastRes(this.getUIContext(), $r('app.string.track_add_failed'));
+    });
+  }
+
+  // 搜索结果元信息行：类型 · 状态 · 站点评分 · 开始日期
+  private searchItemMeta(item: TrackSearchResult): string {
+    const parts: string[] = [];
+    if (item.publishingType !== '') {
+      parts.push(item.publishingType);
+    }
+    if (item.publishingStatus !== '') {
+      parts.push(item.publishingStatus);
+    }
+    if (item.score > 0) {
+      parts.push(`${item.score}`);
+    }
+    if (item.startDate !== '') {
+      parts.push(item.startDate);
+    }
+    return parts.join(' · ');
+  }
+
+  private statusOptions(): ResourceStr[] {
+    const options: ResourceStr[] = [];
+    for (const s of this.selTrackerInst.getStatusList()) {
+      options.push(this.selTrackerInst.getStatusLabel(s));
+    }
+    return options;
+  }
+
+  private scoreOptions(): ResourceStr[] {
+    const options: ResourceStr[] = [];
+    for (const s of this.selTrackerInst.getScoreList()) {
+      options.push(s);
+    }
+    return options;
+  }
+
+  // ----- 视图 -----
+
+  private statusOptionsIndexOf(): number {
+    return this.selTrackerInst.getStatusList().indexOf(this.selTrackRec.status);
+  }
+
+  private scoreOptionsIndexOf(): number {
+    return this.selTrackerInst.scoreIndex(this.selTrackRec.score);
+  }
+
+  private applyStatus(index: number): void {
+    const statusList = this.selTrackerInst.getStatusList();
+    if (index < 0 || index >= statusList.length) {
+      return;
+    }
+    const status = statusList[index];
+    this.runTrackUpdate((): Promise<TrackRecord> => this.selTrackerInst.setRemoteStatus(this.selTrackRec, status));
+  }
+
+  private applyScore(index: number): void {
+    this.runTrackUpdate((): Promise<TrackRecord> => this.selTrackerInst.setRemoteScore(this.selTrackRec, index));
+  }
+
+  private editChapters(): void {
+    const dialog = new CustomDialogController({
+      builder: InputDialog({
+        title: $r('app.string.track_chapters'),
+        placeholder: '',
+        initialText: `${this.selTrackRec.lastChapterRead}`,
+        onConfirm: (text: string): void => {
+          const n = parseFloat(text.trim());
+          if (isNaN(n) || n < 0) {
+            Util.toastRes(this.getUIContext(), $r('app.string.track_invalid_chapters'));
+            return;
+          }
+          this.runTrackUpdate((): Promise<TrackRecord> =>
+          this.selTrackerInst.setRemoteLastChapterRead(this.selTrackRec, n));
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  private pickDate(target: number): void {
+    this.dateTarget = target;
+    const current = target === DATE_START ? this.selTrackRec.startDate : this.selTrackRec.finishDate;
+    this.getUIContext().showDatePickerDialog({
+      selected: new Date(current > 0 ? current : Date.now()),
+      onDateAccept: (date: Date): void => {
+        this.applyDate(date.getTime());
+      },
+    });
+  }
+
+  private applyDate(epochMs: number): void {
+    if (this.dateTarget === DATE_START) {
+      this.runTrackUpdate((): Promise<TrackRecord> =>
+      this.selTrackerInst.setRemoteStartDate(this.selTrackRec, epochMs));
+    } else {
+      this.runTrackUpdate((): Promise<TrackRecord> =>
+      this.selTrackerInst.setRemoteFinishDate(this.selTrackRec, epochMs));
+    }
+  }
+
+  private applyPrivate(value: boolean): void {
+    this.runTrackUpdate((): Promise<TrackRecord> => this.selTrackerInst.setRemotePrivate(this.selTrackRec, value));
+  }
+
+  private refreshTrack(): void {
+    if (this.busy) {
+      return;
+    }
+    this.busy = true;
+    this.selTrackerInst.refresh(this.selTrackRec)
+      .then((remote: TrackRecord): Promise<void> => TrackRepo.upsert(remote))
+      .then((): void => {
+        this.busy = false;
+        this.refreshTracks();
+        this.onChanged();
+      })
+      .catch((): void => {
+        this.busy = false;
+        Util.toastRes(this.getUIContext(), $r('app.string.track_update_failed'));
+      });
+  }
+
+  // 解绑选项：0 仅解除本地绑定；1 远端删除 + 本地解除
+  private applyRemove(index: number): void {
+    if (index === 0) {
+      TrackRepo.delete(this.mangaId, this.selTrackerInst.syncId).then((): void => {
+        this.mode = MODE_LIST;
+        this.refreshTracks();
+        this.onChanged();
+      }).catch((): void => {
+        Util.toastRes(this.getUIContext(), $r('app.string.track_update_failed'));
+      });
+    } else if (index === 1) {
+      if (this.busy) {
+        return;
+      }
+      this.busy = true;
+      this.selTrackerInst.deleteRemote(this.selTrackRec)
+        .then((): Promise<void> => TrackRepo.delete(this.mangaId, this.selTrackerInst.syncId))
+        .then((): void => {
+          this.busy = false;
+          this.mode = MODE_LIST;
+          this.refreshTracks();
+          this.onChanged();
+        })
+        .catch((): void => {
+          this.busy = false;
+          Util.toastRes(this.getUIContext(), $r('app.string.track_remove_failed'));
+        });
+    }
+  }
+
+  // 追踪行右侧摘要：进度 + 评分
+  private trackSummaryText(t: Tracker, track: TrackRecord): string {
+    const score = t.displayScore(track);
+    const parts: string[] = [];
+    if (track.lastChapterRead > 0) {
+      parts.push(`${track.lastChapterRead}`);
+    }
+    if (score !== '' && score !== '-' && score !== '0') {
+      parts.push(score);
+    }
+    return parts.join(' · ');
+  }
+
+  private dateText(epochMs: number): string {
+    return epochMs > 0 ? Util.formatDate(epochMs) : '-';
   }
 }

@@ -1,48 +1,177 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Φιλτράρει όλες τις καταχωρήσεις στη βιβλιοθήκη σας" },
-    { "name": "more_incognito_summary", "value": "Παύει το ιστορικό ανάγνωσης" },
-    { "name": "more_support", "value": "Υποστηρίξτε μας" },
-    { "name": "more_help", "value": "Βοήθεια" },
-    { "name": "support_perks", "value": "Οι Patrons έχουν πρόσβαση σε αποκλειστικά κανάλια, ενώ θα ακολουθήσουν και άλλα προνόμια." },
-    { "name": "support_patreon", "value": "Patreon (προτιμάται)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Το Mihon υποστηρίζεται αυτήν τη στιγμή από %d+ χρήστες. Θέλουμε να ευχαριστήσουμε τον καθένα από εσάς ξεχωριστά. Ας κάνουμε το Mihon ακόμα καλύτερο μαζί." },
-    { "name": "support_contact_msg", "value": "Για εναλλακτικές επιλογές ή οποιεσδήποτε σχετικές ερωτήσεις, εγγραφείτε στον Discord server." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "Δεδομένα και χώρος αποθήκευσης" },
-    { "name": "data_storage_location", "value": "Τοποθεσία αποθήκευσης" },
-    { "name": "data_storage_location_info", "value": "Χρησιμοποιείται για αυτόματα αντίγραφα ασφαλείας, λήψη κεφαλαίων και τοπική πηγή." },
-    { "name": "data_backup_restore", "value": "Αντίγραφο ασφαλείας και επαναφορά" },
-    { "name": "data_create_backup", "value": "Δημιουργία αντιγράφου ασφαλείας" },
-    { "name": "data_restore_backup", "value": "Επαναφορά αντιγράφου ασφαλείας" },
-    { "name": "data_backup_interval", "value": "Συχνότητα αυτόματων αντιγράφων ασφαλείας" },
-    { "name": "data_backup_info", "value": "Θα πρέπει να κρατάτε αντίγραφα αντιγράφων ασφαλείας και σε άλλα μέρη. Τα αντίγραφα ασφαλείας ενδέχεται να περιέχουν ευαίσθητα δεδομένα, συμπεριλαμβανομένων τυχόν αποθηκευμένων κωδικών πρόσβασης, να είστε προσεκτικοί αν τα μοιράζεστε." },
-    { "name": "data_last_auto_backup", "value": "Τελευταία αυτόματη δημιουργία αντιγράφων ασφαλείας: %s" },
-    { "name": "data_storage_usage", "value": "Χρήση αποθηκευτικού χώρου" },
-    { "name": "data_available_space", "value": "Διαθέσιμο: %s / Σύνολο: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Καθάρισμα προσωρινής μνήμης κεφαλαίου" },
-    { "name": "data_used_cache", "value": "Χρησιμοποιήθηκε: %s" },
-    { "name": "data_cache_deleted", "value": "Η προσωρινή μνήμη διαγράφηκε, %d αρχεία διαγράφηκαν" },
-    { "name": "data_cache_delete_error", "value": "Παρουσιάστηκε σφάλμα κατά την εκκαθάριση" },
-    { "name": "data_auto_clear_cache", "value": "Εκκαθάριση της προσωρινής μνήμης κεφαλαίων κατά την εκκίνηση της εφαρμογής" },
-    { "name": "data_export", "value": "Εξαγωγή" },
-    { "name": "data_library_list", "value": "Κατάλογος Βιβλιοθήκης" },
-    { "name": "data_library_exported", "value": "Έγινε εξαγωγή της βιβλιοθήκης" },
-    { "name": "data_export_include", "value": "Επιλέξτε τα δεδομένα που θέλετε να συμπεριλάβετε" },
-    { "name": "data_column_title", "value": "Τίτλος" },
-    { "name": "data_column_author", "value": "Συγγραφέας" },
-    { "name": "data_interval_off", "value": "Απενεργοποιημένο" },
-    { "name": "data_interval_6h", "value": "Κάθε 6 ώρες" },
-    { "name": "data_interval_12h", "value": "Κάθε 12 ώρες" },
-    { "name": "data_interval_24h", "value": "Καθημερινά" },
-    { "name": "data_interval_48h", "value": "Κάθε 2 ημέρες" },
-    { "name": "data_interval_weekly", "value": "Εβδομαδιαία" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Φιλτράρει όλες τις καταχωρήσεις στη βιβλιοθήκη σας"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Παύει το ιστορικό ανάγνωσης"
+    },
+    {
+      "name": "more_support",
+      "value": "Υποστηρίξτε μας"
+    },
+    {
+      "name": "more_help",
+      "value": "Βοήθεια"
+    },
+    {
+      "name": "support_perks",
+      "value": "Οι Patrons έχουν πρόσβαση σε αποκλειστικά κανάλια, ενώ θα ακολουθήσουν και άλλα προνόμια."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (προτιμάται)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Το Mihon υποστηρίζεται αυτήν τη στιγμή από %d+ χρήστες. Θέλουμε να ευχαριστήσουμε τον καθένα από εσάς ξεχωριστά. Ας κάνουμε το Mihon ακόμα καλύτερο μαζί."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "Για εναλλακτικές επιλογές ή οποιεσδήποτε σχετικές ερωτήσεις, εγγραφείτε στον Discord server."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "Δεδομένα και χώρος αποθήκευσης"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Τοποθεσία αποθήκευσης"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Χρησιμοποιείται για αυτόματα αντίγραφα ασφαλείας, λήψη κεφαλαίων και τοπική πηγή."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "Αντίγραφο ασφαλείας και επαναφορά"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Δημιουργία αντιγράφου ασφαλείας"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Επαναφορά αντιγράφου ασφαλείας"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Συχνότητα αυτόματων αντιγράφων ασφαλείας"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "Θα πρέπει να κρατάτε αντίγραφα αντιγράφων ασφαλείας και σε άλλα μέρη. Τα αντίγραφα ασφαλείας ενδέχεται να περιέχουν ευαίσθητα δεδομένα, συμπεριλαμβανομένων τυχόν αποθηκευμένων κωδικών πρόσβασης, να είστε προσεκτικοί αν τα μοιράζεστε."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Τελευταία αυτόματη δημιουργία αντιγράφων ασφαλείας: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Χρήση αποθηκευτικού χώρου"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Διαθέσιμο: %s / Σύνολο: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Καθάρισμα προσωρινής μνήμης κεφαλαίου"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Χρησιμοποιήθηκε: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Η προσωρινή μνήμη διαγράφηκε, %d αρχεία διαγράφηκαν"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Παρουσιάστηκε σφάλμα κατά την εκκαθάριση"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Εκκαθάριση της προσωρινής μνήμης κεφαλαίων κατά την εκκίνηση της εφαρμογής"
+    },
+    {
+      "name": "data_export",
+      "value": "Εξαγωγή"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Κατάλογος Βιβλιοθήκης"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Έγινε εξαγωγή της βιβλιοθήκης"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Επιλέξτε τα δεδομένα που θέλετε να συμπεριλάβετε"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Τίτλος"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Συγγραφέας"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "Απενεργοποιημένο"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "Κάθε 6 ώρες"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "Κάθε 12 ώρες"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "Καθημερινά"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "Κάθε 2 ημέρες"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "Εβδομαδιαία"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
     {
       "name": "module_desc",
       "value": "module description"
@@ -1255,189 +1384,741 @@
       "name": "reader_set_brightness_reset",
       "value": "Η φωτεινότητα ακολουθεί ξανά το σύστημα"
     },
-    { "name": "browse_tab_sources", "value": "Πηγές" },
-    { "name": "browse_tab_extensions", "value": "Επεκτάσεις" },
-    { "name": "browse_tab_migrate", "value": "Μεταφορά" },
-    { "name": "browse_pin", "value": "Καρφίτσωμα" },
-    { "name": "browse_unpin", "value": "Ξεκαρφίτσωμα" },
-    { "name": "browse_disable_source", "value": "Απενεργοποίηση πηγής" },
-    { "name": "browse_source_disabled", "value": "Η πηγή απενεργοποιήθηκε" },
-    { "name": "browse_pinned", "value": "Καρφιτσωμένη" },
-    { "name": "browse_sources_empty", "value": "Δεν υπάρχουν πηγές. Εγκαταστήστε από την καρτέλα Επεκτάσεις" },
-    { "name": "browse_filter_langs", "value": "Φιλτράρισμα γλωσσών" },
-    { "name": "browse_filter_all", "value": "Όλα" },
-    { "name": "browse_source_missing", "value": "Η πηγή δεν είναι διαθέσιμη. Η επέκταση μπορεί να είναι απενεργοποιημένη" },
-    { "name": "global_search_hint", "value": "Αναζήτηση σε όλες τις πηγές" },
-    { "name": "global_search_failed", "value": "Η αναζήτηση απέτυχε" },
-    { "name": "ext_search_hint", "value": "Αναζήτηση επεκτάσεων" },
-    { "name": "ext_search_no_match", "value": "Κανένα αποτέλεσμα" },
-    { "name": "ext_repo_settings", "value": "Ρυθμίσεις αποθετηρίου" },
-    { "name": "ext_refresh_repo", "value": "Ανανέωση αποθετηρίου" },
-    { "name": "migrate_pick_source", "value": "Επιλέξτε πηγή για μεταφορά" },
-    { "name": "migrate_empty_library", "value": "Η βιβλιοθήκη είναι άδεια" },
-    { "name": "migrate_select_all", "value": "Επιλογή όλων" },
-    { "name": "migrate_deselect_all", "value": "Αποεπιλογή όλων" },
-    { "name": "migrate_action", "value": "Μεταφορά (%d)" },
-    { "name": "migrate_title", "value": "Μεταφορά" },
-    { "name": "migrate_skip", "value": "Παράλειψη" },
-    { "name": "migrate_progress", "value": "%d από %d" },
-    { "name": "migrate_target_source", "value": "Πηγή προορισμού" },
-    { "name": "migrate_search_hint", "value": "Αναζήτηση μάνγκα στην πηγή προορισμού" },
-    { "name": "migrate_confirm_title", "value": "Μεταφορά σε αυτό το μάνγκα;" },
-    { "name": "migrate_item_done", "value": "Μεταφέρθηκε: %s" },
-    { "name": "migrate_failed", "value": "Η μεταφορά απέτυχε: %s" },
-    { "name": "migrate_done", "value": "Η μεταφορά ολοκληρώθηκε" },
-    { "name": "migrate_no_target", "value": "Δεν υπάρχει πηγή προορισμού" },
-    { "name": "stats_title", "value": "Στατιστικά" },
-    { "name": "stats_overview_section", "value": "Επισκόπηση" },
-    { "name": "stats_in_library", "value": "Στη βιβλιοθήκη" },
-    { "name": "stats_read_duration", "value": "Διάρκεια ανάγνωσης" },
-    { "name": "stats_completed_titles", "value": "Ολοκληρωμένο" },
-    { "name": "stats_titles_section", "value": "Έργα" },
-    { "name": "stats_started_titles", "value": "Ξεκίνησε" },
-    { "name": "stats_local_titles", "value": "Τοπικό" },
-    { "name": "stats_chapters_section", "value": "Κεφάλαια" },
-    { "name": "stats_total_chapters", "value": "Σύνολο" },
-    { "name": "stats_read_chapters", "value": "Αναγνωσμένο" },
-    { "name": "stats_downloaded_chapters", "value": "Ληφθέν" },
-    { "name": "stats_tracker_section", "value": "Ιχνηλάτες" },
-    { "name": "stats_tracked_titles", "value": "Παρακολουθούμενα έργα" },
-    { "name": "stats_mean_score", "value": "Μέση βαθμολογία" },
-    { "name": "stats_used", "value": "Σε χρήση" },
-    { "name": "stats_not_applicable", "value": "Δ/Υ" },
-    { "name": "stats_week", "value": "Εβδομάδα" },
-    { "name": "stats_month", "value": "Μήνας" },
-    { "name": "stats_week_total", "value": "%s αυτή την εβδομάδα" },
-    { "name": "stats_month_total", "value": "%s αυτόν τον μήνα" },
-    { "name": "stats_no_reading", "value": "Δεν υπάρχει ανάγνωση σε αυτή την περίοδο" },
-    { "name": "stats_day_short", "value": "%dη" },
-    { "name": "stats_hour_short", "value": "%dώ" },
-    { "name": "stats_minute_short", "value": "%dλ" },
-    { "name": "stats_second_short", "value": "%dδ" },
-    { "name": "stats_wd_sun", "value": "Κυ" },
-    { "name": "stats_wd_mon", "value": "Δε" },
-    { "name": "stats_wd_tue", "value": "Τρ" },
-    { "name": "stats_wd_wed", "value": "Τε" },
-    { "name": "stats_wd_thu", "value": "Πε" },
-    { "name": "stats_wd_fri", "value": "Πα" },
-    { "name": "stats_wd_sat", "value": "Σα" },
-    { "name": "reader_mode_vertical", "value": "Κατακόρυφα" },
-    { "name": "reader_mode_smart_grip", "value": "Έξυπνη λαβή" },
-    { "name": "reader_orientation_lock_portrait", "value": "Κλείδωμα κατακόρυφα" },
-    { "name": "reader_orientation_lock_landscape", "value": "Κλείδωμα οριζόντια" },
-    { "name": "reader_tab_general", "value": "Γενικά" },
-    { "name": "reader_tab_filter", "value": "Φίλτρο χρώματος" },
-    { "name": "reader_filter_grayscale", "value": "Κλίμακα του γκρι" },
-    { "name": "reader_filter_invert", "value": "Αντιστροφή χρωμάτων" },
-    { "name": "reader_filter_contrast", "value": "Αντίθεση" },
-    { "name": "reader_filter_saturation", "value": "Κορεσμός" },
-    { "name": "reader_crop_borders", "value": "Περικοπή περιθωρίων" },
-    { "name": "reader_nav_tap_zones", "value": "Ζώνες πατήματος" },
-    { "name": "reader_nav_default", "value": "Προεπιλογή" },
-    { "name": "reader_nav_ltr", "value": "Αριστερά προς τα δεξιά" },
-    { "name": "reader_nav_rtl", "value": "Δεξιά προς τα αριστερά" },
-    { "name": "reader_nav_vertical", "value": "Κατακόρυφα" },
-    { "name": "reader_nav_edge", "value": "Άκρη" },
-    { "name": "reader_nav_none", "value": "Κανένα" },
-    { "name": "reader_dual_page", "value": "Διπλή σελίδα" },
-    { "name": "reader_webtoon_padding", "value": "Πλευρικό περιθώριο Webtoon" },
-    { "name": "reader_set_mode_smart_grip", "value": "Έξυπνη λαβή" },
-    { "name": "ext_install_local", "value": "Τοπική εγκατάσταση" },
-    { "name": "ext_detail_title", "value": "Πληροφορίες επέκτασης" },
-    { "name": "ext_info_version", "value": "Έκδοση" },
-    { "name": "ext_info_language", "value": "Γλώσσα" },
-    { "name": "ext_uninstall_title", "value": "Απεγκατάσταση επέκτασης" },
-    { "name": "ext_uninstall_msg", "value": "Απεγκατάσταση της επέκτασης «%s»; Τα μάνγκα στη βιβλιοθήκη θα διατηρηθούν" },
-    { "name": "ext_detail_sources", "value": "Πηγές" },
-    { "name": "ext_detail_settings", "value": "Ρυθμίσεις" },
-    { "name": "ext_pref_loading", "value": "Φόρτωση…" },
-    { "name": "ext_pref_failed", "value": "Αποτυχία εφαρμογής ρυθμίσεων" },
-    { "name": "ext_detail_missing", "value": "Η επέκταση λείπει ή δεν έχει φορτωθεί" },
-    { "name": "action_filter", "value": "Φίλτρο" },
-    { "name": "action_update_library", "value": "Ενημέρωση βιβλιοθήκης" },
-    { "name": "action_update_category", "value": "Ενημέρωση κατηγορίας" },
-    { "name": "action_open_random_manga", "value": "Άνοιγμα τυχαίου έργου" },
-    { "name": "action_select_all", "value": "Επιλογή όλων" },
-    { "name": "action_select_inverse", "value": "Αντιστροφή επιλογής" },
-    { "name": "action_move_category", "value": "Μετακίνηση σε κατηγορία" },
-    { "name": "action_mark_as_read", "value": "Σήμανση ως αναγνωσμένο" },
-    { "name": "action_mark_as_unread", "value": "Σήμανση ως μη αναγνωσμένο" },
-    { "name": "action_download", "value": "Λήψη" },
-    { "name": "action_delete", "value": "Διαγραφή" },
-    { "name": "action_migrate", "value": "Μεταφορά" },
-    { "name": "action_remove_from_library", "value": "Αφαίρεση από τη βιβλιοθήκη" },
-    { "name": "action_remove_from_library_msg", "value": "Αφαίρεση των επιλεγμένων μάνγκα (%d) από τη βιβλιοθήκη;" },
-    { "name": "action_download_queued", "value": "Προστέθηκαν %d εργασίες λήψης" },
-    { "name": "library_search_hint", "value": "Αναζήτηση στη βιβλιοθήκη" },
-    { "name": "library_no_match", "value": "Δεν υπάρχει αντίστοιχο μάνγκα" },
-    { "name": "lib_sheet_tab_filter", "value": "Φίλτρο" },
-    { "name": "lib_sheet_tab_sort", "value": "Ταξινόμηση" },
-    { "name": "lib_sheet_tab_display", "value": "Εμφάνιση" },
-    { "name": "lib_filter_downloaded", "value": "Ληφθέντα" },
-    { "name": "lib_filter_unread", "value": "Μη αναγνωσμένα" },
-    { "name": "lib_filter_started", "value": "Ξεκινημένα" },
-    { "name": "lib_filter_bookmarked", "value": "Με σελιδοδείκτη" },
-    { "name": "lib_filter_completed", "value": "Ολοκληρωμένο" },
-    { "name": "lib_filter_tracked", "value": "Σε παρακολούθηση" },
-    { "name": "lib_sort_alpha", "value": "Τίτλος" },
-    { "name": "lib_sort_total", "value": "Αριθμός κεφαλαίων" },
-    { "name": "lib_sort_last_read", "value": "Πρόσφατη ανάγνωση" },
-    { "name": "lib_sort_last_update", "value": "Χρόνος ελέγχου ενημερώσεων" },
-    { "name": "lib_sort_unread", "value": "Αριθμός μη αναγνωσμένων" },
-    { "name": "lib_sort_latest_chapter", "value": "Χρόνος ενημέρωσης έργου" },
-    { "name": "lib_sort_fetch_date", "value": "Χρόνος λήψης κεφαλαίων" },
-    { "name": "lib_sort_date_added", "value": "Ημερομηνία προσθήκης" },
-    { "name": "lib_sort_random", "value": "Τυχαία" },
-    { "name": "lib_display_compact", "value": "Συμπαγές πλέγμα" },
-    { "name": "lib_display_comfortable", "value": "Άνετο πλέγμα" },
-    { "name": "lib_display_cover", "value": "Πλέγμα εξωφύλλων" },
-    { "name": "lib_display_list", "value": "Λίστα" },
-    { "name": "lib_display_grid_size", "value": "Αριθμός ανά σειρά" },
-    { "name": "lib_display_grid_auto", "value": "Αυτόματο" },
-    { "name": "lib_display_badges_group", "value": "Σήματα και κουμπιά" },
-    { "name": "lib_badge_downloaded", "value": "Αριθμός ληφθέντων κεφαλαίων" },
-    { "name": "lib_badge_unread", "value": "Μη αναγνωσμένα κεφάλαια" },
-    { "name": "lib_badge_local", "value": "Τοπική πηγή" },
-    { "name": "lib_badge_language", "value": "Γλώσσα" },
-    { "name": "lib_badge_continue", "value": "Κουμπί «Συνέχεια ανάγνωσης»" },
-    { "name": "lib_display_tabs_group", "value": "Καρτέλες" },
-    { "name": "lib_show_category_tabs", "value": "Εμφάνιση καρτελών κατηγοριών" },
-    { "name": "lib_show_manga_count", "value": "Εμφάνιση αριθμού έργων" },
-    { "name": "EntryFormAbility_label", "value": "Κάρτες Honyomi" },
-    { "name": "EntryFormAbility_desc", "value": "Πάροχος καρτών αρχικής οθόνης" },
-    { "name": "card_recent_display", "value": "Συνέχεια ανάγνωσης" },
-    { "name": "card_recent_desc", "value": "Γρήγορη συνέχεια πρόσφατα αναγνωσμένου μάνγκα" },
-    { "name": "card_updates_display", "value": "Ενημερώσεις" },
-    { "name": "card_updates_desc", "value": "Νεότερα μη αναγνωσμένα κεφάλαια στη βιβλιοθήκη" },
-    { "name": "card_recent_header", "value": "Συνέχεια ανάγνωσης" },
-    { "name": "card_updates_header", "value": "Ενημερώσεις" },
-    { "name": "card_unread_count", "value": "Μη αναγνωσμένα κεφάλαια: %d" },
-    { "name": "card_empty_recent", "value": "Δεν υπάρχει ακόμη ιστορικό ανάγνωσης" },
-    { "name": "card_empty_updates", "value": "Δεν υπάρχουν μη αναγνωσμένα κεφάλαια" },
-    { "name": "card_open_hint", "value": "Πατήστε για άνοιγμα της εφαρμογής" },
-    { "name": "card_manga_display", "value": "Κάρτα μάνγκα" },
-    { "name": "card_manga_desc", "value": "Προσθέστε το από τη σελίδα λεπτομερειών· το εξώφυλλο ανοίγει την ανάγνωση" },
-    { "name": "card_manga_empty", "value": "Προσθέστε από τη σελίδα λεπτομερειών του μάνγκα" },
-    { "name": "detail_add_to_desktop", "value": "Προσθήκη στην αρχική οθόνη" },
-    { "name": "detail_card_added", "value": "Προστέθηκε στην αρχική οθόνη" },
-    { "name": "detail_card_add_failed", "value": "Αποτυχία προσθήκης κάρτας" },
-    { "name": "card_stats_week_display", "value": "Εβδομαδιαία στατιστικά" },
-    { "name": "card_stats_week_desc", "value": "Ημερήσιος χρόνος ανάγνωσης αυτή την εβδομάδα" },
-    { "name": "card_stats_month_display", "value": "Μηνιαία στατιστικά" },
-    { "name": "card_stats_month_desc", "value": "Ημερήσιος χρόνος ανάγνωσης αυτόν τον μήνα" },
-    { "name": "card_stats_empty", "value": "Δεν υπάρχει ακόμη ανάγνωση" },
-    { "name": "action_view_upcoming", "value": "Εμφάνιση προσεχών ενημερώσεων" },
-    { "name": "label_upcoming", "value": "Προσεχώς" },
-    { "name": "upcoming_guide", "value": "Οδηγός προσεχών" },
-    { "name": "upcoming_calendar_prev", "value": "Προηγούμενος μήνας" },
-    { "name": "upcoming_calendar_next", "value": "Επόμενος μήνας" },
-    { "name": "pref_filter_update_categories_details", "value": "Οι τίτλοι που ανήκουν και σε συμπεριλαμβανόμενες και σε εξαιρούμενες κατηγορίες δεν θα εμφανίζονται." },
-    { "name": "relative_time_today", "value": "Σήμερα" },
-    { "name": "relative_time_days_ago", "value": "Πριν από %d ημέρες" },
-    { "name": "upcoming_relative_time_days", "value": "Σε %d ημέρες" },
-    { "name": "card_upcoming_display", "value": "Προσεχώς" },
-    { "name": "card_upcoming_desc", "value": "Ημερολόγιο αναμενόμενων ενημερώσεων μάνγκα στη βιβλιοθήκη" },
-    { "name": "card_upcoming_header", "value": "Προσεχώς" },
-    { "name": "card_empty_upcoming", "value": "Δεν υπάρχει μάνγκα σε εξέλιξη στη βιβλιοθήκη" }
-]
+    {
+      "name": "browse_tab_sources",
+      "value": "Πηγές"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "Επεκτάσεις"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "Μεταφορά"
+    },
+    {
+      "name": "browse_pin",
+      "value": "Καρφίτσωμα"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "Ξεκαρφίτσωμα"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "Απενεργοποίηση πηγής"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "Η πηγή απενεργοποιήθηκε"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "Καρφιτσωμένη"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "Δεν υπάρχουν πηγές. Εγκαταστήστε από την καρτέλα Επεκτάσεις"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "Φιλτράρισμα γλωσσών"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "Όλα"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "Η πηγή δεν είναι διαθέσιμη. Η επέκταση μπορεί να είναι απενεργοποιημένη"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "Αναζήτηση σε όλες τις πηγές"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "Η αναζήτηση απέτυχε"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "Αναζήτηση επεκτάσεων"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "Κανένα αποτέλεσμα"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "Ρυθμίσεις αποθετηρίου"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "Ανανέωση αποθετηρίου"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "Επιλέξτε πηγή για μεταφορά"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "Η βιβλιοθήκη είναι άδεια"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "Επιλογή όλων"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "Αποεπιλογή όλων"
+    },
+    {
+      "name": "migrate_action",
+      "value": "Μεταφορά (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "Μεταφορά"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "Παράλειψη"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d από %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "Πηγή προορισμού"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "Αναζήτηση μάνγκα στην πηγή προορισμού"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "Μεταφορά σε αυτό το μάνγκα;"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "Μεταφέρθηκε: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "Η μεταφορά απέτυχε: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "Η μεταφορά ολοκληρώθηκε"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "Δεν υπάρχει πηγή προορισμού"
+    },
+    {
+      "name": "stats_title",
+      "value": "Στατιστικά"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "Επισκόπηση"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "Στη βιβλιοθήκη"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "Διάρκεια ανάγνωσης"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "Ολοκληρωμένο"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "Έργα"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "Ξεκίνησε"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "Τοπικό"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "Κεφάλαια"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "Σύνολο"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "Αναγνωσμένο"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "Ληφθέν"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "Ιχνηλάτες"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "Παρακολουθούμενα έργα"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "Μέση βαθμολογία"
+    },
+    {
+      "name": "stats_used",
+      "value": "Σε χρήση"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "Δ/Υ"
+    },
+    {
+      "name": "stats_week",
+      "value": "Εβδομάδα"
+    },
+    {
+      "name": "stats_month",
+      "value": "Μήνας"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "%s αυτή την εβδομάδα"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "%s αυτόν τον μήνα"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "Δεν υπάρχει ανάγνωση σε αυτή την περίοδο"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%dη"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dώ"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dλ"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%dδ"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "Κυ"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "Δε"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "Τρ"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "Τε"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "Πε"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "Πα"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "Σα"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "Κατακόρυφα"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "Έξυπνη λαβή"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "Κλείδωμα κατακόρυφα"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "Κλείδωμα οριζόντια"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "Γενικά"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "Φίλτρο χρώματος"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "Κλίμακα του γκρι"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "Αντιστροφή χρωμάτων"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "Αντίθεση"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "Κορεσμός"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "Περικοπή περιθωρίων"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "Ζώνες πατήματος"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "Προεπιλογή"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "Αριστερά προς τα δεξιά"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "Δεξιά προς τα αριστερά"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "Κατακόρυφα"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "Άκρη"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "Κανένα"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Διπλή σελίδα"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "Πλευρικό περιθώριο Webtoon"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "Έξυπνη λαβή"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "Τοπική εγκατάσταση"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "Πληροφορίες επέκτασης"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "Έκδοση"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "Γλώσσα"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "Απεγκατάσταση επέκτασης"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "Απεγκατάσταση της επέκτασης «%s»; Τα μάνγκα στη βιβλιοθήκη θα διατηρηθούν"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "Πηγές"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "Ρυθμίσεις"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "Φόρτωση…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "Αποτυχία εφαρμογής ρυθμίσεων"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "Η επέκταση λείπει ή δεν έχει φορτωθεί"
+    },
+    {
+      "name": "action_filter",
+      "value": "Φίλτρο"
+    },
+    {
+      "name": "action_update_library",
+      "value": "Ενημέρωση βιβλιοθήκης"
+    },
+    {
+      "name": "action_update_category",
+      "value": "Ενημέρωση κατηγορίας"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "Άνοιγμα τυχαίου έργου"
+    },
+    {
+      "name": "action_select_all",
+      "value": "Επιλογή όλων"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "Αντιστροφή επιλογής"
+    },
+    {
+      "name": "action_move_category",
+      "value": "Μετακίνηση σε κατηγορία"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "Σήμανση ως αναγνωσμένο"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "Σήμανση ως μη αναγνωσμένο"
+    },
+    {
+      "name": "action_download",
+      "value": "Λήψη"
+    },
+    {
+      "name": "action_delete",
+      "value": "Διαγραφή"
+    },
+    {
+      "name": "action_migrate",
+      "value": "Μεταφορά"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "Αφαίρεση από τη βιβλιοθήκη"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "Αφαίρεση των επιλεγμένων μάνγκα (%d) από τη βιβλιοθήκη;"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "Προστέθηκαν %d εργασίες λήψης"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "Αναζήτηση στη βιβλιοθήκη"
+    },
+    {
+      "name": "library_no_match",
+      "value": "Δεν υπάρχει αντίστοιχο μάνγκα"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "Φίλτρο"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "Ταξινόμηση"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "Εμφάνιση"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "Ληφθέντα"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "Μη αναγνωσμένα"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "Ξεκινημένα"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "Με σελιδοδείκτη"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "Ολοκληρωμένο"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "Σε παρακολούθηση"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "Τίτλος"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "Αριθμός κεφαλαίων"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "Πρόσφατη ανάγνωση"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "Χρόνος ελέγχου ενημερώσεων"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "Αριθμός μη αναγνωσμένων"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "Χρόνος ενημέρωσης έργου"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "Χρόνος λήψης κεφαλαίων"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "Ημερομηνία προσθήκης"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "Τυχαία"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "Συμπαγές πλέγμα"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "Άνετο πλέγμα"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "Πλέγμα εξωφύλλων"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "Λίστα"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "Αριθμός ανά σειρά"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "Αυτόματο"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "Σήματα και κουμπιά"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "Αριθμός ληφθέντων κεφαλαίων"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "Μη αναγνωσμένα κεφάλαια"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "Τοπική πηγή"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "Γλώσσα"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "Κουμπί «Συνέχεια ανάγνωσης»"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "Καρτέλες"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "Εμφάνιση καρτελών κατηγοριών"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "Εμφάνιση αριθμού έργων"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "Κάρτες Honyomi"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "Πάροχος καρτών αρχικής οθόνης"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "Συνέχεια ανάγνωσης"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "Γρήγορη συνέχεια πρόσφατα αναγνωσμένου μάνγκα"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "Ενημερώσεις"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "Νεότερα μη αναγνωσμένα κεφάλαια στη βιβλιοθήκη"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "Συνέχεια ανάγνωσης"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "Ενημερώσεις"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "Μη αναγνωσμένα κεφάλαια: %d"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "Δεν υπάρχει ακόμη ιστορικό ανάγνωσης"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "Δεν υπάρχουν μη αναγνωσμένα κεφάλαια"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "Πατήστε για άνοιγμα της εφαρμογής"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "Κάρτα μάνγκα"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "Προσθέστε το από τη σελίδα λεπτομερειών· το εξώφυλλο ανοίγει την ανάγνωση"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "Προσθέστε από τη σελίδα λεπτομερειών του μάνγκα"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "Προσθήκη στην αρχική οθόνη"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "Προστέθηκε στην αρχική οθόνη"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "Αποτυχία προσθήκης κάρτας"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "Εβδομαδιαία στατιστικά"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "Ημερήσιος χρόνος ανάγνωσης αυτή την εβδομάδα"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "Μηνιαία στατιστικά"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "Ημερήσιος χρόνος ανάγνωσης αυτόν τον μήνα"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "Δεν υπάρχει ακόμη ανάγνωση"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "Εμφάνιση προσεχών ενημερώσεων"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "Προσεχώς"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "Οδηγός προσεχών"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "Προηγούμενος μήνας"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "Επόμενος μήνας"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "Οι τίτλοι που ανήκουν και σε συμπεριλαμβανόμενες και σε εξαιρούμενες κατηγορίες δεν θα εμφανίζονται."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "Σήμερα"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "Πριν από %d ημέρες"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "Σε %d ημέρες"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "Προσεχώς"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "Ημερολόγιο αναμενόμενων ενημερώσεων μάνγκα στη βιβλιοθήκη"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "Προσεχώς"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "Δεν υπάρχει μάνγκα σε εξέλιξη στη βιβλιοθήκη"
+    }
+  ]
 }

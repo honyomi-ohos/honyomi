@@ -1,534 +1,2124 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Filtruje všechnu položky ve vaší knihovně" },
-    { "name": "more_incognito_summary", "value": "Pozastaví historii čtení" },
-    { "name": "more_support", "value": "Podpořte nás" },
-    { "name": "more_help", "value": "Nápověda" },
-    { "name": "support_perks", "value": "Patronům se otevírá přístup k exkluzivním kanálům a další výhody budou následovat." },
-    { "name": "support_patreon", "value": "Patreon (upřednostňováno)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Projekt Mihon v současné době podporuje %d+ sponzorů. Chceme poděkovat každému z vás. Pojďme společně projekt Mihon ještě vylepšit." },
-    { "name": "support_contact_msg", "value": "Pokud hledáte další možnosti nebo máte jakékoli související dotazy, připojte se k našemu serveru na Discord." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "Data a úložiště" },
-    { "name": "data_storage_location", "value": "Umístění úložiště" },
-    { "name": "data_storage_location_info", "value": "Používá se pro automatické zálohování, stahování kapitol a lokální zdroj." },
-    { "name": "data_backup_restore", "value": "Záloha a obnovení" },
-    { "name": "data_create_backup", "value": "Vytvořit zálohu" },
-    { "name": "data_restore_backup", "value": "Obnovit zálohu" },
-    { "name": "data_backup_interval", "value": "Frekvence automatických záloh" },
-    { "name": "data_backup_info", "value": "Kopie záloh byste také měli uchovat na více místech. Zálohy mohou obsahovat citlivé informace, včetně jakýchkoliv uložených hesel; při sdílení buďte opatrní." },
-    { "name": "data_last_auto_backup", "value": "Poslední automatická záloha: %s" },
-    { "name": "data_storage_usage", "value": "Využití úložiště" },
-    { "name": "data_available_space", "value": "Dostupné: %s / Celkem: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Vymazat mezipaměť kapitol" },
-    { "name": "data_used_cache", "value": "Využito: %s" },
-    { "name": "data_cache_deleted", "value": "Mezipaměť smazána, %d souborů odstraněno" },
-    { "name": "data_cache_delete_error", "value": "Během vymazávání došlo k chybě" },
-    { "name": "data_auto_clear_cache", "value": "Vymazat mezipaměť kapitol při spuštění aplikace" },
-    { "name": "data_export", "value": "Exportovat" },
-    { "name": "data_library_list", "value": "Seznam knihoven" },
-    { "name": "data_library_exported", "value": "Knihovna byla exportována" },
-    { "name": "data_export_include", "value": "Vyberte data, která chcete zahrnout" },
-    { "name": "data_column_title", "value": "Název" },
-    { "name": "data_column_author", "value": "Autor" },
-    { "name": "data_interval_off", "value": "Vypnuto" },
-    { "name": "data_interval_6h", "value": "Každých 6 hodiny" },
-    { "name": "data_interval_12h", "value": "Každých 12 hodiny" },
-    { "name": "data_interval_24h", "value": "Denně" },
-    { "name": "data_interval_48h", "value": "Každé 2 dny" },
-    { "name": "data_interval_weekly", "value": "Týdně" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "OK" },
-    { "name": "common_cancel", "value": "Zrušit" },
-    { "name": "common_confirm", "value": "Potvrdit" },
-    { "name": "common_delete", "value": "Smazat" },
-    { "name": "common_retry", "value": "Zkusit znovu" },
-    { "name": "common_search", "value": "Hledat" },
-    { "name": "common_all", "value": "Vše" },
-    { "name": "common_close", "value": "Zavřít" },
-    { "name": "common_save", "value": "Uložit" },
-    { "name": "common_install", "value": "Nainstalovat" },
-    { "name": "common_uninstall", "value": "Odinstalovat" },
-    { "name": "common_update", "value": "Aktualizovat" },
-    { "name": "common_none", "value": "Žádné" },
-    { "name": "common_default", "value": "Výchozí" },
-    { "name": "appearance_title", "value": "Vzhled" },
-    { "name": "appearance_language", "value": "Jazyk" },
-    { "name": "lang_follow_system", "value": "Podle systému" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "Režim motivu" },
-    { "name": "appearance_theme_auto", "value": "Podle systému" },
-    { "name": "appearance_theme_light", "value": "Světlý" },
-    { "name": "appearance_theme_dark", "value": "Tmavý" },
-    { "name": "appearance_accent_color", "value": "Barva zvýraznění" },
-    { "name": "appearance_other", "value": "Ostatní" },
-    { "name": "appearance_amoled", "value": "AMOLED čistě černé pozadí" },
-    { "name": "theme_accent_blue", "value": "Modrá" },
-    { "name": "theme_accent_green", "value": "Zelená" },
-    { "name": "theme_accent_pink", "value": "Růžová" },
-    { "name": "theme_accent_purple", "value": "Fialová" },
-    { "name": "theme_accent_orange", "value": "Oranžová" },
-    { "name": "util_time_minutes_ago", "value": "před %d min" },
-    { "name": "util_time_hours_ago", "value": "před %d h" },
-    { "name": "util_time_days_ago", "value": "před %d d" },
-    { "name": "util_status_ongoing", "value": "Vycházející" },
-    { "name": "util_status_completed", "value": "Dokončeno" },
-    { "name": "util_status_hiatus", "value": "Pozastaveno" },
-    { "name": "util_status_cancelled", "value": "Zrušeno" },
-    { "name": "util_status_publication_complete", "value": "Vydávání dokončeno" },
-    { "name": "util_status_unknown", "value": "Neznámé" },
-    { "name": "tab_library", "value": "Knihovna" },
-    { "name": "tab_updates", "value": "Aktualizace" },
-    { "name": "tab_history", "value": "Historie" },
-    { "name": "tab_browse", "value": "Procházet" },
-    { "name": "tab_more", "value": "Více" },
-    { "name": "tab_cf_waiting", "value": "Čekání na ověření…" },
-    { "name": "tab_cf_verified", "value": "Ověření dokončeno" },
-    { "name": "tab_cf_title", "value": "Ověření člověka" },
-    { "name": "tab_cf_done", "value": "Hotovo" },
-    { "name": "tab_cf_saved", "value": "Výsledek ověření uložen" },
-    { "name": "more_title", "value": "Více" },
-    { "name": "more_version", "value": "Verze %s" },
-    { "name": "more_downloaded_only", "value": "Pouze staženo" },
-    { "name": "more_incognito", "value": "Anonymní režim" },
-    { "name": "more_downloads", "value": "Stahovací fronta" },
-    { "name": "more_categories", "value": "Kategorie" },
-    { "name": "more_settings", "value": "Nastavení" },
-    { "name": "more_about", "value": "O aplikaci" },
-    { "name": "more_plugins", "value": "Rozšíření" },
-    { "name": "categories_title", "value": "Kategorie" },
-    { "name": "categories_add", "value": "Nová kategorie" },
-    { "name": "categories_name_placeholder", "value": "Název kategorie" },
-    { "name": "categories_rename_category", "value": "Přejmenovat kategorii" },
-    { "name": "categories_rename", "value": "Přejmenovat" },
-    { "name": "categories_hint", "value": "Dlouhým stisknutím kategorii přejmenujete nebo smažete; manga ze smazané kategorie se přesune zpět do Výchozí" },
-    { "name": "dialog_pick_category", "value": "Vybrat kategorii" },
-    { "name": "viewer_loading", "value": "Načítání…" },
-    { "name": "viewer_load_failed", "value": "Obrázek se nepodařilo načíst" },
-    { "name": "viewer_tap_retry", "value": "Klepnutím zkuste znovu" },
-    { "name": "library_title", "value": "Knihovna" },
-    { "name": "library_empty", "value": "Knihovna je prázdná, procházejte a přidejte mangu" },
-    { "name": "library_new_category", "value": "Nová kategorie" },
-    { "name": "library_category_name", "value": "Název kategorie" },
-    { "name": "updates_title", "value": "Aktualizace" },
-    { "name": "updates_empty", "value": "Žádné nedávné aktualizace" },
-    { "name": "updates_found_new", "value": "Nalezeno %d nových kapitol" },
-    { "name": "updates_no_new", "value": "Žádné nové kapitoly" },
-    { "name": "updates_refresh_failed", "value": "Obnovení selhalo" },
-    { "name": "updates_refreshing", "value": "Obnovování…" },
-    { "name": "history_title", "value": "Historie" },
-    { "name": "history_clear", "value": "Vymazat" },
-    { "name": "history_confirm_clear", "value": "Opravdu vymazat?" },
-    { "name": "history_empty", "value": "Zatím žádná historie čtení" },
-    { "name": "history_cleared", "value": "Historie vymazána" },
-    { "name": "history_continue", "value": "Pokračovat" },
-    { "name": "browse_title", "value": "Procházet" },
-    { "name": "browse_import", "value": "Importovat" },
-    { "name": "browse_plugins", "value": "Pluginy" },
-    { "name": "browse_local_source_name", "value": "Místní manga" },
-    { "name": "browse_popular", "value": "Populární" },
-    { "name": "browse_latest", "value": "Nejnovější" },
-    { "name": "browse_search_hint", "value": "Hledat mangu…" },
-    { "name": "browse_no_results", "value": "Žádná manga nenalezena" },
-    { "name": "browse_local_empty", "value": "Zatím žádná místní manga, klepněte na Importovat" },
-    { "name": "browse_load_failed", "value": "Načtení selhalo: %s" },
-    { "name": "browse_search_failed", "value": "Hledání selhalo: %s" },
-    { "name": "browse_load_more_failed", "value": "Načtení dalších selhalo" },
-    { "name": "browse_open_detail_failed", "value": "Otevření detailů selhalo" },
-    { "name": "browse_pick_file_failed", "value": "Výběr souborů selhal" },
-    { "name": "browse_import_title", "value": "Importovat %d souborů" },
-    { "name": "browse_manga_name_hint", "value": "Název mangy" },
-    { "name": "browse_input_name", "value": "Zadejte název" },
-    { "name": "browse_import_done", "value": "Importováno %d souborů" },
-    { "name": "browse_import_failed", "value": "Import selhal: %s" },
-    { "name": "download_title", "value": "Stahování" },
-    { "name": "download_resume", "value": "Pokračovat" },
-    { "name": "download_pause", "value": "Pozastavit" },
-    { "name": "download_clear_finished", "value": "Vymazat dokončené" },
-    { "name": "download_queue", "value": "Fronta stahování" },
-    { "name": "download_state_queued", "value": "Ve frontě" },
-    { "name": "download_state_downloading", "value": "Stahování" },
-    { "name": "download_state_done", "value": "Hotovo" },
-    { "name": "download_state_failed", "value": "Selhalo" },
-    { "name": "download_move_top", "value": "Přesunout nahoru" },
-    { "name": "download_move_bottom", "value": "Přesunout dolů" },
-    { "name": "download_deleted", "value": "Smazáno" },
-    { "name": "download_empty", "value": "Zatím žádná stahování" },
-    { "name": "download_status_downloaded", "value": "Staženo" },
-    { "name": "download_chapter_count", "value": "%d kapitol" },
-    { "name": "detail_no_chapters", "value": "Žádné kapitoly" },
-    { "name": "detail_sync_failed_local", "value": "Synchronizace selhala, zobrazují se místní data" },
-    { "name": "detail_added_to_library", "value": "Přidáno do knihovny" },
-    { "name": "detail_removed_from_library", "value": "Odebráno z knihovny" },
-    { "name": "detail_all_marked_read", "value": "Všechny kapitoly označeny jako přečtené" },
-    { "name": "detail_download_queued", "value": "Stahování zařazeno do fronty" },
-    { "name": "detail_config_anilist_token", "value": "Nejprve nastavte token AniList" },
-    { "name": "detail_search_anilist", "value": "Hledat na AniList" },
-    { "name": "detail_manga_title_hint", "value": "Název mangy" },
-    { "name": "detail_no_search_results", "value": "Žádné výsledky hledání" },
-    { "name": "detail_anilist_search_failed", "value": "Hledání na AniList selhalo" },
-    { "name": "detail_anilist_bound", "value": "Propojeno s AniList" },
-    { "name": "detail_anilist_unbound", "value": "Odpojeno od AniList" },
-    { "name": "detail_synced_progress", "value": "Postup synchronizován na kapitolu %d" },
-    { "name": "detail_anilist_sync_failed", "value": "Synchronizace AniList selhala" },
-    { "name": "detail_status_local", "value": "Místní" },
-    { "name": "detail_in_library", "value": "V knihovně" },
-    { "name": "detail_add_to_library", "value": "Přidat do knihovny" },
-    { "name": "detail_continue_reading", "value": "Pokračovat ve čtení" },
-    { "name": "detail_start_reading", "value": "Začít číst" },
-    { "name": "detail_no_chapters_yet", "value": "Zatím žádné kapitoly" },
-    { "name": "detail_collapse", "value": "Sbalit" },
-    { "name": "detail_expand", "value": "Rozbalit" },
-    { "name": "detail_anilist_tracking", "value": "Sledování AniList" },
-    { "name": "detail_anilist_token_hint", "value": "Token AniList ještě není nastaven" },
-    { "name": "detail_searching", "value": "Hledání…" },
-    { "name": "detail_search_and_bind", "value": "Hledat a propojit" },
-    { "name": "detail_bind", "value": "Propojit" },
-    { "name": "detail_synced_to_chapter", "value": "Synchronizováno na kapitolu %d" },
-    { "name": "detail_sync_progress", "value": "Synchronizovat postup" },
-    { "name": "detail_unbind", "value": "Odpojit" },
-    { "name": "detail_chapters_count", "value": "Kapitoly (%d)" },
-    { "name": "detail_sort_asc", "value": "Vzestupně" },
-    { "name": "detail_sort_desc", "value": "Sestupně" },
-    { "name": "detail_mark_all_read", "value": "Označit vše jako přečtené" },
-    { "name": "detail_read", "value": "Přečteno" },
-    { "name": "detail_downloaded", "value": "Staženo" },
-    { "name": "detail_in_queue", "value": "Ve frontě" },
-    { "name": "detail_download", "value": "Stáhnout" },
-    { "name": "reader_chapter_not_found", "value": "Kapitola nenalezena" },
-    { "name": "reader_load_failed", "value": "Načtení selhalo: %s" },
-    { "name": "reader_mode_ltr", "value": "Zleva doprava" },
-    { "name": "reader_mode_rtl", "value": "Zprava doleva" },
-    { "name": "reader_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_reading_mode", "value": "Režim čtení" },
-    { "name": "reader_orientation_free", "value": "Volná" },
-    { "name": "reader_orientation_portrait", "value": "Na výšku" },
-    { "name": "reader_orientation_landscape", "value": "Na šířku" },
-    { "name": "reader_screen_orientation", "value": "Orientace obrazovky" },
-    { "name": "reader_last_chapter", "value": "Už jste na poslední kapitole" },
-    { "name": "reader_first_chapter", "value": "Už jste na první kapitole" },
-    { "name": "reader_first_page", "value": "Už jste na první stránce" },
-    { "name": "reader_last_page", "value": "Už jste na poslední stránce" },
-    { "name": "reader_loading_chapter", "value": "Načítání kapitoly…" },
-    { "name": "reader_settings", "value": "Nastavení čtečky" },
-    { "name": "reader_background", "value": "Pozadí" },
-    { "name": "reader_theme_auto", "value": "Auto" },
-    { "name": "reader_theme_white", "value": "Bílé" },
-    { "name": "reader_theme_gray", "value": "Šedé" },
-    { "name": "reader_theme_black", "value": "Černé" },
-    { "name": "reader_show_page_number", "value": "Zobrazit číslo stránky" },
-    { "name": "reader_brightness", "value": "Jas" },
-    { "name": "reader_auto", "value": "Auto" },
-    { "name": "plugin_title", "value": "Rozšíření" },
-    { "name": "plugin_installed_section", "value": "Nainstalovaná" },
-    { "name": "plugin_empty", "value": "Zatím žádná rozšíření, nainstalujte níže" },
-    { "name": "plugin_disable_hint", "value": "Vypnutá rozšíření lze kdykoli znovu zapnout" },
-    { "name": "plugin_up_to_date", "value": "Aktuální" },
-    { "name": "plugin_local_install", "value": "Nainstalovat ze souboru" },
-    { "name": "plugin_install_from_file", "value": "Vyberte soubor k instalaci" },
-    { "name": "plugin_processing", "value": "Zpracování…" },
-    { "name": "plugin_package_hint", "value": "Podporuje balíčky pluginů .honyomiplug / .zip" },
-    { "name": "plugin_repo", "value": "Online repozitář" },
-    { "name": "plugin_repo_config", "value": "Nastavit repozitář" },
-    { "name": "plugin_repo_refresh", "value": "Obnovit" },
-    { "name": "plugin_repo_hint", "value": "Repozitář pluginů ještě není nastaven" },
-    { "name": "plugin_repo_loading", "value": "Načítání repozitáře…" },
-    { "name": "plugin_repo_url_title", "value": "URL repozitáře pluginů" },
-    { "name": "plugin_repo_url_hint", "value": "Zadejte URL repozitáře pluginů" },
-    { "name": "plugin_repo_load_failed", "value": "Načtení repozitáře selhalo: %s" },
-    { "name": "plugin_pick_file_failed", "value": "Výběr souboru selhal" },
-    { "name": "plugin_installed", "value": "Nainstalováno: %s" },
-    { "name": "plugin_installed_name", "value": "Nainstalováno %s" },
-    { "name": "plugin_install_failed", "value": "Instalace selhala: %s" },
-    { "name": "plugin_action_failed", "value": "Akce selhala" },
-    { "name": "plugin_uninstalled", "value": "Odinstalováno: %s" },
-    { "name": "plugin_uninstall_failed", "value": "Odinstalace selhala" },
-    { "name": "settings_title", "value": "Nastavení" },
-    { "name": "settings_general", "value": "Obecné" },
-    { "name": "settings_start_tab", "value": "Úvodní obrazovka" },
-    { "name": "settings_personalization", "value": "Přizpůsobení" },
-    { "name": "settings_library", "value": "Knihovna" },
-    { "name": "settings_reader", "value": "Čtečka" },
-    { "name": "settings_data", "value": "Data" },
-    { "name": "settings_downloads", "value": "Stahování" },
-    { "name": "settings_browse", "value": "Procházet" },
-    { "name": "settings_advanced", "value": "Pokročilé" },
-    { "name": "settings_about", "value": "O aplikaci" },
-    { "name": "settings_tab_library", "value": "Knihovna" },
-    { "name": "settings_tab_updates", "value": "Aktualizace" },
-    { "name": "settings_tab_history", "value": "Historie" },
-    { "name": "settings_tab_browse", "value": "Procházet" },
-    { "name": "settings_tab_more", "value": "Více" },
-    { "name": "advanced_title", "value": "Pokročilé" },
-    { "name": "advanced_calculating", "value": "Výpočet…" },
-    { "name": "advanced_storage", "value": "Úložiště" },
-    { "name": "advanced_clear_image_cache", "value": "Vymazat mezipaměť obrázků" },
-    { "name": "advanced_image_cache_cleared", "value": "Mezipaměť obrázků vymazána" },
-    { "name": "advanced_clear_cookies", "value": "Vymazat cookies" },
-    { "name": "advanced_cookies_cleared", "value": "Všechny cookies vymazány" },
-    { "name": "advanced_backup_restore", "value": "Záloha a obnovení" },
-    { "name": "advanced_export_backup", "value": "Exportovat zálohu" },
-    { "name": "advanced_import_backup", "value": "Importovat zálohu" },
-    { "name": "advanced_tracking", "value": "Sledování" },
-    { "name": "advanced_anilist_token", "value": "Token AniList" },
-    { "name": "advanced_token_title", "value": "Přístupový token AniList" },
-    { "name": "advanced_token_hint", "value": "Vložte přístupový token (ponechte prázdné pro vymazání)" },
-    { "name": "advanced_token_not_set", "value": "Nenastaveno" },
-    { "name": "advanced_token_set", "value": "Nastaveno" },
-    { "name": "advanced_token_saved", "value": "Token uložen" },
-    { "name": "advanced_token_cleared", "value": "Token vymazán" },
-    { "name": "advanced_backup_exported", "value": "Záloha exportována" },
-    { "name": "advanced_export_canceled", "value": "Export zrušen" },
-    { "name": "advanced_export_failed", "value": "Export selhal" },
-    { "name": "advanced_import_canceled", "value": "Import zrušen" },
-    { "name": "advanced_backup_invalid", "value": "Neplatný soubor zálohy" },
-    { "name": "advanced_restored_manga", "value": "Obnoveno %d mang" },
-    { "name": "advanced_import_failed", "value": "Import selhal" },
-    { "name": "about_title", "value": "O aplikaci" },
-    { "name": "about_version", "value": "Verze 1.0.0" },
-    { "name": "about_desc", "value": "Architektura inspirovaná Mihon (Apache-2.0). Online zdroje se instalují dynamicky jako rozšíření, místní zdroje jsou vestavěné." },
-    { "name": "about_ack", "value": "Poděkování open source:\n· Mihon / Tachiyomi — architektura aplikace a návrh interakce (Apache-2.0)\n· Material Symbols — ikony v aplikaci (Apache-2.0)\n· MangaDex — testovací zdroj dat" },
-    { "name": "browse_set_title", "value": "Procházet" },
-    { "name": "browse_set_content", "value": "Obsah" },
-    { "name": "browse_set_show_nsfw", "value": "Zobrazit zdroje NSFW" },
-    { "name": "browse_set_nsfw_hint", "value": "Po zapnutí se zdroje označené rozšířeními jako NSFW zobrazí v Procházet" },
-    { "name": "dl_set_title", "value": "Stahování" },
-    { "name": "dl_set_network", "value": "Síť" },
-    { "name": "dl_set_wifi_only", "value": "Stahovat jen přes Wi-Fi" },
-    { "name": "dl_set_wifi_only_hint", "value": "Poznámka: tento přepínač je v aktuální verzi zástupný; detekce typu sítě přijde v pozdější verzi" },
-    { "name": "lib_set_title", "value": "Knihovna" },
-    { "name": "lib_set_sort_group", "value": "Filtrovat a řadit" },
-    { "name": "lib_set_sort_default", "value": "Výchozí řazení" },
-    { "name": "lib_set_sort_title", "value": "Název" },
-    { "name": "lib_set_sort_last_update", "value": "Nejnovější kapitola" },
-    { "name": "lib_set_sort_added", "value": "Datum přidání" },
-    { "name": "lib_set_sort_unread", "value": "Počet nepřečtených" },
-    { "name": "lib_set_sort_asc", "value": "Řadit podle názvu vzestupně" },
-    { "name": "lib_set_filter_default", "value": "Výchozí filtr" },
-    { "name": "lib_set_filter_unread", "value": "Nepřečtené" },
-    { "name": "lib_set_filter_downloaded", "value": "Stažené" },
-    { "name": "lib_set_filter_uncompleted", "value": "Nedokončené" },
-    { "name": "lib_set_display_group", "value": "Zobrazení" },
-    { "name": "lib_set_view_default", "value": "Výchozí zobrazení" },
-    { "name": "lib_set_view_grid", "value": "Mřížka" },
-    { "name": "lib_set_view_cover", "value": "Mřížka obálek" },
-    { "name": "lib_set_view_list", "value": "Seznam" },
-    { "name": "lib_set_grid_cols", "value": "Sloupce mřížky" },
-    { "name": "lib_set_cols_auto", "value": "Auto" },
-    { "name": "lib_set_cols_2", "value": "2 sloupce" },
-    { "name": "lib_set_cols_3", "value": "3 sloupce" },
-    { "name": "lib_set_cols_4", "value": "4 sloupce" },
-    { "name": "lib_set_unread_badge", "value": "Odznaky nepřečtených" },
-    { "name": "lib_set_download_badge", "value": "Odznaky stažení" },
-    { "name": "reader_set_title", "value": "Čtečka" },
-    { "name": "reader_set_mode_group", "value": "Režim čtení" },
-    { "name": "reader_set_mode_default", "value": "Výchozí režim" },
-    { "name": "reader_set_mode_ltr", "value": "Zleva doprava" },
-    { "name": "reader_set_mode_rtl", "value": "Zprava doleva" },
-    { "name": "reader_set_mode_vertical", "value": "Svislé listování" },
-    { "name": "reader_set_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_set_dual_page", "value": "Dvojstrana (na šířku)" },
-    { "name": "reader_set_display_group", "value": "Zobrazení" },
-    { "name": "reader_set_show_page_number", "value": "Zobrazit číslo stránky" },
-    { "name": "reader_set_bg_color", "value": "Pozadí čtečky" },
-    { "name": "reader_set_theme_follow", "value": "Podle motivu" },
-    { "name": "reader_set_theme_white", "value": "Bílé" },
-    { "name": "reader_set_theme_black", "value": "Černé" },
-    { "name": "reader_set_theme_gray", "value": "Šedé" },
-    { "name": "reader_set_reset_brightness", "value": "Obnovit jas čtečky" },
-    { "name": "reader_set_brightness_reset", "value": "Jas nyní sleduje systém" },
-    { "name": "browse_tab_sources", "value": "Zdroje" },
-    { "name": "browse_tab_extensions", "value": "Rozšíření" },
-    { "name": "browse_tab_migrate", "value": "Migrovat" },
-    { "name": "browse_pin", "value": "Připnout" },
-    { "name": "browse_unpin", "value": "Odepnout" },
-    { "name": "browse_disable_source", "value": "Zakázat zdroj" },
-    { "name": "browse_source_disabled", "value": "Zdroj zakázán" },
-    { "name": "browse_pinned", "value": "Připnuto" },
-    { "name": "browse_sources_empty", "value": "Nejsou k dispozici žádné zdroje. Nainstalujte je na kartě Rozšíření" },
-    { "name": "browse_filter_langs", "value": "Filtrovat jazyky" },
-    { "name": "browse_filter_all", "value": "Vše" },
-    { "name": "browse_source_missing", "value": "Zdroj není dostupný. Rozšíření může být zakázáno" },
-    { "name": "global_search_hint", "value": "Hledat ve všech zdrojích" },
-    { "name": "global_search_failed", "value": "Hledání selhalo" },
-    { "name": "ext_search_hint", "value": "Hledat rozšíření" },
-    { "name": "ext_search_no_match", "value": "Žádné shody" },
-    { "name": "ext_repo_settings", "value": "Nastavení repozitáře" },
-    { "name": "ext_refresh_repo", "value": "Obnovit repozitář" },
-    { "name": "migrate_pick_source", "value": "Vyberte zdroj k migraci" },
-    { "name": "migrate_empty_library", "value": "Knihovna je prázdná" },
-    { "name": "migrate_select_all", "value": "Vybrat vše" },
-    { "name": "migrate_deselect_all", "value": "Zrušit výběr" },
-    { "name": "migrate_action", "value": "Migrovat (%d)" },
-    { "name": "migrate_title", "value": "Migrovat" },
-    { "name": "migrate_skip", "value": "Přeskočit" },
-    { "name": "migrate_progress", "value": "%d z %d" },
-    { "name": "migrate_target_source", "value": "Cílový zdroj" },
-    { "name": "migrate_search_hint", "value": "Hledat mangu v cílovém zdroji" },
-    { "name": "migrate_confirm_title", "value": "Migrovat do této mangy?" },
-    { "name": "migrate_item_done", "value": "Migrováno: %s" },
-    { "name": "migrate_failed", "value": "Migrace selhala: %s" },
-    { "name": "migrate_done", "value": "Migrace dokončena" },
-    { "name": "migrate_no_target", "value": "Není k dispozici cílový zdroj" },
-    { "name": "stats_title", "value": "Statistiky" },
-    { "name": "stats_overview_section", "value": "Přehled" },
-    { "name": "stats_in_library", "value": "V knihovně" },
-    { "name": "stats_read_duration", "value": "Doba čtení" },
-    { "name": "stats_completed_titles", "value": "Dokončeno" },
-    { "name": "stats_titles_section", "value": "Položky" },
-    { "name": "stats_started_titles", "value": "Zahájené" },
-    { "name": "stats_local_titles", "value": "Místní" },
-    { "name": "stats_chapters_section", "value": "Kapitoly" },
-    { "name": "stats_total_chapters", "value": "Celkem" },
-    { "name": "stats_read_chapters", "value": "Přečteno" },
-    { "name": "stats_downloaded_chapters", "value": "Staženo" },
-    { "name": "stats_tracker_section", "value": "Sledování" },
-    { "name": "stats_tracked_titles", "value": "Sledované položky" },
-    { "name": "stats_mean_score", "value": "Průměrné skóre" },
-    { "name": "stats_used", "value": "Použito" },
-    { "name": "stats_not_applicable", "value": "n. a." },
-    { "name": "stats_week", "value": "Týden" },
-    { "name": "stats_month", "value": "Měsíc" },
-    { "name": "stats_week_total", "value": "%s tento týden" },
-    { "name": "stats_month_total", "value": "%s tento měsíc" },
-    { "name": "stats_no_reading", "value": "V tomto období žádné čtení" },
-    { "name": "stats_day_short", "value": "%d d" },
-    { "name": "stats_hour_short", "value": "%d h" },
-    { "name": "stats_minute_short", "value": "%d min" },
-    { "name": "stats_second_short", "value": "%d s" },
-    { "name": "stats_wd_sun", "value": "Ne" },
-    { "name": "stats_wd_mon", "value": "Po" },
-    { "name": "stats_wd_tue", "value": "Út" },
-    { "name": "stats_wd_wed", "value": "St" },
-    { "name": "stats_wd_thu", "value": "Čt" },
-    { "name": "stats_wd_fri", "value": "Pá" },
-    { "name": "stats_wd_sat", "value": "So" },
-    { "name": "reader_mode_vertical", "value": "Svislé" },
-    { "name": "reader_mode_smart_grip", "value": "Chytrý úchop" },
-    { "name": "reader_orientation_lock_portrait", "value": "Uzamknout na výšku" },
-    { "name": "reader_orientation_lock_landscape", "value": "Uzamknout na šířku" },
-    { "name": "reader_tab_general", "value": "Obecné" },
-    { "name": "reader_tab_filter", "value": "Barevný filtr" },
-    { "name": "reader_filter_grayscale", "value": "Stupně šedi" },
-    { "name": "reader_filter_invert", "value": "Invertované barvy" },
-    { "name": "reader_filter_contrast", "value": "Kontrast" },
-    { "name": "reader_filter_saturation", "value": "Sytost" },
-    { "name": "reader_crop_borders", "value": "Oříznout okraje" },
-    { "name": "reader_nav_tap_zones", "value": "Zóny klepnutí" },
-    { "name": "reader_nav_default", "value": "Výchozí" },
-    { "name": "reader_nav_ltr", "value": "Zleva doprava" },
-    { "name": "reader_nav_rtl", "value": "Zprava doleva" },
-    { "name": "reader_nav_vertical", "value": "Svislé" },
-    { "name": "reader_nav_edge", "value": "Okraj" },
-    { "name": "reader_nav_none", "value": "Žádné" },
-    { "name": "reader_dual_page", "value": "Zobrazení dvou stran" },
-    { "name": "reader_webtoon_padding", "value": "Boční odsazení Webtoon" },
-    { "name": "reader_set_mode_smart_grip", "value": "Chytrý úchop" },
-    { "name": "ext_install_local", "value": "Nainstalovat lokálně" },
-    { "name": "ext_detail_title", "value": "Informace o rozšíření" },
-    { "name": "ext_info_version", "value": "Verze" },
-    { "name": "ext_info_language", "value": "Jazyk" },
-    { "name": "ext_uninstall_title", "value": "Odinstalovat rozšíření" },
-    { "name": "ext_uninstall_msg", "value": "Odinstalovat %s? Data mangy v knihovně zůstanou." },
-    { "name": "ext_detail_sources", "value": "Zdroje" },
-    { "name": "ext_detail_settings", "value": "Nastavení" },
-    { "name": "ext_pref_loading", "value": "Načítání…" },
-    { "name": "ext_pref_failed", "value": "Nastavení se nepodařilo použít" },
-    { "name": "ext_detail_missing", "value": "Rozšíření neexistuje nebo není načteno" },
-    { "name": "action_filter", "value": "Filtrovat" },
-    { "name": "action_update_library", "value": "Aktualizovat knihovnu" },
-    { "name": "action_update_category", "value": "Aktualizovat kategorii" },
-    { "name": "action_open_random_manga", "value": "Otevřít náhodnou mangu" },
-    { "name": "action_select_all", "value": "Vybrat vše" },
-    { "name": "action_select_inverse", "value": "Invertovat výběr" },
-    { "name": "action_move_category", "value": "Přesunout do kategorie" },
-    { "name": "action_mark_as_read", "value": "Označit jako přečtené" },
-    { "name": "action_mark_as_unread", "value": "Označit jako nepřečtené" },
-    { "name": "action_download", "value": "Stáhnout" },
-    { "name": "action_delete", "value": "Smazat" },
-    { "name": "action_migrate", "value": "Migrovat" },
-    { "name": "action_remove_from_library", "value": "Odebrat z knihovny" },
-    { "name": "action_remove_from_library_msg", "value": "Odebrat %d vybraných mang z knihovny?" },
-    { "name": "action_download_queued", "value": "%d stahování přidáno do fronty" },
-    { "name": "library_search_hint", "value": "Hledat v knihovně" },
-    { "name": "library_no_match", "value": "Žádná odpovídající manga" },
-    { "name": "lib_sheet_tab_filter", "value": "Filtrovat" },
-    { "name": "lib_sheet_tab_sort", "value": "Řazení" },
-    { "name": "lib_sheet_tab_display", "value": "Zobrazení" },
-    { "name": "lib_filter_downloaded", "value": "Stažené" },
-    { "name": "lib_filter_unread", "value": "Nepřečtené" },
-    { "name": "lib_filter_started", "value": "Zahájené" },
-    { "name": "lib_filter_bookmarked", "value": "Záložky" },
-    { "name": "lib_filter_completed", "value": "Dokončeno" },
-    { "name": "lib_filter_tracked", "value": "Sledované" },
-    { "name": "lib_sort_alpha", "value": "Název" },
-    { "name": "lib_sort_total", "value": "Počet kapitol" },
-    { "name": "lib_sort_last_read", "value": "Naposledy čteno" },
-    { "name": "lib_sort_last_update", "value": "Poslední kontrola" },
-    { "name": "lib_sort_unread", "value": "Počet nepřečtených" },
-    { "name": "lib_sort_latest_chapter", "value": "Poslední aktualizace" },
-    { "name": "lib_sort_fetch_date", "value": "Načtení kapitol" },
-    { "name": "lib_sort_date_added", "value": "Datum přidání" },
-    { "name": "lib_sort_random", "value": "Náhodně" },
-    { "name": "lib_display_compact", "value": "Kompaktní mřížka" },
-    { "name": "lib_display_comfortable", "value": "Volná mřížka" },
-    { "name": "lib_display_cover", "value": "Mřížka obálek" },
-    { "name": "lib_display_list", "value": "Seznam" },
-    { "name": "lib_display_grid_size", "value": "Na řádek" },
-    { "name": "lib_display_grid_auto", "value": "Auto" },
-    { "name": "lib_display_badges_group", "value": "Odznaky a tlačítka" },
-    { "name": "lib_badge_downloaded", "value": "Stažené kapitoly" },
-    { "name": "lib_badge_unread", "value": "Nepřečtené kapitoly" },
-    { "name": "lib_badge_local", "value": "Místní zdroj" },
-    { "name": "lib_badge_language", "value": "Jazyk" },
-    { "name": "lib_badge_continue", "value": "Tlačítko Pokračovat ve čtení" },
-    { "name": "lib_display_tabs_group", "value": "Karty" },
-    { "name": "lib_show_category_tabs", "value": "Zobrazit karty kategorií" },
-    { "name": "lib_show_manga_count", "value": "Zobrazit počet" },
-    { "name": "EntryFormAbility_label", "value": "Widget Honyomi" },
-    { "name": "EntryFormAbility_desc", "value": "Poskytovatel widgetů plochy" },
-    { "name": "card_recent_display", "value": "Pokračovat ve čtení" },
-    { "name": "card_recent_desc", "value": "Rychle pokračovat v nedávno čtené manze" },
-    { "name": "card_updates_display", "value": "Aktualizace" },
-    { "name": "card_updates_desc", "value": "Nejnovější nepřečtené kapitoly v knihovně" },
-    { "name": "card_recent_header", "value": "Pokračovat ve čtení" },
-    { "name": "card_updates_header", "value": "Aktualizace" },
-    { "name": "card_unread_count", "value": "%d nepřečtených kapitol" },
-    { "name": "card_empty_recent", "value": "Zatím žádná historie čtení" },
-    { "name": "card_empty_updates", "value": "Žádné nepřečtené kapitoly" },
-    { "name": "card_open_hint", "value": "Klepnutím otevřete aplikaci" },
-    { "name": "card_manga_display", "value": "Widget mangy" },
-    { "name": "card_manga_desc", "value": "Přidejte na stránce detailů, klepnutím na obálku čtete" },
-    { "name": "card_manga_empty", "value": "Přidejte na plochu ze stránky mangy" },
-    { "name": "detail_add_to_desktop", "value": "Přidat na plochu" },
-    { "name": "detail_card_added", "value": "Přidáno na plochu" },
-    { "name": "detail_card_add_failed", "value": "Widget se nepodařilo přidat" },
-    { "name": "card_stats_week_display", "value": "Týdenní statistiky" },
-    { "name": "card_stats_week_desc", "value": "Denní doba čtení tento týden" },
-    { "name": "card_stats_month_display", "value": "Měsíční statistiky" },
-    { "name": "card_stats_month_desc", "value": "Denní doba čtení tento měsíc" },
-    { "name": "card_stats_empty", "value": "Zatím žádné čtení" },
-    { "name": "action_view_upcoming", "value": "Zobrazit nadcházející aktualizace" },
-    { "name": "label_upcoming", "value": "Nadcházející" },
-    { "name": "upcoming_guide", "value": "Průvodce nadcházejícími aktualizacemi" },
-    { "name": "upcoming_calendar_prev", "value": "Předchozí měsíc" },
-    { "name": "upcoming_calendar_next", "value": "Další měsíc" },
-    { "name": "pref_filter_update_categories_details", "value": "Položky, které jsou zároveň v zahrnutých i vyloučených kategoriích, se nezobrazí." },
-    { "name": "relative_time_today", "value": "Dnes" },
-    { "name": "relative_time_days_ago", "value": "před %d dny" },
-    { "name": "upcoming_relative_time_days", "value": "Za %d dní" },
-    { "name": "card_upcoming_display", "value": "Nadcházející" },
-    { "name": "card_upcoming_desc", "value": "Očekávaný kalendář aktualizací mangy v knihovně" },
-    { "name": "card_upcoming_header", "value": "Nadcházející" },
-    { "name": "card_empty_upcoming", "value": "V knihovně nejsou žádné vycházející mangy" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Filtruje všechnu položky ve vaší knihovně"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Pozastaví historii čtení"
+    },
+    {
+      "name": "more_support",
+      "value": "Podpořte nás"
+    },
+    {
+      "name": "more_help",
+      "value": "Nápověda"
+    },
+    {
+      "name": "support_perks",
+      "value": "Patronům se otevírá přístup k exkluzivním kanálům a další výhody budou následovat."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (upřednostňováno)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Projekt Mihon v současné době podporuje %d+ sponzorů. Chceme poděkovat každému z vás. Pojďme společně projekt Mihon ještě vylepšit."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "Pokud hledáte další možnosti nebo máte jakékoli související dotazy, připojte se k našemu serveru na Discord."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "Data a úložiště"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Umístění úložiště"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Používá se pro automatické zálohování, stahování kapitol a lokální zdroj."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "Záloha a obnovení"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Vytvořit zálohu"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Obnovit zálohu"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Frekvence automatických záloh"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "Kopie záloh byste také měli uchovat na více místech. Zálohy mohou obsahovat citlivé informace, včetně jakýchkoliv uložených hesel; při sdílení buďte opatrní."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Poslední automatická záloha: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Využití úložiště"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Dostupné: %s / Celkem: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Vymazat mezipaměť kapitol"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Využito: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Mezipaměť smazána, %d souborů odstraněno"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Během vymazávání došlo k chybě"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Vymazat mezipaměť kapitol při spuštění aplikace"
+    },
+    {
+      "name": "data_export",
+      "value": "Exportovat"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Seznam knihoven"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Knihovna byla exportována"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Vyberte data, která chcete zahrnout"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Název"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Autor"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "Vypnuto"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "Každých 6 hodiny"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "Každých 12 hodiny"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "Denně"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "Každé 2 dny"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "Týdně"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "OK"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Zrušit"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Potvrdit"
+    },
+    {
+      "name": "common_delete",
+      "value": "Smazat"
+    },
+    {
+      "name": "common_retry",
+      "value": "Zkusit znovu"
+    },
+    {
+      "name": "common_search",
+      "value": "Hledat"
+    },
+    {
+      "name": "common_all",
+      "value": "Vše"
+    },
+    {
+      "name": "common_close",
+      "value": "Zavřít"
+    },
+    {
+      "name": "common_save",
+      "value": "Uložit"
+    },
+    {
+      "name": "common_install",
+      "value": "Nainstalovat"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "Odinstalovat"
+    },
+    {
+      "name": "common_update",
+      "value": "Aktualizovat"
+    },
+    {
+      "name": "common_none",
+      "value": "Žádné"
+    },
+    {
+      "name": "common_default",
+      "value": "Výchozí"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Vzhled"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Jazyk"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Podle systému"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Režim motivu"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Podle systému"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Světlý"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Tmavý"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Barva zvýraznění"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Ostatní"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED čistě černé pozadí"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Modrá"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "Zelená"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Růžová"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Fialová"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "Oranžová"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "před %d min"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "před %d h"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "před %d d"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "Vycházející"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Dokončeno"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "Pozastaveno"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Zrušeno"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Vydávání dokončeno"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Neznámé"
+    },
+    {
+      "name": "tab_library",
+      "value": "Knihovna"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Aktualizace"
+    },
+    {
+      "name": "tab_history",
+      "value": "Historie"
+    },
+    {
+      "name": "tab_browse",
+      "value": "Procházet"
+    },
+    {
+      "name": "tab_more",
+      "value": "Více"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "Čekání na ověření…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "Ověření dokončeno"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "Ověření člověka"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "Hotovo"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "Výsledek ověření uložen"
+    },
+    {
+      "name": "more_title",
+      "value": "Více"
+    },
+    {
+      "name": "more_version",
+      "value": "Verze %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Pouze staženo"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Anonymní režim"
+    },
+    {
+      "name": "more_downloads",
+      "value": "Stahovací fronta"
+    },
+    {
+      "name": "more_categories",
+      "value": "Kategorie"
+    },
+    {
+      "name": "more_settings",
+      "value": "Nastavení"
+    },
+    {
+      "name": "more_about",
+      "value": "O aplikaci"
+    },
+    {
+      "name": "more_plugins",
+      "value": "Rozšíření"
+    },
+    {
+      "name": "categories_title",
+      "value": "Kategorie"
+    },
+    {
+      "name": "categories_add",
+      "value": "Nová kategorie"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "Název kategorie"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "Přejmenovat kategorii"
+    },
+    {
+      "name": "categories_rename",
+      "value": "Přejmenovat"
+    },
+    {
+      "name": "categories_hint",
+      "value": "Dlouhým stisknutím kategorii přejmenujete nebo smažete; manga ze smazané kategorie se přesune zpět do Výchozí"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "Vybrat kategorii"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "Načítání…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "Obrázek se nepodařilo načíst"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "Klepnutím zkuste znovu"
+    },
+    {
+      "name": "library_title",
+      "value": "Knihovna"
+    },
+    {
+      "name": "library_empty",
+      "value": "Knihovna je prázdná, procházejte a přidejte mangu"
+    },
+    {
+      "name": "library_new_category",
+      "value": "Nová kategorie"
+    },
+    {
+      "name": "library_category_name",
+      "value": "Název kategorie"
+    },
+    {
+      "name": "updates_title",
+      "value": "Aktualizace"
+    },
+    {
+      "name": "updates_empty",
+      "value": "Žádné nedávné aktualizace"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "Nalezeno %d nových kapitol"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "Žádné nové kapitoly"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "Obnovení selhalo"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "Obnovování…"
+    },
+    {
+      "name": "history_title",
+      "value": "Historie"
+    },
+    {
+      "name": "history_clear",
+      "value": "Vymazat"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "Opravdu vymazat?"
+    },
+    {
+      "name": "history_empty",
+      "value": "Zatím žádná historie čtení"
+    },
+    {
+      "name": "history_cleared",
+      "value": "Historie vymazána"
+    },
+    {
+      "name": "history_continue",
+      "value": "Pokračovat"
+    },
+    {
+      "name": "browse_title",
+      "value": "Procházet"
+    },
+    {
+      "name": "browse_import",
+      "value": "Importovat"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "Pluginy"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "Místní manga"
+    },
+    {
+      "name": "browse_popular",
+      "value": "Populární"
+    },
+    {
+      "name": "browse_latest",
+      "value": "Nejnovější"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "Hledat mangu…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "Žádná manga nenalezena"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "Zatím žádná místní manga, klepněte na Importovat"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "Načtení selhalo: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "Hledání selhalo: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "Načtení dalších selhalo"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "Otevření detailů selhalo"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "Výběr souborů selhal"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "Importovat %d souborů"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "Název mangy"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "Zadejte název"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "Importováno %d souborů"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "Import selhal: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "Stahování"
+    },
+    {
+      "name": "download_resume",
+      "value": "Pokračovat"
+    },
+    {
+      "name": "download_pause",
+      "value": "Pozastavit"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "Vymazat dokončené"
+    },
+    {
+      "name": "download_queue",
+      "value": "Fronta stahování"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "Ve frontě"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "Stahování"
+    },
+    {
+      "name": "download_state_done",
+      "value": "Hotovo"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "Selhalo"
+    },
+    {
+      "name": "download_move_top",
+      "value": "Přesunout nahoru"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "Přesunout dolů"
+    },
+    {
+      "name": "download_deleted",
+      "value": "Smazáno"
+    },
+    {
+      "name": "download_empty",
+      "value": "Zatím žádná stahování"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "Staženo"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d kapitol"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "Žádné kapitoly"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "Synchronizace selhala, zobrazují se místní data"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "Přidáno do knihovny"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "Odebráno z knihovny"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "Všechny kapitoly označeny jako přečtené"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "Stahování zařazeno do fronty"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "Nejprve nastavte token AniList"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "Hledat na AniList"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "Název mangy"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "Žádné výsledky hledání"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "Hledání na AniList selhalo"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "Propojeno s AniList"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "Odpojeno od AniList"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "Postup synchronizován na kapitolu %d"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "Synchronizace AniList selhala"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "Místní"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "V knihovně"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "Přidat do knihovny"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "Pokračovat ve čtení"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "Začít číst"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "Zatím žádné kapitoly"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "Sbalit"
+    },
+    {
+      "name": "detail_expand",
+      "value": "Rozbalit"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "Sledování AniList"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "Token AniList ještě není nastaven"
+    },
+    {
+      "name": "detail_searching",
+      "value": "Hledání…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "Hledat a propojit"
+    },
+    {
+      "name": "detail_bind",
+      "value": "Propojit"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "Synchronizováno na kapitolu %d"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "Synchronizovat postup"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "Odpojit"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "Kapitoly (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "Vzestupně"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "Sestupně"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "Označit vše jako přečtené"
+    },
+    {
+      "name": "detail_read",
+      "value": "Přečteno"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "Staženo"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "Ve frontě"
+    },
+    {
+      "name": "detail_download",
+      "value": "Stáhnout"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "Kapitola nenalezena"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "Načtení selhalo: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "Zleva doprava"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "Zprava doleva"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "Režim čtení"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "Volná"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "Na výšku"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "Na šířku"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "Orientace obrazovky"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "Už jste na poslední kapitole"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "Už jste na první kapitole"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "Už jste na první stránce"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "Už jste na poslední stránce"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "Načítání kapitoly…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "Nastavení čtečky"
+    },
+    {
+      "name": "reader_background",
+      "value": "Pozadí"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "Bílé"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "Šedé"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "Černé"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "Zobrazit číslo stránky"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "Jas"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "plugin_title",
+      "value": "Rozšíření"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "Nainstalovaná"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "Zatím žádná rozšíření, nainstalujte níže"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "Vypnutá rozšíření lze kdykoli znovu zapnout"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "Aktuální"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "Nainstalovat ze souboru"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "Vyberte soubor k instalaci"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "Zpracování…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "Podporuje balíčky pluginů .honyomiplug / .zip"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "Online repozitář"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "Nastavit repozitář"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "Obnovit"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "Repozitář pluginů ještě není nastaven"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "Načítání repozitáře…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "URL repozitáře pluginů"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "Zadejte URL repozitáře pluginů"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "Načtení repozitáře selhalo: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "Výběr souboru selhal"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "Nainstalováno: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "Nainstalováno %s"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "Instalace selhala: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "Akce selhala"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "Odinstalováno: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "Odinstalace selhala"
+    },
+    {
+      "name": "settings_title",
+      "value": "Nastavení"
+    },
+    {
+      "name": "settings_general",
+      "value": "Obecné"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Úvodní obrazovka"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "Přizpůsobení"
+    },
+    {
+      "name": "settings_library",
+      "value": "Knihovna"
+    },
+    {
+      "name": "settings_reader",
+      "value": "Čtečka"
+    },
+    {
+      "name": "settings_data",
+      "value": "Data"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Stahování"
+    },
+    {
+      "name": "settings_browse",
+      "value": "Procházet"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Pokročilé"
+    },
+    {
+      "name": "settings_about",
+      "value": "O aplikaci"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "Knihovna"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Aktualizace"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "Historie"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "Procházet"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "Více"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Pokročilé"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "Výpočet…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "Úložiště"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "Vymazat mezipaměť obrázků"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "Mezipaměť obrázků vymazána"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "Vymazat cookies"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "Všechny cookies vymazány"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "Záloha a obnovení"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "Exportovat zálohu"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "Importovat zálohu"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "Sledování"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "Token AniList"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "Přístupový token AniList"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "Vložte přístupový token (ponechte prázdné pro vymazání)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "Nenastaveno"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "Nastaveno"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "Token uložen"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "Token vymazán"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "Záloha exportována"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "Export zrušen"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "Export selhal"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "Import zrušen"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "Neplatný soubor zálohy"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "Obnoveno %d mang"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "Import selhal"
+    },
+    {
+      "name": "about_title",
+      "value": "O aplikaci"
+    },
+    {
+      "name": "about_version",
+      "value": "Verze 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "Architektura inspirovaná Mihon (Apache-2.0). Online zdroje se instalují dynamicky jako rozšíření, místní zdroje jsou vestavěné."
+    },
+    {
+      "name": "about_ack",
+      "value": "Poděkování open source:\n· Mihon / Tachiyomi — architektura aplikace a návrh interakce (Apache-2.0)\n· Material Symbols — ikony v aplikaci (Apache-2.0)\n· MangaDex — testovací zdroj dat"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "Procházet"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "Obsah"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "Zobrazit zdroje NSFW"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "Po zapnutí se zdroje označené rozšířeními jako NSFW zobrazí v Procházet"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Stahování"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Síť"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Stahovat jen přes Wi-Fi"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "Poznámka: tento přepínač je v aktuální verzi zástupný; detekce typu sítě přijde v pozdější verzi"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "Knihovna"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "Filtrovat a řadit"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "Výchozí řazení"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "Název"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "Nejnovější kapitola"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "Datum přidání"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "Počet nepřečtených"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "Řadit podle názvu vzestupně"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "Výchozí filtr"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "Nepřečtené"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "Stažené"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "Nedokončené"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Zobrazení"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "Výchozí zobrazení"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "Mřížka"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "Mřížka obálek"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "Seznam"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "Sloupce mřížky"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 sloupce"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 sloupce"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 sloupce"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "Odznaky nepřečtených"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "Odznaky stažení"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "Čtečka"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "Režim čtení"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "Výchozí režim"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "Zleva doprava"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "Zprava doleva"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "Svislé listování"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "Dvojstrana (na šířku)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Zobrazení"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "Zobrazit číslo stránky"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "Pozadí čtečky"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "Podle motivu"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "Bílé"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "Černé"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "Šedé"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "Obnovit jas čtečky"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "Jas nyní sleduje systém"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "Zdroje"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "Rozšíření"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "Migrovat"
+    },
+    {
+      "name": "browse_pin",
+      "value": "Připnout"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "Odepnout"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "Zakázat zdroj"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "Zdroj zakázán"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "Připnuto"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "Nejsou k dispozici žádné zdroje. Nainstalujte je na kartě Rozšíření"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "Filtrovat jazyky"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "Vše"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "Zdroj není dostupný. Rozšíření může být zakázáno"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "Hledat ve všech zdrojích"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "Hledání selhalo"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "Hledat rozšíření"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "Žádné shody"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "Nastavení repozitáře"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "Obnovit repozitář"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "Vyberte zdroj k migraci"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "Knihovna je prázdná"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "Vybrat vše"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "Zrušit výběr"
+    },
+    {
+      "name": "migrate_action",
+      "value": "Migrovat (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "Migrovat"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "Přeskočit"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d z %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "Cílový zdroj"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "Hledat mangu v cílovém zdroji"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "Migrovat do této mangy?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "Migrováno: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "Migrace selhala: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "Migrace dokončena"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "Není k dispozici cílový zdroj"
+    },
+    {
+      "name": "stats_title",
+      "value": "Statistiky"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "Přehled"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "V knihovně"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "Doba čtení"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "Dokončeno"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "Položky"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "Zahájené"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "Místní"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "Kapitoly"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "Celkem"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "Přečteno"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "Staženo"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "Sledování"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "Sledované položky"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "Průměrné skóre"
+    },
+    {
+      "name": "stats_used",
+      "value": "Použito"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "n. a."
+    },
+    {
+      "name": "stats_week",
+      "value": "Týden"
+    },
+    {
+      "name": "stats_month",
+      "value": "Měsíc"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "%s tento týden"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "%s tento měsíc"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "V tomto období žádné čtení"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%d d"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%d h"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%d min"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%d s"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "Ne"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "Po"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "Út"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "St"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "Čt"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "Pá"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "So"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "Svislé"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "Chytrý úchop"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "Uzamknout na výšku"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "Uzamknout na šířku"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "Obecné"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "Barevný filtr"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "Stupně šedi"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "Invertované barvy"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "Kontrast"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "Sytost"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "Oříznout okraje"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "Zóny klepnutí"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "Výchozí"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "Zleva doprava"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "Zprava doleva"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "Svislé"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "Okraj"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "Žádné"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Zobrazení dvou stran"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "Boční odsazení Webtoon"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "Chytrý úchop"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "Nainstalovat lokálně"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "Informace o rozšíření"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "Verze"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "Jazyk"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "Odinstalovat rozšíření"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "Odinstalovat %s? Data mangy v knihovně zůstanou."
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "Zdroje"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "Nastavení"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "Načítání…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "Nastavení se nepodařilo použít"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "Rozšíření neexistuje nebo není načteno"
+    },
+    {
+      "name": "action_filter",
+      "value": "Filtrovat"
+    },
+    {
+      "name": "action_update_library",
+      "value": "Aktualizovat knihovnu"
+    },
+    {
+      "name": "action_update_category",
+      "value": "Aktualizovat kategorii"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "Otevřít náhodnou mangu"
+    },
+    {
+      "name": "action_select_all",
+      "value": "Vybrat vše"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "Invertovat výběr"
+    },
+    {
+      "name": "action_move_category",
+      "value": "Přesunout do kategorie"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "Označit jako přečtené"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "Označit jako nepřečtené"
+    },
+    {
+      "name": "action_download",
+      "value": "Stáhnout"
+    },
+    {
+      "name": "action_delete",
+      "value": "Smazat"
+    },
+    {
+      "name": "action_migrate",
+      "value": "Migrovat"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "Odebrat z knihovny"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "Odebrat %d vybraných mang z knihovny?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "%d stahování přidáno do fronty"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "Hledat v knihovně"
+    },
+    {
+      "name": "library_no_match",
+      "value": "Žádná odpovídající manga"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "Filtrovat"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "Řazení"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "Zobrazení"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "Stažené"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "Nepřečtené"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "Zahájené"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "Záložky"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "Dokončeno"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "Sledované"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "Název"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "Počet kapitol"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "Naposledy čteno"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "Poslední kontrola"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "Počet nepřečtených"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "Poslední aktualizace"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "Načtení kapitol"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "Datum přidání"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "Náhodně"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "Kompaktní mřížka"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "Volná mřížka"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "Mřížka obálek"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "Seznam"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "Na řádek"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "Odznaky a tlačítka"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "Stažené kapitoly"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "Nepřečtené kapitoly"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "Místní zdroj"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "Jazyk"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "Tlačítko Pokračovat ve čtení"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "Karty"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "Zobrazit karty kategorií"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "Zobrazit počet"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "Widget Honyomi"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "Poskytovatel widgetů plochy"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "Pokračovat ve čtení"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "Rychle pokračovat v nedávno čtené manze"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "Aktualizace"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "Nejnovější nepřečtené kapitoly v knihovně"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "Pokračovat ve čtení"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "Aktualizace"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d nepřečtených kapitol"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "Zatím žádná historie čtení"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "Žádné nepřečtené kapitoly"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "Klepnutím otevřete aplikaci"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "Widget mangy"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "Přidejte na stránce detailů, klepnutím na obálku čtete"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "Přidejte na plochu ze stránky mangy"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "Přidat na plochu"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "Přidáno na plochu"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "Widget se nepodařilo přidat"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "Týdenní statistiky"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "Denní doba čtení tento týden"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "Měsíční statistiky"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "Denní doba čtení tento měsíc"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "Zatím žádné čtení"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "Zobrazit nadcházející aktualizace"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "Nadcházející"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "Průvodce nadcházejícími aktualizacemi"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "Předchozí měsíc"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "Další měsíc"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "Položky, které jsou zároveň v zahrnutých i vyloučených kategoriích, se nezobrazí."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "Dnes"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "před %d dny"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "Za %d dní"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "Nadcházející"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "Očekávaný kalendář aktualizací mangy v knihovně"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "Nadcházející"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "V knihovně nejsou žádné vycházející mangy"
+    }
+  ]
 }

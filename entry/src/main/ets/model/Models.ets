@@ -37,7 +37,6 @@ export class ContentType {
   static readonly MANGA: string = 'manga';
   static readonly NOVEL: string = 'novel';
   static readonly VIDEO: string = 'video';
-
   // 各类型对应的默认分类名（书架初始三分类，首次入库时按类型落分类）；
   // 值为内容类型 code，显示层经资源映射为多语言
   static readonly CATEGORY_MANGA: string = 'manga';

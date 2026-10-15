@@ -1,11 +1,11 @@
-import { common, bundleManager } from '@kit.AbilityKit';
+import { bundleManager, common } from '@kit.AbilityKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { zlib } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { util } from '@kit.ArkTS';
 import { cryptoFramework } from '@kit.CryptoArchitectureKit';
-import { PluginManifest, JsvmSource, CompiledSourceInfo, SourcePrefItem } from '../source/JsvmSource';
-import { EngineGateway, EngineBackend } from '../jsvm/EngineGateway';
+import { CompiledSourceInfo, JsvmSource, PluginManifest, SourcePrefItem } from '../source/JsvmSource';
+import { EngineBackend, EngineGateway } from '../jsvm/EngineGateway';
 import { PluginPrefs } from '../jsvm/PluginPrefs';
 import { SourceRegistry } from '../source/Source';
 import { ContentType, PluginRecord } from '../model/Models';
@@ -13,7 +13,7 @@ import { Http } from '../net/Http';
 import { Util } from '../common/Util';
 import { AppKeys } from '../common/AppKeys';
 import { AppDb } from './AppDb';
-import { PluginRepo, MangaRepo } from './Repos';
+import { MangaRepo, PluginRepo } from './Repos';
 
 const DOMAIN = 0x0002;
 const TAG = 'PluginService';
@@ -27,6 +27,7 @@ export interface SourceSpec {
   baseUrl: string;
   nsfw: boolean;
   supportsLatest: boolean;
+
   // tachiyomi 编译产物 source id；空字符串表示简单契约插件
   sourceId: string;
 }
@@ -62,10 +63,13 @@ export interface RepoEntry {
   file: string;
   nsfw: boolean;
   icon: string;
+
   // manga | novel | video；仓库索引未声明时为空字符串（UI 不显示类型角标）
   contentType: string;
+
   // 仓库索引声明的 sha256（可选），下载后校验插件包完整性
   checksum: string;
+
   // 插件对应站点首页（manifest.baseUrl）：供安装前预览网站；未声明时为空字符串
   site: string;
 }
@@ -107,6 +111,7 @@ export class PluginService {
   // 并发调用共享同一次启动；失败保留 rejected 记忆防止全局搜索对坏插件反复重试起引擎，
   // 成功/卸载/重装时清除（LRU 淘汰后可再次拉起）
   private static startPromises: Map<string, Promise<void>> = new Map();
+  private static loadAllPromise: Promise<void> | undefined = undefined;
 
   static init(context: common.UIAbilityContext): void {
     PluginService.pluginsDir = `${context.filesDir}/plugins`;
@@ -130,61 +135,6 @@ export class PluginService {
     }
     PluginService.cleanStaleTemp();
     PluginService.cleanStaleStaging();
-  }
-
-  // 清理上次崩溃/失败安装遗留的 staging/备份目录（.staging_*/.old_*，含 manifest.json 会被误识别为插件）
-  private static cleanStaleStaging(): void {
-    let names: string[] = [];
-    try {
-      if (!fs.accessSync(PluginService.pluginsDir)) {
-        return;
-      }
-      names = fs.listFileSync(PluginService.pluginsDir);
-    } catch (e) {
-      return;
-    }
-    for (const name of names) {
-      if (!name.startsWith('.staging_') && !name.startsWith('.old_')) {
-        continue;
-      }
-      const path = `${PluginService.pluginsDir}/${name}`;
-      try {
-        fs.rmdirSync(path);
-        hilog.info(DOMAIN, TAG, 'cleaned stale staging: %{public}s', name);
-      } catch (e) {
-        hilog.warn(DOMAIN, TAG, 'clean stale staging failed: %{public}s %{public}s', name, (e as Error).message);
-      }
-    }
-  }
-
-  // 清理历史失败安装遗留的临时文件/目录（plugin_extract_*/plugin_install_*/plugin_repo_*）
-  private static cleanStaleTemp(): void {
-    let names: string[] = [];
-    try {
-      if (!fs.accessSync(PluginService.cacheDir)) {
-        return;
-      }
-      names = fs.listFileSync(PluginService.cacheDir);
-    } catch (e) {
-      return;
-    }
-    for (const name of names) {
-      if (!name.startsWith('plugin_extract_') && !name.startsWith('plugin_install_') &&
-        !name.startsWith('plugin_repo_')) {
-        continue;
-      }
-      const path = `${PluginService.cacheDir}/${name}`;
-      try {
-        if (fs.statSync(path).isDirectory()) {
-          fs.rmdirSync(path);
-        } else {
-          fs.unlinkSync(path);
-        }
-        hilog.info(DOMAIN, TAG, 'cleaned stale temp: %{public}s', name);
-      } catch (e) {
-        hilog.warn(DOMAIN, TAG, 'clean stale temp failed: %{public}s %{public}s', name, (e as Error).message);
-      }
-    }
   }
 
   static parseManifest(text: string): PluginManifest {
@@ -240,7 +190,6 @@ export class PluginService {
     return manifest;
   }
 
-  // 已安装插件列表（异步 DB 版）：读 plugin 元数据索引，不触碰引擎；
   // DB 异常时降级为空列表（面板显示"暂无插件"）
   static async listInstalled(): Promise<InstalledPlugin[]> {
     const result: InstalledPlugin[] = [];
@@ -260,37 +209,7 @@ export class PluginService {
     return result;
   }
 
-  // 扫描插件目录（仅首次导入/诊断用）：不解析 main.js、不拉引擎
-  private static scanInstalledFromFs(): InstalledPlugin[] {
-    const result: InstalledPlugin[] = [];
-    let names: string[] = [];
-    try {
-      if (!fs.accessSync(PluginService.pluginsDir)) {
-        return result;
-      }
-      names = fs.listFileSync(PluginService.pluginsDir);
-    } catch (e) {
-      return result;
-    }
-    for (const dir of names) {
-      const manifestPath = `${PluginService.pluginsDir}/${dir}/manifest.json`;
-      try {
-        if (!fs.accessSync(manifestPath)) {
-          continue;
-        }
-        const manifest = PluginService.parseManifest(fs.readTextSync(manifestPath));
-        const iconPath = `${PluginService.pluginsDir}/${dir}/${manifest.icon}`;
-        const item: InstalledPlugin = {
-          manifest: manifest,
-          iconPath: manifest.icon !== '' && fs.accessSync(iconPath) ? `file://${iconPath}` : '',
-        };
-        result.push(item);
-      } catch (e) {
-        hilog.warn(DOMAIN, TAG, 'skip invalid plugin %{public}s: %{public}s', dir, (e as Error).message);
-      }
-    }
-    return result;
-  }
+  // 已安装插件列表（异步 DB 版）：读 plugin 元数据索引，不触碰引擎；
 
   // 从文件选择器 URI 安装插件包
   static async installFromFile(uri: string): Promise<string> {
@@ -334,7 +253,8 @@ export class PluginService {
         throw new Error('plugin_checksum_mismatch');
       }
     }
-    const zipPath = `${PluginService.cacheDir}/plugin_repo_${entry.key}_${Date.now()}_${util.generateRandomUUID()}.honyomiplug`;
+    const zipPath =
+      `${PluginService.cacheDir}/plugin_repo_${entry.key}_${Date.now()}_${util.generateRandomUUID()}.honyomiplug`;
     try {
       const file = fs.openSync(zipPath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
       try {
@@ -397,15 +317,11 @@ export class PluginService {
     // 注意：数据库中该源的漫画数据保留，重装同 key 插件后自动恢复
   }
 
-  private static loadAllPromise: Promise<void> | undefined = undefined;
-
-  // 等待全部插件源注册完成（尚未开始加载时立即返回）；
   // 供 ImageCache 等消费方在冷启动竞态下等待插件源注册完成
   static ready(): Promise<void> {
     return PluginService.loadAllPromise ?? Promise.resolve();
   }
 
-  // 加载全部插件：注册占位源（DB 元数据索引，不扫盘不拉引擎）+ 预热在库源；
   // 记忆化：并发/重复调用共享同一次加载
   static async loadAll(): Promise<void> {
     if (PluginService.loadAllPromise === undefined) {
@@ -413,6 +329,167 @@ export class PluginService {
     }
     return PluginService.loadAllPromise;
   }
+
+  // 失败保留 rejected 记忆（防全局搜索风暴），成功/卸载/重装时清除
+  static async ensureEngine(packageKey: string): Promise<void> {
+    const engine = EngineGateway.get();
+    if (engine !== undefined && engine.isLoaded(packageKey)) {
+      return;
+    }
+    const pending = PluginService.startPromises.get(packageKey);
+    if (pending !== undefined) {
+      await pending;
+      return;
+    }
+    const promise = PluginService.doStartEngine(packageKey);
+    PluginService.startPromises.set(packageKey, promise);
+    await promise;
+    // 成功：清除记忆（LRU 淘汰后再次调用可重新拉起）
+    PluginService.startPromises.delete(packageKey);
+  }
+
+  // 等待全部插件源注册完成（尚未开始加载时立即返回）；
+
+  static markDirty(): void {
+    AppStorage.setOrCreate(AppKeys.PLUGINS_DIRTY, (AppStorage.get<number>(AppKeys.PLUGINS_DIRTY) ?? 0) + 1);
+  }
+
+  // 加载全部插件：注册占位源（DB 元数据索引，不扫盘不拉引擎）+ 预热在库源；
+
+  static async fetchRepo(url: string): Promise<RepoEntry[]> {
+    const text = await Http.get(url, undefined);
+    const raw = JSON.parse(text) as RawRepoIndex;
+    const entries: RepoEntry[] = [];
+    const list = raw.plugins;
+    if (Array.isArray(list)) {
+      for (const item of list) {
+        const key = item.key ?? '';
+        const file = item.file ?? '';
+        if (key === '' || file === '') {
+          continue;
+        }
+        const entry: RepoEntry = {
+          key: key,
+          name: item.name ?? key,
+          lang: item.lang ?? 'multi',
+          version: item.version ?? '',
+          versionCode: item.versionCode ?? 0,
+          file: PluginService.resolveRepoFile(url, file),
+          nsfw: item.nsfw === true,
+          icon: item.icon !== undefined && item.icon !== '' ?
+            PluginService.resolveRepoIcon(url, item.icon) : '',
+          contentType: item.contentType !== undefined && item.contentType !== null ?
+            ContentType.normalize(item.contentType) : '',
+          checksum: item.checksum ?? '',
+          site: PluginService.normalizeSiteUrl(item.site !== undefined && item.site !== '' ?
+            item.site : item.baseUrl),
+        };
+        entries.push(entry);
+      }
+    }
+    return entries;
+  }
+
+  // manifest.runtime 非空时，在 main.js 前拼接共享运行时（rawfile plugin_runtime_<name>.js）
+  static composeScript(manifest: PluginManifest, mainJs: string): string {
+    if (manifest.runtime === '') {
+      return mainJs;
+    }
+    return `${PluginService.getRuntime(manifest.runtime)}\n;\n${mainJs}`;
+  }
+
+  // 清理上次崩溃/失败安装遗留的 staging/备份目录（.staging_*/.old_*，含 manifest.json 会被误识别为插件）
+  private static cleanStaleStaging(): void {
+    let names: string[] = [];
+    try {
+      if (!fs.accessSync(PluginService.pluginsDir)) {
+        return;
+      }
+      names = fs.listFileSync(PluginService.pluginsDir);
+    } catch (e) {
+      return;
+    }
+    for (const name of names) {
+      if (!name.startsWith('.staging_') && !name.startsWith('.old_')) {
+        continue;
+      }
+      const path = `${PluginService.pluginsDir}/${name}`;
+      try {
+        fs.rmdirSync(path);
+        hilog.info(DOMAIN, TAG, 'cleaned stale staging: %{public}s', name);
+      } catch (e) {
+        hilog.warn(DOMAIN, TAG, 'clean stale staging failed: %{public}s %{public}s', name, (e as Error).message);
+      }
+    }
+  }
+
+  // 预热在库源：对"书架有漫画且声明 getHeaders"的插件包立即拉引擎并预热图片头，
+
+  // 清理历史失败安装遗留的临时文件/目录（plugin_extract_*/plugin_install_*/plugin_repo_*）
+  private static cleanStaleTemp(): void {
+    let names: string[] = [];
+    try {
+      if (!fs.accessSync(PluginService.cacheDir)) {
+        return;
+      }
+      names = fs.listFileSync(PluginService.cacheDir);
+    } catch (e) {
+      return;
+    }
+    for (const name of names) {
+      if (!name.startsWith('plugin_extract_') && !name.startsWith('plugin_install_') &&
+        !name.startsWith('plugin_repo_')) {
+        continue;
+      }
+      const path = `${PluginService.cacheDir}/${name}`;
+      try {
+        if (fs.statSync(path).isDirectory()) {
+          fs.rmdirSync(path);
+        } else {
+          fs.unlinkSync(path);
+        }
+        hilog.info(DOMAIN, TAG, 'cleaned stale temp: %{public}s', name);
+      } catch (e) {
+        hilog.warn(DOMAIN, TAG, 'clean stale temp failed: %{public}s %{public}s', name, (e as Error).message);
+      }
+    }
+  }
+
+  // 惰性引擎启动（记忆化）：引擎已加载直接返回；进行中共享同一次启动；
+
+  // 扫描插件目录（仅首次导入/诊断用）：不解析 main.js、不拉引擎
+  private static scanInstalledFromFs(): InstalledPlugin[] {
+    const result: InstalledPlugin[] = [];
+    let names: string[] = [];
+    try {
+      if (!fs.accessSync(PluginService.pluginsDir)) {
+        return result;
+      }
+      names = fs.listFileSync(PluginService.pluginsDir);
+    } catch (e) {
+      return result;
+    }
+    for (const dir of names) {
+      const manifestPath = `${PluginService.pluginsDir}/${dir}/manifest.json`;
+      try {
+        if (!fs.accessSync(manifestPath)) {
+          continue;
+        }
+        const manifest = PluginService.parseManifest(fs.readTextSync(manifestPath));
+        const iconPath = `${PluginService.pluginsDir}/${dir}/${manifest.icon}`;
+        const item: InstalledPlugin = {
+          manifest: manifest,
+          iconPath: manifest.icon !== '' && fs.accessSync(iconPath) ? `file://${iconPath}` : '',
+        };
+        result.push(item);
+      } catch (e) {
+        hilog.warn(DOMAIN, TAG, 'skip invalid plugin %{public}s: %{public}s', dir, (e as Error).message);
+      }
+    }
+    return result;
+  }
+
+  // 拉起单个插件引擎：读盘 manifest 门禁 → 组装脚本 → prefs 回注 → loadExtension
 
   private static async doLoadAll(): Promise<void> {
     // 元数据索引在数据库中：等待数据库就绪（EntryAbility 已发起 ready，此处共享同一实例）
@@ -441,6 +518,8 @@ export class PluginService {
     await PluginService.prewarmLibrary();
   }
 
+  // 插件敏感偏好声明注册（引擎启动后调用）：读取 getSettingsSchema，
+
   // 旧版本升级导入：扫盘逐个拉引擎（doStartEngine 内完成注册与落库）
   private static async importFromFs(): Promise<void> {
     const installed = PluginService.scanInstalledFromFs();
@@ -458,7 +537,6 @@ export class PluginService {
     }
   }
 
-  // 预热在库源：对"书架有漫画且声明 getHeaders"的插件包立即拉引擎并预热图片头，
   // 保证冷启动书架封面带 Referer/Cookie；其余插件保持惰性
   private static async prewarmLibrary(): Promise<void> {
     if (EngineGateway.get() === undefined) {
@@ -487,26 +565,8 @@ export class PluginService {
     }
   }
 
-  // 惰性引擎启动（记忆化）：引擎已加载直接返回；进行中共享同一次启动；
-  // 失败保留 rejected 记忆（防全局搜索风暴），成功/卸载/重装时清除
-  static async ensureEngine(packageKey: string): Promise<void> {
-    const engine = EngineGateway.get();
-    if (engine !== undefined && engine.isLoaded(packageKey)) {
-      return;
-    }
-    const pending = PluginService.startPromises.get(packageKey);
-    if (pending !== undefined) {
-      await pending;
-      return;
-    }
-    const promise = PluginService.doStartEngine(packageKey);
-    PluginService.startPromises.set(packageKey, promise);
-    await promise;
-    // 成功：清除记忆（LRU 淘汰后再次调用可重新拉起）
-    PluginService.startPromises.delete(packageKey);
-  }
+  // ---------------- 仓库索引 ----------------
 
-  // 拉起单个插件引擎：读盘 manifest 门禁 → 组装脚本 → prefs 回注 → loadExtension
   // → 解析最终源规格 → 同步注册表（就地升级占位源）→ 元数据落库 → 预热图片头
   private static async doStartEngine(packageKey: string): Promise<void> {
     const dir = `${PluginService.pluginsDir}/${packageKey}`;
@@ -562,7 +622,6 @@ export class PluginService {
       manifest.key, manifest.version, specs.length, engine.memoryBytes(manifest.key));
   }
 
-  // 插件敏感偏好声明注册（引擎启动后调用）：读取 getSettingsSchema，
   // 把 sensitive 声明的键登记到 PluginPrefs 注册表，供 persist 分流 / seed 回注
   private static registerSensitivePrefKeys(packageKey: string): void {
     const src = SourceRegistry.get(packageKey);
@@ -583,45 +642,7 @@ export class PluginService {
     });
   }
 
-  static markDirty(): void {
-    AppStorage.setOrCreate(AppKeys.PLUGINS_DIRTY, (AppStorage.get<number>(AppKeys.PLUGINS_DIRTY) ?? 0) + 1);
-  }
-
-  // ---------------- 仓库索引 ----------------
-
-  static async fetchRepo(url: string): Promise<RepoEntry[]> {
-    const text = await Http.get(url, undefined);
-    const raw = JSON.parse(text) as RawRepoIndex;
-    const entries: RepoEntry[] = [];
-    const list = raw.plugins;
-    if (Array.isArray(list)) {
-      for (const item of list) {
-        const key = item.key ?? '';
-        const file = item.file ?? '';
-        if (key === '' || file === '') {
-          continue;
-        }
-        const entry: RepoEntry = {
-          key: key,
-          name: item.name ?? key,
-          lang: item.lang ?? 'multi',
-          version: item.version ?? '',
-          versionCode: item.versionCode ?? 0,
-          file: PluginService.resolveRepoFile(url, file),
-          nsfw: item.nsfw === true,
-          icon: item.icon !== undefined && item.icon !== '' ?
-            PluginService.resolveRepoIcon(url, item.icon) : '',
-          contentType: item.contentType !== undefined && item.contentType !== null ?
-            ContentType.normalize(item.contentType) : '',
-          checksum: item.checksum ?? '',
-          site: PluginService.normalizeSiteUrl(item.site !== undefined && item.site !== '' ?
-            item.site : item.baseUrl),
-        };
-        entries.push(entry);
-      }
-    }
-    return entries;
-  }
+  // ---------------- 内部实现 ----------------
 
   // 仓库索引声明的站点地址归一化：仅接受 http(s) 绝对地址，其余视为未声明
   private static normalizeSiteUrl(url: string | undefined): string {
@@ -630,16 +651,6 @@ export class PluginService {
       return '';
     }
     return /^https?:\/\//.test(u) ? u : '';
-  }
-
-  // ---------------- 内部实现 ----------------
-
-  // manifest.runtime 非空时，在 main.js 前拼接共享运行时（rawfile plugin_runtime_<name>.js）
-  static composeScript(manifest: PluginManifest, mainJs: string): string {
-    if (manifest.runtime === '') {
-      return mainJs;
-    }
-    return `${PluginService.getRuntime(manifest.runtime)}\n;\n${mainJs}`;
   }
 
   private static getRuntime(name: string): string {

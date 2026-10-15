@@ -1,6 +1,6 @@
 import { avSession } from '@kit.AVSessionKit';
-import { common, wantAgent } from '@kit.AbilityKit';
 import type { WantAgent } from '@kit.AbilityKit';
+import { common, wantAgent } from '@kit.AbilityKit';
 import { image } from '@kit.ImageKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';

@@ -14,6 +14,7 @@ export interface JsvmHttpResult {
   headersJson: string;
   body: string;
   error: string | null;
+
   /** Final URL after redirects (request URL when the hop is unknown). */
   url: string;
 }
@@ -33,8 +34,10 @@ export interface JsvmBridgeRequest {
   headersJson: string;
   body: string;
   wantBytes: boolean;
+
   /** True for zero-copy requests answered via resolveHttpBytes(). */
   shared?: boolean;
+
   /** Present only on release messages: '{"type":"release","callId":N}'. */
   type?: string;
 }

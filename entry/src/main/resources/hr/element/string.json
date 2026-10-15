@@ -1,534 +1,2124 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Filtrira sve unose u biblioteci" },
-    { "name": "more_incognito_summary", "value": "Zaustavlja čitanje povijesti" },
-    { "name": "more_support", "value": "Podrži nas" },
-    { "name": "more_help", "value": "Pomoć" },
-    { "name": "support_perks", "value": "Pokrovitelji dobivaju pristup ekskluzivnim kanalima, a uskoro slijede i dodatne pogodnosti." },
-    { "name": "support_patreon", "value": "Patreona (preferiran način)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Trenutačno više od %d pokrovitelja podržavaju Mihon. Želimo se zahvaliti svakome od vas. Učinimo Mihon zajedno još boljim." },
-    { "name": "support_contact_msg", "value": "Za alternativne opcije ili bilo koja srodna pitanja, pridruži se našem Discord serveru." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "Podaci i spremište" },
-    { "name": "data_storage_location", "value": "Mjesto spremišta" },
-    { "name": "data_storage_location_info", "value": "Koristi se za automatske sigurnosne kopije, preuzimanje poglavlja i lokalni izvor." },
-    { "name": "data_backup_restore", "value": "Sigurnosna kopija i obnavljanje" },
-    { "name": "data_create_backup", "value": "Stvori sigurnosnu kopiju" },
-    { "name": "data_restore_backup", "value": "Obnovi sigurnosnu kopiju" },
-    { "name": "data_backup_interval", "value": "Učestalost automatskog spremanja sigurnosnih kopija" },
-    { "name": "data_backup_info", "value": "Čuvaj sigurnosne kopije i na drugim mjestima. Sigurnosne kopije mogu sadržati osjetljive podatke uključujući sve spremljene lozinke; oprez pri dijeljenju podataka." },
-    { "name": "data_last_auto_backup", "value": "Zadnja automatska sigurnosna kopija: %s" },
-    { "name": "data_storage_usage", "value": "Korištenje spremišta" },
-    { "name": "data_available_space", "value": "Dostupno: %s / Ukupno: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Isprazni predmemoriju poglavlja" },
-    { "name": "data_used_cache", "value": "Korišteno: %s" },
-    { "name": "data_cache_deleted", "value": "Predmemorija je izbrisana. Broj izbrisanih datoteka: %d" },
-    { "name": "data_cache_delete_error", "value": "Došlo je do greške prilikom brisanja" },
-    { "name": "data_auto_clear_cache", "value": "Izbriši predmemoriju poglavlja tijekom pokretanja aplikacije" },
-    { "name": "data_export", "value": "Izvezi" },
-    { "name": "data_library_list", "value": "Popis biblioteka" },
-    { "name": "data_library_exported", "value": "Biblioteka je izvezena" },
-    { "name": "data_export_include", "value": "Odaberi podatke koje želiš uključiti" },
-    { "name": "data_column_title", "value": "Naslov" },
-    { "name": "data_column_author", "value": "Autor" },
-    { "name": "data_interval_off", "value": "Isključeno" },
-    { "name": "data_interval_6h", "value": "Svakih 6 sati" },
-    { "name": "data_interval_12h", "value": "Svakih 12 sati" },
-    { "name": "data_interval_24h", "value": "Dnevno" },
-    { "name": "data_interval_48h", "value": "Svaka 2 dana" },
-    { "name": "data_interval_weekly", "value": "Tjedno" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "U redu" },
-    { "name": "common_cancel", "value": "Odustani" },
-    { "name": "common_confirm", "value": "Potvrdi" },
-    { "name": "common_delete", "value": "Izbriši" },
-    { "name": "common_retry", "value": "Pokušaj ponovo" },
-    { "name": "common_search", "value": "Pretraži" },
-    { "name": "common_all", "value": "Sve" },
-    { "name": "common_close", "value": "Zatvori" },
-    { "name": "common_save", "value": "Spremi" },
-    { "name": "common_install", "value": "Instaliraj" },
-    { "name": "common_uninstall", "value": "Deinstaliraj" },
-    { "name": "common_update", "value": "Ažuriraj" },
-    { "name": "common_none", "value": "Ništa" },
-    { "name": "common_default", "value": "Zadano" },
-    { "name": "appearance_title", "value": "Izgled" },
-    { "name": "appearance_language", "value": "Jezik" },
-    { "name": "lang_follow_system", "value": "Prati sustav" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "Način teme" },
-    { "name": "appearance_theme_auto", "value": "Prati sustav" },
-    { "name": "appearance_theme_light", "value": "Svijetlo" },
-    { "name": "appearance_theme_dark", "value": "Tamno" },
-    { "name": "appearance_accent_color", "value": "Naglašena boja" },
-    { "name": "appearance_other", "value": "Ostalo" },
-    { "name": "appearance_amoled", "value": "AMOLED potpuno crna pozadina" },
-    { "name": "theme_accent_blue", "value": "Plava" },
-    { "name": "theme_accent_green", "value": "Zelena" },
-    { "name": "theme_accent_pink", "value": "Ružičasta" },
-    { "name": "theme_accent_purple", "value": "Ljubičasta" },
-    { "name": "theme_accent_orange", "value": "Narančasta" },
-    { "name": "util_time_minutes_ago", "value": "prije %d min" },
-    { "name": "util_time_hours_ago", "value": "prije %d h" },
-    { "name": "util_time_days_ago", "value": "prije %d d" },
-    { "name": "util_status_ongoing", "value": "U tijeku" },
-    { "name": "util_status_completed", "value": "Završeno" },
-    { "name": "util_status_hiatus", "value": "Na pauzi" },
-    { "name": "util_status_cancelled", "value": "Otkazano" },
-    { "name": "util_status_publication_complete", "value": "Objavljivanje završeno" },
-    { "name": "util_status_unknown", "value": "Nepoznato" },
-    { "name": "tab_library", "value": "Biblioteka" },
-    { "name": "tab_updates", "value": "Ažuriranja" },
-    { "name": "tab_history", "value": "Povijest" },
-    { "name": "tab_browse", "value": "Pregledaj" },
-    { "name": "tab_more", "value": "Više" },
-    { "name": "tab_cf_waiting", "value": "Čekanje na potvrdu…" },
-    { "name": "tab_cf_verified", "value": "Potvrda završena" },
-    { "name": "tab_cf_title", "value": "Ljudska potvrda" },
-    { "name": "tab_cf_done", "value": "Gotovo" },
-    { "name": "tab_cf_saved", "value": "Rezultat potvrde spremljen" },
-    { "name": "more_title", "value": "Više" },
-    { "name": "more_version", "value": "Verzija %s" },
-    { "name": "more_downloaded_only", "value": "Samo preuzeto" },
-    { "name": "more_incognito", "value": "Anonimni modus" },
-    { "name": "more_downloads", "value": "Popis preuzimanja" },
-    { "name": "more_categories", "value": "Kategorije" },
-    { "name": "more_settings", "value": "Postavke" },
-    { "name": "more_about", "value": "Informacije" },
-    { "name": "more_plugins", "value": "Proširenja" },
-    { "name": "categories_title", "value": "Kategorije" },
-    { "name": "categories_add", "value": "Nova kategorija" },
-    { "name": "categories_name_placeholder", "value": "Naziv kategorije" },
-    { "name": "categories_rename_category", "value": "Preimenuj kategoriju" },
-    { "name": "categories_rename", "value": "Preimenuj" },
-    { "name": "categories_hint", "value": "Dugo pritisnite kategoriju za preimenovanje ili brisanje; manga iz izbrisane kategorije vraća se u Zadano" },
-    { "name": "dialog_pick_category", "value": "Odaberi kategoriju" },
-    { "name": "viewer_loading", "value": "Učitavanje…" },
-    { "name": "viewer_load_failed", "value": "Učitavanje slike nije uspjelo" },
-    { "name": "viewer_tap_retry", "value": "Dodirnite za ponovni pokušaj" },
-    { "name": "library_title", "value": "Biblioteka" },
-    { "name": "library_empty", "value": "Biblioteka je prazna, pregledajte da dodate mangu" },
-    { "name": "library_new_category", "value": "Nova kategorija" },
-    { "name": "library_category_name", "value": "Naziv kategorije" },
-    { "name": "updates_title", "value": "Ažuriranja" },
-    { "name": "updates_empty", "value": "Nema nedavnih ažuriranja" },
-    { "name": "updates_found_new", "value": "Pronađeno je %d novih poglavlja" },
-    { "name": "updates_no_new", "value": "Nema novih poglavlja" },
-    { "name": "updates_refresh_failed", "value": "Osvježavanje nije uspjelo" },
-    { "name": "updates_refreshing", "value": "Osvježavanje…" },
-    { "name": "history_title", "value": "Povijest" },
-    { "name": "history_clear", "value": "Obriši" },
-    { "name": "history_confirm_clear", "value": "Potvrditi brisanje?" },
-    { "name": "history_empty", "value": "Još nema povijesti čitanja" },
-    { "name": "history_cleared", "value": "Povijest obrisana" },
-    { "name": "history_continue", "value": "Nastavi" },
-    { "name": "browse_title", "value": "Pregledaj" },
-    { "name": "browse_import", "value": "Uvezi" },
-    { "name": "browse_plugins", "value": "Dodaci" },
-    { "name": "browse_local_source_name", "value": "Lokalna manga" },
-    { "name": "browse_popular", "value": "Popularno" },
-    { "name": "browse_latest", "value": "Najnovije" },
-    { "name": "browse_search_hint", "value": "Pretraži mangu…" },
-    { "name": "browse_no_results", "value": "Manga nije pronađena" },
-    { "name": "browse_local_empty", "value": "Još nema lokalne mange, dodirnite Uvezi za dodavanje" },
-    { "name": "browse_load_failed", "value": "Učitavanje nije uspjelo: %s" },
-    { "name": "browse_search_failed", "value": "Pretraživanje nije uspjelo: %s" },
-    { "name": "browse_load_more_failed", "value": "Učitavanje više nije uspjelo" },
-    { "name": "browse_open_detail_failed", "value": "Otvaranje pojedinosti nije uspjelo" },
-    { "name": "browse_pick_file_failed", "value": "Odabir datoteka nije uspio" },
-    { "name": "browse_import_title", "value": "Uvezi %d datoteka" },
-    { "name": "browse_manga_name_hint", "value": "Naziv mange" },
-    { "name": "browse_input_name", "value": "Unesite naziv" },
-    { "name": "browse_import_done", "value": "Uvezeno je %d datoteka" },
-    { "name": "browse_import_failed", "value": "Uvoz nije uspio: %s" },
-    { "name": "download_title", "value": "Preuzimanja" },
-    { "name": "download_resume", "value": "Nastavi" },
-    { "name": "download_pause", "value": "Pauziraj" },
-    { "name": "download_clear_finished", "value": "Obriši završena" },
-    { "name": "download_queue", "value": "Red preuzimanja" },
-    { "name": "download_state_queued", "value": "Na čekanju" },
-    { "name": "download_state_downloading", "value": "Preuzimanje" },
-    { "name": "download_state_done", "value": "Gotovo" },
-    { "name": "download_state_failed", "value": "Neuspjelo" },
-    { "name": "download_move_top", "value": "Premjesti na vrh" },
-    { "name": "download_move_bottom", "value": "Premjesti na dno" },
-    { "name": "download_deleted", "value": "Izbrisano" },
-    { "name": "download_empty", "value": "Još nema preuzimanja" },
-    { "name": "download_status_downloaded", "value": "Preuzeto" },
-    { "name": "download_chapter_count", "value": "%d poglavlja" },
-    { "name": "detail_no_chapters", "value": "Nema poglavlja" },
-    { "name": "detail_sync_failed_local", "value": "Sinkronizacija nije uspjela, prikazuju se lokalni podaci" },
-    { "name": "detail_added_to_library", "value": "Dodano u biblioteku" },
-    { "name": "detail_removed_from_library", "value": "Uklonjeno iz biblioteke" },
-    { "name": "detail_all_marked_read", "value": "Sva poglavlja označena kao pročitana" },
-    { "name": "detail_download_queued", "value": "Preuzimanje stavljeno u red" },
-    { "name": "detail_config_anilist_token", "value": "Prvo konfigurirajte AniList token" },
-    { "name": "detail_search_anilist", "value": "Pretraži AniList" },
-    { "name": "detail_manga_title_hint", "value": "Naslov mange" },
-    { "name": "detail_no_search_results", "value": "Nema rezultata pretraživanja" },
-    { "name": "detail_anilist_search_failed", "value": "Pretraživanje AniLista nije uspjelo" },
-    { "name": "detail_anilist_bound", "value": "Povezano s AniListom" },
-    { "name": "detail_anilist_unbound", "value": "Odvojeno od AniLista" },
-    { "name": "detail_synced_progress", "value": "Napredak sinkroniziran na poglavlje %d" },
-    { "name": "detail_anilist_sync_failed", "value": "Sinkronizacija AniLista nije uspjela" },
-    { "name": "detail_status_local", "value": "Lokalno" },
-    { "name": "detail_in_library", "value": "U biblioteci" },
-    { "name": "detail_add_to_library", "value": "Dodaj u biblioteku" },
-    { "name": "detail_continue_reading", "value": "Nastavi čitati" },
-    { "name": "detail_start_reading", "value": "Počni čitati" },
-    { "name": "detail_no_chapters_yet", "value": "Još nema poglavlja" },
-    { "name": "detail_collapse", "value": "Sažmi" },
-    { "name": "detail_expand", "value": "Proširi" },
-    { "name": "detail_anilist_tracking", "value": "Praćenje AniLista" },
-    { "name": "detail_anilist_token_hint", "value": "AniList token još nije konfiguriran" },
-    { "name": "detail_searching", "value": "Pretraživanje…" },
-    { "name": "detail_search_and_bind", "value": "Pretraži i poveži" },
-    { "name": "detail_bind", "value": "Poveži" },
-    { "name": "detail_synced_to_chapter", "value": "Sinkronizirano na poglavlje %d" },
-    { "name": "detail_sync_progress", "value": "Sinkroniziraj napredak" },
-    { "name": "detail_unbind", "value": "Odvoji" },
-    { "name": "detail_chapters_count", "value": "Poglavlja (%d)" },
-    { "name": "detail_sort_asc", "value": "Uzlazno" },
-    { "name": "detail_sort_desc", "value": "Silazno" },
-    { "name": "detail_mark_all_read", "value": "Označi sve kao pročitano" },
-    { "name": "detail_read", "value": "Pročitano" },
-    { "name": "detail_downloaded", "value": "Preuzeto" },
-    { "name": "detail_in_queue", "value": "Na čekanju" },
-    { "name": "detail_download", "value": "Preuzmi" },
-    { "name": "reader_chapter_not_found", "value": "Poglavlje nije pronađeno" },
-    { "name": "reader_load_failed", "value": "Učitavanje nije uspjelo: %s" },
-    { "name": "reader_mode_ltr", "value": "Slijeva nadesno" },
-    { "name": "reader_mode_rtl", "value": "Zdesna nalijevo" },
-    { "name": "reader_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_reading_mode", "value": "Način čitanja" },
-    { "name": "reader_orientation_free", "value": "Slobodno" },
-    { "name": "reader_orientation_portrait", "value": "Uspravno" },
-    { "name": "reader_orientation_landscape", "value": "Vodoravno" },
-    { "name": "reader_screen_orientation", "value": "Orijentacija zaslona" },
-    { "name": "reader_last_chapter", "value": "Već ste na posljednjem poglavlju" },
-    { "name": "reader_first_chapter", "value": "Već ste na prvom poglavlju" },
-    { "name": "reader_first_page", "value": "Već ste na prvoj stranici" },
-    { "name": "reader_last_page", "value": "Već ste na posljednjoj stranici" },
-    { "name": "reader_loading_chapter", "value": "Učitavanje poglavlja…" },
-    { "name": "reader_settings", "value": "Postavke čitača" },
-    { "name": "reader_background", "value": "Pozadina" },
-    { "name": "reader_theme_auto", "value": "Automatski" },
-    { "name": "reader_theme_white", "value": "Bijela" },
-    { "name": "reader_theme_gray", "value": "Siva" },
-    { "name": "reader_theme_black", "value": "Crna" },
-    { "name": "reader_show_page_number", "value": "Prikaži broj stranice" },
-    { "name": "reader_brightness", "value": "Svjetlina" },
-    { "name": "reader_auto", "value": "Automatski" },
-    { "name": "plugin_title", "value": "Proširenja" },
-    { "name": "plugin_installed_section", "value": "Instalirano" },
-    { "name": "plugin_empty", "value": "Još nema proširenja, instalirajte ispod" },
-    { "name": "plugin_disable_hint", "value": "Onemogućena proširenja možete ponovno omogućiti u bilo koj trenutku" },
-    { "name": "plugin_up_to_date", "value": "Ažurirano" },
-    { "name": "plugin_local_install", "value": "Instaliraj iz datoteke" },
-    { "name": "plugin_install_from_file", "value": "Odaberite datoteku za instalaciju" },
-    { "name": "plugin_processing", "value": "Obrada…" },
-    { "name": "plugin_package_hint", "value": "Podržava pakete dodataka .honyomiplug / .zip" },
-    { "name": "plugin_repo", "value": "Mrežni repozitorij" },
-    { "name": "plugin_repo_config", "value": "Postavi repozitorij" },
-    { "name": "plugin_repo_refresh", "value": "Osvježi" },
-    { "name": "plugin_repo_hint", "value": "Repozitorij dodataka još nije konfiguriran" },
-    { "name": "plugin_repo_loading", "value": "Učitavanje repozitorija…" },
-    { "name": "plugin_repo_url_title", "value": "URL repozitorija dodataka" },
-    { "name": "plugin_repo_url_hint", "value": "Unesite URL repozitorija dodataka" },
-    { "name": "plugin_repo_load_failed", "value": "Učitavanje repozitorija nije uspjelo: %s" },
-    { "name": "plugin_pick_file_failed", "value": "Odabir datoteke nije uspio" },
-    { "name": "plugin_installed", "value": "Instalirano: %s" },
-    { "name": "plugin_installed_name", "value": "Instalirano %s" },
-    { "name": "plugin_install_failed", "value": "Instalacija nije uspjela: %s" },
-    { "name": "plugin_action_failed", "value": "Radnja nije uspjela" },
-    { "name": "plugin_uninstalled", "value": "Deinstalirano: %s" },
-    { "name": "plugin_uninstall_failed", "value": "Deinstalacija nije uspjela" },
-    { "name": "settings_title", "value": "Postavke" },
-    { "name": "settings_general", "value": "Općenito" },
-    { "name": "settings_start_tab", "value": "Početni zaslon" },
-    { "name": "settings_personalization", "value": "Personalizacija" },
-    { "name": "settings_library", "value": "Biblioteka" },
-    { "name": "settings_reader", "value": "Čitač" },
-    { "name": "settings_data", "value": "Podaci" },
-    { "name": "settings_downloads", "value": "Preuzimanja" },
-    { "name": "settings_browse", "value": "Pregledaj" },
-    { "name": "settings_advanced", "value": "Napredno" },
-    { "name": "settings_about", "value": "Informacije" },
-    { "name": "settings_tab_library", "value": "Biblioteka" },
-    { "name": "settings_tab_updates", "value": "Ažuriranja" },
-    { "name": "settings_tab_history", "value": "Povijest" },
-    { "name": "settings_tab_browse", "value": "Pregledaj" },
-    { "name": "settings_tab_more", "value": "Više" },
-    { "name": "advanced_title", "value": "Napredno" },
-    { "name": "advanced_calculating", "value": "Izračunavanje…" },
-    { "name": "advanced_storage", "value": "Pohrana" },
-    { "name": "advanced_clear_image_cache", "value": "Obriši predmemoriju slika" },
-    { "name": "advanced_image_cache_cleared", "value": "Predmemorija slika obrisana" },
-    { "name": "advanced_clear_cookies", "value": "Obriši kolačiće" },
-    { "name": "advanced_cookies_cleared", "value": "Svi kolačići obrisani" },
-    { "name": "advanced_backup_restore", "value": "Sigurnosna kopija i vraćanje" },
-    { "name": "advanced_export_backup", "value": "Izvezi sigurnosnu kopiju" },
-    { "name": "advanced_import_backup", "value": "Uvezi sigurnosnu kopiju" },
-    { "name": "advanced_tracking", "value": "Praćenje" },
-    { "name": "advanced_anilist_token", "value": "AniList token" },
-    { "name": "advanced_token_title", "value": "AniList pristupni token" },
-    { "name": "advanced_token_hint", "value": "Zalijepite pristupni token (ostavite prazno za brisanje)" },
-    { "name": "advanced_token_not_set", "value": "Nije postavljeno" },
-    { "name": "advanced_token_set", "value": "Postavljeno" },
-    { "name": "advanced_token_saved", "value": "Token spremljen" },
-    { "name": "advanced_token_cleared", "value": "Token obrisan" },
-    { "name": "advanced_backup_exported", "value": "Sigurnosna kopija izvezena" },
-    { "name": "advanced_export_canceled", "value": "Izvoz otkazan" },
-    { "name": "advanced_export_failed", "value": "Izvoz nije uspio" },
-    { "name": "advanced_import_canceled", "value": "Uvoz otkazan" },
-    { "name": "advanced_backup_invalid", "value": "Neispravna datoteka sigurnosne kopije" },
-    { "name": "advanced_restored_manga", "value": "Vraćeno je %d mangi" },
-    { "name": "advanced_import_failed", "value": "Uvoz nije uspio" },
-    { "name": "about_title", "value": "Informacije" },
-    { "name": "about_version", "value": "Verzija 1.0.0" },
-    { "name": "about_desc", "value": "Arhitektura inspirirana Mihonom (Apache-2.0). Mrežni izvori instaliraju se dinamički kao proširenja, a lokalni izvori su ugrađeni." },
-    { "name": "about_ack", "value": "Zahvale otvorenom kodu:\n· Mihon / Tachiyomi — arhitektura aplikacije i dizajn interakcije (Apache-2.0)\n· Material Symbols — ikone u aplikaciji (Apache-2.0)\n· MangaDex — izvor testnih podataka" },
-    { "name": "browse_set_title", "value": "Pregledaj" },
-    { "name": "browse_set_content", "value": "Sadržaj" },
-    { "name": "browse_set_show_nsfw", "value": "Prikaži NSFW izvore" },
-    { "name": "browse_set_nsfw_hint", "value": "Kada je uključeno, izvori koje su proširenja označila kao NSFW pojavit će se u Pregledaj" },
-    { "name": "dl_set_title", "value": "Preuzimanja" },
-    { "name": "dl_set_network", "value": "Mreža" },
-    { "name": "dl_set_wifi_only", "value": "Preuzimaj samo putem Wi-Fija" },
-    { "name": "dl_set_wifi_only_hint", "value": "Napomena: ovaj prekidač je rezervirano mjesto u trenutačnoj verziji; prepoznavanje vrste mreže stići će u kasnijem izdanju" },
-    { "name": "lib_set_title", "value": "Biblioteka" },
-    { "name": "lib_set_sort_group", "value": "Filtriraj i sortiraj" },
-    { "name": "lib_set_sort_default", "value": "Zadano sortiranje" },
-    { "name": "lib_set_sort_title", "value": "Naslov" },
-    { "name": "lib_set_sort_last_update", "value": "Najnovije poglavlje" },
-    { "name": "lib_set_sort_added", "value": "Datum dodavanja" },
-    { "name": "lib_set_sort_unread", "value": "Broj nepročitanih" },
-    { "name": "lib_set_sort_asc", "value": "Sortiraj po naslovu uzlazno" },
-    { "name": "lib_set_filter_default", "value": "Zadani filtar" },
-    { "name": "lib_set_filter_unread", "value": "Nepročitano" },
-    { "name": "lib_set_filter_downloaded", "value": "Preuzeto" },
-    { "name": "lib_set_filter_uncompleted", "value": "Nedovršeno" },
-    { "name": "lib_set_display_group", "value": "Prikaz" },
-    { "name": "lib_set_view_default", "value": "Zadani prikaz" },
-    { "name": "lib_set_view_grid", "value": "Mreža" },
-    { "name": "lib_set_view_cover", "value": "Mreža naslovnica" },
-    { "name": "lib_set_view_list", "value": "Popis" },
-    { "name": "lib_set_grid_cols", "value": "Stupci mreže" },
-    { "name": "lib_set_cols_auto", "value": "Automatski" },
-    { "name": "lib_set_cols_2", "value": "2 stupca" },
-    { "name": "lib_set_cols_3", "value": "3 stupca" },
-    { "name": "lib_set_cols_4", "value": "4 stupca" },
-    { "name": "lib_set_unread_badge", "value": "Oznake nepročitanih" },
-    { "name": "lib_set_download_badge", "value": "Oznake preuzimanja" },
-    { "name": "reader_set_title", "value": "Čitač" },
-    { "name": "reader_set_mode_group", "value": "Način čitanja" },
-    { "name": "reader_set_mode_default", "value": "Zadani način" },
-    { "name": "reader_set_mode_ltr", "value": "Slijeva nadesno" },
-    { "name": "reader_set_mode_rtl", "value": "Zdesna nalijevo" },
-    { "name": "reader_set_mode_vertical", "value": "Okomito listanje" },
-    { "name": "reader_set_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_set_dual_page", "value": "Dvostruka stranica (vodoravno)" },
-    { "name": "reader_set_display_group", "value": "Prikaz" },
-    { "name": "reader_set_show_page_number", "value": "Prikaži broj stranice" },
-    { "name": "reader_set_bg_color", "value": "Pozadina čitača" },
-    { "name": "reader_set_theme_follow", "value": "Prati temu" },
-    { "name": "reader_set_theme_white", "value": "Bijela" },
-    { "name": "reader_set_theme_black", "value": "Crna" },
-    { "name": "reader_set_theme_gray", "value": "Siva" },
-    { "name": "reader_set_reset_brightness", "value": "Resetiraj svjetlinu čitača" },
-    { "name": "reader_set_brightness_reset", "value": "Svjetlina sada prati sustav" },
-    { "name": "browse_tab_sources", "value": "Izvori" },
-    { "name": "browse_tab_extensions", "value": "Proširenja" },
-    { "name": "browse_tab_migrate", "value": "Migriraj" },
-    { "name": "browse_pin", "value": "Prikvači" },
-    { "name": "browse_unpin", "value": "Otkvači" },
-    { "name": "browse_disable_source", "value": "Onemogući izvor" },
-    { "name": "browse_source_disabled", "value": "Izvor onemogućen" },
-    { "name": "browse_pinned", "value": "Prikvačeno" },
-    { "name": "browse_sources_empty", "value": "Nema izvora. Instalirajte s kartice Proširenja" },
-    { "name": "browse_filter_langs", "value": "Filtriraj jezike" },
-    { "name": "browse_filter_all", "value": "Sve" },
-    { "name": "browse_source_missing", "value": "Izvor nije dostupan. Proširenje je možda onemogućeno" },
-    { "name": "global_search_hint", "value": "Pretraži sve izvore" },
-    { "name": "global_search_failed", "value": "Pretraživanje nije uspjelo" },
-    { "name": "ext_search_hint", "value": "Pretraži proširenja" },
-    { "name": "ext_search_no_match", "value": "Nema podudaranja" },
-    { "name": "ext_repo_settings", "value": "Postavke repozitorija" },
-    { "name": "ext_refresh_repo", "value": "Osvježi repozitorij" },
-    { "name": "migrate_pick_source", "value": "Odaberite izvor za migraciju" },
-    { "name": "migrate_empty_library", "value": "Biblioteka je prazna" },
-    { "name": "migrate_select_all", "value": "Odaberi sve" },
-    { "name": "migrate_deselect_all", "value": "Poništi odabir" },
-    { "name": "migrate_action", "value": "Migriraj (%d)" },
-    { "name": "migrate_title", "value": "Migriraj" },
-    { "name": "migrate_skip", "value": "Preskoči" },
-    { "name": "migrate_progress", "value": "%d od %d" },
-    { "name": "migrate_target_source", "value": "Odredišni izvor" },
-    { "name": "migrate_search_hint", "value": "Pretraži mangu u odredišnom izvoru" },
-    { "name": "migrate_confirm_title", "value": "Migrirati na ovu mangu?" },
-    { "name": "migrate_item_done", "value": "Migrirano: %s" },
-    { "name": "migrate_failed", "value": "Migracija nije uspjela: %s" },
-    { "name": "migrate_done", "value": "Migracija dovršena" },
-    { "name": "migrate_no_target", "value": "Nema odredišnog izvora" },
-    { "name": "stats_title", "value": "Statistika" },
-    { "name": "stats_overview_section", "value": "Pregled" },
-    { "name": "stats_in_library", "value": "U biblioteci" },
-    { "name": "stats_read_duration", "value": "Trajanje čitanja" },
-    { "name": "stats_completed_titles", "value": "Završeno" },
-    { "name": "stats_titles_section", "value": "Naslovi" },
-    { "name": "stats_started_titles", "value": "Započeto" },
-    { "name": "stats_local_titles", "value": "Lokalno" },
-    { "name": "stats_chapters_section", "value": "Poglavlja" },
-    { "name": "stats_total_chapters", "value": "Ukupno" },
-    { "name": "stats_read_chapters", "value": "Pročitano" },
-    { "name": "stats_downloaded_chapters", "value": "Preuzeto" },
-    { "name": "stats_tracker_section", "value": "Pratioci" },
-    { "name": "stats_tracked_titles", "value": "Praćeni naslovi" },
-    { "name": "stats_mean_score", "value": "Prosječna ocjena" },
-    { "name": "stats_used", "value": "Koristi se" },
-    { "name": "stats_not_applicable", "value": "n/p" },
-    { "name": "stats_week", "value": "Tjedan" },
-    { "name": "stats_month", "value": "Mjesec" },
-    { "name": "stats_week_total", "value": "%s ovaj tjedan" },
-    { "name": "stats_month_total", "value": "%s ovaj mjesec" },
-    { "name": "stats_no_reading", "value": "Nema čitanja u ovom razdoblju" },
-    { "name": "stats_day_short", "value": "%dd" },
-    { "name": "stats_hour_short", "value": "%dh" },
-    { "name": "stats_minute_short", "value": "%dmin" },
-    { "name": "stats_second_short", "value": "%ds" },
-    { "name": "stats_wd_sun", "value": "Ne" },
-    { "name": "stats_wd_mon", "value": "Po" },
-    { "name": "stats_wd_tue", "value": "Ut" },
-    { "name": "stats_wd_wed", "value": "Sr" },
-    { "name": "stats_wd_thu", "value": "Če" },
-    { "name": "stats_wd_fri", "value": "Pe" },
-    { "name": "stats_wd_sat", "value": "Su" },
-    { "name": "reader_mode_vertical", "value": "Okomito" },
-    { "name": "reader_mode_smart_grip", "value": "Pametni hvat" },
-    { "name": "reader_orientation_lock_portrait", "value": "Zaključaj uspravno" },
-    { "name": "reader_orientation_lock_landscape", "value": "Zaključaj vodoravno" },
-    { "name": "reader_tab_general", "value": "Općenito" },
-    { "name": "reader_tab_filter", "value": "Filtar boja" },
-    { "name": "reader_filter_grayscale", "value": "Sivi tonovi" },
-    { "name": "reader_filter_invert", "value": "Obrnute boje" },
-    { "name": "reader_filter_contrast", "value": "Kontrast" },
-    { "name": "reader_filter_saturation", "value": "Zasićenje" },
-    { "name": "reader_crop_borders", "value": "Obreži rubove" },
-    { "name": "reader_nav_tap_zones", "value": "Zone dodira" },
-    { "name": "reader_nav_default", "value": "Zadano" },
-    { "name": "reader_nav_ltr", "value": "Slijeva nadesno" },
-    { "name": "reader_nav_rtl", "value": "Zdesna nalijevo" },
-    { "name": "reader_nav_vertical", "value": "Okomito" },
-    { "name": "reader_nav_edge", "value": "Rub" },
-    { "name": "reader_nav_none", "value": "Nema" },
-    { "name": "reader_dual_page", "value": "Dvostruka stranica" },
-    { "name": "reader_webtoon_padding", "value": "Bočni razmak Webtoona" },
-    { "name": "reader_set_mode_smart_grip", "value": "Pametni hvat" },
-    { "name": "ext_install_local", "value": "Instaliraj lokalno" },
-    { "name": "ext_detail_title", "value": "Podaci o proširenju" },
-    { "name": "ext_info_version", "value": "Verzija" },
-    { "name": "ext_info_language", "value": "Jezik" },
-    { "name": "ext_uninstall_title", "value": "Deinstaliraj proširenje" },
-    { "name": "ext_uninstall_msg", "value": "Deinstalirati proširenje „%s“? Manga u biblioteci ostat će sačuvana" },
-    { "name": "ext_detail_sources", "value": "Izvori" },
-    { "name": "ext_detail_settings", "value": "Postavke" },
-    { "name": "ext_pref_loading", "value": "Učitavanje…" },
-    { "name": "ext_pref_failed", "value": "Primjena postavki nije uspjela" },
-    { "name": "ext_detail_missing", "value": "Proširenje ne postoji ili nije učitano" },
-    { "name": "action_filter", "value": "Filtar" },
-    { "name": "action_update_library", "value": "Ažuriraj biblioteku" },
-    { "name": "action_update_category", "value": "Ažuriraj kategoriju" },
-    { "name": "action_open_random_manga", "value": "Otvori nasumični naslov" },
-    { "name": "action_select_all", "value": "Odaberi sve" },
-    { "name": "action_select_inverse", "value": "Obrni odabir" },
-    { "name": "action_move_category", "value": "Premjesti u kategoriju" },
-    { "name": "action_mark_as_read", "value": "Označi kao pročitano" },
-    { "name": "action_mark_as_unread", "value": "Označi kao nepročitano" },
-    { "name": "action_download", "value": "Preuzmi" },
-    { "name": "action_delete", "value": "Izbriši" },
-    { "name": "action_migrate", "value": "Migriraj" },
-    { "name": "action_remove_from_library", "value": "Ukloni iz biblioteke" },
-    { "name": "action_remove_from_library_msg", "value": "Ukloniti odabrane mange (%d) iz biblioteke?" },
-    { "name": "action_download_queued", "value": "Dodano je %d zadataka preuzimanja" },
-    { "name": "library_search_hint", "value": "Pretraži biblioteku" },
-    { "name": "library_no_match", "value": "Nema odgovarajuće mange" },
-    { "name": "lib_sheet_tab_filter", "value": "Filtar" },
-    { "name": "lib_sheet_tab_sort", "value": "Sortiranje" },
-    { "name": "lib_sheet_tab_display", "value": "Prikaz" },
-    { "name": "lib_filter_downloaded", "value": "Preuzeto" },
-    { "name": "lib_filter_unread", "value": "Nepročitano" },
-    { "name": "lib_filter_started", "value": "Započeto" },
-    { "name": "lib_filter_bookmarked", "value": "S oznakom" },
-    { "name": "lib_filter_completed", "value": "Završeno" },
-    { "name": "lib_filter_tracked", "value": "Praćeno" },
-    { "name": "lib_sort_alpha", "value": "Naslov" },
-    { "name": "lib_sort_total", "value": "Broj poglavlja" },
-    { "name": "lib_sort_last_read", "value": "Nedavno čitanje" },
-    { "name": "lib_sort_last_update", "value": "Vrijeme provjere ažuriranja" },
-    { "name": "lib_sort_unread", "value": "Broj nepročitanih" },
-    { "name": "lib_sort_latest_chapter", "value": "Vrijeme ažuriranja naslova" },
-    { "name": "lib_sort_fetch_date", "value": "Vrijeme dohvaćanja poglavlja" },
-    { "name": "lib_sort_date_added", "value": "Datum dodavanja" },
-    { "name": "lib_sort_random", "value": "Nasumično" },
-    { "name": "lib_display_compact", "value": "Zbijena mreža" },
-    { "name": "lib_display_comfortable", "value": "Rjeđa mreža" },
-    { "name": "lib_display_cover", "value": "Mreža naslovnica" },
-    { "name": "lib_display_list", "value": "Popis" },
-    { "name": "lib_display_grid_size", "value": "Broj u retku" },
-    { "name": "lib_display_grid_auto", "value": "Automatski" },
-    { "name": "lib_display_badges_group", "value": "Oznake i gumbi" },
-    { "name": "lib_badge_downloaded", "value": "Broj preuzetih poglavlja" },
-    { "name": "lib_badge_unread", "value": "Nepročitana poglavlja" },
-    { "name": "lib_badge_local", "value": "Lokalni izvor" },
-    { "name": "lib_badge_language", "value": "Jezik" },
-    { "name": "lib_badge_continue", "value": "Gumb „Nastavi čitati“" },
-    { "name": "lib_display_tabs_group", "value": "Kartice" },
-    { "name": "lib_show_category_tabs", "value": "Prikaži kartice kategorija" },
-    { "name": "lib_show_manga_count", "value": "Prikaži broj naslova" },
-    { "name": "EntryFormAbility_label", "value": "Kartice Honyomi" },
-    { "name": "EntryFormAbility_desc", "value": "Pružatelj kartica početnog zaslona" },
-    { "name": "card_recent_display", "value": "Nastavi čitati" },
-    { "name": "card_recent_desc", "value": "Brzo nastavi nedavno čitanu mangu" },
-    { "name": "card_updates_display", "value": "Ažuriranja" },
-    { "name": "card_updates_desc", "value": "Najnovija nepročitana poglavlja u biblioteci" },
-    { "name": "card_recent_header", "value": "Nastavi čitati" },
-    { "name": "card_updates_header", "value": "Ažuriranja" },
-    { "name": "card_unread_count", "value": "Nepročitanih poglavlja: %d" },
-    { "name": "card_empty_recent", "value": "Još nema povijesti čitanja" },
-    { "name": "card_empty_updates", "value": "Nema nepročitanih poglavlja" },
-    { "name": "card_open_hint", "value": "Dodirnite za otvaranje aplikacije" },
-    { "name": "card_manga_display", "value": "Kartica mange" },
-    { "name": "card_manga_desc", "value": "Dodajte sa stranice pojedinosti, naslovnica odmah otvara čitanje" },
-    { "name": "card_manga_empty", "value": "Dodajte sa stranice pojedinosti o mangi" },
-    { "name": "detail_add_to_desktop", "value": "Dodaj na početni zaslon" },
-    { "name": "detail_card_added", "value": "Dodano na početni zaslon" },
-    { "name": "detail_card_add_failed", "value": "Kartica nije dodana" },
-    { "name": "card_stats_week_display", "value": "Tjedna statistika" },
-    { "name": "card_stats_week_desc", "value": "Dnevno trajanje čitanja ovaj tjedan" },
-    { "name": "card_stats_month_display", "value": "Mjesečna statistika" },
-    { "name": "card_stats_month_desc", "value": "Dnevno trajanje čitanja ovaj mjesec" },
-    { "name": "card_stats_empty", "value": "Još nema čitanja" },
-    { "name": "action_view_upcoming", "value": "Prikaži nadolazeća ažuriranja" },
-    { "name": "label_upcoming", "value": "Nadolazeće" },
-    { "name": "upcoming_guide", "value": "Vodič za nadolazeće" },
-    { "name": "upcoming_calendar_prev", "value": "Prethodni mjesec" },
-    { "name": "upcoming_calendar_next", "value": "Sljedeći mjesec" },
-    { "name": "pref_filter_update_categories_details", "value": "Naslovi koji pripadaju i uključenim i isključenim kategorijama neće se prikazati." },
-    { "name": "relative_time_today", "value": "Danas" },
-    { "name": "relative_time_days_ago", "value": "Prije %d dana" },
-    { "name": "upcoming_relative_time_days", "value": "Za %d dana" },
-    { "name": "card_upcoming_display", "value": "Nadolazeće" },
-    { "name": "card_upcoming_desc", "value": "Kalendar očekivanih ažuriranja mange u biblioteci" },
-    { "name": "card_upcoming_header", "value": "Nadolazeće" },
-    { "name": "card_empty_upcoming", "value": "U biblioteci nema mange u tijeku" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Filtrira sve unose u biblioteci"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Zaustavlja čitanje povijesti"
+    },
+    {
+      "name": "more_support",
+      "value": "Podrži nas"
+    },
+    {
+      "name": "more_help",
+      "value": "Pomoć"
+    },
+    {
+      "name": "support_perks",
+      "value": "Pokrovitelji dobivaju pristup ekskluzivnim kanalima, a uskoro slijede i dodatne pogodnosti."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreona (preferiran način)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Trenutačno više od %d pokrovitelja podržavaju Mihon. Želimo se zahvaliti svakome od vas. Učinimo Mihon zajedno još boljim."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "Za alternativne opcije ili bilo koja srodna pitanja, pridruži se našem Discord serveru."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "Podaci i spremište"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Mjesto spremišta"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Koristi se za automatske sigurnosne kopije, preuzimanje poglavlja i lokalni izvor."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "Sigurnosna kopija i obnavljanje"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Stvori sigurnosnu kopiju"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Obnovi sigurnosnu kopiju"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Učestalost automatskog spremanja sigurnosnih kopija"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "Čuvaj sigurnosne kopije i na drugim mjestima. Sigurnosne kopije mogu sadržati osjetljive podatke uključujući sve spremljene lozinke; oprez pri dijeljenju podataka."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Zadnja automatska sigurnosna kopija: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Korištenje spremišta"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Dostupno: %s / Ukupno: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Isprazni predmemoriju poglavlja"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Korišteno: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Predmemorija je izbrisana. Broj izbrisanih datoteka: %d"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Došlo je do greške prilikom brisanja"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Izbriši predmemoriju poglavlja tijekom pokretanja aplikacije"
+    },
+    {
+      "name": "data_export",
+      "value": "Izvezi"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Popis biblioteka"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Biblioteka je izvezena"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Odaberi podatke koje želiš uključiti"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Naslov"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Autor"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "Isključeno"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "Svakih 6 sati"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "Svakih 12 sati"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "Dnevno"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "Svaka 2 dana"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "Tjedno"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "U redu"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Odustani"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Potvrdi"
+    },
+    {
+      "name": "common_delete",
+      "value": "Izbriši"
+    },
+    {
+      "name": "common_retry",
+      "value": "Pokušaj ponovo"
+    },
+    {
+      "name": "common_search",
+      "value": "Pretraži"
+    },
+    {
+      "name": "common_all",
+      "value": "Sve"
+    },
+    {
+      "name": "common_close",
+      "value": "Zatvori"
+    },
+    {
+      "name": "common_save",
+      "value": "Spremi"
+    },
+    {
+      "name": "common_install",
+      "value": "Instaliraj"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "Deinstaliraj"
+    },
+    {
+      "name": "common_update",
+      "value": "Ažuriraj"
+    },
+    {
+      "name": "common_none",
+      "value": "Ništa"
+    },
+    {
+      "name": "common_default",
+      "value": "Zadano"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Izgled"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Jezik"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Prati sustav"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Način teme"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Prati sustav"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Svijetlo"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Tamno"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Naglašena boja"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Ostalo"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED potpuno crna pozadina"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Plava"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "Zelena"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Ružičasta"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Ljubičasta"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "Narančasta"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "prije %d min"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "prije %d h"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "prije %d d"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "U tijeku"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Završeno"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "Na pauzi"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Otkazano"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Objavljivanje završeno"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Nepoznato"
+    },
+    {
+      "name": "tab_library",
+      "value": "Biblioteka"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Ažuriranja"
+    },
+    {
+      "name": "tab_history",
+      "value": "Povijest"
+    },
+    {
+      "name": "tab_browse",
+      "value": "Pregledaj"
+    },
+    {
+      "name": "tab_more",
+      "value": "Više"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "Čekanje na potvrdu…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "Potvrda završena"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "Ljudska potvrda"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "Gotovo"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "Rezultat potvrde spremljen"
+    },
+    {
+      "name": "more_title",
+      "value": "Više"
+    },
+    {
+      "name": "more_version",
+      "value": "Verzija %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Samo preuzeto"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Anonimni modus"
+    },
+    {
+      "name": "more_downloads",
+      "value": "Popis preuzimanja"
+    },
+    {
+      "name": "more_categories",
+      "value": "Kategorije"
+    },
+    {
+      "name": "more_settings",
+      "value": "Postavke"
+    },
+    {
+      "name": "more_about",
+      "value": "Informacije"
+    },
+    {
+      "name": "more_plugins",
+      "value": "Proširenja"
+    },
+    {
+      "name": "categories_title",
+      "value": "Kategorije"
+    },
+    {
+      "name": "categories_add",
+      "value": "Nova kategorija"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "Naziv kategorije"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "Preimenuj kategoriju"
+    },
+    {
+      "name": "categories_rename",
+      "value": "Preimenuj"
+    },
+    {
+      "name": "categories_hint",
+      "value": "Dugo pritisnite kategoriju za preimenovanje ili brisanje; manga iz izbrisane kategorije vraća se u Zadano"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "Odaberi kategoriju"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "Učitavanje…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "Učitavanje slike nije uspjelo"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "Dodirnite za ponovni pokušaj"
+    },
+    {
+      "name": "library_title",
+      "value": "Biblioteka"
+    },
+    {
+      "name": "library_empty",
+      "value": "Biblioteka je prazna, pregledajte da dodate mangu"
+    },
+    {
+      "name": "library_new_category",
+      "value": "Nova kategorija"
+    },
+    {
+      "name": "library_category_name",
+      "value": "Naziv kategorije"
+    },
+    {
+      "name": "updates_title",
+      "value": "Ažuriranja"
+    },
+    {
+      "name": "updates_empty",
+      "value": "Nema nedavnih ažuriranja"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "Pronađeno je %d novih poglavlja"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "Nema novih poglavlja"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "Osvježavanje nije uspjelo"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "Osvježavanje…"
+    },
+    {
+      "name": "history_title",
+      "value": "Povijest"
+    },
+    {
+      "name": "history_clear",
+      "value": "Obriši"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "Potvrditi brisanje?"
+    },
+    {
+      "name": "history_empty",
+      "value": "Još nema povijesti čitanja"
+    },
+    {
+      "name": "history_cleared",
+      "value": "Povijest obrisana"
+    },
+    {
+      "name": "history_continue",
+      "value": "Nastavi"
+    },
+    {
+      "name": "browse_title",
+      "value": "Pregledaj"
+    },
+    {
+      "name": "browse_import",
+      "value": "Uvezi"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "Dodaci"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "Lokalna manga"
+    },
+    {
+      "name": "browse_popular",
+      "value": "Popularno"
+    },
+    {
+      "name": "browse_latest",
+      "value": "Najnovije"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "Pretraži mangu…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "Manga nije pronađena"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "Još nema lokalne mange, dodirnite Uvezi za dodavanje"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "Učitavanje nije uspjelo: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "Pretraživanje nije uspjelo: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "Učitavanje više nije uspjelo"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "Otvaranje pojedinosti nije uspjelo"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "Odabir datoteka nije uspio"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "Uvezi %d datoteka"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "Naziv mange"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "Unesite naziv"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "Uvezeno je %d datoteka"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "Uvoz nije uspio: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "Preuzimanja"
+    },
+    {
+      "name": "download_resume",
+      "value": "Nastavi"
+    },
+    {
+      "name": "download_pause",
+      "value": "Pauziraj"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "Obriši završena"
+    },
+    {
+      "name": "download_queue",
+      "value": "Red preuzimanja"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "Na čekanju"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "Preuzimanje"
+    },
+    {
+      "name": "download_state_done",
+      "value": "Gotovo"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "Neuspjelo"
+    },
+    {
+      "name": "download_move_top",
+      "value": "Premjesti na vrh"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "Premjesti na dno"
+    },
+    {
+      "name": "download_deleted",
+      "value": "Izbrisano"
+    },
+    {
+      "name": "download_empty",
+      "value": "Još nema preuzimanja"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "Preuzeto"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d poglavlja"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "Nema poglavlja"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "Sinkronizacija nije uspjela, prikazuju se lokalni podaci"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "Dodano u biblioteku"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "Uklonjeno iz biblioteke"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "Sva poglavlja označena kao pročitana"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "Preuzimanje stavljeno u red"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "Prvo konfigurirajte AniList token"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "Pretraži AniList"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "Naslov mange"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "Nema rezultata pretraživanja"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "Pretraživanje AniLista nije uspjelo"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "Povezano s AniListom"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "Odvojeno od AniLista"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "Napredak sinkroniziran na poglavlje %d"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "Sinkronizacija AniLista nije uspjela"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "Lokalno"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "U biblioteci"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "Dodaj u biblioteku"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "Nastavi čitati"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "Počni čitati"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "Još nema poglavlja"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "Sažmi"
+    },
+    {
+      "name": "detail_expand",
+      "value": "Proširi"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "Praćenje AniLista"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList token još nije konfiguriran"
+    },
+    {
+      "name": "detail_searching",
+      "value": "Pretraživanje…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "Pretraži i poveži"
+    },
+    {
+      "name": "detail_bind",
+      "value": "Poveži"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "Sinkronizirano na poglavlje %d"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "Sinkroniziraj napredak"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "Odvoji"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "Poglavlja (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "Uzlazno"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "Silazno"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "Označi sve kao pročitano"
+    },
+    {
+      "name": "detail_read",
+      "value": "Pročitano"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "Preuzeto"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "Na čekanju"
+    },
+    {
+      "name": "detail_download",
+      "value": "Preuzmi"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "Poglavlje nije pronađeno"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "Učitavanje nije uspjelo: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "Slijeva nadesno"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "Zdesna nalijevo"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "Način čitanja"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "Slobodno"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "Uspravno"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "Vodoravno"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "Orijentacija zaslona"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "Već ste na posljednjem poglavlju"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "Već ste na prvom poglavlju"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "Već ste na prvoj stranici"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "Već ste na posljednjoj stranici"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "Učitavanje poglavlja…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "Postavke čitača"
+    },
+    {
+      "name": "reader_background",
+      "value": "Pozadina"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Automatski"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "Bijela"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "Siva"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "Crna"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "Prikaži broj stranice"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "Svjetlina"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Automatski"
+    },
+    {
+      "name": "plugin_title",
+      "value": "Proširenja"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "Instalirano"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "Još nema proširenja, instalirajte ispod"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "Onemogućena proširenja možete ponovno omogućiti u bilo koj trenutku"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "Ažurirano"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "Instaliraj iz datoteke"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "Odaberite datoteku za instalaciju"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "Obrada…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "Podržava pakete dodataka .honyomiplug / .zip"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "Mrežni repozitorij"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "Postavi repozitorij"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "Osvježi"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "Repozitorij dodataka još nije konfiguriran"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "Učitavanje repozitorija…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "URL repozitorija dodataka"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "Unesite URL repozitorija dodataka"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "Učitavanje repozitorija nije uspjelo: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "Odabir datoteke nije uspio"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "Instalirano: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "Instalirano %s"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "Instalacija nije uspjela: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "Radnja nije uspjela"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "Deinstalirano: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "Deinstalacija nije uspjela"
+    },
+    {
+      "name": "settings_title",
+      "value": "Postavke"
+    },
+    {
+      "name": "settings_general",
+      "value": "Općenito"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Početni zaslon"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "Personalizacija"
+    },
+    {
+      "name": "settings_library",
+      "value": "Biblioteka"
+    },
+    {
+      "name": "settings_reader",
+      "value": "Čitač"
+    },
+    {
+      "name": "settings_data",
+      "value": "Podaci"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Preuzimanja"
+    },
+    {
+      "name": "settings_browse",
+      "value": "Pregledaj"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Napredno"
+    },
+    {
+      "name": "settings_about",
+      "value": "Informacije"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "Biblioteka"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Ažuriranja"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "Povijest"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "Pregledaj"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "Više"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Napredno"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "Izračunavanje…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "Pohrana"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "Obriši predmemoriju slika"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "Predmemorija slika obrisana"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "Obriši kolačiće"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "Svi kolačići obrisani"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "Sigurnosna kopija i vraćanje"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "Izvezi sigurnosnu kopiju"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "Uvezi sigurnosnu kopiju"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "Praćenje"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList token"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList pristupni token"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "Zalijepite pristupni token (ostavite prazno za brisanje)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "Nije postavljeno"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "Postavljeno"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "Token spremljen"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "Token obrisan"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "Sigurnosna kopija izvezena"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "Izvoz otkazan"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "Izvoz nije uspio"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "Uvoz otkazan"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "Neispravna datoteka sigurnosne kopije"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "Vraćeno je %d mangi"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "Uvoz nije uspio"
+    },
+    {
+      "name": "about_title",
+      "value": "Informacije"
+    },
+    {
+      "name": "about_version",
+      "value": "Verzija 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "Arhitektura inspirirana Mihonom (Apache-2.0). Mrežni izvori instaliraju se dinamički kao proširenja, a lokalni izvori su ugrađeni."
+    },
+    {
+      "name": "about_ack",
+      "value": "Zahvale otvorenom kodu:\n· Mihon / Tachiyomi — arhitektura aplikacije i dizajn interakcije (Apache-2.0)\n· Material Symbols — ikone u aplikaciji (Apache-2.0)\n· MangaDex — izvor testnih podataka"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "Pregledaj"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "Sadržaj"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "Prikaži NSFW izvore"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "Kada je uključeno, izvori koje su proširenja označila kao NSFW pojavit će se u Pregledaj"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Preuzimanja"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Mreža"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Preuzimaj samo putem Wi-Fija"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "Napomena: ovaj prekidač je rezervirano mjesto u trenutačnoj verziji; prepoznavanje vrste mreže stići će u kasnijem izdanju"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "Biblioteka"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "Filtriraj i sortiraj"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "Zadano sortiranje"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "Naslov"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "Najnovije poglavlje"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "Datum dodavanja"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "Broj nepročitanih"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "Sortiraj po naslovu uzlazno"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "Zadani filtar"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "Nepročitano"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "Preuzeto"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "Nedovršeno"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Prikaz"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "Zadani prikaz"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "Mreža"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "Mreža naslovnica"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "Popis"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "Stupci mreže"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "Automatski"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 stupca"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 stupca"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 stupca"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "Oznake nepročitanih"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "Oznake preuzimanja"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "Čitač"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "Način čitanja"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "Zadani način"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "Slijeva nadesno"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "Zdesna nalijevo"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "Okomito listanje"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "Dvostruka stranica (vodoravno)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Prikaz"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "Prikaži broj stranice"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "Pozadina čitača"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "Prati temu"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "Bijela"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "Crna"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "Siva"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "Resetiraj svjetlinu čitača"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "Svjetlina sada prati sustav"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "Izvori"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "Proširenja"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "Migriraj"
+    },
+    {
+      "name": "browse_pin",
+      "value": "Prikvači"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "Otkvači"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "Onemogući izvor"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "Izvor onemogućen"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "Prikvačeno"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "Nema izvora. Instalirajte s kartice Proširenja"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "Filtriraj jezike"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "Sve"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "Izvor nije dostupan. Proširenje je možda onemogućeno"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "Pretraži sve izvore"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "Pretraživanje nije uspjelo"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "Pretraži proširenja"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "Nema podudaranja"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "Postavke repozitorija"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "Osvježi repozitorij"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "Odaberite izvor za migraciju"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "Biblioteka je prazna"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "Odaberi sve"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "Poništi odabir"
+    },
+    {
+      "name": "migrate_action",
+      "value": "Migriraj (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "Migriraj"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "Preskoči"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d od %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "Odredišni izvor"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "Pretraži mangu u odredišnom izvoru"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "Migrirati na ovu mangu?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "Migrirano: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "Migracija nije uspjela: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "Migracija dovršena"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "Nema odredišnog izvora"
+    },
+    {
+      "name": "stats_title",
+      "value": "Statistika"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "Pregled"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "U biblioteci"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "Trajanje čitanja"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "Završeno"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "Naslovi"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "Započeto"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "Lokalno"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "Poglavlja"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "Ukupno"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "Pročitano"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "Preuzeto"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "Pratioci"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "Praćeni naslovi"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "Prosječna ocjena"
+    },
+    {
+      "name": "stats_used",
+      "value": "Koristi se"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "n/p"
+    },
+    {
+      "name": "stats_week",
+      "value": "Tjedan"
+    },
+    {
+      "name": "stats_month",
+      "value": "Mjesec"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "%s ovaj tjedan"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "%s ovaj mjesec"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "Nema čitanja u ovom razdoblju"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%dd"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dh"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dmin"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%ds"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "Ne"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "Po"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "Ut"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "Sr"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "Če"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "Pe"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "Su"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "Okomito"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "Pametni hvat"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "Zaključaj uspravno"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "Zaključaj vodoravno"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "Općenito"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "Filtar boja"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "Sivi tonovi"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "Obrnute boje"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "Kontrast"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "Zasićenje"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "Obreži rubove"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "Zone dodira"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "Zadano"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "Slijeva nadesno"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "Zdesna nalijevo"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "Okomito"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "Rub"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "Nema"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Dvostruka stranica"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "Bočni razmak Webtoona"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "Pametni hvat"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "Instaliraj lokalno"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "Podaci o proširenju"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "Verzija"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "Jezik"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "Deinstaliraj proširenje"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "Deinstalirati proširenje „%s“? Manga u biblioteci ostat će sačuvana"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "Izvori"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "Postavke"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "Učitavanje…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "Primjena postavki nije uspjela"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "Proširenje ne postoji ili nije učitano"
+    },
+    {
+      "name": "action_filter",
+      "value": "Filtar"
+    },
+    {
+      "name": "action_update_library",
+      "value": "Ažuriraj biblioteku"
+    },
+    {
+      "name": "action_update_category",
+      "value": "Ažuriraj kategoriju"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "Otvori nasumični naslov"
+    },
+    {
+      "name": "action_select_all",
+      "value": "Odaberi sve"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "Obrni odabir"
+    },
+    {
+      "name": "action_move_category",
+      "value": "Premjesti u kategoriju"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "Označi kao pročitano"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "Označi kao nepročitano"
+    },
+    {
+      "name": "action_download",
+      "value": "Preuzmi"
+    },
+    {
+      "name": "action_delete",
+      "value": "Izbriši"
+    },
+    {
+      "name": "action_migrate",
+      "value": "Migriraj"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "Ukloni iz biblioteke"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "Ukloniti odabrane mange (%d) iz biblioteke?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "Dodano je %d zadataka preuzimanja"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "Pretraži biblioteku"
+    },
+    {
+      "name": "library_no_match",
+      "value": "Nema odgovarajuće mange"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "Filtar"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "Sortiranje"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "Prikaz"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "Preuzeto"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "Nepročitano"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "Započeto"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "S oznakom"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "Završeno"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "Praćeno"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "Naslov"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "Broj poglavlja"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "Nedavno čitanje"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "Vrijeme provjere ažuriranja"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "Broj nepročitanih"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "Vrijeme ažuriranja naslova"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "Vrijeme dohvaćanja poglavlja"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "Datum dodavanja"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "Nasumično"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "Zbijena mreža"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "Rjeđa mreža"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "Mreža naslovnica"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "Popis"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "Broj u retku"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "Automatski"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "Oznake i gumbi"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "Broj preuzetih poglavlja"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "Nepročitana poglavlja"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "Lokalni izvor"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "Jezik"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "Gumb „Nastavi čitati“"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "Kartice"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "Prikaži kartice kategorija"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "Prikaži broj naslova"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "Kartice Honyomi"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "Pružatelj kartica početnog zaslona"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "Nastavi čitati"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "Brzo nastavi nedavno čitanu mangu"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "Ažuriranja"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "Najnovija nepročitana poglavlja u biblioteci"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "Nastavi čitati"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "Ažuriranja"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "Nepročitanih poglavlja: %d"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "Još nema povijesti čitanja"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "Nema nepročitanih poglavlja"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "Dodirnite za otvaranje aplikacije"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "Kartica mange"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "Dodajte sa stranice pojedinosti, naslovnica odmah otvara čitanje"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "Dodajte sa stranice pojedinosti o mangi"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "Dodaj na početni zaslon"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "Dodano na početni zaslon"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "Kartica nije dodana"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "Tjedna statistika"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "Dnevno trajanje čitanja ovaj tjedan"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "Mjesečna statistika"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "Dnevno trajanje čitanja ovaj mjesec"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "Još nema čitanja"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "Prikaži nadolazeća ažuriranja"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "Nadolazeće"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "Vodič za nadolazeće"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "Prethodni mjesec"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "Sljedeći mjesec"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "Naslovi koji pripadaju i uključenim i isključenim kategorijama neće se prikazati."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "Danas"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "Prije %d dana"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "Za %d dana"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "Nadolazeće"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "Kalendar očekivanih ažuriranja mange u biblioteci"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "Nadolazeće"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "U biblioteci nema mange u tijeku"
+    }
+  ]
 }

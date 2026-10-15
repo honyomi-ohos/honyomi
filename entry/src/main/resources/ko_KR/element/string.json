@@ -1,534 +1,2124 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "서재의 모든 항목에 적용됩니다" },
-    { "name": "more_incognito_summary", "value": "읽은 내역의 기록을 일시 정지합니다" },
-    { "name": "more_support", "value": "저희를 지원해 주세요" },
-    { "name": "more_help", "value": "도움말" },
-    { "name": "support_perks", "value": "후원해 주시는 분들은 더 많은 혜택이 적용될 예정인 독점 채널에 접속할 수 있습니다." },
-    { "name": "support_patreon", "value": "Patreon (선호됨)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon은 현재 %d+의 후원자 분들의 도움을 받고 있습니다. 모든 분들께 감사를 전하고 싶습니다. 함께 Mihon을 더욱 발전시켜 나갑시다." },
-    { "name": "support_contact_msg", "value": "대체 옵션 또는 관련 질문이 있으실 경우, Discord 서버에 방문해 주십시오." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "데이터와 저장공간" },
-    { "name": "data_storage_location", "value": "저장공간 위치" },
-    { "name": "data_storage_location_info", "value": "자동 백업, 챕터 다운로드 및 로컬 소스에 사용됩니다." },
-    { "name": "data_backup_restore", "value": "백업 및 복원" },
-    { "name": "data_create_backup", "value": "백업 생성" },
-    { "name": "data_restore_backup", "value": "백업 복원" },
-    { "name": "data_backup_interval", "value": "백업 주기" },
-    { "name": "data_backup_info", "value": "백업 파일은 복사하여 다른 장소에 나눠 보관하세요. 백업 파일에는 비밀번호 등의 민감한 정보가 포함될 수 있습니다. 백업 파일 공유시 주의하세요." },
-    { "name": "data_last_auto_backup", "value": "마지막 자동 백업: %s" },
-    { "name": "data_storage_usage", "value": "저장공간 사용량" },
-    { "name": "data_available_space", "value": "사용가능: %s / 전체: %s" },
-    { "name": "data_clear_chapter_cache", "value": "회차별 캐시 삭제" },
-    { "name": "data_used_cache", "value": "%s 사용중" },
-    { "name": "data_cache_deleted", "value": "캐시 삭제됨, %d개의 파일이 삭제됨" },
-    { "name": "data_cache_delete_error", "value": "지우는 동안 오류가 발생했습니다" },
-    { "name": "data_auto_clear_cache", "value": "앱 실행 시 회차 캐시 삭제" },
-    { "name": "data_export", "value": "내보내기" },
-    { "name": "data_library_list", "value": "라이브러리 목록" },
-    { "name": "data_library_exported", "value": "라이브러리 내보냄" },
-    { "name": "data_export_include", "value": "포함할 데이터를 선택하세요" },
-    { "name": "data_column_title", "value": "제목" },
-    { "name": "data_column_author", "value": "저자" },
-    { "name": "data_interval_off", "value": "비활성화" },
-    { "name": "data_interval_6h", "value": "6시간" },
-    { "name": "data_interval_12h", "value": "12시간" },
-    { "name": "data_interval_24h", "value": "1일" },
-    { "name": "data_interval_48h", "value": "2일" },
-    { "name": "data_interval_weekly", "value": "1주" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "확인" },
-    { "name": "common_cancel", "value": "취소" },
-    { "name": "common_confirm", "value": "확인" },
-    { "name": "common_delete", "value": "삭제" },
-    { "name": "common_retry", "value": "다시 시도" },
-    { "name": "common_search", "value": "검색" },
-    { "name": "common_all", "value": "전체" },
-    { "name": "common_close", "value": "닫기" },
-    { "name": "common_save", "value": "저장" },
-    { "name": "common_install", "value": "설치" },
-    { "name": "common_uninstall", "value": "제거" },
-    { "name": "common_update", "value": "업데이트" },
-    { "name": "common_none", "value": "없음" },
-    { "name": "common_default", "value": "기본" },
-    { "name": "appearance_title", "value": "모양" },
-    { "name": "appearance_language", "value": "언어" },
-    { "name": "lang_follow_system", "value": "시스템 따르기" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "테마 모드" },
-    { "name": "appearance_theme_auto", "value": "시스템 따르기" },
-    { "name": "appearance_theme_light", "value": "라이트" },
-    { "name": "appearance_theme_dark", "value": "다크" },
-    { "name": "appearance_accent_color", "value": "강조 색상" },
-    { "name": "appearance_other", "value": "기타" },
-    { "name": "appearance_amoled", "value": "AMOLED 순정 검정 배경" },
-    { "name": "theme_accent_blue", "value": "파랑" },
-    { "name": "theme_accent_green", "value": "초록" },
-    { "name": "theme_accent_pink", "value": "분홍" },
-    { "name": "theme_accent_purple", "value": "보라" },
-    { "name": "theme_accent_orange", "value": "주황" },
-    { "name": "util_time_minutes_ago", "value": "%d분 전" },
-    { "name": "util_time_hours_ago", "value": "%d시간 전" },
-    { "name": "util_time_days_ago", "value": "%d일 전" },
-    { "name": "util_status_ongoing", "value": "연재 중" },
-    { "name": "util_status_completed", "value": "완결" },
-    { "name": "util_status_hiatus", "value": "휴재 중" },
-    { "name": "util_status_cancelled", "value": "연재 중단" },
-    { "name": "util_status_publication_complete", "value": "출간 완료" },
-    { "name": "util_status_unknown", "value": "알 수 없음" },
-    { "name": "tab_library", "value": "서재" },
-    { "name": "tab_updates", "value": "업데이트" },
-    { "name": "tab_history", "value": "기록" },
-    { "name": "tab_browse", "value": "찾아보기" },
-    { "name": "tab_more", "value": "더보기" },
-    { "name": "tab_cf_waiting", "value": "인증을 기다리는 중…" },
-    { "name": "tab_cf_verified", "value": "인증 완료" },
-    { "name": "tab_cf_title", "value": "사람 인증" },
-    { "name": "tab_cf_done", "value": "완료" },
-    { "name": "tab_cf_saved", "value": "인증 결과를 저장했습니다" },
-    { "name": "more_title", "value": "더보기" },
-    { "name": "more_version", "value": "버전 %s" },
-    { "name": "more_downloaded_only", "value": "다운로드가 완료된 항목만 표시" },
-    { "name": "more_incognito", "value": "시크릿 모드" },
-    { "name": "more_downloads", "value": "다운로드 대기열" },
-    { "name": "more_categories", "value": "카테고리" },
-    { "name": "more_settings", "value": "설정" },
-    { "name": "more_about", "value": "정보" },
-    { "name": "more_plugins", "value": "확장 기능" },
-    { "name": "categories_title", "value": "카테고리" },
-    { "name": "categories_add", "value": "새 카테고리" },
-    { "name": "categories_name_placeholder", "value": "카테고리 이름" },
-    { "name": "categories_rename_category", "value": "카테고리 이름 바꾸기" },
-    { "name": "categories_rename", "value": "이름 바꾸기" },
-    { "name": "categories_hint", "value": "카테고리를 길게 눌러 이름을 바꾸거나 삭제할 수 있습니다. 삭제한 카테고리의 만화는 기본으로 돌아갑니다" },
-    { "name": "dialog_pick_category", "value": "카테고리 선택" },
-    { "name": "viewer_loading", "value": "불러오는 중…" },
-    { "name": "viewer_load_failed", "value": "이미지를 불러오지 못했습니다" },
-    { "name": "viewer_tap_retry", "value": "탭하여 다시 시도" },
-    { "name": "library_title", "value": "서재" },
-    { "name": "library_empty", "value": "서재가 비어 있습니다. 찾아보기에서 만화를 추가하세요" },
-    { "name": "library_new_category", "value": "새 카테고리" },
-    { "name": "library_category_name", "value": "카테고리 이름" },
-    { "name": "updates_title", "value": "업데이트" },
-    { "name": "updates_empty", "value": "최근 업데이트가 없습니다" },
-    { "name": "updates_found_new", "value": "새 회차 %d개를 찾았습니다" },
-    { "name": "updates_no_new", "value": "새 회차가 없습니다" },
-    { "name": "updates_refresh_failed", "value": "새로고침 실패" },
-    { "name": "updates_refreshing", "value": "새로고침 중…" },
-    { "name": "history_title", "value": "기록" },
-    { "name": "history_clear", "value": "지우기" },
-    { "name": "history_confirm_clear", "value": "지우시겠습니까?" },
-    { "name": "history_empty", "value": "아직 읽은 기록이 없습니다" },
-    { "name": "history_cleared", "value": "기록을 지웠습니다" },
-    { "name": "history_continue", "value": "이어서" },
-    { "name": "browse_title", "value": "찾아보기" },
-    { "name": "browse_import", "value": "가져오기" },
-    { "name": "browse_plugins", "value": "확장 기능" },
-    { "name": "browse_local_source_name", "value": "로컬 만화" },
-    { "name": "browse_popular", "value": "인기" },
-    { "name": "browse_latest", "value": "최신" },
-    { "name": "browse_search_hint", "value": "만화 검색…" },
-    { "name": "browse_no_results", "value": "만화를 찾지 못했습니다" },
-    { "name": "browse_local_empty", "value": "로컬 만화가 없습니다. 가져오기를 눌러 추가하세요" },
-    { "name": "browse_load_failed", "value": "불러오기 실패: %s" },
-    { "name": "browse_search_failed", "value": "검색 실패: %s" },
-    { "name": "browse_load_more_failed", "value": "더 불러오지 못했습니다" },
-    { "name": "browse_open_detail_failed", "value": "상세 정보를 열지 못했습니다" },
-    { "name": "browse_pick_file_failed", "value": "파일을 선택하지 못했습니다" },
-    { "name": "browse_import_title", "value": "파일 %d개 가져오기" },
-    { "name": "browse_manga_name_hint", "value": "만화 이름" },
-    { "name": "browse_input_name", "value": "이름을 입력하세요" },
-    { "name": "browse_import_done", "value": "파일 %d개를 가져왔습니다" },
-    { "name": "browse_import_failed", "value": "가져오기 실패: %s" },
-    { "name": "download_title", "value": "다운로드" },
-    { "name": "download_resume", "value": "재개" },
-    { "name": "download_pause", "value": "일시 중지" },
-    { "name": "download_clear_finished", "value": "완료 항목 지우기" },
-    { "name": "download_queue", "value": "다운로드 대기열" },
-    { "name": "download_state_queued", "value": "대기 중" },
-    { "name": "download_state_downloading", "value": "다운로드 중" },
-    { "name": "download_state_done", "value": "완료" },
-    { "name": "download_state_failed", "value": "실패" },
-    { "name": "download_move_top", "value": "맨 위로" },
-    { "name": "download_move_bottom", "value": "맨 아래로" },
-    { "name": "download_deleted", "value": "삭제했습니다" },
-    { "name": "download_empty", "value": "아직 다운로드가 없습니다" },
-    { "name": "download_status_downloaded", "value": "다운로드됨" },
-    { "name": "download_chapter_count", "value": "%d화" },
-    { "name": "detail_no_chapters", "value": "회차가 없습니다" },
-    { "name": "detail_sync_failed_local", "value": "동기화에 실패하여 로컬 데이터를 표시합니다" },
-    { "name": "detail_added_to_library", "value": "서재에 추가했습니다" },
-    { "name": "detail_removed_from_library", "value": "서재에서 제거했습니다" },
-    { "name": "detail_all_marked_read", "value": "모든 회차를 읽음으로 표시했습니다" },
-    { "name": "detail_download_queued", "value": "다운로드 대기열에 추가했습니다" },
-    { "name": "detail_config_anilist_token", "value": "먼저 AniList 토큰을 설정하세요" },
-    { "name": "detail_search_anilist", "value": "AniList 검색" },
-    { "name": "detail_manga_title_hint", "value": "만화 제목" },
-    { "name": "detail_no_search_results", "value": "검색 결과가 없습니다" },
-    { "name": "detail_anilist_search_failed", "value": "AniList 검색에 실패했습니다" },
-    { "name": "detail_anilist_bound", "value": "AniList에 연결했습니다" },
-    { "name": "detail_anilist_unbound", "value": "AniList 연결을 해제했습니다" },
-    { "name": "detail_synced_progress", "value": "%d화까지 진행률을 동기화했습니다" },
-    { "name": "detail_anilist_sync_failed", "value": "AniList 동기화에 실패했습니다" },
-    { "name": "detail_status_local", "value": "로컬" },
-    { "name": "detail_in_library", "value": "서재에 있음" },
-    { "name": "detail_add_to_library", "value": "서재에 추가" },
-    { "name": "detail_continue_reading", "value": "이어서 읽기" },
-    { "name": "detail_start_reading", "value": "읽기 시작" },
-    { "name": "detail_no_chapters_yet", "value": "아직 회차가 없습니다" },
-    { "name": "detail_collapse", "value": "접기" },
-    { "name": "detail_expand", "value": "펼치기" },
-    { "name": "detail_anilist_tracking", "value": "AniList 트래킹" },
-    { "name": "detail_anilist_token_hint", "value": "AniList 토큰이 아직 설정되지 않았습니다" },
-    { "name": "detail_searching", "value": "검색 중…" },
-    { "name": "detail_search_and_bind", "value": "검색하고 연결" },
-    { "name": "detail_bind", "value": "연결" },
-    { "name": "detail_synced_to_chapter", "value": "%d화까지 동기화됨" },
-    { "name": "detail_sync_progress", "value": "진행률 동기화" },
-    { "name": "detail_unbind", "value": "연결 해제" },
-    { "name": "detail_chapters_count", "value": "회차 (%d)" },
-    { "name": "detail_sort_asc", "value": "오름차순" },
-    { "name": "detail_sort_desc", "value": "내림차순" },
-    { "name": "detail_mark_all_read", "value": "모두 읽음" },
-    { "name": "detail_read", "value": "읽음" },
-    { "name": "detail_downloaded", "value": "다운로드됨" },
-    { "name": "detail_in_queue", "value": "대기열에 있음" },
-    { "name": "detail_download", "value": "다운로드" },
-    { "name": "reader_chapter_not_found", "value": "회차를 찾을 수 없습니다" },
-    { "name": "reader_load_failed", "value": "불러오기 실패: %s" },
-    { "name": "reader_mode_ltr", "value": "왼쪽에서 오른쪽" },
-    { "name": "reader_mode_rtl", "value": "오른쪽에서 왼쪽" },
-    { "name": "reader_mode_webtoon", "value": "웹툰" },
-    { "name": "reader_reading_mode", "value": "읽기 모드" },
-    { "name": "reader_orientation_free", "value": "자유" },
-    { "name": "reader_orientation_portrait", "value": "세로" },
-    { "name": "reader_orientation_landscape", "value": "가로" },
-    { "name": "reader_screen_orientation", "value": "화면 방향" },
-    { "name": "reader_last_chapter", "value": "이미 마지막 회차입니다" },
-    { "name": "reader_first_chapter", "value": "이미 첫 회차입니다" },
-    { "name": "reader_first_page", "value": "이미 첫 페이지입니다" },
-    { "name": "reader_last_page", "value": "이미 마지막 페이지입니다" },
-    { "name": "reader_loading_chapter", "value": "회차를 불러오는 중…" },
-    { "name": "reader_settings", "value": "뷰어 설정" },
-    { "name": "reader_background", "value": "배경" },
-    { "name": "reader_theme_auto", "value": "자동" },
-    { "name": "reader_theme_white", "value": "흰색" },
-    { "name": "reader_theme_gray", "value": "회색" },
-    { "name": "reader_theme_black", "value": "검정" },
-    { "name": "reader_show_page_number", "value": "페이지 번호 표시" },
-    { "name": "reader_brightness", "value": "밝기" },
-    { "name": "reader_auto", "value": "자동" },
-    { "name": "plugin_title", "value": "확장 기능" },
-    { "name": "plugin_installed_section", "value": "설치됨" },
-    { "name": "plugin_empty", "value": "확장 기능이 없습니다. 아래에서 설치하세요" },
-    { "name": "plugin_disable_hint", "value": "비활성화한 확장 기능은 언제든지 다시 켤 수 있습니다" },
-    { "name": "plugin_up_to_date", "value": "최신 상태" },
-    { "name": "plugin_local_install", "value": "파일에서 설치" },
-    { "name": "plugin_install_from_file", "value": "설치할 파일 선택" },
-    { "name": "plugin_processing", "value": "처리 중…" },
-    { "name": "plugin_package_hint", "value": ".honyomiplug / .zip 확장 기능 패키지를 지원합니다" },
-    { "name": "plugin_repo", "value": "온라인 저장소" },
-    { "name": "plugin_repo_config", "value": "저장소 설정" },
-    { "name": "plugin_repo_refresh", "value": "새로고침" },
-    { "name": "plugin_repo_hint", "value": "확장 기능 저장소가 아직 설정되지 않았습니다" },
-    { "name": "plugin_repo_loading", "value": "저장소를 불러오는 중…" },
-    { "name": "plugin_repo_url_title", "value": "확장 기능 저장소 URL" },
-    { "name": "plugin_repo_url_hint", "value": "확장 기능 저장소 URL을 입력하세요" },
-    { "name": "plugin_repo_load_failed", "value": "저장소를 불러오지 못했습니다: %s" },
-    { "name": "plugin_pick_file_failed", "value": "파일을 선택하지 못했습니다" },
-    { "name": "plugin_installed", "value": "설치됨: %s" },
-    { "name": "plugin_installed_name", "value": "%s을(를) 설치했습니다" },
-    { "name": "plugin_install_failed", "value": "설치 실패: %s" },
-    { "name": "plugin_action_failed", "value": "작업에 실패했습니다" },
-    { "name": "plugin_uninstalled", "value": "제거됨: %s" },
-    { "name": "plugin_uninstall_failed", "value": "제거에 실패했습니다" },
-    { "name": "settings_title", "value": "설정" },
-    { "name": "settings_general", "value": "일반" },
-    { "name": "settings_start_tab", "value": "시작 화면" },
-    { "name": "settings_personalization", "value": "개인 설정" },
-    { "name": "settings_library", "value": "서재" },
-    { "name": "settings_reader", "value": "뷰어" },
-    { "name": "settings_data", "value": "데이터" },
-    { "name": "settings_downloads", "value": "다운로드" },
-    { "name": "settings_browse", "value": "찾아보기" },
-    { "name": "settings_advanced", "value": "고급" },
-    { "name": "settings_about", "value": "정보" },
-    { "name": "settings_tab_library", "value": "서재" },
-    { "name": "settings_tab_updates", "value": "업데이트" },
-    { "name": "settings_tab_history", "value": "기록" },
-    { "name": "settings_tab_browse", "value": "찾아보기" },
-    { "name": "settings_tab_more", "value": "더보기" },
-    { "name": "advanced_title", "value": "고급" },
-    { "name": "advanced_calculating", "value": "계산 중…" },
-    { "name": "advanced_storage", "value": "저장 공간" },
-    { "name": "advanced_clear_image_cache", "value": "이미지 캐시 지우기" },
-    { "name": "advanced_image_cache_cleared", "value": "이미지 캐시를 지웠습니다" },
-    { "name": "advanced_clear_cookies", "value": "쿠키 지우기" },
-    { "name": "advanced_cookies_cleared", "value": "모든 쿠키를 지웠습니다" },
-    { "name": "advanced_backup_restore", "value": "백업 및 복원" },
-    { "name": "advanced_export_backup", "value": "백업 내보내기" },
-    { "name": "advanced_import_backup", "value": "백업 가져오기" },
-    { "name": "advanced_tracking", "value": "트래킹" },
-    { "name": "advanced_anilist_token", "value": "AniList 토큰" },
-    { "name": "advanced_token_title", "value": "AniList 액세스 토큰" },
-    { "name": "advanced_token_hint", "value": "액세스 토큰을 붙여넣으세요 (비우면 삭제)" },
-    { "name": "advanced_token_not_set", "value": "설정되지 않음" },
-    { "name": "advanced_token_set", "value": "설정됨" },
-    { "name": "advanced_token_saved", "value": "토큰을 저장했습니다" },
-    { "name": "advanced_token_cleared", "value": "토큰을 지웠습니다" },
-    { "name": "advanced_backup_exported", "value": "백업을 내보냈습니다" },
-    { "name": "advanced_export_canceled", "value": "내보내기를 취소했습니다" },
-    { "name": "advanced_export_failed", "value": "내보내기에 실패했습니다" },
-    { "name": "advanced_import_canceled", "value": "가져오기를 취소했습니다" },
-    { "name": "advanced_backup_invalid", "value": "잘못된 백업 파일" },
-    { "name": "advanced_restored_manga", "value": "만화 %d편을 복원했습니다" },
-    { "name": "advanced_import_failed", "value": "가져오기에 실패했습니다" },
-    { "name": "about_title", "value": "정보" },
-    { "name": "about_version", "value": "버전 1.0.0" },
-    { "name": "about_desc", "value": "구성은 Mihon (Apache-2.0)을 참고했습니다. 온라인 소스는 확장 기능으로 동적으로 설치되고, 로컬 소스는 내장되어 있습니다." },
-    { "name": "about_ack", "value": "오픈 소스 감사:\n· Mihon / Tachiyomi — 앱 구성과 상호작용 디자인 (Apache-2.0)\n· Material Symbols — 앱 내 아이콘 (Apache-2.0)\n· MangaDex — 테스트 데이터 소스" },
-    { "name": "browse_set_title", "value": "찾아보기" },
-    { "name": "browse_set_content", "value": "콘텐츠" },
-    { "name": "browse_set_show_nsfw", "value": "NSFW 소스 표시" },
-    { "name": "browse_set_nsfw_hint", "value": "켜면 확장 기능이 NSFW로 표시한 소스가 찾아보기에 나타납니다" },
-    { "name": "dl_set_title", "value": "다운로드" },
-    { "name": "dl_set_network", "value": "네트워크" },
-    { "name": "dl_set_wifi_only", "value": "Wi-Fi에서만 다운로드" },
-    { "name": "dl_set_wifi_only_hint", "value": "참고: 현재 버전에서 이 스위치는 자리 표시자입니다. 네트워크 종류 감지는 이후 버전에서 제공됩니다" },
-    { "name": "lib_set_title", "value": "서재" },
-    { "name": "lib_set_sort_group", "value": "필터 및 정렬" },
-    { "name": "lib_set_sort_default", "value": "기본 정렬" },
-    { "name": "lib_set_sort_title", "value": "제목" },
-    { "name": "lib_set_sort_last_update", "value": "최신 회차" },
-    { "name": "lib_set_sort_added", "value": "추가한 날짜" },
-    { "name": "lib_set_sort_unread", "value": "읽지 않은 수" },
-    { "name": "lib_set_sort_asc", "value": "제목 오름차순" },
-    { "name": "lib_set_filter_default", "value": "기본 필터" },
-    { "name": "lib_set_filter_unread", "value": "읽지 않음" },
-    { "name": "lib_set_filter_downloaded", "value": "다운로드됨" },
-    { "name": "lib_set_filter_uncompleted", "value": "미완결" },
-    { "name": "lib_set_display_group", "value": "표시" },
-    { "name": "lib_set_view_default", "value": "기본 보기" },
-    { "name": "lib_set_view_grid", "value": "격자" },
-    { "name": "lib_set_view_cover", "value": "표지 격자" },
-    { "name": "lib_set_view_list", "value": "목록" },
-    { "name": "lib_set_grid_cols", "value": "격자 열 수" },
-    { "name": "lib_set_cols_auto", "value": "자동" },
-    { "name": "lib_set_cols_2", "value": "2열" },
-    { "name": "lib_set_cols_3", "value": "3열" },
-    { "name": "lib_set_cols_4", "value": "4열" },
-    { "name": "lib_set_unread_badge", "value": "읽지 않은 수 배지" },
-    { "name": "lib_set_download_badge", "value": "다운로드 배지" },
-    { "name": "reader_set_title", "value": "뷰어" },
-    { "name": "reader_set_mode_group", "value": "읽기 모드" },
-    { "name": "reader_set_mode_default", "value": "기본 모드" },
-    { "name": "reader_set_mode_ltr", "value": "왼쪽에서 오른쪽" },
-    { "name": "reader_set_mode_rtl", "value": "오른쪽에서 왼쪽" },
-    { "name": "reader_set_mode_vertical", "value": "세로 넘김" },
-    { "name": "reader_set_mode_webtoon", "value": "웹툰" },
-    { "name": "reader_set_dual_page", "value": "두 페이지 (가로)" },
-    { "name": "reader_set_display_group", "value": "표시" },
-    { "name": "reader_set_show_page_number", "value": "페이지 번호 표시" },
-    { "name": "reader_set_bg_color", "value": "뷰어 배경" },
-    { "name": "reader_set_theme_follow", "value": "테마 따르기" },
-    { "name": "reader_set_theme_white", "value": "흰색" },
-    { "name": "reader_set_theme_black", "value": "검정" },
-    { "name": "reader_set_theme_gray", "value": "회색" },
-    { "name": "reader_set_reset_brightness", "value": "뷰어 밝기 재설정" },
-    { "name": "reader_set_brightness_reset", "value": "밝기를 시스템에 맞췄습니다" },
-    { "name": "browse_tab_sources", "value": "소스" },
-    { "name": "browse_tab_extensions", "value": "확장 기능" },
-    { "name": "browse_tab_migrate", "value": "이전" },
-    { "name": "browse_pin", "value": "고정" },
-    { "name": "browse_unpin", "value": "고정 해제" },
-    { "name": "browse_disable_source", "value": "소스 비활성화" },
-    { "name": "browse_source_disabled", "value": "소스를 비활성화했습니다" },
-    { "name": "browse_pinned", "value": "고정됨" },
-    { "name": "browse_sources_empty", "value": "사용 가능한 소스가 없습니다. 확장 기능 탭에서 설치하세요" },
-    { "name": "browse_filter_langs", "value": "언어 필터" },
-    { "name": "browse_filter_all", "value": "전체" },
-    { "name": "browse_source_missing", "value": "소스를 사용할 수 없습니다. 확장 기능이 비활성화되었을 수 있습니다" },
-    { "name": "global_search_hint", "value": "모든 소스 검색" },
-    { "name": "global_search_failed", "value": "검색 실패" },
-    { "name": "ext_search_hint", "value": "확장 기능 검색" },
-    { "name": "ext_search_no_match", "value": "일치하는 항목 없음" },
-    { "name": "ext_repo_settings", "value": "저장소 설정" },
-    { "name": "ext_refresh_repo", "value": "저장소 새로고침" },
-    { "name": "migrate_pick_source", "value": "이전할 소스 선택" },
-    { "name": "migrate_empty_library", "value": "서재가 비어 있습니다" },
-    { "name": "migrate_select_all", "value": "모두 선택" },
-    { "name": "migrate_deselect_all", "value": "선택 해제" },
-    { "name": "migrate_action", "value": "이전 (%d)" },
-    { "name": "migrate_title", "value": "이전" },
-    { "name": "migrate_skip", "value": "건너뛰기" },
-    { "name": "migrate_progress", "value": "%d / %d" },
-    { "name": "migrate_target_source", "value": "대상 소스" },
-    { "name": "migrate_search_hint", "value": "대상 소스에서 만화 검색" },
-    { "name": "migrate_confirm_title", "value": "이 만화로 이전할까요?" },
-    { "name": "migrate_item_done", "value": "이전됨: %s" },
-    { "name": "migrate_failed", "value": "이전 실패: %s" },
-    { "name": "migrate_done", "value": "이전 완료" },
-    { "name": "migrate_no_target", "value": "사용 가능한 대상 소스가 없습니다" },
-    { "name": "stats_title", "value": "통계" },
-    { "name": "stats_overview_section", "value": "개요" },
-    { "name": "stats_in_library", "value": "서재" },
-    { "name": "stats_read_duration", "value": "읽은 시간" },
-    { "name": "stats_completed_titles", "value": "완결" },
-    { "name": "stats_titles_section", "value": "작품" },
-    { "name": "stats_started_titles", "value": "읽기 시작" },
-    { "name": "stats_local_titles", "value": "로컬" },
-    { "name": "stats_chapters_section", "value": "회차" },
-    { "name": "stats_total_chapters", "value": "전체" },
-    { "name": "stats_read_chapters", "value": "읽음" },
-    { "name": "stats_downloaded_chapters", "value": "다운로드됨" },
-    { "name": "stats_tracker_section", "value": "트래킹" },
-    { "name": "stats_tracked_titles", "value": "트래킹 중인 작품" },
-    { "name": "stats_mean_score", "value": "평균 점수" },
-    { "name": "stats_used", "value": "사용 중" },
-    { "name": "stats_not_applicable", "value": "해당 없음" },
-    { "name": "stats_week", "value": "주" },
-    { "name": "stats_month", "value": "월" },
-    { "name": "stats_week_total", "value": "이번 주 %s" },
-    { "name": "stats_month_total", "value": "이번 달 %s" },
-    { "name": "stats_no_reading", "value": "이 기간에는 읽은 기록이 없습니다" },
-    { "name": "stats_day_short", "value": "%d일" },
-    { "name": "stats_hour_short", "value": "%d시간" },
-    { "name": "stats_minute_short", "value": "%d분" },
-    { "name": "stats_second_short", "value": "%d초" },
-    { "name": "stats_wd_sun", "value": "일" },
-    { "name": "stats_wd_mon", "value": "월" },
-    { "name": "stats_wd_tue", "value": "화" },
-    { "name": "stats_wd_wed", "value": "수" },
-    { "name": "stats_wd_thu", "value": "목" },
-    { "name": "stats_wd_fri", "value": "금" },
-    { "name": "stats_wd_sat", "value": "토" },
-    { "name": "reader_mode_vertical", "value": "세로 넘김" },
-    { "name": "reader_mode_smart_grip", "value": "스마트 그립" },
-    { "name": "reader_orientation_lock_portrait", "value": "세로 고정" },
-    { "name": "reader_orientation_lock_landscape", "value": "가로 고정" },
-    { "name": "reader_tab_general", "value": "일반" },
-    { "name": "reader_tab_filter", "value": "색상 필터" },
-    { "name": "reader_filter_grayscale", "value": "회색조" },
-    { "name": "reader_filter_invert", "value": "색상 반전" },
-    { "name": "reader_filter_contrast", "value": "대비" },
-    { "name": "reader_filter_saturation", "value": "채도" },
-    { "name": "reader_crop_borders", "value": "가장자리 자르기" },
-    { "name": "reader_nav_tap_zones", "value": "탭 영역" },
-    { "name": "reader_nav_default", "value": "기본" },
-    { "name": "reader_nav_ltr", "value": "왼쪽에서 오른쪽" },
-    { "name": "reader_nav_rtl", "value": "오른쪽에서 왼쪽" },
-    { "name": "reader_nav_vertical", "value": "세로" },
-    { "name": "reader_nav_edge", "value": "가장자리" },
-    { "name": "reader_nav_none", "value": "없음" },
-    { "name": "reader_dual_page", "value": "두 페이지" },
-    { "name": "reader_webtoon_padding", "value": "웹툰 옆 여백" },
-    { "name": "reader_set_mode_smart_grip", "value": "스마트 그립" },
-    { "name": "ext_install_local", "value": "로컬에서 설치" },
-    { "name": "ext_detail_title", "value": "확장 기능 정보" },
-    { "name": "ext_info_version", "value": "버전" },
-    { "name": "ext_info_language", "value": "언어" },
-    { "name": "ext_uninstall_title", "value": "확장 기능 제거" },
-    { "name": "ext_uninstall_msg", "value": "\"%s\"을(를) 제거할까요? 서재의 만화 데이터는 유지됩니다" },
-    { "name": "ext_detail_sources", "value": "소스" },
-    { "name": "ext_detail_settings", "value": "설정" },
-    { "name": "ext_pref_loading", "value": "불러오는 중…" },
-    { "name": "ext_pref_failed", "value": "설정을 적용하지 못했습니다" },
-    { "name": "ext_detail_missing", "value": "확장 기능이 없거나 불러오지 않았습니다" },
-    { "name": "action_filter", "value": "필터" },
-    { "name": "action_update_library", "value": "서재 업데이트" },
-    { "name": "action_update_category", "value": "카테고리 업데이트" },
-    { "name": "action_open_random_manga", "value": "무작위 작품 열기" },
-    { "name": "action_select_all", "value": "모두 선택" },
-    { "name": "action_select_inverse", "value": "선택 반전" },
-    { "name": "action_move_category", "value": "카테고리 이동" },
-    { "name": "action_mark_as_read", "value": "읽음으로 표시" },
-    { "name": "action_mark_as_unread", "value": "읽지 않음으로 표시" },
-    { "name": "action_download", "value": "다운로드" },
-    { "name": "action_delete", "value": "삭제" },
-    { "name": "action_migrate", "value": "이전" },
-    { "name": "action_remove_from_library", "value": "서재에서 제거" },
-    { "name": "action_remove_from_library_msg", "value": "선택한 만화 %d편을 서재에서 제거할까요?" },
-    { "name": "action_download_queued", "value": "다운로드 %d개를 추가했습니다" },
-    { "name": "library_search_hint", "value": "서재 검색" },
-    { "name": "library_no_match", "value": "일치하는 만화가 없습니다" },
-    { "name": "lib_sheet_tab_filter", "value": "필터" },
-    { "name": "lib_sheet_tab_sort", "value": "정렬" },
-    { "name": "lib_sheet_tab_display", "value": "표시" },
-    { "name": "lib_filter_downloaded", "value": "다운로드됨" },
-    { "name": "lib_filter_unread", "value": "읽지 않음" },
-    { "name": "lib_filter_started", "value": "읽은 적 있음" },
-    { "name": "lib_filter_bookmarked", "value": "북마크됨" },
-    { "name": "lib_filter_completed", "value": "완결" },
-    { "name": "lib_filter_tracked", "value": "트래킹 중" },
-    { "name": "lib_sort_alpha", "value": "제목" },
-    { "name": "lib_sort_total", "value": "회차 수" },
-    { "name": "lib_sort_last_read", "value": "최근 읽음" },
-    { "name": "lib_sort_last_update", "value": "업데이트 확인" },
-    { "name": "lib_sort_unread", "value": "읽지 않은 수" },
-    { "name": "lib_sort_latest_chapter", "value": "작품 업데이트" },
-    { "name": "lib_sort_fetch_date", "value": "회차 가져온 시간" },
-    { "name": "lib_sort_date_added", "value": "추가한 날짜" },
-    { "name": "lib_sort_random", "value": "무작위" },
-    { "name": "lib_display_compact", "value": "촘촘한 격자" },
-    { "name": "lib_display_comfortable", "value": "넉넉한 격자" },
-    { "name": "lib_display_cover", "value": "표지 격자" },
-    { "name": "lib_display_list", "value": "목록" },
-    { "name": "lib_display_grid_size", "value": "한 줄 개수" },
-    { "name": "lib_display_grid_auto", "value": "자동" },
-    { "name": "lib_display_badges_group", "value": "배지와 버튼" },
-    { "name": "lib_badge_downloaded", "value": "다운로드된 회차 수" },
-    { "name": "lib_badge_unread", "value": "읽지 않은 회차" },
-    { "name": "lib_badge_local", "value": "로컬 소스" },
-    { "name": "lib_badge_language", "value": "언어" },
-    { "name": "lib_badge_continue", "value": "이어서 읽기 버튼" },
-    { "name": "lib_display_tabs_group", "value": "탭" },
-    { "name": "lib_show_category_tabs", "value": "카테고리 탭 표시" },
-    { "name": "lib_show_manga_count", "value": "작품 수 표시" },
-    { "name": "EntryFormAbility_label", "value": "Honyomi 카드" },
-    { "name": "EntryFormAbility_desc", "value": "홈 화면 카드 제공" },
-    { "name": "card_recent_display", "value": "이어서 읽기" },
-    { "name": "card_recent_desc", "value": "최근 읽은 만화를 바로 이어 읽습니다" },
-    { "name": "card_updates_display", "value": "업데이트" },
-    { "name": "card_updates_desc", "value": "서재의 최신 읽지 않은 회차" },
-    { "name": "card_recent_header", "value": "이어서 읽기" },
-    { "name": "card_updates_header", "value": "업데이트" },
-    { "name": "card_unread_count", "value": "읽지 않음 %d화" },
-    { "name": "card_empty_recent", "value": "아직 읽은 기록이 없습니다" },
-    { "name": "card_empty_updates", "value": "읽지 않은 회차가 없습니다" },
-    { "name": "card_open_hint", "value": "탭하여 앱 열기" },
-    { "name": "card_manga_display", "value": "만화 카드" },
-    { "name": "card_manga_desc", "value": "상세에서 추가하고 표지를 눌러 읽기" },
-    { "name": "card_manga_empty", "value": "만화 상세에서 홈 화면에 추가" },
-    { "name": "detail_add_to_desktop", "value": "홈 화면에 추가" },
-    { "name": "detail_card_added", "value": "홈 화면에 추가했습니다" },
-    { "name": "detail_card_add_failed", "value": "카드를 추가하지 못했습니다" },
-    { "name": "card_stats_week_display", "value": "주간 통계" },
-    { "name": "card_stats_week_desc", "value": "이번 주 하루 읽은 시간" },
-    { "name": "card_stats_month_display", "value": "월간 통계" },
-    { "name": "card_stats_month_desc", "value": "이번 달 하루 읽은 시간" },
-    { "name": "card_stats_empty", "value": "아직 읽은 기록이 없습니다" },
-    { "name": "action_view_upcoming", "value": "예정된 업데이트 표시" },
-    { "name": "label_upcoming", "value": "업데이트 예정" },
-    { "name": "upcoming_guide", "value": "업데이트 예정 안내" },
-    { "name": "upcoming_calendar_prev", "value": "이전 달" },
-    { "name": "upcoming_calendar_next", "value": "다음 달" },
-    { "name": "pref_filter_update_categories_details", "value": "포함과 제외 카테고리에 모두 속한 작품은 표시되지 않습니다." },
-    { "name": "relative_time_today", "value": "오늘" },
-    { "name": "relative_time_days_ago", "value": "%d일 전" },
-    { "name": "upcoming_relative_time_days", "value": "%d일 후" },
-    { "name": "card_upcoming_display", "value": "업데이트 예정" },
-    { "name": "card_upcoming_desc", "value": "서재 만화의 예상 업데이트 달력" },
-    { "name": "card_upcoming_header", "value": "업데이트 예정" },
-    { "name": "card_empty_upcoming", "value": "서재에 연재 중인 만화가 없습니다" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "서재의 모든 항목에 적용됩니다"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "읽은 내역의 기록을 일시 정지합니다"
+    },
+    {
+      "name": "more_support",
+      "value": "저희를 지원해 주세요"
+    },
+    {
+      "name": "more_help",
+      "value": "도움말"
+    },
+    {
+      "name": "support_perks",
+      "value": "후원해 주시는 분들은 더 많은 혜택이 적용될 예정인 독점 채널에 접속할 수 있습니다."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (선호됨)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon은 현재 %d+의 후원자 분들의 도움을 받고 있습니다. 모든 분들께 감사를 전하고 싶습니다. 함께 Mihon을 더욱 발전시켜 나갑시다."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "대체 옵션 또는 관련 질문이 있으실 경우, Discord 서버에 방문해 주십시오."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "데이터와 저장공간"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "저장공간 위치"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "자동 백업, 챕터 다운로드 및 로컬 소스에 사용됩니다."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "백업 및 복원"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "백업 생성"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "백업 복원"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "백업 주기"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "백업 파일은 복사하여 다른 장소에 나눠 보관하세요. 백업 파일에는 비밀번호 등의 민감한 정보가 포함될 수 있습니다. 백업 파일 공유시 주의하세요."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "마지막 자동 백업: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "저장공간 사용량"
+    },
+    {
+      "name": "data_available_space",
+      "value": "사용가능: %s / 전체: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "회차별 캐시 삭제"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "%s 사용중"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "캐시 삭제됨, %d개의 파일이 삭제됨"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "지우는 동안 오류가 발생했습니다"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "앱 실행 시 회차 캐시 삭제"
+    },
+    {
+      "name": "data_export",
+      "value": "내보내기"
+    },
+    {
+      "name": "data_library_list",
+      "value": "라이브러리 목록"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "라이브러리 내보냄"
+    },
+    {
+      "name": "data_export_include",
+      "value": "포함할 데이터를 선택하세요"
+    },
+    {
+      "name": "data_column_title",
+      "value": "제목"
+    },
+    {
+      "name": "data_column_author",
+      "value": "저자"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "비활성화"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "6시간"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "12시간"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "1일"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "2일"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "1주"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "확인"
+    },
+    {
+      "name": "common_cancel",
+      "value": "취소"
+    },
+    {
+      "name": "common_confirm",
+      "value": "확인"
+    },
+    {
+      "name": "common_delete",
+      "value": "삭제"
+    },
+    {
+      "name": "common_retry",
+      "value": "다시 시도"
+    },
+    {
+      "name": "common_search",
+      "value": "검색"
+    },
+    {
+      "name": "common_all",
+      "value": "전체"
+    },
+    {
+      "name": "common_close",
+      "value": "닫기"
+    },
+    {
+      "name": "common_save",
+      "value": "저장"
+    },
+    {
+      "name": "common_install",
+      "value": "설치"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "제거"
+    },
+    {
+      "name": "common_update",
+      "value": "업데이트"
+    },
+    {
+      "name": "common_none",
+      "value": "없음"
+    },
+    {
+      "name": "common_default",
+      "value": "기본"
+    },
+    {
+      "name": "appearance_title",
+      "value": "모양"
+    },
+    {
+      "name": "appearance_language",
+      "value": "언어"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "시스템 따르기"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "테마 모드"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "시스템 따르기"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "라이트"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "다크"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "강조 색상"
+    },
+    {
+      "name": "appearance_other",
+      "value": "기타"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED 순정 검정 배경"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "파랑"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "초록"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "분홍"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "보라"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "주황"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d분 전"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d시간 전"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d일 전"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "연재 중"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "완결"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "휴재 중"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "연재 중단"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "출간 완료"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "알 수 없음"
+    },
+    {
+      "name": "tab_library",
+      "value": "서재"
+    },
+    {
+      "name": "tab_updates",
+      "value": "업데이트"
+    },
+    {
+      "name": "tab_history",
+      "value": "기록"
+    },
+    {
+      "name": "tab_browse",
+      "value": "찾아보기"
+    },
+    {
+      "name": "tab_more",
+      "value": "더보기"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "인증을 기다리는 중…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "인증 완료"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "사람 인증"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "완료"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "인증 결과를 저장했습니다"
+    },
+    {
+      "name": "more_title",
+      "value": "더보기"
+    },
+    {
+      "name": "more_version",
+      "value": "버전 %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "다운로드가 완료된 항목만 표시"
+    },
+    {
+      "name": "more_incognito",
+      "value": "시크릿 모드"
+    },
+    {
+      "name": "more_downloads",
+      "value": "다운로드 대기열"
+    },
+    {
+      "name": "more_categories",
+      "value": "카테고리"
+    },
+    {
+      "name": "more_settings",
+      "value": "설정"
+    },
+    {
+      "name": "more_about",
+      "value": "정보"
+    },
+    {
+      "name": "more_plugins",
+      "value": "확장 기능"
+    },
+    {
+      "name": "categories_title",
+      "value": "카테고리"
+    },
+    {
+      "name": "categories_add",
+      "value": "새 카테고리"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "카테고리 이름"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "카테고리 이름 바꾸기"
+    },
+    {
+      "name": "categories_rename",
+      "value": "이름 바꾸기"
+    },
+    {
+      "name": "categories_hint",
+      "value": "카테고리를 길게 눌러 이름을 바꾸거나 삭제할 수 있습니다. 삭제한 카테고리의 만화는 기본으로 돌아갑니다"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "카테고리 선택"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "불러오는 중…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "이미지를 불러오지 못했습니다"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "탭하여 다시 시도"
+    },
+    {
+      "name": "library_title",
+      "value": "서재"
+    },
+    {
+      "name": "library_empty",
+      "value": "서재가 비어 있습니다. 찾아보기에서 만화를 추가하세요"
+    },
+    {
+      "name": "library_new_category",
+      "value": "새 카테고리"
+    },
+    {
+      "name": "library_category_name",
+      "value": "카테고리 이름"
+    },
+    {
+      "name": "updates_title",
+      "value": "업데이트"
+    },
+    {
+      "name": "updates_empty",
+      "value": "최근 업데이트가 없습니다"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "새 회차 %d개를 찾았습니다"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "새 회차가 없습니다"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "새로고침 실패"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "새로고침 중…"
+    },
+    {
+      "name": "history_title",
+      "value": "기록"
+    },
+    {
+      "name": "history_clear",
+      "value": "지우기"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "지우시겠습니까?"
+    },
+    {
+      "name": "history_empty",
+      "value": "아직 읽은 기록이 없습니다"
+    },
+    {
+      "name": "history_cleared",
+      "value": "기록을 지웠습니다"
+    },
+    {
+      "name": "history_continue",
+      "value": "이어서"
+    },
+    {
+      "name": "browse_title",
+      "value": "찾아보기"
+    },
+    {
+      "name": "browse_import",
+      "value": "가져오기"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "확장 기능"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "로컬 만화"
+    },
+    {
+      "name": "browse_popular",
+      "value": "인기"
+    },
+    {
+      "name": "browse_latest",
+      "value": "최신"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "만화 검색…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "만화를 찾지 못했습니다"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "로컬 만화가 없습니다. 가져오기를 눌러 추가하세요"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "불러오기 실패: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "검색 실패: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "더 불러오지 못했습니다"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "상세 정보를 열지 못했습니다"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "파일을 선택하지 못했습니다"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "파일 %d개 가져오기"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "만화 이름"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "이름을 입력하세요"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "파일 %d개를 가져왔습니다"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "가져오기 실패: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "다운로드"
+    },
+    {
+      "name": "download_resume",
+      "value": "재개"
+    },
+    {
+      "name": "download_pause",
+      "value": "일시 중지"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "완료 항목 지우기"
+    },
+    {
+      "name": "download_queue",
+      "value": "다운로드 대기열"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "대기 중"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "다운로드 중"
+    },
+    {
+      "name": "download_state_done",
+      "value": "완료"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "실패"
+    },
+    {
+      "name": "download_move_top",
+      "value": "맨 위로"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "맨 아래로"
+    },
+    {
+      "name": "download_deleted",
+      "value": "삭제했습니다"
+    },
+    {
+      "name": "download_empty",
+      "value": "아직 다운로드가 없습니다"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "다운로드됨"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d화"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "회차가 없습니다"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "동기화에 실패하여 로컬 데이터를 표시합니다"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "서재에 추가했습니다"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "서재에서 제거했습니다"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "모든 회차를 읽음으로 표시했습니다"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "다운로드 대기열에 추가했습니다"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "먼저 AniList 토큰을 설정하세요"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "AniList 검색"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "만화 제목"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "검색 결과가 없습니다"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "AniList 검색에 실패했습니다"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "AniList에 연결했습니다"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "AniList 연결을 해제했습니다"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "%d화까지 진행률을 동기화했습니다"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "AniList 동기화에 실패했습니다"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "로컬"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "서재에 있음"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "서재에 추가"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "이어서 읽기"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "읽기 시작"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "아직 회차가 없습니다"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "접기"
+    },
+    {
+      "name": "detail_expand",
+      "value": "펼치기"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList 트래킹"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList 토큰이 아직 설정되지 않았습니다"
+    },
+    {
+      "name": "detail_searching",
+      "value": "검색 중…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "검색하고 연결"
+    },
+    {
+      "name": "detail_bind",
+      "value": "연결"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "%d화까지 동기화됨"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "진행률 동기화"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "연결 해제"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "회차 (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "오름차순"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "내림차순"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "모두 읽음"
+    },
+    {
+      "name": "detail_read",
+      "value": "읽음"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "다운로드됨"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "대기열에 있음"
+    },
+    {
+      "name": "detail_download",
+      "value": "다운로드"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "회차를 찾을 수 없습니다"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "불러오기 실패: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "왼쪽에서 오른쪽"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "오른쪽에서 왼쪽"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "웹툰"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "읽기 모드"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "자유"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "세로"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "가로"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "화면 방향"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "이미 마지막 회차입니다"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "이미 첫 회차입니다"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "이미 첫 페이지입니다"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "이미 마지막 페이지입니다"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "회차를 불러오는 중…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "뷰어 설정"
+    },
+    {
+      "name": "reader_background",
+      "value": "배경"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "자동"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "흰색"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "회색"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "검정"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "페이지 번호 표시"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "밝기"
+    },
+    {
+      "name": "reader_auto",
+      "value": "자동"
+    },
+    {
+      "name": "plugin_title",
+      "value": "확장 기능"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "설치됨"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "확장 기능이 없습니다. 아래에서 설치하세요"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "비활성화한 확장 기능은 언제든지 다시 켤 수 있습니다"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "최신 상태"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "파일에서 설치"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "설치할 파일 선택"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "처리 중…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": ".honyomiplug / .zip 확장 기능 패키지를 지원합니다"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "온라인 저장소"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "저장소 설정"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "새로고침"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "확장 기능 저장소가 아직 설정되지 않았습니다"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "저장소를 불러오는 중…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "확장 기능 저장소 URL"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "확장 기능 저장소 URL을 입력하세요"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "저장소를 불러오지 못했습니다: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "파일을 선택하지 못했습니다"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "설치됨: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "%s을(를) 설치했습니다"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "설치 실패: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "작업에 실패했습니다"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "제거됨: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "제거에 실패했습니다"
+    },
+    {
+      "name": "settings_title",
+      "value": "설정"
+    },
+    {
+      "name": "settings_general",
+      "value": "일반"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "시작 화면"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "개인 설정"
+    },
+    {
+      "name": "settings_library",
+      "value": "서재"
+    },
+    {
+      "name": "settings_reader",
+      "value": "뷰어"
+    },
+    {
+      "name": "settings_data",
+      "value": "데이터"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "다운로드"
+    },
+    {
+      "name": "settings_browse",
+      "value": "찾아보기"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "고급"
+    },
+    {
+      "name": "settings_about",
+      "value": "정보"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "서재"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "업데이트"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "기록"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "찾아보기"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "더보기"
+    },
+    {
+      "name": "advanced_title",
+      "value": "고급"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "계산 중…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "저장 공간"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "이미지 캐시 지우기"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "이미지 캐시를 지웠습니다"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "쿠키 지우기"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "모든 쿠키를 지웠습니다"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "백업 및 복원"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "백업 내보내기"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "백업 가져오기"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "트래킹"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList 토큰"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList 액세스 토큰"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "액세스 토큰을 붙여넣으세요 (비우면 삭제)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "설정되지 않음"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "설정됨"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "토큰을 저장했습니다"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "토큰을 지웠습니다"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "백업을 내보냈습니다"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "내보내기를 취소했습니다"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "내보내기에 실패했습니다"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "가져오기를 취소했습니다"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "잘못된 백업 파일"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "만화 %d편을 복원했습니다"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "가져오기에 실패했습니다"
+    },
+    {
+      "name": "about_title",
+      "value": "정보"
+    },
+    {
+      "name": "about_version",
+      "value": "버전 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "구성은 Mihon (Apache-2.0)을 참고했습니다. 온라인 소스는 확장 기능으로 동적으로 설치되고, 로컬 소스는 내장되어 있습니다."
+    },
+    {
+      "name": "about_ack",
+      "value": "오픈 소스 감사:\n· Mihon / Tachiyomi — 앱 구성과 상호작용 디자인 (Apache-2.0)\n· Material Symbols — 앱 내 아이콘 (Apache-2.0)\n· MangaDex — 테스트 데이터 소스"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "찾아보기"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "콘텐츠"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "NSFW 소스 표시"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "켜면 확장 기능이 NSFW로 표시한 소스가 찾아보기에 나타납니다"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "다운로드"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "네트워크"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Wi-Fi에서만 다운로드"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "참고: 현재 버전에서 이 스위치는 자리 표시자입니다. 네트워크 종류 감지는 이후 버전에서 제공됩니다"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "서재"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "필터 및 정렬"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "기본 정렬"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "제목"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "최신 회차"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "추가한 날짜"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "읽지 않은 수"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "제목 오름차순"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "기본 필터"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "읽지 않음"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "다운로드됨"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "미완결"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "표시"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "기본 보기"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "격자"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "표지 격자"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "목록"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "격자 열 수"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "자동"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2열"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3열"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4열"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "읽지 않은 수 배지"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "다운로드 배지"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "뷰어"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "읽기 모드"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "기본 모드"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "왼쪽에서 오른쪽"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "오른쪽에서 왼쪽"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "세로 넘김"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "웹툰"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "두 페이지 (가로)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "표시"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "페이지 번호 표시"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "뷰어 배경"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "테마 따르기"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "흰색"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "검정"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "회색"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "뷰어 밝기 재설정"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "밝기를 시스템에 맞췄습니다"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "소스"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "확장 기능"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "이전"
+    },
+    {
+      "name": "browse_pin",
+      "value": "고정"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "고정 해제"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "소스 비활성화"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "소스를 비활성화했습니다"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "고정됨"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "사용 가능한 소스가 없습니다. 확장 기능 탭에서 설치하세요"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "언어 필터"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "전체"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "소스를 사용할 수 없습니다. 확장 기능이 비활성화되었을 수 있습니다"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "모든 소스 검색"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "검색 실패"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "확장 기능 검색"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "일치하는 항목 없음"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "저장소 설정"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "저장소 새로고침"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "이전할 소스 선택"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "서재가 비어 있습니다"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "모두 선택"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "선택 해제"
+    },
+    {
+      "name": "migrate_action",
+      "value": "이전 (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "이전"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "건너뛰기"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d / %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "대상 소스"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "대상 소스에서 만화 검색"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "이 만화로 이전할까요?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "이전됨: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "이전 실패: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "이전 완료"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "사용 가능한 대상 소스가 없습니다"
+    },
+    {
+      "name": "stats_title",
+      "value": "통계"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "개요"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "서재"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "읽은 시간"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "완결"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "작품"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "읽기 시작"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "로컬"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "회차"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "전체"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "읽음"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "다운로드됨"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "트래킹"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "트래킹 중인 작품"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "평균 점수"
+    },
+    {
+      "name": "stats_used",
+      "value": "사용 중"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "해당 없음"
+    },
+    {
+      "name": "stats_week",
+      "value": "주"
+    },
+    {
+      "name": "stats_month",
+      "value": "월"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "이번 주 %s"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "이번 달 %s"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "이 기간에는 읽은 기록이 없습니다"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%d일"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%d시간"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%d분"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%d초"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "일"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "월"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "화"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "수"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "목"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "금"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "토"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "세로 넘김"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "스마트 그립"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "세로 고정"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "가로 고정"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "일반"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "색상 필터"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "회색조"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "색상 반전"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "대비"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "채도"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "가장자리 자르기"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "탭 영역"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "기본"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "왼쪽에서 오른쪽"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "오른쪽에서 왼쪽"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "세로"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "가장자리"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "없음"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "두 페이지"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "웹툰 옆 여백"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "스마트 그립"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "로컬에서 설치"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "확장 기능 정보"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "버전"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "언어"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "확장 기능 제거"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "\"%s\"을(를) 제거할까요? 서재의 만화 데이터는 유지됩니다"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "소스"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "설정"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "불러오는 중…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "설정을 적용하지 못했습니다"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "확장 기능이 없거나 불러오지 않았습니다"
+    },
+    {
+      "name": "action_filter",
+      "value": "필터"
+    },
+    {
+      "name": "action_update_library",
+      "value": "서재 업데이트"
+    },
+    {
+      "name": "action_update_category",
+      "value": "카테고리 업데이트"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "무작위 작품 열기"
+    },
+    {
+      "name": "action_select_all",
+      "value": "모두 선택"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "선택 반전"
+    },
+    {
+      "name": "action_move_category",
+      "value": "카테고리 이동"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "읽음으로 표시"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "읽지 않음으로 표시"
+    },
+    {
+      "name": "action_download",
+      "value": "다운로드"
+    },
+    {
+      "name": "action_delete",
+      "value": "삭제"
+    },
+    {
+      "name": "action_migrate",
+      "value": "이전"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "서재에서 제거"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "선택한 만화 %d편을 서재에서 제거할까요?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "다운로드 %d개를 추가했습니다"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "서재 검색"
+    },
+    {
+      "name": "library_no_match",
+      "value": "일치하는 만화가 없습니다"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "필터"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "정렬"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "표시"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "다운로드됨"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "읽지 않음"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "읽은 적 있음"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "북마크됨"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "완결"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "트래킹 중"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "제목"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "회차 수"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "최근 읽음"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "업데이트 확인"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "읽지 않은 수"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "작품 업데이트"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "회차 가져온 시간"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "추가한 날짜"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "무작위"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "촘촘한 격자"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "넉넉한 격자"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "표지 격자"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "목록"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "한 줄 개수"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "자동"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "배지와 버튼"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "다운로드된 회차 수"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "읽지 않은 회차"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "로컬 소스"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "언어"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "이어서 읽기 버튼"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "탭"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "카테고리 탭 표시"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "작품 수 표시"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "Honyomi 카드"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "홈 화면 카드 제공"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "이어서 읽기"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "최근 읽은 만화를 바로 이어 읽습니다"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "업데이트"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "서재의 최신 읽지 않은 회차"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "이어서 읽기"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "업데이트"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "읽지 않음 %d화"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "아직 읽은 기록이 없습니다"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "읽지 않은 회차가 없습니다"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "탭하여 앱 열기"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "만화 카드"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "상세에서 추가하고 표지를 눌러 읽기"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "만화 상세에서 홈 화면에 추가"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "홈 화면에 추가"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "홈 화면에 추가했습니다"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "카드를 추가하지 못했습니다"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "주간 통계"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "이번 주 하루 읽은 시간"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "월간 통계"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "이번 달 하루 읽은 시간"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "아직 읽은 기록이 없습니다"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "예정된 업데이트 표시"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "업데이트 예정"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "업데이트 예정 안내"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "이전 달"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "다음 달"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "포함과 제외 카테고리에 모두 속한 작품은 표시되지 않습니다."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "오늘"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d일 전"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "%d일 후"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "업데이트 예정"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "서재 만화의 예상 업데이트 달력"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "업데이트 예정"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "서재에 연재 중인 만화가 없습니다"
+    }
+  ]
 }

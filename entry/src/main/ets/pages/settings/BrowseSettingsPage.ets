@@ -20,6 +20,7 @@ export struct BrowseSettingsContent {
             }
           })
         }
+
         Text($r('app.string.browse_set_nsfw_hint'))
           .fontSize(12)
           .fontColor(this.pal.sub)

@@ -14,39 +14,6 @@ const DM_DUR_VALUES: number[] = [12, 10, 8, 6];
 export struct PlayerSettingsContent {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
-  private speedLabels(): string[] {
-    const labels: string[] = [];
-    for (let i = 0; i < SPEED_VALUES.length; i++) {
-      labels.push(SPEED_VALUES[i] === 1.0 ? '1.0x' : `${SPEED_VALUES[i]}x`);
-    }
-    return labels;
-  }
-
-  private speedIndex(): number {
-    const i = SPEED_VALUES.indexOf(Settings.getVideoSpeed());
-    return i >= 0 ? i : 2;
-  }
-
-  private fontIndex(): number {
-    const i = DM_FONT_VALUES.indexOf(Settings.getDanmakuFont());
-    return i >= 0 ? i : 2;
-  }
-
-  private opacityIndex(): number {
-    const i = DM_OPACITY_VALUES.indexOf(Settings.getDanmakuOpacityPct());
-    return i >= 0 ? i : 2;
-  }
-
-  private areaIndex(): number {
-    const i = DM_AREA_VALUES.indexOf(Settings.getDanmakuAreaPct());
-    return i >= 0 ? i : 1;
-  }
-
-  private durIndex(): number {
-    const i = DM_DUR_VALUES.indexOf(Settings.getDanmakuDurationSec());
-    return i >= 0 ? i : 1;
-  }
-
   build() {
     Scroll() {
       Column({ space: 12 }) {
@@ -128,7 +95,12 @@ export struct PlayerSettingsContent {
           Text($r('app.string.player_set_danmaku_source'))
             .fontSize(12)
             .fontColor(this.pal.sub)
-            .padding({ left: 16, right: 16, top: 10, bottom: 12 })
+            .padding({
+              left: 16,
+              right: 16,
+              top: 10,
+              bottom: 12
+            })
         }
       }
       .width('100%')
@@ -138,6 +110,39 @@ export struct PlayerSettingsContent {
     .height('100%')
     .scrollBar(BarState.Off)
     .align(Alignment.TopStart)
+  }
+
+  private speedLabels(): string[] {
+    const labels: string[] = [];
+    for (let i = 0; i < SPEED_VALUES.length; i++) {
+      labels.push(SPEED_VALUES[i] === 1.0 ? '1.0x' : `${SPEED_VALUES[i]}x`);
+    }
+    return labels;
+  }
+
+  private speedIndex(): number {
+    const i = SPEED_VALUES.indexOf(Settings.getVideoSpeed());
+    return i >= 0 ? i : 2;
+  }
+
+  private fontIndex(): number {
+    const i = DM_FONT_VALUES.indexOf(Settings.getDanmakuFont());
+    return i >= 0 ? i : 2;
+  }
+
+  private opacityIndex(): number {
+    const i = DM_OPACITY_VALUES.indexOf(Settings.getDanmakuOpacityPct());
+    return i >= 0 ? i : 2;
+  }
+
+  private areaIndex(): number {
+    const i = DM_AREA_VALUES.indexOf(Settings.getDanmakuAreaPct());
+    return i >= 0 ? i : 1;
+  }
+
+  private durIndex(): number {
+    const i = DM_DUR_VALUES.indexOf(Settings.getDanmakuDurationSec());
+    return i >= 0 ? i : 1;
   }
 }
 

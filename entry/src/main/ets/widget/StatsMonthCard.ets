@@ -12,21 +12,6 @@ struct StatsMonthCard {
   @LocalStorageProp('bars') bars: string = '';
   @LocalStorageProp('empty') empty: boolean = false;
 
-  private barList(): string[] {
-    if (this.bars === '') {
-      return [];
-    }
-    return this.bars.split(',');
-  }
-
-  private barHeight(h: string): number {
-    return Number(h);
-  }
-
-  private barColor(h: string): ResourceColor {
-    return Number(h) > 2 ? $r('app.color.honyomi_primary_blue') : $r('app.color.honyomi_chip');
-  }
-
   build() {
     Column() {
       // 标题栏：月统计 + 年月
@@ -43,7 +28,12 @@ struct StatsMonthCard {
           .maxLines(1)
       }
       .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 4 })
+      .padding({
+        left: 16,
+        right: 16,
+        top: 12,
+        bottom: 4
+      })
 
       if (this.empty) {
         // 空状态
@@ -101,5 +91,20 @@ struct StatsMonthCard {
         'params': { 'cardTarget': 'stats' }
       });
     })
+  }
+
+  private barList(): string[] {
+    if (this.bars === '') {
+      return [];
+    }
+    return this.bars.split(',');
+  }
+
+  private barHeight(h: string): number {
+    return Number(h);
+  }
+
+  private barColor(h: string): ResourceColor {
+    return Number(h) > 2 ? $r('app.color.honyomi_primary_blue') : $r('app.color.honyomi_chip');
   }
 }

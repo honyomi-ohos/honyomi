@@ -1,4 +1,3 @@
-import { common } from '@kit.AbilityKit';
 import { curves } from '@kit.ArkUI';
 import { AppDb } from '../data/AppDb';
 import { CategoryRepo } from '../data/Repos';
@@ -41,6 +40,208 @@ export struct CategoriesPage {
     }).catch((_e: Error): void => {
       Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
     });
+  }
+
+  @Builder
+  itemSheetBuilder() {
+    PickerSheet({
+      options: [$r('app.string.categories_rename'), $r('app.string.common_delete')],
+      selectedIndex: -1,
+      onPick: (index: number): void => {
+        this.showItemSheet = false;
+        const cat: CategoryRecord | null = this.menuCat;
+        if (cat === null) {
+          return;
+        }
+        if (index === 0) {
+          this.showRename(cat);
+        } else if (index === 1) {
+          CategoryRepo.remove(cat.id).then(() => {
+            this.reload();
+          }).catch((_e: Error): void => {
+            Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
+          });
+        }
+      }
+    })
+  }
+
+  @Builder
+  headerRight() {
+    AppIcon({ name: 'add', iconSize: 24 })
+      .padding(8)
+      .onClick(() => {
+        this.showAdd();
+      })
+  }
+
+  build() {
+    NavDestination() {
+      LimitedBody({ maxWidth: 960 }) {
+        this.bodyContent()
+      }
+    }
+    .hideTitleBar(true)
+    .backgroundColor(this.pal.bg)
+  }
+
+  // 页面主体：LimitedBody 承载，大屏限宽居中，窄屏全宽
+  @Builder
+  bodyContent() {
+    Column() {
+      PageHeader({ title: $r('app.string.categories_title') }) {
+        this.headerRight()
+      }
+
+      Column() {
+        List({ space: 0 }) {
+          ForEach(this.categories, (cat: CategoryRecord) => {
+            ListItem() {
+              Row() {
+                AppIcon({ name: 'drag_handle', iconSize: 20 })
+                Text(Util.categoryLabel(cat.name))
+                  .fontSize(16)
+                  .fontColor(this.pal.text)
+                  .layoutWeight(1)
+                  .margin({ left: 14 })
+                  .maxLines(1)
+                if (this.isDefaultCat(cat)) {
+                  Text($r('app.string.common_default'))
+                    .fontSize(11)
+                    .fontColor(this.pal.sub)
+                    .backgroundColor(this.pal.chip)
+                    .borderRadius(8)
+                    .padding({
+                      left: 8,
+                      right: 8,
+                      top: 3,
+                      bottom: 3
+                    })
+                } else {
+                  AppIcon({ name: 'expand_more', iconSize: 20 })
+                }
+              }
+              .width('100%')
+              .padding({
+                left: 16,
+                right: 16,
+                top: 14,
+                bottom: 14
+              })
+              .backgroundColor(this.dragId === cat.id ? this.pal.card : Color.Transparent)
+              .borderRadius(this.dragId === cat.id ? 12 : 0)
+              .shadow(this.dragId === cat.id
+                ? {
+                  radius: 20,
+                  offsetX: 0,
+                  offsetY: 6,
+                  color: this.isDark ? '#99000000' : '#2E000000'
+                }
+                : { radius: 0 })
+              .onClick(() => {
+                this.showItemMenu(cat);
+              })
+            }
+            .zIndex(this.dragId === cat.id ? 1 : 0)
+            .scale(this.dragId === cat.id ? { x: 1.02, y: 1.02 } : { x: 1, y: 1 })
+            .translate({ y: this.dragId === cat.id ? this.offsetY : 0 })
+            .onAreaChange((_oldArea: Area, newArea: Area) => {
+              // 行高仅在首行测量一次（各行等高，作为换位阈值）
+              if (this.rowH <= 0 && typeof newArea.height === 'number') {
+                this.rowH = newArea.height;
+              }
+            })
+            .gesture(
+              GestureGroup(GestureMode.Sequence,
+                LongPressGesture({ repeat: false, duration: 300 })
+                  .onAction(() => {
+                    // 长按浮起待拖拽
+                    this.getUIContext().animateTo({ duration: 120, curve: Curve.Friction }, (): void => {
+                      this.dragId = cat.id;
+                      this.offsetY = 0;
+                    });
+                  })
+                  .onActionEnd(() => {
+                    // 长按后未拖动直接松手：取消浮起
+                    if (!this.panning) {
+                      this.endDrag();
+                    }
+                  }),
+                PanGesture({ fingers: 1, direction: PanDirection.Vertical, distance: 0 })
+                  .onActionStart(() => {
+                    this.panning = true;
+                    this.dragRefOffsetY = 0;
+                  })
+                  .onActionUpdate((event: GestureEvent) => {
+                    this.offsetY = event.offsetY - this.dragRefOffsetY;
+                    const index: number =
+                      this.categories.findIndex((c: CategoryRecord): boolean => c.id === this.dragId);
+                    if (this.rowH <= 0 || index < 0) {
+                      return;
+                    }
+                    // 越过半行高时弹簧动画换位（其余行滑动让位）
+                    this.getUIContext().animateTo(
+                      { curve: curves.interpolatingSpring(0, 1, 400, 38) }, (): void => {
+                      if (this.offsetY >= this.rowH / 2 && index < this.categories.length - 1) {
+                        this.offsetY -= this.rowH;
+                        this.dragRefOffsetY += this.rowH;
+                        this.itemMove(index, index + 1);
+                      } else if (this.offsetY <= -this.rowH / 2 && index > 0) {
+                        this.offsetY += this.rowH;
+                        this.dragRefOffsetY -= this.rowH;
+                        this.itemMove(index, index - 1);
+                      }
+                    });
+                  })
+                  .onActionEnd(() => {
+                    this.panning = false;
+                    this.endDrag();
+                  })
+                  .onActionCancel(() => {
+                    this.panning = false;
+                    this.endDrag();
+                  })
+              )
+            )
+          }, (cat: CategoryRecord) => `cat-${cat.id}-${cat.name}`)
+        }
+        .layoutWeight(1)
+        .scrollBar(BarState.Auto)
+        .divider({
+          strokeWidth: 1,
+          color: this.pal.divider,
+          startMargin: 16,
+          endMargin: 16,
+        })
+      }
+      .width('100%')
+      .layoutWeight(1)
+
+      Text($r('app.string.categories_hint'))
+        .fontSize(11)
+        .fontColor(this.pal.sub)
+        .width('100%')
+        .textAlign(TextAlign.Center)
+        .padding({
+          left: 12,
+          right: 12,
+          top: 12,
+          bottom: this.navBarH + 12
+        })
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor(this.pal.bg)
+    .bindSheet($$this.showItemSheet, this.itemSheetBuilder(), {
+      preferType: Bp.sheetType(this.windowW),
+      width: Bp.sheetWidth(this.windowW),
+      height: SheetSize.FIT_CONTENT,
+      title: { title: this.menuCat === null ? '' : Util.categoryLabel(this.menuCat.name) },
+      detents: [SheetSize.FIT_CONTENT],
+      dragBar: true,
+      showClose: false,
+      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
+    })
   }
 
   private reload(): void {
@@ -146,187 +347,6 @@ export struct CategoriesPage {
       this.reload();
       Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
     });
-  }
-
-  @Builder
-  itemSheetBuilder() {
-    PickerSheet({
-      options: [$r('app.string.categories_rename'), $r('app.string.common_delete')],
-      selectedIndex: -1,
-      onPick: (index: number): void => {
-        this.showItemSheet = false;
-        const cat: CategoryRecord | null = this.menuCat;
-        if (cat === null) {
-          return;
-        }
-        if (index === 0) {
-          this.showRename(cat);
-        } else if (index === 1) {
-          CategoryRepo.remove(cat.id).then(() => {
-            this.reload();
-          }).catch((_e: Error): void => {
-            Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
-          });
-        }
-      }
-    })
-  }
-
-  @Builder
-  headerRight() {
-    AppIcon({ name: 'add', iconSize: 24 })
-      .padding(8)
-      .onClick(() => {
-        this.showAdd();
-      })
-  }
-
-  build() {
-    NavDestination() {
-      LimitedBody({ maxWidth: 960 }) {
-        this.bodyContent()
-      }
-    }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
-  }
-
-  // 页面主体：LimitedBody 承载，大屏限宽居中，窄屏全宽
-  @Builder
-  bodyContent() {
-      Column() {
-        PageHeader({ title: $r('app.string.categories_title') }) {
-          this.headerRight()
-        }
-        Column() {
-          List({ space: 0 }) {
-            ForEach(this.categories, (cat: CategoryRecord) => {
-              ListItem() {
-                Row() {
-                  AppIcon({ name: 'drag_handle', iconSize: 20 })
-                  Text(Util.categoryLabel(cat.name))
-                    .fontSize(16)
-                    .fontColor(this.pal.text)
-                    .layoutWeight(1)
-                    .margin({ left: 14 })
-                    .maxLines(1)
-                  if (this.isDefaultCat(cat)) {
-                    Text($r('app.string.common_default'))
-                      .fontSize(11)
-                      .fontColor(this.pal.sub)
-                      .backgroundColor(this.pal.chip)
-                      .borderRadius(8)
-                      .padding({ left: 8, right: 8, top: 3, bottom: 3 })
-                  } else {
-                    AppIcon({ name: 'expand_more', iconSize: 20 })
-                  }
-                }
-                .width('100%')
-                .padding({ left: 16, right: 16, top: 14, bottom: 14 })
-                .backgroundColor(this.dragId === cat.id ? this.pal.card : Color.Transparent)
-                .borderRadius(this.dragId === cat.id ? 12 : 0)
-                .shadow(this.dragId === cat.id
-                  ? { radius: 20, offsetX: 0, offsetY: 6, color: this.isDark ? '#99000000' : '#2E000000' }
-                  : { radius: 0 })
-                .onClick(() => {
-                  this.showItemMenu(cat);
-                })
-              }
-              .zIndex(this.dragId === cat.id ? 1 : 0)
-              .scale(this.dragId === cat.id ? { x: 1.02, y: 1.02 } : { x: 1, y: 1 })
-              .translate({ y: this.dragId === cat.id ? this.offsetY : 0 })
-              .onAreaChange((_oldArea: Area, newArea: Area) => {
-                // 行高仅在首行测量一次（各行等高，作为换位阈值）
-                if (this.rowH <= 0 && typeof newArea.height === 'number') {
-                  this.rowH = newArea.height;
-                }
-              })
-              .gesture(
-                GestureGroup(GestureMode.Sequence,
-                  LongPressGesture({ repeat: false, duration: 300 })
-                    .onAction(() => {
-                      // 长按浮起待拖拽
-                      this.getUIContext().animateTo({ duration: 120, curve: Curve.Friction }, (): void => {
-                        this.dragId = cat.id;
-                        this.offsetY = 0;
-                      });
-                    })
-                    .onActionEnd(() => {
-                      // 长按后未拖动直接松手：取消浮起
-                      if (!this.panning) {
-                        this.endDrag();
-                      }
-                    }),
-                  PanGesture({ fingers: 1, direction: PanDirection.Vertical, distance: 0 })
-                    .onActionStart(() => {
-                      this.panning = true;
-                      this.dragRefOffsetY = 0;
-                    })
-                    .onActionUpdate((event: GestureEvent) => {
-                      this.offsetY = event.offsetY - this.dragRefOffsetY;
-                      const index: number =
-                        this.categories.findIndex((c: CategoryRecord): boolean => c.id === this.dragId);
-                      if (this.rowH <= 0 || index < 0) {
-                        return;
-                      }
-                      // 越过半行高时弹簧动画换位（其余行滑动让位）
-                      this.getUIContext().animateTo(
-                        { curve: curves.interpolatingSpring(0, 1, 400, 38) }, (): void => {
-                          if (this.offsetY >= this.rowH / 2 && index < this.categories.length - 1) {
-                            this.offsetY -= this.rowH;
-                            this.dragRefOffsetY += this.rowH;
-                            this.itemMove(index, index + 1);
-                          } else if (this.offsetY <= -this.rowH / 2 && index > 0) {
-                            this.offsetY += this.rowH;
-                            this.dragRefOffsetY -= this.rowH;
-                            this.itemMove(index, index - 1);
-                          }
-                        });
-                    })
-                    .onActionEnd(() => {
-                      this.panning = false;
-                      this.endDrag();
-                    })
-                    .onActionCancel(() => {
-                      this.panning = false;
-                      this.endDrag();
-                    })
-                )
-              )
-            }, (cat: CategoryRecord) => `cat-${cat.id}-${cat.name}`)
-          }
-          .layoutWeight(1)
-          .scrollBar(BarState.Auto)
-          .divider({
-            strokeWidth: 1,
-            color: this.pal.divider,
-            startMargin: 16,
-            endMargin: 16,
-          })
-        }
-        .width('100%')
-        .layoutWeight(1)
-
-        Text($r('app.string.categories_hint'))
-          .fontSize(11)
-          .fontColor(this.pal.sub)
-          .width('100%')
-          .textAlign(TextAlign.Center)
-          .padding({ left: 12, right: 12, top: 12, bottom: this.navBarH + 12 })
-      }
-      .width('100%')
-      .height('100%')
-      .backgroundColor(this.pal.bg)
-      .bindSheet($$this.showItemSheet, this.itemSheetBuilder(), {
-        preferType: Bp.sheetType(this.windowW),
-        width: Bp.sheetWidth(this.windowW),
-        height: SheetSize.FIT_CONTENT,
-        title: { title: this.menuCat === null ? '' : Util.categoryLabel(this.menuCat.name) },
-        detents: [SheetSize.FIT_CONTENT],
-        dragBar: true,
-        showClose: false,
-        blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
-      })
   }
 }
 

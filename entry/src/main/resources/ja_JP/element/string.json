@@ -1,621 +1,2472 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "ライブラリにある項目はフィルターされます" },
-    { "name": "more_incognito_summary", "value": "閲覧履歴の記録を一時停止します" },
-    { "name": "more_support", "value": "支援する" },
-    { "name": "more_help", "value": "ヘルプ" },
-    { "name": "support_perks", "value": "支援者は限定チャンネルにアクセスできるほか、今後さらに多くの特典が追加される予定です。" },
-    { "name": "support_patreon", "value": "Patreon（推奨）" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon は現在、%d 人以上の支援者の方々にご支援いただいています。皆様一人ひとりに心より感謝申し上げます。共に Mihon をさらに素晴らしいものにしていきましょう。" },
-    { "name": "support_contact_msg", "value": "代替案や関連するご質問については、Discord サーバーにご参加ください。" },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "データとストレージ" },
-    { "name": "data_storage_location", "value": "保存場所" },
-    { "name": "data_storage_location_info", "value": "自動バックアップ、章ダウンロード、ローカルソースに使用されます。" },
-    { "name": "data_backup_restore", "value": "バックアップと復元" },
-    { "name": "data_create_backup", "value": "バックアップを作成" },
-    { "name": "data_restore_backup", "value": "バックアップを復元" },
-    { "name": "data_backup_interval", "value": "自動バックアップの頻度" },
-    { "name": "data_backup_info", "value": "バックアップのコピーは、他の場所にも保管しておくことをお勧めします。バックアップには、保存されたパスワードなど、機密情報が含まれている場合がありますので、共有する際は十分注意してください。" },
-    { "name": "data_last_auto_backup", "value": "前回の自動バックアップ: %s" },
-    { "name": "data_storage_usage", "value": "使用中のストレージ領域" },
-    { "name": "data_available_space", "value": "空き容量: %s / 合計: %s" },
-    { "name": "data_clear_chapter_cache", "value": "章キャッシュを消去" },
-    { "name": "data_used_cache", "value": "サイズ: %s" },
-    { "name": "data_cache_deleted", "value": "キャッシュがクリアされ、%d 個のファイルが削除されました" },
-    { "name": "data_cache_delete_error", "value": "消去中にエラーが発生しました" },
-    { "name": "data_auto_clear_cache", "value": "アプリ起動時に章のキャッシュを消去" },
-    { "name": "data_export", "value": "エクスポート" },
-    { "name": "data_library_list", "value": "ライブラリリスト" },
-    { "name": "data_library_exported", "value": "ライブラリをエクスポートしました" },
-    { "name": "data_export_include", "value": "移行するデータを選択" },
-    { "name": "data_column_title", "value": "タイトル" },
-    { "name": "data_column_author", "value": "著者" },
-    { "name": "data_interval_off", "value": "オフ" },
-    { "name": "data_interval_6h", "value": "6 時間ごと" },
-    { "name": "data_interval_12h", "value": "12 時間ごと" },
-    { "name": "data_interval_24h", "value": "毎日" },
-    { "name": "data_interval_48h", "value": "2 日ごと" },
-    { "name": "data_interval_weekly", "value": "毎週" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "OK" },
-    { "name": "common_cancel", "value": "キャンセル" },
-    { "name": "common_confirm", "value": "確認" },
-    { "name": "common_delete", "value": "削除" },
-    { "name": "common_retry", "value": "再試行" },
-    { "name": "common_search", "value": "検索" },
-    { "name": "common_all", "value": "すべて" },
-    { "name": "common_close", "value": "閉じる" },
-    { "name": "common_save", "value": "保存" },
-    { "name": "common_install", "value": "インストール" },
-    { "name": "common_uninstall", "value": "アンインストール" },
-    { "name": "common_update", "value": "更新" },
-    { "name": "common_none", "value": "なし" },
-    { "name": "common_default", "value": "デフォルト" },
-    { "name": "appearance_title", "value": "外観" },
-    { "name": "appearance_language", "value": "言語" },
-    { "name": "lang_follow_system", "value": "システムに従う" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "テーマモード" },
-    { "name": "appearance_theme_auto", "value": "システムに従う" },
-    { "name": "appearance_theme_light", "value": "ライト" },
-    { "name": "appearance_theme_dark", "value": "ダーク" },
-    { "name": "appearance_accent_color", "value": "アクセントカラー" },
-    { "name": "appearance_other", "value": "その他" },
-    { "name": "appearance_amoled", "value": "AMOLED 純黒背景" },
-    { "name": "theme_accent_blue", "value": "青" },
-    { "name": "theme_accent_green", "value": "緑" },
-    { "name": "theme_accent_pink", "value": "ピンク" },
-    { "name": "theme_accent_purple", "value": "紫" },
-    { "name": "theme_accent_orange", "value": "オレンジ" },
-    { "name": "util_time_minutes_ago", "value": "%d分前" },
-    { "name": "util_time_hours_ago", "value": "%d時間前" },
-    { "name": "util_time_days_ago", "value": "%d日前" },
-    { "name": "util_status_ongoing", "value": "連載中" },
-    { "name": "util_status_completed", "value": "完結" },
-    { "name": "util_status_hiatus", "value": "休載中" },
-    { "name": "util_status_cancelled", "value": "打ち切り" },
-    { "name": "util_status_publication_complete", "value": "刊行完了" },
-    { "name": "util_status_unknown", "value": "不明" },
-    { "name": "tab_library", "value": "本棚" },
-    { "name": "tab_updates", "value": "更新" },
-    { "name": "tab_history", "value": "履歴" },
-    { "name": "tab_browse", "value": "探す" },
-    { "name": "tab_more", "value": "その他" },
-    { "name": "tab_cf_waiting", "value": "認証を待っています…" },
-    { "name": "tab_cf_verified", "value": "認証完了" },
-    { "name": "tab_cf_title", "value": "人による確認" },
-    { "name": "tab_cf_done", "value": "完了" },
-    { "name": "tab_cf_saved", "value": "認証結果を保存しました" },
-    { "name": "more_title", "value": "その他" },
-    { "name": "more_version", "value": "バージョン %s" },
-    { "name": "more_downloaded_only", "value": "ダウンロード済みのみ" },
-    { "name": "more_incognito", "value": "シークレットモード" },
-    { "name": "more_downloads", "value": "ダウンロードキュー" },
-    { "name": "more_categories", "value": "カテゴリ" },
-    { "name": "more_settings", "value": "設定" },
-    { "name": "more_about", "value": "このアプリについて" },
-    { "name": "more_plugins", "value": "拡張機能" },
-    { "name": "categories_title", "value": "カテゴリ" },
-    { "name": "categories_add", "value": "カテゴリを追加" },
-    { "name": "categories_name_placeholder", "value": "カテゴリ名" },
-    { "name": "categories_rename_category", "value": "カテゴリ名を変更" },
-    { "name": "categories_rename", "value": "名前を変更" },
-    { "name": "categories_hint", "value": "カテゴリを長押しすると名前の変更や削除ができます。削除したカテゴリの漫画は「デフォルト」に戻ります" },
-    { "name": "dialog_pick_category", "value": "カテゴリを選択" },
-    { "name": "viewer_loading", "value": "読み込み中…" },
-    { "name": "viewer_load_failed", "value": "画像の読み込みに失敗しました" },
-    { "name": "viewer_tap_retry", "value": "タップして再試行" },
-    { "name": "library_title", "value": "本棚" },
-    { "name": "library_empty", "value": "本棚は空です。探すから漫画を追加しましょう" },
-    { "name": "library_new_category", "value": "カテゴリを追加" },
-    { "name": "library_category_name", "value": "カテゴリ名" },
-    { "name": "updates_title", "value": "更新" },
-    { "name": "updates_empty", "value": "最近の更新はありません" },
-    { "name": "updates_found_new", "value": "新しい話を %d 件見つけました" },
-    { "name": "updates_no_new", "value": "新しい話はありません" },
-    { "name": "updates_refresh_failed", "value": "更新に失敗しました" },
-    { "name": "updates_refreshing", "value": "更新中…" },
-    { "name": "history_title", "value": "履歴" },
-    { "name": "history_clear", "value": "消去" },
-    { "name": "history_confirm_clear", "value": "消去しますか？" },
-    { "name": "history_empty", "value": "まだ閲覧履歴がありません" },
-    { "name": "history_cleared", "value": "履歴を消去しました" },
-    { "name": "history_continue", "value": "続きから" },
-    { "name": "browse_title", "value": "探す" },
-    { "name": "browse_import", "value": "取り込み" },
-    { "name": "browse_plugins", "value": "拡張機能" },
-    { "name": "browse_local_source_name", "value": "ローカル漫画" },
-    { "name": "browse_popular", "value": "人気" },
-    { "name": "browse_latest", "value": "最新" },
-    { "name": "browse_search_hint", "value": "漫画を検索…" },
-    { "name": "browse_no_results", "value": "漫画が見つかりません" },
-    { "name": "browse_local_empty", "value": "ローカル漫画はまだありません。取り込みをタップして追加" },
-    { "name": "browse_load_failed", "value": "読み込み失敗：%s" },
-    { "name": "browse_search_failed", "value": "検索失敗：%s" },
-    { "name": "browse_load_more_failed", "value": "続きの読み込みに失敗しました" },
-    { "name": "browse_open_detail_failed", "value": "詳細を開けませんでした" },
-    { "name": "browse_pick_file_failed", "value": "ファイルを選べませんでした" },
-    { "name": "browse_import_title", "value": "%d 件のファイルを取り込み" },
-    { "name": "browse_manga_name_hint", "value": "漫画名" },
-    { "name": "browse_input_name", "value": "名前を入力してください" },
-    { "name": "browse_import_done", "value": "%d 件のファイルを取り込みました" },
-    { "name": "browse_import_failed", "value": "取り込み失敗：%s" },
-    { "name": "download_title", "value": "ダウンロード" },
-    { "name": "download_resume", "value": "再開" },
-    { "name": "download_pause", "value": "一時停止" },
-    { "name": "download_clear_finished", "value": "完了済みを消去" },
-    { "name": "download_queue", "value": "ダウンロードキュー" },
-    { "name": "download_state_queued", "value": "待機中" },
-    { "name": "download_state_downloading", "value": "ダウンロード中" },
-    { "name": "download_state_done", "value": "完了" },
-    { "name": "download_state_failed", "value": "失敗" },
-    { "name": "download_move_top", "value": "一番上へ" },
-    { "name": "download_move_bottom", "value": "一番下へ" },
-    { "name": "download_deleted", "value": "削除しました" },
-    { "name": "download_empty", "value": "ダウンロードはまだありません" },
-    { "name": "download_status_downloaded", "value": "ダウンロード済み" },
-    { "name": "download_chapter_count", "value": "%d 話" },
-    { "name": "detail_no_chapters", "value": "話がありません" },
-    { "name": "detail_sync_failed_local", "value": "同期に失敗したため、ローカルデータを表示しています" },
-    { "name": "detail_added_to_library", "value": "本棚に追加しました" },
-    { "name": "detail_removed_from_library", "value": "本棚から外しました" },
-    { "name": "detail_all_marked_read", "value": "すべての話を既読にしました" },
-    { "name": "detail_download_queued", "value": "ダウンロードキューに追加しました" },
-    { "name": "detail_config_anilist_token", "value": "先に AniList トークンを設定してください" },
-    { "name": "detail_search_anilist", "value": "AniList を検索" },
-    { "name": "detail_manga_title_hint", "value": "漫画タイトル" },
-    { "name": "detail_no_search_results", "value": "検索結果がありません" },
-    { "name": "detail_anilist_search_failed", "value": "AniList の検索に失敗しました" },
-    { "name": "detail_anilist_bound", "value": "AniList に連携しました" },
-    { "name": "detail_anilist_unbound", "value": "AniList の連携を解除しました" },
-    { "name": "detail_synced_progress", "value": "進捗を第 %d 話まで同期しました" },
-    { "name": "detail_anilist_sync_failed", "value": "AniList の同期に失敗しました" },
-    { "name": "detail_status_local", "value": "ローカル" },
-    { "name": "detail_in_library", "value": "本棚に追加済み" },
-    { "name": "detail_add_to_library", "value": "本棚に追加" },
-    { "name": "detail_continue_reading", "value": "続きを読む" },
-    { "name": "detail_start_reading", "value": "読み始める" },
-    { "name": "detail_no_chapters_yet", "value": "まだ話がありません" },
-    { "name": "detail_collapse", "value": "折りたたむ" },
-    { "name": "detail_expand", "value": "展開" },
-    { "name": "detail_anilist_tracking", "value": "AniList トラッキング" },
-    { "name": "detail_anilist_token_hint", "value": "AniList トークンは未設定です" },
-    { "name": "detail_searching", "value": "検索中…" },
-    { "name": "detail_search_and_bind", "value": "検索して連携" },
-    { "name": "detail_bind", "value": "連携" },
-    { "name": "detail_synced_to_chapter", "value": "第 %d 話まで同期済み" },
-    { "name": "detail_sync_progress", "value": "進捗を同期" },
-    { "name": "detail_unbind", "value": "連携解除" },
-    { "name": "detail_chapters_count", "value": "話（%d）" },
-    { "name": "detail_sort_asc", "value": "昇順" },
-    { "name": "detail_sort_desc", "value": "降順" },
-    { "name": "detail_mark_all_read", "value": "すべて既読" },
-    { "name": "detail_read", "value": "既読" },
-    { "name": "detail_downloaded", "value": "ダウンロード済み" },
-    { "name": "detail_in_queue", "value": "キュー内" },
-    { "name": "detail_download", "value": "ダウンロード" },
-    { "name": "reader_chapter_not_found", "value": "話が見つかりません" },
-    { "name": "reader_load_failed", "value": "読み込み失敗：%s" },
-    { "name": "reader_mode_ltr", "value": "左から右" },
-    { "name": "reader_mode_rtl", "value": "右から左" },
-    { "name": "reader_mode_webtoon", "value": "ウェブトゥーン" },
-    { "name": "reader_reading_mode", "value": "閲覧モード" },
-    { "name": "reader_orientation_free", "value": "自由" },
-    { "name": "reader_orientation_portrait", "value": "縦向き" },
-    { "name": "reader_orientation_landscape", "value": "横向き" },
-    { "name": "reader_screen_orientation", "value": "画面の向き" },
-    { "name": "reader_last_chapter", "value": "すでに最後の話です" },
-    { "name": "reader_first_chapter", "value": "すでに最初の話です" },
-    { "name": "reader_first_page", "value": "すでに最初のページです" },
-    { "name": "reader_last_page", "value": "すでに最後のページです" },
-    { "name": "reader_loading_chapter", "value": "話を読み込み中…" },
-    { "name": "reader_settings", "value": "ビューア設定" },
-    { "name": "reader_background", "value": "背景" },
-    { "name": "reader_theme_auto", "value": "自動" },
-    { "name": "reader_theme_white", "value": "白" },
-    { "name": "reader_theme_gray", "value": "グレー" },
-    { "name": "reader_theme_black", "value": "黒" },
-    { "name": "reader_show_page_number", "value": "ページ番号を表示" },
-    { "name": "reader_brightness", "value": "明るさ" },
-    { "name": "reader_auto", "value": "自動" },
-    { "name": "plugin_title", "value": "拡張機能" },
-    { "name": "plugin_installed_section", "value": "インストール済み" },
-    { "name": "plugin_empty", "value": "拡張機能はまだありません。下からインストール" },
-    { "name": "plugin_disable_hint", "value": "無効にした拡張機能はいつでも再有効化できます" },
-    { "name": "plugin_up_to_date", "value": "最新です" },
-    { "name": "plugin_local_install", "value": "ファイルからインストール" },
-    { "name": "plugin_install_from_file", "value": "ファイルを選んでインストール" },
-    { "name": "plugin_processing", "value": "処理中…" },
-    { "name": "plugin_package_hint", "value": ".honyomiplug / .zip の拡張機能パッケージに対応" },
-    { "name": "plugin_repo", "value": "オンラインリポジトリ" },
-    { "name": "plugin_repo_config", "value": "リポジトリを設定" },
-    { "name": "plugin_repo_refresh", "value": "更新" },
-    { "name": "plugin_repo_hint", "value": "拡張機能リポジトリは未設定です" },
-    { "name": "plugin_repo_loading", "value": "リポジトリを読み込み中…" },
-    { "name": "plugin_repo_url_title", "value": "拡張機能リポジトリ URL" },
-    { "name": "plugin_repo_url_hint", "value": "拡張機能リポジトリの URL を入力" },
-    { "name": "plugin_repo_load_failed", "value": "リポジトリの読み込みに失敗：%s" },
-    { "name": "plugin_pick_file_failed", "value": "ファイルを選べませんでした" },
-    { "name": "plugin_installed", "value": "インストールしました：%s" },
-    { "name": "plugin_installed_name", "value": "%s をインストールしました" },
-    { "name": "plugin_install_failed", "value": "インストール失敗：%s" },
-    { "name": "plugin_action_failed", "value": "操作に失敗しました" },
-    { "name": "plugin_uninstalled", "value": "アンインストールしました：%s" },
-    { "name": "plugin_uninstall_failed", "value": "アンインストールに失敗しました" },
-    { "name": "settings_title", "value": "設定" },
-    { "name": "settings_general", "value": "一般" },
-    { "name": "settings_start_tab", "value": "起動画面" },
-    { "name": "settings_personalization", "value": "カスタマイズ" },
-    { "name": "settings_library", "value": "本棚" },
-    { "name": "settings_reader", "value": "ビューア" },
-    { "name": "settings_data", "value": "データ" },
-    { "name": "settings_downloads", "value": "ダウンロード" },
-    { "name": "settings_browse", "value": "探す" },
-    { "name": "settings_advanced", "value": "高度な設定" },
-    { "name": "settings_about", "value": "このアプリについて" },
-    { "name": "settings_tab_library", "value": "本棚" },
-    { "name": "settings_tab_updates", "value": "更新" },
-    { "name": "settings_tab_history", "value": "履歴" },
-    { "name": "settings_tab_browse", "value": "探す" },
-    { "name": "settings_tab_more", "value": "その他" },
-    { "name": "advanced_title", "value": "高度な設定" },
-    { "name": "advanced_calculating", "value": "計算中…" },
-    { "name": "advanced_storage", "value": "ストレージ" },
-    { "name": "advanced_clear_image_cache", "value": "画像キャッシュを消去" },
-    { "name": "advanced_image_cache_cleared", "value": "画像キャッシュを消去しました" },
-    { "name": "advanced_clear_cookies", "value": "Cookie を消去" },
-    { "name": "advanced_cookies_cleared", "value": "すべての Cookie を消去しました" },
-    { "name": "advanced_backup_restore", "value": "バックアップと復元" },
-    { "name": "advanced_export_backup", "value": "バックアップを書き出し" },
-    { "name": "advanced_import_backup", "value": "バックアップを取り込み" },
-    { "name": "advanced_tracking", "value": "トラッキング" },
-    { "name": "advanced_anilist_token", "value": "AniList トークン" },
-    { "name": "advanced_token_title", "value": "AniList アクセストークン" },
-    { "name": "advanced_token_hint", "value": "アクセストークンを貼り付け（空にすると消去）" },
-    { "name": "advanced_token_not_set", "value": "未設定" },
-    { "name": "advanced_token_set", "value": "設定済み" },
-    { "name": "advanced_token_saved", "value": "トークンを保存しました" },
-    { "name": "advanced_token_cleared", "value": "トークンを消去しました" },
-    { "name": "advanced_backup_exported", "value": "バックアップを書き出しました" },
-    { "name": "advanced_export_canceled", "value": "書き出しをキャンセルしました" },
-    { "name": "advanced_export_failed", "value": "書き出しに失敗しました" },
-    { "name": "advanced_import_canceled", "value": "取り込みをキャンセルしました" },
-    { "name": "advanced_backup_invalid", "value": "バックアップファイルが無効です" },
-    { "name": "advanced_restored_manga", "value": "%d 作品を復元しました" },
-    { "name": "advanced_import_failed", "value": "取り込みに失敗しました" },
-    { "name": "about_title", "value": "このアプリについて" },
-    { "name": "about_version", "value": "バージョン 1.0.0" },
-    { "name": "about_desc", "value": "構成は Mihon (Apache-2.0) を参考にしています。オンラインソースは拡張機能として動的にインストールし、ローカルソースは内蔵です。" },
-    { "name": "about_ack", "value": "オープンソース謝辞：\n· Mihon / Tachiyomi — アプリ構成と操作デザイン (Apache-2.0)\n· Material Symbols — アプリ内アイコン (Apache-2.0)\n· MangaDex — テスト用データソース" },
-    { "name": "browse_set_title", "value": "探す" },
-    { "name": "browse_set_content", "value": "コンテンツ" },
-    { "name": "browse_set_show_nsfw", "value": "NSFW ソースを表示" },
-    { "name": "browse_set_nsfw_hint", "value": "オンにすると、拡張機能が NSFW と示したソースが「探す」に表示されます" },
-    { "name": "dl_set_title", "value": "ダウンロード" },
-    { "name": "dl_set_network", "value": "ネットワーク" },
-    { "name": "dl_set_wifi_only", "value": "Wi-Fi のみでダウンロード" },
-    { "name": "dl_set_wifi_only_hint", "value": "注：このスイッチは現行バージョンではプレースホルダーです。ネットワーク種別の検出は今後追加予定です" },
-    { "name": "lib_set_title", "value": "本棚" },
-    { "name": "lib_set_sort_group", "value": "絞り込みと並べ替え" },
-    { "name": "lib_set_sort_default", "value": "デフォルトの並べ替え" },
-    { "name": "lib_set_sort_title", "value": "タイトル" },
-    { "name": "lib_set_sort_last_update", "value": "最新話" },
-    { "name": "lib_set_sort_added", "value": "追加日" },
-    { "name": "lib_set_sort_unread", "value": "未読数" },
-    { "name": "lib_set_sort_asc", "value": "タイトル昇順" },
-    { "name": "lib_set_filter_default", "value": "デフォルトの絞り込み" },
-    { "name": "lib_set_filter_unread", "value": "未読" },
-    { "name": "lib_set_filter_downloaded", "value": "ダウンロード済み" },
-    { "name": "lib_set_filter_uncompleted", "value": "未完結" },
-    { "name": "lib_set_display_group", "value": "表示" },
-    { "name": "lib_set_view_default", "value": "デフォルト表示" },
-    { "name": "lib_set_view_grid", "value": "グリッド" },
-    { "name": "lib_set_view_cover", "value": "カバーグリッド" },
-    { "name": "lib_set_view_list", "value": "リスト" },
-    { "name": "lib_set_grid_cols", "value": "グリッド列数" },
-    { "name": "lib_set_cols_auto", "value": "自動" },
-    { "name": "lib_set_cols_2", "value": "2列" },
-    { "name": "lib_set_cols_3", "value": "3列" },
-    { "name": "lib_set_cols_4", "value": "4列" },
-    { "name": "lib_set_unread_badge", "value": "未読バッジ" },
-    { "name": "lib_set_download_badge", "value": "ダウンロードバッジ" },
-    { "name": "reader_set_title", "value": "ビューア" },
-    { "name": "reader_set_mode_group", "value": "閲覧モード" },
-    { "name": "reader_set_mode_default", "value": "デフォルトモード" },
-    { "name": "reader_set_mode_ltr", "value": "左から右" },
-    { "name": "reader_set_mode_rtl", "value": "右から左" },
-    { "name": "reader_set_mode_vertical", "value": "縦方向のページ送り" },
-    { "name": "reader_set_mode_webtoon", "value": "ウェブトゥーン" },
-    { "name": "reader_set_dual_page", "value": "見開き（横向き）" },
-    { "name": "reader_set_display_group", "value": "表示" },
-    { "name": "reader_set_show_page_number", "value": "ページ番号を表示" },
-    { "name": "reader_set_bg_color", "value": "ビューアの背景" },
-    { "name": "reader_set_theme_follow", "value": "テーマに従う" },
-    { "name": "reader_set_theme_white", "value": "白" },
-    { "name": "reader_set_theme_black", "value": "黒" },
-    { "name": "reader_set_theme_gray", "value": "グレー" },
-    { "name": "reader_set_reset_brightness", "value": "ビューアの明るさをリセット" },
-    { "name": "reader_set_brightness_reset", "value": "明るさをシステムに合わせました" },
-    { "name": "browse_tab_sources", "value": "ソース" },
-    { "name": "browse_tab_extensions", "value": "拡張機能" },
-    { "name": "browse_tab_migrate", "value": "移行" },
-    { "name": "browse_pin", "value": "ピン留め" },
-    { "name": "browse_unpin", "value": "ピン留めを解除" },
-    { "name": "browse_disable_source", "value": "ソースを無効化" },
-    { "name": "browse_source_disabled", "value": "ソースを無効にしました" },
-    { "name": "browse_pinned", "value": "ピン留め済み" },
-    { "name": "browse_sources_empty", "value": "利用できるソースがありません。拡張機能タブからインストールしてください" },
-    { "name": "browse_filter_langs", "value": "言語で絞り込み" },
-    { "name": "browse_filter_all", "value": "すべて" },
-    { "name": "browse_source_missing", "value": "ソースを利用できません。拡張機能が無効になっている可能性があります" },
-    { "name": "global_search_hint", "value": "すべてのソースを検索" },
-    { "name": "global_search_failed", "value": "検索に失敗しました" },
-    { "name": "ext_search_hint", "value": "拡張機能を検索" },
-    { "name": "ext_search_no_match", "value": "一致するものがありません" },
-    { "name": "ext_repo_settings", "value": "リポジトリの設定" },
-    { "name": "ext_refresh_repo", "value": "リポジトリを更新" },
-    { "name": "migrate_pick_source", "value": "移行するソースを選択" },
-    { "name": "migrate_empty_library", "value": "本棚は空です" },
-    { "name": "migrate_select_all", "value": "すべて選択" },
-    { "name": "migrate_deselect_all", "value": "選択をすべて解除" },
-    { "name": "migrate_action", "value": "移行 (%d)" },
-    { "name": "migrate_title", "value": "移行" },
-    { "name": "migrate_skip", "value": "スキップ" },
-    { "name": "migrate_progress", "value": "%d / %d" },
-    { "name": "migrate_target_source", "value": "移行先のソース" },
-    { "name": "migrate_search_hint", "value": "移行先のソースで漫画を検索" },
-    { "name": "migrate_confirm_title", "value": "この漫画に移行しますか？" },
-    { "name": "migrate_item_done", "value": "移行しました：%s" },
-    { "name": "migrate_failed", "value": "移行に失敗しました：%s" },
-    { "name": "migrate_done", "value": "移行が完了しました" },
-    { "name": "migrate_no_target", "value": "移行先のソースがありません" },
-    { "name": "stats_title", "value": "統計" },
-    { "name": "stats_overview_section", "value": "概要" },
-    { "name": "stats_in_library", "value": "本棚" },
-    { "name": "stats_read_duration", "value": "読書時間" },
-    { "name": "stats_completed_titles", "value": "完結" },
-    { "name": "stats_titles_section", "value": "作品" },
-    { "name": "stats_started_titles", "value": "読み始めた" },
-    { "name": "stats_local_titles", "value": "ローカル" },
-    { "name": "stats_chapters_section", "value": "話" },
-    { "name": "stats_total_chapters", "value": "合計" },
-    { "name": "stats_read_chapters", "value": "既読" },
-    { "name": "stats_downloaded_chapters", "value": "ダウンロード済み" },
-    { "name": "stats_tracker_section", "value": "トラッキング" },
-    { "name": "stats_tracked_titles", "value": "トラッキング中の作品" },
-    { "name": "stats_mean_score", "value": "平均スコア" },
-    { "name": "stats_used", "value": "使用中" },
-    { "name": "stats_not_applicable", "value": "該当なし" },
-    { "name": "stats_week", "value": "週" },
-    { "name": "stats_month", "value": "月" },
-    { "name": "stats_week_total", "value": "今週 %s" },
-    { "name": "stats_month_total", "value": "今月 %s" },
-    { "name": "stats_no_reading", "value": "この期間の読書はありません" },
-    { "name": "stats_day_short", "value": "%d日" },
-    { "name": "stats_hour_short", "value": "%d時間" },
-    { "name": "stats_minute_short", "value": "%d分" },
-    { "name": "stats_second_short", "value": "%d秒" },
-    { "name": "stats_wd_sun", "value": "日" },
-    { "name": "stats_wd_mon", "value": "月" },
-    { "name": "stats_wd_tue", "value": "火" },
-    { "name": "stats_wd_wed", "value": "水" },
-    { "name": "stats_wd_thu", "value": "木" },
-    { "name": "stats_wd_fri", "value": "金" },
-    { "name": "stats_wd_sat", "value": "土" },
-    { "name": "reader_mode_vertical", "value": "縦方向のページ送り" },
-    { "name": "reader_mode_smart_grip", "value": "スマートグリップ" },
-    { "name": "reader_orientation_lock_portrait", "value": "縦向きに固定" },
-    { "name": "reader_orientation_lock_landscape", "value": "横向きに固定" },
-    { "name": "reader_tab_general", "value": "一般" },
-    { "name": "reader_tab_filter", "value": "カラーフィルター" },
-    { "name": "reader_filter_grayscale", "value": "グレースケール" },
-    { "name": "reader_filter_invert", "value": "色反転" },
-    { "name": "reader_filter_contrast", "value": "コントラスト" },
-    { "name": "reader_filter_saturation", "value": "彩度" },
-    { "name": "reader_crop_borders", "value": "余白を切り抜く" },
-    { "name": "reader_nav_tap_zones", "value": "タップ領域" },
-    { "name": "reader_nav_default", "value": "デフォルト" },
-    { "name": "reader_nav_ltr", "value": "左から右" },
-    { "name": "reader_nav_rtl", "value": "右から左" },
-    { "name": "reader_nav_vertical", "value": "縦" },
-    { "name": "reader_nav_edge", "value": "端" },
-    { "name": "reader_nav_none", "value": "なし" },
-    { "name": "reader_dual_page", "value": "見開き" },
-    { "name": "reader_webtoon_padding", "value": "ウェブトゥーンの左右余白" },
-    { "name": "reader_set_mode_smart_grip", "value": "スマートグリップ" },
-    { "name": "ext_install_local", "value": "ローカルからインストール" },
-    { "name": "ext_detail_title", "value": "拡張機能の情報" },
-    { "name": "ext_info_version", "value": "バージョン" },
-    { "name": "ext_info_language", "value": "言語" },
-    { "name": "ext_uninstall_title", "value": "拡張機能をアンインストール" },
-    { "name": "ext_uninstall_msg", "value": "「%s」をアンインストールしますか？本棚の漫画データは残ります" },
-    { "name": "ext_detail_sources", "value": "ソース" },
-    { "name": "ext_detail_settings", "value": "設定" },
-    { "name": "ext_pref_loading", "value": "読み込み中…" },
-    { "name": "ext_pref_failed", "value": "設定を適用できませんでした" },
-    { "name": "ext_detail_missing", "value": "拡張機能がないか、読み込まれていません" },
-    { "name": "action_filter", "value": "絞り込み" },
-    { "name": "action_update_library", "value": "本棚を更新" },
-    { "name": "action_update_category", "value": "カテゴリを更新" },
-    { "name": "action_open_random_manga", "value": "作品をランダムに開く" },
-    { "name": "action_select_all", "value": "すべて選択" },
-    { "name": "action_select_inverse", "value": "選択を反転" },
-    { "name": "action_move_category", "value": "カテゴリへ移動" },
-    { "name": "action_mark_as_read", "value": "既読にする" },
-    { "name": "action_mark_as_unread", "value": "未読にする" },
-    { "name": "action_download", "value": "ダウンロード" },
-    { "name": "action_delete", "value": "削除" },
-    { "name": "action_migrate", "value": "移行" },
-    { "name": "action_remove_from_library", "value": "本棚から外す" },
-    { "name": "action_remove_from_library_msg", "value": "選択した %d 作品を本棚から外しますか？" },
-    { "name": "action_download_queued", "value": "ダウンロードを %d 件追加しました" },
-    { "name": "library_search_hint", "value": "本棚を検索" },
-    { "name": "library_no_match", "value": "一致する漫画がありません" },
-    { "name": "lib_sheet_tab_filter", "value": "絞り込み" },
-    { "name": "lib_sheet_tab_sort", "value": "並べ替え" },
-    { "name": "lib_sheet_tab_display", "value": "表示" },
-    { "name": "lib_filter_downloaded", "value": "ダウンロード済み" },
-    { "name": "lib_filter_unread", "value": "未読" },
-    { "name": "lib_filter_started", "value": "読み始めた" },
-    { "name": "lib_filter_bookmarked", "value": "ブックマーク済み" },
-    { "name": "lib_filter_completed", "value": "完結" },
-    { "name": "lib_filter_tracked", "value": "トラッキング中" },
-    { "name": "lib_sort_alpha", "value": "タイトル" },
-    { "name": "lib_sort_total", "value": "話数" },
-    { "name": "lib_sort_last_read", "value": "最近読んだ" },
-    { "name": "lib_sort_last_update", "value": "更新確認" },
-    { "name": "lib_sort_unread", "value": "未読数" },
-    { "name": "lib_sort_latest_chapter", "value": "作品の更新日時" },
-    { "name": "lib_sort_fetch_date", "value": "話の取得日時" },
-    { "name": "lib_sort_date_added", "value": "追加日" },
-    { "name": "lib_sort_random", "value": "ランダム" },
-    { "name": "lib_display_compact", "value": "コンパクトグリッド" },
-    { "name": "lib_display_comfortable", "value": "ゆったりグリッド" },
-    { "name": "lib_display_cover", "value": "カバーグリッド" },
-    { "name": "lib_display_list", "value": "リスト" },
-    { "name": "lib_display_grid_size", "value": "1行あたり" },
-    { "name": "lib_display_grid_auto", "value": "自動" },
-    { "name": "lib_display_badges_group", "value": "バッジとボタン" },
-    { "name": "lib_badge_downloaded", "value": "ダウンロード済みの話数" },
-    { "name": "lib_badge_unread", "value": "未読の話" },
-    { "name": "lib_badge_local", "value": "ローカルソース" },
-    { "name": "lib_badge_language", "value": "言語" },
-    { "name": "lib_badge_continue", "value": "続きを読むボタン" },
-    { "name": "lib_display_tabs_group", "value": "タブ" },
-    { "name": "lib_show_category_tabs", "value": "カテゴリタブを表示" },
-    { "name": "lib_show_manga_count", "value": "作品数を表示" },
-    { "name": "EntryFormAbility_label", "value": "Honyomi カード" },
-    { "name": "EntryFormAbility_desc", "value": "ホーム画面カードの提供元" },
-    { "name": "card_recent_display", "value": "続きを読む" },
-    { "name": "card_recent_desc", "value": "最近読んだ漫画をすぐ続きから読めます" },
-    { "name": "card_updates_display", "value": "更新" },
-    { "name": "card_updates_desc", "value": "本棚の最新の未読話" },
-    { "name": "card_recent_header", "value": "続きを読む" },
-    { "name": "card_updates_header", "value": "更新" },
-    { "name": "card_unread_count", "value": "未読 %d 話" },
-    { "name": "card_empty_recent", "value": "まだ読書の履歴がありません" },
-    { "name": "card_empty_updates", "value": "未読の話はありません" },
-    { "name": "card_open_hint", "value": "タップしてアプリを開く" },
-    { "name": "card_manga_display", "value": "漫画カード" },
-    { "name": "card_manga_desc", "value": "詳細から追加し、カバーをタップして読む" },
-    { "name": "card_manga_empty", "value": "漫画の詳細からホーム画面に追加" },
-    { "name": "detail_add_to_desktop", "value": "ホーム画面に追加" },
-    { "name": "detail_card_added", "value": "ホーム画面に追加しました" },
-    { "name": "detail_card_add_failed", "value": "カードを追加できませんでした" },
-    { "name": "card_stats_week_display", "value": "週間統計" },
-    { "name": "card_stats_week_desc", "value": "今週の日ごとの読書時間" },
-    { "name": "card_stats_month_display", "value": "月間統計" },
-    { "name": "card_stats_month_desc", "value": "今月の日ごとの読書時間" },
-    { "name": "card_stats_empty", "value": "まだ読書記録がありません" },
-    { "name": "action_view_upcoming", "value": "更新予定を表示" },
-    { "name": "label_upcoming", "value": "更新予定" },
-    { "name": "upcoming_guide", "value": "更新予定ガイド" },
-    { "name": "upcoming_calendar_prev", "value": "前の月" },
-    { "name": "upcoming_calendar_next", "value": "次の月" },
-    { "name": "pref_filter_update_categories_details", "value": "含めるカテゴリと除外するカテゴリの両方にある作品は表示されません。" },
-    { "name": "relative_time_today", "value": "今日" },
-    { "name": "relative_time_days_ago", "value": "%d日前" },
-    { "name": "upcoming_relative_time_days", "value": "%d日後" },
-    { "name": "card_upcoming_display", "value": "更新予定" },
-    { "name": "card_upcoming_desc", "value": "本棚の漫画の更新予定カレンダー" },
-    { "name": "card_upcoming_header", "value": "更新予定" },
-    { "name": "card_empty_upcoming", "value": "本棚に連載中の漫画がありません" },
-    { "name": "chapter_badge_new", "value": "NEW" },
-    { "name": "detail_sync_in_progress", "value": "同期中です。しばらくお待ちください" },
-    { "name": "detail_download_failed", "value": "ダウンロードに失敗しました" },
-    { "name": "detail_load_failed", "value": "詳細の読み込みに失敗しました" },
-    { "name": "detail_invalid_params", "value": "ページのパラメータが無効です" },
-    { "name": "detail_dl_preparing", "value": "ダウンロードを準備しています…" },
-    { "name": "library_move_failed", "value": "カテゴリーの移動に失敗しました" },
-    { "name": "migrate_load_failed", "value": "移行リストの読み込みに失敗しました" },
-    { "name": "common_op_failed", "value": "操作に失敗しました" },
-    { "name": "cf_load_error", "value": "読み込みエラー：%s" },
-    { "name": "cf_loading", "value": "読み込み中…" },
-    { "name": "cf_load_failed", "value": "読み込みに失敗しました：%s" },
-    { "name": "cf_http_prefix", "value": "HTTP %d" },
-    { "name": "cf_render_exited", "value": "レンダリングが終了しました（%d）" },
-    { "name": "badge_type_text", "value": "文" },
-    { "name": "badge_type_video", "value": "動" },
-    { "name": "badge_type_manga", "value": "漫" },
-    { "name": "last_backup_failed_hint", "value": "前回の自動バックアップに失敗しました" },
-    { "name": "category_manga", "value": "マンガ" },
-    { "name": "category_novel", "value": "小説" },
-    { "name": "category_video", "value": "アニメ" },
-    { "name": "util_status_licensed", "value": "ライセンス済み" },
-    { "name": "tts_error_busy", "value": "音声エンジンがビジー状態です。しばらくしてからもう一度お試しください" },
-    { "name": "tts_error_stalled", "value": "音声エンジンの応答がなくなったため、読み上げを停止しました" },
-    { "name": "tts_error_unavailable", "value": "音声エンジンを利用できません" },
-    { "name": "cf_retry_hint", "value": "サイトにはロボット判定の認証が必要です。認証ページを完了してから再試行してください" },
-    { "name": "reader_source_unavailable", "value": "ソースを利用できません" },
-    { "name": "reader_no_content", "value": "この章には本文がありません" },
-    { "name": "video_play_failed", "value": "再生に失敗しました" },
-    { "name": "video_no_streams", "value": "再生可能な動画がありません" },
-    { "name": "video_quality_local", "value": "ローカル" },
-    { "name": "download_error_cancelled", "value": "キャンセルされました" },
-    { "name": "download_error_failed", "value": "ダウンロードに失敗しました" },
-    { "name": "download_error_timeout", "value": "ダウンロードがタイムアウトしました（サーバーから長時間応答がありません）" },
-    { "name": "download_error_fail", "value": "ダウンロードに失敗しました (%s)" },
-    { "name": "download_error_stream_only", "value": "この動画はオンラインストリーミングのためダウンロードできません" },
-    { "name": "download_error_not_ready", "value": "ダウンロードサービスが初期化されていません" },
-    { "name": "download_error_source_missing", "value": "ソースが見つかりません：%s" },
-    { "name": "local_error_chapter_missing", "value": "章のファイルが見つかりません" },
-    { "name": "local_error_unsupported_format", "value": "サポートされていない章の形式です" },
-    { "name": "local_error_video_missing", "value": "動画ファイルが見つかりません" },
-    { "name": "local_desc_manga", "value": "ローカルから取り込んだマンガ" },
-    { "name": "local_desc_novel", "value": "ローカルから取り込んだ小説" },
-    { "name": "local_desc_video", "value": "ローカルから取り込んだ動画" },
-    { "name": "net_redirect_blocked", "value": "非 https へのリダイレクトをブロックしました：%s" },
-    { "name": "net_too_many_redirects", "value": "リダイレクトが多すぎます：%s" },
-    { "name": "net_host_resolve_failed", "value": "サーバーアドレスを解決できませんでした。ネットワークを確認して再試行してください" },
-    { "name": "net_connect_failed", "value": "サーバーに接続できませんでした。ネットワークを確認して再試行してください" },
-    { "name": "net_timeout", "value": "リクエストがタイムアウトしました。しばらくしてから再試行してください" },
-    { "name": "net_ssl_failed", "value": "セキュア接続に失敗しました（SSL エラー）。しばらくしてから再試行してください" },
-    { "name": "net_interrupted", "value": "接続が中断されました。再試行してください" },
-    { "name": "net_request_failed", "value": "ネットワークリクエストに失敗しました：%s" },
-    { "name": "jsvm_error_engine_create", "value": "JSVM エンジンの作成に失敗しました" },
-    { "name": "jsvm_error_script_failed", "value": "プラグインスクリプトの実行に失敗しました" },
-    { "name": "ext_error_not_loaded", "value": "拡張機能が読み込まれていません" },
-    { "name": "ext_error_broken", "value": "拡張機能が破損しています。再インストールまたは再読み込みしてください" },
-    { "name": "ext_error_init_failed", "value": "拡張機能の初期化に失敗しました" },
-    { "name": "ext_error_init_timeout", "value": "拡張機能の初期化がタイムアウトしました" },
-    { "name": "ext_error_call_timeout", "value": "拡張機能の呼び出しがタイムアウトしました：%s" },
-    { "name": "ext_error_call_failed", "value": "拡張機能の呼び出しに失敗しました" },
-    { "name": "ext_error_invalid_json", "value": "拡張機能が無効な JSON を返しました" },
-    { "name": "ext_error_unknown", "value": "不明な拡張機能エラーです" },
-    { "name": "plugin_error_bad_key", "value": "manifest.key が無効です（小文字英数字とアンダースコアのみ）" },
-    { "name": "plugin_error_missing_name", "value": "manifest.name がありません" },
-    { "name": "plugin_error_bad_version_code", "value": "manifest.versionCode が無効です" },
-    { "name": "plugin_error_bad_engine", "value": "サポートされていないプラグインエンジンです：%s（jsvm のみ対応）" },
-    { "name": "plugin_error_dsl_too_new", "value": "このプラグインには新しいバージョンのアプリが必要です（%s）。先にアプリを更新してください" },
-    { "name": "plugin_error_app_too_old", "value": "このプラグインにはバージョンコード %s 以上のアプリが必要です。先にアプリを更新してください" },
-    { "name": "plugin_error_read_failed", "value": "選択したファイルの読み取りに失敗しました：%s" },
-    { "name": "plugin_error_repo_not_https", "value": "プラグインパッケージの URL は https を使用してください" },
-    { "name": "plugin_error_checksum_mismatch", "value": "プラグインの整合性チェックに失敗しました（sha256 不一致）。インストールを中止しました" },
-    { "name": "plugin_error_missing_main", "value": "プラグインパッケージに main.js がありません" },
-    { "name": "plugin_error_replace_failed", "value": "プラグインディレクトリの置き換えに失敗しました：%s" },
-    { "name": "plugin_error_no_manifest", "value": "プラグインパッケージ内に manifest.json が見つかりません" },
-    { "name": "plugin_error_repo_entry_not_https", "value": "リポジトリの URL は https を使用してください。http:// のエントリは拒否されました" },
-    { "name": "plugin_error_runtime_invalid", "value": "プラグインの runtime 名が無効です：%s" },
-    { "name": "plugin_error_runtime_missing", "value": "プラグインのランタイムコンポーネントが見つかりません：plugin_runtime_%s.js" },
-    { "name": "plugin_error_invalid_detail", "value": "プラグインの詳細情報が無効です" },
-    { "name": "plugin_error_no_chapter_text", "value": "プラグインが getChapterText をエクスポートしていません" },
-    { "name": "plugin_error_no_video_list", "value": "プラグインが getVideoList をエクスポートしていません" },
-    { "name": "plugin_error_write_failed", "value": "プラグインパッケージの保存に失敗しました：%s" },
-    { "name": "plugin_error_uninstall_failed", "value": "プラグインディレクトリの削除に失敗しました：%s" },
-    { "name": "plugin_error_start_read_failed", "value": "インストール済みプラグインファイルの読み込みに失敗しました：%s" },
-    { "name": "plugin_error_checksum_failed", "value": "プラグインパッケージの整合性検証に失敗しました：%s" },
-    { "name": "plugin_error_extract_failed", "value": "プラグインパッケージの展開に失敗しました：%s" },
-    { "name": "plugin_error_manifest_read_failed", "value": "プラグインパッケージ内の manifest.json の読み込みに失敗しました：%s" },
-    { "name": "plugin_error_stage_failed", "value": "プラグインファイルのステージングに失敗しました：%s" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "ライブラリにある項目はフィルターされます"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "閲覧履歴の記録を一時停止します"
+    },
+    {
+      "name": "more_support",
+      "value": "支援する"
+    },
+    {
+      "name": "more_help",
+      "value": "ヘルプ"
+    },
+    {
+      "name": "support_perks",
+      "value": "支援者は限定チャンネルにアクセスできるほか、今後さらに多くの特典が追加される予定です。"
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon（推奨）"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon は現在、%d 人以上の支援者の方々にご支援いただいています。皆様一人ひとりに心より感謝申し上げます。共に Mihon をさらに素晴らしいものにしていきましょう。"
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "代替案や関連するご質問については、Discord サーバーにご参加ください。"
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "データとストレージ"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "保存場所"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "自動バックアップ、章ダウンロード、ローカルソースに使用されます。"
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "バックアップと復元"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "バックアップを作成"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "バックアップを復元"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "自動バックアップの頻度"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "バックアップのコピーは、他の場所にも保管しておくことをお勧めします。バックアップには、保存されたパスワードなど、機密情報が含まれている場合がありますので、共有する際は十分注意してください。"
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "前回の自動バックアップ: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "使用中のストレージ領域"
+    },
+    {
+      "name": "data_available_space",
+      "value": "空き容量: %s / 合計: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "章キャッシュを消去"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "サイズ: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "キャッシュがクリアされ、%d 個のファイルが削除されました"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "消去中にエラーが発生しました"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "アプリ起動時に章のキャッシュを消去"
+    },
+    {
+      "name": "data_export",
+      "value": "エクスポート"
+    },
+    {
+      "name": "data_library_list",
+      "value": "ライブラリリスト"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "ライブラリをエクスポートしました"
+    },
+    {
+      "name": "data_export_include",
+      "value": "移行するデータを選択"
+    },
+    {
+      "name": "data_column_title",
+      "value": "タイトル"
+    },
+    {
+      "name": "data_column_author",
+      "value": "著者"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "オフ"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "6 時間ごと"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "12 時間ごと"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "毎日"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "2 日ごと"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "毎週"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "OK"
+    },
+    {
+      "name": "common_cancel",
+      "value": "キャンセル"
+    },
+    {
+      "name": "common_confirm",
+      "value": "確認"
+    },
+    {
+      "name": "common_delete",
+      "value": "削除"
+    },
+    {
+      "name": "common_retry",
+      "value": "再試行"
+    },
+    {
+      "name": "common_search",
+      "value": "検索"
+    },
+    {
+      "name": "common_all",
+      "value": "すべて"
+    },
+    {
+      "name": "common_close",
+      "value": "閉じる"
+    },
+    {
+      "name": "common_save",
+      "value": "保存"
+    },
+    {
+      "name": "common_install",
+      "value": "インストール"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "アンインストール"
+    },
+    {
+      "name": "common_update",
+      "value": "更新"
+    },
+    {
+      "name": "common_none",
+      "value": "なし"
+    },
+    {
+      "name": "common_default",
+      "value": "デフォルト"
+    },
+    {
+      "name": "appearance_title",
+      "value": "外観"
+    },
+    {
+      "name": "appearance_language",
+      "value": "言語"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "システムに従う"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "テーマモード"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "システムに従う"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "ライト"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "ダーク"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "アクセントカラー"
+    },
+    {
+      "name": "appearance_other",
+      "value": "その他"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED 純黒背景"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "青"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "緑"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "ピンク"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "紫"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "オレンジ"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d分前"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d時間前"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d日前"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "連載中"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "完結"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "休載中"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "打ち切り"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "刊行完了"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "不明"
+    },
+    {
+      "name": "tab_library",
+      "value": "本棚"
+    },
+    {
+      "name": "tab_updates",
+      "value": "更新"
+    },
+    {
+      "name": "tab_history",
+      "value": "履歴"
+    },
+    {
+      "name": "tab_browse",
+      "value": "探す"
+    },
+    {
+      "name": "tab_more",
+      "value": "その他"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "認証を待っています…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "認証完了"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "人による確認"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "完了"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "認証結果を保存しました"
+    },
+    {
+      "name": "more_title",
+      "value": "その他"
+    },
+    {
+      "name": "more_version",
+      "value": "バージョン %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "ダウンロード済みのみ"
+    },
+    {
+      "name": "more_incognito",
+      "value": "シークレットモード"
+    },
+    {
+      "name": "more_downloads",
+      "value": "ダウンロードキュー"
+    },
+    {
+      "name": "more_categories",
+      "value": "カテゴリ"
+    },
+    {
+      "name": "more_settings",
+      "value": "設定"
+    },
+    {
+      "name": "more_about",
+      "value": "このアプリについて"
+    },
+    {
+      "name": "more_plugins",
+      "value": "拡張機能"
+    },
+    {
+      "name": "categories_title",
+      "value": "カテゴリ"
+    },
+    {
+      "name": "categories_add",
+      "value": "カテゴリを追加"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "カテゴリ名"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "カテゴリ名を変更"
+    },
+    {
+      "name": "categories_rename",
+      "value": "名前を変更"
+    },
+    {
+      "name": "categories_hint",
+      "value": "カテゴリを長押しすると名前の変更や削除ができます。削除したカテゴリの漫画は「デフォルト」に戻ります"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "カテゴリを選択"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "読み込み中…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "画像の読み込みに失敗しました"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "タップして再試行"
+    },
+    {
+      "name": "library_title",
+      "value": "本棚"
+    },
+    {
+      "name": "library_empty",
+      "value": "本棚は空です。探すから漫画を追加しましょう"
+    },
+    {
+      "name": "library_new_category",
+      "value": "カテゴリを追加"
+    },
+    {
+      "name": "library_category_name",
+      "value": "カテゴリ名"
+    },
+    {
+      "name": "updates_title",
+      "value": "更新"
+    },
+    {
+      "name": "updates_empty",
+      "value": "最近の更新はありません"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "新しい話を %d 件見つけました"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "新しい話はありません"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "更新に失敗しました"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "更新中…"
+    },
+    {
+      "name": "history_title",
+      "value": "履歴"
+    },
+    {
+      "name": "history_clear",
+      "value": "消去"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "消去しますか？"
+    },
+    {
+      "name": "history_empty",
+      "value": "まだ閲覧履歴がありません"
+    },
+    {
+      "name": "history_cleared",
+      "value": "履歴を消去しました"
+    },
+    {
+      "name": "history_continue",
+      "value": "続きから"
+    },
+    {
+      "name": "browse_title",
+      "value": "探す"
+    },
+    {
+      "name": "browse_import",
+      "value": "取り込み"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "拡張機能"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "ローカル漫画"
+    },
+    {
+      "name": "browse_popular",
+      "value": "人気"
+    },
+    {
+      "name": "browse_latest",
+      "value": "最新"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "漫画を検索…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "漫画が見つかりません"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "ローカル漫画はまだありません。取り込みをタップして追加"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "読み込み失敗：%s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "検索失敗：%s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "続きの読み込みに失敗しました"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "詳細を開けませんでした"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "ファイルを選べませんでした"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "%d 件のファイルを取り込み"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "漫画名"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "名前を入力してください"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "%d 件のファイルを取り込みました"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "取り込み失敗：%s"
+    },
+    {
+      "name": "download_title",
+      "value": "ダウンロード"
+    },
+    {
+      "name": "download_resume",
+      "value": "再開"
+    },
+    {
+      "name": "download_pause",
+      "value": "一時停止"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "完了済みを消去"
+    },
+    {
+      "name": "download_queue",
+      "value": "ダウンロードキュー"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "待機中"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "ダウンロード中"
+    },
+    {
+      "name": "download_state_done",
+      "value": "完了"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "失敗"
+    },
+    {
+      "name": "download_move_top",
+      "value": "一番上へ"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "一番下へ"
+    },
+    {
+      "name": "download_deleted",
+      "value": "削除しました"
+    },
+    {
+      "name": "download_empty",
+      "value": "ダウンロードはまだありません"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "ダウンロード済み"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d 話"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "話がありません"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "同期に失敗したため、ローカルデータを表示しています"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "本棚に追加しました"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "本棚から外しました"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "すべての話を既読にしました"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "ダウンロードキューに追加しました"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "先に AniList トークンを設定してください"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "AniList を検索"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "漫画タイトル"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "検索結果がありません"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "AniList の検索に失敗しました"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "AniList に連携しました"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "AniList の連携を解除しました"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "進捗を第 %d 話まで同期しました"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "AniList の同期に失敗しました"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "ローカル"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "本棚に追加済み"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "本棚に追加"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "続きを読む"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "読み始める"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "まだ話がありません"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "折りたたむ"
+    },
+    {
+      "name": "detail_expand",
+      "value": "展開"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList トラッキング"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList トークンは未設定です"
+    },
+    {
+      "name": "detail_searching",
+      "value": "検索中…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "検索して連携"
+    },
+    {
+      "name": "detail_bind",
+      "value": "連携"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "第 %d 話まで同期済み"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "進捗を同期"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "連携解除"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "話（%d）"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "昇順"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "降順"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "すべて既読"
+    },
+    {
+      "name": "detail_read",
+      "value": "既読"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "ダウンロード済み"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "キュー内"
+    },
+    {
+      "name": "detail_download",
+      "value": "ダウンロード"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "話が見つかりません"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "読み込み失敗：%s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "左から右"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "右から左"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "ウェブトゥーン"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "閲覧モード"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "自由"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "縦向き"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "横向き"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "画面の向き"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "すでに最後の話です"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "すでに最初の話です"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "すでに最初のページです"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "すでに最後のページです"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "話を読み込み中…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "ビューア設定"
+    },
+    {
+      "name": "reader_background",
+      "value": "背景"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "自動"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "白"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "グレー"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "黒"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "ページ番号を表示"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "明るさ"
+    },
+    {
+      "name": "reader_auto",
+      "value": "自動"
+    },
+    {
+      "name": "plugin_title",
+      "value": "拡張機能"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "インストール済み"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "拡張機能はまだありません。下からインストール"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "無効にした拡張機能はいつでも再有効化できます"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "最新です"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "ファイルからインストール"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "ファイルを選んでインストール"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "処理中…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": ".honyomiplug / .zip の拡張機能パッケージに対応"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "オンラインリポジトリ"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "リポジトリを設定"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "更新"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "拡張機能リポジトリは未設定です"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "リポジトリを読み込み中…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "拡張機能リポジトリ URL"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "拡張機能リポジトリの URL を入力"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "リポジトリの読み込みに失敗：%s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "ファイルを選べませんでした"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "インストールしました：%s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "%s をインストールしました"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "インストール失敗：%s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "操作に失敗しました"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "アンインストールしました：%s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "アンインストールに失敗しました"
+    },
+    {
+      "name": "settings_title",
+      "value": "設定"
+    },
+    {
+      "name": "settings_general",
+      "value": "一般"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "起動画面"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "カスタマイズ"
+    },
+    {
+      "name": "settings_library",
+      "value": "本棚"
+    },
+    {
+      "name": "settings_reader",
+      "value": "ビューア"
+    },
+    {
+      "name": "settings_data",
+      "value": "データ"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "ダウンロード"
+    },
+    {
+      "name": "settings_browse",
+      "value": "探す"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "高度な設定"
+    },
+    {
+      "name": "settings_about",
+      "value": "このアプリについて"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "本棚"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "更新"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "履歴"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "探す"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "その他"
+    },
+    {
+      "name": "advanced_title",
+      "value": "高度な設定"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "計算中…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "ストレージ"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "画像キャッシュを消去"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "画像キャッシュを消去しました"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "Cookie を消去"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "すべての Cookie を消去しました"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "バックアップと復元"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "バックアップを書き出し"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "バックアップを取り込み"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "トラッキング"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList トークン"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList アクセストークン"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "アクセストークンを貼り付け（空にすると消去）"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "未設定"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "設定済み"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "トークンを保存しました"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "トークンを消去しました"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "バックアップを書き出しました"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "書き出しをキャンセルしました"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "書き出しに失敗しました"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "取り込みをキャンセルしました"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "バックアップファイルが無効です"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "%d 作品を復元しました"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "取り込みに失敗しました"
+    },
+    {
+      "name": "about_title",
+      "value": "このアプリについて"
+    },
+    {
+      "name": "about_version",
+      "value": "バージョン 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "構成は Mihon (Apache-2.0) を参考にしています。オンラインソースは拡張機能として動的にインストールし、ローカルソースは内蔵です。"
+    },
+    {
+      "name": "about_ack",
+      "value": "オープンソース謝辞：\n· Mihon / Tachiyomi — アプリ構成と操作デザイン (Apache-2.0)\n· Material Symbols — アプリ内アイコン (Apache-2.0)\n· MangaDex — テスト用データソース"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "探す"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "コンテンツ"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "NSFW ソースを表示"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "オンにすると、拡張機能が NSFW と示したソースが「探す」に表示されます"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "ダウンロード"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "ネットワーク"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Wi-Fi のみでダウンロード"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "注：このスイッチは現行バージョンではプレースホルダーです。ネットワーク種別の検出は今後追加予定です"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "本棚"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "絞り込みと並べ替え"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "デフォルトの並べ替え"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "タイトル"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "最新話"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "追加日"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "未読数"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "タイトル昇順"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "デフォルトの絞り込み"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "未読"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "ダウンロード済み"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "未完結"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "表示"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "デフォルト表示"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "グリッド"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "カバーグリッド"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "リスト"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "グリッド列数"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "自動"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2列"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3列"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4列"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "未読バッジ"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "ダウンロードバッジ"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "ビューア"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "閲覧モード"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "デフォルトモード"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "左から右"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "右から左"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "縦方向のページ送り"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "ウェブトゥーン"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "見開き（横向き）"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "表示"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "ページ番号を表示"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "ビューアの背景"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "テーマに従う"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "白"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "黒"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "グレー"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "ビューアの明るさをリセット"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "明るさをシステムに合わせました"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "ソース"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "拡張機能"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "移行"
+    },
+    {
+      "name": "browse_pin",
+      "value": "ピン留め"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "ピン留めを解除"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "ソースを無効化"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "ソースを無効にしました"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "ピン留め済み"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "利用できるソースがありません。拡張機能タブからインストールしてください"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "言語で絞り込み"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "すべて"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "ソースを利用できません。拡張機能が無効になっている可能性があります"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "すべてのソースを検索"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "検索に失敗しました"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "拡張機能を検索"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "一致するものがありません"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "リポジトリの設定"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "リポジトリを更新"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "移行するソースを選択"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "本棚は空です"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "すべて選択"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "選択をすべて解除"
+    },
+    {
+      "name": "migrate_action",
+      "value": "移行 (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "移行"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "スキップ"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d / %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "移行先のソース"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "移行先のソースで漫画を検索"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "この漫画に移行しますか？"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "移行しました：%s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "移行に失敗しました：%s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "移行が完了しました"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "移行先のソースがありません"
+    },
+    {
+      "name": "stats_title",
+      "value": "統計"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "概要"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "本棚"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "読書時間"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "完結"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "作品"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "読み始めた"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "ローカル"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "話"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "合計"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "既読"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "ダウンロード済み"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "トラッキング"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "トラッキング中の作品"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "平均スコア"
+    },
+    {
+      "name": "stats_used",
+      "value": "使用中"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "該当なし"
+    },
+    {
+      "name": "stats_week",
+      "value": "週"
+    },
+    {
+      "name": "stats_month",
+      "value": "月"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "今週 %s"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "今月 %s"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "この期間の読書はありません"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%d日"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%d時間"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%d分"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%d秒"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "日"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "月"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "火"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "水"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "木"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "金"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "土"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "縦方向のページ送り"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "スマートグリップ"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "縦向きに固定"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "横向きに固定"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "一般"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "カラーフィルター"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "グレースケール"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "色反転"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "コントラスト"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "彩度"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "余白を切り抜く"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "タップ領域"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "デフォルト"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "左から右"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "右から左"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "縦"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "端"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "なし"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "見開き"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "ウェブトゥーンの左右余白"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "スマートグリップ"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "ローカルからインストール"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "拡張機能の情報"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "バージョン"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "言語"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "拡張機能をアンインストール"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "「%s」をアンインストールしますか？本棚の漫画データは残ります"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "ソース"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "設定"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "読み込み中…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "設定を適用できませんでした"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "拡張機能がないか、読み込まれていません"
+    },
+    {
+      "name": "action_filter",
+      "value": "絞り込み"
+    },
+    {
+      "name": "action_update_library",
+      "value": "本棚を更新"
+    },
+    {
+      "name": "action_update_category",
+      "value": "カテゴリを更新"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "作品をランダムに開く"
+    },
+    {
+      "name": "action_select_all",
+      "value": "すべて選択"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "選択を反転"
+    },
+    {
+      "name": "action_move_category",
+      "value": "カテゴリへ移動"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "既読にする"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "未読にする"
+    },
+    {
+      "name": "action_download",
+      "value": "ダウンロード"
+    },
+    {
+      "name": "action_delete",
+      "value": "削除"
+    },
+    {
+      "name": "action_migrate",
+      "value": "移行"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "本棚から外す"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "選択した %d 作品を本棚から外しますか？"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "ダウンロードを %d 件追加しました"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "本棚を検索"
+    },
+    {
+      "name": "library_no_match",
+      "value": "一致する漫画がありません"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "絞り込み"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "並べ替え"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "表示"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "ダウンロード済み"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "未読"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "読み始めた"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "ブックマーク済み"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "完結"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "トラッキング中"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "タイトル"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "話数"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "最近読んだ"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "更新確認"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "未読数"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "作品の更新日時"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "話の取得日時"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "追加日"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "ランダム"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "コンパクトグリッド"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "ゆったりグリッド"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "カバーグリッド"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "リスト"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "1行あたり"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "自動"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "バッジとボタン"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "ダウンロード済みの話数"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "未読の話"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "ローカルソース"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "言語"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "続きを読むボタン"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "タブ"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "カテゴリタブを表示"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "作品数を表示"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "Honyomi カード"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "ホーム画面カードの提供元"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "続きを読む"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "最近読んだ漫画をすぐ続きから読めます"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "更新"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "本棚の最新の未読話"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "続きを読む"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "更新"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "未読 %d 話"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "まだ読書の履歴がありません"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "未読の話はありません"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "タップしてアプリを開く"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "漫画カード"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "詳細から追加し、カバーをタップして読む"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "漫画の詳細からホーム画面に追加"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "ホーム画面に追加"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "ホーム画面に追加しました"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "カードを追加できませんでした"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "週間統計"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "今週の日ごとの読書時間"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "月間統計"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "今月の日ごとの読書時間"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "まだ読書記録がありません"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "更新予定を表示"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "更新予定"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "更新予定ガイド"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "前の月"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "次の月"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "含めるカテゴリと除外するカテゴリの両方にある作品は表示されません。"
+    },
+    {
+      "name": "relative_time_today",
+      "value": "今日"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d日前"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "%d日後"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "更新予定"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "本棚の漫画の更新予定カレンダー"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "更新予定"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "本棚に連載中の漫画がありません"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "同期中です。しばらくお待ちください"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "ダウンロードに失敗しました"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "詳細の読み込みに失敗しました"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "ページのパラメータが無効です"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "ダウンロードを準備しています…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "カテゴリーの移動に失敗しました"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "移行リストの読み込みに失敗しました"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "操作に失敗しました"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "読み込みエラー：%s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "読み込み中…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "読み込みに失敗しました：%s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "レンダリングが終了しました（%d）"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "文"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "動"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "漫"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "前回の自動バックアップに失敗しました"
+    },
+    {
+      "name": "category_manga",
+      "value": "マンガ"
+    },
+    {
+      "name": "category_novel",
+      "value": "小説"
+    },
+    {
+      "name": "category_video",
+      "value": "アニメ"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "ライセンス済み"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "音声エンジンがビジー状態です。しばらくしてからもう一度お試しください"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "音声エンジンの応答がなくなったため、読み上げを停止しました"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "音声エンジンを利用できません"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "サイトにはロボット判定の認証が必要です。認証ページを完了してから再試行してください"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "ソースを利用できません"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "この章には本文がありません"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "再生に失敗しました"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "再生可能な動画がありません"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "ローカル"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "キャンセルされました"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "ダウンロードに失敗しました"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "ダウンロードがタイムアウトしました（サーバーから長時間応答がありません）"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "ダウンロードに失敗しました (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "この動画はオンラインストリーミングのためダウンロードできません"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "ダウンロードサービスが初期化されていません"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "ソースが見つかりません：%s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "章のファイルが見つかりません"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "サポートされていない章の形式です"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "動画ファイルが見つかりません"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "ローカルから取り込んだマンガ"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "ローカルから取り込んだ小説"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "ローカルから取り込んだ動画"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "非 https へのリダイレクトをブロックしました：%s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "リダイレクトが多すぎます：%s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "サーバーアドレスを解決できませんでした。ネットワークを確認して再試行してください"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "サーバーに接続できませんでした。ネットワークを確認して再試行してください"
+    },
+    {
+      "name": "net_timeout",
+      "value": "リクエストがタイムアウトしました。しばらくしてから再試行してください"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "セキュア接続に失敗しました（SSL エラー）。しばらくしてから再試行してください"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "接続が中断されました。再試行してください"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "ネットワークリクエストに失敗しました：%s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "JSVM エンジンの作成に失敗しました"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "プラグインスクリプトの実行に失敗しました"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "拡張機能が読み込まれていません"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "拡張機能が破損しています。再インストールまたは再読み込みしてください"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "拡張機能の初期化に失敗しました"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "拡張機能の初期化がタイムアウトしました"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "拡張機能の呼び出しがタイムアウトしました：%s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "拡張機能の呼び出しに失敗しました"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "拡張機能が無効な JSON を返しました"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "不明な拡張機能エラーです"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "manifest.key が無効です（小文字英数字とアンダースコアのみ）"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name がありません"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "manifest.versionCode が無効です"
+    },
+    {
+      "name": "plugin_error_bad_engine",
+      "value": "サポートされていないプラグインエンジンです：%s（jsvm のみ対応）"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "このプラグインには新しいバージョンのアプリが必要です（%s）。先にアプリを更新してください"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "このプラグインにはバージョンコード %s 以上のアプリが必要です。先にアプリを更新してください"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "選択したファイルの読み取りに失敗しました：%s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "プラグインパッケージの URL は https を使用してください"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "プラグインの整合性チェックに失敗しました（sha256 不一致）。インストールを中止しました"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "プラグインパッケージに main.js がありません"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "プラグインディレクトリの置き換えに失敗しました：%s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "プラグインパッケージ内に manifest.json が見つかりません"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "リポジトリの URL は https を使用してください。http:// のエントリは拒否されました"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "プラグインの runtime 名が無効です：%s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "プラグインのランタイムコンポーネントが見つかりません：plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "プラグインの詳細情報が無効です"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "プラグインが getChapterText をエクスポートしていません"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "プラグインが getVideoList をエクスポートしていません"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "プラグインパッケージの保存に失敗しました：%s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "プラグインディレクトリの削除に失敗しました：%s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "インストール済みプラグインファイルの読み込みに失敗しました：%s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "プラグインパッケージの整合性検証に失敗しました：%s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "プラグインパッケージの展開に失敗しました：%s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "プラグインパッケージ内の manifest.json の読み込みに失敗しました：%s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "プラグインファイルのステージングに失敗しました：%s"
+    }
+  ]
 }

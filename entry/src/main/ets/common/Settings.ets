@@ -1,6 +1,6 @@
 import { preferences } from '@kit.ArkData';
 import { common, ConfigurationConstant } from '@kit.AbilityKit';
-import { window, UIContext } from '@kit.ArkUI';
+import { UIContext, window } from '@kit.ArkUI';
 import { i18n } from '@kit.LocalizationKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { Theme, ThemePalette } from './Theme';
@@ -15,6 +15,8 @@ export class Settings {
   private static appCtx: common.UIAbilityContext | undefined = undefined;
   // flush 防抖定时器（500ms 批量落盘）
   private static flushTimer: number = -1;
+  // 避让区高度（vp）写入 AppStorage，供页面上下 padding 避让状态栏/导航栏
+  private static avoidSubscribed: boolean = false;
 
   static init(context: common.UIAbilityContext): void {
     Settings.appCtx = context;
@@ -30,93 +32,6 @@ export class Settings {
   // 供无 context 入参的工具层解析资源字符串（Util.timeAgo 等）
   static appContext(): common.UIAbilityContext | undefined {
     return Settings.appCtx;
-  }
-
-  // 取值后 typeof 校验：跨版本类型变更时回退默认值，避免静默返回错误类型
-  private static getStr(key: string, def: string): string {
-    if (Settings.store === undefined) {
-      return def;
-    }
-    try {
-      const v = Settings.store.getSync(key, def);
-      return typeof v === 'string' ? v as string : def;
-    } catch (e) {
-      return def;
-    }
-  }
-
-  // 写入保持 putSync（读己之写）+ 500ms 防抖批量 flush（高频写场景消除 I/O 放大）
-  private static setStr(key: string, value: string): void {
-    if (Settings.store === undefined) {
-      return;
-    }
-    try {
-      Settings.store.putSync(key, value);
-    } catch (_e) {
-    }
-    Settings.scheduleFlush();
-  }
-
-  private static getBool(key: string, def: boolean): boolean {
-    if (Settings.store === undefined) {
-      return def;
-    }
-    try {
-      const v = Settings.store.getSync(key, def);
-      return typeof v === 'boolean' ? v as boolean : def;
-    } catch (e) {
-      return def;
-    }
-  }
-
-  private static setBool(key: string, value: boolean): void {
-    if (Settings.store === undefined) {
-      return;
-    }
-    try {
-      Settings.store.putSync(key, value);
-    } catch (_e) {
-    }
-    Settings.scheduleFlush();
-  }
-
-  private static getNum(key: string, def: number): number {
-    if (Settings.store === undefined) {
-      return def;
-    }
-    try {
-      const v = Settings.store.getSync(key, def);
-      return typeof v === 'number' ? v as number : def;
-    } catch (e) {
-      return def;
-    }
-  }
-
-  private static setNum(key: string, value: number): void {
-    if (Settings.store === undefined) {
-      return;
-    }
-    try {
-      Settings.store.putSync(key, value);
-    } catch (_e) {
-    }
-    Settings.scheduleFlush();
-  }
-
-  // 防抖批量落盘：500ms 内的连续写只触发一次 flush
-  private static scheduleFlush(): void {
-    if (Settings.flushTimer !== -1) {
-      clearTimeout(Settings.flushTimer);
-    }
-    Settings.flushTimer = setTimeout((): void => {
-      Settings.flushTimer = -1;
-      if (Settings.store !== undefined) {
-        // flush() 返回 Promise：必须挂 catch，否则异步落盘失败成为未处理 rejection
-        Settings.store.flush().catch((e: Object): void => {
-          hilog.warn(DOMAIN, TAG, 'debounced settings flush failed: %{public}s', `${e}`);
-        });
-      }
-    }, 500);
   }
 
   // 立即 flush 并取消防抖定时器（应用退后台/销毁时调用）
@@ -275,8 +190,6 @@ export class Settings {
     Settings.setStr('themeMode', mode);
   }
 
-  // ---- 追踪（对齐 Mihon TrackPreferences）----
-  // 仅存非敏感信息：trackUsername_{syncId} / trackDisplay_{syncId}
   // 密码与 OAuth token 一律走 SecureStore（Asset Store）加密存储，不落明文偏好
   static getTrackUsername(syncId: number): string {
     return Settings.getStr(`trackUsername_${syncId}`, '');
@@ -302,6 +215,9 @@ export class Settings {
   static setAnilistScoreType(v: string): void {
     Settings.setStr('anilistScoreType', v);
   }
+
+  // ---- 追踪（对齐 Mihon TrackPreferences）----
+  // 仅存非敏感信息：trackUsername_{syncId} / trackDisplay_{syncId}
 
   // Kitsu 评分制：simple（表情）/ regular（星）/ advanced（10 分制小数）
   static getKitsuScoreType(): string {
@@ -350,7 +266,6 @@ export class Settings {
     Settings.setStr('pluginRepoUrl', url);
   }
 
-  // ---- 数据与存储（对齐 Mihon BackupPreferences / LibraryPreferences）----
   // 自动备份频率（小时，0=关闭）
   static getBackupInterval(): number {
     return Settings.getNum('backupInterval', 0);
@@ -377,6 +292,8 @@ export class Settings {
   static setAutoClearChapterCache(v: boolean): void {
     Settings.setBool('autoClearChapterCache', v);
   }
+
+  // ---- 数据与存储（对齐 Mihon BackupPreferences / LibraryPreferences）----
 
   // ---- 主题 ----
   static getAppThemeId(): string {
@@ -456,7 +373,6 @@ export class Settings {
     Settings.setBool('shownOnboarding', v);
   }
 
-  // ---- 应用语言 ----
   // 'auto' 跟随系统，否则为 BCP-47 语言标签（如 'zh-Hans' / 'en-US'）
   static getAppLanguage(): string {
     const raw: string = Settings.getStr('appLanguage', 'auto');
@@ -485,7 +401,6 @@ export class Settings {
     }
   }
 
-  // ---- 书架 ----
   // 排序键：'alpha','total','lastRead','lastUpdate','unread','latestChapter','fetchDate','dateAdded','random'
   static getLibrarySort(): string {
     const raw: string = Settings.getStr('librarySort', 'alpha');
@@ -507,11 +422,12 @@ export class Settings {
     return Settings.getBool('librarySortAsc', true);
   }
 
+  // ---- 应用语言 ----
+
   static setLibrarySortAsc(v: boolean): void {
     Settings.setBool('librarySortAsc', v);
   }
 
-  // 三态筛选：key 为 'downloaded','unread','started','bookmarked','completed','tracked'
   // 值为 'ignore'（忽略）| 'include'（包含）| 'exclude'（排除）
   static getLibraryTriState(key: string): string {
     return Settings.getStr('libFilter:' + key, 'ignore');
@@ -521,7 +437,8 @@ export class Settings {
     Settings.setStr('libFilter:' + key, v);
   }
 
-  // ---- 更新页筛选（对齐 Mihon UpdatesPreferences）----
+  // ---- 书架 ----
+
   // 三态：key 为 'downloaded','unread','started','bookmarked'
   static getUpdatesTriState(key: string): string {
     return Settings.getStr('updFilter:' + key, 'ignore');
@@ -540,6 +457,8 @@ export class Settings {
     Settings.setStr('updFilterCats:included', JSON.stringify(v));
   }
 
+  // 三态筛选：key 为 'downloaded','unread','started','bookmarked','completed','tracked'
+
   static getUpdatesExcludedCategories(): number[] {
     return Settings.getNumList('updFilterCats:excluded');
   }
@@ -547,6 +466,8 @@ export class Settings {
   static setUpdatesExcludedCategories(v: number[]): void {
     Settings.setStr('updFilterCats:excluded', JSON.stringify(v));
   }
+
+  // ---- 更新页筛选（对齐 Mihon UpdatesPreferences）----
 
   // ---- 即将推出页分类筛选（对齐 Mihon UpcomingPreferences）----
   static getUpcomingIncludedCategories(): number[] {
@@ -563,23 +484,6 @@ export class Settings {
 
   static setUpcomingExcludedCategories(v: number[]): void {
     Settings.setStr('upcomingCats:excluded', JSON.stringify(v));
-  }
-
-  // JSON 数字数组读取（异常/类型不符时回退空数组）
-  private static getNumList(key: string): number[] {
-    const raw: string = Settings.getStr(key, '[]');
-    const result: number[] = [];
-    try {
-      const parsed = JSON.parse(raw) as number[];
-      for (const n of parsed) {
-        if (typeof n === 'number') {
-          result.push(n);
-        }
-      }
-    } catch (e) {
-      // 解析失败按空处理
-    }
-    return result;
   }
 
   // 显示模式：'compact','comfortable','cover','list'（旧值 'grid' 归一为 'compact'）
@@ -785,7 +689,6 @@ export class Settings {
     Settings.setStr('readerPageAnim', v);
   }
 
-  // ---- 阅读器导航/条漫 ----
   // 点击翻页区域：'default','ltr','rtl','vertical','edge','none'
   static getReaderNavMode(): string {
     return Settings.getStr('readerNavMode', 'default');
@@ -823,7 +726,8 @@ export class Settings {
     Settings.scheduleFlush();
   }
 
-  // ---- 视频播放器 ----
+  // ---- 阅读器导航/条漫 ----
+
   // 默认播放倍速（0.5 - 3.0）
   static getVideoSpeed(): number {
     const n = Settings.getNum('videoSpeed', 1.0);
@@ -857,6 +761,8 @@ export class Settings {
   static getDanmakuEnabled(): boolean {
     return Settings.getBool('danmakuEnabled', true);
   }
+
+  // ---- 视频播放器 ----
 
   static setDanmakuEnabled(v: boolean): void {
     Settings.setBool('danmakuEnabled', v);
@@ -936,7 +842,6 @@ export class Settings {
     Settings.setStr('pinnedSources', v);
   }
 
-  // ---- 主题应用 ----
   // 根据设置与系统颜色模式计算是否深色，并写入 AppStorage 与 palette
   static applyTheme(systemDark: boolean): void {
     const mode: string = Settings.getThemeMode();
@@ -1008,9 +913,6 @@ export class Settings {
     });
   }
 
-  // 避让区高度（vp）写入 AppStorage，供页面上下 padding 避让状态栏/导航栏
-  private static avoidSubscribed: boolean = false;
-
   static initAvoidAreas(context: common.Context): void {
     window.getLastWindow(context).then((win: window.Window) => {
       const ui: UIContext = win.getUIContext();
@@ -1033,5 +935,111 @@ export class Settings {
       }
     }).catch((_e: Error) => {
     });
+  }
+
+  // 取值后 typeof 校验：跨版本类型变更时回退默认值，避免静默返回错误类型
+  private static getStr(key: string, def: string): string {
+    if (Settings.store === undefined) {
+      return def;
+    }
+    try {
+      const v = Settings.store.getSync(key, def);
+      return typeof v === 'string' ? v as string : def;
+    } catch (e) {
+      return def;
+    }
+  }
+
+  // ---- 主题应用 ----
+
+  // 写入保持 putSync（读己之写）+ 500ms 防抖批量 flush（高频写场景消除 I/O 放大）
+  private static setStr(key: string, value: string): void {
+    if (Settings.store === undefined) {
+      return;
+    }
+    try {
+      Settings.store.putSync(key, value);
+    } catch (_e) {
+    }
+    Settings.scheduleFlush();
+  }
+
+  private static getBool(key: string, def: boolean): boolean {
+    if (Settings.store === undefined) {
+      return def;
+    }
+    try {
+      const v = Settings.store.getSync(key, def);
+      return typeof v === 'boolean' ? v as boolean : def;
+    } catch (e) {
+      return def;
+    }
+  }
+
+  private static setBool(key: string, value: boolean): void {
+    if (Settings.store === undefined) {
+      return;
+    }
+    try {
+      Settings.store.putSync(key, value);
+    } catch (_e) {
+    }
+    Settings.scheduleFlush();
+  }
+
+  private static getNum(key: string, def: number): number {
+    if (Settings.store === undefined) {
+      return def;
+    }
+    try {
+      const v = Settings.store.getSync(key, def);
+      return typeof v === 'number' ? v as number : def;
+    } catch (e) {
+      return def;
+    }
+  }
+
+  private static setNum(key: string, value: number): void {
+    if (Settings.store === undefined) {
+      return;
+    }
+    try {
+      Settings.store.putSync(key, value);
+    } catch (_e) {
+    }
+    Settings.scheduleFlush();
+  }
+
+  // 防抖批量落盘：500ms 内的连续写只触发一次 flush
+  private static scheduleFlush(): void {
+    if (Settings.flushTimer !== -1) {
+      clearTimeout(Settings.flushTimer);
+    }
+    Settings.flushTimer = setTimeout((): void => {
+      Settings.flushTimer = -1;
+      if (Settings.store !== undefined) {
+        // flush() 返回 Promise：必须挂 catch，否则异步落盘失败成为未处理 rejection
+        Settings.store.flush().catch((e: Object): void => {
+          hilog.warn(DOMAIN, TAG, 'debounced settings flush failed: %{public}s', `${e}`);
+        });
+      }
+    }, 500);
+  }
+
+  // JSON 数字数组读取（异常/类型不符时回退空数组）
+  private static getNumList(key: string): number[] {
+    const raw: string = Settings.getStr(key, '[]');
+    const result: number[] = [];
+    try {
+      const parsed = JSON.parse(raw) as number[];
+      for (const n of parsed) {
+        if (typeof n === 'number') {
+          result.push(n);
+        }
+      }
+    } catch (e) {
+      // 解析失败按空处理
+    }
+    return result;
   }
 }

@@ -22,20 +22,6 @@ export class OAuthToken {
   // 绝对过期时间（epoch 秒）；>0 时优先于 createdAt+expiresIn 判定（MangaBaka 返回 expires_at）
   expiresAt: number = 0;
 
-  isExpired(): boolean {
-    if (this.expiresAt > 0) {
-      return Math.floor(Date.now() / 1000) + 60 > this.expiresAt;
-    }
-    if (this.expiresIn <= 0) {
-      return false;
-    }
-    return Math.floor(Date.now() / 1000) + 60 > this.createdAt + this.expiresIn;
-  }
-
-  toJson(): string {
-    return JSON.stringify(this);
-  }
-
   static fromJson(raw: string): OAuthToken | undefined {
     try {
       const parsed = JSON.parse(raw) as OAuthToken;
@@ -51,6 +37,20 @@ export class OAuthToken {
     } catch (_e) {
     }
     return undefined;
+  }
+
+  isExpired(): boolean {
+    if (this.expiresAt > 0) {
+      return Math.floor(Date.now() / 1000) + 60 > this.expiresAt;
+    }
+    if (this.expiresIn <= 0) {
+      return false;
+    }
+    return Math.floor(Date.now() / 1000) + 60 > this.createdAt + this.expiresIn;
+  }
+
+  toJson(): string {
+    return JSON.stringify(this);
   }
 }
 
@@ -259,20 +259,6 @@ export abstract class Tracker {
     return OAuthToken.fromJson(SecureStore.getSync(Tracker.tokenAlias(this.syncId)));
   }
 
-  // 取有效 token：缺失抛错；过期时用 refreshFn 刷新并保存（refreshFn 返回新 token）
-  protected async ensureToken(refreshFn: (token: OAuthToken) => Promise<OAuthToken>): Promise<OAuthToken> {
-    const token = this.loadToken();
-    if (token === undefined) {
-      throw new Error(`${this.name}: not logged in`);
-    }
-    if (token.isExpired()) {
-      const refreshed = await refreshFn(token);
-      this.saveToken(refreshed);
-      return refreshed;
-    }
-    return token;
-  }
-
   // ---- 抽象接口 ----
   abstract getStatusList(): number[];
 
@@ -318,20 +304,6 @@ export abstract class Tracker {
     throw new Error('unsupported');
   }
 
-  // ---- 共用工具 ----
-  // 从远端记录拷贝个人进度字段（对齐 Mihon Track.copyPersonalFrom）
-  protected copyPersonalFrom(track: TrackRecord, remote: TrackRecord, copyRemotePrivate: boolean = true): void {
-    track.status = remote.status;
-    track.lastChapterRead = remote.lastChapterRead;
-    track.score = remote.score;
-    track.startDate = remote.startDate;
-    track.finishDate = remote.finishDate;
-    if (copyRemotePrivate) {
-      track.isPrivate = remote.isPrivate;
-    }
-  }
-
-  // ---- 注册与字段更新（落库）----
   // 绑定新条目：从搜索结果构造记录 → bind（远端存在则合并远端状态）→ 落库
   async register(item: TrackSearchResult, mangaId: number, hasReadChapters: boolean): Promise<TrackRecord> {
     const track = new TrackRecord();
@@ -353,6 +325,8 @@ export abstract class Tracker {
     return bound;
   }
 
+  // ---- 共用工具 ----
+
   async setRemoteStatus(track: TrackRecord, status: number): Promise<TrackRecord> {
     track.status = status;
     if (track.status === this.getCompletionStatus() && track.totalChapters !== 0) {
@@ -360,6 +334,8 @@ export abstract class Tracker {
     }
     return this.updateAndSave(track, false);
   }
+
+  // ---- 注册与字段更新（落库）----
 
   async setRemoteLastChapterRead(track: TrackRecord, chapterNumber: number): Promise<TrackRecord> {
     if (track.lastChapterRead === 0 && track.status !== this.getRereadingStatus()) {
@@ -398,5 +374,31 @@ export abstract class Tracker {
     const updated = await this.update(track, didReadChapter);
     await TrackRepo.upsert(updated);
     return updated;
+  }
+
+  // 取有效 token：缺失抛错；过期时用 refreshFn 刷新并保存（refreshFn 返回新 token）
+  protected async ensureToken(refreshFn: (token: OAuthToken) => Promise<OAuthToken>): Promise<OAuthToken> {
+    const token = this.loadToken();
+    if (token === undefined) {
+      throw new Error(`${this.name}: not logged in`);
+    }
+    if (token.isExpired()) {
+      const refreshed = await refreshFn(token);
+      this.saveToken(refreshed);
+      return refreshed;
+    }
+    return token;
+  }
+
+  // 从远端记录拷贝个人进度字段（对齐 Mihon Track.copyPersonalFrom）
+  protected copyPersonalFrom(track: TrackRecord, remote: TrackRecord, copyRemotePrivate: boolean = true): void {
+    track.status = remote.status;
+    track.lastChapterRead = remote.lastChapterRead;
+    track.score = remote.score;
+    track.startDate = remote.startDate;
+    track.finishDate = remote.finishDate;
+    if (copyRemotePrivate) {
+      track.isPrivate = remote.isPrivate;
+    }
   }
 }

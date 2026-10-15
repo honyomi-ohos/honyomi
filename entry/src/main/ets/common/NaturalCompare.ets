@@ -29,21 +29,6 @@ export class NaturalCompare {
     return -1;
   }
 
-  private static smallUnitValue(c: string): number {
-    const idx = NaturalCompare.CN_SMALL_UNITS.indexOf(c);
-    return idx >= 0 ? NaturalCompare.CN_SMALL_VALUES[idx] : -1;
-  }
-
-  private static isWan(c: string): boolean {
-    return c === '万' || c === '萬';
-  }
-
-  private static isYi(c: string): boolean {
-    return c === '亿' || c === '億';
-  }
-
-  // 中文（或混合阿拉伯）数字串转数值：
-  // 含数量级单位时按单位算法（"一百二十三"→123，"十二"→12，"一万二"→12000）；
   // 纯数字字符时按十进制位值（"二三"→23，"二零二四"→2024）
   static parseNumberRun(s: string): number {
     let hasUnit = false;
@@ -122,25 +107,6 @@ export class NaturalCompare {
     return total + section;
   }
 
-  private static isNumericChar(c: string): boolean {
-    if (NaturalCompare.digitValue(c) >= 0) {
-      return true;
-    }
-    return NaturalCompare.smallUnitValue(c) > 0 || NaturalCompare.isWan(c) || NaturalCompare.isYi(c);
-  }
-
-  // 从 start 起读取连续数字性字符段，返回 { text, end }（end 为段后首个非数字字符下标）
-  private static readRun(s: string, start: number): NaturalRun {
-    let end = start;
-    while (end < s.length && NaturalCompare.isNumericChar(s.charAt(end))) {
-      end += 1;
-    }
-    const run = new NaturalRun();
-    run.text = s.substring(start, end);
-    run.end = end;
-    return run;
-  }
-
   // 自然比较：返回负/零/正。数字段按数值，其余字符忽略大小写逐字符比较
   static compare(a: string, b: string): number {
     let ia = 0;
@@ -186,6 +152,41 @@ export class NaturalCompare {
     const copy = list.slice();
     copy.sort((a: string, b: string): number => NaturalCompare.compare(a, b));
     return copy;
+  }
+
+  // 中文（或混合阿拉伯）数字串转数值：
+  // 含数量级单位时按单位算法（"一百二十三"→123，"十二"→12，"一万二"→12000）；
+
+  private static smallUnitValue(c: string): number {
+    const idx = NaturalCompare.CN_SMALL_UNITS.indexOf(c);
+    return idx >= 0 ? NaturalCompare.CN_SMALL_VALUES[idx] : -1;
+  }
+
+  private static isWan(c: string): boolean {
+    return c === '万' || c === '萬';
+  }
+
+  private static isYi(c: string): boolean {
+    return c === '亿' || c === '億';
+  }
+
+  private static isNumericChar(c: string): boolean {
+    if (NaturalCompare.digitValue(c) >= 0) {
+      return true;
+    }
+    return NaturalCompare.smallUnitValue(c) > 0 || NaturalCompare.isWan(c) || NaturalCompare.isYi(c);
+  }
+
+  // 从 start 起读取连续数字性字符段，返回 { text, end }（end 为段后首个非数字字符下标）
+  private static readRun(s: string, start: number): NaturalRun {
+    let end = start;
+    while (end < s.length && NaturalCompare.isNumericChar(s.charAt(end))) {
+      end += 1;
+    }
+    const run = new NaturalRun();
+    run.text = s.substring(start, end);
+    run.end = end;
+    return run;
   }
 }
 

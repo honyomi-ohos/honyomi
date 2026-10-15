@@ -1,4 +1,4 @@
-import { InsightIntentEntryExecutor, insightIntent, InsightIntentEntry } from '@kit.AbilityKit';
+import { insightIntent, InsightIntentEntry, InsightIntentEntryExecutor } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { UpdateService } from '../data/UpdateService';
 import { Settings } from '../common/Settings';
@@ -22,6 +22,10 @@ const DOMAIN = 0x0001;
   executeMode: [insightIntent.ExecuteMode.UI_ABILITY_FOREGROUND]
 })
 export default class RefreshLibraryImpl extends InsightIntentEntryExecutor<string> {
+  private static result(code: number, msg: string): insightIntent.IntentResult<string> {
+    return { code: code, result: msg };
+  }
+
   onExecute(): Promise<insightIntent.IntentResult<string>> {
     const context = EntryAbility.appContext;
     if (context === undefined) {
@@ -46,9 +50,5 @@ export default class RefreshLibraryImpl extends InsightIntentEntryExecutor<strin
       hilog.warn(DOMAIN, 'Mihon', 'RefreshLibrary intent failed: %{public}s', e.message);
     });
     return Promise.resolve(RefreshLibraryImpl.result(0, '书库刷新已开始'));
-  }
-
-  private static result(code: number, msg: string): insightIntent.IntentResult<string> {
-    return { code: code, result: msg };
   }
 }

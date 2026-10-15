@@ -46,10 +46,12 @@ struct StripItemView {
   @State pixelMap: image.PixelMap | undefined = undefined;
   @State failed: boolean = false;
   @State loading: boolean = false;
-  onTap: () => void = () => {};
   private loadToken: number = 0;
   // 条目销毁标记：回调内校验后再写 @State
   private destroyed: boolean = false;
+
+  onTap: () => void = () => {
+  };
 
   aboutToAppear(): void {
     this.load();
@@ -59,29 +61,6 @@ struct StripItemView {
   aboutToDisappear(): void {
     this.destroyed = true;
     StripImagePipeline.release(this.url);
-  }
-
-  private load(): void {
-    if (this.loading) {
-      return;
-    }
-    this.loading = true;
-    this.failed = false;
-    this.loadToken += 1;
-    const token = this.loadToken;
-    StripImagePipeline.load(this.url, this.sourceKey, this.pageUrl).then((pm: image.PixelMap) => {
-      if (this.destroyed || token !== this.loadToken) {
-        return;
-      }
-      this.pixelMap = pm;
-      this.loading = false;
-    }).catch((_e: Object) => {
-      if (this.destroyed || token !== this.loadToken) {
-        return;
-      }
-      this.failed = true;
-      this.loading = false;
-    });
   }
 
   build() {
@@ -116,7 +95,12 @@ struct StripItemView {
             .fontSize(12)
             .fontColor(Theme.readerPlaceholder(this.isDark))
             .margin({ top: 6 })
-            .padding({ left: 12, right: 12, top: 4, bottom: 4 })
+            .padding({
+              left: 12,
+              right: 12,
+              top: 4,
+              bottom: 4
+            })
             .borderRadius(12)
             .border({ width: 1, color: Theme.readerPlaceholder(this.isDark) })
         }
@@ -132,6 +116,29 @@ struct StripItemView {
     .onClick(() => {
       this.onTap();
     })
+  }
+
+  private load(): void {
+    if (this.loading) {
+      return;
+    }
+    this.loading = true;
+    this.failed = false;
+    this.loadToken += 1;
+    const token = this.loadToken;
+    StripImagePipeline.load(this.url, this.sourceKey, this.pageUrl).then((pm: image.PixelMap) => {
+      if (this.destroyed || token !== this.loadToken) {
+        return;
+      }
+      this.pixelMap = pm;
+      this.loading = false;
+    }).catch((_e: Object) => {
+      if (this.destroyed || token !== this.loadToken) {
+        return;
+      }
+      this.failed = true;
+      this.loading = false;
+    });
   }
 }
 
@@ -156,22 +163,23 @@ export struct ComicStripViewer {
   @Prop textCol: string = '#ECEEF2';
   @Prop subCol: string = '#99ECEEF2';
   scroller: Scroller = new Scroller();
-  onTap: () => void = () => {};
-  onPageVisible: (index: number) => void = (_i: number) => {};
-  onPrevChapter: () => void = () => {};
-  onNextChapter: () => void = () => {};
   private dataSource: StripDataSource = new StripDataSource();
   private lastVisible: number = -1;
 
+  onTap: () => void = () => {
+  };
+
+  onPageVisible: (index: number) => void = (_i: number) => {
+  };
+
+  onPrevChapter: () => void = () => {
+  };
+
+  onNextChapter: () => void = () => {
+  };
+
   aboutToAppear(): void {
     this.dataSource.setPages(this.pages);
-  }
-
-  private onPagesChanged(): void {
-    this.dataSource.setPages(this.pages);
-    this.lastVisible = -1;
-    // 换数据后重新定位到宿主指定的起始页
-    this.scroller.scrollToIndex(this.initialIndex);
   }
 
   build() {
@@ -199,11 +207,18 @@ export struct ComicStripViewer {
           }
         })
       }
+
       LazyForEach(this.dataSource, (page: SPage) => {
         ListItem() {
-          StripItemView({ url: page.url, sourceKey: this.sourceKey, pageUrl: page.pageUrl ?? '', isDark: this.isDark, onTap: (): void => {
-            this.onTap();
-          } })
+          StripItemView({
+            url: page.url,
+            sourceKey: this.sourceKey,
+            pageUrl: page.pageUrl ?? '',
+            isDark: this.isDark,
+            onTap: (): void => {
+              this.onTap();
+            }
+          })
         }
       }, (page: SPage) => `${page.index}:${page.url}`)
       // 尾部：下一章过渡页
@@ -242,5 +257,12 @@ export struct ComicStripViewer {
         this.onPageVisible(first);
       }
     })
+  }
+
+  private onPagesChanged(): void {
+    this.dataSource.setPages(this.pages);
+    this.lastVisible = -1;
+    // 换数据后重新定位到宿主指定的起始页
+    this.scroller.scrollToIndex(this.initialIndex);
   }
 }

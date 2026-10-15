@@ -1,4 +1,4 @@
-import { SChapter, SVideo, ContentType } from '../model/Models';
+import { ContentType, SChapter, SVideo } from '../model/Models';
 import { LocalFolderManager } from './LocalFolderManager';
 import { LocalFsSource } from './LocalFsSource';
 
@@ -16,18 +16,6 @@ export class LocalVideoSource extends LocalFsSource {
     super(filesDir, 'local_video');
   }
 
-  protected syncSubDir(): string {
-    return LocalFolderManager.ANIME_SUBDIR;
-  }
-
-  protected contentExts(): string[] {
-    return VIDEO_EXTS;
-  }
-
-  protected mangaDescription(): string {
-    return 'local_desc_video';
-  }
-
   async getChapterList(mangaKey: string): Promise<SChapter[]> {
     // 递归收集视频文件相对路径（含季级子目录），按层级自然排序
     const relEntries: string[] = [];
@@ -42,5 +30,17 @@ export class LocalVideoSource extends LocalFsSource {
     }
     const video: SVideo = { url: `file://${path}`, quality: 'local', headers: {} };
     return [video];
+  }
+
+  protected syncSubDir(): string {
+    return LocalFolderManager.ANIME_SUBDIR;
+  }
+
+  protected contentExts(): string[] {
+    return VIDEO_EXTS;
+  }
+
+  protected mangaDescription(): string {
+    return 'local_desc_video';
   }
 }

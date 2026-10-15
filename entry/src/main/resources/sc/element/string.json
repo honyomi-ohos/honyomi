@@ -1,48 +1,177 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Filtrat totu sos elementos in sa biblioteca tua" },
-    { "name": "more_incognito_summary", "value": "Ponet in pàusa sa registratzione de sa cronologia de leghidura" },
-    { "name": "more_support", "value": "Support Us" },
-    { "name": "more_help", "value": "Agiudu" },
-    { "name": "support_perks", "value": "Patrons get access to exclusive channels, with more perks to come." },
-    { "name": "support_patreon", "value": "Patreon (preferred)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together." },
-    { "name": "support_contact_msg", "value": "For alternative options or any related questions, join our Discord server." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "Datos e archiviatzione" },
-    { "name": "data_storage_location", "value": "Positzione de archiviatzione" },
-    { "name": "data_storage_location_info", "value": "Impreadu pro sas còpias de seguresa automàticas, sos iscarrigamentos de sos capìtulos e s'orìgine locale." },
-    { "name": "data_backup_restore", "value": "Còpia de seguresa e riprìstinu" },
-    { "name": "data_create_backup", "value": "Crea una còpia de seguresa" },
-    { "name": "data_restore_backup", "value": "Riprìstina una còpia de seguresa" },
-    { "name": "data_backup_interval", "value": "Frecuèntzia de sarvatàgiu de sas còpias de seguresa" },
-    { "name": "data_backup_info", "value": "Dias dèpere tènnere còpias de seguresa fintzas in àteros logos." },
-    { "name": "data_last_auto_backup", "value": "Ùrtima còpia de seguresa automàtica: %s" },
-    { "name": "data_storage_usage", "value": "Impreu de sa memòria" },
-    { "name": "data_available_space", "value": "A disponimentu: %s / Totale: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Isbòida sa memòria temporànea de sos capìtulos" },
-    { "name": "data_used_cache", "value": "Impreados: %s" },
-    { "name": "data_cache_deleted", "value": "Memòria temporànea isbodiada. %d documentos sunt istados iscantzellados" },
-    { "name": "data_cache_delete_error", "value": "Errore durante s'isboidamentu" },
-    { "name": "data_auto_clear_cache", "value": "Isbòida sa memòria temporànea de sos capìtulos cando aberis s'aplicatzione" },
-    { "name": "data_export", "value": "Esporta" },
-    { "name": "data_library_list", "value": "Lista de sa biblioteca" },
-    { "name": "data_library_exported", "value": "Biblioteca esportada" },
-    { "name": "data_export_include", "value": "Ischerta sos datos de incluire" },
-    { "name": "data_column_title", "value": "Tìtulu" },
-    { "name": "data_column_author", "value": "Autore" },
-    { "name": "data_interval_off", "value": "Istudadu" },
-    { "name": "data_interval_6h", "value": "Cada 6 oras" },
-    { "name": "data_interval_12h", "value": "Cada 12 oras" },
-    { "name": "data_interval_24h", "value": "Cada die" },
-    { "name": "data_interval_48h", "value": "Cada 2 dies" },
-    { "name": "data_interval_weekly", "value": "Cada chida" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Filtrat totu sos elementos in sa biblioteca tua"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Ponet in pàusa sa registratzione de sa cronologia de leghidura"
+    },
+    {
+      "name": "more_support",
+      "value": "Support Us"
+    },
+    {
+      "name": "more_help",
+      "value": "Agiudu"
+    },
+    {
+      "name": "support_perks",
+      "value": "Patrons get access to exclusive channels, with more perks to come."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (preferred)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "For alternative options or any related questions, join our Discord server."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "Datos e archiviatzione"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Positzione de archiviatzione"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Impreadu pro sas còpias de seguresa automàticas, sos iscarrigamentos de sos capìtulos e s'orìgine locale."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "Còpia de seguresa e riprìstinu"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Crea una còpia de seguresa"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Riprìstina una còpia de seguresa"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Frecuèntzia de sarvatàgiu de sas còpias de seguresa"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "Dias dèpere tènnere còpias de seguresa fintzas in àteros logos."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Ùrtima còpia de seguresa automàtica: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Impreu de sa memòria"
+    },
+    {
+      "name": "data_available_space",
+      "value": "A disponimentu: %s / Totale: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Isbòida sa memòria temporànea de sos capìtulos"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Impreados: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Memòria temporànea isbodiada. %d documentos sunt istados iscantzellados"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Errore durante s'isboidamentu"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Isbòida sa memòria temporànea de sos capìtulos cando aberis s'aplicatzione"
+    },
+    {
+      "name": "data_export",
+      "value": "Esporta"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Lista de sa biblioteca"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Biblioteca esportada"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Ischerta sos datos de incluire"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Tìtulu"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Autore"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "Istudadu"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "Cada 6 oras"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "Cada 12 oras"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "Cada die"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "Cada 2 dies"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "Cada chida"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
     {
       "name": "module_desc",
       "value": "module description"
@@ -1255,189 +1384,741 @@
       "name": "reader_set_brightness_reset",
       "value": "Luminosidade impostada pro sighire su sistema"
     },
-    { "name": "browse_tab_sources", "value": "Fontes" },
-    { "name": "browse_tab_extensions", "value": "Estensiones" },
-    { "name": "browse_tab_migrate", "value": "Migra" },
-    { "name": "browse_pin", "value": "Fissa" },
-    { "name": "browse_unpin", "value": "Isfissa" },
-    { "name": "browse_disable_source", "value": "Disativa sa fonte" },
-    { "name": "browse_source_disabled", "value": "Fonte disativada" },
-    { "name": "browse_pinned", "value": "Fissada" },
-    { "name": "browse_sources_empty", "value": "Peruna fonte. Installa-las dae s'ischeda Estensiones" },
-    { "name": "browse_filter_langs", "value": "Filtra limbas" },
-    { "name": "browse_filter_all", "value": "Totu" },
-    { "name": "browse_source_missing", "value": "Fonte no disponibile. S'estensione diat pòdere èssere disativada" },
-    { "name": "global_search_hint", "value": "Chirca in totu sas fontes" },
-    { "name": "global_search_failed", "value": "Sa chirca est fallida" },
-    { "name": "ext_search_hint", "value": "Chirca estensiones" },
-    { "name": "ext_search_no_match", "value": "Peruna currispondèntzia" },
-    { "name": "ext_repo_settings", "value": "Impostatziones de s'archìviu" },
-    { "name": "ext_refresh_repo", "value": "Atualiza s'archìviu" },
-    { "name": "migrate_pick_source", "value": "Seletziona una fonte de migrare" },
-    { "name": "migrate_empty_library", "value": "Sa biblioteca est bòida" },
-    { "name": "migrate_select_all", "value": "Seletziona totu" },
-    { "name": "migrate_deselect_all", "value": "Deseletziona totu" },
-    { "name": "migrate_action", "value": "Migra (%d)" },
-    { "name": "migrate_title", "value": "Migra" },
-    { "name": "migrate_skip", "value": "Brinca" },
-    { "name": "migrate_progress", "value": "%d de %d" },
-    { "name": "migrate_target_source", "value": "Fonte de destinatzione" },
-    { "name": "migrate_search_hint", "value": "Chirca manga in sa fonte de destinatzione" },
-    { "name": "migrate_confirm_title", "value": "Migras a custu manga?" },
-    { "name": "migrate_item_done", "value": "Migradu: %s" },
-    { "name": "migrate_failed", "value": "Sa migrazione est fallida: %s" },
-    { "name": "migrate_done", "value": "Migrazione cumpletada" },
-    { "name": "migrate_no_target", "value": "Peruna fonte de destinatzione" },
-    { "name": "stats_title", "value": "Istatìsticas" },
-    { "name": "stats_overview_section", "value": "Panoràmica" },
-    { "name": "stats_in_library", "value": "In biblioteca" },
-    { "name": "stats_read_duration", "value": "Durada de letura" },
-    { "name": "stats_completed_titles", "value": "Acabadu" },
-    { "name": "stats_titles_section", "value": "Òperas" },
-    { "name": "stats_started_titles", "value": "Cumintzadu" },
-    { "name": "stats_local_titles", "value": "Locale" },
-    { "name": "stats_chapters_section", "value": "Capìtulos" },
-    { "name": "stats_total_chapters", "value": "Totale" },
-    { "name": "stats_read_chapters", "value": "Lèghidu" },
-    { "name": "stats_downloaded_chapters", "value": "Iscarrigadu" },
-    { "name": "stats_tracker_section", "value": "Sighidura" },
-    { "name": "stats_tracked_titles", "value": "Òperas sighidas" },
-    { "name": "stats_mean_score", "value": "Puntu mèdia" },
-    { "name": "stats_used", "value": "Impreadu" },
-    { "name": "stats_not_applicable", "value": "Non si aplicat" },
-    { "name": "stats_week", "value": "Chida" },
-    { "name": "stats_month", "value": "Mese" },
-    { "name": "stats_week_total", "value": "%s custa chida" },
-    { "name": "stats_month_total", "value": "%s custu mese" },
-    { "name": "stats_no_reading", "value": "Peruna letura in custu perìodu" },
-    { "name": "stats_day_short", "value": "%dd" },
-    { "name": "stats_hour_short", "value": "%do" },
-    { "name": "stats_minute_short", "value": "%dmin" },
-    { "name": "stats_second_short", "value": "%dseg" },
-    { "name": "stats_wd_sun", "value": "Do" },
-    { "name": "stats_wd_mon", "value": "Lu" },
-    { "name": "stats_wd_tue", "value": "Ma" },
-    { "name": "stats_wd_wed", "value": "Me" },
-    { "name": "stats_wd_thu", "value": "Gi" },
-    { "name": "stats_wd_fri", "value": "Ch" },
-    { "name": "stats_wd_sat", "value": "Sà" },
-    { "name": "reader_mode_vertical", "value": "Verticale" },
-    { "name": "reader_mode_smart_grip", "value": "A impugnadura" },
-    { "name": "reader_orientation_lock_portrait", "value": "Blocca su verticale" },
-    { "name": "reader_orientation_lock_landscape", "value": "Blocca s'orizontale" },
-    { "name": "reader_tab_general", "value": "Generale" },
-    { "name": "reader_tab_filter", "value": "Filtru de colore" },
-    { "name": "reader_filter_grayscale", "value": "Iscala de grisos" },
-    { "name": "reader_filter_invert", "value": "Colores furriados" },
-    { "name": "reader_filter_contrast", "value": "Cuntrastu" },
-    { "name": "reader_filter_saturation", "value": "Saturatzione" },
-    { "name": "reader_crop_borders", "value": "Sega sos oros" },
-    { "name": "reader_nav_tap_zones", "value": "Zonas de tocu" },
-    { "name": "reader_nav_default", "value": "Predefinidu" },
-    { "name": "reader_nav_ltr", "value": "Dae manca a destra" },
-    { "name": "reader_nav_rtl", "value": "Dae destra a manca" },
-    { "name": "reader_nav_vertical", "value": "Verticale" },
-    { "name": "reader_nav_edge", "value": "Oru" },
-    { "name": "reader_nav_none", "value": "Nissunu" },
-    { "name": "reader_dual_page", "value": "Bista a dòpia pàgina" },
-    { "name": "reader_webtoon_padding", "value": "Ispàtziu laterale de Webtoon" },
-    { "name": "reader_set_mode_smart_grip", "value": "A impugnadura" },
-    { "name": "ext_install_local", "value": "Installa dae locale" },
-    { "name": "ext_detail_title", "value": "Informatziones de s'estensione" },
-    { "name": "ext_info_version", "value": "Versione" },
-    { "name": "ext_info_language", "value": "Limba" },
-    { "name": "ext_uninstall_title", "value": "Disinstalla s'estensione" },
-    { "name": "ext_uninstall_msg", "value": "Disinstallare “%s”? Sos datos de su manga in biblioteca abarrant" },
-    { "name": "ext_detail_sources", "value": "Fontes" },
-    { "name": "ext_detail_settings", "value": "Impostatziones" },
-    { "name": "ext_pref_loading", "value": "Carrighende…" },
-    { "name": "ext_pref_failed", "value": "Aplicatzione de sas impostatziones fallida" },
-    { "name": "ext_detail_missing", "value": "S'estensione non b'est o non est carrigada" },
-    { "name": "action_filter", "value": "Filtra" },
-    { "name": "action_update_library", "value": "Atualiza sa biblioteca" },
-    { "name": "action_update_category", "value": "Atualiza sa categoria" },
-    { "name": "action_open_random_manga", "value": "Aberi un'òpera a sa sorte" },
-    { "name": "action_select_all", "value": "Seletziona totu" },
-    { "name": "action_select_inverse", "value": "Furria sa seletzione" },
-    { "name": "action_move_category", "value": "Move a sa categoria" },
-    { "name": "action_mark_as_read", "value": "Marca comente lèghidu" },
-    { "name": "action_mark_as_unread", "value": "Marca comente non lèghidu" },
-    { "name": "action_download", "value": "Iscàrriga" },
-    { "name": "action_delete", "value": "Cantzella" },
-    { "name": "action_migrate", "value": "Migra" },
-    { "name": "action_remove_from_library", "value": "Boga dae sa biblioteca" },
-    { "name": "action_remove_from_library_msg", "value": "Bogare sos %d manga seletzionados dae sa biblioteca?" },
-    { "name": "action_download_queued", "value": "%d iscarrigamentos annanghiados a sa coa" },
-    { "name": "library_search_hint", "value": "Chirca in sa biblioteca" },
-    { "name": "library_no_match", "value": "Perunu manga chi cointzet" },
-    { "name": "lib_sheet_tab_filter", "value": "Filtra" },
-    { "name": "lib_sheet_tab_sort", "value": "Òrdina" },
-    { "name": "lib_sheet_tab_display", "value": "Visualizatzione" },
-    { "name": "lib_filter_downloaded", "value": "Iscarrigadu" },
-    { "name": "lib_filter_unread", "value": "Non lèghidos" },
-    { "name": "lib_filter_started", "value": "Ja lèghidu" },
-    { "name": "lib_filter_bookmarked", "value": "Sinnaladu" },
-    { "name": "lib_filter_completed", "value": "Acabadu" },
-    { "name": "lib_filter_tracked", "value": "Sighidu" },
-    { "name": "lib_sort_alpha", "value": "Tìtulu" },
-    { "name": "lib_sort_total", "value": "Nùmeru de capìtulos" },
-    { "name": "lib_sort_last_read", "value": "Ùrtima letura" },
-    { "name": "lib_sort_last_update", "value": "Ùrtima verìfica de atualizatzione" },
-    { "name": "lib_sort_unread", "value": "Nùmeru de non lèghidos" },
-    { "name": "lib_sort_latest_chapter", "value": "Ora de atualizatzione de s'òpera" },
-    { "name": "lib_sort_fetch_date", "value": "Data de otenimentu de sos capìtulos" },
-    { "name": "lib_sort_date_added", "value": "Data de agiunta" },
-    { "name": "lib_sort_random", "value": "A sa sorte" },
-    { "name": "lib_display_compact", "value": "Grìllia istrinta" },
-    { "name": "lib_display_comfortable", "value": "Grìllia larga" },
-    { "name": "lib_display_cover", "value": "Grìllia de coberteddas" },
-    { "name": "lib_display_list", "value": "Lista" },
-    { "name": "lib_display_grid_size", "value": "Nùmeru pro riga" },
-    { "name": "lib_display_grid_auto", "value": "Automàticu" },
-    { "name": "lib_display_badges_group", "value": "Distintivos e buttones" },
-    { "name": "lib_badge_downloaded", "value": "Nùmeru de capìtulos iscarrigados" },
-    { "name": "lib_badge_unread", "value": "Capìtulos non lèghidos" },
-    { "name": "lib_badge_local", "value": "Fonte locale" },
-    { "name": "lib_badge_language", "value": "Limba" },
-    { "name": "lib_badge_continue", "value": "Butone Sighi a lèghere" },
-    { "name": "lib_display_tabs_group", "value": "Ischedas" },
-    { "name": "lib_show_category_tabs", "value": "Mustra is ischedas de categorias" },
-    { "name": "lib_show_manga_count", "value": "Mustra su nùmeru de òperas" },
-    { "name": "EntryFormAbility_label", "value": "Ischedas MihonHarmony" },
-    { "name": "EntryFormAbility_desc", "value": "Frunidore de ischedas de s'iscrivania" },
-    { "name": "card_recent_display", "value": "Sighi a lèghere" },
-    { "name": "card_recent_desc", "value": "Sighi a lestru su manga lèghidu de reghente" },
-    { "name": "card_updates_display", "value": "Atualizatziones" },
-    { "name": "card_updates_desc", "value": "Capìtulos noos non lèghidos in biblioteca" },
-    { "name": "card_recent_header", "value": "Sighi a lèghere" },
-    { "name": "card_updates_header", "value": "Atualizatziones" },
-    { "name": "card_unread_count", "value": "%d capìtulos non lèghidos" },
-    { "name": "card_empty_recent", "value": "Ancora peruna cronologia de letura" },
-    { "name": "card_empty_updates", "value": "Perunu capìtulu non lèghidu" },
-    { "name": "card_open_hint", "value": "Toca pro abèrrere s'aplicatzione" },
-    { "name": "card_manga_display", "value": "Ischeda de manga" },
-    { "name": "card_manga_desc", "value": "Agiunghe dae sa pàgina de detàllios; toca sa cobertedda pro lèghere" },
-    { "name": "card_manga_empty", "value": "Agiunghe a s'iscrivania dae sa pàgina de detàllios de su manga" },
-    { "name": "detail_add_to_desktop", "value": "Agiunghe a s'iscrivania" },
-    { "name": "detail_card_added", "value": "Agiuntu a s'iscrivania" },
-    { "name": "detail_card_add_failed", "value": "Agiunta de s'ischeda fallida" },
-    { "name": "card_stats_week_display", "value": "Istatìsticas de sa chida" },
-    { "name": "card_stats_week_desc", "value": "Durada de letura diària custa chida" },
-    { "name": "card_stats_month_display", "value": "Istatìsticas de su mese" },
-    { "name": "card_stats_month_desc", "value": "Durada de letura diària custu mese" },
-    { "name": "card_stats_empty", "value": "Ancora peruna letura" },
-    { "name": "action_view_upcoming", "value": "Mustra is atualizatziones benidoras" },
-    { "name": "label_upcoming", "value": "Benidore" },
-    { "name": "upcoming_guide", "value": "Ghia de su benidore" },
-    { "name": "upcoming_calendar_prev", "value": "Mese coladu" },
-    { "name": "upcoming_calendar_next", "value": "Mese imbeniente" },
-    { "name": "pref_filter_update_categories_details", "value": "Sas òperas chi sunt in una categoria incluida e in una esclùdida non si mustrant." },
-    { "name": "relative_time_today", "value": "Oe" },
-    { "name": "relative_time_days_ago", "value": "Faghet %d dies" },
-    { "name": "upcoming_relative_time_days", "value": "In %d dies" },
-    { "name": "card_upcoming_display", "value": "Benidore" },
-    { "name": "card_upcoming_desc", "value": "Calendàriu de is atualizatziones prevìdidas de su manga in biblioteca" },
-    { "name": "card_upcoming_header", "value": "Benidore" },
-    { "name": "card_empty_upcoming", "value": "In sa biblioteca tua non b'at manga in cursu" }
-]
+    {
+      "name": "browse_tab_sources",
+      "value": "Fontes"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "Estensiones"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "Migra"
+    },
+    {
+      "name": "browse_pin",
+      "value": "Fissa"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "Isfissa"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "Disativa sa fonte"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "Fonte disativada"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "Fissada"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "Peruna fonte. Installa-las dae s'ischeda Estensiones"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "Filtra limbas"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "Totu"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "Fonte no disponibile. S'estensione diat pòdere èssere disativada"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "Chirca in totu sas fontes"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "Sa chirca est fallida"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "Chirca estensiones"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "Peruna currispondèntzia"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "Impostatziones de s'archìviu"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "Atualiza s'archìviu"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "Seletziona una fonte de migrare"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "Sa biblioteca est bòida"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "Seletziona totu"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "Deseletziona totu"
+    },
+    {
+      "name": "migrate_action",
+      "value": "Migra (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "Migra"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "Brinca"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d de %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "Fonte de destinatzione"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "Chirca manga in sa fonte de destinatzione"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "Migras a custu manga?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "Migradu: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "Sa migrazione est fallida: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "Migrazione cumpletada"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "Peruna fonte de destinatzione"
+    },
+    {
+      "name": "stats_title",
+      "value": "Istatìsticas"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "Panoràmica"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "In biblioteca"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "Durada de letura"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "Acabadu"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "Òperas"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "Cumintzadu"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "Locale"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "Capìtulos"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "Totale"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "Lèghidu"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "Iscarrigadu"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "Sighidura"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "Òperas sighidas"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "Puntu mèdia"
+    },
+    {
+      "name": "stats_used",
+      "value": "Impreadu"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "Non si aplicat"
+    },
+    {
+      "name": "stats_week",
+      "value": "Chida"
+    },
+    {
+      "name": "stats_month",
+      "value": "Mese"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "%s custa chida"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "%s custu mese"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "Peruna letura in custu perìodu"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%dd"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%do"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dmin"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%dseg"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "Do"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "Lu"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "Ma"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "Me"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "Gi"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "Ch"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "Sà"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "Verticale"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "A impugnadura"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "Blocca su verticale"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "Blocca s'orizontale"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "Generale"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "Filtru de colore"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "Iscala de grisos"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "Colores furriados"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "Cuntrastu"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "Saturatzione"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "Sega sos oros"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "Zonas de tocu"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "Predefinidu"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "Dae manca a destra"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "Dae destra a manca"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "Verticale"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "Oru"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "Nissunu"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Bista a dòpia pàgina"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "Ispàtziu laterale de Webtoon"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "A impugnadura"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "Installa dae locale"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "Informatziones de s'estensione"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "Versione"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "Limba"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "Disinstalla s'estensione"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "Disinstallare “%s”? Sos datos de su manga in biblioteca abarrant"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "Fontes"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "Impostatziones"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "Carrighende…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "Aplicatzione de sas impostatziones fallida"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "S'estensione non b'est o non est carrigada"
+    },
+    {
+      "name": "action_filter",
+      "value": "Filtra"
+    },
+    {
+      "name": "action_update_library",
+      "value": "Atualiza sa biblioteca"
+    },
+    {
+      "name": "action_update_category",
+      "value": "Atualiza sa categoria"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "Aberi un'òpera a sa sorte"
+    },
+    {
+      "name": "action_select_all",
+      "value": "Seletziona totu"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "Furria sa seletzione"
+    },
+    {
+      "name": "action_move_category",
+      "value": "Move a sa categoria"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "Marca comente lèghidu"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "Marca comente non lèghidu"
+    },
+    {
+      "name": "action_download",
+      "value": "Iscàrriga"
+    },
+    {
+      "name": "action_delete",
+      "value": "Cantzella"
+    },
+    {
+      "name": "action_migrate",
+      "value": "Migra"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "Boga dae sa biblioteca"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "Bogare sos %d manga seletzionados dae sa biblioteca?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "%d iscarrigamentos annanghiados a sa coa"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "Chirca in sa biblioteca"
+    },
+    {
+      "name": "library_no_match",
+      "value": "Perunu manga chi cointzet"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "Filtra"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "Òrdina"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "Visualizatzione"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "Iscarrigadu"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "Non lèghidos"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "Ja lèghidu"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "Sinnaladu"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "Acabadu"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "Sighidu"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "Tìtulu"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "Nùmeru de capìtulos"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "Ùrtima letura"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "Ùrtima verìfica de atualizatzione"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "Nùmeru de non lèghidos"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "Ora de atualizatzione de s'òpera"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "Data de otenimentu de sos capìtulos"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "Data de agiunta"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "A sa sorte"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "Grìllia istrinta"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "Grìllia larga"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "Grìllia de coberteddas"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "Lista"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "Nùmeru pro riga"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "Automàticu"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "Distintivos e buttones"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "Nùmeru de capìtulos iscarrigados"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "Capìtulos non lèghidos"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "Fonte locale"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "Limba"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "Butone Sighi a lèghere"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "Ischedas"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "Mustra is ischedas de categorias"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "Mustra su nùmeru de òperas"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "Ischedas MihonHarmony"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "Frunidore de ischedas de s'iscrivania"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "Sighi a lèghere"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "Sighi a lestru su manga lèghidu de reghente"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "Atualizatziones"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "Capìtulos noos non lèghidos in biblioteca"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "Sighi a lèghere"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "Atualizatziones"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d capìtulos non lèghidos"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "Ancora peruna cronologia de letura"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "Perunu capìtulu non lèghidu"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "Toca pro abèrrere s'aplicatzione"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "Ischeda de manga"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "Agiunghe dae sa pàgina de detàllios; toca sa cobertedda pro lèghere"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "Agiunghe a s'iscrivania dae sa pàgina de detàllios de su manga"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "Agiunghe a s'iscrivania"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "Agiuntu a s'iscrivania"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "Agiunta de s'ischeda fallida"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "Istatìsticas de sa chida"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "Durada de letura diària custa chida"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "Istatìsticas de su mese"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "Durada de letura diària custu mese"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "Ancora peruna letura"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "Mustra is atualizatziones benidoras"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "Benidore"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "Ghia de su benidore"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "Mese coladu"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "Mese imbeniente"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "Sas òperas chi sunt in una categoria incluida e in una esclùdida non si mustrant."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "Oe"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "Faghet %d dies"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "In %d dies"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "Benidore"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "Calendàriu de is atualizatziones prevìdidas de su manga in biblioteca"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "Benidore"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "In sa biblioteca tua non b'at manga in cursu"
+    }
+  ]
 }

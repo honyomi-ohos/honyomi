@@ -24,11 +24,6 @@ export struct ChapterSettingsSheet {
   initUnread: string = 'ignore';
   initDownloaded: string = 'ignore';
   initBookmarked: string = 'ignore';
-  onSortChanged: (mode: number, ascending: boolean) => void = (_mode: number, _ascending: boolean) => {
-  };
-  onFilterChanged: (unread: string, downloaded: string, bookmarked: string) => void =
-    (_unread: string, _downloaded: string, _bookmarked: string) => {
-    };
   // 内部可变副本
   @State sortMode: number = ChapterFlags.SORTING_SOURCE;
   @State ascending: boolean = false;
@@ -36,12 +31,143 @@ export struct ChapterSettingsSheet {
   @State fDownloaded: string = 'ignore';
   @State fBookmarked: string = 'ignore';
 
+  onSortChanged: (mode: number, ascending: boolean) => void = (_mode: number, _ascending: boolean) => {
+  };
+
+  onFilterChanged: (unread: string, downloaded: string, bookmarked: string) => void =
+    (_unread: string, _downloaded: string, _bookmarked: string) => {
+    };
+
   aboutToAppear(): void {
     this.sortMode = this.initSortMode;
     this.ascending = this.initAscending;
     this.fUnread = this.initUnread;
     this.fDownloaded = this.initDownloaded;
     this.fBookmarked = this.initBookmarked;
+  }
+
+  @Builder
+  tabBarLabel(index: number, label: Resource) {
+    Column() {
+      Text(label)
+        .fontSize(14)
+        .fontWeight(this.sheetTab === index ? FontWeight.Bold : FontWeight.Normal)
+        .fontColor(this.sheetTab === index ? this.pal.primary : this.pal.text)
+        .maxLines(1)
+    }
+    .height(48)
+    .width('100%')
+    .justifyContent(FlexAlign.Center)
+  }
+
+  @Builder
+  sortTabContent() {
+    Column() {
+      ForEach(SORT_MODES, (mode: number) => {
+        Row() {
+          Text(this.sortLabel(mode))
+            .fontSize(15)
+            .fontColor(this.sortMode === mode ? this.pal.primary : this.pal.text)
+            .layoutWeight(1)
+          if (this.sortMode === mode) {
+            AppIcon({
+              name: this.ascending ? 'arrow_upward' : 'arrow_downward',
+              iconSize: 20,
+              tint: this.pal.primary
+            })
+          }
+        }
+        .width('100%')
+        .padding({
+          left: 24,
+          right: 24,
+          top: 12,
+          bottom: 12
+        })
+        .onClick(() => {
+          this.pickSortMode(mode);
+        })
+      }, (mode: number) => `sortmode-${mode}`)
+    }
+    .width('100%')
+    .padding({ top: 8, bottom: 16 })
+    .alignItems(HorizontalAlign.Start)
+  }
+
+  @Builder
+  filterTabContent() {
+    Column() {
+      ForEach(['downloaded', 'unread', 'bookmarked'], (key: string) => {
+        Row() {
+          AppIcon({
+            name: this.triIcon(this.triValue(key)),
+            iconSize: 24,
+            tint: this.triTint(this.triValue(key))
+          })
+            .margin({ right: 16 })
+          Text(this.filterLabel(key))
+            .fontSize(15)
+            .fontColor(this.pal.text)
+            .layoutWeight(1)
+        }
+        .width('100%')
+        .padding({
+          left: 24,
+          right: 24,
+          top: 10,
+          bottom: 10
+        })
+        .onClick(() => {
+          this.applyFilter(key);
+        })
+      }, (key: string) => `chfilter-${key}`)
+      Text($r('app.string.detail_filter_reset'))
+        .fontSize(14)
+        .fontColor(this.pal.primary)
+        .width('100%')
+        .textAlign(TextAlign.End)
+        .padding({
+          left: 24,
+          right: 24,
+          top: 12,
+          bottom: 8
+        })
+        .onClick(() => {
+          this.resetFilters();
+        })
+    }
+    .width('100%')
+    .padding({ top: 8, bottom: 16 })
+    .alignItems(HorizontalAlign.Start)
+  }
+
+  build() {
+    Column() {
+      Tabs({ barPosition: BarPosition.Start, index: this.sheetTab }) {
+        TabContent() {
+          this.sortTabContent()
+        }
+        .tabBar(this.tabBarLabel(0, $r('app.string.detail_sort_tab')))
+
+        TabContent() {
+          this.filterTabContent()
+        }
+        .tabBar(this.tabBarLabel(1, $r('app.string.detail_filter_tab')))
+      }
+      .layoutWeight(1)
+      .barHeight(48)
+      .barWidth('100%')
+      .barMode(BarMode.Fixed)
+      .scrollable(false)
+      .vertical(false)
+      .divider({ strokeWidth: 1, color: this.pal.divider })
+      .onChange((index: number) => {
+        this.sheetTab = index;
+      })
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor(this.pal.bg)
   }
 
   private sortLabel(mode: number): Resource {
@@ -125,113 +251,5 @@ export struct ChapterSettingsSheet {
 
   private triTint(v: string): ResourceColor {
     return v === 'ignore' ? this.pal.sub : this.pal.primary;
-  }
-
-  @Builder
-  tabBarLabel(index: number, label: Resource) {
-    Column() {
-      Text(label)
-        .fontSize(14)
-        .fontWeight(this.sheetTab === index ? FontWeight.Bold : FontWeight.Normal)
-        .fontColor(this.sheetTab === index ? this.pal.primary : this.pal.text)
-        .maxLines(1)
-    }
-    .height(48)
-    .width('100%')
-    .justifyContent(FlexAlign.Center)
-  }
-
-  @Builder
-  sortTabContent() {
-    Column() {
-      ForEach(SORT_MODES, (mode: number) => {
-        Row() {
-          Text(this.sortLabel(mode))
-            .fontSize(15)
-            .fontColor(this.sortMode === mode ? this.pal.primary : this.pal.text)
-            .layoutWeight(1)
-          if (this.sortMode === mode) {
-            AppIcon({
-              name: this.ascending ? 'arrow_upward' : 'arrow_downward',
-              iconSize: 20,
-              tint: this.pal.primary
-            })
-          }
-        }
-        .width('100%')
-        .padding({ left: 24, right: 24, top: 12, bottom: 12 })
-        .onClick(() => {
-          this.pickSortMode(mode);
-        })
-      }, (mode: number) => `sortmode-${mode}`)
-    }
-    .width('100%')
-    .padding({ top: 8, bottom: 16 })
-    .alignItems(HorizontalAlign.Start)
-  }
-
-  @Builder
-  filterTabContent() {
-    Column() {
-      ForEach(['downloaded', 'unread', 'bookmarked'], (key: string) => {
-        Row() {
-          AppIcon({
-            name: this.triIcon(this.triValue(key)),
-            iconSize: 24,
-            tint: this.triTint(this.triValue(key))
-          })
-            .margin({ right: 16 })
-          Text(this.filterLabel(key))
-            .fontSize(15)
-            .fontColor(this.pal.text)
-            .layoutWeight(1)
-        }
-        .width('100%')
-        .padding({ left: 24, right: 24, top: 10, bottom: 10 })
-        .onClick(() => {
-          this.applyFilter(key);
-        })
-      }, (key: string) => `chfilter-${key}`)
-      Text($r('app.string.detail_filter_reset'))
-        .fontSize(14)
-        .fontColor(this.pal.primary)
-        .width('100%')
-        .textAlign(TextAlign.End)
-        .padding({ left: 24, right: 24, top: 12, bottom: 8 })
-        .onClick(() => {
-          this.resetFilters();
-        })
-    }
-    .width('100%')
-    .padding({ top: 8, bottom: 16 })
-    .alignItems(HorizontalAlign.Start)
-  }
-
-  build() {
-    Column() {
-      Tabs({ barPosition: BarPosition.Start, index: this.sheetTab }) {
-        TabContent() {
-          this.sortTabContent()
-        }
-        .tabBar(this.tabBarLabel(0, $r('app.string.detail_sort_tab')))
-        TabContent() {
-          this.filterTabContent()
-        }
-        .tabBar(this.tabBarLabel(1, $r('app.string.detail_filter_tab')))
-      }
-      .layoutWeight(1)
-      .barHeight(48)
-      .barWidth('100%')
-      .barMode(BarMode.Fixed)
-      .scrollable(false)
-      .vertical(false)
-      .divider({ strokeWidth: 1, color: this.pal.divider })
-      .onChange((index: number) => {
-        this.sheetTab = index;
-      })
-    }
-    .width('100%')
-    .height('100%')
-    .backgroundColor(this.pal.bg)
   }
 }

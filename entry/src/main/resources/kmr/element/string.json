@@ -1,534 +1,2124 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Filters all entries in your library" },
-    { "name": "more_incognito_summary", "value": "Pauses reading history" },
-    { "name": "more_support", "value": "Piştgirîya Me Bike" },
-    { "name": "more_help", "value": "Alîkarî" },
-    { "name": "support_perks", "value": "Patrons get access to exclusive channels, with more perks to come." },
-    { "name": "support_patreon", "value": "Patreon (preferred)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together." },
-    { "name": "support_contact_msg", "value": "For alternative options or any related questions, join our Discord server." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "Dane û Depo" },
-    { "name": "data_storage_location", "value": "Storage location" },
-    { "name": "data_storage_location_info", "value": "Used for automatic backups, chapter downloads, and local source." },
-    { "name": "data_backup_restore", "value": "Yedekkirin û vegerandin" },
-    { "name": "data_create_backup", "value": "Create backup" },
-    { "name": "data_restore_backup", "value": "Restore backup" },
-    { "name": "data_backup_interval", "value": "Automatic backup frequency" },
-    { "name": "data_backup_info", "value": "You should keep copies of backups in other places as well. Backups may contain sensitive data including any stored passwords; be careful if sharing." },
-    { "name": "data_last_auto_backup", "value": "Last automatically backed up: %s" },
-    { "name": "data_storage_usage", "value": "Storage usage" },
-    { "name": "data_available_space", "value": "Available: %s / Total: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Clear chapter cache" },
-    { "name": "data_used_cache", "value": "Used: %s" },
-    { "name": "data_cache_deleted", "value": "Cache cleared, %d files deleted" },
-    { "name": "data_cache_delete_error", "value": "Error occurred while clearing" },
-    { "name": "data_auto_clear_cache", "value": "Clear chapter cache on app launch" },
-    { "name": "data_export", "value": "Export" },
-    { "name": "data_library_list", "value": "Library List" },
-    { "name": "data_library_exported", "value": "Library Exported" },
-    { "name": "data_export_include", "value": "Select data to include" },
-    { "name": "data_column_title", "value": "Title" },
-    { "name": "data_column_author", "value": "Author" },
-    { "name": "data_interval_off", "value": "Girtî" },
-    { "name": "data_interval_6h", "value": "Her 6 saetan" },
-    { "name": "data_interval_12h", "value": "Her 12 saetan" },
-    { "name": "data_interval_24h", "value": "Rojane" },
-    { "name": "data_interval_48h", "value": "Her 2 rojan" },
-    { "name": "data_interval_weekly", "value": "Heftane" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "Temam" },
-    { "name": "common_cancel", "value": "Betal bike" },
-    { "name": "common_confirm", "value": "Piştrast bike" },
-    { "name": "common_delete", "value": "Jê bibe" },
-    { "name": "common_retry", "value": "Dîsa biceribîne" },
-    { "name": "common_search", "value": "Bigere" },
-    { "name": "common_all", "value": "Hemû" },
-    { "name": "common_close", "value": "Bigire" },
-    { "name": "common_save", "value": "Tomar bike" },
-    { "name": "common_install", "value": "Saz bike" },
-    { "name": "common_uninstall", "value": "Rakêşe" },
-    { "name": "common_update", "value": "Nû bike" },
-    { "name": "common_none", "value": "Tune" },
-    { "name": "common_default", "value": "Standard" },
-    { "name": "appearance_title", "value": "Xuyang" },
-    { "name": "appearance_language", "value": "Ziman" },
-    { "name": "lang_follow_system", "value": "Li pergalê biçe" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "Moda rûkarê" },
-    { "name": "appearance_theme_auto", "value": "Li pergalê biçe" },
-    { "name": "appearance_theme_light", "value": "Ronî" },
-    { "name": "appearance_theme_dark", "value": "Tarî" },
-    { "name": "appearance_accent_color", "value": "Rengê sereke" },
-    { "name": "appearance_other", "value": "Yên din" },
-    { "name": "appearance_amoled", "value": "Paşxaneya reş a pak a AMOLED" },
-    { "name": "theme_accent_blue", "value": "Şîn" },
-    { "name": "theme_accent_green", "value": "Kesk" },
-    { "name": "theme_accent_pink", "value": "Pembe" },
-    { "name": "theme_accent_purple", "value": "Mor" },
-    { "name": "theme_accent_orange", "value": "Porteqalî" },
-    { "name": "util_time_minutes_ago", "value": "%d deqe berê" },
-    { "name": "util_time_hours_ago", "value": "%d saet berê" },
-    { "name": "util_time_days_ago", "value": "%d roj berê" },
-    { "name": "util_status_ongoing", "value": "Didome" },
-    { "name": "util_status_completed", "value": "Qediya" },
-    { "name": "util_status_hiatus", "value": "Rawestiyaye" },
-    { "name": "util_status_cancelled", "value": "Hat betal kirin" },
-    { "name": "util_status_publication_complete", "value": "Weşan qediya" },
-    { "name": "util_status_unknown", "value": "Nenas" },
-    { "name": "tab_library", "value": "Pirtûkxane" },
-    { "name": "tab_updates", "value": "Nûkirin" },
-    { "name": "tab_history", "value": "Dîrok" },
-    { "name": "tab_browse", "value": "Bigere" },
-    { "name": "tab_more", "value": "Bêhtir" },
-    { "name": "tab_cf_waiting", "value": "Li benda piştrastkirinê…" },
-    { "name": "tab_cf_verified", "value": "Piştrastkirin qediya" },
-    { "name": "tab_cf_title", "value": "Piştrastkirina mirovî" },
-    { "name": "tab_cf_done", "value": "Qediya" },
-    { "name": "tab_cf_saved", "value": "Encamê piştrastkirinê hat tomarkirin" },
-    { "name": "more_title", "value": "Bêhtir" },
-    { "name": "more_version", "value": "Guherto %s" },
-    { "name": "more_downloaded_only", "value": "Downloaded only" },
-    { "name": "more_incognito", "value": "Incognito mode" },
-    { "name": "more_downloads", "value": "Rêza daxistinê" },
-    { "name": "more_categories", "value": "Kategorî" },
-    { "name": "more_settings", "value": "Mîheng" },
-    { "name": "more_about", "value": "Derbarê" },
-    { "name": "more_plugins", "value": "Pêvek" },
-    { "name": "categories_title", "value": "Kategorî" },
-    { "name": "categories_add", "value": "Kategoriya nû" },
-    { "name": "categories_name_placeholder", "value": "Navê kategoriyê" },
-    { "name": "categories_rename_category", "value": "Navê kategoriyê biguherîne" },
-    { "name": "categories_rename", "value": "Nav biguherîne" },
-    { "name": "categories_hint", "value": "Ji bo nûnavkirin an jêbirinê kategoriyê dirêj bigire; manga ya kategoriya jêbirî vedigere Standard" },
-    { "name": "dialog_pick_category", "value": "Kategoriyê hilbijêre" },
-    { "name": "viewer_loading", "value": "Tê barkirin…" },
-    { "name": "viewer_load_failed", "value": "Wêne nehat barkirin" },
-    { "name": "viewer_tap_retry", "value": "Ji bo dîsa biceribînî bitepîne" },
-    { "name": "library_title", "value": "Pirtûkxane" },
-    { "name": "library_empty", "value": "Pirtûkxaneya te vala ye, ji bo zêdekirina manga bigere" },
-    { "name": "library_new_category", "value": "Kategoriya nû" },
-    { "name": "library_category_name", "value": "Navê kategoriyê" },
-    { "name": "updates_title", "value": "Nûkirin" },
-    { "name": "updates_empty", "value": "Nûkirinên nû nîn in" },
-    { "name": "updates_found_new", "value": "%d beşên nû hatin dîtin" },
-    { "name": "updates_no_new", "value": "Beşên nû nîn in" },
-    { "name": "updates_refresh_failed", "value": "Nûkirin têk çû" },
-    { "name": "updates_refreshing", "value": "Tê nûkirin…" },
-    { "name": "history_title", "value": "Dîrok" },
-    { "name": "history_clear", "value": "Paqij bike" },
-    { "name": "history_confirm_clear", "value": "Paqijkirinê piştrast dikî?" },
-    { "name": "history_empty", "value": "Hê dîroka xwendinê nîn e" },
-    { "name": "history_cleared", "value": "Dîrok hat paqijkirin" },
-    { "name": "history_continue", "value": "Berdewam bike" },
-    { "name": "browse_title", "value": "Bigere" },
-    { "name": "browse_import", "value": "Têxe" },
-    { "name": "browse_plugins", "value": "Pêvek" },
-    { "name": "browse_local_source_name", "value": "Manga ya herêmî" },
-    { "name": "browse_popular", "value": "Populer" },
-    { "name": "browse_latest", "value": "Nûtirîn" },
-    { "name": "browse_search_hint", "value": "Manga bigere…" },
-    { "name": "browse_no_results", "value": "Manga nehat dîtin" },
-    { "name": "browse_local_empty", "value": "Hê manga ya herêmî nîn e, ji bo zêdekirinê Têxe bitepîne" },
-    { "name": "browse_load_failed", "value": "Barkirin têk çû: %s" },
-    { "name": "browse_search_failed", "value": "Gerrîn têk çû: %s" },
-    { "name": "browse_load_more_failed", "value": "Zêdetir nehat barkirin" },
-    { "name": "browse_open_detail_failed", "value": "Hûrgilî nehatin vekirin" },
-    { "name": "browse_pick_file_failed", "value": "Pel nehatin hilbijartin" },
-    { "name": "browse_import_title", "value": "%d pelan têxe" },
-    { "name": "browse_manga_name_hint", "value": "Navê manga" },
-    { "name": "browse_input_name", "value": "Ji kerema xwe navekî binivîse" },
-    { "name": "browse_import_done", "value": "%d pel hatin têxistin" },
-    { "name": "browse_import_failed", "value": "Têxistin têk çû: %s" },
-    { "name": "download_title", "value": "Daxistin" },
-    { "name": "download_resume", "value": "Berdewam bike" },
-    { "name": "download_pause", "value": "Bisekine" },
-    { "name": "download_clear_finished", "value": "Yên qediyayî paqij bike" },
-    { "name": "download_queue", "value": "Rêza daxistinê" },
-    { "name": "download_state_queued", "value": "Di rêzê de" },
-    { "name": "download_state_downloading", "value": "Tê daxistin" },
-    { "name": "download_state_done", "value": "Qediya" },
-    { "name": "download_state_failed", "value": "Têk çû" },
-    { "name": "download_move_top", "value": "Bibe serî" },
-    { "name": "download_move_bottom", "value": "Bibe binî" },
-    { "name": "download_deleted", "value": "Hat jêbirin" },
-    { "name": "download_empty", "value": "Hê daxistin nîn in" },
-    { "name": "download_status_downloaded", "value": "Hat daxistin" },
-    { "name": "download_chapter_count", "value": "%d beş" },
-    { "name": "detail_no_chapters", "value": "Beş nîn in" },
-    { "name": "detail_sync_failed_local", "value": "Hevdemî têk çû, daneyên herêmî têne nîşandan" },
-    { "name": "detail_added_to_library", "value": "Hate zêdekirin li pirtûkxaneyê" },
-    { "name": "detail_removed_from_library", "value": "Ji pirtûkxaneyê hat rakirin" },
-    { "name": "detail_all_marked_read", "value": "Hemû beş wekî xwendî hatin nîşankirin" },
-    { "name": "detail_download_queued", "value": "Hate zêdekirin li rêza daxistinê" },
-    { "name": "detail_config_anilist_token", "value": "Ji kerema xwe pêşî tokena AniListê mîheng bike" },
-    { "name": "detail_search_anilist", "value": "AniList bigere" },
-    { "name": "detail_manga_title_hint", "value": "Sernavê manga" },
-    { "name": "detail_no_search_results", "value": "Encamên gerrînê nîn in" },
-    { "name": "detail_anilist_search_failed", "value": "Gerrîna AniListê têk çû" },
-    { "name": "detail_anilist_bound", "value": "Bi AniListê ve hat girêdan" },
-    { "name": "detail_anilist_unbound", "value": "Ji AniListê hat qutkirin" },
-    { "name": "detail_synced_progress", "value": "Pêşveçûn bi beşa %d re hat hevdemkirin" },
-    { "name": "detail_anilist_sync_failed", "value": "Hevdemiya AniListê têk çû" },
-    { "name": "detail_status_local", "value": "Herêmî" },
-    { "name": "detail_in_library", "value": "Di pirtûkxaneyê de" },
-    { "name": "detail_add_to_library", "value": "Têxe pirtûkxaneyê" },
-    { "name": "detail_continue_reading", "value": "Xwendinê berdewam bike" },
-    { "name": "detail_start_reading", "value": "Dest bi xwendinê bike" },
-    { "name": "detail_no_chapters_yet", "value": "Hê beş nîn in" },
-    { "name": "detail_collapse", "value": "Bigire" },
-    { "name": "detail_expand", "value": "Veke" },
-    { "name": "detail_anilist_tracking", "value": "Şopandina AniListê" },
-    { "name": "detail_anilist_token_hint", "value": "Tokena AniListê hê nehatiye mîhengkirin" },
-    { "name": "detail_searching", "value": "Tê gerîn…" },
-    { "name": "detail_search_and_bind", "value": "Bigere û girê bide" },
-    { "name": "detail_bind", "value": "Girê bide" },
-    { "name": "detail_synced_to_chapter", "value": "Bi beşa %d re hat hevdemkirin" },
-    { "name": "detail_sync_progress", "value": "Pêşveçûnê hevdem bike" },
-    { "name": "detail_unbind", "value": "Qut bike" },
-    { "name": "detail_chapters_count", "value": "Beş (%d)" },
-    { "name": "detail_sort_asc", "value": "Berjêr" },
-    { "name": "detail_sort_desc", "value": "Berjor" },
-    { "name": "detail_mark_all_read", "value": "Hemûyan wekî xwendî nîşan bike" },
-    { "name": "detail_read", "value": "Xwendî" },
-    { "name": "detail_downloaded", "value": "Hat daxistin" },
-    { "name": "detail_in_queue", "value": "Di rêzê de" },
-    { "name": "detail_download", "value": "Daxe" },
-    { "name": "reader_chapter_not_found", "value": "Beş nehat dîtin" },
-    { "name": "reader_load_failed", "value": "Barkirin têk çû: %s" },
-    { "name": "reader_mode_ltr", "value": "Ji çepê ber bi rastê" },
-    { "name": "reader_mode_rtl", "value": "Ji rastê ber bi çepê" },
-    { "name": "reader_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_reading_mode", "value": "Moda xwendinê" },
-    { "name": "reader_orientation_free", "value": "Azad" },
-    { "name": "reader_orientation_portrait", "value": "Tîre" },
-    { "name": "reader_orientation_landscape", "value": "Berfireh" },
-    { "name": "reader_screen_orientation", "value": "Arasteya ekranê" },
-    { "name": "reader_last_chapter", "value": "Jixwe li beşa dawî yî" },
-    { "name": "reader_first_chapter", "value": "Jixwe li beşa yekem yî" },
-    { "name": "reader_first_page", "value": "Jixwe li rûpela yekem yî" },
-    { "name": "reader_last_page", "value": "Jixwe li rûpela dawî yî" },
-    { "name": "reader_loading_chapter", "value": "Beş tê barkirin…" },
-    { "name": "reader_settings", "value": "Mîhengên xwînerê" },
-    { "name": "reader_background", "value": "Paşxane" },
-    { "name": "reader_theme_auto", "value": "Bixweber" },
-    { "name": "reader_theme_white", "value": "Spî" },
-    { "name": "reader_theme_gray", "value": "Gewr" },
-    { "name": "reader_theme_black", "value": "Reş" },
-    { "name": "reader_show_page_number", "value": "Hejmara rûpelê nîşan bide" },
-    { "name": "reader_brightness", "value": "Ronahî" },
-    { "name": "reader_auto", "value": "Bixweber" },
-    { "name": "plugin_title", "value": "Pêvek" },
-    { "name": "plugin_installed_section", "value": "Sazkirî" },
-    { "name": "plugin_empty", "value": "Hê pêvek nîn in, li jêr saz bike" },
-    { "name": "plugin_disable_hint", "value": "Pêvekên hatine astengkirin dikarin her dem bên vekirin" },
-    { "name": "plugin_up_to_date", "value": "Nû ye" },
-    { "name": "plugin_local_install", "value": "Ji pelê saz bike" },
-    { "name": "plugin_install_from_file", "value": "Ji bo sazkirinê pelekî hilbijêre" },
-    { "name": "plugin_processing", "value": "Tê xebitandin…" },
-    { "name": "plugin_package_hint", "value": "Paketên pêvekan .honyomiplug / .zip tên piştgirîkirin" },
-    { "name": "plugin_repo", "value": "Depoya serhêl" },
-    { "name": "plugin_repo_config", "value": "Depoyê mîheng bike" },
-    { "name": "plugin_repo_refresh", "value": "Nû bike" },
-    { "name": "plugin_repo_hint", "value": "Hê depoya pêvekan nehatiye mîhengkirin" },
-    { "name": "plugin_repo_loading", "value": "Depo tê barkirin…" },
-    { "name": "plugin_repo_url_title", "value": "URLya depoya pêvekan" },
-    { "name": "plugin_repo_url_hint", "value": "URLya depoya pêvekan binivîse" },
-    { "name": "plugin_repo_load_failed", "value": "Barkirina depoyê têk çû: %s" },
-    { "name": "plugin_pick_file_failed", "value": "Pel nehat hilbijartin" },
-    { "name": "plugin_installed", "value": "Hat sazkirin: %s" },
-    { "name": "plugin_installed_name", "value": "%s hat sazkirin" },
-    { "name": "plugin_install_failed", "value": "Sazkirin têk çû: %s" },
-    { "name": "plugin_action_failed", "value": "Kiryar têk çû" },
-    { "name": "plugin_uninstalled", "value": "Hat rakêşandin: %s" },
-    { "name": "plugin_uninstall_failed", "value": "Rakêşandin têk çû" },
-    { "name": "settings_title", "value": "Mîheng" },
-    { "name": "settings_general", "value": "Giştî" },
-    { "name": "settings_start_tab", "value": "Ekrana destpêkê" },
-    { "name": "settings_personalization", "value": "Kesane" },
-    { "name": "settings_library", "value": "Pirtûkxane" },
-    { "name": "settings_reader", "value": "Xwîner" },
-    { "name": "settings_data", "value": "Dane" },
-    { "name": "settings_downloads", "value": "Daxistin" },
-    { "name": "settings_browse", "value": "Bigere" },
-    { "name": "settings_advanced", "value": "Pêşketî" },
-    { "name": "settings_about", "value": "Derbarê" },
-    { "name": "settings_tab_library", "value": "Pirtûkxane" },
-    { "name": "settings_tab_updates", "value": "Nûkirin" },
-    { "name": "settings_tab_history", "value": "Dîrok" },
-    { "name": "settings_tab_browse", "value": "Bigere" },
-    { "name": "settings_tab_more", "value": "Bêhtir" },
-    { "name": "advanced_title", "value": "Pêşketî" },
-    { "name": "advanced_calculating", "value": "Tê hesibandin…" },
-    { "name": "advanced_storage", "value": "Depo" },
-    { "name": "advanced_clear_image_cache", "value": "Pêşbîra wêneyan paqij bike" },
-    { "name": "advanced_image_cache_cleared", "value": "Pêşbîra wêneyan hat paqijkirin" },
-    { "name": "advanced_clear_cookies", "value": "Çerezan paqij bike" },
-    { "name": "advanced_cookies_cleared", "value": "Hemû çerezan hatin paqijkirin" },
-    { "name": "advanced_backup_restore", "value": "Hilanîn û vegerandin" },
-    { "name": "advanced_export_backup", "value": "Hilanînê derxe" },
-    { "name": "advanced_import_backup", "value": "Hilanînê têxe" },
-    { "name": "advanced_tracking", "value": "Şopandin" },
-    { "name": "advanced_anilist_token", "value": "Tokena AniListê" },
-    { "name": "advanced_token_title", "value": "Tokena têketinê ya AniListê" },
-    { "name": "advanced_token_hint", "value": "Tokena têketinê pêve bike (ji bo paqijkirinê vala bihêle)" },
-    { "name": "advanced_token_not_set", "value": "Neyê mîhengkirin" },
-    { "name": "advanced_token_set", "value": "Hat mîhengkirin" },
-    { "name": "advanced_token_saved", "value": "Token hat tomarkirin" },
-    { "name": "advanced_token_cleared", "value": "Token hat paqijkirin" },
-    { "name": "advanced_backup_exported", "value": "Hilanîn hat derxistin" },
-    { "name": "advanced_export_canceled", "value": "Derxistin hat betal kirin" },
-    { "name": "advanced_export_failed", "value": "Derxistin têk çû" },
-    { "name": "advanced_import_canceled", "value": "Têxistin hat betal kirin" },
-    { "name": "advanced_backup_invalid", "value": "Pela hilanînê nederbasdar e" },
-    { "name": "advanced_restored_manga", "value": "%d manga hatin vegerandin" },
-    { "name": "advanced_import_failed", "value": "Têxistin têk çû" },
-    { "name": "about_title", "value": "Derbarê" },
-    { "name": "about_version", "value": "Guherto 1.0.0" },
-    { "name": "about_desc", "value": "Mîmarî ji Mihon (Apache-2.0) hat îlhamgirtin. Çavkaniyên serhêl wekî pêvek bi awayekî dînamîk tên sazkirin, çavkaniyên herêmî jî di hundir de ne." },
-    { "name": "about_ack", "value": "Spasdariyên çavkaniya vekirî:\n· Mihon / Tachiyomi — mîmariya sepanê û sêwirana têkiliyê (Apache-2.0)\n· Material Symbols — îkonên di sepanê de (Apache-2.0)\n· MangaDex — çavkaniya daneyên ceribandinê" },
-    { "name": "browse_set_title", "value": "Bigere" },
-    { "name": "browse_set_content", "value": "Naverok" },
-    { "name": "browse_set_show_nsfw", "value": "Çavkaniyên NSFW nîşan bide" },
-    { "name": "browse_set_nsfw_hint", "value": "Dema vebû, çavkaniyên ku pêvekan wekî NSFW nîşan kirine dê di Gerrînê de xuya bibin" },
-    { "name": "dl_set_title", "value": "Daxistin" },
-    { "name": "dl_set_network", "value": "Tor" },
-    { "name": "dl_set_wifi_only", "value": "Tenê bi Wi-Fi daxe" },
-    { "name": "dl_set_wifi_only_hint", "value": "Nîşe: ev veguherî di vê guhertoyê de cîhigir e; nasîna celebê torê dê di guhertoya pêş de were" },
-    { "name": "lib_set_title", "value": "Pirtûkxane" },
-    { "name": "lib_set_sort_group", "value": "Parzûn û rêzkirin" },
-    { "name": "lib_set_sort_default", "value": "Rêzkirina standard" },
-    { "name": "lib_set_sort_title", "value": "Sernav" },
-    { "name": "lib_set_sort_last_update", "value": "Beşa herî nû" },
-    { "name": "lib_set_sort_added", "value": "Dîroka zêdekirinê" },
-    { "name": "lib_set_sort_unread", "value": "Hejmara nexwendî" },
-    { "name": "lib_set_sort_asc", "value": "Li gorî sernavê berjêr rêz bike" },
-    { "name": "lib_set_filter_default", "value": "Parzûna standard" },
-    { "name": "lib_set_filter_unread", "value": "Nexwendî" },
-    { "name": "lib_set_filter_downloaded", "value": "Hat daxistin" },
-    { "name": "lib_set_filter_uncompleted", "value": "Neqediyayî" },
-    { "name": "lib_set_display_group", "value": "Nîşandan" },
-    { "name": "lib_set_view_default", "value": "Dîtina standard" },
-    { "name": "lib_set_view_grid", "value": "Tor" },
-    { "name": "lib_set_view_cover", "value": "Tora bergê" },
-    { "name": "lib_set_view_list", "value": "Lîste" },
-    { "name": "lib_set_grid_cols", "value": "Stûnên torê" },
-    { "name": "lib_set_cols_auto", "value": "Bixweber" },
-    { "name": "lib_set_cols_2", "value": "2 stûn" },
-    { "name": "lib_set_cols_3", "value": "3 stûn" },
-    { "name": "lib_set_cols_4", "value": "4 stûn" },
-    { "name": "lib_set_unread_badge", "value": "Nîşanên nexwendî" },
-    { "name": "lib_set_download_badge", "value": "Nîşanên daxistinê" },
-    { "name": "reader_set_title", "value": "Xwîner" },
-    { "name": "reader_set_mode_group", "value": "Moda xwendinê" },
-    { "name": "reader_set_mode_default", "value": "Moda standard" },
-    { "name": "reader_set_mode_ltr", "value": "Ji çepê ber bi rastê" },
-    { "name": "reader_set_mode_rtl", "value": "Ji rastê ber bi çepê" },
-    { "name": "reader_set_mode_vertical", "value": "Rûpelkirina tîre" },
-    { "name": "reader_set_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_set_dual_page", "value": "Du rûpel (berfireh)" },
-    { "name": "reader_set_display_group", "value": "Nîşandan" },
-    { "name": "reader_set_show_page_number", "value": "Hejmara rûpelê nîşan bide" },
-    { "name": "reader_set_bg_color", "value": "Paşxaneya xwînerê" },
-    { "name": "reader_set_theme_follow", "value": "Li rûkarê biçe" },
-    { "name": "reader_set_theme_white", "value": "Spî" },
-    { "name": "reader_set_theme_black", "value": "Reş" },
-    { "name": "reader_set_theme_gray", "value": "Gewr" },
-    { "name": "reader_set_reset_brightness", "value": "Ronahiya xwînerê vegerîne" },
-    { "name": "reader_set_brightness_reset", "value": "Ronahî hate mîhengkirin ku li pergalê biçe" },
-    { "name": "browse_tab_sources", "value": "Çavkanî" },
-    { "name": "browse_tab_extensions", "value": "Pêvek" },
-    { "name": "browse_tab_migrate", "value": "Koçkirin" },
-    { "name": "browse_pin", "value": "Bidewirîne" },
-    { "name": "browse_unpin", "value": "Dewerînê rake" },
-    { "name": "browse_disable_source", "value": "Çavkaniyê neçalak bike" },
-    { "name": "browse_source_disabled", "value": "Çavkanî neçalak bû" },
-    { "name": "browse_pinned", "value": "Hate dewirandin" },
-    { "name": "browse_sources_empty", "value": "Çavkanî nîn in. Ji tabê Pêvek saz bike" },
-    { "name": "browse_filter_langs", "value": "Zimanan parzûn bike" },
-    { "name": "browse_filter_all", "value": "Hemû" },
-    { "name": "browse_source_missing", "value": "Çavkanî nayê dîtin. Dibe ku pêvek neçalak be" },
-    { "name": "global_search_hint", "value": "Di hemû çavkaniyan de bigere" },
-    { "name": "global_search_failed", "value": "Gerr têk çû" },
-    { "name": "ext_search_hint", "value": "Pêvekan bigere" },
-    { "name": "ext_search_no_match", "value": "Ti lihevhatin nîn e" },
-    { "name": "ext_repo_settings", "value": "Mîhengên depoyê" },
-    { "name": "ext_refresh_repo", "value": "Depoyê nû bike" },
-    { "name": "migrate_pick_source", "value": "Ji bo koçkirinê çavkaniyekê hilbijêre" },
-    { "name": "migrate_empty_library", "value": "Pirtûkxane vala ye" },
-    { "name": "migrate_select_all", "value": "Hemûyan hilbijêre" },
-    { "name": "migrate_deselect_all", "value": "Hilbijartinê rake" },
-    { "name": "migrate_action", "value": "Koç bike (%d)" },
-    { "name": "migrate_title", "value": "Koçkirin" },
-    { "name": "migrate_skip", "value": "Derbas bike" },
-    { "name": "migrate_progress", "value": "%d ji %d" },
-    { "name": "migrate_target_source", "value": "Çavkaniya armanc" },
-    { "name": "migrate_search_hint", "value": "Di çavkaniya armanc de manga bigere" },
-    { "name": "migrate_confirm_title", "value": "Bo vê mangayê were koçkirin?" },
-    { "name": "migrate_item_done", "value": "Hat koçkirin: %s" },
-    { "name": "migrate_failed", "value": "Koçkirin têk çû: %s" },
-    { "name": "migrate_done", "value": "Koçkirin qediya" },
-    { "name": "migrate_no_target", "value": "Çavkaniya armanc nîn e" },
-    { "name": "stats_title", "value": "Amar" },
-    { "name": "stats_overview_section", "value": "Nêrîn" },
-    { "name": "stats_in_library", "value": "Di pirtûkxaneyê de" },
-    { "name": "stats_read_duration", "value": "Dema xwendinê" },
-    { "name": "stats_completed_titles", "value": "Qediya" },
-    { "name": "stats_titles_section", "value": "Berhem" },
-    { "name": "stats_started_titles", "value": "Dest pê kirî" },
-    { "name": "stats_local_titles", "value": "Herêmî" },
-    { "name": "stats_chapters_section", "value": "Beş" },
-    { "name": "stats_total_chapters", "value": "Giştî" },
-    { "name": "stats_read_chapters", "value": "Xwendî" },
-    { "name": "stats_downloaded_chapters", "value": "Hat daxistin" },
-    { "name": "stats_tracker_section", "value": "Şopandin" },
-    { "name": "stats_tracked_titles", "value": "Berhemên şopandî" },
-    { "name": "stats_mean_score", "value": "Puanê navîn" },
-    { "name": "stats_used", "value": "Bikaranî" },
-    { "name": "stats_not_applicable", "value": "Nayê sepandin" },
-    { "name": "stats_week", "value": "Hefte" },
-    { "name": "stats_month", "value": "Meh" },
-    { "name": "stats_week_total", "value": "%s vê heftê" },
-    { "name": "stats_month_total", "value": "%s vê mehê" },
-    { "name": "stats_no_reading", "value": "Di vê demê de xwendin tune" },
-    { "name": "stats_day_short", "value": "%drj" },
-    { "name": "stats_hour_short", "value": "%dst" },
-    { "name": "stats_minute_short", "value": "%ddq" },
-    { "name": "stats_second_short", "value": "%dçr" },
-    { "name": "stats_wd_sun", "value": "Ye" },
-    { "name": "stats_wd_mon", "value": "Du" },
-    { "name": "stats_wd_tue", "value": "Sê" },
-    { "name": "stats_wd_wed", "value": "Ça" },
-    { "name": "stats_wd_thu", "value": "Pê" },
-    { "name": "stats_wd_fri", "value": "În" },
-    { "name": "stats_wd_sat", "value": "Şe" },
-    { "name": "reader_mode_vertical", "value": "Tîre" },
-    { "name": "reader_mode_smart_grip", "value": "Girtina jîr" },
-    { "name": "reader_orientation_lock_portrait", "value": "Tîreyê kilît bike" },
-    { "name": "reader_orientation_lock_landscape", "value": "Berfirehiyê kilît bike" },
-    { "name": "reader_tab_general", "value": "Giştî" },
-    { "name": "reader_tab_filter", "value": "Parzûna rengê" },
-    { "name": "reader_filter_grayscale", "value": "Gewr" },
-    { "name": "reader_filter_invert", "value": "Rengên berevajî" },
-    { "name": "reader_filter_contrast", "value": "Dijberî" },
-    { "name": "reader_filter_saturation", "value": "Têrbûn" },
-    { "name": "reader_crop_borders", "value": "Kêlekê bibire" },
-    { "name": "reader_nav_tap_zones", "value": "Herêmên pêlê" },
-    { "name": "reader_nav_default", "value": "Standard" },
-    { "name": "reader_nav_ltr", "value": "Ji çepê ber bi rastê" },
-    { "name": "reader_nav_rtl", "value": "Ji rastê ber bi çepê" },
-    { "name": "reader_nav_vertical", "value": "Tîre" },
-    { "name": "reader_nav_edge", "value": "Kêlek" },
-    { "name": "reader_nav_none", "value": "Tune" },
-    { "name": "reader_dual_page", "value": "Dîtina du rûpelan" },
-    { "name": "reader_webtoon_padding", "value": "Valahiya kêleka Webtoon" },
-    { "name": "reader_set_mode_smart_grip", "value": "Girtina jîr" },
-    { "name": "ext_install_local", "value": "Ji herêmê saz bike" },
-    { "name": "ext_detail_title", "value": "Agahiyên pêvekê" },
-    { "name": "ext_info_version", "value": "Guherto" },
-    { "name": "ext_info_language", "value": "Ziman" },
-    { "name": "ext_uninstall_title", "value": "Pêvekê rakêşe" },
-    { "name": "ext_uninstall_msg", "value": "“%s” were rakêşe? Daneyên manga yên pirtûkxaneyê dimînin" },
-    { "name": "ext_detail_sources", "value": "Çavkanî" },
-    { "name": "ext_detail_settings", "value": "Mîheng" },
-    { "name": "ext_pref_loading", "value": "Tê barkirin…" },
-    { "name": "ext_pref_failed", "value": "Mîheng nehatin sepandin" },
-    { "name": "ext_detail_missing", "value": "Pêvek tune ye an nehatiye barkirin" },
-    { "name": "action_filter", "value": "Parzûn" },
-    { "name": "action_update_library", "value": "Pirtûkxaneyê nû bike" },
-    { "name": "action_update_category", "value": "Kategoriyê nû bike" },
-    { "name": "action_open_random_manga", "value": "Berhemeke ketober veke" },
-    { "name": "action_select_all", "value": "Hemûyan hilbijêre" },
-    { "name": "action_select_inverse", "value": "Hilbijartinê berevajî bike" },
-    { "name": "action_move_category", "value": "Bibe kategoriyê" },
-    { "name": "action_mark_as_read", "value": "Wekî xwendî nîşan bike" },
-    { "name": "action_mark_as_unread", "value": "Wekî nexwendî nîşan bike" },
-    { "name": "action_download", "value": "Daxe" },
-    { "name": "action_delete", "value": "Jê bibe" },
-    { "name": "action_migrate", "value": "Koçkirin" },
-    { "name": "action_remove_from_library", "value": "Ji pirtûkxaneyê rake" },
-    { "name": "action_remove_from_library_msg", "value": "%d manga yên hilbijartî ji pirtûkxaneyê werin rakirin?" },
-    { "name": "action_download_queued", "value": "%d daxistin li rêzê hatin zêdekirin" },
-    { "name": "library_search_hint", "value": "Li pirtûkxaneyê bigere" },
-    { "name": "library_no_match", "value": "Manga ya lihevhatî tune" },
-    { "name": "lib_sheet_tab_filter", "value": "Parzûn" },
-    { "name": "lib_sheet_tab_sort", "value": "Rêz bike" },
-    { "name": "lib_sheet_tab_display", "value": "Nîşandan" },
-    { "name": "lib_filter_downloaded", "value": "Hat daxistin" },
-    { "name": "lib_filter_unread", "value": "Nexwendî" },
-    { "name": "lib_filter_started", "value": "Hatiye xwendin" },
-    { "name": "lib_filter_bookmarked", "value": "Nîşankirî" },
-    { "name": "lib_filter_completed", "value": "Qediya" },
-    { "name": "lib_filter_tracked", "value": "Hatiye şopandin" },
-    { "name": "lib_sort_alpha", "value": "Sernav" },
-    { "name": "lib_sort_total", "value": "Hejmara beşan" },
-    { "name": "lib_sort_last_read", "value": "Xwendina dawî" },
-    { "name": "lib_sort_last_update", "value": "Dema kontrola nûkirinê" },
-    { "name": "lib_sort_unread", "value": "Hejmara nexwendî" },
-    { "name": "lib_sort_latest_chapter", "value": "Dema nûkirina berhemê" },
-    { "name": "lib_sort_fetch_date", "value": "Dema standina beşan" },
-    { "name": "lib_sort_date_added", "value": "Dîroka zêdekirinê" },
-    { "name": "lib_sort_random", "value": "Ketober" },
-    { "name": "lib_display_compact", "value": "Tora qalind" },
-    { "name": "lib_display_comfortable", "value": "Tora fireh" },
-    { "name": "lib_display_cover", "value": "Tora bergê" },
-    { "name": "lib_display_list", "value": "Lîste" },
-    { "name": "lib_display_grid_size", "value": "Hejmar di her rêzê de" },
-    { "name": "lib_display_grid_auto", "value": "Bixweber" },
-    { "name": "lib_display_badges_group", "value": "Nîşan û bişkok" },
-    { "name": "lib_badge_downloaded", "value": "Hejmara beşên daxistî" },
-    { "name": "lib_badge_unread", "value": "Beşên nexwendî" },
-    { "name": "lib_badge_local", "value": "Çavkaniya herêmî" },
-    { "name": "lib_badge_language", "value": "Ziman" },
-    { "name": "lib_badge_continue", "value": "Bişkoka xwendinê berdewam bike" },
-    { "name": "lib_display_tabs_group", "value": "Hilpekîn" },
-    { "name": "lib_show_category_tabs", "value": "Hilpekînên kategoriyê nîşan bide" },
-    { "name": "lib_show_manga_count", "value": "Hejmara berheman nîşan bide" },
-    { "name": "EntryFormAbility_label", "value": "Karta MihonHarmony" },
-    { "name": "EntryFormAbility_desc", "value": "Pêşkêşkara karta sermaseyê" },
-    { "name": "card_recent_display", "value": "Xwendinê berdewam bike" },
-    { "name": "card_recent_desc", "value": "Manga ya nû xwendî zû berdewam bike" },
-    { "name": "card_updates_display", "value": "Nûkirin" },
-    { "name": "card_updates_desc", "value": "Beşên nexwendî yên herî nû yên pirtûkxaneyê" },
-    { "name": "card_recent_header", "value": "Xwendinê berdewam bike" },
-    { "name": "card_updates_header", "value": "Nûkirin" },
-    { "name": "card_unread_count", "value": "%d beş nexwendî" },
-    { "name": "card_empty_recent", "value": "Hê dîroka xwendinê nîn e" },
-    { "name": "card_empty_updates", "value": "Beşên nexwendî tune ne" },
-    { "name": "card_open_hint", "value": "Ji bo vekirina sepanê bipelîne" },
-    { "name": "card_manga_display", "value": "Karta manga" },
-    { "name": "card_manga_desc", "value": "Ji rûpela hûragahiyê zêde bike, bergê bipelîne û bixwîne" },
-    { "name": "card_manga_empty", "value": "Ji rûpela hûragahiyên manga li sermaseyê zêde bike" },
-    { "name": "detail_add_to_desktop", "value": "Li sermaseyê zêde bike" },
-    { "name": "detail_card_added", "value": "Li sermaseyê hat zêdekirin" },
-    { "name": "detail_card_add_failed", "value": "Kart nehat zêdekirin" },
-    { "name": "card_stats_week_display", "value": "Amarên hefteyî" },
-    { "name": "card_stats_week_desc", "value": "Dema xwendina rojane vê heftê" },
-    { "name": "card_stats_month_display", "value": "Amarên mehane" },
-    { "name": "card_stats_month_desc", "value": "Dema xwendina rojane vê mehê" },
-    { "name": "card_stats_empty", "value": "Hê xwendin tune" },
-    { "name": "action_view_upcoming", "value": "Nûkirinên pêşerojê nîşan bide" },
-    { "name": "label_upcoming", "value": "Ya pêşerojê" },
-    { "name": "upcoming_guide", "value": "Rêbera ya pêşerojê" },
-    { "name": "upcoming_calendar_prev", "value": "Meha borî" },
-    { "name": "upcoming_calendar_next", "value": "Meha bê" },
-    { "name": "pref_filter_update_categories_details", "value": "Berhemên ku di kategoriya tê de û ya hatiye derxistin de ne nayên nîşandan." },
-    { "name": "relative_time_today", "value": "Îro" },
-    { "name": "relative_time_days_ago", "value": "%d roj berê" },
-    { "name": "upcoming_relative_time_days", "value": "Di %d rojan de" },
-    { "name": "card_upcoming_display", "value": "Ya pêşerojê" },
-    { "name": "card_upcoming_desc", "value": "Salnameya nûkirina bendewar a manga ya pirtûkxaneyê" },
-    { "name": "card_upcoming_header", "value": "Ya pêşerojê" },
-    { "name": "card_empty_upcoming", "value": "Di pirtûkxaneya te de manga ya didome tune" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Filters all entries in your library"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Pauses reading history"
+    },
+    {
+      "name": "more_support",
+      "value": "Piştgirîya Me Bike"
+    },
+    {
+      "name": "more_help",
+      "value": "Alîkarî"
+    },
+    {
+      "name": "support_perks",
+      "value": "Patrons get access to exclusive channels, with more perks to come."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (preferred)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "For alternative options or any related questions, join our Discord server."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "Dane û Depo"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Storage location"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Used for automatic backups, chapter downloads, and local source."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "Yedekkirin û vegerandin"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Create backup"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Restore backup"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Automatic backup frequency"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "You should keep copies of backups in other places as well. Backups may contain sensitive data including any stored passwords; be careful if sharing."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Last automatically backed up: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Storage usage"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Available: %s / Total: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Clear chapter cache"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Used: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Cache cleared, %d files deleted"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Error occurred while clearing"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Clear chapter cache on app launch"
+    },
+    {
+      "name": "data_export",
+      "value": "Export"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Library List"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Library Exported"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Select data to include"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Title"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Author"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "Girtî"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "Her 6 saetan"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "Her 12 saetan"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "Rojane"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "Her 2 rojan"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "Heftane"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "Temam"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Betal bike"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Piştrast bike"
+    },
+    {
+      "name": "common_delete",
+      "value": "Jê bibe"
+    },
+    {
+      "name": "common_retry",
+      "value": "Dîsa biceribîne"
+    },
+    {
+      "name": "common_search",
+      "value": "Bigere"
+    },
+    {
+      "name": "common_all",
+      "value": "Hemû"
+    },
+    {
+      "name": "common_close",
+      "value": "Bigire"
+    },
+    {
+      "name": "common_save",
+      "value": "Tomar bike"
+    },
+    {
+      "name": "common_install",
+      "value": "Saz bike"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "Rakêşe"
+    },
+    {
+      "name": "common_update",
+      "value": "Nû bike"
+    },
+    {
+      "name": "common_none",
+      "value": "Tune"
+    },
+    {
+      "name": "common_default",
+      "value": "Standard"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Xuyang"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Ziman"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Li pergalê biçe"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Moda rûkarê"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Li pergalê biçe"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Ronî"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Tarî"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Rengê sereke"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Yên din"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "Paşxaneya reş a pak a AMOLED"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Şîn"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "Kesk"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Pembe"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Mor"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "Porteqalî"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d deqe berê"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d saet berê"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d roj berê"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "Didome"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Qediya"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "Rawestiyaye"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Hat betal kirin"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Weşan qediya"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Nenas"
+    },
+    {
+      "name": "tab_library",
+      "value": "Pirtûkxane"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Nûkirin"
+    },
+    {
+      "name": "tab_history",
+      "value": "Dîrok"
+    },
+    {
+      "name": "tab_browse",
+      "value": "Bigere"
+    },
+    {
+      "name": "tab_more",
+      "value": "Bêhtir"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "Li benda piştrastkirinê…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "Piştrastkirin qediya"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "Piştrastkirina mirovî"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "Qediya"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "Encamê piştrastkirinê hat tomarkirin"
+    },
+    {
+      "name": "more_title",
+      "value": "Bêhtir"
+    },
+    {
+      "name": "more_version",
+      "value": "Guherto %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Downloaded only"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Incognito mode"
+    },
+    {
+      "name": "more_downloads",
+      "value": "Rêza daxistinê"
+    },
+    {
+      "name": "more_categories",
+      "value": "Kategorî"
+    },
+    {
+      "name": "more_settings",
+      "value": "Mîheng"
+    },
+    {
+      "name": "more_about",
+      "value": "Derbarê"
+    },
+    {
+      "name": "more_plugins",
+      "value": "Pêvek"
+    },
+    {
+      "name": "categories_title",
+      "value": "Kategorî"
+    },
+    {
+      "name": "categories_add",
+      "value": "Kategoriya nû"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "Navê kategoriyê"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "Navê kategoriyê biguherîne"
+    },
+    {
+      "name": "categories_rename",
+      "value": "Nav biguherîne"
+    },
+    {
+      "name": "categories_hint",
+      "value": "Ji bo nûnavkirin an jêbirinê kategoriyê dirêj bigire; manga ya kategoriya jêbirî vedigere Standard"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "Kategoriyê hilbijêre"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "Tê barkirin…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "Wêne nehat barkirin"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "Ji bo dîsa biceribînî bitepîne"
+    },
+    {
+      "name": "library_title",
+      "value": "Pirtûkxane"
+    },
+    {
+      "name": "library_empty",
+      "value": "Pirtûkxaneya te vala ye, ji bo zêdekirina manga bigere"
+    },
+    {
+      "name": "library_new_category",
+      "value": "Kategoriya nû"
+    },
+    {
+      "name": "library_category_name",
+      "value": "Navê kategoriyê"
+    },
+    {
+      "name": "updates_title",
+      "value": "Nûkirin"
+    },
+    {
+      "name": "updates_empty",
+      "value": "Nûkirinên nû nîn in"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%d beşên nû hatin dîtin"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "Beşên nû nîn in"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "Nûkirin têk çû"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "Tê nûkirin…"
+    },
+    {
+      "name": "history_title",
+      "value": "Dîrok"
+    },
+    {
+      "name": "history_clear",
+      "value": "Paqij bike"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "Paqijkirinê piştrast dikî?"
+    },
+    {
+      "name": "history_empty",
+      "value": "Hê dîroka xwendinê nîn e"
+    },
+    {
+      "name": "history_cleared",
+      "value": "Dîrok hat paqijkirin"
+    },
+    {
+      "name": "history_continue",
+      "value": "Berdewam bike"
+    },
+    {
+      "name": "browse_title",
+      "value": "Bigere"
+    },
+    {
+      "name": "browse_import",
+      "value": "Têxe"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "Pêvek"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "Manga ya herêmî"
+    },
+    {
+      "name": "browse_popular",
+      "value": "Populer"
+    },
+    {
+      "name": "browse_latest",
+      "value": "Nûtirîn"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "Manga bigere…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "Manga nehat dîtin"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "Hê manga ya herêmî nîn e, ji bo zêdekirinê Têxe bitepîne"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "Barkirin têk çû: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "Gerrîn têk çû: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "Zêdetir nehat barkirin"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "Hûrgilî nehatin vekirin"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "Pel nehatin hilbijartin"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "%d pelan têxe"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "Navê manga"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "Ji kerema xwe navekî binivîse"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "%d pel hatin têxistin"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "Têxistin têk çû: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "Daxistin"
+    },
+    {
+      "name": "download_resume",
+      "value": "Berdewam bike"
+    },
+    {
+      "name": "download_pause",
+      "value": "Bisekine"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "Yên qediyayî paqij bike"
+    },
+    {
+      "name": "download_queue",
+      "value": "Rêza daxistinê"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "Di rêzê de"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "Tê daxistin"
+    },
+    {
+      "name": "download_state_done",
+      "value": "Qediya"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "Têk çû"
+    },
+    {
+      "name": "download_move_top",
+      "value": "Bibe serî"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "Bibe binî"
+    },
+    {
+      "name": "download_deleted",
+      "value": "Hat jêbirin"
+    },
+    {
+      "name": "download_empty",
+      "value": "Hê daxistin nîn in"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "Hat daxistin"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d beş"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "Beş nîn in"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "Hevdemî têk çû, daneyên herêmî têne nîşandan"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "Hate zêdekirin li pirtûkxaneyê"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "Ji pirtûkxaneyê hat rakirin"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "Hemû beş wekî xwendî hatin nîşankirin"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "Hate zêdekirin li rêza daxistinê"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "Ji kerema xwe pêşî tokena AniListê mîheng bike"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "AniList bigere"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "Sernavê manga"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "Encamên gerrînê nîn in"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "Gerrîna AniListê têk çû"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "Bi AniListê ve hat girêdan"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "Ji AniListê hat qutkirin"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "Pêşveçûn bi beşa %d re hat hevdemkirin"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "Hevdemiya AniListê têk çû"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "Herêmî"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "Di pirtûkxaneyê de"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "Têxe pirtûkxaneyê"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "Xwendinê berdewam bike"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "Dest bi xwendinê bike"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "Hê beş nîn in"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "Bigire"
+    },
+    {
+      "name": "detail_expand",
+      "value": "Veke"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "Şopandina AniListê"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "Tokena AniListê hê nehatiye mîhengkirin"
+    },
+    {
+      "name": "detail_searching",
+      "value": "Tê gerîn…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "Bigere û girê bide"
+    },
+    {
+      "name": "detail_bind",
+      "value": "Girê bide"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "Bi beşa %d re hat hevdemkirin"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "Pêşveçûnê hevdem bike"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "Qut bike"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "Beş (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "Berjêr"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "Berjor"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "Hemûyan wekî xwendî nîşan bike"
+    },
+    {
+      "name": "detail_read",
+      "value": "Xwendî"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "Hat daxistin"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "Di rêzê de"
+    },
+    {
+      "name": "detail_download",
+      "value": "Daxe"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "Beş nehat dîtin"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "Barkirin têk çû: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "Ji çepê ber bi rastê"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "Ji rastê ber bi çepê"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "Moda xwendinê"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "Azad"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "Tîre"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "Berfireh"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "Arasteya ekranê"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "Jixwe li beşa dawî yî"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "Jixwe li beşa yekem yî"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "Jixwe li rûpela yekem yî"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "Jixwe li rûpela dawî yî"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "Beş tê barkirin…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "Mîhengên xwînerê"
+    },
+    {
+      "name": "reader_background",
+      "value": "Paşxane"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Bixweber"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "Spî"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "Gewr"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "Reş"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "Hejmara rûpelê nîşan bide"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "Ronahî"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Bixweber"
+    },
+    {
+      "name": "plugin_title",
+      "value": "Pêvek"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "Sazkirî"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "Hê pêvek nîn in, li jêr saz bike"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "Pêvekên hatine astengkirin dikarin her dem bên vekirin"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "Nû ye"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "Ji pelê saz bike"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "Ji bo sazkirinê pelekî hilbijêre"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "Tê xebitandin…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "Paketên pêvekan .honyomiplug / .zip tên piştgirîkirin"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "Depoya serhêl"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "Depoyê mîheng bike"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "Nû bike"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "Hê depoya pêvekan nehatiye mîhengkirin"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "Depo tê barkirin…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "URLya depoya pêvekan"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "URLya depoya pêvekan binivîse"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "Barkirina depoyê têk çû: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "Pel nehat hilbijartin"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "Hat sazkirin: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "%s hat sazkirin"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "Sazkirin têk çû: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "Kiryar têk çû"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "Hat rakêşandin: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "Rakêşandin têk çû"
+    },
+    {
+      "name": "settings_title",
+      "value": "Mîheng"
+    },
+    {
+      "name": "settings_general",
+      "value": "Giştî"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Ekrana destpêkê"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "Kesane"
+    },
+    {
+      "name": "settings_library",
+      "value": "Pirtûkxane"
+    },
+    {
+      "name": "settings_reader",
+      "value": "Xwîner"
+    },
+    {
+      "name": "settings_data",
+      "value": "Dane"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Daxistin"
+    },
+    {
+      "name": "settings_browse",
+      "value": "Bigere"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Pêşketî"
+    },
+    {
+      "name": "settings_about",
+      "value": "Derbarê"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "Pirtûkxane"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Nûkirin"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "Dîrok"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "Bigere"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "Bêhtir"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Pêşketî"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "Tê hesibandin…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "Depo"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "Pêşbîra wêneyan paqij bike"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "Pêşbîra wêneyan hat paqijkirin"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "Çerezan paqij bike"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "Hemû çerezan hatin paqijkirin"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "Hilanîn û vegerandin"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "Hilanînê derxe"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "Hilanînê têxe"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "Şopandin"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "Tokena AniListê"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "Tokena têketinê ya AniListê"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "Tokena têketinê pêve bike (ji bo paqijkirinê vala bihêle)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "Neyê mîhengkirin"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "Hat mîhengkirin"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "Token hat tomarkirin"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "Token hat paqijkirin"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "Hilanîn hat derxistin"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "Derxistin hat betal kirin"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "Derxistin têk çû"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "Têxistin hat betal kirin"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "Pela hilanînê nederbasdar e"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "%d manga hatin vegerandin"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "Têxistin têk çû"
+    },
+    {
+      "name": "about_title",
+      "value": "Derbarê"
+    },
+    {
+      "name": "about_version",
+      "value": "Guherto 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "Mîmarî ji Mihon (Apache-2.0) hat îlhamgirtin. Çavkaniyên serhêl wekî pêvek bi awayekî dînamîk tên sazkirin, çavkaniyên herêmî jî di hundir de ne."
+    },
+    {
+      "name": "about_ack",
+      "value": "Spasdariyên çavkaniya vekirî:\n· Mihon / Tachiyomi — mîmariya sepanê û sêwirana têkiliyê (Apache-2.0)\n· Material Symbols — îkonên di sepanê de (Apache-2.0)\n· MangaDex — çavkaniya daneyên ceribandinê"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "Bigere"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "Naverok"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "Çavkaniyên NSFW nîşan bide"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "Dema vebû, çavkaniyên ku pêvekan wekî NSFW nîşan kirine dê di Gerrînê de xuya bibin"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Daxistin"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Tor"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Tenê bi Wi-Fi daxe"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "Nîşe: ev veguherî di vê guhertoyê de cîhigir e; nasîna celebê torê dê di guhertoya pêş de were"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "Pirtûkxane"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "Parzûn û rêzkirin"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "Rêzkirina standard"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "Sernav"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "Beşa herî nû"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "Dîroka zêdekirinê"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "Hejmara nexwendî"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "Li gorî sernavê berjêr rêz bike"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "Parzûna standard"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "Nexwendî"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "Hat daxistin"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "Neqediyayî"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Nîşandan"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "Dîtina standard"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "Tor"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "Tora bergê"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "Lîste"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "Stûnên torê"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "Bixweber"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 stûn"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 stûn"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 stûn"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "Nîşanên nexwendî"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "Nîşanên daxistinê"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "Xwîner"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "Moda xwendinê"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "Moda standard"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "Ji çepê ber bi rastê"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "Ji rastê ber bi çepê"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "Rûpelkirina tîre"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "Du rûpel (berfireh)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Nîşandan"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "Hejmara rûpelê nîşan bide"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "Paşxaneya xwînerê"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "Li rûkarê biçe"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "Spî"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "Reş"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "Gewr"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "Ronahiya xwînerê vegerîne"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "Ronahî hate mîhengkirin ku li pergalê biçe"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "Çavkanî"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "Pêvek"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "Koçkirin"
+    },
+    {
+      "name": "browse_pin",
+      "value": "Bidewirîne"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "Dewerînê rake"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "Çavkaniyê neçalak bike"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "Çavkanî neçalak bû"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "Hate dewirandin"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "Çavkanî nîn in. Ji tabê Pêvek saz bike"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "Zimanan parzûn bike"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "Hemû"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "Çavkanî nayê dîtin. Dibe ku pêvek neçalak be"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "Di hemû çavkaniyan de bigere"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "Gerr têk çû"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "Pêvekan bigere"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "Ti lihevhatin nîn e"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "Mîhengên depoyê"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "Depoyê nû bike"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "Ji bo koçkirinê çavkaniyekê hilbijêre"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "Pirtûkxane vala ye"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "Hemûyan hilbijêre"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "Hilbijartinê rake"
+    },
+    {
+      "name": "migrate_action",
+      "value": "Koç bike (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "Koçkirin"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "Derbas bike"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d ji %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "Çavkaniya armanc"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "Di çavkaniya armanc de manga bigere"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "Bo vê mangayê were koçkirin?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "Hat koçkirin: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "Koçkirin têk çû: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "Koçkirin qediya"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "Çavkaniya armanc nîn e"
+    },
+    {
+      "name": "stats_title",
+      "value": "Amar"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "Nêrîn"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "Di pirtûkxaneyê de"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "Dema xwendinê"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "Qediya"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "Berhem"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "Dest pê kirî"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "Herêmî"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "Beş"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "Giştî"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "Xwendî"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "Hat daxistin"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "Şopandin"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "Berhemên şopandî"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "Puanê navîn"
+    },
+    {
+      "name": "stats_used",
+      "value": "Bikaranî"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "Nayê sepandin"
+    },
+    {
+      "name": "stats_week",
+      "value": "Hefte"
+    },
+    {
+      "name": "stats_month",
+      "value": "Meh"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "%s vê heftê"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "%s vê mehê"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "Di vê demê de xwendin tune"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%drj"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dst"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%ddq"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%dçr"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "Ye"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "Du"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "Sê"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "Ça"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "Pê"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "În"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "Şe"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "Tîre"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "Girtina jîr"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "Tîreyê kilît bike"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "Berfirehiyê kilît bike"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "Giştî"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "Parzûna rengê"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "Gewr"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "Rengên berevajî"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "Dijberî"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "Têrbûn"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "Kêlekê bibire"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "Herêmên pêlê"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "Standard"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "Ji çepê ber bi rastê"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "Ji rastê ber bi çepê"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "Tîre"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "Kêlek"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "Tune"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Dîtina du rûpelan"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "Valahiya kêleka Webtoon"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "Girtina jîr"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "Ji herêmê saz bike"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "Agahiyên pêvekê"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "Guherto"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "Ziman"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "Pêvekê rakêşe"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "“%s” were rakêşe? Daneyên manga yên pirtûkxaneyê dimînin"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "Çavkanî"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "Mîheng"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "Tê barkirin…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "Mîheng nehatin sepandin"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "Pêvek tune ye an nehatiye barkirin"
+    },
+    {
+      "name": "action_filter",
+      "value": "Parzûn"
+    },
+    {
+      "name": "action_update_library",
+      "value": "Pirtûkxaneyê nû bike"
+    },
+    {
+      "name": "action_update_category",
+      "value": "Kategoriyê nû bike"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "Berhemeke ketober veke"
+    },
+    {
+      "name": "action_select_all",
+      "value": "Hemûyan hilbijêre"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "Hilbijartinê berevajî bike"
+    },
+    {
+      "name": "action_move_category",
+      "value": "Bibe kategoriyê"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "Wekî xwendî nîşan bike"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "Wekî nexwendî nîşan bike"
+    },
+    {
+      "name": "action_download",
+      "value": "Daxe"
+    },
+    {
+      "name": "action_delete",
+      "value": "Jê bibe"
+    },
+    {
+      "name": "action_migrate",
+      "value": "Koçkirin"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "Ji pirtûkxaneyê rake"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "%d manga yên hilbijartî ji pirtûkxaneyê werin rakirin?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "%d daxistin li rêzê hatin zêdekirin"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "Li pirtûkxaneyê bigere"
+    },
+    {
+      "name": "library_no_match",
+      "value": "Manga ya lihevhatî tune"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "Parzûn"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "Rêz bike"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "Nîşandan"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "Hat daxistin"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "Nexwendî"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "Hatiye xwendin"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "Nîşankirî"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "Qediya"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "Hatiye şopandin"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "Sernav"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "Hejmara beşan"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "Xwendina dawî"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "Dema kontrola nûkirinê"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "Hejmara nexwendî"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "Dema nûkirina berhemê"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "Dema standina beşan"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "Dîroka zêdekirinê"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "Ketober"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "Tora qalind"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "Tora fireh"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "Tora bergê"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "Lîste"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "Hejmar di her rêzê de"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "Bixweber"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "Nîşan û bişkok"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "Hejmara beşên daxistî"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "Beşên nexwendî"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "Çavkaniya herêmî"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "Ziman"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "Bişkoka xwendinê berdewam bike"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "Hilpekîn"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "Hilpekînên kategoriyê nîşan bide"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "Hejmara berheman nîşan bide"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "Karta MihonHarmony"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "Pêşkêşkara karta sermaseyê"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "Xwendinê berdewam bike"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "Manga ya nû xwendî zû berdewam bike"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "Nûkirin"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "Beşên nexwendî yên herî nû yên pirtûkxaneyê"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "Xwendinê berdewam bike"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "Nûkirin"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d beş nexwendî"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "Hê dîroka xwendinê nîn e"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "Beşên nexwendî tune ne"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "Ji bo vekirina sepanê bipelîne"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "Karta manga"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "Ji rûpela hûragahiyê zêde bike, bergê bipelîne û bixwîne"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "Ji rûpela hûragahiyên manga li sermaseyê zêde bike"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "Li sermaseyê zêde bike"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "Li sermaseyê hat zêdekirin"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "Kart nehat zêdekirin"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "Amarên hefteyî"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "Dema xwendina rojane vê heftê"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "Amarên mehane"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "Dema xwendina rojane vê mehê"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "Hê xwendin tune"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "Nûkirinên pêşerojê nîşan bide"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "Ya pêşerojê"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "Rêbera ya pêşerojê"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "Meha borî"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "Meha bê"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "Berhemên ku di kategoriya tê de û ya hatiye derxistin de ne nayên nîşandan."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "Îro"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d roj berê"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "Di %d rojan de"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "Ya pêşerojê"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "Salnameya nûkirina bendewar a manga ya pirtûkxaneyê"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "Ya pêşerojê"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "Di pirtûkxaneya te de manga ya didome tune"
+    }
+  ]
 }

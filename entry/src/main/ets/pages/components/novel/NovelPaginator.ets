@@ -5,8 +5,10 @@
 // 章节正文块：文本段或插图（插件正文里的 <img> 解析而来）
 export interface NovelBlock {
   isImage: boolean;
+
   // 文本段内容；图片块的图片 URL
   text: string;
+
   // 文本段在听书段落序列中的序号（图片块为 -1）
   ttsIdx: number;
 }
@@ -19,6 +21,7 @@ export interface NovelPage {
 
 // 双页中缝宽度（Divider 两侧 margin 12 + 1 线宽）
 export const SPINE_W: number = 25;
+
 // pageAt 越界时共享的空页对象（避免每次调用新建对象字面量）
 export const EMPTY_NOVEL_PAGE: NovelPage = { texts: [], imageUrl: '' };
 
@@ -27,7 +30,6 @@ export type NovelMeasureFn = (text: string, widthVp: number) => number;
 
 // 分页引擎：页面尺寸/间距配置由页面在每次分页前同步进来
 export class NovelPaginator {
-  private readonly measure: NovelMeasureFn;
   // 单页文本可用宽高（vp）
   pageW: number = 0;
   pageH: number = 0;
@@ -37,6 +39,7 @@ export class NovelPaginator {
   lineHeight: number = 32;
   // 段落 → 翻页页码映射（buildPages 填充，听书跟随翻页用）
   paraPage: number[] = [];
+  private readonly measure: NovelMeasureFn;
 
   constructor(measure: NovelMeasureFn) {
     this.measure = measure;
@@ -250,6 +253,18 @@ export class NovelChapterText {
   }
 
   // 把 <img> 之间的 html 片段剥成纯文本段落，追加为文本块（跳过空段）；
+
+  // 纯文本章节的块视图：每行一个文本块（与 body.split('\n') 等价）
+  static plainBlocks(body: string): NovelBlock[] {
+    const paras = body.split('\n');
+    const out: NovelBlock[] = [];
+    for (let i = 0; i < paras.length; i++) {
+      const block: NovelBlock = { isImage: false, text: paras[i], ttsIdx: i };
+      out.push(block);
+    }
+    return out;
+  }
+
   // 返回递增后的文本段序号
   private static pushTextBlocks(segment: string, blocks: NovelBlock[], ttsSeq: number): number {
     const lines = NovelChapterText.htmlToPlain(segment).split('\n');
@@ -273,16 +288,5 @@ export class NovelChapterText {
       return '';
     }
     return match[1].trim();
-  }
-
-  // 纯文本章节的块视图：每行一个文本块（与 body.split('\n') 等价）
-  static plainBlocks(body: string): NovelBlock[] {
-    const paras = body.split('\n');
-    const out: NovelBlock[] = [];
-    for (let i = 0; i < paras.length; i++) {
-      const block: NovelBlock = { isImage: false, text: paras[i], ttsIdx: i };
-      out.push(block);
-    }
-    return out;
   }
 }

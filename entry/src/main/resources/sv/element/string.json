@@ -1,534 +1,2124 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Filtrerar alla artiklar i ditt bibliotek" },
-    { "name": "more_incognito_summary", "value": "Pausar läshistoriken" },
-    { "name": "more_support", "value": "Stöd oss" },
-    { "name": "more_help", "value": "Hjälp" },
-    { "name": "support_perks", "value": "Stödjare på Patreon får tillgång till exklusiva kanaler, med fler förmåner i framtiden." },
-    { "name": "support_patreon", "value": "Patreon (föredragen)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon stöds för närvarande av %d+ personer på Patreon. Vi vill tacka var och en av er. Låt oss göra Mihon ännu bättre tillsammans." },
-    { "name": "support_contact_msg", "value": "För alternativa alternativ eller andra relaterade frågor, gå med i vår Discord-server." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "Data och lagring" },
-    { "name": "data_storage_location", "value": "Lagringsplats" },
-    { "name": "data_storage_location_info", "value": "Används för automatisk säkerhetskopiering, kapitelnedladdningar och lokal källa." },
-    { "name": "data_backup_restore", "value": "Säkerhetskopiera och återställ" },
-    { "name": "data_create_backup", "value": "Skapa säkerhetskopia" },
-    { "name": "data_restore_backup", "value": "Återställ säkerhetskopia" },
-    { "name": "data_backup_interval", "value": "Automatisk säkerhetskopieringsfrekvens" },
-    { "name": "data_backup_info", "value": "Du bör även spara kopior av säkerhetskopior på andra platser. Säkerhetskopior kan innehålla känsliga uppgifter, t.ex. lagrade lösenord; var försiktig om du delar dem." },
-    { "name": "data_last_auto_backup", "value": "Senaste automatiska säkerhetskopieringen: %s" },
-    { "name": "data_storage_usage", "value": "Lagringsanvändning" },
-    { "name": "data_available_space", "value": "Tillgängligt: %s / Totalt: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Rensa kapitelcache" },
-    { "name": "data_used_cache", "value": "Används: %s" },
-    { "name": "data_cache_deleted", "value": "Cache rensad, %d filer togs bort" },
-    { "name": "data_cache_delete_error", "value": "Fel inträffade vid rensning" },
-    { "name": "data_auto_clear_cache", "value": "Rensa kapitelcache när appen startas" },
-    { "name": "data_export", "value": "Exportera" },
-    { "name": "data_library_list", "value": "Bibliotekslista" },
-    { "name": "data_library_exported", "value": "Bibliotek Exporterat" },
-    { "name": "data_export_include", "value": "Välj data som ska inkluderas" },
-    { "name": "data_column_title", "value": "Titel" },
-    { "name": "data_column_author", "value": "Författare" },
-    { "name": "data_interval_off", "value": "Av" },
-    { "name": "data_interval_6h", "value": "Var 6:e timme" },
-    { "name": "data_interval_12h", "value": "Var 12:e timme" },
-    { "name": "data_interval_24h", "value": "Dagligen" },
-    { "name": "data_interval_48h", "value": "Varannan dag" },
-    { "name": "data_interval_weekly", "value": "Varje vecka" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "OK" },
-    { "name": "common_cancel", "value": "Avbryt" },
-    { "name": "common_confirm", "value": "Bekräfta" },
-    { "name": "common_delete", "value": "Radera" },
-    { "name": "common_retry", "value": "Försök igen" },
-    { "name": "common_search", "value": "Sök" },
-    { "name": "common_all", "value": "Alla" },
-    { "name": "common_close", "value": "Stäng" },
-    { "name": "common_save", "value": "Spara" },
-    { "name": "common_install", "value": "Installera" },
-    { "name": "common_uninstall", "value": "Avinstallera" },
-    { "name": "common_update", "value": "Uppdatera" },
-    { "name": "common_none", "value": "Ingen" },
-    { "name": "common_default", "value": "Standard" },
-    { "name": "appearance_title", "value": "Utseende" },
-    { "name": "appearance_language", "value": "Språk" },
-    { "name": "lang_follow_system", "value": "Följ systemet" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "Temaläge" },
-    { "name": "appearance_theme_auto", "value": "Följ systemet" },
-    { "name": "appearance_theme_light", "value": "Ljust" },
-    { "name": "appearance_theme_dark", "value": "Mörkt" },
-    { "name": "appearance_accent_color", "value": "Accentfärg" },
-    { "name": "appearance_other", "value": "Övrigt" },
-    { "name": "appearance_amoled", "value": "AMOLED helt svart bakgrund" },
-    { "name": "theme_accent_blue", "value": "Blå" },
-    { "name": "theme_accent_green", "value": "Grön" },
-    { "name": "theme_accent_pink", "value": "Rosa" },
-    { "name": "theme_accent_purple", "value": "Lila" },
-    { "name": "theme_accent_orange", "value": "Orange" },
-    { "name": "util_time_minutes_ago", "value": "%d min sedan" },
-    { "name": "util_time_hours_ago", "value": "%d h sedan" },
-    { "name": "util_time_days_ago", "value": "%d d sedan" },
-    { "name": "util_status_ongoing", "value": "Pågående" },
-    { "name": "util_status_completed", "value": "Avslutad" },
-    { "name": "util_status_hiatus", "value": "Pausad" },
-    { "name": "util_status_cancelled", "value": "Inställd" },
-    { "name": "util_status_publication_complete", "value": "Publicering avslutad" },
-    { "name": "util_status_unknown", "value": "Okänd" },
-    { "name": "tab_library", "value": "Bibliotek" },
-    { "name": "tab_updates", "value": "Uppdateringar" },
-    { "name": "tab_history", "value": "Historik" },
-    { "name": "tab_browse", "value": "Bläddra" },
-    { "name": "tab_more", "value": "Mer" },
-    { "name": "tab_cf_waiting", "value": "Väntar på verifiering…" },
-    { "name": "tab_cf_verified", "value": "Verifiering klar" },
-    { "name": "tab_cf_title", "value": "Mänsklig verifiering" },
-    { "name": "tab_cf_done", "value": "Klar" },
-    { "name": "tab_cf_saved", "value": "Verifieringsresultat sparat" },
-    { "name": "more_title", "value": "Mer" },
-    { "name": "more_version", "value": "Version %s" },
-    { "name": "more_downloaded_only", "value": "Endast nedladdat" },
-    { "name": "more_incognito", "value": "Inkognitoläge" },
-    { "name": "more_downloads", "value": "Nedladdningskö" },
-    { "name": "more_categories", "value": "Kategorier" },
-    { "name": "more_settings", "value": "Inställningar" },
-    { "name": "more_about", "value": "Om" },
-    { "name": "more_plugins", "value": "Tillägg" },
-    { "name": "categories_title", "value": "Kategorier" },
-    { "name": "categories_add", "value": "Ny kategori" },
-    { "name": "categories_name_placeholder", "value": "Kategorinamn" },
-    { "name": "categories_rename_category", "value": "Byt namn på kategori" },
-    { "name": "categories_rename", "value": "Byt namn" },
-    { "name": "categories_hint", "value": "Tryck länge på en kategori för att byta namn eller radera den; manga i en raderad kategori flyttas tillbaka till Standard" },
-    { "name": "dialog_pick_category", "value": "Välj kategori" },
-    { "name": "viewer_loading", "value": "Läser in…" },
-    { "name": "viewer_load_failed", "value": "Kunde inte läsa in bilden" },
-    { "name": "viewer_tap_retry", "value": "Tryck för att försöka igen" },
-    { "name": "library_title", "value": "Bibliotek" },
-    { "name": "library_empty", "value": "Ditt bibliotek är tomt, bläddra för att lägga till manga" },
-    { "name": "library_new_category", "value": "Ny kategori" },
-    { "name": "library_category_name", "value": "Kategorinamn" },
-    { "name": "updates_title", "value": "Uppdateringar" },
-    { "name": "updates_empty", "value": "Inga senaste uppdateringar" },
-    { "name": "updates_found_new", "value": "%d nya kapitel hittades" },
-    { "name": "updates_no_new", "value": "Inga nya kapitel" },
-    { "name": "updates_refresh_failed", "value": "Uppdatering misslyckades" },
-    { "name": "updates_refreshing", "value": "Uppdaterar…" },
-    { "name": "history_title", "value": "Historik" },
-    { "name": "history_clear", "value": "Rensa" },
-    { "name": "history_confirm_clear", "value": "Bekräfta rensning?" },
-    { "name": "history_empty", "value": "Ingen läshistorik ännu" },
-    { "name": "history_cleared", "value": "Historiken rensad" },
-    { "name": "history_continue", "value": "Fortsätt" },
-    { "name": "browse_title", "value": "Bläddra" },
-    { "name": "browse_import", "value": "Importera" },
-    { "name": "browse_plugins", "value": "Plugin" },
-    { "name": "browse_local_source_name", "value": "Lokal manga" },
-    { "name": "browse_popular", "value": "Populärt" },
-    { "name": "browse_latest", "value": "Senaste" },
-    { "name": "browse_search_hint", "value": "Sök manga…" },
-    { "name": "browse_no_results", "value": "Ingen manga hittades" },
-    { "name": "browse_local_empty", "value": "Ingen lokal manga ännu, tryck på Importera för att lägga till" },
-    { "name": "browse_load_failed", "value": "Kunde inte läsa in: %s" },
-    { "name": "browse_search_failed", "value": "Sökning misslyckades: %s" },
-    { "name": "browse_load_more_failed", "value": "Kunde inte läsa in mer" },
-    { "name": "browse_open_detail_failed", "value": "Kunde inte öppna detaljer" },
-    { "name": "browse_pick_file_failed", "value": "Kunde inte välja filer" },
-    { "name": "browse_import_title", "value": "Importera %d filer" },
-    { "name": "browse_manga_name_hint", "value": "Manganamn" },
-    { "name": "browse_input_name", "value": "Ange ett namn" },
-    { "name": "browse_import_done", "value": "Importerade %d filer" },
-    { "name": "browse_import_failed", "value": "Import misslyckades: %s" },
-    { "name": "download_title", "value": "Nedladdningar" },
-    { "name": "download_resume", "value": "Återuppta" },
-    { "name": "download_pause", "value": "Pausa" },
-    { "name": "download_clear_finished", "value": "Rensa färdiga" },
-    { "name": "download_queue", "value": "Nedladdningskö" },
-    { "name": "download_state_queued", "value": "I kö" },
-    { "name": "download_state_downloading", "value": "Laddar ner" },
-    { "name": "download_state_done", "value": "Klar" },
-    { "name": "download_state_failed", "value": "Misslyckades" },
-    { "name": "download_move_top", "value": "Flytta högst upp" },
-    { "name": "download_move_bottom", "value": "Flytta längst ner" },
-    { "name": "download_deleted", "value": "Raderad" },
-    { "name": "download_empty", "value": "Inga nedladdningar ännu" },
-    { "name": "download_status_downloaded", "value": "Nedladdad" },
-    { "name": "download_chapter_count", "value": "%d kapitel" },
-    { "name": "detail_no_chapters", "value": "Inga kapitel" },
-    { "name": "detail_sync_failed_local", "value": "Synkronisering misslyckades, visar lokal data" },
-    { "name": "detail_added_to_library", "value": "Tillagd i biblioteket" },
-    { "name": "detail_removed_from_library", "value": "Borttagen från biblioteket" },
-    { "name": "detail_all_marked_read", "value": "Alla kapitel markerade som lästa" },
-    { "name": "detail_download_queued", "value": "Nedladdning köad" },
-    { "name": "detail_config_anilist_token", "value": "Konfigurera först din AniList-token" },
-    { "name": "detail_search_anilist", "value": "Sök på AniList" },
-    { "name": "detail_manga_title_hint", "value": "Mangatitel" },
-    { "name": "detail_no_search_results", "value": "Inga sökresultat" },
-    { "name": "detail_anilist_search_failed", "value": "AniList-sökning misslyckades" },
-    { "name": "detail_anilist_bound", "value": "Kopplad till AniList" },
-    { "name": "detail_anilist_unbound", "value": "Frånkopplad från AniList" },
-    { "name": "detail_synced_progress", "value": "Förlopp synkroniserat till kapitel %d" },
-    { "name": "detail_anilist_sync_failed", "value": "AniList-synkronisering misslyckades" },
-    { "name": "detail_status_local", "value": "Lokal" },
-    { "name": "detail_in_library", "value": "I biblioteket" },
-    { "name": "detail_add_to_library", "value": "Lägg till i biblioteket" },
-    { "name": "detail_continue_reading", "value": "Fortsätt läsa" },
-    { "name": "detail_start_reading", "value": "Börja läsa" },
-    { "name": "detail_no_chapters_yet", "value": "Inga kapitel ännu" },
-    { "name": "detail_collapse", "value": "Komprimera" },
-    { "name": "detail_expand", "value": "Expandera" },
-    { "name": "detail_anilist_tracking", "value": "AniList-spårning" },
-    { "name": "detail_anilist_token_hint", "value": "AniList-token är inte konfigurerad ännu" },
-    { "name": "detail_searching", "value": "Söker…" },
-    { "name": "detail_search_and_bind", "value": "Sök och koppla" },
-    { "name": "detail_bind", "value": "Koppla" },
-    { "name": "detail_synced_to_chapter", "value": "Synkroniserad till kapitel %d" },
-    { "name": "detail_sync_progress", "value": "Synkronisera förlopp" },
-    { "name": "detail_unbind", "value": "Koppla från" },
-    { "name": "detail_chapters_count", "value": "Kapitel (%d)" },
-    { "name": "detail_sort_asc", "value": "Stigande" },
-    { "name": "detail_sort_desc", "value": "Fallande" },
-    { "name": "detail_mark_all_read", "value": "Markera alla som lästa" },
-    { "name": "detail_read", "value": "Läst" },
-    { "name": "detail_downloaded", "value": "Nedladdad" },
-    { "name": "detail_in_queue", "value": "I kö" },
-    { "name": "detail_download", "value": "Ladda ner" },
-    { "name": "reader_chapter_not_found", "value": "Kapitlet hittades inte" },
-    { "name": "reader_load_failed", "value": "Kunde inte läsa in: %s" },
-    { "name": "reader_mode_ltr", "value": "Vänster till höger" },
-    { "name": "reader_mode_rtl", "value": "Höger till vänster" },
-    { "name": "reader_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_reading_mode", "value": "Läsläge" },
-    { "name": "reader_orientation_free", "value": "Fri" },
-    { "name": "reader_orientation_portrait", "value": "Stående" },
-    { "name": "reader_orientation_landscape", "value": "Liggande" },
-    { "name": "reader_screen_orientation", "value": "Skärmorientering" },
-    { "name": "reader_last_chapter", "value": "Redan vid sista kapitlet" },
-    { "name": "reader_first_chapter", "value": "Redan vid första kapitlet" },
-    { "name": "reader_first_page", "value": "Redan på första sidan" },
-    { "name": "reader_last_page", "value": "Redan på sista sidan" },
-    { "name": "reader_loading_chapter", "value": "Läser in kapitel…" },
-    { "name": "reader_settings", "value": "Läsarinställningar" },
-    { "name": "reader_background", "value": "Bakgrund" },
-    { "name": "reader_theme_auto", "value": "Auto" },
-    { "name": "reader_theme_white", "value": "Vit" },
-    { "name": "reader_theme_gray", "value": "Grå" },
-    { "name": "reader_theme_black", "value": "Svart" },
-    { "name": "reader_show_page_number", "value": "Visa sidnummer" },
-    { "name": "reader_brightness", "value": "Ljusstyrka" },
-    { "name": "reader_auto", "value": "Auto" },
-    { "name": "plugin_title", "value": "Tillägg" },
-    { "name": "plugin_installed_section", "value": "Installerade" },
-    { "name": "plugin_empty", "value": "Inga tillägg ännu, installera nedan" },
-    { "name": "plugin_disable_hint", "value": "Inaktiverade tillägg kan aktiveras igen när som helst" },
-    { "name": "plugin_up_to_date", "value": "Uppdaterad" },
-    { "name": "plugin_local_install", "value": "Installera från fil" },
-    { "name": "plugin_install_from_file", "value": "Välj en fil att installera" },
-    { "name": "plugin_processing", "value": "Bearbetar…" },
-    { "name": "plugin_package_hint", "value": "Stöder .honyomiplug- / .zip-pluginpaket" },
-    { "name": "plugin_repo", "value": "Onlinerepositorium" },
-    { "name": "plugin_repo_config", "value": "Konfigurera repositorium" },
-    { "name": "plugin_repo_refresh", "value": "Uppdatera" },
-    { "name": "plugin_repo_hint", "value": "Inget pluginrepositorium konfigurerat ännu" },
-    { "name": "plugin_repo_loading", "value": "Läser in repositorium…" },
-    { "name": "plugin_repo_url_title", "value": "URL till pluginrepositorium" },
-    { "name": "plugin_repo_url_hint", "value": "Ange URL till pluginrepositoriet" },
-    { "name": "plugin_repo_load_failed", "value": "Kunde inte läsa in repositorium: %s" },
-    { "name": "plugin_pick_file_failed", "value": "Kunde inte välja fil" },
-    { "name": "plugin_installed", "value": "Installerad: %s" },
-    { "name": "plugin_installed_name", "value": "Installerade %s" },
-    { "name": "plugin_install_failed", "value": "Installation misslyckades: %s" },
-    { "name": "plugin_action_failed", "value": "Åtgärden misslyckades" },
-    { "name": "plugin_uninstalled", "value": "Avinstallerad: %s" },
-    { "name": "plugin_uninstall_failed", "value": "Avinstallation misslyckades" },
-    { "name": "settings_title", "value": "Inställningar" },
-    { "name": "settings_general", "value": "Allmänt" },
-    { "name": "settings_start_tab", "value": "Startskärm" },
-    { "name": "settings_personalization", "value": "Anpassning" },
-    { "name": "settings_library", "value": "Bibliotek" },
-    { "name": "settings_reader", "value": "Läsare" },
-    { "name": "settings_data", "value": "Data" },
-    { "name": "settings_downloads", "value": "Nedladdningar" },
-    { "name": "settings_browse", "value": "Bläddra" },
-    { "name": "settings_advanced", "value": "Avancerat" },
-    { "name": "settings_about", "value": "Om" },
-    { "name": "settings_tab_library", "value": "Bibliotek" },
-    { "name": "settings_tab_updates", "value": "Uppdateringar" },
-    { "name": "settings_tab_history", "value": "Historik" },
-    { "name": "settings_tab_browse", "value": "Bläddra" },
-    { "name": "settings_tab_more", "value": "Mer" },
-    { "name": "advanced_title", "value": "Avancerat" },
-    { "name": "advanced_calculating", "value": "Beräknar…" },
-    { "name": "advanced_storage", "value": "Lagring" },
-    { "name": "advanced_clear_image_cache", "value": "Rensa bildcache" },
-    { "name": "advanced_image_cache_cleared", "value": "Bildcachen rensad" },
-    { "name": "advanced_clear_cookies", "value": "Rensa cookies" },
-    { "name": "advanced_cookies_cleared", "value": "Alla cookies rensade" },
-    { "name": "advanced_backup_restore", "value": "Säkerhetskopiera och återställ" },
-    { "name": "advanced_export_backup", "value": "Exportera säkerhetskopia" },
-    { "name": "advanced_import_backup", "value": "Importera säkerhetskopia" },
-    { "name": "advanced_tracking", "value": "Spårning" },
-    { "name": "advanced_anilist_token", "value": "AniList-token" },
-    { "name": "advanced_token_title", "value": "AniList-åtkomsttoken" },
-    { "name": "advanced_token_hint", "value": "Klistra in din åtkomsttoken (lämna tomt för att rensa)" },
-    { "name": "advanced_token_not_set", "value": "Inte angiven" },
-    { "name": "advanced_token_set", "value": "Angiven" },
-    { "name": "advanced_token_saved", "value": "Token sparad" },
-    { "name": "advanced_token_cleared", "value": "Token rensad" },
-    { "name": "advanced_backup_exported", "value": "Säkerhetskopia exporterad" },
-    { "name": "advanced_export_canceled", "value": "Exporten avbröts" },
-    { "name": "advanced_export_failed", "value": "Exporten misslyckades" },
-    { "name": "advanced_import_canceled", "value": "Importen avbröts" },
-    { "name": "advanced_backup_invalid", "value": "Ogiltig säkerhetskopieringsfil" },
-    { "name": "advanced_restored_manga", "value": "Återställde %d manga" },
-    { "name": "advanced_import_failed", "value": "Importen misslyckades" },
-    { "name": "about_title", "value": "Om" },
-    { "name": "about_version", "value": "Version 1.0.0" },
-    { "name": "about_desc", "value": "Arkitektur inspirerad av Mihon (Apache-2.0). Onlinekällor installeras dynamiskt som tillägg, medan lokala källor är inbyggda." },
-    { "name": "about_ack", "value": "Tack till öppen källkod:\n· Mihon / Tachiyomi — appens arkitektur och interaktionsdesign (Apache-2.0)\n· Material Symbols — ikoner i appen (Apache-2.0)\n· MangaDex — testdatakälla" },
-    { "name": "browse_set_title", "value": "Bläddra" },
-    { "name": "browse_set_content", "value": "Innehåll" },
-    { "name": "browse_set_show_nsfw", "value": "Visa NSFW-källor" },
-    { "name": "browse_set_nsfw_hint", "value": "När det är aktiverat visas källor som markerats som NSFW av sina tillägg under Bläddra" },
-    { "name": "dl_set_title", "value": "Nedladdningar" },
-    { "name": "dl_set_network", "value": "Nätverk" },
-    { "name": "dl_set_wifi_only", "value": "Ladda bara ner via Wi-Fi" },
-    { "name": "dl_set_wifi_only_hint", "value": "Obs: den här knappen är en platshållare i den aktuella versionen; nätverkstypdetektering kommer i en senare version" },
-    { "name": "lib_set_title", "value": "Bibliotek" },
-    { "name": "lib_set_sort_group", "value": "Filtrera och sortera" },
-    { "name": "lib_set_sort_default", "value": "Standardsortering" },
-    { "name": "lib_set_sort_title", "value": "Titel" },
-    { "name": "lib_set_sort_last_update", "value": "Senaste kapitel" },
-    { "name": "lib_set_sort_added", "value": "Datum tillagt" },
-    { "name": "lib_set_sort_unread", "value": "Antal olästa" },
-    { "name": "lib_set_sort_asc", "value": "Sortera efter titel stigande" },
-    { "name": "lib_set_filter_default", "value": "Standardfilter" },
-    { "name": "lib_set_filter_unread", "value": "Oläst" },
-    { "name": "lib_set_filter_downloaded", "value": "Nedladdad" },
-    { "name": "lib_set_filter_uncompleted", "value": "Oavslutad" },
-    { "name": "lib_set_display_group", "value": "Visning" },
-    { "name": "lib_set_view_default", "value": "Standardvy" },
-    { "name": "lib_set_view_grid", "value": "Rutnät" },
-    { "name": "lib_set_view_cover", "value": "Omslagsrutnät" },
-    { "name": "lib_set_view_list", "value": "Lista" },
-    { "name": "lib_set_grid_cols", "value": "Rutnätskolumner" },
-    { "name": "lib_set_cols_auto", "value": "Auto" },
-    { "name": "lib_set_cols_2", "value": "2 kolumner" },
-    { "name": "lib_set_cols_3", "value": "3 kolumner" },
-    { "name": "lib_set_cols_4", "value": "4 kolumner" },
-    { "name": "lib_set_unread_badge", "value": "Olästa märken" },
-    { "name": "lib_set_download_badge", "value": "Nedladdningsmärken" },
-    { "name": "reader_set_title", "value": "Läsare" },
-    { "name": "reader_set_mode_group", "value": "Läsläge" },
-    { "name": "reader_set_mode_default", "value": "Standardläge" },
-    { "name": "reader_set_mode_ltr", "value": "Vänster till höger" },
-    { "name": "reader_set_mode_rtl", "value": "Höger till vänster" },
-    { "name": "reader_set_mode_vertical", "value": "Vertikal bläddring" },
-    { "name": "reader_set_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_set_dual_page", "value": "Dubsida (liggande)" },
-    { "name": "reader_set_display_group", "value": "Visning" },
-    { "name": "reader_set_show_page_number", "value": "Visa sidnummer" },
-    { "name": "reader_set_bg_color", "value": "Läsarbakgrund" },
-    { "name": "reader_set_theme_follow", "value": "Följ temat" },
-    { "name": "reader_set_theme_white", "value": "Vit" },
-    { "name": "reader_set_theme_black", "value": "Svart" },
-    { "name": "reader_set_theme_gray", "value": "Grå" },
-    { "name": "reader_set_reset_brightness", "value": "Återställ läsarens ljusstyrka" },
-    { "name": "reader_set_brightness_reset", "value": "Ljusstyrkan följer nu systemet" },
-    { "name": "browse_tab_sources", "value": "Källor" },
-    { "name": "browse_tab_extensions", "value": "Tillägg" },
-    { "name": "browse_tab_migrate", "value": "Migrera" },
-    { "name": "browse_pin", "value": "Fäst" },
-    { "name": "browse_unpin", "value": "Lossa" },
-    { "name": "browse_disable_source", "value": "Inaktivera källa" },
-    { "name": "browse_source_disabled", "value": "Källa inaktiverad" },
-    { "name": "browse_pinned", "value": "Fäst" },
-    { "name": "browse_sources_empty", "value": "Inga källor. Installera från fliken Tillägg" },
-    { "name": "browse_filter_langs", "value": "Filtrera språk" },
-    { "name": "browse_filter_all", "value": "Alla" },
-    { "name": "browse_source_missing", "value": "Källan är inte tillgänglig. Tillägget kan vara inaktiverat" },
-    { "name": "global_search_hint", "value": "Sök i alla källor" },
-    { "name": "global_search_failed", "value": "Sökningen misslyckades" },
-    { "name": "ext_search_hint", "value": "Sök tillägg" },
-    { "name": "ext_search_no_match", "value": "Inga träffar" },
-    { "name": "ext_repo_settings", "value": "Arkivinställningar" },
-    { "name": "ext_refresh_repo", "value": "Uppdatera arkiv" },
-    { "name": "migrate_pick_source", "value": "Välj en källa att migrera" },
-    { "name": "migrate_empty_library", "value": "Biblioteket är tomt" },
-    { "name": "migrate_select_all", "value": "Markera alla" },
-    { "name": "migrate_deselect_all", "value": "Avmarkera alla" },
-    { "name": "migrate_action", "value": "Migrera (%d)" },
-    { "name": "migrate_title", "value": "Migrera" },
-    { "name": "migrate_skip", "value": "Hoppa över" },
-    { "name": "migrate_progress", "value": "%d av %d" },
-    { "name": "migrate_target_source", "value": "Målkälla" },
-    { "name": "migrate_search_hint", "value": "Sök manga i målkällan" },
-    { "name": "migrate_confirm_title", "value": "Migrera till den här mangan?" },
-    { "name": "migrate_item_done", "value": "Migrerad: %s" },
-    { "name": "migrate_failed", "value": "Migreringen misslyckades: %s" },
-    { "name": "migrate_done", "value": "Migrering klar" },
-    { "name": "migrate_no_target", "value": "Ingen målkälla tillgänglig" },
-    { "name": "stats_title", "value": "Statistik" },
-    { "name": "stats_overview_section", "value": "Översikt" },
-    { "name": "stats_in_library", "value": "I biblioteket" },
-    { "name": "stats_read_duration", "value": "Lästid" },
-    { "name": "stats_completed_titles", "value": "Avslutad" },
-    { "name": "stats_titles_section", "value": "Poster" },
-    { "name": "stats_started_titles", "value": "Påbörjade" },
-    { "name": "stats_local_titles", "value": "Lokal" },
-    { "name": "stats_chapters_section", "value": "Kapitel" },
-    { "name": "stats_total_chapters", "value": "Totalt" },
-    { "name": "stats_read_chapters", "value": "Läst" },
-    { "name": "stats_downloaded_chapters", "value": "Nedladdad" },
-    { "name": "stats_tracker_section", "value": "Spårning" },
-    { "name": "stats_tracked_titles", "value": "Spårade poster" },
-    { "name": "stats_mean_score", "value": "Medelbetyg" },
-    { "name": "stats_used", "value": "Används" },
-    { "name": "stats_not_applicable", "value": "e.t." },
-    { "name": "stats_week", "value": "Vecka" },
-    { "name": "stats_month", "value": "Månad" },
-    { "name": "stats_week_total", "value": "%s den här veckan" },
-    { "name": "stats_month_total", "value": "%s den här månaden" },
-    { "name": "stats_no_reading", "value": "Ingen läsning under perioden" },
-    { "name": "stats_day_short", "value": "%d d" },
-    { "name": "stats_hour_short", "value": "%d tim" },
-    { "name": "stats_minute_short", "value": "%d min" },
-    { "name": "stats_second_short", "value": "%d s" },
-    { "name": "stats_wd_sun", "value": "Sö" },
-    { "name": "stats_wd_mon", "value": "Må" },
-    { "name": "stats_wd_tue", "value": "Ti" },
-    { "name": "stats_wd_wed", "value": "On" },
-    { "name": "stats_wd_thu", "value": "To" },
-    { "name": "stats_wd_fri", "value": "Fr" },
-    { "name": "stats_wd_sat", "value": "Lö" },
-    { "name": "reader_mode_vertical", "value": "Vertikal" },
-    { "name": "reader_mode_smart_grip", "value": "Greppanpassad" },
-    { "name": "reader_orientation_lock_portrait", "value": "Lås stående" },
-    { "name": "reader_orientation_lock_landscape", "value": "Lås liggande" },
-    { "name": "reader_tab_general", "value": "Allmänt" },
-    { "name": "reader_tab_filter", "value": "Färgfilter" },
-    { "name": "reader_filter_grayscale", "value": "Gråskala" },
-    { "name": "reader_filter_invert", "value": "Inverterade färger" },
-    { "name": "reader_filter_contrast", "value": "Kontrast" },
-    { "name": "reader_filter_saturation", "value": "Mättnad" },
-    { "name": "reader_crop_borders", "value": "Beskär kanter" },
-    { "name": "reader_nav_tap_zones", "value": "Tryckzoner" },
-    { "name": "reader_nav_default", "value": "Standard" },
-    { "name": "reader_nav_ltr", "value": "Vänster till höger" },
-    { "name": "reader_nav_rtl", "value": "Höger till vänster" },
-    { "name": "reader_nav_vertical", "value": "Vertikal" },
-    { "name": "reader_nav_edge", "value": "Kant" },
-    { "name": "reader_nav_none", "value": "Ingen" },
-    { "name": "reader_dual_page", "value": "Dubbelsidig vy" },
-    { "name": "reader_webtoon_padding", "value": "Webtoon-sidmarginal" },
-    { "name": "reader_set_mode_smart_grip", "value": "Greppanpassad" },
-    { "name": "ext_install_local", "value": "Installera lokalt" },
-    { "name": "ext_detail_title", "value": "Tilläggsinfo" },
-    { "name": "ext_info_version", "value": "Version" },
-    { "name": "ext_info_language", "value": "Språk" },
-    { "name": "ext_uninstall_title", "value": "Avinstallera tillägg" },
-    { "name": "ext_uninstall_msg", "value": "Avinstallera %s? Manga i biblioteket behålls." },
-    { "name": "ext_detail_sources", "value": "Källor" },
-    { "name": "ext_detail_settings", "value": "Inställningar" },
-    { "name": "ext_pref_loading", "value": "Läser in…" },
-    { "name": "ext_pref_failed", "value": "Det gick inte att tillämpa inställningarna" },
-    { "name": "ext_detail_missing", "value": "Tillägget saknas eller är inte inläst" },
-    { "name": "action_filter", "value": "Filtrera" },
-    { "name": "action_update_library", "value": "Uppdatera bibliotek" },
-    { "name": "action_update_category", "value": "Uppdatera kategori" },
-    { "name": "action_open_random_manga", "value": "Öppna slumpmässig manga" },
-    { "name": "action_select_all", "value": "Markera alla" },
-    { "name": "action_select_inverse", "value": "Invertera markering" },
-    { "name": "action_move_category", "value": "Flytta till kategori" },
-    { "name": "action_mark_as_read", "value": "Markera som läst" },
-    { "name": "action_mark_as_unread", "value": "Markera som oläst" },
-    { "name": "action_download", "value": "Ladda ner" },
-    { "name": "action_delete", "value": "Radera" },
-    { "name": "action_migrate", "value": "Migrera" },
-    { "name": "action_remove_from_library", "value": "Ta bort från biblioteket" },
-    { "name": "action_remove_from_library_msg", "value": "Ta bort %d valda manga från biblioteket?" },
-    { "name": "action_download_queued", "value": "%d nedladdningar tillagda i kön" },
-    { "name": "library_search_hint", "value": "Sök i biblioteket" },
-    { "name": "library_no_match", "value": "Ingen matchande manga" },
-    { "name": "lib_sheet_tab_filter", "value": "Filtrera" },
-    { "name": "lib_sheet_tab_sort", "value": "Sortera" },
-    { "name": "lib_sheet_tab_display", "value": "Visning" },
-    { "name": "lib_filter_downloaded", "value": "Nedladdad" },
-    { "name": "lib_filter_unread", "value": "Oläst" },
-    { "name": "lib_filter_started", "value": "Påbörjade" },
-    { "name": "lib_filter_bookmarked", "value": "Bokmärken" },
-    { "name": "lib_filter_completed", "value": "Avslutad" },
-    { "name": "lib_filter_tracked", "value": "Spårade" },
-    { "name": "lib_sort_alpha", "value": "Titel" },
-    { "name": "lib_sort_total", "value": "Antal kapitel" },
-    { "name": "lib_sort_last_read", "value": "Senast läst" },
-    { "name": "lib_sort_last_update", "value": "Senast kontrollerad" },
-    { "name": "lib_sort_unread", "value": "Antal olästa" },
-    { "name": "lib_sort_latest_chapter", "value": "Senast uppdaterad" },
-    { "name": "lib_sort_fetch_date", "value": "Kapitel hämtade" },
-    { "name": "lib_sort_date_added", "value": "Datum tillagt" },
-    { "name": "lib_sort_random", "value": "Slumpmässigt" },
-    { "name": "lib_display_compact", "value": "Kompakt rutnät" },
-    { "name": "lib_display_comfortable", "value": "Luftigt rutnät" },
-    { "name": "lib_display_cover", "value": "Omslagsrutnät" },
-    { "name": "lib_display_list", "value": "Lista" },
-    { "name": "lib_display_grid_size", "value": "Per rad" },
-    { "name": "lib_display_grid_auto", "value": "Auto" },
-    { "name": "lib_display_badges_group", "value": "Märken och knappar" },
-    { "name": "lib_badge_downloaded", "value": "Nedladdade kapitel" },
-    { "name": "lib_badge_unread", "value": "Olästa kapitel" },
-    { "name": "lib_badge_local", "value": "Lokal källa" },
-    { "name": "lib_badge_language", "value": "Språk" },
-    { "name": "lib_badge_continue", "value": "Knapp Fortsätt läsa" },
-    { "name": "lib_display_tabs_group", "value": "Flikar" },
-    { "name": "lib_show_category_tabs", "value": "Visa kategoriflikar" },
-    { "name": "lib_show_manga_count", "value": "Visa antal" },
-    { "name": "EntryFormAbility_label", "value": "Honyomi-widget" },
-    { "name": "EntryFormAbility_desc", "value": "Leverantör av hemskärmswidgetar" },
-    { "name": "card_recent_display", "value": "Fortsätt läsa" },
-    { "name": "card_recent_desc", "value": "Fortsätt snabbt med senast lästa manga" },
-    { "name": "card_updates_display", "value": "Uppdateringar" },
-    { "name": "card_updates_desc", "value": "Senaste olästa kapitlen i biblioteket" },
-    { "name": "card_recent_header", "value": "Fortsätt läsa" },
-    { "name": "card_updates_header", "value": "Uppdateringar" },
-    { "name": "card_unread_count", "value": "%d olästa kapitel" },
-    { "name": "card_empty_recent", "value": "Ingen läshistorik ännu" },
-    { "name": "card_empty_updates", "value": "Inga olästa kapitel" },
-    { "name": "card_open_hint", "value": "Tryck för att öppna appen" },
-    { "name": "card_manga_display", "value": "Manga-widget" },
-    { "name": "card_manga_desc", "value": "Lägg till på detaljsidan, tryck på omslaget för att läsa" },
-    { "name": "card_manga_empty", "value": "Lägg till på hemskärmen från mangadetaljerna" },
-    { "name": "detail_add_to_desktop", "value": "Lägg till på hemskärmen" },
-    { "name": "detail_card_added", "value": "Tillagd på hemskärmen" },
-    { "name": "detail_card_add_failed", "value": "Det gick inte att lägga till widgeten" },
-    { "name": "card_stats_week_display", "value": "Veckostatistik" },
-    { "name": "card_stats_week_desc", "value": "Daglig lästid den här veckan" },
-    { "name": "card_stats_month_display", "value": "Månadsstatistik" },
-    { "name": "card_stats_month_desc", "value": "Daglig lästid den här månaden" },
-    { "name": "card_stats_empty", "value": "Ingen läsning ännu" },
-    { "name": "action_view_upcoming", "value": "Visa kommande uppdateringar" },
-    { "name": "label_upcoming", "value": "Kommande" },
-    { "name": "upcoming_guide", "value": "Guide till kommande uppdateringar" },
-    { "name": "upcoming_calendar_prev", "value": "Föregående månad" },
-    { "name": "upcoming_calendar_next", "value": "Nästa månad" },
-    { "name": "pref_filter_update_categories_details", "value": "Titlar som finns i både inkluderade och exkluderade kategorier visas inte." },
-    { "name": "relative_time_today", "value": "Idag" },
-    { "name": "relative_time_days_ago", "value": "%d dagar sedan" },
-    { "name": "upcoming_relative_time_days", "value": "Om %d dagar" },
-    { "name": "card_upcoming_display", "value": "Kommande" },
-    { "name": "card_upcoming_desc", "value": "Förväntad uppdateringskalender för manga i biblioteket" },
-    { "name": "card_upcoming_header", "value": "Kommande" },
-    { "name": "card_empty_upcoming", "value": "Inga pågående manga i ditt bibliotek" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Filtrerar alla artiklar i ditt bibliotek"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Pausar läshistoriken"
+    },
+    {
+      "name": "more_support",
+      "value": "Stöd oss"
+    },
+    {
+      "name": "more_help",
+      "value": "Hjälp"
+    },
+    {
+      "name": "support_perks",
+      "value": "Stödjare på Patreon får tillgång till exklusiva kanaler, med fler förmåner i framtiden."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (föredragen)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon stöds för närvarande av %d+ personer på Patreon. Vi vill tacka var och en av er. Låt oss göra Mihon ännu bättre tillsammans."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "För alternativa alternativ eller andra relaterade frågor, gå med i vår Discord-server."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "Data och lagring"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Lagringsplats"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Används för automatisk säkerhetskopiering, kapitelnedladdningar och lokal källa."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "Säkerhetskopiera och återställ"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Skapa säkerhetskopia"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Återställ säkerhetskopia"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Automatisk säkerhetskopieringsfrekvens"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "Du bör även spara kopior av säkerhetskopior på andra platser. Säkerhetskopior kan innehålla känsliga uppgifter, t.ex. lagrade lösenord; var försiktig om du delar dem."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Senaste automatiska säkerhetskopieringen: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Lagringsanvändning"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Tillgängligt: %s / Totalt: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Rensa kapitelcache"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Används: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Cache rensad, %d filer togs bort"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Fel inträffade vid rensning"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Rensa kapitelcache när appen startas"
+    },
+    {
+      "name": "data_export",
+      "value": "Exportera"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Bibliotekslista"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Bibliotek Exporterat"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Välj data som ska inkluderas"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Titel"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Författare"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "Av"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "Var 6:e timme"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "Var 12:e timme"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "Dagligen"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "Varannan dag"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "Varje vecka"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "OK"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Avbryt"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Bekräfta"
+    },
+    {
+      "name": "common_delete",
+      "value": "Radera"
+    },
+    {
+      "name": "common_retry",
+      "value": "Försök igen"
+    },
+    {
+      "name": "common_search",
+      "value": "Sök"
+    },
+    {
+      "name": "common_all",
+      "value": "Alla"
+    },
+    {
+      "name": "common_close",
+      "value": "Stäng"
+    },
+    {
+      "name": "common_save",
+      "value": "Spara"
+    },
+    {
+      "name": "common_install",
+      "value": "Installera"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "Avinstallera"
+    },
+    {
+      "name": "common_update",
+      "value": "Uppdatera"
+    },
+    {
+      "name": "common_none",
+      "value": "Ingen"
+    },
+    {
+      "name": "common_default",
+      "value": "Standard"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Utseende"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Språk"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Följ systemet"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Temaläge"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Följ systemet"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Ljust"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Mörkt"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Accentfärg"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Övrigt"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED helt svart bakgrund"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Blå"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "Grön"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Rosa"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Lila"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "Orange"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d min sedan"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d h sedan"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d d sedan"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "Pågående"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Avslutad"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "Pausad"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Inställd"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Publicering avslutad"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Okänd"
+    },
+    {
+      "name": "tab_library",
+      "value": "Bibliotek"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Uppdateringar"
+    },
+    {
+      "name": "tab_history",
+      "value": "Historik"
+    },
+    {
+      "name": "tab_browse",
+      "value": "Bläddra"
+    },
+    {
+      "name": "tab_more",
+      "value": "Mer"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "Väntar på verifiering…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "Verifiering klar"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "Mänsklig verifiering"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "Klar"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "Verifieringsresultat sparat"
+    },
+    {
+      "name": "more_title",
+      "value": "Mer"
+    },
+    {
+      "name": "more_version",
+      "value": "Version %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Endast nedladdat"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Inkognitoläge"
+    },
+    {
+      "name": "more_downloads",
+      "value": "Nedladdningskö"
+    },
+    {
+      "name": "more_categories",
+      "value": "Kategorier"
+    },
+    {
+      "name": "more_settings",
+      "value": "Inställningar"
+    },
+    {
+      "name": "more_about",
+      "value": "Om"
+    },
+    {
+      "name": "more_plugins",
+      "value": "Tillägg"
+    },
+    {
+      "name": "categories_title",
+      "value": "Kategorier"
+    },
+    {
+      "name": "categories_add",
+      "value": "Ny kategori"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "Kategorinamn"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "Byt namn på kategori"
+    },
+    {
+      "name": "categories_rename",
+      "value": "Byt namn"
+    },
+    {
+      "name": "categories_hint",
+      "value": "Tryck länge på en kategori för att byta namn eller radera den; manga i en raderad kategori flyttas tillbaka till Standard"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "Välj kategori"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "Läser in…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "Kunde inte läsa in bilden"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "Tryck för att försöka igen"
+    },
+    {
+      "name": "library_title",
+      "value": "Bibliotek"
+    },
+    {
+      "name": "library_empty",
+      "value": "Ditt bibliotek är tomt, bläddra för att lägga till manga"
+    },
+    {
+      "name": "library_new_category",
+      "value": "Ny kategori"
+    },
+    {
+      "name": "library_category_name",
+      "value": "Kategorinamn"
+    },
+    {
+      "name": "updates_title",
+      "value": "Uppdateringar"
+    },
+    {
+      "name": "updates_empty",
+      "value": "Inga senaste uppdateringar"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%d nya kapitel hittades"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "Inga nya kapitel"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "Uppdatering misslyckades"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "Uppdaterar…"
+    },
+    {
+      "name": "history_title",
+      "value": "Historik"
+    },
+    {
+      "name": "history_clear",
+      "value": "Rensa"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "Bekräfta rensning?"
+    },
+    {
+      "name": "history_empty",
+      "value": "Ingen läshistorik ännu"
+    },
+    {
+      "name": "history_cleared",
+      "value": "Historiken rensad"
+    },
+    {
+      "name": "history_continue",
+      "value": "Fortsätt"
+    },
+    {
+      "name": "browse_title",
+      "value": "Bläddra"
+    },
+    {
+      "name": "browse_import",
+      "value": "Importera"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "Plugin"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "Lokal manga"
+    },
+    {
+      "name": "browse_popular",
+      "value": "Populärt"
+    },
+    {
+      "name": "browse_latest",
+      "value": "Senaste"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "Sök manga…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "Ingen manga hittades"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "Ingen lokal manga ännu, tryck på Importera för att lägga till"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "Kunde inte läsa in: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "Sökning misslyckades: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "Kunde inte läsa in mer"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "Kunde inte öppna detaljer"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "Kunde inte välja filer"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "Importera %d filer"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "Manganamn"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "Ange ett namn"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "Importerade %d filer"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "Import misslyckades: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "Nedladdningar"
+    },
+    {
+      "name": "download_resume",
+      "value": "Återuppta"
+    },
+    {
+      "name": "download_pause",
+      "value": "Pausa"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "Rensa färdiga"
+    },
+    {
+      "name": "download_queue",
+      "value": "Nedladdningskö"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "I kö"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "Laddar ner"
+    },
+    {
+      "name": "download_state_done",
+      "value": "Klar"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "Misslyckades"
+    },
+    {
+      "name": "download_move_top",
+      "value": "Flytta högst upp"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "Flytta längst ner"
+    },
+    {
+      "name": "download_deleted",
+      "value": "Raderad"
+    },
+    {
+      "name": "download_empty",
+      "value": "Inga nedladdningar ännu"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "Nedladdad"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d kapitel"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "Inga kapitel"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "Synkronisering misslyckades, visar lokal data"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "Tillagd i biblioteket"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "Borttagen från biblioteket"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "Alla kapitel markerade som lästa"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "Nedladdning köad"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "Konfigurera först din AniList-token"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "Sök på AniList"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "Mangatitel"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "Inga sökresultat"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "AniList-sökning misslyckades"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "Kopplad till AniList"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "Frånkopplad från AniList"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "Förlopp synkroniserat till kapitel %d"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "AniList-synkronisering misslyckades"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "Lokal"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "I biblioteket"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "Lägg till i biblioteket"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "Fortsätt läsa"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "Börja läsa"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "Inga kapitel ännu"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "Komprimera"
+    },
+    {
+      "name": "detail_expand",
+      "value": "Expandera"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList-spårning"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList-token är inte konfigurerad ännu"
+    },
+    {
+      "name": "detail_searching",
+      "value": "Söker…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "Sök och koppla"
+    },
+    {
+      "name": "detail_bind",
+      "value": "Koppla"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "Synkroniserad till kapitel %d"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "Synkronisera förlopp"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "Koppla från"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "Kapitel (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "Stigande"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "Fallande"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "Markera alla som lästa"
+    },
+    {
+      "name": "detail_read",
+      "value": "Läst"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "Nedladdad"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "I kö"
+    },
+    {
+      "name": "detail_download",
+      "value": "Ladda ner"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "Kapitlet hittades inte"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "Kunde inte läsa in: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "Vänster till höger"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "Höger till vänster"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "Läsläge"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "Fri"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "Stående"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "Liggande"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "Skärmorientering"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "Redan vid sista kapitlet"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "Redan vid första kapitlet"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "Redan på första sidan"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "Redan på sista sidan"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "Läser in kapitel…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "Läsarinställningar"
+    },
+    {
+      "name": "reader_background",
+      "value": "Bakgrund"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "Vit"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "Grå"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "Svart"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "Visa sidnummer"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "Ljusstyrka"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "plugin_title",
+      "value": "Tillägg"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "Installerade"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "Inga tillägg ännu, installera nedan"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "Inaktiverade tillägg kan aktiveras igen när som helst"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "Uppdaterad"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "Installera från fil"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "Välj en fil att installera"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "Bearbetar…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "Stöder .honyomiplug- / .zip-pluginpaket"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "Onlinerepositorium"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "Konfigurera repositorium"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "Uppdatera"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "Inget pluginrepositorium konfigurerat ännu"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "Läser in repositorium…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "URL till pluginrepositorium"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "Ange URL till pluginrepositoriet"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "Kunde inte läsa in repositorium: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "Kunde inte välja fil"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "Installerad: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "Installerade %s"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "Installation misslyckades: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "Åtgärden misslyckades"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "Avinstallerad: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "Avinstallation misslyckades"
+    },
+    {
+      "name": "settings_title",
+      "value": "Inställningar"
+    },
+    {
+      "name": "settings_general",
+      "value": "Allmänt"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Startskärm"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "Anpassning"
+    },
+    {
+      "name": "settings_library",
+      "value": "Bibliotek"
+    },
+    {
+      "name": "settings_reader",
+      "value": "Läsare"
+    },
+    {
+      "name": "settings_data",
+      "value": "Data"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Nedladdningar"
+    },
+    {
+      "name": "settings_browse",
+      "value": "Bläddra"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Avancerat"
+    },
+    {
+      "name": "settings_about",
+      "value": "Om"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "Bibliotek"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Uppdateringar"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "Historik"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "Bläddra"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "Mer"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Avancerat"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "Beräknar…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "Lagring"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "Rensa bildcache"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "Bildcachen rensad"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "Rensa cookies"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "Alla cookies rensade"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "Säkerhetskopiera och återställ"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "Exportera säkerhetskopia"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "Importera säkerhetskopia"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "Spårning"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList-token"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList-åtkomsttoken"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "Klistra in din åtkomsttoken (lämna tomt för att rensa)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "Inte angiven"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "Angiven"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "Token sparad"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "Token rensad"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "Säkerhetskopia exporterad"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "Exporten avbröts"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "Exporten misslyckades"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "Importen avbröts"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "Ogiltig säkerhetskopieringsfil"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "Återställde %d manga"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "Importen misslyckades"
+    },
+    {
+      "name": "about_title",
+      "value": "Om"
+    },
+    {
+      "name": "about_version",
+      "value": "Version 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "Arkitektur inspirerad av Mihon (Apache-2.0). Onlinekällor installeras dynamiskt som tillägg, medan lokala källor är inbyggda."
+    },
+    {
+      "name": "about_ack",
+      "value": "Tack till öppen källkod:\n· Mihon / Tachiyomi — appens arkitektur och interaktionsdesign (Apache-2.0)\n· Material Symbols — ikoner i appen (Apache-2.0)\n· MangaDex — testdatakälla"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "Bläddra"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "Innehåll"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "Visa NSFW-källor"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "När det är aktiverat visas källor som markerats som NSFW av sina tillägg under Bläddra"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Nedladdningar"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Nätverk"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Ladda bara ner via Wi-Fi"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "Obs: den här knappen är en platshållare i den aktuella versionen; nätverkstypdetektering kommer i en senare version"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "Bibliotek"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "Filtrera och sortera"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "Standardsortering"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "Titel"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "Senaste kapitel"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "Datum tillagt"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "Antal olästa"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "Sortera efter titel stigande"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "Standardfilter"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "Oläst"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "Nedladdad"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "Oavslutad"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Visning"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "Standardvy"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "Rutnät"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "Omslagsrutnät"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "Lista"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "Rutnätskolumner"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 kolumner"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 kolumner"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 kolumner"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "Olästa märken"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "Nedladdningsmärken"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "Läsare"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "Läsläge"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "Standardläge"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "Vänster till höger"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "Höger till vänster"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "Vertikal bläddring"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "Dubsida (liggande)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Visning"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "Visa sidnummer"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "Läsarbakgrund"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "Följ temat"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "Vit"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "Svart"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "Grå"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "Återställ läsarens ljusstyrka"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "Ljusstyrkan följer nu systemet"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "Källor"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "Tillägg"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "Migrera"
+    },
+    {
+      "name": "browse_pin",
+      "value": "Fäst"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "Lossa"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "Inaktivera källa"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "Källa inaktiverad"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "Fäst"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "Inga källor. Installera från fliken Tillägg"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "Filtrera språk"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "Alla"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "Källan är inte tillgänglig. Tillägget kan vara inaktiverat"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "Sök i alla källor"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "Sökningen misslyckades"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "Sök tillägg"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "Inga träffar"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "Arkivinställningar"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "Uppdatera arkiv"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "Välj en källa att migrera"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "Biblioteket är tomt"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "Markera alla"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "Avmarkera alla"
+    },
+    {
+      "name": "migrate_action",
+      "value": "Migrera (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "Migrera"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "Hoppa över"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d av %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "Målkälla"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "Sök manga i målkällan"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "Migrera till den här mangan?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "Migrerad: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "Migreringen misslyckades: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "Migrering klar"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "Ingen målkälla tillgänglig"
+    },
+    {
+      "name": "stats_title",
+      "value": "Statistik"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "Översikt"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "I biblioteket"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "Lästid"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "Avslutad"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "Poster"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "Påbörjade"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "Lokal"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "Kapitel"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "Totalt"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "Läst"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "Nedladdad"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "Spårning"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "Spårade poster"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "Medelbetyg"
+    },
+    {
+      "name": "stats_used",
+      "value": "Används"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "e.t."
+    },
+    {
+      "name": "stats_week",
+      "value": "Vecka"
+    },
+    {
+      "name": "stats_month",
+      "value": "Månad"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "%s den här veckan"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "%s den här månaden"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "Ingen läsning under perioden"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%d d"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%d tim"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%d min"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%d s"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "Sö"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "Må"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "Ti"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "On"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "To"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "Fr"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "Lö"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "Vertikal"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "Greppanpassad"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "Lås stående"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "Lås liggande"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "Allmänt"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "Färgfilter"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "Gråskala"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "Inverterade färger"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "Kontrast"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "Mättnad"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "Beskär kanter"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "Tryckzoner"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "Standard"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "Vänster till höger"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "Höger till vänster"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "Vertikal"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "Kant"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "Ingen"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Dubbelsidig vy"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "Webtoon-sidmarginal"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "Greppanpassad"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "Installera lokalt"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "Tilläggsinfo"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "Version"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "Språk"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "Avinstallera tillägg"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "Avinstallera %s? Manga i biblioteket behålls."
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "Källor"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "Inställningar"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "Läser in…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "Det gick inte att tillämpa inställningarna"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "Tillägget saknas eller är inte inläst"
+    },
+    {
+      "name": "action_filter",
+      "value": "Filtrera"
+    },
+    {
+      "name": "action_update_library",
+      "value": "Uppdatera bibliotek"
+    },
+    {
+      "name": "action_update_category",
+      "value": "Uppdatera kategori"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "Öppna slumpmässig manga"
+    },
+    {
+      "name": "action_select_all",
+      "value": "Markera alla"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "Invertera markering"
+    },
+    {
+      "name": "action_move_category",
+      "value": "Flytta till kategori"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "Markera som läst"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "Markera som oläst"
+    },
+    {
+      "name": "action_download",
+      "value": "Ladda ner"
+    },
+    {
+      "name": "action_delete",
+      "value": "Radera"
+    },
+    {
+      "name": "action_migrate",
+      "value": "Migrera"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "Ta bort från biblioteket"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "Ta bort %d valda manga från biblioteket?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "%d nedladdningar tillagda i kön"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "Sök i biblioteket"
+    },
+    {
+      "name": "library_no_match",
+      "value": "Ingen matchande manga"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "Filtrera"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "Sortera"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "Visning"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "Nedladdad"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "Oläst"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "Påbörjade"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "Bokmärken"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "Avslutad"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "Spårade"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "Titel"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "Antal kapitel"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "Senast läst"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "Senast kontrollerad"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "Antal olästa"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "Senast uppdaterad"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "Kapitel hämtade"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "Datum tillagt"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "Slumpmässigt"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "Kompakt rutnät"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "Luftigt rutnät"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "Omslagsrutnät"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "Lista"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "Per rad"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "Märken och knappar"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "Nedladdade kapitel"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "Olästa kapitel"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "Lokal källa"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "Språk"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "Knapp Fortsätt läsa"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "Flikar"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "Visa kategoriflikar"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "Visa antal"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "Honyomi-widget"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "Leverantör av hemskärmswidgetar"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "Fortsätt läsa"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "Fortsätt snabbt med senast lästa manga"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "Uppdateringar"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "Senaste olästa kapitlen i biblioteket"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "Fortsätt läsa"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "Uppdateringar"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d olästa kapitel"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "Ingen läshistorik ännu"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "Inga olästa kapitel"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "Tryck för att öppna appen"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "Manga-widget"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "Lägg till på detaljsidan, tryck på omslaget för att läsa"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "Lägg till på hemskärmen från mangadetaljerna"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "Lägg till på hemskärmen"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "Tillagd på hemskärmen"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "Det gick inte att lägga till widgeten"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "Veckostatistik"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "Daglig lästid den här veckan"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "Månadsstatistik"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "Daglig lästid den här månaden"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "Ingen läsning ännu"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "Visa kommande uppdateringar"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "Kommande"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "Guide till kommande uppdateringar"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "Föregående månad"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "Nästa månad"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "Titlar som finns i både inkluderade och exkluderade kategorier visas inte."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "Idag"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d dagar sedan"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "Om %d dagar"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "Kommande"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "Förväntad uppdateringskalender för manga i biblioteket"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "Kommande"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "Inga pågående manga i ditt bibliotek"
+    }
+  ]
 }

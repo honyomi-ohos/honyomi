@@ -1,7 +1,7 @@
-import { InsightIntentEntryExecutor, insightIntent, InsightIntentEntry } from '@kit.AbilityKit';
+import { insightIntent, InsightIntentEntry, InsightIntentEntryExecutor } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
-import { MangaRepo, ChapterRepo } from '../data/Repos';
-import { MangaRecord, ChapterRecord } from '../model/Models';
+import { ChapterRepo, MangaRepo } from '../data/Repos';
+import { ChapterRecord, MangaRecord } from '../model/Models';
 import { AppKeys } from '../common/AppKeys';
 import { TitleMatch } from '../common/TitleMatch';
 import EntryAbility from './EntryAbility';
@@ -40,6 +40,42 @@ import EntryAbility from './EntryAbility';
 export default class OpenChapterImpl extends InsightIntentEntryExecutor<string> {
   public mangaTitle: string = '';
   public chapterName: string = '';
+
+  // 章节定位：章节号精确匹配 > 名称包含"第X话/章/回" > 名称模糊匹配
+  private static matchChapter(chapterQuery: string, chapters: ChapterRecord[]): ChapterRecord | undefined {
+    const q: string = chapterQuery.trim().toLowerCase();
+    if (q === '' || chapters.length === 0) {
+      return undefined;
+    }
+    const numMatch: RegExpMatchArray | null = q.match(/\d+/);
+    const num: number = numMatch !== null ? parseInt(numMatch[0]) : -1;
+    let best: ChapterRecord | undefined = undefined;
+    let bestScore: number = 0;
+    for (const ch of chapters) {
+      let score: number = 0;
+      if (num > 0 && ch.chapterNumber === num) {
+        score = 1000;
+      } else if (num > 0) {
+        const lower: string = ch.name.toLowerCase();
+        if (lower.includes(`第${num}话`) || lower.includes(`第${num}章`) || lower.includes(`第${num}回`)) {
+          score = 900;
+        }
+      }
+      const nameScore: number = TitleMatch.score(chapterQuery, ch.name);
+      if (nameScore > score) {
+        score = nameScore;
+      }
+      if (score > bestScore) {
+        bestScore = score;
+        best = ch;
+      }
+    }
+    return bestScore > 0 ? best : undefined;
+  }
+
+  private static result(code: number, msg: string): insightIntent.IntentResult<string> {
+    return { code: code, result: msg };
+  }
 
   onExecute(): Promise<insightIntent.IntentResult<string>> {
     const mangaQuery: string = this.mangaTitle.trim();
@@ -101,38 +137,6 @@ export default class OpenChapterImpl extends InsightIntentEntryExecutor<string> 
     return OpenChapterImpl.result(0, `已打开：《${best.title}》${chapter.name}`);
   }
 
-  // 章节定位：章节号精确匹配 > 名称包含"第X话/章/回" > 名称模糊匹配
-  private static matchChapter(chapterQuery: string, chapters: ChapterRecord[]): ChapterRecord | undefined {
-    const q: string = chapterQuery.trim().toLowerCase();
-    if (q === '' || chapters.length === 0) {
-      return undefined;
-    }
-    const numMatch: RegExpMatchArray | null = q.match(/\d+/);
-    const num: number = numMatch !== null ? parseInt(numMatch[0]) : -1;
-    let best: ChapterRecord | undefined = undefined;
-    let bestScore: number = 0;
-    for (const ch of chapters) {
-      let score: number = 0;
-      if (num > 0 && ch.chapterNumber === num) {
-        score = 1000;
-      } else if (num > 0) {
-        const lower: string = ch.name.toLowerCase();
-        if (lower.includes(`第${num}话`) || lower.includes(`第${num}章`) || lower.includes(`第${num}回`)) {
-          score = 900;
-        }
-      }
-      const nameScore: number = TitleMatch.score(chapterQuery, ch.name);
-      if (nameScore > score) {
-        score = nameScore;
-      }
-      if (score > bestScore) {
-        bestScore = score;
-        best = ch;
-      }
-    }
-    return bestScore > 0 ? best : undefined;
-  }
-
   private fallbackGlobalSearch(query: string): void {
     const payload: Record<string, string | number> = {
       'target': 'globalsearch',
@@ -152,9 +156,5 @@ export default class OpenChapterImpl extends InsightIntentEntryExecutor<string> 
       'contentType': ''
     };
     AppStorage.setOrCreate(AppKeys.CARD_ACTION, JSON.stringify(payload));
-  }
-
-  private static result(code: number, msg: string): insightIntent.IntentResult<string> {
-    return { code: code, result: msg };
   }
 }

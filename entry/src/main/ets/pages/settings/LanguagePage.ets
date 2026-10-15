@@ -1,5 +1,5 @@
 import { Settings } from '../../common/Settings';
-import { Languages, AppLanguage } from '../../common/Languages';
+import { AppLanguage, Languages } from '../../common/Languages';
 import { ThemePalette } from '../../common/Theme';
 import { PageHeader } from '../components/PageHeader';
 import { AppIcon } from '../components/AppIcon';
@@ -9,14 +9,6 @@ import { AppIcon } from '../components/AppIcon';
 export struct LanguageContent {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('appLanguage') appLanguage: string = 'auto';
-
-  private select(tag: string): void {
-    if (this.appLanguage === tag) {
-      return;
-    }
-    Settings.setAppLanguage(tag);
-    Settings.applyAppLanguage();
-  }
 
   @Builder
   langRow(label: Resource | string, tag: string) {
@@ -60,6 +52,14 @@ export struct LanguageContent {
     .align(Alignment.Top)
     .scrollBar(BarState.Auto)
     .padding({ left: 16, right: 16, top: 4 })
+  }
+
+  private select(tag: string): void {
+    if (this.appLanguage === tag) {
+      return;
+    }
+    Settings.setAppLanguage(tag);
+    Settings.applyAppLanguage();
   }
 }
 

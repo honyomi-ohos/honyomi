@@ -1,5 +1,5 @@
 import { picker } from '@kit.CoreFileKit';
-import { PluginService, InstalledPlugin, RepoEntry } from '../../data/PluginService';
+import { InstalledPlugin, PluginService, RepoEntry } from '../../data/PluginService';
 import { ContentType } from '../../model/Models';
 import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
@@ -53,7 +53,6 @@ export struct ExtensionListPanel {
   @Prop @Watch('onFilterChanged') typeFilter: string[] = [];
   // NSFW 显示开关：关闭时隐藏仓库与已安装列表中的 NSFW 插件
   @StorageProp('showNsfw') @Watch('onFilterChanged') showNsfw: boolean = false;
-  onOpenPlugin: (pluginKey: string) => void = (_k: string) => {};
   @State installed: InstalledPlugin[] = [];
   @State repoEntries: RepoEntry[] = [];
   // 已安装且有新版本（对齐 Mihon hasUpdate，归入“待更新”分组）
@@ -78,6 +77,9 @@ export struct ExtensionListPanel {
   // 面板销毁标志：异步续体据此跳过 toast/写状态
   private disposed: boolean = false;
 
+  onOpenPlugin: (pluginKey: string) => void = (_k: string) => {
+  };
+
   aboutToAppear(): void {
     this.refreshInstalled();
     this.repoUrl = Settings.getPluginRepoUrl();
@@ -88,6 +90,319 @@ export struct ExtensionListPanel {
 
   aboutToDisappear(): void {
     this.disposed = true;
+  }
+
+  // 分组头（对齐 Mihon ExtensionHeader）：标题 + 可选“全部更新”按钮
+  @Builder
+  sectionHeader(title: ResourceStr, showUpdateAll: boolean) {
+    Row() {
+      Text(title)
+        .fontSize(14)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+        .layoutWeight(1)
+        .maxLines(1)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+      if (showUpdateAll) {
+        Button($r('app.string.ext_update_all'))
+          .fontSize(13)
+          .fontWeight(FontWeight.Medium)
+          .fontColor(this.pal.onPrimary)
+          .backgroundColor(this.pal.primary)
+          .height(30)
+          .padding({ left: 14, right: 14 })
+          .margin({ left: 8 })
+          .onClick(() => {
+            this.updateAllPending();
+          })
+      }
+    }
+    .width('100%')
+    .alignItems(VerticalAlign.Center)
+    .padding({
+      left: 16,
+      right: 16,
+      top: 14,
+      bottom: 6
+    })
+  }
+
+  // 整行点击进详情；长按弹卸载确认；有更新时行尾显示更新按钮
+  @Builder
+  installedRow(item: InstalledPlugin, updatable: boolean) {
+    Row() {
+      TypeBadgedIcon({
+        iconPath: item.iconPath,
+        fallbackChar: this.firstCharOf(item.manifest.name),
+        iconSize: 40,
+        cornerRadius: 10,
+        contentType: item.manifest.contentType,
+        badgeBorder: this.pal.bg,
+      })
+
+      Column() {
+        Text(item.manifest.name)
+          .fontSize(15)
+          .fontColor(this.pal.text)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+        Row() {
+          Text(this.langLabel(item.manifest.lang))
+            .fontSize(12)
+            .fontColor(this.pal.sub)
+            .maxLines(1)
+          Text(` · ${item.manifest.version}`)
+            .fontSize(12)
+            .fontColor(this.pal.sub)
+            .maxLines(1)
+          if (item.manifest.nsfw) {
+            NsfwTag()
+              .margin({ left: 6 })
+          }
+        }
+        .alignItems(VerticalAlign.Center)
+        .margin({ top: 2 })
+      }
+      .alignItems(HorizontalAlign.Start)
+      .layoutWeight(1)
+      .margin({ left: 16 })
+
+      // 设置按钮进插件详情（Mihon Loaded 行同款）
+      AppIcon({ name: 'settings', iconSize: 22, tint: this.pal.sub })
+        .padding({
+          left: 8,
+          right: updatable ? 0 : 8,
+          top: 10,
+          bottom: 10
+        })
+        .onClick(() => {
+          this.onOpenPlugin(item.manifest.key);
+        })
+
+      // 有新版本时显示更新按钮（对齐 Mihon hasUpdate → Download 图标）
+      if (updatable) {
+        AppIcon({ name: 'download', iconSize: 22, tint: this.pal.primary })
+          .padding({
+            left: 8,
+            right: 8,
+            top: 10,
+            bottom: 10
+          })
+          .onClick(() => {
+            this.updateOne(item.manifest.key);
+          })
+      }
+    }
+    .width('100%')
+    .alignItems(VerticalAlign.Center)
+    .padding({
+      left: 16,
+      right: 16,
+      top: 8,
+      bottom: 8
+    })
+    .onClick(() => {
+      this.onOpenPlugin(item.manifest.key);
+    })
+    .gesture(
+      LongPressGesture({ repeat: false, duration: 500 })
+        .onAction((_e: GestureEvent) => {
+          this.confirmUninstall(item);
+        })
+    )
+  }
+
+  // 在线可用插件行：地球按钮预览站点 + 下载按钮安装；整行点击即安装（Mihon Available 行同款）
+  @Builder
+  availableRow(entry: RepoEntry) {
+    Row() {
+      TypeBadgedIcon({
+        iconPath: entry.icon,
+        fallbackChar: this.firstCharOf(entry.name),
+        iconSize: 40,
+        cornerRadius: 10,
+        contentType: entry.contentType,
+        badgeBorder: this.pal.bg,
+      })
+
+      Column() {
+        Text(entry.name)
+          .fontSize(15)
+          .fontColor(this.pal.text)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+        Row() {
+          Text(this.langLabel(entry.lang))
+            .fontSize(12)
+            .fontColor(this.pal.sub)
+            .maxLines(1)
+          Text(` · ${entry.version}`)
+            .fontSize(12)
+            .fontColor(this.pal.sub)
+            .maxLines(1)
+          if (entry.nsfw) {
+            NsfwTag()
+              .margin({ left: 6 })
+          }
+        }
+        .alignItems(VerticalAlign.Center)
+        .margin({ top: 2 })
+      }
+      .alignItems(HorizontalAlign.Start)
+      .layoutWeight(1)
+      .margin({ left: 16 })
+
+      // 安装前预览插件对应网站（仓库索引声明 site 时显示）
+      if (entry.site !== '') {
+        AppIcon({ name: 'public', iconSize: 22, tint: this.pal.sub })
+          .padding({
+            left: 8,
+            right: 8,
+            top: 10,
+            bottom: 10
+          })
+          .onClick(() => {
+            this.previewSiteUrl = entry.site;
+            this.previewName = entry.name;
+            this.showSitePreview = true;
+          })
+      }
+
+      AppIcon({ name: 'download', iconSize: 22, tint: this.pal.primary })
+        .padding({
+          left: 8,
+          right: 8,
+          top: 10,
+          bottom: 10
+        })
+        .onClick(() => {
+          this.installFromRepo(entry);
+        })
+    }
+    .width('100%')
+    .alignItems(VerticalAlign.Center)
+    .padding({
+      left: 16,
+      right: 16,
+      top: 8,
+      bottom: 8
+    })
+    .onClick(() => {
+      this.installFromRepo(entry);
+    })
+  }
+
+  // 站点预览半模态弹层内容（SitePreviewSheet 承载，样式对齐 Mihon WebView）
+  @Builder
+  sitePreviewBuilder() {
+    SitePreviewSheet({
+      siteUrl: this.previewSiteUrl,
+      defaultTitle: this.previewName,
+      onClose: (): void => {
+        this.showSitePreview = false;
+      },
+    })
+  }
+
+  build() {
+    Refresh({ refreshing: $$this.loadingRepo }) {
+      Scroll() {
+        Column() {
+          // 待更新分组（对齐 Mihon ext_updates_pending，含“全部更新”按钮）
+          if (this.pendingUpdates.length > 0) {
+            this.sectionHeader($r('app.string.ext_updates_pending'), true)
+            ForEach(this.pendingUpdates, (item: InstalledPlugin) => {
+              this.installedRow(item, true)
+            }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}`)
+          }
+
+          // 已安装分组（无新版本）
+          if (this.shownInstalled.length > 0) {
+            this.sectionHeader($r('app.string.plugin_installed_section'), false)
+            ForEach(this.shownInstalled, (item: InstalledPlugin) => {
+              this.installedRow(item, false)
+            }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}`)
+          }
+
+          if (this.repoUrl === '') {
+            // 未配置仓库：提示 + 已安装为空时给空态
+            this.sectionHeader($r('app.string.plugin_repo'), false)
+            if (this.pendingUpdates.length === 0 && this.shownInstalled.length === 0) {
+              EmptyScreen({
+                message: $r('app.string.plugin_repo_hint'),
+                compact: true,
+              })
+            } else {
+              Text($r('app.string.plugin_repo_hint'))
+                .fontSize(12)
+                .fontColor(this.pal.sub)
+                .width('100%')
+                .padding({
+                  left: 16,
+                  right: 16,
+                  top: 8,
+                  bottom: 8
+                })
+            }
+          } else if (this.loadingRepo && this.repoEntries.length === 0) {
+            // 首次加载仓库
+            this.sectionHeader($r('app.string.plugin_repo'), false)
+            Row({ space: 8 }) {
+              LoadingProgress()
+                .width(18)
+                .height(18)
+                .color(this.pal.primary)
+              Text($r('app.string.plugin_repo_loading'))
+                .fontSize(12)
+                .fontColor(this.pal.sub)
+            }
+            .width('100%')
+            .justifyContent(FlexAlign.Center)
+            .padding({ top: 16, bottom: 16 })
+          } else if (this.availableGroups.length === 0) {
+            // 仓库无匹配：全部为空时空态，否则静默（有已安装内容即可）
+            if (this.pendingUpdates.length === 0 && this.shownInstalled.length === 0) {
+              EmptyScreen({
+                message: this.hasActiveFilter() ?
+                  $r('app.string.ext_search_no_match') :
+                  $r('app.string.plugin_empty'),
+                compact: true,
+              })
+            }
+          } else {
+            // 在线可用：按语言分组展示（对齐 Mihon available 按语言分组）
+            ForEach(this.availableGroups, (g: LangGroup) => {
+              this.sectionHeader(g.label, false)
+              ForEach(g.entries, (entry: RepoEntry) => {
+                this.availableRow(entry)
+              }, (entry: RepoEntry) => `repo-${entry.key}-${entry.versionCode}-${entry.icon}`)
+            }, (g: LangGroup) => `grp-${g.lang}`)
+          }
+        }
+        .width('100%')
+      }
+      .scrollBar(BarState.Auto)
+      .align(Alignment.Top)
+      .contentEndOffset(this.navBarH + this.tabPadH)
+      .width('100%')
+      .height('100%')
+    }
+    .onRefreshing(() => {
+      this.refreshRepo();
+    })
+    .layoutWeight(1)
+    .width('100%')
+    .height('100%')
+    .bindSheet($$this.showSitePreview, this.sitePreviewBuilder(), {
+      height: SheetSize.LARGE,
+      detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+      dragBar: true,
+      showClose: false,
+      preferType: Bp.sheetType(this.windowW),
+      width: Bp.sheetWidth(this.windowW, 560),
+      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
+      maskColor: 'rgba(0,0,0,0.45)',
+    })
   }
 
   // 宿主改仓库地址或手动刷新后触发
@@ -131,6 +446,8 @@ export struct ExtensionListPanel {
     return name.substring(0, 1).toUpperCase();
   }
 
+  // 分组重算（对齐 Mihon ExtensionsViewModel.items）：
+
   private matchesQuery(name: string, key: string): boolean {
     const q = this.searchQuery.trim().toLowerCase();
     if (q === '') {
@@ -169,7 +486,6 @@ export struct ExtensionListPanel {
     return name !== undefined ? name : lang.toUpperCase();
   }
 
-  // 分组重算（对齐 Mihon ExtensionsViewModel.items）：
   // 待更新（已安装且仓库版本更高）→ 已安装（无更新）→ 在线可用（未安装）按语言分组
   private recomputeLists(): void {
     const byKey = new Map<string, RepoEntry>();
@@ -346,6 +662,8 @@ export struct ExtensionListPanel {
     }
   }
 
+  // 已安装插件行（待更新/已安装分组共用）：图标 + 名称 + 语言·版本(+NSFW) + 操作
+
   // “待更新”分组行尾更新按钮：按已安装插件 key 找仓库条目更新
   private async updateOne(key: string): Promise<void> {
     const entry: RepoEntry | undefined = this.repoByKey.get(key);
@@ -418,279 +736,5 @@ export struct ExtensionListPanel {
     if (!this.disposed) {
       this.busy = false;
     }
-  }
-
-  // 分组头（对齐 Mihon ExtensionHeader）：标题 + 可选“全部更新”按钮
-  @Builder
-  sectionHeader(title: ResourceStr, showUpdateAll: boolean) {
-    Row() {
-      Text(title)
-        .fontSize(14)
-        .fontWeight(FontWeight.Bold)
-        .fontColor(this.pal.text)
-        .layoutWeight(1)
-        .maxLines(1)
-        .textOverflow({ overflow: TextOverflow.Ellipsis })
-      if (showUpdateAll) {
-        Button($r('app.string.ext_update_all'))
-          .fontSize(13)
-          .fontWeight(FontWeight.Medium)
-          .fontColor(this.pal.onPrimary)
-          .backgroundColor(this.pal.primary)
-          .height(30)
-          .padding({ left: 14, right: 14 })
-          .margin({ left: 8 })
-          .onClick(() => {
-            this.updateAllPending();
-          })
-      }
-    }
-    .width('100%')
-    .alignItems(VerticalAlign.Center)
-    .padding({ left: 16, right: 16, top: 14, bottom: 6 })
-  }
-
-  // 已安装插件行（待更新/已安装分组共用）：图标 + 名称 + 语言·版本(+NSFW) + 操作
-  // 整行点击进详情；长按弹卸载确认；有更新时行尾显示更新按钮
-  @Builder
-  installedRow(item: InstalledPlugin, updatable: boolean) {
-    Row() {
-      TypeBadgedIcon({
-        iconPath: item.iconPath,
-        fallbackChar: this.firstCharOf(item.manifest.name),
-        iconSize: 40,
-        cornerRadius: 10,
-        contentType: item.manifest.contentType,
-        badgeBorder: this.pal.bg,
-      })
-
-      Column() {
-        Text(item.manifest.name)
-          .fontSize(15)
-          .fontColor(this.pal.text)
-          .maxLines(1)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
-        Row() {
-          Text(this.langLabel(item.manifest.lang))
-            .fontSize(12)
-            .fontColor(this.pal.sub)
-            .maxLines(1)
-          Text(` · ${item.manifest.version}`)
-            .fontSize(12)
-            .fontColor(this.pal.sub)
-            .maxLines(1)
-          if (item.manifest.nsfw) {
-            NsfwTag()
-              .margin({ left: 6 })
-          }
-        }
-        .alignItems(VerticalAlign.Center)
-        .margin({ top: 2 })
-      }
-      .alignItems(HorizontalAlign.Start)
-      .layoutWeight(1)
-      .margin({ left: 16 })
-
-      // 设置按钮进插件详情（Mihon Loaded 行同款）
-      AppIcon({ name: 'settings', iconSize: 22, tint: this.pal.sub })
-        .padding({ left: 8, right: updatable ? 0 : 8, top: 10, bottom: 10 })
-        .onClick(() => {
-          this.onOpenPlugin(item.manifest.key);
-        })
-
-      // 有新版本时显示更新按钮（对齐 Mihon hasUpdate → Download 图标）
-      if (updatable) {
-        AppIcon({ name: 'download', iconSize: 22, tint: this.pal.primary })
-          .padding({ left: 8, right: 8, top: 10, bottom: 10 })
-          .onClick(() => {
-            this.updateOne(item.manifest.key);
-          })
-      }
-    }
-    .width('100%')
-    .alignItems(VerticalAlign.Center)
-    .padding({ left: 16, right: 16, top: 8, bottom: 8 })
-    .onClick(() => {
-      this.onOpenPlugin(item.manifest.key);
-    })
-    .gesture(
-      LongPressGesture({ repeat: false, duration: 500 })
-        .onAction((_e: GestureEvent) => {
-          this.confirmUninstall(item);
-        })
-    )
-  }
-
-  // 在线可用插件行：地球按钮预览站点 + 下载按钮安装；整行点击即安装（Mihon Available 行同款）
-  @Builder
-  availableRow(entry: RepoEntry) {
-    Row() {
-      TypeBadgedIcon({
-        iconPath: entry.icon,
-        fallbackChar: this.firstCharOf(entry.name),
-        iconSize: 40,
-        cornerRadius: 10,
-        contentType: entry.contentType,
-        badgeBorder: this.pal.bg,
-      })
-
-      Column() {
-        Text(entry.name)
-          .fontSize(15)
-          .fontColor(this.pal.text)
-          .maxLines(1)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
-        Row() {
-          Text(this.langLabel(entry.lang))
-            .fontSize(12)
-            .fontColor(this.pal.sub)
-            .maxLines(1)
-          Text(` · ${entry.version}`)
-            .fontSize(12)
-            .fontColor(this.pal.sub)
-            .maxLines(1)
-          if (entry.nsfw) {
-            NsfwTag()
-              .margin({ left: 6 })
-          }
-        }
-        .alignItems(VerticalAlign.Center)
-        .margin({ top: 2 })
-      }
-      .alignItems(HorizontalAlign.Start)
-      .layoutWeight(1)
-      .margin({ left: 16 })
-
-      // 安装前预览插件对应网站（仓库索引声明 site 时显示）
-      if (entry.site !== '') {
-        AppIcon({ name: 'public', iconSize: 22, tint: this.pal.sub })
-          .padding({ left: 8, right: 8, top: 10, bottom: 10 })
-          .onClick(() => {
-            this.previewSiteUrl = entry.site;
-            this.previewName = entry.name;
-            this.showSitePreview = true;
-          })
-      }
-
-      AppIcon({ name: 'download', iconSize: 22, tint: this.pal.primary })
-        .padding({ left: 8, right: 8, top: 10, bottom: 10 })
-        .onClick(() => {
-          this.installFromRepo(entry);
-        })
-    }
-    .width('100%')
-    .alignItems(VerticalAlign.Center)
-    .padding({ left: 16, right: 16, top: 8, bottom: 8 })
-    .onClick(() => {
-      this.installFromRepo(entry);
-    })
-  }
-
-  // 站点预览半模态弹层内容（SitePreviewSheet 承载，样式对齐 Mihon WebView）
-  @Builder
-  sitePreviewBuilder() {
-    SitePreviewSheet({
-      siteUrl: this.previewSiteUrl,
-      defaultTitle: this.previewName,
-      onClose: (): void => {
-        this.showSitePreview = false;
-      },
-    })
-  }
-
-  build() {
-    Refresh({ refreshing: $$this.loadingRepo }) {
-      Scroll() {
-        Column() {
-          // 待更新分组（对齐 Mihon ext_updates_pending，含“全部更新”按钮）
-          if (this.pendingUpdates.length > 0) {
-            this.sectionHeader($r('app.string.ext_updates_pending'), true)
-            ForEach(this.pendingUpdates, (item: InstalledPlugin) => {
-              this.installedRow(item, true)
-            }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}`)
-          }
-
-          // 已安装分组（无新版本）
-          if (this.shownInstalled.length > 0) {
-            this.sectionHeader($r('app.string.plugin_installed_section'), false)
-            ForEach(this.shownInstalled, (item: InstalledPlugin) => {
-              this.installedRow(item, false)
-            }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}`)
-          }
-
-          if (this.repoUrl === '') {
-            // 未配置仓库：提示 + 已安装为空时给空态
-            this.sectionHeader($r('app.string.plugin_repo'), false)
-            if (this.pendingUpdates.length === 0 && this.shownInstalled.length === 0) {
-              EmptyScreen({
-                message: $r('app.string.plugin_repo_hint'),
-                compact: true,
-              })
-            } else {
-              Text($r('app.string.plugin_repo_hint'))
-                .fontSize(12)
-                .fontColor(this.pal.sub)
-                .width('100%')
-                .padding({ left: 16, right: 16, top: 8, bottom: 8 })
-            }
-          } else if (this.loadingRepo && this.repoEntries.length === 0) {
-            // 首次加载仓库
-            this.sectionHeader($r('app.string.plugin_repo'), false)
-            Row({ space: 8 }) {
-              LoadingProgress()
-                .width(18)
-                .height(18)
-                .color(this.pal.primary)
-              Text($r('app.string.plugin_repo_loading'))
-                .fontSize(12)
-                .fontColor(this.pal.sub)
-            }
-            .width('100%')
-            .justifyContent(FlexAlign.Center)
-            .padding({ top: 16, bottom: 16 })
-          } else if (this.availableGroups.length === 0) {
-            // 仓库无匹配：全部为空时空态，否则静默（有已安装内容即可）
-            if (this.pendingUpdates.length === 0 && this.shownInstalled.length === 0) {
-              EmptyScreen({
-                message: this.hasActiveFilter() ?
-                  $r('app.string.ext_search_no_match') :
-                  $r('app.string.plugin_empty'),
-                compact: true,
-              })
-            }
-          } else {
-            // 在线可用：按语言分组展示（对齐 Mihon available 按语言分组）
-            ForEach(this.availableGroups, (g: LangGroup) => {
-              this.sectionHeader(g.label, false)
-              ForEach(g.entries, (entry: RepoEntry) => {
-                this.availableRow(entry)
-              }, (entry: RepoEntry) => `repo-${entry.key}-${entry.versionCode}-${entry.icon}`)
-            }, (g: LangGroup) => `grp-${g.lang}`)
-          }
-        }
-        .width('100%')
-      }
-      .scrollBar(BarState.Auto)
-      .align(Alignment.Top)
-      .contentEndOffset(this.navBarH + this.tabPadH)
-      .width('100%')
-      .height('100%')
-    }
-    .onRefreshing(() => {
-      this.refreshRepo();
-    })
-    .layoutWeight(1)
-    .width('100%')
-    .height('100%')
-    .bindSheet($$this.showSitePreview, this.sitePreviewBuilder(), {
-      height: SheetSize.LARGE,
-      detents: [SheetSize.MEDIUM, SheetSize.LARGE],
-      dragBar: true,
-      showClose: false,
-      preferType: Bp.sheetType(this.windowW),
-      width: Bp.sheetWidth(this.windowW, 560),
-      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
-      maskColor: 'rgba(0,0,0,0.45)',
-    })
   }
 }

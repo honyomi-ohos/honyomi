@@ -1,534 +1,2124 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "உங்கள் நூலகத்தில் உள்ள அனைத்து உள்ளீடுகளையும் வடிகட்டுகிறது" },
-    { "name": "more_incognito_summary", "value": "வரலாற்றைப் படிப்பதை இடைநிறுத்துகிறது" },
-    { "name": "more_support", "value": "Support Us" },
-    { "name": "more_help", "value": "உதவி" },
-    { "name": "support_perks", "value": "Patrons get access to exclusive channels, with more perks to come." },
-    { "name": "support_patreon", "value": "Patreon (preferred)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together." },
-    { "name": "support_contact_msg", "value": "For alternative options or any related questions, join our Discord server." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "தரவு மற்றும் சேமிப்பு" },
-    { "name": "data_storage_location", "value": "சேமிப்பக இடம்" },
-    { "name": "data_storage_location_info", "value": "தானியங்கி காப்புப்பிரதிகள், அத்தியாயம் பதிவிறக்கங்கள் மற்றும் உள்ளக மூலங்களுக்குப் பயன்படுத்தப்படுகிறது." },
-    { "name": "data_backup_restore", "value": "காப்புப்பிரதி மற்றும் மீட்டமை" },
-    { "name": "data_create_backup", "value": "காப்புப்பிரதியை உருவாக்கவும்" },
-    { "name": "data_restore_backup", "value": "காப்புப்பிரதியை மீட்டமைக்கவும்" },
-    { "name": "data_backup_interval", "value": "தானியங்கி காப்பு அதிர்வெண்" },
-    { "name": "data_backup_info", "value": "நீங்கள் காப்புப்பிரதிகளின் நகல்களை மற்ற இடங்களிலும் வைத்திருக்க வேண்டும். சேமிக்கப்பட்ட கடவுச்சொற்கள் உட்பட முக்கியமான தரவு காப்புப்பிரதிகளில் இருக்கலாம்; பகிர்வு செய்தால் கவனமாக இருங்கள்." },
-    { "name": "data_last_auto_backup", "value": "கடைசியாக தானாக காப்புப் பிரதி எடுக்கப்பட்டது: %s" },
-    { "name": "data_storage_usage", "value": "சேமிப்பக பயன்பாடு" },
-    { "name": "data_available_space", "value": "கிடைக்கிறது: %s / மொத்தம்: %s" },
-    { "name": "data_clear_chapter_cache", "value": "தெளிவான அத்தியாயம் கேச்" },
-    { "name": "data_used_cache", "value": "பயன்படுத்தப்பட்டது: %s" },
-    { "name": "data_cache_deleted", "value": "கேச் அழிக்கப்பட்டது, %d கோப்புகள் நீக்கப்பட்டன" },
-    { "name": "data_cache_delete_error", "value": "அழிக்கும்போது பிழை ஏற்பட்டது" },
-    { "name": "data_auto_clear_cache", "value": "பயன்பாட்டு வெளியீட்டில் அத்தியாயம் கேச் அழிக்கவும்" },
-    { "name": "data_export", "value": "ஏற்றுமதி" },
-    { "name": "data_library_list", "value": "நூலக பட்டியல்" },
-    { "name": "data_library_exported", "value": "நூலகம் ஏற்றுமதி செய்யப்பட்டது" },
-    { "name": "data_export_include", "value": "சேர்க்க தரவைத் தேர்ந்தெடுக்கவும்" },
-    { "name": "data_column_title", "value": "தலைப்பு" },
-    { "name": "data_column_author", "value": "நூலாசிரியர்" },
-    { "name": "data_interval_off", "value": "அணை" },
-    { "name": "data_interval_6h", "value": "ஒவ்வொரு 6 மணி நேரமும்" },
-    { "name": "data_interval_12h", "value": "ஒவ்வொரு 12 மணி நேரமும்" },
-    { "name": "data_interval_24h", "value": "நாள்தோறும்" },
-    { "name": "data_interval_48h", "value": "ஒவ்வொரு 2 நாட்களுக்கும்" },
-    { "name": "data_interval_weekly", "value": "வாராந்திர" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "சரி" },
-    { "name": "common_cancel", "value": "ரத்துசெய்" },
-    { "name": "common_confirm", "value": "உறுதிப்படுத்து" },
-    { "name": "common_delete", "value": "நீக்கு" },
-    { "name": "common_retry", "value": "மீண்டும் முயற்சி" },
-    { "name": "common_search", "value": "தேடு" },
-    { "name": "common_all", "value": "அனைத்தும்" },
-    { "name": "common_close", "value": "மூடு" },
-    { "name": "common_save", "value": "சேமி" },
-    { "name": "common_install", "value": "நிறுவு" },
-    { "name": "common_uninstall", "value": "நீக்கு நிறுவல்" },
-    { "name": "common_update", "value": "புதுப்பி" },
-    { "name": "common_none", "value": "ஏதுமில்லை" },
-    { "name": "common_default", "value": "இயல்பு" },
-    { "name": "appearance_title", "value": "தோற்றம்" },
-    { "name": "appearance_language", "value": "மொழி" },
-    { "name": "lang_follow_system", "value": "கணினியைப் பின்தொடர்" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "தீம் முறை" },
-    { "name": "appearance_theme_auto", "value": "கணினியைப் பின்தொடர்" },
-    { "name": "appearance_theme_light", "value": "வெளிர்" },
-    { "name": "appearance_theme_dark", "value": "இருள்" },
-    { "name": "appearance_accent_color", "value": "முதன்மை நிறம்" },
-    { "name": "appearance_other", "value": "மற்றவை" },
-    { "name": "appearance_amoled", "value": "AMOLED தூய கருப்பு பின்னணி" },
-    { "name": "theme_accent_blue", "value": "நீலம்" },
-    { "name": "theme_accent_green", "value": "பச்சை" },
-    { "name": "theme_accent_pink", "value": "இளஞ்சிவப்பு" },
-    { "name": "theme_accent_purple", "value": "ஊதா" },
-    { "name": "theme_accent_orange", "value": "ஆரஞ்சு" },
-    { "name": "util_time_minutes_ago", "value": "%d நிமிடம் முன்" },
-    { "name": "util_time_hours_ago", "value": "%d மணி முன்" },
-    { "name": "util_time_days_ago", "value": "%d நாள் முன்" },
-    { "name": "util_status_ongoing", "value": "தொடர்கிறது" },
-    { "name": "util_status_completed", "value": "முடிந்தது" },
-    { "name": "util_status_hiatus", "value": "இடைநிறுத்தம்" },
-    { "name": "util_status_cancelled", "value": "ரத்து" },
-    { "name": "util_status_publication_complete", "value": "வெளியீடு முடிந்தது" },
-    { "name": "util_status_unknown", "value": "தெரியாதது" },
-    { "name": "tab_library", "value": "நூலகம்" },
-    { "name": "tab_updates", "value": "புதுப்பிப்புகள்" },
-    { "name": "tab_history", "value": "வரலாறு" },
-    { "name": "tab_browse", "value": "உலாவு" },
-    { "name": "tab_more", "value": "மேலும்" },
-    { "name": "tab_cf_waiting", "value": "சரிபார்ப்புக்காக காத்திருக்கிறது…" },
-    { "name": "tab_cf_verified", "value": "சரிபார்ப்பு முடிந்தது" },
-    { "name": "tab_cf_title", "value": "மனித சரிபார்ப்பு" },
-    { "name": "tab_cf_done", "value": "முடிந்தது" },
-    { "name": "tab_cf_saved", "value": "சரிபார்ப்பு முடிவு சேமிக்கப்பட்டது" },
-    { "name": "more_title", "value": "மேலும்" },
-    { "name": "more_version", "value": "பதிப்பு %s" },
-    { "name": "more_downloaded_only", "value": "பதிவிறக்கம் மட்டுமே" },
-    { "name": "more_incognito", "value": "மறைநிலை பயன்முறை" },
-    { "name": "more_downloads", "value": "வரிசையைப் பதிவிறக்கவும்" },
-    { "name": "more_categories", "value": "வகைகள்" },
-    { "name": "more_settings", "value": "அமைப்புகள்" },
-    { "name": "more_about", "value": "அறிமுகம்" },
-    { "name": "more_plugins", "value": "நீட்டிப்புகள்" },
-    { "name": "categories_title", "value": "வகைகள்" },
-    { "name": "categories_add", "value": "புதிய வகை" },
-    { "name": "categories_name_placeholder", "value": "வகை பெயர்" },
-    { "name": "categories_rename_category", "value": "வகை பெயர் மாற்று" },
-    { "name": "categories_rename", "value": "பெயர் மாற்று" },
-    { "name": "categories_hint", "value": "வகையை மறுபெயரிட அல்லது நீக்க நீண்ட நேரம் அழுத்தவும்; நீக்கப்பட்ட வகையின் மாங்கா இயல்புக்கு திரும்பும்" },
-    { "name": "dialog_pick_category", "value": "வகையைத் தேர்ந்தெடு" },
-    { "name": "viewer_loading", "value": "ஏற்றுகிறது…" },
-    { "name": "viewer_load_failed", "value": "படம் ஏற்ற முடியவில்லை" },
-    { "name": "viewer_tap_retry", "value": "மீண்டும் முயலத் தட்டவும்" },
-    { "name": "library_title", "value": "நூலகம்" },
-    { "name": "library_empty", "value": "உங்கள் நூலகம் காலியாக உள்ளது, மாங்கா சேர்க்க உலாவவும்" },
-    { "name": "library_new_category", "value": "புதிய வகை" },
-    { "name": "library_category_name", "value": "வகை பெயர்" },
-    { "name": "updates_title", "value": "புதுப்பிப்புகள்" },
-    { "name": "updates_empty", "value": "சமீபத்திய புதுப்பிப்புகள் இல்லை" },
-    { "name": "updates_found_new", "value": "%d புதிய அத்தியாயங்கள் கிடைத்தன" },
-    { "name": "updates_no_new", "value": "புதிய அத்தியாயங்கள் இல்லை" },
-    { "name": "updates_refresh_failed", "value": "புதுப்பிப்பு தோல்வி" },
-    { "name": "updates_refreshing", "value": "புதுப்பிக்கிறது…" },
-    { "name": "history_title", "value": "வரலாறு" },
-    { "name": "history_clear", "value": "அழி" },
-    { "name": "history_confirm_clear", "value": "அழிக்க உறுதி?" },
-    { "name": "history_empty", "value": "இன்னும் வாசிப்பு வரலாறு இல்லை" },
-    { "name": "history_cleared", "value": "வரலாறு அழிக்கப்பட்டது" },
-    { "name": "history_continue", "value": "தொடர்" },
-    { "name": "browse_title", "value": "உலாவு" },
-    { "name": "browse_import", "value": "இறக்குமதி" },
-    { "name": "browse_plugins", "value": "செருகுநிரல்கள்" },
-    { "name": "browse_local_source_name", "value": "உள்ளூர் மாங்கா" },
-    { "name": "browse_popular", "value": "பிரபலமானவை" },
-    { "name": "browse_latest", "value": "சமீபத்தியவை" },
-    { "name": "browse_search_hint", "value": "மாங்கா தேடு…" },
-    { "name": "browse_no_results", "value": "மாங்கா கிடைக்கவில்லை" },
-    { "name": "browse_local_empty", "value": "இன்னும் உள்ளூர் மாங்கா இல்லை, சேர்க்க இறக்குமதியைத் தட்டவும்" },
-    { "name": "browse_load_failed", "value": "ஏற்றம் தோல்வி: %s" },
-    { "name": "browse_search_failed", "value": "தேடல் தோல்வி: %s" },
-    { "name": "browse_load_more_failed", "value": "மேலும் ஏற்ற முடியவில்லை" },
-    { "name": "browse_open_detail_failed", "value": "விவரங்கள் திறக்க முடியவில்லை" },
-    { "name": "browse_pick_file_failed", "value": "கோப்புகளைத் தேர்ந்தெடுக்க முடியவில்லை" },
-    { "name": "browse_import_title", "value": "%d கோப்புகளை இறக்குமதி செய்" },
-    { "name": "browse_manga_name_hint", "value": "மாங்கா பெயர்" },
-    { "name": "browse_input_name", "value": "பெயரை உள்ளிடவும்" },
-    { "name": "browse_import_done", "value": "%d கோப்புகள் இறக்குமதி செய்யப்பட்டன" },
-    { "name": "browse_import_failed", "value": "இறக்குமதி தோல்வி: %s" },
-    { "name": "download_title", "value": "பதிவிறக்கங்கள்" },
-    { "name": "download_resume", "value": "தொடர்" },
-    { "name": "download_pause", "value": "இடைநிறுத்து" },
-    { "name": "download_clear_finished", "value": "முடிந்தவற்றை அழி" },
-    { "name": "download_queue", "value": "பதிவிறக்க வரிசை" },
-    { "name": "download_state_queued", "value": "வரிசையில்" },
-    { "name": "download_state_downloading", "value": "பதிவிறக்குகிறது" },
-    { "name": "download_state_done", "value": "முடிந்தது" },
-    { "name": "download_state_failed", "value": "தோல்வி" },
-    { "name": "download_move_top", "value": "மேலே நகர்த்து" },
-    { "name": "download_move_bottom", "value": "கீழே நகர்த்து" },
-    { "name": "download_deleted", "value": "நீக்கப்பட்டது" },
-    { "name": "download_empty", "value": "இன்னும் பதிவிறக்கங்கள் இல்லை" },
-    { "name": "download_status_downloaded", "value": "பதிவிறக்கப்பட்டது" },
-    { "name": "download_chapter_count", "value": "%d அத்தியாயங்கள்" },
-    { "name": "detail_no_chapters", "value": "அத்தியாயங்கள் இல்லை" },
-    { "name": "detail_sync_failed_local", "value": "ஒத்திசைவு தோல்வி, உள்ளூர் தரவு காட்டப்படுகிறது" },
-    { "name": "detail_added_to_library", "value": "நூலகத்தில் சேர்க்கப்பட்டது" },
-    { "name": "detail_removed_from_library", "value": "நூலகத்திலிருந்து நீக்கப்பட்டது" },
-    { "name": "detail_all_marked_read", "value": "அனைத்து அத்தியாயங்களும் படித்ததாக குறிக்கப்பட்டன" },
-    { "name": "detail_download_queued", "value": "பதிவிறக்க வரிசையில் சேர்க்கப்பட்டது" },
-    { "name": "detail_config_anilist_token", "value": "முதலில் AniList டோக்கனை அமைக்கவும்" },
-    { "name": "detail_search_anilist", "value": "AniList தேடு" },
-    { "name": "detail_manga_title_hint", "value": "மாங்கா தலைப்பு" },
-    { "name": "detail_no_search_results", "value": "தேடல் முடிவுகள் இல்லை" },
-    { "name": "detail_anilist_search_failed", "value": "AniList தேடல் தோல்வி" },
-    { "name": "detail_anilist_bound", "value": "AniList உடன் இணைக்கப்பட்டது" },
-    { "name": "detail_anilist_unbound", "value": "AniList இணைப்பு நீக்கப்பட்டது" },
-    { "name": "detail_synced_progress", "value": "முன்னேற்றம் அத்தியாயம் %dக்கு ஒத்திசைக்கப்பட்டது" },
-    { "name": "detail_anilist_sync_failed", "value": "AniList ஒத்திசைவு தோல்வி" },
-    { "name": "detail_status_local", "value": "உள்ளூர்" },
-    { "name": "detail_in_library", "value": "நூலகத்தில் உள்ளது" },
-    { "name": "detail_add_to_library", "value": "நூலகத்தில் சேர்" },
-    { "name": "detail_continue_reading", "value": "வாசிப்பைத் தொடர்" },
-    { "name": "detail_start_reading", "value": "வாசிக்கத் தொடங்கு" },
-    { "name": "detail_no_chapters_yet", "value": "இன்னும் அத்தியாயங்கள் இல்லை" },
-    { "name": "detail_collapse", "value": "சுருக்கு" },
-    { "name": "detail_expand", "value": "விரிவாக்கு" },
-    { "name": "detail_anilist_tracking", "value": "AniList கண்காணிப்பு" },
-    { "name": "detail_anilist_token_hint", "value": "AniList டோக்கன் இன்னும் அமைக்கப்படவில்லை" },
-    { "name": "detail_searching", "value": "தேடுகிறது…" },
-    { "name": "detail_search_and_bind", "value": "தேடி இணை" },
-    { "name": "detail_bind", "value": "இணை" },
-    { "name": "detail_synced_to_chapter", "value": "அத்தியாயம் %dக்கு ஒத்திசைக்கப்பட்டது" },
-    { "name": "detail_sync_progress", "value": "முன்னேற்றத்தை ஒத்திசை" },
-    { "name": "detail_unbind", "value": "இணைப்பை நீக்கு" },
-    { "name": "detail_chapters_count", "value": "அத்தியாயங்கள் (%d)" },
-    { "name": "detail_sort_asc", "value": "ஏறுவரிசை" },
-    { "name": "detail_sort_desc", "value": "இறங்குவரிசை" },
-    { "name": "detail_mark_all_read", "value": "அனைத்தையும் படித்ததாக குறி" },
-    { "name": "detail_read", "value": "படித்தது" },
-    { "name": "detail_downloaded", "value": "பதிவிறக்கப்பட்டது" },
-    { "name": "detail_in_queue", "value": "வரிசையில்" },
-    { "name": "detail_download", "value": "பதிவிறக்கு" },
-    { "name": "reader_chapter_not_found", "value": "அத்தியாயம் கிடைக்கவில்லை" },
-    { "name": "reader_load_failed", "value": "ஏற்றம் தோல்வி: %s" },
-    { "name": "reader_mode_ltr", "value": "இடமிருந்து வலம்" },
-    { "name": "reader_mode_rtl", "value": "வலமிருந்து இடம்" },
-    { "name": "reader_mode_webtoon", "value": "வெப்டூன்" },
-    { "name": "reader_reading_mode", "value": "வாசிப்பு முறை" },
-    { "name": "reader_orientation_free", "value": "சுதந்திரம்" },
-    { "name": "reader_orientation_portrait", "value": "நிலைப்பு" },
-    { "name": "reader_orientation_landscape", "value": "கிடைமட்டம்" },
-    { "name": "reader_screen_orientation", "value": "திரை நோக்குநிலை" },
-    { "name": "reader_last_chapter", "value": "ஏற்கனவே கடைசி அத்தியாயத்தில் உள்ளீர்கள்" },
-    { "name": "reader_first_chapter", "value": "ஏற்கனவே முதல் அத்தியாயத்தில் உள்ளீர்கள்" },
-    { "name": "reader_first_page", "value": "ஏற்கனவே முதல் பக்கத்தில் உள்ளீர்கள்" },
-    { "name": "reader_last_page", "value": "ஏற்கனவே கடைசி பக்கத்தில் உள்ளீர்கள்" },
-    { "name": "reader_loading_chapter", "value": "அத்தியாயம் ஏற்றுகிறது…" },
-    { "name": "reader_settings", "value": "வாசிப்பான் அமைப்புகள்" },
-    { "name": "reader_background", "value": "பின்னணி" },
-    { "name": "reader_theme_auto", "value": "தானியங்கி" },
-    { "name": "reader_theme_white", "value": "வெள்ளை" },
-    { "name": "reader_theme_gray", "value": "சாம்பல்" },
-    { "name": "reader_theme_black", "value": "கருப்பு" },
-    { "name": "reader_show_page_number", "value": "பக்க எண்ணைக் காட்டு" },
-    { "name": "reader_brightness", "value": "ஒளிர்வு" },
-    { "name": "reader_auto", "value": "தானியங்கி" },
-    { "name": "plugin_title", "value": "நீட்டிப்புகள்" },
-    { "name": "plugin_installed_section", "value": "நிறுவப்பட்டவை" },
-    { "name": "plugin_empty", "value": "இன்னும் நீட்டிப்புகள் இல்லை, கீழே நிறுவவும்" },
-    { "name": "plugin_disable_hint", "value": "முடக்கப்பட்ட நீட்டிப்புகளை எப்போதும் மீண்டும் இயக்கலாம்" },
-    { "name": "plugin_up_to_date", "value": "புதிய நிலையில் உள்ளது" },
-    { "name": "plugin_local_install", "value": "கோப்பிலிருந்து நிறுவு" },
-    { "name": "plugin_install_from_file", "value": "நிறுவ ஒரு கோப்பைத் தேர்ந்தெடு" },
-    { "name": "plugin_processing", "value": "செயலாக்குகிறது…" },
-    { "name": "plugin_package_hint", "value": ".honyomiplug / .zip செருகுநிரல் தொகுப்புகள் ஆதரிக்கப்படும்" },
-    { "name": "plugin_repo", "value": "ஆன்லைன் களஞ்சியம்" },
-    { "name": "plugin_repo_config", "value": "களஞ்சியத்தை அமை" },
-    { "name": "plugin_repo_refresh", "value": "புதுப்பி" },
-    { "name": "plugin_repo_hint", "value": "இன்னும் செருகுநிரல் களஞ்சியம் அமைக்கப்படவில்லை" },
-    { "name": "plugin_repo_loading", "value": "களஞ்சியம் ஏற்றுகிறது…" },
-    { "name": "plugin_repo_url_title", "value": "செருகுநிரல் களஞ்சிய URL" },
-    { "name": "plugin_repo_url_hint", "value": "செருகுநிரல் களஞ்சிய URL ஐ உள்ளிடவும்" },
-    { "name": "plugin_repo_load_failed", "value": "களஞ்சியம் ஏற்ற முடியவில்லை: %s" },
-    { "name": "plugin_pick_file_failed", "value": "கோப்பைத் தேர்ந்தெடுக்க முடியவில்லை" },
-    { "name": "plugin_installed", "value": "நிறுவப்பட்டது: %s" },
-    { "name": "plugin_installed_name", "value": "%s நிறுவப்பட்டது" },
-    { "name": "plugin_install_failed", "value": "நிறுவல் தோல்வி: %s" },
-    { "name": "plugin_action_failed", "value": "செயல் தோல்வி" },
-    { "name": "plugin_uninstalled", "value": "நீக்கப்பட்டது: %s" },
-    { "name": "plugin_uninstall_failed", "value": "நிறுவல் நீக்கம் தோல்வி" },
-    { "name": "settings_title", "value": "அமைப்புகள்" },
-    { "name": "settings_general", "value": "பொது" },
-    { "name": "settings_start_tab", "value": "தொடக்கத் திரை" },
-    { "name": "settings_personalization", "value": "தனிப்பயனாக்கம்" },
-    { "name": "settings_library", "value": "நூலகம்" },
-    { "name": "settings_reader", "value": "வாசிப்பான்" },
-    { "name": "settings_data", "value": "தரவு" },
-    { "name": "settings_downloads", "value": "பதிவிறக்கங்கள்" },
-    { "name": "settings_browse", "value": "உலாவு" },
-    { "name": "settings_advanced", "value": "மேம்பட்டவை" },
-    { "name": "settings_about", "value": "அறிமுகம்" },
-    { "name": "settings_tab_library", "value": "நூலகம்" },
-    { "name": "settings_tab_updates", "value": "புதுப்பிப்புகள்" },
-    { "name": "settings_tab_history", "value": "வரலாறு" },
-    { "name": "settings_tab_browse", "value": "உலாவு" },
-    { "name": "settings_tab_more", "value": "மேலும்" },
-    { "name": "advanced_title", "value": "மேம்பட்டவை" },
-    { "name": "advanced_calculating", "value": "கணக்கிடுகிறது…" },
-    { "name": "advanced_storage", "value": "சேமிப்பகம்" },
-    { "name": "advanced_clear_image_cache", "value": "பட தற்காலிக சேமிப்பை அழி" },
-    { "name": "advanced_image_cache_cleared", "value": "பட தற்காலிக சேமிப்பு அழிக்கப்பட்டது" },
-    { "name": "advanced_clear_cookies", "value": "குக்கீகளை அழி" },
-    { "name": "advanced_cookies_cleared", "value": "அனைத்து குக்கீகளும் அழிக்கப்பட்டன" },
-    { "name": "advanced_backup_restore", "value": "காப்பு மற்றும் மீட்டமை" },
-    { "name": "advanced_export_backup", "value": "காப்பை ஏற்றுமதி செய்" },
-    { "name": "advanced_import_backup", "value": "காப்பை இறக்குமதி செய்" },
-    { "name": "advanced_tracking", "value": "கண்காணிப்பு" },
-    { "name": "advanced_anilist_token", "value": "AniList டோக்கன்" },
-    { "name": "advanced_token_title", "value": "AniList அணுகல் டோக்கன்" },
-    { "name": "advanced_token_hint", "value": "அணுகல் டோக்கனை ஒட்டவும் (அழிக்க காலியாக விடவும்)" },
-    { "name": "advanced_token_not_set", "value": "அமைக்கப்படவில்லை" },
-    { "name": "advanced_token_set", "value": "அமைக்கப்பட்டது" },
-    { "name": "advanced_token_saved", "value": "டோக்கன் சேமிக்கப்பட்டது" },
-    { "name": "advanced_token_cleared", "value": "டோக்கன் அழிக்கப்பட்டது" },
-    { "name": "advanced_backup_exported", "value": "காப்பு ஏற்றுமதி செய்யப்பட்டது" },
-    { "name": "advanced_export_canceled", "value": "ஏற்றுமதி ரத்து" },
-    { "name": "advanced_export_failed", "value": "ஏற்றுமதி தோல்வி" },
-    { "name": "advanced_import_canceled", "value": "இறக்குமதி ரத்து" },
-    { "name": "advanced_backup_invalid", "value": "தவறான காப்புக் கோப்பு" },
-    { "name": "advanced_restored_manga", "value": "%d மாங்கா மீட்டமைக்கப்பட்டன" },
-    { "name": "advanced_import_failed", "value": "இறக்குமதி தோல்வி" },
-    { "name": "about_title", "value": "அறிமுகம்" },
-    { "name": "about_version", "value": "பதிப்பு 1.0.0" },
-    { "name": "about_desc", "value": "கட்டமைப்பு Mihon (Apache-2.0) இலிருந்து ஊக்கம் பெற்றது. ஆன்லைன் மூலங்கள் நீட்டிப்புகளாக இயக்கமாக நிறுவப்படுகின்றன, உள்ளூர் மூலங்கள் உள்ளமைக்கப்பட்டவை." },
-    { "name": "about_ack", "value": "திறந்த மூல நன்றியறிதல்கள்:\n· Mihon / Tachiyomi — பயன்பாட்டு கட்டமைப்பு மற்றும் தொடர்பு வடிவமைப்பு (Apache-2.0)\n· Material Symbols — பயன்பாட்டு சின்னங்கள் (Apache-2.0)\n· MangaDex — சோதனை தரவு மூலம்" },
-    { "name": "browse_set_title", "value": "உலாவு" },
-    { "name": "browse_set_content", "value": "உள்ளடக்கம்" },
-    { "name": "browse_set_show_nsfw", "value": "NSFW மூலங்களைக் காட்டு" },
-    { "name": "browse_set_nsfw_hint", "value": "இயக்கினால், நீட்டிப்புகள் NSFW என குறித்த மூலங்கள் உலாவலில் தோன்றும்" },
-    { "name": "dl_set_title", "value": "பதிவிறக்கங்கள்" },
-    { "name": "dl_set_network", "value": "பிணையம்" },
-    { "name": "dl_set_wifi_only", "value": "Wi-Fi இல் மட்டும் பதிவிறக்கு" },
-    { "name": "dl_set_wifi_only_hint", "value": "குறிப்பு: தற்போதைய பதிப்பில் இந்த சுவிட்ச் இடம்பிடிப்பான்; பிணைய வகை கண்டறிதல் எதிர்கால பதிப்பில் வரும்" },
-    { "name": "lib_set_title", "value": "நூலகம்" },
-    { "name": "lib_set_sort_group", "value": "வடிகட்டி மற்றும் வரிசை" },
-    { "name": "lib_set_sort_default", "value": "இயல்பு வரிசை" },
-    { "name": "lib_set_sort_title", "value": "தலைப்பு" },
-    { "name": "lib_set_sort_last_update", "value": "சமீபத்திய அத்தியாயம்" },
-    { "name": "lib_set_sort_added", "value": "சேர்த்த தேதி" },
-    { "name": "lib_set_sort_unread", "value": "படிக்காத எண்ணிக்கை" },
-    { "name": "lib_set_sort_asc", "value": "தலைப்பு ஏறுவரிசை" },
-    { "name": "lib_set_filter_default", "value": "இயல்பு வடிகட்டி" },
-    { "name": "lib_set_filter_unread", "value": "படிக்காதது" },
-    { "name": "lib_set_filter_downloaded", "value": "பதிவிறக்கப்பட்டது" },
-    { "name": "lib_set_filter_uncompleted", "value": "முடியாதவை" },
-    { "name": "lib_set_display_group", "value": "காட்சி" },
-    { "name": "lib_set_view_default", "value": "இயல்பு காட்சி" },
-    { "name": "lib_set_view_grid", "value": "கட்டம்" },
-    { "name": "lib_set_view_cover", "value": "அட்டை கட்டம்" },
-    { "name": "lib_set_view_list", "value": "பட்டியல்" },
-    { "name": "lib_set_grid_cols", "value": "கட்ட நெடுவரிசைகள்" },
-    { "name": "lib_set_cols_auto", "value": "தானியங்கி" },
-    { "name": "lib_set_cols_2", "value": "2 நெடுவரிசைகள்" },
-    { "name": "lib_set_cols_3", "value": "3 நெடுவரிசைகள்" },
-    { "name": "lib_set_cols_4", "value": "4 நெடுவரிசைகள்" },
-    { "name": "lib_set_unread_badge", "value": "படிக்காத பதக்கங்கள்" },
-    { "name": "lib_set_download_badge", "value": "பதிவிறக்க பதக்கங்கள்" },
-    { "name": "reader_set_title", "value": "வாசிப்பான்" },
-    { "name": "reader_set_mode_group", "value": "வாசிப்பு முறை" },
-    { "name": "reader_set_mode_default", "value": "இயல்பு முறை" },
-    { "name": "reader_set_mode_ltr", "value": "இடமிருந்து வலம்" },
-    { "name": "reader_set_mode_rtl", "value": "வலமிருந்து இடம்" },
-    { "name": "reader_set_mode_vertical", "value": "செங்குத்து பக்கம்" },
-    { "name": "reader_set_mode_webtoon", "value": "வெப்டூன்" },
-    { "name": "reader_set_dual_page", "value": "இரட்டை பக்கம் (கிடைமட்டம்)" },
-    { "name": "reader_set_display_group", "value": "காட்சி" },
-    { "name": "reader_set_show_page_number", "value": "பக்க எண்ணைக் காட்டு" },
-    { "name": "reader_set_bg_color", "value": "வாசிப்பான் பின்னணி" },
-    { "name": "reader_set_theme_follow", "value": "தீமைப் பின்தொடர்" },
-    { "name": "reader_set_theme_white", "value": "வெள்ளை" },
-    { "name": "reader_set_theme_black", "value": "கருப்பு" },
-    { "name": "reader_set_theme_gray", "value": "சாம்பல்" },
-    { "name": "reader_set_reset_brightness", "value": "வாசிப்பான் ஒளிர்வை மீட்டமை" },
-    { "name": "reader_set_brightness_reset", "value": "ஒளிர்வு கணினியைப் பின்தொடர அமைக்கப்பட்டது" },
-    { "name": "browse_tab_sources", "value": "மூலங்கள்" },
-    { "name": "browse_tab_extensions", "value": "நீட்டிப்புகள்" },
-    { "name": "browse_tab_migrate", "value": "இடமாற்று" },
-    { "name": "browse_pin", "value": "பின் செய்" },
-    { "name": "browse_unpin", "value": "பின் நீக்கு" },
-    { "name": "browse_disable_source", "value": "மூலத்தை முடக்கு" },
-    { "name": "browse_source_disabled", "value": "மூலம் முடக்கப்பட்டது" },
-    { "name": "browse_pinned", "value": "பின் செய்யப்பட்டது" },
-    { "name": "browse_sources_empty", "value": "மூலங்கள் இல்லை. நீட்டிப்புகள் தாவலில் இருந்து நிறுவவும்" },
-    { "name": "browse_filter_langs", "value": "மொழிகளை வடிகட்டு" },
-    { "name": "browse_filter_all", "value": "அனைத்தும்" },
-    { "name": "browse_source_missing", "value": "மூலம் கிடைக்கவில்லை. நீட்டிப்பு முடக்கப்பட்டிருக்கலாம்" },
-    { "name": "global_search_hint", "value": "அனைத்து மூலங்களிலும் தேடு" },
-    { "name": "global_search_failed", "value": "தேடல் தோல்வி" },
-    { "name": "ext_search_hint", "value": "நீட்டிப்புகளைத் தேடு" },
-    { "name": "ext_search_no_match", "value": "பொருத்தங்கள் இல்லை" },
-    { "name": "ext_repo_settings", "value": "களஞ்சிய அமைப்புகள்" },
-    { "name": "ext_refresh_repo", "value": "களஞ்சியத்தைப் புதுப்பி" },
-    { "name": "migrate_pick_source", "value": "இடமாற்ற ஒரு மூலத்தைத் தேர்வுசெய்க" },
-    { "name": "migrate_empty_library", "value": "நூலகம் காலியாக உள்ளது" },
-    { "name": "migrate_select_all", "value": "அனைத்தையும் தேர்வுசெய்" },
-    { "name": "migrate_deselect_all", "value": "தேர்வை நீக்கு" },
-    { "name": "migrate_action", "value": "இடமாற்று (%d)" },
-    { "name": "migrate_title", "value": "இடமாற்று" },
-    { "name": "migrate_skip", "value": "தவிர்" },
-    { "name": "migrate_progress", "value": "%d / %d" },
-    { "name": "migrate_target_source", "value": "இலக்கு மூலம்" },
-    { "name": "migrate_search_hint", "value": "இலக்கு மூலத்தில் மாங்காவைத் தேடு" },
-    { "name": "migrate_confirm_title", "value": "இந்த மாங்காவுக்கு இடமாற்றவா?" },
-    { "name": "migrate_item_done", "value": "இடமாற்றப்பட்டது: %s" },
-    { "name": "migrate_failed", "value": "இடமாற்றம் தோல்வி: %s" },
-    { "name": "migrate_done", "value": "இடமாற்றம் முடிந்தது" },
-    { "name": "migrate_no_target", "value": "இலக்கு மூலம் இல்லை" },
-    { "name": "stats_title", "value": "புள்ளிவிவரம்" },
-    { "name": "stats_overview_section", "value": "மேலோட்டம்" },
-    { "name": "stats_in_library", "value": "நூலகத்தில்" },
-    { "name": "stats_read_duration", "value": "வாசிப்பு நேரம்" },
-    { "name": "stats_completed_titles", "value": "முடிந்தது" },
-    { "name": "stats_titles_section", "value": "படைப்புகள்" },
-    { "name": "stats_started_titles", "value": "தொடங்கியது" },
-    { "name": "stats_local_titles", "value": "உள்ளூர்" },
-    { "name": "stats_chapters_section", "value": "அத்தியாயங்கள்" },
-    { "name": "stats_total_chapters", "value": "மொத்தம்" },
-    { "name": "stats_read_chapters", "value": "படித்தது" },
-    { "name": "stats_downloaded_chapters", "value": "பதிவிறக்கப்பட்டது" },
-    { "name": "stats_tracker_section", "value": "கண்காணிப்பு" },
-    { "name": "stats_tracked_titles", "value": "கண்காணித்த படைப்புகள்" },
-    { "name": "stats_mean_score", "value": "சராசரி மதிப்பெண்" },
-    { "name": "stats_used", "value": "பயன்பட்டது" },
-    { "name": "stats_not_applicable", "value": "பொருந்தாது" },
-    { "name": "stats_week", "value": "வாரம்" },
-    { "name": "stats_month", "value": "மாதம்" },
-    { "name": "stats_week_total", "value": "இந்த வாரம் %s" },
-    { "name": "stats_month_total", "value": "இந்த மாதம் %s" },
-    { "name": "stats_no_reading", "value": "இந்த காலத்தில் வாசிப்பு இல்லை" },
-    { "name": "stats_day_short", "value": "%dநா" },
-    { "name": "stats_hour_short", "value": "%dம" },
-    { "name": "stats_minute_short", "value": "%dநி" },
-    { "name": "stats_second_short", "value": "%dவி" },
-    { "name": "stats_wd_sun", "value": "ஞா" },
-    { "name": "stats_wd_mon", "value": "தி" },
-    { "name": "stats_wd_tue", "value": "செ" },
-    { "name": "stats_wd_wed", "value": "பு" },
-    { "name": "stats_wd_thu", "value": "வி" },
-    { "name": "stats_wd_fri", "value": "வெ" },
-    { "name": "stats_wd_sat", "value": "ச" },
-    { "name": "reader_mode_vertical", "value": "செங்குத்து" },
-    { "name": "reader_mode_smart_grip", "value": "பிடி உணர்வு" },
-    { "name": "reader_orientation_lock_portrait", "value": "நிலைப்பைப் பூட்டு" },
-    { "name": "reader_orientation_lock_landscape", "value": "கிடைமட்டத்தைப் பூட்டு" },
-    { "name": "reader_tab_general", "value": "பொது" },
-    { "name": "reader_tab_filter", "value": "நிற வடிகட்டி" },
-    { "name": "reader_filter_grayscale", "value": "சாம்பல்" },
-    { "name": "reader_filter_invert", "value": "நிறம் தலைகீழ்" },
-    { "name": "reader_filter_contrast", "value": "மாறுபாடு" },
-    { "name": "reader_filter_saturation", "value": "செறிவு" },
-    { "name": "reader_crop_borders", "value": "விளிம்பு வெட்டு" },
-    { "name": "reader_nav_tap_zones", "value": "தொடு பகுதி" },
-    { "name": "reader_nav_default", "value": "இயல்பு" },
-    { "name": "reader_nav_ltr", "value": "இடமிருந்து வலம்" },
-    { "name": "reader_nav_rtl", "value": "வலமிருந்து இடம்" },
-    { "name": "reader_nav_vertical", "value": "செங்குத்து" },
-    { "name": "reader_nav_edge", "value": "விளிம்பு" },
-    { "name": "reader_nav_none", "value": "ஏதுமில்லை" },
-    { "name": "reader_dual_page", "value": "இரட்டை பக்கக் காட்சி" },
-    { "name": "reader_webtoon_padding", "value": "வெப்டூன் பக்க இடைவெளி" },
-    { "name": "reader_set_mode_smart_grip", "value": "பிடி உணர்வு" },
-    { "name": "ext_install_local", "value": "உள்ளூரிலிருந்து நிறுவு" },
-    { "name": "ext_detail_title", "value": "நீட்டிப்பு விவரம்" },
-    { "name": "ext_info_version", "value": "பதிப்பு" },
-    { "name": "ext_info_language", "value": "மொழி" },
-    { "name": "ext_uninstall_title", "value": "நீட்டிப்பை நீக்கு நிறுவல்" },
-    { "name": "ext_uninstall_msg", "value": "“%s” ஐ நீக்கு நிறுவல் செய்யவா? நூலக மாங்கா தரவு இருக்கும்" },
-    { "name": "ext_detail_sources", "value": "மூலங்கள்" },
-    { "name": "ext_detail_settings", "value": "அமைப்புகள்" },
-    { "name": "ext_pref_loading", "value": "ஏற்றுகிறது…" },
-    { "name": "ext_pref_failed", "value": "அமைப்புகள் பயன்படுத்த முடியவில்லை" },
-    { "name": "ext_detail_missing", "value": "நீட்டிப்பு இல்லை அல்லது ஏற்றப்படவில்லை" },
-    { "name": "action_filter", "value": "வடிகட்டு" },
-    { "name": "action_update_library", "value": "நூலகத்தைப் புதுப்பி" },
-    { "name": "action_update_category", "value": "வகையைப் புதுப்பி" },
-    { "name": "action_open_random_manga", "value": "சீரற்ற படைப்பைத் திற" },
-    { "name": "action_select_all", "value": "அனைத்தையும் தேர்வுசெய்" },
-    { "name": "action_select_inverse", "value": "தேர்வைத் தலைகீழாக்கு" },
-    { "name": "action_move_category", "value": "வகைக்கு நகர்த்து" },
-    { "name": "action_mark_as_read", "value": "படித்ததாக குறி" },
-    { "name": "action_mark_as_unread", "value": "படிக்காததாக குறி" },
-    { "name": "action_download", "value": "பதிவிறக்கு" },
-    { "name": "action_delete", "value": "நீக்கு" },
-    { "name": "action_migrate", "value": "இடமாற்று" },
-    { "name": "action_remove_from_library", "value": "நூலகத்திலிருந்து நீக்கு" },
-    { "name": "action_remove_from_library_msg", "value": "தேர்ந்த %d மாங்காவை நூலகத்திலிருந்து நீக்கவா?" },
-    { "name": "action_download_queued", "value": "%d பதிவிறக்கங்கள் வரிசையில் சேர்ந்தன" },
-    { "name": "library_search_hint", "value": "நூலகத்தைத் தேடு" },
-    { "name": "library_no_match", "value": "பொருந்தும் மாங்கா இல்லை" },
-    { "name": "lib_sheet_tab_filter", "value": "வடிகட்டு" },
-    { "name": "lib_sheet_tab_sort", "value": "வரிசை" },
-    { "name": "lib_sheet_tab_display", "value": "காட்சி" },
-    { "name": "lib_filter_downloaded", "value": "பதிவிறக்கப்பட்டது" },
-    { "name": "lib_filter_unread", "value": "படிக்காதது" },
-    { "name": "lib_filter_started", "value": "படித்தவை" },
-    { "name": "lib_filter_bookmarked", "value": "புத்தகக்குறி" },
-    { "name": "lib_filter_completed", "value": "முடிந்தது" },
-    { "name": "lib_filter_tracked", "value": "கண்காணித்தது" },
-    { "name": "lib_sort_alpha", "value": "தலைப்பு" },
-    { "name": "lib_sort_total", "value": "அத்தியாய எண்ணிக்கை" },
-    { "name": "lib_sort_last_read", "value": "கடைசியாக படித்தது" },
-    { "name": "lib_sort_last_update", "value": "புதுப்பிப்பு சோதனை நேரம்" },
-    { "name": "lib_sort_unread", "value": "படிக்காத எண்ணிக்கை" },
-    { "name": "lib_sort_latest_chapter", "value": "படைப்பு புதுப்பிப்பு நேரம்" },
-    { "name": "lib_sort_fetch_date", "value": "அத்தியாயம் பெற்ற நேரம்" },
-    { "name": "lib_sort_date_added", "value": "சேர்த்த தேதி" },
-    { "name": "lib_sort_random", "value": "சீரற்ற" },
-    { "name": "lib_display_compact", "value": "இறுக்க கட்டம்" },
-    { "name": "lib_display_comfortable", "value": "தளர்வான கட்டம்" },
-    { "name": "lib_display_cover", "value": "அட்டை கட்டம்" },
-    { "name": "lib_display_list", "value": "பட்டியல்" },
-    { "name": "lib_display_grid_size", "value": "வரிசைக்கு எண்ணிக்கை" },
-    { "name": "lib_display_grid_auto", "value": "தானியங்கி" },
-    { "name": "lib_display_badges_group", "value": "பதக்கங்களும் பொத்தான்களும்" },
-    { "name": "lib_badge_downloaded", "value": "பதிவிறக்க அத்தியாய எண்ணிக்கை" },
-    { "name": "lib_badge_unread", "value": "படிக்காத அத்தியாயங்கள்" },
-    { "name": "lib_badge_local", "value": "உள்ளூர் மூலம்" },
-    { "name": "lib_badge_language", "value": "மொழி" },
-    { "name": "lib_badge_continue", "value": "வாசிப்பைத் தொடர் பொத்தான்" },
-    { "name": "lib_display_tabs_group", "value": "தத்தல்கள்" },
-    { "name": "lib_show_category_tabs", "value": "வகை தத்தல்களைக் காட்டு" },
-    { "name": "lib_show_manga_count", "value": "படைப்பு எண்ணிக்கையைக் காட்டு" },
-    { "name": "EntryFormAbility_label", "value": "MihonHarmony அட்டை" },
-    { "name": "EntryFormAbility_desc", "value": "திரை அட்டை வழங்குநர்" },
-    { "name": "card_recent_display", "value": "வாசிப்பைத் தொடர்" },
-    { "name": "card_recent_desc", "value": "சமீபத்தில் படித்த மாங்காவை விரைவாகத் தொடர்" },
-    { "name": "card_updates_display", "value": "புதுப்பிப்புகள்" },
-    { "name": "card_updates_desc", "value": "நூலகத்தின் புதிய படிக்காத அத்தியாயங்கள்" },
-    { "name": "card_recent_header", "value": "வாசிப்பைத் தொடர்" },
-    { "name": "card_updates_header", "value": "புதுப்பிப்புகள்" },
-    { "name": "card_unread_count", "value": "%d அத்தியாயங்கள் படிக்காதது" },
-    { "name": "card_empty_recent", "value": "இன்னும் வாசிப்பு வரலாறு இல்லை" },
-    { "name": "card_empty_updates", "value": "படிக்காத அத்தியாயங்கள் இல்லை" },
-    { "name": "card_open_hint", "value": "பயன்பாட்டைத் திறக்கத் தட்டவும்" },
-    { "name": "card_manga_display", "value": "மாங்கா அட்டை" },
-    { "name": "card_manga_desc", "value": "விவரப் பக்கத்திலிருந்து சேர், அட்டையைத் தட்டிப் படி" },
-    { "name": "card_manga_empty", "value": "மாங்கா விவரப் பக்கத்திலிருந்து திரையில் சேர்" },
-    { "name": "detail_add_to_desktop", "value": "திரையில் சேர்" },
-    { "name": "detail_card_added", "value": "திரையில் சேர்க்கப்பட்டது" },
-    { "name": "detail_card_add_failed", "value": "அட்டை சேர்க்க முடியவில்லை" },
-    { "name": "card_stats_week_display", "value": "வாராந்திர புள்ளிவிவரம்" },
-    { "name": "card_stats_week_desc", "value": "இந்த வாரம் தினசரி வாசிப்பு நேரம்" },
-    { "name": "card_stats_month_display", "value": "மாதாந்திர புள்ளிவிவரம்" },
-    { "name": "card_stats_month_desc", "value": "இந்த மாதம் தினசரி வாசிப்பு நேரம்" },
-    { "name": "card_stats_empty", "value": "இன்னும் வாசிப்பு இல்லை" },
-    { "name": "action_view_upcoming", "value": "வரவிருக்கும் புதுப்பிப்புகளைக் காட்டு" },
-    { "name": "label_upcoming", "value": "வரவிருப்பது" },
-    { "name": "upcoming_guide", "value": "வரவிருப்பது வழிகாட்டி" },
-    { "name": "upcoming_calendar_prev", "value": "முந்தைய மாதம்" },
-    { "name": "upcoming_calendar_next", "value": "அடுத்த மாதம்" },
-    { "name": "pref_filter_update_categories_details", "value": "சேர்த்த மற்றும் விலக்கிய வகை இரண்டிலும் உள்ள படைப்புகள் காட்டப்படாது." },
-    { "name": "relative_time_today", "value": "இன்று" },
-    { "name": "relative_time_days_ago", "value": "%d நாட்கள் முன்" },
-    { "name": "upcoming_relative_time_days", "value": "%d நாட்களில்" },
-    { "name": "card_upcoming_display", "value": "வரவிருப்பது" },
-    { "name": "card_upcoming_desc", "value": "நூலக மாங்காவின் எதிர்பார்க்கும் புதுப்பிப்பு நாட்காட்டி" },
-    { "name": "card_upcoming_header", "value": "வரவிருப்பது" },
-    { "name": "card_empty_upcoming", "value": "நூலகத்தில் தொடரும் மாங்கா இல்லை" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "உங்கள் நூலகத்தில் உள்ள அனைத்து உள்ளீடுகளையும் வடிகட்டுகிறது"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "வரலாற்றைப் படிப்பதை இடைநிறுத்துகிறது"
+    },
+    {
+      "name": "more_support",
+      "value": "Support Us"
+    },
+    {
+      "name": "more_help",
+      "value": "உதவி"
+    },
+    {
+      "name": "support_perks",
+      "value": "Patrons get access to exclusive channels, with more perks to come."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (preferred)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "For alternative options or any related questions, join our Discord server."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "தரவு மற்றும் சேமிப்பு"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "சேமிப்பக இடம்"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "தானியங்கி காப்புப்பிரதிகள், அத்தியாயம் பதிவிறக்கங்கள் மற்றும் உள்ளக மூலங்களுக்குப் பயன்படுத்தப்படுகிறது."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "காப்புப்பிரதி மற்றும் மீட்டமை"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "காப்புப்பிரதியை உருவாக்கவும்"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "காப்புப்பிரதியை மீட்டமைக்கவும்"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "தானியங்கி காப்பு அதிர்வெண்"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "நீங்கள் காப்புப்பிரதிகளின் நகல்களை மற்ற இடங்களிலும் வைத்திருக்க வேண்டும். சேமிக்கப்பட்ட கடவுச்சொற்கள் உட்பட முக்கியமான தரவு காப்புப்பிரதிகளில் இருக்கலாம்; பகிர்வு செய்தால் கவனமாக இருங்கள்."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "கடைசியாக தானாக காப்புப் பிரதி எடுக்கப்பட்டது: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "சேமிப்பக பயன்பாடு"
+    },
+    {
+      "name": "data_available_space",
+      "value": "கிடைக்கிறது: %s / மொத்தம்: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "தெளிவான அத்தியாயம் கேச்"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "பயன்படுத்தப்பட்டது: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "கேச் அழிக்கப்பட்டது, %d கோப்புகள் நீக்கப்பட்டன"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "அழிக்கும்போது பிழை ஏற்பட்டது"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "பயன்பாட்டு வெளியீட்டில் அத்தியாயம் கேச் அழிக்கவும்"
+    },
+    {
+      "name": "data_export",
+      "value": "ஏற்றுமதி"
+    },
+    {
+      "name": "data_library_list",
+      "value": "நூலக பட்டியல்"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "நூலகம் ஏற்றுமதி செய்யப்பட்டது"
+    },
+    {
+      "name": "data_export_include",
+      "value": "சேர்க்க தரவைத் தேர்ந்தெடுக்கவும்"
+    },
+    {
+      "name": "data_column_title",
+      "value": "தலைப்பு"
+    },
+    {
+      "name": "data_column_author",
+      "value": "நூலாசிரியர்"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "அணை"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "ஒவ்வொரு 6 மணி நேரமும்"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "ஒவ்வொரு 12 மணி நேரமும்"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "நாள்தோறும்"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "ஒவ்வொரு 2 நாட்களுக்கும்"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "வாராந்திர"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "சரி"
+    },
+    {
+      "name": "common_cancel",
+      "value": "ரத்துசெய்"
+    },
+    {
+      "name": "common_confirm",
+      "value": "உறுதிப்படுத்து"
+    },
+    {
+      "name": "common_delete",
+      "value": "நீக்கு"
+    },
+    {
+      "name": "common_retry",
+      "value": "மீண்டும் முயற்சி"
+    },
+    {
+      "name": "common_search",
+      "value": "தேடு"
+    },
+    {
+      "name": "common_all",
+      "value": "அனைத்தும்"
+    },
+    {
+      "name": "common_close",
+      "value": "மூடு"
+    },
+    {
+      "name": "common_save",
+      "value": "சேமி"
+    },
+    {
+      "name": "common_install",
+      "value": "நிறுவு"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "நீக்கு நிறுவல்"
+    },
+    {
+      "name": "common_update",
+      "value": "புதுப்பி"
+    },
+    {
+      "name": "common_none",
+      "value": "ஏதுமில்லை"
+    },
+    {
+      "name": "common_default",
+      "value": "இயல்பு"
+    },
+    {
+      "name": "appearance_title",
+      "value": "தோற்றம்"
+    },
+    {
+      "name": "appearance_language",
+      "value": "மொழி"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "கணினியைப் பின்தொடர்"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "தீம் முறை"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "கணினியைப் பின்தொடர்"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "வெளிர்"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "இருள்"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "முதன்மை நிறம்"
+    },
+    {
+      "name": "appearance_other",
+      "value": "மற்றவை"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED தூய கருப்பு பின்னணி"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "நீலம்"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "பச்சை"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "இளஞ்சிவப்பு"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "ஊதா"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "ஆரஞ்சு"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d நிமிடம் முன்"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d மணி முன்"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d நாள் முன்"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "தொடர்கிறது"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "முடிந்தது"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "இடைநிறுத்தம்"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "ரத்து"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "வெளியீடு முடிந்தது"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "தெரியாதது"
+    },
+    {
+      "name": "tab_library",
+      "value": "நூலகம்"
+    },
+    {
+      "name": "tab_updates",
+      "value": "புதுப்பிப்புகள்"
+    },
+    {
+      "name": "tab_history",
+      "value": "வரலாறு"
+    },
+    {
+      "name": "tab_browse",
+      "value": "உலாவு"
+    },
+    {
+      "name": "tab_more",
+      "value": "மேலும்"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "சரிபார்ப்புக்காக காத்திருக்கிறது…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "சரிபார்ப்பு முடிந்தது"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "மனித சரிபார்ப்பு"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "முடிந்தது"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "சரிபார்ப்பு முடிவு சேமிக்கப்பட்டது"
+    },
+    {
+      "name": "more_title",
+      "value": "மேலும்"
+    },
+    {
+      "name": "more_version",
+      "value": "பதிப்பு %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "பதிவிறக்கம் மட்டுமே"
+    },
+    {
+      "name": "more_incognito",
+      "value": "மறைநிலை பயன்முறை"
+    },
+    {
+      "name": "more_downloads",
+      "value": "வரிசையைப் பதிவிறக்கவும்"
+    },
+    {
+      "name": "more_categories",
+      "value": "வகைகள்"
+    },
+    {
+      "name": "more_settings",
+      "value": "அமைப்புகள்"
+    },
+    {
+      "name": "more_about",
+      "value": "அறிமுகம்"
+    },
+    {
+      "name": "more_plugins",
+      "value": "நீட்டிப்புகள்"
+    },
+    {
+      "name": "categories_title",
+      "value": "வகைகள்"
+    },
+    {
+      "name": "categories_add",
+      "value": "புதிய வகை"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "வகை பெயர்"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "வகை பெயர் மாற்று"
+    },
+    {
+      "name": "categories_rename",
+      "value": "பெயர் மாற்று"
+    },
+    {
+      "name": "categories_hint",
+      "value": "வகையை மறுபெயரிட அல்லது நீக்க நீண்ட நேரம் அழுத்தவும்; நீக்கப்பட்ட வகையின் மாங்கா இயல்புக்கு திரும்பும்"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "வகையைத் தேர்ந்தெடு"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "ஏற்றுகிறது…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "படம் ஏற்ற முடியவில்லை"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "மீண்டும் முயலத் தட்டவும்"
+    },
+    {
+      "name": "library_title",
+      "value": "நூலகம்"
+    },
+    {
+      "name": "library_empty",
+      "value": "உங்கள் நூலகம் காலியாக உள்ளது, மாங்கா சேர்க்க உலாவவும்"
+    },
+    {
+      "name": "library_new_category",
+      "value": "புதிய வகை"
+    },
+    {
+      "name": "library_category_name",
+      "value": "வகை பெயர்"
+    },
+    {
+      "name": "updates_title",
+      "value": "புதுப்பிப்புகள்"
+    },
+    {
+      "name": "updates_empty",
+      "value": "சமீபத்திய புதுப்பிப்புகள் இல்லை"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%d புதிய அத்தியாயங்கள் கிடைத்தன"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "புதிய அத்தியாயங்கள் இல்லை"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "புதுப்பிப்பு தோல்வி"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "புதுப்பிக்கிறது…"
+    },
+    {
+      "name": "history_title",
+      "value": "வரலாறு"
+    },
+    {
+      "name": "history_clear",
+      "value": "அழி"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "அழிக்க உறுதி?"
+    },
+    {
+      "name": "history_empty",
+      "value": "இன்னும் வாசிப்பு வரலாறு இல்லை"
+    },
+    {
+      "name": "history_cleared",
+      "value": "வரலாறு அழிக்கப்பட்டது"
+    },
+    {
+      "name": "history_continue",
+      "value": "தொடர்"
+    },
+    {
+      "name": "browse_title",
+      "value": "உலாவு"
+    },
+    {
+      "name": "browse_import",
+      "value": "இறக்குமதி"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "செருகுநிரல்கள்"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "உள்ளூர் மாங்கா"
+    },
+    {
+      "name": "browse_popular",
+      "value": "பிரபலமானவை"
+    },
+    {
+      "name": "browse_latest",
+      "value": "சமீபத்தியவை"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "மாங்கா தேடு…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "மாங்கா கிடைக்கவில்லை"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "இன்னும் உள்ளூர் மாங்கா இல்லை, சேர்க்க இறக்குமதியைத் தட்டவும்"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "ஏற்றம் தோல்வி: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "தேடல் தோல்வி: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "மேலும் ஏற்ற முடியவில்லை"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "விவரங்கள் திறக்க முடியவில்லை"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "கோப்புகளைத் தேர்ந்தெடுக்க முடியவில்லை"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "%d கோப்புகளை இறக்குமதி செய்"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "மாங்கா பெயர்"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "பெயரை உள்ளிடவும்"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "%d கோப்புகள் இறக்குமதி செய்யப்பட்டன"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "இறக்குமதி தோல்வி: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "பதிவிறக்கங்கள்"
+    },
+    {
+      "name": "download_resume",
+      "value": "தொடர்"
+    },
+    {
+      "name": "download_pause",
+      "value": "இடைநிறுத்து"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "முடிந்தவற்றை அழி"
+    },
+    {
+      "name": "download_queue",
+      "value": "பதிவிறக்க வரிசை"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "வரிசையில்"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "பதிவிறக்குகிறது"
+    },
+    {
+      "name": "download_state_done",
+      "value": "முடிந்தது"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "தோல்வி"
+    },
+    {
+      "name": "download_move_top",
+      "value": "மேலே நகர்த்து"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "கீழே நகர்த்து"
+    },
+    {
+      "name": "download_deleted",
+      "value": "நீக்கப்பட்டது"
+    },
+    {
+      "name": "download_empty",
+      "value": "இன்னும் பதிவிறக்கங்கள் இல்லை"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "பதிவிறக்கப்பட்டது"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d அத்தியாயங்கள்"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "அத்தியாயங்கள் இல்லை"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "ஒத்திசைவு தோல்வி, உள்ளூர் தரவு காட்டப்படுகிறது"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "நூலகத்தில் சேர்க்கப்பட்டது"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "நூலகத்திலிருந்து நீக்கப்பட்டது"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "அனைத்து அத்தியாயங்களும் படித்ததாக குறிக்கப்பட்டன"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "பதிவிறக்க வரிசையில் சேர்க்கப்பட்டது"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "முதலில் AniList டோக்கனை அமைக்கவும்"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "AniList தேடு"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "மாங்கா தலைப்பு"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "தேடல் முடிவுகள் இல்லை"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "AniList தேடல் தோல்வி"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "AniList உடன் இணைக்கப்பட்டது"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "AniList இணைப்பு நீக்கப்பட்டது"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "முன்னேற்றம் அத்தியாயம் %dக்கு ஒத்திசைக்கப்பட்டது"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "AniList ஒத்திசைவு தோல்வி"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "உள்ளூர்"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "நூலகத்தில் உள்ளது"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "நூலகத்தில் சேர்"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "வாசிப்பைத் தொடர்"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "வாசிக்கத் தொடங்கு"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "இன்னும் அத்தியாயங்கள் இல்லை"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "சுருக்கு"
+    },
+    {
+      "name": "detail_expand",
+      "value": "விரிவாக்கு"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList கண்காணிப்பு"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList டோக்கன் இன்னும் அமைக்கப்படவில்லை"
+    },
+    {
+      "name": "detail_searching",
+      "value": "தேடுகிறது…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "தேடி இணை"
+    },
+    {
+      "name": "detail_bind",
+      "value": "இணை"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "அத்தியாயம் %dக்கு ஒத்திசைக்கப்பட்டது"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "முன்னேற்றத்தை ஒத்திசை"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "இணைப்பை நீக்கு"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "அத்தியாயங்கள் (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "ஏறுவரிசை"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "இறங்குவரிசை"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "அனைத்தையும் படித்ததாக குறி"
+    },
+    {
+      "name": "detail_read",
+      "value": "படித்தது"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "பதிவிறக்கப்பட்டது"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "வரிசையில்"
+    },
+    {
+      "name": "detail_download",
+      "value": "பதிவிறக்கு"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "அத்தியாயம் கிடைக்கவில்லை"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "ஏற்றம் தோல்வி: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "இடமிருந்து வலம்"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "வலமிருந்து இடம்"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "வெப்டூன்"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "வாசிப்பு முறை"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "சுதந்திரம்"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "நிலைப்பு"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "கிடைமட்டம்"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "திரை நோக்குநிலை"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "ஏற்கனவே கடைசி அத்தியாயத்தில் உள்ளீர்கள்"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "ஏற்கனவே முதல் அத்தியாயத்தில் உள்ளீர்கள்"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "ஏற்கனவே முதல் பக்கத்தில் உள்ளீர்கள்"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "ஏற்கனவே கடைசி பக்கத்தில் உள்ளீர்கள்"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "அத்தியாயம் ஏற்றுகிறது…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "வாசிப்பான் அமைப்புகள்"
+    },
+    {
+      "name": "reader_background",
+      "value": "பின்னணி"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "தானியங்கி"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "வெள்ளை"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "சாம்பல்"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "கருப்பு"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "பக்க எண்ணைக் காட்டு"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "ஒளிர்வு"
+    },
+    {
+      "name": "reader_auto",
+      "value": "தானியங்கி"
+    },
+    {
+      "name": "plugin_title",
+      "value": "நீட்டிப்புகள்"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "நிறுவப்பட்டவை"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "இன்னும் நீட்டிப்புகள் இல்லை, கீழே நிறுவவும்"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "முடக்கப்பட்ட நீட்டிப்புகளை எப்போதும் மீண்டும் இயக்கலாம்"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "புதிய நிலையில் உள்ளது"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "கோப்பிலிருந்து நிறுவு"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "நிறுவ ஒரு கோப்பைத் தேர்ந்தெடு"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "செயலாக்குகிறது…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": ".honyomiplug / .zip செருகுநிரல் தொகுப்புகள் ஆதரிக்கப்படும்"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "ஆன்லைன் களஞ்சியம்"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "களஞ்சியத்தை அமை"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "புதுப்பி"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "இன்னும் செருகுநிரல் களஞ்சியம் அமைக்கப்படவில்லை"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "களஞ்சியம் ஏற்றுகிறது…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "செருகுநிரல் களஞ்சிய URL"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "செருகுநிரல் களஞ்சிய URL ஐ உள்ளிடவும்"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "களஞ்சியம் ஏற்ற முடியவில்லை: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "கோப்பைத் தேர்ந்தெடுக்க முடியவில்லை"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "நிறுவப்பட்டது: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "%s நிறுவப்பட்டது"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "நிறுவல் தோல்வி: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "செயல் தோல்வி"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "நீக்கப்பட்டது: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "நிறுவல் நீக்கம் தோல்வி"
+    },
+    {
+      "name": "settings_title",
+      "value": "அமைப்புகள்"
+    },
+    {
+      "name": "settings_general",
+      "value": "பொது"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "தொடக்கத் திரை"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "தனிப்பயனாக்கம்"
+    },
+    {
+      "name": "settings_library",
+      "value": "நூலகம்"
+    },
+    {
+      "name": "settings_reader",
+      "value": "வாசிப்பான்"
+    },
+    {
+      "name": "settings_data",
+      "value": "தரவு"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "பதிவிறக்கங்கள்"
+    },
+    {
+      "name": "settings_browse",
+      "value": "உலாவு"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "மேம்பட்டவை"
+    },
+    {
+      "name": "settings_about",
+      "value": "அறிமுகம்"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "நூலகம்"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "புதுப்பிப்புகள்"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "வரலாறு"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "உலாவு"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "மேலும்"
+    },
+    {
+      "name": "advanced_title",
+      "value": "மேம்பட்டவை"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "கணக்கிடுகிறது…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "சேமிப்பகம்"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "பட தற்காலிக சேமிப்பை அழி"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "பட தற்காலிக சேமிப்பு அழிக்கப்பட்டது"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "குக்கீகளை அழி"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "அனைத்து குக்கீகளும் அழிக்கப்பட்டன"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "காப்பு மற்றும் மீட்டமை"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "காப்பை ஏற்றுமதி செய்"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "காப்பை இறக்குமதி செய்"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "கண்காணிப்பு"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList டோக்கன்"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList அணுகல் டோக்கன்"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "அணுகல் டோக்கனை ஒட்டவும் (அழிக்க காலியாக விடவும்)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "அமைக்கப்படவில்லை"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "அமைக்கப்பட்டது"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "டோக்கன் சேமிக்கப்பட்டது"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "டோக்கன் அழிக்கப்பட்டது"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "காப்பு ஏற்றுமதி செய்யப்பட்டது"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "ஏற்றுமதி ரத்து"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "ஏற்றுமதி தோல்வி"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "இறக்குமதி ரத்து"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "தவறான காப்புக் கோப்பு"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "%d மாங்கா மீட்டமைக்கப்பட்டன"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "இறக்குமதி தோல்வி"
+    },
+    {
+      "name": "about_title",
+      "value": "அறிமுகம்"
+    },
+    {
+      "name": "about_version",
+      "value": "பதிப்பு 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "கட்டமைப்பு Mihon (Apache-2.0) இலிருந்து ஊக்கம் பெற்றது. ஆன்லைன் மூலங்கள் நீட்டிப்புகளாக இயக்கமாக நிறுவப்படுகின்றன, உள்ளூர் மூலங்கள் உள்ளமைக்கப்பட்டவை."
+    },
+    {
+      "name": "about_ack",
+      "value": "திறந்த மூல நன்றியறிதல்கள்:\n· Mihon / Tachiyomi — பயன்பாட்டு கட்டமைப்பு மற்றும் தொடர்பு வடிவமைப்பு (Apache-2.0)\n· Material Symbols — பயன்பாட்டு சின்னங்கள் (Apache-2.0)\n· MangaDex — சோதனை தரவு மூலம்"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "உலாவு"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "உள்ளடக்கம்"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "NSFW மூலங்களைக் காட்டு"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "இயக்கினால், நீட்டிப்புகள் NSFW என குறித்த மூலங்கள் உலாவலில் தோன்றும்"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "பதிவிறக்கங்கள்"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "பிணையம்"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Wi-Fi இல் மட்டும் பதிவிறக்கு"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "குறிப்பு: தற்போதைய பதிப்பில் இந்த சுவிட்ச் இடம்பிடிப்பான்; பிணைய வகை கண்டறிதல் எதிர்கால பதிப்பில் வரும்"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "நூலகம்"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "வடிகட்டி மற்றும் வரிசை"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "இயல்பு வரிசை"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "தலைப்பு"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "சமீபத்திய அத்தியாயம்"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "சேர்த்த தேதி"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "படிக்காத எண்ணிக்கை"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "தலைப்பு ஏறுவரிசை"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "இயல்பு வடிகட்டி"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "படிக்காதது"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "பதிவிறக்கப்பட்டது"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "முடியாதவை"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "காட்சி"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "இயல்பு காட்சி"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "கட்டம்"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "அட்டை கட்டம்"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "பட்டியல்"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "கட்ட நெடுவரிசைகள்"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "தானியங்கி"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 நெடுவரிசைகள்"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 நெடுவரிசைகள்"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 நெடுவரிசைகள்"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "படிக்காத பதக்கங்கள்"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "பதிவிறக்க பதக்கங்கள்"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "வாசிப்பான்"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "வாசிப்பு முறை"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "இயல்பு முறை"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "இடமிருந்து வலம்"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "வலமிருந்து இடம்"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "செங்குத்து பக்கம்"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "வெப்டூன்"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "இரட்டை பக்கம் (கிடைமட்டம்)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "காட்சி"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "பக்க எண்ணைக் காட்டு"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "வாசிப்பான் பின்னணி"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "தீமைப் பின்தொடர்"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "வெள்ளை"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "கருப்பு"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "சாம்பல்"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "வாசிப்பான் ஒளிர்வை மீட்டமை"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "ஒளிர்வு கணினியைப் பின்தொடர அமைக்கப்பட்டது"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "மூலங்கள்"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "நீட்டிப்புகள்"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "இடமாற்று"
+    },
+    {
+      "name": "browse_pin",
+      "value": "பின் செய்"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "பின் நீக்கு"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "மூலத்தை முடக்கு"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "மூலம் முடக்கப்பட்டது"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "பின் செய்யப்பட்டது"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "மூலங்கள் இல்லை. நீட்டிப்புகள் தாவலில் இருந்து நிறுவவும்"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "மொழிகளை வடிகட்டு"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "அனைத்தும்"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "மூலம் கிடைக்கவில்லை. நீட்டிப்பு முடக்கப்பட்டிருக்கலாம்"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "அனைத்து மூலங்களிலும் தேடு"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "தேடல் தோல்வி"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "நீட்டிப்புகளைத் தேடு"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "பொருத்தங்கள் இல்லை"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "களஞ்சிய அமைப்புகள்"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "களஞ்சியத்தைப் புதுப்பி"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "இடமாற்ற ஒரு மூலத்தைத் தேர்வுசெய்க"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "நூலகம் காலியாக உள்ளது"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "அனைத்தையும் தேர்வுசெய்"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "தேர்வை நீக்கு"
+    },
+    {
+      "name": "migrate_action",
+      "value": "இடமாற்று (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "இடமாற்று"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "தவிர்"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d / %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "இலக்கு மூலம்"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "இலக்கு மூலத்தில் மாங்காவைத் தேடு"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "இந்த மாங்காவுக்கு இடமாற்றவா?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "இடமாற்றப்பட்டது: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "இடமாற்றம் தோல்வி: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "இடமாற்றம் முடிந்தது"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "இலக்கு மூலம் இல்லை"
+    },
+    {
+      "name": "stats_title",
+      "value": "புள்ளிவிவரம்"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "மேலோட்டம்"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "நூலகத்தில்"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "வாசிப்பு நேரம்"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "முடிந்தது"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "படைப்புகள்"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "தொடங்கியது"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "உள்ளூர்"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "அத்தியாயங்கள்"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "மொத்தம்"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "படித்தது"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "பதிவிறக்கப்பட்டது"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "கண்காணிப்பு"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "கண்காணித்த படைப்புகள்"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "சராசரி மதிப்பெண்"
+    },
+    {
+      "name": "stats_used",
+      "value": "பயன்பட்டது"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "பொருந்தாது"
+    },
+    {
+      "name": "stats_week",
+      "value": "வாரம்"
+    },
+    {
+      "name": "stats_month",
+      "value": "மாதம்"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "இந்த வாரம் %s"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "இந்த மாதம் %s"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "இந்த காலத்தில் வாசிப்பு இல்லை"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%dநா"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dம"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dநி"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%dவி"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "ஞா"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "தி"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "செ"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "பு"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "வி"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "வெ"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "ச"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "செங்குத்து"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "பிடி உணர்வு"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "நிலைப்பைப் பூட்டு"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "கிடைமட்டத்தைப் பூட்டு"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "பொது"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "நிற வடிகட்டி"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "சாம்பல்"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "நிறம் தலைகீழ்"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "மாறுபாடு"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "செறிவு"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "விளிம்பு வெட்டு"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "தொடு பகுதி"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "இயல்பு"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "இடமிருந்து வலம்"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "வலமிருந்து இடம்"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "செங்குத்து"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "விளிம்பு"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "ஏதுமில்லை"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "இரட்டை பக்கக் காட்சி"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "வெப்டூன் பக்க இடைவெளி"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "பிடி உணர்வு"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "உள்ளூரிலிருந்து நிறுவு"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "நீட்டிப்பு விவரம்"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "பதிப்பு"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "மொழி"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "நீட்டிப்பை நீக்கு நிறுவல்"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "“%s” ஐ நீக்கு நிறுவல் செய்யவா? நூலக மாங்கா தரவு இருக்கும்"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "மூலங்கள்"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "அமைப்புகள்"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "ஏற்றுகிறது…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "அமைப்புகள் பயன்படுத்த முடியவில்லை"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "நீட்டிப்பு இல்லை அல்லது ஏற்றப்படவில்லை"
+    },
+    {
+      "name": "action_filter",
+      "value": "வடிகட்டு"
+    },
+    {
+      "name": "action_update_library",
+      "value": "நூலகத்தைப் புதுப்பி"
+    },
+    {
+      "name": "action_update_category",
+      "value": "வகையைப் புதுப்பி"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "சீரற்ற படைப்பைத் திற"
+    },
+    {
+      "name": "action_select_all",
+      "value": "அனைத்தையும் தேர்வுசெய்"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "தேர்வைத் தலைகீழாக்கு"
+    },
+    {
+      "name": "action_move_category",
+      "value": "வகைக்கு நகர்த்து"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "படித்ததாக குறி"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "படிக்காததாக குறி"
+    },
+    {
+      "name": "action_download",
+      "value": "பதிவிறக்கு"
+    },
+    {
+      "name": "action_delete",
+      "value": "நீக்கு"
+    },
+    {
+      "name": "action_migrate",
+      "value": "இடமாற்று"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "நூலகத்திலிருந்து நீக்கு"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "தேர்ந்த %d மாங்காவை நூலகத்திலிருந்து நீக்கவா?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "%d பதிவிறக்கங்கள் வரிசையில் சேர்ந்தன"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "நூலகத்தைத் தேடு"
+    },
+    {
+      "name": "library_no_match",
+      "value": "பொருந்தும் மாங்கா இல்லை"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "வடிகட்டு"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "வரிசை"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "காட்சி"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "பதிவிறக்கப்பட்டது"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "படிக்காதது"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "படித்தவை"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "புத்தகக்குறி"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "முடிந்தது"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "கண்காணித்தது"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "தலைப்பு"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "அத்தியாய எண்ணிக்கை"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "கடைசியாக படித்தது"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "புதுப்பிப்பு சோதனை நேரம்"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "படிக்காத எண்ணிக்கை"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "படைப்பு புதுப்பிப்பு நேரம்"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "அத்தியாயம் பெற்ற நேரம்"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "சேர்த்த தேதி"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "சீரற்ற"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "இறுக்க கட்டம்"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "தளர்வான கட்டம்"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "அட்டை கட்டம்"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "பட்டியல்"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "வரிசைக்கு எண்ணிக்கை"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "தானியங்கி"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "பதக்கங்களும் பொத்தான்களும்"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "பதிவிறக்க அத்தியாய எண்ணிக்கை"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "படிக்காத அத்தியாயங்கள்"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "உள்ளூர் மூலம்"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "மொழி"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "வாசிப்பைத் தொடர் பொத்தான்"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "தத்தல்கள்"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "வகை தத்தல்களைக் காட்டு"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "படைப்பு எண்ணிக்கையைக் காட்டு"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "MihonHarmony அட்டை"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "திரை அட்டை வழங்குநர்"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "வாசிப்பைத் தொடர்"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "சமீபத்தில் படித்த மாங்காவை விரைவாகத் தொடர்"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "புதுப்பிப்புகள்"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "நூலகத்தின் புதிய படிக்காத அத்தியாயங்கள்"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "வாசிப்பைத் தொடர்"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "புதுப்பிப்புகள்"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d அத்தியாயங்கள் படிக்காதது"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "இன்னும் வாசிப்பு வரலாறு இல்லை"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "படிக்காத அத்தியாயங்கள் இல்லை"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "பயன்பாட்டைத் திறக்கத் தட்டவும்"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "மாங்கா அட்டை"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "விவரப் பக்கத்திலிருந்து சேர், அட்டையைத் தட்டிப் படி"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "மாங்கா விவரப் பக்கத்திலிருந்து திரையில் சேர்"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "திரையில் சேர்"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "திரையில் சேர்க்கப்பட்டது"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "அட்டை சேர்க்க முடியவில்லை"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "வாராந்திர புள்ளிவிவரம்"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "இந்த வாரம் தினசரி வாசிப்பு நேரம்"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "மாதாந்திர புள்ளிவிவரம்"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "இந்த மாதம் தினசரி வாசிப்பு நேரம்"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "இன்னும் வாசிப்பு இல்லை"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "வரவிருக்கும் புதுப்பிப்புகளைக் காட்டு"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "வரவிருப்பது"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "வரவிருப்பது வழிகாட்டி"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "முந்தைய மாதம்"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "அடுத்த மாதம்"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "சேர்த்த மற்றும் விலக்கிய வகை இரண்டிலும் உள்ள படைப்புகள் காட்டப்படாது."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "இன்று"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d நாட்கள் முன்"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "%d நாட்களில்"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "வரவிருப்பது"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "நூலக மாங்காவின் எதிர்பார்க்கும் புதுப்பிப்பு நாட்காட்டி"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "வரவிருப்பது"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "நூலகத்தில் தொடரும் மாங்கா இல்லை"
+    }
+  ]
 }

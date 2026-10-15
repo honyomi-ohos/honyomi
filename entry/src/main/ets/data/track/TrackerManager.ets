@@ -18,7 +18,6 @@ export class TrackerManager {
   static readonly mangaUpdates: MangaUpdatesTracker = new MangaUpdatesTracker();
   static readonly hikka: HikkaTracker = new HikkaTracker();
   static readonly mangaBaka: MangaBakaTracker = new MangaBakaTracker();
-
   static readonly trackers: Tracker[] = [
     TrackerManager.myAnimeList,
     TrackerManager.aniList,

@@ -1,7 +1,7 @@
 // MyAnimeList 追踪器（syncId=1）：OAuth code + plain PKCE
 import { TrackRecord, TrackSearchResult } from '../../model/Models';
 import { Settings } from '../../common/Settings';
-import { Tracker, TrackHttp, OAuthToken, TrackDate, Pkce } from './Tracker';
+import { OAuthToken, Pkce, TrackDate, Tracker, TrackHttp } from './Tracker';
 import { Http } from '../../net/Http';
 
 const MAL_CLIENT_ID = 'c46c9e24640a64dad5be5ca7a1a53a0f';
@@ -86,12 +86,60 @@ export class MalTracker extends Tracker {
   static readonly DROPPED: number = 4;
   static readonly PLAN_TO_READ: number = 6;
   static readonly REREADING: number = 7;
-
   private codeVerifier: string = '';
 
   constructor() {
     super(1, 'MyAnimeList', '#2E51A2');
     this.supportsReadingDates = true;
+  }
+
+  private static parseToken(resp: string): OAuthToken {
+    const raw = JSON.parse(resp) as MalTokenRaw;
+    if (typeof raw.access_token !== 'string' || raw.access_token === '') {
+      throw new Error('MyAnimeList: token response invalid');
+    }
+    const t = new OAuthToken();
+    t.accessToken = raw.access_token;
+    t.refreshToken = typeof raw.refresh_token === 'string' ? raw.refresh_token : '';
+    t.createdAt = typeof raw.created_at === 'number' ? raw.created_at : TrackDate.nowSec();
+    t.expiresIn = typeof raw.expires_in === 'number' ? raw.expires_in : 0;
+    return t;
+  }
+
+  private static toApiStatus(status: number): string | undefined {
+    switch (status) {
+      case MalTracker.READING:
+        return 'reading';
+      case MalTracker.COMPLETED:
+        return 'completed';
+      case MalTracker.ON_HOLD:
+        return 'on_hold';
+      case MalTracker.DROPPED:
+        return 'dropped';
+      case MalTracker.PLAN_TO_READ:
+        return 'plan_to_read';
+      case MalTracker.REREADING:
+        return 'reading';
+      default:
+        return undefined;
+    }
+  }
+
+  private static toLocalStatus(api: string): number {
+    switch (api) {
+      case 'reading':
+        return MalTracker.READING;
+      case 'completed':
+        return MalTracker.COMPLETED;
+      case 'on_hold':
+        return MalTracker.ON_HOLD;
+      case 'dropped':
+        return MalTracker.DROPPED;
+      case 'plan_to_read':
+        return MalTracker.PLAN_TO_READ;
+      default:
+        return MalTracker.READING;
+    }
   }
 
   getStatusList(): number[] {
@@ -218,6 +266,8 @@ export class MalTracker extends Tracker {
     return await this.updateItem(track);
   }
 
+  // ---- 内部实现 ----
+
   async update(track: TrackRecord, didReadChapter: boolean): Promise<TrackRecord> {
     if (track.status !== MalTracker.COMPLETED) {
       if (didReadChapter) {
@@ -245,8 +295,6 @@ export class MalTracker extends Tracker {
       await this.authHeaders(), '');
   }
 
-  // ---- 内部实现 ----
-
   private async authHeaders(): Promise<Record<string, string>> {
     const token = await this.ensureToken((t: OAuthToken) => this.refreshToken(t));
     return TrackHttp.bearer(token.accessToken);
@@ -262,19 +310,6 @@ export class MalTracker extends Tracker {
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
     const resp = await TrackHttp.send('POST', `${MAL_OAUTH_BASE}/token`, headers, TrackHttp.formEncode(form));
     return MalTracker.parseToken(resp);
-  }
-
-  private static parseToken(resp: string): OAuthToken {
-    const raw = JSON.parse(resp) as MalTokenRaw;
-    if (typeof raw.access_token !== 'string' || raw.access_token === '') {
-      throw new Error('MyAnimeList: token response invalid');
-    }
-    const t = new OAuthToken();
-    t.accessToken = raw.access_token;
-    t.refreshToken = typeof raw.refresh_token === 'string' ? raw.refresh_token : '';
-    t.createdAt = typeof raw.created_at === 'number' ? raw.created_at : TrackDate.nowSec();
-    t.expiresIn = typeof raw.expires_in === 'number' ? raw.expires_in : 0;
-    return t;
   }
 
   private async getCurrentUser(): Promise<string> {
@@ -398,41 +433,5 @@ export class MalTracker extends Tracker {
       }
     }
     return r;
-  }
-
-  private static toApiStatus(status: number): string | undefined {
-    switch (status) {
-      case MalTracker.READING:
-        return 'reading';
-      case MalTracker.COMPLETED:
-        return 'completed';
-      case MalTracker.ON_HOLD:
-        return 'on_hold';
-      case MalTracker.DROPPED:
-        return 'dropped';
-      case MalTracker.PLAN_TO_READ:
-        return 'plan_to_read';
-      case MalTracker.REREADING:
-        return 'reading';
-      default:
-        return undefined;
-    }
-  }
-
-  private static toLocalStatus(api: string): number {
-    switch (api) {
-      case 'reading':
-        return MalTracker.READING;
-      case 'completed':
-        return MalTracker.COMPLETED;
-      case 'on_hold':
-        return MalTracker.ON_HOLD;
-      case 'dropped':
-        return MalTracker.DROPPED;
-      case 'plan_to_read':
-        return MalTracker.PLAN_TO_READ;
-      default:
-        return MalTracker.READING;
-    }
   }
 }

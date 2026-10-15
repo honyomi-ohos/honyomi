@@ -1,4 +1,3 @@
-import { common } from '@kit.AbilityKit';
 import { statfs } from '@kit.CoreFileKit';
 import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
@@ -7,7 +6,7 @@ import { AppKeys } from '../../common/AppKeys';
 import { ImageCache } from '../../common/ImageCache';
 import { BackupService } from '../../data/BackupService';
 import { PageHeader } from '../components/PageHeader';
-import { PrefGroup, TextRow, PrefSelectRow, PrefSwitchRow } from '../components/Prefs';
+import { PrefGroup, PrefSelectRow, PrefSwitchRow, TextRow } from '../components/Prefs';
 import { ExportColumnsDialog } from '../components/Dialogs';
 import { AppIcon } from '../components/AppIcon';
 
@@ -40,6 +39,165 @@ export struct DataStorageContent {
     this.disposed = true;
   }
 
+  build() {
+    Scroll() {
+      Column({ space: 12 }) {
+        // 存储位置
+        PrefGroup() {
+          TextRow({
+            title: $r('app.string.data_storage_location'),
+            value: $r('app.string.data_storage_location_value'),
+            onTap: (): void => {
+              const context = Util.hostAbilityContext(this.getUIContext());
+              Util.toast(this.getUIContext(), context.filesDir);
+            }
+          })
+        }
+
+        Text($r('app.string.data_storage_location_info'))
+          .fontSize(12)
+          .fontColor(this.pal.sub)
+          .margin({ left: 20 })
+          .constraintSize({ maxWidth: 680 })
+
+        // 备份与还原
+        PrefGroup({ groupTitle: $r('app.string.data_backup_restore') }) {
+          Row({ space: 8 }) {
+            Button($r('app.string.data_create_backup'))
+              .layoutWeight(1)
+              .height(40)
+              .borderRadius(20)
+              .backgroundColor(this.pal.chip)
+              .fontColor(this.pal.text)
+              .fontSize(14)
+              .onClick(() => {
+                this.doCreateBackup();
+              })
+            Button($r('app.string.data_restore_backup'))
+              .layoutWeight(1)
+              .height(40)
+              .borderRadius(20)
+              .backgroundColor(this.pal.chip)
+              .fontColor(this.pal.text)
+              .fontSize(14)
+              .onClick(() => {
+                this.doRestoreBackup();
+              })
+          }
+          .width('100%')
+          .padding({
+            left: 16,
+            right: 16,
+            top: 12,
+            bottom: 12
+          })
+
+          Divider().color(this.pal.divider).margin({ left: 16 })
+
+          PrefSelectRow({
+            title: $r('app.string.data_backup_interval'),
+            options: [
+              $r('app.string.data_interval_off'),
+              $r('app.string.data_interval_6h'),
+              $r('app.string.data_interval_12h'),
+              $r('app.string.data_interval_24h'),
+              $r('app.string.data_interval_48h'),
+              $r('app.string.data_interval_weekly')
+            ],
+            selectedIndex: INTERVAL_HOURS.indexOf(Settings.getBackupInterval()),
+            onSelectIndex: (index: number): void => {
+              this.onIntervalSelect(index);
+            }
+          })
+
+          Divider().color(this.pal.divider).margin({ left: 16 })
+
+          // 上次自动备份失败提示条
+          if (this.lastBackupFailed) {
+            Text($r('app.string.last_backup_failed_hint'))
+              .fontSize(12)
+              .fontColor('#D32F2F')
+              .padding({ left: 16, right: 16, top: 10 })
+          }
+
+          Text($r('app.string.data_backup_info'))
+            .fontSize(12)
+            .fontColor(this.pal.sub)
+            .padding({
+              left: 16,
+              right: 16,
+              top: 10,
+              bottom: 2
+            })
+          Text(this.lastBackupText)
+            .fontSize(12)
+            .fontColor(this.pal.sub)
+            .padding({ left: 16, right: 16, bottom: 12 })
+        }
+
+        // 存储占用
+        PrefGroup({ groupTitle: $r('app.string.data_storage_usage') }) {
+          Column({ space: 8 }) {
+            Text($r('app.string.data_storage_name'))
+              .fontSize(14)
+              .fontWeight(FontWeight.Medium)
+              .fontColor(this.pal.text)
+            Progress({ value: this.usedPercent, total: 100, type: ProgressType.Linear })
+              .height(12)
+              .borderRadius(6)
+              .color(this.pal.primary)
+              .backgroundColor(this.pal.chip)
+            Text(this.spaceText)
+              .fontSize(12)
+              .fontColor(this.pal.sub)
+          }
+          .width('100%')
+          .alignItems(HorizontalAlign.Start)
+          .padding({
+            left: 16,
+            right: 16,
+            top: 12,
+            bottom: 12
+          })
+
+          Divider().color(this.pal.divider).margin({ left: 16 })
+
+          TextRow({
+            title: $r('app.string.data_clear_chapter_cache'),
+            value: this.cacheLabel,
+            onTap: (): void => {
+              this.clearChapterCache();
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          PrefSwitchRow({
+            title: $r('app.string.data_auto_clear_cache'),
+            initValue: Settings.getAutoClearChapterCache(),
+            apply: (value: boolean): void => {
+              Settings.setAutoClearChapterCache(value);
+            }
+          })
+        }
+
+        // 导出
+        PrefGroup({ groupTitle: $r('app.string.data_export') }) {
+          TextRow({
+            title: $r('app.string.data_library_list'),
+            onTap: (): void => {
+              this.showExportDialog();
+            }
+          })
+        }
+      }
+      .width('100%')
+      .padding({ left: 16, right: 16, bottom: 24 })
+    }
+    .width('100%')
+    .height('100%')
+    .scrollBar(BarState.Off)
+    .align(Alignment.TopStart)
+  }
+
   private refreshCacheLabel(): void {
     this.cacheLabel = Util.resStr(this.getUIContext(), $r('app.string.data_used_cache'),
       [Util.formatBytes(ImageCache.size())]);
@@ -61,6 +219,8 @@ export struct DataStorageContent {
     }
   }
 
+  // ---- 备份与还原 ----
+
   private refreshLastBackup(): void {
     const ui = this.getUIContext();
     const last: number = Settings.getLastAutoBackupTimestamp();
@@ -72,8 +232,6 @@ export struct DataStorageContent {
     const relText: string = typeof rel === 'string' ? rel : Util.resStr(ui, rel);
     this.lastBackupText = Util.resStr(ui, $r('app.string.data_last_auto_backup'), [relText]);
   }
-
-  // ---- 备份与还原 ----
 
   private async doCreateBackup(): Promise<void> {
     if (this.busy) {
@@ -129,6 +287,8 @@ export struct DataStorageContent {
     }
   }
 
+  // ---- 存储占用 ----
+
   private onIntervalSelect(index: number): void {
     if (index < 0 || index >= INTERVAL_HOURS.length) {
       return;
@@ -136,7 +296,7 @@ export struct DataStorageContent {
     Settings.setBackupInterval(INTERVAL_HOURS[index]);
   }
 
-  // ---- 存储占用 ----
+  // ---- 导出 ----
 
   private clearChapterCache(): void {
     const deleted: number = ImageCache.count();
@@ -144,8 +304,6 @@ export struct DataStorageContent {
     this.refreshCacheLabel();
     Util.toastRes(this.getUIContext(), $r('app.string.data_cache_deleted'), [deleted]);
   }
-
-  // ---- 导出 ----
 
   private showExportDialog(): void {
     const dialog = new CustomDialogController({
@@ -177,149 +335,6 @@ export struct DataStorageContent {
     }
     this.busy = false;
   }
-
-  build() {
-    Scroll() {
-      Column({ space: 12 }) {
-        // 存储位置
-        PrefGroup() {
-          TextRow({
-            title: $r('app.string.data_storage_location'),
-            value: $r('app.string.data_storage_location_value'),
-            onTap: (): void => {
-              const context = Util.hostAbilityContext(this.getUIContext());
-              Util.toast(this.getUIContext(), context.filesDir);
-            }
-          })
-        }
-        Text($r('app.string.data_storage_location_info'))
-          .fontSize(12)
-          .fontColor(this.pal.sub)
-          .margin({ left: 20 })
-          .constraintSize({ maxWidth: 680 })
-
-        // 备份与还原
-        PrefGroup({ groupTitle: $r('app.string.data_backup_restore') }) {
-          Row({ space: 8 }) {
-            Button($r('app.string.data_create_backup'))
-              .layoutWeight(1)
-              .height(40)
-              .borderRadius(20)
-              .backgroundColor(this.pal.chip)
-              .fontColor(this.pal.text)
-              .fontSize(14)
-              .onClick(() => {
-                this.doCreateBackup();
-              })
-            Button($r('app.string.data_restore_backup'))
-              .layoutWeight(1)
-              .height(40)
-              .borderRadius(20)
-              .backgroundColor(this.pal.chip)
-              .fontColor(this.pal.text)
-              .fontSize(14)
-              .onClick(() => {
-                this.doRestoreBackup();
-              })
-          }
-          .width('100%')
-          .padding({ left: 16, right: 16, top: 12, bottom: 12 })
-
-          Divider().color(this.pal.divider).margin({ left: 16 })
-
-          PrefSelectRow({
-            title: $r('app.string.data_backup_interval'),
-            options: [
-              $r('app.string.data_interval_off'),
-              $r('app.string.data_interval_6h'),
-              $r('app.string.data_interval_12h'),
-              $r('app.string.data_interval_24h'),
-              $r('app.string.data_interval_48h'),
-              $r('app.string.data_interval_weekly')
-            ],
-            selectedIndex: INTERVAL_HOURS.indexOf(Settings.getBackupInterval()),
-            onSelectIndex: (index: number): void => {
-              this.onIntervalSelect(index);
-            }
-          })
-
-          Divider().color(this.pal.divider).margin({ left: 16 })
-
-          // 上次自动备份失败提示条
-          if (this.lastBackupFailed) {
-            Text($r('app.string.last_backup_failed_hint'))
-              .fontSize(12)
-              .fontColor('#D32F2F')
-              .padding({ left: 16, right: 16, top: 10 })
-          }
-
-          Text($r('app.string.data_backup_info'))
-            .fontSize(12)
-            .fontColor(this.pal.sub)
-            .padding({ left: 16, right: 16, top: 10, bottom: 2 })
-          Text(this.lastBackupText)
-            .fontSize(12)
-            .fontColor(this.pal.sub)
-            .padding({ left: 16, right: 16, bottom: 12 })
-        }
-
-        // 存储占用
-        PrefGroup({ groupTitle: $r('app.string.data_storage_usage') }) {
-          Column({ space: 8 }) {
-            Text($r('app.string.data_storage_name'))
-              .fontSize(14)
-              .fontWeight(FontWeight.Medium)
-              .fontColor(this.pal.text)
-            Progress({ value: this.usedPercent, total: 100, type: ProgressType.Linear })
-              .height(12)
-              .borderRadius(6)
-              .color(this.pal.primary)
-              .backgroundColor(this.pal.chip)
-            Text(this.spaceText)
-              .fontSize(12)
-              .fontColor(this.pal.sub)
-          }
-          .width('100%')
-          .alignItems(HorizontalAlign.Start)
-          .padding({ left: 16, right: 16, top: 12, bottom: 12 })
-
-          Divider().color(this.pal.divider).margin({ left: 16 })
-
-          TextRow({
-            title: $r('app.string.data_clear_chapter_cache'),
-            value: this.cacheLabel,
-            onTap: (): void => {
-              this.clearChapterCache();
-            }
-          })
-          Divider().color(this.pal.divider).margin({ left: 16 })
-          PrefSwitchRow({
-            title: $r('app.string.data_auto_clear_cache'),
-            initValue: Settings.getAutoClearChapterCache(),
-            apply: (value: boolean): void => {
-              Settings.setAutoClearChapterCache(value);
-            }
-          })
-        }
-
-        // 导出
-        PrefGroup({ groupTitle: $r('app.string.data_export') }) {
-          TextRow({
-            title: $r('app.string.data_library_list'),
-            onTap: (): void => {
-              this.showExportDialog();
-            }
-          })
-        }
-      }
-      .width('100%')
-      .padding({ left: 16, right: 16, bottom: 24 })
-    }
-    .width('100%')
-    .height('100%')
-    .scrollBar(BarState.Off)
-    .align(Alignment.TopStart)
-  }
 }
 
 // 数据与存储路由壳（手机/平板窄屏 push 进入）
@@ -338,6 +353,7 @@ export struct DataStoragePage {
               Util.openUrl(context, HELP_URL);
             })
         }
+
         DataStorageContent()
           .layoutWeight(1)
       }

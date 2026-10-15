@@ -19,7 +19,7 @@
  * 经 callFunction 参数注入 JSVM（一次性，~1.9MB）。
  */
 
-import { worker, MessageEvents, ErrorEvent, util } from '@kit.ArkTS';
+import { ErrorEvent, MessageEvents, util, worker } from '@kit.ArkTS';
 import { common } from '@kit.AbilityKit';
 
 const READY_TIMEOUT_MS: number = 30000;

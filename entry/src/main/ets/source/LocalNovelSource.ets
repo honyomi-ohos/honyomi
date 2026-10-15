@@ -1,4 +1,4 @@
-import { SManga, SChapter, ContentType } from '../model/Models';
+import { ContentType, SChapter, SManga } from '../model/Models';
 import { LocalFolderManager } from './LocalFolderManager';
 import { LocalFsSource } from './LocalFsSource';
 import { Util } from '../common/Util';
@@ -13,18 +13,6 @@ export class LocalNovelSource extends LocalFsSource {
 
   constructor(filesDir: string) {
     super(filesDir, 'local_novel');
-  }
-
-  protected syncSubDir(): string {
-    return LocalFolderManager.NOVEL_SUBDIR;
-  }
-
-  protected contentExts(): string[] {
-    return ['.txt'];
-  }
-
-  protected mangaDescription(): string {
-    return 'local_desc_novel';
   }
 
   async getChapterList(mangaKey: string): Promise<SChapter[]> {
@@ -45,5 +33,17 @@ export class LocalNovelSource extends LocalFsSource {
 
   async getMangaDetail(mangaKey: string): Promise<SManga> {
     return this.buildManga(mangaKey);
+  }
+
+  protected syncSubDir(): string {
+    return LocalFolderManager.NOVEL_SUBDIR;
+  }
+
+  protected contentExts(): string[] {
+    return ['.txt'];
+  }
+
+  protected mangaDescription(): string {
+    return 'local_desc_novel';
   }
 }

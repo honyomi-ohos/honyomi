@@ -1,6 +1,6 @@
-import { InsightIntentEntryExecutor, insightIntent, InsightIntentEntry } from '@kit.AbilityKit';
+import { insightIntent, InsightIntentEntry, InsightIntentEntryExecutor } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
-import { HistoryRepo, ChapterRepo } from '../data/Repos';
+import { ChapterRepo, HistoryRepo } from '../data/Repos';
 import { HistoryItem } from '../model/Models';
 import { AppKeys } from '../common/AppKeys';
 import EntryAbility from './EntryAbility';
@@ -19,6 +19,10 @@ import EntryAbility from './EntryAbility';
   executeMode: [insightIntent.ExecuteMode.UI_ABILITY_FOREGROUND]
 })
 export default class ContinueReadingImpl extends InsightIntentEntryExecutor<string> {
+  private static result(code: number, msg: string): insightIntent.IntentResult<string> {
+    return { code: code, result: msg };
+  }
+
   onExecute(): Promise<insightIntent.IntentResult<string>> {
     return this.doContinue();
   }
@@ -64,9 +68,5 @@ export default class ContinueReadingImpl extends InsightIntentEntryExecutor<stri
       'contentType': ''
     };
     AppStorage.setOrCreate(AppKeys.CARD_ACTION, JSON.stringify(payload));
-  }
-
-  private static result(code: number, msg: string): insightIntent.IntentResult<string> {
-    return { code: code, result: msg };
   }
 }

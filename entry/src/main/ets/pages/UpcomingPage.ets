@@ -1,8 +1,7 @@
-import { common } from '@kit.AbilityKit';
 import { i18n } from '@kit.LocalizationKit';
 import { AppDb } from '../data/AppDb';
 import { CategoryRepo, UpcomingRepo } from '../data/Repos';
-import { UpcomingManga, CategoryRecord } from '../model/Models';
+import { CategoryRecord, UpcomingManga } from '../model/Models';
 import { DetailParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
@@ -81,6 +80,268 @@ export struct UpcomingPage {
     this.loadData();
   }
 
+  async loadData(): Promise<void> {
+    const context = Util.hostAbilityContext(this.getUIContext());
+    await AppDb.ready(context);
+    this.categories = await CategoryRepo.list();
+    this.includedCats = Settings.getUpcomingIncludedCategories();
+    this.excludedCats = Settings.getUpcomingExcludedCategories();
+    this.allManga = await UpcomingRepo.upcomingList();
+    this.recompute();
+  }
+
+  @Builder
+  filterSheetBuilder() {
+    UpdatesFilterSheet({
+      categories: this.categories,
+      showFilterTab: false,
+      initIncluded: this.includedCats,
+      initExcluded: this.excludedCats,
+      onCategoriesChanged: (included: number[], excluded: number[]): void => {
+        this.includedCats = included;
+        this.excludedCats = excluded;
+        Settings.setUpcomingIncludedCategories(included);
+        Settings.setUpcomingExcludedCategories(excluded);
+        this.recompute();
+      }
+    })
+  }
+
+  @Builder
+  dayCell(day: number) {
+    Stack() {
+      if (this.cellDateMs(day) === this.todayStart()) {
+        Column()
+          .width(40)
+          .height(40)
+          .borderRadius(20)
+          .border({ width: 1, color: this.pal.text })
+      }
+      Text(`${day}`)
+        .fontSize(16)
+        .fontWeight(FontWeight.Medium)
+        .fontColor(this.cellDateMs(day) < this.todayStart() ? this.pal.sub : this.pal.text)
+      Row({ space: 2 }) {
+        ForEach(this.dayDots(day), (i: number) => {
+          Column()
+            .width(5)
+            .height(5)
+            .borderRadius(2.5)
+            .backgroundColor(this.pal.primary)
+            .opacity((i + 1) * 0.3)
+        }, (i: number) => `dot-${i}`)
+      }
+      .translate({ y: 14 })
+    }
+    .layoutWeight(1)
+    .height(48)
+    .onClick(() => {
+      this.onDayClick(day);
+    })
+  }
+
+  @Builder
+  dateHeader(row: UpcomingRow) {
+    Row() {
+      Text(this.relativeDate(row.dateMs))
+        .fontSize(14)
+        .fontWeight(FontWeight.Medium)
+        .fontColor(this.pal.sub)
+        .maxLines(1)
+      Text(`${row.count}`)
+        .fontSize(11)
+        .fontColor(this.pal.onPrimary)
+        .backgroundColor(this.pal.primary)
+        .borderRadius(10)
+        .padding({
+          left: 6,
+          right: 6,
+          top: 1,
+          bottom: 1
+        })
+        .margin({ left: 8 })
+    }
+    .width('100%')
+    .padding({
+      left: 16,
+      right: 16,
+      top: 8,
+      bottom: 8
+    })
+    .alignItems(VerticalAlign.Center)
+  }
+
+  @Builder
+  mangaItem(m: UpcomingManga) {
+    Row({ space: 16 }) {
+      if (m.coverUrl === '') {
+        // 无封面：默认封面占位
+        CoverPlaceholder({ iconSize: 24 })
+          .width(56)
+          .height(80)
+          .borderRadius(4)
+      } else {
+        Image(m.coverUrl)
+          .width(56)
+          .height(80)
+          .objectFit(ImageFit.Cover)
+          .borderRadius(4)
+          .backgroundColor(this.pal.chip)
+      }
+      Text(m.title)
+        .fontSize(14)
+        .fontWeight(FontWeight.Medium)
+        .fontColor(this.pal.text)
+        .maxLines(2)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .layoutWeight(1)
+    }
+    .width('100%')
+    .height(96)
+    .padding({
+      left: 16,
+      right: 16,
+      top: 8,
+      bottom: 8
+    })
+    .alignItems(VerticalAlign.Center)
+    .onClick(() => {
+      const params: DetailParams = { mangaId: m.mangaId };
+      this.pathStack.pushPathByName('MangaDetail', params);
+    })
+  }
+
+  @Builder
+  calendarBlock() {
+    Column({ space: 4 }) {
+      // 月份切换头
+      Row() {
+        Text(this.monthTitle())
+          .fontSize(22)
+          .fontWeight(FontWeight.Bold)
+          .fontColor(this.pal.text)
+          .layoutWeight(1)
+          .maxLines(1)
+          .padding({ left: 16 })
+        AppIcon({ name: 'keyboard_arrow_left', iconSize: 24, tint: this.pal.text })
+          .padding({
+            left: 8,
+            right: 8,
+            top: 8,
+            bottom: 8
+          })
+          .onClick(() => {
+            this.shiftMonth(-1);
+          })
+        AppIcon({ name: 'keyboard_arrow_right', iconSize: 24, tint: this.pal.text })
+          .padding({
+            left: 8,
+            right: 8,
+            top: 8,
+            bottom: 8
+          })
+          .onClick(() => {
+            this.shiftMonth(1);
+          })
+      }
+      .width('100%')
+
+      // 星期标题行
+      Row() {
+        ForEach(this.weekdayLabels, (label: string, col: number) => {
+          Text(label)
+            .fontSize(16)
+            .fontWeight(FontWeight.Medium)
+            .fontColor(this.pal.text)
+            .layoutWeight(1)
+            .textAlign(TextAlign.Center)
+            .maxLines(1)
+        }, (label: string, col: number) => `wd-${col}`)
+      }
+      .width('100%')
+      .padding({ left: 8, right: 8 })
+
+      // 日期网格
+      ForEach(this.monthWeeks(), (week: number[], weekIdx: number) => {
+        Row() {
+          ForEach(week, (day: number, col: number) => {
+            if (day === 0) {
+              Column()
+                .layoutWeight(1)
+                .height(48)
+            } else {
+              this.dayCell(day)
+            }
+          }, (day: number, col: number) => `d-${weekIdx}-${col}`)
+        }
+        .width('100%')
+        .padding({ left: 8, right: 8 })
+      }, (week: number[], weekIdx: number) => `w-${this.selYear}-${this.selMonth}-${weekIdx}`)
+    }
+    .width('100%')
+    .padding({ top: 4, bottom: 8 })
+  }
+
+  build() {
+    NavDestination() {
+      Column() {
+        PageHeader({ title: $r('app.string.label_upcoming') }) {
+          AppIcon({ name: 'filter_list', iconSize: 22, tint: this.filterActive() ? this.pal.primary : this.pal.text })
+            .padding({ left: 12 })
+            .onClick(() => {
+              this.showFilterSheet = true;
+            })
+            .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(), {
+              preferType: Bp.sheetType(this.windowW),
+              width: Bp.sheetWidth(this.windowW),
+              height: Bp.sheetHeight(this.windowW),
+              detents: ['60%', SheetSize.LARGE],
+              showClose: false,
+              dragBar: true,
+              backgroundColor: this.pal.bg
+            })
+          AppIcon({ name: 'help', iconSize: 22, tint: this.pal.text })
+            .padding({ left: 12 })
+            .onClick(() => {
+              const context = Util.hostAbilityContext(this.getUIContext());
+              Util.openUrl(context, HELP_URL);
+            })
+        }
+
+        Column() {
+          List({ scroller: this.scroller }) {
+            ListItem() {
+              this.calendarBlock()
+            }
+
+            ForEach(this.rows, (row: UpcomingRow, idx: number) => {
+              ListItem() {
+                if (row.isHeader) {
+                  this.dateHeader(row)
+                } else if (row.manga !== undefined) {
+                  this.mangaItem(row.manga)
+                }
+              }
+            }, (row: UpcomingRow, idx: number) => row.isHeader ? `uh-${row.dateMs}` : `ui-${row.manga?.mangaId ?? idx}`)
+          }
+          .layoutWeight(1)
+          .scrollBar(BarState.Auto)
+          .contentEndOffset(this.navBarH + 16)
+        }
+        .width('100%')
+        .layoutWeight(1)
+      }
+      .width('100%')
+      .height('100%')
+      .backgroundColor(this.pal.bg)
+    }
+    .hideTitleBar(true)
+    .onReady((ctx: NavDestinationContext) => {
+      this.pathStack = ctx.pathStack;
+    })
+    .backgroundColor(this.pal.bg)
+  }
+
   private localeTag(): string {
     const lang: string = Settings.getAppLanguage();
     if (lang === 'auto') {
@@ -97,16 +358,6 @@ export struct UpcomingPage {
     for (let col = 0; col < 7; col++) {
       this.weekdayLabels.push(Util.weekdayShort(ctx, (firstJs + col) % 7));
     }
-  }
-
-  async loadData(): Promise<void> {
-    const context = Util.hostAbilityContext(this.getUIContext());
-    await AppDb.ready(context);
-    this.categories = await CategoryRepo.list();
-    this.includedCats = Settings.getUpcomingIncludedCategories();
-    this.excludedCats = Settings.getUpcomingExcludedCategories();
-    this.allManga = await UpcomingRepo.upcomingList();
-    this.recompute();
   }
 
   // 分类筛选：排除优先；包含非空时作白名单（对齐 UpcomingViewModel.cycleCategory 语义）
@@ -261,231 +512,6 @@ export struct UpcomingPage {
       return Util.resStr(ui, $r('app.string.upcoming_relative_time_days'), [-diff]);
     }
     return Util.formatDate(ms);
-  }
-
-  @Builder
-  filterSheetBuilder() {
-    UpdatesFilterSheet({
-      categories: this.categories,
-      showFilterTab: false,
-      initIncluded: this.includedCats,
-      initExcluded: this.excludedCats,
-      onCategoriesChanged: (included: number[], excluded: number[]): void => {
-        this.includedCats = included;
-        this.excludedCats = excluded;
-        Settings.setUpcomingIncludedCategories(included);
-        Settings.setUpcomingExcludedCategories(excluded);
-        this.recompute();
-      }
-    })
-  }
-
-  @Builder
-  dayCell(day: number) {
-    Stack() {
-      if (this.cellDateMs(day) === this.todayStart()) {
-        Column()
-          .width(40)
-          .height(40)
-          .borderRadius(20)
-          .border({ width: 1, color: this.pal.text })
-      }
-      Text(`${day}`)
-        .fontSize(16)
-        .fontWeight(FontWeight.Medium)
-        .fontColor(this.cellDateMs(day) < this.todayStart() ? this.pal.sub : this.pal.text)
-      Row({ space: 2 }) {
-        ForEach(this.dayDots(day), (i: number) => {
-          Column()
-            .width(5)
-            .height(5)
-            .borderRadius(2.5)
-            .backgroundColor(this.pal.primary)
-            .opacity((i + 1) * 0.3)
-        }, (i: number) => `dot-${i}`)
-      }
-      .translate({ y: 14 })
-    }
-    .layoutWeight(1)
-    .height(48)
-    .onClick(() => {
-      this.onDayClick(day);
-    })
-  }
-
-  @Builder
-  dateHeader(row: UpcomingRow) {
-    Row() {
-      Text(this.relativeDate(row.dateMs))
-        .fontSize(14)
-        .fontWeight(FontWeight.Medium)
-        .fontColor(this.pal.sub)
-        .maxLines(1)
-      Text(`${row.count}`)
-        .fontSize(11)
-        .fontColor(this.pal.onPrimary)
-        .backgroundColor(this.pal.primary)
-        .borderRadius(10)
-        .padding({ left: 6, right: 6, top: 1, bottom: 1 })
-        .margin({ left: 8 })
-    }
-    .width('100%')
-    .padding({ left: 16, right: 16, top: 8, bottom: 8 })
-    .alignItems(VerticalAlign.Center)
-  }
-
-  @Builder
-  mangaItem(m: UpcomingManga) {
-    Row({ space: 16 }) {
-      if (m.coverUrl === '') {
-        // 无封面：默认封面占位
-        CoverPlaceholder({ iconSize: 24 })
-          .width(56)
-          .height(80)
-          .borderRadius(4)
-      } else {
-        Image(m.coverUrl)
-          .width(56)
-          .height(80)
-          .objectFit(ImageFit.Cover)
-          .borderRadius(4)
-          .backgroundColor(this.pal.chip)
-      }
-      Text(m.title)
-        .fontSize(14)
-        .fontWeight(FontWeight.Medium)
-        .fontColor(this.pal.text)
-        .maxLines(2)
-        .textOverflow({ overflow: TextOverflow.Ellipsis })
-        .layoutWeight(1)
-    }
-    .width('100%')
-    .height(96)
-    .padding({ left: 16, right: 16, top: 8, bottom: 8 })
-    .alignItems(VerticalAlign.Center)
-    .onClick(() => {
-      const params: DetailParams = { mangaId: m.mangaId };
-      this.pathStack.pushPathByName('MangaDetail', params);
-    })
-  }
-
-  @Builder
-  calendarBlock() {
-    Column({ space: 4 }) {
-      // 月份切换头
-      Row() {
-        Text(this.monthTitle())
-          .fontSize(22)
-          .fontWeight(FontWeight.Bold)
-          .fontColor(this.pal.text)
-          .layoutWeight(1)
-          .maxLines(1)
-          .padding({ left: 16 })
-        AppIcon({ name: 'keyboard_arrow_left', iconSize: 24, tint: this.pal.text })
-          .padding({ left: 8, right: 8, top: 8, bottom: 8 })
-          .onClick(() => {
-            this.shiftMonth(-1);
-          })
-        AppIcon({ name: 'keyboard_arrow_right', iconSize: 24, tint: this.pal.text })
-          .padding({ left: 8, right: 8, top: 8, bottom: 8 })
-          .onClick(() => {
-            this.shiftMonth(1);
-          })
-      }
-      .width('100%')
-
-      // 星期标题行
-      Row() {
-        ForEach(this.weekdayLabels, (label: string, col: number) => {
-          Text(label)
-            .fontSize(16)
-            .fontWeight(FontWeight.Medium)
-            .fontColor(this.pal.text)
-            .layoutWeight(1)
-            .textAlign(TextAlign.Center)
-            .maxLines(1)
-        }, (label: string, col: number) => `wd-${col}`)
-      }
-      .width('100%')
-      .padding({ left: 8, right: 8 })
-
-      // 日期网格
-      ForEach(this.monthWeeks(), (week: number[], weekIdx: number) => {
-        Row() {
-          ForEach(week, (day: number, col: number) => {
-            if (day === 0) {
-              Column()
-                .layoutWeight(1)
-                .height(48)
-            } else {
-              this.dayCell(day)
-            }
-          }, (day: number, col: number) => `d-${weekIdx}-${col}`)
-        }
-        .width('100%')
-        .padding({ left: 8, right: 8 })
-      }, (week: number[], weekIdx: number) => `w-${this.selYear}-${this.selMonth}-${weekIdx}`)
-    }
-    .width('100%')
-    .padding({ top: 4, bottom: 8 })
-  }
-
-  build() {
-    NavDestination() {
-      Column() {
-        PageHeader({ title: $r('app.string.label_upcoming') }) {
-          AppIcon({ name: 'filter_list', iconSize: 22, tint: this.filterActive() ? this.pal.primary : this.pal.text })
-            .padding({ left: 12 })
-            .onClick(() => {
-              this.showFilterSheet = true;
-            })
-            .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(), {
-              preferType: Bp.sheetType(this.windowW),
-              width: Bp.sheetWidth(this.windowW),
-              height: Bp.sheetHeight(this.windowW),
-              detents: ['60%', SheetSize.LARGE],
-              showClose: false,
-              dragBar: true,
-              backgroundColor: this.pal.bg
-            })
-          AppIcon({ name: 'help', iconSize: 22, tint: this.pal.text })
-            .padding({ left: 12 })
-            .onClick(() => {
-              const context = Util.hostAbilityContext(this.getUIContext());
-              Util.openUrl(context, HELP_URL);
-            })
-        }
-        Column() {
-          List({ scroller: this.scroller }) {
-            ListItem() {
-              this.calendarBlock()
-            }
-            ForEach(this.rows, (row: UpcomingRow, idx: number) => {
-              ListItem() {
-                if (row.isHeader) {
-                  this.dateHeader(row)
-                } else if (row.manga !== undefined) {
-                  this.mangaItem(row.manga)
-                }
-              }
-            }, (row: UpcomingRow, idx: number) => row.isHeader ? `uh-${row.dateMs}` : `ui-${row.manga?.mangaId ?? idx}`)
-          }
-          .layoutWeight(1)
-          .scrollBar(BarState.Auto)
-          .contentEndOffset(this.navBarH + 16)
-        }
-        .width('100%')
-        .layoutWeight(1)
-      }
-      .width('100%')
-      .height('100%')
-      .backgroundColor(this.pal.bg)
-    }
-    .hideTitleBar(true)
-    .onReady((ctx: NavDestinationContext) => {
-      this.pathStack = ctx.pathStack;
-    })
-    .backgroundColor(this.pal.bg)
   }
 }
 

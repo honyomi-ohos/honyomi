@@ -1,48 +1,177 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Filters all entries in your library" },
-    { "name": "more_incognito_summary", "value": "Pauses reading history" },
-    { "name": "more_support", "value": "Support Us" },
-    { "name": "more_help", "value": "Help" },
-    { "name": "support_perks", "value": "Patrons get access to exclusive channels, with more perks to come." },
-    { "name": "support_patreon", "value": "Patreon (preferred)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together." },
-    { "name": "support_contact_msg", "value": "For alternative options or any related questions, join our Discord server." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "Data and storage" },
-    { "name": "data_storage_location", "value": "Storage location" },
-    { "name": "data_storage_location_info", "value": "Used for automatic backups, chapter downloads, and local source." },
-    { "name": "data_backup_restore", "value": "Backup and restore" },
-    { "name": "data_create_backup", "value": "Create backup" },
-    { "name": "data_restore_backup", "value": "Restore backup" },
-    { "name": "data_backup_interval", "value": "Automatic backup frequency" },
-    { "name": "data_backup_info", "value": "You should keep copies of backups in other places as well. Backups may contain sensitive data including any stored passwords; be careful if sharing." },
-    { "name": "data_last_auto_backup", "value": "Last automatically backed up: %s" },
-    { "name": "data_storage_usage", "value": "Storage usage" },
-    { "name": "data_available_space", "value": "Available: %s / Total: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Clear chapter cache" },
-    { "name": "data_used_cache", "value": "Used: %s" },
-    { "name": "data_cache_deleted", "value": "Cache cleared, %d files deleted" },
-    { "name": "data_cache_delete_error", "value": "Error occurred while clearing" },
-    { "name": "data_auto_clear_cache", "value": "Clear chapter cache on app launch" },
-    { "name": "data_export", "value": "Export" },
-    { "name": "data_library_list", "value": "Library List" },
-    { "name": "data_library_exported", "value": "Library Exported" },
-    { "name": "data_export_include", "value": "Select data to include" },
-    { "name": "data_column_title", "value": "Title" },
-    { "name": "data_column_author", "value": "Author" },
-    { "name": "data_interval_off", "value": "Off" },
-    { "name": "data_interval_6h", "value": "Every 6 hours" },
-    { "name": "data_interval_12h", "value": "Every 12 hours" },
-    { "name": "data_interval_24h", "value": "Daily" },
-    { "name": "data_interval_48h", "value": "Every 2 days" },
-    { "name": "data_interval_weekly", "value": "Weekly" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Filters all entries in your library"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Pauses reading history"
+    },
+    {
+      "name": "more_support",
+      "value": "Support Us"
+    },
+    {
+      "name": "more_help",
+      "value": "Help"
+    },
+    {
+      "name": "support_perks",
+      "value": "Patrons get access to exclusive channels, with more perks to come."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (preferred)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "For alternative options or any related questions, join our Discord server."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "Data and storage"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Storage location"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Used for automatic backups, chapter downloads, and local source."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "Backup and restore"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Create backup"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "Restore backup"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Automatic backup frequency"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "You should keep copies of backups in other places as well. Backups may contain sensitive data including any stored passwords; be careful if sharing."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Last automatically backed up: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Storage usage"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Available: %s / Total: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Clear chapter cache"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Used: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Cache cleared, %d files deleted"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Error occurred while clearing"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Clear chapter cache on app launch"
+    },
+    {
+      "name": "data_export",
+      "value": "Export"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Library List"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Library Exported"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Select data to include"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Title"
+    },
+    {
+      "name": "data_column_author",
+      "value": "Author"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "Off"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "Every 6 hours"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "Every 12 hours"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "Daily"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "Every 2 days"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "Weekly"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
     {
       "name": "module_desc",
       "value": "module description"
@@ -1255,189 +1384,741 @@
       "name": "reader_set_brightness_reset",
       "value": "Яктылык система буенча көйләнде"
     },
-    { "name": "browse_tab_sources", "value": "Чыганаклар" },
-    { "name": "browse_tab_extensions", "value": "Киңәйтүләр" },
-    { "name": "browse_tab_migrate", "value": "Күчерү" },
-    { "name": "browse_pin", "value": "Беркетү" },
-    { "name": "browse_unpin", "value": "Беркетүне алу" },
-    { "name": "browse_disable_source", "value": "Чыганакны сүндерү" },
-    { "name": "browse_source_disabled", "value": "Чыганак сүндерелде" },
-    { "name": "browse_pinned", "value": "Беркетелгән" },
-    { "name": "browse_sources_empty", "value": "Чыганаклар юк. Киңәйтүләр өстеннән урнаштырыгыз" },
-    { "name": "browse_filter_langs", "value": "Телләрне фильтрлау" },
-    { "name": "browse_filter_all", "value": "Барысы" },
-    { "name": "browse_source_missing", "value": "Чыганак юк. Киңәйтү сүндерелгән булырга мөмкин" },
-    { "name": "global_search_hint", "value": "Барлык чыганакларда эзләү" },
-    { "name": "global_search_failed", "value": "Эзләү уңышсыз" },
-    { "name": "ext_search_hint", "value": "Киңәйтүләрне эзләү" },
-    { "name": "ext_search_no_match", "value": "Туры килүләр юк" },
-    { "name": "ext_repo_settings", "value": "Репозиторий көйләүләре" },
-    { "name": "ext_refresh_repo", "value": "Репозиторийны яңарту" },
-    { "name": "migrate_pick_source", "value": "Күчерү өчен чыганак сайлагыз" },
-    { "name": "migrate_empty_library", "value": "Китапханә буш" },
-    { "name": "migrate_select_all", "value": "Барысын да сайлау" },
-    { "name": "migrate_deselect_all", "value": "Сайлауны алу" },
-    { "name": "migrate_action", "value": "Күчерү (%d)" },
-    { "name": "migrate_title", "value": "Күчерү" },
-    { "name": "migrate_skip", "value": "Калындыру" },
-    { "name": "migrate_progress", "value": "%d / %d" },
-    { "name": "migrate_target_source", "value": "Максат чыганагы" },
-    { "name": "migrate_search_hint", "value": "Максат чыганагында манга эзләү" },
-    { "name": "migrate_confirm_title", "value": "Бу мангага күчерергәме?" },
-    { "name": "migrate_item_done", "value": "Күчерелде: %s" },
-    { "name": "migrate_failed", "value": "Күчерү уңышсыз: %s" },
-    { "name": "migrate_done", "value": "Күчерү тәмам" },
-    { "name": "migrate_no_target", "value": "Максат чыганагы юк" },
-    { "name": "stats_title", "value": "Статистика" },
-    { "name": "stats_overview_section", "value": "Күзәтү" },
-    { "name": "stats_in_library", "value": "Китапханәдә" },
-    { "name": "stats_read_duration", "value": "Уку вакыты" },
-    { "name": "stats_completed_titles", "value": "Тәмамланган" },
-    { "name": "stats_titles_section", "value": "Әсәрләр" },
-    { "name": "stats_started_titles", "value": "Башланган" },
-    { "name": "stats_local_titles", "value": "Җирле" },
-    { "name": "stats_chapters_section", "value": "Бүлекләр" },
-    { "name": "stats_total_chapters", "value": "Барлыгы" },
-    { "name": "stats_read_chapters", "value": "Укылган" },
-    { "name": "stats_downloaded_chapters", "value": "Йөкләнгән" },
-    { "name": "stats_tracker_section", "value": "Күзәтүчеләр" },
-    { "name": "stats_tracked_titles", "value": "Күзәтелә торган әсәрләр" },
-    { "name": "stats_mean_score", "value": "Уртача бәя" },
-    { "name": "stats_used", "value": "Кулланыла" },
-    { "name": "stats_not_applicable", "value": "юк" },
-    { "name": "stats_week", "value": "Атна" },
-    { "name": "stats_month", "value": "Ай" },
-    { "name": "stats_week_total", "value": "Бу атнада %s" },
-    { "name": "stats_month_total", "value": "Бу айда %s" },
-    { "name": "stats_no_reading", "value": "Бу чорда уку юк" },
-    { "name": "stats_day_short", "value": "%dк" },
-    { "name": "stats_hour_short", "value": "%dсәг" },
-    { "name": "stats_minute_short", "value": "%dм" },
-    { "name": "stats_second_short", "value": "%dс" },
-    { "name": "stats_wd_sun", "value": "Як" },
-    { "name": "stats_wd_mon", "value": "Дш" },
-    { "name": "stats_wd_tue", "value": "Сш" },
-    { "name": "stats_wd_wed", "value": "Чш" },
-    { "name": "stats_wd_thu", "value": "Пш" },
-    { "name": "stats_wd_fri", "value": "Җм" },
-    { "name": "stats_wd_sat", "value": "Шм" },
-    { "name": "reader_mode_vertical", "value": "Вертикаль" },
-    { "name": "reader_mode_smart_grip", "value": "Акыллы тоту" },
-    { "name": "reader_orientation_lock_portrait", "value": "Портретны бикләү" },
-    { "name": "reader_orientation_lock_landscape", "value": "Альбомны бикләү" },
-    { "name": "reader_tab_general", "value": "Гомуми" },
-    { "name": "reader_tab_filter", "value": "Төс фильтры" },
-    { "name": "reader_filter_grayscale", "value": "Соры төс" },
-    { "name": "reader_filter_invert", "value": "Кире төсләр" },
-    { "name": "reader_filter_contrast", "value": "Контраст" },
-    { "name": "reader_filter_saturation", "value": "Туендырылу" },
-    { "name": "reader_crop_borders", "value": "Кырыйларны кисү" },
-    { "name": "reader_nav_tap_zones", "value": "Басу өлкәләре" },
-    { "name": "reader_nav_default", "value": "Килешү буенча" },
-    { "name": "reader_nav_ltr", "value": "Сулдан уңга" },
-    { "name": "reader_nav_rtl", "value": "Уңнан сулга" },
-    { "name": "reader_nav_vertical", "value": "Вертикаль" },
-    { "name": "reader_nav_edge", "value": "Кырый" },
-    { "name": "reader_nav_none", "value": "Юк" },
-    { "name": "reader_dual_page", "value": "Ике бит" },
-    { "name": "reader_webtoon_padding", "value": "Вебтун ян арасы" },
-    { "name": "reader_set_mode_smart_grip", "value": "Акыллы тоту" },
-    { "name": "ext_install_local", "value": "Җирле урнаштыру" },
-    { "name": "ext_detail_title", "value": "Киңәйтү турында" },
-    { "name": "ext_info_version", "value": "Версия" },
-    { "name": "ext_info_language", "value": "Тел" },
-    { "name": "ext_uninstall_title", "value": "Киңәйтүне бетерү" },
-    { "name": "ext_uninstall_msg", "value": "«%s» киңәйтүе бетерелсенме? Китапханәдәге манга кала" },
-    { "name": "ext_detail_sources", "value": "Чыганаклар" },
-    { "name": "ext_detail_settings", "value": "Көйләүләр" },
-    { "name": "ext_pref_loading", "value": "Йөкләнә…" },
-    { "name": "ext_pref_failed", "value": "Көйләүләр кулланылмады" },
-    { "name": "ext_detail_missing", "value": "Киңәйтү юк яки йөкләнмәгән" },
-    { "name": "action_filter", "value": "Фильтр" },
-    { "name": "action_update_library", "value": "Китапханәне яңарту" },
-    { "name": "action_update_category", "value": "Төркемне яңарту" },
-    { "name": "action_open_random_manga", "value": "Очраклы әсәрне ачу" },
-    { "name": "action_select_all", "value": "Барысын сайлау" },
-    { "name": "action_select_inverse", "value": "Сайлауны кирегә" },
-    { "name": "action_move_category", "value": "Төркемгә күчерү" },
-    { "name": "action_mark_as_read", "value": "Укылган дип билгеләү" },
-    { "name": "action_mark_as_unread", "value": "Укылмаган дип билгеләү" },
-    { "name": "action_download", "value": "Йөкләү" },
-    { "name": "action_delete", "value": "Бетерү" },
-    { "name": "action_migrate", "value": "Күчерү" },
-    { "name": "action_remove_from_library", "value": "Китапханәдән алу" },
-    { "name": "action_remove_from_library_msg", "value": "Сайланган %d манга китапханәдән алынсынмы?" },
-    { "name": "action_download_queued", "value": "%d йөкләү эше өстәлде" },
-    { "name": "library_search_hint", "value": "Китапханәдә эзләү" },
-    { "name": "library_no_match", "value": "Туры килгән манга юк" },
-    { "name": "lib_sheet_tab_filter", "value": "Фильтр" },
-    { "name": "lib_sheet_tab_sort", "value": "Тәртипләү" },
-    { "name": "lib_sheet_tab_display", "value": "Күрсәтү" },
-    { "name": "lib_filter_downloaded", "value": "Йөкләнгән" },
-    { "name": "lib_filter_unread", "value": "Укылмаган" },
-    { "name": "lib_filter_started", "value": "Башланган" },
-    { "name": "lib_filter_bookmarked", "value": "Кыстыргычлы" },
-    { "name": "lib_filter_completed", "value": "Тәмамланган" },
-    { "name": "lib_filter_tracked", "value": "Күзәтелә" },
-    { "name": "lib_sort_alpha", "value": "Исем" },
-    { "name": "lib_sort_total", "value": "Бүлекләр саны" },
-    { "name": "lib_sort_last_read", "value": "Соңгы уку" },
-    { "name": "lib_sort_last_update", "value": "Яңартуны тикшерү вакыты" },
-    { "name": "lib_sort_unread", "value": "Укылмаганнар саны" },
-    { "name": "lib_sort_latest_chapter", "value": "Әсәрнең яңару вакыты" },
-    { "name": "lib_sort_fetch_date", "value": "Бүлекләрне алу вакыты" },
-    { "name": "lib_sort_date_added", "value": "Өстәлгән көн" },
-    { "name": "lib_sort_random", "value": "Очраклы" },
-    { "name": "lib_display_compact", "value": "Тыгыз челтәр" },
-    { "name": "lib_display_comfortable", "value": "Сирәк челтәр" },
-    { "name": "lib_display_cover", "value": "Тышлык челтәре" },
-    { "name": "lib_display_list", "value": "Исемлек" },
-    { "name": "lib_display_grid_size", "value": "Юлдагы саны" },
-    { "name": "lib_display_grid_auto", "value": "Авто" },
-    { "name": "lib_display_badges_group", "value": "Билгеләр һәм төймәләр" },
-    { "name": "lib_badge_downloaded", "value": "Йөкләнгән бүлекләр саны" },
-    { "name": "lib_badge_unread", "value": "Укылмаган бүлекләр" },
-    { "name": "lib_badge_local", "value": "Җирле чыганак" },
-    { "name": "lib_badge_language", "value": "Тел" },
-    { "name": "lib_badge_continue", "value": "«Укуны дәвам итү» төймәсе" },
-    { "name": "lib_display_tabs_group", "value": "Битләр" },
-    { "name": "lib_show_category_tabs", "value": "Төркем битләрен күрсәтү" },
-    { "name": "lib_show_manga_count", "value": "Әсәрләр санын күрсәтү" },
-    { "name": "EntryFormAbility_label", "value": "Honyomi карточкалары" },
-    { "name": "EntryFormAbility_desc", "value": "Төп экран картасын бирүче" },
-    { "name": "card_recent_display", "value": "Укуны дәвам итү" },
-    { "name": "card_recent_desc", "value": "Күптән түгел укылган манганы тиз дәвам итү" },
-    { "name": "card_updates_display", "value": "Яңартулар" },
-    { "name": "card_updates_desc", "value": "Китапханәдәге иң яңа укылмаган бүлекләр" },
-    { "name": "card_recent_header", "value": "Укуны дәвам итү" },
-    { "name": "card_updates_header", "value": "Яңартулар" },
-    { "name": "card_unread_count", "value": "%d укылмаган бүлек" },
-    { "name": "card_empty_recent", "value": "Уку тарихы әле юк" },
-    { "name": "card_empty_updates", "value": "Укылмаган бүлек юк" },
-    { "name": "card_open_hint", "value": "Кушымтаны ачу өчен басыгыз" },
-    { "name": "card_manga_display", "value": "Манга карточкасы" },
-    { "name": "card_manga_desc", "value": "Тәфсил битеннән өстәгез, тышлык укуны ача" },
-    { "name": "card_manga_empty", "value": "Манга тәфсил битеннән төп экранга өстәгез" },
-    { "name": "detail_add_to_desktop", "value": "Төп экранга өстәү" },
-    { "name": "detail_card_added", "value": "Төп экранга өстәлде" },
-    { "name": "detail_card_add_failed", "value": "Карта өстәлмәде" },
-    { "name": "card_stats_week_display", "value": "Атналык статистика" },
-    { "name": "card_stats_week_desc", "value": "Бу атнаның көнлек уку вакыты" },
-    { "name": "card_stats_month_display", "value": "Айлык статистика" },
-    { "name": "card_stats_month_desc", "value": "Бу айның көнлек уку вакыты" },
-    { "name": "card_stats_empty", "value": "Уку әле юк" },
-    { "name": "action_view_upcoming", "value": "Киләсе яңартуларны күрсәтү" },
-    { "name": "label_upcoming", "value": "Киләсе" },
-    { "name": "upcoming_guide", "value": "Киләсе яңарту кулланмасы" },
-    { "name": "upcoming_calendar_prev", "value": "Алдагы ай" },
-    { "name": "upcoming_calendar_next", "value": "Киләсе ай" },
-    { "name": "pref_filter_update_categories_details", "value": "Кертелгән һәм чыгарылган төркемнәргә берүк кергән әсәрләр күрсәтелми." },
-    { "name": "relative_time_today", "value": "Бүген" },
-    { "name": "relative_time_days_ago", "value": "%d көн элек" },
-    { "name": "upcoming_relative_time_days", "value": "%d көннән соң" },
-    { "name": "card_upcoming_display", "value": "Киләсе" },
-    { "name": "card_upcoming_desc", "value": "Китапханә мангасының көтелгән яңарту календаре" },
-    { "name": "card_upcoming_header", "value": "Киләсе" },
-    { "name": "card_empty_upcoming", "value": "Китапханәдә дәвам иткән манга юк" }
-]
+    {
+      "name": "browse_tab_sources",
+      "value": "Чыганаклар"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "Киңәйтүләр"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "Күчерү"
+    },
+    {
+      "name": "browse_pin",
+      "value": "Беркетү"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "Беркетүне алу"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "Чыганакны сүндерү"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "Чыганак сүндерелде"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "Беркетелгән"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "Чыганаклар юк. Киңәйтүләр өстеннән урнаштырыгыз"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "Телләрне фильтрлау"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "Барысы"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "Чыганак юк. Киңәйтү сүндерелгән булырга мөмкин"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "Барлык чыганакларда эзләү"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "Эзләү уңышсыз"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "Киңәйтүләрне эзләү"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "Туры килүләр юк"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "Репозиторий көйләүләре"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "Репозиторийны яңарту"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "Күчерү өчен чыганак сайлагыз"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "Китапханә буш"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "Барысын да сайлау"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "Сайлауны алу"
+    },
+    {
+      "name": "migrate_action",
+      "value": "Күчерү (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "Күчерү"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "Калындыру"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d / %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "Максат чыганагы"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "Максат чыганагында манга эзләү"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "Бу мангага күчерергәме?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "Күчерелде: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "Күчерү уңышсыз: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "Күчерү тәмам"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "Максат чыганагы юк"
+    },
+    {
+      "name": "stats_title",
+      "value": "Статистика"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "Күзәтү"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "Китапханәдә"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "Уку вакыты"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "Тәмамланган"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "Әсәрләр"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "Башланган"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "Җирле"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "Бүлекләр"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "Барлыгы"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "Укылган"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "Йөкләнгән"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "Күзәтүчеләр"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "Күзәтелә торган әсәрләр"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "Уртача бәя"
+    },
+    {
+      "name": "stats_used",
+      "value": "Кулланыла"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "юк"
+    },
+    {
+      "name": "stats_week",
+      "value": "Атна"
+    },
+    {
+      "name": "stats_month",
+      "value": "Ай"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "Бу атнада %s"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "Бу айда %s"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "Бу чорда уку юк"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%dк"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dсәг"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dм"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%dс"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "Як"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "Дш"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "Сш"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "Чш"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "Пш"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "Җм"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "Шм"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "Вертикаль"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "Акыллы тоту"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "Портретны бикләү"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "Альбомны бикләү"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "Гомуми"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "Төс фильтры"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "Соры төс"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "Кире төсләр"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "Контраст"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "Туендырылу"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "Кырыйларны кисү"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "Басу өлкәләре"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "Килешү буенча"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "Сулдан уңга"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "Уңнан сулга"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "Вертикаль"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "Кырый"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "Юк"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Ике бит"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "Вебтун ян арасы"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "Акыллы тоту"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "Җирле урнаштыру"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "Киңәйтү турында"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "Версия"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "Тел"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "Киңәйтүне бетерү"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "«%s» киңәйтүе бетерелсенме? Китапханәдәге манга кала"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "Чыганаклар"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "Көйләүләр"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "Йөкләнә…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "Көйләүләр кулланылмады"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "Киңәйтү юк яки йөкләнмәгән"
+    },
+    {
+      "name": "action_filter",
+      "value": "Фильтр"
+    },
+    {
+      "name": "action_update_library",
+      "value": "Китапханәне яңарту"
+    },
+    {
+      "name": "action_update_category",
+      "value": "Төркемне яңарту"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "Очраклы әсәрне ачу"
+    },
+    {
+      "name": "action_select_all",
+      "value": "Барысын сайлау"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "Сайлауны кирегә"
+    },
+    {
+      "name": "action_move_category",
+      "value": "Төркемгә күчерү"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "Укылган дип билгеләү"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "Укылмаган дип билгеләү"
+    },
+    {
+      "name": "action_download",
+      "value": "Йөкләү"
+    },
+    {
+      "name": "action_delete",
+      "value": "Бетерү"
+    },
+    {
+      "name": "action_migrate",
+      "value": "Күчерү"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "Китапханәдән алу"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "Сайланган %d манга китапханәдән алынсынмы?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "%d йөкләү эше өстәлде"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "Китапханәдә эзләү"
+    },
+    {
+      "name": "library_no_match",
+      "value": "Туры килгән манга юк"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "Фильтр"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "Тәртипләү"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "Күрсәтү"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "Йөкләнгән"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "Укылмаган"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "Башланган"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "Кыстыргычлы"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "Тәмамланган"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "Күзәтелә"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "Исем"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "Бүлекләр саны"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "Соңгы уку"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "Яңартуны тикшерү вакыты"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "Укылмаганнар саны"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "Әсәрнең яңару вакыты"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "Бүлекләрне алу вакыты"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "Өстәлгән көн"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "Очраклы"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "Тыгыз челтәр"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "Сирәк челтәр"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "Тышлык челтәре"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "Исемлек"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "Юлдагы саны"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "Авто"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "Билгеләр һәм төймәләр"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "Йөкләнгән бүлекләр саны"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "Укылмаган бүлекләр"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "Җирле чыганак"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "Тел"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "«Укуны дәвам итү» төймәсе"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "Битләр"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "Төркем битләрен күрсәтү"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "Әсәрләр санын күрсәтү"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "Honyomi карточкалары"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "Төп экран картасын бирүче"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "Укуны дәвам итү"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "Күптән түгел укылган манганы тиз дәвам итү"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "Яңартулар"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "Китапханәдәге иң яңа укылмаган бүлекләр"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "Укуны дәвам итү"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "Яңартулар"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d укылмаган бүлек"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "Уку тарихы әле юк"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "Укылмаган бүлек юк"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "Кушымтаны ачу өчен басыгыз"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "Манга карточкасы"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "Тәфсил битеннән өстәгез, тышлык укуны ача"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "Манга тәфсил битеннән төп экранга өстәгез"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "Төп экранга өстәү"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "Төп экранга өстәлде"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "Карта өстәлмәде"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "Атналык статистика"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "Бу атнаның көнлек уку вакыты"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "Айлык статистика"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "Бу айның көнлек уку вакыты"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "Уку әле юк"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "Киләсе яңартуларны күрсәтү"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "Киләсе"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "Киләсе яңарту кулланмасы"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "Алдагы ай"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "Киләсе ай"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "Кертелгән һәм чыгарылган төркемнәргә берүк кергән әсәрләр күрсәтелми."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "Бүген"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d көн элек"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "%d көннән соң"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "Киләсе"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "Китапханә мангасының көтелгән яңарту календаре"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "Киләсе"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "Китапханәдә дәвам иткән манга юк"
+    }
+  ]
 }

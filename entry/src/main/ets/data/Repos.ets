@@ -1,7 +1,20 @@
 import { relationalStore } from '@kit.ArkData';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { AppDb } from './AppDb';
-import { SManga, SChapter, MangaRecord, ChapterRecord, CategoryRecord, UpdateItem, HistoryItem, TrackRecord, MangaStats, UpcomingManga, ContentType, PluginRecord } from '../model/Models';
+import {
+  CategoryRecord,
+  ChapterRecord,
+  ContentType,
+  HistoryItem,
+  MangaRecord,
+  MangaStats,
+  PluginRecord,
+  SChapter,
+  SManga,
+  TrackRecord,
+  UpcomingManga,
+  UpdateItem
+} from '../model/Models';
 
 function closeQuietly(rs: relationalStore.ResultSet): void {
   try {
@@ -12,6 +25,12 @@ function closeQuietly(rs: relationalStore.ResultSet): void {
 
 // 漫画仓库
 export class MangaRepo {
+  private static readonly COLUMNS: string[] = [
+    'id', 'sourceKey', 'url', 'title', 'thumbnailUrl', 'origThumbnail', 'author',
+    'description', 'genre', 'status', 'contentType', 'inLibrary', 'categoryId', 'addedAt',
+    'lastUpdateAt', 'fetchedAt', 'chapterFlags', 'localCover', 'localCoverUrl',
+  ];
+
   static async upsertFromSource(sourceKey: string, m: SManga, contentType: string): Promise<number> {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('manga');
@@ -145,6 +164,9 @@ export class MangaRepo {
     return list;
   }
 
+  // 仅切换书架标记；首次加入时按内容类型落对应默认分类（小说→小说、视频→动画、
+  // 其余→漫画；同名分类被删/改名时回退 id = 1）与 addedAt，
+
   // 按连载状态获取书架漫画（即将推出页/卡片：连载中 + 完结连载）
   static async getLibraryByStatus(statuses: string[]): Promise<MangaRecord[]> {
     const store = await AppDb.get();
@@ -163,8 +185,6 @@ export class MangaRepo {
     return list;
   }
 
-  // 仅切换书架标记；首次加入时按内容类型落对应默认分类（小说→小说、视频→动画、
-  // 其余→漫画；同名分类被删/改名时回退 id = 1）与 addedAt，
   // 重新加入/移出不得抹掉用户已设置的 categoryId/addedAt
   static async setInLibrary(id: number, inLibrary: boolean): Promise<void> {
     const store = await AppDb.get();
@@ -172,12 +192,12 @@ export class MangaRepo {
     try {
       await store.executeSql(
         `UPDATE manga SET inLibrary = ?,` +
-        ` categoryId = CASE WHEN ? = 1 AND inLibrary = 0 THEN` +
-        ` COALESCE((SELECT c.id FROM category c WHERE c.name =` +
-        ` CASE manga.contentType WHEN ? THEN ? WHEN ? THEN ? ELSE ? END` +
-        ` ORDER BY c.sortOrder ASC, c.id ASC LIMIT 1), 1) ELSE categoryId END,` +
-        ` addedAt = CASE WHEN ? = 1 AND inLibrary = 0 THEN ? ELSE addedAt END` +
-        ` WHERE id = ?`,
+          ` categoryId = CASE WHEN ? = 1 AND inLibrary = 0 THEN` +
+          ` COALESCE((SELECT c.id FROM category c WHERE c.name =` +
+          ` CASE manga.contentType WHEN ? THEN ? WHEN ? THEN ? ELSE ? END` +
+          ` ORDER BY c.sortOrder ASC, c.id ASC LIMIT 1), 1) ELSE categoryId END,` +
+          ` addedAt = CASE WHEN ? = 1 AND inLibrary = 0 THEN ? ELSE addedAt END` +
+          ` WHERE id = ?`,
         [flag, flag,
           ContentType.NOVEL, ContentType.CATEGORY_NOVEL,
           ContentType.VIDEO, ContentType.CATEGORY_VIDEO,
@@ -402,12 +422,6 @@ export class MangaRepo {
     return map;
   }
 
-  private static readonly COLUMNS: string[] = [
-    'id', 'sourceKey', 'url', 'title', 'thumbnailUrl', 'origThumbnail', 'author',
-    'description', 'genre', 'status', 'contentType', 'inLibrary', 'categoryId', 'addedAt',
-    'lastUpdateAt', 'fetchedAt', 'chapterFlags', 'localCover', 'localCoverUrl',
-  ];
-
   private static rowToManga(rs: relationalStore.ResultSet): MangaRecord {
     try {
       const m = new MangaRecord();
@@ -439,6 +453,11 @@ export class MangaRepo {
 
 // 章节仓库
 export class ChapterRepo {
+  private static readonly COLUMNS: string[] = [
+    'id', 'mangaId', 'url', 'name', 'chapterNumber', 'dateUpload',
+    'pages', 'sortOrder', 'read', 'bookmark', 'lastPageRead',
+  ];
+
   static async getById(id: number): Promise<ChapterRecord | undefined> {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('chapter');
@@ -470,12 +489,17 @@ export class ChapterRepo {
     return list;
   }
 
+  // 用源返回的章节列表全量刷新本地记录：保留仍在源中的章节已读状态、
+
   // 第一条未读章节完整记录（漫画卡片续读回退；id 版本见 firstUnread）
   static async firstUnreadChapter(mangaId: number): Promise<ChapterRecord | undefined> {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('chapter');
-    pred.equalTo('mangaId', mangaId).and().equalTo('read', 0)
-      .orderByAsc('sortOrder').orderByAsc('id');
+    pred.equalTo('mangaId', mangaId)
+      .and()
+      .equalTo('read', 0)
+      .orderByAsc('sortOrder')
+      .orderByAsc('id');
     pred.limitAs(1);
     try {
       const rs = await store.query(pred, ChapterRepo.COLUMNS);
@@ -487,7 +511,6 @@ export class ChapterRepo {
     }
   }
 
-  // 用源返回的章节列表全量刷新本地记录：保留仍在源中的章节已读状态、
   // 删除源已移除的章节（含历史，章节可能在源端被删除）；返回新增章节数
   static async syncFromSource(mangaId: number, chapters: SChapter[]): Promise<number> {
     const store = await AppDb.get();
@@ -655,6 +678,8 @@ export class ChapterRepo {
     return count;
   }
 
+  // 备份恢复用：章节不存在则插入，存在则仅恢复阅读状态；
+
   // 备份恢复用：按 mangaId+url 更新阅读状态
   static async applyStateByUrl(mangaId: number, url: string, read: boolean, lastPageRead: number): Promise<void> {
     const store = await AppDb.get();
@@ -671,7 +696,6 @@ export class ChapterRepo {
     }
   }
 
-  // 备份恢复用：章节不存在则插入，存在则仅恢复阅读状态；
   // chapter 表 UNIQUE(mangaId, url) 支撑单条 INSERT ON CONFLICT 原子完成
   static async upsertBackup(mangaId: number, url: string, name: string, chapterNumber: number,
     read: boolean, lastPageRead: number): Promise<void> {
@@ -732,11 +756,6 @@ export class ChapterRepo {
     return count;
   }
 
-  private static readonly COLUMNS: string[] = [
-    'id', 'mangaId', 'url', 'name', 'chapterNumber', 'dateUpload',
-    'pages', 'sortOrder', 'read', 'bookmark', 'lastPageRead',
-  ];
-
   private static rowToChapter(rs: relationalStore.ResultSet): ChapterRecord {
     try {
       const c = new ChapterRecord();
@@ -779,23 +798,6 @@ export class CategoryRepo {
       throw new Error(`list categories failed: ${e}`);
     }
     return list;
-  }
-
-  // 按分类 id 查分类名（编辑守卫用；查不到返回空串）
-  private static async nameOf(store: relationalStore.RdbStore, id: number): Promise<string> {
-    const pred = new relationalStore.RdbPredicates('category');
-    pred.equalTo('id', id);
-    try {
-      const rs = await store.query(pred, ['name']);
-      if (rs.goToNextRow()) {
-        const name = rs.getString(rs.getColumnIndex('name'));
-        closeQuietly(rs);
-        return name;
-      }
-      closeQuietly(rs);
-    } catch (e) {
-    }
-    return '';
   }
 
   static async add(name: string): Promise<void> {
@@ -890,6 +892,23 @@ export class CategoryRepo {
       throw new Error(`category remove failed: ${e}`);
     }
   }
+
+  // 按分类 id 查分类名（编辑守卫用；查不到返回空串）
+  private static async nameOf(store: relationalStore.RdbStore, id: number): Promise<string> {
+    const pred = new relationalStore.RdbPredicates('category');
+    pred.equalTo('id', id);
+    try {
+      const rs = await store.query(pred, ['name']);
+      if (rs.goToNextRow()) {
+        const name = rs.getString(rs.getColumnIndex('name'));
+        closeQuietly(rs);
+        return name;
+      }
+      closeQuietly(rs);
+    } catch (e) {
+    }
+    return '';
+  }
 }
 
 // 阅读历史仓库
@@ -928,23 +947,6 @@ export class HistoryRepo {
       throw new Error(`recent history failed: ${e}`);
     }
     return list;
-  }
-
-  // 行 → HistoryItem 统一映射（recent/lastForManga/lastInLibrary 共用）
-  private static rowToItem(rs: relationalStore.ResultSet): HistoryItem {
-    try {
-      return HistoryItem.of(
-        rs.getLong(rs.getColumnIndex('mangaId')),
-        rs.getLong(rs.getColumnIndex('chapterId')),
-        rs.getString(rs.getColumnIndex('mangaTitle')),
-        rs.getString(rs.getColumnIndex('coverUrl')),
-        rs.getString(rs.getColumnIndex('chapterName')),
-        rs.getLong(rs.getColumnIndex('seenAt')),
-        rs.getLong(rs.getColumnIndex('lastPageRead')),
-        rs.getString(rs.getColumnIndex('sourceKey')));
-    } catch (e) {
-      throw new Error(`map history row failed: ${e}`);
-    }
   }
 
   // 某部漫画最近一条阅读记录（漫画卡片续读章节）
@@ -1019,6 +1021,23 @@ export class HistoryRepo {
       await store.delete(new relationalStore.RdbPredicates('history'));
     } catch (e) {
       throw new Error(`clear history failed: ${e}`);
+    }
+  }
+
+  // 行 → HistoryItem 统一映射（recent/lastForManga/lastInLibrary 共用）
+  private static rowToItem(rs: relationalStore.ResultSet): HistoryItem {
+    try {
+      return HistoryItem.of(
+        rs.getLong(rs.getColumnIndex('mangaId')),
+        rs.getLong(rs.getColumnIndex('chapterId')),
+        rs.getString(rs.getColumnIndex('mangaTitle')),
+        rs.getString(rs.getColumnIndex('coverUrl')),
+        rs.getString(rs.getColumnIndex('chapterName')),
+        rs.getLong(rs.getColumnIndex('seenAt')),
+        rs.getLong(rs.getColumnIndex('lastPageRead')),
+        rs.getString(rs.getColumnIndex('sourceKey')));
+    } catch (e) {
+      throw new Error(`map history row failed: ${e}`);
     }
   }
 }
@@ -1213,11 +1232,6 @@ export class UpcomingRepo {
     return map;
   }
 
-  private static startOfDay(ms: number): number {
-    const d: Date = new Date(ms);
-    return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
-  }
-
   // 章节发布间隔（天）：上传日去重后取相邻间隔中位数，不足 3 天回退 7 天（对齐 FetchInterval.calculateInterval）
   static calcInterval(dates: number[]): number {
     const win: number = dates.length <= 8 ? 3 : 10;
@@ -1252,19 +1266,6 @@ export class UpcomingRepo {
     return interval;
   }
 
-  // 逾期超过 10 个周期时倍增检查周期（对齐 FetchInterval.increaseInterval）
-  private static increaseInterval(delta: number, daysSinceLatest: number): number {
-    if (delta >= UpcomingRepo.MAX_INTERVAL) {
-      return UpcomingRepo.MAX_INTERVAL;
-    }
-    const cycle: number = Math.floor(daysSinceLatest / delta) + 1;
-    if (cycle > 10) {
-      return UpcomingRepo.increaseInterval(delta * 2, daysSinceLatest);
-    }
-    return delta;
-  }
-
-  // 预计下次更新时间（对齐 FetchInterval.calculateNextUpdate，返回当日零点时间戳）；
   // 倍增后的 adjusted 全程统一使用，确保不返回过去的时间
   static nextUpdate(lastUpdateAt: number, interval: number, now: number): number {
     const latest: number = UpcomingRepo.startOfDay(lastUpdateAt > 0 ? lastUpdateAt : now);
@@ -1276,6 +1277,25 @@ export class UpcomingRepo {
       next = latest + (cycle + 2) * adjusted * UpcomingRepo.DAY_MS;
     }
     return next;
+  }
+
+  private static startOfDay(ms: number): number {
+    const d: Date = new Date(ms);
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  }
+
+  // 预计下次更新时间（对齐 FetchInterval.calculateNextUpdate，返回当日零点时间戳）；
+
+  // 逾期超过 10 个周期时倍增检查周期（对齐 FetchInterval.increaseInterval）
+  private static increaseInterval(delta: number, daysSinceLatest: number): number {
+    if (delta >= UpcomingRepo.MAX_INTERVAL) {
+      return UpcomingRepo.MAX_INTERVAL;
+    }
+    const cycle: number = Math.floor(daysSinceLatest / delta) + 1;
+    if (cycle > 10) {
+      return UpcomingRepo.increaseInterval(delta * 2, daysSinceLatest);
+    }
+    return delta;
   }
 }
 

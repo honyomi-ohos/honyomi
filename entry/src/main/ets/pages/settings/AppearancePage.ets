@@ -16,23 +16,11 @@ export struct AppearanceContent {
   @StorageProp('isDark') isDark: boolean = false;
   @State themeMode: string = 'auto';
   // 二级页跳转：手机壳内为 push 路由；lg 双栏内为右栏切换
-  onNavigate: (route: string) => void = (route: string) => {};
+  onNavigate: (route: string) => void = (route: string) => {
+  };
 
   aboutToAppear(): void {
     this.themeMode = Settings.getThemeMode();
-  }
-
-  private applyMode(mode: string): void {
-    this.themeMode = mode;
-    Settings.setThemeMode(mode);
-    const systemDark = AppStorage.get<boolean>(AppKeys.IS_DARK_SYSTEM) ?? false;
-    Settings.applyTheme(systemDark);
-    Settings.applyColorMode(Util.hostAbilityContext(this.getUIContext()));
-  }
-
-  private pickTheme(id: string): void {
-    Settings.setAppThemeId(id);
-    Settings.applyAppTheme(Util.hostAbilityContext(this.getUIContext()));
   }
 
   @Builder
@@ -42,7 +30,12 @@ export struct AppearanceContent {
       .fontColor(this.themeMode === mode ? this.pal.onPrimary : this.pal.text)
       .backgroundColor(this.themeMode === mode ? this.pal.primary : this.pal.chip)
       .borderRadius(16)
-      .padding({ left: 16, right: 16, top: 7, bottom: 7 })
+      .padding({
+        left: 16,
+        right: 16,
+        top: 7,
+        bottom: 7
+      })
       .onClick(() => {
         this.applyMode(mode);
       })
@@ -69,7 +62,12 @@ export struct AppearanceContent {
             this.modeChip($r('app.string.appearance_theme_light'), 'light')
             this.modeChip($r('app.string.appearance_theme_dark'), 'dark')
           }
-          .padding({ left: 16, right: 16, top: 12, bottom: 14 })
+          .padding({
+            left: 16,
+            right: 16,
+            top: 12,
+            bottom: 14
+          })
         }
 
         PrefGroup({ groupTitle: $r('app.string.appearance_theme') }) {
@@ -100,6 +98,19 @@ export struct AppearanceContent {
     .height('100%')
     .scrollBar(BarState.Off)
     .align(Alignment.TopStart)
+  }
+
+  private applyMode(mode: string): void {
+    this.themeMode = mode;
+    Settings.setThemeMode(mode);
+    const systemDark = AppStorage.get<boolean>(AppKeys.IS_DARK_SYSTEM) ?? false;
+    Settings.applyTheme(systemDark);
+    Settings.applyColorMode(Util.hostAbilityContext(this.getUIContext()));
+  }
+
+  private pickTheme(id: string): void {
+    Settings.setAppThemeId(id);
+    Settings.applyAppTheme(Util.hostAbilityContext(this.getUIContext()));
   }
 }
 

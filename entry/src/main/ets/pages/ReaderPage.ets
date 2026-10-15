@@ -2,10 +2,10 @@ import { motion } from '@kit.MultimodalAwarenessKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { uiMaterial } from '@kit.ArkUI';
 import { AppDb } from '../data/AppDb';
-import { MangaRepo, ChapterRepo, HistoryRepo } from '../data/Repos';
+import { ChapterRepo, HistoryRepo, MangaRepo } from '../data/Repos';
 import { ReadingStatsRepo } from '../data/ReadingStats';
 import { SourceRegistry } from '../source/Source';
-import { MangaRecord, ChapterRecord, SPage } from '../model/Models';
+import { ChapterRecord, MangaRecord, SPage } from '../model/Models';
 import { ReaderParams } from '../model/RouteParams';
 import { Theme, ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
@@ -13,7 +13,7 @@ import { Util } from '../common/Util';
 import { Settings } from '../common/Settings';
 import { GripSupport } from '../common/GripSupport';
 import { ReaderWindow } from '../common/ReaderWindow';
-import { ReaderChapterNav, ChapterNeighbors } from '../common/ReaderChapterNav';
+import { ChapterNeighbors, ReaderChapterNav } from '../common/ReaderChapterNav';
 import { DownloadService } from '../data/DownloadService';
 import { TrackService } from '../data/track/TrackService';
 import { SmartImage } from './components/SmartImage';
@@ -22,14 +22,14 @@ import { SwitchRow, TextRow } from './components/Prefs';
 import { PickerSheet } from './components/PickerSheet';
 import { EmulationFlipView } from './components/PageFlip';
 import {
-  ReaderMenu,
   ReaderBottomBar,
-  ReaderNavRow,
-  ReaderPagePill,
-  ReaderMenuIconButton,
-  ReaderIndicatorBadge,
-  ReaderOrientationSheet,
   ReaderFilterArea,
+  ReaderIndicatorBadge,
+  ReaderMenu,
+  ReaderMenuIconButton,
+  ReaderNavRow,
+  ReaderOrientationSheet,
+  ReaderPagePill,
   ReaderTransition
 } from './components/ReaderChrome';
 import { LoadingBackButton } from './components/LoadingBackButton';
@@ -73,7 +73,7 @@ class PageDataSource implements IDataSource {
 @Component
 export struct ReaderPage {
   pathStack: NavPathStack = new NavPathStack();
-  @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('isDark') @Watch('onDarkChanged') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageProp('navBarH') navBarH: number = 0;
@@ -131,16 +131,6 @@ export struct ReaderPage {
   // 设备是否支持智感握姿（不支持则隐藏该模式选项）
   @State gripSupported: boolean = true;
   private gripListening: boolean = false;
-  private handleHoldingHandChange: (status: motion.HoldingHandStatus) => void =
-    (status: motion.HoldingHandStatus): void => {
-      if (canIUse('SystemCapability.MultimodalAwareness.Motion')) {
-        if (status === motion.HoldingHandStatus.LEFT_HAND_HELD) {
-          this.gripRight = false;
-        } else if (status === motion.HoldingHandStatus.RIGHT_HAND_HELD) {
-          this.gripRight = true;
-        }
-      }
-    };
   private dataSource: PageDataSource = new PageDataSource();
   private scroller: Scroller = new Scroller();
   private touchDownX: number = -1;
@@ -164,6 +154,7 @@ export struct ReaderPage {
     this.gripSupported = GripSupport.isSupported();
     this.crop = Settings.getReaderCrop();
     this.readerTheme = Settings.getReaderTheme();
+    this.syncReaderBgDark();
     this.brightLv = Settings.getReaderBrightness();
     this.showPageNumber = Settings.getReaderShowPageNumber();
     this.orientation = Settings.getReaderOrientation();
@@ -195,331 +186,6 @@ export struct ReaderPage {
     ReaderWindow.restore(Util.hostAbilityContext(this.getUIContext()));
   }
 
-  // 智感握姿：订阅/退订握持手感知（want=false 强制退订）
-  private updateGripListener(want: boolean): void {
-    const shouldListen: boolean = want && this.mode === 'smart_grip' && this.gripSupported;
-    if (shouldListen && !this.gripListening) {
-      if (canIUse('SystemCapability.MultimodalAwareness.Motion')) {
-        try {
-          motion.on('holdingHandChanged', this.handleHoldingHandChange);
-          this.gripListening = true;
-        } catch (error) {
-          hilog.warn(0x0001, 'Reader', 'subscribe holdingHandChanged failed: %{public}s', `${error}`);
-        }
-      }
-    } else if (!shouldListen && this.gripListening) {
-      if (canIUse('SystemCapability.MultimodalAwareness.Motion')) {
-        try {
-          motion.off('holdingHandChanged', this.handleHoldingHandChange);
-        } catch (error) {
-          hilog.warn(0x0001, 'Reader', 'unsubscribe holdingHandChanged failed: %{public}s', `${error}`);
-        }
-      }
-      this.gripListening = false;
-    }
-  }
-
-  private applyOrientation(): void {
-    ReaderWindow.applyOrientation(Util.hostAbilityContext(this.getUIContext()), this.orientation);
-  }
-
-  private applyBrightness(): void {
-    ReaderWindow.applyBrightness(Util.hostAbilityContext(this.getUIContext()), this.brightLv);
-  }
-
-  // 记录内容区尺寸与组件在窗口中的全局偏移（globalPosition），供点击热区换算
-  private syncReaderArea(newArea: Area): void {
-    const w = newArea.width;
-    if (typeof w === 'number' && w > 0) {
-      this.readerW = w;
-    }
-    const h = newArea.height;
-    if (typeof h === 'number' && h > 0) {
-      this.readerH = h;
-    }
-    const gp = newArea.globalPosition;
-    const gx = gp.x;
-    if (typeof gx === 'number') {
-      this.readerOffX = gx;
-    }
-    const gy = gp.y;
-    if (typeof gy === 'number') {
-      this.readerOffY = gy;
-    }
-  }
-
-  private async loadChapter(): Promise<void> {
-    const gen = ++this.loadGen;
-    this.loading = true;
-    this.showMenu = false;
-    this.transOverlay = 0;
-    // 切章：先结算上一章的阅读会话
-    ReadingStatsRepo.flush();
-    try {
-      const context = Util.hostAbilityContext(this.getUIContext());
-      await AppDb.ready(context);
-      if (gen !== this.loadGen) {
-        return;
-      }
-      const chapter = await ChapterRepo.getById(this.chapterId);
-      if (gen !== this.loadGen) {
-        return;
-      }
-      if (chapter === undefined) {
-        Util.toastRes(this.getUIContext(), $r('app.string.reader_chapter_not_found'));
-        this.pathStack.pop();
-        return;
-      }
-      this.chapter = chapter;
-      this.mangaId = chapter.mangaId;
-      const manga = await MangaRepo.get(chapter.mangaId);
-      if (gen !== this.loadGen) {
-        return;
-      }
-      if (manga !== undefined) {
-        this.manga = manga;
-      }
-      let pages: SPage[] = [];
-      if (DownloadService.isDownloaded(chapter.id)) {
-        // 离线优先：读取已下载的本地页面
-        const files: string[] = DownloadService.localPages(chapter.mangaId, chapter.id);
-        for (let i = 0; i < files.length; i++) {
-          const p: SPage = { index: i, url: `file://${files[i]}` };
-          pages.push(p);
-        }
-      } else {
-        const source = SourceRegistry.get(this.manga.sourceKey);
-        if (source === undefined) {
-          throw new Error('source_unavailable');
-        }
-        pages = await source.getPageList(chapter.url);
-      }
-      if (gen !== this.loadGen) {
-        return;
-      }
-      this.pages = pages;
-      this.mode = Settings.getReaderMode();
-      // 历史保存的智感握姿在当前设备不支持时，静默回退为从左到右
-      if (this.mode === 'smart_grip' && !this.gripSupported) {
-        this.mode = 'ltr';
-      }
-      // 边界切章落点：向前进下一章落在首页，向回退上一章落在末页（对齐 Mihon 无缝切换）；
-      // 菜单按钮切章按历史进度恢复
-      if (this.gotoBoundary < 0 && pages.length > 0) {
-        this.currentReal = pages.length - 1;
-      } else if (this.gotoBoundary > 0) {
-        this.currentReal = 0;
-      } else {
-        this.currentReal = chapter.lastPageRead > 0 && chapter.lastPageRead < pages.length
-          ? chapter.lastPageRead : 0;
-      }
-      this.gotoBoundary = 0;
-      await this.refreshNeighbors();
-      if (gen !== this.loadGen) {
-        return;
-      }
-      this.applyMode(true);
-      await HistoryRepo.upsert(chapter.mangaId, chapter.id, this.currentReal);
-      if (gen !== this.loadGen) {
-        return;
-      }
-      // 开始本章的阅读时长计时
-      ReadingStatsRepo.begin(chapter.mangaId, chapter.id);
-    } catch (e) {
-      // 加载失败清空旧章页面，防止旧页码经 persistProgress 写入本章进度
-      if (gen === this.loadGen) {
-        this.pages = [];
-        Util.toastRes(this.getUIContext(), $r('app.string.reader_load_failed'),
-          [Util.errText(this.getUIContext(), e instanceof Error ? e.message : String(e))]);
-      }
-    }
-    if (gen !== this.loadGen) {
-      return;
-    }
-    this.loading = false;
-  }
-
-  private async refreshNeighbors(): Promise<void> {
-    const n: ChapterNeighbors = await ReaderChapterNav.neighbors(this.mangaId, this.chapterId);
-    this.hasPrev = n.hasPrev;
-    this.hasNext = n.hasNext;
-    let prevName = '';
-    let nextName = '';
-    for (let i = 0; i < n.chapters.length; i++) {
-      const c: ChapterRecord = n.chapters[i];
-      if (n.prevId > 0 && c.id === n.prevId) {
-        prevName = c.name;
-      }
-      if (n.nextId > 0 && c.id === n.nextId) {
-        nextName = c.name;
-      }
-    }
-    this.prevChapterName = prevName;
-    this.nextChapterName = nextName;
-  }
-
-  // 根据模式构建展示页序（含章节边界过渡页）并恢复进度：
-  // 非 RTL：[上一章过渡, 页0..页N-1, 下一章过渡]；RTL 整体反转（阅读前进 = 索引递减）
-  private applyMode(scrollToResume: boolean): void {
-    const cellCount = this.pages.length + 2;
-    this.coverX = Util.zeros(cellCount);
-    this.coverY = Util.zeros(cellCount);
-    this.coverZ = Util.zeros(cellCount);
-    const cells: SPage[] = [];
-    const prevT: SPage = { index: -1, url: TRANS_PREV_URL };
-    const nextT: SPage = { index: -2, url: TRANS_NEXT_URL };
-    if (this.mode === 'rtl') {
-      cells.push(nextT);
-      for (let i = this.pages.length - 1; i >= 0; i--) {
-        cells.push(this.pages[i]);
-      }
-      cells.push(prevT);
-      this.dataSource.setPages(cells);
-      this.displayIndex = this.pages.length - this.currentReal;
-    } else {
-      cells.push(prevT);
-      for (let i = 0; i < this.pages.length; i++) {
-        cells.push(this.pages[i]);
-      }
-      cells.push(nextT);
-      this.dataSource.setPages(cells);
-      this.displayIndex = this.currentReal + 1;
-    }
-    if (this.mode === 'webtoon' && scrollToResume) {
-      const target = this.currentReal + STRIP_LEAD_COUNT;
-      if (this.resumeTimerId !== -1) {
-        clearTimeout(this.resumeTimerId);
-      }
-      this.resumeTimerId = setTimeout(() => {
-        this.resumeTimerId = -1;
-        this.scroller.scrollToIndex(target, false, ScrollAlign.START);
-      }, 200);
-    }
-    this.updateGripListener(true);
-  }
-
-  // 展示单元格（含过渡页）→ 真实页序；过渡页换算结果越界由调用方校验
-  private displayToReal(displayIdx: number): number {
-    if (this.mode === 'rtl') {
-      return this.pages.length - displayIdx;
-    }
-    return displayIdx - 1;
-  }
-
-  private realToDisplay(realIdx: number): number {
-    if (this.mode === 'rtl') {
-      return this.pages.length - realIdx;
-    }
-    return realIdx + 1;
-  }
-
-  // 展示单元格种类：'prev'/'next' 为过渡页，'' 为普通页（首尾单元格恒为过渡页）
-  private cellKind(cell: number): string {
-    if (cell === 0) {
-      return this.mode === 'rtl' ? 'next' : 'prev';
-    }
-    if (cell === this.pages.length + 1) {
-      return this.mode === 'rtl' ? 'prev' : 'next';
-    }
-    return '';
-  }
-
-  private async onSwipe(displayIdx: number): Promise<void> {
-    this.displayIndex = displayIdx;
-    const kind = this.cellKind(displayIdx);
-    if (kind === 'next') {
-      // 落在“下一章”过渡页：没有下一章时呼出菜单（对齐 Mihon），有则等待继续前翻
-      if (!this.hasNext) {
-        this.showMenu = true;
-      }
-      return;
-    }
-    if (kind === 'prev') {
-      return;
-    }
-    const real = this.displayToReal(displayIdx);
-    if (real !== this.currentReal) {
-      this.currentReal = real;
-      await this.persistProgress();
-    }
-  }
-
-  private async persistProgress(): Promise<void> {
-    try {
-      ReadingStatsRepo.tick();
-      await ChapterRepo.setLastPageRead(this.chapterId, this.currentReal);
-      await HistoryRepo.upsert(this.mangaId, this.chapterId, this.currentReal);
-      if (this.currentReal >= this.pages.length - 1 && !this.chapter.read) {
-        this.chapter.read = true;
-        await ChapterRepo.setRead(this.chapterId, true);
-        TrackService.updateChapterRead(this.mangaId, this.chapterId).catch((e: Object): void => {
-          hilog.warn(0x0001, 'Reader', 'track update failed: %{public}s', `${e}`);
-        });
-      }
-    } catch (e) {
-      hilog.warn(0x0001, 'Reader', 'persistProgress failed: %{public}s',
-        e instanceof Error ? e.message : String(e));
-    }
-  }
-
-  private setMode(mode: string): void {
-    this.mode = mode;
-    this.transOverlay = 0;
-    Settings.setReaderMode(mode);
-    this.applyMode(true);
-  }
-
-  private modeIcon(): string {
-    if (this.mode === 'rtl') {
-      return 'reader_rtl';
-    }
-    if (this.mode === 'webtoon') {
-      return 'reader_webtoon';
-    }
-    if (this.mode === 'vertical') {
-      return 'reader_vertical';
-    }
-    if (this.mode === 'smart_grip') {
-      return 'smart_grip';
-    }
-    return 'reader_ltr';
-  }
-
-  // 当前设备可用的阅读模式（智感握姿仅在支持的设备上提供）
-  private availableModes(): string[] {
-    const modes: string[] = ['ltr', 'rtl', 'vertical', 'webtoon'];
-    if (this.gripSupported) {
-      modes.push('smart_grip');
-    }
-    return modes;
-  }
-
-  private modeOptions(): ResourceStr[] {
-    const opts: ResourceStr[] = [$r('app.string.reader_mode_ltr'), $r('app.string.reader_mode_rtl'),
-      $r('app.string.reader_mode_vertical'), $r('app.string.reader_mode_webtoon')];
-    if (this.gripSupported) {
-      opts.push($r('app.string.reader_mode_smart_grip'));
-    }
-    return opts;
-  }
-
-  private modeIcons(): string[] {
-    const icons: string[] = ['reader_ltr', 'reader_rtl', 'reader_vertical', 'reader_webtoon'];
-    if (this.gripSupported) {
-      icons.push('smart_grip');
-    }
-    return icons;
-  }
-
-  private selectedModeIndex(): number {
-    const idx: number = this.availableModes().indexOf(this.mode);
-    return idx >= 0 ? idx : 0;
-  }
-
-  private selectMode(): void {
-    this.showModeSheet = true;
-  }
-
   @Builder
   modeSheetBuilder() {
     PickerSheet({
@@ -536,10 +202,6 @@ export struct ReaderPage {
     })
   }
 
-  private selectOrientation(): void {
-    this.showOrientationSheet = true;
-  }
-
   @Builder
   orientationSheetBuilder() {
     ReaderOrientationSheet({
@@ -551,362 +213,6 @@ export struct ReaderPage {
         this.applyOrientation();
       }
     })
-  }
-
-  private toggleCrop(): void {
-    this.crop = !this.crop;
-    Settings.setReaderCrop(this.crop);
-  }
-
-  private setCrop(v: boolean): void {
-    this.crop = v;
-    Settings.setReaderCrop(v);
-  }
-
-  // 双页显示：横向分页模式（LTR/RTL/智感握姿）下 Swiper 一屏两页
-  private dualPageActive(): boolean {
-    return this.dualPage && this.mode !== 'vertical';
-  }
-
-  // Slider 跳页（按真实页序）
-  private jumpToReal(real: number): void {
-    if (real < 0 || real >= this.pages.length) {
-      return;
-    }
-    const display = this.realToDisplay(real);
-    this.displayIndex = display;
-    if (this.mode === 'webtoon') {
-      this.scroller.scrollToIndex(display, false, ScrollAlign.START);
-      this.currentReal = real;
-      this.persistProgress();
-    } else {
-      this.onSwipe(display);
-    }
-  }
-
-  // 切换相邻章节；fromBoundary=true 表示由阅读边界（过渡页）触发，
-  // 下一章落在首页、上一章落在末页；菜单按钮触发按历史进度恢复
-  private async gotoChapter(next: boolean, fromBoundary: boolean = false): Promise<void> {
-    const targetId: number = await ReaderChapterNav.neighborChapterId(this.mangaId, this.chapterId, next);
-    if (targetId === 0) {
-      Util.toastRes(this.getUIContext(), next ? $r('app.string.reader_last_chapter') : $r('app.string.reader_first_chapter'));
-      return;
-    }
-    if (next && !this.chapter.read) {
-      await ChapterRepo.setRead(this.chapterId, true);
-    }
-    this.gotoBoundary = fromBoundary ? (next ? 1 : -1) : 0;
-    this.chapterId = targetId;
-    await this.loadChapter();
-  }
-
-  // 翻页模式点击区域（导航模式：默认/从左到右/从右到左/垂直/边缘/无，对齐 Mihon pref_viewer_nav）
-  private handleTouch(event: TouchEvent): void {
-    if (event.type === TouchType.Down) {
-      if (event.touches.length === 0) {
-        return;
-      }
-      const down: TouchObject = event.touches[0];
-      // TouchObject.x/y 为窗口坐标，减去组件在窗口中的偏移得到组件内坐标
-      this.touchDownX = down.x - this.readerOffX;
-      this.touchDownY = down.y - this.readerOffY;
-    } else if (event.type === TouchType.Up) {
-      if (this.touchDownX < 0 || event.changedTouches.length === 0) {
-        return;
-      }
-      const up: TouchObject = event.changedTouches[0];
-      const upX = up.x - this.readerOffX;
-      const upY = up.y - this.readerOffY;
-      const dx = Math.abs(upX - this.touchDownX);
-      const dy = Math.abs(upY - this.touchDownY);
-      this.touchDownX = -1;
-      if (dx > 20 || dy > 20) {
-        return; // 滑动，忽略
-      }
-      if (this.pages.length === 0) {
-        return;
-      }
-      if (this.navMode === 'none') {
-        this.showMenu = !this.showMenu;
-        return;
-      }
-      if (this.navMode === 'vertical') {
-        const zoneY = upY / (this.readerH > 0 ? this.readerH : 640);
-        if (zoneY < 0.3) {
-          this.step(-1);
-        } else if (zoneY > 0.7) {
-          this.step(1);
-        } else {
-          this.showMenu = !this.showMenu;
-        }
-        return;
-      }
-      const zone = upX / (this.readerW > 0 ? this.readerW : 360);
-      // “下一页”是否在左侧：默认跟随阅读模式（RTL；智感握姿下左手握持时握持侧为下一页），可被导航模式覆盖
-      let nextOnLeft: boolean = this.mode === 'rtl' ||
-        (this.mode === 'smart_grip' && !this.gripRight);
-      if (this.navMode === 'ltr') {
-        nextOnLeft = false;
-      } else if (this.navMode === 'rtl') {
-        nextOnLeft = true;
-      }
-      if (this.navMode === 'edge') {
-        // 边缘导航：仅屏幕左右边缘窄条翻页，其余区域切换菜单
-        if (zone < 0.12) {
-          this.step(nextOnLeft ? 1 : -1);
-        } else if (zone > 0.88) {
-          this.step(nextOnLeft ? -1 : 1);
-        } else {
-          this.showMenu = !this.showMenu;
-        }
-        return;
-      }
-      if (zone < 0.3) {
-        // 左侧区域
-        this.step(nextOnLeft ? 1 : -1);
-      } else if (zone > 0.7) {
-        // 右侧区域
-        this.step(nextOnLeft ? -1 : 1);
-      } else {
-        this.showMenu = !this.showMenu;
-      }
-    }
-  }
-
-  // 点击热区翻页：delta 为阅读方向步进（+1 下一页，-1 上一页）。
-  // RTL 展示序与阅读序相反，展示索引步进方向需取反；章节首尾垫有过渡页，
-  // 在过渡页上继续前/后翻即切换章节（上一章落在末页，下一章落在首页）
-  private step(delta: number): void {
-    const ddelta = this.mode === 'rtl' ? -delta : delta;
-    const kind = this.cellKind(this.displayIndex);
-    if (kind === 'next') {
-      if (delta > 0) {
-        this.gotoChapter(true, true);
-      } else {
-        this.backFromTransition();
-      }
-      return;
-    }
-    if (kind === 'prev') {
-      if (delta < 0) {
-        this.gotoChapter(false, true);
-      } else {
-        this.backFromTransition();
-      }
-      return;
-    }
-    const target = this.displayIndex + ddelta;
-    if (target < 0 || target > this.pages.length + 1) {
-      return;
-    }
-    this.displayIndex = target;
-    this.onSwipe(target);
-  }
-
-  // 从过渡页返回本章边界页（真实进度未变，仅回到当前页）
-  private backFromTransition(): void {
-    const back = this.realToDisplay(this.currentReal);
-    this.displayIndex = back;
-    this.onSwipe(back);
-  }
-
-  private useCurl(): boolean {
-    return this.pageAnim === 'curl' && this.mode !== 'webtoon' && this.mode !== 'vertical' && this.pages.length > 0;
-  }
-
-  private curlDual(): boolean {
-    return this.dualPage && this.mode !== 'vertical';
-  }
-
-  private curlCount(): number {
-    if (this.pages.length === 0) {
-      return 0;
-    }
-    if (this.curlDual()) {
-      return Math.ceil(this.pages.length / 2);
-    }
-    return this.pages.length;
-  }
-
-  private curlIndex(): number {
-    if (this.pages.length === 0) {
-      return 0;
-    }
-    if (this.curlDual()) {
-      return Math.min(this.curlCount() - 1, Math.floor(this.currentReal / 2));
-    }
-    return this.currentReal;
-  }
-
-  // 仿真卷曲从左缘翻出下一页：从右到左，或智感握姿左手（下一页在左侧）
-  private curlFromLeft(): boolean {
-    if (this.mode === 'rtl') {
-      return true;
-    }
-    if (this.mode === 'smart_grip' && !this.gripRight) {
-      return true;
-    }
-    return false;
-  }
-
-  private curlNextOnLeft(): boolean {
-    if (this.navMode === 'ltr') {
-      return false;
-    }
-    if (this.navMode === 'rtl') {
-      return true;
-    }
-    return this.curlFromLeft();
-  }
-
-  private curlTapMode(): string {
-    if (this.navMode === 'none') {
-      return 'none';
-    }
-    if (this.navMode === 'vertical') {
-      return 'vertical';
-    }
-    if (this.navMode === 'edge') {
-      return 'edge';
-    }
-    return 'horizontal';
-  }
-
-  private curlEnabled(): boolean {
-    return !this.showSettings && !this.showModeSheet && !this.showOrientationSheet;
-  }
-
-  private onCurlIndex(index: number): void {
-    const real = this.curlDual() ? Math.min(this.pages.length - 1, index * 2) : index;
-    if (real < 0 || real >= this.pages.length || real === this.currentReal) {
-      return;
-    }
-    this.currentReal = real;
-    this.displayIndex = this.realToDisplay(real);
-    this.persistProgress();
-  }
-
-  // 仿真翻页滑出边界：弹出章节过渡层（dir>0 越过末页，dir<0 越过首页）
-  private onCurlOverscroll(dir: number): void {
-    if (this.transOverlay !== 0) {
-      return;
-    }
-    this.transOverlay = dir > 0 ? 1 : -1;
-    // 没有下一章时呼出菜单（对齐 Mihon：落在无目标的 Next 过渡页）
-    if (dir > 0 && !this.hasNext) {
-      this.showMenu = true;
-    }
-  }
-
-  // 过渡层点击：按导航热区判定——继续前/后翻进入相邻章节，反向返回本章，中键呼出菜单
-  private onTransitionOverlayTap(x: number, y: number): void {
-    const kind = this.transOverlay > 0 ? 'next' : 'prev';
-    if (this.navMode === 'none') {
-      this.transOverlay = 0;
-      this.showMenu = !this.showMenu;
-      return;
-    }
-    let delta = 0;
-    if (this.navMode === 'vertical') {
-      const zoneY = y / (this.readerH > 0 ? this.readerH : 640);
-      if (zoneY < 0.3) {
-        delta = -1;
-      } else if (zoneY > 0.7) {
-        delta = 1;
-      }
-    } else {
-      // “下一页”是否在左侧：默认跟随阅读模式，可被导航模式覆盖
-      let nextOnLeft: boolean = this.mode === 'rtl' ||
-        (this.mode === 'smart_grip' && !this.gripRight);
-      if (this.navMode === 'ltr') {
-        nextOnLeft = false;
-      } else if (this.navMode === 'rtl') {
-        nextOnLeft = true;
-      }
-      const zone = x / (this.readerW > 0 ? this.readerW : 360);
-      if (zone < 0.3) {
-        delta = nextOnLeft ? 1 : -1;
-      } else if (zone > 0.7) {
-        delta = nextOnLeft ? -1 : 1;
-      }
-    }
-    this.transOverlay = 0;
-    if (delta === 0) {
-      this.showMenu = !this.showMenu;
-      return;
-    }
-    if (kind === 'next' && delta > 0) {
-      this.gotoChapter(true, true);
-    } else if (kind === 'prev' && delta < 0) {
-      this.gotoChapter(false, true);
-    }
-  }
-
-  private setPageAnim(v: string): void {
-    if (v === this.pageAnim) {
-      return;
-    }
-    this.pageAnim = v;
-    Settings.setReaderPageAnim(v);
-    this.coverX = Util.zeros(this.pages.length);
-    this.coverY = Util.zeros(this.pages.length);
-    this.coverZ = Util.zeros(this.pages.length);
-  }
-
-  private coverAt(arr: number[], index: number): number {
-    if (this.pageAnim !== 'cover' || index < 0 || index >= arr.length) {
-      return 0;
-    }
-    return arr[index];
-  }
-
-  private setCover(i: number, x: number, y: number, z: number): void {
-    if (i < 0 || i >= this.coverX.length) {
-      return;
-    }
-    if (this.coverX[i] !== x) {
-      this.coverX[i] = x;
-    }
-    if (this.coverY[i] !== y) {
-      this.coverY[i] = y;
-    }
-    if (this.coverZ[i] !== z) {
-      this.coverZ[i] = z;
-    }
-  }
-
-  // 覆盖：新页滑入盖住静止的当前页。滑动模式不改位移，沿用 Swiper 默认滚动。
-  private onCoverTransition(proxy: SwiperContentTransitionProxy): void {
-    if (this.pageAnim !== 'cover') {
-      return;
-    }
-    const i = proxy.index;
-    if (i < 0 || i >= this.coverX.length) {
-      return;
-    }
-    const p = proxy.position;
-    if (Math.abs(p - Math.round(p)) < 0.001) {
-      this.setCover(i, 0, 0, 0);
-      return;
-    }
-    const span = proxy.mainAxisLength;
-    const selected = proxy.selectedIndex;
-    const vertical = this.mode === 'vertical';
-    const pinX = vertical ? 0 : -p * span;
-    const pinY = vertical ? -p * span : 0;
-    if (i === selected) {
-      if (p < 0) {
-        this.setCover(i, pinX, pinY, 0);
-      } else {
-        this.setCover(i, 0, 0, 2);
-      }
-    } else if (i === selected + 1) {
-      this.setCover(i, 0, 0, 2);
-    } else if (i === selected - 1) {
-      this.setCover(i, pinX, pinY, 0);
-    } else {
-      this.setCover(i, 0, 0, 0);
-    }
   }
 
   @Builder
@@ -941,50 +247,6 @@ export struct ReaderPage {
     }
   }
 
-  private requestLeaf(dir: number): void {
-    const next = dir > 0 ? Math.abs(this.leafTurn) + 1 : -(Math.abs(this.leafTurn) + 1);
-    this.leafTurn = next === 0 ? dir : next;
-  }
-
-  // 双页热区按整屏计算。onLeaf 表示点击落在正在翻的那一半。
-  private onDualTap(localX: number, localY: number, onLeaf: boolean): void {
-    if (this.showSettings || this.showModeSheet || this.showOrientationSheet) {
-      return;
-    }
-    const fullW = this.readerW > 0 ? this.readerW : 1;
-    const fullH = this.readerH > 0 ? this.readerH : 1;
-    const globalX = this.curlFromLeft() ? (onLeaf ? localX : fullW / 2 + localX) :
-      (onLeaf ? fullW / 2 + localX : localX);
-    if (this.curlTapMode() === 'none') {
-      this.showMenu = !this.showMenu;
-      return;
-    }
-    if (this.curlTapMode() === 'vertical') {
-      const y = localY / fullH;
-      if (y < 0.3) {
-        this.requestLeaf(-1);
-      } else if (y > 0.7) {
-        this.requestLeaf(1);
-      } else {
-        this.showMenu = !this.showMenu;
-      }
-      return;
-    }
-    const edge = this.curlTapMode() === 'edge' ? 0.12 : 0.3;
-    const nextOnLeft = this.curlNextOnLeft();
-    let dir = 0;
-    if (globalX < fullW * edge) {
-      dir = nextOnLeft ? 1 : -1;
-    } else if (globalX > fullW * (1 - edge)) {
-      dir = nextOnLeft ? -1 : 1;
-    }
-    if (dir === 0) {
-      this.showMenu = !this.showMenu;
-    } else {
-      this.requestLeaf(dir);
-    }
-  }
-
   @Builder
   curlLeafPage(index: number) {
     this.curlFull(index * 2 + 1)
@@ -1007,6 +269,8 @@ export struct ReaderPage {
       this.onDualTap(event.x, event.y, false);
     })
   }
+
+  // 根据模式构建展示页序（含章节边界过渡页）并恢复进度：
 
   @Builder
   ComicFlipLeaf() {
@@ -1080,20 +344,6 @@ export struct ReaderPage {
     } else {
       this.curlFull(index)
     }
-  }
-
-  // ---- 各阅读模式内容体（经 ReaderFilterArea 的 content 注入；@BuilderParam 传参
-  // 只能调用 @Builder 方法，不能内联 UI 组件语法） ----
-
-  // 过渡视图文字色：白底深色字，灰/黑底浅色字（自动主题按系统深浅色）
-  private readerTextCol(): string {
-    const t = this.readerTheme === 3 ? (this.isDark ? 1 : 0) : this.readerTheme;
-    return t === 0 ? '#16181D' : '#ECEEF2';
-  }
-
-  private readerSubCol(): string {
-    const t = this.readerTheme === 3 ? (this.isDark ? 1 : 0) : this.readerTheme;
-    return t === 0 ? '#9916181D' : '#99ECEEF2';
   }
 
   // 条漫模式内容体
@@ -1206,8 +456,8 @@ export struct ReaderPage {
               fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
               fill: true
             })
-            .width('100%')
-            .height('100%')
+              .width('100%')
+              .height('100%')
           }
         }
         .width('100%')
@@ -1262,8 +512,6 @@ export struct ReaderPage {
       })
     }
   }
-
-  // ---- 菜单（共享 ReaderChrome 骨架：顶栏+占位+底栏，样式与拆分前一致） ----
 
   @Builder
   menuBottomBar() {
@@ -1523,40 +771,6 @@ export struct ReaderPage {
     })
   }
 
-  // 更多设置面板：背景色 / 显示页码 / 亮度
-  // 当前阅读模式/屏幕方向的显示文案
-  private modeLabelRes(): ResourceStr {
-    if (this.mode === 'rtl') {
-      return $r('app.string.reader_mode_rtl');
-    }
-    if (this.mode === 'vertical') {
-      return $r('app.string.reader_mode_vertical');
-    }
-    if (this.mode === 'webtoon') {
-      return $r('app.string.reader_mode_webtoon');
-    }
-    if (this.mode === 'smart_grip') {
-      return $r('app.string.reader_mode_smart_grip');
-    }
-    return $r('app.string.reader_mode_ltr');
-  }
-
-  private orientationLabelRes(): ResourceStr {
-    if (this.orientation === 'portrait') {
-      return $r('app.string.reader_orientation_portrait');
-    }
-    if (this.orientation === 'landscape') {
-      return $r('app.string.reader_orientation_landscape');
-    }
-    if (this.orientation === 'lock_portrait') {
-      return $r('app.string.reader_orientation_lock_portrait');
-    }
-    if (this.orientation === 'lock_landscape') {
-      return $r('app.string.reader_orientation_lock_landscape');
-    }
-    return $r('app.string.reader_orientation_free');
-  }
-
   // 阅读器设置面板（参考 Mihon：阅读模式 / 常规 / 滤镜）
   @Builder
   settingsSheet() {
@@ -1604,7 +818,13 @@ export struct ReaderPage {
             .width('100%')
           }
           .width('100%')
-          .padding({ left: 16, right: 16, top: 12, bottom: 8 })
+          .padding({
+            left: 16,
+            right: 16,
+            top: 12,
+            bottom: 8
+          })
+
           Divider().color(this.pal.divider)
         }
         if (this.mode === 'webtoon') {
@@ -1634,7 +854,12 @@ export struct ReaderPage {
             .width('100%')
           }
           .width('100%')
-          .padding({ left: 16, right: 16, top: 12, bottom: 8 })
+          .padding({
+            left: 16,
+            right: 16,
+            top: 12,
+            bottom: 8
+          })
 
           if (this.mode !== 'vertical') {
             Divider().color(this.pal.divider)
@@ -1672,7 +897,12 @@ export struct ReaderPage {
           .width('100%')
         }
         .width('100%')
-        .padding({ left: 16, right: 16, top: 8, bottom: 8 })
+        .padding({
+          left: 16,
+          right: 16,
+          top: 8,
+          bottom: 8
+        })
 
         Divider().color(this.pal.divider).margin({ top: 4, bottom: 4 })
 
@@ -1694,7 +924,12 @@ export struct ReaderPage {
             .fontSize(16)
             .fontColor(this.pal.text)
             .width(64)
-          Slider({ value: this.brightLv, min: 0, max: 1, step: 0.05 })
+          Slider({
+            value: this.brightLv,
+            min: 0,
+            max: 1,
+            step: 0.05
+          })
             .layoutWeight(1)
             .blockColor(this.pal.primary)
             .selectedColor(this.pal.primary)
@@ -1828,7 +1063,12 @@ export struct ReaderPage {
         .fontSize(16)
         .fontColor(this.pal.text)
         .width(64)
-      Slider({ value: value, min: min, max: max, step: 1 })
+      Slider({
+        value: value,
+        min: min,
+        max: max,
+        step: 1
+      })
         .layoutWeight(1)
         .blockColor(this.pal.primary)
         .selectedColor(this.pal.primary)
@@ -1854,7 +1094,12 @@ export struct ReaderPage {
     Text(label)
       .fontSize(13)
       .fontColor(this.pageAnim === value ? this.pal.onPrimary : this.pal.text)
-      .padding({ left: 12, right: 12, top: 6, bottom: 6 })
+      .padding({
+        left: 12,
+        right: 12,
+        top: 6,
+        bottom: 6
+      })
       .borderRadius(14)
       .backgroundColor(this.pageAnim === value ? this.pal.primary : this.pal.chip)
       .margin({ right: 8, bottom: 8 })
@@ -1869,7 +1114,12 @@ export struct ReaderPage {
     Text(label)
       .fontSize(13)
       .fontColor(this.navMode === value ? this.pal.onPrimary : this.pal.text)
-      .padding({ left: 12, right: 12, top: 6, bottom: 6 })
+      .padding({
+        left: 12,
+        right: 12,
+        top: 6,
+        bottom: 6
+      })
       .borderRadius(14)
       .backgroundColor(this.navMode === value ? this.pal.primary : this.pal.chip)
       .margin({ right: 8, bottom: 8 })
@@ -1879,18 +1129,829 @@ export struct ReaderPage {
       })
   }
 
+  // 0=白 1=黑 2=灰 3=自动（跟随深色模式）
+  syncReaderBgDark(): void {
+    const t = this.readerTheme === 3 ? (this.isDark ? 1 : 0) : this.readerTheme;
+    AppStorage.setOrCreate('readerBgDark', t !== 0);
+  }
+
+  onDarkChanged(): void {
+    this.syncReaderBgDark();
+  }
+
   @Builder
   themeChip(label: ResourceStr, value: number) {
     Text(label)
       .fontSize(13)
       .fontColor(this.readerTheme === value ? this.pal.onPrimary : this.pal.text)
-      .padding({ left: 14, right: 14, top: 6, bottom: 6 })
+      .padding({
+        left: 14,
+        right: 14,
+        top: 6,
+        bottom: 6
+      })
       .borderRadius(16)
       .backgroundColor(this.readerTheme === value ? this.pal.primary : this.pal.chip)
       .onClick(() => {
         this.readerTheme = value;
         Settings.setReaderTheme(value);
+        this.syncReaderBgDark();
       })
+  }
+
+  // 切换相邻章节；fromBoundary=true 表示由阅读边界（过渡页）触发，
+
+  private handleHoldingHandChange: (status: motion.HoldingHandStatus) => void =
+    (status: motion.HoldingHandStatus): void => {
+      if (canIUse('SystemCapability.MultimodalAwareness.Motion')) {
+        if (status === motion.HoldingHandStatus.LEFT_HAND_HELD) {
+          this.gripRight = false;
+        } else if (status === motion.HoldingHandStatus.RIGHT_HAND_HELD) {
+          this.gripRight = true;
+        }
+      }
+    };
+
+  // 智感握姿：订阅/退订握持手感知（want=false 强制退订）
+  private updateGripListener(want: boolean): void {
+    const shouldListen: boolean = want && this.mode === 'smart_grip' && this.gripSupported;
+    if (shouldListen && !this.gripListening) {
+      if (canIUse('SystemCapability.MultimodalAwareness.Motion')) {
+        try {
+          motion.on('holdingHandChanged', this.handleHoldingHandChange);
+          this.gripListening = true;
+        } catch (error) {
+          hilog.warn(0x0001, 'Reader', 'subscribe holdingHandChanged failed: %{public}s', `${error}`);
+        }
+      }
+    } else if (!shouldListen && this.gripListening) {
+      if (canIUse('SystemCapability.MultimodalAwareness.Motion')) {
+        try {
+          motion.off('holdingHandChanged', this.handleHoldingHandChange);
+        } catch (error) {
+          hilog.warn(0x0001, 'Reader', 'unsubscribe holdingHandChanged failed: %{public}s', `${error}`);
+        }
+      }
+      this.gripListening = false;
+    }
+  }
+
+  // 点击热区翻页：delta 为阅读方向步进（+1 下一页，-1 上一页）。
+  // RTL 展示序与阅读序相反，展示索引步进方向需取反；章节首尾垫有过渡页，
+
+  private applyOrientation(): void {
+    ReaderWindow.applyOrientation(Util.hostAbilityContext(this.getUIContext()), this.orientation);
+  }
+
+  private applyBrightness(): void {
+    ReaderWindow.applyBrightness(Util.hostAbilityContext(this.getUIContext()), this.brightLv);
+  }
+
+  // 记录内容区尺寸与组件在窗口中的全局偏移（globalPosition），供点击热区换算
+  private syncReaderArea(newArea: Area): void {
+    const w = newArea.width;
+    if (typeof w === 'number' && w > 0) {
+      this.readerW = w;
+    }
+    const h = newArea.height;
+    if (typeof h === 'number' && h > 0) {
+      this.readerH = h;
+    }
+    const gp = newArea.globalPosition;
+    const gx = gp.x;
+    if (typeof gx === 'number') {
+      this.readerOffX = gx;
+    }
+    const gy = gp.y;
+    if (typeof gy === 'number') {
+      this.readerOffY = gy;
+    }
+  }
+
+  private async loadChapter(): Promise<void> {
+    const gen = ++this.loadGen;
+    this.loading = true;
+    this.showMenu = false;
+    this.transOverlay = 0;
+    // 切章：先结算上一章的阅读会话
+    ReadingStatsRepo.flush();
+    try {
+      const context = Util.hostAbilityContext(this.getUIContext());
+      await AppDb.ready(context);
+      if (gen !== this.loadGen) {
+        return;
+      }
+      const chapter = await ChapterRepo.getById(this.chapterId);
+      if (gen !== this.loadGen) {
+        return;
+      }
+      if (chapter === undefined) {
+        Util.toastRes(this.getUIContext(), $r('app.string.reader_chapter_not_found'));
+        this.pathStack.pop();
+        return;
+      }
+      this.chapter = chapter;
+      this.mangaId = chapter.mangaId;
+      const manga = await MangaRepo.get(chapter.mangaId);
+      if (gen !== this.loadGen) {
+        return;
+      }
+      if (manga !== undefined) {
+        this.manga = manga;
+      }
+      let pages: SPage[] = [];
+      if (DownloadService.isDownloaded(chapter.id)) {
+        // 离线优先：读取已下载的本地页面
+        const files: string[] = DownloadService.localPages(chapter.mangaId, chapter.id);
+        for (let i = 0; i < files.length; i++) {
+          const p: SPage = { index: i, url: `file://${files[i]}` };
+          pages.push(p);
+        }
+      } else {
+        const source = SourceRegistry.get(this.manga.sourceKey);
+        if (source === undefined) {
+          throw new Error('source_unavailable');
+        }
+        pages = await source.getPageList(chapter.url);
+      }
+      if (gen !== this.loadGen) {
+        return;
+      }
+      this.pages = pages;
+      this.mode = Settings.getReaderMode();
+      // 历史保存的智感握姿在当前设备不支持时，静默回退为从左到右
+      if (this.mode === 'smart_grip' && !this.gripSupported) {
+        this.mode = 'ltr';
+      }
+      // 边界切章落点：向前进下一章落在首页，向回退上一章落在末页（对齐 Mihon 无缝切换）；
+      // 菜单按钮切章按历史进度恢复
+      if (this.gotoBoundary < 0 && pages.length > 0) {
+        this.currentReal = pages.length - 1;
+      } else if (this.gotoBoundary > 0) {
+        this.currentReal = 0;
+      } else {
+        this.currentReal = chapter.lastPageRead > 0 && chapter.lastPageRead < pages.length
+          ? chapter.lastPageRead : 0;
+      }
+      this.gotoBoundary = 0;
+      await this.refreshNeighbors();
+      if (gen !== this.loadGen) {
+        return;
+      }
+      this.applyMode(true);
+      await HistoryRepo.upsert(chapter.mangaId, chapter.id, this.currentReal);
+      if (gen !== this.loadGen) {
+        return;
+      }
+      // 开始本章的阅读时长计时
+      ReadingStatsRepo.begin(chapter.mangaId, chapter.id);
+    } catch (e) {
+      // 加载失败清空旧章页面，防止旧页码经 persistProgress 写入本章进度
+      if (gen === this.loadGen) {
+        this.pages = [];
+        Util.toastRes(this.getUIContext(), $r('app.string.reader_load_failed'),
+          [Util.errText(this.getUIContext(), e instanceof Error ? e.message : String(e))]);
+      }
+    }
+    if (gen !== this.loadGen) {
+      return;
+    }
+    this.loading = false;
+  }
+
+  private async refreshNeighbors(): Promise<void> {
+    const n: ChapterNeighbors = await ReaderChapterNav.neighbors(this.mangaId, this.chapterId);
+    this.hasPrev = n.hasPrev;
+    this.hasNext = n.hasNext;
+    let prevName = '';
+    let nextName = '';
+    for (let i = 0; i < n.chapters.length; i++) {
+      const c: ChapterRecord = n.chapters[i];
+      if (n.prevId > 0 && c.id === n.prevId) {
+        prevName = c.name;
+      }
+      if (n.nextId > 0 && c.id === n.nextId) {
+        nextName = c.name;
+      }
+    }
+    this.prevChapterName = prevName;
+    this.nextChapterName = nextName;
+  }
+
+  // 非 RTL：[上一章过渡, 页0..页N-1, 下一章过渡]；RTL 整体反转（阅读前进 = 索引递减）
+  private applyMode(scrollToResume: boolean): void {
+    const cellCount = this.pages.length + 2;
+    this.coverX = Util.zeros(cellCount);
+    this.coverY = Util.zeros(cellCount);
+    this.coverZ = Util.zeros(cellCount);
+    const cells: SPage[] = [];
+    const prevT: SPage = { index: -1, url: TRANS_PREV_URL };
+    const nextT: SPage = { index: -2, url: TRANS_NEXT_URL };
+    if (this.mode === 'rtl') {
+      cells.push(nextT);
+      for (let i = this.pages.length - 1; i >= 0; i--) {
+        cells.push(this.pages[i]);
+      }
+      cells.push(prevT);
+      this.dataSource.setPages(cells);
+      this.displayIndex = this.pages.length - this.currentReal;
+    } else {
+      cells.push(prevT);
+      for (let i = 0; i < this.pages.length; i++) {
+        cells.push(this.pages[i]);
+      }
+      cells.push(nextT);
+      this.dataSource.setPages(cells);
+      this.displayIndex = this.currentReal + 1;
+    }
+    if (this.mode === 'webtoon' && scrollToResume) {
+      const target = this.currentReal + STRIP_LEAD_COUNT;
+      if (this.resumeTimerId !== -1) {
+        clearTimeout(this.resumeTimerId);
+      }
+      this.resumeTimerId = setTimeout(() => {
+        this.resumeTimerId = -1;
+        this.scroller.scrollToIndex(target, false, ScrollAlign.START);
+      }, 200);
+    }
+    this.updateGripListener(true);
+  }
+
+  // 展示单元格（含过渡页）→ 真实页序；过渡页换算结果越界由调用方校验
+  private displayToReal(displayIdx: number): number {
+    if (this.mode === 'rtl') {
+      return this.pages.length - displayIdx;
+    }
+    return displayIdx - 1;
+  }
+
+  private realToDisplay(realIdx: number): number {
+    if (this.mode === 'rtl') {
+      return this.pages.length - realIdx;
+    }
+    return realIdx + 1;
+  }
+
+  // 展示单元格种类：'prev'/'next' 为过渡页，'' 为普通页（首尾单元格恒为过渡页）
+  private cellKind(cell: number): string {
+    if (cell === 0) {
+      return this.mode === 'rtl' ? 'next' : 'prev';
+    }
+    if (cell === this.pages.length + 1) {
+      return this.mode === 'rtl' ? 'prev' : 'next';
+    }
+    return '';
+  }
+
+  private async onSwipe(displayIdx: number): Promise<void> {
+    this.displayIndex = displayIdx;
+    const kind = this.cellKind(displayIdx);
+    if (kind === 'next') {
+      // 落在“下一章”过渡页：没有下一章时呼出菜单（对齐 Mihon），有则等待继续前翻
+      if (!this.hasNext) {
+        this.showMenu = true;
+      }
+      return;
+    }
+    if (kind === 'prev') {
+      return;
+    }
+    const real = this.displayToReal(displayIdx);
+    if (real !== this.currentReal) {
+      this.currentReal = real;
+      await this.persistProgress();
+    }
+  }
+
+  private async persistProgress(): Promise<void> {
+    try {
+      ReadingStatsRepo.tick();
+      await ChapterRepo.setLastPageRead(this.chapterId, this.currentReal);
+      await HistoryRepo.upsert(this.mangaId, this.chapterId, this.currentReal);
+      if (this.currentReal >= this.pages.length - 1 && !this.chapter.read) {
+        this.chapter.read = true;
+        await ChapterRepo.setRead(this.chapterId, true);
+        TrackService.updateChapterRead(this.mangaId, this.chapterId).catch((e: Object): void => {
+          hilog.warn(0x0001, 'Reader', 'track update failed: %{public}s', `${e}`);
+        });
+      }
+    } catch (e) {
+      hilog.warn(0x0001, 'Reader', 'persistProgress failed: %{public}s',
+        e instanceof Error ? e.message : String(e));
+    }
+  }
+
+  private setMode(mode: string): void {
+    this.mode = mode;
+    this.transOverlay = 0;
+    Settings.setReaderMode(mode);
+    this.applyMode(true);
+  }
+
+  private modeIcon(): string {
+    if (this.mode === 'rtl') {
+      return 'reader_rtl';
+    }
+    if (this.mode === 'webtoon') {
+      return 'reader_webtoon';
+    }
+    if (this.mode === 'vertical') {
+      return 'reader_vertical';
+    }
+    if (this.mode === 'smart_grip') {
+      return 'smart_grip';
+    }
+    return 'reader_ltr';
+  }
+
+  // 当前设备可用的阅读模式（智感握姿仅在支持的设备上提供）
+  private availableModes(): string[] {
+    const modes: string[] = ['ltr', 'rtl', 'vertical', 'webtoon'];
+    if (this.gripSupported) {
+      modes.push('smart_grip');
+    }
+    return modes;
+  }
+
+  private modeOptions(): ResourceStr[] {
+    const opts: ResourceStr[] = [$r('app.string.reader_mode_ltr'), $r('app.string.reader_mode_rtl'),
+      $r('app.string.reader_mode_vertical'), $r('app.string.reader_mode_webtoon')];
+    if (this.gripSupported) {
+      opts.push($r('app.string.reader_mode_smart_grip'));
+    }
+    return opts;
+  }
+
+  private modeIcons(): string[] {
+    const icons: string[] = ['reader_ltr', 'reader_rtl', 'reader_vertical', 'reader_webtoon'];
+    if (this.gripSupported) {
+      icons.push('smart_grip');
+    }
+    return icons;
+  }
+
+  private selectedModeIndex(): number {
+    const idx: number = this.availableModes().indexOf(this.mode);
+    return idx >= 0 ? idx : 0;
+  }
+
+  private selectMode(): void {
+    this.showModeSheet = true;
+  }
+
+  private selectOrientation(): void {
+    this.showOrientationSheet = true;
+  }
+
+  private toggleCrop(): void {
+    this.crop = !this.crop;
+    Settings.setReaderCrop(this.crop);
+  }
+
+  private setCrop(v: boolean): void {
+    this.crop = v;
+    Settings.setReaderCrop(v);
+  }
+
+  // 双页显示：横向分页模式（LTR/RTL/智感握姿）下 Swiper 一屏两页
+  private dualPageActive(): boolean {
+    return this.dualPage && this.mode !== 'vertical';
+  }
+
+  // Slider 跳页（按真实页序）
+  private jumpToReal(real: number): void {
+    if (real < 0 || real >= this.pages.length) {
+      return;
+    }
+    const display = this.realToDisplay(real);
+    this.displayIndex = display;
+    if (this.mode === 'webtoon') {
+      this.scroller.scrollToIndex(display, false, ScrollAlign.START);
+      this.currentReal = real;
+      this.persistProgress();
+    } else {
+      this.onSwipe(display);
+    }
+  }
+
+  // 下一章落在首页、上一章落在末页；菜单按钮触发按历史进度恢复
+  private async gotoChapter(next: boolean, fromBoundary: boolean = false): Promise<void> {
+    const targetId: number = await ReaderChapterNav.neighborChapterId(this.mangaId, this.chapterId, next);
+    if (targetId === 0) {
+      Util.toastRes(this.getUIContext(),
+        next ? $r('app.string.reader_last_chapter') : $r('app.string.reader_first_chapter'));
+      return;
+    }
+    if (next && !this.chapter.read) {
+      await ChapterRepo.setRead(this.chapterId, true);
+    }
+    this.gotoBoundary = fromBoundary ? (next ? 1 : -1) : 0;
+    this.chapterId = targetId;
+    await this.loadChapter();
+  }
+
+  // 翻页模式点击区域（导航模式：默认/从左到右/从右到左/垂直/边缘/无，对齐 Mihon pref_viewer_nav）
+  private handleTouch(event: TouchEvent): void {
+    if (event.type === TouchType.Down) {
+      if (event.touches.length === 0) {
+        return;
+      }
+      const down: TouchObject = event.touches[0];
+      // TouchObject.x/y 为窗口坐标，减去组件在窗口中的偏移得到组件内坐标
+      this.touchDownX = down.x - this.readerOffX;
+      this.touchDownY = down.y - this.readerOffY;
+    } else if (event.type === TouchType.Up) {
+      if (this.touchDownX < 0 || event.changedTouches.length === 0) {
+        return;
+      }
+      const up: TouchObject = event.changedTouches[0];
+      const upX = up.x - this.readerOffX;
+      const upY = up.y - this.readerOffY;
+      const dx = Math.abs(upX - this.touchDownX);
+      const dy = Math.abs(upY - this.touchDownY);
+      this.touchDownX = -1;
+      if (dx > 20 || dy > 20) {
+        return; // 滑动，忽略
+      }
+      if (this.pages.length === 0) {
+        return;
+      }
+      if (this.navMode === 'none') {
+        this.showMenu = !this.showMenu;
+        return;
+      }
+      if (this.navMode === 'vertical') {
+        const zoneY = upY / (this.readerH > 0 ? this.readerH : 640);
+        if (zoneY < 0.3) {
+          this.step(-1);
+        } else if (zoneY > 0.7) {
+          this.step(1);
+        } else {
+          this.showMenu = !this.showMenu;
+        }
+        return;
+      }
+      const zone = upX / (this.readerW > 0 ? this.readerW : 360);
+      // “下一页”是否在左侧：默认跟随阅读模式（RTL；智感握姿下左手握持时握持侧为下一页），可被导航模式覆盖
+      let nextOnLeft: boolean = this.mode === 'rtl' ||
+        (this.mode === 'smart_grip' && !this.gripRight);
+      if (this.navMode === 'ltr') {
+        nextOnLeft = false;
+      } else if (this.navMode === 'rtl') {
+        nextOnLeft = true;
+      }
+      if (this.navMode === 'edge') {
+        // 边缘导航：仅屏幕左右边缘窄条翻页，其余区域切换菜单
+        if (zone < 0.12) {
+          this.step(nextOnLeft ? 1 : -1);
+        } else if (zone > 0.88) {
+          this.step(nextOnLeft ? -1 : 1);
+        } else {
+          this.showMenu = !this.showMenu;
+        }
+        return;
+      }
+      if (zone < 0.3) {
+        // 左侧区域
+        this.step(nextOnLeft ? 1 : -1);
+      } else if (zone > 0.7) {
+        // 右侧区域
+        this.step(nextOnLeft ? -1 : 1);
+      } else {
+        this.showMenu = !this.showMenu;
+      }
+    }
+  }
+
+  // 在过渡页上继续前/后翻即切换章节（上一章落在末页，下一章落在首页）
+  private step(delta: number): void {
+    const ddelta = this.mode === 'rtl' ? -delta : delta;
+    const kind = this.cellKind(this.displayIndex);
+    if (kind === 'next') {
+      if (delta > 0) {
+        this.gotoChapter(true, true);
+      } else {
+        this.backFromTransition();
+      }
+      return;
+    }
+    if (kind === 'prev') {
+      if (delta < 0) {
+        this.gotoChapter(false, true);
+      } else {
+        this.backFromTransition();
+      }
+      return;
+    }
+    const target = this.displayIndex + ddelta;
+    if (target < 0 || target > this.pages.length + 1) {
+      return;
+    }
+    this.displayIndex = target;
+    this.onSwipe(target);
+  }
+
+  // 从过渡页返回本章边界页（真实进度未变，仅回到当前页）
+  private backFromTransition(): void {
+    const back = this.realToDisplay(this.currentReal);
+    this.displayIndex = back;
+    this.onSwipe(back);
+  }
+
+  // ---- 各阅读模式内容体（经 ReaderFilterArea 的 content 注入；@BuilderParam 传参
+  // 只能调用 @Builder 方法，不能内联 UI 组件语法） ----
+
+  private useCurl(): boolean {
+    return this.pageAnim === 'curl' && this.mode !== 'webtoon' && this.mode !== 'vertical' && this.pages.length > 0;
+  }
+
+  private curlDual(): boolean {
+    return this.dualPage && this.mode !== 'vertical';
+  }
+
+  private curlCount(): number {
+    if (this.pages.length === 0) {
+      return 0;
+    }
+    if (this.curlDual()) {
+      return Math.ceil(this.pages.length / 2);
+    }
+    return this.pages.length;
+  }
+
+  private curlIndex(): number {
+    if (this.pages.length === 0) {
+      return 0;
+    }
+    if (this.curlDual()) {
+      return Math.min(this.curlCount() - 1, Math.floor(this.currentReal / 2));
+    }
+    return this.currentReal;
+  }
+
+  // 仿真卷曲从左缘翻出下一页：从右到左，或智感握姿左手（下一页在左侧）
+  private curlFromLeft(): boolean {
+    if (this.mode === 'rtl') {
+      return true;
+    }
+    if (this.mode === 'smart_grip' && !this.gripRight) {
+      return true;
+    }
+    return false;
+  }
+
+  private curlNextOnLeft(): boolean {
+    if (this.navMode === 'ltr') {
+      return false;
+    }
+    if (this.navMode === 'rtl') {
+      return true;
+    }
+    return this.curlFromLeft();
+  }
+
+  // ---- 菜单（共享 ReaderChrome 骨架：顶栏+占位+底栏，样式与拆分前一致） ----
+
+  private curlTapMode(): string {
+    if (this.navMode === 'none') {
+      return 'none';
+    }
+    if (this.navMode === 'vertical') {
+      return 'vertical';
+    }
+    if (this.navMode === 'edge') {
+      return 'edge';
+    }
+    return 'horizontal';
+  }
+
+  private curlEnabled(): boolean {
+    return !this.showSettings && !this.showModeSheet && !this.showOrientationSheet;
+  }
+
+  private onCurlIndex(index: number): void {
+    const real = this.curlDual() ? Math.min(this.pages.length - 1, index * 2) : index;
+    if (real < 0 || real >= this.pages.length || real === this.currentReal) {
+      return;
+    }
+    this.currentReal = real;
+    this.displayIndex = this.realToDisplay(real);
+    this.persistProgress();
+  }
+
+  // 仿真翻页滑出边界：弹出章节过渡层（dir>0 越过末页，dir<0 越过首页）
+  private onCurlOverscroll(dir: number): void {
+    if (this.transOverlay !== 0) {
+      return;
+    }
+    this.transOverlay = dir > 0 ? 1 : -1;
+    // 没有下一章时呼出菜单（对齐 Mihon：落在无目标的 Next 过渡页）
+    if (dir > 0 && !this.hasNext) {
+      this.showMenu = true;
+    }
+  }
+
+  // 过渡层点击：按导航热区判定——继续前/后翻进入相邻章节，反向返回本章，中键呼出菜单
+  private onTransitionOverlayTap(x: number, y: number): void {
+    const kind = this.transOverlay > 0 ? 'next' : 'prev';
+    if (this.navMode === 'none') {
+      this.transOverlay = 0;
+      this.showMenu = !this.showMenu;
+      return;
+    }
+    let delta = 0;
+    if (this.navMode === 'vertical') {
+      const zoneY = y / (this.readerH > 0 ? this.readerH : 640);
+      if (zoneY < 0.3) {
+        delta = -1;
+      } else if (zoneY > 0.7) {
+        delta = 1;
+      }
+    } else {
+      // “下一页”是否在左侧：默认跟随阅读模式，可被导航模式覆盖
+      let nextOnLeft: boolean = this.mode === 'rtl' ||
+        (this.mode === 'smart_grip' && !this.gripRight);
+      if (this.navMode === 'ltr') {
+        nextOnLeft = false;
+      } else if (this.navMode === 'rtl') {
+        nextOnLeft = true;
+      }
+      const zone = x / (this.readerW > 0 ? this.readerW : 360);
+      if (zone < 0.3) {
+        delta = nextOnLeft ? 1 : -1;
+      } else if (zone > 0.7) {
+        delta = nextOnLeft ? -1 : 1;
+      }
+    }
+    this.transOverlay = 0;
+    if (delta === 0) {
+      this.showMenu = !this.showMenu;
+      return;
+    }
+    if (kind === 'next' && delta > 0) {
+      this.gotoChapter(true, true);
+    } else if (kind === 'prev' && delta < 0) {
+      this.gotoChapter(false, true);
+    }
+  }
+
+  // 更多设置面板：背景色 / 显示页码 / 亮度
+
+  private setPageAnim(v: string): void {
+    if (v === this.pageAnim) {
+      return;
+    }
+    this.pageAnim = v;
+    Settings.setReaderPageAnim(v);
+    this.coverX = Util.zeros(this.pages.length);
+    this.coverY = Util.zeros(this.pages.length);
+    this.coverZ = Util.zeros(this.pages.length);
+  }
+
+  private coverAt(arr: number[], index: number): number {
+    if (this.pageAnim !== 'cover' || index < 0 || index >= arr.length) {
+      return 0;
+    }
+    return arr[index];
+  }
+
+  private setCover(i: number, x: number, y: number, z: number): void {
+    if (i < 0 || i >= this.coverX.length) {
+      return;
+    }
+    if (this.coverX[i] !== x) {
+      this.coverX[i] = x;
+    }
+    if (this.coverY[i] !== y) {
+      this.coverY[i] = y;
+    }
+    if (this.coverZ[i] !== z) {
+      this.coverZ[i] = z;
+    }
+  }
+
+  // 覆盖：新页滑入盖住静止的当前页。滑动模式不改位移，沿用 Swiper 默认滚动。
+  private onCoverTransition(proxy: SwiperContentTransitionProxy): void {
+    if (this.pageAnim !== 'cover') {
+      return;
+    }
+    const i = proxy.index;
+    if (i < 0 || i >= this.coverX.length) {
+      return;
+    }
+    const p = proxy.position;
+    if (Math.abs(p - Math.round(p)) < 0.001) {
+      this.setCover(i, 0, 0, 0);
+      return;
+    }
+    const span = proxy.mainAxisLength;
+    const selected = proxy.selectedIndex;
+    const vertical = this.mode === 'vertical';
+    const pinX = vertical ? 0 : -p * span;
+    const pinY = vertical ? -p * span : 0;
+    if (i === selected) {
+      if (p < 0) {
+        this.setCover(i, pinX, pinY, 0);
+      } else {
+        this.setCover(i, 0, 0, 2);
+      }
+    } else if (i === selected + 1) {
+      this.setCover(i, 0, 0, 2);
+    } else if (i === selected - 1) {
+      this.setCover(i, pinX, pinY, 0);
+    } else {
+      this.setCover(i, 0, 0, 0);
+    }
+  }
+
+  private requestLeaf(dir: number): void {
+    const next = dir > 0 ? Math.abs(this.leafTurn) + 1 : -(Math.abs(this.leafTurn) + 1);
+    this.leafTurn = next === 0 ? dir : next;
+  }
+
+  // 双页热区按整屏计算。onLeaf 表示点击落在正在翻的那一半。
+  private onDualTap(localX: number, localY: number, onLeaf: boolean): void {
+    if (this.showSettings || this.showModeSheet || this.showOrientationSheet) {
+      return;
+    }
+    const fullW = this.readerW > 0 ? this.readerW : 1;
+    const fullH = this.readerH > 0 ? this.readerH : 1;
+    const globalX = this.curlFromLeft() ? (onLeaf ? localX : fullW / 2 + localX) :
+      (onLeaf ? fullW / 2 + localX : localX);
+    if (this.curlTapMode() === 'none') {
+      this.showMenu = !this.showMenu;
+      return;
+    }
+    if (this.curlTapMode() === 'vertical') {
+      const y = localY / fullH;
+      if (y < 0.3) {
+        this.requestLeaf(-1);
+      } else if (y > 0.7) {
+        this.requestLeaf(1);
+      } else {
+        this.showMenu = !this.showMenu;
+      }
+      return;
+    }
+    const edge = this.curlTapMode() === 'edge' ? 0.12 : 0.3;
+    const nextOnLeft = this.curlNextOnLeft();
+    let dir = 0;
+    if (globalX < fullW * edge) {
+      dir = nextOnLeft ? 1 : -1;
+    } else if (globalX > fullW * (1 - edge)) {
+      dir = nextOnLeft ? -1 : 1;
+    }
+    if (dir === 0) {
+      this.showMenu = !this.showMenu;
+    } else {
+      this.requestLeaf(dir);
+    }
+  }
+
+  // 过渡视图文字色：白底深色字，灰/黑底浅色字（自动主题按系统深浅色）
+  private readerTextCol(): string {
+    const t = this.readerTheme === 3 ? (this.isDark ? 1 : 0) : this.readerTheme;
+    return t === 0 ? '#16181D' : '#ECEEF2';
+  }
+
+  // 阅读页背景明暗同步给 ReaderChrome（玻璃前景色据此取高对比色）：
+
+  private readerSubCol(): string {
+    const t = this.readerTheme === 3 ? (this.isDark ? 1 : 0) : this.readerTheme;
+    return t === 0 ? '#9916181D' : '#99ECEEF2';
+  }
+
+  // 当前阅读模式/屏幕方向的显示文案
+  private modeLabelRes(): ResourceStr {
+    if (this.mode === 'rtl') {
+      return $r('app.string.reader_mode_rtl');
+    }
+    if (this.mode === 'vertical') {
+      return $r('app.string.reader_mode_vertical');
+    }
+    if (this.mode === 'webtoon') {
+      return $r('app.string.reader_mode_webtoon');
+    }
+    if (this.mode === 'smart_grip') {
+      return $r('app.string.reader_mode_smart_grip');
+    }
+    return $r('app.string.reader_mode_ltr');
+  }
+
+  private orientationLabelRes(): ResourceStr {
+    if (this.orientation === 'portrait') {
+      return $r('app.string.reader_orientation_portrait');
+    }
+    if (this.orientation === 'landscape') {
+      return $r('app.string.reader_orientation_landscape');
+    }
+    if (this.orientation === 'lock_portrait') {
+      return $r('app.string.reader_orientation_lock_portrait');
+    }
+    if (this.orientation === 'lock_landscape') {
+      return $r('app.string.reader_orientation_lock_landscape');
+    }
+    return $r('app.string.reader_orientation_free');
   }
 }
 

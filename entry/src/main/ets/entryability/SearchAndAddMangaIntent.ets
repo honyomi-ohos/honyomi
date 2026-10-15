@@ -1,9 +1,9 @@
-import { InsightIntentEntryExecutor, insightIntent, InsightIntentEntry } from '@kit.AbilityKit';
+import { insightIntent, InsightIntentEntry, InsightIntentEntryExecutor } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
-import { SourceRegistry, Source } from '../source/Source';
-import { SManga, MangasPage } from '../model/Models';
+import { Source, SourceRegistry } from '../source/Source';
+import { MangasPage, SManga } from '../model/Models';
 import { AppKeys } from '../common/AppKeys';
 import { TitleMatch } from '../common/TitleMatch';
 import EntryAbility from './EntryAbility';
@@ -50,6 +50,12 @@ export class SearchAndAddResultDef {
 export default class SearchAndAddMangaImpl extends InsightIntentEntryExecutor<SearchAndAddResultDef> {
   public mangaTitle: string = '';
   public sourceName?: string = '';
+
+  private static result(code: number, msg: string): insightIntent.IntentResult<SearchAndAddResultDef> {
+    const def = new SearchAndAddResultDef();
+    def.msg = msg;
+    return { code: code, result: def };
+  }
 
   onExecute(): Promise<insightIntent.IntentResult<SearchAndAddResultDef>> {
     const query: string = this.mangaTitle.trim();
@@ -173,11 +179,5 @@ export default class SearchAndAddMangaImpl extends InsightIntentEntryExecutor<Se
       'query': query
     };
     AppStorage.setOrCreate(AppKeys.CARD_ACTION, JSON.stringify(payload));
-  }
-
-  private static result(code: number, msg: string): insightIntent.IntentResult<SearchAndAddResultDef> {
-    const def = new SearchAndAddResultDef();
-    def.msg = msg;
-    return { code: code, result: def };
   }
 }

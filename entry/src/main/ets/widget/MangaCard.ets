@@ -13,46 +13,6 @@ struct MangaCard {
   @LocalStorageProp('hasCover') hasCover: boolean = false;
   @LocalStorageProp('contentType') contentType: string = 'manga';
 
-  private badgeChar(): string {
-    if (this.title === '') {
-      return '#';
-    }
-    return this.title.charAt(0).toUpperCase();
-  }
-
-  // 点击分发：有续读章节 → 阅读器；有漫画 → 详情页；否则打开应用
-  private openTarget(): void {
-    if (this.hasChapter && this.mangaId !== '' && this.chapterId !== '') {
-      postCardAction(this, {
-        'action': 'router',
-        'abilityName': 'EntryAbility',
-        'params': {
-          'cardTarget': 'reader',
-          'mangaId': this.mangaId,
-          'chapterId': this.chapterId,
-          'contentType': this.contentType
-        }
-      });
-      return;
-    }
-    if (this.mangaId !== '') {
-      postCardAction(this, {
-        'action': 'router',
-        'abilityName': 'EntryAbility',
-        'params': {
-          'cardTarget': 'detail',
-          'mangaId': this.mangaId
-        }
-      });
-      return;
-    }
-    postCardAction(this, {
-      'action': 'router',
-      'abilityName': 'EntryAbility',
-      'params': {}
-    });
-  }
-
   build() {
     Column() {
       if (this.empty) {
@@ -141,5 +101,45 @@ struct MangaCard {
     }
     .width('100%')
     .height('100%')
+  }
+
+  private badgeChar(): string {
+    if (this.title === '') {
+      return '#';
+    }
+    return this.title.charAt(0).toUpperCase();
+  }
+
+  // 点击分发：有续读章节 → 阅读器；有漫画 → 详情页；否则打开应用
+  private openTarget(): void {
+    if (this.hasChapter && this.mangaId !== '' && this.chapterId !== '') {
+      postCardAction(this, {
+        'action': 'router',
+        'abilityName': 'EntryAbility',
+        'params': {
+          'cardTarget': 'reader',
+          'mangaId': this.mangaId,
+          'chapterId': this.chapterId,
+          'contentType': this.contentType
+        }
+      });
+      return;
+    }
+    if (this.mangaId !== '') {
+      postCardAction(this, {
+        'action': 'router',
+        'abilityName': 'EntryAbility',
+        'params': {
+          'cardTarget': 'detail',
+          'mangaId': this.mangaId
+        }
+      });
+      return;
+    }
+    postCardAction(this, {
+      'action': 'router',
+      'abilityName': 'EntryAbility',
+      'params': {}
+    });
   }
 }

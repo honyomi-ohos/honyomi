@@ -1,12 +1,12 @@
-import { picker, fileIo } from '@kit.CoreFileKit';
+import { fileIo, picker } from '@kit.CoreFileKit';
 import { common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { util } from '@kit.ArkTS';
 import { Settings } from '../common/Settings';
 import { AppKeys } from '../common/AppKeys';
 import { AppDb } from './AppDb';
-import { MangaRepo, ChapterRepo, CategoryRepo } from './Repos';
-import { SManga, CategoryRecord, MangaRecord, ChapterRecord, ContentType } from '../model/Models';
+import { CategoryRepo, ChapterRepo, MangaRepo } from './Repos';
+import { CategoryRecord, ChapterRecord, ContentType, MangaRecord, SManga } from '../model/Models';
 
 // 备份/恢复（对齐 Mihon BackupCreator / BackupRestore 的 JSON 子集）
 
@@ -68,20 +68,6 @@ export interface BackupRoot {
 }
 
 export class BackupService {
-  // 校验写入字节数与文本字节长度一致，防止超大备份部分写入
-  private static writeTextSync(fd: number, text: string): void {
-    let written: number = 0;
-    try {
-      written = fileIo.writeSync(fd, text);
-    } catch (e) {
-      throw new Error(`write backup file failed: ${e}`);
-    }
-    const expected: number = util.TextEncoder.create('utf-8').encodeInto(text).length;
-    if (written !== expected) {
-      throw new Error(`备份写入不完整（${written}/${expected} 字节）`);
-    }
-  }
-
   static async exportBackup(context: common.UIAbilityContext): Promise<boolean> {
     const root: BackupRoot = await BackupService.buildBackup();
     const text: string = JSON.stringify(root);
@@ -136,6 +122,112 @@ export class BackupService {
     return BackupService.restore(text);
   }
 
+  // 自动备份到应用私有目录 backups/，保留最近 3 份；返回写入的文件路径
+  static async autoBackup(context: common.UIAbilityContext): Promise<string> {
+    const root: BackupRoot = await BackupService.buildBackup();
+    const text: string = JSON.stringify(root);
+    const dir: string = `${context.filesDir}/backups`;
+    try {
+      if (!fileIo.accessSync(dir)) {
+        fileIo.mkdirSync(dir, true);
+      }
+    } catch (e) {
+      throw new Error(`create backup dir failed: ${e}`);
+    }
+    const path: string = `${dir}/honyomi_backup_${Date.now()}.json`;
+    let file: fileIo.File;
+    try {
+      file = fileIo.openSync(path, fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE);
+    } catch (e) {
+      throw new Error(`open backup file failed: ${e}`);
+    }
+    try {
+      BackupService.writeTextSync(file.fd, text);
+    } finally {
+      try {
+        fileIo.closeSync(file);
+      } catch (e) {
+      }
+    }
+    BackupService.pruneBackups(dir);
+    return path;
+  }
+
+  // 到期则执行自动备份（频率 0 = 关闭；距上次备份超过频率间隔才触发）
+  static async runAutoBackupIfDue(context: common.UIAbilityContext): Promise<void> {
+    const intervalHours: number = Settings.getBackupInterval();
+    if (intervalHours <= 0) {
+      return;
+    }
+    const last: number = Settings.getLastAutoBackupTimestamp();
+    if (last > 0 && Date.now() - last < intervalHours * 3600 * 1000) {
+      return;
+    }
+    try {
+      await BackupService.autoBackup(context);
+      Settings.setLastAutoBackupTimestamp(Date.now());
+      AppStorage.setOrCreate(AppKeys.LAST_BACKUP_FAILED, false);
+    } catch (e) {
+      // 失败状态经 AppStorage 上报供设置页提示
+      AppStorage.setOrCreate(AppKeys.LAST_BACKUP_FAILED, true);
+      hilog.error(0x0001, 'Backup', 'auto backup failed: %{public}s', (e as Error).message);
+    }
+  }
+
+  // 返回 false 表示用户取消选择保存位置
+  static async exportLibraryCsv(context: common.UIAbilityContext,
+    includeTitle: boolean, includeAuthor: boolean): Promise<boolean> {
+    const library: MangaRecord[] = await MangaRepo.getLibrary();
+    const rows: string[] = [];
+    for (const m of library) {
+      const cols: string[] = [];
+      if (includeTitle) {
+        cols.push(BackupService.csvCell(m.title));
+      }
+      if (includeAuthor) {
+        cols.push(BackupService.csvCell(m.author));
+      }
+      rows.push(cols.join(','));
+    }
+    const text: string = rows.join('\r\n');
+    const options = new picker.DocumentSaveOptions();
+    options.newFileNames = ['honyomi_library.csv'];
+    const docPicker = new picker.DocumentViewPicker(context);
+    const uris: Array<string> = await docPicker.save(options);
+    if (uris.length === 0) {
+      return false;
+    }
+    let file: fileIo.File;
+    try {
+      file = fileIo.openSync(uris[0], fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE);
+    } catch (e) {
+      throw new Error(`open csv file failed: ${e}`);
+    }
+    try {
+      BackupService.writeTextSync(file.fd, text);
+    } finally {
+      try {
+        fileIo.closeSync(file);
+      } catch (e) {
+      }
+    }
+    return true;
+  }
+
+  // 校验写入字节数与文本字节长度一致，防止超大备份部分写入
+  private static writeTextSync(fd: number, text: string): void {
+    let written: number = 0;
+    try {
+      written = fileIo.writeSync(fd, text);
+    } catch (e) {
+      throw new Error(`write backup file failed: ${e}`);
+    }
+    const expected: number = util.TextEncoder.create('utf-8').encodeInto(text).length;
+    if (written !== expected) {
+      throw new Error(`备份写入不完整（${written}/${expected} 字节）`);
+    }
+  }
+
   private static async buildBackup(): Promise<BackupRoot> {
     const categories: CategoryRecord[] = await CategoryRepo.list();
     const categoryNames: string[] = [];
@@ -182,6 +274,8 @@ export class BackupService {
     };
     return root;
   }
+
+  // ---- 自动备份（对齐 Mihon BackupCreateJob 定时任务，应用启动时检查到期与否）----
 
   // 旧备份分类名（中文历史值）→ 内容类型 code；新备份/自建分类原样
   private static mapCategoryName(name: string): string {
@@ -337,59 +431,7 @@ export class BackupService {
     }
   }
 
-  // ---- 自动备份（对齐 Mihon BackupCreateJob 定时任务，应用启动时检查到期与否）----
-
-  // 自动备份到应用私有目录 backups/，保留最近 3 份；返回写入的文件路径
-  static async autoBackup(context: common.UIAbilityContext): Promise<string> {
-    const root: BackupRoot = await BackupService.buildBackup();
-    const text: string = JSON.stringify(root);
-    const dir: string = `${context.filesDir}/backups`;
-    try {
-      if (!fileIo.accessSync(dir)) {
-        fileIo.mkdirSync(dir, true);
-      }
-    } catch (e) {
-      throw new Error(`create backup dir failed: ${e}`);
-    }
-    const path: string = `${dir}/honyomi_backup_${Date.now()}.json`;
-    let file: fileIo.File;
-    try {
-      file = fileIo.openSync(path, fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE);
-    } catch (e) {
-      throw new Error(`open backup file failed: ${e}`);
-    }
-    try {
-      BackupService.writeTextSync(file.fd, text);
-    } finally {
-      try {
-        fileIo.closeSync(file);
-      } catch (e) {
-      }
-    }
-    BackupService.pruneBackups(dir);
-    return path;
-  }
-
-  // 到期则执行自动备份（频率 0 = 关闭；距上次备份超过频率间隔才触发）
-  static async runAutoBackupIfDue(context: common.UIAbilityContext): Promise<void> {
-    const intervalHours: number = Settings.getBackupInterval();
-    if (intervalHours <= 0) {
-      return;
-    }
-    const last: number = Settings.getLastAutoBackupTimestamp();
-    if (last > 0 && Date.now() - last < intervalHours * 3600 * 1000) {
-      return;
-    }
-    try {
-      await BackupService.autoBackup(context);
-      Settings.setLastAutoBackupTimestamp(Date.now());
-      AppStorage.setOrCreate(AppKeys.LAST_BACKUP_FAILED, false);
-    } catch (e) {
-      // 失败状态经 AppStorage 上报供设置页提示
-      AppStorage.setOrCreate(AppKeys.LAST_BACKUP_FAILED, true);
-      hilog.error(0x0001, 'Backup', 'auto backup failed: %{public}s', (e as Error).message);
-    }
-  }
+  // ---- 书架列表 CSV 导出（对齐 Mihon LibraryExporter）----
 
   // 只保留最近 3 份自动备份（文件名含时间戳，字典序即时间序）
   private static pruneBackups(dir: string): void {
@@ -410,48 +452,6 @@ export class BackupService {
       }
     } catch (e) {
     }
-  }
-
-  // ---- 书架列表 CSV 导出（对齐 Mihon LibraryExporter）----
-
-  // 返回 false 表示用户取消选择保存位置
-  static async exportLibraryCsv(context: common.UIAbilityContext,
-    includeTitle: boolean, includeAuthor: boolean): Promise<boolean> {
-    const library: MangaRecord[] = await MangaRepo.getLibrary();
-    const rows: string[] = [];
-    for (const m of library) {
-      const cols: string[] = [];
-      if (includeTitle) {
-        cols.push(BackupService.csvCell(m.title));
-      }
-      if (includeAuthor) {
-        cols.push(BackupService.csvCell(m.author));
-      }
-      rows.push(cols.join(','));
-    }
-    const text: string = rows.join('\r\n');
-    const options = new picker.DocumentSaveOptions();
-    options.newFileNames = ['honyomi_library.csv'];
-    const docPicker = new picker.DocumentViewPicker(context);
-    const uris: Array<string> = await docPicker.save(options);
-    if (uris.length === 0) {
-      return false;
-    }
-    let file: fileIo.File;
-    try {
-      file = fileIo.openSync(uris[0], fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE);
-    } catch (e) {
-      throw new Error(`open csv file failed: ${e}`);
-    }
-    try {
-      BackupService.writeTextSync(file.fd, text);
-    } finally {
-      try {
-        fileIo.closeSync(file);
-      } catch (e) {
-      }
-    }
-    return true;
   }
 
   // CSV 单元格转义：包含换行/引号/逗号时用双引号包裹并双写内部引号

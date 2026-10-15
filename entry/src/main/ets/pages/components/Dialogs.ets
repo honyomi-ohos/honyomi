@@ -12,20 +12,17 @@ export struct InputDialog {
   // true 时使用系统密码输入框（自动掩码 + 明文切换图标）
   password: boolean = false;
   @State inputText: string = '';
-  onConfirm: (text: string) => void = (_t: string) => {};
-  onClose: () => void = () => {};
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
+  onConfirm: (text: string) => void = (_t: string) => {
+  };
+
+  onClose: () => void = () => {
+  };
+
   aboutToAppear(): void {
     this.inputText = this.initialText;
-  }
-
-  private dismiss(): void {
-    if (this.controller !== undefined) {
-      this.controller.close();
-    }
-    this.onClose();
   }
 
   build() {
@@ -65,6 +62,13 @@ export struct InputDialog {
     .padding(20)
     .width('100%')
   }
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
+  }
 }
 
 // 账密登录弹窗（用户名 + 密码一次输入；密码框为系统密码输入框）
@@ -76,16 +80,13 @@ export struct CredentialsDialog {
   passwordPlaceholder: Resource | string = '';
   @State username: string = '';
   @State password: string = '';
-  onConfirm: (username: string, password: string) => void = (_u: string, _p: string) => {};
-  onClose: () => void = () => {};
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
-  private dismiss(): void {
-    if (this.controller !== undefined) {
-      this.controller.close();
-    }
-    this.onClose();
-  }
+  onConfirm: (username: string, password: string) => void = (_u: string, _p: string) => {
+  };
+
+  onClose: () => void = () => {
+  };
 
   build() {
     Column({ space: 16 }) {
@@ -131,6 +132,13 @@ export struct CredentialsDialog {
     .padding(20)
     .width('100%')
   }
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
+  }
 }
 
 // 分类选择弹窗
@@ -140,17 +148,14 @@ export struct CategoryDialog {
   categories: CategoryRecord[] = [];
   // 当前分类 id（快速改分类/入库选分类时高亮，-1 表示不高亮）
   selectedId: number = -1;
-  onPick: (categoryId: number) => void = (_id: number) => {};
-  onClose: () => void = () => {};
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
-  private dismiss(): void {
-    if (this.controller !== undefined) {
-      this.controller.close();
-    }
-    this.onClose();
-  }
+  onPick: (categoryId: number) => void = (_id: number) => {
+  };
+
+  onClose: () => void = () => {
+  };
 
   build() {
     Column({ space: 8 }) {
@@ -177,19 +182,6 @@ export struct CategoryDialog {
     .padding(20)
     .width('100%')
   }
-}
-
-// 导出列选择弹窗（书架列表 CSV 导出：标题/作者，对齐 Mihon ColumnSelectionDialog）
-@CustomDialog
-export struct ExportColumnsDialog {
-  controller?: CustomDialogController;
-  onConfirm: (includeTitle: boolean, includeAuthor: boolean) => void =
-    (_t: boolean, _a: boolean) => {};
-  onClose: () => void = () => {};
-  @State titleSelected: boolean = true;
-  @State authorSelected: boolean = true;
-  @StorageProp('isDark') isDark: boolean = false;
-  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   private dismiss(): void {
     if (this.controller !== undefined) {
@@ -197,6 +189,23 @@ export struct ExportColumnsDialog {
     }
     this.onClose();
   }
+}
+
+// 导出列选择弹窗（书架列表 CSV 导出：标题/作者，对齐 Mihon ColumnSelectionDialog）
+@CustomDialog
+export struct ExportColumnsDialog {
+  controller?: CustomDialogController;
+  @State titleSelected: boolean = true;
+  @State authorSelected: boolean = true;
+  @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+
+  onConfirm: (includeTitle: boolean, includeAuthor: boolean) => void =
+    (_t: boolean, _a: boolean) => {
+    };
+
+  onClose: () => void = () => {
+  };
 
   build() {
     Column({ space: 16 }) {
@@ -259,6 +268,13 @@ export struct ExportColumnsDialog {
     .padding(20)
     .width('100%')
   }
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
+  }
 }
 
 // 通用确认弹窗（迁移确认等）
@@ -268,17 +284,14 @@ export struct ConfirmDialog {
   title: Resource | string = '';
   message: Resource | string = '';
   confirmText: Resource | string = $r('app.string.common_ok');
-  onConfirm: () => void = () => {};
-  onClose: () => void = () => {};
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
-  private dismiss(): void {
-    if (this.controller !== undefined) {
-      this.controller.close();
-    }
-    this.onClose();
-  }
+  onConfirm: () => void = () => {
+  };
+
+  onClose: () => void = () => {
+  };
 
   build() {
     Column({ space: 16 }) {
@@ -310,5 +323,12 @@ export struct ConfirmDialog {
     }
     .padding(20)
     .width('100%')
+  }
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
   }
 }

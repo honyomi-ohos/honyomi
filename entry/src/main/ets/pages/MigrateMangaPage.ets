@@ -1,7 +1,7 @@
 import { common } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
-import { SourceRegistry, Source } from '../source/Source';
+import { Source, SourceRegistry } from '../source/Source';
 import { MangaRecord } from '../model/Models';
 import { MigrateMangaParams, MigrateSearchParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
@@ -29,69 +29,8 @@ export struct MigrateMangaPage {
       Util.localSourceName(this.getUIContext(), source.key, source.name) : this.sourceKey;
   }
 
-  private async load(): Promise<void> {
-    try {
-      const context = Util.hostAbilityContext(this.getUIContext());
-      await AppDb.ready(context);
-      const items = await MangaRepo.getLibraryBySource(this.sourceKey);
-      this.items = items;
-      const valid: number[] = [];
-      for (const id of this.selectedIds) {
-        for (const m of items) {
-          if (m.id === id && valid.indexOf(id) < 0) {
-            valid.push(id);
-          }
-        }
-      }
-      this.selectedIds = valid;
-    } catch (_e) {
-      this.items = [];
-    }
-    this.loading = false;
-  }
-
   isSelected(id: number): boolean {
     return this.selectedIds.indexOf(id) >= 0;
-  }
-
-  private toggle(id: number): void {
-    const next: number[] = [];
-    let removed = false;
-    for (const sid of this.selectedIds) {
-      if (sid === id) {
-        removed = true;
-      } else {
-        next.push(sid);
-      }
-    }
-    if (!removed) {
-      next.push(id);
-    }
-    this.selectedIds = next;
-  }
-
-  private allSelected(): boolean {
-    return this.items.length > 0 && this.selectedIds.length === this.items.length;
-  }
-
-  private toggleAll(): void {
-    if (this.allSelected()) {
-      this.selectedIds = [];
-      return;
-    }
-    const all: number[] = [];
-    for (const m of this.items) {
-      all.push(m.id);
-    }
-    this.selectedIds = all;
-  }
-
-  private startMigrate(): void {
-    if (this.selectedIds.length === 0) {
-      return;
-    }
-    const params: MigrateSearchParams = { mangaIds: this.selectedIds.slice() };
-    this.pathStack.pushPathByName('MigrateSearch', params);
   }
 
   build() {
@@ -120,7 +59,12 @@ export struct MigrateMangaPage {
             })
         }
         .width('100%')
-        .padding({ left: 16, right: 16, top: this.statusBarH + 10, bottom: 8 })
+        .padding({
+          left: 16,
+          right: 16,
+          top: this.statusBarH + 10,
+          bottom: 8
+        })
 
         // 列表
         if (this.loading) {
@@ -200,7 +144,12 @@ export struct MigrateMangaPage {
             })
         }
         .width('100%')
-        .padding({ left: 16, right: 16, top: 8, bottom: this.navBarH + 12 })
+        .padding({
+          left: 16,
+          right: 16,
+          top: 8,
+          bottom: this.navBarH + 12
+        })
       }
       .width('100%')
       .height('100%')
@@ -220,6 +169,67 @@ export struct MigrateMangaPage {
       }
       this.hasShown = true;
     })
+  }
+
+  private async load(): Promise<void> {
+    try {
+      const context = Util.hostAbilityContext(this.getUIContext());
+      await AppDb.ready(context);
+      const items = await MangaRepo.getLibraryBySource(this.sourceKey);
+      this.items = items;
+      const valid: number[] = [];
+      for (const id of this.selectedIds) {
+        for (const m of items) {
+          if (m.id === id && valid.indexOf(id) < 0) {
+            valid.push(id);
+          }
+        }
+      }
+      this.selectedIds = valid;
+    } catch (_e) {
+      this.items = [];
+    }
+    this.loading = false;
+  }
+
+  private toggle(id: number): void {
+    const next: number[] = [];
+    let removed = false;
+    for (const sid of this.selectedIds) {
+      if (sid === id) {
+        removed = true;
+      } else {
+        next.push(sid);
+      }
+    }
+    if (!removed) {
+      next.push(id);
+    }
+    this.selectedIds = next;
+  }
+
+  private allSelected(): boolean {
+    return this.items.length > 0 && this.selectedIds.length === this.items.length;
+  }
+
+  private toggleAll(): void {
+    if (this.allSelected()) {
+      this.selectedIds = [];
+      return;
+    }
+    const all: number[] = [];
+    for (const m of this.items) {
+      all.push(m.id);
+    }
+    this.selectedIds = all;
+  }
+
+  private startMigrate(): void {
+    if (this.selectedIds.length === 0) {
+      return;
+    }
+    const params: MigrateSearchParams = { mangaIds: this.selectedIds.slice() };
+    this.pathStack.pushPathByName('MigrateSearch', params);
   }
 }
 

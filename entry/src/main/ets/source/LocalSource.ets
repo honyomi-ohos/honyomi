@@ -1,6 +1,6 @@
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { zlib } from '@kit.BasicServicesKit';
-import { SChapter, SPage, ContentType } from '../model/Models';
+import { ContentType, SChapter, SPage } from '../model/Models';
 import { LocalFolderManager } from './LocalFolderManager';
 import { LocalFsSource } from './LocalFsSource';
 import { NaturalCompare } from '../common/NaturalCompare';
@@ -16,13 +16,11 @@ interface ExtractCacheDir {
 // 目录结构：<系列名>/<章节名>.zip|.cbz 或 <章节名>/图片；
 // 支持子目录分层（卷/章），章节名按相对路径显示为“卷 / 章”
 export class LocalSource extends LocalFsSource {
+  // 解压缓存总量上限：超限时按目录 mtime 淘汰最旧的解压目录
+  private static readonly EXTRACT_CACHE_LIMIT: number = 256 * 1024 * 1024;
   readonly key = 'local';
   readonly name = '本地漫画';
   readonly contentType = ContentType.MANGA;
-
-  // 解压缓存总量上限：超限时按目录 mtime 淘汰最旧的解压目录
-  private static readonly EXTRACT_CACHE_LIMIT: number = 256 * 1024 * 1024;
-
   private readonly cacheDir: string;
   private readonly imageExts: string[] = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.bmp', '.avif'];
 
@@ -31,16 +29,42 @@ export class LocalSource extends LocalFsSource {
     this.cacheDir = cacheDir;
   }
 
-  protected syncSubDir(): string {
-    return LocalFolderManager.COMIC_SUBDIR;
+  private static dirSize(dir: string): number {
+    let total = 0;
+    let entries: string[] = [];
+    try {
+      entries = fs.listFileSync(dir);
+    } catch (e) {
+      return total;
+    }
+    for (const entry of entries) {
+      const p = `${dir}/${entry}`;
+      let isDir = false;
+      let size = 0;
+      try {
+        const st = fs.statSync(p);
+        isDir = st.isDirectory();
+        size = st.size;
+      } catch (e) {
+        continue;
+      }
+      if (isDir) {
+        total += LocalSource.dirSize(p);
+      } else {
+        total += size;
+      }
+    }
+    return total;
   }
 
-  protected contentExts(): string[] {
-    return this.imageExts.concat(['.zip', '.cbz']);
-  }
-
-  protected mangaDescription(): string {
-    return 'local_desc_manga';
+  private static removeDirQuietly(path: string): void {
+    try {
+      if (fs.accessSync(path)) {
+        fs.rmdirSync(path);
+      }
+    } catch (e) {
+      // 忽略清理失败
+    }
   }
 
   async getChapterList(mangaKey: string): Promise<SChapter[]> {
@@ -74,7 +98,20 @@ export class LocalSource extends LocalFsSource {
     throw new Error('unsupported_format');
   }
 
+  protected syncSubDir(): string {
+    return LocalFolderManager.COMIC_SUBDIR;
+  }
+
   // 递归收集章节条目相对路径：归档文件与含图片的目录为章节，
+
+  protected contentExts(): string[] {
+    return this.imageExts.concat(['.zip', '.cbz']);
+  }
+
+  protected mangaDescription(): string {
+    return 'local_desc_manga';
+  }
+
   // 无图片的目录视为卷（继续向下收集其归档/图片目录）
   private collectChapterEntries(dir: string, prefix: string, out: string[]): void {
     let entries: string[] = [];
@@ -227,44 +264,6 @@ export class LocalSource extends LocalFsSource {
       LocalSource.removeDirQuietly(dirs[i].path);
       total -= dirs[i].size;
       i += 1;
-    }
-  }
-
-  private static dirSize(dir: string): number {
-    let total = 0;
-    let entries: string[] = [];
-    try {
-      entries = fs.listFileSync(dir);
-    } catch (e) {
-      return total;
-    }
-    for (const entry of entries) {
-      const p = `${dir}/${entry}`;
-      let isDir = false;
-      let size = 0;
-      try {
-        const st = fs.statSync(p);
-        isDir = st.isDirectory();
-        size = st.size;
-      } catch (e) {
-        continue;
-      }
-      if (isDir) {
-        total += LocalSource.dirSize(p);
-      } else {
-        total += size;
-      }
-    }
-    return total;
-  }
-
-  private static removeDirQuietly(path: string): void {
-    try {
-      if (fs.accessSync(path)) {
-        fs.rmdirSync(path);
-      }
-    } catch (e) {
-      // 忽略清理失败
     }
   }
 

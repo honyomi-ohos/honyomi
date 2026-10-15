@@ -1,534 +1,2124 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "Isasala ang lahat ng mga entry sa iyong akalatan" },
-    { "name": "more_incognito_summary", "value": "Pinapa-pause ang kasaysayan ng pagbabasa" },
-    { "name": "more_support", "value": "Suportahan Kami" },
-    { "name": "more_help", "value": "Tulong" },
-    { "name": "support_perks", "value": "Ang mga patron ay may access sa exclusive channels, at marami pang perks ang darating." },
-    { "name": "support_patreon", "value": "Patreon (mas mainam)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Ang Mihon ay kasalukuyang sinusuportahan ng %d+ na patron. Nais naming pasalamatan ang bawat isa sa inyo. Sama-sama nating pagandahin pa lalo ang Mihon." },
-    { "name": "support_contact_msg", "value": "Para sa iba pang alternatibong opsyon o anumang mga katanungan, sumali sa aming Discord server." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "Datos at storage" },
-    { "name": "data_storage_location", "value": "Lokasyon ng storage" },
-    { "name": "data_storage_location_info", "value": "Ginagamit para sa automatikong pag-backup, pag-download ng mga kabanata, at lokal na source." },
-    { "name": "data_backup_restore", "value": "Pag-backup at Pag-restore" },
-    { "name": "data_create_backup", "value": "Gumawa ng backup" },
-    { "name": "data_restore_backup", "value": "I-restore ang backup" },
-    { "name": "data_backup_interval", "value": "Awtomatikong dalas ng pag-backup" },
-    { "name": "data_backup_info", "value": "Dapat nagtatabi rin kayo ng mga kopya ng backup sa ibang mga lugar. Ang mga backup ay naglalaman ng sensitibong data tulad ng nakaimbak na password; mag-ingat kung ibahagi ito." },
-    { "name": "data_last_auto_backup", "value": "Huling awtomatikong na-back up: %s" },
-    { "name": "data_storage_usage", "value": "Paggamit ng storage" },
-    { "name": "data_available_space", "value": "Na magagamit: %s / Kabuuan: %s" },
-    { "name": "data_clear_chapter_cache", "value": "Linisin ang cache ng kabanata" },
-    { "name": "data_used_cache", "value": "Nagamit: %s" },
-    { "name": "data_cache_deleted", "value": "Nalinisan na ang cache, natanggal ang %d na file" },
-    { "name": "data_cache_delete_error", "value": "Nagka-error habang nililinis" },
-    { "name": "data_auto_clear_cache", "value": "Linisin ang cache ng kabanata sa paglulunsad ng app" },
-    { "name": "data_export", "value": "I-export" },
-    { "name": "data_library_list", "value": "Listahan ng Aklatan" },
-    { "name": "data_library_exported", "value": "Na-export ang Aklatan" },
-    { "name": "data_export_include", "value": "Pumili ng data na isama" },
-    { "name": "data_column_title", "value": "Pamagat" },
-    { "name": "data_column_author", "value": "May-akda" },
-    { "name": "data_interval_off", "value": "Naka-off" },
-    { "name": "data_interval_6h", "value": "Kada 6 na oras" },
-    { "name": "data_interval_12h", "value": "Kada 12 oras" },
-    { "name": "data_interval_24h", "value": "Araw-araw" },
-    { "name": "data_interval_48h", "value": "Kada 2 araw" },
-    { "name": "data_interval_weekly", "value": "Linggo-linggo" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "OK" },
-    { "name": "common_cancel", "value": "Kanselahin" },
-    { "name": "common_confirm", "value": "Kumpirmahin" },
-    { "name": "common_delete", "value": "Tanggalin" },
-    { "name": "common_retry", "value": "Subukan muli" },
-    { "name": "common_search", "value": "Maghanap" },
-    { "name": "common_all", "value": "Lahat" },
-    { "name": "common_close", "value": "Isara" },
-    { "name": "common_save", "value": "I-save" },
-    { "name": "common_install", "value": "I-install" },
-    { "name": "common_uninstall", "value": "I-uninstall" },
-    { "name": "common_update", "value": "I-update" },
-    { "name": "common_none", "value": "Wala" },
-    { "name": "common_default", "value": "Default" },
-    { "name": "appearance_title", "value": "Hitsura" },
-    { "name": "appearance_language", "value": "Wika" },
-    { "name": "lang_follow_system", "value": "Sundin ang system" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "Mode ng tema" },
-    { "name": "appearance_theme_auto", "value": "Sundin ang system" },
-    { "name": "appearance_theme_light", "value": "Maliwanag" },
-    { "name": "appearance_theme_dark", "value": "Madilim" },
-    { "name": "appearance_accent_color", "value": "Kulay ng accent" },
-    { "name": "appearance_other", "value": "Iba pa" },
-    { "name": "appearance_amoled", "value": "Puro itim na background ng AMOLED" },
-    { "name": "theme_accent_blue", "value": "Asul" },
-    { "name": "theme_accent_green", "value": "Berde" },
-    { "name": "theme_accent_pink", "value": "Rosas" },
-    { "name": "theme_accent_purple", "value": "Lila" },
-    { "name": "theme_accent_orange", "value": "Kahel" },
-    { "name": "util_time_minutes_ago", "value": "%d min ang nakalipas" },
-    { "name": "util_time_hours_ago", "value": "%d oras ang nakalipas" },
-    { "name": "util_time_days_ago", "value": "%d araw ang nakalipas" },
-    { "name": "util_status_ongoing", "value": "Kasalukuyan" },
-    { "name": "util_status_completed", "value": "Tapos na" },
-    { "name": "util_status_hiatus", "value": "Naka-hiatus" },
-    { "name": "util_status_cancelled", "value": "Kinansela" },
-    { "name": "util_status_publication_complete", "value": "Tapos na ang publikasyon" },
-    { "name": "util_status_unknown", "value": "Hindi alam" },
-    { "name": "tab_library", "value": "Aklatan" },
-    { "name": "tab_updates", "value": "Mga update" },
-    { "name": "tab_history", "value": "Kasaysayan" },
-    { "name": "tab_browse", "value": "Mag-browse" },
-    { "name": "tab_more", "value": "Higit pa" },
-    { "name": "tab_cf_waiting", "value": "Naghihintay ng beripikasyon…" },
-    { "name": "tab_cf_verified", "value": "Tapos na ang beripikasyon" },
-    { "name": "tab_cf_title", "value": "Beripikasyon ng tao" },
-    { "name": "tab_cf_done", "value": "Tapos" },
-    { "name": "tab_cf_saved", "value": "Na-save ang resulta ng beripikasyon" },
-    { "name": "more_title", "value": "Higit pa" },
-    { "name": "more_version", "value": "Bersyon %s" },
-    { "name": "more_downloaded_only", "value": "Mga na-download lang" },
-    { "name": "more_incognito", "value": "Incognito na mode" },
-    { "name": "more_downloads", "value": "Pila ng mga download" },
-    { "name": "more_categories", "value": "Mga kategorya" },
-    { "name": "more_settings", "value": "Mga setting" },
-    { "name": "more_about", "value": "Tungkol" },
-    { "name": "more_plugins", "value": "Mga extension" },
-    { "name": "categories_title", "value": "Mga kategorya" },
-    { "name": "categories_add", "value": "Bagong kategorya" },
-    { "name": "categories_name_placeholder", "value": "Pangalan ng kategorya" },
-    { "name": "categories_rename_category", "value": "Palitan ang pangalan ng kategorya" },
-    { "name": "categories_rename", "value": "Palitan ang pangalan" },
-    { "name": "categories_hint", "value": "Pindutin nang matagal ang kategorya para palitan ang pangalan o tanggalin; ang manga sa tinanggal na kategorya ay babalik sa Default" },
-    { "name": "dialog_pick_category", "value": "Pumili ng kategorya" },
-    { "name": "viewer_loading", "value": "Naglo-load…" },
-    { "name": "viewer_load_failed", "value": "Hindi na-load ang larawan" },
-    { "name": "viewer_tap_retry", "value": "I-tap para subukan muli" },
-    { "name": "library_title", "value": "Aklatan" },
-    { "name": "library_empty", "value": "Walang laman ang aklatan, mag-browse para magdagdag ng manga" },
-    { "name": "library_new_category", "value": "Bagong kategorya" },
-    { "name": "library_category_name", "value": "Pangalan ng kategorya" },
-    { "name": "updates_title", "value": "Mga update" },
-    { "name": "updates_empty", "value": "Walang kamakailang update" },
-    { "name": "updates_found_new", "value": "%d bagong kabanata ang nahanap" },
-    { "name": "updates_no_new", "value": "Walang bagong kabanata" },
-    { "name": "updates_refresh_failed", "value": "Nabigo ang pag-refresh" },
-    { "name": "updates_refreshing", "value": "Nire-refresh…" },
-    { "name": "history_title", "value": "Kasaysayan" },
-    { "name": "history_clear", "value": "I-clear" },
-    { "name": "history_confirm_clear", "value": "Kumpirmahin ang pag-clear?" },
-    { "name": "history_empty", "value": "Wala pang kasaysayan ng pagbasa" },
-    { "name": "history_cleared", "value": "Na-clear ang kasaysayan" },
-    { "name": "history_continue", "value": "Magpatuloy" },
-    { "name": "browse_title", "value": "Mag-browse" },
-    { "name": "browse_import", "value": "I-import" },
-    { "name": "browse_plugins", "value": "Mga plugin" },
-    { "name": "browse_local_source_name", "value": "Lokal na manga" },
-    { "name": "browse_popular", "value": "Sikat" },
-    { "name": "browse_latest", "value": "Pinakabago" },
-    { "name": "browse_search_hint", "value": "Maghanap ng manga…" },
-    { "name": "browse_no_results", "value": "Walang nahanap na manga" },
-    { "name": "browse_local_empty", "value": "Wala pang lokal na manga, i-tap ang Import para magdagdag" },
-    { "name": "browse_load_failed", "value": "Hindi na-load: %s" },
-    { "name": "browse_search_failed", "value": "Nabigo ang paghahanap: %s" },
-    { "name": "browse_load_more_failed", "value": "Hindi na-load ang higit pa" },
-    { "name": "browse_open_detail_failed", "value": "Hindi mabuksan ang detalye" },
-    { "name": "browse_pick_file_failed", "value": "Hindi makapili ng file" },
-    { "name": "browse_import_title", "value": "I-import ang %d file" },
-    { "name": "browse_manga_name_hint", "value": "Pangalan ng manga" },
-    { "name": "browse_input_name", "value": "Pakilagay ang pangalan" },
-    { "name": "browse_import_done", "value": "Na-import ang %d file" },
-    { "name": "browse_import_failed", "value": "Nabigo ang pag-import: %s" },
-    { "name": "download_title", "value": "Mga download" },
-    { "name": "download_resume", "value": "Ituloy" },
-    { "name": "download_pause", "value": "I-pause" },
-    { "name": "download_clear_finished", "value": "I-clear ang tapos na" },
-    { "name": "download_queue", "value": "Pila ng download" },
-    { "name": "download_state_queued", "value": "Naka-pila" },
-    { "name": "download_state_downloading", "value": "Dina-download" },
-    { "name": "download_state_done", "value": "Tapos" },
-    { "name": "download_state_failed", "value": "Nabigo" },
-    { "name": "download_move_top", "value": "Ilipat sa itaas" },
-    { "name": "download_move_bottom", "value": "Ilipat sa ibaba" },
-    { "name": "download_deleted", "value": "Tinanggal" },
-    { "name": "download_empty", "value": "Wala pang download" },
-    { "name": "download_status_downloaded", "value": "Naka-download" },
-    { "name": "download_chapter_count", "value": "%d kabanata" },
-    { "name": "detail_no_chapters", "value": "Walang kabanata" },
-    { "name": "detail_sync_failed_local", "value": "Nabigo ang sync, ipinapakita ang lokal na data" },
-    { "name": "detail_added_to_library", "value": "Idinagdag sa aklatan" },
-    { "name": "detail_removed_from_library", "value": "Tinanggal sa aklatan" },
-    { "name": "detail_all_marked_read", "value": "Lahat ng kabanata ay minarkahang nabasa" },
-    { "name": "detail_download_queued", "value": "Nasa pila na ng download" },
-    { "name": "detail_config_anilist_token", "value": "I-configure muna ang AniList token" },
-    { "name": "detail_search_anilist", "value": "Hanapin sa AniList" },
-    { "name": "detail_manga_title_hint", "value": "Pamagat ng manga" },
-    { "name": "detail_no_search_results", "value": "Walang resulta" },
-    { "name": "detail_anilist_search_failed", "value": "Nabigo ang paghahanap sa AniList" },
-    { "name": "detail_anilist_bound", "value": "Naka-bind sa AniList" },
-    { "name": "detail_anilist_unbound", "value": "Hindi na naka-bind sa AniList" },
-    { "name": "detail_synced_progress", "value": "Na-sync ang progreso sa kabanata %d" },
-    { "name": "detail_anilist_sync_failed", "value": "Nabigo ang sync ng AniList" },
-    { "name": "detail_status_local", "value": "Lokal" },
-    { "name": "detail_in_library", "value": "Nasa aklatan" },
-    { "name": "detail_add_to_library", "value": "Idagdag sa aklatan" },
-    { "name": "detail_continue_reading", "value": "Ipagpatuloy ang pagbasa" },
-    { "name": "detail_start_reading", "value": "Simulan ang pagbasa" },
-    { "name": "detail_no_chapters_yet", "value": "Wala pang kabanata" },
-    { "name": "detail_collapse", "value": "I-collapse" },
-    { "name": "detail_expand", "value": "I-expand" },
-    { "name": "detail_anilist_tracking", "value": "AniList Tracking" },
-    { "name": "detail_anilist_token_hint", "value": "Hindi pa naka-configure ang AniList token" },
-    { "name": "detail_searching", "value": "Naghahanap…" },
-    { "name": "detail_search_and_bind", "value": "Hanapin at i-bind" },
-    { "name": "detail_bind", "value": "I-bind" },
-    { "name": "detail_synced_to_chapter", "value": "Na-sync sa kabanata %d" },
-    { "name": "detail_sync_progress", "value": "I-sync ang progreso" },
-    { "name": "detail_unbind", "value": "I-unbind" },
-    { "name": "detail_chapters_count", "value": "Mga kabanata (%d)" },
-    { "name": "detail_sort_asc", "value": "Pataas" },
-    { "name": "detail_sort_desc", "value": "Pababa" },
-    { "name": "detail_mark_all_read", "value": "Markahan lahat na nabasa" },
-    { "name": "detail_read", "value": "Nabasa" },
-    { "name": "detail_downloaded", "value": "Naka-download" },
-    { "name": "detail_in_queue", "value": "Nasa pila" },
-    { "name": "detail_download", "value": "I-download" },
-    { "name": "reader_chapter_not_found", "value": "Hindi nahanap ang kabanata" },
-    { "name": "reader_load_failed", "value": "Hindi na-load: %s" },
-    { "name": "reader_mode_ltr", "value": "Kaliwa pakanan" },
-    { "name": "reader_mode_rtl", "value": "Kanan pakaliwa" },
-    { "name": "reader_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_reading_mode", "value": "Mode ng pagbasa" },
-    { "name": "reader_orientation_free", "value": "Libre" },
-    { "name": "reader_orientation_portrait", "value": "Patayo" },
-    { "name": "reader_orientation_landscape", "value": "Pahiga" },
-    { "name": "reader_screen_orientation", "value": "Oryentasyon ng screen" },
-    { "name": "reader_last_chapter", "value": "Nasa huling kabanata na" },
-    { "name": "reader_first_chapter", "value": "Nasa unang kabanata na" },
-    { "name": "reader_first_page", "value": "Nasa unang pahina na" },
-    { "name": "reader_last_page", "value": "Nasa huling pahina na" },
-    { "name": "reader_loading_chapter", "value": "Nilo-load ang kabanata…" },
-    { "name": "reader_settings", "value": "Mga setting ng reader" },
-    { "name": "reader_background", "value": "Background" },
-    { "name": "reader_theme_auto", "value": "Auto" },
-    { "name": "reader_theme_white", "value": "Puti" },
-    { "name": "reader_theme_gray", "value": "Abo" },
-    { "name": "reader_theme_black", "value": "Itim" },
-    { "name": "reader_show_page_number", "value": "Ipakita ang numero ng pahina" },
-    { "name": "reader_brightness", "value": "Liwanag" },
-    { "name": "reader_auto", "value": "Auto" },
-    { "name": "plugin_title", "value": "Mga extension" },
-    { "name": "plugin_installed_section", "value": "Naka-install" },
-    { "name": "plugin_empty", "value": "Wala pang extension, mag-install sa ibaba" },
-    { "name": "plugin_disable_hint", "value": "Ang naka-disable na extension ay maaaring i-enable ulit anumang oras" },
-    { "name": "plugin_up_to_date", "value": "Napapanahon" },
-    { "name": "plugin_local_install", "value": "I-install mula sa file" },
-    { "name": "plugin_install_from_file", "value": "Pumili ng file para i-install" },
-    { "name": "plugin_processing", "value": "Pinoproseso…" },
-    { "name": "plugin_package_hint", "value": "Sinusuportahan ang .honyomiplug / .zip na package ng plugin" },
-    { "name": "plugin_repo", "value": "Online na repository" },
-    { "name": "plugin_repo_config", "value": "I-set up ang repository" },
-    { "name": "plugin_repo_refresh", "value": "I-refresh" },
-    { "name": "plugin_repo_hint", "value": "Hindi pa naka-configure ang repository ng plugin" },
-    { "name": "plugin_repo_loading", "value": "Nilo-load ang repository…" },
-    { "name": "plugin_repo_url_title", "value": "URL ng repository ng plugin" },
-    { "name": "plugin_repo_url_hint", "value": "Ilagay ang URL ng repository ng plugin" },
-    { "name": "plugin_repo_load_failed", "value": "Hindi na-load ang repository: %s" },
-    { "name": "plugin_pick_file_failed", "value": "Hindi makapili ng file" },
-    { "name": "plugin_installed", "value": "Na-install: %s" },
-    { "name": "plugin_installed_name", "value": "Na-install ang %s" },
-    { "name": "plugin_install_failed", "value": "Nabigo ang pag-install: %s" },
-    { "name": "plugin_action_failed", "value": "Nabigo ang aksyon" },
-    { "name": "plugin_uninstalled", "value": "Na-uninstall: %s" },
-    { "name": "plugin_uninstall_failed", "value": "Nabigo ang pag-uninstall" },
-    { "name": "settings_title", "value": "Mga setting" },
-    { "name": "settings_general", "value": "Pangkalahatan" },
-    { "name": "settings_start_tab", "value": "Start screen" },
-    { "name": "settings_personalization", "value": "Personalisasyon" },
-    { "name": "settings_library", "value": "Aklatan" },
-    { "name": "settings_reader", "value": "Reader" },
-    { "name": "settings_data", "value": "Data" },
-    { "name": "settings_downloads", "value": "Mga download" },
-    { "name": "settings_browse", "value": "Mag-browse" },
-    { "name": "settings_advanced", "value": "Advanced" },
-    { "name": "settings_about", "value": "Tungkol" },
-    { "name": "settings_tab_library", "value": "Aklatan" },
-    { "name": "settings_tab_updates", "value": "Mga update" },
-    { "name": "settings_tab_history", "value": "Kasaysayan" },
-    { "name": "settings_tab_browse", "value": "Mag-browse" },
-    { "name": "settings_tab_more", "value": "Higit pa" },
-    { "name": "advanced_title", "value": "Advanced" },
-    { "name": "advanced_calculating", "value": "Kinakalkula…" },
-    { "name": "advanced_storage", "value": "Storage" },
-    { "name": "advanced_clear_image_cache", "value": "I-clear ang image cache" },
-    { "name": "advanced_image_cache_cleared", "value": "Na-clear ang image cache" },
-    { "name": "advanced_clear_cookies", "value": "I-clear ang cookies" },
-    { "name": "advanced_cookies_cleared", "value": "Na-clear ang lahat ng cookie" },
-    { "name": "advanced_backup_restore", "value": "Backup at restore" },
-    { "name": "advanced_export_backup", "value": "I-export ang backup" },
-    { "name": "advanced_import_backup", "value": "I-import ang backup" },
-    { "name": "advanced_tracking", "value": "Tracking" },
-    { "name": "advanced_anilist_token", "value": "AniList token" },
-    { "name": "advanced_token_title", "value": "AniList access token" },
-    { "name": "advanced_token_hint", "value": "I-paste ang access token (iwanang blangko para i-clear)" },
-    { "name": "advanced_token_not_set", "value": "Hindi naka-set" },
-    { "name": "advanced_token_set", "value": "Naka-set" },
-    { "name": "advanced_token_saved", "value": "Na-save ang token" },
-    { "name": "advanced_token_cleared", "value": "Na-clear ang token" },
-    { "name": "advanced_backup_exported", "value": "Na-export ang backup" },
-    { "name": "advanced_export_canceled", "value": "Kinansela ang pag-export" },
-    { "name": "advanced_export_failed", "value": "Nabigo ang pag-export" },
-    { "name": "advanced_import_canceled", "value": "Kinansela ang pag-import" },
-    { "name": "advanced_backup_invalid", "value": "Hindi valid ang backup file" },
-    { "name": "advanced_restored_manga", "value": "Na-restore ang %d manga" },
-    { "name": "advanced_import_failed", "value": "Nabigo ang pag-import" },
-    { "name": "about_title", "value": "Tungkol" },
-    { "name": "about_version", "value": "Bersyon 1.0.0" },
-    { "name": "about_desc", "value": "Ang arkitektura ay inspirado ng Mihon (Apache-2.0). Ang mga online source ay dina-install nang dynamic bilang extension, habang built-in ang mga lokal na source." },
-    { "name": "about_ack", "value": "Pagkilala sa open source:\n· Mihon / Tachiyomi — arkitektura ng app at disenyo ng interaksyon (Apache-2.0)\n· Material Symbols — mga icon sa app (Apache-2.0)\n· MangaDex — test data source" },
-    { "name": "browse_set_title", "value": "Mag-browse" },
-    { "name": "browse_set_content", "value": "Nilalaman" },
-    { "name": "browse_set_show_nsfw", "value": "Ipakita ang mga NSFW source" },
-    { "name": "browse_set_nsfw_hint", "value": "Kapag naka-on, lalabas sa Browse ang mga source na minarkahan ng extension na NSFW" },
-    { "name": "dl_set_title", "value": "Mga download" },
-    { "name": "dl_set_network", "value": "Network" },
-    { "name": "dl_set_wifi_only", "value": "Mag-download sa Wi-Fi lang" },
-    { "name": "dl_set_wifi_only_hint", "value": "Tandaan: placeholder pa ang switch na ito sa kasalukuyang bersyon; darating sa susunod na release ang pag-detect ng uri ng network" },
-    { "name": "lib_set_title", "value": "Aklatan" },
-    { "name": "lib_set_sort_group", "value": "I-filter at i-sort" },
-    { "name": "lib_set_sort_default", "value": "Default na sort" },
-    { "name": "lib_set_sort_title", "value": "Pamagat" },
-    { "name": "lib_set_sort_last_update", "value": "Pinakabagong kabanata" },
-    { "name": "lib_set_sort_added", "value": "Petsa ng pagdagdag" },
-    { "name": "lib_set_sort_unread", "value": "Bilang ng hindi pa nabasa" },
-    { "name": "lib_set_sort_asc", "value": "I-sort ang pamagat pataas" },
-    { "name": "lib_set_filter_default", "value": "Default na filter" },
-    { "name": "lib_set_filter_unread", "value": "Hindi pa nabasa" },
-    { "name": "lib_set_filter_downloaded", "value": "Naka-download" },
-    { "name": "lib_set_filter_uncompleted", "value": "Hindi pa tapos" },
-    { "name": "lib_set_display_group", "value": "Display" },
-    { "name": "lib_set_view_default", "value": "Default na view" },
-    { "name": "lib_set_view_grid", "value": "Grid" },
-    { "name": "lib_set_view_cover", "value": "Cover grid" },
-    { "name": "lib_set_view_list", "value": "Listahan" },
-    { "name": "lib_set_grid_cols", "value": "Mga column ng grid" },
-    { "name": "lib_set_cols_auto", "value": "Auto" },
-    { "name": "lib_set_cols_2", "value": "2 column" },
-    { "name": "lib_set_cols_3", "value": "3 column" },
-    { "name": "lib_set_cols_4", "value": "4 na column" },
-    { "name": "lib_set_unread_badge", "value": "Mga unread badge" },
-    { "name": "lib_set_download_badge", "value": "Mga download badge" },
-    { "name": "reader_set_title", "value": "Reader" },
-    { "name": "reader_set_mode_group", "value": "Mode ng pagbasa" },
-    { "name": "reader_set_mode_default", "value": "Default na mode" },
-    { "name": "reader_set_mode_ltr", "value": "Kaliwa pakanan" },
-    { "name": "reader_set_mode_rtl", "value": "Kanan pakaliwa" },
-    { "name": "reader_set_mode_vertical", "value": "Patayong paglipat ng pahina" },
-    { "name": "reader_set_mode_webtoon", "value": "Webtoon" },
-    { "name": "reader_set_dual_page", "value": "Dalawang pahina (landscape)" },
-    { "name": "reader_set_display_group", "value": "Display" },
-    { "name": "reader_set_show_page_number", "value": "Ipakita ang numero ng pahina" },
-    { "name": "reader_set_bg_color", "value": "Background ng reader" },
-    { "name": "reader_set_theme_follow", "value": "Sundin ang tema" },
-    { "name": "reader_set_theme_white", "value": "Puti" },
-    { "name": "reader_set_theme_black", "value": "Itim" },
-    { "name": "reader_set_theme_gray", "value": "Abo" },
-    { "name": "reader_set_reset_brightness", "value": "I-reset ang liwanag ng reader" },
-    { "name": "reader_set_brightness_reset", "value": "Naka-set na ang liwanag na sundin ang system" },
-    { "name": "browse_tab_sources", "value": "Mga source" },
-    { "name": "browse_tab_extensions", "value": "Mga extension" },
-    { "name": "browse_tab_migrate", "value": "Ilipat" },
-    { "name": "browse_pin", "value": "I-pin" },
-    { "name": "browse_unpin", "value": "I-unpin" },
-    { "name": "browse_disable_source", "value": "I-disable ang source" },
-    { "name": "browse_source_disabled", "value": "Na-disable ang source" },
-    { "name": "browse_pinned", "value": "Naka-pin" },
-    { "name": "browse_sources_empty", "value": "Walang available na source. Mag-install mula sa tab na Mga extension" },
-    { "name": "browse_filter_langs", "value": "I-filter ang mga wika" },
-    { "name": "browse_filter_all", "value": "Lahat" },
-    { "name": "browse_source_missing", "value": "Hindi available ang source. Baka naka-disable ang extension" },
-    { "name": "global_search_hint", "value": "Maghanap sa lahat ng source" },
-    { "name": "global_search_failed", "value": "Nabigo ang paghahanap" },
-    { "name": "ext_search_hint", "value": "Maghanap ng mga extension" },
-    { "name": "ext_search_no_match", "value": "Walang tugma" },
-    { "name": "ext_repo_settings", "value": "Mga setting ng repository" },
-    { "name": "ext_refresh_repo", "value": "I-refresh ang repository" },
-    { "name": "migrate_pick_source", "value": "Pumili ng source na ililipat" },
-    { "name": "migrate_empty_library", "value": "Walang laman ang aklatan" },
-    { "name": "migrate_select_all", "value": "Piliin lahat" },
-    { "name": "migrate_deselect_all", "value": "Alisin ang lahat ng pili" },
-    { "name": "migrate_action", "value": "Ilipat (%d)" },
-    { "name": "migrate_title", "value": "Ilipat" },
-    { "name": "migrate_skip", "value": "Laktawan" },
-    { "name": "migrate_progress", "value": "%d ng %d" },
-    { "name": "migrate_target_source", "value": "Target na source" },
-    { "name": "migrate_search_hint", "value": "Maghanap ng manga sa target na source" },
-    { "name": "migrate_confirm_title", "value": "Ilipat sa mangang ito?" },
-    { "name": "migrate_item_done", "value": "Nailipat: %s" },
-    { "name": "migrate_failed", "value": "Nabigo ang paglipat: %s" },
-    { "name": "migrate_done", "value": "Tapos na ang paglipat" },
-    { "name": "migrate_no_target", "value": "Walang available na target na source" },
-    { "name": "stats_title", "value": "Estadistika" },
-    { "name": "stats_overview_section", "value": "Buod" },
-    { "name": "stats_in_library", "value": "Sa aklatan" },
-    { "name": "stats_read_duration", "value": "Tagal ng pagbasa" },
-    { "name": "stats_completed_titles", "value": "Tapos na" },
-    { "name": "stats_titles_section", "value": "Mga akda" },
-    { "name": "stats_started_titles", "value": "Nagsimula na" },
-    { "name": "stats_local_titles", "value": "Lokal" },
-    { "name": "stats_chapters_section", "value": "Mga kabanata" },
-    { "name": "stats_total_chapters", "value": "Kabuuan" },
-    { "name": "stats_read_chapters", "value": "Nabasa" },
-    { "name": "stats_downloaded_chapters", "value": "Naka-download" },
-    { "name": "stats_tracker_section", "value": "Tracking" },
-    { "name": "stats_tracked_titles", "value": "Mga na-track na akda" },
-    { "name": "stats_mean_score", "value": "Karaniwang iskor" },
-    { "name": "stats_used", "value": "Ginagamit" },
-    { "name": "stats_not_applicable", "value": "Wala" },
-    { "name": "stats_week", "value": "Linggo" },
-    { "name": "stats_month", "value": "Buwan" },
-    { "name": "stats_week_total", "value": "%s ngayong linggo" },
-    { "name": "stats_month_total", "value": "%s ngayong buwan" },
-    { "name": "stats_no_reading", "value": "Walang nabasa sa panahong ito" },
-    { "name": "stats_day_short", "value": "%da" },
-    { "name": "stats_hour_short", "value": "%dor" },
-    { "name": "stats_minute_short", "value": "%dm" },
-    { "name": "stats_second_short", "value": "%ds" },
-    { "name": "stats_wd_sun", "value": "Lin" },
-    { "name": "stats_wd_mon", "value": "Lun" },
-    { "name": "stats_wd_tue", "value": "Mar" },
-    { "name": "stats_wd_wed", "value": "Miy" },
-    { "name": "stats_wd_thu", "value": "Huw" },
-    { "name": "stats_wd_fri", "value": "Biy" },
-    { "name": "stats_wd_sat", "value": "Sab" },
-    { "name": "reader_mode_vertical", "value": "Patayong paglipat ng pahina" },
-    { "name": "reader_mode_smart_grip", "value": "Matalinong hawak" },
-    { "name": "reader_orientation_lock_portrait", "value": "I-lock nang patayo" },
-    { "name": "reader_orientation_lock_landscape", "value": "I-lock nang pahiga" },
-    { "name": "reader_tab_general", "value": "Pangkalahatan" },
-    { "name": "reader_tab_filter", "value": "Filter ng kulay" },
-    { "name": "reader_filter_grayscale", "value": "Kulay-abo" },
-    { "name": "reader_filter_invert", "value": "Baligtad na kulay" },
-    { "name": "reader_filter_contrast", "value": "Contrast" },
-    { "name": "reader_filter_saturation", "value": "Saturasyon" },
-    { "name": "reader_crop_borders", "value": "I-crop ang gilid" },
-    { "name": "reader_nav_tap_zones", "value": "Mga sona ng tap" },
-    { "name": "reader_nav_default", "value": "Default" },
-    { "name": "reader_nav_ltr", "value": "Kaliwa pakanan" },
-    { "name": "reader_nav_rtl", "value": "Kanan pakaliwa" },
-    { "name": "reader_nav_vertical", "value": "Patayo" },
-    { "name": "reader_nav_edge", "value": "Gilid" },
-    { "name": "reader_nav_none", "value": "Wala" },
-    { "name": "reader_dual_page", "value": "Dalawang pahina" },
-    { "name": "reader_webtoon_padding", "value": "Gilid ng Webtoon" },
-    { "name": "reader_set_mode_smart_grip", "value": "Matalinong hawak" },
-    { "name": "ext_install_local", "value": "I-install mula sa lokal" },
-    { "name": "ext_detail_title", "value": "Impormasyon ng extension" },
-    { "name": "ext_info_version", "value": "Bersyon" },
-    { "name": "ext_info_language", "value": "Wika" },
-    { "name": "ext_uninstall_title", "value": "I-uninstall ang extension" },
-    { "name": "ext_uninstall_msg", "value": "I-uninstall ang \"%s\"? Mananatili ang manga sa aklatan" },
-    { "name": "ext_detail_sources", "value": "Mga source" },
-    { "name": "ext_detail_settings", "value": "Mga setting" },
-    { "name": "ext_pref_loading", "value": "Naglo-load…" },
-    { "name": "ext_pref_failed", "value": "Hindi nailapat ang mga setting" },
-    { "name": "ext_detail_missing", "value": "Walang extension o hindi pa naka-load" },
-    { "name": "action_filter", "value": "I-filter" },
-    { "name": "action_update_library", "value": "I-update ang aklatan" },
-    { "name": "action_update_category", "value": "I-update ang kategorya" },
-    { "name": "action_open_random_manga", "value": "Magbukas ng random na akda" },
-    { "name": "action_select_all", "value": "Piliin lahat" },
-    { "name": "action_select_inverse", "value": "Baligtarin ang pili" },
-    { "name": "action_move_category", "value": "Ilipat ang kategorya" },
-    { "name": "action_mark_as_read", "value": "Markahan bilang nabasa" },
-    { "name": "action_mark_as_unread", "value": "Markahan bilang hindi pa nabasa" },
-    { "name": "action_download", "value": "I-download" },
-    { "name": "action_delete", "value": "Tanggalin" },
-    { "name": "action_migrate", "value": "Ilipat" },
-    { "name": "action_remove_from_library", "value": "Alisin sa aklatan" },
-    { "name": "action_remove_from_library_msg", "value": "Alisin ang %d napiling manga sa aklatan?" },
-    { "name": "action_download_queued", "value": "Nadagdag ang %d download" },
-    { "name": "library_search_hint", "value": "Maghanap sa aklatan" },
-    { "name": "library_no_match", "value": "Walang tumugmang manga" },
-    { "name": "lib_sheet_tab_filter", "value": "Filter" },
-    { "name": "lib_sheet_tab_sort", "value": "Pag-uri" },
-    { "name": "lib_sheet_tab_display", "value": "Display" },
-    { "name": "lib_filter_downloaded", "value": "Naka-download" },
-    { "name": "lib_filter_unread", "value": "Hindi pa nabasa" },
-    { "name": "lib_filter_started", "value": "Nabasa na" },
-    { "name": "lib_filter_bookmarked", "value": "Naka-bookmark" },
-    { "name": "lib_filter_completed", "value": "Tapos na" },
-    { "name": "lib_filter_tracked", "value": "Na-track" },
-    { "name": "lib_sort_alpha", "value": "Pamagat" },
-    { "name": "lib_sort_total", "value": "Bilang ng kabanata" },
-    { "name": "lib_sort_last_read", "value": "Huling binasa" },
-    { "name": "lib_sort_last_update", "value": "Huling pag-check ng update" },
-    { "name": "lib_sort_unread", "value": "Bilang ng hindi pa nabasa" },
-    { "name": "lib_sort_latest_chapter", "value": "Update ng akda" },
-    { "name": "lib_sort_fetch_date", "value": "Oras na nakuha ang kabanata" },
-    { "name": "lib_sort_date_added", "value": "Petsa ng pagdagdag" },
-    { "name": "lib_sort_random", "value": "Random" },
-    { "name": "lib_display_compact", "value": "Siksik na grid" },
-    { "name": "lib_display_comfortable", "value": "Maluwag na grid" },
-    { "name": "lib_display_cover", "value": "Cover grid" },
-    { "name": "lib_display_list", "value": "Listahan" },
-    { "name": "lib_display_grid_size", "value": "Bilang bawat hilera" },
-    { "name": "lib_display_grid_auto", "value": "Auto" },
-    { "name": "lib_display_badges_group", "value": "Mga badge at pindutan" },
-    { "name": "lib_badge_downloaded", "value": "Bilang ng naka-download na kabanata" },
-    { "name": "lib_badge_unread", "value": "Mga kabanatang hindi pa nabasa" },
-    { "name": "lib_badge_local", "value": "Lokal na source" },
-    { "name": "lib_badge_language", "value": "Wika" },
-    { "name": "lib_badge_continue", "value": "Pindutan ng ipagpatuloy ang pagbasa" },
-    { "name": "lib_display_tabs_group", "value": "Mga tab" },
-    { "name": "lib_show_category_tabs", "value": "Ipakita ang mga tab ng kategorya" },
-    { "name": "lib_show_manga_count", "value": "Ipakita ang bilang ng akda" },
-    { "name": "EntryFormAbility_label", "value": "Mga card ng Honyomi" },
-    { "name": "EntryFormAbility_desc", "value": "Tagapagbigay ng card sa desktop" },
-    { "name": "card_recent_display", "value": "Ipagpatuloy ang pagbasa" },
-    { "name": "card_recent_desc", "value": "Ipagpatuloy agad ang kamakailang binasang manga" },
-    { "name": "card_updates_display", "value": "Mga update" },
-    { "name": "card_updates_desc", "value": "Pinakabagong kabanatang hindi pa nabasa sa aklatan" },
-    { "name": "card_recent_header", "value": "Ipagpatuloy ang pagbasa" },
-    { "name": "card_updates_header", "value": "Mga update" },
-    { "name": "card_unread_count", "value": "%d hindi pa nabasa" },
-    { "name": "card_empty_recent", "value": "Wala pang kasaysayan ng pagbasa" },
-    { "name": "card_empty_updates", "value": "Walang kabanatang hindi pa nabasa" },
-    { "name": "card_open_hint", "value": "I-tap para buksan ang app" },
-    { "name": "card_manga_display", "value": "Card ng manga" },
-    { "name": "card_manga_desc", "value": "Idagdag mula sa pahina ng detalye, i-tap ang cover para magbasa" },
-    { "name": "card_manga_empty", "value": "Idagdag mula sa pahina ng detalye ng manga papunta sa desktop" },
-    { "name": "detail_add_to_desktop", "value": "Idagdag sa desktop" },
-    { "name": "detail_card_added", "value": "Naidagdag sa desktop" },
-    { "name": "detail_card_add_failed", "value": "Hindi naidagdag ang card" },
-    { "name": "card_stats_week_display", "value": "Estadistika sa linggo" },
-    { "name": "card_stats_week_desc", "value": "Oras ng pagbasa bawat araw ngayong linggo" },
-    { "name": "card_stats_month_display", "value": "Estadistika sa buwan" },
-    { "name": "card_stats_month_desc", "value": "Oras ng pagbasa bawat araw ngayong buwan" },
-    { "name": "card_stats_empty", "value": "Wala pang nabasa" },
-    { "name": "action_view_upcoming", "value": "Ipakita ang mga paparating na update" },
-    { "name": "label_upcoming", "value": "Paparating" },
-    { "name": "upcoming_guide", "value": "Gabay sa paparating" },
-    { "name": "upcoming_calendar_prev", "value": "Nakaraang buwan" },
-    { "name": "upcoming_calendar_next", "value": "Susunod na buwan" },
-    { "name": "pref_filter_update_categories_details", "value": "Ang mga akdang nasa kategoryang kasama at hindi kasama ay hindi ipapakita." },
-    { "name": "relative_time_today", "value": "Ngayon" },
-    { "name": "relative_time_days_ago", "value": "%d araw ang nakalipas" },
-    { "name": "upcoming_relative_time_days", "value": "Sa %d araw" },
-    { "name": "card_upcoming_display", "value": "Paparating" },
-    { "name": "card_upcoming_desc", "value": "Kalendaryo ng inaasahang update ng manga sa aklatan" },
-    { "name": "card_upcoming_header", "value": "Paparating" },
-    { "name": "card_empty_upcoming", "value": "Walang kasalukuyang manga sa aklatan" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "Isasala ang lahat ng mga entry sa iyong akalatan"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "Pinapa-pause ang kasaysayan ng pagbabasa"
+    },
+    {
+      "name": "more_support",
+      "value": "Suportahan Kami"
+    },
+    {
+      "name": "more_help",
+      "value": "Tulong"
+    },
+    {
+      "name": "support_perks",
+      "value": "Ang mga patron ay may access sa exclusive channels, at marami pang perks ang darating."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (mas mainam)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Ang Mihon ay kasalukuyang sinusuportahan ng %d+ na patron. Nais naming pasalamatan ang bawat isa sa inyo. Sama-sama nating pagandahin pa lalo ang Mihon."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "Para sa iba pang alternatibong opsyon o anumang mga katanungan, sumali sa aming Discord server."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "Datos at storage"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "Lokasyon ng storage"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "Ginagamit para sa automatikong pag-backup, pag-download ng mga kabanata, at lokal na source."
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "Pag-backup at Pag-restore"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "Gumawa ng backup"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "I-restore ang backup"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "Awtomatikong dalas ng pag-backup"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "Dapat nagtatabi rin kayo ng mga kopya ng backup sa ibang mga lugar. Ang mga backup ay naglalaman ng sensitibong data tulad ng nakaimbak na password; mag-ingat kung ibahagi ito."
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "Huling awtomatikong na-back up: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "Paggamit ng storage"
+    },
+    {
+      "name": "data_available_space",
+      "value": "Na magagamit: %s / Kabuuan: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "Linisin ang cache ng kabanata"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "Nagamit: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "Nalinisan na ang cache, natanggal ang %d na file"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "Nagka-error habang nililinis"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "Linisin ang cache ng kabanata sa paglulunsad ng app"
+    },
+    {
+      "name": "data_export",
+      "value": "I-export"
+    },
+    {
+      "name": "data_library_list",
+      "value": "Listahan ng Aklatan"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "Na-export ang Aklatan"
+    },
+    {
+      "name": "data_export_include",
+      "value": "Pumili ng data na isama"
+    },
+    {
+      "name": "data_column_title",
+      "value": "Pamagat"
+    },
+    {
+      "name": "data_column_author",
+      "value": "May-akda"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "Naka-off"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "Kada 6 na oras"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "Kada 12 oras"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "Araw-araw"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "Kada 2 araw"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "Linggo-linggo"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "OK"
+    },
+    {
+      "name": "common_cancel",
+      "value": "Kanselahin"
+    },
+    {
+      "name": "common_confirm",
+      "value": "Kumpirmahin"
+    },
+    {
+      "name": "common_delete",
+      "value": "Tanggalin"
+    },
+    {
+      "name": "common_retry",
+      "value": "Subukan muli"
+    },
+    {
+      "name": "common_search",
+      "value": "Maghanap"
+    },
+    {
+      "name": "common_all",
+      "value": "Lahat"
+    },
+    {
+      "name": "common_close",
+      "value": "Isara"
+    },
+    {
+      "name": "common_save",
+      "value": "I-save"
+    },
+    {
+      "name": "common_install",
+      "value": "I-install"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "I-uninstall"
+    },
+    {
+      "name": "common_update",
+      "value": "I-update"
+    },
+    {
+      "name": "common_none",
+      "value": "Wala"
+    },
+    {
+      "name": "common_default",
+      "value": "Default"
+    },
+    {
+      "name": "appearance_title",
+      "value": "Hitsura"
+    },
+    {
+      "name": "appearance_language",
+      "value": "Wika"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "Sundin ang system"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "Mode ng tema"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "Sundin ang system"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "Maliwanag"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "Madilim"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "Kulay ng accent"
+    },
+    {
+      "name": "appearance_other",
+      "value": "Iba pa"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "Puro itim na background ng AMOLED"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "Asul"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "Berde"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "Rosas"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "Lila"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "Kahel"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d min ang nakalipas"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d oras ang nakalipas"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d araw ang nakalipas"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "Kasalukuyan"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "Tapos na"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "Naka-hiatus"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "Kinansela"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "Tapos na ang publikasyon"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "Hindi alam"
+    },
+    {
+      "name": "tab_library",
+      "value": "Aklatan"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Mga update"
+    },
+    {
+      "name": "tab_history",
+      "value": "Kasaysayan"
+    },
+    {
+      "name": "tab_browse",
+      "value": "Mag-browse"
+    },
+    {
+      "name": "tab_more",
+      "value": "Higit pa"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "Naghihintay ng beripikasyon…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "Tapos na ang beripikasyon"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "Beripikasyon ng tao"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "Tapos"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "Na-save ang resulta ng beripikasyon"
+    },
+    {
+      "name": "more_title",
+      "value": "Higit pa"
+    },
+    {
+      "name": "more_version",
+      "value": "Bersyon %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "Mga na-download lang"
+    },
+    {
+      "name": "more_incognito",
+      "value": "Incognito na mode"
+    },
+    {
+      "name": "more_downloads",
+      "value": "Pila ng mga download"
+    },
+    {
+      "name": "more_categories",
+      "value": "Mga kategorya"
+    },
+    {
+      "name": "more_settings",
+      "value": "Mga setting"
+    },
+    {
+      "name": "more_about",
+      "value": "Tungkol"
+    },
+    {
+      "name": "more_plugins",
+      "value": "Mga extension"
+    },
+    {
+      "name": "categories_title",
+      "value": "Mga kategorya"
+    },
+    {
+      "name": "categories_add",
+      "value": "Bagong kategorya"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "Pangalan ng kategorya"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "Palitan ang pangalan ng kategorya"
+    },
+    {
+      "name": "categories_rename",
+      "value": "Palitan ang pangalan"
+    },
+    {
+      "name": "categories_hint",
+      "value": "Pindutin nang matagal ang kategorya para palitan ang pangalan o tanggalin; ang manga sa tinanggal na kategorya ay babalik sa Default"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "Pumili ng kategorya"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "Naglo-load…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "Hindi na-load ang larawan"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "I-tap para subukan muli"
+    },
+    {
+      "name": "library_title",
+      "value": "Aklatan"
+    },
+    {
+      "name": "library_empty",
+      "value": "Walang laman ang aklatan, mag-browse para magdagdag ng manga"
+    },
+    {
+      "name": "library_new_category",
+      "value": "Bagong kategorya"
+    },
+    {
+      "name": "library_category_name",
+      "value": "Pangalan ng kategorya"
+    },
+    {
+      "name": "updates_title",
+      "value": "Mga update"
+    },
+    {
+      "name": "updates_empty",
+      "value": "Walang kamakailang update"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%d bagong kabanata ang nahanap"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "Walang bagong kabanata"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "Nabigo ang pag-refresh"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "Nire-refresh…"
+    },
+    {
+      "name": "history_title",
+      "value": "Kasaysayan"
+    },
+    {
+      "name": "history_clear",
+      "value": "I-clear"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "Kumpirmahin ang pag-clear?"
+    },
+    {
+      "name": "history_empty",
+      "value": "Wala pang kasaysayan ng pagbasa"
+    },
+    {
+      "name": "history_cleared",
+      "value": "Na-clear ang kasaysayan"
+    },
+    {
+      "name": "history_continue",
+      "value": "Magpatuloy"
+    },
+    {
+      "name": "browse_title",
+      "value": "Mag-browse"
+    },
+    {
+      "name": "browse_import",
+      "value": "I-import"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "Mga plugin"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "Lokal na manga"
+    },
+    {
+      "name": "browse_popular",
+      "value": "Sikat"
+    },
+    {
+      "name": "browse_latest",
+      "value": "Pinakabago"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "Maghanap ng manga…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "Walang nahanap na manga"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "Wala pang lokal na manga, i-tap ang Import para magdagdag"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "Hindi na-load: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "Nabigo ang paghahanap: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "Hindi na-load ang higit pa"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "Hindi mabuksan ang detalye"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "Hindi makapili ng file"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "I-import ang %d file"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "Pangalan ng manga"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "Pakilagay ang pangalan"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "Na-import ang %d file"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "Nabigo ang pag-import: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "Mga download"
+    },
+    {
+      "name": "download_resume",
+      "value": "Ituloy"
+    },
+    {
+      "name": "download_pause",
+      "value": "I-pause"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "I-clear ang tapos na"
+    },
+    {
+      "name": "download_queue",
+      "value": "Pila ng download"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "Naka-pila"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "Dina-download"
+    },
+    {
+      "name": "download_state_done",
+      "value": "Tapos"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "Nabigo"
+    },
+    {
+      "name": "download_move_top",
+      "value": "Ilipat sa itaas"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "Ilipat sa ibaba"
+    },
+    {
+      "name": "download_deleted",
+      "value": "Tinanggal"
+    },
+    {
+      "name": "download_empty",
+      "value": "Wala pang download"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "Naka-download"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d kabanata"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "Walang kabanata"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "Nabigo ang sync, ipinapakita ang lokal na data"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "Idinagdag sa aklatan"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "Tinanggal sa aklatan"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "Lahat ng kabanata ay minarkahang nabasa"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "Nasa pila na ng download"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "I-configure muna ang AniList token"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "Hanapin sa AniList"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "Pamagat ng manga"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "Walang resulta"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "Nabigo ang paghahanap sa AniList"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "Naka-bind sa AniList"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "Hindi na naka-bind sa AniList"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "Na-sync ang progreso sa kabanata %d"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "Nabigo ang sync ng AniList"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "Lokal"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "Nasa aklatan"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "Idagdag sa aklatan"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "Ipagpatuloy ang pagbasa"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "Simulan ang pagbasa"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "Wala pang kabanata"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "I-collapse"
+    },
+    {
+      "name": "detail_expand",
+      "value": "I-expand"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList Tracking"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "Hindi pa naka-configure ang AniList token"
+    },
+    {
+      "name": "detail_searching",
+      "value": "Naghahanap…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "Hanapin at i-bind"
+    },
+    {
+      "name": "detail_bind",
+      "value": "I-bind"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "Na-sync sa kabanata %d"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "I-sync ang progreso"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "I-unbind"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "Mga kabanata (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "Pataas"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "Pababa"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "Markahan lahat na nabasa"
+    },
+    {
+      "name": "detail_read",
+      "value": "Nabasa"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "Naka-download"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "Nasa pila"
+    },
+    {
+      "name": "detail_download",
+      "value": "I-download"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "Hindi nahanap ang kabanata"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "Hindi na-load: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "Kaliwa pakanan"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "Kanan pakaliwa"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "Mode ng pagbasa"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "Libre"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "Patayo"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "Pahiga"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "Oryentasyon ng screen"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "Nasa huling kabanata na"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "Nasa unang kabanata na"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "Nasa unang pahina na"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "Nasa huling pahina na"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "Nilo-load ang kabanata…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "Mga setting ng reader"
+    },
+    {
+      "name": "reader_background",
+      "value": "Background"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "Puti"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "Abo"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "Itim"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "Ipakita ang numero ng pahina"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "Liwanag"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "plugin_title",
+      "value": "Mga extension"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "Naka-install"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "Wala pang extension, mag-install sa ibaba"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "Ang naka-disable na extension ay maaaring i-enable ulit anumang oras"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "Napapanahon"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "I-install mula sa file"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "Pumili ng file para i-install"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "Pinoproseso…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": "Sinusuportahan ang .honyomiplug / .zip na package ng plugin"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "Online na repository"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "I-set up ang repository"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "I-refresh"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "Hindi pa naka-configure ang repository ng plugin"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "Nilo-load ang repository…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "URL ng repository ng plugin"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "Ilagay ang URL ng repository ng plugin"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "Hindi na-load ang repository: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "Hindi makapili ng file"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "Na-install: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "Na-install ang %s"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "Nabigo ang pag-install: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "Nabigo ang aksyon"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "Na-uninstall: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "Nabigo ang pag-uninstall"
+    },
+    {
+      "name": "settings_title",
+      "value": "Mga setting"
+    },
+    {
+      "name": "settings_general",
+      "value": "Pangkalahatan"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Start screen"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "Personalisasyon"
+    },
+    {
+      "name": "settings_library",
+      "value": "Aklatan"
+    },
+    {
+      "name": "settings_reader",
+      "value": "Reader"
+    },
+    {
+      "name": "settings_data",
+      "value": "Data"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Mga download"
+    },
+    {
+      "name": "settings_browse",
+      "value": "Mag-browse"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Advanced"
+    },
+    {
+      "name": "settings_about",
+      "value": "Tungkol"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "Aklatan"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Mga update"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "Kasaysayan"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "Mag-browse"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "Higit pa"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Advanced"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "Kinakalkula…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "Storage"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "I-clear ang image cache"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "Na-clear ang image cache"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "I-clear ang cookies"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "Na-clear ang lahat ng cookie"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "Backup at restore"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "I-export ang backup"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "I-import ang backup"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "Tracking"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList token"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList access token"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "I-paste ang access token (iwanang blangko para i-clear)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "Hindi naka-set"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "Naka-set"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "Na-save ang token"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "Na-clear ang token"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "Na-export ang backup"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "Kinansela ang pag-export"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "Nabigo ang pag-export"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "Kinansela ang pag-import"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "Hindi valid ang backup file"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "Na-restore ang %d manga"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "Nabigo ang pag-import"
+    },
+    {
+      "name": "about_title",
+      "value": "Tungkol"
+    },
+    {
+      "name": "about_version",
+      "value": "Bersyon 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "Ang arkitektura ay inspirado ng Mihon (Apache-2.0). Ang mga online source ay dina-install nang dynamic bilang extension, habang built-in ang mga lokal na source."
+    },
+    {
+      "name": "about_ack",
+      "value": "Pagkilala sa open source:\n· Mihon / Tachiyomi — arkitektura ng app at disenyo ng interaksyon (Apache-2.0)\n· Material Symbols — mga icon sa app (Apache-2.0)\n· MangaDex — test data source"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "Mag-browse"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "Nilalaman"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "Ipakita ang mga NSFW source"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "Kapag naka-on, lalabas sa Browse ang mga source na minarkahan ng extension na NSFW"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Mga download"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Network"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "Mag-download sa Wi-Fi lang"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "Tandaan: placeholder pa ang switch na ito sa kasalukuyang bersyon; darating sa susunod na release ang pag-detect ng uri ng network"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "Aklatan"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "I-filter at i-sort"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "Default na sort"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "Pamagat"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "Pinakabagong kabanata"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "Petsa ng pagdagdag"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "Bilang ng hindi pa nabasa"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "I-sort ang pamagat pataas"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "Default na filter"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "Hindi pa nabasa"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "Naka-download"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "Hindi pa tapos"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Display"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "Default na view"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "Grid"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "Cover grid"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "Listahan"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "Mga column ng grid"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 column"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 column"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 na column"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "Mga unread badge"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "Mga download badge"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "Reader"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "Mode ng pagbasa"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "Default na mode"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "Kaliwa pakanan"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "Kanan pakaliwa"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "Patayong paglipat ng pahina"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "Dalawang pahina (landscape)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Display"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "Ipakita ang numero ng pahina"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "Background ng reader"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "Sundin ang tema"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "Puti"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "Itim"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "Abo"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "I-reset ang liwanag ng reader"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "Naka-set na ang liwanag na sundin ang system"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "Mga source"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "Mga extension"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "Ilipat"
+    },
+    {
+      "name": "browse_pin",
+      "value": "I-pin"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "I-unpin"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "I-disable ang source"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "Na-disable ang source"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "Naka-pin"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "Walang available na source. Mag-install mula sa tab na Mga extension"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "I-filter ang mga wika"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "Lahat"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "Hindi available ang source. Baka naka-disable ang extension"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "Maghanap sa lahat ng source"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "Nabigo ang paghahanap"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "Maghanap ng mga extension"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "Walang tugma"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "Mga setting ng repository"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "I-refresh ang repository"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "Pumili ng source na ililipat"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "Walang laman ang aklatan"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "Piliin lahat"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "Alisin ang lahat ng pili"
+    },
+    {
+      "name": "migrate_action",
+      "value": "Ilipat (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "Ilipat"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "Laktawan"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d ng %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "Target na source"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "Maghanap ng manga sa target na source"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "Ilipat sa mangang ito?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "Nailipat: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "Nabigo ang paglipat: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "Tapos na ang paglipat"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "Walang available na target na source"
+    },
+    {
+      "name": "stats_title",
+      "value": "Estadistika"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "Buod"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "Sa aklatan"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "Tagal ng pagbasa"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "Tapos na"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "Mga akda"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "Nagsimula na"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "Lokal"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "Mga kabanata"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "Kabuuan"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "Nabasa"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "Naka-download"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "Tracking"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "Mga na-track na akda"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "Karaniwang iskor"
+    },
+    {
+      "name": "stats_used",
+      "value": "Ginagamit"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "Wala"
+    },
+    {
+      "name": "stats_week",
+      "value": "Linggo"
+    },
+    {
+      "name": "stats_month",
+      "value": "Buwan"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "%s ngayong linggo"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "%s ngayong buwan"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "Walang nabasa sa panahong ito"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%da"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dor"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dm"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%ds"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "Lin"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "Lun"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "Mar"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "Miy"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "Huw"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "Biy"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "Sab"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "Patayong paglipat ng pahina"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "Matalinong hawak"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "I-lock nang patayo"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "I-lock nang pahiga"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "Pangkalahatan"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "Filter ng kulay"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "Kulay-abo"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "Baligtad na kulay"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "Contrast"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "Saturasyon"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "I-crop ang gilid"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "Mga sona ng tap"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "Default"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "Kaliwa pakanan"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "Kanan pakaliwa"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "Patayo"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "Gilid"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "Wala"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Dalawang pahina"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "Gilid ng Webtoon"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "Matalinong hawak"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "I-install mula sa lokal"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "Impormasyon ng extension"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "Bersyon"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "Wika"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "I-uninstall ang extension"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "I-uninstall ang \"%s\"? Mananatili ang manga sa aklatan"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "Mga source"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "Mga setting"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "Naglo-load…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "Hindi nailapat ang mga setting"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "Walang extension o hindi pa naka-load"
+    },
+    {
+      "name": "action_filter",
+      "value": "I-filter"
+    },
+    {
+      "name": "action_update_library",
+      "value": "I-update ang aklatan"
+    },
+    {
+      "name": "action_update_category",
+      "value": "I-update ang kategorya"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "Magbukas ng random na akda"
+    },
+    {
+      "name": "action_select_all",
+      "value": "Piliin lahat"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "Baligtarin ang pili"
+    },
+    {
+      "name": "action_move_category",
+      "value": "Ilipat ang kategorya"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "Markahan bilang nabasa"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "Markahan bilang hindi pa nabasa"
+    },
+    {
+      "name": "action_download",
+      "value": "I-download"
+    },
+    {
+      "name": "action_delete",
+      "value": "Tanggalin"
+    },
+    {
+      "name": "action_migrate",
+      "value": "Ilipat"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "Alisin sa aklatan"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "Alisin ang %d napiling manga sa aklatan?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "Nadagdag ang %d download"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "Maghanap sa aklatan"
+    },
+    {
+      "name": "library_no_match",
+      "value": "Walang tumugmang manga"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "Filter"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "Pag-uri"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "Display"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "Naka-download"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "Hindi pa nabasa"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "Nabasa na"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "Naka-bookmark"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "Tapos na"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "Na-track"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "Pamagat"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "Bilang ng kabanata"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "Huling binasa"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "Huling pag-check ng update"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "Bilang ng hindi pa nabasa"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "Update ng akda"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "Oras na nakuha ang kabanata"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "Petsa ng pagdagdag"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "Random"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "Siksik na grid"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "Maluwag na grid"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "Cover grid"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "Listahan"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "Bilang bawat hilera"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "Mga badge at pindutan"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "Bilang ng naka-download na kabanata"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "Mga kabanatang hindi pa nabasa"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "Lokal na source"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "Wika"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "Pindutan ng ipagpatuloy ang pagbasa"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "Mga tab"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "Ipakita ang mga tab ng kategorya"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "Ipakita ang bilang ng akda"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "Mga card ng Honyomi"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "Tagapagbigay ng card sa desktop"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "Ipagpatuloy ang pagbasa"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "Ipagpatuloy agad ang kamakailang binasang manga"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "Mga update"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "Pinakabagong kabanatang hindi pa nabasa sa aklatan"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "Ipagpatuloy ang pagbasa"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "Mga update"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d hindi pa nabasa"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "Wala pang kasaysayan ng pagbasa"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "Walang kabanatang hindi pa nabasa"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "I-tap para buksan ang app"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "Card ng manga"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "Idagdag mula sa pahina ng detalye, i-tap ang cover para magbasa"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "Idagdag mula sa pahina ng detalye ng manga papunta sa desktop"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "Idagdag sa desktop"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "Naidagdag sa desktop"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "Hindi naidagdag ang card"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "Estadistika sa linggo"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "Oras ng pagbasa bawat araw ngayong linggo"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "Estadistika sa buwan"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "Oras ng pagbasa bawat araw ngayong buwan"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "Wala pang nabasa"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "Ipakita ang mga paparating na update"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "Paparating"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "Gabay sa paparating"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "Nakaraang buwan"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "Susunod na buwan"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "Ang mga akdang nasa kategoryang kasama at hindi kasama ay hindi ipapakita."
+    },
+    {
+      "name": "relative_time_today",
+      "value": "Ngayon"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d araw ang nakalipas"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "Sa %d araw"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "Paparating"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "Kalendaryo ng inaasahang update ng manga sa aklatan"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "Paparating"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "Walang kasalukuyang manga sa aklatan"
+    }
+  ]
 }

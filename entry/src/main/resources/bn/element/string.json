@@ -1,534 +1,2124 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "লাইব্রেরির সব এন্ট্রি ফিল্টার হবে" },
-    { "name": "more_incognito_summary", "value": "পড়ার ইতিহাসে বিরতি দেয়" },
-    { "name": "more_support", "value": "আমাদের সহায়তা করুন" },
-    { "name": "more_help", "value": "সাহায্য" },
-    { "name": "support_perks", "value": "Patrons get access to exclusive channels, with more perks to come." },
-    { "name": "support_patreon", "value": "Patreon (preferred)" },
-    { "name": "support_opencollective", "value": "OpenCollective" },
-    { "name": "support_supported_by", "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together." },
-    { "name": "support_contact_msg", "value": "For alternative options or any related questions, join our Discord server." },
-    { "name": "support_discord", "value": "Discord" },
-    { "name": "data_storage_title", "value": "ডাটা অ্যান্ড স্টোরেজ" },
-    { "name": "data_storage_location", "value": "স্টোরেজের ঠিকানা" },
-    { "name": "data_storage_location_info", "value": "অটোমেটিক ব্যাকআপ এর জন্য, চ্যাপ্টার ডাউনলোড ও লোকাল সোর্স এর জন্য ব্যবহার হয়।" },
-    { "name": "data_backup_restore", "value": "ব্যাকআপ এবং পুনরুদ্ধার" },
-    { "name": "data_create_backup", "value": "ব্যাকআপ তৈরী করুন" },
-    { "name": "data_restore_backup", "value": "ব্যাকআপ পুনরুদ্ধার" },
-    { "name": "data_backup_interval", "value": "ব্যাকআপ ফ্রিকোয়েন্সি" },
-    { "name": "data_backup_info", "value": "স্বয়ংক্রিয় ব্যাকআপ অত্যন্ত সুপারিশময়. আপনি অন্যান্য জায়গায়ও কপি রাখা উচিত।" },
-    { "name": "data_last_auto_backup", "value": "শেষবার স্বয়ংক্রিয়ভাবে ব্যাকআপ নেওয়া হয়েছে: %s" },
-    { "name": "data_storage_usage", "value": "স্টোরেজ ব্যবহার" },
-    { "name": "data_available_space", "value": "খালি: %s/ মোট: %s" },
-    { "name": "data_clear_chapter_cache", "value": "অধ্যায়ের ক্যাচি পরিষ্কার করুন" },
-    { "name": "data_used_cache", "value": "ব্যাবহৃত হয়েছে: %s" },
-    { "name": "data_cache_deleted", "value": "ক্যাচি পরিষ্কার হয়েছে. %d ফাইল মুছে ফেলা হয়েছে" },
-    { "name": "data_cache_delete_error", "value": "ক্যাচ পরিষ্কারের সময় একটি ত্রুটি দেখা দিয়েছে" },
-    { "name": "data_auto_clear_cache", "value": "অ্যাপ বন্দ্ধ করার সময় অধ্যায়ের ক্যাশে পরিষ্কার করুন" },
-    { "name": "data_export", "value": "এক্সপোর্ট" },
-    { "name": "data_library_list", "value": "লাইব্রেরী লিস্ট" },
-    { "name": "data_library_exported", "value": "লাইব্রেরী এক্সপোর্ট করা হয়েছে" },
-    { "name": "data_export_include", "value": "যোগ করার জন্য উপাত্ত নির্বাচন করুন" },
-    { "name": "data_column_title", "value": "শিরোনাম" },
-    { "name": "data_column_author", "value": "লেখক" },
-    { "name": "data_interval_off", "value": "বন্ধ" },
-    { "name": "data_interval_6h", "value": "প্রতি ৬ ঘন্টায়" },
-    { "name": "data_interval_12h", "value": "প্রতি ১২ ঘন্টায়" },
-    { "name": "data_interval_24h", "value": "প্রতিদিন" },
-    { "name": "data_interval_48h", "value": "প্রতি ২ দিন" },
-    { "name": "data_interval_weekly", "value": "সাপ্তাহিক" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "ঠিক আছে" },
-    { "name": "common_cancel", "value": "বাতিল" },
-    { "name": "common_confirm", "value": "নিশ্চিত করুন" },
-    { "name": "common_delete", "value": "মুছুন" },
-    { "name": "common_retry", "value": "আবার চেষ্টা" },
-    { "name": "common_search", "value": "খুঁজুন" },
-    { "name": "common_all", "value": "সব" },
-    { "name": "common_close", "value": "বন্ধ" },
-    { "name": "common_save", "value": "সংরক্ষণ" },
-    { "name": "common_install", "value": "ইনস্টল" },
-    { "name": "common_uninstall", "value": "আনইনস্টল" },
-    { "name": "common_update", "value": "আপডেট" },
-    { "name": "common_none", "value": "কোনোটি নয়" },
-    { "name": "common_default", "value": "ডিফল্ট" },
-    { "name": "appearance_title", "value": "চেহারা" },
-    { "name": "appearance_language", "value": "ভাষা" },
-    { "name": "lang_follow_system", "value": "সিস্টেম অনুসরণ করুন" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "থিম মোড" },
-    { "name": "appearance_theme_auto", "value": "সিস্টেম অনুসরণ করুন" },
-    { "name": "appearance_theme_light", "value": "হালকা" },
-    { "name": "appearance_theme_dark", "value": "গাঢ়" },
-    { "name": "appearance_accent_color", "value": "অ্যাকসেন্ট রং" },
-    { "name": "appearance_other", "value": "অন্যান্য" },
-    { "name": "appearance_amoled", "value": "AMOLED বিশুদ্ধ কালো পটভূমি" },
-    { "name": "theme_accent_blue", "value": "নীল" },
-    { "name": "theme_accent_green", "value": "সবুজ" },
-    { "name": "theme_accent_pink", "value": "গোলাপি" },
-    { "name": "theme_accent_purple", "value": "বেগুনি" },
-    { "name": "theme_accent_orange", "value": "কমলা" },
-    { "name": "util_time_minutes_ago", "value": "%d মিনিট আগে" },
-    { "name": "util_time_hours_ago", "value": "%d ঘণ্টা আগে" },
-    { "name": "util_time_days_ago", "value": "%d দিন আগে" },
-    { "name": "util_status_ongoing", "value": "চলমান" },
-    { "name": "util_status_completed", "value": "সম্পূর্ণ" },
-    { "name": "util_status_hiatus", "value": "বিরতিতে" },
-    { "name": "util_status_cancelled", "value": "বাতিল" },
-    { "name": "util_status_publication_complete", "value": "প্রকাশনা সম্পূর্ণ" },
-    { "name": "util_status_unknown", "value": "অজানা" },
-    { "name": "tab_library", "value": "লাইব্রেরি" },
-    { "name": "tab_updates", "value": "আপডেট" },
-    { "name": "tab_history", "value": "ইতিহাস" },
-    { "name": "tab_browse", "value": "ব্রাউজ" },
-    { "name": "tab_more", "value": "আরও" },
-    { "name": "tab_cf_waiting", "value": "যাচাইয়ের অপেক্ষা…" },
-    { "name": "tab_cf_verified", "value": "যাচাই সম্পন্ন" },
-    { "name": "tab_cf_title", "value": "মানব যাচাই" },
-    { "name": "tab_cf_done", "value": "সম্পন্ন" },
-    { "name": "tab_cf_saved", "value": "যাচাই ফলাফল সংরক্ষিত" },
-    { "name": "more_title", "value": "আরও" },
-    { "name": "more_version", "value": "সংস্করণ %s" },
-    { "name": "more_downloaded_only", "value": "শুধু ডাউনলোড" },
-    { "name": "more_incognito", "value": "ছদ্মবেশী মোড" },
-    { "name": "more_downloads", "value": "ডাউনলোড সারি" },
-    { "name": "more_categories", "value": "বিভাগ" },
-    { "name": "more_settings", "value": "সেটিংস" },
-    { "name": "more_about", "value": "সম্পর্কে" },
-    { "name": "more_plugins", "value": "এক্সটেনশন" },
-    { "name": "categories_title", "value": "বিভাগ" },
-    { "name": "categories_add", "value": "নতুন বিভাগ" },
-    { "name": "categories_name_placeholder", "value": "বিভাগের নাম" },
-    { "name": "categories_rename_category", "value": "বিভাগের নাম পরিবর্তন" },
-    { "name": "categories_rename", "value": "নাম পরিবর্তন" },
-    { "name": "categories_hint", "value": "নাম পরিবর্তন বা মুছতে বিভাগটি দীর্ঘক্ষণ চাপুন; মুছে ফেলা বিভাগের মাঙ্গা ডিফল্টে ফিরে যায়" },
-    { "name": "dialog_pick_category", "value": "বিভাগ নির্বাচন করুন" },
-    { "name": "viewer_loading", "value": "লোড হচ্ছে…" },
-    { "name": "viewer_load_failed", "value": "ছবি লোড ব্যর্থ" },
-    { "name": "viewer_tap_retry", "value": "আবার চেষ্টা করতে ট্যাপ করুন" },
-    { "name": "library_title", "value": "লাইব্রেরি" },
-    { "name": "library_empty", "value": "আপনার লাইব্রেরি খালি, মাঙ্গা যোগ করতে ব্রাউজ করুন" },
-    { "name": "library_new_category", "value": "নতুন বিভাগ" },
-    { "name": "library_category_name", "value": "বিভাগের নাম" },
-    { "name": "updates_title", "value": "আপডেট" },
-    { "name": "updates_empty", "value": "সাম্প্রতিক আপডেট নেই" },
-    { "name": "updates_found_new", "value": "%dটি নতুন অধ্যায় পাওয়া গেছে" },
-    { "name": "updates_no_new", "value": "নতুন অধ্যায় নেই" },
-    { "name": "updates_refresh_failed", "value": "রিফ্রেশ ব্যর্থ" },
-    { "name": "updates_refreshing", "value": "রিফ্রেশ হচ্ছে…" },
-    { "name": "history_title", "value": "ইতিহাস" },
-    { "name": "history_clear", "value": "মুছুন" },
-    { "name": "history_confirm_clear", "value": "মুছে ফেলতে নিশ্চিত?" },
-    { "name": "history_empty", "value": "এখনো পড়ার ইতিহাস নেই" },
-    { "name": "history_cleared", "value": "ইতিহাস মুছে ফেলা হয়েছে" },
-    { "name": "history_continue", "value": "চালিয়ে যান" },
-    { "name": "browse_title", "value": "ব্রাউজ" },
-    { "name": "browse_import", "value": "আমদানি" },
-    { "name": "browse_plugins", "value": "প্লাগইন" },
-    { "name": "browse_local_source_name", "value": "স্থানীয় মাঙ্গা" },
-    { "name": "browse_popular", "value": "জনপ্রিয়" },
-    { "name": "browse_latest", "value": "সর্বশেষ" },
-    { "name": "browse_search_hint", "value": "মাঙ্গা খুঁজুন…" },
-    { "name": "browse_no_results", "value": "কোনো মাঙ্গা পাওয়া যায়নি" },
-    { "name": "browse_local_empty", "value": "এখনো স্থানীয় মাঙ্গা নেই, যোগ করতে আমদানিতে ট্যাপ করুন" },
-    { "name": "browse_load_failed", "value": "লোড ব্যর্থ: %s" },
-    { "name": "browse_search_failed", "value": "অনুসন্ধান ব্যর্থ: %s" },
-    { "name": "browse_load_more_failed", "value": "আরও লোড ব্যর্থ" },
-    { "name": "browse_open_detail_failed", "value": "বিস্তারিত খুলতে ব্যর্থ" },
-    { "name": "browse_pick_file_failed", "value": "ফাইল নির্বাচন ব্যর্থ" },
-    { "name": "browse_import_title", "value": "%dটি ফাইল আমদানি" },
-    { "name": "browse_manga_name_hint", "value": "মাঙ্গার নাম" },
-    { "name": "browse_input_name", "value": "অনুগ্রহ করে একটি নাম লিখুন" },
-    { "name": "browse_import_done", "value": "%dটি ফাইল আমদানি হয়েছে" },
-    { "name": "browse_import_failed", "value": "আমদানি ব্যর্থ: %s" },
-    { "name": "download_title", "value": "ডাউনলোড" },
-    { "name": "download_resume", "value": "চালিয়ে যান" },
-    { "name": "download_pause", "value": "বিরতি" },
-    { "name": "download_clear_finished", "value": "সম্পন্নগুলো মুছুন" },
-    { "name": "download_queue", "value": "ডাউনলোড সারি" },
-    { "name": "download_state_queued", "value": "সারিতে" },
-    { "name": "download_state_downloading", "value": "ডাউনলোড হচ্ছে" },
-    { "name": "download_state_done", "value": "সম্পন্ন" },
-    { "name": "download_state_failed", "value": "ব্যর্থ" },
-    { "name": "download_move_top", "value": "উপরে নিন" },
-    { "name": "download_move_bottom", "value": "নিচে নিন" },
-    { "name": "download_deleted", "value": "মুছে ফেলা হয়েছে" },
-    { "name": "download_empty", "value": "এখনো কোনো ডাউনলোড নেই" },
-    { "name": "download_status_downloaded", "value": "ডাউনলোড হয়েছে" },
-    { "name": "download_chapter_count", "value": "%d অধ্যায়" },
-    { "name": "detail_no_chapters", "value": "কোনো অধ্যায় নেই" },
-    { "name": "detail_sync_failed_local", "value": "সিঙ্ক ব্যর্থ, স্থানীয় তথ্য দেখানো হচ্ছে" },
-    { "name": "detail_added_to_library", "value": "লাইব্রেরিতে যোগ হয়েছে" },
-    { "name": "detail_removed_from_library", "value": "লাইব্রেরি থেকে সরানো হয়েছে" },
-    { "name": "detail_all_marked_read", "value": "সব অধ্যায় পড়া হিসেবে চিহ্নিত" },
-    { "name": "detail_download_queued", "value": "ডাউনলোড সারিতে যোগ হয়েছে" },
-    { "name": "detail_config_anilist_token", "value": "অনুগ্রহ করে আগে AniList টোকেন কনফিগার করুন" },
-    { "name": "detail_search_anilist", "value": "AniList খুঁজুন" },
-    { "name": "detail_manga_title_hint", "value": "মাঙ্গার শিরোনাম" },
-    { "name": "detail_no_search_results", "value": "কোনো ফলাফল নেই" },
-    { "name": "detail_anilist_search_failed", "value": "AniList অনুসন্ধান ব্যর্থ" },
-    { "name": "detail_anilist_bound", "value": "AniList-এ আবদ্ধ" },
-    { "name": "detail_anilist_unbound", "value": "AniList থেকে বিচ্ছিন্ন" },
-    { "name": "detail_synced_progress", "value": "অগ্রগতি অধ্যায় %d-এ সিঙ্ক হয়েছে" },
-    { "name": "detail_anilist_sync_failed", "value": "AniList সিঙ্ক ব্যর্থ" },
-    { "name": "detail_status_local", "value": "স্থানীয়" },
-    { "name": "detail_in_library", "value": "লাইব্রেরিতে আছে" },
-    { "name": "detail_add_to_library", "value": "লাইব্রেরিতে যোগ করুন" },
-    { "name": "detail_continue_reading", "value": "পড়া চালিয়ে যান" },
-    { "name": "detail_start_reading", "value": "পড়া শুরু করুন" },
-    { "name": "detail_no_chapters_yet", "value": "এখনো অধ্যায় নেই" },
-    { "name": "detail_collapse", "value": "সংকুচিত করুন" },
-    { "name": "detail_expand", "value": "প্রসারিত করুন" },
-    { "name": "detail_anilist_tracking", "value": "AniList ট্র্যাকিং" },
-    { "name": "detail_anilist_token_hint", "value": "AniList টোকেন এখনো কনফিগার করা হয়নি" },
-    { "name": "detail_searching", "value": "খোঁজা হচ্ছে…" },
-    { "name": "detail_search_and_bind", "value": "খুঁজে আবদ্ধ করুন" },
-    { "name": "detail_bind", "value": "আবদ্ধ করুন" },
-    { "name": "detail_synced_to_chapter", "value": "অধ্যায় %d-এ সিঙ্ক" },
-    { "name": "detail_sync_progress", "value": "অগ্রগতি সিঙ্ক করুন" },
-    { "name": "detail_unbind", "value": "বিচ্ছিন্ন করুন" },
-    { "name": "detail_chapters_count", "value": "অধ্যায় (%d)" },
-    { "name": "detail_sort_asc", "value": "আরোহী" },
-    { "name": "detail_sort_desc", "value": "অবরোহী" },
-    { "name": "detail_mark_all_read", "value": "সব পড়া চিহ্নিত করুন" },
-    { "name": "detail_read", "value": "পড়া" },
-    { "name": "detail_downloaded", "value": "ডাউনলোড হয়েছে" },
-    { "name": "detail_in_queue", "value": "সারিতে" },
-    { "name": "detail_download", "value": "ডাউনলোড" },
-    { "name": "reader_chapter_not_found", "value": "অধ্যায় পাওয়া যায়নি" },
-    { "name": "reader_load_failed", "value": "লোড ব্যর্থ: %s" },
-    { "name": "reader_mode_ltr", "value": "বাম থেকে ডান" },
-    { "name": "reader_mode_rtl", "value": "ডান থেকে বাম" },
-    { "name": "reader_mode_webtoon", "value": "ওয়েবটুন" },
-    { "name": "reader_reading_mode", "value": "পড়ার মোড" },
-    { "name": "reader_orientation_free", "value": "মুক্ত" },
-    { "name": "reader_orientation_portrait", "value": "উল্লম্ব" },
-    { "name": "reader_orientation_landscape", "value": "অনুভূমিক" },
-    { "name": "reader_screen_orientation", "value": "স্ক্রিন অভিমুখ" },
-    { "name": "reader_last_chapter", "value": "ইতিমধ্যে শেষ অধ্যায়ে আছেন" },
-    { "name": "reader_first_chapter", "value": "ইতিমধ্যে প্রথম অধ্যায়ে আছেন" },
-    { "name": "reader_first_page", "value": "ইতিমধ্যে প্রথম পৃষ্ঠায় আছেন" },
-    { "name": "reader_last_page", "value": "ইতিমধ্যে শেষ পৃষ্ঠায় আছেন" },
-    { "name": "reader_loading_chapter", "value": "অধ্যায় লোড হচ্ছে…" },
-    { "name": "reader_settings", "value": "রিডার সেটিংস" },
-    { "name": "reader_background", "value": "পটভূমি" },
-    { "name": "reader_theme_auto", "value": "স্বয়ংক্রিয়" },
-    { "name": "reader_theme_white", "value": "সাদা" },
-    { "name": "reader_theme_gray", "value": "ধূসর" },
-    { "name": "reader_theme_black", "value": "কালো" },
-    { "name": "reader_show_page_number", "value": "পৃষ্ঠা নম্বর দেখান" },
-    { "name": "reader_brightness", "value": "উজ্জ্বলতা" },
-    { "name": "reader_auto", "value": "স্বয়ংক্রিয়" },
-    { "name": "plugin_title", "value": "এক্সটেনশন" },
-    { "name": "plugin_installed_section", "value": "ইনস্টল করা" },
-    { "name": "plugin_empty", "value": "এখনো এক্সটেনশন নেই, নিচ থেকে ইনস্টল করুন" },
-    { "name": "plugin_disable_hint", "value": "নিষ্ক্রিয় এক্সটেনশন যেকোনো সময় আবার চালু করা যায়" },
-    { "name": "plugin_up_to_date", "value": "আপ টু ডেট" },
-    { "name": "plugin_local_install", "value": "ফাইল থেকে ইনস্টল" },
-    { "name": "plugin_install_from_file", "value": "ইনস্টলের জন্য ফাইল বেছে নিন" },
-    { "name": "plugin_processing", "value": "প্রক্রিয়া চলছে…" },
-    { "name": "plugin_package_hint", "value": ".honyomiplug / .zip প্লাগইন প্যাকেজ সমর্থিত" },
-    { "name": "plugin_repo", "value": "অনলাইন রিপোজিটরি" },
-    { "name": "plugin_repo_config", "value": "রিপোজিটরি সেট করুন" },
-    { "name": "plugin_repo_refresh", "value": "রিফ্রেশ" },
-    { "name": "plugin_repo_hint", "value": "এখনো প্লাগইন রিপোজিটরি কনফিগার করা হয়নি" },
-    { "name": "plugin_repo_loading", "value": "রিপোজিটরি লোড হচ্ছে…" },
-    { "name": "plugin_repo_url_title", "value": "প্লাগইন রিপোজিটরি URL" },
-    { "name": "plugin_repo_url_hint", "value": "প্লাগইন রিপোজিটরি URL লিখুন" },
-    { "name": "plugin_repo_load_failed", "value": "রিপোজিটরি লোড ব্যর্থ: %s" },
-    { "name": "plugin_pick_file_failed", "value": "ফাইল নির্বাচন ব্যর্থ" },
-    { "name": "plugin_installed", "value": "ইনস্টল হয়েছে: %s" },
-    { "name": "plugin_installed_name", "value": "%s ইনস্টল হয়েছে" },
-    { "name": "plugin_install_failed", "value": "ইনস্টল ব্যর্থ: %s" },
-    { "name": "plugin_action_failed", "value": "কাজ ব্যর্থ" },
-    { "name": "plugin_uninstalled", "value": "আনইনস্টল: %s" },
-    { "name": "plugin_uninstall_failed", "value": "আনইনস্টল ব্যর্থ" },
-    { "name": "settings_title", "value": "সেটিংস" },
-    { "name": "settings_general", "value": "সাধারণ" },
-    { "name": "settings_start_tab", "value": "শুরুর পর্দা" },
-    { "name": "settings_personalization", "value": "ব্যক্তিগতকরণ" },
-    { "name": "settings_library", "value": "লাইব্রেরি" },
-    { "name": "settings_reader", "value": "রিডার" },
-    { "name": "settings_data", "value": "ডেটা" },
-    { "name": "settings_downloads", "value": "ডাউনলোড" },
-    { "name": "settings_browse", "value": "ব্রাউজ" },
-    { "name": "settings_advanced", "value": "উন্নত" },
-    { "name": "settings_about", "value": "সম্পর্কে" },
-    { "name": "settings_tab_library", "value": "লাইব্রেরি" },
-    { "name": "settings_tab_updates", "value": "আপডেট" },
-    { "name": "settings_tab_history", "value": "ইতিহাস" },
-    { "name": "settings_tab_browse", "value": "ব্রাউজ" },
-    { "name": "settings_tab_more", "value": "আরও" },
-    { "name": "advanced_title", "value": "উন্নত" },
-    { "name": "advanced_calculating", "value": "হিসাব হচ্ছে…" },
-    { "name": "advanced_storage", "value": "স্টোরেজ" },
-    { "name": "advanced_clear_image_cache", "value": "ছবির ক্যাশ মুছুন" },
-    { "name": "advanced_image_cache_cleared", "value": "ছবির ক্যাশ মুছে ফেলা হয়েছে" },
-    { "name": "advanced_clear_cookies", "value": "কুকি মুছুন" },
-    { "name": "advanced_cookies_cleared", "value": "সব কুকি মুছে ফেলা হয়েছে" },
-    { "name": "advanced_backup_restore", "value": "ব্যাকআপ ও পুনরুদ্ধার" },
-    { "name": "advanced_export_backup", "value": "ব্যাকআপ রপ্তানি" },
-    { "name": "advanced_import_backup", "value": "ব্যাকআপ আমদানি" },
-    { "name": "advanced_tracking", "value": "ট্র্যাকিং" },
-    { "name": "advanced_anilist_token", "value": "AniList টোকেন" },
-    { "name": "advanced_token_title", "value": "AniList অ্যাক্সেস টোকেন" },
-    { "name": "advanced_token_hint", "value": "অ্যাক্সেস টোকেন পেস্ট করুন (মুছতে খালি রাখুন)" },
-    { "name": "advanced_token_not_set", "value": "সেট করা হয়নি" },
-    { "name": "advanced_token_set", "value": "সেট করা" },
-    { "name": "advanced_token_saved", "value": "টোকেন সংরক্ষিত" },
-    { "name": "advanced_token_cleared", "value": "টোকেন মুছে ফেলা হয়েছে" },
-    { "name": "advanced_backup_exported", "value": "ব্যাকআপ রপ্তানি হয়েছে" },
-    { "name": "advanced_export_canceled", "value": "রপ্তানি বাতিল" },
-    { "name": "advanced_export_failed", "value": "রপ্তানি ব্যর্থ" },
-    { "name": "advanced_import_canceled", "value": "আমদানি বাতিল" },
-    { "name": "advanced_backup_invalid", "value": "অবৈধ ব্যাকআপ ফাইল" },
-    { "name": "advanced_restored_manga", "value": "%dটি মাঙ্গা পুনরুদ্ধার হয়েছে" },
-    { "name": "advanced_import_failed", "value": "আমদানি ব্যর্থ" },
-    { "name": "about_title", "value": "সম্পর্কে" },
-    { "name": "about_version", "value": "সংস্করণ 1.0.0" },
-    { "name": "about_desc", "value": "স্থাপত্য Mihon (Apache-2.0) থেকে অনুপ্রাণিত। অনলাইন উৎস এক্সটেনশন হিসেবে গতিশীলভাবে ইনস্টল হয়, স্থানীয় উৎস অন্তর্নির্মিত।" },
-    { "name": "about_ack", "value": "ওপেন সোর্স স্বীকৃতি:\n· Mihon / Tachiyomi — অ্যাপ স্থাপত্য ও ইন্টারঅ্যাকশন ডিজাইন (Apache-2.0)\n· Material Symbols — অ্যাপ আইকন (Apache-2.0)\n· MangaDex — পরীক্ষার তথ্য উৎস" },
-    { "name": "browse_set_title", "value": "ব্রাউজ" },
-    { "name": "browse_set_content", "value": "বিষয়বস্তু" },
-    { "name": "browse_set_show_nsfw", "value": "NSFW উৎস দেখান" },
-    { "name": "browse_set_nsfw_hint", "value": "চালু থাকলে, এক্সটেনশনে NSFW চিহ্নিত উৎস ব্রাউজে দেখা যাবে" },
-    { "name": "dl_set_title", "value": "ডাউনলোড" },
-    { "name": "dl_set_network", "value": "নেটওয়ার্ক" },
-    { "name": "dl_set_wifi_only", "value": "শুধু Wi-Fi-তে ডাউনলোড" },
-    { "name": "dl_set_wifi_only_hint", "value": "নোট: বর্তমান সংস্করণে এই সুইচ স্থানধারক; নেটওয়ার্ক ধরন শনাক্তকরণ পরবর্তী সংস্করণে আসবে" },
-    { "name": "lib_set_title", "value": "লাইব্রেরি" },
-    { "name": "lib_set_sort_group", "value": "ফিল্টার ও সাজানো" },
-    { "name": "lib_set_sort_default", "value": "ডিফল্ট সাজানো" },
-    { "name": "lib_set_sort_title", "value": "শিরোনাম" },
-    { "name": "lib_set_sort_last_update", "value": "সর্বশেষ অধ্যায়" },
-    { "name": "lib_set_sort_added", "value": "যোগের তারিখ" },
-    { "name": "lib_set_sort_unread", "value": "অপঠিত সংখ্যা" },
-    { "name": "lib_set_sort_asc", "value": "শিরোনাম আরোহী ক্রমে" },
-    { "name": "lib_set_filter_default", "value": "ডিফল্ট ফিল্টার" },
-    { "name": "lib_set_filter_unread", "value": "অপঠিত" },
-    { "name": "lib_set_filter_downloaded", "value": "ডাউনলোড হয়েছে" },
-    { "name": "lib_set_filter_uncompleted", "value": "অসম্পূর্ণ" },
-    { "name": "lib_set_display_group", "value": "প্রদর্শন" },
-    { "name": "lib_set_view_default", "value": "ডিফল্ট দৃশ্য" },
-    { "name": "lib_set_view_grid", "value": "গ্রিড" },
-    { "name": "lib_set_view_cover", "value": "কভার গ্রিড" },
-    { "name": "lib_set_view_list", "value": "তালিকা" },
-    { "name": "lib_set_grid_cols", "value": "গ্রিড কলাম" },
-    { "name": "lib_set_cols_auto", "value": "স্বয়ংক্রিয়" },
-    { "name": "lib_set_cols_2", "value": "২ কলাম" },
-    { "name": "lib_set_cols_3", "value": "৩ কলাম" },
-    { "name": "lib_set_cols_4", "value": "৪ কলাম" },
-    { "name": "lib_set_unread_badge", "value": "অপঠিত ব্যাজ" },
-    { "name": "lib_set_download_badge", "value": "ডাউনলোড ব্যাজ" },
-    { "name": "reader_set_title", "value": "রিডার" },
-    { "name": "reader_set_mode_group", "value": "পড়ার মোড" },
-    { "name": "reader_set_mode_default", "value": "ডিফল্ট মোড" },
-    { "name": "reader_set_mode_ltr", "value": "বাম থেকে ডান" },
-    { "name": "reader_set_mode_rtl", "value": "ডান থেকে বাম" },
-    { "name": "reader_set_mode_vertical", "value": "উল্লম্ব পৃষ্ঠা" },
-    { "name": "reader_set_mode_webtoon", "value": "ওয়েবটুন" },
-    { "name": "reader_set_dual_page", "value": "দ্বৈত পৃষ্ঠা (অনুভূমিক)" },
-    { "name": "reader_set_display_group", "value": "প্রদর্শন" },
-    { "name": "reader_set_show_page_number", "value": "পৃষ্ঠা নম্বর দেখান" },
-    { "name": "reader_set_bg_color", "value": "রিডার পটভূমি" },
-    { "name": "reader_set_theme_follow", "value": "থিম অনুসরণ করুন" },
-    { "name": "reader_set_theme_white", "value": "সাদা" },
-    { "name": "reader_set_theme_black", "value": "কালো" },
-    { "name": "reader_set_theme_gray", "value": "ধূসর" },
-    { "name": "reader_set_reset_brightness", "value": "রিডার উজ্জ্বলতা রিসেট" },
-    { "name": "reader_set_brightness_reset", "value": "উজ্জ্বলতা সিস্টেম অনুসরণে সেট" },
-    { "name": "browse_tab_sources", "value": "সোর্স" },
-    { "name": "browse_tab_extensions", "value": "এক্সটেনশন" },
-    { "name": "browse_tab_migrate", "value": "মাইগ্রেট" },
-    { "name": "browse_pin", "value": "পিন" },
-    { "name": "browse_unpin", "value": "আনপিন" },
-    { "name": "browse_disable_source", "value": "সোর্স নিষ্ক্রিয় করুন" },
-    { "name": "browse_source_disabled", "value": "সোর্স নিষ্ক্রিয় করা হয়েছে" },
-    { "name": "browse_pinned", "value": "পিন করা হয়েছে" },
-    { "name": "browse_sources_empty", "value": "কোনো সোর্স নেই। এক্সটেনশন ট্যাব থেকে ইনস্টল করুন" },
-    { "name": "browse_filter_langs", "value": "ভাষা ফিল্টার" },
-    { "name": "browse_filter_all", "value": "সব" },
-    { "name": "browse_source_missing", "value": "সোর্স পাওয়া যাচ্ছে না। এক্সটেনশন নিষ্ক্রিয় থাকতে পারে" },
-    { "name": "global_search_hint", "value": "সব সোর্সে খুঁজুন" },
-    { "name": "global_search_failed", "value": "খোঁজা ব্যর্থ" },
-    { "name": "ext_search_hint", "value": "এক্সটেনশন খুঁজুন" },
-    { "name": "ext_search_no_match", "value": "কোনো মিল নেই" },
-    { "name": "ext_repo_settings", "value": "রিপোজিটরি সেটিংস" },
-    { "name": "ext_refresh_repo", "value": "রিপোজিটরি রিফ্রেশ" },
-    { "name": "migrate_pick_source", "value": "মাইগ্রেট করার সোর্স বেছে নিন" },
-    { "name": "migrate_empty_library", "value": "লাইব্রেরি খালি" },
-    { "name": "migrate_select_all", "value": "সব নির্বাচন" },
-    { "name": "migrate_deselect_all", "value": "নির্বাচন তুলে নিন" },
-    { "name": "migrate_action", "value": "মাইগ্রেট (%d)" },
-    { "name": "migrate_title", "value": "মাইগ্রেট" },
-    { "name": "migrate_skip", "value": "এড়িয়ে যান" },
-    { "name": "migrate_progress", "value": "%d / %d" },
-    { "name": "migrate_target_source", "value": "লক্ষ্য সোর্স" },
-    { "name": "migrate_search_hint", "value": "লক্ষ্য সোর্সে মাঙ্গা খুঁজুন" },
-    { "name": "migrate_confirm_title", "value": "এই মাঙ্গায় মাইগ্রেট করবেন?" },
-    { "name": "migrate_item_done", "value": "মাইগ্রেট হয়েছে: %s" },
-    { "name": "migrate_failed", "value": "মাইগ্রেট ব্যর্থ: %s" },
-    { "name": "migrate_done", "value": "মাইগ্রেট সম্পূর্ণ" },
-    { "name": "migrate_no_target", "value": "কোনো লক্ষ্য সোর্স নেই" },
-    { "name": "stats_title", "value": "পরিসংখ্যান" },
-    { "name": "stats_overview_section", "value": "সারসংক্ষেপ" },
-    { "name": "stats_in_library", "value": "লাইব্রেরিতে" },
-    { "name": "stats_read_duration", "value": "পড়ার সময়" },
-    { "name": "stats_completed_titles", "value": "সম্পূর্ণ" },
-    { "name": "stats_titles_section", "value": "রচনা" },
-    { "name": "stats_started_titles", "value": "শুরু করা" },
-    { "name": "stats_local_titles", "value": "স্থানীয়" },
-    { "name": "stats_chapters_section", "value": "অধ্যায়" },
-    { "name": "stats_total_chapters", "value": "মোট" },
-    { "name": "stats_read_chapters", "value": "পড়া" },
-    { "name": "stats_downloaded_chapters", "value": "ডাউনলোড হয়েছে" },
-    { "name": "stats_tracker_section", "value": "ট্র্যাকিং" },
-    { "name": "stats_tracked_titles", "value": "ট্র্যাক করা রচনা" },
-    { "name": "stats_mean_score", "value": "গড় নম্বর" },
-    { "name": "stats_used", "value": "ব্যবহৃত" },
-    { "name": "stats_not_applicable", "value": "প্রযোজ্য নয়" },
-    { "name": "stats_week", "value": "সপ্তাহ" },
-    { "name": "stats_month", "value": "মাস" },
-    { "name": "stats_week_total", "value": "এই সপ্তাহে %s" },
-    { "name": "stats_month_total", "value": "এই মাসে %s" },
-    { "name": "stats_no_reading", "value": "এই সময়ে কোনো পড়া নেই" },
-    { "name": "stats_day_short", "value": "%dদি" },
-    { "name": "stats_hour_short", "value": "%dঘ" },
-    { "name": "stats_minute_short", "value": "%dমি" },
-    { "name": "stats_second_short", "value": "%dসে" },
-    { "name": "stats_wd_sun", "value": "র" },
-    { "name": "stats_wd_mon", "value": "সো" },
-    { "name": "stats_wd_tue", "value": "ম" },
-    { "name": "stats_wd_wed", "value": "বু" },
-    { "name": "stats_wd_thu", "value": "বৃ" },
-    { "name": "stats_wd_fri", "value": "শু" },
-    { "name": "stats_wd_sat", "value": "শ" },
-    { "name": "reader_mode_vertical", "value": "উল্লম্ব" },
-    { "name": "reader_mode_smart_grip", "value": "মুঠি-সচেতন" },
-    { "name": "reader_orientation_lock_portrait", "value": "উল্লম্ব আটকান" },
-    { "name": "reader_orientation_lock_landscape", "value": "অনুভূমিক আটকান" },
-    { "name": "reader_tab_general", "value": "সাধারণ" },
-    { "name": "reader_tab_filter", "value": "রঙের ছাঁকনি" },
-    { "name": "reader_filter_grayscale", "value": "ধূসর" },
-    { "name": "reader_filter_invert", "value": "উল্টো রং" },
-    { "name": "reader_filter_contrast", "value": "বৈপরীত্য" },
-    { "name": "reader_filter_saturation", "value": "সম্পৃক্তি" },
-    { "name": "reader_crop_borders", "value": "কিনারা কাটুন" },
-    { "name": "reader_nav_tap_zones", "value": "স্পর্শ এলাকা" },
-    { "name": "reader_nav_default", "value": "ডিফল্ট" },
-    { "name": "reader_nav_ltr", "value": "বাম থেকে ডান" },
-    { "name": "reader_nav_rtl", "value": "ডান থেকে বাম" },
-    { "name": "reader_nav_vertical", "value": "উল্লম্ব" },
-    { "name": "reader_nav_edge", "value": "কিনারা" },
-    { "name": "reader_nav_none", "value": "কোনোটি নয়" },
-    { "name": "reader_dual_page", "value": "দ্বৈত পৃষ্ঠা দৃশ্য" },
-    { "name": "reader_webtoon_padding", "value": "ওয়েবটুন পাশের ফাঁক" },
-    { "name": "reader_set_mode_smart_grip", "value": "মুঠি-সচেতন" },
-    { "name": "ext_install_local", "value": "স্থানীয় থেকে ইনস্টল" },
-    { "name": "ext_detail_title", "value": "এক্সটেনশন তথ্য" },
-    { "name": "ext_info_version", "value": "সংস্করণ" },
-    { "name": "ext_info_language", "value": "ভাষা" },
-    { "name": "ext_uninstall_title", "value": "এক্সটেনশন আনইনস্টল" },
-    { "name": "ext_uninstall_msg", "value": "“%s” আনইনস্টল করবেন? লাইব্রেরির মাঙ্গা ডেটা থাকবে" },
-    { "name": "ext_detail_sources", "value": "সোর্স" },
-    { "name": "ext_detail_settings", "value": "সেটিংস" },
-    { "name": "ext_pref_loading", "value": "লোড হচ্ছে…" },
-    { "name": "ext_pref_failed", "value": "সেটিংস প্রয়োগ ব্যর্থ" },
-    { "name": "ext_detail_missing", "value": "এক্সটেনশন নেই বা লোড হয়নি" },
-    { "name": "action_filter", "value": "ছাঁকনি" },
-    { "name": "action_update_library", "value": "লাইব্রেরি আপডেট" },
-    { "name": "action_update_category", "value": "বিভাগ আপডেট" },
-    { "name": "action_open_random_manga", "value": "এলোমেলো রচনা খুলুন" },
-    { "name": "action_select_all", "value": "সব নির্বাচন" },
-    { "name": "action_select_inverse", "value": "নির্বাচন উল্টান" },
-    { "name": "action_move_category", "value": "বিভাগে সরান" },
-    { "name": "action_mark_as_read", "value": "পড়া চিহ্নিত করুন" },
-    { "name": "action_mark_as_unread", "value": "অপঠিত চিহ্নিত করুন" },
-    { "name": "action_download", "value": "ডাউনলোড" },
-    { "name": "action_delete", "value": "মুছুন" },
-    { "name": "action_migrate", "value": "মাইগ্রেট" },
-    { "name": "action_remove_from_library", "value": "লাইব্রেরি থেকে সরান" },
-    { "name": "action_remove_from_library_msg", "value": "নির্বাচিত %d মাঙ্গা লাইব্রেরি থেকে সরাবেন?" },
-    { "name": "action_download_queued", "value": "%d ডাউনলোড সারিতে যোগ হয়েছে" },
-    { "name": "library_search_hint", "value": "লাইব্রেরি খুঁজুন" },
-    { "name": "library_no_match", "value": "মিলে যাওয়া মাঙ্গা নেই" },
-    { "name": "lib_sheet_tab_filter", "value": "ছাঁকনি" },
-    { "name": "lib_sheet_tab_sort", "value": "সাজান" },
-    { "name": "lib_sheet_tab_display", "value": "প্রদর্শন" },
-    { "name": "lib_filter_downloaded", "value": "ডাউনলোড হয়েছে" },
-    { "name": "lib_filter_unread", "value": "অপঠিত" },
-    { "name": "lib_filter_started", "value": "পড়া হয়েছে" },
-    { "name": "lib_filter_bookmarked", "value": "বুকমার্ক" },
-    { "name": "lib_filter_completed", "value": "সম্পূর্ণ" },
-    { "name": "lib_filter_tracked", "value": "ট্র্যাক করা" },
-    { "name": "lib_sort_alpha", "value": "শিরোনাম" },
-    { "name": "lib_sort_total", "value": "অধ্যায় সংখ্যা" },
-    { "name": "lib_sort_last_read", "value": "সর্বশেষ পড়া" },
-    { "name": "lib_sort_last_update", "value": "আপডেট যাচাইয়ের সময়" },
-    { "name": "lib_sort_unread", "value": "অপঠিত সংখ্যা" },
-    { "name": "lib_sort_latest_chapter", "value": "রচনার আপডেট সময়" },
-    { "name": "lib_sort_fetch_date", "value": "অধ্যায় আনার সময়" },
-    { "name": "lib_sort_date_added", "value": "যোগের তারিখ" },
-    { "name": "lib_sort_random", "value": "এলোমেলো" },
-    { "name": "lib_display_compact", "value": "ঘন গ্রিড" },
-    { "name": "lib_display_comfortable", "value": "ফাঁকা গ্রিড" },
-    { "name": "lib_display_cover", "value": "কভার গ্রিড" },
-    { "name": "lib_display_list", "value": "তালিকা" },
-    { "name": "lib_display_grid_size", "value": "প্রতি সারিতে সংখ্যা" },
-    { "name": "lib_display_grid_auto", "value": "স্বয়ংক্রিয়" },
-    { "name": "lib_display_badges_group", "value": "ব্যাজ ও বোতাম" },
-    { "name": "lib_badge_downloaded", "value": "ডাউনলোড অধ্যায় সংখ্যা" },
-    { "name": "lib_badge_unread", "value": "অপঠিত অধ্যায়" },
-    { "name": "lib_badge_local", "value": "স্থানীয় সোর্স" },
-    { "name": "lib_badge_language", "value": "ভাষা" },
-    { "name": "lib_badge_continue", "value": "পড়া চালিয়ে যান বোতাম" },
-    { "name": "lib_display_tabs_group", "value": "ট্যাব" },
-    { "name": "lib_show_category_tabs", "value": "বিভাগ ট্যাব দেখান" },
-    { "name": "lib_show_manga_count", "value": "রচনার সংখ্যা দেখান" },
-    { "name": "EntryFormAbility_label", "value": "MihonHarmony কার্ড" },
-    { "name": "EntryFormAbility_desc", "value": "ডেস্কটপ কার্ড প্রদানকারী" },
-    { "name": "card_recent_display", "value": "পড়া চালিয়ে যান" },
-    { "name": "card_recent_desc", "value": "সম্প্রতি পড়া মাঙ্গা দ্রুত চালিয়ে যান" },
-    { "name": "card_updates_display", "value": "আপডেট" },
-    { "name": "card_updates_desc", "value": "লাইব্রেরির নতুন অপঠিত অধ্যায়" },
-    { "name": "card_recent_header", "value": "পড়া চালিয়ে যান" },
-    { "name": "card_updates_header", "value": "আপডেট" },
-    { "name": "card_unread_count", "value": "%d অধ্যায় অপঠিত" },
-    { "name": "card_empty_recent", "value": "এখনো পড়ার ইতিহাস নেই" },
-    { "name": "card_empty_updates", "value": "কোনো অপঠিত অধ্যায় নেই" },
-    { "name": "card_open_hint", "value": "অ্যাপ খুলতে ট্যাপ করুন" },
-    { "name": "card_manga_display", "value": "মাঙ্গা কার্ড" },
-    { "name": "card_manga_desc", "value": "বিবরণ পৃষ্ঠা থেকে যোগ করুন, কভারে ট্যাপ করে পড়ুন" },
-    { "name": "card_manga_empty", "value": "মাঙ্গার বিবরণ পৃষ্ঠা থেকে ডেস্কটপে যোগ করুন" },
-    { "name": "detail_add_to_desktop", "value": "ডেস্কটপে যোগ করুন" },
-    { "name": "detail_card_added", "value": "ডেস্কটপে যোগ হয়েছে" },
-    { "name": "detail_card_add_failed", "value": "কার্ড যোগ ব্যর্থ" },
-    { "name": "card_stats_week_display", "value": "সাপ্তাহিক পরিসংখ্যান" },
-    { "name": "card_stats_week_desc", "value": "এই সপ্তাহে প্রতিদিন পড়ার সময়" },
-    { "name": "card_stats_month_display", "value": "মাসিক পরিসংখ্যান" },
-    { "name": "card_stats_month_desc", "value": "এই মাসে প্রতিদিন পড়ার সময়" },
-    { "name": "card_stats_empty", "value": "এখনো কোনো পড়া নেই" },
-    { "name": "action_view_upcoming", "value": "আসন্ন আপডেট দেখান" },
-    { "name": "label_upcoming", "value": "আসন্ন" },
-    { "name": "upcoming_guide", "value": "আসন্নের নির্দেশিকা" },
-    { "name": "upcoming_calendar_prev", "value": "আগের মাস" },
-    { "name": "upcoming_calendar_next", "value": "পরের মাস" },
-    { "name": "pref_filter_update_categories_details", "value": "যে রচনা একই সঙ্গে অন্তর্ভুক্ত ও বাদ দেওয়া বিভাগে আছে, তা দেখানো হবে না।" },
-    { "name": "relative_time_today", "value": "আজ" },
-    { "name": "relative_time_days_ago", "value": "%d দিন আগে" },
-    { "name": "upcoming_relative_time_days", "value": "%d দিনে" },
-    { "name": "card_upcoming_display", "value": "আসন্ন" },
-    { "name": "card_upcoming_desc", "value": "লাইব্রেরির মাঙ্গার প্রত্যাশিত আপডেট ক্যালেন্ডার" },
-    { "name": "card_upcoming_header", "value": "আসন্ন" },
-    { "name": "card_empty_upcoming", "value": "লাইব্রেরিতে কোনো চলমান মাঙ্গা নেই" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "লাইব্রেরির সব এন্ট্রি ফিল্টার হবে"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "পড়ার ইতিহাসে বিরতি দেয়"
+    },
+    {
+      "name": "more_support",
+      "value": "আমাদের সহায়তা করুন"
+    },
+    {
+      "name": "more_help",
+      "value": "সাহায্য"
+    },
+    {
+      "name": "support_perks",
+      "value": "Patrons get access to exclusive channels, with more perks to come."
+    },
+    {
+      "name": "support_patreon",
+      "value": "Patreon (preferred)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "OpenCollective"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together."
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "For alternative options or any related questions, join our Discord server."
+    },
+    {
+      "name": "support_discord",
+      "value": "Discord"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "ডাটা অ্যান্ড স্টোরেজ"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "স্টোরেজের ঠিকানা"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "অটোমেটিক ব্যাকআপ এর জন্য, চ্যাপ্টার ডাউনলোড ও লোকাল সোর্স এর জন্য ব্যবহার হয়।"
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "ব্যাকআপ এবং পুনরুদ্ধার"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "ব্যাকআপ তৈরী করুন"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "ব্যাকআপ পুনরুদ্ধার"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "ব্যাকআপ ফ্রিকোয়েন্সি"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "স্বয়ংক্রিয় ব্যাকআপ অত্যন্ত সুপারিশময়. আপনি অন্যান্য জায়গায়ও কপি রাখা উচিত।"
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "শেষবার স্বয়ংক্রিয়ভাবে ব্যাকআপ নেওয়া হয়েছে: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "স্টোরেজ ব্যবহার"
+    },
+    {
+      "name": "data_available_space",
+      "value": "খালি: %s/ মোট: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "অধ্যায়ের ক্যাচি পরিষ্কার করুন"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "ব্যাবহৃত হয়েছে: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "ক্যাচি পরিষ্কার হয়েছে. %d ফাইল মুছে ফেলা হয়েছে"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "ক্যাচ পরিষ্কারের সময় একটি ত্রুটি দেখা দিয়েছে"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "অ্যাপ বন্দ্ধ করার সময় অধ্যায়ের ক্যাশে পরিষ্কার করুন"
+    },
+    {
+      "name": "data_export",
+      "value": "এক্সপোর্ট"
+    },
+    {
+      "name": "data_library_list",
+      "value": "লাইব্রেরী লিস্ট"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "লাইব্রেরী এক্সপোর্ট করা হয়েছে"
+    },
+    {
+      "name": "data_export_include",
+      "value": "যোগ করার জন্য উপাত্ত নির্বাচন করুন"
+    },
+    {
+      "name": "data_column_title",
+      "value": "শিরোনাম"
+    },
+    {
+      "name": "data_column_author",
+      "value": "লেখক"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "বন্ধ"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "প্রতি ৬ ঘন্টায়"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "প্রতি ১২ ঘন্টায়"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "প্রতিদিন"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "প্রতি ২ দিন"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "সাপ্তাহিক"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "ঠিক আছে"
+    },
+    {
+      "name": "common_cancel",
+      "value": "বাতিল"
+    },
+    {
+      "name": "common_confirm",
+      "value": "নিশ্চিত করুন"
+    },
+    {
+      "name": "common_delete",
+      "value": "মুছুন"
+    },
+    {
+      "name": "common_retry",
+      "value": "আবার চেষ্টা"
+    },
+    {
+      "name": "common_search",
+      "value": "খুঁজুন"
+    },
+    {
+      "name": "common_all",
+      "value": "সব"
+    },
+    {
+      "name": "common_close",
+      "value": "বন্ধ"
+    },
+    {
+      "name": "common_save",
+      "value": "সংরক্ষণ"
+    },
+    {
+      "name": "common_install",
+      "value": "ইনস্টল"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "আনইনস্টল"
+    },
+    {
+      "name": "common_update",
+      "value": "আপডেট"
+    },
+    {
+      "name": "common_none",
+      "value": "কোনোটি নয়"
+    },
+    {
+      "name": "common_default",
+      "value": "ডিফল্ট"
+    },
+    {
+      "name": "appearance_title",
+      "value": "চেহারা"
+    },
+    {
+      "name": "appearance_language",
+      "value": "ভাষা"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "সিস্টেম অনুসরণ করুন"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "থিম মোড"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "সিস্টেম অনুসরণ করুন"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "হালকা"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "গাঢ়"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "অ্যাকসেন্ট রং"
+    },
+    {
+      "name": "appearance_other",
+      "value": "অন্যান্য"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED বিশুদ্ধ কালো পটভূমি"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "নীল"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "সবুজ"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "গোলাপি"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "বেগুনি"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "কমলা"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d মিনিট আগে"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d ঘণ্টা আগে"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d দিন আগে"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "চলমান"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "সম্পূর্ণ"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "বিরতিতে"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "বাতিল"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "প্রকাশনা সম্পূর্ণ"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "অজানা"
+    },
+    {
+      "name": "tab_library",
+      "value": "লাইব্রেরি"
+    },
+    {
+      "name": "tab_updates",
+      "value": "আপডেট"
+    },
+    {
+      "name": "tab_history",
+      "value": "ইতিহাস"
+    },
+    {
+      "name": "tab_browse",
+      "value": "ব্রাউজ"
+    },
+    {
+      "name": "tab_more",
+      "value": "আরও"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "যাচাইয়ের অপেক্ষা…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "যাচাই সম্পন্ন"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "মানব যাচাই"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "সম্পন্ন"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "যাচাই ফলাফল সংরক্ষিত"
+    },
+    {
+      "name": "more_title",
+      "value": "আরও"
+    },
+    {
+      "name": "more_version",
+      "value": "সংস্করণ %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "শুধু ডাউনলোড"
+    },
+    {
+      "name": "more_incognito",
+      "value": "ছদ্মবেশী মোড"
+    },
+    {
+      "name": "more_downloads",
+      "value": "ডাউনলোড সারি"
+    },
+    {
+      "name": "more_categories",
+      "value": "বিভাগ"
+    },
+    {
+      "name": "more_settings",
+      "value": "সেটিংস"
+    },
+    {
+      "name": "more_about",
+      "value": "সম্পর্কে"
+    },
+    {
+      "name": "more_plugins",
+      "value": "এক্সটেনশন"
+    },
+    {
+      "name": "categories_title",
+      "value": "বিভাগ"
+    },
+    {
+      "name": "categories_add",
+      "value": "নতুন বিভাগ"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "বিভাগের নাম"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "বিভাগের নাম পরিবর্তন"
+    },
+    {
+      "name": "categories_rename",
+      "value": "নাম পরিবর্তন"
+    },
+    {
+      "name": "categories_hint",
+      "value": "নাম পরিবর্তন বা মুছতে বিভাগটি দীর্ঘক্ষণ চাপুন; মুছে ফেলা বিভাগের মাঙ্গা ডিফল্টে ফিরে যায়"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "বিভাগ নির্বাচন করুন"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "লোড হচ্ছে…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "ছবি লোড ব্যর্থ"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "আবার চেষ্টা করতে ট্যাপ করুন"
+    },
+    {
+      "name": "library_title",
+      "value": "লাইব্রেরি"
+    },
+    {
+      "name": "library_empty",
+      "value": "আপনার লাইব্রেরি খালি, মাঙ্গা যোগ করতে ব্রাউজ করুন"
+    },
+    {
+      "name": "library_new_category",
+      "value": "নতুন বিভাগ"
+    },
+    {
+      "name": "library_category_name",
+      "value": "বিভাগের নাম"
+    },
+    {
+      "name": "updates_title",
+      "value": "আপডেট"
+    },
+    {
+      "name": "updates_empty",
+      "value": "সাম্প্রতিক আপডেট নেই"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%dটি নতুন অধ্যায় পাওয়া গেছে"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "নতুন অধ্যায় নেই"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "রিফ্রেশ ব্যর্থ"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "রিফ্রেশ হচ্ছে…"
+    },
+    {
+      "name": "history_title",
+      "value": "ইতিহাস"
+    },
+    {
+      "name": "history_clear",
+      "value": "মুছুন"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "মুছে ফেলতে নিশ্চিত?"
+    },
+    {
+      "name": "history_empty",
+      "value": "এখনো পড়ার ইতিহাস নেই"
+    },
+    {
+      "name": "history_cleared",
+      "value": "ইতিহাস মুছে ফেলা হয়েছে"
+    },
+    {
+      "name": "history_continue",
+      "value": "চালিয়ে যান"
+    },
+    {
+      "name": "browse_title",
+      "value": "ব্রাউজ"
+    },
+    {
+      "name": "browse_import",
+      "value": "আমদানি"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "প্লাগইন"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "স্থানীয় মাঙ্গা"
+    },
+    {
+      "name": "browse_popular",
+      "value": "জনপ্রিয়"
+    },
+    {
+      "name": "browse_latest",
+      "value": "সর্বশেষ"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "মাঙ্গা খুঁজুন…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "কোনো মাঙ্গা পাওয়া যায়নি"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "এখনো স্থানীয় মাঙ্গা নেই, যোগ করতে আমদানিতে ট্যাপ করুন"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "লোড ব্যর্থ: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "অনুসন্ধান ব্যর্থ: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "আরও লোড ব্যর্থ"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "বিস্তারিত খুলতে ব্যর্থ"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "ফাইল নির্বাচন ব্যর্থ"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "%dটি ফাইল আমদানি"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "মাঙ্গার নাম"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "অনুগ্রহ করে একটি নাম লিখুন"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "%dটি ফাইল আমদানি হয়েছে"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "আমদানি ব্যর্থ: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "ডাউনলোড"
+    },
+    {
+      "name": "download_resume",
+      "value": "চালিয়ে যান"
+    },
+    {
+      "name": "download_pause",
+      "value": "বিরতি"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "সম্পন্নগুলো মুছুন"
+    },
+    {
+      "name": "download_queue",
+      "value": "ডাউনলোড সারি"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "সারিতে"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "ডাউনলোড হচ্ছে"
+    },
+    {
+      "name": "download_state_done",
+      "value": "সম্পন্ন"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "ব্যর্থ"
+    },
+    {
+      "name": "download_move_top",
+      "value": "উপরে নিন"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "নিচে নিন"
+    },
+    {
+      "name": "download_deleted",
+      "value": "মুছে ফেলা হয়েছে"
+    },
+    {
+      "name": "download_empty",
+      "value": "এখনো কোনো ডাউনলোড নেই"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "ডাউনলোড হয়েছে"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d অধ্যায়"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "কোনো অধ্যায় নেই"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "সিঙ্ক ব্যর্থ, স্থানীয় তথ্য দেখানো হচ্ছে"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "লাইব্রেরিতে যোগ হয়েছে"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "লাইব্রেরি থেকে সরানো হয়েছে"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "সব অধ্যায় পড়া হিসেবে চিহ্নিত"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "ডাউনলোড সারিতে যোগ হয়েছে"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "অনুগ্রহ করে আগে AniList টোকেন কনফিগার করুন"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "AniList খুঁজুন"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "মাঙ্গার শিরোনাম"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "কোনো ফলাফল নেই"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "AniList অনুসন্ধান ব্যর্থ"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "AniList-এ আবদ্ধ"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "AniList থেকে বিচ্ছিন্ন"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "অগ্রগতি অধ্যায় %d-এ সিঙ্ক হয়েছে"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "AniList সিঙ্ক ব্যর্থ"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "স্থানীয়"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "লাইব্রেরিতে আছে"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "লাইব্রেরিতে যোগ করুন"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "পড়া চালিয়ে যান"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "পড়া শুরু করুন"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "এখনো অধ্যায় নেই"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "সংকুচিত করুন"
+    },
+    {
+      "name": "detail_expand",
+      "value": "প্রসারিত করুন"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList ট্র্যাকিং"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList টোকেন এখনো কনফিগার করা হয়নি"
+    },
+    {
+      "name": "detail_searching",
+      "value": "খোঁজা হচ্ছে…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "খুঁজে আবদ্ধ করুন"
+    },
+    {
+      "name": "detail_bind",
+      "value": "আবদ্ধ করুন"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "অধ্যায় %d-এ সিঙ্ক"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "অগ্রগতি সিঙ্ক করুন"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "বিচ্ছিন্ন করুন"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "অধ্যায় (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "আরোহী"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "অবরোহী"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "সব পড়া চিহ্নিত করুন"
+    },
+    {
+      "name": "detail_read",
+      "value": "পড়া"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "ডাউনলোড হয়েছে"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "সারিতে"
+    },
+    {
+      "name": "detail_download",
+      "value": "ডাউনলোড"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "অধ্যায় পাওয়া যায়নি"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "লোড ব্যর্থ: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "বাম থেকে ডান"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "ডান থেকে বাম"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "ওয়েবটুন"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "পড়ার মোড"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "মুক্ত"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "উল্লম্ব"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "অনুভূমিক"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "স্ক্রিন অভিমুখ"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "ইতিমধ্যে শেষ অধ্যায়ে আছেন"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "ইতিমধ্যে প্রথম অধ্যায়ে আছেন"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "ইতিমধ্যে প্রথম পৃষ্ঠায় আছেন"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "ইতিমধ্যে শেষ পৃষ্ঠায় আছেন"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "অধ্যায় লোড হচ্ছে…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "রিডার সেটিংস"
+    },
+    {
+      "name": "reader_background",
+      "value": "পটভূমি"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "স্বয়ংক্রিয়"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "সাদা"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "ধূসর"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "কালো"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "পৃষ্ঠা নম্বর দেখান"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "উজ্জ্বলতা"
+    },
+    {
+      "name": "reader_auto",
+      "value": "স্বয়ংক্রিয়"
+    },
+    {
+      "name": "plugin_title",
+      "value": "এক্সটেনশন"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "ইনস্টল করা"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "এখনো এক্সটেনশন নেই, নিচ থেকে ইনস্টল করুন"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "নিষ্ক্রিয় এক্সটেনশন যেকোনো সময় আবার চালু করা যায়"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "আপ টু ডেট"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "ফাইল থেকে ইনস্টল"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "ইনস্টলের জন্য ফাইল বেছে নিন"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "প্রক্রিয়া চলছে…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": ".honyomiplug / .zip প্লাগইন প্যাকেজ সমর্থিত"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "অনলাইন রিপোজিটরি"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "রিপোজিটরি সেট করুন"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "রিফ্রেশ"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "এখনো প্লাগইন রিপোজিটরি কনফিগার করা হয়নি"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "রিপোজিটরি লোড হচ্ছে…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "প্লাগইন রিপোজিটরি URL"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "প্লাগইন রিপোজিটরি URL লিখুন"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "রিপোজিটরি লোড ব্যর্থ: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "ফাইল নির্বাচন ব্যর্থ"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "ইনস্টল হয়েছে: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "%s ইনস্টল হয়েছে"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "ইনস্টল ব্যর্থ: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "কাজ ব্যর্থ"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "আনইনস্টল: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "আনইনস্টল ব্যর্থ"
+    },
+    {
+      "name": "settings_title",
+      "value": "সেটিংস"
+    },
+    {
+      "name": "settings_general",
+      "value": "সাধারণ"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "শুরুর পর্দা"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "ব্যক্তিগতকরণ"
+    },
+    {
+      "name": "settings_library",
+      "value": "লাইব্রেরি"
+    },
+    {
+      "name": "settings_reader",
+      "value": "রিডার"
+    },
+    {
+      "name": "settings_data",
+      "value": "ডেটা"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "ডাউনলোড"
+    },
+    {
+      "name": "settings_browse",
+      "value": "ব্রাউজ"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "উন্নত"
+    },
+    {
+      "name": "settings_about",
+      "value": "সম্পর্কে"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "লাইব্রেরি"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "আপডেট"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "ইতিহাস"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "ব্রাউজ"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "আরও"
+    },
+    {
+      "name": "advanced_title",
+      "value": "উন্নত"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "হিসাব হচ্ছে…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "স্টোরেজ"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "ছবির ক্যাশ মুছুন"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "ছবির ক্যাশ মুছে ফেলা হয়েছে"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "কুকি মুছুন"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "সব কুকি মুছে ফেলা হয়েছে"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "ব্যাকআপ ও পুনরুদ্ধার"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "ব্যাকআপ রপ্তানি"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "ব্যাকআপ আমদানি"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "ট্র্যাকিং"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList টোকেন"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList অ্যাক্সেস টোকেন"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "অ্যাক্সেস টোকেন পেস্ট করুন (মুছতে খালি রাখুন)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "সেট করা হয়নি"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "সেট করা"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "টোকেন সংরক্ষিত"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "টোকেন মুছে ফেলা হয়েছে"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "ব্যাকআপ রপ্তানি হয়েছে"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "রপ্তানি বাতিল"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "রপ্তানি ব্যর্থ"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "আমদানি বাতিল"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "অবৈধ ব্যাকআপ ফাইল"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "%dটি মাঙ্গা পুনরুদ্ধার হয়েছে"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "আমদানি ব্যর্থ"
+    },
+    {
+      "name": "about_title",
+      "value": "সম্পর্কে"
+    },
+    {
+      "name": "about_version",
+      "value": "সংস্করণ 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "স্থাপত্য Mihon (Apache-2.0) থেকে অনুপ্রাণিত। অনলাইন উৎস এক্সটেনশন হিসেবে গতিশীলভাবে ইনস্টল হয়, স্থানীয় উৎস অন্তর্নির্মিত।"
+    },
+    {
+      "name": "about_ack",
+      "value": "ওপেন সোর্স স্বীকৃতি:\n· Mihon / Tachiyomi — অ্যাপ স্থাপত্য ও ইন্টারঅ্যাকশন ডিজাইন (Apache-2.0)\n· Material Symbols — অ্যাপ আইকন (Apache-2.0)\n· MangaDex — পরীক্ষার তথ্য উৎস"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "ব্রাউজ"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "বিষয়বস্তু"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "NSFW উৎস দেখান"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "চালু থাকলে, এক্সটেনশনে NSFW চিহ্নিত উৎস ব্রাউজে দেখা যাবে"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "ডাউনলোড"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "নেটওয়ার্ক"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "শুধু Wi-Fi-তে ডাউনলোড"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "নোট: বর্তমান সংস্করণে এই সুইচ স্থানধারক; নেটওয়ার্ক ধরন শনাক্তকরণ পরবর্তী সংস্করণে আসবে"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "লাইব্রেরি"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "ফিল্টার ও সাজানো"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "ডিফল্ট সাজানো"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "শিরোনাম"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "সর্বশেষ অধ্যায়"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "যোগের তারিখ"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "অপঠিত সংখ্যা"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "শিরোনাম আরোহী ক্রমে"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "ডিফল্ট ফিল্টার"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "অপঠিত"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "ডাউনলোড হয়েছে"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "অসম্পূর্ণ"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "প্রদর্শন"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "ডিফল্ট দৃশ্য"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "গ্রিড"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "কভার গ্রিড"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "তালিকা"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "গ্রিড কলাম"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "স্বয়ংক্রিয়"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "২ কলাম"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "৩ কলাম"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "৪ কলাম"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "অপঠিত ব্যাজ"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "ডাউনলোড ব্যাজ"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "রিডার"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "পড়ার মোড"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "ডিফল্ট মোড"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "বাম থেকে ডান"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "ডান থেকে বাম"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "উল্লম্ব পৃষ্ঠা"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "ওয়েবটুন"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "দ্বৈত পৃষ্ঠা (অনুভূমিক)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "প্রদর্শন"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "পৃষ্ঠা নম্বর দেখান"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "রিডার পটভূমি"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "থিম অনুসরণ করুন"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "সাদা"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "কালো"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "ধূসর"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "রিডার উজ্জ্বলতা রিসেট"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "উজ্জ্বলতা সিস্টেম অনুসরণে সেট"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "সোর্স"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "এক্সটেনশন"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "মাইগ্রেট"
+    },
+    {
+      "name": "browse_pin",
+      "value": "পিন"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "আনপিন"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "সোর্স নিষ্ক্রিয় করুন"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "সোর্স নিষ্ক্রিয় করা হয়েছে"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "পিন করা হয়েছে"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "কোনো সোর্স নেই। এক্সটেনশন ট্যাব থেকে ইনস্টল করুন"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "ভাষা ফিল্টার"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "সব"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "সোর্স পাওয়া যাচ্ছে না। এক্সটেনশন নিষ্ক্রিয় থাকতে পারে"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "সব সোর্সে খুঁজুন"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "খোঁজা ব্যর্থ"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "এক্সটেনশন খুঁজুন"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "কোনো মিল নেই"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "রিপোজিটরি সেটিংস"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "রিপোজিটরি রিফ্রেশ"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "মাইগ্রেট করার সোর্স বেছে নিন"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "লাইব্রেরি খালি"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "সব নির্বাচন"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "নির্বাচন তুলে নিন"
+    },
+    {
+      "name": "migrate_action",
+      "value": "মাইগ্রেট (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "মাইগ্রেট"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "এড়িয়ে যান"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d / %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "লক্ষ্য সোর্স"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "লক্ষ্য সোর্সে মাঙ্গা খুঁজুন"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "এই মাঙ্গায় মাইগ্রেট করবেন?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "মাইগ্রেট হয়েছে: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "মাইগ্রেট ব্যর্থ: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "মাইগ্রেট সম্পূর্ণ"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "কোনো লক্ষ্য সোর্স নেই"
+    },
+    {
+      "name": "stats_title",
+      "value": "পরিসংখ্যান"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "সারসংক্ষেপ"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "লাইব্রেরিতে"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "পড়ার সময়"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "সম্পূর্ণ"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "রচনা"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "শুরু করা"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "স্থানীয়"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "অধ্যায়"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "মোট"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "পড়া"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "ডাউনলোড হয়েছে"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "ট্র্যাকিং"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "ট্র্যাক করা রচনা"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "গড় নম্বর"
+    },
+    {
+      "name": "stats_used",
+      "value": "ব্যবহৃত"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "প্রযোজ্য নয়"
+    },
+    {
+      "name": "stats_week",
+      "value": "সপ্তাহ"
+    },
+    {
+      "name": "stats_month",
+      "value": "মাস"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "এই সপ্তাহে %s"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "এই মাসে %s"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "এই সময়ে কোনো পড়া নেই"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%dদি"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dঘ"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dমি"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%dসে"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "র"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "সো"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "ম"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "বু"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "বৃ"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "শু"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "শ"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "উল্লম্ব"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "মুঠি-সচেতন"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "উল্লম্ব আটকান"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "অনুভূমিক আটকান"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "সাধারণ"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "রঙের ছাঁকনি"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "ধূসর"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "উল্টো রং"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "বৈপরীত্য"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "সম্পৃক্তি"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "কিনারা কাটুন"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "স্পর্শ এলাকা"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "ডিফল্ট"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "বাম থেকে ডান"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "ডান থেকে বাম"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "উল্লম্ব"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "কিনারা"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "কোনোটি নয়"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "দ্বৈত পৃষ্ঠা দৃশ্য"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "ওয়েবটুন পাশের ফাঁক"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "মুঠি-সচেতন"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "স্থানীয় থেকে ইনস্টল"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "এক্সটেনশন তথ্য"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "সংস্করণ"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "ভাষা"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "এক্সটেনশন আনইনস্টল"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "“%s” আনইনস্টল করবেন? লাইব্রেরির মাঙ্গা ডেটা থাকবে"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "সোর্স"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "সেটিংস"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "লোড হচ্ছে…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "সেটিংস প্রয়োগ ব্যর্থ"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "এক্সটেনশন নেই বা লোড হয়নি"
+    },
+    {
+      "name": "action_filter",
+      "value": "ছাঁকনি"
+    },
+    {
+      "name": "action_update_library",
+      "value": "লাইব্রেরি আপডেট"
+    },
+    {
+      "name": "action_update_category",
+      "value": "বিভাগ আপডেট"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "এলোমেলো রচনা খুলুন"
+    },
+    {
+      "name": "action_select_all",
+      "value": "সব নির্বাচন"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "নির্বাচন উল্টান"
+    },
+    {
+      "name": "action_move_category",
+      "value": "বিভাগে সরান"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "পড়া চিহ্নিত করুন"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "অপঠিত চিহ্নিত করুন"
+    },
+    {
+      "name": "action_download",
+      "value": "ডাউনলোড"
+    },
+    {
+      "name": "action_delete",
+      "value": "মুছুন"
+    },
+    {
+      "name": "action_migrate",
+      "value": "মাইগ্রেট"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "লাইব্রেরি থেকে সরান"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "নির্বাচিত %d মাঙ্গা লাইব্রেরি থেকে সরাবেন?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "%d ডাউনলোড সারিতে যোগ হয়েছে"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "লাইব্রেরি খুঁজুন"
+    },
+    {
+      "name": "library_no_match",
+      "value": "মিলে যাওয়া মাঙ্গা নেই"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "ছাঁকনি"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "সাজান"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "প্রদর্শন"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "ডাউনলোড হয়েছে"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "অপঠিত"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "পড়া হয়েছে"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "বুকমার্ক"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "সম্পূর্ণ"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "ট্র্যাক করা"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "শিরোনাম"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "অধ্যায় সংখ্যা"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "সর্বশেষ পড়া"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "আপডেট যাচাইয়ের সময়"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "অপঠিত সংখ্যা"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "রচনার আপডেট সময়"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "অধ্যায় আনার সময়"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "যোগের তারিখ"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "এলোমেলো"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "ঘন গ্রিড"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "ফাঁকা গ্রিড"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "কভার গ্রিড"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "তালিকা"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "প্রতি সারিতে সংখ্যা"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "স্বয়ংক্রিয়"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "ব্যাজ ও বোতাম"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "ডাউনলোড অধ্যায় সংখ্যা"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "অপঠিত অধ্যায়"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "স্থানীয় সোর্স"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "ভাষা"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "পড়া চালিয়ে যান বোতাম"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "ট্যাব"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "বিভাগ ট্যাব দেখান"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "রচনার সংখ্যা দেখান"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "MihonHarmony কার্ড"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "ডেস্কটপ কার্ড প্রদানকারী"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "পড়া চালিয়ে যান"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "সম্প্রতি পড়া মাঙ্গা দ্রুত চালিয়ে যান"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "আপডেট"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "লাইব্রেরির নতুন অপঠিত অধ্যায়"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "পড়া চালিয়ে যান"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "আপডেট"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d অধ্যায় অপঠিত"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "এখনো পড়ার ইতিহাস নেই"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "কোনো অপঠিত অধ্যায় নেই"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "অ্যাপ খুলতে ট্যাপ করুন"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "মাঙ্গা কার্ড"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "বিবরণ পৃষ্ঠা থেকে যোগ করুন, কভারে ট্যাপ করে পড়ুন"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "মাঙ্গার বিবরণ পৃষ্ঠা থেকে ডেস্কটপে যোগ করুন"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "ডেস্কটপে যোগ করুন"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "ডেস্কটপে যোগ হয়েছে"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "কার্ড যোগ ব্যর্থ"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "সাপ্তাহিক পরিসংখ্যান"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "এই সপ্তাহে প্রতিদিন পড়ার সময়"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "মাসিক পরিসংখ্যান"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "এই মাসে প্রতিদিন পড়ার সময়"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "এখনো কোনো পড়া নেই"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "আসন্ন আপডেট দেখান"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "আসন্ন"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "আসন্নের নির্দেশিকা"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "আগের মাস"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "পরের মাস"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "যে রচনা একই সঙ্গে অন্তর্ভুক্ত ও বাদ দেওয়া বিভাগে আছে, তা দেখানো হবে না।"
+    },
+    {
+      "name": "relative_time_today",
+      "value": "আজ"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d দিন আগে"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "%d দিনে"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "আসন্ন"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "লাইব্রেরির মাঙ্গার প্রত্যাশিত আপডেট ক্যালেন্ডার"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "আসন্ন"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "লাইব্রেরিতে কোনো চলমান মাঙ্গা নেই"
+    }
+  ]
 }

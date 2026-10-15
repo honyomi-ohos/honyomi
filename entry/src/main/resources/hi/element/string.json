@@ -1,534 +1,2124 @@
 {
   "string": [
-    { "name": "more_downloaded_only_summary", "value": "आपकी पुस्तकालय में सभी आइटम को फ़िल्टर करता है" },
-    { "name": "more_incognito_summary", "value": "इतिहास पढ़ने से रोक देता है" },
-    { "name": "more_support", "value": "हमारा समर्थन करें" },
-    { "name": "more_help", "value": "मदद" },
-    { "name": "support_perks", "value": "पैट्रन्स को विशेष चैनलों का एक्सेस मिलता है, और आगे और भी सुविधाएँ मिलेंगी।" },
-    { "name": "support_patreon", "value": "पैट्रियन (पसंदीदा)" },
-    { "name": "support_opencollective", "value": "ओपनकलेक्टिव" },
-    { "name": "support_supported_by", "value": "Mihon को वर्तमान में %d+ पैट्रन्स का समर्थन प्राप्त है। हम आप सभी में से हर एक को धन्यवाद देना चाहते हैं। आइए, मिलकर Mihon को और भी बेहतर बनाएं।" },
-    { "name": "support_contact_msg", "value": "वैकल्पिक विकल्पों या किसी भी संबंधित प्रश्न के लिए, हमारे Discord सर्वर से जुड़ें।" },
-    { "name": "support_discord", "value": "डिस्कॉर्ड" },
-    { "name": "data_storage_title", "value": "डेटा और स्टोरेज" },
-    { "name": "data_storage_location", "value": "स्टोरेज स्थान" },
-    { "name": "data_storage_location_info", "value": "स्वचालित बैकअप, अध्याय डाउनलोड और स्थानीय स्रोत के लिए उपयोग किया जाता है।" },
-    { "name": "data_backup_restore", "value": "बैकअप और पुनर्स्थापना" },
-    { "name": "data_create_backup", "value": "बैकअप बनाये" },
-    { "name": "data_restore_backup", "value": "बैकअप पुनर्स्थापित करे" },
-    { "name": "data_backup_interval", "value": "बैकअप फ़्रीक्वेंसी" },
-    { "name": "data_backup_info", "value": "आपको अन्य स्थानों पर भी बैकअप की प्रतियाँ रखनी चाहिए।" },
-    { "name": "data_last_auto_backup", "value": "अंतिम स्वचालित बैकअप: %s" },
-    { "name": "data_storage_usage", "value": "स्टोरेज उपयोग" },
-    { "name": "data_available_space", "value": "उपलब्ध: %s / कुल: %s" },
-    { "name": "data_clear_chapter_cache", "value": "अध्याय कैश साफ़ करें" },
-    { "name": "data_used_cache", "value": "उपयोग किया गया: %s" },
-    { "name": "data_cache_deleted", "value": "कैश साफ़ किया गया %d फ़ाइलों को हटा दिया गया है" },
-    { "name": "data_cache_delete_error", "value": "साफ़ करने के दौरान त्रुटि हुई" },
-    { "name": "data_auto_clear_cache", "value": "ऐप लॉन्च पर चैप्टर कैशे साफ़ करें" },
-    { "name": "data_export", "value": "निर्यात करें" },
-    { "name": "data_library_list", "value": "पुस्तकालय सूची" },
-    { "name": "data_library_exported", "value": "पुस्तकालय निर्यातित हो गया" },
-    { "name": "data_export_include", "value": "शामिल करने के लिए डेटा का चयन करें" },
-    { "name": "data_column_title", "value": "शीर्षक" },
-    { "name": "data_column_author", "value": "लेखक" },
-    { "name": "data_interval_off", "value": "बंद" },
-    { "name": "data_interval_6h", "value": "हर ६ घंटे" },
-    { "name": "data_interval_12h", "value": "हर १२ घंटे" },
-    { "name": "data_interval_24h", "value": "हर रोज़" },
-    { "name": "data_interval_48h", "value": "हर २ दिन" },
-    { "name": "data_interval_weekly", "value": "साप्ताहिक" },
-    { "name": "data_storage_location_value", "value": "App private storage" },
-    { "name": "data_storage_name", "value": "Internal storage" },
-    { "name": "data_never_backed_up", "value": "Never" },
-    { "name": "data_export_canceled", "value": "Export canceled" },
-    { "name": "data_export_failed", "value": "Export failed" },
-    { "name": "module_desc", "value": "module description" },
-    { "name": "EntryAbility_desc", "value": "description" },
-    { "name": "EntryAbility_label", "value": "Honyomi" },
-    { "name": "common_ok", "value": "ठीक है" },
-    { "name": "common_cancel", "value": "रद्द करें" },
-    { "name": "common_confirm", "value": "पुष्टि करें" },
-    { "name": "common_delete", "value": "हटाएँ" },
-    { "name": "common_retry", "value": "पुनः प्रयास" },
-    { "name": "common_search", "value": "खोजें" },
-    { "name": "common_all", "value": "सभी" },
-    { "name": "common_close", "value": "बंद करें" },
-    { "name": "common_save", "value": "सहेजें" },
-    { "name": "common_install", "value": "स्थापित करें" },
-    { "name": "common_uninstall", "value": "अनइंस्टॉल करें" },
-    { "name": "common_update", "value": "अपडेट" },
-    { "name": "common_none", "value": "कोई नहीं" },
-    { "name": "common_default", "value": "डिफ़ॉल्ट" },
-    { "name": "appearance_title", "value": "दिखावट" },
-    { "name": "appearance_language", "value": "भाषा" },
-    { "name": "lang_follow_system", "value": "सिस्टम का अनुसरण करें" },
-    { "name": "lang_simplified_chinese", "value": "简体中文" },
-    { "name": "lang_english", "value": "English" },
-    { "name": "appearance_theme_mode", "value": "थीम मोड" },
-    { "name": "appearance_theme_auto", "value": "सिस्टम का अनुसरण करें" },
-    { "name": "appearance_theme_light", "value": "हल्का" },
-    { "name": "appearance_theme_dark", "value": "गहरा" },
-    { "name": "appearance_accent_color", "value": "उच्चारण रंग" },
-    { "name": "appearance_other", "value": "अन्य" },
-    { "name": "appearance_amoled", "value": "AMOLED शुद्ध काला पृष्ठभूमि" },
-    { "name": "theme_accent_blue", "value": "नीला" },
-    { "name": "theme_accent_green", "value": "हरा" },
-    { "name": "theme_accent_pink", "value": "गुलाबी" },
-    { "name": "theme_accent_purple", "value": "बैंगनी" },
-    { "name": "theme_accent_orange", "value": "नारंगी" },
-    { "name": "util_time_minutes_ago", "value": "%d मिनट पहले" },
-    { "name": "util_time_hours_ago", "value": "%d घंटे पहले" },
-    { "name": "util_time_days_ago", "value": "%d दिन पहले" },
-    { "name": "util_status_ongoing", "value": "जारी" },
-    { "name": "util_status_completed", "value": "पूर्ण" },
-    { "name": "util_status_hiatus", "value": "स्थगित" },
-    { "name": "util_status_cancelled", "value": "रद्द" },
-    { "name": "util_status_publication_complete", "value": "प्रकाशन पूर्ण" },
-    { "name": "util_status_unknown", "value": "अज्ञात" },
-    { "name": "tab_library", "value": "लाइब्रेरी" },
-    { "name": "tab_updates", "value": "अपडेट" },
-    { "name": "tab_history", "value": "इतिहास" },
-    { "name": "tab_browse", "value": "ब्राउज़" },
-    { "name": "tab_more", "value": "अधिक" },
-    { "name": "tab_cf_waiting", "value": "सत्यापन की प्रतीक्षा…" },
-    { "name": "tab_cf_verified", "value": "सत्यापन पूर्ण" },
-    { "name": "tab_cf_title", "value": "मानव सत्यापन" },
-    { "name": "tab_cf_done", "value": "हो गया" },
-    { "name": "tab_cf_saved", "value": "सत्यापन परिणाम सहेजा गया" },
-    { "name": "more_title", "value": "अधिक" },
-    { "name": "more_version", "value": "संस्करण %s" },
-    { "name": "more_downloaded_only", "value": "केवल डाउनलोड किए गए" },
-    { "name": "more_incognito", "value": "इंकॉग्निटो मोड" },
-    { "name": "more_downloads", "value": "डाउनलोड सूची" },
-    { "name": "more_categories", "value": "श्रेणियाँ" },
-    { "name": "more_settings", "value": "सेटिंग" },
-    { "name": "more_about", "value": "परिचय" },
-    { "name": "more_plugins", "value": "एक्सटेंशन" },
-    { "name": "categories_title", "value": "श्रेणियाँ" },
-    { "name": "categories_add", "value": "नई श्रेणी" },
-    { "name": "categories_name_placeholder", "value": "श्रेणी का नाम" },
-    { "name": "categories_rename_category", "value": "श्रेणी का नाम बदलें" },
-    { "name": "categories_rename", "value": "नाम बदलें" },
-    { "name": "categories_hint", "value": "श्रेणी का नाम बदलने या हटाने के लिए देर तक दबाएँ; हटाई गई श्रेणी की मंगा डिफ़ॉल्ट में वापस चली जाती है" },
-    { "name": "dialog_pick_category", "value": "श्रेणी चुनें" },
-    { "name": "viewer_loading", "value": "लोड हो रहा है…" },
-    { "name": "viewer_load_failed", "value": "छवि लोड करने में विफल" },
-    { "name": "viewer_tap_retry", "value": "पुनः प्रयास के लिए टैप करें" },
-    { "name": "library_title", "value": "लाइब्रेरी" },
-    { "name": "library_empty", "value": "आपकी लाइब्रेरी खाली है, मंगा जोड़ने के लिए ब्राउज़ करें" },
-    { "name": "library_new_category", "value": "नई श्रेणी" },
-    { "name": "library_category_name", "value": "श्रेणी का नाम" },
-    { "name": "updates_title", "value": "अपडेट" },
-    { "name": "updates_empty", "value": "हाल के अपडेट नहीं हैं" },
-    { "name": "updates_found_new", "value": "%d नए अध्याय मिले" },
-    { "name": "updates_no_new", "value": "कोई नया अध्याय नहीं" },
-    { "name": "updates_refresh_failed", "value": "रीफ़्रेश विफल" },
-    { "name": "updates_refreshing", "value": "रीफ़्रेश हो रहा है…" },
-    { "name": "history_title", "value": "इतिहास" },
-    { "name": "history_clear", "value": "साफ़ करें" },
-    { "name": "history_confirm_clear", "value": "साफ़ करना सुनिश्चित करें?" },
-    { "name": "history_empty", "value": "अभी कोई पठन इतिहास नहीं" },
-    { "name": "history_cleared", "value": "इतिहास साफ़ किया गया" },
-    { "name": "history_continue", "value": "जारी रखें" },
-    { "name": "browse_title", "value": "ब्राउज़" },
-    { "name": "browse_import", "value": "आयात" },
-    { "name": "browse_plugins", "value": "प्लगइन" },
-    { "name": "browse_local_source_name", "value": "स्थानीय मंगा" },
-    { "name": "browse_popular", "value": "लोकप्रिय" },
-    { "name": "browse_latest", "value": "नवीनतम" },
-    { "name": "browse_search_hint", "value": "मंगा खोजें…" },
-    { "name": "browse_no_results", "value": "कोई मंगा नहीं मिली" },
-    { "name": "browse_local_empty", "value": "अभी कोई स्थानीय मंगा नहीं, जोड़ने के लिए आयात पर टैप करें" },
-    { "name": "browse_load_failed", "value": "लोड विफल: %s" },
-    { "name": "browse_search_failed", "value": "खोज विफल: %s" },
-    { "name": "browse_load_more_failed", "value": "और लोड करने में विफल" },
-    { "name": "browse_open_detail_failed", "value": "विवरण खोलने में विफल" },
-    { "name": "browse_pick_file_failed", "value": "फ़ाइलें चुनने में विफल" },
-    { "name": "browse_import_title", "value": "%d फ़ाइलें आयात करें" },
-    { "name": "browse_manga_name_hint", "value": "मंगा का नाम" },
-    { "name": "browse_input_name", "value": "कृपया एक नाम दर्ज करें" },
-    { "name": "browse_import_done", "value": "%d फ़ाइलें आयात की गईं" },
-    { "name": "browse_import_failed", "value": "आयात विफल: %s" },
-    { "name": "download_title", "value": "डाउनलोड" },
-    { "name": "download_resume", "value": "जारी रखें" },
-    { "name": "download_pause", "value": "रोकें" },
-    { "name": "download_clear_finished", "value": "पूर्ण हुए साफ़ करें" },
-    { "name": "download_queue", "value": "डाउनलोड कतार" },
-    { "name": "download_state_queued", "value": "कतार में" },
-    { "name": "download_state_downloading", "value": "डाउनलोड हो रहा है" },
-    { "name": "download_state_done", "value": "हो गया" },
-    { "name": "download_state_failed", "value": "विफल" },
-    { "name": "download_move_top", "value": "सबसे ऊपर ले जाएँ" },
-    { "name": "download_move_bottom", "value": "सबसे नीचे ले जाएँ" },
-    { "name": "download_deleted", "value": "हटाया गया" },
-    { "name": "download_empty", "value": "अभी कोई डाउनलोड नहीं" },
-    { "name": "download_status_downloaded", "value": "डाउनलोड हो चुका" },
-    { "name": "download_chapter_count", "value": "%d अध्याय" },
-    { "name": "detail_no_chapters", "value": "कोई अध्याय नहीं" },
-    { "name": "detail_sync_failed_local", "value": "सिंक विफल, स्थानीय डेटा दिखाया जा रहा है" },
-    { "name": "detail_added_to_library", "value": "लाइब्रेरी में जोड़ा गया" },
-    { "name": "detail_removed_from_library", "value": "लाइब्रेरी से हटाया गया" },
-    { "name": "detail_all_marked_read", "value": "सभी अध्याय पढ़े गए चिह्नित" },
-    { "name": "detail_download_queued", "value": "डाउनलोड कतार में जोड़ा गया" },
-    { "name": "detail_config_anilist_token", "value": "कृपया पहले अपना AniList टोकन कॉन्फ़िगर करें" },
-    { "name": "detail_search_anilist", "value": "AniList खोजें" },
-    { "name": "detail_manga_title_hint", "value": "मंगा शीर्षक" },
-    { "name": "detail_no_search_results", "value": "कोई खोज परिणाम नहीं" },
-    { "name": "detail_anilist_search_failed", "value": "AniList खोज विफल" },
-    { "name": "detail_anilist_bound", "value": "AniList से बाउंड" },
-    { "name": "detail_anilist_unbound", "value": "AniList से अनबाउंड" },
-    { "name": "detail_synced_progress", "value": "प्रगति अध्याय %d पर सिंक की गई" },
-    { "name": "detail_anilist_sync_failed", "value": "AniList सिंक विफल" },
-    { "name": "detail_status_local", "value": "स्थानीय" },
-    { "name": "detail_in_library", "value": "लाइब्रेरी में" },
-    { "name": "detail_add_to_library", "value": "लाइब्रेरी में जोड़ें" },
-    { "name": "detail_continue_reading", "value": "पढ़ना जारी रखें" },
-    { "name": "detail_start_reading", "value": "पढ़ना शुरू करें" },
-    { "name": "detail_no_chapters_yet", "value": "अभी कोई अध्याय नहीं" },
-    { "name": "detail_collapse", "value": "संक्षिप्त करें" },
-    { "name": "detail_expand", "value": "विस्तृत करें" },
-    { "name": "detail_anilist_tracking", "value": "AniList ट्रैकिंग" },
-    { "name": "detail_anilist_token_hint", "value": "AniList टोकन अभी कॉन्फ़िगर नहीं है" },
-    { "name": "detail_searching", "value": "खोजा जा रहा है…" },
-    { "name": "detail_search_and_bind", "value": "खोजें और बाउंड करें" },
-    { "name": "detail_bind", "value": "बाउंड करें" },
-    { "name": "detail_synced_to_chapter", "value": "अध्याय %d पर सिंक" },
-    { "name": "detail_sync_progress", "value": "प्रगति सिंक करें" },
-    { "name": "detail_unbind", "value": "अनबाउंड करें" },
-    { "name": "detail_chapters_count", "value": "अध्याय (%d)" },
-    { "name": "detail_sort_asc", "value": "आरोही" },
-    { "name": "detail_sort_desc", "value": "अवरोही" },
-    { "name": "detail_mark_all_read", "value": "सभी को पढ़ा चिह्नित करें" },
-    { "name": "detail_read", "value": "पढ़ा" },
-    { "name": "detail_downloaded", "value": "डाउनलोड हो चुका" },
-    { "name": "detail_in_queue", "value": "कतार में" },
-    { "name": "detail_download", "value": "डाउनलोड" },
-    { "name": "reader_chapter_not_found", "value": "अध्याय नहीं मिला" },
-    { "name": "reader_load_failed", "value": "लोड विफल: %s" },
-    { "name": "reader_mode_ltr", "value": "बाएँ से दाएँ" },
-    { "name": "reader_mode_rtl", "value": "दाएँ से बाएँ" },
-    { "name": "reader_mode_webtoon", "value": "वेबटून" },
-    { "name": "reader_reading_mode", "value": "पठन मोड" },
-    { "name": "reader_orientation_free", "value": "मुक्त" },
-    { "name": "reader_orientation_portrait", "value": "पोर्ट्रेट" },
-    { "name": "reader_orientation_landscape", "value": "लैंडस्केप" },
-    { "name": "reader_screen_orientation", "value": "स्क्रीन अभिविन्यास" },
-    { "name": "reader_last_chapter", "value": "पहले से अंतिम अध्याय पर हैं" },
-    { "name": "reader_first_chapter", "value": "पहले से पहले अध्याय पर हैं" },
-    { "name": "reader_first_page", "value": "पहले से पहले पृष्ठ पर हैं" },
-    { "name": "reader_last_page", "value": "पहले से अंतिम पृष्ठ पर हैं" },
-    { "name": "reader_loading_chapter", "value": "अध्याय लोड हो रहा है…" },
-    { "name": "reader_settings", "value": "रीडर सेटिंग" },
-    { "name": "reader_background", "value": "पृष्ठभूमि" },
-    { "name": "reader_theme_auto", "value": "स्वचालित" },
-    { "name": "reader_theme_white", "value": "सफ़ेद" },
-    { "name": "reader_theme_gray", "value": "धूसर" },
-    { "name": "reader_theme_black", "value": "काला" },
-    { "name": "reader_show_page_number", "value": "पृष्ठ संख्या दिखाएँ" },
-    { "name": "reader_brightness", "value": "चमक" },
-    { "name": "reader_auto", "value": "स्वचालित" },
-    { "name": "plugin_title", "value": "एक्सटेंशन" },
-    { "name": "plugin_installed_section", "value": "स्थापित" },
-    { "name": "plugin_empty", "value": "अभी कोई एक्सटेंशन नहीं, नीचे से स्थापित करें" },
-    { "name": "plugin_disable_hint", "value": "अक्षम एक्सटेंशन को कभी भी फिर से सक्षम किया जा सकता है" },
-    { "name": "plugin_up_to_date", "value": "अद्यतित" },
-    { "name": "plugin_local_install", "value": "फ़ाइल से स्थापित करें" },
-    { "name": "plugin_install_from_file", "value": "स्थापित करने के लिए फ़ाइल चुनें" },
-    { "name": "plugin_processing", "value": "प्रसंस्करण…" },
-    { "name": "plugin_package_hint", "value": ".honyomiplug / .zip प्लगइन पैकेज समर्थित हैं" },
-    { "name": "plugin_repo", "value": "ऑनलाइन रिपॉज़िटरी" },
-    { "name": "plugin_repo_config", "value": "रिपॉज़िटरी सेट करें" },
-    { "name": "plugin_repo_refresh", "value": "रीफ़्रेश" },
-    { "name": "plugin_repo_hint", "value": "अभी कोई प्लगइन रिपॉज़िटरी कॉन्फ़िगर नहीं है" },
-    { "name": "plugin_repo_loading", "value": "रिपॉज़िटरी लोड हो रही है…" },
-    { "name": "plugin_repo_url_title", "value": "प्लगइन रिपॉज़िटरी URL" },
-    { "name": "plugin_repo_url_hint", "value": "प्लगइन रिपॉज़िटरी URL दर्ज करें" },
-    { "name": "plugin_repo_load_failed", "value": "रिपॉज़िटरी लोड विफल: %s" },
-    { "name": "plugin_pick_file_failed", "value": "फ़ाइल चुनने में विफल" },
-    { "name": "plugin_installed", "value": "स्थापित: %s" },
-    { "name": "plugin_installed_name", "value": "%s स्थापित" },
-    { "name": "plugin_install_failed", "value": "स्थापना विफल: %s" },
-    { "name": "plugin_action_failed", "value": "कार्रवाई विफल" },
-    { "name": "plugin_uninstalled", "value": "अनइंस्टॉल: %s" },
-    { "name": "plugin_uninstall_failed", "value": "अनइंस्टॉल विफल" },
-    { "name": "settings_title", "value": "सेटिंग" },
-    { "name": "settings_general", "value": "सामान्य" },
-    { "name": "settings_start_tab", "value": "प्रारंभ स्क्रीन" },
-    { "name": "settings_personalization", "value": "वैयक्तिकरण" },
-    { "name": "settings_library", "value": "लाइब्रेरी" },
-    { "name": "settings_reader", "value": "रीडर" },
-    { "name": "settings_data", "value": "डेटा" },
-    { "name": "settings_downloads", "value": "डाउनलोड" },
-    { "name": "settings_browse", "value": "ब्राउज़" },
-    { "name": "settings_advanced", "value": "उन्नत" },
-    { "name": "settings_about", "value": "परिचय" },
-    { "name": "settings_tab_library", "value": "लाइब्रेरी" },
-    { "name": "settings_tab_updates", "value": "अपडेट" },
-    { "name": "settings_tab_history", "value": "इतिहास" },
-    { "name": "settings_tab_browse", "value": "ब्राउज़" },
-    { "name": "settings_tab_more", "value": "अधिक" },
-    { "name": "advanced_title", "value": "उन्नत" },
-    { "name": "advanced_calculating", "value": "गणना हो रही है…" },
-    { "name": "advanced_storage", "value": "संग्रहण" },
-    { "name": "advanced_clear_image_cache", "value": "छवि कैश साफ़ करें" },
-    { "name": "advanced_image_cache_cleared", "value": "छवि कैश साफ़ किया गया" },
-    { "name": "advanced_clear_cookies", "value": "कुकीज़ साफ़ करें" },
-    { "name": "advanced_cookies_cleared", "value": "सभी कुकीज़ साफ़ की गईं" },
-    { "name": "advanced_backup_restore", "value": "बैकअप और पुनर्स्थापना" },
-    { "name": "advanced_export_backup", "value": "बैकअप निर्यात करें" },
-    { "name": "advanced_import_backup", "value": "बैकअप आयात करें" },
-    { "name": "advanced_tracking", "value": "ट्रैकिंग" },
-    { "name": "advanced_anilist_token", "value": "AniList टोकन" },
-    { "name": "advanced_token_title", "value": "AniList एक्सेस टोकन" },
-    { "name": "advanced_token_hint", "value": "अपना एक्सेस टोकन चिपकाएँ (साफ़ करने के लिए खाली छोड़ें)" },
-    { "name": "advanced_token_not_set", "value": "सेट नहीं" },
-    { "name": "advanced_token_set", "value": "सेट" },
-    { "name": "advanced_token_saved", "value": "टोकन सहेजा गया" },
-    { "name": "advanced_token_cleared", "value": "टोकन साफ़ किया गया" },
-    { "name": "advanced_backup_exported", "value": "बैकअप निर्यात किया गया" },
-    { "name": "advanced_export_canceled", "value": "निर्यात रद्द" },
-    { "name": "advanced_export_failed", "value": "निर्यात विफल" },
-    { "name": "advanced_import_canceled", "value": "आयात रद्द" },
-    { "name": "advanced_backup_invalid", "value": "अमान्य बैकअप फ़ाइल" },
-    { "name": "advanced_restored_manga", "value": "%d मंगा पुनर्स्थापित" },
-    { "name": "advanced_import_failed", "value": "आयात विफल" },
-    { "name": "about_title", "value": "परिचय" },
-    { "name": "about_version", "value": "संस्करण 1.0.0" },
-    { "name": "about_desc", "value": "वास्तुकला Mihon (Apache-2.0) से प्रेरित। ऑनलाइन स्रोत एक्सटेंशन के रूप में गतिशील रूप से स्थापित होते हैं, जबकि स्थानीय स्रोत अंतर्निहित हैं।" },
-    { "name": "about_ack", "value": "मुक्त स्रोत आभार:\n· Mihon / Tachiyomi — ऐप वास्तुकला और इंटरैक्शन डिज़ाइन (Apache-2.0)\n· Material Symbols — ऐप आइकन (Apache-2.0)\n· MangaDex — परीक्षण डेटा स्रोत" },
-    { "name": "browse_set_title", "value": "ब्राउज़" },
-    { "name": "browse_set_content", "value": "सामग्री" },
-    { "name": "browse_set_show_nsfw", "value": "NSFW स्रोत दिखाएँ" },
-    { "name": "browse_set_nsfw_hint", "value": "सक्षम होने पर, एक्सटेंशन द्वारा NSFW चिह्नित स्रोत ब्राउज़ में दिखाई देंगे" },
-    { "name": "dl_set_title", "value": "डाउनलोड" },
-    { "name": "dl_set_network", "value": "नेटवर्क" },
-    { "name": "dl_set_wifi_only", "value": "केवल Wi-Fi पर डाउनलोड करें" },
-    { "name": "dl_set_wifi_only_hint", "value": "नोट: वर्तमान संस्करण में यह स्विच प्लेसहोल्डर है; नेटवर्क प्रकार पहचान भविष्य के संस्करण में आएगी" },
-    { "name": "lib_set_title", "value": "लाइब्रेरी" },
-    { "name": "lib_set_sort_group", "value": "फ़िल्टर और क्रम" },
-    { "name": "lib_set_sort_default", "value": "डिफ़ॉल्ट क्रम" },
-    { "name": "lib_set_sort_title", "value": "शीर्षक" },
-    { "name": "lib_set_sort_last_update", "value": "नवीनतम अध्याय" },
-    { "name": "lib_set_sort_added", "value": "जोड़ने की तिथि" },
-    { "name": "lib_set_sort_unread", "value": "अपठित संख्या" },
-    { "name": "lib_set_sort_asc", "value": "शीर्षक आरोही क्रम में" },
-    { "name": "lib_set_filter_default", "value": "डिफ़ॉल्ट फ़िल्टर" },
-    { "name": "lib_set_filter_unread", "value": "अपठित" },
-    { "name": "lib_set_filter_downloaded", "value": "डाउनलोड हो चुका" },
-    { "name": "lib_set_filter_uncompleted", "value": "अधूरा" },
-    { "name": "lib_set_display_group", "value": "प्रदर्शन" },
-    { "name": "lib_set_view_default", "value": "डिफ़ॉल्ट दृश्य" },
-    { "name": "lib_set_view_grid", "value": "ग्रिड" },
-    { "name": "lib_set_view_cover", "value": "कवर ग्रिड" },
-    { "name": "lib_set_view_list", "value": "सूची" },
-    { "name": "lib_set_grid_cols", "value": "ग्रिड स्तंभ" },
-    { "name": "lib_set_cols_auto", "value": "स्वचालित" },
-    { "name": "lib_set_cols_2", "value": "2 स्तंभ" },
-    { "name": "lib_set_cols_3", "value": "3 स्तंभ" },
-    { "name": "lib_set_cols_4", "value": "4 स्तंभ" },
-    { "name": "lib_set_unread_badge", "value": "अपठित बैज" },
-    { "name": "lib_set_download_badge", "value": "डाउनलोड बैज" },
-    { "name": "reader_set_title", "value": "रीडर" },
-    { "name": "reader_set_mode_group", "value": "पठन मोड" },
-    { "name": "reader_set_mode_default", "value": "डिफ़ॉल्ट मोड" },
-    { "name": "reader_set_mode_ltr", "value": "बाएँ से दाएँ" },
-    { "name": "reader_set_mode_rtl", "value": "दाएँ से बाएँ" },
-    { "name": "reader_set_mode_vertical", "value": "ऊर्ध्वाधर पृष्ठ" },
-    { "name": "reader_set_mode_webtoon", "value": "वेबटून" },
-    { "name": "reader_set_dual_page", "value": "दोहरे पृष्ठ (लैंडस्केप)" },
-    { "name": "reader_set_display_group", "value": "प्रदर्शन" },
-    { "name": "reader_set_show_page_number", "value": "पृष्ठ संख्या दिखाएँ" },
-    { "name": "reader_set_bg_color", "value": "रीडर पृष्ठभूमि" },
-    { "name": "reader_set_theme_follow", "value": "थीम का अनुसरण करें" },
-    { "name": "reader_set_theme_white", "value": "सफ़ेद" },
-    { "name": "reader_set_theme_black", "value": "काला" },
-    { "name": "reader_set_theme_gray", "value": "धूसर" },
-    { "name": "reader_set_reset_brightness", "value": "रीडर चमक रीसेट करें" },
-    { "name": "reader_set_brightness_reset", "value": "चमक सिस्टम का अनुसरण करने पर सेट" },
-    { "name": "browse_tab_sources", "value": "स्रोत" },
-    { "name": "browse_tab_extensions", "value": "एक्सटेंशन" },
-    { "name": "browse_tab_migrate", "value": "माइग्रेट" },
-    { "name": "browse_pin", "value": "पिन करें" },
-    { "name": "browse_unpin", "value": "अनपिन करें" },
-    { "name": "browse_disable_source", "value": "स्रोत अक्षम करें" },
-    { "name": "browse_source_disabled", "value": "स्रोत अक्षम किया गया" },
-    { "name": "browse_pinned", "value": "पिन किया गया" },
-    { "name": "browse_sources_empty", "value": "कोई स्रोत नहीं। एक्सटेंशन टैब से इंस्टॉल करें" },
-    { "name": "browse_filter_langs", "value": "भाषाएँ फ़िल्टर करें" },
-    { "name": "browse_filter_all", "value": "सभी" },
-    { "name": "browse_source_missing", "value": "स्रोत उपलब्ध नहीं। एक्सटेंशन अक्षम हो सकता है" },
-    { "name": "global_search_hint", "value": "सभी स्रोतों में खोजें" },
-    { "name": "global_search_failed", "value": "खोज विफल" },
-    { "name": "ext_search_hint", "value": "एक्सटेंशन खोजें" },
-    { "name": "ext_search_no_match", "value": "कोई मेल नहीं" },
-    { "name": "ext_repo_settings", "value": "रिपॉज़िटरी सेटिंग्स" },
-    { "name": "ext_refresh_repo", "value": "रिपॉज़िटरी रीफ़्रेश करें" },
-    { "name": "migrate_pick_source", "value": "माइग्रेट करने के लिए स्रोत चुनें" },
-    { "name": "migrate_empty_library", "value": "लाइब्रेरी खाली है" },
-    { "name": "migrate_select_all", "value": "सभी चुनें" },
-    { "name": "migrate_deselect_all", "value": "चयन हटाएँ" },
-    { "name": "migrate_action", "value": "माइग्रेट (%d)" },
-    { "name": "migrate_title", "value": "माइग्रेट" },
-    { "name": "migrate_skip", "value": "छोड़ें" },
-    { "name": "migrate_progress", "value": "%d / %d" },
-    { "name": "migrate_target_source", "value": "लक्ष्य स्रोत" },
-    { "name": "migrate_search_hint", "value": "लक्ष्य स्रोत में मंगा खोजें" },
-    { "name": "migrate_confirm_title", "value": "इस मंगा पर माइग्रेट करें?" },
-    { "name": "migrate_item_done", "value": "माइग्रेट हुआ: %s" },
-    { "name": "migrate_failed", "value": "माइग्रेट विफल: %s" },
-    { "name": "migrate_done", "value": "माइग्रेट पूरा" },
-    { "name": "migrate_no_target", "value": "कोई लक्ष्य स्रोत नहीं" },
-    { "name": "stats_title", "value": "आँकड़े" },
-    { "name": "stats_overview_section", "value": "अवलोकन" },
-    { "name": "stats_in_library", "value": "लाइब्रेरी में" },
-    { "name": "stats_read_duration", "value": "पठन अवधि" },
-    { "name": "stats_completed_titles", "value": "पूर्ण" },
-    { "name": "stats_titles_section", "value": "रचनाएँ" },
-    { "name": "stats_started_titles", "value": "शुरू की गई" },
-    { "name": "stats_local_titles", "value": "स्थानीय" },
-    { "name": "stats_chapters_section", "value": "अध्याय" },
-    { "name": "stats_total_chapters", "value": "कुल" },
-    { "name": "stats_read_chapters", "value": "पढ़ा" },
-    { "name": "stats_downloaded_chapters", "value": "डाउनलोड हो चुका" },
-    { "name": "stats_tracker_section", "value": "ट्रैकिंग" },
-    { "name": "stats_tracked_titles", "value": "ट्रैक की गई रचनाएँ" },
-    { "name": "stats_mean_score", "value": "औसत अंक" },
-    { "name": "stats_used", "value": "प्रयुक्त" },
-    { "name": "stats_not_applicable", "value": "लागू नहीं" },
-    { "name": "stats_week", "value": "सप्ताह" },
-    { "name": "stats_month", "value": "महीना" },
-    { "name": "stats_week_total", "value": "इस सप्ताह %s" },
-    { "name": "stats_month_total", "value": "इस माह %s" },
-    { "name": "stats_no_reading", "value": "इस अवधि में कोई पठन नहीं" },
-    { "name": "stats_day_short", "value": "%dदि" },
-    { "name": "stats_hour_short", "value": "%dघं" },
-    { "name": "stats_minute_short", "value": "%dमि" },
-    { "name": "stats_second_short", "value": "%dसे" },
-    { "name": "stats_wd_sun", "value": "र" },
-    { "name": "stats_wd_mon", "value": "सो" },
-    { "name": "stats_wd_tue", "value": "मं" },
-    { "name": "stats_wd_wed", "value": "बु" },
-    { "name": "stats_wd_thu", "value": "गु" },
-    { "name": "stats_wd_fri", "value": "शु" },
-    { "name": "stats_wd_sat", "value": "श" },
-    { "name": "reader_mode_vertical", "value": "ऊर्ध्वाधर" },
-    { "name": "reader_mode_smart_grip", "value": "पकड़-अनुकूल" },
-    { "name": "reader_orientation_lock_portrait", "value": "पोर्ट्रेट स्थिर करें" },
-    { "name": "reader_orientation_lock_landscape", "value": "लैंडस्केप स्थिर करें" },
-    { "name": "reader_tab_general", "value": "सामान्य" },
-    { "name": "reader_tab_filter", "value": "रंग फ़िल्टर" },
-    { "name": "reader_filter_grayscale", "value": "धूसर" },
-    { "name": "reader_filter_invert", "value": "उलटे रंग" },
-    { "name": "reader_filter_contrast", "value": "वैषम्य" },
-    { "name": "reader_filter_saturation", "value": "संतृप्ति" },
-    { "name": "reader_crop_borders", "value": "किनारे काटें" },
-    { "name": "reader_nav_tap_zones", "value": "स्पर्श क्षेत्र" },
-    { "name": "reader_nav_default", "value": "डिफ़ॉल्ट" },
-    { "name": "reader_nav_ltr", "value": "बाएँ से दाएँ" },
-    { "name": "reader_nav_rtl", "value": "दाएँ से बाएँ" },
-    { "name": "reader_nav_vertical", "value": "ऊर्ध्वाधर" },
-    { "name": "reader_nav_edge", "value": "किनारा" },
-    { "name": "reader_nav_none", "value": "कोई नहीं" },
-    { "name": "reader_dual_page", "value": "दोहरा पृष्ठ दृश्य" },
-    { "name": "reader_webtoon_padding", "value": "वेबटून पार्श्व हाशिया" },
-    { "name": "reader_set_mode_smart_grip", "value": "पकड़-अनुकूल" },
-    { "name": "ext_install_local", "value": "स्थानीय से स्थापित करें" },
-    { "name": "ext_detail_title", "value": "एक्सटेंशन जानकारी" },
-    { "name": "ext_info_version", "value": "संस्करण" },
-    { "name": "ext_info_language", "value": "भाषा" },
-    { "name": "ext_uninstall_title", "value": "एक्सटेंशन अनइंस्टॉल करें" },
-    { "name": "ext_uninstall_msg", "value": "“%s” अनइंस्टॉल करें? लाइब्रेरी का मंगा डेटा बना रहेगा" },
-    { "name": "ext_detail_sources", "value": "स्रोत" },
-    { "name": "ext_detail_settings", "value": "सेटिंग" },
-    { "name": "ext_pref_loading", "value": "लोड हो रहा है…" },
-    { "name": "ext_pref_failed", "value": "सेटिंग लागू नहीं हुई" },
-    { "name": "ext_detail_missing", "value": "एक्सटेंशन नहीं है या लोड नहीं हुआ" },
-    { "name": "action_filter", "value": "फ़िल्टर" },
-    { "name": "action_update_library", "value": "लाइब्रेरी अपडेट करें" },
-    { "name": "action_update_category", "value": "श्रेणी अपडेट करें" },
-    { "name": "action_open_random_manga", "value": "कोई एक रचना खोलें" },
-    { "name": "action_select_all", "value": "सभी चुनें" },
-    { "name": "action_select_inverse", "value": "चयन पलटें" },
-    { "name": "action_move_category", "value": "श्रेणी में ले जाएँ" },
-    { "name": "action_mark_as_read", "value": "पढ़ा चिह्नित करें" },
-    { "name": "action_mark_as_unread", "value": "अपठित चिह्नित करें" },
-    { "name": "action_download", "value": "डाउनलोड" },
-    { "name": "action_delete", "value": "हटाएँ" },
-    { "name": "action_migrate", "value": "माइग्रेट" },
-    { "name": "action_remove_from_library", "value": "लाइब्रेरी से हटाएँ" },
-    { "name": "action_remove_from_library_msg", "value": "चयनित %d मंगा लाइब्रेरी से हटाएँ?" },
-    { "name": "action_download_queued", "value": "%d डाउनलोड कतार में जोड़े गए" },
-    { "name": "library_search_hint", "value": "लाइब्रेरी खोजें" },
-    { "name": "library_no_match", "value": "कोई मेल खाता मंगा नहीं" },
-    { "name": "lib_sheet_tab_filter", "value": "फ़िल्टर" },
-    { "name": "lib_sheet_tab_sort", "value": "क्रम" },
-    { "name": "lib_sheet_tab_display", "value": "प्रदर्शन" },
-    { "name": "lib_filter_downloaded", "value": "डाउनलोड हो चुका" },
-    { "name": "lib_filter_unread", "value": "अपठित" },
-    { "name": "lib_filter_started", "value": "पढ़ चुके" },
-    { "name": "lib_filter_bookmarked", "value": "बुकमार्क" },
-    { "name": "lib_filter_completed", "value": "पूर्ण" },
-    { "name": "lib_filter_tracked", "value": "ट्रैक किया गया" },
-    { "name": "lib_sort_alpha", "value": "शीर्षक" },
-    { "name": "lib_sort_total", "value": "अध्याय संख्या" },
-    { "name": "lib_sort_last_read", "value": "हाल में पढ़ा" },
-    { "name": "lib_sort_last_update", "value": "अपडेट जाँच समय" },
-    { "name": "lib_sort_unread", "value": "अपठित संख्या" },
-    { "name": "lib_sort_latest_chapter", "value": "रचना अपडेट समय" },
-    { "name": "lib_sort_fetch_date", "value": "अध्याय प्राप्त समय" },
-    { "name": "lib_sort_date_added", "value": "जोड़ने की तिथि" },
-    { "name": "lib_sort_random", "value": "यादृच्छिक" },
-    { "name": "lib_display_compact", "value": "सघन ग्रिड" },
-    { "name": "lib_display_comfortable", "value": "ढीला ग्रिड" },
-    { "name": "lib_display_cover", "value": "कवर ग्रिड" },
-    { "name": "lib_display_list", "value": "सूची" },
-    { "name": "lib_display_grid_size", "value": "प्रति पंक्ति संख्या" },
-    { "name": "lib_display_grid_auto", "value": "स्वचालित" },
-    { "name": "lib_display_badges_group", "value": "बैज और बटन" },
-    { "name": "lib_badge_downloaded", "value": "डाउनलोड अध्याय संख्या" },
-    { "name": "lib_badge_unread", "value": "अपठित अध्याय" },
-    { "name": "lib_badge_local", "value": "स्थानीय स्रोत" },
-    { "name": "lib_badge_language", "value": "भाषा" },
-    { "name": "lib_badge_continue", "value": "पढ़ना जारी रखें बटन" },
-    { "name": "lib_display_tabs_group", "value": "टैब" },
-    { "name": "lib_show_category_tabs", "value": "श्रेणी टैब दिखाएँ" },
-    { "name": "lib_show_manga_count", "value": "रचना संख्या दिखाएँ" },
-    { "name": "EntryFormAbility_label", "value": "MihonHarmony कार्ड" },
-    { "name": "EntryFormAbility_desc", "value": "डेस्कटॉप कार्ड प्रदाता" },
-    { "name": "card_recent_display", "value": "पढ़ना जारी रखें" },
-    { "name": "card_recent_desc", "value": "हाल में पढ़ा मंगा जल्दी जारी रखें" },
-    { "name": "card_updates_display", "value": "अपडेट" },
-    { "name": "card_updates_desc", "value": "लाइब्रेरी के नए अपठित अध्याय" },
-    { "name": "card_recent_header", "value": "पढ़ना जारी रखें" },
-    { "name": "card_updates_header", "value": "अपडेट" },
-    { "name": "card_unread_count", "value": "%d अध्याय अपठित" },
-    { "name": "card_empty_recent", "value": "अभी कोई पठन इतिहास नहीं" },
-    { "name": "card_empty_updates", "value": "कोई अपठित अध्याय नहीं" },
-    { "name": "card_open_hint", "value": "ऐप खोलने के लिए टैप करें" },
-    { "name": "card_manga_display", "value": "मंगा कार्ड" },
-    { "name": "card_manga_desc", "value": "विवरण पृष्ठ से जोड़ें, कवर छूकर पढ़ें" },
-    { "name": "card_manga_empty", "value": "मंगा विवरण पृष्ठ से डेस्कटॉप पर जोड़ें" },
-    { "name": "detail_add_to_desktop", "value": "डेस्कटॉप पर जोड़ें" },
-    { "name": "detail_card_added", "value": "डेस्कटॉप पर जोड़ा गया" },
-    { "name": "detail_card_add_failed", "value": "कार्ड जोड़ना विफल" },
-    { "name": "card_stats_week_display", "value": "साप्ताहिक आँकड़े" },
-    { "name": "card_stats_week_desc", "value": "इस सप्ताह प्रतिदिन पठन अवधि" },
-    { "name": "card_stats_month_display", "value": "मासिक आँकड़े" },
-    { "name": "card_stats_month_desc", "value": "इस माह प्रतिदिन पठन अवधि" },
-    { "name": "card_stats_empty", "value": "अभी कोई पठन नहीं" },
-    { "name": "action_view_upcoming", "value": "आने वाले अपडेट दिखाएँ" },
-    { "name": "label_upcoming", "value": "आने वाला" },
-    { "name": "upcoming_guide", "value": "आने वाले की मार्गदर्शिका" },
-    { "name": "upcoming_calendar_prev", "value": "पिछला महीना" },
-    { "name": "upcoming_calendar_next", "value": "अगला महीना" },
-    { "name": "pref_filter_update_categories_details", "value": "जो रचनाएँ शामिल और बाहर दोनों श्रेणियों में हैं, वे नहीं दिखेंगी।" },
-    { "name": "relative_time_today", "value": "आज" },
-    { "name": "relative_time_days_ago", "value": "%d दिन पहले" },
-    { "name": "upcoming_relative_time_days", "value": "%d दिन में" },
-    { "name": "card_upcoming_display", "value": "आने वाला" },
-    { "name": "card_upcoming_desc", "value": "लाइब्रेरी मंगा का अपेक्षित अपडेट कैलेंडर" },
-    { "name": "card_upcoming_header", "value": "आने वाला" },
-    { "name": "card_empty_upcoming", "value": "लाइब्रेरी में कोई जारी मंगा नहीं" }
-]
+    {
+      "name": "more_downloaded_only_summary",
+      "value": "आपकी पुस्तकालय में सभी आइटम को फ़िल्टर करता है"
+    },
+    {
+      "name": "more_incognito_summary",
+      "value": "इतिहास पढ़ने से रोक देता है"
+    },
+    {
+      "name": "more_support",
+      "value": "हमारा समर्थन करें"
+    },
+    {
+      "name": "more_help",
+      "value": "मदद"
+    },
+    {
+      "name": "support_perks",
+      "value": "पैट्रन्स को विशेष चैनलों का एक्सेस मिलता है, और आगे और भी सुविधाएँ मिलेंगी।"
+    },
+    {
+      "name": "support_patreon",
+      "value": "पैट्रियन (पसंदीदा)"
+    },
+    {
+      "name": "support_opencollective",
+      "value": "ओपनकलेक्टिव"
+    },
+    {
+      "name": "support_supported_by",
+      "value": "Mihon को वर्तमान में %d+ पैट्रन्स का समर्थन प्राप्त है। हम आप सभी में से हर एक को धन्यवाद देना चाहते हैं। आइए, मिलकर Mihon को और भी बेहतर बनाएं।"
+    },
+    {
+      "name": "support_contact_msg",
+      "value": "वैकल्पिक विकल्पों या किसी भी संबंधित प्रश्न के लिए, हमारे Discord सर्वर से जुड़ें।"
+    },
+    {
+      "name": "support_discord",
+      "value": "डिस्कॉर्ड"
+    },
+    {
+      "name": "data_storage_title",
+      "value": "डेटा और स्टोरेज"
+    },
+    {
+      "name": "data_storage_location",
+      "value": "स्टोरेज स्थान"
+    },
+    {
+      "name": "data_storage_location_info",
+      "value": "स्वचालित बैकअप, अध्याय डाउनलोड और स्थानीय स्रोत के लिए उपयोग किया जाता है।"
+    },
+    {
+      "name": "data_backup_restore",
+      "value": "बैकअप और पुनर्स्थापना"
+    },
+    {
+      "name": "data_create_backup",
+      "value": "बैकअप बनाये"
+    },
+    {
+      "name": "data_restore_backup",
+      "value": "बैकअप पुनर्स्थापित करे"
+    },
+    {
+      "name": "data_backup_interval",
+      "value": "बैकअप फ़्रीक्वेंसी"
+    },
+    {
+      "name": "data_backup_info",
+      "value": "आपको अन्य स्थानों पर भी बैकअप की प्रतियाँ रखनी चाहिए।"
+    },
+    {
+      "name": "data_last_auto_backup",
+      "value": "अंतिम स्वचालित बैकअप: %s"
+    },
+    {
+      "name": "data_storage_usage",
+      "value": "स्टोरेज उपयोग"
+    },
+    {
+      "name": "data_available_space",
+      "value": "उपलब्ध: %s / कुल: %s"
+    },
+    {
+      "name": "data_clear_chapter_cache",
+      "value": "अध्याय कैश साफ़ करें"
+    },
+    {
+      "name": "data_used_cache",
+      "value": "उपयोग किया गया: %s"
+    },
+    {
+      "name": "data_cache_deleted",
+      "value": "कैश साफ़ किया गया %d फ़ाइलों को हटा दिया गया है"
+    },
+    {
+      "name": "data_cache_delete_error",
+      "value": "साफ़ करने के दौरान त्रुटि हुई"
+    },
+    {
+      "name": "data_auto_clear_cache",
+      "value": "ऐप लॉन्च पर चैप्टर कैशे साफ़ करें"
+    },
+    {
+      "name": "data_export",
+      "value": "निर्यात करें"
+    },
+    {
+      "name": "data_library_list",
+      "value": "पुस्तकालय सूची"
+    },
+    {
+      "name": "data_library_exported",
+      "value": "पुस्तकालय निर्यातित हो गया"
+    },
+    {
+      "name": "data_export_include",
+      "value": "शामिल करने के लिए डेटा का चयन करें"
+    },
+    {
+      "name": "data_column_title",
+      "value": "शीर्षक"
+    },
+    {
+      "name": "data_column_author",
+      "value": "लेखक"
+    },
+    {
+      "name": "data_interval_off",
+      "value": "बंद"
+    },
+    {
+      "name": "data_interval_6h",
+      "value": "हर ६ घंटे"
+    },
+    {
+      "name": "data_interval_12h",
+      "value": "हर १२ घंटे"
+    },
+    {
+      "name": "data_interval_24h",
+      "value": "हर रोज़"
+    },
+    {
+      "name": "data_interval_48h",
+      "value": "हर २ दिन"
+    },
+    {
+      "name": "data_interval_weekly",
+      "value": "साप्ताहिक"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "App private storage"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Never"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export canceled"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export failed"
+    },
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "common_ok",
+      "value": "ठीक है"
+    },
+    {
+      "name": "common_cancel",
+      "value": "रद्द करें"
+    },
+    {
+      "name": "common_confirm",
+      "value": "पुष्टि करें"
+    },
+    {
+      "name": "common_delete",
+      "value": "हटाएँ"
+    },
+    {
+      "name": "common_retry",
+      "value": "पुनः प्रयास"
+    },
+    {
+      "name": "common_search",
+      "value": "खोजें"
+    },
+    {
+      "name": "common_all",
+      "value": "सभी"
+    },
+    {
+      "name": "common_close",
+      "value": "बंद करें"
+    },
+    {
+      "name": "common_save",
+      "value": "सहेजें"
+    },
+    {
+      "name": "common_install",
+      "value": "स्थापित करें"
+    },
+    {
+      "name": "common_uninstall",
+      "value": "अनइंस्टॉल करें"
+    },
+    {
+      "name": "common_update",
+      "value": "अपडेट"
+    },
+    {
+      "name": "common_none",
+      "value": "कोई नहीं"
+    },
+    {
+      "name": "common_default",
+      "value": "डिफ़ॉल्ट"
+    },
+    {
+      "name": "appearance_title",
+      "value": "दिखावट"
+    },
+    {
+      "name": "appearance_language",
+      "value": "भाषा"
+    },
+    {
+      "name": "lang_follow_system",
+      "value": "सिस्टम का अनुसरण करें"
+    },
+    {
+      "name": "lang_simplified_chinese",
+      "value": "简体中文"
+    },
+    {
+      "name": "lang_english",
+      "value": "English"
+    },
+    {
+      "name": "appearance_theme_mode",
+      "value": "थीम मोड"
+    },
+    {
+      "name": "appearance_theme_auto",
+      "value": "सिस्टम का अनुसरण करें"
+    },
+    {
+      "name": "appearance_theme_light",
+      "value": "हल्का"
+    },
+    {
+      "name": "appearance_theme_dark",
+      "value": "गहरा"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "उच्चारण रंग"
+    },
+    {
+      "name": "appearance_other",
+      "value": "अन्य"
+    },
+    {
+      "name": "appearance_amoled",
+      "value": "AMOLED शुद्ध काला पृष्ठभूमि"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "नीला"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "हरा"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "गुलाबी"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "बैंगनी"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "नारंगी"
+    },
+    {
+      "name": "util_time_minutes_ago",
+      "value": "%d मिनट पहले"
+    },
+    {
+      "name": "util_time_hours_ago",
+      "value": "%d घंटे पहले"
+    },
+    {
+      "name": "util_time_days_ago",
+      "value": "%d दिन पहले"
+    },
+    {
+      "name": "util_status_ongoing",
+      "value": "जारी"
+    },
+    {
+      "name": "util_status_completed",
+      "value": "पूर्ण"
+    },
+    {
+      "name": "util_status_hiatus",
+      "value": "स्थगित"
+    },
+    {
+      "name": "util_status_cancelled",
+      "value": "रद्द"
+    },
+    {
+      "name": "util_status_publication_complete",
+      "value": "प्रकाशन पूर्ण"
+    },
+    {
+      "name": "util_status_unknown",
+      "value": "अज्ञात"
+    },
+    {
+      "name": "tab_library",
+      "value": "लाइब्रेरी"
+    },
+    {
+      "name": "tab_updates",
+      "value": "अपडेट"
+    },
+    {
+      "name": "tab_history",
+      "value": "इतिहास"
+    },
+    {
+      "name": "tab_browse",
+      "value": "ब्राउज़"
+    },
+    {
+      "name": "tab_more",
+      "value": "अधिक"
+    },
+    {
+      "name": "tab_cf_waiting",
+      "value": "सत्यापन की प्रतीक्षा…"
+    },
+    {
+      "name": "tab_cf_verified",
+      "value": "सत्यापन पूर्ण"
+    },
+    {
+      "name": "tab_cf_title",
+      "value": "मानव सत्यापन"
+    },
+    {
+      "name": "tab_cf_done",
+      "value": "हो गया"
+    },
+    {
+      "name": "tab_cf_saved",
+      "value": "सत्यापन परिणाम सहेजा गया"
+    },
+    {
+      "name": "more_title",
+      "value": "अधिक"
+    },
+    {
+      "name": "more_version",
+      "value": "संस्करण %s"
+    },
+    {
+      "name": "more_downloaded_only",
+      "value": "केवल डाउनलोड किए गए"
+    },
+    {
+      "name": "more_incognito",
+      "value": "इंकॉग्निटो मोड"
+    },
+    {
+      "name": "more_downloads",
+      "value": "डाउनलोड सूची"
+    },
+    {
+      "name": "more_categories",
+      "value": "श्रेणियाँ"
+    },
+    {
+      "name": "more_settings",
+      "value": "सेटिंग"
+    },
+    {
+      "name": "more_about",
+      "value": "परिचय"
+    },
+    {
+      "name": "more_plugins",
+      "value": "एक्सटेंशन"
+    },
+    {
+      "name": "categories_title",
+      "value": "श्रेणियाँ"
+    },
+    {
+      "name": "categories_add",
+      "value": "नई श्रेणी"
+    },
+    {
+      "name": "categories_name_placeholder",
+      "value": "श्रेणी का नाम"
+    },
+    {
+      "name": "categories_rename_category",
+      "value": "श्रेणी का नाम बदलें"
+    },
+    {
+      "name": "categories_rename",
+      "value": "नाम बदलें"
+    },
+    {
+      "name": "categories_hint",
+      "value": "श्रेणी का नाम बदलने या हटाने के लिए देर तक दबाएँ; हटाई गई श्रेणी की मंगा डिफ़ॉल्ट में वापस चली जाती है"
+    },
+    {
+      "name": "dialog_pick_category",
+      "value": "श्रेणी चुनें"
+    },
+    {
+      "name": "viewer_loading",
+      "value": "लोड हो रहा है…"
+    },
+    {
+      "name": "viewer_load_failed",
+      "value": "छवि लोड करने में विफल"
+    },
+    {
+      "name": "viewer_tap_retry",
+      "value": "पुनः प्रयास के लिए टैप करें"
+    },
+    {
+      "name": "library_title",
+      "value": "लाइब्रेरी"
+    },
+    {
+      "name": "library_empty",
+      "value": "आपकी लाइब्रेरी खाली है, मंगा जोड़ने के लिए ब्राउज़ करें"
+    },
+    {
+      "name": "library_new_category",
+      "value": "नई श्रेणी"
+    },
+    {
+      "name": "library_category_name",
+      "value": "श्रेणी का नाम"
+    },
+    {
+      "name": "updates_title",
+      "value": "अपडेट"
+    },
+    {
+      "name": "updates_empty",
+      "value": "हाल के अपडेट नहीं हैं"
+    },
+    {
+      "name": "updates_found_new",
+      "value": "%d नए अध्याय मिले"
+    },
+    {
+      "name": "updates_no_new",
+      "value": "कोई नया अध्याय नहीं"
+    },
+    {
+      "name": "updates_refresh_failed",
+      "value": "रीफ़्रेश विफल"
+    },
+    {
+      "name": "updates_refreshing",
+      "value": "रीफ़्रेश हो रहा है…"
+    },
+    {
+      "name": "history_title",
+      "value": "इतिहास"
+    },
+    {
+      "name": "history_clear",
+      "value": "साफ़ करें"
+    },
+    {
+      "name": "history_confirm_clear",
+      "value": "साफ़ करना सुनिश्चित करें?"
+    },
+    {
+      "name": "history_empty",
+      "value": "अभी कोई पठन इतिहास नहीं"
+    },
+    {
+      "name": "history_cleared",
+      "value": "इतिहास साफ़ किया गया"
+    },
+    {
+      "name": "history_continue",
+      "value": "जारी रखें"
+    },
+    {
+      "name": "browse_title",
+      "value": "ब्राउज़"
+    },
+    {
+      "name": "browse_import",
+      "value": "आयात"
+    },
+    {
+      "name": "browse_plugins",
+      "value": "प्लगइन"
+    },
+    {
+      "name": "browse_local_source_name",
+      "value": "स्थानीय मंगा"
+    },
+    {
+      "name": "browse_popular",
+      "value": "लोकप्रिय"
+    },
+    {
+      "name": "browse_latest",
+      "value": "नवीनतम"
+    },
+    {
+      "name": "browse_search_hint",
+      "value": "मंगा खोजें…"
+    },
+    {
+      "name": "browse_no_results",
+      "value": "कोई मंगा नहीं मिली"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "अभी कोई स्थानीय मंगा नहीं, जोड़ने के लिए आयात पर टैप करें"
+    },
+    {
+      "name": "browse_load_failed",
+      "value": "लोड विफल: %s"
+    },
+    {
+      "name": "browse_search_failed",
+      "value": "खोज विफल: %s"
+    },
+    {
+      "name": "browse_load_more_failed",
+      "value": "और लोड करने में विफल"
+    },
+    {
+      "name": "browse_open_detail_failed",
+      "value": "विवरण खोलने में विफल"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "फ़ाइलें चुनने में विफल"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "%d फ़ाइलें आयात करें"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "मंगा का नाम"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "कृपया एक नाम दर्ज करें"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "%d फ़ाइलें आयात की गईं"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "आयात विफल: %s"
+    },
+    {
+      "name": "download_title",
+      "value": "डाउनलोड"
+    },
+    {
+      "name": "download_resume",
+      "value": "जारी रखें"
+    },
+    {
+      "name": "download_pause",
+      "value": "रोकें"
+    },
+    {
+      "name": "download_clear_finished",
+      "value": "पूर्ण हुए साफ़ करें"
+    },
+    {
+      "name": "download_queue",
+      "value": "डाउनलोड कतार"
+    },
+    {
+      "name": "download_state_queued",
+      "value": "कतार में"
+    },
+    {
+      "name": "download_state_downloading",
+      "value": "डाउनलोड हो रहा है"
+    },
+    {
+      "name": "download_state_done",
+      "value": "हो गया"
+    },
+    {
+      "name": "download_state_failed",
+      "value": "विफल"
+    },
+    {
+      "name": "download_move_top",
+      "value": "सबसे ऊपर ले जाएँ"
+    },
+    {
+      "name": "download_move_bottom",
+      "value": "सबसे नीचे ले जाएँ"
+    },
+    {
+      "name": "download_deleted",
+      "value": "हटाया गया"
+    },
+    {
+      "name": "download_empty",
+      "value": "अभी कोई डाउनलोड नहीं"
+    },
+    {
+      "name": "download_status_downloaded",
+      "value": "डाउनलोड हो चुका"
+    },
+    {
+      "name": "download_chapter_count",
+      "value": "%d अध्याय"
+    },
+    {
+      "name": "detail_no_chapters",
+      "value": "कोई अध्याय नहीं"
+    },
+    {
+      "name": "detail_sync_failed_local",
+      "value": "सिंक विफल, स्थानीय डेटा दिखाया जा रहा है"
+    },
+    {
+      "name": "detail_added_to_library",
+      "value": "लाइब्रेरी में जोड़ा गया"
+    },
+    {
+      "name": "detail_removed_from_library",
+      "value": "लाइब्रेरी से हटाया गया"
+    },
+    {
+      "name": "detail_all_marked_read",
+      "value": "सभी अध्याय पढ़े गए चिह्नित"
+    },
+    {
+      "name": "detail_download_queued",
+      "value": "डाउनलोड कतार में जोड़ा गया"
+    },
+    {
+      "name": "detail_config_anilist_token",
+      "value": "कृपया पहले अपना AniList टोकन कॉन्फ़िगर करें"
+    },
+    {
+      "name": "detail_search_anilist",
+      "value": "AniList खोजें"
+    },
+    {
+      "name": "detail_manga_title_hint",
+      "value": "मंगा शीर्षक"
+    },
+    {
+      "name": "detail_no_search_results",
+      "value": "कोई खोज परिणाम नहीं"
+    },
+    {
+      "name": "detail_anilist_search_failed",
+      "value": "AniList खोज विफल"
+    },
+    {
+      "name": "detail_anilist_bound",
+      "value": "AniList से बाउंड"
+    },
+    {
+      "name": "detail_anilist_unbound",
+      "value": "AniList से अनबाउंड"
+    },
+    {
+      "name": "detail_synced_progress",
+      "value": "प्रगति अध्याय %d पर सिंक की गई"
+    },
+    {
+      "name": "detail_anilist_sync_failed",
+      "value": "AniList सिंक विफल"
+    },
+    {
+      "name": "detail_status_local",
+      "value": "स्थानीय"
+    },
+    {
+      "name": "detail_in_library",
+      "value": "लाइब्रेरी में"
+    },
+    {
+      "name": "detail_add_to_library",
+      "value": "लाइब्रेरी में जोड़ें"
+    },
+    {
+      "name": "detail_continue_reading",
+      "value": "पढ़ना जारी रखें"
+    },
+    {
+      "name": "detail_start_reading",
+      "value": "पढ़ना शुरू करें"
+    },
+    {
+      "name": "detail_no_chapters_yet",
+      "value": "अभी कोई अध्याय नहीं"
+    },
+    {
+      "name": "detail_collapse",
+      "value": "संक्षिप्त करें"
+    },
+    {
+      "name": "detail_expand",
+      "value": "विस्तृत करें"
+    },
+    {
+      "name": "detail_anilist_tracking",
+      "value": "AniList ट्रैकिंग"
+    },
+    {
+      "name": "detail_anilist_token_hint",
+      "value": "AniList टोकन अभी कॉन्फ़िगर नहीं है"
+    },
+    {
+      "name": "detail_searching",
+      "value": "खोजा जा रहा है…"
+    },
+    {
+      "name": "detail_search_and_bind",
+      "value": "खोजें और बाउंड करें"
+    },
+    {
+      "name": "detail_bind",
+      "value": "बाउंड करें"
+    },
+    {
+      "name": "detail_synced_to_chapter",
+      "value": "अध्याय %d पर सिंक"
+    },
+    {
+      "name": "detail_sync_progress",
+      "value": "प्रगति सिंक करें"
+    },
+    {
+      "name": "detail_unbind",
+      "value": "अनबाउंड करें"
+    },
+    {
+      "name": "detail_chapters_count",
+      "value": "अध्याय (%d)"
+    },
+    {
+      "name": "detail_sort_asc",
+      "value": "आरोही"
+    },
+    {
+      "name": "detail_sort_desc",
+      "value": "अवरोही"
+    },
+    {
+      "name": "detail_mark_all_read",
+      "value": "सभी को पढ़ा चिह्नित करें"
+    },
+    {
+      "name": "detail_read",
+      "value": "पढ़ा"
+    },
+    {
+      "name": "detail_downloaded",
+      "value": "डाउनलोड हो चुका"
+    },
+    {
+      "name": "detail_in_queue",
+      "value": "कतार में"
+    },
+    {
+      "name": "detail_download",
+      "value": "डाउनलोड"
+    },
+    {
+      "name": "reader_chapter_not_found",
+      "value": "अध्याय नहीं मिला"
+    },
+    {
+      "name": "reader_load_failed",
+      "value": "लोड विफल: %s"
+    },
+    {
+      "name": "reader_mode_ltr",
+      "value": "बाएँ से दाएँ"
+    },
+    {
+      "name": "reader_mode_rtl",
+      "value": "दाएँ से बाएँ"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "वेबटून"
+    },
+    {
+      "name": "reader_reading_mode",
+      "value": "पठन मोड"
+    },
+    {
+      "name": "reader_orientation_free",
+      "value": "मुक्त"
+    },
+    {
+      "name": "reader_orientation_portrait",
+      "value": "पोर्ट्रेट"
+    },
+    {
+      "name": "reader_orientation_landscape",
+      "value": "लैंडस्केप"
+    },
+    {
+      "name": "reader_screen_orientation",
+      "value": "स्क्रीन अभिविन्यास"
+    },
+    {
+      "name": "reader_last_chapter",
+      "value": "पहले से अंतिम अध्याय पर हैं"
+    },
+    {
+      "name": "reader_first_chapter",
+      "value": "पहले से पहले अध्याय पर हैं"
+    },
+    {
+      "name": "reader_first_page",
+      "value": "पहले से पहले पृष्ठ पर हैं"
+    },
+    {
+      "name": "reader_last_page",
+      "value": "पहले से अंतिम पृष्ठ पर हैं"
+    },
+    {
+      "name": "reader_loading_chapter",
+      "value": "अध्याय लोड हो रहा है…"
+    },
+    {
+      "name": "reader_settings",
+      "value": "रीडर सेटिंग"
+    },
+    {
+      "name": "reader_background",
+      "value": "पृष्ठभूमि"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "स्वचालित"
+    },
+    {
+      "name": "reader_theme_white",
+      "value": "सफ़ेद"
+    },
+    {
+      "name": "reader_theme_gray",
+      "value": "धूसर"
+    },
+    {
+      "name": "reader_theme_black",
+      "value": "काला"
+    },
+    {
+      "name": "reader_show_page_number",
+      "value": "पृष्ठ संख्या दिखाएँ"
+    },
+    {
+      "name": "reader_brightness",
+      "value": "चमक"
+    },
+    {
+      "name": "reader_auto",
+      "value": "स्वचालित"
+    },
+    {
+      "name": "plugin_title",
+      "value": "एक्सटेंशन"
+    },
+    {
+      "name": "plugin_installed_section",
+      "value": "स्थापित"
+    },
+    {
+      "name": "plugin_empty",
+      "value": "अभी कोई एक्सटेंशन नहीं, नीचे से स्थापित करें"
+    },
+    {
+      "name": "plugin_disable_hint",
+      "value": "अक्षम एक्सटेंशन को कभी भी फिर से सक्षम किया जा सकता है"
+    },
+    {
+      "name": "plugin_up_to_date",
+      "value": "अद्यतित"
+    },
+    {
+      "name": "plugin_local_install",
+      "value": "फ़ाइल से स्थापित करें"
+    },
+    {
+      "name": "plugin_install_from_file",
+      "value": "स्थापित करने के लिए फ़ाइल चुनें"
+    },
+    {
+      "name": "plugin_processing",
+      "value": "प्रसंस्करण…"
+    },
+    {
+      "name": "plugin_package_hint",
+      "value": ".honyomiplug / .zip प्लगइन पैकेज समर्थित हैं"
+    },
+    {
+      "name": "plugin_repo",
+      "value": "ऑनलाइन रिपॉज़िटरी"
+    },
+    {
+      "name": "plugin_repo_config",
+      "value": "रिपॉज़िटरी सेट करें"
+    },
+    {
+      "name": "plugin_repo_refresh",
+      "value": "रीफ़्रेश"
+    },
+    {
+      "name": "plugin_repo_hint",
+      "value": "अभी कोई प्लगइन रिपॉज़िटरी कॉन्फ़िगर नहीं है"
+    },
+    {
+      "name": "plugin_repo_loading",
+      "value": "रिपॉज़िटरी लोड हो रही है…"
+    },
+    {
+      "name": "plugin_repo_url_title",
+      "value": "प्लगइन रिपॉज़िटरी URL"
+    },
+    {
+      "name": "plugin_repo_url_hint",
+      "value": "प्लगइन रिपॉज़िटरी URL दर्ज करें"
+    },
+    {
+      "name": "plugin_repo_load_failed",
+      "value": "रिपॉज़िटरी लोड विफल: %s"
+    },
+    {
+      "name": "plugin_pick_file_failed",
+      "value": "फ़ाइल चुनने में विफल"
+    },
+    {
+      "name": "plugin_installed",
+      "value": "स्थापित: %s"
+    },
+    {
+      "name": "plugin_installed_name",
+      "value": "%s स्थापित"
+    },
+    {
+      "name": "plugin_install_failed",
+      "value": "स्थापना विफल: %s"
+    },
+    {
+      "name": "plugin_action_failed",
+      "value": "कार्रवाई विफल"
+    },
+    {
+      "name": "plugin_uninstalled",
+      "value": "अनइंस्टॉल: %s"
+    },
+    {
+      "name": "plugin_uninstall_failed",
+      "value": "अनइंस्टॉल विफल"
+    },
+    {
+      "name": "settings_title",
+      "value": "सेटिंग"
+    },
+    {
+      "name": "settings_general",
+      "value": "सामान्य"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "प्रारंभ स्क्रीन"
+    },
+    {
+      "name": "settings_personalization",
+      "value": "वैयक्तिकरण"
+    },
+    {
+      "name": "settings_library",
+      "value": "लाइब्रेरी"
+    },
+    {
+      "name": "settings_reader",
+      "value": "रीडर"
+    },
+    {
+      "name": "settings_data",
+      "value": "डेटा"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "डाउनलोड"
+    },
+    {
+      "name": "settings_browse",
+      "value": "ब्राउज़"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "उन्नत"
+    },
+    {
+      "name": "settings_about",
+      "value": "परिचय"
+    },
+    {
+      "name": "settings_tab_library",
+      "value": "लाइब्रेरी"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "अपडेट"
+    },
+    {
+      "name": "settings_tab_history",
+      "value": "इतिहास"
+    },
+    {
+      "name": "settings_tab_browse",
+      "value": "ब्राउज़"
+    },
+    {
+      "name": "settings_tab_more",
+      "value": "अधिक"
+    },
+    {
+      "name": "advanced_title",
+      "value": "उन्नत"
+    },
+    {
+      "name": "advanced_calculating",
+      "value": "गणना हो रही है…"
+    },
+    {
+      "name": "advanced_storage",
+      "value": "संग्रहण"
+    },
+    {
+      "name": "advanced_clear_image_cache",
+      "value": "छवि कैश साफ़ करें"
+    },
+    {
+      "name": "advanced_image_cache_cleared",
+      "value": "छवि कैश साफ़ किया गया"
+    },
+    {
+      "name": "advanced_clear_cookies",
+      "value": "कुकीज़ साफ़ करें"
+    },
+    {
+      "name": "advanced_cookies_cleared",
+      "value": "सभी कुकीज़ साफ़ की गईं"
+    },
+    {
+      "name": "advanced_backup_restore",
+      "value": "बैकअप और पुनर्स्थापना"
+    },
+    {
+      "name": "advanced_export_backup",
+      "value": "बैकअप निर्यात करें"
+    },
+    {
+      "name": "advanced_import_backup",
+      "value": "बैकअप आयात करें"
+    },
+    {
+      "name": "advanced_tracking",
+      "value": "ट्रैकिंग"
+    },
+    {
+      "name": "advanced_anilist_token",
+      "value": "AniList टोकन"
+    },
+    {
+      "name": "advanced_token_title",
+      "value": "AniList एक्सेस टोकन"
+    },
+    {
+      "name": "advanced_token_hint",
+      "value": "अपना एक्सेस टोकन चिपकाएँ (साफ़ करने के लिए खाली छोड़ें)"
+    },
+    {
+      "name": "advanced_token_not_set",
+      "value": "सेट नहीं"
+    },
+    {
+      "name": "advanced_token_set",
+      "value": "सेट"
+    },
+    {
+      "name": "advanced_token_saved",
+      "value": "टोकन सहेजा गया"
+    },
+    {
+      "name": "advanced_token_cleared",
+      "value": "टोकन साफ़ किया गया"
+    },
+    {
+      "name": "advanced_backup_exported",
+      "value": "बैकअप निर्यात किया गया"
+    },
+    {
+      "name": "advanced_export_canceled",
+      "value": "निर्यात रद्द"
+    },
+    {
+      "name": "advanced_export_failed",
+      "value": "निर्यात विफल"
+    },
+    {
+      "name": "advanced_import_canceled",
+      "value": "आयात रद्द"
+    },
+    {
+      "name": "advanced_backup_invalid",
+      "value": "अमान्य बैकअप फ़ाइल"
+    },
+    {
+      "name": "advanced_restored_manga",
+      "value": "%d मंगा पुनर्स्थापित"
+    },
+    {
+      "name": "advanced_import_failed",
+      "value": "आयात विफल"
+    },
+    {
+      "name": "about_title",
+      "value": "परिचय"
+    },
+    {
+      "name": "about_version",
+      "value": "संस्करण 1.0.0"
+    },
+    {
+      "name": "about_desc",
+      "value": "वास्तुकला Mihon (Apache-2.0) से प्रेरित। ऑनलाइन स्रोत एक्सटेंशन के रूप में गतिशील रूप से स्थापित होते हैं, जबकि स्थानीय स्रोत अंतर्निहित हैं।"
+    },
+    {
+      "name": "about_ack",
+      "value": "मुक्त स्रोत आभार:\n· Mihon / Tachiyomi — ऐप वास्तुकला और इंटरैक्शन डिज़ाइन (Apache-2.0)\n· Material Symbols — ऐप आइकन (Apache-2.0)\n· MangaDex — परीक्षण डेटा स्रोत"
+    },
+    {
+      "name": "browse_set_title",
+      "value": "ब्राउज़"
+    },
+    {
+      "name": "browse_set_content",
+      "value": "सामग्री"
+    },
+    {
+      "name": "browse_set_show_nsfw",
+      "value": "NSFW स्रोत दिखाएँ"
+    },
+    {
+      "name": "browse_set_nsfw_hint",
+      "value": "सक्षम होने पर, एक्सटेंशन द्वारा NSFW चिह्नित स्रोत ब्राउज़ में दिखाई देंगे"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "डाउनलोड"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "नेटवर्क"
+    },
+    {
+      "name": "dl_set_wifi_only",
+      "value": "केवल Wi-Fi पर डाउनलोड करें"
+    },
+    {
+      "name": "dl_set_wifi_only_hint",
+      "value": "नोट: वर्तमान संस्करण में यह स्विच प्लेसहोल्डर है; नेटवर्क प्रकार पहचान भविष्य के संस्करण में आएगी"
+    },
+    {
+      "name": "lib_set_title",
+      "value": "लाइब्रेरी"
+    },
+    {
+      "name": "lib_set_sort_group",
+      "value": "फ़िल्टर और क्रम"
+    },
+    {
+      "name": "lib_set_sort_default",
+      "value": "डिफ़ॉल्ट क्रम"
+    },
+    {
+      "name": "lib_set_sort_title",
+      "value": "शीर्षक"
+    },
+    {
+      "name": "lib_set_sort_last_update",
+      "value": "नवीनतम अध्याय"
+    },
+    {
+      "name": "lib_set_sort_added",
+      "value": "जोड़ने की तिथि"
+    },
+    {
+      "name": "lib_set_sort_unread",
+      "value": "अपठित संख्या"
+    },
+    {
+      "name": "lib_set_sort_asc",
+      "value": "शीर्षक आरोही क्रम में"
+    },
+    {
+      "name": "lib_set_filter_default",
+      "value": "डिफ़ॉल्ट फ़िल्टर"
+    },
+    {
+      "name": "lib_set_filter_unread",
+      "value": "अपठित"
+    },
+    {
+      "name": "lib_set_filter_downloaded",
+      "value": "डाउनलोड हो चुका"
+    },
+    {
+      "name": "lib_set_filter_uncompleted",
+      "value": "अधूरा"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "प्रदर्शन"
+    },
+    {
+      "name": "lib_set_view_default",
+      "value": "डिफ़ॉल्ट दृश्य"
+    },
+    {
+      "name": "lib_set_view_grid",
+      "value": "ग्रिड"
+    },
+    {
+      "name": "lib_set_view_cover",
+      "value": "कवर ग्रिड"
+    },
+    {
+      "name": "lib_set_view_list",
+      "value": "सूची"
+    },
+    {
+      "name": "lib_set_grid_cols",
+      "value": "ग्रिड स्तंभ"
+    },
+    {
+      "name": "lib_set_cols_auto",
+      "value": "स्वचालित"
+    },
+    {
+      "name": "lib_set_cols_2",
+      "value": "2 स्तंभ"
+    },
+    {
+      "name": "lib_set_cols_3",
+      "value": "3 स्तंभ"
+    },
+    {
+      "name": "lib_set_cols_4",
+      "value": "4 स्तंभ"
+    },
+    {
+      "name": "lib_set_unread_badge",
+      "value": "अपठित बैज"
+    },
+    {
+      "name": "lib_set_download_badge",
+      "value": "डाउनलोड बैज"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "रीडर"
+    },
+    {
+      "name": "reader_set_mode_group",
+      "value": "पठन मोड"
+    },
+    {
+      "name": "reader_set_mode_default",
+      "value": "डिफ़ॉल्ट मोड"
+    },
+    {
+      "name": "reader_set_mode_ltr",
+      "value": "बाएँ से दाएँ"
+    },
+    {
+      "name": "reader_set_mode_rtl",
+      "value": "दाएँ से बाएँ"
+    },
+    {
+      "name": "reader_set_mode_vertical",
+      "value": "ऊर्ध्वाधर पृष्ठ"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "वेबटून"
+    },
+    {
+      "name": "reader_set_dual_page",
+      "value": "दोहरे पृष्ठ (लैंडस्केप)"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "प्रदर्शन"
+    },
+    {
+      "name": "reader_set_show_page_number",
+      "value": "पृष्ठ संख्या दिखाएँ"
+    },
+    {
+      "name": "reader_set_bg_color",
+      "value": "रीडर पृष्ठभूमि"
+    },
+    {
+      "name": "reader_set_theme_follow",
+      "value": "थीम का अनुसरण करें"
+    },
+    {
+      "name": "reader_set_theme_white",
+      "value": "सफ़ेद"
+    },
+    {
+      "name": "reader_set_theme_black",
+      "value": "काला"
+    },
+    {
+      "name": "reader_set_theme_gray",
+      "value": "धूसर"
+    },
+    {
+      "name": "reader_set_reset_brightness",
+      "value": "रीडर चमक रीसेट करें"
+    },
+    {
+      "name": "reader_set_brightness_reset",
+      "value": "चमक सिस्टम का अनुसरण करने पर सेट"
+    },
+    {
+      "name": "browse_tab_sources",
+      "value": "स्रोत"
+    },
+    {
+      "name": "browse_tab_extensions",
+      "value": "एक्सटेंशन"
+    },
+    {
+      "name": "browse_tab_migrate",
+      "value": "माइग्रेट"
+    },
+    {
+      "name": "browse_pin",
+      "value": "पिन करें"
+    },
+    {
+      "name": "browse_unpin",
+      "value": "अनपिन करें"
+    },
+    {
+      "name": "browse_disable_source",
+      "value": "स्रोत अक्षम करें"
+    },
+    {
+      "name": "browse_source_disabled",
+      "value": "स्रोत अक्षम किया गया"
+    },
+    {
+      "name": "browse_pinned",
+      "value": "पिन किया गया"
+    },
+    {
+      "name": "browse_sources_empty",
+      "value": "कोई स्रोत नहीं। एक्सटेंशन टैब से इंस्टॉल करें"
+    },
+    {
+      "name": "browse_filter_langs",
+      "value": "भाषाएँ फ़िल्टर करें"
+    },
+    {
+      "name": "browse_filter_all",
+      "value": "सभी"
+    },
+    {
+      "name": "browse_source_missing",
+      "value": "स्रोत उपलब्ध नहीं। एक्सटेंशन अक्षम हो सकता है"
+    },
+    {
+      "name": "global_search_hint",
+      "value": "सभी स्रोतों में खोजें"
+    },
+    {
+      "name": "global_search_failed",
+      "value": "खोज विफल"
+    },
+    {
+      "name": "ext_search_hint",
+      "value": "एक्सटेंशन खोजें"
+    },
+    {
+      "name": "ext_search_no_match",
+      "value": "कोई मेल नहीं"
+    },
+    {
+      "name": "ext_repo_settings",
+      "value": "रिपॉज़िटरी सेटिंग्स"
+    },
+    {
+      "name": "ext_refresh_repo",
+      "value": "रिपॉज़िटरी रीफ़्रेश करें"
+    },
+    {
+      "name": "migrate_pick_source",
+      "value": "माइग्रेट करने के लिए स्रोत चुनें"
+    },
+    {
+      "name": "migrate_empty_library",
+      "value": "लाइब्रेरी खाली है"
+    },
+    {
+      "name": "migrate_select_all",
+      "value": "सभी चुनें"
+    },
+    {
+      "name": "migrate_deselect_all",
+      "value": "चयन हटाएँ"
+    },
+    {
+      "name": "migrate_action",
+      "value": "माइग्रेट (%d)"
+    },
+    {
+      "name": "migrate_title",
+      "value": "माइग्रेट"
+    },
+    {
+      "name": "migrate_skip",
+      "value": "छोड़ें"
+    },
+    {
+      "name": "migrate_progress",
+      "value": "%d / %d"
+    },
+    {
+      "name": "migrate_target_source",
+      "value": "लक्ष्य स्रोत"
+    },
+    {
+      "name": "migrate_search_hint",
+      "value": "लक्ष्य स्रोत में मंगा खोजें"
+    },
+    {
+      "name": "migrate_confirm_title",
+      "value": "इस मंगा पर माइग्रेट करें?"
+    },
+    {
+      "name": "migrate_item_done",
+      "value": "माइग्रेट हुआ: %s"
+    },
+    {
+      "name": "migrate_failed",
+      "value": "माइग्रेट विफल: %s"
+    },
+    {
+      "name": "migrate_done",
+      "value": "माइग्रेट पूरा"
+    },
+    {
+      "name": "migrate_no_target",
+      "value": "कोई लक्ष्य स्रोत नहीं"
+    },
+    {
+      "name": "stats_title",
+      "value": "आँकड़े"
+    },
+    {
+      "name": "stats_overview_section",
+      "value": "अवलोकन"
+    },
+    {
+      "name": "stats_in_library",
+      "value": "लाइब्रेरी में"
+    },
+    {
+      "name": "stats_read_duration",
+      "value": "पठन अवधि"
+    },
+    {
+      "name": "stats_completed_titles",
+      "value": "पूर्ण"
+    },
+    {
+      "name": "stats_titles_section",
+      "value": "रचनाएँ"
+    },
+    {
+      "name": "stats_started_titles",
+      "value": "शुरू की गई"
+    },
+    {
+      "name": "stats_local_titles",
+      "value": "स्थानीय"
+    },
+    {
+      "name": "stats_chapters_section",
+      "value": "अध्याय"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "कुल"
+    },
+    {
+      "name": "stats_read_chapters",
+      "value": "पढ़ा"
+    },
+    {
+      "name": "stats_downloaded_chapters",
+      "value": "डाउनलोड हो चुका"
+    },
+    {
+      "name": "stats_tracker_section",
+      "value": "ट्रैकिंग"
+    },
+    {
+      "name": "stats_tracked_titles",
+      "value": "ट्रैक की गई रचनाएँ"
+    },
+    {
+      "name": "stats_mean_score",
+      "value": "औसत अंक"
+    },
+    {
+      "name": "stats_used",
+      "value": "प्रयुक्त"
+    },
+    {
+      "name": "stats_not_applicable",
+      "value": "लागू नहीं"
+    },
+    {
+      "name": "stats_week",
+      "value": "सप्ताह"
+    },
+    {
+      "name": "stats_month",
+      "value": "महीना"
+    },
+    {
+      "name": "stats_week_total",
+      "value": "इस सप्ताह %s"
+    },
+    {
+      "name": "stats_month_total",
+      "value": "इस माह %s"
+    },
+    {
+      "name": "stats_no_reading",
+      "value": "इस अवधि में कोई पठन नहीं"
+    },
+    {
+      "name": "stats_day_short",
+      "value": "%dदि"
+    },
+    {
+      "name": "stats_hour_short",
+      "value": "%dघं"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dमि"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%dसे"
+    },
+    {
+      "name": "stats_wd_sun",
+      "value": "र"
+    },
+    {
+      "name": "stats_wd_mon",
+      "value": "सो"
+    },
+    {
+      "name": "stats_wd_tue",
+      "value": "मं"
+    },
+    {
+      "name": "stats_wd_wed",
+      "value": "बु"
+    },
+    {
+      "name": "stats_wd_thu",
+      "value": "गु"
+    },
+    {
+      "name": "stats_wd_fri",
+      "value": "शु"
+    },
+    {
+      "name": "stats_wd_sat",
+      "value": "श"
+    },
+    {
+      "name": "reader_mode_vertical",
+      "value": "ऊर्ध्वाधर"
+    },
+    {
+      "name": "reader_mode_smart_grip",
+      "value": "पकड़-अनुकूल"
+    },
+    {
+      "name": "reader_orientation_lock_portrait",
+      "value": "पोर्ट्रेट स्थिर करें"
+    },
+    {
+      "name": "reader_orientation_lock_landscape",
+      "value": "लैंडस्केप स्थिर करें"
+    },
+    {
+      "name": "reader_tab_general",
+      "value": "सामान्य"
+    },
+    {
+      "name": "reader_tab_filter",
+      "value": "रंग फ़िल्टर"
+    },
+    {
+      "name": "reader_filter_grayscale",
+      "value": "धूसर"
+    },
+    {
+      "name": "reader_filter_invert",
+      "value": "उलटे रंग"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "वैषम्य"
+    },
+    {
+      "name": "reader_filter_saturation",
+      "value": "संतृप्ति"
+    },
+    {
+      "name": "reader_crop_borders",
+      "value": "किनारे काटें"
+    },
+    {
+      "name": "reader_nav_tap_zones",
+      "value": "स्पर्श क्षेत्र"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "डिफ़ॉल्ट"
+    },
+    {
+      "name": "reader_nav_ltr",
+      "value": "बाएँ से दाएँ"
+    },
+    {
+      "name": "reader_nav_rtl",
+      "value": "दाएँ से बाएँ"
+    },
+    {
+      "name": "reader_nav_vertical",
+      "value": "ऊर्ध्वाधर"
+    },
+    {
+      "name": "reader_nav_edge",
+      "value": "किनारा"
+    },
+    {
+      "name": "reader_nav_none",
+      "value": "कोई नहीं"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "दोहरा पृष्ठ दृश्य"
+    },
+    {
+      "name": "reader_webtoon_padding",
+      "value": "वेबटून पार्श्व हाशिया"
+    },
+    {
+      "name": "reader_set_mode_smart_grip",
+      "value": "पकड़-अनुकूल"
+    },
+    {
+      "name": "ext_install_local",
+      "value": "स्थानीय से स्थापित करें"
+    },
+    {
+      "name": "ext_detail_title",
+      "value": "एक्सटेंशन जानकारी"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "संस्करण"
+    },
+    {
+      "name": "ext_info_language",
+      "value": "भाषा"
+    },
+    {
+      "name": "ext_uninstall_title",
+      "value": "एक्सटेंशन अनइंस्टॉल करें"
+    },
+    {
+      "name": "ext_uninstall_msg",
+      "value": "“%s” अनइंस्टॉल करें? लाइब्रेरी का मंगा डेटा बना रहेगा"
+    },
+    {
+      "name": "ext_detail_sources",
+      "value": "स्रोत"
+    },
+    {
+      "name": "ext_detail_settings",
+      "value": "सेटिंग"
+    },
+    {
+      "name": "ext_pref_loading",
+      "value": "लोड हो रहा है…"
+    },
+    {
+      "name": "ext_pref_failed",
+      "value": "सेटिंग लागू नहीं हुई"
+    },
+    {
+      "name": "ext_detail_missing",
+      "value": "एक्सटेंशन नहीं है या लोड नहीं हुआ"
+    },
+    {
+      "name": "action_filter",
+      "value": "फ़िल्टर"
+    },
+    {
+      "name": "action_update_library",
+      "value": "लाइब्रेरी अपडेट करें"
+    },
+    {
+      "name": "action_update_category",
+      "value": "श्रेणी अपडेट करें"
+    },
+    {
+      "name": "action_open_random_manga",
+      "value": "कोई एक रचना खोलें"
+    },
+    {
+      "name": "action_select_all",
+      "value": "सभी चुनें"
+    },
+    {
+      "name": "action_select_inverse",
+      "value": "चयन पलटें"
+    },
+    {
+      "name": "action_move_category",
+      "value": "श्रेणी में ले जाएँ"
+    },
+    {
+      "name": "action_mark_as_read",
+      "value": "पढ़ा चिह्नित करें"
+    },
+    {
+      "name": "action_mark_as_unread",
+      "value": "अपठित चिह्नित करें"
+    },
+    {
+      "name": "action_download",
+      "value": "डाउनलोड"
+    },
+    {
+      "name": "action_delete",
+      "value": "हटाएँ"
+    },
+    {
+      "name": "action_migrate",
+      "value": "माइग्रेट"
+    },
+    {
+      "name": "action_remove_from_library",
+      "value": "लाइब्रेरी से हटाएँ"
+    },
+    {
+      "name": "action_remove_from_library_msg",
+      "value": "चयनित %d मंगा लाइब्रेरी से हटाएँ?"
+    },
+    {
+      "name": "action_download_queued",
+      "value": "%d डाउनलोड कतार में जोड़े गए"
+    },
+    {
+      "name": "library_search_hint",
+      "value": "लाइब्रेरी खोजें"
+    },
+    {
+      "name": "library_no_match",
+      "value": "कोई मेल खाता मंगा नहीं"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "फ़िल्टर"
+    },
+    {
+      "name": "lib_sheet_tab_sort",
+      "value": "क्रम"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "प्रदर्शन"
+    },
+    {
+      "name": "lib_filter_downloaded",
+      "value": "डाउनलोड हो चुका"
+    },
+    {
+      "name": "lib_filter_unread",
+      "value": "अपठित"
+    },
+    {
+      "name": "lib_filter_started",
+      "value": "पढ़ चुके"
+    },
+    {
+      "name": "lib_filter_bookmarked",
+      "value": "बुकमार्क"
+    },
+    {
+      "name": "lib_filter_completed",
+      "value": "पूर्ण"
+    },
+    {
+      "name": "lib_filter_tracked",
+      "value": "ट्रैक किया गया"
+    },
+    {
+      "name": "lib_sort_alpha",
+      "value": "शीर्षक"
+    },
+    {
+      "name": "lib_sort_total",
+      "value": "अध्याय संख्या"
+    },
+    {
+      "name": "lib_sort_last_read",
+      "value": "हाल में पढ़ा"
+    },
+    {
+      "name": "lib_sort_last_update",
+      "value": "अपडेट जाँच समय"
+    },
+    {
+      "name": "lib_sort_unread",
+      "value": "अपठित संख्या"
+    },
+    {
+      "name": "lib_sort_latest_chapter",
+      "value": "रचना अपडेट समय"
+    },
+    {
+      "name": "lib_sort_fetch_date",
+      "value": "अध्याय प्राप्त समय"
+    },
+    {
+      "name": "lib_sort_date_added",
+      "value": "जोड़ने की तिथि"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "यादृच्छिक"
+    },
+    {
+      "name": "lib_display_compact",
+      "value": "सघन ग्रिड"
+    },
+    {
+      "name": "lib_display_comfortable",
+      "value": "ढीला ग्रिड"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "कवर ग्रिड"
+    },
+    {
+      "name": "lib_display_list",
+      "value": "सूची"
+    },
+    {
+      "name": "lib_display_grid_size",
+      "value": "प्रति पंक्ति संख्या"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "स्वचालित"
+    },
+    {
+      "name": "lib_display_badges_group",
+      "value": "बैज और बटन"
+    },
+    {
+      "name": "lib_badge_downloaded",
+      "value": "डाउनलोड अध्याय संख्या"
+    },
+    {
+      "name": "lib_badge_unread",
+      "value": "अपठित अध्याय"
+    },
+    {
+      "name": "lib_badge_local",
+      "value": "स्थानीय स्रोत"
+    },
+    {
+      "name": "lib_badge_language",
+      "value": "भाषा"
+    },
+    {
+      "name": "lib_badge_continue",
+      "value": "पढ़ना जारी रखें बटन"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "टैब"
+    },
+    {
+      "name": "lib_show_category_tabs",
+      "value": "श्रेणी टैब दिखाएँ"
+    },
+    {
+      "name": "lib_show_manga_count",
+      "value": "रचना संख्या दिखाएँ"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "MihonHarmony कार्ड"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "डेस्कटॉप कार्ड प्रदाता"
+    },
+    {
+      "name": "card_recent_display",
+      "value": "पढ़ना जारी रखें"
+    },
+    {
+      "name": "card_recent_desc",
+      "value": "हाल में पढ़ा मंगा जल्दी जारी रखें"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "अपडेट"
+    },
+    {
+      "name": "card_updates_desc",
+      "value": "लाइब्रेरी के नए अपठित अध्याय"
+    },
+    {
+      "name": "card_recent_header",
+      "value": "पढ़ना जारी रखें"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "अपडेट"
+    },
+    {
+      "name": "card_unread_count",
+      "value": "%d अध्याय अपठित"
+    },
+    {
+      "name": "card_empty_recent",
+      "value": "अभी कोई पठन इतिहास नहीं"
+    },
+    {
+      "name": "card_empty_updates",
+      "value": "कोई अपठित अध्याय नहीं"
+    },
+    {
+      "name": "card_open_hint",
+      "value": "ऐप खोलने के लिए टैप करें"
+    },
+    {
+      "name": "card_manga_display",
+      "value": "मंगा कार्ड"
+    },
+    {
+      "name": "card_manga_desc",
+      "value": "विवरण पृष्ठ से जोड़ें, कवर छूकर पढ़ें"
+    },
+    {
+      "name": "card_manga_empty",
+      "value": "मंगा विवरण पृष्ठ से डेस्कटॉप पर जोड़ें"
+    },
+    {
+      "name": "detail_add_to_desktop",
+      "value": "डेस्कटॉप पर जोड़ें"
+    },
+    {
+      "name": "detail_card_added",
+      "value": "डेस्कटॉप पर जोड़ा गया"
+    },
+    {
+      "name": "detail_card_add_failed",
+      "value": "कार्ड जोड़ना विफल"
+    },
+    {
+      "name": "card_stats_week_display",
+      "value": "साप्ताहिक आँकड़े"
+    },
+    {
+      "name": "card_stats_week_desc",
+      "value": "इस सप्ताह प्रतिदिन पठन अवधि"
+    },
+    {
+      "name": "card_stats_month_display",
+      "value": "मासिक आँकड़े"
+    },
+    {
+      "name": "card_stats_month_desc",
+      "value": "इस माह प्रतिदिन पठन अवधि"
+    },
+    {
+      "name": "card_stats_empty",
+      "value": "अभी कोई पठन नहीं"
+    },
+    {
+      "name": "action_view_upcoming",
+      "value": "आने वाले अपडेट दिखाएँ"
+    },
+    {
+      "name": "label_upcoming",
+      "value": "आने वाला"
+    },
+    {
+      "name": "upcoming_guide",
+      "value": "आने वाले की मार्गदर्शिका"
+    },
+    {
+      "name": "upcoming_calendar_prev",
+      "value": "पिछला महीना"
+    },
+    {
+      "name": "upcoming_calendar_next",
+      "value": "अगला महीना"
+    },
+    {
+      "name": "pref_filter_update_categories_details",
+      "value": "जो रचनाएँ शामिल और बाहर दोनों श्रेणियों में हैं, वे नहीं दिखेंगी।"
+    },
+    {
+      "name": "relative_time_today",
+      "value": "आज"
+    },
+    {
+      "name": "relative_time_days_ago",
+      "value": "%d दिन पहले"
+    },
+    {
+      "name": "upcoming_relative_time_days",
+      "value": "%d दिन में"
+    },
+    {
+      "name": "card_upcoming_display",
+      "value": "आने वाला"
+    },
+    {
+      "name": "card_upcoming_desc",
+      "value": "लाइब्रेरी मंगा का अपेक्षित अपडेट कैलेंडर"
+    },
+    {
+      "name": "card_upcoming_header",
+      "value": "आने वाला"
+    },
+    {
+      "name": "card_empty_upcoming",
+      "value": "लाइब्रेरी में कोई जारी मंगा नहीं"
+    }
+  ]
 }

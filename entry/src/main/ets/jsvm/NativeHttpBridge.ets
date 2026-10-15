@@ -28,10 +28,13 @@ export interface JsvmBridgeRequest {
   headersJson: string;
   body: string;
   wantBytes: boolean;
+
   /** True for zero-copy requests answered via resolveHttpBytes(). */
   shared?: boolean;
+
   /** Present only on release messages: '{"type":"release","callId":N}'. */
   type?: string;
+
   /** Present only on encodeGbk messages: text to encode as GBK URL bytes. */
   text?: string;
 }
@@ -59,6 +62,8 @@ interface NativeHttpFollowed {
 export class NativeHttpBridge {
   private static installed: boolean = false;
   private static inflight: number = 0;
+  /** wantBytes 响应体大小上限（base64 编码前），防内存放大 */
+  private static readonly MAX_WANT_BYTES: number = 32 * 1024 * 1024;
 
   /**
    * Installs the one-time dispatcher into the native engine. Must be called
@@ -80,11 +85,11 @@ export class NativeHttpBridge {
     return NativeHttpBridge.installed;
   }
 
+  // ------------------------------------------------------------------ private
+
   static activeRequests(): number {
     return NativeHttpBridge.inflight;
   }
-
-  // ------------------------------------------------------------------ private
 
   private static onRequest(reqJson: string): void {
     let msg: JsvmBridgeRequest | null = null;
@@ -160,6 +165,10 @@ export class NativeHttpBridge {
     });
   }
 
+  // Zero-copy variant: fetches with expectDataType ARRAY_BUFFER and hands the
+  // raw buffer to the native engine (no base64 round-trip). Challenge
+  // detection is header-based only here (cf-mitigated), since the body is not
+
   private static async execute(req: JsvmBridgeRequest): Promise<JsvmHttpResult> {
     const url = req.url;
     if (url.indexOf('https://') !== 0 && url.indexOf('http://') !== 0) {
@@ -207,17 +216,22 @@ export class NativeHttpBridge {
     };
   }
 
-  // Zero-copy variant: fetches with expectDataType ARRAY_BUFFER and hands the
-  // raw buffer to the native engine (no base64 round-trip). Challenge
-  // detection is header-based only here (cf-mitigated), since the body is not
+  // 手动重定向链：https 起始的请求禁止降级到 http；
+  // 跨源跳转剥离插件自定义的敏感头（Authorization/Referer/Cookie），
+
   // decoded as text on this path.
   private static async executeShared(req: JsvmBridgeRequest): Promise<JsvmSharedResult> {
     const url = req.url;
     if (url.indexOf('https://') !== 0 && url.indexOf('http://') !== 0) {
       const e = NativeHttpBridge.error(0, `仅支持 http/https 请求: ${url}`, url);
       return {
-        status: e.status, statusText: e.statusText, headersJson: e.headersJson,
-        body: e.body, error: e.error, url: e.url, bytes: null,
+        status: e.status,
+        statusText: e.statusText,
+        headersJson: e.headersJson,
+        body: e.body,
+        error: e.error,
+        url: e.url,
+        bytes: null,
       };
     }
     let headers: Record<string, string> = {};
@@ -252,8 +266,6 @@ export class NativeHttpBridge {
     };
   }
 
-  // 手动重定向链：https 起始的请求禁止降级到 http；
-  // 跨源跳转剥离插件自定义的敏感头（Authorization/Referer/Cookie），
   // CookieJar 会为新目标域自动附带其自身 cookie。
   private static async follow(
     startUrl: string,
@@ -354,6 +366,11 @@ export class NativeHttpBridge {
     };
   }
 
+  // Same policy as net/Http.ets: unified UA (cf_clearance binds UA + client),
+  // extension header overrides, then CookieJar auto-attach. Form POSTs get a
+  // default Content-Type when the extension omitted one (Madara ajax).
+  // 域名已有 cf_clearance 会话时忽略插件自定义 UA：cf_clearance 与验证
+
   private static methodOf(name: string): http.RequestMethod {
     const upper = name.toUpperCase();
     if (upper === 'POST') {
@@ -377,10 +394,6 @@ export class NativeHttpBridge {
     return http.RequestMethod.GET;
   }
 
-  // Same policy as net/Http.ets: unified UA (cf_clearance binds UA + client),
-  // extension header overrides, then CookieJar auto-attach. Form POSTs get a
-  // default Content-Type when the extension omitted one (Madara ajax).
-  // 域名已有 cf_clearance 会话时忽略插件自定义 UA：cf_clearance 与验证
   // WebView 的 UA（Http.USER_AGENT）绑定，混用其他 UA 会被 CF 拒绝。
   private static mergeHeaders(
     url: string,
@@ -534,6 +547,9 @@ export class NativeHttpBridge {
     return false;
   }
 
+  // Cloudflare bot challenge detection is centralized in net/CfChallenge.ets
+  // (401/403/503 + cf-mitigated header or challenge page markers).
+
   private static flattenHeaders(header: Object): Record<string, string> {
     const flat: Record<string, string> = {};
     const raw = header as Record<string, Object>;
@@ -548,12 +564,6 @@ export class NativeHttpBridge {
     }
     return flat;
   }
-
-  // Cloudflare bot challenge detection is centralized in net/CfChallenge.ets
-  // (401/403/503 + cf-mitigated header or challenge page markers).
-
-  /** wantBytes 响应体大小上限（base64 编码前），防内存放大 */
-  private static readonly MAX_WANT_BYTES: number = 32 * 1024 * 1024;
 
   private static toBase64(buffer: ArrayBuffer): string {
     const helper = new util.Base64Helper();

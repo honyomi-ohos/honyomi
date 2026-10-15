@@ -1,4 +1,4 @@
-import { InsightIntentEntryExecutor, insightIntent, InsightIntentEntry } from '@kit.AbilityKit';
+import { insightIntent, InsightIntentEntry, InsightIntentEntryExecutor } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
 import { HistoryRepo } from '../data/Repos';
 import { HistoryItem } from '../model/Models';
@@ -21,6 +21,10 @@ import EntryAbility from './EntryAbility';
   executeMode: [insightIntent.ExecuteMode.UI_ABILITY_FOREGROUND]
 })
 export default class ContinueListeningImpl extends InsightIntentEntryExecutor<string> {
+  private static result(code: number, msg: string): insightIntent.IntentResult<string> {
+    return { code: code, result: msg };
+  }
+
   onExecute(): Promise<insightIntent.IntentResult<string>> {
     return this.doContinue();
   }
@@ -75,9 +79,5 @@ export default class ContinueListeningImpl extends InsightIntentEntryExecutor<st
       'contentType': ''
     };
     AppStorage.setOrCreate(AppKeys.CARD_ACTION, JSON.stringify(payload));
-  }
-
-  private static result(code: number, msg: string): insightIntent.IntentResult<string> {
-    return { code: code, result: msg };
   }
 }

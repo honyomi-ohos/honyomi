@@ -1,5 +1,5 @@
 import { Http } from '../net/Http';
-import { MangaRecord, ChapterRecord } from '../model/Models';
+import { ChapterRecord, MangaRecord } from '../model/Models';
 
 // 单条弹幕（时间毫秒 + dandanplay 模式 + 24bit 颜色 + 文本）
 export class DanmakuItem {
