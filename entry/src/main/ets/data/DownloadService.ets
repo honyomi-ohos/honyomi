@@ -104,6 +104,56 @@ export class DownloadService {
     DownloadService.notify();
   }
 
+  // 取消队列中全部任务（对齐 Mihon 下载队列页 overflow 的 "Cancel all"）
+  static cancelAll(): void {
+    let hasActive = false;
+    for (const t of DownloadService.queue) {
+      if (t.state === 1) {
+        hasActive = true;
+      }
+      if (t.state !== 3) {
+        t.state = 3;
+        t.error = 'download_cancelled';
+      }
+    }
+    if (hasActive && DownloadService.activeCancel !== undefined) {
+      DownloadService.activeCancel();
+    }
+    DownloadService.queue = [];
+    DownloadService.notify();
+  }
+
+  // 按章节 id 升/降序重排整个队列（对齐 Mihon "Order by chapter number" 的近似实现）
+  static sortQueue(asc: boolean): void {
+    const sorted: DownloadTask[] = DownloadService.queue.slice()
+      .sort((a: DownloadTask, b: DownloadTask): number => {
+        return asc ? a.chapterId - b.chapterId : b.chapterId - a.chapterId;
+      });
+    DownloadService.queue = sorted;
+    DownloadService.notify();
+  }
+
+  // 拖拽排序后按给定章节 id 顺序同步内部队列（静默处理，不触发通知以不打断落位动画）
+  static reorderQueue(orderedIds: number[]): void {
+    const byId = new Map<number, DownloadTask>();
+    for (const t of DownloadService.queue) {
+      byId.set(t.chapterId, t);
+    }
+    const next: DownloadTask[] = [];
+    for (const id of orderedIds) {
+      const t: DownloadTask | undefined = byId.get(id);
+      if (t !== undefined) {
+        next.push(t);
+        byId.delete(id);
+      }
+    }
+    // 未包含在有序列表中的任务（同步期间新增）保持原有相对顺序追加
+    byId.forEach((t: DownloadTask) => {
+      next.push(t);
+    });
+    DownloadService.queue = next;
+  }
+
   // 暂停：当前任务继续跑完，不再启动新任务
   static pauseAll(): void {
     DownloadService.paused = true;

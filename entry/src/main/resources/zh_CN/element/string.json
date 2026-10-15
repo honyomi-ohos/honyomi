@@ -743,10 +743,22 @@
                        "name":  "download_move_top",
                        "value":  "置顶"
                    },
-                   {
-                       "name":  "download_move_bottom",
-                       "value":  "移到底部"
-                   },
+                    {
+                        "name":  "download_move_bottom",
+                        "value":  "移到底部"
+                    },
+                    {
+                        "name":  "download_cancel_all",
+                        "value":  "全部取消"
+                    },
+                    {
+                        "name":  "download_sort_asc",
+                        "value":  "章节升序"
+                    },
+                    {
+                        "name":  "download_sort_desc",
+                        "value":  "章节降序"
+                    },
                    {
                        "name":  "download_deleted",
                        "value":  "已删除"

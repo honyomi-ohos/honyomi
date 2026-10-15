@@ -8,6 +8,7 @@ import { LimitedBody } from './components/LimitedBody';
 
 // 队列行子组件：ForEach key 固定为章节 id 后同 key 行会被复用而不重跑生成器，
 // 进度/状态改由本组件自订阅 DownloadService 通知刷新（DownloadTask 非 @Observed）
+// 行布局对齐 Mihon download_item.xml：拖拽把手 | 漫画标题+页数文本 | 章节标题 | 细进度条 | 溢出菜单
 @Component
 struct QueueTaskRow {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
@@ -46,102 +47,90 @@ struct QueueTaskRow {
     }
   }
 
-  private stateLabel(state: number): Resource {
-    switch (state) {
-      case 0:
-        return $r('app.string.download_state_queued');
-      case 1:
-        return $r('app.string.download_state_downloading');
-      case 2:
-        return $r('app.string.download_state_done');
-      default:
-        return $r('app.string.download_state_failed');
+  // 行溢出菜单（对齐 Mihon download_single.xml：置顶/移底/重试/取消）
+  @Builder
+  rowMenuBuilder() {
+    Menu() {
+      if (this.state === 0) {
+        MenuItem({ content: $r('app.string.download_move_top') })
+          .onClick(() => {
+            DownloadService.moveToTop(this.task.chapterId);
+          })
+        MenuItem({ content: $r('app.string.download_move_bottom') })
+          .onClick(() => {
+            DownloadService.moveToBottom(this.task.chapterId);
+          })
+      } else if (this.state === 3) {
+        MenuItem({ content: $r('app.string.common_retry') })
+          .onClick(() => {
+            DownloadService.retry(this.task.chapterId);
+          })
+      }
+      MenuItem({ content: $r('app.string.common_cancel') })
+        .contentFontColor(this.pal.badgeRed)
+        .onClick(() => {
+          DownloadService.cancel(this.task.chapterId);
+        })
     }
   }
 
   build() {
-    Row({ space: 12 }) {
+    Row() {
+      AppIcon({ name: 'drag_handle', iconSize: 20, tint: this.pal.sub })
+        .margin({ right: 8 })
       Column() {
+        Row() {
+          Text(this.task.mangaTitle)
+            .fontSize(14)
+            .fontColor(this.pal.text)
+            .maxLines(1)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+            .layoutWeight(1)
+          // 页数进度文本（对齐 Mihon "downloaded/total"）；
+          // 视频/音频任务 total 为字节数，超过页数上限时不展示数字只保留进度条
+          if (this.total > 0 && this.total <= 500) {
+            Text(`${this.progress}/${this.total}`)
+              .fontSize(12)
+              .fontColor(this.pal.sub)
+              .margin({ left: 8 })
+          }
+        }
+        .width('100%')
         Text(this.task.chapterName)
-          .fontSize(14)
-          .fontColor(this.pal.text)
-          .maxLines(1)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
-        Text(this.task.mangaTitle)
-          .fontSize(11)
+          .fontSize(12)
           .fontColor(this.pal.sub)
           .maxLines(1)
           .textOverflow({ overflow: TextOverflow.Ellipsis })
-          .margin({ top: 2 })
+          .margin({ top: 1 })
         if (this.total > 0) {
           Progress({ value: this.progress, total: this.total, type: ProgressType.Linear })
-            .color(this.pal.primary)
+            .style({ strokeWidth: 3 })
+            .color(this.state === 3 ? this.pal.badgeRed : this.pal.primary)
+            .backgroundColor(this.pal.chip)
             .margin({ top: 6 })
         }
         if (this.state === 3 && this.error !== '') {
           Text(Util.errText(this.getUIContext(), this.error))
             .fontSize(11)
-            .fontColor('#E05252')
+            .fontColor(this.pal.badgeRed)
             .maxLines(1)
-            .margin({ top: 2 })
+            .margin({ top: 3 })
         }
       }
       .alignItems(HorizontalAlign.Start)
       .layoutWeight(1)
 
-      Text(this.stateLabel(this.state))
-        .fontSize(11)
-        .fontColor(this.state === 2 ? this.pal.primary :
-          (this.state === 3 ? '#E05252' : this.pal.sub))
-      if (this.state === 0) {
-        Row({ space: 2 }) {
-          Text($r('app.string.download_move_top'))
-            .fontSize(12)
-            .fontColor(this.pal.primary)
-            .padding({ left: 6 })
-            .onClick(() => {
-              DownloadService.moveToTop(this.task.chapterId);
-            })
-          Text($r('app.string.download_move_bottom'))
-            .fontSize(12)
-            .fontColor(this.pal.primary)
-            .padding({ left: 6 })
-            .onClick(() => {
-              DownloadService.moveToBottom(this.task.chapterId);
-            })
-          Text($r('app.string.common_cancel'))
-            .fontSize(12)
-            .fontColor('#E05252')
-            .padding({ left: 6 })
-            .onClick(() => {
-              DownloadService.cancel(this.task.chapterId);
-            })
-        }
-      } else if (this.state === 3) {
-        Row({ space: 2 }) {
-          Text($r('app.string.common_retry'))
-            .fontSize(12)
-            .fontColor(this.pal.primary)
-            .padding({ left: 6 })
-            .onClick(() => {
-              DownloadService.retry(this.task.chapterId);
-            })
-          Text($r('app.string.common_cancel'))
-            .fontSize(12)
-            .fontColor('#E05252')
-            .padding({ left: 6 })
-            .onClick(() => {
-              DownloadService.cancel(this.task.chapterId);
-            })
-        }
-      }
+      AppIcon({ name: 'more_vert', iconSize: 20, tint: this.pal.sub })
+        .bindMenu(this.rowMenuBuilder)
+        .padding({ left: 6, right: 2 })
     }
     .width('100%')
-    .padding({ left: 16, right: 16, top: 10, bottom: 10 })
+    .padding({ left: 12, right: 12, top: 10, bottom: 10 })
   }
 }
 
-// 下载管理页：下载队列 + 已下载章节
+// 下载管理页：下载队列 + 已下载章节（交互对齐 Mihon DownloadQueueScreen：
+// 标题数量 Pill 徽标、排序/溢出菜单、拖拽排序、右下角暂停/继续 FAB）
 @Component
 export struct DownloadPage {
   pathStack: NavPathStack = new NavPathStack();
@@ -152,6 +141,7 @@ export struct DownloadPage {
   @State downloaded: DownloadedManga[] = [];
   @State loading: boolean = true;
   @State paused: boolean = false;
+  @State fabExpanded: boolean = true;
 
   private onQueueChanged = (): void => {
     this.queue = DownloadService.getQueue().slice();
@@ -180,6 +170,37 @@ export struct DownloadPage {
     Util.toastRes(this.getUIContext(), $r('app.string.download_deleted'));
   }
 
+  // 排序菜单（对齐 Mihon "Order by chapter number" 的升/降序）
+  @Builder
+  sortMenuBuilder() {
+    Menu() {
+      MenuItem({ content: $r('app.string.download_sort_asc') })
+        .onClick(() => {
+          DownloadService.sortQueue(true);
+        })
+      MenuItem({ content: $r('app.string.download_sort_desc') })
+        .onClick(() => {
+          DownloadService.sortQueue(false);
+        })
+    }
+  }
+
+  // 头部溢出菜单（对齐 Mihon overflow："Clear finished" + "Cancel all"）
+  @Builder
+  overflowMenuBuilder() {
+    Menu() {
+      MenuItem({ content: $r('app.string.download_clear_finished') })
+        .onClick(() => {
+          DownloadService.clearFinished();
+        })
+      MenuItem({ content: $r('app.string.download_cancel_all') })
+        .contentFontColor(this.pal.badgeRed)
+        .onClick(() => {
+          DownloadService.cancelAll();
+        })
+    }
+  }
+
   build() {
     NavDestination() {
       LimitedBody({ maxWidth: 960 }) {
@@ -196,46 +217,46 @@ export struct DownloadPage {
   // 页面主体：LimitedBody 承载，大屏限宽居中，窄屏全宽
   @Builder
   bodyContent() {
-      Column() {
-        // 头部
+    Column() {
+      // 头部：返回 + 标题 + 队列数 Pill 徽标（对齐 Mihon AppBar + Pill 计数）
+      Row() {
+        AppIcon({ name: 'arrow_back', iconSize: 24 })
+          .padding({ left: 12, right: 12 })
+          .onClick(() => {
+            this.pathStack.pop();
+          })
         Row() {
-          AppIcon({ name: 'arrow_back', iconSize: 24 })
-            .padding({ left: 12, right: 12 })
-            .onClick(() => {
-              this.pathStack.pop();
-            })
           Text($r('app.string.download_title'))
             .fontSize(20)
             .fontWeight(FontWeight.Bold)
             .fontColor(this.pal.text)
-            .layoutWeight(1)
+            .maxLines(1)
           if (this.queue.length > 0) {
-            Text(this.paused ? $r('app.string.download_resume') : $r('app.string.download_pause'))
-              .fontSize(13)
-              .fontColor(this.pal.primary)
-              .padding(6)
-              .onClick(() => {
-                if (this.paused) {
-                  DownloadService.resumeAll();
-                } else {
-                  DownloadService.pauseAll();
-                }
-              })
-            Text($r('app.string.download_clear_finished'))
-              .fontSize(13)
-              .fontColor(this.pal.primary)
-              .padding(6)
-              .margin({ left: 4 })
-              .onClick(() => {
-                DownloadService.clearFinished();
-              })
+            Text(`${this.queue.length}`)
+              .fontSize(12)
+              .fontColor(this.pal.text)
+              .backgroundColor(this.isDark ? this.pal.text + '1F' : this.pal.text + '14')
+              .borderRadius(11)
+              .padding({ left: 7, right: 7, top: 2, bottom: 2 })
+              .margin({ left: 8 })
           }
         }
-        .width('100%')
-        .padding({ left: 4, right: 16, top: this.statusBarH + 8, bottom: 8 })
+        .layoutWeight(1)
 
-        Column() {
-          List({ space: 0 }) {
+        if (this.queue.length > 0) {
+          AppIcon({ name: 'sort', iconSize: 22 })
+            .bindMenu(this.sortMenuBuilder)
+            .padding({ left: 10, right: 10 })
+          AppIcon({ name: 'more_vert', iconSize: 22 })
+            .bindMenu(this.overflowMenuBuilder)
+            .padding({ left: 10, right: 6 })
+        }
+      }
+      .width('100%')
+      .padding({ left: 4, right: 8, top: this.statusBarH + 8, bottom: 8 })
+
+      Stack({ alignContent: Alignment.BottomEnd }) {
+        List({ space: 0 }) {
           // 下载队列
           if (this.queue.length > 0) {
             ListItem() {
@@ -251,6 +272,19 @@ export struct DownloadPage {
                 QueueTaskRow({ task: task })
               }
             }, (task: DownloadTask) => `q-${task.chapterId}`)
+              .onMove((from: number, to: number) => {
+                // 拖拽排序：同步页面数据源并落库到 DownloadService（对齐 Mihon 拖拽重排）
+                const removed: DownloadTask[] = this.queue.splice(from, 1);
+                const moved: DownloadTask | undefined = removed[0];
+                if (moved !== undefined) {
+                  this.queue.splice(to, 0, moved);
+                  const ids: number[] = [];
+                  for (const t of this.queue) {
+                    ids.push(t.chapterId);
+                  }
+                  DownloadService.reorderQueue(ids);
+                }
+              })
           }
 
           // 已下载
@@ -279,33 +313,29 @@ export struct DownloadPage {
               ListItemGroup({ header: this.groupHeader(group) }) {
                 ForEach(group.chapters, (item: DownloadedChapter) => {
                   ListItem() {
-                    Row() {
+                    Row({ space: 8 }) {
                       Text(item.chapterName)
                         .fontSize(14)
                         .fontColor(this.pal.text)
                         .maxLines(1)
                         .textOverflow({ overflow: TextOverflow.Ellipsis })
                         .layoutWeight(1)
-                      Text($r('app.string.download_status_downloaded'))
-                        .fontSize(11)
-                        .fontColor(this.pal.primary)
-                        .margin({ right: 8 })
-                      Text($r('app.string.common_delete'))
-                        .fontSize(12)
-                        .fontColor('#E05252')
+                      AppIcon({ name: 'delete', iconSize: 20, tint: this.pal.sub })
+                        .padding(6)
                         .onClick(() => {
                           this.deleteChapter(item);
                         })
                     }
                     .width('100%')
-                    .padding({ left: 16, right: 16, top: 10, bottom: 10 })
+                    .padding({ left: 16, right: 6, top: 6, bottom: 6 })
                   }
                 }, (item: DownloadedChapter) => `d-${item.chapterId}`)
               }
             }, (group: DownloadedManga) => `g-${group.mangaId}-${group.chapters.length}`)
           }
         }
-        .layoutWeight(1)
+        .width('100%')
+        .height('100%')
         .scrollBar(BarState.Auto)
         .divider({
           strokeWidth: 1,
@@ -313,13 +343,54 @@ export struct DownloadPage {
           startMargin: 16,
           endMargin: 16,
         })
+        .onWillScroll((offset: number) => {
+          // 对齐 Mihon FAB 手势行为：向列表底部滚动收起、回滚展开
+          if (offset > 0) {
+            this.fabExpanded = false;
+          } else if (offset < 0) {
+            this.fabExpanded = true;
+          }
+        })
+
+        // 暂停/继续 FAB（对齐 Mihon SmallExtendedFloatingActionButton：队列空时隐藏）
+        if (this.queue.length > 0) {
+          Row({ space: 6 }) {
+            AppIcon({ name: this.paused ? 'play_arrow' : 'pause', iconSize: 20, tint: this.pal.onPrimary })
+            if (this.fabExpanded) {
+              Text(this.paused ? $r('app.string.download_resume') : $r('app.string.download_pause'))
+                .fontSize(14)
+                .fontColor(this.pal.onPrimary)
+            }
+          }
+          .padding({
+            left: this.fabExpanded ? 16 : 11,
+            right: this.fabExpanded ? 16 : 11,
+            top: 11,
+            bottom: 11,
+          })
+          .borderRadius(24)
+          .backgroundColor(this.pal.primary)
+          .shadow({ radius: 8, color: '#66000000', offsetY: 4 })
+          .margin({ right: 20, bottom: 28 })
+          .animation({ duration: 150 })
+          .transition(TransitionEffect.OPACITY
+            .combine(TransitionEffect.scale({ x: 0.8, y: 0.8 }))
+            .animation({ duration: 150 }))
+          .onClick(() => {
+            if (this.paused) {
+              DownloadService.resumeAll();
+            } else {
+              DownloadService.pauseAll();
+            }
+          })
         }
-        .width('100%')
-        .layoutWeight(1)
       }
       .width('100%')
-      .height('100%')
-      .backgroundColor(this.pal.bg)
+      .layoutWeight(1)
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor(this.pal.bg)
   }
 
   @Builder

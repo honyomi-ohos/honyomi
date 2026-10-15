@@ -663,10 +663,22 @@
                        "name":  "download_status_downloaded",
                        "value":  "Downloaded"
                    },
-                   {
-                       "name":  "download_chapter_count",
-                       "value":  "%d chapters"
-                   },
+                    {
+                        "name":  "download_chapter_count",
+                        "value":  "%d chapters"
+                    },
+                    {
+                        "name":  "download_cancel_all",
+                        "value":  "Cancel all"
+                    },
+                    {
+                        "name":  "download_sort_asc",
+                        "value":  "Chapter ascending"
+                    },
+                    {
+                        "name":  "download_sort_desc",
+                        "value":  "Chapter descending"
+                    },
                    {
                        "name":  "detail_no_chapters",
                        "value":  "No chapters"
