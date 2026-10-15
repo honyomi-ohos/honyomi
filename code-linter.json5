@@ -9,7 +9,8 @@
     "**/node_modules/**/*",
     "**/oh_modules/**/*",
     "**/build/**/*",
-    "**/.preview/**/*"
+    "**/.preview/**/*",
+    "entry/src/main/cpp/third_party/**/*"
   ],
   "ruleSet": [
     "plugin:@performance/recommended",

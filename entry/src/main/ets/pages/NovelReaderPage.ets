@@ -569,7 +569,8 @@ export struct NovelReaderPage {
       Row() {
         Text(`${Math.round(this.permilleUi / 10)}%`)
           .fontSize(13)
-          .fontColor(this.isBgDark() ? '#FFFFFF' : '#111111')
+          // sys.color 资源配合材质 colorInvert 自动反色（硬编码颜色不触发反色）
+          .fontColor($r('sys.color.font_primary'))
           .width(44)
           .textAlign(TextAlign.End)
         Slider({
@@ -580,6 +581,7 @@ export struct NovelReaderPage {
           style: SliderStyle.OutSet
         })
           .layoutWeight(1)
+          // Slider 颜色不在系统反色支持列表内，按阅读页背景明暗手动取高对比色
           .blockColor(this.isBgDark() ? '#FFFFFF' : '#111111')
           .selectedColor(this.isBgDark() ? '#99FFFFFF' : '#99000000')
           .trackColor(this.isBgDark() ? '#40FFFFFF' : '#40000000')
@@ -591,13 +593,14 @@ export struct NovelReaderPage {
           })
         Text('100%')
           .fontSize(13)
-          .fontColor(this.isBgDark() ? '#FFFFFF' : '#111111')
+          // sys.color 资源配合材质 colorInvert 自动反色（硬编码颜色不触发反色）
+          .fontColor($r('sys.color.font_primary'))
           .width(44)
       }
       .layoutWeight(1)
       .height(44)
       .borderRadius(22)
-      // 玻璃内嵌胶囊：无填充，仅发丝描边；前景色按背景明暗取高对比色
+      // 玻璃内嵌胶囊：无填充，仅发丝描边；描边仅作不支持材质设备的回退
       .border({ width: 0.5, color: this.isBgDark() ? '#2EFFFFFF' : '#2E000000' })
       .padding({ left: 14, right: 14 })
     } else if (this.screenIdxs.length > 0) {

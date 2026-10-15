@@ -108,9 +108,14 @@ export struct ReaderMenu {
 export struct ReaderBottomBar {
   @StorageProp('readerBgDark') bgDark: boolean = false;
   @Prop navBarH: number = 0;
-  // TabBar 内容实测高度：Tabs 默认尺寸不随自定义 tabBar 内容自适应（会被撑到全屏），
-  // 用 onAreaChange 实测后显式约束 Tabs/barHeight 高度
-  @State barContentH: number = 130;
+  // 胶囊全配置沉浸材质：ULTRA_THIN 超薄玻璃 + colorInvert 自动反色（保证可读性）
+  // + interactive 按压弹性形变 + lightEffect 点光源流光跟随
+  private capsuleMaterial: uiMaterial.ImmersiveMaterial = new uiMaterial.ImmersiveMaterial({
+    style: uiMaterial.ImmersiveStyle.ULTRA_THIN,
+    colorInvert: true,
+    interactive: true,
+    lightEffect: {}
+  });
   @BuilderParam navRow: () => void = this.emptyBuilder;
   @BuilderParam settingsRow: () => void = this.emptyBuilder;
 
@@ -129,8 +134,8 @@ export struct ReaderBottomBar {
     })
     .borderRadius(28)
     .clip(true)
-    // 真实系统沉浸材质（底部 TabBar 作用域内生效）；colorInvert 让系统按背景明暗自动反色前景内容，保证可见性
-    .systemMaterial(new uiMaterial.ImmersiveMaterial({ style: uiMaterial.ImmersiveStyle.THIN, colorInvert: true }))
+    // 真实系统沉浸材质（底部 TabBar 作用域内生效）
+    .systemMaterial(this.capsuleMaterial)
     // 材质生效时系统将边框恢复为无边框；此处描边仅作为不支持设备的回退
     .border({ width: 0.5, color: this.bgDark ? '#2EFFFFFF' : '#2E000000' })
     .shadow({ radius: 28, color: '#4D000000', offsetY: 10 })
@@ -151,8 +156,8 @@ export struct ReaderBottomBar {
     })
     .borderRadius(28)
     .clip(true)
-    // 真实系统沉浸材质（底部 TabBar 作用域内生效）；colorInvert 让系统按背景明暗自动反色前景内容，保证可见性
-    .systemMaterial(new uiMaterial.ImmersiveMaterial({ style: uiMaterial.ImmersiveStyle.THIN, colorInvert: true }))
+    // 真实系统沉浸材质（底部 TabBar 作用域内生效）
+    .systemMaterial(this.capsuleMaterial)
     // 材质生效时系统将边框恢复为无边框；此处描边仅作为不支持设备的回退
     .border({ width: 0.5, color: this.bgDark ? '#2EFFFFFF' : '#2E000000' })
     .shadow({ radius: 28, color: '#4D000000', offsetY: 10 })
@@ -162,44 +167,20 @@ export struct ReaderBottomBar {
     // 外层全宽透明容器：用 padding 留出左右屏幕边距与底部导航条避让
     // （内层 width('100%') 按去 padding 后的内容区解析；若用 margin 会与 100% 宽度叠加溢出，导致胶囊贴边）
     Column() {
-      // 沉浸材质生效范围要求：横向 Tabs + barPosition 为 BarPosition.End 的底部 TabBar。
-      // 用单页签 Tabs 把两组胶囊包进真正的 TabBar，使 systemMaterial 生效
-      Tabs({ barPosition: BarPosition.End }) {
-        TabContent()
-          .tabBar(this.barContent())
+      Column({ space: 10 }) {
+        this.progressGroup()
+        this.settingsGroup()
       }
-      .scrollable(false)
-      .vertical(false)
-      .barBackgroundColor(Color.Transparent)
       .width('100%')
-      // 高度锁到 TabBar 内容实测值：内容区为 0，胶囊贴底且不出屏
-      .height(this.barContentH)
-      .barHeight(this.barContentH)
+      // 对齐 Mihon ReaderAppBars：底栏从屏幕下方滑入/滑出 + 渐隐
+      .transition(
+        TransitionEffect.translate({ y: 240 })
+          .animation({ duration: 200, curve: Curve.Linear })
+          .combine(TransitionEffect.OPACITY.animation({ duration: 150, curve: Curve.Linear }))
+      )
     }
     .width('100%')
     .padding({ left: 16, right: 16, bottom: Math.max(this.navBarH, 12) })
-  }
-
-  // TabBar 内容：两组玻璃胶囊（自带下方滑入转场）
-  @Builder
-  barContent() {
-    Column({ space: 10 }) {
-      this.progressGroup()
-      this.settingsGroup()
-    }
-    .width('100%')
-    .onAreaChange((_old: Area, newArea: Area) => {
-      const h = newArea.height;
-      if (typeof h === 'number' && h > 0) {
-        this.barContentH = h;
-      }
-    })
-    // 对齐 Mihon ReaderAppBars：底栏从屏幕下方滑入/滑出 + 渐隐
-    .transition(
-      TransitionEffect.translate({ y: 240 })
-        .animation({ duration: 200, curve: Curve.Linear })
-        .combine(TransitionEffect.OPACITY.animation({ duration: 150, curve: Curve.Linear }))
-    )
   }
 
   @Builder
@@ -261,13 +242,14 @@ export struct ReaderChapterButton {
       Image(AppIconRes.get(this.icon))
         .width(24)
         .height(24)
-        .fillColor(this.bgDark ? '#FFFFFF' : '#111111')
+        // sys.color 资源配合材质 colorInvert 自动反色（硬编码颜色不触发反色）
+        .fillColor($r('sys.color.icon_primary'))
     }
     .width(44)
     .height(44)
     .borderRadius(22)
     .justifyContent(FlexAlign.Center)
-    // 玻璃内嵌控件：无填充，仅发丝描边；前景色按背景明暗取高对比色
+    // 玻璃内嵌控件：无填充，仅发丝描边；描边仅作不支持材质设备的回退
     .border({ width: 0.5, color: this.bgDark ? '#2EFFFFFF' : '#2E000000' })
     .opacity(this.isActive ? 1 : 0.4)
     .onClick(() => {
@@ -289,7 +271,8 @@ export struct ReaderMenuIconButton {
       Image(AppIconRes.get(this.icon))
         .width(24)
         .height(24)
-        .fillColor(this.bgDark ? '#FFFFFF' : '#111111')
+        // sys.color 资源配合材质 colorInvert 自动反色（硬编码颜色不触发反色）
+        .fillColor($r('sys.color.icon_primary'))
     }
     .width(48)
     .height(44)
@@ -313,7 +296,8 @@ export struct ReaderPagePill {
     Row() {
       Text(`${this.pos}`)
         .fontSize(13)
-        .fontColor(this.bgDark ? '#FFFFFF' : '#111111')
+        // sys.color 资源配合材质 colorInvert 自动反色（硬编码颜色不触发反色）
+        .fontColor($r('sys.color.font_primary'))
         .width(24)
         .textAlign(TextAlign.End)
       Slider({
@@ -324,6 +308,7 @@ export struct ReaderPagePill {
         style: SliderStyle.OutSet
       })
         .layoutWeight(1)
+        // Slider 颜色不在系统反色支持列表内，按阅读页背景明暗手动取高对比色
         .blockColor(this.bgDark ? '#FFFFFF' : '#111111')
         .selectedColor(this.bgDark ? '#99FFFFFF' : '#99000000')
         .trackColor(this.bgDark ? '#40FFFFFF' : '#40000000')
@@ -335,13 +320,14 @@ export struct ReaderPagePill {
         })
       Text(`${this.total}`)
         .fontSize(13)
-        .fontColor(this.bgDark ? '#FFFFFF' : '#111111')
+        // sys.color 资源配合材质 colorInvert 自动反色（硬编码颜色不触发反色）
+        .fontColor($r('sys.color.font_primary'))
         .width(24)
     }
     .layoutWeight(1)
     .height(44)
     .borderRadius(22)
-    // 玻璃内嵌胶囊：无填充，仅发丝描边；前景色按背景明暗取高对比色
+    // 玻璃内嵌胶囊：无填充，仅发丝描边；描边仅作不支持材质设备的回退
     .border({ width: 0.5, color: this.bgDark ? '#2EFFFFFF' : '#2E000000' })
     .padding({ left: 14, right: 14 })
   }
