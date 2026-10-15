@@ -28,6 +28,9 @@ export struct CfVerifySheet {
   // Chrome 风格加载态：标题前图标切换（加载中转圈 / 加载完成地球）
   @State loading: boolean = true;
   @State pageTitle: string = '';
+  // Web 延迟挂载：引擎初始化（拉起渲染进程）会抢占 UI 线程，
+  // 与工具栏同帧挂载会导致 Image 图标（close 等）解码上屏被阻塞而延迟显示
+  @State webMounted: boolean = false;
   // 网页当前地址（跟随重定向更新），供复制/浏览器打开使用
   private currentUrl: string = '';
   private loadedUrl: string = '';
@@ -47,6 +50,10 @@ export struct CfVerifySheet {
         // 注入失败不阻塞验证
       });
     }
+    // 延迟一拍挂载 Web，让工具栏（含图标）首帧先绘制上屏
+    setTimeout(() => {
+      this.webMounted = true;
+    }, 100);
   }
 
   aboutToDisappear(): void {
@@ -180,63 +187,70 @@ export struct CfVerifySheet {
           .backgroundColor(this.pal.divider)
       }
 
-      Web({ src: this.challengeUrl, controller: this.controller })
-        .javaScriptAccess(true)
-        .domStorageAccess(true)
-        .fileAccess(false)
-        .onlineImageAccess(true)
-        .darkMode(this.isDark ? WebDarkMode.On : WebDarkMode.Off)
-        .forceDarkAccess(this.isDark)
-        .onControllerAttached(() => {
-          this.attached = true;
-          hilog.info(0x0C0F, 'CfVerify', 'controller attached, src=%{public}s', this.challengeUrl);
-          try {
-            // UA 必须在首次加载前设置（cf_clearance 与 UA 绑定）
-            this.controller.setCustomUserAgent(Http.USER_AGENT);
-            // 主动激活渲染，避免 Web 实例创建后停在未激活状态导致白屏
-            this.controller.onActive();
-          } catch (e) {
-            const err = e as BusinessError;
-            hilog.error(0x0C0F, 'CfVerify', 'attach failed: %{public}d %{public}s',
-              err.code, err.message);
-          }
-        })
-        .onPageBegin((event: OnPageBeginEvent) => {
-          this.currentUrl = event?.url ?? this.challengeUrl;
-          hilog.info(0x0C0F, 'CfVerify', 'pageBegin url=%{public}s', this.currentUrl);
-          this.loading = true;
-        })
-        .onTitleReceive((event: OnTitleReceiveEvent) => {
-          this.pageTitle = event?.title ?? '';
-        })
-        .onProgressChange((event: OnProgressChangeEvent) => {
-          this.loadProgress = event?.newProgress ?? 0;
-        })
-        .onErrorReceive((event: OnErrorReceiveEvent) => {
-          // 主文档加载失败时记录原因（页面由引擎默认错误页呈现）
-          if (event && event.request.isMainFrame()) {
-            hilog.error(0x0C0F, 'CfVerify', 'errorReceive(main) url=%{public}s info=%{public}s',
-              event.request.getRequestUrl(), event.error.getErrorInfo());
+      if (this.webMounted) {
+        Web({ src: this.challengeUrl, controller: this.controller })
+          .javaScriptAccess(true)
+          .domStorageAccess(true)
+          .fileAccess(false)
+          .onlineImageAccess(true)
+          .darkMode(this.isDark ? WebDarkMode.On : WebDarkMode.Off)
+          .forceDarkAccess(this.isDark)
+          .onControllerAttached(() => {
+            this.attached = true;
+            hilog.info(0x0C0F, 'CfVerify', 'controller attached, src=%{public}s', this.challengeUrl);
+            try {
+              // UA 必须在首次加载前设置（cf_clearance 与 UA 绑定）
+              this.controller.setCustomUserAgent(Http.USER_AGENT);
+              // 主动激活渲染，避免 Web 实例创建后停在未激活状态导致白屏
+              this.controller.onActive();
+            } catch (e) {
+              const err = e as BusinessError;
+              hilog.error(0x0C0F, 'CfVerify', 'attach failed: %{public}d %{public}s',
+                err.code, err.message);
+            }
+          })
+          .onPageBegin((event: OnPageBeginEvent) => {
+            this.currentUrl = event?.url ?? this.challengeUrl;
+            hilog.info(0x0C0F, 'CfVerify', 'pageBegin url=%{public}s', this.currentUrl);
+            this.loading = true;
+          })
+          .onTitleReceive((event: OnTitleReceiveEvent) => {
+            this.pageTitle = event?.title ?? '';
+          })
+          .onProgressChange((event: OnProgressChangeEvent) => {
+            this.loadProgress = event?.newProgress ?? 0;
+          })
+          .onErrorReceive((event: OnErrorReceiveEvent) => {
+            // 主文档加载失败时记录原因（页面由引擎默认错误页呈现）
+            if (event && event.request.isMainFrame()) {
+              hilog.error(0x0C0F, 'CfVerify', 'errorReceive(main) url=%{public}s info=%{public}s',
+                event.request.getRequestUrl(), event.error.getErrorInfo());
+              this.loading = false;
+            }
+          })
+          .onHttpErrorReceive((event: OnHttpErrorReceiveEvent) => {
+            if (event && event.request.isMainFrame()) {
+              hilog.info(0x0C0F, 'CfVerify', 'httpError(main) url=%{public}s code=%{public}d %{public}s',
+                event.request.getRequestUrl(), event.response.getResponseCode(),
+                event.response.getReasonMessage());
+            }
+          })
+          .onRenderExited((event: OnRenderExitedEvent) => {
+            hilog.error(0x0C0F, 'CfVerify', 'renderExited reason=%{public}d', event?.renderExitReason ?? -1);
+          })
+          .onPageEnd((event: OnPageEndEvent) => {
+            this.currentUrl = event?.url ?? this.currentUrl;
+            hilog.info(0x0C0F, 'CfVerify', 'pageEnd url=%{public}s', this.currentUrl);
             this.loading = false;
-          }
-        })
-        .onHttpErrorReceive((event: OnHttpErrorReceiveEvent) => {
-          if (event && event.request.isMainFrame()) {
-            hilog.info(0x0C0F, 'CfVerify', 'httpError(main) url=%{public}s code=%{public}d %{public}s',
-              event.request.getRequestUrl(), event.response.getResponseCode(),
-              event.response.getReasonMessage());
-          }
-        })
-        .onRenderExited((event: OnRenderExitedEvent) => {
-          hilog.error(0x0C0F, 'CfVerify', 'renderExited reason=%{public}d', event?.renderExitReason ?? -1);
-        })
-        .onPageEnd((event: OnPageEndEvent) => {
-          this.currentUrl = event?.url ?? this.currentUrl;
-          hilog.info(0x0C0F, 'CfVerify', 'pageEnd url=%{public}s', this.currentUrl);
-          this.loading = false;
-          this.checkCfSolved();
-        })
-        .layoutWeight(1)
+            this.checkCfSolved();
+          })
+          .layoutWeight(1)
+      } else {
+        // Web 未挂载时的占位，保持布局稳定
+        Column()
+          .width('100%')
+          .layoutWeight(1)
+      }
     }
     .width('100%')
     .height('100%')

@@ -34,6 +34,7 @@ export struct SettingsPage {
   @Consume('navStack') pathStack: NavPathStack;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('windowW') windowW: number = 0;
+  @StorageProp('statusBarH') statusBarH: number = 0;
   @State selCat: number = CAT_DEFAULT;
   // 右栏二级页：'' 分类内容本身；'Language' 外观分类内的语言选择
   @State rightSub: string = '';
@@ -146,23 +147,29 @@ export struct SettingsPage {
     .align(Alignment.TopStart)
   }
 
-  // lg 双栏主体：左分类导航 + 分隔线 + 右内容面板
+  // lg 双栏主体：左分类导航（顶部自带「设置」标题）+ 竖分割线（通到窗口顶端）
+  // + 右内容面板（自行避开状态栏）；标题不再通栏压在双栏之上，避免分割线顶端缺一段
   @Builder
   wideBody() {
     Row() {
-      Scroll() {
-        Column({ space: 4 }) {
-          ForEach(CAT_ICONS, (icon: string, index: number) => {
-            this.railItem(index)
-          }, (icon: string, index: number) => `cat-${index}`)
+      Column() {
+        PageHeader({ title: $r('app.string.settings_title') })
+        Scroll() {
+          Column({ space: 4 }) {
+            ForEach(CAT_ICONS, (icon: string, index: number) => {
+              this.railItem(index)
+            }, (icon: string, index: number) => `cat-${index}`)
+          }
+          .width('100%')
+          .padding({ left: 12, right: 12, top: 8, bottom: 8 })
         }
         .width('100%')
-        .padding({ left: 12, right: 12, top: 8 })
+        .layoutWeight(1)
+        .scrollBar(BarState.Auto)
+        .align(Alignment.TopStart)
       }
       .width(264)
       .height('100%')
-      .scrollBar(BarState.Auto)
-      .align(Alignment.TopStart)
 
       Divider()
         .vertical(true)
@@ -228,6 +235,8 @@ export struct SettingsPage {
       }
       .layoutWeight(1)
       .height('100%')
+      // 分割线通到窗口顶端后右栏从顶部铺满，自行避开状态栏
+      .padding({ top: this.statusBarH })
     }
     .width('100%')
     .layoutWeight(1)
@@ -353,10 +362,10 @@ export struct SettingsPage {
   build() {
     NavDestination() {
       Column() {
-        PageHeader({ title: $r('app.string.settings_title') })
         if (Bp.isWide(this.windowW)) {
           this.wideBody()
         } else {
+          PageHeader({ title: $r('app.string.settings_title') })
           this.compactList()
         }
       }

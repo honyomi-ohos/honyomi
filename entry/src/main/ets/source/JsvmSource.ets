@@ -90,6 +90,8 @@ export interface SourcePrefItem {
   // 插件声明的敏感项（密码/Token 等）：值经 SecureStore（Asset Store）加密存储，
   // 不落明文 preferences；声明方式：sensitive: true 或 type: 'password'
   sensitive: boolean;
+  // 隐藏项：仅作敏感键声明（如登录后程序化写入的 token），设置页不渲染
+  hidden: boolean;
 }
 
 interface RawPrefOption {
@@ -109,6 +111,7 @@ interface RawPrefItem {
   values?: string[];
   titles?: string[];
   sensitive?: boolean;
+  hidden?: boolean;
 }
 
 // 插件过滤器 JSON 形态（getFilterList 返回元素的宽松字段）
@@ -376,6 +379,7 @@ export class JsvmSource implements Source {
       value: JsvmSource.prefValueToString(stored),
       options: options,
       sensitive: sensitive,
+      hidden: raw.hidden === true,
     };
     return item;
   }

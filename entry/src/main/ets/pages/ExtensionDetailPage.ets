@@ -132,7 +132,8 @@ export struct ExtensionDetailPage {
     }
     this.loadingSchema = true;
     try {
-      this.schema = await src.getSettingsSchema();
+      const all = await src.getSettingsSchema();
+      this.schema = all.filter((item: SourcePrefItem): boolean => !item.hidden);
     } catch (e) {
       this.schema = [];
       if (!this.destroyed) {
