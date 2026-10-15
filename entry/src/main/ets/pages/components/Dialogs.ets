@@ -2,13 +2,15 @@ import { CategoryRecord } from '../../model/Models';
 import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
 
-// 文本输入弹窗（新建分类 / 导入漫画命名）
+// 文本输入弹窗（新建分类 / 导入漫画命名 / 敏感偏好输入）
 @CustomDialog
 export struct InputDialog {
   controller?: CustomDialogController;
   title: Resource | string = '';
   placeholder: Resource | string = '';
   initialText: string = '';
+  // true 时使用系统密码输入框（自动掩码 + 明文切换图标）
+  password: boolean = false;
   @State inputText: string = '';
   onConfirm: (text: string) => void = (_t: string) => {};
   onClose: () => void = () => {};
@@ -32,7 +34,11 @@ export struct InputDialog {
         .fontSize(16)
         .fontWeight(FontWeight.Bold)
         .fontColor(this.pal.text)
-      TextInput({ placeholder: this.placeholder, text: this.inputText })
+      TextInput({
+        placeholder: this.placeholder,
+        text: this.inputText,
+      })
+        .type(this.password ? InputType.Password : InputType.Normal)
         .defaultFocus(true)
         .onChange((value: string) => {
           this.inputText = value;
@@ -52,6 +58,72 @@ export struct InputDialog {
           .onClick(() => {
             this.dismiss();
             this.onConfirm(this.inputText);
+          })
+      }
+      .width('100%')
+    }
+    .padding(20)
+    .width('100%')
+  }
+}
+
+// 账密登录弹窗（用户名 + 密码一次输入；密码框为系统密码输入框）
+@CustomDialog
+export struct CredentialsDialog {
+  controller?: CustomDialogController;
+  title: Resource | string = '';
+  usernamePlaceholder: Resource | string = '';
+  passwordPlaceholder: Resource | string = '';
+  @State username: string = '';
+  @State password: string = '';
+  onConfirm: (username: string, password: string) => void = (_u: string, _p: string) => {};
+  onClose: () => void = () => {};
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
+  }
+
+  build() {
+    Column({ space: 16 }) {
+      Text(this.title)
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+      TextInput({
+        placeholder: this.usernamePlaceholder,
+        text: this.username,
+      })
+        .defaultFocus(true)
+        .onChange((value: string) => {
+          this.username = value;
+        })
+      TextInput({
+        placeholder: this.passwordPlaceholder,
+        text: this.password,
+      })
+        .type(InputType.Password)
+        .onChange((value: string) => {
+          this.password = value;
+        })
+      Row({ space: 12 }) {
+        Button($r('app.string.common_cancel'))
+          .layoutWeight(1)
+          .backgroundColor(this.pal.chip)
+          .fontColor(this.pal.text)
+          .onClick(() => {
+            this.dismiss();
+          })
+        Button($r('app.string.common_ok'))
+          .layoutWeight(1)
+          .backgroundColor(this.pal.primary)
+          .fontColor(this.pal.onPrimary)
+          .onClick(() => {
+            this.dismiss();
+            this.onConfirm(this.username.trim(), this.password);
           })
       }
       .width('100%')

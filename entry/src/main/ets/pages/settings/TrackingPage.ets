@@ -11,7 +11,7 @@ import { PageHeader } from '../components/PageHeader';
 import { PrefGroup, SwitchRow } from '../components/Prefs';
 import { TrackLogo } from '../components/TrackLogo';
 import { OAuthSheet } from '../components/OAuthSheet';
-import { InputDialog, ConfirmDialog } from '../components/Dialogs';
+import { CredentialsDialog, ConfirmDialog } from '../components/Dialogs';
 import { AppIcon } from '../components/AppIcon';
 
 // 追踪设置内容
@@ -31,15 +31,6 @@ export struct TrackingContent {
 
   aboutToAppear(): void {
     this.autoUpdate = Settings.getTrackAutoUpdate();
-    // 旧版 anilistToken 静默迁移
-    const al = TrackerManager.aniList;
-    if (!al.isLoggedIn()) {
-      al.migrateLegacyToken().then((migrated: boolean): void => {
-        if (migrated) {
-          this.loginTick += 1;
-        }
-      }).catch((): void => {});
-    }
   }
 
   // ----- 登录 -----
@@ -97,29 +88,15 @@ export struct TrackingContent {
     });
   }
 
-  // 账密登录：用户名 → 密码 两段输入
+  // 账密登录：用户名 + 密码同弹窗一次输入
   private showCredentialsLogin(t: Tracker): void {
-    let username = '';
     const dialog = new CustomDialogController({
-      builder: InputDialog({
-        title: $r('app.string.track_username'),
-        placeholder: t.name,
-        onConfirm: (text: string): void => {
-          username = text.trim();
-          const dialog2 = new CustomDialogController({
-            builder: InputDialog({
-              title: $r('app.string.track_password'),
-              placeholder: '',
-              onConfirm: (password: string): void => {
-                this.doCredentialsLogin(t, username, password);
-              },
-              onClose: (): void => {
-                dialog2.close();
-              },
-            }),
-            autoCancel: true,
-          });
-          dialog2.open();
+      builder: CredentialsDialog({
+        title: t.name,
+        usernamePlaceholder: $r('app.string.track_username'),
+        passwordPlaceholder: $r('app.string.track_password'),
+        onConfirm: (username: string, password: string): void => {
+          this.doCredentialsLogin(t, username, password);
         },
         onClose: (): void => {
           dialog.close();
@@ -179,7 +156,7 @@ export struct TrackingContent {
   @Builder
   trackerRow(t: Tracker) {
     Row() {
-      TrackLogo({ logoName: t.name, color: t.brandColor, logoSize: 30 })
+      TrackLogo({ syncId: t.syncId, logoName: t.name, color: t.brandColor, logoSize: 30 })
         .margin({ right: 14 })
       Column() {
         Text(t.name)
@@ -270,13 +247,14 @@ export struct TrackingContent {
     .scrollBar(BarState.Off)
     .align(Alignment.TopStart)
     .bindSheet($$this.showOAuth, this.oauthBuilder(), {
-      height: SheetSize.LARGE,
+      height: '80%',
       detents: [SheetSize.MEDIUM, SheetSize.LARGE],
       dragBar: true,
       showClose: false,
       preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
       width: Bp.isWide(this.windowW) ? 560 : '100%',
-      backgroundColor: this.pal.bg
+      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
+      maskColor: 'rgba(0,0,0,0.45)'
     })
   }
 }

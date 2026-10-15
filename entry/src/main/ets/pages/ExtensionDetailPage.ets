@@ -219,6 +219,8 @@ export struct ExtensionDetailPage {
         title: item.title,
         placeholder: item.summary,
         initialText: item.value,
+        // 敏感项（密码/Token）使用系统密码输入框，自动掩码显示
+        password: item.sensitive,
         onConfirm: (text: string): void => {
           this.applyPref(item, text);
         },
@@ -339,7 +341,8 @@ export struct ExtensionDetailPage {
           Text(item.title)
             .fontSize(15)
             .fontColor(this.pal.text)
-          Text(item.value !== '' ? item.value : item.summary)
+          // 敏感项已设值时掩码显示（不回显明文）
+          Text(item.value !== '' ? (item.sensitive ? '••••••••' : item.value) : item.summary)
             .fontSize(11)
             .fontColor(this.pal.sub)
             .margin({ top: 2 })

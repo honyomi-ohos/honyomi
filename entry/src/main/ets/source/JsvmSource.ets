@@ -87,6 +87,9 @@ export interface SourcePrefItem {
   summary: string;
   value: string;
   options: SourcePrefOption[];
+  // 插件声明的敏感项（密码/Token 等）：值经 SecureStore（Asset Store）加密存储，
+  // 不落明文 preferences；声明方式：sensitive: true 或 type: 'password'
+  sensitive: boolean;
 }
 
 interface RawPrefOption {
@@ -105,6 +108,7 @@ interface RawPrefItem {
   options?: RawPrefOption[];
   values?: string[];
   titles?: string[];
+  sensitive?: boolean;
 }
 
 // 插件过滤器 JSON 形态（getFilterList 返回元素的宽松字段）
@@ -358,6 +362,12 @@ export class JsvmSource implements Source {
     } else if (type === 'multi-select') {
       type = 'select';
     }
+    // 敏感声明：sensitive: true 或 type: 'password'（password 渲染为 edit 行）
+    let sensitive = raw.sensitive === true;
+    if (type === 'password') {
+      sensitive = true;
+      type = 'edit';
+    }
     const item: SourcePrefItem = {
       type: type,
       key: raw.key,
@@ -365,6 +375,7 @@ export class JsvmSource implements Source {
       summary: raw.summary ?? '',
       value: JsvmSource.prefValueToString(stored),
       options: options,
+      sensitive: sensitive,
     };
     return item;
   }

@@ -4,7 +4,7 @@ import zlib from '@ohos.zlib';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { util } from '@kit.ArkTS';
 import { cryptoFramework } from '@kit.CryptoArchitectureKit';
-import { PluginManifest, JsvmSource, CompiledSourceInfo } from '../source/JsvmSource';
+import { PluginManifest, JsvmSource, CompiledSourceInfo, SourcePrefItem } from '../source/JsvmSource';
 import { EngineGateway, EngineBackend } from '../jsvm/EngineGateway';
 import { PluginPrefs } from '../jsvm/PluginPrefs';
 import { SourceRegistry } from '../source/Source';
@@ -359,6 +359,16 @@ export class PluginService {
     PluginService.unregisterPackage(packageKey);
     // 清除引擎启动记忆（含失败 rejected 记忆），重装后可重新拉起
     PluginService.startPromises.delete(packageKey);
+    // 卸载即销毁插件敏感数据：SecureStore 条目 + 敏感键注册表一并清除
+    if (PluginService.context !== undefined) {
+      try {
+        await PluginPrefs.ensureInit(PluginService.context);
+        PluginPrefs.removeSecureEntries(packageKey);
+      } catch (e) {
+        hilog.warn(DOMAIN, TAG, 'remove secure prefs of %{public}s failed: %{public}s',
+          packageKey, (e as Error).message);
+      }
+    }
     // 引擎后端未注册（预览器等场景）时无引擎可卸载，直接跳过
     const engine = EngineGateway.get();
     if (engine !== undefined) {
@@ -525,6 +535,9 @@ export class PluginService {
     PluginService.syncRegistry(manifest, info.methods, specs);
     // 元数据落库（安装/升级/引擎重启均幂等覆盖）
     await PluginService.persistRecord(manifest, info.methods, specs);
+    // 插件敏感偏好声明注册：getSettingsSchema 中 sensitive: true / type: 'password'
+    // 的键登记到 SecureStore 分流注册表（见 PluginPrefs.registerSensitiveKeys）
+    PluginService.registerSensitivePrefKeys(manifest.key);
     // 插件可选导出 getHeaders：声明后图片经宿主 http 管线加载（Referer/Cookie）
     for (const spec of specs) {
       const src = SourceRegistry.get(spec.key);
@@ -534,6 +547,27 @@ export class PluginService {
     }
     hilog.info(DOMAIN, TAG, 'jsvm engine started: %{public}s v%{public}s (%{public}d sources, mem %{public}d)',
       manifest.key, manifest.version, specs.length, engine.memoryBytes(manifest.key));
+  }
+
+  // 插件敏感偏好声明注册（引擎启动后调用）：读取 getSettingsSchema，
+  // 把 sensitive 声明的键登记到 PluginPrefs 注册表，供 persist 分流 / seed 回注
+  private static registerSensitivePrefKeys(packageKey: string): void {
+    const src = SourceRegistry.get(packageKey);
+    if (!(src instanceof JsvmSource) || !src.hasMethod('getSettingsSchema')) {
+      return;
+    }
+    src.getSettingsSchema().then((schema: SourcePrefItem[]): void => {
+      const keys: string[] = [];
+      for (const item of schema) {
+        if (item.sensitive) {
+          keys.push(item.key);
+        }
+      }
+      PluginPrefs.registerSensitiveKeys(packageKey, keys);
+    }).catch((e: Error): void => {
+      hilog.warn(DOMAIN, TAG, 'read sensitive pref schema of %{public}s failed: %{public}s',
+        packageKey, e.message);
+    });
   }
 
   static markDirty(): void {

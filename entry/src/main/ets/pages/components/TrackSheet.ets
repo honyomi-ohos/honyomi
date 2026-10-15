@@ -13,7 +13,7 @@ import { TrackLogo } from './TrackLogo';
 import { OAuthSheet } from './OAuthSheet';
 import { PickerSheet } from './PickerSheet';
 import { SmartImage } from './SmartImage';
-import { InputDialog } from './Dialogs';
+import { InputDialog, CredentialsDialog } from './Dialogs';
 import { AppIcon } from './AppIcon';
 
 // 弹层模式
@@ -64,16 +64,6 @@ export struct TrackSheet {
 
   aboutToAppear(): void {
     this.refreshTracks();
-    // 旧版 anilistToken 静默迁移（对齐 Mihon AniList 隐式迁移）
-    const al = TrackerManager.aniList;
-    if (!al.isLoggedIn()) {
-      al.migrateLegacyToken().then((migrated: boolean): void => {
-        if (migrated) {
-          this.loginTick += 1;
-          this.refreshTracks();
-        }
-      }).catch((): void => {});
-    }
   }
 
   // ----- 数据 -----
@@ -193,29 +183,15 @@ export struct TrackSheet {
     });
   }
 
-  // 账密登录：用户名 → 密码 两段输入
+  // 账密登录：用户名 + 密码同弹窗一次输入
   private showCredentialsLogin(t: Tracker): void {
-    let username = '';
     const dialog = new CustomDialogController({
-      builder: InputDialog({
-        title: $r('app.string.track_username'),
-        placeholder: t.name,
-        onConfirm: (text: string): void => {
-          username = text.trim();
-          const dialog2 = new CustomDialogController({
-            builder: InputDialog({
-              title: $r('app.string.track_password'),
-              placeholder: '',
-              onConfirm: (password: string): void => {
-                this.doCredentialsLogin(t, username, password);
-              },
-              onClose: (): void => {
-                dialog2.close();
-              },
-            }),
-            autoCancel: true,
-          });
-          dialog2.open();
+      builder: CredentialsDialog({
+        title: t.name,
+        usernamePlaceholder: $r('app.string.track_username'),
+        passwordPlaceholder: $r('app.string.track_password'),
+        onConfirm: (username: string, password: string): void => {
+          this.doCredentialsLogin(t, username, password);
         },
         onClose: (): void => {
           dialog.close();
@@ -456,7 +432,7 @@ export struct TrackSheet {
   @Builder
   trackerRow(t: Tracker, track: TrackRecord | undefined) {
     Row() {
-      TrackLogo({ logoName: t.name, color: t.brandColor, logoSize: 30 })
+      TrackLogo({ syncId: t.syncId, logoName: t.name, color: t.brandColor, logoSize: 30 })
         .margin({ right: 14 })
       Column() {
         Text(t.name)
@@ -954,13 +930,14 @@ export struct TrackSheet {
     .height('100%')
     .alignItems(HorizontalAlign.Start)
     .bindSheet($$this.showOAuth, this.oauthBuilder(), {
-      height: SheetSize.LARGE,
+      height: '80%',
       detents: [SheetSize.MEDIUM, SheetSize.LARGE],
       dragBar: true,
       showClose: false,
       preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
       width: Bp.isWide(this.windowW) ? 560 : '100%',
-      backgroundColor: this.pal.bg
+      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
+      maskColor: 'rgba(0,0,0,0.45)'
     })
   }
 }

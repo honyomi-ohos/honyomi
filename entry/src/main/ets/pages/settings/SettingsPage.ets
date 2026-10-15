@@ -95,10 +95,12 @@ export struct SettingsPage {
 
   // ---- lg 双栏：右栏 ----
 
+  // lg 双栏右栏头：仅二级页（语言）保留返回键 + 标题；分类内容不重复分类
+  // 标题（左栏已高亮当前分类，重复显示冗余），顶部由外层补少量内边距
   @Builder
   paneHeader() {
-    Row({ space: 8 }) {
-      if (this.rightSub === 'Language') {
+    if (this.rightSub === 'Language') {
+      Row({ space: 8 }) {
         AppIcon({ name: 'arrow_back', iconSize: 20, tint: this.pal.text })
           .onClick(() => {
             this.rightSub = '';
@@ -107,15 +109,10 @@ export struct SettingsPage {
           .fontSize(16)
           .fontWeight(FontWeight.Medium)
           .fontColor(this.pal.text)
-      } else {
-        Text(this.catTitle(this.selCat))
-          .fontSize(16)
-          .fontWeight(FontWeight.Medium)
-          .fontColor(this.pal.text)
       }
+      .width('100%')
+      .padding({ left: 16, right: 16, top: 10, bottom: 6 })
     }
-    .width('100%')
-    .padding({ left: 16, right: 16, top: 10, bottom: 6 })
   }
 
   // 常规分类内容（仅 lg 双栏右栏使用；窄屏展示在主页列表顶部）
@@ -225,6 +222,8 @@ export struct SettingsPage {
           }
           .width('100%')
           .height('100%')
+          // 分类内容无右栏头时补顶部内边距（二级页头部自带间距则不补）
+          .padding({ top: this.rightSub === '' ? 8 : 0 })
         }
       }
       .layoutWeight(1)

@@ -265,17 +265,9 @@ export class Settings {
     Settings.setStr('themeMode', mode);
   }
 
-  static getAnilistToken(): string {
-    return Settings.getStr('anilistToken', '');
-  }
-
-  static setAnilistToken(token: string): void {
-    Settings.setStr('anilistToken', token);
-  }
-
   // ---- 追踪（对齐 Mihon TrackPreferences）----
-  // 各追踪器凭据：trackUsername_{syncId} / trackPassword_{syncId}（OAuth 为 access token）
-  // trackDisplay_{syncId} 展示用户名；trackToken_{syncId} 为 OAuth token JSON
+  // 仅存非敏感信息：trackUsername_{syncId} / trackDisplay_{syncId}
+  // 密码与 OAuth token 一律走 SecureStore（Asset Store）加密存储，不落明文偏好
   static getTrackUsername(syncId: number): string {
     return Settings.getStr(`trackUsername_${syncId}`, '');
   }
@@ -284,28 +276,12 @@ export class Settings {
     Settings.setStr(`trackUsername_${syncId}`, v);
   }
 
-  static getTrackPassword(syncId: number): string {
-    return Settings.getStr(`trackPassword_${syncId}`, '');
-  }
-
-  static setTrackPassword(syncId: number, v: string): void {
-    Settings.setStr(`trackPassword_${syncId}`, v);
-  }
-
   static getTrackDisplay(syncId: number): string {
     return Settings.getStr(`trackDisplay_${syncId}`, '');
   }
 
   static setTrackDisplay(syncId: number, v: string): void {
     Settings.setStr(`trackDisplay_${syncId}`, v);
-  }
-
-  static getTrackToken(syncId: number): string {
-    return Settings.getStr(`trackToken_${syncId}`, '');
-  }
-
-  static setTrackToken(syncId: number, v: string): void {
-    Settings.setStr(`trackToken_${syncId}`, v);
   }
 
   // AniList 评分制：POINT_100 / POINT_10 / POINT_10_DECIMAL / POINT_5 / POINT_3

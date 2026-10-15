@@ -13,3 +13,7 @@
 .arkui-x
 .cache
 /.codegenie
+*.cer
+*.p7b
+*.p12
+*.csr

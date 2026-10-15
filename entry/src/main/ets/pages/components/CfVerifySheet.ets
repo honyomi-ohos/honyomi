@@ -17,16 +17,17 @@ import { AppIcon, AppIconRes } from './AppIcon';
 //   仍赶在首个网络请求前生效
 // - controller 每个实例全新创建（不可跨 Web 组件复用）；弹层内容存活期间
 //   challenge URL 变化时通过 @Prop @Watch 热切换加载
-// - 工具栏对齐 Mihon WebView：页面标题 + 菜单（刷新/在浏览器打开/复制链接）+ 完成
+// - 工具栏对齐 Mihon WebView：Chrome 风格加载图标 + 页面标题 + 菜单（刷新/在浏览器打开/复制链接）+ 完成
 @Component
 export struct CfVerifySheet {
   @Prop @Watch('onUrlChanged') challengeUrl: string = '';
   onClose: () => void = () => {};
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @State cfStatus: ResourceStr = '';
-  @State pageTitle: string = '';
   @State loadProgress: number = 0;
+  // Chrome 风格加载态：标题前图标切换（加载中转圈 / 加载完成地球）
+  @State loading: boolean = true;
+  @State pageTitle: string = '';
   // 网页当前地址（跟随重定向更新），供复制/浏览器打开使用
   private currentUrl: string = '';
   private loadedUrl: string = '';
@@ -38,7 +39,6 @@ export struct CfVerifySheet {
   aboutToAppear(): void {
     this.currentUrl = this.challengeUrl;
     this.loadedUrl = this.challengeUrl;
-    this.cfStatus = $r('app.string.tab_cf_waiting');
     hilog.info(0x0C0F, 'CfVerify', 'sheet aboutToAppear url=%{public}s', this.challengeUrl);
     // 把 CookieJar 已有会话预注入 ArkWeb（cf_clearance 与 UA/Cookie 绑定）
     const jar = CookieJar.headerFor(this.challengeUrl);
@@ -63,7 +63,7 @@ export struct CfVerifySheet {
       this.controller.loadUrl(this.challengeUrl);
       this.currentUrl = this.challengeUrl;
       this.loadedUrl = this.challengeUrl;
-      this.cfStatus = $r('app.string.tab_cf_waiting');
+      this.loading = true;
     } catch (e) {
       hilog.error(0x0C0F, 'CfVerify', 'hot-switch loadUrl failed: %{public}s',
         (e as BusinessError).message);
@@ -136,24 +136,33 @@ export struct CfVerifySheet {
   build() {
     Column() {
       Row() {
-        AppIcon({ name: 'close', iconSize: 20, tint: '#FFFFFF' })
+        AppIcon({ name: 'close', iconSize: 20, tint: this.pal.text })
           .padding({ left: 14, right: 14, top: 10, bottom: 10 })
           .onClick(() => {
             this.onClose();
           })
+        if (this.loading) {
+          LoadingProgress()
+            .width(18)
+            .height(18)
+            .color(this.pal.primary)
+        } else {
+          AppIcon({ name: 'public', iconSize: 16, tint: this.pal.sub })
+        }
         Text(this.pageTitle !== '' ? this.pageTitle : $r('app.string.tab_cf_title'))
           .fontSize(16)
           .fontWeight(FontWeight.Bold)
-          .fontColor('#FFFFFF')
+          .fontColor(this.pal.text)
           .layoutWeight(1)
           .maxLines(1)
           .textOverflow({ overflow: TextOverflow.Ellipsis })
-        AppIcon({ name: 'more_vert', iconSize: 20, tint: '#FFFFFF' })
+          .margin({ left: 6 })
+        AppIcon({ name: 'more_vert', iconSize: 20, tint: this.pal.text })
           .padding({ left: 10, right: 10, top: 12, bottom: 12 })
           .bindMenu(this.cfMenu)
         Text($r('app.string.tab_cf_done'))
           .fontSize(15)
-          .fontColor('#FFFFFF')
+          .fontColor(this.pal.primary)
           .padding({ left: 10, right: 14, top: 10, bottom: 10 })
           .onClick(() => {
             Util.toastRes(this.getUIContext(), $r('app.string.tab_cf_saved'));
@@ -161,7 +170,6 @@ export struct CfVerifySheet {
           })
       }
       .width('100%')
-      .backgroundColor('#CC000000')
 
       // 页面加载进度条（Mihon WebView 工具栏下方同款细进度条）
       if (this.loadProgress > 0 && this.loadProgress < 100) {
@@ -191,14 +199,12 @@ export struct CfVerifySheet {
             const err = e as BusinessError;
             hilog.error(0x0C0F, 'CfVerify', 'attach failed: %{public}d %{public}s',
               err.code, err.message);
-            this.cfStatus = Util.resStr(this.getUIContext(), $r('app.string.cf_load_error'),
-              [`${err.code} ${err.message}`]);
           }
         })
         .onPageBegin((event: OnPageBeginEvent) => {
           this.currentUrl = event?.url ?? this.challengeUrl;
           hilog.info(0x0C0F, 'CfVerify', 'pageBegin url=%{public}s', this.currentUrl);
-          this.cfStatus = $r('app.string.cf_loading');
+          this.loading = true;
         })
         .onTitleReceive((event: OnTitleReceiveEvent) => {
           this.pageTitle = event?.title ?? '';
@@ -207,12 +213,11 @@ export struct CfVerifySheet {
           this.loadProgress = event?.newProgress ?? 0;
         })
         .onErrorReceive((event: OnErrorReceiveEvent) => {
-          // 主文档加载失败时回显原因，避免无声白屏
+          // 主文档加载失败时记录原因（页面由引擎默认错误页呈现）
           if (event && event.request.isMainFrame()) {
             hilog.error(0x0C0F, 'CfVerify', 'errorReceive(main) url=%{public}s info=%{public}s',
               event.request.getRequestUrl(), event.error.getErrorInfo());
-            this.cfStatus = Util.resStr(this.getUIContext(), $r('app.string.cf_load_failed'),
-              [event.error.getErrorInfo()]);
+            this.loading = false;
           }
         })
         .onHttpErrorReceive((event: OnHttpErrorReceiveEvent) => {
@@ -220,36 +225,25 @@ export struct CfVerifySheet {
             hilog.info(0x0C0F, 'CfVerify', 'httpError(main) url=%{public}s code=%{public}d %{public}s',
               event.request.getRequestUrl(), event.response.getResponseCode(),
               event.response.getReasonMessage());
-            this.cfStatus = Util.resStr(this.getUIContext(), $r('app.string.cf_http_prefix'),
-              [event.response.getResponseCode()]);
           }
         })
         .onRenderExited((event: OnRenderExitedEvent) => {
           hilog.error(0x0C0F, 'CfVerify', 'renderExited reason=%{public}d', event?.renderExitReason ?? -1);
-          if (event) {
-            this.cfStatus = Util.resStr(this.getUIContext(), $r('app.string.cf_render_exited'),
-              [event.renderExitReason]);
-          }
         })
         .onPageEnd((event: OnPageEndEvent) => {
           this.currentUrl = event?.url ?? this.currentUrl;
           hilog.info(0x0C0F, 'CfVerify', 'pageEnd url=%{public}s', this.currentUrl);
+          this.loading = false;
           this.checkCfSolved();
         })
         .layoutWeight(1)
-
-      Text(this.cfStatus)
-        .fontSize(12)
-        .fontColor(this.pal.sub)
-        .width('100%')
-        .textAlign(TextAlign.Center)
-        .padding(8)
     }
     .width('100%')
     .height('100%')
   }
 
   // 工具栏菜单：刷新 / 在浏览器中打开 / 复制链接（对齐 Mihon WebView 菜单）
+  // 菜单图标经 dark 资源限定符适配明暗（base 黑色 / dark 白色），避免深色菜单下不可见
   @Builder
   cfMenu() {
     Menu() {

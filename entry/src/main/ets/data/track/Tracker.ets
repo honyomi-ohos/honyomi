@@ -1,11 +1,14 @@
 // 追踪器基类与共用工具（对齐 Mihon BaseTracker / Tracker / PkceUtil）
-// - 凭据持久化：Settings trackUsername_/trackPassword_/trackDisplay_/trackToken_{syncId}
-// - token：OAuthToken JSON 存 trackToken_{syncId}，过期前 60s 视为过期
+// - 凭据持久化：密码 / OAuth token 经 SecureStore（Asset Store）加密存储；
+//   用户名与展示名（非敏感）仍在 Settings trackUsername_/trackDisplay_{syncId}
+// - Asset Store 为唯一凭据存储：写入失败直接抛错（调用方 toast），不回退明文
+// - token：OAuthToken JSON 存 honyomi.track.token.{syncId}，过期前 60s 视为过期
 // - PKCE：随机 32 字节 base64url verifier + S256 challenge
 import { cryptoFramework } from '@kit.CryptoArchitectureKit';
 import { util } from '@kit.ArkTS';
 import { TrackRecord, TrackSearchResult } from '../../model/Models';
 import { Settings } from '../../common/Settings';
+import { SecureStore } from '../../common/SecureStore';
 import { TrackRepo } from '../Repos';
 import { Http, RawResponse } from '../../net/Http';
 
@@ -185,12 +188,22 @@ export abstract class Tracker {
   }
 
   // ---- 凭据 ----
+  // Asset Store 别名（密码 / token 各一条，syncId 保证唯一）
+  static passwordAlias(syncId: number): string {
+    return `honyomi.track.pass.${syncId}`;
+  }
+
+  static tokenAlias(syncId: number): string {
+    return `honyomi.track.token.${syncId}`;
+  }
+
   getUsername(): string {
     return Settings.getTrackUsername(this.syncId);
   }
 
+  // 密码 / OAuth access token：仅存 Asset Store
   getPassword(): string {
-    return Settings.getTrackPassword(this.syncId);
+    return SecureStore.getSync(Tracker.passwordAlias(this.syncId));
   }
 
   getDisplayUsername(): string {
@@ -198,9 +211,12 @@ export abstract class Tracker {
     return display !== '' ? display : this.getUsername();
   }
 
+  // 写入失败（Asset 服务异常 / secret 超 1024 字节）抛错，由登录流程 toast
   saveCredentials(username: string, password: string): void {
     Settings.setTrackUsername(this.syncId, username);
-    Settings.setTrackPassword(this.syncId, password);
+    if (!SecureStore.putSync(Tracker.passwordAlias(this.syncId), password)) {
+      throw new Error('secure_store_unavailable');
+    }
   }
 
   isLoggedIn(): boolean {
@@ -208,18 +224,21 @@ export abstract class Tracker {
   }
 
   logout(): void {
-    this.saveCredentials('', '');
-    Settings.setTrackToken(this.syncId, '');
+    Settings.setTrackUsername(this.syncId, '');
     Settings.setTrackDisplay(this.syncId, '');
+    SecureStore.removeSync(Tracker.passwordAlias(this.syncId));
+    SecureStore.removeSync(Tracker.tokenAlias(this.syncId));
   }
 
   // ---- OAuth token 存储 ----
   saveToken(token: OAuthToken): void {
-    Settings.setTrackToken(this.syncId, token.toJson());
+    if (!SecureStore.putSync(Tracker.tokenAlias(this.syncId), token.toJson())) {
+      throw new Error('secure_store_unavailable');
+    }
   }
 
   loadToken(): OAuthToken | undefined {
-    return OAuthToken.fromJson(Settings.getTrackToken(this.syncId));
+    return OAuthToken.fromJson(SecureStore.getSync(Tracker.tokenAlias(this.syncId)));
   }
 
   // 取有效 token：缺失抛错；过期时用 refreshFn 刷新并保存（refreshFn 返回新 token）

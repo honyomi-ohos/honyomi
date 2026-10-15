@@ -252,24 +252,6 @@ export class AniListTracker extends Tracker {
     throw new Error('AniList only supports OAuth login');
   }
 
-  // 旧版单追踪器迁移：anilistToken 偏好 → 新 token 存储；返回是否迁移成功
-  async migrateLegacyToken(): Promise<boolean> {
-    if (this.loadToken() !== undefined) {
-      return false;
-    }
-    const legacy = Settings.getAnilistToken();
-    if (legacy === '') {
-      return false;
-    }
-    try {
-      await this.loginWithCode(legacy);
-      Settings.setAnilistToken('');
-      return true;
-    } catch (_e) {
-      return false;
-    }
-  }
-
   async search(query: string): Promise<TrackSearchResult[]> {
     if (query.startsWith('id:')) {
       const id = parseInt(query.substring(3).trim(), 10);
