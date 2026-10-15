@@ -83,10 +83,14 @@
                        "name":  "common_all",
                        "value":  "全部"
                    },
-                   {
-                       "name":  "common_close",
-                       "value":  "关闭"
-                   },
+                    {
+                        "name":  "common_close",
+                        "value":  "关闭"
+                    },
+                    {
+                        "name":  "common_copy_to_clipboard",
+                        "value":  "复制到剪贴板"
+                    },
                    {
                        "name":  "common_save",
                        "value":  "保存"

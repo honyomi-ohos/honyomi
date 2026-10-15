@@ -859,6 +859,7 @@ export class HistoryRepo {
       const rs = await store.querySql(
         `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
                 h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
+                m.sourceKey AS sourceKey,
                 m.thumbnailUrl AS coverUrl, c.name AS chapterName
          FROM history h
          JOIN manga m ON m.id = h.mangaId
@@ -884,7 +885,8 @@ export class HistoryRepo {
         rs.getString(rs.getColumnIndex('coverUrl')),
         rs.getString(rs.getColumnIndex('chapterName')),
         rs.getLong(rs.getColumnIndex('seenAt')),
-        rs.getLong(rs.getColumnIndex('lastPageRead')));
+        rs.getLong(rs.getColumnIndex('lastPageRead')),
+        rs.getString(rs.getColumnIndex('sourceKey')));
     } catch (e) {
       throw new Error(`map history row failed: ${e}`);
     }
@@ -897,6 +899,7 @@ export class HistoryRepo {
       const rs = await store.querySql(
         `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
                 h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
+                m.sourceKey AS sourceKey,
                 m.thumbnailUrl AS coverUrl, c.name AS chapterName
          FROM history h
          JOIN manga m ON m.id = h.mangaId
@@ -918,6 +921,7 @@ export class HistoryRepo {
       const rs = await store.querySql(
         `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
                 h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
+                m.sourceKey AS sourceKey,
                 m.thumbnailUrl AS coverUrl, c.name AS chapterName
          FROM history h
          JOIN manga m ON m.id = h.mangaId
@@ -939,6 +943,7 @@ export class HistoryRepo {
       const rs = await store.querySql(
         `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
                 h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
+                m.sourceKey AS sourceKey,
                 m.thumbnailUrl AS coverUrl, c.name AS chapterName
          FROM history h
          JOIN manga m ON m.id = h.mangaId
@@ -972,7 +977,7 @@ export class UpdatesRepo {
       const rs = await store.querySql(
         `SELECT c.id AS chapterId, c.mangaId AS mangaId, c.name AS chapterName,
                 c.dateUpload AS dateUpload, c.read AS readFlag, c.bookmark AS bookmarkFlag,
-                m.title AS mangaTitle, m.thumbnailUrl AS coverUrl
+                m.title AS mangaTitle, m.sourceKey AS sourceKey, m.thumbnailUrl AS coverUrl
          FROM chapter c
          JOIN manga m ON m.id = c.mangaId
          WHERE m.inLibrary = 1 AND c.read = 0
@@ -986,7 +991,8 @@ export class UpdatesRepo {
           rs.getString(rs.getColumnIndex('chapterName')),
           rs.getLong(rs.getColumnIndex('dateUpload')),
           rs.getLong(rs.getColumnIndex('readFlag')) === 1,
-          rs.getLong(rs.getColumnIndex('bookmarkFlag')) === 1));
+          rs.getLong(rs.getColumnIndex('bookmarkFlag')) === 1,
+          rs.getString(rs.getColumnIndex('sourceKey'))));
       }
       closeQuietly(rs);
     } catch (e) {
@@ -1021,7 +1027,7 @@ export class UpdatesRepo {
     let sql: string =
       `SELECT c.id AS chapterId, c.mangaId AS mangaId, c.name AS chapterName,
               c.dateUpload AS dateUpload, c.read AS readFlag, c.bookmark AS bookmarkFlag,
-              m.title AS mangaTitle, m.thumbnailUrl AS coverUrl
+              m.title AS mangaTitle, m.sourceKey AS sourceKey, m.thumbnailUrl AS coverUrl
        FROM chapter c
        JOIN manga m ON m.id = c.mangaId
        WHERE m.inLibrary = 1`;
@@ -1071,7 +1077,8 @@ export class UpdatesRepo {
           rs.getString(rs.getColumnIndex('chapterName')),
           rs.getLong(rs.getColumnIndex('dateUpload')),
           rs.getLong(rs.getColumnIndex('readFlag')) === 1,
-          rs.getLong(rs.getColumnIndex('bookmarkFlag')) === 1));
+          rs.getLong(rs.getColumnIndex('bookmarkFlag')) === 1,
+          rs.getString(rs.getColumnIndex('sourceKey'))));
       }
       closeQuietly(rs);
     } catch (e) {

@@ -2,9 +2,10 @@ import { common } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
 import { SourceRegistry, Source } from '../source/Source';
+import { JsvmSource, RawFilter } from '../source/JsvmSource';
 import { LocalFolderManager } from '../source/LocalFolderManager';
 import { MangaRecord, SManga, MangasPage, ContentType } from '../model/Models';
-import { BrowseSourceParams, DetailParams } from '../model/RouteParams';
+import { BrowseSourceParams, DetailParams, DetailSearchResult } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
@@ -26,6 +27,8 @@ export struct BrowseSourcePage {
   @State sourceKey: string = '';
   @State mode: string = 'popular';
   @State query: string = '';
+  // 标签过滤搜索模式：query 为空仍走 getSearchManga（过滤器在插件侧生效）
+  @State filterSearch: boolean = false;
   @State searchOpen: boolean = false;
   @State results: MangaRecord[] = [];
   @State searching: boolean = false;
@@ -74,6 +77,14 @@ export struct BrowseSourcePage {
     if (source === undefined) {
       return;
     }
+    if (this.filterSearch) {
+      // 离开过滤模式（关闭搜索/切换模式）：复位插件过滤器状态
+      this.filterSearch = false;
+      if (source instanceof JsvmSource) {
+        await source.resetFilters().catch((_e: Error): void => {
+        });
+      }
+    }
     this.searching = true;
     this.results = [];
     this.page = 1;
@@ -102,7 +113,15 @@ export struct BrowseSourcePage {
       const context = Util.hostAbilityContext(this.getUIContext());
       await AppDb.ready(context);
       const q = this.query.trim();
-      const result = q === '' ? await source.getPopularManga(1) : await source.getSearchManga(1, q);
+      if (q !== '' && this.filterSearch) {
+        // 文本搜索前清掉标签过滤残留（对齐 Mihon：每次搜索使用全新默认过滤器）
+        this.filterSearch = false;
+        if (source instanceof JsvmSource) {
+          await source.resetFilters();
+        }
+      }
+      // 过滤搜索模式下空查询仍走搜索接口（过滤器在插件侧生效）
+      const result = q === '' && !this.filterSearch ? await source.getPopularManga(1) : await source.getSearchManga(1, q);
       this.results = await this.toRecords(source.key, result.mangas);
       this.hasNextPage = result.hasNextPage;
     } catch (e) {
@@ -110,6 +129,89 @@ export struct BrowseSourcePage {
         [Util.errText(this.getUIContext(), (e as Error).message)]);
     }
     this.searching = false;
+  }
+
+  // 按标签过滤/搜索（对齐 Mihon BrowseSourceViewModel.searchGenre）：
+  // 插件源先在过滤器列表中按名匹配标签（tri-state→INCLUDE / checkbox→勾选 / select→选中同值项），
+  // 命中则以空查询执行过滤器搜索；未命中或源不支持过滤器时回退文本搜索
+  async searchGenre(genre: string): Promise<void> {
+    const g = genre.trim();
+    const source = this.currentSource();
+    if (g !== '' && source instanceof JsvmSource &&
+      source.hasMethod('getFilterList') && source.hasMethod('applyFilterState')) {
+      try {
+        const applied = await this.applyGenreFilter(source, g);
+        if (applied) {
+          this.filterSearch = true;
+          this.query = '';
+          this.searchOpen = true;
+          await this.search();
+          return;
+        }
+      } catch (_e) {
+        // 过滤器获取/应用失败：回退文本搜索
+      }
+    }
+    this.filterSearch = false;
+    this.query = g;
+    this.searchOpen = true;
+    await this.search();
+  }
+
+  // 在插件过滤器列表中按名匹配标签并置位；命中返回 true（未命中不改过滤器状态）
+  private async applyGenreFilter(source: JsvmSource, genre: string): Promise<boolean> {
+    const list = await source.getFilterList();
+    if (!Array.isArray(list) || list.length === 0) {
+      return false;
+    }
+    let matched = false;
+    for (let i = 0; i < list.length; i++) {
+      const filter = list[i];
+      // applyFilterState 契约：顶层序号由宿主回传前写入
+      filter.index = i;
+      const type = filter.type ?? '';
+      if (type === 'group' && filter.filters !== undefined) {
+        for (let j = 0; j < filter.filters.length; j++) {
+          if (this.matchGenreFilter(filter.filters[j], genre)) {
+            matched = true;
+          }
+        }
+      } else if (this.matchGenreFilter(filter, genre)) {
+        matched = true;
+      }
+    }
+    if (!matched) {
+      return false;
+    }
+    await source.applyFilterState(list);
+    return true;
+  }
+
+  // 单个过滤器按名匹配置位：tri-state→1(INCLUDE)、checkbox→勾选、select→选中同值项
+  private matchGenreFilter(filter: RawFilter, genre: string): boolean {
+    const name = filter.name ?? '';
+    if (name.toLowerCase() !== genre.toLowerCase()) {
+      return false;
+    }
+    const type = filter.type ?? '';
+    if (type === 'tristate' || type === 'tri-state') {
+      filter.state = 1;
+      return true;
+    }
+    if (type === 'checkbox') {
+      filter.state = true;
+      return true;
+    }
+    if (type === 'select' && filter.values !== undefined) {
+      for (let i = 0; i < filter.values.length; i++) {
+        const v = filter.values[i];
+        if (typeof v === 'string' && (v as string).toLowerCase() === genre.toLowerCase()) {
+          filter.state = i;
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   async loadMore(): Promise<void> {
@@ -121,7 +223,7 @@ export struct BrowseSourcePage {
     try {
       const nextPage = this.page + 1;
       const q = this.query.trim();
-      const result = q === '' ? await this.fetchPage(source, nextPage) :
+      const result = q === '' && !this.filterSearch ? await this.fetchPage(source, nextPage) :
         await source.getSearchManga(nextPage, q);
       const more = await this.toRecords(source.key, result.mangas);
       this.results = this.results.concat(more);
@@ -158,9 +260,28 @@ export struct BrowseSourcePage {
       await AppDb.ready(context);
       const id = await MangaRepo.upsertFromSource(record.sourceKey, this.toSManga(record), record.contentType);
       const params: DetailParams = { mangaId: id };
-      this.pathStack.pushPathByName('MangaDetail', params);
+      // 详情页内“搜索此处”（源名点击/标签菜单“搜索”）经 popWithResult 回传，回到本页后执行
+      this.pathStack.pushPathByName('MangaDetail', params, (popInfo: PopInfo): void => {
+        this.onDetailSearchResult(popInfo.result);
+      });
     } catch (e) {
       Util.toastRes(this.getUIContext(), $r('app.string.browse_open_detail_failed'));
+    }
+  }
+
+  // 详情页回传的搜索请求（对齐 Mihon BrowseSourceController.search/searchGenre）：
+  // search = 页内文本搜索；searchGenre = 按标签过滤（源不支持过滤器时回退文本搜索）
+  private onDetailSearchResult(result: Object): void {
+    const r = result as DetailSearchResult;
+    if (r === undefined || r === null || r.query === undefined) {
+      return;
+    }
+    if (r.action === 'search') {
+      this.query = r.query;
+      this.searchOpen = true;
+      this.search();
+    } else if (r.action === 'searchGenre') {
+      this.searchGenre(r.query);
     }
   }
 

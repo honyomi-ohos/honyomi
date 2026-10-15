@@ -66,6 +66,8 @@ export struct LibraryPage {
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
   // 复刻 Mihon：再次点击书架页签打开筛选/显示设置弹层（LibraryTab.onReselect）
   @StorageLink('libReselect') @Watch('onLibReselect') libReselect: number = 0;
+  // 详情页回退书架的文本搜索请求（对齐 Mihon LibraryTab.search）：计数触发，查询词经 libSearchQuery 传递
+  @StorageLink('libSearchReq') @Watch('onLibSearchReq') libSearchReq: number = 0;
   // NSFW 源显示开关：关闭时隐藏 NSFW 插件源的作品；插件注册完成后（pluginsDirty）重算过滤
   @StorageProp('showNsfw') @Watch('refreshView') showNsfw: boolean = false;
   @StorageProp('pluginsDirty') @Watch('refreshView') pluginsDirty: number = 0;
@@ -114,6 +116,7 @@ export struct LibraryPage {
 
   aboutToAppear(): void {
     this.applySettings();
+    this.takePendingLibSearch();
     this.loadData();
   }
 
@@ -130,6 +133,26 @@ export struct LibraryPage {
 
   private onLibReselect(): void {
     this.showFilterSheet = true;
+  }
+
+  // 消费详情页回退书架的搜索请求（已挂载时由 @Watch 触发；未挂载时由 aboutToAppear 兜底）
+  private takePendingLibSearch(): void {
+    const q = AppStorage.get<string>('libSearchQuery') ?? '';
+    if (q === '') {
+      return;
+    }
+    AppStorage.setOrCreate('libSearchQuery', '');
+    if (this.searchTimer >= 0) {
+      clearTimeout(this.searchTimer);
+      this.searchTimer = -1;
+    }
+    this.searchOpen = true;
+    this.searchQuery = q;
+  }
+
+  private onLibSearchReq(): void {
+    this.takePendingLibSearch();
+    this.refreshView();
   }
 
   private applySettings(): void {

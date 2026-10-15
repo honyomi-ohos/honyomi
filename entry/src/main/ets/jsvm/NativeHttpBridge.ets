@@ -18,6 +18,7 @@ import { CookieJar } from '../net/CookieJar';
 import { Http } from '../net/Http';
 import { CfChallenge } from '../net/CfChallenge';
 import { Util } from '../common/Util';
+import { challengeError } from './EngineGateway';
 
 /** Bridge request as dispatched by the native engine (JSON-decoded). */
 export interface JsvmBridgeRequest {
@@ -55,25 +56,6 @@ interface NativeHttpFollowed {
   resp: http.HttpResponse;
 }
 
-/**
- * Thrown when a source answers with a Cloudflare bot challenge (401/403/503
- * challenge pages). The JSVM engine yields execution with this exception;
- * the ArkTS layer opens the single-instance verification webview, harvests
- * the token/cookie into the CookieJar and retries (cookies are re-injected
- * automatically on every subsequent bridge request).
- */
-export class WebChallengeError extends Error {
-  readonly challengeUrl: string;
-
-  constructor(url: string) {
-    super('cf_required');
-    this.challengeUrl = url;
-  }
-}
-
-/** Marker prefix used inside the bridge error field. */
-const CHALLENGE_PREFIX = 'CF_CHALLENGE:';
-
 export class NativeHttpBridge {
   private static installed: boolean = false;
   private static inflight: number = 0;
@@ -100,21 +82,6 @@ export class NativeHttpBridge {
 
   static activeRequests(): number {
     return NativeHttpBridge.inflight;
-  }
-
-  /** True when an envelope error string is a challenge exception. */
-  static isChallengeError(error: string): boolean {
-    return error.indexOf(CHALLENGE_PREFIX) === 0;
-  }
-
-  /** Extracts the challenge URL from an envelope error string. */
-  static challengeUrlOf(error: string): string {
-    return error.substring(CHALLENGE_PREFIX.length);
-  }
-
-  /** Builds the marker error string reported through the bridge. */
-  static challengeError(url: string): string {
-    return `${CHALLENGE_PREFIX}${url}`;
   }
 
   // ------------------------------------------------------------------ private
@@ -219,7 +186,7 @@ export class NativeHttpBridge {
         statusText: NativeHttpBridge.statusTextOf(resp.responseCode),
         headersJson: headersJson,
         body: '',
-        error: NativeHttpBridge.challengeError(finalUrl),
+        error: challengeError(finalUrl),
         url: finalUrl,
       };
     }
@@ -262,7 +229,7 @@ export class NativeHttpBridge {
         statusText: NativeHttpBridge.statusTextOf(resp.responseCode),
         headersJson: headersJson,
         body: '',
-        error: NativeHttpBridge.challengeError(finalUrl),
+        error: challengeError(finalUrl),
         url: finalUrl,
         bytes: null,
       };

@@ -11,7 +11,8 @@ import { LocalVideoSource } from '../source/LocalVideoSource';
 import { DownloadService } from '../data/DownloadService';
 import { PluginService } from '../data/PluginService';
 import { BackupService } from '../data/BackupService';
-import { JsvmExtensionManager } from '../jsvm/JsvmExtensionManager';
+import { EngineGateway } from '../jsvm/EngineGateway';
+import { JsvmEngineBackend } from '../jsvm/JsvmEngineBackend';
 import { CookieJar } from '../net/CookieJar';
 import { ImageCache } from '../common/ImageCache';
 import { AvifConverter } from '../common/AvifConverter';
@@ -50,9 +51,13 @@ export default class EntryAbility extends UIAbility {
     SourceRegistry.register(new LocalSource(this.context.filesDir, this.context.cacheDir));
     SourceRegistry.register(new LocalNovelSource(this.context.filesDir));
     SourceRegistry.register(new LocalVideoSource(this.context.filesDir));
-    // 插件宿主（JSVM 隔离引擎）：HTTP 桥必须在首个插件网络请求前就绪，保持同步
+    // 插件宿主（JSVM 隔离引擎）：注册引擎后端（native 实现仅在此处接入，
+    // UI/服务层经 EngineGateway 访问，页面导入链保持 native-free 以支持预览器）；
+    // HTTP 桥必须在首个插件网络请求前就绪，保持同步
     PluginService.init(this.context);
-    JsvmExtensionManager.init();
+    const engineBackend = new JsvmEngineBackend();
+    EngineGateway.setBackend(engineBackend);
+    engineBackend.init();
     this.handleCardWant(want);
     // ── 第1级（主线程空闲即执行，先于首帧内容挂载）：非首帧必需的服务初始化 ──
     // 契约：此处初始化的服务允许在回调执行前被访问——各服务必须容忍“未 init 先使用”

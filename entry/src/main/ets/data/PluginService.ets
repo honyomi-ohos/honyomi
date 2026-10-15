@@ -5,7 +5,7 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { util } from '@kit.ArkTS';
 import { cryptoFramework } from '@kit.CryptoArchitectureKit';
 import { PluginManifest, JsvmSource, CompiledSourceInfo } from '../source/JsvmSource';
-import { JsvmExtensionManager } from '../jsvm/JsvmExtensionManager';
+import { EngineGateway, EngineBackend } from '../jsvm/EngineGateway';
 import { PluginPrefs } from '../jsvm/PluginPrefs';
 import { SourceRegistry } from '../source/Source';
 import { ContentType } from '../model/Models';
@@ -315,7 +315,11 @@ export class PluginService {
   static async uninstall(key: string): Promise<void> {
     const packageKey = PluginService.packageKeyOf(key);
     PluginService.unregisterPackage(packageKey);
-    await JsvmExtensionManager.unloadExtension(packageKey);
+    // 引擎后端未注册（预览器等场景）时无引擎可卸载，直接跳过
+    const engine = EngineGateway.get();
+    if (engine !== undefined) {
+      await engine.unloadExtension(packageKey);
+    }
     const dir = `${PluginService.pluginsDir}/${packageKey}`;
     try {
       if (fs.accessSync(dir)) {
@@ -664,8 +668,12 @@ export class PluginService {
   }
 
   private static async readCompiledSources(packageKey: string): Promise<CompiledSourceInfo[]> {
+    const engine = EngineGateway.get();
+    if (engine === undefined) {
+      return [];
+    }
     try {
-      const raw = await JsvmExtensionManager.callData<object>(packageKey, 'getSources', []);
+      const raw = await engine.callData<object>(packageKey, 'getSources', []);
       const text = JSON.stringify(raw);
       const parsed = JSON.parse(text) as CompiledSourceInfo[];
       if (Array.isArray(parsed)) {
@@ -719,14 +727,15 @@ export class PluginService {
         hilog.warn(DOMAIN, TAG, 'plugin prefs init failed: %{public}s', (e as Error).message);
       }
     }
-    const info = await JsvmExtensionManager.loadExtension(manifest.key, script, seed);
+    const engine: EngineBackend = EngineGateway.require();
+    const info = await engine.loadExtension(manifest.key, script, seed);
     PluginService.unregisterPackage(manifest.key);
     if (info.kind === 'tachiyomi' && info.methods.indexOf('getSources') >= 0) {
       const compiled = await PluginService.readCompiledSources(manifest.key);
       if (compiled.length > 0) {
         PluginService.registerCompiled(manifest, info.methods, compiled);
         hilog.info(DOMAIN, TAG, 'jsvm plugin ready: %{public}s v%{public}s (%{public}d sources, mem %{public}d)',
-          manifest.key, manifest.version, compiled.length, JsvmExtensionManager.memoryBytes(manifest.key));
+          manifest.key, manifest.version, compiled.length, engine.memoryBytes(manifest.key));
         return;
       }
     }
@@ -735,6 +744,6 @@ export class PluginService {
     // 插件可选导出 getHeaders：声明后图片经宿主 http 管线加载（支持 Referer/Cookie）
     src.warmImageHeaders();
     hilog.info(DOMAIN, TAG, 'jsvm plugin ready: %{public}s v%{public}s (kind %{public}s, %{public}d methods, mem %{public}d)',
-      manifest.key, manifest.version, info.kind, info.methods.length, JsvmExtensionManager.memoryBytes(manifest.key));
+      manifest.key, manifest.version, info.kind, info.methods.length, engine.memoryBytes(manifest.key));
   }
 }

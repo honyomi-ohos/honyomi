@@ -1189,6 +1189,7 @@ export struct EmulationFlipView {
     .width('100%')
     .height('100%')
     .backgroundColor(this.bgColor)
+    .clip(true)
     .onAreaChange((_old: Area, neu: Area) => {
       const w = neu.width;
       const h = neu.height;

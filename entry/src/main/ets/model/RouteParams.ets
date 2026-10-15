@@ -19,6 +19,13 @@ export interface GlobalSearchParams {
   query: string;
 }
 
+// 详情页 popWithResult 回传给上一页的搜索请求
+export interface DetailSearchResult {
+  // 'search'：上一页文本搜索（源名点击）；'searchGenre'：上一页按标签过滤/搜索（标签菜单“搜索”）
+  action: string;
+  query: string;
+}
+
 export interface MigrateMangaParams {
   sourceKey: string;
 }

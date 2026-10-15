@@ -54,6 +54,7 @@
     { "name": "common_search", "value": "搜尋" },
     { "name": "common_all", "value": "全部" },
     { "name": "common_close", "value": "關閉" },
+    { "name": "common_copy_to_clipboard", "value": "複製到剪貼簿" },
     { "name": "common_save", "value": "儲存" },
     { "name": "common_install", "value": "安裝" },
     { "name": "common_uninstall", "value": "解除安裝" },

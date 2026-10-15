@@ -16,7 +16,8 @@
  */
 
 import { worker, MessageEvents, ErrorEvent } from '@kit.ArkTS';
-import { NativeHttpBridge, WebChallengeError } from './NativeHttpBridge';
+import { NativeHttpBridge } from './NativeHttpBridge';
+import { WebChallengeError, isChallengeError, challengeUrlOf, JsvmExtensionInfo } from './EngineGateway';
 import { PluginPrefs } from './PluginPrefs';
 
 /** Per-extension JSVM heap budget (bytes) — see architecture spec. */
@@ -25,12 +26,6 @@ export const JSVM_HEAP_BUDGET_BYTES: number = 2 * 1024 * 1024;
 
 const READY_TIMEOUT_MS: number = 30000;
 const CALL_TIMEOUT_MS: number = 190000; // > native 180s pump deadline
-
-export interface JsvmExtensionInfo {
-  key: string;
-  kind: string; // 'tachiyomi' | 'simple'
-  methods: string[];
-}
 
 interface PendingCall {
   resolve: (json: string) => void;
@@ -358,8 +353,8 @@ export class JsvmExtensionManager {
     }
     if (envelope.ok !== true) {
       const error = envelope.error ?? 'ext_unknown';
-      if (NativeHttpBridge.isChallengeError(error)) {
-        throw new WebChallengeError(NativeHttpBridge.challengeUrlOf(error));
+      if (isChallengeError(error)) {
+        throw new WebChallengeError(challengeUrlOf(error));
       }
       throw new Error(error);
     }

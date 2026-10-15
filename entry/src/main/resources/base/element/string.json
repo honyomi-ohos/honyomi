@@ -248,6 +248,7 @@
     { "name": "common_search", "value": "Search" },
     { "name": "common_all", "value": "All" },
     { "name": "common_close", "value": "Close" },
+    { "name": "common_copy_to_clipboard", "value": "Copy to clipboard" },
     { "name": "common_save", "value": "Save" },
     { "name": "common_install", "value": "Install" },
     { "name": "common_uninstall", "value": "Uninstall" },

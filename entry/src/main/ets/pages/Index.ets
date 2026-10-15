@@ -320,12 +320,19 @@ struct Index {
   // 书架多选数：>0 时隐藏底部页签栏（HDS 官方多选交互：操作栏替换页签栏）
   @StorageLink('libSelectionCount') @Watch('onLibSelectionChanged') libSelectionCount: number = 0;
   @StorageLink('cardAction') @Watch('onCardActionChanged') cardActionJson: string = '';
+  // 详情页“搜索此处”回退主页时切到书架页签执行文本搜索（对齐 Mihon HomeScreen.search → LibraryTab）
+  @StorageLink('libSearchReq') @Watch('onLibSearchReq') libSearchReq: number = 0;
   // 一多响应式：窗口宽度 + 已挂载页签位掩码（宽屏下按需挂载后驻留保状态）
   @State windowW: number = 0;
   @State mountedMask: number = 1;
   // 首启引导只拉起一次（onPageShow 每次回前台都会触发，需防重复）
   private onboardingLaunched: boolean = false;
   private tabsController: HdsTabsController = new HdsTabsController();
+  // 无 HDS 运行时环境（预览器）的标准 Tabs 回退控制器
+  private fallbackTabsController: TabsController = new TabsController();
+  // HDS 组件（@kit.UIDesignKit）由系统 HDS 运行时注册，预览器环境 HdsTabs 为
+  // null；探测失败时回退标准 Tabs，保证预览器可正常渲染（真机走 HdsTabs 不变）
+  private hdsAvailable: boolean = HdsTabs !== null && HdsTabs !== undefined;
   // 听书进行中才挂载迷你条覆盖层（避免空覆盖层拦截整页触摸）
   @State ttsActive: boolean = false;
   private readonly onTtsState: TtsServiceStateHandler =
@@ -369,7 +376,7 @@ struct Index {
 
   // 进入多选隐藏页签栏，退出多选恢复（HdsTabsController 官方隐藏/显示动效）；宽屏侧边栏常驻不参与
   private onLibSelectionChanged(): void {
-    if (this.isWide()) {
+    if (this.isWide() || !this.hdsAvailable) {
       return;
     }
     if (this.libSelectionCount > 0) {
@@ -405,6 +412,11 @@ struct Index {
       const params: OnboardingParams = { firstRun: true };
       this.pathStack.pushPathByName('Onboarding', params);
     }
+  }
+
+  // 详情页回退主页的书架搜索请求：切到书架页签（搜索词由 LibraryPage 消费 libSearchQuery）
+  private onLibSearchReq(): void {
+    this.switchTab(0);
   }
 
   // 桌面卡片点击 / 意图框架（小艺）导航：切页签或跳阅读器/详情页
@@ -621,6 +633,55 @@ struct Index {
     })
   }
 
+  // 手机端五个页签内容（HdsTabs 与标准 Tabs 回退共用）
+  @Builder
+  phoneTabContents() {
+    TabContent() {
+      Column() {
+        LibraryPage()
+      }
+      .height('100%')
+      .padding({ top: this.statusBarH })
+    }
+    .tabBar(this.tabBuilder('library', $r('app.string.tab_library'), 0))
+
+    TabContent() {
+      Column() {
+        UpdatesPage()
+      }
+      .height('100%')
+      .padding({ top: this.statusBarH })
+    }
+    .tabBar(this.tabBuilder('updates', $r('app.string.tab_updates'), 1))
+
+    TabContent() {
+      Column() {
+        HistoryPage()
+      }
+      .height('100%')
+      .padding({ top: this.statusBarH })
+    }
+    .tabBar(this.tabBuilder('history', $r('app.string.tab_history'), 2))
+
+    TabContent() {
+      Column() {
+        BrowsePage()
+      }
+      .height('100%')
+      .padding({ top: this.statusBarH })
+    }
+    .tabBar(this.tabBuilder('browse', $r('app.string.tab_browse'), 3))
+
+    TabContent() {
+      Column() {
+        MorePage()
+      }
+      .height('100%')
+      .padding({ top: this.statusBarH })
+    }
+    .tabBar(this.tabBuilder('more', $r('app.string.tab_more'), 4))
+  }
+
   // 宽屏主界面：左侧固定导航栏 + 右侧内容区（页签首次访问时挂载、驻留保状态）
   @Builder
   wideHome() {
@@ -724,52 +785,9 @@ struct Index {
       Stack({ alignContent: Alignment.TopStart }) {
         if (this.isWide()) {
           this.wideHome()
-        } else {
+        } else if (this.hdsAvailable) {
         HdsTabs({ barPosition: BarPosition.End, index: this.currentTab, controller: this.tabsController }) {
-          TabContent() {
-            Column() {
-              LibraryPage()
-            }
-            .height('100%')
-            .padding({ top: this.statusBarH })
-          }
-          .tabBar(this.tabBuilder('library', $r('app.string.tab_library'), 0))
-
-          TabContent() {
-            Column() {
-              UpdatesPage()
-            }
-            .height('100%')
-            .padding({ top: this.statusBarH })
-          }
-          .tabBar(this.tabBuilder('updates', $r('app.string.tab_updates'), 1))
-
-          TabContent() {
-            Column() {
-              HistoryPage()
-            }
-            .height('100%')
-            .padding({ top: this.statusBarH })
-          }
-          .tabBar(this.tabBuilder('history', $r('app.string.tab_history'), 2))
-
-          TabContent() {
-            Column() {
-              BrowsePage()
-            }
-            .height('100%')
-            .padding({ top: this.statusBarH })
-          }
-          .tabBar(this.tabBuilder('browse', $r('app.string.tab_browse'), 3))
-
-          TabContent() {
-            Column() {
-              MorePage()
-            }
-            .height('100%')
-            .padding({ top: this.statusBarH })
-          }
-          .tabBar(this.tabBuilder('more', $r('app.string.tab_more'), 4))
+          this.phoneTabContents()
         }
         .scrollable(true)
         .barOverlap(true)
@@ -789,6 +807,18 @@ struct Index {
         .onSelected((index: number) => {
           this.currentTab = index;
         })
+        .onChange((index: number) => {
+          this.currentTab = index;
+        })
+        .width('100%')
+        .height('100%')
+        } else {
+        // 无 HDS 运行时（预览器等）：回退标准 Tabs，保证页面可渲染
+        Tabs({ barPosition: BarPosition.End, index: this.currentTab, controller: this.fallbackTabsController }) {
+          this.phoneTabContents()
+        }
+        .scrollable(true)
+        .vertical(false)
         .onChange((index: number) => {
           this.currentTab = index;
         })

@@ -1,7 +1,6 @@
 import { SManga, SChapter, SPage, SVideo, MangasPage, ContentType } from '../model/Models';
 import { Source } from './Source';
-import { JsvmExtensionManager } from '../jsvm/JsvmExtensionManager';
-import { WebChallengeError } from '../jsvm/NativeHttpBridge';
+import { EngineGateway, EngineBackend, WebChallengeError } from '../jsvm/EngineGateway';
 import { Http } from '../net/Http';
 import { util } from '@kit.ArkTS';
 
@@ -108,6 +107,20 @@ interface RawPrefItem {
   titles?: string[];
 }
 
+// 插件过滤器 JSON 形态（getFilterList 返回元素的宽松字段）
+// type: 'group' | 'tristate'/'tri-state' | 'checkbox' | 'select' | 'sort' | ...
+export interface RawFilter {
+  type?: string;
+  name?: string;
+  // tri-state: 0 忽略/1 包含/2 排除；checkbox: boolean；select: 选中下标；group: 无
+  state?: Object;
+  values?: Object[];
+  // group 子过滤器
+  filters?: RawFilter[];
+  // applyFilterState 使用的顶层序号（宿主回传前写入）
+  index?: number;
+}
+
 // tachiyomi-js getManifest()/getSources() 里的单个源
 export interface CompiledSourceInfo {
   id?: string;
@@ -193,15 +206,15 @@ export class JsvmSource implements Source {
     return bytes.buffer;
   }
 
-  async getFilterList(): Promise<object[]> {
+  async getFilterList(): Promise<RawFilter[]> {
     if (this.exportedMethods.indexOf('getFilterList') < 0) {
       return [];
     }
-    const raw = await this.call<object[]>('getFilterList', this.callArgs([]));
+    const raw = await this.call<RawFilter[]>('getFilterList', this.callArgs([]));
     return Array.isArray(raw) ? raw : [];
   }
 
-  async applyFilterState(state: object[]): Promise<void> {
+  async applyFilterState(state: RawFilter[]): Promise<void> {
     if (this.exportedMethods.indexOf('applyFilterState') < 0) {
       return;
     }
@@ -420,6 +433,12 @@ export class JsvmSource implements Source {
 
   // ---------------- 内部实现 ----------------
 
+  // 引擎后端访问：经 EngineGateway 间接获取，保持本模块（及全部 UI 导入链）
+  // native-free；后端未注册（预览器等场景）时抛 engine_unavailable。
+  private static engine(): EngineBackend {
+    return EngineGateway.require();
+  }
+
   // 统一调用入口：CF 盾挑战异常上抛前触发全局验证页
   // 编译产物按 sourceId 选源；简单契约插件不传这个前缀参数。
   private callArgs(args: Array<string | number | boolean | object>): Array<string | number | boolean | object> {
@@ -435,7 +454,7 @@ export class JsvmSource implements Source {
 
   private async call<T>(method: string, args: Array<string | number | boolean | object>): Promise<T> {
     try {
-      return await JsvmExtensionManager.callData<T>(this.packageKey, method, args);
+      return await JsvmSource.engine().callData<T>(this.packageKey, method, args);
     } catch (e) {
       if (e instanceof WebChallengeError) {
         AppStorage.setOrCreate('cfChallengeUrl', e.challengeUrl);
@@ -443,7 +462,7 @@ export class JsvmSource implements Source {
         // cf_clearance 自动重试一次；用户放弃（验证页关闭未通过）则原样上抛
         const solved = await JsvmSource.waitChallengeSolved();
         if (solved) {
-          return await JsvmExtensionManager.callData<T>(this.packageKey, method, args);
+          return await JsvmSource.engine().callData<T>(this.packageKey, method, args);
         }
       }
       throw e as Error;
@@ -550,7 +569,7 @@ export class JsvmSource implements Source {
     if (this.exportedMethods.indexOf('getHeaders') < 0) {
       return Promise.resolve();
     }
-    return JsvmExtensionManager.callData<Record<string, Object>>(this.packageKey, 'getHeaders', this.callArgs([]))
+    return JsvmSource.engine().callData<Record<string, Object>>(this.packageKey, 'getHeaders', this.callArgs([]))
       .then((raw: Record<string, Object>): void => {
         const keys = Object.keys(raw);
         const headers: Record<string, string> = {};

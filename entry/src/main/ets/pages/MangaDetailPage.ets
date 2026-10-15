@@ -7,7 +7,7 @@ import { AppDb } from '../data/AppDb';
 import { MangaRepo, ChapterRepo, TrackRepo, CategoryRepo } from '../data/Repos';
 import { SourceRegistry } from '../source/Source';
 import { MangaRecord, ChapterRecord, DownloadTask, CategoryRecord, ContentType } from '../model/Models';
-import { DetailParams, GlobalSearchParams } from '../model/RouteParams';
+import { DetailParams, GlobalSearchParams, DetailSearchResult } from '../model/RouteParams';
 import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
@@ -296,15 +296,49 @@ export struct MangaDetailPage {
       .filter((s: string): boolean => s !== '');
   }
 
-  // 全局搜索跳转（标题/作者/标签点击，对齐 Mihon doSearch(query, global=true)）
+  // 全局搜索跳转（标题/作者点击，对齐 Mihon doSearch(query, global=true)）
   private searchGlobal(query: string): void {
     const params: GlobalSearchParams = { query: query };
     this.pathStack.pushPathByName('GlobalSearch', params);
   }
 
-  // 复制标签到剪贴板（对齐 Mihon onCopyTagToClipboard）
-  private copyTag(tag: string): void {
-    const data = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, tag);
+  // 非全局搜索（对齐 Mihon performSearch global=false）：目标为路由栈中详情页的下一页——
+  // 单源浏览页 → 回退后页内文本搜索；详情页直接压在主页上 → 切书架页签文本搜索；
+  // 其余（全局搜索页等）不处理
+  private searchInPrevious(query: string): void {
+    const q = query.trim();
+    if (q === '') {
+      return;
+    }
+    const names: string[] = this.pathStack.getAllPathName();
+    if (names.length >= 2 && names[names.length - 2] === 'BrowseSource') {
+      const result: DetailSearchResult = { action: 'search', query: q };
+      this.pathStack.pop(result);
+      return;
+    }
+    if (names.length === 1) {
+      // 详情页直接位于主页之上：切书架页签并以文本搜索（对齐 Mihon HomeScreen.search → LibraryTab）
+      AppStorage.setOrCreate('libSearchQuery', q);
+      AppStorage.setOrCreate('libSearchReq', (AppStorage.get<number>('libSearchReq') ?? 0) + 1);
+      this.pathStack.pop();
+    }
+  }
+
+  // 标签搜索（对齐 Mihon performGenreSearch）：上一页为单源浏览页时回退后按标签过滤/搜索
+  // （源支持过滤器时置 INCLUDE，否则文本搜索回退）；其余场景走非全局搜索（书架文本搜索）
+  private searchGenreInPrevious(genre: string): void {
+    const names: string[] = this.pathStack.getAllPathName();
+    if (names.length >= 2 && names[names.length - 2] === 'BrowseSource') {
+      const result: DetailSearchResult = { action: 'searchGenre', query: genre.trim() };
+      this.pathStack.pop(result);
+      return;
+    }
+    this.searchInPrevious(genre);
+  }
+
+  // 复制文本到剪贴板（标签菜单“复制”、标题/作者长按，对齐 Mihon onCopyTagToClipboard）
+  private copyText(text: string): void {
+    const data = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, text);
     pasteboard.getSystemPasteboard().setData(data).then((): void => {
       Util.toastRes(this.getUIContext(), $r('app.string.detail_tag_copied'));
     }).catch((_e: BusinessError) => {
@@ -659,7 +693,7 @@ export struct MangaDetailPage {
     Util.toastRes(this.getUIContext(), $r('app.string.detail_cover_reset'));
   }
 
-  // 标签 chip（对齐 Mihon TagsChip）：点击跳全局搜索，长按复制
+  // 标签 chip（对齐 Mihon TagsChip）：点击弹出 搜索/复制 菜单
   @Builder
   TagChip(tag: string) {
     Text(tag)
@@ -669,13 +703,25 @@ export struct MangaDetailPage {
       .borderRadius(14)
       .padding({ left: 12, right: 12, top: 5, bottom: 5 })
       .margin({ right: 6, top: 6 })
-      .onClick(() => {
-        this.searchGlobal(tag);
+      .bindMenu((): void => {
+        this.TagMenu(tag);
       })
-      .gesture(LongPressGesture({ repeat: false })
-        .onAction(() => {
-          this.copyTag(tag);
-        }))
+  }
+
+  // 标签菜单（对齐 Mihon TagsChip DropdownMenu）：
+  // 搜索 = 回上一页按标签过滤/搜索；复制到剪贴板 = 复制标签文本
+  @Builder
+  TagMenu(tag: string) {
+    Menu() {
+      MenuItem({ content: $r('app.string.common_search') })
+        .onClick(() => {
+          this.searchGenreInPrevious(tag);
+        })
+      MenuItem({ content: $r('app.string.common_copy_to_clipboard') })
+        .onClick(() => {
+          this.copyText(tag);
+        })
+    }
   }
 
   // 封面查看器（对齐 Mihon MangaCoverDialog）：点击封面进入全屏查看，
@@ -1165,7 +1211,7 @@ export struct MangaDetailPage {
                       backgroundColor: '#B3000000',
                     })
                     // 标题/作者/状态+源名（对齐 Mihon MangaContentInfo）：
-                    // 标题、作者点击跳全局搜索；状态行 = 状态图标 + 状态文案 · 源名
+                    // 标题、作者点击跳全局搜索，长按复制；源名点击回上一页文本搜索
                     Column({ space: 5 }) {
                       Text(this.manga.title)
                         .fontSize(20)
@@ -1178,6 +1224,10 @@ export struct MangaDetailPage {
                             this.searchGlobal(this.manga.title.trim());
                           }
                         })
+                        .gesture(LongPressGesture({ repeat: false })
+                          .onAction(() => {
+                            this.copyText(this.manga.title);
+                          }))
                       if (this.manga.author !== '') {
                         Text(this.manga.author)
                           .fontSize(13)
@@ -1187,6 +1237,10 @@ export struct MangaDetailPage {
                           .onClick(() => {
                             this.searchGlobal(this.manga.author);
                           })
+                          .gesture(LongPressGesture({ repeat: false })
+                            .onAction(() => {
+                              this.copyText(this.manga.author);
+                            }))
                       }
                       Row({ space: 4 }) {
                         AppIcon({
@@ -1207,6 +1261,10 @@ export struct MangaDetailPage {
                           .maxLines(1)
                           .textOverflow({ overflow: TextOverflow.Ellipsis })
                           .layoutWeight(1)
+                          .onClick(() => {
+                            // 源名点击：回上一页（单源浏览页/书架）按源名文本搜索
+                            this.searchInPrevious(this.sourceDisplayName());
+                          })
                       }
                       .width('100%')
                     }

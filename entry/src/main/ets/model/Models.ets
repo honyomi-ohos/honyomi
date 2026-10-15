@@ -156,9 +156,12 @@ export class UpdateItem {
   dateUpload: number = 0;
   read: boolean = false;
   bookmark: boolean = false;
+  // 所属源 key：关闭“显示 NSFW 源”时按源过滤更新条目
+  sourceKey: string = '';
 
   static of(mangaId: number, chapterId: number, mangaTitle: string, coverUrl: string,
-    chapterName: string, dateUpload: number, read: boolean, bookmark: boolean): UpdateItem {
+    chapterName: string, dateUpload: number, read: boolean, bookmark: boolean,
+    sourceKey: string = ''): UpdateItem {
     const item = new UpdateItem();
     item.mangaId = mangaId;
     item.chapterId = chapterId;
@@ -168,6 +171,7 @@ export class UpdateItem {
     item.dateUpload = dateUpload;
     item.read = read;
     item.bookmark = bookmark;
+    item.sourceKey = sourceKey;
     return item;
   }
 }
@@ -189,9 +193,11 @@ export class HistoryItem {
   chapterName: string = '';
   seenAt: number = 0;
   lastPageRead: number = 0;
+  // 所属源 key：关闭“显示 NSFW 源”时按源过滤历史条目
+  sourceKey: string = '';
 
   static of(mangaId: number, chapterId: number, mangaTitle: string, coverUrl: string,
-    chapterName: string, seenAt: number, lastPageRead: number): HistoryItem {
+    chapterName: string, seenAt: number, lastPageRead: number, sourceKey: string = ''): HistoryItem {
     const item = new HistoryItem();
     item.mangaId = mangaId;
     item.chapterId = chapterId;
@@ -200,6 +206,7 @@ export class HistoryItem {
     item.chapterName = chapterName;
     item.seenAt = seenAt;
     item.lastPageRead = lastPageRead;
+    item.sourceKey = sourceKey;
     return item;
   }
 }
