@@ -392,10 +392,11 @@ struct Index {
     }
   }
 
-  // 沉浸式路由（阅读器/听书/视频播放器）：全屏体验，宽屏下不显示左侧导航
+  // 沉浸式路由（阅读器/听书/视频播放器/新手引导）：全屏体验，宽屏下不显示左侧导航
   private isImmersiveRoute(name: string): boolean {
     return name === 'Reader' || name === 'NovelReader'
-      || name === 'TtsPlayer' || name === 'VideoPlayer';
+      || name === 'TtsPlayer' || name === 'VideoPlayer'
+      || name === 'Onboarding';
   }
 
   // 复刻 Mihon 底部导航快捷操作：再次点击已选中的页签触发 onReselect
