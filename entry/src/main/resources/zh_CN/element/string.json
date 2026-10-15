@@ -147,38 +147,78 @@
                        "name":  "appearance_theme_dark",
                        "value":  "深色"
                    },
-                   {
-                       "name":  "appearance_accent_color",
-                       "value":  "主题色"
-                   },
-                   {
-                       "name":  "appearance_other",
-                       "value":  "其他"
-                   },
-                   {
-                       "name":  "appearance_amoled",
-                       "value":  "AMOLED 纯黑背景"
-                   },
-                   {
-                       "name":  "theme_accent_blue",
-                       "value":  "蓝色"
-                   },
-                   {
-                       "name":  "theme_accent_green",
-                       "value":  "绿色"
-                   },
-                   {
-                       "name":  "theme_accent_pink",
-                       "value":  "粉色"
-                   },
-                   {
-                       "name":  "theme_accent_purple",
-                       "value":  "紫色"
-                   },
-                   {
-                       "name":  "theme_accent_orange",
-                       "value":  "橙色"
-                   },
+                    {
+                        "name":  "appearance_theme",
+                        "value":  "主题"
+                    },
+                    {
+                        "name":  "appearance_other",
+                        "value":  "其他"
+                    },
+                    {
+                        "name":  "appearance_amoled",
+                        "value":  "AMOLED 纯黑背景"
+                    },
+                    {
+                        "name":  "theme_name_default",
+                        "value":  "默认"
+                    },
+                    {
+                        "name":  "theme_name_tachiyomi",
+                        "value":  "Tachiyomi"
+                    },
+                    {
+                        "name":  "theme_name_midnight_dusk",
+                        "value":  "午夜暮色"
+                    },
+                    {
+                        "name":  "theme_name_nord",
+                        "value":  "Nord"
+                    },
+                    {
+                        "name":  "theme_name_strawberry_daiquiri",
+                        "value":  "草莓戴克利"
+                    },
+                    {
+                        "name":  "theme_name_tako",
+                        "value":  "章鱼"
+                    },
+                    {
+                        "name":  "theme_name_teal_turquoise",
+                        "value":  "蓝绿松石"
+                    },
+                    {
+                        "name":  "theme_name_tidal_wave",
+                        "value":  "潮汐"
+                    },
+                    {
+                        "name":  "theme_name_yin_yang",
+                        "value":  "阴阳"
+                    },
+                    {
+                        "name":  "theme_name_yotsuba",
+                        "value":  "四叶"
+                    },
+                    {
+                        "name":  "theme_name_tokyo_night",
+                        "value":  "东京之夜"
+                    },
+                    {
+                        "name":  "theme_name_monochrome",
+                        "value":  "单色"
+                    },
+                    {
+                        "name":  "theme_name_green_apple",
+                        "value":  "青苹果"
+                    },
+                    {
+                        "name":  "theme_name_lavender",
+                        "value":  "薰衣草"
+                    },
+                    {
+                        "name":  "theme_name_catppuccin",
+                        "value":  "Catppuccin"
+                    },
                    {
                        "name":  "util_time_minutes_ago",
                        "value":  "%d 分钟前"
@@ -1992,6 +2032,48 @@
       { "name": "plugin_error_runtime_missing", "value": "插件运行时组件缺失：plugin_runtime_%s.js" },
       { "name": "plugin_error_invalid_detail", "value": "插件详情返回无效" },
       { "name": "plugin_error_no_chapter_text", "value": "插件未导出 getChapterText" },
-      { "name": "plugin_error_no_video_list", "value": "插件未导出 getVideoList" }
+       { "name": "plugin_error_no_video_list", "value": "插件未导出 getVideoList" },
+       { "name": "track_title", "value": "追踪" },
+       { "name": "track_login", "value": "登录" },
+       { "name": "track_logout", "value": "退出登录" },
+       { "name": "track_logout_confirm", "value": "退出登录 %s？" },
+       { "name": "track_logged_in", "value": "已登录 %s" },
+       { "name": "track_logged_out", "value": "已退出登录" },
+       { "name": "track_login_failed", "value": "登录失败" },
+       { "name": "track_username", "value": "用户名" },
+       { "name": "track_password", "value": "密码" },
+       { "name": "track_auto_update", "value": "自动更新追踪进度" },
+       { "name": "track_search_hint", "value": "在 %s 中搜索" },
+       { "name": "track_search_failed", "value": "搜索失败" },
+       { "name": "track_no_results", "value": "没有找到结果" },
+       { "name": "track_added", "value": "已添加追踪" },
+       { "name": "track_add_failed", "value": "添加追踪失败" },
+       { "name": "track_update_failed", "value": "更新追踪失败" },
+       { "name": "track_remove_failed", "value": "从追踪服务删除失败" },
+       { "name": "track_status", "value": "状态" },
+       { "name": "track_score", "value": "评分" },
+       { "name": "track_chapters", "value": "章节" },
+       { "name": "track_start_date", "value": "开始日期" },
+       { "name": "track_finish_date", "value": "结束日期" },
+       { "name": "track_private", "value": "私密" },
+       { "name": "track_unlink", "value": "解除绑定" },
+       { "name": "track_remove_remote", "value": "从追踪服务删除" },
+       { "name": "track_invalid_chapters", "value": "请输入有效的章节数" },
+       { "name": "track_reading", "value": "在看" },
+       { "name": "track_completed", "value": "看完" },
+       { "name": "track_on_hold", "value": "搁置" },
+       { "name": "track_paused", "value": "暂停" },
+       { "name": "track_dropped", "value": "弃了" },
+       { "name": "track_plan_to_read", "value": "想看" },
+       { "name": "track_repeating", "value": "重看" },
+       { "name": "track_considering", "value": "考虑中" },
+       { "name": "track_unknown_status", "value": "未知" },
+       { "name": "track_reading_list", "value": "在看列表" },
+       { "name": "track_wish_list", "value": "想看列表" },
+       { "name": "track_complete_list", "value": "看完列表" },
+       { "name": "track_on_hold_list", "value": "搁置列表" },
+       { "name": "track_unfinished_list", "value": "未完列表" },
+       { "name": "oauth_loading", "value": "加载中…" },
+       { "name": "oauth_load_error", "value": "加载失败：%s" }
 ]
 }

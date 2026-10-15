@@ -206,15 +206,56 @@ export class HistoryItem {
 
 // P2 模型
 
+// 追踪记录（对齐 Mihon Track）：status/score 存储 tracker 原生值，syncId 见 TrackerManager
 export class TrackRecord {
   id: number = 0;
   mangaId: number = 0;
-  syncId: number = 1; // 1 = AniList
+  syncId: number = 0;
   remoteId: number = 0;
+  libraryId: number = 0;
   title: string = '';
-  status: string = '';
+  // tracker 原生状态码（各追踪器常量）
+  status: number = 0;
   lastChapterRead: number = 0;
+  // tracker 原生评分（0-10 / 0-100 等）
   score: number = 0;
+  totalChapters: number = 0;
+  remoteUrl: string = '';
+  // 阅读起止日期（epoch 毫秒，0 = 未设置）
+  startDate: number = 0;
+  finishDate: number = 0;
+  isPrivate: boolean = false;
+}
+
+// 追踪搜索结果（对齐 Mihon TrackSearch）
+export class TrackSearchResult {
+  syncId: number = 0;
+  remoteId: number = 0;
+  libraryId: number = 0;
+  title: string = '';
+  totalChapters: number = 0;
+  coverUrl: string = '';
+  summary: string = '';
+  // 站点平均评分
+  score: number = 0;
+  trackingUrl: string = '';
+  publishingStatus: string = '';
+  publishingType: string = '';
+  startDate: string = '';
+  authors: string[] = [];
+  artists: string[] = [];
+  // 已在用户库中时的条目状态
+  status: number = 0;
+  lastChapterRead: number = 0;
+  isPrivate: boolean = false;
+  startReadDate: number = 0;
+  finishReadDate: number = 0;
+}
+
+// AniList 搜索结果
+export class ALMediaItem {
+  id: number = 0;
+  title: string = '';
 }
 
 export class DownloadTask {
@@ -255,10 +296,4 @@ export class DownloadedManga {
   mangaId: number = 0;
   mangaTitle: string = '';
   chapters: DownloadedChapter[] = [];
-}
-
-// AniList 搜索结果
-export class ALMediaItem {
-  id: number = 0;
-  title: string = '';
 }

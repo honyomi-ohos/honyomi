@@ -7,6 +7,7 @@ import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
 import { SmartImage } from './components/SmartImage';
+import { LimitedBody } from './components/LimitedBody';
 
 // 历史页：最近阅读记录
 @Component
@@ -74,6 +75,14 @@ export struct HistoryPage {
   }
 
   build() {
+    LimitedBody() {
+      this.bodyContent()
+    }
+  }
+
+  // 页面主体：LimitedBody 承载，大屏限宽居中，窄屏全宽
+  @Builder
+  bodyContent() {
     Column() {
       Row() {
         Text($r('app.string.history_title'))

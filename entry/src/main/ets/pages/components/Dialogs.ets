@@ -47,6 +47,7 @@ export struct InputDialog {
         Button($r('app.string.common_ok'))
           .layoutWeight(1)
           .backgroundColor(this.pal.primary)
+          .fontColor(this.pal.onPrimary)
           .onClick(() => {
             this.dismiss();
             this.onConfirm(this.inputText);
@@ -174,6 +175,7 @@ export struct ExportColumnsDialog {
         Button($r('app.string.common_save'))
           .layoutWeight(1)
           .backgroundColor(this.pal.primary)
+          .fontColor(this.pal.onPrimary)
           .onClick(() => {
             this.dismiss();
             this.onConfirm(this.titleSelected, this.authorSelected);
@@ -225,6 +227,7 @@ export struct ConfirmDialog {
         Button(this.confirmText)
           .layoutWeight(1)
           .backgroundColor(this.pal.primary)
+          .fontColor(this.pal.onPrimary)
           .onClick(() => {
             this.dismiss();
             this.onConfirm();

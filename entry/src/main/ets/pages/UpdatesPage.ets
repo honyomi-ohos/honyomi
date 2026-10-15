@@ -8,6 +8,7 @@ import { DetailParams } from '../model/RouteParams';
 import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
+import { LimitedBody } from './components/LimitedBody';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
@@ -152,6 +153,14 @@ export struct UpdatesPage {
   }
 
   build() {
+    LimitedBody() {
+      this.bodyContent()
+    }
+  }
+
+  // 页面主体：LimitedBody 承载，大屏限宽居中，窄屏全宽
+  @Builder
+  bodyContent() {
     Column() {
       // 顶栏：标题 + 筛选/日历/刷新（对齐 Mihon UpdatesAppBar）
       Row() {
@@ -173,9 +182,9 @@ export struct UpdatesPage {
             this.showFilterSheet = true;
           })
           .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(), {
-            preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
-            width: Bp.isWide(this.windowW) ? 560 : '100%',
-            height: Bp.isWide(this.windowW) ? 560 : SheetSize.FIT_CONTENT,
+            preferType: Bp.sheetType(this.windowW),
+            width: Bp.sheetWidth(this.windowW),
+            height: Bp.sheetHeight(this.windowW),
             detents: ['60%', SheetSize.LARGE],
             showClose: false,
             dragBar: true,

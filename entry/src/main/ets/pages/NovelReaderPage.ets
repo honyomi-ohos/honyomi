@@ -15,6 +15,7 @@ import { TtsText } from '../common/TtsText';
 import { ReaderWindow } from '../common/ReaderWindow';
 import { ReaderChapterNav, ChapterNeighbors } from '../common/ReaderChapterNav';
 import { DownloadService } from '../data/DownloadService';
+import { TrackService } from '../data/track/TrackService';
 import { EmulationFlipView } from './components/PageFlip';
 import { NovelBlock, NovelPage, SPINE_W, EMPTY_NOVEL_PAGE, NovelPaginator, NovelChapterText } from './components/novel/NovelPaginator';
 import { NovelModeSheet } from './components/novel/NovelModeSheet';
@@ -404,6 +405,9 @@ export struct NovelReaderPage {
     if (permille >= 950) {
       ChapterRepo.setRead(chapterId, true).catch((e: Object): void => {
         hilog.warn(0x0001, 'NovelReader', 'setRead failed: %{public}s', `${e}`);
+      });
+      TrackService.updateChapterRead(mangaId, chapterId).catch((e: Object): void => {
+        hilog.warn(0x0001, 'NovelReader', 'track update failed: %{public}s', `${e}`);
       });
     }
   }
@@ -1910,8 +1914,8 @@ export struct NovelReaderPage {
           .height(0)
           .hitTestBehavior(HitTestMode.None)
           .bindSheet($$this.showPanelSheet, this.panelSheetBuilder(), {
-            preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
-            width: Bp.isWide(this.windowW) ? 560 : '100%',
+            preferType: Bp.sheetType(this.windowW),
+            width: Bp.sheetWidth(this.windowW),
             height: SheetSize.FIT_CONTENT,
             title: { title: this.panelTitleRes() },
             detents: [SheetSize.FIT_CONTENT],
@@ -1925,8 +1929,8 @@ export struct NovelReaderPage {
       .height('100%')
       .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
       .bindSheet($$this.showModeSheet, this.modeSheetBuilder(), {
-        preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
-        width: Bp.isWide(this.windowW) ? 560 : '100%',
+        preferType: Bp.sheetType(this.windowW),
+        width: Bp.sheetWidth(this.windowW),
         height: SheetSize.FIT_CONTENT,
         title: { title: $r('app.string.reader_reading_mode') },
         detents: [SheetSize.FIT_CONTENT],
@@ -1939,8 +1943,8 @@ export struct NovelReaderPage {
     .hideTitleBar(true)
     .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
     .bindSheet($$this.showOrientationSheet, this.orientationSheetBuilder(), {
-      preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
-      width: Bp.isWide(this.windowW) ? 560 : '100%',
+      preferType: Bp.sheetType(this.windowW),
+      width: Bp.sheetWidth(this.windowW),
       height: SheetSize.FIT_CONTENT,
       title: { title: $r('app.string.reader_screen_orientation') },
       detents: [SheetSize.FIT_CONTENT],

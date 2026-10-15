@@ -11,11 +11,13 @@ export struct LibBadge {
   @Prop text: string = '';
   @Prop icon: string = '';
   @Prop bgColor: ResourceColor = '';
+  // 前景色：默认白色（固定绿底徽标），primary 底徽标需传主题 onPrimary 保证对比度
+  @Prop fgColor: ResourceColor = '#FFFFFF';
 
   build() {
     if (this.icon !== '') {
       Column() {
-        AppIcon({ name: this.icon, iconSize: 12, tint: '#FFFFFF' })
+        AppIcon({ name: this.icon, iconSize: 12, tint: this.fgColor })
       }
       .backgroundColor(this.bgColor)
       .padding({ left: 4, right: 4, top: 2, bottom: 2 })
@@ -23,7 +25,7 @@ export struct LibBadge {
     } else {
       Text(this.text)
         .fontSize(11)
-        .fontColor('#FFFFFF')
+        .fontColor(this.fgColor)
         .fontWeight(FontWeight.Medium)
         .maxLines(1)
         .backgroundColor(this.bgColor)
@@ -72,7 +74,7 @@ export struct LibraryMangaItem {
         LibBadge({ text: `${this.downloadCount}`, bgColor: '#4E9B5E' })
       }
       if (this.showUnreadBadge && this.unreadCount > 0) {
-        LibBadge({ text: `${this.unreadCount}`, bgColor: this.pal.primary })
+        LibBadge({ text: `${this.unreadCount}`, bgColor: this.pal.primary, fgColor: this.pal.onPrimary })
       }
     }
     .borderRadius(4)
@@ -87,7 +89,7 @@ export struct LibraryMangaItem {
           LibBadge({ icon: 'folder', bgColor: '#4E9B5E' })
         }
       } else if (this.showLanguageBadge && this.langLabel !== '') {
-        LibBadge({ text: this.langLabel, bgColor: this.pal.primary })
+        LibBadge({ text: this.langLabel, bgColor: this.pal.primary, fgColor: this.pal.onPrimary })
       }
     }
     .borderRadius(4)

@@ -2,22 +2,23 @@
 // 步骤 1 主题（模式/主题色/AMOLED）→ 步骤 2 指南（入门指南/还原备份）；
 // 首启未完成引导时拦截返回（Mihon BackHandler 行为），完成后落库 shownOnboarding。
 // 注：Mihon 的存储选择/权限步骤为 Android SAF 与安装权限场景，鸿蒙沙箱存储下不适用，故省略。
-import { ThemePalette, Theme } from '../common/Theme';
+import { ThemePalette } from '../common/Theme';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
 import { BackupService } from '../data/BackupService';
 import { OnboardingParams } from '../model/RouteParams';
 import { AppIcon } from './components/AppIcon';
+import { ThemePicker } from './components/ThemePicker';
 
 const GETTING_STARTED_URL: string = 'https://mihon.app/docs/guides/getting-started';
 const APP_NAME: string = 'Honyomi';
 
-// 步骤 1：主题（复用外观设置的主题模式/主题色/AMOLED 逻辑）
+// 步骤 1：主题（复用外观设置的主题模式/主题/AMOLED 逻辑）
 @Component
 struct OnboardingThemeStep {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @StorageProp('accent') accent: string = 'blue';
+  @StorageProp('appTheme') appTheme: string = 'default';
   @State themeMode: string = 'auto';
   @State amoled: boolean = false;
 
@@ -26,7 +27,7 @@ struct OnboardingThemeStep {
     this.amoled = Settings.getAmoledMode();
   }
 
-  private applyTheme(mode: string): void {
+  private applyThemeMode(mode: string): void {
     this.themeMode = mode;
     Settings.setThemeMode(mode);
     const systemDark = AppStorage.get<boolean>('isDarkSystem') ?? false;
@@ -34,16 +35,27 @@ struct OnboardingThemeStep {
     Settings.applyColorMode(Util.hostAbilityContext(this.getUIContext()));
   }
 
+  private pickTheme(id: string): void {
+    Settings.setAppThemeId(id);
+    Settings.applyAppTheme(Util.hostAbilityContext(this.getUIContext()));
+  }
+
+  private toggleAmoled(value: boolean): void {
+    this.amoled = value;
+    Settings.setAmoledMode(value);
+    Settings.applyAppTheme(Util.hostAbilityContext(this.getUIContext()));
+  }
+
   @Builder
   modeChip(label: Resource | string, mode: string) {
     Text(label)
       .fontSize(13)
-      .fontColor(this.themeMode === mode ? '#FFFFFF' : this.pal.text)
+      .fontColor(this.themeMode === mode ? this.pal.onPrimary : this.pal.text)
       .backgroundColor(this.themeMode === mode ? this.pal.primary : this.pal.chip)
       .borderRadius(16)
       .padding({ left: 16, right: 16, top: 7, bottom: 7 })
       .onClick(() => {
-        this.applyTheme(mode);
+        this.applyThemeMode(mode);
       })
   }
 
@@ -60,47 +72,18 @@ struct OnboardingThemeStep {
 
       Divider().color(this.pal.divider)
 
-      // 主题色
-      Row({ space: 18 }) {
-        ForEach(Theme.accentNames(), (name: string) => {
-          Column({ space: 4 }) {
-            Column() {
-              if (this.accent === name) {
-                Column()
-                  .width(12)
-                  .height(12)
-                  .borderRadius(6)
-                  .backgroundColor('#FFFFFF')
-              }
-            }
-            .width(36)
-            .height(36)
-            .borderRadius(18)
-            .backgroundColor(Theme.accentDot(name))
-            .justifyContent(FlexAlign.Center)
-            .alignItems(HorizontalAlign.Center)
-            .border({
-              width: this.accent === name ? 2 : 0,
-              color: this.pal.text
-            })
-            .onClick(() => {
-              this.accent = name;
-              Settings.setAccentColor(name);
-              Settings.applyAccent();
-            })
-            Text(Theme.accentLabel(name))
-              .fontSize(11)
-              .fontColor(this.pal.sub)
-          }
-          .alignItems(HorizontalAlign.Center)
-        }, (name: string) => `accent-${name}`)
-      }
-      .width('100%')
-      .padding({ top: 16, bottom: 16 })
+      // 主题（横向滚动预览卡片，模式切换后预览随当前深浅/AMOLED 渲染）
+      ThemePicker({
+        selectedTheme: this.appTheme,
+        onPick: (id: string): void => {
+          this.pickTheme(id);
+        }
+      })
+        .margin({ left: -16, right: -16 })
 
       Divider().color(this.pal.divider)
 
-      // AMOLED 纯黑背景
+      // AMOLED 纯黑背景（浅色模式下禁用，对齐 Mihon AMOLED 主题仅深色生效）
       Row() {
         Text($r('app.string.appearance_amoled'))
           .fontSize(15)
@@ -108,10 +91,10 @@ struct OnboardingThemeStep {
           .layoutWeight(1)
         Toggle({ type: ToggleType.Switch, isOn: this.amoled })
           .selectedColor(this.pal.primary)
+          .enabled(this.isDark)
+          .opacity(this.isDark ? 1 : 0.45)
           .onChange((value: boolean) => {
-            this.amoled = value;
-            Settings.setAmoledMode(value);
-            Settings.applyAccent();
+            this.toggleAmoled(value);
           })
       }
       .width('100%')
@@ -149,7 +132,7 @@ struct OnboardingGuidesStep {
         .height(44)
         .borderRadius(22)
         .backgroundColor(this.pal.primary)
-        .fontColor('#FFFFFF')
+        .fontColor(this.pal.onPrimary)
         .fontSize(14)
         .fontWeight(FontWeight.Medium)
         .onClick(() => {
@@ -329,7 +312,7 @@ export struct OnboardingPage {
             .height(48)
             .borderRadius(24)
             .backgroundColor(this.pal.primary)
-            .fontColor('#FFFFFF')
+            .fontColor(this.pal.onPrimary)
             .fontSize(15)
             .fontWeight(FontWeight.Medium)
             .margin({ top: 12 })

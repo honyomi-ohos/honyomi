@@ -329,6 +329,7 @@ export struct BrowseSourcePage {
                 .fontSize(14)
                 .height(38)
                 .backgroundColor(this.pal.primary)
+                .fontColor(this.pal.onPrimary)
                 .onClick(() => {
                   this.search();
                 })
@@ -390,6 +391,7 @@ export struct BrowseSourcePage {
                   .height(38)
                   .padding({ left: 20, right: 20 })
                   .backgroundColor(this.pal.primary)
+                  .fontColor(this.pal.onPrimary)
                   .borderRadius(19)
                   .margin({ top: 20 })
                   .onClick(() => {
@@ -428,8 +430,8 @@ export struct BrowseSourcePage {
         .height('100%')
         .backgroundColor(this.pal.bg)
         .bindSheet($$this.showFolderSheet, this.folderSheetBuilder(), {
-          preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
-          width: Bp.isWide(this.windowW) ? 560 : '100%',
+          preferType: Bp.sheetType(this.windowW),
+          width: Bp.sheetWidth(this.windowW),
           height: SheetSize.FIT_CONTENT,
           title: { title: $r('app.string.browse_local_folder_title') },
           detents: [SheetSize.FIT_CONTENT],

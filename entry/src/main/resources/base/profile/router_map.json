@@ -116,6 +116,11 @@
       "pageSourceFile": "src/main/ets/pages/settings/DataStoragePage.ets"
     },
     {
+      "buildFunction": "TrackingBuilder",
+      "name": "Tracking",
+      "pageSourceFile": "src/main/ets/pages/settings/TrackingPage.ets"
+    },
+    {
       "buildFunction": "SupportBuilder",
       "name": "Support",
       "pageSourceFile": "src/main/ets/pages/settings/SupportPage.ets"

@@ -11,17 +11,20 @@ import { PlayerSettingsContent } from './PlayerSettingsPage';
 import { DownloadsSettingsContent } from './DownloadsSettingsPage';
 import { BrowseSettingsContent } from './BrowseSettingsPage';
 import { DataStorageContent } from './DataStoragePage';
+import { TrackingContent } from './TrackingPage';
 import { AdvancedContent } from './AdvancedPage';
 import { AboutContent } from './AboutPage';
 import { LanguageContent } from './LanguagePage';
 import { OnboardingParams } from '../../model/RouteParams';
+import { LimitedBody } from '../components/LimitedBody';
 
 // lg 双栏左栏分类（index 与 CAT_ICONS、catTitle() 一一对应）
 const CAT_ICONS: string[] = [
   'tune', 'palette', 'collections_bookmark', 'image', 'play_arrow',
-  'download', 'explore', 'storage', 'settings', 'info'
+  'download', 'explore', 'sync', 'storage', 'settings', 'info'
 ];
-// 分类索引：0 常规 / 1 外观 / 2 书库 / 3 阅读器 / 4 播放器 / 5 下载 / 6 浏览 / 7 数据与存储 / 8 高级 / 9 关于
+// 分类索引：0 常规 / 1 外观 / 2 书库 / 3 阅读器 / 4 播放器 / 5 下载 / 6 浏览
+// / 7 追踪 / 8 数据与存储 / 9 高级 / 10 关于
 const CAT_DEFAULT: number = 1;
 
 // 设置中心主页：sm/md 为「常规 + 各分类入口」列表；lg(≥840vp) 双栏
@@ -52,8 +55,10 @@ export struct SettingsPage {
       case 6:
         return $r('app.string.settings_browse');
       case 7:
-        return $r('app.string.data_storage_title');
+        return $r('app.string.track_title');
       case 8:
+        return $r('app.string.data_storage_title');
+      case 9:
         return $r('app.string.settings_advanced');
       default:
         return $r('app.string.settings_about');
@@ -167,49 +172,59 @@ export struct SettingsPage {
         .height('100%')
         .color(this.pal.divider)
 
+      // 右栏限宽居中：平板横屏/PC 宽窗口下设置面板保持可读宽度
       Column() {
-        this.paneHeader()
-        if (this.rightSub === 'Language') {
-          LanguageContent()
-            .layoutWeight(1)
-        } else if (this.selCat === 0) {
-          this.generalPane()
-        } else if (this.selCat === 1) {
-          AppearanceContent({
-            onNavigate: (route: string): void => {
-              this.rightSub = route === 'Language' ? 'Language' : '';
+        LimitedBody() {
+          Column() {
+            this.paneHeader()
+            if (this.rightSub === 'Language') {
+              LanguageContent()
+                .layoutWeight(1)
+            } else if (this.selCat === 0) {
+              this.generalPane()
+            } else if (this.selCat === 1) {
+              AppearanceContent({
+                onNavigate: (route: string): void => {
+                  this.rightSub = route === 'Language' ? 'Language' : '';
+                }
+              })
+                .layoutWeight(1)
+            } else if (this.selCat === 2) {
+              LibrarySettingsContent()
+                .layoutWeight(1)
+            } else if (this.selCat === 3) {
+              ReaderSettingsContent()
+                .layoutWeight(1)
+            } else if (this.selCat === 4) {
+              PlayerSettingsContent()
+                .layoutWeight(1)
+            } else if (this.selCat === 5) {
+              DownloadsSettingsContent()
+                .layoutWeight(1)
+            } else if (this.selCat === 6) {
+              BrowseSettingsContent()
+                .layoutWeight(1)
+            } else if (this.selCat === 7) {
+              TrackingContent()
+                .layoutWeight(1)
+            } else if (this.selCat === 8) {
+              DataStorageContent()
+                .layoutWeight(1)
+            } else if (this.selCat === 9) {
+              AdvancedContent({
+                onOpenOnboarding: (): void => {
+                  const params: OnboardingParams = { firstRun: false };
+                  this.pathStack.pushPathByName('Onboarding', params);
+                }
+              })
+                .layoutWeight(1)
+            } else {
+              AboutContent()
+                .layoutWeight(1)
             }
-          })
-            .layoutWeight(1)
-        } else if (this.selCat === 2) {
-          LibrarySettingsContent()
-            .layoutWeight(1)
-        } else if (this.selCat === 3) {
-          ReaderSettingsContent()
-            .layoutWeight(1)
-        } else if (this.selCat === 4) {
-          PlayerSettingsContent()
-            .layoutWeight(1)
-        } else if (this.selCat === 5) {
-          DownloadsSettingsContent()
-            .layoutWeight(1)
-        } else if (this.selCat === 6) {
-          BrowseSettingsContent()
-            .layoutWeight(1)
-        } else if (this.selCat === 7) {
-          DataStorageContent()
-            .layoutWeight(1)
-        } else if (this.selCat === 8) {
-          AdvancedContent({
-            onOpenOnboarding: (): void => {
-              const params: OnboardingParams = { firstRun: false };
-              this.pathStack.pushPathByName('Onboarding', params);
-            }
-          })
-            .layoutWeight(1)
-        } else {
-          AboutContent()
-            .layoutWeight(1)
+          }
+          .width('100%')
+          .height('100%')
         }
       }
       .layoutWeight(1)
@@ -289,6 +304,14 @@ export struct SettingsPage {
             icon: 'explore',
             onTap: (): void => {
               this.pathStack.pushPathByName('BrowseSettings', null);
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          IconRow({
+            title: $r('app.string.track_title'),
+            icon: 'sync',
+            onTap: (): void => {
+              this.pathStack.pushPathByName('Tracking', null);
             }
           })
           Divider().color(this.pal.divider).margin({ left: 16 })

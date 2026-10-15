@@ -6,19 +6,17 @@ import { photoAccessHelper } from '@kit.MediaLibraryKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo, ChapterRepo, TrackRepo, CategoryRepo } from '../data/Repos';
 import { SourceRegistry } from '../source/Source';
-import { MangaRecord, ChapterRecord, TrackRecord, DownloadTask, ALMediaItem, CategoryRecord, ContentType } from '../model/Models';
+import { MangaRecord, ChapterRecord, DownloadTask, CategoryRecord, ContentType } from '../model/Models';
 import { DetailParams, GlobalSearchParams } from '../model/RouteParams';
 import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
-import { Settings } from '../common/Settings';
 import { CoverStore } from '../common/CoverStore';
 import { ChapterFlags } from '../common/ChapterFlags';
 import { NaturalCompare } from '../common/NaturalCompare';
 import { DownloadService } from '../data/DownloadService';
 import { WidgetUpdater } from '../form/WidgetUpdater';
-import { AniListTracker } from '../data/AniListTracker';
 import { InputDialog, ConfirmDialog, CategoryDialog } from './components/Dialogs';
 import { SmartImage } from './components/SmartImage';
 import { EmptyScreen } from './components/EmptyScreen';
@@ -26,6 +24,7 @@ import { AppIcon } from './components/AppIcon';
 import { CoverViewer } from './components/CoverViewer';
 import { CoverPlaceholder } from './components/CoverPlaceholder';
 import { ChapterSettingsSheet } from './components/ChapterSettingsSheet';
+import { TrackSheet } from './components/TrackSheet';
 
 // 章节行：自订阅 DownloadService 变化刷新下载指示器，
 // 避免 ForEach key 携带全局版本号导致整个章节列表重建
@@ -221,13 +220,10 @@ export struct MangaDetailPage {
   @State syncing: boolean = false;
   @State refreshing: boolean = false;
   @State topBarProgress: number = 0;
-  @State track: TrackRecord | undefined = undefined;
-  @State alResults: ALMediaItem[] = [];
-  @State alSearching: boolean = false;
+  @State trackCount: number = 0;
+  @State showTrackSheet: boolean = false;
   @State showCoverViewer: boolean = false;
   @State showSettingsSheet: boolean = false;
-  // AniList 追踪卡片：默认收起，由操作行"追踪"按钮展开（对齐 Mihon Tracking 按钮拉起追踪面板）
-  @State showTrackingCard: boolean = false;
   // 章节排序/筛选状态（持久化于 manga.chapterFlags，对齐 Mihon ChapterSettingsDialog）
   @State @Watch('onFilterStateChanged') sortMode: number = ChapterFlags.SORTING_SOURCE;
   @State @Watch('onFilterStateChanged') sortAscending: boolean = false;
@@ -364,7 +360,7 @@ export struct MangaDetailPage {
   private async loadAll(): Promise<void> {
     try {
       await this.syncFromSource();
-      this.track = await TrackRepo.get(this.mangaId);
+      await this.refreshTrackCount();
     } catch (e) {
       const msg = e instanceof Error ? e.message : `${e}`;
       hilog.warn(0x0001, 'MangaDetail', 'loadAll failed: %{public}s', msg);
@@ -423,6 +419,22 @@ export struct MangaDetailPage {
     } finally {
       this.refreshing = false;
     }
+  }
+
+  // 当前漫画的追踪记录数（操作行"追踪"按钮着色）
+  private async refreshTrackCount(): Promise<void> {
+    const list = await TrackRepo.listByManga(this.mangaId);
+    this.trackCount = list.length;
+  }
+
+  // 是否存在已读章节（注册追踪时远端合并进度用）
+  private hasReadChapters(): boolean {
+    for (const c of this.chapters) {
+      if (c.read) {
+        return true;
+      }
+    }
+    return false;
   }
 
   // 排序/筛选状态变化（弹层回调或本地数据应用）时重算展示缓存
@@ -941,82 +953,20 @@ export struct MangaDetailPage {
     this.clearSelection();
   }
 
-  private showAlSearch(): void {
-    if (Settings.getAnilistToken() === '') {
-      Util.toastRes(this.getUIContext(), $r('app.string.detail_config_anilist_token'));
-      return;
-    }
-    const dialog = new CustomDialogController({
-      builder: InputDialog({
-        title: $r('app.string.detail_search_anilist'),
-        placeholder: $r('app.string.detail_manga_title_hint'),
-        onConfirm: (text: string): void => {
-          this.runSafe((): Promise<void> => this.doAlSearch(text));
-        },
-        onClose: (): void => {
-          dialog.close();
-        },
-      }),
-      autoCancel: true,
-    });
-    dialog.open();
-  }
-
-  private async doAlSearch(query: string): Promise<void> {
-    const q = query.trim();
-    if (q === '') {
-      return;
-    }
-    const token = Settings.getAnilistToken();
-    this.alSearching = true;
-    try {
-      this.alResults = await AniListTracker.search(q, token, this.manga.contentType);
-      if (this.alResults.length === 0) {
-        Util.toastRes(this.getUIContext(), $r('app.string.detail_no_search_results'));
-      }
-    } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.detail_anilist_search_failed'));
-    }
-    this.alSearching = false;
-  }
-
-  private async bindAl(item: ALMediaItem): Promise<void> {
-    await TrackRepo.bind(this.mangaId, item.id, item.title);
-    this.track = await TrackRepo.get(this.mangaId);
-    this.alResults = [];
-    Util.toastRes(this.getUIContext(), $r('app.string.detail_anilist_bound'));
-  }
-
-  private async unbindAl(): Promise<void> {
-    await TrackRepo.unbind(this.mangaId);
-    this.track = undefined;
-    this.alResults = [];
-    Util.toastRes(this.getUIContext(), $r('app.string.detail_anilist_unbound'));
-  }
-
-  private async syncTrack(): Promise<void> {
-    if (this.track === undefined) {
-      return;
-    }
-    const token = Settings.getAnilistToken();
-    if (token === '') {
-      Util.toastRes(this.getUIContext(), $r('app.string.detail_config_anilist_token'));
-      return;
-    }
-    let progress = 0;
-    for (const c of this.chapters) {
-      if (c.read && c.chapterNumber > progress) {
-        progress = Math.floor(c.chapterNumber);
-      }
-    }
-    try {
-      await AniListTracker.updateProgress(token, this.track.remoteId, progress);
-      await TrackRepo.setLastChapterRead(this.mangaId, progress);
-      this.track = await TrackRepo.get(this.mangaId);
-      Util.toastRes(this.getUIContext(), $r('app.string.detail_synced_progress'), [progress]);
-    } catch (e) {
-      Util.toastRes(this.getUIContext(), $r('app.string.detail_anilist_sync_failed'));
-    }
+  // 追踪弹层（对齐 Mihon TrackSheet）
+  @Builder
+  trackSheetBuilder() {
+    TrackSheet({
+      mangaId: this.mangaId,
+      mangaTitle: this.manga.title,
+      hasReadChapters: this.hasReadChapters(),
+      onChanged: (): void => {
+        this.runSafe((): Promise<void> => this.refreshTrackCount());
+      },
+      onClose: (): void => {
+        this.showTrackSheet = false;
+      },
+    })
   }
 
   // 章节排序/筛选设置弹层（对齐 Mihon ChapterSettingsDialog）
@@ -1314,17 +1264,26 @@ export struct MangaDetailPage {
                   AppIcon({
                     name: 'sync',
                     iconSize: 22,
-                    tint: this.track !== undefined ? this.pal.primary : this.pal.sub
+                    tint: this.trackCount > 0 ? this.pal.primary : this.pal.sub
                   })
                   Text($r('app.string.detail_action_tracking'))
                     .fontSize(11)
                     .maxLines(2)
                     .textAlign(TextAlign.Center)
-                    .fontColor(this.track !== undefined ? this.pal.primary : this.pal.sub)
+                    .fontColor(this.trackCount > 0 ? this.pal.primary : this.pal.sub)
                 }
                 .layoutWeight(1)
                 .onClick(() => {
-                  this.showTrackingCard = !this.showTrackingCard;
+                  this.showTrackSheet = true;
+                })
+                .bindSheet($$this.showTrackSheet, this.trackSheetBuilder(), {
+                  preferType: Bp.sheetType(this.windowW),
+                  width: Bp.sheetWidth(this.windowW),
+                  height: Bp.sheetHeight(this.windowW),
+                  detents: ['75%', SheetSize.LARGE],
+                  dragBar: true,
+                  showClose: false,
+                  backgroundColor: this.pal.bg
                 })
 
                 if (this.manga.inLibrary) {
@@ -1393,104 +1352,6 @@ export struct MangaDetailPage {
               }
             }
 
-            // AniList 追踪（操作行"追踪"按钮控制显隐）
-            if (this.showTrackingCard) {
-              ListItem() {
-              Column() {
-                Text($r('app.string.detail_anilist_tracking'))
-                  .fontSize(15)
-                  .fontWeight(FontWeight.Bold)
-                  .fontColor(this.pal.text)
-                  .width('100%')
-                  .margin({ bottom: 8 })
-                if (Settings.getAnilistToken() === '') {
-                  Text($r('app.string.detail_anilist_token_hint'))
-                    .fontSize(12)
-                    .fontColor(this.pal.sub)
-                } else if (this.track === undefined) {
-                  if (this.alSearching) {
-                    Row({ space: 8 }) {
-                      LoadingProgress()
-                        .width(16)
-                        .height(16)
-                        .color(this.pal.primary)
-                      Text($r('app.string.detail_searching'))
-                        .fontSize(12)
-                        .fontColor(this.pal.sub)
-                    }
-                  } else {
-                    Text($r('app.string.detail_search_and_bind'))
-                      .fontSize(13)
-                      .fontColor('#FFFFFF')
-                      .backgroundColor(this.pal.primary)
-                      .borderRadius(14)
-                      .padding({ left: 14, right: 14, top: 6, bottom: 6 })
-                      .onClick(() => {
-                        this.showAlSearch();
-                      })
-                  }
-                  ForEach(this.alResults, (item: ALMediaItem) => {
-                    Row() {
-                      Text(item.title)
-                        .fontSize(13)
-                        .fontColor(this.pal.text)
-                        .maxLines(1)
-                        .textOverflow({ overflow: TextOverflow.Ellipsis })
-                        .layoutWeight(1)
-                      Text($r('app.string.detail_bind'))
-                        .fontSize(12)
-                        .fontColor(this.pal.primary)
-                        .padding({ left: 8 })
-                      .onClick(() => {
-                        this.runSafe((): Promise<void> => this.bindAl(item));
-                      })
-                    }
-                    .width('100%')
-                    .padding({ top: 8, bottom: 8 })
-                  }, (item: ALMediaItem) => `al-${item.id}`)
-                } else {
-                  Text(this.track.title)
-                    .fontSize(13)
-                    .fontColor(this.pal.text)
-                    .maxLines(1)
-                    .textOverflow({ overflow: TextOverflow.Ellipsis })
-                  Text($r('app.string.detail_synced_to_chapter', this.track.lastChapterRead))
-                    .fontSize(11)
-                    .fontColor(this.pal.sub)
-                    .margin({ top: 2 })
-                  Row({ space: 12 }) {
-                    Text($r('app.string.detail_sync_progress'))
-                      .fontSize(12)
-                      .fontColor(this.pal.primary)
-                      .backgroundColor(this.pal.chip)
-                      .borderRadius(12)
-                      .padding({ left: 10, right: 10, top: 4, bottom: 4 })
-                      .margin({ top: 8 })
-                      .onClick(() => {
-                        this.runSafe((): Promise<void> => this.syncTrack());
-                      })
-                    Text($r('app.string.detail_unbind'))
-                      .fontSize(12)
-                      .fontColor('#E05252')
-                      .backgroundColor(this.pal.chip)
-                      .borderRadius(12)
-                      .padding({ left: 10, right: 10, top: 4, bottom: 4 })
-                      .margin({ top: 8 })
-                      .onClick(() => {
-                        this.runSafe((): Promise<void> => this.unbindAl());
-                      })
-                  }
-                }
-              }
-               .width('100%')
-               .alignItems(HorizontalAlign.Start)
-               .padding(16)
-               .backgroundColor(this.pal.card)
-               .borderRadius(14)
-               .margin({ left: 16, right: 16, top: 12 })
-              }
-            }
-
             // 章节标题栏：标题/排序/筛选入口 + 批量下载 + 全部已读（对齐 Mihon ChapterHeader）
             ListItem() {
               Row() {
@@ -1520,9 +1381,9 @@ export struct MangaDetailPage {
                     this.showSettingsSheet = true;
                   })
                   .bindSheet($$this.showSettingsSheet, this.chapterSettingsSheetBuilder(), {
-                    preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
-                    width: Bp.isWide(this.windowW) ? 560 : '100%',
-                    height: Bp.isWide(this.windowW) ? 560 : SheetSize.FIT_CONTENT,
+                    preferType: Bp.sheetType(this.windowW),
+                    width: Bp.sheetWidth(this.windowW),
+                    height: Bp.sheetHeight(this.windowW),
                     detents: ['45%', SheetSize.LARGE],
                     showClose: false,
                     dragBar: true,

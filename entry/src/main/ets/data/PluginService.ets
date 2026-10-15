@@ -78,16 +78,22 @@ export class PluginService {
   private static context: common.UIAbilityContext | undefined = undefined;
   private static runtimeCache: Map<string, string> = new Map();
   private static appVersionCode: number = 1;
+  // 调试签名构建（appProvisionType === 'debug'）：放行 http 协议的仓库索引/插件包，release 一律强制 https
+  private static debugBuild: boolean = false;
 
   static init(context: common.UIAbilityContext): void {
     PluginService.pluginsDir = `${context.filesDir}/plugins`;
     PluginService.cacheDir = context.cacheDir;
     PluginService.context = context;
     try {
-      const bundleInfo = bundleManager.getBundleInfoForSelfSync(bundleManager.BundleFlag.GET_BUNDLE_INFO_DEFAULT);
+      const bundleInfo = bundleManager.getBundleInfoForSelfSync(
+        bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_APPLICATION);
       PluginService.appVersionCode = bundleInfo.versionCode;
+      PluginService.debugBuild = bundleInfo.appInfo !== undefined &&
+        bundleInfo.appInfo.appProvisionType === 'debug';
     } catch (e) {
       PluginService.appVersionCode = 1;
+      PluginService.debugBuild = false;
     }
     try {
       if (!fs.accessSync(PluginService.pluginsDir)) {
@@ -263,9 +269,14 @@ export class PluginService {
     }
   }
 
-  // 从仓库条目下载并安装：强制 https，索引声明 checksum（sha256）时校验完整性
+  // 是否调试签名构建：调试态放行 http 协议插件分发（本地调试仓库），release 拒绝
+  static isDebugBuild(): boolean {
+    return PluginService.debugBuild;
+  }
+
+  // 从仓库条目下载并安装：release 强制 https（调试构建放行 http），索引声明 checksum（sha256）时校验完整性
   static async installFromRepo(entry: RepoEntry): Promise<string> {
-    if (entry.file.startsWith('http://')) {
+    if (entry.file.startsWith('http://') && !PluginService.isDebugBuild()) {
       throw new Error('plugin_repo_not_https');
     }
     const buffer: ArrayBuffer = await Http.getBuffer(entry.file, undefined);
@@ -544,11 +555,14 @@ export class PluginService {
     throw new Error('plugin_no_manifest');
   }
 
-  // 仓库索引里的 file 可以是绝对 URL，也可以相对 index.json 所在目录；强制 https。
+  // 仓库索引里的 file 可以是绝对 URL，也可以相对 index.json 所在目录；release 强制 https，调试构建放行 http。
   private static resolveRepoFile(indexUrl: string, file: string): string {
     if (file.startsWith('http://')) {
-      // 明文 http 分发插件包等同远程代码注入面，一律拒绝
-      throw new Error('plugin_repo_entry_not_https');
+      // 明文 http 分发插件包等同远程代码注入面：仅调试签名构建放行，release 一律拒绝
+      if (!PluginService.isDebugBuild()) {
+        throw new Error('plugin_repo_entry_not_https');
+      }
+      return file;
     }
     if (file.startsWith('https://')) {
       return file;

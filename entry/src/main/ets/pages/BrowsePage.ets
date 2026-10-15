@@ -14,6 +14,7 @@ import { InputDialog } from './components/Dialogs';
 import { AppIcon } from './components/AppIcon';
 import { TypeBadgedIcon } from './components/TypeBadgedIcon';
 import { NsfwTag } from './components/NsfwTag';
+import { LimitedBody } from './components/LimitedBody';
 
 // 语言显示名（对齐 Mihon 源列表的语言分组头）
 const LANG_NAMES: Record<string, string> = {
@@ -257,6 +258,7 @@ struct SourceFilterDialog {
         Button($r('app.string.common_ok'))
           .layoutWeight(1)
           .backgroundColor(this.pal.primary)
+          .fontColor(this.pal.onPrimary)
           .onClick(() => {
             this.dismiss();
             this.onApply(this.checkedLangs.slice(), this.checkedTypes.slice());
@@ -774,7 +776,7 @@ export struct BrowsePage {
                 .margin({ left: 12 })
                 Text(`${item.count}`)
                   .fontSize(11)
-                  .fontColor('#FFFFFF')
+                  .fontColor(this.pal.onPrimary)
                   .backgroundColor(this.pal.primary)
                   .borderRadius(10)
                   .padding({ left: 8, right: 8, top: 2, bottom: 2 })
@@ -802,6 +804,14 @@ export struct BrowsePage {
   }
 
   build() {
+    LimitedBody() {
+      this.bodyContent()
+    }
+  }
+
+  // 页面主体：LimitedBody 承载，大屏限宽居中，窄屏全宽
+  @Builder
+  bodyContent() {
     Column() {
       // 顶栏（标题 + 按页签变化的右上角按钮，对齐原版 TabbedScreen）
       Row() {

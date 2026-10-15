@@ -4,6 +4,7 @@ import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
 import { AppIcon } from './components/AppIcon';
+import { LimitedBody } from './components/LimitedBody';
 
 // 队列行子组件：ForEach key 固定为章节 id 后同 key 行会被复用而不重跑生成器，
 // 进度/状态改由本组件自订阅 DownloadService 通知刷新（DownloadTask 非 @Observed）
@@ -181,6 +182,20 @@ export struct DownloadPage {
 
   build() {
     NavDestination() {
+      LimitedBody() {
+        this.bodyContent()
+      }
+    }
+    .hideTitleBar(true)
+    .backgroundColor(this.pal.bg)
+    .onReady((ctx: NavDestinationContext) => {
+      this.pathStack = ctx.pathStack;
+    })
+  }
+
+  // 页面主体：LimitedBody 承载，大屏限宽居中，窄屏全宽
+  @Builder
+  bodyContent() {
       Column() {
         // 头部
         Row() {
@@ -305,12 +320,6 @@ export struct DownloadPage {
       .width('100%')
       .height('100%')
       .backgroundColor(this.pal.bg)
-    }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
-    .onReady((ctx: NavDestinationContext) => {
-      this.pathStack = ctx.pathStack;
-    })
   }
 
   @Builder

@@ -1,16 +1,18 @@
-import { Theme, ThemePalette } from '../../common/Theme';
+import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
 import { Languages } from '../../common/Languages';
 import { Util } from '../../common/Util';
 import { PageHeader } from '../components/PageHeader';
 import { PrefGroup, PrefSwitchRow, TextRow } from '../components/Prefs';
+import { ThemePicker } from '../components/ThemePicker';
 
-// 外观设置内容（可嵌入 lg 设置双栏右栏）：语言 / 主题模式 / 主题色 / AMOLED
+// 外观设置内容（可嵌入 lg 设置双栏右栏）：语言 / 主题模式 / 主题 / AMOLED
 @Component
 export struct AppearanceContent {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @StorageProp('accent') accent: string = 'blue';
+  @StorageProp('appTheme') appTheme: string = 'default';
   @StorageProp('appLanguage') appLanguage: string = 'auto';
+  @StorageProp('isDark') isDark: boolean = false;
   @State themeMode: string = 'auto';
   // 二级页跳转：手机壳内为 push 路由；lg 双栏内为右栏切换
   onNavigate: (route: string) => void = (route: string) => {};
@@ -19,7 +21,7 @@ export struct AppearanceContent {
     this.themeMode = Settings.getThemeMode();
   }
 
-  private applyTheme(mode: string): void {
+  private applyMode(mode: string): void {
     this.themeMode = mode;
     Settings.setThemeMode(mode);
     const systemDark = AppStorage.get<boolean>('isDarkSystem') ?? false;
@@ -27,16 +29,21 @@ export struct AppearanceContent {
     Settings.applyColorMode(Util.hostAbilityContext(this.getUIContext()));
   }
 
+  private pickTheme(id: string): void {
+    Settings.setAppThemeId(id);
+    Settings.applyAppTheme(Util.hostAbilityContext(this.getUIContext()));
+  }
+
   @Builder
   modeChip(label: Resource | string, mode: string) {
     Text(label)
       .fontSize(13)
-      .fontColor(this.themeMode === mode ? '#FFFFFF' : this.pal.text)
+      .fontColor(this.themeMode === mode ? this.pal.onPrimary : this.pal.text)
       .backgroundColor(this.themeMode === mode ? this.pal.primary : this.pal.chip)
       .borderRadius(16)
       .padding({ left: 16, right: 16, top: 7, bottom: 7 })
       .onClick(() => {
-        this.applyTheme(mode);
+        this.applyMode(mode);
       })
   }
 
@@ -64,51 +71,23 @@ export struct AppearanceContent {
           .padding({ left: 16, right: 16, top: 12, bottom: 14 })
         }
 
-        PrefGroup({ groupTitle: $r('app.string.appearance_accent_color') }) {
-          Row({ space: 18 }) {
-            ForEach(Theme.accentNames(), (name: string) => {
-              Column({ space: 4 }) {
-                Column() {
-                  if (this.accent === name) {
-                    Column()
-                      .width(12)
-                      .height(12)
-                      .borderRadius(6)
-                      .backgroundColor('#FFFFFF')
-                  }
-                }
-                .width(36)
-                .height(36)
-                .borderRadius(18)
-                .backgroundColor(Theme.accentDot(name))
-                .justifyContent(FlexAlign.Center)
-                .alignItems(HorizontalAlign.Center)
-                .border({
-                  width: this.accent === name ? 2 : 0,
-                  color: this.pal.text
-                })
-                .onClick(() => {
-                  this.accent = name;
-                  Settings.setAccentColor(name);
-                  Settings.applyAccent();
-                })
-                Text(Theme.accentLabel(name))
-                  .fontSize(11)
-                  .fontColor(this.pal.sub)
-              }
-              .alignItems(HorizontalAlign.Center)
-            }, (name: string) => `accent-${name}`)
-          }
-          .padding({ left: 16, right: 16, top: 14, bottom: 14 })
+        PrefGroup({ groupTitle: $r('app.string.appearance_theme') }) {
+          ThemePicker({
+            selectedTheme: this.appTheme,
+            onPick: (id: string): void => {
+              this.pickTheme(id);
+            }
+          })
         }
 
         PrefGroup({ groupTitle: $r('app.string.appearance_other') }) {
           PrefSwitchRow({
             title: $r('app.string.appearance_amoled'),
             initValue: Settings.getAmoledMode(),
+            switchEnabled: this.isDark,
             apply: (value: boolean): void => {
               Settings.setAmoledMode(value);
-              Settings.applyAccent();
+              Settings.applyAppTheme(Util.hostAbilityContext(this.getUIContext()));
             }
           })
         }

@@ -52,7 +52,7 @@ export struct TypeBadgedIcon {
         Text(this.fallbackChar)
           .fontSize(Math.max(12, Math.round(this.iconSize * 0.42)))
           .fontWeight(FontWeight.Bold)
-          .fontColor('#FFFFFF')
+          .fontColor(this.pal.onPrimary)
           .textAlign(TextAlign.Center)
           .width(this.iconSize)
           .height(this.iconSize)

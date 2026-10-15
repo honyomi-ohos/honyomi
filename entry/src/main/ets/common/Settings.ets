@@ -2,7 +2,7 @@ import { preferences } from '@kit.ArkData';
 import { common, ConfigurationConstant } from '@kit.AbilityKit';
 import { window, UIContext } from '@kit.ArkUI';
 import { i18n } from '@kit.LocalizationKit';
-import { Theme } from './Theme';
+import { Theme, ThemePalette } from './Theme';
 import { AppKeys } from './AppKeys';
 
 // 轻量设置存储（阅读/主题/书架/阅读器/浏览/全局开关等）
@@ -273,6 +273,81 @@ export class Settings {
     Settings.setStr('anilistToken', token);
   }
 
+  // ---- 追踪（对齐 Mihon TrackPreferences）----
+  // 各追踪器凭据：trackUsername_{syncId} / trackPassword_{syncId}（OAuth 为 access token）
+  // trackDisplay_{syncId} 展示用户名；trackToken_{syncId} 为 OAuth token JSON
+  static getTrackUsername(syncId: number): string {
+    return Settings.getStr(`trackUsername_${syncId}`, '');
+  }
+
+  static setTrackUsername(syncId: number, v: string): void {
+    Settings.setStr(`trackUsername_${syncId}`, v);
+  }
+
+  static getTrackPassword(syncId: number): string {
+    return Settings.getStr(`trackPassword_${syncId}`, '');
+  }
+
+  static setTrackPassword(syncId: number, v: string): void {
+    Settings.setStr(`trackPassword_${syncId}`, v);
+  }
+
+  static getTrackDisplay(syncId: number): string {
+    return Settings.getStr(`trackDisplay_${syncId}`, '');
+  }
+
+  static setTrackDisplay(syncId: number, v: string): void {
+    Settings.setStr(`trackDisplay_${syncId}`, v);
+  }
+
+  static getTrackToken(syncId: number): string {
+    return Settings.getStr(`trackToken_${syncId}`, '');
+  }
+
+  static setTrackToken(syncId: number, v: string): void {
+    Settings.setStr(`trackToken_${syncId}`, v);
+  }
+
+  // AniList 评分制：POINT_100 / POINT_10 / POINT_10_DECIMAL / POINT_5 / POINT_3
+  static getAnilistScoreType(): string {
+    return Settings.getStr('anilistScoreType', 'POINT_100');
+  }
+
+  static setAnilistScoreType(v: string): void {
+    Settings.setStr('anilistScoreType', v);
+  }
+
+  // Kitsu 评分制：simple（表情）/ regular（星）/ advanced（10 分制小数）
+  static getKitsuScoreType(): string {
+    const raw: string = Settings.getStr('kitsuScoreType', 'simple');
+    if (raw === 'regular' || raw === 'advanced') {
+      return raw;
+    }
+    return 'simple';
+  }
+
+  static setKitsuScoreType(v: string): void {
+    Settings.setStr('kitsuScoreType', v);
+  }
+
+  // MangaBaka 评分制：STEP_1 / STEP_5 / STEP_10 / STEP_20 / STEP_25（0-100 步进）
+  static getMangabakaScoreType(): string {
+    return Settings.getStr('mangabakaScoreType', 'STEP_10');
+  }
+
+  static setMangabakaScoreType(v: string): void {
+    Settings.setStr('mangabakaScoreType', v);
+  }
+
+  // 阅读完成后自动同步追踪进度
+  static getTrackAutoUpdate(): boolean {
+    return Settings.getBool('trackAutoUpdate', true);
+  }
+
+  static setTrackAutoUpdate(v: boolean): void {
+    Settings.setBool('trackAutoUpdate', v);
+  }
+
   static getLastRefreshAt(): number {
     return Settings.getNum('lastRefreshAt', 0);
   }
@@ -318,12 +393,13 @@ export class Settings {
   }
 
   // ---- 主题 ----
-  static getAccentColor(): string {
-    return Settings.getStr('accentColor', 'blue');
+  static getAppThemeId(): string {
+    const raw: string = Settings.getStr('appTheme', 'default');
+    return Theme.isValidTheme(raw) ? raw : 'default';
   }
 
-  static setAccentColor(v: string): void {
-    Settings.setStr('accentColor', v);
+  static setAppThemeId(v: string): void {
+    Settings.setStr('appTheme', v);
   }
 
   static getAmoledMode(): boolean {
@@ -880,22 +956,24 @@ export class Settings {
     const mode: string = Settings.getThemeMode();
     const dark: boolean = mode === 'dark' || (mode === 'auto' && systemDark);
     AppStorage.setOrCreate(AppKeys.IS_DARK, dark);
-    AppStorage.setOrCreate(AppKeys.ACCENT, Settings.getAccentColor());
+    AppStorage.setOrCreate(AppKeys.APP_THEME, Settings.getAppThemeId());
     AppStorage.setOrCreate(AppKeys.AMOLED, Settings.getAmoledMode());
     Settings.pushPalette();
   }
 
-  static applyAccent(): void {
-    AppStorage.setOrCreate(AppKeys.ACCENT, Settings.getAccentColor());
+  // 主题/AMOLED 变更：更新 AppStorage、重建色板并同步系统栏
+  static applyAppTheme(context: common.Context): void {
+    AppStorage.setOrCreate(AppKeys.APP_THEME, Settings.getAppThemeId());
     AppStorage.setOrCreate(AppKeys.AMOLED, Settings.getAmoledMode());
     Settings.pushPalette();
+    Settings.applySystemBar(context);
   }
 
   // 重建色板并写入 AppStorage 'palette'（组件经 @StorageProp 绑定）
   static pushPalette(): void {
     const dark: boolean = AppStorage.get<boolean>(AppKeys.IS_DARK) ?? false;
     AppStorage.setOrCreate(AppKeys.PALETTE,
-      Theme.buildPalette(dark, Settings.getAmoledMode(), Settings.getAccentColor()));
+      Theme.buildPalette(Settings.getAppThemeId(), dark, Settings.getAmoledMode()));
   }
 
   // 应用颜色模式到系统（资源/系统组件随此切换；auto = 跟随系统）
@@ -923,13 +1001,12 @@ export class Settings {
     Settings.applySystemBar(context);
   }
 
-  // 系统栏：透明背景（沉浸式，光感效果由系统渲染），内容色与文本色资源保持一致
+  // 系统栏：透明背景（沉浸式，光感效果由系统渲染），内容色取自当前 palette 的文本色
   static applySystemBar(context: common.Context): void {
     window.getLastWindow(context).then((win: window.Window) => {
       const dark: boolean = AppStorage.get<boolean>(AppKeys.IS_DARK) ?? false;
-      // 内容色从 color.json 资源取（honyomi_text：浅 #16181D / 深 #ECEEF2），避免硬编码双份维护
-      const colorNum: number = context.resourceManager.getColorSync($r('app.color.honyomi_text').id);
-      const content: string = `#${(colorNum & 0xFFFFFF).toString(16).padStart(6, '0')}`;
+      const pal: ThemePalette = AppStorage.get<ThemePalette>(AppKeys.PALETTE) ?? new ThemePalette();
+      const content: string = pal.text;
       if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
         win.setWindowSystemBarProperties({
           statusBarColor: '#00000000',

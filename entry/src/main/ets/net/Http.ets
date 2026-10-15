@@ -4,6 +4,12 @@ import { common } from '@kit.AbilityKit';
 import { CookieJar } from './CookieJar';
 import { CfChallenge } from './CfChallenge';
 
+// 原始响应：状态码 + 响应体（追踪器需要区分 404 等非 2xx 状态）
+export interface RawResponse {
+  code: number;
+  body: string;
+}
+
 // 下载句柄：promise 必然 settle；cancel 中断；setProgressCb 接收字节进度
 export interface DownloadHandle {
   promise: Promise<void>;
@@ -75,8 +81,60 @@ export class Http {
     }
   }
 
-  static async getBuffer(url: string, headers: Record<string, string> | undefined): Promise<ArrayBuffer> {
+  // 任意方法原始请求（追踪器用）：返回状态码 + 响应体，非 2xx 不抛错；
+  // method 支持 GET/POST/PUT/PATCH/DELETE/HEAD；body 传空串表示无请求体；
+  // Content-Type 由调用方通过 headers 指定（JSON / x-www-form-urlencoded）
+  static async requestRaw(method: string, url: string, body: string,
+    headers: Record<string, string> | undefined): Promise<RawResponse> {
+    const client: http.HttpRequest = http.createHttp();
     try {
+      const options: http.HttpRequestOptions = {
+        method: Http.parseMethod(method),
+        header: Http.buildHeaders(url, headers),
+        expectDataType: http.HttpDataType.STRING,
+        connectTimeout: 15000,
+        readTimeout: 20000,
+      };
+      if (body !== '') {
+        options.extraData = body;
+      }
+      let resp: http.HttpResponse;
+      try {
+        resp = await client.request(url, options);
+      } catch (e) {
+        throw new Error(`HTTP ${method} failed: ${e}`);
+      }
+      CookieJar.storeFromResponse(url, resp.header);
+      const respBody: string = Http.bodyText(resp.result);
+      if (CfChallenge.isCfChallenge(resp.responseCode, respBody, resp.header)) {
+        AppStorage.setOrCreate('cfChallengeUrl', url);
+        throw new HttpCfError('cf_required');
+      }
+      const raw: RawResponse = { code: resp.responseCode, body: respBody };
+      return raw;
+    } finally {
+      client.destroy();
+    }
+  }
+
+  private static parseMethod(method: string): http.RequestMethod {
+    switch (method) {
+      case 'POST':
+        return http.RequestMethod.POST;
+      case 'PUT':
+        return http.RequestMethod.PUT;
+      case 'PATCH':
+        return http.RequestMethod.PATCH;
+      case 'DELETE':
+        return http.RequestMethod.DELETE;
+      case 'HEAD':
+        return http.RequestMethod.HEAD;
+      default:
+        return http.RequestMethod.GET;
+    }
+  }
+
+  static async getBuffer(url: string, headers: Record<string, string> | undefined): Promise<ArrayBuffer> {    try {
       return await Http.getBufferOnce(url, headers);
     } catch (e) {
       if (e instanceof HttpCfError || e instanceof HttpStatusError) {

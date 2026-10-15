@@ -3,6 +3,7 @@ import { ThemePalette } from '../common/Theme';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
 import { PrefGroup, SwitchRow, IconRow } from './components/Prefs';
+import { LimitedBody } from './components/LimitedBody';
 
 const HELP_URL: string = 'https://mihon.app/docs/guides/troubleshooting/';
 
@@ -19,6 +20,14 @@ export struct MorePage {
   @StorageProp('incognito') incognito: boolean = false;
 
   build() {
+    LimitedBody() {
+      this.bodyContent()
+    }
+  }
+
+  // 页面主体：LimitedBody 承载，大屏限宽居中，窄屏全宽
+  @Builder
+  bodyContent() {
     Column() {
       Text($r('app.string.more_title'))
         .fontSize(22)

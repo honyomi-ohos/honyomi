@@ -50,6 +50,8 @@ interface CardActionPayload {
 struct TabIcon {
   @Prop @Watch('onSelectedChanged') selected: boolean = false;
   @Prop kind: string = '';
+  // 选中态落在 primarySoft 底上（侧边 RailItem 胶囊）时需用 onPrimarySoft 保证对比度
+  @Prop onSoft: boolean = false;
   @State morphT: number = 0;
   @State histAngle: number = 0;
   @State browseDotScale: number = 0;
@@ -74,7 +76,10 @@ struct TabIcon {
   }
 
   private iconTint(): ResourceColor {
-    return this.selected ? this.pal.primary : this.pal.sub;
+    if (!this.selected) {
+      return this.pal.sub;
+    }
+    return this.onSoft ? this.pal.onPrimarySoft : this.pal.primary;
   }
 
   // 绘制 Path 的 commands 单位为 px：24 视口图标 24vp，library 为 1080 视口需再乘 24/1080
@@ -277,10 +282,10 @@ struct RailItem {
 
   build() {
     Row() {
-      TabIcon({ kind: this.kind, selected: this.selected })
+      TabIcon({ kind: this.kind, selected: this.selected, onSoft: true })
       Text(this.title)
         .fontSize(14)
-        .fontColor(this.selected ? this.pal.primary : this.pal.sub)
+        .fontColor(this.selected ? this.pal.onPrimarySoft : this.pal.sub)
         .margin({ left: 12 })
         .maxLines(1)
         .textOverflow({ overflow: TextOverflow.Ellipsis })

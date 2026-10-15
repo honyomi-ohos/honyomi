@@ -10,6 +10,7 @@ import { EmptyScreen } from './components/EmptyScreen';
 import { MangaRow } from './components/MangaRow';
 import { AppIcon } from './components/AppIcon';
 import { Settings } from '../common/Settings';
+import { LimitedBody } from './components/LimitedBody';
 
 // 全局搜索结果分节（每源一节）
 export class SearchSection {
@@ -138,6 +139,27 @@ export struct GlobalSearchPage {
 
   build() {
     NavDestination() {
+      LimitedBody() {
+        this.bodyContent()
+      }
+    }
+    .hideTitleBar(true)
+    .backgroundColor(this.pal.bg)
+    .onReady((ctx: NavDestinationContext) => {
+      this.pathStack = ctx.pathStack;
+      // 详情页跳转携带初始搜索词：进入即自动执行搜索
+      const params = ctx.pathInfo.param as GlobalSearchParams;
+      if (params !== undefined && params !== null && params.query.trim() !== '') {
+        this.query = params.query.trim();
+        this.startSearch().catch((_e: Error) => {
+        });
+      }
+    })
+  }
+
+  // 页面主体：LimitedBody 承载，大屏限宽居中，窄屏全宽
+  @Builder
+  bodyContent() {
       Column() {
         // 顶栏
         Row() {
@@ -160,6 +182,7 @@ export struct GlobalSearchPage {
             .fontSize(14)
             .height(38)
             .backgroundColor(this.pal.primary)
+            .fontColor(this.pal.onPrimary)
             .margin({ left: 8 })
             .onClick(() => {
               this.startSearch();
@@ -240,19 +263,6 @@ export struct GlobalSearchPage {
       .width('100%')
       .height('100%')
       .backgroundColor(this.pal.bg)
-    }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
-    .onReady((ctx: NavDestinationContext) => {
-      this.pathStack = ctx.pathStack;
-      // 详情页跳转携带初始搜索词：进入即自动执行搜索
-      const params = ctx.pathInfo.param as GlobalSearchParams;
-      if (params !== undefined && params !== null && params.query.trim() !== '') {
-        this.query = params.query.trim();
-        this.startSearch().catch((_e: Error) => {
-        });
-      }
-    })
   }
 }
 

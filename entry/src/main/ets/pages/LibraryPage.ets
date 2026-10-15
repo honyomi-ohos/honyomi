@@ -6,7 +6,7 @@ import { DownloadService } from '../data/DownloadService';
 import { Settings } from '../common/Settings';
 import { MangaRecord, CategoryRecord, MangaStats, ChapterRecord, DownloadTask, ContentType } from '../model/Models';
 import { DetailParams, MigrateSearchParams } from '../model/RouteParams';
-import { SourceRegistry } from '../source/Source';
+import { SourceRegistry, Source } from '../source/Source';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
@@ -66,6 +66,9 @@ export struct LibraryPage {
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
   // 复刻 Mihon：再次点击书架页签打开筛选/显示设置弹层（LibraryTab.onReselect）
   @StorageLink('libReselect') @Watch('onLibReselect') libReselect: number = 0;
+  // NSFW 源显示开关：关闭时隐藏 NSFW 插件源的作品；插件注册完成后（pluginsDirty）重算过滤
+  @StorageProp('showNsfw') @Watch('refreshView') showNsfw: boolean = false;
+  @StorageProp('pluginsDirty') @Watch('refreshView') pluginsDirty: number = 0;
   // 弹层状态（与 Settings 同步）；筛选/排序输入变化时重算缓存列表
   @State @Watch('refreshView') sortKey: string = 'alpha';
   @State @Watch('refreshView') sortAsc: boolean = true;
@@ -271,6 +274,13 @@ export struct LibraryPage {
   // 应用搜索 + 三态筛选（不含分类），供列表与分类计数共用
   private filteredAll(): MangaRecord[] {
     let list = this.mangas;
+    // 关闭“显示 NSFW 源”时隐藏来自 NSFW 插件源的作品（源未注册时保留展示）
+    if (!this.showNsfw) {
+      list = list.filter((m: MangaRecord): boolean => {
+        const source: Source | undefined = SourceRegistry.get(m.sourceKey);
+        return source === undefined || !source.nsfw;
+      });
+    }
     const q = this.searchQuery.trim().toLowerCase();
     if (q !== '') {
       list = list.filter((m: MangaRecord): boolean => m.title.toLowerCase().includes(q));
@@ -738,9 +748,9 @@ export struct LibraryPage {
               this.showFilterSheet = true;
             })
             .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(), {
-              preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
-              width: Bp.isWide(this.windowW) ? 560 : '100%',
-              height: Bp.isWide(this.windowW) ? 560 : SheetSize.FIT_CONTENT,
+              preferType: Bp.sheetType(this.windowW),
+              width: Bp.sheetWidth(this.windowW),
+              height: Bp.sheetHeight(this.windowW),
               detents: ['70%', SheetSize.LARGE],
               showClose: false,
               dragBar: true,

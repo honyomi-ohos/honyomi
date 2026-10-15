@@ -1734,9 +1734,9 @@ export struct VideoPlayerPage {
       .height('100%')
       .backgroundColor('#000000')
       .bindSheet($$this.showSheet, this.sheetBuilder(), {
-        preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
-        width: Bp.isWide(this.windowW) ? 560 : '100%',
-        height: Bp.isWide(this.windowW) ? 560 : SheetSize.FIT_CONTENT,
+        preferType: Bp.sheetType(this.windowW),
+        width: Bp.sheetWidth(this.windowW),
+        height: Bp.sheetHeight(this.windowW),
         detents: [SheetSize.MEDIUM, SheetSize.LARGE],
         dragBar: true,
         showClose: false,

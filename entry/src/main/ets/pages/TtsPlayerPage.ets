@@ -220,8 +220,8 @@ export struct TtsPlayerPage {
           .height(0)
           .hitTestBehavior(HitTestMode.None)
           .bindSheet($$this.showSpeed, this.speedSheetBuilder(), {
-            preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
-            width: Bp.isWide(this.windowW) ? 480 : '100%',
+            preferType: Bp.sheetType(this.windowW),
+            width: Bp.sheetWidth(this.windowW, 480),
             height: SheetSize.FIT_CONTENT,
             title: { title: $r('app.string.novel_tts_speed') },
             detents: [SheetSize.FIT_CONTENT],
@@ -236,8 +236,8 @@ export struct TtsPlayerPage {
           .height(0)
           .hitTestBehavior(HitTestMode.None)
           .bindSheet($$this.showSleep, this.sleepSheetBuilder(), {
-            preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
-            width: Bp.isWide(this.windowW) ? 480 : '100%',
+            preferType: Bp.sheetType(this.windowW),
+            width: Bp.sheetWidth(this.windowW, 480),
             height: SheetSize.FIT_CONTENT,
             title: { title: $r('app.string.tts_sleep_timer') },
             detents: [SheetSize.FIT_CONTENT],
@@ -254,8 +254,8 @@ export struct TtsPlayerPage {
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)
     .bindSheet($$this.showChapters, this.chapterSheetBuilder(), {
-      preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
-      width: Bp.isWide(this.windowW) ? 480 : '100%',
+      preferType: Bp.sheetType(this.windowW),
+      width: Bp.sheetWidth(this.windowW, 480),
       height: SheetSize.LARGE,
       title: { title: $r('app.string.tts_chapters') },
       detents: [SheetSize.MEDIUM, SheetSize.LARGE],
@@ -349,7 +349,7 @@ export struct TtsPlayerPage {
           })
 
           Row() {
-            AppIcon({ name: this.playing ? 'pause' : 'play_arrow', iconSize: 34, tint: '#FFFFFF' })
+            AppIcon({ name: this.playing ? 'pause' : 'play_arrow', iconSize: 34, tint: this.pal.onPrimary })
           }
           .width(72)
           .height(72)

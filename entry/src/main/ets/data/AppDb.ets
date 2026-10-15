@@ -142,12 +142,18 @@ export class AppDb {
       await store.executeSql(`CREATE TABLE IF NOT EXISTS track (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         mangaId INTEGER NOT NULL,
-        syncId INTEGER NOT NULL DEFAULT 1,
+        syncId INTEGER NOT NULL,
         remoteId INTEGER NOT NULL,
+        libraryId INTEGER DEFAULT 0,
         title TEXT DEFAULT '',
-        status TEXT DEFAULT '',
-        lastChapterRead INTEGER DEFAULT 0,
+        status INTEGER DEFAULT 0,
+        lastChapterRead REAL DEFAULT 0,
         score REAL DEFAULT 0,
+        totalChapters INTEGER DEFAULT 0,
+        remoteUrl TEXT DEFAULT '',
+        startDate INTEGER DEFAULT 0,
+        finishDate INTEGER DEFAULT 0,
+        isPrivate INTEGER DEFAULT 0,
         UNIQUE(mangaId, syncId)
       )`);
     } catch (e) {
@@ -287,6 +293,59 @@ export class AppDb {
       }
       version = 4;
       hilog.info(0x0001, 'AppDb', 'migrated schema to v4');
+    }
+    // v4 -> v5：track 表重建（多追踪器：Mihon syncId 体系 + 状态数值化 + 完整字段）
+    if (version < 5) {
+      try {
+        store.beginTransaction();
+      } catch (e) {
+        throw new Error(`migrate to v5 failed: ${e}`);
+      }
+      try {
+        // 新表结构检测：remoteUrl 列存在即已是 v5 结构（全新库 createTables 已建新表）
+        const cols5 = new Set<string>();
+        const colRs5 = await store.querySql(`PRAGMA table_info(track)`);
+        while (colRs5.goToNextRow()) {
+          cols5.add(colRs5.getString(colRs5.getColumnIndex('name')));
+        }
+        closeQuietly(colRs5);
+        if (!cols5.has('remoteUrl')) {
+          await store.executeSql(`CREATE TABLE track_v5 (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            mangaId INTEGER NOT NULL,
+            syncId INTEGER NOT NULL,
+            remoteId INTEGER NOT NULL,
+            libraryId INTEGER DEFAULT 0,
+            title TEXT DEFAULT '',
+            status INTEGER DEFAULT 0,
+            lastChapterRead REAL DEFAULT 0,
+            score REAL DEFAULT 0,
+            totalChapters INTEGER DEFAULT 0,
+            remoteUrl TEXT DEFAULT '',
+            startDate INTEGER DEFAULT 0,
+            finishDate INTEGER DEFAULT 0,
+            isPrivate INTEGER DEFAULT 0,
+            UNIQUE(mangaId, syncId)
+          )`);
+          // 旧表 syncId 1 = AniList → Mihon syncId 2；status 旧为文本（已废弃）重置为 0
+          await store.executeSql(`INSERT INTO track_v5
+            (mangaId, syncId, remoteId, title, status, lastChapterRead, score)
+            SELECT mangaId, CASE WHEN syncId = 1 THEN 2 ELSE syncId END,
+              remoteId, title, 0, lastChapterRead, score FROM track`);
+          await store.executeSql(`DROP TABLE track`);
+          await store.executeSql(`ALTER TABLE track_v5 RENAME TO track`);
+        }
+        await store.executeSql(`PRAGMA user_version = 5`);
+        store.commit();
+      } catch (e) {
+        try {
+          store.rollBack();
+        } catch (e2) {
+        }
+        throw new Error(`migrate to v5 failed: ${e}`);
+      }
+      version = 5;
+      hilog.info(0x0001, 'AppDb', 'migrated schema to v5');
     }
   }
 

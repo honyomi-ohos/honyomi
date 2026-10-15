@@ -1,48 +1,16 @@
 import { ThemePalette } from '../../common/Theme';
-import { Settings } from '../../common/Settings';
 import { Util } from '../../common/Util';
 import { CookieJar } from '../../net/CookieJar';
 import { PageHeader } from '../components/PageHeader';
 import { PrefGroup, TextRow, IconRow } from '../components/Prefs';
-import { InputDialog } from '../components/Dialogs';
 import { OnboardingParams } from '../../model/RouteParams';
 
-// 高级设置内容：新手引导 / Cookie / AniList（备份、章节缓存清理已移至「数据与存储」）
+// 高级设置内容：新手引导 / Cookie（备份、章节缓存清理已移至「数据与存储」，追踪已移至「追踪」页）
 @Component
 export struct AdvancedContent {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @State tokenLabel: string = '';
   // 打开新手引导（由宿主注入导航；lg 双栏与窄屏壳均 push Onboarding 路由）
   onOpenOnboarding: () => void = () => {};
-
-  aboutToAppear(): void {
-    this.tokenLabel = Settings.getAnilistToken() === '' ?
-      Util.resStr(this.getUIContext(), $r('app.string.advanced_token_not_set')) :
-      Util.resStr(this.getUIContext(), $r('app.string.advanced_token_set'));
-  }
-
-  private showTokenDialog(): void {
-    const dialog = new CustomDialogController({
-      builder: InputDialog({
-        title: $r('app.string.advanced_token_title'),
-        placeholder: $r('app.string.advanced_token_hint'),
-        onConfirm: (text: string): void => {
-          const token = text.trim();
-          Settings.setAnilistToken(token);
-          this.tokenLabel = token === '' ?
-            Util.resStr(this.getUIContext(), $r('app.string.advanced_token_not_set')) :
-            Util.resStr(this.getUIContext(), $r('app.string.advanced_token_set'));
-          Util.toastRes(this.getUIContext(), token === '' ?
-            $r('app.string.advanced_token_cleared') : $r('app.string.advanced_token_saved'));
-        },
-        onClose: (): void => {
-          dialog.close();
-        },
-      }),
-      autoCancel: true,
-    });
-    dialog.open();
-  }
 
   build() {
     Scroll() {
@@ -63,16 +31,6 @@ export struct AdvancedContent {
             onTap: (): void => {
               CookieJar.clear();
               Util.toastRes(this.getUIContext(), $r('app.string.advanced_cookies_cleared'));
-            }
-          })
-        }
-
-        PrefGroup({ groupTitle: $r('app.string.advanced_tracking') }) {
-          TextRow({
-            title: $r('app.string.advanced_anilist_token'),
-            value: this.tokenLabel,
-            onTap: (): void => {
-              this.showTokenDialog();
             }
           })
         }

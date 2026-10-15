@@ -215,8 +215,8 @@ export struct PrefSelectRow {
     .padding({ left: 16, right: 12 })
     .backgroundColor(this.hovered ? this.pal.chip : Color.Transparent)
     .bindSheet($$this.showPicker, this.pickerSheetBuilder(), {
-      preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
-      width: Bp.isWide(this.windowW) ? 560 : '100%',
+      preferType: Bp.sheetType(this.windowW),
+      width: Bp.sheetWidth(this.windowW),
       height: SheetSize.FIT_CONTENT,
       title: { title: this.title },
       detents: [SheetSize.FIT_CONTENT],
@@ -242,6 +242,9 @@ export struct PrefSwitchRow {
   subtitle: Resource | string = '';
   icon: string = '';
   initValue: boolean = false;
+  // 开关可用性（false 时行内开关禁用并降低不透明度，如浅色模式下的 AMOLED）；
+  // 命名避开通用属性 enabled()
+  @Prop switchEnabled: boolean = true;
   apply: (value: boolean) => void = (value: boolean) => {};
   @State isOn: boolean = false;
   private inited: boolean = false;
@@ -269,6 +272,7 @@ export struct PrefSwitchRow {
       .alignItems(HorizontalAlign.Start)
       Toggle({ type: ToggleType.Switch, isOn: this.isOn })
         .selectedColor(this.pal.primary)
+        .enabled(this.switchEnabled)
         .onChange((value: boolean) => {
           this.isOn = value;
           this.apply(value);
@@ -276,6 +280,7 @@ export struct PrefSwitchRow {
     }
     .width('100%')
     .constraintSize({ minHeight: 52 })
+    .opacity(this.switchEnabled ? 1 : 0.45)
     .padding({
       left: 16,
       right: 16,

@@ -7,7 +7,7 @@ export class AppKeys {
   static readonly IS_DARK: string = 'isDark';
   static readonly IS_DARK_SYSTEM: string = 'isDarkSystem';
   static readonly PALETTE: string = 'palette';
-  static readonly ACCENT: string = 'accent';
+  static readonly APP_THEME: string = 'appTheme';
   static readonly AMOLED: string = 'amoled';
   static readonly APP_LANGUAGE: string = 'appLanguage';
   // 系统避让区

@@ -322,7 +322,7 @@ export struct UpcomingPage {
         .maxLines(1)
       Text(`${row.count}`)
         .fontSize(11)
-        .fontColor('#FFFFFF')
+        .fontColor(this.pal.onPrimary)
         .backgroundColor(this.pal.primary)
         .borderRadius(10)
         .padding({ left: 6, right: 6, top: 1, bottom: 1 })
@@ -439,9 +439,9 @@ export struct UpcomingPage {
               this.showFilterSheet = true;
             })
             .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(), {
-              preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
-              width: Bp.isWide(this.windowW) ? 560 : '100%',
-              height: Bp.isWide(this.windowW) ? 560 : SheetSize.FIT_CONTENT,
+              preferType: Bp.sheetType(this.windowW),
+              width: Bp.sheetWidth(this.windowW),
+              height: Bp.sheetHeight(this.windowW),
               detents: ['60%', SheetSize.LARGE],
               showClose: false,
               dragBar: true,

@@ -1217,10 +1217,11 @@ export class UpcomingRepo {
   }
 }
 
-// 追踪仓库（AniList）
+// 追踪仓库（多追踪器，对齐 Mihon TrackRepo：每漫画 × 每 syncId 一条记录）
 export class TrackRepo {
   private static readonly COLUMNS: string[] = [
-    'id', 'mangaId', 'syncId', 'remoteId', 'title', 'status', 'lastChapterRead', 'score',
+    'id', 'mangaId', 'syncId', 'remoteId', 'libraryId', 'title', 'status', 'lastChapterRead',
+    'score', 'totalChapters', 'remoteUrl', 'startDate', 'finishDate', 'isPrivate',
   ];
 
   // 已绑定追踪的漫画 id 集合（书架"已追踪"筛选用）
@@ -1255,10 +1256,71 @@ export class TrackRepo {
     return list;
   }
 
+  // 某漫画的全部追踪记录
+  static async listByManga(mangaId: number): Promise<TrackRecord[]> {
+    const store = await AppDb.get();
+    const list: TrackRecord[] = [];
+    const pred = new relationalStore.RdbPredicates('track');
+    pred.equalTo('mangaId', mangaId);
+    try {
+      const rs = await store.query(pred, TrackRepo.COLUMNS);
+      while (rs.goToNextRow()) {
+        list.push(TrackRepo.rowToTrack(rs));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`list tracks failed: ${e}`);
+    }
+    return list;
+  }
+
+  // 某漫画的第一条追踪记录（单追踪器 UI 用；无记录返回 undefined）
   static async get(mangaId: number): Promise<TrackRecord | undefined> {
+    const list = await TrackRepo.listByManga(mangaId);
+    return list.length > 0 ? list[0] : undefined;
+  }
+
+  // 绑定 AniList 条目（syncId=2，对齐 Mihon Anilist sync id）
+  static async bind(mangaId: number, remoteId: number, title: string): Promise<void> {
+    const record = new TrackRecord();
+    record.mangaId = mangaId;
+    record.syncId = 2;
+    record.remoteId = remoteId;
+    record.title = title;
+    await TrackRepo.upsert(record);
+  }
+
+  // 解除某漫画的全部追踪绑定
+  static async unbind(mangaId: number): Promise<void> {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('track');
-    pred.equalTo('mangaId', mangaId).and().equalTo('syncId', 1);
+    pred.equalTo('mangaId', mangaId);
+    try {
+      await store.delete(pred);
+    } catch (e) {
+      throw new Error(`unbind tracks failed: ${e}`);
+    }
+  }
+
+  // 更新某漫画全部追踪记录的已读进度（同步后回写本地）
+  static async setLastChapterRead(mangaId: number, progress: number): Promise<void> {
+    const store = await AppDb.get();
+    const values: relationalStore.ValuesBucket = {
+      'lastChapterRead': progress,
+    };
+    const pred = new relationalStore.RdbPredicates('track');
+    pred.equalTo('mangaId', mangaId);
+    try {
+      await store.update(values, pred);
+    } catch (e) {
+      throw new Error(`update track progress failed: ${e}`);
+    }
+  }
+
+  static async getBySyncId(mangaId: number, syncId: number): Promise<TrackRecord | undefined> {
+    const store = await AppDb.get();
+    const pred = new relationalStore.RdbPredicates('track');
+    pred.equalTo('mangaId', mangaId).and().equalTo('syncId', syncId);
     try {
       const rs = await store.query(pred, TrackRepo.COLUMNS);
       const result: TrackRecord | undefined = rs.goToNextRow() ? TrackRepo.rowToTrack(rs) : undefined;
@@ -1269,59 +1331,48 @@ export class TrackRepo {
     }
   }
 
-  static async bind(mangaId: number, remoteId: number, title: string): Promise<void> {
+  // 插入或更新（按 mangaId + syncId 唯一）
+  static async upsert(track: TrackRecord): Promise<void> {
     const store = await AppDb.get();
-    const existing = await TrackRepo.get(mangaId);
-    if (existing !== undefined) {
-      const values: relationalStore.ValuesBucket = {
-        'remoteId': remoteId,
-        'title': title,
-      };
-      const pred = new relationalStore.RdbPredicates('track');
-      pred.equalTo('id', existing.id);
-      try {
-        await store.update(values, pred);
-      } catch (e) {
-        throw new Error(`update track failed: ${e}`);
-      }
-      return;
-    }
+    const existing = await TrackRepo.getBySyncId(track.mangaId, track.syncId);
     const values: relationalStore.ValuesBucket = {
-      'mangaId': mangaId,
-      'syncId': 1,
-      'remoteId': remoteId,
-      'title': title,
-      'status': '',
-      'lastChapterRead': 0,
-      'score': 0,
+      'mangaId': track.mangaId,
+      'syncId': track.syncId,
+      'remoteId': track.remoteId,
+      'libraryId': track.libraryId,
+      'title': track.title,
+      'status': track.status,
+      'lastChapterRead': track.lastChapterRead,
+      'score': track.score,
+      'totalChapters': track.totalChapters,
+      'remoteUrl': track.remoteUrl,
+      'startDate': track.startDate,
+      'finishDate': track.finishDate,
+      'isPrivate': track.isPrivate ? 1 : 0,
     };
     try {
-      await store.insert('track', values);
+      if (existing !== undefined) {
+        track.id = existing.id;
+        values['id'] = existing.id;
+        const pred = new relationalStore.RdbPredicates('track');
+        pred.equalTo('id', existing.id);
+        await store.update(values, pred);
+      } else {
+        await store.insert('track', values);
+      }
     } catch (e) {
-      throw new Error(`insert track failed: ${e}`);
+      throw new Error(`upsert track failed: ${e}`);
     }
   }
 
-  static async unbind(mangaId: number): Promise<void> {
+  static async delete(mangaId: number, syncId: number): Promise<void> {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('track');
-    pred.equalTo('mangaId', mangaId).and().equalTo('syncId', 1);
+    pred.equalTo('mangaId', mangaId).and().equalTo('syncId', syncId);
     try {
       await store.delete(pred);
     } catch (e) {
-      throw new Error(`unbind track failed: ${e}`);
-    }
-  }
-
-  static async setLastChapterRead(mangaId: number, lastChapterRead: number): Promise<void> {
-    const store = await AppDb.get();
-    const values: relationalStore.ValuesBucket = { 'lastChapterRead': lastChapterRead };
-    const pred = new relationalStore.RdbPredicates('track');
-    pred.equalTo('mangaId', mangaId).and().equalTo('syncId', 1);
-    try {
-      await store.update(values, pred);
-    } catch (e) {
-      throw new Error(`set last chapter read failed: ${e}`);
+      throw new Error(`delete track failed: ${e}`);
     }
   }
 
@@ -1332,10 +1383,16 @@ export class TrackRepo {
       t.mangaId = rs.getLong(rs.getColumnIndex('mangaId'));
       t.syncId = rs.getLong(rs.getColumnIndex('syncId'));
       t.remoteId = rs.getLong(rs.getColumnIndex('remoteId'));
+      t.libraryId = rs.getLong(rs.getColumnIndex('libraryId'));
       t.title = rs.getString(rs.getColumnIndex('title'));
-      t.status = rs.getString(rs.getColumnIndex('status'));
-      t.lastChapterRead = rs.getLong(rs.getColumnIndex('lastChapterRead'));
+      t.status = rs.getLong(rs.getColumnIndex('status'));
+      t.lastChapterRead = rs.getDouble(rs.getColumnIndex('lastChapterRead'));
       t.score = rs.getDouble(rs.getColumnIndex('score'));
+      t.totalChapters = rs.getLong(rs.getColumnIndex('totalChapters'));
+      t.remoteUrl = rs.getString(rs.getColumnIndex('remoteUrl'));
+      t.startDate = rs.getLong(rs.getColumnIndex('startDate'));
+      t.finishDate = rs.getLong(rs.getColumnIndex('finishDate'));
+      t.isPrivate = rs.getLong(rs.getColumnIndex('isPrivate')) !== 0;
       return t;
     } catch (e) {
       throw new Error(`map track row failed: ${e}`);

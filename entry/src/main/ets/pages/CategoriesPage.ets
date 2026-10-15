@@ -9,6 +9,7 @@ import { PageHeader } from './components/PageHeader';
 import { AppIcon } from './components/AppIcon';
 import { InputDialog } from './components/Dialogs';
 import { PickerSheet } from './components/PickerSheet';
+import { LimitedBody } from './components/LimitedBody';
 
 // 分类管理：列表 + 新建 + 长按重命名/删除
 @Component
@@ -130,6 +131,17 @@ export struct CategoriesPage {
 
   build() {
     NavDestination() {
+      LimitedBody() {
+        this.bodyContent()
+      }
+    }
+    .hideTitleBar(true)
+    .backgroundColor(this.pal.bg)
+  }
+
+  // 页面主体：LimitedBody 承载，大屏限宽居中，窄屏全宽
+  @Builder
+  bodyContent() {
       Column() {
         PageHeader({ title: $r('app.string.categories_title') }) {
           this.headerRight()
@@ -194,8 +206,8 @@ export struct CategoriesPage {
       .height('100%')
       .backgroundColor(this.pal.bg)
       .bindSheet($$this.showItemSheet, this.itemSheetBuilder(), {
-        preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
-        width: Bp.isWide(this.windowW) ? 560 : '100%',
+        preferType: Bp.sheetType(this.windowW),
+        width: Bp.sheetWidth(this.windowW),
         height: SheetSize.FIT_CONTENT,
         title: { title: this.menuCat === null ? '' : Util.categoryLabel(this.menuCat.name) },
         detents: [SheetSize.FIT_CONTENT],
@@ -203,9 +215,6 @@ export struct CategoriesPage {
         showClose: false,
         blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
       })
-    }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
   }
 }
 

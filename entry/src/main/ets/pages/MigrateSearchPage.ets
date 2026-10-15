@@ -284,6 +284,7 @@ export struct MigrateSearchPage {
               .fontSize(14)
               .height(38)
               .backgroundColor(this.pal.primary)
+              .fontColor(this.pal.onPrimary)
               .enabled(this.targetKey !== '')
               .onClick(() => {
                 this.searchNow();
