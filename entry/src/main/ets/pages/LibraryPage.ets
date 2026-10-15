@@ -297,11 +297,12 @@ export struct LibraryPage {
   // 应用搜索 + 三态筛选（不含分类），供列表与分类计数共用
   private filteredAll(): MangaRecord[] {
     let list = this.mangas;
-    // 关闭“显示 NSFW 源”时隐藏来自 NSFW 插件源的作品（源未注册时保留展示）
+    // 关闭“显示 NSFW 源”时隐藏来自 NSFW 插件源的作品；
+    // 源未注册（插件尚未加载完/已卸载）时无法确认非 NSFW，同样隐藏，避免冷启动闪现
     if (!this.showNsfw) {
       list = list.filter((m: MangaRecord): boolean => {
         const source: Source | undefined = SourceRegistry.get(m.sourceKey);
-        return source === undefined || !source.nsfw;
+        return source !== undefined && !source.nsfw;
       });
     }
     const q = this.searchQuery.trim().toLowerCase();

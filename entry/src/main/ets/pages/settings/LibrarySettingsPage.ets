@@ -31,7 +31,7 @@ export struct LibrarySettingsContent {
 
   build() {
     Scroll() {
-      Column() {
+      Column({ space: 12 }) {
         PrefGroup({ groupTitle: $r('app.string.lib_set_sort_group') }) {
           PrefSelectRow({
             title: $r('app.string.lib_set_sort_default'),

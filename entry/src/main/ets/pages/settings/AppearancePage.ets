@@ -49,7 +49,7 @@ export struct AppearanceContent {
 
   build() {
     Scroll() {
-      Column() {
+      Column({ space: 12 }) {
         PrefGroup({ groupTitle: $r('app.string.appearance_language') }) {
           TextRow({
             title: $r('app.string.appearance_language'),

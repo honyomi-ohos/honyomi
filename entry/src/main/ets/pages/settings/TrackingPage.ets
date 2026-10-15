@@ -253,7 +253,10 @@ export struct TrackingContent {
 
         // 追踪器列表
         PrefGroup() {
-          ForEach(TrackerManager.trackers, (t: Tracker) => {
+          ForEach(TrackerManager.trackers, (t: Tracker, index: number) => {
+            if (index > 0) {
+              Divider().color(this.pal.divider).margin({ left: 16 })
+            }
             this.trackerRow(t)
           }, (t: Tracker): string => `trk-${t.syncId}-${this.loginTick}`)
         }

@@ -45,7 +45,7 @@ export struct ReaderSettingsContent {
 
   build() {
     Scroll() {
-      Column() {
+      Column({ space: 12 }) {
         PrefGroup({ groupTitle: $r('app.string.reader_set_mode_group') }) {
           PrefSelectRow({
             title: $r('app.string.reader_set_mode_default'),

@@ -270,11 +270,13 @@ struct TabIcon {
   }
 }
 
-// 宽屏（lg ≥840vp，平板横屏/PC）侧边导航项：图标在左、文本在右（横排）+ 选中胶囊底 + 鼠标悬停反馈
+// 宽屏（lg ≥840vp，平板横屏/PC）侧边导航项：图标在左、文本在右（横排）+ 选中胶囊底 + 鼠标悬停反馈；
+// compact=true 时仅显示图标（推入路由页后外层导航收窄为图标栏，避免与设置页自身分类导航形成双栏）
 @Component
 struct RailItem {
   @Prop kind: string = '';
   @Prop selected: boolean = false;
+  @Prop compact: boolean = false;
   title: ResourceStr = '';
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State hovered: boolean = false;
@@ -283,18 +285,21 @@ struct RailItem {
   build() {
     Row() {
       TabIcon({ kind: this.kind, selected: this.selected, onSoft: true })
-      Text(this.title)
-        .fontSize(14)
-        .fontColor(this.selected ? this.pal.onPrimarySoft : this.pal.sub)
-        .margin({ left: 12 })
-        .maxLines(1)
-        .textOverflow({ overflow: TextOverflow.Ellipsis })
-        .layoutWeight(1)
+      if (!this.compact) {
+        Text(this.title)
+          .fontSize(14)
+          .fontColor(this.selected ? this.pal.onPrimarySoft : this.pal.sub)
+          .margin({ left: 12 })
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+          .layoutWeight(1)
+      }
     }
     .width('100%')
     .height(48)
     .alignItems(VerticalAlign.Center)
-    .padding({ left: 16, right: 12 })
+    .justifyContent(FlexAlign.Center)
+    .padding(this.compact ? { left: 0, right: 0 } : { left: 16, right: 12 })
     .borderRadius(24)
     .backgroundColor(this.selected ? this.pal.primarySoft : (this.hovered ? this.pal.chip : Color.Transparent))
     .onClick(() => {
@@ -325,6 +330,8 @@ struct Index {
   // 一多响应式：窗口宽度 + 已挂载页签位掩码（宽屏下按需挂载后驻留保状态）
   @State windowW: number = 0;
   @State mountedMask: number = 1;
+  // 栈顶路由名：'' = 首页；仅设置页（自带左侧分类导航，避免双栏）时外层导航收窄为图标栏，其余路由页均显示完整导航
+  @State topRouteName: string = '';
   // 首启引导只拉起一次（onPageShow 每次回前台都会触发，需防重复）
   private onboardingLaunched: boolean = false;
   private tabsController: HdsTabsController = new HdsTabsController();
@@ -354,6 +361,34 @@ struct Index {
       this.mountedMask = this.mountedMask | (1 << index);
     }
     this.currentTab = index;
+  }
+
+  // 路由切换后同步栈顶路由名（驱动外层导航 完整栏 ↔ 图标栏）。
+  // 仅在转场结束后（didShow）触发，且宽度变化放入动画：若在转场中途切换
+  // 导航宽度，内容区会跟着重排，出现首页透出到推入页下层、页面闪白等问题
+  private syncTopRoute(): void {
+    const names: string[] = this.pathStack.getAllPathName();
+    const top: string = names.length > 0 ? names[names.length - 1] : '';
+    if (top === this.topRouteName) {
+      return;
+    }
+    this.getUIContext().animateTo({ duration: 250, curve: Curve.EaseOut }, (): void => {
+      this.topRouteName = top;
+    });
+  }
+
+  // 侧边导航点击：首页内切换页签/触发快捷操作；路由页内点击先清栈回首页再切换
+  private railTap(index: number): void {
+    if (this.topRouteName !== '') {
+      this.pathStack.clear();
+      this.switchTab(index);
+      return;
+    }
+    if (this.currentTab === index) {
+      this.onTabReselect(index);
+    } else {
+      this.switchTab(index);
+    }
   }
 
   // 复刻 Mihon 底部导航快捷操作：再次点击已选中的页签触发 onReselect
@@ -389,6 +424,12 @@ struct Index {
   aboutToAppear(): void {
     this.currentTab = Settings.getStartTab();
     this.mountedMask = 1 << this.currentTab;
+    // 拦截路由切换：每次跳转完成后同步栈顶路由名（含路由页之间的跳转）
+    this.pathStack.setInterception({
+      didShow: (): void => {
+        this.syncTopRoute();
+      }
+    });
     // 订阅听书状态：仅听书进行中才挂载迷你条覆盖层
     TtsPlaybackService.events.onState(this.onTtsState);
     this.ttsActive = TtsPlaybackService.isActive();
@@ -682,91 +723,132 @@ struct Index {
     .tabBar(this.tabBuilder('more', $r('app.string.tab_more'), 4))
   }
 
-  // 宽屏主界面：左侧固定导航栏 + 右侧内容区（页签首次访问时挂载、驻留保状态）
+  // 宽屏常驻左侧导航（置于 Navigation 之外）：推入任意路由页（分类/下载/设置等）均不遮挡，PC 上随时切页签
   @Builder
-  wideHome() {
-    Row() {
-      Column({ space: 4 }) {
-        RailItem({
-          kind: 'library', title: $r('app.string.tab_library'),
-          selected: this.currentTab === 0,
-          onTap: (): void => { this.currentTab === 0 ? this.onTabReselect(0) : this.switchTab(0); }
-        })
-        RailItem({
-          kind: 'updates', title: $r('app.string.tab_updates'),
-          selected: this.currentTab === 1,
-          onTap: (): void => { this.currentTab === 1 ? this.onTabReselect(1) : this.switchTab(1); }
-        })
-        RailItem({
-          kind: 'history', title: $r('app.string.tab_history'),
-          selected: this.currentTab === 2,
-          onTap: (): void => { this.currentTab === 2 ? this.onTabReselect(2) : this.switchTab(2); }
-        })
-        RailItem({
-          kind: 'browse', title: $r('app.string.tab_browse'),
-          selected: this.currentTab === 3,
-          onTap: (): void => { this.currentTab === 3 ? this.onTabReselect(3) : this.switchTab(3); }
-        })
-        RailItem({
-          kind: 'more', title: $r('app.string.tab_more'),
-          selected: this.currentTab === 4,
-          onTap: (): void => { this.currentTab === 4 ? this.onTabReselect(4) : this.switchTab(4); }
-        })
-      }
-      .width(200)
-      .height('100%')
-      .padding({ top: this.statusBarH + 8, left: 12, right: 12, bottom: 8 })
-      .backgroundColor(this.pal.bg)
-      .border({ width: { right: 1 }, color: this.pal.divider })
+  wideRail() {
+    Column({ space: 4 }) {
+      RailItem({
+        kind: 'library', title: $r('app.string.tab_library'),
+        selected: this.currentTab === 0,
+        onTap: (): void => { this.railTap(0); }
+      })
+      RailItem({
+        kind: 'updates', title: $r('app.string.tab_updates'),
+        selected: this.currentTab === 1,
+        onTap: (): void => { this.railTap(1); }
+      })
+      RailItem({
+        kind: 'history', title: $r('app.string.tab_history'),
+        selected: this.currentTab === 2,
+        onTap: (): void => { this.railTap(2); }
+      })
+      RailItem({
+        kind: 'browse', title: $r('app.string.tab_browse'),
+        selected: this.currentTab === 3,
+        onTap: (): void => { this.railTap(3); }
+      })
+      RailItem({
+        kind: 'more', title: $r('app.string.tab_more'),
+        selected: this.currentTab === 4,
+        onTap: (): void => { this.railTap(4); }
+      })
+    }
+    .width(200)
+    .height('100%')
+    .padding({ top: this.statusBarH + 8, left: 12, right: 12, bottom: 8 })
+    .backgroundColor(this.pal.bg)
+    .border({ width: { right: 1 }, color: this.pal.divider })
+    // 渲染在 Navigation（Row 中靠后的兄弟节点）之上：推入路由页时首页向左平移
+    // 让位，Rail 不被平移中的首页内容盖住
+    .zIndex(1)
+  }
 
-      Stack() {
-        if (this.tabMounted(0)) {
-          Column() {
-            LibraryPage()
-          }
-          .height('100%')
-          .padding({ top: this.statusBarH })
-          .visibility(this.currentTab === 0 ? Visibility.Visible : Visibility.None)
+  // 宽屏路由页（设置等）内的收窄图标栏：仅图标无文本，避免与设置页自身左侧分类导航形成双栏
+  @Builder
+  wideRailMini() {
+    Column({ space: 4 }) {
+      RailItem({
+        kind: 'library', compact: true,
+        selected: this.currentTab === 0,
+        onTap: (): void => { this.railTap(0); }
+      })
+      RailItem({
+        kind: 'updates', compact: true,
+        selected: this.currentTab === 1,
+        onTap: (): void => { this.railTap(1); }
+      })
+      RailItem({
+        kind: 'history', compact: true,
+        selected: this.currentTab === 2,
+        onTap: (): void => { this.railTap(2); }
+      })
+      RailItem({
+        kind: 'browse', compact: true,
+        selected: this.currentTab === 3,
+        onTap: (): void => { this.railTap(3); }
+      })
+      RailItem({
+        kind: 'more', compact: true,
+        selected: this.currentTab === 4,
+        onTap: (): void => { this.railTap(4); }
+      })
+    }
+    .width(72)
+    .height('100%')
+    .padding({ top: this.statusBarH + 8, left: 8, right: 8, bottom: 8 })
+    .backgroundColor(this.pal.bg)
+    .border({ width: { right: 1 }, color: this.pal.divider })
+    .zIndex(1)
+  }
+
+  // 宽屏内容区：页签首次访问时挂载、驻留保状态（无页签栏，导航由左侧 Rail 承担）
+  @Builder
+  wideContent() {
+    Stack() {
+      if (this.tabMounted(0)) {
+        Column() {
+          LibraryPage()
         }
-        if (this.tabMounted(1)) {
-          Column() {
-            UpdatesPage()
-          }
-          .height('100%')
-          .padding({ top: this.statusBarH })
-          .visibility(this.currentTab === 1 ? Visibility.Visible : Visibility.None)
-        }
-        if (this.tabMounted(2)) {
-          Column() {
-            HistoryPage()
-          }
-          .height('100%')
-          .padding({ top: this.statusBarH })
-          .visibility(this.currentTab === 2 ? Visibility.Visible : Visibility.None)
-        }
-        if (this.tabMounted(3)) {
-          Column() {
-            BrowsePage()
-          }
-          .height('100%')
-          .padding({ top: this.statusBarH })
-          .visibility(this.currentTab === 3 ? Visibility.Visible : Visibility.None)
-        }
-        if (this.tabMounted(4)) {
-          Column() {
-            MorePage()
-          }
-          .height('100%')
-          .padding({ top: this.statusBarH })
-          .visibility(this.currentTab === 4 ? Visibility.Visible : Visibility.None)
-        }
+        .height('100%')
+        .padding({ top: this.statusBarH })
+        .visibility(this.currentTab === 0 ? Visibility.Visible : Visibility.None)
       }
-      .layoutWeight(1)
-      .height('100%')
-      .backgroundColor(this.pal.bg)
+      if (this.tabMounted(1)) {
+        Column() {
+          UpdatesPage()
+        }
+        .height('100%')
+        .padding({ top: this.statusBarH })
+        .visibility(this.currentTab === 1 ? Visibility.Visible : Visibility.None)
+      }
+      if (this.tabMounted(2)) {
+        Column() {
+          HistoryPage()
+        }
+        .height('100%')
+        .padding({ top: this.statusBarH })
+        .visibility(this.currentTab === 2 ? Visibility.Visible : Visibility.None)
+      }
+      if (this.tabMounted(3)) {
+        Column() {
+          BrowsePage()
+        }
+        .height('100%')
+        .padding({ top: this.statusBarH })
+        .visibility(this.currentTab === 3 ? Visibility.Visible : Visibility.None)
+      }
+      if (this.tabMounted(4)) {
+        Column() {
+          MorePage()
+        }
+        .height('100%')
+        .padding({ top: this.statusBarH })
+        .visibility(this.currentTab === 4 ? Visibility.Visible : Visibility.None)
+      }
     }
     .width('100%')
     .height('100%')
+    .backgroundColor(this.pal.bg)
   }
 
   // CF 人机验证半模态内容：Mihon 风格工具栏 + 验证网页
@@ -781,10 +863,20 @@ struct Index {
   }
 
   build() {
-    Navigation(this.pathStack) {
+    Row() {
+      // 宽屏常驻左侧导航：置于 Navigation 之外，推入任意路由页（分类/下载/设置等）均不遮挡；
+      // 仅设置页（自带左侧分类导航，避免双栏）收窄为图标栏，其余路由页均显示完整导航
+      if (this.isWide()) {
+        if (this.topRouteName === 'Settings') {
+          this.wideRailMini()
+        } else {
+          this.wideRail()
+        }
+      }
+      Navigation(this.pathStack) {
       Stack({ alignContent: Alignment.TopStart }) {
         if (this.isWide()) {
-          this.wideHome()
+          this.wideContent()
         } else if (this.hdsAvailable) {
         HdsTabs({ barPosition: BarPosition.End, index: this.currentTab, controller: this.tabsController }) {
           this.phoneTabContents()
@@ -872,11 +964,26 @@ struct Index {
           }
         }
       })
-    }
-    .hideTitleBar(true)
-    .mode(NavigationMode.Stack)
+      }
+      .layoutWeight(1)
+      .hideTitleBar(true)
+      .mode(NavigationMode.Stack)
+      .backgroundColor(this.pal.bg)
+      // 裁剪内容到自身边界：Stack 模式推入路由页时首页向左平移让位，
+      // 不裁剪会溢出画到左侧 Rail 区域上（Rail 被"挤压"至不可见）
+      .clip(true)
+      // 返回首页时兜底同步（didShow 正常覆盖此场景，此处仅防极端未触发导致
+      // 导航卡在图标栏）；延迟到转场结束后执行，避免导航宽度在动画中途跳变
+      .onNavBarStateChange((isVisible: boolean) => {
+        if (isVisible) {
+          setTimeout((): void => { this.syncTopRoute(); }, 450);
+        }
+      })
+      }
+    .width('100%')
+    .height('100%')
     .backgroundColor(this.pal.bg)
-    // 一多断点跟踪：窗口宽度变化驱动 底部页签/侧边导航 切换；
+    // 一多断点跟踪：外层 Row = 整窗宽度（含 Rail），避免 840vp 临界值来回抖动；
     // 同步发布到 AppStorage，供各页面按断点做限宽/边距适配
     .onAreaChange((_old: Area, newArea: Area) => {
       const w = newArea.width;

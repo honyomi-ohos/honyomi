@@ -95,11 +95,12 @@ export struct UpdatesPage {
     query.includedCategories = this.includedCats;
     query.excludedCategories = this.excludedCats;
     let items = await UpdatesRepo.filteredChapters(query, 300);
-    // 关闭“显示 NSFW 源”时隐藏 NSFW 插件源的更新条目（源未注册时保留展示）
+    // 关闭“显示 NSFW 源”时隐藏 NSFW 插件源的更新条目；
+    // 源未注册（插件尚未加载完/已卸载）时无法确认非 NSFW，同样隐藏，避免冷启动闪现
     if (!this.showNsfw) {
       items = items.filter((it: UpdateItem): boolean => {
         const source = SourceRegistry.get(it.sourceKey);
-        return source === undefined || !source.nsfw;
+        return source !== undefined && !source.nsfw;
       });
     }
     // 已下载筛选走内存过滤（下载状态在文件系统）

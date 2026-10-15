@@ -49,7 +49,7 @@ export struct PlayerSettingsContent {
 
   build() {
     Scroll() {
-      Column() {
+      Column({ space: 12 }) {
         PrefGroup({ groupTitle: $r('app.string.player_set_playback') }) {
           PrefSelectRow({
             title: $r('app.string.player_set_speed'),

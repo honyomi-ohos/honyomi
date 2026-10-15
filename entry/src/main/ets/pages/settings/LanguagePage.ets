@@ -42,7 +42,11 @@ export struct LanguageContent {
     Scroll() {
       Column() {
         this.langRow($r('app.string.lang_follow_system'), 'auto')
-        ForEach(Languages.all(), (lang: AppLanguage) => {
+        Divider().color(this.pal.divider).margin({ left: 16 })
+        ForEach(Languages.all(), (lang: AppLanguage, index: number) => {
+          if (index > 0) {
+            Divider().color(this.pal.divider).margin({ left: 16 })
+          }
           this.langRow(lang.nativeName, lang.tag)
         }, (lang: AppLanguage) => `lang-${lang.tag}`)
       }

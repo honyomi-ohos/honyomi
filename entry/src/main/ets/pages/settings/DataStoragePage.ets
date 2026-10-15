@@ -199,11 +199,11 @@ export struct DataStorageContent {
 
         // 备份与还原
         PrefGroup({ groupTitle: $r('app.string.data_backup_restore') }) {
-          Row() {
+          Row({ space: 8 }) {
             Button($r('app.string.data_create_backup'))
               .layoutWeight(1)
               .height(40)
-              .borderRadius({ topLeft: 20, bottomLeft: 20 })
+              .borderRadius(20)
               .backgroundColor(this.pal.chip)
               .fontColor(this.pal.text)
               .fontSize(14)
@@ -213,7 +213,7 @@ export struct DataStorageContent {
             Button($r('app.string.data_restore_backup'))
               .layoutWeight(1)
               .height(40)
-              .borderRadius({ topRight: 20, bottomRight: 20 })
+              .borderRadius(20)
               .backgroundColor(this.pal.chip)
               .fontColor(this.pal.text)
               .fontSize(14)

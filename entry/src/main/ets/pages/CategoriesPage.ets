@@ -1,7 +1,8 @@
 import { common } from '@kit.AbilityKit';
+import { curves } from '@kit.ArkUI';
 import { AppDb } from '../data/AppDb';
 import { CategoryRepo } from '../data/Repos';
-import { CategoryRecord } from '../model/Models';
+import { CategoryRecord, ContentType } from '../model/Models';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
@@ -11,7 +12,9 @@ import { InputDialog } from './components/Dialogs';
 import { PickerSheet } from './components/PickerSheet';
 import { LimitedBody } from './components/LimitedBody';
 
-// 分类管理：列表 + 新建 + 长按重命名/删除
+// 分类管理：列表 + 新建 + 点击重命名/删除 + 长按拖拽排序
+// 拖拽参考官方 grid-drag-sort 示例的"直接拖拽"模式：
+// 长按浮起（translate/zIndex/scale）→ 跟手位移 → 越过半行高时弹簧动画换位 → 松手持久化
 @Component
 export struct CategoriesPage {
   @StorageProp('isDark') isDark: boolean = false;
@@ -20,7 +23,13 @@ export struct CategoriesPage {
   @StorageProp('windowW') windowW: number = 0;
   @State categories: CategoryRecord[] = [];
   @State showItemSheet: boolean = false;
+  @State dragId: number = -1;
+  @State offsetY: number = 0;
+  @State rowH: number = 0;
   private menuCat: CategoryRecord | null = null;
+  private dragRefOffsetY: number = 0;
+  private panning: boolean = false;
+  private orderDirty: boolean = false;
 
   aboutToAppear(): void {
     const context = Util.hostAbilityContext(this.getUIContext());
@@ -88,12 +97,54 @@ export struct CategoriesPage {
     dialog.open();
   }
 
+  // 默认分类：id = 1 回退分类 + 内置三分类（漫画/小说/动画），均不可编辑
+  private isDefaultCat(cat: CategoryRecord): boolean {
+    return cat.id === 1 || ContentType.isBuiltinCategory(cat.name);
+  }
+
   private showItemMenu(cat: CategoryRecord): void {
-    if (cat.id === 1) {
+    if (this.isDefaultCat(cat)) {
       return;
     }
     this.menuCat = cat;
     this.showItemSheet = true;
+  }
+
+  // 数组内移动分类（换位），标记顺序已变更
+  private itemMove(index: number, newIndex: number): void {
+    if (newIndex < 0 || newIndex >= this.categories.length || index === newIndex || index < 0) {
+      return;
+    }
+    const moved: CategoryRecord = this.categories.splice(index, 1)[0];
+    this.categories.splice(newIndex, 0, moved);
+    this.orderDirty = true;
+  }
+
+  // 松手：浮起复位 + 持久化（顺序有变化时）
+  private endDrag(): void {
+    const dragged: number = this.dragId;
+    this.getUIContext().animateTo({ curve: curves.interpolatingSpring(0, 1, 400, 38) }, (): void => {
+      this.dragId = -1;
+      this.offsetY = 0;
+    });
+    if (dragged >= 0 && this.orderDirty) {
+      this.orderDirty = false;
+      this.persistOrder();
+    }
+  }
+
+  // 持久化当前顺序到数据库并刷新书架分类 tab
+  private persistOrder(): void {
+    const ids: number[] = [];
+    for (const cat of this.categories) {
+      ids.push(cat.id);
+    }
+    CategoryRepo.reorder(ids).then(() => {
+      AppStorage.setOrCreate('libDirty', (AppStorage.get<number>('libDirty') ?? 0) + 1);
+    }).catch((_e: Error): void => {
+      this.reload();
+      Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
+    });
   }
 
   @Builder
@@ -131,7 +182,7 @@ export struct CategoriesPage {
 
   build() {
     NavDestination() {
-      LimitedBody() {
+      LimitedBody({ maxWidth: 960 }) {
         this.bodyContent()
       }
     }
@@ -151,14 +202,14 @@ export struct CategoriesPage {
             ForEach(this.categories, (cat: CategoryRecord) => {
               ListItem() {
                 Row() {
-                  AppIcon({ name: 'label', iconSize: 20 })
+                  AppIcon({ name: 'drag_handle', iconSize: 20 })
                   Text(Util.categoryLabel(cat.name))
                     .fontSize(16)
                     .fontColor(this.pal.text)
                     .layoutWeight(1)
                     .margin({ left: 14 })
                     .maxLines(1)
-                  if (cat.id === 1) {
+                  if (this.isDefaultCat(cat)) {
                     Text($r('app.string.common_default'))
                       .fontSize(11)
                       .fontColor(this.pal.sub)
@@ -171,16 +222,76 @@ export struct CategoriesPage {
                 }
                 .width('100%')
                 .padding({ left: 16, right: 16, top: 14, bottom: 14 })
+                .backgroundColor(this.dragId === cat.id ? this.pal.card : Color.Transparent)
+                .borderRadius(this.dragId === cat.id ? 12 : 0)
+                .shadow(this.dragId === cat.id
+                  ? { radius: 20, offsetX: 0, offsetY: 6, color: this.isDark ? '#99000000' : '#2E000000' }
+                  : { radius: 0 })
                 .onClick(() => {
                   this.showItemMenu(cat);
                 })
-                .gesture(
-                  LongPressGesture({ repeat: false })
-                    .onAction((event: GestureEvent) => {
-                      this.showItemMenu(cat);
+              }
+              .zIndex(this.dragId === cat.id ? 1 : 0)
+              .scale(this.dragId === cat.id ? { x: 1.02, y: 1.02 } : { x: 1, y: 1 })
+              .translate({ y: this.dragId === cat.id ? this.offsetY : 0 })
+              .onAreaChange((_oldArea: Area, newArea: Area) => {
+                // 行高仅在首行测量一次（各行等高，作为换位阈值）
+                if (this.rowH <= 0 && typeof newArea.height === 'number') {
+                  this.rowH = newArea.height;
+                }
+              })
+              .gesture(
+                GestureGroup(GestureMode.Sequence,
+                  LongPressGesture({ repeat: false, duration: 300 })
+                    .onAction(() => {
+                      // 长按浮起待拖拽
+                      this.getUIContext().animateTo({ duration: 120, curve: Curve.Friction }, (): void => {
+                        this.dragId = cat.id;
+                        this.offsetY = 0;
+                      });
+                    })
+                    .onActionEnd(() => {
+                      // 长按后未拖动直接松手：取消浮起
+                      if (!this.panning) {
+                        this.endDrag();
+                      }
+                    }),
+                  PanGesture({ fingers: 1, direction: PanDirection.Vertical, distance: 0 })
+                    .onActionStart(() => {
+                      this.panning = true;
+                      this.dragRefOffsetY = 0;
+                    })
+                    .onActionUpdate((event: GestureEvent) => {
+                      this.offsetY = event.offsetY - this.dragRefOffsetY;
+                      const index: number =
+                        this.categories.findIndex((c: CategoryRecord): boolean => c.id === this.dragId);
+                      if (this.rowH <= 0 || index < 0) {
+                        return;
+                      }
+                      // 越过半行高时弹簧动画换位（其余行滑动让位）
+                      this.getUIContext().animateTo(
+                        { curve: curves.interpolatingSpring(0, 1, 400, 38) }, (): void => {
+                          if (this.offsetY >= this.rowH / 2 && index < this.categories.length - 1) {
+                            this.offsetY -= this.rowH;
+                            this.dragRefOffsetY += this.rowH;
+                            this.itemMove(index, index + 1);
+                          } else if (this.offsetY <= -this.rowH / 2 && index > 0) {
+                            this.offsetY += this.rowH;
+                            this.dragRefOffsetY -= this.rowH;
+                            this.itemMove(index, index - 1);
+                          }
+                        });
+                    })
+                    .onActionEnd(() => {
+                      this.panning = false;
+                      this.endDrag();
+                    })
+                    .onActionCancel(() => {
+                      this.panning = false;
+                      this.endDrag();
                     })
                 )
-              }
+              )
             }, (cat: CategoryRecord) => `cat-${cat.id}-${cat.name}`)
           }
           .layoutWeight(1)

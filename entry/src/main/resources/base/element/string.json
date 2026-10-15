@@ -319,7 +319,7 @@
     { "name": "categories_name_placeholder", "value": "Category name" },
     { "name": "categories_rename_category", "value": "Rename category" },
     { "name": "categories_rename", "value": "Rename" },
-    { "name": "categories_hint", "value": "Long-press a category to rename or delete it; manga in a deleted category move back to Default" },
+    { "name": "categories_hint", "value": "Tap a category to rename or delete it; long-press and drag to reorder; manga in a deleted category move back to Default" },
     { "name": "dialog_pick_category", "value": "Select category" },
     { "name": "viewer_loading", "value": "Loading…" },
     { "name": "viewer_load_failed", "value": "Failed to load image" },

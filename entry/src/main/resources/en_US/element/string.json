@@ -445,7 +445,7 @@
                    },
                    {
                        "name":  "categories_hint",
-                       "value":  "Long-press a category to rename or delete it; manga in a deleted category move back to Default"
+                        "value":  "Tap a category to rename or delete it; long-press and drag to reorder; manga in a deleted category move back to Default"
                    },
                    {
                        "name":  "dialog_pick_category",

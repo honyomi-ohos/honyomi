@@ -139,7 +139,7 @@ export struct GlobalSearchPage {
 
   build() {
     NavDestination() {
-      LimitedBody() {
+      LimitedBody({ maxWidth: 960 }) {
         this.bodyContent()
       }
     }

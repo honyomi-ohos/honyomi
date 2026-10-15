@@ -781,7 +781,28 @@ export class CategoryRepo {
     return list;
   }
 
+  // 按分类 id 查分类名（编辑守卫用；查不到返回空串）
+  private static async nameOf(store: relationalStore.RdbStore, id: number): Promise<string> {
+    const pred = new relationalStore.RdbPredicates('category');
+    pred.equalTo('id', id);
+    try {
+      const rs = await store.query(pred, ['name']);
+      if (rs.goToNextRow()) {
+        const name = rs.getString(rs.getColumnIndex('name'));
+        closeQuietly(rs);
+        return name;
+      }
+      closeQuietly(rs);
+    } catch (e) {
+    }
+    return '';
+  }
+
   static async add(name: string): Promise<void> {
+    // 禁止用内置分类 code 建分类（会造成同名默认分类且不可编辑）
+    if (ContentType.isBuiltinCategory(name)) {
+      return;
+    }
     const store = await AppDb.get();
     // sortOrder 取当前总数，单条语句原子完成（消除查后写竞态）
     try {
@@ -797,6 +818,11 @@ export class CategoryRepo {
       return;
     }
     const store = await AppDb.get();
+    // 内置默认分类（漫画/小说/动画）不可改名；也不允许改成内置 code
+    const current = await CategoryRepo.nameOf(store, id);
+    if (ContentType.isBuiltinCategory(current) || ContentType.isBuiltinCategory(name)) {
+      return;
+    }
     const values: relationalStore.ValuesBucket = { 'name': name };
     const pred = new relationalStore.RdbPredicates('category');
     pred.equalTo('id', id);
@@ -807,11 +833,40 @@ export class CategoryRepo {
     }
   }
 
+  // 按给定顺序重写 sortOrder（拖拽排序持久化），事务内完成
+  static async reorder(orderedIds: number[]): Promise<void> {
+    const store = await AppDb.get();
+    try {
+      store.beginTransaction();
+    } catch (e) {
+      throw new Error(`category reorder failed: ${e}`);
+    }
+    try {
+      for (let i = 0; i < orderedIds.length; i++) {
+        const values: relationalStore.ValuesBucket = { 'sortOrder': i };
+        const pred = new relationalStore.RdbPredicates('category');
+        pred.equalTo('id', orderedIds[i]);
+        await store.update(values, pred);
+      }
+      store.commit();
+    } catch (e) {
+      try {
+        store.rollBack();
+      } catch (e2) {
+      }
+      throw new Error(`category reorder failed: ${e}`);
+    }
+  }
+
   static async remove(id: number): Promise<void> {
     if (id === 1) {
       return;
     }
     const store = await AppDb.get();
+    // 内置默认分类（漫画/小说/动画）不可删除
+    if (ContentType.isBuiltinCategory(await CategoryRepo.nameOf(store, id))) {
+      return;
+    }
     // 该分类下的漫画移回默认分类 + 删除分类，同一事务内完成
     const values: relationalStore.ValuesBucket = { 'categoryId': 1 };
     const predManga = new relationalStore.RdbPredicates('manga');

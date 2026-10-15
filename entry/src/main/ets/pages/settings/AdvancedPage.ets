@@ -14,7 +14,7 @@ export struct AdvancedContent {
 
   build() {
     Scroll() {
-      Column() {
+      Column({ space: 12 }) {
         PrefGroup() {
           IconRow({
             title: $r('app.string.pref_onboarding_guide'),

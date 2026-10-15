@@ -1,0 +1,64 @@
+{
+  "shortcuts": [
+    {
+      "shortcutId": "id_library",
+      "label": "$string:tab_library",
+      "icon": "$media:shortcut_library",
+      "wants": [
+        {
+          "bundleName": "fun.shuey.honyomi",
+          "moduleName": "entry",
+          "abilityName": "EntryAbility",
+          "parameters": {
+            "cardTarget": "library"
+          }
+        }
+      ]
+    },
+    {
+      "shortcutId": "id_updates",
+      "label": "$string:tab_updates",
+      "icon": "$media:shortcut_updates",
+      "wants": [
+        {
+          "bundleName": "fun.shuey.honyomi",
+          "moduleName": "entry",
+          "abilityName": "EntryAbility",
+          "parameters": {
+            "cardTarget": "updates"
+          }
+        }
+      ]
+    },
+    {
+      "shortcutId": "id_history",
+      "label": "$string:tab_history",
+      "icon": "$media:shortcut_history",
+      "wants": [
+        {
+          "bundleName": "fun.shuey.honyomi",
+          "moduleName": "entry",
+          "abilityName": "EntryAbility",
+          "parameters": {
+            "cardTarget": "history"
+          }
+        }
+      ]
+    },
+    {
+      "shortcutId": "id_downloads",
+      "label": "$string:more_downloads",
+      "icon": "$media:shortcut_downloads",
+      "wants": [
+        {
+          "bundleName": "fun.shuey.honyomi",
+          "moduleName": "entry",
+          "abilityName": "EntryAbility",
+          "parameters": {
+            "cardTarget": "downloads"
+          }
+        }
+      ]
+    }
+  ]
+}
