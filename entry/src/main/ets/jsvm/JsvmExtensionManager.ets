@@ -23,6 +23,14 @@ import { PluginPrefs } from './PluginPrefs';
 /** Per-extension JSVM heap budget (bytes) — see architecture spec. */
 export const JSVM_HEAP_BUDGET_BYTES: number = 2 * 1024 * 1024;
 
+/**
+ * Maximum number of live (loaded) extension engines. Loading beyond this cap
+ * evicts the least-recently-used idle engine (LRU), keeping memory bounded
+ * for thousand-scale plugin installs. Engines with in-flight calls and the
+ * engine that just triggered the load are never evicted.
+ */
+export const MAX_LIVE_ENGINES: number = 12;
+
 
 const READY_TIMEOUT_MS: number = 30000;
 const CALL_TIMEOUT_MS: number = 190000; // > native 180s pump deadline
@@ -44,6 +52,10 @@ interface ExtensionEntry {
   terminateTimer: number;
   /** 最近一次持久化的 prefs JSON，内容未变化时跳过 persist */
   lastPrefsJson: string;
+  /** 最近使用时间（LRU 淘汰依据） */
+  lastUsedAt: number;
+  /** 进行中的调用数（含加载过程；> 0 的引擎不被 LRU 淘汰） */
+  activeCalls: number;
 }
 
 interface WorkerEvent {
@@ -108,16 +120,26 @@ export class JsvmExtensionManager {
     JsvmExtensionManager.init();
     await JsvmExtensionManager.unloadExtension(key);
     const entry = JsvmExtensionManager.spawnWorker(key);
+    // 加载过程计为活跃调用：新引擎不被随后的 LRU 淘汰误杀
+    entry.activeCalls += 1;
     try {
       const kind = await JsvmExtensionManager.waitReady(entry, code, seed);
       entry.kind = kind;
       const methodsJson = await JsvmExtensionManager.callRaw(entry, '__methods', '[]');
       const methods = JsvmExtensionManager.unwrap<string[]>(methodsJson);
+      entry.lastUsedAt = Date.now();
       const info: JsvmExtensionInfo = { key: key, kind: kind, methods: methods };
       return info;
     } catch (e) {
       await JsvmExtensionManager.unloadExtension(key);
       throw e as Error;
+    } finally {
+      entry.activeCalls -= 1;
+      // 加载成功后按 LRU 收敛引擎数（跳过刚加载的 key 与活跃引擎）
+      if (!entry.broken) {
+        JsvmExtensionManager.evictOverCap(key).catch((_e: Error): void => {
+        });
+      }
     }
   }
 
@@ -167,7 +189,13 @@ export class JsvmExtensionManager {
     if (entry.broken) {
       throw new Error('ext_broken');
     }
-    return JsvmExtensionManager.callRaw(entry, method, JSON.stringify(args));
+    entry.lastUsedAt = Date.now();
+    entry.activeCalls += 1;
+    try {
+      return await JsvmExtensionManager.callRaw(entry, method, JSON.stringify(args));
+    } finally {
+      entry.activeCalls -= 1;
+    }
   }
 
   // ------------------------------------------------------------------ private
@@ -183,7 +211,9 @@ export class JsvmExtensionManager {
       lastMemoryBytes: -1,
       broken: false,
       terminateTimer: -1,
-      lastPrefsJson: ''
+      lastPrefsJson: '',
+      lastUsedAt: Date.now(),
+      activeCalls: 0
     };
     threadWorker.onmessage = (e: MessageEvents): void => {
       JsvmExtensionManager.onWorkerMessage(entry, e.data);
@@ -367,6 +397,49 @@ export class JsvmExtensionManager {
       pending.reject(err);
     });
     entry.pending.clear();
+  }
+
+  /**
+   * LRU convergence: unload broken leftovers first (they hold workers but do
+   * not count as useful engines), then evict least-recently-used engines
+   * while the live count exceeds MAX_LIVE_ENGINES. Never evicts the
+   * protected key (the engine that just loaded) or engines with in-flight
+   * calls.
+   */
+  private static async evictOverCap(protectedKey: string): Promise<void> {
+    // 1. 清理 broken 残留（无进行中调用的死引擎，释放 worker 线程）
+    const brokenKeys: string[] = [];
+    JsvmExtensionManager.extensions.forEach((entry: ExtensionEntry) => {
+      if (entry.broken && entry.activeCalls <= 0) {
+        brokenKeys.push(entry.key);
+      }
+    });
+    for (const brokenKey of brokenKeys) {
+      await JsvmExtensionManager.unloadExtension(brokenKey);
+    }
+    // 2. 活跃引擎超限时按 LRU 淘汰最久未用的空闲引擎
+    while (JsvmExtensionManager.extensions.size > MAX_LIVE_ENGINES) {
+      const entries: ExtensionEntry[] = [];
+      JsvmExtensionManager.extensions.forEach((entry: ExtensionEntry) => {
+        entries.push(entry);
+      });
+      let victimIdx = -1;
+      for (let i = 0; i < entries.length; i++) {
+        const e = entries[i];
+        if (e.key === protectedKey || e.activeCalls > 0) {
+          continue;
+        }
+        if (victimIdx < 0 || e.lastUsedAt < entries[victimIdx].lastUsedAt) {
+          victimIdx = i;
+        }
+      }
+      if (victimIdx < 0) {
+        break;
+      }
+      const victimKey = entries[victimIdx].key;
+      console.info(`[JsvmExt] LRU evicting engine ${victimKey} (cap ${MAX_LIVE_ENGINES})`);
+      await JsvmExtensionManager.unloadExtension(victimKey);
+    }
   }
 }
 

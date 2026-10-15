@@ -211,6 +211,32 @@ export class HistoryItem {
   }
 }
 
+// 已安装插件元数据索引（plugin 表记录）：启动时据此注册占位源，引擎按需惰性拉起
+export class PluginRecord {
+  // 插件包 key（plugins/ 目录名，多源包的引擎 key）
+  key: string = '';
+  name: string = '';
+  lang: string = 'multi';
+  version: string = '';
+  versionCode: number = 0;
+  baseUrl: string = '';
+  nsfw: boolean = false;
+  supportsLatest: boolean = false;
+  minAppVersion: number = 1;
+  dslVersion: number = 1;
+  // 包内图标文件名（如 icon.png）
+  icon: string = '';
+  // 共享运行时名（rawfile plugin_runtime_<name>.js；空 = 无）
+  runtime: string = '';
+  engine: string = 'jsvm';
+  contentType: string = 'manga';
+  // 引擎探测到的导出方法列表（JSON string[]），占位源据此判断 hasMethod/supportsLatest
+  methodsJson: string = '[]';
+  // 最终注册源规格（JSON SourceSpec[]，含子源注册 key），manga.sourceKey 引用其 key
+  sourcesJson: string = '[]';
+  installedAt: number = 0;
+}
+
 // P2 模型
 
 // 追踪记录（对齐 Mihon Track）：status/score 存储 tracker 原生值，syncId 见 TrackerManager

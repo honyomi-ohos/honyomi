@@ -156,6 +156,25 @@ export class AppDb {
         isPrivate INTEGER DEFAULT 0,
         UNIQUE(mangaId, syncId)
       )`);
+      await store.executeSql(`CREATE TABLE IF NOT EXISTS plugin (
+        key TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        lang TEXT DEFAULT 'multi',
+        version TEXT DEFAULT '',
+        versionCode INTEGER DEFAULT 0,
+        baseUrl TEXT DEFAULT '',
+        nsfw INTEGER DEFAULT 0,
+        supportsLatest INTEGER DEFAULT 0,
+        minAppVersion INTEGER DEFAULT 1,
+        dslVersion INTEGER DEFAULT 1,
+        icon TEXT DEFAULT '',
+        runtime TEXT DEFAULT '',
+        engine TEXT DEFAULT 'jsvm',
+        contentType TEXT DEFAULT 'manga',
+        methodsJson TEXT DEFAULT '[]',
+        sourcesJson TEXT DEFAULT '[]',
+        installedAt INTEGER DEFAULT 0
+      )`);
     } catch (e) {
       throw new Error(`create tables failed: ${e}`);
     }
@@ -346,6 +365,47 @@ export class AppDb {
       }
       version = 5;
       hilog.info(0x0001, 'AppDb', 'migrated schema to v5');
+    }
+    // v5 -> v6：plugin 表（已安装插件元数据索引）。启动时据此注册占位源，
+    // 不再扫盘拉引擎；引擎按需惰性拉起（LRU 上限），支撑千级插件规模
+    if (version < 6) {
+      try {
+        store.beginTransaction();
+      } catch (e) {
+        throw new Error(`migrate to v6 failed: ${e}`);
+      }
+      try {
+        // 全新库 createTables 已建 plugin 表；旧库补建（IF NOT EXISTS 幂等）
+        await store.executeSql(`CREATE TABLE IF NOT EXISTS plugin (
+          key TEXT PRIMARY KEY,
+          name TEXT NOT NULL,
+          lang TEXT DEFAULT 'multi',
+          version TEXT DEFAULT '',
+          versionCode INTEGER DEFAULT 0,
+          baseUrl TEXT DEFAULT '',
+          nsfw INTEGER DEFAULT 0,
+          supportsLatest INTEGER DEFAULT 0,
+          minAppVersion INTEGER DEFAULT 1,
+          dslVersion INTEGER DEFAULT 1,
+          icon TEXT DEFAULT '',
+          runtime TEXT DEFAULT '',
+          engine TEXT DEFAULT 'jsvm',
+          contentType TEXT DEFAULT 'manga',
+          methodsJson TEXT DEFAULT '[]',
+          sourcesJson TEXT DEFAULT '[]',
+          installedAt INTEGER DEFAULT 0
+        )`);
+        await store.executeSql(`PRAGMA user_version = 6`);
+        store.commit();
+      } catch (e) {
+        try {
+          store.rollBack();
+        } catch (e2) {
+        }
+        throw new Error(`migrate to v6 failed: ${e}`);
+      }
+      version = 6;
+      hilog.info(0x0001, 'AppDb', 'migrated schema to v6');
     }
   }
 

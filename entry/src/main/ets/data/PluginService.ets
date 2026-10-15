@@ -8,11 +8,26 @@ import { PluginManifest, JsvmSource, CompiledSourceInfo } from '../source/JsvmSo
 import { EngineGateway, EngineBackend } from '../jsvm/EngineGateway';
 import { PluginPrefs } from '../jsvm/PluginPrefs';
 import { SourceRegistry } from '../source/Source';
-import { ContentType } from '../model/Models';
+import { ContentType, PluginRecord } from '../model/Models';
 import { Http } from '../net/Http';
+import { AppDb } from './AppDb';
+import { PluginRepo, MangaRepo } from './Repos';
 
 const DOMAIN = 0x0002;
 const TAG = 'PluginService';
+
+// 最终注册源规格（引擎解析结果，持久化到 plugin.sourcesJson）：
+// spec.key 即 manga.sourceKey 引用的注册 key（多源包含子源 key）
+export interface SourceSpec {
+  key: string;
+  name: string;
+  lang: string;
+  baseUrl: string;
+  nsfw: boolean;
+  supportsLatest: boolean;
+  // tachiyomi 编译产物 source id；空字符串表示简单契约插件
+  sourceId: string;
+}
 
 interface RawManifest {
   key?: string;
@@ -69,7 +84,9 @@ interface RawRepoIndex {
 }
 
 // 插件包管理：.honyomiplug(zip: manifest.json + main.js) 安装/卸载 + 在线仓库索引
-// 所有插件统一运行于 JSVM 隔离引擎（专属 Worker + 本机 C++ JSVM，零 ArkWeb 依赖）
+// 所有插件统一运行于 JSVM 隔离引擎（专属 Worker + 本机 C++ JSVM，零 ArkWeb 依赖）。
+// 千级插件规模：数据库 plugin 表为元数据索引，启动只注册占位源（不扫盘不拉引擎），
+// 引擎在源被实际调用时惰性拉起（ensureEngine 记忆化 + LRU 淘汰，见 JsvmExtensionManager）。
 export class PluginService {
   // 宿主支持的插件 DSL 最高版本（与 JSVM 适配层 ADAPTER_JS 的契约保持一致）
   static readonly HOST_DSL_VERSION: number = 2;
@@ -80,6 +97,10 @@ export class PluginService {
   private static appVersionCode: number = 1;
   // 调试签名构建（appProvisionType === 'debug'）：放行 http 协议的仓库索引/插件包，release 一律强制 https
   private static debugBuild: boolean = false;
+  // 引擎启动记忆化（packageKey → 进行中/已失败的启动 Promise）：
+  // 并发调用共享同一次启动；失败保留 rejected 记忆防止全局搜索对坏插件反复重试起引擎，
+  // 成功/卸载/重装时清除（LRU 淘汰后可再次拉起）
+  private static startPromises: Map<string, Promise<void>> = new Map();
 
   static init(context: common.UIAbilityContext): void {
     PluginService.pluginsDir = `${context.filesDir}/plugins`;
@@ -213,7 +234,28 @@ export class PluginService {
     return manifest;
   }
 
-  static listInstalled(): InstalledPlugin[] {
+  // 已安装插件列表（异步 DB 版）：读 plugin 元数据索引，不触碰引擎；
+  // DB 异常时降级为空列表（面板显示"暂无插件"）
+  static async listInstalled(): Promise<InstalledPlugin[]> {
+    const result: InstalledPlugin[] = [];
+    try {
+      const records = await PluginRepo.list();
+      for (const record of records) {
+        const manifest = PluginService.manifestOfRecord(record);
+        const item: InstalledPlugin = {
+          manifest: manifest,
+          iconPath: PluginService.iconUrlOf(manifest),
+        };
+        result.push(item);
+      }
+    } catch (e) {
+      hilog.warn(DOMAIN, TAG, 'list installed failed: %{public}s', (e as Error).message);
+    }
+    return result;
+  }
+
+  // 扫描插件目录（仅首次导入/诊断用）：不解析 main.js、不拉引擎
+  private static scanInstalledFromFs(): InstalledPlugin[] {
     const result: InstalledPlugin[] = [];
     let names: string[] = [];
     try {
@@ -315,10 +357,18 @@ export class PluginService {
   static async uninstall(key: string): Promise<void> {
     const packageKey = PluginService.packageKeyOf(key);
     PluginService.unregisterPackage(packageKey);
+    // 清除引擎启动记忆（含失败 rejected 记忆），重装后可重新拉起
+    PluginService.startPromises.delete(packageKey);
     // 引擎后端未注册（预览器等场景）时无引擎可卸载，直接跳过
     const engine = EngineGateway.get();
     if (engine !== undefined) {
       await engine.unloadExtension(packageKey);
+    }
+    // 元数据索引同步移除；DB 不可用时降级告警（残留记录重装时被覆盖）
+    try {
+      await PluginRepo.remove(packageKey);
+    } catch (e) {
+      hilog.warn(DOMAIN, TAG, 'remove plugin record failed: %{public}s', (e as Error).message);
     }
     const dir = `${PluginService.pluginsDir}/${packageKey}`;
     try {
@@ -333,14 +383,14 @@ export class PluginService {
 
   private static loadAllPromise: Promise<void> | undefined = undefined;
 
-  // 等待全部插件加载完成（尚未开始加载时立即返回）；
+  // 等待全部插件源注册完成（尚未开始加载时立即返回）；
   // 供 ImageCache 等消费方在冷启动竞态下等待插件源注册完成
   static ready(): Promise<void> {
     return PluginService.loadAllPromise ?? Promise.resolve();
   }
 
-  // 加载全部插件（每个插件在其专属 Worker 的隔离 JSVM 引擎中执行）；
-  // 记忆化：并发/重复调用共享同一次加载，避免重复起 Worker
+  // 加载全部插件：注册占位源（DB 元数据索引，不扫盘不拉引擎）+ 预热在库源；
+  // 记忆化：并发/重复调用共享同一次加载
   static async loadAll(): Promise<void> {
     if (PluginService.loadAllPromise === undefined) {
       PluginService.loadAllPromise = PluginService.doLoadAll();
@@ -349,16 +399,141 @@ export class PluginService {
   }
 
   private static async doLoadAll(): Promise<void> {
-    const installed = PluginService.listInstalled();
+    // 元数据索引在数据库中：等待数据库就绪（EntryAbility 已发起 ready，此处共享同一实例）
+    if (PluginService.context !== undefined) {
+      await AppDb.ready(PluginService.context);
+    }
+    let records: PluginRecord[] = [];
+    try {
+      records = await PluginRepo.list();
+    } catch (e) {
+      hilog.error(DOMAIN, TAG, 'read plugin index failed: %{public}s', (e as Error).message);
+      return;
+    }
+    if (records.length === 0) {
+      // 旧版本升级（索引为空而插件目录非空）：一次性扫盘导入并落库
+      await PluginService.importFromFs();
+      return;
+    }
+    // 只注册占位源：nsfw/methods/supportsLatest 等来自持久化元数据，
+    // 引擎在源被实际调用时经 engineStarter 惰性拉起
+    for (const record of records) {
+      PluginService.registerPlaceholders(record);
+    }
+    hilog.info(DOMAIN, TAG, 'registered %{public}d plugin packages from db index', records.length);
+    // 预热：仅为"在库漫画且导出 getHeaders"的插件包拉引擎（封面需要 Referer/Cookie）
+    await PluginService.prewarmLibrary();
+  }
+
+  // 旧版本升级导入：扫盘逐个拉引擎（doStartEngine 内完成注册与落库）
+  private static async importFromFs(): Promise<void> {
+    const installed = PluginService.scanInstalledFromFs();
+    if (installed.length === 0) {
+      return;
+    }
+    hilog.info(DOMAIN, TAG, 'importing %{public}d plugins from filesystem', installed.length);
     for (const item of installed) {
       try {
-        const scriptText = fs.readTextSync(`${PluginService.pluginsDir}/${item.manifest.key}/main.js`);
-        await PluginService.reloadOne(item.manifest, scriptText);
+        await PluginService.doStartEngine(item.manifest.key);
       } catch (e) {
-        hilog.error(DOMAIN, TAG, 'load plugin %{public}s failed: %{public}s',
+        hilog.error(DOMAIN, TAG, 'import plugin %{public}s failed: %{public}s',
           item.manifest.key, (e as Error).message);
       }
     }
+  }
+
+  // 预热在库源：对"书架有漫画且声明 getHeaders"的插件包立即拉引擎并预热图片头，
+  // 保证冷启动书架封面带 Referer/Cookie；其余插件保持惰性
+  private static async prewarmLibrary(): Promise<void> {
+    if (EngineGateway.get() === undefined) {
+      // 预览器等场景无引擎后端：占位源保持惰性
+      return;
+    }
+    try {
+      const counts = await MangaRepo.countBySource();
+      const packageKeys = new Set<string>();
+      for (const source of SourceRegistry.all()) {
+        if (source instanceof JsvmSource && (counts[source.key] ?? 0) > 0 &&
+          source.hasMethod('getHeaders')) {
+          packageKeys.add(source.packageKey);
+        }
+      }
+      for (const packageKey of packageKeys) {
+        try {
+          await PluginService.ensureEngine(packageKey);
+        } catch (e) {
+          hilog.warn(DOMAIN, TAG, 'prewarm %{public}s failed: %{public}s',
+            packageKey, (e as Error).message);
+        }
+      }
+    } catch (e) {
+      hilog.warn(DOMAIN, TAG, 'prewarm library failed: %{public}s', (e as Error).message);
+    }
+  }
+
+  // 惰性引擎启动（记忆化）：引擎已加载直接返回；进行中共享同一次启动；
+  // 失败保留 rejected 记忆（防全局搜索风暴），成功/卸载/重装时清除
+  static async ensureEngine(packageKey: string): Promise<void> {
+    const engine = EngineGateway.get();
+    if (engine !== undefined && engine.isLoaded(packageKey)) {
+      return;
+    }
+    const pending = PluginService.startPromises.get(packageKey);
+    if (pending !== undefined) {
+      await pending;
+      return;
+    }
+    const promise = PluginService.doStartEngine(packageKey);
+    PluginService.startPromises.set(packageKey, promise);
+    await promise;
+    // 成功：清除记忆（LRU 淘汰后再次调用可重新拉起）
+    PluginService.startPromises.delete(packageKey);
+  }
+
+  // 拉起单个插件引擎：读盘 manifest 门禁 → 组装脚本 → prefs 回注 → loadExtension
+  // → 解析最终源规格 → 同步注册表（就地升级占位源）→ 元数据落库 → 预热图片头
+  private static async doStartEngine(packageKey: string): Promise<void> {
+    const dir = `${PluginService.pluginsDir}/${packageKey}`;
+    const manifest = PluginService.parseManifest(fs.readTextSync(`${dir}/manifest.json`));
+    const scriptText = fs.readTextSync(`${dir}/main.js`);
+    const script = PluginService.composeScript(manifest, scriptText);
+    // 插件偏好持久化：确保 Preferences 就绪，并把已存的 __PREFS_STORE__ 注回引擎
+    let seed = '';
+    if (PluginService.context !== undefined) {
+      try {
+        await PluginPrefs.ensureInit(PluginService.context);
+        seed = PluginPrefs.seedScript(manifest.key);
+      } catch (e) {
+        hilog.warn(DOMAIN, TAG, 'plugin prefs init failed: %{public}s', (e as Error).message);
+      }
+    }
+    const engine: EngineBackend = EngineGateway.require();
+    const info = await engine.loadExtension(manifest.key, script, seed);
+    // tachiyomi 编译产物：读子源列表
+    let compiled: CompiledSourceInfo[] = [];
+    if (info.kind === 'tachiyomi' && info.methods.indexOf('getSources') >= 0) {
+      compiled = await PluginService.readCompiledSources(manifest.key);
+    }
+    // 同包已注册 key 不算占用：childKey 派生结果与占位源保持一致（key 稳定）
+    const ownKeys: string[] = [];
+    for (const source of SourceRegistry.all()) {
+      if (source instanceof JsvmSource && source.packageKey === manifest.key) {
+        ownKeys.push(source.key);
+      }
+    }
+    const specs = PluginService.resolveSpecs(manifest, info.methods, compiled, ownKeys);
+    PluginService.syncRegistry(manifest, info.methods, specs);
+    // 元数据落库（安装/升级/引擎重启均幂等覆盖）
+    await PluginService.persistRecord(manifest, info.methods, specs);
+    // 插件可选导出 getHeaders：声明后图片经宿主 http 管线加载（Referer/Cookie）
+    for (const spec of specs) {
+      const src = SourceRegistry.get(spec.key);
+      if (src instanceof JsvmSource) {
+        src.warmImageHeaders();
+      }
+    }
+    hilog.info(DOMAIN, TAG, 'jsvm engine started: %{public}s v%{public}s (%{public}d sources, mem %{public}d)',
+      manifest.key, manifest.version, specs.length, engine.memoryBytes(manifest.key));
   }
 
   static markDirty(): void {
@@ -516,13 +691,9 @@ export class PluginService {
         }
       } catch (e) {
       }
-      let scriptText = '';
-      try {
-        scriptText = fs.readTextSync(`${destDir}/main.js`);
-      } catch (e) {
-        throw new Error(`plugin_read_failed|${e}`);
-      }
-      await PluginService.reloadOne(manifest, scriptText);
+      // 重装/升级：清除旧启动记忆（含失败 rejected 记忆）后拉起引擎并同步注册表/元数据
+      PluginService.startPromises.delete(manifest.key);
+      await PluginService.doStartEngine(manifest.key);
       hilog.info(DOMAIN, TAG, 'plugin installed: %{public}s', manifest.key);
       return manifest.key;
     } finally {
@@ -630,10 +801,13 @@ export class PluginService {
     return out;
   }
 
-  private static childKey(packageKey: string, src: CompiledSourceInfo, used: string[]): string {
+  // 子源 key 派生：同包占位 key（ownKeys）不算占用，保证引擎重启/升级后 key 稳定
+  private static childKey(packageKey: string, src: CompiledSourceInfo, used: string[],
+    ownKeys: string[]): string {
     const lang = PluginService.keyPart(src.lang ?? 'all');
     let key = `${packageKey}_${lang !== '' ? lang : 'src'}`;
-    const taken = used.indexOf(key) >= 0 || key === packageKey || SourceRegistry.get(key) !== undefined;
+    const taken = used.indexOf(key) >= 0 || ownKeys.indexOf(key) >= 0 ||
+      key === packageKey || SourceRegistry.get(key) !== undefined;
     if (taken) {
       const id = PluginService.keyPart(src.id ?? '0');
       const suffix = id.length > 4 ? id.substring(id.length - 4) : (id !== '' ? id : '0');
@@ -642,21 +816,134 @@ export class PluginService {
     return key;
   }
 
-  private static manifestForSource(base: PluginManifest, src: CompiledSourceInfo, key: string): PluginManifest {
-    let supports = base.supportsLatest;
-    if (src.supportsLatest === true || src.supportsLatest === false) {
-      supports = src.supportsLatest;
+  // 解析最终注册源规格：tachiyomi 编译产物多源（首个源沿用包 key，其余派生子源 key）；
+  // 简单契约插件单源直接用包 key
+  private static resolveSpecs(manifest: PluginManifest, methods: string[],
+    compiled: CompiledSourceInfo[], ownKeys: string[]): SourceSpec[] {
+    const specs: SourceSpec[] = [];
+    if (compiled.length > 0) {
+      const used: string[] = [manifest.key];
+      for (let i = 0; i < compiled.length; i++) {
+        const info = compiled[i];
+        const key = i === 0 ? manifest.key : PluginService.childKey(manifest.key, info, used, ownKeys);
+        used.push(key);
+        let supports = manifest.supportsLatest;
+        if (info.supportsLatest === true || info.supportsLatest === false) {
+          supports = info.supportsLatest;
+        }
+        const spec: SourceSpec = {
+          key: key,
+          name: info.name !== undefined && info.name !== '' ? info.name : manifest.name,
+          lang: info.lang !== undefined && info.lang !== '' ? info.lang : manifest.lang,
+          baseUrl: info.baseUrl !== undefined && info.baseUrl !== '' ? info.baseUrl : manifest.baseUrl,
+          // 单源声明 nsfw 时优先生效，否则继承包级 manifest.nsfw
+          nsfw: info.nsfw !== undefined ? info.nsfw : manifest.nsfw,
+          supportsLatest: supports,
+          sourceId: info.id !== undefined ? info.id : '',
+        };
+        specs.push(spec);
+      }
+      return specs;
     }
+    const spec: SourceSpec = {
+      key: manifest.key,
+      name: manifest.name,
+      lang: manifest.lang,
+      baseUrl: manifest.baseUrl,
+      nsfw: manifest.nsfw,
+      supportsLatest: manifest.supportsLatest,
+      sourceId: '',
+    };
+    specs.push(spec);
+    return specs;
+  }
+
+  // 注册表同步：已有占位源就地升级（同 key 同 sourceId 保持实例稳定），
+  // 缺失的补注册，插件已移除的子源注销
+  private static syncRegistry(manifest: PluginManifest, methods: string[], specs: SourceSpec[]): void {
+    const iconUrl = PluginService.iconUrlOf(manifest);
+    const specKeys = new Set<string>();
+    for (const spec of specs) {
+      specKeys.add(spec.key);
+      const child = PluginService.manifestForSpec(manifest, spec);
+      const existing = SourceRegistry.get(spec.key);
+      if (existing instanceof JsvmSource && existing.packageKey === manifest.key &&
+        existing.sourceId === spec.sourceId) {
+        existing.upgrade(child, methods);
+        existing.setEngineStarter((): Promise<void> => PluginService.ensureEngine(manifest.key));
+        continue;
+      }
+      const src = new JsvmSource(child, methods, manifest.key, spec.sourceId, iconUrl);
+      src.setEngineStarter((): Promise<void> => PluginService.ensureEngine(manifest.key));
+      SourceRegistry.register(src);
+    }
+    // 子源已从插件中移除：注销残留注册
+    for (const source of SourceRegistry.all()) {
+      if (source instanceof JsvmSource && source.packageKey === manifest.key && !specKeys.has(source.key)) {
+        SourceRegistry.unregister(source.key);
+      }
+    }
+  }
+
+  // 占位源注册：DB 元数据 → JsvmSource（不拉引擎），engineStarter 注入惰性启动
+  private static registerPlaceholders(record: PluginRecord): void {
+    const base = PluginService.manifestOfRecord(record);
+    const methods = PluginService.parseStringArray(record.methodsJson);
+    let specs = PluginService.parseSpecs(record.sourcesJson);
+    if (specs.length === 0) {
+      // 索引缺源规格（异常数据兜底）：按单源处理
+      const spec: SourceSpec = {
+        key: record.key,
+        name: record.name,
+        lang: record.lang,
+        baseUrl: record.baseUrl,
+        nsfw: record.nsfw,
+        supportsLatest: base.supportsLatest,
+        sourceId: '',
+      };
+      specs = [spec];
+    }
+    const iconUrl = PluginService.iconUrlOf(base);
+    for (const spec of specs) {
+      const manifest = PluginService.manifestForSpec(base, spec);
+      const src = new JsvmSource(manifest, methods, record.key, spec.sourceId, iconUrl);
+      src.setEngineStarter((): Promise<void> => PluginService.ensureEngine(record.key));
+      SourceRegistry.register(src);
+    }
+  }
+
+  // plugin 表记录 → 包级 manifest（占位源/详情页展示用）
+  private static manifestOfRecord(record: PluginRecord): PluginManifest {
     const manifest: PluginManifest = {
-      key: key,
-      name: src.name !== undefined && src.name !== '' ? src.name : base.name,
-      lang: src.lang !== undefined && src.lang !== '' ? src.lang : base.lang,
+      key: record.key,
+      name: record.name,
+      lang: record.lang,
+      version: record.version,
+      versionCode: record.versionCode,
+      baseUrl: record.baseUrl,
+      nsfw: record.nsfw,
+      supportsLatest: record.supportsLatest,
+      minAppVersion: record.minAppVersion,
+      dslVersion: record.dslVersion,
+      icon: record.icon,
+      runtime: record.runtime,
+      engine: record.engine,
+      contentType: ContentType.normalize(record.contentType),
+    };
+    return manifest;
+  }
+
+  // 包级 manifest + 源规格 → 注册用 manifest（spec 字段优先，空值回退包级）
+  private static manifestForSpec(base: PluginManifest, spec: SourceSpec): PluginManifest {
+    const manifest: PluginManifest = {
+      key: spec.key,
+      name: spec.name !== '' ? spec.name : base.name,
+      lang: spec.lang !== '' ? spec.lang : base.lang,
       version: base.version,
       versionCode: base.versionCode,
-      baseUrl: src.baseUrl !== undefined && src.baseUrl !== '' ? src.baseUrl : base.baseUrl,
-      // 单源声明 nsfw 时优先生效，否则继承包级 manifest.nsfw
-      nsfw: src.nsfw !== undefined ? src.nsfw : base.nsfw,
-      supportsLatest: supports,
+      baseUrl: spec.baseUrl !== '' ? spec.baseUrl : base.baseUrl,
+      nsfw: spec.nsfw,
+      supportsLatest: spec.supportsLatest,
       minAppVersion: base.minAppVersion,
       dslVersion: base.dslVersion,
       icon: base.icon,
@@ -665,6 +952,80 @@ export class PluginService {
       contentType: ContentType.normalize(base.contentType),
     };
     return manifest;
+  }
+
+  // 持久化元数据索引：引擎解析结果（方法表 + 最终源规格）落库
+  private static async persistRecord(manifest: PluginManifest, methods: string[],
+    specs: SourceSpec[]): Promise<void> {
+    const record = new PluginRecord();
+    record.key = manifest.key;
+    record.name = manifest.name;
+    record.lang = manifest.lang;
+    record.version = manifest.version;
+    record.versionCode = manifest.versionCode;
+    record.baseUrl = manifest.baseUrl;
+    record.nsfw = manifest.nsfw;
+    record.supportsLatest = manifest.supportsLatest;
+    record.minAppVersion = manifest.minAppVersion;
+    record.dslVersion = manifest.dslVersion;
+    record.icon = manifest.icon;
+    record.runtime = manifest.runtime;
+    record.engine = manifest.engine;
+    record.contentType = manifest.contentType;
+    record.methodsJson = JSON.stringify(methods);
+    record.sourcesJson = JSON.stringify(specs);
+    record.installedAt = Date.now();
+    await PluginRepo.upsert(record);
+  }
+
+  // sourcesJson → SourceSpec[]（损坏/缺失字段容忍，逐项校验归一）
+  private static parseSpecs(sourcesJson: string): SourceSpec[] {
+    let parsed: SourceSpec[] = [];
+    try {
+      const raw = JSON.parse(sourcesJson) as SourceSpec[];
+      if (Array.isArray(raw)) {
+        parsed = raw;
+      }
+    } catch (e) {
+      return [];
+    }
+    const specs: SourceSpec[] = [];
+    for (const item of parsed) {
+      if (item === undefined || item === null || typeof item.key !== 'string' || item.key === '') {
+        continue;
+      }
+      const spec: SourceSpec = {
+        key: item.key,
+        name: typeof item.name === 'string' ? item.name : '',
+        lang: typeof item.lang === 'string' ? item.lang : 'multi',
+        baseUrl: typeof item.baseUrl === 'string' ? item.baseUrl : '',
+        nsfw: item.nsfw === true,
+        supportsLatest: item.supportsLatest === true,
+        sourceId: typeof item.sourceId === 'string' ? item.sourceId : '',
+      };
+      specs.push(spec);
+    }
+    return specs;
+  }
+
+  // methodsJson → string[]（损坏数据容忍）
+  private static parseStringArray(rawJson: string): string[] {
+    let parsed: string[] = [];
+    try {
+      const raw = JSON.parse(rawJson) as string[];
+      if (Array.isArray(raw)) {
+        parsed = raw;
+      }
+    } catch (e) {
+      return [];
+    }
+    const out: string[] = [];
+    for (const item of parsed) {
+      if (typeof item === 'string') {
+        out.push(item);
+      }
+    }
+    return out;
   }
 
   private static async readCompiledSources(packageKey: string): Promise<CompiledSourceInfo[]> {
@@ -685,21 +1046,6 @@ export class PluginService {
     return [];
   }
 
-  private static registerCompiled(manifest: PluginManifest, methods: string[], compiled: CompiledSourceInfo[]): void {
-    const used: string[] = [manifest.key];
-    const iconUrl = PluginService.iconUrlOf(manifest);
-    for (let i = 0; i < compiled.length; i++) {
-      const info = compiled[i];
-      const key = i === 0 ? manifest.key : PluginService.childKey(manifest.key, info, used);
-      used.push(key);
-      const child = PluginService.manifestForSource(manifest, info, key);
-      const sourceId = info.id !== undefined ? info.id : '';
-      const src = new JsvmSource(child, methods, manifest.key, sourceId, iconUrl);
-      SourceRegistry.register(src);
-      src.warmImageHeaders();
-    }
-  }
-
   // 插件图标 file:// 路径；包内无图标时返回空字符串
   private static iconUrlOf(manifest: PluginManifest): string {
     if (manifest.icon === '') {
@@ -711,39 +1057,5 @@ export class PluginService {
     } catch (e) {
       return '';
     }
-  }
-
-  // 加载/替换插件：卸载旧引擎后重新拉起专属 Worker + 隔离 JSVM_Context。
-  // tachiyomi 编译产物若包含多个源，共用一个引擎并各自注册。
-  private static async reloadOne(manifest: PluginManifest, mainJs: string): Promise<void> {
-    const script = PluginService.composeScript(manifest, mainJs);
-    // 插件偏好持久化：确保 Preferences 就绪，并把已存的 __PREFS_STORE__ 注回引擎
-    let seed = '';
-    if (PluginService.context !== undefined) {
-      try {
-        await PluginPrefs.ensureInit(PluginService.context);
-        seed = PluginPrefs.seedScript(manifest.key);
-      } catch (e) {
-        hilog.warn(DOMAIN, TAG, 'plugin prefs init failed: %{public}s', (e as Error).message);
-      }
-    }
-    const engine: EngineBackend = EngineGateway.require();
-    const info = await engine.loadExtension(manifest.key, script, seed);
-    PluginService.unregisterPackage(manifest.key);
-    if (info.kind === 'tachiyomi' && info.methods.indexOf('getSources') >= 0) {
-      const compiled = await PluginService.readCompiledSources(manifest.key);
-      if (compiled.length > 0) {
-        PluginService.registerCompiled(manifest, info.methods, compiled);
-        hilog.info(DOMAIN, TAG, 'jsvm plugin ready: %{public}s v%{public}s (%{public}d sources, mem %{public}d)',
-          manifest.key, manifest.version, compiled.length, engine.memoryBytes(manifest.key));
-        return;
-      }
-    }
-    const src = new JsvmSource(manifest, info.methods, manifest.key, '', PluginService.iconUrlOf(manifest));
-    SourceRegistry.register(src);
-    // 插件可选导出 getHeaders：声明后图片经宿主 http 管线加载（支持 Referer/Cookie）
-    src.warmImageHeaders();
-    hilog.info(DOMAIN, TAG, 'jsvm plugin ready: %{public}s v%{public}s (kind %{public}s, %{public}d methods, mem %{public}d)',
-      manifest.key, manifest.version, info.kind, info.methods.length, engine.memoryBytes(manifest.key));
   }
 }

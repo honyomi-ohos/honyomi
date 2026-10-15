@@ -1,7 +1,7 @@
 import { relationalStore } from '@kit.ArkData';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { AppDb } from './AppDb';
-import { SManga, SChapter, MangaRecord, ChapterRecord, CategoryRecord, UpdateItem, HistoryItem, TrackRecord, MangaStats, UpcomingManga, ContentType } from '../model/Models';
+import { SManga, SChapter, MangaRecord, ChapterRecord, CategoryRecord, UpdateItem, HistoryItem, TrackRecord, MangaStats, UpcomingManga, ContentType, PluginRecord } from '../model/Models';
 
 function closeQuietly(rs: relationalStore.ResultSet): void {
   try {
@@ -1458,6 +1458,129 @@ export class TrackRepo {
       return t;
     } catch (e) {
       throw new Error(`map track row failed: ${e}`);
+    }
+  }
+}
+
+// 插件元数据索引仓库（plugin 表）：安装/卸载同步维护记录，
+// 启动时据此注册占位源（不扫盘、不拉引擎），支撑千级插件
+export class PluginRepo {
+  private static readonly COLUMNS: string[] = [
+    'key', 'name', 'lang', 'version', 'versionCode', 'baseUrl', 'nsfw', 'supportsLatest',
+    'minAppVersion', 'dslVersion', 'icon', 'runtime', 'engine', 'contentType',
+    'methodsJson', 'sourcesJson', 'installedAt',
+  ];
+
+  static async upsert(record: PluginRecord): Promise<void> {
+    const store = await AppDb.get();
+    const values: relationalStore.ValuesBucket = {
+      'key': record.key,
+      'name': record.name,
+      'lang': record.lang,
+      'version': record.version,
+      'versionCode': record.versionCode,
+      'baseUrl': record.baseUrl,
+      'nsfw': record.nsfw ? 1 : 0,
+      'supportsLatest': record.supportsLatest ? 1 : 0,
+      'minAppVersion': record.minAppVersion,
+      'dslVersion': record.dslVersion,
+      'icon': record.icon,
+      'runtime': record.runtime,
+      'engine': record.engine,
+      'contentType': ContentType.normalize(record.contentType),
+      'methodsJson': record.methodsJson,
+      'sourcesJson': record.sourcesJson,
+      'installedAt': record.installedAt,
+    };
+    try {
+      // key 为主键：INSERT OR REPLACE 原子完成重装/升级覆盖
+      await store.executeSql(
+        `INSERT INTO plugin (key, name, lang, version, versionCode, baseUrl, nsfw, supportsLatest,
+          minAppVersion, dslVersion, icon, runtime, engine, contentType, methodsJson, sourcesJson, installedAt)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         ON CONFLICT(key) DO UPDATE SET
+          name = excluded.name, lang = excluded.lang, version = excluded.version,
+          versionCode = excluded.versionCode, baseUrl = excluded.baseUrl, nsfw = excluded.nsfw,
+          supportsLatest = excluded.supportsLatest, minAppVersion = excluded.minAppVersion,
+          dslVersion = excluded.dslVersion, icon = excluded.icon, runtime = excluded.runtime,
+          engine = excluded.engine, contentType = excluded.contentType,
+          methodsJson = excluded.methodsJson, sourcesJson = excluded.sourcesJson,
+          installedAt = excluded.installedAt`,
+        [record.key, record.name, record.lang, record.version, record.versionCode, record.baseUrl,
+          record.nsfw ? 1 : 0, record.supportsLatest ? 1 : 0, record.minAppVersion, record.dslVersion,
+          record.icon, record.runtime, record.engine, ContentType.normalize(record.contentType),
+          record.methodsJson, record.sourcesJson, record.installedAt]);
+    } catch (e) {
+      throw new Error(`upsert plugin failed: ${e}`);
+    }
+  }
+
+  static async remove(key: string): Promise<void> {
+    const store = await AppDb.get();
+    const pred = new relationalStore.RdbPredicates('plugin');
+    pred.equalTo('key', key);
+    try {
+      await store.delete(pred);
+    } catch (e) {
+      throw new Error(`remove plugin failed: ${e}`);
+    }
+  }
+
+  static async list(): Promise<PluginRecord[]> {
+    const store = await AppDb.get();
+    const pred = new relationalStore.RdbPredicates('plugin');
+    pred.orderByAsc('installedAt').orderByAsc('key');
+    const list: PluginRecord[] = [];
+    try {
+      const rs = await store.query(pred, PluginRepo.COLUMNS);
+      while (rs.goToNextRow()) {
+        list.push(PluginRepo.rowToPlugin(rs));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`list plugins failed: ${e}`);
+    }
+    return list;
+  }
+
+  static async count(): Promise<number> {
+    const store = await AppDb.get();
+    let n = 0;
+    try {
+      const rs = await store.querySql(`SELECT COUNT(*) AS n FROM plugin`);
+      if (rs.goToNextRow()) {
+        n = rs.getLong(rs.getColumnIndex('n'));
+      }
+      closeQuietly(rs);
+    } catch (e) {
+      throw new Error(`count plugins failed: ${e}`);
+    }
+    return n;
+  }
+
+  private static rowToPlugin(rs: relationalStore.ResultSet): PluginRecord {
+    try {
+      const p = new PluginRecord();
+      p.key = rs.getString(rs.getColumnIndex('key'));
+      p.name = rs.getString(rs.getColumnIndex('name'));
+      p.lang = rs.getString(rs.getColumnIndex('lang'));
+      p.version = rs.getString(rs.getColumnIndex('version'));
+      p.versionCode = rs.getLong(rs.getColumnIndex('versionCode'));
+      p.baseUrl = rs.getString(rs.getColumnIndex('baseUrl'));
+      p.nsfw = rs.getLong(rs.getColumnIndex('nsfw')) === 1;
+      p.supportsLatest = rs.getLong(rs.getColumnIndex('supportsLatest')) === 1;
+      p.minAppVersion = rs.getLong(rs.getColumnIndex('minAppVersion'));
+      p.dslVersion = rs.getLong(rs.getColumnIndex('dslVersion'));
+      p.icon = rs.getString(rs.getColumnIndex('icon'));
+      p.runtime = rs.getString(rs.getColumnIndex('runtime'));
+      p.engine = rs.getString(rs.getColumnIndex('engine'));
+      p.contentType = ContentType.normalize(rs.getString(rs.getColumnIndex('contentType')));
+      p.methodsJson = rs.getString(rs.getColumnIndex('methodsJson'));
+      p.sourcesJson = rs.getString(rs.getColumnIndex('sourcesJson'));
+      p.installedAt = rs.getLong(rs.getColumnIndex('installedAt'));
+      return p;
+    } catch (e) {
+      throw new Error(`map plugin row failed: ${e}`);
     }
   }
 }

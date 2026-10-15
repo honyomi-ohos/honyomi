@@ -67,8 +67,12 @@ export struct ExtensionListPanel {
     this.refreshInstalled();
   }
 
-  private refreshInstalled(): void {
-    this.installed = PluginService.listInstalled();
+  // 已安装列表来自 DB 元数据索引（异步），刷新后重算过滤缓存
+  private async refreshInstalled(): Promise<void> {
+    this.installed = await PluginService.listInstalled();
+    if (this.disposed) {
+      return;
+    }
     this.recomputeShownInstalled();
   }
 

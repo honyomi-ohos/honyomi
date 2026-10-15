@@ -24,6 +24,8 @@ export interface EngineBackend {
   loadExtension(key: string, code: string, seed: string): Promise<JsvmExtensionInfo>;
   /** 卸载插件并释放 Worker + JSVM 引擎。 */
   unloadExtension(key: string): Promise<void>;
+  /** 插件引擎当前是否处于已加载且可用状态（LRU 淘汰/卸载后返回 false）。 */
+  isLoaded(key: string): boolean;
   /**
    * 调用插件规范化方法，返回适配器 envelope 的 `data` 载荷。
    * Cloudflare 质询时抛出 WebChallengeError。

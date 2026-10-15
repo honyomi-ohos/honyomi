@@ -104,6 +104,20 @@ export struct ExtensionDetailPage {
     return SourceRegistry.get(this.pluginKey);
   }
 
+  // 已安装插件来自 DB 元数据索引（异步）：按 key 匹配当前插件
+  private async loadPlugin(): Promise<void> {
+    const installed = await PluginService.listInstalled();
+    if (this.destroyed) {
+      return;
+    }
+    for (const item of installed) {
+      if (item.manifest.key === this.pluginKey) {
+        this.plugin = item;
+        break;
+      }
+    }
+  }
+
   // 插件是否声明了设置页
   private isConfigurable(): boolean {
     const src = this.currentSource();
@@ -555,13 +569,7 @@ export struct ExtensionDetailPage {
         return;
       }
       this.pluginKey = key;
-      const installed = PluginService.listInstalled();
-      for (const item of installed) {
-        if (item.manifest.key === this.pluginKey) {
-          this.plugin = item;
-          break;
-        }
-      }
+      this.loadPlugin();
       this.loadSchema();
     })
   }

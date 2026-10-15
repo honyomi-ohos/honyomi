@@ -23,6 +23,10 @@ export class JsvmEngineBackend implements EngineBackend {
     return JsvmExtensionManager.unloadExtension(key);
   }
 
+  isLoaded(key: string): boolean {
+    return JsvmExtensionManager.isLoaded(key);
+  }
+
   callData<T>(key: string, method: string, args: Array<string | number | boolean | object>): Promise<T> {
     return JsvmExtensionManager.callData<T>(key, method, args);
   }

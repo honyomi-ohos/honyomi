@@ -132,15 +132,17 @@ export interface CompiledSourceInfo {
   nsfw?: boolean;
 }
 
-// JSVM 插件适配器：实现 Source 接口，方法经专属 Worker 转发到隔离 JSVM 引擎
+// JSVM 插件适配器：实现 Source 接口，方法经专属 Worker 转发到隔离 JSVM 引擎。
+// 千级插件规模下先以“占位源”注册（仅元数据），首次调用经 engineStarter 惰性拉起引擎；
+// 引擎被 LRU 淘汰后再次调用会自动重新拉起。
 export class JsvmSource implements Source {
   readonly key: string;
-  readonly name: string;
-  readonly lang: string;
-  readonly supportsLatest: boolean;
-  readonly contentType: string;
-  readonly nsfw: boolean;
-  readonly manifest: PluginManifest;
+  name: string;
+  lang: string;
+  supportsLatest: boolean;
+  contentType: string;
+  nsfw: boolean;
+  manifest: PluginManifest;
   // 插件包目录名。多语言扩展共用一个 JSVM 引擎，浏览列表里每个语言各有自己的 key。
   readonly packageKey: string;
   // tachiyomi 编译产物的 source id；空字符串表示简单契约插件。
@@ -153,6 +155,8 @@ export class JsvmSource implements Source {
   private imageViaHost: boolean = false;
   // getHeaders 预热的 Promise 缓存：并发去重，调用方可 await 保证首图带 Referer/Cookie
   private warmHeadersPromise: Promise<void> | undefined = undefined;
+  // 惰性引擎启动器（PluginService.ensureEngine(packageKey)）；占位源首调时拉起引擎
+  private engineStarter: (() => Promise<void>) | undefined = undefined;
 
   constructor(manifest: PluginManifest, exportedMethods: string[] = [], packageKey: string = '',
     sourceId: string = '', iconPath: string = '') {
@@ -167,6 +171,30 @@ export class JsvmSource implements Source {
     this.supportsLatest = manifest.supportsLatest && exportedMethods.indexOf('getLatestManga') >= 0;
     this.contentType = ContentType.normalize(manifest.contentType);
     this.nsfw = manifest.nsfw;
+  }
+
+  // 注入惰性引擎启动器：call/getHeaders 首次执行前先等待引擎就绪
+  setEngineStarter(starter: () => Promise<void>): void {
+    this.engineStarter = starter;
+  }
+
+  private async ensureEngineStarted(): Promise<void> {
+    if (this.engineStarter !== undefined) {
+      await this.engineStarter();
+    }
+  }
+
+  // 引擎就绪后就地升级（同 key 源不换实例）：刷新 manifest/方法表/supportsLatest/nsfw；
+  // 版本可能更换了图片头，清空预热缓存待下次 warm 重新拉取
+  upgrade(manifest: PluginManifest, exportedMethods: string[]): void {
+    this.manifest = manifest;
+    this.name = manifest.name;
+    this.lang = manifest.lang;
+    this.supportsLatest = manifest.supportsLatest && exportedMethods.indexOf('getLatestManga') >= 0;
+    this.contentType = ContentType.normalize(manifest.contentType);
+    this.nsfw = manifest.nsfw;
+    this.exportedMethods = exportedMethods;
+    this.warmHeadersPromise = undefined;
   }
 
   setImageHeaders(headers: Record<string, string> | undefined): void {
@@ -453,6 +481,8 @@ export class JsvmSource implements Source {
   }
 
   private async call<T>(method: string, args: Array<string | number | boolean | object>): Promise<T> {
+    // 占位源首调：先等待引擎惰性拉起（引擎已加载时立即返回）
+    await this.ensureEngineStarted();
     try {
       return await JsvmSource.engine().callData<T>(this.packageKey, method, args);
     } catch (e) {
@@ -569,7 +599,10 @@ export class JsvmSource implements Source {
     if (this.exportedMethods.indexOf('getHeaders') < 0) {
       return Promise.resolve();
     }
-    return JsvmSource.engine().callData<Record<string, Object>>(this.packageKey, 'getHeaders', this.callArgs([]))
+    // 占位源：getHeaders 前先等待引擎惰性拉起
+    return this.ensureEngineStarted()
+      .then((): Promise<Record<string, Object>> =>
+        JsvmSource.engine().callData<Record<string, Object>>(this.packageKey, 'getHeaders', this.callArgs([])))
       .then((raw: Record<string, Object>): void => {
         const keys = Object.keys(raw);
         const headers: Record<string, string> = {};
