@@ -28,9 +28,18 @@ export struct HistoryPage {
   @State items: HistoryItem[] = [];
   @State loading: boolean = true;
   @State confirmClear: boolean = false;
+  // 清空确认 3 秒倒计时定时器：销毁时清理，防回调写已销毁组件状态
+  private confirmTimerId: number = -1;
 
   aboutToAppear(): void {
     this.loadData();
+  }
+
+  aboutToDisappear(): void {
+    if (this.confirmTimerId >= 0) {
+      clearTimeout(this.confirmTimerId);
+      this.confirmTimerId = -1;
+    }
   }
 
   onLibDirty(): void {
@@ -78,7 +87,8 @@ export struct HistoryPage {
   async clearHistory(): Promise<void> {
     if (!this.confirmClear) {
       this.confirmClear = true;
-      setTimeout(() => {
+      this.confirmTimerId = setTimeout(() => {
+        this.confirmTimerId = -1;
         this.confirmClear = false;
       }, 3000);
       return;

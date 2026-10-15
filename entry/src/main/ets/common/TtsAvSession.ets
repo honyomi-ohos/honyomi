@@ -128,12 +128,18 @@ export class TtsAvSession {
       avQueueId: meta.queueId
     };
     if (meta.coverUri !== '') {
+      // ImageSource 解码完成后必须 release（成功/失败路径均不例外）
+      let source: image.ImageSource | undefined = undefined;
       try {
-        const source: image.ImageSource = image.createImageSource(meta.coverUri);
-        const pm: image.PixelMap = await source.createPixelMap();
-        md.mediaImage = pm;
+        source = image.createImageSource(meta.coverUri);
+        md.mediaImage = await source.createPixelMap();
       } catch (e) {
         // 封面加载失败不阻断元数据上报
+      } finally {
+        if (source !== undefined) {
+          source.release().catch((_e: BusinessError): void => {
+          });
+        }
       }
     }
     await s.setAVMetadata(md).catch((e: BusinessError): void => {

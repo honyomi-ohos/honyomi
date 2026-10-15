@@ -38,6 +38,8 @@ export struct CfVerifySheet {
   // 弹层内容销毁标志：异步回调（fetchCookie 等）续体据此跳过 toast/onClose
   private disposed: boolean = false;
   private controller: webview.WebviewController = new webview.WebviewController();
+  // Web 延迟挂载定时器：销毁时清理，防回调写已销毁组件状态
+  private mountTimerId: number = -1;
 
   aboutToAppear(): void {
     this.currentUrl = this.challengeUrl;
@@ -52,13 +54,18 @@ export struct CfVerifySheet {
       });
     }
     // 延迟一拍挂载 Web，让工具栏（含图标）首帧先绘制上屏
-    setTimeout(() => {
+    this.mountTimerId = setTimeout(() => {
+      this.mountTimerId = -1;
       this.webMounted = true;
     }, 100);
   }
 
   aboutToDisappear(): void {
     this.disposed = true;
+    if (this.mountTimerId >= 0) {
+      clearTimeout(this.mountTimerId);
+      this.mountTimerId = -1;
+    }
   }
 
   // 弹层内容存活期间 challenge URL 变化（重新触发/换地址）：热切换加载新地址；

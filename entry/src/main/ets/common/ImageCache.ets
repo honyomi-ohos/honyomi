@@ -108,16 +108,29 @@ export class ImageCache {
     }
   }
 
-  // 限时等待插件加载完成（加载挂死时 8s 超时回落直连）
+  // 限时等待插件加载完成（加载挂死时 8s 超时回落直连）；
+  // 插件就绪后清掉超时定时器，不留下空转计时器
   private static waitPluginsLoaded(): Promise<void> {
-    return Promise.race([
-      PluginService.ready(),
-      new Promise<void>((resolve: (value: void) => void): void => {
-        setTimeout((): void => {
-          resolve();
-        }, 8000);
-      })
-    ]);
+    return new Promise<void>((resolve: (value: void) => void): void => {
+      let timerId: number = -1;
+      PluginService.ready().then((): void => {
+        if (timerId >= 0) {
+          clearTimeout(timerId);
+          timerId = -1;
+        }
+        resolve();
+      }).catch((_e: Object): void => {
+        if (timerId >= 0) {
+          clearTimeout(timerId);
+          timerId = -1;
+        }
+        resolve();
+      });
+      timerId = setTimeout((): void => {
+        timerId = -1;
+        resolve();
+      }, 8000);
+    });
   }
 
   // 确保本地文件存在并返回裸绝对路径（桌面卡片等需要 fd 的场景）：

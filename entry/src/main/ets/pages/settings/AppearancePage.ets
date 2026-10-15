@@ -107,7 +107,8 @@ export struct AppearanceContent {
 @Component
 export struct AppearancePage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @Consume('navStack') pathStack: NavPathStack;
+  // 路由栈：NavDestination onReady 时从自身上下文获取（官方推荐方式）
+  pathStack: NavPathStack = new NavPathStack();
 
   build() {
     NavDestination() {
@@ -125,6 +126,9 @@ export struct AppearancePage {
       .backgroundColor(this.pal.bg)
     }
     .hideTitleBar(true)
+    .onReady((ctx: NavDestinationContext) => {
+      this.pathStack = ctx.pathStack;
+    })
     .backgroundColor(this.pal.bg)
   }
 }

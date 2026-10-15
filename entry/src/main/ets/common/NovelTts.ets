@@ -123,6 +123,8 @@ export class NovelTts {
   private static starting: boolean = false;
   // 看门狗（2s 一查）
   private static keepAlive: number = -1;
+  // 引擎忙重试的 250ms 延迟定时器（stop 时清理，防迟到重试）
+  private static retryTimer: number = -1;
   private static startReceived: boolean = false;
   private static issueAt: number = 0;
   private static busyFalseStreak: number = 0;
@@ -194,6 +196,10 @@ export class NovelTts {
     NovelTts.session += 1;
     NovelTts.stopped = true;
     NovelTts.activeReq = '';
+    if (NovelTts.retryTimer >= 0) {
+      clearTimeout(NovelTts.retryTimer);
+      NovelTts.retryTimer = -1;
+    }
     NovelTts.clearKeepAlive();
     NovelTts.stopTtsTask();
     const eng = NovelTts.engine;
@@ -339,7 +345,11 @@ export class NovelTts {
       // 引擎忙（刚 stop 完等）时稍后重试，最多 3 次
       if (NovelTts.retries < 3) {
         NovelTts.retries += 1;
-        setTimeout(() => {
+        if (NovelTts.retryTimer >= 0) {
+          clearTimeout(NovelTts.retryTimer);
+        }
+        NovelTts.retryTimer = setTimeout(() => {
+          NovelTts.retryTimer = -1;
           NovelTts.retrySpeak(reqId);
         }, 250);
       } else {

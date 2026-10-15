@@ -40,7 +40,8 @@ function dateKeyOf(ms: number): string {
 // 数据：书架内连载中/完结连载漫画，按章节上传间隔推算预计更新时间（FetchInterval 移植）
 @Component
 export struct UpcomingPage {
-  @Consume('navStack') pathStack: NavPathStack;
+  // 路由栈：NavDestination onReady 时从自身上下文获取（官方推荐方式）
+  pathStack: NavPathStack = new NavPathStack();
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('statusBarH') statusBarH: number = 0;
@@ -481,6 +482,9 @@ export struct UpcomingPage {
       .backgroundColor(this.pal.bg)
     }
     .hideTitleBar(true)
+    .onReady((ctx: NavDestinationContext) => {
+      this.pathStack = ctx.pathStack;
+    })
     .backgroundColor(this.pal.bg)
   }
 }

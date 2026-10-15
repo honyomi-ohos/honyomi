@@ -434,6 +434,15 @@ export class CookieJar {
     }, 500);
   }
 
+  // 退出/销毁场景：取消防抖定时器并立即落盘，防最后一次写入随进程结束丢失
+  static flushNow(): void {
+    if (CookieJar.saveTimer >= 0) {
+      clearTimeout(CookieJar.saveTimer);
+      CookieJar.saveTimer = -1;
+    }
+    CookieJar.save();
+  }
+
   // AES-256-GCM 加密：返回 IV || 密文+tag；失败返回 undefined（调用方放弃本次落盘）
   private static encrypt(plain: Uint8Array): Uint8Array | undefined {
     const key = CookieJar.key;

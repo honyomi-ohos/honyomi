@@ -87,16 +87,22 @@ export struct CoverViewer {
       }
       this.localPath = path;
       this.displayPath = path.indexOf('/') === 0 ? `file://${path}` : path;
+      // ImageSource 解码完成后必须 release（失败路径经 finally 同样释放）
+      let source: image.ImageSource | undefined = undefined;
       try {
-        const source = image.createImageSource(path);
+        source = image.createImageSource(path);
         const info = await source.getImageInfo();
-        source.release();
         this.naturalWidth = info.size.width;
         this.naturalHeight = info.size.height;
       } catch (e) {
         // 读取宽高失败：退化为容器尺寸 + Contain 展示
         this.naturalWidth = 0;
         this.naturalHeight = 0;
+      } finally {
+        if (source !== undefined) {
+          source.release().catch((_e: BusinessError): void => {
+          });
+        }
       }
       this.fitImage();
     } catch (e) {

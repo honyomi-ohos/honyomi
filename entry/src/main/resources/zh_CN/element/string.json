@@ -640,6 +640,26 @@
                         "value":  "打开详情失败"
                     },
                      {
+                         "name":  "browse_filter_empty",
+                         "value":  "无可用过滤项"
+                     },
+                     {
+                         "name":  "browse_filter_reset",
+                         "value":  "重置"
+                     },
+                     {
+                         "name":  "browse_filter_ignore",
+                         "value":  "忽略"
+                     },
+                     {
+                         "name":  "browse_filter_include",
+                         "value":  "包含"
+                     },
+                     {
+                         "name":  "browse_filter_exclude",
+                         "value":  "排除"
+                     },
+                     {
                          "name":  "browse_pick_folder_failed",
                          "value":  "选择文件夹失败"
                      },

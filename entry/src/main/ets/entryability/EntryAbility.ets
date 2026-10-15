@@ -20,6 +20,7 @@ import { WidgetUpdater } from '../form/WidgetUpdater';
 import { ReadingStatsRepo } from '../data/ReadingStats';
 import { TtsPlaybackService } from '../common/TtsPlaybackService';
 import { AppKeys } from '../common/AppKeys';
+import { PluginPrefs } from '../jsvm/PluginPrefs';
 
 const DOMAIN = 0x0001;
 
@@ -97,6 +98,11 @@ export default class EntryAbility extends UIAbility {
     TtsPlaybackService.stop();
     ReadingStatsRepo.flush();
     Settings.flushNow();
+    // 防抖窗口内的插件偏好与 Cookie 立即落盘，防退出丢失最后一次写入
+    PluginPrefs.flushAll().catch((e: Error): void => {
+      hilog.warn(DOMAIN, 'Mihon', 'plugin prefs flush failed: %{public}s', `${e}`);
+    });
+    CookieJar.flushNow();
   }
 
   onWindowStageCreate(windowStage: window.WindowStage): void {

@@ -31,7 +31,8 @@ const CAT_DEFAULT: number = 1;
 // （左侧分类导航 + 右侧内容面板，对齐系统设置布局；二级页如语言在右栏内切换）
 @Component
 export struct SettingsPage {
-  @Consume('navStack') pathStack: NavPathStack;
+  // 路由栈：NavDestination onReady 时从自身上下文获取（官方推荐方式）
+  pathStack: NavPathStack = new NavPathStack();
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('windowW') windowW: number = 0;
   @StorageProp('statusBarH') statusBarH: number = 0;
@@ -374,6 +375,9 @@ export struct SettingsPage {
       .backgroundColor(this.pal.bg)
     }
     .hideTitleBar(true)
+    .onReady((ctx: NavDestinationContext) => {
+      this.pathStack = ctx.pathStack;
+    })
     .backgroundColor(this.pal.bg)
   }
 }

@@ -335,6 +335,8 @@ struct Index {
   @State topRouteName: string = '';
   // 首启引导只拉起一次（onPageShow 每次回前台都会触发，需防重复）
   private onboardingLaunched: boolean = false;
+  // 返回首页兜底同步的 450ms 延迟定时器：销毁时清理，防对已销毁组件执行 animateTo
+  private navSyncTimerId: number = -1;
   private tabsController: HdsTabsController = new HdsTabsController();
   // 无 HDS 运行时环境（预览器）的标准 Tabs 回退控制器
   private fallbackTabsController: TabsController = new TabsController();
@@ -449,6 +451,10 @@ struct Index {
 
   aboutToDisappear(): void {
     TtsPlaybackService.events.offState(this.onTtsState);
+    if (this.navSyncTimerId >= 0) {
+      clearTimeout(this.navSyncTimerId);
+      this.navSyncTimerId = -1;
+    }
   }
 
   // 首启未完成引导时拉起引导页（页面挂载完成后，对齐 Mihon ShowOnboarding）
@@ -985,7 +991,13 @@ struct Index {
       // 导航卡在图标栏）；延迟到转场结束后执行，避免导航宽度在动画中途跳变
       .onNavBarStateChange((isVisible: boolean) => {
         if (isVisible) {
-          setTimeout((): void => { this.syncTopRoute(); }, 450);
+          if (this.navSyncTimerId >= 0) {
+            clearTimeout(this.navSyncTimerId);
+          }
+          this.navSyncTimerId = setTimeout((): void => {
+            this.navSyncTimerId = -1;
+            this.syncTopRoute();
+          }, 450);
         }
       })
       }

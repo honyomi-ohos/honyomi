@@ -39,6 +39,8 @@ export struct OAuthSheet {
   // 网页当前地址（跟随重定向更新），供复制/浏览器打开使用
   private currentUrl: string = '';
   private controller: webview.WebviewController = new webview.WebviewController();
+  // Web 延迟挂载定时器：销毁时清理，防回调写已销毁组件状态
+  private mountTimerId: number = -1;
 
   // 解析 mihon://host?query 或 mihon://host#fragment 中的键值对
   static parseParams(url: string): Record<string, string> {
@@ -77,9 +79,17 @@ export struct OAuthSheet {
   aboutToAppear(): void {
     this.updateHost(this.authUrl);
     // 延迟一拍挂载 Web，让工具栏（含图标）首帧先绘制上屏
-    setTimeout(() => {
+    this.mountTimerId = setTimeout(() => {
+      this.mountTimerId = -1;
       this.webMounted = true;
     }, 100);
+  }
+
+  aboutToDisappear(): void {
+    if (this.mountTimerId >= 0) {
+      clearTimeout(this.mountTimerId);
+      this.mountTimerId = -1;
+    }
   }
 
   // 更新当前页面域名/协议展示（授权中域名变化即刷新，防钓鱼）
