@@ -498,6 +498,7 @@
     { "name": "plugin_processing", "value": "Processing…" },
     { "name": "plugin_package_hint", "value": "Supports .honyomiplug / .zip plugin packages" },
     { "name": "plugin_repo", "value": "Online repository" },
+    { "name": "plugin_site_preview_title", "value": "Website" },
     { "name": "plugin_repo_config", "value": "Set up repository" },
     { "name": "plugin_repo_refresh", "value": "Refresh" },
     { "name": "plugin_repo_hint", "value": "No plugin repository configured yet" },

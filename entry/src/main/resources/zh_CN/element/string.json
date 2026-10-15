@@ -1299,10 +1299,14 @@
                        "name":  "plugin_package_hint",
                        "value":  "支持 .honyomiplug / .zip 插件包"
                    },
-                   {
-                       "name":  "plugin_repo",
-                       "value":  "在线仓库"
-                   },
+                    {
+                        "name":  "plugin_repo",
+                        "value":  "在线仓库"
+                    },
+                    {
+                        "name":  "plugin_site_preview_title",
+                        "value":  "网站"
+                    },
                    {
                        "name":  "plugin_repo_config",
                        "value":  "配置仓库"

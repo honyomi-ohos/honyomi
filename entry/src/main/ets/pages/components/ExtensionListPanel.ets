@@ -5,10 +5,12 @@ import { ContentType } from '../../model/Models';
 import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
 import { Settings } from '../../common/Settings';
+import { Bp } from '../../common/Breakpoint';
 import { EmptyScreen } from './EmptyScreen';
 import { AppIcon } from './AppIcon';
 import { TypeBadgedIcon } from './TypeBadgedIcon';
 import { NsfwTag } from './NsfwTag';
+import { SitePreviewSheet } from './SitePreviewSheet';
 
 // 插件列表面板（浏览页“插件”Tab 内嵌）：已安装 / 在线仓库
 // 对齐 Mihon：整行点击进入插件详情页；从本地安装/仓库配置/刷新由宿主（BrowsePage 菜单）
@@ -35,6 +37,11 @@ export struct ExtensionListPanel {
   @State repoUrl: string = '';
   @State loadingRepo: boolean = false;
   @State busy: boolean = false;
+  // 安装前站点预览弹层（在线插件行地球按钮触发）
+  @State showSitePreview: boolean = false;
+  @State previewSiteUrl: string = '';
+  @State previewName: string = '';
+  @StorageProp('windowW') windowW: number = 0;
   // 面板销毁标志：异步续体据此跳过 toast/写状态
   private disposed: boolean = false;
 
@@ -319,6 +326,17 @@ export struct ExtensionListPanel {
       .layoutWeight(1)
       .margin({ left: 12 })
 
+      // 安装前预览插件对应网站（仓库索引声明 site 时显示）
+      if (entry.site !== '') {
+        AppIcon({ name: 'public', iconSize: 20, tint: this.pal.sub })
+          .padding({ left: 8, right: 4, top: 8, bottom: 8 })
+          .onClick(() => {
+            this.previewSiteUrl = entry.site;
+            this.previewName = entry.name;
+            this.showSitePreview = true;
+          })
+      }
+
       if (this.installedVersionOf(entry.key) < 0) {
         Text($r('app.string.common_install'))
           .fontSize(13)
@@ -344,6 +362,18 @@ export struct ExtensionListPanel {
     }
     .width('100%')
     .padding({ top: 8, bottom: 8 })
+  }
+
+  // 站点预览半模态弹层内容（SitePreviewSheet 承载，样式对齐 Mihon WebView）
+  @Builder
+  sitePreviewBuilder() {
+    SitePreviewSheet({
+      siteUrl: this.previewSiteUrl,
+      defaultTitle: this.previewName,
+      onClose: (): void => {
+        this.showSitePreview = false;
+      },
+    })
   }
 
   build() {
@@ -442,5 +472,15 @@ export struct ExtensionListPanel {
     .contentEndOffset(this.navBarH + this.tabPadH)
     .width('100%')
     .height('100%')
+    .bindSheet($$this.showSitePreview, this.sitePreviewBuilder(), {
+      height: SheetSize.LARGE,
+      detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+      dragBar: true,
+      showClose: false,
+      preferType: Bp.sheetType(this.windowW),
+      width: Bp.sheetWidth(this.windowW, 560),
+      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
+      maskColor: 'rgba(0,0,0,0.45)',
+    })
   }
 }

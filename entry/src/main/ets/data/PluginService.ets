@@ -66,6 +66,8 @@ export interface RepoEntry {
   contentType: string;
   // 仓库索引声明的 sha256（可选），下载后校验插件包完整性
   checksum: string;
+  // 插件对应站点首页（manifest.baseUrl）：供安装前预览网站；未声明时为空字符串
+  site: string;
 }
 
 interface RawRepoEntry {
@@ -79,6 +81,8 @@ interface RawRepoEntry {
   icon?: string;
   contentType?: string;
   checksum?: string;
+  site?: string;
+  baseUrl?: string;
 }
 
 interface RawRepoIndex {
@@ -610,11 +614,22 @@ export class PluginService {
           contentType: item.contentType !== undefined && item.contentType !== null ?
             ContentType.normalize(item.contentType) : '',
           checksum: item.checksum ?? '',
+          site: PluginService.normalizeSiteUrl(item.site !== undefined && item.site !== '' ?
+            item.site : item.baseUrl),
         };
         entries.push(entry);
       }
     }
     return entries;
+  }
+
+  // 仓库索引声明的站点地址归一化：仅接受 http(s) 绝对地址，其余视为未声明
+  private static normalizeSiteUrl(url: string | undefined): string {
+    const u = url ?? '';
+    if (u === '') {
+      return '';
+    }
+    return /^https?:\/\//.test(u) ? u : '';
   }
 
   // ---------------- 内部实现 ----------------
