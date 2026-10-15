@@ -220,9 +220,9 @@ struct TabIcon {
   build() {
     if (this.kind === 'more') {
       Row({ space: 2 }) {
-        Circle().width(4).height(4).fill(this.iconTint()).translate({ y: this.moreY0 })
-        Circle().width(4).height(4).fill(this.iconTint()).translate({ y: this.moreY1 })
-        Circle().width(4).height(4).fill(this.iconTint()).translate({ y: this.moreY2 })
+        Column().width(4).height(4).borderRadius(2).backgroundColor(this.iconTint()).translate({ y: this.moreY0 })
+        Column().width(4).height(4).borderRadius(2).backgroundColor(this.iconTint()).translate({ y: this.moreY1 })
+        Column().width(4).height(4).borderRadius(2).backgroundColor(this.iconTint()).translate({ y: this.moreY2 })
       }
       .width(24)
       .height(24)

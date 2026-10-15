@@ -42,7 +42,8 @@ export struct CfVerifySheet {
   aboutToAppear(): void {
     this.currentUrl = this.challengeUrl;
     this.loadedUrl = this.challengeUrl;
-    hilog.info(0x0C0F, 'CfVerify', 'sheet aboutToAppear url=%{public}s', this.challengeUrl);
+    // URL 偶含会话参数：日志只输出 host，不输出完整 URL
+    hilog.info(0x0C0F, 'CfVerify', 'sheet aboutToAppear host=%{public}s', CookieJar.hostOf(this.challengeUrl));
     // 把 CookieJar 已有会话预注入 ArkWeb（cf_clearance 与 UA/Cookie 绑定）
     const jar = CookieJar.headerFor(this.challengeUrl);
     if (this.challengeUrl !== '' && jar !== '') {
@@ -211,7 +212,7 @@ export struct CfVerifySheet {
           })
           .onPageBegin((event: OnPageBeginEvent) => {
             this.currentUrl = event?.url ?? this.challengeUrl;
-            hilog.info(0x0C0F, 'CfVerify', 'pageBegin url=%{public}s', this.currentUrl);
+            hilog.info(0x0C0F, 'CfVerify', 'pageBegin host=%{public}s', CookieJar.hostOf(this.currentUrl));
             this.loading = true;
           })
           .onTitleReceive((event: OnTitleReceiveEvent) => {
@@ -221,17 +222,17 @@ export struct CfVerifySheet {
             this.loadProgress = event?.newProgress ?? 0;
           })
           .onErrorReceive((event: OnErrorReceiveEvent) => {
-            // 主文档加载失败时记录原因（页面由引擎默认错误页呈现）
+            // 主文档加载失败时记录原因（页面由引擎默认错误页呈现）；只输出 host，不输出完整 URL
             if (event && event.request.isMainFrame()) {
-              hilog.error(0x0C0F, 'CfVerify', 'errorReceive(main) url=%{public}s info=%{public}s',
-                event.request.getRequestUrl(), event.error.getErrorInfo());
+              hilog.error(0x0C0F, 'CfVerify', 'errorReceive(main) host=%{public}s info=%{public}s',
+                CookieJar.hostOf(event.request.getRequestUrl()), event.error.getErrorInfo());
               this.loading = false;
             }
           })
           .onHttpErrorReceive((event: OnHttpErrorReceiveEvent) => {
             if (event && event.request.isMainFrame()) {
-              hilog.info(0x0C0F, 'CfVerify', 'httpError(main) url=%{public}s code=%{public}d %{public}s',
-                event.request.getRequestUrl(), event.response.getResponseCode(),
+              hilog.info(0x0C0F, 'CfVerify', 'httpError(main) host=%{public}s code=%{public}d %{public}s',
+                CookieJar.hostOf(event.request.getRequestUrl()), event.response.getResponseCode(),
                 event.response.getReasonMessage());
             }
           })
@@ -240,7 +241,7 @@ export struct CfVerifySheet {
           })
           .onPageEnd((event: OnPageEndEvent) => {
             this.currentUrl = event?.url ?? this.currentUrl;
-            hilog.info(0x0C0F, 'CfVerify', 'pageEnd url=%{public}s', this.currentUrl);
+            hilog.info(0x0C0F, 'CfVerify', 'pageEnd host=%{public}s', CookieJar.hostOf(this.currentUrl));
             this.loading = false;
             this.checkCfSolved();
           })

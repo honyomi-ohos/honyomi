@@ -1,9 +1,18 @@
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { util } from '@kit.ArkTS';
+import { cryptoFramework } from '@kit.CryptoArchitectureKit';
+import { SecureStore } from '../common/SecureStore';
 
 const DOMAIN = 0x0002;
 const TAG = 'CookieJar';
+
+// 加密密钥的 Asset Store 别名（密钥本身存 TEE 加密的 ASSET，明文不出安全环境）
+const KEY_ALIAS = 'honyomi.cookiejar.key';
+// AES-256-GCM：12 字节随机 IV || 密文 || 16 字节认证 tag
+const GCM_IV_BYTES = 12;
+const GCM_TAG_BYTES = 16;
 
 // 单条 Cookie：值 + 过期时间戳（毫秒，0 表示会话期不过期）+ Secure 标记
 interface CookieEntry {
@@ -18,30 +27,102 @@ interface PersistShape {
 
 // 域名级 Cookie 存储：自动回收响应 Set-Cookie 并持久化，请求时自动附带
 // （插件 $.http、图片管线、下载服务全部经此受益；cf_clearance 亦存放于此）
+//
+// 落盘安全：cookies.json 明文格式已废弃，现为 cookies.bin（AES-256-GCM 加密）。
+// 密钥由 Asset Store 持久化；Asset Store 不可用时保持仅内存会话，绝不回退明文落盘。
 export class CookieJar {
   private static jar: Map<string, Record<string, CookieEntry>> = new Map();
   private static filePath: string = '';
   private static saveTimer: number = -1;
+  private static key: cryptoFramework.SymKey | undefined = undefined;
+  // 密钥是否已持久化到 Asset Store（false 时跳过落盘）
+  private static keyPersisted: boolean = false;
 
   static init(context: common.UIAbilityContext): void {
-    CookieJar.filePath = `${context.filesDir}/cookies.json`;
+    CookieJar.filePath = `${context.filesDir}/cookies.bin`;
+    // 清理旧版明文 cookies.json（不读取、不迁移，直接删除）
+    try {
+      const legacy = `${context.filesDir}/cookies.json`;
+      if (fs.accessSync(legacy)) {
+        fs.unlinkSync(legacy);
+      }
+    } catch (e) {
+    }
+    CookieJar.loadKey();
     try {
       if (fs.accessSync(CookieJar.filePath)) {
-        const raw = JSON.parse(fs.readTextSync(CookieJar.filePath)) as PersistShape;
-        const domains = raw.domains;
-        if (domains !== undefined) {
-          const keys = Object.keys(domains);
-          for (const d of keys) {
-            const rawEntries = domains[d] as Record<string, Object>;
-            if (rawEntries === undefined || rawEntries === null) {
-              continue;
-            }
-            CookieJar.jar.set(d, CookieJar.normalizeEntries(rawEntries));
-          }
+        const stat = fs.statSync(CookieJar.filePath);
+        const file = fs.openSync(CookieJar.filePath, fs.OpenMode.READ_ONLY);
+        try {
+          const buf = new ArrayBuffer(stat.size);
+          fs.readSync(file.fd, buf);
+          CookieJar.loadEncrypted(new Uint8Array(buf));
+        } finally {
+          fs.closeSync(file);
         }
       }
     } catch (e) {
       hilog.warn(DOMAIN, TAG, 'load failed: %{public}s', (e as Error).message);
+    }
+  }
+
+  // 加载/生成 AES-256 密钥：优先从 Asset Store 恢复，缺失则生成并持久化
+  private static loadKey(): void {
+    try {
+      const stored = SecureStore.getSync(KEY_ALIAS);
+      if (stored !== '') {
+        const gen = cryptoFramework.createSymKeyGenerator('AES256');
+        CookieJar.key = gen.convertKeySync({ data: CookieJar.b64Decode(stored) });
+        CookieJar.keyPersisted = true;
+        return;
+      }
+      const gen = cryptoFramework.createSymKeyGenerator('AES256');
+      const key = gen.generateSymKeySync();
+      const encoded = key.getEncoded();
+      // 密钥持久化失败（Asset Store 不可用）：仅内存会话，不回退明文落盘
+      CookieJar.keyPersisted = SecureStore.putSync(KEY_ALIAS, CookieJar.b64Encode(encoded.data));
+      CookieJar.key = key;
+      if (!CookieJar.keyPersisted) {
+        hilog.warn(DOMAIN, TAG, 'cookie key not persisted: asset store unavailable, session-only cookies');
+      }
+    } catch (e) {
+      hilog.warn(DOMAIN, TAG, 'load key failed: %{public}s', (e as Error).message);
+    }
+  }
+
+  // 解密并解析 cookies.bin（IV || 密文+tag）：解密失败（密钥变更/文件损坏）按空 jar 处理
+  private static loadEncrypted(bytes: Uint8Array): void {
+    const key = CookieJar.key;
+    if (key === undefined || bytes.length <= GCM_IV_BYTES + GCM_TAG_BYTES) {
+      return;
+    }
+    try {
+      const iv = bytes.slice(0, GCM_IV_BYTES);
+      const tag = bytes.slice(bytes.length - GCM_TAG_BYTES);
+      const cipherText = bytes.slice(GCM_IV_BYTES, bytes.length - GCM_TAG_BYTES);
+      const cipher = cryptoFramework.createCipher('AES256|GCM|NoPadding');
+      const params: cryptoFramework.GcmParamsSpec = {
+        algName: 'GcmParamsSpec',
+        iv: { data: iv },
+        aad: { data: new Uint8Array(0) },
+        authTag: { data: tag },
+      };
+      cipher.initSync(cryptoFramework.CryptoMode.DECRYPT_MODE, key, params);
+      const plain = cipher.doFinalSync({ data: cipherText });
+      const raw = JSON.parse(util.TextDecoder.create('utf-8').decodeToString(plain.data)) as PersistShape;
+      const domains = raw.domains;
+      if (domains !== undefined) {
+        const keys = Object.keys(domains);
+        for (const d of keys) {
+          const rawEntries = domains[d] as Record<string, Object>;
+          if (rawEntries === undefined || rawEntries === null) {
+            continue;
+          }
+          CookieJar.jar.set(d, CookieJar.normalizeEntries(rawEntries));
+        }
+      }
+    } catch (e) {
+      hilog.warn(DOMAIN, TAG, 'decrypt failed: %{public}s', (e as Error).message);
     }
   }
 
@@ -297,6 +378,16 @@ export class CookieJar {
 
   static clear(): void {
     CookieJar.jar.clear();
+    if (!CookieJar.keyPersisted) {
+      // 无法重写加密文件时直接删除文件，保证清除语义完整
+      try {
+        if (CookieJar.filePath !== '' && fs.accessSync(CookieJar.filePath)) {
+          fs.unlinkSync(CookieJar.filePath);
+        }
+      } catch (e) {
+      }
+      return;
+    }
     CookieJar.save();
   }
 
@@ -343,10 +434,43 @@ export class CookieJar {
     }, 500);
   }
 
+  // AES-256-GCM 加密：返回 IV || 密文+tag；失败返回 undefined（调用方放弃本次落盘）
+  private static encrypt(plain: Uint8Array): Uint8Array | undefined {
+    const key = CookieJar.key;
+    if (key === undefined) {
+      return undefined;
+    }
+    try {
+      const iv = cryptoFramework.createRandom().generateRandomSync(GCM_IV_BYTES);
+      const cipher = cryptoFramework.createCipher('AES256|GCM|NoPadding');
+      const params: cryptoFramework.GcmParamsSpec = {
+        algName: 'GcmParamsSpec',
+        iv: { data: iv.data },
+        aad: { data: new Uint8Array(0) },
+        authTag: { data: new Uint8Array(0) },
+      };
+      cipher.initSync(cryptoFramework.CryptoMode.ENCRYPT_MODE, key, params);
+      // GCM 加密 doFinal 输出末尾自动追加 16 字节认证 tag
+      const out = cipher.doFinalSync({ data: plain });
+      const result = new Uint8Array(GCM_IV_BYTES + out.data.length);
+      result.set(iv.data, 0);
+      result.set(out.data, GCM_IV_BYTES);
+      return result;
+    } catch (e) {
+      hilog.warn(DOMAIN, TAG, 'encrypt failed: %{public}s', (e as Error).message);
+      return undefined;
+    }
+  }
+
   // 原子持久化：先写临时文件，再 rename 原子替换主文件；
-  // rename 不支持覆盖时移除旧文件后重试，避免写中途崩溃损坏 cookies.json
+  // rename 不支持覆盖时移除旧文件后重试，避免写中途崩溃损坏 cookies.bin
   private static save(): void {
     if (CookieJar.filePath === '') {
+      return;
+    }
+    const key = CookieJar.key;
+    if (key === undefined || !CookieJar.keyPersisted) {
+      // 无持久化密钥：保持内存会话，绝不回退明文落盘
       return;
     }
     const tmpPath = `${CookieJar.filePath}.tmp`;
@@ -356,10 +480,15 @@ export class CookieJar {
         domains[domain] = cookies;
       });
       const shape: PersistShape = { domains: domains };
+      const plain = util.TextEncoder.create('utf-8').encodeInto(JSON.stringify(shape));
+      const encrypted = CookieJar.encrypt(plain);
+      if (encrypted === undefined) {
+        return;
+      }
       const file = fs.openSync(tmpPath,
         fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE | fs.OpenMode.TRUNC);
       try {
-        fs.writeSync(file.fd, JSON.stringify(shape));
+        fs.writeSync(file.fd, encrypted.buffer);
       } finally {
         fs.closeSync(file);
       }
@@ -378,5 +507,13 @@ export class CookieJar {
     } catch (e) {
       hilog.warn(DOMAIN, TAG, 'save failed: %{public}s', (e as Error).message);
     }
+  }
+
+  private static b64Encode(bytes: Uint8Array): string {
+    return new util.Base64Helper().encodeToStringSync(bytes);
+  }
+
+  private static b64Decode(text: string): Uint8Array {
+    return new util.Base64Helper().decodeSync(text);
   }
 }

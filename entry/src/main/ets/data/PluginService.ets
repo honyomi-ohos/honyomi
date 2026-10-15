@@ -504,8 +504,15 @@ export class PluginService {
   // → 解析最终源规格 → 同步注册表（就地升级占位源）→ 元数据落库 → 预热图片头
   private static async doStartEngine(packageKey: string): Promise<void> {
     const dir = `${PluginService.pluginsDir}/${packageKey}`;
-    const manifest = PluginService.parseManifest(fs.readTextSync(`${dir}/manifest.json`));
-    const scriptText = fs.readTextSync(`${dir}/main.js`);
+    let manifestText = '';
+    let scriptText = '';
+    try {
+      manifestText = fs.readTextSync(`${dir}/manifest.json`);
+      scriptText = fs.readTextSync(`${dir}/main.js`);
+    } catch (e) {
+      throw new Error(`plugin_start_read_failed|${e}`);
+    }
+    const manifest = PluginService.parseManifest(manifestText);
     const script = PluginService.composeScript(manifest, scriptText);
     // 插件偏好持久化：确保 Preferences 就绪，并把已存的 __PREFS_STORE__ 注回引擎
     let seed = '';
@@ -641,15 +648,18 @@ export class PluginService {
 
   private static async sha256Hex(data: ArrayBuffer): Promise<string> {
     try {
-      const md: cryptoFramework.Md = cryptoFramework.createMd('SHA256');
-      await md.update({ data: new Uint8Array(data) });
-      const digest: cryptoFramework.DataBlob = await md.digest();
-      let out = '';
-      for (let i = 0; i < digest.data.length; i++) {
-        const byte: number = digest.data[i];
-        out += byte < 16 ? `0${byte.toString(16)}` : byte.toString(16);
+      if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest')) {
+        const md: cryptoFramework.Md = cryptoFramework.createMd('SHA256');
+        await md.update({ data: new Uint8Array(data) });
+        const digest: cryptoFramework.DataBlob = await md.digest();
+        let out = '';
+        for (let i = 0; i < digest.data.length; i++) {
+          const byte: number = digest.data[i];
+          out += byte < 16 ? `0${byte.toString(16)}` : byte.toString(16);
+        }
+        return out;
       }
-      return out;
+      throw new Error('crypto unavailable');
     } catch (e) {
       throw new Error(`plugin_checksum_failed|${e}`);
     }

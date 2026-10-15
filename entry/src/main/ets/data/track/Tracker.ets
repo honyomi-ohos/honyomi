@@ -69,16 +69,33 @@ export class Pkce {
 
   // 同步生成随机 verifier（plain PKCE / state 参数用）
   static verifier(): string {
-    const random = cryptoFramework.createRandom().generateRandomSync(32);
-    return Pkce.b64Url(random.data).replace(/=/g, '');
+    if (canIUse('SystemCapability.Security.CryptoFramework.Rand')) {
+      try {
+        const random = cryptoFramework.createRandom().generateRandomSync(32);
+        return Pkce.b64Url(random.data).replace(/=/g, '');
+      } catch (_e) {
+      }
+    }
+    const fallback: number[] = [];
+    for (let i = 0; i < 32; i++) {
+      fallback.push(Math.floor(Math.random() * 256));
+    }
+    return Pkce.b64Url(new Uint8Array(fallback)).replace(/=/g, '');
   }
 
   private static async s256(input: string): Promise<string> {
-    const bytes: Uint8Array = new util.TextEncoder().encodeInto(input);
-    const md = cryptoFramework.createMd('SHA256');
-    await md.update({ data: bytes });
-    const digest = await md.digest();
-    return Pkce.b64Url(digest.data).replace(/=/g, '');
+    if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest')) {
+      try {
+        const bytes: Uint8Array = new util.TextEncoder().encodeInto(input);
+        const md = cryptoFramework.createMd('SHA256');
+        await md.update({ data: bytes });
+        const digest = await md.digest();
+        return Pkce.b64Url(digest.data).replace(/=/g, '');
+      } catch (e) {
+        throw new Error(`pkce_failed|${e}`);
+      }
+    }
+    throw new Error('pkce_unsupported');
   }
 
   private static b64Url(data: Uint8Array): string {

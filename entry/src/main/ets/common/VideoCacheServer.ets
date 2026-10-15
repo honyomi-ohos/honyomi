@@ -12,7 +12,10 @@ class RegisteredHeaderInjector implements HeaderInjector {
     const merged: Record<string, string> = Http.headersFor(url, VideoCacheServer.getUrlHeaders(url));
     const keys = Object.keys(merged);
     for (const k of keys) {
-      out.set(k, merged[k]);
+      try {
+        out.set(k, merged[k]);
+      } catch (_e) {
+      }
     }
     return out;
   }

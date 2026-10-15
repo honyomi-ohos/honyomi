@@ -842,6 +842,22 @@
     { "name": "track_on_hold_list", "value": "On hold list" },
     { "name": "track_unfinished_list", "value": "Unfinished list" },
     { "name": "oauth_loading", "value": "Loading…" },
-    { "name": "oauth_load_error", "value": "Failed to load: %s" }
+    { "name": "oauth_load_error", "value": "Failed to load: %s" },
+    { "name": "appearance_accent_color", "value": "Accent color" },
+    { "name": "theme_accent_blue", "value": "Blue" },
+    { "name": "theme_accent_green", "value": "Green" },
+    { "name": "theme_accent_orange", "value": "Orange" },
+    { "name": "theme_accent_pink", "value": "Pink" },
+    { "name": "theme_accent_purple", "value": "Purple" },
+    { "name": "browse_import", "value": "Import" },
+    { "name": "browse_import_done", "value": "Imported %d files" },
+    { "name": "browse_import_failed", "value": "Import failed: %s" },
+    { "name": "browse_import_title", "value": "Import %d files" },
+    { "name": "browse_input_name", "value": "Please enter a name" },
+    { "name": "browse_local_empty", "value": "No local manga yet, tap Import to add some" },
+    { "name": "browse_local_files_empty", "value": "No local files yet, tap Import to add some" },
+    { "name": "browse_manga_name_hint", "value": "Manga name" },
+    { "name": "browse_pick_file_failed", "value": "Failed to pick files" },
+    { "name": "browse_work_name_hint", "value": "Name" }
 ]
 }

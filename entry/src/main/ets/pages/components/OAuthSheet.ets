@@ -9,6 +9,7 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { BusinessError, pasteboard } from '@kit.BasicServicesKit';
 import { Want } from '@kit.AbilityKit';
 import { Http } from '../../net/Http';
+import { CookieJar } from '../../net/CookieJar';
 import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
 import { AppIcon, AppIconRes } from './AppIcon';
@@ -28,6 +29,9 @@ export struct OAuthSheet {
   // Chrome 风格加载态：标题前图标切换（加载中转圈 / 加载完成地球）
   @State loading: boolean = true;
   @State pageTitle: string = '';
+  // 防钓鱼：当前页面域名与协议（非 https 时以警示色展示）
+  @State pageHost: string = '';
+  @State pageSecure: boolean = true;
   // Web 延迟挂载：引擎初始化（拉起渲染进程）会抢占 UI 线程，
   // 与工具栏同帧挂载会导致 Image 图标（close 等）解码上屏被阻塞而延迟显示
   @State webMounted: boolean = false;
@@ -71,10 +75,17 @@ export struct OAuthSheet {
   }
 
   aboutToAppear(): void {
+    this.updateHost(this.authUrl);
     // 延迟一拍挂载 Web，让工具栏（含图标）首帧先绘制上屏
     setTimeout(() => {
       this.webMounted = true;
     }, 100);
+  }
+
+  // 更新当前页面域名/协议展示（授权中域名变化即刷新，防钓鱼）
+  private updateHost(url: string): void {
+    this.pageHost = CookieJar.hostOf(url);
+    this.pageSecure = url.indexOf('https://') === 0;
   }
 
   private tryHandleRedirect(url: string): boolean {
@@ -82,7 +93,9 @@ export struct OAuthSheet {
       return false;
     }
     this.handled = true;
-    hilog.info(0x0C0F, 'OAuth', 'redirect intercepted: %{public}s', url);
+    // 回调 URL 的 query/fragment 携带 access_token：只记录回调标识（host），绝不输出完整 URL
+    const host = url.substring(MIHON_SCHEME.length).split('?')[0].split('#')[0].split('/')[0];
+    hilog.info(0x0C0F, 'OAuth', 'redirect intercepted: %{public}s', host);
     this.onOAuthResult(OAuthSheet.parseParams(url));
     return true;
   }
@@ -158,6 +171,16 @@ export struct OAuthSheet {
       }
       .width('100%')
 
+      // 防钓鱼：常驻展示当前授权页域名；非 https 连接以警示色标出
+      Text(this.pageHost === '' ? ' ' : this.pageHost)
+        .fontSize(11)
+        .fontColor(this.pageSecure ? this.pal.sub : '#B45309')
+        .maxLines(1)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .width('100%')
+        .textAlign(TextAlign.Center)
+        .padding({ top: 3, bottom: 3 })
+
       // 页面加载进度条（与 CfVerifySheet 工具栏下方同款细进度条）
       if (this.loadProgress > 0 && this.loadProgress < 100) {
         Progress({ value: this.loadProgress, total: 100, type: ProgressType.Linear })
@@ -189,6 +212,7 @@ export struct OAuthSheet {
           })
           .onPageBegin((event: OnPageBeginEvent) => {
             this.currentUrl = event?.url ?? this.authUrl;
+            this.updateHost(this.currentUrl);
             // 兜底：部分引擎 onLoadIntercept 不含 fragment 时由 onPageBegin 捕获
             this.tryHandleRedirect(this.currentUrl);
             this.loading = true;
@@ -201,6 +225,7 @@ export struct OAuthSheet {
           })
           .onPageEnd((event: OnPageEndEvent) => {
             this.currentUrl = event?.url ?? this.currentUrl;
+            this.updateHost(this.currentUrl);
             this.loading = false;
           })
           .onErrorReceive((event: OnErrorReceiveEvent) => {

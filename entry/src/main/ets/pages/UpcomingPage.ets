@@ -283,12 +283,11 @@ export struct UpcomingPage {
   dayCell(day: number) {
     Stack() {
       if (this.cellDateMs(day) === this.todayStart()) {
-        Circle()
+        Column()
           .width(40)
           .height(40)
-          .fill(Color.Transparent)
-          .stroke(this.pal.text)
-          .strokeWidth(1)
+          .borderRadius(20)
+          .border({ width: 1, color: this.pal.text })
       }
       Text(`${day}`)
         .fontSize(16)
@@ -296,10 +295,11 @@ export struct UpcomingPage {
         .fontColor(this.cellDateMs(day) < this.todayStart() ? this.pal.sub : this.pal.text)
       Row({ space: 2 }) {
         ForEach(this.dayDots(day), (i: number) => {
-          Circle()
+          Column()
             .width(5)
             .height(5)
-            .fill(this.pal.primary)
+            .borderRadius(2.5)
+            .backgroundColor(this.pal.primary)
             .opacity((i + 1) * 0.3)
         }, (i: number) => `dot-${i}`)
       }

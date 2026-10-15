@@ -340,7 +340,7 @@ export struct TrackSheet {
   private pickDate(target: number): void {
     this.dateTarget = target;
     const current = target === DATE_START ? this.selTrackRec.startDate : this.selTrackRec.finishDate;
-    DatePickerDialog.show({
+    this.getUIContext().showDatePickerDialog({
       selected: new Date(current > 0 ? current : Date.now()),
       onDateAccept: (date: Date): void => {
         this.applyDate(date.getTime());

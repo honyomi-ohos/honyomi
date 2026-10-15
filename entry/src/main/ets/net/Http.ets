@@ -25,10 +25,18 @@ class HttpCfError extends Error {
 class HttpStatusError extends Error {
 }
 
+// 重定向跟随结果：最终 URL + 最终响应
+interface HttpFollowed {
+  url: string;
+  resp: http.HttpResponse;
+}
+
 // HTTP 客户端封装（对齐 Mihon NetworkHelper 的最小集）
 // - 统一 UA：CF 盾 cf_clearance 与 UA 绑定，http 层与验证 Web 必须一致
 // - CookieJar：自动附带请求 Cookie、回收响应 Set-Cookie
 // - CF challenge：检测到盾页时置 AppStorage.cfChallengeUrl，由 Index 弹验证页
+// - 手动重定向链（策略与 NativeHttpBridge 一致）：跨源跳转剥离敏感头
+//   （Authorization/Referer/Referrer/Cookie），https 起始禁止降级 http
 // - 幂等 GET：网络类错误（非 CF 挑战）退避 500ms 后重试一次
 export class Http {
   static readonly USER_AGENT: string = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +
@@ -47,38 +55,21 @@ export class Http {
   }
 
   static async post(url: string, body: string, headers: Record<string, string> | undefined): Promise<string> {
-    const client: http.HttpRequest = http.createHttp();
-    try {
-      const merged: Record<string, string> = Http.buildHeaders(url, headers);
-      merged['Content-Type'] = 'application/json';
-      merged['Accept'] = 'application/json';
-      const options: http.HttpRequestOptions = {
-        method: http.RequestMethod.POST,
-        header: merged,
-        extraData: body,
-        expectDataType: http.HttpDataType.STRING,
-        connectTimeout: 15000,
-        readTimeout: 20000,
-      };
-      let resp: http.HttpResponse;
-      try {
-        resp = await client.request(url, options);
-      } catch (e) {
-        throw new Error(`HTTP POST failed: ${e}`);
-      }
-      CookieJar.storeFromResponse(url, resp.header);
-      const respBody: string = Http.bodyText(resp.result);
-      if (CfChallenge.isCfChallenge(resp.responseCode, respBody, resp.header)) {
-        AppStorage.setOrCreate('cfChallengeUrl', url);
-        throw new HttpCfError('cf_required');
-      }
-      if (resp.responseCode < 200 || resp.responseCode >= 300) {
-        throw new HttpStatusError(`HTTP ${resp.responseCode}: ${url}`);
-      }
-      return respBody;
-    } finally {
-      client.destroy();
+    const caller: Record<string, string> = Http.copyHeaders(headers);
+    caller['Content-Type'] = 'application/json';
+    caller['Accept'] = 'application/json';
+    const followed = await Http.follow(url, http.RequestMethod.POST, caller, body,
+      http.HttpDataType.STRING, 20000);
+    const resp = followed.resp;
+    const respBody: string = Http.bodyText(resp.result);
+    if (CfChallenge.isCfChallenge(resp.responseCode, respBody, resp.header)) {
+      AppStorage.setOrCreate('cfChallengeUrl', followed.url);
+      throw new HttpCfError('cf_required');
     }
+    if (resp.responseCode < 200 || resp.responseCode >= 300) {
+      throw new HttpStatusError(`HTTP ${resp.responseCode}: ${followed.url}`);
+    }
+    return respBody;
   }
 
   // 任意方法原始请求（追踪器用）：返回状态码 + 响应体，非 2xx 不抛错；
@@ -86,35 +77,16 @@ export class Http {
   // Content-Type 由调用方通过 headers 指定（JSON / x-www-form-urlencoded）
   static async requestRaw(method: string, url: string, body: string,
     headers: Record<string, string> | undefined): Promise<RawResponse> {
-    const client: http.HttpRequest = http.createHttp();
-    try {
-      const options: http.HttpRequestOptions = {
-        method: Http.parseMethod(method),
-        header: Http.buildHeaders(url, headers),
-        expectDataType: http.HttpDataType.STRING,
-        connectTimeout: 15000,
-        readTimeout: 20000,
-      };
-      if (body !== '') {
-        options.extraData = body;
-      }
-      let resp: http.HttpResponse;
-      try {
-        resp = await client.request(url, options);
-      } catch (e) {
-        throw new Error(`HTTP ${method} failed: ${e}`);
-      }
-      CookieJar.storeFromResponse(url, resp.header);
-      const respBody: string = Http.bodyText(resp.result);
-      if (CfChallenge.isCfChallenge(resp.responseCode, respBody, resp.header)) {
-        AppStorage.setOrCreate('cfChallengeUrl', url);
-        throw new HttpCfError('cf_required');
-      }
-      const raw: RawResponse = { code: resp.responseCode, body: respBody };
-      return raw;
-    } finally {
-      client.destroy();
+    const followed = await Http.follow(url, Http.parseMethod(method), Http.copyHeaders(headers), body,
+      http.HttpDataType.STRING, 20000);
+    const resp = followed.resp;
+    const respBody: string = Http.bodyText(resp.result);
+    if (CfChallenge.isCfChallenge(resp.responseCode, respBody, resp.header)) {
+      AppStorage.setOrCreate('cfChallengeUrl', followed.url);
+      throw new HttpCfError('cf_required');
     }
+    const raw: RawResponse = { code: resp.responseCode, body: respBody };
+    return raw;
   }
 
   private static parseMethod(method: string): http.RequestMethod {
@@ -134,7 +106,8 @@ export class Http {
     }
   }
 
-  static async getBuffer(url: string, headers: Record<string, string> | undefined): Promise<ArrayBuffer> {    try {
+  static async getBuffer(url: string, headers: Record<string, string> | undefined): Promise<ArrayBuffer> {
+    try {
       return await Http.getBufferOnce(url, headers);
     } catch (e) {
       if (e instanceof HttpCfError || e instanceof HttpStatusError) {
@@ -247,64 +220,209 @@ export class Http {
   // ---------------- 内部实现 ----------------
 
   private static async getOnce(url: string, headers: Record<string, string> | undefined): Promise<string> {
+    const followed = await Http.follow(url, http.RequestMethod.GET, Http.copyHeaders(headers), '',
+      http.HttpDataType.STRING, 20000);
+    const resp = followed.resp;
+    const respBody: string = Http.bodyText(resp.result);
+    if (CfChallenge.isCfChallenge(resp.responseCode, respBody, resp.header)) {
+      AppStorage.setOrCreate('cfChallengeUrl', followed.url);
+      throw new HttpCfError('cf_required');
+    }
+    if (resp.responseCode < 200 || resp.responseCode >= 300) {
+      throw new HttpStatusError(`HTTP ${resp.responseCode}: ${followed.url}`);
+    }
+    return respBody;
+  }
+
+  private static async getBufferOnce(url: string, headers: Record<string, string> | undefined): Promise<ArrayBuffer> {
+    const followed = await Http.follow(url, http.RequestMethod.GET, Http.copyHeaders(headers), '',
+      http.HttpDataType.ARRAY_BUFFER, 60000);
+    const resp = followed.resp;
+    if (CfChallenge.isCfChallenge(resp.responseCode, '', resp.header)) {
+      AppStorage.setOrCreate('cfChallengeUrl', followed.url);
+      throw new HttpCfError('cf_required');
+    }
+    if (resp.responseCode < 200 || resp.responseCode >= 300) {
+      throw new HttpStatusError(`HTTP ${resp.responseCode}: ${followed.url}`);
+    }
+    return resp.result as ArrayBuffer;
+  }
+
+  // 手动重定向链（策略对齐 NativeHttpBridge.follow）：
+  // - 最多 8 跳，超出报错
+  // - https 起始的请求禁止降级 http（或跳转其他协议）
+  // - 跨源跳转剥离调用方自定义的敏感头（Authorization/Referer/Referrer/Cookie），
+  //   CookieJar 会为新目标域自动附带其自身 cookie
+  // - 303 或（301/302 且 POST）转 GET 并丢弃请求体
+  // - 每跳回收 Set-Cookie
+  private static async follow(
+    startUrl: string,
+    method: http.RequestMethod,
+    headers: Record<string, string>,
+    body: string,
+    expectDataType: http.HttpDataType,
+    readTimeout: number
+  ): Promise<HttpFollowed> {
+    let url = startUrl;
+    let currentMethod = method;
+    let currentHeaders = headers;
+    let currentBody = body;
+    const httpsStart = startUrl.indexOf('https://') === 0;
+    for (let hop = 0; hop < 8; hop++) {
+      const resp = await Http.requestOnce(url, currentMethod, currentHeaders, currentBody, expectDataType,
+        readTimeout);
+      CookieJar.storeFromResponse(url, resp.header);
+      if (!Http.isRedirect(resp.responseCode)) {
+        const followed: HttpFollowed = { url: url, resp: resp };
+        return followed;
+      }
+      const loc = Http.headerValue(resp.header, 'Location');
+      const next = Http.resolveLocation(url, loc);
+      if (next === '') {
+        const followed: HttpFollowed = { url: url, resp: resp };
+        return followed;
+      }
+      // https 起始禁止降级：目标非 https（降级 http 或其他协议）即终止并报错
+      if (httpsStart && next.indexOf('https://') !== 0) {
+        throw new Error(`redirect_blocked|${next}`);
+      }
+      // 跨源跳转剥离敏感头，凭证明文不外送
+      if (Http.originOf(next) !== Http.originOf(url)) {
+        currentHeaders = Http.stripSensitiveHeaders(currentHeaders);
+      }
+      if (resp.responseCode === 303 ||
+        ((resp.responseCode === 301 || resp.responseCode === 302) &&
+          currentMethod === http.RequestMethod.POST)) {
+        currentMethod = http.RequestMethod.GET;
+        currentBody = '';
+      }
+      url = next;
+    }
+    throw new Error(`too_many_redirects|${startUrl}`);
+  }
+
+  private static async requestOnce(
+    url: string,
+    method: http.RequestMethod,
+    headers: Record<string, string>,
+    body: string,
+    expectDataType: http.HttpDataType,
+    readTimeout: number
+  ): Promise<http.HttpResponse> {
     const client: http.HttpRequest = http.createHttp();
     try {
       const options: http.HttpRequestOptions = {
-        method: http.RequestMethod.GET,
+        method: method,
         header: Http.buildHeaders(url, headers),
-        expectDataType: http.HttpDataType.STRING,
+        expectDataType: expectDataType,
         connectTimeout: 15000,
-        readTimeout: 20000,
+        readTimeout: readTimeout,
       };
+      if (body !== '' && method !== http.RequestMethod.GET && method !== http.RequestMethod.HEAD) {
+        options.extraData = body;
+      }
       let resp: http.HttpResponse;
       try {
         resp = await client.request(url, options);
       } catch (e) {
-        throw new Error(`HTTP GET failed: ${e}`);
+        throw new Error(`HTTP request failed: ${e}`);
       }
-      CookieJar.storeFromResponse(url, resp.header);
-      const respBody: string = Http.bodyText(resp.result);
-      if (CfChallenge.isCfChallenge(resp.responseCode, respBody, resp.header)) {
-        AppStorage.setOrCreate('cfChallengeUrl', url);
-        throw new HttpCfError('cf_required');
-      }
-      if (resp.responseCode < 200 || resp.responseCode >= 300) {
-        throw new HttpStatusError(`HTTP ${resp.responseCode}: ${url}`);
-      }
-      return respBody;
+      return resp;
     } finally {
       client.destroy();
     }
   }
 
-  private static async getBufferOnce(url: string, headers: Record<string, string> | undefined): Promise<ArrayBuffer> {
-    const client: http.HttpRequest = http.createHttp();
-    try {
-      const options: http.HttpRequestOptions = {
-        method: http.RequestMethod.GET,
-        header: Http.buildHeaders(url, headers),
-        expectDataType: http.HttpDataType.ARRAY_BUFFER,
-        connectTimeout: 15000,
-        readTimeout: 60000,
-      };
-      let resp: http.HttpResponse;
-      try {
-        resp = await client.request(url, options);
-      } catch (e) {
-        throw new Error(`HTTP GET failed: ${e}`);
+  private static copyHeaders(headers: Record<string, string> | undefined): Record<string, string> {
+    const out: Record<string, string> = {};
+    if (headers !== undefined) {
+      const keys = Object.keys(headers);
+      for (const k of keys) {
+        out[k] = headers[k];
       }
-      CookieJar.storeFromResponse(url, resp.header);
-      if (CfChallenge.isCfChallenge(resp.responseCode, '', resp.header)) {
-        AppStorage.setOrCreate('cfChallengeUrl', url);
-        throw new HttpCfError('cf_required');
-      }
-      if (resp.responseCode < 200 || resp.responseCode >= 300) {
-        throw new HttpStatusError(`HTTP ${resp.responseCode}: ${url}`);
-      }
-      return resp.result as ArrayBuffer;
-    } finally {
-      client.destroy();
     }
+    return out;
+  }
+
+  private static isRedirect(code: number): boolean {
+    return code === 301 || code === 302 || code === 303 || code === 307 || code === 308;
+  }
+
+  private static headerValue(header: Object, name: string): string {
+    const raw = header as Record<string, Object>;
+    const keys = Object.keys(raw);
+    for (let i = 0; i < keys.length; i++) {
+      if (keys[i].toLowerCase() !== name.toLowerCase()) {
+        continue;
+      }
+      const value = raw[keys[i]];
+      if (typeof value === 'string') {
+        return value as string;
+      }
+      if (Array.isArray(value) && (value as Object[]).length > 0) {
+        return String((value as Object[])[0]);
+      }
+    }
+    return '';
+  }
+
+  private static originOf(u: string): string {
+    let start = 0;
+    if (u.indexOf('https://') === 0) {
+      start = 8;
+    } else if (u.indexOf('http://') === 0) {
+      start = 7;
+    } else {
+      return u;
+    }
+    const slash = u.indexOf('/', start);
+    return slash >= 0 ? u.substring(0, slash) : u;
+  }
+
+  private static resolveLocation(base: string, loc: string): string {
+    const trimmed = loc.trim();
+    if (trimmed === '') {
+      return '';
+    }
+    if (trimmed.indexOf('https://') === 0 || trimmed.indexOf('http://') === 0) {
+      return trimmed;
+    }
+    if (trimmed.indexOf('//') === 0) {
+      if (base.indexOf('https://') === 0) {
+        return `https:${trimmed}`;
+      }
+      return `http:${trimmed}`;
+    }
+    const origin = Http.originOf(base);
+    if (trimmed.charAt(0) === '/') {
+      return origin + trimmed;
+    }
+    let noHash = base;
+    const hash = noHash.indexOf('#');
+    if (hash >= 0) {
+      noHash = noHash.substring(0, hash);
+    }
+    const query = noHash.indexOf('?');
+    if (query >= 0) {
+      noHash = noHash.substring(0, query);
+    }
+    const slash = noHash.lastIndexOf('/');
+    const dir = slash >= 0 ? noHash.substring(0, slash + 1) : `${noHash}/`;
+    return dir + trimmed;
+  }
+
+  // 跨源重定向时剥离调用方自定义的敏感头（大小写不敏感），返回净化后的新表
+  private static stripSensitiveHeaders(headers: Record<string, string>): Record<string, string> {
+    const kept: Record<string, string> = {};
+    const keys = Object.keys(headers);
+    for (const key of keys) {
+      const lower = key.toLowerCase();
+      if (lower === 'authorization' || lower === 'referer' || lower === 'referrer' || lower === 'cookie') {
+        continue;
+      }
+      kept[key] = headers[key];
+    }
+    return kept;
   }
 
   // resp.result null/undefined 防护：非字符串一律按空串参与挑战检测

@@ -106,10 +106,11 @@ struct DetailChapterRow {
         Row({ space: 5 }) {
           // 未读圆点（对齐 Mihon MangaChapterListItem）
           if (!this.chapter.read) {
-            Circle()
+            Column()
               .width(6)
               .height(6)
-              .fill(this.pal.primary)
+              .borderRadius(3)
+              .backgroundColor(this.pal.primary)
           }
           Text(this.chapter.name)
             .fontSize(14)
@@ -1517,7 +1518,7 @@ export struct MangaDetailPage {
           .width('100%')
           .height('100%')
           .scrollBar(BarState.Auto)
-          .onScroll((_scrollOffset: number, _state: ScrollState) => {
+          .onDidScroll((_scrollOffset: number, _state: ScrollState) => {
             this.syncTopBar();
           })
           .onReachStart(() => {

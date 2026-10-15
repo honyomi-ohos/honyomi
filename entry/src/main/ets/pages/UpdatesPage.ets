@@ -264,10 +264,11 @@ export struct UpdatesPage {
                       .opacity(item.read ? 0.38 : 1)
                     Row({ space: 4 }) {
                       if (!item.read) {
-                        Circle()
+                        Column()
                           .width(8)
                           .height(8)
-                          .fill(this.pal.primary)
+                          .borderRadius(4)
+                          .backgroundColor(this.pal.primary)
                       }
                       if (item.bookmark) {
                         AppIcon({ name: 'bookmark_filled', iconSize: 12, tint: this.pal.primary })

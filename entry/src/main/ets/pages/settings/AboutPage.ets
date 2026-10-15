@@ -93,10 +93,11 @@ export struct AboutContent {
                 .lineHeight(20)
               ForEach(this.ackItems, (item: AckItem) => {
                 Row() {
-                  Circle()
+                  Column()
                     .width(5)
                     .height(5)
-                    .fill(this.pal.primary)
+                    .borderRadius(2.5)
+                    .backgroundColor(this.pal.primary)
                     .margin({ top: 6 })
                   Column() {
                     Text(item.name)

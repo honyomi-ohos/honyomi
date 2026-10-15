@@ -367,20 +367,23 @@ export class HikkaTracker extends Tracker {
 
   // slug → 48 位稳定数字 ID（对齐 Mihon 的 UUID.nameUUIDFromBytes，避免 64 位精度丢失）
   private static slugToId(slug: string): number {
-    try {
-      const bytes: Uint8Array = new util.TextEncoder().encodeInto(slug);
-      const md = cryptoFramework.createMd('MD5');
-      md.updateSync({ data: bytes });
-      const digest = md.digestSync();
-      const d = digest.data;
-      let v = d[0] & 0x7f;
-      for (let i = 1; i <= 5; i++) {
-        v = v * 256 + d[i];
+    if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest')) {
+      try {
+        const bytes: Uint8Array = new util.TextEncoder().encodeInto(slug);
+        const md = cryptoFramework.createMd('MD5');
+        md.updateSync({ data: bytes });
+        const digest = md.digestSync();
+        const d = digest.data;
+        let v = d[0] & 0x7f;
+        for (let i = 1; i <= 5; i++) {
+          v = v * 256 + d[i];
+        }
+        return v;
+      } catch (_e) {
+        return 0;
       }
-      return v;
-    } catch (_e) {
-      return 0;
     }
+    return 0;
   }
 
   private toApiStatus(status: number): string {
