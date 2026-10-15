@@ -76,10 +76,8 @@ struct SourceOptionsDialog {
   sourceName: Resource | string = '';
   isPinned: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-
   onPin: () => void = () => {
   };
-
   onClose: () => void = () => {
   };
 
@@ -138,10 +136,8 @@ struct SourceFilterDialog {
   @State checkedLangs: string[] = [];
   @State checkedTypes: string[] = [];
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-
   onApply: (langs: string[], types: string[]) => void = (_l: string[], _t: string[]) => {
   };
-
   onClose: () => void = () => {
   };
 

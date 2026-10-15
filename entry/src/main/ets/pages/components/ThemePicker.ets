@@ -117,7 +117,6 @@ export struct ThemePicker {
   private scroller: Scroller = new Scroller();
   // PanGesture 偏移为累计值，记录上次值换算单次增量
   private lastPanX: number = 0;
-
   onPick: (id: string) => void = (id: string) => {
   };
 

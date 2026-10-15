@@ -34,7 +34,6 @@ export struct LibrarySettingsSheet {
   @Link showCategoryTabs: boolean;
   @Link showMangaCount: boolean;
   @State sheetTab: number = 0;
-
   onReshuffle: () => void = () => {
   };
 

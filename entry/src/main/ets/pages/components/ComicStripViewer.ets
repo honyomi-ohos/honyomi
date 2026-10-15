@@ -49,7 +49,6 @@ struct StripItemView {
   private loadToken: number = 0;
   // 条目销毁标记：回调内校验后再写 @State
   private destroyed: boolean = false;
-
   onTap: () => void = () => {
   };
 
@@ -165,16 +164,12 @@ export struct ComicStripViewer {
   scroller: Scroller = new Scroller();
   private dataSource: StripDataSource = new StripDataSource();
   private lastVisible: number = -1;
-
   onTap: () => void = () => {
   };
-
   onPageVisible: (index: number) => void = (_i: number) => {
   };
-
   onPrevChapter: () => void = () => {
   };
-
   onNextChapter: () => void = () => {
   };
 

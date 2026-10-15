@@ -251,9 +251,7 @@ export struct PrefSliderRow {
   @State currentVal: number = 0;
   private savedVal: number = 0;
   private inited: boolean = false;
-
   valueText: (v: number) => ResourceStr = (v: number): ResourceStr => `${v}`;
-
   apply: (value: number) => void = (value: number) => {
   };
 
@@ -327,7 +325,6 @@ export struct PrefSwitchRow {
   @Prop switchEnabled: boolean = true;
   @State isOn: boolean = false;
   private inited: boolean = false;
-
   apply: (value: boolean) => void = (value: boolean) => {
   };
 

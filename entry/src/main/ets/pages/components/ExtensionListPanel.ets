@@ -76,7 +76,6 @@ export struct ExtensionListPanel {
   private repoFetching: boolean = false;
   // 面板销毁标志：异步续体据此跳过 toast/写状态
   private disposed: boolean = false;
-
   onOpenPlugin: (pluginKey: string) => void = (_k: string) => {
   };
 

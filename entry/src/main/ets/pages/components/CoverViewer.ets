@@ -57,13 +57,10 @@ export struct CoverViewer {
   private componentWidth: number = 0;
   private componentHeight: number = 0;
   private axisPinchActive: boolean = false;
-
   onClose: () => void = () => {
   };
-
   onEdit: () => void = () => {
   };
-
   onDelete: () => void = () => {
   };
 

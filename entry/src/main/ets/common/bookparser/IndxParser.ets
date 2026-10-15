@@ -13,7 +13,7 @@ export class IndxEntry {
 // 一次完整索引（主 INDX 节 + 附属 INDX 节 + CTOC 节）的解析结果
 export class IndxTable {
   entries: IndxEntry[] = [];
-  ctoc: Map<number, Uint8Array> = new Map();  // ctoc 起始偏移 -> 原始字节
+  ctoc: Map<number, Uint8Array> = new Map(); // ctoc 起始偏移 -> 原始字节
 }
 
 // INDX 头字段
@@ -23,7 +23,7 @@ export class IndxHeader {
   count: number = 0;
   code: number = 0;
   nctoc: number = 0;
-  ordt2: number[] | null = null;  // ORDT2 双字节映射表（text 字节经此映射）
+  ordt2: number[] | null = null; // ORDT2 双字节映射表（text 字节经此映射）
 }
 
 // TAGX 标签定义（4 字节：tag / valuesPerEntry / mask / endFlag）
@@ -48,7 +48,7 @@ export class VarWidthValue {
 // 待解码标签（getTagMap 中间态）
 class PendingTag {
   tag: number = 0;
-  valueCount: number = -1;   // -1 = 未定（走 valueBytes 分支）
+  valueCount: number = -1; // -1 = 未定（走 valueBytes 分支）
   valueBytes: number = -1;
   valuesPerEntry: number = 0;
 }

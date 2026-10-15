@@ -23,10 +23,8 @@ export struct ReaderMenu {
   @Prop subtitle: string = '';
   @Prop statusBarH: number = 0;
   @BuilderParam bottomBar: () => void = this.emptyBuilder;
-
   onBack: () => void = (): void => {
   };
-
   onBackdrop: () => void = (): void => {
   };
 
@@ -109,6 +107,8 @@ export struct ReaderBottomBar {
   @StorageProp('readerBgDark') bgDark: boolean = false;
   @Prop navBarH: number = 0;
   // 胶囊全配置沉浸材质：ULTRA_THIN 超薄玻璃 + colorInvert 自动反色（保证可读性）
+  @BuilderParam navRow: () => void = this.emptyBuilder;
+  @BuilderParam settingsRow: () => void = this.emptyBuilder;
   // + interactive 按压弹性形变 + lightEffect 点光源流光跟随
   private capsuleMaterial: uiMaterial.ImmersiveMaterial = new uiMaterial.ImmersiveMaterial({
     style: uiMaterial.ImmersiveStyle.ULTRA_THIN,
@@ -116,8 +116,6 @@ export struct ReaderBottomBar {
     interactive: true,
     lightEffect: {}
   });
-  @BuilderParam navRow: () => void = this.emptyBuilder;
-  @BuilderParam settingsRow: () => void = this.emptyBuilder;
 
   // 进度组：章节导航行（上一章 / 进度胶囊 / 下一章）独占一个系统玻璃胶囊
   @Builder

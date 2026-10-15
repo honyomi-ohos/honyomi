@@ -76,7 +76,6 @@ export struct OAuthSheet {
   // 拦截到 mihon:// 回调后回传参数（query 优先，缺失取 fragment）
   onOAuthResult: (params: Record<string, string>) => void = (_p: Record<string, string>) => {
   };
-
   onClose: () => void = () => {
   };
 

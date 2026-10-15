@@ -594,29 +594,23 @@ export struct TtsPlayerPage {
     (_playing: boolean, _paused: boolean, _mangaId: number, _chapterId: number): void => {
       this.sync();
     };
-
   private readonly onPara: TtsServiceParaHandler =
     (_mangaId: number, _chapterId: number, paraIdx: number): void => {
       this.paraIdx = paraIdx;
     };
-
   private readonly onChapter: TtsServiceChapterHandler = (_mangaId: number, _chapterId: number): void => {
     this.sync();
   };
-
   private readonly onError: TtsServiceErrorHandler = (_message: string): void => {
     this.sync();
   };
-
   private readonly onFinish: TtsServiceFinishHandler = (): void => {
     this.sync();
   };
-
   private readonly onSleep: TtsServiceSleepHandler = (remainingMs: number): void => {
     this.sleepRemainingMs = remainingMs;
     this.sleepMinutes = TtsPlaybackService.sleepTimerMinutes();
   };
-
   private readonly onSleepChapters: TtsServiceSleepChaptersHandler = (chaptersLeft: number): void => {
     this.sleepChaptersLeft = chaptersLeft;
   };

@@ -1,4 +1,3 @@
-import { common } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
 import { Source, SourceRegistry } from '../source/Source';

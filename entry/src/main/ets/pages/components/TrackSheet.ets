@@ -59,10 +59,8 @@ export struct TrackSheet {
   private selTrackerInst: Tracker = TrackerManager.myAnimeList;
   private oauthSyncId: number = 0;
   private dateTarget: number = DATE_START;
-
   onChanged: () => void = () => {
   };
-
   onClose: () => void = () => {
   };
 

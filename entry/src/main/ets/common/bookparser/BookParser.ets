@@ -3,8 +3,10 @@
 // 模型流转：task 返回 JSON → JSON.parse(x) as BookMetaRaw（一次转换）→ BookInfo。
 
 import { zlib } from '@kit.BasicServicesKit';
+import { taskpool } from '@kit.ArkTS';
 import { BookFileIo, BookTextCodec } from './ByteUtils';
-import { BookMetaRaw, BookPersist, parseEpubBookTask, parseMobiBookTask } from './BookParserTasks';
+import { BookMetaRaw, BookPersist } from './BookMeta';
+import { parseEpubBookTask, parseMobiBookTask } from './BookParserTasks';
 
 // 面向调用方（本地小说源）的解析结果
 export class BookInfo {
@@ -83,7 +85,10 @@ export class BookParser {
     if (lower.endsWith('.epub') || BookParser.isZipFile(path)) {
       json = await BookParser.parseEpub(path, cacheDir);
     } else {
-      const result = await BookParser.runTask(parseMobiBookTask, path, cacheDir);
+      const result = await taskpool.execute(parseMobiBookTask, path, cacheDir);
+      if (typeof result !== 'string') {
+        throw new Error('book_parse_failed');
+      }
       json = result;
     }
     return BookParser.toBookInfo(json);
@@ -97,13 +102,7 @@ export class BookParser {
       BookFileIo.ensureDir(extractDir);
       await zlib.decompressFile(path, extractDir);
     }
-    return BookParser.runTask(parseEpubBookTask, extractDir, cacheDir);
-  }
-
-  // taskpool.execute 返回 Promise<Object|void>，typeof 收窄为 string（不用 as）
-  private static async runTask(task: (a: string, b: string) => string,
-    arg1: string, arg2: string): Promise<string> {
-    const result = await taskpool.execute(task, arg1, arg2);
+    const result = await taskpool.execute(parseEpubBookTask, extractDir, cacheDir);
     if (typeof result !== 'string') {
       throw new Error('book_parse_failed');
     }

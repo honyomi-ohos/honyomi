@@ -14,10 +14,8 @@ export struct InputDialog {
   @State inputText: string = '';
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-
   onConfirm: (text: string) => void = (_t: string) => {
   };
-
   onClose: () => void = () => {
   };
 
@@ -81,10 +79,8 @@ export struct CredentialsDialog {
   @State username: string = '';
   @State password: string = '';
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-
   onConfirm: (username: string, password: string) => void = (_u: string, _p: string) => {
   };
-
   onClose: () => void = () => {
   };
 
@@ -150,10 +146,8 @@ export struct CategoryDialog {
   selectedId: number = -1;
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-
   onPick: (categoryId: number) => void = (_id: number) => {
   };
-
   onClose: () => void = () => {
   };
 
@@ -199,11 +193,9 @@ export struct ExportColumnsDialog {
   @State authorSelected: boolean = true;
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-
   onConfirm: (includeTitle: boolean, includeAuthor: boolean) => void =
     (_t: boolean, _a: boolean) => {
     };
-
   onClose: () => void = () => {
   };
 
@@ -286,10 +278,8 @@ export struct ConfirmDialog {
   confirmText: Resource | string = $r('app.string.common_ok');
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-
   onConfirm: () => void = () => {
   };
-
   onClose: () => void = () => {
   };
 

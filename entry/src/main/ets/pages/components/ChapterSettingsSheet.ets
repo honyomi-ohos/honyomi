@@ -30,10 +30,8 @@ export struct ChapterSettingsSheet {
   @State fUnread: string = 'ignore';
   @State fDownloaded: string = 'ignore';
   @State fBookmarked: string = 'ignore';
-
   onSortChanged: (mode: number, ascending: boolean) => void = (_mode: number, _ascending: boolean) => {
   };
-
   onFilterChanged: (unread: string, downloaded: string, bookmarked: string) => void =
     (_unread: string, _downloaded: string, _bookmarked: string) => {
     };

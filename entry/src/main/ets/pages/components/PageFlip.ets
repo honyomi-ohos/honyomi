@@ -777,16 +777,12 @@ export struct EmulationFlipView {
   private backCurId: string = '';
   private backPrevId: string = '';
   private lastTurn: number = 0;
-
   onAreaTap: (x: number, y: number) => void = (_x: number, _y: number): void => {
   };
-
   onIndexChange: (index: number) => void = (_index: number): void => {
   };
-
   onCenterTap: () => void = (): void => {
   };
-
   onOverscroll: (dir: number) => void = (_dir: number): void => {
   };
 

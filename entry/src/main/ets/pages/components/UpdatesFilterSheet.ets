@@ -31,10 +31,8 @@ export struct UpdatesFilterSheet {
   @State fBookmarked: string = 'ignore';
   @State includedCats: number[] = [];
   @State excludedCats: number[] = [];
-
   onTriStateChanged: (key: string, v: string) => void = (_key: string, _v: string) => {
   };
-
   onCategoriesChanged: (included: number[], excluded: number[]) => void =
     (_included: number[], _excluded: number[]) => {
     };

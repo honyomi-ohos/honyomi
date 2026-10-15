@@ -3,9 +3,9 @@
 // 口径对齐 KindleUnpack（kindleunpack.py / mobi_header.py / mobi_k8proc.py / mobi_html.py）；
 // 纯逻辑无 UI 依赖，taskpool 可用。
 
-import { ByteBuilder, ByteUtils, BookFileIo, BookTextCodec } from './ByteUtils';
+import { BookFileIo, BookTextCodec, ByteBuilder, ByteUtils } from './ByteUtils';
 import { PalmDb } from './PalmDb';
-import { PalmdocDecoder, HuffCdicDecoder } from './MobiCodec';
+import { HuffCdicDecoder, PalmdocDecoder } from './MobiCodec';
 import { IndxParser, IndxTable } from './IndxParser';
 
 // 解析结果：章节 HTML 已重写为 file:// 图片绝对路径；封面已落盘
@@ -471,7 +471,6 @@ export class MobiBookParser {
       const builder = new ByteBuilder(1024 * 16);
       // 线性拼装：骨架段片段与碎片片段交替输出（碎片按最终文档坐标递增插入）
       let prevRel = 0;
-      builder.reset();
       for (let i = 0; i < fragcnt; i++) {
         if (fragTable === null || fragPtr >= fragTable.entries.length) {
           break;
@@ -616,8 +615,12 @@ export class MobiBookParser {
 
   private static cleanChapterName(raw: string): string {
     let name = raw.replace(/<[^>]+>/g, ' ');
-    name = name.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"').replace(/&#39;/g, '\'').replace(/&nbsp;/g, ' ');
+    name = name.replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, '\'')
+      .replace(/&nbsp;/g, ' ');
     name = name.replace(/\s+/g, ' ').trim();
     if (name.length > 80) {
       name = name.substring(0, 80);

@@ -10,7 +10,6 @@ export struct MangaRow {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State hovered: boolean = false;
   @BuilderParam trailing: () => void = this.emptyTrailing;
-
   onRowClick: (record: MangaRecord) => void = (_r: MangaRecord) => {
   };
 

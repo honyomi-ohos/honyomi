@@ -101,7 +101,6 @@ export struct TtsMiniBar {
     (_playing: boolean, _paused: boolean, _mangaId: number, _chapterId: number): void => {
       this.sync();
     };
-
   private readonly onChapter: TtsServiceChapterHandler = (_mangaId: number, _chapterId: number): void => {
     this.sync();
   };

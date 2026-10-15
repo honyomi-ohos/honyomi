@@ -34,10 +34,8 @@ struct PrefSelectDialog {
   title: Resource | string = '';
   options: SourcePrefOption[] = [];
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-
   onPick: (value: string) => void = (_v: string) => {
   };
-
   onClose: () => void = () => {
   };
 

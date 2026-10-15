@@ -39,7 +39,6 @@ export struct CfVerifySheet {
   private controller: webview.WebviewController = new webview.WebviewController();
   // Web 延迟挂载定时器：销毁时清理，防回调写已销毁组件状态
   private mountTimerId: number = -1;
-
   onClose: () => void = () => {
   };
 
