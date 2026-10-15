@@ -233,6 +233,72 @@ export struct PrefSelectRow {
   }
 }
 
+// 声明式偏好滑条行：标题 + 行尾值 + 步进 Slider，
+// 拖动中仅更新行尾显示，松手/点击时才落库（避免逐 tick 写 preferences）
+@Component
+export struct PrefSliderRow {
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  title: Resource | string = '';
+  initValue: number = 0;
+  minValue: number = 0;
+  maxValue: number = 10;
+  stepValue: number = 1;
+  valueText: (v: number) => ResourceStr = (v: number): ResourceStr => `${v}`;
+  apply: (value: number) => void = (value: number) => {};
+  @State currentVal: number = 0;
+  private savedVal: number = 0;
+  private inited: boolean = false;
+
+  build() {
+    Column() {
+      Row() {
+        Text(this.title)
+          .fontSize(16)
+          .fontColor(this.pal.text)
+          .layoutWeight(1)
+          .maxLines(1)
+        Text(this.valueText(this.currentVal))
+          .fontSize(14)
+          .fontColor(this.pal.sub)
+          .maxLines(1)
+          .margin({ left: 8 })
+      }
+      .width('100%')
+      Slider({
+        value: this.currentVal,
+        min: this.minValue,
+        max: this.maxValue,
+        step: this.stepValue,
+        style: SliderStyle.OutSet
+      })
+        .selectedColor(this.pal.primary)
+        .trackColor(this.pal.chip)
+        .blockColor(this.pal.primary)
+        .width('100%')
+        .margin({ top: 4 })
+        .onChange((v: number, mode: SliderChangeMode) => {
+          const n: number = Math.floor(v);
+          this.currentVal = n;
+          if ((mode === SliderChangeMode.End || mode === SliderChangeMode.Click) && n !== this.savedVal) {
+            this.savedVal = n;
+            this.apply(n);
+          }
+        })
+    }
+    .width('100%')
+    .constraintSize({ minHeight: 52 })
+    .padding({ left: 16, right: 16, top: 10, bottom: 10 })
+    .alignItems(HorizontalAlign.Start)
+    .onAppear(() => {
+      if (!this.inited) {
+        this.inited = true;
+        this.currentVal = this.initValue;
+        this.savedVal = this.initValue;
+      }
+    })
+  }
+}
+
 // 声明式偏好开关行：组件自持开关状态，页面传入初始值与落库回调即可，
 // 免去页面级 @State 镜像 + aboutToAppear 同步样板
 @Component

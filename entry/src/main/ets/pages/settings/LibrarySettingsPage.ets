@@ -1,13 +1,12 @@
 import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
 import { PageHeader } from '../components/PageHeader';
-import { PrefGroup, PrefSelectRow, PrefSwitchRow } from '../components/Prefs';
+import { PrefGroup, PrefSelectRow, PrefSliderRow, PrefSwitchRow } from '../components/Prefs';
 
 const SORT_VALUES: string[] = [
   'alpha', 'total', 'lastRead', 'lastUpdate', 'unread', 'latestChapter', 'fetchDate', 'dateAdded', 'random'
 ];
 const VIEW_VALUES: string[] = ['compact', 'comfortable', 'cover', 'list'];
-const COLS_VALUES: number[] = [0, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 // 书架设置内容：默认排序/视图/列数/徽标（筛选与三态逻辑在书架过滤弹层中）
 @Component
@@ -21,11 +20,6 @@ export struct LibrarySettingsContent {
 
   private viewIndex(): number {
     const i = VIEW_VALUES.indexOf(Settings.getLibraryView());
-    return i >= 0 ? i : 0;
-  }
-
-  private colsIndex(): number {
-    const i = COLS_VALUES.indexOf(Settings.getLibraryGridCols());
     return i >= 0 ? i : 0;
   }
 
@@ -70,14 +64,15 @@ export struct LibrarySettingsContent {
             }
           })
           Divider().color(this.pal.divider).margin({ left: 16 })
-          PrefSelectRow({
+          PrefSliderRow({
             title: $r('app.string.lib_set_grid_cols'),
-            options: [
-              $r('app.string.lib_display_grid_auto'), '2', '3', '4', '5', '6', '7', '8', '9', '10'
-            ],
-            selectedIndex: this.colsIndex(),
-            onSelectIndex: (index: number): void => {
-              Settings.setLibraryGridCols(COLS_VALUES[index]);
+            initValue: Settings.getLibraryGridCols(),
+            minValue: 0,
+            maxValue: 10,
+            stepValue: 1,
+            valueText: (v: number): ResourceStr => v === 0 ? $r('app.string.lib_display_grid_auto') : `${v}`,
+            apply: (v: number): void => {
+              Settings.setLibraryGridCols(v);
             }
           })
           Divider().color(this.pal.divider).margin({ left: 16 })

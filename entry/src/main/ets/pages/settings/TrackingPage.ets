@@ -238,7 +238,7 @@ export struct TrackingContent {
 
   build() {
     Scroll() {
-      Column() {
+      Column({ space: 12 }) {
         // 阅读进度自动同步（对齐 Mihon autoUpdateTrackers 开关）
         PrefGroup() {
           SwitchRow({

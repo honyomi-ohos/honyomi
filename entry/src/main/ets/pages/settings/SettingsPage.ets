@@ -144,7 +144,7 @@ export struct SettingsPage {
       .padding({ left: 16, right: 16, bottom: 24 })
     }
     .width('100%')
-    .height('100%')
+    .layoutWeight(1)
     .scrollBar(BarState.Off)
     .align(Alignment.TopStart)
   }
@@ -231,7 +231,7 @@ export struct SettingsPage {
       .height('100%')
     }
     .width('100%')
-    .height('100%')
+    .layoutWeight(1)
   }
 
   // 窄屏（sm/md）分类入口列表
@@ -346,7 +346,7 @@ export struct SettingsPage {
       .padding({ left: 16, right: 16, bottom: 24 })
     }
     .width('100%')
-    .height('100%')
+    .layoutWeight(1)
     .scrollBar(BarState.Off)
     .align(Alignment.TopStart)
   }
