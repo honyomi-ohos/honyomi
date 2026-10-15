@@ -391,6 +391,12 @@ struct Index {
     }
   }
 
+  // 沉浸式路由（阅读器/听书/视频播放器）：全屏体验，宽屏下不显示左侧导航
+  private isImmersiveRoute(name: string): boolean {
+    return name === 'Reader' || name === 'NovelReader'
+      || name === 'TtsPlayer' || name === 'VideoPlayer';
+  }
+
   // 复刻 Mihon 底部导航快捷操作：再次点击已选中的页签触发 onReselect
   // （HomeScreen.NavigationSuiteItem：已选中时调用 tab.onReselect(navigator)）
   // - 书架: 打开筛选/显示设置弹层；更新: 下载队列；历史: 续读最近作品
@@ -865,8 +871,8 @@ struct Index {
   build() {
     Row() {
       // 宽屏常驻左侧导航：置于 Navigation 之外，推入任意路由页（分类/下载/设置等）均不遮挡；
-      // 仅设置页（自带左侧分类导航，避免双栏）收窄为图标栏，其余路由页均显示完整导航
-      if (this.isWide()) {
+      // 仅设置页（自带左侧分类导航，避免双栏）收窄为图标栏；沉浸式页（阅读器/播放器）全屏隐藏
+      if (this.isWide() && !this.isImmersiveRoute(this.topRouteName)) {
         if (this.topRouteName === 'Settings') {
           this.wideRailMini()
         } else {
