@@ -172,6 +172,31 @@ Madara chapter-protector / tachiyomi Cipher 兼容）、`crypto.getRandomValues`
   经 `setPreference` 转发进来（参见 `plugins/catalog/emby/manifest.json` +
   `main.js`）。
 
+### 5.4 TypeScript 工具链（`plugins/`，`@honyomi/plugin-sdk`）
+
+手写插件推荐用 TypeScript 编写并经工具链构建（`plugins/README.md` 有完整流程）：
+
+| 包 | 职责 |
+|---|---|
+| `@honyomi/plugin-sdk` | 作者面 API：`SourceExtension` 等契约类型、`defineExtension`、`createPrefs`、`mangaOf/chapterOf/pageOf/videoOf` 等模型助手、`$` DSL 全局类型声明 |
+| `@honyomi/plugin-test` | 测试 harness：Node `vm` 沙箱逐字加载真实 shim + 构建产物 `main.js`，`loadExtension()` 返回 `{ext, calls, prefs}`；`createFixtureFetch()` 按 `fixtures/index.json`（精确 URL 或 `/正则/`）回放本地文件 |
+| `@honyomi/plugin-tools` | CLI：`build [key...]`（esbuild 打包 `catalog/<key>/main.ts` → 自包含 iife `main.js`）/ `publish` / `check` / `serve` |
+
+约定：已迁移插件的 `main.ts` 是唯一真源，构建产物 `main.js` 不入库
+（`.gitignore` 排除 + `git rm --cached`）；迁移逻辑与原 JS 版 1:1。典型入口：
+
+```ts
+import { createPrefs, defineExtension } from '@honyomi/plugin-sdk';
+import type { SourceExtension } from '@honyomi/plugin-sdk';
+
+const prefs = createPrefs('myplugin');          // 参数 = manifest.key
+const ext: SourceExtension = { /* getPopularManga / getSearchManga / ... */ };
+defineExtension(ext);                            // 写宿主 module.exports
+```
+
+迁移示范见 `plugins/catalog/{emby,baozi,picacomic}/`（main.ts + test/fixtures）。
+
+
 ## 6. Wire 协议（JsvmExtensionManager ↔ JsvmWorker）
 
 全部为 JSON 字符串消息；调用结果 envelope：`{ok: true, data}` 或 `{ok: false, error}`。
@@ -240,4 +265,5 @@ READY 超时 30s；调用超时 190s（> native 180s pump 上限），超时判 
 | 偏好持久化（明文 + SecureStore） | `entry/src/main/ets/jsvm/PluginPrefs.ets` |
 | 引擎适配器（导出探测/方法归一/保留名） | `entry/src/main/cpp/jsvm_engine.cpp` |
 | 宿主运行时 shim（polyfills + `$` DSL） | `entry/src/main/resources/rawfile/plugin_runtime_jsvm.js` |
+| 插件 TS 工具链（SDK/测试/构建发布） | `plugins/`（`sdk/` `testing/` `tools/`，见 `plugins/README.md`） |
 | 插件样例（video/manga/novel） | `plugins/catalog/*` |
