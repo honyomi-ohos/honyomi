@@ -25,7 +25,6 @@ export class ImageCache {
   // 目录累计字节数（init 时延后一拍统计一次，写入增量维护）
   private static totalBytes: number = 0;
   private static evicting: boolean = false;
-  private static upgrading: Map<string, Promise<void>> = new Map();
 
   static init(context: common.Context): void {
     ImageCache.dir = `${context.cacheDir}/image_file_cache`;
@@ -60,7 +59,6 @@ export class ImageCache {
       throw new Error(`access cache file failed: ${e}`);
     }
     if (exists) {
-      await ImageCache.upgradeAvif(path);
       return `file://${path}`;
     }
     let source = SourceRegistry.get(sourceKey);
@@ -110,7 +108,6 @@ export class ImageCache {
       throw new Error(`access cache file failed: ${e}`);
     }
     if (exists) {
-      await ImageCache.upgradeAvif(path);
       return path;
     }
     try {
@@ -249,10 +246,6 @@ export class ImageCache {
     return merged;
   }
 
-  // ---------------- AVIF 惰性升级 ----------------
-  // 旧版本构建落盘的 .avif 缓存文件：命中时嗅探内容，AVIF 则经 WASM 转换器
-  // 原位替换为 JPEG（同名文件，系统 Image 按内容嗅探解码）
-
   private static async fetch(url: string, headers: Record<string, string>, path: string): Promise<string> {
     const raw = await Http.getBuffer(url, headers);
     let buffer = raw;
@@ -294,65 +287,6 @@ export class ImageCache {
       ImageCache.noteWrite(buffer.byteLength);
     }
     return `file://${path}`;
-  }
-
-  private static upgradeAvif(path: string): Promise<void> {
-    // 仅 .avif 后缀可能存有未转换内容（fetch 路径已对所有下载做过转换）
-    if (!path.endsWith('.avif')) {
-      return Promise.resolve();
-    }
-    const pending = ImageCache.upgrading.get(path);
-    if (pending !== undefined) {
-      return pending;
-    }
-    const task = ImageCache.doUpgradeAvif(path);
-    ImageCache.upgrading.set(path, task);
-    return task.finally((): void => {
-      ImageCache.upgrading.delete(path);
-    });
-  }
-
-  private static async doUpgradeAvif(path: string): Promise<void> {
-    try {
-      if (!fs.accessSync(path)) {
-        return;
-      }
-      const stat = fs.statSync(path);
-      const file = fs.openSync(path, fs.OpenMode.READ_ONLY);
-      let src: Uint8Array;
-      try {
-        const body = new ArrayBuffer(stat.size);
-        fs.readSync(file.fd, body);
-        src = new Uint8Array(body);
-      } finally {
-        fs.closeSync(file);
-      }
-      if (!AvifConverter.isAvif(src)) {
-        return;
-      }
-      const jpeg = await AvifConverter.convert(src);
-      const tmp = `${path}.tmp`;
-      try {
-        const out = fs.openSync(tmp, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE | fs.OpenMode.TRUNC);
-        try {
-          fs.writeSync(out.fd, jpeg);
-        } finally {
-          fs.closeSync(out);
-        }
-        fs.renameSync(tmp, path);
-      } catch (e) {
-        try {
-          if (fs.accessSync(tmp)) {
-            fs.unlinkSync(tmp);
-          }
-        } catch (_e) {
-        }
-        return;
-      }
-      ImageCache.noteWrite(jpeg.byteLength - src.byteLength);
-    } catch (e) {
-      // 升级失败保留原文件
-    }
   }
 
   // 写入成功后增量累计字节，超预算时延后一拍触发 LRU 淘汰

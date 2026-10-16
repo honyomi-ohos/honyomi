@@ -375,15 +375,7 @@ export class Settings {
 
   // 'auto' 跟随系统，否则为 BCP-47 语言标签（如 'zh-Hans' / 'en-US'）
   static getAppLanguage(): string {
-    const raw: string = Settings.getStr('appLanguage', 'auto');
-    // 旧版取值迁移（'zh'/'en'）
-    if (raw === 'zh') {
-      return 'zh-Hans';
-    }
-    if (raw === 'en') {
-      return 'en-US';
-    }
-    return raw;
+    return Settings.getStr('appLanguage', 'auto');
   }
 
   static setAppLanguage(v: string): void {
@@ -403,15 +395,7 @@ export class Settings {
 
   // 排序键：'alpha','total','lastRead','lastUpdate','unread','latestChapter','fetchDate','dateAdded','random'
   static getLibrarySort(): string {
-    const raw: string = Settings.getStr('librarySort', 'alpha');
-    // 旧版取值迁移
-    if (raw === 'title') {
-      return 'alpha';
-    }
-    if (raw === 'added') {
-      return 'dateAdded';
-    }
-    return raw;
+    return Settings.getStr('librarySort', 'alpha');
   }
 
   static setLibrarySort(v: string): void {
@@ -486,13 +470,9 @@ export class Settings {
     Settings.setStr('upcomingCats:excluded', JSON.stringify(v));
   }
 
-  // 显示模式：'compact','comfortable','cover','list'（旧值 'grid' 归一为 'compact'）
+  // 显示模式：'compact','comfortable','cover','list'
   static getLibraryView(): string {
-    const raw: string = Settings.getStr('libraryView', 'compact');
-    if (raw === 'grid') {
-      return 'compact';
-    }
-    return raw;
+    return Settings.getStr('libraryView', 'compact');
   }
 
   static setLibraryView(v: string): void {

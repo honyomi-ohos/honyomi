@@ -12,7 +12,7 @@ interface ExtractCacheDir {
   size: number;
 }
 
-// 本地漫画源：扫描固定本地源文件夹的同步副本（filesDir/local_root，未设置时回退 filesDir/local）
+// 本地漫画源：扫描固定本地源文件夹的同步副本（filesDir/local_root）
 // 目录结构：<系列名>/<章节名>.zip|.cbz 或 <章节名>/图片；
 // 支持子目录分层（卷/章），章节名按相对路径显示为“卷 / 章”
 export class LocalSource extends LocalFsSource {
@@ -25,7 +25,7 @@ export class LocalSource extends LocalFsSource {
   private readonly imageExts: string[] = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.bmp', '.avif'];
 
   constructor(filesDir: string, cacheDir: string) {
-    super(filesDir, 'local');
+    super(filesDir);
     this.cacheDir = cacheDir;
   }
 

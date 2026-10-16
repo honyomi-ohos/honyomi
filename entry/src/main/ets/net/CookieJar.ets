@@ -40,14 +40,6 @@ export class CookieJar {
 
   static init(context: common.UIAbilityContext): void {
     CookieJar.filePath = `${context.filesDir}/cookies.bin`;
-    // 清理旧版明文 cookies.json（不读取、不迁移，直接删除）
-    try {
-      const legacy = `${context.filesDir}/cookies.json`;
-      if (fs.accessSync(legacy)) {
-        fs.unlinkSync(legacy);
-      }
-    } catch (e) {
-    }
     CookieJar.loadKey();
     try {
       if (fs.accessSync(CookieJar.filePath)) {
@@ -361,16 +353,13 @@ export class CookieJar {
     }
   }
 
-  // 兼容旧持久化格式（cookie 值为纯字符串）与新格式（CookieEntry）
+  // 反序列化归一：仅接受 CookieEntry 结构，字段缺失/类型不符时按默认值兜底
   private static normalizeEntries(rawEntries: Record<string, Object>): Record<string, CookieEntry> {
     const out: Record<string, CookieEntry> = {};
     const names = Object.keys(rawEntries);
     for (const n of names) {
       const v = rawEntries[n];
-      if (typeof v === 'string') {
-        const legacy: CookieEntry = { value: v as string, expires: 0, secure: false };
-        out[n] = legacy;
-      } else if (v !== undefined && v !== null) {
+      if (v !== undefined && v !== null && typeof v !== 'string') {
         const entry = v as CookieEntry;
         if (typeof entry.value === 'string') {
           const normalized: CookieEntry = {

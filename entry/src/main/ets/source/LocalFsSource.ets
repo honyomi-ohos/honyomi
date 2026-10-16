@@ -5,7 +5,7 @@ import { LocalFolderManager } from './LocalFolderManager';
 import { NaturalCompare } from '../common/NaturalCompare';
 
 // 本地文件源基类：三个本地图源（漫画/小说/视频）共用
-// 扫描根 = 本地源文件夹同步副本下的子目录，未同步时回退旧导入目录
+// 扫描根 = 本地源文件夹同步副本下的子目录
 // 目录条目约定：<作品名>/<章节条目>，chapterKey 格式 <作品目录>::<章节条目相对路径>
 export abstract class LocalFsSource implements Source {
   abstract readonly key: string;
@@ -15,15 +15,10 @@ export abstract class LocalFsSource implements Source {
   readonly iconPath = '';
   readonly nsfw = false;
   abstract readonly contentType: string;
-  protected readonly legacyDir: string;
   private readonly syncRoot: string;
 
-  protected constructor(filesDir: string, legacyName: string) {
-    this.legacyDir = `${filesDir}/${legacyName}`;
+  protected constructor(filesDir: string) {
     this.syncRoot = LocalFolderManager.syncedRootPath(filesDir);
-    if (!fs.accessSync(this.legacyDir)) {
-      fs.mkdirSync(this.legacyDir, true);
-    }
   }
 
   private static hasDotDotSegment(path: string): boolean {
@@ -82,16 +77,7 @@ export abstract class LocalFsSource implements Source {
   protected abstract mangaDescription(): string;
 
   protected rootDir(): string {
-    let synced = false;
-    try {
-      synced = fs.accessSync(this.syncRoot);
-    } catch (e) {
-      synced = false;
-    }
-    if (synced) {
-      return `${this.syncRoot}/${this.syncSubDir()}`;
-    }
-    return this.legacyDir;
+    return `${this.syncRoot}/${this.syncSubDir()}`;
   }
 
   protected namesToMangas(names: string[]): MangasPage {

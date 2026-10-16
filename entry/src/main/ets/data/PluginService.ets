@@ -457,38 +457,6 @@ export class PluginService {
 
   // 惰性引擎启动（记忆化）：引擎已加载直接返回；进行中共享同一次启动；
 
-  // 扫描插件目录（仅首次导入/诊断用）：不解析 main.js、不拉引擎
-  private static scanInstalledFromFs(): InstalledPlugin[] {
-    const result: InstalledPlugin[] = [];
-    let names: string[] = [];
-    try {
-      if (!fs.accessSync(PluginService.pluginsDir)) {
-        return result;
-      }
-      names = fs.listFileSync(PluginService.pluginsDir);
-    } catch (e) {
-      return result;
-    }
-    for (const dir of names) {
-      const manifestPath = `${PluginService.pluginsDir}/${dir}/manifest.json`;
-      try {
-        if (!fs.accessSync(manifestPath)) {
-          continue;
-        }
-        const manifest = PluginService.parseManifest(fs.readTextSync(manifestPath));
-        const iconPath = `${PluginService.pluginsDir}/${dir}/${manifest.icon}`;
-        const item: InstalledPlugin = {
-          manifest: manifest,
-          iconPath: manifest.icon !== '' && fs.accessSync(iconPath) ? `file://${iconPath}` : '',
-        };
-        result.push(item);
-      } catch (e) {
-        hilog.warn(DOMAIN, TAG, 'skip invalid plugin %{public}s: %{public}s', dir, (e as Error).message);
-      }
-    }
-    return result;
-  }
-
   // 拉起单个插件引擎：读盘 manifest 门禁 → 组装脚本 → prefs 回注 → loadExtension
 
   private static async doLoadAll(): Promise<void> {
@@ -504,8 +472,6 @@ export class PluginService {
       return;
     }
     if (records.length === 0) {
-      // 旧版本升级（索引为空而插件目录非空）：一次性扫盘导入并落库
-      await PluginService.importFromFs();
       return;
     }
     // 只注册占位源：nsfw/methods/supportsLatest 等来自持久化元数据，
@@ -519,23 +485,6 @@ export class PluginService {
   }
 
   // 插件敏感偏好声明注册（引擎启动后调用）：读取 getSettingsSchema，
-
-  // 旧版本升级导入：扫盘逐个拉引擎（doStartEngine 内完成注册与落库）
-  private static async importFromFs(): Promise<void> {
-    const installed = PluginService.scanInstalledFromFs();
-    if (installed.length === 0) {
-      return;
-    }
-    hilog.info(DOMAIN, TAG, 'importing %{public}d plugins from filesystem', installed.length);
-    for (const item of installed) {
-      try {
-        await PluginService.doStartEngine(item.manifest.key);
-      } catch (e) {
-        hilog.error(DOMAIN, TAG, 'import plugin %{public}s failed: %{public}s',
-          item.manifest.key, (e as Error).message);
-      }
-    }
-  }
 
   // 保证冷启动书架封面带 Referer/Cookie；其余插件保持惰性
   private static async prewarmLibrary(): Promise<void> {

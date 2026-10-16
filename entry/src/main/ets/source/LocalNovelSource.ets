@@ -6,7 +6,7 @@ import { BookParser } from '../common/bookparser/BookParser';
 import { BookFileIo } from '../common/bookparser/ByteUtils';
 import { readTextAutoAsync } from '../common/bookparser/TextLoadTasks';
 
-// 本地小说：扫描固定本地源文件夹的同步副本（filesDir/local_root，未设置时回退 filesDir/local_novel）
+// 本地小说：扫描固定本地源文件夹的同步副本（filesDir/local_root）
 // <书名>/**/*.txt，一个文件一章；支持子目录分层（卷/章），章节名按相对路径显示为“卷 / 章”
 // 另支持书籍文件（epub/mobi/azw/azw3/prc）：taskpool 解析为章节 HTML + 图片缓存（book_cache/<hash>/），
 // 书籍 mangaKey 为相对路径（可含 '/'），章节 key 以 '#' 前缀区分 txt 文件章节
@@ -16,7 +16,7 @@ export class LocalNovelSource extends LocalFsSource {
   readonly contentType = ContentType.NOVEL;
 
   constructor(filesDir: string) {
-    super(filesDir, 'local_novel');
+    super(filesDir);
     BookParser.init(filesDir);
   }
 

@@ -4,7 +4,7 @@ import { LocalFsSource } from './LocalFsSource';
 
 const VIDEO_EXTS: string[] = ['.mp4', '.mkv', '.webm', '.mov', '.m4v'];
 
-// 本地视频：扫描固定本地源文件夹的同步副本（filesDir/local_root，未设置时回退 filesDir/local_video）
+// 本地视频：扫描固定本地源文件夹的同步副本（filesDir/local_root）
 // <片名>/**/*.{mp4,mkv,webm,mov,m4v}，一个文件一集；
 // 支持子目录分层（季/集），章节名按相对路径显示为“季 / 集”
 export class LocalVideoSource extends LocalFsSource {
@@ -13,7 +13,7 @@ export class LocalVideoSource extends LocalFsSource {
   readonly contentType = ContentType.VIDEO;
 
   constructor(filesDir: string) {
-    super(filesDir, 'local_video');
+    super(filesDir);
   }
 
   async getChapterList(mangaKey: string): Promise<SChapter[]> {
