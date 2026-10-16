@@ -13,9 +13,13 @@ export function readTextAutoTask(path: string): string {
 
 // 异步读取文本文件（编码自动识别）：解码在 taskpool 线程，主线程仅收字符串
 export async function readTextAutoAsync(path: string): Promise<string> {
-  const result = await taskpool.execute(readTextAutoTask, path);
-  if (typeof result !== 'string') {
+  try {
+    const result = await taskpool.execute(readTextAutoTask, path);
+    if (typeof result !== 'string') {
+      throw new Error('read_text_failed');
+    }
+    return result;
+  } catch (e) {
     throw new Error('read_text_failed');
   }
-  return result;
 }

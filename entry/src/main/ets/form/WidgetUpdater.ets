@@ -349,7 +349,11 @@ export class WidgetUpdater {
 
   private static async getPrefs(context: common.Context): Promise<preferences.Preferences> {
     if (WidgetUpdater.prefs === null) {
-      WidgetUpdater.prefs = await preferences.getPreferences(context, { name: PREFS_NAME });
+      try {
+        WidgetUpdater.prefs = await preferences.getPreferences(context, { name: PREFS_NAME });
+      } catch (e) {
+        throw new Error(`open widget prefs failed: ${e}`);
+      }
     }
     return WidgetUpdater.prefs;
   }

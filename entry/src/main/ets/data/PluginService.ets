@@ -4,7 +4,7 @@ import { zlib } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { util } from '@kit.ArkTS';
 import { cryptoFramework } from '@kit.CryptoArchitectureKit';
-import { CompiledSourceInfo, JsvmSource, PluginManifest, SourcePrefItem } from '../source/JsvmSource';
+import { CompiledSourceInfo, JsvmSource, PluginManifest, SourcePrefItem, SourcePrefOption } from '../source/JsvmSource';
 import { EngineBackend, EngineGateway } from '../jsvm/EngineGateway';
 import { PluginPrefs } from '../jsvm/PluginPrefs';
 import { SourceRegistry } from '../source/Source';
@@ -91,6 +91,29 @@ interface RawRepoEntry {
 
 interface RawRepoIndex {
   plugins?: RawRepoEntry[];
+}
+
+// manifest.json settings 数组元素（插件静态设置声明：type/key/title/summary/
+// default/options/sensitive/hidden）。声明后设置页渲染与写入全部在宿主侧完成，
+// 无需拉起 JSVM 引擎；插件可选保留 setPreference 作为引擎运行中的内存态同步钩子。
+interface RawManifestSetting {
+  type?: string;
+  key?: string;
+  title?: string;
+  summary?: string;
+  default?: string;
+  options?: RawSettingOption[];
+  sensitive?: boolean;
+  hidden?: boolean;
+}
+
+interface RawSettingOption {
+  value?: string;
+  label?: string;
+}
+
+interface RawManifestSettingsFile {
+  settings?: RawManifestSetting[];
 }
 
 // 插件包管理：.honyomiplug(zip: manifest.json + main.js) 安装/卸载 + 在线仓库索引
@@ -571,8 +594,28 @@ export class PluginService {
       manifest.key, manifest.version, specs.length, engine.memoryBytes(manifest.key));
   }
 
-  // 把 sensitive 声明的键登记到 PluginPrefs 注册表，供 persist 分流 / seed 回注
+  // 把 sensitive 声明的键登记到 PluginPrefs 注册表，供 persist 分流 / seed 回注。
+  // manifest settings 静态声明优先（无需引擎）；未声明时回退运行期 getSettingsSchema 契约。
   private static registerSensitivePrefKeys(packageKey: string): void {
+    PluginService.declaredSettings(packageKey).then((items: SourcePrefItem[]): void => {
+      const keys: string[] = [];
+      for (const item of items) {
+        if (item.sensitive) {
+          keys.push(item.key);
+        }
+      }
+      if (keys.length > 0) {
+        PluginPrefs.registerSensitiveKeys(packageKey, keys);
+        return;
+      }
+      PluginService.registerSensitivePrefKeysLegacy(packageKey);
+    }).catch((_e: Error): void => {
+      PluginService.registerSensitivePrefKeysLegacy(packageKey);
+    });
+  }
+
+  // 运行期 getSettingsSchema 契约的敏感键注册（未迁移 manifest settings 的插件）
+  private static registerSensitivePrefKeysLegacy(packageKey: string): void {
     const src = SourceRegistry.get(packageKey);
     if (!(src instanceof JsvmSource) || !src.hasMethod('getSettingsSchema')) {
       return;
@@ -589,6 +632,116 @@ export class PluginService {
       hilog.warn(DOMAIN, TAG, 'read sensitive pref schema of %{public}s failed: %{public}s',
         packageKey, e.message);
     });
+  }
+
+  // manifest 静态声明的插件设置：读安装目录 manifest.json 的 settings 数组，
+  // 合并 PluginPrefs 当前值 → SourcePrefItem[]。全程不触碰 JSVM 引擎。
+  // 无声明/解析失败返回空数组（调用方回退运行期 getSettingsSchema 契约）。
+  static async declaredSettings(packageKey: string): Promise<SourcePrefItem[]> {
+    let manifestText = '';
+    try {
+      manifestText = fs.readTextSync(`${PluginService.pluginsDir}/${packageKey}/manifest.json`);
+    } catch (e) {
+      return [];
+    }
+    let rawSettings: RawManifestSetting[] = [];
+    try {
+      const parsed = JSON.parse(manifestText) as RawManifestSettingsFile;
+      if (parsed !== null && parsed !== undefined && Array.isArray(parsed.settings)) {
+        rawSettings = parsed.settings;
+      }
+    } catch (e) {
+      return [];
+    }
+    const items: SourcePrefItem[] = [];
+    const sensitiveKeys: string[] = [];
+    for (const raw of rawSettings) {
+      const item = PluginService.toDeclaredPrefItem(raw);
+      if (item === undefined) {
+        continue;
+      }
+      if (item.sensitive) {
+        sensitiveKeys.push(item.key);
+      }
+      items.push(item);
+    }
+    if (items.length === 0) {
+      return [];
+    }
+    if (PluginService.context !== undefined) {
+      try {
+        await PluginPrefs.ensureInit(PluginService.context);
+      } catch (e) {
+        // 偏好存储不可用：当前值降级为声明默认值
+      }
+      const stored = PluginPrefs.currentValues(packageKey);
+      for (const item of items) {
+        const v = stored[item.key];
+        if (typeof v === 'string') {
+          item.value = v;
+        } else if (v !== undefined && v !== null) {
+          item.value = `${v}`;
+        }
+      }
+      if (sensitiveKeys.length > 0) {
+        PluginPrefs.registerSensitiveKeys(packageKey, sensitiveKeys);
+      }
+    }
+    return items;
+  }
+
+  // manifest 静态设置写入：直接落 PluginPrefs（不拉起引擎）；引擎恰在运行时
+  // 转发 setPreference 同步插件内存态（best-effort，见 JsvmSource.syncPreferenceLive）
+  static async setDeclaredPref(packageKey: string, key: string, value: string): Promise<void> {
+    if (PluginService.context !== undefined) {
+      await PluginPrefs.ensureInit(PluginService.context);
+      PluginPrefs.updatePref(packageKey, key, value);
+    }
+    const src = SourceRegistry.get(packageKey);
+    if (src instanceof JsvmSource) {
+      await src.syncPreferenceLive(key, value);
+    }
+  }
+
+  // 单条 manifest 静态设置声明 → SourcePrefItem（类型白名单外的条目丢弃）
+  private static toDeclaredPrefItem(raw: RawManifestSetting): SourcePrefItem | undefined {
+    const key = raw.key ?? '';
+    if (key === '') {
+      return undefined;
+    }
+    let type = raw.type ?? 'edit';
+    if (type !== 'switch' && type !== 'select' && type !== 'edit' && type !== 'password') {
+      return undefined;
+    }
+    // 敏感声明：sensitive: true 或 type: 'password'（password 渲染为 edit 行）
+    let sensitive = raw.sensitive === true;
+    if (type === 'password') {
+      sensitive = true;
+      type = 'edit';
+    }
+    const options: SourcePrefOption[] = [];
+    if (Array.isArray(raw.options)) {
+      for (const o of raw.options) {
+        if (o !== undefined && o.value !== undefined) {
+          const opt: SourcePrefOption = {
+            value: o.value,
+            label: o.label ?? o.value,
+          };
+          options.push(opt);
+        }
+      }
+    }
+    const item: SourcePrefItem = {
+      type: type,
+      key: key,
+      title: raw.title ?? key,
+      summary: raw.summary ?? '',
+      value: raw.default ?? '',
+      options: options,
+      sensitive: sensitive,
+      hidden: raw.hidden === true,
+    };
+    return item;
   }
 
   // ---------------- 内部实现 ----------------

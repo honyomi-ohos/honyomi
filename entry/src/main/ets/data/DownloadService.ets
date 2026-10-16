@@ -692,17 +692,29 @@ export class DownloadService {
   // 从而重启后可按"文件存在即完整"安全断点续传
   private static writePageFile(path: string, buffer: ArrayBuffer): void {
     const tmp = `${path}.tmp`;
-    const fd = fileIo.openSync(tmp,
-      fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE | fileIo.OpenMode.TRUNC).fd;
+    let fd: number = -1;
     try {
+      fd = fileIo.openSync(tmp,
+        fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE | fileIo.OpenMode.TRUNC).fd;
       fileIo.writeSync(fd, buffer);
+    } catch (e) {
+      throw new Error(`write_page_failed: ${e}`);
     } finally {
-      fileIo.closeSync(fd);
+      if (fd >= 0) {
+        try {
+          fileIo.closeSync(fd);
+        } catch (e) {
+        }
+      }
     }
-    if (fileIo.accessSync(path)) {
-      fileIo.unlinkSync(path);
+    try {
+      if (fileIo.accessSync(path)) {
+        fileIo.unlinkSync(path);
+      }
+      fileIo.renameSync(tmp, path);
+    } catch (e) {
+      throw new Error(`write_page_failed: ${e}`);
     }
-    fileIo.renameSync(tmp, path);
   }
 
   // 清理目录内残留的半截 .tmp 文件
@@ -795,7 +807,7 @@ export class DownloadService {
         if (enabled) {
           return;
         }
-        notificationManager.requestEnableNotification().catch((_e: BusinessError): void => {
+        notificationManager.requestEnableNotification(ctx).catch((_e: BusinessError): void => {
         });
       }).catch((_e: BusinessError): void => {
       });

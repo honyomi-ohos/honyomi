@@ -551,6 +551,25 @@ export class JsvmSource implements Source {
     await this.call<object>('setPreference', this.callArgs([key, value]));
   }
 
+  // manifest 静态设置写入后的内存态同步（不拉起引擎）：引擎恰在运行时转发
+  // setPreference，插件侧缓存失效等副作用得以生效；引擎未加载直接跳过，
+  // 持久化值在下次引擎启动时经 seed 回注。best-effort：失败静默（宿主持久化
+  // 的值才是 source of truth）。
+  async syncPreferenceLive(key: string, value: string): Promise<void> {
+    if (this.exportedMethods.indexOf('setPreference') < 0) {
+      return;
+    }
+    const engine = EngineGateway.get();
+    if (engine === undefined || !engine.isLoaded(this.packageKey)) {
+      return;
+    }
+    try {
+      await engine.callData<object>(this.packageKey, 'setPreference', this.callArgs([key, value]));
+    } catch (e) {
+      // 引擎调用失败不影响宿主侧已持久化的值
+    }
+  }
+
   // 统一调用入口：CF 盾挑战异常上抛前触发全局验证页
 
   // 插件是否导出某方法（用于设置页判断源是否可配置）

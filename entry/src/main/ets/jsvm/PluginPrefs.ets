@@ -114,36 +114,7 @@ export class PluginPrefs {
   // 构建 __PREFS_STORE__ 种子：明文偏好 + SecureStore 敏感值合并；
   // 插件 JS 读取路径不变（敏感值仅存在于内存中的 globalThis）
   static seedScript(key: string): string {
-    if (PluginPrefs.store === undefined) {
-      return '';
-    }
-    let merged: Record<string, Object> = {};
-    let raw: string = '';
-    try {
-      raw = PluginPrefs.store.getSync(`__extprefs:${key}`, '') as string;
-    } catch (e) {
-      throw new Error(`read plugin prefs failed: ${e}`);
-    }
-    if (raw !== '') {
-      try {
-        const parsed = JSON.parse(raw) as Record<string, Object>;
-        // 仅接受对象载荷：JSON.parse('null')/'5' 等合法非对象 JSON 直接丢弃，
-        // 否则后续 merged[k] = v 写入 null 会抛错
-        if (parsed !== null && parsed !== undefined && typeof parsed === 'object') {
-          merged = parsed;
-        }
-      } catch (e) {
-        // Corrupt persisted payload: drop it instead of poisoning the engine script.
-      }
-    }
-    // 敏感键回注：Asset Store → __PREFS_STORE__
-    const secureKeys = PluginPrefs.secureKeysOf(key);
-    for (const k of secureKeys) {
-      const v = SecureStore.getSync(PluginPrefs.secureAlias(key, k));
-      if (v !== '') {
-        merged[k] = v;
-      }
-    }
+    const merged = PluginPrefs.mergedPrefs(key);
     const json = JSON.stringify(merged);
     if (json === '{}' || json === '') {
       return '';
@@ -154,6 +125,83 @@ export class PluginPrefs {
       return '';
     }
     return `globalThis.__PREFS_STORE__ = ${json};`;
+  }
+
+  // 当前持久化偏好的合并视图（明文 preferences + SecureStore 敏感值）：
+  // manifest 静态设置读取当前值用；store 未初始化/载荷损坏时返回空对象
+  static currentValues(key: string): Record<string, Object> {
+    return PluginPrefs.mergedPrefs(key);
+  }
+
+  // 单键写入（manifest 静态设置路径）：合并当前值 → 改键 → 敏感分流 → 立即落盘。
+  // 立即写而非防抖：设置页写入后回读必须一致；先叠加防抖队列中的 worker 快照，
+  // 避免立即落盘覆盖丢失 worker 侧更新
+  static updatePref(pkgKey: string, key: string, value: string): void {
+    const store = PluginPrefs.store;
+    if (store === undefined) {
+      return;
+    }
+    const merged = PluginPrefs.mergedPrefs(pkgKey);
+    const pendingJson = PluginPrefs.pending.get(pkgKey);
+    if (pendingJson !== undefined) {
+      try {
+        const pendingParsed = JSON.parse(pendingJson) as Record<string, Object>;
+        // 仅接受对象载荷：JSON.parse('null')/'5' 等合法非对象 JSON 直接丢弃
+        if (pendingParsed !== null && pendingParsed !== undefined && typeof pendingParsed === 'object') {
+          for (const k of Object.keys(pendingParsed)) {
+            merged[k] = pendingParsed[k];
+          }
+        }
+      } catch (_e) {
+      }
+    }
+    merged[key] = value;
+    PluginPrefs.persist(pkgKey, JSON.stringify(merged));
+    if (PluginPrefs.debounceTimer >= 0) {
+      clearTimeout(PluginPrefs.debounceTimer);
+      PluginPrefs.debounceTimer = -1;
+    }
+    PluginPrefs.writePending();
+    store.flush().catch((e: Object): void => {
+      hilog.warn(DOMAIN, TAG, 'flush after pref update failed: %{public}s', `${e}`);
+    });
+  }
+
+  // 明文偏好 + SecureStore 敏感值合并（seedScript / currentValues / updatePref 共用）
+  private static mergedPrefs(key: string): Record<string, Object> {
+    const merged: Record<string, Object> = {};
+    const store = PluginPrefs.store;
+    if (store !== undefined) {
+      let raw = '';
+      try {
+        raw = store.getSync(`__extprefs:${key}`, '') as string;
+      } catch (e) {
+        raw = '';
+      }
+      if (raw !== '') {
+        try {
+          const parsed = JSON.parse(raw) as Record<string, Object>;
+          // 仅接受对象载荷：JSON.parse('null')/'5' 等合法非对象 JSON 直接丢弃，
+          // 否则后续 merged[k] = v 写入 null 会抛错
+          if (parsed !== null && parsed !== undefined && typeof parsed === 'object') {
+            for (const k of Object.keys(parsed)) {
+              merged[k] = parsed[k];
+            }
+          }
+        } catch (e) {
+          // Corrupt persisted payload: drop it instead of poisoning the engine script.
+        }
+      }
+    }
+    // 敏感键回注：Asset Store → __PREFS_STORE__
+    const secureKeys = PluginPrefs.secureKeysOf(key);
+    for (const k of secureKeys) {
+      const v = SecureStore.getSync(PluginPrefs.secureAlias(key, k));
+      if (v !== '') {
+        merged[k] = v;
+      }
+    }
+    return merged;
   }
 
   // 防抖持久化：300ms 窗口内同一扩展仅保留最新快照，合并为一次 putSync + flush；

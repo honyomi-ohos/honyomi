@@ -94,6 +94,8 @@ export struct ExtensionDetailPage {
   @State plugin: InstalledPlugin | undefined = undefined;
   @State schema: SourcePrefItem[] = [];
   @State loadingSchema: boolean = false;
+  // 设置来源：true = manifest 静态声明（宿主直读直写，不拉引擎）
+  @State manifestSettings: boolean = false;
   @State busy: boolean = false;
   // 页面已销毁标志：await 返回后组件可能已析构，禁止再访问 UIContext/执行导航
   private destroyed: boolean = false;
@@ -441,19 +443,34 @@ export struct ExtensionDetailPage {
     }
   }
 
-  // 插件是否声明了设置页
+  // 插件是否声明了设置页（manifest 静态声明或运行期 getSettingsSchema 契约）
   private isConfigurable(): boolean {
     const src = this.currentSource();
-    return src instanceof JsvmSource && src.hasMethod('getSettingsSchema');
+    return src instanceof JsvmSource &&
+      (this.manifestSettings || src.hasMethod('getSettingsSchema'));
   }
 
   private async loadSchema(): Promise<void> {
+    this.loadingSchema = true;
+    // manifest 静态声明优先：读 manifest.json + PluginPrefs 当前值，不拉起 JSVM 引擎
+    try {
+      const declared = await PluginService.declaredSettings(this.pluginKey);
+      if (declared.length > 0) {
+        this.manifestSettings = true;
+        this.schema = declared.filter((item: SourcePrefItem): boolean => !item.hidden);
+        this.loadingSchema = false;
+        return;
+      }
+    } catch (e) {
+      // manifest 读取失败：回退运行期契约
+    }
+    this.manifestSettings = false;
     const src = this.currentSource();
     if (!(src instanceof JsvmSource) || !src.hasMethod('getSettingsSchema')) {
       this.schema = [];
+      this.loadingSchema = false;
       return;
     }
-    this.loadingSchema = true;
     try {
       const all = await src.getSettingsSchema();
       this.schema = all.filter((item: SourcePrefItem): boolean => !item.hidden);
@@ -467,18 +484,22 @@ export struct ExtensionDetailPage {
     this.loadingSchema = false;
   }
 
-  // 应用设置项变更：调用插件 setPreference 后刷新声明（回读当前值）
+  // 应用设置项变更：manifest 静态设置宿主直写持久化偏好（不拉引擎）；
+  // 运行期契约走插件 setPreference 后刷新声明（回读当前值）
   private async applyPref(item: SourcePrefItem, value: string): Promise<void> {
     if (this.busy) {
       return;
     }
-    const src = this.currentSource();
-    if (!(src instanceof JsvmSource)) {
-      return;
-    }
     this.busy = true;
     try {
-      await src.setPreference(item.key, value);
+      if (this.manifestSettings) {
+        await PluginService.setDeclaredPref(this.pluginKey, item.key, value);
+      } else {
+        const src = this.currentSource();
+        if (src instanceof JsvmSource) {
+          await src.setPreference(item.key, value);
+        }
+      }
       await this.loadSchema();
     } catch (e) {
       if (!this.destroyed) {

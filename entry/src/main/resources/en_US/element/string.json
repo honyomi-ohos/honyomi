@@ -1502,7 +1502,7 @@
     },
     {
       "name": "about_ack",
-      "value": "Open source acknowledgements:\n· Mihon / Tachiyomi — app architecture and interaction design (Apache-2.0)\n· Material Symbols — in-app icons (Apache-2.0)\n· MangaDex — test data source"
+      "value": "Open source acknowledgements:\n· Mihon / Tachiyomi — app architecture and interaction design (Apache-2.0)\n· Material Symbols — in-app icons (Apache-2.0)"
     },
     {
       "name": "browse_set_title",

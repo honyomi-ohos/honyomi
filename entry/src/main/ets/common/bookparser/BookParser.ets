@@ -92,11 +92,15 @@ export class BookParser {
     if (lower.endsWith('.epub') || BookParser.isZipFile(path)) {
       json = await BookParser.parseEpub(path, cacheDir);
     } else {
-      const result = await taskpool.execute(parseMobiBookTask, path, cacheDir);
-      if (typeof result !== 'string') {
+      try {
+        const result = await taskpool.execute(parseMobiBookTask, path, cacheDir);
+        if (typeof result !== 'string') {
+          throw new Error('book_parse_failed');
+        }
+        json = result;
+      } catch (e) {
         throw new Error('book_parse_failed');
       }
-      json = result;
     }
     return BookParser.toBookInfo(json);
   }
@@ -107,13 +111,21 @@ export class BookParser {
       // 清理可能的半成品解压目录后重新解压
       BookFileIo.removeQuietly(extractDir);
       BookFileIo.ensureDir(extractDir);
-      await zlib.decompressFile(path, extractDir);
+      try {
+        await zlib.decompressFile(path, extractDir);
+      } catch (e) {
+        throw new Error('book_parse_failed');
+      }
     }
-    const result = await taskpool.execute(parseEpubBookTask, extractDir, cacheDir);
-    if (typeof result !== 'string') {
+    try {
+      const result = await taskpool.execute(parseEpubBookTask, extractDir, cacheDir);
+      if (typeof result !== 'string') {
+        throw new Error('book_parse_failed');
+      }
+      return result;
+    } catch (e) {
       throw new Error('book_parse_failed');
     }
-    return result;
   }
 
   private static isZipFile(path: string): boolean {

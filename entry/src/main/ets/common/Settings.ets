@@ -342,11 +342,108 @@ export class Settings {
   }
 
   static getDownloadWifiOnly(): boolean {
-    return Settings.getBool('downloadWifiOnly', false);
+    return Settings.getBool('downloadWifiOnly', true);
   }
 
   static setDownloadWifiOnly(v: boolean): void {
     Settings.setBool('downloadWifiOnly', v);
+  }
+
+  // ---- 下载设置（对齐 Mihon DownloadPreferences） ----
+
+  // 章节保存为 CBZ 压缩包（阅读时解压到缓存目录；与原版默认 true 不同，
+  // 鸿蒙端 zip 内页需解压读取，保守默认 false 由用户开启）
+  static getSaveChaptersAsCbz(): boolean {
+    return Settings.getBool('saveChaptersAsCbz', false);
+  }
+
+  static setSaveChaptersAsCbz(v: boolean): void {
+    Settings.setBool('saveChaptersAsCbz', v);
+  }
+
+  // 下载时拆分超长条漫图片（提升阅读器渲染性能）
+  static getSplitTallImages(): boolean {
+    return Settings.getBool('splitTallImages', false);
+  }
+
+  static setSplitTallImages(v: boolean): void {
+    Settings.setBool('splitTallImages', v);
+  }
+
+  // 同时下载的源数量上限（1-10）
+  static getDownloadParallelSourceLimit(): number {
+    const n = Settings.getNum('downloadParallelSourceLimit', 5);
+    return n >= 1 && n <= 10 ? n : 5;
+  }
+
+  static setDownloadParallelSourceLimit(v: number): void {
+    Settings.setNum('downloadParallelSourceLimit', v);
+  }
+
+  // 单章节内页面并发下载数（1-15）
+  static getDownloadParallelPageLimit(): number {
+    const n = Settings.getNum('downloadParallelPageLimit', 5);
+    return n >= 1 && n <= 15 ? n : 5;
+  }
+
+  static setDownloadParallelPageLimit(v: number): void {
+    Settings.setNum('downloadParallelPageLimit', v);
+  }
+
+  // 手动标记已读后删除下载
+  static getRemoveAfterMarkedAsRead(): boolean {
+    return Settings.getBool('removeAfterMarkedAsRead', false);
+  }
+
+  static setRemoveAfterMarkedAsRead(v: boolean): void {
+    Settings.setBool('removeAfterMarkedAsRead', v);
+  }
+
+  // 阅读后自动删除第 N 个之前已读章节的下载（-1 禁用，1-5）
+  static getRemoveAfterReadSlots(): number {
+    const n = Settings.getNum('removeAfterReadSlots', -1);
+    return n === -1 || (n >= 1 && n <= 5) ? n : -1;
+  }
+
+  static setRemoveAfterReadSlots(v: number): void {
+    Settings.setNum('removeAfterReadSlots', v);
+  }
+
+  // 允许删除已书签章节的下载
+  static getRemoveBookmarked(): boolean {
+    return Settings.getBool('removeBookmarked', false);
+  }
+
+  static setRemoveBookmarked(v: boolean): void {
+    Settings.setBool('removeBookmarked', v);
+  }
+
+  // 库更新发现新章节时自动下载
+  static getDownloadNewChapters(): boolean {
+    return Settings.getBool('downloadNewChapters', false);
+  }
+
+  static setDownloadNewChapters(v: boolean): void {
+    Settings.setBool('downloadNewChapters', v);
+  }
+
+  // 自动下载时跳过与已读章节重复的新章节
+  static getDownloadNewUnreadOnly(): boolean {
+    return Settings.getBool('downloadNewUnreadOnly', false);
+  }
+
+  static setDownloadNewUnreadOnly(v: boolean): void {
+    Settings.setBool('downloadNewUnreadOnly', v);
+  }
+
+  // 阅读时预下载后续未读章节数（0 禁用，1/2/3/5/10）
+  static getAutoDownloadWhileReading(): number {
+    const n = Settings.getNum('autoDownloadWhileReading', 0);
+    return n === 1 || n === 2 || n === 3 || n === 5 || n === 10 ? n : 0;
+  }
+
+  static setAutoDownloadWhileReading(v: number): void {
+    Settings.setNum('autoDownloadWhileReading', v);
   }
 
   static pushGlobalFlags(): void {

@@ -1686,7 +1686,7 @@
     },
     {
       "name": "about_ack",
-      "value": "开源致谢：\n· Mihon / Tachiyomi — 应用架构与交互设计 (Apache-2.0)\n· Material Symbols — 应用内图标 (Apache-2.0)\n· MangaDex — 测试用例数据源"
+      "value": "开源致谢：\n· Mihon / Tachiyomi — 应用架构与交互设计 (Apache-2.0)\n· Material Symbols — 应用内图标 (Apache-2.0)"
     },
     {
       "name": "browse_set_title",

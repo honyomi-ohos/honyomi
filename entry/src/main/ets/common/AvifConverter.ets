@@ -3,9 +3,9 @@
  *
  * AvifConverter — AVIF → JPEG 转码器主线程门面。
  *
- * 模拟器系统的 AVIF 解码器无法解码 Photos18 的封面/页面（62980116），
- * 且 createPixelMap 失败时 Promise 永不结算（挂死），因此任何依赖系统
- * 解码的路径（含系统转码兜底）都不可行。
+ * 为 API 6.x（SDK 23）环境提供 AVIF 解码支持：模拟器系统的 AVIF 解码
+ * 器不可用（62980116），且 createPixelMap 失败时 Promise 永不结算（挂
+ * 死），因此任何依赖系统解码的路径（含系统转码兜底）都不可行。
  *
  * 实现：AvifWorker.ets 中调用 libjsvmengine.so 的 avifDecodeToJpeg
  * （libavif/aom 解码 + 系统 ImagePacker JPEG 编码，质量 88），请求在

@@ -25,8 +25,11 @@ interface AvifWorkerError {
 const workerPort: ThreadWorkerGlobalScope = worker.workerPort;
 
 function postError(message: string): void {
-  const failure: AvifWorkerError = { error: message };
-  workerPort.postMessage(failure);
+  try {
+    const failure: AvifWorkerError = { error: message };
+    workerPort.postMessage(failure);
+  } catch (e) {
+  }
 }
 
 workerPort.onmessage = (e: MessageEvents): void => {

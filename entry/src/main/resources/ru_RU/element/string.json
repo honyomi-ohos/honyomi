@@ -1186,7 +1186,7 @@
     },
     {
       "name": "about_ack",
-      "value": "Благодарности за открытый код:\n· Mihon / Tachiyomi — архитектура приложения и взаимодействие (Apache-2.0)\n· Material Symbols — значки в приложении (Apache-2.0)\n· MangaDex — тестовый источник данных"
+      "value": "Благодарности за открытый код:\n· Mihon / Tachiyomi — архитектура приложения и взаимодействие (Apache-2.0)\n· Material Symbols — значки в приложении (Apache-2.0)"
     },
     {
       "name": "browse_set_title",

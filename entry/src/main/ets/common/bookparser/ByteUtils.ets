@@ -172,13 +172,21 @@ export class BookFileIo {
   }
 
   static writeBytes(path: string, data: Uint8Array): void {
-    const file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE | fs.OpenMode.TRUNC);
+    let file: fs.File | undefined = undefined;
     try {
+      file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE | fs.OpenMode.TRUNC);
       const buf: ArrayBuffer = new ArrayBuffer(data.length);
       new Uint8Array(buf).set(data);
       fs.writeSync(file.fd, buf);
+    } catch (e) {
+      throw new Error(`write_bytes_failed: ${e}`);
     } finally {
-      fs.closeSync(file);
+      if (file !== undefined) {
+        try {
+          fs.closeSync(file);
+        } catch (e) {
+        }
+      }
     }
   }
 
@@ -228,8 +236,12 @@ export class BookFileIo {
   }
 
   static ensureDir(path: string): void {
-    if (!fs.accessSync(path)) {
-      fs.mkdirSync(path, true);
+    try {
+      if (!fs.accessSync(path)) {
+        fs.mkdirSync(path, true);
+      }
+    } catch (e) {
+      throw new Error(`ensure_dir_failed: ${e}`);
     }
   }
 
