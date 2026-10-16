@@ -136,9 +136,24 @@
       "pageSourceFile": "src/main/ets/pages/settings/AdvancedPage.ets"
     },
     {
+      "buildFunction": "DebugInfoBuilder",
+      "name": "DebugInfo",
+      "pageSourceFile": "src/main/ets/pages/settings/DebugInfoPage.ets"
+    },
+    {
       "buildFunction": "AboutBuilder",
       "name": "About",
       "pageSourceFile": "src/main/ets/pages/settings/AboutPage.ets"
+    },
+    {
+      "buildFunction": "LicensesBuilder",
+      "name": "Licenses",
+      "pageSourceFile": "src/main/ets/pages/settings/LicensesPage.ets"
+    },
+    {
+      "buildFunction": "PrivacyPolicyBuilder",
+      "name": "PrivacyPolicy",
+      "pageSourceFile": "src/main/ets/pages/settings/PrivacyPolicyPage.ets"
     },
     {
       "buildFunction": "OnboardingBuilder",

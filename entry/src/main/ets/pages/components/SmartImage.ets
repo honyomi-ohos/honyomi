@@ -10,6 +10,8 @@ export struct SmartImage {
   @Prop sourceKey: string = '';
   @Prop fit: ImageFit = ImageFit.Cover;
   @Prop fill: boolean = true;
+  // 高质量渲染（阅读器设置）：开启时对位图启用高精度插值，放大缩小更平滑但更耗性能
+  @Prop highQuality: boolean = false;
   // 无封面时默认封面占位的图标尺寸（小尺寸列表封面传小值）
   @Prop placeholderIconSize: number = 30;
   @State display: string = '';
@@ -56,6 +58,7 @@ export struct SmartImage {
             .width('100%')
             .height(this.fill ? '100%' : 'auto')
             .objectFit(this.fit)
+            .interpolation(this.highQuality ? ImageInterpolation.High : ImageInterpolation.None)
             .onComplete((): void => {
               this.imgReady = true;
             })

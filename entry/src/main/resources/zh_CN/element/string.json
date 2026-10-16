@@ -1677,16 +1677,104 @@
       "value": "关于"
     },
     {
-      "name": "about_version",
-      "value": "版本 1.0.0"
-    },
-    {
       "name": "about_desc",
       "value": "架构参考 Mihon (Apache-2.0)。在线源以插件形式动态安装，本地源内置。"
     },
     {
-      "name": "about_ack",
-      "value": "开源致谢：\n· Mihon / Tachiyomi — 应用架构与交互设计 (Apache-2.0)\n· Material Symbols — 应用内图标 (Apache-2.0)"
+      "name": "about_row_version",
+      "value": "版本"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "已复制调试信息"
+    },
+    {
+      "name": "licenses_title",
+      "value": "开源许可证"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "打开主页"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "完整许可协议"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "应用架构与交互设计参考"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "应用内图标"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "平台 SDK 与 ArkUI 框架"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "AVIF 图片解码"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "AVIF 解码所用的 AV1 解码器"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "扩展插件 HTML 解析"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "视频播放缓存"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "隐私说明"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi 是一款本地优先的漫画、小说、视频阅读器。应用本身不收集、不上传、不共享任何个人数据。"
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "本地数据"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "你的书库、阅读历史、下载记录、偏好设置与追踪服务凭据仅保存在设备本地，可随时在设置中导出或清除；卸载应用将永久删除这些数据。"
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "在线源与扩展"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "在线内容由第三方扩展与网站提供。浏览或阅读在线源时，请求将直接发送至对应网站，并受其隐私政策约束。应用无法控制第三方服务，也不对其负责。"
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "追踪服务"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "你可以选择连接 AniList、MyAnimeList、Bangumi、Kitsu、Shikimori 等追踪服务。登录在对应服务页面由你本人授权，令牌仅保存在本地，用于同步阅读进度。"
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "权限"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "网络权限用于加载在线内容；文件权限用于本地导入与备份；生物识别仅用于本地应用锁。任何权限均不用于收集个人数据。"
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "联系方式"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi 是一款受 Mihon 启发的开源项目。如对隐私说明有疑问，可通过 Discord 或 GitHub 联系我们。"
     },
     {
       "name": "browse_set_title",
@@ -3607,6 +3695,154 @@
     {
       "name": "privacy_dl_title",
       "value": "正在下载"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "导出故障日志"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "没有可导出的故障日志"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "已导出 %d 条故障日志"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "详细日志"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "在系统日志中包含调试级详细信息"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "调试信息"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "操作失败"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "数据"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "网络"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "书库"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "阅读器"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "清理数据库"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "删除所有不在书库中的条目？这些条目的阅读记录和进度将丢失。"
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "已删除 %d 个条目"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "清除内嵌网页数据"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "已清除内嵌网页数据"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "HTTPS 加密 DNS（DoH）"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "关闭"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "自定义 User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "留空使用默认值"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent 已保存"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "恢复默认 User-Agent"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "刷新书库封面"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "正在刷新封面…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "已刷新 %d 个条目"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "重置各作品阅读器设置"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "将各作品单独设置的阅读模式恢复为全局默认？"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "已重置 %d 个条目"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "高质量渲染"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "图片缩放更平滑，但会增加性能开销"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "应用版本"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "设备型号"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "设备类型"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "系统版本"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "API 版本"
+    },
+    {
+      "name": "debug_screen",
+      "value": "屏幕"
+    },
+    {
+      "name": "debug_language",
+      "value": "语言"
     }
   ]
 }

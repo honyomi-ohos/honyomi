@@ -107,6 +107,11 @@ export struct UpcomingPage {
     })
   }
 
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（960 上限）
+  private inset(): number {
+    return Bp.contentInset(this.windowW, 960);
+  }
+
   @Builder
   dayCell(day: number) {
     Stack() {
@@ -163,8 +168,8 @@ export struct UpcomingPage {
     }
     .width('100%')
     .padding({
-      left: 16,
-      right: 16,
+      left: 16 + this.inset(),
+      right: 16 + this.inset(),
       top: 8,
       bottom: 8
     })
@@ -199,8 +204,8 @@ export struct UpcomingPage {
     .width('100%')
     .height(96)
     .padding({
-      left: 16,
-      right: 16,
+      left: 16 + this.inset(),
+      right: 16 + this.inset(),
       top: 8,
       bottom: 8
     })
@@ -222,7 +227,7 @@ export struct UpcomingPage {
           .fontColor(this.pal.text)
           .layoutWeight(1)
           .maxLines(1)
-          .padding({ left: 16 })
+          .padding({ left: 16 + this.inset() })
         AppIcon({ name: 'keyboard_arrow_left', iconSize: 24, tint: this.pal.text })
           .padding({
             left: 8,
@@ -259,7 +264,7 @@ export struct UpcomingPage {
         }, (label: string, col: number) => `wd-${col}`)
       }
       .width('100%')
-      .padding({ left: 8, right: 8 })
+      .padding({ left: 8 + this.inset(), right: 8 + this.inset() })
 
       // 日期网格
       ForEach(this.monthWeeks(), (week: number[], weekIdx: number) => {
@@ -275,7 +280,7 @@ export struct UpcomingPage {
           }, (day: number, col: number) => `d-${weekIdx}-${col}`)
         }
         .width('100%')
-        .padding({ left: 8, right: 8 })
+        .padding({ left: 8 + this.inset(), right: 8 + this.inset() })
       }, (week: number[], weekIdx: number) => `w-${this.selYear}-${this.selMonth}-${weekIdx}`)
     }
     .width('100%')
@@ -285,7 +290,7 @@ export struct UpcomingPage {
   build() {
     NavDestination() {
       Column() {
-        PageHeader({ title: $r('app.string.label_upcoming') }) {
+        PageHeader({ title: $r('app.string.label_upcoming'), inset: this.inset() }) {
           AppIcon({ name: 'filter_list', iconSize: 22, tint: this.filterActive() ? this.pal.primary : this.pal.text })
             .padding({ left: 12 })
             .onClick(() => {

@@ -533,6 +533,66 @@ export class Settings {
     });
   }
 
+  // ---- 高级（对齐 Mihon SettingsAdvancedScreen）----
+
+  // 详细日志：Log.debug 门禁开关（关闭时 debug 级零输出）
+  static getVerboseLogging(): boolean {
+    return Settings.getBool('verboseLogging', false);
+  }
+
+  static setVerboseLogging(v: boolean): void {
+    Settings.setBool('verboseLogging', v);
+  }
+
+  // 自定义 User-Agent（空串 = 默认 UA；Http/CF WebView 同步读取）
+  static getUserAgent(): string {
+    return Settings.getStr('userAgent', '');
+  }
+
+  static setUserAgent(v: string): void {
+    Settings.setStr('userAgent', v);
+  }
+
+  // DoH 供应商 id（空串 = 关闭；供应商清单见 net/Doh.ets）
+  static getDohProvider(): string {
+    return Settings.getStr('dohProvider', '');
+  }
+
+  static setDohProvider(v: string): void {
+    Settings.setStr('dohProvider', v);
+  }
+
+  // 阅读器高质量渲染（图片插值）
+  static getReaderHighQuality(): boolean {
+    return Settings.getBool('readerHighQuality', false);
+  }
+
+  static setReaderHighQuality(v: boolean): void {
+    Settings.setBool('readerHighQuality', v);
+  }
+
+  // 重置各作品阅读器标志（viewer_mode:* 偏好清空，恢复全局默认阅读模式）
+  static resetViewerFlags(): number {
+    if (Settings.store === undefined) {
+      return 0;
+    }
+    let removed = 0;
+    try {
+      const all = Settings.store.getAllSync();
+      const keys = Object.keys(all as Record<string, Object>);
+      for (const key of keys) {
+        if (key.indexOf('viewer_mode:') === 0) {
+          Settings.store.deleteSync(key);
+          removed++;
+        }
+      }
+    } catch (_e) {
+      return removed;
+    }
+    Settings.scheduleFlush();
+    return removed;
+  }
+
   // ---- 通用 ----
   static getStartTab(): number {
     return Settings.getNum('startTab', 0);

@@ -2,6 +2,7 @@ import { ThemePalette } from '../common/Theme';
 import { Settings } from '../common/Settings';
 import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
+import { AppInfo } from '../common/AppInfo';
 import { IconRow, PrefGroup, SwitchRow } from './components/Prefs';
 
 const HELP_URL: string = 'https://mihon.app/docs/guides/troubleshooting/';
@@ -58,7 +59,7 @@ export struct MorePage {
               .fontWeight(FontWeight.Bold)
               .fontColor(this.pal.text)
               .margin({ top: 10 })
-            Text($r('app.string.more_version', '1.0.0'))
+            Text($r('app.string.more_version', AppInfo.versionName()))
               .fontSize(12)
               .fontColor(this.pal.sub)
               .margin({ top: 2 })

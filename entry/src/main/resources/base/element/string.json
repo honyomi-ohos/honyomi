@@ -2201,16 +2201,104 @@
       "value": "About"
     },
     {
-      "name": "about_version",
-      "value": "Version 1.0.0"
-    },
-    {
       "name": "about_desc",
       "value": "Architecture inspired by Mihon (Apache-2.0). Online sources are installed dynamically as extensions, while local sources are built in."
     },
     {
-      "name": "about_ack",
-      "value": "Open source acknowledgements:\n· Mihon / Tachiyomi — app architecture and interaction design (Apache-2.0)\n· Material Symbols — in-app icons (Apache-2.0)"
+      "name": "about_row_version",
+      "value": "Version"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "Debug information copied"
+    },
+    {
+      "name": "licenses_title",
+      "value": "Open source licenses"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "Open homepage"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "Full license text"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "App architecture and interaction design reference"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "In-app icons"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "Platform SDK and ArkUI framework"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "AVIF image decoding"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "AV1 decoder used for AVIF decoding"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "HTML parsing for extensions"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "Video playback caching"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "Privacy policy"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi is a local-first reader for manga, novels and videos. The app itself does not collect, upload or share any personal data."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "Local data"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "Your library, reading history, download records, preferences and tracker credentials are stored only on your device. You can export or erase them at any time in Settings. Uninstalling the app removes them permanently."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "Online sources and extensions"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "Online content is provided by third-party extensions and websites. Browsing or reading from an online source sends your requests directly to that site, which is governed by its own privacy policy. The app does not control and is not responsible for third-party services."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "Tracking services"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "You can optionally connect tracker accounts such as AniList, MyAnimeList, Bangumi, Kitsu and Shikimori. Login is authorized by you on the tracker's own page, and access tokens are saved only on your device to sync reading progress."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "Permissions"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "Internet access is used to load online content, file access for local imports and backups, and biometric authentication only for the local app lock. No permission is used to collect personal data."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "Contact"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi is an open-source project inspired by Mihon. If you have questions about this privacy statement, reach us via Discord or GitHub."
     },
     {
       "name": "browse_set_title",
@@ -3671,6 +3759,154 @@
     {
       "name": "privacy_dl_title",
       "value": "Downloading"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "Export crash logs"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "No crash logs found"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "Exported %d fault logs"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "Verbose logging"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "Include debug-level details in system logs"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "Debug info"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "Action failed"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Data"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "Network"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "Library"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "Reader"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "Clear database"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "Remove all entries that are not in your library? Reading history and progress of these entries will be lost."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "Removed %d entries"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "Clear embedded web data"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "Embedded web data cleared"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS over HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "Disabled"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "Custom User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "Leave empty to use the default"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent saved"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "Reset User-Agent"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "Refresh library covers"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "Refreshing covers…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "Refreshed %d entries"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "Reset per-series reader settings"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "Reset reading modes you set per series back to the global default?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "Reset %d entries"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "High quality rendering"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "Smoother image scaling at the cost of performance"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "App version"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "Device model"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "Device type"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "System version"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "API version"
+    },
+    {
+      "name": "debug_screen",
+      "value": "Screen"
+    },
+    {
+      "name": "debug_language",
+      "value": "Language"
     }
   ]
 }

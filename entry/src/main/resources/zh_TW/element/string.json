@@ -1605,16 +1605,104 @@
       "value": "關於"
     },
     {
-      "name": "about_version",
-      "value": "版本 1.0.0"
-    },
-    {
       "name": "about_desc",
       "value": "架構參考 Mihon (Apache-2.0)。線上來源以擴充功能形式動態安裝，本機來源內建。"
     },
     {
-      "name": "about_ack",
-      "value": "開源致謝：\n· Mihon / Tachiyomi — 應用架構與互動設計 (Apache-2.0)\n· Material Symbols — 應用內圖示 (Apache-2.0)"
+      "name": "about_row_version",
+      "value": "版本"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "已複製除錯資訊"
+    },
+    {
+      "name": "licenses_title",
+      "value": "開源授權條款"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "開啟主頁"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "完整授權條款"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "應用架構與互動設計參考"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "應用內圖示"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "平台 SDK 與 ArkUI 框架"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "AVIF 圖片解碼"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "AVIF 解碼所用的 AV1 解碼器"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "擴充功能 HTML 解析"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "影片播放快取"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "隱私說明"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi 是一款本機優先的漫畫、小說、影片閱讀器。應用本身不蒐集、不上傳、不共享任何個人資料。"
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "本機資料"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "你的書庫、閱讀歷史、下載記錄、偏好設定與追蹤服務憑證僅保存在裝置本機，可隨時在設定中匯出或清除；解除安裝應用將永久刪除這些資料。"
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "線上來源與擴充功能"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "線上內容由第三方擴充功能與網站提供。瀏覽或閱讀線上來源時，請求將直接傳送至對應網站，並受其隱私政策約束。應用無法控制第三方服務，也不對其負責。"
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "追蹤服務"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "你可以選擇連結 AniList、MyAnimeList、Bangumi、Kitsu、Shikimori 等追蹤服務。登入在對應服務頁面由你本人授權，權杖僅保存在本機，用於同步閱讀進度。"
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "權限"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "網路權限用於載入線上內容；檔案權限用於本機匯入與備份；生物辨識僅用於本機應用鎖。任何權限均不用於蒐集個人資料。"
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "聯絡方式"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi 是一款受 Mihon 啟發的開源專案。如對隱私說明有疑問，可透過 Discord 或 GitHub 與我們聯絡。"
     },
     {
       "name": "browse_set_title",

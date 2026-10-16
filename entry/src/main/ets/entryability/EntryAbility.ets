@@ -14,6 +14,7 @@ import { BackupService } from '../data/BackupService';
 import { EngineGateway } from '../jsvm/EngineGateway';
 import { JsvmEngineBackend } from '../jsvm/JsvmEngineBackend';
 import { CookieJar } from '../net/CookieJar';
+import { Http } from '../net/Http';
 import { ImageCache } from '../common/ImageCache';
 import { NetworkMonitor } from '../common/NetworkMonitor';
 
@@ -40,6 +41,8 @@ export default class EntryAbility extends UIAbility {
     AppStorage.setOrCreate(AppKeys.PLUGINS_DIRTY, 0);
     AppStorage.setOrCreate(AppKeys.CF_CHALLENGE_URL, '');
     Settings.init(this.context);
+    // 自定义 User-Agent 同步到网络层（Settings.init 之后，先于任意网络请求）
+    Http.syncUserAgent();
     // 全局功能开关从持久化偏好恢复（NSFW 源显示等）
     Settings.pushGlobalFlags();
     // 应用锁（隐私设置）：启用且设备有解锁凭据时冷启动即锁定（对齐 Mihon useAuthenticator）

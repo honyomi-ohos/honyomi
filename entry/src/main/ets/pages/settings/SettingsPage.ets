@@ -207,6 +207,9 @@ export struct SettingsPage {
                 onOpenOnboarding: (): void => {
                   const params: OnboardingParams = { firstRun: false };
                   this.pathStack.pushPathByName('Onboarding', params);
+                },
+                onOpenDebugInfo: (): void => {
+                  this.pathStack.pushPathByName('DebugInfo', null);
                 }
               })
                 .layoutWeight(1)

@@ -223,7 +223,8 @@ export struct ReaderPage {
         url: this.pages[index].url,
         sourceKey: this.manga.sourceKey,
         fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
-        fill: true
+        fill: true,
+        highQuality: Settings.getReaderHighQuality()
       })
         .width('100%')
         .height('100%')
@@ -237,7 +238,8 @@ export struct ReaderPage {
         url: this.pages[index].url,
         sourceKey: this.manga.sourceKey,
         fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
-        fill: true
+        fill: true,
+        highQuality: Settings.getReaderHighQuality()
       })
         .layoutWeight(1)
         .height('100%')
@@ -455,7 +457,8 @@ export struct ReaderPage {
               url: page.url,
               sourceKey: this.manga.sourceKey,
               fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
-              fill: true
+              fill: true,
+              highQuality: Settings.getReaderHighQuality()
             })
               .width('100%')
               .height('100%')

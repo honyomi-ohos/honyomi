@@ -16,6 +16,7 @@ import { util } from '@kit.ArkTS';
 import jsvmEngine from 'libjsvmengine.so';
 import { CookieJar } from '../net/CookieJar';
 import { Http } from '../net/Http';
+import { Doh } from '../net/Doh';
 import { CfChallenge } from '../net/CfChallenge';
 import { Util } from '../common/Util';
 import { challengeError } from './EngineGateway';
@@ -330,6 +331,8 @@ export class NativeHttpBridge {
     body: string,
     wantBytes: boolean
   ): Promise<http.HttpResponse> {
+    // DoH 开启时先注入 host 解析规则（失败内部静默回落系统 DNS）
+    await Doh.prepare(url);
     const client: http.HttpRequest = http.createHttp();
     try {
       const options: http.HttpRequestOptions = {

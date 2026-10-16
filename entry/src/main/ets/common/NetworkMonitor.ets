@@ -25,7 +25,8 @@ export class NetworkMonitor {
     try {
       const conn = connection.createNetConnection();
       conn.on('netCapabilitiesChange', (info: connection.NetCapabilityInfo): void => {
-        NetworkMonitor.applyCaps(info.netCapabilities, onChange);
+        // SDK 中 NetCapabilityInfo 的能力字段名为 netCap（非 netCapabilities）
+        NetworkMonitor.applyCaps(info.netCap, onChange);
       });
       conn.on('netUnavailable', (): void => {
         // 网络完全断开：复检（getDefaultNet 失败时 fail-open 由 check 兜底）

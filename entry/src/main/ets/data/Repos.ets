@@ -394,6 +394,42 @@ export class MangaRepo {
     }
   }
 
+  // 清理数据库：删除所有不在书库的作品及其章节/历史/阅读统计/追踪数据
+  // （对齐 Mihon ClearDatabase 的 clearAll；书库内数据不受影响）。返回删除的作品数
+  static async clearNonLibrary(): Promise<number> {
+    const store = await AppDb.get();
+    let count = 0;
+    try {
+      store.beginTransaction();
+    } catch (e) {
+      throw new Error(`clear database failed: ${e}`);
+    }
+    try {
+      const rs = await store.querySql(`SELECT COUNT(*) AS cnt FROM manga WHERE inLibrary = 0`);
+      if (rs.goToNextRow()) {
+        count = rs.getLong(rs.getColumnIndex('cnt'));
+      }
+      closeQuietly(rs);
+      await store.executeSql(`DELETE FROM chapter WHERE mangaId IN
+        (SELECT id FROM manga WHERE inLibrary = 0)`);
+      await store.executeSql(`DELETE FROM history WHERE mangaId IN
+        (SELECT id FROM manga WHERE inLibrary = 0)`);
+      await store.executeSql(`DELETE FROM readingSession WHERE mangaId IN
+        (SELECT id FROM manga WHERE inLibrary = 0)`);
+      await store.executeSql(`DELETE FROM track WHERE mangaId IN
+        (SELECT id FROM manga WHERE inLibrary = 0)`);
+      await store.executeSql(`DELETE FROM manga WHERE inLibrary = 0`);
+      store.commit();
+    } catch (e) {
+      try {
+        store.rollBack();
+      } catch (e2) {
+      }
+      throw new Error(`clear database failed: ${e}`);
+    }
+    return count;
+  }
+
   // 章节/历史聚合统计（书架排序与筛选用），一次查询全部漫画
   static async stats(): Promise<Record<string, MangaStats>> {
     const store = await AppDb.get();

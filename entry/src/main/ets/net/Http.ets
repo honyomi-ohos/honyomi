@@ -5,6 +5,9 @@ import { CookieJar } from './CookieJar';
 import { CfChallenge } from './CfChallenge';
 import { Util } from '../common/Util';
 import { AppKeys } from '../common/AppKeys';
+import { Settings } from '../common/Settings';
+import { Doh } from './Doh';
+import { Log } from '../common/Log';
 
 // 原始响应：状态码 + 响应体（追踪器需要区分 404 等非 2xx 状态）
 export interface RawResponse {
@@ -41,8 +44,19 @@ interface HttpFollowed {
 //   （Authorization/Referer/Referrer/Cookie），https 起始禁止降级 http
 // - 幂等 GET：网络类错误（非 CF 挑战）退避 500ms 后重试一次
 export class Http {
-  static readonly USER_AGENT: string = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +
+  // 默认 UA（对齐桌面 Chrome；cf_clearance 与 UA 绑定，http 层与验证 Web 必须一致）
+  static readonly DEFAULT_USER_AGENT: string =
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +
     '(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+  // 运行时生效 UA：高级设置可自定义覆盖，各请求层与 CF 验证 WebView
+  // 均在请求时实时读取本字段，无需重启即生效
+  static USER_AGENT: string = Http.DEFAULT_USER_AGENT;
+
+  // 从持久化偏好同步自定义 UA（应用启动与用户修改后调用）
+  static syncUserAgent(): void {
+    const custom: string = Settings.getUserAgent();
+    Http.USER_AGENT = custom !== '' ? custom : Http.DEFAULT_USER_AGENT;
+  }
 
   static async get(url: string, headers: Record<string, string> | undefined): Promise<string> {
     try {
@@ -158,30 +172,33 @@ export class Http {
         }, stallTimeoutMs);
       };
       // @SuppressWarnings syscap
-      request.downloadFile(context, config).then((task: request.DownloadTask) => {
-        if (settled) {
-          task.delete().catch((_e: Error) => {
-          });
-          return;
-        }
-        taskRef = task;
-        task.on('progress', (received: number, total: number) => {
-          armWatchdog();
-          if (progressCb !== undefined) {
-            progressCb(received, total);
+      // DoH 规则注入完成（或关闭/失败回落）后再发起系统下载任务
+      Doh.prepare(url).then((): void => {
+        request.downloadFile(context, config).then((task: request.DownloadTask) => {
+          if (settled) {
+            task.delete().catch((_e: Error) => {
+            });
+            return;
           }
+          taskRef = task;
+          task.on('progress', (received: number, total: number) => {
+            armWatchdog();
+            if (progressCb !== undefined) {
+              progressCb(received, total);
+            }
+          });
+          task.on('complete', () => {
+            finish(undefined);
+          });
+          task.on('fail', (err: number) => {
+            finish(new Error(`download_fail|${err}`));
+          });
+          task.on('remove', () => {
+            finish(new Error('download_cancelled'));
+          });
+        }).catch((e: Error) => {
+          finish(e);
         });
-        task.on('complete', () => {
-          finish(undefined);
-        });
-        task.on('fail', (err: number) => {
-          finish(new Error(`download_fail|${err}`));
-        });
-        task.on('remove', () => {
-          finish(new Error('download_cancelled'));
-        });
-      }).catch((e: Error) => {
-        finish(e);
       });
       armWatchdog();
     });
@@ -317,6 +334,8 @@ export class Http {
     readTimeout: number,
     customMethod: string = ''
   ): Promise<http.HttpResponse> {
+    // DoH 开启时先注入 host 解析规则（失败内部静默回落系统 DNS）
+    await Doh.prepare(url);
     const client: http.HttpRequest = http.createHttp();
     try {
       const options: http.HttpRequestOptions = {
@@ -334,6 +353,7 @@ export class Http {
       }
       let resp: http.HttpResponse;
       try {
+        Log.debug('Http', `request ${customMethod !== '' ? customMethod : method} ${url}`);
         resp = await client.request(url, options);
       } catch (e) {
         throw new Error(Util.netErrOf(e));
