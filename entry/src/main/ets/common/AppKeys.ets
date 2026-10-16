@@ -44,4 +44,6 @@ export class AppKeys {
   static readonly LAST_BACKUP_FAILED: string = 'lastBackupFailed';
   // 主页底部页签区高度（px，Index 窗口测量写入）
   static readonly TAB_PAD_H: string = 'tabPadH';
+  // 应用锁锁定态（EntryAbility 判定写入，LockOverlay 消费）
+  static readonly APP_LOCKED: string = 'appLocked';
 }

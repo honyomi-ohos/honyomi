@@ -121,6 +121,11 @@
       "pageSourceFile": "src/main/ets/pages/settings/TrackingPage.ets"
     },
     {
+      "buildFunction": "PrivacyBuilder",
+      "name": "Privacy",
+      "pageSourceFile": "src/main/ets/pages/settings/PrivacyPage.ets"
+    },
+    {
       "buildFunction": "SupportBuilder",
       "name": "Support",
       "pageSourceFile": "src/main/ets/pages/settings/SupportPage.ets"

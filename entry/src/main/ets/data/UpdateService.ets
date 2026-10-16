@@ -3,9 +3,11 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppDb } from './AppDb';
 import { ChapterRepo, MangaRepo } from './Repos';
 import { Source, SourceRegistry } from '../source/Source';
-import { ContentType, MangaRecord } from '../model/Models';
+import { ContentType, ChapterRecord, MangaRecord } from '../model/Models';
 import { WidgetUpdater } from '../form/WidgetUpdater';
 import { AppKeys } from '../common/AppKeys';
+import { Settings } from '../common/Settings';
+import { DownloadRules } from './DownloadRules';
 
 // 书架更新服务：按源分组刷新最新章节（组内串行、组间最多 3 组并发）
 export class UpdateService {
@@ -55,8 +57,24 @@ export class UpdateService {
         for (const manga of group) {
           try {
             const chapters = await source.getChapterList(manga.url);
+            // 自动下载开启时：同步前记录已有章节，同步后按新增章节入队（对齐 Mihon Download new chapters）
+            const autoDl = Settings.getDownloadNewChapters();
+            const beforeUrls = new Set<string>();
+            if (autoDl) {
+              const before = await ChapterRepo.listByManga(manga.id);
+              for (const c of before) {
+                beforeUrls.add(c.url);
+              }
+            }
             const n = await ChapterRepo.syncFromSource(manga.id, chapters);
             await MangaRepo.touch(manga.id, n > 0);
+            if (autoDl && n > 0) {
+              const after = await ChapterRepo.listByManga(manga.id);
+              const fresh: ChapterRecord[] = after.filter((c: ChapterRecord): boolean => {
+                return !beforeUrls.has(c.url);
+              });
+              DownloadRules.autoDownloadNewChapters(manga, fresh);
+            }
             newCount += n;
           } catch (e) {
             // 单本失败不中断整体刷新，记录失败供上层提示

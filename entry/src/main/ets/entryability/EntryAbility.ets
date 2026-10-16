@@ -15,12 +15,14 @@ import { EngineGateway } from '../jsvm/EngineGateway';
 import { JsvmEngineBackend } from '../jsvm/JsvmEngineBackend';
 import { CookieJar } from '../net/CookieJar';
 import { ImageCache } from '../common/ImageCache';
+import { NetworkMonitor } from '../common/NetworkMonitor';
 
 import { WidgetUpdater } from '../form/WidgetUpdater';
 import { ReadingStatsRepo } from '../data/ReadingStats';
 import { TtsPlaybackService } from '../common/TtsPlaybackService';
 import { AppKeys } from '../common/AppKeys';
 import { PluginPrefs } from '../jsvm/PluginPrefs';
+import { AppLock } from '../common/AppLock';
 
 const DOMAIN = 0x0001;
 
@@ -40,6 +42,8 @@ export default class EntryAbility extends UIAbility {
     Settings.init(this.context);
     // 全局功能开关从持久化偏好恢复（NSFW 源显示等）
     Settings.pushGlobalFlags();
+    // 应用锁（隐私设置）：启用且设备有解锁凭据时冷启动即锁定（对齐 Mihon useAuthenticator）
+    AppStorage.setOrCreate(AppKeys.APP_LOCKED, Settings.getAppLock() && AppLock.isAuthSupported());
     // 应用语言偏好（跟随系统时由系统资源机制自动匹配）
     Settings.applyAppLanguage();
     // 主题
@@ -64,6 +68,10 @@ export default class EntryAbility extends UIAbility {
     // 契约：此处初始化的服务允许在回调执行前被访问——各服务必须容忍“未 init 先使用”
     // （内部空安全/延迟就绪），不得假设构造期已完成初始化；首帧路径严禁依赖本级服务。
     setTimeout((): void => {
+      // 网络监听先行启动：下载"仅 Wi-Fi"门禁依赖其判定（判定失败 fail-open 放行）
+      NetworkMonitor.start((): void => {
+        DownloadService.refreshNetworkGate();
+      });
       DownloadService.init(this.context);
       CookieJar.init(this.context);
       ImageCache.init(this.context);
@@ -124,6 +132,8 @@ export default class EntryAbility extends UIAbility {
     }).catch((e: Error) => {
       hilog.error(DOMAIN, 'Mihon', 'Failed to get main window. Cause: %{public}s', e.message);
     });
+    // 隐私界面（防截屏）：窗口就绪后按设置应用到主窗口
+    Settings.applySecureScreen(this.context);
     windowStage.loadContent('pages/Index', (err) => {
       if (err.code) {
         hilog.error(DOMAIN, 'Mihon', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));
@@ -139,10 +149,22 @@ export default class EntryAbility extends UIAbility {
 
   onForeground(): void {
     hilog.info(DOMAIN, 'Mihon', '%{public}s', 'Ability onForeground');
+    // 应用锁：切后台超过时限后回前台需重新解锁（0=切后台立即锁；>0=分钟；-1=从不自动锁）
+    if (Settings.getAppLock() && AppLock.isAuthSupported()) {
+      const after: number = Settings.getLockAfterMinutes();
+      if (after !== -1) {
+        const elapsed: number = Date.now() - Settings.getLastAppClosedAt();
+        if (after === 0 || elapsed >= after * 60 * 1000) {
+          AppStorage.setOrCreate(AppKeys.APP_LOCKED, true);
+        }
+      }
+    }
   }
 
   onBackground(): void {
     hilog.info(DOMAIN, 'Mihon', '%{public}s', 'Ability onBackground');
+    // 记录切后台时间戳：应用锁空闲判定（进程存活内存判定 + 被杀重启持久化兜底）
+    Settings.setLastAppClosedAt(Date.now());
     // 退后台先结算进行中的阅读会话，偏好设置落盘，再刷新桌面卡片
     ReadingStatsRepo.flush();
     Settings.flushNow();

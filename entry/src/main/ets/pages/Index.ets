@@ -23,6 +23,7 @@ import { MorePage } from './MorePage';
 import { ContentOpen } from './ContentOpen';
 import { AppIcon } from './components/AppIcon';
 import { CfVerifySheet } from './components/CfVerifySheet';
+import { LockOverlay } from './components/LockOverlay';
 import { TtsMiniBar } from './components/novel/TtsMiniBar';
 import { BROWSE_MORPH, LIBRARY_MORPH, PathMorph, UPDATES_MORPH } from './components/PathMorph';
 import { DetailParams, GlobalSearchParams, OnboardingParams } from '../model/RouteParams';
@@ -389,6 +390,8 @@ struct Index {
   // 书架多选数：>0 时隐藏底部页签栏（HDS 官方多选交互：操作栏替换页签栏）
   @StorageLink('libSelectionCount') @Watch('onLibSelectionChanged') libSelectionCount: number = 0;
   @StorageLink('cardAction') @Watch('onCardActionChanged') cardActionJson: string = '';
+  // 应用锁锁定态（隐私设置）：true 时全屏覆盖锁定层并拉起系统认证
+  @StorageProp('appLocked') appLocked: boolean = false;
   // 详情页“搜索此处”回退主页时切到书架页签执行文本搜索（对齐 Mihon HomeScreen.search → LibraryTab）
   @StorageLink('libSearchReq') @Watch('onLibSearchReq') libSearchReq: number = 0;
   // 一多响应式：窗口宽度 + 已挂载页签位掩码（宽屏下按需挂载后驻留保状态）
@@ -706,82 +709,83 @@ struct Index {
   }
 
   build() {
-    Row() {
-      // 宽屏常驻左侧导航：置于 Navigation 之外，推入任意路由页（分类/下载/设置等）均不遮挡；
-      // 仅设置页（自带左侧分类导航，避免双栏）收窄为图标栏；沉浸式页（阅读器/播放器）全屏隐藏
-      if (this.isWide() && !this.isImmersiveRoute(this.topRouteName)) {
-        if (this.topRouteName === 'Settings') {
-          this.wideRailMini()
-        } else {
-          this.wideRail()
-        }
-      }
-      Navigation(this.pathStack) {
-        Stack({ alignContent: Alignment.TopStart }) {
-          if (this.isWide()) {
-            this.wideContent()
+    Stack() {
+      Row() {
+        // 宽屏常驻左侧导航：置于 Navigation 之外，推入任意路由页（分类/下载/设置等）均不遮挡；
+        // 仅设置页（自带左侧分类导航，避免双栏）收窄为图标栏；沉浸式页（阅读器/播放器）全屏隐藏
+        if (this.isWide() && !this.isImmersiveRoute(this.topRouteName)) {
+          if (this.topRouteName === 'Settings') {
+            this.wideRailMini()
           } else {
-            // 手机端 HDS 沉浸浮动页签栏（预览器由 src/mock 的标准 Tabs Mock 等效渲染）
-            HdsTabsHost({
-              index: this.currentTab,
-              scrollable: true,
-              barBottomMargin: Math.max(this.navBarH + 2, 8),
-              controller: this.tabsController,
-              miniBar: this.ttsMiniBarOptions(),
-              onTabChange: (index: number): void => {
-                this.currentTab = index;
-              }
-            }) {
-              this.phoneTabContents()
-            }
-          }
-          // 听书迷你条（PC/宽屏无底部页签条）：MusicHome 风格胶囊悬于右下角
-          // （28 圆角 + 1px 描边 + 卡片底色，无阴影）
-          if (this.isWide() && this.ttsActive) {
-            Stack({ alignContent: Alignment.BottomEnd }) {
-              Column() {
-                TtsMiniBar({
-                  onOpenPlayer: (): void => {
-                    this.pathStack.pushPathByName('TtsPlayer', null);
-                  }
-                })
-              }
-              .width(360)
-              .height(56)
-              .justifyContent(FlexAlign.Center)
-              .borderRadius(28)
-              .backgroundColor(this.pal.card)
-              .border({ width: 1, color: this.pal.divider })
-              .margin({ right: 24, bottom: 16 })
-            }
-            .width('100%')
-            .height('100%')
-            .hitTestBehavior(HitTestMode.Transparent)
+            this.wideRail()
           }
         }
-        .width('100%')
-        .height('100%')
-        .bindSheet($$this.cfSheetShow, this.cfSheetBuilder(), {
-          height: SheetSize.LARGE,
-          detents: [SheetSize.MEDIUM, SheetSize.LARGE],
-          dragBar: true,
-          showClose: false,
-          preferType: this.isWide() ? SheetType.CENTER : SheetType.BOTTOM,
-          width: this.isWide() ? 560 : '100%',
-          blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
-          maskColor: 'rgba(0,0,0,0.45)',
-          onDisappear: (): void => {
-            // 弹层关闭：回写 ArkWeb 会话 Cookie 到 CookieJar，并复位 challenge 标记
-            const url = this.cfChallengeUrl;
-            if (url !== '') {
-              this.cfChallengeUrl = '';
-              webview.WebCookieManager.fetchCookie(url).then((cookies: string) => {
-                CookieJar.importCookieString(url, cookies);
-              }).catch((_e: Error) => {
-              });
+        Navigation(this.pathStack) {
+          Stack({ alignContent: Alignment.TopStart }) {
+            if (this.isWide()) {
+              this.wideContent()
+            } else {
+              // 手机端 HDS 沉浸浮动页签栏（预览器由 src/mock 的标准 Tabs Mock 等效渲染）
+              HdsTabsHost({
+                index: this.currentTab,
+                scrollable: true,
+                barBottomMargin: Math.max(this.navBarH + 2, 8),
+                controller: this.tabsController,
+                miniBar: this.ttsMiniBarOptions(),
+                onTabChange: (index: number): void => {
+                  this.currentTab = index;
+                }
+              }) {
+                this.phoneTabContents()
+              }
+            }
+            // 听书迷你条（PC/宽屏无底部页签条）：MusicHome 风格胶囊悬于右下角
+            // （28 圆角 + 1px 描边 + 卡片底色，无阴影）
+            if (this.isWide() && this.ttsActive) {
+              Stack({ alignContent: Alignment.BottomEnd }) {
+                Column() {
+                  TtsMiniBar({
+                    onOpenPlayer: (): void => {
+                      this.pathStack.pushPathByName('TtsPlayer', null);
+                    }
+                  })
+                }
+                .width(360)
+                .height(56)
+                .justifyContent(FlexAlign.Center)
+                .borderRadius(28)
+                .backgroundColor(this.pal.card)
+                .border({ width: 1, color: this.pal.divider })
+                .margin({ right: 24, bottom: 16 })
+              }
+              .width('100%')
+              .height('100%')
+              .hitTestBehavior(HitTestMode.Transparent)
             }
           }
-        })
+          .width('100%')
+          .height('100%')
+          .bindSheet($$this.cfSheetShow, this.cfSheetBuilder(), {
+            height: SheetSize.LARGE,
+            detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+            dragBar: true,
+            showClose: false,
+            preferType: this.isWide() ? SheetType.CENTER : SheetType.BOTTOM,
+            width: this.isWide() ? 560 : '100%',
+            blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
+            maskColor: 'rgba(0,0,0,0.45)',
+            onDisappear: (): void => {
+              // 弹层关闭：回写 ArkWeb 会话 Cookie 到 CookieJar，并复位 challenge 标记
+              const url = this.cfChallengeUrl;
+              if (url !== '') {
+                this.cfChallengeUrl = '';
+                webview.WebCookieManager.fetchCookie(url).then((cookies: string) => {
+                  CookieJar.importCookieString(url, cookies);
+                }).catch((_e: Error) => {
+                });
+              }
+            }
+          })
       }
       .layoutWeight(1)
       .hideTitleBar(true)
@@ -803,6 +807,11 @@ struct Index {
           }, 450);
         }
       })
+      }
+      // 应用锁（隐私设置）：锁定时全屏覆盖，拦截一切交互直至系统认证通过
+      if (this.appLocked) {
+        LockOverlay()
+      }
     }
     .width('100%')
     .height('100%')

@@ -4,12 +4,18 @@ import { common, wantAgent } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { backgroundTaskManager } from '@kit.BackgroundTasksKit';
 import { notificationManager } from '@kit.NotificationKit';
-import { BusinessError } from '@kit.BasicServicesKit';
+import { BusinessError, zlib } from '@kit.BasicServicesKit';
+import { image } from '@kit.ImageKit';
 import { util } from '@kit.ArkTS';
 import { Http } from '../net/Http';
 import { Source, SourceRegistry } from '../source/Source';
 import { ContentType, DownloadedChapter, DownloadedManga, DownloadTask, SPage, SVideo } from '../model/Models';
 import { ChapterRepo, MangaRepo } from './Repos';
+import { Settings } from '../common/Settings';
+import { NetworkMonitor } from '../common/NetworkMonitor';
+
+// 拆分超长条漫图片的高度阈值（对齐 Mihon optimalImageHeight ≈ 屏幕高度*2）
+const TALL_IMAGE_LIMIT = 8000;
 
 // 队列持久化 JSON 结构（{filesDir}/download_queue.json）：
 // 完成态不落盘（done.mark 为准），下载中(state=1)重启后重新排队，失败态保留供重试
@@ -32,22 +38,36 @@ class DownloadQueueRaw {
   tasks: DownloadTaskRaw[] = [];
 }
 
-// 下载服务（对齐 Mihon DownloadManager 的精简版）
+// 活动任务的控制标志：cancelled=用户取消；blocked=网络环境变化（回到队列续传）
+class DlFlags {
+  cancelled: boolean = false;
+  blocked: boolean = false;
+}
+
+// 页面并发下载游标（worker 池共享推进）
+class PageCursor {
+  next: number = 0;
+}
+
+// 下载服务（对齐 Mihon DownloadManager 的精简版）：
+// 多源并发（不同源各占一个下载槽）+ 单章页面并发 + 仅 Wi-Fi 门禁 + CBZ 打包 + 超长图拆分
 // 存储布局: {filesDir}/downloads/{mangaId}/{chapterId}/000.jpg ... + done.mark
+//           开启 CBZ 后页面打包为 chapter.cbz，阅读时解压到 cacheDir/cbz_extract/
 export class DownloadService {
   private static rootDir: string = '';
   private static queueFile: string = '';
   private static context: common.UIAbilityContext | undefined = undefined;
   private static queue: DownloadTask[] = [];
-  private static running: boolean = false;
   private static paused: boolean = false;
   private static listeners: Array<() => void> = [];
-  private static activeCancel: (() => void) | undefined = undefined;
+  // 并发模型：同一源同一时刻只跑一个任务，不同源最多 sourceLimit 个任务并行
+  private static activeTasks: DownloadTask[] = [];
+  private static activeFlags: Map<number, DlFlags> = new Map<number, DlFlags>();
+  // 视频流式下载的主动中断句柄（chapterId → cancel）
+  private static activeAborts: Map<number, () => void> = new Map<number, () => void>();
   // 已完成(done.mark)章节 id 内存索引：列表行高频查询 isDownloaded，
   // 不能每次调用都做 O(N) 目录扫描；下载完成/删除章节时增量维护
   private static doneIds: Set<number> | undefined = undefined;
-  // 当前正在 process 的任务（deleteChapter 等待其退出用）
-  private static activeTask: DownloadTask | undefined = undefined;
   // DATA_TRANSFER 长时任务：下载期间防真机锁屏/切后台进程被挂起导致下载永久卡住。
   // 系统要求通过实况窗持续更新进度（进度超过10分钟未更新会被系统取消），30秒心跳兜底
   private static bgTaskId: number = -1;
@@ -126,23 +146,30 @@ export class DownloadService {
     DownloadService.pump();
   }
 
-  // 取消任务：排队中直接移除；下载中（视频中断传输，图片/小说置状态后由下载循环检查中止）
+  // 取消任务：排队中直接移除；下载中置取消标志，由下载循环/续体在页边界退出
   static cancel(chapterId: number): void {
-    let hasActive = false;
+    let hadActive = false;
     for (const t of DownloadService.queue) {
       if (t.chapterId !== chapterId) {
         continue;
       }
       if (t.state === 1) {
-        hasActive = true;
+        hadActive = true;
       }
       if (t.state !== 3) {
         t.state = 3;
         t.error = 'download_cancelled';
       }
     }
-    if (hasActive && DownloadService.activeCancel !== undefined) {
-      DownloadService.activeCancel();
+    const flags: DlFlags | undefined = DownloadService.activeFlags.get(chapterId);
+    if (flags !== undefined) {
+      flags.cancelled = true;
+    }
+    if (hadActive) {
+      const abort: (() => void) | undefined = DownloadService.activeAborts.get(chapterId);
+      if (abort !== undefined) {
+        abort();
+      }
     }
     DownloadService.queue = DownloadService.queue.filter((t: DownloadTask) => t.state !== 3);
     DownloadService.persistQueue();
@@ -157,18 +184,23 @@ export class DownloadService {
 
   // 取消队列中全部任务（对齐 Mihon 下载队列页 overflow 的 "Cancel all"）
   static cancelAll(): void {
-    let hasActive = false;
+    let hadActive = false;
     for (const t of DownloadService.queue) {
       if (t.state === 1) {
-        hasActive = true;
+        hadActive = true;
       }
       if (t.state !== 3) {
         t.state = 3;
         t.error = 'download_cancelled';
       }
     }
-    if (hasActive && DownloadService.activeCancel !== undefined) {
-      DownloadService.activeCancel();
+    DownloadService.activeFlags.forEach((flags: DlFlags): void => {
+      flags.cancelled = true;
+    });
+    if (hadActive) {
+      DownloadService.activeAborts.forEach((abort: () => void): void => {
+        abort();
+      });
     }
     DownloadService.queue = [];
     DownloadService.persistQueue();
@@ -208,7 +240,7 @@ export class DownloadService {
     DownloadService.persistQueue();
   }
 
-  // 暂停：当前任务继续跑完，不再启动新任务
+  // 暂停：活动任务继续跑完，不再启动新任务
   static pauseAll(): void {
     DownloadService.paused = true;
     DownloadService.persistQueue();
@@ -261,6 +293,21 @@ export class DownloadService {
     DownloadService.persistQueue();
     DownloadService.notify();
     DownloadService.pump();
+  }
+
+  // 网络环境/仅 Wi-Fi 开关变化后的门禁刷新：
+  // 不可用 → 活动任务在页边界回到队列；可用 → 恢复泵送
+  static refreshNetworkGate(): void {
+    if (!DownloadService.networkAllowed()) {
+      DownloadService.activeFlags.forEach((flags: DlFlags): void => {
+        flags.blocked = true;
+      });
+      DownloadService.activeAborts.forEach((abort: () => void): void => {
+        abort();
+      });
+    } else {
+      DownloadService.pump();
+    }
   }
 
   static chapterDir(mangaId: number, chapterId: number): string {
@@ -385,7 +432,8 @@ export class DownloadService {
         return [];
       }
       const files = fileIo.listFileSync(dir);
-      const pages = files.filter((f: string) => f !== 'done.mark' && f !== 'chapter.txt' && f !== 'video.mp4').sort();
+      const pages = files.filter((f: string) => f !== 'done.mark' && f !== 'chapter.txt' &&
+        f !== 'video.mp4' && f !== 'chapter.cbz' && f !== 'extract.ok').sort();
       const result: string[] = [];
       for (const f of pages) {
         result.push(`${dir}/${f}`);
@@ -396,6 +444,23 @@ export class DownloadService {
     }
   }
 
+  // 本地页面（异步版）：CBZ 章节首次阅读时解压到缓存目录后返回图片路径
+  static async localPagesAsync(mangaId: number, chapterId: number): Promise<string[]> {
+    const dir = DownloadService.chapterDir(mangaId, chapterId);
+    try {
+      if (!fileIo.accessSync(dir)) {
+        return [];
+      }
+      const cbz = `${dir}/chapter.cbz`;
+      if (fileIo.accessSync(cbz)) {
+        return await DownloadService.extractCbzPages(cbz, mangaId, chapterId);
+      }
+    } catch (e) {
+      throw new Error(`check local pages failed: ${e}`);
+    }
+    return DownloadService.localPages(mangaId, chapterId);
+  }
+
   // 删除章节本地文件：先取消并等待活动下载任务退出，避免删除与写入并发产生半截文件
   static async deleteChapter(mangaId: number, chapterId: number): Promise<void> {
     const active = DownloadService.queue.find((t: DownloadTask) => t.chapterId === chapterId && t.state === 1);
@@ -403,7 +468,7 @@ export class DownloadService {
     if (active !== undefined) {
       await new Promise<void>((resolve: () => void) => {
         const timer = setInterval((): void => {
-          if (DownloadService.activeTask !== active) {
+          if (!DownloadService.isActive(chapterId)) {
             clearInterval(timer);
             resolve();
           }
@@ -418,6 +483,7 @@ export class DownloadService {
     } catch (e) {
       throw new Error(`delete chapter files failed: ${e}`);
     }
+    DownloadService.clearExtractCache(mangaId, chapterId);
     if (DownloadService.doneIds !== undefined) {
       DownloadService.doneIds.delete(chapterId);
     }
@@ -463,6 +529,19 @@ export class DownloadService {
     }
   }
 
+  private static isActive(chapterId: number): boolean {
+    for (const t of DownloadService.activeTasks) {
+      if (t.chapterId === chapterId) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private static networkAllowed(): boolean {
+    return !Settings.getDownloadWifiOnly() || NetworkMonitor.isWifiLike();
+  }
+
   private static notify(): void {
     const snapshot = DownloadService.listeners.slice();
     for (const fn of snapshot) {
@@ -470,47 +549,54 @@ export class DownloadService {
     }
   }
 
+  // 泵送：同一源同时只跑一个任务，不同源最多 sourceLimit 个并行
   private static pump(): void {
-    if (DownloadService.running || DownloadService.paused) {
+    if (DownloadService.paused || !DownloadService.networkAllowed()) {
       return;
     }
-    const next = DownloadService.queue.find((t: DownloadTask) => t.state === 0);
-    if (next === undefined) {
-      return;
+    const limit = Settings.getDownloadParallelSourceLimit();
+    while (DownloadService.activeTasks.length < limit) {
+      const busySources = new Set<string>();
+      for (const t of DownloadService.activeTasks) {
+        busySources.add(t.sourceKey);
+      }
+      const next = DownloadService.queue.find((t: DownloadTask): boolean => {
+        return t.state === 0 && !busySources.has(t.sourceKey);
+      });
+      if (next === undefined) {
+        return;
+      }
+      DownloadService.activeTasks.push(next);
+      DownloadService.launch(next);
     }
+  }
+
+  private static launch(task: DownloadTask): void {
     DownloadService.ensureBgTask();
-    DownloadService.running = true;
-    DownloadService.activeTask = next;
-    DownloadService.process(next).then(() => {
-      DownloadService.running = false;
-      DownloadService.activeTask = undefined;
-      DownloadService.activeCancel = undefined;
-      DownloadService.persistQueue();
-      DownloadService.releaseBgTaskIfIdle();
-      DownloadService.notify();
-      DownloadService.pump();
+    const flags = new DlFlags();
+    DownloadService.activeFlags.set(task.chapterId, flags);
+    DownloadService.process(task, flags).then(() => {
+      DownloadService.finishTask(task);
     }).catch((e: Error) => {
       hilog.error(0x0001, 'Download', 'process failed: %{public}s', e.message);
-      DownloadService.running = false;
-      DownloadService.activeTask = undefined;
-      DownloadService.activeCancel = undefined;
-      DownloadService.persistQueue();
-      DownloadService.releaseBgTaskIfIdle();
-      DownloadService.notify();
-      DownloadService.pump();
+      DownloadService.finishTask(task);
     });
   }
 
-  private static async process(task: DownloadTask): Promise<void> {
+  private static finishTask(task: DownloadTask): void {
+    DownloadService.activeTasks = DownloadService.activeTasks.filter((t: DownloadTask) => t !== task);
+    DownloadService.activeFlags.delete(task.chapterId);
+    DownloadService.activeAborts.delete(task.chapterId);
+    DownloadService.persistQueue();
+    DownloadService.releaseBgTaskIfIdle();
+    DownloadService.notify();
+    DownloadService.pump();
+  }
+
+  private static async process(task: DownloadTask, flags: DlFlags): Promise<void> {
     task.state = 1;
     task.progress = 0;
     task.error = '';
-    // 图片/文本下载也注册取消回调（对齐 downloadVideo 的 activeCancel 模式）：
-    // cancel() 置状态后由下载循环/await 续体每轮检查 task.state 中止
-    DownloadService.activeCancel = (): void => {
-      task.state = 3;
-      task.error = 'download_cancelled';
-    };
     DownloadService.notify();
     DownloadService.publishBgProgress(true);
     try {
@@ -518,17 +604,26 @@ export class DownloadService {
       if (source === undefined) {
         throw new Error(`source_not_found|${task.sourceKey}`);
       }
+      if (flags.cancelled) {
+        throw new Error('download_cancelled');
+      }
+      if (flags.blocked) {
+        throw new Error('network_blocked');
+      }
       if (source.contentType === ContentType.NOVEL) {
-        await DownloadService.downloadNovel(task, source);
+        await DownloadService.downloadNovel(task, source, flags);
         return;
       }
       if (source.contentType === ContentType.VIDEO) {
-        await DownloadService.downloadVideo(task, source);
+        await DownloadService.downloadVideo(task, source, flags);
         return;
       }
       const pages: SPage[] = await source.getPageList(task.chapterUrl);
-      if (task.state === 3) {
+      if (flags.cancelled) {
         throw new Error('download_cancelled');
+      }
+      if (flags.blocked) {
+        throw new Error('network_blocked');
       }
       task.total = pages.length;
       DownloadService.notify();
@@ -540,22 +635,18 @@ export class DownloadService {
       // 残留 .tmp 是上次进程被杀/取消时的半截文件；正式页文件经原子写必然完整，
       // 已存在的页直接跳过实现断点续传
       DownloadService.cleanTmpFiles(dir);
-      for (const p of pages) {
-        if (task.state === 3) {
-          throw new Error('download_cancelled');
-        }
-        const fileName = DownloadService.pad(p.index);
-        const filePath = `${dir}/${fileName}.jpg`;
-        if (!fileIo.accessSync(filePath)) {
-          const buffer = await Http.getBuffer(p.url, imageHeaders);
-          DownloadService.writePageFile(filePath, buffer);
-        }
-        task.progress += 1;
-        DownloadService.notify();
-        DownloadService.publishBgProgress(false);
+      // 页级并发：单章内 pageLimit 个 worker 同时抓页
+      const cursor = new PageCursor();
+      const workerCount = Math.min(Settings.getDownloadParallelPageLimit(), pages.length);
+      const workers: Array<Promise<void>> = [];
+      for (let i = 0; i < workerCount; i++) {
+        workers.push(DownloadService.pageWorker(task, pages, dir, imageHeaders, flags, cursor));
       }
+      await Promise.all(workers);
       // 页列表比上次短时清理超出的多余编号页，避免旧图混入本地阅读
       DownloadService.removeStalePages(dir, pages.length);
+      // 打包 CBZ（设置开启时；失败自动回退文件夹形式）
+      await DownloadService.buildCbz(task, dir);
       const markFd = fileIo.openSync(`${dir}/done.mark`,
         fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE).fd;
       fileIo.closeSync(markFd);
@@ -569,17 +660,252 @@ export class DownloadService {
         });
       }
     } catch (e) {
-      task.state = 3;
-      task.error = e instanceof Error ? e.message : 'download_failed';
+      const msg = e instanceof Error ? e.message : 'download_failed';
+      if (msg === 'network_blocked') {
+        // 网络环境变化（如离开 Wi-Fi）：回到队列，网络恢复后自动续传
+        task.state = 0;
+        task.error = '';
+      } else {
+        task.state = 3;
+        task.error = msg;
+      }
       // 失败/取消仅清理半截 .tmp 文件，已完整落盘的页保留供重试/重启续传
       DownloadService.cleanupPartial(task.mangaId, task.chapterId);
     }
   }
 
-  private static async downloadNovel(task: DownloadTask, source: Source): Promise<void> {
+  // 单章页面下载 worker：按共享游标领取下一页，直至取尽或被取消/阻断
+  private static async pageWorker(task: DownloadTask, pages: SPage[], dir: string,
+    imageHeaders: Record<string, string> | undefined, flags: DlFlags, cursor: PageCursor): Promise<void> {
+    while (true) {
+      const i = cursor.next;
+      cursor.next += 1;
+      if (i >= pages.length) {
+        return;
+      }
+      if (flags.cancelled) {
+        throw new Error('download_cancelled');
+      }
+      if (flags.blocked) {
+        throw new Error('network_blocked');
+      }
+      const p = pages[i];
+      const fileName = DownloadService.pad(p.index);
+      const filePath = `${dir}/${fileName}.jpg`;
+      if (!fileIo.accessSync(filePath)) {
+        const buffer = await Http.getBuffer(p.url, imageHeaders);
+        if (flags.cancelled) {
+          throw new Error('download_cancelled');
+        }
+        if (flags.blocked) {
+          throw new Error('network_blocked');
+        }
+        DownloadService.writePageFile(filePath, buffer);
+        await DownloadService.splitTallIfNeeded(filePath);
+      }
+      task.progress += 1;
+      DownloadService.notify();
+      DownloadService.publishBgProgress(false);
+    }
+  }
+
+  // 拆分超长条漫图片（对齐 Mihon splitTallImage）：超过阈值高度均分为多片 JPEG，
+  // 全部切片落盘成功后删除原图；任一步失败保留原图不影响阅读
+  private static async splitTallIfNeeded(filePath: string): Promise<void> {
+    if (!Settings.getSplitTallImages()) {
+      return;
+    }
+    let src: image.ImageSource | undefined = undefined;
+    let packer: image.ImagePacker | undefined = undefined;
+    const slices: string[] = [];
+    try {
+      src = image.createImageSource(filePath);
+      const info: image.ImageInfo = await src.getImageInfo();
+      const w = info.size.width;
+      const h = info.size.height;
+      if (w <= 0 || h <= TALL_IMAGE_LIMIT) {
+        return;
+      }
+      const partCount = Math.ceil(h / TALL_IMAGE_LIMIT);
+      const sliceH = Math.floor(h / partCount);
+      packer = image.createImagePacker();
+      const base = filePath.substring(0, filePath.length - 4);
+      for (let i = 0; i < partCount; i++) {
+        const top = i * sliceH;
+        const height = i === partCount - 1 ? h - top : sliceH;
+        const region: image.Region = { x: 0, y: top, size: { width: w, height: height } };
+        const pm: image.PixelMap = await src.createPixelMap({ desiredRegion: region });
+        const buf: ArrayBuffer = await packer.packing(pm, { format: 'image/jpeg', quality: 90 });
+        const slicePath = `${base}__${DownloadService.pad(i + 1)}.jpg`;
+        DownloadService.writePageFile(slicePath, buf);
+        slices.push(slicePath);
+        pm.release();
+      }
+      fileIo.unlinkSync(filePath);
+    } catch (e) {
+      for (const s of slices) {
+        try {
+          fileIo.unlinkSync(s);
+        } catch (_e) {
+        }
+      }
+      hilog.warn(0x0001, 'Download', 'split tall image failed: %{public}s', `${e}`);
+    } finally {
+      if (src !== undefined) {
+        src.release();
+      }
+      if (packer !== undefined) {
+        packer.release();
+      }
+    }
+  }
+
+  // CBZ 打包（对齐 Mihon archiveChapter）：页面目录压缩为 chapter.cbz 后删除零散页文件；
+  // 打包失败保留文件夹形式，阅读路径不受影响
+  private static async buildCbz(task: DownloadTask, dir: string): Promise<void> {
+    if (!Settings.getSaveChaptersAsCbz()) {
+      return;
+    }
+    let hasPage = false;
+    const files = fileIo.listFileSync(dir);
+    for (const f of files) {
+      if (f.endsWith('.jpg')) {
+        hasPage = true;
+        break;
+      }
+    }
+    if (!hasPage) {
+      return;
+    }
+    const opts: zlib.Options = {
+      level: zlib.CompressLevel.COMPRESS_LEVEL_DEFAULT_COMPRESSION,
+      memLevel: zlib.MemLevel.MEM_LEVEL_DEFAULT,
+      strategy: zlib.CompressStrategy.COMPRESS_STRATEGY_DEFAULT_STRATEGY
+    };
+    const tmp = `${DownloadService.rootDir}/tmp_cbz_${task.chapterId}.zip`;
+    try {
+      if (fileIo.accessSync(tmp)) {
+        fileIo.unlinkSync(tmp);
+      }
+      await zlib.compressFile(dir, tmp, opts);
+      for (const f of fileIo.listFileSync(dir)) {
+        if (f.endsWith('.jpg')) {
+          fileIo.unlinkSync(`${dir}/${f}`);
+        }
+      }
+      const cbz = `${dir}/chapter.cbz`;
+      if (fileIo.accessSync(cbz)) {
+        fileIo.unlinkSync(cbz);
+      }
+      fileIo.renameSync(tmp, cbz);
+    } catch (e) {
+      try {
+        if (fileIo.accessSync(tmp)) {
+          fileIo.unlinkSync(tmp);
+        }
+      } catch (_e) {
+      }
+      hilog.warn(0x0001, 'Download', 'build cbz failed: %{public}s', `${e}`);
+    }
+  }
+
+  // CBZ 读取：解压到 cacheDir/cbz_extract/{mangaId}/{chapterId}，extract.ok 标记完整性；
+  // 缓存被系统清理或上次解压中断时自动重解
+  private static async extractCbzPages(cbzPath: string, mangaId: number, chapterId: number): Promise<string[]> {
+    const ctx = DownloadService.context;
+    if (ctx === undefined) {
+      throw new Error('download_not_ready');
+    }
+    const extractDir = `${ctx.cacheDir}/cbz_extract/${mangaId}/${chapterId}`;
+    const markPath = `${extractDir}/extract.ok`;
+    const opts: zlib.Options = {
+      level: zlib.CompressLevel.COMPRESS_LEVEL_DEFAULT_COMPRESSION,
+      memLevel: zlib.MemLevel.MEM_LEVEL_DEFAULT,
+      strategy: zlib.CompressStrategy.COMPRESS_STRATEGY_DEFAULT_STRATEGY
+    };
+    try {
+      if (!fileIo.accessSync(markPath)) {
+        if (fileIo.accessSync(extractDir)) {
+          DownloadService.rmdir(extractDir);
+        }
+        fileIo.mkdirSync(extractDir, true);
+        await zlib.decompressFile(cbzPath, extractDir, opts);
+        const fd = fileIo.openSync(markPath,
+          fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE).fd;
+        fileIo.closeSync(fd);
+      }
+    } catch (e) {
+      try {
+        if (fileIo.accessSync(extractDir)) {
+          DownloadService.rmdir(extractDir);
+        }
+      } catch (_e) {
+      }
+      throw new Error(`extract cbz failed: ${e}`);
+    }
+    return DownloadService.listImagesRecursive(extractDir);
+  }
+
+  // 递归列出目录下全部图片文件（解压产物可能是嵌套目录结构，按文件名排序保证页序）
+  private static listImagesRecursive(dir: string): string[] {
+    const out: string[] = [];
+    try {
+      if (!fileIo.accessSync(dir)) {
+        return out;
+      }
+      const files = fileIo.listFileSync(dir).sort();
+      for (const f of files) {
+        const p = `${dir}/${f}`;
+        let isDir = false;
+        try {
+          isDir = fileIo.statSync(p).isDirectory();
+        } catch (_e) {
+          continue;
+        }
+        if (isDir) {
+          const nested = DownloadService.listImagesRecursive(p);
+          for (const n of nested) {
+            out.push(n);
+          }
+        } else if (DownloadService.isImageFile(f)) {
+          out.push(p);
+        }
+      }
+    } catch (e) {
+      throw new Error(`list cbz images failed: ${e}`);
+    }
+    return out;
+  }
+
+  private static isImageFile(name: string): boolean {
+    const lower = name.toLowerCase();
+    return lower.endsWith('.jpg') || lower.endsWith('.jpeg') || lower.endsWith('.png') ||
+      lower.endsWith('.webp') || lower.endsWith('.gif');
+  }
+
+  // 删除章节时同步清理 CBZ 解压缓存
+  private static clearExtractCache(mangaId: number, chapterId: number): void {
+    const ctx = DownloadService.context;
+    if (ctx === undefined) {
+      return;
+    }
+    const extractDir = `${ctx.cacheDir}/cbz_extract/${mangaId}/${chapterId}`;
+    try {
+      if (fileIo.accessSync(extractDir)) {
+        DownloadService.rmdir(extractDir);
+      }
+    } catch (e) {
+      hilog.warn(0x0001, 'Download', 'clear extract cache failed: %{public}s', `${e}`);
+    }
+  }
+
+  private static async downloadNovel(task: DownloadTask, source: Source, flags: DlFlags): Promise<void> {
     const text = await source.getChapterText(task.chapterUrl);
-    if (task.state === 3) {
+    if (flags.cancelled) {
       throw new Error('download_cancelled');
+    }
+    if (flags.blocked) {
+      throw new Error('network_blocked');
     }
     if (text === '') {
       throw new Error('no_content');
@@ -611,10 +937,13 @@ export class DownloadService {
     task.state = 2;
   }
 
-  private static async downloadVideo(task: DownloadTask, source: Source): Promise<void> {
+  private static async downloadVideo(task: DownloadTask, source: Source, flags: DlFlags): Promise<void> {
     const videos: SVideo[] = await source.getVideoList(task.chapterUrl);
-    if (task.state === 3) {
+    if (flags.cancelled) {
       throw new Error('download_cancelled');
+    }
+    if (flags.blocked) {
+      throw new Error('network_blocked');
     }
     let chosen: SVideo | undefined = undefined;
     for (let i = 0; i < videos.length; i++) {
@@ -645,9 +974,9 @@ export class DownloadService {
     task.progress = 0;
     DownloadService.notify();
     const handle = Http.downloadToFile(DownloadService.context, chosen.url, chosen.headers, path);
-    DownloadService.activeCancel = (): void => {
+    DownloadService.activeAborts.set(task.chapterId, (): void => {
       handle.cancel();
-    };
+    });
     handle.setProgressCb((received: number, total: number): void => {
       if (total > 0 && task.total !== total) {
         task.total = total;
@@ -660,7 +989,13 @@ export class DownloadService {
     try {
       await handle.promise;
     } finally {
-      DownloadService.activeCancel = undefined;
+      DownloadService.activeAborts.delete(task.chapterId);
+    }
+    if (flags.cancelled) {
+      throw new Error('download_cancelled');
+    }
+    if (flags.blocked) {
+      throw new Error('network_blocked');
     }
     DownloadService.markDone(dir);
     if (DownloadService.doneIds !== undefined) {
@@ -878,11 +1213,25 @@ export class DownloadService {
       return;
     }
     DownloadService.bgLastPct = pct;
+    // 隐藏通知内容（隐私设置）：不显示作品/章节名，标题用占位文案
+    let notifTitle: string = task.mangaTitle;
+    let notifText: string = task.chapterName;
+    if (Settings.getHideNotificationContent()) {
+      notifTitle = '•••';
+      notifText = '•••';
+      const ctx = DownloadService.context;
+      if (ctx !== undefined) {
+        try {
+          notifTitle = ctx.resourceManager.getStringSync($r('app.string.privacy_dl_title').id);
+        } catch (_e) {
+        }
+      }
+    }
     const template: notificationManager.NotificationTemplate = {
       name: 'downloadTemplate',
       data: {
-        'title': task.mangaTitle,
-        'fileName': task.chapterName,
+        'title': notifTitle,
+        'fileName': notifText,
         'progressValue': pct
       }
     };
@@ -892,8 +1241,8 @@ export class DownloadService {
         notificationContentType: notificationManager.ContentType.NOTIFICATION_CONTENT_SYSTEM_LIVE_VIEW,
         systemLiveView: {
           typeCode: 8,
-          title: task.mangaTitle,
-          text: task.chapterName
+          title: notifTitle,
+          text: notifText
         }
       },
       notificationSlotType: notificationManager.SlotType.LIVE_VIEW,

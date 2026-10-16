@@ -12,6 +12,7 @@ import { DownloadsSettingsContent } from './DownloadsSettingsPage';
 import { BrowseSettingsContent } from './BrowseSettingsPage';
 import { DataStorageContent } from './DataStoragePage';
 import { TrackingContent } from './TrackingPage';
+import { PrivacyContent } from './PrivacyPage';
 import { AdvancedContent } from './AdvancedPage';
 import { AboutContent } from './AboutPage';
 import { LanguageContent } from './LanguagePage';
@@ -21,10 +22,10 @@ import { LimitedBody } from '../components/LimitedBody';
 // lg 双栏左栏分类（index 与 CAT_ICONS、catTitle() 一一对应）
 const CAT_ICONS: string[] = [
   'tune', 'palette', 'collections_bookmark', 'image', 'play_arrow',
-  'download', 'explore', 'sync', 'storage', 'settings', 'info'
+  'download', 'explore', 'sync', 'storage', 'lock', 'settings', 'info'
 ];
 // 分类索引：0 常规 / 1 外观 / 2 书库 / 3 阅读器 / 4 播放器 / 5 下载 / 6 浏览
-// / 7 追踪 / 8 数据与存储 / 9 高级 / 10 关于
+// / 7 追踪 / 8 数据与存储 / 9 隐私 / 10 高级 / 11 关于
 const CAT_DEFAULT: number = 1;
 
 // 设置中心主页：sm/md 为「常规 + 各分类入口」列表；lg(≥840vp) 双栏
@@ -199,6 +200,9 @@ export struct SettingsPage {
               DataStorageContent()
                 .layoutWeight(1)
             } else if (this.selCat === 9) {
+              PrivacyContent()
+                .layoutWeight(1)
+            } else if (this.selCat === 10) {
               AdvancedContent({
                 onOpenOnboarding: (): void => {
                   const params: OnboardingParams = { firstRun: false };
@@ -318,6 +322,14 @@ export struct SettingsPage {
           })
           Divider().color(this.pal.divider).margin({ left: 16 })
           IconRow({
+            title: $r('app.string.privacy_title'),
+            icon: 'lock',
+            onTap: (): void => {
+              this.pathStack.pushPathByName('Privacy', null);
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          IconRow({
             title: $r('app.string.settings_advanced'),
             icon: 'settings',
             onTap: (): void => {
@@ -387,6 +399,8 @@ export struct SettingsPage {
       case 8:
         return $r('app.string.data_storage_title');
       case 9:
+        return $r('app.string.privacy_title');
+      case 10:
         return $r('app.string.settings_advanced');
       default:
         return $r('app.string.settings_about');

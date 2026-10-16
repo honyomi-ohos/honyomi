@@ -3027,6 +3027,82 @@
     {
       "name": "plugin_error_stage_failed",
       "value": "暫存外掛檔案失敗：%s"
+    },
+    {
+      "name": "privacy_title",
+      "value": "隱私"
+    },
+    {
+      "name": "privacy_group",
+      "value": "安全"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "應用鎖"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "請先設定螢幕鎖定密碼"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "切換背景時鎖定"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "始終"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 分鐘"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 分鐘"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 分鐘"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 分鐘"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "關閉"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "隱藏通知內容"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "隱私介面"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "阻止截圖和錄影"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "應用已鎖定"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "驗證身分以繼續"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "解鎖"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "解鎖應用"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "正在下載"
     }
   ]
 }

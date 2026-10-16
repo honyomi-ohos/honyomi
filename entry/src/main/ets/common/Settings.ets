@@ -330,6 +330,10 @@ export class Settings {
   static setIncognito(v: boolean): void {
     Settings.setBool('incognito', v);
     AppStorage.setOrCreate(AppKeys.INCOGNITO, v);
+    // 隐私界面=「无痕模式时」档位需随无痕开关即时切换防截屏
+    if (Settings.appCtx !== undefined) {
+      Settings.applySecureScreen(Settings.appCtx);
+    }
   }
 
   static getShowNsfw(): boolean {
@@ -450,6 +454,83 @@ export class Settings {
     AppStorage.setOrCreate(AppKeys.DOWNLOADED_ONLY, Settings.getDownloadedOnly());
     AppStorage.setOrCreate(AppKeys.INCOGNITO, Settings.getIncognito());
     AppStorage.setOrCreate(AppKeys.SHOW_NSFW, Settings.getShowNsfw());
+  }
+
+  // ---- 隐私（对齐 Mihon SecurityPreferences / PrivacyPreferences，遥测开关不适用）----
+
+  // 应用锁：打开应用时要求系统解锁凭据（指纹/人脸/锁屏口令）认证
+  static getAppLock(): boolean {
+    return Settings.getBool('appLock', false);
+  }
+
+  static setAppLock(v: boolean): void {
+    Settings.setBool('appLock', v);
+  }
+
+  // 空闲锁定（切后台时锁定）：0=切后台立即锁定；>0=超过 N 分钟锁定；-1=从不自动锁定
+  static getLockAfterMinutes(): number {
+    return Settings.getNum('lockAfterMinutes', 0);
+  }
+
+  static setLockAfterMinutes(v: number): void {
+    Settings.setNum('lockAfterMinutes', v);
+  }
+
+  // 隐私界面（防截屏）：'always'（始终）| 'incognito'（无痕模式时）| 'never'（关闭）
+  static getSecureScreen(): string {
+    const raw = Settings.getStr('secureScreen', 'incognito');
+    if (raw === 'always' || raw === 'never') {
+      return raw;
+    }
+    return 'incognito';
+  }
+
+  static setSecureScreen(v: string): void {
+    Settings.setStr('secureScreen', v);
+  }
+
+  // 隐藏通知内容：下载实况通知不显示作品/章节名
+  static getHideNotificationContent(): boolean {
+    return Settings.getBool('hideNotificationContent', false);
+  }
+
+  static setHideNotificationContent(v: boolean): void {
+    Settings.setBool('hideNotificationContent', v);
+  }
+
+  // 上次切后台时间戳：进程存活期间内存判断 + 持久化兜底（进程被杀后重启判定空闲锁定）
+  static getLastAppClosedAt(): number {
+    return Settings.getNum('lastAppClosedAt', 0);
+  }
+
+  static setLastAppClosedAt(v: number): void {
+    Settings.setNum('lastAppClosedAt', v);
+  }
+
+  // 隐私界面生效态：按 secureScreen 设置与无痕模式计算
+  static isSecureScreenActive(): boolean {
+    const mode: string = Settings.getSecureScreen();
+    if (mode === 'always') {
+      return true;
+    }
+    if (mode === 'incognito') {
+      return Settings.getIncognito();
+    }
+    return false;
+  }
+
+  // 将防截屏（窗口隐私模式）应用到当前主窗口；需 module.json5 声明 ohos.permission.PRIVACY_WINDOW
+  static applySecureScreen(context: common.Context): void {
+    if (!canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
+      return;
+    }
+    const enable: boolean = Settings.isSecureScreenActive();
+    window.getLastWindow(context).then((win: window.Window) => {
+      win.setWindowPrivacyMode(enable).catch((e: Object): void => {
+        hilog.warn(DOMAIN, TAG, 'set privacy mode(%{public}s) failed: %{public}s', `${enable}`, `${e}`);
+      });
+    }).catch((_e: Object): void => {
+    });
   }
 
   // ---- 通用 ----

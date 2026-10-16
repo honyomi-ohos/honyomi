@@ -2771,6 +2771,82 @@
     {
       "name": "oauth_load_error",
       "value": "Failed to load: %s"
+    },
+    {
+      "name": "privacy_title",
+      "value": "Privacy"
+    },
+    {
+      "name": "privacy_group",
+      "value": "Security"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "App lock"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "Set a screen lock first"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "Lock when idle"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "Always"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 minute"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 minutes"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 minutes"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 minutes"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "Never"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "Hide notification content"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "Secure screen"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "Blocks screenshots and screen recording"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "App locked"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "Verify your identity to continue"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "Unlock"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "Unlock app"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "Downloading"
     }
   ]
 }

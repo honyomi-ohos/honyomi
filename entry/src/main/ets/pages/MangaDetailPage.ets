@@ -17,6 +17,7 @@ import { CoverStore } from '../common/CoverStore';
 import { ChapterFlags } from '../common/ChapterFlags';
 import { NaturalCompare } from '../common/NaturalCompare';
 import { DownloadService } from '../data/DownloadService';
+import { DownloadRules } from '../data/DownloadRules';
 import { WidgetUpdater } from '../form/WidgetUpdater';
 import { CategoryDialog, ConfirmDialog } from './components/Dialogs';
 import { SmartImage } from './components/SmartImage';
@@ -1494,6 +1495,8 @@ export struct MangaDetailPage {
 
   private async markAllRead(): Promise<void> {
     await ChapterRepo.markAllRead(this.mangaId, true);
+    // 手动全部标记已读：按下载设置删除已读章节的下载
+    DownloadRules.onDeleteAllRead(this.mangaId);
     AppStorage.set(AppKeys.LIB_DIRTY, this.libDirty + 1);
     Util.toastRes(this.getUIContext(), $r('app.string.detail_all_marked_read'));
   }
@@ -1642,6 +1645,10 @@ export struct MangaDetailPage {
       return;
     }
     await ChapterRepo.setReadForIds(ids, read);
+    // 手动标记已读：按下载设置删除对应下载
+    if (read) {
+      DownloadRules.onDeleteMarkedRead(this.mangaId, ids);
+    }
     AppStorage.set(AppKeys.LIB_DIRTY, this.libDirty + 1);
     this.clearSelection();
   }

@@ -2242,7 +2242,111 @@
     },
     {
       "name": "dl_set_wifi_only_hint",
-      "value": "Note: this switch is a placeholder in the current version; network type detection will arrive in a future release"
+      "value": "Downloads pause on mobile data and resume when Wi-Fi is available"
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "Save as CBZ archive"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "Split tall images"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "Improves reader performance"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "Concurrency"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "Concurrent source downloads"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "Concurrent page downloads"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "Pages downloaded simultaneously per source"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "Delete chapters"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "After manually marked as read"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "After reading automatically delete"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "Disabled"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "Last read chapter"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "Second to last read chapter"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "Third to last read chapter"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "Fourth to last read chapter"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "Fifth to last read chapter"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "Allow deleting bookmarked chapters"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "Auto-download"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "Download new chapters"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "Automatically download new chapters found during library updates"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "Skip downloading duplicate read chapters"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "Download ahead"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "Auto download while reading"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "Next unread chapter"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "Next %d unread chapters"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "Only works if the current chapter and the next one are already downloaded."
     },
     {
       "name": "lib_set_title",
@@ -3491,6 +3595,82 @@
     {
       "name": "browse_work_name_hint",
       "value": "Name"
+    },
+    {
+      "name": "privacy_title",
+      "value": "Privacy"
+    },
+    {
+      "name": "privacy_group",
+      "value": "Security"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "App lock"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "Set a screen lock first"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "Lock when idle"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "Always"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 minute"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 minutes"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 minutes"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 minutes"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "Never"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "Hide notification content"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "Secure screen"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "Blocks screenshots and screen recording"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "App locked"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "Verify your identity to continue"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "Unlock"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "Unlock app"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "Downloading"
     }
   ]
 }

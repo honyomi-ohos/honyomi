@@ -2,6 +2,7 @@ import { AppDb } from '../data/AppDb';
 import { CategoryRepo, ChapterRepo, MangaRepo, TrackRepo } from '../data/Repos';
 import { UpdateService } from '../data/UpdateService';
 import { DownloadService } from '../data/DownloadService';
+import { DownloadRules } from '../data/DownloadRules';
 import { Settings } from '../common/Settings';
 import { CategoryRecord, ChapterRecord, ContentType, DownloadTask, MangaRecord, MangaStats } from '../model/Models';
 import { DetailParams, MigrateSearchParams } from '../model/RouteParams';
@@ -890,6 +891,12 @@ export struct LibraryPage {
     const ids: number[] = Array.from(this.selection);
     this.clearSelection();
     await Promise.all(ids.map((id: number): Promise<void> => ChapterRepo.markAllRead(id, read)));
+    // 手动全部标记已读：按下载设置删除已读章节的下载
+    if (read) {
+      for (const id of ids) {
+        DownloadRules.onDeleteAllRead(id);
+      }
+    }
     await this.loadData();
   }
 

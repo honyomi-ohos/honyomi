@@ -1718,7 +1718,111 @@
     },
     {
       "name": "dl_set_wifi_only_hint",
-      "value": "说明：当前版本此开关为预留项，网络类型检测将在后续版本提供"
+      "value": "移动数据下自动暂停下载，回到 Wi-Fi 后自动恢复"
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "保存为 CBZ 压缩包"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "拆分超长条漫图片"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "提升阅读器性能"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "并发下载"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "同时下载的源数量"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "单章页面并发下载数"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "每个源内同时下载的页面数"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "删除章节"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "手动标记已读后删除"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "阅读后自动删除"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "禁用"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "倒数第 1 个已读章节"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "倒数第 2 个已读章节"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "倒数第 3 个已读章节"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "倒数第 4 个已读章节"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "倒数第 5 个已读章节"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "允许删除已书签章节"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "自动下载"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "下载新章节"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "书库更新发现新章节时自动下载"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "跳过下载与已读重复的章节"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "预下载"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "阅读时自动预下载"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "预下载下一章"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "预下载后续 %d 章"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "仅当当前章节与下一章节均已下载时生效。"
     },
     {
       "name": "lib_set_title",
@@ -3427,6 +3531,82 @@
     {
       "name": "oauth_load_error",
       "value": "加载失败：%s"
+    },
+    {
+      "name": "privacy_title",
+      "value": "隐私"
+    },
+    {
+      "name": "privacy_group",
+      "value": "安全"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "应用锁"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "请先设置锁屏密码"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "切后台时锁定"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "始终"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 分钟"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 分钟"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 分钟"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 分钟"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "关闭"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "隐藏通知内容"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "隐私界面"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "阻止截屏和录屏"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "应用已锁定"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "验证身份以继续"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "解锁"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "解锁应用"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "正在下载"
     }
   ]
 }

@@ -75,6 +75,12 @@
         "name": "ohos.permission.FILE_ACCESS_PERSIST"
       },
       {
+        "name": "ohos.permission.ACCESS_BIOMETRIC"
+      },
+      {
+        "name": "ohos.permission.PRIVACY_WINDOW"
+      },
+      {
         "name": "ohos.permission.KEEP_BACKGROUND_RUNNING",
         "reason": "$string:keep_background_running_reason",
         "usedScene": {

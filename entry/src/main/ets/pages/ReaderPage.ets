@@ -15,6 +15,7 @@ import { GripSupport } from '../common/GripSupport';
 import { ReaderWindow } from '../common/ReaderWindow';
 import { ChapterNeighbors, ReaderChapterNav } from '../common/ReaderChapterNav';
 import { DownloadService } from '../data/DownloadService';
+import { DownloadRules } from '../data/DownloadRules';
 import { TrackService } from '../data/track/TrackService';
 import { SmartImage } from './components/SmartImage';
 import { ComicStripViewer, STRIP_LEAD_COUNT } from './components/ComicStripViewer';
@@ -1266,8 +1267,8 @@ export struct ReaderPage {
       }
       let pages: SPage[] = [];
       if (DownloadService.isDownloaded(chapter.id)) {
-        // 离线优先：读取已下载的本地页面
-        const files: string[] = DownloadService.localPages(chapter.mangaId, chapter.id);
+        // 离线优先：读取已下载的本地页面（CBZ 章节首次阅读自动解压到缓存）
+        const files: string[] = await DownloadService.localPagesAsync(chapter.mangaId, chapter.id);
         for (let i = 0; i < files.length; i++) {
           const p: SPage = { index: i, url: `file://${files[i]}` };
           pages.push(p);
@@ -1310,6 +1311,10 @@ export struct ReaderPage {
       }
       // 开始本章的阅读时长计时
       ReadingStatsRepo.begin(chapter.mangaId, chapter.id);
+      // 阅读预下载：当前章与下一章均已下载时，按设置预下载后续未读章节
+      if (manga !== undefined) {
+        DownloadRules.downloadAheadIfNeeded(manga, chapter.id);
+      }
     } catch (e) {
       // 加载失败清空旧章页面，防止旧页码经 persistProgress 写入本章进度
       if (gen === this.loadGen) {
@@ -1439,6 +1444,8 @@ export struct ReaderPage {
         TrackService.updateChapterRead(this.mangaId, this.chapterId).catch((e: Object): void => {
           hilog.warn(0x0001, 'Reader', 'track update failed: %{public}s', `${e}`);
         });
+        // 读完本章：按下载设置删除倒数第 N 章的下载
+        DownloadRules.onChapterFinished(this.mangaId, this.chapterId);
       }
     } catch (e) {
       hilog.warn(0x0001, 'Reader', 'persistProgress failed: %{public}s',
@@ -1549,6 +1556,8 @@ export struct ReaderPage {
     }
     if (next && !this.chapter.read) {
       await ChapterRepo.setRead(this.chapterId, true);
+      // 前进到下一章视为读完本章：按下载设置删除倒数第 N 章的下载
+      DownloadRules.onChapterFinished(this.mangaId, this.chapterId);
     }
     this.gotoBoundary = fromBoundary ? (next ? 1 : -1) : 0;
     this.chapterId = targetId;
