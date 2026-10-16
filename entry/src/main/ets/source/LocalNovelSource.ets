@@ -1,10 +1,10 @@
 import { ContentType, SChapter, SManga } from '../model/Models';
 import { LocalFolderManager } from './LocalFolderManager';
 import { LocalFsSource } from './LocalFsSource';
-import { Util } from '../common/Util';
 import { NaturalCompare } from '../common/NaturalCompare';
 import { BookParser } from '../common/bookparser/BookParser';
 import { BookFileIo } from '../common/bookparser/ByteUtils';
+import { readTextAutoAsync } from '../common/bookparser/TextLoadTasks';
 
 // 本地小说：扫描固定本地源文件夹的同步副本（filesDir/local_root，未设置时回退 filesDir/local_novel）
 // <书名>/**/*.txt，一个文件一章；支持子目录分层（卷/章），章节名按相对路径显示为“卷 / 章”
@@ -78,8 +78,8 @@ export class LocalNovelSource extends LocalFsSource {
     if (path === '' || !this.fileExists(path)) {
       throw new Error('chapter_missing');
     }
-    // 本地 txt 可能为 UTF-8/GBK 等编码，智能识别解码避免乱码
-    return Util.readTextAuto(path);
+    // 本地 txt 可能为 UTF-8/GBK 等编码，智能识别解码避免乱码（解码在 taskpool 线程）
+    return readTextAutoAsync(path);
   }
 
   async getMangaDetail(mangaKey: string): Promise<SManga> {

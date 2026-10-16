@@ -9,7 +9,7 @@ import { EmptyScreen } from './components/EmptyScreen';
 import { MangaRow } from './components/MangaRow';
 import { AppIcon } from './components/AppIcon';
 import { Settings } from '../common/Settings';
-import { LimitedBody } from './components/LimitedBody';
+import { Bp } from '../common/Breakpoint';
 
 // 全局搜索结果分节（每源一节）
 export class SearchSection {
@@ -26,6 +26,7 @@ export struct GlobalSearchPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageProp('navBarH') navBarH: number = 0;
+  @StorageProp('windowW') windowW: number = 0;
   @State query: string = '';
   @State sections: SearchSection[] = [];
   @State searching: boolean = false;
@@ -53,9 +54,7 @@ export struct GlobalSearchPage {
 
   build() {
     NavDestination() {
-      LimitedBody({ maxWidth: 960 }) {
-        this.bodyContent()
-      }
+      this.bodyContent()
     }
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)
@@ -71,7 +70,11 @@ export struct GlobalSearchPage {
     })
   }
 
-  // 页面主体：LimitedBody 承载，大屏限宽居中，窄屏全宽
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（960 上限）
+  private inset(): number {
+    return Bp.contentInset(this.windowW, 960);
+  }
+
   @Builder
   bodyContent() {
     Column() {
@@ -104,8 +107,8 @@ export struct GlobalSearchPage {
       }
       .width('100%')
       .padding({
-        left: 16,
-        right: 16,
+        left: 16 + this.inset(),
+        right: 16 + this.inset(),
         top: this.statusBarH + 10,
         bottom: 10
       })
@@ -168,7 +171,7 @@ export struct GlobalSearchPage {
               .padding(16)
               .backgroundColor(this.pal.card)
               .borderRadius(14)
-              .margin({ left: 16, right: 16, top: 8 })
+              .margin({ left: 16 + this.inset(), right: 16 + this.inset(), top: 8 })
             }, (section: SearchSection) => `sec-${section.sourceKey}-${section.state}-${section.results.length}`)
           }
           .width('100%')

@@ -3,10 +3,10 @@ import { ChapterRepo, HistoryRepo } from '../data/Repos';
 import { HistoryItem } from '../model/Models';
 import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
+import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
 import { SmartImage } from './components/SmartImage';
-import { LimitedBody } from './components/LimitedBody';
 import { SourceRegistry } from '../source/Source';
 
 // 历史页：最近阅读记录
@@ -18,6 +18,7 @@ export struct HistoryPage {
   @StorageProp('navBarH') navBarH: number = 0;
   // 页签浮动条避让高度：宽屏无页签条时为 0（Index 按断点发布）
   @StorageProp('tabPadH') tabPadH: number = 76;
+  @StorageProp('windowW') windowW: number = 0;
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
   // 复刻 Mihon：再次点击历史页签续读最近作品的下一未读章节（HistoryTab.onReselect）
   @StorageLink('historyReselect') @Watch('onHistoryReselect') historyReselect: number = 0;
@@ -80,12 +81,14 @@ export struct HistoryPage {
   }
 
   build() {
-    LimitedBody() {
-      this.bodyContent()
-    }
+    this.bodyContent()
   }
 
-  // 页面主体：LimitedBody 承载，大屏限宽居中，窄屏全宽
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
+  }
+
   @Builder
   bodyContent() {
     Column() {
@@ -105,8 +108,8 @@ export struct HistoryPage {
       }
       .width('100%')
       .padding({
-        left: 16,
-        right: 16,
+        left: 16 + this.inset(),
+        right: 16 + this.inset(),
         top: 12,
         bottom: 8
       })
@@ -179,8 +182,8 @@ export struct HistoryPage {
                 }
                 .width('100%')
                 .padding({
-                  left: 16,
-                  right: 16,
+                  left: 16 + this.inset(),
+                  right: 16 + this.inset(),
                   top: 10,
                   bottom: 10
                 })
@@ -196,8 +199,8 @@ export struct HistoryPage {
           .divider({
             strokeWidth: 1,
             color: this.pal.divider,
-            startMargin: 72,
-            endMargin: 16,
+            startMargin: 72 + this.inset(),
+            endMargin: 16 + this.inset(),
           })
         }
         .width('100%')

@@ -45,99 +45,24 @@ export class NovelPaginator {
     this.measure = measure;
   }
 
-  // 按块贪心装页（段间计入 paraSpacing，与渲染端 Column({space}) 一致）；超长段落按测量二分切分；
-  // 插图块独占一页（imageUrl 非空）。同时记录 paraPage[i]：第 i 个文本段所在的页码（听书跟随翻页用）
+  // 按块贪心装页：一次性跑完增量游标（等价旧行为，供小章节/非渐进路径使用）
   buildPages(blocks: NovelBlock[]): NovelPage[] {
-    const pages: NovelPage[] = [];
-    const paraPage: number[] = [];
-    const maxH = this.pageH;
-    const width = this.pageW;
-    const gap = this.paraSpacing;
-    let current: string[] = [];
-    let used = 0;
-    for (let i = 0; i < blocks.length; i++) {
-      const block = blocks[i];
-      if (block.isImage) {
-        // 插图：收尾当前文本页，插图独占新页
-        if (current.length > 0) {
-          pages.push({ texts: current, imageUrl: '' });
-          current = [];
-          used = 0;
-        }
-        pages.push({ texts: [], imageUrl: block.text });
-        continue;
-      }
-      let para = block.text;
-      if (para === '') {
-        para = ' ';
-      }
-      const h = this.measure(para, width);
-      if (h <= maxH) {
-        const extra = current.length > 0 ? gap : 0;
-        if (used + extra + h <= maxH) {
-          paraPage[block.ttsIdx] = pages.length;
-          current.push(para);
-          used += extra + h;
-          continue;
-        }
-        // 当前页放不下：整段放入新页
-        if (current.length > 0) {
-          pages.push({ texts: current, imageUrl: '' });
-        }
-        paraPage[block.ttsIdx] = pages.length;
-        current = [para];
-        used = h;
-        continue;
-      }
-      // 整段超过一页：按字符切分
-      if (current.length > 0) {
-        pages.push({ texts: current, imageUrl: '' });
-        current = [];
-        used = 0;
-      }
-      paraPage[block.ttsIdx] = pages.length;
-      let rest = para;
-      // 每页可容纳字符数的先验（0=未知）：由上一次切点更新；
-      // 剩余不超过一页容量时才整段测量判断能否收尾，避免反复测量大段文本
-      let cap = 0;
-      while (rest.length > 0) {
-        if (rest.length <= cap) {
-          const hRest = this.measure(rest, width);
-          if (hRest <= maxH) {
-            current.push(rest);
-            used = hRest;
-            break;
-          }
-        }
-        const fit = this.fitPrefix(rest, width, maxH, cap);
-        if (fit <= 0) {
-          // 页高不足一行：整段放入避免死循环
-          current.push(rest);
-          used = maxH;
-          break;
-        }
-        if (fit >= rest.length) {
-          // 整个剩余部分一页内放得下：并入当前页，继续贪心装后续段落
-          current.push(rest);
-          used = this.measure(rest, width);
-          break;
-        }
-        pages.push({ texts: [rest.substring(0, fit)], imageUrl: '' });
-        rest = rest.substring(fit);
-        cap = fit;
-      }
-    }
-    if (current.length > 0) {
-      pages.push({ texts: current, imageUrl: '' });
-    }
-    this.paraPage = paraPage;
-    return pages;
+    const cursor = new PaginateCursor(this, blocks);
+    cursor.step(0);
+    this.paraPage = cursor.paraPage;
+    return cursor.pages;
+  }
+
+  // 供 PaginateCursor 步进使用：测量文本块高度
+  measureBlock(text: string, widthVp: number): number {
+    return this.measure(text, widthVp);
   }
 
   // 在超长段落中找切点：capHint 为上一页的字符容量先验（0=未知）。
   // 先用实测行数按比例收敛切点，页面基本排满（剩余不足 0.08 行）即接受，
   // 省去精确二分的十余次测量；未收敛时才在剩余区间精确二分兜底，结果与全量二分一致
-  private fitPrefix(text: string, width: number, maxH: number, capHint: number): number {
+  // （供 PaginateCursor 切分步进复用）
+  fitPrefix(text: string, width: number, maxH: number, capHint: number): number {
     const len = text.length;
     if (len <= 0) {
       return 0;
@@ -199,6 +124,201 @@ export class NovelPaginator {
       }
     }
     return best;
+  }
+}
+
+// 增量分页游标：把一次完整分页拆成可暂停的最小单元（一个块装页 / 超长段一次切分），
+// 按时间预算步进，供阅读器把大章节分页切片到多帧执行（首批同步出页，后续异步补齐）。
+// 每个单元至少执行一次再查预算，保证有进度；步进结果与一次性分页完全一致
+export class PaginateCursor {
+  private readonly paginator: NovelPaginator;
+  private readonly blocks: NovelBlock[];
+  // 已产出的页面（内部累加，step 返回其中新增部分）
+  readonly pages: NovelPage[] = [];
+  // 段落 → 页码映射（随分页增长，听书跟随翻页用）
+  readonly paraPage: number[] = [];
+  // 全部块处理完毕（含末页收尾）
+  done: boolean = false;
+  // 当前装页状态：未满页的段集合 / 已用高度
+  private current: string[] = [];
+  private used: number = 0;
+  // 下一个待处理块
+  private idx: number = 0;
+  // 超长段切分状态：rest 非空表示正在切同一段；cap 为上一页字符容量先验
+  private rest: string = '';
+  private cap: number = 0;
+
+  constructor(paginator: NovelPaginator, blocks: NovelBlock[]) {
+    this.paginator = paginator;
+    this.blocks = blocks;
+  }
+
+  // 推进分页直到预算耗尽或全部完成；budgetMs <= 0 表示不限时一次跑完。
+  // 返回本次新产出的页面（与 pages 数组共享页对象引用）
+  step(budgetMs: number): NovelPage[] {
+    const start = this.pages.length;
+    if (this.done) {
+      return this.pages.slice(start);
+    }
+    const deadline = budgetMs > 0 ? Date.now() + budgetMs : -1;
+    while (!this.done) {
+      if (this.rest !== '') {
+        this.splitStep();
+      } else if (this.idx < this.blocks.length) {
+        this.blockStep();
+      } else {
+        // 收尾：未满一页的 current 落页
+        this.done = true;
+        if (this.current.length > 0) {
+          this.pages.push({ texts: this.current, imageUrl: '' });
+          this.current = [];
+        }
+        break;
+      }
+      if (deadline > 0 && !this.done && Date.now() >= deadline) {
+        break;
+      }
+    }
+    return this.pages.slice(start);
+  }
+
+  // 处理一个块：插图独占一页；整段装得下走贪心装页；超长段进入切分状态
+  private blockStep(): void {
+    const p = this.paginator;
+    const maxH = p.pageH;
+    const width = p.pageW;
+    const gap = p.paraSpacing;
+    const block = this.blocks[this.idx];
+    this.idx += 1;
+    if (block.isImage) {
+      // 插图：收尾当前文本页，插图独占新页
+      if (this.current.length > 0) {
+        this.pages.push({ texts: this.current, imageUrl: '' });
+        this.current = [];
+        this.used = 0;
+      }
+      this.pages.push({ texts: [], imageUrl: block.text });
+      return;
+    }
+    let para = block.text;
+    if (para === '') {
+      para = ' ';
+    }
+    const h = p.measureBlock(para, width);
+    if (h <= maxH) {
+      const extra = this.current.length > 0 ? gap : 0;
+      if (this.used + extra + h <= maxH) {
+        this.paraPage[block.ttsIdx] = this.pages.length;
+        this.current.push(para);
+        this.used += extra + h;
+        return;
+      }
+      // 当前页放不下：整段放入新页
+      if (this.current.length > 0) {
+        this.pages.push({ texts: this.current, imageUrl: '' });
+      }
+      this.paraPage[block.ttsIdx] = this.pages.length;
+      this.current = [para];
+      this.used = h;
+      return;
+    }
+    // 整段超过一页：进入切分状态（当前页已收尾）
+    if (this.current.length > 0) {
+      this.pages.push({ texts: this.current, imageUrl: '' });
+      this.current = [];
+      this.used = 0;
+    }
+    this.paraPage[block.ttsIdx] = this.pages.length;
+    this.rest = para;
+    this.cap = 0;
+  }
+
+  // 超长段切分一步：产出一页或把剩余部分并入当前页
+  private splitStep(): void {
+    const p = this.paginator;
+    const maxH = p.pageH;
+    const width = p.pageW;
+    const rest = this.rest;
+    // 剩余不超过一页容量（先验）时才整段测量判断能否收尾，避免反复测量大段文本
+    if (rest.length <= this.cap) {
+      const hRest = p.measureBlock(rest, width);
+      if (hRest <= maxH) {
+        this.current.push(rest);
+        this.used = hRest;
+        this.rest = '';
+        return;
+      }
+    }
+    const fit = p.fitPrefix(rest, width, maxH, this.cap);
+    if (fit <= 0) {
+      // 页高不足一行：整段放入避免死循环
+      this.current.push(rest);
+      this.used = maxH;
+      this.rest = '';
+      return;
+    }
+    if (fit >= rest.length) {
+      // 整个剩余部分一页内放得下：并入当前页，继续贪心装后续段落
+      this.current.push(rest);
+      this.used = p.measureBlock(rest, width);
+      this.rest = '';
+      return;
+    }
+    this.pages.push({ texts: [rest.substring(0, fit)], imageUrl: '' });
+    this.rest = rest.substring(fit);
+    this.cap = fit;
+  }
+}
+
+// 一次完整分页的结果（页面与段落映射共享引用，缓存复用零拷贝）
+export class PaginatedResult {
+  readonly pages: NovelPage[];
+  readonly paraPage: number[];
+
+  constructor(pages: NovelPage[], paraPage: number[]) {
+    this.pages = pages;
+    this.paraPage = paraPage;
+  }
+}
+
+// 整章分页结果 LRU 缓存：命中免重分页（切回上一章、改回设置等场景）。
+// 页对象为共享引用，内存开销低；容量按章节计，超出淘汰最久未用条目
+export class PaginateCache {
+  private readonly capacity: number;
+  private readonly keys: string[] = [];
+  private readonly entries: PaginatedResult[] = [];
+
+  constructor(capacity: number) {
+    this.capacity = Math.max(1, capacity);
+  }
+
+  get(key: string): PaginatedResult | undefined {
+    for (let i = 0; i < this.keys.length; i++) {
+      if (this.keys[i] === key) {
+        // 命中：移到末尾（最近使用）
+        const k = this.keys.splice(i, 1)[0];
+        this.keys.push(k);
+        const e = this.entries.splice(i, 1)[0];
+        this.entries.push(e);
+        return e;
+      }
+    }
+    return undefined;
+  }
+
+  put(key: string, result: PaginatedResult): void {
+    for (let i = 0; i < this.keys.length; i++) {
+      if (this.keys[i] === key) {
+        this.entries[i] = result;
+        return;
+      }
+    }
+    this.keys.push(key);
+    this.entries.push(result);
+    if (this.keys.length > this.capacity) {
+      this.keys.shift();
+      this.entries.shift();
+    }
   }
 }
 

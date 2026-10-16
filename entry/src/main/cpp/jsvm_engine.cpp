@@ -69,6 +69,10 @@ static std::mutex g_enginesLock;
 static std::unordered_map<uint32_t, Engine *> g_engines;
 static std::atomic<uint32_t> g_nextEngineId{1};
 static std::atomic<bool> g_jsvmInited{false};
+// Serializes JSVM init + VM creation across worker threads: a second engine
+// created while OH_JSVM_Init is still running crashes in v8::Isolate::New
+// (observed deterministically on x86_64 when two workers start concurrently).
+static std::mutex g_createEngineLock;
 
 // ============================================================================
 // HTTP bridge state (worker blocks here while main thread performs the request)
@@ -1039,6 +1043,10 @@ static napi_value NapiString(napi_env env, const std::string &text)
 static napi_value CreateEngine(napi_env env, napi_callback_info info)
 {
     napi_value result = nullptr;
+    // Serialize JSVM init + VM/Env creation: without this, a concurrent creator
+    // skips the (still in-progress) OH_JSVM_Init and crashes inside
+    // OH_JSVM_CreateVM -> v8::Isolate::New with a NULL dereference.
+    std::lock_guard<std::mutex> createGuard(g_createEngineLock);
     if (!g_jsvmInited.exchange(true)) {
         JSVM_InitOptions initOptions;
         std::memset(&initOptions, 0, sizeof(initOptions));

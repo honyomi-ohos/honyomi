@@ -137,8 +137,11 @@ export class NovelTts {
   // 后台长任务
   private static ctx: common.UIAbilityContext | undefined = undefined;
   private static taskRequested: boolean = false;
+
   private static taskRunning: boolean = false;
 
+  // 本长时任务 id：定点撤销，避免 stopBackgroundRunning(ctx) 取消全部任务时误杀下载 DATA_TRANSFER 长时任务
+  private static taskId: number = -1;
   static isPlaying(): boolean {
     return !NovelTts.stopped;
   }
@@ -542,17 +545,20 @@ export class NovelTts {
     };
     try {
       const agent: WantAgent = await wantAgent.getWantAgent(info);
-      await backgroundTaskManager.startBackgroundRunning(ctx, backgroundTaskManager.BackgroundMode.AUDIO_PLAYBACK,
-        agent);
+      const res: backgroundTaskManager.ContinuousTaskNotification =
+        await backgroundTaskManager.startBackgroundRunning(ctx, ['audioPlayback'], agent);
       if (NovelTts.stopped) {
         // 申请期间用户已停止：立即撤销，避免残留长任务
         NovelTts.taskRequested = false;
         NovelTts.taskRunning = false;
-        await backgroundTaskManager.stopBackgroundRunning(ctx).catch((_e: BusinessError): void => {
-        });
+        if (res.continuousTaskId !== undefined) {
+          await backgroundTaskManager.stopBackgroundRunning(ctx, res.continuousTaskId).catch((_e: BusinessError): void => {
+          });
+        }
         return;
       }
       NovelTts.taskRunning = true;
+      NovelTts.taskId = res.continuousTaskId !== undefined ? res.continuousTaskId : -1;
     } catch (_e) {
       // 长任务申请失败不阻断前台听书
       NovelTts.taskRequested = false;
@@ -570,7 +576,12 @@ export class NovelTts {
     }
     NovelTts.taskRunning = false;
     try {
-      await backgroundTaskManager.stopBackgroundRunning(ctx);
+      if (NovelTts.taskId >= 0) {
+        await backgroundTaskManager.stopBackgroundRunning(ctx, NovelTts.taskId);
+        NovelTts.taskId = -1;
+      } else {
+        await backgroundTaskManager.stopBackgroundRunning(ctx);
+      }
     } catch (_e) {
     }
   }

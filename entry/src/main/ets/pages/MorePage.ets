@@ -1,8 +1,8 @@
 import { ThemePalette } from '../common/Theme';
 import { Settings } from '../common/Settings';
+import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { IconRow, PrefGroup, SwitchRow } from './components/Prefs';
-import { LimitedBody } from './components/LimitedBody';
 
 const HELP_URL: string = 'https://mihon.app/docs/guides/troubleshooting/';
 
@@ -15,18 +15,21 @@ export struct MorePage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('navBarH') navBarH: number = 0;
+  @StorageProp('windowW') windowW: number = 0;
   // 页签浮动条避让高度：宽屏无页签条时为 0（Index 按断点发布）
   @StorageProp('tabPadH') tabPadH: number = 76;
   @StorageProp('downloadedOnly') downloadedOnly: boolean = false;
   @StorageProp('incognito') incognito: boolean = false;
 
   build() {
-    LimitedBody() {
-      this.bodyContent()
-    }
+    this.bodyContent()
   }
 
-  // 页面主体：LimitedBody 承载，大屏限宽居中，窄屏全宽
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
+  }
+
   @Builder
   bodyContent() {
     Column() {
@@ -36,8 +39,8 @@ export struct MorePage {
         .fontColor(this.pal.text)
         .width('100%')
         .padding({
-          left: 16,
-          right: 16,
+          left: 16 + this.inset(),
+          right: 16 + this.inset(),
           top: 12,
           bottom: 12
         })
@@ -161,7 +164,11 @@ export struct MorePage {
           }
         }
         .width('100%')
-        .padding({ left: 16, right: 16, bottom: 24 })
+        .padding({
+          left: 16 + this.inset(),
+          right: 16 + this.inset(),
+          bottom: 24
+        })
       }
       .layoutWeight(1)
       .scrollBar(BarState.Auto)

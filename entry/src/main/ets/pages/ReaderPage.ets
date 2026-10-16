@@ -14,6 +14,7 @@ import { Settings } from '../common/Settings';
 import { GripSupport } from '../common/GripSupport';
 import { ReaderWindow } from '../common/ReaderWindow';
 import { ChapterNeighbors, ReaderChapterNav } from '../common/ReaderChapterNav';
+import { isHdsRuntimeAvailable } from '../common/HdsSupport';
 import { DownloadService } from '../data/DownloadService';
 import { TrackService } from '../data/track/TrackService';
 import { SmartImage } from './components/SmartImage';
@@ -24,6 +25,7 @@ import { EmulationFlipView } from './components/PageFlip';
 import {
   ReaderBottomBar,
   ReaderFilterArea,
+  ReaderHdsHost,
   ReaderIndicatorBadge,
   ReaderMenu,
   ReaderMenuIconButton,
@@ -131,6 +133,8 @@ export struct ReaderPage {
   // 设备是否支持智感握姿（不支持则隐藏该模式选项）
   @State gripSupported: boolean = true;
   private gripListening: boolean = false;
+  // HDS 运行时可用性：不可用（预览器等）时阅读器走 ReaderBottomBar 回退渲染
+  private hdsAvailable: boolean = isHdsRuntimeAvailable();
   private dataSource: PageDataSource = new PageDataSource();
   private scroller: Scroller = new Scroller();
   private touchDownX: number = -1;
@@ -515,15 +519,19 @@ export struct ReaderPage {
 
   @Builder
   menuBottomBar() {
-    ReaderBottomBar({
-      navBarH: this.navBarH,
-      navRow: (): void => {
-        this.menuNavRow();
-      },
-      settingsRow: (): void => {
-        this.menuSettingsRow();
-      }
-    })
+    // 无 HDS 运行时（预览器等）回退：玻璃底栏由 ReaderBottomBar 承载；
+    // HDS 路径底栏由 ReaderHdsHost 浮动胶囊承载，此处不渲染
+    if (!this.hdsAvailable) {
+      ReaderBottomBar({
+        navBarH: this.navBarH,
+        navRow: (): void => {
+          this.menuNavRow();
+        },
+        settingsRow: (): void => {
+          this.menuSettingsRow();
+        }
+      })
+    }
   }
 
   // 章节导航行：上一章 / 页码胶囊 / 下一章（guard 保留在回调内）
@@ -600,7 +608,56 @@ export struct ReaderPage {
 
   build() {
     NavDestination() {
-      Stack({ alignContent: Alignment.BottomEnd }) {
+      if (this.hdsAvailable) {
+        // HDS 沉浸宿主：设置行挂入页签栏胶囊、进度行挂入迷你栏胶囊，
+        // 垂直堆叠为两块独立玻璃；showMenu 开合驱动官方显隐动效
+        ReaderHdsHost({
+          barsVisible: this.showMenu,
+          barBottomMargin: Math.max(this.navBarH, 12),
+          barWidth: 328,
+          content: (): void => {
+            this.readerBody();
+          },
+          progressBar: (): void => {
+            this.menuNavRow();
+          },
+          settingsBar: (): void => {
+            this.menuSettingsRow();
+          }
+        })
+      } else {
+        this.readerBody()
+      }
+    }
+    .hideTitleBar(true)
+    .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
+    .bindSheet($$this.showOrientationSheet, this.orientationSheetBuilder(), {
+      preferType: Bp.sheetType(this.windowW),
+      width: Bp.sheetWidth(this.windowW),
+      height: SheetSize.FIT_CONTENT,
+      title: { title: $r('app.string.reader_screen_orientation') },
+      detents: [SheetSize.FIT_CONTENT],
+      dragBar: true,
+      showClose: false,
+      systemMaterial: new uiMaterial.ImmersiveMaterial(),
+      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
+    })
+    .onReady((ctx: NavDestinationContext) => {
+      this.pathStack = ctx.pathStack;
+      const params = ctx.pathInfo.param as ReaderParams;
+      if (params !== undefined && params !== null) {
+        this.mangaId = params.mangaId;
+        this.chapterId = params.chapterId;
+      }
+      this.loadChapter();
+    })
+  }
+
+  // 阅读器主体（内容 + 菜单 + Sheet 宿主）：HDS 路径装入 ReaderHdsHost 唯一 TabContent，
+  // 无 HDS 运行时直接渲染（底栏由 ReaderMenu 内 menuBottomBar 回退 ReaderBottomBar）
+  @Builder
+  readerBody() {
+    Stack({ alignContent: Alignment.BottomEnd }) {
         // 内容区
         if (this.loading) {
           Column() {
@@ -746,29 +803,6 @@ export struct ReaderPage {
         systemMaterial: new uiMaterial.ImmersiveMaterial(),
         blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
       })
-    }
-    .hideTitleBar(true)
-    .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
-    .bindSheet($$this.showOrientationSheet, this.orientationSheetBuilder(), {
-      preferType: Bp.sheetType(this.windowW),
-      width: Bp.sheetWidth(this.windowW),
-      height: SheetSize.FIT_CONTENT,
-      title: { title: $r('app.string.reader_screen_orientation') },
-      detents: [SheetSize.FIT_CONTENT],
-      dragBar: true,
-      showClose: false,
-      systemMaterial: new uiMaterial.ImmersiveMaterial(),
-      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
-    })
-    .onReady((ctx: NavDestinationContext) => {
-      this.pathStack = ctx.pathStack;
-      const params = ctx.pathInfo.param as ReaderParams;
-      if (params !== undefined && params !== null) {
-        this.mangaId = params.mangaId;
-        this.chapterId = params.chapterId;
-      }
-      this.loadChapter();
-    })
   }
 
   // 阅读器设置面板（参考 Mihon：阅读模式 / 常规 / 滤镜）

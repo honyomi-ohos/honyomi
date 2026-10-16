@@ -7,7 +7,6 @@ import { DetailParams } from '../model/RouteParams';
 import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
-import { LimitedBody } from './components/LimitedBody';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
@@ -141,12 +140,14 @@ export struct UpdatesPage {
   }
 
   build() {
-    LimitedBody() {
-      this.bodyContent()
-    }
+    this.bodyContent()
   }
 
-  // 页面主体：LimitedBody 承载，大屏限宽居中，窄屏全宽
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
+  }
+
   @Builder
   bodyContent() {
     Column() {
@@ -191,8 +192,8 @@ export struct UpdatesPage {
       }
       .width('100%')
       .padding({
-        left: 16,
-        right: 16,
+        left: 16 + this.inset(),
+        right: 16 + this.inset(),
         top: 12,
         bottom: 8
       })
@@ -276,8 +277,8 @@ export struct UpdatesPage {
                 }
                 .width('100%')
                 .padding({
-                  left: 16,
-                  right: 16,
+                  left: 16 + this.inset(),
+                  right: 16 + this.inset(),
                   top: 10,
                   bottom: 10
                 })
@@ -293,8 +294,8 @@ export struct UpdatesPage {
           .divider({
             strokeWidth: 1,
             color: this.pal.divider,
-            startMargin: 72,
-            endMargin: 16,
+            startMargin: 72 + this.inset(),
+            endMargin: 16 + this.inset(),
           })
         }
         .width('100%')

@@ -4,8 +4,8 @@ import { ChapterRepo, HistoryRepo, MangaRepo } from '../data/Repos';
 import { ChapterRecord, MangaRecord } from '../model/Models';
 import { SourceRegistry } from '../source/Source';
 import { DownloadService } from '../data/DownloadService';
-import { Util } from './Util';
 import { Settings } from './Settings';
+import { readTextAutoAsync } from './bookparser/TextLoadTasks';
 import { NovelTts } from './NovelTts';
 import { TtsText } from './TtsText';
 import { TtsAvSession, TtsSessionMeta } from './TtsAvSession';
@@ -754,7 +754,8 @@ export class TtsPlaybackService {
   private static async fetchText(manga: MangaRecord, chapter: ChapterRecord): Promise<string> {
     const local = DownloadService.localText(manga.id, chapter.id);
     if (local !== '') {
-      return Util.readTextAuto(local);
+      // 读取与编码识别在 taskpool 线程，避免大章节阻塞 UI
+      return await readTextAutoAsync(local);
     }
     const source = SourceRegistry.get(manga.sourceKey);
     if (source === undefined) {

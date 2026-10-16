@@ -4,6 +4,7 @@ import { Source, SourceRegistry } from '../source/Source';
 import { BrowseSourceParams, ExtensionDetailParams, MigrateMangaParams } from '../model/RouteParams';
 import { ContentType } from '../model/Models';
 import { ThemePalette } from '../common/Theme';
+import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { AppKeys } from '../common/AppKeys';
 import { Settings } from '../common/Settings';
@@ -13,7 +14,6 @@ import { InputDialog } from './components/Dialogs';
 import { AppIcon } from './components/AppIcon';
 import { TypeBadgedIcon } from './components/TypeBadgedIcon';
 import { NsfwTag } from './components/NsfwTag';
-import { LimitedBody } from './components/LimitedBody';
 
 // 语言显示名（对齐 Mihon 源列表的语言分组头）
 const LANG_NAMES: Record<string, string> = {
@@ -284,6 +284,7 @@ export struct BrowsePage {
   @StorageProp('navBarH') navBarH: number = 0;
   // 页签浮动条避让高度：宽屏无页签条时为 0（Index 按断点发布）
   @StorageProp('tabPadH') tabPadH: number = 76;
+  @StorageProp('windowW') windowW: number = 0;
   @StorageProp('pluginsDirty') @Watch('onPluginsChanged') pluginsDirty: number = 0;
   // NSFW 源显示开关（浏览设置页写入 AppStorage）
   @StorageProp('showNsfw') showNsfw: boolean = false;
@@ -364,6 +365,12 @@ export struct BrowsePage {
     }
     .height(44)
     .justifyContent(FlexAlign.Center)
+    // 宽屏 Scrollable 模式下首个标签左内边距对齐限宽内容列左缘（与标题同行起点一致）；
+    // 窄屏 Fixed 均分对称内边距，文字居中位置不变
+    .padding({
+      left: index === 0 && this.windowW >= Bp.LG_MIN ? this.inset() + 16 : 10,
+      right: 10
+    })
   }
 
   @Builder
@@ -490,7 +497,7 @@ export struct BrowsePage {
           }, (section: SourceSection) => this.sectionKey(section))
         }
         .width('100%')
-        .padding({ left: 16, right: 16, bottom: 16 })
+        .padding({ left: 16 + this.inset(), right: 16 + this.inset(), bottom: 16 })
       }
       .width('100%')
       .height('100%')
@@ -543,8 +550,8 @@ export struct BrowsePage {
         }
         .width('100%')
         .padding({
-          left: 16,
-          right: 16,
+          left: 16 + this.inset(),
+          right: 16 + this.inset(),
           top: 10,
           bottom: 4
         })
@@ -597,7 +604,7 @@ export struct BrowsePage {
             }, (item: MigrateSourceCount) => `mig-${item.key}-${item.count}-${item.iconPath}-${item.contentType}`)
           }
           .width('100%')
-          .padding({ left: 16, right: 16, bottom: 16 })
+          .padding({ left: 16 + this.inset(), right: 16 + this.inset(), bottom: 16 })
         }
         .width('100%')
         .layoutWeight(1)
@@ -611,12 +618,13 @@ export struct BrowsePage {
   }
 
   build() {
-    LimitedBody() {
-      this.bodyContent()
-    }
+    this.bodyContent()
   }
 
-  // 页面主体：LimitedBody 承载，大屏限宽居中，窄屏全宽
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
+  }
   @Builder
   bodyContent() {
     Column() {
@@ -683,8 +691,8 @@ export struct BrowsePage {
       }
       .width('100%')
       .padding({
-        left: 16,
-        right: 16,
+        left: 16 + this.inset(),
+        right: 16 + this.inset(),
         top: 12,
         bottom: 4
       })
@@ -719,6 +727,8 @@ export struct BrowsePage {
           this.loadMigrate();
         }
       })
+      // 宽屏标签自然宽度从左排布（配合首标签内边距对齐内容列），窄屏均分不变
+      .barMode(this.windowW >= Bp.LG_MIN ? BarMode.Scrollable : BarMode.Fixed)
       .layoutWeight(1)
       .width('100%')
     }

@@ -15,6 +15,7 @@ import { AppKeys } from '../common/AppKeys';
 import { CookieJar } from '../net/CookieJar';
 import { CoverStore } from '../common/CoverStore';
 import { TtsPlaybackService, TtsServiceStateHandler } from '../common/TtsPlaybackService';
+import { isHdsRuntimeAvailable } from '../common/HdsSupport';
 import { LibraryPage } from './LibraryPage';
 import { UpdatesPage } from './UpdatesPage';
 import { HistoryPage } from './HistoryPage';
@@ -403,11 +404,11 @@ struct Index {
   // 返回首页兜底同步的 450ms 延迟定时器：销毁时清理，防对已销毁组件执行 animateTo
   private navSyncTimerId: number = -1;
   private tabsController: HdsTabsController = new HdsTabsController();
-  // HDS 组件（@kit.UIDesignKit）由系统 HDS 运行时注册，预览器环境 HdsTabs 为
   // 无 HDS 运行时环境（预览器）的标准 Tabs 回退控制器
   private fallbackTabsController: TabsController = new TabsController();
-  // null；探测失败时回退标准 Tabs，保证预览器可正常渲染（真机走 HdsTabs 不变）
-  private hdsAvailable: boolean = HdsTabs !== null && HdsTabs !== undefined;
+  // HDS 组件（@kit.UIDesignKit）由系统 HDS 运行时注册，预览器环境 HdsTabs 为 null；
+  // 探测失败时回退标准 Tabs，保证预览器可正常渲染（真机走 HdsTabs 不变）
+  private hdsAvailable: boolean = isHdsRuntimeAvailable();
 
   aboutToAppear(): void {
     this.currentTab = Settings.getStartTab();
@@ -572,7 +573,7 @@ struct Index {
         }
       })
     }
-    .width(200)
+    .width(Bp.WIDE_RAIL_W)
     .height('100%')
     .padding({
       top: this.statusBarH + 8,

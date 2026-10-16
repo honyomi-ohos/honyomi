@@ -7,6 +7,7 @@ import { taskpool } from '@kit.ArkTS';
 import { BookFileIo, BookTextCodec } from './ByteUtils';
 import { BookMetaRaw, BookPersist } from './BookMeta';
 import { parseEpubBookTask, parseMobiBookTask } from './BookParserTasks';
+import { readTextAutoAsync } from './TextLoadTasks';
 
 // 面向调用方（本地小说源）的解析结果
 export class BookInfo {
@@ -66,11 +67,17 @@ export class BookParser {
     }
   }
 
-  // 加载章节文本（解析已完成，缓存必命中）
-  static loadChapterText(path: string, index: number): string {
+  // 加载章节文本（解析已完成，缓存必命中；读取与解码在 taskpool 线程，避免大章节阻塞 UI）
+  static async loadChapterText(path: string, index: number): Promise<string> {
     const cacheDir = BookParser.cacheDirOf(path);
-    const text = BookFileIo.readText(`${cacheDir}/chapters/${BookPersist.chapterFile(index)}`);
-    if (text === null) {
+    const file = `${cacheDir}/chapters/${BookPersist.chapterFile(index)}`;
+    let text = '';
+    try {
+      text = await readTextAutoAsync(file);
+    } catch (e) {
+      throw new Error('chapter_missing');
+    }
+    if (text === '') {
       throw new Error('chapter_missing');
     }
     return text;

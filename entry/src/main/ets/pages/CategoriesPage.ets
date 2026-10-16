@@ -10,7 +10,6 @@ import { PageHeader } from './components/PageHeader';
 import { AppIcon } from './components/AppIcon';
 import { InputDialog } from './components/Dialogs';
 import { PickerSheet } from './components/PickerSheet';
-import { LimitedBody } from './components/LimitedBody';
 
 // 分类管理：列表 + 新建 + 点击重命名/删除 + 长按拖拽排序
 // 拖拽参考官方 grid-drag-sort 示例的"直接拖拽"模式：
@@ -77,19 +76,21 @@ export struct CategoriesPage {
 
   build() {
     NavDestination() {
-      LimitedBody({ maxWidth: 960 }) {
-        this.bodyContent()
-      }
+      this.bodyContent()
     }
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)
   }
 
-  // 页面主体：LimitedBody 承载，大屏限宽居中，窄屏全宽
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（960 上限）
+  private inset(): number {
+    return Bp.contentInset(this.windowW, 960);
+  }
+
   @Builder
   bodyContent() {
     Column() {
-      PageHeader({ title: $r('app.string.categories_title') }) {
+      PageHeader({ title: $r('app.string.categories_title'), inset: this.inset() }) {
         this.headerRight()
       }
 
@@ -123,8 +124,8 @@ export struct CategoriesPage {
               }
               .width('100%')
               .padding({
-                left: 16,
-                right: 16,
+                left: 16 + this.inset(),
+                right: 16 + this.inset(),
                 top: 14,
                 bottom: 14
               })
@@ -210,8 +211,8 @@ export struct CategoriesPage {
         .divider({
           strokeWidth: 1,
           color: this.pal.divider,
-          startMargin: 16,
-          endMargin: 16,
+          startMargin: 16 + this.inset(),
+          endMargin: 16 + this.inset(),
         })
       }
       .width('100%')

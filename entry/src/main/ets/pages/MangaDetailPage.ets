@@ -483,6 +483,7 @@ export struct MangaDetailPage {
       .justifyContent(FlexAlign.SpaceBetween)
     }
     .width('100%')
+    .constraintSize({ maxWidth: 720 })
     .padding({ left: 16, right: 16, top: 8 })
     .backgroundColor(this.pal.card)
     .borderRadius({ topLeft: 20, topRight: 20 })
@@ -616,7 +617,11 @@ export struct MangaDetailPage {
                       .layoutWeight(1)
                     }
                     .width('100%')
-                    .padding({ left: 16, right: 16, top: 12 })
+                    .padding({
+                      left: 16 + this.contentInset(),
+                      right: 16 + this.contentInset(),
+                      top: 12
+                    })
                     .alignItems(VerticalAlign.Top)
                   }
                   .width('100%')
@@ -705,7 +710,11 @@ export struct MangaDetailPage {
                   }
                 }
                 .width('100%')
-                .padding({ left: 8, right: 8, top: 14 })
+                .padding({
+                  left: 8 + this.contentInset(),
+                  right: 8 + this.contentInset(),
+                  top: 14
+                })
               }
 
               // 简介 + 标签（对齐 Mihon ExpandableMangaDescription）
@@ -749,9 +758,13 @@ export struct MangaDetailPage {
                       }
                     }
                   }
-                  .alignItems(HorizontalAlign.Start)
-                  .width('100%')
-                  .padding({ left: 16, right: 16, top: 10 })
+                   .alignItems(HorizontalAlign.Start)
+                   .width('100%')
+                   .padding({
+                     left: 16 + this.contentInset(),
+                     right: 16 + this.contentInset(),
+                     top: 10
+                   })
                 }
               }
 
@@ -807,8 +820,8 @@ export struct MangaDetailPage {
                 }
                 .width('100%')
                 .padding({
-                  left: 16,
-                  right: 16,
+                  left: 16 + this.contentInset(),
+                  right: 16 + this.contentInset(),
                   top: 14,
                   bottom: 6
                 })
@@ -859,13 +872,17 @@ export struct MangaDetailPage {
                         },
                       })
                     }
+                    .padding({
+                      left: this.contentInset(),
+                      right: this.contentInset()
+                    })
                   }, (chapter: ChapterRecord) => `ch-${chapter.id}`)
                 }
                 .divider({
                   strokeWidth: 1,
                   color: this.pal.divider,
-                  startMargin: 16,
-                  endMargin: 16,
+                  startMargin: 16 + this.contentInset(),
+                  endMargin: 16 + this.contentInset(),
                 })
               }
             }
@@ -928,7 +945,11 @@ export struct MangaDetailPage {
           }
           .width('100%')
           .height(this.statusBarH + 52)
-          .padding({ left: 8, right: 16, top: this.statusBarH })
+          .padding({
+            left: 8 + this.contentInset(),
+            right: 16 + this.contentInset(),
+            top: this.statusBarH
+          })
           .alignItems(VerticalAlign.Center)
           .hitTestBehavior(HitTestMode.Transparent)
         }
@@ -1203,6 +1224,12 @@ export struct MangaDetailPage {
   // 头部总高度：保证封面信息在任意状态栏高度下完整展示
   private headerHeight(): number {
     return Math.max(280, this.statusBarH + 236);
+  }
+
+  // 大屏响应式限宽缩进：内容列限宽 720vp 居中，超出部分左右留白；
+  // 虚化封面背景保持全宽，仅内容（信息/操作/简介/章节）随缩进收窄
+  private contentInset(): number {
+    return Bp.contentInset(this.windowW);
   }
 
   // 吸顶栏渐显进度：随滚动偏移 0 → 1

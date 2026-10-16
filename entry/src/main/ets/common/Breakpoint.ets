@@ -7,6 +7,9 @@ export class Bp {
   static readonly LG_MIN: number = 840;
   static readonly XL_MIN: number = 1200;
 
+  // 宽屏左侧常驻导航栏宽度（Index wideRail），页面计算内容限宽缩进时需扣除
+  static readonly WIDE_RAIL_W: number = 200;
+
   // lg 及以上视为宽屏（侧边导航/双栏/居中弹窗阈值）
   static isWide(widthVp: number): boolean {
     return widthVp >= Bp.LG_MIN;
@@ -26,6 +29,16 @@ export class Bp {
   // 半模态高度：宽屏定高（默认 560vp），窄屏随内容自适应
   static sheetHeight(widthVp: number, wideHeight: number = 560): SheetSize | Dimension {
     return widthVp >= Bp.LG_MIN ? wideHeight : SheetSize.FIT_CONTENT;
+  }
+
+  // 限宽内容列的左右缩进：滚动容器保持全宽（滚动条贴窗口边），
+  // 内容行/卡片以该缩进居中限宽；maxWidth 为内容列宽度（720/960），
+  // railW 为宽屏左侧导航占宽（默认常驻导航栏；设置页场景由调用方传实际值）
+  static contentInset(widthVp: number, maxWidth: number = 720,
+    railW: number = Bp.WIDE_RAIL_W): number {
+    const pageW = widthVp - (widthVp >= Bp.LG_MIN ? railW : 0);
+    const inset = Math.floor((pageW - maxWidth) / 2);
+    return inset > 0 ? inset : 0;
   }
 }
 

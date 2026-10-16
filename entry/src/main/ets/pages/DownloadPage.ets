@@ -1,10 +1,10 @@
 import { DownloadService } from '../data/DownloadService';
 import { DownloadedChapter, DownloadedManga, DownloadTask } from '../model/Models';
 import { ThemePalette } from '../common/Theme';
+import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
 import { AppIcon } from './components/AppIcon';
-import { LimitedBody } from './components/LimitedBody';
 
 // 队列行子组件：ForEach key 固定为章节 id 后同 key 行会被复用而不重跑生成器，
 // 进度/状态改由本组件自订阅 DownloadService 通知刷新（DownloadTask 非 @Observed）
@@ -13,6 +13,8 @@ import { LimitedBody } from './components/LimitedBody';
 struct QueueTaskRow {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   task: DownloadTask = new DownloadTask();
+  // 宽屏内容列缩进（宿主传入），行内容与限宽列左缘对齐
+  inset: number = 0;
   @State state: number = 0;
   @State progress: number = 0;
   @State total: number = 0;
@@ -110,8 +112,8 @@ struct QueueTaskRow {
     }
     .width('100%')
     .padding({
-      left: 12,
-      right: 12,
+      left: 12 + this.inset,
+      right: 12 + this.inset,
       top: 10,
       bottom: 10
     })
@@ -143,6 +145,7 @@ export struct DownloadPage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('statusBarH') statusBarH: number = 0;
+  @StorageProp('windowW') windowW: number = 0;
   @State queue: DownloadTask[] = [];
   @State downloaded: DownloadedManga[] = [];
   @State loading: boolean = true;
@@ -193,9 +196,7 @@ export struct DownloadPage {
 
   build() {
     NavDestination() {
-      LimitedBody({ maxWidth: 960 }) {
-        this.bodyContent()
-      }
+      this.bodyContent()
     }
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)
@@ -204,7 +205,10 @@ export struct DownloadPage {
     })
   }
 
-  // 页面主体：LimitedBody 承载，大屏限宽居中，窄屏全宽
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（960 上限）
+  private inset(): number {
+    return Bp.contentInset(this.windowW, 960);
+  }
   @Builder
   bodyContent() {
     Column() {
@@ -249,8 +253,8 @@ export struct DownloadPage {
       }
       .width('100%')
       .padding({
-        left: 4,
-        right: 8,
+        left: 4 + this.inset(),
+        right: 8 + this.inset(),
         top: this.statusBarH + 8,
         bottom: 8
       })
@@ -266,8 +270,8 @@ export struct DownloadPage {
                 .fontColor(this.pal.sub)
                 .width('100%')
                 .padding({
-                  left: 16,
-                  right: 16,
+                  left: 16 + this.inset(),
+                  right: 16 + this.inset(),
                   top: 10,
                   bottom: 6
                 })
@@ -275,7 +279,7 @@ export struct DownloadPage {
 
             ForEach(this.queue, (task: DownloadTask) => {
               ListItem() {
-                QueueTaskRow({ task: task })
+                QueueTaskRow({ task: task, inset: this.inset() })
               }
             }, (task: DownloadTask) => `q-${task.chapterId}`)
               .onMove((from: number, to: number) => {
@@ -334,8 +338,8 @@ export struct DownloadPage {
                     }
                     .width('100%')
                     .padding({
-                      left: 16,
-                      right: 6,
+                      left: 16 + this.inset(),
+                      right: 6 + this.inset(),
                       top: 6,
                       bottom: 6
                     })
@@ -351,8 +355,8 @@ export struct DownloadPage {
         .divider({
           strokeWidth: 1,
           color: this.pal.divider,
-          startMargin: 16,
-          endMargin: 16,
+          startMargin: 16 + this.inset(),
+          endMargin: 16 + this.inset(),
         })
         .onWillScroll((offset: number) => {
           // 对齐 Mihon FAB 手势行为：向列表底部滚动收起、回滚展开
@@ -382,7 +386,7 @@ export struct DownloadPage {
           .borderRadius(24)
           .backgroundColor(this.pal.primary)
           .shadow({ radius: 8, color: '#66000000', offsetY: 4 })
-          .margin({ right: 20, bottom: 28 })
+          .margin({ right: 20 + this.inset(), bottom: 28 })
           .animation({ duration: 150 })
           .transition(TransitionEffect.OPACITY
             .combine(TransitionEffect.scale({ x: 0.8, y: 0.8 }))
@@ -421,8 +425,8 @@ export struct DownloadPage {
     }
     .width('100%')
     .padding({
-      left: 16,
-      right: 16,
+      left: 16 + this.inset(),
+      right: 16 + this.inset(),
       top: 14,
       bottom: 8
     })

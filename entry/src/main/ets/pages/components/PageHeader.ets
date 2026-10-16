@@ -17,6 +17,8 @@ export struct PageHeader {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('statusBarH') statusBarH: number = 0;
   title: Resource | string = '';
+  // 大屏限宽缩进：头部内容与限宽内容列左缘对齐（页面按断点计算传入，默认 0）
+  inset: number = 0;
   @BuilderParam right: () => void = headerEmpty;
 
   build() {
@@ -41,6 +43,6 @@ export struct PageHeader {
     }
     .width('100%')
     .height(52 + this.statusBarH)
-    .padding({ top: this.statusBarH, left: 4, right: 12 })
+    .padding({ top: this.statusBarH, left: 4 + this.inset, right: 12 + this.inset })
   }
 }

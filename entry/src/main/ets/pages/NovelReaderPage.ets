@@ -30,13 +30,19 @@ import {
   NovelChapterText,
   NovelPage,
   NovelPaginator,
+  PaginateCache,
+  PaginateCursor,
+  PaginatedResult,
   SPINE_W
 } from './components/novel/NovelPaginator';
+import { readTextAutoAsync } from '../common/bookparser/TextLoadTasks';
+import { isHdsRuntimeAvailable } from '../common/HdsSupport';
 import { NovelModeSheet } from './components/novel/NovelModeSheet';
 import { NovelDisplayPanel } from './components/novel/NovelDisplayPanel';
 import { NovelTextPanel } from './components/novel/NovelTextPanel';
 import {
   ReaderBottomBar,
+  ReaderHdsHost,
   ReaderIndicatorBadge,
   ReaderMenu,
   ReaderMenuIconButton,
@@ -48,6 +54,10 @@ import { LoadingBackButton } from './components/LoadingBackButton';
 
 // 翻屏进度持久化防抖间隔（毫秒）
 const PERSIST_DEBOUNCE_MS: number = 2000;
+
+// 渐进分页时间预算（毫秒）：首批同步出页让正文立即可读，剩余每帧小步补齐
+const PAG_FIRST_BUDGET_MS: number = 32;
+const PAG_STEP_BUDGET_MS: number = 8;
 
 // 翻页屏幕的 LazyForEach 数据源：按需构建当前屏及相邻屏，大章节不再一次性渲染全部页面
 class NovelScreenSource implements IDataSource {
@@ -144,6 +154,8 @@ export struct NovelReaderPage {
   @State halfTilt: number = 0;
   // 本次翻页的抓取纵向位置（0 顶部 ~ 1 底部，相对正文区），决定卷曲弓高与倾斜方向
   private flipGrabY: number = 0.5;
+  // HDS 运行时可用性：不可用（预览器等）时阅读器走 ReaderBottomBar 回退渲染
+  private hdsAvailable: boolean = isHdsRuntimeAvailable();
   private mangaId: number = -1;
   private chapterId: number = -1;
   private scroller: Scroller = new Scroller();
@@ -186,6 +198,15 @@ export struct NovelReaderPage {
   private persistSnapChapterId: number = -1;
   private persistSnapMangaId: number = -1;
   private persistSnapPermille: number = 0;
+  // 渐进分页：在途游标（非 null 表示分页未完成）/ 调度定时器
+  private pagCursor: PaginateCursor | null = null;
+  private pagTimerId: number = -1;
+  // 渐进期间用户是否翻过页：完成时据此决定是否按进度拉回
+  private paginateUserMoved: boolean = false;
+  // 本次分页开始时的阅读进度（完成恢复位置用）
+  private paginateStartPermille: number = 0;
+  // 整章分页结果 LRU（切回上一章/改回设置时免重分页）
+  private paginateCache: PaginateCache = new PaginateCache(6);
 
   aboutToAppear(): void {
     try {
@@ -214,6 +235,7 @@ export struct NovelReaderPage {
   aboutToDisappear(): void {
     this.destroyed = true;
     this.loadGen += 1;
+    this.cancelProgressivePagination();
     // 听书播放与页面生命周期解耦：离开阅读器不停止朗读，仅退订本实例回调
     TtsPlaybackService.events.offState(this.ttsOnState);
     TtsPlaybackService.events.offPara(this.ttsOnPara);
@@ -510,15 +532,19 @@ export struct NovelReaderPage {
 
   @Builder
   menuBottomBar() {
-    ReaderBottomBar({
-      navBarH: this.navBarH,
-      navRow: (): void => {
-        this.menuNavRow();
-      },
-      settingsRow: (): void => {
-        this.menuSettingsRow();
-      }
-    })
+    // 无 HDS 运行时（预览器等）回退：玻璃底栏由 ReaderBottomBar 承载；
+    // HDS 路径底栏由 ReaderHdsHost 浮动胶囊承载，此处不渲染
+    if (!this.hdsAvailable) {
+      ReaderBottomBar({
+        navBarH: this.navBarH,
+        navRow: (): void => {
+          this.menuNavRow();
+        },
+        settingsRow: (): void => {
+          this.menuSettingsRow();
+        }
+      })
+    }
   }
 
   // 章节导航行：上一章 / 进度胶囊 / 下一章（guard 保留在回调内）
@@ -742,7 +768,57 @@ export struct NovelReaderPage {
 
   build() {
     NavDestination() {
-      Stack({ alignContent: Alignment.BottomEnd }) {
+      if (this.hdsAvailable) {
+        // HDS 沉浸宿主：设置行挂入页签栏胶囊、进度行挂入迷你栏胶囊，
+        // 垂直堆叠为两块独立玻璃；showMenu 开合驱动官方显隐动效
+        ReaderHdsHost({
+          barsVisible: this.showMenu,
+          barBottomMargin: Math.max(this.navBarH, 12),
+          barWidth: 328,
+          content: (): void => {
+            this.readerBody();
+          },
+          progressBar: (): void => {
+            this.menuNavRow();
+          },
+          settingsBar: (): void => {
+            this.menuSettingsRow();
+          }
+        })
+      } else {
+        this.readerBody()
+      }
+    }
+    .hideTitleBar(true)
+    .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
+    .bindSheet($$this.showOrientationSheet, this.orientationSheetBuilder(), {
+      preferType: Bp.sheetType(this.windowW),
+      width: Bp.sheetWidth(this.windowW),
+      height: SheetSize.FIT_CONTENT,
+      title: { title: $r('app.string.reader_screen_orientation') },
+      detents: [SheetSize.FIT_CONTENT],
+      dragBar: true,
+      showClose: false,
+      systemMaterial: new uiMaterial.ImmersiveMaterial(),
+      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
+      enableOutsideInteractive: true
+    })
+    .onReady((ctx: NavDestinationContext) => {
+      this.pathStack = ctx.pathStack;
+      const params = ctx.pathInfo.param as ReaderParams;
+      if (params !== undefined && params !== null) {
+        this.mangaId = params.mangaId;
+        this.chapterId = params.chapterId;
+      }
+      this.loadChapter();
+    })
+  }
+
+  // 阅读器主体（内容 + 菜单 + Sheet 宿主）：HDS 路径装入 ReaderHdsHost 唯一 TabContent，
+  // 无 HDS 运行时直接渲染（底栏由 ReaderMenu 内 menuBottomBar 回退 ReaderBottomBar）
+  @Builder
+  readerBody() {
+    Stack({ alignContent: Alignment.BottomEnd }) {
         // 内容区
         if (this.loading) {
           Column() {
@@ -988,30 +1064,6 @@ export struct NovelReaderPage {
         blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
         enableOutsideInteractive: true
       })
-    }
-    .hideTitleBar(true)
-    .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
-    .bindSheet($$this.showOrientationSheet, this.orientationSheetBuilder(), {
-      preferType: Bp.sheetType(this.windowW),
-      width: Bp.sheetWidth(this.windowW),
-      height: SheetSize.FIT_CONTENT,
-      title: { title: $r('app.string.reader_screen_orientation') },
-      detents: [SheetSize.FIT_CONTENT],
-      dragBar: true,
-      showClose: false,
-      systemMaterial: new uiMaterial.ImmersiveMaterial(),
-      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
-      enableOutsideInteractive: true
-    })
-    .onReady((ctx: NavDestinationContext) => {
-      this.pathStack = ctx.pathStack;
-      const params = ctx.pathInfo.param as ReaderParams;
-      if (params !== undefined && params !== null) {
-        this.mangaId = params.mangaId;
-        this.chapterId = params.chapterId;
-      }
-      this.loadChapter();
-    })
   }
 
   private applyOrientation(): void {
@@ -1036,6 +1088,7 @@ export struct NovelReaderPage {
     this.screenSource.setItems([]);
     this.pageIdx = 0;
     this.pagSig = '';
+    this.cancelProgressivePagination();
     // 打开其它章节时停止听书；听书服务正在朗读本章（跟随切章/重新进入）不打断
     if (TtsPlaybackService.currentChapterId() !== this.chapterId) {
       TtsPlaybackService.stop();
@@ -1087,7 +1140,8 @@ export struct NovelReaderPage {
       const local = DownloadService.localText(chapter.mangaId, chapter.id);
       let text = '';
       if (local !== '') {
-        text = Util.readTextAuto(local);
+        // 本地章节文本：读取与编码识别在 taskpool 线程，避免大文件阻塞 UI
+        text = await readTextAutoAsync(local);
       } else {
         const source = SourceRegistry.get(this.manga.sourceKey);
         if (source === undefined) {
@@ -1461,7 +1515,9 @@ export struct NovelReaderPage {
     this.pageH = Math.floor(this.contH - (this.statusBarH + 8) - (this.navBarH + 8));
   }
 
-  // 分页参数（正文/模式/字号/行距/段距/页面尺寸）变化时重新分页，并按千分比恢复到原位置附近
+  // 分页参数（正文/模式/字号/行距/段距/页面尺寸）变化时重新分页；
+  // 缓存命中直接复用整章结果；未命中走渐进分页：首批同步出页立即可读，
+  // 剩余切片到后续帧补齐（大章节不再一次性卡住主线程），完成后按进度恢复位置
   private ensurePaginated(): void {
     if (this.loading || this.body === '' || this.mode === 'scroll') {
       return;
@@ -1475,29 +1531,85 @@ export struct NovelReaderPage {
     if (sig === this.pagSig) {
       return;
     }
+    // 参数已变：撤销在途渐进分页（旧游标产出的部分页面随之作废）
+    this.cancelProgressivePagination();
+    this.pagSig = sig;
+    // 整章结果 LRU 命中：免重分页（页面数组共享引用）
+    const cacheKey = `${this.chapterId}|${sig}`;
+    const cached = this.paginateCache.get(cacheKey);
+    if (cached !== undefined) {
+      this.applyFullPages(cached.pages, cached.paraPage, this.permille);
+      return;
+    }
     // 同步分页引擎参数后重建页面（分页/切点算法在 NovelPaginator）
     this.paginator.pageW = this.pageW;
     this.paginator.pageH = this.pageH;
     this.paginator.paraSpacing = this.paraSpacing;
     this.paginator.lineHeight = this.lineHeight;
     const blocks: NovelBlock[] = this.hasImages ? this.blocks : NovelChapterText.plainBlocks(this.body);
-    const pages = this.paginator.buildPages(blocks);
-    this.paraPage = this.paginator.paraPage;
-    const total = pages.length;
-    let logical = 0;
-    if (total > 1) {
-      logical = Math.min(total - 1, Math.round(this.permille * (total - 1) / 1000));
+    const cursor = new PaginateCursor(this.paginator, blocks);
+    this.pagCursor = cursor;
+    this.paginateUserMoved = false;
+    this.paginateStartPermille = this.permille;
+    // 清空旧页面状态，首批同步分页产出立即可读
+    this.pages = [];
+    this.paraPage = [];
+    this.screenIdxs = [];
+    this.screenSource.setItems([]);
+    this.transX = [];
+    this.transAngle = [];
+    this.transZ = [];
+    this.transAngleL = [];
+    this.transAngleR = [];
+    this.halfTilt = 0;
+    this.pageIdx = 0;
+    this.applyPartialPages(cursor.step(PAG_FIRST_BUDGET_MS));
+    if (cursor.done) {
+      this.completePagination();
+      return;
     }
+    this.pagTimerId = setTimeout((): void => {
+      this.pagTimerId = -1;
+      this.paginateNextStep();
+    }, 0);
+  }
+
+  // 渐进分页下一批：小步预算推进，有新页面即刷新屏幕，直至完成后结算
+  private paginateNextStep(): void {
+    const cursor = this.pagCursor;
+    if (cursor === null || cursor.done) {
+      return;
+    }
+    this.applyPartialPages(cursor.step(PAG_STEP_BUDGET_MS));
+    if (cursor.done) {
+      this.completePagination();
+      return;
+    }
+    this.pagTimerId = setTimeout((): void => {
+      this.pagTimerId = -1;
+      this.paginateNextStep();
+    }, 0);
+  }
+
+  // 渐进分页中间态：新产出的页面并入状态（push 逐项观察），
+  // 屏幕数变化才重建屏幕序列与数据源；paraPage 为游标内数组的共享引用
+  private applyPartialPages(fresh: NovelPage[]): void {
+    if (this.pagCursor === null) {
+      return;
+    }
+    this.paraPage = this.pagCursor.paraPage;
+    for (let i = 0; i < fresh.length; i++) {
+      this.pages.push(fresh[i]);
+    }
+    const total = this.pages.length;
     const screenCount = this.mode === 'double' ? Math.ceil(total / 2) : total;
+    if (screenCount === this.screenIdxs.length) {
+      return;
+    }
     const screens: number[] = [];
     for (let i = 0; i < screenCount; i++) {
       screens.push(i);
     }
-    // 从右到左：屏幕序与页序相反，按阅读进度换算起始屏
-    const screenIdx = this.mode === 'double' ? Math.floor(logical / 2) :
-      (this.mode === 'paged_rtl' ? screenCount - 1 - logical : logical);
-    this.pagSig = sig;
-    this.pages = pages;
     this.screenIdxs = screens;
     this.screenSource.setItems(screens);
     this.transX = Util.zeros(screenCount);
@@ -1506,6 +1618,81 @@ export struct NovelReaderPage {
     this.transAngleL = Util.zeros(screenCount);
     this.transAngleR = Util.zeros(screenCount);
     this.halfTilt = 0;
+  }
+
+  // 渐进分页完成：结果写入 LRU 缓存；用户翻过页则保持当前屏（并按完整页数重算进度），
+  // 否则按分页开始时的进度恢复位置
+  private completePagination(): void {
+    const cursor = this.pagCursor;
+    this.pagCursor = null;
+    if (this.pagTimerId !== -1) {
+      clearTimeout(this.pagTimerId);
+      this.pagTimerId = -1;
+    }
+    if (cursor === null) {
+      return;
+    }
+    this.paginateCache.put(`${this.chapterId}|${this.pagSig}`,
+      new PaginatedResult(this.pages, cursor.paraPage));
+    if (this.paginateUserMoved) {
+      // 按完整页数重算当前屏进度（渐进期间的部分页数不可靠）
+      this.onScreenChange(this.pageIdx);
+      return;
+    }
+    this.jumpToPermille(this.paginateStartPermille);
+  }
+
+  // 撤销在途渐进分页（参数变化/切章/退出时）：停调度、弃游标
+  private cancelProgressivePagination(): void {
+    if (this.pagTimerId !== -1) {
+      clearTimeout(this.pagTimerId);
+      this.pagTimerId = -1;
+    }
+    this.pagCursor = null;
+    this.paginateUserMoved = false;
+  }
+
+  // 整章分页结果直接应用（缓存命中）：写状态并按进度恢复位置
+  private applyFullPages(pages: NovelPage[], paraPage: number[], permille: number): void {
+    const total = pages.length;
+    const screenCount = this.mode === 'double' ? Math.ceil(total / 2) : total;
+    const screens: number[] = [];
+    for (let i = 0; i < screenCount; i++) {
+      screens.push(i);
+    }
+    this.pages = pages;
+    this.paraPage = paraPage;
+    this.screenIdxs = screens;
+    this.screenSource.setItems(screens);
+    this.transX = Util.zeros(screenCount);
+    this.transAngle = Util.zeros(screenCount);
+    this.transZ = Util.zeros(screenCount);
+    this.transAngleL = Util.zeros(screenCount);
+    this.transAngleR = Util.zeros(screenCount);
+    this.halfTilt = 0;
+    this.jumpToPermille(permille);
+  }
+
+  // 按千分比换算目标屏并跳转（完整分页结果上恢复阅读位置）
+  private jumpToPermille(p: number): void {
+    const total = this.pages.length;
+    const screenCount = this.screenIdxs.length;
+    if (total <= 0 || screenCount <= 0) {
+      return;
+    }
+    let logical = 0;
+    if (total > 1) {
+      logical = Math.min(total - 1, Math.round(p * (total - 1) / 1000));
+    }
+    // 从右到左：屏幕序与页序相反，按阅读进度换算起始屏
+    let screenIdx = this.mode === 'double' ? Math.floor(logical / 2) :
+      (this.mode === 'paged_rtl' ? screenCount - 1 - logical : logical);
+    if (screenIdx < 0) {
+      screenIdx = 0;
+    }
+    if (screenIdx > screenCount - 1) {
+      screenIdx = screenCount - 1;
+    }
     this.pageIdx = screenIdx;
     try {
       this.swiperCtrl.changeIndex(screenIdx, false);
@@ -1550,6 +1737,10 @@ export struct NovelReaderPage {
   // 翻页/双页：屏幕（Swiper 页）切换 → 换算千分比并持久化
   private onScreenChange(idx: number): void {
     this.pageIdx = idx;
+    // 渐进分页期间发生屏幕切换：视为用户已翻页，完成时不按进度拉回
+    if (this.pagCursor !== null) {
+      this.paginateUserMoved = true;
+    }
     const total = this.pages.length;
     // 从右到左：屏幕序与页序相反，页码 = 总页数 - 1 - 屏幕索引
     const logical = this.mode === 'double' ? idx * 2 :
@@ -1653,6 +1844,10 @@ export struct NovelReaderPage {
       return;
     }
     if (target >= this.screenIdxs.length) {
+      // 渐进分页未完成：末屏仍在增长，翻到当前末尾不切章
+      if (this.pagCursor !== null) {
+        return;
+      }
       this.openChapter(rtl ? this.prevId : this.nextId, rtl);
       return;
     }
@@ -1713,6 +1908,7 @@ export struct NovelReaderPage {
     Settings.setNovelReaderMode(mode);
     this.restored = false;
     this.pagSig = '';
+    this.cancelProgressivePagination();
     this.pages = [];
     this.screenIdxs = [];
     this.screenSource.setItems([]);
@@ -1998,6 +2194,10 @@ export struct NovelReaderPage {
   private onCurlOverscroll(dir: number): void {
     if (this.anySheetOpen()) {
       this.dismissSheets();
+      return;
+    }
+    // 渐进分页未完成：末屏仍在增长，越界不切章
+    if (this.pagCursor !== null) {
       return;
     }
     // 越过末页向前进下一章；越过首页向回退上一章（落在末尾）

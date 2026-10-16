@@ -379,6 +379,11 @@ export struct ExtensionListPanel {
           }
         }
         .width('100%')
+        // 大屏限宽缩进：滚动容器全宽（滚动条贴窗口边），内容列与浏览页 720 列对齐
+        .padding({
+          left: Bp.contentInset(this.windowW),
+          right: Bp.contentInset(this.windowW)
+        })
       }
       .scrollBar(BarState.Auto)
       .align(Alignment.Top)

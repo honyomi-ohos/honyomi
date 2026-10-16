@@ -1,15 +1,42 @@
 import { fileIo } from '@kit.CoreFileKit';
-import { common } from '@kit.AbilityKit';
+import type { WantAgent } from '@kit.AbilityKit';
+import { common, wantAgent } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { backgroundTaskManager } from '@kit.BackgroundTasksKit';
+import { notificationManager } from '@kit.NotificationKit';
+import { BusinessError } from '@kit.BasicServicesKit';
+import { util } from '@kit.ArkTS';
 import { Http } from '../net/Http';
 import { Source, SourceRegistry } from '../source/Source';
 import { ContentType, DownloadedChapter, DownloadedManga, DownloadTask, SPage, SVideo } from '../model/Models';
 import { ChapterRepo, MangaRepo } from './Repos';
 
+// 队列持久化 JSON 结构（{filesDir}/download_queue.json）：
+// 完成态不落盘（done.mark 为准），下载中(state=1)重启后重新排队，失败态保留供重试
+class DownloadTaskRaw {
+  mangaId: number = 0;
+  mangaTitle: string = '';
+  chapterId: number = 0;
+  chapterName: string = '';
+  sourceKey: string = '';
+  mangaUrl: string = '';
+  chapterUrl: string = '';
+  state: number = 0;
+  progress: number = 0;
+  total: number = 0;
+  error: string = '';
+}
+
+class DownloadQueueRaw {
+  paused: boolean = false;
+  tasks: DownloadTaskRaw[] = [];
+}
+
 // 下载服务（对齐 Mihon DownloadManager 的精简版）
 // 存储布局: {filesDir}/downloads/{mangaId}/{chapterId}/000.jpg ... + done.mark
 export class DownloadService {
   private static rootDir: string = '';
+  private static queueFile: string = '';
   private static context: common.UIAbilityContext | undefined = undefined;
   private static queue: DownloadTask[] = [];
   private static running: boolean = false;
@@ -21,16 +48,45 @@ export class DownloadService {
   private static doneIds: Set<number> | undefined = undefined;
   // 当前正在 process 的任务（deleteChapter 等待其退出用）
   private static activeTask: DownloadTask | undefined = undefined;
+  // DATA_TRANSFER 长时任务：下载期间防真机锁屏/切后台进程被挂起导致下载永久卡住。
+  // 系统要求通过实况窗持续更新进度（进度超过10分钟未更新会被系统取消），30秒心跳兜底
+  private static bgTaskId: number = -1;
+  private static bgNotifId: number = -1;
+  private static bgRequesting: boolean = false;
+  private static bgHeartbeat: number = -1;
+  private static bgLastPct: number = -1;
+  private static bgCancelBound: boolean = false;
+
+  // 长时任务被用户移除通知/系统取消时重置状态，下个任务开始时重新申请
+  private static onBgTaskCancel = (info: backgroundTaskManager.ContinuousTaskCancelInfo): void => {
+    if (DownloadService.bgTaskId >= 0 && info.id === DownloadService.bgTaskId) {
+      DownloadService.resetBgTask();
+    }
+  };
 
   static init(context: common.UIAbilityContext): void {
     DownloadService.context = context;
     DownloadService.rootDir = `${context.filesDir}/downloads`;
+    DownloadService.queueFile = `${context.filesDir}/download_queue.json`;
     try {
       if (!fileIo.accessSync(DownloadService.rootDir)) {
         fileIo.mkdirSync(DownloadService.rootDir, true);
       }
     } catch (e) {
       throw new Error(`init download dir failed: ${e}`);
+    }
+    if (!DownloadService.bgCancelBound) {
+      DownloadService.bgCancelBound = true;
+      try {
+        backgroundTaskManager.on('continuousTaskCancel', DownloadService.onBgTaskCancel);
+      } catch (e) {
+        hilog.warn(0x0001, 'Download', 'bind continuousTaskCancel failed: %{public}s', `${e}`);
+      }
+    }
+    // 重启恢复持久化队列并自动续传（未暂停时）
+    DownloadService.loadQueue();
+    if (!DownloadService.paused) {
+      DownloadService.pump();
     }
   }
 
@@ -65,6 +121,7 @@ export class DownloadService {
     }
     task.state = 0;
     DownloadService.queue.push(task);
+    DownloadService.persistQueue();
     DownloadService.notify();
     DownloadService.pump();
   }
@@ -88,11 +145,13 @@ export class DownloadService {
       DownloadService.activeCancel();
     }
     DownloadService.queue = DownloadService.queue.filter((t: DownloadTask) => t.state !== 3);
+    DownloadService.persistQueue();
     DownloadService.notify();
   }
 
   static clearFinished(): void {
     DownloadService.queue = DownloadService.queue.filter((t: DownloadTask) => t.state !== 2 && t.state !== 3);
+    DownloadService.persistQueue();
     DownloadService.notify();
   }
 
@@ -112,6 +171,7 @@ export class DownloadService {
       DownloadService.activeCancel();
     }
     DownloadService.queue = [];
+    DownloadService.persistQueue();
     DownloadService.notify();
   }
 
@@ -122,6 +182,7 @@ export class DownloadService {
         return asc ? a.chapterId - b.chapterId : b.chapterId - a.chapterId;
       });
     DownloadService.queue = sorted;
+    DownloadService.persistQueue();
     DownloadService.notify();
   }
 
@@ -144,16 +205,19 @@ export class DownloadService {
       next.push(t);
     });
     DownloadService.queue = next;
+    DownloadService.persistQueue();
   }
 
   // 暂停：当前任务继续跑完，不再启动新任务
   static pauseAll(): void {
     DownloadService.paused = true;
+    DownloadService.persistQueue();
     DownloadService.notify();
   }
 
   static resumeAll(): void {
     DownloadService.paused = false;
+    DownloadService.persistQueue();
     DownloadService.notify();
     DownloadService.pump();
   }
@@ -170,6 +234,7 @@ export class DownloadService {
     }
     DownloadService.queue = DownloadService.queue.filter((t: DownloadTask) => t !== task);
     DownloadService.queue.unshift(task);
+    DownloadService.persistQueue();
     DownloadService.notify();
   }
 
@@ -180,6 +245,7 @@ export class DownloadService {
     }
     DownloadService.queue = DownloadService.queue.filter((t: DownloadTask) => t !== task);
     DownloadService.queue.push(task);
+    DownloadService.persistQueue();
     DownloadService.notify();
   }
 
@@ -192,6 +258,7 @@ export class DownloadService {
         t.error = '';
       }
     }
+    DownloadService.persistQueue();
     DownloadService.notify();
     DownloadService.pump();
   }
@@ -355,6 +422,7 @@ export class DownloadService {
       DownloadService.doneIds.delete(chapterId);
     }
     DownloadService.queue = DownloadService.queue.filter((t: DownloadTask) => t.chapterId !== chapterId);
+    DownloadService.persistQueue();
     DownloadService.notify();
   }
 
@@ -410,12 +478,15 @@ export class DownloadService {
     if (next === undefined) {
       return;
     }
+    DownloadService.ensureBgTask();
     DownloadService.running = true;
     DownloadService.activeTask = next;
     DownloadService.process(next).then(() => {
       DownloadService.running = false;
       DownloadService.activeTask = undefined;
       DownloadService.activeCancel = undefined;
+      DownloadService.persistQueue();
+      DownloadService.releaseBgTaskIfIdle();
       DownloadService.notify();
       DownloadService.pump();
     }).catch((e: Error) => {
@@ -423,6 +494,8 @@ export class DownloadService {
       DownloadService.running = false;
       DownloadService.activeTask = undefined;
       DownloadService.activeCancel = undefined;
+      DownloadService.persistQueue();
+      DownloadService.releaseBgTaskIfIdle();
       DownloadService.notify();
       DownloadService.pump();
     });
@@ -439,6 +512,7 @@ export class DownloadService {
       task.error = 'download_cancelled';
     };
     DownloadService.notify();
+    DownloadService.publishBgProgress(true);
     try {
       const source = SourceRegistry.get(task.sourceKey);
       if (source === undefined) {
@@ -460,13 +534,12 @@ export class DownloadService {
       DownloadService.notify();
       const imageHeaders = source.imageRequestHeaders();
       const dir = DownloadService.chapterDir(task.mangaId, task.chapterId);
-      // 上次失败残留的部分页文件会被误判为已完成，先清理保证从头下载
-      if (fileIo.accessSync(dir) && !fileIo.accessSync(`${dir}/done.mark`)) {
-        DownloadService.rmdir(dir);
-      }
       if (!fileIo.accessSync(dir)) {
         fileIo.mkdirSync(dir, true);
       }
+      // 残留 .tmp 是上次进程被杀/取消时的半截文件；正式页文件经原子写必然完整，
+      // 已存在的页直接跳过实现断点续传
+      DownloadService.cleanTmpFiles(dir);
       for (const p of pages) {
         if (task.state === 3) {
           throw new Error('download_cancelled');
@@ -475,16 +548,14 @@ export class DownloadService {
         const filePath = `${dir}/${fileName}.jpg`;
         if (!fileIo.accessSync(filePath)) {
           const buffer = await Http.getBuffer(p.url, imageHeaders);
-          const fd = fileIo.openSync(filePath, fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE).fd;
-          try {
-            fileIo.writeSync(fd, buffer);
-          } finally {
-            fileIo.closeSync(fd);
-          }
+          DownloadService.writePageFile(filePath, buffer);
         }
         task.progress += 1;
         DownloadService.notify();
+        DownloadService.publishBgProgress(false);
       }
+      // 页列表比上次短时清理超出的多余编号页，避免旧图混入本地阅读
+      DownloadService.removeStalePages(dir, pages.length);
       const markFd = fileIo.openSync(`${dir}/done.mark`,
         fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE).fd;
       fileIo.closeSync(markFd);
@@ -500,7 +571,7 @@ export class DownloadService {
     } catch (e) {
       task.state = 3;
       task.error = e instanceof Error ? e.message : 'download_failed';
-      // 失败/取消时清理部分下载文件，保证重试从头开始
+      // 失败/取消仅清理半截 .tmp 文件，已完整落盘的页保留供重试/重启续传
       DownloadService.cleanupPartial(task.mangaId, task.chapterId);
     }
   }
@@ -582,6 +653,9 @@ export class DownloadService {
         task.total = total;
         DownloadService.notify();
       }
+      // 视频任务 total/progress 为字节数：同步已接收字节数供进度条与实况窗百分比使用
+      task.progress = received;
+      DownloadService.publishBgProgress(false);
     });
     try {
       await handle.promise;
@@ -605,15 +679,63 @@ export class DownloadService {
     }
   }
 
-  // 清理未完成章节的部分下载文件（无 done.mark 时整目录删除，重试从头开始）
+  // 失败/取消时清理章节内的半截 .tmp 文件（完整页文件保留，供续传）
   private static cleanupPartial(mangaId: number, chapterId: number): void {
     if (DownloadService.rootDir === '') {
       return;
     }
     const dir = DownloadService.chapterDir(mangaId, chapterId);
+    DownloadService.cleanTmpFiles(dir);
+  }
+
+  // 原子写单页：先写 .tmp 再改名落位，进程任意时刻被杀都不会留下半截正式页文件，
+  // 从而重启后可按"文件存在即完整"安全断点续传
+  private static writePageFile(path: string, buffer: ArrayBuffer): void {
+    const tmp = `${path}.tmp`;
+    const fd = fileIo.openSync(tmp,
+      fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE | fileIo.OpenMode.TRUNC).fd;
     try {
-      if (fileIo.accessSync(dir) && !fileIo.accessSync(`${dir}/done.mark`)) {
-        DownloadService.rmdir(dir);
+      fileIo.writeSync(fd, buffer);
+    } finally {
+      fileIo.closeSync(fd);
+    }
+    if (fileIo.accessSync(path)) {
+      fileIo.unlinkSync(path);
+    }
+    fileIo.renameSync(tmp, path);
+  }
+
+  // 清理目录内残留的半截 .tmp 文件
+  private static cleanTmpFiles(dir: string): void {
+    try {
+      if (!fileIo.accessSync(dir)) {
+        return;
+      }
+      const files = fileIo.listFileSync(dir);
+      for (const f of files) {
+        if (f.endsWith('.tmp')) {
+          fileIo.unlinkSync(`${dir}/${f}`);
+        }
+      }
+    } catch (e) {
+    }
+  }
+
+  // 删除编号超出当前页数的旧页文件（页列表缩短场景，避免旧图混入）
+  private static removeStalePages(dir: string, pageCount: number): void {
+    try {
+      if (!fileIo.accessSync(dir)) {
+        return;
+      }
+      const files = fileIo.listFileSync(dir);
+      for (const f of files) {
+        if (!f.endsWith('.jpg')) {
+          continue;
+        }
+        const idx = parseInt(f.substring(0, f.length - 4), 10);
+        if (!Number.isNaN(idx) && idx >= pageCount) {
+          fileIo.unlinkSync(`${dir}/${f}`);
+        }
       }
     } catch (e) {
     }
@@ -629,6 +751,254 @@ export class DownloadService {
       out = `0${out}`;
     }
     return out;
+  }
+
+  // ---------------- DATA_TRANSFER 长时任务（真机锁屏/后台续传） ----------------
+
+  // 队列有任务要执行时申请 DATA_TRANSFER 长时任务（API 21+ 多任务接口，与听书 AUDIO_PLAYBACK 互不影响）
+  private static ensureBgTask(): void {
+    if (DownloadService.bgTaskId >= 0 || DownloadService.bgRequesting) {
+      return;
+    }
+    const ctx = DownloadService.context;
+    if (ctx === undefined) {
+      return;
+    }
+    DownloadService.bgRequesting = true;
+    const info: wantAgent.WantAgentInfo = {
+      wants: [
+        {
+          bundleName: ctx.abilityInfo.bundleName,
+          abilityName: ctx.abilityInfo.name
+        }
+      ],
+      operationType: wantAgent.OperationType.START_ABILITY,
+      requestCode: 0
+    };
+    wantAgent.getWantAgent(info).then((agent: WantAgent): Promise<backgroundTaskManager.ContinuousTaskNotification> => {
+      const req = new backgroundTaskManager.ContinuousTaskRequest();
+      req.backgroundTaskModes = [backgroundTaskManager.BackgroundTaskMode.MODE_DATA_TRANSFER];
+      req.backgroundTaskSubmodes = [backgroundTaskManager.BackgroundTaskSubmode.SUBMODE_LIVE_VIEW_NOTIFICATION];
+      req.wantAgent = agent;
+      return backgroundTaskManager.startBackgroundRunning(ctx, req);
+    }).then((res: backgroundTaskManager.ContinuousTaskNotification): void => {
+      DownloadService.bgRequesting = false;
+      if (res.continuousTaskId === undefined) {
+        hilog.warn(0x0001, 'Download', 'dataTransfer task created without id');
+        return;
+      }
+      DownloadService.bgTaskId = res.continuousTaskId;
+      DownloadService.bgNotifId = res.notificationId;
+      DownloadService.startBgHeartbeat();
+      // 通知授权未开时实况窗进度更新会失败（任务10分钟后被系统取消），前台弹授权引导
+      notificationManager.isNotificationEnabled().then((enabled: boolean): void => {
+        if (enabled) {
+          return;
+        }
+        notificationManager.requestEnableNotification().catch((_e: BusinessError): void => {
+        });
+      }).catch((_e: BusinessError): void => {
+      });
+      DownloadService.publishBgProgress(true);
+    }).catch((e: BusinessError): void => {
+      DownloadService.bgRequesting = false;
+      hilog.warn(0x0001, 'Download', 'request dataTransfer task failed: %{public}d %{public}s', e.code, e.message);
+    });
+  }
+
+  // 队列再无排队/进行中任务时按 id 定点撤销长时任务（不影响听书等其他长时任务）
+  private static releaseBgTaskIfIdle(): void {
+    for (const t of DownloadService.queue) {
+      if (t.state === 0 || t.state === 1) {
+        return;
+      }
+    }
+    const ctx = DownloadService.context;
+    const taskId = DownloadService.bgTaskId;
+    DownloadService.resetBgTask();
+    if (ctx === undefined || taskId < 0) {
+      return;
+    }
+    backgroundTaskManager.stopBackgroundRunning(ctx, taskId).catch((e: BusinessError): void => {
+      hilog.warn(0x0001, 'Download', 'stop dataTransfer task failed: %{public}d %{public}s', e.code, e.message);
+    });
+  }
+
+  private static resetBgTask(): void {
+    if (DownloadService.bgHeartbeat >= 0) {
+      clearInterval(DownloadService.bgHeartbeat);
+      DownloadService.bgHeartbeat = -1;
+    }
+    DownloadService.bgTaskId = -1;
+    DownloadService.bgNotifId = -1;
+    DownloadService.bgLastPct = -1;
+  }
+
+  // 实况窗进度心跳：DATA_TRANSFER 要求持续更新进度，30秒兜底刷新防止任务被系统取消
+  private static startBgHeartbeat(): void {
+    if (DownloadService.bgHeartbeat >= 0) {
+      return;
+    }
+    DownloadService.bgHeartbeat = setInterval((): void => {
+      DownloadService.publishBgProgress(true);
+    }, 30000);
+  }
+
+  // 以长时任务返回的通知 id 更新实况窗下载进度（downloadTemplate）；
+  // force=true 跳过百分比去重，供心跳续期与新章节标题刷新使用
+  private static publishBgProgress(force: boolean): void {
+    if (DownloadService.bgNotifId < 0) {
+      return;
+    }
+    const task = DownloadService.queue.find((t: DownloadTask): boolean => t.state === 1);
+    if (task === undefined) {
+      return;
+    }
+    let pct = 0;
+    if (task.total > 0) {
+      pct = Math.floor(task.progress * 100 / task.total);
+      // 完成态由任务结束后的长时任务撤销清理，进度环不提前消失
+      if (pct > 99) {
+        pct = 99;
+      }
+    }
+    if (!force && pct === DownloadService.bgLastPct) {
+      return;
+    }
+    DownloadService.bgLastPct = pct;
+    const template: notificationManager.NotificationTemplate = {
+      name: 'downloadTemplate',
+      data: {
+        'title': task.mangaTitle,
+        'fileName': task.chapterName,
+        'progressValue': pct
+      }
+    };
+    const request: notificationManager.NotificationRequest = {
+      id: DownloadService.bgNotifId,
+      content: {
+        notificationContentType: notificationManager.ContentType.NOTIFICATION_CONTENT_SYSTEM_LIVE_VIEW,
+        systemLiveView: {
+          typeCode: 8,
+          title: task.mangaTitle,
+          text: task.chapterName
+        }
+      },
+      notificationSlotType: notificationManager.SlotType.LIVE_VIEW,
+      template: template
+    };
+    notificationManager.publish(request).catch((e: BusinessError): void => {
+      hilog.warn(0x0001, 'Download', 'publish live view progress failed: %{public}d %{public}s', e.code, e.message);
+    });
+  }
+
+  // ---------------- 队列持久化（关闭应用后重开继续下载） ----------------
+
+  // 队列/暂停态变更时原子落盘；完成态任务不持久化（done.mark 为准）
+  private static persistQueue(): void {
+    const file = DownloadService.queueFile;
+    if (file === '') {
+      return;
+    }
+    try {
+      const raw = new DownloadQueueRaw();
+      raw.paused = DownloadService.paused;
+      for (const t of DownloadService.queue) {
+        if (t.state === 2) {
+          continue;
+        }
+        const r = new DownloadTaskRaw();
+        r.mangaId = t.mangaId;
+        r.mangaTitle = t.mangaTitle;
+        r.chapterId = t.chapterId;
+        r.chapterName = t.chapterName;
+        r.sourceKey = t.sourceKey;
+        r.mangaUrl = t.mangaUrl;
+        r.chapterUrl = t.chapterUrl;
+        r.state = t.state;
+        r.progress = t.progress;
+        r.total = t.total;
+        r.error = t.error;
+        raw.tasks.push(r);
+      }
+      const tmp = `${file}.tmp`;
+      const fd = fileIo.openSync(tmp,
+        fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE | fileIo.OpenMode.TRUNC).fd;
+      try {
+        fileIo.writeSync(fd, JSON.stringify(raw));
+      } finally {
+        fileIo.closeSync(fd);
+      }
+      if (fileIo.accessSync(file)) {
+        fileIo.unlinkSync(file);
+      }
+      fileIo.renameSync(tmp, file);
+    } catch (e) {
+      hilog.warn(0x0001, 'Download', 'persist queue failed: %{public}s', `${e}`);
+    }
+  }
+
+  // 启动时恢复持久化队列：下载中(1)重新排队，失败(3)保留可重试；
+  // 已有 done.mark 的任务丢弃（完成态以磁盘为准）
+  private static loadQueue(): void {
+    const file = DownloadService.queueFile;
+    if (file === '') {
+      return;
+    }
+    try {
+      if (!fileIo.accessSync(file)) {
+        return;
+      }
+      const stat = fileIo.statSync(file);
+      if (stat.size <= 0) {
+        return;
+      }
+      let text = '';
+      const fd = fileIo.openSync(file, fileIo.OpenMode.READ_ONLY).fd;
+      try {
+        const buf = new ArrayBuffer(stat.size);
+        fileIo.readSync(fd, buf);
+        text = util.TextDecoder.create('utf-8').decodeToString(new Uint8Array(buf));
+      } finally {
+        fileIo.closeSync(fd);
+      }
+      const raw = JSON.parse(text) as DownloadQueueRaw;
+      if (raw === null || typeof raw !== 'object' || !Array.isArray(raw.tasks)) {
+        return;
+      }
+      DownloadService.paused = raw.paused === true;
+      const restored: DownloadTask[] = [];
+      for (const r of raw.tasks) {
+        if (typeof r.chapterId !== 'number' || typeof r.sourceKey !== 'string' ||
+          typeof r.chapterUrl !== 'string' || r.chapterUrl === '') {
+          continue;
+        }
+        if (DownloadService.isDownloaded(r.chapterId)) {
+          continue;
+        }
+        const t = new DownloadTask();
+        t.mangaId = typeof r.mangaId === 'number' ? r.mangaId : 0;
+        t.mangaTitle = typeof r.mangaTitle === 'string' ? r.mangaTitle : '';
+        t.chapterId = r.chapterId;
+        t.chapterName = typeof r.chapterName === 'string' ? r.chapterName : '';
+        t.sourceKey = r.sourceKey;
+        t.mangaUrl = typeof r.mangaUrl === 'string' ? r.mangaUrl : '';
+        t.chapterUrl = r.chapterUrl;
+        t.state = r.state === 3 ? 3 : 0;
+        t.progress = typeof r.progress === 'number' ? r.progress : 0;
+        t.total = typeof r.total === 'number' ? r.total : 0;
+        t.error = t.state === 3 && typeof r.error === 'string' ? r.error : '';
+        restored.push(t);
+      }
+      DownloadService.queue = restored;
+      if (restored.length > 0) {
+        hilog.info(0x0001, 'Download', 'restored %{public}d queue tasks, paused=%{public}s',
+          restored.length, `${DownloadService.paused}`);
+      }
+      DownloadService.notify();
+    } catch (e) {
+      hilog.warn(0x0001, 'Download', 'load queue failed: %{public}s', `${e}`);
+    }
   }
 
   // 单次目录遍历构建 done.mark 索引
