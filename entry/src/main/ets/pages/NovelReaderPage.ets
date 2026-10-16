@@ -36,7 +36,6 @@ import {
   SPINE_W
 } from './components/novel/NovelPaginator';
 import { readTextAutoAsync } from '../common/bookparser/TextLoadTasks';
-import { isHdsRuntimeAvailable } from '../common/HdsSupport';
 import { NovelModeSheet } from './components/novel/NovelModeSheet';
 import { NovelDisplayPanel } from './components/novel/NovelDisplayPanel';
 import { NovelTextPanel } from './components/novel/NovelTextPanel';
@@ -153,8 +152,6 @@ export struct NovelReaderPage {
   @State halfTilt: number = 0;
   // 本次翻页的抓取纵向位置（0 顶部 ~ 1 底部，相对正文区），决定卷曲弓高与倾斜方向
   private flipGrabY: number = 0.5;
-  // HDS 运行时可用性：不可用（预览器等）时不实例化 ReaderHdsHost，直接渲染正文（无浮动底栏）
-  private hdsAvailable: boolean = isHdsRuntimeAvailable();
   private mangaId: number = -1;
   private chapterId: number = -1;
   private scroller: Scroller = new Scroller();
@@ -750,26 +747,22 @@ export struct NovelReaderPage {
 
   build() {
     NavDestination() {
-      if (this.hdsAvailable) {
-        // HDS 沉浸宿主：设置行挂入页签栏胶囊、进度行挂入迷你栏胶囊，
-        // 垂直堆叠为两块独立玻璃；showMenu 开合驱动官方显隐动效
-        ReaderHdsHost({
-          barsVisible: this.showMenu,
-          barBottomMargin: Math.max(this.navBarH, 12),
-          barWidth: 328,
-          content: (): void => {
-            this.readerBody();
-          },
-          progressBar: (): void => {
-            this.menuNavRow();
-          },
-          settingsBar: (): void => {
-            this.menuSettingsRow();
-          }
-        })
-      } else {
-        this.readerBody()
-      }
+      // HDS 沉浸宿主：设置行挂入页签栏胶囊、进度行挂入迷你栏胶囊，
+      // 垂直堆叠为两块独立玻璃；showMenu 开合驱动官方显隐动效
+      ReaderHdsHost({
+        barsVisible: this.showMenu,
+        barBottomMargin: Math.max(this.navBarH, 12),
+        barWidth: 328,
+        content: (): void => {
+          this.readerBody();
+        },
+        progressBar: (): void => {
+          this.menuNavRow();
+        },
+        settingsBar: (): void => {
+          this.menuSettingsRow();
+        }
+      })
     }
     .hideTitleBar(true)
     .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
@@ -796,8 +789,7 @@ export struct NovelReaderPage {
     })
   }
 
-  // 阅读器主体（内容 + 菜单 + Sheet 宿主）：HDS 路径装入 ReaderHdsHost 唯一 TabContent，
-  // 无 HDS 运行时直接渲染（无浮动底栏）
+  // 阅读器主体（内容 + 菜单 + Sheet 宿主）：装入 ReaderHdsHost 唯一 TabContent
   @Builder
   readerBody() {
     Stack({ alignContent: Alignment.BottomEnd }) {

@@ -2,7 +2,7 @@ import { fileIo as fs } from '@kit.CoreFileKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AnimatorOptions, AnimatorResult, curves } from '@kit.ArkUI';
 import { webview } from '@kit.ArkWeb';
-import { HdsAnimationMode, hdsMaterial, HdsTabs, HdsTabsController, HdsTabsMiniBar } from '@kit.UIDesignKit';
+import { HdsTabsHost, HdsTabsHostController, HdsTabsHostMiniBar } from '../common/HdsTabsHost';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Settings } from '../common/Settings';
@@ -15,7 +15,6 @@ import { AppKeys } from '../common/AppKeys';
 import { CookieJar } from '../net/CookieJar';
 import { CoverStore } from '../common/CoverStore';
 import { TtsPlaybackService, TtsServiceStateHandler } from '../common/TtsPlaybackService';
-import { isHdsRuntimeAvailable } from '../common/HdsSupport';
 import { LibraryPage } from './LibraryPage';
 import { UpdatesPage } from './UpdatesPage';
 import { HistoryPage } from './HistoryPage';
@@ -403,12 +402,7 @@ struct Index {
   private onboardingLaunched: boolean = false;
   // 返回首页兜底同步的 450ms 延迟定时器：销毁时清理，防对已销毁组件执行 animateTo
   private navSyncTimerId: number = -1;
-  private tabsController: HdsTabsController = new HdsTabsController();
-  // 无 HDS 运行时环境（预览器）的标准 Tabs 回退控制器
-  private fallbackTabsController: TabsController = new TabsController();
-  // HDS 组件（@kit.UIDesignKit）由系统 HDS 运行时注册，预览器环境 HdsTabs 为 null；
-  // 探测失败时回退标准 Tabs，保证预览器可正常渲染（真机走 HdsTabs 不变）
-  private hdsAvailable: boolean = isHdsRuntimeAvailable();
+  private tabsController: HdsTabsHostController = new HdsTabsHostController();
 
   aboutToAppear(): void {
     this.currentTab = Settings.getStartTab();
@@ -726,46 +720,20 @@ struct Index {
         Stack({ alignContent: Alignment.TopStart }) {
           if (this.isWide()) {
             this.wideContent()
-          } else if (this.hdsAvailable) {
-            HdsTabs({ barPosition: BarPosition.End, index: this.currentTab, controller: this.tabsController }) {
-              this.phoneTabContents()
-            }
-            .scrollable(true)
-            .barOverlap(true)
-            .barPosition(BarPosition.End)
-            .vertical(false)
-            .barFloatingStyle({
-              // PC 无小白条避让区（navBarH=0）时钳制最小窗口底边距，避免页签条贴边
-              barBottomMargin: Math.max(this.navBarH + 2, 8),
-              systemMaterialEffect: {
-                materialType: hdsMaterial.MaterialType.IMMERSIVE,
-                materialLevel: hdsMaterial.MaterialLevel.ADAPTIVE
-              },
-              // 听书迷你条（对齐 MusicHome）：听书进行中由 HDS 绘制胶囊背景，
-              // 与浮动页签条堆叠悬浮于导航条上方（barBottomMargin 控制）
-              miniBar: this.ttsMiniBarOptions()
-            })
-            // onSelected 在切换动画开始时触发，让图标动画与 Mihon 一样即刻起播（onChange 在切换完成后才触发）
-            .onSelected((index: number) => {
-              this.currentTab = index;
-            })
-            .onChange((index: number) => {
-              this.currentTab = index;
-            })
-            .width('100%')
-            .height('100%')
           } else {
-            // 无 HDS 运行时（预览器等）：回退标准 Tabs，保证页面可渲染
-            Tabs({ barPosition: BarPosition.End, index: this.currentTab, controller: this.fallbackTabsController }) {
+            // 手机端 HDS 沉浸浮动页签栏（预览器由 src/mock 的标准 Tabs Mock 等效渲染）
+            HdsTabsHost({
+              index: this.currentTab,
+              scrollable: true,
+              barBottomMargin: Math.max(this.navBarH + 2, 8),
+              controller: this.tabsController,
+              miniBar: this.ttsMiniBarOptions(),
+              onTabChange: (index: number): void => {
+                this.currentTab = index;
+              }
+            }) {
               this.phoneTabContents()
             }
-            .scrollable(true)
-            .vertical(false)
-            .onChange((index: number) => {
-              this.currentTab = index;
-            })
-            .width('100%')
-            .height('100%')
           }
           // 听书迷你条（PC/宽屏无底部页签条）：MusicHome 风格胶囊悬于右下角
           // （28 圆角 + 1px 描边 + 卡片底色，无阴影）
@@ -925,15 +893,15 @@ struct Index {
     }
   }
 
-  // 进入多选隐藏页签栏，退出多选恢复（HdsTabsController 官方隐藏/显示动效）；宽屏侧边栏常驻不参与
+  // 进入多选隐藏页签栏，退出多选恢复（官方隐藏/显示动效）；宽屏侧边栏常驻不参与
   private onLibSelectionChanged(): void {
-    if (this.isWide() || !this.hdsAvailable) {
+    if (this.isWide()) {
       return;
     }
     if (this.libSelectionCount > 0) {
-      this.tabsController.applyHideAnimation(HdsAnimationMode.CLICK_ANIMATION);
+      this.tabsController.applyHideAnimation();
     } else {
-      this.tabsController.applyShowAnimation(HdsAnimationMode.CLICK_ANIMATION);
+      this.tabsController.applyShowAnimation();
     }
   }
 
@@ -1115,12 +1083,12 @@ struct Index {
   }
 
   // 听书未进行时不配置 miniBar，避免空胶囊
-  private ttsMiniBarOptions(): HdsTabsMiniBar | undefined {
+  private ttsMiniBarOptions(): HdsTabsHostMiniBar | undefined {
     if (!this.ttsActive) {
       return undefined;
     }
     return {
-      miniBarBuilder: (): void => {
+      builder: (): void => {
         this.ttsMiniBar();
       }
     };

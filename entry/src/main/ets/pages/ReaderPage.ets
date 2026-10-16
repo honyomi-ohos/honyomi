@@ -14,7 +14,6 @@ import { Settings } from '../common/Settings';
 import { GripSupport } from '../common/GripSupport';
 import { ReaderWindow } from '../common/ReaderWindow';
 import { ChapterNeighbors, ReaderChapterNav } from '../common/ReaderChapterNav';
-import { isHdsRuntimeAvailable } from '../common/HdsSupport';
 import { DownloadService } from '../data/DownloadService';
 import { TrackService } from '../data/track/TrackService';
 import { SmartImage } from './components/SmartImage';
@@ -132,8 +131,6 @@ export struct ReaderPage {
   // 设备是否支持智感握姿（不支持则隐藏该模式选项）
   @State gripSupported: boolean = true;
   private gripListening: boolean = false;
-  // HDS 运行时可用性：不可用（预览器等）时不实例化 ReaderHdsHost，直接渲染正文（无浮动底栏）
-  private hdsAvailable: boolean = isHdsRuntimeAvailable();
   private dataSource: PageDataSource = new PageDataSource();
   private scroller: Scroller = new Scroller();
   private touchDownX: number = -1;
@@ -590,26 +587,22 @@ export struct ReaderPage {
 
   build() {
     NavDestination() {
-      if (this.hdsAvailable) {
-        // HDS 沉浸宿主：设置行挂入页签栏胶囊、进度行挂入迷你栏胶囊，
-        // 垂直堆叠为两块独立玻璃；showMenu 开合驱动官方显隐动效
-        ReaderHdsHost({
-          barsVisible: this.showMenu,
-          barBottomMargin: Math.max(this.navBarH, 12),
-          barWidth: 328,
-          content: (): void => {
-            this.readerBody();
-          },
-          progressBar: (): void => {
-            this.menuNavRow();
-          },
-          settingsBar: (): void => {
-            this.menuSettingsRow();
-          }
-        })
-      } else {
-        this.readerBody()
-      }
+      // HDS 沉浸宿主：设置行挂入页签栏胶囊、进度行挂入迷你栏胶囊，
+      // 垂直堆叠为两块独立玻璃；showMenu 开合驱动官方显隐动效
+      ReaderHdsHost({
+        barsVisible: this.showMenu,
+        barBottomMargin: Math.max(this.navBarH, 12),
+        barWidth: 328,
+        content: (): void => {
+          this.readerBody();
+        },
+        progressBar: (): void => {
+          this.menuNavRow();
+        },
+        settingsBar: (): void => {
+          this.menuSettingsRow();
+        }
+      })
     }
     .hideTitleBar(true)
     .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
@@ -635,8 +628,7 @@ export struct ReaderPage {
     })
   }
 
-  // 阅读器主体（内容 + 菜单 + Sheet 宿主）：HDS 路径装入 ReaderHdsHost 唯一 TabContent，
-  // 无 HDS 运行时直接渲染（无浮动底栏）
+  // 阅读器主体（内容 + 菜单 + Sheet 宿主）：装入 ReaderHdsHost 唯一 TabContent
   @Builder
   readerBody() {
     Stack({ alignContent: Alignment.BottomEnd }) {

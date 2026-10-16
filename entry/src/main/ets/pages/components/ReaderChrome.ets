@@ -1,23 +1,12 @@
 // 阅读器共享 Chrome 组件（Wave 3I 从 ReaderPage / NovelReaderPage 抽出）：
 // 菜单骨架（顶栏+占位）、HDS 沉浸宿主、章节导航行、页码胶囊、指示徽标、方向 Sheet、滤镜容器。
 // 样式与两页原实现逐行一致，行为不变。
-import { hilog } from '@kit.PerformanceAnalysisKit';
-import {
-  DividerMode,
-  HdsAnimationMode,
-  HdsBarLayoutMode,
-  HdsBarStyle,
-  HdsTabs,
-  HdsTabsBarChangeMode,
-  HdsTabsController,
-  hdsMaterial
-} from '@kit.UIDesignKit';
+import { HdsTabsHost, HdsTabsHostController, HdsTabsHostMiniBar } from '../../common/HdsTabsHost';
 import { AppIcon, AppIconRes } from './AppIcon';
 import { PickerSheet } from './PickerSheet';
 
-// HDS 可用性探测在 common/HdsSupport（首页/阅读器共用）：
-// 无 HDS 运行时（预览器等）时由各阅读页 if/else 降级——不实例化 ReaderHdsHost
-// （HdsTabs 为 null 会原生崩溃），直接渲染正文（无浮动底栏）；真机走 HdsTabs 浮动胶囊路径。
+// HDS 沉浸宿主由 common/HdsTabsHost 统一承载（全项目唯一 @kit.UIDesignKit 导入点）；
+// 预览器经 src/mock/HdsTabsHost.mock.ets 等效渲染（标准 Tabs），生产包不含 Mock。
 
 // 屏幕方向的可选值（与方向选择 sheet 选项一一对应，两阅读器共用）
 export const READER_ORIENTATIONS: string[] =
@@ -104,15 +93,14 @@ export struct ReaderMenu {
   }
 }
 
-// 阅读器 HDS 沉浸宿主（对齐首页 HdsTabs 浮动页签栏实现）：
-// 单个 HdsTabs 挂两块独立浮动玻璃胶囊，barLayoutMode VERTICAL 垂直上下堆叠——
+// 阅读器 HDS 沉浸宿主（对齐首页浮动页签栏实现）：
+// HdsTabsHost 挂两块独立浮动玻璃胶囊，垂直上下堆叠——
 // 迷你栏（miniBar）= 进度行（上排胶囊），页签栏（tabBar）= 设置行（下排胶囊）。
 // VERTICAL 布局（6.1.1(24)+）不受窄屏(<440vp)“迷你栏展开联动折叠页签栏”规则约束
 // （该规则仅适用左右布局场景）；两栏均以 EXPAND 常驻展开。
 // 玻璃胶囊与沉浸材质由 HDS 绘制（systemMaterialEffect IMMERSIVE/ADAPTIVE，
 // 系统按需 colorInvert 保证前景可读）。
-// barsVisible 驱动 HdsTabsController 官方显隐动效（对齐首页多选显隐用法）；
-// 栏样式/动效回调经 hilog 输出，用于验证 VERTICAL 运行时行为。
+// barsVisible 驱动官方显隐动效（对齐首页多选显隐用法）。
 @Component
 export struct ReaderHdsHost {
   // 菜单开合：true 显示浮动页签栏，false 隐藏（沉浸阅读）
@@ -128,13 +116,13 @@ export struct ReaderHdsHost {
   @BuilderParam progressBar: () => void = this.emptyBuilder;
   // 页签栏胶囊内容（设置行，下排）
   @BuilderParam settingsBar: () => void = this.emptyBuilder;
-  private controller: HdsTabsController = new HdsTabsController();
+  private controller: HdsTabsHostController = new HdsTabsHostController();
 
   aboutToAppear(): void {
     // 延迟到 HdsTabs 与控制器完成绑定后：菜单初始收起
     setTimeout(() => {
       if (!this.barsVisible) {
-        this.controller.applyHideAnimation(HdsAnimationMode.CLICK_ANIMATION);
+        this.controller.applyHideAnimation();
       }
     }, 0);
   }
@@ -142,9 +130,9 @@ export struct ReaderHdsHost {
   // 菜单开合 → 官方显隐动效（迷你栏+页签栏同步）
   onBarsVisibleChange(): void {
     if (this.barsVisible) {
-      this.controller.applyShowAnimation(HdsAnimationMode.CLICK_ANIMATION);
+      this.controller.applyShowAnimation();
     } else {
-      this.controller.applyHideAnimation(HdsAnimationMode.CLICK_ANIMATION);
+      this.controller.applyHideAnimation();
     }
   }
 
@@ -162,67 +150,38 @@ export struct ReaderHdsHost {
   }
 
   build() {
-    HdsTabs({ barPosition: BarPosition.End, controller: this.controller }) {
-      TabContent() {
-        this.content()
-      }
-      .tabBar(this.settingsTabItem())
-    }
-    .scrollable(false)
-    .barOverlap(true)
-    .barPosition(BarPosition.End)
-    .vertical(false)
-    // 胶囊高度显式数值：进度行 44vp / 设置行 48vp + 胶囊上下内边距；
-    // 'auto' 字符串 HDS 不识别（栏高回落 56vp 且浮动胶囊不绘制）
-    .barHeight(this.capsuleHeight)
-    // 关闭页签栏上方跟手分割线（阅读器无需）
-    .divider({ mode: DividerMode.NONE })
-    .barFloatingStyle({
-      barWidth: {
-        smallWidth: this.barWidth,
-        mediumWidth: this.barWidth,
-        largeWidth: this.barWidth
-      },
+    HdsTabsHost({
+      scrollable: false,
+      barHeight: this.capsuleHeight,
+      barWidth: this.barWidth,
       barBottomMargin: this.barBottomMargin,
-      systemMaterialEffect: {
-        materialType: hdsMaterial.MaterialType.IMMERSIVE,
-        materialLevel: hdsMaterial.MaterialLevel.ADAPTIVE
-      },
-      miniBar: {
-        // 箭头函数形式（对齐官方文档示例）：对象字面量内直接调用 @Builder 会被
-        // 编译器就地执行，内容发射进 Swiper 且浮动样式失效（实测 s22）
-        miniBarBuilder: (): void => {
-          this.progressMiniBar();
-        },
-        miniBarWidth: {
-          smallWidth: this.barWidth,
-          mediumWidth: this.barWidth,
-          largeWidth: this.barWidth
-        },
-        // 进度胶囊常驻展开（VERTICAL 下不受窄屏联动约束）
-        miniBarStyle: HdsBarStyle.EXPAND,
-        // 垂直上下布局：迷你栏（进度）在上、页签栏（设置）在下
-        barLayoutMode: HdsBarLayoutMode.VERTICAL,
-        // 栏样式/动效插桩：验证 VERTICAL 运行时实际布局与样式联动
-        onBarStyleChange: (miniBarStyle: HdsBarStyle, tabBarStyle: HdsBarStyle, miniBarWidth: number,
-          tabBarWidth: number, mode: HdsTabsBarChangeMode): void => {
-          hilog.info(0x0000, 'ReaderHds',
-            `onBarStyleChange mini=${miniBarStyle} tab=${tabBarStyle} miniW=${miniBarWidth}` +
-            ` tabW=${tabBarWidth} mode=${mode}`);
-        },
-        onMiniBarAnimationStart: (style: HdsBarStyle, width: number): void => {
-          hilog.info(0x0000, 'ReaderHds', `onMiniBarAnimationStart style=${style} width=${width}`);
-        },
-        onMiniBarAnimationEnd: (style: HdsBarStyle): void => {
-          hilog.info(0x0000, 'ReaderHds', `onMiniBarAnimationEnd style=${style}`);
-        },
-        onTabBarAnimationStart: (style: HdsBarStyle, width: number): void => {
-          hilog.info(0x0000, 'ReaderHds', `onTabBarAnimationStart style=${style} width=${width}`);
-        }
+      // 阅读器无需页签栏上方跟手分割线
+      dividerFollowScroll: false,
+      controller: this.controller,
+      miniBar: this.readerMiniBar(),
+      content: (): void => {
+        this.readerContent()
       }
     })
-    .width('100%')
-    .height('100%')
+  }
+
+  // 唯一 TabContent：正文（设置行挂页签栏胶囊，进度行挂迷你栏胶囊）
+  @Builder
+  readerContent() {
+    TabContent() {
+      this.content()
+    }
+    .tabBar(this.settingsTabItem())
+  }
+
+  // 迷你条配置：垂直堆叠常驻展开（进度行常驻展开，VERTICAL 下不受窄屏联动约束）
+  private readerMiniBar(): HdsTabsHostMiniBar {
+    return {
+      builder: (): void => {
+        this.progressMiniBar();
+      },
+      verticalLayout: true
+    };
   }
 
   @Builder

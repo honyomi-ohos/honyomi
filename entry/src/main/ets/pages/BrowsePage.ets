@@ -285,6 +285,8 @@ export struct BrowsePage {
   // 页签浮动条避让高度：宽屏无页签条时为 0（Index 按断点发布）
   @StorageProp('tabPadH') tabPadH: number = 76;
   @StorageProp('windowW') windowW: number = 0;
+  // 页签控制器：系统 tab 栏隐藏后由自定义标签行驱动切换
+  tabController: TabsController = new TabsController();
   @StorageProp('pluginsDirty') @Watch('onPluginsChanged') pluginsDirty: number = 0;
   // NSFW 源显示开关（浏览设置页写入 AppStorage）
   @StorageProp('showNsfw') showNsfw: boolean = false;
@@ -364,12 +366,10 @@ export struct BrowsePage {
         .fontColor(this.currentTab === index ? this.pal.primary : this.pal.text)
     }
     .height(44)
+    .layoutWeight(1)
     .justifyContent(FlexAlign.Center)
-    // 宽屏 Scrollable 模式下首个标签左内边距对齐限宽内容列左缘（与标题同行起点一致）；
-    // 窄屏 Fixed 均分对称内边距，文字居中位置不变
-    .padding({
-      left: index === 0 && this.windowW >= Bp.LG_MIN ? this.inset() + 16 : 10,
-      right: 10
+    .onClick(() => {
+      this.tabController.changeIndex(index);
     })
   }
 
@@ -697,12 +697,23 @@ export struct BrowsePage {
         bottom: 4
       })
 
-      // 三页签 + 可滑动内容
-      Tabs({ barPosition: BarPosition.Start, index: this.currentTab }) {
+      // 页签标签行：在限宽内容列内均分三份（对齐 Mihon TabRow），点击经控制器切换
+      Row() {
+        this.tabLabel($r('app.string.browse_tab_sources'), 0)
+        this.tabLabel($r('app.string.browse_tab_extensions'), 1)
+        this.tabLabel($r('app.string.browse_tab_migrate'), 2)
+      }
+      .width('100%')
+      .padding({
+        left: 16 + this.inset(),
+        right: 16 + this.inset()
+      })
+
+      // 三页签 + 可滑动内容（系统 tab 栏隐藏，标签由上方自定义行承载）
+      Tabs({ barPosition: BarPosition.Start, index: this.currentTab, controller: this.tabController }) {
         TabContent() {
           this.sourcesTabContent()
         }
-        .tabBar(this.tabLabel($r('app.string.browse_tab_sources'), 0))
 
         TabContent() {
           ExtensionListPanel({
@@ -714,21 +725,18 @@ export struct BrowsePage {
             },
           })
         }
-        .tabBar(this.tabLabel($r('app.string.browse_tab_extensions'), 1))
 
         TabContent() {
           this.migrateTabContent()
         }
-        .tabBar(this.tabLabel($r('app.string.browse_tab_migrate'), 2))
       }
+      .barHeight(0)
       .onChange((index: number) => {
         this.currentTab = index;
         if (index === 2) {
           this.loadMigrate();
         }
       })
-      // 宽屏标签自然宽度从左排布（配合首标签内边距对齐内容列），窄屏均分不变
-      .barMode(this.windowW >= Bp.LG_MIN ? BarMode.Scrollable : BarMode.Fixed)
       .layoutWeight(1)
       .width('100%')
     }

@@ -1,2 +1,6 @@
 {
+  // 预览器无 HDS 运行时：用标准 Tabs 等效 Mock 整体替换生产 HdsTabsHost 模块
+  "common/HdsTabsHost.ets": {
+    "source": "src/mock/HdsTabsHost.mock.ets"
+  }
 }

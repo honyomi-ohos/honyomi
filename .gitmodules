@@ -1,3 +1,9 @@
 [submodule "entry/src/main/cpp/third_party/lexbor"]
 	path = entry/src/main/cpp/third_party/lexbor
 	url = https://github.com/lexbor/lexbor
+[submodule "entry/src/main/cpp/third_party/avif/aom"]
+	path = entry/src/main/cpp/third_party/avif/aom
+	url = https://aomedia.googlesource.com/aom
+[submodule "entry/src/main/cpp/third_party/avif/libavif"]
+	path = entry/src/main/cpp/third_party/avif/libavif
+	url = https://github.com/AOMediaCodec/libavif
