@@ -54,15 +54,65 @@ add_library(lexbor STATIC
 target_include_directories(lexbor PUBLIC ${LEXBOR_ROOT})
 
 # ============================================================================
+# libavif (vendored v1.4.2) + libaom v3.15.2 + libjpeg-turbo 3.2.0 (prebuilt)
+# Native AVIF → JPEG conversion (decode-only codec path).
+# aom/jpeg static libs are cross-compiled with the OHOS llvm toolchain, one
+# copy per ABI under prebuilt/. Update instructions: see third_party/avif.
+# ============================================================================
+
+set(AVIF_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/third_party/avif)
+set(AVIF_PREBUILT ${AVIF_ROOT}/prebuilt/${OHOS_ARCH})
+
+add_library(avif STATIC
+    ${AVIF_ROOT}/libavif/src/alpha.c
+    ${AVIF_ROOT}/libavif/src/avif.c
+    ${AVIF_ROOT}/libavif/src/codec_aom.c
+    ${AVIF_ROOT}/libavif/src/colr.c
+    ${AVIF_ROOT}/libavif/src/colrconvert.c
+    ${AVIF_ROOT}/libavif/src/diag.c
+    ${AVIF_ROOT}/libavif/src/exif.c
+    ${AVIF_ROOT}/libavif/src/gainmap.c
+    ${AVIF_ROOT}/libavif/src/io.c
+    ${AVIF_ROOT}/libavif/src/mem.c
+    ${AVIF_ROOT}/libavif/src/obu.c
+    ${AVIF_ROOT}/libavif/src/properties.c
+    ${AVIF_ROOT}/libavif/src/rawdata.c
+    ${AVIF_ROOT}/libavif/src/read.c
+    ${AVIF_ROOT}/libavif/src/reformat.c
+    ${AVIF_ROOT}/libavif/src/reformat_libsharpyuv.c
+    ${AVIF_ROOT}/libavif/src/reformat_libyuv.c
+    ${AVIF_ROOT}/libavif/src/sampletransform.c
+    ${AVIF_ROOT}/libavif/src/scale.c
+    ${AVIF_ROOT}/libavif/src/stream.c
+    ${AVIF_ROOT}/libavif/src/utils.c
+    ${AVIF_ROOT}/libavif/src/write.c
+    # libyuv 桩实现：scale.c 无条件包含 <libyuv.h>，本项目不走缩放路径，
+    # 桩函数一律返回失败（见 include/libyuv.h 注释）
+    ${AVIF_ROOT}/libyuv_stub.c)
+
+target_compile_definitions(avif PRIVATE
+    AVIF_CODEC_AOM=1
+    AVIF_CODEC_AOM_DECODE=1)
+
+target_include_directories(avif PUBLIC ${AVIF_ROOT}/libavif/include)
+target_include_directories(avif PUBLIC ${AVIF_ROOT}/include)
+
+target_link_libraries(avif PUBLIC
+    ${AVIF_PREBUILT}/libaom.a
+    ${AVIF_PREBUILT}/libturbojpeg.a)
+
+# ============================================================================
 
 add_library(jsvmengine SHARED
     jsvm_engine.cpp
-    html_selector.cpp)
+    html_selector.cpp
+    avif_decoder.cpp)
 
 target_include_directories(jsvmengine PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(jsvmengine PUBLIC
     lexbor
+    avif
     libace_napi.z.so
     libjsvm.so
     libhilog_ndk.z.so)

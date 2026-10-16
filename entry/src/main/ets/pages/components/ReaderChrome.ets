@@ -227,12 +227,8 @@ export struct ReaderHdsHost {
   // 页签栏胶囊内容（设置行，下排）
   @BuilderParam settingsBar: () => void = this.emptyBuilder;
   private controller: HdsTabsController = new HdsTabsController();
-  private hdsAvailable: boolean = isHdsRuntimeAvailable();
 
   aboutToAppear(): void {
-    if (!this.hdsAvailable) {
-      return;
-    }
     // 延迟到 HdsTabs 与控制器完成绑定后：菜单初始收起
     setTimeout(() => {
       if (!this.barsVisible) {
@@ -243,9 +239,6 @@ export struct ReaderHdsHost {
 
   // 菜单开合 → 官方显隐动效（迷你栏+页签栏同步）
   onBarsVisibleChange(): void {
-    if (!this.hdsAvailable) {
-      return;
-    }
     if (this.barsVisible) {
       this.controller.applyShowAnimation(HdsAnimationMode.CLICK_ANIMATION);
     } else {
@@ -267,72 +260,67 @@ export struct ReaderHdsHost {
   }
 
   build() {
-    if (this.hdsAvailable) {
-      HdsTabs({ barPosition: BarPosition.End, controller: this.controller }) {
-        TabContent() {
-          this.content()
-        }
-        .tabBar(this.settingsTabItem())
+    HdsTabs({ barPosition: BarPosition.End, controller: this.controller }) {
+      TabContent() {
+        this.content()
       }
-      .scrollable(false)
-      .barOverlap(true)
-      .barPosition(BarPosition.End)
-      .vertical(false)
-      // 胶囊高度显式数值：进度行 44vp / 设置行 48vp + 胶囊上下内边距；
-      // 'auto' 字符串 HDS 不识别（栏高回落 56vp 且浮动胶囊不绘制）
-      .barHeight(this.capsuleHeight)
-      // 关闭页签栏上方跟手分割线（阅读器无需）
-      .divider({ mode: DividerMode.NONE })
-      .barFloatingStyle({
-        barWidth: {
+      .tabBar(this.settingsTabItem())
+    }
+    .scrollable(false)
+    .barOverlap(true)
+    .barPosition(BarPosition.End)
+    .vertical(true)
+    // 胶囊高度显式数值：进度行 44vp / 设置行 48vp + 胶囊上下内边距；
+    // 'auto' 字符串 HDS 不识别（栏高回落 56vp 且浮动胶囊不绘制）
+    .barHeight(this.capsuleHeight)
+    // 关闭页签栏上方跟手分割线（阅读器无需）
+    .divider({ mode: DividerMode.NONE })
+    .barFloatingStyle({
+      barWidth: {
+        smallWidth: this.barWidth,
+        mediumWidth: this.barWidth,
+        largeWidth: this.barWidth
+      },
+      barBottomMargin: this.barBottomMargin,
+      systemMaterialEffect: {
+        materialType: hdsMaterial.MaterialType.IMMERSIVE,
+        materialLevel: hdsMaterial.MaterialLevel.ADAPTIVE
+      },
+      miniBar: {
+        // 箭头函数形式（对齐官方文档示例）：对象字面量内直接调用 @Builder 会被
+        // 编译器就地执行，内容发射进 Swiper 且浮动样式失效（实测 s22）
+        miniBarBuilder: (): void => {
+          this.progressMiniBar();
+        },
+        miniBarWidth: {
           smallWidth: this.barWidth,
           mediumWidth: this.barWidth,
           largeWidth: this.barWidth
         },
-        barBottomMargin: this.barBottomMargin,
-        systemMaterialEffect: {
-          materialType: hdsMaterial.MaterialType.IMMERSIVE,
-          materialLevel: hdsMaterial.MaterialLevel.ADAPTIVE
+        // 进度胶囊常驻展开（VERTICAL 下不受窄屏联动约束）
+        miniBarStyle: HdsBarStyle.EXPAND,
+        // 垂直上下布局：迷你栏（进度）在上、页签栏（设置）在下
+        barLayoutMode: HdsBarLayoutMode.VERTICAL,
+        // 栏样式/动效插桩：验证 VERTICAL 运行时实际布局与样式联动
+        onBarStyleChange: (miniBarStyle: HdsBarStyle, tabBarStyle: HdsBarStyle, miniBarWidth: number,
+          tabBarWidth: number, mode: HdsTabsBarChangeMode): void => {
+          hilog.info(0x0000, 'ReaderHds',
+            `onBarStyleChange mini=${miniBarStyle} tab=${tabBarStyle} miniW=${miniBarWidth}` +
+            ` tabW=${tabBarWidth} mode=${mode}`);
         },
-        miniBar: {
-          // 箭头函数形式（对齐官方文档示例）：对象字面量内直接调用 @Builder 会被
-          // 编译器就地执行，内容发射进 Swiper 且浮动样式失效（实测 s22）
-          miniBarBuilder: (): void => {
-            this.progressMiniBar();
-          },
-          miniBarWidth: {
-            smallWidth: this.barWidth,
-            mediumWidth: this.barWidth,
-            largeWidth: this.barWidth
-          },
-          // 进度胶囊常驻展开（VERTICAL 下不受窄屏联动约束）
-          miniBarStyle: HdsBarStyle.EXPAND,
-          // 垂直上下布局：迷你栏（进度）在上、页签栏（设置）在下
-          barLayoutMode: HdsBarLayoutMode.VERTICAL,
-          // 栏样式/动效插桩：验证 VERTICAL 运行时实际布局与样式联动
-          onBarStyleChange: (miniBarStyle: HdsBarStyle, tabBarStyle: HdsBarStyle, miniBarWidth: number,
-            tabBarWidth: number, mode: HdsTabsBarChangeMode): void => {
-            hilog.info(0x0000, 'ReaderHds',
-              `onBarStyleChange mini=${miniBarStyle} tab=${tabBarStyle} miniW=${miniBarWidth}` +
-              ` tabW=${tabBarWidth} mode=${mode}`);
-          },
-          onMiniBarAnimationStart: (style: HdsBarStyle, width: number): void => {
-            hilog.info(0x0000, 'ReaderHds', `onMiniBarAnimationStart style=${style} width=${width}`);
-          },
-          onMiniBarAnimationEnd: (style: HdsBarStyle): void => {
-            hilog.info(0x0000, 'ReaderHds', `onMiniBarAnimationEnd style=${style}`);
-          },
-          onTabBarAnimationStart: (style: HdsBarStyle, width: number): void => {
-            hilog.info(0x0000, 'ReaderHds', `onTabBarAnimationStart style=${style} width=${width}`);
-          }
+        onMiniBarAnimationStart: (style: HdsBarStyle, width: number): void => {
+          hilog.info(0x0000, 'ReaderHds', `onMiniBarAnimationStart style=${style} width=${width}`);
+        },
+        onMiniBarAnimationEnd: (style: HdsBarStyle): void => {
+          hilog.info(0x0000, 'ReaderHds', `onMiniBarAnimationEnd style=${style}`);
+        },
+        onTabBarAnimationStart: (style: HdsBarStyle, width: number): void => {
+          hilog.info(0x0000, 'ReaderHds', `onTabBarAnimationStart style=${style} width=${width}`);
         }
-      })
-      .width('100%')
-      .height('100%')
-    } else {
-      // 无 HDS 运行时：内容原样渲染，底栏由调用方回退 ReaderBottomBar 提供
-      this.content()
-    }
+      }
+    })
+    .width('100%')
+    .height('100%')
   }
 
   @Builder

@@ -3,7 +3,8 @@
   "buildOption": {
     "sourceOption": {
       "workers": [
-        "./src/main/ets/workers/JsvmWorker.ets"
+        "./src/main/ets/workers/JsvmWorker.ets",
+        "./src/main/ets/workers/AvifWorker.ets"
       ]
     },
     "resOptions": {

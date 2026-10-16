@@ -1,13 +1,19 @@
 /*
  * Copyright (c) 2026 honyomi
  *
- * AvifConverter — AVIF → JPEG 转码器（JSVM + WASM）主线程门面。
+ * AvifConverter — AVIF → JPEG 转码器主线程门面。
  *
  * 模拟器系统的 AVIF 解码器无法解码 Photos18 的封面/页面（62980116），
  * 且 createPixelMap 失败时 Promise 永不结算（挂死），因此任何依赖系统
- * 解码的路径（含系统转码兜底）都不可行。本模块在 JSVM worker 中运行
- * @jsquash（Squoosh）的 avif 解码 + mozjpeg 编码 WASM，把 AVIF 转成
- * JPEG 落盘后交由系统 Image 显示（JPEG 显示无任何问题）。
+ * 解码的路径（含系统转码兜底）都不可行。
+ *
+ * 快路径（原生）：AvifWorker.ets 中调用 libjsvmengine.so 的
+ *   avifDecodeToJpeg（libavif/aom 解码 + turbojpeg 编码，质量 88/4:4:4），
+ *   较 WASM 快约 4~5 倍，请求在 worker 内串行排队。
+ *
+ * 兜底路径（WASM）：本模块在 JSVM worker 中运行 @jsquash（Squoosh）的
+ *   avif 解码 + mozjpeg 编码 WASM，把 AVIF 转成 JPEG 落盘后交由系统
+ *   Image 显示（JPEG 显示无任何问题）。
  *
  * 组成：
  *   rawfile avif/avif_converter.js  自包含转换脚本（经典脚本，经 ADAPTER_JS
@@ -21,10 +27,12 @@
 
 import { ErrorEvent, MessageEvents, util, worker } from '@kit.ArkTS';
 import { common } from '@kit.AbilityKit';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 
 const READY_TIMEOUT_MS: number = 30000;
 const INIT_TIMEOUT_MS: number = 60000; // wasm 编译在模拟器上可能较慢
 const CALL_TIMEOUT_MS: number = 60000; // 单图转码远低于此值（PC 实测 ~200ms）
+const NATIVE_CALL_TIMEOUT_MS: number = 15000; // 原生路径安全绳：解码是纯 CPU 有界操作
 
 /** init 握手保留的 seq（worker 以 {"type":"ready"} 回应）。 */
 const READY_SEQ: number = -1;
@@ -32,6 +40,11 @@ const READY_SEQ: number = -1;
 interface PendingCall {
   resolve: (json: string) => void;
   reject: (err: Error) => void;
+  timer: number;
+}
+
+interface NativePendingCall {
+  resolve: (jpeg: ArrayBuffer | null) => void;
   timer: number;
 }
 
@@ -71,6 +84,10 @@ export class AvifConverter {
   private static ready: Promise<void> | null = null;
   private static broken: boolean = false;
   private static b64Helper: util.Base64Helper = new util.Base64Helper();
+  // 原生快路径状态（libjsvmengine.so avifDecodeToJpeg，AvifWorker 串行执行）
+  private static nativeWorker: worker.ThreadWorker | null = null;
+  private static nativePending: NativePendingCall[] = [];
+  private static nativeBroken: boolean = false;
 
   /** EntryAbility 启动时注入上下文（rawfile 读取用）。 */
   static init(context: common.Context): void {
@@ -93,9 +110,14 @@ export class AvifConverter {
   }
 
   /**
-   * AVIF → JPEG。失败抛错（调用方自行回退保留原始字节）。
+   * AVIF → JPEG。优先走原生 libavif/turbojpeg 快路径，失败静默回退 WASM
+   * 转码器；两条路径都失败时抛错（调用方自行回退保留原始字节）。
    */
   static async convert(src: Uint8Array): Promise<ArrayBuffer> {
+    const native = await AvifConverter.convertNative(src);
+    if (native !== null) {
+      return native;
+    }
     await AvifConverter.ensureReady();
     const srcB64 = AvifConverter.b64Helper.encodeToStringSync(src);
     const envelopeJson = await AvifConverter.call('__convertAvif', JSON.stringify([srcB64]), CALL_TIMEOUT_MS);
@@ -109,6 +131,105 @@ export class AvifConverter {
     const view = new Uint8Array(out);
     view.set(decoded);
     return out;
+  }
+
+  // ---------------- 原生快路径（libjsvmengine.so avifDecodeToJpeg） ----------------
+
+  /**
+   * 原生 AVIF → JPEG。返回 null 表示原生路径不可用/失败/超时，调用方回退
+   * WASM。请求按 FIFO 在 AvifWorker 内串行处理；worker 退出后置
+   * nativeBroken，后续请求直接回退，不再重建。
+   */
+  private static convertNative(src: Uint8Array): Promise<ArrayBuffer | null> {
+    if (AvifConverter.nativeBroken) {
+      return Promise.resolve(null);
+    }
+    // 拷贝出独立 ArrayBuffer：postMessage 转移会 detach 原缓冲，且视图可能
+    // 只是更大缓冲的一段（fs.readSync/Http.getBuffer 场景）
+    const transfer = src.slice().buffer;
+    return new Promise<ArrayBuffer | null>((resolve, _reject) => {
+      const threadWorker = AvifConverter.ensureNativeWorker();
+      if (threadWorker === null) {
+        resolve(null);
+        return;
+      }
+      const timer = setTimeout(() => {
+        hilog.warn(0x0000, 'AvifConverter', 'native convert timeout, falling back to wasm');
+        AvifConverter.nativeBroken = true;
+        AvifConverter.failAllNative(null);
+        AvifConverter.killNativeWorker();
+      }, NATIVE_CALL_TIMEOUT_MS);
+      AvifConverter.nativePending.push({ resolve: resolve, timer: timer });
+      threadWorker.postMessage(transfer, [transfer]);
+    });
+  }
+
+  private static ensureNativeWorker(): worker.ThreadWorker | null {
+    if (AvifConverter.nativeWorker !== null) {
+      return AvifConverter.nativeWorker;
+    }
+    try {
+      const threadWorker = new worker.ThreadWorker('entry/ets/workers/AvifWorker.ets');
+      threadWorker.onmessage = (e: MessageEvents): void => {
+        AvifConverter.onNativeMessage(e.data);
+      };
+      threadWorker.onerror = (err: ErrorEvent): void => {
+        hilog.warn(0x0000, 'AvifConverter', 'native worker error: %{public}s', err.message);
+        AvifConverter.failAllNative(null);
+      };
+      threadWorker.onAllErrors = (err: ErrorEvent): void => {
+        hilog.warn(0x0000, 'AvifConverter', 'native worker allErrors: %{public}s', err.message);
+        AvifConverter.failAllNative(null);
+      };
+      threadWorker.onexit = (_code: number): void => {
+        AvifConverter.nativeBroken = true;
+        AvifConverter.nativeWorker = null;
+        AvifConverter.failAllNative(null);
+      };
+      AvifConverter.nativeWorker = threadWorker;
+      return threadWorker;
+    } catch (e) {
+      hilog.warn(0x0000, 'AvifConverter', 'native worker unavailable: %{public}s', `${e}`);
+      AvifConverter.nativeBroken = true;
+      return null;
+    }
+  }
+
+  private static onNativeMessage(data: Object): void {
+    const pending = AvifConverter.nativePending.shift();
+    if (pending === undefined) {
+      return;
+    }
+    clearTimeout(pending.timer);
+    if (data instanceof ArrayBuffer) {
+      pending.resolve(data);
+    } else {
+      hilog.warn(0x0000, 'AvifConverter', 'native convert failed: %{public}s', `${data}`);
+      pending.resolve(null);
+    }
+  }
+
+  private static failAllNative(result: ArrayBuffer | null): void {
+    while (AvifConverter.nativePending.length > 0) {
+      const pending = AvifConverter.nativePending.shift();
+      if (pending === undefined) {
+        break;
+      }
+      clearTimeout(pending.timer);
+      pending.resolve(result);
+    }
+  }
+
+  private static killNativeWorker(): void {
+    const threadWorker = AvifConverter.nativeWorker;
+    AvifConverter.nativeWorker = null;
+    if (threadWorker !== null) {
+      try {
+        threadWorker.terminate();
+      } catch (e) {
+        // worker 可能已自行退出（BusinessError 1003）
+      }
+    }
   }
 
   // ---------------- 内部实现 ----------------

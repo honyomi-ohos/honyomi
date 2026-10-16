@@ -1413,9 +1413,16 @@ static napi_value EngineMemoryBytes(napi_env env, napi_callback_info info)
 // Module registration
 // ============================================================================
 
+// avif_decoder.cpp — native AVIF → JPEG conversion (libavif + aom + turbojpeg)
+napi_value AvifDecodeToJpeg(napi_env env, napi_callback_info info);
+
 EXTERN_C_START
 static napi_value Export(napi_env env, napi_value exports)
 {
+    napi_value avifFn = nullptr;
+    napi_create_function(env, "avifDecodeToJpeg", NAPI_AUTO_LENGTH, AvifDecodeToJpeg, nullptr, &avifFn);
+    napi_set_named_property(env, exports, "avifDecodeToJpeg", avifFn);
+
     static napi_property_descriptor desc[] = {
         { "createEngine", nullptr, CreateEngine, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "destroyEngine", nullptr, DestroyEngine, nullptr, nullptr, nullptr, napi_default, nullptr },
