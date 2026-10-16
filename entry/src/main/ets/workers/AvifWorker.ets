@@ -4,7 +4,7 @@
  * AvifWorker — dedicated Worker thread for native AVIF → JPEG conversion.
  *
  * Runs avifDecodeToJpeg() from libjsvmengine.so off the UI thread
- * (libavif/aom decode + turbojpeg encode, ~4-5x faster than the WASM path).
+ * (libavif/aom decode + system ImagePacker encode, ~4-5x faster than the WASM path).
  * The call is synchronous and blocking; each message is processed serially,
  * so concurrent convert() requests queue naturally in the worker's loop.
  *

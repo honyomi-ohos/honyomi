@@ -41,7 +41,6 @@ import { NovelModeSheet } from './components/novel/NovelModeSheet';
 import { NovelDisplayPanel } from './components/novel/NovelDisplayPanel';
 import { NovelTextPanel } from './components/novel/NovelTextPanel';
 import {
-  ReaderBottomBar,
   ReaderHdsHost,
   ReaderIndicatorBadge,
   ReaderMenu,
@@ -154,7 +153,7 @@ export struct NovelReaderPage {
   @State halfTilt: number = 0;
   // 本次翻页的抓取纵向位置（0 顶部 ~ 1 底部，相对正文区），决定卷曲弓高与倾斜方向
   private flipGrabY: number = 0.5;
-  // HDS 运行时可用性：不可用（预览器等）时阅读器走 ReaderBottomBar 回退渲染
+  // HDS 运行时可用性：不可用（预览器等）时不实例化 ReaderHdsHost，直接渲染正文（无浮动底栏）
   private hdsAvailable: boolean = isHdsRuntimeAvailable();
   private mangaId: number = -1;
   private chapterId: number = -1;
@@ -530,23 +529,6 @@ export struct NovelReaderPage {
     }
   }
 
-  @Builder
-  menuBottomBar() {
-    // 无 HDS 运行时（预览器等）回退：玻璃底栏由 ReaderBottomBar 承载；
-    // HDS 路径底栏由 ReaderHdsHost 浮动胶囊承载，此处不渲染
-    if (!this.hdsAvailable) {
-      ReaderBottomBar({
-        navBarH: this.navBarH,
-        navRow: (): void => {
-          this.menuNavRow();
-        },
-        settingsRow: (): void => {
-          this.menuSettingsRow();
-        }
-      })
-    }
-  }
-
   // 章节导航行：上一章 / 进度胶囊 / 下一章（guard 保留在回调内）
   @Builder
   menuNavRow() {
@@ -815,7 +797,7 @@ export struct NovelReaderPage {
   }
 
   // 阅读器主体（内容 + 菜单 + Sheet 宿主）：HDS 路径装入 ReaderHdsHost 唯一 TabContent，
-  // 无 HDS 运行时直接渲染（底栏由 ReaderMenu 内 menuBottomBar 回退 ReaderBottomBar）
+  // 无 HDS 运行时直接渲染（无浮动底栏）
   @Builder
   readerBody() {
     Stack({ alignContent: Alignment.BottomEnd }) {
@@ -1022,9 +1004,6 @@ export struct NovelReaderPage {
                 return;
               }
               this.showMenu = false;
-            },
-            bottomBar: (): void => {
-              this.menuBottomBar();
             }
           })
         }

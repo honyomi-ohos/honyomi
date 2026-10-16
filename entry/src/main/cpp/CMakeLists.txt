@@ -54,10 +54,11 @@ add_library(lexbor STATIC
 target_include_directories(lexbor PUBLIC ${LEXBOR_ROOT})
 
 # ============================================================================
-# libavif (vendored v1.4.2) + libaom v3.15.2 + libjpeg-turbo 3.2.0 (prebuilt)
-# Native AVIF → JPEG conversion (decode-only codec path).
-# aom/jpeg static libs are cross-compiled with the OHOS llvm toolchain, one
-# copy per ABI under prebuilt/. Update instructions: see third_party/avif.
+# libavif (vendored v1.4.2) + libaom v3.15.2 (prebuilt)
+# Native AVIF → JPEG conversion (decode-only codec path, JPEG 编码走系统
+# ImagePacker：libpixelmap.so + libimage_packer.so，不引入 vendored 编码器)。
+# aom 静态库用 OHOS llvm 工具链交叉编译，每 ABI 一份放在 prebuilt/ 下。
+# Update instructions: see third_party/avif。
 # ============================================================================
 
 set(AVIF_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/third_party/avif)
@@ -98,8 +99,7 @@ target_include_directories(avif PUBLIC ${AVIF_ROOT}/libavif/include)
 target_include_directories(avif PUBLIC ${AVIF_ROOT}/include)
 
 target_link_libraries(avif PUBLIC
-    ${AVIF_PREBUILT}/libaom.a
-    ${AVIF_PREBUILT}/libturbojpeg.a)
+    ${AVIF_PREBUILT}/libaom.a)
 
 # ============================================================================
 
@@ -115,4 +115,6 @@ target_link_libraries(jsvmengine PUBLIC
     avif
     libace_napi.z.so
     libjsvm.so
-    libhilog_ndk.z.so)
+    libhilog_ndk.z.so
+    libpixelmap.so
+    libimage_packer.so)

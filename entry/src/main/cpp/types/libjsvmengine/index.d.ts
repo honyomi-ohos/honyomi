@@ -98,9 +98,9 @@ export function releaseHttpBuffer(callId: number): boolean;
 export function engineMemoryBytes(engineId: number): number;
 
 /**
- * Converts AVIF bytes to JPEG bytes natively (libavif + aom decode,
- * turbojpeg encode at quality 88 / 4:4:4). Synchronous and blocking;
- * call from a worker thread only (see AvifWorker.ets).
+ * Converts AVIF bytes to JPEG bytes natively (libavif + aom decode, system
+ * ImagePacker encode at quality 88). Synchronous and blocking; call from a
+ * worker thread only (see AvifWorker.ets).
  * @throws Error when the input is not decodable AVIF content.
  */
 export function avifDecodeToJpeg(input: ArrayBuffer): ArrayBuffer;

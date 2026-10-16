@@ -1,7 +1,6 @@
 // 阅读器共享 Chrome 组件（Wave 3I 从 ReaderPage / NovelReaderPage 抽出）：
-// 菜单骨架（顶栏+占位+底栏）、章节导航行、页码胶囊、指示徽标、方向 Sheet、滤镜容器。
+// 菜单骨架（顶栏+占位）、HDS 沉浸宿主、章节导航行、页码胶囊、指示徽标、方向 Sheet、滤镜容器。
 // 样式与两页原实现逐行一致，行为不变。
-import { uiMaterial } from '@kit.ArkUI';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import {
   DividerMode,
@@ -13,13 +12,12 @@ import {
   HdsTabsController,
   hdsMaterial
 } from '@kit.UIDesignKit';
-import { isHdsRuntimeAvailable } from '../../common/HdsSupport';
 import { AppIcon, AppIconRes } from './AppIcon';
 import { PickerSheet } from './PickerSheet';
 
-// HDS 可用性探测已抽至 common/HdsSupport（首页/阅读器共用）：
-// 无 HDS 运行时（预览器等）或 PC/2in1（HDS 主题资源缺失致原生崩溃）时，
-// 阅读器回退 ReaderBottomBar 纯 @Builder 渲染路径（真机不变）。
+// HDS 可用性探测在 common/HdsSupport（首页/阅读器共用）：
+// 无 HDS 运行时（预览器等）时由各阅读页 if/else 降级——不实例化 ReaderHdsHost
+// （HdsTabs 为 null 会原生崩溃），直接渲染正文（无浮动底栏）；真机走 HdsTabs 浮动胶囊路径。
 
 // 屏幕方向的可选值（与方向选择 sheet 选项一一对应，两阅读器共用）
 export const READER_ORIENTATIONS: string[] =
@@ -29,8 +27,8 @@ export const READER_ORIENTATION_ICONS: string[] =
   ['screen_rotation', 'stay_current_portrait', 'stay_current_landscape', 'screen_lock_portrait',
     'screen_lock_landscape'];
 
-// 阅读器菜单骨架：顶栏（返回 + 标题/章节名）+ 点击关闭占位 + 底栏
-// 顶栏从上方滑入、底栏经 bottomBar 注入（内部自带下方滑入转场）
+// 阅读器菜单骨架：顶栏（返回 + 标题/章节名）+ 点击关闭占位
+// 顶栏从上方滑入（底栏由 ReaderHdsHost 浮动胶囊承载，不在此渲染）
 @Component
 export struct ReaderMenu {
   // 阅读页背景是否为深色（由宿主页面写入）：玻璃无任何底色，前景色据此取高对比色
@@ -38,7 +36,6 @@ export struct ReaderMenu {
   @Prop title: string = '';
   @Prop subtitle: string = '';
   @Prop statusBarH: number = 0;
-  @BuilderParam bottomBar: () => void = this.emptyBuilder;
   onBack: () => void = (): void => {
   };
   onBackdrop: () => void = (): void => {
@@ -94,8 +91,6 @@ export struct ReaderMenu {
         .onClick(() => {
           this.onBackdrop();
         })
-
-      this.bottomBar()
     }
     .width('100%')
     .height('100%')
@@ -106,99 +101,6 @@ export struct ReaderMenu {
         TransitionEffect.OPACITY.animation({ duration: 200, curve: Curve.Linear })
       )
     )
-  }
-
-  @Builder
-  emptyBuilder() {
-  }
-}
-
-// 阅读器底栏（液态玻璃设计，参考华为阅读底栏布局）：
-// 进度（章节导航行）与设置行拆为两个独立的悬浮玻璃胶囊。
-// 真实系统沉浸材质：胶囊包在横向 Tabs（barPosition End）的底部 TabBar 内，
-// 处于 systemMaterial 生效范围；不支持沉浸材质的设备由系统回退（背景色/边框实现），
-// 此处不额外叠加任何背景颜色或 backgroundEffect（会覆盖材质层）。
-@Component
-export struct ReaderBottomBar {
-  @StorageProp('readerBgDark') bgDark: boolean = false;
-  @Prop navBarH: number = 0;
-  // 胶囊全配置沉浸材质：ULTRA_THIN 超薄玻璃 + colorInvert 自动反色（保证可读性）
-  @BuilderParam navRow: () => void = this.emptyBuilder;
-  @BuilderParam settingsRow: () => void = this.emptyBuilder;
-  // + interactive 按压弹性形变 + lightEffect 点光源流光跟随
-  private capsuleMaterial: uiMaterial.ImmersiveMaterial = new uiMaterial.ImmersiveMaterial({
-    style: uiMaterial.ImmersiveStyle.ULTRA_THIN,
-    colorInvert: true,
-    interactive: true,
-    lightEffect: {}
-  });
-
-  // 进度组：章节导航行（上一章 / 进度胶囊 / 下一章）独占一个系统玻璃胶囊
-  @Builder
-  progressGroup() {
-    Column() {
-      this.navRow()
-    }
-    .width('100%')
-    .padding({
-      top: 10,
-      bottom: 10,
-      left: 8,
-      right: 8
-    })
-    .borderRadius(28)
-    .clip(true)
-    // 真实系统沉浸材质（底部 TabBar 作用域内生效）
-    .systemMaterial(this.capsuleMaterial)
-    // 材质生效时系统将边框恢复为无边框；此处描边仅作为不支持设备的回退
-    .border({ width: 0.5, color: this.bgDark ? '#2EFFFFFF' : '#2E000000' })
-    .shadow({ radius: 28, color: '#4D000000', offsetY: 10 })
-  }
-
-  // 设置组：功能图标行独占一个系统玻璃胶囊
-  @Builder
-  settingsGroup() {
-    Column() {
-      this.settingsRow()
-    }
-    .width('100%')
-    .padding({
-      top: 4,
-      bottom: 4,
-      left: 6,
-      right: 6
-    })
-    .borderRadius(28)
-    .clip(true)
-    // 真实系统沉浸材质（底部 TabBar 作用域内生效）
-    .systemMaterial(this.capsuleMaterial)
-    // 材质生效时系统将边框恢复为无边框；此处描边仅作为不支持设备的回退
-    .border({ width: 0.5, color: this.bgDark ? '#2EFFFFFF' : '#2E000000' })
-    .shadow({ radius: 28, color: '#4D000000', offsetY: 10 })
-  }
-
-  build() {
-    // 外层全宽透明容器：用 padding 留出左右屏幕边距与底部导航条避让
-    // （内层 width('100%') 按去 padding 后的内容区解析；若用 margin 会与 100% 宽度叠加溢出，导致胶囊贴边）
-    Column() {
-      Column({ space: 10 }) {
-        this.progressGroup()
-        this.settingsGroup()
-      }
-      .width('100%')
-      // 对齐 Mihon ReaderAppBars：底栏从屏幕下方滑入/滑出 + 渐隐
-      .transition(
-        TransitionEffect.translate({ y: 240 })
-          .animation({ duration: 200, curve: Curve.Linear })
-          .combine(TransitionEffect.OPACITY.animation({ duration: 150, curve: Curve.Linear }))
-      )
-    }
-    .width('100%')
-    .padding({ left: 16, right: 16, bottom: Math.max(this.navBarH, 12) })
-  }
-
-  @Builder
-  emptyBuilder() {
   }
 }
 
@@ -269,7 +171,7 @@ export struct ReaderHdsHost {
     .scrollable(false)
     .barOverlap(true)
     .barPosition(BarPosition.End)
-    .vertical(true)
+    .vertical(false)
     // 胶囊高度显式数值：进度行 44vp / 设置行 48vp + 胶囊上下内边距；
     // 'auto' 字符串 HDS 不识别（栏高回落 56vp 且浮动胶囊不绘制）
     .barHeight(this.capsuleHeight)

@@ -1,15 +1,17 @@
 /*
  * Copyright (c) 2026 honyomi
  *
- * avif_decoder.cpp — native AVIF → JPEG conversion (libavif + aom + turbojpeg).
+ * avif_decoder.cpp — native AVIF → JPEG conversion (libavif + aom decode,
+ * system ImagePacker encode).
  *
  * Replaces the JSVM/WASM pipeline for this hot path (~4-5x faster):
  *   1. libavif parses the ISO-BMFF container, aom decodes the AV1 keyframe
  *      (multi-threaded, NEON/SSE accelerated).
- *   2. YUV planes are converted to interleaved RGB (alpha dropped, same as
- *      the WASM path's mozjpeg behaviour).
- *   3. libjpeg-turbo re-encodes to JPEG at quality 88 / 4:4:4 to match the
- *      previous mozjpeg output.
+ *   2. YUV planes are converted to packed RGBA (alpha forced opaque via
+ *      memset, same flattening as the WASM path's mozjpeg behaviour).
+ *   3. An OH_PixelmapNative wraps the RGBA buffer and the system
+ *      ImagePacker (libimage_packer.so) encodes JPEG at quality 88,
+ *      matching the previous mozjpeg output size class.
  *
  * The exported function is synchronous and blocking; callers must run it off
  * the UI thread (AvifWorker.ets). Throws a JS error on any failure so the
@@ -17,7 +19,10 @@
  */
 
 #include "avif/avif.h"
-#include "turbojpeg.h"
+
+#include <multimedia/image_framework/image/image_common.h>
+#include <multimedia/image_framework/image/image_packer_native.h>
+#include <multimedia/image_framework/image/pixelmap_native.h>
 
 #include <cstdio>
 #include <cstdlib>
@@ -28,13 +33,24 @@
 namespace {
 
 constexpr int kMaxThreads = 4;
-constexpr int kJpegQuality = 88;
+constexpr uint32_t kJpegQuality = 88;
 
 bool ThrowAvif(napi_env env, const char* stage, avifResult result)
 {
     char message[128];
     if (snprintf(message, sizeof(message), "%s: %s", stage,
                  avifResultToString(result)) < 0) {
+        napi_throw_error(env, nullptr, stage);
+        return false;
+    }
+    napi_throw_error(env, nullptr, message);
+    return false;
+}
+
+bool ThrowImage(napi_env env, const char* stage, Image_ErrorCode code)
+{
+    char message[128];
+    if (snprintf(message, sizeof(message), "%s: %d", stage, static_cast<int>(code)) < 0) {
         napi_throw_error(env, nullptr, stage);
         return false;
     }
@@ -88,45 +104,98 @@ napi_value AvifDecodeToJpeg(napi_env env, napi_callback_info info)
         return nullptr;
     }
 
-    // ---- 2) YUV → packed RGB (alpha dropped; matches the WASM/mozjpeg path)
+    // ---- 2) YUV → packed RGBA (alpha forced opaque; matches the WASM/mozjpeg path)
+    const uint32_t width = decoder->image->width;
+    const uint32_t height = decoder->image->height;
+    const size_t rgbaStride = static_cast<size_t>(width) * 4;
+    const size_t rgbaSize = rgbaStride * height;
+    uint8_t* rgba = static_cast<uint8_t*>(malloc(rgbaSize));
+    if (rgba == nullptr) {
+        avifDecoderDestroy(decoder);
+        napi_throw_error(env, nullptr, "avifDecodeToJpeg: out of memory");
+        return nullptr;
+    }
+    memset(rgba, 0xFF, rgbaSize); // ignoreAlpha leaves the alpha channel untouched
     avifRGBImage rgb;
-    avifRGBImageSetDefaults(&rgb, decoder->image);
-    rgb.format = AVIF_RGB_FORMAT_RGB;
+    memset(&rgb, 0, sizeof(rgb));
+    rgb.width = width;
+    rgb.height = height;
+    rgb.depth = 8;
+    rgb.format = AVIF_RGB_FORMAT_RGBA;
     rgb.chromaUpsampling = AVIF_CHROMA_UPSAMPLING_AUTOMATIC;
     rgb.maxThreads = kMaxThreads;
-    avifRGBImageAllocatePixels(&rgb);
+    rgb.ignoreAlpha = AVIF_TRUE;
+    rgb.pixels = rgba;
+    rgb.rowBytes = rgbaStride;
     result = avifImageYUVToRGB(decoder->image, &rgb);
     avifDecoderDestroy(decoder);
     if (result != AVIF_RESULT_OK) {
-        avifRGBImageFreePixels(&rgb);
+        free(rgba);
         ThrowAvif(env, "avifDecodeToJpeg rgb conversion failed", result);
         return nullptr;
     }
 
-    // ---- 3) RGB → JPEG (quality 88, 4:4:4 — mirrors mozjpeg@88 of the WASM path)
-    tjhandle compressor = tjInitCompress();
-    if (compressor == nullptr) {
-        avifRGBImageFreePixels(&rgb);
-        napi_throw_error(env, nullptr, "avifDecodeToJpeg: tjInitCompress failed");
-        return nullptr;
+    // ---- 3) RGBA → OH_PixelmapNative (the call copies the buffer)
+    OH_Pixelmap_InitializationOptions* initOptions = nullptr;
+    OH_PixelmapNative* pixelmap = nullptr;
+    Image_ErrorCode code = OH_PixelmapInitializationOptions_Create(&initOptions);
+    if (code == IMAGE_SUCCESS && initOptions != nullptr) {
+        OH_PixelmapInitializationOptions_SetWidth(initOptions, width);
+        OH_PixelmapInitializationOptions_SetHeight(initOptions, height);
+        OH_PixelmapInitializationOptions_SetSrcPixelFormat(initOptions, PIXEL_FORMAT_RGBA_8888);
+        OH_PixelmapInitializationOptions_SetPixelFormat(initOptions, PIXEL_FORMAT_RGBA_8888);
+        OH_PixelmapInitializationOptions_SetAlphaType(initOptions, PIXELMAP_ALPHA_TYPE_OPAQUE);
+        code = OH_PixelmapNative_CreatePixelmap(rgba, rgbaSize, initOptions, &pixelmap);
     }
-    unsigned char* jpegBuffer = nullptr;
-    unsigned long jpegSize = 0;
-    const int ok = tjCompress2(compressor, rgb.pixels, static_cast<int>(rgb.width),
-                               static_cast<int>(rgb.rowBytes), static_cast<int>(rgb.height), TJPF_RGB,
-                               &jpegBuffer, &jpegSize, TJSAMP_444, kJpegQuality, TJFLAG_FASTDCT);
-    const char* tjError = ok == 0 ? nullptr : tjGetErrorStr2(compressor);
-    avifRGBImageFreePixels(&rgb);
-    if (ok != 0 || jpegBuffer == nullptr || jpegSize == 0) {
-        if (jpegBuffer != nullptr) {
-            tjFree(jpegBuffer);
-        }
-        tjDestroy(compressor);
-        napi_throw_error(env, nullptr, tjError != nullptr ? tjError : "avifDecodeToJpeg: jpeg encode failed");
+    free(rgba);
+    if (initOptions != nullptr) {
+        OH_PixelmapInitializationOptions_Release(initOptions);
+    }
+    if (code != IMAGE_SUCCESS || pixelmap == nullptr) {
+        ThrowImage(env, "avifDecodeToJpeg pixelmap creation failed", code);
         return nullptr;
     }
 
-    // ---- 4) copy into the JS-visible ArrayBuffer
+    // ---- 4) Pixelmap → JPEG via the system ImagePacker (quality 88)
+    OH_PackingOptions* packingOptions = nullptr;
+    OH_ImagePackerNative* packer = nullptr;
+    uint8_t* jpegBuffer = static_cast<uint8_t*>(malloc(rgbaSize)); // JPEG@88 always fits the RGBA budget
+    size_t jpegSize = jpegBuffer != nullptr ? rgbaSize : 0;
+    if (jpegBuffer == nullptr) {
+        code = IMAGE_BAD_PARAMETER;
+    }
+    if (code == IMAGE_SUCCESS) {
+        code = OH_PackingOptions_Create(&packingOptions);
+    }
+    if (code == IMAGE_SUCCESS && packingOptions != nullptr) {
+        Image_MimeType mime;
+        mime.data = const_cast<char*>("image/jpeg");
+        mime.size = strlen("image/jpeg");
+        code = OH_PackingOptions_SetMimeType(packingOptions, &mime);
+        if (code == IMAGE_SUCCESS) {
+            code = OH_PackingOptions_SetQuality(packingOptions, kJpegQuality);
+        }
+    }
+    if (code == IMAGE_SUCCESS) {
+        code = OH_ImagePackerNative_Create(&packer);
+    }
+    if (code == IMAGE_SUCCESS && packer != nullptr) {
+        code = OH_ImagePackerNative_PackToDataFromPixelmap(packer, packingOptions, pixelmap, jpegBuffer, &jpegSize);
+    }
+    if (packingOptions != nullptr) {
+        OH_PackingOptions_Release(packingOptions);
+    }
+    if (packer != nullptr) {
+        OH_ImagePackerNative_Release(packer);
+    }
+    OH_PixelmapNative_Release(pixelmap);
+    if (code != IMAGE_SUCCESS || jpegSize == 0) {
+        free(jpegBuffer);
+        ThrowImage(env, "avifDecodeToJpeg jpeg encode failed", code);
+        return nullptr;
+    }
+
+    // ---- 5) copy into the JS-visible ArrayBuffer
     napi_value output = nullptr;
     void* outputData = nullptr;
     napi_status status = napi_create_arraybuffer(env, jpegSize, &outputData, &output);
@@ -135,8 +204,7 @@ napi_value AvifDecodeToJpeg(napi_env env, napi_callback_info info)
             status = napi_generic_failure;
         }
     }
-    tjFree(jpegBuffer);
-    tjDestroy(compressor);
+    free(jpegBuffer);
     if (status != napi_ok || output == nullptr) {
         napi_throw_error(env, nullptr, "avifDecodeToJpeg: out of memory");
         return nullptr;

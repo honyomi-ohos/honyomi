@@ -15,7 +15,7 @@ import { EngineGateway } from '../jsvm/EngineGateway';
 import { JsvmEngineBackend } from '../jsvm/JsvmEngineBackend';
 import { CookieJar } from '../net/CookieJar';
 import { ImageCache } from '../common/ImageCache';
-import { AvifConverter } from '../common/AvifConverter';
+
 import { WidgetUpdater } from '../form/WidgetUpdater';
 import { ReadingStatsRepo } from '../data/ReadingStats';
 import { TtsPlaybackService } from '../common/TtsPlaybackService';
@@ -67,7 +67,6 @@ export default class EntryAbility extends UIAbility {
       DownloadService.init(this.context);
       CookieJar.init(this.context);
       ImageCache.init(this.context);
-      AvifConverter.init(this.context);
       // 启动时清除章节缓存（数据与存储设置）
       if (Settings.getAutoClearChapterCache()) {
         ImageCache.clearAll();

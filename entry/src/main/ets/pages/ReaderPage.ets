@@ -23,7 +23,6 @@ import { SwitchRow, TextRow } from './components/Prefs';
 import { PickerSheet } from './components/PickerSheet';
 import { EmulationFlipView } from './components/PageFlip';
 import {
-  ReaderBottomBar,
   ReaderFilterArea,
   ReaderHdsHost,
   ReaderIndicatorBadge,
@@ -133,7 +132,7 @@ export struct ReaderPage {
   // 设备是否支持智感握姿（不支持则隐藏该模式选项）
   @State gripSupported: boolean = true;
   private gripListening: boolean = false;
-  // HDS 运行时可用性：不可用（预览器等）时阅读器走 ReaderBottomBar 回退渲染
+  // HDS 运行时可用性：不可用（预览器等）时不实例化 ReaderHdsHost，直接渲染正文（无浮动底栏）
   private hdsAvailable: boolean = isHdsRuntimeAvailable();
   private dataSource: PageDataSource = new PageDataSource();
   private scroller: Scroller = new Scroller();
@@ -517,23 +516,6 @@ export struct ReaderPage {
     }
   }
 
-  @Builder
-  menuBottomBar() {
-    // 无 HDS 运行时（预览器等）回退：玻璃底栏由 ReaderBottomBar 承载；
-    // HDS 路径底栏由 ReaderHdsHost 浮动胶囊承载，此处不渲染
-    if (!this.hdsAvailable) {
-      ReaderBottomBar({
-        navBarH: this.navBarH,
-        navRow: (): void => {
-          this.menuNavRow();
-        },
-        settingsRow: (): void => {
-          this.menuSettingsRow();
-        }
-      })
-    }
-  }
-
   // 章节导航行：上一章 / 页码胶囊 / 下一章（guard 保留在回调内）
   @Builder
   menuNavRow() {
@@ -654,7 +636,7 @@ export struct ReaderPage {
   }
 
   // 阅读器主体（内容 + 菜单 + Sheet 宿主）：HDS 路径装入 ReaderHdsHost 唯一 TabContent，
-  // 无 HDS 运行时直接渲染（底栏由 ReaderMenu 内 menuBottomBar 回退 ReaderBottomBar）
+  // 无 HDS 运行时直接渲染（无浮动底栏）
   @Builder
   readerBody() {
     Stack({ alignContent: Alignment.BottomEnd }) {
@@ -763,9 +745,6 @@ export struct ReaderPage {
             },
             onBackdrop: (): void => {
               this.showMenu = false;
-            },
-            bottomBar: (): void => {
-              this.menuBottomBar();
             }
           })
         }

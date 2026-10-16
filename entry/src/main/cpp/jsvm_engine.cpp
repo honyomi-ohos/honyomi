@@ -956,8 +956,7 @@ static const char *ADAPTER_JS = R"JS((function () {
         return okJson(typeof g.__prefsDump === 'function' ? g.__prefsDump() : (g.__PREFS_STORE__ || {}));
       }
       // Escape hatch: "__"-prefixed global functions registered by the loaded
-      // script itself (e.g. the AVIF WASM converter's __initWasm/__convertAvif)
-      // are callable even when no extension api was found.
+      // script itself are callable even when no extension api was found.
       if (name.length > 2 && name.indexOf('__') === 0 && typeof g[name] === 'function') {
         var fnArgs = [];
         if (typeof argsJson === 'string') {
@@ -1413,7 +1412,7 @@ static napi_value EngineMemoryBytes(napi_env env, napi_callback_info info)
 // Module registration
 // ============================================================================
 
-// avif_decoder.cpp — native AVIF → JPEG conversion (libavif + aom + turbojpeg)
+// avif_decoder.cpp — native AVIF → JPEG conversion (libavif + aom decode, system ImagePacker encode)
 napi_value AvifDecodeToJpeg(napi_env env, napi_callback_info info);
 
 EXTERN_C_START
