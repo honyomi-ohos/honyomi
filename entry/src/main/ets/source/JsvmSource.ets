@@ -21,7 +21,7 @@ export interface PluginManifest {
   // 可选：插件包内图标文件名（如 icon.png）
   icon: string;
 
-  // 可选：共享运行时名（如 'wp'）——非空时 App 在 main.js 前拼接 rawfile plugin_runtime_<name>.js
+  // 可选：共享运行时名——非空时 App 在 main.js 前拼接 rawfile plugin_runtime_<name>.js
   runtime: string;
 
   // 执行引擎：唯一合法值 'jsvm'（纯 JSVM 隔离引擎，本机 C++ JSVM + Worker）

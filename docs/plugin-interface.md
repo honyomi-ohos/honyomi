@@ -43,7 +43,7 @@ JSVM 引擎 (cpp/jsvm_engine.cpp, libjsvmengine.so)        ← 适配器层：�
 | `minAppVersion` | number | 宿主版本门槛 |
 | `dslVersion` | number | DSL 契约版本 |
 | `icon` | string | 包内图标文件名（缺省 UI 回退首字母） |
-| `runtime` | string | 共享运行时名（如 `wp` → 前拼 `plugin_runtime_wp.js`） |
+| `runtime` | string | 共享运行时名（非空时在 main.js 前拼接 rawfile `plugin_runtime_<name>.js`） |
 | `engine` | string | 执行引擎，唯一合法值 `jsvm` |
 | `contentType` | string | `manga` \| `novel` \| `video`，缺省 `manga`；驱动宿主 UI 路由（§7） |
 | `settings` | `RawManifestSetting[]` | **插件设置静态声明**（§2.1）：声明后设置页渲染与写入全部在宿主侧完成，无需拉起 JSVM 引擎 |
@@ -56,7 +56,7 @@ JSVM 引擎 (cpp/jsvm_engine.cpp, libjsvmengine.so)        ← 适配器层：�
 | 字段 | 类型 | 说明 |
 |---|---|---|
 | `type` | string | `switch` \| `select` \| `edit` \| `password`（白名单外条目整条丢弃；`password` 渲染为 edit 行并强制敏感） |
-| `key` | string | 偏好键（与插件脚本 `__PREFS_STORE__` 同名空间） |
+| `key` | string | 偏好键（写入本插件扁平 `__PREFS_STORE__` 存储的同名键） |
 | `title` / `summary` | string | 行标题 / 说明 |
 | `default` | string | 声明默认值（当前值 = 持久化值 ?? default） |
 | `options` | `{value, label}[]` | `select` 选项 |
@@ -93,7 +93,7 @@ JSVM 引擎 (cpp/jsvm_engine.cpp, libjsvmengine.so)        ← 适配器层：�
 | kind | 导出位置 | 说明 |
 |---|---|---|
 | `tachiyomi` | `globalThis.tachiyomi.generated` | tachiyomi-js 编译产物；一个包可含多个源，调用时首参为 `sourceId`；`getManifest()` 列出源 |
-| `simple` | `module.exports` 或 `globalThis.extension` | 手写宿主式 DSL 插件（`plugins/catalog/*`） |
+| `simple` | `module.exports` 或 `globalThis.extension` | 宿主式 DSL 插件（`plugins/catalog/*`，TypeScript 经工具链构建） |
 
 引擎对 simple 形态做方法名归一（`getPopular`→`getPopularManga`、
 `getChapters`→`getChapterList` 等，见 `bindHost`/`pickFn`）。
@@ -163,27 +163,37 @@ Madara chapter-protector / tachiyomi Cipher 兼容）、`crypto.getRandomValues`
 
 ### 5.3 插件偏好（prefs）
 
-- 宿主把持久化快照作为 seed（`__PREFS_STORE__`）注入脚本；
+- 安全边界：每个引擎实例只承载一个扩展，`__PREFS_STORE__` 即该扩展自己的
+  扁平偏好映射（`k→v`）；shim 的 `__prefs_*` 把 name 参数一律忽略——插件
+  传任何 bucket 名都只落在本扩展存储上，结构上无法寻址其它插件的偏好；
+- 宿主把该扩展的持久化快照作为 seed 注入脚本；
 - 被标记 `prefsDirty` 的调用结束后，Worker dump 回 prefs JSON，宿主经
   `PluginPrefs` 去抖写入 preferences；敏感键（manifest `settings` 声明，或 legacy
   schema 声明）转 SecureStore；
 - 推荐用 manifest `settings` 静态声明设置项（§2.1）：渲染与写入零引擎；
-  插件脚本直接读写 `__PREFS_STORE__` 即可，引擎恰在运行时宿主会把设置页写入
-  经 `setPreference` 转发进来（参见 `plugins/catalog/emby/manifest.json` +
-  `main.js`）。
+  插件脚本经 `createPrefs(manifest.key)` 读写即可，引擎恰在运行时宿主会把
+  设置页写入经 `setPreference` 转发进来（参见 `plugins/catalog/emby/`）；
+- 纵深防御（设备侧，`PluginService`/`PluginPrefs`）：安装拒绝 key 相同但
+  `name` 不匹配的包（`plugin_key_conflict`），阻止仿冒既有插件 key 继承其
+  持久化偏好；卸载清除明文 blob（`__extprefs:<key>`）与 SecureStore 敏感值，
+  重装不继承旧值。安全回归见 `plugins/testing/test/security.test.ts`。
 
 ### 5.4 TypeScript 工具链（`plugins/`，`@honyomi/plugin-sdk`）
 
-手写插件推荐用 TypeScript 编写并经工具链构建（`plugins/README.md` 有完整流程）：
+插件一律用 TypeScript 编写（支持完整 TS 语法，含 enum/namespace；Node 侧经
+`tools/register.mjs` esbuild loader 直接运行 `.ts`），经工具链构建
+（`plugins/README.md` 有完整流程）：
 
 | 包 | 职责 |
 |---|---|
 | `@honyomi/plugin-sdk` | 作者面 API：`SourceExtension` 等契约类型、`defineExtension`、`createPrefs`、`mangaOf/chapterOf/pageOf/videoOf` 等模型助手、`$` DSL 全局类型声明 |
 | `@honyomi/plugin-test` | 测试 harness：Node `vm` 沙箱逐字加载真实 shim + 构建产物 `main.js`，`loadExtension()` 返回 `{ext, calls, prefs}`；`createFixtureFetch()` 按 `fixtures/index.json`（精确 URL 或 `/正则/`）回放本地文件 |
-| `@honyomi/plugin-tools` | CLI：`build [key...]`（esbuild 打包 `catalog/<key>/main.ts` → 自包含 iife `main.js`）/ `publish` / `check` / `serve` |
+| `@honyomi/plugin-tools` | CLI：`build [key...]`（esbuild 编译压缩全部插件为单文件 iife → `dist/catalog/<key>/main.js`，与源码分离）/ `publish` / `check` / `serve [dir]`；`register.mjs` 为 Node 提供 TS loader（enum 等完整语法直跑 `.ts`） |
 
-约定：已迁移插件的 `main.ts` 是唯一真源，构建产物 `main.js` 不入库
-（`.gitignore` 排除 + `git rm --cached`）；迁移逻辑与原 JS 版 1:1。典型入口：
+约定：全部插件的 `.ts` 源文件是唯一真源，构建产物 `dist/` 不入库
+（`.gitignore` 排除）；插件可拆分多个源文件（入口固定 `main.ts`，如
+`plugins/catalog/picacomic/sha256.ts`）；自手写 JS 迁移的插件逻辑与原版 1:1。
+每个插件自带 `test/<key>.test.ts`（`npm test` 全量回归）。典型入口：
 
 ```ts
 import { createPrefs, defineExtension } from '@honyomi/plugin-sdk';
@@ -194,7 +204,7 @@ const ext: SourceExtension = { /* getPopularManga / getSearchManga / ... */ };
 defineExtension(ext);                            // 写宿主 module.exports
 ```
 
-迁移示范见 `plugins/catalog/{emby,baozi,picacomic}/`（main.ts + test/fixtures）。
+迁移示范见 `plugins/catalog/`（全部 31 个插件：main.ts + test/<key>.test.ts）。
 
 
 ## 6. Wire 协议（JsvmExtensionManager ↔ JsvmWorker）

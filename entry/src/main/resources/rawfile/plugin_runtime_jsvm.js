@@ -183,32 +183,41 @@
   }
 
   // ---- SharedPreferences host bridge (in-memory + seed from ArkTS) --------
+  // 安全边界：每个引擎实例只承载一个扩展，__PREFS_STORE__ 即该扩展自己的偏好映射
+  // （扁平 k→v）。__prefs_* 的 name 参数仅为兼容旧调用保留，一律被宿主忽略——
+  // 插件无法寻址、也无法读写其它插件的偏好。
   if (typeof g.__PREFS_STORE__ !== 'object' || g.__PREFS_STORE__ == null) {
     g.__PREFS_STORE__ = {};
   }
 
-  function prefsBucket(name) {
-    if (!g.__PREFS_STORE__[name] || typeof g.__PREFS_STORE__[name] !== 'object') {
-      g.__PREFS_STORE__[name] = {};
+  function prefsMap() {
+    if (typeof g.__PREFS_STORE__ !== 'object' || g.__PREFS_STORE__ == null) {
+      g.__PREFS_STORE__ = {};
     }
-    return g.__PREFS_STORE__[name];
+    return g.__PREFS_STORE__;
   }
 
-  g.__prefs_get = function (name, key) {
-    var b = prefsBucket(String(name));
+  g.__prefs_get = function (_name, key) {
+    var b = prefsMap();
     return Object.prototype.hasOwnProperty.call(b, key) ? b[key] : undefined;
   };
-  g.__prefs_set = function (name, key, value) {
-    prefsBucket(String(name))[key] = value;
+  g.__prefs_set = function (_name, key, value) {
+    prefsMap()[key] = value;
   };
-  g.__prefs_remove = function (name, key) {
-    delete prefsBucket(String(name))[key];
+  g.__prefs_remove = function (_name, key) {
+    delete prefsMap()[key];
   };
-  g.__prefs_clear = function (name) {
-    g.__PREFS_STORE__[String(name)] = {};
+  g.__prefs_clear = function () {
+    // 原地清空而非换新对象：保持 seed 注入对象与外部快照引用有效
+    var b = prefsMap();
+    for (var k in b) {
+      if (Object.prototype.hasOwnProperty.call(b, k)) {
+        delete b[k];
+      }
+    }
   };
-  g.__prefs_getAll = function (name) {
-    var src = prefsBucket(String(name));
+  g.__prefs_getAll = function () {
+    var src = prefsMap();
     var out = {};
     for (var k in src) {
       if (Object.prototype.hasOwnProperty.call(src, k)) {
@@ -218,7 +227,7 @@
     return out;
   };
   g.__prefsDump = function () {
-    return g.__PREFS_STORE__;
+    return prefsMap();
   };
 
   // ---- crypto.subtle AES-CBC (Madara chapter-protector + tachiyomi Cipher) -
@@ -649,6 +658,9 @@
 
   // ---- Jsoup-ish node wrapper over nativeSelector JSON --------------------
   function absUrl(u, base) {
+    if (String(u) === '') {
+      return '';
+    }
     try {
       return new g.URL(String(u), base || undefined).href;
     } catch (e) {

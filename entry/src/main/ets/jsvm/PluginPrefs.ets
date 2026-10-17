@@ -11,6 +11,10 @@ const TAG = 'PluginPrefs';
  * Seeded into the engine as globalThis.__PREFS_STORE__ and flushed after
  * every __honyomiCall (see JsvmWorker prefs dump).
  *
+ * 安全契约：每个引擎实例只承载一个扩展，__PREFS_STORE__ 即该扩展自己的
+ * 扁平偏好映射（k→v）；shim 的 __prefs_* 忽略 name 参数，插件无法寻址
+ * 其它插件的偏好。persist/seed 均以 manifest.key 为持久化命名空间。
+ *
  * persist 为防抖写（300ms 内多条 worker 消息合并为一次落盘）；
  * flushAll() 提供立即可 await 的落盘路径（销毁/退出场景防丢数据）。
  *
@@ -111,6 +115,24 @@ export class PluginPrefs {
     }
   }
 
+  // 卸载路径：彻底清除该扩展的明文偏好 blob（__extprefs:<key>）与防抖队列中的
+  // 待写快照。若只清 SecureStore 不清明文 blob，重装同 key（或安装仿冒同 key 的
+  // 恶意包）会经 seedScript 继承旧偏好
+  static removePackage(pkgKey: string): void {
+    PluginPrefs.pending.delete(pkgKey);
+    const store = PluginPrefs.store;
+    if (store === undefined) {
+      return;
+    }
+    try {
+      store.deleteSync(`__extprefs:${pkgKey}`);
+      store.flush().catch((e: Object): void => {
+        hilog.warn(DOMAIN, TAG, 'flush after prefs removal failed: %{public}s', `${e}`);
+      });
+    } catch (_e) {
+    }
+  }
+
   // 构建 __PREFS_STORE__ 种子：明文偏好 + SecureStore 敏感值合并；
   // 插件 JS 读取路径不变（敏感值仅存在于内存中的 globalThis）
   static seedScript(key: string): string {
@@ -167,7 +189,12 @@ export class PluginPrefs {
     });
   }
 
-  // 明文偏好 + SecureStore 敏感值合并（seedScript / currentValues / updatePref 共用）
+  // 明文偏好 + SecureStore 敏感值合并（seedScript / currentValues / updatePref 共用）。
+  // 全链路契约：__PREFS_STORE__ 是单个扩展自己的扁平偏好映射（k→v）。
+  // 旧格式扁平化：历史 blob 可能混有旧 shim 嵌套寻址留下的本插件桶
+  // （blob[key] 为对象，引擎经 __prefs_set 写入的值）——提升其字符串键；
+  // 其余嵌套对象（历史误写的外部桶）与非字符串值丢弃。读路径始终归一，
+  // 落盘在下一次 persist 时自然迁移为纯扁平格式。
   private static mergedPrefs(key: string): Record<string, Object> {
     const merged: Record<string, Object> = {};
     const store = PluginPrefs.store;
@@ -184,8 +211,21 @@ export class PluginPrefs {
           // 仅接受对象载荷：JSON.parse('null')/'5' 等合法非对象 JSON 直接丢弃，
           // 否则后续 merged[k] = v 写入 null 会抛错
           if (parsed !== null && parsed !== undefined && typeof parsed === 'object') {
+            // 顶层字符串键（manifest 静态设置写入）
             for (const k of Object.keys(parsed)) {
-              merged[k] = parsed[k];
+              if (typeof parsed[k] === 'string') {
+                merged[k] = parsed[k];
+              }
+            }
+            // 旧嵌套本插件桶：字符串键提升（引擎写入的值优先）
+            const bucket = parsed[key];
+            if (bucket !== null && bucket !== undefined && typeof bucket === 'object') {
+              const bucketMap = bucket as Record<string, Object>;
+              for (const k of Object.keys(bucketMap)) {
+                if (typeof bucketMap[k] === 'string') {
+                  merged[k] = bucketMap[k];
+                }
+              }
             }
           }
         } catch (e) {

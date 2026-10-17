@@ -308,10 +308,12 @@ export class PluginService {
     PluginService.unregisterPackage(packageKey);
     // 清除引擎启动记忆（含失败 rejected 记忆），重装后可重新拉起
     PluginService.startPromises.delete(packageKey);
-    // 卸载即销毁插件敏感数据：SecureStore 条目 + 敏感键注册表一并清除
+    // 卸载即销毁插件持久化数据：明文偏好 blob + SecureStore 条目 + 敏感键注册表一并清除，
+    // 重装同 key（或安装仿冒同 key 的包）不继承旧值
     if (PluginService.context !== undefined) {
       try {
         await PluginPrefs.ensureInit(PluginService.context);
+        PluginPrefs.removePackage(packageKey);
         PluginPrefs.removeSecureEntries(packageKey);
       } catch (e) {
         hilog.warn(DOMAIN, TAG, 'remove secure prefs of %{public}s failed: %{public}s',
@@ -824,6 +826,21 @@ export class PluginService {
       if (!mainExists) {
         throw new Error('plugin_missing_main');
       }
+      // 同名 key 已被 name 不同的其它插件占用：无包签名校验下，仿冒既有插件 key 的包
+      // 会在安装后继承其持久化偏好（含 SecureStore 种子并入的敏感值），必须拒绝；
+      // name 相同视为同插件升级/重装，放行
+      const destDir = `${PluginService.pluginsDir}/${manifest.key}`;
+      if (fs.accessSync(destDir)) {
+        let oldName = '';
+        try {
+          const oldManifest = PluginService.parseManifest(fs.readTextSync(`${destDir}/manifest.json`));
+          oldName = oldManifest.name;
+        } catch (_e) {
+        }
+        if (oldName !== '' && oldName !== manifest.name) {
+          throw new Error(`plugin_key_conflict|${manifest.key}`);
+        }
+      }
       // 先完整复制到 staging 目录，成功后再删除旧目录并 rename 新目录
       stagingDir = `${PluginService.pluginsDir}/.staging_${manifest.key}_${Date.now()}_${util.generateRandomUUID()}`;
       try {
@@ -836,7 +853,6 @@ export class PluginService {
       } catch (e) {
         throw new Error(`plugin_stage_failed|${Util.errSummary(e)}`);
       }
-      const destDir = `${PluginService.pluginsDir}/${manifest.key}`;
       const backupDir = `${PluginService.pluginsDir}/.old_${manifest.key}_${util.generateRandomUUID()}`;
       let swapped = false;
       try {
