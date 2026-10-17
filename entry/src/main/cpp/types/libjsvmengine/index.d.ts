@@ -44,7 +44,7 @@ export interface JsvmBridgeRequest {
 
 /**
  * Creates an isolated JSVM_VM + JSVM_Env with the native bridge globals
- * (fetch/tachiyomiHttpRequest/nativeSelector/console) pre-installed.
+ * (fetch/fetchBytes/nativeSelector/console) pre-installed.
  * @returns engine id (>= 1), or -1 on failure.
  */
 export function createEngine(): number;

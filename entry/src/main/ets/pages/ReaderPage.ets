@@ -1,4 +1,5 @@
 import { motion } from '@kit.MultimodalAwarenessKit';
+import { KeyCode } from '@kit.InputKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { uiMaterial } from '@kit.ArkUI';
 import { AppDb } from '../data/AppDb';
@@ -407,6 +408,7 @@ export struct ReaderPage {
       nextOnLeft: this.curlNextOnLeft(),
       tapMode: this.curlTapMode(),
       flipEnabled: this.curlEnabled(),
+      turnToken: this.leafTurn,
       bgColor: Theme.readerBg(this.readerTheme, this.isDark),
       onIndexChange: (index: number): void => {
         this.onCurlIndex(index);
@@ -767,6 +769,13 @@ export struct ReaderPage {
       .width('100%')
       .height('100%')
       .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
+      // 键盘控制宿主：默认获焦使 onKeyEvent 生效，触摸重聚焦避免焦点漂移后按键失灵
+      .focusable(true)
+      .defaultFocus(true)
+      .focusOnTouch(true)
+      .onKeyEvent((event: KeyEvent) => {
+        this.handleReaderKey(event);
+      })
       .bindSheet($$this.showModeSheet, this.modeSheetBuilder(), {
         preferType: Bp.sheetType(this.windowW),
         width: Bp.sheetWidth(this.windowW),
@@ -1673,6 +1682,82 @@ export struct ReaderPage {
     const back = this.realToDisplay(this.currentReal);
     this.displayIndex = back;
     this.onSwipe(back);
+  }
+
+  // ---- 键盘控制（外接键盘/PC）：方向键/PgUp/PgDn/空格翻页，回车呼出菜单，Escape 逐级退出 ----
+
+  private handleReaderKey(event: KeyEvent): void {
+    if (event.type !== KeyType.Down) {
+      return;
+    }
+    if (event.keyCode === KeyCode.KEYCODE_ESCAPE) {
+      // 加载中由 LoadingBackButton 的 ESC 快捷键兜底退出，避免重复 pop
+      if (this.loading) {
+        return;
+      }
+      if (this.showSettings) {
+        this.showSettings = false;
+      } else if (this.showModeSheet) {
+        this.showModeSheet = false;
+      } else if (this.showOrientationSheet) {
+        this.showOrientationSheet = false;
+      } else if (this.showMenu) {
+        this.showMenu = false;
+      } else {
+        this.pathStack.pop();
+      }
+      return;
+    }
+    if (event.keyCode === KeyCode.KEYCODE_ENTER) {
+      if (!this.loading) {
+        this.showMenu = !this.showMenu;
+      }
+      return;
+    }
+    let delta = 0;
+    const verticalScroll = this.mode === 'vertical' || this.mode === 'webtoon';
+    if (event.keyCode === KeyCode.KEYCODE_PAGE_DOWN || event.keyCode === KeyCode.KEYCODE_SPACE) {
+      delta = 1;
+    } else if (event.keyCode === KeyCode.KEYCODE_PAGE_UP) {
+      delta = -1;
+    } else if (event.keyCode === KeyCode.KEYCODE_DPAD_RIGHT) {
+      delta = this.mode === 'rtl' ? -1 : 1;
+    } else if (event.keyCode === KeyCode.KEYCODE_DPAD_LEFT) {
+      delta = this.mode === 'rtl' ? 1 : -1;
+    } else if (event.keyCode === KeyCode.KEYCODE_DPAD_DOWN) {
+      delta = verticalScroll ? 1 : 0;
+    } else if (event.keyCode === KeyCode.KEYCODE_DPAD_UP) {
+      delta = verticalScroll ? -1 : 0;
+    }
+    if (delta !== 0) {
+      this.keyTurn(delta);
+    }
+  }
+
+  // 键盘翻页统一入口：条漫整屏滚动、仿真走翻页令牌、其余走 step
+  //（step 内部已适配 RTL 与章节过渡页；仿真边界过渡层上继续前进进相邻章节）
+  private keyTurn(delta: number): void {
+    if (this.loading || this.pages.length === 0 || this.showMenu ||
+      this.showSettings || this.showModeSheet || this.showOrientationSheet) {
+      return;
+    }
+    if (this.mode === 'webtoon') {
+      this.scroller.scrollBy(0, delta * (this.readerH > 0 ? this.readerH : 640));
+      return;
+    }
+    if (this.transOverlay !== 0) {
+      const next = this.transOverlay > 0;
+      this.transOverlay = 0;
+      if (delta > 0) {
+        this.gotoChapter(next, true);
+      }
+      return;
+    }
+    if (this.useCurl()) {
+      this.requestLeaf(delta);
+      return;
+    }
+    this.step(delta);
   }
 
   // ---- 各阅读模式内容体（经 ReaderFilterArea 的 content 注入；@BuilderParam 传参

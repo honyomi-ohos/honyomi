@@ -1,3 +1,4 @@
+import { KeyCode } from '@kit.InputKit';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Settings } from '../common/Settings';
@@ -153,6 +154,13 @@ export struct TtsPlayerPage {
       .width('100%')
       .height('100%')
       .backgroundColor(this.pal.bg)
+      // 键盘控制宿主：默认获焦使 onKeyEvent 生效，触摸重聚焦避免焦点漂移后按键失灵
+      .focusable(true)
+      .defaultFocus(true)
+      .focusOnTouch(true)
+      .onKeyEvent((event: KeyEvent) => {
+        this.handlePlayerKey(event);
+      })
     }
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)
@@ -653,6 +661,51 @@ export struct TtsPlayerPage {
   private hasNext(): boolean {
     const idx = this.chapterIndex();
     return idx >= 0 && idx < this.chapters.length - 1;
+  }
+
+  // ---- 键盘控制（外接键盘/PC）：空格播放/暂停，左右方向键回退/快进 30s，
+  // 上下方向键（或 PgUp/PgDn）切换章节，Escape 关闭面板/退出 ----
+  private handlePlayerKey(event: KeyEvent): void {
+    if (event.type !== KeyType.Down) {
+      return;
+    }
+    if (event.keyCode === KeyCode.KEYCODE_ESCAPE) {
+      if (this.showChapters || this.showSpeed || this.showSleep) {
+        this.showChapters = false;
+        this.showSpeed = false;
+        this.showSleep = false;
+      } else {
+        this.pathStack.pop();
+      }
+      return;
+    }
+    if (!this.active) {
+      return;
+    }
+    if (event.keyCode === KeyCode.KEYCODE_SPACE || event.keyCode === KeyCode.KEYCODE_ENTER) {
+      TtsPlaybackService.toggle();
+      return;
+    }
+    if (event.keyCode === KeyCode.KEYCODE_DPAD_LEFT) {
+      TtsPlaybackService.seek(-30);
+      return;
+    }
+    if (event.keyCode === KeyCode.KEYCODE_DPAD_RIGHT) {
+      TtsPlaybackService.seek(30);
+      return;
+    }
+    if (event.keyCode === KeyCode.KEYCODE_DPAD_UP || event.keyCode === KeyCode.KEYCODE_PAGE_UP) {
+      if (this.hasPrev()) {
+        TtsPlaybackService.step(-1);
+      }
+      return;
+    }
+    if (event.keyCode === KeyCode.KEYCODE_DPAD_DOWN || event.keyCode === KeyCode.KEYCODE_PAGE_DOWN) {
+      if (this.hasNext()) {
+        TtsPlaybackService.step(1);
+      }
+      return;
+    }
   }
 
   // 定时剩余 mm:ss

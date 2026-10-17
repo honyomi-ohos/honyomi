@@ -1,4 +1,5 @@
 import { display, uiMaterial } from '@kit.ArkUI';
+import { KeyCode } from '@kit.InputKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppDb } from '../data/AppDb';
 import { ChapterRepo, HistoryRepo, MangaRepo } from '../data/Repos';
@@ -886,6 +887,7 @@ export struct NovelReaderPage {
                 nextOnLeft: this.mode === 'paged_rtl',
                 tapMode: 'horizontal',
                 flipEnabled: !this.anySheetOpen(),
+                turnToken: this.leafTurn,
                 bgColor: Theme.readerBg(this.readerTheme, this.isDark),
                 onIndexChange: (index: number): void => {
                   this.onCurlIndex(index);
@@ -1023,6 +1025,13 @@ export struct NovelReaderPage {
       .width('100%')
       .height('100%')
       .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
+      // 键盘控制宿主：默认获焦使 onKeyEvent 生效，触摸重聚焦避免焦点漂移后按键失灵
+      .focusable(true)
+      .defaultFocus(true)
+      .focusOnTouch(true)
+      .onKeyEvent((event: KeyEvent) => {
+        this.handleReaderKey(event);
+      })
       .bindSheet($$this.showModeSheet, this.modeSheetBuilder(), {
         preferType: Bp.sheetType(this.windowW),
         width: Bp.sheetWidth(this.windowW),
@@ -2173,6 +2182,71 @@ export struct NovelReaderPage {
     }
     // 越过末页向前进下一章；越过首页向回退上一章（落在末尾）
     this.openChapter(dir > 0 ? this.nextId : this.prevId, dir < 0);
+  }
+
+  // ---- 键盘控制（外接键盘/PC）：方向键/PgUp/PgDn/空格翻页或滚动，回车呼出菜单，Escape 逐级退出 ----
+
+  private handleReaderKey(event: KeyEvent): void {
+    if (event.type !== KeyType.Down) {
+      return;
+    }
+    if (event.keyCode === KeyCode.KEYCODE_ESCAPE) {
+      // 加载中由 LoadingBackButton 的 ESC 快捷键兜底退出，避免重复 pop
+      if (this.loading) {
+        return;
+      }
+      if (this.anySheetOpen()) {
+        this.dismissSheets();
+      } else if (this.showMenu) {
+        this.showMenu = false;
+      } else {
+        this.pathStack.pop();
+      }
+      return;
+    }
+    if (event.keyCode === KeyCode.KEYCODE_ENTER) {
+      if (!this.loading && this.body !== '') {
+        this.toggleMenu();
+      }
+      return;
+    }
+    let delta = 0;
+    if (event.keyCode === KeyCode.KEYCODE_PAGE_DOWN || event.keyCode === KeyCode.KEYCODE_SPACE) {
+      delta = 1;
+    } else if (event.keyCode === KeyCode.KEYCODE_PAGE_UP) {
+      delta = -1;
+    } else if (event.keyCode === KeyCode.KEYCODE_DPAD_RIGHT) {
+      delta = this.mode === 'paged_rtl' ? -1 : 1;
+    } else if (event.keyCode === KeyCode.KEYCODE_DPAD_LEFT) {
+      delta = this.mode === 'paged_rtl' ? 1 : -1;
+    } else if (event.keyCode === KeyCode.KEYCODE_DPAD_DOWN) {
+      delta = this.mode === 'scroll' ? 1 : 0;
+    } else if (event.keyCode === KeyCode.KEYCODE_DPAD_UP) {
+      delta = this.mode === 'scroll' ? -1 : 0;
+    }
+    if (delta !== 0) {
+      this.keyTurn(delta);
+    }
+  }
+
+  // 键盘翻页统一入口：滚动模式整屏滚动（末尾继续前进切下一章）、仿真走翻页令牌、Swiper 走 turnScreen
+  private keyTurn(delta: number): void {
+    if (this.loading || this.body === '' || this.showMenu || this.anySheetOpen()) {
+      return;
+    }
+    if (this.mode === 'scroll') {
+      if (delta > 0 && this.permille >= 1000 && this.nextId > 0) {
+        this.openChapter(this.nextId);
+        return;
+      }
+      this.scroller.scrollBy(0, delta * (this.viewH > 0 ? this.viewH : 640));
+      return;
+    }
+    if (this.curlActive()) {
+      this.requestLeaf(delta);
+      return;
+    }
+    this.turnScreen(delta);
   }
 
   // 底栏阅读模式图标（随当前模式变化）

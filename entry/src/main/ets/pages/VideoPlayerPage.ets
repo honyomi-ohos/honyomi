@@ -1,4 +1,5 @@
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { KeyCode } from '@kit.InputKit';
 import { media } from '@kit.MediaKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { window } from '@kit.ArkUI';
@@ -910,6 +911,13 @@ export struct VideoPlayerPage {
       .width('100%')
       .height('100%')
       .backgroundColor('#000000')
+      // 键盘控制宿主：默认获焦使 onKeyEvent 生效，触摸重聚焦避免焦点漂移后按键失灵
+      .focusable(true)
+      .defaultFocus(true)
+      .focusOnTouch(true)
+      .onKeyEvent((event: KeyEvent) => {
+        this.handlePlayerKey(event);
+      })
       .bindSheet($$this.showSheet, this.sheetBuilder(), {
         preferType: Bp.sheetType(this.windowW),
         width: Bp.sheetWidth(this.windowW),
@@ -1583,6 +1591,54 @@ export struct VideoPlayerPage {
       this.armAutoHide();
     }
     this.armAutoHide();
+  }
+
+  // ---- 键盘控制（外接键盘/PC）：空格播放/暂停，左右方向键快退/快进 10s，
+  // 回车切换控制条，Escape 退出全屏/页面 ----
+  private handlePlayerKey(event: KeyEvent): void {
+    if (event.type !== KeyType.Down) {
+      return;
+    }
+    if (event.keyCode === KeyCode.KEYCODE_SPACE) {
+      if (this.locked) {
+        this.pokeControls();
+        return;
+      }
+      if (!this.loading && this.errorText === '') {
+        this.togglePlay();
+        this.pokeControls();
+      }
+      return;
+    }
+    if (event.keyCode === KeyCode.KEYCODE_ENTER) {
+      if (this.locked) {
+        this.pokeControls();
+      } else {
+        this.toggleControls();
+      }
+      return;
+    }
+    if (event.keyCode === KeyCode.KEYCODE_DPAD_LEFT) {
+      this.onDoubleTap(-1);
+      return;
+    }
+    if (event.keyCode === KeyCode.KEYCODE_DPAD_RIGHT) {
+      this.onDoubleTap(1);
+      return;
+    }
+    if (event.keyCode === KeyCode.KEYCODE_ESCAPE) {
+      if (this.showSheet) {
+        this.showSheet = false;
+      } else if (this.fullscreen) {
+        this.toggleFullscreen();
+      } else {
+        this.pathStack.pop();
+      }
+      return;
+    }
+    if (event.keyCode === KeyCode.KEYCODE_DPAD_UP || event.keyCode === KeyCode.KEYCODE_DPAD_DOWN) {
+      this.pokeControls();
+    }
   }
 
   // 意图框架快进/跳转指令（VideoSeekIntent 写入）：仅栈顶最新实例、且时间戳递增时消费
