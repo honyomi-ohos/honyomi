@@ -47,6 +47,10 @@ export class Doh {
     { id: 'shecan', label: 'Shecan', url: 'https://free.shecan.ir/dns-query' },
   ];
 
+  // 插件显式 pin（$.dns.set）的有效期：netstack 规则进程内常驻，
+  // 缓存 pin 只为拦住 DoH prepare 的重复解析/覆盖，取一个足够长的会话级 TTL
+  private static readonly PIN_TTL_MS: number = 24 * 3600 * 1000;
+
   private static cache: Map<string, DohCacheEntry> = new Map();
   private static inflight: Map<string, Promise<void>> = new Map();
   private static querySeq: number = 1;
@@ -106,6 +110,17 @@ export class Doh {
     } catch (e) {
       Log.debug(TAG, `clearCustomDnsRules failed: ${e}`);
     }
+  }
+
+  // 插件显式 DNS 直连（$.dns.set / NativeHttpBridge dnsSet 消息）：
+  // 注入 netstack 直连规则（应用内全部请求生效），并写入长 TTL 缓存 pin，
+  // 防止开启 DoH 时 prepare 用 DoH 应答覆盖插件指定的入口 IP。
+  // host/ips 已由调用方校验（域名非 IP 字面量 / 1..8 个 IPv4）。
+  static async pin(host: string, ips: string[]): Promise<void> {
+    await connection.addCustomDnsRule(host, ips);
+    const entry: DohCacheEntry = { ips: ips, expireAt: Date.now() + Doh.PIN_TTL_MS };
+    Doh.cache.set(host, entry);
+    Log.debug(TAG, `pin ${host} -> ${ips.join(',')}`);
   }
 
   private static async resolveAndRegister(host: string, provider: DohProvider): Promise<void> {

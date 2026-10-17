@@ -28,6 +28,128 @@ class HlsMediaPlaylist {
   live: boolean = true;
 }
 
+// TS 分片 PES 扫描结果：首个带 PTS 的 PES 原始值与输出时间线上的最大 PTS
+class TsPesScan {
+  firstPts: number = -1;
+  maxPts: number = -1;
+}
+
+// MPEG-TS 时间轴缝合器：源播放列表常把多段独立编码的视频（各自 PTS 从 ~0 起）拼进
+// 一个列表，裸合并出的 TS 在分片边界出现 PTS 倒退，解复用器据此把文件判坏（时长与
+// 可播范围只剩第一段）。本类逐分片检测首个 PES 的 PTS 回跳，为该分片起计算统一偏移
+// 并原位重写全部 PTS/DTS/PCR，把多条时间轴缝成一条连续时间线（各段 PID 映射一致，
+// 已实测校验，无需重映射 PID/流类型）。
+class TsTimelineFixer {
+  // 当前分片起统一叠加的 90kHz tick 偏移（33bit 环内非负）
+  private curOffset: number = 0;
+  // 已输出时间线上最近的最大 PES PTS；-1 表示尚未见过任何 PES
+  private lastOutPts: number = -1;
+
+  // 处理一个 TS 分片（原位改写 buf）。无 PES 的分片直接跳过。
+  processSegment(buf: Uint8Array): void {
+    const scan: TsPesScan = TsTimelineFixer.scanPes(buf, this.curOffset, false);
+    if (scan.firstPts < 0) {
+      return;
+    }
+    // 首个 PES 相对已输出时间线倒退超过 1s：判定为新时间轴块，块首紧接上一块结尾
+    // （留 40ms 间隙），此后所有分片叠加新偏移
+    if (this.lastOutPts >= 0 && scan.firstPts + this.curOffset < this.lastOutPts - 90000) {
+      this.curOffset = this.lastOutPts + 3600 - scan.firstPts;
+      hilog.info(0x0001, 'HlsDownload', 'ts timeline stitched: new block, offset=%{public}d ticks (%{public}ds)',
+        this.curOffset, Math.round(this.curOffset / 90000));
+    }
+    if (this.curOffset === 0) {
+      // 尚无任何时间轴断裂：重写是恒等变换，只推进 lastOutPts
+      this.lastOutPts = scan.maxPts;
+    } else {
+      this.lastOutPts = TsTimelineFixer.scanPes(buf, this.curOffset, true).maxPts;
+    }
+  }
+
+  // 扫描（rewrite=true 时原位重写）分片内全部 188 字节 TS 包：
+  // 视频/音频 PES 的 PTS/DTS 与自适应字段中的 PCR 基值按 offset 平移（33bit 取模）
+  private static scanPes(buf: Uint8Array, offset: number, rewrite: boolean): TsPesScan {
+    const out: TsPesScan = new TsPesScan();
+    let i = 0;
+    while (i + 188 <= buf.length) {
+      if (buf[i] !== 0x47) {
+        i += 1;
+        continue;
+      }
+      const flags: number = buf[i + 1];
+      const pusi: boolean = (flags & 0x40) !== 0;
+      const afc: number = (buf[i + 3] >> 4) & 3;
+      let p: number = i + 4;
+      if (afc === 2 || afc === 3) {
+        const afl: number = buf[i + 4];
+        if (rewrite && afl >= 7 && (buf[i + 5] & 0x10) !== 0) {
+          TsTimelineFixer.shiftPcr(buf, i + 6, offset);
+        }
+        p += 1 + afl;
+      }
+      if (pusi && (afc === 1 || afc === 3) && p + 14 < i + 188 &&
+        buf[p] === 0 && buf[p + 1] === 0 && buf[p + 2] === 1) {
+        const sid: number = buf[p + 3];
+        if ((sid >= 0xE0 && sid <= 0xEF) || (sid >= 0xC0 && sid <= 0xDF)) {
+          const ptsFlags: number = (buf[p + 7] >> 6) & 3;
+          if (ptsFlags !== 0) {
+            const raw: number = TsTimelineFixer.readPts(buf, p + 9);
+            if (out.firstPts < 0) {
+              out.firstPts = raw;
+            }
+            if (rewrite) {
+              TsTimelineFixer.writePts(buf, p + 9, raw + offset);
+              if (ptsFlags === 3 && p + 19 < i + 188) {
+                TsTimelineFixer.writePts(buf, p + 14, TsTimelineFixer.readPts(buf, p + 14) + offset);
+              }
+            }
+            if (raw + offset > out.maxPts) {
+              out.maxPts = raw + offset;
+            }
+          }
+        }
+      }
+      i += 188;
+    }
+    return out;
+  }
+
+  // PTS/DTS 33bit 编码读取（5 字节，含 marker 位）
+  private static readPts(b: Uint8Array, p: number): number {
+    return (b[p] >> 1 & 7) * 1073741824 + b[p + 1] * 4194304 +
+      (b[p + 2] >> 1 & 0x7F) * 32768 + b[p + 3] * 128 + (b[p + 4] >> 1);
+  }
+
+  private static writePts(b: Uint8Array, p: number, v: number): void {
+    let t = v % 8589934592;
+    if (t < 0) {
+      t += 8589934592;
+    }
+    b[p] = 0x20 | ((Math.floor(t / 1073741824) & 7) << 1) | 1;
+    b[p + 1] = Math.floor(t / 4194304) & 0xFF;
+    b[p + 2] = ((Math.floor(t / 32768) & 0x7F) << 1) | 1;
+    b[p + 3] = Math.floor(t / 128) & 0xFF;
+    b[p + 4] = ((t & 0x7F) << 1) | 1;
+  }
+
+  // PCR 基值（33bit）平移，9bit 扩展保留
+  private static shiftPcr(b: Uint8Array, p: number, offset: number): void {
+    const base: number = b[p] * 33554432 + b[p + 1] * 131072 +
+      b[p + 2] * 512 + b[p + 3] * 2 + (b[p + 4] >> 7);
+    let nb = (base + offset) % 8589934592;
+    if (nb < 0) {
+      nb += 8589934592;
+    }
+    const ext: number = ((b[p + 4] & 0x7F) << 8) | b[p + 5];
+    b[p] = Math.floor(nb / 33554432) & 0xFF;
+    b[p + 1] = Math.floor(nb / 131072) & 0xFF;
+    b[p + 2] = Math.floor(nb / 512) & 0xFF;
+    b[p + 3] = Math.floor(nb / 2) & 0xFF;
+    b[p + 4] = ((nb & 1) << 7) | ((ext >> 8) & 0x7F);
+    b[p + 5] = ext & 0xFF;
+  }
+}
+
 // HLS(m3u8) 下载器：解析 m3u8（含主列表多码率选择）→ 逐分片请求（带源请求头）
 // → AES-128-CBC 解密 → 按序合并。fMP4 流（含 EXT-X-MAP）输出 video.mp4，
 // MPEG-TS 流输出 video.ts（AVPlayer 支持 mpeg2ts 播放）。
@@ -88,18 +210,19 @@ export class HlsDownloader {
     onProgress(0, total);
     hilog.info(0x0001, 'HlsDownload', 'start: %{public}d segments, %{public}s', total, isFmp4 ? 'fmp4' : 'ts');
     const keyCache = new Map<string, Uint8Array>();
-    let fd: number = -1;
+    // MPEG-TS：逐分片缝合多时间轴（详见 TsTimelineFixer）；fMP4 时间线在 trun 盒内，不适用
+    const fixer: TsTimelineFixer = new TsTimelineFixer();
+    // 大文件顺序写入官方推荐 fs.createStream 流式接口（FAQ faqs-local-file-manager-77）：
+    // 流内部维护写入位置、每块自动推进。fd 版 writeSync 在部分设备上位置不随写入推进，
+    // 且传 options.offset 追加会被判非法参数直接抛错，均不可靠
+    let stream: fileIo.Stream | undefined = undefined;
     try {
-      // APPEND 模式打开：fs.writeSync 默认从当前位置写入且不随写入推进，
-      // 不加 APPEND 会导致后续分片反复覆盖文件头，最终只剩一个分片
-      fd = fileIo.openSync(tmpPath,
-        fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE | fileIo.OpenMode.TRUNC |
-        fileIo.OpenMode.APPEND).fd;
+      stream = fileIo.createStreamSync(tmpPath, 'w');
       // fMP4：初始化段（ftyp/moov）在最前
       if (isFmp4) {
         HlsDownloader.checkStop(shouldStop);
         const initBuf: ArrayBuffer = await Http.getBuffer(media.initUrl, headers);
-        HlsDownloader.appendBuffer(fd, initBuf);
+        HlsDownloader.writeBuffer(stream, initBuf);
       }
       let next = 0;
       let done = 0;
@@ -121,14 +244,17 @@ export class HlsDownloader {
         }
         const buf: ArrayBuffer = await head;
         HlsDownloader.checkStop(shouldStop);
-        HlsDownloader.appendBuffer(fd, buf);
+        if (!isFmp4) {
+          fixer.processSegment(new Uint8Array(buf));
+        }
+        HlsDownloader.writeBuffer(stream, buf);
         done += 1;
         onProgress(done, total);
       }
     } catch (e) {
-      if (fd >= 0) {
+      if (stream !== undefined) {
         try {
-          fileIo.closeSync(fd);
+          stream.closeSync();
         } catch (_ce) {
         }
       }
@@ -141,7 +267,7 @@ export class HlsDownloader {
       throw e as Error;
     }
     try {
-      fileIo.closeSync(fd);
+      stream.closeSync();
     } catch (e) {
       throw new Error(`write video file failed: ${e}`);
     }
@@ -263,9 +389,9 @@ export class HlsDownloader {
 
   // ---------------- 分片获取与解密 ----------------
 
-  // 追加写入整块缓冲：字节数不足视为写入失败（磁盘满/沙箱异常）
-  private static appendBuffer(fd: number, buf: ArrayBuffer): void {
-    const written = fileIo.writeSync(fd, buf);
+  // 通过流顺序写入整块缓冲：字节数不足视为写入失败（磁盘满/沙箱异常）
+  private static writeBuffer(stream: fileIo.Stream, buf: ArrayBuffer): void {
+    const written = stream.writeSync(buf);
     if (written !== buf.byteLength) {
       throw new Error('hls_write_failed');
     }

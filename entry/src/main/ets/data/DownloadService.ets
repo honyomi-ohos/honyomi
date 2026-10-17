@@ -593,6 +593,11 @@ export class DownloadService {
     DownloadService.activeTasks = DownloadService.activeTasks.filter((t: DownloadTask) => t !== task);
     DownloadService.activeFlags.delete(task.chapterId);
     DownloadService.activeAborts.delete(task.chapterId);
+    // 完成即移出队列：避免"228/228"完成态常驻队列页，章节转由"已下载"区展示；
+    // 失败任务保留在队列中供重试
+    if (task.state === 2) {
+      DownloadService.queue = DownloadService.queue.filter((t: DownloadTask) => t !== task);
+    }
     DownloadService.persistQueue();
     DownloadService.releaseBgTaskIfIdle();
     DownloadService.notify();

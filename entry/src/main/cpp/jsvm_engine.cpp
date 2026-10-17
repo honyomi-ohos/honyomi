@@ -453,6 +453,66 @@ static JSVM_Value NativeUrlEncodeGbk(JSVM_Env env, JSVM_CallbackInfo info)
     return ToJsString(env, resultJson);
 }
 
+// Blocking bridge to the ArkTS side: registers a pinned DNS rule
+// (host -> IPv4 list) into this app's netstack (Doh.pin ->
+// connection.addCustomDnsRule + long-lived Doh cache pin). Reuses the HTTP
+// task channel with reqJson == {"type":"dnsSet","callId":N,"host":"...",
+// "ipsJson":"[\"1.2.3.4\",...]"}; the answer arrives as a JsvmHttpResult
+// envelope (resolved through resolveHttp) whose `error` field marks
+// rejection. Lets a plugin bypass poisoned system DNS for a specific host
+// (ChannelDns-style direct addressing).
+static JSVM_Value NativeDnsSet(JSVM_Env env, JSVM_CallbackInfo info)
+{
+    size_t argc = 2;
+    JSVM_Value args[2] = {nullptr, nullptr};
+    OH_JSVM_GetCbInfo(env, info, &argc, args, nullptr, nullptr);
+    std::string host = argc > 0 ? ToStdString(env, args[0]) : "";
+    std::string ipsJson = argc > 1 ? ToStdString(env, args[1]) : "[]";
+
+    const uint64_t callId = g_nextCallId.fetch_add(1);
+    auto pending = std::make_shared<PendingHttp>();
+    {
+        std::lock_guard<std::mutex> lock(g_pendingLock);
+        g_pending[callId] = pending;
+    }
+
+    std::string reqJson = std::string("{\"callId\":") + std::to_string(callId) +
+        ",\"type\":\"dnsSet\",\"host\":\"" + JsonEscape(host) +
+        "\",\"ipsJson\":\"" + JsonEscape(ipsJson) + "\"}";
+
+    bool dispatched = false;
+    {
+        std::lock_guard<std::mutex> lock(g_tsfLock);
+        if (g_httpTsf != nullptr) {
+            HttpTask *task = new HttpTask{callId, reqJson};
+            if (napi_call_threadsafe_function(g_httpTsf, task, napi_tsfn_nonblocking) == napi_ok) {
+                dispatched = true;
+            } else {
+                delete task;
+            }
+        }
+    }
+
+    std::string resultJson;
+    if (!dispatched) {
+        resultJson = HttpErrResult("http bridge not initialized");
+        std::lock_guard<std::mutex> lock(g_pendingLock);
+        g_pending.erase(callId);
+    } else {
+        std::unique_lock<std::mutex> lock(pending->mtx);
+        bool woke = pending->cv.wait_for(lock, std::chrono::seconds(HTTP_BRIDGE_TIMEOUT_S),
+                                         [&pending]() { return pending->done; });
+        if (!woke) {
+            resultJson = HttpErrResult("http bridge timeout");
+            std::lock_guard<std::mutex> plock(g_pendingLock);
+            g_pending.erase(callId);
+        } else {
+            resultJson = pending->resultJson;
+        }
+    }
+    return ToJsString(env, resultJson);
+}
+
 static JSVM_Value NativeSelector(JSVM_Env env, JSVM_CallbackInfo info)
 {
     size_t argc = 2;
@@ -684,6 +744,7 @@ static JSVM_Value NativeLog(JSVM_Env env, JSVM_CallbackInfo info)
 static JSVM_CallbackStruct g_httpCb = {NativeHttpRequest, nullptr};
 static JSVM_CallbackStruct g_httpSharedCb = {NativeHttpRequestShared, nullptr};
 static JSVM_CallbackStruct g_encodeGbkCb = {NativeUrlEncodeGbk, nullptr};
+static JSVM_CallbackStruct g_dnsSetCb = {NativeDnsSet, nullptr};
 static JSVM_CallbackStruct g_selectorCb = {NativeSelector, nullptr};
 static JSVM_CallbackStruct g_selectorBufferCb = {NativeSelectorBuffer, nullptr};
 static JSVM_CallbackStruct g_logCb = {NativeLog, nullptr};
@@ -1057,6 +1118,7 @@ static bool InstallNativeBridges(JSVM_Env env)
         {"__nativeHttpRequest", &g_httpCb},
         {"__nativeHttpRequestShared", &g_httpSharedCb},
         {"__nativeUrlEncodeGbk", &g_encodeGbkCb},
+        {"__nativeDnsSet", &g_dnsSetCb},
         {"nativeSelector", &g_selectorCb},
         {"nativeSelectorBuffer", &g_selectorBufferCb},
         {"__nativeLog", &g_logCb},

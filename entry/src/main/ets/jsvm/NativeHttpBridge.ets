@@ -38,6 +38,12 @@ export interface JsvmBridgeRequest {
 
   /** Present only on encodeGbk messages: text to encode as GBK URL bytes. */
   text?: string;
+
+  /** Present only on dnsSet messages: 域名（非 IP 字面量）。 */
+  host?: string;
+
+  /** Present only on dnsSet messages: JSON 数组字符串（IPv4 字面量列表）。 */
+  ipsJson?: string;
 }
 
 /** KotlinHttpResult shape expected by the extension runtime. */
@@ -135,6 +141,17 @@ export class NativeHttpBridge {
         jsvmEngine.resolveHttp(msg.callId,
           JSON.stringify(NativeHttpBridge.error(0, 'GBK 编码失败', '')));
       }
+      return;
+    }
+    // DNS 直连桥：注册 host→IP netstack 规则（Doh.pin），按结果 resolve
+    if (msg.type === 'dnsSet') {
+      const dnsReq: JsvmBridgeRequest = msg;
+      NativeHttpBridge.applyDnsPin(dnsReq).then((): void => {
+        jsvmEngine.resolveHttp(dnsReq.callId, JSON.stringify(NativeHttpBridge.okEnvelope()));
+      }).catch((e: Error) => {
+        jsvmEngine.resolveHttp(dnsReq.callId,
+          JSON.stringify(NativeHttpBridge.error(0, e.message, '')));
+      });
       return;
     }
     const req = msg;
@@ -590,6 +607,56 @@ export class NativeHttpBridge {
       }
     }
     return out;
+  }
+
+  private static okEnvelope(): JsvmHttpResult {
+    return {
+      status: 200,
+      statusText: 'OK',
+      headersJson: '{}',
+      body: '',
+      error: null,
+      url: '',
+    };
+  }
+
+  // dnsSet 消息处理：校验 host（域名，非 IP 字面量）与 ips（1..8 个 IPv4），
+  // 通过后注入 netstack 直连规则 + DoH 缓存 pin（Doh.pin）。
+  // 运行时 shim 已校验一遍，这里独立再校验：防插件绕过 shim 手工打桥。
+  private static async applyDnsPin(msg: JsvmBridgeRequest): Promise<void> {
+    const host = (msg.host ?? '').trim().toLowerCase();
+    if (host === '' || host.length > 253 ||
+      !/^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/.test(host) ||
+      /^\d{1,3}(\.\d{1,3}){3}$/.test(host)) {
+      throw new Error(`invalid dns host: ${host}`);
+    }
+    let rawIps: Object[] = [];
+    try {
+      const parsed = JSON.parse(msg.ipsJson ?? '[]') as Object[];
+      if (Array.isArray(parsed)) {
+        rawIps = parsed;
+      }
+    } catch (e) {
+      rawIps = [];
+    }
+    if (rawIps.length === 0 || rawIps.length > 8) {
+      throw new Error('dns ips must contain 1..8 addresses');
+    }
+    const ips: string[] = [];
+    for (let i = 0; i < rawIps.length; i++) {
+      const ip = String(rawIps[i] ?? '').trim();
+      if (!/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(ip)) {
+        throw new Error(`invalid dns ip: ${ip}`);
+      }
+      const parts = ip.split('.');
+      for (let j = 0; j < parts.length; j++) {
+        if (Number(parts[j]) > 255) {
+          throw new Error(`invalid dns ip: ${ip}`);
+        }
+      }
+      ips.push(ip);
+    }
+    await Doh.pin(host, ips);
   }
 
   // 按响应 Content-Type 声明的 charset 解码响应体；未声明或不受支持时

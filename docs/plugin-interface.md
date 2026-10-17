@@ -179,6 +179,7 @@ AES-CBC 的 pkcs7 解填充保持宽松，GCM 认证失败抛错）、
 | `$.http.getBytes(url, headers)` | 字节响应；桥未返回字节时抛错 |
 | `$.html(html, baseUrl)` | 包装 DOM Document（选择器 + 相对链接解析） |
 | `$.urlEncodeGbk(text)` | GBK URL 编码桥（`__nativeUrlEncodeGbk`） |
+| `$.dns.set(host, ips)` | DNS 直连桥（`__nativeDnsSet`）：把域名钉到 1..8 个 IPv4（netstack 直连规则 + DoH 缓存 pin），绕过被污染的系统 DNS；host 须为域名（非 IP 字面量），失败抛错 |
 | `$.crypto.base64Encode/Decode`、`aesCbcDecrypt`、`md5`、`md5Bytes`、`sha1/256/384/512`、`hmac`、`pbkdf2`、`aesGcmEncrypt/Decrypt` | 摘要/HMAC/派生/解密；PBKDF2 迭代上限 2_000_000，GCM nonce 固定 12 字节 |
 
 ### 5.3 插件偏好（prefs）
@@ -209,7 +210,7 @@ AES-CBC 的 pkcs7 解填充保持宽松，GCM 认证失败抛错）、
   `TextEncoder` / `TextDecoder` / `atob` / `btoa` / `console` / `module` /
   `exports` / `global`）；
 - raw native 桥（`__nativeHttpRequest(Shared)` / `nativeSelector(Buffer)` /
-  `__nativeLog` / `__nativeUrlEncodeGbk` / `__nativeRandomBytes`）由引擎用
+  `__nativeLog` / `__nativeUrlEncodeGbk` / `__nativeRandomBytes` / `__nativeDnsSet`）由引擎用
   `OH_JSVM_SetNamedProperty` 装成普通可配置属性（不用 `CreateEnv` 的
   `JSVM_DEFAULT`：那是不可配置绑定，strict `delete` 会抛
   `Cannot delete property '…'`，插件安装直接失败）。bootstrap/shim 捕获进
