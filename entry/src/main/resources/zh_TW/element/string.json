@@ -2558,7 +2558,7 @@
     },
     {
       "name": "plugin_error_bad_key",
-      "value": "manifest.key 無效（僅小寫字母/數字/底線）"
+      "value": "manifest.key 無效（必須是小寫 UUID v4）"
     },
     {
       "name": "plugin_error_missing_name",

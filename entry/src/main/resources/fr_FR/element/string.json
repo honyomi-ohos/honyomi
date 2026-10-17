@@ -2718,7 +2718,7 @@
     },
     {
       "name": "plugin_error_bad_key",
-      "value": "manifest.key non valide (lettres minuscules, chiffres et tirets bas uniquement)"
+      "value": "manifest.key non valide (UUID v4 en minuscules uniquement)"
     },
     {
       "name": "plugin_error_missing_name",

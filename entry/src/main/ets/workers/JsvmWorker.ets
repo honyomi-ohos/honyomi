@@ -11,7 +11,7 @@
  * bridged to the main thread by the native engine (see NativeHttpBridge.ets).
  *
  * Message protocol (JSON strings, both directions):
- *   host -> worker: {"type":"init","code":"<extension js>"}
+ *   host -> worker: {"type":"init","code":"<extension js>","key":"<plugin key>"}
  *                   {"type":"call","seq":N,"name":"method","argsJson":"[...]","prefsDirty":bool}
  *                   {"type":"destroy"}
  *   worker -> host: {"type":"ready","ok":true,"kind":"simple"}
@@ -39,6 +39,9 @@ interface WorkerRequest {
   name?: string;
   argsJson?: string;
   code?: string;
+
+  /** 当前插件 key。bootstrap 把它写进 console 前缀，插件代码不读取。 */
+  key?: string;
 
   /** 宿主标记：该调用可能写入插件偏好（true 时才 dump prefs） */
   prefsDirty?: boolean;
@@ -116,7 +119,7 @@ function dumpPrefs(): string {
 function handleInit(req: WorkerRequest): void {
   try {
     hilog.info(DOMAIN, TAG, 'init start');
-    engineId = jsvmEngine.createEngine();
+    engineId = jsvmEngine.createEngine(req.key ?? '');
     if (engineId < 0) {
       ready(false, '', 'engine_create_failed');
       return;

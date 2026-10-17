@@ -2878,7 +2878,7 @@
     },
     {
       "name": "plugin_error_bad_key",
-      "value": "manifest.key غير صالح (أحرف صغيرة وأرقام وشرطات سفلية فقط)"
+      "value": "manifest.key غير صالح (يجب أن يكون UUID v4 بأحرف صغيرة)"
     },
     {
       "name": "plugin_error_missing_name",

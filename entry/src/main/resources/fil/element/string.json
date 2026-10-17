@@ -2674,7 +2674,7 @@
     },
     {
       "name": "plugin_error_bad_key",
-      "value": "Hindi wasto ang manifest.key (maliliit na letra, numero, at underscore lang)"
+      "value": "Hindi wasto ang manifest.key (lowercase UUID v4 lamang)"
     },
     {
       "name": "plugin_error_missing_name",

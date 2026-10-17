@@ -2930,7 +2930,7 @@
     },
     {
       "name": "plugin_error_bad_key",
-      "value": "Invalid manifest.key (lowercase letters, digits and underscores only)"
+      "value": "Invalid manifest.key (must be a lowercase UUID v4)"
     },
     {
       "name": "plugin_error_missing_name",

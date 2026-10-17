@@ -90,13 +90,16 @@ export class HlsDownloader {
     const keyCache = new Map<string, Uint8Array>();
     let fd: number = -1;
     try {
+      // APPEND 模式打开：fs.writeSync 默认从当前位置写入且不随写入推进，
+      // 不加 APPEND 会导致后续分片反复覆盖文件头，最终只剩一个分片
       fd = fileIo.openSync(tmpPath,
-        fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE | fileIo.OpenMode.TRUNC).fd;
+        fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE | fileIo.OpenMode.TRUNC |
+        fileIo.OpenMode.APPEND).fd;
       // fMP4：初始化段（ftyp/moov）在最前
       if (isFmp4) {
         HlsDownloader.checkStop(shouldStop);
         const initBuf: ArrayBuffer = await Http.getBuffer(media.initUrl, headers);
-        fileIo.writeSync(fd, initBuf);
+        HlsDownloader.appendBuffer(fd, initBuf);
       }
       let next = 0;
       let done = 0;
@@ -118,7 +121,7 @@ export class HlsDownloader {
         }
         const buf: ArrayBuffer = await head;
         HlsDownloader.checkStop(shouldStop);
-        fileIo.writeSync(fd, buf);
+        HlsDownloader.appendBuffer(fd, buf);
         done += 1;
         onProgress(done, total);
       }
@@ -259,6 +262,14 @@ export class HlsDownloader {
   }
 
   // ---------------- 分片获取与解密 ----------------
+
+  // 追加写入整块缓冲：字节数不足视为写入失败（磁盘满/沙箱异常）
+  private static appendBuffer(fd: number, buf: ArrayBuffer): void {
+    const written = fileIo.writeSync(fd, buf);
+    if (written !== buf.byteLength) {
+      throw new Error('hls_write_failed');
+    }
+  }
 
   private static async fetchSegment(segment: HlsSegment, headers: Record<string, string>,
     keyCache: Map<string, Uint8Array>): Promise<ArrayBuffer> {

@@ -2754,7 +2754,7 @@
     },
     {
       "name": "plugin_error_bad_key",
-      "value": "manifest.key tidak valid (hanya huruf kecil, angka, dan garis bawah)"
+      "value": "manifest.key tidak valid (harus UUID v4 huruf kecil)"
     },
     {
       "name": "plugin_error_missing_name",

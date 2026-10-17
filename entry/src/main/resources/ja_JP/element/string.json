@@ -1866,7 +1866,7 @@
     },
     {
       "name": "plugin_error_bad_key",
-      "value": "manifest.key が無効です（小文字英数字とアンダースコアのみ）"
+      "value": "manifest.key が無効です（小文字の UUID v4 のみ）"
     },
     {
       "name": "plugin_error_missing_name",

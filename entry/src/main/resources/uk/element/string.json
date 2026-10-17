@@ -2834,7 +2834,7 @@
     },
     {
       "name": "plugin_error_bad_key",
-      "value": "Неправильний manifest.key (лише малі літери, цифри та підкреслення)"
+      "value": "Неправильний manifest.key (лише UUID v4 у нижньому регістрі)"
     },
     {
       "name": "plugin_error_missing_name",

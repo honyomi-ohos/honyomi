@@ -2826,7 +2826,7 @@
     },
     {
       "name": "plugin_error_bad_key",
-      "value": "Geçersiz manifest.key (yalnızca küçük harf, rakam ve alt çizgi)"
+      "value": "Geçersiz manifest.key (yalnızca küçük harfli UUID v4)"
     },
     {
       "name": "plugin_error_missing_name",

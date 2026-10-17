@@ -162,7 +162,8 @@ export class PluginService {
     const raw = JSON.parse(text) as RawManifest;
     const key = raw.key ?? '';
     const name = raw.name ?? '';
-    if (!new RegExp('^[a-z0-9_]+$').test(key)) {
+    // 小写 UUID v4。安装目录、偏好和引擎都按它区分，同一站点可以装多份插件。
+    if (!new RegExp('^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$').test(key)) {
       throw new Error('plugin_bad_key');
     }
     if (name === '') {

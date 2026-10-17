@@ -2846,7 +2846,7 @@
     },
     {
       "name": "plugin_error_bad_key",
-      "value": "manifest.key ไม่ถูกต้อง (ใช้ได้เฉพาะตัวอักษรพิมพ์เล็ก ตัวเลข และขีดล่าง)"
+      "value": "manifest.key ไม่ถูกต้อง (ต้องเป็น UUID v4 ตัวพิมพ์เล็ก)"
     },
     {
       "name": "plugin_error_missing_name",

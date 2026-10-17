@@ -313,6 +313,7 @@ export class Util {
       case 'hls_parse_failed':
       case 'hls_no_segments':
       case 'hls_decrypt_failed':
+      case 'hls_write_failed':
         res = $r('app.string.download_error_failed');
         break;
       case 'download_not_ready':

@@ -2782,7 +2782,7 @@
     },
     {
       "name": "plugin_error_bad_key",
-      "value": "manifest.key tidak sah (huruf kecil, digit dan garis bawah sahaja)"
+      "value": "manifest.key tidak sah (mestilah UUID v4 huruf kecil)"
     },
     {
       "name": "plugin_error_missing_name",

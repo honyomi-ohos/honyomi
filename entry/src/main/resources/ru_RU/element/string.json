@@ -2850,7 +2850,7 @@
     },
     {
       "name": "plugin_error_bad_key",
-      "value": "Неверный manifest.key (только строчные буквы, цифры и подчёркивания)"
+      "value": "Неверный manifest.key (только UUID v4 в нижнем регистре)"
     },
     {
       "name": "plugin_error_missing_name",

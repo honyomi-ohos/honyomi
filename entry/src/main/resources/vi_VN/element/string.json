@@ -2826,7 +2826,7 @@
     },
     {
       "name": "plugin_error_bad_key",
-      "value": "manifest.key không hợp lệ (chỉ chữ thường, chữ số và dấu gạch dưới)"
+      "value": "manifest.key không hợp lệ (chỉ UUID v4 chữ thường)"
     },
     {
       "name": "plugin_error_missing_name",

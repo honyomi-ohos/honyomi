@@ -45,9 +45,11 @@ export interface JsvmBridgeRequest {
 /**
  * Creates an isolated JSVM_VM + JSVM_Env with the native bridge globals
  * (fetch/fetchBytes/nativeSelector/console) pre-installed.
+ * `pluginKey` is stamped into console by the bootstrap and then hidden;
+ * plugin code never reads it.
  * @returns engine id (>= 1), or -1 on failure.
  */
-export function createEngine(): number;
+export function createEngine(pluginKey?: string): number;
 
 /** Destroys the engine and frees its VM. Safe to call from its worker thread. */
 export function destroyEngine(engineId: number): boolean;

@@ -25,7 +25,9 @@
  *         CreateEnv binding) and captured/deleted by plugin_runtime_jsvm.js
  *         (host.ts natives closure), never visible to plugin code.
  *   - A JS bootstrap (BOOTSTRAP_JS) builds fetch()/Response-like objects and
- *     console on top of the raw natives. plugin_runtime_jsvm.js (prepended by
+ *     console on top of the raw natives. createEngine(pluginKey) stamps that
+ *     key into console, so plugin code logs with console.* and never names
+ *     itself. plugin_runtime_jsvm.js (prepended by
  *     PluginService) adds the $ DSL, CommonJS, URL/atob/crypto.subtle, prefs.
  *     An adapter (ADAPTER_JS) is appended after each extension script to
  *     bind host-DSL plugins (module.exports with getPopularWorks) and
@@ -706,6 +708,17 @@ static const char *BOOTSTRAP_JS = R"JS((function () {
   var nativeSelectorBuffer = g.nativeSelectorBuffer;
 
   // ---- console -----------------------------------------------------------
+  // 插件 key 由 createEngine 在 bootstrap 前写入，这里收进闭包后立刻从全局删掉。
+  // 插件只调 console.*，日志自动带上 [key]，并打码 api_key / token / password。
+  var pluginKey = typeof g.__honyomiPluginKey === 'string' ? g.__honyomiPluginKey : '';
+  function redactLog(text) {
+    return String(text)
+      .replace(/([?&#](?:api[_-]?key|access[_-]?token|token|password|passwd|pwd|authorization|auth)=)[^&#\s]*/gi, '$1***')
+      .replace(/((?:api[_-]?key|access[_-]?token|token|password|passwd|pwd|authorization)\s*[:=]\s*)(?!\[)([^\s,&;"']+)/gi, '$1***')
+      .replace(/(MediaBrowser Token=")[^"]*(")/g, '$1***$2')
+      .replace(/(Bearer\s+)\S+/gi, '$1***')
+      .replace(/("(?:apiKey|api_key|password|token|authorization)"\s*:\s*")[^"]*(")/gi, '$1***$2');
+  }
   function logAt(level) {
     return function () {
       try {
@@ -714,7 +727,10 @@ static const char *BOOTSTRAP_JS = R"JS((function () {
           var a = arguments[i];
           parts.push(typeof a === 'string' ? a : JSON.stringify(a));
         }
-        __nativeLog(level, parts.join(' '));
+        var msg = redactLog(parts.join(' '));
+        if (msg.length > 500) { msg = msg.slice(0, 500) + '…'; }
+        if (pluginKey) { msg = '[' + pluginKey + '] ' + msg; }
+        __nativeLog(level, msg);
       } catch (e) { /* never throw from logging */ }
     };
   }
@@ -800,6 +816,7 @@ static const char *BOOTSTRAP_JS = R"JS((function () {
   hideNative('nativeSelector');
   hideNative('nativeSelectorBuffer');
   hideNative('__nativeLog');
+  hideNative('__honyomiPluginKey');
 })();)JS";
 
 static const char *ADAPTER_JS = R"JS((function () {
@@ -989,6 +1006,41 @@ static napi_value NapiString(napi_env env, const std::string &text)
     return value;
 }
 
+static std::string NapiUtf8(napi_env env, napi_value value)
+{
+    napi_valuetype type = napi_undefined;
+    if (value == nullptr || napi_typeof(env, value, &type) != napi_ok || type != napi_string) {
+        return "";
+    }
+    size_t len = 0;
+    if (napi_get_value_string_utf8(env, value, nullptr, 0, &len) != napi_ok) {
+        return "";
+    }
+    std::vector<char> buf(len + 1, '\0');
+    size_t written = 0;
+    if (napi_get_value_string_utf8(env, value, buf.data(), buf.size(), &written) != napi_ok) {
+        return "";
+    }
+    return std::string(buf.data(), written);
+}
+
+// Ordinary configurable data property, so bootstrap can capture and delete it.
+static bool SetGlobalString(JSVM_Env env, const char *name, const std::string &value)
+{
+    JSVM_HandleScope scope = nullptr;
+    if (OH_JSVM_OpenHandleScope(env, &scope) != JSVM_OK) {
+        return false;
+    }
+    bool ok = false;
+    JSVM_Value global = nullptr;
+    JSVM_Value jsValue = ToJsString(env, value);
+    if (OH_JSVM_GetGlobal(env, &global) == JSVM_OK && global != nullptr && jsValue != nullptr) {
+        ok = OH_JSVM_SetNamedProperty(env, global, name, jsValue) == JSVM_OK;
+    }
+    OH_JSVM_CloseHandleScope(env, scope);
+    return ok;
+}
+
 // Raw bridges must be ordinary configurable data properties. CreateEnv
 // descriptors with JSVM_DEFAULT are non-configurable (DontDelete); the
 // strict-mode delete in bootstrap / plugin_runtime then throws
@@ -1048,6 +1100,11 @@ static bool InstallNativeBridges(JSVM_Env env)
 
 static napi_value CreateEngine(napi_env env, napi_callback_info info)
 {
+    size_t argc = 1;
+    napi_value inArgs[1] = {nullptr};
+    napi_get_cb_info(env, info, &argc, inArgs, nullptr, nullptr);
+    const std::string pluginKey = argc >= 1 ? NapiUtf8(env, inArgs[0]) : "";
+
     napi_value result = nullptr;
     // Serialize JSVM init + VM/Env creation: without this, a concurrent creator
     // skips the (still in-progress) OH_JSVM_Init and crashes inside
@@ -1100,6 +1157,10 @@ static napi_value CreateEngine(napi_env env, napi_callback_info info)
     // Install fetch/console/selector bootstrap before any extension code runs.
     // A thrown bootstrap used to be ignored, leaving the raw bridges on the
     // global; surface the failure instead of continuing half-initialized.
+    // Plugin key is captured by console and removed from the visible global.
+    if (!pluginKey.empty() && !SetGlobalString(engine->env, "__honyomiPluginKey", pluginKey)) {
+        OH_LOG_Print(LOG_APP, LOG_WARN, JSVM_LOG_DOMAIN, JSVM_LOG_TAG, "set plugin log key failed");
+    }
     std::string boot = RunRawScript(engine, BOOTSTRAP_JS);
     if (boot.rfind("{\"ok\":false", 0) == 0) {
         OH_LOG_Print(LOG_APP, LOG_ERROR, JSVM_LOG_DOMAIN, JSVM_LOG_TAG,

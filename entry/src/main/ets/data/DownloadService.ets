@@ -971,7 +971,17 @@ export class DownloadService {
       throw new Error(`prepare video file failed: ${e}`);
     }
     if (chosen === undefined) {
-      await DownloadService.downloadHls(task, videos[0], dir, flags);
+      // 多个 m3u8（多清晰度）时按清晰度标签选最优流，而非固定取第一个
+      let stream: SVideo = videos[0];
+      let bestScore = DownloadService.scoreQuality(stream.quality);
+      for (let i = 1; i < videos.length; i++) {
+        const s = DownloadService.scoreQuality(videos[i].quality);
+        if (s > bestScore) {
+          bestScore = s;
+          stream = videos[i];
+        }
+      }
+      await DownloadService.downloadHls(task, stream, dir, flags);
       return;
     }
     if (DownloadService.context === undefined) {
@@ -1016,7 +1026,10 @@ export class DownloadService {
     if (DownloadService.doneIds !== undefined) {
       DownloadService.doneIds.add(task.chapterId);
     }
-    task.progress = 1;
+    // 完成态进度回满：避免"已完成"与空进度条/进度 1 同时展示
+    if (task.total > 0) {
+      task.progress = task.total;
+    }
     task.state = 2;
   }
 
@@ -1062,8 +1075,45 @@ export class DownloadService {
     if (DownloadService.doneIds !== undefined) {
       DownloadService.doneIds.add(task.chapterId);
     }
-    task.progress = 1;
+    // 完成态进度回满（分片数计满），避免"已完成"与"进度 1"同时展示
+    if (task.total > 0) {
+      task.progress = task.total;
+    }
     task.state = 2;
+  }
+
+  // 清晰度标签打分：数字清晰度（1080p/720p 等）优先，中文档位与关键词次之，
+  // 无法识别返回 0；仅用于多个 m3u8 流之间的相对排序
+  private static scoreQuality(label: string): number {
+    const l = label.toLowerCase();
+    const withP = l.match(/([0-9]{3,4})p/);
+    if (withP !== null && withP.length > 1) {
+      return parseInt(withP[1], 10);
+    }
+    // 独立数字（排除 h264/x265 等编码名前缀）
+    const plain = l.match(/(?:^|[^a-z0-9.])([0-9]{3,4})(?:$|[^0-9])/);
+    if (plain !== null && plain.length > 1) {
+      return parseInt(plain[1], 10);
+    }
+    if (l.indexOf('4k') >= 0 || l.indexOf('2160') >= 0) {
+      return 2160;
+    }
+    if (l.indexOf('蓝光') >= 0 || l.indexOf('bluray') >= 0 || l.indexOf('blu-ray') >= 0) {
+      return 1440;
+    }
+    if (l.indexOf('超清') >= 0 || l.indexOf('超高清') >= 0) {
+      return 1080;
+    }
+    if (l.indexOf('高清') >= 0 || l.indexOf('hd') >= 0) {
+      return 720;
+    }
+    if (l.indexOf('标清') >= 0 || l.indexOf('sd') >= 0) {
+      return 480;
+    }
+    if (l.indexOf('流畅') >= 0) {
+      return 360;
+    }
+    return 0;
   }
 
   private static markDone(dir: string): void {

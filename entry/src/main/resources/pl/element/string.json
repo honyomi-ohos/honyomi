@@ -2782,7 +2782,7 @@
     },
     {
       "name": "plugin_error_bad_key",
-      "value": "Nieprawidłowy manifest.key (tylko małe litery, cyfry i podkreślenia)"
+      "value": "Nieprawidłowy manifest.key (tylko małe UUID v4)"
     },
     {
       "name": "plugin_error_missing_name",

@@ -329,7 +329,11 @@ export class JsvmExtensionManager {
         timer: timer
       });
     });
-    const initMessage: Record<string, Object> = { 'type': 'init', 'code': seed + code };
+    const initMessage: Record<string, Object> = {
+      'type': 'init',
+      'code': seed + code,
+      'key': entry.key
+    };
     try {
       entry.worker.postMessage(JSON.stringify(initMessage));
     } catch (e) {

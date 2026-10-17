@@ -2730,7 +2730,7 @@
     },
     {
       "name": "plugin_error_bad_key",
-      "value": "Ungültiger manifest.key (nur Kleinbuchstaben, Ziffern und Unterstriche)"
+      "value": "Ungültiger manifest.key (muss eine UUID v4 in Kleinbuchstaben sein)"
     },
     {
       "name": "plugin_error_missing_name",
