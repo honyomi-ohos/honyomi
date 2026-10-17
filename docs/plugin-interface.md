@@ -149,12 +149,12 @@ raw native 桥（`__nativeHttpRequest(Shared)` / `nativeSelector(Buffer)` /
 
 ### 5.2 运行时 shim（rawfile/plugin_runtime_jsvm.js，前拼于 main.js）
 
-**来源与构建**：源码在 `plugins/runtime/src/`（TypeScript），由
-`plugins/tools/src/build.ts` 经 esbuild 打包。`npm run build` / `npm test`
-写入 `plugins/runtime/dist/plugin_runtime_jsvm.js`，`@honyomi/plugin-test`
-通过包导出 `./shim` 加载它。只有宿主自动打包（`entry/hvigorfile.ts`）才把
-同一构建写入 `entry/src/main/resources/rawfile/plugin_runtime_jsvm.js`。两处都不入库。
-打包前须已执行 `cd plugins && npm install`。
+**来源与构建**：源码在 `plugins/runtime/`（跟应用仓库走，不属于作者工具链）。
+`cd plugins/runtime && npm run build` 写入 `dist/plugin_runtime_jsvm.js`，
+`@honyomi/plugin-test` 通过包导出 `./shim` 加载它。只有宿主自动打包
+（`entry` 模块任务 `GeneratePluginRuntime`，排在 `ProcessResource` 之前）才把同一构建写入
+`entry/src/main/resources/rawfile/plugin_runtime_jsvm.js`。两处都不入库。
+该任务使用正在执行 hvigor 的 Node。缺 `plugins/runtime/node_modules` 时，会先按 lockfile 执行 `npm ci`。
 npm 依赖（对应许可证页条目）：
 
 - `fast-text-encoding`（Apache-2.0）：TextEncoder/TextDecoder
@@ -229,7 +229,7 @@ AES-CBC 的 pkcs7 解填充保持宽松，GCM 认证失败抛错）、
 |---|---|
 | `@honyomi/plugin-sdk` | 作者面 API：`SourceExtension` 等契约类型、`defineExtension`、`createPrefs`、`mangaOf/chapterOf/pageOf/videoOf` 等模型助手、`$` DSL 全局类型声明 |
 | `@honyomi/plugin-test` | 测试 harness：Node `vm` 沙箱逐字加载真实 shim + 构建产物 `main.js`，`loadExtension()` 返回 `{ext, calls, prefs}`；`createFixtureFetch()` 按 `fixtures/index.json`（精确 URL 或 `/正则/`）回放本地文件 |
-| `@honyomi/plugin-tools` | CLI：`build [key...]`（esbuild 编译压缩全部插件为单文件 iife → `dist/catalog/<key>/main.js`，与源码分离）/ `publish` / `check` / `serve [dir] [--host 127.0.0.1\|0.0.0.0]`（缺省只监听本机）；`register.mjs` 为 Node 提供 TS loader（enum 等完整语法直跑 `.ts`） |
+| `@honyomi/plugin-tools` | CLI：`build [key...]`（esbuild 编译压缩全部插件为单文件 iife → `dist/catalog/<key>/main.js`，与源码分离）/ `publish` / `check` / `serve [dir] [--host 127.0.0.1\|0.0.0.0]`（缺省监听 0.0.0.0）；`register.mjs` 为 Node 提供 TS loader（enum 等完整语法直跑 `.ts`） |
 
 约定：全部插件的 `.ts` 源文件是唯一真源，构建产物 `dist/` 不入库
 （`.gitignore` 排除）；插件可拆分多个源文件（入口固定 `main.ts`，如

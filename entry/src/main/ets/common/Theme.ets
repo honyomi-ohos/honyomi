@@ -1,4 +1,4 @@
-// 主题系统（参考 Mihon AppTheme）：15 套内置主题，全部为程序化 hex 色板，
+// 主题系统（参考 Mihon AppTheme）：23 套内置主题，全部为程序化 hex 色板，
 // 每套主题含 light / dark / amoled 三个变体；palette 由 Settings.applyTheme /
 // applyAppTheme / pushPalette 重建并写入 AppStorage('palette')。
 // 组件用法：@StorageProp('palette') pal: ThemePalette = new ThemePalette()
@@ -164,6 +164,46 @@ export class Theme {
         '#CDD6F4', '#CDD6F4', '#CBA6F7', '#11111B', '#CBA6F7', '#11111B', '#F38BA8', '#B4BEFE');
       const catLight = new ThemeScheme('#E6E9EF', '#EFF1F5', '#EFF1F5', '#ACB0BE',
         '#4C4F69', '#4C4F69', '#8839EF', '#DCE0E8', '#8839EF', '#DCE0E8', '#D20F39', '#7287FD');
+      // ---- kanagawa（浮世绘：和纸 / 墨底 + 浪青）----
+      const kanaDark = new ThemeScheme('#1F1F28', '#2A2A37', '#363646', '#54546D',
+        '#DCD7BA', '#C4C0A8', '#A8C4F5', '#1A1B26', '#2A4060', '#D6E6FF', '#FF7B81', '#8FCBE0');
+      const kanaLight = new ThemeScheme('#F2ECBC', '#E7DFB0', '#DCD5AC', '#B5B094',
+        '#3D3D52', '#5A574A', '#2F4F86', '#F7F3E4', '#C5D6EC', '#1E3A68', '#B4233A', '#2F6F86');
+      // ---- rose_pine（玫瑰松：暖纸底 + 鸢尾紫）----
+      const roseDark = new ThemeScheme('#191724', '#2A2638', '#322C42', '#524E68',
+        '#E0DEF4', '#B4AFC8', '#D4B8F5', '#1E1630', '#3A3054', '#F0E4FF', '#FF8FA8', '#8FD4DE');
+      const roseLight = new ThemeScheme('#F6EBE1', '#FFF9F4', '#F3E6DB', '#E4D3C6',
+        '#3E3654', '#6A6478', '#6B4C8A', '#FFF9F4', '#E6D4F4', '#4A2E68', '#A33B55', '#1F6A78');
+      // ---- gruvbox（暖褐：复古纸色 + 琥珀橙）----
+      const gruvDark = new ThemeScheme('#282828', '#32302F', '#3C3836', '#665C54',
+        '#EBDBB2', '#C4B596', '#FEA040', '#2A1A08', '#5A3A18', '#FFE0B8', '#FF7A6A', '#8EC4C4');
+      const gruvLight = new ThemeScheme('#FBF1C7', '#F2E5BC', '#EBDBB2', '#D5C4A1',
+        '#3C3836', '#665C54', '#9A3E00', '#FFF8E8', '#F0C890', '#6A2800', '#9D1C16', '#076678');
+      // ---- dracula（德古拉：夜紫）----
+      const dracDark = new ThemeScheme('#282A36', '#313244', '#3A3C52', '#6272A4',
+        '#F8F8F2', '#C8CAD6', '#D0B0FF', '#24183A', '#4A3A72', '#F3E8FF', '#FF6E6E', '#8BE9FD');
+      const dracLight = new ThemeScheme('#EFEDF6', '#FFFFFF', '#E6E3F2', '#D2CEE2',
+        '#282A36', '#5C6080', '#5A3EAE', '#FFFFFF', '#E0D4FA', '#3A2278', '#C42B45', '#0B6E86');
+      // ---- matcha（抹茶：偏黄的茶绿）----
+      const matchaDark = new ThemeScheme('#141A12', '#222C1C', '#2A3622', '#4A5A40',
+        '#E4EDD8', '#B4C4A4', '#C6DE78', '#1A2408', '#314218', '#E8F4B8', '#FF8A7A', '#8FCBB8');
+      const matchaLight = new ThemeScheme('#E8EEDC', '#FFFFFF', '#DCE6CC', '#C6D4B4',
+        '#1C2414', '#55634A', '#3E6B22', '#F4F8EC', '#D0E4B4', '#2A4C16', '#B33A32', '#1F6A58');
+      // ---- sakura（樱：淡粉）----
+      const sakuraDark = new ThemeScheme('#120C10', '#261820', '#321E28', '#5C4050',
+        '#F8E8EE', '#D4B4C0', '#F5B0CC', '#3A1020', '#5A2840', '#FFE0EC', '#FF8A96', '#D4B0E8');
+      const sakuraLight = new ThemeScheme('#FFF1F4', '#F6DCE4', '#EEC8D4', '#E2B8C6',
+        '#2C161C', '#6E4C5A', '#A32050', '#FFFFFF', '#F0B8CE', '#7A1438', '#C42B3E', '#6A3E96');
+      // ---- kintsugi（金缮：陶黑 / 素瓷 + 金）----
+      const kintDark = new ThemeScheme('#141210', '#26221C', '#302A22', '#564C40',
+        '#F4EEE4', '#C8BBA6', '#F0C36A', '#2A1C06', '#4A3814', '#FFE8B8', '#FF8A78', '#9EC0D4');
+      const kintLight = new ThemeScheme('#EFE8DC', '#FFFFFF', '#E7D8C0', '#D8C8B0',
+        '#1E1A14', '#645C4E', '#7A4E0C', '#FFF8EC', '#F0D6A4', '#5C3A08', '#B33A32', '#2E5E80');
+      // ---- glacier（冰川：冷调冰青）----
+      const glacDark = new ThemeScheme('#0E161C', '#1C2832', '#243440', '#3E5666',
+        '#E6F2F6', '#B0C6D2', '#8EE0F4', '#042028', '#1A4454', '#D4F4FC', '#FF8A86', '#B4D0F0');
+      const glacLight = new ThemeScheme('#E7F1F6', '#FFFFFF', '#D5E6EF', '#C0D4E0',
+        '#102028', '#4E6674', '#0C6480', '#F4FBFD', '#C8E6F0', '#084456', '#B33A3A', '#2A5688');
       Theme.themeList = [
         new AppThemeDef('default', $r('app.string.theme_name_default'), defLight, defDark, defAmoled),
         new AppThemeDef('tachiyomi', $r('app.string.theme_name_tachiyomi'),
@@ -193,7 +233,23 @@ export class Theme {
         new AppThemeDef('lavender', $r('app.string.theme_name_lavender'),
           lavLight, lavDark, amoledVariant(lavDark)),
         new AppThemeDef('catppuccin', $r('app.string.theme_name_catppuccin'),
-          catLight, catDark, amoledVariant(catDark))
+          catLight, catDark, amoledVariant(catDark)),
+        new AppThemeDef('kanagawa', $r('app.string.theme_name_kanagawa'),
+          kanaLight, kanaDark, amoledVariant(kanaDark)),
+        new AppThemeDef('rose_pine', $r('app.string.theme_name_rose_pine'),
+          roseLight, roseDark, amoledVariant(roseDark)),
+        new AppThemeDef('gruvbox', $r('app.string.theme_name_gruvbox'),
+          gruvLight, gruvDark, amoledVariant(gruvDark)),
+        new AppThemeDef('dracula', $r('app.string.theme_name_dracula'),
+          dracLight, dracDark, amoledVariant(dracDark)),
+        new AppThemeDef('matcha', $r('app.string.theme_name_matcha'),
+          matchaLight, matchaDark, amoledVariant(matchaDark)),
+        new AppThemeDef('sakura', $r('app.string.theme_name_sakura'),
+          sakuraLight, sakuraDark, amoledVariant(sakuraDark)),
+        new AppThemeDef('kintsugi', $r('app.string.theme_name_kintsugi'),
+          kintLight, kintDark, amoledVariant(kintDark)),
+        new AppThemeDef('glacier', $r('app.string.theme_name_glacier'),
+          glacLight, glacDark, amoledVariant(glacDark))
       ];
     }
     return Theme.themeList;

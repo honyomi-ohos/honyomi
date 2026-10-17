@@ -25,20 +25,12 @@
       "value": "Patreon (tercih edilen)"
     },
     {
-      "name": "support_opencollective",
-      "value": "OpenCollective"
-    },
-    {
       "name": "support_supported_by",
       "value": "Mihon, şu anda %d+ patron tarafından desteklenmektedir. Her birinize ayrı olarak teşekkür etmek istiyoruz. Hadi Mihon'u birlikte daha iyi yapalım."
     },
     {
       "name": "support_contact_msg",
       "value": "Başka seçenekler ve sorularınız için Discord sunucumuza katılın."
-    },
-    {
-      "name": "support_discord",
-      "value": "Discord"
     },
     {
       "name": "data_storage_title",
@@ -97,10 +89,6 @@
       "value": "Önbellek temizlendi, %d dosya silindi"
     },
     {
-      "name": "data_cache_delete_error",
-      "value": "Temizlenirken sorun oluştu"
-    },
-    {
       "name": "data_auto_clear_cache",
       "value": "Uygulama başlatıldığında bölüm önbelleğini temizle"
     },
@@ -153,48 +141,12 @@
       "value": "Haftalık"
     },
     {
-      "name": "data_storage_location_value",
-      "value": "App private storage"
-    },
-    {
-      "name": "data_storage_name",
-      "value": "Internal storage"
-    },
-    {
-      "name": "data_never_backed_up",
-      "value": "Never"
-    },
-    {
-      "name": "data_export_canceled",
-      "value": "Export canceled"
-    },
-    {
-      "name": "data_export_failed",
-      "value": "Export failed"
-    },
-    {
-      "name": "module_desc",
-      "value": "module description"
-    },
-    {
-      "name": "EntryAbility_desc",
-      "value": "description"
-    },
-    {
-      "name": "EntryAbility_label",
-      "value": "Honyomi"
-    },
-    {
       "name": "common_ok",
       "value": "Tamam"
     },
     {
       "name": "common_cancel",
       "value": "İptal"
-    },
-    {
-      "name": "common_confirm",
-      "value": "Onayla"
     },
     {
       "name": "common_delete",
@@ -213,28 +165,12 @@
       "value": "Tümü"
     },
     {
-      "name": "common_close",
-      "value": "Kapat"
-    },
-    {
       "name": "common_save",
       "value": "Kaydet"
     },
     {
-      "name": "common_install",
-      "value": "Yükle"
-    },
-    {
       "name": "common_uninstall",
       "value": "Kaldır"
-    },
-    {
-      "name": "common_update",
-      "value": "Güncelle"
-    },
-    {
-      "name": "common_none",
-      "value": "Yok"
     },
     {
       "name": "common_default",
@@ -253,14 +189,6 @@
       "value": "Sistemi izle"
     },
     {
-      "name": "lang_simplified_chinese",
-      "value": "简体中文"
-    },
-    {
-      "name": "lang_english",
-      "value": "English"
-    },
-    {
       "name": "appearance_theme_mode",
       "value": "Tema modu"
     },
@@ -277,36 +205,12 @@
       "value": "Koyu"
     },
     {
-      "name": "appearance_accent_color",
-      "value": "Vurgu rengi"
-    },
-    {
       "name": "appearance_other",
       "value": "Diğer"
     },
     {
       "name": "appearance_amoled",
       "value": "AMOLED saf siyah arka plan"
-    },
-    {
-      "name": "theme_accent_blue",
-      "value": "Mavi"
-    },
-    {
-      "name": "theme_accent_green",
-      "value": "Yeşil"
-    },
-    {
-      "name": "theme_accent_pink",
-      "value": "Pembe"
-    },
-    {
-      "name": "theme_accent_purple",
-      "value": "Mor"
-    },
-    {
-      "name": "theme_accent_orange",
-      "value": "Turuncu"
     },
     {
       "name": "util_time_minutes_ago",
@@ -365,10 +269,6 @@
       "value": "Daha fazla"
     },
     {
-      "name": "tab_cf_waiting",
-      "value": "Doğrulama bekleniyor…"
-    },
-    {
       "name": "tab_cf_verified",
       "value": "Doğrulama tamamlandı"
     },
@@ -415,10 +315,6 @@
     {
       "name": "more_about",
       "value": "Hakkında"
-    },
-    {
-      "name": "more_plugins",
-      "value": "Uzantılar"
     },
     {
       "name": "categories_title",
@@ -469,14 +365,6 @@
       "value": "Kitaplığınız boş, manga eklemek için göz atın"
     },
     {
-      "name": "library_new_category",
-      "value": "Yeni kategori"
-    },
-    {
-      "name": "library_category_name",
-      "value": "Kategori adı"
-    },
-    {
       "name": "updates_title",
       "value": "Güncellemeler"
     },
@@ -495,10 +383,6 @@
     {
       "name": "updates_refresh_failed",
       "value": "Yenileme başarısız"
-    },
-    {
-      "name": "updates_refreshing",
-      "value": "Yenileniyor…"
     },
     {
       "name": "history_title",
@@ -529,14 +413,6 @@
       "value": "Göz at"
     },
     {
-      "name": "browse_import",
-      "value": "İçe aktar"
-    },
-    {
-      "name": "browse_plugins",
-      "value": "Eklentiler"
-    },
-    {
       "name": "browse_local_source_name",
       "value": "Yerel manga"
     },
@@ -557,10 +433,6 @@
       "value": "Manga bulunamadı"
     },
     {
-      "name": "browse_local_empty",
-      "value": "Henüz yerel manga yok, eklemek için İçe aktar’a dokunun"
-    },
-    {
       "name": "browse_load_failed",
       "value": "Yükleme başarısız: %s"
     },
@@ -575,30 +447,6 @@
     {
       "name": "browse_open_detail_failed",
       "value": "Ayrıntılar açılamadı"
-    },
-    {
-      "name": "browse_pick_file_failed",
-      "value": "Dosyalar seçilemedi"
-    },
-    {
-      "name": "browse_import_title",
-      "value": "%d dosyayı içe aktar"
-    },
-    {
-      "name": "browse_manga_name_hint",
-      "value": "Manga adı"
-    },
-    {
-      "name": "browse_input_name",
-      "value": "Lütfen bir ad girin"
-    },
-    {
-      "name": "browse_import_done",
-      "value": "%d dosya içe aktarıldı"
-    },
-    {
-      "name": "browse_import_failed",
-      "value": "İçe aktarma başarısız: %s"
     },
     {
       "name": "download_title",
@@ -621,22 +469,6 @@
       "value": "İndirme kuyruğu"
     },
     {
-      "name": "download_state_queued",
-      "value": "Kuyrukta"
-    },
-    {
-      "name": "download_state_downloading",
-      "value": "İndiriliyor"
-    },
-    {
-      "name": "download_state_done",
-      "value": "Bitti"
-    },
-    {
-      "name": "download_state_failed",
-      "value": "Başarısız"
-    },
-    {
       "name": "download_move_top",
       "value": "En üste taşı"
     },
@@ -651,10 +483,6 @@
     {
       "name": "download_empty",
       "value": "Henüz indirme yok"
-    },
-    {
-      "name": "download_status_downloaded",
-      "value": "İndirildi"
     },
     {
       "name": "download_chapter_count",
@@ -683,42 +511,6 @@
     {
       "name": "detail_download_queued",
       "value": "İndirme kuyruğuna eklendi"
-    },
-    {
-      "name": "detail_config_anilist_token",
-      "value": "Lütfen önce AniList jetonunuzu yapılandırın"
-    },
-    {
-      "name": "detail_search_anilist",
-      "value": "AniList’te ara"
-    },
-    {
-      "name": "detail_manga_title_hint",
-      "value": "Manga başlığı"
-    },
-    {
-      "name": "detail_no_search_results",
-      "value": "Arama sonucu yok"
-    },
-    {
-      "name": "detail_anilist_search_failed",
-      "value": "AniList araması başarısız"
-    },
-    {
-      "name": "detail_anilist_bound",
-      "value": "AniList’e bağlandı"
-    },
-    {
-      "name": "detail_anilist_unbound",
-      "value": "AniList bağlantısı kaldırıldı"
-    },
-    {
-      "name": "detail_synced_progress",
-      "value": "İlerleme %d. bölüme eşitlendi"
-    },
-    {
-      "name": "detail_anilist_sync_failed",
-      "value": "AniList eşitlemesi başarısız"
     },
     {
       "name": "detail_status_local",
@@ -753,64 +545,12 @@
       "value": "Genişlet"
     },
     {
-      "name": "detail_anilist_tracking",
-      "value": "AniList takibi"
-    },
-    {
-      "name": "detail_anilist_token_hint",
-      "value": "AniList jetonu henüz yapılandırılmadı"
-    },
-    {
-      "name": "detail_searching",
-      "value": "Aranıyor…"
-    },
-    {
-      "name": "detail_search_and_bind",
-      "value": "Ara ve bağla"
-    },
-    {
-      "name": "detail_bind",
-      "value": "Bağla"
-    },
-    {
-      "name": "detail_synced_to_chapter",
-      "value": "%d. bölüme eşitlendi"
-    },
-    {
-      "name": "detail_sync_progress",
-      "value": "İlerlemeyi eşitle"
-    },
-    {
-      "name": "detail_unbind",
-      "value": "Bağlantıyı kaldır"
-    },
-    {
       "name": "detail_chapters_count",
       "value": "Bölümler (%d)"
     },
     {
-      "name": "detail_sort_asc",
-      "value": "Artan"
-    },
-    {
-      "name": "detail_sort_desc",
-      "value": "Azalan"
-    },
-    {
       "name": "detail_mark_all_read",
       "value": "Tümünü okundu işaretle"
-    },
-    {
-      "name": "detail_read",
-      "value": "Okundu"
-    },
-    {
-      "name": "detail_downloaded",
-      "value": "İndirildi"
-    },
-    {
-      "name": "detail_in_queue",
-      "value": "Kuyrukta"
     },
     {
       "name": "detail_download",
@@ -831,10 +571,6 @@
     {
       "name": "reader_mode_rtl",
       "value": "Sağdan sola"
-    },
-    {
-      "name": "reader_mode_webtoon",
-      "value": "Webtoon"
     },
     {
       "name": "reader_reading_mode",
@@ -863,14 +599,6 @@
     {
       "name": "reader_first_chapter",
       "value": "Zaten ilk bölümdesiniz"
-    },
-    {
-      "name": "reader_first_page",
-      "value": "Zaten ilk sayfadasınız"
-    },
-    {
-      "name": "reader_last_page",
-      "value": "Zaten son sayfadasınız"
     },
     {
       "name": "reader_loading_chapter",
@@ -913,10 +641,6 @@
       "value": "Otomatik"
     },
     {
-      "name": "plugin_title",
-      "value": "Uzantılar"
-    },
-    {
       "name": "plugin_installed_section",
       "value": "Yüklü"
     },
@@ -925,40 +649,8 @@
       "value": "Henüz uzantı yok, aşağıdan yükleyin"
     },
     {
-      "name": "plugin_disable_hint",
-      "value": "Devre dışı uzantılar istediğiniz zaman yeniden etkinleştirilebilir"
-    },
-    {
-      "name": "plugin_up_to_date",
-      "value": "Güncel"
-    },
-    {
-      "name": "plugin_local_install",
-      "value": "Dosyadan yükle"
-    },
-    {
-      "name": "plugin_install_from_file",
-      "value": "Yüklemek için bir dosya seçin"
-    },
-    {
-      "name": "plugin_processing",
-      "value": "İşleniyor…"
-    },
-    {
-      "name": "plugin_package_hint",
-      "value": ".honyomiplug / .zip eklenti paketleri desteklenir"
-    },
-    {
       "name": "plugin_repo",
       "value": "Çevrimiçi depo"
-    },
-    {
-      "name": "plugin_repo_config",
-      "value": "Depoyu ayarla"
-    },
-    {
-      "name": "plugin_repo_refresh",
-      "value": "Yenile"
     },
     {
       "name": "plugin_repo_hint",
@@ -995,10 +687,6 @@
     {
       "name": "plugin_install_failed",
       "value": "Yükleme başarısız: %s"
-    },
-    {
-      "name": "plugin_action_failed",
-      "value": "İşlem başarısız"
     },
     {
       "name": "plugin_uninstalled",
@@ -1077,72 +765,12 @@
       "value": "Gelişmiş"
     },
     {
-      "name": "advanced_calculating",
-      "value": "Hesaplanıyor…"
-    },
-    {
-      "name": "advanced_storage",
-      "value": "Depolama"
-    },
-    {
-      "name": "advanced_clear_image_cache",
-      "value": "Görüntü önbelleğini temizle"
-    },
-    {
-      "name": "advanced_image_cache_cleared",
-      "value": "Görüntü önbelleği temizlendi"
-    },
-    {
       "name": "advanced_clear_cookies",
       "value": "Çerezleri temizle"
     },
     {
       "name": "advanced_cookies_cleared",
       "value": "Tüm çerezler temizlendi"
-    },
-    {
-      "name": "advanced_backup_restore",
-      "value": "Yedekle ve geri yükle"
-    },
-    {
-      "name": "advanced_export_backup",
-      "value": "Yedeği dışa aktar"
-    },
-    {
-      "name": "advanced_import_backup",
-      "value": "Yedeği içe aktar"
-    },
-    {
-      "name": "advanced_tracking",
-      "value": "Takip"
-    },
-    {
-      "name": "advanced_anilist_token",
-      "value": "AniList jetonu"
-    },
-    {
-      "name": "advanced_token_title",
-      "value": "AniList erişim jetonu"
-    },
-    {
-      "name": "advanced_token_hint",
-      "value": "Erişim jetonunu yapıştırın (temizlemek için boş bırakın)"
-    },
-    {
-      "name": "advanced_token_not_set",
-      "value": "Ayarlanmadı"
-    },
-    {
-      "name": "advanced_token_set",
-      "value": "Ayarlandı"
-    },
-    {
-      "name": "advanced_token_saved",
-      "value": "Jeton kaydedildi"
-    },
-    {
-      "name": "advanced_token_cleared",
-      "value": "Jeton temizlendi"
     },
     {
       "name": "advanced_backup_exported",
@@ -1177,16 +805,8 @@
       "value": "Hakkında"
     },
     {
-      "name": "about_version",
-      "value": "Sürüm 1.0.0"
-    },
-    {
       "name": "about_desc",
       "value": "Mimari Mihon’dan (Apache-2.0) esinlenmiştir. Çevrimiçi kaynaklar uzantı olarak dinamik yüklenir, yerel kaynaklar yerleşiktir."
-    },
-    {
-      "name": "about_ack",
-      "value": "Açık kaynak teşekkürleri:\n· Mihon / Tachiyomi — uygulama mimarisi ve etkileşim tasarımı (Apache-2.0)\n· Material Symbols — uygulama içi simgeler (Apache-2.0)"
     },
     {
       "name": "browse_set_title",
@@ -1233,40 +853,8 @@
       "value": "Varsayılan sıralama"
     },
     {
-      "name": "lib_set_sort_title",
-      "value": "Başlık"
-    },
-    {
-      "name": "lib_set_sort_last_update",
-      "value": "Son bölüm"
-    },
-    {
-      "name": "lib_set_sort_added",
-      "value": "Eklenme tarihi"
-    },
-    {
-      "name": "lib_set_sort_unread",
-      "value": "Okunmamış sayısı"
-    },
-    {
       "name": "lib_set_sort_asc",
       "value": "Başlığa göre artan sırala"
-    },
-    {
-      "name": "lib_set_filter_default",
-      "value": "Varsayılan filtre"
-    },
-    {
-      "name": "lib_set_filter_unread",
-      "value": "Okunmamış"
-    },
-    {
-      "name": "lib_set_filter_downloaded",
-      "value": "İndirilmiş"
-    },
-    {
-      "name": "lib_set_filter_uncompleted",
-      "value": "Bitmemiş"
     },
     {
       "name": "lib_set_display_group",
@@ -1277,36 +865,8 @@
       "value": "Varsayılan görünüm"
     },
     {
-      "name": "lib_set_view_grid",
-      "value": "Izgara"
-    },
-    {
-      "name": "lib_set_view_cover",
-      "value": "Kapak ızgarası"
-    },
-    {
-      "name": "lib_set_view_list",
-      "value": "Liste"
-    },
-    {
       "name": "lib_set_grid_cols",
       "value": "Izgara sütunları"
-    },
-    {
-      "name": "lib_set_cols_auto",
-      "value": "Otomatik"
-    },
-    {
-      "name": "lib_set_cols_2",
-      "value": "2 sütun"
-    },
-    {
-      "name": "lib_set_cols_3",
-      "value": "3 sütun"
-    },
-    {
-      "name": "lib_set_cols_4",
-      "value": "4 sütun"
     },
     {
       "name": "lib_set_unread_badge",
@@ -1339,10 +899,6 @@
     {
       "name": "reader_set_mode_vertical",
       "value": "Dikey sayfalama"
-    },
-    {
-      "name": "reader_set_mode_webtoon",
-      "value": "Webtoon"
     },
     {
       "name": "reader_set_dual_page",
@@ -1403,14 +959,6 @@
     {
       "name": "browse_unpin",
       "value": "Sabitlemeyi kaldır"
-    },
-    {
-      "name": "browse_disable_source",
-      "value": "Kaynağı devre dışı bırak"
-    },
-    {
-      "name": "browse_source_disabled",
-      "value": "Kaynak devre dışı bırakıldı"
     },
     {
       "name": "browse_pinned",
@@ -1793,14 +1341,6 @@
       "value": "Rastgele bir eser aç"
     },
     {
-      "name": "action_select_all",
-      "value": "Tümünü seç"
-    },
-    {
-      "name": "action_select_inverse",
-      "value": "Seçimi tersine çevir"
-    },
-    {
       "name": "action_move_category",
       "value": "Kategoriye taşı"
     },
@@ -1961,10 +1501,6 @@
       "value": "Dil"
     },
     {
-      "name": "lib_badge_continue",
-      "value": "Okumaya devam et düğmesi"
-    },
-    {
       "name": "lib_display_tabs_group",
       "value": "Sekmeler"
     },
@@ -2041,10 +1577,6 @@
       "value": "Ana ekrana ekle"
     },
     {
-      "name": "detail_card_added",
-      "value": "Ana ekrana eklendi"
-    },
-    {
       "name": "detail_card_add_failed",
       "value": "Kart eklenemedi"
     },
@@ -2069,24 +1601,8 @@
       "value": "Henüz okuma yok"
     },
     {
-      "name": "action_view_upcoming",
-      "value": "Yaklaşan güncellemeleri göster"
-    },
-    {
       "name": "label_upcoming",
       "value": "Yakında"
-    },
-    {
-      "name": "upcoming_guide",
-      "value": "Yakında rehberi"
-    },
-    {
-      "name": "upcoming_calendar_prev",
-      "value": "Önceki ay"
-    },
-    {
-      "name": "upcoming_calendar_next",
-      "value": "Sonraki ay"
     },
     {
       "name": "pref_filter_update_categories_details",
@@ -2133,24 +1649,12 @@
       "value": "Varsayılan"
     },
     {
-      "name": "theme_name_tachiyomi",
-      "value": "Tachiyomi"
-    },
-    {
       "name": "theme_name_midnight_dusk",
       "value": "Gece Alacakaranlığı"
     },
     {
-      "name": "theme_name_nord",
-      "value": "Nord"
-    },
-    {
       "name": "theme_name_strawberry_daiquiri",
       "value": "Çilekli Daiquiri"
-    },
-    {
-      "name": "theme_name_tako",
-      "value": "Tako"
     },
     {
       "name": "theme_name_teal_turquoise",
@@ -2163,10 +1667,6 @@
     {
       "name": "theme_name_yin_yang",
       "value": "Yin ve Yang"
-    },
-    {
-      "name": "theme_name_yotsuba",
-      "value": "Yotsuba"
     },
     {
       "name": "theme_name_tokyo_night",
@@ -2185,8 +1685,36 @@
       "value": "Lavanta"
     },
     {
-      "name": "theme_name_catppuccin",
-      "value": "Catppuccin"
+      "name": "theme_name_kanagawa",
+      "value": "Kanagawa"
+    },
+    {
+      "name": "theme_name_rose_pine",
+      "value": "Rosé Pine"
+    },
+    {
+      "name": "theme_name_gruvbox",
+      "value": "Gruvbox"
+    },
+    {
+      "name": "theme_name_dracula",
+      "value": "Dracula"
+    },
+    {
+      "name": "theme_name_matcha",
+      "value": "Matcha"
+    },
+    {
+      "name": "theme_name_sakura",
+      "value": "Sakura"
+    },
+    {
+      "name": "theme_name_kintsugi",
+      "value": "Kintsugi"
+    },
+    {
+      "name": "theme_name_glacier",
+      "value": "Buzul"
     },
     {
       "name": "tab_cf_refresh",
@@ -2219,18 +1747,6 @@
     {
       "name": "browse_filter_reset",
       "value": "Sıfırla"
-    },
-    {
-      "name": "browse_filter_ignore",
-      "value": "Yoksay"
-    },
-    {
-      "name": "browse_filter_include",
-      "value": "Dahil et"
-    },
-    {
-      "name": "browse_filter_exclude",
-      "value": "Hariç tut"
     },
     {
       "name": "browse_pick_folder_failed",
@@ -2283,10 +1799,6 @@
     {
       "name": "browse_local_folder_empty",
       "value": "Henüz yerel klasör ayarlanmadı"
-    },
-    {
-      "name": "browse_local_synced_empty",
-      "value": "Yerel klasörde bir şey bulunamadı"
     },
     {
       "name": "browse_local_comic_empty",
@@ -2403,10 +1915,6 @@
     {
       "name": "detail_action_tracking",
       "value": "Takip"
-    },
-    {
-      "name": "detail_dl_cancel",
-      "value": "İndirmeyi iptal et"
     },
     {
       "name": "detail_dl_cancelled",
@@ -2613,10 +2121,6 @@
       "value": "Eşzamanlı sayfa indirmeleri"
     },
     {
-      "name": "dl_set_parallel_pages_sub",
-      "value": "Kaynak başına aynı anda indirilen sayfalar"
-    },
-    {
       "name": "dl_set_delete_chapters",
       "value": "Bölümleri sil"
     },
@@ -2693,10 +2197,6 @@
       "value": "Yalnızca geçerli bölüm ve sonraki bölüm zaten indirilmişse çalışır."
     },
     {
-      "name": "browse_type_manga",
-      "value": "Manga"
-    },
-    {
       "name": "browse_type_novel",
       "value": "Romanlar"
     },
@@ -2749,28 +2249,12 @@
       "value": "Bu bölümde metin yok"
     },
     {
-      "name": "novel_prev",
-      "value": "Önceki bölüm"
-    },
-    {
-      "name": "novel_next",
-      "value": "Sonraki bölüm"
-    },
-    {
       "name": "novel_mode_scroll",
       "value": "Kaydırma"
     },
     {
-      "name": "novel_mode_paged",
-      "value": "Sayfalı"
-    },
-    {
       "name": "novel_mode_double",
       "value": "İki sayfa"
-    },
-    {
-      "name": "novel_paging_mode",
-      "value": "Sayfalama modu"
     },
     {
       "name": "novel_paragraph_spacing",
@@ -2845,18 +2329,6 @@
       "value": "Eş aralıklı"
     },
     {
-      "name": "novel_tts",
-      "value": "Sesli oku"
-    },
-    {
-      "name": "novel_tts_start",
-      "value": "Sesli okumayı başlat"
-    },
-    {
-      "name": "novel_tts_stop",
-      "value": "Sesli okumayı durdur"
-    },
-    {
       "name": "novel_tts_speed",
       "value": "Okuma hızı"
     },
@@ -2867,14 +2339,6 @@
     {
       "name": "novel_tts_error",
       "value": "Sesli okuma başarısız: %s"
-    },
-    {
-      "name": "novel_tts_pause",
-      "value": "Duraklat"
-    },
-    {
-      "name": "novel_tts_resume",
-      "value": "Sürdür"
     },
     {
       "name": "tts_player_title",
@@ -2903,10 +2367,6 @@
     {
       "name": "tts_no_content",
       "value": "Sesli okunan bir şey yok"
-    },
-    {
-      "name": "tts_open_player",
-      "value": "Oynatıcıyı aç"
     },
     {
       "name": "tts_chapters",
@@ -2945,22 +2405,6 @@
       "value": "Roman sesli okunurken uygulamanın arka planda çalışmasını sürdürür"
     },
     {
-      "name": "video_play",
-      "value": "Oynat"
-    },
-    {
-      "name": "video_pause",
-      "value": "Duraklat"
-    },
-    {
-      "name": "video_prev",
-      "value": "Önceki"
-    },
-    {
-      "name": "video_next",
-      "value": "Sonraki"
-    },
-    {
       "name": "video_settings",
       "value": "Oynatıcı ayarları"
     },
@@ -2975,10 +2419,6 @@
     {
       "name": "video_speed",
       "value": "Oynatma hızı"
-    },
-    {
-      "name": "video_danmaku",
-      "value": "Danmaku"
     },
     {
       "name": "video_danmaku_on",
@@ -3033,10 +2473,6 @@
       "value": "Bitince sonraki bölümü otomatik oynat"
     },
     {
-      "name": "player_set_danmaku",
-      "value": "Danmaku"
-    },
-    {
       "name": "player_set_danmaku_enable",
       "value": "Danmaku göster"
     },
@@ -3081,10 +2517,6 @@
       "value": "Yavaş"
     },
     {
-      "name": "danmaku_speed_normal",
-      "value": "Normal"
-    },
-    {
       "name": "danmaku_speed_fast",
       "value": "Hızlı"
     },
@@ -3121,10 +2553,6 @@
       "value": "Video süresi"
     },
     {
-      "name": "detail_cover_actions",
-      "value": "Kapak"
-    },
-    {
       "name": "detail_edit_cover",
       "value": "Kapağı düzenle"
     },
@@ -3155,14 +2583,6 @@
     {
       "name": "detail_cover_share_failed",
       "value": "Kapak paylaşılırken hata"
-    },
-    {
-      "name": "detail_edit",
-      "value": "Düzenle"
-    },
-    {
-      "name": "detail_delete",
-      "value": "Sil"
     },
     {
       "name": "onboarding_heading",
@@ -3197,10 +2617,6 @@
       "value": "%s yeniden mi yükleniyor?"
     },
     {
-      "name": "chapter_badge_new",
-      "value": "NEW"
-    },
-    {
       "name": "detail_sync_in_progress",
       "value": "Eşitleme sürüyor, lütfen bekleyin"
     },
@@ -3233,44 +2649,8 @@
       "value": "İşlem başarısız"
     },
     {
-      "name": "cf_load_error",
-      "value": "Yükleme hatası: %s"
-    },
-    {
-      "name": "cf_loading",
-      "value": "Yükleniyor…"
-    },
-    {
-      "name": "cf_load_failed",
-      "value": "Yükleme başarısız: %s"
-    },
-    {
-      "name": "cf_http_prefix",
-      "value": "HTTP %d"
-    },
-    {
-      "name": "cf_render_exited",
-      "value": "İşleme çıktı (%d)"
-    },
-    {
-      "name": "badge_type_text",
-      "value": "T"
-    },
-    {
-      "name": "badge_type_video",
-      "value": "V"
-    },
-    {
-      "name": "badge_type_manga",
-      "value": "M"
-    },
-    {
       "name": "last_backup_failed_hint",
       "value": "Son otomatik yedekleme başarısız"
-    },
-    {
-      "name": "category_manga",
-      "value": "Manga"
     },
     {
       "name": "category_novel",
@@ -3701,22 +3081,6 @@
       "value": "Bitmemişler"
     },
     {
-      "name": "oauth_loading",
-      "value": "Yükleniyor…"
-    },
-    {
-      "name": "oauth_load_error",
-      "value": "Yüklenemedi: %s"
-    },
-    {
-      "name": "browse_local_files_empty",
-      "value": "Henüz yerel dosya yok, eklemek için İçe aktar'a dokunun"
-    },
-    {
-      "name": "browse_work_name_hint",
-      "value": "Ad"
-    },
-    {
       "name": "privacy_title",
       "value": "Gizlilik"
     },
@@ -3855,10 +3219,6 @@
     {
       "name": "pref_webview_data_deleted",
       "value": "Gömülü web verileri temizlendi"
-    },
-    {
-      "name": "pref_dns_over_https",
-      "value": "DNS over HTTPS"
     },
     {
       "name": "pref_doh_disabled",

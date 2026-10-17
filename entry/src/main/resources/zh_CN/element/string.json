@@ -25,20 +25,12 @@
       "value": "Patreon（首选）"
     },
     {
-      "name": "support_opencollective",
-      "value": "OpenCollective"
-    },
-    {
       "name": "support_supported_by",
       "value": "目前 Mihon 已获得 %d+ 位赞助者的支持。我们衷心感谢大家。让我们携手把 Mihon 办得更出色。"
     },
     {
       "name": "support_contact_msg",
       "value": "如需替代方案或有任何相关问题，请加入我们的 Discord 服务器。"
-    },
-    {
-      "name": "support_discord",
-      "value": "Discord"
     },
     {
       "name": "data_storage_title",
@@ -95,10 +87,6 @@
     {
       "name": "data_cache_deleted",
       "value": "已清除缓存，删除了 %d 个文件"
-    },
-    {
-      "name": "data_cache_delete_error",
-      "value": "清除时发生错误"
     },
     {
       "name": "data_auto_clear_cache",
@@ -173,28 +161,12 @@
       "value": "导出失败"
     },
     {
-      "name": "module_desc",
-      "value": "module description"
-    },
-    {
-      "name": "EntryAbility_desc",
-      "value": "description"
-    },
-    {
-      "name": "EntryAbility_label",
-      "value": "Honyomi"
-    },
-    {
       "name": "common_ok",
       "value": "确定"
     },
     {
       "name": "common_cancel",
       "value": "取消"
-    },
-    {
-      "name": "common_confirm",
-      "value": "确认"
     },
     {
       "name": "common_delete",
@@ -213,10 +185,6 @@
       "value": "全部"
     },
     {
-      "name": "common_close",
-      "value": "关闭"
-    },
-    {
       "name": "common_copy_to_clipboard",
       "value": "复制到剪贴板"
     },
@@ -225,20 +193,8 @@
       "value": "保存"
     },
     {
-      "name": "common_install",
-      "value": "安装"
-    },
-    {
       "name": "common_uninstall",
       "value": "卸载"
-    },
-    {
-      "name": "common_update",
-      "value": "更新"
-    },
-    {
-      "name": "common_none",
-      "value": "无"
     },
     {
       "name": "common_default",
@@ -255,14 +211,6 @@
     {
       "name": "lang_follow_system",
       "value": "跟随系统"
-    },
-    {
-      "name": "lang_simplified_chinese",
-      "value": "简体中文"
-    },
-    {
-      "name": "lang_english",
-      "value": "English"
     },
     {
       "name": "appearance_theme_mode",
@@ -297,16 +245,8 @@
       "value": "默认"
     },
     {
-      "name": "theme_name_tachiyomi",
-      "value": "Tachiyomi"
-    },
-    {
       "name": "theme_name_midnight_dusk",
       "value": "午夜暮色"
-    },
-    {
-      "name": "theme_name_nord",
-      "value": "Nord"
     },
     {
       "name": "theme_name_strawberry_daiquiri",
@@ -349,8 +289,36 @@
       "value": "薰衣草"
     },
     {
-      "name": "theme_name_catppuccin",
-      "value": "Catppuccin"
+      "name": "theme_name_kanagawa",
+      "value": "神奈川"
+    },
+    {
+      "name": "theme_name_rose_pine",
+      "value": "玫瑰松"
+    },
+    {
+      "name": "theme_name_gruvbox",
+      "value": "暖褐"
+    },
+    {
+      "name": "theme_name_dracula",
+      "value": "德古拉"
+    },
+    {
+      "name": "theme_name_matcha",
+      "value": "抹茶"
+    },
+    {
+      "name": "theme_name_sakura",
+      "value": "樱"
+    },
+    {
+      "name": "theme_name_kintsugi",
+      "value": "金缮"
+    },
+    {
+      "name": "theme_name_glacier",
+      "value": "冰川"
     },
     {
       "name": "util_time_minutes_ago",
@@ -407,10 +375,6 @@
     {
       "name": "tab_more",
       "value": "更多"
-    },
-    {
-      "name": "tab_cf_waiting",
-      "value": "等待验证完成…"
     },
     {
       "name": "tab_cf_verified",
@@ -479,10 +443,6 @@
     {
       "name": "more_about",
       "value": "关于"
-    },
-    {
-      "name": "more_plugins",
-      "value": "插件管理"
     },
     {
       "name": "stats_title",
@@ -617,10 +577,6 @@
       "value": "六"
     },
     {
-      "name": "categories_title",
-      "value": "分类"
-    },
-    {
       "name": "categories_add",
       "value": "新建分类"
     },
@@ -665,14 +621,6 @@
       "value": "书架为空，去浏览页添加漫画吧"
     },
     {
-      "name": "library_new_category",
-      "value": "新建分类"
-    },
-    {
-      "name": "library_category_name",
-      "value": "分类名称"
-    },
-    {
       "name": "updates_title",
       "value": "更新"
     },
@@ -691,10 +639,6 @@
     {
       "name": "updates_refresh_failed",
       "value": "刷新失败"
-    },
-    {
-      "name": "updates_refreshing",
-      "value": "刷新中…"
     },
     {
       "name": "history_title",
@@ -727,10 +671,6 @@
     {
       "name": "browse_title",
       "value": "浏览"
-    },
-    {
-      "name": "browse_plugins",
-      "value": "插件"
     },
     {
       "name": "browse_local_source_name",
@@ -775,18 +715,6 @@
     {
       "name": "browse_filter_reset",
       "value": "重置"
-    },
-    {
-      "name": "browse_filter_ignore",
-      "value": "忽略"
-    },
-    {
-      "name": "browse_filter_include",
-      "value": "包含"
-    },
-    {
-      "name": "browse_filter_exclude",
-      "value": "排除"
     },
     {
       "name": "browse_pick_folder_failed",
@@ -841,10 +769,6 @@
       "value": "还没有设置本地文件夹"
     },
     {
-      "name": "browse_local_synced_empty",
-      "value": "本地文件夹中未找到内容"
-    },
-    {
       "name": "browse_local_comic_empty",
       "value": "comic 子文件夹中未找到内容"
     },
@@ -877,22 +801,6 @@
       "value": "下载队列"
     },
     {
-      "name": "download_state_queued",
-      "value": "排队中"
-    },
-    {
-      "name": "download_state_downloading",
-      "value": "下载中"
-    },
-    {
-      "name": "download_state_done",
-      "value": "已完成"
-    },
-    {
-      "name": "download_state_failed",
-      "value": "失败"
-    },
-    {
       "name": "download_move_top",
       "value": "置顶"
     },
@@ -921,10 +829,6 @@
       "value": "还没有下载内容"
     },
     {
-      "name": "download_status_downloaded",
-      "value": "已下载"
-    },
-    {
       "name": "download_chapter_count",
       "value": "%d 章"
     },
@@ -951,42 +855,6 @@
     {
       "name": "detail_download_queued",
       "value": "已加入下载队列"
-    },
-    {
-      "name": "detail_config_anilist_token",
-      "value": "请先配置 AniList Token"
-    },
-    {
-      "name": "detail_search_anilist",
-      "value": "搜索 AniList"
-    },
-    {
-      "name": "detail_manga_title_hint",
-      "value": "漫画标题"
-    },
-    {
-      "name": "detail_no_search_results",
-      "value": "没有搜索结果"
-    },
-    {
-      "name": "detail_anilist_search_failed",
-      "value": "AniList 搜索失败"
-    },
-    {
-      "name": "detail_anilist_bound",
-      "value": "已绑定 AniList"
-    },
-    {
-      "name": "detail_anilist_unbound",
-      "value": "已解绑 AniList"
-    },
-    {
-      "name": "detail_synced_progress",
-      "value": "已同步进度到第 %d 话"
-    },
-    {
-      "name": "detail_anilist_sync_failed",
-      "value": "AniList 同步失败"
     },
     {
       "name": "detail_status_local",
@@ -1021,64 +889,12 @@
       "value": "展开"
     },
     {
-      "name": "detail_anilist_tracking",
-      "value": "AniList 追踪"
-    },
-    {
-      "name": "detail_anilist_token_hint",
-      "value": "尚未配置 AniList Token"
-    },
-    {
-      "name": "detail_searching",
-      "value": "搜索中…"
-    },
-    {
-      "name": "detail_search_and_bind",
-      "value": "搜索并绑定"
-    },
-    {
-      "name": "detail_bind",
-      "value": "绑定"
-    },
-    {
-      "name": "detail_synced_to_chapter",
-      "value": "已同步到第 %d 话"
-    },
-    {
-      "name": "detail_sync_progress",
-      "value": "同步进度"
-    },
-    {
-      "name": "detail_unbind",
-      "value": "解绑"
-    },
-    {
       "name": "detail_chapters_count",
       "value": "章节（%d）"
     },
     {
-      "name": "detail_sort_asc",
-      "value": "正序"
-    },
-    {
-      "name": "detail_sort_desc",
-      "value": "倒序"
-    },
-    {
       "name": "detail_mark_all_read",
       "value": "全部已读"
-    },
-    {
-      "name": "detail_read",
-      "value": "已读"
-    },
-    {
-      "name": "detail_downloaded",
-      "value": "已下载"
-    },
-    {
-      "name": "detail_in_queue",
-      "value": "队列中"
     },
     {
       "name": "detail_download",
@@ -1175,10 +991,6 @@
     {
       "name": "detail_action_tracking",
       "value": "追踪"
-    },
-    {
-      "name": "detail_dl_cancel",
-      "value": "取消下载"
     },
     {
       "name": "detail_dl_cancelled",
@@ -1325,14 +1137,6 @@
       "value": "已经是第一章"
     },
     {
-      "name": "reader_first_page",
-      "value": "已经是第一页"
-    },
-    {
-      "name": "reader_last_page",
-      "value": "已经是最后一页"
-    },
-    {
       "name": "transition_finished",
       "value": "已完成："
     },
@@ -1397,40 +1201,12 @@
       "value": "自动"
     },
     {
-      "name": "plugin_title",
-      "value": "插件管理"
-    },
-    {
       "name": "plugin_installed_section",
       "value": "已安装"
     },
     {
       "name": "plugin_empty",
       "value": "暂无插件，可从右上角菜单安装"
-    },
-    {
-      "name": "plugin_disable_hint",
-      "value": "停用后可在需要时重新开启"
-    },
-    {
-      "name": "plugin_up_to_date",
-      "value": "已是最新版本"
-    },
-    {
-      "name": "plugin_local_install",
-      "value": "从文件安装"
-    },
-    {
-      "name": "plugin_install_from_file",
-      "value": "选择文件安装"
-    },
-    {
-      "name": "plugin_processing",
-      "value": "处理中…"
-    },
-    {
-      "name": "plugin_package_hint",
-      "value": "支持 .honyomiplug / .zip 插件包"
     },
     {
       "name": "plugin_repo",
@@ -1451,14 +1227,6 @@
     {
       "name": "ext_multi_lang",
       "value": "多语言"
-    },
-    {
-      "name": "plugin_repo_config",
-      "value": "配置仓库"
-    },
-    {
-      "name": "plugin_repo_refresh",
-      "value": "刷新"
     },
     {
       "name": "plugin_repo_hint",
@@ -1495,10 +1263,6 @@
     {
       "name": "plugin_install_failed",
       "value": "安装失败：%s"
-    },
-    {
-      "name": "plugin_action_failed",
-      "value": "操作失败"
     },
     {
       "name": "plugin_uninstalled",
@@ -1577,72 +1341,12 @@
       "value": "高级"
     },
     {
-      "name": "advanced_calculating",
-      "value": "计算中…"
-    },
-    {
-      "name": "advanced_storage",
-      "value": "存储"
-    },
-    {
-      "name": "advanced_clear_image_cache",
-      "value": "清除图片缓存"
-    },
-    {
-      "name": "advanced_image_cache_cleared",
-      "value": "已清除图片缓存"
-    },
-    {
       "name": "advanced_clear_cookies",
       "value": "清除 Cookie"
     },
     {
       "name": "advanced_cookies_cleared",
       "value": "已清除全部 Cookie"
-    },
-    {
-      "name": "advanced_backup_restore",
-      "value": "备份与还原"
-    },
-    {
-      "name": "advanced_export_backup",
-      "value": "导出备份"
-    },
-    {
-      "name": "advanced_import_backup",
-      "value": "导入备份"
-    },
-    {
-      "name": "advanced_tracking",
-      "value": "追踪服务"
-    },
-    {
-      "name": "advanced_anilist_token",
-      "value": "AniList 令牌"
-    },
-    {
-      "name": "advanced_token_title",
-      "value": "AniList 访问令牌"
-    },
-    {
-      "name": "advanced_token_hint",
-      "value": "粘贴 access token（留空清除）"
-    },
-    {
-      "name": "advanced_token_not_set",
-      "value": "未配置"
-    },
-    {
-      "name": "advanced_token_set",
-      "value": "已配置"
-    },
-    {
-      "name": "advanced_token_saved",
-      "value": "已保存令牌"
-    },
-    {
-      "name": "advanced_token_cleared",
-      "value": "已清除令牌"
     },
     {
       "name": "advanced_backup_exported",
@@ -1861,10 +1565,6 @@
       "value": "单章页面并发下载数"
     },
     {
-      "name": "dl_set_parallel_pages_sub",
-      "value": "每个源内同时下载的页面数"
-    },
-    {
       "name": "dl_set_delete_chapters",
       "value": "删除章节"
     },
@@ -1953,40 +1653,8 @@
       "value": "默认排序"
     },
     {
-      "name": "lib_set_sort_title",
-      "value": "标题"
-    },
-    {
-      "name": "lib_set_sort_last_update",
-      "value": "最新章节"
-    },
-    {
-      "name": "lib_set_sort_added",
-      "value": "添加时间"
-    },
-    {
-      "name": "lib_set_sort_unread",
-      "value": "未读数"
-    },
-    {
       "name": "lib_set_sort_asc",
       "value": "按标题正序排列"
-    },
-    {
-      "name": "lib_set_filter_default",
-      "value": "默认筛选"
-    },
-    {
-      "name": "lib_set_filter_unread",
-      "value": "未读"
-    },
-    {
-      "name": "lib_set_filter_downloaded",
-      "value": "已下载"
-    },
-    {
-      "name": "lib_set_filter_uncompleted",
-      "value": "未完结"
     },
     {
       "name": "lib_set_display_group",
@@ -1997,36 +1665,8 @@
       "value": "默认视图"
     },
     {
-      "name": "lib_set_view_grid",
-      "value": "网格"
-    },
-    {
-      "name": "lib_set_view_cover",
-      "value": "封面网格"
-    },
-    {
-      "name": "lib_set_view_list",
-      "value": "列表"
-    },
-    {
       "name": "lib_set_grid_cols",
       "value": "网格列数"
-    },
-    {
-      "name": "lib_set_cols_auto",
-      "value": "自适应"
-    },
-    {
-      "name": "lib_set_cols_2",
-      "value": "2 列"
-    },
-    {
-      "name": "lib_set_cols_3",
-      "value": "3 列"
-    },
-    {
-      "name": "lib_set_cols_4",
-      "value": "4 列"
     },
     {
       "name": "lib_set_unread_badge",
@@ -2127,14 +1767,6 @@
     {
       "name": "browse_unpin",
       "value": "取消置顶"
-    },
-    {
-      "name": "browse_disable_source",
-      "value": "停用源"
-    },
-    {
-      "name": "browse_source_disabled",
-      "value": "已停用该源"
     },
     {
       "name": "browse_pinned",
@@ -2301,14 +1933,6 @@
       "value": "随机打开作品"
     },
     {
-      "name": "action_select_all",
-      "value": "全选"
-    },
-    {
-      "name": "action_select_inverse",
-      "value": "反选"
-    },
-    {
       "name": "action_move_category",
       "value": "移动分类"
     },
@@ -2469,10 +2093,6 @@
       "value": "语言"
     },
     {
-      "name": "lib_badge_continue",
-      "value": "继续阅读按钮"
-    },
-    {
       "name": "lib_display_tabs_group",
       "value": "标签"
     },
@@ -2549,10 +2169,6 @@
       "value": "添加到桌面"
     },
     {
-      "name": "detail_card_added",
-      "value": "已添加到桌面"
-    },
-    {
       "name": "detail_card_add_failed",
       "value": "添加卡片失败"
     },
@@ -2577,24 +2193,8 @@
       "value": "暂无阅读记录"
     },
     {
-      "name": "action_view_upcoming",
-      "value": "显示即将推出的更新"
-    },
-    {
       "name": "label_upcoming",
       "value": "即将推出"
-    },
-    {
-      "name": "upcoming_guide",
-      "value": "即将推出的指南"
-    },
-    {
-      "name": "upcoming_calendar_prev",
-      "value": "上个月"
-    },
-    {
-      "name": "upcoming_calendar_next",
-      "value": "下个月"
     },
     {
       "name": "pref_filter_update_categories_details",
@@ -2685,28 +2285,12 @@
       "value": "这一章没有正文"
     },
     {
-      "name": "novel_prev",
-      "value": "上一章"
-    },
-    {
-      "name": "novel_next",
-      "value": "下一章"
-    },
-    {
       "name": "novel_mode_scroll",
       "value": "滚动"
     },
     {
-      "name": "novel_mode_paged",
-      "value": "翻页"
-    },
-    {
       "name": "novel_mode_double",
       "value": "双页"
-    },
-    {
-      "name": "novel_paging_mode",
-      "value": "翻页方式"
     },
     {
       "name": "novel_paragraph_spacing",
@@ -2781,18 +2365,6 @@
       "value": "等宽"
     },
     {
-      "name": "novel_tts",
-      "value": "听书"
-    },
-    {
-      "name": "novel_tts_start",
-      "value": "开始朗读"
-    },
-    {
-      "name": "novel_tts_stop",
-      "value": "停止朗读"
-    },
-    {
       "name": "novel_tts_speed",
       "value": "朗读语速"
     },
@@ -2803,14 +2375,6 @@
     {
       "name": "novel_tts_error",
       "value": "朗读失败：%s"
-    },
-    {
-      "name": "novel_tts_pause",
-      "value": "暂停朗读"
-    },
-    {
-      "name": "novel_tts_resume",
-      "value": "继续朗读"
     },
     {
       "name": "tts_player_title",
@@ -2839,10 +2403,6 @@
     {
       "name": "tts_no_content",
       "value": "暂无正在朗读的内容"
-    },
-    {
-      "name": "tts_open_player",
-      "value": "打开播放器"
     },
     {
       "name": "tts_chapters",
@@ -2881,22 +2441,6 @@
       "value": "小说听书朗读时保持应用在后台持续运行"
     },
     {
-      "name": "video_play",
-      "value": "播放"
-    },
-    {
-      "name": "video_pause",
-      "value": "暂停"
-    },
-    {
-      "name": "video_prev",
-      "value": "上一集"
-    },
-    {
-      "name": "video_next",
-      "value": "下一集"
-    },
-    {
       "name": "video_settings",
       "value": "播放设置"
     },
@@ -2911,10 +2455,6 @@
     {
       "name": "video_speed",
       "value": "倍速"
-    },
-    {
-      "name": "video_danmaku",
-      "value": "弹幕"
     },
     {
       "name": "video_danmaku_on",
@@ -3057,10 +2597,6 @@
       "value": "视频时长"
     },
     {
-      "name": "detail_cover_actions",
-      "value": "封面"
-    },
-    {
       "name": "detail_edit_cover",
       "value": "更换封面"
     },
@@ -3091,14 +2627,6 @@
     {
       "name": "detail_cover_share_failed",
       "value": "分享封面时出错"
-    },
-    {
-      "name": "detail_edit",
-      "value": "编辑"
-    },
-    {
-      "name": "detail_delete",
-      "value": "删除"
     },
     {
       "name": "onboarding_heading",
@@ -3133,10 +2661,6 @@
       "value": "重新安装 %s？"
     },
     {
-      "name": "chapter_badge_new",
-      "value": "NEW"
-    },
-    {
       "name": "detail_sync_in_progress",
       "value": "同步进行中，请稍候"
     },
@@ -3167,26 +2691,6 @@
     {
       "name": "common_op_failed",
       "value": "操作失败"
-    },
-    {
-      "name": "cf_load_error",
-      "value": "加载失败：%s"
-    },
-    {
-      "name": "cf_loading",
-      "value": "加载中…"
-    },
-    {
-      "name": "cf_load_failed",
-      "value": "加载失败：%s"
-    },
-    {
-      "name": "cf_http_prefix",
-      "value": "HTTP %d"
-    },
-    {
-      "name": "cf_render_exited",
-      "value": "渲染进程退出（%d）"
     },
     {
       "name": "badge_type_text",
@@ -3637,14 +3141,6 @@
       "value": "未完列表"
     },
     {
-      "name": "oauth_loading",
-      "value": "加载中…"
-    },
-    {
-      "name": "oauth_load_error",
-      "value": "加载失败：%s"
-    },
-    {
       "name": "privacy_title",
       "value": "隐私"
     },
@@ -3867,70 +3363,6 @@
     {
       "name": "debug_language",
       "value": "语言"
-    },
-    {
-      "name": "appearance_accent_color",
-      "value": "强调色"
-    },
-    {
-      "name": "theme_accent_blue",
-      "value": "蓝色"
-    },
-    {
-      "name": "theme_accent_green",
-      "value": "绿色"
-    },
-    {
-      "name": "theme_accent_orange",
-      "value": "橙色"
-    },
-    {
-      "name": "theme_accent_pink",
-      "value": "粉色"
-    },
-    {
-      "name": "theme_accent_purple",
-      "value": "紫色"
-    },
-    {
-      "name": "browse_import",
-      "value": "导入"
-    },
-    {
-      "name": "browse_import_done",
-      "value": "已导入 %d 个文件"
-    },
-    {
-      "name": "browse_import_failed",
-      "value": "导入失败：%s"
-    },
-    {
-      "name": "browse_import_title",
-      "value": "导入 %d 个文件"
-    },
-    {
-      "name": "browse_input_name",
-      "value": "请输入名称"
-    },
-    {
-      "name": "browse_local_empty",
-      "value": "还没有本地漫画，点击导入添加"
-    },
-    {
-      "name": "browse_local_files_empty",
-      "value": "还没有本地文件，点击导入添加"
-    },
-    {
-      "name": "browse_manga_name_hint",
-      "value": "漫画名称"
-    },
-    {
-      "name": "browse_pick_file_failed",
-      "value": "选择文件失败"
-    },
-    {
-      "name": "browse_work_name_hint",
-      "value": "名称"
     }
   ]
 }

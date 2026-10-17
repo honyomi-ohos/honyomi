@@ -13,6 +13,8 @@
 .arkui-x
 .cache
 /.codegenie
+# 插件运行时由 entry/hvigorfile.ts 在打包前生成，源码在 plugins/runtime
+/entry/src/main/resources/rawfile/plugin_runtime_jsvm.js
 *.cer
 *.p7b
 *.p12

@@ -9,36 +9,8 @@
       "value": "Wstrzymuje zapisywanie do historii czytania"
     },
     {
-      "name": "more_support",
-      "value": "Support Us"
-    },
-    {
       "name": "more_help",
       "value": "Pomoc"
-    },
-    {
-      "name": "support_perks",
-      "value": "Patrons get access to exclusive channels, with more perks to come."
-    },
-    {
-      "name": "support_patreon",
-      "value": "Patreon (preferred)"
-    },
-    {
-      "name": "support_opencollective",
-      "value": "OpenCollective"
-    },
-    {
-      "name": "support_supported_by",
-      "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together."
-    },
-    {
-      "name": "support_contact_msg",
-      "value": "For alternative options or any related questions, join our Discord server."
-    },
-    {
-      "name": "support_discord",
-      "value": "Discord"
     },
     {
       "name": "data_storage_title",
@@ -97,24 +69,12 @@
       "value": "Wyczyszczono cache, %d plików zostało usunięte"
     },
     {
-      "name": "data_cache_delete_error",
-      "value": "Podczas czyszczenia wystąpił błąd"
-    },
-    {
       "name": "data_auto_clear_cache",
       "value": "Wyczyść cache rozdziałów przy uruchamianiu aplikacji"
     },
     {
       "name": "data_export",
       "value": "Eksportuj"
-    },
-    {
-      "name": "data_library_list",
-      "value": "Library List"
-    },
-    {
-      "name": "data_library_exported",
-      "value": "Library Exported"
     },
     {
       "name": "data_export_include",
@@ -153,48 +113,8 @@
       "value": "Co tydzień"
     },
     {
-      "name": "data_storage_location_value",
-      "value": "App private storage"
-    },
-    {
-      "name": "data_storage_name",
-      "value": "Internal storage"
-    },
-    {
-      "name": "data_never_backed_up",
-      "value": "Never"
-    },
-    {
-      "name": "data_export_canceled",
-      "value": "Export canceled"
-    },
-    {
-      "name": "data_export_failed",
-      "value": "Export failed"
-    },
-    {
-      "name": "module_desc",
-      "value": "module description"
-    },
-    {
-      "name": "EntryAbility_desc",
-      "value": "description"
-    },
-    {
-      "name": "EntryAbility_label",
-      "value": "Honyomi"
-    },
-    {
-      "name": "common_ok",
-      "value": "OK"
-    },
-    {
       "name": "common_cancel",
       "value": "Anuluj"
-    },
-    {
-      "name": "common_confirm",
-      "value": "Potwierdź"
     },
     {
       "name": "common_delete",
@@ -213,28 +133,12 @@
       "value": "Wszystko"
     },
     {
-      "name": "common_close",
-      "value": "Zamknij"
-    },
-    {
       "name": "common_save",
       "value": "Zapisz"
     },
     {
-      "name": "common_install",
-      "value": "Zainstaluj"
-    },
-    {
       "name": "common_uninstall",
       "value": "Odinstaluj"
-    },
-    {
-      "name": "common_update",
-      "value": "Aktualizuj"
-    },
-    {
-      "name": "common_none",
-      "value": "Brak"
     },
     {
       "name": "common_default",
@@ -253,14 +157,6 @@
       "value": "Zgodnie z systemem"
     },
     {
-      "name": "lang_simplified_chinese",
-      "value": "简体中文"
-    },
-    {
-      "name": "lang_english",
-      "value": "English"
-    },
-    {
       "name": "appearance_theme_mode",
       "value": "Tryb motywu"
     },
@@ -277,36 +173,12 @@
       "value": "Ciemny"
     },
     {
-      "name": "appearance_accent_color",
-      "value": "Kolor akcentu"
-    },
-    {
       "name": "appearance_other",
       "value": "Inne"
     },
     {
       "name": "appearance_amoled",
       "value": "Czysto czarne tło AMOLED"
-    },
-    {
-      "name": "theme_accent_blue",
-      "value": "Niebieski"
-    },
-    {
-      "name": "theme_accent_green",
-      "value": "Zielony"
-    },
-    {
-      "name": "theme_accent_pink",
-      "value": "Różowy"
-    },
-    {
-      "name": "theme_accent_purple",
-      "value": "Fioletowy"
-    },
-    {
-      "name": "theme_accent_orange",
-      "value": "Pomarańczowy"
     },
     {
       "name": "util_time_minutes_ago",
@@ -365,10 +237,6 @@
       "value": "Więcej"
     },
     {
-      "name": "tab_cf_waiting",
-      "value": "Oczekiwanie na weryfikację…"
-    },
-    {
       "name": "tab_cf_verified",
       "value": "Weryfikacja zakończona"
     },
@@ -415,10 +283,6 @@
     {
       "name": "more_about",
       "value": "O aplikacji"
-    },
-    {
-      "name": "more_plugins",
-      "value": "Rozszerzenia"
     },
     {
       "name": "categories_title",
@@ -469,14 +333,6 @@
       "value": "Twoja biblioteka jest pusta, przeglądaj, aby dodać mangę"
     },
     {
-      "name": "library_new_category",
-      "value": "Nowa kategoria"
-    },
-    {
-      "name": "library_category_name",
-      "value": "Nazwa kategorii"
-    },
-    {
       "name": "updates_title",
       "value": "Aktualizacje"
     },
@@ -495,10 +351,6 @@
     {
       "name": "updates_refresh_failed",
       "value": "Odświeżanie nie powiodło się"
-    },
-    {
-      "name": "updates_refreshing",
-      "value": "Odświeżanie…"
     },
     {
       "name": "history_title",
@@ -529,14 +381,6 @@
       "value": "Przeglądaj"
     },
     {
-      "name": "browse_import",
-      "value": "Importuj"
-    },
-    {
-      "name": "browse_plugins",
-      "value": "Wtyczki"
-    },
-    {
       "name": "browse_local_source_name",
       "value": "Lokalna manga"
     },
@@ -557,10 +401,6 @@
       "value": "Nie znaleziono mangi"
     },
     {
-      "name": "browse_local_empty",
-      "value": "Brak lokalnej mangi, dotknij Importuj, aby dodać"
-    },
-    {
       "name": "browse_load_failed",
       "value": "Nie udało się wczytać: %s"
     },
@@ -575,30 +415,6 @@
     {
       "name": "browse_open_detail_failed",
       "value": "Nie udało się otworzyć szczegółów"
-    },
-    {
-      "name": "browse_pick_file_failed",
-      "value": "Nie udało się wybrać plików"
-    },
-    {
-      "name": "browse_import_title",
-      "value": "Importuj %d plików"
-    },
-    {
-      "name": "browse_manga_name_hint",
-      "value": "Nazwa mangi"
-    },
-    {
-      "name": "browse_input_name",
-      "value": "Podaj nazwę"
-    },
-    {
-      "name": "browse_import_done",
-      "value": "Zaimportowano %d plików"
-    },
-    {
-      "name": "browse_import_failed",
-      "value": "Import nie powiódł się: %s"
     },
     {
       "name": "download_title",
@@ -621,22 +437,6 @@
       "value": "Kolejka pobierania"
     },
     {
-      "name": "download_state_queued",
-      "value": "W kolejce"
-    },
-    {
-      "name": "download_state_downloading",
-      "value": "Pobieranie"
-    },
-    {
-      "name": "download_state_done",
-      "value": "Gotowe"
-    },
-    {
-      "name": "download_state_failed",
-      "value": "Niepowodzenie"
-    },
-    {
       "name": "download_move_top",
       "value": "Przenieś na górę"
     },
@@ -651,10 +451,6 @@
     {
       "name": "download_empty",
       "value": "Brak pobrań"
-    },
-    {
-      "name": "download_status_downloaded",
-      "value": "Pobrano"
     },
     {
       "name": "download_chapter_count",
@@ -683,42 +479,6 @@
     {
       "name": "detail_download_queued",
       "value": "Pobieranie dodane do kolejki"
-    },
-    {
-      "name": "detail_config_anilist_token",
-      "value": "Najpierw skonfiguruj token AniList"
-    },
-    {
-      "name": "detail_search_anilist",
-      "value": "Szukaj w AniList"
-    },
-    {
-      "name": "detail_manga_title_hint",
-      "value": "Tytuł mangi"
-    },
-    {
-      "name": "detail_no_search_results",
-      "value": "Brak wyników wyszukiwania"
-    },
-    {
-      "name": "detail_anilist_search_failed",
-      "value": "Wyszukiwanie AniList nie powiodło się"
-    },
-    {
-      "name": "detail_anilist_bound",
-      "value": "Powiązano z AniList"
-    },
-    {
-      "name": "detail_anilist_unbound",
-      "value": "Odłączono od AniList"
-    },
-    {
-      "name": "detail_synced_progress",
-      "value": "Postęp zsynchronizowano do rozdziału %d"
-    },
-    {
-      "name": "detail_anilist_sync_failed",
-      "value": "Synchronizacja AniList nie powiodła się"
     },
     {
       "name": "detail_status_local",
@@ -753,64 +513,12 @@
       "value": "Rozwiń"
     },
     {
-      "name": "detail_anilist_tracking",
-      "value": "Śledzenie AniList"
-    },
-    {
-      "name": "detail_anilist_token_hint",
-      "value": "Token AniList nie został jeszcze skonfigurowany"
-    },
-    {
-      "name": "detail_searching",
-      "value": "Wyszukiwanie…"
-    },
-    {
-      "name": "detail_search_and_bind",
-      "value": "Szukaj i powiąż"
-    },
-    {
-      "name": "detail_bind",
-      "value": "Powiąż"
-    },
-    {
-      "name": "detail_synced_to_chapter",
-      "value": "Zsynchronizowano do rozdziału %d"
-    },
-    {
-      "name": "detail_sync_progress",
-      "value": "Synchronizuj postęp"
-    },
-    {
-      "name": "detail_unbind",
-      "value": "Odłącz"
-    },
-    {
       "name": "detail_chapters_count",
       "value": "Rozdziały (%d)"
     },
     {
-      "name": "detail_sort_asc",
-      "value": "Rosnąco"
-    },
-    {
-      "name": "detail_sort_desc",
-      "value": "Malejąco"
-    },
-    {
       "name": "detail_mark_all_read",
       "value": "Oznacz wszystkie jako przeczytane"
-    },
-    {
-      "name": "detail_read",
-      "value": "Przeczytane"
-    },
-    {
-      "name": "detail_downloaded",
-      "value": "Pobrane"
-    },
-    {
-      "name": "detail_in_queue",
-      "value": "W kolejce"
     },
     {
       "name": "detail_download",
@@ -831,10 +539,6 @@
     {
       "name": "reader_mode_rtl",
       "value": "Od prawej do lewej"
-    },
-    {
-      "name": "reader_mode_webtoon",
-      "value": "Webtoon"
     },
     {
       "name": "reader_reading_mode",
@@ -865,14 +569,6 @@
       "value": "To już pierwszy rozdział"
     },
     {
-      "name": "reader_first_page",
-      "value": "To już pierwsza strona"
-    },
-    {
-      "name": "reader_last_page",
-      "value": "To już ostatnia strona"
-    },
-    {
       "name": "reader_loading_chapter",
       "value": "Ładowanie rozdziału…"
     },
@@ -883,10 +579,6 @@
     {
       "name": "reader_background",
       "value": "Tło"
-    },
-    {
-      "name": "reader_theme_auto",
-      "value": "Auto"
     },
     {
       "name": "reader_theme_white",
@@ -909,14 +601,6 @@
       "value": "Jasność"
     },
     {
-      "name": "reader_auto",
-      "value": "Auto"
-    },
-    {
-      "name": "plugin_title",
-      "value": "Rozszerzenia"
-    },
-    {
       "name": "plugin_installed_section",
       "value": "Zainstalowane"
     },
@@ -925,40 +609,8 @@
       "value": "Brak rozszerzeń, zainstaluj poniżej"
     },
     {
-      "name": "plugin_disable_hint",
-      "value": "Wyłączone rozszerzenia można w każdej chwili włączyć ponownie"
-    },
-    {
-      "name": "plugin_up_to_date",
-      "value": "Aktualne"
-    },
-    {
-      "name": "plugin_local_install",
-      "value": "Zainstaluj z pliku"
-    },
-    {
-      "name": "plugin_install_from_file",
-      "value": "Wybierz plik do instalacji"
-    },
-    {
-      "name": "plugin_processing",
-      "value": "Przetwarzanie…"
-    },
-    {
-      "name": "plugin_package_hint",
-      "value": "Obsługuje pakiety wtyczek .honyomiplug / .zip"
-    },
-    {
       "name": "plugin_repo",
       "value": "Repozytorium online"
-    },
-    {
-      "name": "plugin_repo_config",
-      "value": "Skonfiguruj repozytorium"
-    },
-    {
-      "name": "plugin_repo_refresh",
-      "value": "Odśwież"
     },
     {
       "name": "plugin_repo_hint",
@@ -995,10 +647,6 @@
     {
       "name": "plugin_install_failed",
       "value": "Instalacja nie powiodła się: %s"
-    },
-    {
-      "name": "plugin_action_failed",
-      "value": "Akcja nie powiodła się"
     },
     {
       "name": "plugin_uninstalled",
@@ -1077,72 +725,12 @@
       "value": "Zaawansowane"
     },
     {
-      "name": "advanced_calculating",
-      "value": "Obliczanie…"
-    },
-    {
-      "name": "advanced_storage",
-      "value": "Pamięć"
-    },
-    {
-      "name": "advanced_clear_image_cache",
-      "value": "Wyczyść pamięć podręczną obrazów"
-    },
-    {
-      "name": "advanced_image_cache_cleared",
-      "value": "Pamięć podręczna obrazów wyczyszczona"
-    },
-    {
       "name": "advanced_clear_cookies",
       "value": "Wyczyść pliki cookie"
     },
     {
       "name": "advanced_cookies_cleared",
       "value": "Wszystkie pliki cookie wyczyszczone"
-    },
-    {
-      "name": "advanced_backup_restore",
-      "value": "Kopia zapasowa i przywracanie"
-    },
-    {
-      "name": "advanced_export_backup",
-      "value": "Eksportuj kopię zapasową"
-    },
-    {
-      "name": "advanced_import_backup",
-      "value": "Importuj kopię zapasową"
-    },
-    {
-      "name": "advanced_tracking",
-      "value": "Śledzenie"
-    },
-    {
-      "name": "advanced_anilist_token",
-      "value": "Token AniList"
-    },
-    {
-      "name": "advanced_token_title",
-      "value": "Token dostępu AniList"
-    },
-    {
-      "name": "advanced_token_hint",
-      "value": "Wklej token dostępu (zostaw puste, aby wyczyścić)"
-    },
-    {
-      "name": "advanced_token_not_set",
-      "value": "Nie ustawiono"
-    },
-    {
-      "name": "advanced_token_set",
-      "value": "Ustawiono"
-    },
-    {
-      "name": "advanced_token_saved",
-      "value": "Token zapisany"
-    },
-    {
-      "name": "advanced_token_cleared",
-      "value": "Token wyczyszczony"
     },
     {
       "name": "advanced_backup_exported",
@@ -1177,16 +765,8 @@
       "value": "O aplikacji"
     },
     {
-      "name": "about_version",
-      "value": "Wersja 1.0.0"
-    },
-    {
       "name": "about_desc",
       "value": "Architektura inspirowana Mihon (Apache-2.0). Źródła online są instalowane dynamicznie jako rozszerzenia, a źródła lokalne są wbudowane."
-    },
-    {
-      "name": "about_ack",
-      "value": "Podziękowania open source:\n· Mihon / Tachiyomi — architektura aplikacji i projekt interakcji (Apache-2.0)\n· Material Symbols — ikony w aplikacji (Apache-2.0)"
     },
     {
       "name": "browse_set_title",
@@ -1233,40 +813,8 @@
       "value": "Domyślne sortowanie"
     },
     {
-      "name": "lib_set_sort_title",
-      "value": "Tytuł"
-    },
-    {
-      "name": "lib_set_sort_last_update",
-      "value": "Najnowszy rozdział"
-    },
-    {
-      "name": "lib_set_sort_added",
-      "value": "Data dodania"
-    },
-    {
-      "name": "lib_set_sort_unread",
-      "value": "Liczba nieprzeczytanych"
-    },
-    {
       "name": "lib_set_sort_asc",
       "value": "Sortuj według tytułu rosnąco"
-    },
-    {
-      "name": "lib_set_filter_default",
-      "value": "Domyślny filtr"
-    },
-    {
-      "name": "lib_set_filter_unread",
-      "value": "Nieprzeczytane"
-    },
-    {
-      "name": "lib_set_filter_downloaded",
-      "value": "Pobrane"
-    },
-    {
-      "name": "lib_set_filter_uncompleted",
-      "value": "Nieukończone"
     },
     {
       "name": "lib_set_display_group",
@@ -1277,36 +825,8 @@
       "value": "Domyślny widok"
     },
     {
-      "name": "lib_set_view_grid",
-      "value": "Siatka"
-    },
-    {
-      "name": "lib_set_view_cover",
-      "value": "Siatka okładek"
-    },
-    {
-      "name": "lib_set_view_list",
-      "value": "Lista"
-    },
-    {
       "name": "lib_set_grid_cols",
       "value": "Kolumny siatki"
-    },
-    {
-      "name": "lib_set_cols_auto",
-      "value": "Auto"
-    },
-    {
-      "name": "lib_set_cols_2",
-      "value": "2 kolumny"
-    },
-    {
-      "name": "lib_set_cols_3",
-      "value": "3 kolumny"
-    },
-    {
-      "name": "lib_set_cols_4",
-      "value": "4 kolumny"
     },
     {
       "name": "lib_set_unread_badge",
@@ -1339,10 +859,6 @@
     {
       "name": "reader_set_mode_vertical",
       "value": "Pionowe przewracanie"
-    },
-    {
-      "name": "reader_set_mode_webtoon",
-      "value": "Webtoon"
     },
     {
       "name": "reader_set_dual_page",
@@ -1403,14 +919,6 @@
     {
       "name": "browse_unpin",
       "value": "Odepnij"
-    },
-    {
-      "name": "browse_disable_source",
-      "value": "Wyłącz źródło"
-    },
-    {
-      "name": "browse_source_disabled",
-      "value": "Źródło wyłączone"
     },
     {
       "name": "browse_pinned",
@@ -1793,14 +1301,6 @@
       "value": "Otwórz losową mangę"
     },
     {
-      "name": "action_select_all",
-      "value": "Zaznacz wszystko"
-    },
-    {
-      "name": "action_select_inverse",
-      "value": "Odwróć zaznaczenie"
-    },
-    {
       "name": "action_move_category",
       "value": "Przenieś do kategorii"
     },
@@ -1937,10 +1437,6 @@
       "value": "Na wiersz"
     },
     {
-      "name": "lib_display_grid_auto",
-      "value": "Auto"
-    },
-    {
       "name": "lib_display_badges_group",
       "value": "Odznaki i przyciski"
     },
@@ -1959,10 +1455,6 @@
     {
       "name": "lib_badge_language",
       "value": "Język"
-    },
-    {
-      "name": "lib_badge_continue",
-      "value": "Przycisk Kontynuuj czytanie"
     },
     {
       "name": "lib_display_tabs_group",
@@ -2041,10 +1533,6 @@
       "value": "Dodaj na pulpit"
     },
     {
-      "name": "detail_card_added",
-      "value": "Dodano na pulpit"
-    },
-    {
       "name": "detail_card_add_failed",
       "value": "Nie udało się dodać widżetu"
     },
@@ -2069,24 +1557,8 @@
       "value": "Jeszcze brak czytania"
     },
     {
-      "name": "action_view_upcoming",
-      "value": "Pokaż nadchodzące aktualizacje"
-    },
-    {
       "name": "label_upcoming",
       "value": "Nadchodzące"
-    },
-    {
-      "name": "upcoming_guide",
-      "value": "Przewodnik nadchodzących aktualizacji"
-    },
-    {
-      "name": "upcoming_calendar_prev",
-      "value": "Poprzedni miesiąc"
-    },
-    {
-      "name": "upcoming_calendar_next",
-      "value": "Następny miesiąc"
     },
     {
       "name": "pref_filter_update_categories_details",
@@ -2133,24 +1605,12 @@
       "value": "Domyślny"
     },
     {
-      "name": "theme_name_tachiyomi",
-      "value": "Tachiyomi"
-    },
-    {
       "name": "theme_name_midnight_dusk",
       "value": "Północny zmierzch"
     },
     {
-      "name": "theme_name_nord",
-      "value": "Nord"
-    },
-    {
       "name": "theme_name_strawberry_daiquiri",
       "value": "Truskawkowe daiquiri"
-    },
-    {
-      "name": "theme_name_tako",
-      "value": "Tako"
     },
     {
       "name": "theme_name_teal_turquoise",
@@ -2163,10 +1623,6 @@
     {
       "name": "theme_name_yin_yang",
       "value": "Yin i Yang"
-    },
-    {
-      "name": "theme_name_yotsuba",
-      "value": "Yotsuba"
     },
     {
       "name": "theme_name_tokyo_night",
@@ -2185,8 +1641,36 @@
       "value": "Lawenda"
     },
     {
-      "name": "theme_name_catppuccin",
-      "value": "Catppuccin"
+      "name": "theme_name_kanagawa",
+      "value": "Kanagawa"
+    },
+    {
+      "name": "theme_name_rose_pine",
+      "value": "Rosé Pine"
+    },
+    {
+      "name": "theme_name_gruvbox",
+      "value": "Gruvbox"
+    },
+    {
+      "name": "theme_name_dracula",
+      "value": "Dracula"
+    },
+    {
+      "name": "theme_name_matcha",
+      "value": "Matcha"
+    },
+    {
+      "name": "theme_name_sakura",
+      "value": "Sakura"
+    },
+    {
+      "name": "theme_name_kintsugi",
+      "value": "Kintsugi"
+    },
+    {
+      "name": "theme_name_glacier",
+      "value": "Lodowiec"
     },
     {
       "name": "tab_cf_refresh",
@@ -2219,18 +1703,6 @@
     {
       "name": "browse_filter_reset",
       "value": "Resetuj"
-    },
-    {
-      "name": "browse_filter_ignore",
-      "value": "Ignoruj"
-    },
-    {
-      "name": "browse_filter_include",
-      "value": "Uwzględnij"
-    },
-    {
-      "name": "browse_filter_exclude",
-      "value": "Wyklucz"
     },
     {
       "name": "browse_pick_folder_failed",
@@ -2283,10 +1755,6 @@
     {
       "name": "browse_local_folder_empty",
       "value": "Nie ustawiono jeszcze folderu lokalnego"
-    },
-    {
-      "name": "browse_local_synced_empty",
-      "value": "Nic nie znaleziono w folderze lokalnym"
     },
     {
       "name": "browse_local_comic_empty",
@@ -2403,10 +1871,6 @@
     {
       "name": "detail_action_tracking",
       "value": "Śledzenie"
-    },
-    {
-      "name": "detail_dl_cancel",
-      "value": "Anuluj pobieranie"
     },
     {
       "name": "detail_dl_cancelled",
@@ -2613,10 +2077,6 @@
       "value": "Równoległe pobieranie stron"
     },
     {
-      "name": "dl_set_parallel_pages_sub",
-      "value": "Strony pobierane jednocześnie z jednego źródła"
-    },
-    {
       "name": "dl_set_delete_chapters",
       "value": "Usuwaj rozdziały"
     },
@@ -2693,10 +2153,6 @@
       "value": "Działa tylko wtedy, gdy bieżący rozdział i następny są już pobrane."
     },
     {
-      "name": "browse_type_manga",
-      "value": "Manga"
-    },
-    {
       "name": "browse_type_novel",
       "value": "Powieści"
     },
@@ -2749,28 +2205,12 @@
       "value": "Ten rozdział nie ma tekstu"
     },
     {
-      "name": "novel_prev",
-      "value": "Poprzedni rozdział"
-    },
-    {
-      "name": "novel_next",
-      "value": "Następny rozdział"
-    },
-    {
       "name": "novel_mode_scroll",
       "value": "Przewijanie"
     },
     {
-      "name": "novel_mode_paged",
-      "value": "Stronicowany"
-    },
-    {
       "name": "novel_mode_double",
       "value": "Dwie strony"
-    },
-    {
-      "name": "novel_paging_mode",
-      "value": "Tryb stronicowania"
     },
     {
       "name": "novel_paragraph_spacing",
@@ -2845,18 +2285,6 @@
       "value": "O stałej szerokości"
     },
     {
-      "name": "novel_tts",
-      "value": "Czytaj na głos"
-    },
-    {
-      "name": "novel_tts_start",
-      "value": "Zacznij czytać na głos"
-    },
-    {
-      "name": "novel_tts_stop",
-      "value": "Zatrzymaj czytanie na głos"
-    },
-    {
       "name": "novel_tts_speed",
       "value": "Prędkość czytania"
     },
@@ -2867,14 +2295,6 @@
     {
       "name": "novel_tts_error",
       "value": "Synteza mowy nie powiodła się: %s"
-    },
-    {
-      "name": "novel_tts_pause",
-      "value": "Wstrzymaj"
-    },
-    {
-      "name": "novel_tts_resume",
-      "value": "Wznów"
     },
     {
       "name": "tts_player_title",
@@ -2893,20 +2313,12 @@
       "value": "Wyłączone"
     },
     {
-      "name": "tts_sleep_minutes",
-      "value": "%1$d min"
-    },
-    {
       "name": "tts_sleep_stop_after",
       "value": "Zatrzyma się za %1$s"
     },
     {
       "name": "tts_no_content",
       "value": "Nic nie jest czytane na głos"
-    },
-    {
-      "name": "tts_open_player",
-      "value": "Otwórz odtwarzacz"
     },
     {
       "name": "tts_chapters",
@@ -2945,22 +2357,6 @@
       "value": "Utrzymuje aplikację w tle, gdy powieść jest czytana na głos"
     },
     {
-      "name": "video_play",
-      "value": "Odtwórz"
-    },
-    {
-      "name": "video_pause",
-      "value": "Wstrzymaj"
-    },
-    {
-      "name": "video_prev",
-      "value": "Poprzedni"
-    },
-    {
-      "name": "video_next",
-      "value": "Następny"
-    },
-    {
       "name": "video_settings",
       "value": "Ustawienia odtwarzacza"
     },
@@ -2975,10 +2371,6 @@
     {
       "name": "video_speed",
       "value": "Prędkość odtwarzania"
-    },
-    {
-      "name": "video_danmaku",
-      "value": "Danmaku"
     },
     {
       "name": "video_danmaku_on",
@@ -3031,10 +2423,6 @@
     {
       "name": "player_set_auto_next_sub",
       "value": "Odtwórz następny odcinek automatycznie po zakończeniu"
-    },
-    {
-      "name": "player_set_danmaku",
-      "value": "Danmaku"
     },
     {
       "name": "player_set_danmaku_enable",
@@ -3121,10 +2509,6 @@
       "value": "Czas wideo"
     },
     {
-      "name": "detail_cover_actions",
-      "value": "Okładka"
-    },
-    {
       "name": "detail_edit_cover",
       "value": "Edytuj okładkę"
     },
@@ -3155,14 +2539,6 @@
     {
       "name": "detail_cover_share_failed",
       "value": "Błąd udostępniania okładki"
-    },
-    {
-      "name": "detail_edit",
-      "value": "Edytuj"
-    },
-    {
-      "name": "detail_delete",
-      "value": "Usuń"
     },
     {
       "name": "onboarding_heading",
@@ -3197,10 +2573,6 @@
       "value": "Instalujesz ponownie %s?"
     },
     {
-      "name": "chapter_badge_new",
-      "value": "NEW"
-    },
-    {
       "name": "detail_sync_in_progress",
       "value": "Synchronizacja w toku, proszę czekać"
     },
@@ -3233,44 +2605,8 @@
       "value": "Operacja nie powiodła się"
     },
     {
-      "name": "cf_load_error",
-      "value": "Błąd wczytywania: %s"
-    },
-    {
-      "name": "cf_loading",
-      "value": "Ładowanie…"
-    },
-    {
-      "name": "cf_load_failed",
-      "value": "Wczytywanie nie powiodło się: %s"
-    },
-    {
-      "name": "cf_http_prefix",
-      "value": "HTTP %d"
-    },
-    {
-      "name": "cf_render_exited",
-      "value": "Renderowanie zakończone (%d)"
-    },
-    {
-      "name": "badge_type_text",
-      "value": "T"
-    },
-    {
-      "name": "badge_type_video",
-      "value": "V"
-    },
-    {
-      "name": "badge_type_manga",
-      "value": "M"
-    },
-    {
       "name": "last_backup_failed_hint",
       "value": "Ostatnia automatyczna kopia zapasowa nie powiodła się"
-    },
-    {
-      "name": "category_manga",
-      "value": "Manga"
     },
     {
       "name": "category_novel",
@@ -3609,10 +2945,6 @@
       "value": "Nie udało się usunąć z usługi"
     },
     {
-      "name": "track_status",
-      "value": "Status"
-    },
-    {
       "name": "track_score",
       "value": "Ocena"
     },
@@ -3699,22 +3031,6 @@
     {
       "name": "track_unfinished_list",
       "value": "Lista niedokończonych"
-    },
-    {
-      "name": "oauth_loading",
-      "value": "Ładowanie…"
-    },
-    {
-      "name": "oauth_load_error",
-      "value": "Nie udało się wczytać: %s"
-    },
-    {
-      "name": "browse_local_files_empty",
-      "value": "Brak plików lokalnych, dotknij Importuj, aby dodać"
-    },
-    {
-      "name": "browse_work_name_hint",
-      "value": "Nazwa"
     },
     {
       "name": "privacy_title",

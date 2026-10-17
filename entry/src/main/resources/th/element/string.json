@@ -9,36 +9,8 @@
       "value": "หยุดประวัติการอ่านชั่วคราว"
     },
     {
-      "name": "more_support",
-      "value": "Support Us"
-    },
-    {
       "name": "more_help",
       "value": "ช่วยเหลือ"
-    },
-    {
-      "name": "support_perks",
-      "value": "Patrons get access to exclusive channels, with more perks to come."
-    },
-    {
-      "name": "support_patreon",
-      "value": "Patreon (preferred)"
-    },
-    {
-      "name": "support_opencollective",
-      "value": "OpenCollective"
-    },
-    {
-      "name": "support_supported_by",
-      "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together."
-    },
-    {
-      "name": "support_contact_msg",
-      "value": "For alternative options or any related questions, join our Discord server."
-    },
-    {
-      "name": "support_discord",
-      "value": "Discord"
     },
     {
       "name": "data_storage_title",
@@ -97,10 +69,6 @@
       "value": "ล้างแคชแล้ว %d แฟ้มถูกลบ"
     },
     {
-      "name": "data_cache_delete_error",
-      "value": "เกิดข้อผิดพลาดขณะกำลังล้าง"
-    },
-    {
       "name": "data_auto_clear_cache",
       "value": "ล้างแคชตอนในเมื่อเปิดแอพ"
     },
@@ -123,10 +91,6 @@
     {
       "name": "data_column_title",
       "value": "ชื่อเรื่อง"
-    },
-    {
-      "name": "data_column_author",
-      "value": "Author"
     },
     {
       "name": "data_interval_off",
@@ -153,48 +117,12 @@
       "value": "ทุกสัปดาห์"
     },
     {
-      "name": "data_storage_location_value",
-      "value": "App private storage"
-    },
-    {
-      "name": "data_storage_name",
-      "value": "Internal storage"
-    },
-    {
-      "name": "data_never_backed_up",
-      "value": "Never"
-    },
-    {
-      "name": "data_export_canceled",
-      "value": "Export canceled"
-    },
-    {
-      "name": "data_export_failed",
-      "value": "Export failed"
-    },
-    {
-      "name": "module_desc",
-      "value": "module description"
-    },
-    {
-      "name": "EntryAbility_desc",
-      "value": "description"
-    },
-    {
-      "name": "EntryAbility_label",
-      "value": "Honyomi"
-    },
-    {
       "name": "common_ok",
       "value": "ตกลง"
     },
     {
       "name": "common_cancel",
       "value": "ยกเลิก"
-    },
-    {
-      "name": "common_confirm",
-      "value": "ยืนยัน"
     },
     {
       "name": "common_delete",
@@ -213,28 +141,12 @@
       "value": "ทั้งหมด"
     },
     {
-      "name": "common_close",
-      "value": "ปิด"
-    },
-    {
       "name": "common_save",
       "value": "บันทึก"
     },
     {
-      "name": "common_install",
-      "value": "ติดตั้ง"
-    },
-    {
       "name": "common_uninstall",
       "value": "ถอนการติดตั้ง"
-    },
-    {
-      "name": "common_update",
-      "value": "อัปเดต"
-    },
-    {
-      "name": "common_none",
-      "value": "ไม่มี"
     },
     {
       "name": "common_default",
@@ -253,14 +165,6 @@
       "value": "ตามระบบ"
     },
     {
-      "name": "lang_simplified_chinese",
-      "value": "简体中文"
-    },
-    {
-      "name": "lang_english",
-      "value": "English"
-    },
-    {
       "name": "appearance_theme_mode",
       "value": "โหมดธีม"
     },
@@ -277,36 +181,12 @@
       "value": "มืด"
     },
     {
-      "name": "appearance_accent_color",
-      "value": "สีเน้น"
-    },
-    {
       "name": "appearance_other",
       "value": "อื่นๆ"
     },
     {
       "name": "appearance_amoled",
       "value": "พื้นหลังดำสนิท AMOLED"
-    },
-    {
-      "name": "theme_accent_blue",
-      "value": "น้ำเงิน"
-    },
-    {
-      "name": "theme_accent_green",
-      "value": "เขียว"
-    },
-    {
-      "name": "theme_accent_pink",
-      "value": "ชมพู"
-    },
-    {
-      "name": "theme_accent_purple",
-      "value": "ม่วง"
-    },
-    {
-      "name": "theme_accent_orange",
-      "value": "ส้ม"
     },
     {
       "name": "util_time_minutes_ago",
@@ -365,10 +245,6 @@
       "value": "เพิ่มเติม"
     },
     {
-      "name": "tab_cf_waiting",
-      "value": "กำลังรอการยืนยัน…"
-    },
-    {
       "name": "tab_cf_verified",
       "value": "ยืนยันเสร็จแล้ว"
     },
@@ -415,10 +291,6 @@
     {
       "name": "more_about",
       "value": "เกี่ยวกับ"
-    },
-    {
-      "name": "more_plugins",
-      "value": "ส่วนขยาย"
     },
     {
       "name": "categories_title",
@@ -469,14 +341,6 @@
       "value": "ชั้นหนังสือว่าง ไปเรียกดูเพื่อเพิ่มมังงะ"
     },
     {
-      "name": "library_new_category",
-      "value": "หมวดหมู่ใหม่"
-    },
-    {
-      "name": "library_category_name",
-      "value": "ชื่อหมวดหมู่"
-    },
-    {
       "name": "updates_title",
       "value": "อัปเดต"
     },
@@ -495,10 +359,6 @@
     {
       "name": "updates_refresh_failed",
       "value": "รีเฟรชไม่สำเร็จ"
-    },
-    {
-      "name": "updates_refreshing",
-      "value": "กำลังรีเฟรช…"
     },
     {
       "name": "history_title",
@@ -529,14 +389,6 @@
       "value": "เรียกดู"
     },
     {
-      "name": "browse_import",
-      "value": "นำเข้า"
-    },
-    {
-      "name": "browse_plugins",
-      "value": "ส่วนขยาย"
-    },
-    {
       "name": "browse_local_source_name",
       "value": "มังงะในเครื่อง"
     },
@@ -557,10 +409,6 @@
       "value": "ไม่พบมังงะ"
     },
     {
-      "name": "browse_local_empty",
-      "value": "ยังไม่มีมังงะในเครื่อง แตะนำเข้าเพื่อเพิ่ม"
-    },
-    {
       "name": "browse_load_failed",
       "value": "โหลดไม่สำเร็จ: %s"
     },
@@ -575,30 +423,6 @@
     {
       "name": "browse_open_detail_failed",
       "value": "เปิดรายละเอียดไม่สำเร็จ"
-    },
-    {
-      "name": "browse_pick_file_failed",
-      "value": "เลือกไฟล์ไม่สำเร็จ"
-    },
-    {
-      "name": "browse_import_title",
-      "value": "นำเข้า %d ไฟล์"
-    },
-    {
-      "name": "browse_manga_name_hint",
-      "value": "ชื่อมังงะ"
-    },
-    {
-      "name": "browse_input_name",
-      "value": "กรุณาใส่ชื่อ"
-    },
-    {
-      "name": "browse_import_done",
-      "value": "นำเข้าแล้ว %d ไฟล์"
-    },
-    {
-      "name": "browse_import_failed",
-      "value": "นำเข้าไม่สำเร็จ: %s"
     },
     {
       "name": "download_title",
@@ -621,22 +445,6 @@
       "value": "คิวดาวน์โหลด"
     },
     {
-      "name": "download_state_queued",
-      "value": "อยู่ในคิว"
-    },
-    {
-      "name": "download_state_downloading",
-      "value": "กำลังดาวน์โหลด"
-    },
-    {
-      "name": "download_state_done",
-      "value": "เสร็จ"
-    },
-    {
-      "name": "download_state_failed",
-      "value": "ล้มเหลว"
-    },
-    {
       "name": "download_move_top",
       "value": "ย้ายขึ้นบนสุด"
     },
@@ -651,10 +459,6 @@
     {
       "name": "download_empty",
       "value": "ยังไม่มีการดาวน์โหลด"
-    },
-    {
-      "name": "download_status_downloaded",
-      "value": "ดาวน์โหลดแล้ว"
     },
     {
       "name": "download_chapter_count",
@@ -683,42 +487,6 @@
     {
       "name": "detail_download_queued",
       "value": "ใส่คิวดาวน์โหลดแล้ว"
-    },
-    {
-      "name": "detail_config_anilist_token",
-      "value": "กรุณาตั้งค่าโทเค็น AniList ก่อน"
-    },
-    {
-      "name": "detail_search_anilist",
-      "value": "ค้นหา AniList"
-    },
-    {
-      "name": "detail_manga_title_hint",
-      "value": "ชื่อเรื่องมังงะ"
-    },
-    {
-      "name": "detail_no_search_results",
-      "value": "ไม่พบผลการค้นหา"
-    },
-    {
-      "name": "detail_anilist_search_failed",
-      "value": "ค้นหา AniList ไม่สำเร็จ"
-    },
-    {
-      "name": "detail_anilist_bound",
-      "value": "ผูกกับ AniList แล้ว"
-    },
-    {
-      "name": "detail_anilist_unbound",
-      "value": "ยกเลิกผูก AniList แล้ว"
-    },
-    {
-      "name": "detail_synced_progress",
-      "value": "ซิงก์ความคืบหน้าถึงตอนที่ %d"
-    },
-    {
-      "name": "detail_anilist_sync_failed",
-      "value": "ซิงก์ AniList ไม่สำเร็จ"
     },
     {
       "name": "detail_status_local",
@@ -753,64 +521,12 @@
       "value": "ขยาย"
     },
     {
-      "name": "detail_anilist_tracking",
-      "value": "ติดตาม AniList"
-    },
-    {
-      "name": "detail_anilist_token_hint",
-      "value": "ยังไม่ได้ตั้งค่าโทเค็น AniList"
-    },
-    {
-      "name": "detail_searching",
-      "value": "กำลังค้นหา…"
-    },
-    {
-      "name": "detail_search_and_bind",
-      "value": "ค้นหาแล้วผูก"
-    },
-    {
-      "name": "detail_bind",
-      "value": "ผูก"
-    },
-    {
-      "name": "detail_synced_to_chapter",
-      "value": "ซิงก์ถึงตอนที่ %d"
-    },
-    {
-      "name": "detail_sync_progress",
-      "value": "ซิงก์ความคืบหน้า"
-    },
-    {
-      "name": "detail_unbind",
-      "value": "ยกเลิกผูก"
-    },
-    {
       "name": "detail_chapters_count",
       "value": "ตอน (%d)"
     },
     {
-      "name": "detail_sort_asc",
-      "value": "น้อยไปมาก"
-    },
-    {
-      "name": "detail_sort_desc",
-      "value": "มากไปน้อย"
-    },
-    {
       "name": "detail_mark_all_read",
       "value": "อ่านทั้งหมด"
-    },
-    {
-      "name": "detail_read",
-      "value": "อ่านแล้ว"
-    },
-    {
-      "name": "detail_downloaded",
-      "value": "ดาวน์โหลดแล้ว"
-    },
-    {
-      "name": "detail_in_queue",
-      "value": "อยู่ในคิว"
     },
     {
       "name": "detail_download",
@@ -865,14 +581,6 @@
       "value": "อยู่ตอนแรกแล้ว"
     },
     {
-      "name": "reader_first_page",
-      "value": "อยู่หน้าแรกแล้ว"
-    },
-    {
-      "name": "reader_last_page",
-      "value": "อยู่หน้าสุดท้ายแล้ว"
-    },
-    {
       "name": "reader_loading_chapter",
       "value": "กำลังโหลดตอน…"
     },
@@ -913,10 +621,6 @@
       "value": "อัตโนมัติ"
     },
     {
-      "name": "plugin_title",
-      "value": "ส่วนขยาย"
-    },
-    {
       "name": "plugin_installed_section",
       "value": "ติดตั้งแล้ว"
     },
@@ -925,40 +629,8 @@
       "value": "ยังไม่มีส่วนขยาย ติดตั้งด้านล่าง"
     },
     {
-      "name": "plugin_disable_hint",
-      "value": "ส่วนขยายที่ปิดใช้สามารถเปิดใหม่ได้ทุกเมื่อ"
-    },
-    {
-      "name": "plugin_up_to_date",
-      "value": "เป็นเวอร์ชันล่าสุด"
-    },
-    {
-      "name": "plugin_local_install",
-      "value": "ติดตั้งจากไฟล์"
-    },
-    {
-      "name": "plugin_install_from_file",
-      "value": "เลือกไฟล์เพื่อติดตั้ง"
-    },
-    {
-      "name": "plugin_processing",
-      "value": "กำลังประมวลผล…"
-    },
-    {
-      "name": "plugin_package_hint",
-      "value": "รองรับแพ็กเกจส่วนขยาย .honyomiplug / .zip"
-    },
-    {
       "name": "plugin_repo",
       "value": "ที่เก็บออนไลน์"
-    },
-    {
-      "name": "plugin_repo_config",
-      "value": "ตั้งค่าที่เก็บ"
-    },
-    {
-      "name": "plugin_repo_refresh",
-      "value": "รีเฟรช"
     },
     {
       "name": "plugin_repo_hint",
@@ -995,10 +667,6 @@
     {
       "name": "plugin_install_failed",
       "value": "ติดตั้งไม่สำเร็จ: %s"
-    },
-    {
-      "name": "plugin_action_failed",
-      "value": "ดำเนินการไม่สำเร็จ"
     },
     {
       "name": "plugin_uninstalled",
@@ -1077,72 +745,12 @@
       "value": "ขั้นสูง"
     },
     {
-      "name": "advanced_calculating",
-      "value": "กำลังคำนวณ…"
-    },
-    {
-      "name": "advanced_storage",
-      "value": "ที่เก็บข้อมูล"
-    },
-    {
-      "name": "advanced_clear_image_cache",
-      "value": "ล้างแคชรูปภาพ"
-    },
-    {
-      "name": "advanced_image_cache_cleared",
-      "value": "ล้างแคชรูปภาพแล้ว"
-    },
-    {
       "name": "advanced_clear_cookies",
       "value": "ล้างคุกกี้"
     },
     {
       "name": "advanced_cookies_cleared",
       "value": "ล้างคุกกี้ทั้งหมดแล้ว"
-    },
-    {
-      "name": "advanced_backup_restore",
-      "value": "สำรองและกู้คืน"
-    },
-    {
-      "name": "advanced_export_backup",
-      "value": "ส่งออกข้อมูลสำรอง"
-    },
-    {
-      "name": "advanced_import_backup",
-      "value": "นำเข้าข้อมูลสำรอง"
-    },
-    {
-      "name": "advanced_tracking",
-      "value": "การติดตาม"
-    },
-    {
-      "name": "advanced_anilist_token",
-      "value": "โทเค็น AniList"
-    },
-    {
-      "name": "advanced_token_title",
-      "value": "โทเค็นเข้าถึง AniList"
-    },
-    {
-      "name": "advanced_token_hint",
-      "value": "วางโทเค็นเข้าถึง (เว้นว่างเพื่อล้าง)"
-    },
-    {
-      "name": "advanced_token_not_set",
-      "value": "ยังไม่ตั้งค่า"
-    },
-    {
-      "name": "advanced_token_set",
-      "value": "ตั้งค่าแล้ว"
-    },
-    {
-      "name": "advanced_token_saved",
-      "value": "บันทึกโทเค็นแล้ว"
-    },
-    {
-      "name": "advanced_token_cleared",
-      "value": "ล้างโทเค็นแล้ว"
     },
     {
       "name": "advanced_backup_exported",
@@ -1177,16 +785,8 @@
       "value": "เกี่ยวกับ"
     },
     {
-      "name": "about_version",
-      "value": "เวอร์ชัน 1.0.0"
-    },
-    {
       "name": "about_desc",
       "value": "สถาปัตยกรรมได้รับแรงบันดาลใจจาก Mihon (Apache-2.0) แหล่งออนไลน์ติดตั้งแบบไดนามิกเป็นส่วนขยาย ส่วนแหล่งในเครื่องมีมาให้ในตัว"
-    },
-    {
-      "name": "about_ack",
-      "value": "คำขอบคุณโอเพนซอร์ส:\n· Mihon / Tachiyomi — สถาปัตยกรรมแอปและการออกแบบการโต้ตอบ (Apache-2.0)\n· Material Symbols — ไอคอนในแอป (Apache-2.0)"
     },
     {
       "name": "browse_set_title",
@@ -1233,40 +833,8 @@
       "value": "การเรียงเริ่มต้น"
     },
     {
-      "name": "lib_set_sort_title",
-      "value": "ชื่อเรื่อง"
-    },
-    {
-      "name": "lib_set_sort_last_update",
-      "value": "ตอนล่าสุด"
-    },
-    {
-      "name": "lib_set_sort_added",
-      "value": "วันที่เพิ่ม"
-    },
-    {
-      "name": "lib_set_sort_unread",
-      "value": "จำนวนยังไม่อ่าน"
-    },
-    {
       "name": "lib_set_sort_asc",
       "value": "เรียงชื่อเรื่องน้อยไปมาก"
-    },
-    {
-      "name": "lib_set_filter_default",
-      "value": "ตัวกรองเริ่มต้น"
-    },
-    {
-      "name": "lib_set_filter_unread",
-      "value": "ยังไม่อ่าน"
-    },
-    {
-      "name": "lib_set_filter_downloaded",
-      "value": "ดาวน์โหลดแล้ว"
-    },
-    {
-      "name": "lib_set_filter_uncompleted",
-      "value": "ยังไม่จบ"
     },
     {
       "name": "lib_set_display_group",
@@ -1277,36 +845,8 @@
       "value": "มุมมองเริ่มต้น"
     },
     {
-      "name": "lib_set_view_grid",
-      "value": "ตาราง"
-    },
-    {
-      "name": "lib_set_view_cover",
-      "value": "ตารางปก"
-    },
-    {
-      "name": "lib_set_view_list",
-      "value": "รายการ"
-    },
-    {
       "name": "lib_set_grid_cols",
       "value": "จำนวนคอลัมน์ตาราง"
-    },
-    {
-      "name": "lib_set_cols_auto",
-      "value": "อัตโนมัติ"
-    },
-    {
-      "name": "lib_set_cols_2",
-      "value": "2 คอลัมน์"
-    },
-    {
-      "name": "lib_set_cols_3",
-      "value": "3 คอลัมน์"
-    },
-    {
-      "name": "lib_set_cols_4",
-      "value": "4 คอลัมน์"
     },
     {
       "name": "lib_set_unread_badge",
@@ -1403,14 +943,6 @@
     {
       "name": "browse_unpin",
       "value": "เลิกปักหมุด"
-    },
-    {
-      "name": "browse_disable_source",
-      "value": "ปิดแหล่ง"
-    },
-    {
-      "name": "browse_source_disabled",
-      "value": "ปิดแหล่งแล้ว"
     },
     {
       "name": "browse_pinned",
@@ -1793,14 +1325,6 @@
       "value": "เปิดเรื่องแบบสุ่ม"
     },
     {
-      "name": "action_select_all",
-      "value": "เลือกทั้งหมด"
-    },
-    {
-      "name": "action_select_inverse",
-      "value": "สลับการเลือก"
-    },
-    {
       "name": "action_move_category",
       "value": "ย้ายหมวดหมู่"
     },
@@ -1961,10 +1485,6 @@
       "value": "ภาษา"
     },
     {
-      "name": "lib_badge_continue",
-      "value": "ปุ่มอ่านต่อ"
-    },
-    {
       "name": "lib_display_tabs_group",
       "value": "แท็บ"
     },
@@ -2041,10 +1561,6 @@
       "value": "เพิ่มไปยังหน้าเดสก์ท็อป"
     },
     {
-      "name": "detail_card_added",
-      "value": "เพิ่มไปยังหน้าเดสก์ท็อปแล้ว"
-    },
-    {
       "name": "detail_card_add_failed",
       "value": "เพิ่มการ์ดไม่สำเร็จ"
     },
@@ -2069,24 +1585,8 @@
       "value": "ยังไม่มีการอ่าน"
     },
     {
-      "name": "action_view_upcoming",
-      "value": "แสดงอัปเดตที่จะมา"
-    },
-    {
       "name": "label_upcoming",
       "value": "อัปเดตที่จะมา"
-    },
-    {
-      "name": "upcoming_guide",
-      "value": "คู่มืออัปเดตที่จะมา"
-    },
-    {
-      "name": "upcoming_calendar_prev",
-      "value": "เดือนก่อน"
-    },
-    {
-      "name": "upcoming_calendar_next",
-      "value": "เดือนถัดไป"
     },
     {
       "name": "pref_filter_update_categories_details",
@@ -2133,16 +1633,8 @@
       "value": "ค่าเริ่มต้น"
     },
     {
-      "name": "theme_name_tachiyomi",
-      "value": "Tachiyomi"
-    },
-    {
       "name": "theme_name_midnight_dusk",
       "value": "พลบค่ำเที่ยงคืน"
-    },
-    {
-      "name": "theme_name_nord",
-      "value": "Nord"
     },
     {
       "name": "theme_name_strawberry_daiquiri",
@@ -2185,8 +1677,36 @@
       "value": "ลาเวนเดอร์"
     },
     {
-      "name": "theme_name_catppuccin",
-      "value": "Catppuccin"
+      "name": "theme_name_kanagawa",
+      "value": "คานากาวะ"
+    },
+    {
+      "name": "theme_name_rose_pine",
+      "value": "โรสไพน์"
+    },
+    {
+      "name": "theme_name_gruvbox",
+      "value": "กรูฟบ็อกซ์"
+    },
+    {
+      "name": "theme_name_dracula",
+      "value": "แดร็กคูลา"
+    },
+    {
+      "name": "theme_name_matcha",
+      "value": "มัทฉะ"
+    },
+    {
+      "name": "theme_name_sakura",
+      "value": "ซากุระ"
+    },
+    {
+      "name": "theme_name_kintsugi",
+      "value": "คินสึงิ"
+    },
+    {
+      "name": "theme_name_glacier",
+      "value": "ธารน้ำแข็ง"
     },
     {
       "name": "tab_cf_refresh",
@@ -2219,18 +1739,6 @@
     {
       "name": "browse_filter_reset",
       "value": "รีเซ็ต"
-    },
-    {
-      "name": "browse_filter_ignore",
-      "value": "ไม่สนใจ"
-    },
-    {
-      "name": "browse_filter_include",
-      "value": "รวม"
-    },
-    {
-      "name": "browse_filter_exclude",
-      "value": "ยกเว้น"
     },
     {
       "name": "browse_pick_folder_failed",
@@ -2283,10 +1791,6 @@
     {
       "name": "browse_local_folder_empty",
       "value": "ยังไม่ได้ตั้งโฟลเดอร์ในเครื่อง"
-    },
-    {
-      "name": "browse_local_synced_empty",
-      "value": "ไม่พบอะไรในโฟลเดอร์ในเครื่อง"
     },
     {
       "name": "browse_local_comic_empty",
@@ -2403,10 +1907,6 @@
     {
       "name": "detail_action_tracking",
       "value": "การติดตาม"
-    },
-    {
-      "name": "detail_dl_cancel",
-      "value": "ยกเลิกการดาวน์โหลด"
     },
     {
       "name": "detail_dl_cancelled",
@@ -2613,10 +2113,6 @@
       "value": "ดาวน์โหลดหลายหน้าพร้อมกัน"
     },
     {
-      "name": "dl_set_parallel_pages_sub",
-      "value": "จำนวนหน้าที่ดาวน์โหลดพร้อมกันต่อแหล่ง"
-    },
-    {
       "name": "dl_set_delete_chapters",
       "value": "ลบตอน"
     },
@@ -2749,28 +2245,12 @@
       "value": "ตอนนี้ไม่มีข้อความ"
     },
     {
-      "name": "novel_prev",
-      "value": "ตอนก่อนหน้า"
-    },
-    {
-      "name": "novel_next",
-      "value": "ตอนถัดไป"
-    },
-    {
       "name": "novel_mode_scroll",
       "value": "เลื่อน"
     },
     {
-      "name": "novel_mode_paged",
-      "value": "แบ่งหน้า"
-    },
-    {
       "name": "novel_mode_double",
       "value": "สองหน้า"
-    },
-    {
-      "name": "novel_paging_mode",
-      "value": "โหมดแบ่งหน้า"
     },
     {
       "name": "novel_paragraph_spacing",
@@ -2845,18 +2325,6 @@
       "value": "ความกว้างเท่ากัน"
     },
     {
-      "name": "novel_tts",
-      "value": "อ่านออกเสียง"
-    },
-    {
-      "name": "novel_tts_start",
-      "value": "เริ่มอ่านออกเสียง"
-    },
-    {
-      "name": "novel_tts_stop",
-      "value": "หยุดอ่านออกเสียง"
-    },
-    {
       "name": "novel_tts_speed",
       "value": "ความเร็วในการอ่าน"
     },
@@ -2867,14 +2335,6 @@
     {
       "name": "novel_tts_error",
       "value": "อ่านออกเสียงไม่สำเร็จ: %s"
-    },
-    {
-      "name": "novel_tts_pause",
-      "value": "หยุดชั่วคราว"
-    },
-    {
-      "name": "novel_tts_resume",
-      "value": "ทำต่อ"
     },
     {
       "name": "tts_player_title",
@@ -2903,10 +2363,6 @@
     {
       "name": "tts_no_content",
       "value": "ไม่มีอะไรกำลังถูกอ่านออกเสียง"
-    },
-    {
-      "name": "tts_open_player",
-      "value": "เปิดตัวเล่น"
     },
     {
       "name": "tts_chapters",
@@ -2945,22 +2401,6 @@
       "value": "ให้แอปทำงานอยู่เบื้องหลังขณะอ่านนิยายออกเสียง"
     },
     {
-      "name": "video_play",
-      "value": "เล่น"
-    },
-    {
-      "name": "video_pause",
-      "value": "หยุดชั่วคราว"
-    },
-    {
-      "name": "video_prev",
-      "value": "ก่อนหน้า"
-    },
-    {
-      "name": "video_next",
-      "value": "ถัดไป"
-    },
-    {
       "name": "video_settings",
       "value": "ตั้งค่าตัวเล่น"
     },
@@ -2975,10 +2415,6 @@
     {
       "name": "video_speed",
       "value": "ความเร็วการเล่น"
-    },
-    {
-      "name": "video_danmaku",
-      "value": "ดานมากุ"
     },
     {
       "name": "video_danmaku_on",
@@ -3121,10 +2557,6 @@
       "value": "เวลาวิดีโอ"
     },
     {
-      "name": "detail_cover_actions",
-      "value": "ปก"
-    },
-    {
       "name": "detail_edit_cover",
       "value": "แก้ไขปก"
     },
@@ -3155,14 +2587,6 @@
     {
       "name": "detail_cover_share_failed",
       "value": "แชร์ปกไม่สำเร็จ"
-    },
-    {
-      "name": "detail_edit",
-      "value": "แก้ไข"
-    },
-    {
-      "name": "detail_delete",
-      "value": "ลบ"
     },
     {
       "name": "onboarding_heading",
@@ -3197,10 +2621,6 @@
       "value": "กำลังติดตั้ง %s ใหม่?"
     },
     {
-      "name": "chapter_badge_new",
-      "value": "NEW"
-    },
-    {
       "name": "detail_sync_in_progress",
       "value": "กำลังซิงก์ โปรดรอ"
     },
@@ -3231,26 +2651,6 @@
     {
       "name": "common_op_failed",
       "value": "ดำเนินการไม่สำเร็จ"
-    },
-    {
-      "name": "cf_load_error",
-      "value": "โหลดผิดพลาด: %s"
-    },
-    {
-      "name": "cf_loading",
-      "value": "กำลังโหลด…"
-    },
-    {
-      "name": "cf_load_failed",
-      "value": "โหลดไม่สำเร็จ: %s"
-    },
-    {
-      "name": "cf_http_prefix",
-      "value": "HTTP %d"
-    },
-    {
-      "name": "cf_render_exited",
-      "value": "การเรนเดอร์จบลง (%d)"
     },
     {
       "name": "badge_type_text",
@@ -3701,22 +3101,6 @@
       "value": "รายการที่ยังไม่จบ"
     },
     {
-      "name": "oauth_loading",
-      "value": "กำลังโหลด…"
-    },
-    {
-      "name": "oauth_load_error",
-      "value": "โหลดไม่สำเร็จ: %s"
-    },
-    {
-      "name": "browse_local_files_empty",
-      "value": "ยังไม่มีไฟล์ในเครื่อง แตะนำเข้าเพื่อเพิ่ม"
-    },
-    {
-      "name": "browse_work_name_hint",
-      "value": "ชื่อ"
-    },
-    {
       "name": "privacy_title",
       "value": "ความเป็นส่วนตัว"
     },
@@ -3855,10 +3239,6 @@
     {
       "name": "pref_webview_data_deleted",
       "value": "ล้างข้อมูลเว็บที่ฝังไว้แล้ว"
-    },
-    {
-      "name": "pref_dns_over_https",
-      "value": "DNS over HTTPS"
     },
     {
       "name": "pref_doh_disabled",
