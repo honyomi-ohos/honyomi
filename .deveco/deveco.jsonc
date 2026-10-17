@@ -3,5 +3,9 @@
   // 绿灯模式：自动执行工具调用，无需逐次确认
   "permission": "allow",
   // 启用 LSP
-  "lsp": true
+  "lsp": true,
+  // 插件调试 skill（源随仓库分发于 plugins/skills/，供 DevEco Code / opencode 加载）
+  "skills": {
+    "paths": ["plugins/skills"]
+  }
 }
