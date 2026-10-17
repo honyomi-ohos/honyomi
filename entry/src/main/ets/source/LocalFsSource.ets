@@ -1,5 +1,5 @@
 import { fileIo as fs } from '@kit.CoreFileKit';
-import { MangasPage, SChapter, SManga, SPage, SVideo } from '../model/Models';
+import { SChapter, SManga, SPage, SVideo, WorksPage } from '../model/Models';
 import { Source } from './Source';
 import { LocalFolderManager } from './LocalFolderManager';
 import { NaturalCompare } from '../common/NaturalCompare';
@@ -31,26 +31,26 @@ export abstract class LocalFsSource implements Source {
     return false;
   }
 
-  async getPopularManga(page: number): Promise<MangasPage> {
+  async getPopularWorks(page: number): Promise<WorksPage> {
     const names = page === 1 ? this.listDirs() : [];
-    return this.namesToMangas(names);
+    return this.namesToWorks(names);
   }
 
   // 本地源不支持最新更新，回退为全部列表（接口要求实现，UI 不会触发）
-  async getLatestManga(page: number): Promise<MangasPage> {
-    return this.getPopularManga(page);
+  async getLatestWorks(page: number): Promise<WorksPage> {
+    return this.getPopularWorks(page);
   }
 
-  async getSearchManga(_page: number, query: string): Promise<MangasPage> {
+  async getSearchWorks(_page: number, query: string): Promise<WorksPage> {
     const names = this.listDirs().filter((n: string): boolean => n.includes(query));
-    return this.namesToMangas(names);
+    return this.namesToWorks(names);
   }
 
-  async getMangaDetail(mangaKey: string): Promise<SManga> {
-    return this.buildManga(mangaKey);
+  async getWorkDetail(workKey: string): Promise<SManga> {
+    return this.buildManga(workKey);
   }
 
-  abstract getChapterList(mangaKey: string): Promise<SChapter[]>;
+  abstract getChapterList(workKey: string): Promise<SChapter[]>;
 
   async getPageList(_chapterKey: string): Promise<SPage[]> {
     return [];
@@ -80,19 +80,19 @@ export abstract class LocalFsSource implements Source {
     return `${this.syncRoot}/${this.syncSubDir()}`;
   }
 
-  protected namesToMangas(names: string[]): MangasPage {
-    const mangas: SManga[] = [];
+  protected namesToWorks(names: string[]): WorksPage {
+    const works: SManga[] = [];
     for (const name of names) {
-      mangas.push(this.buildManga(name));
+      works.push(this.buildManga(name));
     }
-    const result: MangasPage = { mangas: mangas, hasNextPage: false };
+    const result: WorksPage = { works: works, hasNextPage: false };
     return result;
   }
 
-  protected entriesToChapters(mangaKey: string, relEntries: string[]): SChapter[] {
+  protected entriesToChapters(workKey: string, relEntries: string[]): SChapter[] {
     const chapters: SChapter[] = [];
     for (let i = 0; i < relEntries.length; i++) {
-      chapters.push(this.buildChapter(mangaKey, relEntries[i], i));
+      chapters.push(this.buildChapter(workKey, relEntries[i], i));
     }
     return chapters;
   }

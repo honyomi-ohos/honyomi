@@ -3,7 +3,7 @@ import { CategoryRepo, MangaRepo } from '../data/Repos';
 import { Source, SourceRegistry } from '../source/Source';
 import { JsvmSource, RawFilter } from '../source/JsvmSource';
 import { LocalFolderManager } from '../source/LocalFolderManager';
-import { CategoryRecord, ContentType, MangaRecord, MangasPage, SManga } from '../model/Models';
+import { CategoryRecord, ContentType, MangaRecord, SManga, WorksPage } from '../model/Models';
 import { BrowseSourceParams, DetailParams, DetailSearchResult } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
@@ -29,7 +29,7 @@ export struct BrowseSourcePage {
   @State sourceKey: string = '';
   @State mode: string = 'popular';
   @State query: string = '';
-  // 标签过滤搜索模式：query 为空仍走 getSearchManga（过滤器在插件侧生效）
+  // 标签过滤搜索模式：query 为空仍走 getSearchWorks（过滤器在插件侧生效）
   @State filterSearch: boolean = false;
   @State searchOpen: boolean = false;
   @State results: MangaRecord[] = [];
@@ -71,7 +71,7 @@ export struct BrowseSourcePage {
       const context = Util.hostAbilityContext(this.getUIContext());
       await AppDb.ready(context);
       const result = await this.fetchPage(source, 1);
-      this.results = await this.toRecords(source.key, result.mangas);
+      this.results = await this.toRecords(source.key, result.works);
       this.hasNextPage = result.hasNextPage;
     } catch (e) {
       Util.toastRes(this.getUIContext(), $r('app.string.browse_load_failed'),
@@ -101,8 +101,8 @@ export struct BrowseSourcePage {
       }
       // 过滤搜索模式下空查询仍走搜索接口（过滤器在插件侧生效）
       const result =
-        q === '' && !this.filterSearch ? await source.getPopularManga(1) : await source.getSearchManga(1, q);
-      this.results = await this.toRecords(source.key, result.mangas);
+        q === '' && !this.filterSearch ? await source.getPopularWorks(1) : await source.getSearchWorks(1, q);
+      this.results = await this.toRecords(source.key, result.works);
       this.hasNextPage = result.hasNextPage;
     } catch (e) {
       Util.toastRes(this.getUIContext(), $r('app.string.browse_search_failed'),
@@ -220,8 +220,8 @@ export struct BrowseSourcePage {
       const nextPage = this.page + 1;
       const q = this.query.trim();
       const result = q === '' && !this.filterSearch ? await this.fetchPage(source, nextPage) :
-        await source.getSearchManga(nextPage, q);
-      const more = await this.toRecords(source.key, result.mangas);
+        await source.getSearchWorks(nextPage, q);
+      const more = await this.toRecords(source.key, result.works);
       this.results = this.results.concat(more);
       this.page = nextPage;
       this.hasNextPage = result.hasNextPage;
@@ -750,11 +750,11 @@ export struct BrowseSourcePage {
   }
 
   // 当前模式下的列表页（最新模式仅在源支持时生效）
-  private fetchPage(source: Source, page: number): Promise<MangasPage> {
+  private fetchPage(source: Source, page: number): Promise<WorksPage> {
     if (this.mode === 'latest' && source.supportsLatest) {
-      return source.getLatestManga(page);
+      return source.getLatestWorks(page);
     }
-    return source.getPopularManga(page);
+    return source.getPopularWorks(page);
   }
 
   // 在插件过滤器列表中按名匹配标签并置位；命中返回 true（未命中不改过滤器状态）

@@ -314,7 +314,7 @@
     },
     {
       "name": "categories_hint",
-      "value": "กดค้างที่หมวดหมู่เพื่อเปลี่ยนชื่อหรือลบ มังงะในหมวดที่ลบจะกลับไปที่ค่าเริ่มต้น"
+      "value": "กดค้างที่หมวดหมู่เพื่อเปลี่ยนชื่อหรือลบ ผลงานในหมวดที่ลบจะกลับไปที่ค่าเริ่มต้น"
     },
     {
       "name": "dialog_pick_category",
@@ -338,7 +338,7 @@
     },
     {
       "name": "library_empty",
-      "value": "ชั้นหนังสือว่าง ไปเรียกดูเพื่อเพิ่มมังงะ"
+      "value": "ชั้นหนังสือว่าง ไปเรียกดูเพื่อเพิ่มผลงาน"
     },
     {
       "name": "updates_title",
@@ -402,11 +402,11 @@
     },
     {
       "name": "browse_search_hint",
-      "value": "ค้นหามังงะ…"
+      "value": "ค้นหาผลงาน…"
     },
     {
       "name": "browse_no_results",
-      "value": "ไม่พบมังงะ"
+      "value": "ไม่พบผลงาน"
     },
     {
       "name": "browse_load_failed",
@@ -774,7 +774,7 @@
     },
     {
       "name": "advanced_restored_manga",
-      "value": "กู้คืนมังงะ %d เรื่อง"
+      "value": "กู้คืนผลงาน %d เรื่อง"
     },
     {
       "name": "advanced_import_failed",
@@ -1026,11 +1026,11 @@
     },
     {
       "name": "migrate_search_hint",
-      "value": "ค้นหามังงะในแหล่งปลายทาง"
+      "value": "ค้นหาผลงานในแหล่งปลายทาง"
     },
     {
       "name": "migrate_confirm_title",
-      "value": "ย้ายไปมังงะนี้หรือไม่?"
+      "value": "ย้ายไปผลงานนี้หรือไม่?"
     },
     {
       "name": "migrate_item_done",
@@ -1286,7 +1286,7 @@
     },
     {
       "name": "ext_uninstall_msg",
-      "value": "ถอนการติดตั้ง \"%s\" หรือไม่? ข้อมูลมังงะในชั้นหนังสือจะยังอยู่"
+      "value": "ถอนการติดตั้ง \"%s\" หรือไม่? ข้อมูลผลงานในชั้นหนังสือจะยังอยู่"
     },
     {
       "name": "ext_detail_sources",
@@ -1354,7 +1354,7 @@
     },
     {
       "name": "action_remove_from_library_msg",
-      "value": "นำมังงะที่เลือก %d เรื่องออกจากชั้นหนังสือหรือไม่?"
+      "value": "นำผลงานที่เลือก %d เรื่องออกจากชั้นหนังสือหรือไม่?"
     },
     {
       "name": "action_download_queued",
@@ -1366,7 +1366,7 @@
     },
     {
       "name": "library_no_match",
-      "value": "ไม่มีมังงะที่ตรงกัน"
+      "value": "ไม่มีผลงานที่ตรงกัน"
     },
     {
       "name": "lib_sheet_tab_filter",
@@ -1510,7 +1510,7 @@
     },
     {
       "name": "card_recent_desc",
-      "value": "อ่านมังงะล่าสุดต่อได้อย่างรวดเร็ว"
+      "value": "อ่านผลงานล่าสุดต่อได้อย่างรวดเร็ว"
     },
     {
       "name": "card_updates_display",
@@ -1546,7 +1546,7 @@
     },
     {
       "name": "card_manga_display",
-      "value": "การ์ดมังงะ"
+      "value": "การ์ดผลงาน"
     },
     {
       "name": "card_manga_desc",
@@ -1554,7 +1554,7 @@
     },
     {
       "name": "card_manga_empty",
-      "value": "เพิ่มจากหน้ารายละเอียดมังงะไปยังหน้าเดสก์ท็อป"
+      "value": "เพิ่มจากหน้ารายละเอียดผลงานไปยังหน้าเดสก์ท็อป"
     },
     {
       "name": "detail_add_to_desktop",
@@ -1610,7 +1610,7 @@
     },
     {
       "name": "card_upcoming_desc",
-      "value": "ปฏิทินอัปเดตที่คาดไว้ของมังงะในชั้นหนังสือ"
+      "value": "ปฏิทินอัปเดตที่คาดไว้ของผลงานในชั้นหนังสือ"
     },
     {
       "name": "card_upcoming_header",
@@ -1618,7 +1618,7 @@
     },
     {
       "name": "card_empty_upcoming",
-      "value": "ไม่มีมังงะที่กำลังลงในชั้นหนังสือ"
+      "value": "ไม่มีผลงานที่กำลังลงในชั้นหนังสือ"
     },
     {
       "name": "common_copy_to_clipboard",
@@ -2902,7 +2902,7 @@
     },
     {
       "name": "plugin_error_invalid_detail",
-      "value": "ปลั๊กอินส่งคืนรายละเอียดมังงะที่ไม่ถูกต้อง"
+      "value": "ปลั๊กอินส่งคืนรายละเอียดผลงานที่ไม่ถูกต้อง"
     },
     {
       "name": "plugin_error_no_chapter_text",

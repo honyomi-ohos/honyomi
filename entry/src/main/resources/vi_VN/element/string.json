@@ -358,7 +358,7 @@
     },
     {
       "name": "library_empty",
-      "value": "Giá sách trống, hãy duyệt để thêm manga"
+      "value": "Giá sách trống, hãy duyệt để thêm tác phẩm"
     },
     {
       "name": "updates_title",
@@ -422,11 +422,11 @@
     },
     {
       "name": "browse_search_hint",
-      "value": "Tìm manga…"
+      "value": "Tìm tác phẩm…"
     },
     {
       "name": "browse_no_results",
-      "value": "Không tìm thấy manga"
+      "value": "Không tìm thấy tác phẩm"
     },
     {
       "name": "browse_load_failed",
@@ -790,7 +790,7 @@
     },
     {
       "name": "advanced_restored_manga",
-      "value": "Đã khôi phục %d manga"
+      "value": "Đã khôi phục %d tác phẩm"
     },
     {
       "name": "advanced_import_failed",
@@ -1038,11 +1038,11 @@
     },
     {
       "name": "migrate_search_hint",
-      "value": "Tìm manga trong nguồn đích"
+      "value": "Tìm tác phẩm trong nguồn đích"
     },
     {
       "name": "migrate_confirm_title",
-      "value": "Chuyển sang manga này?"
+      "value": "Chuyển sang tác phẩm này?"
     },
     {
       "name": "migrate_item_done",
@@ -1298,7 +1298,7 @@
     },
     {
       "name": "ext_uninstall_msg",
-      "value": "Gỡ cài đặt \"%s\"? Manga trong giá sách sẽ được giữ lại"
+      "value": "Gỡ cài đặt \"%s\"? Tác phẩm trong giá sách sẽ được giữ lại"
     },
     {
       "name": "ext_detail_sources",
@@ -1366,7 +1366,7 @@
     },
     {
       "name": "action_remove_from_library_msg",
-      "value": "Gỡ %d manga đã chọn khỏi giá sách?"
+      "value": "Gỡ %d tác phẩm đã chọn khỏi giá sách?"
     },
     {
       "name": "action_download_queued",
@@ -1378,7 +1378,7 @@
     },
     {
       "name": "library_no_match",
-      "value": "Không có manga phù hợp"
+      "value": "Không có tác phẩm phù hợp"
     },
     {
       "name": "lib_sheet_tab_filter",
@@ -1522,7 +1522,7 @@
     },
     {
       "name": "card_recent_desc",
-      "value": "Đọc tiếp nhanh manga vừa xem"
+      "value": "Đọc tiếp nhanh tác phẩm vừa xem"
     },
     {
       "name": "card_updates_display",
@@ -1558,7 +1558,7 @@
     },
     {
       "name": "card_manga_display",
-      "value": "Thẻ manga"
+      "value": "Thẻ tác phẩm"
     },
     {
       "name": "card_manga_desc",
@@ -1566,7 +1566,7 @@
     },
     {
       "name": "card_manga_empty",
-      "value": "Thêm từ trang chi tiết manga vào màn hình nền"
+      "value": "Thêm từ trang chi tiết tác phẩm vào màn hình nền"
     },
     {
       "name": "detail_add_to_desktop",
@@ -1622,7 +1622,7 @@
     },
     {
       "name": "card_upcoming_desc",
-      "value": "Lịch cập nhật dự kiến của manga trong giá sách"
+      "value": "Lịch cập nhật dự kiến của tác phẩm trong giá sách"
     },
     {
       "name": "card_upcoming_header",
@@ -1630,7 +1630,7 @@
     },
     {
       "name": "card_empty_upcoming",
-      "value": "Không có manga đang ra trong giá sách"
+      "value": "Không có tác phẩm đang ra trong giá sách"
     },
     {
       "name": "common_copy_to_clipboard",
@@ -2882,7 +2882,7 @@
     },
     {
       "name": "plugin_error_invalid_detail",
-      "value": "Plugin trả về chi tiết manga không hợp lệ"
+      "value": "Plugin trả về chi tiết tác phẩm không hợp lệ"
     },
     {
       "name": "plugin_error_no_chapter_text",

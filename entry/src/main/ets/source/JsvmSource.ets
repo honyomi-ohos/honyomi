@@ -1,4 +1,4 @@
-import { ContentType, MangasPage, SChapter, SManga, SPage, SVideo } from '../model/Models';
+import { ContentType, SChapter, SManga, SPage, SVideo, WorksPage } from '../model/Models';
 import { Source } from './Source';
 import { EngineBackend, EngineGateway, WebChallengeError } from '../jsvm/EngineGateway';
 import { Http } from '../net/Http';
@@ -25,8 +25,8 @@ export interface PluginManifest {
   contentType: string;
 }
 
-// 插件返回值（宽松 JSON 形态，兼容 tachiyomi 编译产物与简单契约两种 key 命名）
-interface RawManga {
+// 插件返回的作品（宽松 JSON：key/url、coverUrl/thumbnailUrl 都接受）
+interface RawWork {
   key?: string;
   url?: string;
   title?: string;
@@ -39,8 +39,8 @@ interface RawManga {
   status?: number | string;
 }
 
-interface RawMangasPage {
-  mangas?: RawManga[];
+interface RawWorksPage {
+  works?: RawWork[];
   hasNextPage?: boolean;
 }
 
@@ -132,18 +132,6 @@ export interface RawFilter {
   index?: number;
 }
 
-// tachiyomi-js getManifest()/getSources() 里的单个源
-export interface CompiledSourceInfo {
-  id?: string;
-  name?: string;
-  lang?: string;
-  baseUrl?: string;
-  supportsLatest?: boolean;
-
-  // 单源级 NSFW 声明（可选）；未声明时继承包级 manifest.nsfw
-  nsfw?: boolean;
-}
-
 // JSVM 插件适配器：实现 Source 接口，方法经专属 Worker 转发到隔离 JSVM 引擎。
 // 千级插件规模下先以“占位源”注册（仅元数据），首次调用经 engineStarter 惰性拉起引擎；
 // 引擎被 LRU 淘汰后再次调用会自动重新拉起。
@@ -159,7 +147,7 @@ export class JsvmSource implements Source {
   manifest: PluginManifest;
   // 插件包目录名。多语言扩展共用一个 JSVM 引擎，浏览列表里每个语言各有自己的 key。
   readonly packageKey: string;
-  // tachiyomi 编译产物的 source id；空字符串表示简单契约插件。
+  // 旧多源记录的 source id。当前插件为空字符串，调用时不作为首参。
   readonly sourceId: string;
   // 插件图标（file:// 路径）；空字符串表示包内无图标
   readonly iconPath: string;
@@ -181,7 +169,7 @@ export class JsvmSource implements Source {
     this.sourceId = sourceId;
     this.iconPath = iconPath;
     this.exportedMethods = exportedMethods;
-    this.supportsLatest = manifest.supportsLatest && exportedMethods.indexOf('getLatestManga') >= 0;
+    this.supportsLatest = manifest.supportsLatest && exportedMethods.indexOf('getLatestWorks') >= 0;
     this.contentType = ContentType.normalize(manifest.contentType);
     this.nsfw = manifest.nsfw;
   }
@@ -196,9 +184,9 @@ export class JsvmSource implements Source {
     return `${v}`;
   }
 
-  // 引擎就绪后就地升级（同 key 源不换实例）：刷新 manifest/方法表/supportsLatest/nsfw；
+  // 引擎就绪后就地升级（同 key 源不换实例）：刷新 manifest/方法表/supportsLatest/nsfw。
 
-  // tachiyomi-js 把 schema 再包成 JSON 字符串，字段是 type/values/titles/default。
+  // schema 可能是对象，也可能是 JSON 字符串。
   private static prefListOf(raw: object): RawPrefItem[] {
     let text = '';
     if (typeof raw === 'string') {
@@ -366,24 +354,24 @@ export class JsvmSource implements Source {
     return headers;
   }
 
-  private static toMangasPage(raw: RawMangasPage | undefined): MangasPage {
-    const mangas: SManga[] = [];
-    if (raw !== undefined && Array.isArray(raw.mangas)) {
-      for (let i = 0; i < raw.mangas.length; i++) {
-        const m = JsvmSource.toSManga(raw.mangas[i]);
+  private static toWorksPage(raw: RawWorksPage | undefined): WorksPage {
+    const works: SManga[] = [];
+    if (raw !== undefined && Array.isArray(raw.works)) {
+      for (let i = 0; i < raw.works.length; i++) {
+        const m = JsvmSource.toSManga(raw.works[i]);
         if (m !== undefined) {
-          mangas.push(m);
+          works.push(m);
         }
       }
     }
-    const result: MangasPage = {
-      mangas: mangas,
+    const result: WorksPage = {
+      works: works,
       hasNextPage: raw !== undefined && raw.hasNextPage === true,
     };
     return result;
   }
 
-  private static toSManga(raw: RawManga | undefined): SManga | undefined {
+  private static toSManga(raw: RawWork | undefined): SManga | undefined {
     if (raw === undefined) {
       return undefined;
     }
@@ -468,7 +456,7 @@ export class JsvmSource implements Source {
     this.manifest = manifest;
     this.name = manifest.name;
     this.lang = manifest.lang;
-    this.supportsLatest = manifest.supportsLatest && exportedMethods.indexOf('getLatestManga') >= 0;
+    this.supportsLatest = manifest.supportsLatest && exportedMethods.indexOf('getLatestWorks') >= 0;
     this.contentType = ContentType.normalize(manifest.contentType);
     this.nsfw = manifest.nsfw;
     this.exportedMethods = exportedMethods;
@@ -591,26 +579,26 @@ export class JsvmSource implements Source {
   // 轮询等待 CF 验证结果：cfVerifiedTick 增长代表通过；cfChallengeUrl 复空代表放弃；
   // 上限 2 分钟（验证页超时关闭后调用方收到原始错误）。
 
-  async getPopularManga(page: number): Promise<MangasPage> {
-    const raw = await this.call<RawMangasPage>('getPopularManga', this.callArgs([page]));
-    return JsvmSource.toMangasPage(raw);
+  async getPopularWorks(page: number): Promise<WorksPage> {
+    const raw = await this.call<RawWorksPage>('getPopularWorks', this.callArgs([page]));
+    return JsvmSource.toWorksPage(raw);
   }
 
-  async getLatestManga(page: number): Promise<MangasPage> {
+  async getLatestWorks(page: number): Promise<WorksPage> {
     if (this.supportsLatest) {
-      const raw = await this.call<RawMangasPage>('getLatestManga', this.callArgs([page]));
-      return JsvmSource.toMangasPage(raw);
+      const raw = await this.call<RawWorksPage>('getLatestWorks', this.callArgs([page]));
+      return JsvmSource.toWorksPage(raw);
     }
-    return this.getPopularManga(page);
+    return this.getPopularWorks(page);
   }
 
-  async getSearchManga(page: number, query: string): Promise<MangasPage> {
-    const raw = await this.call<RawMangasPage>('getSearchManga', this.callArgs([page, query]));
-    return JsvmSource.toMangasPage(raw);
+  async getSearchWorks(page: number, query: string): Promise<WorksPage> {
+    const raw = await this.call<RawWorksPage>('getSearchWorks', this.callArgs([page, query]));
+    return JsvmSource.toWorksPage(raw);
   }
 
-  async getMangaDetail(mangaKey: string): Promise<SManga> {
-    const raw = await this.call<RawManga | undefined>('getMangaDetail', this.callArgs([mangaKey]));
+  async getWorkDetail(workKey: string): Promise<SManga> {
+    const raw = await this.call<RawWork | undefined>('getWorkDetail', this.callArgs([workKey]));
     const manga = JsvmSource.toSManga(raw);
     if (manga === undefined) {
       throw new Error('plugin_invalid_detail');
@@ -618,8 +606,8 @@ export class JsvmSource implements Source {
     return manga;
   }
 
-  async getChapterList(mangaKey: string): Promise<SChapter[]> {
-    const raw = await this.call<RawChapter[]>('getChapterList', this.callArgs([mangaKey]));
+  async getChapterList(workKey: string): Promise<SChapter[]> {
+    const raw = await this.call<RawChapter[]>('getChapterList', this.callArgs([workKey]));
     const chapters: SChapter[] = [];
     if (!Array.isArray(raw)) {
       return chapters;
@@ -698,16 +686,8 @@ export class JsvmSource implements Source {
     }
   }
 
-  // 编译产物按 sourceId 选源；简单契约插件不传这个前缀参数。
   private callArgs(args: Array<string | number | boolean | object>): Array<string | number | boolean | object> {
-    if (this.sourceId === '') {
-      return args;
-    }
-    const next: Array<string | number | boolean | object> = [this.sourceId];
-    for (const item of args) {
-      next.push(item);
-    }
-    return next;
+    return args;
   }
 
   private async call<T>(method: string, args: Array<string | number | boolean | object>): Promise<T> {

@@ -72,14 +72,14 @@ export class ContentType {
     return sourceKey === 'local' || sourceKey === 'local_novel' || sourceKey === 'local_video';
   }
 
-  // m3u8 只在线播放，不进下载队列
+  // m3u8(HLS) 播放列表识别：下载优先直链，仅剩 m3u8 时走 HLS 下载管线
   static isPlaylist(url: string): boolean {
     return url.toLowerCase().indexOf('.m3u8') >= 0;
   }
 }
 
-export interface MangasPage {
-  mangas: SManga[];
+export interface WorksPage {
+  works: SManga[];
   hasNextPage: boolean;
 }
 

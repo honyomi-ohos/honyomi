@@ -304,6 +304,17 @@ export class Util {
       case 'stream_only':
         res = $r('app.string.download_error_stream_only');
         break;
+      case 'hls_live_unsupported':
+        res = $r('app.string.download_error_hls_live');
+        break;
+      case 'hls_unsupported_encryption':
+        res = $r('app.string.download_error_hls_encrypted');
+        break;
+      case 'hls_parse_failed':
+      case 'hls_no_segments':
+      case 'hls_decrypt_failed':
+        res = $r('app.string.download_error_failed');
+        break;
       case 'download_not_ready':
         res = $r('app.string.download_error_not_ready');
         break;

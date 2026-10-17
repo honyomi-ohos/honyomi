@@ -334,7 +334,7 @@
     },
     {
       "name": "categories_hint",
-      "value": "カテゴリを長押しすると名前の変更や削除ができます。削除したカテゴリの漫画は「デフォルト」に戻ります"
+      "value": "カテゴリを長押しすると名前の変更や削除ができます。削除したカテゴリの作品は「デフォルト」に戻ります"
     },
     {
       "name": "dialog_pick_category",
@@ -358,7 +358,7 @@
     },
     {
       "name": "library_empty",
-      "value": "本棚は空です。探すから漫画を追加しましょう"
+      "value": "本棚は空です。探すから作品を追加しましょう"
     },
     {
       "name": "updates_title",
@@ -422,11 +422,11 @@
     },
     {
       "name": "browse_search_hint",
-      "value": "漫画を検索…"
+      "value": "作品を検索…"
     },
     {
       "name": "browse_no_results",
-      "value": "漫画が見つかりません"
+      "value": "作品が見つかりません"
     },
     {
       "name": "browse_load_failed",
@@ -1046,11 +1046,11 @@
     },
     {
       "name": "migrate_search_hint",
-      "value": "移行先のソースで漫画を検索"
+      "value": "移行先のソースで作品を検索"
     },
     {
       "name": "migrate_confirm_title",
-      "value": "この漫画に移行しますか？"
+      "value": "この作品に移行しますか？"
     },
     {
       "name": "migrate_item_done",
@@ -1306,7 +1306,7 @@
     },
     {
       "name": "ext_uninstall_msg",
-      "value": "「%s」をアンインストールしますか？本棚の漫画データは残ります"
+      "value": "「%s」をアンインストールしますか？本棚の作品データは残ります"
     },
     {
       "name": "ext_detail_sources",
@@ -1386,7 +1386,7 @@
     },
     {
       "name": "library_no_match",
-      "value": "一致する漫画がありません"
+      "value": "一致する作品がありません"
     },
     {
       "name": "lib_sheet_tab_filter",
@@ -1530,7 +1530,7 @@
     },
     {
       "name": "card_recent_desc",
-      "value": "最近読んだ漫画をすぐ続きから読めます"
+      "value": "最近読んだ作品をすぐ続きから読めます"
     },
     {
       "name": "card_updates_display",
@@ -1566,7 +1566,7 @@
     },
     {
       "name": "card_manga_display",
-      "value": "漫画カード"
+      "value": "作品カード"
     },
     {
       "name": "card_manga_desc",
@@ -1574,7 +1574,7 @@
     },
     {
       "name": "card_manga_empty",
-      "value": "漫画の詳細からホーム画面に追加"
+      "value": "作品の詳細からホーム画面に追加"
     },
     {
       "name": "detail_add_to_desktop",
@@ -1630,7 +1630,7 @@
     },
     {
       "name": "card_upcoming_desc",
-      "value": "本棚の漫画の更新予定カレンダー"
+      "value": "本棚の作品の更新予定カレンダー"
     },
     {
       "name": "card_upcoming_header",
@@ -1638,7 +1638,7 @@
     },
     {
       "name": "card_empty_upcoming",
-      "value": "本棚に連載中の漫画がありません"
+      "value": "本棚に連載中の作品がありません"
     },
     {
       "name": "detail_sync_in_progress",

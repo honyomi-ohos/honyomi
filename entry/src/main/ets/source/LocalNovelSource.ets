@@ -9,7 +9,7 @@ import { readTextAutoAsync } from '../common/bookparser/TextLoadTasks';
 // 本地小说：扫描固定本地源文件夹的同步副本（filesDir/local_root）
 // <书名>/**/*.txt，一个文件一章；支持子目录分层（卷/章），章节名按相对路径显示为“卷 / 章”
 // 另支持书籍文件（epub/mobi/azw/azw3/prc）：taskpool 解析为章节 HTML + 图片缓存（book_cache/<hash>/），
-// 书籍 mangaKey 为相对路径（可含 '/'），章节 key 以 '#' 前缀区分 txt 文件章节
+// 书籍 workKey 为相对路径（可含 '/'），章节 key 以 '#' 前缀区分 txt 文件章节
 export class LocalNovelSource extends LocalFsSource {
   readonly key = 'local_novel';
   readonly name = '本地小说';
@@ -29,16 +29,16 @@ export class LocalNovelSource extends LocalFsSource {
     return all.sort((a: string, b: string): number => NaturalCompare.compare(a, b));
   }
 
-  async getChapterList(mangaKey: string): Promise<SChapter[]> {
-    if (BookParser.isBookFile(mangaKey) && LocalNovelSource.noDotDot(mangaKey)) {
-      const path = `${this.rootDir()}/${mangaKey}`;
+  async getChapterList(workKey: string): Promise<SChapter[]> {
+    if (BookParser.isBookFile(workKey) && LocalNovelSource.noDotDot(workKey)) {
+      const path = `${this.rootDir()}/${workKey}`;
       const info = await BookParser.parse(path);
       const chapters: SChapter[] = [];
       const dateUpload = BookFileIo.mtime(path) * 1000;
       for (let i = 0; i < info.chapterNames.length; i++) {
         const name = info.chapterNames[i] !== '' ? info.chapterNames[i] : `${i + 1}`;
         const chapter: SChapter = {
-          key: `${mangaKey}::#${i}`,
+          key: `${workKey}::#${i}`,
           name: name,
           chapterNumber: -1,
           dateUpload: dateUpload,
@@ -51,8 +51,8 @@ export class LocalNovelSource extends LocalFsSource {
     }
     // 递归收集 txt 相对路径（含卷级子目录），按层级自然排序
     const relEntries: string[] = [];
-    this.collectEntriesByExts(`${this.rootDir()}/${mangaKey}`, '', relEntries, ['.txt']);
-    return this.entriesToChapters(mangaKey, relEntries);
+    this.collectEntriesByExts(`${this.rootDir()}/${workKey}`, '', relEntries, ['.txt']);
+    return this.entriesToChapters(workKey, relEntries);
   }
 
   async getChapterText(chapterKey: string): Promise<string> {
@@ -60,16 +60,16 @@ export class LocalNovelSource extends LocalFsSource {
     if (sepIdx < 0) {
       throw new Error('chapter_missing');
     }
-    const mangaKey = chapterKey.substring(0, sepIdx);
+    const workKey = chapterKey.substring(0, sepIdx);
     const entry = chapterKey.substring(sepIdx + 2);
     // 书籍章节：'#' + 序号
     if (entry.length > 0 && entry[0] === '#') {
-      if (BookParser.isBookFile(mangaKey) && LocalNovelSource.noDotDot(mangaKey)) {
+      if (BookParser.isBookFile(workKey) && LocalNovelSource.noDotDot(workKey)) {
         const index = Number.parseInt(entry.substring(1), 10);
         if (Number.isNaN(index) || index < 0) {
           throw new Error('chapter_missing');
         }
-        return BookParser.loadChapterText(`${this.rootDir()}/${mangaKey}`, index);
+        return BookParser.loadChapterText(`${this.rootDir()}/${workKey}`, index);
       }
       throw new Error('chapter_missing');
     }
@@ -82,13 +82,13 @@ export class LocalNovelSource extends LocalFsSource {
     return readTextAutoAsync(path);
   }
 
-  async getMangaDetail(mangaKey: string): Promise<SManga> {
-    if (BookParser.isBookFile(mangaKey) && LocalNovelSource.noDotDot(mangaKey)) {
-      const path = `${this.rootDir()}/${mangaKey}`;
+  async getWorkDetail(workKey: string): Promise<SManga> {
+    if (BookParser.isBookFile(workKey) && LocalNovelSource.noDotDot(workKey)) {
+      const path = `${this.rootDir()}/${workKey}`;
       const info = await BookParser.parse(path);
       const manga: SManga = {
-        key: mangaKey,
-        title: info.title !== '' ? info.title : LocalNovelSource.baseNameNoExt(mangaKey),
+        key: workKey,
+        title: info.title !== '' ? info.title : LocalNovelSource.baseNameNoExt(workKey),
         coverUrl: info.coverPath !== '' ? `file://${info.coverPath}` : '',
         author: info.author,
         description: this.mangaDescription(),
@@ -97,7 +97,7 @@ export class LocalNovelSource extends LocalFsSource {
       };
       return manga;
     }
-    return this.buildManga(mangaKey);
+    return this.buildManga(workKey);
   }
 
   // 列表页书籍条目：标题取文件名去扩展名（不解析，保证列表性能）

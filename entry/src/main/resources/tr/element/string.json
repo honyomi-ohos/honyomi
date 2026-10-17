@@ -338,7 +338,7 @@
     },
     {
       "name": "categories_hint",
-      "value": "Yeniden adlandırmak veya silmek için bir kategoriye uzun basın; silinen kategorideki mangalar Varsayılan’a döner"
+      "value": "Yeniden adlandırmak veya silmek için bir kategoriye uzun basın; silinen kategorideki eserler Varsayılan’a döner"
     },
     {
       "name": "dialog_pick_category",
@@ -362,7 +362,7 @@
     },
     {
       "name": "library_empty",
-      "value": "Kitaplığınız boş, manga eklemek için göz atın"
+      "value": "Kitaplığınız boş, eser eklemek için göz atın"
     },
     {
       "name": "updates_title",
@@ -426,11 +426,11 @@
     },
     {
       "name": "browse_search_hint",
-      "value": "Manga ara…"
+      "value": "Eser ara…"
     },
     {
       "name": "browse_no_results",
-      "value": "Manga bulunamadı"
+      "value": "Eser bulunamadı"
     },
     {
       "name": "browse_load_failed",
@@ -794,7 +794,7 @@
     },
     {
       "name": "advanced_restored_manga",
-      "value": "%d manga geri yüklendi"
+      "value": "%d eser geri yüklendi"
     },
     {
       "name": "advanced_import_failed",
@@ -1042,11 +1042,11 @@
     },
     {
       "name": "migrate_search_hint",
-      "value": "Hedef kaynakta manga ara"
+      "value": "Hedef kaynakta eser ara"
     },
     {
       "name": "migrate_confirm_title",
-      "value": "Bu mangaya aktarılsın mı?"
+      "value": "Bu esere aktarılsın mı?"
     },
     {
       "name": "migrate_item_done",
@@ -1302,7 +1302,7 @@
     },
     {
       "name": "ext_uninstall_msg",
-      "value": "„%s“ uzantısı kaldırılsın mı? Kitaplıktaki manga verileri korunur"
+      "value": "„%s“ uzantısı kaldırılsın mı? Kitaplıktaki eser verileri korunur"
     },
     {
       "name": "ext_detail_sources",
@@ -1370,7 +1370,7 @@
     },
     {
       "name": "action_remove_from_library_msg",
-      "value": "Seçilen %d manga kitaplıktan kaldırılsın mı?"
+      "value": "Seçilen %d eser kitaplıktan kaldırılsın mı?"
     },
     {
       "name": "action_download_queued",
@@ -1382,7 +1382,7 @@
     },
     {
       "name": "library_no_match",
-      "value": "Eşleşen manga yok"
+      "value": "Eşleşen eser yok"
     },
     {
       "name": "lib_sheet_tab_filter",
@@ -1526,7 +1526,7 @@
     },
     {
       "name": "card_recent_desc",
-      "value": "Son okunan mangaya hızla devam et"
+      "value": "Son okunan esere hızla devam et"
     },
     {
       "name": "card_updates_display",
@@ -1562,7 +1562,7 @@
     },
     {
       "name": "card_manga_display",
-      "value": "Manga kartı"
+      "value": "Eser kartı"
     },
     {
       "name": "card_manga_desc",
@@ -1570,7 +1570,7 @@
     },
     {
       "name": "card_manga_empty",
-      "value": "Manga ayrıntı sayfasından ana ekrana ekleyin"
+      "value": "Eser ayrıntı sayfasından ana ekrana ekleyin"
     },
     {
       "name": "detail_add_to_desktop",
@@ -1626,7 +1626,7 @@
     },
     {
       "name": "card_upcoming_desc",
-      "value": "Kitaplıktaki manga için beklenen güncelleme takvimi"
+      "value": "Kitaplıktaki eser için beklenen güncelleme takvimi"
     },
     {
       "name": "card_upcoming_header",
@@ -1634,7 +1634,7 @@
     },
     {
       "name": "card_empty_upcoming",
-      "value": "Kitaplıkta devam eden manga yok"
+      "value": "Kitaplıkta devam eden eser yok"
     },
     {
       "name": "common_copy_to_clipboard",
@@ -2882,7 +2882,7 @@
     },
     {
       "name": "plugin_error_invalid_detail",
-      "value": "Eklenti geçersiz manga ayrıntıları döndürdü"
+      "value": "Eklenti geçersiz eser ayrıntıları döndürdü"
     },
     {
       "name": "plugin_error_no_chapter_text",

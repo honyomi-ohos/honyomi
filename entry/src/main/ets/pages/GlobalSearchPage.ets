@@ -1,7 +1,7 @@
 import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
 import { Source, SourceRegistry } from '../source/Source';
-import { MangaRecord, MangasPage, SManga } from '../model/Models';
+import { MangaRecord, SManga, WorksPage } from '../model/Models';
 import { DetailParams, GlobalSearchParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
@@ -205,9 +205,9 @@ export struct GlobalSearchPage {
   }
 
   private searchOne(source: Source, q: string): void {
-    source.getSearchManga(1, q).then(async (result: MangasPage) => {
+    source.getSearchWorks(1, q).then(async (result: WorksPage) => {
       const records: MangaRecord[] = [];
-      for (const m of result.mangas) {
+      for (const m of result.works) {
         const record = new MangaRecord();
         record.sourceKey = source.key;
         record.url = m.key;

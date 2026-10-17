@@ -16,11 +16,11 @@ export class LocalVideoSource extends LocalFsSource {
     super(filesDir);
   }
 
-  async getChapterList(mangaKey: string): Promise<SChapter[]> {
+  async getChapterList(workKey: string): Promise<SChapter[]> {
     // 递归收集视频文件相对路径（含季级子目录），按层级自然排序
     const relEntries: string[] = [];
-    this.collectEntriesByExts(`${this.rootDir()}/${mangaKey}`, '', relEntries, VIDEO_EXTS);
-    return this.entriesToChapters(mangaKey, relEntries);
+    this.collectEntriesByExts(`${this.rootDir()}/${workKey}`, '', relEntries, VIDEO_EXTS);
+    return this.entriesToChapters(workKey, relEntries);
   }
 
   async getVideoList(chapterKey: string): Promise<SVideo[]> {

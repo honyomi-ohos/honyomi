@@ -21,16 +21,16 @@
  *       * __nativeLog(level, message) — hilog bridge.
  *       * __nativeRandomBytes(n) — libohcrypto (CryptoArchitectureKit C API)
  *         hardware-entropy CSPRNG; backs crypto.getRandomValues in the shim.
- *         Registered as a raw native and captured/deleted by plugin_runtime_
- *         jsvm.js (host.ts natives closure), never visible to plugin code.
+ *         Installed as an ordinary configurable global (not a JSVM_DEFAULT
+ *         CreateEnv binding) and captured/deleted by plugin_runtime_jsvm.js
+ *         (host.ts natives closure), never visible to plugin code.
  *   - A JS bootstrap (BOOTSTRAP_JS) builds fetch()/Response-like objects and
  *     console on top of the raw natives. plugin_runtime_jsvm.js (prepended by
  *     PluginService) adds the $ DSL, CommonJS, URL/atob/crypto.subtle, prefs.
  *     An adapter (ADAPTER_JS) is appended after each extension script to
- *     normalize tachiyomi-generated exports (globalThis[*].tachiyomi.generated
- *     or module.exports.tachiyomi.generated), host-DSL plugins (module.exports
- *     with getPopularManga) and simple-contract extensions (globalThis.extension)
- *     into one uniform __honyomiCall() entry, with a promise trampoline
+ *     bind host-DSL plugins (module.exports with getPopularWorks) and
+ *     simple-contract extensions (globalThis.extension) into one uniform
+ *     __honyomiCall() entry, with a promise trampoline
  *     (__PENDING__ / __honyomiPoll) driven by the native microtask pump.
  */
 
@@ -697,7 +697,7 @@ static const char *BOOTSTRAP_JS = R"JS((function () {
 
   // ---- 暴露面收敛 ----------------------------------------------------------
   // raw native 桥捕获进闭包，IIFE 末尾从全局删除：插件只能访问公开包装
-  // （console / fetch / fetchBytes / tachiyomiHttpRequest / querySelectorAll），
+  // （console / fetch / fetchBytes / querySelectorAll），
   // raw native 桥不出现在插件可见全局里。
   var __nativeLog = g.__nativeLog;
   var __nativeHttpRequest = g.__nativeHttpRequest;
@@ -728,10 +728,8 @@ static const char *BOOTSTRAP_JS = R"JS((function () {
     g.exports = g.module.exports;
   }
 
-  // ---- synchronous http core ----------------------------------------------
-  // Compiled tachiyomi extensions call this via the OkHttp shim; it mirrors
-  // the KotlinHttpResult shape: {status, statusText, headersJson, body, error}
-  g.tachiyomiHttpRequest = function (url, method, headersJson, body, wantBytes) {
+  // 同步 HTTP。只给下面的 fetch 用，不挂到全局。
+  function httpRequest(url, method, headersJson, body, wantBytes) {
     var raw = __nativeHttpRequest(String(url), String(method || 'GET'),
       String(headersJson || '{}'), body == null ? '' : String(body), wantBytes === true);
     var r;
@@ -739,13 +737,13 @@ static const char *BOOTSTRAP_JS = R"JS((function () {
       r = { status: 0, statusText: '', headersJson: '{}', body: '', url: '', error: 'bridge result parse failed' };
     }
     return r;
-  };
+  }
 
-  // ---- fetch() for simple-contract extensions ------------------------------
+  // runtime 捕获后会从插件可见面删掉，插件 HTTP 走 $.http / fetchBytes。
   g.fetch = function (url, options) {
     options = options || {};
     var headers = options.headers || {};
-    var r = tachiyomiHttpRequest(url, options.method || 'GET', JSON.stringify(headers),
+    var r = httpRequest(url, options.method || 'GET', JSON.stringify(headers),
       options.body == null ? '' : String(options.body), false);
     if (r.error) { throw new Error(r.error); }
     return {
@@ -786,12 +784,22 @@ static const char *BOOTSTRAP_JS = R"JS((function () {
     return JSON.parse(nativeSelector(String(html), String(cssQuery)));
   };
 
-  // raw native 桥退出插件可见全局（上方包装器已持有闭包引用）
-  delete g.__nativeLog;
-  delete g.__nativeHttpRequest;
-  delete g.__nativeHttpRequestShared;
-  delete g.nativeSelector;
-  delete g.nativeSelectorBuffer;
+  // raw native 桥退出插件可见全局（上方包装器已持有闭包引用）。
+  // 只删可配置属性：JSVM_DEFAULT 绑定不可配置，strict delete 会抛
+  // TypeError: Cannot delete property '…'，整段 bootstrap 中断后桥仍留在全局。
+  function hideNative(name) {
+    try {
+      var desc = Object.getOwnPropertyDescriptor(g, name);
+      if (desc && desc.configurable) {
+        delete g[name];
+      }
+    } catch (e) { /* non-configurable: leave it */ }
+  }
+  hideNative('__nativeHttpRequest');
+  hideNative('__nativeHttpRequestShared');
+  hideNative('nativeSelector');
+  hideNative('nativeSelectorBuffer');
+  hideNative('__nativeLog');
 })();)JS";
 
 static const char *ADAPTER_JS = R"JS((function () {
@@ -799,56 +807,16 @@ static const char *ADAPTER_JS = R"JS((function () {
 
   function errJson(msg) { return JSON.stringify({ ok: false, error: String(msg) }); }
   function okJson(v) { return JSON.stringify({ ok: true, data: v === undefined ? null : v }); }
-  function unwrap(json) {
-    var r;
-    try { r = JSON.parse(json); } catch (e) { throw new Error('extension returned invalid JSON'); }
-    if (!r || r.ok !== true) {
-      throw new Error(r && r.error ? (typeof r.error === 'string' ? r.error : JSON.stringify(r.error))
-        : 'unknown extension error');
-    }
-    return r.data;
-  }
-
-  var SKIP = {
-    console: 1, fetch: 1, fetchBytes: 1, module: 1, exports: 1, global: 1,
-    $: 1, crypto: 1, URL: 1, URLSearchParams: 1, atob: 1, btoa: 1,
-    TextEncoder: 1, TextDecoder: 1, querySelectorAll: 1, nativeSelector: 1
-  };
-
-  function hasGenerated(obj) {
-    return obj && typeof obj === 'object' && obj.tachiyomi && obj.tachiyomi.generated;
-  }
-
-  // Locate compiled tachiyomi exports: globalThis[*].tachiyomi.generated
-  // or module.exports.tachiyomi.generated (CJS / Kotlin UMD captured by exports).
-  var gen = null;
-  try {
-    if (g.module && hasGenerated(g.module.exports)) {
-      gen = g.module.exports.tachiyomi.generated;
-    }
-    if (!gen && hasGenerated(g)) {
-      gen = g.tachiyomi.generated;
-    }
-    if (!gen) {
-      for (var k in g) {
-        if (k.indexOf('__') === 0 || SKIP[k]) { continue; }
-        var v;
-        try { v = g[k]; } catch (e) { continue; }
-        if (hasGenerated(v)) { gen = v.tachiyomi.generated; break; }
-      }
-    }
-  } catch (e) { gen = null; }
 
   var hostObj = null;
   if (g.module && g.module.exports && typeof g.module.exports === 'object') {
     var mex = g.module.exports;
-    if (typeof mex.getPopularManga === 'function' || typeof mex.getPopular === 'function') {
+    if (typeof mex.getPopularWorks === 'function') {
       hostObj = mex;
     }
   }
   var simple = (g.extension && typeof g.extension === 'object') ? g.extension : null;
   var api = null;
-  var sourceId = null;
 
   function pickFn(obj, names, args, required) {
     for (var i = 0; i < names.length; i++) {
@@ -859,32 +827,19 @@ static const char *ADAPTER_JS = R"JS((function () {
   }
 
   function bindHost(obj, kind) {
-    var md = obj.metadata || {};
-    var hasLatest = typeof obj.getLatestManga === 'function' ||
-      typeof obj.getLatestUpdates === 'function' || typeof obj.getLatest === 'function';
+    var hasLatest = typeof obj.getLatestWorks === 'function';
     var api = {
       kind: kind,
-      getSources: function () {
-        return [{
-          id: String(md.id || kind), name: String(md.name || ''),
-          lang: String(md.lang || ''), baseUrl: String(md.baseUrl || ''),
-          supportsLatest: hasLatest
-        }];
+      getPopularWorks: function (page) { return obj.getPopularWorks(page); },
+      getSearchWorks: function (page, query) { return obj.getSearchWorks(page, query); },
+      getWorkDetail: function (url) {
+        return typeof obj.getWorkDetail === 'function' ? obj.getWorkDetail(url) : undefined;
       },
-      getPopularManga: function (page) { return pickFn(obj, ['getPopularManga', 'getPopular'], [page], true); },
-      getSearchManga: function (page, query) {
-        if (typeof obj.getSearchManga === 'function') { return obj.getSearchManga(page, query); }
-        if (typeof obj.search === 'function') { return obj.search(query, page); }
-        throw new Error('method not supported: getSearchManga');
-      },
-      getMangaDetail: function (url) { return pickFn(obj, ['getMangaDetail', 'getMangaDetails'], [url], false); },
-      getChapterList: function (url) { return pickFn(obj, ['getChapterList', 'getChapters'], [url], true); },
-      getPageList: function (url) { return pickFn(obj, ['getPageList', 'getPages'], [url], true); }
+      getChapterList: function (url) { return obj.getChapterList(url); },
+      getPageList: function (url) { return obj.getPageList(url); }
     };
     if (hasLatest) {
-      api.getLatestManga = function (page) {
-        return pickFn(obj, ['getLatestManga', 'getLatestUpdates', 'getLatest'], [page], true);
-      };
+      api.getLatestWorks = function (page) { return obj.getLatestWorks(page); };
     }
     if (typeof obj.getHeaders === 'function' || typeof obj.headers === 'function') {
       api.getHeaders = function () {
@@ -920,93 +875,7 @@ static const char *ADAPTER_JS = R"JS((function () {
     return api;
   }
 
-  if (gen && typeof gen.getManifest === 'function') {
-    try {
-      var sources = unwrap(gen.getManifest());
-      if (sources && sources.length > 0) { sourceId = String(sources[0].id); }
-    } catch (e) { sourceId = null; }
-    // Compiled extensions export one factory with many sources. Calls are
-    // (page, ...) using the first source, or (sourceId, page, ...) when the
-    // host registers each source separately against the same engine.
-    function sid(explicit) {
-      return explicit !== undefined && explicit !== null && String(explicit) !== '' ? String(explicit) : sourceId;
-    }
-    api = {
-      kind: 'tachiyomi',
-      getSources: function () { return unwrap(gen.getManifest()); },
-      getPopularManga: function (a, b) {
-        if (arguments.length >= 2) { return unwrap(gen.getPopularManga(sid(a), b)); }
-        return unwrap(gen.getPopularManga(sourceId, a));
-      },
-      getLatestManga: function (a, b) {
-        if (arguments.length >= 2) { return unwrap(gen.getLatestUpdates(sid(a), b)); }
-        return unwrap(gen.getLatestUpdates(sourceId, a));
-      },
-      getSearchManga: function (a, b, c) {
-        if (arguments.length >= 3) { return unwrap(gen.searchManga(sid(a), b, c)); }
-        return unwrap(gen.searchManga(sourceId, a, b));
-      },
-      getMangaDetail: function (a, b) {
-        if (arguments.length >= 2) { return unwrap(gen.getMangaDetails(sid(a), b)); }
-        return unwrap(gen.getMangaDetails(sourceId, a));
-      },
-      getChapterList: function (a, b) {
-        if (arguments.length >= 2) { return unwrap(gen.getChapterList(sid(a), b)); }
-        return unwrap(gen.getChapterList(sourceId, a));
-      },
-      getPageList: function (a, b) {
-        if (arguments.length >= 2) { return unwrap(gen.getPageList(sid(a), b)); }
-        return unwrap(gen.getPageList(sourceId, a));
-      },
-      getFilterList: function (a) {
-        var id = arguments.length >= 1 ? sid(a) : sourceId;
-        return unwrap(gen.getFilterList(id));
-      },
-      applyFilterState: function (a, b) {
-        if (typeof gen.applyFilterState !== 'function') { return { ok: true }; }
-        var id = sourceId;
-        var state = a;
-        if (arguments.length >= 2) { id = sid(a); state = b; }
-        var payload = typeof state === 'string' ? state : JSON.stringify(state == null ? [] : state);
-        return unwrap(gen.applyFilterState(id, payload));
-      },
-      resetFilters: function (a) {
-        if (typeof gen.resetFilters !== 'function') { return { ok: true }; }
-        var id = arguments.length >= 1 ? sid(a) : sourceId;
-        return unwrap(gen.resetFilters(id));
-      },
-      getHeaders: function (a) {
-        var id = arguments.length >= 1 ? sid(a) : sourceId;
-        return unwrap(gen.getHeaders(id));
-      },
-      fetchImage: function (a, b, c) {
-        if (arguments.length >= 3) { return unwrap(gen.fetchImage(sid(a), b, c)); }
-        return unwrap(gen.fetchImage(sourceId, a, b));
-      },
-      setPreference: function (a, b, c) {
-        if (typeof gen.setPreference !== 'function') { return null; }
-        if (arguments.length >= 3) { return unwrap(gen.setPreference(sid(a), b, JSON.stringify(c))); }
-        return unwrap(gen.setPreference(sourceId, a, JSON.stringify(b)));
-      },
-      getSettingsSchema: function (a) {
-        if (typeof gen.getSettingsSchema !== 'function') { return null; }
-        var id = arguments.length >= 1 ? sid(a) : sourceId;
-        return unwrap(gen.getSettingsSchema(id));
-      }
-    };
-    if (typeof gen.getChapterText === 'function') {
-      api.getChapterText = function (a, b) {
-        if (arguments.length >= 2) { return unwrap(gen.getChapterText(sid(a), b)); }
-        return unwrap(gen.getChapterText(sourceId, a));
-      };
-    }
-    if (typeof gen.getVideoList === 'function') {
-      api.getVideoList = function (a, b) {
-        if (arguments.length >= 2) { return unwrap(gen.getVideoList(sid(a), b)); }
-        return unwrap(gen.getVideoList(sourceId, a));
-      };
-    }
-  } else if (hostObj) {
+  if (hostObj) {
     api = bindHost(hostObj, 'simple');
   } else if (simple) {
     api = bindHost(simple, 'simple');
@@ -1059,7 +928,7 @@ static const char *ADAPTER_JS = R"JS((function () {
         return okJson(fnResult);
       }
       if (!api) {
-        return errJson('no extension exports found (expected tachiyomi.generated, module.exports, or globalThis.extension)');
+        return errJson('no extension exports found (expected module.exports or globalThis.extension)');
       }
       var fn = api[name];
       if (typeof fn !== 'function') {
@@ -1120,6 +989,63 @@ static napi_value NapiString(napi_env env, const std::string &text)
     return value;
 }
 
+// Raw bridges must be ordinary configurable data properties. CreateEnv
+// descriptors with JSVM_DEFAULT are non-configurable (DontDelete); the
+// strict-mode delete in bootstrap / plugin_runtime then throws
+// "Cannot delete property '__nativeUrlEncodeGbk'" and plugin install fails.
+// SetNamedProperty installs a writable, enumerable, configurable function,
+// which bootstrap and the runtime shim can remove after capturing it.
+static bool InstallNativeBridges(JSVM_Env env)
+{
+    struct Bridge {
+        const char *name;
+        JSVM_Callback callback;
+    };
+    const Bridge bridges[] = {
+        {"__nativeHttpRequest", &g_httpCb},
+        {"__nativeHttpRequestShared", &g_httpSharedCb},
+        {"__nativeUrlEncodeGbk", &g_encodeGbkCb},
+        {"nativeSelector", &g_selectorCb},
+        {"nativeSelectorBuffer", &g_selectorBufferCb},
+        {"__nativeLog", &g_logCb},
+        {"__nativeRandomBytes", &g_randomBytesCb},
+    };
+
+    JSVM_EnvScope envScope = nullptr;
+    if (OH_JSVM_OpenEnvScope(env, &envScope) != JSVM_OK) {
+        return false;
+    }
+    JSVM_HandleScope scope = nullptr;
+    if (OH_JSVM_OpenHandleScope(env, &scope) != JSVM_OK) {
+        OH_JSVM_CloseEnvScope(env, envScope);
+        return false;
+    }
+    bool ok = true;
+    JSVM_Value global = nullptr;
+    if (OH_JSVM_GetGlobal(env, &global) != JSVM_OK || global == nullptr) {
+        ok = false;
+    } else {
+        for (const Bridge &bridge : bridges) {
+            JSVM_Value fn = nullptr;
+            JSVM_Value exc = nullptr;
+            if (OH_JSVM_CreateFunction(env, bridge.name, std::strlen(bridge.name),
+                    bridge.callback, &fn) != JSVM_OK || fn == nullptr) {
+                OH_JSVM_GetAndClearLastException(env, &exc);
+                ok = false;
+                break;
+            }
+            if (OH_JSVM_SetNamedProperty(env, global, bridge.name, fn) != JSVM_OK) {
+                OH_JSVM_GetAndClearLastException(env, &exc);
+                ok = false;
+                break;
+            }
+        }
+    }
+    OH_JSVM_CloseHandleScope(env, scope);
+    OH_JSVM_CloseEnvScope(env, envScope);
+    return ok;
+}
+
 static napi_value CreateEngine(napi_env env, napi_callback_info info)
 {
     napi_value result = nullptr;
@@ -1146,23 +1072,20 @@ static napi_value CreateEngine(napi_env env, napi_callback_info info)
         return result;
     }
 
-    JSVM_PropertyDescriptor descriptors[] = {
-        { "__nativeHttpRequest", nullptr, &g_httpCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
-        { "__nativeHttpRequestShared", nullptr, &g_httpSharedCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
-        { "__nativeUrlEncodeGbk", nullptr, &g_encodeGbkCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
-        { "nativeSelector", nullptr, &g_selectorCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
-        { "nativeSelectorBuffer", nullptr, &g_selectorBufferCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
-        { "__nativeLog", nullptr, &g_logCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
-        { "__nativeRandomBytes", nullptr, &g_randomBytesCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
-    };
-
     JSVM_VMScope vmScope = nullptr;
     OH_JSVM_OpenVMScope(vm, &vmScope);
     JSVM_Env jsvmEnv = nullptr;
-    if (OH_JSVM_CreateEnv(vm, sizeof(descriptors) / sizeof(descriptors[0]), descriptors,
-                          &jsvmEnv) != JSVM_OK || jsvmEnv == nullptr) {
+    if (OH_JSVM_CreateEnv(vm, 0, nullptr, &jsvmEnv) != JSVM_OK || jsvmEnv == nullptr) {
         OH_LOG_Print(LOG_APP, LOG_ERROR, JSVM_LOG_DOMAIN, JSVM_LOG_TAG, "CreateEnv failed");
         OH_JSVM_CloseVMScope(vm, vmScope);
+        OH_JSVM_DestroyVM(vm);
+        napi_create_int32(env, -1, &result);
+        return result;
+    }
+    if (!InstallNativeBridges(jsvmEnv)) {
+        OH_LOG_Print(LOG_APP, LOG_ERROR, JSVM_LOG_DOMAIN, JSVM_LOG_TAG, "install native bridges failed");
+        OH_JSVM_CloseVMScope(vm, vmScope);
+        OH_JSVM_DestroyEnv(jsvmEnv);
         OH_JSVM_DestroyVM(vm);
         napi_create_int32(env, -1, &result);
         return result;
@@ -1175,7 +1098,22 @@ static napi_value CreateEngine(napi_env env, napi_callback_info info)
         g_engines[engine->id] = engine;
     }
     // Install fetch/console/selector bootstrap before any extension code runs.
-    RunRawScript(engine, BOOTSTRAP_JS);
+    // A thrown bootstrap used to be ignored, leaving the raw bridges on the
+    // global; surface the failure instead of continuing half-initialized.
+    std::string boot = RunRawScript(engine, BOOTSTRAP_JS);
+    if (boot.rfind("{\"ok\":false", 0) == 0) {
+        OH_LOG_Print(LOG_APP, LOG_ERROR, JSVM_LOG_DOMAIN, JSVM_LOG_TAG,
+            "bootstrap failed: %{public}s", boot.c_str());
+        {
+            std::lock_guard<std::mutex> lock(g_enginesLock);
+            g_engines.erase(engine->id);
+        }
+        OH_JSVM_DestroyEnv(engine->env);
+        OH_JSVM_DestroyVM(engine->vm);
+        delete engine;
+        napi_create_int32(env, -1, &result);
+        return result;
+    }
     OH_LOG_Print(LOG_APP, LOG_INFO, JSVM_LOG_DOMAIN, JSVM_LOG_TAG, "engine %{public}u created", engine->id);
     napi_create_uint32(env, engine->id, &result);
     return result;

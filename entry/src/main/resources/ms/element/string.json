@@ -334,7 +334,7 @@
     },
     {
       "name": "categories_hint",
-      "value": "Tekan lama kategori untuk namakan semula atau padam; manga dalam kategori dipadam dipindah kembali ke Lalai"
+      "value": "Tekan lama kategori untuk namakan semula atau padam; karya dalam kategori dipadam dipindah kembali ke Lalai"
     },
     {
       "name": "dialog_pick_category",
@@ -358,7 +358,7 @@
     },
     {
       "name": "library_empty",
-      "value": "Rak buku kosong, layari untuk menambah manga"
+      "value": "Rak buku kosong, layari untuk menambah karya"
     },
     {
       "name": "updates_title",
@@ -418,11 +418,11 @@
     },
     {
       "name": "browse_search_hint",
-      "value": "Cari manga…"
+      "value": "Cari karya…"
     },
     {
       "name": "browse_no_results",
-      "value": "Manga tidak dijumpai"
+      "value": "Karya tidak dijumpai"
     },
     {
       "name": "browse_load_failed",
@@ -774,7 +774,7 @@
     },
     {
       "name": "advanced_restored_manga",
-      "value": "%d manga dipulihkan"
+      "value": "%d karya dipulihkan"
     },
     {
       "name": "advanced_import_failed",
@@ -1022,11 +1022,11 @@
     },
     {
       "name": "migrate_search_hint",
-      "value": "Cari manga dalam sumber sasaran"
+      "value": "Cari karya dalam sumber sasaran"
     },
     {
       "name": "migrate_confirm_title",
-      "value": "Hijrah ke manga ini?"
+      "value": "Hijrah ke karya ini?"
     },
     {
       "name": "migrate_item_done",
@@ -1278,7 +1278,7 @@
     },
     {
       "name": "ext_uninstall_msg",
-      "value": "Nyahpasang \"%s\"? Manga dalam rak buku akan dikekalkan"
+      "value": "Nyahpasang \"%s\"? Karya dalam rak buku akan dikekalkan"
     },
     {
       "name": "ext_detail_sources",
@@ -1346,7 +1346,7 @@
     },
     {
       "name": "action_remove_from_library_msg",
-      "value": "Buang %d manga terpilih dari rak buku?"
+      "value": "Buang %d karya terpilih dari rak buku?"
     },
     {
       "name": "action_download_queued",
@@ -1358,7 +1358,7 @@
     },
     {
       "name": "library_no_match",
-      "value": "Tiada manga yang sepadan"
+      "value": "Tiada karya yang sepadan"
     },
     {
       "name": "lib_sheet_tab_filter",
@@ -1498,7 +1498,7 @@
     },
     {
       "name": "card_recent_desc",
-      "value": "Teruskan baca manga yang baru dibaca"
+      "value": "Teruskan baca karya yang baru dibaca"
     },
     {
       "name": "card_updates_display",
@@ -1534,7 +1534,7 @@
     },
     {
       "name": "card_manga_display",
-      "value": "Kad manga"
+      "value": "Kad karya"
     },
     {
       "name": "card_manga_desc",
@@ -1542,7 +1542,7 @@
     },
     {
       "name": "card_manga_empty",
-      "value": "Tambah dari halaman butiran manga ke desktop"
+      "value": "Tambah dari halaman butiran karya ke desktop"
     },
     {
       "name": "detail_add_to_desktop",
@@ -1598,7 +1598,7 @@
     },
     {
       "name": "card_upcoming_desc",
-      "value": "Kalendar anggaran kemas kini manga dalam rak buku"
+      "value": "Kalendar anggaran kemas kini karya dalam rak buku"
     },
     {
       "name": "card_upcoming_header",
@@ -1606,7 +1606,7 @@
     },
     {
       "name": "card_empty_upcoming",
-      "value": "Tiada manga sedang berjalan dalam rak buku"
+      "value": "Tiada karya sedang berjalan dalam rak buku"
     },
     {
       "name": "common_copy_to_clipboard",
@@ -2838,7 +2838,7 @@
     },
     {
       "name": "plugin_error_invalid_detail",
-      "value": "Pemalam memulangkan butiran manga yang tidak sah"
+      "value": "Pemalam memulangkan butiran karya yang tidak sah"
     },
     {
       "name": "plugin_error_no_chapter_text",

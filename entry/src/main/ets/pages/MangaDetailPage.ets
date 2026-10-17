@@ -1162,7 +1162,7 @@ export struct MangaDetailPage {
         try {
           const chapters = await source.getChapterList(this.manga.url);
           await ChapterRepo.syncFromSource(this.mangaId, chapters);
-          const detail = await source.getMangaDetail(this.manga.url);
+          const detail = await source.getWorkDetail(this.manga.url);
           await MangaRepo.upsertFromSource(this.manga.sourceKey, detail, source.contentType);
         } catch (e) {
           Util.toastRes(this.getUIContext(), $r('app.string.detail_sync_failed_local'));
@@ -1501,31 +1501,14 @@ export struct MangaDetailPage {
     Util.toastRes(this.getUIContext(), $r('app.string.detail_all_marked_read'));
   }
 
-  // 返回：'ok' 已入队 | 'no_direct' 仅流媒体无直链 | 'failed' 校验/入队失败
+  // 返回：'ok' 已入队 | 'failed' 校验/入队失败
+  // 视频章节不做入队前流校验：直链与 m3u8 均可下载（m3u8 走 HLS 管线），流类型由下载时判定
   private async enqueueDownload(chapter: ChapterRecord): Promise<string> {
     if (ContentType.isLocal(this.manga.sourceKey)) {
       return 'failed';
     }
-    if (this.manga.contentType === ContentType.VIDEO) {
-      const source = SourceRegistry.get(this.manga.sourceKey);
-      if (source === undefined) {
-        return 'failed';
-      }
-      try {
-        const videos = await source.getVideoList(chapter.url);
-        let direct = false;
-        for (let i = 0; i < videos.length; i++) {
-          if (!ContentType.isPlaylist(videos[i].url)) {
-            direct = true;
-            break;
-          }
-        }
-        if (!direct) {
-          return 'no_direct';
-        }
-      } catch (_e) {
-        return 'failed';
-      }
+    if (SourceRegistry.get(this.manga.sourceKey) === undefined) {
+      return 'failed';
     }
     const task = new DownloadTask();
     task.mangaId = this.mangaId;
@@ -1546,20 +1529,15 @@ export struct MangaDetailPage {
     const status = await this.enqueueDownload(chapter);
     if (status === 'ok') {
       Util.toastRes(this.getUIContext(), $r('app.string.detail_download_queued'));
-    } else if (status === 'no_direct') {
-      Util.toastRes(this.getUIContext(), $r('app.string.detail_download_stream_only'));
     } else {
       Util.toastRes(this.getUIContext(), $r('app.string.detail_download_failed'));
     }
   }
 
-  // 完成后统一提示入队数量；视频源批量需逐章请求解析接口，先提示准备中
+  // 完成后统一提示入队数量
   private async downloadChapters(list: ChapterRecord[]): Promise<void> {
     if (ContentType.isLocal(this.manga.sourceKey) || list.length === 0) {
       return;
-    }
-    if (this.manga.contentType === ContentType.VIDEO) {
-      Util.toastRes(this.getUIContext(), $r('app.string.detail_dl_preparing'));
     }
     let index = 0;
     let count = 0;
@@ -1577,7 +1555,7 @@ export struct MangaDetailPage {
     if (count > 0) {
       Util.toastRes(this.getUIContext(), $r('app.string.detail_dl_queued_n'), [count]);
     } else {
-      Util.toastRes(this.getUIContext(), $r('app.string.detail_download_stream_only'));
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_download_failed'));
     }
   }
 

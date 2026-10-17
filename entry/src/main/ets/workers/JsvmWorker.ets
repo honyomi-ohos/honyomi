@@ -14,7 +14,7 @@
  *   host -> worker: {"type":"init","code":"<extension js>"}
  *                   {"type":"call","seq":N,"name":"method","argsJson":"[...]","prefsDirty":bool}
  *                   {"type":"destroy"}
- *   worker -> host: {"type":"ready","ok":true,"kind":"tachiyomi|simple"}
+ *   worker -> host: {"type":"ready","ok":true,"kind":"simple"}
  *                   {"type":"result","seq":N,"ok":true,"json":"{...}","mem":N}
  *                   {"type":"destroyed"}
  */

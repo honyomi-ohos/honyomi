@@ -594,7 +594,7 @@
     },
     {
       "name": "categories_hint",
-      "value": "点击分类可重命名或删除；长按拖动可调整顺序；删除后其中的漫画会移回「默认」分类"
+      "value": "点击分类可重命名或删除；长按拖动可调整顺序；删除后其中的作品会移回「默认」分类"
     },
     {
       "name": "dialog_pick_category",
@@ -618,7 +618,7 @@
     },
     {
       "name": "library_empty",
-      "value": "书架为空，去浏览页添加漫画吧"
+      "value": "书架为空，去浏览页添加作品吧"
     },
     {
       "name": "updates_title",
@@ -686,11 +686,11 @@
     },
     {
       "name": "browse_search_hint",
-      "value": "搜索漫画…"
+      "value": "搜索作品…"
     },
     {
       "name": "browse_no_results",
-      "value": "没有找到漫画"
+      "value": "没有找到作品"
     },
     {
       "name": "browse_load_failed",
@@ -1370,7 +1370,7 @@
     },
     {
       "name": "advanced_restored_manga",
-      "value": "已恢复 %d 部漫画"
+      "value": "已恢复 %d 部作品"
     },
     {
       "name": "advanced_import_failed",
@@ -1850,11 +1850,11 @@
     },
     {
       "name": "migrate_search_hint",
-      "value": "搜索目标源中的漫画"
+      "value": "搜索目标源中的作品"
     },
     {
       "name": "migrate_confirm_title",
-      "value": "迁移到该漫画？"
+      "value": "迁移到该作品？"
     },
     {
       "name": "migrate_item_done",
@@ -1894,7 +1894,7 @@
     },
     {
       "name": "ext_uninstall_msg",
-      "value": "确定要卸载“%s”吗？书架中的漫画数据会保留"
+      "value": "确定要卸载“%s”吗？书架中的作品数据会保留"
     },
     {
       "name": "ext_detail_sources",
@@ -1962,7 +1962,7 @@
     },
     {
       "name": "action_remove_from_library_msg",
-      "value": "确定要从书架移除选中的 %d 部漫画吗？"
+      "value": "确定要从书架移除选中的 %d 部作品吗？"
     },
     {
       "name": "action_download_queued",
@@ -1974,7 +1974,7 @@
     },
     {
       "name": "library_no_match",
-      "value": "没有匹配的漫画"
+      "value": "没有匹配的作品"
     },
     {
       "name": "lib_sheet_tab_filter",
@@ -2118,7 +2118,7 @@
     },
     {
       "name": "card_recent_desc",
-      "value": "快速继续最近阅读的漫画"
+      "value": "快速继续最近阅读的作品"
     },
     {
       "name": "card_updates_display",
@@ -2154,7 +2154,7 @@
     },
     {
       "name": "card_manga_display",
-      "value": "漫画卡片"
+      "value": "作品卡片"
     },
     {
       "name": "card_manga_desc",
@@ -2162,7 +2162,7 @@
     },
     {
       "name": "card_manga_empty",
-      "value": "从漫画详情页添加到桌面"
+      "value": "从作品详情页添加到桌面"
     },
     {
       "name": "detail_add_to_desktop",
@@ -2218,7 +2218,7 @@
     },
     {
       "name": "card_upcoming_desc",
-      "value": "书架漫画的预计更新日历"
+      "value": "书架作品的预计更新日历"
     },
     {
       "name": "card_upcoming_header",
@@ -2226,7 +2226,7 @@
     },
     {
       "name": "card_empty_upcoming",
-      "value": "书架内没有连载中的漫画"
+      "value": "书架内没有连载中的作品"
     },
     {
       "name": "browse_type_manga",
@@ -2779,6 +2779,14 @@
     {
       "name": "download_error_stream_only",
       "value": "该视频为在线串流，不能下载"
+    },
+    {
+      "name": "download_error_hls_live",
+      "value": "直播流暂不支持下载"
+    },
+    {
+      "name": "download_error_hls_encrypted",
+      "value": "暂不支持该视频流的加密方式"
     },
     {
       "name": "download_error_not_ready",

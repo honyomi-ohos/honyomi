@@ -338,7 +338,7 @@
     },
     {
       "name": "categories_hint",
-      "value": "카테고리를 길게 눌러 이름을 바꾸거나 삭제할 수 있습니다. 삭제한 카테고리의 만화는 기본으로 돌아갑니다"
+      "value": "카테고리를 길게 눌러 이름을 바꾸거나 삭제할 수 있습니다. 삭제한 카테고리의 작품는 기본으로 돌아갑니다"
     },
     {
       "name": "dialog_pick_category",
@@ -362,7 +362,7 @@
     },
     {
       "name": "library_empty",
-      "value": "서재가 비어 있습니다. 찾아보기에서 만화를 추가하세요"
+      "value": "서재가 비어 있습니다. 찾아보기에서 작품를 추가하세요"
     },
     {
       "name": "updates_title",
@@ -426,11 +426,11 @@
     },
     {
       "name": "browse_search_hint",
-      "value": "만화 검색…"
+      "value": "작품 검색…"
     },
     {
       "name": "browse_no_results",
-      "value": "만화를 찾지 못했습니다"
+      "value": "작품를 찾지 못했습니다"
     },
     {
       "name": "browse_load_failed",
@@ -798,7 +798,7 @@
     },
     {
       "name": "advanced_restored_manga",
-      "value": "만화 %d편을 복원했습니다"
+      "value": "작품 %d편을 복원했습니다"
     },
     {
       "name": "advanced_import_failed",
@@ -1050,11 +1050,11 @@
     },
     {
       "name": "migrate_search_hint",
-      "value": "대상 소스에서 만화 검색"
+      "value": "대상 소스에서 작품 검색"
     },
     {
       "name": "migrate_confirm_title",
-      "value": "이 만화로 이전할까요?"
+      "value": "이 작품로 이전할까요?"
     },
     {
       "name": "migrate_item_done",
@@ -1310,7 +1310,7 @@
     },
     {
       "name": "ext_uninstall_msg",
-      "value": "\"%s\"을(를) 제거할까요? 서재의 만화 데이터는 유지됩니다"
+      "value": "\"%s\"을(를) 제거할까요? 서재의 작품 데이터는 유지됩니다"
     },
     {
       "name": "ext_detail_sources",
@@ -1378,7 +1378,7 @@
     },
     {
       "name": "action_remove_from_library_msg",
-      "value": "선택한 만화 %d편을 서재에서 제거할까요?"
+      "value": "선택한 작품 %d편을 서재에서 제거할까요?"
     },
     {
       "name": "action_download_queued",
@@ -1390,7 +1390,7 @@
     },
     {
       "name": "library_no_match",
-      "value": "일치하는 만화가 없습니다"
+      "value": "일치하는 작품가 없습니다"
     },
     {
       "name": "lib_sheet_tab_filter",
@@ -1534,7 +1534,7 @@
     },
     {
       "name": "card_recent_desc",
-      "value": "최근 읽은 만화를 바로 이어 읽습니다"
+      "value": "최근 읽은 작품를 바로 이어 읽습니다"
     },
     {
       "name": "card_updates_display",
@@ -1570,7 +1570,7 @@
     },
     {
       "name": "card_manga_display",
-      "value": "만화 카드"
+      "value": "작품 카드"
     },
     {
       "name": "card_manga_desc",
@@ -1578,7 +1578,7 @@
     },
     {
       "name": "card_manga_empty",
-      "value": "만화 상세에서 홈 화면에 추가"
+      "value": "작품 상세에서 홈 화면에 추가"
     },
     {
       "name": "detail_add_to_desktop",
@@ -1634,7 +1634,7 @@
     },
     {
       "name": "card_upcoming_desc",
-      "value": "서재 만화의 예상 업데이트 달력"
+      "value": "서재 작품의 예상 업데이트 달력"
     },
     {
       "name": "card_upcoming_header",
@@ -1642,7 +1642,7 @@
     },
     {
       "name": "card_empty_upcoming",
-      "value": "서재에 연재 중인 만화가 없습니다"
+      "value": "서재에 연재 중인 작품가 없습니다"
     },
     {
       "name": "common_copy_to_clipboard",
@@ -2926,7 +2926,7 @@
     },
     {
       "name": "plugin_error_invalid_detail",
-      "value": "플러그인이 잘못된 만화 상세 정보를 반환했습니다"
+      "value": "플러그인이 잘못된 작품 상세 정보를 반환했습니다"
     },
     {
       "name": "plugin_error_no_chapter_text",

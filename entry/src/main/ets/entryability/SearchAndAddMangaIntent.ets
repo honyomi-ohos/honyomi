@@ -3,7 +3,7 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
 import { Source, SourceRegistry } from '../source/Source';
-import { MangasPage, SManga } from '../model/Models';
+import { SManga, WorksPage } from '../model/Models';
 import { AppKeys } from '../common/AppKeys';
 import { TitleMatch } from '../common/TitleMatch';
 import EntryAbility from './EntryAbility';
@@ -148,9 +148,9 @@ export default class SearchAndAddMangaImpl extends InsightIntentEntryExecutor<Se
       const timerId: number = setTimeout(() => {
         finish([]);
       }, SEARCH_TIMEOUT_MS);
-      source.getSearchManga(1, query).then((page: MangasPage) => {
+      source.getSearchWorks(1, query).then((page: WorksPage) => {
         clearTimeout(timerId);
-        finish(page.mangas);
+        finish(page.works);
       }).catch((_e: Error) => {
         clearTimeout(timerId);
         finish([]);

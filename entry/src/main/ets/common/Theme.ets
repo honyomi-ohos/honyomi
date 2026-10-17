@@ -8,18 +8,18 @@
 // onPrimary=onPrimary primarySoft=primaryContainer onPrimarySoft=onPrimaryContainer
 // badgeRed=error badgeBlue=secondary
 export class ThemePalette {
-  bg: string = '#F2F3F7';
+  bg: string = '#F2F4F8';
   card: string = '#FFFFFF';
-  chip: string = '#E9ECF2';
-  divider: string = '#E5E7EB';
+  chip: string = '#ECF0F4';
+  divider: string = '#E5E8ED';
   text: string = '#16181D';
-  sub: string = '#6B7280';
-  primary: string = '#4E6E9E';
+  sub: string = '#4C5A68';
+  primary: string = '#345080';
   onPrimary: string = '#FFFFFF';
   primarySoft: string = '#E0E7F0';
-  onPrimarySoft: string = '#4E6E9E';
-  badgeRed: string = '#E5484D';
-  badgeBlue: string = '#3D7DC8';
+  onPrimarySoft: string = '#203864';
+  badgeRed: string = '#BE2E38';
+  badgeBlue: string = '#2A5C9E';
 }
 
 // 主题单变体（浅色/深色/AMOLED 之一）的完整色值
@@ -88,82 +88,82 @@ export class Theme {
   static themes(): AppThemeDef[] {
     if (Theme.themeList === undefined) {
       // ---- default（Honyomi 原有外观，色值与 color.json 基准一致）----
-      const defLight = new ThemeScheme('#F2F3F7', '#FFFFFF', '#E9ECF2', '#E5E7EB',
-        '#16181D', '#6B7280', '#4E6E9E', '#FFFFFF', '#E0E7F0', '#4E6E9E', '#E5484D', '#3D7DC8');
-      const defDark = new ThemeScheme('#101318', '#1B212B', '#242B37', '#2A313D',
-        '#ECEEF2', '#8B93A1', '#7B9BD4', '#FFFFFF', '#28303C', '#7B9BD4', '#E5484D', '#3D7DC8');
-      const defAmoled = new ThemeScheme('#000000', '#0D0D0D', '#161616', '#1E1E1E',
-        '#ECEEF2', '#8B93A1', '#7B9BD4', '#FFFFFF', '#28303C', '#7B9BD4', '#E5484D', '#3D7DC8');
+      const defLight = new ThemeScheme('#F2F4F8', '#FFFFFF', '#ECF0F4', '#E5E8ED',
+        '#16181D', '#4C5A68', '#345080', '#FFFFFF', '#E0E7F0', '#203864', '#BE2E38', '#2A5C9E');
+      const defDark = new ThemeScheme('#101318', '#1B212B', '#242B37', '#3A4556',
+        '#ECEEF2', '#9AA3B2', '#8EAEDE', '#162033', '#2C3C54', '#D0DEF4', '#FF8B90', '#7EAEF0');
+      const defAmoled = new ThemeScheme('#000000', '#121212', '#1C1C1C', '#333333',
+        '#ECEEF2', '#9AA3B2', '#8EAEDE', '#162033', '#2C3C54', '#D0DEF4', '#FF8B90', '#7EAEF0');
       // ---- tachiyomi（M3 蓝色）----
-      const tachiDark = new ThemeScheme('#1B1B1F', '#1E1C22', '#211F26', '#44464F',
-        '#E3E2E6', '#C5C6D0', '#B0C6FF', '#002D6E', '#00429B', '#D9E2FF', '#FFB4AB', '#B0C6FF');
-      const tachiLight = new ThemeScheme('#FEFBFF', '#F7F2FA', '#F3EDF7', '#C5C6D0',
-        '#1B1B1F', '#44464F', '#0058CA', '#FFFFFF', '#D9E2FF', '#001945', '#BA1A1A', '#0058CA');
+      const tachiDark = new ThemeScheme('#14141A', '#23232C', '#2E2E3A', '#555568',
+        '#E6E4EA', '#C4C6D2', '#B4C8FF', '#06285E', '#1E3A78', '#E2EAFF', '#FFB4AB', '#B4C8FF');
+      const tachiLight = new ThemeScheme('#F5F3F9', '#FFFFFF', '#F1EEF7', '#EBE7F2',
+        '#1B1B1F', '#454654', '#0058CA', '#FFFFFF', '#EDF2FF', '#002A70', '#BA1A1A', '#0058CA');
       // ---- midnight_dusk ----
-      const duskDark = new ThemeScheme('#16151D', '#251522', '#281624', '#49454F',
-        '#E5E1E5', '#D6C1C4', '#F02475', '#FFFFFF', '#BD1C5C', '#FFFFFF', '#FFB4AB', '#F02475');
-      const duskLight = new ThemeScheme('#FFFBFF', '#E8D1DD', '#F9E6F1', '#CAC4D0',
-        '#1C1B1F', '#524346', '#BB0054', '#FFFFFF', '#FFD9E1', '#3F0017', '#BA1A1A', '#BB0054');
+      const duskDark = new ThemeScheme('#140E14', '#2C1824', '#3C2230', '#6A4558',
+        '#F6E8EE', '#C8A8B6', '#FF7AAB', '#3D001C', '#6E2044', '#FFD4E4', '#FFB4AB', '#FF7AAB');
+      const duskLight = new ThemeScheme('#F9F3F6', '#FFFFFF', '#F8ECF1', '#F3E4EC',
+        '#241820', '#5C4250', '#A00048', '#FFFFFF', '#FFEEF3', '#5C0028', '#BA1A1A', '#A00048');
       // ---- nord ----
-      const nordDark = new ThemeScheme('#2E3440', '#3E4756', '#414C5C', '#90939A',
-        '#ECEFF4', '#ECEFF4', '#88C0D0', '#2E3440', '#88C0D0', '#2E3440', '#FFB4AB', '#81A1C1');
-      const nordLight = new ThemeScheme('#ECEFF4', '#D6DCE6', '#DAE0EA', '#D8DEE9',
-        '#2E3440', '#2E3440', '#5E81AC', '#000000', '#5E81AC', '#000000', '#BA1A1A', '#81A1C1');
+      const nordDark = new ThemeScheme('#2E3440', '#3B4252', '#434C5E', '#616E88',
+        '#ECEFF4', '#D8DEE9', '#9AD4E2', '#1E2834', '#3E6A78', '#E4F6F8', '#F2B4B8', '#A3C0DC');
+      const nordLight = new ThemeScheme('#F3F4F8', '#FFFFFF', '#ECF0F4', '#E5E9EE',
+        '#2E3440', '#4C566A', '#3A587E', '#FFFFFF', '#EFF2F7', '#2E3440', '#9A3E46', '#3A587E');
       // ---- strawberry_daiquiri ----
-      const strawDark = new ThemeScheme('#201A1A', '#302525', '#322727', '#594042',
-        '#F7DCDD', '#E1BEC0', '#FFB2B8', '#67001D', '#D53855', '#FFFFFF', '#FFB4AB', '#ED4A65');
-      const strawLight = new ThemeScheme('#FAFAFA', '#FDE2E3', '#F6EAED', '#E1BEC0',
-        '#261819', '#594042', '#A10833', '#FFFFFF', '#D53855', '#FFFFFF', '#BA1A1A', '#A10833');
+      const strawDark = new ThemeScheme('#1C1414', '#302222', '#402E2E', '#6E5254',
+        '#F8E0E0', '#D4B0B4', '#FFC0C4', '#5C1824', '#6E2834', '#FFDCE0', '#FFB4AB', '#FF8A98');
+      const strawLight = new ThemeScheme('#FBF3F3', '#FFFFFF', '#FAEBEC', '#F5E4E7',
+        '#261819', '#68444A', '#920628', '#FFFFFF', '#FDEFF1', '#6A0422', '#B42330', '#920628');
       // ---- tako ----
-      const takoDark = new ThemeScheme('#21212E', '#262636', '#2A2A3C', '#49454F',
-        '#E3E0F2', '#CBC4CE', '#F3B375', '#38294E', '#F3B375', '#38294E', '#FFB4AB', '#F3B375');
-      const takoLight = new ThemeScheme('#F7F5FF', '#DFD8E2', '#E8E0EB', '#CAC4D0',
-        '#1B1B22', '#49454E', '#66577E', '#F3B375', '#66577E', '#F3B375', '#BA1A1A', '#66577E');
+      const takoDark = new ThemeScheme('#1A1A26', '#282836', '#343448', '#564E6A',
+        '#E8E4F4', '#B8B0C6', '#F6C08A', '#3A2410', '#5A4030', '#FFE6CC', '#FFB4AB', '#F6C08A');
+      const takoLight = new ThemeScheme('#F6F3FA', '#FFFFFF', '#F2EDF8', '#ECE6F2',
+        '#1B1B22', '#524860', '#463268', '#FFE4C6', '#F5F0FA', '#3A2858', '#BA1A1A', '#463268');
       // ---- teal_turquoise ----
-      const tealDark = new ThemeScheme('#202125', '#222F31', '#233133', '#49454F',
-        '#DFDEDA', '#DFDEDA', '#40E0D0', '#000000', '#40E0D0', '#000000', '#FFB4AB', '#40E0D0');
-      const tealLight = new ThemeScheme('#FAFAFA', '#E6EEEC', '#EBF3F1', '#CAC4D0',
-        '#050505', '#050505', '#008080', '#FFFFFF', '#008080', '#FFFFFF', '#BA1A1A', '#008080');
+      const tealDark = new ThemeScheme('#12181A', '#1C2C2E', '#264044', '#4A6864',
+        '#E4F2F0', '#B4C8C4', '#62E8D8', '#042422', '#0E4E4A', '#C8FFF4', '#FFB4AB', '#62E8D8');
+      const tealLight = new ThemeScheme('#EEF5F4', '#FFFFFF', '#E7F1EF', '#DFEBE9',
+        '#10201E', '#3A524E', '#006864', '#FFFFFF', '#E8F4F3', '#044444', '#BA1A1A', '#006864');
       // ---- tidal_wave ----
-      const tidalDark = new ThemeScheme('#001C3B', '#072947', '#082B4B', '#49454F',
-        '#D5E3FF', '#BFC8CC', '#5ED4FC', '#003544', '#004D61', '#B8EAFF', '#FFB4AB', '#5ED4FC');
-      const tidalLight = new ThemeScheme('#FDFBFF', '#E5ECF1', '#E8EFF5', '#CAC4D0',
-        '#001C3B', '#40484C', '#006780', '#FFFFFF', '#B4D4DF', '#001F28', '#BA1A1A', '#006780');
+      const tidalDark = new ThemeScheme('#001428', '#0A3058', '#12406C', '#3A6484',
+        '#D8E6FF', '#B4C8D6', '#6AD8FC', '#003544', '#085878', '#C8F2FF', '#FFB4AB', '#6AD8FC');
+      const tidalLight = new ThemeScheme('#EFF5FA', '#FFFFFF', '#E7F0F7', '#E0EBF1',
+        '#001C3B', '#384852', '#005870', '#FFFFFF', '#E9F4F9', '#003444', '#BA1A1A', '#005870');
       // ---- yin_yang ----
-      const yinDark = new ThemeScheme('#1E1E1E', '#2D2D2D', '#313131', '#49454F',
-        '#E6E6E6', '#D1D1D1', '#FFFFFF', '#5A5A5A', '#FFFFFF', '#000000', '#FFB4AB', '#FFFFFF');
-      const yinLight = new ThemeScheme('#FDFDFD', '#DADADA', '#E8E8E8', '#CAC4D0',
-        '#222222', '#515151', '#000000', '#FFFFFF', '#000000', '#FFFFFF', '#BA1A1A', '#000000');
+      const yinDark = new ThemeScheme('#121212', '#1E1E1E', '#2A2A2A', '#4A4A4A',
+        '#F2F2F2', '#C4C4C4', '#FFFFFF', '#1A1A1A', '#E8E8E8', '#1A1A1A', '#FFB4AB', '#FFFFFF');
+      const yinLight = new ThemeScheme('#F4F4F4', '#FFFFFF', '#EEEEEE', '#E8E8E8',
+        '#1A1A1A', '#555555', '#111111', '#FFFFFF', '#F2F2F2', '#1A1A1A', '#B4232A', '#111111');
       // ---- yotsuba ----
-      const yotsDark = new ThemeScheme('#211A18', '#312521', '#332723', '#49454F',
-        '#EDE0DD', '#D8C2BC', '#FFB59D', '#5F1600', '#862200', '#FFDBCF', '#FFB4AB', '#FFB59D');
-      const yotsLight = new ThemeScheme('#FCFCFC', '#F1E7E4', '#F6EBE7', '#CAC4D0',
-        '#211A18', '#53433F', '#AE3200', '#FFFFFF', '#FFDBCF', '#3B0A00', '#BA1A1A', '#AE3200');
+      const yotsDark = new ThemeScheme('#1A1412', '#2E221C', '#3C2C26', '#6A544A',
+        '#F4E8E2', '#D0B8AE', '#FFC0AA', '#5A1600', '#7A3018', '#FFE0D4', '#FFB4AB', '#FFC0AA');
+      const yotsLight = new ThemeScheme('#F8F3F1', '#FFFFFF', '#F6EDEA', '#F1E6E3',
+        '#211A18', '#58443E', '#962C00', '#FFFFFF', '#FFEFE8', '#581400', '#BA1A1A', '#962C00');
       // ---- tokyo_night ----
-      const tokyoDark = new ThemeScheme('#222436', '#292C44', '#2D304B', '#444A73',
-        '#C8D3F5', '#828BB8', '#82AAFF', '#1B1D2B', '#444A73', '#9AB8FF', '#FF757F', '#86E1FC');
-      const tokyoLight = new ThemeScheme('#E1E2E7', '#D0D5E3', '#C1C9DF', '#A8AECB',
-        '#3760BF', '#6172B0', '#2E7DE9', '#FFFFFF', '#92A6D5', '#15386A', '#F52A65', '#007197');
-      // ---- monochrome（深色即纯黑，AMOLED 与深色一致）----
-      const monoDark = new ThemeScheme('#000000', '#000000', '#000000', '#FFFFFF',
-        '#FFFFFF', '#FFFFFF', '#FFFFFF', '#000000', '#FFFFFF', '#000000', '#FFFFFF', '#FFFFFF');
-      const monoLight = new ThemeScheme('#FFFFFF', '#FFFFFF', '#FFFFFF', '#000000',
-        '#000000', '#000000', '#000000', '#FFFFFF', '#000000', '#FFFFFF', '#000000', '#000000');
+      const tokyoDark = new ThemeScheme('#1E2030', '#292C44', '#343858', '#4A5080',
+        '#C8D3F5', '#A8B0D8', '#96BAFF', '#1A1E30', '#3A4478', '#D8E6FF', '#FF8A92', '#8EE4FC');
+      const tokyoLight = new ThemeScheme('#F2F4F8', '#FFFFFF', '#ECEFF8', '#E5E9F2',
+        '#1A3F86', '#4A5E90', '#1560C8', '#FFFFFF', '#ECF2FD', '#0E3878', '#C01040', '#0C6A88');
+      // ---- monochrome（深色保留灰阶层次，AMOLED 再压成纯黑）----
+      const monoDark = new ThemeScheme('#000000', '#161616', '#242424', '#3A3A3A',
+        '#FFFFFF', '#B5B5B5', '#FFFFFF', '#000000', '#2E2E2E', '#FFFFFF', '#FFFFFF', '#FFFFFF');
+      const monoLight = new ThemeScheme('#F4F4F4', '#FFFFFF', '#EEEEEE', '#E8E8E8',
+        '#111111', '#555555', '#111111', '#FFFFFF', '#F1F1F1', '#111111', '#111111', '#111111');
       // ---- green_apple ----
-      const appleDark = new ThemeScheme('#0F1510', '#181D18', '#1C211C', '#3F493F',
-        '#DFE4DB', '#BECABC', '#7ADB8F', '#003917', '#017737', '#FFFFFF', '#FFB4AB', '#7ADB8F');
-      const appleLight = new ThemeScheme('#F6FBF2', '#F0F5EC', '#EAEFE6', '#BECABC',
-        '#181D18', '#3F493F', '#005927', '#FFFFFF', '#188140', '#FFFFFF', '#BA1A1A', '#005927');
+      const appleDark = new ThemeScheme('#0E1510', '#1A2820', '#24362A', '#3E5646',
+        '#E4F0E6', '#B4C8B6', '#7EDC92', '#063018', '#145C30', '#D8F8E0', '#FFB4AB', '#7EDC92');
+      const appleLight = new ThemeScheme('#EFF6ED', '#FFFFFF', '#E8F1E6', '#E0EBDE',
+        '#142016', '#3C5244', '#0C642E', '#FFFFFF', '#E9F5EC', '#084020', '#BA1A1A', '#0C642E');
       // ---- lavender ----
-      const lavDark = new ThemeScheme('#111129', '#171531', '#1D193B', '#4A4453',
-        '#E7E0EC', '#CBC3D6', '#A177FF', '#3D0090', '#A177FF', '#FFFFFF', '#FFB4AB', '#A177FF');
-      const lavLight = new ThemeScheme('#EDE2FF', '#DED0F1', '#E4D5F8', '#CBC3D6',
-        '#1D1A22', '#4A4453', '#6D41C8', '#FFFFFF', '#7B46AF', '#130038', '#BA1A1A', '#7B46AF');
+      const lavDark = new ThemeScheme('#100E22', '#1E1A36', '#2A2448', '#4E4670',
+        '#EDE6F6', '#C4B8D4', '#C9B0FF', '#2A0858', '#3A2878', '#E8DCFF', '#FFB4AB', '#C9B0FF');
+      const lavLight = new ThemeScheme('#F7F2FC', '#FFFFFF', '#F2EDFA', '#EDE6F5',
+        '#1D1A22', '#524860', '#552EA6', '#FFFFFF', '#F5F0FD', '#3A1880', '#BA1A1A', '#552EA6');
       // ---- catppuccin ----
-      const catDark = new ThemeScheme('#181825', '#1E1E2E', '#1E1E2E', '#585B70',
-        '#CDD6F4', '#CDD6F4', '#CBA6F7', '#11111B', '#CBA6F7', '#11111B', '#F38BA8', '#B4BEFE');
-      const catLight = new ThemeScheme('#E6E9EF', '#EFF1F5', '#EFF1F5', '#ACB0BE',
-        '#4C4F69', '#4C4F69', '#8839EF', '#DCE0E8', '#8839EF', '#DCE0E8', '#D20F39', '#7287FD');
+      const catDark = new ThemeScheme('#11111B', '#1E1E2E', '#313244', '#585B70',
+        '#CDD6F4', '#A6ADC8', '#CBA6F7', '#11111B', '#3C3458', '#E8D8FF', '#F38BA8', '#89B4FA');
+      const catLight = new ThemeScheme('#E3E6ED', '#EFF1F5', '#DEE2E9', '#D9DCE4',
+        '#3C3F56', '#484C62', '#641EBC', '#FFFFFF', '#E8E1F6', '#401878', '#B8162C', '#3A4EBE');
       // ---- kanagawa（浮世绘：和纸 / 墨底 + 浪青）----
       const kanaDark = new ThemeScheme('#1F1F28', '#2A2A37', '#363646', '#54546D',
         '#DCD7BA', '#C4C0A8', '#A8C4F5', '#1A1B26', '#2A4060', '#D6E6FF', '#FF7B81', '#8FCBE0');
@@ -172,8 +172,8 @@ export class Theme {
       // ---- rose_pine（玫瑰松：暖纸底 + 鸢尾紫）----
       const roseDark = new ThemeScheme('#191724', '#2A2638', '#322C42', '#524E68',
         '#E0DEF4', '#B4AFC8', '#D4B8F5', '#1E1630', '#3A3054', '#F0E4FF', '#FF8FA8', '#8FD4DE');
-      const roseLight = new ThemeScheme('#F6EBE1', '#FFF9F4', '#F3E6DB', '#E4D3C6',
-        '#3E3654', '#6A6478', '#6B4C8A', '#FFF9F4', '#E6D4F4', '#4A2E68', '#A33B55', '#1F6A78');
+      const roseLight = new ThemeScheme('#F8EDE4', '#FFF9F4', '#F5E9DE', '#EEE2D8',
+        '#3E3654', '#6A6478', '#6B4C8A', '#FFF9F4', '#F5EAF4', '#4A2E68', '#A33B55', '#1F6A78');
       // ---- gruvbox（暖褐：复古纸色 + 琥珀橙）----
       const gruvDark = new ThemeScheme('#282828', '#32302F', '#3C3836', '#665C54',
         '#EBDBB2', '#C4B596', '#FEA040', '#2A1A08', '#5A3A18', '#FFE0B8', '#FF7A6A', '#8EC4C4');
@@ -182,28 +182,28 @@ export class Theme {
       // ---- dracula（德古拉：夜紫）----
       const dracDark = new ThemeScheme('#282A36', '#313244', '#3A3C52', '#6272A4',
         '#F8F8F2', '#C8CAD6', '#D0B0FF', '#24183A', '#4A3A72', '#F3E8FF', '#FF6E6E', '#8BE9FD');
-      const dracLight = new ThemeScheme('#EFEDF6', '#FFFFFF', '#E6E3F2', '#D2CEE2',
-        '#282A36', '#5C6080', '#5A3EAE', '#FFFFFF', '#E0D4FA', '#3A2278', '#C42B45', '#0B6E86');
+      const dracLight = new ThemeScheme('#F5F3F9', '#FFFFFF', '#F0EEF7', '#E9E8F1',
+        '#282A36', '#5C6080', '#5A3EAE', '#FFFFFF', '#F5F0FD', '#3A2278', '#C42B45', '#0B6E86');
       // ---- matcha（抹茶：偏黄的茶绿）----
       const matchaDark = new ThemeScheme('#141A12', '#222C1C', '#2A3622', '#4A5A40',
         '#E4EDD8', '#B4C4A4', '#C6DE78', '#1A2408', '#314218', '#E8F4B8', '#FF8A7A', '#8FCBB8');
-      const matchaLight = new ThemeScheme('#E8EEDC', '#FFFFFF', '#DCE6CC', '#C6D4B4',
-        '#1C2414', '#55634A', '#3E6B22', '#F4F8EC', '#D0E4B4', '#2A4C16', '#B33A32', '#1F6A58');
+      const matchaLight = new ThemeScheme('#F2F6EB', '#FFFFFF', '#ECF1E3', '#E4EBDC',
+        '#1C2414', '#55634A', '#3E6B22', '#F4F8EC', '#EDF4E2', '#2A4C16', '#B33A32', '#1F6A58');
       // ---- sakura（樱：淡粉）----
       const sakuraDark = new ThemeScheme('#120C10', '#261820', '#321E28', '#5C4050',
         '#F8E8EE', '#D4B4C0', '#F5B0CC', '#3A1020', '#5A2840', '#FFE0EC', '#FF8A96', '#D4B0E8');
-      const sakuraLight = new ThemeScheme('#FFF1F4', '#F6DCE4', '#EEC8D4', '#E2B8C6',
-        '#2C161C', '#6E4C5A', '#A32050', '#FFFFFF', '#F0B8CE', '#7A1438', '#C42B3E', '#6A3E96');
+      const sakuraLight = new ThemeScheme('#FFF1F4', '#FFFFFF', '#F9ECF0', '#F4E4EA',
+        '#2C161C', '#6E4C5A', '#A32050', '#FFFFFF', '#FCEEF4', '#7A1438', '#C42B3E', '#6A3E96');
       // ---- kintsugi（金缮：陶黑 / 素瓷 + 金）----
       const kintDark = new ThemeScheme('#141210', '#26221C', '#302A22', '#564C40',
         '#F4EEE4', '#C8BBA6', '#F0C36A', '#2A1C06', '#4A3814', '#FFE8B8', '#FF8A78', '#9EC0D4');
-      const kintLight = new ThemeScheme('#EFE8DC', '#FFFFFF', '#E7D8C0', '#D8C8B0',
-        '#1E1A14', '#645C4E', '#7A4E0C', '#FFF8EC', '#F0D6A4', '#5C3A08', '#B33A32', '#2E5E80');
+      const kintLight = new ThemeScheme('#F7F3ED', '#FFFFFF', '#F5EEE4', '#EEE7DD',
+        '#1E1A14', '#645C4E', '#7A4E0C', '#FFF8EC', '#FAF2E1', '#5C3A08', '#B33A32', '#2E5E80');
       // ---- glacier（冰川：冷调冰青）----
       const glacDark = new ThemeScheme('#0E161C', '#1C2832', '#243440', '#3E5666',
         '#E6F2F6', '#B0C6D2', '#8EE0F4', '#042028', '#1A4454', '#D4F4FC', '#FF8A86', '#B4D0F0');
-      const glacLight = new ThemeScheme('#E7F1F6', '#FFFFFF', '#D5E6EF', '#C0D4E0',
-        '#102028', '#4E6674', '#0C6480', '#F4FBFD', '#C8E6F0', '#084456', '#B33A3A', '#2A5688');
+      const glacLight = new ThemeScheme('#EEF5F9', '#FFFFFF', '#E7F1F6', '#E0EAF0',
+        '#102028', '#4E6674', '#0C6480', '#F4FBFD', '#E8F4F9', '#084456', '#B33A3A', '#2A5688');
       Theme.themeList = [
         new AppThemeDef('default', $r('app.string.theme_name_default'), defLight, defDark, defAmoled),
         new AppThemeDef('tachiyomi', $r('app.string.theme_name_tachiyomi'),
@@ -227,7 +227,7 @@ export class Theme {
         new AppThemeDef('tokyo_night', $r('app.string.theme_name_tokyo_night'),
           tokyoLight, tokyoDark, amoledVariant(tokyoDark)),
         new AppThemeDef('monochrome', $r('app.string.theme_name_monochrome'),
-          monoLight, monoDark, monoDark),
+          monoLight, monoDark, amoledVariant(monoDark)),
         new AppThemeDef('green_apple', $r('app.string.theme_name_green_apple'),
           appleLight, appleDark, amoledVariant(appleDark)),
         new AppThemeDef('lavender', $r('app.string.theme_name_lavender'),

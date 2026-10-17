@@ -13,6 +13,7 @@ import { ContentType, DownloadedChapter, DownloadedManga, DownloadTask, SPage, S
 import { ChapterRepo, MangaRepo } from './Repos';
 import { Settings } from '../common/Settings';
 import { NetworkMonitor } from '../common/NetworkMonitor';
+import { HlsDownloader } from '../common/HlsDownloader';
 
 // 拆分超长条漫图片的高度阈值（对齐 Mihon optimalImageHeight ≈ 屏幕高度*2）
 const TALL_IMAGE_LIMIT = 8000;
@@ -414,13 +415,18 @@ export class DownloadService {
   }
 
   static localVideo(mangaId: number, chapterId: number): string {
-    const path = `${DownloadService.chapterDir(mangaId, chapterId)}/video.mp4`;
-    try {
-      if (DownloadService.rootDir !== '' && fileIo.accessSync(path)) {
-        return path;
+    const dir = DownloadService.chapterDir(mangaId, chapterId);
+    // 直链下载产物为 video.mp4，m3u8(MPEG-TS) 合并产物为 video.ts
+    const names: string[] = ['video.mp4', 'video.ts'];
+    for (const name of names) {
+      const path = `${dir}/${name}`;
+      try {
+        if (DownloadService.rootDir !== '' && fileIo.accessSync(path)) {
+          return path;
+        }
+      } catch (e) {
+        throw new Error(`check local video failed: ${e}`);
       }
-    } catch (e) {
-      throw new Error(`check local video failed: ${e}`);
     }
     return '';
   }
@@ -433,7 +439,7 @@ export class DownloadService {
       }
       const files = fileIo.listFileSync(dir);
       const pages = files.filter((f: string) => f !== 'done.mark' && f !== 'chapter.txt' &&
-        f !== 'video.mp4' && f !== 'chapter.cbz' && f !== 'extract.ok').sort();
+        f !== 'video.mp4' && f !== 'video.ts' && f !== 'chapter.cbz' && f !== 'extract.ok').sort();
       const result: string[] = [];
       for (const f of pages) {
         result.push(`${dir}/${f}`);
@@ -945,6 +951,10 @@ export class DownloadService {
     if (flags.blocked) {
       throw new Error('network_blocked');
     }
+    if (videos.length === 0) {
+      throw new Error('video_no_streams');
+    }
+    // 优先直链（单文件 + 系统级断点续传），无直链回退 m3u8 走 HLS 下载管线
     let chosen: SVideo | undefined = undefined;
     for (let i = 0; i < videos.length; i++) {
       if (!ContentType.isPlaylist(videos[i].url)) {
@@ -952,18 +962,23 @@ export class DownloadService {
         break;
       }
     }
-    if (chosen === undefined) {
-      throw new Error('stream_only');
-    }
-    if (DownloadService.context === undefined) {
-      throw new Error('download_not_ready');
-    }
     const dir = DownloadService.chapterDir(task.mangaId, task.chapterId);
-    const path = `${dir}/video.mp4`;
     try {
       if (!fileIo.accessSync(dir)) {
         fileIo.mkdirSync(dir, true);
       }
+    } catch (e) {
+      throw new Error(`prepare video file failed: ${e}`);
+    }
+    if (chosen === undefined) {
+      await DownloadService.downloadHls(task, videos[0], dir, flags);
+      return;
+    }
+    if (DownloadService.context === undefined) {
+      throw new Error('download_not_ready');
+    }
+    const path = `${dir}/video.mp4`;
+    try {
       if (fileIo.accessSync(path)) {
         fileIo.unlinkSync(path);
       }
@@ -991,6 +1006,52 @@ export class DownloadService {
     } finally {
       DownloadService.activeAborts.delete(task.chapterId);
     }
+    if (flags.cancelled) {
+      throw new Error('download_cancelled');
+    }
+    if (flags.blocked) {
+      throw new Error('network_blocked');
+    }
+    DownloadService.markDone(dir);
+    if (DownloadService.doneIds !== undefined) {
+      DownloadService.doneIds.add(task.chapterId);
+    }
+    task.progress = 1;
+    task.state = 2;
+  }
+
+  // m3u8 下载：HLS 管线（解析 → 多码率选择 → 分片下载 → AES-128 解密 → 合并），
+  // 进度按分片计数（total/progress 为分片数）
+  private static async downloadHls(task: DownloadTask, stream: SVideo, dir: string,
+    flags: DlFlags): Promise<void> {
+    // 清理上次中断留下的半截产物，避免与本次输出（video.ts/video.mp4）混存
+    const staleFiles: string[] = ['video.mp4', 'video.ts'];
+    for (const stale of staleFiles) {
+      try {
+        if (fileIo.accessSync(`${dir}/${stale}`)) {
+          fileIo.unlinkSync(`${dir}/${stale}`);
+        }
+      } catch (_e) {
+      }
+    }
+    task.total = 0;
+    task.progress = 0;
+    await HlsDownloader.download(stream.url, stream.headers, dir,
+      (done: number, total: number): void => {
+        task.total = total;
+        task.progress = done;
+        DownloadService.notify();
+        DownloadService.publishBgProgress(false);
+      },
+      (): string => {
+        if (flags.cancelled) {
+          return 'cancelled';
+        }
+        if (flags.blocked) {
+          return 'blocked';
+        }
+        return '';
+      });
     if (flags.cancelled) {
       throw new Error('download_cancelled');
     }

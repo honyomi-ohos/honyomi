@@ -598,7 +598,7 @@
     },
     {
       "name": "categories_hint",
-      "value": "長按分類可重新命名或刪除；刪除後其中的漫畫會移回「預設」分類"
+      "value": "長按分類可重新命名或刪除；刪除後其中的作品會移回「預設」分類"
     },
     {
       "name": "dialog_pick_category",
@@ -622,7 +622,7 @@
     },
     {
       "name": "library_empty",
-      "value": "書架為空，去瀏覽頁新增漫畫吧"
+      "value": "書架為空，去瀏覽頁新增作品吧"
     },
     {
       "name": "updates_title",
@@ -690,11 +690,11 @@
     },
     {
       "name": "browse_search_hint",
-      "value": "搜尋漫畫…"
+      "value": "搜尋作品…"
     },
     {
       "name": "browse_no_results",
-      "value": "沒有找到漫畫"
+      "value": "沒有找到作品"
     },
     {
       "name": "browse_load_failed",
@@ -1286,7 +1286,7 @@
     },
     {
       "name": "advanced_restored_manga",
-      "value": "已還原 %d 部漫畫"
+      "value": "已還原 %d 部作品"
     },
     {
       "name": "advanced_import_failed",
@@ -1666,11 +1666,11 @@
     },
     {
       "name": "migrate_search_hint",
-      "value": "搜尋目標來源中的漫畫"
+      "value": "搜尋目標來源中的作品"
     },
     {
       "name": "migrate_confirm_title",
-      "value": "遷移到該漫畫？"
+      "value": "遷移到該作品？"
     },
     {
       "name": "migrate_item_done",
@@ -1702,7 +1702,7 @@
     },
     {
       "name": "card_recent_desc",
-      "value": "快速繼續最近閱讀的漫畫"
+      "value": "快速繼續最近閱讀的作品"
     },
     {
       "name": "card_updates_display",
@@ -1738,7 +1738,7 @@
     },
     {
       "name": "card_manga_display",
-      "value": "漫畫卡片"
+      "value": "作品卡片"
     },
     {
       "name": "card_manga_desc",
@@ -1746,7 +1746,7 @@
     },
     {
       "name": "card_manga_empty",
-      "value": "從漫畫詳情頁新增到桌面"
+      "value": "從作品詳情頁新增到桌面"
     },
     {
       "name": "detail_add_to_desktop",
@@ -1794,7 +1794,7 @@
     },
     {
       "name": "card_upcoming_desc",
-      "value": "書架漫畫的預計更新日曆"
+      "value": "書架作品的預計更新日曆"
     },
     {
       "name": "card_upcoming_header",
@@ -1802,7 +1802,7 @@
     },
     {
       "name": "card_empty_upcoming",
-      "value": "書架內沒有連載中的漫畫"
+      "value": "書架內沒有連載中的作品"
     },
     {
       "name": "ext_install_local",
@@ -1826,7 +1826,7 @@
     },
     {
       "name": "ext_uninstall_msg",
-      "value": "確定要解除安裝「%s」嗎？書架中的漫畫資料會保留"
+      "value": "確定要解除安裝「%s」嗎？書架中的作品資料會保留"
     },
     {
       "name": "ext_detail_sources",
@@ -1894,7 +1894,7 @@
     },
     {
       "name": "action_remove_from_library_msg",
-      "value": "確定要從書架移除選取的 %d 部漫畫嗎？"
+      "value": "確定要從書架移除選取的 %d 部作品嗎？"
     },
     {
       "name": "action_download_queued",
@@ -1906,7 +1906,7 @@
     },
     {
       "name": "library_no_match",
-      "value": "沒有符合的漫畫"
+      "value": "沒有符合的作品"
     },
     {
       "name": "lib_sheet_tab_filter",

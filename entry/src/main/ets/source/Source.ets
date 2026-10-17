@@ -1,6 +1,6 @@
-import { MangasPage, SChapter, SManga, SPage, SVideo } from '../model/Models';
+import { SChapter, SManga, SPage, SVideo, WorksPage } from '../model/Models';
 
-// 源抽象接口。contentType 为 manga / novel / video，缺省实现视为漫画。
+// 源抽象接口。contentType 为 manga / novel / video，缺省 manga。
 // 漫画走 getPageList；小说走 getChapterText；视频走 getVideoList。宿主只按类型调用。
 export interface Source {
   readonly key: string;
@@ -15,16 +15,16 @@ export interface Source {
   // 源图标（file:// 路径或网络 URL）；空字符串表示无图标，由 UI 回退首字母
   readonly iconPath: string;
 
-  getPopularManga(page: number): Promise<MangasPage>;
+  getPopularWorks(page: number): Promise<WorksPage>;
 
   // 最新更新（supportsLatest 为 false 时宿主不会调用）
-  getLatestManga(page: number): Promise<MangasPage>;
+  getLatestWorks(page: number): Promise<WorksPage>;
 
-  getSearchManga(page: number, query: string): Promise<MangasPage>;
+  getSearchWorks(page: number, query: string): Promise<WorksPage>;
 
-  getMangaDetail(mangaKey: string): Promise<SManga>;
+  getWorkDetail(workKey: string): Promise<SManga>;
 
-  getChapterList(mangaKey: string): Promise<SChapter[]>;
+  getChapterList(workKey: string): Promise<SChapter[]>;
 
   getPageList(chapterKey: string): Promise<SPage[]>;
 

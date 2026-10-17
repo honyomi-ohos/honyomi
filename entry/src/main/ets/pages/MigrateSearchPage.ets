@@ -1,7 +1,7 @@
 import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
 import { Source, SourceRegistry } from '../source/Source';
-import { ContentType, MangaRecord, MangasPage, SManga } from '../model/Models';
+import { ContentType, MangaRecord, SManga, WorksPage } from '../model/Models';
 import { MigrateSearchParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
@@ -69,8 +69,8 @@ export struct MigrateSearchPage {
     this.searching = true;
     this.results = [];
     try {
-      const result: MangasPage = await source.getSearchManga(1, this.query.trim());
-      this.results = await this.toRecords(source, result.mangas);
+      const result: WorksPage = await source.getSearchWorks(1, this.query.trim());
+      this.results = await this.toRecords(source, result.works);
     } catch (e) {
       Util.toastRes(this.getUIContext(), $r('app.string.browse_search_failed'),
         [Util.errText(this.getUIContext(), (e as Error).message)]);
@@ -86,7 +86,7 @@ export struct MigrateSearchPage {
     }
     this.busy = true;
     try {
-      const detail = await target.getMangaDetail(record.url);
+      const detail = await target.getWorkDetail(record.url);
       await MangaRepo.migrate(cur.id, target.key, record.url, detail, target.contentType);
       Util.toastRes(this.getUIContext(), $r('app.string.migrate_item_done'), [cur.title]);
       this.advance();

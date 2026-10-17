@@ -67,7 +67,7 @@ JSVM 引擎 (cpp/jsvm_engine.cpp, libjsvmengine.so)        ← 适配器层：�
 已声明 `settings` 的插件无需（也应删除）运行期 `getSettingsSchema`；可保留
 `setPreference` 作为引擎运行中的内存态同步钩子（宿主写入后 best-effort 转发，
 引擎未运行时静默跳过，绝不为此拉起引擎）。未声明 `settings` 的插件仍走运行期
-`getSettingsSchema` 回退路径（tachiyomi 编译产物兼容，§4.2）。
+`getSettingsSchema` 回退路径（§4.2）。
 
 ## 3. Source — 宿主内部接口（`source/Source.ets`）
 
@@ -76,12 +76,12 @@ JSVM 引擎 (cpp/jsvm_engine.cpp, libjsvmengine.so)        ← 适配器层：�
 
 | 方法 | 能力 |
 |---|---|
-| `getPopularManga(page)` | 热门列表（分页） |
-| `getLatestManga(page)` | 最新更新；`supportsLatest === false` 时宿主不调用 |
-| `getSearchManga(page, query)` | 搜索（分页） |
-| `getMangaDetail(mangaKey)` | 作品详情 |
-| `getChapterList(mangaKey)` | 章节列表 |
-| `getPageList(chapterKey)` | 漫画页图列表（按 contentType 调用） |
+| `getPopularWorks(page)` | 热门列表（分页） |
+| `getLatestWorks(page)` | 最新更新；`supportsLatest === false` 时宿主不调用 |
+| `getSearchWorks(page, query)` | 搜索（分页） |
+| `getWorkDetail(workKey)` | 作品详情 |
+| `getChapterList(workKey)` | 章节列表 |
+| `getPageList(chapterKey)` | 页图列表（`contentType === manga` 时调用） |
 | `getChapterText(chapterKey)` | 小说正文；非小说源返回空串 |
 | `getVideoList(chapterKey)` | 视频流列表（直链 / m3u8）；非视频源返回空数组 |
 | `imageRequestHeaders()` | 图片加载附加头；`undefined` = 系统 Image 直连 |
@@ -93,21 +93,19 @@ JSVM 引擎 (cpp/jsvm_engine.cpp, libjsvmengine.so)        ← 适配器层：�
 
 | kind | 导出位置 | 说明 |
 |---|---|---|
-| `tachiyomi` | `globalThis.tachiyomi.generated` | tachiyomi-js 编译产物；一个包可含多个源，调用时首参为 `sourceId`；`getManifest()` 列出源 |
 | `simple` | `module.exports` 或 `globalThis.extension` | 宿主式 DSL 插件（`plugins/catalog/*`，TypeScript 经工具链构建） |
 
-引擎对 simple 形态做方法名归一（`getPopular`→`getPopularManga`、
-`getChapters`→`getChapterList` 等，见 `bindHost`/`pickFn`）。
+引擎按规范方法名直接绑定，不接受旧名或缩写别名。
 
-### 4.2 宿主 → 插件方法表（经适配器归一后的规范名）
+### 4.2 宿主 → 插件方法表
 
 | 方法 | 必选性 | 能力 | 参数 | 返回（宽松 JSON） |
 |---|---|---|---|---|
-| `getPopularManga` | **必选** | 热门列表 | `(page)` | `{mangas: RawManga[], hasNextPage}` |
-| `getSearchManga` | **必选** | 搜索 | `(page, query)` | 同上 |
-| `getMangaDetail` | **必选** | 作品详情 | `(mangaKey)` | `RawManga`（无 key/url 时宿主报 `plugin_invalid_detail`） |
-| `getChapterList` | **必选** | 章节列表 | `(mangaKey)` | `RawChapter[]` |
-| `getLatestManga` | 可选 | 最新更新；导出后 `supportsLatest` 生效 | `(page)` | 同 popular |
+| `getPopularWorks` | **必选** | 热门列表 | `(page)` | `{works: RawWork[], hasNextPage}` |
+| `getSearchWorks` | **必选** | 搜索 | `(page, query)` | 同上 |
+| `getWorkDetail` | **必选** | 作品详情 | `(workKey)` | `RawWork`（无 key/url 时宿主报 `plugin_invalid_detail`） |
+| `getChapterList` | **必选** | 章节列表 | `(workKey)` | `RawChapter[]` |
+| `getLatestWorks` | 可选 | 最新更新；导出后 `supportsLatest` 生效 | `(page)` | 同 popular |
 | `getPageList` | manga **必选** | 页图列表 | `(chapterKey)` | `RawPage[]` |
 | `getChapterText` | novel **必选** | 章节正文（纯文本/简单 HTML） | `(chapterKey)` | `string` 或 `{text\|content}` |
 | `getVideoList` | video **必选** | 可播放流列表 | `(chapterKey)` | `RawVideo[]` |
@@ -116,7 +114,7 @@ JSVM 引擎 (cpp/jsvm_engine.cpp, libjsvmengine.so)        ← 适配器层：�
 | `getFilterList` | 可选 | 搜索过滤器声明（浏览页过滤面板） | `()` | `RawFilter[]` |
 | `applyFilterState` | 可选 | 应用过滤面板状态 | `(stateJson)` | 任意 |
 | `resetFilters` | 可选 | 重置过滤状态 | `()` | 任意 |
-| `getSettingsSchema` | 可选（legacy） | 运行期设置 schema；**仅作 manifest 未声明 `settings` 时的回退**（tachiyomi 编译产物等），查看/修改设置需拉起引擎 | `()` | `SourcePrefItem[]`（可包 JSON 字符串） |
+| `getSettingsSchema` | 可选（legacy） | 运行期设置 schema；**仅作 manifest 未声明 `settings` 时的回退**，查看/修改设置需拉起引擎 | `()` | `SourcePrefItem[]`（可包 JSON 字符串） |
 | `setPreference` | 可选 | 引擎运行中的设置写入同步钩子：宿主直写持久化后 best-effort 转发，同步插件内存态；引擎未运行时静默跳过 | `(key, value)` | 任意 |
 
 **未导出必需方法的行为**：`contentType === 'novel'` 缺 `getChapterText` →
@@ -125,9 +123,9 @@ JSVM 引擎 (cpp/jsvm_engine.cpp, libjsvmengine.so)        ← 适配器层：�
 
 ### 4.3 返回模型（宽松字段 → 宿主模型，`JsvmSource.ets`）
 
-| 模型 | 宽松字段（兼容 tachiyomi 编译产物） | 归一目标 |
+| 模型 | 宽松字段 | 归一目标 |
 |---|---|---|
-| RawManga | `key\|url`, `title`, `coverUrl\|thumbnailUrl`, `author\|artist`, `description`, `genre` (string\|string[]), `status` (tachiyomi 枚举 1–6 \| 字符串) | `SManga` |
+| RawWork | `key\|url`, `title`, `coverUrl\|thumbnailUrl`, `author\|artist`, `description`, `genre` (string\|string[]), `status` (数字 1–6 \| 字符串) | `SManga` |
 | RawChapter | `key\|url`, `name`, `chapterNumber`, `dateUpload`, `scanlator`, `pages`, `sortOrder`（缺省用数组下标） | `SChapter` |
 | RawPage | `index`, `url`, `imageUrl`, `pageUrl` | `SPage` |
 | RawVideo | `url`, `quality`（缺省序号）, `headers` | `SVideo`（`url` 为空丢弃） |
@@ -141,7 +139,7 @@ JSVM 引擎 (cpp/jsvm_engine.cpp, libjsvmengine.so)        ← 适配器层：�
 | API | 能力 |
 |---|---|
 | `console.log/warn/error` | 日志回收（hilog） |
-| `fetchBytes` / `tachiyomiHttpRequest` | 唯一网络出口：经 Worker → `NativeHttpBridge` → ArkTS `Http` 管线（UA/CookieJar/重定向合并）；编译型 tachiyomi 扩展走 `tachiyomiHttpRequest` |
+| `fetchBytes` | 字节网络出口：经 Worker → `NativeHttpBridge` → ArkTS `Http` 管线（UA/CookieJar/重定向合并）。文本请求走 `$.http` |
 | `querySelectorAll(html, cssQuery)` | lexbor 原生 CSS 选择器（支持 `:not`/`:has`） |
 
 raw native 桥（`__nativeHttpRequest(Shared)` / `nativeSelector(Buffer)` /
@@ -207,13 +205,15 @@ AES-CBC 的 pkcs7 解填充保持宽松，GCM 认证失败抛错）、
 
 - 插件可见全局收敛为：**标准 JS 内建 + 公开 DSL + CJS 约定**
   （`$`（含 `$.prefs`）/ `fetchBytes` / `querySelectorAll` /
-  `tachiyomiHttpRequest` / `crypto` / `URL` / `URLSearchParams` /
+  `crypto` / `URL` / `URLSearchParams` /
   `TextEncoder` / `TextDecoder` / `atob` / `btoa` / `console` / `module` /
   `exports` / `global`）；
 - raw native 桥（`__nativeHttpRequest(Shared)` / `nativeSelector(Buffer)` /
-  `__nativeLog` / `__nativeUrlEncodeGbk`）在 bootstrap/shim 初始化时捕获进
-  闭包并从全局删除；裸 `fetch` 同样移除（HTTP 一律走 `$.http`/`fetchBytes`，
-  编译型 tachiyomi 扩展走 `tachiyomiHttpRequest`）；
+  `__nativeLog` / `__nativeUrlEncodeGbk` / `__nativeRandomBytes`）由引擎用
+  `OH_JSVM_SetNamedProperty` 装成普通可配置属性（不用 `CreateEnv` 的
+  `JSVM_DEFAULT`：那是不可配置绑定，strict `delete` 会抛
+  `Cannot delete property '…'`，插件安装直接失败）。bootstrap/shim 捕获进
+  闭包后只删除可配置属性；裸 `fetch` 同样移除（HTTP 一律走 `$.http`/`fetchBytes`）；
 - raw prefs 桥（`__PREFS_STORE__`/`__prefs_*`/`__prefsDump`）在 shim 初始化时
   捕获进闭包并从全局删除——偏好能力仅经 `$.prefs` 提供（§5.3）；
 - shim 末尾按 `SURFACE_KEEP` 白名单兜底清理任何非公开契约的全局（含未来
@@ -227,7 +227,7 @@ AES-CBC 的 pkcs7 解填充保持宽松，GCM 认证失败抛错）、
 
 | 包 | 职责 |
 |---|---|
-| `@honyomi/plugin-sdk` | 作者面 API：`SourceExtension` 等契约类型、`defineExtension`、`createPrefs`、`mangaOf/chapterOf/pageOf/videoOf` 等模型助手、`$` DSL 全局类型声明 |
+| `@honyomi/plugin-sdk` | 作者面 API：`SourceExtension` 等契约类型、`defineExtension`、`createPrefs`、`workOf/chapterOf/pageOf/videoOf` 等模型助手、`$` DSL 全局类型声明 |
 | `@honyomi/plugin-test` | 测试 harness：Node `vm` 沙箱逐字加载真实 shim + 构建产物 `main.js`，`loadExtension()` 返回 `{ext, calls, prefs}`；`createFixtureFetch()` 按 `fixtures/index.json`（精确 URL 或 `/正则/`）回放本地文件 |
 | `@honyomi/plugin-tools` | CLI：`build [key...]`（esbuild 编译压缩全部插件为单文件 iife → `dist/catalog/<key>/main.js`，与源码分离）/ `publish` / `check` / `serve [dir] [--host 127.0.0.1\|0.0.0.0]`（缺省监听 0.0.0.0）；`register.mjs` 为 Node 提供 TS loader（enum 等完整语法直跑 `.ts`） |
 
@@ -241,7 +241,7 @@ import { createPrefs, defineExtension } from '@honyomi/plugin-sdk';
 import type { SourceExtension } from '@honyomi/plugin-sdk';
 
 const prefs = createPrefs();                       // 本扩展的扁平偏好存储
-const ext: SourceExtension = { /* getPopularManga / getSearchManga / ... */ };
+const ext: SourceExtension = { /* getPopularWorks / getSearchWorks / ... */ };
 defineExtension(ext);                            // 写宿主 module.exports
 ```
 
@@ -255,7 +255,7 @@ defineExtension(ext);                            // 写宿主 module.exports
 | 方向 | 消息 | 说明 |
 |---|---|---|
 | 宿主→Worker | `{"type":"init","code": seed+code}` | seed = 偏好回灌 prologue |
-| Worker→宿主 | `{"type":"ready","ok","kind","prefs"}` | kind = `tachiyomi` \| `simple` |
+| Worker→宿主 | `{"type":"ready","ok","kind","prefs"}` | kind = `simple` |
 | 宿主→Worker | `{"type":"call","seq","name","argsJson","prefsDirty"}` | `prefsDirty` = 方法名含 `pref`/`filter`（§7） |
 | Worker→宿主 | `{"type":"result","seq","ok","json","mem","prefs"}` | `mem` = JS 堆用量上报（看门狗） |
 | 宿主→Worker | `{"type":"destroy"}` → `{"type":"destroyed"}` | Worker 自退，3s terminate 安全网 |
@@ -285,8 +285,8 @@ READY 超时 30s；调用超时 190s（> native 180s pump 上限），超时判 
 |---|---|---|
 | 详情页路由（MangaDetail / NovelReader / VideoPlayer）、入库分类 | manifest `contentType` | `ContentType.normalize` |
 | NSFW 浏览/搜索隐藏 | manifest `nsfw` | 浏览/搜索过滤 |
-| `supportsLatest` | **混合**：manifest 声明 ∧ `__methods` 含 `getLatestManga` | `JsvmSource` 构造器 / `upgrade` |
-| 最新页缺方法回退热门 | `__methods` 探测 | `getLatestManga` |
+| `supportsLatest` | **混合**：manifest 声明 ∧ `__methods` 含 `getLatestWorks` | `JsvmSource` 构造器 / `upgrade` |
+| 最新页缺方法回退热门 | `__methods` 探测 | `getLatestWorks` |
 | 图片走宿主管线（带 Referer/Cookie） | `__methods` 含 `getHeaders`（warm 缓存 + 并发去重） | `warmImageHeaders` |
 | 图片由插件代取（base64） | `__methods` 含 `fetchImage` | `fetchPageImage` |
 | 设置页是否可配置 | **混合**：manifest `settings` 声明优先（零引擎），空则回退 `__methods` 含 `getSettingsSchema` | `ExtensionDetailPage.loadSchema` / `isConfigurable` |
@@ -300,8 +300,7 @@ READY 超时 30s；调用超时 190s（> native 180s pump 上限），超时判 
 
 1. **占位源**：千级插件只注册元数据、不拉引擎，安装期唯一可用信息就是 manifest
    ——这部分已经走 manifest（contentType/nsfw/name 等）；
-2. **tachiyomi 编译包**：一包一引擎多源，能力是 per-source 的，包级 manifest 表达不了；
-3. **可信度**：manifest 是作者声明、可能失真或过期；`__methods` 是对实际适配器对象
+2. **可信度**：manifest 是作者声明、可能失真或过期；`__methods` 是对实际适配器对象
    枚举出来的（`jsvm_engine.cpp` `__honyomiCall('__methods')`），自校验、不可谎报。
 
 ## 8. 相关文件索引

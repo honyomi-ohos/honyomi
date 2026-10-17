@@ -306,7 +306,7 @@
     },
     {
       "name": "categories_hint",
-      "value": "Przytrzymaj kategorię, aby zmienić nazwę lub usunąć; manga z usuniętej kategorii wraca do Domyślne"
+      "value": "Przytrzymaj kategorię, aby zmienić nazwę lub usunąć; tytuł z usuniętej kategorii wraca do Domyślne"
     },
     {
       "name": "dialog_pick_category",

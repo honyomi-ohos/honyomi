@@ -67,11 +67,11 @@ export class LocalSource extends LocalFsSource {
     }
   }
 
-  async getChapterList(mangaKey: string): Promise<SChapter[]> {
+  async getChapterList(workKey: string): Promise<SChapter[]> {
     // 递归收集章节条目相对路径（含卷级子目录），按层级自然排序
     const relEntries: string[] = [];
-    this.collectChapterEntries(`${this.rootDir()}/${mangaKey}`, '', relEntries);
-    return this.entriesToChapters(mangaKey, relEntries);
+    this.collectChapterEntries(`${this.rootDir()}/${workKey}`, '', relEntries);
+    return this.entriesToChapters(workKey, relEntries);
   }
 
   async getPageList(chapterKey: string): Promise<SPage[]> {

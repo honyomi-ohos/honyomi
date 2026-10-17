@@ -4,7 +4,7 @@ import { zlib } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { util } from '@kit.ArkTS';
 import { cryptoFramework } from '@kit.CryptoArchitectureKit';
-import { CompiledSourceInfo, JsvmSource, PluginManifest, SourcePrefItem, SourcePrefOption } from '../source/JsvmSource';
+import { JsvmSource, PluginManifest, SourcePrefItem, SourcePrefOption } from '../source/JsvmSource';
 import { EngineBackend, EngineGateway } from '../jsvm/EngineGateway';
 import { PluginPrefs } from '../jsvm/PluginPrefs';
 import { SourceRegistry } from '../source/Source';
@@ -19,7 +19,7 @@ const DOMAIN = 0x0002;
 const TAG = 'PluginService';
 
 // 最终注册源规格（引擎解析结果，持久化到 plugin.sourcesJson）：
-// spec.key 即 manga.sourceKey 引用的注册 key（多源包含子源 key）
+// spec.key 即 manga.sourceKey 引用的注册 key
 export interface SourceSpec {
   key: string;
   name: string;
@@ -28,7 +28,7 @@ export interface SourceSpec {
   nsfw: boolean;
   supportsLatest: boolean;
 
-  // tachiyomi 编译产物 source id；空字符串表示简单契约插件
+  // 空字符串。旧的多源记录可能带 source id，解析时保留。
   sourceId: string;
 }
 
@@ -554,19 +554,7 @@ export class PluginService {
     }
     const engine: EngineBackend = EngineGateway.require();
     const info = await engine.loadExtension(manifest.key, script, seed);
-    // tachiyomi 编译产物：读子源列表
-    let compiled: CompiledSourceInfo[] = [];
-    if (info.kind === 'tachiyomi' && info.methods.indexOf('getSources') >= 0) {
-      compiled = await PluginService.readCompiledSources(manifest.key);
-    }
-    // 同包已注册 key 不算占用：childKey 派生结果与占位源保持一致（key 稳定）
-    const ownKeys: string[] = [];
-    for (const source of SourceRegistry.all()) {
-      if (source instanceof JsvmSource && source.packageKey === manifest.key) {
-        ownKeys.push(source.key);
-      }
-    }
-    const specs = PluginService.resolveSpecs(manifest, info.methods, compiled, ownKeys);
+    const specs = PluginService.resolveSpecs(manifest);
     PluginService.syncRegistry(manifest, info.methods, specs);
     // 元数据落库（安装/升级/引擎重启均幂等覆盖）
     await PluginService.persistRecord(manifest, info.methods, specs);
@@ -922,8 +910,12 @@ export class PluginService {
     if (file.startsWith('https://')) {
       return file;
     }
-    const slash = indexUrl.lastIndexOf('/');
-    const base = slash >= 0 ? indexUrl.substring(0, slash + 1) : indexUrl;
+    // 相对基准取 indexUrl 最后一个路径斜杠之前；裸源地址（http://host:port，无路径）时
+    // lastIndexOf('/') 会命中协议分隔符吞掉主机名，此时基准应为根目录（补尾斜杠）
+    const schemeEnd = indexUrl.indexOf('://');
+    const pathStart = schemeEnd >= 0 ? schemeEnd + 3 : 0;
+    const base = indexUrl.indexOf('/', pathStart) < 0 ? `${indexUrl}/` :
+      indexUrl.substring(0, indexUrl.lastIndexOf('/') + 1);
     let rel = file;
     while (rel.startsWith('./')) {
       rel = rel.substring(2);
@@ -963,68 +955,8 @@ export class PluginService {
     }
   }
 
-  private static keyPart(raw: string): string {
-    const lower = raw.toLowerCase();
-    let out = '';
-    for (let i = 0; i < lower.length; i++) {
-      const c = lower.charAt(i);
-      const ok = (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9');
-      if (ok) {
-        out += c;
-      } else if (out !== '' && out.charAt(out.length - 1) !== '_') {
-        out += '_';
-      }
-    }
-    while (out.length > 0 && out.charAt(out.length - 1) === '_') {
-      out = out.substring(0, out.length - 1);
-    }
-    return out;
-  }
-
-  // 子源 key 派生：同包占位 key（ownKeys）不算占用，保证引擎重启/升级后 key 稳定
-  private static childKey(packageKey: string, src: CompiledSourceInfo, used: string[],
-    ownKeys: string[]): string {
-    const lang = PluginService.keyPart(src.lang ?? 'all');
-    let key = `${packageKey}_${lang !== '' ? lang : 'src'}`;
-    const taken = used.indexOf(key) >= 0 || ownKeys.indexOf(key) >= 0 ||
-      key === packageKey || SourceRegistry.get(key) !== undefined;
-    if (taken) {
-      const id = PluginService.keyPart(src.id ?? '0');
-      const suffix = id.length > 4 ? id.substring(id.length - 4) : (id !== '' ? id : '0');
-      key = `${key}_${suffix}`;
-    }
-    return key;
-  }
-
-  // 解析最终注册源规格：tachiyomi 编译产物多源（首个源沿用包 key，其余派生子源 key）；
-  // 简单契约插件单源直接用包 key
-  private static resolveSpecs(manifest: PluginManifest, methods: string[],
-    compiled: CompiledSourceInfo[], ownKeys: string[]): SourceSpec[] {
-    const specs: SourceSpec[] = [];
-    if (compiled.length > 0) {
-      const used: string[] = [manifest.key];
-      for (let i = 0; i < compiled.length; i++) {
-        const info = compiled[i];
-        const key = i === 0 ? manifest.key : PluginService.childKey(manifest.key, info, used, ownKeys);
-        used.push(key);
-        let supports = manifest.supportsLatest;
-        if (info.supportsLatest === true || info.supportsLatest === false) {
-          supports = info.supportsLatest;
-        }
-        const spec: SourceSpec = {
-          key: key,
-          name: info.name !== undefined && info.name !== '' ? info.name : manifest.name,
-          lang: info.lang !== undefined && info.lang !== '' ? info.lang : manifest.lang,
-          baseUrl: info.baseUrl !== undefined && info.baseUrl !== '' ? info.baseUrl : manifest.baseUrl,
-          // 单源声明 nsfw 时优先生效，否则继承包级 manifest.nsfw
-          nsfw: info.nsfw !== undefined ? info.nsfw : manifest.nsfw,
-          supportsLatest: supports,
-          sourceId: info.id !== undefined ? info.id : '',
-        };
-        specs.push(spec);
-      }
-      return specs;
-    }
+  // 一个包注册一个源，key 就是包 key。
+  private static resolveSpecs(manifest: PluginManifest): SourceSpec[] {
     const spec: SourceSpec = {
       key: manifest.key,
       name: manifest.name,
@@ -1034,6 +966,7 @@ export class PluginService {
       supportsLatest: manifest.supportsLatest,
       sourceId: '',
     };
+    const specs: SourceSpec[] = [];
     specs.push(spec);
     return specs;
   }
@@ -1200,24 +1133,6 @@ export class PluginService {
       }
     }
     return out;
-  }
-
-  private static async readCompiledSources(packageKey: string): Promise<CompiledSourceInfo[]> {
-    const engine = EngineGateway.get();
-    if (engine === undefined) {
-      return [];
-    }
-    try {
-      const raw = await engine.callData<object>(packageKey, 'getSources', []);
-      const text = JSON.stringify(raw);
-      const parsed = JSON.parse(text) as CompiledSourceInfo[];
-      if (Array.isArray(parsed)) {
-        return parsed;
-      }
-    } catch (e) {
-      hilog.warn(DOMAIN, TAG, 'getSources failed for %{public}s: %{public}s', packageKey, (e as Error).message);
-    }
-    return [];
   }
 
   // 插件图标 file:// 路径；包内无图标时返回空字符串

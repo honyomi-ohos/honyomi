@@ -282,11 +282,11 @@
     },
     {
       "name": "migrate_search_hint",
-      "value": "Search manga in the target source"
+      "value": "Search titles in the target source"
     },
     {
       "name": "migrate_confirm_title",
-      "value": "Migrate to this manga?"
+      "value": "Migrate to this title?"
     },
     {
       "name": "migrate_item_done",
@@ -326,7 +326,7 @@
     },
     {
       "name": "ext_uninstall_msg",
-      "value": "Uninstall \"%s\"? Manga in your library will be kept"
+      "value": "Uninstall \"%s\"? Titles in your library will be kept"
     },
     {
       "name": "ext_detail_sources",
@@ -394,7 +394,7 @@
     },
     {
       "name": "action_remove_from_library_msg",
-      "value": "Remove the selected %d manga from your library?"
+      "value": "Remove the selected %d titles from your library?"
     },
     {
       "name": "action_download_queued",
@@ -406,7 +406,7 @@
     },
     {
       "name": "library_no_match",
-      "value": "No matching manga"
+      "value": "No matching titles"
     },
     {
       "name": "lib_sheet_tab_filter",
@@ -634,7 +634,7 @@
     },
     {
       "name": "card_recent_desc",
-      "value": "Quickly resume recently read manga"
+      "value": "Quickly resume recently read titles"
     },
     {
       "name": "card_updates_display",
@@ -670,7 +670,7 @@
     },
     {
       "name": "card_manga_display",
-      "value": "Manga card"
+      "value": "Title card"
     },
     {
       "name": "card_manga_desc",
@@ -678,7 +678,7 @@
     },
     {
       "name": "card_manga_empty",
-      "value": "Add from a manga's details page"
+      "value": "Add from a title's details page"
     },
     {
       "name": "detail_add_to_desktop",
@@ -870,7 +870,7 @@
     },
     {
       "name": "card_upcoming_desc",
-      "value": "Expected update calendar for library manga"
+      "value": "Expected update calendar for library titles"
     },
     {
       "name": "card_upcoming_header",
@@ -878,7 +878,7 @@
     },
     {
       "name": "card_empty_upcoming",
-      "value": "No ongoing manga in your library"
+      "value": "No ongoing titles in your library"
     },
     {
       "name": "common_ok",
@@ -1194,7 +1194,7 @@
     },
     {
       "name": "categories_hint",
-      "value": "Tap a category to rename or delete it; long-press and drag to reorder; manga in a deleted category move back to Default"
+      "value": "Tap a category to rename or delete it; long-press and drag to reorder; titles in a deleted category move back to Default"
     },
     {
       "name": "dialog_pick_category",
@@ -1218,7 +1218,7 @@
     },
     {
       "name": "library_empty",
-      "value": "Your library is empty, browse to add manga"
+      "value": "Your library is empty, browse to add titles"
     },
     {
       "name": "updates_title",
@@ -1286,11 +1286,11 @@
     },
     {
       "name": "browse_search_hint",
-      "value": "Search manga…"
+      "value": "Search titles…"
     },
     {
       "name": "browse_no_results",
-      "value": "No manga found"
+      "value": "No titles found"
     },
     {
       "name": "browse_load_failed",
@@ -1890,7 +1890,7 @@
     },
     {
       "name": "advanced_restored_manga",
-      "value": "Restored %d manga"
+      "value": "Restored %d titles"
     },
     {
       "name": "advanced_import_failed",
@@ -2817,6 +2817,14 @@
       "value": "This video is streamed online and cannot be downloaded"
     },
     {
+      "name": "download_error_hls_live",
+      "value": "Live streams cannot be downloaded"
+    },
+    {
+      "name": "download_error_hls_encrypted",
+      "value": "Unsupported video stream encryption"
+    },
+    {
       "name": "download_error_not_ready",
       "value": "Download service not initialized"
     },
@@ -2978,7 +2986,7 @@
     },
     {
       "name": "plugin_error_invalid_detail",
-      "value": "The plugin returned invalid manga details"
+      "value": "The plugin returned invalid title details"
     },
     {
       "name": "plugin_error_no_chapter_text",

@@ -6,7 +6,7 @@
     },
     {
       "name": "honyomi_bg",
-      "value": "#F2F3F7"
+      "value": "#F2F4F8"
     },
     {
       "name": "honyomi_card",
@@ -14,11 +14,11 @@
     },
     {
       "name": "honyomi_chip",
-      "value": "#E9ECF2"
+      "value": "#ECF0F4"
     },
     {
       "name": "honyomi_divider",
-      "value": "#E5E7EB"
+      "value": "#E5E8ED"
     },
     {
       "name": "honyomi_text",
@@ -26,19 +26,19 @@
     },
     {
       "name": "honyomi_sub",
-      "value": "#6B7280"
+      "value": "#4C5A68"
     },
     {
       "name": "honyomi_badge_red",
-      "value": "#E5484D"
+      "value": "#BE2E38"
     },
     {
       "name": "honyomi_badge_blue",
-      "value": "#3D7DC8"
+      "value": "#2A5C9E"
     },
     {
       "name": "honyomi_primary_blue",
-      "value": "#4E6E9E"
+      "value": "#345080"
     },
     {
       "name": "honyomi_primary_green",
@@ -78,7 +78,7 @@
     },
     {
       "name": "honyomi_bg_amoled",
-      "value": "#F2F3F7"
+      "value": "#F2F4F8"
     },
     {
       "name": "honyomi_card_amoled",
@@ -86,11 +86,11 @@
     },
     {
       "name": "honyomi_chip_amoled",
-      "value": "#E9ECF2"
+      "value": "#ECF0F4"
     },
     {
       "name": "honyomi_divider_amoled",
-      "value": "#E5E7EB"
+      "value": "#E5E8ED"
     }
   ]
 }

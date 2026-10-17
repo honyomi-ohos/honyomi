@@ -12,7 +12,7 @@
 /** 加载完成后的引擎能力信息（EngineBackend.loadExtension 返回）。 */
 export interface JsvmExtensionInfo {
   key: string;
-  kind: string; // 'tachiyomi' | 'simple'
+  kind: string; // 'simple'
   methods: string[];
 }
 

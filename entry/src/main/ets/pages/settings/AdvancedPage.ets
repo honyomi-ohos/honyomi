@@ -314,7 +314,7 @@ export struct AdvancedContent {
             continue;
           }
           try {
-            const detail = await source.getMangaDetail(record.url);
+            const detail = await source.getWorkDetail(record.url);
             await MangaRepo.upsertFromSource(record.sourceKey, detail, source.contentType);
           } catch (_e) {
             // 单作品失败跳过，不阻断整体刷新

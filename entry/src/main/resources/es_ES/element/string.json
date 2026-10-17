@@ -338,7 +338,7 @@
     },
     {
       "name": "categories_hint",
-      "value": "Mantén pulsada una categoría para renombrarla o eliminarla; el manga de una categoría eliminada vuelve a Predeterminado"
+      "value": "Mantén pulsada una categoría para renombrarla o eliminarla; el título de una categoría eliminada vuelve a Predeterminado"
     },
     {
       "name": "dialog_pick_category",
@@ -362,7 +362,7 @@
     },
     {
       "name": "library_empty",
-      "value": "Tu biblioteca está vacía; explora para añadir manga"
+      "value": "Tu biblioteca está vacía; explora para añadir título"
     },
     {
       "name": "updates_title",
@@ -422,11 +422,11 @@
     },
     {
       "name": "browse_search_hint",
-      "value": "Buscar manga…"
+      "value": "Buscar título…"
     },
     {
       "name": "browse_no_results",
-      "value": "No se ha encontrado manga"
+      "value": "No se ha encontrado título"
     },
     {
       "name": "browse_load_failed",
@@ -782,7 +782,7 @@
     },
     {
       "name": "advanced_restored_manga",
-      "value": "Se han restaurado %d mangas"
+      "value": "Se han restaurado %d títulos"
     },
     {
       "name": "advanced_import_failed",
@@ -1030,11 +1030,11 @@
     },
     {
       "name": "migrate_search_hint",
-      "value": "Buscar manga en la fuente de destino"
+      "value": "Buscar título en la fuente de destino"
     },
     {
       "name": "migrate_confirm_title",
-      "value": "¿Migrar a este manga?"
+      "value": "¿Migrar a este título?"
     },
     {
       "name": "migrate_item_done",
@@ -1266,7 +1266,7 @@
     },
     {
       "name": "ext_uninstall_msg",
-      "value": "¿Desinstalar %s? Los datos de manga de la biblioteca se conservan."
+      "value": "¿Desinstalar %s? Los datos de título de la biblioteca se conservan."
     },
     {
       "name": "ext_detail_sources",
@@ -1334,7 +1334,7 @@
     },
     {
       "name": "action_remove_from_library_msg",
-      "value": "¿Quitar los %d manga seleccionados de la biblioteca?"
+      "value": "¿Quitar los %d título seleccionados de la biblioteca?"
     },
     {
       "name": "action_download_queued",
@@ -1346,7 +1346,7 @@
     },
     {
       "name": "library_no_match",
-      "value": "Ningún manga coincide"
+      "value": "Ningún título coincide"
     },
     {
       "name": "lib_sheet_tab_filter",
@@ -1490,7 +1490,7 @@
     },
     {
       "name": "card_recent_desc",
-      "value": "Seguir rápido con el manga leído recientemente"
+      "value": "Seguir rápido con el título leído recientemente"
     },
     {
       "name": "card_updates_display",
@@ -1526,7 +1526,7 @@
     },
     {
       "name": "card_manga_display",
-      "value": "Widget de manga"
+      "value": "Widget de título"
     },
     {
       "name": "card_manga_desc",
@@ -1534,7 +1534,7 @@
     },
     {
       "name": "card_manga_empty",
-      "value": "Añádelo al inicio desde los detalles del manga"
+      "value": "Añádelo al inicio desde los detalles del título"
     },
     {
       "name": "detail_add_to_desktop",
@@ -1598,7 +1598,7 @@
     },
     {
       "name": "card_empty_upcoming",
-      "value": "No hay manga en publicación en tu biblioteca"
+      "value": "No hay título en publicación en tu biblioteca"
     },
     {
       "name": "common_copy_to_clipboard",
@@ -2834,7 +2834,7 @@
     },
     {
       "name": "plugin_error_invalid_detail",
-      "value": "El plugin devolvió detalles de manga no válidos"
+      "value": "El plugin devolvió detalles de título no válidos"
     },
     {
       "name": "plugin_error_no_chapter_text",

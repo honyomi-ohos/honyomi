@@ -46,10 +46,10 @@
                   "keywords": [
                     "书架",
                     "收藏",
-                    "我的漫画",
-                    "漫画收藏"
+                    "我的作品",
+                    "作品收藏"
                   ],
-                  "displayDescription": "查看收藏的漫画书库",
+                  "displayDescription": "查看收藏的作品书库",
                   "icon": ""
                 },
                 {
@@ -57,10 +57,10 @@
                   "displayName": "更新",
                   "keywords": [
                     "最新章节",
-                    "漫画更新",
+                    "作品更新",
                     "章节更新"
                   ],
-                  "displayDescription": "查看收藏漫画的最新更新章节",
+                  "displayDescription": "查看收藏作品的最新更新章节",
                   "icon": ""
                 },
                 {
@@ -80,12 +80,12 @@
                   "displayName": "浏览",
                   "keywords": [
                     "找书",
-                    "找漫画",
+                    "找作品",
                     "书源",
                     "探索",
-                    "发现漫画"
+                    "发现作品"
                   ],
-                  "displayDescription": "浏览书源发现漫画",
+                  "displayDescription": "浏览书源发现作品",
                   "icon": ""
                 },
                 {
@@ -105,22 +105,22 @@
                   "keywords": [
                     "下载",
                     "下载队列",
-                    "离线漫画",
+                    "离线作品",
                     "已下载"
                   ],
-                  "displayDescription": "查看和管理漫画下载队列",
+                  "displayDescription": "查看和管理作品下载队列",
                   "icon": ""
                 },
                 {
                   "value": "globalsearch",
                   "displayName": "全局搜索",
                   "keywords": [
-                    "搜索漫画",
+                    "搜索作品",
                     "搜书",
-                    "查找漫画",
+                    "查找作品",
                     "搜索"
                   ],
-                  "displayDescription": "在所有书源中全局搜索漫画",
+                  "displayDescription": "在所有书源中全局搜索作品",
                   "icon": ""
                 },
                 {
@@ -154,7 +154,7 @@
                     "新书预告",
                     "待更新"
                   ],
-                  "displayDescription": "查看即将更新的漫画",
+                  "displayDescription": "查看即将更新的作品",
                   "icon": ""
                 },
                 {

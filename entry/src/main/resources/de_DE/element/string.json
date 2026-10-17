@@ -326,7 +326,7 @@
     },
     {
       "name": "categories_hint",
-      "value": "Lange auf eine Kategorie drücken, um sie umzubenennen oder zu löschen; Manga in einer gelöschten Kategorie werden zu Standard zurückverschoben"
+      "value": "Lange auf eine Kategorie drücken, um sie umzubenennen oder zu löschen; Titel in einer gelöschten Kategorie werden zu Standard zurückverschoben"
     },
     {
       "name": "dialog_pick_category",
@@ -350,7 +350,7 @@
     },
     {
       "name": "library_empty",
-      "value": "Deine Bibliothek ist leer, stöbere, um Manga hinzuzufügen"
+      "value": "Deine Bibliothek ist leer, stöbere, um Titel hinzuzufügen"
     },
     {
       "name": "updates_empty",
@@ -410,11 +410,11 @@
     },
     {
       "name": "browse_search_hint",
-      "value": "Manga suchen…"
+      "value": "Titel suchen…"
     },
     {
       "name": "browse_no_results",
-      "value": "Keine Manga gefunden"
+      "value": "Keine Titel gefunden"
     },
     {
       "name": "browse_load_failed",
@@ -758,7 +758,7 @@
     },
     {
       "name": "advanced_restored_manga",
-      "value": "%d Manga wiederhergestellt"
+      "value": "%d Titel wiederhergestellt"
     },
     {
       "name": "advanced_import_failed",
@@ -1002,11 +1002,11 @@
     },
     {
       "name": "migrate_search_hint",
-      "value": "Manga in der Zielquelle suchen"
+      "value": "Titel in der Zielquelle suchen"
     },
     {
       "name": "migrate_confirm_title",
-      "value": "Zu diesem Manga migrieren?"
+      "value": "Zu diesem Titel migrieren?"
     },
     {
       "name": "migrate_item_done",
@@ -1258,7 +1258,7 @@
     },
     {
       "name": "ext_uninstall_msg",
-      "value": "%s wirklich deinstallieren? Manga in der Bibliothek bleiben erhalten."
+      "value": "%s wirklich deinstallieren? Titel in der Bibliothek bleiben erhalten."
     },
     {
       "name": "ext_detail_sources",
@@ -1326,7 +1326,7 @@
     },
     {
       "name": "action_remove_from_library_msg",
-      "value": "%d ausgewählte Manga aus der Bibliothek entfernen?"
+      "value": "%d ausgewählte Titel aus der Bibliothek entfernen?"
     },
     {
       "name": "action_download_queued",
@@ -1338,7 +1338,7 @@
     },
     {
       "name": "library_no_match",
-      "value": "Keine passenden Manga"
+      "value": "Keine passenden Titel"
     },
     {
       "name": "lib_sheet_tab_filter",
@@ -1474,7 +1474,7 @@
     },
     {
       "name": "card_recent_desc",
-      "value": "Schnell mit dem zuletzt gelesenen Manga weitermachen"
+      "value": "Schnell mit dem zuletzt gelesenen Titel weitermachen"
     },
     {
       "name": "card_updates_desc",
@@ -1502,7 +1502,7 @@
     },
     {
       "name": "card_manga_display",
-      "value": "Manga-Widget"
+      "value": "Titel-Widget"
     },
     {
       "name": "card_manga_desc",
@@ -1510,7 +1510,7 @@
     },
     {
       "name": "card_manga_empty",
-      "value": "In den Manga-Details zum Startbildschirm hinzufügen"
+      "value": "In den Titel-Details zum Startbildschirm hinzufügen"
     },
     {
       "name": "detail_add_to_desktop",
@@ -1566,7 +1566,7 @@
     },
     {
       "name": "card_upcoming_desc",
-      "value": "Voraussichtlicher Update-Kalender für Manga in der Bibliothek"
+      "value": "Voraussichtlicher Update-Kalender für Titel in der Bibliothek"
     },
     {
       "name": "card_upcoming_header",
@@ -1574,7 +1574,7 @@
     },
     {
       "name": "card_empty_upcoming",
-      "value": "Keine fortlaufenden Manga in deiner Bibliothek"
+      "value": "Keine fortlaufenden Titel in deiner Bibliothek"
     },
     {
       "name": "common_copy_to_clipboard",
@@ -2786,7 +2786,7 @@
     },
     {
       "name": "plugin_error_invalid_detail",
-      "value": "Das Plug-in hat ungültige Manga-Details zurückgegeben"
+      "value": "Das Plug-in hat ungültige Titel-Details zurückgegeben"
     },
     {
       "name": "plugin_error_no_chapter_text",

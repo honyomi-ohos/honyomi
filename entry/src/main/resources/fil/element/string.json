@@ -330,7 +330,7 @@
     },
     {
       "name": "categories_hint",
-      "value": "Pindutin nang matagal ang kategorya para palitan ang pangalan o tanggalin; ang manga sa tinanggal na kategorya ay babalik sa Default"
+      "value": "Pindutin nang matagal ang kategorya para palitan ang pangalan o tanggalin; ang akda sa tinanggal na kategorya ay babalik sa Default"
     },
     {
       "name": "dialog_pick_category",
@@ -354,7 +354,7 @@
     },
     {
       "name": "library_empty",
-      "value": "Walang laman ang aklatan, mag-browse para magdagdag ng manga"
+      "value": "Walang laman ang aklatan, mag-browse para magdagdag ng akda"
     },
     {
       "name": "updates_title",
@@ -418,11 +418,11 @@
     },
     {
       "name": "browse_search_hint",
-      "value": "Maghanap ng manga…"
+      "value": "Maghanap ng akda…"
     },
     {
       "name": "browse_no_results",
-      "value": "Walang nahanap na manga"
+      "value": "Walang nahanap na akda"
     },
     {
       "name": "browse_load_failed",
@@ -754,7 +754,7 @@
     },
     {
       "name": "advanced_restored_manga",
-      "value": "Na-restore ang %d manga"
+      "value": "Na-restore ang %d akda"
     },
     {
       "name": "advanced_import_failed",
@@ -986,11 +986,11 @@
     },
     {
       "name": "migrate_search_hint",
-      "value": "Maghanap ng manga sa target na source"
+      "value": "Maghanap ng akda sa target na source"
     },
     {
       "name": "migrate_confirm_title",
-      "value": "Ilipat sa mangang ito?"
+      "value": "Ilipat sa akdang ito?"
     },
     {
       "name": "migrate_item_done",
@@ -1230,7 +1230,7 @@
     },
     {
       "name": "ext_uninstall_msg",
-      "value": "I-uninstall ang \"%s\"? Mananatili ang manga sa aklatan"
+      "value": "I-uninstall ang \"%s\"? Mananatili ang akda sa aklatan"
     },
     {
       "name": "ext_detail_sources",
@@ -1298,7 +1298,7 @@
     },
     {
       "name": "action_remove_from_library_msg",
-      "value": "Alisin ang %d napiling manga sa aklatan?"
+      "value": "Alisin ang %d napiling akda sa aklatan?"
     },
     {
       "name": "action_download_queued",
@@ -1310,7 +1310,7 @@
     },
     {
       "name": "library_no_match",
-      "value": "Walang tumugmang manga"
+      "value": "Walang tumugmang akda"
     },
     {
       "name": "lib_sheet_tab_sort",
@@ -1434,7 +1434,7 @@
     },
     {
       "name": "card_recent_desc",
-      "value": "Ipagpatuloy agad ang kamakailang binasang manga"
+      "value": "Ipagpatuloy agad ang kamakailang binasang akda"
     },
     {
       "name": "card_updates_display",
@@ -1470,7 +1470,7 @@
     },
     {
       "name": "card_manga_display",
-      "value": "Card ng manga"
+      "value": "Card ng akda"
     },
     {
       "name": "card_manga_desc",
@@ -1478,7 +1478,7 @@
     },
     {
       "name": "card_manga_empty",
-      "value": "Idagdag mula sa pahina ng detalye ng manga papunta sa desktop"
+      "value": "Idagdag mula sa pahina ng detalye ng akda papunta sa desktop"
     },
     {
       "name": "detail_add_to_desktop",
@@ -1534,7 +1534,7 @@
     },
     {
       "name": "card_upcoming_desc",
-      "value": "Kalendaryo ng inaasahang update ng manga sa aklatan"
+      "value": "Kalendaryo ng inaasahang update ng akda sa aklatan"
     },
     {
       "name": "card_upcoming_header",
@@ -1542,7 +1542,7 @@
     },
     {
       "name": "card_empty_upcoming",
-      "value": "Walang kasalukuyang manga sa aklatan"
+      "value": "Walang kasalukuyang akda sa aklatan"
     },
     {
       "name": "common_copy_to_clipboard",
@@ -2730,7 +2730,7 @@
     },
     {
       "name": "plugin_error_invalid_detail",
-      "value": "Nagbalik ang plugin ng hindi wastong detalye ng manga"
+      "value": "Nagbalik ang plugin ng hindi wastong detalye ng akda"
     },
     {
       "name": "plugin_error_no_chapter_text",

@@ -4,7 +4,7 @@
  * NativeHttpBridge — ArkTS half of the JSVM <-> native HTTP bridge.
  *
  * The native engine (libjsvmengine.so) dispatches every extension HTTP call
- * (fetch() / tachiyomiHttpRequest) to the main thread through a
+ * (fetch() / fetchBytes) to the main thread through a
  * napi_threadsafe_function. This module executes the request with
  * @ohos.net.http — honoring extension headers (Referer / User-Agent / Cookie),
  * the shared CookieJar, and Cloudflare challenge detection — and resolves the
