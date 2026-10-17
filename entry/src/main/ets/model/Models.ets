@@ -225,9 +225,6 @@ export class PluginRecord {
   dslVersion: number = 1;
   // 包内图标文件名（如 icon.png）
   icon: string = '';
-  // 共享运行时名（rawfile plugin_runtime_<name>.js；空 = 无）
-  runtime: string = '';
-  engine: string = 'jsvm';
   contentType: string = 'manga';
   // 引擎探测到的导出方法列表（JSON string[]），占位源据此判断 hasMethod/supportsLatest
   methodsJson: string = '[]';

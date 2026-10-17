@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "በቤተ-መጻሕፍትዎ በሂደት ላይ ያለ ማንጋ የለም"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "ወደ ቅንጥብ ሰሌዳ ቅዳ"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "ገጽታ"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "ነባሪ"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "የእኩለ ሌሊት ምሽግ"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "እንጆሪ ዳይኪሪ"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "ኦክቶፐስ"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "ሰማያዊ አረንጓዴ እና ፈርጥ"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "የባሕር ማዕበል"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "ዪን እና ያንግ"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "አራት ቅጠል"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "የቶኪዮ ሌሊት"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "ነጠላ ቀለም"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "አረንጓዴ ፖም"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "ላቬንደር"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "አድስ"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "በአሳሽ ክፈት"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "በአሳሽ መክፈት አልተቻለም"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "URL ቅዳ"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL ተቀድቷል"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "ቀጣይ ምዕራፍ የለም"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "ማጣሪያ የለም"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "ዳግም አስጀምር"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "ችላ በል"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "አካትት"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "አስወጣ"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "አቃፊ መምረጥ አልተሳካም"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "አቃፊ ያስፈልጋል፣ ፋይል አይደለም"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "አቃፊ ምረጥ"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "አመሳስል"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "አቃፊ ቀይር"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "አካባቢያዊ አቃፊ"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "አቃፊ በመመሳሰል ላይ…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "አቃፊ ተመሳስሏል"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "ማመሳሰል አልተሳካም፦ %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "አካባቢያዊውን አቃፊ መድረስ አልተቻለም፣ እባክዎ እንደገና ይምረጡ"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "የአቃፊ መዳረሻን ማቆየት አልተሳካም"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "በዚህ መሣሪያ አቃፊ መምረጥ አይደገፍም"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "አካባቢያዊ አቃፊ ገና አልተቀመጠም"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "በአካባቢያዊ አቃፊ ውስጥ ምንም አልተገኘም"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "በ comic ንዑስ አቃፊ ውስጥ ምንም አልተገኘም"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "በ novel ንዑስ አቃፊ ውስጥ ምንም አልተገኘም"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "በ anime ንዑስ አቃፊ ውስጥ ምንም አልተገኘም"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "ሁሉንም ሰርዝ"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "ምዕራፍ ወደ ላይ"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "ምዕራፍ ወደ ታች"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "ደርድር"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "አጣራ"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "በምንጭ"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "በምዕራፍ ቁጥር"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "በተጫነበት ቀን"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "በስም"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "ዳግም አስጀምር"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "የወረደ"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "ያልተነበበ"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "የተለጠፈ"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d ተመርጧል"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "እንደተነበበ ምልክት አድርግ"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "እንዳልተነበበ ምልክት አድርግ"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "ዕልባት"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "ሰርዝ"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "ቀጣይ %d ያልተነበቡ"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "ሁሉም ያልተነበቡ"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "የተለጠፉ ምዕራፎች"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d ምዕራፎች ተሰልፈዋል"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "ያልተነበበ ምዕራፍ የለም"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "የሚሰረዝ ውርድ የለም"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "%d ውርዶች ተሰርዘዋል"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "ክትትል"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "ውርድ ሰርዝ"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "ውርድ ተሰርዟል"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "የወረደው ምዕራፍ ይሰረዝ?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "ውርድ ተሰርዟል"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "ወደ ቅንጥብ ሰሌዳ ተቀድቷል"
+    },
+    {
+      "name": "transition_finished",
+      "value": "ያለቀ፦"
+    },
+    {
+      "name": "transition_current",
+      "value": "የአሁኑ፦"
+    },
+    {
+      "name": "transition_next",
+      "value": "ቀጣይ፦"
+    },
+    {
+      "name": "transition_previous",
+      "value": "ቀዳሚ፦"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "ቀጣይ ምዕራፍ የለም"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "ቀዳሚ ምዕራፍ የለም"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "ድረ-ገጽ"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "የሚጠብቁ ዝማኔዎች"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "ሁሉንም አዘምን"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "ብዙ"
+    },
+    {
+      "name": "about_row_version",
+      "value": "ስሪት"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "የማረሚያ መረጃ ተቀድቷል"
+    },
+    {
+      "name": "licenses_title",
+      "value": "የክፍት ምንጭ ፈቃዶች"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "መነሻ ገጽ ክፈት"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "ሙሉ የፈቃድ ጽሑፍ"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "የመተግበሪያ አሠራር እና ግንኙነት ንድፍ ማጣቀሻ"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "የውስጥ አዶዎች"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "የመድረክ SDK እና ArkUI ማዕቀፍ"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "AVIF ምስል መፍታት"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "ለ AVIF የሚያገለግል AV1 ፈቺ"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "ለቅጥያዎች HTML መተንተን"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "የቪዲዮ ማጫወቻ ማጠራቀሚያ"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "ለቅጥያዎች URL እና URLSearchParams (የፕለጊን አሂድ)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "ለቅጥያዎች TextEncoder እና TextDecoder (የፕለጊን አሂድ)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "WebIDL እሴት መቀየር፣ የ whatwg-url ጥገኛ (የፕለጊን አሂድ)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "ለቅጥያዎች MD5 ሃሽ (የፕለጊን አሂድ)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "ለቅጥያዎች AES-CBC ምስጠራ እና መፍታት (የፕለጊን አሂድ)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "ለቅጥያዎች SHA/HMAC/PBKDF2 ሃሽ (የፕለጊን አሂድ)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "ለቅጥያዎች AES-GCM ምስጠራ እና መፍታት (የፕለጊን አሂድ)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "የግላዊነት መመሪያ"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi ማንጋ፣ ልብ ወለድ እና ቪዲዮ የሚያነብ አካባቢ-መጀመሪያ አንባቢ ነው። መተግበሪያው ራሱ የግል ውሂብ አይሰብስብም፣ አያስገባም ወይም አያጋራም።"
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "አካባቢያዊ ውሂብ"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "ቤተ-መጻሕፍትዎ፣ የንባብ ታሪክ፣ የውርድ መዝገቦች፣ ምርጫዎች እና የክትትል ማረጋገጫዎች በመሣሪያዎ ላይ ብቻ ይቀመጣሉ። በማስተካከያዎች ውስጥ በማንኛውም ጊዜ መላክ ወይም መሰረዝ ይችላሉ። መተግበሪያውን ማራገፍ እነሱን እስከመጨረሻ ያስወግዳል።"
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "የመስመር ላይ ምንጮች እና ቅጥያዎች"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "የመስመር ላይ ይዘት ከሦስተኛ ወገን ቅጥያዎች እና ድረ-ገጾች ይመጣል። ከመስመር ላይ ምንጭ ማሰስ ወይም ማንበብ ጥያቄዎን በቀጥታ ወደዚያ ጣቢያ ይልካል፣ የራሱ የግላዊነት መመሪያ አለው። መተግበሪያው የሦስተኛ ወገን አገልግሎቶችን አይቆጣጠርም፣ ኃላፊነትም አይወስድም።"
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "የክትትል አገልግሎቶች"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "ከፈለጉ እንደ AniList፣ MyAnimeList፣ Bangumi፣ Kitsu እና Shikimori ያሉ የክትትል መለያዎችን ማገናኘት ይችላሉ። መግባትን እርስዎ በአገልግሎቱ ገጽ ላይ ይፈቅዳሉ፣ የመዳረሻ ምልክቶችም የንባብ ሂደትን ለማመሳሰል በመሣሪያዎ ላይ ብቻ ይቀመጣሉ።"
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "ፈቃዶች"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "የበይነመረብ መዳረሻ የመስመር ላይ ይዘት ለመጫን፣ የፋይል መዳረሻ ለአካባቢያዊ ማስመጣት እና ምትኬ፣ ባዮሜትሪክ ማረጋገጫ ደግሞ ለአካባቢያዊ መተግበሪያ መቆለፊያ ብቻ ነው። የግል ውሂብ ለመሰብሰብ ምንም ፈቃድ አይውልም።"
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "እውቂያ"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi በ Mihon የተነሳሳ ክፍት ምንጭ ፕሮጀክት ነው። ስለዚህ የግላዊነት መግለጫ ጥያቄ ካለዎት በ Discord ወይም GitHub ያግኙን።"
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "እንደ CBZ መዝገብ አስቀምጥ"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "ረጃጅም ምስሎችን ክፈል"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "የአንባቢ ፍጥነትን ያሻሽላል"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "ተጓዳኝ ሥራ"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "ተጓዳኝ የምንጭ ውርዶች"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "ተጓዳኝ የገጽ ውርዶች"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "በእያንዳንዱ ምንጭ በአንድ ጊዜ የሚወርዱ ገጾች"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "ምዕራፎችን ሰርዝ"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "በእጅ እንደተነበበ ከተመለከተ በኋላ"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "ከተነበበ በኋላ በራስ ሰር ሰርዝ"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "ጠፍቷል"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "የመጨረሻው የተነበበ ምዕራፍ"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "ከመጨረሻው ሁለተኛ"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "ከመጨረሻው ሦስተኛ"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "ከመጨረሻው አራተኛ"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "ከመጨረሻው አምስተኛ"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "የተለጠፉ ምዕራፎችን መሰረዝ ፍቀድ"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "ራስ-ውርድ"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "አዳዲስ ምዕራፎችን አውርድ"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "ቤተ-መጻሕፍት ሲዘምን የተገኙ አዳዲስ ምዕራፎችን በራስ ያውርዳል"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "የተነበቡ ድግግሞሾችን ዝለል"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "ቀድመህ አውርድ"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "ሲያነቡ በራስ አውርድ"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "ቀጣይ ያልተነበበ ምዕራፍ"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "ቀጣይ %d ያልተነበቡ ምዕራፎች"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "የአሁኑ ምዕራፍ እና ቀጣዩ አስቀድመው ከወረዱ ብቻ ይሠራል።"
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "ማንጋ"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "ልብ ወለዶች"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "ቪዲዮዎች"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "ለዚህ ዓይነት ምንጭ ገና የለም"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "አካባቢያዊ ልብ ወለዶች"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "አካባቢያዊ ቪዲዮዎች"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "ዓይነት"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "ሁሉም"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "ማጫወት ጀምር"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "ማጫወት ቀጥል"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "ይህ ዥረት በመስመር ላይ ብቻ ይጫወታል"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "የቅርጸ-ቁምፊ መጠን"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "የመስመር ክፍተት"
+    },
+    {
+      "name": "novel_empty",
+      "value": "ይህ ምዕራፍ ጽሑፍ የለውም"
+    },
+    {
+      "name": "novel_prev",
+      "value": "ቀዳሚ ምዕራፍ"
+    },
+    {
+      "name": "novel_next",
+      "value": "ቀጣይ ምዕራፍ"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "ሸብልል"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "በገጽ"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "ሁለት ገጽ"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "የገጽ ሁኔታ"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "የአንቀጽ ክፍተት"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "ማሳያ"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "ጽሑፍ"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "አንድ ገጽ (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "አንድ ገጽ (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "የገጽ ሽግግር"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "ማስመሰል"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "መንሸራተት"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "ሽፋን"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "የጽሑፍ ቀለም"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "ብርሃን"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "ጨለማ"
+    },
+    {
+      "name": "novel_margin",
+      "value": "ህዳጎች"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "ቅርጸ-ቁምፊ"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "ነባሪ"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "እግር ያለው"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "እግር የሌለው"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "እኩል ስፋት"
+    },
+    {
+      "name": "novel_tts",
+      "value": "ጮክ ብለህ አንብብ"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "ጮክ ብሎ ማንበብ ጀምር"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "ጮክ ብሎ ማንበብ አቁም"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "የንባብ ፍጥነት"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "የዚህ ምዕራፍ መጨረሻ ደርሷል"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "በድምፅ ማንበብ አልተሳካም፦ %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "አቁም"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "ቀጥል"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "አሁን በማንበብ ላይ"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "አንቀጽ %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "የእንቅልፍ ጊዜ"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "ጠፍቷል"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d ደቂቃ"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "በ %1$s ውስጥ ይቆማል"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "በድምፅ የሚነበብ ነገር የለም"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "ማጫወቻ ክፈት"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "ምዕራፎች"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "በጊዜ"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "በምዕራፍ"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "ከዚህ ምዕራፍ በኋላ"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "ከ %1$d ምዕራፎች በኋላ"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d ምዕ"
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "ከዚህ ምዕራፍ በኋላ ይቆማል"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "ከ %1$d ምዕራፎች በኋላ ይቆማል"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "ልብ ወለድ በድምፅ እየተነበበ ሳለ መተግበሪያውን ከበስተጀርባ ያቆያል"
+    },
+    {
+      "name": "video_play",
+      "value": "አጫውት"
+    },
+    {
+      "name": "video_pause",
+      "value": "አቁም"
+    },
+    {
+      "name": "video_prev",
+      "value": "ቀዳሚ"
+    },
+    {
+      "name": "video_next",
+      "value": "ቀጣይ"
+    },
+    {
+      "name": "video_settings",
+      "value": "የማጫወቻ ማስተካከያ"
+    },
+    {
+      "name": "video_episodes",
+      "value": "ክፍሎች"
+    },
+    {
+      "name": "video_quality",
+      "value": "ጥራት"
+    },
+    {
+      "name": "video_speed",
+      "value": "የማጫወት ፍጥነት"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "ዳንማኩ"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "ዳንማኩ በርቷል"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "ዳንማኩ ጠፍቷል"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "ዳንማኩ በመጫን ላይ…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%d ዳንማኩ ተጭኗል"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "የሚዛመድ ዳንማኩ አልተገኘም"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "ዳንማኩ መጫን አልተሳካም"
+    },
+    {
+      "name": "video_locked",
+      "value": "መቆጣጠሪያዎች ተቆልፈዋል"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "መቆጣጠሪያዎች ተከፍተዋል"
+    },
+    {
+      "name": "player_set_title",
+      "value": "ማጫወቻ"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "ማጫወት"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "ነባሪ ፍጥነት"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "ቀጣዩን ክፍል በራስ አጫውት"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "ሲያልቅ ቀጣዩን ክፍል በራስ ያጫውታል"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "ዳንማኩ"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "ዳንማኩ አሳይ"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "የዳንማኩ ቅርጸ-ቁምፊ"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "የዳንማኩ ግልጽነት"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "የዳንማኩ ቦታ"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "የዳንማኩ ፍጥነት"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "የዳንማኩ ውሂብ ከ dandanplay (አውታረ መረብ ያስፈልጋል)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "የማያ መጠን ሁኔታ"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "አስማማ"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "ሙላ"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "ዘርጋ"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "ዝግ"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "መደበኛ"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "ፈጣን"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "በጣም ፈጣን"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 ማያ"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "ግማሽ ማያ"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 ማያ"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "ሙሉ ማያ"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "የማንጋ ጊዜ"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "የልብ ወለድ ጊዜ"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "የቪዲዮ ጊዜ"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "ሽፋን"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "ሽፋን አርትዕ"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "ሽፋን መልስ"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "ሽፋን ተዘምኗል"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "ሽፋን ተመልሷል"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "ሽፋኑን ማዘመን አልተቻለም"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "ሽፋን ተቀምጧል"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "ሽፋን ማስቀመጥ ስህተት"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "ሽፋን ማጋራት ስህተት"
+    },
+    {
+      "name": "detail_edit",
+      "value": "አርትዕ"
+    },
+    {
+      "name": "detail_delete",
+      "value": "ሰርዝ"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "እንኳን ደህና መጡ!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "መጀመሪያ ጥቂት ነገሮችን እናዘጋጅ። በኋላም በማስተካከያዎች መቀየር ይችላሉ።"
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "ቀጣይ"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "ጀምር"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "የመጀመሪያ መመሪያ"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "የመጀመሪያ መመሪያ"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "ለ %s አዲስ ነዎት? የመጀመሪያ መመሪያውን እንድታዩ እንመክራለን።"
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "%s እንደገና እየጫኑ ነው?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "ማመሳሰል በሂደት ላይ ነው፣ እባክዎ ይጠብቁ"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "ውርድ አልተሳካም"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "ዝርዝር መጫን አልተሳካም"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "የገጽ ግቤቶች ትክክል አይደሉም"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "ውርዶች በመዘጋጀት ላይ…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "ወደ ምድብ ማንቀሳቀስ አልተሳካም"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "የማዛወሪያ ዝርዝር መጫን አልተሳካም"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "ሥራው አልተሳካም"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "የመጫን ስህተት፦ %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "በመጫን ላይ…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "መጫን አልተሳካም፦ %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "ማሳየት ወጣ (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "ጽ"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "ቪ"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "ማ"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "የመጨረሻው ራስ-ምትኬ አልተሳካም"
+    },
+    {
+      "name": "category_manga",
+      "value": "ማንጋ"
+    },
+    {
+      "name": "category_novel",
+      "value": "ልብ ወለዶች"
+    },
+    {
+      "name": "category_video",
+      "value": "ቪዲዮዎች"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "ፈቃድ ያለው"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "የ TTS ሞተር ተይዟል፣ እባክዎ ቆይተው እንደገና ይሞክሩ"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "የ TTS ሞተር ምላሽ አቆመ፣ ንባቡም ቆሟል"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "የ TTS ሞተር አይገኝም"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "የሰው ማረጋገጫ ያስፈልጋል፣ እባክዎ ገጹን ጨርሰው እንደገና ይሞክሩ"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "ምንጩ አይገኝም"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "ይህ ምዕራፍ ይዘት የለውም"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "ማጫወት አልተሳካም"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "የሚጫወት ቪዲዮ አልተገኘም"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "አካባቢያዊ"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "ተሰርዟል"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "ውርድ አልተሳካም"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "የውርድ ጊዜ አልፏል (አገልጋዩ አልመለሰም)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "ውርድ አልተሳካም (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "ይህ ቪዲዮ በመስመር ላይ ይፈስሳል፣ ሊወርድ አይችልም"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "የውርድ አገልግሎት አልተጀመረም"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "ምንጭ አልተገኘም፦ %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "የምዕራፍ ፋይል አልተገኘም"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "የምዕራፍ ቅርጸት አይደገፍም"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "የቪዲዮ ፋይል አልተገኘም"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "በአካባቢ የገባ ማንጋ"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "በአካባቢ የገቡ ልብ ወለዶች"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "በአካባቢ የገቡ ቪዲዮዎች"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "ደህንነቱ ያልተጠበቀ ማዞር ታግዷል፦ %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "ከመጠን በላይ ማዞር፦ %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "የአገልጋይ አድራሻውን ማግኘት አልተቻለም፣ እባክዎ ግንኙነቱን ይፈትሹና እንደገና ይሞክሩ"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "ከአገልጋዩ ጋር መገናኘት አልተቻለም፣ እባክዎ አውታረ መረቡን ይፈትሹና እንደገና ይሞክሩ"
+    },
+    {
+      "name": "net_timeout",
+      "value": "የጥያቄው ጊዜ አልፏል፣ እባክዎ ቆይተው እንደገና ይሞክሩ"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "ደህንነቱ የተጠበቀ ግንኙነት አልተሳካም (SSL ስህተት)፣ እባክዎ ቆይተው እንደገና ይሞክሩ"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "ግንኙነቱ ተቋርጧል፣ እባክዎ እንደገና ይሞክሩ"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "የአውታረ መረብ ጥያቄ አልተሳካም፦ %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "የ JSVM ሞተር መፍጠር አልተሳካም"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "የፕለጊን ጽሑፍ ማሄድ አልተሳካም"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "ቅጥያ አልተጫነም"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "ቅጥያው ተበላሽቷል፣ እባክዎ እንደገና ይጫኑ ወይም እንደገና ይሙሉት"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "ቅጥያ ማስጀመር አልተሳካም"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "የቅጥያ ማስጀመሪያ ጊዜ አልፏል"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "የቅጥያ ጥሪ ጊዜ አልፏል፦ %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "የቅጥያ ጥሪ አልተሳካም"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "ቅጥያው ትክክል ያልሆነ JSON መለሰ"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "ያልታወቀ የቅጥያ ስህተት"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "manifest.key ትክክል አይደለም (ንዑስ ፊደላት፣ ቁጥሮች እና አንደርስኮር ብቻ)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name የለም"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "manifest.versionCode ትክክል አይደለም"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "ይህ ፕለጊን አዲስ መተግበሪያ ይፈልጋል (%s)፣ እባክዎ መጀመሪያ ያዘምኑ"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "ይህ ፕለጊን የመተግበሪያ versionCode >= %s ይፈልጋል፣ እባክዎ መጀመሪያ ያዘምኑ"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "የተመረጠውን ፋይል ማንበብ አልተሳካም፦ %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "የፕለጊን ጥቅል URL ዎች https መሆን አለባቸው፣ ግልጽ ውርዶች ተቀባይነት የላቸውም"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "የፕለጊን ታማኝነት ማረጋገጫ አልተሳካም (sha256 አይዛመድም)፣ መጫን ተሰርዟል"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "በፕለጊን ጥቅሉ ውስጥ main.js የለም"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "የፕለጊን ማውጫ መተካት አልተሳካም፦ %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "በፕለጊን ጥቅሉ ውስጥ manifest.json አልተገኘም"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "የማከማቻ ፋይል URL ዎች https መሆን አለባቸው፣ http:// ግቤቶች ተቀባይነት የላቸውም"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "የፕለጊን አሂድ ስም ትክክል አይደለም፦ %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "የፕለጊን አሂድ ክፍል የለም፦ plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "ፕለጊኑ ትክክል ያልሆነ የማንጋ ዝርዝር መለሰ"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "ፕለጊኑ getChapterText አያወጣም"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "ፕለጊኑ getVideoList አያወጣም"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "የፕለጊን ጥቅሉን ማስቀመጥ አልተሳካም፦ %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "የፕለጊን ማውጫ ማስወገድ አልተሳካም፦ %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "የተጫኑ የፕለጊን ፋይሎችን ማንበብ አልተሳካም፦ %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "የፕለጊን ጥቅል ታማኝነት ማረጋገጥ አልተሳካም፦ %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "የፕለጊን ጥቅሉን ማውጣት አልተሳካም፦ %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "በፕለጊን ጥቅሉ ውስጥ manifest.json ማንበብ አልተሳካም፦ %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "የፕለጊን ፋይሎችን ማዘጋጀት አልተሳካም፦ %s"
+    },
+    {
+      "name": "track_title",
+      "value": "ክትትል"
+    },
+    {
+      "name": "track_login",
+      "value": "ግባ"
+    },
+    {
+      "name": "track_logout",
+      "value": "ውጣ"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "ከ %s ይውጡ?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "ወደ %s ገብተዋል"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "ወጥተዋል"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "መግባት አልተሳካም"
+    },
+    {
+      "name": "track_username",
+      "value": "የተጠቃሚ ስም"
+    },
+    {
+      "name": "track_password",
+      "value": "የይለፍ ቃል"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "የክትትል ሂደትን በራስ አዘምን"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "በ %s ፈልግ"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "ፍለጋ አልተሳካም"
+    },
+    {
+      "name": "track_no_results",
+      "value": "ውጤት አልተገኘም"
+    },
+    {
+      "name": "track_added",
+      "value": "ክትትል ታክሏል"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "ክትትል መጨመር አልተሳካም"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "ክትትል ማዘመን አልተሳካም"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "ከአገልግሎቱ ማስወገድ አልተሳካም"
+    },
+    {
+      "name": "track_status",
+      "value": "ሁኔታ"
+    },
+    {
+      "name": "track_score",
+      "value": "ነጥብ"
+    },
+    {
+      "name": "track_chapters",
+      "value": "ምዕራፎች"
+    },
+    {
+      "name": "track_start_date",
+      "value": "የመጀመሪያ ቀን"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "የማብቂያ ቀን"
+    },
+    {
+      "name": "track_private",
+      "value": "የግል"
+    },
+    {
+      "name": "track_unlink",
+      "value": "ግንኙነት አቋርጥ"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "ከአገልግሎቱ አስወግድ"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "ትክክለኛ የምዕራፍ ቁጥር ያስገቡ"
+    },
+    {
+      "name": "track_reading",
+      "value": "በማንበብ ላይ"
+    },
+    {
+      "name": "track_completed",
+      "value": "ተጠናቋል"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "ታግዷል"
+    },
+    {
+      "name": "track_paused",
+      "value": "ቆሟል"
+    },
+    {
+      "name": "track_dropped",
+      "value": "ተትቷል"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "ለማንበብ ታቅዷል"
+    },
+    {
+      "name": "track_repeating",
+      "value": "በድጋሚ በማንበብ ላይ"
+    },
+    {
+      "name": "track_considering",
+      "value": "በማሰብ ላይ"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "ያልታወቀ"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "የንባብ ዝርዝር"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "የምኞት ዝርዝር"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "የተጠናቀቀ ዝርዝር"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "የታገደ ዝርዝር"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "ያላለቀ ዝርዝር"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "በመጫን ላይ…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "መጫን አልተሳካም፦ %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "አካባቢያዊ ፋይል ገና የለም፣ ለመጨመር አስመጣን ይንኩ"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "ስም"
+    },
+    {
+      "name": "privacy_title",
+      "value": "ግላዊነት"
+    },
+    {
+      "name": "privacy_group",
+      "value": "ደህንነት"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "የመተግበሪያ መቆለፊያ"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "መጀመሪያ የማያ መቆለፊያ ያዘጋጁ"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "ሥራ ፈት ሲሆን ቆልፍ"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "ሁልጊዜ"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 ደቂቃ"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 ደቂቃ"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 ደቂቃ"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 ደቂቃ"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "በፍጹም"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "የማሳወቂያ ይዘት ደብቅ"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "ደህንነቱ የተጠበቀ ማያ"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "ቅጽበታዊ ገጽ እይታን እና ማያ ቀረጻን ይከለክላል"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "መተግበሪያው ተቆልፏል"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "ለመቀጠል ማንነትዎን ያረጋግጡ"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "ክፈት"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "መተግበሪያውን ክፈት"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "በማውረድ ላይ"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "የብልሽት መዝገቦችን ላክ"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "የብልሽት መዝገብ አልተገኘም"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "%d የስህተት መዝገቦች ተልከዋል"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "ዝርዝር መመዝገብ"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "በሥርዓት መዝገቦች ውስጥ የማረሚያ ዝርዝር አካትት"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "የማረሚያ መረጃ"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "እርምጃው አልተሳካም"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "ውሂብ"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "አውታረ መረብ"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "ቤተ-መጻሕፍት"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "አንባቢ"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "የውሂብ ጎታ አጽዳ"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "በቤተ-መጻሕፍትዎ ውስጥ ያልሆኑ ግቤቶች በሙሉ ይወገዱ? የእነሱ የንባብ ታሪክ እና ሂደት ይጠፋል።"
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "%d ግቤቶች ተወግደዋል"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "የተከተተ ድር ውሂብ አጽዳ"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "የተከተተ ድር ውሂብ ተጠርጓል"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS በ HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "ጠፍቷል"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "ብጁ User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "ነባሪውን ለመጠቀም ባዶ ይተዉ"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent ተቀምጧል"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "User-Agent መልስ"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "የቤተ-መጻሕፍት ሽፋኖችን አድስ"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "ሽፋኖች በመታደስ ላይ…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "%d ግቤቶች ታድሰዋል"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "የተከታታይ አንባቢ ማስተካከያ መልስ"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "ለእያንዳንዱ ተከታታይ ያዘጋጁትን የንባብ ሁኔታ ወደ አጠቃላይ ነባሪ ይመለስ?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "%d ግቤቶች ተመልሰዋል"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "ከፍተኛ ጥራት ማሳያ"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "የምስል ማሳያ ለስላሳ ነው፣ ግን ክብደቱ ይጨምራል"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "የመተግበሪያ ስሪት"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "የመሣሪያ ሞዴል"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "የመሣሪያ ዓይነት"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "የሥርዓት ስሪት"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "የ API ስሪት"
+    },
+    {
+      "name": "debug_screen",
+      "value": "ማያ"
+    },
+    {
+      "name": "debug_language",
+      "value": "ቋንቋ"
     }
   ]
 }

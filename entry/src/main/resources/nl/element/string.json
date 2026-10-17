@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "Geen lopende manga in je bibliotheek"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "Kopiëren naar klembord"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "Thema"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "Standaard"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "Middernachtsschemer"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "Aardbeiendaiquiri"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "Groenblauw en turkoois"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "Vloedgolf"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "Yin en Yang"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "Tokio bij nacht"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "Monochroom"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "Groene appel"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "Lavendel"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "Vernieuwen"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "Openen in browser"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "Openen in browser mislukt"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "URL kopiëren"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL gekopieerd"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "Geen volgend hoofdstuk"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "Geen filters beschikbaar"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "Resetten"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "Negeren"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "Opnemen"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "Uitsluiten"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "Map kiezen mislukt"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "Een map is vereist, geen bestand"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "Map kiezen"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "Synchroniseren"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "Map wijzigen"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "Lokale map"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "Map synchroniseren…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "Map gesynchroniseerd"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "Synchroniseren mislukt: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "Geen toegang tot de lokale map, kies deze opnieuw"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "Toegang tot de map behouden mislukt"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "Map selecteren wordt niet ondersteund op dit apparaat"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "Nog geen lokale map ingesteld"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "Niets gevonden in de lokale map"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "Niets gevonden in de submap comic"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "Niets gevonden in de submap novel"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "Niets gevonden in de submap anime"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "Alles annuleren"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "Hoofdstuk oplopend"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "Hoofdstuk aflopend"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "Sorteren"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "Filteren"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "Op bron"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "Op hoofdstuknummer"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "Op uploaddatum"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "Op naam"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "Resetten"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "Gedownload"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "Ongelezen"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "Met bladwijzer"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d geselecteerd"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "Markeer gelezen"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "Markeer ongelezen"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "Bladwijzer"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "Verwijderen"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "Volgende %d ongelezen"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "Alle ongelezen"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "Hoofdstukken met bladwijzer"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d hoofdstukken in de wachtrij"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "Geen ongelezen hoofdstukken"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "Geen downloads om te verwijderen"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "%d downloads verwijderd"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "Tracking"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "Download annuleren"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "Download geannuleerd"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "Gedownload hoofdstuk verwijderen?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "Download verwijderd"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "Gekopieerd naar klembord"
+    },
+    {
+      "name": "transition_finished",
+      "value": "Voltooid:"
+    },
+    {
+      "name": "transition_current",
+      "value": "Huidig:"
+    },
+    {
+      "name": "transition_next",
+      "value": "Volgende:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "Vorige:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "Er is geen volgend hoofdstuk"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "Er is geen vorig hoofdstuk"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "Website"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "Updates in behandeling"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "Alles bijwerken"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "Meerdere"
+    },
+    {
+      "name": "about_row_version",
+      "value": "Versie"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "Debuginformatie gekopieerd"
+    },
+    {
+      "name": "licenses_title",
+      "value": "Opensourcelicenties"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "Startpagina openen"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "Volledige licentietekst"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "Referentie voor app-architectuur en interactieontwerp"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "Pictogrammen in de app"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "Platform-SDK en ArkUI-framework"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "AVIF-beelddecodering"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "AV1-decoder voor AVIF-decodering"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "HTML ontleden voor extensies"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "Cache voor videoafspelen"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL en URLSearchParams voor extensies (plug-inruntime)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder en TextDecoder voor extensies (plug-inruntime)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "WebIDL-waardeconversie, een afhankelijkheid van whatwg-url (plug-inruntime)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "MD5-hashing voor extensies (plug-inruntime)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "AES-CBC-versleuteling en -ontsleuteling voor extensies (plug-inruntime)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "SHA/HMAC/PBKDF2-hashing voor extensies (plug-inruntime)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "AES-GCM-versleuteling en -ontsleuteling voor extensies (plug-inruntime)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "Privacybeleid"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi is een lokale lezer voor manga, romans en video's. De app zelf verzamelt, uploadt of deelt geen persoonsgegevens."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "Lokale gegevens"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "Je bibliotheek, leesgeschiedenis, downloadgegevens, voorkeuren en trackergegevens staan alleen op je apparaat. Je kunt ze altijd exporteren of wissen in Instellingen. Als je de app verwijdert, zijn ze definitief weg."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "Online bronnen en extensies"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "Online-inhoud komt van extensies en websites van derden. Bladeren of lezen via een online bron stuurt je verzoeken rechtstreeks naar die site, onder het eigen privacybeleid. De app heeft daar geen controle over en is niet verantwoordelijk voor diensten van derden."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "Trackingdiensten"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "Je kunt optioneel trackeraccounts koppelen, zoals AniList, MyAnimeList, Bangumi, Kitsu en Shikimori. Je geeft toestemming op de eigen pagina van de tracker, en toegangstokens blijven alleen op je apparaat om je leesvoortgang te synchroniseren."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "Machtigingen"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "Internettoegang wordt gebruikt om online-inhoud te laden, bestandstoegang voor lokale imports en back-ups, en biometrische verificatie alleen voor de lokale app-vergrendeling. Geen enkele machtiging verzamelt persoonsgegevens."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "Contact"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi is een opensourceproject geïnspireerd op Mihon. Vragen over deze privacyverklaring kun je stellen via Discord of GitHub."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "Opslaan als CBZ-archief"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "Hoge afbeeldingen splitsen"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "Verbetert de lezerprestaties"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "Gelijktijdigheid"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "Gelijktijdige brondownloads"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "Gelijktijdige paginadownloads"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "Pagina's die tegelijk per bron worden gedownload"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "Hoofdstukken verwijderen"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "Na handmatig als gelezen markeren"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "Na het lezen automatisch verwijderen"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "Uitgeschakeld"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "Laatst gelezen hoofdstuk"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "Voorlaatst gelezen hoofdstuk"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "Derde laatst gelezen hoofdstuk"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "Vierde laatst gelezen hoofdstuk"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "Vijfde laatst gelezen hoofdstuk"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "Hoofdstukken met bladwijzer mogen worden verwijderd"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "Automatisch downloaden"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "Nieuwe hoofdstukken downloaden"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "Nieuwe hoofdstukken uit bibliotheekupdates automatisch downloaden"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "Dubbele gelezen hoofdstukken overslaan"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "Vooruit downloaden"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "Automatisch downloaden tijdens het lezen"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "Volgende ongelezen hoofdstuk"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "Volgende %d ongelezen hoofdstukken"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "Werkt alleen als het huidige hoofdstuk en het volgende al gedownload zijn."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "Romans"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "Video's"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "Nog geen bronnen voor dit type"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "Lokale romans"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "Lokale video's"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "Type"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "Alles"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "Afspelen"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "Verder afspelen"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "Deze stream kan alleen online worden afgespeeld"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "Lettergrootte"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "Regelafstand"
+    },
+    {
+      "name": "novel_empty",
+      "value": "Dit hoofdstuk bevat geen tekst"
+    },
+    {
+      "name": "novel_prev",
+      "value": "Vorig hoofdstuk"
+    },
+    {
+      "name": "novel_next",
+      "value": "Volgend hoofdstuk"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "Scrollen"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "Gepagineerd"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "Twee pagina's"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "Paginamodus"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "Alinea-afstand"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "Weergave"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "Tekst"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "Enkele pagina (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "Enkele pagina (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "Paginaovergang"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "Simulatie"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "Schuiven"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "Bedekken"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "Tekstkleur"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "Licht"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "Donker"
+    },
+    {
+      "name": "novel_margin",
+      "value": "Marges"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "Lettertype"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "Standaard"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "Schreef"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "Schreefloos"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "Vaste breedte"
+    },
+    {
+      "name": "novel_tts",
+      "value": "Voorlezen"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "Voorlezen starten"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "Voorlezen stoppen"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "Leessnelheid"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "Einde van dit hoofdstuk bereikt"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "Tekst-naar-spraak mislukt: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "Pauzeren"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "Hervatten"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "Nu aan het lezen"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "Alinea %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "Slaaptimer"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "Uit"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d min"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "Stopt over %1$s"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "Er wordt niets voorgelezen"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "Speler openen"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "Hoofdstukken"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "Op tijd"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "Op hoofdstukken"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "Na dit hoofdstuk"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "Na %1$d hoofdstukken"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d hfst."
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "Stopt na dit hoofdstuk"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "Stopt na %1$d hoofdstukken"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "Houdt de app op de achtergrond actief terwijl een roman wordt voorgelezen"
+    },
+    {
+      "name": "video_play",
+      "value": "Afspelen"
+    },
+    {
+      "name": "video_pause",
+      "value": "Pauzeren"
+    },
+    {
+      "name": "video_prev",
+      "value": "Vorige"
+    },
+    {
+      "name": "video_next",
+      "value": "Volgende"
+    },
+    {
+      "name": "video_settings",
+      "value": "Spelerinstellingen"
+    },
+    {
+      "name": "video_episodes",
+      "value": "Afleveringen"
+    },
+    {
+      "name": "video_quality",
+      "value": "Kwaliteit"
+    },
+    {
+      "name": "video_speed",
+      "value": "Afspeelsnelheid"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "Danmaku aan"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "Danmaku uit"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "Danmaku laden…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%d danmaku geladen"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "Geen overeenkomende danmaku"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "Danmaku laden mislukt"
+    },
+    {
+      "name": "video_locked",
+      "value": "Bediening vergrendeld"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "Bediening ontgrendeld"
+    },
+    {
+      "name": "player_set_title",
+      "value": "Speler"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "Afspelen"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "Standaardsnelheid"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "Volgende aflevering automatisch afspelen"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "Speel de volgende aflevering automatisch af na afloop"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "Danmaku tonen"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "Lettergrootte van danmaku"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "Dekking van danmaku"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "Weergavegebied van danmaku"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "Snelheid van danmaku"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "Danmakugegevens van dandanplay (netwerk vereist)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "Schermschaal"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "Passend"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "Vullen"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "Uitrekken"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "Langzaam"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Normaal"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "Snel"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "Zeer snel"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 scherm"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "Half scherm"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 scherm"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "Volledig scherm"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "Mangatijd"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "Romantijd"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "Videotijd"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "Cover"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "Cover bewerken"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "Cover resetten"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "Cover bijgewerkt"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "Cover hersteld"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "Cover bijwerken mislukt"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "Cover opgeslagen"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "Fout bij opslaan van cover"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "Fout bij delen van cover"
+    },
+    {
+      "name": "detail_edit",
+      "value": "Bewerken"
+    },
+    {
+      "name": "detail_delete",
+      "value": "Verwijderen"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "Welkom!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "Laten we eerst een paar dingen instellen. Je kunt dit later altijd wijzigen in de instellingen."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "Volgende"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "Aan de slag"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "Introductiegids"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "Starthandleiding"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "Nieuw bij %s? Bekijk de starthandleiding."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "%s opnieuw installeren?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "Synchronisatie bezig, even geduld"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "Downloaden mislukt"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "Details laden mislukt"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "Ongeldige paginaparameters"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "Downloads voorbereiden…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "Verplaatsen naar categorie mislukt"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "Migratielijst laden mislukt"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "Bewerking mislukt"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "Laadfout: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "Laden…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "Laden mislukt: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "Renderen afgesloten (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "Laatste automatische back-up mislukt"
+    },
+    {
+      "name": "category_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "category_novel",
+      "value": "Romans"
+    },
+    {
+      "name": "category_video",
+      "value": "Video's"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "Gelicentieerd"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "De TTS-engine is bezet, probeer het later opnieuw"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "De TTS-engine reageert niet meer en het voorlezen is gestopt"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "De TTS-engine is niet beschikbaar"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "Menselijke verificatie vereist, voltooi de verificatiepagina en probeer opnieuw"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "Bron niet beschikbaar"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "Dit hoofdstuk heeft geen inhoud"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "Afspelen mislukt"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "Geen afspeelbare video's gevonden"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "Lokaal"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "Geannuleerd"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "Downloaden mislukt"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "Downloadtime-out (server reageert niet)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "Downloaden mislukt (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "Deze video wordt online gestreamd en kan niet worden gedownload"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "Downloadservice niet geïnitialiseerd"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "Bron niet gevonden: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "Hoofdstukbestand niet gevonden"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "Niet-ondersteund hoofdstukformaat"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "Videobestand niet gevonden"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "Lokaal geïmporteerde manga"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "Lokaal geïmporteerde romans"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "Lokaal geïmporteerde video's"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "Onveilige omleiding geblokkeerd: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "Te veel omleidingen: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "Serveradres niet gevonden, controleer je netwerkverbinding en probeer opnieuw"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "Geen verbinding met de server, controleer je netwerk en probeer opnieuw"
+    },
+    {
+      "name": "net_timeout",
+      "value": "De aanvraag is verlopen, probeer het later opnieuw"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "Beveiligde verbinding mislukt (SSL-fout), probeer het later opnieuw"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "De verbinding is onderbroken, probeer opnieuw"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "Netwerkverzoek mislukt: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "JSVM-engine maken mislukt"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "Plug-inscript uitvoeren mislukt"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "Extensie niet geladen"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "Extensie is defect, installeer of laad deze opnieuw"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "Initialisatie van extensie mislukt"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "Time-out bij initialisatie van extensie"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "Time-out bij aanroep van extensie: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "Aanroep van extensie mislukt"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "De extensie gaf ongeldige JSON terug"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "Onbekende extensiefout"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "Ongeldige manifest.key (alleen kleine letters, cijfers en onderstrepingstekens)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name ontbreekt"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "Ongeldige manifest.versionCode"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "Deze plug-in vereist een nieuwere app (%s), werk eerst bij"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "Deze plug-in vereist app-versionCode >= %s, werk eerst bij"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "Geselecteerd bestand lezen mislukt: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "URL's van plug-inpakketten moeten https gebruiken, onversleutelde downloads worden geweigerd"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "Integriteitscontrole van plug-in mislukt (sha256 komt niet overeen), installatie geannuleerd"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "Het plug-inpakket mist main.js"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "Plug-inmap vervangen mislukt: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "manifest.json niet gevonden in het plug-inpakket"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "URL's van repositorybestanden moeten https gebruiken, http://-vermeldingen worden geweigerd"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "Ongeldige naam van plug-inruntime: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "Onderdeel van plug-inruntime ontbreekt: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "De plug-in gaf ongeldige mangadetails terug"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "De plug-in exporteert getChapterText niet"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "De plug-in exporteert getVideoList niet"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "Plug-inpakket opslaan mislukt: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "Plug-inmap verwijderen mislukt: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "Geïnstalleerde plug-inbestanden lezen mislukt: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "Integriteit van plug-inpakket verifiëren mislukt: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "Plug-inpakket uitpakken mislukt: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "manifest.json in het plug-inpakket lezen mislukt: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "Plug-inbestanden voorbereiden mislukt: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "Tracking"
+    },
+    {
+      "name": "track_login",
+      "value": "Inloggen"
+    },
+    {
+      "name": "track_logout",
+      "value": "Uitloggen"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "Uitloggen bij %s?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "Ingelogd bij %s"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "Uitgelogd"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "Inloggen mislukt"
+    },
+    {
+      "name": "track_username",
+      "value": "Gebruikersnaam"
+    },
+    {
+      "name": "track_password",
+      "value": "Wachtwoord"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "Trackingvoortgang automatisch bijwerken"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "Zoeken op %s"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "Zoeken mislukt"
+    },
+    {
+      "name": "track_no_results",
+      "value": "Geen resultaten gevonden"
+    },
+    {
+      "name": "track_added",
+      "value": "Tracking toegevoegd"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "Tracking toevoegen mislukt"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "Tracking bijwerken mislukt"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "Verwijderen van dienst mislukt"
+    },
+    {
+      "name": "track_status",
+      "value": "Status"
+    },
+    {
+      "name": "track_score",
+      "value": "Score"
+    },
+    {
+      "name": "track_chapters",
+      "value": "Hoofdstukken"
+    },
+    {
+      "name": "track_start_date",
+      "value": "Startdatum"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "Einddatum"
+    },
+    {
+      "name": "track_private",
+      "value": "Privé"
+    },
+    {
+      "name": "track_unlink",
+      "value": "Ontkoppelen"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "Verwijderen van dienst"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "Voer een geldig hoofdstuknummer in"
+    },
+    {
+      "name": "track_reading",
+      "value": "Aan het lezen"
+    },
+    {
+      "name": "track_completed",
+      "value": "Voltooid"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "In de wacht"
+    },
+    {
+      "name": "track_paused",
+      "value": "Gepauzeerd"
+    },
+    {
+      "name": "track_dropped",
+      "value": "Gestopt"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "Van plan te lezen"
+    },
+    {
+      "name": "track_repeating",
+      "value": "Opnieuw"
+    },
+    {
+      "name": "track_considering",
+      "value": "Overwegen"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "Onbekend"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "Leeslijst"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "Verlanglijst"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "Voltooide lijst"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "Lijst in de wacht"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "Onvoltooide lijst"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "Laden…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "Laden mislukt: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "Nog geen lokale bestanden, tik op Importeren om toe te voegen"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "Naam"
+    },
+    {
+      "name": "privacy_title",
+      "value": "Privacy"
+    },
+    {
+      "name": "privacy_group",
+      "value": "Beveiliging"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "App-vergrendeling"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "Stel eerst een schermvergrendeling in"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "Vergrendelen bij inactiviteit"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "Altijd"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 minuut"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 minuten"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 minuten"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 minuten"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "Nooit"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "Meldingsinhoud verbergen"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "Beveiligd scherm"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "Blokkeert schermafbeeldingen en schermopname"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "App vergrendeld"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "Verifieer je identiteit om door te gaan"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "Ontgrendelen"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "App ontgrendelen"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "Downloaden"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "Crashlogboeken exporteren"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "Geen crashlogboeken gevonden"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "%d foutlogboeken geëxporteerd"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "Uitgebreid loggen"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "Debugdetails opnemen in systeemlogboeken"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "Debuginfo"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "Actie mislukt"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Gegevens"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "Netwerk"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "Bibliotheek"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "Lezer"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "Database wissen"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "Alle items verwijderen die niet in je bibliotheek staan? Leesgeschiedenis en voortgang van deze items gaan verloren."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "%d items verwijderd"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "Ingesloten webgegevens wissen"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "Ingesloten webgegevens gewist"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS via HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "Uitgeschakeld"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "Aangepaste User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "Laat leeg om de standaard te gebruiken"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent opgeslagen"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "User-Agent resetten"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "Bibliotheekcovers vernieuwen"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "Covers vernieuwen…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "%d items vernieuwd"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "Lezerinstellingen per serie resetten"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "Leesmodi die je per serie hebt ingesteld terugzetten naar de algemene standaard?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "%d items gereset"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "Hoge renderkwaliteit"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "Vloeiendere beeldschaling ten koste van de prestaties"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "App-versie"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "Apparaatmodel"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "Apparaattype"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "Systeemversie"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "API-versie"
+    },
+    {
+      "name": "debug_screen",
+      "value": "Scherm"
+    },
+    {
+      "name": "debug_language",
+      "value": "Taal"
     }
   ]
 }

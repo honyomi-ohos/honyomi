@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "Neniu daŭranta mangao en la biblioteko"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "Kopii al tondejo"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "Etoso"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "Defaŭlta"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "Noktomeza krepusko"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "Fraga-dakirio"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "Blaŭverda kaj turkisa"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "Tajda ondo"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "Jino kaj jango"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "Tokia nokto"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "Unukolora"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "Verda pomo"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "Lavendo"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "Aktualigi"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "Malfermi en retumilo"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "Ne eblas malfermi en retumilo"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "Kopii URL"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL kopiita"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "Neniu sekva ĉapitro"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "Neniuj filtriloj"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "Restarigi"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "Ignori"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "Inkluzivi"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "Ekskluzivi"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "Malsukcesis elekti dosierujon"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "Necesas dosierujo, ne dosiero"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "Elekti dosierujon"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "Sinkronigi"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "Ŝanĝi dosierujon"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "Loka dosierujo"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "Sinkronigas dosierujon…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "Dosierujo sinkronigita"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "Sinkronigo malsukcesis: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "Ne eblas atingi la lokan dosierujon, bonvolu elekti ĝin denove"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "Malsukcesis konservi aliron al la dosierujo"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "Ĉi tiu aparato ne subtenas elekton de dosierujo"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "Ankoraŭ neniu loka dosierujo"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "Nenio trovita en la loka dosierujo"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "Nenio trovita en la subdosierujo comic"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "Nenio trovita en la subdosierujo novel"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "Nenio trovita en la subdosierujo anime"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "Nuligi ĉion"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "Ĉapitroj kreskante"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "Ĉapitroj malkreskante"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "Ordigo"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "Filtrilo"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "Laŭ fonto"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "Laŭ ĉapitra numero"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "Laŭ alŝuta dato"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "Laŭ nomo"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "Restarigi"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "Elŝutitaj"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "Nelegitaj"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "Legosignitaj"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d elektitaj"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "Marki kiel legita"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "Marki kiel nelegita"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "Legosigno"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "Forigi"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "Sekvaj %d nelegitaj"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "Ĉiuj nelegitaj"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "Legosignitaj ĉapitroj"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d ĉapitroj envicigitaj"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "Neniuj nelegitaj ĉapitroj"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "Neniuj elŝutoj por forigi"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "Forigis %d elŝutojn"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "Spurado"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "Nuligi elŝuton"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "Elŝuto nuligita"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "Ĉu forigi la elŝutitan ĉapitron?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "Elŝuto forigita"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "Kopiita al tondejo"
+    },
+    {
+      "name": "transition_finished",
+      "value": "Finita:"
+    },
+    {
+      "name": "transition_current",
+      "value": "Nuna:"
+    },
+    {
+      "name": "transition_next",
+      "value": "Sekva:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "Antaŭa:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "Ne estas sekva ĉapitro"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "Ne estas antaŭa ĉapitro"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "Retejo"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "Atendantaj ĝisdatigoj"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "Ĝisdatigi ĉion"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "Plura"
+    },
+    {
+      "name": "about_row_version",
+      "value": "Versio"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "Senerarigaj informoj kopiitaj"
+    },
+    {
+      "name": "licenses_title",
+      "value": "Permesiloj de malfermita kodo"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "Malfermi hejmpaĝon"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "Plena permesila teksto"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "Referenco de aplika arkitekturo kaj interagado"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "Bildsimboloj de la apo"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "Platforma SDK kaj kadro ArkUI"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "Malkodado de bildoj AVIF"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "Malkodilo AV1 por malkodado AVIF"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "Analizo HTML por etendaĵoj"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "Kaŝmemoro de videa ludado"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL kaj URLSearchParams por etendaĵoj (rultempo)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder kaj TextDecoder por etendaĵoj (rultempo)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "Konverto de valoroj WebIDL, dependaĵo de whatwg-url (rultempo)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "Haketo MD5 por etendaĵoj (rultempo)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "Ĉifrado kaj malĉifrado AES-CBC por etendaĵoj (rultempo)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "Haketo SHA/HMAC/PBKDF2 por etendaĵoj (rultempo)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "Ĉifrado kaj malĉifrado AES-GCM por etendaĵoj (rultempo)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "Privateca politiko"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi estas loke unua legilo por mangao, romanoj kaj videoj. La apo mem nek kolektas, nek alŝutas, nek kunhavigas personajn datumojn."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "Lokaj datumoj"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "Via biblioteko, leghistorio, elŝutoj, preferoj kaj spurilaj legitimaĵoj konserviĝas nur en via aparato. Vi povas eksporti aŭ forviŝi ilin iam ajn en Agordoj. Malinstalo de la apo forigas ilin porĉiame."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "Retaj fontoj kaj etendaĵoj"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "Reta enhavo venas de triaj etendaĵoj kaj retejoj. Foliumado aŭ legado el reta fonto sendas viajn petojn rekte al tiu retejo, kiu sekvas sian propran privatecan politikon. La apo nek regas nek respondecas pri triaj servoj."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "Spuraj servoj"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "Vi povas laŭvole konekti spurilajn kontojn kiel AniList, MyAnimeList, Bangumi, Kitsu kaj Shikimori. Ensaluto estas rajtigita de vi en la paĝo de la spurilo, kaj alirĵetonoj konserviĝas nur en via aparato por sinkronigi legprogreson."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "Permesoj"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "Interreta aliro servas por ŝargi retan enhavon, dosiera aliro por lokaj importoj kaj savkopioj, kaj biometria aŭtentigo nur por la loka aplika ŝloso. Neniu permeso kolektas personajn datumojn."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "Kontakto"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi estas malfermitkoda projekto inspirita de Mihon. Se vi havas demandojn pri ĉi tiu privateca deklaro, kontaktu nin per Discord aŭ GitHub."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "Konservi kiel arkivo CBZ"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "Dividi altajn bildojn"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "Plibonigas la rendimenton de la legilo"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "Samtempeco"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "Samtempaj fontaj elŝutoj"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "Samtempaj paĝaj elŝutoj"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "Paĝoj elŝutataj samtempe por fonto"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "Forigi ĉapitrojn"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "Post mana markado kiel legita"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "Aŭtomate forigi post legado"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "Malebligita"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "Lasta legita ĉapitro"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "Antaŭlasta legita ĉapitro"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "Triapaŭlasta legita ĉapitro"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "Kvara antaŭ la lasta legita"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "Kvina antaŭ la lasta legita"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "Permesi forigi legosignitajn ĉapitrojn"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "Aŭtomata elŝuto"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "Elŝuti novajn ĉapitrojn"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "Aŭtomate elŝutas novajn ĉapitrojn trovitajn dum bibliotekaj ĝisdatigoj"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "Preterpasi duplikatajn legitajn ĉapitrojn"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "Elŝuti anticipe"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "Aŭtomata elŝuto dum legado"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "Sekva nelegita ĉapitro"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "Sekvaj %d nelegitaj ĉapitroj"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "Funkcias nur se la nuna ĉapitro kaj la sekva jam estas elŝutitaj."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Mangao"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "Romanoj"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "Videoj"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "Ankoraŭ neniuj fontoj de ĉi tiu tipo"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "Lokaj romanoj"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "Lokaj videoj"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "Tipo"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "Ĉio"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "Komenci ludadon"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "Daŭrigi ludadon"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "Ĉi tiu fluo ludeblas nur rete"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "Tipara grando"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "Linia interspaco"
+    },
+    {
+      "name": "novel_empty",
+      "value": "Ĉi tiu ĉapitro ne havas tekston"
+    },
+    {
+      "name": "novel_prev",
+      "value": "Antaŭa ĉapitro"
+    },
+    {
+      "name": "novel_next",
+      "value": "Sekva ĉapitro"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "Rulumado"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "Paĝa"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "Dupaĝa"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "Paĝiga reĝimo"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "Alinea interspaco"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "Montrado"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "Teksto"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "Unu paĝo (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "Unu paĝo (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "Paĝa transiro"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "Simulado"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "Glitado"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "Kovrado"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "Teksta koloro"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "Hela"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "Malhela"
+    },
+    {
+      "name": "novel_margin",
+      "value": "Marĝenoj"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "Tiparo"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "Defaŭlta"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "Serifa"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "Senserifa"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "Egallarĝa"
+    },
+    {
+      "name": "novel_tts",
+      "value": "Laŭtlegi"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "Komenci laŭtlegadon"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "Haltigi laŭtlegadon"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "Legorapido"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "Atingis la finon de ĉi tiu ĉapitro"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "Tekst-al-parolo malsukcesis: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "Paŭzigi"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "Daŭrigi"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "Nun legata"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "Alineo %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "Dormotempigilo"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "Malŝaltita"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d min"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "Haltos post %1$s"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "Nenio estas laŭtlegata"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "Malfermi ludilon"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "Ĉapitroj"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "Laŭ tempo"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "Laŭ ĉapitroj"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "Post ĉi tiu ĉapitro"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "Post %1$d ĉapitroj"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d ĉap."
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "Haltos post ĉi tiu ĉapitro"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "Haltos post %1$d ĉapitroj"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "Tenadas la apon fone dum romano estas laŭtlegata"
+    },
+    {
+      "name": "video_play",
+      "value": "Ludi"
+    },
+    {
+      "name": "video_pause",
+      "value": "Paŭzigi"
+    },
+    {
+      "name": "video_prev",
+      "value": "Antaŭa"
+    },
+    {
+      "name": "video_next",
+      "value": "Sekva"
+    },
+    {
+      "name": "video_settings",
+      "value": "Ludilaj agordoj"
+    },
+    {
+      "name": "video_episodes",
+      "value": "Epizodoj"
+    },
+    {
+      "name": "video_quality",
+      "value": "Kvalito"
+    },
+    {
+      "name": "video_speed",
+      "value": "Ludrapido"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "Danmaku ŝaltita"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "Danmaku malŝaltita"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "Ŝargas danmaku…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%d danmaku ŝargitaj"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "Neniu kongrua danmaku trovita"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "Malsukcesis ŝargi danmaku"
+    },
+    {
+      "name": "video_locked",
+      "value": "Regiloj ŝlositaj"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "Regiloj malŝlositaj"
+    },
+    {
+      "name": "player_set_title",
+      "value": "Ludilo"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "Ludado"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "Defaŭlta rapido"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "Aŭtomate ludi sekvan epizodon"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "Ludas la sekvan epizodon aŭtomate post la fino"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "Montri danmaku"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "Tipara grando de danmaku"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "Opakeco de danmaku"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "Montrota areo de danmaku"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "Rapido de danmaku"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "Danmaku-datumoj el dandanplay (reto necesa)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "Ekrana skala reĝimo"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "Adapti"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "Plenigi"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "Streĉi"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "Malrapida"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Normala"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "Rapida"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "Tre rapida"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 de ekrano"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "Duona ekrano"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 de ekrano"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "Plena ekrano"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "Mangaa tempo"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "Romana tempo"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "Videa tempo"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "Kovrilo"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "Redakti kovrilon"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "Restarigi kovrilon"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "Kovrilo ĝisdatigita"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "Kovrilo restaŭrita"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "Ne eblis ĝisdatigi la kovrilon"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "Kovrilo konservita"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "Eraro dum konservo de kovrilo"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "Eraro dum kunhavigo de kovrilo"
+    },
+    {
+      "name": "detail_edit",
+      "value": "Redakti"
+    },
+    {
+      "name": "detail_delete",
+      "value": "Forigi"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "Bonvenon!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "Ni unue agordu kelkajn aferojn. Vi ĉiam povos ŝanĝi ilin poste en la agordoj."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "Sekva"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "Komenci"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "Enkonduka gvidilo"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "Gvidilo por komenci"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "Nova ĉe %s? Ni rekomendas la gvidilon por komenci."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "Ĉu reinstali %s?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "Sinkronigo okazas, bonvolu atendi"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "Elŝuto malsukcesis"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "Malsukcesis ŝargi detalojn"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "Nevalidaj paĝaj parametroj"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "Pretigas elŝutojn…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "Malsukcesis movi al kategorio"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "Malsukcesis ŝargi la migran liston"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "Operacio malsukcesis"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "Ŝarga eraro: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "Ŝargas…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "Ŝargo malsukcesis: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "Bildigo eliris (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "Lasta aŭtomata savkopio malsukcesis"
+    },
+    {
+      "name": "category_manga",
+      "value": "Mangao"
+    },
+    {
+      "name": "category_novel",
+      "value": "Romanoj"
+    },
+    {
+      "name": "category_video",
+      "value": "Videoj"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "Permesita"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "La motoro TTS estas okupita, bonvolu reprovi poste"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "La motoro TTS ĉesis respondi kaj la legado haltis"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "La motoro TTS ne disponeblas"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "Homa konfirmo necesas; kompletigu la konfirman paĝon kaj reprovu"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "Fonto ne disponebla"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "Ĉi tiu ĉapitro ne havas enhavon"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "Ludado malsukcesis"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "Neniuj ludeblaj videoj trovitaj"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "Loka"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "Nuligita"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "Elŝuto malsukcesis"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "Elŝuto eltempiĝis (servilo ne respondas)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "Elŝuto malsukcesis (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "Ĉi tiu video fluas rete kaj ne elŝuteblas"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "Elŝuta servo ne pravalorizita"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "Fonto ne trovita: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "Ĉapitra dosiero ne trovita"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "Nesubtenata ĉapitra formato"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "Videa dosiero ne trovita"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "Loke importita mangao"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "Loke importitaj romanoj"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "Loke importitaj videoj"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "Nesekura alidirekto blokita: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "Tro da alidirektoj: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "Ne eblis trovi la servilan adreson; kontrolu la reton kaj reprovu"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "Ne eblis konektiĝi al la servilo; kontrolu la reton kaj reprovu"
+    },
+    {
+      "name": "net_timeout",
+      "value": "La peto eltempiĝis; bonvolu reprovi poste"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "Sekura konekto malsukcesis (eraro SSL); bonvolu reprovi poste"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "La konekto interrompiĝis; bonvolu reprovi"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "Reta peto malsukcesis: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "Malsukcesis krei la motoron JSVM"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "Malsukcesis ruli la kromprograman skripton"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "Etendaĵo ne ŝargita"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "Etendaĵo estas difektita; reinstalu aŭ reŝargu ĝin"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "Pravalorizado de etendaĵo malsukcesis"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "Pravalorizado de etendaĵo eltempiĝis"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "Voko de etendaĵo eltempiĝis: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "Voko de etendaĵo malsukcesis"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "La etendaĵo redonis nevalidan JSON"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "Nekonata etendaĵa eraro"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "Nevalida manifest.key (nur minuskloj, ciferoj kaj substrekoj)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name mankas"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "Nevalida manifest.versionCode"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "Ĉi tiu kromprogramo postulas pli novan apon (%s); unue ĝisdatigu"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "Ĉi tiu kromprogramo postulas versionCode de apo >= %s; unue ĝisdatigu"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "Malsukcesis legi la elektitan dosieron: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "URL de kromprogramaj pakaĵoj devas uzi https; klartekstaj elŝutoj estas rifuzitaj"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "Integreca kontrolo malsukcesis (sha256 ne kongruas); instalo nuligita"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "En la kromprograma pakaĵo mankas main.js"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "Malsukcesis anstataŭigi la kromprograman dosierujon: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "manifest.json ne trovita en la kromprograma pakaĵo"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "URL de deponejaj dosieroj devas uzi https; eniroj http:// estas rifuzitaj"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "Nevalida nomo de rultempo: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "Mankas rultempa komponanto: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "La kromprogramo redonis nevalidajn mangaajn detalojn"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "La kromprogramo ne eksportas getChapterText"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "La kromprogramo ne eksportas getVideoList"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "Malsukcesis konservi la kromprograman pakaĵon: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "Malsukcesis forigi la kromprograman dosierujon: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "Malsukcesis legi la instalitajn kromprogramajn dosierojn: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "Malsukcesis kontroli la integrecon de la pakaĵo: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "Malsukcesis elpaki la kromprograman pakaĵon: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "Malsukcesis legi manifest.json en la pakaĵo: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "Malsukcesis prepari la kromprogramajn dosierojn: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "Spurado"
+    },
+    {
+      "name": "track_login",
+      "value": "Ensaluti"
+    },
+    {
+      "name": "track_logout",
+      "value": "Elsaluti"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "Ĉu elsaluti el %s?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "Ensalutita en %s"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "Elsalutita"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "Ensaluto malsukcesis"
+    },
+    {
+      "name": "track_username",
+      "value": "Uzantnomo"
+    },
+    {
+      "name": "track_password",
+      "value": "Pasvorto"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "Aŭtomate ĝisdatigi spuran progreson"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "Serĉi en %s"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "Serĉo malsukcesis"
+    },
+    {
+      "name": "track_no_results",
+      "value": "Neniuj rezultoj trovitaj"
+    },
+    {
+      "name": "track_added",
+      "value": "Spurado aldonita"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "Malsukcesis aldoni spuradon"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "Malsukcesis ĝisdatigi spuradon"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "Malsukcesis forigi el la servo"
+    },
+    {
+      "name": "track_status",
+      "value": "Stato"
+    },
+    {
+      "name": "track_score",
+      "value": "Poentaro"
+    },
+    {
+      "name": "track_chapters",
+      "value": "Ĉapitroj"
+    },
+    {
+      "name": "track_start_date",
+      "value": "Komenca dato"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "Fina dato"
+    },
+    {
+      "name": "track_private",
+      "value": "Privata"
+    },
+    {
+      "name": "track_unlink",
+      "value": "Malligi"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "Forigi el la servo"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "Enigu validan ĉapitran numeron"
+    },
+    {
+      "name": "track_reading",
+      "value": "Leganta"
+    },
+    {
+      "name": "track_completed",
+      "value": "Finita"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "Detenita"
+    },
+    {
+      "name": "track_paused",
+      "value": "Paŭzita"
+    },
+    {
+      "name": "track_dropped",
+      "value": "Forlasita"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "Planas legi"
+    },
+    {
+      "name": "track_repeating",
+      "value": "Releganta"
+    },
+    {
+      "name": "track_considering",
+      "value": "Konsideranta"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "Nekonata"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "Lega listo"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "Dezira listo"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "Finita listo"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "Detenita listo"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "Nefinita listo"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "Ŝargas…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "Malsukcesis ŝargi: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "Ankoraŭ neniuj lokaj dosieroj, tuŝu Importi por aldoni"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "Nomo"
+    },
+    {
+      "name": "privacy_title",
+      "value": "Privateco"
+    },
+    {
+      "name": "privacy_group",
+      "value": "Sekureco"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "Aplika ŝloso"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "Unue agordu ekranan ŝloson"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "Ŝlosi dum senagado"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "Ĉiam"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 minuto"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 minutoj"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 minutoj"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 minutoj"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "Neniam"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "Kaŝi enhavon de sciigoj"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "Sekura ekrano"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "Blokas ekrankopiojn kaj ekranan registradon"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "Apo ŝlosita"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "Konfirmu vian identecon por daŭrigi"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "Malŝlosi"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "Malŝlosi apon"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "Elŝutas"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "Eksporti kraŝprotokolojn"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "Neniuj kraŝprotokoloj trovitaj"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "Eksportis %d erarprotokolojn"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "Detala protokolado"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "Inkluzivi senerarigajn detalojn en sistemaj protokoloj"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "Senerarigaj informoj"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "Ago malsukcesis"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Datumoj"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "Reto"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "Biblioteko"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "Legilo"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "Viŝi datumbazon"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "Ĉu forigi ĉiujn erojn, kiuj ne estas en via biblioteko? La leghistorio kaj progreso de tiuj eroj perdiĝos."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "Forigis %d erojn"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "Viŝi enkorpigitajn retajn datumojn"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "Enkorpigitaj retaj datumoj viŝitaj"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS per HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "Malebligita"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "Propra User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "Lasu malplena por uzi la defaŭltan"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent konservita"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "Restarigi User-Agent"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "Aktualigi bibliotekajn kovrilojn"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "Aktualigas kovrilojn…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "Aktualigis %d erojn"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "Restarigi legilajn agordojn por serio"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "Ĉu restarigi la legreĝimojn de ĉiu serio al la ĝenerala defaŭlto?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "Restarigis %d erojn"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "Altkvalita bildigo"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "Pli glata bilda skalado kontraŭ rendimento"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "Apa versio"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "Aparata modelo"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "Aparata tipo"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "Sistema versio"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "API-versio"
+    },
+    {
+      "name": "debug_screen",
+      "value": "Ekrano"
+    },
+    {
+      "name": "debug_language",
+      "value": "Lingvo"
     }
   ]
 }

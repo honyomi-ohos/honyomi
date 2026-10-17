@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "مانگای در حال انتشار در کتابخانه نیست"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "کپی در بریده‌دان"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "پوسته"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "پیش‌فرض"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "غروب نیمه‌شب"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "دایکیری توت‌فرنگی"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "تاکو"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "سبزآبی و فیروزه‌ای"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "موج جزر و مد"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "یین و یانگ"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "یوتسوبا"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "شب توکیو"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "تک‌رنگ"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "سیب سبز"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "اسطوخودوس"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "تازه‌سازی"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "باز کردن در مرورگر"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "باز کردن در مرورگر ممکن نشد"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "کپی URL"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL کپی شد"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "فصل بعدی نیست"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "فیلتری موجود نیست"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "بازنشانی"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "نادیده گرفتن"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "شامل"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "مستثنی"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "انتخاب پوشه ناموفق بود"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "پوشه لازم است، نه فایل"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "انتخاب پوشه"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "همگام‌سازی"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "تغییر پوشه"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "پوشهٔ محلی"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "در حال همگام‌سازی پوشه…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "پوشه همگام شد"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "همگام‌سازی ناموفق: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "دسترسی به پوشهٔ محلی ممکن نیست، لطفاً دوباره انتخاب کنید"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "نگه‌داشتن دسترسی به پوشه ناموفق بود"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "انتخاب پوشه در این دستگاه پشتیبانی نمی‌شود"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "هنوز پوشهٔ محلی تنظیم نشده"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "در پوشهٔ محلی چیزی یافت نشد"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "در زیرپوشهٔ comic چیزی یافت نشد"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "در زیرپوشهٔ novel چیزی یافت نشد"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "در زیرپوشهٔ anime چیزی یافت نشد"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "لغو همه"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "فصل صعودی"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "فصل نزولی"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "مرتب‌سازی"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "فیلتر"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "بر اساس منبع"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "بر اساس شمارهٔ فصل"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "بر اساس تاریخ بارگذاری"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "بر اساس نام"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "بازنشانی"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "دانلود شده"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "نخوانده"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "نشانک‌دار"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d انتخاب شد"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "علامت خوانده‌شده"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "علامت نخوانده"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "نشانک"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "حذف"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "%d نخواندهٔ بعدی"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "همهٔ نخوانده‌ها"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "فصل‌های نشانک‌دار"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d فصل در صف"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "فصل نخوانده‌ای نیست"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "دانلودی برای حذف نیست"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "%d دانلود حذف شد"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "ردیابی"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "لغو دانلود"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "دانلود لغو شد"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "فصل دانلودشده حذف شود؟"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "دانلود حذف شد"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "در بریده‌دان کپی شد"
+    },
+    {
+      "name": "transition_finished",
+      "value": "پایان:"
+    },
+    {
+      "name": "transition_current",
+      "value": "فعلی:"
+    },
+    {
+      "name": "transition_next",
+      "value": "بعدی:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "قبلی:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "فصل بعدی نیست"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "فصل قبلی نیست"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "وب‌سایت"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "به‌روزرسانی در انتظار"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "به‌روزرسانی همه"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "چند"
+    },
+    {
+      "name": "about_row_version",
+      "value": "نسخه"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "اطلاعات اشکال‌زدایی کپی شد"
+    },
+    {
+      "name": "licenses_title",
+      "value": "مجوزهای متن‌باز"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "باز کردن صفحهٔ اصلی"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "متن کامل مجوز"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "مرجع معماری برنامه و طراحی تعامل"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "نمادهای درون برنامه"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "کیت توسعهٔ سکو و چارچوب ArkUI"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "رمزگشایی تصویر AVIF"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "رمزگشای AV1 برای رمزگشایی AVIF"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "تجزیهٔ HTML برای افزونه‌ها"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "حافظهٔ پنهان پخش ویدیو"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL و URLSearchParams برای افزونه‌ها (زمان‌اجرای افزونه)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder و TextDecoder برای افزونه‌ها (زمان‌اجرای افزونه)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "تبدیل مقدار WebIDL، وابستگی whatwg-url (زمان‌اجرای افزونه)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "درهم‌سازی MD5 برای افزونه‌ها (زمان‌اجرای افزونه)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "رمزنگاری و رمزگشایی AES-CBC برای افزونه‌ها (زمان‌اجرای افزونه)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "درهم‌سازی SHA/HMAC/PBKDF2 برای افزونه‌ها (زمان‌اجرای افزونه)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "رمزنگاری و رمزگشایی AES-GCM برای افزونه‌ها (زمان‌اجرای افزونه)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "سیاست حریم خصوصی"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi خواننده‌ای محلی‌محور برای مانگا، رمان و ویدیو است. خود برنامه هیچ دادهٔ شخصی را جمع، بارگذاری یا هم‌رسانی نمی‌کند."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "داده‌های محلی"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "کتابخانه، تاریخچهٔ خواندن، سوابق دانلود، ترجیح‌ها و اطلاعات ورود ردیاب‌ها فقط روی دستگاه شما ذخیره می‌شوند. هر زمان می‌توانید آن‌ها را در تنظیمات صادر یا پاک کنید. حذف نصب برنامه آن‌ها را برای همیشه برمی‌دارد."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "منابع و افزونه‌های آنلاین"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "محتوای آنلاین را افزونه‌ها و وب‌سایت‌های شخص ثالث فراهم می‌کنند. مرور یا خواندن از یک منبع آنلاین درخواست‌های شما را مستقیم به همان سایت می‌فرستد و تابع سیاست حریم خصوصی آن است. برنامه بر خدمات شخص ثالث کنترل ندارد و مسئول آن‌ها نیست."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "خدمات ردیابی"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "می‌توانید در صورت تمایل حساب ردیاب‌هایی مانند AniList، MyAnimeList، Bangumi، Kitsu و Shikimori را وصل کنید. ورود را خودتان در صفحهٔ ردیاب مجاز می‌کنید و نشانه‌های دسترسی فقط روی دستگاه شما برای همگام‌سازی پیشرفت خواندن ذخیره می‌شوند."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "مجوزها"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "دسترسی به اینترنت برای بارگذاری محتوای آنلاین، دسترسی به فایل برای ورود محلی و پشتیبان، و احراز زیست‌سنجی فقط برای قفل محلی برنامه است. هیچ مجوزی برای جمع‌آوری دادهٔ شخصی به کار نمی‌رود."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "تماس"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi پروژه‌ای متن‌باز و الهام‌گرفته از Mihon است. اگر دربارهٔ این بیانیهٔ حریم خصوصی پرسشی دارید، از راه Discord یا GitHub با ما تماس بگیرید."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "ذخیره به‌صورت بایگانی CBZ"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "تقسیم تصویرهای بلند"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "کارایی خواننده را بهتر می‌کند"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "هم‌زمانی"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "دانلود هم‌زمان منابع"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "دانلود هم‌زمان صفحه‌ها"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "صفحه‌هایی که برای هر منبع با هم دانلود می‌شوند"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "حذف فصل‌ها"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "پس از علامت دستی به‌عنوان خوانده‌شده"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "حذف خودکار پس از خواندن"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "غیرفعال"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "آخرین فصل خوانده‌شده"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "فصل یکی‌مانده به آخر خوانده‌شده"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "فصل سوم از آخر خوانده‌شده"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "فصل چهارم از آخر خوانده‌شده"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "فصل پنجم از آخر خوانده‌شده"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "اجازهٔ حذف فصل‌های نشانک‌دار"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "دانلود خودکار"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "دانلود فصل‌های تازه"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "دانلود خودکار فصل‌های تازه‌ای که هنگام به‌روزرسانی کتابخانه پیدا می‌شوند"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "رد شدن از دانلود فصل‌های خوانده‌شدهٔ تکراری"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "دانلود از پیش"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "دانلود خودکار هنگام خواندن"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "فصل نخواندهٔ بعدی"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "%d فصل نخواندهٔ بعدی"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "فقط وقتی کار می‌کند که فصل فعلی و فصل بعدی از قبل دانلود شده باشند."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "مانگا"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "رمان‌ها"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "ویدیوها"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "هنوز منبعی برای این نوع نیست"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "رمان‌های محلی"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "ویدیوهای محلی"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "نوع"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "همه"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "شروع پخش"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "ادامهٔ پخش"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "این جریان فقط آنلاین پخش می‌شود"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "اندازهٔ قلم"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "فاصلهٔ خط"
+    },
+    {
+      "name": "novel_empty",
+      "value": "این فصل متنی ندارد"
+    },
+    {
+      "name": "novel_prev",
+      "value": "فصل قبلی"
+    },
+    {
+      "name": "novel_next",
+      "value": "فصل بعدی"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "پیمایش"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "صفحه‌ای"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "دو صفحه"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "حالت ورق زدن"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "فاصلهٔ بند"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "نمایش"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "متن"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "تک‌صفحه (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "تک‌صفحه (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "گذار صفحه"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "شبیه‌سازی"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "لغزش"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "پوشش"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "رنگ متن"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "روشن"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "تیره"
+    },
+    {
+      "name": "novel_margin",
+      "value": "حاشیه‌ها"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "قلم"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "پیش‌فرض"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "سریف"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "بدون سریف"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "تک‌فاصله"
+    },
+    {
+      "name": "novel_tts",
+      "value": "خواندن با صدا"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "شروع خواندن با صدا"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "توقف خواندن با صدا"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "سرعت خواندن"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "به پایان این فصل رسید"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "متن به گفتار ناموفق بود: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "مکث"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "ادامه"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "در حال خواندن"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "بند %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "زمان‌سنج خواب"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "خاموش"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d دقیقه"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "پس از %1$s می‌ایستد"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "چیزی با صدا خوانده نمی‌شود"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "باز کردن پخش‌کننده"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "فصل‌ها"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "بر اساس زمان"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "بر اساس فصل"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "پس از این فصل"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "پس از %1$d فصل"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d فصل"
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "پس از این فصل می‌ایستد"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "پس از %1$d فصل می‌ایستد"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "هنگام خواندن رمان با صدا، برنامه را در پس‌زمینه روشن نگه می‌دارد"
+    },
+    {
+      "name": "video_play",
+      "value": "پخش"
+    },
+    {
+      "name": "video_pause",
+      "value": "مکث"
+    },
+    {
+      "name": "video_prev",
+      "value": "قبلی"
+    },
+    {
+      "name": "video_next",
+      "value": "بعدی"
+    },
+    {
+      "name": "video_settings",
+      "value": "تنظیمات پخش‌کننده"
+    },
+    {
+      "name": "video_episodes",
+      "value": "قسمت‌ها"
+    },
+    {
+      "name": "video_quality",
+      "value": "کیفیت"
+    },
+    {
+      "name": "video_speed",
+      "value": "سرعت پخش"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "دانماکو"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "دانماکو روشن"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "دانماکو خاموش"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "در حال بارگذاری دانماکو…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%d دانماکو بارگذاری شد"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "دانماکوی همخوانی یافت نشد"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "بارگذاری دانماکو ناموفق بود"
+    },
+    {
+      "name": "video_locked",
+      "value": "کنترل‌ها قفل شد"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "کنترل‌ها باز شد"
+    },
+    {
+      "name": "player_set_title",
+      "value": "پخش‌کننده"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "پخش"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "سرعت پیش‌فرض"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "پخش خودکار قسمت بعدی"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "با پایان، قسمت بعدی خودکار پخش شود"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "دانماکو"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "نمایش دانماکو"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "اندازهٔ قلم دانماکو"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "شفافیت دانماکو"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "ناحیهٔ نمایش دانماکو"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "سرعت دانماکو"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "دادهٔ دانماکو از dandanplay (نیاز به شبکه)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "حالت مقیاس صفحه"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "جا شدن"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "پر کردن"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "کشیدن"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "آهسته"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "عادی"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "سریع"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "خیلی سریع"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "یک‌چهارم صفحه"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "نیم صفحه"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "سه‌چهارم صفحه"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "تمام‌صفحه"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "زمان مانگا"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "زمان رمان"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "زمان ویدیو"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "جلد"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "ویرایش جلد"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "بازنشانی جلد"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "جلد به‌روز شد"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "جلد بازگردانده شد"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "به‌روزرسانی جلد ممکن نشد"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "جلد ذخیره شد"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "خطا در ذخیرهٔ جلد"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "خطا در هم‌رسانی جلد"
+    },
+    {
+      "name": "detail_edit",
+      "value": "ویرایش"
+    },
+    {
+      "name": "detail_delete",
+      "value": "حذف"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "خوش آمدید!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "اول چند چیز را تنظیم کنیم. بعداً هم می‌توانید آن‌ها را در تنظیمات تغییر دهید."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "بعدی"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "شروع"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "راهنمای شروع"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "راهنمای آغاز"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "تازه با %s آشنا شده‌اید؟ پیشنهاد می‌کنیم راهنمای آغاز را ببینید."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "%s را دوباره نصب می‌کنید؟"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "همگام‌سازی در جریان است، لطفاً صبر کنید"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "دانلود ناموفق بود"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "بارگذاری جزئیات ناموفق بود"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "پارامترهای صفحه نامعتبر است"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "در حال آماده‌سازی دانلودها…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "انتقال به دسته ناموفق بود"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "بارگذاری فهرست انتقال ناموفق بود"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "عملیات ناموفق بود"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "خطای بارگذاری: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "در حال بارگذاری…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "بارگذاری ناموفق: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "نمایشگر بسته شد (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "ت"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "و"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "م"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "آخرین پشتیبان‌گیری خودکار ناموفق بود"
+    },
+    {
+      "name": "category_manga",
+      "value": "مانگا"
+    },
+    {
+      "name": "category_novel",
+      "value": "رمان‌ها"
+    },
+    {
+      "name": "category_video",
+      "value": "ویدیوها"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "دارای مجوز"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "موتور TTS مشغول است، بعداً دوباره تلاش کنید"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "موتور TTS پاسخ نداد و خواندن متوقف شد"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "موتور TTS در دسترس نیست"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "تأیید انسانی لازم است؛ صفحهٔ تأیید را کامل کنید و دوباره تلاش کنید"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "منبع در دسترس نیست"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "این فصل محتوایی ندارد"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "پخش ناموفق بود"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "ویدیوی قابل پخشی یافت نشد"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "محلی"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "لغو شد"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "دانلود ناموفق بود"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "مهلت دانلود تمام شد (کارساز پاسخ نمی‌دهد)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "دانلود ناموفق (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "این ویدیو آنلاین پخش می‌شود و دانلود نمی‌شود"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "خدمت دانلود راه‌اندازی نشده"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "منبع پیدا نشد: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "فایل فصل پیدا نشد"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "قالب فصل پشتیبانی نمی‌شود"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "فایل ویدیو پیدا نشد"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "مانگای واردشدهٔ محلی"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "رمان‌های واردشدهٔ محلی"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "ویدیوهای واردشدهٔ محلی"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "تغییر مسیر ناامن مسدود شد: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "تغییر مسیر بیش از حد: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "نشانی کارساز پیدا نشد، اتصال را بررسی کنید و دوباره تلاش کنید"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "اتصال به کارساز ممکن نشد، شبکه را بررسی کنید و دوباره تلاش کنید"
+    },
+    {
+      "name": "net_timeout",
+      "value": "مهلت درخواست تمام شد، بعداً دوباره تلاش کنید"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "اتصال امن ناموفق بود (خطای SSL)، بعداً دوباره تلاش کنید"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "اتصال قطع شد، لطفاً دوباره تلاش کنید"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "درخواست شبکه ناموفق بود: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "ساخت موتور JSVM ناموفق بود"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "اجرای اسکریپت افزونه ناموفق بود"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "افزونه بارگذاری نشده"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "افزونه خراب است، لطفاً دوباره نصب یا بارگذاری کنید"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "راه‌اندازی افزونه ناموفق بود"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "مهلت راه‌اندازی افزونه تمام شد"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "مهلت فراخوانی افزونه تمام شد: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "فراخوانی افزونه ناموفق بود"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "افزونه JSON نامعتبر برگرداند"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "خطای ناشناختهٔ افزونه"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "manifest.key نامعتبر است (فقط حروف کوچک، رقم و زیرخط)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name وجود ندارد"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "manifest.versionCode نامعتبر است"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "این افزونه برنامهٔ جدیدتری می‌خواهد (%s)، لطفاً اول به‌روزرسانی کنید"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "این افزونه versionCode برنامه >= %s می‌خواهد، لطفاً اول به‌روزرسانی کنید"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "خواندن فایل انتخاب‌شده ناموفق بود: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "نشانی بستهٔ افزونه باید https باشد؛ دانلود متن ساده رد می‌شود"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "بررسی یکپارچگی افزونه ناموفق بود (ناهمخوانی sha256)، نصب لغو شد"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "بستهٔ افزونه main.js ندارد"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "جایگزینی پوشهٔ افزونه ناموفق بود: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "manifest.json در بستهٔ افزونه پیدا نشد"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "نشانی فایل مخزن باید https باشد؛ ورودی‌های http:// رد می‌شوند"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "نام زمان‌اجرای افزونه نامعتبر است: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "جزء زمان‌اجرای افزونه موجود نیست: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "افزونه جزئیات مانگای نامعتبر برگرداند"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "افزونه getChapterText را صادر نمی‌کند"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "افزونه getVideoList را صادر نمی‌کند"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "ذخیرهٔ بستهٔ افزونه ناموفق بود: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "حذف پوشهٔ افزونه ناموفق بود: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "خواندن فایل‌های افزونهٔ نصب‌شده ناموفق بود: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "تأیید یکپارچگی بستهٔ افزونه ناموفق بود: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "استخراج بستهٔ افزونه ناموفق بود: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "خواندن manifest.json در بستهٔ افزونه ناموفق بود: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "آماده‌سازی فایل‌های افزونه ناموفق بود: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "ردیابی"
+    },
+    {
+      "name": "track_login",
+      "value": "ورود"
+    },
+    {
+      "name": "track_logout",
+      "value": "خروج"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "از %s خارج شوید؟"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "به %s وارد شدید"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "خارج شدید"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "ورود ناموفق بود"
+    },
+    {
+      "name": "track_username",
+      "value": "نام کاربری"
+    },
+    {
+      "name": "track_password",
+      "value": "گذرواژه"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "به‌روزرسانی خودکار پیشرفت ردیابی"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "جستجو در %s"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "جستجو ناموفق بود"
+    },
+    {
+      "name": "track_no_results",
+      "value": "نتیجه‌ای یافت نشد"
+    },
+    {
+      "name": "track_added",
+      "value": "ردیابی افزوده شد"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "افزودن ردیابی ناموفق بود"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "به‌روزرسانی ردیابی ناموفق بود"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "حذف از خدمت ناموفق بود"
+    },
+    {
+      "name": "track_status",
+      "value": "وضعیت"
+    },
+    {
+      "name": "track_score",
+      "value": "امتیاز"
+    },
+    {
+      "name": "track_chapters",
+      "value": "فصل‌ها"
+    },
+    {
+      "name": "track_start_date",
+      "value": "تاریخ شروع"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "تاریخ پایان"
+    },
+    {
+      "name": "track_private",
+      "value": "خصوصی"
+    },
+    {
+      "name": "track_unlink",
+      "value": "قطع اتصال"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "حذف از خدمت"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "شمارهٔ فصل معتبر وارد کنید"
+    },
+    {
+      "name": "track_reading",
+      "value": "در حال خواندن"
+    },
+    {
+      "name": "track_completed",
+      "value": "تمام‌شده"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "معلق"
+    },
+    {
+      "name": "track_paused",
+      "value": "متوقف"
+    },
+    {
+      "name": "track_dropped",
+      "value": "رهاشده"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "برای خواندن"
+    },
+    {
+      "name": "track_repeating",
+      "value": "تکرار"
+    },
+    {
+      "name": "track_considering",
+      "value": "در حال بررسی"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "ناشناخته"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "فهرست خواندن"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "فهرست آرزو"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "فهرست تمام‌شده"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "فهرست معلق"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "فهرست ناتمام"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "در حال بارگذاری…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "بارگذاری ناموفق: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "هنوز فایل محلی نیست، برای افزودن روی وارد کردن بزنید"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "نام"
+    },
+    {
+      "name": "privacy_title",
+      "value": "حریم خصوصی"
+    },
+    {
+      "name": "privacy_group",
+      "value": "امنیت"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "قفل برنامه"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "اول قفل صفحه را تنظیم کنید"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "قفل هنگام بیکاری"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "همیشه"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "۱ دقیقه"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "۲ دقیقه"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "۵ دقیقه"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "۱۰ دقیقه"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "هرگز"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "پنهان کردن محتوای اعلان"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "صفحهٔ امن"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "نماگرفت و ضبط صفحه را مسدود می‌کند"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "برنامه قفل است"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "برای ادامه هویت خود را تأیید کنید"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "باز کردن قفل"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "باز کردن قفل برنامه"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "در حال دانلود"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "صدور گزارش خرابی"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "گزارش خرابی یافت نشد"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "%d گزارش خطا صادر شد"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "گزارش مفصل"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "جزئیات سطح اشکال‌زدایی را در گزارش سیستم بگنجانید"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "اطلاعات اشکال‌زدایی"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "عمل ناموفق بود"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "داده"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "شبکه"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "کتابخانه"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "خواننده"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "پاک کردن پایگاه داده"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "همهٔ موارد خارج از کتابخانه حذف شوند؟ تاریخچه و پیشرفت خواندن آن‌ها از بین می‌رود."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "%d مورد حذف شد"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "پاک کردن دادهٔ وب توکار"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "دادهٔ وب توکار پاک شد"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS روی HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "غیرفعال"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "User-Agent سفارشی"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "برای پیش‌فرض خالی بگذارید"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent ذخیره شد"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "بازنشانی User-Agent"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "تازه‌سازی جلدهای کتابخانه"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "در حال تازه‌سازی جلدها…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "%d مورد تازه شد"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "بازنشانی تنظیم خواننده برای هر اثر"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "حالت‌های خواندنی که برای هر اثر گذاشته‌اید به پیش‌فرض سراسری برگردد؟"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "%d مورد بازنشانی شد"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "پرداخت با کیفیت بالا"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "مقیاس تصویر نرم‌تر، با هزینهٔ کارایی"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "نسخهٔ برنامه"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "مدل دستگاه"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "نوع دستگاه"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "نسخهٔ سیستم"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "نسخهٔ API"
+    },
+    {
+      "name": "debug_screen",
+      "value": "صفحه"
+    },
+    {
+      "name": "debug_language",
+      "value": "زبان"
     }
   ]
 }

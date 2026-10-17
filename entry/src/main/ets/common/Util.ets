@@ -391,9 +391,6 @@ export class Util {
       case 'plugin_bad_version_code':
         res = $r('app.string.plugin_error_bad_version_code');
         break;
-      case 'plugin_bad_engine':
-        res = $r('app.string.plugin_error_bad_engine');
-        break;
       case 'plugin_dsl_too_new':
         res = $r('app.string.plugin_error_dsl_too_new');
         break;

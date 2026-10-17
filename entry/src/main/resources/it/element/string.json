@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "Nessun manga in corso nella libreria"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "Copia negli appunti"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "Tema"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "Predefinito"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "Crepuscolo di mezzanotte"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "Daiquiri alla fragola"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "Verde acqua e turchese"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "Onda di marea"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "Yin e Yang"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "Notte di Tokyo"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "Monocromo"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "Mela verde"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "Lavanda"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "Aggiorna"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "Apri nel browser"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "Impossibile aprire nel browser"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "Copia URL"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL copiato"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "Nessun capitolo successivo"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "Nessun filtro disponibile"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "Reimposta"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "Ignora"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "Includi"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "Escludi"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "Impossibile scegliere la cartella"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "È richiesta una cartella, non un file"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "Scegli cartella"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "Sincronizza"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "Cambia cartella"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "Cartella locale"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "Sincronizzazione della cartella…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "Cartella sincronizzata"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "Sincronizzazione non riuscita: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "Impossibile accedere alla cartella locale, sceglila di nuovo"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "Impossibile mantenere l'accesso alla cartella"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "La selezione delle cartelle non è supportata su questo dispositivo"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "Nessuna cartella locale impostata"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "Nulla trovato nella cartella locale"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "Nulla trovato nella sottocartella comic"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "Nulla trovato nella sottocartella novel"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "Nulla trovato nella sottocartella anime"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "Annulla tutto"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "Capitolo crescente"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "Capitolo decrescente"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "Ordina"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "Filtro"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "Per fonte"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "Per numero di capitolo"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "Per data di caricamento"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "Per nome"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "Reimposta"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "Scaricato"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "Non letto"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "Segnalibri"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d selezionati"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "Segna come letto"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "Segna come non letto"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "Segnalibro"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "Elimina"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "Prossimi %d non letti"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "Tutti i non letti"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "Capitoli con segnalibro"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d capitoli in coda"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "Nessun capitolo non letto"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "Nessun download da eliminare"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "%d download eliminati"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "Tracciamento"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "Annulla download"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "Download annullato"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "Eliminare il capitolo scaricato?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "Download eliminato"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "Copiato negli appunti"
+    },
+    {
+      "name": "transition_finished",
+      "value": "Finito:"
+    },
+    {
+      "name": "transition_current",
+      "value": "Attuale:"
+    },
+    {
+      "name": "transition_next",
+      "value": "Successivo:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "Precedente:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "Non c'è un capitolo successivo"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "Non c'è un capitolo precedente"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "Sito web"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "Aggiornamenti in sospeso"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "Aggiorna tutto"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "Multi"
+    },
+    {
+      "name": "about_row_version",
+      "value": "Versione"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "Informazioni di debug copiate"
+    },
+    {
+      "name": "licenses_title",
+      "value": "Licenze open source"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "Apri la pagina iniziale"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "Testo completo della licenza"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "Riferimento per l'architettura dell'app e il design delle interazioni"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "Icone dell'app"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "SDK della piattaforma e framework ArkUI"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "Decodifica di immagini AVIF"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "Decoder AV1 usato per la decodifica AVIF"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "Analisi HTML per le estensioni"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "Cache della riproduzione video"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL e URLSearchParams per le estensioni (esecuzione del plugin)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder e TextDecoder per le estensioni (esecuzione del plugin)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "Conversione di valori WebIDL, una dipendenza di whatwg-url (esecuzione del plugin)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "Hashing MD5 per le estensioni (esecuzione del plugin)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "Crittografia e decrittografia AES-CBC per le estensioni (esecuzione del plugin)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "Hashing SHA/HMAC/PBKDF2 per le estensioni (esecuzione del plugin)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "Crittografia e decrittografia AES-GCM per le estensioni (esecuzione del plugin)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "Informativa sulla privacy"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi è un lettore orientato al locale per manga, romanzi e video. L'app stessa non raccoglie, carica né condivide alcun dato personale."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "Dati locali"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "La tua libreria, la cronologia di lettura, i download, le preferenze e le credenziali dei tracker sono salvati solo sul tuo dispositivo. Puoi esportarli o cancellarli in qualsiasi momento nelle Impostazioni. Disinstallare l'app li rimuove in modo permanente."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "Fonti online ed estensioni"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "I contenuti online sono forniti da estensioni e siti di terze parti. Sfogliare o leggere da una fonte online invia le tue richieste direttamente a quel sito, regolato dalla sua informativa sulla privacy. L'app non controlla i servizi di terze parti e non ne è responsabile."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "Servizi di tracciamento"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "Puoi collegare facoltativamente account di tracciamento come AniList, MyAnimeList, Bangumi, Kitsu e Shikimori. L'accesso lo autorizzi tu sulla pagina del servizio e i token di accesso restano solo sul tuo dispositivo per sincronizzare i progressi di lettura."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "Permessi"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "L'accesso a Internet serve a caricare i contenuti online, l'accesso ai file per importazioni locali e backup, e l'autenticazione biometrica solo per il blocco locale dell'app. Nessun permesso viene usato per raccogliere dati personali."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "Contatto"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi è un progetto open source ispirato a Mihon. Per domande su questa informativa sulla privacy, contattaci tramite Discord o GitHub."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "Salva come archivio CBZ"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "Dividi le immagini alte"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "Migliora le prestazioni del lettore"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "Simultaneità"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "Download simultanei delle fonti"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "Download simultanei delle pagine"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "Pagine scaricate insieme per fonte"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "Elimina capitoli"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "Dopo la marcatura manuale come letto"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "Elimina automaticamente dopo la lettura"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "Disattivato"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "Ultimo capitolo letto"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "Penultimo capitolo letto"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "Terzultimo capitolo letto"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "Quartultimo capitolo letto"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "Quintultimo capitolo letto"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "Consenti di eliminare i capitoli con segnalibro"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "Download automatico"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "Scarica i nuovi capitoli"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "Scarica automaticamente i nuovi capitoli trovati durante gli aggiornamenti della libreria"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "Salta il download dei capitoli letti duplicati"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "Download anticipato"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "Download automatico durante la lettura"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "Prossimo capitolo non letto"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "Prossimi %d capitoli non letti"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "Funziona solo se il capitolo attuale e il successivo sono già scaricati."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "Romanzi"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "Video"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "Nessuna fonte per questo tipo"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "Romanzi locali"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "Video locali"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "Tipo"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "Tutto"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "Avvia riproduzione"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "Continua riproduzione"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "Questo flusso si può riprodurre solo online"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "Dimensione del carattere"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "Interlinea"
+    },
+    {
+      "name": "novel_empty",
+      "value": "Questo capitolo non ha testo"
+    },
+    {
+      "name": "novel_prev",
+      "value": "Capitolo precedente"
+    },
+    {
+      "name": "novel_next",
+      "value": "Capitolo successivo"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "Scorrimento"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "Paginato"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "Due pagine"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "Modalità di paginazione"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "Spaziatura dei paragrafi"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "Visualizzazione"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "Testo"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "Pagina singola (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "Pagina singola (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "Transizione di pagina"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "Simulazione"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "Scorrimento pagina"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "Copertura"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "Colore del testo"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "Chiaro"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "Scuro"
+    },
+    {
+      "name": "novel_margin",
+      "value": "Margini"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "Carattere"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "Predefinito"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "Serif"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "Senza grazie"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "Monospazio"
+    },
+    {
+      "name": "novel_tts",
+      "value": "Lettura ad alta voce"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "Avvia la lettura ad alta voce"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "Ferma la lettura ad alta voce"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "Velocità di lettura"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "Raggiunta la fine di questo capitolo"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "Sintesi vocale non riuscita: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "Pausa"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "Riprendi"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "In lettura"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "Paragrafo %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "Timer di spegnimento"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "Disattivo"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d min"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "Si ferma tra %1$s"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "Nessuna lettura ad alta voce in corso"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "Apri il lettore"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "Capitoli"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "Per tempo"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "Per capitoli"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "Dopo questo capitolo"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "Dopo %1$d capitoli"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d cap."
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "Si ferma dopo questo capitolo"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "Si ferma dopo %1$d capitoli"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "Mantiene l'app in esecuzione in background mentre un romanzo viene letto ad alta voce"
+    },
+    {
+      "name": "video_play",
+      "value": "Riproduci"
+    },
+    {
+      "name": "video_pause",
+      "value": "Pausa"
+    },
+    {
+      "name": "video_prev",
+      "value": "Precedente"
+    },
+    {
+      "name": "video_next",
+      "value": "Successivo"
+    },
+    {
+      "name": "video_settings",
+      "value": "Impostazioni del lettore"
+    },
+    {
+      "name": "video_episodes",
+      "value": "Episodi"
+    },
+    {
+      "name": "video_quality",
+      "value": "Qualità"
+    },
+    {
+      "name": "video_speed",
+      "value": "Velocità di riproduzione"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "Danmaku attivo"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "Danmaku disattivo"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "Caricamento danmaku…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%d danmaku caricati"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "Nessun danmaku corrispondente"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "Impossibile caricare i danmaku"
+    },
+    {
+      "name": "video_locked",
+      "value": "Controlli bloccati"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "Controlli sbloccati"
+    },
+    {
+      "name": "player_set_title",
+      "value": "Lettore"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "Riproduzione"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "Velocità predefinita"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "Riproduci automaticamente l'episodio successivo"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "Riproduce automaticamente l'episodio successivo al termine"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "Mostra danmaku"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "Dimensione dei danmaku"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "Opacità dei danmaku"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "Area dei danmaku"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "Velocità dei danmaku"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "Dati danmaku da dandanplay (rete necessaria)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "Modalità di scala"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "Adatta"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "Riempi"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "Allunga"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "Lenta"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Normale"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "Veloce"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "Molto veloce"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 dello schermo"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "Metà schermo"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 dello schermo"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "Schermo intero"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "Tempo manga"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "Tempo romanzo"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "Tempo video"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "Copertina"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "Modifica copertina"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "Reimposta copertina"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "Copertina aggiornata"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "Copertina ripristinata"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "Impossibile aggiornare la copertina"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "Copertina salvata"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "Errore nel salvataggio della copertina"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "Errore nella condivisione della copertina"
+    },
+    {
+      "name": "detail_edit",
+      "value": "Modifica"
+    },
+    {
+      "name": "detail_delete",
+      "value": "Elimina"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "Benvenuto!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "Impostiamo prima alcune cose. Puoi sempre cambiarle più tardi nelle impostazioni."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "Avanti"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "Inizia"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "Guida introduttiva"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "Guida per iniziare"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "Nuovo su %s? Ti consigliamo la guida per iniziare."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "Stai reinstallando %s?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "Sincronizzazione in corso, attendi"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "Download non riuscito"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "Impossibile caricare i dettagli"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "Parametri di pagina non validi"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "Preparazione dei download…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "Impossibile spostare nella categoria"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "Impossibile caricare l'elenco di migrazione"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "Operazione non riuscita"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "Errore di caricamento: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "Caricamento…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "Caricamento non riuscito: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "Rendering terminato (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "Ultimo backup automatico non riuscito"
+    },
+    {
+      "name": "category_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "category_novel",
+      "value": "Romanzi"
+    },
+    {
+      "name": "category_video",
+      "value": "Video"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "Con licenza"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "Il motore TTS è occupato, riprova più tardi"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "Il motore TTS non risponde più e la lettura è stata interrotta"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "Il motore TTS non è disponibile"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "Verifica umana richiesta, completa la pagina di verifica e riprova"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "Fonte non disponibile"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "Questo capitolo non ha contenuto"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "Riproduzione non riuscita"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "Nessun video riproducibile trovato"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "Locale"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "Annullato"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "Download non riuscito"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "Timeout del download (il server non risponde)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "Download non riuscito (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "Questo video è in streaming online e non può essere scaricato"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "Servizio di download non inizializzato"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "Fonte non trovata: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "File del capitolo non trovato"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "Formato di capitolo non supportato"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "File video non trovato"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "Manga importati localmente"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "Romanzi importati localmente"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "Video importati localmente"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "Reindirizzamento non sicuro bloccato: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "Troppi reindirizzamenti: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "Impossibile risolvere l'indirizzo del server, controlla la connessione di rete e riprova"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "Impossibile connettersi al server, controlla la rete e riprova"
+    },
+    {
+      "name": "net_timeout",
+      "value": "Timeout della richiesta, riprova più tardi"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "Connessione sicura non riuscita (errore SSL), riprova più tardi"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "La connessione è stata interrotta, riprova"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "Richiesta di rete non riuscita: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "Impossibile creare il motore JSVM"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "Impossibile eseguire lo script del plugin"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "Estensione non caricata"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "L'estensione è danneggiata, reinstallala o ricaricala"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "Inizializzazione dell'estensione non riuscita"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "Timeout nell'inizializzazione dell'estensione"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "Timeout della chiamata all'estensione: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "Chiamata all'estensione non riuscita"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "L'estensione ha restituito un JSON non valido"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "Errore sconosciuto dell'estensione"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "manifest.key non valido (solo lettere minuscole, cifre e trattini bassi)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name mancante"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "manifest.versionCode non valido"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "Questo plugin richiede un'app più recente (%s), aggiorna prima"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "Questo plugin richiede un'app con versionCode >= %s, aggiorna prima"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "Impossibile leggere il file selezionato: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "Gli URL dei pacchetti plugin devono usare https; i download in chiaro vengono rifiutati"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "Controllo di integrità del plugin non riuscito (sha256 non corrispondente), installazione annullata"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "Manca main.js nel pacchetto del plugin"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "Impossibile sostituire la cartella del plugin: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "manifest.json non trovato nel pacchetto del plugin"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "Gli URL dei file del repository devono usare https; le voci http:// vengono rifiutate"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "Nome di esecuzione del plugin non valido: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "Componente di esecuzione del plugin mancante: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "Il plugin ha restituito dettagli del manga non validi"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "Il plugin non esporta getChapterText"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "Il plugin non esporta getVideoList"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "Impossibile salvare il pacchetto del plugin: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "Impossibile rimuovere la cartella del plugin: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "Impossibile leggere i file del plugin installato: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "Impossibile verificare l'integrità del pacchetto del plugin: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "Impossibile estrarre il pacchetto del plugin: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "Impossibile leggere manifest.json nel pacchetto del plugin: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "Impossibile preparare i file del plugin: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "Tracciamento"
+    },
+    {
+      "name": "track_login",
+      "value": "Accedi"
+    },
+    {
+      "name": "track_logout",
+      "value": "Esci"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "Uscire da %s?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "Accesso effettuato a %s"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "Disconnesso"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "Accesso non riuscito"
+    },
+    {
+      "name": "track_username",
+      "value": "Nome utente"
+    },
+    {
+      "name": "track_password",
+      "value": "Password"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "Aggiorna automaticamente i progressi del tracciamento"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "Cerca su %s"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "Ricerca non riuscita"
+    },
+    {
+      "name": "track_no_results",
+      "value": "Nessun risultato trovato"
+    },
+    {
+      "name": "track_added",
+      "value": "Tracciamento aggiunto"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "Impossibile aggiungere il tracciamento"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "Impossibile aggiornare il tracciamento"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "Impossibile rimuovere dal servizio"
+    },
+    {
+      "name": "track_status",
+      "value": "Stato"
+    },
+    {
+      "name": "track_score",
+      "value": "Punteggio"
+    },
+    {
+      "name": "track_chapters",
+      "value": "Capitoli"
+    },
+    {
+      "name": "track_start_date",
+      "value": "Data di inizio"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "Data di fine"
+    },
+    {
+      "name": "track_private",
+      "value": "Privato"
+    },
+    {
+      "name": "track_unlink",
+      "value": "Scollega"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "Rimuovi dal servizio"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "Inserisci un numero di capitolo valido"
+    },
+    {
+      "name": "track_reading",
+      "value": "In lettura"
+    },
+    {
+      "name": "track_completed",
+      "value": "Completato"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "In attesa"
+    },
+    {
+      "name": "track_paused",
+      "value": "In pausa"
+    },
+    {
+      "name": "track_dropped",
+      "value": "Abbandonato"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "Da leggere"
+    },
+    {
+      "name": "track_repeating",
+      "value": "In rilettura"
+    },
+    {
+      "name": "track_considering",
+      "value": "In considerazione"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "Sconosciuto"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "Lista di lettura"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "Lista dei desideri"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "Lista completata"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "Lista in attesa"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "Lista incompiuta"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "Caricamento…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "Caricamento non riuscito: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "Nessun file locale, tocca Importa per aggiungerne"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "Nome"
+    },
+    {
+      "name": "privacy_title",
+      "value": "Privacy"
+    },
+    {
+      "name": "privacy_group",
+      "value": "Sicurezza"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "Blocco app"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "Imposta prima un blocco schermo"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "Blocca se inattivo"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "Sempre"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 minuto"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 minuti"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 minuti"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 minuti"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "Mai"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "Nascondi il contenuto delle notifiche"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "Schermo sicuro"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "Blocca screenshot e registrazione dello schermo"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "App bloccata"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "Verifica la tua identità per continuare"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "Sblocca"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "Sblocca l'app"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "Download in corso"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "Esporta i log degli arresti"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "Nessun log di arresto trovato"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "Esportati %d log di errore"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "Registrazione dettagliata"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "Includi i dettagli di debug nei log di sistema"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "Info di debug"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "Azione non riuscita"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Dati"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "Rete"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "Libreria"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "Lettore"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "Cancella il database"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "Rimuovere tutte le voci che non sono nella tua libreria? La cronologia di lettura e i progressi di queste voci andranno persi."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "Rimosse %d voci"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "Cancella i dati web incorporati"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "Dati web incorporati cancellati"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS su HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "Disattivato"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "User-Agent personalizzato"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "Lascia vuoto per usare quello predefinito"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent salvato"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "Reimposta User-Agent"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "Aggiorna le copertine della libreria"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "Aggiornamento delle copertine…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "%d voci aggiornate"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "Reimposta le impostazioni di lettura per serie"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "Reimpostare le modalità di lettura impostate per serie sul valore predefinito globale?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "%d voci reimpostate"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "Rendering di alta qualità"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "Ridimensionamento più fluido a scapito delle prestazioni"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "Versione dell'app"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "Modello del dispositivo"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "Tipo di dispositivo"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "Versione del sistema"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "Versione API"
+    },
+    {
+      "name": "debug_screen",
+      "value": "Schermo"
+    },
+    {
+      "name": "debug_language",
+      "value": "Lingua"
     }
   ]
 }

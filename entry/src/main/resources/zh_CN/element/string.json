@@ -1729,6 +1729,34 @@
       "value": "视频播放缓存"
     },
     {
+      "name": "licenses_desc_whatwgurl",
+      "value": "扩展插件 URL 与 URLSearchParams（插件运行时）"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "扩展插件 TextEncoder 与 TextDecoder（插件运行时）"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "WebIDL 值转换，whatwg-url 的依赖（插件运行时）"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "扩展插件 MD5 哈希（插件运行时）"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "扩展插件 AES-CBC 加解密（插件运行时）"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "扩展插件 SHA/HMAC/PBKDF2（插件运行时）"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "扩展插件 AES-GCM 加解密（插件运行时）"
+    },
+    {
       "name": "privacy_policy_title",
       "value": "隐私说明"
     },
@@ -3365,10 +3393,6 @@
       "value": "manifest.versionCode 无效"
     },
     {
-      "name": "plugin_error_bad_engine",
-      "value": "不支持的插件引擎：%s（本应用仅支持 jsvm）"
-    },
-    {
       "name": "plugin_error_dsl_too_new",
       "value": "插件需要新版应用（%s），请先升级应用"
     },
@@ -3843,6 +3867,70 @@
     {
       "name": "debug_language",
       "value": "语言"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "强调色"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "蓝色"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "绿色"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "橙色"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "粉色"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "紫色"
+    },
+    {
+      "name": "browse_import",
+      "value": "导入"
+    },
+    {
+      "name": "browse_import_done",
+      "value": "已导入 %d 个文件"
+    },
+    {
+      "name": "browse_import_failed",
+      "value": "导入失败：%s"
+    },
+    {
+      "name": "browse_import_title",
+      "value": "导入 %d 个文件"
+    },
+    {
+      "name": "browse_input_name",
+      "value": "请输入名称"
+    },
+    {
+      "name": "browse_local_empty",
+      "value": "还没有本地漫画，点击导入添加"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "还没有本地文件，点击导入添加"
+    },
+    {
+      "name": "browse_manga_name_hint",
+      "value": "漫画名称"
+    },
+    {
+      "name": "browse_pick_file_failed",
+      "value": "选择文件失败"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "名称"
     }
   ]
 }

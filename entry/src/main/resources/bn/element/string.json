@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "লাইব্রেরিতে কোনো চলমান মাঙ্গা নেই"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "ক্লিপবোর্ডে কপি"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "থিম"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "ডিফল্ট"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "মধ্যরাতের গোধূলি"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "স্ট্রবেরি ডাইকিরি"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "তাকো"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "টিল ও ফিরোজা"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "জোয়ারের ঢেউ"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "ইয়িন ও ইয়াং"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "ইয়োতসুবা"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "টোকিও নাইট"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "একরঙা"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "সবুজ আপেল"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "ল্যাভেন্ডার"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "রিফ্রেশ"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "ব্রাউজারে খুলুন"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "ব্রাউজারে খোলা যায়নি"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "URL কপি"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL কপি হয়েছে"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "পরের অধ্যায় নেই"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "কোনো ফিল্টার নেই"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "রিসেট"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "উপেক্ষা"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "অন্তর্ভুক্ত"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "বাদ"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "ফোল্ডার বেছে নেওয়া ব্যর্থ"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "ফাইল নয়, ফোল্ডার লাগবে"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "ফোল্ডার বেছে নিন"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "সিঙ্ক"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "ফোল্ডার বদলান"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "স্থানীয় ফোল্ডার"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "ফোল্ডার সিঙ্ক হচ্ছে…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "ফোল্ডার সিঙ্ক হয়েছে"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "সিঙ্ক ব্যর্থ: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "স্থানীয় ফোল্ডারে ঢোকা যায়নি, আবার বেছে নিন"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "ফোল্ডারের অ্যাক্সেস রাখা যায়নি"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "এই ডিভাইসে ফোল্ডার বেছে নেওয়া যায় না"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "এখনো স্থানীয় ফোল্ডার সেট হয়নি"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "স্থানীয় ফোল্ডারে কিছু পাওয়া যায়নি"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "comic সাবফোল্ডারে কিছু পাওয়া যায়নি"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "novel সাবফোল্ডারে কিছু পাওয়া যায়নি"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "anime সাবফোল্ডারে কিছু পাওয়া যায়নি"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "সব বাতিল"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "অধ্যায় ঊর্ধ্বক্রম"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "অধ্যায় নিম্নক্রম"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "সাজান"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "ফিল্টার"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "সোর্স অনুযায়ী"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "অধ্যায় নম্বর অনুযায়ী"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "আপলোডের তারিখ অনুযায়ী"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "নাম অনুযায়ী"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "রিসেট"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "ডাউনলোড হয়েছে"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "অপঠিত"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "বুকমার্ক"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%dটি নির্বাচিত"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "পঠিত চিহ্নিত করুন"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "অপঠিত চিহ্নিত করুন"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "বুকমার্ক"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "মুছুন"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "পরের %dটি অপঠিত"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "সব অপঠিত"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "বুকমার্ক করা অধ্যায়"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%dটি অধ্যায় সারিতে"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "কোনো অপঠিত অধ্যায় নেই"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "মুছতে কোনো ডাউনলোড নেই"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "%dটি ডাউনলোড মুছেছে"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "ট্র্যাকিং"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "ডাউনলোড বাতিল"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "ডাউনলোড বাতিল হয়েছে"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "ডাউনলোড করা অধ্যায় মুছবেন?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "ডাউনলোড মুছেছে"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "ক্লিপবোর্ডে কপি হয়েছে"
+    },
+    {
+      "name": "transition_finished",
+      "value": "শেষ:"
+    },
+    {
+      "name": "transition_current",
+      "value": "বর্তমান:"
+    },
+    {
+      "name": "transition_next",
+      "value": "পরের:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "আগের:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "পরের অধ্যায় নেই"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "আগের অধ্যায় নেই"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "ওয়েবসাইট"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "আপডেট অপেক্ষমাণ"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "সব আপডেট"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "বহু"
+    },
+    {
+      "name": "about_row_version",
+      "value": "সংস্করণ"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "ডিবাগ তথ্য কপি হয়েছে"
+    },
+    {
+      "name": "licenses_title",
+      "value": "ওপেন সোর্স লাইসেন্স"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "হোমপেজ খুলুন"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "সম্পূর্ণ লাইসেন্স পাঠ"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "অ্যাপ কাঠামো ও ইন্টারঅ্যাকশন ডিজাইনের রেফারেন্স"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "অ্যাপের আইকন"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "প্ল্যাটফর্ম ডেভেলপমেন্ট কিট ও ArkUI ফ্রেমওয়ার্ক"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "AVIF ছবি ডিকোড"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "AVIF ডিকোডের জন্য AV1 ডিকোডার"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "এক্সটেনশনের জন্য HTML পার্স"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "ভিডিও প্লেব্যাক ক্যাশ"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "এক্সটেনশনের জন্য URL ও URLSearchParams (প্লাগইন রানটাইম)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "এক্সটেনশনের জন্য TextEncoder ও TextDecoder (প্লাগইন রানটাইম)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "WebIDL মান রূপান্তর, whatwg-url এর নির্ভরতা (প্লাগইন রানটাইম)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "এক্সটেনশনের জন্য MD5 হ্যাশ (প্লাগইন রানটাইম)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "এক্সটেনশনের জন্য AES-CBC এনক্রিপশন ও ডিক্রিপশন (প্লাগইন রানটাইম)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "এক্সটেনশনের জন্য SHA/HMAC/PBKDF2 হ্যাশ (প্লাগইন রানটাইম)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "এক্সটেনশনের জন্য AES-GCM এনক্রিপশন ও ডিক্রিপশন (প্লাগইন রানটাইম)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "গোপনীয়তা নীতি"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi মাঙ্গা, উপন্যাস ও ভিডিওর স্থানীয়-প্রথম রিডার। অ্যাপ নিজে কোনো ব্যক্তিগত ডেটা সংগ্রহ, আপলোড বা শেয়ার করে না।"
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "স্থানীয় ডেটা"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "আপনার লাইব্রেরি, পড়ার ইতিহাস, ডাউনলোড রেকর্ড, পছন্দ ও ট্র্যাকার পরিচয়পত্র শুধু আপনার ডিভাইসে থাকে। সেটিংসে যেকোনো সময় এগুলো রপ্তানি বা মুছতে পারেন। অ্যাপ আনইনস্টল করলে এগুলো স্থায়ীভাবে যায়।"
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "অনলাইন সোর্স ও এক্সটেনশন"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "অনলাইন কনটেন্ট তৃতীয় পক্ষের এক্সটেনশন ও ওয়েবসাইট দেয়। অনলাইন সোর্স থেকে ব্রাউজ বা পড়লে অনুরোধ সরাসরি সেই সাইটে যায়, যা তার নিজের গোপনীয়তা নীতি মেনে চলে। অ্যাপ তৃতীয় পক্ষের সেবা নিয়ন্ত্রণ করে না এবং তার জন্য দায়ী নয়।"
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "ট্র্যাকিং সেবা"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "চাইলে AniList, MyAnimeList, Bangumi, Kitsu ও Shikimori এর মতো ট্র্যাকার অ্যাকাউন্ট যোগ করতে পারেন। লগইন আপনি ট্র্যাকারের নিজের পাতায় অনুমোদন করেন, আর অ্যাক্সেস টোকেন শুধু ডিভাইসে পড়ার অগ্রগতি সিঙ্ক করতে থাকে।"
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "অনুমতি"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "ইন্টারনেট অনলাইন কনটেন্ট লোড করতে, ফাইল অ্যাক্সেস স্থানীয় আমদানি ও ব্যাকআপের জন্য, আর বায়োমেট্রিক যাচাই শুধু স্থানীয় অ্যাপ লকের জন্য। কোনো অনুমতি ব্যক্তিগত ডেটা সংগ্রহে লাগে না।"
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "যোগাযোগ"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi একটি ওপেন-সোর্স প্রকল্প, Mihon থেকে অনুপ্রাণিত। এই গোপনীয়তা বিবৃতি নিয়ে প্রশ্ন থাকলে Discord বা GitHub এ যোগাযোগ করুন।"
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "CBZ আর্কাইভ হিসেবে সংরক্ষণ"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "লম্বা ছবি ভাগ করুন"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "রিডারের কার্যক্ষমতা বাড়ে"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "সমান্তরালতা"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "সোর্সের সমান্তরাল ডাউনলোড"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "পাতার সমান্তরাল ডাউনলোড"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "প্রতি সোর্সে একসঙ্গে ডাউনলোড হওয়া পাতা"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "অধ্যায় মুছুন"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "হাতে পঠিত চিহ্নিত করার পর"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "পড়ার পর স্বয়ংক্রিয় মুছুন"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "নিষ্ক্রিয়"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "শেষ পড়া অধ্যায়"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "শেষের আগের পড়া অধ্যায়"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "শেষ থেকে তৃতীয় পড়া অধ্যায়"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "শেষ থেকে চতুর্থ পড়া অধ্যায়"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "শেষ থেকে পঞ্চম পড়া অধ্যায়"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "বুকমার্ক করা অধ্যায় মুছতে দিন"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "স্বয়ংক্রিয় ডাউনলোড"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "নতুন অধ্যায় ডাউনলোড"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "লাইব্রেরি আপডেটে পাওয়া নতুন অধ্যায় স্বয়ংক্রিয় ডাউনলোড"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "পঠিত ডুপ্লিকেট অধ্যায় ডাউনলোড এড়িয়ে যান"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "আগে ডাউনলোড"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "পড়ার সময় স্বয়ংক্রিয় ডাউনলোড"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "পরের অপঠিত অধ্যায়"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "পরের %dটি অপঠিত অধ্যায়"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "শুধু তখনই কাজ করে যখন বর্তমান ও পরের অধ্যায় আগেই ডাউনলোড করা থাকে।"
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "মাঙ্গা"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "উপন্যাস"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "ভিডিও"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "এই ধরনের কোনো সোর্স এখনো নেই"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "স্থানীয় উপন্যাস"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "স্থানীয় ভিডিও"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "ধরন"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "সব"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "চালানো শুরু"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "চালানো চালিয়ে যান"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "এই স্ট্রিম শুধু অনলাইনে চলে"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "ফন্টের আকার"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "লাইনের ফাঁক"
+    },
+    {
+      "name": "novel_empty",
+      "value": "এই অধ্যায়ে কোনো লেখা নেই"
+    },
+    {
+      "name": "novel_prev",
+      "value": "আগের অধ্যায়"
+    },
+    {
+      "name": "novel_next",
+      "value": "পরের অধ্যায়"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "স্ক্রল"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "পাতা"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "দুই পাতা"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "পেজিং মোড"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "অনুচ্ছেদের ফাঁক"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "প্রদর্শন"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "লেখা"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "এক পাতা (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "এক পাতা (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "পাতা পরিবর্তন"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "অনুকরণ"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "স্লাইড"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "ঢাকা"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "লেখার রং"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "হালকা"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "গাঢ়"
+    },
+    {
+      "name": "novel_margin",
+      "value": "মার্জিন"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "ফন্ট"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "ডিফল্ট"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "সেরিফ"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "সান্স-সেরিফ"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "মনোস্পেস"
+    },
+    {
+      "name": "novel_tts",
+      "value": "জোরে পড়ুন"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "জোরে পড়া শুরু"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "জোরে পড়া থামান"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "পড়ার গতি"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "এই অধ্যায়ের শেষে পৌঁছেছে"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "লেখা-থেকে-কথা ব্যর্থ: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "বিরতি"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "চালিয়ে যান"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "এখন পড়ছে"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "অনুচ্ছেদ %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "স্লিপ টাইমার"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "বন্ধ"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d মি"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "%1$s পরে থামবে"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "এখন কিছু জোরে পড়া হচ্ছে না"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "প্লেয়ার খুলুন"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "অধ্যায়"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "সময় অনুযায়ী"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "অধ্যায় অনুযায়ী"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "এই অধ্যায়ের পর"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "%1$dটি অধ্যায়ের পর"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d অধ্যায়"
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "এই অধ্যায়ের পর থামবে"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "%1$dটি অধ্যায়ের পর থামবে"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "উপন্যাস জোরে পড়ার সময় অ্যাপকে পটভূমিতে চালু রাখে"
+    },
+    {
+      "name": "video_play",
+      "value": "চালান"
+    },
+    {
+      "name": "video_pause",
+      "value": "বিরতি"
+    },
+    {
+      "name": "video_prev",
+      "value": "আগের"
+    },
+    {
+      "name": "video_next",
+      "value": "পরের"
+    },
+    {
+      "name": "video_settings",
+      "value": "প্লেয়ার সেটিংস"
+    },
+    {
+      "name": "video_episodes",
+      "value": "এপিসোড"
+    },
+    {
+      "name": "video_quality",
+      "value": "গুণমান"
+    },
+    {
+      "name": "video_speed",
+      "value": "প্লেব্যাক গতি"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "ডানমাকু"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "ডানমাকু চালু"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "ডানমাকু বন্ধ"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "ডানমাকু লোড হচ্ছে…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%dটি ডানমাকু লোড হয়েছে"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "মেলা ডানমাকু পাওয়া যায়নি"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "ডানমাকু লোড ব্যর্থ"
+    },
+    {
+      "name": "video_locked",
+      "value": "নিয়ন্ত্রণ লক"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "নিয়ন্ত্রণ আনলক"
+    },
+    {
+      "name": "player_set_title",
+      "value": "প্লেয়ার"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "প্লেব্যাক"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "ডিফল্ট গতি"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "পরের এপিসোড স্বয়ংক্রিয় চালান"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "শেষ হলে পরের এপিসোড নিজে চলবে"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "ডানমাকু"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "ডানমাকু দেখান"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "ডানমাকু ফন্টের আকার"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "ডানমাকুর অস্বচ্ছতা"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "ডানমাকু প্রদর্শনের এলাকা"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "ডানমাকুর গতি"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "ডানমাকু ডেটা dandanplay থেকে (নেটওয়ার্ক লাগবে)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "স্ক্রিন স্কেল মোড"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "মানানসই"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "ভরুন"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "টানুন"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "ধীর"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "স্বাভাবিক"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "দ্রুত"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "খুব দ্রুত"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "১/৪ স্ক্রিন"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "অর্ধেক স্ক্রিন"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "৩/৪ স্ক্রিন"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "পূর্ণ স্ক্রিন"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "মাঙ্গার সময়"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "উপন্যাসের সময়"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "ভিডিওর সময়"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "কভার"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "কভার সম্পাদনা"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "কভার রিসেট"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "কভার আপডেট হয়েছে"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "কভার ফিরে এসেছে"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "কভার আপডেট করা যায়নি"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "কভার সংরক্ষিত"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "কভার সংরক্ষণে ত্রুটি"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "কভার শেয়ারে ত্রুটি"
+    },
+    {
+      "name": "detail_edit",
+      "value": "সম্পাদনা"
+    },
+    {
+      "name": "detail_delete",
+      "value": "মুছুন"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "স্বাগতম!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "আগে কিছু সেট করে নিই। পরে সেটিংসেও বদলাতে পারবেন।"
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "পরের"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "শুরু করুন"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "শুরুর গাইড"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "শুরু করার গাইড"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "%s এ নতুন? শুরু করার গাইড দেখে নিন।"
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "%s আবার ইনস্টল করছেন?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "সিঙ্ক চলছে, অপেক্ষা করুন"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "ডাউনলোড ব্যর্থ"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "বিবরণ লোড ব্যর্থ"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "পাতার প্যারামিটার অকার্যকর"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "ডাউনলোড প্রস্তুত হচ্ছে…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "বিভাগে সরানো ব্যর্থ"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "মাইগ্রেশন তালিকা লোড ব্যর্থ"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "কাজ ব্যর্থ"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "লোড ত্রুটি: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "লোড হচ্ছে…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "লোড ব্যর্থ: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "রেন্ডার বন্ধ (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "প"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "ভ"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "ম"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "শেষ স্বয়ংক্রিয় ব্যাকআপ ব্যর্থ"
+    },
+    {
+      "name": "category_manga",
+      "value": "মাঙ্গা"
+    },
+    {
+      "name": "category_novel",
+      "value": "উপন্যাস"
+    },
+    {
+      "name": "category_video",
+      "value": "ভিডিও"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "লাইসেন্সকৃত"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "TTS ইঞ্জিন ব্যস্ত, পরে আবার চেষ্টা করুন"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "TTS ইঞ্জিন সাড়া দেওয়া বন্ধ করেছে এবং পড়া থেমেছে"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "TTS ইঞ্জিন পাওয়া যাচ্ছে না"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "মানুষের যাচাই লাগবে, যাচাই পাতা শেষ করে আবার চেষ্টা করুন"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "সোর্স পাওয়া যাচ্ছে না"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "এই অধ্যায়ে কোনো কনটেন্ট নেই"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "প্লেব্যাক ব্যর্থ"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "চালানোর মতো ভিডিও পাওয়া যায়নি"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "স্থানীয়"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "বাতিল"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "ডাউনলোড ব্যর্থ"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "ডাউনলোডের সময় শেষ (সার্ভার সাড়া দিচ্ছে না)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "ডাউনলোড ব্যর্থ (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "এই ভিডিও অনলাইনে স্ট্রিম হয়, ডাউনলোড হয় না"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "ডাউনলোড সেবা চালু হয়নি"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "সোর্স পাওয়া যায়নি: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "অধ্যায়ের ফাইল পাওয়া যায়নি"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "অধ্যায়ের ফরম্যাট সমর্থিত নয়"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "ভিডিও ফাইল পাওয়া যায়নি"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "স্থানীয়ভাবে আমদানি করা মাঙ্গা"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "স্থানীয়ভাবে আমদানি করা উপন্যাস"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "স্থানীয়ভাবে আমদানি করা ভিডিও"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "অনিরাপদ রিডাইরেক্ট আটকানো হয়েছে: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "অতিরিক্ত রিডাইরেক্ট: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "সার্ভারের ঠিকানা মেলানো যায়নি, নেটওয়ার্ক দেখে আবার চেষ্টা করুন"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "সার্ভারে যুক্ত হওয়া যায়নি, নেটওয়ার্ক দেখে আবার চেষ্টা করুন"
+    },
+    {
+      "name": "net_timeout",
+      "value": "অনুরোধের সময় শেষ, পরে আবার চেষ্টা করুন"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "নিরাপদ সংযোগ ব্যর্থ (SSL ত্রুটি), পরে আবার চেষ্টা করুন"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "সংযোগ ছিঁড়েছে, আবার চেষ্টা করুন"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "নেটওয়ার্ক অনুরোধ ব্যর্থ: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "JSVM ইঞ্জিন তৈরি ব্যর্থ"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "প্লাগইন স্ক্রিপ্ট চালানো ব্যর্থ"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "এক্সটেনশন লোড হয়নি"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "এক্সটেনশন ভাঙা, আবার ইনস্টল বা লোড করুন"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "এক্সটেনশন শুরু ব্যর্থ"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "এক্সটেনশন শুরুর সময় শেষ"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "এক্সটেনশন কলের সময় শেষ: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "এক্সটেনশন কল ব্যর্থ"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "এক্সটেনশন অকার্যকর JSON দিয়েছে"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "অজানা এক্সটেনশন ত্রুটি"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "অকার্যকর manifest.key (শুধু ছোট হাতের অক্ষর, সংখ্যা ও আন্ডারস্কোর)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name নেই"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "অকার্যকর manifest.versionCode"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "এই প্লাগইনে নতুন অ্যাপ লাগবে (%s), আগে আপডেট করুন"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "এই প্লাগইনে অ্যাপ versionCode >= %s লাগবে, আগে আপডেট করুন"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "বেছে নেওয়া ফাইল পড়া যায়নি: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "প্লাগইন প্যাকেজ URL এ https লাগবে, সাধারণ ডাউনলোড বাতিল"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "প্লাগইন অখণ্ডতা যাচাই ব্যর্থ (sha256 মেলেনি), ইনস্টল বাতিল"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "প্লাগইন প্যাকেজে main.js নেই"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "প্লাগইন ডিরেক্টরি বদলানো যায়নি: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "প্লাগইন প্যাকেজে manifest.json পাওয়া যায়নি"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "রিপোজিটরি ফাইল URL এ https লাগবে, http:// এন্ট্রি বাতিল"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "অকার্যকর প্লাগইন রানটাইম নাম: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "প্লাগইন রানটাইম অংশ নেই: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "প্লাগইন অকার্যকর মাঙ্গা বিবরণ দিয়েছে"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "প্লাগইন getChapterText রপ্তানি করে না"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "প্লাগইন getVideoList রপ্তানি করে না"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "প্লাগইন প্যাকেজ সংরক্ষণ ব্যর্থ: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "প্লাগইন ডিরেক্টরি সরানো ব্যর্থ: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "ইনস্টল করা প্লাগইন ফাইল পড়া যায়নি: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "প্লাগইন প্যাকেজের অখণ্ডতা যাচাই ব্যর্থ: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "প্লাগইন প্যাকেজ বের করা যায়নি: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "প্লাগইন প্যাকেজে manifest.json পড়া যায়নি: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "প্লাগইন ফাইল প্রস্তুত করা যায়নি: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "ট্র্যাকিং"
+    },
+    {
+      "name": "track_login",
+      "value": "লগ ইন"
+    },
+    {
+      "name": "track_logout",
+      "value": "লগ আউট"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "%s থেকে লগ আউট করবেন?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "%s এ লগ ইন হয়েছে"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "লগ আউট হয়েছে"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "লগ ইন ব্যর্থ"
+    },
+    {
+      "name": "track_username",
+      "value": "ব্যবহারকারীর নাম"
+    },
+    {
+      "name": "track_password",
+      "value": "পাসওয়ার্ড"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "ট্র্যাকিং অগ্রগতি স্বয়ংক্রিয় আপডেট"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "%s এ খুঁজুন"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "খোঁজা ব্যর্থ"
+    },
+    {
+      "name": "track_no_results",
+      "value": "কোনো ফল নেই"
+    },
+    {
+      "name": "track_added",
+      "value": "ট্র্যাকিং যোগ হয়েছে"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "ট্র্যাকিং যোগ ব্যর্থ"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "ট্র্যাকিং আপডেট ব্যর্থ"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "সেবা থেকে সরানো ব্যর্থ"
+    },
+    {
+      "name": "track_status",
+      "value": "অবস্থা"
+    },
+    {
+      "name": "track_score",
+      "value": "স্কোর"
+    },
+    {
+      "name": "track_chapters",
+      "value": "অধ্যায়"
+    },
+    {
+      "name": "track_start_date",
+      "value": "শুরুর তারিখ"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "শেষের তারিখ"
+    },
+    {
+      "name": "track_private",
+      "value": "ব্যক্তিগত"
+    },
+    {
+      "name": "track_unlink",
+      "value": "সংযোগ ছাড়ান"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "সেবা থেকে সরান"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "সঠিক অধ্যায় নম্বর দিন"
+    },
+    {
+      "name": "track_reading",
+      "value": "পড়ছেন"
+    },
+    {
+      "name": "track_completed",
+      "value": "সম্পন্ন"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "স্থগিত"
+    },
+    {
+      "name": "track_paused",
+      "value": "বিরতি"
+    },
+    {
+      "name": "track_dropped",
+      "value": "ছেড়ে দেওয়া"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "পড়ার পরিকল্পনা"
+    },
+    {
+      "name": "track_repeating",
+      "value": "আবার পড়ছেন"
+    },
+    {
+      "name": "track_considering",
+      "value": "ভাবছেন"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "অজানা"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "পড়ার তালিকা"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "ইচ্ছার তালিকা"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "সম্পন্ন তালিকা"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "স্থগিত তালিকা"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "অসমাপ্ত তালিকা"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "লোড হচ্ছে…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "লোড ব্যর্থ: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "এখনো স্থানীয় ফাইল নেই, যোগ করতে আমদানিতে ট্যাপ করুন"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "নাম"
+    },
+    {
+      "name": "privacy_title",
+      "value": "গোপনীয়তা"
+    },
+    {
+      "name": "privacy_group",
+      "value": "নিরাপত্তা"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "অ্যাপ লক"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "আগে স্ক্রিন লক সেট করুন"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "নিষ্ক্রিয় হলে লক"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "সবসময়"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "১ মিনিট"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "২ মিনিট"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "৫ মিনিট"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "১০ মিনিট"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "কখনো না"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "নোটিফিকেশনের বিষয়বস্তু লুকান"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "নিরাপদ স্ক্রিন"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "স্ক্রিনশট ও স্ক্রিন রেকর্ডিং আটকায়"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "অ্যাপ লক করা"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "চালিয়ে যেতে পরিচয় যাচাই করুন"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "আনলক"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "অ্যাপ আনলক"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "ডাউনলোড হচ্ছে"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "ক্র্যাশ লগ রপ্তানি"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "কোনো ক্র্যাশ লগ নেই"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "%dটি ত্রুটি লগ রপ্তানি হয়েছে"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "বিস্তারিত লগ"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "সিস্টেম লগে ডিবাগ-স্তরের বিবরণ রাখুন"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "ডিবাগ তথ্য"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "কাজ ব্যর্থ"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "ডেটা"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "নেটওয়ার্ক"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "লাইব্রেরি"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "রিডার"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "ডেটাবেস মুছুন"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "লাইব্রেরির বাইরের সব এন্ট্রি সরাবেন? এগুলোর পড়ার ইতিহাস ও অগ্রগতি হারাবে।"
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "%dটি এন্ট্রি সরানো হয়েছে"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "এম্বেড করা ওয়েব ডেটা মুছুন"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "এম্বেড করা ওয়েব ডেটা মুছেছে"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "HTTPS এর উপর DNS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "নিষ্ক্রিয়"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "কাস্টম User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "ডিফল্টের জন্য খালি রাখুন"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent সংরক্ষিত"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "User-Agent রিসেট"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "লাইব্রেরি কভার রিফ্রেশ"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "কভার রিফ্রেশ হচ্ছে…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "%dটি এন্ট্রি রিফ্রেশ হয়েছে"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "প্রতি সিরিজের রিডার সেটিং রিসেট"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "প্রতি সিরিজে সেট করা পড়ার মোড বৈশ্বিক ডিফল্টে ফেরাবেন?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "%dটি এন্ট্রি রিসেট হয়েছে"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "উচ্চ মানের রেন্ডার"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "কার্যক্ষমতার বিনিময়ে মসৃণ ছবি স্কেলিং"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "অ্যাপ সংস্করণ"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "ডিভাইস মডেল"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "ডিভাইসের ধরন"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "সিস্টেম সংস্করণ"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "API সংস্করণ"
+    },
+    {
+      "name": "debug_screen",
+      "value": "স্ক্রিন"
+    },
+    {
+      "name": "debug_language",
+      "value": "ভাষা"
     }
   ]
 }

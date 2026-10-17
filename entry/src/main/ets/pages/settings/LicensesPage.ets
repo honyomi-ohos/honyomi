@@ -76,6 +76,64 @@ function buildLicenseItems(): LicenseItem[] {
       url: 'https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/OhosVideoCache',
       licenseFile: 'license_apache2.txt',
       description: $r('app.string.licenses_desc_videocache')
+    },
+    {
+      // 插件运行时由 plugins/runtime 经 esbuild 在宿主构建时生成（不入库），
+      // 以下为其 npm 依赖；版本以 plugins/runtime/package.json 为准
+      name: 'whatwg-url',
+      version: '14.2.0',
+      license: 'MIT',
+      url: 'https://github.com/jsdom/whatwg-url',
+      licenseFile: 'license_mit.txt',
+      description: $r('app.string.licenses_desc_whatwgurl')
+    },
+    {
+      name: 'fast-text-encoding',
+      version: '1.0.6',
+      license: 'Apache-2.0',
+      url: 'https://github.com/samthor/fast-text-encoding',
+      licenseFile: 'license_apache2.txt',
+      description: $r('app.string.licenses_desc_fasttextencoding')
+    },
+    {
+      name: 'webidl-conversions',
+      version: '7.0.0',
+      license: 'BSD-2-Clause',
+      url: 'https://github.com/jsdom/webidl-conversions',
+      licenseFile: 'license_webidl.txt',
+      description: $r('app.string.licenses_desc_webidlconversions')
+    },
+    {
+      name: 'js-md5',
+      version: '0.8.3',
+      license: 'MIT',
+      url: 'https://github.com/emn178/js-md5',
+      licenseFile: 'license_mit.txt',
+      description: $r('app.string.licenses_desc_jsmd5')
+    },
+    {
+      name: '@noble/hashes',
+      version: '2.4.0',
+      license: 'MIT',
+      url: 'https://github.com/paulmillr/noble-hashes',
+      licenseFile: 'license_mit.txt',
+      description: $r('app.string.licenses_desc_noblehashes')
+    },
+    {
+      name: '@noble/ciphers',
+      version: '2.4.0',
+      license: 'MIT',
+      url: 'https://github.com/paulmillr/noble-ciphers',
+      licenseFile: 'license_mit.txt',
+      description: $r('app.string.licenses_desc_nobleciphers')
+    },
+    {
+      name: 'aes-js',
+      version: '3.1.2',
+      license: 'MIT',
+      url: 'https://github.com/ricmoo/aes-js',
+      licenseFile: 'license_mit.txt',
+      description: $r('app.string.licenses_desc_aesjs')
     }
   ];
   return items;

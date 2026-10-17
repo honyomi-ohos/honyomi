@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "Nuk ka manga në vazhdim në bibliotekë"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "Kopjo në kujtesën e fragmenteve"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "Tema"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "Parazgjedhur"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "Muzgu i mesnatës"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "Daiquiri luleshtrydheje"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "Gurkali dhe turkeze"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "Valë baticore"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "Jin dhe Jang"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "Nata e Tokios"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "Njëngjyrësh"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "Mollë e gjelbër"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "Livandë"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "Rifresko"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "Hap në shfletues"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "Nuk u hap dot në shfletues"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "Kopjo URL"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL u kopjua"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "Nuk ka kapitull tjetër"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "Nuk ka filtra"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "Rivendos"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "Shpërfill"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "Përfshi"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "Përjashto"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "Zgjedhja e dosjes dështoi"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "Duhet një dosje, jo një skedar"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "Zgjidh dosjen"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "Sinkronizo"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "Ndrysho dosjen"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "Dosja lokale"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "Po sinkronizohet dosja…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "Dosja u sinkronizua"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "Sinkronizimi dështoi: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "Nuk hyhet dot te dosja lokale, zgjidhe përsëri"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "Nuk u ruajt dot hyrja te dosja"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "Kjo pajisje nuk lejon zgjedhjen e dosjes"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "Ende nuk është caktuar dosje lokale"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "Nuk u gjet asgjë në dosjen lokale"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "Nuk u gjet asgjë në nëndosjen comic"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "Nuk u gjet asgjë në nëndosjen novel"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "Nuk u gjet asgjë në nëndosjen anime"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "Anulo të gjitha"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "Kapituj në ngjitje"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "Kapituj në zbritje"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "Renditja"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "Filtro"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "Sipas burimit"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "Sipas numrit të kapitullit"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "Sipas datës së ngarkimit"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "Sipas emrit"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "Rivendos"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "Të shkarkuara"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "Të palexuara"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "Me faqeshënues"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d të zgjedhura"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "Shëno si të lexuar"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "Shëno si të palexuar"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "Faqeshënues"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "Fshi"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "%d të palexuarat e ardhshme"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "Të gjitha të palexuarat"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "Kapituj me faqeshënues"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d kapituj në radhë"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "Nuk ka kapituj të palexuar"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "Nuk ka shkarkime për të fshirë"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "U fshinë %d shkarkime"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "Ndjekja"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "Anulo shkarkimin"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "Shkarkimi u anulua"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "Të fshihet kapitulli i shkarkuar?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "Shkarkimi u fshi"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "U kopjua në kujtesën e fragmenteve"
+    },
+    {
+      "name": "transition_finished",
+      "value": "Përfunduar:"
+    },
+    {
+      "name": "transition_current",
+      "value": "Aktual:"
+    },
+    {
+      "name": "transition_next",
+      "value": "Tjetri:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "I mëparshmi:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "Nuk ka kapitull tjetër"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "Nuk ka kapitull të mëparshëm"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "Faqja e uebit"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "Përditësime në pritje"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "Përditëso të gjitha"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "Shumë"
+    },
+    {
+      "name": "about_row_version",
+      "value": "Versioni"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "Informacioni i diagnostikimit u kopjua"
+    },
+    {
+      "name": "licenses_title",
+      "value": "Licenca me kod të hapur"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "Hap faqen kryesore"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "Teksti i plotë i licencës"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "Referencë e arkitekturës dhe e ndërveprimit të aplikacionit"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "Ikonat e aplikacionit"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "SDK e platformës dhe korniza ArkUI"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "Dekodimi i imazheve AVIF"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "Dekoderi AV1 për dekodimin AVIF"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "Analiza HTML për shtesat"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "Memoria e fshehtë e luajtjes së videos"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL dhe URLSearchParams për shtesat (mjedisi i ekzekutimit)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder dhe TextDecoder për shtesat (mjedisi i ekzekutimit)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "Shndërrimi i vlerave WebIDL, varësi e whatwg-url (mjedisi i ekzekutimit)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "Përmbledhja MD5 për shtesat (mjedisi i ekzekutimit)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "Fshehtëzimi dhe çfshehtëzimi AES-CBC për shtesat (mjedisi i ekzekutimit)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "Përmbledhja SHA/HMAC/PBKDF2 për shtesat (mjedisi i ekzekutimit)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "Fshehtëzimi dhe çfshehtëzimi AES-GCM për shtesat (mjedisi i ekzekutimit)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "Politika e privatësisë"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi është një lexues lokal për manga, romane dhe video. Vetë aplikacioni nuk mbledh, nuk ngarkon dhe nuk ndan të dhëna personale."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "Të dhëna lokale"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "Biblioteka, historiku i leximit, shkarkimet, preferencat dhe kredencialet e ndjekjes ruhen vetëm në pajisjen tënde. Mund t’i eksportosh ose t’i fshish kur të duash te Cilësimet. Çinstalimi i aplikacionit i heq përgjithmonë."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "Burime dhe shtesa në linjë"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "Përmbajtjen në linjë e japin shtesa dhe faqe të palëve të treta. Shfletimi ose leximi nga një burim në linjë i dërgon kërkesat drejtpërdrejt atij sajti, sipas politikës së tij të privatësisë. Aplikacioni nuk i kontrollon dhe nuk përgjigjet për shërbimet e palëve të treta."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "Shërbimet e ndjekjes"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "Mund të lidhësh, nëse do, llogari si AniList, MyAnimeList, Bangumi, Kitsu dhe Shikimori. Hyrjen e autorizon ti në faqen e shërbimit, dhe shenjat e hyrjes ruhen vetëm në pajisje për të sinkronizuar ecurinë e leximit."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "Lejet"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "Hyrja në internet përdoret për përmbajtjen në linjë, hyrja te skedarët për importe dhe kopje rezervë lokale, dhe vërtetimi biometrik vetëm për kyçjen lokale. Asnjë leje nuk përdoret për të mbledhur të dhëna personale."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "Kontakti"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi është një projekt me kod të hapur i frymëzuar nga Mihon. Nëse ke pyetje për këtë deklaratë privatësie, na shkruaj në Discord ose GitHub."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "Ruaj si arkiv CBZ"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "Ndaj imazhet e larta"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "Përmirëson punën e lexuesit"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "Njëkohësi"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "Shkarkime të njëkohshme të burimeve"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "Shkarkime të njëkohshme të faqeve"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "Faqe të shkarkuara njëherësh për burim"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "Fshi kapitujt"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "Pasi shënohen dorazi si të lexuar"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "Fshi automatikisht pas leximit"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "Çaktivizuar"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "Kapitulli i fundit i lexuar"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "Kapitulli i parafundit i lexuar"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "I treti para të fundit të lexuar"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "I katërti para të fundit të lexuar"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "I pesti para të fundit të lexuar"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "Lejo fshirjen e kapitujve me faqeshënues"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "Shkarkim automatik"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "Shkarko kapitujt e rinj"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "Shkarkon automatikisht kapitujt e rinj të gjetur gjatë përditësimit të bibliotekës"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "Anashkalo kapitujt e lexuar të dyfishtë"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "Shkarko paraprakisht"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "Shkarkim automatik gjatë leximit"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "Kapitulli tjetër i palexuar"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "%d kapitujt e ardhshëm të palexuar"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "Funksionon vetëm nëse kapitulli aktual dhe tjetri janë shkarkuar tashmë."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "Romane"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "Video"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "Ende nuk ka burime të këtij lloji"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "Romane lokale"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "Video lokale"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "Lloji"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "Të gjitha"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "Fillo luajtjen"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "Vazhdo luajtjen"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "Ky transmetim luhet vetëm në linjë"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "Madhësia e shkronjave"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "Hapësira e rreshtave"
+    },
+    {
+      "name": "novel_empty",
+      "value": "Ky kapitull nuk ka tekst"
+    },
+    {
+      "name": "novel_prev",
+      "value": "Kapitulli i mëparshëm"
+    },
+    {
+      "name": "novel_next",
+      "value": "Kapitulli tjetër"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "Rrëshqitje"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "Faqe"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "Dy faqe"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "Mënyra e faqosjes"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "Hapësira e paragrafëve"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "Shfaqja"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "Teksti"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "Një faqe (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "Një faqe (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "Kalimi i faqes"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "Simulim"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "Rrëshqitje"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "Mbulim"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "Ngjyra e tekstit"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "E çelët"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "E errët"
+    },
+    {
+      "name": "novel_margin",
+      "value": "Anët"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "Shkronjat"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "Parazgjedhur"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "Me mbështetëse"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "Pa mbështetëse"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "Gjerësi e njëjtë"
+    },
+    {
+      "name": "novel_tts",
+      "value": "Lexo me zë"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "Fillo leximin me zë"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "Ndalo leximin me zë"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "Shpejtësia e leximit"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "U arrit fundi i këtij kapitulli"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "Sinteza e të folurit dështoi: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "Pauzë"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "Vazhdo"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "Po lexohet"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "Paragrafi %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "Kohëmatësi i gjumit"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "Fikur"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d min"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "Ndalon pas %1$s"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "Nuk po lexohet asgjë me zë"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "Hap luajtësin"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "Kapituj"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "Sipas kohës"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "Sipas kapitujve"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "Pas këtij kapitulli"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "Pas %1$d kapitujve"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d kap."
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "Ndalon pas këtij kapitulli"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "Ndalon pas %1$d kapitujve"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "E mban aplikacionin në sfond ndërsa një roman lexohet me zë"
+    },
+    {
+      "name": "video_play",
+      "value": "Luaj"
+    },
+    {
+      "name": "video_pause",
+      "value": "Pauzë"
+    },
+    {
+      "name": "video_prev",
+      "value": "I mëparshmi"
+    },
+    {
+      "name": "video_next",
+      "value": "Tjetri"
+    },
+    {
+      "name": "video_settings",
+      "value": "Cilësimet e luajtësit"
+    },
+    {
+      "name": "video_episodes",
+      "value": "Episodet"
+    },
+    {
+      "name": "video_quality",
+      "value": "Cilësia"
+    },
+    {
+      "name": "video_speed",
+      "value": "Shpejtësia e luajtjes"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "Danmaku ndezur"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "Danmaku fikur"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "Po ngarkohet danmaku…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "U ngarkuan %d danmaku"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "Nuk u gjet danmaku përputhës"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "Ngarkimi i danmaku dështoi"
+    },
+    {
+      "name": "video_locked",
+      "value": "Kontrollet u kyçën"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "Kontrollet u çkyçën"
+    },
+    {
+      "name": "player_set_title",
+      "value": "Luajtësi"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "Luajtja"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "Shpejtësia e parazgjedhur"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "Luaj automatikisht episodin tjetër"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "Luan episodin tjetër automatikisht kur mbaron"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "Shfaq danmaku"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "Madhësia e danmaku"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "Tejdukshmëria e danmaku"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "Zona e danmaku"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "Shpejtësia e danmaku"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "Të dhëna danmaku nga dandanplay (duhet rrjet)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "Mënyra e shkallëzimit"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "Përshtat"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "Mbush"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "Zgjero"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "E ngadaltë"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Normale"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "E shpejtë"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "Shumë e shpejtë"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 e ekranit"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "Gjysma e ekranit"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 e ekranit"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "Ekran i plotë"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "Koha e mangas"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "Koha e romanit"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "Koha e videos"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "Kopertina"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "Redakto kopertinën"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "Rivendos kopertinën"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "Kopertina u përditësua"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "Kopertina u rivendos"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "Kopertina nuk u përditësua dot"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "Kopertina u ruajt"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "Gabim gjatë ruajtjes së kopertinës"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "Gabim gjatë ndarjes së kopertinës"
+    },
+    {
+      "name": "detail_edit",
+      "value": "Redakto"
+    },
+    {
+      "name": "detail_delete",
+      "value": "Fshi"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "Mirë se erdhe!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "Së pari le të caktojmë disa gjëra. Mund t’i ndryshosh gjithmonë më vonë te cilësimet."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "Tjetri"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "Fillo"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "Udhëzuesi fillestar"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "Udhëzuesi i nisjes"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "I ri te %s? Të këshillojmë udhëzuesin e nisjes."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "Po e riinstalon %s?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "Sinkronizimi në vazhdim, prit"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "Shkarkimi dështoi"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "Ngarkimi i detajeve dështoi"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "Parametra të pavlefshëm të faqes"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "Po përgatiten shkarkimet…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "Zhvendosja te kategoria dështoi"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "Ngarkimi i listës së migrimit dështoi"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "Veprimi dështoi"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "Gabim ngarkimi: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "Duke ngarkuar…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "Ngarkimi dështoi: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "Paraqitja doli (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "Kopja e fundit rezervë automatike dështoi"
+    },
+    {
+      "name": "category_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "category_novel",
+      "value": "Romane"
+    },
+    {
+      "name": "category_video",
+      "value": "Video"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "Me licencë"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "Motori TTS është i zënë, provo përsëri më vonë"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "Motori TTS nuk përgjigjet më dhe leximi u ndal"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "Motori TTS nuk është i gatshëm"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "Duhet verifikim njerëzor; plotëso faqen e verifikimit dhe riprovo"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "Burimi nuk është i gatshëm"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "Ky kapitull nuk ka përmbajtje"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "Luajtja dështoi"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "Nuk u gjetën video të luajtshme"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "Lokale"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "Anuluar"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "Shkarkimi dështoi"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "Shkarkimi skadoi (serveri nuk përgjigjet)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "Shkarkimi dështoi (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "Kjo video transmetohet në linjë dhe nuk shkarkohet"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "Shërbimi i shkarkimit nuk është nisur"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "Burimi nuk u gjet: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "Skedari i kapitullit nuk u gjet"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "Format kapitulli i pambështetur"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "Skedari i videos nuk u gjet"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "Manga e importuar lokalisht"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "Romane të importuara lokalisht"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "Video të importuara lokalisht"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "U bllokua një ridrejtim i pasigurt: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "Shumë ridrejtime: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "Adresa e serverit nuk u zgjidh; kontrollo rrjetin dhe riprovo"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "Nuk u lidh dot me serverin; kontrollo rrjetin dhe riprovo"
+    },
+    {
+      "name": "net_timeout",
+      "value": "Kërkesa skadoi; provo përsëri më vonë"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "Lidhja e sigurt dështoi (gabim SSL); provo përsëri më vonë"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "Lidhja u ndërpre; riprovo"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "Kërkesa e rrjetit dështoi: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "Krijimi i motorit JSVM dështoi"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "Ekzekutimi i skriptit të shtesës dështoi"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "Shtesa nuk u ngarkua"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "Shtesa është e dëmtuar; riinstaloje ose ringarkoje"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "Nisja e shtesës dështoi"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "Nisja e shtesës skadoi"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "Thirrja e shtesës skadoi: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "Thirrja e shtesës dështoi"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "Shtesa ktheu JSON të pavlefshëm"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "Gabim i panjohur i shtesës"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "manifest.key i pavlefshëm (vetëm shkronja të vogla, shifra dhe nënvija)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "Mungon manifest.name"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "manifest.versionCode i pavlefshëm"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "Kjo shtesë kërkon një aplikacion më të ri (%s); përditëso fillimisht"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "Kjo shtesë kërkon versionCode të aplikacionit >= %s; përditëso fillimisht"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "Leximi i skedarit të zgjedhur dështoi: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "URL-të e paketave duhet të përdorin https; shkarkimet e hapura refuzohen"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "Kontrolli i integritetit dështoi (sha256 nuk përputhet); instalimi u anulua"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "Paketës së shtesës i mungon main.js"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "Zëvendësimi i dosjes së shtesës dështoi: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "manifest.json nuk u gjet në paketën e shtesës"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "URL-të e depos duhet të përdorin https; hyrjet http:// refuzohen"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "Emër i pavlefshëm i mjedisit të ekzekutimit: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "Mungon një përbërës i mjedisit të ekzekutimit: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "Shtesa ktheu detaje të pavlefshme të mangas"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "Shtesa nuk eksporton getChapterText"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "Shtesa nuk eksporton getVideoList"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "Ruajtja e paketës së shtesës dështoi: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "Heqja e dosjes së shtesës dështoi: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "Leximi i skedarëve të shtesës së instaluar dështoi: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "Verifikimi i integritetit të paketës dështoi: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "Nxjerrja e paketës së shtesës dështoi: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "Leximi i manifest.json në paketë dështoi: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "Përgatitja e skedarëve të shtesës dështoi: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "Ndjekja"
+    },
+    {
+      "name": "track_login",
+      "value": "Hyr"
+    },
+    {
+      "name": "track_logout",
+      "value": "Dil"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "Të dilet nga %s?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "U hy në %s"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "U dol"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "Hyrja dështoi"
+    },
+    {
+      "name": "track_username",
+      "value": "Emri i përdoruesit"
+    },
+    {
+      "name": "track_password",
+      "value": "Fjalëkalimi"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "Përditëso automatikisht ecurinë e ndjekjes"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "Kërko në %s"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "Kërkimi dështoi"
+    },
+    {
+      "name": "track_no_results",
+      "value": "Nuk u gjetën rezultate"
+    },
+    {
+      "name": "track_added",
+      "value": "Ndjekja u shtua"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "Shtimi i ndjekjes dështoi"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "Përditësimi i ndjekjes dështoi"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "Heqja nga shërbimi dështoi"
+    },
+    {
+      "name": "track_status",
+      "value": "Gjendja"
+    },
+    {
+      "name": "track_score",
+      "value": "Pikët"
+    },
+    {
+      "name": "track_chapters",
+      "value": "Kapituj"
+    },
+    {
+      "name": "track_start_date",
+      "value": "Data e fillimit"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "Data e mbarimit"
+    },
+    {
+      "name": "track_private",
+      "value": "Private"
+    },
+    {
+      "name": "track_unlink",
+      "value": "Shkëput"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "Hiq nga shërbimi"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "Vendos një numër të vlefshëm kapitulli"
+    },
+    {
+      "name": "track_reading",
+      "value": "Duke lexuar"
+    },
+    {
+      "name": "track_completed",
+      "value": "Përfunduar"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "Në pritje"
+    },
+    {
+      "name": "track_paused",
+      "value": "Në pauzë"
+    },
+    {
+      "name": "track_dropped",
+      "value": "Braktisur"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "Për ta lexuar"
+    },
+    {
+      "name": "track_repeating",
+      "value": "Duke e rilexuar"
+    },
+    {
+      "name": "track_considering",
+      "value": "Po e shqyrton"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "E panjohur"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "Lista e leximit"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "Lista e dëshirave"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "Lista e përfunduar"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "Lista në pritje"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "Lista e papërfunduar"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "Duke ngarkuar…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "Ngarkimi dështoi: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "Ende nuk ka skedarë lokalë, prek Importo për të shtuar"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "Emri"
+    },
+    {
+      "name": "privacy_title",
+      "value": "Privatësia"
+    },
+    {
+      "name": "privacy_group",
+      "value": "Siguria"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "Kyçja e aplikacionit"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "Cakto fillimisht një kyçje ekrani"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "Kyç kur është në pritje"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "Gjithmonë"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 minutë"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 minuta"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 minuta"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 minuta"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "Kurrë"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "Fshih përmbajtjen e njoftimeve"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "Ekran i sigurt"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "Bllokon pamjet e ekranit dhe regjistrimin"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "Aplikacioni u kyç"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "Verifiko identitetin për të vazhduar"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "Çkyç"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "Çkyç aplikacionin"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "Duke shkarkuar"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "Eksporto regjistrat e përplasjeve"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "Nuk u gjetën regjistra përplasjesh"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "U eksportuan %d regjistra gabimesh"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "Regjistrim i hollësishëm"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "Përfshi hollësi diagnostikimi në regjistrat e sistemit"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "Informacion diagnostikimi"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "Veprimi dështoi"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Të dhënat"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "Rrjeti"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "Biblioteka"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "Lexuesi"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "Pastro bazën e të dhënave"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "Të hiqen të gjitha zërat që nuk janë në bibliotekë? Historiku dhe ecuria e leximit të tyre do të humbasin."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "U hoqën %d zëra"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "Pastro të dhënat e futura të uebit"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "Të dhënat e futura të uebit u pastruan"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS përmes HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "Çaktivizuar"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "User-Agent i personalizuar"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "Lëre bosh për vlerën e parazgjedhur"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent u ruajt"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "Rivendos User-Agent"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "Rifresko kopertinat e bibliotekës"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "Po rifreskohen kopertinat…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "U rifreskuan %d zëra"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "Rivendos cilësimet e lexuesit për seri"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "Të rivendosen mënyrat e leximit të çdo serie te vlera e përgjithshme e parazgjedhur?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "U rivendosën %d zëra"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "Paraqitje me cilësi të lartë"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "Shkallëzim më i lëmuar i imazhit, me kosto të shpejtësisë"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "Versioni i aplikacionit"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "Modeli i pajisjes"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "Lloji i pajisjes"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "Versioni i sistemit"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "Versioni i API"
+    },
+    {
+      "name": "debug_screen",
+      "value": "Ekrani"
+    },
+    {
+      "name": "debug_language",
+      "value": "Gjuha"
     }
   ]
 }

@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "No hi ha manga en curs a la biblioteca"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "Copia al porta-retalls"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "Tema"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "Per defecte"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "Capvespre"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "Daiquiri de maduixa"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "Verd blavós i turquesa"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "Onada"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "Yin i Yang"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "Nit de Tòquio"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "Monocrom"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "Poma verda"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "Lavanda"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "Actualitza"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "Obre al navegador"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "No s'ha pogut obrir al navegador"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "Copia l'URL"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "S'ha copiat l'URL"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "No hi ha capítol següent"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "No hi ha filtres"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "Restableix"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "Ignora"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "Inclou"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "Exclou"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "No s'ha pogut triar la carpeta"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "Cal una carpeta, no un fitxer"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "Tria una carpeta"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "Sincronitza"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "Canvia la carpeta"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "Carpeta local"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "S'està sincronitzant la carpeta…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "Carpeta sincronitzada"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "Ha fallat la sincronització: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "No es pot accedir a la carpeta local; torna-la a triar"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "No s'ha pogut conservar l'accés a la carpeta"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "Aquest dispositiu no admet triar carpetes"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "Encara no hi ha cap carpeta local"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "No s'ha trobat res a la carpeta local"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "No s'ha trobat res a la subcarpeta comic"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "No s'ha trobat res a la subcarpeta novel"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "No s'ha trobat res a la subcarpeta anime"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "Cancel·la-ho tot"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "Capítols ascendents"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "Capítols descendents"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "Ordena"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "Filtra"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "Per font"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "Per número de capítol"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "Per data de pujada"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "Per nom"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "Restableix"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "Baixats"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "No llegits"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "Amb marcador"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d seleccionats"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "Marca com a llegit"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "Marca com a no llegit"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "Marcador"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "Suprimeix"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "Següents %d no llegits"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "Tots els no llegits"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "Capítols amb marcador"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d capítols a la cua"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "No hi ha capítols no llegits"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "No hi ha baixades per suprimir"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "S'han suprimit %d baixades"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "Seguiment"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "Cancel·la la baixada"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "Baixada cancel·lada"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "Vols suprimir el capítol baixat?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "Baixada suprimida"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "Copiat al porta-retalls"
+    },
+    {
+      "name": "transition_finished",
+      "value": "Acabat:"
+    },
+    {
+      "name": "transition_current",
+      "value": "Actual:"
+    },
+    {
+      "name": "transition_next",
+      "value": "Següent:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "Anterior:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "No hi ha capítol següent"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "No hi ha capítol anterior"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "Lloc web"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "Actualitzacions pendents"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "Actualitza-ho tot"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "Múltiple"
+    },
+    {
+      "name": "about_row_version",
+      "value": "Versió"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "S'ha copiat la informació de depuració"
+    },
+    {
+      "name": "licenses_title",
+      "value": "Llicències de codi obert"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "Obre la pàgina principal"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "Text complet de la llicència"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "Referència d'arquitectura i de disseny d'interacció"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "Icones de l'aplicació"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "SDK de la plataforma i entorn ArkUI"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "Descodificació d'imatges AVIF"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "Descodificador AV1 per a la descodificació AVIF"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "Anàlisi HTML per a les extensions"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "Memòria cau de reproducció de vídeo"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL i URLSearchParams per a les extensions (entorn d'execució)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder i TextDecoder per a les extensions (entorn d'execució)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "Conversió de valors WebIDL, dependència de whatwg-url (entorn d'execució)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "Resum MD5 per a les extensions (entorn d'execució)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "Xifratge i desxifratge AES-CBC per a les extensions (entorn d'execució)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "Resum SHA/HMAC/PBKDF2 per a les extensions (entorn d'execució)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "Xifratge i desxifratge AES-GCM per a les extensions (entorn d'execució)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "Política de privadesa"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi és un lector de manga, novel·les i vídeos que guarda les dades al dispositiu. L'aplicació no recull, no puja ni comparteix cap dada personal."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "Dades locals"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "La biblioteca, l'historial de lectura, les baixades, les preferències i les credencials de seguiment només es desen al dispositiu. Pots exportar-les o esborrar-les en qualsevol moment a Configuració. En desinstal·lar l'aplicació s'eliminen per sempre."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "Fonts i extensions en línia"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "El contingut en línia el proporcionen extensions i llocs web de tercers. En explorar o llegir d'una font en línia, les sol·licituds s'envien directament a aquell lloc, regit per la seva política de privadesa. L'aplicació no controla ni es fa responsable dels serveis de tercers."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "Serveis de seguiment"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "Pots connectar, si vols, comptes com AniList, MyAnimeList, Bangumi, Kitsu i Shikimori. L'inici de sessió l'autoritzes tu a la pàgina del servei, i els testimonis d'accés només es desen al dispositiu per sincronitzar el progrés de lectura."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "Permisos"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "L'accés a Internet serveix per carregar contingut en línia, l'accés a fitxers per a importacions i còpies de seguretat locals, i l'autenticació biomètrica només per al bloqueig local. Cap permís es fa servir per recollir dades personals."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "Contacte"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi és un projecte de codi obert inspirat en Mihon. Si tens dubtes sobre aquesta declaració de privadesa, contacta'ns per Discord o GitHub."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "Desa com a arxiu CBZ"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "Divideix les imatges altes"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "Millora el rendiment del lector"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "Concurrència"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "Baixades simultànies de fonts"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "Baixades simultànies de pàgines"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "Pàgines baixades alhora per cada font"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "Suprimeix capítols"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "Després de marcar-los com a llegits"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "Suprimeix automàticament després de llegir"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "Desactivat"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "Darrer capítol llegit"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "Penúltim capítol llegit"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "Antepenúltim capítol llegit"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "Quart abans de l'últim llegit"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "Cinquè abans de l'últim llegit"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "Permet suprimir capítols amb marcador"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "Baixada automàtica"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "Baixa els capítols nous"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "Baixa automàticament els capítols nous trobats en actualitzar la biblioteca"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "Omet els capítols llegits duplicats"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "Baixa per endavant"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "Baixada automàtica en llegir"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "Capítol no llegit següent"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "%d capítols no llegits següents"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "Només funciona si el capítol actual i el següent ja estan baixats."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "Novel·les"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "Vídeos"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "Encara no hi ha fonts d'aquest tipus"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "Novel·les locals"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "Vídeos locals"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "Tipus"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "Tot"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "Comença a reproduir"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "Continua la reproducció"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "Aquest flux només es pot reproduir en línia"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "Mida de la lletra"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "Interlineat"
+    },
+    {
+      "name": "novel_empty",
+      "value": "Aquest capítol no té text"
+    },
+    {
+      "name": "novel_prev",
+      "value": "Capítol anterior"
+    },
+    {
+      "name": "novel_next",
+      "value": "Capítol següent"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "Desplaçament"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "Pàgines"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "Dues pàgines"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "Mode de paginació"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "Espai entre paràgrafs"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "Visualització"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "Text"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "Una pàgina (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "Una pàgina (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "Transició de pàgina"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "Simulació"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "Llisca"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "Coberta"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "Color del text"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "Clar"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "Fosc"
+    },
+    {
+      "name": "novel_margin",
+      "value": "Marges"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "Tipus de lletra"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "Per defecte"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "Amb gràcia"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "De pal sec"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "Monoespai"
+    },
+    {
+      "name": "novel_tts",
+      "value": "Llegeix en veu alta"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "Comença la lectura en veu alta"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "Atura la lectura en veu alta"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "Velocitat de lectura"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "S'ha arribat al final d'aquest capítol"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "Ha fallat la síntesi de veu: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "Pausa"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "Reprèn"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "S'està llegint"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "Paràgraf %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "Temporitzador"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "Desactivat"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d min"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "S'atura d'aquí a %1$s"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "No s'està llegint res en veu alta"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "Obre el reproductor"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "Capítols"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "Per temps"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "Per capítols"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "Després d'aquest capítol"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "Després de %1$d capítols"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d cap."
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "S'atura després d'aquest capítol"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "S'atura després de %1$d capítols"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "Manté l'aplicació en segon pla mentre es llegeix una novel·la en veu alta"
+    },
+    {
+      "name": "video_play",
+      "value": "Reprodueix"
+    },
+    {
+      "name": "video_pause",
+      "value": "Pausa"
+    },
+    {
+      "name": "video_prev",
+      "value": "Anterior"
+    },
+    {
+      "name": "video_next",
+      "value": "Següent"
+    },
+    {
+      "name": "video_settings",
+      "value": "Configuració del reproductor"
+    },
+    {
+      "name": "video_episodes",
+      "value": "Episodis"
+    },
+    {
+      "name": "video_quality",
+      "value": "Qualitat"
+    },
+    {
+      "name": "video_speed",
+      "value": "Velocitat de reproducció"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "Danmaku activat"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "Danmaku desactivat"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "S'està carregant el danmaku…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "S'han carregat %d danmaku"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "No s'ha trobat danmaku coincident"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "No s'ha pogut carregar el danmaku"
+    },
+    {
+      "name": "video_locked",
+      "value": "Controls bloquejats"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "Controls desbloquejats"
+    },
+    {
+      "name": "player_set_title",
+      "value": "Reproductor"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "Reproducció"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "Velocitat per defecte"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "Reprodueix l'episodi següent"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "Reprodueix l'episodi següent en acabar"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "Mostra el danmaku"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "Mida del danmaku"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "Opacitat del danmaku"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "Àrea del danmaku"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "Velocitat del danmaku"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "Dades de danmaku de dandanplay (cal xarxa)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "Mode d'escala"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "Ajusta"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "Omple"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "Estira"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "Lenta"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Normal"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "Ràpida"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "Molt ràpida"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 de pantalla"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "Mitja pantalla"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 de pantalla"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "Pantalla completa"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "Temps de manga"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "Temps de novel·la"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "Temps de vídeo"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "Portada"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "Edita la portada"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "Restableix la portada"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "S'ha actualitzat la portada"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "S'ha restaurat la portada"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "No s'ha pogut actualitzar la portada"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "S'ha desat la portada"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "Error en desar la portada"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "Error en compartir la portada"
+    },
+    {
+      "name": "detail_edit",
+      "value": "Edita"
+    },
+    {
+      "name": "detail_delete",
+      "value": "Suprimeix"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "Et donem la benvinguda!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "Primer configurem unes quantes coses. Sempre les podràs canviar a la configuració."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "Següent"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "Comença"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "Guia inicial"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "Guia de primers passos"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "Ets nou a %s? Et recomanem la guia de primers passos."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "Tornes a instal·lar %s?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "Sincronització en curs, espera"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "Ha fallat la baixada"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "No s'han pogut carregar els detalls"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "Paràmetres de pàgina no vàlids"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "S'estan preparant les baixades…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "No s'ha pogut moure a la categoria"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "No s'ha pogut carregar la llista de migració"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "Ha fallat l'operació"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "Error de càrrega: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "S'està carregant…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "Ha fallat la càrrega: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "La renderització ha sortit (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "Ha fallat la darrera còpia de seguretat automàtica"
+    },
+    {
+      "name": "category_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "category_novel",
+      "value": "Novel·les"
+    },
+    {
+      "name": "category_video",
+      "value": "Vídeos"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "Amb llicència"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "El motor TTS està ocupat; torna-ho a provar més tard"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "El motor TTS ha deixat de respondre i s'ha aturat la lectura"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "El motor TTS no està disponible"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "Cal una verificació humana; completa la pàgina i torna-ho a provar"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "Font no disponible"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "Aquest capítol no té contingut"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "Ha fallat la reproducció"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "No s'han trobat vídeos reproduïbles"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "Local"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "Cancel·lat"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "Ha fallat la baixada"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "S'ha esgotat el temps de la baixada (el servidor no respon)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "Ha fallat la baixada (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "Aquest vídeo es reprodueix en línia i no es pot baixar"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "El servei de baixades no s'ha inicialitzat"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "No s'ha trobat la font: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "No s'ha trobat el fitxer del capítol"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "Format de capítol no compatible"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "No s'ha trobat el fitxer de vídeo"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "Manga importat localment"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "Novel·les importades localment"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "Vídeos importats localment"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "S'ha blocat una redirecció insegura: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "Massa redireccions: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "No s'ha pogut resoldre l'adreça del servidor; comprova la connexió i torna-ho a provar"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "No s'ha pogut connectar amb el servidor; comprova la xarxa i torna-ho a provar"
+    },
+    {
+      "name": "net_timeout",
+      "value": "S'ha esgotat el temps de la sol·licitud; torna-ho a provar més tard"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "Ha fallat la connexió segura (error SSL); torna-ho a provar més tard"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "S'ha interromput la connexió; torna-ho a provar"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "Ha fallat la sol·licitud de xarxa: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "No s'ha pogut crear el motor JSVM"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "No s'ha pogut executar l'script del connector"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "L'extensió no s'ha carregat"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "L'extensió està malmesa; torna-la a instal·lar o a carregar"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "Ha fallat la inicialització de l'extensió"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "S'ha esgotat el temps d'inicialització de l'extensió"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "S'ha esgotat el temps de la crida a l'extensió: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "Ha fallat la crida a l'extensió"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "L'extensió ha retornat un JSON no vàlid"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "Error d'extensió desconegut"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "manifest.key no vàlid (només lletres minúscules, dígits i guions baixos)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "Falta manifest.name"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "manifest.versionCode no vàlid"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "Aquest connector requereix una aplicació més nova (%s); actualitza primer"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "Aquest connector requereix versionCode de l'aplicació >= %s; actualitza primer"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "No s'ha pogut llegir el fitxer seleccionat: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "Els URL dels paquets han d'usar https; es rebutgen les baixades en clar"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "Ha fallat la comprovació d'integritat (sha256 no coincideix); instal·lació cancel·lada"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "Al paquet del connector li falta main.js"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "No s'ha pogut substituir el directori del connector: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "No s'ha trobat manifest.json al paquet del connector"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "Els URL del repositori han d'usar https; es rebutgen les entrades http://"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "Nom d'entorn d'execució no vàlid: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "Falta un component de l'entorn d'execució: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "El connector ha retornat detalls de manga no vàlids"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "El connector no exporta getChapterText"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "El connector no exporta getVideoList"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "No s'ha pogut desar el paquet del connector: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "No s'ha pogut suprimir el directori del connector: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "No s'han pogut llegir els fitxers del connector instal·lat: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "No s'ha pogut verificar la integritat del paquet: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "No s'ha pogut extreure el paquet del connector: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "No s'ha pogut llegir manifest.json del paquet: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "No s'han pogut preparar els fitxers del connector: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "Seguiment"
+    },
+    {
+      "name": "track_login",
+      "value": "Inicia la sessió"
+    },
+    {
+      "name": "track_logout",
+      "value": "Tanca la sessió"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "Vols tancar la sessió de %s?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "Sessió iniciada a %s"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "Sessió tancada"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "Ha fallat l'inici de sessió"
+    },
+    {
+      "name": "track_username",
+      "value": "Nom d'usuari"
+    },
+    {
+      "name": "track_password",
+      "value": "Contrasenya"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "Actualitza el progrés del seguiment automàticament"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "Cerca a %s"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "Ha fallat la cerca"
+    },
+    {
+      "name": "track_no_results",
+      "value": "No s'han trobat resultats"
+    },
+    {
+      "name": "track_added",
+      "value": "S'ha afegit el seguiment"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "No s'ha pogut afegir el seguiment"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "No s'ha pogut actualitzar el seguiment"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "No s'ha pogut treure del servei"
+    },
+    {
+      "name": "track_status",
+      "value": "Estat"
+    },
+    {
+      "name": "track_score",
+      "value": "Puntuació"
+    },
+    {
+      "name": "track_chapters",
+      "value": "Capítols"
+    },
+    {
+      "name": "track_start_date",
+      "value": "Data d'inici"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "Data de finalització"
+    },
+    {
+      "name": "track_private",
+      "value": "Privat"
+    },
+    {
+      "name": "track_unlink",
+      "value": "Desvincula"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "Treu del servei"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "Introdueix un número de capítol vàlid"
+    },
+    {
+      "name": "track_reading",
+      "value": "Llegint"
+    },
+    {
+      "name": "track_completed",
+      "value": "Completat"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "En espera"
+    },
+    {
+      "name": "track_paused",
+      "value": "En pausa"
+    },
+    {
+      "name": "track_dropped",
+      "value": "Abandonat"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "Pendent de llegir"
+    },
+    {
+      "name": "track_repeating",
+      "value": "Rellegint"
+    },
+    {
+      "name": "track_considering",
+      "value": "Ho estic considerant"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "Desconegut"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "Llista de lectura"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "Llista de desitjos"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "Llista de completats"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "Llista en espera"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "Llista d'inacabats"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "S'està carregant…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "No s'ha pogut carregar: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "Encara no hi ha fitxers locals; toca Importa per afegir-ne"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "Nom"
+    },
+    {
+      "name": "privacy_title",
+      "value": "Privadesa"
+    },
+    {
+      "name": "privacy_group",
+      "value": "Seguretat"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "Bloqueig de l'aplicació"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "Configura primer un bloqueig de pantalla"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "Bloqueja en inactivitat"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "Sempre"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 minut"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 minuts"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 minuts"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 minuts"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "Mai"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "Amaga el contingut de les notificacions"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "Pantalla segura"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "Bloca les captures i la gravació de pantalla"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "Aplicació bloquejada"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "Verifica la teva identitat per continuar"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "Desbloqueja"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "Desbloqueja l'aplicació"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "S'està baixant"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "Exporta els registres de fallades"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "No s'han trobat registres de fallades"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "S'han exportat %d registres d'errors"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "Registre detallat"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "Inclou detalls de depuració als registres del sistema"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "Informació de depuració"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "Ha fallat l'acció"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Dades"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "Xarxa"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "Biblioteca"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "Lector"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "Buida la base de dades"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "Vols treure totes les entrades que no són a la biblioteca? Es perdrà l'historial i el progrés de lectura."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "S'han tret %d entrades"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "Buida les dades web incrustades"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "S'han buidat les dades web incrustades"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS sobre HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "Desactivat"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "User-Agent personalitzat"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "Deixa-ho buit per usar el valor per defecte"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "S'ha desat el User-Agent"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "Restableix el User-Agent"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "Actualitza les portades de la biblioteca"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "S'estan actualitzant les portades…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "S'han actualitzat %d entrades"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "Restableix la configuració del lector per sèrie"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "Vols restablir els modes de lectura de cada sèrie al valor global per defecte?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "S'han restablert %d entrades"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "Renderització d'alta qualitat"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "Escalat d'imatge més suau a costa del rendiment"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "Versió de l'aplicació"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "Model del dispositiu"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "Tipus de dispositiu"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "Versió del sistema"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "Versió de l'API"
+    },
+    {
+      "name": "debug_screen",
+      "value": "Pantalla"
+    },
+    {
+      "name": "debug_language",
+      "value": "Idioma"
     }
   ]
 }

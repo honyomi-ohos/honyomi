@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "Китапханәдә дәвам иткән манга юк"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "Алмашу буферына күчереп алу"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "Тема"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "Килешү буенча"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "Төнге эңгер"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "Җиләкле Daiquiri"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "Зәңгәр һәм фирүзә"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "Дулкын"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "Инь һәм Ян"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "Токио төне"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "Бер төсле"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "Яшел алма"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "Лаванда"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "Яңарту"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "Браузерда ачу"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "Браузерда ачып булмады"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "URL күчереп алу"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL күчерелде"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "Киләсе бүлек юк"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "Фильтр юк"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "Кире кайтару"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "Игътибарсыз калдыру"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "Кертү"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "Чыгару"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "Папка сайланмады"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "Файл түгел, папка кирәк"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "Папка сайлау"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "Синхронлау"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "Папканы алыштыру"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "Җирле папка"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "Папка синхронлана…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "Папка синхронланды"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "Синхронлау уңышсыз: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "Җирле папкага керә алмыйм, яңадан сайлагыз"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "Папкага керү сакланмады"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "Бу җайланмада папка сайлау хупланмый"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "Җирле папка әле куелмаган"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "Җирле папкада бернәрсә дә табылмады"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "comic эчке папкасында бернәрсә дә табылмады"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "novel эчке папкасында бернәрсә дә табылмады"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "anime эчке папкасында бернәрсә дә табылмады"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "Барысын да кире кагу"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "Бүлек арту буенча"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "Бүлек кимү буенча"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "Тәртипләү"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "Фильтр"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "Чыганак буенча"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "Бүлек номеры буенча"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "Йөкләү көне буенча"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "Исем буенча"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "Кире кайтару"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "Йөкләнгән"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "Укылмаган"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "Кыстыргычлы"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d сайланды"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "Укылган дип билгеләү"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "Укылмаган дип билгеләү"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "Кыстыргыч"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "Бетерү"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "Киләсе %d укылмаган"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "Барлык укылмаганнар"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "Кыстыргычлы бүлекләр"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d бүлек чиратка өстәлде"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "Укылмаган бүлек юк"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "Бетерелергә тиешле йөкләү юк"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "%d йөкләү бетерелде"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "Күзәтү"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "Йөкләүне кире кагу"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "Йөкләү кире кагылды"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "Йөкләнгән бүлек бетерелсенме?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "Йөкләү бетерелде"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "Алмашу буферына күчерелде"
+    },
+    {
+      "name": "transition_finished",
+      "value": "Беткәне:"
+    },
+    {
+      "name": "transition_current",
+      "value": "Хәзерге:"
+    },
+    {
+      "name": "transition_next",
+      "value": "Киләсе:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "Алдагы:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "Киләсе бүлек юк"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "Алдагы бүлек юк"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "Веб-сайт"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "Көтелүче яңартулар"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "Барысын яңарту"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "Күп телле"
+    },
+    {
+      "name": "about_row_version",
+      "value": "Версия"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "Хата эзләү мәгълүматы күчерелде"
+    },
+    {
+      "name": "licenses_title",
+      "value": "Ачык чыганак лицензияләре"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "Баш битне ачу"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "Тулы лицензия тексты"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "Кушымта төзелеше һәм үзара эшләү үрнәге"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "Кушымта эчендәге билгеләр"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "Платформа SDK һәм ArkUI каркасы"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "AVIF рәсем декодлау"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "AVIF декодлау өчен AV1 декодеры"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "Киңәйтүләр өчен HTML таләү"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "Видео уйнату кэшы"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "Киңәйтүләр өчен URL һәм URLSearchParams (плагин эш вакыты)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "Киңәйтүләр өчен TextEncoder һәм TextDecoder (плагин эш вакыты)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "WebIDL кыйммәт әйләндерү, whatwg-url бәйләнеше (плагин эш вакыты)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "Киңәйтүләр өчен MD5 хэш (плагин эш вакыты)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "Киңәйтүләр өчен AES-CBC шифрлау һәм ачу (плагин эш вакыты)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "Киңәйтүләр өчен SHA/HMAC/PBKDF2 хэш (плагин эш вакыты)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "Киңәйтүләр өчен AES-GCM шифрлау һәм ачу (плагин эш вакыты)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "Хосусыйлык сәясәте"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi — манга, роман һәм видео өчен җирле укучы. Кушымта үзе шәхси мәгълүмат җыймый, йөкләми һәм уртаклашмый."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "Җирле мәгълүмат"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "Китапханәгез, уку тарихыгыз, йөкләү язмаларыгыз, көйләүләрегез һәм күзәтү хисап мәгълүматы бары тик җайланмагызда саклана. Аларны Көйләүләрдә теләсә кайчан экспортларга яки бетерергә була. Кушымтаны бетерү аларны мәңгегә юк итә."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "Челтәр чыганаклары һәм киңәйтүләр"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "Челтәр эчтәлеген өченче як киңәйтүләре һәм веб-сайтлар бирә. Челтәр чыганагыннан карау яки уку сорауларыгызны турыдан-туры шул сайтка җибәрә; бу сайтның үз хосусыйлык сәясәтенә буйсына. Кушымта өченче як хезмәтләрен идарә итми һәм алар өчен җаваплы түгел."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "Күзәтү хезмәтләре"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "Теләсәгез, AniList, MyAnimeList, Bangumi, Kitsu һәм Shikimori кебек күзәтү хисапларын тоташтыра аласыз. Керү күзәтүченең үз битендә сезнең раславыгыз белән башкарыла; керү билгеләре уку барышын синхронлау өчен бары тик җайланмагызда саклана."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "Рөхсәтләр"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "Интернет керүе челтәр эчтәлеген йөкләү, файл керүе җирле импорт һәм резерв күчермәләр, биометрик раслау исә бары тик җирле кушымта биге өчен кулланыла. Бер рөхсәт тә шәхси мәгълүмат җыю өчен кулланылмый."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "Элемтә"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi — Mihonнан илһамланган ачык чыганаклы проект. Бу хосусыйлык белдерүе турында сорауларыгыз булса, Discord яки GitHub аша языгыз."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "CBZ архивы итеп саклау"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "Биек рәсемнәрне бүлү"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "Укучы эшен яхшырта"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "Берьюлылык"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "Берьюлы чыганак йөкләүләре"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "Берьюлы бит йөкләүләре"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "Һәр чыганакка берьюлы йөкләнә торган битләр"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "Бүлекләрне бетерү"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "Кулдан укылган дип билгеләнгәннән соң"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "Укыганнан соң автоматик бетерү"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "Сүндерелгән"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "Соңгы укылган бүлек"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "Ахырыннан икенче укылган бүлек"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "Ахырыннан өченче укылган бүлек"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "Ахырыннан дүртенче укылган бүлек"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "Ахырыннан бишенче укылган бүлек"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "Кыстыргычлы бүлекләрне бетерүгә рөхсәт"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "Автоматик йөкләү"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "Яңа бүлекләрне йөкләү"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "Китапханә яңартуларында табылган яңа бүлекләрне автоматик йөкләү"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "Укылган кабатланган бүлекләрне йөкләмәү"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "Алдан йөкләү"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "Укыганда автоматик йөкләү"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "Киләсе укылмаган бүлек"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "Киләсе %d укылмаган бүлек"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "Бары тик хәзерге бүлек һәм киләсе бүлек инде йөкләнгән булса гына эшли."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Манга"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "Романнар"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "Видеолар"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "Бу төр өчен чыганак әле юк"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "Җирле романнар"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "Җирле видеолар"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "Төр"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "Барысы"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "Уйнатуны башлау"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "Уйнатуны дәвам итү"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "Бу агымны бары тик челтәрдә уйнатырга була"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "Шрифт зурлыгы"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "Юл арасы"
+    },
+    {
+      "name": "novel_empty",
+      "value": "Бу бүлектә текст юк"
+    },
+    {
+      "name": "novel_prev",
+      "value": "Алдагы бүлек"
+    },
+    {
+      "name": "novel_next",
+      "value": "Киләсе бүлек"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "Шудыру"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "Битләп"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "Ике бит"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "Битләү режимы"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "Юл башы арасы"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "Күрсәтү"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "Текст"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "Бер бит (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "Бер бит (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "Бит күчеше"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "Охшату"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "Шудыру"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "Каплау"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "Текст төсе"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "Ачык"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "Караңгы"
+    },
+    {
+      "name": "novel_margin",
+      "value": "Кырыйлар"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "Шрифт"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "Килешү буенча"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "Чыгынтылы"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "Чыгынтысыз"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "Тигез киңлекле"
+    },
+    {
+      "name": "novel_tts",
+      "value": "Тавыш белән уку"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "Тавыш белән укуны башлау"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "Тавыш белән укуны туктату"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "Уку тизлеге"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "Бу бүлек ахырына җитте"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "Тавыш белән уку уңышсыз: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "Тыныш"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "Дәвам итү"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "Хәзер укыла"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "Юл башы %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "Йокы таймеры"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "Сүнек"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d мин"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "%1$s соң туктый"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "Тавыш белән укыла торган бернәрсә юк"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "Плеерны ачу"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "Бүлекләр"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "Вакыт буенча"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "Бүлекләр буенча"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "Бу бүлектән соң"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "%1$d бүлектән соң"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d бл"
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "Бу бүлектән соң туктый"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "%1$d бүлектән соң туктый"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "Роман тавыш белән укылганда кушымтаның фонда эшләвен саклый"
+    },
+    {
+      "name": "video_play",
+      "value": "Уйнату"
+    },
+    {
+      "name": "video_pause",
+      "value": "Тыныш"
+    },
+    {
+      "name": "video_prev",
+      "value": "Алдагы"
+    },
+    {
+      "name": "video_next",
+      "value": "Киләсе"
+    },
+    {
+      "name": "video_settings",
+      "value": "Плеер көйләүләре"
+    },
+    {
+      "name": "video_episodes",
+      "value": "Серияләр"
+    },
+    {
+      "name": "video_quality",
+      "value": "Сыйфат"
+    },
+    {
+      "name": "video_speed",
+      "value": "Уйнату тизлеге"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "Danmaku кабызылган"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "Danmaku сүндерелгән"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "Danmaku йөкләнә…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%d danmaku йөкләнде"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "Туры килгән danmaku табылмады"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "Danmaku йөкләнмәде"
+    },
+    {
+      "name": "video_locked",
+      "value": "Идарә бикләнгән"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "Идарә биге ачылды"
+    },
+    {
+      "name": "player_set_title",
+      "value": "Плеер"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "Уйнату"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "Килешү буенча тизлек"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "Киләсе серияне автоматик уйнату"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "Беткәч киләсе серияне автоматик уйнату"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "Danmaku күрсәтү"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "Danmaku шрифт зурлыгы"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "Danmaku үтә күренмәлеге"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "Danmaku күрсәтү өлкәсе"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "Danmaku тизлеге"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "Danmaku мәгълүматы dandanplay тан (челтәр кирәк)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "Экран масштаб режимы"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "Сыйдыру"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "Тутыру"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "Сузу"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "Әкрен"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Гади"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "Тиз"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "Бик тиз"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "Экранның 1/4 өлеше"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "Ярты экран"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "Экранның 3/4 өлеше"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "Тулы экран"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "Манга вакыты"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "Роман вакыты"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "Видео вакыты"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "Тышлык"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "Тышлыкны үзгәртү"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "Тышлыкны кире кайтару"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "Тышлык яңартылды"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "Тышлык торгызылды"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "Тышлык яңартылмады"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "Тышлык сакланды"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "Тышлыкны саклау хатасы"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "Тышлыкны уртаклашу хатасы"
+    },
+    {
+      "name": "detail_edit",
+      "value": "Үзгәртү"
+    },
+    {
+      "name": "detail_delete",
+      "value": "Бетерү"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "Рәхим итегез!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "Башта берничә нәрсәне көйлик. Аларны соңрак көйләүләрдә дә үзгәртергә була."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "Алга"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "Башлау"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "Башлау кулланмасы"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "Башлау кулланмасы"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "%s кушымтасында яңасызмы? Башлау кулланмасын каравыгызны тәкъдим итәбез."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "%s яңадан урнаштырыламы?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "Синхронлау бара, көтегез"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "Йөкләү уңышсыз"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "Тәфсилләр йөкләнмәде"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "Бит мәгълүматы яраксыз"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "Йөкләүләр әзерләнә…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "Төркемгә күчереп булмады"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "Күчерү исемлеге йөкләнмәде"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "Гамәл уңышсыз"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "Йөкләү хатасы: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "Йөкләнә…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "Йөкләү уңышсыз: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "Эшкәртү чыкты (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "Соңгы автоматик резерв күчермә уңышсыз"
+    },
+    {
+      "name": "category_manga",
+      "value": "Манга"
+    },
+    {
+      "name": "category_novel",
+      "value": "Романнар"
+    },
+    {
+      "name": "category_video",
+      "value": "Видеолар"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "Лицензияле"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "TTS двигателе мәшгуль, соңрак кабатлагыз"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "TTS двигателе җавап бирүдән туктады һәм уку туктатылды"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "TTS двигателе юк"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "Кеше тикшерүе кирәк, тикшерү битен тәмамлап, кабатлагыз"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "Чыганак юк"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "Бу бүлектә эчтәлек юк"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "Уйнату уңышсыз"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "Уйнатыла торган видео табылмады"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "Җирле"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "Кире кагылды"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "Йөкләү уңышсыз"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "Йөкләү вакыты бетте (сервер җавап бирми)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "Йөкләү уңышсыз (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "Бу видео челтәрдә агымда һәм йөкләнми"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "Йөкләү хезмәте эшләтеп җибәрелмәгән"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "Чыганак табылмады: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "Бүлек файлы табылмады"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "Хупланмый торган бүлек форматы"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "Видео файлы табылмады"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "Җирле импортланган манга"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "Җирле импортланган романнар"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "Җирле импортланган видеолар"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "Куркынычсыз булмаган юнәлтү тыелды: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "Юнәлтүләр бик күп: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "Сервер адресы ачыкланмады, челтәрне тикшереп, кабатлагыз"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "Серверга тоташып булмады, челтәрне тикшереп, кабатлагыз"
+    },
+    {
+      "name": "net_timeout",
+      "value": "Сорау вакыты бетте, соңрак кабатлагыз"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "Куркынычсыз тоташу уңышсыз (SSL хатасы), соңрак кабатлагыз"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "Тоташу өзелде, кабатлагыз"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "Челтәр соравы уңышсыз: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "JSVM двигателе ясалмады"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "Плагин коды эшләмәде"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "Киңәйтү йөкләнмәгән"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "Киңәйтү бозылган, яңадан урнаштырыгыз яки яңартыгыз"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "Киңәйтү эшләтеп җибәрелмәде"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "Киңәйтүне эшләтеп җибәрү вакыты бетте"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "Киңәйтү чакыруы вакыты бетте: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "Киңәйтү чакыруы уңышсыз"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "Киңәйтү яраксыз JSON кайтарды"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "Билгесез киңәйтү хатасы"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "Яраксыз manifest.key (бары тик кече хәреф, сан һәм аскы сызык)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name юк"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "Яраксыз manifest.versionCode"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "Бу плагин яңарак кушымта сорый (%s), башта яңартыгыз"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "Бу плагин кушымта versionCode >= %s сорый, башта яңартыгыз"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "Сайланган файл укылмады: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "Плагин пакеты URL адреслары https булырга тиеш, ачык текстлы йөкләүләр кире кагыла"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "Плагин бөтенлек тикшерүе уңышсыз (sha256 туры килми), урнаштыру кире кагылды"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "Плагин пакетында main.js юк"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "Плагин папкасы алыштырылмады: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "Плагин пакетында manifest.json табылмады"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "Репозиторий файл URL адреслары https булырга тиеш, http:// язмалары кире кагыла"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "Яраксыз плагин эш вакыты исеме: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "Плагин эш вакыты өлеше юк: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "Плагин яраксыз манга тәфсилен кайтарды"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "Плагин getChapterText экспортламый"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "Плагин getVideoList экспортламый"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "Плагин пакеты сакланмады: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "Плагин папкасы бетерелмәде: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "Урнаштырылган плагин файллары укылмады: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "Плагин пакеты бөтенлеге тикшерелмәде: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "Плагин пакеты ачылмады: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "Плагин пакетындагы manifest.json укылмады: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "Плагин файллары әзерләнмәде: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "Күзәтү"
+    },
+    {
+      "name": "track_login",
+      "value": "Керү"
+    },
+    {
+      "name": "track_logout",
+      "value": "Чыгу"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "%s хисабыннан чыгаргамы?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "%s хисабына керелде"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "Чыгылды"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "Керү уңышсыз"
+    },
+    {
+      "name": "track_username",
+      "value": "Кулланучы исеме"
+    },
+    {
+      "name": "track_password",
+      "value": "Серсүз"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "Күзәтү барышын автоматик яңарту"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "%s эчендә эзләү"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "Эзләү уңышсыз"
+    },
+    {
+      "name": "track_no_results",
+      "value": "Нәтиҗә табылмады"
+    },
+    {
+      "name": "track_added",
+      "value": "Күзәтү өстәлде"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "Күзәтү өстәлмәде"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "Күзәтү яңартылмады"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "Хезмәттән алынмады"
+    },
+    {
+      "name": "track_status",
+      "value": "Халәт"
+    },
+    {
+      "name": "track_score",
+      "value": "Бәя"
+    },
+    {
+      "name": "track_chapters",
+      "value": "Бүлекләр"
+    },
+    {
+      "name": "track_start_date",
+      "value": "Башлану көне"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "Бетү көне"
+    },
+    {
+      "name": "track_private",
+      "value": "Хосусый"
+    },
+    {
+      "name": "track_unlink",
+      "value": "Бәйләнешне өзү"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "Хезмәттән алу"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "Дөрес бүлек номерын кертегез"
+    },
+    {
+      "name": "track_reading",
+      "value": "Укыла"
+    },
+    {
+      "name": "track_completed",
+      "value": "Тәмамланган"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "Китереп куелган"
+    },
+    {
+      "name": "track_paused",
+      "value": "Туктатылган"
+    },
+    {
+      "name": "track_dropped",
+      "value": "Ташланган"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "Укуны планлаштыру"
+    },
+    {
+      "name": "track_repeating",
+      "value": "Кабатлау"
+    },
+    {
+      "name": "track_considering",
+      "value": "Каралып тора"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "Билгесез"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "Уку исемлеге"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "Теләк исемлеге"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "Тәмамланганнар"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "Китереп куелганнар"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "Тәмамланмаганнар"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "Йөкләнә…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "Йөкләнмәде: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "Җирле файл әле юк, өстәү өчен Импортка басыгыз"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "Исем"
+    },
+    {
+      "name": "privacy_title",
+      "value": "Хосусыйлык"
+    },
+    {
+      "name": "privacy_group",
+      "value": "Куркынычсызлык"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "Кушымта биге"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "Башта экран биген куегыз"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "Буш торганда бикләү"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "Һәрвакыт"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 минут"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 минут"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 минут"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 минут"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "Беркайчан"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "Хәбәр эчтәлеген яшерү"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "Куркынычсыз экран"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "Экран сурәтен һәм экран язуын тыя"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "Кушымта бикләнгән"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "Дәвам итү өчен шәхесегезне раслагыз"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "Бикне ачу"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "Кушымта биген ачу"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "Йөкләнә"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "Сөрелү язмаларын экспортлау"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "Сөрелү язмасы табылмады"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "%d хата язмасы экспортланды"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "Тәфсилле язма"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "Система язмаларына хата эзләү тәфсилләрен кертү"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "Хата эзләү мәгълүматы"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "Гамәл уңышсыз"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Мәгълүмат"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "Челтәр"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "Китапханә"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "Укучы"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "Мәгълүмат базасын чистарту"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "Китапханәгездә булмаган барлык язмалар алынсынмы? Бу язмаларның уку тарихы һәм барышы югалачак."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "%d язма алынды"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "Эчке веб мәгълүматын чистарту"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "Эчке веб мәгълүматы чистартылды"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS over HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "Сүндерелгән"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "Махсус User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "Килешү буенча куллану өчен буш калдырыгыз"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent сакланды"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "User-Agent кире кайтару"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "Китапханә тышлыкларын яңарту"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "Тышлыклар яңартыла…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "%d язма яңартылды"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "Серия буенча укучы көйләүләрен кире кайтару"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "Серия буенча куйган уку режимнары гомуми килешүгә кайтарылсынмы?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "%d язма кире кайтарылды"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "Югары сыйфатлы эшкәртү"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "Җитештерүчәнлек исәбенә шомарак рәсем масштабы"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "Кушымта версиясе"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "Җайланма үлгесе"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "Җайланма төре"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "Система версиясе"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "API версиясе"
+    },
+    {
+      "name": "debug_screen",
+      "value": "Экран"
+    },
+    {
+      "name": "debug_language",
+      "value": "Тел"
     }
   ]
 }

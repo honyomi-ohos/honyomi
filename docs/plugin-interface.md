@@ -32,6 +32,9 @@ JSVM 引擎 (cpp/jsvm_engine.cpp, libjsvmengine.so)        ← 适配器层：�
 
 包级声明文件，引擎拉起之前即可用（占位源注册、浏览列表渲染都只依赖它）。
 
+执行模型固定：所有插件一律 JSVM 引擎，宿主在 main.js 前无条件拼接共享运行时
+（§5）；manifest 不需要（也不应）声明执行引擎或运行时字段。
+
 | 字段 | 类型 | 能力 / 宿主行为 |
 |---|---|---|
 | `key` | string | 插件包唯一标识（多语言扩展共用一个包 key = `packageKey`） |
@@ -43,8 +46,6 @@ JSVM 引擎 (cpp/jsvm_engine.cpp, libjsvmengine.so)        ← 适配器层：�
 | `minAppVersion` | number | 宿主版本门槛 |
 | `dslVersion` | number | DSL 契约版本 |
 | `icon` | string | 包内图标文件名（缺省 UI 回退首字母） |
-| `runtime` | string | 共享运行时名（非空时在 main.js 前拼接 rawfile `plugin_runtime_<name>.js`） |
-| `engine` | string | 执行引擎，唯一合法值 `jsvm` |
 | `contentType` | string | `manga` \| `novel` \| `video`，缺省 `manga`；驱动宿主 UI 路由（§7） |
 | `settings` | `RawManifestSetting[]` | **插件设置静态声明**（§2.1）：声明后设置页渲染与写入全部在宿主侧完成，无需拉起 JSVM 引擎 |
 
@@ -56,7 +57,7 @@ JSVM 引擎 (cpp/jsvm_engine.cpp, libjsvmengine.so)        ← 适配器层：�
 | 字段 | 类型 | 说明 |
 |---|---|---|
 | `type` | string | `switch` \| `select` \| `edit` \| `password`（白名单外条目整条丢弃；`password` 渲染为 edit 行并强制敏感） |
-| `key` | string | 偏好键（写入本插件扁平 `__PREFS_STORE__` 存储的同名键） |
+| `key` | string | 偏好键（写入本插件扁平偏好存储（`$.prefs` 后端）的同名键） |
 | `title` / `summary` | string | 行标题 / 说明 |
 | `default` | string | 声明默认值（当前值 = 持久化值 ?? default） |
 | `options` | `{value, label}[]` | `select` 选项 |
@@ -140,45 +141,85 @@ JSVM 引擎 (cpp/jsvm_engine.cpp, libjsvmengine.so)        ← 适配器层：�
 | API | 能力 |
 |---|---|
 | `console.log/warn/error` | 日志回收（hilog） |
-| `fetch(url, options)` / `fetchBytes` / `tachiyomiHttpRequest` | 唯一网络出口：经 Worker → `NativeHttpBridge` → ArkTS `Http` 管线（UA/CookieJar/重定向合并） |
-| `querySelectorAll(html, cssQuery)` / `nativeSelector` | lexbor 原生 CSS 选择器（支持 `:not`/`:has`） |
+| `fetchBytes` / `tachiyomiHttpRequest` | 唯一网络出口：经 Worker → `NativeHttpBridge` → ArkTS `Http` 管线（UA/CookieJar/重定向合并）；编译型 tachiyomi 扩展走 `tachiyomiHttpRequest` |
+| `querySelectorAll(html, cssQuery)` | lexbor 原生 CSS 选择器（支持 `:not`/`:has`） |
+
+raw native 桥（`__nativeHttpRequest(Shared)` / `nativeSelector(Buffer)` /
+`__nativeLog`）在 `BOOTSTRAP_JS` 内捕获进闭包后即从全局删除，不进插件可见面。
 
 ### 5.2 运行时 shim（rawfile/plugin_runtime_jsvm.js，前拼于 main.js）
 
-Polyfills：`atob`/`btoa`、`TextEncoder`/`TextDecoder`、`crypto.subtle`（AES-CBC，
-Madara chapter-protector / tachiyomi Cipher 兼容）、`crypto.getRandomValues`、
-`global`/`module`/`exports`。
+**来源与构建**：源码在 `plugins/runtime/src/`（TypeScript），由
+`plugins/tools/src/build.ts` 经 esbuild 打包。`npm run build` / `npm test`
+写入 `plugins/runtime/dist/plugin_runtime_jsvm.js`，`@honyomi/plugin-test`
+通过包导出 `./shim` 加载它。只有宿主自动打包（`entry/hvigorfile.ts`）才把
+同一构建写入 `entry/src/main/resources/rawfile/plugin_runtime_jsvm.js`。两处都不入库。
+打包前须已执行 `cd plugins && npm install`。
+npm 依赖（对应许可证页条目）：
+
+- `fast-text-encoding`（Apache-2.0）：TextEncoder/TextDecoder
+- `whatwg-url` + `tr46` + `punycode`（MIT）：URL/URLSearchParams 规范实现
+- `webidl-conversions`（BSD-2-Clause）：whatwg-url 依赖
+- `js-md5`（MIT）：MD5
+- `aes-js`（MIT）：AES-CBC
+- `@noble/hashes`（MIT）：SHA-1/256/384/512、HMAC、PBKDF2
+- `@noble/ciphers`（MIT）：AES-GCM
+
+Polyfills：`atob`/`btoa`（手写宽松实现）、`TextEncoder`/`TextDecoder`、
+`crypto.subtle`（AES-CBC / AES-GCM、SHA-1/256/384/512、HMAC、PBKDF2；
+AES-CBC 的 pkcs7 解填充保持宽松，GCM 认证失败抛错）、
+`crypto.getRandomValues`（宿主随机桥优先，缺失时整段回落 `Math.random`，
+不可用于安全令牌）、`global`/`module`/`exports`。
 
 `$` DSL（原 Mihon 命名空间）：
 
 | API | 能力 |
 |---|---|
-| `$.http.get/post(url, ...)` | 同步式请求，返回 body |
-| `$.http.request(url, {method, headers, body})` | 返回 `{ok, status, headers, body, url}` |
+| `$.http.get/post(url, ...)` | 同步式请求，返回 body；仅 `http://` / `https://` |
+| `$.http.request(url, {method, headers, body})` | 返回 `{ok, status, headers, body, url}`；方法限 GET/HEAD/POST/PUT/PATCH/DELETE/OPTIONS，头禁止 CR/LF |
 | `$.http.enqueue` | fire-and-forget |
-| `$.http.getBytes(url, headers)` | 字节响应 |
+| `$.http.getBytes(url, headers)` | 字节响应；桥未返回字节时抛错 |
 | `$.html(html, baseUrl)` | 包装 DOM Document（选择器 + 相对链接解析） |
 | `$.urlEncodeGbk(text)` | GBK URL 编码桥（`__nativeUrlEncodeGbk`） |
-| `$.crypto.base64Encode/Decode`、`aesCbcDecrypt`、`md5`、`md5Bytes` | 常用摘要/解码 |
+| `$.crypto.base64Encode/Decode`、`aesCbcDecrypt`、`md5`、`md5Bytes`、`sha1/256/384/512`、`hmac`、`pbkdf2`、`aesGcmEncrypt/Decrypt` | 摘要/HMAC/派生/解密；PBKDF2 迭代上限 2_000_000，GCM nonce 固定 12 字节 |
 
 ### 5.3 插件偏好（prefs）
 
-- 安全边界：每个引擎实例只承载一个扩展，`__PREFS_STORE__` 即该扩展自己的
-  扁平偏好映射（`k→v`）；shim 的 `__prefs_*` 把 name 参数一律忽略——插件
-  传任何 bucket 名都只落在本扩展存储上，结构上无法寻址其它插件的偏好；
+- 安全边界：每个引擎实例只承载一个扩展，偏好存储是该扩展自己的扁平映射
+  （`k→v`），由 shim 持有为闭包私有对象；插件经 `$.prefs`（`createPrefs()`
+  的后端）读写——raw 桥（`__PREFS_STORE__`/`__prefs_*`/`__prefsDump`）
+  不进插件可见面，插件无法寻址、也无法读写其它插件的偏好；
+- `$.prefs` 的键拒绝空串、NUL、`__proto__` / `constructor` / `prototype`；值必须是字符串。
+  `dump()` / `all()` 返回字符串快照，不交出可写活引用；
 - 宿主把该扩展的持久化快照作为 seed 注入脚本；
 - 被标记 `prefsDirty` 的调用结束后，Worker dump 回 prefs JSON，宿主经
   `PluginPrefs` 去抖写入 preferences；敏感键（manifest `settings` 声明，或 legacy
   schema 声明）转 SecureStore；
 - 推荐用 manifest `settings` 静态声明设置项（§2.1）：渲染与写入零引擎；
-  插件脚本经 `createPrefs(manifest.key)` 读写即可，引擎恰在运行时宿主会把
+  插件脚本经 `createPrefs()` 读写即可，引擎恰在运行时宿主会把
   设置页写入经 `setPreference` 转发进来（参见 `plugins/catalog/emby/`）；
 - 纵深防御（设备侧，`PluginService`/`PluginPrefs`）：安装拒绝 key 相同但
   `name` 不匹配的包（`plugin_key_conflict`），阻止仿冒既有插件 key 继承其
   持久化偏好；卸载清除明文 blob（`__extprefs:<key>`）与 SecureStore 敏感值，
   重装不继承旧值。安全回归见 `plugins/testing/test/security.test.ts`。
 
-### 5.4 TypeScript 工具链（`plugins/`，`@honyomi/plugin-sdk`）
+### 5.4 插件可见全局面（暴露面收敛）
+
+- 插件可见全局收敛为：**标准 JS 内建 + 公开 DSL + CJS 约定**
+  （`$`（含 `$.prefs`）/ `fetchBytes` / `querySelectorAll` /
+  `tachiyomiHttpRequest` / `crypto` / `URL` / `URLSearchParams` /
+  `TextEncoder` / `TextDecoder` / `atob` / `btoa` / `console` / `module` /
+  `exports` / `global`）；
+- raw native 桥（`__nativeHttpRequest(Shared)` / `nativeSelector(Buffer)` /
+  `__nativeLog` / `__nativeUrlEncodeGbk`）在 bootstrap/shim 初始化时捕获进
+  闭包并从全局删除；裸 `fetch` 同样移除（HTTP 一律走 `$.http`/`fetchBytes`，
+  编译型 tachiyomi 扩展走 `tachiyomiHttpRequest`）；
+- raw prefs 桥（`__PREFS_STORE__`/`__prefs_*`/`__prefsDump`）在 shim 初始化时
+  捕获进闭包并从全局删除——偏好能力仅经 `$.prefs` 提供（§5.3）；
+- shim 末尾按 `SURFACE_KEEP` 白名单兜底清理任何非公开契约的全局（含未来
+  新增的桥）；`security.test.ts` 枚举 `globalThis` 自有属性锁定该面。
+
+### 5.5 TypeScript 工具链（`plugins/`，`@honyomi/plugin-sdk`）
 
 插件一律用 TypeScript 编写（支持完整 TS 语法，含 enum/namespace；Node 侧经
 `tools/register.mjs` esbuild loader 直接运行 `.ts`），经工具链构建
@@ -188,7 +229,7 @@ Madara chapter-protector / tachiyomi Cipher 兼容）、`crypto.getRandomValues`
 |---|---|
 | `@honyomi/plugin-sdk` | 作者面 API：`SourceExtension` 等契约类型、`defineExtension`、`createPrefs`、`mangaOf/chapterOf/pageOf/videoOf` 等模型助手、`$` DSL 全局类型声明 |
 | `@honyomi/plugin-test` | 测试 harness：Node `vm` 沙箱逐字加载真实 shim + 构建产物 `main.js`，`loadExtension()` 返回 `{ext, calls, prefs}`；`createFixtureFetch()` 按 `fixtures/index.json`（精确 URL 或 `/正则/`）回放本地文件 |
-| `@honyomi/plugin-tools` | CLI：`build [key...]`（esbuild 编译压缩全部插件为单文件 iife → `dist/catalog/<key>/main.js`，与源码分离）/ `publish` / `check` / `serve [dir]`；`register.mjs` 为 Node 提供 TS loader（enum 等完整语法直跑 `.ts`） |
+| `@honyomi/plugin-tools` | CLI：`build [key...]`（esbuild 编译压缩全部插件为单文件 iife → `dist/catalog/<key>/main.js`，与源码分离）/ `publish` / `check` / `serve [dir] [--host 127.0.0.1\|0.0.0.0]`（缺省只监听本机）；`register.mjs` 为 Node 提供 TS loader（enum 等完整语法直跑 `.ts`） |
 
 约定：全部插件的 `.ts` 源文件是唯一真源，构建产物 `dist/` 不入库
 （`.gitignore` 排除）；插件可拆分多个源文件（入口固定 `main.ts`，如
@@ -199,7 +240,7 @@ Madara chapter-protector / tachiyomi Cipher 兼容）、`crypto.getRandomValues`
 import { createPrefs, defineExtension } from '@honyomi/plugin-sdk';
 import type { SourceExtension } from '@honyomi/plugin-sdk';
 
-const prefs = createPrefs('myplugin');          // 参数 = manifest.key
+const prefs = createPrefs();                       // 本扩展的扁平偏好存储
 const ext: SourceExtension = { /* getPopularManga / getSearchManga / ... */ };
 defineExtension(ext);                            // 写宿主 module.exports
 ```
@@ -225,7 +266,7 @@ defineExtension(ext);                            // 写宿主 module.exports
 |---|---|
 | `__kind` | 返回适配器 kind |
 | `__methods` | 枚举实际导出方法（能力探测的依据，§7） |
-| `__prefsDump` | dump 偏好快照 |
+| `__prefsDump` | dump 偏好快照（适配器特判，改查 `$.prefs.dump()`） |
 | `__xxx`（脚本自注册的全局函数） | 逃逸口：无适配器也可调用 |
 
 错误与质询：envelope `error` 以 `CF_CHALLENGE:` 前缀上抛 → 宿主转

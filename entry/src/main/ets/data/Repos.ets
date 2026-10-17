@@ -1523,7 +1523,7 @@ export class TrackRepo {
 export class PluginRepo {
   private static readonly COLUMNS: string[] = [
     'key', 'name', 'lang', 'version', 'versionCode', 'baseUrl', 'nsfw', 'supportsLatest',
-    'minAppVersion', 'dslVersion', 'icon', 'runtime', 'engine', 'contentType',
+    'minAppVersion', 'dslVersion', 'icon', 'contentType',
     'methodsJson', 'sourcesJson', 'installedAt',
   ];
 
@@ -1541,8 +1541,6 @@ export class PluginRepo {
       'minAppVersion': record.minAppVersion,
       'dslVersion': record.dslVersion,
       'icon': record.icon,
-      'runtime': record.runtime,
-      'engine': record.engine,
       'contentType': ContentType.normalize(record.contentType),
       'methodsJson': record.methodsJson,
       'sourcesJson': record.sourcesJson,
@@ -1552,19 +1550,19 @@ export class PluginRepo {
       // key 为主键：INSERT OR REPLACE 原子完成重装/升级覆盖
       await store.executeSql(
         `INSERT INTO plugin (key, name, lang, version, versionCode, baseUrl, nsfw, supportsLatest,
-          minAppVersion, dslVersion, icon, runtime, engine, contentType, methodsJson, sourcesJson, installedAt)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          minAppVersion, dslVersion, icon, contentType, methodsJson, sourcesJson, installedAt)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
          ON CONFLICT(key) DO UPDATE SET
           name = excluded.name, lang = excluded.lang, version = excluded.version,
           versionCode = excluded.versionCode, baseUrl = excluded.baseUrl, nsfw = excluded.nsfw,
           supportsLatest = excluded.supportsLatest, minAppVersion = excluded.minAppVersion,
-          dslVersion = excluded.dslVersion, icon = excluded.icon, runtime = excluded.runtime,
-          engine = excluded.engine, contentType = excluded.contentType,
+          dslVersion = excluded.dslVersion, icon = excluded.icon,
+          contentType = excluded.contentType,
           methodsJson = excluded.methodsJson, sourcesJson = excluded.sourcesJson,
           installedAt = excluded.installedAt`,
         [record.key, record.name, record.lang, record.version, record.versionCode, record.baseUrl,
           record.nsfw ? 1 : 0, record.supportsLatest ? 1 : 0, record.minAppVersion, record.dslVersion,
-          record.icon, record.runtime, record.engine, ContentType.normalize(record.contentType),
+          record.icon, ContentType.normalize(record.contentType),
           record.methodsJson, record.sourcesJson, record.installedAt]);
     } catch (e) {
       throw new Error(`upsert plugin failed: ${e}`);
@@ -1628,8 +1626,6 @@ export class PluginRepo {
       p.minAppVersion = rs.getLong(rs.getColumnIndex('minAppVersion'));
       p.dslVersion = rs.getLong(rs.getColumnIndex('dslVersion'));
       p.icon = rs.getString(rs.getColumnIndex('icon'));
-      p.runtime = rs.getString(rs.getColumnIndex('runtime'));
-      p.engine = rs.getString(rs.getColumnIndex('engine'));
       p.contentType = ContentType.normalize(rs.getString(rs.getColumnIndex('contentType')));
       p.methodsJson = rs.getString(rs.getColumnIndex('methodsJson'));
       p.sourcesJson = rs.getString(rs.getColumnIndex('sourcesJson'));

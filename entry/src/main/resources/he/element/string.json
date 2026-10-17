@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "אין בספרייה מנגה בהמשכים"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "העתקה ללוח"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "ערכת נושא"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "ברירת מחדל"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "דמדומי חצות"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "דאקירי תות"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "טאקו"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "כחול־ירקרק וטורקיז"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "גל גאות"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "יין ויאנג"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "יוטסובה"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "ליל טוקיו"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "חד־גוני"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "תפוח ירוק"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "לבנדר"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "רענון"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "פתיחה בדפדפן"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "לא ניתן לפתוח בדפדפן"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "העתקת URL"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL הועתק"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "אין פרק הבא"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "אין מסננים זמינים"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "איפוס"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "התעלמות"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "הכללה"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "החרגה"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "בחירת התיקייה נכשלה"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "נדרשת תיקייה, לא קובץ"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "בחירת תיקייה"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "סנכרון"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "החלפת תיקייה"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "תיקייה מקומית"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "מסנכרן תיקייה…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "התיקייה סונכרנה"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "הסנכרון נכשל: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "אין גישה לתיקייה המקומית, בחרו אותה שוב"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "שמירת הגישה לתיקייה נכשלה"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "בחירת תיקייה אינה נתמכת במכשיר זה"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "עדיין לא הוגדרה תיקייה מקומית"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "לא נמצא דבר בתיקייה המקומית"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "לא נמצא דבר בתת־התיקייה comic"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "לא נמצא דבר בתת־התיקייה novel"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "לא נמצא דבר בתת־התיקייה anime"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "ביטול הכול"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "פרקים בסדר עולה"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "פרקים בסדר יורד"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "מיון"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "סינון"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "לפי מקור"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "לפי מספר פרק"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "לפי תאריך העלאה"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "לפי שם"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "איפוס"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "הורד"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "לא נקרא"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "עם סימנייה"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d נבחרו"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "סימון כנקרא"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "סימון כלא נקרא"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "סימנייה"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "מחיקה"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "%d הבאים שלא נקראו"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "כל מה שלא נקרא"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "פרקים עם סימנייה"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d פרקים בתור"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "אין פרקים שלא נקראו"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "אין הורדות למחיקה"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "נמחקו %d הורדות"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "מעקב"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "ביטול הורדה"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "ההורדה בוטלה"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "למחוק את הפרק שהורד?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "ההורדה נמחקה"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "הועתק ללוח"
+    },
+    {
+      "name": "transition_finished",
+      "value": "הסתיים:"
+    },
+    {
+      "name": "transition_current",
+      "value": "נוכחי:"
+    },
+    {
+      "name": "transition_next",
+      "value": "הבא:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "הקודם:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "אין פרק הבא"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "אין פרק קודם"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "אתר"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "עדכונים ממתינים"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "עדכון הכול"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "רב"
+    },
+    {
+      "name": "about_row_version",
+      "value": "גרסה"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "פרטי ניפוי השגיאות הועתקו"
+    },
+    {
+      "name": "licenses_title",
+      "value": "רישיונות קוד פתוח"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "פתיחת דף הבית"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "טקסט הרישיון המלא"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "ייחוס לארכיטקטורת האפליקציה ולעיצוב האינטראקציה"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "סמלים בתוך האפליקציה"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "ערכת הפיתוח של הפלטפורמה ומסגרת ArkUI"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "פענוח תמונות AVIF"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "מפענח AV1 המשמש לפענוח AVIF"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "ניתוח HTML להרחבות"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "מטמון לניגון וידאו"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL ו־URLSearchParams להרחבות (סביבת הרחבה)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder ו־TextDecoder להרחבות (סביבת הרחבה)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "המרת ערכי WebIDL, תלות של whatwg-url (סביבת הרחבה)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "גיבוב MD5 להרחבות (סביבת הרחבה)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "הצפנה ופענוח AES-CBC להרחבות (סביבת הרחבה)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "גיבוב SHA/HMAC/PBKDF2 להרחבות (סביבת הרחבה)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "הצפנה ופענוח AES-GCM להרחבות (סביבת הרחבה)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "מדיניות פרטיות"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi הוא קורא מקומי בראש ובראשונה למנגה, לרומנים ולסרטונים. האפליקציה עצמה אינה אוספת, מעלה או משתפת נתונים אישיים."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "נתונים מקומיים"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "הספרייה, היסטוריית הקריאה, רשומות ההורדה, ההעדפות ופרטי המעקב נשמרים רק במכשיר. אפשר לייצא או למחוק אותם בכל עת בהגדרות. הסרת האפליקציה מוחקת אותם לצמיתות."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "מקורות והרחבות מקוונים"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "תוכן מקוון מסופק על ידי הרחבות ואתרים של צד שלישי. עיון או קריאה ממקור מקוון שולחים את הבקשות ישירות לאתר, לפי מדיניות הפרטיות שלו. האפליקציה אינה שולטת בשירותי צד שלישי ואינה אחראית להם."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "שירותי מעקב"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "אפשר לחבר חשבונות מעקב כמו AniList, MyAnimeList, Bangumi, Kitsu ו־Shikimori. ההתחברות מאושרת על ידכם בדף של שירות המעקב, ואסימוני הגישה נשמרים רק במכשיר כדי לסנכרן את התקדמות הקריאה."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "הרשאות"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "גישה לאינטרנט משמשת לטעינת תוכן מקוון, גישה לקבצים לייבוא מקומי ולגיבויים, ואימות ביומטרי רק לנעילה המקומית. אף הרשאה אינה משמשת לאיסוף נתונים אישיים."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "יצירת קשר"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi הוא מיזם קוד פתוח בהשראת Mihon. לשאלות על הצהרת פרטיות זו, פנו אלינו ב־Discord או ב־GitHub."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "שמירה כארכיון CBZ"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "פיצול תמונות גבוהות"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "משפר את ביצועי הקורא"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "מקביליות"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "הורדות מקבילות של מקורות"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "הורדות מקבילות של עמודים"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "עמודים שיורדים בו־זמנית לכל מקור"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "מחיקת פרקים"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "אחרי סימון ידני כנקרא"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "מחיקה אוטומטית אחרי קריאה"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "מושבת"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "הפרק האחרון שנקרא"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "הפרק שלפני האחרון שנקרא"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "הפרק השלישי מהסוף שנקרא"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "הפרק הרביעי מהסוף שנקרא"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "הפרק החמישי מהסוף שנקרא"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "לאפשר מחיקת פרקים עם סימנייה"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "הורדה אוטומטית"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "הורדת פרקים חדשים"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "הורדה אוטומטית של פרקים חדשים שנמצאו בעדכון הספרייה"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "דילוג על הורדת פרקים כפולים שכבר נקראו"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "הורדה מראש"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "הורדה אוטומטית בזמן קריאה"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "הפרק הבא שלא נקרא"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "%d הפרקים הבאים שלא נקראו"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "פועל רק אם הפרק הנוכחי והפרק הבא כבר הורדו."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "מנגה"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "רומנים"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "סרטונים"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "אין עדיין מקורות לסוג זה"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "רומנים מקומיים"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "סרטונים מקומיים"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "סוג"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "הכול"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "התחלת ניגון"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "המשך ניגון"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "אפשר לנגן את השידור הזה רק אונליין"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "גודל גופן"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "ריווח שורות"
+    },
+    {
+      "name": "novel_empty",
+      "value": "בפרק זה אין טקסט"
+    },
+    {
+      "name": "novel_prev",
+      "value": "הפרק הקודם"
+    },
+    {
+      "name": "novel_next",
+      "value": "הפרק הבא"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "גלילה"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "עמודים"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "שני עמודים"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "מצב דפדוף"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "ריווח פסקאות"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "תצוגה"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "טקסט"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "עמוד יחיד (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "עמוד יחיד (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "מעבר עמוד"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "הדמיה"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "החלקה"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "כיסוי"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "צבע טקסט"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "בהיר"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "כהה"
+    },
+    {
+      "name": "novel_margin",
+      "value": "שוליים"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "גופן"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "ברירת מחדל"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "סריף"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "ללא סריף"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "רוחב קבוע"
+    },
+    {
+      "name": "novel_tts",
+      "value": "הקראה"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "התחלת הקראה"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "הפסקת הקראה"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "מהירות קריאה"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "הגעת לסוף הפרק"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "ההקראה נכשלה: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "השהיה"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "המשך"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "קורא כעת"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "פסקה %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "טיימר שינה"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "כבוי"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d דק׳"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "נעצר בעוד %1$s"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "אין הקראה כרגע"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "פתיחת הנגן"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "פרקים"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "לפי זמן"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "לפי פרקים"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "אחרי פרק זה"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "אחרי %1$d פרקים"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d פרק"
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "נעצר אחרי פרק זה"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "נעצר אחרי %1$d פרקים"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "משאיר את האפליקציה פעילה ברקע בזמן הקראת רומן"
+    },
+    {
+      "name": "video_play",
+      "value": "ניגון"
+    },
+    {
+      "name": "video_pause",
+      "value": "השהיה"
+    },
+    {
+      "name": "video_prev",
+      "value": "הקודם"
+    },
+    {
+      "name": "video_next",
+      "value": "הבא"
+    },
+    {
+      "name": "video_settings",
+      "value": "הגדרות נגן"
+    },
+    {
+      "name": "video_episodes",
+      "value": "פרקים"
+    },
+    {
+      "name": "video_quality",
+      "value": "איכות"
+    },
+    {
+      "name": "video_speed",
+      "value": "מהירות ניגון"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "דאנמאקו"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "דאנמאקו פעיל"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "דאנמאקו כבוי"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "טוען דאנמאקו…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "נטענו %d דאנמאקו"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "לא נמצא דאנמאקו תואם"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "טעינת הדאנמאקו נכשלה"
+    },
+    {
+      "name": "video_locked",
+      "value": "הפקדים נעולים"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "הפקדים שוחררו"
+    },
+    {
+      "name": "player_set_title",
+      "value": "נגן"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "ניגון"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "מהירות ברירת מחדל"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "ניגון אוטומטי של הפרק הבא"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "ניגון הפרק הבא אוטומטית בסיום"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "דאנמאקו"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "הצגת דאנמאקו"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "גודל גופן דאנמאקו"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "אטימות דאנמאקו"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "אזור תצוגת דאנמאקו"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "מהירות דאנמאקו"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "נתוני דאנמאקו מ־dandanplay (נדרשת רשת)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "מצב קנה מידה"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "התאמה"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "מילוי"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "מתיחה"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "איטי"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "רגיל"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "מהיר"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "מהיר מאוד"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "רבע מסך"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "חצי מסך"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "שלושת רבעי מסך"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "מסך מלא"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "זמן מנגה"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "זמן רומן"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "זמן וידאו"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "כריכה"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "עריכת כריכה"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "איפוס כריכה"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "הכריכה עודכנה"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "הכריכה שוחזרה"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "לא ניתן לעדכן את הכריכה"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "הכריכה נשמרה"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "שגיאה בשמירת הכריכה"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "שגיאה בשיתוף הכריכה"
+    },
+    {
+      "name": "detail_edit",
+      "value": "עריכה"
+    },
+    {
+      "name": "detail_delete",
+      "value": "מחיקה"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "ברוכים הבאים!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "בואו נגדיר כמה דברים קודם. תמיד אפשר לשנות אותם אחר כך בהגדרות."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "הבא"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "בואו נתחיל"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "מדריך התחלה"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "מדריך תחילת עבודה"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "חדשים ב־%s? מומלץ לעיין במדריך תחילת העבודה."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "מתקינים מחדש את %s?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "הסנכרון מתבצע, נא להמתין"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "ההורדה נכשלה"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "טעינת הפרטים נכשלה"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "פרמטרי העמוד אינם תקינים"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "מכין הורדות…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "ההעברה לקטגוריה נכשלה"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "טעינת רשימת ההעברה נכשלה"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "הפעולה נכשלה"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "שגיאת טעינה: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "טוען…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "הטעינה נכשלה: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "העיבוד נסגר (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "ט"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "ו"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "מ"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "הגיבוי האוטומטי האחרון נכשל"
+    },
+    {
+      "name": "category_manga",
+      "value": "מנגה"
+    },
+    {
+      "name": "category_novel",
+      "value": "רומנים"
+    },
+    {
+      "name": "category_video",
+      "value": "סרטונים"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "ברישיון"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "מנוע TTS עמוס, נסו שוב מאוחר יותר"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "מנוע TTS הפסיק להגיב וההקראה הופסקה"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "מנוע TTS אינו זמין"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "נדרש אימות אנושי, השלימו את עמוד האימות ונסו שוב"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "המקור אינו זמין"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "בפרק זה אין תוכן"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "הניגון נכשל"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "לא נמצאו סרטונים לניגון"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "מקומי"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "בוטל"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "ההורדה נכשלה"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "תם הזמן להורדה (השרת אינו מגיב)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "ההורדה נכשלה (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "הסרטון משודר אונליין ולא ניתן להורדה"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "שירות ההורדה לא אותחל"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "המקור לא נמצא: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "קובץ הפרק לא נמצא"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "תבנית הפרק אינה נתמכת"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "קובץ הווידאו לא נמצא"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "מנגה שיובאה מקומית"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "רומנים שיובאו מקומית"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "סרטונים שיובאו מקומית"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "הפניה לא מאובטחת נחסמה: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "יותר מדי הפניות: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "לא ניתן לאתר את כתובת השרת, בדקו את החיבור ונסו שוב"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "לא ניתן להתחבר לשרת, בדקו את הרשת ונסו שוב"
+    },
+    {
+      "name": "net_timeout",
+      "value": "תם הזמן לבקשה, נסו שוב מאוחר יותר"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "החיבור המאובטח נכשל (שגיאת SSL), נסו שוב מאוחר יותר"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "החיבור נקטע, נסו שוב"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "בקשת הרשת נכשלה: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "יצירת מנוע JSVM נכשלה"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "הרצת סקריפט ההרחבה נכשלה"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "ההרחבה לא נטענה"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "ההרחבה פגומה, התקינו או טענו אותה מחדש"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "אתחול ההרחבה נכשל"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "תם הזמן לאתחול ההרחבה"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "תם הזמן לקריאת ההרחבה: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "קריאת ההרחבה נכשלה"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "ההרחבה החזירה JSON לא תקין"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "שגיאת הרחבה לא ידועה"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "manifest.key לא תקין (אותיות קטנות, ספרות וקווים תחתונים בלבד)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name חסר"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "manifest.versionCode לא תקין"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "התוסף דורש אפליקציה חדשה יותר (%s), עדכנו קודם"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "התוסף דורש versionCode של האפליקציה >= %s, עדכנו קודם"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "קריאת הקובץ שנבחר נכשלה: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "כתובות חבילות התוסף חייבות להשתמש ב־https, הורדה לא מוצפנת נדחית"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "בדיקת תקינות התוסף נכשלה (אי־התאמת sha256), ההתקנה בוטלה"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "בחבילת התוסף חסר main.js"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "החלפת תיקיית התוסף נכשלה: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "manifest.json לא נמצא בחבילת התוסף"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "כתובות קבצי המאגר חייבות להשתמש ב־https, רשומות http:// נדחות"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "שם סביבת התוסף אינו תקין: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "רכיב סביבת התוסף חסר: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "התוסף החזיר פרטי מנגה לא תקינים"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "התוסף אינו מייצא את getChapterText"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "התוסף אינו מייצא את getVideoList"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "שמירת חבילת התוסף נכשלה: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "הסרת תיקיית התוסף נכשלה: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "קריאת קובצי התוסף המותקן נכשלה: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "אימות תקינות חבילת התוסף נכשל: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "חילוץ חבילת התוסף נכשל: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "קריאת manifest.json בחבילת התוסף נכשלה: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "הכנת קובצי התוסף נכשלה: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "מעקב"
+    },
+    {
+      "name": "track_login",
+      "value": "התחברות"
+    },
+    {
+      "name": "track_logout",
+      "value": "התנתקות"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "להתנתק מ־%s?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "התחברתם אל %s"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "התנתקתם"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "ההתחברות נכשלה"
+    },
+    {
+      "name": "track_username",
+      "value": "שם משתמש"
+    },
+    {
+      "name": "track_password",
+      "value": "סיסמה"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "עדכון אוטומטי של התקדמות המעקב"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "חיפוש ב־%s"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "החיפוש נכשל"
+    },
+    {
+      "name": "track_no_results",
+      "value": "לא נמצאו תוצאות"
+    },
+    {
+      "name": "track_added",
+      "value": "המעקב נוסף"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "הוספת המעקב נכשלה"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "עדכון המעקב נכשל"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "ההסרה מהשירות נכשלה"
+    },
+    {
+      "name": "track_status",
+      "value": "סטטוס"
+    },
+    {
+      "name": "track_score",
+      "value": "ציון"
+    },
+    {
+      "name": "track_chapters",
+      "value": "פרקים"
+    },
+    {
+      "name": "track_start_date",
+      "value": "תאריך התחלה"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "תאריך סיום"
+    },
+    {
+      "name": "track_private",
+      "value": "פרטי"
+    },
+    {
+      "name": "track_unlink",
+      "value": "ניתוק"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "הסרה מהשירות"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "הזינו מספר פרק תקין"
+    },
+    {
+      "name": "track_reading",
+      "value": "בקריאה"
+    },
+    {
+      "name": "track_completed",
+      "value": "הושלם"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "בהמתנה"
+    },
+    {
+      "name": "track_paused",
+      "value": "מושהה"
+    },
+    {
+      "name": "track_dropped",
+      "value": "ננטש"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "מתכנן לקרוא"
+    },
+    {
+      "name": "track_repeating",
+      "value": "חוזר"
+    },
+    {
+      "name": "track_considering",
+      "value": "שוקל"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "לא ידוע"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "רשימת קריאה"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "רשימת משאלות"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "רשימת הושלם"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "רשימת המתנה"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "רשימת לא גמור"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "טוען…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "הטעינה נכשלה: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "אין עדיין קבצים מקומיים, הקישו על ייבוא כדי להוסיף"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "שם"
+    },
+    {
+      "name": "privacy_title",
+      "value": "פרטיות"
+    },
+    {
+      "name": "privacy_group",
+      "value": "אבטחה"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "נעילת אפליקציה"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "הגדירו תחילה נעילת מסך"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "נעילה בחוסר פעילות"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "תמיד"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "דקה"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 דקות"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 דקות"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 דקות"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "אף פעם"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "הסתרת תוכן התראות"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "מסך מאובטח"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "חוסם צילומי מסך והקלטת מסך"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "האפליקציה נעולה"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "אשרו את זהותכם כדי להמשיך"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "שחרור"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "שחרור האפליקציה"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "מוריד"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "ייצוא יומני קריסה"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "לא נמצאו יומני קריסה"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "יוצאו %d יומני תקלה"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "רישום מפורט"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "כולל פרטים ברמת ניפוי שגיאות ביומני המערכת"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "פרטי ניפוי"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "הפעולה נכשלה"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "נתונים"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "רשת"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "ספרייה"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "קורא"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "ניקוי מסד הנתונים"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "להסיר את כל הפריטים שאינם בספרייה? היסטוריית הקריאה וההתקדמות שלהם יאבדו."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "הוסרו %d פריטים"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "ניקוי נתוני דפדפן מוטמע"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "נתוני הדפדפן המוטמע נוקו"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS דרך HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "מושבת"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "User-Agent מותאם"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "השאירו ריק לברירת המחדל"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent נשמר"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "איפוס User-Agent"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "רענון כריכות הספרייה"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "מרענן כריכות…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "רוענן %d פריטים"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "איפוס הגדרות קורא לכל סדרה"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "לאפס את מצבי הקריאה שהוגדרו לכל סדרה לברירת המחדל הכללית?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "אופסו %d פריטים"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "עיבוד באיכות גבוהה"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "החלקת תמונה חלקה יותר במחיר ביצועים"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "גרסת אפליקציה"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "דגם מכשיר"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "סוג מכשיר"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "גרסת מערכת"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "גרסת API"
+    },
+    {
+      "name": "debug_screen",
+      "value": "מסך"
+    },
+    {
+      "name": "debug_language",
+      "value": "שפה"
     }
   ]
 }

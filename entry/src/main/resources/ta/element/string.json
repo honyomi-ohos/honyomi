@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "நூலகத்தில் தொடரும் மாங்கா இல்லை"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "கிளிப்போர்டுக்கு நகலெடு"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "தோற்றம்"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "இயல்பு"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "நள்ளிரவு அந்தி"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "ஸ்ட்ராபெரி டாக்கிரி"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "டாக்கோ"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "நீலப்பச்சை"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "அலைமோதல்"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "யின் & யாங்"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "யோட்சுபா"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "டோக்கியோ இரவு"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "ஒரே நிறம்"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "பச்சை ஆப்பிள்"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "லாவெண்டர்"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "புதுப்பி"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "உலாவியில் திற"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "உலாவியில் திறக்க முடியவில்லை"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "URL நகலெடு"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL நகலெடுக்கப்பட்டது"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "அடுத்த அத்தியாயம் இல்லை"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "வடிகட்டிகள் இல்லை"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "மீட்டமை"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "புறக்கணி"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "உள்ளடக்கு"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "விலக்கு"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "கோப்புறையைத் தேர்ந்தெடுக்க முடியவில்லை"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "கோப்பு அல்ல, கோப்புறை தேவை"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "கோப்புறையைத் தேர்வுசெய்"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "ஒத்திசை"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "கோப்புறையை மாற்று"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "உள்ளகக் கோப்புறை"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "கோப்புறை ஒத்திசைகிறது…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "கோப்புறை ஒத்திசைந்தது"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "ஒத்திசைவு தோல்வி: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "உள்ளகக் கோப்புறையை அணுக முடியவில்லை, மீண்டும் தேர்வுசெய்யுங்கள்"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "கோப்புறை அணுகலை வைத்திருக்க முடியவில்லை"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "இந்தச் சாதனத்தில் கோப்புறை தேர்வு இல்லை"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "உள்ளகக் கோப்புறை இன்னும் அமைக்கப்படவில்லை"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "உள்ளகக் கோப்புறையில் எதுவும் இல்லை"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "comic துணைக்கோப்புறையில் எதுவும் இல்லை"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "novel துணைக்கோப்புறையில் எதுவும் இல்லை"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "anime துணைக்கோப்புறையில் எதுவும் இல்லை"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "அனைத்தையும் ரத்துசெய்"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "அத்தியாயம் ஏறுவரிசை"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "அத்தியாயம் இறங்குவரிசை"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "வரிசைப்படுத்து"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "வடிகட்டு"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "மூலப்படி"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "அத்தியாய எண் படி"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "பதிவேற்ற தேதி படி"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "பெயர் படி"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "மீட்டமை"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "பதிவிறக்கியது"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "படிக்காதது"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "புத்தகக்குறி"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d தேர்வு"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "படித்ததாகக் குறி"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "படிக்காததாகக் குறி"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "புத்தகக்குறி"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "நீக்கு"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "அடுத்த %d படிக்காதவை"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "அனைத்துப் படிக்காதவை"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "புத்தகக்குறி அத்தியாயங்கள்"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d அத்தியாயங்கள் வரிசையில்"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "படிக்காத அத்தியாயங்கள் இல்லை"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "நீக்க பதிவிறக்கங்கள் இல்லை"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "%d பதிவிறக்கங்கள் நீக்கப்பட்டன"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "கண்காணிப்பு"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "பதிவிறக்கத்தை ரத்துசெய்"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "பதிவிறக்கம் ரத்துசெய்யப்பட்டது"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "பதிவிறக்கிய அத்தியாயத்தை நீக்கவா?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "பதிவிறக்கம் நீக்கப்பட்டது"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "கிளிப்போர்டுக்கு நகலெடுக்கப்பட்டது"
+    },
+    {
+      "name": "transition_finished",
+      "value": "முடிந்தது:"
+    },
+    {
+      "name": "transition_current",
+      "value": "தற்போதையது:"
+    },
+    {
+      "name": "transition_next",
+      "value": "அடுத்து:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "முந்தையது:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "அடுத்த அத்தியாயம் இல்லை"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "முந்தைய அத்தியாயம் இல்லை"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "இணையதளம்"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "புதுப்பிப்புகள் நிலுவையில்"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "அனைத்தையும் புதுப்பி"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "பலமொழி"
+    },
+    {
+      "name": "about_row_version",
+      "value": "பதிப்பு"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "பிழைத்திருத்தத் தகவல் நகலெடுக்கப்பட்டது"
+    },
+    {
+      "name": "licenses_title",
+      "value": "திறந்த மூல உரிமங்கள்"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "முகப்பைத் திற"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "முழு உரிம உரை"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "பயன்பாட்டுக் கட்டமைப்பும் இடைமுக வடிவமைப்புக் குறிப்பும்"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "பயன்பாட்டுச் சின்னங்கள்"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "தள நிரல்தொகுப்பும் ArkUI கட்டமைப்பும்"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "AVIF படக் குறிவிலக்கம்"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "AVIF குறிவிலக்கத்திற்கான AV1 குறிவிலக்கி"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "நீட்டிப்புகளுக்கான HTML பாகுபடுத்தல்"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "காணொலி இயக்க கேச்"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "நீட்டிப்புகளுக்கான URL மற்றும் URLSearchParams (செருகுநிரல் இயக்கம்)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "நீட்டிப்புகளுக்கான TextEncoder மற்றும் TextDecoder (செருகுநிரல் இயக்கம்)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "WebIDL மதிப்பு மாற்றம், whatwg-url சார்பு (செருகுநிரல் இயக்கம்)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "நீட்டிப்புகளுக்கான MD5 குறுக்கீடு (செருகுநிரல் இயக்கம்)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "நீட்டிப்புகளுக்கான AES-CBC மறையாக்கமும் மறைவிலக்கமும் (செருகுநிரல் இயக்கம்)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "நீட்டிப்புகளுக்கான SHA/HMAC/PBKDF2 குறுக்கீடு (செருகுநிரல் இயக்கம்)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "நீட்டிப்புகளுக்கான AES-GCM மறையாக்கமும் மறைவிலக்கமும் (செருகுநிரல் இயக்கம்)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "தனியுரிமைக் கொள்கை"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi மாங்கா, நாவல், காணொலிகளுக்கான உள்ளக முதன்மை வாசிப்பான். இந்தப் பயன்பாடு தனிப்பட்ட தரவைச் சேகரிக்கவோ பதிவேற்றவோ பகிரவோ இல்லை."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "உள்ளகத் தரவு"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "உங்கள் நூலகம், வாசிப்பு வரலாறு, பதிவிறக்கப் பதிவுகள், விருப்பங்கள், கண்காணிப்புச் சான்றுகள் சாதனத்தில் மட்டுமே இருக்கும். அமைப்புகளில் எப்போதும் ஏற்றுமதி செய்யலாம் அல்லது அழிக்கலாம். பயன்பாட்டை நீக்கினால் அவை நிரந்தரமாகப் போகும்."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "இணைய மூலங்களும் நீட்டிப்புகளும்"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "இணைய உள்ளடக்கத்தை மூன்றாம் தரப்பு நீட்டிப்புகளும் இணையதளங்களும் தருகின்றன. இணைய மூலத்தில் உலாவுதல் அல்லது வாசித்தல் கோரிக்கைகளை நேரடியாக அந்தத் தளத்திற்கு அனுப்பும்; அதன் தனியுரிமைக் கொள்கை பொருந்தும். மூன்றாம் தரப்புச் சேவைகளை இந்தப் பயன்பாடு கட்டுப்படுத்தாது, பொறுப்பும் ஏற்காது."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "கண்காணிப்புச் சேவைகள்"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "விரும்பினால் AniList, MyAnimeList, Bangumi, Kitsu, Shikimori போன்ற கணக்குகளை இணைக்கலாம். உள்நுழைவை நீங்கள் கண்காணிப்பாளரின் பக்கத்தில் அனுமதிப்பீர்கள்; அணுகல் சான்றுகள் வாசிப்பு முன்னேற்ற ஒத்திசைவுக்குச் சாதனத்தில் மட்டும் சேமிக்கப்படும்."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "அனுமதிகள்"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "இணைய அணுகல் இணைய உள்ளடக்கத்தை ஏற்றவும், கோப்பு அணுகல் உள்ளக இறக்குமதிக்கும் காப்புப்பிரதிக்கும், உயிரியளவு சரிபார்ப்பு உள்ளகப் பூட்டுக்கு மட்டும். தனிப்பட்ட தரவைச் சேகரிக்க எந்த அனுமதியும் பயன்படாது."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "தொடர்பு"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi, Mihon-இலிருந்து உருவான திறந்த மூலத் திட்டம். இந்தத் தனியுரிமை அறிக்கை பற்றிக் கேள்வி இருந்தால் Discord அல்லது GitHub வழியாகத் தொடர்பு கொள்ளுங்கள்."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "CBZ காப்பகமாகச் சேமி"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "உயரமான படங்களைப் பிரி"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "வாசிப்பான் செயல்திறனை மேம்படுத்தும்"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "இணை செயல்"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "இணை மூலப் பதிவிறக்கங்கள்"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "இணைப் பக்கப் பதிவிறக்கங்கள்"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "ஒரு மூலத்திற்கு ஒரே நேரத்தில் பதிவிறக்கப்படும் பக்கங்கள்"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "அத்தியாயங்களை நீக்கு"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "கைமுறையாகப் படித்ததாகக் குறித்த பின்"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "படித்த பின் தானாக நீக்கு"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "முடக்கப்பட்டது"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "கடைசியாகப் படித்த அத்தியாயம்"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "இரண்டாவது கடைசிப் படித்த அத்தியாயம்"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "மூன்றாவது கடைசிப் படித்த அத்தியாயம்"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "நான்காவது கடைசிப் படித்த அத்தியாயம்"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "ஐந்தாவது கடைசிப் படித்த அத்தியாயம்"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "புத்தகக்குறி அத்தியாயங்களை நீக்க அனுமதி"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "தானியங்கு பதிவிறக்கம்"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "புதிய அத்தியாயங்களைப் பதிவிறக்கு"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "நூலகப் புதுப்பிப்பில் கண்ட புதிய அத்தியாயங்களைத் தானாகப் பதிவிறக்கு"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "படித்த நகல்களைப் பதிவிறக்க வேண்டாம்"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "முன்கூட்டிய பதிவிறக்கம்"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "வாசிக்கும்போது தானாகப் பதிவிறக்கு"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "அடுத்த படிக்காத அத்தியாயம்"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "அடுத்த %d படிக்காத அத்தியாயங்கள்"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "தற்போதைய அத்தியாயமும் அடுத்ததும் ஏற்கெனவே பதிவிறக்கப்பட்டிருந்தால் மட்டும் செயல்படும்."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "மாங்கா"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "நாவல்கள்"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "காணொலிகள்"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "இந்த வகைக்கு மூலங்கள் இன்னும் இல்லை"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "உள்ளக நாவல்கள்"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "உள்ளகக் காணொலிகள்"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "வகை"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "அனைத்தும்"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "இயக்கத் தொடங்கு"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "தொடர்ந்து இயக்கு"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "இந்த ஓடையை இணையத்தில் மட்டுமே இயக்க முடியும்"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "எழுத்து அளவு"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "வரி இடைவெளி"
+    },
+    {
+      "name": "novel_empty",
+      "value": "இந்த அத்தியாயத்தில் உரை இல்லை"
+    },
+    {
+      "name": "novel_prev",
+      "value": "முந்தைய அத்தியாயம்"
+    },
+    {
+      "name": "novel_next",
+      "value": "அடுத்த அத்தியாயம்"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "உருள்"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "பக்கவாட்டு"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "இருபக்கம்"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "பக்க மாற்ற முறை"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "பத்தி இடைவெளி"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "காட்சி"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "உரை"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "ஒற்றைப் பக்கம் (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "ஒற்றைப் பக்கம் (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "பக்க மாற்றம்"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "சுருள்"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "நழுவு"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "மூடல்"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "உரை நிறம்"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "வெளிர்"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "இருள்"
+    },
+    {
+      "name": "novel_margin",
+      "value": "விளிம்புகள்"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "எழுத்துரு"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "இயல்பு"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "வால் எழுத்து"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "வால் இல்லாதது"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "சம அகலம்"
+    },
+    {
+      "name": "novel_tts",
+      "value": "உரக்கப் படி"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "உரக்கப் படிக்கத் தொடங்கு"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "உரக்கப் படிப்பதை நிறுத்து"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "வாசிப்பு வேகம்"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "இந்த அத்தியாயத்தின் முடிவு வந்தது"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "உரையிலிருந்து பேச்சு தோல்வி: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "இடைநிறுத்து"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "தொடர்"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "இப்போது படிக்கிறது"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "பத்தி %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "உறக்க நேரங்கி"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "அணை"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d நிமி"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "%1$s இல் நிற்கும்"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "எதுவும் உரக்கப் படிக்கப்படவில்லை"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "இயக்கியைத் திற"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "அத்தியாயங்கள்"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "நேரப்படி"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "அத்தியாயப்படி"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "இந்த அத்தியாயத்திற்குப் பின்"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "%1$d அத்தியாயங்களுக்குப் பின்"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d அத்."
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "இந்த அத்தியாயத்திற்குப் பின் நிற்கும்"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "%1$d அத்தியாயங்களுக்குப் பின் நிற்கும்"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "நாவல் உரக்கப் படிக்கப்படும்போது பயன்பாட்டைப் பின்னணியில் இயங்க வைக்கும்"
+    },
+    {
+      "name": "video_play",
+      "value": "இயக்கு"
+    },
+    {
+      "name": "video_pause",
+      "value": "இடைநிறுத்து"
+    },
+    {
+      "name": "video_prev",
+      "value": "முந்தையது"
+    },
+    {
+      "name": "video_next",
+      "value": "அடுத்து"
+    },
+    {
+      "name": "video_settings",
+      "value": "இயக்கி அமைப்புகள்"
+    },
+    {
+      "name": "video_episodes",
+      "value": "பகுதிகள்"
+    },
+    {
+      "name": "video_quality",
+      "value": "தரம்"
+    },
+    {
+      "name": "video_speed",
+      "value": "இயக்க வேகம்"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "டான்மாகு"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "டான்மாகு இயக்கம்"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "டான்மாகு அணை"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "டான்மாகு ஏற்றப்படுகிறது…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%d டான்மாகு ஏற்றப்பட்டது"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "பொருந்தும் டான்மாகு இல்லை"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "டான்மாகு ஏற்ற முடியவில்லை"
+    },
+    {
+      "name": "video_locked",
+      "value": "கட்டுப்பாடுகள் பூட்டப்பட்டன"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "கட்டுப்பாடுகள் திறக்கப்பட்டன"
+    },
+    {
+      "name": "player_set_title",
+      "value": "இயக்கி"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "இயக்கம்"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "இயல்பு வேகம்"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "அடுத்த பகுதியைத் தானாக இயக்கு"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "முடிந்ததும் அடுத்த பகுதியைத் தானாக இயக்கு"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "டான்மாகு"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "டான்மாகு காட்டு"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "டான்மாகு எழுத்து அளவு"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "டான்மாகு ஒளிபுகாமை"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "டான்மாகு காட்சிப் பரப்பு"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "டான்மாகு வேகம்"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "dandanplay இலிருந்து டான்மாகு தரவு (பிணையம் தேவை)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "திரை அளவு முறை"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "பொருத்து"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "நிரப்பு"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "நீட்டு"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "மெதுவு"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "இயல்பு"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "வேகம்"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "மிக வேகம்"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 திரை"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "அரைத் திரை"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 திரை"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "முழுத் திரை"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "மாங்கா நேரம்"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "நாவல் நேரம்"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "காணொலி நேரம்"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "அட்டை"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "அட்டையைத் திருத்து"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "அட்டையை மீட்டமை"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "அட்டை புதுப்பிக்கப்பட்டது"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "அட்டை மீட்டமைக்கப்பட்டது"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "அட்டையைப் புதுப்பிக்க முடியவில்லை"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "அட்டை சேமிக்கப்பட்டது"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "அட்டை சேமிப்பில் பிழை"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "அட்டை பகிர்வில் பிழை"
+    },
+    {
+      "name": "detail_edit",
+      "value": "திருத்து"
+    },
+    {
+      "name": "detail_delete",
+      "value": "நீக்கு"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "வரவேற்பு!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "முதலில் சிலவற்றை அமைப்போம். பின்னர் அமைப்புகளில் எப்போதும் மாற்றலாம்."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "அடுத்து"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "தொடங்கு"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "அறிமுக வழிகாட்டி"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "தொடக்க வழிகாட்டி"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "%s-க்கு புதியவரா? தொடக்க வழிகாட்டியைப் பார்க்கப் பரிந்துரைக்கிறோம்."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "%s-ஐ மீண்டும் நிறுவுகிறீர்களா?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "ஒத்திசைவு நடைபெறுகிறது, காத்திருங்கள்"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "பதிவிறக்கம் தோல்வி"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "விவரங்களை ஏற்ற முடியவில்லை"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "தவறான பக்க அளவுருக்கள்"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "பதிவிறக்கங்கள் தயாராகின்றன…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "வகைக்கு நகர்த்த முடியவில்லை"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "இடமாற்றப் பட்டியலை ஏற்ற முடியவில்லை"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "செயல் தோல்வி"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "ஏற்றல் பிழை: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "ஏற்றப்படுகிறது…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "ஏற்றல் தோல்வி: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "வரைவு நின்றது (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "உ"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "வ"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "ம"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "கடைசி தானியங்கி காப்புப்பிரதி தோல்வி"
+    },
+    {
+      "name": "category_manga",
+      "value": "மாங்கா"
+    },
+    {
+      "name": "category_novel",
+      "value": "நாவல்கள்"
+    },
+    {
+      "name": "category_video",
+      "value": "காணொலிகள்"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "உரிமம் பெற்றது"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "TTS இயந்திரம் பிஸி, பின்னர் முயலுங்கள்"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "TTS இயந்திரம் பதிலளிக்கவில்லை, வாசிப்பு நின்றது"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "TTS இயந்திரம் இல்லை"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "மனிதச் சரிபார்ப்பு தேவை, சரிபார்ப்புப் பக்கத்தை முடித்து மீண்டும் முயலுங்கள்"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "மூலம் இல்லை"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "இந்த அத்தியாயத்தில் உள்ளடக்கம் இல்லை"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "இயக்கம் தோல்வி"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "இயக்கக்கூடிய காணொலிகள் இல்லை"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "உள்ளகம்"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "ரத்துசெய்யப்பட்டது"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "பதிவிறக்கம் தோல்வி"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "பதிவிறக்கம் நேரம் முடிந்தது (சேவையகம் பதிலளிக்கவில்லை)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "பதிவிறக்கம் தோல்வி (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "இந்தக் காணொலி இணைய ஓடை, பதிவிறக்க முடியாது"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "பதிவிறக்கச் சேவை தொடங்கவில்லை"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "மூலம் இல்லை: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "அத்தியாயக் கோப்பு இல்லை"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "ஆதரிக்கப்படாத அத்தியாய வடிவம்"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "காணொலிக் கோப்பு இல்லை"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "உள்ளகமாக இறக்குமதி செய்த மாங்கா"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "உள்ளகமாக இறக்குமதி செய்த நாவல்கள்"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "உள்ளகமாக இறக்குமதி செய்த காணொலிகள்"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "பாதுகாப்பற்ற திருப்பல் தடுக்கப்பட்டது: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "அதிக திருப்பல்கள்: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "சேவையக முகவரியைக் காண முடியவில்லை, பிணைய இணைப்பைச் சரிபார்த்து மீண்டும் முயலுங்கள்"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "சேவையகத்துடன் இணைக்க முடியவில்லை, பிணையத்தைச் சரிபார்த்து மீண்டும் முயலுங்கள்"
+    },
+    {
+      "name": "net_timeout",
+      "value": "கோரிக்கை நேரம் முடிந்தது, பின்னர் முயலுங்கள்"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "பாதுகாப்பான இணைப்பு தோல்வி (SSL பிழை), பின்னர் முயலுங்கள்"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "இணைப்பு துண்டிக்கப்பட்டது, மீண்டும் முயலுங்கள்"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "பிணையக் கோரிக்கை தோல்வி: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "JSVM இயந்திரத்தை உருவாக்க முடியவில்லை"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "செருகுநிரல் உரையை இயக்க முடியவில்லை"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "நீட்டிப்பு ஏற்றப்படவில்லை"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "நீட்டிப்பு பழுதானது, மீண்டும் நிறுவவும் அல்லது ஏற்றவும்"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "நீட்டிப்பு தொடக்கம் தோல்வி"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "நீட்டிப்பு தொடக்க நேரம் முடிந்தது"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "நீட்டிப்பு அழைப்பு நேரம் முடிந்தது: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "நீட்டிப்பு அழைப்பு தோல்வி"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "நீட்டிப்பு தவறான JSON அளித்தது"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "அறியாத நீட்டிப்புப் பிழை"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "தவறான manifest.key (சிற்றெழுத்து, இலக்கங்கள், அடிக்கோடு மட்டும்)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name இல்லை"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "தவறான manifest.versionCode"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "இந்தச் செருகுநிரலுக்குப் புதிய பயன்பாடு தேவை (%s), முதலில் புதுப்பிக்கவும்"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "இந்தச் செருகுநிரலுக்குப் பயன்பாடு versionCode >= %s தேவை, முதலில் புதுப்பிக்கவும்"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "தேர்ந்த கோப்பைப் படிக்க முடியவில்லை: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "செருகுநிரல் தொகுப்பு URL-கள் https ஆக இருக்க வேண்டும், வெளிப்படையான பதிவிறக்கங்கள் நிராகரிக்கப்படும்"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "செருகுநிரல் ஒருமைச் சோதனை தோல்வி (sha256 பொருந்தவில்லை), நிறுவல் ரத்து"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "செருகுநிரல் தொகுப்பில் main.js இல்லை"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "செருகுநிரல் கோப்புறையை மாற்ற முடியவில்லை: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "செருகுநிரல் தொகுப்பில் manifest.json இல்லை"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "களஞ்சியக் கோப்பு URL-கள் https ஆக இருக்க வேண்டும், http:// பதிவுகள் நிராகரிக்கப்படும்"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "தவறான செருகுநிரல் இயக்கப் பெயர்: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "செருகுநிரல் இயக்கக் கூறு இல்லை: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "செருகுநிரல் தவறான மாங்கா விவரங்களை அளித்தது"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "செருகுநிரல் getChapterText ஏற்றுமதி செய்யவில்லை"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "செருகுநிரல் getVideoList ஏற்றுமதி செய்யவில்லை"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "செருகுநிரல் தொகுப்பைச் சேமிக்க முடியவில்லை: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "செருகுநிரல் கோப்புறையை நீக்க முடியவில்லை: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "நிறுவப்பட்ட செருகுநிரல் கோப்புகளைப் படிக்க முடியவில்லை: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "செருகுநிரல் தொகுப்பு ஒருமையைச் சரிபார்க்க முடியவில்லை: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "செருகுநிரல் தொகுப்பைப் பிரிக்க முடியவில்லை: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "செருகுநிரல் தொகுப்பில் manifest.json படிக்க முடியவில்லை: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "செருகுநிரல் கோப்புகளைத் தயார் செய்ய முடியவில்லை: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "கண்காணிப்பு"
+    },
+    {
+      "name": "track_login",
+      "value": "உள்நுழை"
+    },
+    {
+      "name": "track_logout",
+      "value": "வெளியேறு"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "%s இலிருந்து வெளியேறவா?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "%s இல் உள்நுழைந்தது"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "வெளியேறியது"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "உள்நுழைவு தோல்வி"
+    },
+    {
+      "name": "track_username",
+      "value": "பயனர் பெயர்"
+    },
+    {
+      "name": "track_password",
+      "value": "கடவுச்சொல்"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "கண்காணிப்பு முன்னேற்றத்தைத் தானாகப் புதுப்பி"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "%s இல் தேடு"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "தேடல் தோல்வி"
+    },
+    {
+      "name": "track_no_results",
+      "value": "முடிவுகள் இல்லை"
+    },
+    {
+      "name": "track_added",
+      "value": "கண்காணிப்பு சேர்க்கப்பட்டது"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "கண்காணிப்பைச் சேர்க்க முடியவில்லை"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "கண்காணிப்பைப் புதுப்பிக்க முடியவில்லை"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "சேவையிலிருந்து நீக்க முடியவில்லை"
+    },
+    {
+      "name": "track_status",
+      "value": "நிலை"
+    },
+    {
+      "name": "track_score",
+      "value": "மதிப்பெண்"
+    },
+    {
+      "name": "track_chapters",
+      "value": "அத்தியாயங்கள்"
+    },
+    {
+      "name": "track_start_date",
+      "value": "தொடக்க தேதி"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "முடிவு தேதி"
+    },
+    {
+      "name": "track_private",
+      "value": "தனிப்பட்டது"
+    },
+    {
+      "name": "track_unlink",
+      "value": "இணைப்பை நீக்கு"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "சேவையிலிருந்து நீக்கு"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "சரியான அத்தியாய எண்ணை உள்ளிடுங்கள்"
+    },
+    {
+      "name": "track_reading",
+      "value": "படிக்கிறது"
+    },
+    {
+      "name": "track_completed",
+      "value": "முடிந்தது"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "நிறுத்தம்"
+    },
+    {
+      "name": "track_paused",
+      "value": "இடைநிறுத்தம்"
+    },
+    {
+      "name": "track_dropped",
+      "value": "கைவிடப்பட்டது"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "படிக்கத் திட்டம்"
+    },
+    {
+      "name": "track_repeating",
+      "value": "மீண்டும்"
+    },
+    {
+      "name": "track_considering",
+      "value": "பரிசீலனை"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "தெரியவில்லை"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "வாசிப்புப் பட்டியல்"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "விருப்பப் பட்டியல்"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "முடிந்த பட்டியல்"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "நிறுத்தப் பட்டியல்"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "முடியாத பட்டியல்"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "ஏற்றப்படுகிறது…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "ஏற்ற முடியவில்லை: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "உள்ளகக் கோப்புகள் இன்னும் இல்லை, சேர்க்க இறக்குமதி தட்டவும்"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "பெயர்"
+    },
+    {
+      "name": "privacy_title",
+      "value": "தனியுரிமை"
+    },
+    {
+      "name": "privacy_group",
+      "value": "பாதுகாப்பு"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "பயன்பாட்டுப் பூட்டு"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "முதலில் திரைப் பூட்டை அமைக்கவும்"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "சும்மா இருக்கும்போது பூட்டு"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "எப்போதும்"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 நிமிடம்"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 நிமிடங்கள்"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 நிமிடங்கள்"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 நிமிடங்கள்"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "ஒருபோதும் இல்லை"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "அறிவிப்பு உள்ளடக்கத்தை மறை"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "பாதுகாப்பான திரை"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "திரைப்பிடிப்பையும் திரைப் பதிவையும் தடுக்கும்"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "பயன்பாடு பூட்டப்பட்டது"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "தொடர அடையாளத்தைச் சரிபாருங்கள்"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "திற"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "பயன்பாட்டைத் திற"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "பதிவிறக்குகிறது"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "செயலிழப்புப் பதிவுகளை ஏற்றுமதி செய்"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "செயலிழப்புப் பதிவுகள் இல்லை"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "%d பிழைப் பதிவுகள் ஏற்றுமதி செய்யப்பட்டன"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "விரிவான பதிவு"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "கணினிப் பதிவுகளில் பிழைத்திருத்த விவரங்களைச் சேர்"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "பிழைத்திருத்தத் தகவல்"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "செயல் தோல்வி"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "தரவு"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "பிணையம்"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "நூலகம்"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "வாசிப்பான்"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "தரவுத்தளத்தை அழி"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "நூலகத்தில் இல்லாத அனைத்து உள்ளீடுகளையும் நீக்கவா? அவற்றின் வாசிப்பு வரலாறும் முன்னேற்றமும் இழக்கப்படும்."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "%d உள்ளீடுகள் நீக்கப்பட்டன"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "உட்பொதிந்த வலைத் தரவை அழி"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "உட்பொதிந்த வலைத் தரவு அழிக்கப்பட்டது"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "HTTPS வழியான DNS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "முடக்கப்பட்டது"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "தனிப்பயன் User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "இயல்பைப் பயன்படுத்த காலியாக விடுங்கள்"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent சேமிக்கப்பட்டது"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "User-Agent மீட்டமை"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "நூலக அட்டைகளைப் புதுப்பி"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "அட்டைகள் புதுப்பிக்கப்படுகின்றன…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "%d உள்ளீடுகள் புதுப்பிக்கப்பட்டன"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "தொடர் வாசிப்பு அமைப்புகளை மீட்டமை"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "தொடருக்கு அமைத்த வாசிப்பு முறைகளைப் பொது இயல்புக்கு மீட்டமைக்கவா?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "%d உள்ளீடுகள் மீட்டமைக்கப்பட்டன"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "உயர்தர வரைவு"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "செயல்திறன் செலவில் மென்மையான பட அளவீடு"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "பயன்பாட்டுப் பதிப்பு"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "சாதன மாதிரி"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "சாதன வகை"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "அமைப்புப் பதிப்பு"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "API பதிப்பு"
+    },
+    {
+      "name": "debug_screen",
+      "value": "திரை"
+    },
+    {
+      "name": "debug_language",
+      "value": "மொழி"
     }
   ]
 }

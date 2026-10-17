@@ -2517,10 +2517,6 @@
       "value": "Invalid manifest.versionCode"
     },
     {
-      "name": "plugin_error_bad_engine",
-      "value": "Unsupported plugin engine: %s (only jsvm is supported)"
-    },
-    {
       "name": "plugin_error_dsl_too_new",
       "value": "This plugin requires a newer app (%s), please update first"
     },
@@ -2847,6 +2843,1102 @@
     {
       "name": "privacy_dl_title",
       "value": "Downloading"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "Copy to clipboard"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "Theme"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "Default"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "Midnight Dusk"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "Strawberry Daiquiri"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "Teal & Turquoise"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "Tidal Wave"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "Yin & Yang"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "Tokyo Night"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "Monochrome"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "Green Apple"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "Lavender"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "Refresh"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "Open in browser"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "Unable to open in browser"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "Copy URL"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL copied"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "No filters available"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "Reset"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "Ignore"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "Include"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "Exclude"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "Failed to pick folder"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "A folder is required, not a file"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "Choose folder"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "Sync"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "Change folder"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "Local folder"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "Syncing folder…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "Folder synced"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "Sync failed: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "Cannot access the local folder, please choose it again"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "Failed to keep access to the folder"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "Folder selection is not supported on this device"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "No local folder set yet"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "Nothing found in the local folder"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "Nothing found in the comic subfolder"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "Nothing found in the novel subfolder"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "Nothing found in the anime subfolder"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "Tracking"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "Cancel download"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "Download cancelled"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "Delete the downloaded chapter?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "Download deleted"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "Copied to clipboard"
+    },
+    {
+      "name": "transition_finished",
+      "value": "Finished:"
+    },
+    {
+      "name": "transition_current",
+      "value": "Current:"
+    },
+    {
+      "name": "transition_next",
+      "value": "Next:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "Previous:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "There's no next chapter"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "There's no previous chapter"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "Website"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "Updates pending"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "Update all"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "Multi"
+    },
+    {
+      "name": "about_row_version",
+      "value": "Version"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "Debug information copied"
+    },
+    {
+      "name": "licenses_title",
+      "value": "Open source licenses"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "Open homepage"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "Full license text"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "App architecture and interaction design reference"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "In-app icons"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "Platform SDK and ArkUI framework"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "AVIF image decoding"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "AV1 decoder used for AVIF decoding"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "HTML parsing for extensions"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "Video playback caching"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL and URLSearchParams for extensions (plugin runtime)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder and TextDecoder for extensions (plugin runtime)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "WebIDL value conversion, a whatwg-url dependency (plugin runtime)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "MD5 hashing for extensions (plugin runtime)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "AES-CBC encryption and decryption for extensions (plugin runtime)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "Privacy policy"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi is a local-first reader for manga, novels and videos. The app itself does not collect, upload or share any personal data."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "Local data"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "Your library, reading history, download records, preferences and tracker credentials are stored only on your device. You can export or erase them at any time in Settings. Uninstalling the app removes them permanently."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "Online sources and extensions"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "Online content is provided by third-party extensions and websites. Browsing or reading from an online source sends your requests directly to that site, which is governed by its own privacy policy. The app does not control and is not responsible for third-party services."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "Tracking services"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "You can optionally connect tracker accounts such as AniList, MyAnimeList, Bangumi, Kitsu and Shikimori. Login is authorized by you on the tracker's own page, and access tokens are saved only on your device to sync reading progress."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "Permissions"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "Internet access is used to load online content, file access for local imports and backups, and biometric authentication only for the local app lock. No permission is used to collect personal data."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "Contact"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi is an open-source project inspired by Mihon. If you have questions about this privacy statement, reach us via Discord or GitHub."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "Save as CBZ archive"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "Split tall images"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "Improves reader performance"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "Concurrency"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "Concurrent source downloads"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "Concurrent page downloads"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "Pages downloaded simultaneously per source"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "Delete chapters"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "After manually marked as read"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "After reading automatically delete"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "Disabled"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "Last read chapter"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "Second to last read chapter"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "Third to last read chapter"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "Fourth to last read chapter"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "Fifth to last read chapter"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "Allow deleting bookmarked chapters"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "Auto-download"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "Download new chapters"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "Automatically download new chapters found during library updates"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "Skip downloading duplicate read chapters"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "Download ahead"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "Auto download while reading"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "Next unread chapter"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "Next %d unread chapters"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "Only works if the current chapter and the next one are already downloaded."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "Novels"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "Videos"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "No sources for this type yet"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "Local novels"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "Local videos"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "Type"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "All"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "Start playing"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "Continue playing"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "This stream can only be played online"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "Font size"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "Line spacing"
+    },
+    {
+      "name": "novel_empty",
+      "value": "This chapter has no text"
+    },
+    {
+      "name": "novel_prev",
+      "value": "Previous chapter"
+    },
+    {
+      "name": "novel_next",
+      "value": "Next chapter"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "Scroll"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "Paged"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "Two-page"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "Paging mode"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "Paragraph spacing"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "Display"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "Text"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "Single page (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "Single page (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "Page transition"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "Simulation"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "Slide"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "Cover"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "Text color"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "Light"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "Dark"
+    },
+    {
+      "name": "novel_margin",
+      "value": "Margins"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "Font"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "Default"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "Serif"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "Sans-serif"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "Monospace"
+    },
+    {
+      "name": "novel_tts",
+      "value": "Read aloud"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "Start reading aloud"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "Stop reading aloud"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "Reading speed"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "Reached the end of this chapter"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "Text-to-speech failed: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "Pause"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "Resume"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "Now reading"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "Paragraph %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "Sleep timer"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "Off"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d min"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "Stops in %1$s"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "Nothing is being read aloud"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "Open player"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "Chapters"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "By time"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "By chapters"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "After this chapter"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "After %1$d chapters"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d ch"
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "Stops after this chapter"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "Stops after %1$d chapters"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "Keeps the app running in the background while a novel is being read aloud"
+    },
+    {
+      "name": "video_play",
+      "value": "Play"
+    },
+    {
+      "name": "video_pause",
+      "value": "Pause"
+    },
+    {
+      "name": "video_prev",
+      "value": "Previous"
+    },
+    {
+      "name": "video_next",
+      "value": "Next"
+    },
+    {
+      "name": "video_settings",
+      "value": "Player settings"
+    },
+    {
+      "name": "video_episodes",
+      "value": "Episodes"
+    },
+    {
+      "name": "video_quality",
+      "value": "Quality"
+    },
+    {
+      "name": "video_speed",
+      "value": "Playback speed"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "Danmaku on"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "Danmaku off"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "Loading danmaku…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%d danmaku loaded"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "No matching danmaku found"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "Failed to load danmaku"
+    },
+    {
+      "name": "video_locked",
+      "value": "Controls locked"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "Controls unlocked"
+    },
+    {
+      "name": "player_set_title",
+      "value": "Player"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "Playback"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "Default speed"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "Auto-play next episode"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "Play the next episode automatically when finished"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "Show danmaku"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "Danmaku font size"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "Danmaku opacity"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "Danmaku display area"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "Danmaku speed"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "Danmaku data from dandanplay (network required)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "Screen scale mode"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "Fit"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "Fill"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "Stretch"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "Slow"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Normal"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "Fast"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "Very fast"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 screen"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "Half screen"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 screen"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "Full screen"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "Manga time"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "Novel time"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "Video time"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "Cover"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "Edit cover"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "Reset cover"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "Cover updated"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "Cover restored"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "Couldn't update the cover"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "Cover saved"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "Error saving cover"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "Error sharing cover"
+    },
+    {
+      "name": "detail_edit",
+      "value": "Edit"
+    },
+    {
+      "name": "detail_delete",
+      "value": "Delete"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "No local files yet, tap Import to add some"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "Name"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "Export crash logs"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "No crash logs found"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "Exported %d fault logs"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "Verbose logging"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "Include debug-level details in system logs"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "Debug info"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "Action failed"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Data"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "Network"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "Library"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "Reader"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "Clear database"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "Remove all entries that are not in your library? Reading history and progress of these entries will be lost."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "Removed %d entries"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "Clear embedded web data"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "Embedded web data cleared"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS over HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "Disabled"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "Custom User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "Leave empty to use the default"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent saved"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "Reset User-Agent"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "Refresh library covers"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "Refreshing covers…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "Refreshed %d entries"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "Reset per-series reader settings"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "Reset reading modes you set per series back to the global default?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "Reset %d entries"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "High quality rendering"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "Smoother image scaling at the cost of performance"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "App version"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "Device model"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "Device type"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "System version"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "API version"
+    },
+    {
+      "name": "debug_screen",
+      "value": "Screen"
+    },
+    {
+      "name": "debug_language",
+      "value": "Language"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "SHA, HMAC and PBKDF2 for extensions (plugin runtime)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "AES-GCM encryption and decryption for extensions (plugin runtime)"
     }
   ]
 }

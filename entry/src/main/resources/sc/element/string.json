@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "In sa biblioteca tua non b'at manga in cursu"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "Còpia in sa tauledda"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "Tema"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "Predefinidu"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "Crepusculu de mesanote"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "Daiquiri de fràgula"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Pruppu"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "Birde-biaitu e turchese"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "Onda de marea"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "Yin e yang"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Bator fògias"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "Note de Tokyo"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "Monocromàticu"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "Mela birde"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "Lavanda"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "Atualiza"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "Aberi in su navigadore"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "Impossìbile abèrrere in su navigadore"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "Còpia s'URL"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL copiadu"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "Perunu capìtulu imbeniente"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "Perunu filtru a disponimentu"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "Reseta"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "Ignora"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "Incluì"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "Esclude"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "Seletzione de sa cartella fallida"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "Serbit una cartella, non unu documentu"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "Sèbera sa cartella"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "Sincroniza"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "Càmbia cartella"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "Cartella locale"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "Sincronizende sa cartella…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "Cartella sincronizada"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "Sincronizatzione fallida: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "Non si podet atzèdere a sa cartella locale, sèbera·la torra"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "Faddina a mantènnere s'atzessu a sa cartella"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "Sa seletzione de cartella non est suportada in custu dispositivu"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "Peruna cartella locale impostada"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "Nudda agatadu in sa cartella locale"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "Nudda agatadu in sa sutacartella comic"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "Nudda agatadu in sa sutacartella novel"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "Nudda agatadu in sa sutacartella anime"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "Annulla totu"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "Capìtulu in artziada"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "Capìtulu in calada"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "Òrdina"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "Filtra"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "Pro fonte"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "Pro nùmeru de capìtulu"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "Pro data de càrriga"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "Pro nòmine"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "Reseta"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "Iscarrigados"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "Non lèghidu"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "Cun signàlibru"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d seletzionados"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "Marca comente lèghidu"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "Marca comente non lèghidu"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "Signàlibru"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "Cantzella"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "Imbenientes %d non lèghidu"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "Totu sos non lèghidu"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "Capìtulos cun signàlibru"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d capìtulos in cua"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "Perunu capìtulu non lèghidu"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "Peruna iscàrriga de cantzellare"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "Cantzelladas %d iscàrrigas"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "Arrastu"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "Annulla s'iscàrriga"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "Iscàrriga annullada"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "Cantzellare su capìtulu iscarrigadu?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "Iscàrriga cantzellada"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "Copiadu in sa tauledda"
+    },
+    {
+      "name": "transition_finished",
+      "value": "Acabadu:"
+    },
+    {
+      "name": "transition_current",
+      "value": "Atuale:"
+    },
+    {
+      "name": "transition_next",
+      "value": "Imbeniente:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "Pretzedente:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "Non b'est unu capìtulu imbeniente"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "Non b'est unu capìtulu pretzedente"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "Situ web"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "Atualizatziones in isetu"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "Atualiza totu"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "Medas"
+    },
+    {
+      "name": "about_row_version",
+      "value": "Versione"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "Informatziones de debug copiadas"
+    },
+    {
+      "name": "licenses_title",
+      "value": "Litzèntzias de còdighe abertu"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "Aberi sa pàgina printzipale"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "Testu cumpletu de sa litzèntzia"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "Referèntzia de architetura e disinnu de interatzione"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "Iconas in s'aplicatzione"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "SDK de sa prataforma e framework ArkUI"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "Decodìfica de immàgines AVIF"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "Decodificadore AV1 impreadu pro AVIF"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "Anàlisi HTML pro sas estensiones"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "Memòria temporànea de riprodutzione vìdeu"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL e URLSearchParams pro sas estensiones (runtime de plugin)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder e TextDecoder pro sas estensiones (runtime de plugin)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "Conversione de balores WebIDL, dipendèntzia de whatwg-url (runtime de plugin)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "Hash MD5 pro sas estensiones (runtime de plugin)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "Cifradura e decifradura AES-CBC pro sas estensiones (runtime de plugin)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "Hash SHA/HMAC/PBKDF2 pro sas estensiones (runtime de plugin)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "Cifradura e decifradura AES-GCM pro sas estensiones (runtime de plugin)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "Polìtica de riservadesa"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi est unu leghidore locale-in antis pro manga, romanzos e vìdeos. S'aplicatzione etotu non regollit, non càrrigat e non cumpartzit datos personales."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "Datos locales"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "Sa biblioteca tua, sa cronologia de leghidura, sos registros de iscàrriga, sas preferèntzias e sas credentziales de arrastu sunt sarvados isceti in su dispositivu tuo. Los podes esportare o cantzellare in cale si siat momentu in Impostatziones. Disinstallende s'aplicatzione los bogas pro semper."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "Fontes in lìnia e estensiones"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "Su cuntenutu in lìnia benit dae estensiones e sitos de tertzos. Navigare o lèghere dae una fonte in lìnia imbiat sas dimandas tuas deretu a cussu situ, chi tenet sa polìtica sua. S'aplicatzione non controllat e non est responsàbile de sos servìtzios de tertzos."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "Servìtzios de arrastu"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "Podes collegare, si lu cheres, contos de arrastu comente AniList, MyAnimeList, Bangumi, Kitsu e Shikimori. S'intrada la autorizas tue in sa pàgina de su servìtziu, e sos token de atzessu abarrant isceti in su dispositivu tuo pro sincronizare su progressu de leghidura."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "Permissos"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "S'atzessu a internet serbit pro carrigare cuntenutu in lìnia, s'atzessu a sos documentos pro importatziones e còpias de seguresa locales, e s'autenticatzione biomètrica isceti pro su blocu locale de s'aplicatzione. Perunu permissu serbit pro regòllere datos personales."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "Cuntatu"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi est unu progetu de còdighe abertu ispiradu a Mihon. Si tenes preguntas subra custa decraratzione de riservadesa, iscrie·nos pro Discord o GitHub."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "Sarva comente archìviu CBZ"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "Partzi immàgines artas"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "Megiorat sas prestatziones de su leghidore"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "Cuncurrèntzia"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "Iscàrrigas de fontes in parallelu"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "Iscàrrigas de pàginas in parallelu"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "Pàginas iscarrigadas impare pro cada fonte"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "Cantzella capìtulos"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "A pustis de su marcu manuale comente lèghidu"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "Cantzella in automàticu a pustis de sa leghidura"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "Istudadu"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "Ùrtimu capìtulu lèghidu"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "Segundu dae s'ùrtimu lèghidu"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "Tertzu dae s'ùrtimu lèghidu"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "Cuàrtu dae s'ùrtimu lèghidu"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "Cuìntu dae s'ùrtimu lèghidu"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "Permite de cantzellare capìtulos cun signàlibru"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "Iscàrriga automàtica"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "Iscàrriga sos capìtulos noos"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "Iscàrriga in automàticu sos capìtulos noos agatados in s'atualizatzione de sa biblioteca"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "Brinca sos capìtulos duplicados giai lèghidu"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "Iscàrriga in antis"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "Iscàrriga automàtica in leghidura"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "Capìtulu imbeniente non lèghidu"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "Imbenientes %d capìtulos non lèghidu"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "Funtzionat isceti si su capìtulu atuale e su imbeniente sunt giai iscarrigados."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "Romanzos"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "Vìdeos"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "Peruna fonte pro custa genia"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "Romanzos locales"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "Vìdeos locales"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "Genia"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "Totu"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "Cumintza a riprodùere"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "Sighi a riprodùere"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "Custu flussu si podet bìdere isceti in lìnia"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "Mannària de su caràtere"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "Ispàtziu intre lìnias"
+    },
+    {
+      "name": "novel_empty",
+      "value": "Custu capìtulu non tenet testu"
+    },
+    {
+      "name": "novel_prev",
+      "value": "Capìtulu pretzedente"
+    },
+    {
+      "name": "novel_next",
+      "value": "Capìtulu imbeniente"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "Iscurrimentu"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "A pàginas"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "Duas pàginas"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "Modalidade de pàgina"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "Ispàtziu de paràgrafu"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "Visualizatzione"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "Testu"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "Pàgina ùnica (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "Pàgina ùnica (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "Transitzione de pàgina"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "Simulatzione"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "Iscurrimentu laterale"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "Coberta"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "Colore de su testu"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "Craru"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "Iscuru"
+    },
+    {
+      "name": "novel_margin",
+      "value": "Màrgines"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "Caràtere"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "Predefinidu"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "Cun gràtzias"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "Chene gràtzias"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "Largària fissa"
+    },
+    {
+      "name": "novel_tts",
+      "value": "Leghe a boghe arta"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "Cumintza a lèghere a boghe arta"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "Firma sa leghidura a boghe arta"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "Lestresa de leghidura"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "Ses lòmpidu a sa fine de custu capìtulu"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "Leghidura a boghe fallida: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "Pàusa"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "Riprende"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "Leghende como"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "Paràgrafu %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "Temporizadore de sonnu"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "Istudadu"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d min"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "Fermat in %1$s"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "Nudda est lèghidu a boghe arta"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "Aberi su riprodutore"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "Capìtulos"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "Pro tempus"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "Pro capìtulos"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "A pustis de custu capìtulu"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "A pustis de %1$d capìtulos"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d cap"
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "Fermat a pustis de custu capìtulu"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "Fermat a pustis de %1$d capìtulos"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "Mantene s'aplicatzione in activity in segundu pranu mentras unu romanzu est lèghidu a boghe arta"
+    },
+    {
+      "name": "video_play",
+      "value": "Riprodui"
+    },
+    {
+      "name": "video_pause",
+      "value": "Pàusa"
+    },
+    {
+      "name": "video_prev",
+      "value": "Pretzedente"
+    },
+    {
+      "name": "video_next",
+      "value": "Imbeniente"
+    },
+    {
+      "name": "video_settings",
+      "value": "Impostatziones de su riprodutore"
+    },
+    {
+      "name": "video_episodes",
+      "value": "Episòdios"
+    },
+    {
+      "name": "video_quality",
+      "value": "Calidade"
+    },
+    {
+      "name": "video_speed",
+      "value": "Lestresa de riprodutzione"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "Danmaku ativu"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "Danmaku istudadu"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "Carrighende danmaku…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%d danmaku carrigados"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "Perunu danmaku currispondente"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "Càrriga de danmaku fallida"
+    },
+    {
+      "name": "video_locked",
+      "value": "Controllos blocados"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "Controllos isblocados"
+    },
+    {
+      "name": "player_set_title",
+      "value": "Riprodutore"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "Riprodutzione"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "Lestresa predefinida"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "Riprodui s'episòdiu imbeniente"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "Riprodui s'episòdiu imbeniente in automàticu a sa fine"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "Mustra danmaku"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "Mannària de su danmaku"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "Opacitate de su danmaku"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "Àrea de su danmaku"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "Lestresa de su danmaku"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "Datos danmaku dae dandanplay (retza netzessària)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "Modalidade de iscala"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "Adatta"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "Riempi"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "Istira"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "Lentu"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Regulare"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "Lestra"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "Lestra meda"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 de ischermu"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "Mesu ischermu"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 de ischermu"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "Ischermu intreu"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "Tempus manga"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "Tempus romanzu"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "Tempus vìdeu"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "Coberta"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "Modìfica sa coberta"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "Reseta sa coberta"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "Coberta atualizada"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "Coberta ripristinada"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "Impossìbile atualizare sa coberta"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "Coberta sarvada"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "Errore sarvende sa coberta"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "Errore cumpartzende sa coberta"
+    },
+    {
+      "name": "detail_edit",
+      "value": "Modìfica"
+    },
+    {
+      "name": "detail_delete",
+      "value": "Cantzella"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "Bene bènnidu!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "Impostemus prima carchi cosa. Las podes cambiare luego in sas impostatziones."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "Imbeniente"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "Cumintza"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "Ghida de benènnida"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "Ghida pro cumintzare"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "Nou in %s? Cussigiamus de lèghere sa ghida pro cumintzare."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "Ses torrende a installare %s?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "Sincronizatzione in cursu, iseta"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "Iscàrriga fallida"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "Càrriga de sos detàllios fallida"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "Paràmetros de pàgina non vàlidos"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "Preparende sas iscàrrigas…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "Tramudòngiu a sa categoria fallidu"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "Càrriga de sa lista de migrazione fallida"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "Operatzione fallida"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "Errore de càrriga: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "Carrighende…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "Càrriga fallida: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "Render essidu (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "S'ùrtima còpia de seguresa automàtica est fallida"
+    },
+    {
+      "name": "category_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "category_novel",
+      "value": "Romanzos"
+    },
+    {
+      "name": "category_video",
+      "value": "Vìdeos"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "Cun litzèntzia"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "Su motore TTS est ocupadu, torra a proare luego"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "Su motore TTS at firmadu de rispondere e sa leghidura est istada firmada"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "Su motore TTS non est a disponimentu"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "Serbit una verìfica umana, cumpleta sa pàgina e torra a proare"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "Fonte non a disponimentu"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "Custu capìtulu non tenet cuntenutu"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "Riprodutzione fallida"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "Perunu vìdeu riproduìbile"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "Locale"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "Annulladu"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "Iscàrriga fallida"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "Iscàrriga iscadida (su servidore non rispondet)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "Iscàrriga fallida (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "Custu vìdeu est in flussu in lìnia e non si podet iscarrigare"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "Servìtziu de iscàrriga non inizializadu"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "Fonte non agatada: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "Documentu de capìtulu non agatadu"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "Formadu de capìtulu non suportadu"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "Documentu vìdeu non agatadu"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "Manga importadu in locale"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "Romanzos importados in locale"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "Vìdeos importados in locale"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "Reindiritzamentu non seguru blocadu: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "Tropu reindiritzamentos: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "Impossìbile risòlvere s'indiritzu de su servidore, controlla sa connessione e torra a proare"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "Impossìbile si collegare a su servidore, controlla sa retza e torra a proare"
+    },
+    {
+      "name": "net_timeout",
+      "value": "Sa dimanda est iscadida, torra a proare luego"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "Connessione segura fallida (errore SSL), torra a proare luego"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "Sa connessione est istada interrotta, torra a proare"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "Dimanda de retza fallida: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "Faddina a creare su motore JSVM"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "Faddina a esecutare s'iscritu de su plugin"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "Estensione non carrigada"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "S'estensione est ruta, reinstalla·la o torra a la carrigare"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "Inizializatzione de s'estensione fallida"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "Inizializatzione de s'estensione iscadida"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "Mutida de s'estensione iscadida: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "Mutida de s'estensione fallida"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "S'estensione at torradu unu JSON non vàlidu"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "Errore de estensione disconnotu"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "manifest.key non vàlidu (isceti lìteras minùsculas, tzifras e tratos bassos)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "Mancat manifest.name"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "manifest.versionCode non vàlidu"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "Custu plugin rechedet un'aplicatzione prus noa (%s), atualiza prima"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "Custu plugin rechedet versionCode de s'aplicatzione >= %s, atualiza prima"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "Faddina a lèghere su documentu seletzionadu: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "Sos URL de su pachete de plugin depent impreare https, sas iscàrrigas in claru sunt refudadas"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "Verìfica de integridade de su plugin fallida (sha256 non currispondet), installatzione annullada"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "In su pachete de plugin mancat main.js"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "Faddina a sostituire sa cartella de su plugin: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "manifest.json non agatadu in su pachete de plugin"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "Sos URL de sos documentos de s'archìviu depent impreare https, sas intradas http:// sunt refudadas"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "Nòmine de runtime de plugin non vàlidu: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "Cumponente de runtime de plugin mancante: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "Su plugin at torradu detàllios de manga non vàlidos"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "Su plugin non esportat getChapterText"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "Su plugin non esportat getVideoList"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "Faddina a sarvare su pachete de plugin: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "Faddina a bogare sa cartella de su plugin: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "Faddina a lèghere sos documentos de su plugin installadu: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "Faddina a verificare s'integridade de su pachete de plugin: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "Faddina a estràere su pachete de plugin: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "Faddina a lèghere manifest.json in su pachete de plugin: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "Faddina a preparare sos documentos de su plugin: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "Arrastu"
+    },
+    {
+      "name": "track_login",
+      "value": "Intra"
+    },
+    {
+      "name": "track_logout",
+      "value": "Essì"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "Essire dae %s?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "Intradu in %s"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "Essidu"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "Intrada fallida"
+    },
+    {
+      "name": "track_username",
+      "value": "Nòmine de utente"
+    },
+    {
+      "name": "track_password",
+      "value": "Crae"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "Atualiza in automàticu su progressu de arrastu"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "Chirca in %s"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "Chirca fallida"
+    },
+    {
+      "name": "track_no_results",
+      "value": "Perunu risultadu"
+    },
+    {
+      "name": "track_added",
+      "value": "Arrastu agiuntu"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "Agiunta de arrastu fallida"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "Atualizatzione de arrastu fallida"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "Bogadura dae su servìtziu fallida"
+    },
+    {
+      "name": "track_status",
+      "value": "Istadu"
+    },
+    {
+      "name": "track_score",
+      "value": "Puntu"
+    },
+    {
+      "name": "track_chapters",
+      "value": "Capìtulos"
+    },
+    {
+      "name": "track_start_date",
+      "value": "Data de cumintzu"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "Data de fine"
+    },
+    {
+      "name": "track_private",
+      "value": "Privadu"
+    },
+    {
+      "name": "track_unlink",
+      "value": "Iscòliga"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "Boga dae su servìtziu"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "Inserta unu nùmeru de capìtulu vàlidu"
+    },
+    {
+      "name": "track_reading",
+      "value": "Leghende"
+    },
+    {
+      "name": "track_completed",
+      "value": "Cumpletadu"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "In isetu"
+    },
+    {
+      "name": "track_paused",
+      "value": "In pàusa"
+    },
+    {
+      "name": "track_dropped",
+      "value": "Abbandonadu"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "De lèghere"
+    },
+    {
+      "name": "track_repeating",
+      "value": "Torrende a lèghere"
+    },
+    {
+      "name": "track_considering",
+      "value": "In cunsideru"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "Disconnotu"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "Lista de leghidura"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "Lista de desìgios"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "Lista cumpletada"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "Lista in isetu"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "Lista non acabada"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "Carrighende…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "Càrriga fallida: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "Perunu documentu locale, toca Importa pro nd'agiùnghere"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "Nòmine"
+    },
+    {
+      "name": "privacy_title",
+      "value": "Riservadesa"
+    },
+    {
+      "name": "privacy_group",
+      "value": "Seguresa"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "Blocu de s'aplicatzione"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "Imposta prima unu blocu de ischermu"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "Bloca cando est inativa"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "Semper"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 minutu"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 minutos"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 minutos"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 minutos"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "Mai"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "Cua su cuntenutu de sas notìficas"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "Ischermu seguru"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "Blocat catturas e registratziones de ischermu"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "Aplicatzione blocada"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "Verìfica s'identidade tua pro sighire"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "Isbloca"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "Isbloca s'aplicatzione"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "Iscarrighende"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "Esporta sos registros de crash"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "Perunu registru de crash agatadu"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "Esportados %d registros de faddina"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "Registratzione detalliada"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "Include detàllios de debug in sos registros de sistema"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "Informatziones de debug"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "Atzione fallida"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Datos"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "Retza"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "Biblioteca"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "Leghidore"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "Isbòida sa base de datos"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "Bogare totu sas intradas chi non sunt in sa biblioteca tua? Sa cronologia e su progressu de cussas intradas andant pèrdidos."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "Bogadas %d intradas"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "Isbòida sos datos web incorporados"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "Datos web incorporados isboidados"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS subra HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "Istudadu"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "User-Agent personalizadu"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "Lassa bòidu pro impreare su predefinidu"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent sarvadu"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "Reseta User-Agent"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "Atualiza sas cobertas de sa biblioteca"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "Atualizende sas cobertas…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "Atualizadas %d intradas"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "Reseta sas impostatziones de leghidura pro sèrie"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "Torrare sas modalidades de leghidura impostadas pro sèrie a su predefinidu globale?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "Resetadas %d intradas"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "Renderizatzione de calidade arta"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "Iscala de immàgine prus lìsia, cun prus costu de prestazione"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "Versione de s'aplicatzione"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "Modellu de su dispositivu"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "Genia de dispositivu"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "Versione de sistema"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "Versione API"
+    },
+    {
+      "name": "debug_screen",
+      "value": "Ischermu"
+    },
+    {
+      "name": "debug_language",
+      "value": "Limba"
     }
   ]
 }

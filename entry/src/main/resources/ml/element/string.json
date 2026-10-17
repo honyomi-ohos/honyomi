@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "ലൈബ്രറിയിൽ തുടരുന്ന മംഗയില്ല"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തുക"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "രൂപം"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "സ്ഥിരം"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "അർധരാത്രി സന്ധ്യ"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "സ്ട്രോബെറി ഡൈക്വിരി"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "ടാകോ"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "നീലപച്ച"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "വേലിയേറ്റം"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "യിൻ & യാങ്"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "യോത്സുബ"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "ടോക്കിയോ രാത്രി"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "ഏകവർണം"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "പച്ച ആപ്പിൾ"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "ലാവെൻഡർ"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "പുതുക്കുക"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "ബ്രൗസറിൽ തുറക്കുക"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "ബ്രൗസറിൽ തുറക്കാനായില്ല"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "URL പകർത്തുക"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL പകർത്തി"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "അടുത്ത അധ്യായമില്ല"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "ഫിൽട്ടറുകളില്ല"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "പുനഃക്രമീകരിക്കുക"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "അവഗണിക്കുക"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "ഉൾപ്പെടുത്തുക"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "ഒഴിവാക്കുക"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "ഫോൾഡർ തിരഞ്ഞെടുക്കാനായില്ല"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "ഫയലല്ല, ഫോൾഡർ വേണം"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "ഫോൾഡർ തിരഞ്ഞെടുക്കുക"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "സമന്വയം"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "ഫോൾഡർ മാറ്റുക"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "പ്രാദേശിക ഫോൾഡർ"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "ഫോൾഡർ സമന്വയിപ്പിക്കുന്നു…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "ഫോൾഡർ സമന്വയിച്ചു"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "സമന്വയം പരാജയപ്പെട്ടു: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "പ്രാദേശിക ഫോൾഡർ തുറക്കാനായില്ല, വീണ്ടും തിരഞ്ഞെടുക്കുക"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "ഫോൾഡർ പ്രവേശനം നിലനിർത്താനായില്ല"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "ഈ ഉപകരണത്തിൽ ഫോൾഡർ തിരഞ്ഞെടുപ്പില്ല"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "പ്രാദേശിക ഫോൾഡർ ഇതുവരെ സജ്ജമാക്കിയിട്ടില്ല"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "പ്രാദേശിക ഫോൾഡറിൽ ഒന്നുമില്ല"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "comic ഉപഫോൾഡറിൽ ഒന്നുമില്ല"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "novel ഉപഫോൾഡറിൽ ഒന്നുമില്ല"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "anime ഉപഫോൾഡറിൽ ഒന്നുമില്ല"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "എല്ലാം റദ്ദാക്കുക"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "അധ്യായം ആരോഹണം"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "അധ്യായം അവരോഹണം"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "ക്രമീകരിക്കുക"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "ഫിൽട്ടർ"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "സ്രോതസ്സ് പ്രകാരം"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "അധ്യായ നമ്പർ പ്രകാരം"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "അപ്‌ലോഡ് തീയതി പ്രകാരം"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "പേര് പ്രകാരം"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "പുനഃക്രമീകരിക്കുക"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "ഡൗൺലോഡ് ചെയ്തവ"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "വായിക്കാത്തവ"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "ബുക്ക്മാർക്ക്"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d തിരഞ്ഞെടുത്തു"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "വായിച്ചതായി അടയാളം"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "വായിക്കാത്തതായി അടയാളം"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "ബുക്ക്മാർക്ക്"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "നീക്കം ചെയ്യുക"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "അടുത്ത %d വായിക്കാത്തവ"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "വായിക്കാത്തതെല്ലാം"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "ബുക്ക്മാർക്ക് അധ്യായങ്ങൾ"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d അധ്യായങ്ങൾ ക്യൂവിൽ"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "വായിക്കാത്ത അധ്യായങ്ങളില്ല"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "നീക്കം ചെയ്യാൻ ഡൗൺലോഡുകളില്ല"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "%d ഡൗൺലോഡുകൾ നീക്കം ചെയ്തു"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "ട്രാക്കിംഗ്"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "ഡൗൺലോഡ് റദ്ദാക്കുക"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "ഡൗൺലോഡ് റദ്ദാക്കി"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "ഡൗൺലോഡ് ചെയ്ത അധ്യായം നീക്കം ചെയ്യണോ?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "ഡൗൺലോഡ് നീക്കം ചെയ്തു"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി"
+    },
+    {
+      "name": "transition_finished",
+      "value": "പൂർത്തിയായി:"
+    },
+    {
+      "name": "transition_current",
+      "value": "ഇപ്പോഴത്തേത്:"
+    },
+    {
+      "name": "transition_next",
+      "value": "അടുത്തത്:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "മുമ്പത്തേത്:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "അടുത്ത അധ്യായമില്ല"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "മുമ്പത്തെ അധ്യായമില്ല"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "വെബ്സൈറ്റ്"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "അപ്ഡേറ്റുകൾ കാത്തിരിക്കുന്നു"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "എല്ലാം അപ്ഡേറ്റ് ചെയ്യുക"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "ബഹുഭാഷ"
+    },
+    {
+      "name": "about_row_version",
+      "value": "പതിപ്പ്"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "ഡീബഗ് വിവരം പകർത്തി"
+    },
+    {
+      "name": "licenses_title",
+      "value": "തുറന്ന സ്രോതസ് അനുമതികൾ"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "ഹോംപേജ് തുറക്കുക"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "പൂർണ അനുമതി പാഠം"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "ആപ്പ് ഘടനയും ഇടപെടൽ രൂപകല്പനയും"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "ആപ്പ് ചിഹ്നങ്ങൾ"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "പ്ലാറ്റ്‌ഫോം നിർമാണ ഉപകരണവും ArkUI ചട്ടക്കൂടും"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "AVIF ചിത്ര ഡീകോഡിംഗ്"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "AVIF ഡീകോഡിംഗിനുള്ള AV1 ഡീകോഡർ"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "വിപുലീകരണങ്ങൾക്കുള്ള HTML പാഴ്‌സിംഗ്"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "വീഡിയോ പ്ലേബാക്ക് കാഷ്"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "വിപുലീകരണങ്ങൾക്കുള്ള URL ഉം URLSearchParams ഉം (പ്ലഗിൻ റൺടൈം)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "വിപുലീകരണങ്ങൾക്കുള്ള TextEncoder ഉം TextDecoder ഉം (പ്ലഗിൻ റൺടൈം)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "WebIDL മൂല്യ പരിവർത്തനം, whatwg-url ആശ്രയം (പ്ലഗിൻ റൺടൈം)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "വിപുലീകരണങ്ങൾക്കുള്ള MD5 ഹാഷ് (പ്ലഗിൻ റൺടൈം)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "വിപുലീകരണങ്ങൾക്കുള്ള AES-CBC എൻക്രിപ്ഷനും ഡീക്രിപ്ഷനും (പ്ലഗിൻ റൺടൈം)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "വിപുലീകരണങ്ങൾക്കുള്ള SHA/HMAC/PBKDF2 ഹാഷ് (പ്ലഗിൻ റൺടൈം)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "വിപുലീകരണങ്ങൾക്കുള്ള AES-GCM എൻക്രിപ്ഷനും ഡീക്രിപ്ഷനും (പ്ലഗിൻ റൺടൈം)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "സ്വകാര്യതാ നയം"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi മംഗ, നോവൽ, വീഡിയോ എന്നിവയ്ക്കുള്ള പ്രാദേശിക മുൻഗണനാ വായനാ ആപ്പാണ്. ആപ്പ് വ്യക്തിഗത ഡാറ്റ ശേഖരിക്കുകയോ അപ്‌ലോഡ് ചെയ്യുകയോ പങ്കിടുകയോ ചെയ്യുന്നില്ല."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "പ്രാദേശിക ഡാറ്റ"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "നിങ്ങളുടെ ലൈബ്രറി, വായനാ ചരിത്രം, ഡൗൺലോഡ് രേഖകൾ, മുൻഗണനകൾ, ട്രാക്കർ രേഖകൾ ഉപകരണത്തിൽ മാത്രമേ സൂക്ഷിക്കൂ. ക്രമീകരണങ്ങളിൽ എപ്പോൾ വേണമെങ്കിലും കയറ്റുമതി ചെയ്യാം അല്ലെങ്കിൽ മായ്ക്കാം. ആപ്പ് നീക്കം ചെയ്താൽ അവ ശാശ്വതമായി പോകും."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "ഓൺലൈൻ സ്രോതസ്സുകളും വിപുലീകരണങ്ങളും"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "ഓൺലൈൻ ഉള്ളടക്കം മൂന്നാം കക്ഷി വിപുലീകരണങ്ങളും വെബ്സൈറ്റുകളും നൽകുന്നു. ഓൺലൈൻ സ്രോതസ്സിൽ നിന്ന് തിരയുകയോ വായിക്കുകയോ ചെയ്താൽ അഭ്യർത്ഥന നേരിട്ട് ആ സൈറ്റിലേക്ക് പോകും; അതിന്റെ സ്വകാര്യതാ നയം ബാധകം. മൂന്നാം കക്ഷി സേവനങ്ങളെ ആപ്പ് നിയന്ത്രിക്കുന്നില്ല, ഉത്തരവാദിത്തവുമില്ല."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "ട്രാക്കിംഗ് സേവനങ്ങൾ"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "വേണമെങ്കിൽ AniList, MyAnimeList, Bangumi, Kitsu, Shikimori പോലുള്ള ട്രാക്കർ അക്കൗണ്ടുകൾ ബന്ധിപ്പിക്കാം. പ്രവേശനം നിങ്ങൾ ട്രാക്കറിന്റെ സ്വന്തം പേജിൽ അനുവദിക്കുന്നു; ആക്സസ് ടോക്കണുകൾ വായന പുരോഗതി സമന്വയത്തിന് ഉപകരണത്തിൽ മാത്രം സൂക്ഷിക്കും."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "അനുമതികൾ"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "ഇന്റർനെറ്റ് ഓൺലൈൻ ഉള്ളടക്കം ലോഡ് ചെയ്യാൻ, ഫയൽ പ്രവേശനം പ്രാദേശിക ഇറക്കുമതിക്കും ബാക്കപ്പിനും, ജൈവമാപനം പ്രാദേശിക ആപ്പ് പൂട്ടിന് മാത്രം. വ്യക്തിഗത ഡാറ്റ ശേഖരിക്കാൻ ഒരു അനുമതിയും ഉപയോഗിക്കുന്നില്ല."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "ബന്ധപ്പെടുക"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi, Mihon-ൽ നിന്ന് പ്രചോദിതമായ തുറന്ന സ്രോതസ് പദ്ധതിയാണ്. ഈ സ്വകാര്യതാ പ്രസ്താവനയെക്കുറിച്ച് ചോദ്യമുണ്ടെങ്കിൽ Discord അല്ലെങ്കിൽ GitHub വഴി ബന്ധപ്പെടുക."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "CBZ ആർക്കൈവായി സംരക്ഷിക്കുക"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "നീണ്ട ചിത്രങ്ങൾ വിഭജിക്കുക"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "വായന പ്രകടനം മെച്ചപ്പെടുത്തും"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "സമാന്തരത"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "സമാന്തര സ്രോതസ്സ് ഡൗൺലോഡുകൾ"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "സമാന്തര പേജ് ഡൗൺലോഡുകൾ"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "ഒരു സ്രോതസ്സിൽ ഒരേസമയം ഡൗൺലോഡ് ചെയ്യുന്ന പേജുകൾ"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "അധ്യായങ്ങൾ നീക്കം ചെയ്യുക"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "കൈകൊണ്ട് വായിച്ചതായി അടയാളപ്പെടുത്തിയ ശേഷം"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "വായിച്ച ശേഷം സ്വയം നീക്കം ചെയ്യുക"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "പ്രവർത്തനരഹിതം"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "അവസാനം വായിച്ച അധ്യായം"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "അവസാനത്തിൽ നിന്ന് രണ്ടാമത്തെ അധ്യായം"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "അവസാനത്തിൽ നിന്ന് മൂന്നാമത്തെ അധ്യായം"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "അവസാനത്തിൽ നിന്ന് നാലാമത്തെ അധ്യായം"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "അവസാനത്തിൽ നിന്ന് അഞ്ചാമത്തെ അധ്യായം"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "ബുക്ക്മാർക്ക് അധ്യായങ്ങൾ നീക്കം ചെയ്യാൻ അനുവദിക്കുക"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "സ്വയം ഡൗൺലോഡ്"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "പുതിയ അധ്യായങ്ങൾ ഡൗൺലോഡ്"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "ലൈബ്രറി അപ്ഡേറ്റിൽ കണ്ട പുതിയ അധ്യായങ്ങൾ സ്വയം ഡൗൺലോഡ് ചെയ്യുക"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "വായിച്ച പകർപ്പുകൾ ഡൗൺലോഡ് ചെയ്യരുത്"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "മുൻകൂർ ഡൗൺലോഡ്"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "വായിക്കുമ്പോൾ സ്വയം ഡൗൺലോഡ്"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "അടുത്ത വായിക്കാത്ത അധ്യായം"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "അടുത്ത %d വായിക്കാത്ത അധ്യായങ്ങൾ"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "ഇപ്പോഴത്തെ അധ്യായവും അടുത്തതും ഇതിനകം ഡൗൺലോഡ് ആണെങ്കിൽ മാത്രം പ്രവർത്തിക്കും."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "മംഗ"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "നോവലുകൾ"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "വീഡിയോകൾ"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "ഈ തരത്തിന് സ്രോതസ്സുകൾ ഇതുവരെയില്ല"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "പ്രാദേശിക നോവലുകൾ"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "പ്രാദേശിക വീഡിയോകൾ"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "തരം"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "എല്ലാം"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "പ്ലേ തുടങ്ങുക"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "പ്ലേ തുടരുക"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "ഈ സ്ട്രീം ഓൺലൈനിൽ മാത്രമേ പ്ലേ ചെയ്യാനാകൂ"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "അക്ഷര വലുപ്പം"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "വരി അകലം"
+    },
+    {
+      "name": "novel_empty",
+      "value": "ഈ അധ്യായത്തിൽ പാഠമില്ല"
+    },
+    {
+      "name": "novel_prev",
+      "value": "മുമ്പത്തെ അധ്യായം"
+    },
+    {
+      "name": "novel_next",
+      "value": "അടുത്ത അധ്യായം"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "സ്ക്രോൾ"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "പേജ്"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "രണ്ട് പേജ്"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "പേജ് മാറ്റം"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "ഖണ്ഡിക അകലം"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "പ്രദർശനം"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "പാഠം"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "ഒറ്റ പേജ് (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "ഒറ്റ പേജ് (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "പേജ് മാറ്റം"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "ചുരുൾ"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "വഴുത്തം"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "മൂടൽ"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "പാഠ നിറം"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "വെളിച്ചം"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "ഇരുട്ട്"
+    },
+    {
+      "name": "novel_margin",
+      "value": "അരികുകൾ"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "ഫോണ്ട്"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "സ്ഥിരം"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "ശീർഷരേഖ"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "ശീർഷരേഖയില്ലാത്തത്"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "സമവീതി"
+    },
+    {
+      "name": "novel_tts",
+      "value": "ഉറക്കെ വായിക്കുക"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "ഉറക്കെ വായന തുടങ്ങുക"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "ഉറക്കെ വായന നിർത്തുക"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "വായന വേഗം"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "ഈ അധ്യായത്തിന്റെ അവസാനം എത്തി"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "പാഠത്തിൽ നിന്നുള്ള സംസാരം പരാജയപ്പെട്ടു: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "താൽക്കാലികമായി നിർത്തുക"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "തുടരുക"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "ഇപ്പോൾ വായിക്കുന്നു"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "ഖണ്ഡിക %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "ഉറക്ക ടൈമർ"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "ഓഫ്"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d മിനി"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "%1$s കഴിഞ്ഞ് നിൽക്കും"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "ഒന്നും ഉറക്കെ വായിക്കുന്നില്ല"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "പ്ലെയർ തുറക്കുക"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "അധ്യായങ്ങൾ"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "സമയം പ്രകാരം"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "അധ്യായം പ്രകാരം"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "ഈ അധ്യായത്തിന് ശേഷം"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "%1$d അധ്യായങ്ങൾക്ക് ശേഷം"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d അധ്യാ."
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "ഈ അധ്യായത്തിന് ശേഷം നിൽക്കും"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "%1$d അധ്യായങ്ങൾക്ക് ശേഷം നിൽക്കും"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "നോവൽ ഉറക്കെ വായിക്കുമ്പോൾ ആപ്പ് പശ്ചാത്തലത്തിൽ നിലനിർത്തും"
+    },
+    {
+      "name": "video_play",
+      "value": "പ്ലേ"
+    },
+    {
+      "name": "video_pause",
+      "value": "താൽക്കാലികമായി നിർത്തുക"
+    },
+    {
+      "name": "video_prev",
+      "value": "മുമ്പത്തേത്"
+    },
+    {
+      "name": "video_next",
+      "value": "അടുത്തത്"
+    },
+    {
+      "name": "video_settings",
+      "value": "പ്ലെയർ ക്രമീകരണങ്ങൾ"
+    },
+    {
+      "name": "video_episodes",
+      "value": "ഭാഗങ്ങൾ"
+    },
+    {
+      "name": "video_quality",
+      "value": "ഗുണം"
+    },
+    {
+      "name": "video_speed",
+      "value": "പ്ലേബാക്ക് വേഗം"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "ഡാൻമാകു"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "ഡാൻമാകു ഓൺ"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "ഡാൻമാകു ഓഫ്"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "ഡാൻമാകു ലോഡ് ചെയ്യുന്നു…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%d ഡാൻമാകു ലോഡ് ആയി"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "ചേരുന്ന ഡാൻമാകു ഇല്ല"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "ഡാൻമാകു ലോഡ് ആയില്ല"
+    },
+    {
+      "name": "video_locked",
+      "value": "നിയന്ത്രണങ്ങൾ പൂട്ടി"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "നിയന്ത്രണങ്ങൾ തുറന്നു"
+    },
+    {
+      "name": "player_set_title",
+      "value": "പ്ലെയർ"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "പ്ലേബാക്ക്"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "സ്ഥിര വേഗം"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "അടുത്ത ഭാഗം സ്വയം പ്ലേ"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "തീരുമ്പോൾ അടുത്ത ഭാഗം സ്വയം പ്ലേ ചെയ്യുക"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "ഡാൻമാകു"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "ഡാൻമാകു കാണിക്കുക"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "ഡാൻമാകു അക്ഷര വലുപ്പം"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "ഡാൻമാകു അതാര്യത"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "ഡാൻമാകു പ്രദർശന മേഖല"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "ഡാൻമാകു വേഗം"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "dandanplay-ൽ നിന്നുള്ള ഡാൻമാകു ഡാറ്റ (നെറ്റ്‌വർക്ക് വേണം)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "സ്ക്രീൻ സ്കെയിൽ രീതി"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "ഒതുക്കുക"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "നിറയ്ക്കുക"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "വലിക്കുക"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "പതുക്കെ"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "സാധാരണം"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "വേഗം"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "വളരെ വേഗം"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 സ്ക്രീൻ"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "പകുതി സ്ക്രീൻ"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 സ്ക്രീൻ"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "മുഴുവൻ സ്ക്രീൻ"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "മംഗ സമയം"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "നോവൽ സമയം"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "വീഡിയോ സമയം"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "കവർ"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "കവർ തിരുത്തുക"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "കവർ പുനഃക്രമീകരിക്കുക"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "കവർ അപ്ഡേറ്റ് ചെയ്തു"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "കവർ പുനഃസ്ഥാപിച്ചു"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "കവർ അപ്ഡേറ്റ് ചെയ്യാനായില്ല"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "കവർ സംരക്ഷിച്ചു"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "കവർ സംരക്ഷണത്തിൽ പിശക്"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "കവർ പങ്കിടലിൽ പിശക്"
+    },
+    {
+      "name": "detail_edit",
+      "value": "തിരുത്തുക"
+    },
+    {
+      "name": "detail_delete",
+      "value": "നീക്കം ചെയ്യുക"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "സ്വാഗതം!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "ആദ്യം ചിലത് ഒരുക്കാം. പിന്നീട് ക്രമീകരണങ്ങളിൽ എപ്പോൾ വേണമെങ്കിലും മാറ്റാം."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "അടുത്തത്"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "തുടങ്ങുക"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "പരിചയ ഗൈഡ്"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "തുടക്ക ഗൈഡ്"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "%s-ൽ പുതിയ ആളാണോ? തുടക്ക ഗൈഡ് നോക്കാൻ ശുപാർശ ചെയ്യുന്നു."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "%s വീണ്ടും ഇൻസ്റ്റാൾ ചെയ്യുകയാണോ?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "സമന്വയം നടക്കുന്നു, കാത്തിരിക്കുക"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "ഡൗൺലോഡ് പരാജയപ്പെട്ടു"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "വിവരങ്ങൾ ലോഡ് ആയില്ല"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "അസാധുവായ പേജ് പാരാമീറ്ററുകൾ"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "ഡൗൺലോഡുകൾ തയ്യാറാകുന്നു…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "വിഭാഗത്തിലേക്ക് നീക്കാനായില്ല"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "മൈഗ്രേഷൻ പട്ടിക ലോഡ് ആയില്ല"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "പ്രവർത്തനം പരാജയപ്പെട്ടു"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "ലോഡ് പിശക്: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "ലോഡ് ചെയ്യുന്നു…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "ലോഡ് പരാജയപ്പെട്ടു: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "റെൻഡർ നിർത്തി (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "പ"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "വ"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "മ"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "അവസാന സ്വയം ബാക്കപ്പ് പരാജയപ്പെട്ടു"
+    },
+    {
+      "name": "category_manga",
+      "value": "മംഗ"
+    },
+    {
+      "name": "category_novel",
+      "value": "നോവലുകൾ"
+    },
+    {
+      "name": "category_video",
+      "value": "വീഡിയോകൾ"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "അനുമതിയുള്ളത്"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "TTS എഞ്ചിൻ തിരക്കിലാണ്, പിന്നീട് ശ്രമിക്കുക"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "TTS എഞ്ചിൻ പ്രതികരിച്ചില്ല, വായന നിർത്തി"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "TTS എഞ്ചിൻ ലഭ്യമല്ല"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "മനുഷ്യ പരിശോധന വേണം, പരിശോധന പേജ് പൂർത്തിയാക്കി വീണ്ടും ശ്രമിക്കുക"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "സ്രോതസ്സ് ലഭ്യമല്ല"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "ഈ അധ്യായത്തിൽ ഉള്ളടക്കമില്ല"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "പ്ലേബാക്ക് പരാജയപ്പെട്ടു"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "പ്ലേ ചെയ്യാവുന്ന വീഡിയോകളില്ല"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "പ്രാദേശികം"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "റദ്ദാക്കി"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "ഡൗൺലോഡ് പരാജയപ്പെട്ടു"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "ഡൗൺലോഡ് സമയം കഴിഞ്ഞു (സെർവർ പ്രതികരിച്ചില്ല)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "ഡൗൺലോഡ് പരാജയപ്പെട്ടു (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "ഈ വീഡിയോ ഓൺലൈൻ സ്ട്രീമാണ്, ഡൗൺലോഡ് ചെയ്യാനാകില്ല"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "ഡൗൺലോഡ് സേവനം തുടങ്ങിയിട്ടില്ല"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "സ്രോതസ്സ് കണ്ടില്ല: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "അധ്യായ ഫയൽ കണ്ടില്ല"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "പിന്തുണയില്ലാത്ത അധ്യായ ഫോർമാറ്റ്"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "വീഡിയോ ഫയൽ കണ്ടില്ല"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "പ്രാദേശികമായി ഇറക്കുമതി ചെയ്ത മംഗ"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "പ്രാദേശികമായി ഇറക്കുമതി ചെയ്ത നോവലുകൾ"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "പ്രാദേശികമായി ഇറക്കുമതി ചെയ്ത വീഡിയോകൾ"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "അസുരക്ഷിത തിരിച്ചുവിടൽ തടഞ്ഞു: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "തിരിച്ചുവിടലുകൾ കൂടുതലാണ്: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "സെർവർ വിലാസം കണ്ടെത്താനായില്ല, നെറ്റ്‌വർക്ക് പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "സെർവറിലേക്ക് ബന്ധിപ്പിക്കാനായില്ല, നെറ്റ്‌വർക്ക് പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക"
+    },
+    {
+      "name": "net_timeout",
+      "value": "അഭ്യർത്ഥന സമയം കഴിഞ്ഞു, പിന്നീട് ശ്രമിക്കുക"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "സുരക്ഷിത ബന്ധം പരാജയപ്പെട്ടു (SSL പിശക്), പിന്നീട് ശ്രമിക്കുക"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "ബന്ധം മുറിഞ്ഞു, വീണ്ടും ശ്രമിക്കുക"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "നെറ്റ്‌വർക്ക് അഭ്യർത്ഥന പരാജയപ്പെട്ടു: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "JSVM എഞ്ചിൻ ഉണ്ടാക്കാനായില്ല"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "പ്ലഗിൻ ലിപി ഓടിക്കാനായില്ല"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "വിപുലീകരണം ലോഡ് ആയിട്ടില്ല"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "വിപുലീകരണം പൊട്ടിയിരിക്കുന്നു, വീണ്ടും ഇൻസ്റ്റാൾ ചെയ്യുക അല്ലെങ്കിൽ റീലോഡ് ചെയ്യുക"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "വിപുലീകരണ ആരംഭം പരാജയപ്പെട്ടു"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "വിപുലീകരണ ആരംഭ സമയം കഴിഞ്ഞു"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "വിപുലീകരണ വിളി സമയം കഴിഞ്ഞു: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "വിപുലീകരണ വിളി പരാജയപ്പെട്ടു"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "വിപുലീകരണം അസാധുവായ JSON തന്നു"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "അജ്ഞാത വിപുലീകരണ പിശക്"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "അസാധുവായ manifest.key (ചെറിയക്ഷരം, അക്കങ്ങൾ, അടിവര മാത്രം)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name ഇല്ല"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "അസാധുവായ manifest.versionCode"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "ഈ പ്ലഗിന് പുതിയ ആപ്പ് വേണം (%s), ആദ്യം അപ്ഡേറ്റ് ചെയ്യുക"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "ഈ പ്ലഗിന് ആപ്പ് versionCode >= %s വേണം, ആദ്യം അപ്ഡേറ്റ് ചെയ്യുക"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "തിരഞ്ഞെടുത്ത ഫയൽ വായിക്കാനായില്ല: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "പ്ലഗിൻ പാക്കേജ് URL https ആയിരിക്കണം, വെറും ഡൗൺലോഡുകൾ നിരസിക്കും"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "പ്ലഗിൻ സമഗ്രത പരിശോധന പരാജയപ്പെട്ടു (sha256 ചേർന്നില്ല), ഇൻസ്റ്റാൾ റദ്ദ്"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "പ്ലഗിൻ പാക്കേജിൽ main.js ഇല്ല"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "പ്ലഗിൻ ഫോൾഡർ മാറ്റാനായില്ല: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "പ്ലഗിൻ പാക്കേജിൽ manifest.json ഇല്ല"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "റെപ്പോസിറ്ററി ഫയൽ URL https ആയിരിക്കണം, http:// എൻട്രികൾ നിരസിക്കും"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "അസാധുവായ പ്ലഗിൻ റൺടൈം പേര്: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "പ്ലഗിൻ റൺടൈം ഘടകം ഇല്ല: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "പ്ലഗിൻ അസാധുവായ മംഗ വിവരം തന്നു"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "പ്ലഗിൻ getChapterText കയറ്റുമതി ചെയ്യുന്നില്ല"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "പ്ലഗിൻ getVideoList കയറ്റുമതി ചെയ്യുന്നില്ല"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "പ്ലഗിൻ പാക്കേജ് സംരക്ഷിക്കാനായില്ല: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "പ്ലഗിൻ ഫോൾഡർ നീക്കം ചെയ്യാനായില്ല: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "ഇൻസ്റ്റാൾ ചെയ്ത പ്ലഗിൻ ഫയലുകൾ വായിക്കാനായില്ല: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "പ്ലഗിൻ പാക്കേജ് സമഗ്രത പരിശോധിക്കാനായില്ല: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "പ്ലഗിൻ പാക്കേജ് വേർതിരിക്കാനായില്ല: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "പ്ലഗിൻ പാക്കേജിലെ manifest.json വായിക്കാനായില്ല: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "പ്ലഗിൻ ഫയലുകൾ തയ്യാറാക്കാനായില്ല: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "ട്രാക്കിംഗ്"
+    },
+    {
+      "name": "track_login",
+      "value": "പ്രവേശിക്കുക"
+    },
+    {
+      "name": "track_logout",
+      "value": "പുറത്തുകടക്കുക"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "%s-ൽ നിന്ന് പുറത്തുകടക്കണോ?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "%s-ൽ പ്രവേശിച്ചു"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "പുറത്തുകടന്നു"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "പ്രവേശനം പരാജയപ്പെട്ടു"
+    },
+    {
+      "name": "track_username",
+      "value": "ഉപയോക്തൃനാമം"
+    },
+    {
+      "name": "track_password",
+      "value": "രഹസ്യവാക്ക്"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "ട്രാക്കിംഗ് പുരോഗതി സ്വയം അപ്ഡേറ്റ്"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "%s-ൽ തിരയുക"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "തിരച്ചിൽ പരാജയപ്പെട്ടു"
+    },
+    {
+      "name": "track_no_results",
+      "value": "ഫലങ്ങളില്ല"
+    },
+    {
+      "name": "track_added",
+      "value": "ട്രാക്കിംഗ് ചേർത്തു"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "ട്രാക്കിംഗ് ചേർക്കാനായില്ല"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "ട്രാക്കിംഗ് അപ്ഡേറ്റ് ആയില്ല"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "സേവനത്തിൽ നിന്ന് നീക്കം ചെയ്യാനായില്ല"
+    },
+    {
+      "name": "track_status",
+      "value": "നില"
+    },
+    {
+      "name": "track_score",
+      "value": "സ്കോർ"
+    },
+    {
+      "name": "track_chapters",
+      "value": "അധ്യായങ്ങൾ"
+    },
+    {
+      "name": "track_start_date",
+      "value": "തുടക്ക തീയതി"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "അവസാന തീയതി"
+    },
+    {
+      "name": "track_private",
+      "value": "സ്വകാര്യം"
+    },
+    {
+      "name": "track_unlink",
+      "value": "ബന്ധം മാറ്റുക"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "സേവനത്തിൽ നിന്ന് നീക്കം ചെയ്യുക"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "ശരിയായ അധ്യായ നമ്പർ നൽകുക"
+    },
+    {
+      "name": "track_reading",
+      "value": "വായിക്കുന്നു"
+    },
+    {
+      "name": "track_completed",
+      "value": "പൂർത്തിയായി"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "നിർത്തിവെച്ചു"
+    },
+    {
+      "name": "track_paused",
+      "value": "താൽക്കാലികമായി നിർത്തി"
+    },
+    {
+      "name": "track_dropped",
+      "value": "ഉപേക്ഷിച്ചു"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "വായിക്കാൻ പദ്ധതി"
+    },
+    {
+      "name": "track_repeating",
+      "value": "ആവർത്തനം"
+    },
+    {
+      "name": "track_considering",
+      "value": "പരിഗണിക്കുന്നു"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "അജ്ഞാതം"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "വായനാ പട്ടിക"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "ആഗ്രഹ പട്ടിക"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "പൂർത്തി പട്ടിക"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "നിർത്തിവെച്ച പട്ടിക"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "പൂർത്തിയാകാത്ത പട്ടിക"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "ലോഡ് ചെയ്യുന്നു…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "ലോഡ് ആയില്ല: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "പ്രാദേശിക ഫയലുകൾ ഇതുവരെയില്ല, ചേർക്കാൻ ഇറക്കുമതി തട്ടുക"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "പേര്"
+    },
+    {
+      "name": "privacy_title",
+      "value": "സ്വകാര്യത"
+    },
+    {
+      "name": "privacy_group",
+      "value": "സുരക്ഷ"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "ആപ്പ് പൂട്ട്"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "ആദ്യം സ്ക്രീൻ പൂട്ട് സജ്ജമാക്കുക"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "നിഷ്ക്രിയമാകുമ്പോൾ പൂട്ടുക"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "എപ്പോഴും"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 മിനിറ്റ്"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 മിനിറ്റ്"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 മിനിറ്റ്"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 മിനിറ്റ്"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "ഒരിക്കലും വേണ്ട"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "അറിയിപ്പ് ഉള്ളടക്കം മറയ്ക്കുക"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "സുരക്ഷിത സ്ക്രീൻ"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "സ്ക്രീൻഷോട്ടും സ്ക്രീൻ റെക്കോർഡിംഗും തടയും"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "ആപ്പ് പൂട്ടിയിരിക്കുന്നു"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "തുടരാൻ തിരിച്ചറിയൽ ഉറപ്പാക്കുക"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "തുറക്കുക"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "ആപ്പ് തുറക്കുക"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "ഡൗൺലോഡ് ചെയ്യുന്നു"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "ക്രാഷ് ലോഗുകൾ കയറ്റുമതി"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "ക്രാഷ് ലോഗുകളില്ല"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "%d തകരാർ ലോഗുകൾ കയറ്റുമതി ചെയ്തു"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "വിശദ ലോഗിംഗ്"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "സിസ്റ്റം ലോഗുകളിൽ ഡീബഗ് വിവരങ്ങൾ ഉൾപ്പെടുത്തുക"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "ഡീബഗ് വിവരം"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "പ്രവർത്തനം പരാജയപ്പെട്ടു"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "ഡാറ്റ"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "നെറ്റ്‌വർക്ക്"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "ലൈബ്രറി"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "വായന"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "ഡാറ്റാബേസ് മായ്ക്കുക"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "ലൈബ്രറിയിൽ ഇല്ലാത്ത എല്ലാ കൃതികളും നീക്കം ചെയ്യണോ? അവയുടെ വായനാ ചരിത്രവും പുരോഗതിയും നഷ്ടമാകും."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "%d കൃതികൾ നീക്കം ചെയ്തു"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "ഉൾച്ചേർത്ത വെബ് ഡാറ്റ മായ്ക്കുക"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "ഉൾച്ചേർത്ത വെബ് ഡാറ്റ മായ്ച്ചു"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "HTTPS വഴിയുള്ള DNS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "പ്രവർത്തനരഹിതം"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "ഇഷ്ടാനുസൃത User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "സ്ഥിരം ഉപയോഗിക്കാൻ ഒഴിഞ്ഞിടുക"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent സംരക്ഷിച്ചു"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "User-Agent പുനഃക്രമീകരിക്കുക"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "ലൈബ്രറി കവറുകൾ പുതുക്കുക"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "കവറുകൾ പുതുക്കുന്നു…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "%d കൃതികൾ പുതുക്കി"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "പരമ്പര വായന ക്രമീകരണങ്ങൾ പുനഃക്രമീകരിക്കുക"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "പരമ്പരയ്ക്ക് വെച്ച വായനാ രീതികൾ പൊതു സ്ഥിരത്തിലേക്ക് മാറ്റണോ?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "%d കൃതികൾ പുനഃക്രമീകരിച്ചു"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "ഉയർന്ന ഗുണമുള്ള റെൻഡറിംഗ്"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "പ്രകടനച്ചെലവിൽ മിനുസമുള്ള ചിത്ര സ്കെയിലിംഗ്"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "ആപ്പ് പതിപ്പ്"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "ഉപകരണ മാതൃക"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "ഉപകരണ തരം"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "സിസ്റ്റം പതിപ്പ്"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "API പതിപ്പ്"
+    },
+    {
+      "name": "debug_screen",
+      "value": "സ്ക്രീൻ"
+    },
+    {
+      "name": "debug_language",
+      "value": "ഭാഷ"
     }
   ]
 }

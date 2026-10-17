@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "पुस्तकालयमा कुनै जारी मांगा छैन"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "क्लिपबोर्डमा प्रतिलिपि"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "रूप"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "पूर्वनिर्धारित"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "मध्यरात साँझ"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "स्ट्रबेरी डाइकिरी"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "ताको"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "नीलो हरियो"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "ज्वार"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "यिन र याङ"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "योत्सुबा"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "टोक्यो रात"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "एकरङ"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "हरियो स्याउ"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "ल्याभेन्डर"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "रिफ्रेस"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "ब्राउजरमा खोल्नुहोस्"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "ब्राउजरमा खोल्न सकिएन"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "URL प्रतिलिपि"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL प्रतिलिपि भयो"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "अर्को अध्याय छैन"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "फिल्टर छैन"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "रिसेट"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "बेवास्ता"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "समेट्नुहोस्"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "हटाउनुहोस्"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "फोल्डर छान्न सकिएन"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "फाइल होइन, फोल्डर चाहिन्छ"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "फोल्डर छान्नुहोस्"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "सिङ्क"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "फोल्डर बदल्नुहोस्"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "स्थानीय फोल्डर"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "फोल्डर सिङ्क हुँदैछ…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "फोल्डर सिङ्क भयो"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "सिङ्क असफल: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "स्थानीय फोल्डर खोल्न सकिएन, फेरि छान्नुहोस्"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "फोल्डर पहुँच राख्न सकिएन"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "यो यन्त्रमा फोल्डर छनोट छैन"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "स्थानीय फोल्डर अझै सेट छैन"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "स्थानीय फोल्डरमा केही छैन"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "comic उपफोल्डरमा केही छैन"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "novel उपफोल्डरमा केही छैन"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "anime उपफोल्डरमा केही छैन"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "सबै रद्द गर्नुहोस्"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "अध्याय बढ्दो"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "अध्याय घट्दो"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "क्रम"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "फिल्टर"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "स्रोत अनुसार"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "अध्याय नम्बर अनुसार"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "अपलोड मिति अनुसार"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "नाम अनुसार"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "रिसेट"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "डाउनलोड भएका"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "नपढिएका"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "बुकमार्क"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d छानियो"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "पढिएको चिन्ह"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "नपढिएको चिन्ह"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "बुकमार्क"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "हटाउनुहोस्"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "अर्को %d नपढिएका"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "सबै नपढिएका"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "बुकमार्क अध्याय"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d अध्याय लाममा"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "नपढिएका अध्याय छैनन्"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "हटाउने डाउनलोड छैन"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "%d डाउनलोड हटाइयो"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "ट्र्याकिङ"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "डाउनलोड रद्द"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "डाउनलोड रद्द भयो"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "डाउनलोड भएको अध्याय हटाउने?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "डाउनलोड हटाइयो"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "क्लिपबोर्डमा प्रतिलिपि भयो"
+    },
+    {
+      "name": "transition_finished",
+      "value": "सकियो:"
+    },
+    {
+      "name": "transition_current",
+      "value": "अहिलेको:"
+    },
+    {
+      "name": "transition_next",
+      "value": "अर्को:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "अघिल्लो:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "अर्को अध्याय छैन"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "अघिल्लो अध्याय छैन"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "वेबसाइट"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "अद्यावधिक बाँकी"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "सबै अद्यावधिक"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "बहुभाषा"
+    },
+    {
+      "name": "about_row_version",
+      "value": "संस्करण"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "डिबग जानकारी प्रतिलिपि भयो"
+    },
+    {
+      "name": "licenses_title",
+      "value": "खुला स्रोत इजाजतपत्र"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "गृहपृष्ठ खोल्नुहोस्"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "पूरा इजाजतपत्र पाठ"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "एप संरचना र अन्तरक्रिया डिजाइन सन्दर्भ"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "एप चिह्न"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "प्लेटफर्म निर्माण साधन र ArkUI ढाँचा"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "AVIF चित्र डिकोडिङ"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "AVIF डिकोडिङका लागि AV1 डिकोडर"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "एक्सटेन्सनका लागि HTML पार्सिङ"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "भिडियो प्लेब्याक क्यास"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "एक्सटेन्सनका लागि URL र URLSearchParams (प्लगइन रनटाइम)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "एक्सटेन्सनका लागि TextEncoder र TextDecoder (प्लगइन रनटाइम)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "WebIDL मान रूपान्तरण, whatwg-url निर्भरता (प्लगइन रनटाइम)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "एक्सटेन्सनका लागि MD5 ह्यास (प्लगइन रनटाइम)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "एक्सटेन्सनका लागि AES-CBC गुप्तीकरण र खोलिने (प्लगइन रनटाइम)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "एक्सटेन्सनका लागि SHA/HMAC/PBKDF2 ह्यास (प्लगइन रनटाइम)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "एक्सटेन्सनका लागि AES-GCM गुप्तीकरण र खोलिने (प्लगइन रनटाइम)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "गोपनीयता नीति"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi मांगा, उपन्यास र भिडियोका लागि स्थानीय-प्रथम वाचक हो। एप आफैँ व्यक्तिगत डेटा सङ्कलन, अपलोड वा साझेदारी गर्दैन।"
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "स्थानीय डेटा"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "तपाईंको पुस्तकालय, पढाइ इतिहास, डाउनलोड रेकर्ड, प्राथमिकता र ट्र्याकर प्रमाण यन्त्रमै रहन्छन्। सेटिङमा जहिले पनि निर्यात वा मेटाउन सकिन्छ। एप हटाएपछि ती स्थायी रूपमा जान्छन्।"
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "अनलाइन स्रोत र एक्सटेन्सन"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "अनलाइन सामग्री तेस्रो पक्ष एक्सटेन्सन र वेबसाइटले दिन्छन्। अनलाइन स्रोतबाट हेर्दा वा पढ्दा अनुरोध सिधै त्यो साइटमा जान्छ; त्यसको गोपनीयता नीति लागु हुन्छ। तेस्रो पक्ष सेवा एपले नियन्त्रण गर्दैन र जिम्मेवार पनि छैन।"
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "ट्र्याकिङ सेवा"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "चाहेमा AniList, MyAnimeList, Bangumi, Kitsu र Shikimori जस्ता ट्र्याकर खाता जोड्न सकिन्छ। लगइन तपाईंले ट्र्याकरको आफ्नै पृष्ठमा अनुमति दिनुहुन्छ; पहुँच टोकन पढाइ प्रगति सिङ्कका लागि यन्त्रमै सुरक्षित हुन्छन्।"
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "अनुमति"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "इन्टरनेट अनलाइन सामग्री लोड गर्न, फाइल पहुँच स्थानीय आयात र ब्याकअपका लागि, बायोमेट्रिक प्रमाणीकरण स्थानीय एप लकका लागि मात्र। व्यक्तिगत डेटा सङ्कलनमा कुनै अनुमति प्रयोग हुँदैन।"
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "सम्पर्क"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi, Mihon बाट प्रेरित खुला स्रोत परियोजना हो। यो गोपनीयता कथनबारे प्रश्न भए Discord वा GitHub मार्फत सम्पर्क गर्नुहोस्।"
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "CBZ सङ्ग्रहका रूपमा सुरक्षित गर्नुहोस्"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "अग्ला चित्र विभाजन"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "वाचक कार्यसम्पादन सुधार्छ"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "समानान्तरता"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "समानान्तर स्रोत डाउनलोड"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "समानान्तर पृष्ठ डाउनलोड"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "एक स्रोतमा एकैचोटि डाउनलोड हुने पृष्ठ"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "अध्याय हटाउनुहोस्"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "हातले पढिएको चिन्ह लगाएपछि"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "पढेपछि स्वतः हटाउनुहोस्"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "अक्षम"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "अन्तिम पढिएको अध्याय"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "अन्त्यबाट दोस्रो अध्याय"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "अन्त्यबाट तेस्रो अध्याय"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "अन्त्यबाट चौथो अध्याय"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "अन्त्यबाट पाँचौँ अध्याय"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "बुकमार्क अध्याय हटाउन अनुमति"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "स्वतः डाउनलोड"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "नयाँ अध्याय डाउनलोड"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "पुस्तकालय अद्यावधिकमा भेटिएका नयाँ अध्याय स्वतः डाउनलोड"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "पढिएका नक्कल अध्याय डाउनलोड नगर्नुहोस्"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "अगाडि डाउनलोड"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "पढ्दा स्वतः डाउनलोड"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "अर्को नपढिएको अध्याय"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "अर्को %d नपढिएका अध्याय"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "अहिलेको अध्याय र अर्को अध्याय पहिले नै डाउनलोड भएमा मात्र काम गर्छ।"
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "मांगा"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "उपन्यास"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "भिडियो"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "यो प्रकारका स्रोत अझै छैनन्"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "स्थानीय उपन्यास"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "स्थानीय भिडियो"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "प्रकार"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "सबै"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "प्ले सुरु"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "प्ले जारी"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "यो स्ट्रिम अनलाइन मात्र प्ले हुन्छ"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "अक्षर आकार"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "हरफ अन्तर"
+    },
+    {
+      "name": "novel_empty",
+      "value": "यो अध्यायमा पाठ छैन"
+    },
+    {
+      "name": "novel_prev",
+      "value": "अघिल्लो अध्याय"
+    },
+    {
+      "name": "novel_next",
+      "value": "अर्को अध्याय"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "स्क्रोल"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "पृष्ठ"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "दुई पृष्ठ"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "पृष्ठ परिवर्तन"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "अनुच्छेद अन्तर"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "प्रदर्शन"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "पाठ"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "एकल पृष्ठ (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "एकल पृष्ठ (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "पृष्ठ संक्रमण"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "घुमाउरो"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "सर्कन"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "छोप"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "पाठ रङ"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "उज्यालो"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "अँध्यारो"
+    },
+    {
+      "name": "novel_margin",
+      "value": "किनारा"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "फन्ट"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "पूर्वनिर्धारित"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "शिरोरेखा"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "शिरोरेखाविहीन"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "समान चौडाइ"
+    },
+    {
+      "name": "novel_tts",
+      "value": "ठूलो स्वरमा पढ्नुहोस्"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "ठूलो स्वरमा पढ्न सुरु"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "ठूलो स्वरमा पढ्न रोक्नुहोस्"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "पढाइ गति"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "यो अध्यायको अन्त्य पुग्यो"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "पाठबाट वाणी असफल: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "पज"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "जारी"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "अहिले पढ्दै"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "अनुच्छेद %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "निद्रा टाइमर"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "अफ"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d मिनेट"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "%1$s मा रोकिन्छ"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "केही पनि ठूलो स्वरमा पढिँदैन"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "प्लेयर खोल्नुहोस्"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "अध्याय"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "समय अनुसार"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "अध्याय अनुसार"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "यो अध्यायपछि"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "%1$d अध्यायपछि"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d अध्या."
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "यो अध्यायपछि रोकिन्छ"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "%1$d अध्यायपछि रोकिन्छ"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "उपन्यास ठूलो स्वरमा पढिँदा एप पृष्ठभूमिमा चलिरहन्छ"
+    },
+    {
+      "name": "video_play",
+      "value": "प्ले"
+    },
+    {
+      "name": "video_pause",
+      "value": "पज"
+    },
+    {
+      "name": "video_prev",
+      "value": "अघिल्लो"
+    },
+    {
+      "name": "video_next",
+      "value": "अर्को"
+    },
+    {
+      "name": "video_settings",
+      "value": "प्लेयर सेटिङ"
+    },
+    {
+      "name": "video_episodes",
+      "value": "भाग"
+    },
+    {
+      "name": "video_quality",
+      "value": "गुणस्तर"
+    },
+    {
+      "name": "video_speed",
+      "value": "प्लेब्याक गति"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "डानमाकु"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "डानमाकु अन"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "डानमाकु अफ"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "डानमाकु लोड हुँदैछ…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%d डानमाकु लोड भयो"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "मिलेको डानमाकु छैन"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "डानमाकु लोड असफल"
+    },
+    {
+      "name": "video_locked",
+      "value": "नियन्त्रण लक"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "नियन्त्रण खुल्यो"
+    },
+    {
+      "name": "player_set_title",
+      "value": "प्लेयर"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "प्लेब्याक"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "पूर्वनिर्धारित गति"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "अर्को भाग स्वतः प्ले"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "सकिएपछि अर्को भाग स्वतः प्ले"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "डानमाकु"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "डानमाकु देखाउनुहोस्"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "डानमाकु अक्षर आकार"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "डानमाकु अपारदर्शिता"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "डानमाकु प्रदर्शन क्षेत्र"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "डानमाकु गति"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "dandanplay बाट डानमाकु डेटा (नेटवर्क चाहिन्छ)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "स्क्रिन स्केल विधि"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "मिलान"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "भर्ने"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "तान्नु"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "ढिलो"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "सामान्य"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "छिटो"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "एकदम छिटो"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "१/४ स्क्रिन"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "आधा स्क्रिन"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "३/४ स्क्रिन"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "पूरा स्क्रिन"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "मांगा समय"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "उपन्यास समय"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "भिडियो समय"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "कभर"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "कभर सम्पादन"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "कभर रिसेट"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "कभर अद्यावधिक भयो"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "कभर पुनर्स्थापित"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "कभर अद्यावधिक हुन सकेन"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "कभर सुरक्षित भयो"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "कभर सुरक्षित गर्दा त्रुटि"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "कभर साझेदारीमा त्रुटि"
+    },
+    {
+      "name": "detail_edit",
+      "value": "सम्पादन"
+    },
+    {
+      "name": "detail_delete",
+      "value": "हटाउनुहोस्"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "स्वागत!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "पहिले केही कुरा मिलाऔँ। पछि सेटिङमा जहिले पनि बदल्न सकिन्छ।"
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "अर्को"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "सुरु गर्नुहोस्"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "परिचय गाइड"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "सुरुवात गाइड"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "%s मा नयाँ हुनुहुन्छ? सुरुवात गाइड हेर्न सिफारिस गर्छौं।"
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "%s फेरि स्थापना गर्दै हुनुहुन्छ?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "सिङ्क भइरहेको छ, पर्खनुहोस्"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "डाउनलोड असफल"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "विवरण लोड भएन"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "अमान्य पृष्ठ मापदण्ड"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "डाउनलोड तयार हुँदैछ…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "श्रेणीमा सार्न सकिएन"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "माइग्रेट सूची लोड भएन"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "कार्य असफल"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "लोड त्रुटि: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "लोड हुँदैछ…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "लोड असफल: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "रेन्डर रोकियो (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "प"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "भ"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "म"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "अन्तिम स्वचालित ब्याकअप असफल"
+    },
+    {
+      "name": "category_manga",
+      "value": "मांगा"
+    },
+    {
+      "name": "category_novel",
+      "value": "उपन्यास"
+    },
+    {
+      "name": "category_video",
+      "value": "भिडियो"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "इजाजतप्राप्त"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "TTS इन्जिन व्यस्त छ, पछि प्रयास गर्नुहोस्"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "TTS इन्जिनले प्रतिक्रिया दिएन, पढाइ रोकियो"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "TTS इन्जिन उपलब्ध छैन"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "मानव प्रमाणीकरण चाहिन्छ, प्रमाणीकरण पृष्ठ पूरा गरी फेरि प्रयास गर्नुहोस्"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "स्रोत उपलब्ध छैन"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "यो अध्यायमा सामग्री छैन"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "प्लेब्याक असफल"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "प्ले हुने भिडियो भेटिएन"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "स्थानीय"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "रद्द"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "डाउनलोड असफल"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "डाउनलोड समय सकियो (सर्भरले प्रतिक्रिया दिएन)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "डाउनलोड असफल (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "यो भिडियो अनलाइन स्ट्रिम हो, डाउनलोड हुँदैन"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "डाउनलोड सेवा सुरु भएको छैन"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "स्रोत भेटिएन: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "अध्याय फाइल भेटिएन"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "असमर्थित अध्याय ढाँचा"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "भिडियो फाइल भेटिएन"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "स्थानीय रूपमा आयात गरिएको मांगा"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "स्थानीय रूपमा आयात गरिएका उपन्यास"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "स्थानीय रूपमा आयात गरिएका भिडियो"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "असुरक्षित पुनर्निर्देशन रोकियो: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "धेरै पुनर्निर्देशन: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "सर्भर ठेगाना भेटिएन, नेटवर्क जाँचेर फेरि प्रयास गर्नुहोस्"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "सर्भरमा जोड्न सकिएन, नेटवर्क जाँचेर फेरि प्रयास गर्नुहोस्"
+    },
+    {
+      "name": "net_timeout",
+      "value": "अनुरोधको समय सकियो, पछि प्रयास गर्नुहोस्"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "सुरक्षित जडान असफल (SSL त्रुटि), पछि प्रयास गर्नुहोस्"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "जडान टुट्यो, फेरि प्रयास गर्नुहोस्"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "नेटवर्क अनुरोध असफल: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "JSVM इन्जिन बनाउन सकिएन"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "प्लगइन लिपि चल्न सकेन"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "एक्सटेन्सन लोड भएको छैन"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "एक्सटेन्सन बिग्रिएको छ, फेरि स्थापना वा रिलोड गर्नुहोस्"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "एक्सटेन्सन सुरु असफल"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "एक्सटेन्सन सुरु समय सकियो"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "एक्सटेन्सन कल समय सकियो: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "एक्सटेन्सन कल असफल"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "एक्सटेन्सनले अमान्य JSON दियो"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "अज्ञात एक्सटेन्सन त्रुटि"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "अमान्य manifest.key (साना अक्षर, अङ्क, अन्डरस्कोर मात्र)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name छैन"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "अमान्य manifest.versionCode"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "यो प्लगइनलाई नयाँ एप चाहिन्छ (%s), पहिले अद्यावधिक गर्नुहोस्"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "यो प्लगइनलाई एप versionCode >= %s चाहिन्छ, पहिले अद्यावधिक गर्नुहोस्"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "छानिएको फाइल पढ्न सकिएन: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "प्लगइन प्याकेज URL https हुनुपर्छ, सादा डाउनलोड अस्वीकार"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "प्लगइन अखण्डता जाँच असफल (sha256 मिलेन), स्थापना रद्द"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "प्लगइन प्याकेजमा main.js छैन"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "प्लगइन फोल्डर बदल्न सकिएन: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "प्लगइन प्याकेजमा manifest.json छैन"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "रिपोजिटरी फाइल URL https हुनुपर्छ, http:// प्रविष्टि अस्वीकार"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "अमान्य प्लगइन रनटाइम नाम: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "प्लगइन रनटाइम घटक छैन: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "प्लगइनले अमान्य मांगा विवरण दियो"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "प्लगइनले getChapterText निर्यात गर्दैन"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "प्लगइनले getVideoList निर्यात गर्दैन"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "प्लगइन प्याकेज सुरक्षित हुन सकेन: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "प्लगइन फोल्डर हटाउन सकिएन: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "स्थापित प्लगइन फाइल पढ्न सकिएन: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "प्लगइन प्याकेज अखण्डता जाँच्न सकिएन: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "प्लगइन प्याकेज निकाल्न सकिएन: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "प्लगइन प्याकेजको manifest.json पढ्न सकिएन: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "प्लगइन फाइल तयार गर्न सकिएन: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "ट्र्याकिङ"
+    },
+    {
+      "name": "track_login",
+      "value": "लगइन"
+    },
+    {
+      "name": "track_logout",
+      "value": "लगआउट"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "%s बाट लगआउट गर्ने?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "%s मा लगइन भयो"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "लगआउट भयो"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "लगइन असफल"
+    },
+    {
+      "name": "track_username",
+      "value": "प्रयोगकर्ता नाम"
+    },
+    {
+      "name": "track_password",
+      "value": "पासवर्ड"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "ट्र्याकिङ प्रगति स्वतः अद्यावधिक"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "%s मा खोज्नुहोस्"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "खोज असफल"
+    },
+    {
+      "name": "track_no_results",
+      "value": "नतिजा छैन"
+    },
+    {
+      "name": "track_added",
+      "value": "ट्र्याकिङ थपियो"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "ट्र्याकिङ थप्न सकिएन"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "ट्र्याकिङ अद्यावधिक हुन सकेन"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "सेवाबाट हटाउन सकिएन"
+    },
+    {
+      "name": "track_status",
+      "value": "स्थिति"
+    },
+    {
+      "name": "track_score",
+      "value": "अङ्क"
+    },
+    {
+      "name": "track_chapters",
+      "value": "अध्याय"
+    },
+    {
+      "name": "track_start_date",
+      "value": "सुरु मिति"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "समाप्ति मिति"
+    },
+    {
+      "name": "track_private",
+      "value": "निजी"
+    },
+    {
+      "name": "track_unlink",
+      "value": "लिङ्क हटाउनुहोस्"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "सेवाबाट हटाउनुहोस्"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "मान्य अध्याय नम्बर लेख्नुहोस्"
+    },
+    {
+      "name": "track_reading",
+      "value": "पढ्दै"
+    },
+    {
+      "name": "track_completed",
+      "value": "पूरा"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "रोकिएको"
+    },
+    {
+      "name": "track_paused",
+      "value": "पज"
+    },
+    {
+      "name": "track_dropped",
+      "value": "छाडिएको"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "पढ्ने योजना"
+    },
+    {
+      "name": "track_repeating",
+      "value": "दोहोर्‍याउने"
+    },
+    {
+      "name": "track_considering",
+      "value": "विचार गर्दै"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "अज्ञात"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "पढाइ सूची"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "इच्छा सूची"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "पूरा सूची"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "रोकिएको सूची"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "अधुरो सूची"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "लोड हुँदैछ…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "लोड भएन: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "स्थानीय फाइल अझै छैन, थप्न आयात थिच्नुहोस्"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "नाम"
+    },
+    {
+      "name": "privacy_title",
+      "value": "गोपनीयता"
+    },
+    {
+      "name": "privacy_group",
+      "value": "सुरक्षा"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "एप लक"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "पहिले स्क्रिन लक सेट गर्नुहोस्"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "निष्क्रिय हुँदा लक"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "सधैँ"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "१ मिनेट"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "२ मिनेट"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "५ मिनेट"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "१० मिनेट"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "कहिल्यै होइन"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "सूचना सामग्री लुकाउनुहोस्"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "सुरक्षित स्क्रिन"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "स्क्रिनसट र स्क्रिन रेकर्डिङ रोक्छ"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "एप लक छ"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "जारी राख्न पहिचान पुष्टि गर्नुहोस्"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "खोल्नुहोस्"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "एप खोल्नुहोस्"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "डाउनलोड हुँदैछ"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "क्र्यास लग निर्यात"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "क्र्यास लग छैन"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "%d त्रुटि लग निर्यात भयो"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "विस्तृत लगिङ"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "प्रणाली लगमा डिबग विवरण समेट्नुहोस्"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "डिबग जानकारी"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "कार्य असफल"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "डेटा"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "नेटवर्क"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "पुस्तकालय"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "वाचक"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "डेटाबेस खाली गर्नुहोस्"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "पुस्तकालयमा नभएका सबै इन्ट्री हटाउने? तिनीहरूको पढाइ इतिहास र प्रगति हराउनेछ।"
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "%d इन्ट्री हटाइयो"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "सम्मिलित वेब डेटा खाली गर्नुहोस्"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "सम्मिलित वेब डेटा खाली भयो"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "HTTPS मार्फत DNS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "अक्षम"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "अनुकूलित User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "पूर्वनिर्धारितका लागि खाली छोड्नुहोस्"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent सुरक्षित भयो"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "User-Agent रिसेट"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "पुस्तकालय कभर ताजा गर्नुहोस्"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "कभर ताजा हुँदैछ…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "%d इन्ट्री ताजा भयो"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "शृङ्खला वाचन सेटिङ रिसेट"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "शृङ्खलाका लागि राखिएका पढाइ मोड विश्वव्यापी पूर्वनिर्धारितमा रिसेट गर्ने?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "%d इन्ट्री रिसेट भयो"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "उच्च गुणस्तर रेन्डरिङ"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "कार्यसम्पादन खर्चमा चिकनो चित्र स्केल"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "एप संस्करण"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "यन्त्र मोडेल"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "यन्त्र प्रकार"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "प्रणाली संस्करण"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "API संस्करण"
+    },
+    {
+      "name": "debug_screen",
+      "value": "स्क्रिन"
+    },
+    {
+      "name": "debug_language",
+      "value": "भाषा"
     }
   ]
 }

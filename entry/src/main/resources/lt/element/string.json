@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "Bibliotekoje nėra leidžiamos mangos"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "Kopijuoti į iškarpinę"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "Tema"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "Numatyta"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "Vidurnakčio sutemos"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "Braškių daikiris"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "Žalsvai mėlyna ir turkio"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "Potvynio banga"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "In ir jang"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "Tokijo naktis"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "Vienspalvė"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "Žalias obuolys"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "Levanda"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "Atnaujinti"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "Atidaryti naršyklėje"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "Nepavyko atidaryti naršyklėje"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "Kopijuoti URL"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL nukopijuotas"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "Kito skyriaus nėra"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "Filtrų nėra"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "Atstatyti"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "Nepaisyti"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "Įtraukti"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "Neįtraukti"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "Nepavyko pasirinkti aplanko"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "Reikia aplanko, ne failo"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "Pasirinkti aplanką"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "Sinchronizuoti"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "Keisti aplanką"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "Vietinis aplankas"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "Sinchronizuojamas aplankas…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "Aplankas sinchronizuotas"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "Sinchronizuoti nepavyko: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "Nepavyksta pasiekti vietinio aplanko, pasirinkite jį iš naujo"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "Nepavyko išsaugoti prieigos prie aplanko"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "Šiame įrenginyje aplanko pasirinkimas nepalaikomas"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "Vietinis aplankas dar nenustatytas"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "Vietiniame aplanke nieko nerasta"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "comic poaplankyje nieko nerasta"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "novel poaplankyje nieko nerasta"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "anime poaplankyje nieko nerasta"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "Atšaukti viską"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "Skyriai didėjančiai"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "Skyriai mažėjančiai"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "Rikiuoti"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "Filtruoti"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "Pagal šaltinį"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "Pagal skyriaus numerį"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "Pagal įkėlimo datą"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "Pagal pavadinimą"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "Atstatyti"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "Atsisiųsta"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "Neskaityta"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "Pažymėta žyme"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "Pasirinkta: %d"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "Pažymėti kaip skaitytą"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "Pažymėti kaip neskaitytą"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "Žymė"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "Ištrinti"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "Kiti %d neskaityti"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "Visi neskaityti"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "Pažymėti skyriai"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d skyriai eilėje"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "Neskaitytų skyrių nėra"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "Nėra atsisiuntimų, kuriuos būtų galima ištrinti"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "Ištrinta %d atsisiuntimų"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "Sekimas"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "Atšaukti atsisiuntimą"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "Atsisiuntimas atšauktas"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "Ištrinti atsisiųstą skyrių?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "Atsisiuntimas ištrintas"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "Nukopijuota į iškarpinę"
+    },
+    {
+      "name": "transition_finished",
+      "value": "Baigta:"
+    },
+    {
+      "name": "transition_current",
+      "value": "Dabartinis:"
+    },
+    {
+      "name": "transition_next",
+      "value": "Kitas:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "Ankstesnis:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "Kito skyriaus nėra"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "Ankstesnio skyriaus nėra"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "Svetainė"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "Laukia naujinimų"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "Atnaujinti visus"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "Kelios"
+    },
+    {
+      "name": "about_row_version",
+      "value": "Versija"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "Derinimo informacija nukopijuota"
+    },
+    {
+      "name": "licenses_title",
+      "value": "Atvirojo kodo licencijos"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "Atidaryti pagrindinį puslapį"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "Visas licencijos tekstas"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "Programos architektūros ir sąveikos pavyzdys"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "Programos piktogramos"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "Platformos SDK ir ArkUI karkasas"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "AVIF vaizdų dekodavimas"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "AV1 dekoderis AVIF dekodavimui"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "HTML analizė plėtiniams"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "Vaizdo atkūrimo talpykla"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL ir URLSearchParams plėtiniams (vykdymo aplinka)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder ir TextDecoder plėtiniams (vykdymo aplinka)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "WebIDL reikšmių keitimas, whatwg-url priklausomybė (vykdymo aplinka)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "MD5 santrauka plėtiniams (vykdymo aplinka)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "AES-CBC šifravimas ir iššifravimas plėtiniams (vykdymo aplinka)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "SHA/HMAC/PBKDF2 santrauka plėtiniams (vykdymo aplinka)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "AES-GCM šifravimas ir iššifravimas plėtiniams (vykdymo aplinka)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "Privatumo politika"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi yra vietinis mangos, romanų ir vaizdo įrašų skaitytuvas. Pati programa nerenka, neįkelia ir nebendrina jokių asmens duomenų."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "Vietiniai duomenys"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "Biblioteka, skaitymo istorija, atsisiuntimai, nuostatos ir sekimo prisijungimai saugomi tik įrenginyje. Juos galite bet kada eksportuoti arba ištrinti Nustatymuose. Pašalinus programą jie ištrinami visam laikui."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "Internetiniai šaltiniai ir plėtiniai"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "Internetinį turinį teikia trečiųjų šalių plėtiniai ir svetainės. Naršant ar skaitant iš internetinio šaltinio užklausos siunčiamos tiesiai į tą svetainę pagal jos privatumo politiką. Programa nevaldo trečiųjų šalių paslaugų ir už jas neatsako."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "Sekimo paslaugos"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "Galite pasirinktinai prijungti paskyras, tokias kaip AniList, MyAnimeList, Bangumi, Kitsu ir Shikimori. Prisijungimą patvirtinate sekimo paslaugos puslapyje, o prieigos raktai saugomi tik įrenginyje skaitymo eigai sinchronizuoti."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "Leidimai"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "Interneto prieiga naudojama turiniui įkelti, failų prieiga vietiniams importams ir atsarginėms kopijoms, o biometrinis tapatybės nustatymas tik vietiniam programos užraktui. Joks leidimas nenaudojamas asmens duomenims rinkti."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "Kontaktai"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi yra atvirojo kodo projektas, įkvėptas Mihon. Jei turite klausimų apie šį privatumo pareiškimą, rašykite per Discord arba GitHub."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "Įrašyti kaip CBZ archyvą"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "Skaidyti aukštus vaizdus"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "Pagerina skaitytuvo spartą"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "Lygiagretumas"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "Lygiagretūs šaltinių atsisiuntimai"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "Lygiagretūs puslapių atsisiuntimai"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "Vienu metu atsisiunčiami puslapiai šaltiniui"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "Trinti skyrius"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "Pažymėjus kaip skaitytą rankiniu būdu"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "Automatiškai trinti perskaičius"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "Išjungta"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "Paskutinis skaitytas skyrius"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "Priešpaskutinis skaitytas skyrius"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "Trečias nuo galo skaitytas skyrius"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "Ketvirtas nuo galo skaitytas skyrius"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "Penktas nuo galo skaitytas skyrius"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "Leisti trinti pažymėtus skyrius"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "Automatinis atsisiuntimas"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "Atsisiųsti naujus skyrius"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "Automatiškai atsisiunčia naujus skyrius, rastus atnaujinant biblioteką"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "Praleisti pasikartojančius skaitytus skyrius"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "Atsisiųsti iš anksto"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "Automatinis atsisiuntimas skaitant"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "Kitas neskaitytas skyrius"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "Kiti %d neskaityti skyriai"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "Veikia tik jei dabartinis skyrius ir kitas jau atsisiųsti."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "Romanai"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "Vaizdo įrašai"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "Šio tipo šaltinių dar nėra"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "Vietiniai romanai"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "Vietiniai vaizdo įrašai"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "Tipas"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "Visi"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "Pradėti leisti"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "Tęsti leidimą"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "Šį srautą galima leisti tik internetu"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "Šrifto dydis"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "Eilučių tarpas"
+    },
+    {
+      "name": "novel_empty",
+      "value": "Šiame skyriuje nėra teksto"
+    },
+    {
+      "name": "novel_prev",
+      "value": "Ankstesnis skyrius"
+    },
+    {
+      "name": "novel_next",
+      "value": "Kitas skyrius"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "Slinktis"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "Puslapiais"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "Du puslapiai"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "Puslapiavimo režimas"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "Pastraipų tarpas"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "Rodymas"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "Tekstas"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "Vienas puslapis (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "Vienas puslapis (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "Puslapio perėjimas"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "Modeliavimas"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "Slinktis"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "Uždengimas"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "Teksto spalva"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "Šviesi"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "Tamsi"
+    },
+    {
+      "name": "novel_margin",
+      "value": "Paraštės"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "Šriftas"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "Numatytasis"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "Su užraitais"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "Be užraitų"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "Lygiaplotis"
+    },
+    {
+      "name": "novel_tts",
+      "value": "Skaityti garsiai"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "Pradėti skaityti garsiai"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "Stabdyti skaitymą garsiai"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "Skaitymo greitis"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "Pasiektas šio skyriaus galas"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "Kalbos sintezė nepavyko: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "Pristabdyti"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "Tęsti"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "Dabar skaitoma"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "Pastraipa %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "Miego laikmatis"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "Išjungta"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d min."
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "Sustos po %1$s"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "Nieko neskaitoma garsiai"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "Atidaryti leistuvą"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "Skyriai"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "Pagal laiką"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "Pagal skyrius"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "Po šio skyriaus"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "Po %1$d skyrių"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d sk."
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "Sustos po šio skyriaus"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "Sustos po %1$d skyrių"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "Laiko programą fone, kol romanas skaitomas garsiai"
+    },
+    {
+      "name": "video_play",
+      "value": "Leisti"
+    },
+    {
+      "name": "video_pause",
+      "value": "Pristabdyti"
+    },
+    {
+      "name": "video_prev",
+      "value": "Ankstesnis"
+    },
+    {
+      "name": "video_next",
+      "value": "Kitas"
+    },
+    {
+      "name": "video_settings",
+      "value": "Leistuvo nustatymai"
+    },
+    {
+      "name": "video_episodes",
+      "value": "Serijos"
+    },
+    {
+      "name": "video_quality",
+      "value": "Kokybė"
+    },
+    {
+      "name": "video_speed",
+      "value": "Atkūrimo greitis"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "Danmaku įjungta"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "Danmaku išjungta"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "Įkeliamas danmaku…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "Įkelta danmaku: %d"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "Atitinkančio danmaku nerasta"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "Nepavyko įkelti danmaku"
+    },
+    {
+      "name": "video_locked",
+      "value": "Valdikliai užrakinti"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "Valdikliai atrakinti"
+    },
+    {
+      "name": "player_set_title",
+      "value": "Leistuvas"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "Atkūrimas"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "Numatytasis greitis"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "Automatiškai leisti kitą seriją"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "Pasibaigus automatiškai leidžia kitą seriją"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "Rodyti danmaku"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "Danmaku šrifto dydis"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "Danmaku nepermatomumas"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "Danmaku sritis"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "Danmaku greitis"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "Danmaku duomenys iš dandanplay (reikia tinklo)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "Ekrano mastelio režimas"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "Talpinti"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "Užpildyti"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "Ištempti"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "Lėtas"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Įprastas"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "Greitas"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "Labai greitas"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 ekrano"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "Pusė ekrano"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 ekrano"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "Visas ekranas"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "Mangos laikas"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "Romano laikas"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "Vaizdo laikas"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "Viršelis"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "Redaguoti viršelį"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "Atstatyti viršelį"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "Viršelis atnaujintas"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "Viršelis atkurtas"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "Nepavyko atnaujinti viršelio"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "Viršelis įrašytas"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "Klaida įrašant viršelį"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "Klaida bendrinant viršelį"
+    },
+    {
+      "name": "detail_edit",
+      "value": "Redaguoti"
+    },
+    {
+      "name": "detail_delete",
+      "value": "Ištrinti"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "Sveiki!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "Pirmiausia sutvarkykime kelis dalykus. Vėliau juos visada galėsite pakeisti nustatymuose."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "Toliau"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "Pradėti"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "Įvadinis vadovas"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "Darbo pradžios vadovas"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "Naujokas %s? Rekomenduojame darbo pradžios vadovą."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "Iš naujo diegiate %s?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "Sinchronizuojama, palaukite"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "Atsisiųsti nepavyko"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "Nepavyko įkelti informacijos"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "Netinkami puslapio parametrai"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "Ruošiami atsisiuntimai…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "Nepavyko perkelti į kategoriją"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "Nepavyko įkelti perkėlimo sąrašo"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "Veiksmas nepavyko"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "Įkėlimo klaida: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "Įkeliama…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "Įkelti nepavyko: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "Atvaizdavimas baigėsi (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "Paskutinė automatinė atsarginė kopija nepavyko"
+    },
+    {
+      "name": "category_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "category_novel",
+      "value": "Romanai"
+    },
+    {
+      "name": "category_video",
+      "value": "Vaizdo įrašai"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "Licencijuota"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "TTS variklis užimtas, bandykite vėliau"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "TTS variklis nebeatsako ir skaitymas sustabdytas"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "TTS variklis nepasiekiamas"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "Reikia žmogaus patvirtinimo; užbaikite patvirtinimo puslapį ir bandykite dar kartą"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "Šaltinis nepasiekiamas"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "Šiame skyriuje nėra turinio"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "Atkurti nepavyko"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "Leidžiamų vaizdo įrašų nerasta"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "Vietinis"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "Atšaukta"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "Atsisiųsti nepavyko"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "Atsisiuntimo laikas baigėsi (serveris neatsako)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "Atsisiųsti nepavyko (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "Šis vaizdo įrašas transliuojamas internetu ir jo negalima atsisiųsti"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "Atsisiuntimo tarnyba nepaleista"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "Šaltinis nerastas: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "Skyriaus failas nerastas"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "Nepalaikomas skyriaus formatas"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "Vaizdo failas nerastas"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "Vietiniu būdu importuota manga"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "Vietiniu būdu importuoti romanai"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "Vietiniu būdu importuoti vaizdo įrašai"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "Nesaugus peradresavimas užblokuotas: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "Per daug peradresavimų: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "Nepavyko nustatyti serverio adreso; patikrinkite tinklą ir bandykite dar kartą"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "Nepavyko prisijungti prie serverio; patikrinkite tinklą ir bandykite dar kartą"
+    },
+    {
+      "name": "net_timeout",
+      "value": "Užklausos laikas baigėsi; bandykite vėliau"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "Saugus ryšys nepavyko (SSL klaida); bandykite vėliau"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "Ryšys nutrūko; bandykite dar kartą"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "Tinklo užklausa nepavyko: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "Nepavyko sukurti JSVM variklio"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "Nepavyko paleisti papildinio scenarijaus"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "Plėtinys neįkeltas"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "Plėtinys sugadintas; įdiekite arba įkelkite jį iš naujo"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "Plėtinio paleidimas nepavyko"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "Plėtinio paleidimo laikas baigėsi"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "Plėtinio iškvietos laikas baigėsi: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "Plėtinio iškvieta nepavyko"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "Plėtinys grąžino netinkamą JSON"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "Nežinoma plėtinio klaida"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "Netinkamas manifest.key (tik mažosios raidės, skaitmenys ir apatiniai brūkšniai)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "Trūksta manifest.name"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "Netinkamas manifest.versionCode"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "Šiam papildiniui reikia naujesnės programos (%s); pirmiausia atnaujinkite"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "Šiam papildiniui reikia programos versionCode >= %s; pirmiausia atnaujinkite"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "Nepavyko perskaityti pasirinkto failo: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "Papildinių paketų URL turi naudoti https; atviri atsisiuntimai atmetami"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "Vientisumo patikra nepavyko (sha256 nesutampa); diegimas atšauktas"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "Papildinio pakete trūksta main.js"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "Nepavyko pakeisti papildinio katalogo: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "Papildinio pakete nerastas manifest.json"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "Saugyklos failų URL turi naudoti https; http:// įrašai atmetami"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "Netinkamas vykdymo aplinkos pavadinimas: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "Trūksta vykdymo aplinkos komponento: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "Papildinys grąžino netinkamą mangos informaciją"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "Papildinys neeksportuoja getChapterText"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "Papildinys neeksportuoja getVideoList"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "Nepavyko įrašyti papildinio paketo: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "Nepavyko pašalinti papildinio katalogo: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "Nepavyko perskaityti įdiegto papildinio failų: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "Nepavyko patikrinti paketo vientisumo: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "Nepavyko išskleisti papildinio paketo: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "Nepavyko perskaityti manifest.json pakete: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "Nepavyko paruošti papildinio failų: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "Sekimas"
+    },
+    {
+      "name": "track_login",
+      "value": "Prisijungti"
+    },
+    {
+      "name": "track_logout",
+      "value": "Atsijungti"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "Atsijungti nuo %s?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "Prisijungta prie %s"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "Atsijungta"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "Prisijungti nepavyko"
+    },
+    {
+      "name": "track_username",
+      "value": "Naudotojo vardas"
+    },
+    {
+      "name": "track_password",
+      "value": "Slaptažodis"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "Automatiškai naujinti sekimo eigą"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "Ieškoti %s"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "Paieška nepavyko"
+    },
+    {
+      "name": "track_no_results",
+      "value": "Rezultatų nerasta"
+    },
+    {
+      "name": "track_added",
+      "value": "Sekimas pridėtas"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "Nepavyko pridėti sekimo"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "Nepavyko atnaujinti sekimo"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "Nepavyko pašalinti iš paslaugos"
+    },
+    {
+      "name": "track_status",
+      "value": "Būsena"
+    },
+    {
+      "name": "track_score",
+      "value": "Įvertinimas"
+    },
+    {
+      "name": "track_chapters",
+      "value": "Skyriai"
+    },
+    {
+      "name": "track_start_date",
+      "value": "Pradžios data"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "Pabaigos data"
+    },
+    {
+      "name": "track_private",
+      "value": "Privatu"
+    },
+    {
+      "name": "track_unlink",
+      "value": "Atsieti"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "Pašalinti iš paslaugos"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "Įveskite tinkamą skyriaus numerį"
+    },
+    {
+      "name": "track_reading",
+      "value": "Skaitoma"
+    },
+    {
+      "name": "track_completed",
+      "value": "Baigta"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "Atidėta"
+    },
+    {
+      "name": "track_paused",
+      "value": "Pristabdyta"
+    },
+    {
+      "name": "track_dropped",
+      "value": "Mesta"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "Planuojama skaityti"
+    },
+    {
+      "name": "track_repeating",
+      "value": "Skaitoma iš naujo"
+    },
+    {
+      "name": "track_considering",
+      "value": "Svarstoma"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "Nežinoma"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "Skaitinių sąrašas"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "Pageidavimų sąrašas"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "Baigtų sąrašas"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "Atidėtų sąrašas"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "Nebaigtų sąrašas"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "Įkeliama…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "Įkelti nepavyko: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "Vietinių failų dar nėra, bakstelėkite Importuoti, kad pridėtumėte"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "Pavadinimas"
+    },
+    {
+      "name": "privacy_title",
+      "value": "Privatumas"
+    },
+    {
+      "name": "privacy_group",
+      "value": "Sauga"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "Programos užraktas"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "Pirmiausia nustatykite ekrano užraktą"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "Užrakinti neveikiant"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "Visada"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 minutė"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 minutės"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 minutės"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 minučių"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "Niekada"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "Slėpti pranešimų turinį"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "Saugus ekranas"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "Blokuoja ekrano nuotraukas ir įrašymą"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "Programa užrakinta"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "Patvirtinkite tapatybę, kad tęstumėte"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "Atrakinti"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "Atrakinti programą"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "Atsisiunčiama"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "Eksportuoti strigčių žurnalus"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "Strigčių žurnalų nerasta"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "Eksportuota %d klaidų žurnalų"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "Išsamus žurnalas"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "Įtraukti derinimo informaciją į sistemos žurnalus"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "Derinimo informacija"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "Veiksmas nepavyko"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Duomenys"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "Tinklas"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "Biblioteka"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "Skaitytuvas"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "Išvalyti duomenų bazę"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "Pašalinti visus įrašus, kurių nėra bibliotekoje? Jų skaitymo istorija ir eiga bus prarastos."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "Pašalinta %d įrašų"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "Išvalyti įterptus žiniatinklio duomenis"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "Įterpti žiniatinklio duomenys išvalyti"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS per HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "Išjungta"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "Pasirinktinis User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "Palikite tuščią, kad būtų naudojama numatytoji"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent įrašytas"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "Atstatyti User-Agent"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "Atnaujinti bibliotekos viršelius"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "Atnaujinami viršeliai…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "Atnaujinta %d įrašų"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "Atstatyti serijų skaitytuvo nustatymus"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "Atstatyti kiekvienos serijos skaitymo režimus į bendrą numatytąjį?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "Atstatyta %d įrašų"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "Aukštos kokybės atvaizdavimas"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "Lygesnis vaizdo mastelis spartos sąskaita"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "Programos versija"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "Įrenginio modelis"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "Įrenginio tipas"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "Sistemos versija"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "API versija"
+    },
+    {
+      "name": "debug_screen",
+      "value": "Ekranas"
+    },
+    {
+      "name": "debug_language",
+      "value": "Kalba"
     }
   ]
 }

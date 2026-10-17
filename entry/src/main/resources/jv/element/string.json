@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "Ora ana manga sing isih mlaku ing rak buku"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "Salin menyang papan klip"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "Tema"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "Default"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "Surup tengah wengi"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "Daiquiri stroberi"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "Ijo semu biru & toska"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "Ombak pasang"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "Yin & Yang"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "Wengi Tokyo"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "Siji warna"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "Apel ijo"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "Lavender"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "Segaraké"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "Bukak ing peramban"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "Ora bisa dibukak ing peramban"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "Salin URL"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL disalin"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "Ora ana bab sabanjuré"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "Ora ana saringan"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "Balèkaké"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "Lirwakaké"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "Lebokaké"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "Copot"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "Gagal milih folder"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "Sing dibutuhaké folder, dudu berkas"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "Pilih folder"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "Selarasaké"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "Ganti folder"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "Folder lokal"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "Nyelarasaké folder…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "Folder wis selaras"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "Selaras gagal: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "Ora bisa ngakses folder lokal, pilih manèh"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "Gagal njaga akses menyang folder"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "Milih folder ora didhukung ing piranti iki"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "Folder lokal durung disetel"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "Ora ana apa-apa ing folder lokal"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "Ora ana apa-apa ing subfolder comic"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "Ora ana apa-apa ing subfolder novel"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "Ora ana apa-apa ing subfolder anime"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "Batal kabèh"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "Bab munggah"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "Bab mudhun"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "Urut"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "Saring"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "Miturut sumber"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "Miturut nomer bab"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "Miturut tanggal unggah"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "Miturut jeneng"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "Balèkaké"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "Wis diundhuh"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "Durung diwaca"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "Ditandhai"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d dipilih"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "Tandhani diwaca"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "Tandhani durung diwaca"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "Tandha"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "Busak"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "%d durung diwaca sabanjuré"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "Kabèh sing durung diwaca"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "Bab sing ditandhai"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d bab mlebu antrian"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "Ora ana bab sing durung diwaca"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "Ora ana undhuhan sing dibusak"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "%d undhuhan dibusak"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "Pelacakan"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "Batal undhuhan"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "Undhuhan dibatalaké"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "Busak bab sing wis diundhuh?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "Undhuhan dibusak"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "Disalin menyang papan klip"
+    },
+    {
+      "name": "transition_finished",
+      "value": "Rampung:"
+    },
+    {
+      "name": "transition_current",
+      "value": "Saiki:"
+    },
+    {
+      "name": "transition_next",
+      "value": "Sabanjuré:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "Sadurungé:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "Ora ana bab sabanjuré"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "Ora ana bab sadurungé"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "Situs web"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "Nganyari isih ngenteni"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "Anyari kabèh"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "Pirang-pirang"
+    },
+    {
+      "name": "about_row_version",
+      "value": "Versi"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "Katerangan debug disalin"
+    },
+    {
+      "name": "licenses_title",
+      "value": "Lisensi sumber terbuka"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "Bukak kaca ngarep"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "Tèks lisensi jangkep"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "Rujukan arsitektur aplikasi lan desain interaksi"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "Ikon ing aplikasi"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "SDK platform lan kerangka ArkUI"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "Dekode gambar AVIF"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "Dekoder AV1 kanggo dekode AVIF"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "Ngurai HTML kanggo èkstènsi"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "Cache muter video"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL lan URLSearchParams kanggo èkstènsi (runtime plugin)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder lan TextDecoder kanggo èkstènsi (runtime plugin)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "Ngowahi aji WebIDL, dependensi whatwg-url (runtime plugin)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "Hash MD5 kanggo èkstènsi (runtime plugin)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "Enkripsi lan dekripsi AES-CBC kanggo èkstènsi (runtime plugin)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "Hash SHA/HMAC/PBKDF2 kanggo èkstènsi (runtime plugin)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "Enkripsi lan dekripsi AES-GCM kanggo èkstènsi (runtime plugin)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "Kawicaksanan privasi"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi iku pamaca sing ngunggulaké data lokal kanggo manga, novel, lan video. Aplikasi iki ora ngumpulaké, ngunggah, utawa mbagèkaké data pribadhi."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "Data lokal"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "Rak buku, riwayat waca, cathetan undhuhan, pilihan, lan kredensial pelacak mung disimpen ing piranti sampeyan. Sampeyan bisa ngekspor utawa mbusak kapan wae ing Setelan. Nyopot aplikasi bakal mbusak kabèh kuwi saklawasé."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "Sumber daring lan èkstènsi"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "Isi daring diwènèhaké déning èkstènsi lan situs pihak katelu. Njelajah utawa maca saka sumber daring ngirim panjalukan sampeyan langsung menyang situs kuwi, sing diatur kawicaksanan privasiné dhéwé. Aplikasi ora ngendhalèni lan ora tanggung jawab marang layanan pihak katelu."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "Layanan pelacakan"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "Sampeyan bisa nyambungaké akun pelacak kaya AniList, MyAnimeList, Bangumi, Kitsu, lan Shikimori. Mlebu diidinaké déning sampeyan ing kaca pelacak, lan token akses mung disimpen ing piranti kanggo nyelarasaké kamajuan waca."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "Idin"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "Akses internet kanggo ngamot isi daring, akses berkas kanggo impor lokal lan serep, sarta otentikasi biometrik mung kanggo kunci aplikasi lokal. Ora ana idin sing dianggo ngumpulaké data pribadhi."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "Kontak"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi iku proyek sumber terbuka sing diilhami saka Mihon. Yèn ana pitakonan babagan pernyataan privasi iki, hubungi kita liwat Discord utawa GitHub."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "Simpen minangka arsip CBZ"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "Pisah gambar dhuwur"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "Ndadekaké pamaca luwih lancar"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "Barengan"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "Undhuh sumber bebarengan"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "Undhuh kaca bebarengan"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "Kaca sing diundhuh bebarengan saben sumber"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "Busak bab"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "Sawisé ditandhani diwaca kanthi manual"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "Busak otomatis sawisé diwaca"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "Dipateni"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "Bab sing pungkasan diwaca"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "Bab kapindho saka pungkasan sing diwaca"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "Bab katelu saka pungkasan sing diwaca"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "Bab kapapat saka pungkasan sing diwaca"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "Bab kalima saka pungkasan sing diwaca"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "Idinaké mbusak bab sing ditandhai"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "Undhuh otomatis"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "Undhuh bab anyar"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "Otomatis ngundhuh bab anyar sing ketemu nalika rak buku dianyari"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "Liwati bab duplikat sing wis diwaca"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "Undhuh luwih dhisik"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "Undhuh otomatis nalika maca"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "Bab durung diwaca sabanjuré"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "%d bab durung diwaca sabanjuré"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "Mung mlaku yèn bab saiki lan bab sabanjuré wis diundhuh."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "Novel"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "Video"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "Durung ana sumber kanggo jinis iki"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "Novel lokal"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "Video lokal"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "Jinis"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "Kabèh"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "Wiwit muter"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "Terusaké muter"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "Aliran iki mung bisa diputer daring"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "Ukuran aksara"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "Jarak baris"
+    },
+    {
+      "name": "novel_empty",
+      "value": "Bab iki ora ana tèksé"
+    },
+    {
+      "name": "novel_prev",
+      "value": "Bab sadurungé"
+    },
+    {
+      "name": "novel_next",
+      "value": "Bab sabanjuré"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "Gulir"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "Saben kaca"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "Rong kaca"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "Mode kaca"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "Jarak paragraf"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "Tampilan"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "Tèks"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "Sak kaca (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "Sak kaca (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "Transisi kaca"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "Simulasi"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "Geser"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "Nutupi"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "Werna tèks"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "Padhang"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "Peteng"
+    },
+    {
+      "name": "novel_margin",
+      "value": "Pinggir"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "Aksara"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "Default"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "Serif"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "Sans-serif"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "Jembar padha"
+    },
+    {
+      "name": "novel_tts",
+      "value": "Waca banter"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "Wiwit waca banter"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "Mandheg waca banter"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "Kacepetan waca"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "Wis tekan pungkasan bab iki"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "Tèks dadi swara gagal: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "Mandheg sedhela"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "Terusaké"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "Lagi diwaca"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "Paragraf %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "Wektu turu"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "Mati"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d mnt"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "Mandheg ing %1$s"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "Ora ana sing lagi diwaca banter"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "Bukak pamuter"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "Bab"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "Miturut wektu"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "Miturut bab"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "Sawisé bab iki"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "Sawisé %1$d bab"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d bab"
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "Mandheg sawisé bab iki"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "Mandheg sawisé %1$d bab"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "Njaga aplikasi tetep mlaku ing latar nalika novel diwaca banter"
+    },
+    {
+      "name": "video_play",
+      "value": "Puter"
+    },
+    {
+      "name": "video_pause",
+      "value": "Mandheg sedhela"
+    },
+    {
+      "name": "video_prev",
+      "value": "Sadurungé"
+    },
+    {
+      "name": "video_next",
+      "value": "Sabanjuré"
+    },
+    {
+      "name": "video_settings",
+      "value": "Setelan pamuter"
+    },
+    {
+      "name": "video_episodes",
+      "value": "Episode"
+    },
+    {
+      "name": "video_quality",
+      "value": "Mutu"
+    },
+    {
+      "name": "video_speed",
+      "value": "Kacepetan muter"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "Danmaku urip"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "Danmaku mati"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "Ngamot danmaku…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%d danmaku diamot"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "Ora ana danmaku sing cocog"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "Gagal ngamot danmaku"
+    },
+    {
+      "name": "video_locked",
+      "value": "Kontrol dikunci"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "Kontrol dibukak"
+    },
+    {
+      "name": "player_set_title",
+      "value": "Pamuter"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "Pamuteran"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "Kacepetan default"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "Puter otomatis episode sabanjuré"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "Puter episode sabanjuré otomatis yèn rampung"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "Tuduhaké danmaku"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "Ukuran aksara danmaku"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "Kekandelan danmaku"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "Wilayah tampilan danmaku"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "Kacepetan danmaku"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "Data danmaku saka dandanplay (butuh jaringan)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "Mode skala layar"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "Pas"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "Kebak"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "Regang"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "Alon"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Biasa"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "Cepet"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "Cepet banget"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 layar"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "Setengah layar"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 layar"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "Layar kebak"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "Wektu manga"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "Wektu novel"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "Wektu video"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "Sampul"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "Sunting sampul"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "Balèkaké sampul"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "Sampul dianyari"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "Sampul dibalèkaké"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "Ora bisa nganyari sampul"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "Sampul disimpen"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "Kaluputan nyimpen sampul"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "Kaluputan mbagèkaké sampul"
+    },
+    {
+      "name": "detail_edit",
+      "value": "Sunting"
+    },
+    {
+      "name": "detail_delete",
+      "value": "Busak"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "Sugeng rawuh!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "Ayo disiapaké dhisik. Sampeyan isih bisa ngganti iki mengko ing setelan."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "Sabanjuré"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "Wiwiti"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "Pandhuan wiwitan"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "Pandhuan miwiti"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "Anyar nganggo %s? Apiké delengen pandhuan miwiti."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "Masang manèh %s?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "Selaras lagi mlaku, mangga dienteni"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "Undhuhan gagal"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "Gagal ngamot rincian"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "Parameter kaca ora sah"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "Nyiapaké undhuhan…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "Gagal mindhah menyang kategori"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "Gagal ngamot dhaptar migrasi"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "Operasi gagal"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "Kaluputan ngamot: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "Ngamot…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "Gagal ngamot: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "Render metu (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "Serep otomatis pungkasan gagal"
+    },
+    {
+      "name": "category_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "category_novel",
+      "value": "Novel"
+    },
+    {
+      "name": "category_video",
+      "value": "Video"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "Duwe lisensi"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "Mesin TTS lagi repot, coba manèh mengko"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "Mesin TTS mandheg nanggapi lan wacan diendhegaké"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "Mesin TTS ora sumadhiya"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "Perlu verifikasi manungsa, rampungaké kaca verifikasi banjur coba manèh"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "Sumber ora sumadhiya"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "Bab iki ora ana isiné"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "Pamuteran gagal"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "Ora ana video sing bisa diputer"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "Lokal"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "Dibatalaké"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "Undhuhan gagal"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "Undhuhan kehabisan wektu (server ora nanggapi)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "Undhuhan gagal (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "Video iki dialiraké daring lan ora bisa diundhuh"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "Layanan undhuhan durung diwiwiti"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "Sumber ora ketemu: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "Berkas bab ora ketemu"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "Format bab ora didhukung"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "Berkas video ora ketemu"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "Manga sing diimpor sacara lokal"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "Novel sing diimpor sacara lokal"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "Video sing diimpor sacara lokal"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "Pangalihan ora aman diblokir: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "Pangalihan kakèhan: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "Ora bisa ngrampungaké alamat server, priksa sambungan jaringan banjur coba manèh"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "Ora bisa nyambung menyang server, priksa jaringan banjur coba manèh"
+    },
+    {
+      "name": "net_timeout",
+      "value": "Panjalukan kehabisan wektu, coba manèh mengko"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "Sambungan aman gagal (kaluputan SSL), coba manèh mengko"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "Sambungan keputus, coba manèh"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "Panjalukan jaringan gagal: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "Gagal nggawé mesin JSVM"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "Gagal nglakokaké skrip plugin"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "Èkstènsi durung diamot"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "Èkstènsi rusak, pasang manèh utawa amot manèh"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "Wiwitan èkstènsi gagal"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "Wiwitan èkstènsi kehabisan wektu"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "Telpon èkstènsi kehabisan wektu: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "Telpon èkstènsi gagal"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "Èkstènsi mbalèkaké JSON sing ora sah"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "Kaluputan èkstènsi ora dingertèni"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "manifest.key ora sah (mung aksara cilik, angka, lan garis ngisor)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name ora ana"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "manifest.versionCode ora sah"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "Plugin iki butuh aplikasi sing luwih anyar (%s), anyari dhisik"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "Plugin iki butuh versionCode aplikasi >= %s, anyari dhisik"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "Gagal maca berkas sing dipilih: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "URL paket plugin kudu nganggo https, undhuhan tèks biasa ditolak"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "Priksa integritas plugin gagal (sha256 ora cocog), masang dibatalaké"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "Paket plugin ora duwé main.js"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "Gagal ngganti direktori plugin: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "manifest.json ora ketemu ing paket plugin"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "URL berkas repositori kudu nganggo https, entri http:// ditolak"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "Jeneng runtime plugin ora sah: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "Komponen runtime plugin ora ana: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "Plugin mbalèkaké rincian manga sing ora sah"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "Plugin ora ngekspor getChapterText"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "Plugin ora ngekspor getVideoList"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "Gagal nyimpen paket plugin: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "Gagal mbusak direktori plugin: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "Gagal maca berkas plugin sing wis dipasang: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "Gagal merifikasi integritas paket plugin: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "Gagal ngekstrak paket plugin: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "Gagal maca manifest.json ing paket plugin: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "Gagal nyiapaké berkas plugin: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "Pelacakan"
+    },
+    {
+      "name": "track_login",
+      "value": "Mlebu"
+    },
+    {
+      "name": "track_logout",
+      "value": "Metu"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "Metu saka %s?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "Mlebu menyang %s"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "Wis metu"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "Mlebu gagal"
+    },
+    {
+      "name": "track_username",
+      "value": "Jeneng panganggo"
+    },
+    {
+      "name": "track_password",
+      "value": "Tembung sandhi"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "Anyari kamajuan pelacakan otomatis"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "Golèk ing %s"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "Panggolekan gagal"
+    },
+    {
+      "name": "track_no_results",
+      "value": "Ora ana asil"
+    },
+    {
+      "name": "track_added",
+      "value": "Pelacakan ditambahaké"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "Gagal nambahaké pelacakan"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "Gagal nganyari pelacakan"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "Gagal mbusak saka layanan"
+    },
+    {
+      "name": "track_status",
+      "value": "Status"
+    },
+    {
+      "name": "track_score",
+      "value": "Skor"
+    },
+    {
+      "name": "track_chapters",
+      "value": "Bab"
+    },
+    {
+      "name": "track_start_date",
+      "value": "Tanggal wiwit"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "Tanggal rampung"
+    },
+    {
+      "name": "track_private",
+      "value": "Pribadhi"
+    },
+    {
+      "name": "track_unlink",
+      "value": "Pedhot tautan"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "Busak saka layanan"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "Lebokaké nomer bab sing sah"
+    },
+    {
+      "name": "track_reading",
+      "value": "Lagi diwaca"
+    },
+    {
+      "name": "track_completed",
+      "value": "Rampung"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "Ditahan"
+    },
+    {
+      "name": "track_paused",
+      "value": "Mandheg sedhela"
+    },
+    {
+      "name": "track_dropped",
+      "value": "Dilirwakaké"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "Rencana maca"
+    },
+    {
+      "name": "track_repeating",
+      "value": "Mbalèni"
+    },
+    {
+      "name": "track_considering",
+      "value": "Dipertimbangaké"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "Ora dingertèni"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "Dhaptar waca"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "Dhaptar kepinginan"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "Dhaptar rampung"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "Dhaptar ditahan"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "Dhaptar durung rampung"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "Ngamot…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "Gagal ngamot: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "Durung ana berkas lokal, tutul Impor kanggo nambah"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "Jeneng"
+    },
+    {
+      "name": "privacy_title",
+      "value": "Privasi"
+    },
+    {
+      "name": "privacy_group",
+      "value": "Keamanan"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "Kunci aplikasi"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "Setel kunci layar dhisik"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "Kunci nalika nganggur"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "Tansah"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 menit"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 menit"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 menit"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 menit"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "Ora tau"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "Delikaké isi notifikasi"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "Layar aman"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "Mblokir potret layar lan rekaman layar"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "Aplikasi dikunci"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "Verifikasi jatidiri kanggo nerusaké"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "Bukak kunci"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "Bukak kunci aplikasi"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "Ngundhuh"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "Ekspor log rusak"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "Ora ana log rusak"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "%d log kaluputan diekspor"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "Cathetan rinci"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "Lebokaké rincian tataran debug ing log sistem"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "Info debug"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "Tindakan gagal"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Data"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "Jaringan"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "Rak buku"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "Pamaca"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "Resiki basis data"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "Busak kabèh entri sing ora ana ing rak buku? Riwayat waca lan kamajuan entri iki bakal ilang."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "%d entri dibusak"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "Resiki data web sing ditempelaké"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "Data web sing ditempelaké diresiki"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS over HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "Dipateni"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "User-Agent khusus"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "Kosongaké kanggo nganggo default"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent disimpen"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "Balèkaké User-Agent"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "Segaraké sampul rak buku"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "Nyegaraké sampul…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "%d entri disegaraké"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "Balèkaké setelan pamaca saben seri"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "Balèkaké mode waca sing disetel saben seri menyang default global?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "%d entri dibalèkaké"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "Rendering mutu dhuwur"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "Skala gambar luwih alus kanthi ngorbanaké kinerja"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "Versi aplikasi"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "Modhèl piranti"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "Jinis piranti"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "Versi sistem"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "Versi API"
+    },
+    {
+      "name": "debug_screen",
+      "value": "Layar"
+    },
+    {
+      "name": "debug_language",
+      "value": "Basa"
     }
   ]
 }

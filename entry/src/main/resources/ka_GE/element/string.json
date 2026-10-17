@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "ბიბლიოთეკაში მიმდინარე მანგა არ არის"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "ბუფერში კოპირება"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "თემა"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "ნაგულისხმევი"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "შუაღამის ბინდი"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "მარწყვის Daiquiri"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "ცისფერი და ფირუზი"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "მოქცევა"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "ინი და იანი"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "ტოკიოს ღამე"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "ერთფეროვანი"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "მწვანე ვაშლი"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "ლავანდა"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "განახლება"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "ბრაუზერში გახსნა"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "ბრაუზერში გახსნა ვერ მოხერხდა"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "URL-ის კოპირება"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL დაკოპირდა"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "შემდეგი თავი არ არის"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "ფილტრი არ არის"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "აღდგენა"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "უგულებელყოფა"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "ჩართვა"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "გამორიცხვა"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "საქაღალდის არჩევა ვერ მოხერხდა"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "საჭიროა საქაღალდე, არა ფაილი"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "საქაღალდის არჩევა"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "სინქრონიზაცია"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "საქაღალდის შეცვლა"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "ადგილობრივი საქაღალდე"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "საქაღალდე სინქრონდება…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "საქაღალდე სინქრონდა"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "სინქრონიზაცია ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "ადგილობრივ საქაღალდეზე წვდომა არ არის, თავიდან აირჩიეთ"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "საქაღალდეზე წვდომა ვერ შენარჩუნდა"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "ამ მოწყობილობაზე საქაღალდის არჩევა არ არის მხარდაჭერილი"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "ადგილობრივი საქაღალდე ჯერ არ არის არჩეული"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "ადგილობრივ საქაღალდეში არაფერი მოიძებნა"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "comic ქვესაქაღალდეში არაფერი მოიძებნა"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "novel ქვესაქაღალდეში არაფერი მოიძებნა"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "anime ქვესაქაღალდეში არაფერი მოიძებნა"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "ყველას გაუქმება"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "თავი ზრდადად"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "თავი კლებადად"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "დალაგება"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "ფილტრი"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "წყაროს მიხედვით"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "თავის ნომრის მიხედვით"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "ატვირთვის თარიღით"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "სახელით"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "აღდგენა"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "ჩამოტვირთული"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "წაუკითხავი"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "სანიშნიანი"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d არჩეულია"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "წაკითხულად მონიშვნა"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "წაუკითხავად მონიშვნა"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "სანიშნე"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "წაშლა"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "შემდეგი %d წაუკითხავი"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "ყველა წაუკითხავი"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "სანიშნიანი თავები"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d თავი რიგში დაემატა"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "წაუკითხავი თავი არ არის"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "წასაშლელი ჩამოტვირთვა არ არის"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "წაიშალა %d ჩამოტვირთვა"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "თვალყური"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "ჩამოტვირთვის გაუქმება"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "ჩამოტვირთვა გაუქმდა"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "წაიშალოს ჩამოტვირთული თავი?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "ჩამოტვირთვა წაიშალა"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "დაკოპირდა ბუფერში"
+    },
+    {
+      "name": "transition_finished",
+      "value": "დასრულებული:"
+    },
+    {
+      "name": "transition_current",
+      "value": "მიმდინარე:"
+    },
+    {
+      "name": "transition_next",
+      "value": "შემდეგი:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "წინა:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "შემდეგი თავი არ არის"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "წინა თავი არ არის"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "ვებსაიტი"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "მოლოდინშია განახლებები"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "ყველას განახლება"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "მრავალენოვანი"
+    },
+    {
+      "name": "about_row_version",
+      "value": "ვერსია"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "გამართვის ინფორმაცია დაკოპირდა"
+    },
+    {
+      "name": "licenses_title",
+      "value": "ღია კოდის ლიცენზიები"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "მთავარი გვერდის გახსნა"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "ლიცენზიის სრული ტექსტი"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "აპის არქიტექტურისა და ურთიერთქმედების ნიმუში"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "აპშიდა ხატულები"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "პლატფორმის SDK და ArkUI ჩარჩო"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "AVIF სურათის გაშიფვრა"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "AV1 დეკოდერი AVIF გაშიფვრისთვის"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "HTML დამუშავება გაფართოებებისთვის"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "ვიდეოს დაკვრის ქეში"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL და URLSearchParams გაფართოებებისთვის (პლაგინის გარემო)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder და TextDecoder გაფართოებებისთვის (პლაგინის გარემო)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "WebIDL მნიშვნელობის გარდაქმნა, whatwg-url დამოკიდებულება (პლაგინის გარემო)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "MD5 ჰეშირება გაფართოებებისთვის (პლაგინის გარემო)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "AES-CBC დაშიფვრა და გაშიფვრა გაფართოებებისთვის (პლაგინის გარემო)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "SHA/HMAC/PBKDF2 ჰეშირება გაფართოებებისთვის (პლაგინის გარემო)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "AES-GCM დაშიფვრა და გაშიფვრა გაფართოებებისთვის (პლაგინის გარემო)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "კონფიდენციალურობის პოლიტიკა"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi არის მანგის, რომანებისა და ვიდეოს ადგილობრივი წამკითხველი. აპი თავად არ აგროვებს, არ ტვირთავს და არ აზიარებს პირად მონაცემებს."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "ადგილობრივი მონაცემები"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "თქვენი ბიბლიოთეკა, კითხვის ისტორია, ჩამოტვირთვის ჩანაწერები, პარამეტრები და ტრეკერის მონაცემები ინახება მხოლოდ თქვენს მოწყობილობაზე. მათი ექსპორტი ან წაშლა შეგიძლიათ ნებისმიერ დროს პარამეტრებში. აპის წაშლა მათ სამუდამოდ შლის."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "ონლაინ წყაროები და გაფართოებები"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "ონლაინ შიგთავსს იძლევა მესამე მხარის გაფართოებები და ვებსაიტები. ონლაინ წყაროდან დათვალიერება ან კითხვა მოთხოვნებს პირდაპირ იმ საიტზე აგზავნის; ეს საიტის საკუთარ კონფიდენციალურობის პოლიტიკას ექვემდებარება. აპი არ აკონტროლებს მესამე მხარის სერვისებს და არ არის მათზე პასუხისმგებელი."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "თვალყურის სერვისები"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "სურვილისამებრ შეგიძლიათ დააკავშიროთ ტრეკერის ანგარიშები, როგორიცაა AniList, MyAnimeList, Bangumi, Kitsu და Shikimori. შესვლა ხდება ტრეკერის საკუთარ გვერდზე თქვენი დასტურით; წვდომის ნიშნები კითხვის პროგრესის სინქრონიზაციისთვის მხოლოდ მოწყობილობაზე ინახება."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "ნებართვები"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "ინტერნეტზე წვდომა ონლაინ შიგთავსის ჩატვირთვისთვისაა, ფაილზე წვდომა ადგილობრივი იმპორტისა და რეზერვისთვის, ბიომეტრია კი მხოლოდ ადგილობრივი აპის საკეტისთვის. არც ერთი ნებართვა პირადი მონაცემების შესაგროვებლად არ გამოიყენება."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "კონტაქტი"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi არის ღია კოდის პროექტი, შთაგონებული Mihon-ით. თუ ამ კონფიდენციალურობის განცხადებაზე გაქვთ კითხვები, მოგვწერეთ Discord-ით ან GitHub-ით."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "შენახვა CBZ არქივად"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "მაღალი სურათების გაყოფა"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "აუმჯობესებს მკითხველის მუშაობას"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "პარალელურობა"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "პარალელური წყაროს ჩამოტვირთვები"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "პარალელური გვერდის ჩამოტვირთვები"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "ერთდროულად ჩამოტვირთული გვერდები თითო წყაროზე"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "თავების წაშლა"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "ხელით წაკითხულად მონიშვნის შემდეგ"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "წაკითხვის შემდეგ ავტომატური წაშლა"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "გამორთული"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "ბოლო წაკითხული თავი"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "ბოლოდან მეორე წაკითხული თავი"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "ბოლოდან მესამე წაკითხული თავი"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "ბოლოდან მეოთხე წაკითხული თავი"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "ბოლოდან მეხუთე წაკითხული თავი"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "სანიშნიანი თავების წაშლის ნება"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "ავტოჩამოტვირთვა"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "ახალი თავების ჩამოტვირთვა"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "ბიბლიოთეკის განახლებისას ნაპოვნი ახალი თავების ავტომატური ჩამოტვირთვა"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "წაკითხული დუბლირებული თავების გამოტოვება"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "წინასწარ ჩამოტვირთვა"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "კითხვისას ავტომატური ჩამოტვირთვა"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "შემდეგი წაუკითხავი თავი"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "შემდეგი %d წაუკითხავი თავი"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "მუშაობს მხოლოდ მაშინ, თუ მიმდინარე და შემდეგი თავი უკვე ჩამოტვირთულია."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "მანგა"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "რომანები"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "ვიდეოები"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "ამ ტიპის წყარო ჯერ არ არის"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "ადგილობრივი რომანები"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "ადგილობრივი ვიდეოები"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "ტიპი"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "ყველა"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "დაკვრის დაწყება"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "დაკვრის გაგრძელება"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "ეს ნაკადი მხოლოდ ონლაინ დაიკვრება"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "შრიფტის ზომა"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "სტრიქონის დაშორება"
+    },
+    {
+      "name": "novel_empty",
+      "value": "ამ თავში ტექსტი არ არის"
+    },
+    {
+      "name": "novel_prev",
+      "value": "წინა თავი"
+    },
+    {
+      "name": "novel_next",
+      "value": "შემდეგი თავი"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "გადახვევა"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "გვერდებად"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "ორი გვერდი"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "გვერდების რეჟიმი"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "პარაგრაფის დაშორება"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "ჩვენება"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "ტექსტი"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "ერთი გვერდი (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "ერთი გვერდი (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "გვერდის გადასვლა"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "სიმულაცია"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "სრიალი"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "დაფარვა"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "ტექსტის ფერი"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "ღია"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "მუქი"
+    },
+    {
+      "name": "novel_margin",
+      "value": "კიდეები"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "შრიფტი"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "ნაგულისხმევი"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "კონცხიანი"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "უკონცხო"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "თანაბარი სიგანის"
+    },
+    {
+      "name": "novel_tts",
+      "value": "ხმამაღლა კითხვა"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "ხმამაღლა კითხვის დაწყება"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "ხმამაღლა კითხვის შეწყვეტა"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "კითხვის სიჩქარე"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "ამ თავის ბოლოს მიღწეულია"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "ხმამაღლა კითხვა ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "პაუზა"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "გაგრძელება"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "ახლა იკითხება"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "პარაგრაფი %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "ძილის ტაიმერი"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "გამორთული"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d წთ"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "ჩერდება %1$s-ში"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "ხმამაღლა არაფერი იკითხება"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "დამკვრელის გახსნა"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "თავები"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "დროით"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "თავებით"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "ამ თავის შემდეგ"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "%1$d თავის შემდეგ"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d თვ"
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "ჩერდება ამ თავის შემდეგ"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "ჩერდება %1$d თავის შემდეგ"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "რომანის ხმამაღლა კითხვისას აპს ფონურ რეჟიმში ტოვებს"
+    },
+    {
+      "name": "video_play",
+      "value": "დაკვრა"
+    },
+    {
+      "name": "video_pause",
+      "value": "პაუზა"
+    },
+    {
+      "name": "video_prev",
+      "value": "წინა"
+    },
+    {
+      "name": "video_next",
+      "value": "შემდეგი"
+    },
+    {
+      "name": "video_settings",
+      "value": "დამკვრელის პარამეტრები"
+    },
+    {
+      "name": "video_episodes",
+      "value": "ეპიზოდები"
+    },
+    {
+      "name": "video_quality",
+      "value": "ხარისხი"
+    },
+    {
+      "name": "video_speed",
+      "value": "დაკვრის სიჩქარე"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "Danmaku ჩართულია"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "Danmaku გამორთულია"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "Danmaku იტვირთება…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "ჩაიტვირთა %d danmaku"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "შესაბამისი danmaku ვერ მოიძებნა"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "Danmaku ვერ ჩაიტვირთა"
+    },
+    {
+      "name": "video_locked",
+      "value": "მართვა ჩაკეტილია"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "მართვის საკეტი მოიხსნა"
+    },
+    {
+      "name": "player_set_title",
+      "value": "დამკვრელი"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "დაკვრა"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "ნაგულისხმევი სიჩქარე"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "შემდეგი ეპიზოდის ავტოდაკვრა"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "დასრულებისას შემდეგი ეპიზოდის ავტომატური დაკვრა"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "Danmaku-ს ჩვენება"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "Danmaku შრიფტის ზომა"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "Danmaku გამჭვირვალობა"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "Danmaku ჩვენების არე"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "Danmaku სიჩქარე"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "Danmaku მონაცემები dandanplay-დან (ქსელი საჭიროა)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "ეკრანის მასშტაბის რეჟიმი"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "მორგება"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "შევსება"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "გაწელვა"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "ნელი"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "ჩვეულებრივი"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "სწრაფი"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "ძალიან სწრაფი"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "ეკრანის 1/4"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "ნახევარი ეკრანი"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "ეკრანის 3/4"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "სრული ეკრანი"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "მანგის დრო"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "რომანის დრო"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "ვიდეოს დრო"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "ყდა"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "ყდის რედაქტირება"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "ყდის აღდგენა"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "ყდა განახლდა"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "ყდა აღდგა"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "ყდის განახლება ვერ მოხერხდა"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "ყდა შეინახა"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "ყდის შენახვის შეცდომა"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "ყდის გაზიარების შეცდომა"
+    },
+    {
+      "name": "detail_edit",
+      "value": "რედაქტირება"
+    },
+    {
+      "name": "detail_delete",
+      "value": "წაშლა"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "კეთილი იყოს თქვენი მობრძანება!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "ჯერ რამდენიმე რამ დავაყენოთ. ამას მოგვიანებით პარამეტრებშიც შეცვლით."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "შემდეგი"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "დაწყება"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "დასაწყისის გზამკვლევი"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "დასაწყისის გზამკვლევი"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "ახალი ხართ %s-ში? გირჩევთ დასაწყისის გზამკვლევის ნახვას."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "%s თავიდან ყენდება?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "სინქრონიზაცია მიმდინარეობს, დაელოდეთ"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "ჩამოტვირთვა ვერ მოხერხდა"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "დეტალების ჩატვირთვა ვერ მოხერხდა"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "გვერდის პარამეტრები არასწორია"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "ჩამოტვირთვები მზადდება…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "კატეგორიაში გადატანა ვერ მოხერხდა"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "გადატანის სია ვერ ჩაიტვირთა"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "ოპერაცია ვერ მოხერხდა"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "ჩატვირთვის შეცდომა: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "იტვირთება…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "ჩატვირთვა ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "დამუშავება დასრულდა (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "ბოლო ავტომატური რეზერვი ვერ მოხერხდა"
+    },
+    {
+      "name": "category_manga",
+      "value": "მანგა"
+    },
+    {
+      "name": "category_novel",
+      "value": "რომანები"
+    },
+    {
+      "name": "category_video",
+      "value": "ვიდეოები"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "ლიცენზირებული"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "TTS ძრავა დაკავებულია, მოგვიანებით სცადეთ"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "TTS ძრავამ პასუხი შეწყვიტა და კითხვა გაჩერდა"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "TTS ძრავა მიუწვდომელია"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "საჭიროა ადამიანის შემოწმება, დაასრულეთ შემოწმების გვერდი და სცადეთ თავიდან"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "წყარო მიუწვდომელია"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "ამ თავში შიგთავსი არ არის"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "დაკვრა ვერ მოხერხდა"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "დასაკრავი ვიდეო ვერ მოიძებნა"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "ადგილობრივი"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "გაუქმებულია"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "ჩამოტვირთვა ვერ მოხერხდა"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "ჩამოტვირთვის დრო ამოიწურა (სერვერი არ პასუხობს)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "ჩამოტვირთვა ვერ მოხერხდა (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "ეს ვიდეო ონლაინ ნაკადადაა და არ ჩამოიტვირთება"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "ჩამოტვირთვის სერვისი არ არის გაშვებული"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "წყარო ვერ მოიძებნა: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "თავის ფაილი ვერ მოიძებნა"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "მხარდაუჭერელი თავის ფორმატი"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "ვიდეოს ფაილი ვერ მოიძებნა"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "ადგილობრივად იმპორტირებული მანგა"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "ადგილობრივად იმპორტირებული რომანები"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "ადგილობრივად იმპორტირებული ვიდეოები"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "დაუცველი გადამისამართება დაიბლოკა: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "ძალიან ბევრი გადამისამართება: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "სერვერის მისამართი ვერ მოიძებნა, შეამოწმეთ ქსელი და სცადეთ თავიდან"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "სერვერთან დაკავშირება ვერ მოხერხდა, შეამოწმეთ ქსელი და სცადეთ თავიდან"
+    },
+    {
+      "name": "net_timeout",
+      "value": "მოთხოვნის დრო ამოიწურა, მოგვიანებით სცადეთ"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "უსაფრთხო კავშირი ვერ მოხერხდა (SSL შეცდომა), მოგვიანებით სცადეთ"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "კავშირი გაწყდა, სცადეთ თავიდან"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "ქსელის მოთხოვნა ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "JSVM ძრავის შექმნა ვერ მოხერხდა"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "პლაგინის კოდი ვერ გაეშვა"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "გაფართოება არ ჩატვირთულა"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "გაფართოება დაზიანებულია, თავიდან დააყენეთ ან განაახლეთ"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "გაფართოების გაშვება ვერ მოხერხდა"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "გაფართოების გაშვების დრო ამოიწურა"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "გაფართოების გამოძახების დრო ამოიწურა: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "გაფართოების გამოძახება ვერ მოხერხდა"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "გაფართოებამ არასწორი JSON დააბრუნა"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "უცნობი გაფართოების შეცდომა"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "არასწორი manifest.key (მხოლოდ პატარა ასო, ციფრი და ქვედა ხაზი)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name აკლია"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "არასწორი manifest.versionCode"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "ამ პლაგინს უფრო ახალი აპი სჭირდება (%s), ჯერ განაახლეთ"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "ამ პლაგინს სჭირდება აპის versionCode >= %s, ჯერ განაახლეთ"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "არჩეული ფაილის წაკითხვა ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "პლაგინის პაკეტის URL უნდა იყოს https, ღია ტექსტის ჩამოტვირთვა უარყოფილია"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "პლაგინის მთლიანობის შემოწმება ვერ მოხერხდა (sha256 არ ემთხვევა), დაყენება გაუქმდა"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "პლაგინის პაკეტში main.js არ არის"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "პლაგინის საქაღალდის ჩანაცვლება ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "პლაგინის პაკეტში manifest.json ვერ მოიძებნა"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "საცავის ფაილის URL უნდა იყოს https, http:// ჩანაწერები უარყოფილია"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "არასწორი პლაგინის გარემოს სახელი: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "პლაგინის გარემოს ნაწილი აკლია: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "პლაგინმა არასწორი მანგის დეტალი დააბრუნა"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "პლაგინი არ ახორციელებს getChapterText-ს"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "პლაგინი არ ახორციელებს getVideoList-ს"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "პლაგინის პაკეტის შენახვა ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "პლაგინის საქაღალდის წაშლა ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "დაყენებული პლაგინის ფაილების წაკითხვა ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "პლაგინის პაკეტის მთლიანობის შემოწმება ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "პლაგინის პაკეტის გახსნა ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "პლაგინის პაკეტში manifest.json-ის წაკითხვა ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "პლაგინის ფაილების მომზადება ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "თვალყური"
+    },
+    {
+      "name": "track_login",
+      "value": "შესვლა"
+    },
+    {
+      "name": "track_logout",
+      "value": "გასვლა"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "გახვიდეთ %s-დან?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "შესული ხართ %s-ში"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "გამოსული ხართ"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "შესვლა ვერ მოხერხდა"
+    },
+    {
+      "name": "track_username",
+      "value": "მომხმარებლის სახელი"
+    },
+    {
+      "name": "track_password",
+      "value": "პაროლი"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "თვალყურის პროგრესის ავტოგანახლება"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "ძებნა %s-ზე"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "ძებნა ვერ მოხერხდა"
+    },
+    {
+      "name": "track_no_results",
+      "value": "შედეგი ვერ მოიძებნა"
+    },
+    {
+      "name": "track_added",
+      "value": "თვალყური დაემატა"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "თვალყურის დამატება ვერ მოხერხდა"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "თვალყურის განახლება ვერ მოხერხდა"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "სერვისიდან ამოღება ვერ მოხერხდა"
+    },
+    {
+      "name": "track_status",
+      "value": "სტატუსი"
+    },
+    {
+      "name": "track_score",
+      "value": "ქულა"
+    },
+    {
+      "name": "track_chapters",
+      "value": "თავები"
+    },
+    {
+      "name": "track_start_date",
+      "value": "დაწყების თარიღი"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "დასრულების თარიღი"
+    },
+    {
+      "name": "track_private",
+      "value": "პირადი"
+    },
+    {
+      "name": "track_unlink",
+      "value": "კავშირის მოხსნა"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "სერვისიდან ამოღება"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "შეიყვანეთ სწორი თავის ნომერი"
+    },
+    {
+      "name": "track_reading",
+      "value": "იკითხება"
+    },
+    {
+      "name": "track_completed",
+      "value": "დასრულებული"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "გადადებული"
+    },
+    {
+      "name": "track_paused",
+      "value": "შეჩერებული"
+    },
+    {
+      "name": "track_dropped",
+      "value": "მიტოვებული"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "წასაკითხად"
+    },
+    {
+      "name": "track_repeating",
+      "value": "გამეორება"
+    },
+    {
+      "name": "track_considering",
+      "value": "განხილვაში"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "უცნობი"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "კითხვის სია"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "სურვილების სია"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "დასრულებულები"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "გადადებულები"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "დაუსრულებელი"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "იტვირთება…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "ჩატვირთვა ვერ მოხერხდა: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "ადგილობრივი ფაილი ჯერ არ არის, დასამატებლად შეეხეთ იმპორტს"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "სახელი"
+    },
+    {
+      "name": "privacy_title",
+      "value": "კონფიდენციალურობა"
+    },
+    {
+      "name": "privacy_group",
+      "value": "უსაფრთხოება"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "აპის საკეტი"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "ჯერ დააყენეთ ეკრანის საკეტი"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "უქმედობისას ჩაკეტვა"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "ყოველთვის"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 წუთი"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 წუთი"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 წუთი"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 წუთი"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "არასდროს"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "შეტყობინების შიგთავსის დამალვა"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "უსაფრთხო ეკრანი"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "ბლოკავს ეკრანის სურათს და ეკრანის ჩაწერას"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "აპი ჩაკეტილია"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "გასაგრძელებლად დაადასტურეთ ვინაობა"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "განბლოკვა"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "აპის განბლოკვა"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "ჩამოტვირთვა"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "ავარიის ჟურნალების ექსპორტი"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "ავარიის ჟურნალი ვერ მოიძებნა"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "ექსპორტირდა %d ხარვეზის ჟურნალი"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "დაწვრილებითი ჟურნალი"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "სისტემის ჟურნალში გამართვის დეტალების ჩართვა"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "გამართვის ინფორმაცია"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "მოქმედება ვერ მოხერხდა"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "მონაცემები"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "ქსელი"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "ბიბლიოთეკა"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "მკითხველი"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "მონაცემთა ბაზის გასუფთავება"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "წაიშალოს ყველა ჩანაწერი, რომელიც ბიბლიოთეკაში არ არის? ამ ჩანაწერების კითხვის ისტორია და პროგრესი დაიკარგება."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "ამოიშალა %d ჩანაწერი"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "ჩაშენებული ვებმონაცემების გასუფთავება"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "ჩაშენებული ვებმონაცემები გასუფთავდა"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS over HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "გამორთული"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "მორგებული User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "ნაგულისხმევისთვის დატოვეთ ცარიელი"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent შეინახა"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "User-Agent-ის აღდგენა"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "ბიბლიოთეკის ყდების განახლება"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "ყდები ახლდება…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "განახლდა %d ჩანაწერი"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "სერიის მკითხველის პარამეტრების აღდგენა"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "სერიაზე დაყენებული კითხვის რეჟიმები დაბრუნდეს საერთო ნაგულისხმევზე?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "აღდგა %d ჩანაწერი"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "მაღალი ხარისხის დამუშავება"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "უფრო გლუვი სურათის მასშტაბი წარმადობის ხარჯზე"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "აპის ვერსია"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "მოწყობილობის მოდელი"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "მოწყობილობის ტიპი"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "სისტემის ვერსია"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "API ვერსია"
+    },
+    {
+      "name": "debug_screen",
+      "value": "ეკრანი"
+    },
+    {
+      "name": "debug_language",
+      "value": "ენა"
     }
   ]
 }

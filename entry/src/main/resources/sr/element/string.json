@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "У библиотеци нема манге у току"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "Копирај у међуспремник"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "Тема"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "Подразумевано"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "Поноћни сумрак"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "Јагода даикири"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "Тил и тиркиз"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "Плимски талас"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "Јин и јанг"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "Токијска ноћ"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "Једнобојно"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "Зелена јабука"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "Лаванда"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "Освежи"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "Отвори у прегледачу"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "Није могуће отворити у прегледачу"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "Копирај URL"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL је копиран"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "Нема следећег поглавља"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "Нема доступних филтера"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "Поништи"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "Занемари"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "Укључи"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "Изузми"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "Избор фасцикле није успео"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "Потребна је фасцикла, не датотека"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "Изабери фасциклу"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "Синхронизуј"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "Промени фасциклу"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "Локална фасцикла"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "Синхронизација фасцикле…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "Фасцикла је синхронизована"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "Синхронизација није успела: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "Локалној фасцикли није могуће приступити, изаберите је поново"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "Приступ фасцикли није могуће задржати"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "Избор фасцикле није подржан на овом уређају"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "Локална фасцикла још није постављена"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "У локалној фасцикли нема ничега"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "У подфасцикли comic нема ничега"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "У подфасцикли novel нема ничега"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "У подфасцикли anime нема ничега"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "Откажи све"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "Поглавља растуће"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "Поглавља опадајуће"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "Сортирање"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "Филтер"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "По извору"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "По броју поглавља"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "По датуму отпремања"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "По наслову"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "Поништи"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "Преузето"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "Непрочитано"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "Са обележивачем"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "Изабрано: %d"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "Означи као прочитано"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "Означи као непрочитано"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "Обележивач"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "Обриши"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "Следећих %d непрочитаних"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "Сва непрочитана"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "Поглавља са обележивачем"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d поглавља у реду"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "Нема непрочитаних поглавља"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "Нема преузимања за брисање"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "Обрисано %d преузимања"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "Праћење"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "Откажи преузимање"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "Преузимање је отказано"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "Обрисати преузето поглавље?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "Преузимање је обрисано"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "Копирано у међуспремник"
+    },
+    {
+      "name": "transition_finished",
+      "value": "Завршено:"
+    },
+    {
+      "name": "transition_current",
+      "value": "Тренутно:"
+    },
+    {
+      "name": "transition_next",
+      "value": "Следеће:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "Претходно:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "Нема следећег поглавља"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "Нема претходног поглавља"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "Веб-сајт"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "Ажурирања на чекању"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "Ажурирај све"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "Више"
+    },
+    {
+      "name": "about_row_version",
+      "value": "Верзија"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "Подаци за отклањање грешака су копирани"
+    },
+    {
+      "name": "licenses_title",
+      "value": "Лиценце отвореног кода"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "Отвори почетну страницу"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "Цео текст лиценце"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "Референца архитектуре апликације и дизајна интеракција"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "Иконе у апликацији"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "SDK платформе и оквир ArkUI"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "Декодирање слика AVIF"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "Декодер AV1 за декодирање AVIF"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "Рашчлањивање HTML за проширења"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "Кеш репродукције видеа"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL и URLSearchParams за проширења (окружење додатака)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder и TextDecoder за проширења (окружење додатака)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "Претварање вредности WebIDL, зависност whatwg-url (окружење додатака)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "Сажетак MD5 за проширења (окружење додатака)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "Шифровање и дешифровање AES-CBC за проширења (окружење додатака)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "Сажетак SHA/HMAC/PBKDF2 за проширења (окружење додатака)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "Шифровање и дешифровање AES-GCM за проширења (окружење додатака)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "Правила приватности"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi је читач манге, романа и видео садржаја који податке чува првенствено локално. Сама апликација не прикупља, не шаље и не дели личне податке."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "Локални подаци"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "Библиотека, историја читања, евиденција преузимања, подешавања и акредитиви праћења чувају се само на вашем уређају. У Подешавањима их можете у било ком тренутку извести или обрисати. Деинсталација апликације трајно их уклања."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "Мрежни извори и проширења"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "Мрежни садржај пружају проширења и веб-сајтови трећих страна. Прегледање или читање са мрежног извора шаље захтеве директно том сајту, који има сопствена правила приватности. Апликација не управља тим услугама и не одговара за њих."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "Услуге праћења"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "По жељи можете повезати налоге праћења као што су AniList, MyAnimeList, Bangumi, Kitsu и Shikimori. Пријаву одобравате на страници саме услуге, а приступни токени чувају се само на уређају ради синхронизације напретка читања."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "Дозволе"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "Приступ интернету служи учитавању мрежног садржаја, приступ датотекама локалном увозу и резервним копијама, а биометријска потврда само локалном закључавању апликације. Ниједна дозвола не прикупља личне податке."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "Контакт"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi је пројекат отвореног кода надахнут апликацијом Mihon. За питања о овим правилима јавите се путем Discord или GitHub."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "Сачувај као архиву CBZ"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "Подели високе слике"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "Побољшава перформансе читача"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "Истовременост"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "Истовремена преузимања извора"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "Истовремена преузимања страница"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "Странице преузете одједном по извору"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "Брисање поглавља"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "Након ручне ознаке као прочитано"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "Аутоматски обриши након читања"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "Онемогућено"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "Последње прочитано поглавље"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "Претпоследње прочитано поглавље"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "Треће прочитано поглавље од краја"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "Четврто прочитано поглавље од краја"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "Пето прочитано поглавље од краја"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "Дозволи брисање поглавља са обележивачем"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "Аутоматско преузимање"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "Преузми нова поглавља"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "Аутоматски преузми нова поглавља пронађена при ажурирању библиотеке"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "Прескочи преузимање дуплих прочитаних поглавља"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "Преузимање унапред"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "Аутоматски преузимај током читања"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "Следеће непрочитано поглавље"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "Следећих %d непрочитаних поглавља"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "Ради само ако су тренутно и следеће поглавље већ преузети."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Манга"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "Романи"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "Видео"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "За овај тип још нема извора"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "Локални романи"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "Локални видео"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "Тип"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "Све"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "Покрени репродукцију"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "Настави репродукцију"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "Овај пренос може се репродуковати само на мрежи"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "Величина писма"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "Проред"
+    },
+    {
+      "name": "novel_empty",
+      "value": "Ово поглавље нема текст"
+    },
+    {
+      "name": "novel_prev",
+      "value": "Претходно поглавље"
+    },
+    {
+      "name": "novel_next",
+      "value": "Следеће поглавље"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "Померање"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "По страницама"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "Две странице"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "Начин листања"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "Размак пасуса"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "Приказ"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "Текст"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "Једна страница (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "Једна страница (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "Прелаз странице"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "Симулација"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "Клизање"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "Прекривање"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "Боја текста"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "Светла"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "Тамна"
+    },
+    {
+      "name": "novel_margin",
+      "value": "Маргине"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "Писмо"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "Подразумевано"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "Са серифима"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "Без серифа"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "Једнаке ширине"
+    },
+    {
+      "name": "novel_tts",
+      "value": "Читај наглас"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "Започни читање наглас"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "Заустави читање наглас"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "Брзина читања"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "Достигнут је крај овог поглавља"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "Читање наглас није успело: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "Пауза"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "Настави"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "Тренутно се чита"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "Пасус %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "Тајмер за искључивање"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "Искључено"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d мин"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "Зауставља се за %1$s"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "Ништа се не чита наглас"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "Отвори плејер"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "Поглавља"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "По времену"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "По поглављима"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "После овог поглавља"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "После %1$d поглавља"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d пог."
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "Зауставља се после овог поглавља"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "Зауставља се после %1$d поглавља"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "Држи апликацију у позадини док се роман чита наглас"
+    },
+    {
+      "name": "video_play",
+      "value": "Пусти"
+    },
+    {
+      "name": "video_pause",
+      "value": "Пауза"
+    },
+    {
+      "name": "video_prev",
+      "value": "Претходно"
+    },
+    {
+      "name": "video_next",
+      "value": "Следеће"
+    },
+    {
+      "name": "video_settings",
+      "value": "Подешавања плејера"
+    },
+    {
+      "name": "video_episodes",
+      "value": "Епизоде"
+    },
+    {
+      "name": "video_quality",
+      "value": "Квалитет"
+    },
+    {
+      "name": "video_speed",
+      "value": "Брзина репродукције"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "Данмаку"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "Данмаку укључен"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "Данмаку искључен"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "Учитавање данмакуа…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "Учитано %d данмакуа"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "Није пронађен одговарајући данмаку"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "Данмаку није учитан"
+    },
+    {
+      "name": "video_locked",
+      "value": "Контроле закључане"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "Контроле откључане"
+    },
+    {
+      "name": "player_set_title",
+      "value": "Плејер"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "Репродукција"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "Подразумевана брзина"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "Аутоматски пусти следећу епизоду"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "По завршетку аутоматски пушта следећу епизоду"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Данмаку"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "Прикажи данмаку"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "Величина писма данмакуа"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "Непрозирност данмакуа"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "Област приказа данмакуа"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "Брзина данмакуа"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "Подаци данмакуа са dandanplay (потребна је мрежа)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "Начин размере слике"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "Уклопи"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "Попуни"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "Растегни"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "Споро"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Нормално"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "Брзо"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "Веома брзо"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 екрана"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "Пола екрана"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 екрана"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "Цео екран"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "Време манге"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "Време романа"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "Време видеа"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "Насловница"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "Уреди насловницу"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "Врати насловницу"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "Насловница је ажурирана"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "Насловница је враћена"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "Насловница није ажурирана"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "Насловница је сачувана"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "Грешка при чувању насловнице"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "Грешка при дељењу насловнице"
+    },
+    {
+      "name": "detail_edit",
+      "value": "Уреди"
+    },
+    {
+      "name": "detail_delete",
+      "value": "Обриши"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "Добро дошли!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "Најпре подесимо неколико ствари. Све можете касније променити у подешавањима."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "Даље"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "Започни"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "Уводни водич"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "Водич за почетак"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "Нови сте у %s? Препоручујемо водич за почетак."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "Поново инсталирате %s?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "Синхронизација је у току, сачекајте"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "Преузимање није успело"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "Појединости нису учитане"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "Неважећи параметри странице"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "Припрема преузимања…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "Премештање у категорију није успело"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "Списак преноса није учитан"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "Радња није успела"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "Грешка учитавања: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "Учитавање…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "Учитавање није успело: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "Исцртавање је завршено (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "Т"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "В"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "М"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "Последња аутоматска резервна копија није успела"
+    },
+    {
+      "name": "category_manga",
+      "value": "Манга"
+    },
+    {
+      "name": "category_novel",
+      "value": "Романи"
+    },
+    {
+      "name": "category_video",
+      "value": "Видео"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "Лиценцирано"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "Модул TTS је заузет, покушајте касније"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "Модул TTS је престао да одговара и читање је заустављено"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "Модул TTS није доступан"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "Потребна је провера човека. Довршите страницу провере и покушајте поново"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "Извор није доступан"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "Ово поглавље нема садржај"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "Репродукција није успела"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "Нема видео записа за репродукцију"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "Локално"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "Отказано"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "Преузимање није успело"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "Истекло је време преузимања (сервер не одговара)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "Преузимање није успело (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "Овај видео се емитује на мрежи и не може се преузети"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "Услуга преузимања није покренута"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "Извор није пронађен: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "Датотека поглавља није пронађена"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "Неподржан формат поглавља"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "Видео датотека није пронађена"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "Локално увезена манга"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "Локално увезени романи"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "Локално увезени видео"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "Небезбедно преусмеравање блокирано: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "Превише преусмеравања: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "Адреса сервера није разрешена. Проверите мрежу и покушајте поново"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "Није могуће повезати се са сервером. Проверите мрежу и покушајте поново"
+    },
+    {
+      "name": "net_timeout",
+      "value": "Истекло је време захтева, покушајте касније"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "Безбедна веза није успела (грешка SSL), покушајте касније"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "Веза је прекинута, покушајте поново"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "Мрежни захтев није успео: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "Прављење погона JSVM није успело"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "Покретање скрипте додатка није успело"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "Проширење није учитано"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "Проширење је оштећено, поново га инсталирајте или учитајте"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "Покретање проширења није успело"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "Истекло је време покретања проширења"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "Истекло је време позива проширења: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "Позив проширења није успео"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "Проширење је вратило неважећи JSON"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "Непозната грешка проширења"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "Неважећи manifest.key (само мала слова, цифре и доње црте)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "Недостаје manifest.name"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "Неважећи manifest.versionCode"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "Овај додатак захтева новију апликацију (%s), прво ажурирајте"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "Овај додатак захтева versionCode апликације >= %s, прво ажурирајте"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "Изабрана датотека није прочитана: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "URL пакета додатака морају користити https, нешифрована преузимања се одбијају"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "Провера целовитости додатка није успела (sha256 се не поклапа), инсталација отказана"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "У пакету додатка недостаје main.js"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "Фасцикла додатка није замењена: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "У пакету додатка није пронађен manifest.json"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "URL датотека складишта морају користити https, уноси http:// се одбијају"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "Неважећи назив окружења додатка: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "Недостаје компонента окружења додатка: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "Додатак је вратио неважеће податке о манги"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "Додатак не извози getChapterText"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "Додатак не извози getVideoList"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "Пакет додатка није сачуван: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "Фасцикла додатка није уклоњена: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "Инсталиране датотеке додатка нису прочитане: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "Целовитост пакета додатка није проверена: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "Пакет додатка није распакован: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "manifest.json у пакету додатка није прочитан: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "Датотеке додатка нису припремљене: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "Праћење"
+    },
+    {
+      "name": "track_login",
+      "value": "Пријава"
+    },
+    {
+      "name": "track_logout",
+      "value": "Одјава"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "Одјавити се са %s?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "Пријављени сте на %s"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "Одјављени сте"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "Пријава није успела"
+    },
+    {
+      "name": "track_username",
+      "value": "Корисничко име"
+    },
+    {
+      "name": "track_password",
+      "value": "Лозинка"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "Аутоматски ажурирај напредак праћења"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "Тражи на %s"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "Претрага није успела"
+    },
+    {
+      "name": "track_no_results",
+      "value": "Нема резултата"
+    },
+    {
+      "name": "track_added",
+      "value": "Праћење је додато"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "Праћење није додато"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "Праћење није ажурирано"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "Уклањање са услуге није успело"
+    },
+    {
+      "name": "track_status",
+      "value": "Стање"
+    },
+    {
+      "name": "track_score",
+      "value": "Оцена"
+    },
+    {
+      "name": "track_chapters",
+      "value": "Поглавља"
+    },
+    {
+      "name": "track_start_date",
+      "value": "Датум почетка"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "Датум завршетка"
+    },
+    {
+      "name": "track_private",
+      "value": "Приватно"
+    },
+    {
+      "name": "track_unlink",
+      "value": "Одвежи"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "Уклони са услуге"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "Унесите важећи број поглавља"
+    },
+    {
+      "name": "track_reading",
+      "value": "Читам"
+    },
+    {
+      "name": "track_completed",
+      "value": "Завршено"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "На чекању"
+    },
+    {
+      "name": "track_paused",
+      "value": "Паузирано"
+    },
+    {
+      "name": "track_dropped",
+      "value": "Одустао"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "Планирам да читам"
+    },
+    {
+      "name": "track_repeating",
+      "value": "Понављам"
+    },
+    {
+      "name": "track_considering",
+      "value": "Размишљам"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "Непознато"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "Листа читања"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "Листа жеља"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "Довршена листа"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "Листа на чекању"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "Недовршена листа"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "Учитавање…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "Учитавање није успело: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "Још нема локалних датотека, додирните Увези да додате неке"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "Назив"
+    },
+    {
+      "name": "privacy_title",
+      "value": "Приватност"
+    },
+    {
+      "name": "privacy_group",
+      "value": "Безбедност"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "Закључавање апликације"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "Најпре поставите закључавање екрана"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "Закључај при неактивности"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "Увек"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 минут"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 минута"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 минута"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 минута"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "Никад"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "Сакриј садржај обавештења"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "Безбедан екран"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "Блокира снимке екрана и снимање екрана"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "Апликација је закључана"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "Потврдите идентитет да бисте наставили"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "Откључај"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "Откључај апликацију"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "Преузимање"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "Извези дневнике падова"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "Нема дневника падова"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "Извезено %d дневника грешака"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "Опширно записивање"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "Укључи појединости за отклањање грешака у системске дневнике"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "Подаци за отклањање грешака"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "Радња није успела"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Подаци"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "Мрежа"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "Библиотека"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "Читач"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "Очисти базу података"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "Уклонити све уносе који нису у библиотеци? Историја читања и напредак тих уноса биће изгубљени."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "Уклоњено %d уноса"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "Очисти уграђене веб-податке"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "Уграђени веб-подаци су очишћени"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS преко HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "Онемогућено"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "Прилагођени User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "Оставите празно за подразумевану вредност"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent је сачуван"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "Поништи User-Agent"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "Освежи насловнице у библиотеци"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "Освежавање насловница…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "Освежено %d уноса"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "Поништи подешавања читача по серијама"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "Вратити начине читања постављене по серијама на глобално подразумевано?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "Поништено %d уноса"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "Висококвалитетно исцртавање"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "Глађе скалирање слика на уштрб перформанси"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "Верзија апликације"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "Модел уређаја"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "Тип уређаја"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "Верзија система"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "Верзија API"
+    },
+    {
+      "name": "debug_screen",
+      "value": "Екран"
+    },
+    {
+      "name": "debug_language",
+      "value": "Језик"
     }
   ]
 }

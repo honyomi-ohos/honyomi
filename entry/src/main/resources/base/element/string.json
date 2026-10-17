@@ -2253,6 +2253,34 @@
       "value": "Video playback caching"
     },
     {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL and URLSearchParams for extensions (plugin runtime)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder and TextDecoder for extensions (plugin runtime)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "WebIDL value conversion, a whatwg-url dependency (plugin runtime)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "MD5 hashing for extensions (plugin runtime)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "AES-CBC encryption and decryption for extensions (plugin runtime)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "SHA, HMAC and PBKDF2 for extensions (plugin runtime)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "AES-GCM encryption and decryption for extensions (plugin runtime)"
+    },
+    {
       "name": "privacy_policy_title",
       "value": "Privacy policy"
     },
@@ -3363,10 +3391,6 @@
     {
       "name": "plugin_error_bad_version_code",
       "value": "Invalid manifest.versionCode"
-    },
-    {
-      "name": "plugin_error_bad_engine",
-      "value": "Unsupported plugin engine: %s (only jsvm is supported)"
     },
     {
       "name": "plugin_error_dsl_too_new",

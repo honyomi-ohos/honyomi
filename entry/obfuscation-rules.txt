@@ -1,11 +1,14 @@
 # ArkGuard obfuscation rules (release)
-# Enabled: toplevel / export obfuscation + compact.
+# Enabled: toplevel / export / filename obfuscation + compact.
 # Property obfuscation intentionally OFF: heavy JSON.parse/stringify surface
 # (trackers, plugin prefs, settings persistence) would need a large
 # -keep-property-name whitelist; revisit if size target is not met.
+# Filename obfuscation: worker files / entry / ability are auto-whitelisted
+# by the toolchain; system router map needs no manual keep since API 20.
 
 -enable-toplevel-obfuscation
 -enable-export-obfuscation
+-enable-filename-obfuscation
 -compact
 
 # Crash symbolication mapping (obfuscated -> original)

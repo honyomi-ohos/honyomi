@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "ไม่มีมังงะที่กำลังลงในชั้นหนังสือ"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "คัดลอกไปยังคลิปบอร์ด"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "ธีม"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "ค่าเริ่มต้น"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "พลบค่ำเที่ยงคืน"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "สตรอว์เบอร์รีไดกีรี"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "ทาโกะ"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "เขียวอมฟ้าและเทอร์ควอยซ์"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "คลื่นซัดฝั่ง"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "หยินและหยาง"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "โยตสึบะ"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "ค่ำคืนโตเกียว"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "ขาวดำ"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "แอปเปิลเขียว"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "ลาเวนเดอร์"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "รีเฟรช"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "เปิดในเบราว์เซอร์"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "เปิดในเบราว์เซอร์ไม่สำเร็จ"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "คัดลอก URL"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "คัดลอก URL แล้ว"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "ไม่มีตอนถัดไป"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "ไม่มีตัวกรอง"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "รีเซ็ต"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "ไม่สนใจ"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "รวม"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "ยกเว้น"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "เลือกโฟลเดอร์ไม่สำเร็จ"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "ต้องเป็นโฟลเดอร์ ไม่ใช่ไฟล์"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "เลือกโฟลเดอร์"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "ซิงก์"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "เปลี่ยนโฟลเดอร์"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "โฟลเดอร์ในเครื่อง"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "กำลังซิงก์โฟลเดอร์…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "ซิงก์โฟลเดอร์แล้ว"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "ซิงก์ไม่สำเร็จ: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "เข้าถึงโฟลเดอร์ในเครื่องไม่ได้ โปรดเลือกอีกครั้ง"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "คงสิทธิ์เข้าถึงโฟลเดอร์ไม่สำเร็จ"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "อุปกรณ์นี้ไม่รองรับการเลือกโฟลเดอร์"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "ยังไม่ได้ตั้งโฟลเดอร์ในเครื่อง"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "ไม่พบอะไรในโฟลเดอร์ในเครื่อง"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "ไม่พบอะไรในโฟลเดอร์ย่อย comic"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "ไม่พบอะไรในโฟลเดอร์ย่อย novel"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "ไม่พบอะไรในโฟลเดอร์ย่อย anime"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "ยกเลิกทั้งหมด"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "ตอนจากน้อยไปมาก"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "ตอนจากมากไปน้อย"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "เรียง"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "กรอง"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "ตามแหล่ง"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "ตามเลขตอน"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "ตามวันที่อัปโหลด"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "ตามชื่อ"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "รีเซ็ต"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "ดาวน์โหลดแล้ว"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "ยังไม่อ่าน"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "บุ๊กมาร์กแล้ว"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "เลือก %d รายการ"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "ทำเครื่องหมายว่าอ่านแล้ว"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "ทำเครื่องหมายว่ายังไม่อ่าน"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "บุ๊กมาร์ก"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "ลบ"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "ยังไม่อ่านอีก %d ตอน"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "ยังไม่อ่านทั้งหมด"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "ตอนที่บุ๊กมาร์ก"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "เข้าคิว %d ตอน"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "ไม่มีตอนที่ยังไม่อ่าน"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "ไม่มีการดาวน์โหลดให้ลบ"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "ลบการดาวน์โหลด %d รายการ"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "การติดตาม"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "ยกเลิกการดาวน์โหลด"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "ยกเลิกการดาวน์โหลดแล้ว"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "ลบตอนที่ดาวน์โหลดไว้?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "ลบการดาวน์โหลดแล้ว"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "คัดลอกไปยังคลิปบอร์ดแล้ว"
+    },
+    {
+      "name": "transition_finished",
+      "value": "จบแล้ว:"
+    },
+    {
+      "name": "transition_current",
+      "value": "ปัจจุบัน:"
+    },
+    {
+      "name": "transition_next",
+      "value": "ถัดไป:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "ก่อนหน้า:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "ไม่มีตอนถัดไป"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "ไม่มีตอนก่อนหน้า"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "เว็บไซต์"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "มีอัปเดตรออยู่"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "อัปเดตทั้งหมด"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "หลายภาษา"
+    },
+    {
+      "name": "about_row_version",
+      "value": "เวอร์ชัน"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "คัดลอกข้อมูลดีบักแล้ว"
+    },
+    {
+      "name": "licenses_title",
+      "value": "สัญญาอนุญาตโอเพนซอร์ส"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "เปิดหน้าแรก"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "ข้อความสัญญาอนุญาตฉบับเต็ม"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "อ้างอิงสถาปัตยกรรมแอปและการออกแบบการโต้ตอบ"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "ไอคอนในแอป"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "SDK ของแพลตฟอร์มและเฟรมเวิร์ก ArkUI"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "ถอดรหัสภาพ AVIF"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "ตัวถอดรหัส AV1 สำหรับถอดรหัส AVIF"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "แยกวิเคราะห์ HTML สำหรับส่วนขยาย"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "แคชการเล่นวิดีโอ"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL และ URLSearchParams สำหรับส่วนขยาย (รันไทม์ปลั๊กอิน)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder และ TextDecoder สำหรับส่วนขยาย (รันไทม์ปลั๊กอิน)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "แปลงค่า WebIDL ซึ่งเป็นส่วนพึ่งพาของ whatwg-url (รันไทม์ปลั๊กอิน)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "แฮช MD5 สำหรับส่วนขยาย (รันไทม์ปลั๊กอิน)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "เข้ารหัสและถอดรหัส AES-CBC สำหรับส่วนขยาย (รันไทม์ปลั๊กอิน)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "แฮช SHA/HMAC/PBKDF2 สำหรับส่วนขยาย (รันไทม์ปลั๊กอิน)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "เข้ารหัสและถอดรหัส AES-GCM สำหรับส่วนขยาย (รันไทม์ปลั๊กอิน)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "นโยบายความเป็นส่วนตัว"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi เป็นตัวอ่านที่เน้นข้อมูลในเครื่องสำหรับมังงะ นิยาย และวิดีโอ ตัวแอปไม่เก็บ อัปโหลด หรือแชร์ข้อมูลส่วนบุคคลใดๆ"
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "ข้อมูลในเครื่อง"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "ชั้นหนังสือ ประวัติการอ่าน บันทึกการดาวน์โหลด การตั้งค่า และข้อมูลรับรองตัวติดตามถูกเก็บไว้บนอุปกรณ์ของคุณเท่านั้น ส่งออกหรือลบได้ตลอดเวลาในการตั้งค่า การถอนการติดตั้งแอปจะลบข้อมูลเหล่านี้อย่างถาวร"
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "แหล่งออนไลน์และส่วนขยาย"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "เนื้อหาออนไลน์มาจากส่วนขยายและเว็บไซต์ของบุคคลที่สาม การเรียกดูหรืออ่านจากแหล่งออนไลน์จะส่งคำขอของคุณตรงไปยังไซต์นั้น ซึ่งอยู่ภายใต้นโยบายความเป็นส่วนตัวของไซต์เอง แอปไม่ได้ควบคุมและไม่รับผิดชอบต่อบริการของบุคคลที่สาม"
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "บริการติดตาม"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "คุณเชื่อมบัญชีตัวติดตาม เช่น AniList, MyAnimeList, Bangumi, Kitsu และ Shikimori ได้ตามต้องการ การเข้าสู่ระบบได้รับอนุญาตจากคุณบนหน้าของตัวติดตามเอง และโทเค็นการเข้าถึงจะถูกบันทึกไว้บนอุปกรณ์ของคุณเท่านั้นเพื่อซิงก์ความคืบหน้าการอ่าน"
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "สิทธิ์"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "การเข้าถึงอินเทอร์เน็ตใช้โหลดเนื้อหาออนไลน์ การเข้าถึงไฟล์ใช้สำหรับนำเข้าในเครื่องและข้อมูลสำรอง และการยืนยันตัวตนด้วยชีวมาตรใช้เฉพาะล็อกแอปในเครื่อง ไม่มีสิทธิ์ใดถูกใช้เพื่อเก็บข้อมูลส่วนบุคคล"
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "ติดต่อ"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi เป็นโครงการโอเพนซอร์สที่ได้รับแรงบันดาลใจจาก Mihon หากมีคำถามเกี่ยวกับคำชี้แจงความเป็นส่วนตัวนี้ ติดต่อเราทาง Discord หรือ GitHub"
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "บันทึกเป็นไฟล์เก็บถาวร CBZ"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "แบ่งภาพที่สูง"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "ช่วยให้ตัวอ่านลื่นขึ้น"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "การทำงานพร้อมกัน"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "ดาวน์โหลดหลายแหล่งพร้อมกัน"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "ดาวน์โหลดหลายหน้าพร้อมกัน"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "จำนวนหน้าที่ดาวน์โหลดพร้อมกันต่อแหล่ง"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "ลบตอน"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "หลังจากทำเครื่องหมายว่าอ่านแล้วด้วยตนเอง"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "ลบอัตโนมัติหลังจากอ่าน"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "ปิดอยู่"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "ตอนที่อ่านล่าสุด"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "ตอนที่อ่านรองล่าสุด"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "ตอนที่อ่านอันดับสามจากท้าย"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "ตอนที่อ่านอันดับสี่จากท้าย"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "ตอนที่อ่านอันดับห้าจากท้าย"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "อนุญาตให้ลบตอนที่บุ๊กมาร์ก"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "ดาวน์โหลดอัตโนมัติ"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "ดาวน์โหลดตอนใหม่"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "ดาวน์โหลดตอนใหม่ที่พบระหว่างอัปเดตชั้นหนังสือโดยอัตโนมัติ"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "ข้ามตอนซ้ำที่อ่านแล้ว"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "ดาวน์โหลดล่วงหน้า"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "ดาวน์โหลดอัตโนมัติขณะอ่าน"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "ตอนถัดไปที่ยังไม่อ่าน"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "อีก %d ตอนที่ยังไม่อ่าน"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "ใช้ได้เมื่อตอนปัจจุบันและตอนถัดไปถูกดาวน์โหลดไว้แล้ว"
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "มังงะ"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "นิยาย"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "วิดีโอ"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "ยังไม่มีแหล่งสำหรับประเภทนี้"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "นิยายในเครื่อง"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "วิดีโอในเครื่อง"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "ประเภท"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "ทั้งหมด"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "เริ่มเล่น"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "เล่นต่อ"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "สตรีมนี้เล่นออนไลน์ได้เท่านั้น"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "ขนาดตัวอักษร"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "ระยะบรรทัด"
+    },
+    {
+      "name": "novel_empty",
+      "value": "ตอนนี้ไม่มีข้อความ"
+    },
+    {
+      "name": "novel_prev",
+      "value": "ตอนก่อนหน้า"
+    },
+    {
+      "name": "novel_next",
+      "value": "ตอนถัดไป"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "เลื่อน"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "แบ่งหน้า"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "สองหน้า"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "โหมดแบ่งหน้า"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "ระยะย่อหน้า"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "การแสดงผล"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "ข้อความ"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "หน้าเดียว (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "หน้าเดียว (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "การเปลี่ยนหน้า"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "จำลอง"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "สไลด์"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "ปิดทับ"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "สีข้อความ"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "สว่าง"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "มืด"
+    },
+    {
+      "name": "novel_margin",
+      "value": "ขอบ"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "แบบอักษร"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "ค่าเริ่มต้น"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "มีเชิง"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "ไม่มีเชิง"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "ความกว้างเท่ากัน"
+    },
+    {
+      "name": "novel_tts",
+      "value": "อ่านออกเสียง"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "เริ่มอ่านออกเสียง"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "หยุดอ่านออกเสียง"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "ความเร็วในการอ่าน"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "ถึงท้ายตอนนี้แล้ว"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "อ่านออกเสียงไม่สำเร็จ: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "หยุดชั่วคราว"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "ทำต่อ"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "กำลังอ่าน"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "ย่อหน้าที่ %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "ตัวตั้งเวลาปิด"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "ปิด"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d นาที"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "หยุดใน %1$s"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "ไม่มีอะไรกำลังถูกอ่านออกเสียง"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "เปิดตัวเล่น"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "ตอน"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "ตามเวลา"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "ตามตอน"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "หลังตอนนี้"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "หลัง %1$d ตอน"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d ตอน"
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "จะหยุดหลังตอนนี้"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "จะหยุดหลัง %1$d ตอน"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "ให้แอปทำงานอยู่เบื้องหลังขณะอ่านนิยายออกเสียง"
+    },
+    {
+      "name": "video_play",
+      "value": "เล่น"
+    },
+    {
+      "name": "video_pause",
+      "value": "หยุดชั่วคราว"
+    },
+    {
+      "name": "video_prev",
+      "value": "ก่อนหน้า"
+    },
+    {
+      "name": "video_next",
+      "value": "ถัดไป"
+    },
+    {
+      "name": "video_settings",
+      "value": "ตั้งค่าตัวเล่น"
+    },
+    {
+      "name": "video_episodes",
+      "value": "ตอน"
+    },
+    {
+      "name": "video_quality",
+      "value": "คุณภาพ"
+    },
+    {
+      "name": "video_speed",
+      "value": "ความเร็วการเล่น"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "ดานมากุ"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "เปิดดานมากุ"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "ปิดดานมากุ"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "กำลังโหลดดานมากุ…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "โหลดดานมากุ %d รายการ"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "ไม่พบดานมากุที่ตรงกัน"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "โหลดดานมากุไม่สำเร็จ"
+    },
+    {
+      "name": "video_locked",
+      "value": "ล็อกตัวควบคุมแล้ว"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "ปลดล็อกตัวควบคุมแล้ว"
+    },
+    {
+      "name": "player_set_title",
+      "value": "ตัวเล่น"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "การเล่น"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "ความเร็วเริ่มต้น"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "เล่นตอนถัดไปอัตโนมัติ"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "เล่นตอนถัดไปอัตโนมัติเมื่อจบ"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "ดานมากุ"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "แสดงดานมากุ"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "ขนาดตัวอักษรดานมากุ"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "ความทึบของดานมากุ"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "พื้นที่แสดงดานมากุ"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "ความเร็วดานมากุ"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "ข้อมูลดานมากุจาก dandanplay (ต้องใช้อินเทอร์เน็ต)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "โหมดปรับขนาดหน้าจอ"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "พอดี"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "เต็ม"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "ยืด"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "ช้า"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "ปกติ"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "เร็ว"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "เร็วมาก"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 หน้าจอ"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "ครึ่งหน้าจอ"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 หน้าจอ"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "เต็มหน้าจอ"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "เวลามังงะ"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "เวลานิยาย"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "เวลาวิดีโอ"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "ปก"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "แก้ไขปก"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "รีเซ็ตปก"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "อัปเดตปกแล้ว"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "คืนค่าปกแล้ว"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "อัปเดตปกไม่สำเร็จ"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "บันทึกปกแล้ว"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "บันทึกปกไม่สำเร็จ"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "แชร์ปกไม่สำเร็จ"
+    },
+    {
+      "name": "detail_edit",
+      "value": "แก้ไข"
+    },
+    {
+      "name": "detail_delete",
+      "value": "ลบ"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "ยินดีต้อนรับ!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "มาตั้งค่าบางอย่างก่อน คุณเปลี่ยนค่าเหล่านี้ในการตั้งค่าได้ภายหลัง"
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "ถัดไป"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "เริ่มใช้งาน"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "คู่มือเริ่มต้น"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "คู่มือเริ่มใช้งาน"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "เพิ่งใช้ %s ใช่ไหม? แนะนำให้ดูคู่มือเริ่มใช้งาน"
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "กำลังติดตั้ง %s ใหม่?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "กำลังซิงก์ โปรดรอ"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "ดาวน์โหลดไม่สำเร็จ"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "โหลดรายละเอียดไม่สำเร็จ"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "พารามิเตอร์ของหน้าไม่ถูกต้อง"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "กำลังเตรียมการดาวน์โหลด…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "ย้ายไปหมวดหมู่ไม่สำเร็จ"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "โหลดรายการย้ายไม่สำเร็จ"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "ดำเนินการไม่สำเร็จ"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "โหลดผิดพลาด: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "กำลังโหลด…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "โหลดไม่สำเร็จ: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "การเรนเดอร์จบลง (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "ท"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "ว"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "ม"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "สำรองข้อมูลอัตโนมัติครั้งล่าสุดไม่สำเร็จ"
+    },
+    {
+      "name": "category_manga",
+      "value": "มังงะ"
+    },
+    {
+      "name": "category_novel",
+      "value": "นิยาย"
+    },
+    {
+      "name": "category_video",
+      "value": "วิดีโอ"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "มีลิขสิทธิ์"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "เอนจิน TTS ไม่ว่าง โปรดลองใหม่ภายหลัง"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "เอนจิน TTS ไม่ตอบสนอง จึงหยุดการอ่าน"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "เอนจิน TTS ไม่พร้อมใช้งาน"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "ต้องยืนยันว่าเป็นมนุษย์ โปรดทำหน้ายืนยันให้เสร็จแล้วลองอีกครั้ง"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "แหล่งไม่พร้อมใช้งาน"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "ตอนนี้ไม่มีเนื้อหา"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "เล่นไม่สำเร็จ"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "ไม่พบวิดีโอที่เล่นได้"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "ในเครื่อง"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "ยกเลิกแล้ว"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "ดาวน์โหลดไม่สำเร็จ"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "ดาวน์โหลดหมดเวลา (เซิร์ฟเวอร์ไม่ตอบสนอง)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "ดาวน์โหลดไม่สำเร็จ (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "วิดีโอนี้สตรีมออนไลน์และดาวน์โหลดไม่ได้"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "บริการดาวน์โหลดยังไม่พร้อม"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "ไม่พบแหล่ง: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "ไม่พบไฟล์ตอน"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "รูปแบบตอนไม่รองรับ"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "ไม่พบไฟล์วิดีโอ"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "มังงะที่นำเข้าในเครื่อง"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "นิยายที่นำเข้าในเครื่อง"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "วิดีโอที่นำเข้าในเครื่อง"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "บล็อกการเปลี่ยนเส้นทางที่ไม่ปลอดภัย: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "เปลี่ยนเส้นทางมากเกินไป: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "หาที่อยู่เซิร์ฟเวอร์ไม่พบ โปรดตรวจการเชื่อมต่อเครือข่ายแล้วลองอีกครั้ง"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ โปรดตรวจเครือข่ายแล้วลองอีกครั้ง"
+    },
+    {
+      "name": "net_timeout",
+      "value": "คำขอหมดเวลา โปรดลองใหม่ภายหลัง"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "เชื่อมต่ออย่างปลอดภัยไม่สำเร็จ (ข้อผิดพลาด SSL) โปรดลองใหม่ภายหลัง"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "การเชื่อมต่อถูกขัดจังหวะ โปรดลองอีกครั้ง"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "คำขอเครือข่ายไม่สำเร็จ: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "สร้างเอนจิน JSVM ไม่สำเร็จ"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "รันสคริปต์ปลั๊กอินไม่สำเร็จ"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "ยังไม่ได้โหลดส่วนขยาย"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "ส่วนขยายเสีย โปรดติดตั้งใหม่หรือโหลดใหม่"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "เริ่มต้นส่วนขยายไม่สำเร็จ"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "เริ่มต้นส่วนขยายหมดเวลา"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "เรียกส่วนขยายหมดเวลา: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "เรียกส่วนขยายไม่สำเร็จ"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "ส่วนขยายส่งคืน JSON ที่ไม่ถูกต้อง"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "ข้อผิดพลาดส่วนขยายที่ไม่ทราบสาเหตุ"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "manifest.key ไม่ถูกต้อง (ใช้ได้เฉพาะตัวอักษรพิมพ์เล็ก ตัวเลข และขีดล่าง)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "ไม่มี manifest.name"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "manifest.versionCode ไม่ถูกต้อง"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "ปลั๊กอินนี้ต้องการแอปที่ใหม่กว่า (%s) โปรดอัปเดตก่อน"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "ปลั๊กอินนี้ต้องการ versionCode ของแอป >= %s โปรดอัปเดตก่อน"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "อ่านไฟล์ที่เลือกไม่สำเร็จ: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "URL ของแพ็กเกจปลั๊กอินต้องใช้ https การดาวน์โหลดแบบข้อความธรรมดาถูกปฏิเสธ"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "ตรวจสอบความสมบูรณ์ของปลั๊กอินไม่ผ่าน (sha256 ไม่ตรงกัน) ยกเลิกการติดตั้ง"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "แพ็กเกจปลั๊กอินไม่มี main.js"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "แทนที่ไดเรกทอรีปลั๊กอินไม่สำเร็จ: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "ไม่พบ manifest.json ในแพ็กเกจปลั๊กอิน"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "URL ของไฟล์ในที่เก็บต้องใช้ https รายการ http:// ถูกปฏิเสธ"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "ชื่อรันไทม์ปลั๊กอินไม่ถูกต้อง: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "ไม่มีส่วนประกอบรันไทม์ปลั๊กอิน: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "ปลั๊กอินส่งคืนรายละเอียดมังงะที่ไม่ถูกต้อง"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "ปลั๊กอินไม่ได้ส่งออก getChapterText"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "ปลั๊กอินไม่ได้ส่งออก getVideoList"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "บันทึกแพ็กเกจปลั๊กอินไม่สำเร็จ: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "ลบไดเรกทอรีปลั๊กอินไม่สำเร็จ: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "อ่านไฟล์ปลั๊กอินที่ติดตั้งไม่สำเร็จ: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "ตรวจสอบความสมบูรณ์ของแพ็กเกจปลั๊กอินไม่สำเร็จ: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "แตกแพ็กเกจปลั๊กอินไม่สำเร็จ: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "อ่าน manifest.json ในแพ็กเกจปลั๊กอินไม่สำเร็จ: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "จัดเตรียมไฟล์ปลั๊กอินไม่สำเร็จ: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "การติดตาม"
+    },
+    {
+      "name": "track_login",
+      "value": "เข้าสู่ระบบ"
+    },
+    {
+      "name": "track_logout",
+      "value": "ออกจากระบบ"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "ออกจากระบบ %s?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "เข้าสู่ระบบ %s แล้ว"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "ออกจากระบบแล้ว"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "เข้าสู่ระบบไม่สำเร็จ"
+    },
+    {
+      "name": "track_username",
+      "value": "ชื่อผู้ใช้"
+    },
+    {
+      "name": "track_password",
+      "value": "รหัสผ่าน"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "อัปเดตความคืบหน้าการติดตามอัตโนมัติ"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "ค้นหาบน %s"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "ค้นหาไม่สำเร็จ"
+    },
+    {
+      "name": "track_no_results",
+      "value": "ไม่พบผลลัพธ์"
+    },
+    {
+      "name": "track_added",
+      "value": "เพิ่มการติดตามแล้ว"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "เพิ่มการติดตามไม่สำเร็จ"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "อัปเดตการติดตามไม่สำเร็จ"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "นำออกจากบริการไม่สำเร็จ"
+    },
+    {
+      "name": "track_status",
+      "value": "สถานะ"
+    },
+    {
+      "name": "track_score",
+      "value": "คะแนน"
+    },
+    {
+      "name": "track_chapters",
+      "value": "ตอน"
+    },
+    {
+      "name": "track_start_date",
+      "value": "วันที่เริ่ม"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "วันที่จบ"
+    },
+    {
+      "name": "track_private",
+      "value": "ส่วนตัว"
+    },
+    {
+      "name": "track_unlink",
+      "value": "ยกเลิกการเชื่อม"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "นำออกจากบริการ"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "ใส่เลขตอนที่ถูกต้อง"
+    },
+    {
+      "name": "track_reading",
+      "value": "กำลังอ่าน"
+    },
+    {
+      "name": "track_completed",
+      "value": "อ่านจบ"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "พักไว้"
+    },
+    {
+      "name": "track_paused",
+      "value": "หยุดชั่วคราว"
+    },
+    {
+      "name": "track_dropped",
+      "value": "เลิกอ่าน"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "วางแผนจะอ่าน"
+    },
+    {
+      "name": "track_repeating",
+      "value": "อ่านซ้ำ"
+    },
+    {
+      "name": "track_considering",
+      "value": "กำลังพิจารณา"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "ไม่ทราบ"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "รายการที่กำลังอ่าน"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "รายการที่อยากอ่าน"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "รายการที่อ่านจบ"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "รายการที่พักไว้"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "รายการที่ยังไม่จบ"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "กำลังโหลด…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "โหลดไม่สำเร็จ: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "ยังไม่มีไฟล์ในเครื่อง แตะนำเข้าเพื่อเพิ่ม"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "ชื่อ"
+    },
+    {
+      "name": "privacy_title",
+      "value": "ความเป็นส่วนตัว"
+    },
+    {
+      "name": "privacy_group",
+      "value": "ความปลอดภัย"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "ล็อกแอป"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "ตั้งล็อกหน้าจอก่อน"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "ล็อกเมื่อไม่ได้ใช้งาน"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "เสมอ"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 นาที"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 นาที"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 นาที"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 นาที"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "ไม่ล็อก"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "ซ่อนเนื้อหาการแจ้งเตือน"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "หน้าจอปลอดภัย"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "บล็อกภาพหน้าจอและการบันทึกหน้าจอ"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "ล็อกแอปแล้ว"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "ยืนยันตัวตนเพื่อดำเนินการต่อ"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "ปลดล็อก"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "ปลดล็อกแอป"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "กำลังดาวน์โหลด"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "ส่งออกบันทึกข้อขัดข้อง"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "ไม่พบบันทึกข้อขัดข้อง"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "ส่งออกบันทึกความผิดพลาด %d รายการ"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "บันทึกแบบละเอียด"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "ใส่รายละเอียดระดับดีบักในบันทึกระบบ"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "ข้อมูลดีบัก"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "ดำเนินการไม่สำเร็จ"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "ข้อมูล"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "เครือข่าย"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "ชั้นหนังสือ"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "ตัวอ่าน"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "ล้างฐานข้อมูล"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "นำรายการที่ไม่อยู่ในชั้นหนังสือออกทั้งหมด? ประวัติการอ่านและความคืบหน้าของรายการเหล่านี้จะหายไป"
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "นำออก %d รายการ"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "ล้างข้อมูลเว็บที่ฝังไว้"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "ล้างข้อมูลเว็บที่ฝังไว้แล้ว"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS over HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "ปิดอยู่"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "User-Agent กำหนดเอง"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "เว้นว่างเพื่อใช้ค่าเริ่มต้น"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "บันทึก User-Agent แล้ว"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "รีเซ็ต User-Agent"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "รีเฟรชปกในชั้นหนังสือ"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "กำลังรีเฟรชปก…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "รีเฟรช %d รายการ"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "รีเซ็ตการตั้งค่าตัวอ่านรายเรื่อง"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "รีเซ็ตโหมดการอ่านที่ตั้งไว้รายเรื่องกลับเป็นค่าเริ่มต้นส่วนกลาง?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "รีเซ็ต %d รายการ"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "เรนเดอร์คุณภาพสูง"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "ปรับขนาดภาพนุ่มขึ้น โดยแลกกับประสิทธิภาพ"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "เวอร์ชันแอป"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "รุ่นอุปกรณ์"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "ประเภทอุปกรณ์"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "เวอร์ชันระบบ"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "เวอร์ชัน API"
+    },
+    {
+      "name": "debug_screen",
+      "value": "หน้าจอ"
+    },
+    {
+      "name": "debug_language",
+      "value": "ภาษา"
     }
   ]
 }

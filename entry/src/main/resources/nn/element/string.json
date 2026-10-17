@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "Ingen pågåande manga i biblioteket ditt"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "Kopier til utklippstavla"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "Tema"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "Standard"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "Midnattsskyming"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "Jordbærdaiquiri"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "Blågrøn og turkis"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "Tidvassbølgje"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "Yin og yang"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "Natt i Tokyo"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "Einsfarga"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "Grønt eple"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "Lavendel"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "Oppdater"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "Opne i nettlesar"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "Klarte ikkje å opne i nettlesar"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "Kopier URL"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL er kopiert"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "Ikkje noko neste kapittel"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "Ingen filter tilgjengelege"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "Nullstill"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "Ignorer"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "Ta med"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "Utelat"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "Klarte ikkje å velje mappe"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "Ei mappe krevst, ikkje ei fil"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "Vel mappe"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "Synkroniser"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "Byt mappe"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "Lokal mappe"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "Synkroniserer mappe…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "Mappa er synkronisert"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "Synkronisering mislukkast: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "Får ikkje tilgang til den lokale mappa, vel ho på nytt"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "Klarte ikkje å halde på tilgangen til mappa"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "Mappeval er ikkje støtta på denne eininga"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "Inga lokal mappe er vald enno"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "Ingen ting funne i den lokale mappa"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "Ingen ting funne i undermappa comic"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "Ingen ting funne i undermappa novel"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "Ingen ting funne i undermappa anime"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "Avbryt alle"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "Kapittel stigande"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "Kapittel fallande"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "Sorter"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "Filter"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "Etter kjelde"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "Etter kapittelnummer"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "Etter opplastingsdato"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "Etter namn"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "Nullstill"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "Nedlasta"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "Ulesen"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "Bokmerkt"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d valde"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "Merk som lesen"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "Merk som ulesen"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "Bokmerke"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "Slett"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "Neste %d ulesne"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "Alle ulesne"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "Bokmerkte kapittel"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d kapittel i kø"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "Ingen ulesne kapittel"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "Ingen nedlastingar å slette"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "Sletta %d nedlastingar"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "Sporing"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "Avbryt nedlasting"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "Nedlasting avbroten"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "Slette det nedlasta kapitlet?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "Nedlasting sletta"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "Kopiert til utklippstavla"
+    },
+    {
+      "name": "transition_finished",
+      "value": "Ferdig:"
+    },
+    {
+      "name": "transition_current",
+      "value": "Gjeldande:"
+    },
+    {
+      "name": "transition_next",
+      "value": "Neste:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "Førre:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "Det finst ikkje noko neste kapittel"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "Det finst ikkje noko førre kapittel"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "Nettstad"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "Ventande oppdateringar"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "Oppdater alle"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "Fleire"
+    },
+    {
+      "name": "about_row_version",
+      "value": "Versjon"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "Feilsøkingsinformasjon kopiert"
+    },
+    {
+      "name": "licenses_title",
+      "value": "Lisensar for open kjeldekode"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "Opne heimeside"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "Full lisensstekst"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "Referanse for apparkitektur og interaksjonsdesign"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "Ikon i appen"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "Plattform-SDK og ArkUI-rammeverk"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "AVIF-biletdekoding"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "AV1-dekoder brukt til AVIF-dekoding"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "HTML-tolking for utvidingar"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "Mellomlagring av videoavspeling"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL og URLSearchParams for utvidingar (køyretid for tillegg)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder og TextDecoder for utvidingar (køyretid for tillegg)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "WebIDL-verdikonvertering, ein avhengnad av whatwg-url (køyretid for tillegg)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "MD5-hashing for utvidingar (køyretid for tillegg)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "AES-CBC-kryptering og dekryptering for utvidingar (køyretid for tillegg)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "SHA/HMAC/PBKDF2-hashing for utvidingar (køyretid for tillegg)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "AES-GCM-kryptering og dekryptering for utvidingar (køyretid for tillegg)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "Personvernerklæring"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi er ein lokal lesar for manga, romanar og videoar. Appen samlar ikkje inn, lastar opp eller deler personopplysningar."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "Lokale data"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "Biblioteket, lesehistorikken, nedlastingar, innstillingar og sporingsopplysningar blir berre lagra på eininga. Du kan eksportere eller slette dei når som helst i Innstillingar. Avinstallering fjernar dei for godt."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "Nettkjelder og utvidingar"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "Nettinnhald kjem frå utvidingar og nettstader frå tredjepartar. Når du blar eller les frå ei nettkjelde, går førespurnadene dine direkte dit og følgjer personvernerklæringa til nettstaden. Appen styrer ikkje og svarar ikkje for tenester frå tredjepartar."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "Sporingstenester"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "Du kan valfritt kople til kontoar hos AniList, MyAnimeList, Bangumi, Kitsu og Shikimori. Du godkjennar innlogginga på tenesta si eiga side, og tilgangsteikn blir berre lagra på eininga for å synkronisere leseframdrift."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "Løyve"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "Internettilgang blir brukt til nettinnhald, filtilgang til lokal import og reservekopiar, og biometri berre til den lokale applåsen. Ingen løyve blir brukt til å samle inn personopplysningar."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "Kontakt"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi er eit prosjekt med open kjeldekode, inspirert av Mihon. Spørsmål om denne teksten kan sendast via Discord eller GitHub."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "Lagra som CBZ-arkiv"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "Del høge bilete"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "Betre ytinga til lesaren"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "Samtid"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "Samtidige kjelnedlastingar"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "Samtidige sidenedlastingar"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "Sider som blir lasta ned samtidig per kjelde"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "Slett kapittel"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "Etter manuell merking som lesen"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "Slett automatisk etter lesing"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "Slått av"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "Sist lesne kapittel"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "Nest sist lesne kapittel"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "Tredje sist lesne kapittel"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "Fjerde sist lesne kapittel"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "Femte sist lesne kapittel"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "Tillat sletting av bokmerkte kapittel"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "Automatisk nedlasting"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "Last ned nye kapittel"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "Last automatisk ned nye kapittel som blir funne ved bibliotekoppdateringar"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "Hopp over duplikat av lesne kapittel"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "Last ned på førehand"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "Last ned automatisk under lesing"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "Neste ulesne kapittel"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "Neste %d ulesne kapittel"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "Verkar berre om gjeldande kapittel og det neste allereie er lasta ned."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "Romanar"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "Videoar"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "Ingen kjelder for denne typen enno"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "Lokale romanar"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "Lokale videoar"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "Type"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "Alle"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "Start avspeling"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "Hald fram med avspeling"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "Denne straumen kan berre spelast av på nett"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "Skriftstorleik"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "Avstand mellom liner"
+    },
+    {
+      "name": "novel_empty",
+      "value": "Dette kapitlet har ingen tekst"
+    },
+    {
+      "name": "novel_prev",
+      "value": "Førre kapittel"
+    },
+    {
+      "name": "novel_next",
+      "value": "Neste kapittel"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "Rull"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "Sider"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "To sider"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "Blademodus"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "Avstand mellom avsnitt"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "Visning"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "Tekst"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "Ei side (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "Ei side (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "Sidebyte"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "Etterlikning"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "Skyv"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "Overtrekk"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "Skriftfarge"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "Lyst"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "Mørkt"
+    },
+    {
+      "name": "novel_margin",
+      "value": "Margar"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "Skrift"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "Standard"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "Seriffskrift"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "Groteskskrift"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "Fast breidd"
+    },
+    {
+      "name": "novel_tts",
+      "value": "Les opp"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "Start opplesing"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "Stopp opplesing"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "Lesehastigheit"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "Slutten av kapitlet er nådd"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "Opplesing mislukkast: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "Pause"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "Hald fram"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "Les no"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "Avsnitt %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "Sovetimer"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "Av"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d min"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "Stoppar om %1$s"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "Ingen ting blir lese opp"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "Opne spelaren"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "Kapittel"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "Etter tid"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "Etter kapittel"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "Etter dette kapitlet"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "Etter %1$d kapittel"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d kap."
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "Stoppar etter dette kapitlet"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "Stoppar etter %1$d kapittel"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "Held appen i gang i bakgrunnen medan ein roman blir lesen opp"
+    },
+    {
+      "name": "video_play",
+      "value": "Spel"
+    },
+    {
+      "name": "video_pause",
+      "value": "Pause"
+    },
+    {
+      "name": "video_prev",
+      "value": "Førre"
+    },
+    {
+      "name": "video_next",
+      "value": "Neste"
+    },
+    {
+      "name": "video_settings",
+      "value": "Spelarinnstillingar"
+    },
+    {
+      "name": "video_episodes",
+      "value": "Episodar"
+    },
+    {
+      "name": "video_quality",
+      "value": "Kvalitet"
+    },
+    {
+      "name": "video_speed",
+      "value": "Avspelingssnøggleik"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "Danmaku på"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "Danmaku av"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "Lastar danmaku…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%d danmaku lasta"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "Ingen samsvarande danmaku funne"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "Klarte ikkje å laste danmaku"
+    },
+    {
+      "name": "video_locked",
+      "value": "Kontrollar låste"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "Kontrollar opplåste"
+    },
+    {
+      "name": "player_set_title",
+      "value": "Spelar"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "Avspeling"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "Standardfart"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "Spel neste episode automatisk"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "Spel neste episode automatisk når han er ferdig"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "Vis danmaku"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "Skriftstorleik for danmaku"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "Gjennomsikt for danmaku"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "Visingsområde for danmaku"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "Danmaku-fart"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "Danmaku-data frå dandanplay (nettverk krevst)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "Skjermskalering"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "Pass inn"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "Fyll"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "Tøy"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "Sakte"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Vanleg"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "Rask"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "Svært rask"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 skjerm"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "Halv skjerm"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 skjerm"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "Full skjerm"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "Tid med manga"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "Tid med roman"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "Tid med video"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "Omslag"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "Rediger omslag"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "Nullstill omslag"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "Omslag oppdatert"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "Omslag attoppretta"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "Klarte ikkje å oppdatere omslaget"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "Omslag lagra"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "Feil ved lagring av omslag"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "Feil ved deling av omslag"
+    },
+    {
+      "name": "detail_edit",
+      "value": "Rediger"
+    },
+    {
+      "name": "detail_delete",
+      "value": "Slett"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "Velkomen!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "Lat oss setje opp nokre ting fyrst. Du kan alltid endre dei seinare i innstillingane."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "Neste"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "Sett i gang"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "Oppstartsrettleiing"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "Rettleiing for å kome i gang"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "Ny i %s? Vi tilrår rettleiinga for å kome i gang."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "Installerer du %s på nytt?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "Synkronisering pågår, vent"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "Nedlasting mislukkast"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "Klarte ikkje å laste detaljar"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "Ugyldige sideparametrar"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "Førebur nedlastingar…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "Klarte ikkje å flytte til kategori"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "Klarte ikkje å laste migreringslista"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "Handlinga mislukkast"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "Lastefeil: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "Lastar…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "Lasting mislukkast: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "Attgjeving avslutta (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "Siste automatiske reservekopi mislukkast"
+    },
+    {
+      "name": "category_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "category_novel",
+      "value": "Romanar"
+    },
+    {
+      "name": "category_video",
+      "value": "Videoar"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "Lisensiert"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "TTS-motoren er oppteken, prøv på nytt seinare"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "TTS-motoren slutta å svare, og opplesinga vart stoppa"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "TTS-motoren er ikkje tilgjengeleg"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "Stadfesting krevst. Fullfør stadfestingssida og prøv på nytt"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "Kjelda er ikkje tilgjengeleg"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "Dette kapitlet har ikkje innhald"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "Avspeling mislukkast"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "Ingen spelebare videoar funne"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "Lokal"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "Avbrote"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "Nedlasting mislukkast"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "Nedlastinga fekk tidsavbrot (tenaren svarar ikkje)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "Nedlasting mislukkast (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "Denne videoen blir strøyma på nett og kan ikkje lastast ned"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "Nedlastingstenesta er ikkje starta"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "Kjelde ikkje funnen: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "Kapittelfil ikkje funnen"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "Kapittelformatet er ikkje støtta"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "Videofil ikkje funnen"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "Lokalt importert manga"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "Lokalt importerte romanar"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "Lokalt importerte videoar"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "Utrygg omdirigering blokkert: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "For mange omdirigeringar: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "Klarte ikkje å slå opp serveradressa. Sjekk nettverket og prøv på nytt"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "Klarte ikkje å kople til tenaren. Sjekk nettverket og prøv på nytt"
+    },
+    {
+      "name": "net_timeout",
+      "value": "Førespurnaden fekk tidsavbrot, prøv på nytt seinare"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "Trygg tilkopling mislukkast (SSL-feil), prøv på nytt seinare"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "Tilkoplinga blei avbroten, prøv på nytt"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "Nettverksførespurnad mislukkast: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "Klarte ikkje å opprette JSVM-motoren"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "Klarte ikkje å køyre tilleggsskriptet"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "Tillegget er ikkje lasta"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "Tillegget er øydelagt, installer på nytt eller last det inn att"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "Oppstart av tillegget mislukkast"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "Oppstart av tillegget fekk tidsavbrot"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "Tilleggskall fekk tidsavbrot: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "Tilleggskall mislukkast"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "Tillegget gav ugyldig JSON"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "Ukjend tilleggsfeil"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "Ugyldig manifest.key (berre små bokstavar, siffer og understrekar)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name manglar"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "Ugyldig manifest.versionCode"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "Dette tillegget krev ein nyare app (%s), oppdater fyrst"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "Dette tillegget krev app-versionCode >= %s, oppdater fyrst"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "Klarte ikkje å lese den valde fila: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "URL-ar for tilleggspakker må bruke https, ukrypterte nedlastingar blir avviste"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "Integritetssjekken mislukkast (sha256 stemmer ikkje), installeringa er avbroten"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "Tilleggspakka manglar main.js"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "Klarte ikkje å byte ut tilleggsmappa: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "manifest.json vart ikkje funnen i tilleggspakka"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "URL-ar for arkivfiler må bruke https, oppføringar med http:// blir avviste"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "Ugyldig namn på køyretid for tillegg: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "Køyretidskomponent for tillegg manglar: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "Tillegget gav ugyldige manga-detaljar"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "Tillegget eksporterer ikkje getChapterText"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "Tillegget eksporterer ikkje getVideoList"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "Klarte ikkje å lagre tilleggspakka: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "Klarte ikkje å fjerne tilleggsmappa: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "Klarte ikkje å lese dei installerte tilleggsfilene: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "Klarte ikkje å stadfeste integriteten til tilleggspakka: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "Klarte ikkje å pakke ut tilleggspakka: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "Klarte ikkje å lese manifest.json i tilleggspakka: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "Klarte ikkje å klargjere tilleggsfilene: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "Sporing"
+    },
+    {
+      "name": "track_login",
+      "value": "Logg på"
+    },
+    {
+      "name": "track_logout",
+      "value": "Logg av"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "Logge av %s?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "Logga på %s"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "Logga av"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "Innlogging mislukkast"
+    },
+    {
+      "name": "track_username",
+      "value": "Brukarnamn"
+    },
+    {
+      "name": "track_password",
+      "value": "Passord"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "Oppdater sporingsframdrift automatisk"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "Søk på %s"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "Søket mislukkast"
+    },
+    {
+      "name": "track_no_results",
+      "value": "Ingen resultat"
+    },
+    {
+      "name": "track_added",
+      "value": "Sporing lagd til"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "Klarte ikkje å leggje til sporing"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "Klarte ikkje å oppdatere sporing"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "Klarte ikkje å fjerne frå tenesta"
+    },
+    {
+      "name": "track_status",
+      "value": "Status"
+    },
+    {
+      "name": "track_score",
+      "value": "Karakter"
+    },
+    {
+      "name": "track_chapters",
+      "value": "Kapittel"
+    },
+    {
+      "name": "track_start_date",
+      "value": "Startdato"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "Sluttdato"
+    },
+    {
+      "name": "track_private",
+      "value": "Privat"
+    },
+    {
+      "name": "track_unlink",
+      "value": "Kopla frå"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "Fjern frå tenesta"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "Skriv inn eit gyldig kapittelnummer"
+    },
+    {
+      "name": "track_reading",
+      "value": "Les"
+    },
+    {
+      "name": "track_completed",
+      "value": "Fullført"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "På vent"
+    },
+    {
+      "name": "track_paused",
+      "value": "Pausa"
+    },
+    {
+      "name": "track_dropped",
+      "value": "Gitt opp"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "Planlegg å lese"
+    },
+    {
+      "name": "track_repeating",
+      "value": "Les om att"
+    },
+    {
+      "name": "track_considering",
+      "value": "Vurderer"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "Ukjend"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "Leseliste"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "Ynskjeliste"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "Fullført liste"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "På vent-liste"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "Uferdig liste"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "Lastar…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "Klarte ikkje å laste: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "Ingen lokale filer enno, trykk på Importer for å leggje til"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "Namn"
+    },
+    {
+      "name": "privacy_title",
+      "value": "Personvern"
+    },
+    {
+      "name": "privacy_group",
+      "value": "Tryggleik"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "Applås"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "Set ein skjermlås fyrst"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "Lås når appen er uverksam"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "Alltid"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 minutt"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 minutt"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 minutt"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 minutt"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "Aldri"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "Skjul varselinnhald"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "Trygg skjerm"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "Blokkerer skjermbilete og skjermopptak"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "Appen er låst"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "Stadfest kven du er for å halde fram"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "Lås opp"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "Lås opp appen"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "Lastar ned"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "Eksporter krasjloggar"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "Ingen krasjloggar funne"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "Eksporterte %d feilloggar"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "Utførleg logging"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "Ta med feilsøkingsdetaljar i systemloggar"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "Feilsøkingsinfo"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "Handlinga mislukkast"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Data"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "Nettverk"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "Bibliotek"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "Lesar"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "Tøm databasen"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "Fjerne alle oppføringar som ikkje er i biblioteket? Lesehistorikk og framdrift for desse oppføringane går tapt."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "Fjerna %d oppføringar"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "Tøm innbygde nettdata"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "Innbygde nettdata tømde"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS via HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "Slått av"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "Sjølvvald User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "La stå tomt for å bruke standard"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent lagra"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "Nullstill User-Agent"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "Oppdater biblioteksomslag"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "Oppdaterer omslag…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "Oppdaterte %d oppføringar"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "Nullstill lesarinnstillingar per serie"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "Setje lesemodusar du har valt per serie tilbake til den globale standarden?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "Nullstilte %d oppføringar"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "Høgkvalitets attgjeving"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "Jamnare biletskalering på kostnad av yting"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "Appversjon"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "Einingmodell"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "Einingstype"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "Systemversjon"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "API-versjon"
+    },
+    {
+      "name": "debug_screen",
+      "value": "Skjerm"
+    },
+    {
+      "name": "debug_language",
+      "value": "Språk"
     }
   ]
 }

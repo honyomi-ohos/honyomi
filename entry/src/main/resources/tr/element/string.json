@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "Kitaplıkta devam eden manga yok"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "Panoya kopyala"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "Tema"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "Varsayılan"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "Gece Alacakaranlığı"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "Çilekli Daiquiri"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "Camgöbeği ve Turkuaz"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "Gelgit"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "Yin ve Yang"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "Tokyo Gecesi"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "Tek renk"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "Yeşil Elma"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "Lavanta"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "Yenile"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "Tarayıcıda aç"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "Tarayıcıda açılamadı"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "URL'yi kopyala"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL kopyalandı"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "Sonraki bölüm yok"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "Kullanılabilir filtre yok"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "Sıfırla"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "Yoksay"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "Dahil et"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "Hariç tut"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "Klasör seçilemedi"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "Dosya değil, klasör gerekli"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "Klasör seç"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "Eşitle"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "Klasörü değiştir"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "Yerel klasör"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "Klasör eşitleniyor…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "Klasör eşitlendi"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "Eşitleme başarısız: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "Yerel klasöre erişilemiyor, lütfen yeniden seçin"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "Klasör erişimi korunamadı"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "Bu cihazda klasör seçimi desteklenmiyor"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "Henüz yerel klasör ayarlanmadı"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "Yerel klasörde bir şey bulunamadı"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "comic alt klasöründe bir şey bulunamadı"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "novel alt klasöründe bir şey bulunamadı"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "anime alt klasöründe bir şey bulunamadı"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "Tümünü iptal et"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "Bölüm artan"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "Bölüm azalan"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "Sırala"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "Filtre"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "Kaynağa göre"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "Bölüm numarasına göre"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "Yükleme tarihine göre"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "Ada göre"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "Sıfırla"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "İndirilmiş"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "Okunmamış"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "Yer işaretli"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d seçildi"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "Okundu işaretle"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "Okunmadı işaretle"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "Yer işareti"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "Sil"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "Sonraki %d okunmamış"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "Tüm okunmamışlar"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "Yer işaretli bölümler"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d bölüm kuyruğa eklendi"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "Okunmamış bölüm yok"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "Silinecek indirme yok"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "%d indirme silindi"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "Takip"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "İndirmeyi iptal et"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "İndirme iptal edildi"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "İndirilen bölüm silinsin mi?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "İndirme silindi"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "Panoya kopyalandı"
+    },
+    {
+      "name": "transition_finished",
+      "value": "Biten:"
+    },
+    {
+      "name": "transition_current",
+      "value": "Geçerli:"
+    },
+    {
+      "name": "transition_next",
+      "value": "Sonraki:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "Önceki:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "Sonraki bölüm yok"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "Önceki bölüm yok"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "Web sitesi"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "Bekleyen güncellemeler"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "Tümünü güncelle"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "Çoklu"
+    },
+    {
+      "name": "about_row_version",
+      "value": "Sürüm"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "Hata ayıklama bilgisi kopyalandı"
+    },
+    {
+      "name": "licenses_title",
+      "value": "Açık kaynak lisansları"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "Ana sayfayı aç"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "Tam lisans metni"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "Uygulama mimarisi ve etkileşim tasarımı başvurusu"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "Uygulama içi simgeler"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "Platform SDK'sı ve ArkUI çerçevesi"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "AVIF görüntü çözümü"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "AVIF çözümü için kullanılan AV1 çözücü"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "Uzantılar için HTML ayrıştırma"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "Video oynatma önbelleği"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "Uzantılar için URL ve URLSearchParams (eklenti çalışma zamanı)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "Uzantılar için TextEncoder ve TextDecoder (eklenti çalışma zamanı)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "WebIDL değer dönüşümü, bir whatwg-url bağımlılığı (eklenti çalışma zamanı)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "Uzantılar için MD5 özetleme (eklenti çalışma zamanı)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "Uzantılar için AES-CBC şifreleme ve şifre çözme (eklenti çalışma zamanı)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "Uzantılar için SHA/HMAC/PBKDF2 özetleme (eklenti çalışma zamanı)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "Uzantılar için AES-GCM şifreleme ve şifre çözme (eklenti çalışma zamanı)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "Gizlilik ilkesi"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi; manga, roman ve videolar için önce yerel bir okuyucudur. Uygulamanın kendisi kişisel veri toplamaz, yüklemez veya paylaşmaz."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "Yerel veriler"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "Kitaplığınız, okuma geçmişiniz, indirme kayıtlarınız, tercihleriniz ve izleyici kimlik bilgileriniz yalnızca cihazınızda saklanır. Bunları Ayarlar'dan istediğiniz zaman dışa aktarabilir veya silebilirsiniz. Uygulamayı kaldırmak bunları kalıcı olarak siler."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "Çevrimiçi kaynaklar ve uzantılar"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "Çevrimiçi içerik üçüncü taraf uzantılar ve web siteleri tarafından sağlanır. Çevrimiçi bir kaynaktan göz atmak veya okumak isteklerinizi doğrudan o siteye gönderir; bu, sitenin kendi gizlilik ilkesine tabidir. Uygulama üçüncü taraf hizmetleri denetlemez ve onlardan sorumlu değildir."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "Takip hizmetleri"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "İsterseniz AniList, MyAnimeList, Bangumi, Kitsu ve Shikimori gibi izleyici hesaplarını bağlayabilirsiniz. Giriş, izleyicinin kendi sayfasında sizin onayınızla yapılır; erişim belirteçleri okuma ilerlemesini eşitlemek için yalnızca cihazınızda saklanır."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "İzinler"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "İnternet erişimi çevrimiçi içerik yüklemek, dosya erişimi yerel içe aktarma ve yedekler, biyometrik doğrulama ise yalnızca yerel uygulama kilidi için kullanılır. Hiçbir izin kişisel veri toplamak için kullanılmaz."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "İletişim"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi, Mihon'dan esinlenen açık kaynaklı bir projedir. Bu gizlilik bildirimi hakkında sorularınız varsa Discord veya GitHub üzerinden bize ulaşın."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "CBZ arşivi olarak kaydet"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "Uzun görüntüleri böl"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "Okuyucu başarımını artırır"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "Eşzamanlılık"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "Eşzamanlı kaynak indirmeleri"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "Eşzamanlı sayfa indirmeleri"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "Kaynak başına aynı anda indirilen sayfalar"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "Bölümleri sil"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "Elle okundu işaretlendikten sonra"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "Okuduktan sonra otomatik sil"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "Devre dışı"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "Son okunan bölüm"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "Sondan ikinci okunan bölüm"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "Sondan üçüncü okunan bölüm"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "Sondan dördüncü okunan bölüm"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "Sondan beşinci okunan bölüm"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "Yer işaretli bölümlerin silinmesine izin ver"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "Otomatik indirme"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "Yeni bölümleri indir"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "Kitaplık güncellemelerinde bulunan yeni bölümleri otomatik indir"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "Okunmuş yinelenen bölümleri indirme"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "İleri indir"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "Okurken otomatik indir"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "Sonraki okunmamış bölüm"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "Sonraki %d okunmamış bölüm"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "Yalnızca geçerli bölüm ve sonraki bölüm zaten indirilmişse çalışır."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "Romanlar"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "Videolar"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "Bu tür için henüz kaynak yok"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "Yerel romanlar"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "Yerel videolar"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "Tür"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "Tümü"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "Oynatmaya başla"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "Oynatmaya devam et"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "Bu yayın yalnızca çevrimiçi oynatılabilir"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "Yazı boyutu"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "Satır aralığı"
+    },
+    {
+      "name": "novel_empty",
+      "value": "Bu bölümde metin yok"
+    },
+    {
+      "name": "novel_prev",
+      "value": "Önceki bölüm"
+    },
+    {
+      "name": "novel_next",
+      "value": "Sonraki bölüm"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "Kaydırma"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "Sayfalı"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "İki sayfa"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "Sayfalama modu"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "Paragraf aralığı"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "Görünüm"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "Metin"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "Tek sayfa (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "Tek sayfa (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "Sayfa geçişi"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "Benzetim"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "Kaydır"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "Kapak"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "Metin rengi"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "Açık"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "Koyu"
+    },
+    {
+      "name": "novel_margin",
+      "value": "Kenar boşlukları"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "Yazı tipi"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "Varsayılan"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "Tırnaklı"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "Tırnaksız"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "Eş aralıklı"
+    },
+    {
+      "name": "novel_tts",
+      "value": "Sesli oku"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "Sesli okumayı başlat"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "Sesli okumayı durdur"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "Okuma hızı"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "Bu bölümün sonuna gelindi"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "Sesli okuma başarısız: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "Duraklat"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "Sürdür"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "Şimdi okunuyor"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "Paragraf %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "Uyku zamanlayıcısı"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "Kapalı"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d dk"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "%1$s sonra durur"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "Sesli okunan bir şey yok"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "Oynatıcıyı aç"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "Bölümler"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "Süreye göre"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "Bölüme göre"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "Bu bölümden sonra"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "%1$d bölüm sonra"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d bl"
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "Bu bölümden sonra durur"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "%1$d bölüm sonra durur"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "Roman sesli okunurken uygulamanın arka planda çalışmasını sürdürür"
+    },
+    {
+      "name": "video_play",
+      "value": "Oynat"
+    },
+    {
+      "name": "video_pause",
+      "value": "Duraklat"
+    },
+    {
+      "name": "video_prev",
+      "value": "Önceki"
+    },
+    {
+      "name": "video_next",
+      "value": "Sonraki"
+    },
+    {
+      "name": "video_settings",
+      "value": "Oynatıcı ayarları"
+    },
+    {
+      "name": "video_episodes",
+      "value": "Bölümler"
+    },
+    {
+      "name": "video_quality",
+      "value": "Kalite"
+    },
+    {
+      "name": "video_speed",
+      "value": "Oynatma hızı"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "Danmaku açık"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "Danmaku kapalı"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "Danmaku yükleniyor…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%d danmaku yüklendi"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "Eşleşen danmaku bulunamadı"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "Danmaku yüklenemedi"
+    },
+    {
+      "name": "video_locked",
+      "value": "Denetimler kilitli"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "Denetimlerin kilidi açıldı"
+    },
+    {
+      "name": "player_set_title",
+      "value": "Oynatıcı"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "Oynatma"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "Varsayılan hız"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "Sonraki bölümü otomatik oynat"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "Bitince sonraki bölümü otomatik oynat"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "Danmaku göster"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "Danmaku yazı boyutu"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "Danmaku opaklığı"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "Danmaku gösterim alanı"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "Danmaku hızı"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "Danmaku verisi dandanplay kaynağından (ağ gerekir)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "Ekran ölçek modu"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "Sığdır"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "Doldur"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "Ger"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "Yavaş"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Normal"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "Hızlı"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "Çok hızlı"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "Ekranın 1/4'ü"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "Yarım ekran"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "Ekranın 3/4'ü"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "Tam ekran"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "Manga süresi"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "Roman süresi"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "Video süresi"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "Kapak"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "Kapağı düzenle"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "Kapağı sıfırla"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "Kapak güncellendi"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "Kapak geri yüklendi"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "Kapak güncellenemedi"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "Kapak kaydedildi"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "Kapak kaydedilirken hata"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "Kapak paylaşılırken hata"
+    },
+    {
+      "name": "detail_edit",
+      "value": "Düzenle"
+    },
+    {
+      "name": "detail_delete",
+      "value": "Sil"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "Hoş geldiniz!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "Önce birkaç şeyi ayarlayalım. Bunları daha sonra ayarlardan da değiştirebilirsiniz."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "İleri"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "Başla"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "Başlangıç rehberi"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "Başlangıç kılavuzu"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "%s uygulamasında yeni misiniz? Başlangıç kılavuzuna bakmanızı öneririz."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "%s yeniden mi yükleniyor?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "Eşitleme sürüyor, lütfen bekleyin"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "İndirme başarısız"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "Ayrıntılar yüklenemedi"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "Geçersiz sayfa parametreleri"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "İndirmeler hazırlanıyor…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "Kategoriye taşınamadı"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "Aktarma listesi yüklenemedi"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "İşlem başarısız"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "Yükleme hatası: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "Yükleniyor…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "Yükleme başarısız: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "İşleme çıktı (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "Son otomatik yedekleme başarısız"
+    },
+    {
+      "name": "category_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "category_novel",
+      "value": "Romanlar"
+    },
+    {
+      "name": "category_video",
+      "value": "Videolar"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "Lisanslı"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "TTS motoru meşgul, lütfen daha sonra deneyin"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "TTS motoru yanıt vermeyi kesti ve okuma durduruldu"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "TTS motoru kullanılamıyor"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "İnsan doğrulaması gerekli, doğrulama sayfasını tamamlayıp yeniden deneyin"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "Kaynak kullanılamıyor"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "Bu bölümde içerik yok"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "Oynatma başarısız"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "Oynatılabilir video bulunamadı"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "Yerel"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "İptal edildi"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "İndirme başarısız"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "İndirme zaman aşımına uğradı (sunucu yanıt vermiyor)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "İndirme başarısız (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "Bu video çevrimiçi yayınlanır ve indirilemez"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "İndirme hizmeti başlatılmadı"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "Kaynak bulunamadı: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "Bölüm dosyası bulunamadı"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "Desteklenmeyen bölüm biçimi"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "Video dosyası bulunamadı"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "Yerel içe aktarılan manga"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "Yerel içe aktarılan romanlar"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "Yerel içe aktarılan videolar"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "Güvensiz yönlendirme engellendi: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "Çok fazla yönlendirme: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "Sunucu adresi çözülemedi, ağ bağlantınızı denetleyip yeniden deneyin"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "Sunucuya bağlanılamadı, ağınızı denetleyip yeniden deneyin"
+    },
+    {
+      "name": "net_timeout",
+      "value": "İstek zaman aşımına uğradı, lütfen daha sonra deneyin"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "Güvenli bağlantı başarısız (SSL hatası), lütfen daha sonra deneyin"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "Bağlantı kesildi, lütfen yeniden deneyin"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "Ağ isteği başarısız: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "JSVM motoru oluşturulamadı"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "Eklenti betiği çalıştırılamadı"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "Uzantı yüklenmedi"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "Uzantı bozuk, lütfen yeniden yükleyin veya yenileyin"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "Uzantı başlatılamadı"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "Uzantı başlatma zaman aşımına uğradı"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "Uzantı çağrısı zaman aşımına uğradı: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "Uzantı çağrısı başarısız"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "Uzantı geçersiz JSON döndürdü"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "Bilinmeyen uzantı hatası"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "Geçersiz manifest.key (yalnızca küçük harf, rakam ve alt çizgi)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name eksik"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "Geçersiz manifest.versionCode"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "Bu eklenti daha yeni bir uygulama gerektiriyor (%s), önce güncelleyin"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "Bu eklenti uygulama versionCode >= %s gerektiriyor, önce güncelleyin"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "Seçilen dosya okunamadı: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "Eklenti paketi URL'leri https kullanmalıdır, düz metin indirmeler reddedilir"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "Eklenti bütünlük denetimi başarısız (sha256 uyuşmuyor), yükleme iptal edildi"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "Eklenti paketinde main.js yok"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "Eklenti dizini değiştirilemedi: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "Eklenti paketinde manifest.json bulunamadı"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "Depo dosyası URL'leri https kullanmalıdır, http:// girdileri reddedilir"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "Geçersiz eklenti çalışma zamanı adı: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "Eklenti çalışma zamanı bileşeni eksik: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "Eklenti geçersiz manga ayrıntıları döndürdü"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "Eklenti getChapterText dışa aktarmıyor"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "Eklenti getVideoList dışa aktarmıyor"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "Eklenti paketi kaydedilemedi: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "Eklenti dizini kaldırılamadı: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "Yüklü eklenti dosyaları okunamadı: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "Eklenti paketi bütünlüğü doğrulanamadı: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "Eklenti paketi açılamadı: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "Eklenti paketindeki manifest.json okunamadı: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "Eklenti dosyaları hazırlanamadı: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "Takip"
+    },
+    {
+      "name": "track_login",
+      "value": "Giriş yap"
+    },
+    {
+      "name": "track_logout",
+      "value": "Çıkış yap"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "%s oturumu kapatılsın mı?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "%s oturumu açıldı"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "Oturum kapatıldı"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "Giriş başarısız"
+    },
+    {
+      "name": "track_username",
+      "value": "Kullanıcı adı"
+    },
+    {
+      "name": "track_password",
+      "value": "Parola"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "Takip ilerlemesini otomatik güncelle"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "%s üzerinde ara"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "Arama başarısız"
+    },
+    {
+      "name": "track_no_results",
+      "value": "Sonuç bulunamadı"
+    },
+    {
+      "name": "track_added",
+      "value": "Takip eklendi"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "Takip eklenemedi"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "Takip güncellenemedi"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "Hizmetten kaldırılamadı"
+    },
+    {
+      "name": "track_status",
+      "value": "Durum"
+    },
+    {
+      "name": "track_score",
+      "value": "Puan"
+    },
+    {
+      "name": "track_chapters",
+      "value": "Bölümler"
+    },
+    {
+      "name": "track_start_date",
+      "value": "Başlangıç tarihi"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "Bitiş tarihi"
+    },
+    {
+      "name": "track_private",
+      "value": "Gizli"
+    },
+    {
+      "name": "track_unlink",
+      "value": "Bağı kaldır"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "Hizmetten kaldır"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "Geçerli bir bölüm numarası girin"
+    },
+    {
+      "name": "track_reading",
+      "value": "Okunuyor"
+    },
+    {
+      "name": "track_completed",
+      "value": "Tamamlandı"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "Beklemede"
+    },
+    {
+      "name": "track_paused",
+      "value": "Duraklatıldı"
+    },
+    {
+      "name": "track_dropped",
+      "value": "Bırakıldı"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "Okunacak"
+    },
+    {
+      "name": "track_repeating",
+      "value": "Tekrar"
+    },
+    {
+      "name": "track_considering",
+      "value": "Değerlendiriliyor"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "Bilinmiyor"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "Okuma listesi"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "İstek listesi"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "Tamamlananlar"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "Beklemede listesi"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "Bitmemişler"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "Yükleniyor…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "Yüklenemedi: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "Henüz yerel dosya yok, eklemek için İçe aktar'a dokunun"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "Ad"
+    },
+    {
+      "name": "privacy_title",
+      "value": "Gizlilik"
+    },
+    {
+      "name": "privacy_group",
+      "value": "Güvenlik"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "Uygulama kilidi"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "Önce bir ekran kilidi ayarlayın"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "Boştayken kilitle"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "Her zaman"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 dakika"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 dakika"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 dakika"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 dakika"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "Asla"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "Bildirim içeriğini gizle"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "Güvenli ekran"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "Ekran görüntüsü ve ekran kaydını engeller"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "Uygulama kilitli"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "Devam etmek için kimliğinizi doğrulayın"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "Kilidi aç"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "Uygulama kilidini aç"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "İndiriliyor"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "Çökme günlüklerini dışa aktar"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "Çökme günlüğü bulunamadı"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "%d hata günlüğü dışa aktarıldı"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "Ayrıntılı günlük"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "Sistem günlüklerine hata ayıklama ayrıntılarını ekle"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "Hata ayıklama bilgisi"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "Eylem başarısız"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Veri"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "Ağ"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "Kitaplık"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "Okuyucu"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "Veritabanını temizle"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "Kitaplığınızda olmayan tüm girdiler kaldırılsın mı? Bu girdilerin okuma geçmişi ve ilerlemesi silinir."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "%d girdi kaldırıldı"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "Gömülü web verilerini temizle"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "Gömülü web verileri temizlendi"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS over HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "Devre dışı"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "Özel User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "Varsayılanı kullanmak için boş bırakın"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent kaydedildi"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "User-Agent'ı sıfırla"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "Kitaplık kapaklarını yenile"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "Kapaklar yenileniyor…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "%d girdi yenilendi"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "Diziye özel okuyucu ayarlarını sıfırla"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "Dizi başına ayarladığınız okuma modları genel varsayılana döndürülsün mü?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "%d girdi sıfırlandı"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "Yüksek kaliteli işleme"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "Başarım pahasına daha pürüzsüz görüntü ölçekleme"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "Uygulama sürümü"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "Cihaz modeli"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "Cihaz türü"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "Sistem sürümü"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "API sürümü"
+    },
+    {
+      "name": "debug_screen",
+      "value": "Ekran"
+    },
+    {
+      "name": "debug_language",
+      "value": "Dil"
     }
   ]
 }

@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "గ్రంథాలయంలో కొనసాగుతున్న మంగా లేదు"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "క్లిప్‌బోర్డుకు కాపీ చేయి"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "అలంకారం"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "అప్రమేయం"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "అర్ధరాత్రి సంధ్య"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "స్ట్రాబెర్రీ డైకిరి"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "టాకో"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "నీలిపచ్చ"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "అలలు"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "యిన్ & యాంగ్"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "యోత్సుబా"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "టోక్యో రాత్రి"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "ఏకవర్ణం"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "పచ్చి ఆపిల్"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "లావెండర్"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "రిఫ్రెష్"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "బ్రౌజర్‌లో తెరువు"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "బ్రౌజర్‌లో తెరవలేకపోయింది"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "URL కాపీ చేయి"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL కాపీ అయింది"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "తదుపరి అధ్యాయం లేదు"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "వడపోతలు లేవు"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "రీసెట్"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "వదిలివేయి"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "చేర్చు"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "మినహాయించు"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "ఫోల్డర్ ఎంపిక విఫలమైంది"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "ఫైల్ కాదు, ఫోల్డర్ కావాలి"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "ఫోల్డర్ ఎంచుకోండి"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "సమకాలీకరించు"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "ఫోల్డర్ మార్చు"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "స్థానిక ఫోల్డర్"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "ఫోల్డర్ సమకాలీకరిస్తోంది…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "ఫోల్డర్ సమకాలీకరించబడింది"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "సమకాలీకరణ విఫలమైంది: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "స్థానిక ఫోల్డర్‌ను చేరలేకపోయింది, మళ్లీ ఎంచుకోండి"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "ఫోల్డర్ ప్రవేశాన్ని ఉంచలేకపోయింది"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "ఈ పరికరంలో ఫోల్డర్ ఎంపిక లేదు"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "స్థానిక ఫోల్డర్ ఇంకా పెట్టలేదు"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "స్థానిక ఫోల్డర్‌లో ఏమీ లేదు"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "comic ఉపఫోల్డర్‌లో ఏమీ లేదు"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "novel ఉపఫోల్డర్‌లో ఏమీ లేదు"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "anime ఉపఫోల్డర్‌లో ఏమీ లేదు"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "అన్నీ రద్దు చేయి"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "అధ్యాయం ఆరోహణ"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "అధ్యాయం అవరోహణ"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "క్రమబద్ధం"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "వడపోత"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "మూలం ప్రకారం"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "అధ్యాయ సంఖ్య ప్రకారం"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "ఎక్కించిన తేదీ ప్రకారం"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "పేరు ప్రకారం"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "రీసెట్"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "దిగుమతి అయినవి"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "చదవనివి"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "బుక్‌మార్క్"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d ఎంచుకున్నారు"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "చదివినట్లు గుర్తు"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "చదవనట్లు గుర్తు"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "బుక్‌మార్క్"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "తొలగించు"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "తదుపరి %d చదవనివి"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "చదవనివన్నీ"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "బుక్‌మార్క్ అధ్యాయాలు"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d అధ్యాయాలు వరుసలో"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "చదవని అధ్యాయాలు లేవు"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "తొలగించే దిగుమతులు లేవు"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "%d దిగుమతులు తొలగించబడ్డాయి"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "ట్రాకింగ్"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "దిగుమతి రద్దు"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "దిగుమతి రద్దు అయింది"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "దిగుమతి అయిన అధ్యాయాన్ని తొలగించాలా?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "దిగుమతి తొలగించబడింది"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "క్లిప్‌బోర్డుకు కాపీ అయింది"
+    },
+    {
+      "name": "transition_finished",
+      "value": "ముగిసింది:"
+    },
+    {
+      "name": "transition_current",
+      "value": "ప్రస్తుతం:"
+    },
+    {
+      "name": "transition_next",
+      "value": "తదుపరి:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "మునుపటి:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "తదుపరి అధ్యాయం లేదు"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "మునుపటి అధ్యాయం లేదు"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "వెబ్‌సైట్"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "నవీకరణలు వేచి ఉన్నాయి"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "అన్నీ నవీకరించు"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "బహుళ"
+    },
+    {
+      "name": "about_row_version",
+      "value": "వెర్షన్"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "లోపశోధన సమాచారం కాపీ అయింది"
+    },
+    {
+      "name": "licenses_title",
+      "value": "బహిరంగ మూల అనుమతులు"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "మొదటి పేజీ తెరువు"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "పూర్తి అనుమతి పాఠం"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "అనువర్తన నిర్మాణం మరియు అనుభవ రూపకల్పన సూచన"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "అనువర్తన చిహ్నాలు"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "వేదిక నిర్మాణ సాధనం మరియు ArkUI చట్రం"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "AVIF చిత్ర వికోడింగ్"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "AVIF వికోడింగ్ కోసం AV1 వికోడర్"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "పొడిగింపుల కోసం HTML విశ్లేషణ"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "వీడియో ప్లేబ్యాక్ క్యాష్"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "పొడిగింపుల కోసం URL మరియు URLSearchParams (ప్లగిన్ రన్‌టైమ్)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "పొడిగింపుల కోసం TextEncoder మరియు TextDecoder (ప్లగిన్ రన్‌టైమ్)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "WebIDL విలువ మార్పిడి, whatwg-url ఆధారం (ప్లగిన్ రన్‌టైమ్)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "పొడిగింపుల కోసం MD5 హాష్ (ప్లగిన్ రన్‌టైమ్)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "పొడిగింపుల కోసం AES-CBC గుప్తీకరణ మరియు విక్రమణ (ప్లగిన్ రన్‌టైమ్)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "పొడిగింపుల కోసం SHA/HMAC/PBKDF2 హాష్ (ప్లగిన్ రన్‌టైమ్)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "పొడిగింపుల కోసం AES-GCM గుప్తీకరణ మరియు విక్రమణ (ప్లగిన్ రన్‌టైమ్)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "గోప్యతా విధానం"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi మంగా, నవలలు, వీడియోల కోసం స్థానిక ప్రథమ పఠని. అనువర్తనం వ్యక్తిగత డేటాను సేకరించదు, ఎక్కించదు, పంచదు."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "స్థానిక డేటా"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "మీ గ్రంథాలయం, చదివిన చరిత్ర, దిగుమతి రికార్డులు, అభిరుచులు, ట్రాకర్ ఆధారాలు పరికరంలో మాత్రమే ఉంటాయి. అమరికల్లో ఎప్పుడైనా ఎగుమతి లేదా తొలగింపు చేయవచ్చు. అనువర్తనం తీసివేస్తే అవి శాశ్వతంగా పోతాయి."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "ఆన్‌లైన్ మూలాలు మరియు పొడిగింపులు"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "ఆన్‌లైన్ విషయాన్ని మూడవ పక్ష పొడిగింపులు మరియు వెబ్‌సైట్లు ఇస్తాయి. ఆన్‌లైన్ మూలం నుండి చూడటం లేదా చదవడం అభ్యర్థనలను నేరుగా ఆ సైట్‌కు పంపుతుంది; దాని గోప్యతా విధానం వర్తిస్తుంది. మూడవ పక్ష సేవలను అనువర్తనం నియంత్రించదు, బాధ్యత వహించదు."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "ట్రాకింగ్ సేవలు"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "కావాలంటే AniList, MyAnimeList, Bangumi, Kitsu, Shikimori వంటి ట్రాకర్ ఖాతాలను కలపవచ్చు. ప్రవేశం మీరు ట్రాకర్ పేజీలో అనుమతిస్తారు; ప్రవేశ చీటీలు చదివిన పురోగతి సమకాలీకరణకు పరికరంలో మాత్రమే భద్రమవుతాయి."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "అనుమతులు"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "ఇంటర్నెట్ ఆన్‌లైన్ విషయం లోడ్ చేయడానికి, ఫైల్ ప్రవేశం స్థానిక ఇంపోర్ట్‌లు మరియు భద్రప్రతులకు, జీవమాపన ధృవీకరణ స్థానిక తాళానికి మాత్రమే. వ్యక్తిగత డేటా సేకరణకు ఏ అనుమతీ వాడదు."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "సంప్రదింపు"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi, Mihon నుండి ప్రేరణ పొందిన బహిరంగ మూల ప్రాజెక్ట్. ఈ గోప్యతా ప్రకటన గురించి ప్రశ్నలుంటే Discord లేదా GitHub ద్వారా చేరండి."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "CBZ ఆర్కైవ్‌గా భద్రపరచు"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "పొడవైన చిత్రాలను విడదీయి"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "పఠని పనితీరు మెరుగవుతుంది"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "సమాంతరత"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "సమాంతర మూల దిగుమతులు"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "సమాంతర పేజీ దిగుమతులు"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "ఒక్కో మూలానికి ఒకేసారి దిగుమతి అయ్యే పేజీలు"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "అధ్యాయాలు తొలగించు"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "చేతితో చదివినట్లు గుర్తించిన తర్వాత"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "చదివిన తర్వాత స్వయంగా తొలగించు"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "నిలిపివేయబడింది"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "చివరగా చదివిన అధ్యాయం"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "చివరి నుండి రెండో అధ్యాయం"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "చివరి నుండి మూడో అధ్యాయం"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "చివరి నుండి నాలుగో అధ్యాయం"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "చివరి నుండి ఐదో అధ్యాయం"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "బుక్‌మార్క్ అధ్యాయాలు తొలగించడానికి అనుమతి"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "స్వయంచాలక దిగుమతి"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "కొత్త అధ్యాయాలు దిగుమతి"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "గ్రంథాలయ నవీకరణలో కనబడిన కొత్త అధ్యాయాలను స్వయంగా దిగుమతి చేయి"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "చదివిన నకిలీలను దిగుమతి చేయవద్దు"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "ముందస్తు దిగుమతి"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "చదువుతూ స్వయంగా దిగుమతి"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "తదుపరి చదవని అధ్యాయం"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "తదుపరి %d చదవని అధ్యాయాలు"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "ప్రస్తుత అధ్యాయం మరియు తదుపరిది ఇప్పటికే దిగుమతి అయి ఉంటేనే పని చేస్తుంది."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "మంగా"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "నవలలు"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "వీడియోలు"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "ఈ రకానికి మూలాలు ఇంకా లేవు"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "స్థానిక నవలలు"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "స్థానిక వీడియోలు"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "రకం"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "అన్నీ"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "ప్లే ప్రారంభించు"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "ప్లే కొనసాగించు"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "ఈ ప్రవాహాన్ని ఆన్‌లైన్‌లో మాత్రమే ప్లే చేయవచ్చు"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "ఫాంట్ పరిమాణం"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "వరుస అంతరం"
+    },
+    {
+      "name": "novel_empty",
+      "value": "ఈ అధ్యాయంలో పాఠం లేదు"
+    },
+    {
+      "name": "novel_prev",
+      "value": "మునుపటి అధ్యాయం"
+    },
+    {
+      "name": "novel_next",
+      "value": "తదుపరి అధ్యాయం"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "స్క్రోల్"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "పేజీలు"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "రెండు పేజీలు"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "పేజీ మార్పిడి"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "పేరా అంతరం"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "ప్రదర్శన"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "పాఠం"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "ఒకే పేజీ (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "ఒకే పేజీ (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "పేజీ మార్పు"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "మడత"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "జారు"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "కప్పు"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "పాఠ రంగు"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "వెలుగు"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "చీకటి"
+    },
+    {
+      "name": "novel_margin",
+      "value": "అంచులు"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "ఫాంట్"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "అప్రమేయం"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "శీర్షరేఖ"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "శీర్షరేఖ లేనిది"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "సమ వెడల్పు"
+    },
+    {
+      "name": "novel_tts",
+      "value": "బిగ్గరగా చదువు"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "బిగ్గరగా చదవడం మొదలుపెట్టు"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "బిగ్గరగా చదవడం ఆపు"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "చదివే వేగం"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "ఈ అధ్యాయం చివరికి చేరింది"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "పాఠం నుండి మాట విఫలమైంది: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "పాజ్"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "కొనసాగించు"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "ఇప్పుడు చదువుతోంది"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "పేరా %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "నిద్ర టైమర్"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "ఆఫ్"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d నిమి"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "%1$s లో ఆగుతుంది"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "ఏదీ బిగ్గరగా చదవడం లేదు"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "ప్లేయర్ తెరువు"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "అధ్యాయాలు"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "సమయం ప్రకారం"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "అధ్యాయం ప్రకారం"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "ఈ అధ్యాయం తర్వాత"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "%1$d అధ్యాయాల తర్వాత"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d అధ్యా."
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "ఈ అధ్యాయం తర్వాత ఆగుతుంది"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "%1$d అధ్యాయాల తర్వాత ఆగుతుంది"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "నవల బిగ్గరగా చదవబడుతుండగా అనువర్తనాన్ని నేపథ్యంలో నడుపుతుంది"
+    },
+    {
+      "name": "video_play",
+      "value": "ప్లే"
+    },
+    {
+      "name": "video_pause",
+      "value": "పాజ్"
+    },
+    {
+      "name": "video_prev",
+      "value": "మునుపటి"
+    },
+    {
+      "name": "video_next",
+      "value": "తదుపరి"
+    },
+    {
+      "name": "video_settings",
+      "value": "ప్లేయర్ అమరికలు"
+    },
+    {
+      "name": "video_episodes",
+      "value": "భాగాలు"
+    },
+    {
+      "name": "video_quality",
+      "value": "నాణ్యత"
+    },
+    {
+      "name": "video_speed",
+      "value": "ప్లేబ్యాక్ వేగం"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "డాన్మాకు"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "డాన్మాకు ఆన్"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "డాన్మాకు ఆఫ్"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "డాన్మాకు లోడ్ అవుతుంది…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%d డాన్మాకు లోడ్ అయింది"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "సరిపోలే డాన్మాకు లేదు"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "డాన్మాకు లోడ్ విఫలమైంది"
+    },
+    {
+      "name": "video_locked",
+      "value": "నియంత్రణలు లాక్ అయ్యాయి"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "నియంత్రణలు అన్‌లాక్ అయ్యాయి"
+    },
+    {
+      "name": "player_set_title",
+      "value": "ప్లేయర్"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "ప్లేబ్యాక్"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "అప్రమేయ వేగం"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "తదుపరి భాగం స్వయంగా ప్లే"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "అయిపోగానే తదుపరి భాగాన్ని స్వయంగా ప్లే చేయి"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "డాన్మాకు"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "డాన్మాకు చూపు"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "డాన్మాకు ఫాంట్ పరిమాణం"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "డాన్మాకు అపారదర్శకత"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "డాన్మాకు ప్రదర్శన ప్రాంతం"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "డాన్మాకు వేగం"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "dandanplay నుండి డాన్మాకు డేటా (నెట్‌వర్క్ కావాలి)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "తెర స్కేల్ విధానం"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "సరిపోల్చు"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "నింపు"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "సాగదీయి"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "నెమ్మది"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "సాధారణం"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "వేగం"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "అతి వేగం"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 తెర"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "సగం తెర"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 తెర"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "పూర్తి తెర"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "మంగా సమయం"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "నవల సమయం"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "వీడియో సమయం"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "ముఖచిత్రం"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "ముఖచిత్రం సవరించు"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "ముఖచిత్రం రీసెట్"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "ముఖచిత్రం నవీకరించబడింది"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "ముఖచిత్రం పునరుద్ధరించబడింది"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "ముఖచిత్రం నవీకరించలేకపోయింది"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "ముఖచిత్రం భద్రమైంది"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "ముఖచిత్రం భద్రపరచడంలో లోపం"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "ముఖచిత్రం పంచడంలో లోపం"
+    },
+    {
+      "name": "detail_edit",
+      "value": "సవరించు"
+    },
+    {
+      "name": "detail_delete",
+      "value": "తొలగించు"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "స్వాగతం!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "ముందు కొన్ని అమరికలు చేద్దాం. తర్వాత అమరికల్లో ఎప్పుడైనా మార్చవచ్చు."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "తదుపరి"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "ప్రారంభించు"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "పరిచయ మార్గదర్శి"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "ప్రారంభ మార్గదర్శి"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "%s కు కొత్తవారా? ప్రారంభ మార్గదర్శిని చూడమని సూచిస్తున్నాం."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "%s ను మళ్లీ ఇన్‌స్టాల్ చేస్తున్నారా?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "సమకాలీకరణ జరుగుతోంది, వేచి ఉండండి"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "దిగుమతి విఫలమైంది"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "వివరాలు లోడ్ కాలేదు"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "చెల్లని పేజీ పరామితులు"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "దిగుమతులు సిద్ధమవుతున్నాయి…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "విభాగానికి తరలించడం విఫలమైంది"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "మైగ్రేషన్ జాబితా లోడ్ కాలేదు"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "చర్య విఫలమైంది"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "లోడ్ లోపం: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "లోడ్ అవుతుంది…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "లోడ్ విఫలమైంది: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "రెండర్ ఆగింది (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "ప"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "వ"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "మ"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "చివరి స్వయంచాలక భద్రప్రతి విఫలమైంది"
+    },
+    {
+      "name": "category_manga",
+      "value": "మంగా"
+    },
+    {
+      "name": "category_novel",
+      "value": "నవలలు"
+    },
+    {
+      "name": "category_video",
+      "value": "వీడియోలు"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "అనుమతి ఉంది"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "TTS యంత్రం బిజీగా ఉంది, తర్వాత ప్రయత్నించండి"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "TTS యంత్రం స్పందించలేదు, చదవడం ఆగింది"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "TTS యంత్రం అందుబాటులో లేదు"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "మానవ ధృవీకరణ కావాలి, ధృవీకరణ పేజీ పూర్తి చేసి మళ్లీ ప్రయత్నించండి"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "మూలం అందుబాటులో లేదు"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "ఈ అధ్యాయంలో విషయం లేదు"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "ప్లేబ్యాక్ విఫలమైంది"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "ప్లే చేయదగిన వీడియోలు లేవు"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "స్థానిక"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "రద్దు అయింది"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "దిగుమతి విఫలమైంది"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "దిగుమతి సమయం ముగిసింది (సర్వర్ స్పందించలేదు)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "దిగుమతి విఫలమైంది (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "ఈ వీడియో ఆన్‌లైన్ ప్రవాహం, దిగుమతి చేయలేరు"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "దిగుమతి సేవ ప్రారంభం కాలేదు"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "మూలం దొరకలేదు: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "అధ్యాయ ఫైల్ దొరకలేదు"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "మద్దతు లేని అధ్యాయ ఆకృతి"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "వీడియో ఫైల్ దొరకలేదు"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "స్థానికంగా ఇంపోర్ట్ చేసిన మంగా"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "స్థానికంగా ఇంపోర్ట్ చేసిన నవలలు"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "స్థానికంగా ఇంపోర్ట్ చేసిన వీడియోలు"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "అసురక్షిత మళ్లింపు నిరోధించబడింది: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "మళ్లింపులు ఎక్కువ: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "సర్వర్ చిరునామా తేలలేదు, నెట్‌వర్క్ చూసి మళ్లీ ప్రయత్నించండి"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "సర్వర్‌కు కలవలేకపోయింది, నెట్‌వర్క్ చూసి మళ్లీ ప్రయత్నించండి"
+    },
+    {
+      "name": "net_timeout",
+      "value": "అభ్యర్థన సమయం ముగిసింది, తర్వాత ప్రయత్నించండి"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "సురక్షిత అనుసంధానం విఫలమైంది (SSL లోపం), తర్వాత ప్రయత్నించండి"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "అనుసంధానం తెగింది, మళ్లీ ప్రయత్నించండి"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "నెట్‌వర్క్ అభ్యర్థన విఫలమైంది: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "JSVM యంత్రం సృష్టించలేకపోయింది"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "ప్లగిన్ లిపి నడవలేదు"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "పొడిగింపు లోడ్ కాలేదు"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "పొడిగింపు పాడైంది, మళ్లీ ఇన్‌స్టాల్ లేదా రీలోడ్ చేయండి"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "పొడిగింపు ప్రారంభం విఫలమైంది"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "పొడిగింపు ప్రారంభ సమయం ముగిసింది"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "పొడిగింపు పిలుపు సమయం ముగిసింది: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "పొడిగింపు పిలుపు విఫలమైంది"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "పొడిగింపు చెల్లని JSON ఇచ్చింది"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "తెలియని పొడిగింపు లోపం"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "చెల్లని manifest.key (చిన్న అక్షరాలు, అంకెలు, అండర్‌స్కోర్ మాత్రమే)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name లేదు"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "చెల్లని manifest.versionCode"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "ఈ ప్లగిన్‌కు కొత్త అనువర్తనం కావాలి (%s), ముందు నవీకరించండి"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "ఈ ప్లగిన్‌కు అనువర్తనం versionCode >= %s కావాలి, ముందు నవీకరించండి"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "ఎంచుకున్న ఫైల్ చదవలేకపోయింది: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "ప్లగిన్ ప్యాకేజీ URL లు https అయి ఉండాలి, సాదా దిగుమతులు తిరస్కరించబడతాయి"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "ప్లగిన్ సమగ్రత పరీక్ష విఫలమైంది (sha256 కుదరలేదు), ఇన్‌స్టాల్ రద్దు"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "ప్లగిన్ ప్యాకేజీలో main.js లేదు"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "ప్లగిన్ ఫోల్డర్ మార్చలేకపోయింది: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "ప్లగిన్ ప్యాకేజీలో manifest.json లేదు"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "రిపోజిటరీ ఫైల్ URL లు https అయి ఉండాలి, http:// ఎంట్రీలు తిరస్కరించబడతాయి"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "చెల్లని ప్లగిన్ రన్‌టైమ్ పేరు: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "ప్లగిన్ రన్‌టైమ్ భాగం లేదు: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "ప్లగిన్ చెల్లని మంగా వివరాలు ఇచ్చింది"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "ప్లగిన్ getChapterText ఎగుమతి చేయదు"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "ప్లగిన్ getVideoList ఎగుమతి చేయదు"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "ప్లగిన్ ప్యాకేజీ భద్రపరచలేకపోయింది: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "ప్లగిన్ ఫోల్డర్ తొలగించలేకపోయింది: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "ఇన్‌స్టాల్ అయిన ప్లగిన్ ఫైళ్లు చదవలేకపోయింది: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "ప్లగిన్ ప్యాకేజీ సమగ్రత తనిఖీ విఫలమైంది: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "ప్లగిన్ ప్యాకేజీ విడదీయలేకపోయింది: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "ప్లగిన్ ప్యాకేజీలో manifest.json చదవలేకపోయింది: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "ప్లగిన్ ఫైళ్లు సిద్ధం చేయలేకపోయింది: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "ట్రాకింగ్"
+    },
+    {
+      "name": "track_login",
+      "value": "లాగిన్"
+    },
+    {
+      "name": "track_logout",
+      "value": "లాగ్ అవుట్"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "%s నుండి లాగ్ అవుట్ చేయాలా?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "%s లో లాగిన్ అయింది"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "లాగ్ అవుట్ అయింది"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "లాగిన్ విఫలమైంది"
+    },
+    {
+      "name": "track_username",
+      "value": "వినియోగదారు పేరు"
+    },
+    {
+      "name": "track_password",
+      "value": "సంకేతపదం"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "ట్రాకింగ్ పురోగతి స్వయంగా నవీకరించు"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "%s లో వెతకండి"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "శోధన విఫలమైంది"
+    },
+    {
+      "name": "track_no_results",
+      "value": "ఫలితాలు లేవు"
+    },
+    {
+      "name": "track_added",
+      "value": "ట్రాకింగ్ చేర్చబడింది"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "ట్రాకింగ్ చేర్చలేకపోయింది"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "ట్రాకింగ్ నవీకరించలేకపోయింది"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "సేవ నుండి తొలగించలేకపోయింది"
+    },
+    {
+      "name": "track_status",
+      "value": "స్థితి"
+    },
+    {
+      "name": "track_score",
+      "value": "స్కోరు"
+    },
+    {
+      "name": "track_chapters",
+      "value": "అధ్యాయాలు"
+    },
+    {
+      "name": "track_start_date",
+      "value": "ప్రారంభ తేదీ"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "ముగింపు తేదీ"
+    },
+    {
+      "name": "track_private",
+      "value": "అంతరంగికం"
+    },
+    {
+      "name": "track_unlink",
+      "value": "అనుసంధానం తీసివేయి"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "సేవ నుండి తొలగించు"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "చెల్లే అధ్యాయ సంఖ్య ఇవ్వండి"
+    },
+    {
+      "name": "track_reading",
+      "value": "చదువుతున్నాను"
+    },
+    {
+      "name": "track_completed",
+      "value": "పూర్తి"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "ఆపి ఉంచారు"
+    },
+    {
+      "name": "track_paused",
+      "value": "పాజ్"
+    },
+    {
+      "name": "track_dropped",
+      "value": "వదిలేశారు"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "చదవాలని ఉంది"
+    },
+    {
+      "name": "track_repeating",
+      "value": "మళ్లీ"
+    },
+    {
+      "name": "track_considering",
+      "value": "ఆలోచిస్తున్నాను"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "తెలియదు"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "చదివే జాబితా"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "కోరిక జాబితా"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "పూర్తి జాబితా"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "ఆపి ఉంచిన జాబితా"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "అసంపూర్ణ జాబితా"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "లోడ్ అవుతుంది…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "లోడ్ కాలేదు: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "స్థానిక ఫైళ్లు ఇంకా లేవు, చేర్చేందుకు ఇంపోర్ట్ నొక్కండి"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "పేరు"
+    },
+    {
+      "name": "privacy_title",
+      "value": "గోప్యత"
+    },
+    {
+      "name": "privacy_group",
+      "value": "భద్రత"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "అనువర్తన తాళం"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "ముందు తెర తాళం పెట్టండి"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "పని లేనప్పుడు తాళం"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "ఎల్లప్పుడూ"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 నిమిషం"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 నిమిషాలు"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 నిమిషాలు"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 నిమిషాలు"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "ఎప్పుడూ కాదు"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "నోటిఫికేషన్ విషయం దాచు"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "సురక్షిత తెర"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "తెరపట్టు మరియు తెర రికార్డింగ్‌ను అడ్డుకుంటుంది"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "అనువర్తనం లాక్ అయింది"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "కొనసాగేందుకు గుర్తింపు నిర్ధారించండి"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "అన్‌లాక్"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "అనువర్తనం అన్‌లాక్"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "దిగుమతి అవుతోంది"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "క్రాష్ లాగ్‌లు ఎగుమతి"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "క్రాష్ లాగ్‌లు లేవు"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "%d లోప లాగ్‌లు ఎగుమతి అయ్యాయి"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "వివరణాత్మక లాగింగ్"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "వ్యవస్థ లాగ్‌లలో లోపశోధన వివరాలు చేర్చు"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "లోపశోధన సమాచారం"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "చర్య విఫలమైంది"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "డేటా"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "నెట్‌వర్క్"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "గ్రంథాలయం"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "పఠని"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "డేటాబేస్ తుడిచివేయి"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "గ్రంథాలయంలో లేని అన్ని రచనలను తొలగించాలా? వాటి చదివిన చరిత్ర మరియు పురోగతి పోతాయి."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "%d రచనలు తొలగించబడ్డాయి"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "పొందుపరిచిన వెబ్ డేటా తుడిచివేయి"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "పొందుపరిచిన వెబ్ డేటా తుడిచివేయబడింది"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "HTTPS ద్వారా DNS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "నిలిపివేయబడింది"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "అనుకూల User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "అప్రమేయం కోసం ఖాళీగా వదలండి"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent భద్రమైంది"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "User-Agent రీసెట్"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "గ్రంథాలయ ముఖచిత్రాలు నవీకరించు"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "ముఖచిత్రాలు నవీకరిస్తున్నాయి…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "%d రచనలు నవీకరించబడ్డాయి"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "ధారావాహిక పఠన అమరికలు రీసెట్"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "ధారావాహికకు పెట్టిన పఠన విధానాలను సాధారణ అప్రమేయానికి రీసెట్ చేయాలా?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "%d రచనలు రీసెట్ అయ్యాయి"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "అధిక నాణ్యత రెండరింగ్"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "పనితీరు ఖర్చుతో మృదువైన చిత్ర స్కేలింగ్"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "అనువర్తన వెర్షన్"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "పరికర నమూనా"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "పరికర రకం"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "వ్యవస్థ వెర్షన్"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "API వెర్షన్"
+    },
+    {
+      "name": "debug_screen",
+      "value": "తెర"
+    },
+    {
+      "name": "debug_language",
+      "value": "భాష"
     }
   ]
 }

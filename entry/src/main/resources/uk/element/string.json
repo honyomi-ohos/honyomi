@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "У бібліотеці немає манґи, що виходить"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "Копіювати"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "Тема"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "Типово"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "Опівнічні сутінки"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "Полуничний дайкірі"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "Бірюза"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "Приплив"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "Інь і ян"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "Токійська ніч"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "Монохром"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "Зелене яблуко"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "Лаванда"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "Оновити"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "Відкрити в браузері"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "Не вдалося відкрити в браузері"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "Копіювати URL"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL скопійовано"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "Немає наступного розділу"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "Немає доступних фільтрів"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "Скинути"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "Ігнорувати"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "Включити"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "Виключити"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "Не вдалося вибрати папку"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "Потрібна папка, а не файл"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "Вибрати папку"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "Синхронізувати"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "Змінити папку"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "Локальна папка"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "Синхронізація папки…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "Папку синхронізовано"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "Помилка синхронізації: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "Немає доступу до локальної папки, виберіть її знову"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "Не вдалося зберегти доступ до папки"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "Вибір папки не підтримується на цьому пристрої"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "Локальну папку ще не вибрано"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "У локальній папці нічого не знайдено"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "У підпапці comic нічого не знайдено"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "У підпапці novel нічого не знайдено"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "У підпапці anime нічого не знайдено"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "Скасувати все"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "Розділи за зростанням"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "Розділи за спаданням"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "Сортування"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "Фільтр"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "За джерелом"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "За номером розділу"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "За датою завантаження"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "За назвою"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "Скинути"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "Завантажено"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "Непрочитане"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "У закладках"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "Вибрано: %d"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "Прочитано"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "Не прочитано"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "У закладки"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "Видалити"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "Наступні непрочитані: %d"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "Усі непрочитані"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "Розділи в закладках"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "У черзі розділів: %d"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "Немає непрочитаних розділів"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "Немає завантажень для видалення"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "Видалено завантажень: %d"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "Трекінг"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "Скасувати завантаження"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "Завантаження скасовано"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "Видалити завантажений розділ?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "Завантаження видалено"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "Скопійовано в буфер"
+    },
+    {
+      "name": "transition_finished",
+      "value": "Прочитано:"
+    },
+    {
+      "name": "transition_current",
+      "value": "Поточний:"
+    },
+    {
+      "name": "transition_next",
+      "value": "Наступний:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "Попередній:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "Наступного розділу немає"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "Попереднього розділу немає"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "Сайт"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "Є оновлення"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "Оновити все"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "Мульти"
+    },
+    {
+      "name": "about_row_version",
+      "value": "Версія"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "Дані налагодження скопійовано"
+    },
+    {
+      "name": "licenses_title",
+      "value": "Ліцензії відкритого коду"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "Відкрити сайт"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "Повний текст ліцензії"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "Орієнтир з архітектури та взаємодії"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "Значки в застосунку"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "SDK платформи та фреймворк ArkUI"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "Декодування зображень AVIF"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "Декодер AV1 для декодування AVIF"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "Розбір HTML для розширень"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "Кеш відтворення відео"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL і URLSearchParams для розширень (середовище плагінів)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder і TextDecoder для розширень (середовище плагінів)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "Перетворення значень WebIDL, залежність whatwg-url (середовище плагінів)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "Хешування MD5 для розширень (середовище плагінів)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "Шифрування та розшифрування AES-CBC для розширень (середовище плагінів)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "Хешування SHA/HMAC/PBKDF2 для розширень (середовище плагінів)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "Шифрування та розшифрування AES-GCM для розширень (середовище плагінів)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "Політика конфіденційності"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi — локальна читалка манґи, новел і відео. Сам застосунок не збирає, не надсилає і не передає персональні дані."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "Локальні дані"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "Бібліотека, історія читання, завантаження, налаштування та дані трекерів зберігаються лише на вашому пристрої. Їх можна експортувати або стерти в налаштуваннях. Видалення застосунку стирає їх назавжди."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "Онлайн-джерела та розширення"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "Онлайн-вміст надають сторонні розширення та сайти. Перегляд або читання з онлайн-джерела надсилає запити безпосередньо на цей сайт за його власною політикою конфіденційності. Застосунок не керує сторонніми сервісами і не відповідає за них."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "Сервіси трекінгу"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "За бажанням можна підключити трекери, зокрема AniList, MyAnimeList, Bangumi, Kitsu і Shikimori. Вхід ви підтверджуєте на сторінці самого трекера, а токени доступу зберігаються лише на пристрої для синхронізації прогресу."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "Дозволи"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "Інтернет потрібен для онлайн-вмісту, доступ до файлів — для локального імпорту та резервних копій, а біометрія — лише для локального блокування. Жоден дозвіл не використовується для збору персональних даних."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "Контакти"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi — проєкт із відкритим кодом, натхненний Mihon. Питання щодо цієї політики можна поставити в Discord або на GitHub."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "Зберігати як архів CBZ"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "Ділити довгі зображення"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "Пришвидшує роботу читалки"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "Паралельність"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "Одночасні завантаження джерел"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "Одночасні завантаження сторінок"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "Сторінок одночасно з одного джерела"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "Видалення розділів"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "Після ручної позначки прочитаним"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "Автовидалення після прочитання"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "Вимкнено"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "Останній прочитаний розділ"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "Передостанній прочитаний розділ"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "Третій з кінця прочитаний розділ"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "Четвертий з кінця прочитаний розділ"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "П'ятий з кінця прочитаний розділ"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "Дозволити видаляти розділи в закладках"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "Автозавантаження"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "Завантажувати нові розділи"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "Автоматично завантажувати нові розділи під час оновлення бібліотеки"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "Не завантажувати вже прочитані дублікати"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "Завантаження наперед"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "Завантажувати під час читання"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "Наступний непрочитаний розділ"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "Наступні непрочитані розділи: %d"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "Працює, лише якщо поточний і наступний розділи вже завантажено."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Манґа"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "Новели"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "Відео"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "Джерел цього типу ще немає"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "Локальні новели"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "Локальні відео"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "Тип"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "Усі"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "Почати перегляд"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "Продовжити перегляд"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "Цей потік можна дивитися лише онлайн"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "Розмір шрифту"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "Міжрядковий інтервал"
+    },
+    {
+      "name": "novel_empty",
+      "value": "У цьому розділі немає тексту"
+    },
+    {
+      "name": "novel_prev",
+      "value": "Попередній розділ"
+    },
+    {
+      "name": "novel_next",
+      "value": "Наступний розділ"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "Прокручування"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "Посторінково"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "Дві сторінки"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "Режим гортання"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "Інтервал абзаців"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "Відображення"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "Текст"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "Одна сторінка (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "Одна сторінка (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "Перехід сторінок"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "Імітація"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "Зсув"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "Накладання"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "Колір тексту"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "Світлий"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "Темний"
+    },
+    {
+      "name": "novel_margin",
+      "value": "Поля"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "Шрифт"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "Типово"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "Із засічками"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "Без засічок"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "Моноширинний"
+    },
+    {
+      "name": "novel_tts",
+      "value": "Читання вголос"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "Почати читання вголос"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "Зупинити читання вголос"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "Швидкість читання"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "Кінець цього розділу"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "Помилка синтезу мовлення: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "Пауза"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "Продовжити"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "Зараз читається"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "Абзац %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "Таймер сну"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "Вимкнено"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d хв"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "Зупинка через %1$s"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "Зараз нічого не читається вголос"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "Відкрити програвач"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "Розділи"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "За часом"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "За розділами"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "Після цього розділу"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "Після %1$d розділів"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d розд."
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "Зупинка після цього розділу"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "Зупинка після %1$d розділів"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "Тримає застосунок у фоні, поки новела читається вголос"
+    },
+    {
+      "name": "video_play",
+      "value": "Пуск"
+    },
+    {
+      "name": "video_pause",
+      "value": "Пауза"
+    },
+    {
+      "name": "video_prev",
+      "value": "Назад"
+    },
+    {
+      "name": "video_next",
+      "value": "Далі"
+    },
+    {
+      "name": "video_settings",
+      "value": "Налаштування програвача"
+    },
+    {
+      "name": "video_episodes",
+      "value": "Серії"
+    },
+    {
+      "name": "video_quality",
+      "value": "Якість"
+    },
+    {
+      "name": "video_speed",
+      "value": "Швидкість"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "Данмаку"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "Данмаку увімкнено"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "Данмаку вимкнено"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "Завантаження данмаку…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "Завантажено данмаку: %d"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "Відповідних данмаку немає"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "Не вдалося завантажити данмаку"
+    },
+    {
+      "name": "video_locked",
+      "value": "Керування заблоковано"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "Керування розблоковано"
+    },
+    {
+      "name": "player_set_title",
+      "value": "Програвач"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "Відтворення"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "Типова швидкість"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "Наступна серія автоматично"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "Вмикати наступну серію після завершення поточної"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Данмаку"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "Показувати данмаку"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "Розмір шрифту данмаку"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "Непрозорість данмаку"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "Область данмаку"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "Швидкість данмаку"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "Данмаку з dandanplay (потрібна мережа)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "Масштаб екрана"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "Вписати"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "Заповнити"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "Розтягнути"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "Повільно"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Звичайно"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "Швидко"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "Дуже швидко"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 екрана"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "Пів екрана"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 екрана"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "Увесь екран"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "Час манґи"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "Час новел"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "Час відео"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "Обкладинка"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "Змінити обкладинку"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "Скинути обкладинку"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "Обкладинку оновлено"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "Обкладинку відновлено"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "Не вдалося оновити обкладинку"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "Обкладинку збережено"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "Помилка збереження обкладинки"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "Помилка надсилання обкладинки"
+    },
+    {
+      "name": "detail_edit",
+      "value": "Змінити"
+    },
+    {
+      "name": "detail_delete",
+      "value": "Видалити"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "Вітаємо!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "Спочатку налаштуємо кілька параметрів. Пізніше їх завжди можна змінити в налаштуваннях."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "Далі"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "Почати"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "Початкове налаштування"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "Посібник для початку"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "Уперше в %s? Радимо відкрити посібник для початку."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "Перевстановлюєте %s?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "Триває синхронізація, зачекайте"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "Помилка завантаження"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "Не вдалося завантажити відомості"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "Неправильні параметри сторінки"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "Підготовка завантажень…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "Не вдалося перемістити до категорії"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "Не вдалося завантажити список перенесення"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "Операцію не виконано"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "Помилка завантаження: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "Завантаження…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "Не вдалося завантажити: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "Відображення завершилося (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "Останній автоматичний бекап не вдався"
+    },
+    {
+      "name": "category_manga",
+      "value": "Манґа"
+    },
+    {
+      "name": "category_novel",
+      "value": "Новели"
+    },
+    {
+      "name": "category_video",
+      "value": "Відео"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "Ліцензія"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "Рушій TTS зайнятий, повторіть пізніше"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "Рушій TTS перестав відповідати, читання зупинено"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "Рушій TTS недоступний"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "Потрібна перевірка, що ви людина: пройдіть її на сторінці та повторіть"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "Джерело недоступне"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "У цьому розділі немає вмісту"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "Помилка відтворення"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "Немає відео для відтворення"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "Локально"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "Скасовано"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "Помилка завантаження"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "Час завантаження минув (сервер не відповідає)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "Помилка завантаження (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "Це відео транслюється онлайн, і його не можна завантажити"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "Службу завантажень не ініціалізовано"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "Джерело не знайдено: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "Файл розділу не знайдено"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "Формат розділу не підтримується"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "Відеофайл не знайдено"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "Локально імпортована манґа"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "Локально імпортовані новели"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "Локально імпортовані відео"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "Небезпечне переспрямування заблоковано: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "Забагато переспрямувань: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "Не вдалося визначити адресу сервера, перевірте мережу та повторіть"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "Не вдалося підключитися до сервера, перевірте мережу та повторіть"
+    },
+    {
+      "name": "net_timeout",
+      "value": "Час запиту минув, повторіть пізніше"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "Захищене з'єднання не вдалося (помилка SSL), повторіть пізніше"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "З'єднання перервано, повторіть спробу"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "Мережевий запит не виконано: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "Не вдалося створити рушій JSVM"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "Не вдалося виконати скрипт плагіна"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "Розширення не завантажено"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "Розширення пошкоджено, перевстановіть або перезавантажте його"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "Не вдалося ініціалізувати розширення"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "Час ініціалізації розширення минув"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "Час виклику розширення минув: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "Виклик розширення не виконано"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "Розширення повернуло некоректний JSON"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "Невідома помилка розширення"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "Неправильний manifest.key (лише малі літери, цифри та підкреслення)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "Немає manifest.name"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "Неправильний manifest.versionCode"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "Плагіну потрібна новіша версія застосунку (%s), спершу оновіть його"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "Плагіну потрібен versionCode застосунку >= %s, спершу оновіть його"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "Не вдалося прочитати вибраний файл: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "URL пакетів плагінів мають використовувати https, відкрите завантаження відхилено"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "Перевірку цілісності плагіна не пройдено (невідповідність sha256), встановлення скасовано"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "У пакеті плагіна немає main.js"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "Не вдалося замінити каталог плагіна: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "У пакеті плагіна немає manifest.json"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "URL файлів репозиторію мають використовувати https, записи http:// відхилено"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "Неправильне ім'я середовища плагіна: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "Немає компонента середовища плагіна: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "Плагін повернув некоректні відомості про манґу"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "Плагін не експортує getChapterText"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "Плагін не експортує getVideoList"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "Не вдалося зберегти пакет плагіна: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "Не вдалося видалити каталог плагіна: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "Не вдалося прочитати файли встановленого плагіна: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "Не вдалося перевірити цілісність пакета плагіна: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "Не вдалося розпакувати пакет плагіна: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "Не вдалося прочитати manifest.json у пакеті плагіна: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "Не вдалося підготувати файли плагіна: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "Трекінг"
+    },
+    {
+      "name": "track_login",
+      "value": "Увійти"
+    },
+    {
+      "name": "track_logout",
+      "value": "Вийти"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "Вийти з %s?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "Вхід у %s виконано"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "Вихід виконано"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "Не вдалося увійти"
+    },
+    {
+      "name": "track_username",
+      "value": "Ім'я користувача"
+    },
+    {
+      "name": "track_password",
+      "value": "Пароль"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "Автооновлення прогресу трекінгу"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "Пошук на %s"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "Помилка пошуку"
+    },
+    {
+      "name": "track_no_results",
+      "value": "Нічого не знайдено"
+    },
+    {
+      "name": "track_added",
+      "value": "Трекінг додано"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "Не вдалося додати трекінг"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "Не вдалося оновити трекінг"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "Не вдалося видалити із сервісу"
+    },
+    {
+      "name": "track_status",
+      "value": "Статус"
+    },
+    {
+      "name": "track_score",
+      "value": "Оцінка"
+    },
+    {
+      "name": "track_chapters",
+      "value": "Розділи"
+    },
+    {
+      "name": "track_start_date",
+      "value": "Дата початку"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "Дата завершення"
+    },
+    {
+      "name": "track_private",
+      "value": "Приватно"
+    },
+    {
+      "name": "track_unlink",
+      "value": "Відв'язати"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "Видалити із сервісу"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "Введіть правильний номер розділу"
+    },
+    {
+      "name": "track_reading",
+      "value": "Читаю"
+    },
+    {
+      "name": "track_completed",
+      "value": "Завершено"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "Відкладено"
+    },
+    {
+      "name": "track_paused",
+      "value": "На паузі"
+    },
+    {
+      "name": "track_dropped",
+      "value": "Покинуто"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "У планах"
+    },
+    {
+      "name": "track_repeating",
+      "value": "Перечитую"
+    },
+    {
+      "name": "track_considering",
+      "value": "Розглядаю"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "Невідомо"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "Список «Читаю»"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "Список бажаного"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "Список завершеного"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "Список відкладеного"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "Список незавершеного"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "Завантаження…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "Не вдалося завантажити: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "Локальних файлів ще немає, натисніть «Імпорт», щоб додати"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "Назва"
+    },
+    {
+      "name": "privacy_title",
+      "value": "Конфіденційність"
+    },
+    {
+      "name": "privacy_group",
+      "value": "Безпека"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "Блокування застосунку"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "Спочатку задайте блокування екрана"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "Блокувати під час бездіяльності"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "Завжди"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 хвилина"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 хвилини"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 хвилин"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 хвилин"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "Ніколи"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "Приховувати текст сповіщень"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "Захист екрана"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "Забороняє знімки та запис екрана"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "Застосунок заблоковано"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "Підтвердьте особу, щоб продовжити"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "Розблокувати"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "Розблокувати застосунок"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "Завантаження"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "Експорт журналів збоїв"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "Журналів збоїв немає"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "Експортовано журналів збоїв: %d"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "Докладні журнали"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "Записувати налагоджувальні відомості в системний журнал"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "Дані налагодження"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "Не вдалося виконати"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Дані"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "Мережа"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "Бібліотека"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "Читалка"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "Очистити базу даних"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "Видалити всі записи, яких немає в бібліотеці? Історію читання та прогрес цих записів буде втрачено."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "Видалено записів: %d"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "Очистити дані вбудованого браузера"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "Дані вбудованого браузера очищено"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS over HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "Вимкнено"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "Власний User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "Залиште порожнім, щоб використовувати типове значення"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent збережено"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "Скинути User-Agent"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "Оновити обкладинки бібліотеки"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "Оновлення обкладинок…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "Оновлено записів: %d"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "Скинути налаштування читалки для творів"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "Повернути режими читання окремих творів до спільного типового значення?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "Скинуто записів: %d"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "Якісне відображення"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "Плавніше масштабування зображень ціною продуктивності"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "Версія застосунку"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "Модель пристрою"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "Тип пристрою"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "Версія системи"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "Версія API"
+    },
+    {
+      "name": "debug_screen",
+      "value": "Екран"
+    },
+    {
+      "name": "debug_language",
+      "value": "Мова"
     }
   ]
 }

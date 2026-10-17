@@ -1657,6 +1657,34 @@
       "value": "影片播放快取"
     },
     {
+      "name": "licenses_desc_whatwgurl",
+      "value": "擴充功能 URL 與 URLSearchParams（插件執行時）"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "擴充功能 TextEncoder 與 TextDecoder（插件執行時）"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "WebIDL 值轉換，whatwg-url 的相依套件（插件執行時）"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "擴充功能 MD5 雜湊（插件執行時）"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "擴充功能 AES-CBC 加解密（插件執行時）"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "擴充功能 SHA/HMAC/PBKDF2（插件執行時）"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "擴充功能 AES-GCM 加解密（插件執行時）"
+    },
+    {
       "name": "privacy_policy_title",
       "value": "隱私說明"
     },
@@ -3029,10 +3057,6 @@
       "value": "manifest.versionCode 無效"
     },
     {
-      "name": "plugin_error_bad_engine",
-      "value": "不支援的外掛引擎：%s（本應用僅支援 jsvm）"
-    },
-    {
       "name": "plugin_error_dsl_too_new",
       "value": "外掛需要新版應用（%s），請先升級應用"
     },
@@ -3191,6 +3215,722 @@
     {
       "name": "privacy_dl_title",
       "value": "正在下載"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "沒有可用的篩選條件"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "重設"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "忽略"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "包含"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "排除"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "選擇資料夾失敗"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "請選擇資料夾而不是檔案"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "選擇資料夾"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "同步"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "更換資料夾"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "本地資料夾"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "正在同步資料夾…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "同步完成"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "同步失敗：%s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "無法存取本地資料夾，請重新選擇"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "無法保留資料夾的存取權限"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "此裝置不支援選擇資料夾"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "還沒有設定本地資料夾"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "本地資料夾中未找到內容"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "comic 子資料夾中未找到內容"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "novel 子資料夾中未找到內容"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "anime 子資料夾中未找到內容"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "網站"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "待更新"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "全部更新"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "多語言"
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "儲存為 CBZ 壓縮檔"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "拆分超長條漫圖片"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "提升閱讀器效能"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "並行下載"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "同時下載的來源數量"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "單章頁面並行下載數"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "每個來源內同時下載的頁面數"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "刪除章節"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "手動標記已讀後刪除"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "閱讀後自動刪除"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "停用"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "倒數第 1 個已讀章節"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "倒數第 2 個已讀章節"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "倒數第 3 個已讀章節"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "倒數第 4 個已讀章節"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "倒數第 5 個已讀章節"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "允許刪除已加書籤的章節"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "自動下載"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "下載新章節"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "書架更新發現新章節時自動下載"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "跳過下載已讀過的重複章節"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "預下載"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "閱讀時自動預下載"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "預下載下一章"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "預下載後續 %d 章"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "僅當目前章節與下一章節都已下載時才會生效。"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "顯示"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "文字設定"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "單頁式（從左到右）"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "單頁式（從右到左）"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "翻頁動畫"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "模擬"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "滑動"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "覆蓋"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "配色"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "淺色"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "深色"
+    },
+    {
+      "name": "novel_margin",
+      "value": "邊距"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "字型"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "預設"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "襯線體"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "無襯線體"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "等寬"
+    },
+    {
+      "name": "novel_tts",
+      "value": "聽書"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "開始朗讀"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "停止朗讀"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "朗讀語速"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "本章已朗讀完畢"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "朗讀失敗：%s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "暫停朗讀"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "繼續朗讀"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "正在聽書"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "段落 %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "定時停止"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "關閉"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d 分鐘"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "%1$s 後停止"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "暫無正在朗讀的內容"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "開啟播放器"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "章節清單"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "按時長"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "按章節"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "播完本章"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "播完 %1$d 章"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d 章"
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "播完本章後停止"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "播完 %1$d 章後停止"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "小說朗讀時讓應用程式在背景持續執行"
+    },
+    {
+      "name": "track_title",
+      "value": "追蹤"
+    },
+    {
+      "name": "track_login",
+      "value": "登入"
+    },
+    {
+      "name": "track_logout",
+      "value": "登出"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "要登出 %s？"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "已登入 %s"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "已登出"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "登入失敗"
+    },
+    {
+      "name": "track_username",
+      "value": "使用者名稱"
+    },
+    {
+      "name": "track_password",
+      "value": "密碼"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "自動更新追蹤進度"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "在 %s 中搜尋"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "搜尋失敗"
+    },
+    {
+      "name": "track_no_results",
+      "value": "沒有找到結果"
+    },
+    {
+      "name": "track_added",
+      "value": "已新增追蹤"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "新增追蹤失敗"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "更新追蹤失敗"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "從追蹤服務刪除失敗"
+    },
+    {
+      "name": "track_status",
+      "value": "狀態"
+    },
+    {
+      "name": "track_score",
+      "value": "評分"
+    },
+    {
+      "name": "track_chapters",
+      "value": "章節"
+    },
+    {
+      "name": "track_start_date",
+      "value": "開始日期"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "結束日期"
+    },
+    {
+      "name": "track_private",
+      "value": "私密"
+    },
+    {
+      "name": "track_unlink",
+      "value": "解除綁定"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "從追蹤服務刪除"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "請輸入有效的章節數"
+    },
+    {
+      "name": "track_reading",
+      "value": "在看"
+    },
+    {
+      "name": "track_completed",
+      "value": "看完"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "擱置"
+    },
+    {
+      "name": "track_paused",
+      "value": "暫停"
+    },
+    {
+      "name": "track_dropped",
+      "value": "棄看"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "想看"
+    },
+    {
+      "name": "track_repeating",
+      "value": "重看"
+    },
+    {
+      "name": "track_considering",
+      "value": "考慮中"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "未知"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "在看清單"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "想看清單"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "看完清單"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "擱置清單"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "未完清單"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "載入中…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "載入失敗：%s"
+    },
+    {
+      "name": "appearance_accent_color",
+      "value": "強調色"
+    },
+    {
+      "name": "theme_accent_blue",
+      "value": "藍色"
+    },
+    {
+      "name": "theme_accent_green",
+      "value": "綠色"
+    },
+    {
+      "name": "theme_accent_orange",
+      "value": "橘色"
+    },
+    {
+      "name": "theme_accent_pink",
+      "value": "粉紅色"
+    },
+    {
+      "name": "theme_accent_purple",
+      "value": "紫色"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "匯出故障記錄"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "沒有可匯出的故障記錄"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "已匯出 %d 筆故障記錄"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "詳細記錄"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "在系統日誌中加入偵錯層級的詳細資訊"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "偵錯資訊"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "操作失敗"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "資料"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "網路"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "書架"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "閱讀器"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "清除資料庫"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "刪除所有不在書架中的項目？這些項目的閱讀記錄和進度將會遺失。"
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "已刪除 %d 個項目"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "清除內嵌網頁資料"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "已清除內嵌網頁資料"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "HTTPS 加密 DNS（DoH）"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "關閉"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "自訂 User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "留空使用預設值"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent 已儲存"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "還原預設 User-Agent"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "重新整理書架封面"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "正在重新整理封面…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "已重新整理 %d 個項目"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "重設各作品閱讀器設定"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "將各作品單獨設定的閱讀模式還原為全域預設？"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "已重設 %d 個項目"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "高品質渲染"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "圖片縮放更平滑，但會增加效能負擔"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "應用程式版本"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "裝置型號"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "裝置類型"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "系統版本"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "API 版本"
+    },
+    {
+      "name": "debug_screen",
+      "value": "螢幕"
+    },
+    {
+      "name": "debug_language",
+      "value": "語言"
     }
   ]
 }

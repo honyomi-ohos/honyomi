@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "ग्रन्थालये प्रचलन्ती मङ्गा नास्ति"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "अंशफलके प्रतिलिखतु"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "रूपम्"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "मूलम्"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "मध्यरात्रिसन्ध्या"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "स्त्रॉबेरीडाकिरी"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "ताको"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "नीलहरितम्"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "वेलातरङ्गः"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "यिन् याङ्ग् च"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "योत्सुबा"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "टोक्योरात्रिः"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "एकवर्णम्"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "हरितसेबम्"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "लावण्डरम्"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "पुनर्नवीकरोतु"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "ब्राउझरे उद्घाटयतु"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "ब्राउझरे उद्घाटयितुं नाशक्तम्"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "URL प्रतिलिखतु"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL प्रतिलिखितम्"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "अग्रिमः अध्यायः नास्ति"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "शोधनानि न सन्ति"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "पुनःस्थापयतु"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "उपेक्षतु"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "संयोजयतु"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "बहिष्करोतु"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "पुटिकाचयनं विफलम्"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "सञ्चिका न, पुटिका आवश्यकी"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "पुटिकां चिनोतु"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "समकालनम्"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "पुटिकां परिवर्तयतु"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "स्थानिकपुटिका"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "पुटिका समकाल्यते…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "पुटिका समकालिता"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "समकालनं विफलम्: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "स्थानिकपुटिका न प्राप्ता, पुनः चिनोतु"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "पुटिकाप्रवेशः न धृतः"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "अस्मिन् यन्त्रे पुटिकाचयनं नास्ति"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "स्थानिकपुटिका अधुना न स्थापितम्"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "स्थानिकपुटिकायां किमपि नास्ति"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "comic उपपुटिकायां किमपि नास्ति"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "novel उपपुटिकायां किमपि नास्ति"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "anime उपपुटिकायां किमपि नास्ति"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "सर्वं निरस्यतु"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "अध्यायः आरोहणम्"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "अध्यायः अवरोहणम्"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "क्रमः"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "शोधनम्"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "स्रोतानुसारम्"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "अध्यायसङ्ख्यानुसारम्"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "आरोपणतिथ्यनुसारम्"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "नामानुसारम्"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "पुनःस्थापयतु"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "अवतरितम्"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "अपठितम्"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "पुस्तकचिह्नम्"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d चितम्"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "पठितम् इति"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "अपठितम् इति"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "पुस्तकचिह्नम्"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "नाशयतु"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "अग्रिमाणि %d अपठितानि"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "सर्वाणि अपठितानि"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "पुस्तकचिह्नअध्यायाः"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d अध्यायाः पङ्क्तौ"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "अपठिताः अध्यायाः न सन्ति"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "नाशयितुम् अवतरणानि न सन्ति"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "%d अवतरणानि नाशितानि"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "अनुवर्तनम्"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "अवतरणं निरस्यतु"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "अवतरणं निरस्तम्"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "अवतरितम् अध्यायं नाशयतु?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "अवतरणं नाशितम्"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "अंशफलके प्रतिलिखितम्"
+    },
+    {
+      "name": "transition_finished",
+      "value": "समाप्तम्:"
+    },
+    {
+      "name": "transition_current",
+      "value": "वर्तमानम्:"
+    },
+    {
+      "name": "transition_next",
+      "value": "अग्रिमम्:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "पूर्वम्:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "अग्रिमः अध्यायः नास्ति"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "पूर्वः अध्यायः नास्ति"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "जालस्थलम्"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "नवीकरणानि प्रतीयन्ते"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "सर्वं नवीकरोतु"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "बहुभाषा"
+    },
+    {
+      "name": "about_row_version",
+      "value": "संस्करणम्"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "दोषशोधसूचना प्रतिलिखिता"
+    },
+    {
+      "name": "licenses_title",
+      "value": "मुक्तस्रोतअनुज्ञाः"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "मुखपृष्ठम् उद्घाटयतु"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "पूर्णा अनुज्ञापाठः"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "अनुप्रयोगरचना संवादविन्यासश्च सन्दर्भः"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "अनुप्रयोगचिह्नानि"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "मञ्चनिर्माणसाधनं ArkUI कङ्कटं च"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "AVIF चित्रविकोटनम्"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "AVIF विकोटनाय AV1 विकोटकः"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "विस्तारकाणां HTML विश्लेषणम्"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "चलचित्रवादनकस्य काष्वस्तु"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "विस्तारकाणां URL URLSearchParams च (प्लगिन्रनटाइम)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "विस्तारकाणां TextEncoder TextDecoder च (प्लगिन्रनटाइम)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "WebIDL मूल्यपरिवर्तनम्, whatwg-url निर्भरता (प्लगिन्रनटाइम)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "विस्तारकाणां MD5 सङ्क्षेपः (प्लगिन् रनटाइम)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "विस्तारकाणां AES-CBC गुप्तीकरणं विगुप्तीकरणं च (प्लगिन्रनटाइम)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "विस्तारकाणां SHA/HMAC/PBKDF2 सङ्क्षेपः (प्लगिन् रनटाइम)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "विस्तारकाणां AES-GCM गुप्तीकरणं विगुप्तीकरणं च (प्लगिन्रनटाइम)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "गोपनीयतानीतिः"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi मङ्गा-उपन्यास-चलचित्राणां स्थानिकप्रधानः पठित्रः। अनुप्रयोगः स्वयं व्यक्तिगतदत्तांशान् न संगृह्णाति, न आरोहयति, न च संविभजति।"
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "स्थानिकदत्तांशाः"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "भवतः ग्रन्थालयः, पठनचरित्रम्, अवतरणलेखानि, रुचयः, अनुवर्तकप्रमाणानि च केवलं यन्त्रे तिष्ठन्ति। समायोजनेषु कदापि निर्यातु अथवा मार्जयतु। अनुप्रयोगनिष्कासने तानि नित्यं नश्यन्ति।"
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "जालस्रोताः विस्तारकाः च"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "जालसामग्री तृतीयपक्षविस्तारकैः जालस्थलैश्च दीयते। जालस्रोतात् अवलोकनं पठनं वा याचनानि साक्षात् तस्मिन् स्थले प्रेषयति; तस्य गोपनीयतानीतिः प्रवर्तते। तृतीयपक्षसेवाः अनुप्रयोगः न नियन्त्रयति, न च उत्तरदायी।"
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "अनुवर्तनसेवाः"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "इच्छया AniList, MyAnimeList, Bangumi, Kitsu, Shikimori इत्यादीनाम् अनुवर्तकलेखान् योजयतु। प्रवेशं भवान् अनुवर्तकस्य स्वपृष्ठे अनुमन्यते; प्रवेशटोकनानि पठनप्रगतिसमकालनाय केवलं यन्त्रे रक्ष्यन्ते।"
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "अनुमतयः"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "अन्तर्जालं जालसामग्रीम् आरोपयितुम्, सञ्चिकाप्रवेशः स्थानिकआयाताय प्रतिलेखनाय च, जैवमापनं केवलं स्थानिकतालाय। व्यक्तिगतदत्तांशसङ्ग्रहणाय कापि अनुमतिः न प्रयुज्यते।"
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "सम्पर्कः"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi Mihonतः प्रेरितः मुक्तस्रोतप्रकल्पः। अस्यां गोपनीयताविवृतौ प्रश्नः चेत् Discord अथवा GitHub द्वारा सम्पर्कं करोतु।"
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "CBZ सङ्ग्रहत्वेन रक्षतु"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "उच्चचित्राणि विभजतु"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "पठित्रकार्यक्षमतां वर्धयति"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "समान्तरता"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "समान्तरस्रोतावतरणानि"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "समान्तरपृष्ठावतरणानि"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "एकस्मिन् स्रोते युगपत् अवतरितानि पृष्ठानि"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "अध्यायान् नाशयतु"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "हस्ततः पठितम् इति चिह्निते सति"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "पठनानन्तरं स्वतः नाशयतु"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "निष्क्रियम्"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "अन्तिमपठिताध्यायः"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "अन्त्याद् द्वितीयः अध्यायः"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "अन्त्यात् तृतीयः अध्यायः"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "अन्त्याच् चतुर्थः अध्यायः"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "अन्त्यात् पञ्चमः अध्यायः"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "पुस्तकचिह्नाध्यायान् नाशयितुम् अनुमतिः"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "स्वतः अवतरणम्"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "नवाध्यायान् अवतरयतु"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "ग्रन्थालयनवीकरणे दृष्टान् नवाध्यायान् स्वतः अवतरयतु"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "पठितान् द्वितीयकान् न अवतरयतु"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "पुरतः अवतरणम्"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "पठन् स्वतः अवतरयतु"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "अग्रिमः अपठिताध्यायः"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "अग्रिमाः %d अपठिताध्यायाः"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "वर्तमानः अध्यायः अग्रिमश्च पूर्वमेव अवतरितौ चेत् एव चलति।"
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "मङ्गा"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "उपन्यासाः"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "चलचित्राणि"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "अस्य प्रकारस्य स्रोताः अधुना न सन्ति"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "स्थानिकउपन्यासाः"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "स्थानिकचलचित्राणि"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "प्रकारः"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "सर्वम्"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "वादनम् आरभतु"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "वादनं निरन्तरयतु"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "अयं प्रवाहः केवलं जाले वाद्यते"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "अक्षरप्रमाणम्"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "पङ्क्त्यन्तरम्"
+    },
+    {
+      "name": "novel_empty",
+      "value": "अस्मिन् अध्याये पाठः नास्ति"
+    },
+    {
+      "name": "novel_prev",
+      "value": "पूर्वः अध्यायः"
+    },
+    {
+      "name": "novel_next",
+      "value": "अग्रिमः अध्यायः"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "अवनतिः"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "पृष्ठम्"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "द्विपृष्ठम्"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "पृष्ठपरिवर्तनम्"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "अनुच्छेदान्तरम्"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "प्रदर्शनम्"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "पाठः"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "एकपृष्ठम् (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "एकपृष्ठम् (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "पृष्ठसङ्क्रमणम्"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "वर्तनम्"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "सर्पणम्"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "आच्छादनम्"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "पाठवर्णः"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "प्रकाशः"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "तमः"
+    },
+    {
+      "name": "novel_margin",
+      "value": "प्रान्तौ"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "टङ्कः"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "मूलम्"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "शिरोरेखा"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "शिरोरेखाहीनम्"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "समविस्तारम्"
+    },
+    {
+      "name": "novel_tts",
+      "value": "उच्चैः पठतु"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "उच्चैः पठनम् आरभतु"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "उच्चैः पठनं विरमतु"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "पठनगतिः"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "अस्य अध्यायस्य अन्तः प्राप्तः"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "पाठात् वाक् विफला: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "विरमतु"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "पुनः आरभतु"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "इदानीं पठ्यते"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "अनुच्छेदः %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "निद्राकालमापकः"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "अशक्तम्"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d निमि"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "%1$s मध्ये विरमिष्यति"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "किमपि उच्चैः न पठ्यते"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "वादकं उद्घाटयतु"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "अध्यायाः"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "कालानुसारम्"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "अध्यायानुसारम्"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "अस्माद् अध्यायात् परम्"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "%1$d अध्यायेभ्यः परम्"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d अध्या."
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "अस्माद् अध्यायात् परं विरमिष्यति"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "%1$d अध्यायेभ्यः परं विरमिष्यति"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "उपन्यासः उच्चैः पठ्यमाने अनुप्रयोगं पृष्ठभूमौ चालयति"
+    },
+    {
+      "name": "video_play",
+      "value": "वादयतु"
+    },
+    {
+      "name": "video_pause",
+      "value": "विरमतु"
+    },
+    {
+      "name": "video_prev",
+      "value": "पूर्वम्"
+    },
+    {
+      "name": "video_next",
+      "value": "अग्रिमम्"
+    },
+    {
+      "name": "video_settings",
+      "value": "वादकसमायोजनानि"
+    },
+    {
+      "name": "video_episodes",
+      "value": "खण्डाः"
+    },
+    {
+      "name": "video_quality",
+      "value": "गुणः"
+    },
+    {
+      "name": "video_speed",
+      "value": "वादनगतिः"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "डानमाकु"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "डानमाकु चालयतु"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "डानमाकु अशक्तम्"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "डानमाकु आरोपयति…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%d डानमाकु आरोपितम्"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "मेलकं डानमाकु नास्ति"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "डानमाकु आरोपणं विफलम्"
+    },
+    {
+      "name": "video_locked",
+      "value": "नियन्त्रणानि कीलितानि"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "नियन्त्रणानि मुक्तानि"
+    },
+    {
+      "name": "player_set_title",
+      "value": "वादकः"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "वादनम्"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "मूलगतिः"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "अग्रिमखण्डं स्वतः वादयतु"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "समाप्तौ अग्रिमखण्डं स्वतः वादयतु"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "डानमाकु"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "डानमाकु दर्शयतु"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "डानमाकु अक्षरप्रमाणम्"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "डानमाकु अपारदर्शिता"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "डानमाकु प्रदर्शनक्षेत्रम्"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "डानमाकु गतिः"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "dandanplay तः डानमाकुदत्तांशः (जालम् आवश्यकम्)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "पटप्रमाणविधिः"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "योजयतु"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "पूरयतु"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "तानयतु"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "मन्दम्"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "सामान्यम्"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "द्रुतम्"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "अतिद्रुतम्"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "१/४ पटः"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "अर्धपटः"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "३/४ पटः"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "पूर्णपटः"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "मङ्गाकालः"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "उपन्यासकालः"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "चलचित्रकालः"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "आवरणम्"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "आवरणं सम्पादयतु"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "आवरणं पुनःस्थापयतु"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "आवरणं नवीकृतम्"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "आवरणं प्रत्यानीतम्"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "आवरणं नवीकर्तुं नाशक्तम्"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "आवरणं रक्षितम्"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "आवरणरक्षणे दोषः"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "आवरणसंविभागे दोषः"
+    },
+    {
+      "name": "detail_edit",
+      "value": "सम्पादयतु"
+    },
+    {
+      "name": "detail_delete",
+      "value": "नाशयतु"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "स्वागतम्!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "प्रथमं कानिचन स्थापयाम। पश्चात् समायोजनेषु कदापि परिवर्तयितुं शक्यते।"
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "अग्रिमम्"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "आरभतु"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "परिचयमार्गदर्शिका"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "आरम्भमार्गदर्शिका"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "%s विषये नूतनः? आरम्भमार्गदर्शिकां द्रष्टुं शंसा।"
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "%s पुनः प्रतिष्ठापयति?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "समकालनं प्रचलति, प्रतीक्षतु"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "अवतरणं विफलम्"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "विवरणम् न आरोपितम्"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "अमान्यपृष्ठमापकाः"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "अवतरणानि सज्जीभवन्ति…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "वर्गे नेतुं नाशक्तम्"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "स्थानान्तरणसूची न आरोपिता"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "क्रिया विफला"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "आरोपणदोषः: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "आरोपयति…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "आरोपणं विफलम्: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "चित्रणं निर्गतम् (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "प"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "च"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "म"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "अन्तिमं स्वतः प्रतिलेखनं विफलम्"
+    },
+    {
+      "name": "category_manga",
+      "value": "मङ्गा"
+    },
+    {
+      "name": "category_novel",
+      "value": "उपन्यासाः"
+    },
+    {
+      "name": "category_video",
+      "value": "चलचित्राणि"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "अनुज्ञाप्राप्तम्"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "TTS यन्त्रं व्यस्तम्, पश्चात् प्रयततु"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "TTS यन्त्रं न प्रत्युत्तरितम्, पठनं विरान्तम्"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "TTS यन्त्रं न उपलब्धम्"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "मानवपरीक्षणम् आवश्यकम्, परीक्षणपृष्ठं समाप्य पुनः प्रयततु"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "स्रोतः न उपलब्धः"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "अस्मिन् अध्याये सामग्री नास्ति"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "वादनं विफलम्"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "वादनीयानि चलचित्राणि न सन्ति"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "स्थानिकम्"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "निरस्तम्"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "अवतरणं विफलम्"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "अवतरणकालः समाप्तः (सेवकः न प्रत्युत्तरितः)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "अवतरणं विफलम् (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "इदं चलचित्रं जालप्रवाहः, अवतरणं न शक्यम्"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "अवतरणसेवा न आरब्धा"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "स्रोतः न लब्धः: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "अध्यायसञ्चिका न लब्धा"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "असमर्थिताध्यायस्वरूपम्"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "चलचित्रसञ्चिका न लब्धा"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "स्थानिकतः आयातिता मङ्गा"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "स्थानिकतः आयातिताः उपन्यासाः"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "स्थानिकतः आयातितानि चलचित्राणि"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "असुरक्षितपुनर्निदेशनं रुद्धम्: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "अतिपुनर्निदेशनानि: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "सेवकसङ्केतः न लब्धः, जालं परीक्ष्य पुनः प्रयततु"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "सेवकेन न संयुज्यते, जालं परीक्ष्य पुनः प्रयततु"
+    },
+    {
+      "name": "net_timeout",
+      "value": "याचनकालः समाप्तः, पश्चात् प्रयततु"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "सुरक्षितसंयोगः विफलः (SSL दोषः), पश्चात् प्रयततु"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "संयोगः छिन्नः, पुनः प्रयततु"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "जालयाचना विफला: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "JSVM यन्त्रं निर्मातुं नाशक्तम्"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "प्लगिनलिपिः न चालिता"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "विस्तारकः न आरोपितः"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "विस्तारकः भग्नः, पुनः प्रतिष्ठापयतु अथवा पुनरारोपयतु"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "विस्तारकारम्भः विफलः"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "विस्तारकारम्भकालः समाप्तः"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "विस्तारकआह्वानकालः समाप्तः: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "विस्तारकआह्वानं विफलम्"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "विस्तारकः अमान्यं JSON दत्तवान्"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "अज्ञातः विस्तारकदोषः"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "अमान्यं manifest.key (लघ्वक्षराणि, अङ्काः, अधोरेखा च केवलम्)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name नास्ति"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "अमान्यं manifest.versionCode"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "अस्य प्लगिनस्य नूतनः अनुप्रयोगः आवश्यकः (%s), प्रथमं नवीकरोतु"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "अस्य प्लगिनस्य अनुप्रयोग versionCode >= %s आवश्यकः, प्रथमं नवीकरोतु"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "चिता सञ्चिका पठितुं नाशक्या: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "प्लगिनसङ्कुल URL https भवेयुः, स्पष्टावतरणानि प्रत्याख्यायन्ते"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "प्लगिनसमग्रतापरीक्षा विफला (sha256 न मेलितम्), प्रतिष्ठापनं निरस्तम्"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "प्लगिनसङ्कुले main.js नास्ति"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "प्लगिनपुटिकां परिवर्तयितुं नाशक्तम्: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "प्लगिनसङ्कुले manifest.json नास्ति"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "भण्डारसञ्चिका URL https भवेयुः, http:// प्रविष्टयः प्रत्याख्यायन्ते"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "अमान्यं प्लगिन्रनटाइमनाम: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "प्लगिन्रनटाइमघटकः नास्ति: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "प्लगिन् अमान्यं मङ्गाविवरणं दत्तवान्"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "प्लगिन् getChapterText न निर्यातयति"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "प्लगिन् getVideoList न निर्यातयति"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "प्लगिनसङ्कुलं रक्षितुं नाशक्तम्: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "प्लगिनपुटिकां निष्कासयितुं नाशक्तम्: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "प्रतिष्ठापिताः प्लगिनसञ्चिकाः पठितुं नाशक्याः: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "प्लगिनसङ्कुलसमग्रतां परीक्षितुं नाशक्तम्: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "प्लगिनसङ्कुलं विभक्तुं नाशक्तम्: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "प्लगिनसङ्कुले manifest.json पठितुं नाशक्या: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "प्लगिनसञ्चिकाः सज्जीकर्तुं नाशक्याः: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "अनुवर्तनम्"
+    },
+    {
+      "name": "track_login",
+      "value": "प्रविशतु"
+    },
+    {
+      "name": "track_logout",
+      "value": "निर्गच्छतु"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "%s तः निर्गच्छतु?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "%s मध्ये प्रविष्टम्"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "निर्गतम्"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "प्रवेशः विफलः"
+    },
+    {
+      "name": "track_username",
+      "value": "प्रयोक्तृनाम"
+    },
+    {
+      "name": "track_password",
+      "value": "गुप्तपदम्"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "अनुवर्तनप्रगतिं स्वतः नवीकरोतु"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "%s मध्ये अन्विष्यतु"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "अन्वेषणं विफलम्"
+    },
+    {
+      "name": "track_no_results",
+      "value": "फलानि न सन्ति"
+    },
+    {
+      "name": "track_added",
+      "value": "अनुवर्तनं योजितम्"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "अनुवर्तनं योजयितुं नाशक्तम्"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "अनुवर्तनं नवीकर्तुं नाशक्तम्"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "सेवायाः निष्कासयितुं नाशक्तम्"
+    },
+    {
+      "name": "track_status",
+      "value": "स्थितिः"
+    },
+    {
+      "name": "track_score",
+      "value": "अङ्कः"
+    },
+    {
+      "name": "track_chapters",
+      "value": "अध्यायाः"
+    },
+    {
+      "name": "track_start_date",
+      "value": "आरम्भतिथिः"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "समाप्तितिथिः"
+    },
+    {
+      "name": "track_private",
+      "value": "निजम्"
+    },
+    {
+      "name": "track_unlink",
+      "value": "बन्धं मोचयतु"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "सेवायाः निष्कासयतु"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "मान्यम् अध्यायसङ्ख्यां लिखतु"
+    },
+    {
+      "name": "track_reading",
+      "value": "पठति"
+    },
+    {
+      "name": "track_completed",
+      "value": "पूर्णम्"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "स्थगितम्"
+    },
+    {
+      "name": "track_paused",
+      "value": "विरान्तम्"
+    },
+    {
+      "name": "track_dropped",
+      "value": "त्यक्तम्"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "पठनयोजना"
+    },
+    {
+      "name": "track_repeating",
+      "value": "पुनरावृत्तिः"
+    },
+    {
+      "name": "track_considering",
+      "value": "विचार्यते"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "अज्ञातम्"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "पठनसूची"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "इच्छासूची"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "पूर्णसूची"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "स्थगितसूची"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "अपूर्णसूची"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "आरोपयति…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "आरोपयितुं नाशक्तम्: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "स्थानिकसञ्चिकाः अधुना न सन्ति, योजयितुम् आयातं स्पृशतु"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "नाम"
+    },
+    {
+      "name": "privacy_title",
+      "value": "गोपनीयता"
+    },
+    {
+      "name": "privacy_group",
+      "value": "सुरक्षा"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "अनुप्रयोगतालः"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "प्रथमं पटतालम् स्थापयतु"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "निष्क्रिये तालः"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "सदा"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "१ निमेषः"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "२ निमेषौ"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "५ निमेषाः"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "१० निमेषाः"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "कदापि न"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "सूचनासामग्रीं गोपयतु"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "सुरक्षितपटः"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "पटग्रहणं पटलेखनं च रुणद्धि"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "अनुप्रयोगः तालितः"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "अग्रे गन्तुम् परिचयं प्रमाणयतु"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "उद्घाटयतु"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "अनुप्रयोगम् उद्घाटयतु"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "अवतरति"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "भङ्गलिखितानि निर्यातयतु"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "भङ्गलिखितानि न सन्ति"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "%d दोषलिखितानि निर्यातितानि"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "विस्तृतलिखनम्"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "तन्त्रलिखितेषु दोषशोधविवरणं संयोजयतु"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "दोषशोधसूचना"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "क्रिया विफला"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "दत्तांशाः"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "जालम्"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "ग्रन्थालयः"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "पठित्रम्"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "दत्तांशकोशं मार्जयतु"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "ग्रन्थालये न स्थिताः सर्वाः प्रविष्टीः निष्कासयतु? तासां पठनचरित्रं प्रगतिः च नश्येताम्।"
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "%d प्रविष्टयः निष्कासिताः"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "अन्तर्निहितजालदत्तांशान् मार्जयतु"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "अन्तर्निहितजालदत्तांशाः मार्जिताः"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "HTTPS द्वारा DNS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "निष्क्रियम्"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "स्वेच्छ User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "मूलार्थं रिक्तं त्यजतु"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent रक्षितम्"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "User-Agent पुनःस्थापयतु"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "ग्रन्थालयावरणानि नवीकरोतु"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "आवरणानि नवीक्रियन्ते…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "%d प्रविष्टयः नवीकृताः"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "शृङ्खलापठनसमायोजनानि पुनःस्थापयतु"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "शृङ्खलायै स्थापितानि पठनविधानानि वैश्विकमूले पुनःस्थापयतु?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "%d प्रविष्टयः पुनःस्थापिताः"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "उच्चगुणचित्रणम्"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "कार्यक्षमताव्यये मृदुचित्रप्रमाणम्"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "अनुप्रयोगसंस्करणम्"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "यन्त्रप्रकारः"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "यन्त्रभेदः"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "तन्त्रसंस्करणम्"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "API संस्करणम्"
+    },
+    {
+      "name": "debug_screen",
+      "value": "पटः"
+    },
+    {
+      "name": "debug_language",
+      "value": "भाषा"
     }
   ]
 }

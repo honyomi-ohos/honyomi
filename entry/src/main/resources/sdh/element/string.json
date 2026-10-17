@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "لە کۆکراوەکانتدا مانگای بەردەوام نییە"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "کۆپی بکە بۆ تەختە"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "ڕووکار"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "بنەڕەت"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "شەوی نیوەشەو"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "دایکیری فراولە"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "هەشتپا"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "شین-سەوز و فیروزە"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "شەپۆلی دەریا"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "یین و یانگ"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "چوار گەڵا"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "شەوی تۆکیۆ"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "تاکرەنگ"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "سێوی سەوز"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "لڤەندەر"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "نوێکردنەوە"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "لە وێبگەڕدا بیکەرەوە"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "لە وێبگەڕدا نەکرایەوە"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "URL کۆپی بکە"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL کۆپی کرا"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "بەشی داهاتوو نییە"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "پاڵاوتن نییە"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "گەڕاندنەوە"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "پشتگوێ بخە"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "بخە ناو"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "دەری بهێنە"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "هەڵبژاردنی بوخچە سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "بوخچە پێویستە، نەک پەڕگە"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "بوخچە هەڵبژێرە"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "هاوکات بکە"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "بوخچە بگۆڕە"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "بوخچەی ناوخۆیی"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "بوخچە هاوکات دەکرێت…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "بوخچە هاوکات کرا"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "هاوکاتکردن سەرکەوتوو نەبوو: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "ناتوانرێت بگەیتە بوخچەی ناوخۆیی، تکایە دووبارە هەڵیبژێرە"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "پاراستنی دەستگەیشتن بە بوخچە سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "هەڵبژاردنی بوخچە لەم ئامێرەدا پشتگیری ناکرێت"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "هێشتا بوخچەی ناوخۆیی دانەنراوە"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "لە بوخچەی ناوخۆیی هیچ نەدۆزرایەوە"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "لە بوخچەی لاوەکی comic هیچ نەدۆزرایەوە"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "لە بوخچەی لاوەکی novel هیچ نەدۆزرایەوە"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "لە بوخچەی لاوەکی anime هیچ نەدۆزرایەوە"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "هەڵوەشاندنەوەی گشت"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "بەش، سەرەوە"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "بەش، خوارەوە"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "ڕیزکردن"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "پاڵاوتن"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "بەپێی سەرچاوە"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "بەپێی ژمارەی بەش"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "بەپێی ڕێکەوتی بارکردن"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "بەپێی ناو"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "گەڕاندنەوە"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "داونلۆدکراو"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "نەخوێندراو"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "نیشانکراو"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d هەڵبژێردراو"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "وەک خوێندراو نیشان بکە"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "وەک نەخوێندراو نیشان بکە"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "نیشانک"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "سڕینەوە"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "%d ی نەخوێندراوی داهاتوو"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "گشت نەخوێندراوەکان"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "بەشە نیشانکراوەکان"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d بەش خرایە ڕیز"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "بەشی نەخوێندراو نییە"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "داونلۆدی سڕینەوە نییە"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "%d داونلۆد سڕایەوە"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "شوێنکەوتن"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "داونلۆد هەڵبوەشێنەرەوە"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "داونلۆد هەڵوەشایەوە"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "بەشی داونلۆدکراو بسڕدرێتەوە؟"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "داونلۆد سڕایەوە"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "کۆپی کرا بۆ تەختە"
+    },
+    {
+      "name": "transition_finished",
+      "value": "تەواوبوو:"
+    },
+    {
+      "name": "transition_current",
+      "value": "ئێستا:"
+    },
+    {
+      "name": "transition_next",
+      "value": "داهاتوو:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "پێشوو:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "بەشی داهاتوو نییە"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "بەشی پێشوو نییە"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "ماڵپەڕ"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "نوێکردنەوە لە چاوەڕوانیدایە"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "گشت نوێ بکەرەوە"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "فرە"
+    },
+    {
+      "name": "about_row_version",
+      "value": "وەشان"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "زانیاری چارەسەر کۆپی کرا"
+    },
+    {
+      "name": "licenses_title",
+      "value": "مۆڵەتەکانی سەرچاوەی کراوە"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "پەڕەی سەرەکی بکەرەوە"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "دەقی تەواوی مۆڵەت"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "سەرچاوەی تەلارسازی و دیزاینی کارلێک"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "ئایکۆنەکانی ناو ئەپ"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "SDK ی پلاتفۆرم و چوارچێوەی ArkUI"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "کردنەوەی وێنەی AVIF"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "کردنەوەی AV1 بۆ AVIF"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "شیکردنەوەی HTML بۆ زیادکراوەکان"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "کاشی پەخشکردنی ڤیدیۆ"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL و URLSearchParams بۆ زیادکراوەکان (ڕەن تایمی پڵەگین)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder و TextDecoder بۆ زیادکراوەکان (ڕەن تایمی پڵەگین)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "گۆڕینی بەهای WebIDL، پەیوەندی whatwg-url (ڕەن تایمی پڵەگین)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "هاشکردنی MD5 بۆ زیادکراوەکان (ڕەن تایمی پڵەگین)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "نهێنیکردن و کردنەوەی AES-CBC بۆ زیادکراوەکان (ڕەن تایمی پڵەگین)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "هاشکردنی SHA/HMAC/PBKDF2 بۆ زیادکراوەکان (ڕەن تایمی پڵەگین)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "نهێنیکردن و کردنەوەی AES-GCM بۆ زیادکراوەکان (ڕەن تایمی پڵەگین)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "سیاسەتی نهێنی"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi خوێنەرێکی ناوخۆیی-پێشە بۆ مانگا و ڕۆمان و ڤیدیۆ. ئەپەکە خۆی هیچ داتایەکی کەسی کۆناکاتەوە، بارناکات و هاوبەشی ناکات."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "داتای ناوخۆیی"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "کۆکراوەکان، مێژووی خوێندنەوە، تۆمارەکانی داونلۆد، هەڵبژاردن و بڕوانامەکانی شوێنکەوتن تەنها لەسەر ئامێرەکەت دەمێننەوە. دەتوانیت هەر کاتێک لە سازکارییەکان بیاننێریتە دەرەوە یان بیانسڕیتەوە. لابردنی ئەپەکە بۆ هەمیشە دەیانسڕێتەوە."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "سەرچاوەکانی سەرهێڵ و زیادکراوەکان"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "ناوەڕۆکی سەرهێڵ لە زیادکراوە و ماڵپەڕەکانی لایەنی سێیەم دێت. گەڕان یان خوێندنەوە لە سەرچاوەیەکی سەرهێڵ داواکارییەکانت ڕاستەوخۆ دەنێرێت بۆ ئەو ماڵپەڕە، کە سیاسەتی نهێنی خۆی هەیە. ئەپەکە ئەو خزمەتانە کۆنتڕۆڵ ناکات و بەرپرسیار نییە."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "خزمەتگوزارییەکانی شوێنکەوتن"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "دەتوانیت، ئەگەر بتەوێت، هەژمارەکانی شوێنکەوتن وەک AniList، MyAnimeList، Bangumi، Kitsu و Shikimori ببەستیتەوە. چوونەژوورەوە لە پەڕەی خۆی خزمەتگوزارییەکە لەلایەن تۆوە ڕێگەپێدراوە، و نیشانەکانی دەستگەیشتن تەنها لەسەر ئامێرەکەت دەمێننەوە بۆ هاوکاتکردنی پێشکەوتنی خوێندنەوە."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "مۆڵەتەکان"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "دەستگەیشتن بە ئینتەرنێت بۆ بارکردنی ناوەڕۆکی سەرهێڵە، دەستگەیشتن بە پەڕگە بۆ هێنان و یەدەگی ناوخۆیییە، و پشتڕاستکردنەوەی بایۆمەتری تەنها بۆ قوفڵی ناوخۆیی ئەپەکەیە. هیچ مۆڵەتێک بۆ کۆکردنەوەی داتای کەسی بەکارناهێنرێت."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "پەیوەندی"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi پڕۆژەیەکی سەرچاوەی کراوەیە کە لە Mihon ئیلهامی وەرگرتووە. ئەگەر پرسیارت هەیە دەربارەی ئەم ڕاگەیاندنەی نهێنی، لە ڕێگەی Discord یان GitHub پەیوەندیمان پێوە بکە."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "وەک ئەرشیفی CBZ پاشەکەوت بکە"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "وێنە درێژەکان دابەش بکە"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "خێرایی خوێنەر باشتر دەکات"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "هاوکات"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "داونلۆدی هاوکاتی سەرچاوەکان"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "داونلۆدی هاوکاتی پەڕەکان"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "پەڕەکانی هاوکات داونلۆدکراو بۆ هەر سەرچاوەیەک"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "بەشەکان بسڕەوە"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "دوای نیشانکردنی دەستی وەک خوێندراو"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "دوای خوێندنەوە خۆکار بسڕەوە"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "کوژاوە"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "دوا بەشی خوێندراو"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "دووەم لە پێش دوایین"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "سێیەم لە پێش دوایین"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "چوارەم لە پێش دوایین"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "پێنجەم لە پێش دوایین"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "سڕینەوەی بەشە نیشانکراوەکان ڕێگە بدە"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "داونلۆدی خۆکار"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "بەشە نوێیەکان داونلۆد بکە"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "بەشە نوێیەکانی دۆزراو لە نوێکردنەوەی کۆکراوەکان خۆکار داونلۆد دەکات"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "بەشە دووبارەکانی خوێندراو تێپەڕێنە"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "پێشداونلۆد"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "لە کاتی خوێندنەوە خۆکار داونلۆد بکە"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "بەشی نەخوێندراوی داهاتوو"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "%d بەشی نەخوێندراوی داهاتوو"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "تەنها کاردەکات ئەگەر بەشی ئێستا و داهاتوو پێشتر داونلۆد کرابن."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "مانگا"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "ڕۆمان"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "ڤیدیۆ"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "هێشتا سەرچاوە بۆ ئەم جۆرە نییە"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "ڕۆمانە ناوخۆییەکان"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "ڤیدیۆ ناوخۆییەکان"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "جۆر"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "گشت"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "دەست بکە بە پەخش"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "پەخش بەردەوام بکە"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "ئەم ڕەوتە تەنها سەرهێڵ پەخش دەکرێت"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "قەبارەی نووسین"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "بۆشایی دێڕ"
+    },
+    {
+      "name": "novel_empty",
+      "value": "ئەم بەشە دەقی نییە"
+    },
+    {
+      "name": "novel_prev",
+      "value": "بەشی پێشوو"
+    },
+    {
+      "name": "novel_next",
+      "value": "بەشی داهاتوو"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "خلیسکاندن"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "پەڕە بە پەڕە"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "دوو پەڕە"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "شێوازی پەڕە"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "بۆشایی پەرەگراف"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "پیشاندان"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "دەق"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "یەک پەڕە (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "یەک پەڕە (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "گواستنەوەی پەڕە"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "هاوشێوەکردن"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "خلیسکاندن"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "بەرگ"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "ڕەنگی دەق"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "ڕووناک"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "تاریک"
+    },
+    {
+      "name": "novel_margin",
+      "value": "لێوارەکان"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "جۆری نووسین"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "بنەڕەت"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "پێدار"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "بێ پێ"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "پانی جێگیر"
+    },
+    {
+      "name": "novel_tts",
+      "value": "بە دەنگێکی بەرز بیخوێنەرەوە"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "خوێندنەوەی بە دەنگ دەست پێ بکە"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "خوێندنەوەی بە دەنگ ڕابگرە"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "خێرایی خوێندنەوە"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "گەیشتە کۆتایی ئەم بەشە"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "خوێندنەوەی بە دەنگ سەرکەوتوو نەبوو: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "ڕاگرتن"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "بەردەوامبوون"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "ئێستا دەخوێندرێتەوە"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "پەرەگراف %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "کاتی خەوتن"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "کوژاوە"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d خولەک"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "لە %1$s دا دەوەستێت"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "هیچ شتێک بە دەنگ ناخوێندرێتەوە"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "پەخشەر بکەرەوە"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "بەشەکان"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "بەپێی کات"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "بەپێی بەش"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "دوای ئەم بەشە"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "دوای %1$d بەش"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d بەش"
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "دوای ئەم بەشە دەوەستێت"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "دوای %1$d بەش دەوەستێت"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "کاتێک ڕۆمان بە دەنگ دەخوێندرێتەوە ئەپەکە لە پاشبنەما دەهێڵێتەوە"
+    },
+    {
+      "name": "video_play",
+      "value": "پەخش"
+    },
+    {
+      "name": "video_pause",
+      "value": "ڕاگرتن"
+    },
+    {
+      "name": "video_prev",
+      "value": "پێشوو"
+    },
+    {
+      "name": "video_next",
+      "value": "داهاتوو"
+    },
+    {
+      "name": "video_settings",
+      "value": "سازکاری پەخشەر"
+    },
+    {
+      "name": "video_episodes",
+      "value": "ئەڵقەکان"
+    },
+    {
+      "name": "video_quality",
+      "value": "کوالێتی"
+    },
+    {
+      "name": "video_speed",
+      "value": "خێرایی پەخش"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "دانماکو"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "دانماکو کراوەیە"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "دانماکو کوژاوەتەوە"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "دانماکو باردەکرێت…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%d دانماکو بارکرا"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "دانماکوی هاوتا نەدۆزرایەوە"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "بارکردنی دانماکو سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "video_locked",
+      "value": "کۆنتڕۆڵەکان قوفڵ کران"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "کۆنتڕۆڵەکان کرانەوە"
+    },
+    {
+      "name": "player_set_title",
+      "value": "پەخشەر"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "پەخش"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "خێرایی بنەڕەت"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "ئەڵقەی داهاتوو خۆکار پەخش بکە"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "کاتێک تەواو بوو ئەڵقەی داهاتوو خۆکار پەخش دەکات"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "دانماکو"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "دانماکو پیشان بدە"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "قەبارەی دانماکو"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "تێکڕایی دانماکو"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "ناوچەی دانماکو"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "خێرایی دانماکو"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "داتای دانماکو لە dandanplay (تۆڕ پێویستە)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "شێوازی پێوانی شاشە"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "بگونجێنە"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "پڕی بکەرەوە"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "ڕایبکێشە"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "هێواش"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "ئاسایی"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "خێرا"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "زۆر خێرا"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 ی شاشە"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "نیوەی شاشە"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 ی شاشە"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "تەواوی شاشە"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "کاتی مانگا"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "کاتی ڕۆمان"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "کاتی ڤیدیۆ"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "بەرگ"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "بەرگ دەستکاری بکە"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "بەرگ بگەڕێنەرەوە"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "بەرگ نوێ کرایەوە"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "بەرگ گەڕایەوە"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "بەرگ نوێ نەکرایەوە"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "بەرگ پاشەکەوت کرا"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "هەڵەی پاشەکەوتکردنی بەرگ"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "هەڵەی هاوبەشکردنی بەرگ"
+    },
+    {
+      "name": "detail_edit",
+      "value": "دەستکاری"
+    },
+    {
+      "name": "detail_delete",
+      "value": "سڕینەوە"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "بەخێربێیت!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "با سەرەتا هەندێک شت ڕێک بخەین. دواتریش دەتوانیت لە سازکارییەکان بیانگۆڕیت."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "داهاتوو"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "دەست پێ بکە"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "ڕێنمایی دەستپێک"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "ڕێنمایی دەستپێک"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "نوێیت لە %s؟ پێشنیار دەکەین ڕێنمایی دەستپێک ببینیت."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "دووبارە %s دادەمەزرێنیت؟"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "هاوکاتکردن بەردەوامە، تکایە چاوەڕێ بە"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "داونلۆد سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "بارکردنی وردەکاری سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "پارامیتەرەکانی پەڕە نادروستن"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "داونلۆد ئامادە دەکرێت…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "گواستنەوە بۆ کاتیگۆری سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "بارکردنی لیستی گواستنەوە سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "کردار سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "هەڵەی بارکردن: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "بارکردن…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "بارکردن سەرکەوتوو نەبوو: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "ڕێندەر دەرچوو (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "ن"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "ڤ"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "م"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "دوا یەدەگی خۆکار سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "category_manga",
+      "value": "مانگا"
+    },
+    {
+      "name": "category_novel",
+      "value": "ڕۆمان"
+    },
+    {
+      "name": "category_video",
+      "value": "ڤیدیۆ"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "مۆڵەتدار"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "بزوێنەری TTS سەرقاڵە، تکایە دواتر دووبارە تاقی بکەرەوە"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "بزوێنەری TTS وەڵامی نەدایەوە و خوێندنەوە ڕاگیرا"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "بزوێنەری TTS بەردەست نییە"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "پشتڕاستکردنەوەی مرۆیی پێویستە، تکایە پەڕەکە تەواو بکە و دووبارە تاقی بکەرەوە"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "سەرچاوە بەردەست نییە"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "ئەم بەشە ناوەڕۆکی نییە"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "پەخش سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "ڤیدیۆی پەخشکراو نەدۆزرایەوە"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "ناوخۆیی"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "هەڵوەشایەوە"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "داونلۆد سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "کاتی داونلۆد تێپەڕی (ڕاژەکار وەڵام ناداتەوە)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "داونلۆد سەرکەوتوو نەبوو (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "ئەم ڤیدیۆیە سەرهێڵ دەڕژێت و داونلۆد ناکرێت"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "خزمەتگوزاری داونلۆد دەستپێنەکراوە"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "سەرچاوە نەدۆزرایەوە: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "پەڕگەی بەش نەدۆزرایەوە"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "فۆرماتی بەش پشتگیری ناکرێت"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "پەڕگەی ڤیدیۆ نەدۆزرایەوە"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "مانگای هێنراوی ناوخۆیی"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "ڕۆمانی هێنراوی ناوخۆیی"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "ڤیدیۆی هێنراوی ناوخۆیی"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "گواستنەوەی نائەمین ڕێگری لێکرا: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "گواستنەوە زۆرە: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "ناونیشانی ڕاژەکار نەدۆزرایەوە، تکایە پەیوەندی بپشکنە و دووبارە تاقی بکەرەوە"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "پەیوەندی بە ڕاژەکارەوە نەکرا، تکایە تۆڕ بپشکنە و دووبارە تاقی بکەرەوە"
+    },
+    {
+      "name": "net_timeout",
+      "value": "کاتی داواکاری تێپەڕی، تکایە دواتر دووبارە تاقی بکەرەوە"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "پەیوەندی ئەمین سەرکەوتوو نەبوو (هەڵەی SSL)، تکایە دواتر دووبارە تاقی بکەرەوە"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "پەیوەندی پچڕا، تکایە دووبارە تاقی بکەرەوە"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "داواکاری تۆڕ سەرکەوتوو نەبوو: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "دروستکردنی بزوێنەری JSVM سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "ڕەنکردنی سکریپتی پڵەگین سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "زیادکراو بارنەکراوە"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "زیادکراو تێکچووە، تکایە دووبارە دایبمەزرێنە یان باری بکەرەوە"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "دەستپێکردنی زیادکراو سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "کاتی دەستپێکردنی زیادکراو تێپەڕی"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "کاتی بانگکردنی زیادکراو تێپەڕی: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "بانگکردنی زیادکراو سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "زیادکراو JSON ی نادروستی گەڕاندەوە"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "هەڵەیەکی نەناسراوی زیادکراو"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "manifest.key نادروستە (تەنها پیتی بچووک، ژمارە و هێڵی خوارەوە)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name نییە"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "manifest.versionCode نادروستە"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "ئەم پڵەگینە ئەپێکی نوێتری دەوێت (%s)، تکایە سەرەتا نوێی بکەرەوە"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "ئەم پڵەگینە versionCode ی ئەپ >= %s ی دەوێت، تکایە سەرەتا نوێی بکەرەوە"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "خوێندنەوەی پەڕگەی هەڵبژێردراو سەرکەوتوو نەبوو: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "URL ی پاکێجی پڵەگین دەبێت https بێت، داونلۆدی ئاشکرا ڕەتدەکرێتەوە"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "پشکنینی تەواوی پڵەگین سەرکەوتوو نەبوو (sha256 ناگونجێت)، دامەزراندن هەڵوەشایەوە"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "لە پاکێجی پڵەگین main.js نییە"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "گۆڕینی بوخچەی پڵەگین سەرکەوتوو نەبوو: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "manifest.json لە پاکێجی پڵەگین نەدۆزرایەوە"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "URL ی پەڕگەکانی کۆگا دەبێت https بێت، تۆمارەکانی http:// ڕەتدەکرێنەوە"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "ناوی ڕەن تایمی پڵەگین نادروستە: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "بەشێکی ڕەن تایمی پڵەگین نییە: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "پڵەگین وردەکاری مانگای نادروستی گەڕاندەوە"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "پڵەگین getChapterText دەرناکات"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "پڵەگین getVideoList دەرناکات"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "پاشەکەوتکردنی پاکێجی پڵەگین سەرکەوتوو نەبوو: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "لابردنی بوخچەی پڵەگین سەرکەوتوو نەبوو: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "خوێندنەوەی پەڕگەکانی پڵەگینی دامەزراو سەرکەوتوو نەبوو: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "پشتڕاستکردنەوەی تەواوی پاکێجی پڵەگین سەرکەوتوو نەبوو: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "دەرهێنانی پاکێجی پڵەگین سەرکەوتوو نەبوو: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "خوێندنەوەی manifest.json لە پاکێجی پڵەگین سەرکەوتوو نەبوو: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "ئامادەکردنی پەڕگەکانی پڵەگین سەرکەوتوو نەبوو: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "شوێنکەوتن"
+    },
+    {
+      "name": "track_login",
+      "value": "چوونەژوور"
+    },
+    {
+      "name": "track_logout",
+      "value": "چوونەدەر"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "لە %s دەربچیت؟"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "چوویتە ناو %s"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "دەرچوو"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "چوونەژوور سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "track_username",
+      "value": "ناوی بەکارهێنەر"
+    },
+    {
+      "name": "track_password",
+      "value": "وشەی نهێنی"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "پێشکەوتنی شوێنکەوتن خۆکار نوێ بکەرەوە"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "لە %s بگەڕێ"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "گەڕان سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "track_no_results",
+      "value": "ئەنجام نەدۆزرایەوە"
+    },
+    {
+      "name": "track_added",
+      "value": "شوێنکەوتن زیاد کرا"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "زیادکردنی شوێنکەوتن سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "نوێکردنەوەی شوێنکەوتن سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "لابردن لە خزمەتگوزاری سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "track_status",
+      "value": "دۆخ"
+    },
+    {
+      "name": "track_score",
+      "value": "نمرە"
+    },
+    {
+      "name": "track_chapters",
+      "value": "بەشەکان"
+    },
+    {
+      "name": "track_start_date",
+      "value": "ڕێکەوتی دەستپێک"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "ڕێکەوتی کۆتایی"
+    },
+    {
+      "name": "track_private",
+      "value": "تایبەت"
+    },
+    {
+      "name": "track_unlink",
+      "value": "پەیوەندی ببڕە"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "لە خزمەتگوزاری لابدە"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "ژمارەیەکی دروستی بەش بنووسە"
+    },
+    {
+      "name": "track_reading",
+      "value": "لە خوێندنەوەدایە"
+    },
+    {
+      "name": "track_completed",
+      "value": "تەواو بوو"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "ڕاگیراو"
+    },
+    {
+      "name": "track_paused",
+      "value": "وەستاو"
+    },
+    {
+      "name": "track_dropped",
+      "value": "بەجێهێڵراو"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "پلانی خوێندنەوە"
+    },
+    {
+      "name": "track_repeating",
+      "value": "دووبارە دەخوێندرێتەوە"
+    },
+    {
+      "name": "track_considering",
+      "value": "لە بیرکردنەوەدایە"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "نەناسراو"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "لیستی خوێندنەوە"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "لیستی خواست"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "لیستی تەواوبوو"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "لیستی ڕاگیراو"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "لیستی تەواونەبوو"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "بارکردن…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "بارکردن سەرکەوتوو نەبوو: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "هێشتا پەڕگەی ناوخۆیی نییە، بۆ زیادکردن هێنان دابگرە"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "ناو"
+    },
+    {
+      "name": "privacy_title",
+      "value": "نهێنی"
+    },
+    {
+      "name": "privacy_group",
+      "value": "ئاسایش"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "قوفڵی ئەپ"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "سەرەتا قوفڵی شاشە دابنێ"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "کاتێک بێکارە قوفڵی بکە"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "هەمیشە"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 خولەک"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 خولەک"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 خولەک"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 خولەک"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "هەرگیز"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "ناوەڕۆکی ئاگاداری بشارەوە"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "شاشەی ئەمین"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "وێنەگرتنی شاشە و تۆمارکردنی شاشە دەگرێت"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "ئەپ قوفڵ کرا"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "بۆ بەردەوامبوون ناسنامەکەت پشتڕاست بکەرەوە"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "بیکەرەوە"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "ئەپ بکەرەوە"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "داونلۆد دەکرێت"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "تۆمارەکانی تێکچوون بنێرە دەرەوە"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "تۆماری تێکچوون نەدۆزرایەوە"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "%d تۆماری هەڵە نێردرانە دەرەوە"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "تۆمارکردنی ورد"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "وردەکاری چارەسەر لە تۆمارەکانی سیستەم بگرە"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "زانیاری چارەسەر"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "کردار سەرکەوتوو نەبوو"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "داتا"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "تۆڕ"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "کۆکراوەکان"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "خوێنەر"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "بنکەدراوە پاک بکەرەوە"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "گشت تۆمارەکانی ناو کۆکراوەکانت نین بسڕدرێنەوە؟ مێژووی خوێندنەوە و پێشکەوتنیان لەدەست دەچێت."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "%d تۆمار سڕانەوە"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "داتای وێبی ناوەکی پاک بکەرەوە"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "داتای وێبی ناوەکی پاک کرایەوە"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS لە ڕێگەی HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "کوژاوە"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "User-Agent ی تایبەت"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "بۆ بنەڕەت بەتاڵی بهێڵەرەوە"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent پاشەکەوت کرا"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "User-Agent بگەڕێنەرەوە"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "بەرگەکانی کۆکراوەکان نوێ بکەرەوە"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "بەرگەکان نوێ دەکرێنەوە…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "%d تۆمار نوێ کرانەوە"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "سازکاری خوێنەری هەر زنجیرەیەک بگەڕێنەرەوە"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "شێوازەکانی خوێندنەوە کە بۆ هەر زنجیرەیەک دانراون بگەڕێنەوە بۆ بنەڕەتی گشتی؟"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "%d تۆمار گەڕانەوە"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "پیشاندانی کوالێتی بەرز"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "پێوانی وێنە نەرمترە، بەڵام قورسترە"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "وەشانی ئەپ"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "مۆدێلی ئامێر"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "جۆری ئامێر"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "وەشانی سیستەم"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "وەشانی API"
+    },
+    {
+      "name": "debug_screen",
+      "value": "شاشە"
+    },
+    {
+      "name": "debug_language",
+      "value": "زمان"
     }
   ]
 }

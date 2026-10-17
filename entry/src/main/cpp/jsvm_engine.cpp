@@ -19,6 +19,10 @@
  *       * nativeSelector(html, cssQuery)
  *         Lexbor HTML parser + CSS selectors (html_selector.cpp).
  *       * __nativeLog(level, message) — hilog bridge.
+ *       * __nativeRandomBytes(n) — libohcrypto (CryptoArchitectureKit C API)
+ *         hardware-entropy CSPRNG; backs crypto.getRandomValues in the shim.
+ *         Registered as a raw native and captured/deleted by plugin_runtime_
+ *         jsvm.js (host.ts natives closure), never visible to plugin code.
  *   - A JS bootstrap (BOOTSTRAP_JS) builds fetch()/Response-like objects and
  *     console on top of the raw natives. plugin_runtime_jsvm.js (prepended by
  *     PluginService) adds the $ DSL, CommonJS, URL/atob/crypto.subtle, prefs.
@@ -35,6 +39,7 @@
 // Enables OH_JSVM_CreateArrayBufferFromExternalMemory (zero-copy ArrayBuffer).
 #define JSVM_EXPERIMENTAL
 #include "ark_runtime/jsvm.h"
+#include "CryptoArchitectureKit/crypto_architecture_kit.h"
 #include "hilog/log.h"
 #include "napi/native_api.h"
 
@@ -598,6 +603,62 @@ static JSVM_Value NativeHttpRequestShared(JSVM_Env env, JSVM_CallbackInfo info)
     return obj;
 }
 
+// __nativeRandomBytes(n): n 字节硬件熵随机数 → Uint8Array。
+// 任何失败（参数非法/libohcrypto 错误）返回 undefined，由 shim 侧
+// crypto.getRandomValues 落到 Math.random 兜底——决不静默返回全零或
+// 截断缓冲（随机数退化为全零是密钥安全灾难）。
+static JSVM_Value NativeRandomBytes(JSVM_Env env, JSVM_CallbackInfo info)
+{
+    size_t argc = 1;
+    JSVM_Value args[1] = {nullptr};
+    OH_JSVM_GetCbInfo(env, info, &argc, args, nullptr, nullptr);
+    int32_t requested = 0;
+    if (argc > 0 && args[0] != nullptr &&
+        OH_JSVM_GetValueInt32(env, args[0], &requested) != JSVM_OK) {
+        requested = 0;
+    }
+    // 防御式上限：getRandomValues 不会请求超过 64KiB
+    if (requested > 65536) {
+        requested = 65536;
+    }
+    if (requested <= 0) {
+        JSVM_Value undefined = nullptr;
+        OH_JSVM_GetUndefined(env, &undefined);
+        return undefined;
+    }
+
+    OH_CryptoRand *rand = nullptr;
+    Crypto_DataBlob blob = {nullptr, 0};
+    bool ok = OH_CryptoRand_Create(&rand) == CRYPTO_SUCCESS && rand != nullptr;
+    if (ok) {
+        // API 21+，尽力而为：无硬件熵时回落默认熵源（仍为 CSPRNG）
+        OH_CryptoRand_EnableHardwareEntropy(rand);
+        ok = OH_CryptoRand_GenerateRandom(rand, requested, &blob) == CRYPTO_SUCCESS &&
+             blob.data != nullptr && blob.len == static_cast<size_t>(requested);
+    }
+
+    JSVM_Value result = nullptr;
+    if (ok) {
+        JSVM_Value arrayBuffer = nullptr;
+        void *data = nullptr;
+        if (OH_JSVM_CreateArraybuffer(env, blob.len, &data, &arrayBuffer) == JSVM_OK &&
+            arrayBuffer != nullptr && data != nullptr) {
+            std::memcpy(data, blob.data, blob.len);
+            OH_JSVM_CreateTypedarray(env, JSVM_UINT8_ARRAY, blob.len, arrayBuffer, 0, &result);
+        }
+    }
+    if (blob.data != nullptr) {
+        OH_Crypto_FreeDataBlob(&blob);
+    }
+    if (rand != nullptr) {
+        OH_CryptoRand_Destroy(rand);
+    }
+    if (result == nullptr) {
+        OH_JSVM_GetUndefined(env, &result);
+    }
+    return result;
+}
+
 static JSVM_Value NativeLog(JSVM_Env env, JSVM_CallbackInfo info)
 {
     size_t argc = 2;
@@ -624,6 +685,7 @@ static JSVM_CallbackStruct g_encodeGbkCb = {NativeUrlEncodeGbk, nullptr};
 static JSVM_CallbackStruct g_selectorCb = {NativeSelector, nullptr};
 static JSVM_CallbackStruct g_selectorBufferCb = {NativeSelectorBuffer, nullptr};
 static JSVM_CallbackStruct g_logCb = {NativeLog, nullptr};
+static JSVM_CallbackStruct g_randomBytesCb = {NativeRandomBytes, nullptr};
 
 // ============================================================================
 // Bootstrap & adapter JS
@@ -632,6 +694,16 @@ static JSVM_CallbackStruct g_logCb = {NativeLog, nullptr};
 static const char *BOOTSTRAP_JS = R"JS((function () {
   'use strict';
   var g = globalThis;
+
+  // ---- 暴露面收敛 ----------------------------------------------------------
+  // raw native 桥捕获进闭包，IIFE 末尾从全局删除：插件只能访问公开包装
+  // （console / fetch / fetchBytes / tachiyomiHttpRequest / querySelectorAll），
+  // raw native 桥不出现在插件可见全局里。
+  var __nativeLog = g.__nativeLog;
+  var __nativeHttpRequest = g.__nativeHttpRequest;
+  var __nativeHttpRequestShared = g.__nativeHttpRequestShared;
+  var nativeSelector = g.nativeSelector;
+  var nativeSelectorBuffer = g.nativeSelectorBuffer;
 
   // ---- console -----------------------------------------------------------
   function logAt(level) {
@@ -713,7 +785,13 @@ static const char *BOOTSTRAP_JS = R"JS((function () {
     }
     return JSON.parse(nativeSelector(String(html), String(cssQuery)));
   };
-  g.nativeSelector = function (html, cssQuery) { return nativeSelector(String(html), String(cssQuery)); };
+
+  // raw native 桥退出插件可见全局（上方包装器已持有闭包引用）
+  delete g.__nativeLog;
+  delete g.__nativeHttpRequest;
+  delete g.__nativeHttpRequestShared;
+  delete g.nativeSelector;
+  delete g.nativeSelectorBuffer;
 })();)JS";
 
 static const char *ADAPTER_JS = R"JS((function () {
@@ -953,7 +1031,10 @@ static const char *ADAPTER_JS = R"JS((function () {
         return okJson(names);
       }
       if (name === '__prefsDump') {
-        return okJson(typeof g.__prefsDump === 'function' ? g.__prefsDump() : (g.__PREFS_STORE__ || {}));
+        // prefs 存储为 shim 闭包私有，dump 经公开 DSL $.prefs 走（raw
+        // __prefsDump 全局已随暴露面收敛移除）
+        return okJson(g.$ && g.$.prefs && typeof g.$.prefs.dump === 'function'
+          ? g.$.prefs.dump() : {});
       }
       // Escape hatch: "__"-prefixed global functions registered by the loaded
       // script itself are callable even when no extension api was found.
@@ -1072,6 +1153,7 @@ static napi_value CreateEngine(napi_env env, napi_callback_info info)
         { "nativeSelector", nullptr, &g_selectorCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
         { "nativeSelectorBuffer", nullptr, &g_selectorBufferCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
         { "__nativeLog", nullptr, &g_logCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
+        { "__nativeRandomBytes", nullptr, &g_randomBytesCb, nullptr, nullptr, nullptr, JSVM_DEFAULT },
     };
 
     JSVM_VMScope vmScope = nullptr;

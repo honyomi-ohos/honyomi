@@ -117,4 +117,6 @@ target_link_libraries(jsvmengine PUBLIC
     libjsvm.so
     libhilog_ndk.z.so
     libpixelmap.so
-    libimage_packer.so)
+    libimage_packer.so
+    # CryptoArchitectureKit C API：__nativeRandomBytes 硬件熵随机桥
+    libohcrypto.so)

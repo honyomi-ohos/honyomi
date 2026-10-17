@@ -44,8 +44,6 @@ interface RawManifest {
   minAppVersion?: number;
   dslVersion?: number;
   icon?: string;
-  runtime?: string;
-  engine?: string;
   contentType?: string;
 }
 
@@ -174,11 +172,6 @@ export class PluginService {
     if (versionCode <= 0) {
       throw new Error('plugin_bad_version_code');
     }
-    // 引擎门禁：唯一支持的执行引擎是 jsvm
-    const engine = raw.engine ?? 'jsvm';
-    if (engine !== 'jsvm') {
-      throw new Error(`plugin_bad_engine|${engine}`);
-    }
     // 版本门禁：DSL 版本过高或要求的应用版本过高时拒绝加载，给出可理解的错误
     const dslVersion = raw.dslVersion ?? 1;
     if (dslVersion > PluginService.HOST_DSL_VERSION) {
@@ -206,8 +199,6 @@ export class PluginService {
       minAppVersion: minAppVersion,
       dslVersion: dslVersion,
       icon: icon,
-      runtime: raw.runtime ?? '',
-      engine: engine,
       contentType: ContentType.normalize(raw.contentType),
     };
     return manifest;
@@ -415,12 +406,9 @@ export class PluginService {
     return entries;
   }
 
-  // manifest.runtime 非空时，在 main.js 前拼接共享运行时（rawfile plugin_runtime_<name>.js）
-  static composeScript(manifest: PluginManifest, mainJs: string): string {
-    if (manifest.runtime === '') {
-      return mainJs;
-    }
-    return `${PluginService.getRuntime(manifest.runtime)}\n;\n${mainJs}`;
+  // 所有插件一律 jsvm 引擎：main.js 前固定拼接共享运行时（rawfile plugin_runtime_jsvm.js）
+  static composeScript(mainJs: string): string {
+    return `${PluginService.getRuntime('jsvm')}\n;\n${mainJs}`;
   }
 
   // 清理上次崩溃/失败安装遗留的 staging/备份目录（.staging_*/.old_*，含 manifest.json 会被误识别为插件）
@@ -553,7 +541,7 @@ export class PluginService {
       throw new Error(`plugin_start_read_failed|${Util.errSummary(e)}`);
     }
     const manifest = PluginService.parseManifest(manifestText);
-    const script = PluginService.composeScript(manifest, scriptText);
+    const script = PluginService.composeScript(scriptText);
     // 插件偏好持久化：确保 Preferences 就绪，并把已存的 __PREFS_STORE__ 注回引擎
     let seed = '';
     if (PluginService.context !== undefined) {
@@ -757,6 +745,8 @@ export class PluginService {
     return /^https?:\/\//.test(u) ? u : '';
   }
 
+  // 插件运行时 shim：rawfile 产物由 plugins/runtime/src 经 esbuild 打包直出
+  // 并随仓库提交（文件名是宿主/沙箱稳定契约），此处仅按名读取缓存
   private static getRuntime(name: string): string {
     const cached = PluginService.runtimeCache.get(name);
     if (cached !== undefined) {
@@ -1116,8 +1106,6 @@ export class PluginService {
       minAppVersion: record.minAppVersion,
       dslVersion: record.dslVersion,
       icon: record.icon,
-      runtime: record.runtime,
-      engine: record.engine,
       contentType: ContentType.normalize(record.contentType),
     };
     return manifest;
@@ -1137,8 +1125,6 @@ export class PluginService {
       minAppVersion: base.minAppVersion,
       dslVersion: base.dslVersion,
       icon: base.icon,
-      runtime: base.runtime,
-      engine: base.engine,
       contentType: ContentType.normalize(base.contentType),
     };
     return manifest;
@@ -1159,8 +1145,6 @@ export class PluginService {
     record.minAppVersion = manifest.minAppVersion;
     record.dslVersion = manifest.dslVersion;
     record.icon = manifest.icon;
-    record.runtime = manifest.runtime;
-    record.engine = manifest.engine;
     record.contentType = manifest.contentType;
     record.methodsJson = JSON.stringify(methods);
     record.sourcesJson = JSON.stringify(specs);

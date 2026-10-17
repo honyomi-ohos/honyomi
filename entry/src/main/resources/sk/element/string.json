@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "V knižnici nie sú žiadne pokračujúce mangy"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "Kopírovať do schránky"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "Motív"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "Predvolený"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "Polnočný súmrak"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "Jahodové daiquiri"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "Modrozelená a tyrkysová"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "Prílivová vlna"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "Jin a jang"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "Tokijská noc"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "Čiernobiela"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "Zelené jablko"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "Levanduľa"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "Obnoviť"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "Otvoriť v prehliadači"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "V prehliadači sa nedá otvoriť"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "Kopírovať URL"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL skopírované"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "Žiadna ďalšia kapitola"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "Nie sú dostupné žiadne filtre"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "Resetovať"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "Ignorovať"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "Zahrnúť"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "Vylúčiť"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "Priečinok sa nepodarilo vybrať"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "Vyžaduje sa priečinok, nie súbor"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "Vybrať priečinok"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "Synchronizovať"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "Zmeniť priečinok"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "Miestny priečinok"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "Synchronizácia priečinka…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "Priečinok synchronizovaný"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "Synchronizácia zlyhala: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "K miestnemu priečinku nie je prístup, vyberte ho znova"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "Prístup k priečinku sa nepodarilo zachovať"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "Výber priečinka nie je na tomto zariadení podporovaný"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "Miestny priečinok ešte nie je nastavený"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "V miestnom priečinku nič nie je"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "V podpriečinku comic nič nie je"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "V podpriečinku novel nič nie je"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "V podpriečinku anime nič nie je"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "Zrušiť všetko"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "Kapitoly vzostupne"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "Kapitoly zostupne"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "Zoradenie"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "Filter"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "Podľa zdroja"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "Podľa čísla kapitoly"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "Podľa dátumu nahratia"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "Podľa názvu"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "Resetovať"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "Stiahnuté"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "Neprečítané"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "V záložkách"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d vybraných"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "Označiť ako prečítané"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "Označiť ako neprečítané"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "Záložka"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "Odstrániť"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "Ďalších %d neprečítaných"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "Všetky neprečítané"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "Kapitoly v záložkách"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d kapitol vo fronte"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "Žiadne neprečítané kapitoly"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "Žiadne stiahnuté súbory na odstránenie"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "Odstránených %d stiahnutí"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "Sledovanie"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "Zrušiť sťahovanie"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "Sťahovanie zrušené"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "Odstrániť stiahnutú kapitolu?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "Stiahnutý súbor odstránený"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "Skopírované do schránky"
+    },
+    {
+      "name": "transition_finished",
+      "value": "Dokončené:"
+    },
+    {
+      "name": "transition_current",
+      "value": "Aktuálne:"
+    },
+    {
+      "name": "transition_next",
+      "value": "Ďalšie:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "Predchádzajúce:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "Ďalšia kapitola nie je"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "Predchádzajúca kapitola nie je"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "Web"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "Čakajúce aktualizácie"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "Aktualizovať všetko"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "Viac"
+    },
+    {
+      "name": "about_row_version",
+      "value": "Verzia"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "Ladiace informácie skopírované"
+    },
+    {
+      "name": "licenses_title",
+      "value": "Licencie s otvoreným zdrojovým kódom"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "Otvoriť domovskú stránku"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "Celý text licencie"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "Referencia architektúry aplikácie a návrhu interakcií"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "Ikony v aplikácii"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "SDK platformy a framework ArkUI"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "Dekódovanie obrázkov AVIF"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "Dekodér AV1 na dekódovanie AVIF"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "Analýza HTML pre rozšírenia"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "Vyrovnávacia pamäť prehrávania videa"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL a URLSearchParams pre rozšírenia (runtime pluginov)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder a TextDecoder pre rozšírenia (runtime pluginov)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "Prevod hodnôt WebIDL, závislosť whatwg-url (runtime pluginov)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "Hašovanie MD5 pre rozšírenia (runtime pluginov)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "Šifrovanie a dešifrovanie AES-CBC pre rozšírenia (runtime pluginov)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "Hašovanie SHA/HMAC/PBKDF2 pre rozšírenia (runtime pluginov)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "Šifrovanie a dešifrovanie AES-GCM pre rozšírenia (runtime pluginov)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "Zásady ochrany súkromia"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi je čítačka mangy, románov a videí, ktorá ukladá údaje predovšetkým lokálne. Samotná aplikácia nezhromažďuje, nenahráva ani nezdieľa žiadne osobné údaje."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "Miestne údaje"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "Knižnica, história čítania, záznamy sťahovania, predvoľby a prihlasovacie údaje sledovania sú uložené len vo vašom zariadení. Kedykoľvek ich môžete exportovať alebo vymazať v Nastaveniach. Odinštalovanie aplikácie ich odstráni natrvalo."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "Online zdroje a rozšírenia"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "Online obsah poskytujú rozšírenia a weby tretích strán. Prehliadanie alebo čítanie z online zdroja odosiela požiadavky priamo na daný web, ktorý sa riadi vlastnými zásadami ochrany súkromia. Aplikácia tieto služby neriadi a nezodpovedá za ne."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "Služby sledovania"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "Voliteľne môžete pripojiť účty sledovania, napríklad AniList, MyAnimeList, Bangumi, Kitsu a Shikimori. Prihlásenie schvaľujete na stránke danej služby a prístupové tokeny sa ukladajú len v zariadení kvôli synchronizácii postupu čítania."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "Povolenia"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "Prístup na internet slúži na načítanie online obsahu, prístup k súborom na miestny import a zálohy a biometrické overenie len na miestny zámok aplikácie. Žiadne povolenie neslúži na zber osobných údajov."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "Kontakt"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi je projekt s otvoreným zdrojovým kódom inšpirovaný Mihon. S otázkami k týmto zásadám sa ozvite cez Discord alebo GitHub."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "Uložiť ako archív CBZ"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "Rozdeliť vysoké obrázky"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "Zlepší výkon čítačky"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "Súbežnosť"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "Súbežné sťahovanie zo zdrojov"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "Súbežné sťahovanie stránok"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "Stránky sťahované naraz z jedného zdroja"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "Odstraňovať kapitoly"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "Po ručnom označení ako prečítané"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "Po prečítaní automaticky odstrániť"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "Vypnuté"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "Posledná prečítaná kapitola"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "Predposledná prečítaná kapitola"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "Tretia od konca prečítaných"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "Štvrtá od konca prečítaných"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "Piata od konca prečítaných"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "Povoliť odstraňovanie kapitol v záložkách"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "Automatické sťahovanie"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "Sťahovať nové kapitoly"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "Automaticky stiahnuť nové kapitoly nájdené pri aktualizácii knižnice"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "Preskočiť sťahovanie duplicitných prečítaných kapitol"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "Sťahovať dopredu"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "Automaticky sťahovať pri čítaní"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "Ďalšia neprečítaná kapitola"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "Ďalších %d neprečítaných kapitol"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "Funguje len vtedy, ak je aktuálna aj nasledujúca kapitola už stiahnutá."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "Romány"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "Videá"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "Pre tento typ zatiaľ nie sú žiadne zdroje"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "Miestne romány"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "Miestne videá"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "Typ"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "Všetko"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "Spustiť prehrávanie"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "Pokračovať v prehrávaní"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "Tento stream sa dá prehrať len online"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "Veľkosť písma"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "Riadkovanie"
+    },
+    {
+      "name": "novel_empty",
+      "value": "Táto kapitola nemá text"
+    },
+    {
+      "name": "novel_prev",
+      "value": "Predchádzajúca kapitola"
+    },
+    {
+      "name": "novel_next",
+      "value": "Ďalšia kapitola"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "Posúvanie"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "Po stranách"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "Dve strany"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "Režim stránkovania"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "Medzery medzi odsekmi"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "Zobrazenie"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "Text"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "Jedna strana (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "Jedna strana (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "Prechod strán"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "Simulácia"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "Posunutie"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "Prekrytie"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "Farba textu"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "Svetlá"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "Tmavá"
+    },
+    {
+      "name": "novel_margin",
+      "value": "Okraje"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "Písmo"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "Predvolené"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "Pätkové"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "Bezpätkové"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "Neproporcionálne"
+    },
+    {
+      "name": "novel_tts",
+      "value": "Čítať nahlas"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "Začať čítať nahlas"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "Prestať čítať nahlas"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "Rýchlosť čítania"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "Dosiahnutý koniec tejto kapitoly"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "Hlasové čítanie zlyhalo: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "Pozastaviť"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "Pokračovať"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "Práve sa číta"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "Odsek %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "Časovač vypnutia"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "Vyp."
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d min"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "Zastaví sa o %1$s"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "Nič sa nečíta nahlas"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "Otvoriť prehrávač"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "Kapitoly"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "Podľa času"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "Podľa kapitol"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "Po tejto kapitole"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "Po %1$d kapitolách"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d kap."
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "Zastaví sa po tejto kapitole"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "Zastaví sa po %1$d kapitolách"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "Udržiava aplikáciu na pozadí, kým sa román číta nahlas"
+    },
+    {
+      "name": "video_play",
+      "value": "Prehrať"
+    },
+    {
+      "name": "video_pause",
+      "value": "Pozastaviť"
+    },
+    {
+      "name": "video_prev",
+      "value": "Predchádzajúce"
+    },
+    {
+      "name": "video_next",
+      "value": "Ďalšie"
+    },
+    {
+      "name": "video_settings",
+      "value": "Nastavenia prehrávača"
+    },
+    {
+      "name": "video_episodes",
+      "value": "Epizódy"
+    },
+    {
+      "name": "video_quality",
+      "value": "Kvalita"
+    },
+    {
+      "name": "video_speed",
+      "value": "Rýchlosť prehrávania"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "Danmaku zapnuté"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "Danmaku vypnuté"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "Načítava sa danmaku…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "Načítaných %d danmaku"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "Nenašlo sa zodpovedajúce danmaku"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "Danmaku sa nepodarilo načítať"
+    },
+    {
+      "name": "video_locked",
+      "value": "Ovládanie uzamknuté"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "Ovládanie odomknuté"
+    },
+    {
+      "name": "player_set_title",
+      "value": "Prehrávač"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "Prehrávanie"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "Predvolená rýchlosť"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "Automaticky prehrať ďalšiu epizódu"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "Po skončení automaticky prehrať ďalšiu epizódu"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "Zobraziť danmaku"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "Veľkosť písma danmaku"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "Krytie danmaku"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "Oblasť zobrazenia danmaku"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "Rýchlosť danmaku"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "Údaje danmaku z dandanplay (vyžaduje sieť)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "Režim mierky obrazu"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "Prispôsobiť"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "Vyplniť"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "Roztiahnuť"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "Pomaly"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Normálne"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "Rýchlo"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "Veľmi rýchlo"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 obrazovky"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "Polovica obrazovky"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 obrazovky"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "Celá obrazovka"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "Čas pri mange"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "Čas pri románoch"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "Čas pri videu"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "Obálka"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "Upraviť obálku"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "Obnoviť obálku"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "Obálka aktualizovaná"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "Obálka obnovená"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "Obálku sa nepodarilo aktualizovať"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "Obálka uložená"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "Chyba pri ukladaní obálky"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "Chyba pri zdieľaní obálky"
+    },
+    {
+      "name": "detail_edit",
+      "value": "Upraviť"
+    },
+    {
+      "name": "detail_delete",
+      "value": "Odstrániť"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "Vitajte!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "Najprv si niečo nastavíme. Všetko môžete neskôr zmeniť v nastaveniach."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "Ďalej"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "Začať"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "Úvodný sprievodca"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "Sprievodca začiatkom"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "Ste v %s noví? Odporúčame sprievodcu začiatkom."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "Preinštalovávate %s?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "Prebieha synchronizácia, počkajte"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "Sťahovanie zlyhalo"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "Podrobnosti sa nepodarilo načítať"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "Neplatné parametre stránky"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "Príprava sťahovania…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "Presun do kategórie zlyhal"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "Zoznam migrácie sa nepodarilo načítať"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "Operácia zlyhala"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "Chyba načítania: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "Načítava sa…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "Načítanie zlyhalo: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "Vykresľovanie skončilo (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "Posledná automatická záloha zlyhala"
+    },
+    {
+      "name": "category_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "category_novel",
+      "value": "Romány"
+    },
+    {
+      "name": "category_video",
+      "value": "Videá"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "Licencované"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "Modul TTS je zaneprázdnený, skúste to neskôr"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "Modul TTS prestal odpovedať a čítanie bolo zastavené"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "Modul TTS nie je dostupný"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "Vyžaduje sa overenie človeka. Dokončite overovaciu stránku a skúste to znova"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "Zdroj nie je dostupný"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "Táto kapitola nemá obsah"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "Prehrávanie zlyhalo"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "Nenašli sa žiadne prehrateľné videá"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "Miestne"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "Zrušené"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "Sťahovanie zlyhalo"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "Časový limit sťahovania vypršal (server neodpovedá)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "Sťahovanie zlyhalo (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "Toto video sa streamuje online a nedá sa stiahnuť"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "Služba sťahovania nie je inicializovaná"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "Zdroj sa nenašiel: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "Súbor kapitoly sa nenašiel"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "Nepodporovaný formát kapitoly"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "Súbor videa sa nenašiel"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "Miestne importovaná manga"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "Miestne importované romány"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "Miestne importované videá"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "Nezabezpečené presmerovanie zablokované: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "Príliš veľa presmerovaní: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "Adresu servera sa nepodarilo preložiť. Skontrolujte sieť a skúste to znova"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "K serveru sa nedá pripojiť. Skontrolujte sieť a skúste to znova"
+    },
+    {
+      "name": "net_timeout",
+      "value": "Časový limit požiadavky vypršal, skúste to neskôr"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "Zabezpečené pripojenie zlyhalo (chyba SSL), skúste to neskôr"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "Pripojenie bolo prerušené, skúste to znova"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "Sieťová požiadavka zlyhala: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "Vytvorenie enginu JSVM zlyhalo"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "Spustenie skriptu pluginu zlyhalo"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "Rozšírenie nie je načítané"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "Rozšírenie je poškodené, preinštalujte ho alebo ho znova načítajte"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "Inicializácia rozšírenia zlyhala"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "Časový limit inicializácie rozšírenia vypršal"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "Časový limit volania rozšírenia vypršal: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "Volanie rozšírenia zlyhalo"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "Rozšírenie vrátilo neplatný JSON"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "Neznáma chyba rozšírenia"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "Neplatný manifest.key (len malé písmená, číslice a podčiarkovníky)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "Chýba manifest.name"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "Neplatný manifest.versionCode"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "Tento plugin vyžaduje novšiu aplikáciu (%s), najprv aktualizujte"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "Tento plugin vyžaduje versionCode aplikácie >= %s, najprv aktualizujte"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "Vybraný súbor sa nepodarilo prečítať: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "Adresy URL balíkov pluginov musia používať https, nešifrované sťahovanie je odmietnuté"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "Kontrola integrity pluginu zlyhala (nezhoduje sa sha256), inštalácia zrušená"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "V balíku pluginu chýba main.js"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "Adresár pluginu sa nepodarilo nahradiť: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "V balíku pluginu sa nenašiel manifest.json"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "Adresy URL súborov repozitára musia používať https, záznamy http:// sú odmietnuté"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "Neplatný názov runtime pluginu: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "Chýba komponent runtime pluginu: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "Plugin vrátil neplatné údaje o mange"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "Plugin neexportuje getChapterText"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "Plugin neexportuje getVideoList"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "Balík pluginu sa nepodarilo uložiť: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "Adresár pluginu sa nepodarilo odstrániť: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "Nainštalované súbory pluginu sa nepodarilo prečítať: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "Integritu balíka pluginu sa nepodarilo overiť: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "Balík pluginu sa nepodarilo rozbaliť: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "manifest.json v balíku pluginu sa nepodarilo prečítať: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "Súbory pluginu sa nepodarilo pripraviť: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "Sledovanie"
+    },
+    {
+      "name": "track_login",
+      "value": "Prihlásiť sa"
+    },
+    {
+      "name": "track_logout",
+      "value": "Odhlásiť sa"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "Odhlásiť sa z %s?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "Prihlásené k %s"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "Odhlásené"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "Prihlásenie zlyhalo"
+    },
+    {
+      "name": "track_username",
+      "value": "Používateľské meno"
+    },
+    {
+      "name": "track_password",
+      "value": "Heslo"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "Automaticky aktualizovať postup sledovania"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "Hľadať na %s"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "Hľadanie zlyhalo"
+    },
+    {
+      "name": "track_no_results",
+      "value": "Nič sa nenašlo"
+    },
+    {
+      "name": "track_added",
+      "value": "Sledovanie pridané"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "Sledovanie sa nepodarilo pridať"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "Sledovanie sa nepodarilo aktualizovať"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "Zo služby sa nepodarilo odobrať"
+    },
+    {
+      "name": "track_status",
+      "value": "Stav"
+    },
+    {
+      "name": "track_score",
+      "value": "Skóre"
+    },
+    {
+      "name": "track_chapters",
+      "value": "Kapitoly"
+    },
+    {
+      "name": "track_start_date",
+      "value": "Dátum začiatku"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "Dátum dokončenia"
+    },
+    {
+      "name": "track_private",
+      "value": "Súkromné"
+    },
+    {
+      "name": "track_unlink",
+      "value": "Odpojiť"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "Odobrať zo služby"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "Zadajte platné číslo kapitoly"
+    },
+    {
+      "name": "track_reading",
+      "value": "Čítam"
+    },
+    {
+      "name": "track_completed",
+      "value": "Dokončené"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "Odložené"
+    },
+    {
+      "name": "track_paused",
+      "value": "Pozastavené"
+    },
+    {
+      "name": "track_dropped",
+      "value": "Zahodené"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "Plánujem čítať"
+    },
+    {
+      "name": "track_repeating",
+      "value": "Opakujem"
+    },
+    {
+      "name": "track_considering",
+      "value": "Zvažujem"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "Neznámy"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "Zoznam čítania"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "Zoznam želaní"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "Dokončený zoznam"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "Odložený zoznam"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "Nedokončený zoznam"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "Načítava sa…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "Načítanie zlyhalo: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "Zatiaľ žiadne miestne súbory, ťuknutím na Importovať nejaké pridajte"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "Názov"
+    },
+    {
+      "name": "privacy_title",
+      "value": "Súkromie"
+    },
+    {
+      "name": "privacy_group",
+      "value": "Zabezpečenie"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "Zámok aplikácie"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "Najprv nastavte zámok obrazovky"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "Zamknúť pri nečinnosti"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "Vždy"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 minúta"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 minúty"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 minút"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 minút"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "Nikdy"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "Skryť obsah upozornení"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "Zabezpečená obrazovka"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "Blokuje snímky obrazovky a nahrávanie"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "Aplikácia uzamknutá"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "Na pokračovanie overte totožnosť"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "Odomknúť"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "Odomknúť aplikáciu"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "Sťahovanie"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "Exportovať denníky pádov"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "Nenašli sa žiadne denníky pádov"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "Exportovaných %d denníkov chýb"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "Podrobné protokolovanie"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "Zahrnúť ladiace podrobnosti do systémových denníkov"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "Ladiace informácie"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "Akcia zlyhala"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Dáta"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "Sieť"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "Knižnica"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "Čítačka"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "Vymazať databázu"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "Odobrať všetky položky, ktoré nie sú v knižnici? História čítania a postup týchto položiek sa stratia."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "Odobraných %d položiek"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "Vymazať údaje vloženého webu"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "Údaje vloženého webu vymazané"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS cez HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "Vypnuté"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "Vlastný User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "Ponechajte prázdne pre predvolenú hodnotu"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent uložený"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "Resetovať User-Agent"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "Obnoviť obálky v knižnici"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "Obnovovanie obálok…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "Obnovených %d položiek"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "Resetovať nastavenia čítačky pri sériách"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "Resetovať režimy čítania nastavené pri sériách na globálne predvolené?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "Resetovaných %d položiek"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "Vysokokvalitné vykresľovanie"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "Plynulejšie škálovanie obrázkov za cenu výkonu"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "Verzia aplikácie"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "Model zariadenia"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "Typ zariadenia"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "Verzia systému"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "Verzia API"
+    },
+    {
+      "name": "debug_screen",
+      "value": "Obrazovka"
+    },
+    {
+      "name": "debug_language",
+      "value": "Jazyk"
     }
   ]
 }

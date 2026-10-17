@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "Tiada manga sedang berjalan dalam rak buku"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "Salin ke papan keratan"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "Tema"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "Lalai"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "Senja tengah malam"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "Daiquiri strawberi"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "Hijau kebiruan & firus"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "Ombak pasang"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "Yin & Yang"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "Malam Tokyo"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "Monokrom"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "Epal hijau"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "Lavender"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "Segar semula"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "Buka dalam pelayar"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "Tidak dapat dibuka dalam pelayar"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "Salin URL"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL disalin"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "Tiada bab seterusnya"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "Tiada penapis"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "Tetap semula"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "Abaikan"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "Sertakan"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "Kecualikan"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "Gagal memilih folder"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "Folder diperlukan, bukan fail"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "Pilih folder"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "Segerak"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "Tukar folder"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "Folder tempatan"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "Menyegerakkan folder…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "Folder disegerakkan"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "Segerak gagal: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "Tidak dapat mengakses folder tempatan, sila pilih semula"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "Gagal mengekalkan akses kepada folder"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "Pemilihan folder tidak disokong pada peranti ini"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "Folder tempatan belum ditetapkan"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "Tiada apa-apa dalam folder tempatan"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "Tiada apa-apa dalam subfolder comic"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "Tiada apa-apa dalam subfolder novel"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "Tiada apa-apa dalam subfolder anime"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "Batal semua"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "Bab menaik"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "Bab menurun"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "Isih"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "Tapis"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "Mengikut sumber"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "Mengikut nombor bab"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "Mengikut tarikh muat naik"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "Mengikut nama"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "Tetap semula"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "Dimuat turun"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "Belum dibaca"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "Ditanda buku"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d dipilih"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "Tanda sebagai dibaca"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "Tanda sebagai belum dibaca"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "Tanda buku"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "Padam"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "%d belum dibaca seterusnya"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "Semua belum dibaca"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "Bab bertanda buku"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d bab dalam baris gilir"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "Tiada bab yang belum dibaca"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "Tiada muat turun untuk dipadam"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "%d muat turun dipadam"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "Penjejakan"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "Batal muat turun"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "Muat turun dibatalkan"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "Padam bab yang telah dimuat turun?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "Muat turun dipadam"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "Disalin ke papan keratan"
+    },
+    {
+      "name": "transition_finished",
+      "value": "Selesai:"
+    },
+    {
+      "name": "transition_current",
+      "value": "Semasa:"
+    },
+    {
+      "name": "transition_next",
+      "value": "Seterusnya:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "Sebelumnya:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "Tiada bab seterusnya"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "Tiada bab sebelumnya"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "Tapak web"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "Kemas kini belum selesai"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "Kemas kini semua"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "Pelbagai"
+    },
+    {
+      "name": "about_row_version",
+      "value": "Versi"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "Maklumat nyahpepijat disalin"
+    },
+    {
+      "name": "licenses_title",
+      "value": "Lesen sumber terbuka"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "Buka laman utama"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "Teks lesen penuh"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "Rujukan seni bina apl dan reka bentuk interaksi"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "Ikon dalam apl"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "SDK platform dan rangka kerja ArkUI"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "Penyahkodan imej AVIF"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "Penyahkod AV1 yang digunakan untuk penyahkodan AVIF"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "Penghuraian HTML untuk sambungan"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "Cache main balik video"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL dan URLSearchParams untuk sambungan (masa jalan pemalam)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder dan TextDecoder untuk sambungan (masa jalan pemalam)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "Penukaran nilai WebIDL, kebergantungan whatwg-url (masa jalan pemalam)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "Cincangan MD5 untuk sambungan (masa jalan pemalam)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "Penyulitan dan penyahsulitan AES-CBC untuk sambungan (masa jalan pemalam)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "Cincangan SHA/HMAC/PBKDF2 untuk sambungan (masa jalan pemalam)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "Penyulitan dan penyahsulitan AES-GCM untuk sambungan (masa jalan pemalam)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "Dasar privasi"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "Honyomi ialah pembaca yang mengutamakan data tempatan untuk manga, novel dan video. Apl ini tidak mengumpul, memuat naik atau berkongsi sebarang data peribadi."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "Data tempatan"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "Rak buku, sejarah membaca, rekod muat turun, keutamaan dan kelayakan penjejak disimpan pada peranti anda sahaja. Anda boleh mengeksport atau memadamnya pada bila-bila masa dalam Tetapan. Menyahpasang apl akan membuangnya secara kekal."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "Sumber dalam talian dan sambungan"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "Kandungan dalam talian disediakan oleh sambungan dan tapak pihak ketiga. Melayari atau membaca daripada sumber dalam talian menghantar permintaan anda terus ke tapak itu, yang tertakluk pada dasar privasinya sendiri. Apl tidak mengawal dan tidak bertanggungjawab terhadap perkhidmatan pihak ketiga."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "Perkhidmatan penjejakan"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "Anda boleh memilih untuk menyambung akaun penjejak seperti AniList, MyAnimeList, Bangumi, Kitsu dan Shikimori. Log masuk dibenarkan oleh anda pada halaman penjejak sendiri, dan token akses disimpan pada peranti anda sahaja untuk menyegerakkan kemajuan bacaan."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "Kebenaran"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "Akses Internet digunakan untuk memuatkan kandungan dalam talian, akses fail untuk import tempatan dan sandaran, serta pengesahan biometrik hanya untuk kunci apl tempatan. Tiada kebenaran digunakan untuk mengumpul data peribadi."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "Hubungan"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "Honyomi ialah projek sumber terbuka yang diilhamkan oleh Mihon. Jika anda ada soalan tentang pernyataan privasi ini, hubungi kami melalui Discord atau GitHub."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "Simpan sebagai arkib CBZ"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "Belah imej tinggi"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "Menjadikan pembaca lebih lancar"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "Keserentakan"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "Muat turun sumber serentak"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "Muat turun halaman serentak"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "Halaman yang dimuat turun serentak bagi setiap sumber"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "Padam bab"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "Selepas ditanda dibaca secara manual"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "Padam automatik selepas dibaca"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "Dilumpuhkan"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "Bab yang terakhir dibaca"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "Bab kedua terakhir yang dibaca"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "Bab ketiga terakhir yang dibaca"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "Bab keempat terakhir yang dibaca"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "Bab kelima terakhir yang dibaca"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "Benarkan pemadaman bab bertanda buku"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "Muat turun automatik"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "Muat turun bab baharu"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "Muat turun bab baharu yang dijumpai semasa kemas kini rak buku secara automatik"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "Langkau bab pendua yang sudah dibaca"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "Muat turun lebih awal"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "Muat turun automatik semasa membaca"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "Bab belum dibaca seterusnya"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "%d bab belum dibaca seterusnya"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "Hanya berfungsi jika bab semasa dan bab seterusnya sudah dimuat turun."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "Novel"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "Video"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "Belum ada sumber untuk jenis ini"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "Novel tempatan"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "Video tempatan"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "Jenis"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "Semua"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "Mula main"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "Teruskan main"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "Strim ini hanya boleh dimainkan dalam talian"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "Saiz fon"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "Jarak baris"
+    },
+    {
+      "name": "novel_empty",
+      "value": "Bab ini tiada teks"
+    },
+    {
+      "name": "novel_prev",
+      "value": "Bab sebelumnya"
+    },
+    {
+      "name": "novel_next",
+      "value": "Bab seterusnya"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "Tatal"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "Berhalaman"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "Dua halaman"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "Mod halaman"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "Jarak perenggan"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "Paparan"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "Teks"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "Satu halaman (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "Satu halaman (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "Peralihan halaman"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "Simulasi"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "Luncur"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "Tutup"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "Warna teks"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "Cerah"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "Gelap"
+    },
+    {
+      "name": "novel_margin",
+      "value": "Jidar"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "Fon"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "Lalai"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "Serif"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "Sans-serif"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "Lebar tetap"
+    },
+    {
+      "name": "novel_tts",
+      "value": "Baca dengan kuat"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "Mula baca dengan kuat"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "Henti baca dengan kuat"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "Kelajuan bacaan"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "Sudah sampai ke hujung bab ini"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "Teks ke pertuturan gagal: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "Jeda"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "Sambung"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "Sedang dibaca"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "Perenggan %1$d / %2$d"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "Pemasa tidur"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "Mati"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d min"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "Berhenti dalam %1$s"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "Tiada apa yang sedang dibaca dengan kuat"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "Buka pemain"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "Bab"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "Mengikut masa"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "Mengikut bab"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "Selepas bab ini"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "Selepas %1$d bab"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d bab"
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "Berhenti selepas bab ini"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "Berhenti selepas %1$d bab"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "Membiarkan apl terus berjalan di latar belakang semasa novel dibaca dengan kuat"
+    },
+    {
+      "name": "video_play",
+      "value": "Main"
+    },
+    {
+      "name": "video_pause",
+      "value": "Jeda"
+    },
+    {
+      "name": "video_prev",
+      "value": "Sebelumnya"
+    },
+    {
+      "name": "video_next",
+      "value": "Seterusnya"
+    },
+    {
+      "name": "video_settings",
+      "value": "Tetapan pemain"
+    },
+    {
+      "name": "video_episodes",
+      "value": "Episod"
+    },
+    {
+      "name": "video_quality",
+      "value": "Kualiti"
+    },
+    {
+      "name": "video_speed",
+      "value": "Kelajuan main"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "Danmaku hidup"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "Danmaku mati"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "Memuatkan danmaku…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%d danmaku dimuatkan"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "Tiada danmaku yang sepadan"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "Gagal memuatkan danmaku"
+    },
+    {
+      "name": "video_locked",
+      "value": "Kawalan dikunci"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "Kawalan dibuka kunci"
+    },
+    {
+      "name": "player_set_title",
+      "value": "Pemain"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "Main balik"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "Kelajuan lalai"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "Main episod seterusnya secara automatik"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "Main episod seterusnya secara automatik apabila selesai"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "Tunjukkan danmaku"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "Saiz fon danmaku"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "Kelegapan danmaku"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "Kawasan paparan danmaku"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "Kelajuan danmaku"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "Data danmaku daripada dandanplay (rangkaian diperlukan)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "Mod skala skrin"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "Muat"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "Isi"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "Regang"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "Perlahan"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Biasa"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "Pantas"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "Sangat pantas"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "1/4 skrin"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "Separuh skrin"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "3/4 skrin"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "Skrin penuh"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "Masa manga"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "Masa novel"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "Masa video"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "Kulit"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "Sunting kulit"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "Tetap semula kulit"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "Kulit dikemas kini"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "Kulit dipulihkan"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "Tidak dapat mengemas kini kulit"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "Kulit disimpan"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "Ralat menyimpan kulit"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "Ralat berkongsi kulit"
+    },
+    {
+      "name": "detail_edit",
+      "value": "Sunting"
+    },
+    {
+      "name": "detail_delete",
+      "value": "Padam"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "Selamat datang!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "Mari sediakan beberapa perkara dahulu. Anda masih boleh menukarnya kemudian dalam tetapan."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "Seterusnya"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "Mulakan"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "Panduan pengenalan"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "Panduan bermula"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "Baharu menggunakan %s? Kami syorkan anda melihat panduan bermula."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "Memasang semula %s?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "Penyegerakan sedang berjalan, sila tunggu"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "Muat turun gagal"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "Gagal memuatkan butiran"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "Parameter halaman tidak sah"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "Menyediakan muat turun…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "Gagal mengalih ke kategori"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "Gagal memuatkan senarai hijrah"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "Operasi gagal"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "Ralat muat: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "Memuatkan…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "Gagal memuatkan: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "Paparan keluar (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "Sandaran automatik terakhir gagal"
+    },
+    {
+      "name": "category_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "category_novel",
+      "value": "Novel"
+    },
+    {
+      "name": "category_video",
+      "value": "Video"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "Berlesen"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "Enjin TTS sedang sibuk, sila cuba lagi kemudian"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "Enjin TTS berhenti bertindak balas dan bacaan dihentikan"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "Enjin TTS tidak tersedia"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "Pengesahan manusia diperlukan, sila lengkapkan halaman pengesahan lalu cuba lagi"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "Sumber tidak tersedia"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "Bab ini tiada kandungan"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "Main balik gagal"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "Tiada video yang boleh dimainkan"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "Tempatan"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "Dibatalkan"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "Muat turun gagal"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "Muat turun tamat masa (pelayan tidak bertindak balas)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "Muat turun gagal (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "Video ini distrim dalam talian dan tidak boleh dimuat turun"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "Perkhidmatan muat turun belum dimulakan"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "Sumber tidak dijumpai: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "Fail bab tidak dijumpai"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "Format bab tidak disokong"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "Fail video tidak dijumpai"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "Manga yang diimport secara tempatan"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "Novel yang diimport secara tempatan"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "Video yang diimport secara tempatan"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "Lencongan tidak selamat disekat: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "Terlalu banyak lencongan: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "Tidak dapat menyelesaikan alamat pelayan, sila semak sambungan rangkaian dan cuba lagi"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "Tidak dapat menyambung ke pelayan, sila semak rangkaian dan cuba lagi"
+    },
+    {
+      "name": "net_timeout",
+      "value": "Permintaan tamat masa, sila cuba lagi kemudian"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "Sambungan selamat gagal (ralat SSL), sila cuba lagi kemudian"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "Sambungan terganggu, sila cuba lagi"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "Permintaan rangkaian gagal: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "Gagal mencipta enjin JSVM"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "Gagal menjalankan skrip pemalam"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "Sambungan belum dimuatkan"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "Sambungan rosak, sila pasang semula atau muat semula"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "Pemulaan sambungan gagal"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "Pemulaan sambungan tamat masa"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "Panggilan sambungan tamat masa: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "Panggilan sambungan gagal"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "Sambungan memulangkan JSON yang tidak sah"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "Ralat sambungan tidak diketahui"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "manifest.key tidak sah (huruf kecil, digit dan garis bawah sahaja)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "manifest.name tiada"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "manifest.versionCode tidak sah"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "Pemalam ini memerlukan apl yang lebih baharu (%s), sila kemas kini dahulu"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "Pemalam ini memerlukan versionCode apl >= %s, sila kemas kini dahulu"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "Gagal membaca fail yang dipilih: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "URL pakej pemalam mesti menggunakan https, muat turun teks biasa ditolak"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "Semakan integriti pemalam gagal (sha256 tidak sepadan), pemasangan dibatalkan"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "Pakej pemalam tiada main.js"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "Gagal menggantikan direktori pemalam: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "manifest.json tidak dijumpai dalam pakej pemalam"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "URL fail repositori mesti menggunakan https, entri http:// ditolak"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "Nama masa jalan pemalam tidak sah: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "Komponen masa jalan pemalam tiada: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "Pemalam memulangkan butiran manga yang tidak sah"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "Pemalam tidak mengeksport getChapterText"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "Pemalam tidak mengeksport getVideoList"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "Gagal menyimpan pakej pemalam: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "Gagal membuang direktori pemalam: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "Gagal membaca fail pemalam yang dipasang: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "Gagal mengesahkan integriti pakej pemalam: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "Gagal mengekstrak pakej pemalam: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "Gagal membaca manifest.json dalam pakej pemalam: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "Gagal menyediakan fail pemalam: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "Penjejakan"
+    },
+    {
+      "name": "track_login",
+      "value": "Log masuk"
+    },
+    {
+      "name": "track_logout",
+      "value": "Log keluar"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "Log keluar daripada %s?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "Telah log masuk ke %s"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "Telah log keluar"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "Log masuk gagal"
+    },
+    {
+      "name": "track_username",
+      "value": "Nama pengguna"
+    },
+    {
+      "name": "track_password",
+      "value": "Kata laluan"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "Kemas kini kemajuan penjejakan secara automatik"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "Cari di %s"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "Carian gagal"
+    },
+    {
+      "name": "track_no_results",
+      "value": "Tiada hasil"
+    },
+    {
+      "name": "track_added",
+      "value": "Penjejakan ditambah"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "Gagal menambah penjejakan"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "Gagal mengemas kini penjejakan"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "Gagal membuang daripada perkhidmatan"
+    },
+    {
+      "name": "track_status",
+      "value": "Status"
+    },
+    {
+      "name": "track_score",
+      "value": "Skor"
+    },
+    {
+      "name": "track_chapters",
+      "value": "Bab"
+    },
+    {
+      "name": "track_start_date",
+      "value": "Tarikh mula"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "Tarikh selesai"
+    },
+    {
+      "name": "track_private",
+      "value": "Peribadi"
+    },
+    {
+      "name": "track_unlink",
+      "value": "Nyahpaut"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "Buang daripada perkhidmatan"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "Masukkan nombor bab yang sah"
+    },
+    {
+      "name": "track_reading",
+      "value": "Sedang membaca"
+    },
+    {
+      "name": "track_completed",
+      "value": "Selesai"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "Ditangguh"
+    },
+    {
+      "name": "track_paused",
+      "value": "Dijeda"
+    },
+    {
+      "name": "track_dropped",
+      "value": "Digugurkan"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "Rancang untuk baca"
+    },
+    {
+      "name": "track_repeating",
+      "value": "Mengulang"
+    },
+    {
+      "name": "track_considering",
+      "value": "Mempertimbangkan"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "Tidak diketahui"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "Senarai bacaan"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "Senarai hajat"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "Senarai selesai"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "Senarai ditangguh"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "Senarai belum selesai"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "Memuatkan…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "Gagal memuatkan: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "Belum ada fail tempatan, ketik Import untuk menambah"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "Nama"
+    },
+    {
+      "name": "privacy_title",
+      "value": "Privasi"
+    },
+    {
+      "name": "privacy_group",
+      "value": "Keselamatan"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "Kunci apl"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "Tetapkan kunci skrin dahulu"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "Kunci apabila melahu"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "Sentiasa"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 minit"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 minit"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 minit"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 minit"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "Tidak sekali-kali"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "Sembunyikan kandungan pemberitahuan"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "Skrin selamat"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "Menyekat tangkapan skrin dan rakaman skrin"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "Apl dikunci"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "Sahkan identiti anda untuk meneruskan"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "Buka kunci"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "Buka kunci apl"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "Memuat turun"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "Eksport log ranap"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "Tiada log ranap dijumpai"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "%d log kerosakan dieksport"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "Pengelogan berjela"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "Sertakan butiran aras nyahpepijat dalam log sistem"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "Info nyahpepijat"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "Tindakan gagal"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Data"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "Rangkaian"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "Rak buku"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "Pembaca"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "Kosongkan pangkalan data"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "Buang semua entri yang tiada dalam rak buku anda? Sejarah membaca dan kemajuan entri ini akan hilang."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "%d entri dibuang"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "Kosongkan data web terbenam"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "Data web terbenam dikosongkan"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS over HTTPS"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "Dilumpuhkan"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "User-Agent tersuai"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "Biarkan kosong untuk menggunakan lalai"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent disimpan"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "Tetap semula User-Agent"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "Segar semula kulit rak buku"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "Menyegar semula kulit…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "%d entri disegarkan semula"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "Tetap semula tetapan pembaca setiap siri"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "Tetap semula mod bacaan yang anda tetapkan bagi setiap siri kepada lalai global?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "%d entri ditetapkan semula"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "Pemaparan berkualiti tinggi"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "Penskalaan imej lebih licin dengan mengorbankan prestasi"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "Versi apl"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "Model peranti"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "Jenis peranti"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "Versi sistem"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "Versi API"
+    },
+    {
+      "name": "debug_screen",
+      "value": "Skrin"
+    },
+    {
+      "name": "debug_language",
+      "value": "Bahasa"
     }
   ]
 }

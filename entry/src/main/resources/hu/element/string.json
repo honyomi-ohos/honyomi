@@ -2119,6 +2119,1826 @@
     {
       "name": "card_empty_upcoming",
       "value": "Nincs folyamatban lévő manga a könyvtárban"
+    },
+    {
+      "name": "common_copy_to_clipboard",
+      "value": "Másolás a vágólapra"
+    },
+    {
+      "name": "appearance_theme",
+      "value": "Téma"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "Alapértelmezett"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_midnight_dusk",
+      "value": "Éjféli szürkület"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "Epres daiquiri"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_teal_turquoise",
+      "value": "Zöldeskék és türkiz"
+    },
+    {
+      "name": "theme_name_tidal_wave",
+      "value": "Árapály"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "Jin és jang"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "theme_name_tokyo_night",
+      "value": "Tokiói éj"
+    },
+    {
+      "name": "theme_name_monochrome",
+      "value": "Monokróm"
+    },
+    {
+      "name": "theme_name_green_apple",
+      "value": "Zöldalma"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "Levendula"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "tab_cf_refresh",
+      "value": "Frissítés"
+    },
+    {
+      "name": "tab_cf_open_browser",
+      "value": "Megnyitás böngészőben"
+    },
+    {
+      "name": "tab_cf_open_failed",
+      "value": "Nem nyitható meg a böngészőben"
+    },
+    {
+      "name": "tab_cf_copy_url",
+      "value": "URL másolása"
+    },
+    {
+      "name": "tab_cf_url_copied",
+      "value": "URL másolva"
+    },
+    {
+      "name": "history_no_next_chapter",
+      "value": "Nincs következő fejezet"
+    },
+    {
+      "name": "browse_filter_empty",
+      "value": "Nincs elérhető szűrő"
+    },
+    {
+      "name": "browse_filter_reset",
+      "value": "Visszaállítás"
+    },
+    {
+      "name": "browse_filter_ignore",
+      "value": "Mellőzés"
+    },
+    {
+      "name": "browse_filter_include",
+      "value": "Tartalmazza"
+    },
+    {
+      "name": "browse_filter_exclude",
+      "value": "Kizárás"
+    },
+    {
+      "name": "browse_pick_folder_failed",
+      "value": "A mappa kiválasztása sikertelen"
+    },
+    {
+      "name": "browse_pick_not_folder",
+      "value": "Mappa kell, nem fájl"
+    },
+    {
+      "name": "browse_local_setup",
+      "value": "Mappa választása"
+    },
+    {
+      "name": "browse_local_sync",
+      "value": "Szinkronizálás"
+    },
+    {
+      "name": "browse_local_change",
+      "value": "Mappa cseréje"
+    },
+    {
+      "name": "browse_local_folder_title",
+      "value": "Helyi mappa"
+    },
+    {
+      "name": "browse_local_syncing",
+      "value": "Mappa szinkronizálása…"
+    },
+    {
+      "name": "browse_local_sync_done",
+      "value": "Mappa szinkronizálva"
+    },
+    {
+      "name": "browse_local_sync_failed",
+      "value": "A szinkronizálás sikertelen: %s"
+    },
+    {
+      "name": "browse_local_access_failed",
+      "value": "A helyi mappa nem érhető el, válassza ki újra"
+    },
+    {
+      "name": "browse_local_persist_failed",
+      "value": "A mappához való hozzáférés megtartása sikertelen"
+    },
+    {
+      "name": "browse_local_folder_unsupported",
+      "value": "A mappaválasztás nem támogatott ezen az eszközön"
+    },
+    {
+      "name": "browse_local_folder_empty",
+      "value": "Még nincs beállítva helyi mappa"
+    },
+    {
+      "name": "browse_local_synced_empty",
+      "value": "A helyi mappa üres"
+    },
+    {
+      "name": "browse_local_comic_empty",
+      "value": "A comic almappa üres"
+    },
+    {
+      "name": "browse_local_novel_empty",
+      "value": "A novel almappa üres"
+    },
+    {
+      "name": "browse_local_anime_empty",
+      "value": "Az anime almappa üres"
+    },
+    {
+      "name": "download_cancel_all",
+      "value": "Összes megszakítása"
+    },
+    {
+      "name": "download_sort_asc",
+      "value": "Fejezet növekvő"
+    },
+    {
+      "name": "download_sort_desc",
+      "value": "Fejezet csökkenő"
+    },
+    {
+      "name": "detail_sort_tab",
+      "value": "Rendezés"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "Szűrő"
+    },
+    {
+      "name": "detail_sort_by_source",
+      "value": "Forrás szerint"
+    },
+    {
+      "name": "detail_sort_by_number",
+      "value": "Fejezetszám szerint"
+    },
+    {
+      "name": "detail_sort_by_date",
+      "value": "Feltöltés dátuma szerint"
+    },
+    {
+      "name": "detail_sort_by_name",
+      "value": "Név szerint"
+    },
+    {
+      "name": "detail_filter_reset",
+      "value": "Visszaállítás"
+    },
+    {
+      "name": "detail_filter_downloaded",
+      "value": "Letöltött"
+    },
+    {
+      "name": "detail_filter_unread",
+      "value": "Olvasatlan"
+    },
+    {
+      "name": "detail_filter_bookmarked",
+      "value": "Könyvjelzőzött"
+    },
+    {
+      "name": "detail_selected_count",
+      "value": "%d kijelölve"
+    },
+    {
+      "name": "detail_action_mark_read",
+      "value": "Olvasottnak jelölés"
+    },
+    {
+      "name": "detail_action_mark_unread",
+      "value": "Olvasatlannak jelölés"
+    },
+    {
+      "name": "detail_action_bookmark",
+      "value": "Könyvjelző"
+    },
+    {
+      "name": "detail_action_delete",
+      "value": "Törlés"
+    },
+    {
+      "name": "detail_dl_next_n",
+      "value": "Következő %d olvasatlan"
+    },
+    {
+      "name": "detail_dl_unread",
+      "value": "Minden olvasatlan"
+    },
+    {
+      "name": "detail_dl_bookmarked",
+      "value": "Könyvjelzőzött fejezetek"
+    },
+    {
+      "name": "detail_dl_queued_n",
+      "value": "%d fejezet sorban"
+    },
+    {
+      "name": "detail_no_unread",
+      "value": "Nincs olvasatlan fejezet"
+    },
+    {
+      "name": "detail_no_downloads",
+      "value": "Nincs törölhető letöltés"
+    },
+    {
+      "name": "detail_deleted_n",
+      "value": "%d letöltés törölve"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "Követés"
+    },
+    {
+      "name": "detail_dl_cancel",
+      "value": "Letöltés megszakítása"
+    },
+    {
+      "name": "detail_dl_cancelled",
+      "value": "Letöltés megszakítva"
+    },
+    {
+      "name": "detail_dl_delete_confirm",
+      "value": "Törli a letöltött fejezetet?"
+    },
+    {
+      "name": "detail_dl_deleted_one",
+      "value": "Letöltés törölve"
+    },
+    {
+      "name": "detail_tag_copied",
+      "value": "Vágólapra másolva"
+    },
+    {
+      "name": "transition_finished",
+      "value": "Befejezett:"
+    },
+    {
+      "name": "transition_current",
+      "value": "Jelenlegi:"
+    },
+    {
+      "name": "transition_next",
+      "value": "Következő:"
+    },
+    {
+      "name": "transition_previous",
+      "value": "Előző:"
+    },
+    {
+      "name": "transition_no_next",
+      "value": "Nincs következő fejezet"
+    },
+    {
+      "name": "transition_no_previous",
+      "value": "Nincs előző fejezet"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "Webhely"
+    },
+    {
+      "name": "ext_updates_pending",
+      "value": "Függő frissítések"
+    },
+    {
+      "name": "ext_update_all",
+      "value": "Összes frissítése"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "Több"
+    },
+    {
+      "name": "about_row_version",
+      "value": "Verzió"
+    },
+    {
+      "name": "about_debug_copied",
+      "value": "Hibakeresési adatok másolva"
+    },
+    {
+      "name": "licenses_title",
+      "value": "Nyílt forráskódú licencek"
+    },
+    {
+      "name": "licenses_open_homepage",
+      "value": "Honlap megnyitása"
+    },
+    {
+      "name": "licenses_full_text",
+      "value": "Teljes licencszöveg"
+    },
+    {
+      "name": "licenses_desc_mihon",
+      "value": "Az alkalmazás felépítésének és interakcióinak referenciája"
+    },
+    {
+      "name": "licenses_desc_material",
+      "value": "Alkalmazáson belüli ikonok"
+    },
+    {
+      "name": "licenses_desc_openharmony",
+      "value": "Platform SDK és ArkUI keretrendszer"
+    },
+    {
+      "name": "licenses_desc_libavif",
+      "value": "AVIF-képek dekódolása"
+    },
+    {
+      "name": "licenses_desc_libaom",
+      "value": "AV1-dekóder az AVIF dekódolásához"
+    },
+    {
+      "name": "licenses_desc_lexbor",
+      "value": "HTML elemzés a bővítményekhez"
+    },
+    {
+      "name": "licenses_desc_videocache",
+      "value": "Videolejátszás gyorsítótára"
+    },
+    {
+      "name": "licenses_desc_whatwgurl",
+      "value": "URL és URLSearchParams a bővítményekhez (plugin futásidő)"
+    },
+    {
+      "name": "licenses_desc_fasttextencoding",
+      "value": "TextEncoder és TextDecoder a bővítményekhez (plugin futásidő)"
+    },
+    {
+      "name": "licenses_desc_webidlconversions",
+      "value": "WebIDL értékátalakítás, a whatwg-url függősége (plugin futásidő)"
+    },
+    {
+      "name": "licenses_desc_jsmd5",
+      "value": "MD5 kivonatolás a bővítményekhez (plugin futásidő)"
+    },
+    {
+      "name": "licenses_desc_aesjs",
+      "value": "AES-CBC titkosítás és visszafejtés a bővítményekhez (plugin futásidő)"
+    },
+    {
+      "name": "licenses_desc_noblehashes",
+      "value": "SHA/HMAC/PBKDF2 kivonatolás a bővítményekhez (plugin futásidő)"
+    },
+    {
+      "name": "licenses_desc_nobleciphers",
+      "value": "AES-GCM titkosítás és visszafejtés a bővítményekhez (plugin futásidő)"
+    },
+    {
+      "name": "privacy_policy_title",
+      "value": "Adatvédelmi nyilatkozat"
+    },
+    {
+      "name": "privacy_policy_intro",
+      "value": "A Honyomi helyi adattárolású olvasó mangához, regényekhez és videókhoz. Az alkalmazás maga nem gyűjt, nem tölt fel és nem oszt meg személyes adatot."
+    },
+    {
+      "name": "privacy_policy_local_title",
+      "value": "Helyi adatok"
+    },
+    {
+      "name": "privacy_policy_local_body",
+      "value": "A könyvtár, az olvasási előzmények, a letöltési nyilvántartás, a beállítások és a követési belépési adatok csak az eszközön tárolódnak. A Beállításokban bármikor exportálhatja vagy törölheti őket. Az alkalmazás eltávolítása véglegesen törli az adatokat."
+    },
+    {
+      "name": "privacy_policy_network_title",
+      "value": "Online források és bővítmények"
+    },
+    {
+      "name": "privacy_policy_network_body",
+      "value": "Az online tartalmat harmadik felek bővítményei és webhelyei adják. Az online forrás böngészése vagy olvasása a kéréseket közvetlenül arra az oldalra küldi, amelyre a saját adatvédelmi szabályzata vonatkozik. Az alkalmazás nem irányítja ezeket a szolgáltatásokat, és nem felel értük."
+    },
+    {
+      "name": "privacy_policy_tracking_title",
+      "value": "Követőszolgáltatások"
+    },
+    {
+      "name": "privacy_policy_tracking_body",
+      "value": "Opcionálisan csatlakoztathat követőfiókokat, például az AniList, a MyAnimeList, a Bangumi, a Kitsu és a Shikimori szolgáltatást. A bejelentkezést a követő saját oldalán hagyja jóvá, a hozzáférési tokenek pedig csak az eszközön tárolódnak az olvasási előrehaladás szinkronizálásához."
+    },
+    {
+      "name": "privacy_policy_permissions_title",
+      "value": "Engedélyek"
+    },
+    {
+      "name": "privacy_policy_permissions_body",
+      "value": "Az internet az online tartalom betöltéséhez, a fájlhozzáférés a helyi importhoz és a biztonsági mentésekhez, a biometrikus hitelesítés pedig csak a helyi alkalmazászárhoz kell. Egyik engedély sem személyes adatok gyűjtésére szolgál."
+    },
+    {
+      "name": "privacy_policy_contact_title",
+      "value": "Kapcsolat"
+    },
+    {
+      "name": "privacy_policy_contact_body",
+      "value": "A Honyomi a Mihon által ihletett nyílt forráskódú projekt. Ha kérdése van erről a nyilatkozatról, a Discordon vagy a GitHubon érhet el minket."
+    },
+    {
+      "name": "dl_set_save_cbz",
+      "value": "Mentés CBZ archívumként"
+    },
+    {
+      "name": "dl_set_split_tall",
+      "value": "Magas képek felosztása"
+    },
+    {
+      "name": "dl_set_split_tall_sub",
+      "value": "Javítja az olvasó teljesítményét"
+    },
+    {
+      "name": "dl_set_concurrency",
+      "value": "Párhuzamosság"
+    },
+    {
+      "name": "dl_set_parallel_sources",
+      "value": "Párhuzamos forrásletöltések"
+    },
+    {
+      "name": "dl_set_parallel_pages",
+      "value": "Párhuzamos oldalletöltések"
+    },
+    {
+      "name": "dl_set_parallel_pages_sub",
+      "value": "Egyszerre letöltött oldalak forrásonként"
+    },
+    {
+      "name": "dl_set_delete_chapters",
+      "value": "Fejezetek törlése"
+    },
+    {
+      "name": "dl_set_remove_marked_read",
+      "value": "Kézi olvasottnak jelölés után"
+    },
+    {
+      "name": "dl_set_remove_after_read",
+      "value": "Olvasás után automatikus törlés"
+    },
+    {
+      "name": "dl_set_remove_disabled",
+      "value": "Kikapcsolva"
+    },
+    {
+      "name": "dl_set_remove_last_1",
+      "value": "Utoljára olvasott fejezet"
+    },
+    {
+      "name": "dl_set_remove_last_2",
+      "value": "Utolsó előtti olvasott fejezet"
+    },
+    {
+      "name": "dl_set_remove_last_3",
+      "value": "Hátulról a harmadik olvasott fejezet"
+    },
+    {
+      "name": "dl_set_remove_last_4",
+      "value": "Hátulról a negyedik olvasott fejezet"
+    },
+    {
+      "name": "dl_set_remove_last_5",
+      "value": "Hátulról az ötödik olvasott fejezet"
+    },
+    {
+      "name": "dl_set_remove_bookmarked",
+      "value": "Könyvjelzőzött fejezetek törlésének engedélyezése"
+    },
+    {
+      "name": "dl_set_auto_download",
+      "value": "Automatikus letöltés"
+    },
+    {
+      "name": "dl_set_download_new",
+      "value": "Új fejezetek letöltése"
+    },
+    {
+      "name": "dl_set_download_new_sub",
+      "value": "A könyvtárfrissítéskor talált új fejezetek automatikus letöltése"
+    },
+    {
+      "name": "dl_set_skip_read_dup",
+      "value": "Ismétlődő olvasott fejezetek kihagyása"
+    },
+    {
+      "name": "dl_set_download_ahead",
+      "value": "Előre letöltés"
+    },
+    {
+      "name": "dl_set_dl_ahead",
+      "value": "Automatikus letöltés olvasás közben"
+    },
+    {
+      "name": "dl_set_ahead_next_1",
+      "value": "Következő olvasatlan fejezet"
+    },
+    {
+      "name": "dl_set_ahead_next_n",
+      "value": "Következő %d olvasatlan fejezet"
+    },
+    {
+      "name": "dl_set_ahead_info",
+      "value": "Csak akkor működik, ha a jelenlegi és a következő fejezet már le van töltve."
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "browse_type_novel",
+      "value": "Regények"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "Videók"
+    },
+    {
+      "name": "browse_type_empty",
+      "value": "Ehhez a típushoz még nincs forrás"
+    },
+    {
+      "name": "browse_local_novel_name",
+      "value": "Helyi regények"
+    },
+    {
+      "name": "browse_local_video_name",
+      "value": "Helyi videók"
+    },
+    {
+      "name": "lib_filter_content",
+      "value": "Típus"
+    },
+    {
+      "name": "lib_filter_type_all",
+      "value": "Mind"
+    },
+    {
+      "name": "detail_start_playing",
+      "value": "Lejátszás indítása"
+    },
+    {
+      "name": "detail_continue_playing",
+      "value": "Lejátszás folytatása"
+    },
+    {
+      "name": "detail_download_stream_only",
+      "value": "Ez a stream csak online játszható le"
+    },
+    {
+      "name": "novel_font_size",
+      "value": "Betűméret"
+    },
+    {
+      "name": "novel_line_height",
+      "value": "Sorköz"
+    },
+    {
+      "name": "novel_empty",
+      "value": "Ebben a fejezetben nincs szöveg"
+    },
+    {
+      "name": "novel_prev",
+      "value": "Előző fejezet"
+    },
+    {
+      "name": "novel_next",
+      "value": "Következő fejezet"
+    },
+    {
+      "name": "novel_mode_scroll",
+      "value": "Görgetés"
+    },
+    {
+      "name": "novel_mode_paged",
+      "value": "Lapozós"
+    },
+    {
+      "name": "novel_mode_double",
+      "value": "Kétoldalas"
+    },
+    {
+      "name": "novel_paging_mode",
+      "value": "Lapozási mód"
+    },
+    {
+      "name": "novel_paragraph_spacing",
+      "value": "Bekezdésköz"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "Megjelenés"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "Szöveg"
+    },
+    {
+      "name": "novel_mode_single_ltr",
+      "value": "Egy oldal (LTR)"
+    },
+    {
+      "name": "novel_mode_single_rtl",
+      "value": "Egy oldal (RTL)"
+    },
+    {
+      "name": "novel_page_animation",
+      "value": "Oldalváltás"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "Szimuláció"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "Csúsztatás"
+    },
+    {
+      "name": "novel_anim_cover",
+      "value": "Fedés"
+    },
+    {
+      "name": "novel_color_scheme",
+      "value": "Szövegszín"
+    },
+    {
+      "name": "novel_color_light",
+      "value": "Világos"
+    },
+    {
+      "name": "novel_color_dark",
+      "value": "Sötét"
+    },
+    {
+      "name": "novel_margin",
+      "value": "Margók"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "Betűtípus"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "Alapértelmezett"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "Talpas"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "Talpatlan"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "Fix szélességű"
+    },
+    {
+      "name": "novel_tts",
+      "value": "Felolvasás"
+    },
+    {
+      "name": "novel_tts_start",
+      "value": "Felolvasás indítása"
+    },
+    {
+      "name": "novel_tts_stop",
+      "value": "Felolvasás leállítása"
+    },
+    {
+      "name": "novel_tts_speed",
+      "value": "Olvasási sebesség"
+    },
+    {
+      "name": "novel_tts_finish",
+      "value": "A fejezet végére ért"
+    },
+    {
+      "name": "novel_tts_error",
+      "value": "A felolvasás sikertelen: %s"
+    },
+    {
+      "name": "novel_tts_pause",
+      "value": "Szünet"
+    },
+    {
+      "name": "novel_tts_resume",
+      "value": "Folytatás"
+    },
+    {
+      "name": "tts_player_title",
+      "value": "Most olvasott"
+    },
+    {
+      "name": "tts_para_progress",
+      "value": "%1$d. / %2$d. bekezdés"
+    },
+    {
+      "name": "tts_sleep_timer",
+      "value": "Alvásidőzítő"
+    },
+    {
+      "name": "tts_sleep_off",
+      "value": "Ki"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d perc"
+    },
+    {
+      "name": "tts_sleep_stop_after",
+      "value": "Leáll %1$s múlva"
+    },
+    {
+      "name": "tts_no_content",
+      "value": "Semmi nincs felolvasás alatt"
+    },
+    {
+      "name": "tts_open_player",
+      "value": "Lejátszó megnyitása"
+    },
+    {
+      "name": "tts_chapters",
+      "value": "Fejezetek"
+    },
+    {
+      "name": "tts_sleep_by_time",
+      "value": "Idő szerint"
+    },
+    {
+      "name": "tts_sleep_by_chapters",
+      "value": "Fejezet szerint"
+    },
+    {
+      "name": "tts_sleep_after_this_chapter",
+      "value": "Ez után a fejezet után"
+    },
+    {
+      "name": "tts_sleep_after_n_chapters",
+      "value": "%1$d fejezet után"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d fej."
+    },
+    {
+      "name": "tts_sleep_will_stop_this_chapter",
+      "value": "Ez után a fejezet után áll le"
+    },
+    {
+      "name": "tts_sleep_will_stop_n_chapters",
+      "value": "%1$d fejezet után áll le"
+    },
+    {
+      "name": "keep_background_running_reason",
+      "value": "Az alkalmazást a háttérben tartja, amíg egy regényt felolvas"
+    },
+    {
+      "name": "video_play",
+      "value": "Lejátszás"
+    },
+    {
+      "name": "video_pause",
+      "value": "Szünet"
+    },
+    {
+      "name": "video_prev",
+      "value": "Előző"
+    },
+    {
+      "name": "video_next",
+      "value": "Következő"
+    },
+    {
+      "name": "video_settings",
+      "value": "Lejátszó beállításai"
+    },
+    {
+      "name": "video_episodes",
+      "value": "Epizódok"
+    },
+    {
+      "name": "video_quality",
+      "value": "Minőség"
+    },
+    {
+      "name": "video_speed",
+      "value": "Lejátszási sebesség"
+    },
+    {
+      "name": "video_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "video_danmaku_on",
+      "value": "Danmaku be"
+    },
+    {
+      "name": "video_danmaku_off",
+      "value": "Danmaku ki"
+    },
+    {
+      "name": "video_danmaku_loading",
+      "value": "Danmaku betöltése…"
+    },
+    {
+      "name": "video_danmaku_loaded",
+      "value": "%d danmaku betöltve"
+    },
+    {
+      "name": "video_danmaku_none",
+      "value": "Nincs megfelelő danmaku"
+    },
+    {
+      "name": "video_danmaku_failed",
+      "value": "A danmaku betöltése sikertelen"
+    },
+    {
+      "name": "video_locked",
+      "value": "Vezérlők zárolva"
+    },
+    {
+      "name": "video_unlocked",
+      "value": "Vezérlők feloldva"
+    },
+    {
+      "name": "player_set_title",
+      "value": "Lejátszó"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "Lejátszás"
+    },
+    {
+      "name": "player_set_speed",
+      "value": "Alapértelmezett sebesség"
+    },
+    {
+      "name": "player_set_auto_next",
+      "value": "Következő epizód automatikus lejátszása"
+    },
+    {
+      "name": "player_set_auto_next_sub",
+      "value": "A végén automatikusan lejátssza a következő epizódot"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "player_set_danmaku_enable",
+      "value": "Danmaku megjelenítése"
+    },
+    {
+      "name": "player_set_danmaku_font",
+      "value": "Danmaku betűmérete"
+    },
+    {
+      "name": "player_set_danmaku_opacity",
+      "value": "Danmaku átlátszatlansága"
+    },
+    {
+      "name": "player_set_danmaku_area",
+      "value": "Danmaku megjelenési területe"
+    },
+    {
+      "name": "player_set_danmaku_speed",
+      "value": "Danmaku sebessége"
+    },
+    {
+      "name": "player_set_danmaku_source",
+      "value": "Danmaku adatok a dandanplay szolgáltatásból (hálózat szükséges)"
+    },
+    {
+      "name": "video_scale_mode",
+      "value": "Képméretezési mód"
+    },
+    {
+      "name": "video_scale_fit",
+      "value": "Illesztés"
+    },
+    {
+      "name": "video_scale_fill",
+      "value": "Kitöltés"
+    },
+    {
+      "name": "video_scale_stretch",
+      "value": "Nyújtás"
+    },
+    {
+      "name": "danmaku_speed_slow",
+      "value": "Lassú"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Normál"
+    },
+    {
+      "name": "danmaku_speed_fast",
+      "value": "Gyors"
+    },
+    {
+      "name": "danmaku_speed_fastest",
+      "value": "Nagyon gyors"
+    },
+    {
+      "name": "danmaku_area_quarter",
+      "value": "A képernyő 1/4-e"
+    },
+    {
+      "name": "danmaku_area_half",
+      "value": "Fél képernyő"
+    },
+    {
+      "name": "danmaku_area_three_quarters",
+      "value": "A képernyő 3/4-e"
+    },
+    {
+      "name": "danmaku_area_full",
+      "value": "Teljes képernyő"
+    },
+    {
+      "name": "stats_duration_manga",
+      "value": "Manga ideje"
+    },
+    {
+      "name": "stats_duration_novel",
+      "value": "Regény ideje"
+    },
+    {
+      "name": "stats_duration_video",
+      "value": "Videó ideje"
+    },
+    {
+      "name": "detail_cover_actions",
+      "value": "Borító"
+    },
+    {
+      "name": "detail_edit_cover",
+      "value": "Borító szerkesztése"
+    },
+    {
+      "name": "detail_reset_cover",
+      "value": "Borító visszaállítása"
+    },
+    {
+      "name": "detail_cover_updated",
+      "value": "Borító frissítve"
+    },
+    {
+      "name": "detail_cover_reset",
+      "value": "Borító visszaállítva"
+    },
+    {
+      "name": "detail_cover_save_failed",
+      "value": "A borító frissítése sikertelen"
+    },
+    {
+      "name": "detail_cover_saved",
+      "value": "Borító mentve"
+    },
+    {
+      "name": "detail_cover_save_gallery_failed",
+      "value": "Hiba a borító mentésekor"
+    },
+    {
+      "name": "detail_cover_share_failed",
+      "value": "Hiba a borító megosztásakor"
+    },
+    {
+      "name": "detail_edit",
+      "value": "Szerkesztés"
+    },
+    {
+      "name": "detail_delete",
+      "value": "Törlés"
+    },
+    {
+      "name": "onboarding_heading",
+      "value": "Üdvözöljük!"
+    },
+    {
+      "name": "onboarding_description",
+      "value": "Először állítsunk be néhány dolgot. Ezeket később a beállításokban is módosíthatja."
+    },
+    {
+      "name": "onboarding_action_next",
+      "value": "Tovább"
+    },
+    {
+      "name": "onboarding_action_finish",
+      "value": "Kezdés"
+    },
+    {
+      "name": "pref_onboarding_guide",
+      "value": "Bevezető útmutató"
+    },
+    {
+      "name": "getting_started_guide",
+      "value": "Kezdő útmutató"
+    },
+    {
+      "name": "onboarding_guides_new_user",
+      "value": "Új a %s alkalmazásban? Ajánljuk a kezdő útmutatót."
+    },
+    {
+      "name": "onboarding_guides_returning_user",
+      "value": "Újratelepíti a %s alkalmazást?"
+    },
+    {
+      "name": "chapter_badge_new",
+      "value": "NEW"
+    },
+    {
+      "name": "detail_sync_in_progress",
+      "value": "Szinkronizálás folyamatban, kérjük, várjon"
+    },
+    {
+      "name": "detail_download_failed",
+      "value": "A letöltés sikertelen"
+    },
+    {
+      "name": "detail_load_failed",
+      "value": "A részletek betöltése sikertelen"
+    },
+    {
+      "name": "detail_invalid_params",
+      "value": "Érvénytelen oldalparaméterek"
+    },
+    {
+      "name": "detail_dl_preparing",
+      "value": "Letöltések előkészítése…"
+    },
+    {
+      "name": "library_move_failed",
+      "value": "Az áthelyezés a kategóriába sikertelen"
+    },
+    {
+      "name": "migrate_load_failed",
+      "value": "Az áttelepítési lista betöltése sikertelen"
+    },
+    {
+      "name": "common_op_failed",
+      "value": "A művelet sikertelen"
+    },
+    {
+      "name": "cf_load_error",
+      "value": "Betöltési hiba: %s"
+    },
+    {
+      "name": "cf_loading",
+      "value": "Betöltés…"
+    },
+    {
+      "name": "cf_load_failed",
+      "value": "A betöltés sikertelen: %s"
+    },
+    {
+      "name": "cf_http_prefix",
+      "value": "HTTP %d"
+    },
+    {
+      "name": "cf_render_exited",
+      "value": "A megjelenítés kilépett (%d)"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "last_backup_failed_hint",
+      "value": "Az utolsó automatikus biztonsági mentés sikertelen"
+    },
+    {
+      "name": "category_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "category_novel",
+      "value": "Regények"
+    },
+    {
+      "name": "category_video",
+      "value": "Videók"
+    },
+    {
+      "name": "util_status_licensed",
+      "value": "Licencelt"
+    },
+    {
+      "name": "tts_error_busy",
+      "value": "A TTS motor foglalt, próbálja meg később"
+    },
+    {
+      "name": "tts_error_stalled",
+      "value": "A TTS motor nem válaszol, a felolvasás leállt"
+    },
+    {
+      "name": "tts_error_unavailable",
+      "value": "A TTS motor nem érhető el"
+    },
+    {
+      "name": "cf_retry_hint",
+      "value": "Emberi ellenőrzés szükséges. Fejezze be az ellenőrző oldalt, majd próbálja újra"
+    },
+    {
+      "name": "reader_source_unavailable",
+      "value": "A forrás nem érhető el"
+    },
+    {
+      "name": "reader_no_content",
+      "value": "Ebben a fejezetben nincs tartalom"
+    },
+    {
+      "name": "video_play_failed",
+      "value": "A lejátszás sikertelen"
+    },
+    {
+      "name": "video_no_streams",
+      "value": "Nincs lejátszható videó"
+    },
+    {
+      "name": "video_quality_local",
+      "value": "Helyi"
+    },
+    {
+      "name": "download_error_cancelled",
+      "value": "Megszakítva"
+    },
+    {
+      "name": "download_error_failed",
+      "value": "A letöltés sikertelen"
+    },
+    {
+      "name": "download_error_timeout",
+      "value": "A letöltés időtúllépés miatt megszakadt (a szerver nem válaszol)"
+    },
+    {
+      "name": "download_error_fail",
+      "value": "A letöltés sikertelen (%s)"
+    },
+    {
+      "name": "download_error_stream_only",
+      "value": "Ez a videó online stream, nem tölthető le"
+    },
+    {
+      "name": "download_error_not_ready",
+      "value": "A letöltési szolgáltatás nincs inicializálva"
+    },
+    {
+      "name": "download_error_source_missing",
+      "value": "A forrás nem található: %s"
+    },
+    {
+      "name": "local_error_chapter_missing",
+      "value": "A fejezetfájl nem található"
+    },
+    {
+      "name": "local_error_unsupported_format",
+      "value": "Nem támogatott fejezetformátum"
+    },
+    {
+      "name": "local_error_video_missing",
+      "value": "A videofájl nem található"
+    },
+    {
+      "name": "local_desc_manga",
+      "value": "Helyileg importált manga"
+    },
+    {
+      "name": "local_desc_novel",
+      "value": "Helyileg importált regények"
+    },
+    {
+      "name": "local_desc_video",
+      "value": "Helyileg importált videók"
+    },
+    {
+      "name": "net_redirect_blocked",
+      "value": "Nem biztonságos átirányítás blokkolva: %s"
+    },
+    {
+      "name": "net_too_many_redirects",
+      "value": "Túl sok átirányítás: %s"
+    },
+    {
+      "name": "net_host_resolve_failed",
+      "value": "A szerver címe nem oldható fel. Ellenőrizze a hálózatot, és próbálja újra"
+    },
+    {
+      "name": "net_connect_failed",
+      "value": "Nem lehet csatlakozni a szerverhez. Ellenőrizze a hálózatot, és próbálja újra"
+    },
+    {
+      "name": "net_timeout",
+      "value": "A kérés időtúllépés miatt megszakadt, próbálja meg később"
+    },
+    {
+      "name": "net_ssl_failed",
+      "value": "A biztonságos kapcsolat sikertelen (SSL-hiba), próbálja meg később"
+    },
+    {
+      "name": "net_interrupted",
+      "value": "A kapcsolat megszakadt, próbálja újra"
+    },
+    {
+      "name": "net_request_failed",
+      "value": "A hálózati kérés sikertelen: %s"
+    },
+    {
+      "name": "jsvm_error_engine_create",
+      "value": "A JSVM motor létrehozása sikertelen"
+    },
+    {
+      "name": "jsvm_error_script_failed",
+      "value": "A plugin szkript futtatása sikertelen"
+    },
+    {
+      "name": "ext_error_not_loaded",
+      "value": "A bővítmény nincs betöltve"
+    },
+    {
+      "name": "ext_error_broken",
+      "value": "A bővítmény hibás, telepítse újra vagy töltse be újra"
+    },
+    {
+      "name": "ext_error_init_failed",
+      "value": "A bővítmény inicializálása sikertelen"
+    },
+    {
+      "name": "ext_error_init_timeout",
+      "value": "A bővítmény inicializálása időtúllépés miatt megszakadt"
+    },
+    {
+      "name": "ext_error_call_timeout",
+      "value": "A bővítményhívás időtúllépés miatt megszakadt: %s"
+    },
+    {
+      "name": "ext_error_call_failed",
+      "value": "A bővítményhívás sikertelen"
+    },
+    {
+      "name": "ext_error_invalid_json",
+      "value": "A bővítmény érvénytelen JSON-t adott vissza"
+    },
+    {
+      "name": "ext_error_unknown",
+      "value": "Ismeretlen bővítményhiba"
+    },
+    {
+      "name": "plugin_error_bad_key",
+      "value": "Érvénytelen manifest.key (csak kisbetű, szám és aláhúzás)"
+    },
+    {
+      "name": "plugin_error_missing_name",
+      "value": "Hiányzik a manifest.name"
+    },
+    {
+      "name": "plugin_error_bad_version_code",
+      "value": "Érvénytelen manifest.versionCode"
+    },
+    {
+      "name": "plugin_error_dsl_too_new",
+      "value": "Ez a plugin újabb alkalmazást igényel (%s), először frissítsen"
+    },
+    {
+      "name": "plugin_error_app_too_old",
+      "value": "Ez a plugin legalább %s versionCode értéket igényel, először frissítsen"
+    },
+    {
+      "name": "plugin_error_read_failed",
+      "value": "A kijelölt fájl olvasása sikertelen: %s"
+    },
+    {
+      "name": "plugin_error_repo_not_https",
+      "value": "A plugincsomagok URL-jének https-t kell használnia, a titkosítatlan letöltés elutasítva"
+    },
+    {
+      "name": "plugin_error_checksum_mismatch",
+      "value": "A plugin integritásellenőrzése sikertelen (a sha256 nem egyezik), a telepítés megszakadt"
+    },
+    {
+      "name": "plugin_error_missing_main",
+      "value": "A plugincsomagból hiányzik a main.js"
+    },
+    {
+      "name": "plugin_error_replace_failed",
+      "value": "A plugin mappájának cseréje sikertelen: %s"
+    },
+    {
+      "name": "plugin_error_no_manifest",
+      "value": "A plugincsomagban nem található a manifest.json"
+    },
+    {
+      "name": "plugin_error_repo_entry_not_https",
+      "value": "A tárhely fájljainak URL-je https kell legyen, a http:// bejegyzések elutasítva"
+    },
+    {
+      "name": "plugin_error_runtime_invalid",
+      "value": "Érvénytelen plugin-futásidőnév: %s"
+    },
+    {
+      "name": "plugin_error_runtime_missing",
+      "value": "Hiányzó plugin-futásidő összetevő: plugin_runtime_%s.js"
+    },
+    {
+      "name": "plugin_error_invalid_detail",
+      "value": "A plugin érvénytelen mangaadatokat adott vissza"
+    },
+    {
+      "name": "plugin_error_no_chapter_text",
+      "value": "A plugin nem exportálja a getChapterText függvényt"
+    },
+    {
+      "name": "plugin_error_no_video_list",
+      "value": "A plugin nem exportálja a getVideoList függvényt"
+    },
+    {
+      "name": "plugin_error_write_failed",
+      "value": "A plugincsomag mentése sikertelen: %s"
+    },
+    {
+      "name": "plugin_error_uninstall_failed",
+      "value": "A plugin mappájának eltávolítása sikertelen: %s"
+    },
+    {
+      "name": "plugin_error_start_read_failed",
+      "value": "A telepített plugin fájljainak olvasása sikertelen: %s"
+    },
+    {
+      "name": "plugin_error_checksum_failed",
+      "value": "A plugincsomag integritásának ellenőrzése sikertelen: %s"
+    },
+    {
+      "name": "plugin_error_extract_failed",
+      "value": "A plugincsomag kibontása sikertelen: %s"
+    },
+    {
+      "name": "plugin_error_manifest_read_failed",
+      "value": "A plugincsomag manifest.json fájljának olvasása sikertelen: %s"
+    },
+    {
+      "name": "plugin_error_stage_failed",
+      "value": "A plugin fájljainak előkészítése sikertelen: %s"
+    },
+    {
+      "name": "track_title",
+      "value": "Követés"
+    },
+    {
+      "name": "track_login",
+      "value": "Bejelentkezés"
+    },
+    {
+      "name": "track_logout",
+      "value": "Kijelentkezés"
+    },
+    {
+      "name": "track_logout_confirm",
+      "value": "Kijelentkezik innen: %s?"
+    },
+    {
+      "name": "track_logged_in",
+      "value": "Bejelentkezve: %s"
+    },
+    {
+      "name": "track_logged_out",
+      "value": "Kijelentkezve"
+    },
+    {
+      "name": "track_login_failed",
+      "value": "A bejelentkezés sikertelen"
+    },
+    {
+      "name": "track_username",
+      "value": "Felhasználónév"
+    },
+    {
+      "name": "track_password",
+      "value": "Jelszó"
+    },
+    {
+      "name": "track_auto_update",
+      "value": "Követési előrehaladás automatikus frissítése"
+    },
+    {
+      "name": "track_search_hint",
+      "value": "Keresés itt: %s"
+    },
+    {
+      "name": "track_search_failed",
+      "value": "A keresés sikertelen"
+    },
+    {
+      "name": "track_no_results",
+      "value": "Nincs találat"
+    },
+    {
+      "name": "track_added",
+      "value": "Követés hozzáadva"
+    },
+    {
+      "name": "track_add_failed",
+      "value": "A követés hozzáadása sikertelen"
+    },
+    {
+      "name": "track_update_failed",
+      "value": "A követés frissítése sikertelen"
+    },
+    {
+      "name": "track_remove_failed",
+      "value": "Az eltávolítás a szolgáltatásból sikertelen"
+    },
+    {
+      "name": "track_status",
+      "value": "Állapot"
+    },
+    {
+      "name": "track_score",
+      "value": "Pontszám"
+    },
+    {
+      "name": "track_chapters",
+      "value": "Fejezetek"
+    },
+    {
+      "name": "track_start_date",
+      "value": "Kezdés dátuma"
+    },
+    {
+      "name": "track_finish_date",
+      "value": "Befejezés dátuma"
+    },
+    {
+      "name": "track_private",
+      "value": "Privát"
+    },
+    {
+      "name": "track_unlink",
+      "value": "Leválasztás"
+    },
+    {
+      "name": "track_remove_remote",
+      "value": "Eltávolítás a szolgáltatásból"
+    },
+    {
+      "name": "track_invalid_chapters",
+      "value": "Adjon meg érvényes fejezettszámot"
+    },
+    {
+      "name": "track_reading",
+      "value": "Olvasás"
+    },
+    {
+      "name": "track_completed",
+      "value": "Befejezett"
+    },
+    {
+      "name": "track_on_hold",
+      "value": "Félretéve"
+    },
+    {
+      "name": "track_paused",
+      "value": "Szüneteltetve"
+    },
+    {
+      "name": "track_dropped",
+      "value": "Eldobva"
+    },
+    {
+      "name": "track_plan_to_read",
+      "value": "Olvasásra tervezett"
+    },
+    {
+      "name": "track_repeating",
+      "value": "Újraolvasás"
+    },
+    {
+      "name": "track_considering",
+      "value": "Megfontolás alatt"
+    },
+    {
+      "name": "track_unknown_status",
+      "value": "Ismeretlen"
+    },
+    {
+      "name": "track_reading_list",
+      "value": "Olvasólista"
+    },
+    {
+      "name": "track_wish_list",
+      "value": "Kívánságlista"
+    },
+    {
+      "name": "track_complete_list",
+      "value": "Befejezett lista"
+    },
+    {
+      "name": "track_on_hold_list",
+      "value": "Félretett lista"
+    },
+    {
+      "name": "track_unfinished_list",
+      "value": "Befejezetlen lista"
+    },
+    {
+      "name": "oauth_loading",
+      "value": "Betöltés…"
+    },
+    {
+      "name": "oauth_load_error",
+      "value": "A betöltés sikertelen: %s"
+    },
+    {
+      "name": "browse_local_files_empty",
+      "value": "Még nincs helyi fájl, koppintson az Importálás elemre"
+    },
+    {
+      "name": "browse_work_name_hint",
+      "value": "Név"
+    },
+    {
+      "name": "privacy_title",
+      "value": "Adatvédelem"
+    },
+    {
+      "name": "privacy_group",
+      "value": "Biztonság"
+    },
+    {
+      "name": "privacy_app_lock",
+      "value": "Alkalmazászár"
+    },
+    {
+      "name": "privacy_app_lock_no_cred",
+      "value": "Először állítson be képernyőzárat"
+    },
+    {
+      "name": "privacy_lock_after",
+      "value": "Zárolás tétlenségkor"
+    },
+    {
+      "name": "privacy_lock_after_always",
+      "value": "Mindig"
+    },
+    {
+      "name": "privacy_lock_after_1min",
+      "value": "1 perc"
+    },
+    {
+      "name": "privacy_lock_after_2min",
+      "value": "2 perc"
+    },
+    {
+      "name": "privacy_lock_after_5min",
+      "value": "5 perc"
+    },
+    {
+      "name": "privacy_lock_after_10min",
+      "value": "10 perc"
+    },
+    {
+      "name": "privacy_lock_after_never",
+      "value": "Soha"
+    },
+    {
+      "name": "privacy_hide_notification",
+      "value": "Értesítés tartalmának elrejtése"
+    },
+    {
+      "name": "privacy_secure_screen",
+      "value": "Biztonságos képernyő"
+    },
+    {
+      "name": "privacy_secure_summary",
+      "value": "Blokkolja a képernyőképeket és a képernyőfelvételt"
+    },
+    {
+      "name": "privacy_locked_title",
+      "value": "Alkalmazás zárolva"
+    },
+    {
+      "name": "privacy_locked_summary",
+      "value": "A folytatáshoz igazolja a személyazonosságát"
+    },
+    {
+      "name": "privacy_unlock_btn",
+      "value": "Feloldás"
+    },
+    {
+      "name": "privacy_auth_title",
+      "value": "Alkalmazás feloldása"
+    },
+    {
+      "name": "privacy_dl_title",
+      "value": "Letöltés"
+    },
+    {
+      "name": "pref_dump_crash_logs",
+      "value": "Összeomlási naplók exportálása"
+    },
+    {
+      "name": "pref_no_crash_logs",
+      "value": "Nincs összeomlási napló"
+    },
+    {
+      "name": "pref_crash_logs_saved",
+      "value": "%d hibanapló exportálva"
+    },
+    {
+      "name": "pref_verbose_logging",
+      "value": "Részletes naplózás"
+    },
+    {
+      "name": "pref_verbose_logging_summary",
+      "value": "Hibakeresési részletek a rendszernaplókban"
+    },
+    {
+      "name": "pref_debug_info",
+      "value": "Hibakeresési adatok"
+    },
+    {
+      "name": "pref_action_failed",
+      "value": "A művelet sikertelen"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Adatok"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "Hálózat"
+    },
+    {
+      "name": "pref_group_library",
+      "value": "Könyvtár"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "Olvasó"
+    },
+    {
+      "name": "pref_clear_database",
+      "value": "Adatbázis törlése"
+    },
+    {
+      "name": "pref_clear_database_confirm",
+      "value": "Eltávolítja a könyvtárban nem szereplő összes elemet? Ezek olvasási előzményei és előrehaladása elvész."
+    },
+    {
+      "name": "pref_database_cleared",
+      "value": "%d elem eltávolítva"
+    },
+    {
+      "name": "pref_clear_webview_data",
+      "value": "Beágyazott webes adatok törlése"
+    },
+    {
+      "name": "pref_webview_data_deleted",
+      "value": "Beágyazott webes adatok törölve"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS HTTPS-en keresztül"
+    },
+    {
+      "name": "pref_doh_disabled",
+      "value": "Kikapcsolva"
+    },
+    {
+      "name": "pref_user_agent_string",
+      "value": "Egyéni User-Agent"
+    },
+    {
+      "name": "pref_user_agent_hint",
+      "value": "Hagyja üresen az alapértelmezetthez"
+    },
+    {
+      "name": "pref_user_agent_saved",
+      "value": "User-Agent mentve"
+    },
+    {
+      "name": "pref_reset_user_agent",
+      "value": "User-Agent visszaállítása"
+    },
+    {
+      "name": "pref_refresh_library_covers",
+      "value": "Könyvtári borítók frissítése"
+    },
+    {
+      "name": "pref_covers_refresh_started",
+      "value": "Borítók frissítése…"
+    },
+    {
+      "name": "pref_covers_refreshed",
+      "value": "%d elem frissítve"
+    },
+    {
+      "name": "pref_reset_viewer_flags",
+      "value": "Sorozatonkénti olvasóbeállítások visszaállítása"
+    },
+    {
+      "name": "pref_reset_viewer_flags_summary",
+      "value": "Visszaállítja a sorozatonként megadott olvasási módokat a globális alapértelmezettre?"
+    },
+    {
+      "name": "pref_viewer_flags_reset",
+      "value": "%d elem visszaállítva"
+    },
+    {
+      "name": "pref_high_quality_renderer",
+      "value": "Kiváló minőségű megjelenítés"
+    },
+    {
+      "name": "pref_high_quality_renderer_summary",
+      "value": "Simább képméretezés a teljesítmény rovására"
+    },
+    {
+      "name": "debug_app_version",
+      "value": "Alkalmazásverzió"
+    },
+    {
+      "name": "debug_device_model",
+      "value": "Eszközmodell"
+    },
+    {
+      "name": "debug_device_type",
+      "value": "Eszköztípus"
+    },
+    {
+      "name": "debug_system_version",
+      "value": "Rendszerverzió"
+    },
+    {
+      "name": "debug_api_version",
+      "value": "API-verzió"
+    },
+    {
+      "name": "debug_screen",
+      "value": "Képernyő"
+    },
+    {
+      "name": "debug_language",
+      "value": "Nyelv"
     }
   ]
 }
