@@ -453,6 +453,34 @@
       "value": "다운로드"
     },
     {
+      "name": "download_tab_queue",
+      "value": "다운로드 중"
+    },
+    {
+      "name": "download_tab_downloaded",
+      "value": "다운로드됨"
+    },
+    {
+      "name": "download_move_top_series",
+      "value": "이 시리즈를 맨 위로 이동"
+    },
+    {
+      "name": "download_move_bottom_series",
+      "value": "이 시리즈를 맨 아래로 이동"
+    },
+    {
+      "name": "download_cancel_series",
+      "value": "이 만화의 항목을 모두 취소"
+    },
+    {
+      "name": "download_sort_newest",
+      "value": "최신 순"
+    },
+    {
+      "name": "download_sort_oldest",
+      "value": "오래된 순"
+    },
+    {
       "name": "download_resume",
       "value": "재개"
     },

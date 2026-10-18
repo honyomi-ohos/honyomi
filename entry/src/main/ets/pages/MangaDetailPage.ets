@@ -1515,6 +1515,8 @@ export struct MangaDetailPage {
     task.mangaTitle = this.manga.title;
     task.chapterId = chapter.id;
     task.chapterName = chapter.name;
+    task.chapterNumber = chapter.chapterNumber;
+    task.dateUpload = chapter.dateUpload;
     task.sourceKey = this.manga.sourceKey;
     task.mangaUrl = this.manga.url;
     task.chapterUrl = chapter.url;

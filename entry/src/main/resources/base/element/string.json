@@ -1162,7 +1162,7 @@
     },
     {
       "name": "more_downloads",
-      "value": "Download queue"
+      "value": "Downloads"
     },
     {
       "name": "more_categories",
@@ -1383,6 +1383,34 @@
     {
       "name": "download_title",
       "value": "Downloads"
+    },
+    {
+      "name": "download_tab_queue",
+      "value": "Downloading"
+    },
+    {
+      "name": "download_tab_downloaded",
+      "value": "Downloaded"
+    },
+    {
+      "name": "download_move_top_series",
+      "value": "Move series to top"
+    },
+    {
+      "name": "download_move_bottom_series",
+      "value": "Move series to bottom"
+    },
+    {
+      "name": "download_cancel_series",
+      "value": "Cancel all for this series"
+    },
+    {
+      "name": "download_sort_newest",
+      "value": "Newest"
+    },
+    {
+      "name": "download_sort_oldest",
+      "value": "Oldest"
     },
     {
       "name": "download_resume",
@@ -1767,6 +1795,74 @@
     {
       "name": "plugin_repo_load_failed",
       "value": "Failed to load repository: %s"
+    },
+    {
+      "name": "ext_stores_title",
+      "value": "Extension repositories"
+    },
+    {
+      "name": "ext_stores_empty",
+      "value": "No extension repositories yet. Tap + to add one."
+    },
+    {
+      "name": "ext_stores_add_title",
+      "value": "Add repository"
+    },
+    {
+      "name": "ext_stores_url_label",
+      "value": "Repository index URL"
+    },
+    {
+      "name": "ext_stores_url_hint",
+      "value": "https://example.com/index.json"
+    },
+    {
+      "name": "ext_stores_url_invalid",
+      "value": "Enter a valid http(s) URL"
+    },
+    {
+      "name": "ext_stores_already_exists",
+      "value": "This repository is already added"
+    },
+    {
+      "name": "ext_stores_processing",
+      "value": "Adding…"
+    },
+    {
+      "name": "ext_stores_added",
+      "value": "Repository added"
+    },
+    {
+      "name": "ext_stores_add_failed",
+      "value": "Failed to add repository: %s"
+    },
+    {
+      "name": "ext_stores_delete_title",
+      "value": "Delete repository"
+    },
+    {
+      "name": "ext_stores_delete_body",
+      "value": "Delete repository %s?\n%s\n\nInstalled extensions will be kept."
+    },
+    {
+      "name": "ext_stores_deleted",
+      "value": "Repository deleted"
+    },
+    {
+      "name": "ext_stores_copied",
+      "value": "Copied to clipboard"
+    },
+    {
+      "name": "ext_stores_refreshing",
+      "value": "Refreshing…"
+    },
+    {
+      "name": "ext_stores_refreshed",
+      "value": "Repositories refreshed"
+    },
+    {
+      "name": "ext_stores_refresh_failed",
+      "value": "Failed to refresh: %s"
     },
     {
       "name": "plugin_pick_file_failed",

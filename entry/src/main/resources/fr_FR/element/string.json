@@ -441,6 +441,34 @@
       "value": "Téléchargements"
     },
     {
+      "name": "download_tab_queue",
+      "value": "En cours de téléchargement"
+    },
+    {
+      "name": "download_tab_downloaded",
+      "value": "Téléchargé"
+    },
+    {
+      "name": "download_move_top_series",
+      "value": "Déplacer la série vers le haut"
+    },
+    {
+      "name": "download_move_bottom_series",
+      "value": "Déplacer la série vers le bas"
+    },
+    {
+      "name": "download_cancel_series",
+      "value": "Tout annuler pour cette série"
+    },
+    {
+      "name": "download_sort_newest",
+      "value": "Plus récent"
+    },
+    {
+      "name": "download_sort_oldest",
+      "value": "Plus ancien"
+    },
+    {
       "name": "download_resume",
       "value": "Reprendre"
     },

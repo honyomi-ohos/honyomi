@@ -461,6 +461,34 @@
       "value": "التنزيلات"
     },
     {
+      "name": "download_tab_queue",
+      "value": "قيد التنزيل"
+    },
+    {
+      "name": "download_tab_downloaded",
+      "value": "تم التنزيل"
+    },
+    {
+      "name": "download_move_top_series",
+      "value": "نقل السلسلة للأعلى"
+    },
+    {
+      "name": "download_move_bottom_series",
+      "value": "انقل السلسلة للأسفل"
+    },
+    {
+      "name": "download_cancel_series",
+      "value": "إلغاء الكل لهذه السلسلة"
+    },
+    {
+      "name": "download_sort_newest",
+      "value": "الأَحدثْ"
+    },
+    {
+      "name": "download_sort_oldest",
+      "value": "الأقدم"
+    },
+    {
       "name": "download_resume",
       "value": "استئناف"
     },

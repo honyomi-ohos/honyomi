@@ -445,6 +445,34 @@
       "value": "Mga download"
     },
     {
+      "name": "download_tab_queue",
+      "value": "Nagda-download"
+    },
+    {
+      "name": "download_tab_downloaded",
+      "value": "Nai-download"
+    },
+    {
+      "name": "download_move_top_series",
+      "value": "Ilagay sa taas ang serye"
+    },
+    {
+      "name": "download_move_bottom_series",
+      "value": "Ilagay sa ibaba ang serye"
+    },
+    {
+      "name": "download_cancel_series",
+      "value": "Kanselahin lahat para sa seryeng ito"
+    },
+    {
+      "name": "download_sort_newest",
+      "value": "Pinakabago"
+    },
+    {
+      "name": "download_sort_oldest",
+      "value": "Pinakaluma"
+    },
+    {
       "name": "download_resume",
       "value": "Ituloy"
     },

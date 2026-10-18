@@ -453,6 +453,34 @@
       "value": "İndirmeler"
     },
     {
+      "name": "download_tab_queue",
+      "value": "İndiriliyor"
+    },
+    {
+      "name": "download_tab_downloaded",
+      "value": "İndirildi"
+    },
+    {
+      "name": "download_move_top_series",
+      "value": "Seriyi en üste taşı"
+    },
+    {
+      "name": "download_move_bottom_series",
+      "value": "Seriyi en alta taşı"
+    },
+    {
+      "name": "download_cancel_series",
+      "value": "Bu seri için tümünü iptal et"
+    },
+    {
+      "name": "download_sort_newest",
+      "value": "En yeni"
+    },
+    {
+      "name": "download_sort_oldest",
+      "value": "En eski"
+    },
+    {
       "name": "download_resume",
       "value": "Sürdür"
     },

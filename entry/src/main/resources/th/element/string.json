@@ -429,6 +429,34 @@
       "value": "การดาวน์โหลด"
     },
     {
+      "name": "download_tab_queue",
+      "value": "กำลังดาวน์โหลด"
+    },
+    {
+      "name": "download_tab_downloaded",
+      "value": "ดาวน์โหลดแล้ว"
+    },
+    {
+      "name": "download_move_top_series",
+      "value": "ย้ายเรื่องไปด้านบน"
+    },
+    {
+      "name": "download_move_bottom_series",
+      "value": "ย้ายเรื่องไปด้านล่าง"
+    },
+    {
+      "name": "download_cancel_series",
+      "value": "ยกเลิกทั้งหมดสำหรับเรื่องนี้"
+    },
+    {
+      "name": "download_sort_newest",
+      "value": "ล่าสุด"
+    },
+    {
+      "name": "download_sort_oldest",
+      "value": "เก่าสุด"
+    },
+    {
       "name": "download_resume",
       "value": "ทำต่อ"
     },

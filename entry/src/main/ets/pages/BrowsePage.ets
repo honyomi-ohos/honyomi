@@ -10,7 +10,6 @@ import { AppKeys } from '../common/AppKeys';
 import { Settings } from '../common/Settings';
 import { EmptyScreen } from './components/EmptyScreen';
 import { ExtensionListPanel } from './components/ExtensionListPanel';
-import { InputDialog } from './components/Dialogs';
 import { AppIcon } from './components/AppIcon';
 import { TypeBadgedIcon } from './components/TypeBadgedIcon';
 import { NsfwTag } from './components/NsfwTag';
@@ -383,7 +382,7 @@ export struct BrowsePage {
         })
       MenuItem({ content: $r('app.string.ext_repo_settings') })
         .onClick(() => {
-          this.showRepoUrlDialog();
+          this.pathStack.pushPathByName('ExtensionStores', null);
         })
       MenuItem({ content: $r('app.string.ext_refresh_repo') })
         .onClick(() => {
@@ -887,24 +886,6 @@ export struct BrowsePage {
   private openBrowseSource(s: Source, mode: string): void {
     const params: BrowseSourceParams = { sourceKey: s.key, mode: mode };
     this.pathStack.pushPathByName('BrowseSource', params);
-  }
-
-  private showRepoUrlDialog(): void {
-    const dialog = new CustomDialogController({
-      builder: InputDialog({
-        title: $r('app.string.plugin_repo_url_title'),
-        placeholder: $r('app.string.plugin_repo_url_hint'),
-        onConfirm: (text: string): void => {
-          Settings.setPluginRepoUrl(text.trim());
-          AppStorage.setOrCreate(AppKeys.EXT_REPO_REFRESH, (AppStorage.get<number>(AppKeys.EXT_REPO_REFRESH) ?? 0) + 1);
-        },
-        onClose: (): void => {
-          dialog.close();
-        },
-      }),
-      autoCancel: true,
-    });
-    dialog.open();
   }
 
   private refreshRepo(): void {

@@ -453,6 +453,34 @@
       "value": "Загрузки"
     },
     {
+      "name": "download_tab_queue",
+      "value": "Скачивается"
+    },
+    {
+      "name": "download_tab_downloaded",
+      "value": "Скачано"
+    },
+    {
+      "name": "download_move_top_series",
+      "value": "Переместить серию в начало"
+    },
+    {
+      "name": "download_move_bottom_series",
+      "value": "Переместить серию в конец"
+    },
+    {
+      "name": "download_cancel_series",
+      "value": "Отменить всё для этой серии"
+    },
+    {
+      "name": "download_sort_newest",
+      "value": "Новейший"
+    },
+    {
+      "name": "download_sort_oldest",
+      "value": "Старейший"
+    },
+    {
       "name": "download_resume",
       "value": "Продолжить"
     },

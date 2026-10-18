@@ -441,6 +441,34 @@
       "value": "Unduhan"
     },
     {
+      "name": "download_tab_queue",
+      "value": "Mengunduh"
+    },
+    {
+      "name": "download_tab_downloaded",
+      "value": "Terunduh"
+    },
+    {
+      "name": "download_move_top_series",
+      "value": "Pindahkan seri ke atas"
+    },
+    {
+      "name": "download_move_bottom_series",
+      "value": "Pindahkan seri ke bawah"
+    },
+    {
+      "name": "download_cancel_series",
+      "value": "Batal semua untuk seri ini"
+    },
+    {
+      "name": "download_sort_newest",
+      "value": "Terbaru"
+    },
+    {
+      "name": "download_sort_oldest",
+      "value": "Terlama"
+    },
+    {
       "name": "download_resume",
       "value": "Lanjutkan"
     },

@@ -88,7 +88,15 @@ interface RawRepoEntry {
 }
 
 interface RawRepoIndex {
+  name?: string;
   plugins?: RawRepoEntry[];
+}
+
+// 插件仓库信息（仓库管理页展示：地址 + 展示名 + 插件数）
+export interface RepoStoreInfo {
+  url: string;
+  name: string;
+  count: number;
 }
 
 // manifest.json settings 数组元素（插件静态设置声明：type/key/title/summary/
@@ -375,7 +383,11 @@ export class PluginService {
 
   static async fetchRepo(url: string): Promise<RepoEntry[]> {
     const text = await Http.get(url, undefined);
-    const raw = JSON.parse(text) as RawRepoIndex;
+    return PluginService.parseRepoIndex(url, JSON.parse(text) as RawRepoIndex);
+  }
+
+  // 仓库索引 JSON → 条目列表（fetchRepo / fetchStoreInfo 共用解析）
+  private static parseRepoIndex(url: string, raw: RawRepoIndex): RepoEntry[] {
     const entries: RepoEntry[] = [];
     const list = raw.plugins;
     if (Array.isArray(list)) {
@@ -410,6 +422,49 @@ export class PluginService {
   // 所有插件一律 jsvm 引擎：main.js 前固定拼接共享运行时（rawfile plugin_runtime_jsvm.js）
   static composeScript(mainJs: string): string {
     return `${PluginService.getRuntime('jsvm')}\n;\n${mainJs}`;
+  }
+
+  // 仓库索引信息（添加仓库时校验 + 管理页展示）：
+  // 拉取索引并要求 plugins 数组可解析；展示名取索引声明 name，缺省回退地址主机名
+  static async fetchStoreInfo(url: string): Promise<RepoStoreInfo> {
+    if (url.startsWith('http://') && !PluginService.isDebugBuild()) {
+      throw new Error('plugin_repo_not_https');
+    }
+    const text = await Http.get(url, undefined);
+    const raw = JSON.parse(text) as RawRepoIndex;
+    if (raw === null || raw === undefined || !Array.isArray(raw.plugins)) {
+      throw new Error('plugin_repo_bad_index');
+    }
+    const entries = PluginService.parseRepoIndex(url, raw);
+    let name = typeof raw.name === 'string' ? raw.name : '';
+    if (name === '') {
+      const m = new RegExp('^https?://([^/?#]+)').exec(url);
+      name = m !== null ? m[1] : url;
+    }
+    const info: RepoStoreInfo = {
+      url: url,
+      name: name,
+      count: entries.length,
+    };
+    return info;
+  }
+
+  // 多仓库条目合并（插件商店支持多仓库）：同 key 插件保留 versionCode 更高的条目
+  static mergeRepoEntries(lists: RepoEntry[][]): RepoEntry[] {
+    const byKey = new Map<string, RepoEntry>();
+    for (const list of lists) {
+      for (const entry of list) {
+        const existing = byKey.get(entry.key);
+        if (existing === undefined || entry.versionCode > existing.versionCode) {
+          byKey.set(entry.key, entry);
+        }
+      }
+    }
+    const merged: RepoEntry[] = [];
+    for (const entry of byKey.values()) {
+      merged.push(entry);
+    }
+    return merged;
   }
 
   // 清理上次崩溃/失败安装遗留的 staging/备份目录（.staging_*/.old_*，含 manifest.json 会被误识别为插件）

@@ -56,6 +56,11 @@
       "pageSourceFile": "src/main/ets/pages/ExtensionDetailPage.ets"
     },
     {
+      "buildFunction": "ExtensionStoresBuilder",
+      "name": "ExtensionStores",
+      "pageSourceFile": "src/main/ets/pages/ExtensionStoresPage.ets"
+    },
+    {
       "buildFunction": "CategoriesBuilder",
       "name": "Categories",
       "pageSourceFile": "src/main/ets/pages/CategoriesPage.ets"

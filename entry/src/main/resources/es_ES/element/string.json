@@ -449,6 +449,34 @@
       "value": "Descargas"
     },
     {
+      "name": "download_tab_queue",
+      "value": "Descargando"
+    },
+    {
+      "name": "download_tab_downloaded",
+      "value": "Descargado"
+    },
+    {
+      "name": "download_move_top_series",
+      "value": "Mover al primer puesto"
+    },
+    {
+      "name": "download_move_bottom_series",
+      "value": "Mover al último puesto"
+    },
+    {
+      "name": "download_cancel_series",
+      "value": "Cancelar todo para esta serie"
+    },
+    {
+      "name": "download_sort_newest",
+      "value": "Lo más nuevo"
+    },
+    {
+      "name": "download_sort_oldest",
+      "value": "Lo más antiguo"
+    },
+    {
       "name": "download_resume",
       "value": "Reanudar"
     },

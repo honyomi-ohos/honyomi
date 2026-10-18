@@ -445,6 +445,34 @@
       "value": "Muat turun"
     },
     {
+      "name": "download_tab_queue",
+      "value": "Memuat turun"
+    },
+    {
+      "name": "download_tab_downloaded",
+      "value": "Dimuat turun"
+    },
+    {
+      "name": "download_move_top_series",
+      "value": "Alih siri ke atas"
+    },
+    {
+      "name": "download_move_bottom_series",
+      "value": "Gerak siri ke bawah"
+    },
+    {
+      "name": "download_cancel_series",
+      "value": "Batalkan semua untuk siri ini"
+    },
+    {
+      "name": "download_sort_newest",
+      "value": "Terbaru"
+    },
+    {
+      "name": "download_sort_oldest",
+      "value": "Terlama"
+    },
+    {
       "name": "download_resume",
       "value": "Sambung"
     },

@@ -437,6 +437,34 @@
       "value": "Завантаження"
     },
     {
+      "name": "download_tab_queue",
+      "value": "Завантаження"
+    },
+    {
+      "name": "download_tab_downloaded",
+      "value": "Завантажено"
+    },
+    {
+      "name": "download_move_top_series",
+      "value": "Перемістити серію на початок"
+    },
+    {
+      "name": "download_move_bottom_series",
+      "value": "Перемістити серію вниз"
+    },
+    {
+      "name": "download_cancel_series",
+      "value": "Скасувати для усієї серії"
+    },
+    {
+      "name": "download_sort_newest",
+      "value": "Найновіші"
+    },
+    {
+      "name": "download_sort_oldest",
+      "value": "Найстаріші"
+    },
+    {
       "name": "download_resume",
       "value": "Продовжити"
     },

@@ -9,6 +9,12 @@ import { AppKeys } from './AppKeys';
 const DOMAIN = 0x0000;
 const TAG = 'Settings';
 
+// 插件仓库记录（多仓库管理，对齐 Mihon ExtensionStore：地址 + 展示名）
+export interface PluginStoreRecord {
+  url: string;
+  name: string;
+}
+
 // 轻量设置存储（阅读/主题/书架/阅读器/浏览/全局开关等）
 export class Settings {
   private static store: preferences.Preferences | undefined = undefined;
@@ -264,6 +270,80 @@ export class Settings {
 
   static setPluginRepoUrl(url: string): void {
     Settings.setStr('pluginRepoUrl', url);
+  }
+
+  // ---- 插件仓库（多仓库管理）----
+
+  // 多仓库列表（JSON 数组 [{url, name}]）；
+  static getPluginStores(): PluginStoreRecord[] {
+    const raw = Settings.getStr('pluginStores', '');
+    if (raw !== '') {
+      try {
+        const parsed = JSON.parse(raw) as PluginStoreRecord[];
+        if (Array.isArray(parsed)) {
+          const out: PluginStoreRecord[] = [];
+          for (const item of parsed) {
+            if (item !== undefined && item !== null && typeof item.url === 'string' && item.url !== '') {
+              out.push({
+                url: item.url,
+                name: typeof item.name === 'string' && item.name !== '' ? item.name : Settings.urlHostOf(item.url),
+              });
+            }
+          }
+          return out;
+        }
+      } catch (_e) {
+      }
+    }
+    // 旧版单仓库地址迁移：并入多仓库列表（展示名暂取主机名）
+    const legacy = Settings.getPluginRepoUrl();
+    if (legacy !== '') {
+      const list: PluginStoreRecord[] = [{ url: legacy, name: Settings.urlHostOf(legacy) }];
+      Settings.setPluginStores(list);
+      return list;
+    }
+    return [];
+  }
+
+  static setPluginStores(list: PluginStoreRecord[]): void {
+    Settings.setStr('pluginStores', JSON.stringify(list));
+  }
+
+  static hasPluginStore(url: string): boolean {
+    for (const s of Settings.getPluginStores()) {
+      if (s.url === url) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  static addPluginStore(record: PluginStoreRecord): void {
+    const list = Settings.getPluginStores();
+    for (const s of list) {
+      if (s.url === record.url) {
+        return;
+      }
+    }
+    list.push(record);
+    Settings.setPluginStores(list);
+  }
+
+  static removePluginStore(url: string): void {
+    const list = Settings.getPluginStores();
+    const next: PluginStoreRecord[] = [];
+    for (const s of list) {
+      if (s.url !== url) {
+        next.push(s);
+      }
+    }
+    Settings.setPluginStores(next);
+  }
+
+  // 仓库地址主机名（仓库展示名兜底；非 http(s) 返回原串）
+  static urlHostOf(url: string): string {
+    const m = new RegExp('^https?://([^/?#]+)').exec(url);
+    return m !== null ? m[1] : url;
   }
 
   // 自动备份频率（小时，0=关闭）

@@ -421,6 +421,34 @@
       "value": "Pobrane"
     },
     {
+      "name": "download_tab_queue",
+      "value": "Pobieranie"
+    },
+    {
+      "name": "download_tab_downloaded",
+      "value": "Pobrano"
+    },
+    {
+      "name": "download_move_top_series",
+      "value": "Przenieś serię na górę"
+    },
+    {
+      "name": "download_move_bottom_series",
+      "value": "Przenieś serię na dół"
+    },
+    {
+      "name": "download_cancel_series",
+      "value": "Anuluj wszystko dla tego tytułu"
+    },
+    {
+      "name": "download_sort_newest",
+      "value": "Najnowsze"
+    },
+    {
+      "name": "download_sort_oldest",
+      "value": "Najstarsze"
+    },
+    {
       "name": "download_resume",
       "value": "Wznów"
     },

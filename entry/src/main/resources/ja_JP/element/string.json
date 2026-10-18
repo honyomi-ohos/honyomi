@@ -449,6 +449,34 @@
       "value": "ダウンロード"
     },
     {
+      "name": "download_tab_queue",
+      "value": "ダウンロード中"
+    },
+    {
+      "name": "download_tab_downloaded",
+      "value": "ダウンロード済み"
+    },
+    {
+      "name": "download_move_top_series",
+      "value": "シリーズをトップに移動"
+    },
+    {
+      "name": "download_move_bottom_series",
+      "value": "シリーズを底に移動"
+    },
+    {
+      "name": "download_cancel_series",
+      "value": "このシリーズのすべてをキャンセル"
+    },
+    {
+      "name": "download_sort_newest",
+      "value": "最新"
+    },
+    {
+      "name": "download_sort_oldest",
+      "value": "最古"
+    },
+    {
       "name": "download_resume",
       "value": "再開"
     },

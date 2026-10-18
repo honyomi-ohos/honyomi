@@ -292,6 +292,9 @@ export class DownloadTask {
   mangaTitle: string = '';
   chapterId: number = 0;
   chapterName: string = '';
+  // 章节号/上传时间：下载管理页排序（对齐 Mihon chapterNumber/dateUpload 排序键）
+  chapterNumber: number = 0;
+  dateUpload: number = 0;
   sourceKey: string = '';
   mangaUrl: string = '';
   chapterUrl: string = '';

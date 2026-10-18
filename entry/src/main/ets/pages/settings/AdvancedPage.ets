@@ -194,6 +194,9 @@ export struct AdvancedContent {
         onConfirm: (): void => {
           this.doClearDatabase();
         },
+        onClose: (): void => {
+          dialog.close();
+        },
       }),
       autoCancel: true,
     });
@@ -279,6 +282,9 @@ export struct AdvancedContent {
           Http.syncUserAgent();
           Util.toastRes(this.getUIContext(), $r('app.string.pref_user_agent_saved'));
         },
+        onClose: (): void => {
+          dialog.close();
+        },
       }),
       autoCancel: true,
     });
@@ -347,6 +353,9 @@ export struct AdvancedContent {
         onConfirm: (): void => {
           const count = Settings.resetViewerFlags();
           Util.toastRes(this.getUIContext(), $r('app.string.pref_viewer_flags_reset'), [count]);
+        },
+        onClose: (): void => {
+          dialog.close();
         },
       }),
       autoCancel: true,

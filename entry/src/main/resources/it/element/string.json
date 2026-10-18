@@ -433,6 +433,34 @@
       "value": "Download"
     },
     {
+      "name": "download_tab_queue",
+      "value": "In download"
+    },
+    {
+      "name": "download_tab_downloaded",
+      "value": "Scaricato"
+    },
+    {
+      "name": "download_move_top_series",
+      "value": "Sposta la serie in cima"
+    },
+    {
+      "name": "download_move_bottom_series",
+      "value": "Spostare la serie in fondo"
+    },
+    {
+      "name": "download_cancel_series",
+      "value": "Annulla tutti per questa serie"
+    },
+    {
+      "name": "download_sort_newest",
+      "value": "Più recenti"
+    },
+    {
+      "name": "download_sort_oldest",
+      "value": "Più vecchi"
+    },
+    {
       "name": "download_resume",
       "value": "Riprendi"
     },

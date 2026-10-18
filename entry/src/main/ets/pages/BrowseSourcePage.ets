@@ -946,6 +946,9 @@ export struct BrowseSourcePage {
             Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
           });
         },
+        onClose: (): void => {
+          dialog.close();
+        },
       }),
       autoCancel: true,
     });

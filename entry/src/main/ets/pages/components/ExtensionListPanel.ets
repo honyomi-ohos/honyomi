@@ -61,7 +61,8 @@ export struct ExtensionListPanel {
   @State shownInstalled: InstalledPlugin[] = [];
   // 在线可用插件按语言分组
   @State availableGroups: LangGroup[] = [];
-  @State repoUrl: string = '';
+  // 多仓库地址列表（对齐 Mihon 多 ExtensionStore 聚合）
+  @State repoUrls: string[] = [];
   // 下拉刷新 spinner 状态（Refresh 双向绑定）
   @State loadingRepo: boolean = false;
   @State busy: boolean = false;
@@ -81,8 +82,8 @@ export struct ExtensionListPanel {
 
   aboutToAppear(): void {
     this.refreshInstalled();
-    this.repoUrl = Settings.getPluginRepoUrl();
-    if (this.repoUrl !== '') {
+    this.repoUrls = this.loadStoreUrls();
+    if (this.repoUrls.length > 0) {
       this.refreshRepo();
     }
   }
@@ -323,7 +324,7 @@ export struct ExtensionListPanel {
             }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}`)
           }
 
-          if (this.repoUrl === '') {
+          if (this.repoUrls.length === 0) {
             // 未配置仓库：提示 + 已安装为空时给空态
             this.sectionHeader($r('app.string.plugin_repo'), false)
             if (this.pendingUpdates.length === 0 && this.shownInstalled.length === 0) {
@@ -409,14 +410,23 @@ export struct ExtensionListPanel {
     })
   }
 
-  // 宿主改仓库地址或手动刷新后触发
+  // 宿主改仓库列表（增删/刷新）后触发
   private onRepoRefresh(): void {
-    this.repoUrl = Settings.getPluginRepoUrl();
+    this.repoUrls = this.loadStoreUrls();
     this.repoEntries = [];
     this.recomputeLists();
-    if (this.repoUrl !== '') {
+    if (this.repoUrls.length > 0) {
       this.refreshRepo();
     }
+  }
+
+  // 当前仓库地址列表（Settings 多仓库记录）
+  private loadStoreUrls(): string[] {
+    const urls: string[] = [];
+    for (const store of Settings.getPluginStores()) {
+      urls.push(store.url);
+    }
+    return urls;
   }
 
   // 宿主溢出菜单“从本地安装”触发
@@ -562,10 +572,13 @@ export struct ExtensionListPanel {
     return this.searchQuery.trim() !== '' || this.typeFilter.length > 0;
   }
 
+  // 多仓库聚合拉取（对齐 Mihon findAvailableExtensions 多 store 聚合）：
+  // 逐仓库拉取索引，合并去重（同 key 保留 versionCode 更高者）；单仓库失败不中断其余，
+  // 全部失败才报错（部分成功按成功处理）
   private async refreshRepo(): Promise<void> {
-    if (this.repoUrl === '' || this.repoFetching) {
-      // 未配置仓库时收起下拉 spinner
-      if (this.repoUrl === '') {
+    if (this.repoUrls.length === 0 || this.repoFetching) {
+      // 无仓库时收起下拉 spinner
+      if (this.repoUrls.length === 0) {
         this.loadingRepo = false;
       }
       return;
@@ -573,16 +586,25 @@ export struct ExtensionListPanel {
     this.repoFetching = true;
     this.loadingRepo = true;
     try {
-      const entries = await PluginService.fetchRepo(this.repoUrl);
-      if (!this.disposed) {
-        this.repoEntries = entries;
-        this.recomputeLists();
+      const lists: RepoEntry[][] = [];
+      let firstError = '';
+      for (const url of this.repoUrls) {
+        try {
+          lists.push(await PluginService.fetchRepo(url));
+        } catch (e) {
+          if (firstError === '') {
+            firstError = Util.errText(this.getUIContext(), (e as Error).message);
+          }
+        }
       }
-    } catch (e) {
-      if (!this.disposed) {
-        Util.toastRes(this.getUIContext(), $r('app.string.plugin_repo_load_failed'),
-          [Util.errText(this.getUIContext(), (e as Error).message)]);
+      if (this.disposed) {
+        return;
       }
+      if (lists.length === 0 && firstError !== '') {
+        Util.toastRes(this.getUIContext(), $r('app.string.plugin_repo_load_failed'), [firstError]);
+      }
+      this.repoEntries = PluginService.mergeRepoEntries(lists);
+      this.recomputeLists();
     } finally {
       if (!this.disposed) {
         this.loadingRepo = false;

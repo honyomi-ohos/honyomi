@@ -449,6 +449,34 @@
       "value": "Tải xuống"
     },
     {
+      "name": "download_tab_queue",
+      "value": "Đang tải"
+    },
+    {
+      "name": "download_tab_downloaded",
+      "value": "Đã tải"
+    },
+    {
+      "name": "download_move_top_series",
+      "value": "Di chuyển bộ truyện lên đầu"
+    },
+    {
+      "name": "download_move_bottom_series",
+      "value": "Di chuyển bộ truyện xuống cuối"
+    },
+    {
+      "name": "download_cancel_series",
+      "value": "Hủy bỏ tất cả cho phần truyền này"
+    },
+    {
+      "name": "download_sort_newest",
+      "value": "Mới nhất"
+    },
+    {
+      "name": "download_sort_oldest",
+      "value": "Cũ nhất"
+    },
+    {
       "name": "download_resume",
       "value": "Tiếp tục"
     },

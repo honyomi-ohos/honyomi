@@ -165,6 +165,8 @@ export class DownloadRules {
     task.mangaTitle = manga.title;
     task.chapterId = chapter.id;
     task.chapterName = chapter.name;
+    task.chapterNumber = chapter.chapterNumber;
+    task.dateUpload = chapter.dateUpload;
     task.sourceKey = manga.sourceKey;
     task.mangaUrl = manga.url;
     task.chapterUrl = chapter.url;

@@ -430,7 +430,7 @@
     },
     {
       "name": "more_downloads",
-      "value": "下載佇列"
+      "value": "下載管理"
     },
     {
       "name": "more_categories",
@@ -714,7 +714,35 @@
     },
     {
       "name": "download_title",
-      "value": "下載"
+      "value": "下載管理"
+    },
+    {
+      "name": "download_tab_queue",
+      "value": "下載中"
+    },
+    {
+      "name": "download_tab_downloaded",
+      "value": "已下載"
+    },
+    {
+      "name": "download_move_top_series",
+      "value": "置頂此作品"
+    },
+    {
+      "name": "download_move_bottom_series",
+      "value": "置底此作品"
+    },
+    {
+      "name": "download_cancel_series",
+      "value": "取消此作品"
+    },
+    {
+      "name": "download_sort_newest",
+      "value": "由新到舊"
+    },
+    {
+      "name": "download_sort_oldest",
+      "value": "由舊到新"
     },
     {
       "name": "download_resume",

@@ -351,13 +351,17 @@ export struct NovelReaderPage {
       .layoutWeight(1)
       .height('100%')
     } else {
-      Text(this.pageTexts(pIdx).join('\n'))
-        .fontSize(this.fontSize)
-        .lineHeight(this.lineHeight)
-        .fontFamily(this.fontFamilyVal())
-        .fontColor(this.readerTextCol())
-        .layoutWeight(1)
-        .height('100%')
+      // 外层满高 Column 顶端对齐：末页文字不足一屏时靠上显示，避免 Text 满高时段落垂直居中
+      Column() {
+        Text(this.pageTexts(pIdx).join('\n'))
+          .fontSize(this.fontSize)
+          .lineHeight(this.lineHeight)
+          .fontFamily(this.fontFamilyVal())
+          .fontColor(this.readerTextCol())
+          .width('100%')
+      }
+      .width('100%')
+      .height('100%')
     }
   }
 

@@ -430,7 +430,7 @@
     },
     {
       "name": "more_downloads",
-      "value": "下载队列"
+      "value": "下载管理"
     },
     {
       "name": "more_categories",
@@ -782,7 +782,35 @@
     },
     {
       "name": "download_title",
-      "value": "下载"
+      "value": "下载管理"
+    },
+    {
+      "name": "download_tab_queue",
+      "value": "下载中"
+    },
+    {
+      "name": "download_tab_downloaded",
+      "value": "已下载"
+    },
+    {
+      "name": "download_move_top_series",
+      "value": "将作品移到顶部"
+    },
+    {
+      "name": "download_move_bottom_series",
+      "value": "将作品移到底部"
+    },
+    {
+      "name": "download_cancel_series",
+      "value": "取消此作品"
+    },
+    {
+      "name": "download_sort_newest",
+      "value": "从新到旧"
+    },
+    {
+      "name": "download_sort_oldest",
+      "value": "从旧到新"
     },
     {
       "name": "download_resume",
@@ -1247,6 +1275,74 @@
     {
       "name": "plugin_repo_load_failed",
       "value": "仓库加载失败：%s"
+    },
+    {
+      "name": "ext_stores_title",
+      "value": "插件仓库"
+    },
+    {
+      "name": "ext_stores_empty",
+      "value": "暂无插件仓库，点击 + 添加"
+    },
+    {
+      "name": "ext_stores_add_title",
+      "value": "添加仓库"
+    },
+    {
+      "name": "ext_stores_url_label",
+      "value": "仓库索引地址"
+    },
+    {
+      "name": "ext_stores_url_hint",
+      "value": "https://example.com/index.json"
+    },
+    {
+      "name": "ext_stores_url_invalid",
+      "value": "请输入有效的 http(s) 地址"
+    },
+    {
+      "name": "ext_stores_already_exists",
+      "value": "该仓库已添加"
+    },
+    {
+      "name": "ext_stores_processing",
+      "value": "添加中…"
+    },
+    {
+      "name": "ext_stores_added",
+      "value": "仓库已添加"
+    },
+    {
+      "name": "ext_stores_add_failed",
+      "value": "添加仓库失败：%s"
+    },
+    {
+      "name": "ext_stores_delete_title",
+      "value": "删除仓库"
+    },
+    {
+      "name": "ext_stores_delete_body",
+      "value": "删除仓库 %s？\n%s\n\n已安装的插件将保留。"
+    },
+    {
+      "name": "ext_stores_deleted",
+      "value": "仓库已删除"
+    },
+    {
+      "name": "ext_stores_copied",
+      "value": "已复制到剪贴板"
+    },
+    {
+      "name": "ext_stores_refreshing",
+      "value": "刷新中…"
+    },
+    {
+      "name": "ext_stores_refreshed",
+      "value": "仓库已刷新"
+    },
+    {
+      "name": "ext_stores_refresh_failed",
+      "value": "刷新失败：%s"
     },
     {
       "name": "plugin_pick_file_failed",

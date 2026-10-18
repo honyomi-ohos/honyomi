@@ -924,6 +924,8 @@ export struct LibraryPage {
           task.mangaTitle = manga.title;
           task.chapterId = ch.id;
           task.chapterName = ch.name;
+          task.chapterNumber = ch.chapterNumber;
+          task.dateUpload = ch.dateUpload;
           task.sourceKey = manga.sourceKey;
           task.mangaUrl = manga.url;
           task.chapterUrl = ch.url;

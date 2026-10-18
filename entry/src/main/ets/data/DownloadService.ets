@@ -25,6 +25,8 @@ class DownloadTaskRaw {
   mangaTitle: string = '';
   chapterId: number = 0;
   chapterName: string = '';
+  chapterNumber: number = 0;
+  dateUpload: number = 0;
   sourceKey: string = '';
   mangaUrl: string = '';
   chapterUrl: string = '';
@@ -208,13 +210,40 @@ export class DownloadService {
     DownloadService.notify();
   }
 
-  // 按章节 id 升/降序重排整个队列（对齐 Mihon "Order by chapter number" 的近似实现）
+  // 按章节号升/降序重排队列（对齐 Mihon "Order by chapter number"）：
+  // 各作品分组内排序，分组间顺序保持不变
   static sortQueue(asc: boolean): void {
-    const sorted: DownloadTask[] = DownloadService.queue.slice()
-      .sort((a: DownloadTask, b: DownloadTask): number => {
-        return asc ? a.chapterId - b.chapterId : b.chapterId - a.chapterId;
+    const groups = DownloadService.groupsOf();
+    const next: DownloadTask[] = [];
+    groups.forEach((tasks: DownloadTask[]): void => {
+      const sorted = tasks.slice().sort((a: DownloadTask, b: DownloadTask): number => {
+        const ka = a.chapterNumber > 0 ? a.chapterNumber : a.chapterId;
+        const kb = b.chapterNumber > 0 ? b.chapterNumber : b.chapterId;
+        return asc ? ka - kb : kb - ka;
       });
-    DownloadService.queue = sorted;
+      for (const t of sorted) {
+        next.push(t);
+      }
+    });
+    DownloadService.queue = next;
+    DownloadService.persistQueue();
+    DownloadService.notify();
+  }
+
+  // 按上传日期重排队列（对齐 Mihon "Order by upload date" 的 Newest/Oldest）：
+  // 各作品分组内排序，分组间顺序保持不变
+  static sortQueueByDate(newest: boolean): void {
+    const groups = DownloadService.groupsOf();
+    const next: DownloadTask[] = [];
+    groups.forEach((tasks: DownloadTask[]): void => {
+      const sorted = tasks.slice().sort((a: DownloadTask, b: DownloadTask): number => {
+        return newest ? b.dateUpload - a.dateUpload : a.dateUpload - b.dateUpload;
+      });
+      for (const t of sorted) {
+        next.push(t);
+      }
+    });
+    DownloadService.queue = next;
     DownloadService.persistQueue();
     DownloadService.notify();
   }
@@ -259,16 +288,26 @@ export class DownloadService {
     return DownloadService.paused;
   }
 
-  // 置顶/移底：仅对排队中(state=0)的任务生效
+  // 置顶/移底：仅对排队中(state=0)的任务生效，且只在所属作品分组内移动
+  // （对齐 Mihon 行菜单的 move to top/bottom：分组间顺序不受影响）
   static moveToTop(chapterId: number): void {
     const task = DownloadService.queue.find((t: DownloadTask) => t.chapterId === chapterId && t.state === 0);
     if (task === undefined) {
       return;
     }
-    DownloadService.queue = DownloadService.queue.filter((t: DownloadTask) => t !== task);
-    DownloadService.queue.unshift(task);
-    DownloadService.persistQueue();
-    DownloadService.notify();
+    const groups = DownloadService.groupsOf();
+    const group: DownloadTask[] | undefined = groups.get(task.mangaId);
+    if (group === undefined) {
+      return;
+    }
+    const idx = group.indexOf(task);
+    if (idx > 0) {
+      group.splice(idx, 1);
+      group.unshift(task);
+      DownloadService.queue = DownloadService.flattenGroups(groups);
+      DownloadService.persistQueue();
+      DownloadService.notify();
+    }
   }
 
   static moveToBottom(chapterId: number): void {
@@ -276,8 +315,84 @@ export class DownloadService {
     if (task === undefined) {
       return;
     }
-    DownloadService.queue = DownloadService.queue.filter((t: DownloadTask) => t !== task);
-    DownloadService.queue.push(task);
+    const groups = DownloadService.groupsOf();
+    const group: DownloadTask[] | undefined = groups.get(task.mangaId);
+    if (group === undefined) {
+      return;
+    }
+    const idx = group.indexOf(task);
+    if (idx >= 0 && idx < group.length - 1) {
+      group.splice(idx, 1);
+      group.push(task);
+      DownloadService.queue = DownloadService.flattenGroups(groups);
+      DownloadService.persistQueue();
+      DownloadService.notify();
+    }
+  }
+
+  // 整部作品置顶/移底（对齐 Mihon move_to_top_series/move_to_bottom_series）
+  static moveSeriesToTop(mangaId: number): void {
+    const groups = DownloadService.groupsOf();
+    const group: DownloadTask[] | undefined = groups.get(mangaId);
+    if (group === undefined) {
+      return;
+    }
+    groups.delete(mangaId);
+    const next: DownloadTask[] = group.slice();
+    groups.forEach((tasks: DownloadTask[]): void => {
+      for (const t of tasks) {
+        next.push(t);
+      }
+    });
+    DownloadService.queue = next;
+    DownloadService.persistQueue();
+    DownloadService.notify();
+  }
+
+  static moveSeriesToBottom(mangaId: number): void {
+    const groups = DownloadService.groupsOf();
+    const group: DownloadTask[] | undefined = groups.get(mangaId);
+    if (group === undefined) {
+      return;
+    }
+    // 删除后重新插入：Map 按插入顺序迭代，目标分组落到末尾
+    groups.delete(mangaId);
+    groups.set(mangaId, group);
+    DownloadService.queue = DownloadService.flattenGroups(groups);
+    DownloadService.persistQueue();
+    DownloadService.notify();
+  }
+
+  // 取消整部作品的全部任务（对齐 Mihon cancel_series）
+  static cancelSeries(mangaId: number): void {
+    let hadActive = false;
+    for (const t of DownloadService.queue) {
+      if (t.mangaId !== mangaId) {
+        continue;
+      }
+      if (t.state === 1) {
+        hadActive = true;
+      }
+      if (t.state !== 3) {
+        t.state = 3;
+        t.error = 'download_cancelled';
+      }
+      const flags: DlFlags | undefined = DownloadService.activeFlags.get(t.chapterId);
+      if (flags !== undefined) {
+        flags.cancelled = true;
+      }
+    }
+    if (hadActive) {
+      DownloadService.activeAborts.forEach((abort: () => void, chapterId: number): void => {
+        const owns: boolean = DownloadService.queue.some((t: DownloadTask): boolean => {
+          return t.mangaId === mangaId && t.chapterId === chapterId;
+        });
+        if (owns) {
+          abort();
+        }
+      });
+    }
+    DownloadService.queue = DownloadService.queue.filter((t: DownloadTask) => t.mangaId !== mangaId);
     DownloadService.persistQueue();
     DownloadService.notify();
   }
@@ -553,6 +668,31 @@ export class DownloadService {
     for (const fn of snapshot) {
       fn();
     }
+  }
+
+  // 按作品分组（保持首次出现顺序，组内保持队列顺序）
+  private static groupsOf(): Map<number, DownloadTask[]> {
+    const groups = new Map<number, DownloadTask[]>();
+    for (const t of DownloadService.queue) {
+      let g: DownloadTask[] | undefined = groups.get(t.mangaId);
+      if (g === undefined) {
+        g = [];
+        groups.set(t.mangaId, g);
+      }
+      g.push(t);
+    }
+    return groups;
+  }
+
+  // 分组按插入顺序摊平回队列
+  private static flattenGroups(groups: Map<number, DownloadTask[]>): DownloadTask[] {
+    const next: DownloadTask[] = [];
+    groups.forEach((tasks: DownloadTask[]): void => {
+      for (const t of tasks) {
+        next.push(t);
+      }
+    });
+    return next;
   }
 
   // 泵送：同一源同时只跑一个任务，不同源最多 sourceLimit 个并行
@@ -1389,6 +1529,8 @@ export class DownloadService {
         r.mangaTitle = t.mangaTitle;
         r.chapterId = t.chapterId;
         r.chapterName = t.chapterName;
+        r.chapterNumber = t.chapterNumber;
+        r.dateUpload = t.dateUpload;
         r.sourceKey = t.sourceKey;
         r.mangaUrl = t.mangaUrl;
         r.chapterUrl = t.chapterUrl;
@@ -1458,6 +1600,8 @@ export class DownloadService {
         t.mangaTitle = typeof r.mangaTitle === 'string' ? r.mangaTitle : '';
         t.chapterId = r.chapterId;
         t.chapterName = typeof r.chapterName === 'string' ? r.chapterName : '';
+        t.chapterNumber = typeof r.chapterNumber === 'number' ? r.chapterNumber : 0;
+        t.dateUpload = typeof r.dateUpload === 'number' ? r.dateUpload : 0;
         t.sourceKey = r.sourceKey;
         t.mangaUrl = typeof r.mangaUrl === 'string' ? r.mangaUrl : '';
         t.chapterUrl = r.chapterUrl;

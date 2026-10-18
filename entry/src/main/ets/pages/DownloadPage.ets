@@ -6,9 +6,38 @@ import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
 import { AppIcon } from './components/AppIcon';
 
+// 队列分组模型（对齐 Mihon DownloadHeaderItem：按作品分组，组内为章节任务）
+class QueueGroup {
+  mangaId: number = 0;
+  mangaTitle: string = '';
+  tasks: DownloadTask[] = [];
+}
+
+// 队列渲染项：分组头/任务行混合摊平进单个 ForEach，支撑 onMove 组内拖拽排序
+class QueueRowItem {
+  isHeader: boolean = false;
+  group: QueueGroup = new QueueGroup();
+  task: DownloadTask = new DownloadTask();
+
+  key(): string {
+    return this.isHeader ? `h-${this.group.mangaId}` : `q-${this.task.chapterId}`;
+  }
+}
+
+// 已下载渲染项：分组头/章节行混合摊平（折叠时隐藏章节行）
+class DownloadedRowItem {
+  isHeader: boolean = false;
+  group: DownloadedManga = new DownloadedManga();
+  chapter: DownloadedChapter = new DownloadedChapter();
+
+  key(): string {
+    return this.isHeader ? `dh-${this.group.mangaId}` : `d-${this.chapter.chapterId}`;
+  }
+}
+
 // 队列行子组件：ForEach key 固定为章节 id 后同 key 行会被复用而不重跑生成器，
 // 进度/状态改由本组件自订阅 DownloadService 通知刷新（DownloadTask 非 @Observed）
-// 行布局对齐 Mihon download_item.xml：拖拽把手 | 漫画标题+页数文本 | 章节标题 | 细进度条 | 溢出菜单
+// 行布局对齐 Mihon download_item.xml：拖拽把手 | 章节标题+页数文本 | 细进度条 | 溢出菜单
 @Component
 struct QueueTaskRow {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
@@ -32,7 +61,8 @@ struct QueueTaskRow {
     DownloadService.removeListener(this.onQueueChanged);
   }
 
-  // 行溢出菜单（对齐 Mihon download_single.xml：置顶/移底/重试/取消）
+  // 行溢出菜单（对齐 Mihon download_single.xml：
+  // 置顶/置顶本作品/移底/移底本作品/取消/取消本作品，失败态附加重试）
   @Builder
   rowMenuBuilder() {
     Menu() {
@@ -41,9 +71,17 @@ struct QueueTaskRow {
           .onClick(() => {
             DownloadService.moveToTop(this.task.chapterId);
           })
+        MenuItem({ content: $r('app.string.download_move_top_series') })
+          .onClick(() => {
+            DownloadService.moveSeriesToTop(this.task.mangaId);
+          })
         MenuItem({ content: $r('app.string.download_move_bottom') })
           .onClick(() => {
             DownloadService.moveToBottom(this.task.chapterId);
+          })
+        MenuItem({ content: $r('app.string.download_move_bottom_series') })
+          .onClick(() => {
+            DownloadService.moveSeriesToBottom(this.task.mangaId);
           })
       } else if (this.state === 3) {
         MenuItem({ content: $r('app.string.common_retry') })
@@ -56,6 +94,11 @@ struct QueueTaskRow {
         .onClick(() => {
           DownloadService.cancel(this.task.chapterId);
         })
+      MenuItem({ content: $r('app.string.download_cancel_series') })
+        .contentFontColor(this.pal.badgeRed)
+        .onClick(() => {
+          DownloadService.cancelSeries(this.task.mangaId);
+        })
     }
   }
 
@@ -65,7 +108,8 @@ struct QueueTaskRow {
         .margin({ right: 8 })
       Column() {
         Row() {
-          Text(this.task.mangaTitle)
+          // 组头已展示作品标题，行内主文本为章节名（对齐 Mihon DownloadHolder）
+          Text(this.task.chapterName)
             .fontSize(14)
             .fontColor(this.pal.text)
             .maxLines(1)
@@ -82,12 +126,6 @@ struct QueueTaskRow {
         }
         .width('100%')
 
-        Text(this.task.chapterName)
-          .fontSize(12)
-          .fontColor(this.pal.sub)
-          .maxLines(1)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
-          .margin({ top: 1 })
         if (this.total > 0) {
           Progress({ value: this.progress, total: this.total, type: ProgressType.Linear })
             .style({ strokeWidth: 3 })
@@ -137,8 +175,9 @@ struct QueueTaskRow {
   }
 }
 
-// 下载管理页：下载队列 + 已下载章节（交互对齐 Mihon DownloadQueueScreen：
-// 标题数量 Pill 徽标、排序/溢出菜单、拖拽排序、右下角暂停/继续 FAB）
+// 下载管理页：双 Tab 分别管理"下载中"队列与"已下载"章节
+// （交互对齐 Mihon DownloadQueueScreen：按作品分组可折叠、标题数量 Pill 徽标、
+// 排序/溢出菜单、组内拖拽排序、行菜单整体调整优先级、右下角暂停/继续 FAB）
 @Component
 export struct DownloadPage {
   pathStack: NavPathStack = new NavPathStack();
@@ -146,16 +185,26 @@ export struct DownloadPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageProp('windowW') windowW: number = 0;
+  @State currentTab: number = 0;
   @State queue: DownloadTask[] = [];
-  @State downloaded: DownloadedManga[] = [];
+  @State queueRows: QueueRowItem[] = [];
+  @State downloadedRows: DownloadedRowItem[] = [];
+  @State downloadedCount: number = 0;
   @State loading: boolean = true;
   @State paused: boolean = false;
   @State fabExpanded: boolean = true;
+  private downloaded: DownloadedManga[] = [];
+  private collapsedQueueIds: Set<number> = new Set<number>();
+  private collapsedDownloadedIds: Set<number> = new Set<number>();
+  private tabsController: TabsController = new TabsController();
+  private lastQueueSignature: string = '';
 
   aboutToAppear(): void {
     DownloadService.addListener(this.onQueueChanged);
     this.queue = DownloadService.getQueue().slice();
+    this.lastQueueSignature = this.queueSignature();
     this.paused = DownloadService.isPaused();
+    this.rebuildQueueRows();
     this.loadDownloaded();
   }
 
@@ -163,7 +212,23 @@ export struct DownloadPage {
     DownloadService.removeListener(this.onQueueChanged);
   }
 
-  // 排序菜单（对齐 Mihon "Order by chapter number" 的升/降序）
+  build() {
+    NavDestination() {
+      this.bodyContent()
+    }
+    .hideTitleBar(true)
+    .backgroundColor(this.pal.bg)
+    .onReady((ctx: NavDestinationContext) => {
+      this.pathStack = ctx.pathStack;
+    })
+  }
+
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（960 上限）
+  private inset(): number {
+    return Bp.contentInset(this.windowW, 960);
+  }
+
+  // 排序菜单（对齐 Mihon 排序键：章节号升/降序 + 上传日期从新到旧/从旧到新）
   @Builder
   sortMenuBuilder() {
     Menu() {
@@ -174,6 +239,14 @@ export struct DownloadPage {
       MenuItem({ content: $r('app.string.download_sort_desc') })
         .onClick(() => {
           DownloadService.sortQueue(false);
+        })
+      MenuItem({ content: $r('app.string.download_sort_newest') })
+        .onClick(() => {
+          DownloadService.sortQueueByDate(true);
+        })
+      MenuItem({ content: $r('app.string.download_sort_oldest') })
+        .onClick(() => {
+          DownloadService.sortQueueByDate(false);
         })
     }
   }
@@ -194,21 +267,261 @@ export struct DownloadPage {
     }
   }
 
-  build() {
-    NavDestination() {
-      this.bodyContent()
+  // 页签标签：选中超粗+主色，附数量徽标（对齐 Mihon TabRow + Pill 计数）
+  @Builder
+  tabLabel(title: ResourceStr, count: number, index: number) {
+    Column() {
+      Row({ space: 5 }) {
+        Text(title)
+          .fontSize(14)
+          .fontWeight(this.currentTab === index ? FontWeight.Bold : FontWeight.Normal)
+          .fontColor(this.currentTab === index ? this.pal.primary : this.pal.text)
+        if (count > 0) {
+          Text(`${count}`)
+            .fontSize(11)
+            .fontColor(this.currentTab === index ? this.pal.primary : this.pal.sub)
+            .backgroundColor(this.isDark ? this.pal.text + '1F' : this.pal.text + '14')
+            .borderRadius(9)
+            .padding({
+              left: 6,
+              right: 6,
+              top: 1,
+              bottom: 1
+            })
+        }
+      }
+      .justifyContent(FlexAlign.Center)
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
-    .onReady((ctx: NavDestinationContext) => {
-      this.pathStack = ctx.pathStack;
+    .height(44)
+    .layoutWeight(1)
+    .justifyContent(FlexAlign.Center)
+    .onClick(() => {
+      this.tabsController.changeIndex(index);
     })
   }
 
-  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（960 上限）
-  private inset(): number {
-    return Bp.contentInset(this.windowW, 960);
+  // 下载中分组头：折叠开关 + 作品标题 + 章节数（点击整行切换折叠）
+  @Builder
+  queueGroupHeader(group: QueueGroup) {
+    Row({ space: 8 }) {
+      AppIcon({
+        name: this.isQueueGroupCollapsed(group.mangaId) ? 'expand_more' : 'expand_less',
+        iconSize: 18,
+        tint: this.pal.sub
+      })
+      Text(group.mangaTitle)
+        .fontSize(14)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+        .maxLines(1)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .layoutWeight(1)
+      Text($r('app.string.download_chapter_count', group.tasks.length))
+        .fontSize(11)
+        .fontColor(this.pal.sub)
+    }
+    .width('100%')
+    .padding({
+      left: 12 + this.inset(),
+      right: 12 + this.inset(),
+      top: 12,
+      bottom: 6
+    })
+    .backgroundColor(this.pal.bg)
+    .onClick(() => {
+      this.toggleQueueGroup(group.mangaId);
+    })
   }
+
+  // 已下载分组头：折叠开关 + 作品标题 + 章节数（点击整行切换折叠）
+  @Builder
+  downloadedGroupHeader(group: DownloadedManga) {
+    Row({ space: 8 }) {
+      AppIcon({
+        name: this.isDownloadedGroupCollapsed(group.mangaId) ? 'expand_more' : 'expand_less',
+        iconSize: 18,
+        tint: this.pal.sub
+      })
+      AppIcon({ name: 'photo', iconSize: 16 })
+      Text(group.mangaTitle)
+        .fontSize(14)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+        .maxLines(1)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .layoutWeight(1)
+      Text($r('app.string.download_chapter_count', group.chapters.length))
+        .fontSize(11)
+        .fontColor(this.pal.sub)
+    }
+    .width('100%')
+    .padding({
+      left: 12 + this.inset(),
+      right: 12 + this.inset(),
+      top: 14,
+      bottom: 8
+    })
+    .backgroundColor(this.pal.bg)
+    .onClick(() => {
+      this.toggleDownloadedGroup(group.mangaId);
+    })
+  }
+
+  // 已下载章节行
+  @Builder
+  downloadedChapterRow(item: DownloadedChapter) {
+    Row({ space: 8 }) {
+      Text(item.chapterName)
+        .fontSize(14)
+        .fontColor(this.pal.text)
+        .maxLines(1)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .layoutWeight(1)
+      AppIcon({ name: 'delete', iconSize: 20, tint: this.pal.sub })
+        .padding(6)
+        .onClick(() => {
+          this.deleteChapter(item);
+        })
+    }
+    .width('100%')
+    .padding({
+      left: 42 + this.inset(),
+      right: 6 + this.inset(),
+      top: 6,
+      bottom: 6
+    })
+  }
+
+  // 下载中 Tab：分组队列列表 + 拖拽排序 + 暂停/继续 FAB
+  @Builder
+  queueTabContent() {
+    Stack({ alignContent: Alignment.BottomEnd }) {
+      List({ space: 0 }) {
+        if (this.queue.length === 0) {
+          ListItem() {
+            Column() {
+              EmptyScreen({ message: $r('app.string.download_empty'), compact: true })
+            }
+            .width('100%')
+            .padding({ top: 48, bottom: 48 })
+          }
+        } else {
+          ForEach(this.queueRows, (item: QueueRowItem) => {
+            ListItem() {
+              if (item.isHeader) {
+                this.queueGroupHeader(item.group)
+              } else {
+                QueueTaskRow({ task: item.task, inset: this.inset() })
+              }
+            }
+          }, (item: QueueRowItem) => item.key())
+            .onMove((from: number, to: number) => {
+              this.onQueueMove(from, to);
+            })
+        }
+      }
+      .width('100%')
+      .height('100%')
+      .scrollBar(BarState.Auto)
+      .divider({
+        strokeWidth: 1,
+        color: this.pal.divider,
+        startMargin: 16 + this.inset(),
+        endMargin: 16 + this.inset(),
+      })
+      .onWillScroll((offset: number) => {
+        // 对齐 Mihon FAB 手势行为：向列表底部滚动收起、回滚展开
+        if (offset > 0) {
+          this.fabExpanded = false;
+        } else if (offset < 0) {
+          this.fabExpanded = true;
+        }
+      })
+
+      // 暂停/继续 FAB（对齐 Mihon SmallExtendedFloatingActionButton：队列空时隐藏）
+      if (this.queue.length > 0) {
+        Row({ space: 6 }) {
+          AppIcon({ name: this.paused ? 'play_arrow' : 'pause', iconSize: 20, tint: this.pal.onPrimary })
+          if (this.fabExpanded) {
+            Text(this.paused ? $r('app.string.download_resume') : $r('app.string.download_pause'))
+              .fontSize(14)
+              .fontColor(this.pal.onPrimary)
+          }
+        }
+        .padding({
+          left: this.fabExpanded ? 16 : 11,
+          right: this.fabExpanded ? 16 : 11,
+          top: 11,
+          bottom: 11,
+        })
+        .borderRadius(24)
+        .backgroundColor(this.pal.primary)
+        .shadow({ radius: 8, color: '#66000000', offsetY: 4 })
+        .margin({ right: 20 + this.inset(), bottom: 28 })
+        .animation({ duration: 150 })
+        .transition(TransitionEffect.OPACITY
+          .combine(TransitionEffect.scale({ x: 0.8, y: 0.8 }))
+          .animation({ duration: 150 }))
+        .onClick(() => {
+          if (this.paused) {
+            DownloadService.resumeAll();
+          } else {
+            DownloadService.pauseAll();
+          }
+        })
+      }
+    }
+    .width('100%')
+    .height('100%')
+  }
+
+  // 已下载 Tab：按作品分组的已完成章节列表
+  @Builder
+  downloadedTabContent() {
+    List({ space: 0 }) {
+      if (this.loading) {
+        ListItem() {
+          Row() {
+            LoadingProgress()
+              .width(28)
+              .height(28)
+              .color(this.pal.primary)
+          }
+          .width('100%')
+          .justifyContent(FlexAlign.Center)
+          .padding({ top: 40, bottom: 40 })
+        }
+      } else if (this.downloadedRows.length === 0) {
+        ListItem() {
+          Column() {
+            EmptyScreen({ message: $r('app.string.download_empty'), compact: true })
+          }
+          .width('100%')
+          .padding({ top: 48, bottom: 48 })
+        }
+      } else {
+        ForEach(this.downloadedRows, (item: DownloadedRowItem) => {
+          ListItem() {
+            if (item.isHeader) {
+              this.downloadedGroupHeader(item.group)
+            } else {
+              this.downloadedChapterRow(item.chapter)
+            }
+          }
+        }, (item: DownloadedRowItem) => item.key())
+      }
+    }
+    .width('100%')
+    .height('100%')
+    .scrollBar(BarState.Auto)
+    .divider({
+      strokeWidth: 1,
+      color: this.pal.divider,
+      startMargin: 16 + this.inset(),
+      endMargin: 16 + this.inset(),
+    })
+  }
+
   @Builder
   bodyContent() {
     Column() {
@@ -242,7 +555,7 @@ export struct DownloadPage {
         }
         .layoutWeight(1)
 
-        if (this.queue.length > 0) {
+        if (this.currentTab === 0 && this.queue.length > 0) {
           AppIcon({ name: 'sort', iconSize: 22 })
             .bindMenu(this.sortMenuBuilder)
             .padding({ left: 10, right: 10 })
@@ -259,193 +572,213 @@ export struct DownloadPage {
         bottom: 8
       })
 
-      Stack({ alignContent: Alignment.BottomEnd }) {
-        List({ space: 0 }) {
-          // 下载队列
-          if (this.queue.length > 0) {
-            ListItem() {
-              Text($r('app.string.download_queue'))
-                .fontSize(14)
-                .fontWeight(FontWeight.Bold)
-                .fontColor(this.pal.sub)
-                .width('100%')
-                .padding({
-                  left: 16 + this.inset(),
-                  right: 16 + this.inset(),
-                  top: 10,
-                  bottom: 6
-                })
-            }
-
-            ForEach(this.queue, (task: DownloadTask) => {
-              ListItem() {
-                QueueTaskRow({ task: task, inset: this.inset() })
-              }
-            }, (task: DownloadTask) => `q-${task.chapterId}`)
-              .onMove((from: number, to: number) => {
-                // 拖拽排序：同步页面数据源并落库到 DownloadService（对齐 Mihon 拖拽重排）
-                const removed: DownloadTask[] = this.queue.splice(from, 1);
-                const moved: DownloadTask | undefined = removed[0];
-                if (moved !== undefined) {
-                  this.queue.splice(to, 0, moved);
-                  const ids: number[] = [];
-                  for (const t of this.queue) {
-                    ids.push(t.chapterId);
-                  }
-                  DownloadService.reorderQueue(ids);
-                }
-              })
-          }
-
-          // 已下载
-          if (this.loading) {
-            ListItem() {
-              Row() {
-                LoadingProgress()
-                  .width(28)
-                  .height(28)
-                  .color(this.pal.primary)
-              }
-              .width('100%')
-              .justifyContent(FlexAlign.Center)
-              .padding({ top: 40, bottom: 40 })
-            }
-          } else if (this.downloaded.length === 0 && this.queue.length === 0) {
-            ListItem() {
-              Column() {
-                EmptyScreen({ message: $r('app.string.download_empty'), compact: true })
-              }
-              .width('100%')
-              .padding({ top: 48, bottom: 48 })
-            }
-          } else {
-            ForEach(this.downloaded, (group: DownloadedManga) => {
-              ListItemGroup({ header: this.groupHeader(group) }) {
-                ForEach(group.chapters, (item: DownloadedChapter) => {
-                  ListItem() {
-                    Row({ space: 8 }) {
-                      Text(item.chapterName)
-                        .fontSize(14)
-                        .fontColor(this.pal.text)
-                        .maxLines(1)
-                        .textOverflow({ overflow: TextOverflow.Ellipsis })
-                        .layoutWeight(1)
-                      AppIcon({ name: 'delete', iconSize: 20, tint: this.pal.sub })
-                        .padding(6)
-                        .onClick(() => {
-                          this.deleteChapter(item);
-                        })
-                    }
-                    .width('100%')
-                    .padding({
-                      left: 16 + this.inset(),
-                      right: 6 + this.inset(),
-                      top: 6,
-                      bottom: 6
-                    })
-                  }
-                }, (item: DownloadedChapter) => `d-${item.chapterId}`)
-              }
-            }, (group: DownloadedManga) => `g-${group.mangaId}-${group.chapters.length}`)
-          }
-        }
-        .width('100%')
-        .height('100%')
-        .scrollBar(BarState.Auto)
-        .divider({
-          strokeWidth: 1,
-          color: this.pal.divider,
-          startMargin: 16 + this.inset(),
-          endMargin: 16 + this.inset(),
-        })
-        .onWillScroll((offset: number) => {
-          // 对齐 Mihon FAB 手势行为：向列表底部滚动收起、回滚展开
-          if (offset > 0) {
-            this.fabExpanded = false;
-          } else if (offset < 0) {
-            this.fabExpanded = true;
-          }
-        })
-
-        // 暂停/继续 FAB（对齐 Mihon SmallExtendedFloatingActionButton：队列空时隐藏）
-        if (this.queue.length > 0) {
-          Row({ space: 6 }) {
-            AppIcon({ name: this.paused ? 'play_arrow' : 'pause', iconSize: 20, tint: this.pal.onPrimary })
-            if (this.fabExpanded) {
-              Text(this.paused ? $r('app.string.download_resume') : $r('app.string.download_pause'))
-                .fontSize(14)
-                .fontColor(this.pal.onPrimary)
-            }
-          }
-          .padding({
-            left: this.fabExpanded ? 16 : 11,
-            right: this.fabExpanded ? 16 : 11,
-            top: 11,
-            bottom: 11,
-          })
-          .borderRadius(24)
-          .backgroundColor(this.pal.primary)
-          .shadow({ radius: 8, color: '#66000000', offsetY: 4 })
-          .margin({ right: 20 + this.inset(), bottom: 28 })
-          .animation({ duration: 150 })
-          .transition(TransitionEffect.OPACITY
-            .combine(TransitionEffect.scale({ x: 0.8, y: 0.8 }))
-            .animation({ duration: 150 }))
-          .onClick(() => {
-            if (this.paused) {
-              DownloadService.resumeAll();
-            } else {
-              DownloadService.pauseAll();
-            }
-          })
-        }
+      // 页签标签行：在限宽内容列内均分两份（对齐 Mihon TabRow），点击经控制器切换
+      Row() {
+        this.tabLabel($r('app.string.download_tab_queue'), this.queue.length, 0)
+        this.tabLabel($r('app.string.download_tab_downloaded'), this.downloadedCount, 1)
       }
       .width('100%')
+      .padding({
+        left: 16 + this.inset(),
+        right: 16 + this.inset()
+      })
+
+      // 双页签 + 可滑动内容（系统 tab 栏隐藏，标签由上方自定义行承载）
+      Tabs({ barPosition: BarPosition.Start, index: this.currentTab, controller: this.tabsController }) {
+        TabContent() {
+          this.queueTabContent()
+        }
+
+        TabContent() {
+          this.downloadedTabContent()
+        }
+      }
+      .barHeight(0)
+      .onChange((index: number) => {
+        this.currentTab = index;
+      })
       .layoutWeight(1)
+      .width('100%')
     }
     .width('100%')
     .height('100%')
     .backgroundColor(this.pal.bg)
   }
 
-  @Builder
-  groupHeader(group: DownloadedManga) {
-    Row({ space: 8 }) {
-      AppIcon({ name: 'photo', iconSize: 16 })
-      Text(group.mangaTitle)
-        .fontSize(14)
-        .fontWeight(FontWeight.Bold)
-        .fontColor(this.pal.text)
-        .maxLines(1)
-        .textOverflow({ overflow: TextOverflow.Ellipsis })
-        .layoutWeight(1)
-      Text($r('app.string.download_chapter_count', group.chapters.length))
-        .fontSize(11)
-        .fontColor(this.pal.sub)
-    }
-    .width('100%')
-    .padding({
-      left: 16 + this.inset(),
-      right: 16 + this.inset(),
-      top: 14,
-      bottom: 8
-    })
-    .backgroundColor(this.pal.bg)
+  // ----- 队列分组折叠 -----
+
+  private isQueueGroupCollapsed(mangaId: number): boolean {
+    return this.collapsedQueueIds.has(mangaId);
   }
+
+  private toggleQueueGroup(mangaId: number): void {
+    if (this.collapsedQueueIds.has(mangaId)) {
+      this.collapsedQueueIds.delete(mangaId);
+    } else {
+      this.collapsedQueueIds.add(mangaId);
+    }
+    this.rebuildQueueRows();
+  }
+
+  private isDownloadedGroupCollapsed(mangaId: number): boolean {
+    return this.collapsedDownloadedIds.has(mangaId);
+  }
+
+  private toggleDownloadedGroup(mangaId: number): void {
+    if (this.collapsedDownloadedIds.has(mangaId)) {
+      this.collapsedDownloadedIds.delete(mangaId);
+    } else {
+      this.collapsedDownloadedIds.add(mangaId);
+    }
+    this.rebuildDownloadedRows();
+  }
+
+  // ----- 渲染模型重建 -----
+
+  // 队列摊平：分组头 + （展开组的）任务行；分组按首次出现顺序
+  private rebuildQueueRows(): void {
+    const rows: QueueRowItem[] = [];
+    const groups = new Map<number, QueueGroup>();
+    for (const t of this.queue) {
+      let g: QueueGroup | undefined = groups.get(t.mangaId);
+      if (g === undefined) {
+        g = new QueueGroup();
+        g.mangaId = t.mangaId;
+        g.mangaTitle = t.mangaTitle;
+        groups.set(t.mangaId, g);
+        const header = new QueueRowItem();
+        header.isHeader = true;
+        header.group = g;
+        rows.push(header);
+      }
+      g.tasks.push(t);
+      if (!this.collapsedQueueIds.has(t.mangaId)) {
+        const row = new QueueRowItem();
+        row.task = t;
+        rows.push(row);
+      }
+    }
+    this.queueRows = rows;
+  }
+
+  // 已下载摊平：分组头 + （展开组的）章节行
+  private rebuildDownloadedRows(): void {
+    const rows: DownloadedRowItem[] = [];
+    let count = 0;
+    for (const group of this.downloaded) {
+      count += group.chapters.length;
+      const header = new DownloadedRowItem();
+      header.isHeader = true;
+      header.group = group;
+      rows.push(header);
+      if (this.collapsedDownloadedIds.has(group.mangaId)) {
+        continue;
+      }
+      for (const ch of group.chapters) {
+        const row = new DownloadedRowItem();
+        row.chapter = ch;
+        rows.push(row);
+      }
+    }
+    this.downloadedRows = rows;
+    this.downloadedCount = count;
+  }
+
+  // ----- 组内拖拽排序（对齐 Mihon shouldMove：跨组拖拽禁止） -----
+
+  private onQueueMove(from: number, to: number): void {
+    if (from === to) {
+      return;
+    }
+    const fromItem: QueueRowItem | undefined = this.queueRows[from];
+    const toItem: QueueRowItem | undefined = this.queueRows[to];
+    if (fromItem === undefined || toItem === undefined || fromItem.isHeader || toItem.isHeader) {
+      return;
+    }
+    const movedTask: DownloadTask = fromItem.task;
+    const targetTask: DownloadTask = toItem.task;
+    if (movedTask.mangaId !== targetTask.mangaId) {
+      return;
+    }
+    const removed: QueueRowItem[] = this.queueRows.splice(from, 1);
+    const moved: QueueRowItem | undefined = removed[0];
+    if (moved === undefined) {
+      return;
+    }
+    this.queueRows.splice(to, 0, moved);
+    this.queueRows = this.queueRows.slice();
+    this.syncDraggedGroupOrder(movedTask.mangaId);
+  }
+
+  // 拖拽落位后把可见行顺序同步回 DownloadService：
+  // 被拖组按行内新顺序、其余分组按原顺序，分组间保持原相对顺序
+  private syncDraggedGroupOrder(mangaId: number): void {
+    const visible: number[] = [];
+    for (const item of this.queueRows) {
+      if (!item.isHeader && item.task.mangaId === mangaId) {
+        visible.push(item.task.chapterId);
+      }
+    }
+    const ids: number[] = [];
+    const seen: Set<number> = new Set<number>();
+    for (const t of this.queue) {
+      if (seen.has(t.mangaId)) {
+        continue;
+      }
+      seen.add(t.mangaId);
+      if (t.mangaId === mangaId) {
+        for (const id of visible) {
+          ids.push(id);
+        }
+        for (const tt of this.queue) {
+          if (tt.mangaId === mangaId && visible.indexOf(tt.chapterId) < 0) {
+            ids.push(tt.chapterId);
+          }
+        }
+      } else {
+        for (const tt of this.queue) {
+          if (tt.mangaId === t.mangaId) {
+            ids.push(tt.chapterId);
+          }
+        }
+      }
+    }
+    DownloadService.reorderQueue(ids);
+    this.queue = DownloadService.getQueue();
+  }
+
+  // ----- 数据加载 -----
 
   private onQueueChanged = (): void => {
     this.queue = DownloadService.getQueue().slice();
     this.paused = DownloadService.isPaused();
-    this.loadDownloaded();
+    this.rebuildQueueRows();
+    // 队列成员变化（完成/新增/取消）时才重扫已下载目录，进度 tick 不触发
+    const signature: string = this.queueSignature();
+    if (signature !== this.lastQueueSignature) {
+      this.lastQueueSignature = signature;
+      this.loadDownloaded();
+    }
+  }
+
+  private queueSignature(): string {
+    const ids: string[] = [];
+    for (const t of this.queue) {
+      ids.push(`${t.chapterId}`);
+    }
+    return ids.join(',');
   }
 
   private async loadDownloaded(): Promise<void> {
     this.downloaded = await DownloadService.listDownloaded();
+    this.rebuildDownloadedRows();
     this.loading = false;
   }
 
   private deleteChapter(item: DownloadedChapter): void {
-    DownloadService.deleteChapter(item.mangaId, item.chapterId);
+    DownloadService.deleteChapter(item.mangaId, item.chapterId).then(() => {
+      this.loadDownloaded();
+    });
     Util.toastRes(this.getUIContext(), $r('app.string.download_deleted'));
   }
 }
