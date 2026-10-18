@@ -177,6 +177,18 @@
       "value": "حفظ"
     },
     {
+      "name": "common_select",
+      "value": "تحديد"
+    },
+    {
+      "name": "download_delete_series_confirm",
+      "value": "حذف الفصول التي تم تنزيلها من هذه السلسلة؟"
+    },
+    {
+      "name": "download_delete_selected_confirm",
+      "value": "حذف %d من الفصول المنزّلة المحددة؟"
+    },
+    {
       "name": "common_uninstall",
       "value": "إلغاء التثبيت"
     },

@@ -507,6 +507,12 @@ export struct LibraryPage {
                     },
                     onItemLongPress: (r: MangaRecord): void => {
                       this.onItemLongPress(r);
+                    },
+                    onItemMenuSelect: (r: MangaRecord): void => {
+                      this.menuSelectItem(r);
+                    },
+                    onItemMenuCategory: (r: MangaRecord): void => {
+                      this.showQuickCategoryMenu(r);
                     }
                   })
                 }
@@ -539,6 +545,12 @@ export struct LibraryPage {
                   },
                   onItemLongPress: (r: MangaRecord): void => {
                     this.onItemLongPress(r);
+                  },
+                  onItemMenuSelect: (r: MangaRecord): void => {
+                    this.menuSelectItem(r);
+                  },
+                  onItemMenuCategory: (r: MangaRecord): void => {
+                    this.showQuickCategoryMenu(r);
                   }
                 })
               }
@@ -832,6 +844,11 @@ export struct LibraryPage {
     if (wasEmpty) {
       this.showQuickCategoryMenu(record);
     }
+  }
+
+  // PC 右键菜单「选择」/ Ctrl+点击：切换多选（不弹快速分类，移动端长按行为不变）
+  private menuSelectItem(record: MangaRecord): void {
+    this.toggleSelection(record.id);
   }
 
   // 长按快速修改分类：弹分类选择（高亮当前分类），确认后落库刷新

@@ -153,6 +153,18 @@
       "value": "Зберегти"
     },
     {
+      "name": "common_select",
+      "value": "Вибрати"
+    },
+    {
+      "name": "download_delete_series_confirm",
+      "value": "Видалити завантажені розділи цього тайтлу?"
+    },
+    {
+      "name": "download_delete_selected_confirm",
+      "value": "Видалити вибрані завантажені розділи (%d)?"
+    },
+    {
       "name": "common_uninstall",
       "value": "Видалити"
     },

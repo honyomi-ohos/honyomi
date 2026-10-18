@@ -145,6 +145,18 @@
       "value": "บันทึก"
     },
     {
+      "name": "common_select",
+      "value": "เลือก"
+    },
+    {
+      "name": "download_delete_series_confirm",
+      "value": "ลบตอนที่ดาวน์โหลดของเรื่องนี้?"
+    },
+    {
+      "name": "download_delete_selected_confirm",
+      "value": "ลบตอนที่ดาวน์โหลดที่เลือก %d ตอน?"
+    },
+    {
       "name": "common_uninstall",
       "value": "ถอนการติดตั้ง"
     },

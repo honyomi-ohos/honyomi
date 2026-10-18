@@ -5,6 +5,7 @@ import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
 import { AppIcon } from './components/AppIcon';
+import { ConfirmDialog } from './components/Dialogs';
 
 // 队列分组模型（对齐 Mihon DownloadHeaderItem：按作品分组，组内为章节任务）
 class QueueGroup {
@@ -193,6 +194,8 @@ export struct DownloadPage {
   @State loading: boolean = true;
   @State paused: boolean = false;
   @State fabExpanded: boolean = true;
+  @State selecting: boolean = false;
+  @State selectedIds: Set<number> = new Set<number>();
   private downloaded: DownloadedManga[] = [];
   private collapsedQueueIds: Set<number> = new Set<number>();
   private collapsedDownloadedIds: Set<number> = new Set<number>();
@@ -333,15 +336,24 @@ export struct DownloadPage {
     })
   }
 
-  // 已下载分组头：折叠开关 + 作品标题 + 章节数（点击整行切换折叠）
+  // 已下载分组头：普通态点击折叠/展开、长按进入多选并勾选整组、尾部图标整作品删除；
+  // 多选态头部变勾选框，点击整组勾选/取消
   @Builder
   downloadedGroupHeader(group: DownloadedManga) {
     Row({ space: 8 }) {
-      AppIcon({
-        name: this.isDownloadedGroupCollapsed(group.mangaId) ? 'expand_more' : 'expand_less',
-        iconSize: 18,
-        tint: this.pal.sub
-      })
+      if (this.selecting) {
+        AppIcon({
+          name: this.isGroupFullySelected(group) ? 'check_circle' : 'check_box_outline_blank',
+          iconSize: 20,
+          tint: this.isGroupFullySelected(group) ? this.pal.primary : this.pal.sub
+        })
+      } else {
+        AppIcon({
+          name: this.isDownloadedGroupCollapsed(group.mangaId) ? 'expand_more' : 'expand_less',
+          iconSize: 18,
+          tint: this.pal.sub
+        })
+      }
       AppIcon({ name: 'photo', iconSize: 16 })
       Text(group.mangaTitle)
         .fontSize(14)
@@ -353,6 +365,13 @@ export struct DownloadPage {
       Text($r('app.string.download_chapter_count', group.chapters.length))
         .fontSize(11)
         .fontColor(this.pal.sub)
+      if (!this.selecting) {
+        AppIcon({ name: 'delete_sweep', iconSize: 20, tint: this.pal.sub })
+          .padding({ left: 6, right: 2 })
+          .onClick(() => {
+            this.confirmDeleteSeries(group);
+          })
+      }
     }
     .width('100%')
     .padding({
@@ -362,34 +381,80 @@ export struct DownloadPage {
       bottom: 8
     })
     .backgroundColor(this.pal.bg)
-    .onClick(() => {
-      this.toggleDownloadedGroup(group.mangaId);
+    .onClick((event?: ClickEvent) => {
+      if (event !== undefined && Util.isCtrlHeld(event) && !this.selecting) {
+        this.enterGroupSelection(group);
+        return;
+      }
+      if (this.selecting) {
+        this.toggleGroupSelection(group);
+      } else {
+        this.toggleDownloadedGroup(group.mangaId);
+      }
     })
+    .gesture(LongPressGesture()
+      .onAction(() => {
+        if (!this.selecting) {
+          this.enterGroupSelection(group);
+        }
+      }))
+    .bindContextMenu((): void => {
+      this.downloadedGroupMenu(group);
+    }, ResponseType.RightClick)
   }
 
-  // 已下载章节行
+  // 已下载章节行：普通态尾部单章删除、长按进入多选；
+  // 多选态头部勾选框、点击行切换选中
   @Builder
   downloadedChapterRow(item: DownloadedChapter) {
     Row({ space: 8 }) {
+      if (this.selecting) {
+        AppIcon({
+          name: this.selectedIds.has(item.chapterId) ? 'check_circle' : 'check_box_outline_blank',
+          iconSize: 20,
+          tint: this.selectedIds.has(item.chapterId) ? this.pal.primary : this.pal.sub
+        })
+          .margin({ left: 8 })
+      }
       Text(item.chapterName)
         .fontSize(14)
         .fontColor(this.pal.text)
         .maxLines(1)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
         .layoutWeight(1)
-      AppIcon({ name: 'delete', iconSize: 20, tint: this.pal.sub })
-        .padding(6)
-        .onClick(() => {
-          this.deleteChapter(item);
-        })
+      if (!this.selecting) {
+        AppIcon({ name: 'delete', iconSize: 20, tint: this.pal.sub })
+          .padding(6)
+          .onClick(() => {
+            this.deleteChapter(item);
+          })
+      }
     }
     .width('100%')
     .padding({
-      left: 42 + this.inset(),
+      left: (this.selecting ? 12 : 42) + this.inset(),
       right: 6 + this.inset(),
       top: 6,
       bottom: 6
     })
+    .onClick((event?: ClickEvent) => {
+      if (event !== undefined && Util.isCtrlHeld(event) && !this.selecting) {
+        this.enterSelection(item.chapterId);
+        return;
+      }
+      if (this.selecting) {
+        this.toggleSelected(item.chapterId);
+      }
+    })
+    .gesture(LongPressGesture()
+      .onAction(() => {
+        if (!this.selecting) {
+          this.enterSelection(item.chapterId);
+        }
+      }))
+    .bindContextMenu((): void => {
+      this.downloadedChapterMenu(item);
+    }, ResponseType.RightClick)
   }
 
   // 下载中 Tab：分组队列列表 + 拖拽排序 + 暂停/继续 FAB
@@ -414,7 +479,7 @@ export struct DownloadPage {
                 QueueTaskRow({ task: item.task, inset: this.inset() })
               }
             }
-          }, (item: QueueRowItem) => item.key())
+          }, (item: QueueRowItem) => this.queueRowKey(item))
             .onMove((from: number, to: number) => {
               this.onQueueMove(from, to);
             })
@@ -475,51 +540,99 @@ export struct DownloadPage {
     .height('100%')
   }
 
-  // 已下载 Tab：按作品分组的已完成章节列表
+  // 已下载 Tab：按作品分组的已完成章节列表 + 多选底部操作条
   @Builder
   downloadedTabContent() {
-    List({ space: 0 }) {
-      if (this.loading) {
-        ListItem() {
-          Row() {
-            LoadingProgress()
-              .width(28)
-              .height(28)
-              .color(this.pal.primary)
-          }
-          .width('100%')
-          .justifyContent(FlexAlign.Center)
-          .padding({ top: 40, bottom: 40 })
-        }
-      } else if (this.downloadedRows.length === 0) {
-        ListItem() {
-          Column() {
-            EmptyScreen({ message: $r('app.string.download_empty'), compact: true })
-          }
-          .width('100%')
-          .padding({ top: 48, bottom: 48 })
-        }
-      } else {
-        ForEach(this.downloadedRows, (item: DownloadedRowItem) => {
+    Stack({ alignContent: Alignment.Bottom }) {
+      List({ space: 0 }) {
+        if (this.loading) {
           ListItem() {
-            if (item.isHeader) {
-              this.downloadedGroupHeader(item.group)
-            } else {
-              this.downloadedChapterRow(item.chapter)
+            Row() {
+              LoadingProgress()
+                .width(28)
+                .height(28)
+                .color(this.pal.primary)
             }
+            .width('100%')
+            .justifyContent(FlexAlign.Center)
+            .padding({ top: 40, bottom: 40 })
           }
-        }, (item: DownloadedRowItem) => item.key())
+        } else if (this.downloadedRows.length === 0) {
+          ListItem() {
+            Column() {
+              EmptyScreen({ message: $r('app.string.download_empty'), compact: true })
+            }
+            .width('100%')
+            .padding({ top: 48, bottom: 48 })
+          }
+        } else {
+          ForEach(this.downloadedRows, (item: DownloadedRowItem) => {
+            ListItem() {
+              if (item.isHeader) {
+                this.downloadedGroupHeader(item.group)
+              } else {
+                this.downloadedChapterRow(item.chapter)
+              }
+            }
+          }, (item: DownloadedRowItem) => this.downloadedRowKey(item))
+        }
+      }
+      .width('100%')
+      .height('100%')
+      .scrollBar(BarState.Auto)
+      .divider({
+        strokeWidth: 1,
+        color: this.pal.divider,
+        startMargin: 16 + this.inset(),
+        endMargin: 16 + this.inset(),
+      })
+
+      // 多选底部操作条：退出 / 已选计数 / 全选切换 / 删除
+      if (this.selecting) {
+        Row({ space: 14 }) {
+          AppIcon({ name: 'close', iconSize: 20, tint: this.pal.text })
+            .onClick(() => {
+              this.exitSelection();
+            })
+          Text($r('app.string.detail_selected_count', this.selectedIds.size))
+            .fontSize(14)
+            .fontWeight(FontWeight.Bold)
+            .fontColor(this.pal.text)
+            .layoutWeight(1)
+          AppIcon({
+            name: this.allDownloadedSelected() ? 'deselect' : 'select_all',
+            iconSize: 20,
+            tint: this.pal.text
+          })
+            .onClick(() => {
+              this.toggleSelectAllDownloaded();
+            })
+          Row({ space: 4 }) {
+            AppIcon({ name: 'delete', iconSize: 18, tint: this.pal.badgeRed })
+            Text($r('app.string.common_delete'))
+              .fontSize(14)
+              .fontColor(this.pal.badgeRed)
+          }
+          .opacity(this.selectedIds.size > 0 ? 1 : 0.4)
+          .onClick(() => {
+            if (this.selectedIds.size > 0) {
+              this.confirmDeleteSelected();
+            }
+          })
+        }
+        .width('100%')
+        .padding({
+          left: 16 + this.inset(),
+          right: 16 + this.inset(),
+          top: 10,
+          bottom: 14
+        })
+        .backgroundColor(this.pal.bg)
+        .shadow({ radius: 12, color: '#33000000', offsetY: -2 })
       }
     }
     .width('100%')
     .height('100%')
-    .scrollBar(BarState.Auto)
-    .divider({
-      strokeWidth: 1,
-      color: this.pal.divider,
-      startMargin: 16 + this.inset(),
-      endMargin: 16 + this.inset(),
-    })
   }
 
   @Builder
@@ -780,6 +893,199 @@ export struct DownloadPage {
       this.loadDownloaded();
     });
     Util.toastRes(this.getUIContext(), $r('app.string.download_deleted'));
+  }
+
+  // ----- 行 key：折叠态编入分组头 key -----
+  // ForEach 对同 key 行复用组件而不重跑生成器，折叠集合又非状态成员，
+  // 箭头图标无法驱动刷新；将折叠态编入 key 使头行在切换时销毁重建
+
+  private queueRowKey(item: QueueRowItem): string {
+    if (item.isHeader) {
+      return `h-${item.group.mangaId}-${this.collapsedQueueIds.has(item.group.mangaId) ? 'c' : 'e'}`;
+    }
+    return item.key();
+  }
+
+  private downloadedRowKey(item: DownloadedRowItem): string {
+    if (item.isHeader) {
+      return `dh-${item.group.mangaId}-${this.collapsedDownloadedIds.has(item.group.mangaId) ? 'c' : 'e'}`;
+    }
+    return item.key();
+  }
+
+  // ----- 已下载多选 -----
+
+  // PC 右键菜单「选择」：整组进入多选（与长按一致；移动端仍走长按手势）
+  @Builder
+  downloadedGroupMenu(group: DownloadedManga) {
+    Menu() {
+      MenuItem({ content: $r('app.string.common_select') })
+        .onClick(() => {
+          this.enterGroupSelection(group);
+        })
+    }
+  }
+
+  // PC 右键菜单「选择」：单章进入多选（与长按一致）
+  @Builder
+  downloadedChapterMenu(item: DownloadedChapter) {
+    Menu() {
+      MenuItem({ content: $r('app.string.common_select') })
+        .onClick(() => {
+          this.enterSelection(item.chapterId);
+        })
+    }
+  }
+
+  private enterSelection(chapterId: number): void {
+    const ids: Set<number> = new Set<number>();
+    ids.add(chapterId);
+    this.selectedIds = ids;
+    this.expandAllDownloadedGroups();
+    this.selecting = true;
+  }
+
+  private enterGroupSelection(group: DownloadedManga): void {
+    const ids: Set<number> = new Set<number>();
+    for (const ch of group.chapters) {
+      ids.add(ch.chapterId);
+    }
+    this.selectedIds = ids;
+    this.expandAllDownloadedGroups();
+    this.selecting = true;
+  }
+
+  private exitSelection(): void {
+    this.selectedIds = new Set<number>();
+    this.selecting = false;
+  }
+
+  private toggleSelected(chapterId: number): void {
+    const ids: Set<number> = new Set<number>(this.selectedIds);
+    if (ids.has(chapterId)) {
+      ids.delete(chapterId);
+    } else {
+      ids.add(chapterId);
+    }
+    this.selectedIds = ids;
+  }
+
+  private isGroupFullySelected(group: DownloadedManga): boolean {
+    if (group.chapters.length === 0) {
+      return false;
+    }
+    for (const ch of group.chapters) {
+      if (!this.selectedIds.has(ch.chapterId)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private toggleGroupSelection(group: DownloadedManga): void {
+    const ids: Set<number> = new Set<number>(this.selectedIds);
+    const fully: boolean = this.isGroupFullySelected(group);
+    for (const ch of group.chapters) {
+      if (fully) {
+        ids.delete(ch.chapterId);
+      } else {
+        ids.add(ch.chapterId);
+      }
+    }
+    this.selectedIds = ids;
+  }
+
+  private allDownloadedSelected(): boolean {
+    return this.downloadedCount > 0 && this.selectedIds.size >= this.downloadedCount;
+  }
+
+  private toggleSelectAllDownloaded(): void {
+    if (this.allDownloadedSelected()) {
+      this.selectedIds = new Set<number>();
+      return;
+    }
+    const ids: Set<number> = new Set<number>();
+    for (const group of this.downloaded) {
+      for (const ch of group.chapters) {
+        ids.add(ch.chapterId);
+      }
+    }
+    this.selectedIds = ids;
+  }
+
+  private expandAllDownloadedGroups(): void {
+    if (this.collapsedDownloadedIds.size === 0) {
+      return;
+    }
+    this.collapsedDownloadedIds = new Set<number>();
+    this.rebuildDownloadedRows();
+  }
+
+  // ----- 删除（整作品 / 多选，均先确认） -----
+
+  private confirmDeleteSeries(group: DownloadedManga): void {
+    const dialog: CustomDialogController = new CustomDialogController({
+      builder: ConfirmDialog({
+        title: group.mangaTitle,
+        message: $r('app.string.download_delete_series_confirm'),
+        confirmText: $r('app.string.common_delete'),
+        onConfirm: (): void => {
+          dialog.close();
+          this.deleteChapters(group.chapters);
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  private confirmDeleteSelected(): void {
+    const chapters: DownloadedChapter[] = [];
+    for (const group of this.downloaded) {
+      for (const ch of group.chapters) {
+        if (this.selectedIds.has(ch.chapterId)) {
+          chapters.push(ch);
+        }
+      }
+    }
+    if (chapters.length === 0) {
+      return;
+    }
+    const dialog: CustomDialogController = new CustomDialogController({
+      builder: ConfirmDialog({
+        title: $r('app.string.common_delete'),
+        message: $r('app.string.download_delete_selected_confirm', chapters.length),
+        confirmText: $r('app.string.common_delete'),
+        onConfirm: (): void => {
+          dialog.close();
+          this.deleteChapters(chapters);
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  // 批量删除：完成后退出多选、刷新列表并按数量提示
+  private deleteChapters(chapters: DownloadedChapter[]): void {
+    const n: number = chapters.length;
+    this.deleteChaptersAsync(chapters).then(() => {
+      this.exitSelection();
+      this.loadDownloaded();
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_deleted_n', n));
+    });
+  }
+
+  private async deleteChaptersAsync(chapters: DownloadedChapter[]): Promise<void> {
+    for (const ch of chapters) {
+      await DownloadService.deleteChapter(ch.mangaId, ch.chapterId);
+    }
   }
 }
 

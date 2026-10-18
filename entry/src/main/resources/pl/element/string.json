@@ -137,6 +137,18 @@
       "value": "Zapisz"
     },
     {
+      "name": "common_select",
+      "value": "Wybierz"
+    },
+    {
+      "name": "download_delete_series_confirm",
+      "value": "Usunąć pobrane rozdziały tej serii?"
+    },
+    {
+      "name": "download_delete_selected_confirm",
+      "value": "Usunąć zaznaczone pobrane rozdziały (%d)?"
+    },
+    {
       "name": "common_uninstall",
       "value": "Odinstaluj"
     },

@@ -169,6 +169,18 @@
       "value": "저장"
     },
     {
+      "name": "common_select",
+      "value": "선택"
+    },
+    {
+      "name": "download_delete_series_confirm",
+      "value": "이 작품의 다운로드된 화를 삭제할까요?"
+    },
+    {
+      "name": "download_delete_selected_confirm",
+      "value": "선택한 다운로드 %d개를 삭제할까요?"
+    },
+    {
       "name": "common_uninstall",
       "value": "제거"
     },

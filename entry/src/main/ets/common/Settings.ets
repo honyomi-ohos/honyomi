@@ -9,10 +9,12 @@ import { AppKeys } from './AppKeys';
 const DOMAIN = 0x0000;
 const TAG = 'Settings';
 
-// 插件仓库记录（多仓库管理，对齐 Mihon ExtensionStore：地址 + 展示名）
+// 插件仓库记录（多仓库管理，对齐 Mihon ExtensionStore：地址 + 展示名 + 官网）
 export interface PluginStoreRecord {
   url: string;
   name: string;
+  // 仓库官网（索引声明 website 字段）；未声明为空字符串
+  website: string;
 }
 
 // 轻量设置存储（阅读/主题/书架/阅读器/浏览/全局开关等）
@@ -274,7 +276,7 @@ export class Settings {
 
   // ---- 插件仓库（多仓库管理）----
 
-  // 多仓库列表（JSON 数组 [{url, name}]）；
+  // 多仓库列表（JSON 数组 [{url, name, website}]）；
   static getPluginStores(): PluginStoreRecord[] {
     const raw = Settings.getStr('pluginStores', '');
     if (raw !== '') {
@@ -287,6 +289,7 @@ export class Settings {
               out.push({
                 url: item.url,
                 name: typeof item.name === 'string' && item.name !== '' ? item.name : Settings.urlHostOf(item.url),
+                website: typeof item.website === 'string' ? item.website : '',
               });
             }
           }
@@ -298,7 +301,7 @@ export class Settings {
     // 旧版单仓库地址迁移：并入多仓库列表（展示名暂取主机名）
     const legacy = Settings.getPluginRepoUrl();
     if (legacy !== '') {
-      const list: PluginStoreRecord[] = [{ url: legacy, name: Settings.urlHostOf(legacy) }];
+      const list: PluginStoreRecord[] = [{ url: legacy, name: Settings.urlHostOf(legacy), website: '' }];
       Settings.setPluginStores(list);
       return list;
     }

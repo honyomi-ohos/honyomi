@@ -165,6 +165,18 @@
       "value": "保存"
     },
     {
+      "name": "common_select",
+      "value": "選拡"
+    },
+    {
+      "name": "download_delete_series_confirm",
+      "value": "この作品のダウンロード済み章を削除しますか？"
+    },
+    {
+      "name": "download_delete_selected_confirm",
+      "value": "選択した%d章のダウンロード済みデータを削除しますか？"
+    },
+    {
       "name": "common_uninstall",
       "value": "アンインストール"
     },

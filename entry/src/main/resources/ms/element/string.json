@@ -165,6 +165,18 @@
       "value": "Simpan"
     },
     {
+      "name": "common_select",
+      "value": "Pilih"
+    },
+    {
+      "name": "download_delete_series_confirm",
+      "value": "Padam bab yang dimuat turun daripada siri ini?"
+    },
+    {
+      "name": "download_delete_selected_confirm",
+      "value": "Padam %d bab dimuat turun yang dipilih?"
+    },
+    {
       "name": "common_uninstall",
       "value": "Nyahpasang"
     },

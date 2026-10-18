@@ -15,6 +15,20 @@ export struct MangaCard {
   };
   onCardLongPress: (record: MangaRecord) => void = (_r: MangaRecord) => {
   };
+  // PC 右键菜单「加入书架」：与长按快速入库同一逻辑
+  onCardMenuAddToLibrary: (record: MangaRecord) => void = (_r: MangaRecord) => {
+  };
+
+  // PC 鼠标右键菜单（移动端仍走长按手势，右键不响应触摸）
+  @Builder
+  cardContextMenu() {
+    Menu() {
+      MenuItem({ content: $r('app.string.detail_add_to_library') })
+        .onClick(() => {
+          this.onCardMenuAddToLibrary(this.record);
+        })
+    }
+  }
 
   build() {
     Column() {
@@ -69,6 +83,7 @@ export struct MangaCard {
           this.onCardLongPress(this.record);
         })
     )
+    .bindContextMenu(this.cardContextMenu, ResponseType.RightClick)
     .onHover((isHover: boolean) => {
       this.getUIContext().animateTo({ duration: 120, curve: Curve.Friction }, (): void => {
         this.hovered = isHover;

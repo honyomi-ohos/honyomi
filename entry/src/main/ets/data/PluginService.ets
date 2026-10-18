@@ -89,14 +89,16 @@ interface RawRepoEntry {
 
 interface RawRepoIndex {
   name?: string;
+  website?: string;
   plugins?: RawRepoEntry[];
 }
 
-// 插件仓库信息（仓库管理页展示：地址 + 展示名 + 插件数）
+// 插件仓库信息（仓库管理页展示：地址 + 展示名 + 官网）
 export interface RepoStoreInfo {
   url: string;
   name: string;
-  count: number;
+  // 仓库官网（索引声明 website 字段，http(s) 归一化）；未声明为空字符串
+  website: string;
 }
 
 // manifest.json settings 数组元素（插件静态设置声明：type/key/title/summary/
@@ -425,7 +427,8 @@ export class PluginService {
   }
 
   // 仓库索引信息（添加仓库时校验 + 管理页展示）：
-  // 拉取索引并要求 plugins 数组可解析；展示名取索引声明 name，缺省回退地址主机名
+  // 拉取索引并要求 plugins 数组可解析；展示名取索引声明 name，缺省回退地址主机名；
+  // 官网取索引声明 website（仅接受 http(s) 绝对地址，其余视为未声明）
   static async fetchStoreInfo(url: string): Promise<RepoStoreInfo> {
     if (url.startsWith('http://') && !PluginService.isDebugBuild()) {
       throw new Error('plugin_repo_not_https');
@@ -435,7 +438,7 @@ export class PluginService {
     if (raw === null || raw === undefined || !Array.isArray(raw.plugins)) {
       throw new Error('plugin_repo_bad_index');
     }
-    const entries = PluginService.parseRepoIndex(url, raw);
+    PluginService.parseRepoIndex(url, raw);
     let name = typeof raw.name === 'string' ? raw.name : '';
     if (name === '') {
       const m = new RegExp('^https?://([^/?#]+)').exec(url);
@@ -444,7 +447,7 @@ export class PluginService {
     const info: RepoStoreInfo = {
       url: url,
       name: name,
-      count: entries.length,
+      website: PluginService.normalizeSiteUrl(raw.website),
     };
     return info;
   }

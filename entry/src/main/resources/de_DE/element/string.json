@@ -165,6 +165,18 @@
       "value": "Speichern"
     },
     {
+      "name": "common_select",
+      "value": "Auswählen"
+    },
+    {
+      "name": "download_delete_series_confirm",
+      "value": "Heruntergeladene Kapitel dieser Serie löschen?"
+    },
+    {
+      "name": "download_delete_selected_confirm",
+      "value": "%d ausgewählte heruntergeladene Kapitel löschen?"
+    },
+    {
       "name": "common_uninstall",
       "value": "Deinstallieren"
     },

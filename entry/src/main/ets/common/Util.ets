@@ -11,6 +11,19 @@ export class Util {
     return new Array<number>(n).fill(0);
   }
 
+  // PC 鼠标点击时是否按住 Ctrl（经事件对象的 getModifierKeyState 查询；触屏或不支持时返回 false）
+  // 用于 PC 端 Ctrl+点击进入/切换多选，移动端不受影响
+  static isCtrlHeld(event: BaseEvent): boolean {
+    if (event.getModifierKeyState === undefined) {
+      return false;
+    }
+    try {
+      return event.getModifierKeyState(['Ctrl']);
+    } catch (_e) {
+      return false;
+    }
+  }
+
   // the global getContext() helper is deprecated since API 18: use UIContext.getHostContext() instead
   static hostAbilityContext(ui: UIContext): common.UIAbilityContext {
     return ui.getHostContext() as common.UIAbilityContext;

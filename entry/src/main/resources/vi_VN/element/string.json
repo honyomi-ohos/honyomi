@@ -165,6 +165,18 @@
       "value": "Lưu"
     },
     {
+      "name": "common_select",
+      "value": "Chọn"
+    },
+    {
+      "name": "download_delete_series_confirm",
+      "value": "Xóa các chương đã tải của bộ truyện này?"
+    },
+    {
+      "name": "download_delete_selected_confirm",
+      "value": "Xóa %d chương đã tải đang chọn?"
+    },
+    {
       "name": "common_uninstall",
       "value": "Gỡ cài đặt"
     },

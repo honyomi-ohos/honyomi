@@ -149,6 +149,18 @@
       "value": "Salva"
     },
     {
+      "name": "common_select",
+      "value": "Seleziona"
+    },
+    {
+      "name": "download_delete_series_confirm",
+      "value": "Eliminare i capitoli scaricati di questa serie?"
+    },
+    {
+      "name": "download_delete_selected_confirm",
+      "value": "Eliminare i %d capitoli scaricati selezionati?"
+    },
+    {
       "name": "common_uninstall",
       "value": "Disinstalla"
     },

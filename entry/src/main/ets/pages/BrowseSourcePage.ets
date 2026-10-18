@@ -38,6 +38,10 @@ export struct BrowseSourcePage {
   @State hasNextPage: boolean = false;
   @State loadingMore: boolean = false;
   @State contentW: number = 0;
+  // 结果网格视口高度（补拉判定用，不参与渲染）
+  private gridH: number = 0;
+  // 上次补拉触发时的条数（加载后条数无增长时终止补拉链）
+  private fillChecked: number = -1;
   @State folderReady: boolean = false;
   @State syncing: boolean = false;
   @State showFolderSheet: boolean = false;
@@ -67,12 +71,14 @@ export struct BrowseSourcePage {
     this.searching = true;
     this.results = [];
     this.page = 1;
+    this.fillChecked = -1;
     try {
       const context = Util.hostAbilityContext(this.getUIContext());
       await AppDb.ready(context);
       const result = await this.fetchPage(source, 1);
       this.results = await this.toRecords(source.key, result.works);
       this.hasNextPage = result.hasNextPage;
+      this.ensureFilled();
     } catch (e) {
       Util.toastRes(this.getUIContext(), $r('app.string.browse_load_failed'),
         [Util.errText(this.getUIContext(), (e as Error).message)]);
@@ -88,6 +94,7 @@ export struct BrowseSourcePage {
     this.searching = true;
     this.results = [];
     this.page = 1;
+    this.fillChecked = -1;
     try {
       const context = Util.hostAbilityContext(this.getUIContext());
       await AppDb.ready(context);
@@ -104,6 +111,7 @@ export struct BrowseSourcePage {
         q === '' && !this.filterSearch ? await source.getPopularWorks(1) : await source.getSearchWorks(1, q);
       this.results = await this.toRecords(source.key, result.works);
       this.hasNextPage = result.hasNextPage;
+      this.ensureFilled();
     } catch (e) {
       Util.toastRes(this.getUIContext(), $r('app.string.browse_search_failed'),
         [Util.errText(this.getUIContext(), (e as Error).message)]);
@@ -216,6 +224,7 @@ export struct BrowseSourcePage {
       return;
     }
     this.loadingMore = true;
+    let ok = false;
     try {
       const nextPage = this.page + 1;
       const q = this.query.trim();
@@ -225,10 +234,39 @@ export struct BrowseSourcePage {
       this.results = this.results.concat(more);
       this.page = nextPage;
       this.hasNextPage = result.hasNextPage;
+      ok = true;
     } catch (e) {
       Util.toastRes(this.getUIContext(), $r('app.string.browse_load_more_failed'));
     }
     this.loadingMore = false;
+    if (ok) {
+      // 每次加载完成后都重新判断：单页仍不足以铺满时继续拉下一页，直到铺满或无更多页
+      this.ensureFilled();
+    }
+  }
+
+  // 内容不足一屏时的补拉兜底：大屏列数多 + 插件单页条数少（如哔咔 20 条/页）时，
+  // Grid 内容不溢出无法滚动，onReachEnd 永远不触发。按卡片实际尺寸估算铺满视口所需条数，
+  // 不足则继续加载下一页；loadMore 成功后回到这里形成补拉链。
+  private ensureFilled(): void {
+    if (this.gridH <= 0 || this.results.length === 0 || this.loadingMore || !this.hasNextPage) {
+      return;
+    }
+    // 上次补拉后条数没有增长（插件返回空页）：终止补拉链，避免死循环
+    if (this.results.length === this.fillChecked) {
+      return;
+    }
+    const columns = this.gridColumns();
+    // 卡片宽度 = (网格宽 - 左右内边距 32 - 列间距 12*(cols-1)) / cols
+    const cardW = (this.contentW - 32 - (columns - 1) * 12) / columns;
+    // 行高 = 封面（宽高比 0.7）+ 标题两行 + 行间距
+    const rowH = cardW / 0.7 + 56;
+    // 多备一行缓冲：内容恰好等于视口高度时仍不可滚动，预留余量保证 onReachEnd 可触发
+    const rowsNeeded = Math.ceil(this.gridH / rowH) + 1;
+    if (this.results.length < rowsNeeded * columns) {
+      this.fillChecked = this.results.length;
+      this.loadMore();
+    }
   }
 
   async toRecords(sourceKey: string, mangas: SManga[]): Promise<MangaRecord[]> {
@@ -641,6 +679,9 @@ export struct BrowseSourcePage {
                     onCardLongPress: (r: MangaRecord): void => {
                       this.quickAddToLibrary(r);
                     },
+                    onCardMenuAddToLibrary: (r: MangaRecord): void => {
+                      this.quickAddToLibrary(r);
+                    },
                   })
                 }
               }, (record: MangaRecord) => `bs-${record.sourceKey}-${record.url}`)
@@ -653,6 +694,18 @@ export struct BrowseSourcePage {
             .layoutWeight(1)
             .onReachEnd(() => {
               this.loadMore();
+            })
+            .onAreaChange((_old: Area, newArea: Area) => {
+              // Grid 首次上屏时 gridH 才有值，此处启动补拉链；窗口/旋转变化时同样补拉
+              const w = newArea.width;
+              if (typeof w === 'number') {
+                this.contentW = w;
+              }
+              const h = newArea.height;
+              if (typeof h === 'number') {
+                this.gridH = h;
+              }
+              this.ensureFilled();
             })
           }
         }

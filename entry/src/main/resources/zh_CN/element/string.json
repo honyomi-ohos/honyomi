@@ -193,6 +193,10 @@
       "value": "保存"
     },
     {
+      "name": "common_select",
+      "value": "选择"
+    },
+    {
       "name": "common_uninstall",
       "value": "卸载"
     },
@@ -851,6 +855,14 @@
     {
       "name": "download_deleted",
       "value": "已删除"
+    },
+    {
+      "name": "download_delete_series_confirm",
+      "value": "删除该作品的全部已下载章节？"
+    },
+    {
+      "name": "download_delete_selected_confirm",
+      "value": "删除选中的 %d 个章节？"
     },
     {
       "name": "download_empty",

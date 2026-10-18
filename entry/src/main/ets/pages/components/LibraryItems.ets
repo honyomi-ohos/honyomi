@@ -1,6 +1,7 @@
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { MangaRecord } from '../../model/Models';
 import { ThemePalette } from '../../common/Theme';
+import { Util } from '../../common/Util';
 import { SmartImage } from './SmartImage';
 import { AppIcon } from './AppIcon';
 import { CoverPlaceholder } from './CoverPlaceholder';
@@ -64,8 +65,29 @@ export struct LibraryMangaItem {
   };
   onItemLongPress: (record: MangaRecord) => void = (_r: MangaRecord) => {
   };
+  // PC 右键菜单「选择」：进入/切换多选（与长按一致，但不弹快速分类）
+  onItemMenuSelect: (record: MangaRecord) => void = (_r: MangaRecord) => {
+  };
+  // PC 右键菜单「移动分类」：弹快速改分类弹窗（与长按快速分类一致）
+  onItemMenuCategory: (record: MangaRecord) => void = (_r: MangaRecord) => {
+  };
 
   // 封面展示地址：自定义封面优先（origThumbnail 非空，thumbnailUrl 即 file:// 自定义路径），
+
+  // PC 鼠标右键菜单：选择 / 移动分类（移动端仍走长按手势，右键不响应触摸）
+  @Builder
+  itemContextMenu() {
+    Menu() {
+      MenuItem({ content: $r('app.string.common_select') })
+        .onClick(() => {
+          this.onItemMenuSelect(this.record);
+        })
+      MenuItem({ content: $r('app.string.action_move_category') })
+        .onClick(() => {
+          this.onItemMenuCategory(this.record);
+        })
+    }
+  }
 
   @Builder
   startBadges() {
@@ -122,9 +144,14 @@ export struct LibraryMangaItem {
       })
       .alignItems(VerticalAlign.Center)
       .backgroundColor(this.isSelected ? this.pal.primarySoft : Color.Transparent)
-      .onClick(() => {
-        this.onItemClick(this.record);
+      .onClick((event?: ClickEvent) => {
+        if (event !== undefined && Util.isCtrlHeld(event)) {
+          this.onItemMenuSelect(this.record);
+        } else {
+          this.onItemClick(this.record);
+        }
       })
+      .bindContextMenu(this.itemContextMenu, ResponseType.RightClick)
       .gesture(
         LongPressGesture()
           .onAction(() => {
@@ -196,9 +223,14 @@ export struct LibraryMangaItem {
       }
       .width('100%')
       .alignItems(HorizontalAlign.Start)
-      .onClick(() => {
-        this.onItemClick(this.record);
+      .onClick((event?: ClickEvent) => {
+        if (event !== undefined && Util.isCtrlHeld(event)) {
+          this.onItemMenuSelect(this.record);
+        } else {
+          this.onItemClick(this.record);
+        }
       })
+      .bindContextMenu(this.itemContextMenu, ResponseType.RightClick)
       .gesture(
         LongPressGesture()
           .onAction(() => {

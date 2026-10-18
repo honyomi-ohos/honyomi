@@ -169,6 +169,18 @@
       "value": "Kaydet"
     },
     {
+      "name": "common_select",
+      "value": "Seç"
+    },
+    {
+      "name": "download_delete_series_confirm",
+      "value": "Bu serinin indirilen bölümleri silinsin mi?"
+    },
+    {
+      "name": "download_delete_selected_confirm",
+      "value": "Seçilen %d indirilen bölüm silinsin mi?"
+    },
+    {
       "name": "common_uninstall",
       "value": "Kaldır"
     },

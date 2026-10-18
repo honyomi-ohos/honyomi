@@ -391,6 +391,19 @@ export struct BrowsePage {
     }
   }
 
+  // PC 鼠标右键菜单：置顶/取消置顶（与长按弹窗同一动作；移动端仍走长按手势）
+  @Builder
+  sourceContextMenu(s: Source) {
+    Menu() {
+      MenuItem({
+        content: this.isPinned(s.key) ? $r('app.string.browse_unpin') : $r('app.string.browse_pin')
+      })
+        .onClick(() => {
+          this.togglePin(s.key);
+        })
+    }
+  }
+
   @Builder
   sourceRow(s: Source) {
     Row() {
@@ -461,6 +474,9 @@ export struct BrowsePage {
           this.showSourceOptions(s);
         })
     )
+    .bindContextMenu((): void => {
+      this.sourceContextMenu(s);
+    }, ResponseType.RightClick)
   }
 
   @Builder

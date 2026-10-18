@@ -165,6 +165,18 @@
       "value": "I-save"
     },
     {
+      "name": "common_select",
+      "value": "Pumili"
+    },
+    {
+      "name": "download_delete_series_confirm",
+      "value": "Burahin ang mga naka-download na chapter ng seryeng ito?"
+    },
+    {
+      "name": "download_delete_selected_confirm",
+      "value": "Burahin ang %d napiling naka-download na chapter?"
+    },
+    {
       "name": "common_uninstall",
       "value": "I-uninstall"
     },

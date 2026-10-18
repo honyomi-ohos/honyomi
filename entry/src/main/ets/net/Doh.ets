@@ -1,4 +1,4 @@
-import { http, connection } from '@kit.NetworkKit';
+import { http, connection, socket } from '@kit.NetworkKit';
 import { Settings } from '../common/Settings';
 import { Log } from '../common/Log';
 
@@ -9,6 +9,9 @@ export interface DohProvider {
   id: string;
   label: string;
   url: string;
+  // true = 走 DNS-over-HTTPS JSON API（Google resolve 风格 ?name=&type=A）。
+  // doh.pub 实测 wire API 应答被上游污染，JSON API 返回干净结果，故 dnspod 走 JSON
+  json?: boolean;
 }
 
 // DNS 应答解析结果：IPv4 列表 + 最小 TTL（秒）
@@ -17,10 +20,23 @@ interface DohAnswer {
   ttl: number;
 }
 
+// JSON API 原始应答模型（JSON.parse 后一次性转换）
+interface DohJsonAnswer {
+  Status?: number;
+  Answer?: DohJsonRecord[];
+}
+
+interface DohJsonRecord {
+  type?: number;
+  TTL?: number;
+  data?: string;
+}
+
 // host → 已注入 netstack 的映射缓存
 interface DohCacheEntry {
   ips: string[];
   expireAt: number;
+  pin: boolean;
 }
 
 // DNS over HTTPS 解析器：
@@ -30,6 +46,10 @@ interface DohCacheEntry {
 // - 查询走独立裸 http 通道（不经 Http/CookieJar/UA 管线，天然免递归）
 // - 解析失败 fail-open：不注入规则，回落系统 DNS，绝不阻断业务请求
 // - 结果缓存至 TTL 过期（钳制 60s - 1h），并发去重
+// - 应答经 GFW 假 IP 池过滤 + TCP 探测验证，只注入真实可连的 IP，
+//   防止污染应答把请求引向假 IP
+// - 插件 pin（$.dns.set）优先于 DoH：pin 存活期间 DoH 永不覆盖
+// - 供应商网络故障（超时/被 RST）后 60s 内直接 fail-open，避免每请求烧超时
 export class Doh {
   // 供应商清单（顺序即设置页展示顺序）
   static readonly PROVIDERS: DohProvider[] = [
@@ -38,7 +58,7 @@ export class Doh {
     { id: 'adguard', label: 'AdGuard', url: 'https://dns.adguard-dns.com/dns-query' },
     { id: 'quad9', label: 'Quad9', url: 'https://dns.quad9.net/dns-query' },
     { id: 'alidns', label: 'AliDNS', url: 'https://dns.alidns.com/dns-query' },
-    { id: 'dnspod', label: 'DNSPod', url: 'https://doh.pub/dns-query' },
+    { id: 'dnspod', label: 'DNSPod', url: 'https://doh.pub/dns-query', json: true },
     { id: '360', label: '360', url: 'https://doh.360.cn/dns-query' },
     { id: 'quad101', label: 'Quad 101', url: 'https://dns.twnic.tw/dns-query' },
     { id: 'mullvad', label: 'Mullvad', url: 'https://dns.mullvad.net/dns-query' },
@@ -54,6 +74,36 @@ export class Doh {
   private static cache: Map<string, DohCacheEntry> = new Map();
   private static inflight: Map<string, Promise<void>> = new Map();
   private static querySeq: number = 1;
+  private static providerFailedUntil: number = 0;
+
+  // 供应商网络故障退避窗口
+  private static readonly PROVIDER_BACKOFF_MS: number = 60 * 1000;
+  // 应答 IP 真实性探测参数（真 IP 秒连，假 IP 黑洞/RST 被拒）
+  private static readonly PROBE_PORT: number = 443;
+  private static readonly PROBE_TIMEOUT_MS: number = 900;
+
+  // GFW 污染假 IP 段（Facebook/Twitter 段 + 经典单 IP）。命中即弃用；
+  // 未命中仍经 TCP 探测验证，此表只做黑名单快速路径
+  private static readonly FAKE_RANGES: number[][] = [
+    [0x1F0D1800, 0xFFFFF800], // 31.13.24.0/21
+    [0x1F0D4000, 0xFFC00000], // 31.13.64.0/18
+    [0x42DC9000, 0xFFFFF000], // 66.220.144.0/20
+    [0x453FB000, 0xFFFFF000], // 69.63.176.0/20
+    [0x45ABE000, 0xFFFFE000], // 69.171.224.0/19
+    [0x4A774C00, 0xFFFFFC00], // 74.119.76.0/22
+    [0x66846000, 0xFFFFF000], // 102.132.96.0/20
+    [0x67046000, 0xFFFFFC00], // 103.4.96.0/22
+    [0x9DF00000, 0xFFFF0000], // 157.240.0.0/16
+    [0xADFC4000, 0xFFC00000], // 173.252.64.0/18
+    [0xCC0F1400, 0xFFFFFC00], // 204.15.20.0/22
+    [0xC73B9400, 0xFFFFFC00], // 199.59.148.0/22
+    [0x0807C62D, 0xFFFFFFFF], // 8.7.198.45
+    [0x2E52AE44, 0xFFFFFFFF], // 46.82.174.68
+    [0x3B1803AD, 0xFFFFFFFF], // 59.24.3.173
+    [0x5D2E0859, 0xFFFFFFFF], // 93.46.8.89
+    [0xCB620741, 0xFFFFFFFF], // 203.98.7.65
+    [0xF3B9BB27, 0xFFFFFFFF], // 243.185.187.39
+  ];
 
   // 当前生效供应商（设置未开启时 undefined）
   static currentProvider(): DohProvider | undefined {
@@ -85,7 +135,10 @@ export class Doh {
     }
     const now = Date.now();
     const hit = Doh.cache.get(host);
-    if (hit !== undefined && hit.expireAt > now) {
+    if (hit !== undefined && (hit.pin || hit.expireAt > now)) {
+      return;
+    }
+    if (Doh.providerFailedUntil > now) {
       return;
     }
     const pending = Doh.inflight.get(host);
@@ -105,6 +158,7 @@ export class Doh {
   // 关闭/切换供应商时清空全部自定义规则与缓存（规则仅进程内有效，重启即失）
   static reset(): void {
     Doh.cache.clear();
+    Doh.providerFailedUntil = 0;
     try {
       connection.clearCustomDnsRules();
     } catch (e) {
@@ -118,26 +172,84 @@ export class Doh {
   // host/ips 已由调用方校验（域名非 IP 字面量 / 1..8 个 IPv4）。
   static async pin(host: string, ips: string[]): Promise<void> {
     await connection.addCustomDnsRule(host, ips);
-    const entry: DohCacheEntry = { ips: ips, expireAt: Date.now() + Doh.PIN_TTL_MS };
+    const entry: DohCacheEntry = { ips: ips, expireAt: Date.now() + Doh.PIN_TTL_MS, pin: true };
     Doh.cache.set(host, entry);
     Log.debug(TAG, `pin ${host} -> ${ips.join(',')}`);
   }
 
   private static async resolveAndRegister(host: string, provider: DohProvider): Promise<void> {
-    const answer = await Doh.resolve(host, provider);
-    if (answer === undefined || answer.ips.length === 0) {
-      Log.debug(TAG, `resolve ${host} via ${provider.id} got no answer`);
+    let answer: DohAnswer | undefined;
+    try {
+      answer = await Doh.resolve(host, provider);
+    } catch (e) {
+      // 供应商网络故障（连接超时/被 RST 等）：60s 内 fail-open，避免每请求烧超时
+      Doh.providerFailedUntil = Date.now() + Doh.PROVIDER_BACKOFF_MS;
+      Log.warn(TAG, `provider ${provider.id} unreachable, backoff ${Doh.PROVIDER_BACKOFF_MS / 1000}s, fail-open: ${e}`);
       return;
     }
-    await connection.addCustomDnsRule(host, answer.ips);
+    if (answer === undefined || answer.ips.length === 0) {
+      Log.warn(TAG, `resolve ${host} via ${provider.id} got no answer, fail-open`);
+      return;
+    }
+    // pin 保护：解析期间插件已显式 pin 该 host，DoH 应答不覆盖插件指定 IP
+    const pinned = Doh.cache.get(host);
+    if (pinned !== undefined && pinned.pin) {
+      Log.debug(TAG, `skip ${host}: pinned by plugin`);
+      return;
+    }
+    // GFW 假 IP 池快速过滤 + TCP 探测验证，只注入真实可连的 IP
+    const candidates: string[] = [];
+    for (const ip of answer.ips) {
+      if (!Doh.isKnownFakeIp(ip)) {
+        candidates.push(ip);
+      }
+    }
+    const validated: string[] = await Doh.probeIps(candidates);
+    if (validated.length === 0) {
+      Log.warn(TAG, `answer for ${host} rejected (poisoned/unreachable): ${answer.ips.join(',')} via ${provider.id}`);
+      return;
+    }
+    await connection.addCustomDnsRule(host, validated);
     const ttlMs: number = Math.min(Math.max(answer.ttl, 60), 3600) * 1000;
-    const entry: DohCacheEntry = { ips: answer.ips, expireAt: Date.now() + ttlMs };
+    const entry: DohCacheEntry = { ips: validated, expireAt: Date.now() + ttlMs, pin: false };
     Doh.cache.set(host, entry);
-    Log.debug(TAG, `${host} -> ${answer.ips.join(',')} via ${provider.id} ttl=${answer.ttl}`);
+    Log.debug(TAG, `${host} -> ${validated.join(',')} via ${provider.id} ttl=${answer.ttl}`);
+  }
+
+  // 并行探测候选 IP 的 TCP 可达性，返回真实可连的子集（空数组 = 全部被拒）
+  private static async probeIps(ips: string[]): Promise<string[]> {
+    const tasks: Promise<boolean>[] = [];
+    for (const ip of ips) {
+      tasks.push(Doh.probeIp(ip));
+    }
+    const results: boolean[] = await Promise.all(tasks);
+    const ok: string[] = [];
+    for (let i = 0; i < ips.length; i++) {
+      if (results[i]) {
+        ok.push(ips[i]);
+      }
+    }
+    return ok;
+  }
+
+  private static async probeIp(ip: string): Promise<boolean> {
+    const tcp: socket.TCPSocket = socket.constructTCPSocketInstance();
+    try {
+      await tcp.connect({ address: { address: ip, port: Doh.PROBE_PORT }, timeout: Doh.PROBE_TIMEOUT_MS });
+      return true;
+    } catch (e) {
+      return false;
+    } finally {
+      tcp.close().catch((): void => {
+      });
+    }
   }
 
   // RFC 8484：POST application/dns-message（单问题 A 查询）
   private static async resolve(host: string, provider: DohProvider): Promise<DohAnswer | undefined> {
+    if (provider.json === true) {
+      return Doh.resolveJson(host, provider);
+    }
     const id = (Doh.querySeq++) & 0xffff;
     const query = Doh.buildQuery(id, host);
     const client: http.HttpRequest = http.createHttp();
@@ -150,7 +262,7 @@ export class Doh {
         },
         extraData: query.buffer,
         expectDataType: http.HttpDataType.ARRAY_BUFFER,
-        connectTimeout: 5000,
+        connectTimeout: 3000,
         readTimeout: 5000,
       };
       const resp = await client.request(provider.url, options);
@@ -158,6 +270,44 @@ export class Doh {
         return undefined;
       }
       return Doh.parseAnswer(new Uint8Array(resp.result as ArrayBuffer));
+    } finally {
+      client.destroy();
+    }
+  }
+
+  // JSON API 查询：GET {url}?name={host}&type=A（accept: application/dns-json）
+  private static async resolveJson(host: string, provider: DohProvider): Promise<DohAnswer | undefined> {
+    const client: http.HttpRequest = http.createHttp();
+    try {
+      const options: http.HttpRequestOptions = {
+        method: http.RequestMethod.GET,
+        header: {
+          'Accept': 'application/dns-json'
+        },
+        expectDataType: http.HttpDataType.STRING,
+        connectTimeout: 3000,
+        readTimeout: 5000,
+      };
+      const resp = await client.request(`${provider.url}?name=${host}&type=A`, options);
+      if (resp.responseCode < 200 || resp.responseCode >= 300 || typeof resp.result !== 'string') {
+        return undefined;
+      }
+      const raw = JSON.parse(resp.result) as DohJsonAnswer;
+      if (raw.Status !== 0 || raw.Answer === undefined || raw.Answer.length === 0) {
+        return undefined;
+      }
+      const ips: string[] = [];
+      let minTtl = 3600;
+      for (const rec of raw.Answer) {
+        if (rec.type === 1 && rec.data !== undefined && Doh.ipToInt(rec.data) >= 0) {
+          ips.push(rec.data);
+          if (rec.TTL !== undefined && rec.TTL > 0 && rec.TTL < minTtl) {
+            minTtl = rec.TTL;
+          }
+        }
+      }
+      const answer: DohAnswer = { ips: ips, ttl: minTtl };
+      return answer;
     } finally {
       client.destroy();
     }
@@ -254,6 +404,37 @@ export class Doh {
 
   private static readU32(msg: Uint8Array, off: number): number {
     return ((msg[off] << 24) | (msg[off + 1] << 16) | (msg[off + 2] << 8) | msg[off + 3]) >>> 0;
+  }
+
+  // 点分 IPv4 → 无符号整数；非法返回 -1
+  private static ipToInt(ip: string): number {
+    const parts: string[] = ip.split('.');
+    if (parts.length !== 4) {
+      return -1;
+    }
+    let v: number = 0;
+    for (const part of parts) {
+      const n: number = parseInt(part, 10);
+      if (isNaN(n) || n < 0 || n > 255) {
+        return -1;
+      }
+      v = v * 256 + n;
+    }
+    return v >>> 0;
+  }
+
+  // 是否命中 GFW 假 IP 段
+  private static isKnownFakeIp(ip: string): boolean {
+    const v = Doh.ipToInt(ip);
+    if (v < 0) {
+      return false;
+    }
+    for (const r of Doh.FAKE_RANGES) {
+      if (((v & r[1]) >>> 0) === r[0]) {
+        return true;
+      }
+    }
+    return false;
   }
 
   // 从 URL 提取主机名（剥离协议/端口/路径/凭据）

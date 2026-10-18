@@ -127,6 +127,17 @@ export struct ExtensionListPanel {
     })
   }
 
+  // PC 右键菜单「卸载」：弹卸载确认（与长按一致；移动端仍走长按手势）
+  @Builder
+  installedRowMenu(item: InstalledPlugin) {
+    Menu() {
+      MenuItem({ content: $r('app.string.common_uninstall') })
+        .onClick(() => {
+          this.confirmUninstall(item);
+        })
+    }
+  }
+
   // 整行点击进详情；长按弹卸载确认；有更新时行尾显示更新按钮
   @Builder
   installedRow(item: InstalledPlugin, updatable: boolean) {
@@ -210,6 +221,9 @@ export struct ExtensionListPanel {
           this.confirmUninstall(item);
         })
     )
+    .bindContextMenu((): void => {
+      this.installedRowMenu(item);
+    }, ResponseType.RightClick)
   }
 
   // 在线可用插件行：地球按钮预览站点 + 下载按钮安装；整行点击即安装（Mihon Available 行同款）

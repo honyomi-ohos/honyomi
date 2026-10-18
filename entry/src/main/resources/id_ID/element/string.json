@@ -161,6 +161,18 @@
       "value": "Simpan"
     },
     {
+      "name": "common_select",
+      "value": "Pilih"
+    },
+    {
+      "name": "download_delete_series_confirm",
+      "value": "Hapus chapter yang diunduh dari seri ini?"
+    },
+    {
+      "name": "download_delete_selected_confirm",
+      "value": "Hapus %d chapter terunduh yang dipilih?"
+    },
+    {
       "name": "common_uninstall",
       "value": "Copot"
     },

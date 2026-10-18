@@ -169,6 +169,18 @@
       "value": "Сохранить"
     },
     {
+      "name": "common_select",
+      "value": "Выбрать"
+    },
+    {
+      "name": "download_delete_series_confirm",
+      "value": "Удалить скачанные главы этого тайтла?"
+    },
+    {
+      "name": "download_delete_selected_confirm",
+      "value": "Удалить выбранные скачанные главы (%d)?"
+    },
+    {
       "name": "common_uninstall",
       "value": "Удалить"
     },

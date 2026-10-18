@@ -45,6 +45,17 @@ struct DetailChapterRow {
   };
   onLongPress: (chapter: ChapterRecord) => void = (_c: ChapterRecord) => {
   };
+
+  // PC 鼠标右键菜单「选择」：进入多选（与长按一致；移动端仍走长按手势）
+  @Builder
+  chapterContextMenu() {
+    Menu() {
+      MenuItem({ content: $r('app.string.common_select') })
+        .onClick(() => {
+          this.onLongPress(this.chapter);
+        })
+    }
+  }
   // 指示器点击：state 为行内当前下载状态（none/downloading/queued/downloaded）
   onIndicatorTap: (chapter: ChapterRecord, state: string) => void = (_c: ChapterRecord, _s: string) => {
   };
@@ -133,13 +144,18 @@ struct DetailChapterRow {
       top: 10,
       bottom: 10
     })
-    .onClick(() => {
-      this.onTap(this.chapter);
+    .onClick((event?: ClickEvent) => {
+      if (event !== undefined && Util.isCtrlHeld(event)) {
+        this.onLongPress(this.chapter);
+      } else {
+        this.onTap(this.chapter);
+      }
     })
     .gesture(LongPressGesture({ repeat: false })
       .onAction(() => {
         this.onLongPress(this.chapter);
       }))
+    .bindContextMenu(this.chapterContextMenu, ResponseType.RightClick)
   }
 
   private onDlNotify = (): void => {
@@ -557,6 +573,7 @@ export struct MangaDetailPage {
 
                       // 标题/作者/状态+源名（对齐 Mihon MangaContentInfo）：
                       // 标题、作者点击跳全局搜索，长按复制；源名点击回上一页文本搜索
+                      // PC 右键标题/作者复制（移动端仍走长按复制）
                       Column({ space: 5 }) {
                         Text(this.manga.title)
                           .fontSize(20)
@@ -573,6 +590,7 @@ export struct MangaDetailPage {
                             .onAction(() => {
                               this.copyText(this.manga.title);
                             }))
+                          .bindContextMenu(this.titleContextMenu, ResponseType.RightClick)
                         if (this.manga.author !== '') {
                           Text(this.manga.author)
                             .fontSize(13)
@@ -586,6 +604,7 @@ export struct MangaDetailPage {
                               .onAction(() => {
                                 this.copyText(this.manga.author);
                               }))
+                            .bindContextMenu(this.authorContextMenu, ResponseType.RightClick)
                         }
                         Row({ space: 4 }) {
                           AppIcon({
@@ -1085,6 +1104,28 @@ export struct MangaDetailPage {
     }).catch((_e: BusinessError) => {
       Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
     });
+  }
+
+  // PC 右键复制标题（移动端仍走长按复制）
+  @Builder
+  titleContextMenu() {
+    Menu() {
+      MenuItem({ content: $r('app.string.common_copy_to_clipboard') })
+        .onClick(() => {
+          this.copyText(this.manga.title);
+        })
+    }
+  }
+
+  // PC 右键复制作者（移动端仍走长按复制）
+  @Builder
+  authorContextMenu() {
+    Menu() {
+      MenuItem({ content: $r('app.string.common_copy_to_clipboard') })
+        .onClick(() => {
+          this.copyText(this.manga.author);
+        })
+    }
   }
 
   // 未下载→入队；下载中/排队→取消；已下载→确认后删除

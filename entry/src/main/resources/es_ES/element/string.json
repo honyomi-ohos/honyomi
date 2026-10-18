@@ -169,6 +169,18 @@
       "value": "Guardar"
     },
     {
+      "name": "common_select",
+      "value": "Seleccionar"
+    },
+    {
+      "name": "download_delete_series_confirm",
+      "value": "¿Eliminar los capítulos descargados de esta serie?"
+    },
+    {
+      "name": "download_delete_selected_confirm",
+      "value": "¿Eliminar los %d capítulos descargados seleccionados?"
+    },
+    {
       "name": "common_uninstall",
       "value": "Desinstalar"
     },

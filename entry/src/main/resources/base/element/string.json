@@ -913,6 +913,10 @@
       "value": "Save"
     },
     {
+      "name": "common_select",
+      "value": "Select"
+    },
+    {
       "name": "common_uninstall",
       "value": "Uninstall"
     },
@@ -1439,6 +1443,14 @@
     {
       "name": "download_deleted",
       "value": "Deleted"
+    },
+    {
+      "name": "download_delete_series_confirm",
+      "value": "Delete all downloaded chapters of this work?"
+    },
+    {
+      "name": "download_delete_selected_confirm",
+      "value": "Delete %d selected chapters?"
     },
     {
       "name": "download_empty",
