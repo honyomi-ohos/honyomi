@@ -917,6 +917,14 @@
       "value": "Select"
     },
     {
+      "name": "history_remove_selected_confirm",
+      "value": "Remove %d selected entries from history?"
+    },
+    {
+      "name": "history_removed",
+      "value": "Removed from history"
+    },
+    {
       "name": "common_uninstall",
       "value": "Uninstall"
     },

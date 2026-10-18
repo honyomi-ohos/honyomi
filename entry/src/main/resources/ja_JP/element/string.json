@@ -169,6 +169,14 @@
       "value": "選拡"
     },
     {
+      "name": "history_remove_selected_confirm",
+      "value": "選択した%d件の履歴を削除しますか？"
+    },
+    {
+      "name": "history_removed",
+      "value": "履歴から削除しました"
+    },
+    {
       "name": "download_delete_series_confirm",
       "value": "この作品のダウンロード済み章を削除しますか？"
     },

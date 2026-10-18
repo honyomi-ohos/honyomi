@@ -141,6 +141,14 @@
       "value": "Wybierz"
     },
     {
+      "name": "history_remove_selected_confirm",
+      "value": "Usunąć %d zaznaczonych wpisów z historii?"
+    },
+    {
+      "name": "history_removed",
+      "value": "Usunięto z historii"
+    },
+    {
       "name": "download_delete_series_confirm",
       "value": "Usunąć pobrane rozdziały tej serii?"
     },

@@ -169,6 +169,14 @@
       "value": "Pilih"
     },
     {
+      "name": "history_remove_selected_confirm",
+      "value": "Padam %d entri yang dipilih daripada sejarah?"
+    },
+    {
+      "name": "history_removed",
+      "value": "Dipadam daripada sejarah"
+    },
+    {
       "name": "download_delete_series_confirm",
       "value": "Padam bab yang dimuat turun daripada siri ini?"
     },

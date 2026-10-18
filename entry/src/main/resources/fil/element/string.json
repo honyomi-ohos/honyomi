@@ -169,6 +169,14 @@
       "value": "Pumili"
     },
     {
+      "name": "history_remove_selected_confirm",
+      "value": "Burahin ang %d napiling entry mula sa kasaysayan?"
+    },
+    {
+      "name": "history_removed",
+      "value": "Tinanggal mula sa kasaysayan"
+    },
+    {
       "name": "download_delete_series_confirm",
       "value": "Burahin ang mga naka-download na chapter ng seryeng ito?"
     },

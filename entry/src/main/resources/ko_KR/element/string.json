@@ -173,6 +173,14 @@
       "value": "선택"
     },
     {
+      "name": "history_remove_selected_confirm",
+      "value": "선택한 기록 %d건을 삭제할까요?"
+    },
+    {
+      "name": "history_removed",
+      "value": "기록에서 삭제됨"
+    },
+    {
       "name": "download_delete_series_confirm",
       "value": "이 작품의 다운로드된 화를 삭제할까요?"
     },

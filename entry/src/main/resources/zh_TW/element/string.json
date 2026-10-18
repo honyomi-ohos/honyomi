@@ -197,6 +197,14 @@
       "value": "選擇"
     },
     {
+      "name": "history_remove_selected_confirm",
+      "value": "從歷史中移除選取的 %d 筆記錄？"
+    },
+    {
+      "name": "history_removed",
+      "value": "已從歷史中移除"
+    },
+    {
       "name": "download_delete_series_confirm",
       "value": "刪除此作品的已下載章節？"
     },

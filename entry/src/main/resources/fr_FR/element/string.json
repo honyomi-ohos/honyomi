@@ -165,6 +165,14 @@
       "value": "Sélectionner"
     },
     {
+      "name": "history_remove_selected_confirm",
+      "value": "Supprimer les %d entrées sélectionnées de l'historique ?"
+    },
+    {
+      "name": "history_removed",
+      "value": "Supprimé de l'historique"
+    },
+    {
       "name": "download_delete_series_confirm",
       "value": "Supprimer les chapitres téléchargés de cette série ?"
     },

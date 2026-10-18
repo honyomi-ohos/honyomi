@@ -169,6 +169,14 @@
       "value": "Chọn"
     },
     {
+      "name": "history_remove_selected_confirm",
+      "value": "Xóa %d mục đã chọn khỏi lịch sử?"
+    },
+    {
+      "name": "history_removed",
+      "value": "Đã xóa khỏi lịch sử"
+    },
+    {
       "name": "download_delete_series_confirm",
       "value": "Xóa các chương đã tải của bộ truyện này?"
     },

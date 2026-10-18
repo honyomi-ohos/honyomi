@@ -7,6 +7,8 @@ import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
 import { SmartImage } from './components/SmartImage';
+import { ConfirmDialog } from './components/Dialogs';
+import { AppIcon } from './components/AppIcon';
 import { SourceRegistry } from '../source/Source';
 
 // 历史页：最近阅读记录
@@ -28,6 +30,9 @@ export struct HistoryPage {
   @State items: HistoryItem[] = [];
   @State loading: boolean = true;
   @State confirmClear: boolean = false;
+  // 多选删除（对齐 Mihon HistoryScreen 长按进入选择模式）
+  @State selecting: boolean = false;
+  @State selectedIds: Set<number> = new Set<number>();
   // 清空确认 3 秒倒计时定时器：销毁时清理，防回调写已销毁组件状态
   private confirmTimerId: number = -1;
 
@@ -98,13 +103,15 @@ export struct HistoryPage {
           .fontWeight(FontWeight.Bold)
           .fontColor(this.pal.text)
           .layoutWeight(1)
-        Text(this.confirmClear ? $r('app.string.history_confirm_clear') : $r('app.string.history_clear'))
-          .fontSize(14)
-          .fontColor(this.confirmClear ? '#E05252' : this.pal.sub)
-          .padding({ left: 8, right: 8 })
-          .onClick(() => {
-            this.clearHistory();
-          })
+        if (!this.selecting) {
+          Text(this.confirmClear ? $r('app.string.history_confirm_clear') : $r('app.string.history_clear'))
+            .fontSize(14)
+            .fontColor(this.confirmClear ? '#E05252' : this.pal.sub)
+            .padding({ left: 8, right: 8 })
+            .onClick(() => {
+              this.clearHistory();
+            })
+        }
       }
       .width('100%')
       .padding({
@@ -135,6 +142,14 @@ export struct HistoryPage {
             ForEach(this.items, (item: HistoryItem) => {
               ListItem() {
                 Row({ space: 12 }) {
+                  // 多选态行首勾选框（对齐 Mihon 选择模式）
+                  if (this.selecting) {
+                    AppIcon({
+                      name: this.selectedIds.has(item.chapterId) ? 'check_circle' : 'check_box_outline_blank',
+                      iconSize: 20,
+                      tint: this.selectedIds.has(item.chapterId) ? this.pal.primary : this.pal.sub
+                    })
+                  }
                   // 封面（无封面时 SmartImage 内部渲染默认封面占位）；
                   // HistoryItem 不含 sourceKey，传空串走网络/缓存通用路径
                   SmartImage({
@@ -168,28 +183,50 @@ export struct HistoryPage {
                   .alignItems(HorizontalAlign.Start)
                   .layoutWeight(1)
 
-                  Text($r('app.string.history_continue'))
-                    .fontSize(12)
-                    .fontColor(this.pal.primary)
-                    .backgroundColor(this.pal.chip)
-                    .borderRadius(12)
-                    .padding({
-                      left: 10,
-                      right: 10,
-                      top: 4,
-                      bottom: 4
-                    })
+                  if (!this.selecting) {
+                    Text($r('app.string.history_continue'))
+                      .fontSize(12)
+                      .fontColor(this.pal.primary)
+                      .backgroundColor(this.pal.chip)
+                      .borderRadius(12)
+                      .padding({
+                        left: 10,
+                        right: 10,
+                        top: 4,
+                        bottom: 4
+                      })
+                  }
                 }
                 .width('100%')
                 .padding({
-                  left: 16 + this.inset(),
+                  left: (this.selecting ? 8 : 16) + this.inset(),
                   right: 16 + this.inset(),
                   top: 10,
                   bottom: 10
                 })
-                .onClick(() => {
-                  ContentOpen.open(this.pathStack, item.mangaId, item.chapterId);
+                .onClick((event?: ClickEvent) => {
+                  // PC Ctrl+点击直接进入多选（与右键菜单「选择」一致）
+                  if (event !== undefined && Util.isCtrlHeld(event) && !this.selecting) {
+                    this.enterSelection(item.chapterId);
+                    return;
+                  }
+                  if (this.selecting) {
+                    this.toggleSelected(item.chapterId);
+                  } else {
+                    ContentOpen.open(this.pathStack, item.mangaId, item.chapterId);
+                  }
                 })
+                // 移动端长按进入多选（对齐 Mihon）
+                .gesture(LongPressGesture()
+                  .onAction(() => {
+                    if (!this.selecting) {
+                      this.enterSelection(item.chapterId);
+                    }
+                  }))
+                // PC 右键菜单「选择」
+                .bindContextMenu((): void => {
+                  this.historyItemMenu(item);
+                }, ResponseType.RightClick)
               }
             }, (item: HistoryItem) => `his-${item.chapterId}-${item.seenAt}-${item.coverUrl}`)
           }
@@ -202,6 +239,50 @@ export struct HistoryPage {
             startMargin: 72 + this.inset(),
             endMargin: 16 + this.inset(),
           })
+
+          // 多选底部操作条：退出 / 已选计数 / 全选切换 / 删除
+          if (this.selecting) {
+            Row({ space: 14 }) {
+              AppIcon({ name: 'close', iconSize: 20, tint: this.pal.text })
+                .onClick(() => {
+                  this.exitSelection();
+                })
+              Text($r('app.string.detail_selected_count', this.selectedIds.size))
+                .fontSize(14)
+                .fontWeight(FontWeight.Bold)
+                .fontColor(this.pal.text)
+                .layoutWeight(1)
+              AppIcon({
+                name: this.allSelected() ? 'deselect' : 'select_all',
+                iconSize: 20,
+                tint: this.pal.text
+              })
+                .onClick(() => {
+                  this.toggleSelectAll();
+                })
+              Row({ space: 4 }) {
+                AppIcon({ name: 'delete', iconSize: 18, tint: this.pal.badgeRed })
+                Text($r('app.string.common_delete'))
+                  .fontSize(14)
+                  .fontColor(this.pal.badgeRed)
+              }
+              .opacity(this.selectedIds.size > 0 ? 1 : 0.4)
+              .onClick(() => {
+                if (this.selectedIds.size > 0) {
+                  this.confirmRemoveSelected();
+                }
+              })
+            }
+            .width('100%')
+            .padding({
+              left: 16 + this.inset(),
+              right: 16 + this.inset(),
+              top: 10,
+              bottom: 14
+            })
+            .backgroundColor(this.pal.bg)
+            .shadow({ radius: 12, color: '#33000000', offsetY: -2 })
+          }
         }
         .width('100%')
         .layoutWeight(1)
@@ -214,6 +295,88 @@ export struct HistoryPage {
 
   private onHistoryReselect(): void {
     this.resumeLastRead();
+  }
+
+  // ----- 多选删除 -----
+
+  // PC 右键菜单「选择」：单条进入多选（与长按一致；移动端仍走长按手势）
+  @Builder
+  historyItemMenu(item: HistoryItem) {
+    Menu() {
+      MenuItem({ content: $r('app.string.common_select') })
+        .onClick(() => {
+          this.enterSelection(item.chapterId);
+        })
+    }
+  }
+
+  private enterSelection(chapterId: number): void {
+    const ids: Set<number> = new Set<number>();
+    ids.add(chapterId);
+    this.selectedIds = ids;
+    this.selecting = true;
+  }
+
+  private exitSelection(): void {
+    this.selectedIds = new Set<number>();
+    this.selecting = false;
+  }
+
+  private toggleSelected(chapterId: number): void {
+    const ids: Set<number> = new Set<number>(this.selectedIds);
+    if (ids.has(chapterId)) {
+      ids.delete(chapterId);
+    } else {
+      ids.add(chapterId);
+    }
+    this.selectedIds = ids;
+  }
+
+  private allSelected(): boolean {
+    return this.items.length > 0 && this.selectedIds.size >= this.items.length;
+  }
+
+  private toggleSelectAll(): void {
+    if (this.allSelected()) {
+      this.selectedIds = new Set<number>();
+      return;
+    }
+    const ids: Set<number> = new Set<number>();
+    for (const item of this.items) {
+      ids.add(item.chapterId);
+    }
+    this.selectedIds = ids;
+  }
+
+  private confirmRemoveSelected(): void {
+    const dialog: CustomDialogController = new CustomDialogController({
+      builder: ConfirmDialog({
+        title: $r('app.string.common_delete'),
+        message: $r('app.string.history_remove_selected_confirm', this.selectedIds.size),
+        confirmText: $r('app.string.common_delete'),
+        onConfirm: (): void => {
+          dialog.close();
+          this.removeSelected();
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  private async removeSelected(): Promise<void> {
+    try {
+      const ids: number[] = Array.from(this.selectedIds);
+      await HistoryRepo.removeByChapters(ids);
+      this.exitSelection();
+      await this.loadData();
+      Util.toastRes(this.getUIContext(), $r('app.string.history_removed'));
+    } catch (_e) {
+      Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
+    }
   }
 
   // 续读最近一部作品：取最近记录的漫画，打开其第一个未读章节；无可读时提示

@@ -173,6 +173,14 @@
       "value": "Seç"
     },
     {
+      "name": "history_remove_selected_confirm",
+      "value": "Seçilen %d kayıt geçmişten silinsin mi?"
+    },
+    {
+      "name": "history_removed",
+      "value": "Geçmişten kaldırıldı"
+    },
+    {
       "name": "download_delete_series_confirm",
       "value": "Bu serinin indirilen bölümleri silinsin mi?"
     },

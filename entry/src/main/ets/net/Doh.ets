@@ -47,7 +47,8 @@ interface DohCacheEntry {
 // - 解析失败 fail-open：不注入规则，回落系统 DNS，绝不阻断业务请求
 // - 结果缓存至 TTL 过期（钳制 60s - 1h），并发去重
 // - 应答经 GFW 假 IP 池过滤 + TCP 探测验证，只注入真实可连的 IP，
-//   防止污染应答把请求引向假 IP
+//   防止污染应答把请求引向假 IP；被拒后立即重查（上游注入为竞态窗口，
+//   重查即可能拿到干净应答），连续被拒则短负缓存后 fail-open
 // - 插件 pin（$.dns.set）优先于 DoH：pin 存活期间 DoH 永不覆盖
 // - 供应商网络故障（超时/被 RST）后 60s 内直接 fail-open，避免每请求烧超时
 export class Doh {
@@ -81,6 +82,10 @@ export class Doh {
   // 应答 IP 真实性探测参数（真 IP 秒连，假 IP 黑洞/RST 被拒）
   private static readonly PROBE_PORT: number = 443;
   private static readonly PROBE_TIMEOUT_MS: number = 900;
+  // 应答被拒后的立即重查次数（GFW 对上游递归的注入为竞态，重查即可能干净）
+  private static readonly RESOLVE_ATTEMPTS: number = 3;
+  // 连续被拒后的短负缓存：窗口内 fail-open 不再烧查询/探测
+  private static readonly NEG_TTL_MS: number = 15 * 1000;
 
   // GFW 污染假 IP 段（Facebook/Twitter 段 + 经典单 IP）。命中即弃用；
   // 未命中仍经 TCP 探测验证，此表只做黑名单快速路径
@@ -179,41 +184,58 @@ export class Doh {
 
   private static async resolveAndRegister(host: string, provider: DohProvider): Promise<void> {
     let answer: DohAnswer | undefined;
-    try {
-      answer = await Doh.resolve(host, provider);
-    } catch (e) {
-      // 供应商网络故障（连接超时/被 RST 等）：60s 内 fail-open，避免每请求烧超时
-      Doh.providerFailedUntil = Date.now() + Doh.PROVIDER_BACKOFF_MS;
-      Log.warn(TAG, `provider ${provider.id} unreachable, backoff ${Doh.PROVIDER_BACKOFF_MS / 1000}s, fail-open: ${e}`);
-      return;
-    }
-    if (answer === undefined || answer.ips.length === 0) {
-      Log.warn(TAG, `resolve ${host} via ${provider.id} got no answer, fail-open`);
-      return;
-    }
-    // pin 保护：解析期间插件已显式 pin 该 host，DoH 应答不覆盖插件指定 IP
-    const pinned = Doh.cache.get(host);
-    if (pinned !== undefined && pinned.pin) {
-      Log.debug(TAG, `skip ${host}: pinned by plugin`);
-      return;
-    }
-    // GFW 假 IP 池快速过滤 + TCP 探测验证，只注入真实可连的 IP
-    const candidates: string[] = [];
-    for (const ip of answer.ips) {
-      if (!Doh.isKnownFakeIp(ip)) {
-        candidates.push(ip);
+    let validated: string[] = [];
+    let ttl = 60;
+    for (let attempt = 1; attempt <= Doh.RESOLVE_ATTEMPTS; attempt++) {
+      try {
+        answer = await Doh.resolve(host, provider);
+      } catch (e) {
+        // 供应商网络故障（连接超时/被 RST 等）：60s 内 fail-open，避免每请求烧超时
+        Doh.providerFailedUntil = Date.now() + Doh.PROVIDER_BACKOFF_MS;
+        Log.warn(TAG, `provider ${provider.id} unreachable, backoff ${Doh.PROVIDER_BACKOFF_MS / 1000}s, fail-open: ${e}`);
+        return;
       }
+      if (answer === undefined || answer.ips.length === 0) {
+        Log.warn(TAG, `resolve ${host} via ${provider.id} got no answer, fail-open`);
+        return;
+      }
+      // pin 保护：解析期间插件已显式 pin 该 host，DoH 应答不覆盖插件指定 IP
+      const pinned = Doh.cache.get(host);
+      if (pinned !== undefined && pinned.pin) {
+        Log.debug(TAG, `skip ${host}: pinned by plugin`);
+        return;
+      }
+      // GFW 假 IP 池快速过滤 + TCP 探测验证，只注入真实可连的 IP
+      const candidates: string[] = [];
+      for (const ip of answer.ips) {
+        if (!Doh.isKnownFakeIp(ip)) {
+          candidates.push(ip);
+        }
+      }
+      validated = await Doh.probeIps(candidates);
+      if (validated.length > 0) {
+        ttl = answer.ttl;
+        break;
+      }
+      Log.warn(TAG, `answer for ${host} rejected (poisoned/unreachable): ${answer.ips.join(',')} via ${provider.id} (attempt ${attempt}/${Doh.RESOLVE_ATTEMPTS})`);
     }
-    const validated: string[] = await Doh.probeIps(candidates);
     if (validated.length === 0) {
-      Log.warn(TAG, `answer for ${host} rejected (poisoned/unreachable): ${answer.ips.join(',')} via ${provider.id}`);
+      // 连续被拒：短负缓存后 fail-open（回落系统 DNS），窗口过后自动重试
+      const negEntry: DohCacheEntry = { ips: [], expireAt: Date.now() + Doh.NEG_TTL_MS, pin: false };
+      Doh.cache.set(host, negEntry);
+      return;
+    }
+    // 注入前再查一次 pin：探测期间插件 pin 落地时不覆盖
+    const pinnedFinal = Doh.cache.get(host);
+    if (pinnedFinal !== undefined && pinnedFinal.pin) {
+      Log.debug(TAG, `skip ${host}: pinned by plugin (late)`);
       return;
     }
     await connection.addCustomDnsRule(host, validated);
-    const ttlMs: number = Math.min(Math.max(answer.ttl, 60), 3600) * 1000;
+    const ttlMs: number = Math.min(Math.max(ttl, 60), 3600) * 1000;
     const entry: DohCacheEntry = { ips: validated, expireAt: Date.now() + ttlMs, pin: false };
     Doh.cache.set(host, entry);
-    Log.debug(TAG, `${host} -> ${validated.join(',')} via ${provider.id} ttl=${answer.ttl}`);
+    Log.debug(TAG, `${host} -> ${validated.join(',')} via ${provider.id} ttl=${ttl}`);
   }
 
   // 并行探测候选 IP 的 TCP 可达性，返回真实可连的子集（空数组 = 全部被拒）

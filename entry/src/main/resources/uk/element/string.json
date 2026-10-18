@@ -157,6 +157,14 @@
       "value": "Вибрати"
     },
     {
+      "name": "history_remove_selected_confirm",
+      "value": "Видалити вибрані записи з історії (%d)?"
+    },
+    {
+      "name": "history_removed",
+      "value": "Видалено з історії"
+    },
+    {
       "name": "download_delete_series_confirm",
       "value": "Видалити завантажені розділи цього тайтлу?"
     },

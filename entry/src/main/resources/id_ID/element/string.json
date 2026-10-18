@@ -165,6 +165,14 @@
       "value": "Pilih"
     },
     {
+      "name": "history_remove_selected_confirm",
+      "value": "Hapus %d entri terpilih dari riwayat?"
+    },
+    {
+      "name": "history_removed",
+      "value": "Dihapus dari riwayat"
+    },
+    {
       "name": "download_delete_series_confirm",
       "value": "Hapus chapter yang diunduh dari seri ini?"
     },

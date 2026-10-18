@@ -1060,6 +1060,21 @@ export class HistoryRepo {
     }
   }
 
+  // 删除指定章节的阅读记录（历史页多选删除）
+  static async removeByChapters(chapterIds: number[]): Promise<void> {
+    if (chapterIds.length === 0) {
+      return;
+    }
+    const store = await AppDb.get();
+    try {
+      const pred = new relationalStore.RdbPredicates('history');
+      pred.in('chapterId', chapterIds);
+      await store.delete(pred);
+    } catch (e) {
+      throw new Error(`remove history failed: ${e}`);
+    }
+  }
+
   // 行 → HistoryItem 统一映射（recent/lastForManga/lastInLibrary 共用）
   private static rowToItem(rs: relationalStore.ResultSet): HistoryItem {
     try {

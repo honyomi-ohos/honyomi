@@ -173,6 +173,14 @@
       "value": "Выбрать"
     },
     {
+      "name": "history_remove_selected_confirm",
+      "value": "Удалить выбранные записи из истории (%d)?"
+    },
+    {
+      "name": "history_removed",
+      "value": "Удалено из истории"
+    },
+    {
       "name": "download_delete_series_confirm",
       "value": "Удалить скачанные главы этого тайтла?"
     },

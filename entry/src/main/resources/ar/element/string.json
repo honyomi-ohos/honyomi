@@ -181,6 +181,14 @@
       "value": "تحديد"
     },
     {
+      "name": "history_remove_selected_confirm",
+      "value": "إزالة %d من السجلات المحددة من السجل؟"
+    },
+    {
+      "name": "history_removed",
+      "value": "أُزيل من السجل"
+    },
+    {
       "name": "download_delete_series_confirm",
       "value": "حذف الفصول التي تم تنزيلها من هذه السلسلة؟"
     },

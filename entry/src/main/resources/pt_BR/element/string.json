@@ -169,6 +169,14 @@
       "value": "Selecionar"
     },
     {
+      "name": "history_remove_selected_confirm",
+      "value": "Excluir as %d entradas selecionadas do histórico?"
+    },
+    {
+      "name": "history_removed",
+      "value": "Removido do histórico"
+    },
+    {
       "name": "download_delete_series_confirm",
       "value": "Excluir os capítulos baixados desta série?"
     },

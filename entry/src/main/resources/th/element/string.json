@@ -149,6 +149,14 @@
       "value": "เลือก"
     },
     {
+      "name": "history_remove_selected_confirm",
+      "value": "ลบรายการที่เลือก %d รายการออกจากประวัติ?"
+    },
+    {
+      "name": "history_removed",
+      "value": "ลบออกจากประวัติแล้ว"
+    },
+    {
       "name": "download_delete_series_confirm",
       "value": "ลบตอนที่ดาวน์โหลดของเรื่องนี้?"
     },

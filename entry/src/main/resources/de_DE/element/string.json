@@ -169,6 +169,14 @@
       "value": "Auswählen"
     },
     {
+      "name": "history_remove_selected_confirm",
+      "value": "%d ausgewählte Einträge aus dem Verlauf entfernen?"
+    },
+    {
+      "name": "history_removed",
+      "value": "Aus dem Verlauf entfernt"
+    },
+    {
       "name": "download_delete_series_confirm",
       "value": "Heruntergeladene Kapitel dieser Serie löschen?"
     },
