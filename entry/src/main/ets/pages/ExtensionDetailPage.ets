@@ -10,6 +10,7 @@ import { ConfirmDialog, InputDialog } from './components/Dialogs';
 import { AppIcon } from './components/AppIcon';
 import { TypeBadgedIcon } from './components/TypeBadgedIcon';
 import { NsfwTag } from './components/NsfwTag';
+import { BtTag } from './components/BtTag';
 
 // 语言显示名（与 BrowsePage 保持一致的精简版）
 const LANG_NAMES: Record<string, string> = {
@@ -263,6 +264,10 @@ export struct ExtensionDetailPage {
                     NsfwTag()
                       .margin({ left: 6 })
                   }
+                  if (this.plugin.manifest.bt) {
+                    BtTag()
+                      .margin({ left: 6 })
+                  }
                 }
                 .alignItems(VerticalAlign.Center)
                 .margin({ top: 12 })
@@ -331,6 +336,10 @@ export struct ExtensionDetailPage {
                             .fontColor(this.pal.sub)
                           if (source.nsfw) {
                             NsfwTag()
+                              .margin({ left: 6 })
+                          }
+                          if (source.bt) {
+                            BtTag()
                               .margin({ left: 6 })
                           }
                         }

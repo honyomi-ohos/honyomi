@@ -13,6 +13,7 @@ import { ExtensionListPanel } from './components/ExtensionListPanel';
 import { AppIcon } from './components/AppIcon';
 import { TypeBadgedIcon } from './components/TypeBadgedIcon';
 import { NsfwTag } from './components/NsfwTag';
+import { BtTag } from './components/BtTag';
 
 // 语言显示名（对齐 Mihon 源列表的语言分组头）
 const LANG_NAMES: Record<string, string> = {
@@ -429,6 +430,10 @@ export struct BrowsePage {
             .margin({ top: 2 })
           if (s.nsfw) {
             NsfwTag()
+              .margin({ left: 6, top: 2 })
+          }
+          if (s.bt) {
+            BtTag()
               .margin({ left: 6, top: 2 })
           }
         }

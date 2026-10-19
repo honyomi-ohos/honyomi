@@ -2973,6 +2973,122 @@
       "value": "Failed to download BT component. Check your network and try again."
     },
     {
+      "name": "bt_choice_title",
+      "value": "BitTorrent download"
+    },
+    {
+      "name": "bt_choice_msg",
+      "value": "This chapter is a BitTorrent torrent. Choose how to download it (you can change this later in Settings > Downloads):\n· Built-in engine: download in app, supports progressive playback (component about %1$d MB)\n· System app: hand the magnet/torrent to another app (e.g. a torrent client)"
+    },
+    {
+      "name": "bt_choice_system",
+      "value": "Use system app"
+    },
+    {
+      "name": "bt_choice_module",
+      "value": "Built-in engine"
+    },
+    {
+      "name": "bt_handoff_started",
+      "value": "Handed off to system app"
+    },
+    {
+      "name": "bt_handoff_failed",
+      "value": "No app can handle this torrent"
+    },
+    {
+      "name": "bt_progressive_waiting",
+      "value": "Downloading… playback will start automatically when enough data is available"
+    },
+    {
+      "name": "bt_batch_skipped",
+      "value": "%1$d torrent chapters skipped"
+    },
+    {
+      "name": "bt_set_group",
+      "value": "BitTorrent"
+    },
+    {
+      "name": "bt_set_engine",
+      "value": "Download engine"
+    },
+    {
+      "name": "bt_engine_ask",
+      "value": "Ask every time"
+    },
+    {
+      "name": "bt_engine_module",
+      "value": "Built-in engine"
+    },
+    {
+      "name": "bt_engine_system",
+      "value": "System app"
+    },
+    {
+      "name": "bt_engine_module_missing",
+      "value": "BT engine component not installed"
+    },
+    {
+      "name": "bt_engine_module_missing_sub",
+      "value": "Required for torrent downloads with the built-in engine"
+    },
+    {
+      "name": "bt_engine_install",
+      "value": "Install"
+    },
+    {
+      "name": "bt_set_progressive",
+      "value": "Progressive playback"
+    },
+    {
+      "name": "bt_set_progressive_sub",
+      "value": "Start playing while the torrent is still downloading (sequential download)"
+    },
+    {
+      "name": "bt_set_speed_limits",
+      "value": "Speed limits"
+    },
+    {
+      "name": "bt_set_download_limit",
+      "value": "Download speed limit"
+    },
+    {
+      "name": "bt_set_upload_limit",
+      "value": "Upload speed limit"
+    },
+    {
+      "name": "bt_limit_unlimited",
+      "value": "Unlimited"
+    },
+    {
+      "name": "bt_limit_kb",
+      "value": "%1$d KB/s"
+    },
+    {
+      "name": "bt_limit_mb",
+      "value": "%1$d MB/s"
+    },
+    {
+      "name": "bt_set_extra_trackers",
+      "value": "Extra trackers"
+    },
+    {
+      "name": "bt_set_extra_trackers_sub",
+      "value": "Added to every torrent download"
+    },
+    {
+      "name": "bt_set_extra_trackers_hint",
+      "value": "One tracker URL per line"
+    },
+    {
+      "name": "bt_trackers_none",
+      "value": "None"
+    },
+    {
+      "name": "bt_trackers_n",
+      "value": "%1$d trackers"
+    },
+    {
       "name": "local_error_chapter_missing",
       "value": "Chapter file not found"
     },

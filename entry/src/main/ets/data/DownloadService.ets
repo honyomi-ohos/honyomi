@@ -9,12 +9,13 @@ import { image } from '@kit.ImageKit';
 import { util } from '@kit.ArkTS';
 import { Http } from '../net/Http';
 import { Source, SourceRegistry } from '../source/Source';
-import { ContentType, DownloadedChapter, DownloadedManga, DownloadTask, SPage, SVideo } from '../model/Models';
+import { ContentType, ChapterRecord, DownloadedChapter, DownloadedManga, DownloadTask, MangaRecord, SPage, SVideo } from '../model/Models';
 import { ChapterRepo, MangaRepo } from './Repos';
 import { Settings } from '../common/Settings';
 import { NetworkMonitor } from '../common/NetworkMonitor';
 import { HlsDownloader } from '../common/HlsDownloader';
 import { BtModule } from './BtModule';
+import { BtFlow } from './BtFlow';
 import { BtComponentInstaller } from '../common/BtComponentInstaller';
 import { AppKeys } from '../common/AppKeys';
 
@@ -442,6 +443,72 @@ export class DownloadService {
     return DownloadService.context;
   }
 
+  // 活动 BT 任务的 torrent 句柄（chapterId → key；无活动 BT 任务返回 -1）
+  static btKeyOf(chapterId: number): number {
+    const key: number | undefined = DownloadService.btKeys.get(chapterId);
+    return key !== undefined ? key : -1;
+  }
+
+  // 章节任务状态：-1 无任务；0 排队；1 下载中；2 完成；3 失败
+  static taskStateOf(chapterId: number): number {
+    let state = -1;
+    for (const t of DownloadService.queue) {
+      if (t.chapterId === chapterId) {
+        if (t.state > state || state === -1) {
+          state = t.state;
+        }
+      }
+    }
+    if (state === -1 && DownloadService.isDownloaded(chapterId)) {
+      return 2;
+    }
+    return state;
+  }
+
+  // 失败任务的错误码（无失败任务返回 ''；播放器等待流用于区分取消/缺组件）
+  static failedErrorOf(chapterId: number): string {
+    for (const t of DownloadService.queue) {
+      if (t.chapterId === chapterId && t.state === 3) {
+        return t.error;
+      }
+    }
+    return '';
+  }
+
+  // BT 种子常见视频容器扩展（localVideo 扫描回退用）
+  private static readonly VIDEO_EXTS: string[] =
+    ['.mp4', '.mkv', '.ts', '.avi', '.mov', '.webm', '.m4v', '.wmv', '.flv', '.mpg', '.mpeg'];
+
+  // 文件名是否为种子内视频容器（播放器边下边播选取目标文件用）
+  static isVideoName(name: string): boolean {
+    const lower = name.toLowerCase();
+    for (const ext of DownloadService.VIDEO_EXTS) {
+      if (lower.endsWith(ext)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // 由漫画/章节记录直接构造入队（播放器内触发 BT 下载复用；同 enqueue 去重）
+  static enqueueRecord(manga: MangaRecord, chapter: ChapterRecord): boolean {
+    if (SourceRegistry.get(manga.sourceKey) === undefined) {
+      return false;
+    }
+    const task = new DownloadTask();
+    task.mangaId = manga.id;
+    task.mangaTitle = manga.title;
+    task.chapterId = chapter.id;
+    task.chapterName = chapter.name;
+    task.chapterNumber = chapter.chapterNumber;
+    task.dateUpload = chapter.dateUpload;
+    task.sourceKey = manga.sourceKey;
+    task.mangaUrl = manga.url;
+    task.chapterUrl = chapter.url;
+    DownloadService.enqueue(task);
+    return true;
+  }
+
   // 网络环境/仅 Wi-Fi 开关变化后的门禁刷新：
   // 不可用 → 活动任务在页边界回到队列；可用 → 恢复泵送
   static refreshNetworkGate(): void {
@@ -577,10 +644,6 @@ export class DownloadService {
     // BT 下载产物：种子内部文件名/子目录由种子决定，递归扫描取最大视频文件
     return DownloadService.scanVideoFile(dir);
   }
-
-  // BT 种子常见视频容器扩展（localVideo 扫描回退用）
-  private static readonly VIDEO_EXTS: string[] =
-    ['.mp4', '.mkv', '.ts', '.avi', '.mov', '.webm', '.m4v', '.wmv', '.flv', '.mpg', '.mpeg'];
 
   private static scanVideoFile(dir: string): string {
     if (DownloadService.rootDir === '') {
@@ -1337,6 +1400,19 @@ export class DownloadService {
     } else {
       const bytes = await Http.getBuffer(url, undefined);
       key = await BtModule.addTorrentFile(new Uint8Array(bytes), dir);
+    }
+    // 边下边播：顺序下载优先完成文件头部，播放器可提前起播（引擎层设置，
+    // 此处仅按开关下发；失败不影响下载本身）
+    if (Settings.getBtProgressive()) {
+      BtModule.setSequential(key, true).catch((): void => {
+      });
+    }
+    // 用户自定义额外 tracker（设置页多行文本）追加；BUILTIN_TRACKERS 已由
+    // TorrentManager 在 add 时叠加，此处仅补充用户列表
+    const extraTrackers = BtFlow.extraTrackerList();
+    if (extraTrackers.length > 0) {
+      BtModule.addTrackers(key, extraTrackers).catch((): void => {
+      });
     }
     DownloadService.btKeys.set(task.chapterId, key);
     // metadata 就绪前 total=1 防除零；就绪后为字节数（与直链视频语义一致）

@@ -3,15 +3,8 @@ import { common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { ContentType } from '../model/Models';
 
-function closeQuietly(rs: relationalStore.ResultSet): void {
-  try {
-    rs.close();
-  } catch (e) {
-  }
-}
-
 // RelationalStore 数据库（对齐 Mihon Room schema 的 P1 子集）
-// 迁移策略：PRAGMA user_version 版本号顺序迁移，失败即抛出（不吞真实错误）
+// 开发阶段：无版本迁移，建表语句即完整 schema（结构变更需清除应用数据重建）
 export class AppDb {
   private static store: relationalStore.RdbStore | undefined = undefined;
   private static initPromise: Promise<void> | undefined = undefined;
@@ -46,7 +39,6 @@ export class AppDb {
       throw new Error(`init rdb store failed: ${e}`);
     }
     await AppDb.createTables(store);
-    await AppDb.migrate(store);
     await AppDb.createIndexes(store);
     await AppDb.ensureDefaultCategories(store);
     AppDb.store = store;
@@ -164,6 +156,7 @@ export class AppDb {
         versionCode INTEGER DEFAULT 0,
         baseUrl TEXT DEFAULT '',
         nsfw INTEGER DEFAULT 0,
+        bt INTEGER DEFAULT 0,
         supportsLatest INTEGER DEFAULT 0,
         minAppVersion INTEGER DEFAULT 1,
         dslVersion INTEGER DEFAULT 1,
@@ -178,233 +171,6 @@ export class AppDb {
     }
   }
 
-  // 版本号顺序迁移：0 = 无版本历史（全新库或 ALTER TABLE 时代的旧库）
-  private static async migrate(store: relationalStore.RdbStore): Promise<void> {
-    let version = 0;
-    try {
-      const rs = await store.querySql(`PRAGMA user_version`);
-      if (rs.goToNextRow()) {
-        version = rs.getLong(rs.getColumnIndex('user_version'));
-      }
-      closeQuietly(rs);
-    } catch (e) {
-      throw new Error(`read user_version failed: ${e}`);
-    }
-    // v0 -> v1：早期旧库补列（新库建表已含，ALTER 失败按真实错误抛出前先校验列存在）
-    if (version < 1) {
-      try {
-        store.beginTransaction();
-      } catch (e) {
-        throw new Error(`migrate to v1 failed: ${e}`);
-      }
-      try {
-        const cols = new Set<string>();
-        const colRs = await store.querySql(`PRAGMA table_info(manga)`);
-        while (colRs.goToNextRow()) {
-          cols.add(colRs.getString(colRs.getColumnIndex('name')));
-        }
-        closeQuietly(colRs);
-        if (!cols.has('contentType')) {
-          await store.executeSql(`ALTER TABLE manga ADD COLUMN contentType TEXT DEFAULT 'manga'`);
-        }
-        if (!cols.has('origThumbnail')) {
-          await store.executeSql(`ALTER TABLE manga ADD COLUMN origThumbnail TEXT DEFAULT ''`);
-        }
-        await store.executeSql(`PRAGMA user_version = 1`);
-        store.commit();
-      } catch (e) {
-        try {
-          store.rollBack();
-        } catch (e2) {
-        }
-        throw new Error(`migrate to v1 failed: ${e}`);
-      }
-      version = 1;
-      hilog.info(0x0001, 'AppDb', 'migrated schema to v1');
-    }
-    // v1 -> v2：history 按 (mangaId, chapterId) 去重后建唯一索引，
-    // 使 HistoryRepo.upsert 可用单条 INSERT ON CONFLICT 原子完成（消除查后写竞态）
-    if (version < 2) {
-      try {
-        store.beginTransaction();
-      } catch (e) {
-        throw new Error(`migrate to v2 failed: ${e}`);
-      }
-      try {
-        await store.executeSql(`DELETE FROM history WHERE id NOT IN (
-          SELECT h.id FROM history h
-          WHERE h.id = (
-            SELECT h2.id FROM history h2
-            WHERE h2.mangaId = h.mangaId AND h2.chapterId = h.chapterId
-            ORDER BY h2.seenAt DESC, h2.id DESC LIMIT 1))`);
-        await store.executeSql(`CREATE UNIQUE INDEX IF NOT EXISTS idx_history_unique ON history(mangaId, chapterId)`);
-        await store.executeSql(`PRAGMA user_version = 2`);
-        store.commit();
-      } catch (e) {
-        try {
-          store.rollBack();
-        } catch (e2) {
-        }
-        throw new Error(`migrate to v2 failed: ${e}`);
-      }
-      hilog.info(0x0001, 'AppDb', 'migrated schema to v2');
-    }
-    // v2 -> v3：manga 增加章节排序/筛选标志位（对齐 Mihon chapterFlags，
-    // 详情页排序模式/方向与三态筛选按部持久化）
-    if (version < 3) {
-      try {
-        store.beginTransaction();
-      } catch (e) {
-        throw new Error(`migrate to v3 failed: ${e}`);
-      }
-      try {
-        const cols3 = new Set<string>();
-        const colRs3 = await store.querySql(`PRAGMA table_info(manga)`);
-        while (colRs3.goToNextRow()) {
-          cols3.add(colRs3.getString(colRs3.getColumnIndex('name')));
-        }
-        closeQuietly(colRs3);
-        if (!cols3.has('chapterFlags')) {
-          await store.executeSql(`ALTER TABLE manga ADD COLUMN chapterFlags INTEGER DEFAULT 0`);
-        }
-        await store.executeSql(`PRAGMA user_version = 3`);
-        store.commit();
-      } catch (e) {
-        try {
-          store.rollBack();
-        } catch (e2) {
-        }
-        throw new Error(`migrate to v3 failed: ${e}`);
-      }
-      version = 3;
-      hilog.info(0x0001, 'AppDb', 'migrated schema to v3');
-    }
-    // v3 -> v4：内置数据 code 化（分类名/连载状态改存 code，显示层经资源映射多语言）
-    if (version < 4) {
-      try {
-        store.beginTransaction();
-      } catch (e) {
-        throw new Error(`migrate to v4 failed: ${e}`);
-      }
-      try {
-        // 分类名：内置默认分类的中文历史值 → 内容类型 code（用户自建/改名分类不动）
-        await store.executeSql(`UPDATE category SET name = 'manga' WHERE name IN ('漫画', '默认')`);
-        await store.executeSql(`UPDATE category SET name = 'novel' WHERE name = '小说'`);
-        await store.executeSql(`UPDATE category SET name = 'video' WHERE name = '动画'`);
-        // 连载状态：中文历史值 → tachiyomi 状态 code
-        await store.executeSql(`UPDATE manga SET status = 'ongoing' WHERE status = '连载中'`);
-        await store.executeSql(`UPDATE manga SET status = 'completed' WHERE status = '已完结'`);
-        await store.executeSql(`UPDATE manga SET status = 'licensed' WHERE status = '已授权'`);
-        await store.executeSql(`UPDATE manga SET status = 'publication_complete' WHERE status = '出版完毕'`);
-        await store.executeSql(`UPDATE manga SET status = 'cancelled' WHERE status = '已取消'`);
-        await store.executeSql(`UPDATE manga SET status = 'hiatus' WHERE status = '休刊'`);
-        await store.executeSql(`UPDATE manga SET status = 'unknown' WHERE status = '未知'`);
-        await store.executeSql(`PRAGMA user_version = 4`);
-        store.commit();
-      } catch (e) {
-        try {
-          store.rollBack();
-        } catch (e2) {
-        }
-        throw new Error(`migrate to v4 failed: ${e}`);
-      }
-      version = 4;
-      hilog.info(0x0001, 'AppDb', 'migrated schema to v4');
-    }
-    // v4 -> v5：track 表重建（多追踪器：Mihon syncId 体系 + 状态数值化 + 完整字段）
-    if (version < 5) {
-      try {
-        store.beginTransaction();
-      } catch (e) {
-        throw new Error(`migrate to v5 failed: ${e}`);
-      }
-      try {
-        // 新表结构检测：remoteUrl 列存在即已是 v5 结构（全新库 createTables 已建新表）
-        const cols5 = new Set<string>();
-        const colRs5 = await store.querySql(`PRAGMA table_info(track)`);
-        while (colRs5.goToNextRow()) {
-          cols5.add(colRs5.getString(colRs5.getColumnIndex('name')));
-        }
-        closeQuietly(colRs5);
-        if (!cols5.has('remoteUrl')) {
-          await store.executeSql(`CREATE TABLE track_v5 (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            mangaId INTEGER NOT NULL,
-            syncId INTEGER NOT NULL,
-            remoteId INTEGER NOT NULL,
-            libraryId INTEGER DEFAULT 0,
-            title TEXT DEFAULT '',
-            status INTEGER DEFAULT 0,
-            lastChapterRead REAL DEFAULT 0,
-            score REAL DEFAULT 0,
-            totalChapters INTEGER DEFAULT 0,
-            remoteUrl TEXT DEFAULT '',
-            startDate INTEGER DEFAULT 0,
-            finishDate INTEGER DEFAULT 0,
-            isPrivate INTEGER DEFAULT 0,
-            UNIQUE(mangaId, syncId)
-          )`);
-          // 旧表 syncId 1 = AniList → Mihon syncId 2；status 旧为文本（已废弃）重置为 0
-          await store.executeSql(`INSERT INTO track_v5
-            (mangaId, syncId, remoteId, title, status, lastChapterRead, score)
-            SELECT mangaId, CASE WHEN syncId = 1 THEN 2 ELSE syncId END,
-              remoteId, title, 0, lastChapterRead, score FROM track`);
-          await store.executeSql(`DROP TABLE track`);
-          await store.executeSql(`ALTER TABLE track_v5 RENAME TO track`);
-        }
-        await store.executeSql(`PRAGMA user_version = 5`);
-        store.commit();
-      } catch (e) {
-        try {
-          store.rollBack();
-        } catch (e2) {
-        }
-        throw new Error(`migrate to v5 failed: ${e}`);
-      }
-      version = 5;
-      hilog.info(0x0001, 'AppDb', 'migrated schema to v5');
-    }
-    // v5 -> v6：plugin 表（已安装插件元数据索引）。启动时据此注册占位源，
-    // 不再扫盘拉引擎；引擎按需惰性拉起（LRU 上限），支撑千级插件规模
-    if (version < 6) {
-      try {
-        store.beginTransaction();
-      } catch (e) {
-        throw new Error(`migrate to v6 failed: ${e}`);
-      }
-      try {
-        // 全新库 createTables 已建 plugin 表；旧库补建（IF NOT EXISTS 幂等）
-        await store.executeSql(`CREATE TABLE IF NOT EXISTS plugin (
-          key TEXT PRIMARY KEY,
-          name TEXT NOT NULL,
-          lang TEXT DEFAULT 'multi',
-          version TEXT DEFAULT '',
-          versionCode INTEGER DEFAULT 0,
-          baseUrl TEXT DEFAULT '',
-          nsfw INTEGER DEFAULT 0,
-          supportsLatest INTEGER DEFAULT 0,
-          minAppVersion INTEGER DEFAULT 1,
-          dslVersion INTEGER DEFAULT 1,
-          icon TEXT DEFAULT '',
-          contentType TEXT DEFAULT 'manga',
-          methodsJson TEXT DEFAULT '[]',
-          sourcesJson TEXT DEFAULT '[]',
-          installedAt INTEGER DEFAULT 0
-        )`);
-        await store.executeSql(`PRAGMA user_version = 6`);
-        store.commit();
-      } catch (e) {
-        try {
-          store.rollBack();
-        } catch (e2) {
-        }
-        throw new Error(`migrate to v6 failed: ${e}`);
-      }
-      version = 6;
-      hilog.info(0x0001, 'AppDb', 'migrated schema to v6');
-    }
-  }
-
   // 二级索引：书架/更新/历史/统计的高频查询列
   private static async createIndexes(store: relationalStore.RdbStore): Promise<void> {
     try {
@@ -413,6 +179,8 @@ export class AppDb {
       await store.executeSql(`CREATE INDEX IF NOT EXISTS idx_chapter_sortOrder ON chapter(mangaId, sortOrder)`);
       await store.executeSql(`CREATE INDEX IF NOT EXISTS idx_history_mangaId ON history(mangaId, seenAt)`);
       await store.executeSql(`CREATE INDEX IF NOT EXISTS idx_session_day ON readingSession(day)`);
+      // history 唯一索引：HistoryRepo.upsert 单条 INSERT ON CONFLICT 原子完成（消除查后写竞态）
+      await store.executeSql(`CREATE UNIQUE INDEX IF NOT EXISTS idx_history_unique ON history(mangaId, chapterId)`);
     } catch (e) {
       throw new Error(`create indexes failed: ${e}`);
     }

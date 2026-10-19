@@ -14,6 +14,8 @@ export interface PluginManifest {
   versionCode: number;
   baseUrl: string;
   nsfw: boolean;
+  // BT 源标记：内容为种子/magnet 下载（manifest 可选，缺省 false）
+  bt: boolean;
   supportsLatest: boolean;
   minAppVersion: number;
   dslVersion: number;
@@ -144,6 +146,7 @@ export class JsvmSource implements Source {
   supportsLatest: boolean;
   contentType: string;
   nsfw: boolean;
+  bt: boolean;
   manifest: PluginManifest;
   // 插件包目录名。多语言扩展共用一个 JSVM 引擎，浏览列表里每个语言各有自己的 key。
   readonly packageKey: string;
@@ -172,6 +175,7 @@ export class JsvmSource implements Source {
     this.supportsLatest = manifest.supportsLatest && exportedMethods.indexOf('getLatestWorks') >= 0;
     this.contentType = ContentType.normalize(manifest.contentType);
     this.nsfw = manifest.nsfw;
+    this.bt = manifest.bt;
   }
 
   private static prefValueToString(v: string | boolean | number | undefined): string {
@@ -459,6 +463,7 @@ export class JsvmSource implements Source {
     this.supportsLatest = manifest.supportsLatest && exportedMethods.indexOf('getLatestWorks') >= 0;
     this.contentType = ContentType.normalize(manifest.contentType);
     this.nsfw = manifest.nsfw;
+    this.bt = manifest.bt;
     this.exportedMethods = exportedMethods;
     this.warmHeadersPromise = undefined;
   }

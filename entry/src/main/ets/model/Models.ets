@@ -220,6 +220,8 @@ export class PluginRecord {
   versionCode: number = 0;
   baseUrl: string = '';
   nsfw: boolean = false;
+  // BT 源标记（manifest bt，缺省 false）
+  bt: boolean = false;
   supportsLatest: boolean = false;
   minAppVersion: number = 1;
   dslVersion: number = 1;

@@ -9,6 +9,7 @@ import { EmptyScreen } from './EmptyScreen';
 import { AppIcon } from './AppIcon';
 import { TypeBadgedIcon } from './TypeBadgedIcon';
 import { NsfwTag } from './NsfwTag';
+import { BtTag } from './BtTag';
 import { ConfirmDialog } from './Dialogs';
 import { SitePreviewSheet } from './SitePreviewSheet';
 
@@ -170,6 +171,10 @@ export struct ExtensionListPanel {
             NsfwTag()
               .margin({ left: 6 })
           }
+          if (item.manifest.bt) {
+            BtTag()
+              .margin({ left: 6 })
+          }
         }
         .alignItems(VerticalAlign.Center)
         .margin({ top: 2 })
@@ -256,6 +261,10 @@ export struct ExtensionListPanel {
             .maxLines(1)
           if (entry.nsfw) {
             NsfwTag()
+              .margin({ left: 6 })
+          }
+          if (entry.bt) {
+            BtTag()
               .margin({ left: 6 })
           }
         }

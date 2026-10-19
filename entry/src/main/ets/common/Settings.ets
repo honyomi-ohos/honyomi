@@ -436,6 +436,59 @@ export class Settings {
     Settings.setBool('downloadWifiOnly', v);
   }
 
+  // ---- BT / BitTorrent ----
+
+  // BT 下载引擎选择：'ask'（未决，每次询问）| 'module'（内置引擎）| 'system'（交给系统应用）
+  static getBtEngineChoice(): string {
+    const raw = Settings.getStr('btEngineChoice', 'ask');
+    if (raw === 'module' || raw === 'system') {
+      return raw;
+    }
+    return 'ask';
+  }
+
+  static setBtEngineChoice(v: string): void {
+    Settings.setStr('btEngineChoice', v);
+  }
+
+  // BT 边下边播：视频任务按顺序下载，未完成即可开始播放
+  static getBtProgressive(): boolean {
+    return Settings.getBool('btProgressive', true);
+  }
+
+  static setBtProgressive(v: boolean): void {
+    Settings.setBool('btProgressive', v);
+  }
+
+  // BT 会话级下载限速（KB/s，0 = 不限）
+  static getBtDownloadLimitKb(): number {
+    const n = Settings.getNum('btDownloadLimitKb', 0);
+    return n >= 0 ? Math.floor(n) : 0;
+  }
+
+  static setBtDownloadLimitKb(v: number): void {
+    Settings.setNum('btDownloadLimitKb', v);
+  }
+
+  // BT 会话级上传限速（KB/s，0 = 不限）
+  static getBtUploadLimitKb(): number {
+    const n = Settings.getNum('btUploadLimitKb', 0);
+    return n >= 0 ? Math.floor(n) : 0;
+  }
+
+  static setBtUploadLimitKb(v: number): void {
+    Settings.setNum('btUploadLimitKb', v);
+  }
+
+  // 额外 tracker 列表（多行文本，每行一个 URL，附加到每个新 BT 任务）
+  static getBtExtraTrackers(): string {
+    return Settings.getStr('btExtraTrackers', '');
+  }
+
+  static setBtExtraTrackers(v: string): void {
+    Settings.setStr('btExtraTrackers', v);
+  }
+
   // ---- 下载设置（对齐 Mihon DownloadPreferences） ----
 
   // 章节保存为 CBZ 压缩包（阅读时解压到缓存目录；与原版默认 true 不同，

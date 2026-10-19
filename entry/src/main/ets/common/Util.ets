@@ -305,6 +305,9 @@ export class Util {
       case 'bt_download_first':
         res = $r('app.string.video_bt_download_first');
         break;
+      case 'bt_progressive_waiting':
+        res = $r('app.string.bt_progressive_waiting');
+        break;
       case 'bt_component_required':
         res = $r('app.string.download_bt_component_required');
         break;

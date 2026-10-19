@@ -18,6 +18,8 @@ import { ChapterFlags } from '../common/ChapterFlags';
 import { NaturalCompare } from '../common/NaturalCompare';
 import { DownloadService } from '../data/DownloadService';
 import { DownloadRules } from '../data/DownloadRules';
+import { BtFlow } from '../data/BtFlow';
+import { Settings } from '../common/Settings';
 import { WidgetUpdater } from '../form/WidgetUpdater';
 import { CategoryDialog, ConfirmDialog } from './components/Dialogs';
 import { SmartImage } from './components/SmartImage';
@@ -1584,7 +1586,45 @@ export struct MangaDetailPage {
   }
 
   private openReader(chapterId: number): void {
+    // BT 视频章节（magnet/.torrent 直链）不支持在线流播：分流到专用流程
+    if (this.manga.contentType === ContentType.VIDEO) {
+      const chapter = this.chapters.find((c: ChapterRecord): boolean => c.id === chapterId);
+      if (chapter !== undefined && DownloadService.isBtUrl(chapter.url)) {
+        this.runSafe((): Promise<void> => this.openBtChapter(chapter));
+        return;
+      }
+    }
     ContentOpen.push(this.pathStack, this.manga.contentType, this.mangaId, chapterId);
+  }
+
+  // BT 章节点击：已完整下载→直接播本地；未下载→引擎选择（可记住）：
+  // module=入队且边下边播开启时立即进播放器等待起播（关闭则仅入队提示）；
+  // system=移交系统下载应用；cancel=无操作
+  private async openBtChapter(chapter: ChapterRecord): Promise<void> {
+    if (DownloadService.isDownloaded(chapter.id)) {
+      ContentOpen.push(this.pathStack, this.manga.contentType, this.mangaId, chapter.id);
+      return;
+    }
+    const choice = await BtFlow.acquireEngineChoice(this.getUIContext());
+    if (choice === 'cancel') {
+      return;
+    }
+    if (choice === 'system') {
+      await BtFlow.handOffToSystem(this.getUIContext(), chapter.url);
+      return;
+    }
+    // 用户明确选择内置引擎：解除安装引导抑制（此前"暂不"仅抑制自动弹窗）
+    AppStorage.setOrCreate(AppKeys.BT_ASK_DISMISSED, false);
+    const status = await this.enqueueDownload(chapter);
+    if (status !== 'ok') {
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_download_failed'));
+      return;
+    }
+    if (Settings.getBtProgressive()) {
+      ContentOpen.push(this.pathStack, this.manga.contentType, this.mangaId, chapter.id);
+    } else {
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_download_queued'));
+    }
   }
 
   // 批量入队（多选下载 / 下载菜单）：两个 worker 共享递增游标实现 2 并发，
@@ -1662,6 +1702,11 @@ export struct MangaDetailPage {
     if (ContentType.isLocal(this.manga.sourceKey)) {
       return;
     }
+    // BT 章节单下载：同样走引擎选择，但不进播放器
+    if (DownloadService.isBtUrl(chapter.url)) {
+      await this.downloadBtChapter(chapter);
+      return;
+    }
     const status = await this.enqueueDownload(chapter);
     if (status === 'ok') {
       Util.toastRes(this.getUIContext(), $r('app.string.detail_download_queued'));
@@ -1670,16 +1715,62 @@ export struct MangaDetailPage {
     }
   }
 
-  // 完成后统一提示入队数量
+  // BT 章节下载（指示器点击/单章下载入口）：module 入队、system 移交、cancel 无操作
+  private async downloadBtChapter(chapter: ChapterRecord): Promise<void> {
+    const choice = await BtFlow.acquireEngineChoice(this.getUIContext());
+    if (choice === 'cancel') {
+      return;
+    }
+    if (choice === 'system') {
+      await BtFlow.handOffToSystem(this.getUIContext(), chapter.url);
+      return;
+    }
+    AppStorage.setOrCreate(AppKeys.BT_ASK_DISMISSED, false);
+    const status = await this.enqueueDownload(chapter);
+    if (status === 'ok') {
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_download_queued'));
+    } else {
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_download_failed'));
+    }
+  }
+
+  // 完成后统一提示入队数量（BT 章节按引擎选择分流，不进 2 并发 worker）
   private async downloadChapters(list: ChapterRecord[]): Promise<void> {
     if (ContentType.isLocal(this.manga.sourceKey) || list.length === 0) {
       return;
     }
-    let index = 0;
+    const btList: ChapterRecord[] = [];
+    const normalList: ChapterRecord[] = [];
+    for (const c of list) {
+      if (DownloadService.isBtUrl(c.url)) {
+        btList.push(c);
+      } else {
+        normalList.push(c);
+      }
+    }
     let count = 0;
+    if (btList.length > 0) {
+      const choice = await BtFlow.acquireEngineChoice(this.getUIContext());
+      if (choice === 'system') {
+        // 系统应用逐个弹选择器不可行：仅移交第一个，其余跳过提示
+        await BtFlow.handOffToSystem(this.getUIContext(), btList[0].url);
+        if (btList.length > 1) {
+          Util.toastRes(this.getUIContext(), $r('app.string.bt_batch_skipped'), [btList.length - 1]);
+        }
+      } else if (choice === 'module') {
+        AppStorage.setOrCreate(AppKeys.BT_ASK_DISMISSED, false);
+        for (const chapter of btList) {
+          const status = await this.enqueueDownload(chapter);
+          if (status === 'ok') {
+            count += 1;
+          }
+        }
+      }
+    }
+    let index = 0;
     const worker = async (): Promise<void> => {
-      while (index < list.length) {
-        const chapter = list[index];
+      while (index < normalList.length) {
+        const chapter = normalList[index];
         index += 1;
         const status = await this.enqueueDownload(chapter);
         if (status === 'ok') {
@@ -1690,7 +1781,7 @@ export struct MangaDetailPage {
     await Promise.all([worker(), worker()]);
     if (count > 0) {
       Util.toastRes(this.getUIContext(), $r('app.string.detail_dl_queued_n'), [count]);
-    } else {
+    } else if (btList.length === 0) {
       Util.toastRes(this.getUIContext(), $r('app.string.detail_download_failed'));
     }
   }

@@ -14,6 +14,7 @@ export abstract class LocalFsSource implements Source {
   readonly supportsLatest = false;
   readonly iconPath = '';
   readonly nsfw = false;
+  readonly bt = false;
   abstract readonly contentType: string;
   private readonly syncRoot: string;
 

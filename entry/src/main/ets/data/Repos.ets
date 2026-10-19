@@ -1537,7 +1537,7 @@ export class TrackRepo {
 // 启动时据此注册占位源（不扫盘、不拉引擎），支撑千级插件
 export class PluginRepo {
   private static readonly COLUMNS: string[] = [
-    'key', 'name', 'lang', 'version', 'versionCode', 'baseUrl', 'nsfw', 'supportsLatest',
+    'key', 'name', 'lang', 'version', 'versionCode', 'baseUrl', 'nsfw', 'bt', 'supportsLatest',
     'minAppVersion', 'dslVersion', 'icon', 'contentType',
     'methodsJson', 'sourcesJson', 'installedAt',
   ];
@@ -1552,6 +1552,7 @@ export class PluginRepo {
       'versionCode': record.versionCode,
       'baseUrl': record.baseUrl,
       'nsfw': record.nsfw ? 1 : 0,
+      'bt': record.bt ? 1 : 0,
       'supportsLatest': record.supportsLatest ? 1 : 0,
       'minAppVersion': record.minAppVersion,
       'dslVersion': record.dslVersion,
@@ -1564,19 +1565,20 @@ export class PluginRepo {
     try {
       // key 为主键：INSERT OR REPLACE 原子完成重装/升级覆盖
       await store.executeSql(
-        `INSERT INTO plugin (key, name, lang, version, versionCode, baseUrl, nsfw, supportsLatest,
+        `INSERT INTO plugin (key, name, lang, version, versionCode, baseUrl, nsfw, bt, supportsLatest,
           minAppVersion, dslVersion, icon, contentType, methodsJson, sourcesJson, installedAt)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
          ON CONFLICT(key) DO UPDATE SET
           name = excluded.name, lang = excluded.lang, version = excluded.version,
           versionCode = excluded.versionCode, baseUrl = excluded.baseUrl, nsfw = excluded.nsfw,
+          bt = excluded.bt,
           supportsLatest = excluded.supportsLatest, minAppVersion = excluded.minAppVersion,
           dslVersion = excluded.dslVersion, icon = excluded.icon,
           contentType = excluded.contentType,
           methodsJson = excluded.methodsJson, sourcesJson = excluded.sourcesJson,
           installedAt = excluded.installedAt`,
         [record.key, record.name, record.lang, record.version, record.versionCode, record.baseUrl,
-          record.nsfw ? 1 : 0, record.supportsLatest ? 1 : 0, record.minAppVersion, record.dslVersion,
+          record.nsfw ? 1 : 0, record.bt ? 1 : 0, record.supportsLatest ? 1 : 0, record.minAppVersion, record.dslVersion,
           record.icon, ContentType.normalize(record.contentType),
           record.methodsJson, record.sourcesJson, record.installedAt]);
     } catch (e) {
@@ -1637,6 +1639,7 @@ export class PluginRepo {
       p.versionCode = rs.getLong(rs.getColumnIndex('versionCode'));
       p.baseUrl = rs.getString(rs.getColumnIndex('baseUrl'));
       p.nsfw = rs.getLong(rs.getColumnIndex('nsfw')) === 1;
+      p.bt = rs.getLong(rs.getColumnIndex('bt')) === 1;
       p.supportsLatest = rs.getLong(rs.getColumnIndex('supportsLatest')) === 1;
       p.minAppVersion = rs.getLong(rs.getColumnIndex('minAppVersion'));
       p.dslVersion = rs.getLong(rs.getColumnIndex('dslVersion'));

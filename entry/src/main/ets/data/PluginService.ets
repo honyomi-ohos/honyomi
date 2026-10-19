@@ -40,6 +40,7 @@ interface RawManifest {
   versionCode?: number;
   baseUrl?: string;
   nsfw?: boolean;
+  bt?: boolean;
   supportsLatest?: boolean;
   minAppVersion?: number;
   dslVersion?: number;
@@ -60,6 +61,8 @@ export interface RepoEntry {
   versionCode: number;
   file: string;
   nsfw: boolean;
+  // BT 源标记（索引 bt 字段，缺省 false）：UI 展示 BT 徽标
+  bt: boolean;
   icon: string;
 
   // manga | novel | video；仓库索引未声明时为空字符串（UI 不显示类型角标）
@@ -80,6 +83,7 @@ interface RawRepoEntry {
   versionCode?: number;
   file?: string;
   nsfw?: boolean;
+  bt?: boolean;
   icon?: string;
   contentType?: string;
   checksum?: string;
@@ -206,6 +210,7 @@ export class PluginService {
       versionCode: versionCode,
       baseUrl: raw.baseUrl ?? '',
       nsfw: raw.nsfw === true,
+      bt: raw.bt === true,
       supportsLatest: raw.supportsLatest !== false,
       minAppVersion: minAppVersion,
       dslVersion: dslVersion,
@@ -407,6 +412,7 @@ export class PluginService {
           versionCode: item.versionCode ?? 0,
           file: PluginService.resolveRepoFile(url, file),
           nsfw: item.nsfw === true,
+          bt: item.bt === true,
           icon: item.icon !== undefined && item.icon !== '' ?
             PluginService.resolveRepoIcon(url, item.icon) : '',
           contentType: item.contentType !== undefined && item.contentType !== null ?
@@ -1094,6 +1100,7 @@ export class PluginService {
       versionCode: record.versionCode,
       baseUrl: record.baseUrl,
       nsfw: record.nsfw,
+      bt: record.bt,
       supportsLatest: record.supportsLatest,
       minAppVersion: record.minAppVersion,
       dslVersion: record.dslVersion,
@@ -1113,6 +1120,7 @@ export class PluginService {
       versionCode: base.versionCode,
       baseUrl: spec.baseUrl !== '' ? spec.baseUrl : base.baseUrl,
       nsfw: spec.nsfw,
+      bt: base.bt,
       supportsLatest: spec.supportsLatest,
       minAppVersion: base.minAppVersion,
       dslVersion: base.dslVersion,
@@ -1133,6 +1141,7 @@ export class PluginService {
     record.versionCode = manifest.versionCode;
     record.baseUrl = manifest.baseUrl;
     record.nsfw = manifest.nsfw;
+    record.bt = manifest.bt;
     record.supportsLatest = manifest.supportsLatest;
     record.minAppVersion = manifest.minAppVersion;
     record.dslVersion = manifest.dslVersion;

@@ -8,6 +8,10 @@ import { AppDb } from '../data/AppDb';
 import { ChapterRepo, HistoryRepo, MangaRepo } from '../data/Repos';
 import { ReadingStatsRepo } from '../data/ReadingStats';
 import { DownloadService } from '../data/DownloadService';
+import { BtFlow } from '../data/BtFlow';
+import { BtModule } from '../data/BtModule';
+import type { TorrentFileJson } from '@honyomi/torrent';
+import { AppKeys } from '../common/AppKeys';
 import { DanmakuItem, DanmakuService } from '../data/DanmakuService';
 import { SourceRegistry } from '../source/Source';
 import { Http } from '../net/Http';
@@ -37,6 +41,13 @@ interface VpSeekCommand {
   mode: string; // delta 相对位移 | absolute 绝对位置 | end 片尾
   ms: number;
   ts: number;
+}
+
+// BT 边下边播目标文件快照（字节）
+interface BtHeadInfo {
+  done: number; // 已下载字节
+  size: number; // 文件总字节
+  minHead: number; // 起播门槛 min(8MB, 5%)
 }
 
 // 代理缓存进度监听：把 OhosVideoCache 下载百分比同步到页面状态
@@ -127,6 +138,13 @@ export struct VideoPlayerPage {
   private dmLoading: boolean = false;
   private dmChapterId: number = -1;
   private instId: number = ++vpSeq;
+  // BT 边下边播：localPath 为预分配稀疏文件，fdSrc 须限制在已下载字节数内，
+  // 到达边界（completed/error）后等待新数据重开播放器并续播
+  private btPending: boolean = false;
+  private btProgressive: boolean = false;
+  private btStatSize: number = 0;
+  private btSafeLen: number = 0;
+  private btFileDone: number = 0;
 
   aboutToAppear(): void {
     this.log('aboutToAppear');
@@ -1031,7 +1049,10 @@ export struct VideoPlayerPage {
         this.manga = manga;
       }
       this.localPath = DownloadService.localVideo(chapter.mangaId, chapter.id);
-      if (this.localPath === '') {
+      // BT 章节未完整下载：localVideo 可能命中下载中的预分配稀疏文件，标记后走边下边播等待流
+      this.btPending = DownloadService.isBtUrl(chapter.url) && !DownloadService.isDownloaded(chapter.id);
+      this.btProgressive = false;
+      if (this.localPath === '' && !this.btPending) {
         const source = SourceRegistry.get(this.manga.sourceKey);
         if (source === undefined) {
           throw new Error('source_unavailable');
@@ -1109,6 +1130,11 @@ export struct VideoPlayerPage {
     if (this.surfaceId === '') {
       return;
     }
+    // BT 章节未完整下载：进入等待流（引擎选择/入队/轮询头部就绪起播）
+    if (this.btPending) {
+      this.runBtFlow();
+      return;
+    }
     if (this.localPath !== '') {
       this.playFile(this.localPath);
       return;
@@ -1130,8 +1156,200 @@ export struct VideoPlayerPage {
     this.playRemote(video);
   }
 
-  private playFile(path: string): void {
-    this.log(`playFile: ${path}`);
+  // ===== BT 边下边播等待流 =====
+  // 章节为 magnet/.torrent 且未完整下载：无任务时先走引擎选择/入队，
+  // 之后轮询目标文件头部数据就绪即限长起播；到数据边界后等待扩展续播
+
+  private runBtFlow(): void {
+    const gen: number = this.loadGen;
+    this.runBtFlowAsync(gen).catch((e: Error) => {
+      if (gen !== this.loadGen || this.destroyed) {
+        return;
+      }
+      this.log(`runBtFlow catch: ${e.message}`);
+      this.errorText = 'bt_download_first';
+      this.buffering = false;
+    });
+  }
+
+  private async runBtFlowAsync(gen: number): Promise<void> {
+    this.buffering = false;
+    const st = DownloadService.taskStateOf(this.chapterId);
+    if (st !== 0 && st !== 1) {
+      // 无排队/下载中任务：询问引擎选择（已决直接短路）
+      const choice = await BtFlow.acquireEngineChoice(this.getUIContext());
+      if (gen !== this.loadGen || this.destroyed) {
+        return;
+      }
+      if (choice === 'cancel') {
+        this.pathStack.pop();
+        return;
+      }
+      if (choice === 'system') {
+        await BtFlow.handOffToSystem(this.getUIContext(), this.chapter.url);
+        if (gen !== this.loadGen || this.destroyed) {
+          return;
+        }
+        this.pathStack.pop();
+        return;
+      }
+      // 用户明确选择内置引擎：解除安装引导抑制（此前"暂不"仅抑制自动弹窗）
+      AppStorage.setOrCreate(AppKeys.BT_ASK_DISMISSED, false);
+      DownloadService.enqueueRecord(this.manga, this.chapter);
+      if (!Settings.getBtProgressive()) {
+        this.errorText = 'bt_download_first';
+        Util.toastRes(this.getUIContext(), $r('app.string.detail_download_queued'));
+        return;
+      }
+    } else if (!Settings.getBtProgressive()) {
+      // 任务已在下载但用户关闭边下边播：提示先下载完成
+      this.errorText = 'bt_download_first';
+      return;
+    }
+    await this.waitBtHeadAndPlay(gen);
+  }
+
+  // 轮询等待目标文件头部就绪（顺序下载下 done 即连续头部）：门槛 min(8MB, 5%)
+  private async waitBtHeadAndPlay(gen: number): Promise<void> {
+    this.errorText = 'bt_progressive_waiting';
+    const deadline: number = Date.now() + 15 * 60 * 1000;
+    while (Date.now() < deadline) {
+      if (gen !== this.loadGen || this.destroyed) {
+        return;
+      }
+      if (DownloadService.isDownloaded(this.chapterId)) {
+        this.beginBtFullPlay();
+        return;
+      }
+      const st = DownloadService.taskStateOf(this.chapterId);
+      if (st === -1) {
+        // 任务消失且未完成：被取消/删除
+        this.errorText = 'bt_download_first';
+        this.buffering = false;
+        return;
+      }
+      if (st === 3) {
+        const err = DownloadService.failedErrorOf(this.chapterId);
+        if (err !== '' && err !== 'bt_component_required' && err !== 'download_cancelled') {
+          this.errorText = err;
+          this.buffering = false;
+          return;
+        }
+        // 组件缺失：Index 安装引导 → retryBtComponentTasks 自动恢复，继续等待
+      }
+      const head: BtHeadInfo | undefined = await this.btHeadInfo();
+      if (gen !== this.loadGen || this.destroyed) {
+        return;
+      }
+      if (head !== undefined && head.done >= head.minHead) {
+        this.localPath = DownloadService.localVideo(this.mangaId, this.chapterId);
+        if (this.localPath !== '') {
+          this.errorText = '';
+          this.startBtPlay(head.done, head.size);
+          return;
+        }
+      }
+      await BtFlow.sleep(1000);
+    }
+    this.errorText = 'bt_download_first';
+    this.buffering = false;
+  }
+
+  // 目标视频文件（种子内最大视频容器）下载快照；引擎未启动/无元数据返回 undefined
+  private async btHeadInfo(): Promise<BtHeadInfo | undefined> {
+    const key = DownloadService.btKeyOf(this.chapterId);
+    if (key < 0) {
+      return undefined;
+    }
+    try {
+      const files: TorrentFileJson[] = await BtModule.files(key);
+      let target: TorrentFileJson | undefined = undefined;
+      for (const f of files) {
+        if (DownloadService.isVideoName(f.path) && (target === undefined || f.size > target.size)) {
+          target = f;
+        }
+      }
+      if (target === undefined || target.size <= 0) {
+        return undefined;
+      }
+      const info: BtHeadInfo = {
+        done: target.done,
+        size: target.size,
+        minHead: Math.min(8 * 1024 * 1024, Math.floor(target.size * 0.05))
+      };
+      return info;
+    } catch (_e) {
+      return undefined;
+    }
+  }
+
+  // 限长起播：fdSrc 截至已下载头部（顺序下载下数据连续）
+  private startBtPlay(safeLen: number, realSize: number): void {
+    this.log(`startBtPlay: safeLen=${safeLen}, size=${realSize}`);
+    this.btProgressive = true;
+    this.btStatSize = realSize;
+    this.btSafeLen = Math.min(safeLen, realSize);
+    this.btFileDone = this.btSafeLen;
+    this.buffering = true;
+    this.playFile(this.localPath, this.btSafeLen);
+  }
+
+  // 数据边界（completed/error 且 safeLen < 真实大小）：等待新增数据后重开续播
+  private onBtBoundary(): void {
+    const pos: number = this.positionMs;
+    this.log(`bt boundary at ${pos}ms, safeLen=${this.btSafeLen}/${this.btStatSize}`);
+    this.buffering = true;
+    const gen: number = this.loadGen;
+    this.extendBtWait(gen, pos).catch((): void => {
+    });
+  }
+
+  private async extendBtWait(gen: number, pos: number): Promise<void> {
+    const deadline: number = Date.now() + 15 * 60 * 1000;
+    // 每次扩展至少等待 8MB 增量（约数秒视频），减少播放器重开次数
+    const target: number = Math.min(this.btStatSize, this.btSafeLen + 8 * 1024 * 1024);
+    while (Date.now() < deadline) {
+      if (gen !== this.loadGen || this.destroyed || !this.btProgressive) {
+        return;
+      }
+      if (DownloadService.isDownloaded(this.chapterId)) {
+        this.btProgressive = false;
+        this.resumeMs = pos;
+        this.playFile(this.localPath);
+        return;
+      }
+      const head: BtHeadInfo | undefined = await this.btHeadInfo();
+      if (gen !== this.loadGen || this.destroyed || !this.btProgressive) {
+        return;
+      }
+      if (head !== undefined && head.done >= target) {
+        this.btFileDone = head.done;
+        this.btSafeLen = Math.min(head.done, this.btStatSize);
+        this.resumeMs = pos;
+        this.playFile(this.localPath, this.btSafeLen);
+        return;
+      }
+      await BtFlow.sleep(1000);
+    }
+    this.btProgressive = false;
+    this.errorText = 'bt_download_first';
+    this.buffering = false;
+  }
+
+  // 等待期间下载完成：转完整文件正常播放
+  private beginBtFullPlay(): void {
+    this.log('bt download completed during wait, full play');
+    this.btPending = false;
+    this.btProgressive = false;
+    this.localPath = DownloadService.localVideo(this.mangaId, this.chapterId);
+    this.errorText = '';
+    this.startCurrent();
+  }
+
+  // limitLen >= 0 时 fdSrc 限制在已下载字节数（BT 边下边播：稀疏文件尾部为零洞，
+  // 播放器读到未下载数据会产生解码错误），否则按文件实际大小
+  private playFile(path: string, limitLen: number = -1): void {
+    this.log(`playFile: ${path}, limitLen: ${limitLen}`);
     this.playGen += 1;
     const gen = this.playGen;
     this.releasePlayer();
@@ -1153,7 +1371,8 @@ export struct VideoPlayerPage {
         return;
       }
       this.mediaFile = file;
-      const fdSrc: media.AVFileDescriptor = { fd: file.fd, offset: 0, length: stat.size };
+      const length: number = limitLen >= 0 ? Math.min(limitLen, stat.size) : stat.size;
+      const fdSrc: media.AVFileDescriptor = { fd: file.fd, offset: 0, length: length };
       player.fdSrc = fdSrc;
     }).catch((e: Error) => {
       if (gen !== this.playGen) {
@@ -1267,6 +1486,11 @@ export struct VideoPlayerPage {
         this.playing = false;
         this.buffering = false;
       } else if (state === 'completed') {
+        // BT 边下边播：completed 可能是 fdSrc 截断处的数据边界而非真实片尾
+        if (this.btProgressive && this.btSafeLen < this.btStatSize) {
+          this.onBtBoundary();
+          return;
+        }
         this.playing = false;
         this.buffering = false;
         this.persist(true);
@@ -1277,6 +1501,11 @@ export struct VideoPlayerPage {
         }
       } else if (state === 'error') {
         this.log(`stateChange error, native state: ${player.state}`);
+        // BT 边下边播：截断容器的解码错误优先按数据边界处理
+        if (this.btProgressive && this.btSafeLen < this.btStatSize) {
+          this.onBtBoundary();
+          return;
+        }
         this.playing = false;
         this.buffering = false;
         this.errorText = 'play_failed';

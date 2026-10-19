@@ -2533,6 +2533,122 @@
       "value": "BT 組件下載失敗，請檢查網路後重試"
     },
     {
+      "name": "bt_choice_title",
+      "value": "BitTorrent 下載"
+    },
+    {
+      "name": "bt_choice_msg",
+      "value": "本章節為 BitTorrent 種子。請選擇下載方式（之後可在 設定 → 下載 中修改）：\n· 內建引擎：應用程式內下載，支援邊下邊播（組件約 %1$d MB）\n· 系統應用：將磁力/種子連結移交給其他應用（如迅雷）"
+    },
+    {
+      "name": "bt_choice_system",
+      "value": "交給系統應用"
+    },
+    {
+      "name": "bt_choice_module",
+      "value": "內建引擎"
+    },
+    {
+      "name": "bt_handoff_started",
+      "value": "已移交給系統應用"
+    },
+    {
+      "name": "bt_handoff_failed",
+      "value": "沒有應用可處理該種子"
+    },
+    {
+      "name": "bt_progressive_waiting",
+      "value": "正在下載，資料足夠後將自動開始播放"
+    },
+    {
+      "name": "bt_batch_skipped",
+      "value": "已跳過 %1$d 個 BT 章節"
+    },
+    {
+      "name": "bt_set_group",
+      "value": "BitTorrent"
+    },
+    {
+      "name": "bt_set_engine",
+      "value": "下載引擎"
+    },
+    {
+      "name": "bt_engine_ask",
+      "value": "每次詢問"
+    },
+    {
+      "name": "bt_engine_module",
+      "value": "內建引擎"
+    },
+    {
+      "name": "bt_engine_system",
+      "value": "系統應用"
+    },
+    {
+      "name": "bt_engine_module_missing",
+      "value": "BT 引擎組件未安裝"
+    },
+    {
+      "name": "bt_engine_module_missing_sub",
+      "value": "使用內建引擎下載種子時需要"
+    },
+    {
+      "name": "bt_engine_install",
+      "value": "安裝"
+    },
+    {
+      "name": "bt_set_progressive",
+      "value": "邊下邊播"
+    },
+    {
+      "name": "bt_set_progressive_sub",
+      "value": "種子下載中即可開始播放（依序下載）"
+    },
+    {
+      "name": "bt_set_speed_limits",
+      "value": "速度限制"
+    },
+    {
+      "name": "bt_set_download_limit",
+      "value": "下載限速"
+    },
+    {
+      "name": "bt_set_upload_limit",
+      "value": "上傳限速"
+    },
+    {
+      "name": "bt_limit_unlimited",
+      "value": "不限速"
+    },
+    {
+      "name": "bt_limit_kb",
+      "value": "%1$d KB/s"
+    },
+    {
+      "name": "bt_limit_mb",
+      "value": "%1$d MB/s"
+    },
+    {
+      "name": "bt_set_extra_trackers",
+      "value": "額外 Tracker"
+    },
+    {
+      "name": "bt_set_extra_trackers_sub",
+      "value": "加入每個種子任務"
+    },
+    {
+      "name": "bt_set_extra_trackers_hint",
+      "value": "每行一個 Tracker 位址"
+    },
+    {
+      "name": "bt_trackers_none",
+      "value": "未設定"
+    },
+    {
+      "name": "bt_trackers_n",
+      "value": "%1$d 個"
+    },
+    {
       "name": "local_error_chapter_missing",
       "value": "章節檔案不存在"
     },
