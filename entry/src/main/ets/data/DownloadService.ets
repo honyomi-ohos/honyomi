@@ -1306,39 +1306,13 @@ export class DownloadService {
     return path.toLowerCase().endsWith('.torrent');
   }
 
-  // 无 tracker 的纯 infohash magnet（如 animegarden）在 DHT 引导受阻的网络下找不到
-  // 任何 peer。追加动画生态常用的公开 tracker 作为兜底发现通道（原 swarm 若向这些
-  // tracker 上报过即可命中；追加不影响 DHT 继续工作）。
-  private static readonly BT_FALLBACK_TRACKERS: string[] = [
-    'udp://tracker.opentrackr.org:1337/announce',
-    'udp://open.demonii.com:1337/announce',
-    'udp://open.stealth.si:80/announce',
-    'udp://tracker.dler.org:6969/announce',
-    'udp://exodus.desync.com:6969/announce',
-    'udp://tracker.cyberia.is:6969/announce',
-    'udp://tracker.torrent.eu.org:451/announce',
-    'https://tr.bangumi.moe:9696/announce',
-    'http://open.acgnxtracker.com:80/announce',
-    'http://t.acg.rip:6699/announce',
-    'http://t.nyaatracker.com:2710/announce'
-  ];
-
-  private static withFallbackTrackers(magnet: string): string {
-    if (magnet.indexOf('tr=') >= 0) {
-      return magnet;
-    }
-    let out = magnet;
-    for (const tr of DownloadService.BT_FALLBACK_TRACKERS) {
-      out += '&tr=' + encodeURIComponent(tr);
-    }
-    return out;
-  }
-
   // BT 下载：magnet/.torrent → BtModule（torrent HSP 动态加载，libtorrent worker）。
   // 产物落 chapterDir（种子内部文件名/子目录由种子决定，localVideo 递归扫描定位）。
   // 重启恢复：队列恢复为 queued → 重走 downloadVideo → 同 savePath 重加种子 → re-check 续传，无需额外状态。
   // 取消：remove(key,false) 保留分片；完成：remove(key,false) 保留文件并停止做种。
   // 组件未装（AGC 按需分发）→ bt_component_required → process 置前台安装引导标志。
+  // tracker 兜底在引擎层完成（TorrentManager 对每个新任务自动叠加内置公共 tracker 列表，
+  // 对齐 animeko/anitorrent），此处 magnet 保持原样传入。
   private static async downloadBt(task: DownloadTask, url: string, dir: string, flags: DlFlags): Promise<void> {
     if (DownloadService.context === undefined) {
       throw new Error('download_not_ready');
@@ -1359,7 +1333,7 @@ export class DownloadService {
     await BtModule.ensureStarted(btRoot);
     let key = -1;
     if (url.startsWith('magnet:')) {
-      key = await BtModule.addMagnet(DownloadService.withFallbackTrackers(url), dir);
+      key = await BtModule.addMagnet(url, dir);
     } else {
       const bytes = await Http.getBuffer(url, undefined);
       key = await BtModule.addTorrentFile(new Uint8Array(bytes), dir);
