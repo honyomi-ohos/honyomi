@@ -2745,6 +2745,10 @@
       "value": "Oynatılabilir video bulunamadı"
     },
     {
+      "name": "video_bt_download_first",
+      "value": "Bu bölüm bir BitTorrent torrentidir. Önce indirin, ardından yerel dosyayı oynatın."
+    },
+    {
       "name": "video_quality_local",
       "value": "Yerel"
     },
@@ -2775,6 +2779,22 @@
     {
       "name": "download_error_source_missing",
       "value": "Kaynak bulunamadı: %s"
+    },
+    {
+      "name": "download_bt_component_required",
+      "value": "BT indirme bileşeni gerekli"
+    },
+    {
+      "name": "bt_component_ask_msg",
+      "value": "Bu videoyu indirmek için BT motor bileşeni (yaklaşık %1$d MB) gerekiyor. Şimdi indirilsin mi?"
+    },
+    {
+      "name": "bt_component_downloading",
+      "value": "BT bileşeni indiriliyor"
+    },
+    {
+      "name": "bt_component_download_failed",
+      "value": "BT bileşeni indirilemedi. Ağı kontrol edip tekrar deneyin."
     },
     {
       "name": "local_error_chapter_missing",

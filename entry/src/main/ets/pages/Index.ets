@@ -24,6 +24,7 @@ import { ContentOpen } from './ContentOpen';
 import { AppIcon } from './components/AppIcon';
 import { CfVerifySheet } from './components/CfVerifySheet';
 import { LockOverlay } from './components/LockOverlay';
+import { BtComponentDialog } from './components/BtComponentDialog';
 import { TtsMiniBar } from './components/novel/TtsMiniBar';
 import { BROWSE_MORPH, LIBRARY_MORPH, PathMorph, UPDATES_MORPH } from './components/PathMorph';
 import { DetailParams, GlobalSearchParams, OnboardingParams } from '../model/RouteParams';
@@ -392,6 +393,7 @@ struct Index {
   @StorageLink('cardAction') @Watch('onCardActionChanged') cardActionJson: string = '';
   // 应用锁锁定态（隐私设置）：true 时全屏覆盖锁定层并拉起系统认证
   @StorageProp('appLocked') appLocked: boolean = false;
+  @StorageLink('btComponentAsk') btComponentAsk: boolean = false;
   // 详情页“搜索此处”回退主页时切到书架页签执行文本搜索（对齐 Mihon HomeScreen.search → LibraryTab）
   @StorageLink('libSearchReq') @Watch('onLibSearchReq') libSearchReq: number = 0;
   // 一多响应式：窗口宽度 + 已挂载页签位掩码（宽屏下按需挂载后驻留保状态）
@@ -811,6 +813,10 @@ struct Index {
       // 应用锁（隐私设置）：锁定时全屏覆盖，拦截一切交互直至系统认证通过
       if (this.appLocked) {
         LockOverlay()
+      }
+      // BT 组件安装引导：torrent HSP 按需分发缺失时 DownloadService 置位弹窗
+      if (this.btComponentAsk) {
+        BtComponentDialog()
       }
     }
     .width('100%')

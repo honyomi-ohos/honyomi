@@ -2701,6 +2701,10 @@
       "value": "Tiada video yang boleh dimainkan"
     },
     {
+      "name": "video_bt_download_first",
+      "value": "Bab ini ialah torrent BitTorrent. Muat turun dahulu, kemudian mainkan fail tempatan."
+    },
+    {
       "name": "video_quality_local",
       "value": "Tempatan"
     },
@@ -2731,6 +2735,22 @@
     {
       "name": "download_error_source_missing",
       "value": "Sumber tidak dijumpai: %s"
+    },
+    {
+      "name": "download_bt_component_required",
+      "value": "Komponen muat turun BT diperlukan"
+    },
+    {
+      "name": "bt_component_ask_msg",
+      "value": "Komponen enjin BT (sekitar %1$d MB) diperlukan untuk memuat turun video ini. Muat turun sekarang?"
+    },
+    {
+      "name": "bt_component_downloading",
+      "value": "Memuat turun komponen BT"
+    },
+    {
+      "name": "bt_component_download_failed",
+      "value": "Gagal memuat turun komponen BT. Semak rangkaian dan cuba lagi."
     },
     {
       "name": "local_error_chapter_missing",

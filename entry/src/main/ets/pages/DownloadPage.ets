@@ -43,8 +43,8 @@ class DownloadedRowItem {
 struct QueueTaskRow {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   task: DownloadTask = new DownloadTask();
-  // 宽屏内容列缩进（宿主传入），行内容与限宽列左缘对齐
-  inset: number = 0;
+  // 宽屏内容列缩进：自读 windowW 计算（经宿主传普通属性时，ForEach 缓存项在窗口尺寸变化后不会更新）
+  @StorageProp('windowW') windowW: number = 0;
   @State state: number = 0;
   @State progress: number = 0;
   @State total: number = 0;
@@ -151,8 +151,8 @@ struct QueueTaskRow {
     }
     .width('100%')
     .padding({
-      left: 12 + this.inset,
-      right: 12 + this.inset,
+      left: 12 + Bp.contentInset(this.windowW),
+      right: 12 + Bp.contentInset(this.windowW),
       top: 10,
       bottom: 10
     })
@@ -226,9 +226,9 @@ export struct DownloadPage {
     })
   }
 
-  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（960 上限）
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（720 上限）
   private inset(): number {
-    return Bp.contentInset(this.windowW, 960);
+    return Bp.contentInset(this.windowW);
   }
 
   // 排序菜单（对齐 Mihon 排序键：章节号升/降序 + 上传日期从新到旧/从旧到新）
@@ -476,7 +476,7 @@ export struct DownloadPage {
               if (item.isHeader) {
                 this.queueGroupHeader(item.group)
               } else {
-                QueueTaskRow({ task: item.task, inset: this.inset() })
+                QueueTaskRow({ task: item.task })
               }
             }
           }, (item: QueueRowItem) => this.queueRowKey(item))

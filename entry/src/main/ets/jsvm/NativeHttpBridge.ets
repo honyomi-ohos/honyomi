@@ -20,6 +20,7 @@ import { Doh } from '../net/Doh';
 import { CfChallenge } from '../net/CfChallenge';
 import { Util } from '../common/Util';
 import { challengeError } from './EngineGateway';
+import { HostCalls } from './HostCalls';
 
 /** Bridge request as dispatched by the native engine (JSON-decoded). */
 export interface JsvmBridgeRequest {
@@ -44,6 +45,12 @@ export interface JsvmBridgeRequest {
 
   /** Present only on dnsSet messages: JSON 数组字符串（IPv4 字面量列表）。 */
   ipsJson?: string;
+
+  /** Present only on hostCall messages: 宿主能力路由名（cookieHeader/…）。 */
+  kind?: string;
+
+  /** Present only on hostCall messages: 载荷 JSON 字符串。 */
+  payload?: string;
 }
 
 /** KotlinHttpResult shape expected by the extension runtime. */
@@ -150,6 +157,17 @@ export class NativeHttpBridge {
         jsvmEngine.resolveHttp(dnsReq.callId, JSON.stringify(NativeHttpBridge.okEnvelope()));
       }).catch((e: Error) => {
         jsvmEngine.resolveHttp(dnsReq.callId,
+          JSON.stringify(NativeHttpBridge.error(0, e.message, '')));
+      });
+      return;
+    }
+    // 通用宿主调用桥：cookie 存取 / 图像像素编解码等（HostCalls 按 kind 路由）
+    if (msg.type === 'hostCall') {
+      const hostReq: JsvmBridgeRequest = msg;
+      HostCalls.dispatch(hostReq.kind ?? '', hostReq.payload ?? '').then((body: string) => {
+        jsvmEngine.resolveHttp(hostReq.callId, JSON.stringify(NativeHttpBridge.okBody(body)));
+      }).catch((e: Error) => {
+        jsvmEngine.resolveHttp(hostReq.callId,
           JSON.stringify(NativeHttpBridge.error(0, e.message, '')));
       });
       return;
@@ -615,6 +633,18 @@ export class NativeHttpBridge {
       statusText: 'OK',
       headersJson: '{}',
       body: '',
+      error: null,
+      url: '',
+    };
+  }
+
+  // hostCall 成功信封：body 为结果 JSON 字符串
+  private static okBody(body: string): JsvmHttpResult {
+    return {
+      status: 200,
+      statusText: 'OK',
+      headersJson: '{}',
+      body: body,
       error: null,
       url: '',
     };

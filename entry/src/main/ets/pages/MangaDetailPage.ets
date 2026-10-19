@@ -6,7 +6,7 @@ import { photoAccessHelper } from '@kit.MediaLibraryKit';
 import { AppDb } from '../data/AppDb';
 import { CategoryRepo, ChapterRepo, MangaRepo, TrackRepo } from '../data/Repos';
 import { SourceRegistry } from '../source/Source';
-import { CategoryRecord, ChapterRecord, ContentType, DownloadTask, MangaRecord } from '../model/Models';
+import { CategoryRecord, ChapterRecord, ContentType, DownloadTask, MangaRecord, SManga } from '../model/Models';
 import { DetailParams, DetailSearchResult, GlobalSearchParams } from '../model/RouteParams';
 import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
@@ -247,6 +247,8 @@ export struct MangaDetailPage {
   @State topBarProgress: number = 0;
   @State trackCount: number = 0;
   @State showTrackSheet: boolean = false;
+  // 相关/推荐作品（插件可选导出 getRelatedWorks；为空不渲染该区块）
+  @State relatedWorks: SManga[] = [];
   @State showCoverViewer: boolean = false;
   @State showSettingsSheet: boolean = false;
   // 章节排序/筛选状态（持久化于 manga.chapterFlags，对齐 Mihon ChapterSettingsDialog）
@@ -788,6 +790,59 @@ export struct MangaDetailPage {
                 }
               }
 
+              // 相关/推荐作品（插件导出 getRelatedWorks 时展示）：横向封面卡片，点击入库并进详情
+              if (this.relatedWorks.length > 0) {
+                ListItem() {
+                  Column() {
+                    Text($r('app.string.detail_related_works'))
+                      .fontSize(16)
+                      .fontWeight(FontWeight.Bold)
+                      .fontColor(this.pal.text)
+                    Scroll() {
+                      Row({ space: 10 }) {
+                        ForEach(this.relatedWorks, (m: SManga) => {
+                          Column() {
+                            SmartImage({
+                              url: m.coverUrl,
+                              sourceKey: this.manga.sourceKey,
+                              fit: ImageFit.Cover,
+                              fill: true
+                            })
+                              .width('100%')
+                              .aspectRatio(0.7)
+                              .borderRadius(8)
+                              .clip(true)
+                              .backgroundColor(this.pal.chip)
+                            Text(m.title)
+                              .fontSize(11)
+                              .fontColor(this.pal.sub)
+                              .maxLines(2)
+                              .textOverflow({ overflow: TextOverflow.Ellipsis })
+                              .margin({ top: 5 })
+                          }
+                          .width(88)
+                          .alignItems(HorizontalAlign.Start)
+                          .onClick(() => {
+                            this.runSafe((): Promise<void> => this.openRelatedWork(m));
+                          })
+                        }, (m: SManga, idx: number) => `rel-${idx}-${m.key}`)
+                      }
+                    }
+                    .scrollable(ScrollDirection.Horizontal)
+                    .scrollBar(BarState.Off)
+                    .edgeEffect(EdgeEffect.None)
+                    .margin({ top: 10 })
+                  }
+                  .alignItems(HorizontalAlign.Start)
+                  .width('100%')
+                  .padding({
+                    left: 16 + this.contentInset(),
+                    right: 16 + this.contentInset(),
+                    top: 10
+                  })
+                }
+              }
+
               // 章节标题栏：标题/排序/筛选入口 + 批量下载 + 全部已读（对齐 Mihon ChapterHeader）
               ListItem() {
                 Row() {
@@ -1164,12 +1219,50 @@ export struct MangaDetailPage {
     try {
       await this.syncFromSource();
       await this.refreshTrackCount();
+      await this.loadRelatedWorks();
     } catch (e) {
       const msg = e instanceof Error ? e.message : `${e}`;
       hilog.warn(0x0001, 'MangaDetail', 'loadAll failed: %{public}s', msg);
       Util.toastRes(this.getUIContext(), $r('app.string.detail_load_failed'));
     } finally {
       this.loading = false;
+    }
+  }
+
+  // 相关/推荐作品：插件导出 getRelatedWorks 时加载（失败静默，不阻塞详情主流程）。
+  // 排除自身后最多展示 20 项。
+  private async loadRelatedWorks(): Promise<void> {
+    try {
+      const source = SourceRegistry.get(this.manga.sourceKey);
+      if (source === undefined) {
+        this.relatedWorks = [];
+        return;
+      }
+      const list = await source.getRelatedWorks(this.manga.url);
+      const filtered: SManga[] = [];
+      for (const m of list) {
+        if (m.key !== this.manga.url && filtered.length < 20) {
+          filtered.push(m);
+        }
+      }
+      this.relatedWorks = filtered;
+    } catch (e) {
+      this.relatedWorks = [];
+    }
+  }
+
+  // 点击相关作品：入库（upsertFromSource）后压入详情页
+  private async openRelatedWork(m: SManga): Promise<void> {
+    try {
+      const context = Util.hostAbilityContext(this.getUIContext());
+      await AppDb.ready(context);
+      const source = SourceRegistry.get(this.manga.sourceKey);
+      const contentType = source !== undefined ? source.contentType : '';
+      const id = await MangaRepo.upsertFromSource(this.manga.sourceKey, m, contentType);
+      const params: DetailParams = { mangaId: id };
+      this.pathStack.pushPathByName('MangaDetail', params);
+    } catch (e) {
+      Util.toastRes(this.getUIContext(), $r('app.string.browse_open_detail_failed'));
     }
   }
 

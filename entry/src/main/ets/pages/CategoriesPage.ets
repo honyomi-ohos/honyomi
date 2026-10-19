@@ -82,9 +82,9 @@ export struct CategoriesPage {
     .backgroundColor(this.pal.bg)
   }
 
-  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（960 上限）
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（720 上限）
   private inset(): number {
-    return Bp.contentInset(this.windowW, 960);
+    return Bp.contentInset(this.windowW);
   }
 
   @Builder

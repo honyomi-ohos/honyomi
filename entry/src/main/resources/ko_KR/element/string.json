@@ -593,6 +593,10 @@
       "value": "펼치기"
     },
     {
+      "name": "detail_related_works",
+      "value": "관련 작품"
+    },
+    {
       "name": "detail_chapters_count",
       "value": "회차 (%d)"
     },
@@ -2789,6 +2793,10 @@
       "value": "재생할 수 있는 동영상이 없습니다"
     },
     {
+      "name": "video_bt_download_first",
+      "value": "이 챕터는 BT 토렌트입니다. 먼저 다운로드한 후 로컬 파일을 재생해 주세요."
+    },
+    {
       "name": "video_quality_local",
       "value": "로컬"
     },
@@ -2819,6 +2827,22 @@
     {
       "name": "download_error_source_missing",
       "value": "소스를 찾을 수 없습니다: %s"
+    },
+    {
+      "name": "download_bt_component_required",
+      "value": "BT 다운로드 구성 요소 필요"
+    },
+    {
+      "name": "bt_component_ask_msg",
+      "value": "이 영상을 다운로드하려면 BT 엔진 구성 요소(약 %1$d MB)가 필요합니다. 지금 다운로드하시겠습니까?"
+    },
+    {
+      "name": "bt_component_downloading",
+      "value": "BT 구성 요소 다운로드 중"
+    },
+    {
+      "name": "bt_component_download_failed",
+      "value": "BT 구성 요소 다운로드에 실패했습니다. 네트워크를 확인한 후 다시 시도하세요."
     },
     {
       "name": "local_error_chapter_missing",

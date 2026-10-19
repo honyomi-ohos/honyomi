@@ -2753,6 +2753,10 @@
       "value": "Немає відео для відтворення"
     },
     {
+      "name": "video_bt_download_first",
+      "value": "Цей розділ — торрент BitTorrent. Спочатку завантажте його, а потім відтворіть локальний файл."
+    },
+    {
       "name": "video_quality_local",
       "value": "Локально"
     },
@@ -2783,6 +2787,22 @@
     {
       "name": "download_error_source_missing",
       "value": "Джерело не знайдено: %s"
+    },
+    {
+      "name": "download_bt_component_required",
+      "value": "Потрібен компонент завантаження BT"
+    },
+    {
+      "name": "bt_component_ask_msg",
+      "value": "Для завантаження цього відео потрібен компонент рушія BT (близько %1$d МБ). Завантажити зараз?"
+    },
+    {
+      "name": "bt_component_downloading",
+      "value": "Завантаження компонента BT"
+    },
+    {
+      "name": "bt_component_download_failed",
+      "value": "Не вдалося завантажити компонент BT. Перевірте мережу та спробуйте ще раз."
     },
     {
       "name": "local_error_chapter_missing",

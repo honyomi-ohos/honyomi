@@ -46,4 +46,8 @@ export class AppKeys {
   static readonly TAB_PAD_H: string = 'tabPadH';
   // 应用锁锁定态（EntryAbility 判定写入，LockOverlay 消费）
   static readonly APP_LOCKED: string = 'appLocked';
+  // BT 组件安装引导（DownloadService 失败捕获写入，Index/BtComponentDialog 消费）
+  static readonly BT_COMPONENT_ASK: string = 'btComponentAsk';
+  // 用户已拒绝 BT 组件安装引导（抑制自动弹窗，手动重试/retryBtComponentTasks 重置）
+  static readonly BT_ASK_DISMISSED: string = 'btAskDismissed';
 }

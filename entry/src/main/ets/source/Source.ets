@@ -24,6 +24,9 @@ export interface Source {
 
   getWorkDetail(workKey: string): Promise<SManga>;
 
+  // 相关/推荐作品（插件可选导出 getRelatedWorks 时才有数据；本地源恒为空）
+  getRelatedWorks(workKey: string): Promise<SManga[]>;
+
   getChapterList(workKey: string): Promise<SChapter[]>;
 
   getPageList(chapterKey: string): Promise<SPage[]>;

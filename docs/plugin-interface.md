@@ -104,6 +104,7 @@ JSVM 引擎 (cpp/jsvm_engine.cpp, libjsvmengine.so)        ← 适配器层：�
 | `getPopularWorks` | **必选** | 热门列表 | `(page)` | `{works: RawWork[], hasNextPage}` |
 | `getSearchWorks` | **必选** | 搜索 | `(page, query)` | 同上 |
 | `getWorkDetail` | **必选** | 作品详情 | `(workKey)` | `RawWork`（无 key/url 时宿主报 `plugin_invalid_detail`） |
+| `getRelatedWorks` | 可选 | 相关/推荐作品（详情页"相关作品"横向区块；Tachiyomi `fetchRelatedMangas` 对应） | `(workKey)` | `RawWork[]`（无 key/url 项丢弃；空数组不渲染区块） |
 | `getChapterList` | **必选** | 章节列表 | `(workKey)` | `RawChapter[]` |
 | `getLatestWorks` | 可选 | 最新更新；导出后 `supportsLatest` 生效 | `(page)` | 同 popular |
 | `getPageList` | manga **必选** | 页图列表 | `(chapterKey)` | `RawPage[]` |
@@ -177,9 +178,13 @@ AES-CBC 的 pkcs7 解填充保持宽松，GCM 认证失败抛错）、
 | `$.http.request(url, {method, headers, body})` | 返回 `{ok, status, headers, body, url}`；方法限 GET/HEAD/POST/PUT/PATCH/DELETE/OPTIONS，头禁止 CR/LF |
 | `$.http.enqueue` | fire-and-forget |
 | `$.http.getBytes(url, headers)` | 字节响应；桥未返回字节时抛错 |
+| `$.http.getBytesResponse(url, headers)` | 同 getBytes，但保留完整响应信封 `{ok, status, statusText, headers, url, bytes}`（插件按状态码分支，如 401 图链过期提示） |
 | `$.html(html, baseUrl)` | 包装 DOM Document（选择器 + 相对链接解析） |
 | `$.urlEncodeGbk(text)` | GBK URL 编码桥（`__nativeUrlEncodeGbk`） |
 | `$.dns.set(host, ips)` | DNS 直连桥（`__nativeDnsSet`）：把域名钉到 1..8 个 IPv4（netstack 直连规则 + DoH 缓存 pin），绕过被污染的系统 DNS；host 须为域名（非 IP 字面量），失败抛错 |
+| `$.cookies.set(url, name, value)` / `get(url, name)` / `header(url)` | 域级持久 CookieJar 读写桥（`__nativeHostCall` → CookieJar）：插件主动读跨域会话 / 注入 Cookie（如 noyacg SessionCookieJar）；HTTP 请求本身仍由宿主自动存取 Cookie |
+| `$.image.decode(bytes)` | 图像像素解码桥（`__nativeHostCall` → @ohos.image）：图片字节 → `{width, height, pixels}`（RGBA，4 字节/像素）；输入 ≤64MB、解码 ≤1600 万像素，失败抛错 |
+| `$.image.encodePng(width, height, pixels)` | RGBA 像素（`width*height*4` 字节）→ PNG 字节；与 `decode` 对称，供图片还原类拦截器使用（如 hanabimanga 切块重排） |
 | `$.crypto.base64Encode/Decode`、`aesCbcDecrypt`、`md5`、`md5Bytes`、`sha1/256/384/512`、`hmac`、`pbkdf2`、`aesGcmEncrypt/Decrypt` | 摘要/HMAC/派生/解密；PBKDF2 迭代上限 2_000_000，GCM nonce 固定 12 字节 |
 
 ### 5.3 插件偏好（prefs）

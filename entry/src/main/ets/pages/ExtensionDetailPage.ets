@@ -4,6 +4,7 @@ import { JsvmSource, SourcePrefItem, SourcePrefOption } from '../source/JsvmSour
 import { BrowseSourceParams, ExtensionDetailParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
+import { Bp } from '../common/Breakpoint';
 import { EmptyScreen } from './components/EmptyScreen';
 import { ConfirmDialog, InputDialog } from './components/Dialogs';
 import { AppIcon } from './components/AppIcon';
@@ -90,6 +91,7 @@ export struct ExtensionDetailPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageProp('navBarH') navBarH: number = 0;
+  @StorageProp('windowW') windowW: number = 0;
   @State pluginKey: string = '';
   @State plugin: InstalledPlugin | undefined = undefined;
   @State schema: SourcePrefItem[] = [];
@@ -102,6 +104,10 @@ export struct ExtensionDetailPage {
 
   aboutToDisappear(): void {
     this.destroyed = true;
+  }
+
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
   }
 
   @Builder
@@ -218,8 +224,8 @@ export struct ExtensionDetailPage {
         }
         .width('100%')
         .padding({
-          left: 16,
-          right: 16,
+          left: 16 + this.inset(),
+          right: 16 + this.inset(),
           top: this.statusBarH + 10,
           bottom: 8
         })
@@ -293,7 +299,7 @@ export struct ExtensionDetailPage {
               .padding(20)
               .backgroundColor(this.pal.card)
               .borderRadius(14)
-              .margin({ left: 16, right: 16, top: 4 })
+              .margin({ top: 4 })
 
               // 源入口
               Column() {
@@ -350,7 +356,7 @@ export struct ExtensionDetailPage {
               .padding(16)
               .backgroundColor(this.pal.card)
               .borderRadius(14)
-              .margin({ left: 16, right: 16, top: 12 })
+              .margin({ top: 12 })
 
               // 插件设置（getSettingsSchema 声明时显示）
               if (this.isConfigurable()) {
@@ -385,18 +391,15 @@ export struct ExtensionDetailPage {
                 .padding(16)
                 .backgroundColor(this.pal.card)
                 .borderRadius(14)
-                .margin({
-                  left: 16,
-                  right: 16,
-                  top: 12,
-                  bottom: 24
-                })
+                .margin({ top: 12, bottom: 24 })
               } else {
                 Column()
                   .height(24)
               }
             }
             .width('100%')
+            // 大屏限宽缩进：滚动容器全宽，内容列经 padding 缩进（卡片 margin+width('100%') 会被父默认居中对齐抵消）
+            .padding({ left: 16 + this.inset(), right: 16 + this.inset() })
           }
           .layoutWeight(1)
           .scrollBar(BarState.Auto)

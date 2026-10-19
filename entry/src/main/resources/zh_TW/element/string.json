@@ -869,6 +869,10 @@
       "value": "展開"
     },
     {
+      "name": "detail_related_works",
+      "value": "相關作品"
+    },
+    {
       "name": "detail_chapters_count",
       "value": "章節（%d）"
     },
@@ -2477,6 +2481,10 @@
       "value": "沒有可播放的影片"
     },
     {
+      "name": "video_bt_download_first",
+      "value": "本章節為 BT 種子資源，請先於章節列表下載，完成後播放本機檔案。"
+    },
+    {
       "name": "video_quality_local",
       "value": "本地"
     },
@@ -2507,6 +2515,22 @@
     {
       "name": "download_error_source_missing",
       "value": "來源不存在：%s"
+    },
+    {
+      "name": "download_bt_component_required",
+      "value": "需要 BT 下載組件"
+    },
+    {
+      "name": "bt_component_ask_msg",
+      "value": "下載該影片需要 BT 引擎組件（約 %1$d MB），目前未安裝。是否立即下載安裝？"
+    },
+    {
+      "name": "bt_component_downloading",
+      "value": "正在下載 BT 組件"
+    },
+    {
+      "name": "bt_component_download_failed",
+      "value": "BT 組件下載失敗，請檢查網路後重試"
     },
     {
       "name": "local_error_chapter_missing",

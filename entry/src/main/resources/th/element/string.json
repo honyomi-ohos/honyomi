@@ -2765,6 +2765,10 @@
       "value": "ไม่พบวิดีโอที่เล่นได้"
     },
     {
+      "name": "video_bt_download_first",
+      "value": "บทนี้เป็นทอร์เรนต์ BitTorrent โปรดดาวน์โหลดก่อน จากนั้นจึงเล่นไฟล์ในเครื่อง"
+    },
+    {
       "name": "video_quality_local",
       "value": "ในเครื่อง"
     },
@@ -2795,6 +2799,22 @@
     {
       "name": "download_error_source_missing",
       "value": "ไม่พบแหล่ง: %s"
+    },
+    {
+      "name": "download_bt_component_required",
+      "value": "ต้องใช้ส่วนประกอบดาวน์โหลด BT"
+    },
+    {
+      "name": "bt_component_ask_msg",
+      "value": "ต้องใช้ส่วนประกอบเอนจิน BT (ประมาณ %1$d MB) ในการดาวน์โหลดวิดีโอนี้ ดาวน์โหลดตอนนี้หรือไม่"
+    },
+    {
+      "name": "bt_component_downloading",
+      "value": "กำลังดาวน์โหลดส่วนประกอบ BT"
+    },
+    {
+      "name": "bt_component_download_failed",
+      "value": "ดาวน์โหลดส่วนประกอบ BT ไม่สำเร็จ โปรดตรวจสอบเครือข่ายแล้วลองอีกครั้ง"
     },
     {
       "name": "local_error_chapter_missing",

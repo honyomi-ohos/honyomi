@@ -589,6 +589,10 @@
       "value": "展開"
     },
     {
+      "name": "detail_related_works",
+      "value": "関連作品"
+    },
+    {
       "name": "detail_chapters_count",
       "value": "話（%d）"
     },
@@ -1785,6 +1789,10 @@
       "value": "再生可能な動画がありません"
     },
     {
+      "name": "video_bt_download_first",
+      "value": "このチャプターはBTトレントです。先にダウンロードしてからローカルファイルを再生してください。"
+    },
+    {
       "name": "video_quality_local",
       "value": "ローカル"
     },
@@ -1815,6 +1823,22 @@
     {
       "name": "download_error_source_missing",
       "value": "ソースが見つかりません：%s"
+    },
+    {
+      "name": "download_bt_component_required",
+      "value": "BTダウンロードコンポーネントが必要です"
+    },
+    {
+      "name": "bt_component_ask_msg",
+      "value": "この動画のダウンロードにはBTエンジンコンポーネント（約%1$d MB）が必要です。今すぐダウンロードしますか？"
+    },
+    {
+      "name": "bt_component_downloading",
+      "value": "BTコンポーネントをダウンロード中"
+    },
+    {
+      "name": "bt_component_download_failed",
+      "value": "BTコンポーネントのダウンロードに失敗しました。ネットワークを確認して再試行してください。"
     },
     {
       "name": "local_error_chapter_missing",

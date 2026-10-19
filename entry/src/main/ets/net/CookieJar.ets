@@ -144,6 +144,31 @@ export class CookieJar {
     return found;
   }
 
+  // 读取 url 域下指定名称的 Cookie 值（host 匹配 + 父域后缀匹配；
+  // 过期条目视为不存在），未找到返回 ''
+  static getCookie(url: string, name: string): string {
+    const host = CookieJar.hostOf(url);
+    if (host === '') {
+      return '';
+    }
+    let found = '';
+    const now = Date.now();
+    CookieJar.jar.forEach((cookies: Record<string, CookieEntry>, domain: string) => {
+      if (found !== '' || (host !== domain && !host.endsWith(`.${domain}`))) {
+        return;
+      }
+      const entry = cookies[name];
+      if (entry === undefined) {
+        return;
+      }
+      if (entry.expires > 0 && entry.expires <= now) {
+        return;
+      }
+      found = entry.value;
+    });
+    return found;
+  }
+
   // 解析 OHOS http 响应头对象中的 Set-Cookie（可能为 string 或 string[]）
   static storeFromResponse(url: string, header: Object): void {
     const h = header as Record<string, Object>;

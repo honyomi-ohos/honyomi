@@ -302,6 +302,12 @@ export class Util {
       case 'video_no_streams':
         res = $r('app.string.video_no_streams');
         break;
+      case 'bt_download_first':
+        res = $r('app.string.video_bt_download_first');
+        break;
+      case 'bt_component_required':
+        res = $r('app.string.download_bt_component_required');
+        break;
       case 'download_cancelled':
         res = $r('app.string.download_error_cancelled');
         break;

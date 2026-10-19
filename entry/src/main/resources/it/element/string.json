@@ -2717,6 +2717,10 @@
       "value": "Nessun video riproducibile trovato"
     },
     {
+      "name": "video_bt_download_first",
+      "value": "Questo capitolo è un torrent BitTorrent. Scaricalo prima, poi riproduci il file locale."
+    },
+    {
       "name": "video_quality_local",
       "value": "Locale"
     },
@@ -2747,6 +2751,22 @@
     {
       "name": "download_error_source_missing",
       "value": "Fonte non trovata: %s"
+    },
+    {
+      "name": "download_bt_component_required",
+      "value": "Componente di download BT richiesto"
+    },
+    {
+      "name": "bt_component_ask_msg",
+      "value": "Il componente del motore BT (circa %1$d MB) è necessario per scaricare questo video. Scaricarlo ora?"
+    },
+    {
+      "name": "bt_component_downloading",
+      "value": "Download del componente BT"
+    },
+    {
+      "name": "bt_component_download_failed",
+      "value": "Download del componente BT non riuscito. Controlla la rete e riprova."
     },
     {
       "name": "local_error_chapter_missing",

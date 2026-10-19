@@ -2797,6 +2797,10 @@
       "value": "لم يُعثر على فيديو قابل للتشغيل"
     },
     {
+      "name": "video_bt_download_first",
+      "value": "هذا الفصل هو تورنت BitTorrent. نزّله أولاً ثم شغّل الملف المحلي."
+    },
+    {
       "name": "video_quality_local",
       "value": "محلي"
     },
@@ -2827,6 +2831,22 @@
     {
       "name": "download_error_source_missing",
       "value": "المصدر غير موجود: %s"
+    },
+    {
+      "name": "download_bt_component_required",
+      "value": "مكوّن تنزيل BT مطلوب"
+    },
+    {
+      "name": "bt_component_ask_msg",
+      "value": "يلزم مكوّن محرّك BT (حوالي %1$d ميغابايت) لتنزيل هذا الفيديو. هل تريد تنزيله الآن؟"
+    },
+    {
+      "name": "bt_component_downloading",
+      "value": "جارٍ تنزيل مكوّن BT"
+    },
+    {
+      "name": "bt_component_download_failed",
+      "value": "فشل تنزيل مكوّن BT. تحقق من الشبكة وحاول مرة أخرى."
     },
     {
       "name": "local_error_chapter_missing",

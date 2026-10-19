@@ -14,6 +14,9 @@ import { ChapterRepo, MangaRepo } from './Repos';
 import { Settings } from '../common/Settings';
 import { NetworkMonitor } from '../common/NetworkMonitor';
 import { HlsDownloader } from '../common/HlsDownloader';
+import { BtModule } from './BtModule';
+import { BtComponentInstaller } from '../common/BtComponentInstaller';
+import { AppKeys } from '../common/AppKeys';
 
 // 拆分超长条漫图片的高度阈值（对齐 Mihon optimalImageHeight ≈ 屏幕高度*2）
 const TALL_IMAGE_LIMIT = 8000;
@@ -68,6 +71,8 @@ export class DownloadService {
   private static activeFlags: Map<number, DlFlags> = new Map<number, DlFlags>();
   // 视频流式下载的主动中断句柄（chapterId → cancel）
   private static activeAborts: Map<number, () => void> = new Map<number, () => void>();
+  // BT 下载任务映射（chapterId → torrent key）：完成/取消时定位种子句柄
+  private static btKeys: Map<number, number> = new Map<number, number>();
   // 已完成(done.mark)章节 id 内存索引：列表行高频查询 isDownloaded，
   // 不能每次调用都做 O(N) 目录扫描；下载完成/删除章节时增量维护
   private static doneIds: Set<number> | undefined = undefined;
@@ -406,9 +411,35 @@ export class DownloadService {
         t.error = '';
       }
     }
+    // 手动重试视为重新接受 BT 组件安装引导（此前"暂不"的拒绝仅抑制自动弹窗）
+    AppStorage.setOrCreate(AppKeys.BT_ASK_DISMISSED, false);
     DownloadService.persistQueue();
     DownloadService.notify();
     DownloadService.pump();
+  }
+
+  // BT 组件安装完成后重跑因组件缺失（bt_component_required）失败的任务
+  static retryBtComponentTasks(): void {
+    let touched = false;
+    for (const t of DownloadService.queue) {
+      if (t.state === 3 && t.error === 'bt_component_required') {
+        t.state = 0;
+        t.progress = 0;
+        t.error = '';
+        touched = true;
+      }
+    }
+    if (!touched) {
+      return;
+    }
+    DownloadService.persistQueue();
+    DownloadService.notify();
+    DownloadService.pump();
+  }
+
+  // 前台 UIAbilityContext（BtComponentInstaller 发起按需安装须前台上下文）
+  static abilityContext(): common.UIAbilityContext | undefined {
+    return DownloadService.context;
   }
 
   // 网络环境/仅 Wi-Fi 开关变化后的门禁刷新：
@@ -543,7 +574,83 @@ export class DownloadService {
         throw new Error(`check local video failed: ${e}`);
       }
     }
-    return '';
+    // BT 下载产物：种子内部文件名/子目录由种子决定，递归扫描取最大视频文件
+    return DownloadService.scanVideoFile(dir);
+  }
+
+  // BT 种子常见视频容器扩展（localVideo 扫描回退用）
+  private static readonly VIDEO_EXTS: string[] =
+    ['.mp4', '.mkv', '.ts', '.avi', '.mov', '.webm', '.m4v', '.wmv', '.flv', '.mpg', '.mpeg'];
+
+  private static scanVideoFile(dir: string): string {
+    if (DownloadService.rootDir === '') {
+      return '';
+    }
+    try {
+      if (!fileIo.accessSync(dir)) {
+        return '';
+      }
+      return DownloadService.scanVideoDir(dir);
+    } catch (e) {
+      return '';
+    }
+  }
+
+  // 递归扫描目录内最大的视频文件（BT 章节可能含多文件/子目录，播放主视频取最大者）
+  private static scanVideoDir(dir: string): string {
+    let best = '';
+    let bestSize = -1;
+    let entries: string[] = [];
+    try {
+      entries = fileIo.listFileSync(dir);
+    } catch (e) {
+      return '';
+    }
+    for (const name of entries) {
+      if (name === 'done.mark' || name === 'video.mp4' || name === 'video.ts') {
+        continue;
+      }
+      const full = `${dir}/${name}`;
+      let isDir = false;
+      let size = -1;
+      try {
+        const stat = fileIo.statSync(full);
+        isDir = stat.isDirectory();
+        size = stat.size;
+      } catch (e) {
+        continue;
+      }
+      if (isDir) {
+        const sub = DownloadService.scanVideoDir(full);
+        if (sub !== '') {
+          const subSize = DownloadService.fileSizeOf(sub);
+          if (subSize > bestSize) {
+            best = sub;
+            bestSize = subSize;
+          }
+        }
+        continue;
+      }
+      const lower = name.toLowerCase();
+      for (const ext of DownloadService.VIDEO_EXTS) {
+        if (lower.endsWith(ext)) {
+          if (size > bestSize) {
+            best = full;
+            bestSize = size;
+          }
+          break;
+        }
+      }
+    }
+    return best;
+  }
+
+  private static fileSizeOf(path: string): number {
+    try {
+      return fileIo.statSync(path).size;
+    } catch (e) {
+      return 0;
+    }
   }
 
   static localPages(mangaId: number, chapterId: number): string[] {
@@ -819,6 +926,11 @@ export class DownloadService {
       } else {
         task.state = 3;
         task.error = msg;
+        // BT 组件缺失：置前台安装引导标志（用户未拒绝过时弹出 BtComponentDialog）
+        if (msg === 'bt_component_required' &&
+          AppStorage.get<boolean>(AppKeys.BT_ASK_DISMISSED) !== true) {
+          AppStorage.setOrCreate(AppKeys.BT_COMPONENT_ASK, true);
+        }
       }
       // 失败/取消仅清理半截 .tmp 文件，已完整落盘的页保留供重试/重启续传
       DownloadService.cleanupPartial(task.mangaId, task.chapterId);
@@ -1115,6 +1227,11 @@ export class DownloadService {
     } catch (e) {
       throw new Error(`prepare video file failed: ${e}`);
     }
+    // BT 链接（magnet / .torrent）：走 libtorrent 下载管线
+    if (chosen !== undefined && DownloadService.isBtUrl(chosen.url)) {
+      await DownloadService.downloadBt(task, chosen.url, dir, flags);
+      return;
+    }
     if (chosen === undefined) {
       // 多个 m3u8（多清晰度）时按清晰度标签选最优流，而非固定取第一个
       let stream: SVideo = videos[0];
@@ -1172,6 +1289,132 @@ export class DownloadService {
       DownloadService.doneIds.add(task.chapterId);
     }
     // 完成态进度回满：避免"已完成"与空进度条/进度 1 同时展示
+    if (task.total > 0) {
+      task.progress = task.total;
+    }
+    task.state = 2;
+  }
+
+  // BT 链接判定：magnet URI 或 .torrent 直链
+  static isBtUrl(url: string): boolean {
+    const u = url.trim();
+    if (u.startsWith('magnet:')) {
+      return true;
+    }
+    const q = u.indexOf('?');
+    const path = q >= 0 ? u.substring(0, q) : u;
+    return path.toLowerCase().endsWith('.torrent');
+  }
+
+  // 无 tracker 的纯 infohash magnet（如 animegarden）在 DHT 引导受阻的网络下找不到
+  // 任何 peer。追加动画生态常用的公开 tracker 作为兜底发现通道（原 swarm 若向这些
+  // tracker 上报过即可命中；追加不影响 DHT 继续工作）。
+  private static readonly BT_FALLBACK_TRACKERS: string[] = [
+    'udp://tracker.opentrackr.org:1337/announce',
+    'udp://open.demonii.com:1337/announce',
+    'udp://open.stealth.si:80/announce',
+    'udp://tracker.dler.org:6969/announce',
+    'udp://exodus.desync.com:6969/announce',
+    'udp://tracker.cyberia.is:6969/announce',
+    'udp://tracker.torrent.eu.org:451/announce',
+    'https://tr.bangumi.moe:9696/announce',
+    'http://open.acgnxtracker.com:80/announce',
+    'http://t.acg.rip:6699/announce',
+    'http://t.nyaatracker.com:2710/announce'
+  ];
+
+  private static withFallbackTrackers(magnet: string): string {
+    if (magnet.indexOf('tr=') >= 0) {
+      return magnet;
+    }
+    let out = magnet;
+    for (const tr of DownloadService.BT_FALLBACK_TRACKERS) {
+      out += '&tr=' + encodeURIComponent(tr);
+    }
+    return out;
+  }
+
+  // BT 下载：magnet/.torrent → BtModule（torrent HSP 动态加载，libtorrent worker）。
+  // 产物落 chapterDir（种子内部文件名/子目录由种子决定，localVideo 递归扫描定位）。
+  // 重启恢复：队列恢复为 queued → 重走 downloadVideo → 同 savePath 重加种子 → re-check 续传，无需额外状态。
+  // 取消：remove(key,false) 保留分片；完成：remove(key,false) 保留文件并停止做种。
+  // 组件未装（AGC 按需分发）→ bt_component_required → process 置前台安装引导标志。
+  private static async downloadBt(task: DownloadTask, url: string, dir: string, flags: DlFlags): Promise<void> {
+    if (DownloadService.context === undefined) {
+      throw new Error('download_not_ready');
+    }
+    if (!BtComponentInstaller.isInstalled()) {
+      throw new Error('bt_component_required');
+    }
+    // 引擎级默认下载目录（savePath 兜底）；实际落盘以每任务 savePath 为准
+    const btRoot = `${DownloadService.rootDir}/bt`;
+    try {
+      if (!fileIo.accessSync(btRoot)) {
+        fileIo.mkdirSync(btRoot, true);
+      }
+    } catch (e) {
+      throw new Error(`prepare bt dir failed: ${e}`);
+    }
+    // ensureStarted 内动态 import + 引擎启动，任一失败归一为 bt_component_required
+    await BtModule.ensureStarted(btRoot);
+    let key = -1;
+    if (url.startsWith('magnet:')) {
+      key = await BtModule.addMagnet(DownloadService.withFallbackTrackers(url), dir);
+    } else {
+      const bytes = await Http.getBuffer(url, undefined);
+      key = await BtModule.addTorrentFile(new Uint8Array(bytes), dir);
+    }
+    DownloadService.btKeys.set(task.chapterId, key);
+    // metadata 就绪前 total=1 防除零；就绪后为字节数（与直链视频语义一致）
+    task.total = 1;
+    task.progress = 0;
+    DownloadService.notify();
+    DownloadService.activeAborts.set(task.chapterId, (): void => {
+      // 主动取消：移除任务但保留已下载分片（重试/重启 re-check 续传）
+      BtModule.remove(key, false).catch((): void => {
+      });
+    });
+    try {
+      while (true) {
+        if (flags.cancelled) {
+          throw new Error('download_cancelled');
+        }
+        if (flags.blocked) {
+          throw new Error('network_blocked');
+        }
+        const st = await BtModule.status(key);
+        if (st.error !== undefined && st.error !== '') {
+          throw new Error(`bt_error: ${st.error}`);
+        }
+        if (st.hasMetadata && st.totalWanted > 0) {
+          task.total = st.totalWanted;
+          task.progress = st.totalDone;
+        }
+        DownloadService.notify();
+        DownloadService.publishBgProgress(false);
+        if (st.isFinished) {
+          break;
+        }
+        await new Promise<void>((resolve: () => void) => {
+          setTimeout(resolve, 1000);
+        });
+      }
+    } finally {
+      DownloadService.activeAborts.delete(task.chapterId);
+      DownloadService.btKeys.delete(task.chapterId);
+    }
+    if (flags.cancelled) {
+      throw new Error('download_cancelled');
+    }
+    if (flags.blocked) {
+      throw new Error('network_blocked');
+    }
+    // 完成即移除（保留文件）：不做种、不占会话句柄
+    await BtModule.remove(key, false);
+    DownloadService.markDone(dir);
+    if (DownloadService.doneIds !== undefined) {
+      DownloadService.doneIds.add(task.chapterId);
+    }
     if (task.total > 0) {
       task.progress = task.total;
     }

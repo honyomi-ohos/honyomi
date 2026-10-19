@@ -1537,6 +1537,10 @@
       "value": "Expand"
     },
     {
+      "name": "detail_related_works",
+      "value": "Related"
+    },
+    {
       "name": "detail_chapters_count",
       "value": "Chapters (%d)"
     },
@@ -2909,6 +2913,10 @@
       "value": "No playable videos found"
     },
     {
+      "name": "video_bt_download_first",
+      "value": "This chapter is a BitTorrent torrent. Download it first, then play the local file."
+    },
+    {
       "name": "video_quality_local",
       "value": "Local"
     },
@@ -2947,6 +2955,22 @@
     {
       "name": "download_error_source_missing",
       "value": "Source not found: %s"
+    },
+    {
+      "name": "download_bt_component_required",
+      "value": "BT download component required"
+    },
+    {
+      "name": "bt_component_ask_msg",
+      "value": "The BitTorrent engine component (about %1$d MB) is required to download this video. Download and install it now?"
+    },
+    {
+      "name": "bt_component_downloading",
+      "value": "Downloading BT component"
+    },
+    {
+      "name": "bt_component_download_failed",
+      "value": "Failed to download BT component. Check your network and try again."
     },
     {
       "name": "local_error_chapter_missing",

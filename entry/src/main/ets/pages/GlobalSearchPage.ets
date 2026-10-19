@@ -70,9 +70,9 @@ export struct GlobalSearchPage {
     })
   }
 
-  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（960 上限）
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（720 上限）
   private inset(): number {
-    return Bp.contentInset(this.windowW, 960);
+    return Bp.contentInset(this.windowW);
   }
 
   @Builder
@@ -171,11 +171,16 @@ export struct GlobalSearchPage {
               .padding(16)
               .backgroundColor(this.pal.card)
               .borderRadius(14)
-              .margin({ left: 16 + this.inset(), right: 16 + this.inset(), top: 8 })
+              .margin({ top: 8 })
             }, (section: SearchSection) => `sec-${section.sourceKey}-${section.state}-${section.results.length}`)
           }
           .width('100%')
-          .padding({ bottom: this.navBarH + 24 })
+          // 大屏限宽缩进：滚动容器全宽，内容列经 padding 缩进（卡片 margin+width('100%') 会被父默认居中对齐抵消）
+          .padding({
+            left: 16 + this.inset(),
+            right: 16 + this.inset(),
+            bottom: this.navBarH + 24
+          })
         }
         .layoutWeight(1)
         .scrollBar(BarState.Auto)

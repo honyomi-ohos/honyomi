@@ -326,7 +326,7 @@ export struct ExtensionStoresPage {
       builder: ConfirmDialog({
         title: $r('app.string.ext_stores_delete_title'),
         message: Util.resStr(this.getUIContext(), $r('app.string.ext_stores_delete_body'),
-          [store.name]),
+          [store.name, store.url]),
         confirmText: $r('app.string.common_delete'),
         onConfirm: (): void => {
           this.deleteStore(store.url);

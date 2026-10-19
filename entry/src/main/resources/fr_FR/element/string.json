@@ -2641,6 +2641,10 @@
       "value": "Aucune vidéo lisible trouvée"
     },
     {
+      "name": "video_bt_download_first",
+      "value": "Ce chapitre est un torrent BitTorrent. Téléchargez-le d’abord, puis lisez le fichier local."
+    },
+    {
       "name": "download_error_cancelled",
       "value": "Annulé"
     },
@@ -2667,6 +2671,22 @@
     {
       "name": "download_error_source_missing",
       "value": "Source introuvable : %s"
+    },
+    {
+      "name": "download_bt_component_required",
+      "value": "Composant de téléchargement BT requis"
+    },
+    {
+      "name": "bt_component_ask_msg",
+      "value": "Le composant du moteur BT (environ %1$d Mo) est requis pour télécharger cette vidéo. Le télécharger maintenant ?"
+    },
+    {
+      "name": "bt_component_downloading",
+      "value": "Téléchargement du composant BT"
+    },
+    {
+      "name": "bt_component_download_failed",
+      "value": "Échec du téléchargement du composant BT. Vérifiez le réseau et réessayez."
     },
     {
       "name": "local_error_chapter_missing",

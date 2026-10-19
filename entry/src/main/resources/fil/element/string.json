@@ -2593,6 +2593,10 @@
       "value": "Walang nahanap na mapapanood na video"
     },
     {
+      "name": "video_bt_download_first",
+      "value": "BitTorrent torrent ang kabanata na ito. I-download muna ito, saka i-play ang lokal na file."
+    },
+    {
       "name": "video_quality_local",
       "value": "Lokal"
     },
@@ -2623,6 +2627,22 @@
     {
       "name": "download_error_source_missing",
       "value": "Hindi nahanap ang source: %s"
+    },
+    {
+      "name": "download_bt_component_required",
+      "value": "Kailangan ang BT download component"
+    },
+    {
+      "name": "bt_component_ask_msg",
+      "value": "Kailangan ang BT engine component (mga %1$d MB) para i-download ang video na ito. I-download ngayon?"
+    },
+    {
+      "name": "bt_component_downloading",
+      "value": "Nagda-download ng BT component"
+    },
+    {
+      "name": "bt_component_download_failed",
+      "value": "Nabigo ang pag-download ng BT component. Suriin ang network at subukan muli."
     },
     {
       "name": "local_error_chapter_missing",

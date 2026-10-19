@@ -2701,6 +2701,10 @@
       "value": "Nie znaleziono odtwarzalnych wideo"
     },
     {
+      "name": "video_bt_download_first",
+      "value": "Ten rozdział to torrent BitTorrent. Najpierw go pobierz, a następnie odtwórz plik lokalny."
+    },
+    {
       "name": "video_quality_local",
       "value": "Lokalne"
     },
@@ -2731,6 +2735,22 @@
     {
       "name": "download_error_source_missing",
       "value": "Nie znaleziono źródła: %s"
+    },
+    {
+      "name": "download_bt_component_required",
+      "value": "Wymagany komponent pobierania BT"
+    },
+    {
+      "name": "bt_component_ask_msg",
+      "value": "Do pobrania tego wideo wymagany jest komponent silnika BT (ok. %1$d MB). Pobrać teraz?"
+    },
+    {
+      "name": "bt_component_downloading",
+      "value": "Pobieranie komponentu BT"
+    },
+    {
+      "name": "bt_component_download_failed",
+      "value": "Nie udało się pobrać komponentu BT. Sprawdź sieć i spróbuj ponownie."
     },
     {
       "name": "local_error_chapter_missing",

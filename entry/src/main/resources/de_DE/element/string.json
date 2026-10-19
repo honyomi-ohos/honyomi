@@ -2621,6 +2621,10 @@
       "value": "Keine abspielbaren Videos gefunden"
     },
     {
+      "name": "video_bt_download_first",
+      "value": "Dieses Kapitel ist ein BitTorrent-Torrent. Laden Sie es zuerst herunter und geben Sie dann die lokale Datei wieder."
+    },
+    {
       "name": "video_quality_local",
       "value": "Lokal"
     },
@@ -2651,6 +2655,22 @@
     {
       "name": "download_error_source_missing",
       "value": "Quelle nicht gefunden: %s"
+    },
+    {
+      "name": "download_bt_component_required",
+      "value": "BT-Downloadkomponente erforderlich"
+    },
+    {
+      "name": "bt_component_ask_msg",
+      "value": "Für den Download dieses Videos wird die BT-Engine-Komponente (ca. %1$d MB) benötigt. Jetzt herunterladen?"
+    },
+    {
+      "name": "bt_component_downloading",
+      "value": "BT-Komponente wird heruntergeladen"
+    },
+    {
+      "name": "bt_component_download_failed",
+      "value": "Download der BT-Komponente fehlgeschlagen. Bitte Netzwerk prüfen und erneut versuchen."
     },
     {
       "name": "local_error_chapter_missing",

@@ -1121,6 +1121,12 @@ export struct VideoPlayerPage {
       this.playFile(video.url.substring('file://'.length));
       return;
     }
+    // BT 流（magnet/.torrent）不支持在线播放：需先下载完成再播本地文件
+    if (DownloadService.isBtUrl(video.url)) {
+      this.errorText = 'bt_download_first';
+      this.buffering = false;
+      return;
+    }
     this.playRemote(video);
   }
 

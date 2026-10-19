@@ -937,6 +937,10 @@
       "value": "展开"
     },
     {
+      "name": "detail_related_works",
+      "value": "相关作品"
+    },
+    {
       "name": "detail_chapters_count",
       "value": "章节（%d）"
     },
@@ -2873,6 +2877,10 @@
       "value": "没有可播放的视频"
     },
     {
+      "name": "video_bt_download_first",
+      "value": "本章节为 BT 种子资源，请先在章节列表下载，完成后播放本地文件。"
+    },
+    {
       "name": "video_quality_local",
       "value": "本地"
     },
@@ -2911,6 +2919,22 @@
     {
       "name": "download_error_source_missing",
       "value": "源不存在：%s"
+    },
+    {
+      "name": "download_bt_component_required",
+      "value": "需要 BT 下载组件"
+    },
+    {
+      "name": "bt_component_ask_msg",
+      "value": "下载该视频需要 BT 引擎组件（约 %1$d MB），当前未安装。是否立即下载安装？"
+    },
+    {
+      "name": "bt_component_downloading",
+      "value": "正在下载 BT 组件"
+    },
+    {
+      "name": "bt_component_download_failed",
+      "value": "BT 组件下载失败，请检查网络后重试"
     },
     {
       "name": "local_error_chapter_missing",

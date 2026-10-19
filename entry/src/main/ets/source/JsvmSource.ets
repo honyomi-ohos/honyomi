@@ -606,6 +606,25 @@ export class JsvmSource implements Source {
     return manga;
   }
 
+  // 相关/推荐作品：插件可选导出 getRelatedWorks（Tachiyomi fetchRelatedMangas 对应）；
+  // 未导出或返回非法时为空数组，不参与详情/章节主流程。
+  async getRelatedWorks(workKey: string): Promise<SManga[]> {
+    if (this.exportedMethods.indexOf('getRelatedWorks') < 0) {
+      return [];
+    }
+    const raw = await this.call<RawWork[]>('getRelatedWorks', this.callArgs([workKey]));
+    const works: SManga[] = [];
+    if (Array.isArray(raw)) {
+      for (let i = 0; i < raw.length; i++) {
+        const m = JsvmSource.toSManga(raw[i]);
+        if (m !== undefined) {
+          works.push(m);
+        }
+      }
+    }
+    return works;
+  }
+
   async getChapterList(workKey: string): Promise<SChapter[]> {
     const raw = await this.call<RawChapter[]>('getChapterList', this.callArgs([workKey]));
     const chapters: SChapter[] = [];

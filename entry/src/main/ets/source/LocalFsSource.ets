@@ -50,6 +50,11 @@ export abstract class LocalFsSource implements Source {
     return this.buildManga(workKey);
   }
 
+  // 本地源无相关作品概念，恒为空
+  async getRelatedWorks(_workKey: string): Promise<SManga[]> {
+    return [];
+  }
+
   abstract getChapterList(workKey: string): Promise<SChapter[]>;
 
   async getPageList(_chapterKey: string): Promise<SPage[]> {

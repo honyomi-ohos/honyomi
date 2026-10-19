@@ -2745,6 +2745,10 @@
       "value": "Không tìm thấy video phát được"
     },
     {
+      "name": "video_bt_download_first",
+      "value": "Chương này là torrent BitTorrent. Hãy tải xuống trước, sau đó phát tệp cục bộ."
+    },
+    {
       "name": "video_quality_local",
       "value": "Nội bộ"
     },
@@ -2775,6 +2779,22 @@
     {
       "name": "download_error_source_missing",
       "value": "Không tìm thấy nguồn: %s"
+    },
+    {
+      "name": "download_bt_component_required",
+      "value": "Cần thành phần tải xuống BT"
+    },
+    {
+      "name": "bt_component_ask_msg",
+      "value": "Cần thành phần engine BT (khoảng %1$d MB) để tải video này. Tải xuống ngay?"
+    },
+    {
+      "name": "bt_component_downloading",
+      "value": "Đang tải thành phần BT"
+    },
+    {
+      "name": "bt_component_download_failed",
+      "value": "Tải thành phần BT không thành công. Kiểm tra mạng rồi thử lại."
     },
     {
       "name": "local_error_chapter_missing",

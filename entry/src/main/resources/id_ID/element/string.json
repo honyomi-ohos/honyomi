@@ -2673,6 +2673,10 @@
       "value": "Tidak ada video yang bisa diputar"
     },
     {
+      "name": "video_bt_download_first",
+      "value": "Bab ini adalah torrent BitTorrent. Unduh dulu, lalu putar file lokalnya."
+    },
+    {
       "name": "video_quality_local",
       "value": "Lokal"
     },
@@ -2703,6 +2707,22 @@
     {
       "name": "download_error_source_missing",
       "value": "Sumber tidak ditemukan: %s"
+    },
+    {
+      "name": "download_bt_component_required",
+      "value": "Komponen unduhan BT diperlukan"
+    },
+    {
+      "name": "bt_component_ask_msg",
+      "value": "Komponen mesin BT (sekitar %1$d MB) diperlukan untuk mengunduh video ini. Unduh sekarang?"
+    },
+    {
+      "name": "bt_component_downloading",
+      "value": "Mengunduh komponen BT"
+    },
+    {
+      "name": "bt_component_download_failed",
+      "value": "Gagal mengunduh komponen BT. Periksa jaringan dan coba lagi."
     },
     {
       "name": "local_error_chapter_missing",
