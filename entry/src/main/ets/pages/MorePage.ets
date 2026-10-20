@@ -128,21 +128,14 @@ export struct MorePage {
             })
           }
 
-          // 设置 / 支持我们 / 关于 / 帮助
+          // 设置 / 关于 / 帮助
+          // （支持我们入口已移除：Patreon/OpenCollective 等外部捐赠引流属 AppGallery 审核敏感项）
           PrefGroup() {
             IconRow({
               title: $r('app.string.more_settings'),
               icon: 'settings',
               onTap: (): void => {
                 this.pathStack.pushPathByName('Settings', null);
-              }
-            })
-            Divider().color(this.pal.divider).margin({ left: 52 })
-            IconRow({
-              title: $r('app.string.more_support'),
-              icon: 'volunteer_activism',
-              onTap: (): void => {
-                this.pathStack.pushPathByName('Support', null);
               }
             })
             Divider().color(this.pal.divider).margin({ left: 52 })

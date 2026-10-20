@@ -549,7 +549,7 @@ export struct BrowseSourcePage {
           // 搜索栏
           if (this.searchOpen && this.sourceKey !== 'local') {
             Row({ space: 8 }) {
-              TextInput({ placeholder: $r('app.string.browse_search_hint') })
+              TextInput({ text: this.query, placeholder: $r('app.string.browse_search_hint') })
                 .layoutWeight(1)
                 .height(38)
                 .backgroundColor(this.pal.card)
@@ -778,7 +778,15 @@ export struct BrowseSourcePage {
       this.sourceKey = params !== undefined && params !== null ? params.sourceKey : '';
       this.mode = params !== undefined && params !== null && params.mode === 'latest' ? 'latest' : 'popular';
       this.folderReady = LocalFolderManager.hasFolder();
-      this.loadFirst();
+      // 外部"打开方式"导入书籍后跳入：预填搜索词并直接执行，定位导入的书籍
+      const prefill = params !== undefined && params !== null && params.query !== undefined ? params.query : '';
+      if (prefill !== '') {
+        this.searchOpen = true;
+        this.query = prefill;
+        this.search();
+      } else {
+        this.loadFirst();
+      }
     })
   }
 

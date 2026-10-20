@@ -141,11 +141,6 @@
       "pageSourceFile": "src/main/ets/pages/settings/PrivacyPage.ets"
     },
     {
-      "buildFunction": "SupportBuilder",
-      "name": "Support",
-      "pageSourceFile": "src/main/ets/pages/settings/SupportPage.ets"
-    },
-    {
       "buildFunction": "AdvancedBuilder",
       "name": "Advanced",
       "pageSourceFile": "src/main/ets/pages/settings/AdvancedPage.ets"

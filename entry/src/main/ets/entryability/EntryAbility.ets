@@ -2,12 +2,15 @@ import { AbilityConstant, common, Configuration, ConfigurationConstant, UIAbilit
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
 import { deviceInfo } from '@kit.BasicServicesKit';
+import { fileIo as fs, fileUri } from '@kit.CoreFileKit';
 import { Settings } from '../common/Settings';
 import { AppDb } from '../data/AppDb';
 import { SourceRegistry } from '../source/Source';
 import { LocalSource } from '../source/LocalSource';
 import { LocalNovelSource } from '../source/LocalNovelSource';
 import { LocalVideoSource } from '../source/LocalVideoSource';
+import { LocalFolderManager } from '../source/LocalFolderManager';
+import { BookParser } from '../common/bookparser/BookParser';
 import { DownloadService } from '../data/DownloadService';
 import { BtFlow } from '../data/BtFlow';
 import { PluginService } from '../data/PluginService';
@@ -68,6 +71,7 @@ export default class EntryAbility extends UIAbility {
     EngineGateway.setBackend(engineBackend);
     engineBackend.init();
     this.handleCardWant(want);
+    this.handleFileOpenWant(want);
     // ── 第1级（主线程空闲即执行，先于首帧内容挂载）：非首帧必需的服务初始化 ──
     // 契约：此处初始化的服务允许在回调执行前被访问——各服务必须容忍“未 init 先使用”
     // （内部空安全/延迟就绪），不得假设构造期已完成初始化；首帧路径严禁依赖本级服务。
@@ -182,6 +186,69 @@ export default class EntryAbility extends UIAbility {
   onNewWant(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     hilog.info(DOMAIN, 'Mihon', '%{public}s', 'Ability onNewWant');
     this.handleCardWant(want);
+    this.handleFileOpenWant(want);
+  }
+
+  // 系统"打开方式"拉起（文件管理器等选择本应用打开书籍文件）：
+  // 识别 epub/mobi/azw/azw3/prc 后导入本地小说源，经 cardAction 通道由 Index 导航定位
+  private handleFileOpenWant(want: Want): void {
+    const uri = want.uri;
+    if (typeof uri !== 'string' || uri === '') {
+      return;
+    }
+    const name = LocalFolderManager.uriName(uri);
+    if (!BookParser.isBookFile(name)) {
+      return;
+    }
+    EntryAbility.importBookToNovelSource(this.context, uri, name).catch((e: Error): void => {
+      hilog.warn(DOMAIN, 'Mihon', 'import opened book failed: %{public}s', e.message);
+    });
+  }
+
+  // 书籍导入：拷入沙箱本地小说源目录（立即出现在本地小说源列表）；
+  // 已配置本地源文件夹时尽力向用户文件夹同步落一份，防止整树重新同步覆盖 local_root 后导入丢失
+  private static async importBookToNovelSource(context: common.UIAbilityContext,
+    srcUri: string, name: string): Promise<void> {
+    const novelDir = `${LocalFolderManager.syncedRootPath(context.filesDir)}/${LocalFolderManager.NOVEL_SUBDIR}`;
+    try {
+      if (!fs.accessSync(novelDir)) {
+        fs.mkdirSync(novelDir, true);
+      }
+    } catch (e) {
+      throw new Error('mkdir_failed');
+    }
+    const destPath = `${novelDir}/${name}`;
+    try {
+      fs.unlinkSync(destPath);
+    } catch (e) {
+      // 目标不存在，继续拷贝
+    }
+    await fs.copy(srcUri, fileUri.getUriFromPath(destPath));
+    const folderUri = Settings.getLocalFolderUri();
+    if (folderUri !== '') {
+      try {
+        const userDestUri = `${folderUri}/${LocalFolderManager.NOVEL_SUBDIR}/${name}`;
+        try {
+          fs.unlinkSync(userDestUri);
+        } catch (e) {
+          // 目标不存在，继续拷贝
+        }
+        await fs.copy(srcUri, userDestUri);
+      } catch (e) {
+        // 用户文件夹写入失败不影响本次导入（沙箱副本已就位）
+      }
+    }
+    const dotIdx = name.lastIndexOf('.');
+    const baseName = dotIdx > 0 ? name.substring(0, dotIdx) : name;
+    const payload: Record<string, string | number> = {
+      'target': 'browsesource',
+      'mangaId': 0,
+      'chapterId': 0,
+      'contentType': '',
+      'sourceKey': 'local_novel',
+      'query': baseName
+    };
+    AppStorage.setOrCreate(AppKeys.CARD_ACTION, JSON.stringify(payload));
   }
 
   // 解析桌面卡片 router 事件参数，写入 AppStorage 供 Index 导航

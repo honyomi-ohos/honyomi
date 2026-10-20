@@ -36,6 +36,38 @@
             "actions": [
               "ohos.want.action.home"
             ]
+          },
+          {
+            "actions": [
+              "ohos.want.action.viewData"
+            ],
+            "uris": [
+              {
+                "scheme": "file",
+                "type": "general.epub",
+                "linkFeature": "FileOpen"
+              },
+              {
+                "scheme": "file",
+                "type": "com.amazon.mobi",
+                "linkFeature": "FileOpen"
+              },
+              {
+                "scheme": "file",
+                "type": "com.amazon.azw",
+                "linkFeature": "FileOpen"
+              },
+              {
+                "scheme": "file",
+                "type": "com.amazon.azw3",
+                "linkFeature": "FileOpen"
+              },
+              {
+                "scheme": "file",
+                "type": "fun.shuey.honyomi.prc",
+                "linkFeature": "FileOpen"
+              }
+            ]
           }
         ],
         "metadata": [
@@ -67,9 +99,6 @@
       },
       {
         "name": "ohos.permission.GET_NETWORK_INFO"
-      },
-      {
-        "name": "ohos.permission.DETECT_GESTURE"
       },
       {
         "name": "ohos.permission.FILE_ACCESS_PERSIST"

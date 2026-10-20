@@ -27,7 +27,7 @@ import { LockOverlay } from './components/LockOverlay';
 import { BtComponentDialog } from './components/BtComponentDialog';
 import { TtsMiniBar } from './components/novel/TtsMiniBar';
 import { BROWSE_MORPH, LIBRARY_MORPH, PathMorph, UPDATES_MORPH } from './components/PathMorph';
-import { DetailParams, GlobalSearchParams, OnboardingParams } from '../model/RouteParams';
+import { DetailParams, BrowseSourceParams, GlobalSearchParams, OnboardingParams } from '../model/RouteParams';
 import { MangaRecord } from '../model/Models';
 
 // 桌面卡片 router 事件载荷（由 EntryAbility.handleCardWant 写入 AppStorage）
@@ -37,6 +37,7 @@ interface CardActionPayload {
   chapterId: number;
   contentType: string;
   query?: string;
+  sourceKey?: string;
 }
 
 // 底部导航图标：逐 Tab 复刻 Mihon 的 AnimatedImageVector 动画
@@ -436,6 +437,7 @@ struct Index {
   }
 
   // 首启未完成引导时拉起引导页（页面挂载完成后，对齐 Mihon ShowOnboarding）
+  // 隐私同意走 AGC 隐私托管（系统标准弹窗），应用内不再自研同意流程，避免双弹窗
   onPageShow(): void {
     if (this.onboardingLaunched) {
       return;
@@ -989,6 +991,17 @@ struct Index {
       } else {
         this.pathStack.pushPathByName('GlobalSearch', null);
       }
+      return;
+    }
+    // 外部"打开方式"导入书籍后：跳转指定源浏览页（携带搜索词定位导入书籍）
+    if (raw.target === 'browsesource' && raw.sourceKey !== undefined && raw.sourceKey !== '') {
+      this.switchTab(3);
+      const bsParams: BrowseSourceParams = {
+        sourceKey: raw.sourceKey,
+        mode: 'popular',
+        query: raw.query !== undefined ? raw.query : ''
+      };
+      this.pathStack.pushPathByName('BrowseSource', bsParams);
       return;
     }
     if (raw.target === 'settings') {

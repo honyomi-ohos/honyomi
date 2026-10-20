@@ -12,6 +12,8 @@ export interface ReaderParams {
 export interface BrowseSourceParams {
   sourceKey: string;
   mode: string; // 'popular' | 'latest'
+  // 非空时进入页面即预填搜索并执行（外部打开书籍文件导入后定位该书）
+  query?: string;
 }
 
 export interface GlobalSearchParams {
