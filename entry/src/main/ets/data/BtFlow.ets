@@ -119,11 +119,25 @@ export class BtFlow {
     return out;
   }
 
-  // 限速设置变更即时生效：引擎已启动则更新会话限速，未启动静默（启动时读取）
+  // 限速设置变更/网络环境切换时即时生效：计费网络（蜂窝）按设置压低上传。
+  // 引擎未启动/组件缺失静默（启动时由 ensureStarted 读取）
   static applyLimitsLive(): void {
-    BtModule.setLimits(Settings.getBtDownloadLimitKb() * 1024, Settings.getBtUploadLimitKb() * 1024)
+    BtModule.setLimits(Settings.getBtDownloadLimitKb() * 1024, BtModule.effectiveUploadLimitBytes())
       .catch((): void => {
-        // 引擎未启动/组件缺失：下次启动由 ensureStarted 读取最新设置
+      });
+  }
+
+  // 分享率限制变更即时生效（引擎未启动静默）
+  static applyShareRatioLive(): void {
+    BtModule.setShareRatioLimit(Settings.getBtShareRatioLimit())
+      .catch((): void => {
+      });
+  }
+
+  // Peer 过滤规则变更即时生效（引擎未启动静默）
+  static applyPeerFilterLive(): void {
+    BtModule.setIpFilter(BtModule.peerFilterRules())
+      .catch((): void => {
       });
   }
 

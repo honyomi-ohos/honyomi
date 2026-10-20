@@ -2649,6 +2649,54 @@
       "value": "%1$d 個"
     },
     {
+      "name": "bt_set_share_group",
+      "value": "做種"
+    },
+    {
+      "name": "bt_set_share_ratio",
+      "value": "分享率限制"
+    },
+    {
+      "name": "bt_share_ratio_value",
+      "value": "%1$s"
+    },
+    {
+      "name": "bt_set_limit_upload_metered",
+      "value": "計費網路限制上傳"
+    },
+    {
+      "name": "bt_set_limit_upload_metered_sub",
+      "value": "行動網路下將上傳壓至 10 KB/s 以節省流量"
+    },
+    {
+      "name": "bt_set_peer_filter",
+      "value": "Peer 過濾器"
+    },
+    {
+      "name": "bt_set_peer_filter_sub",
+      "value": "按 IP 或網段封鎖連線"
+    },
+    {
+      "name": "bt_peer_filter_title",
+      "value": "Peer 過濾器"
+    },
+    {
+      "name": "bt_peer_filter_hint",
+      "value": "每行一條規則：單一 IP（192.168.1.1）或網段（10.0.0.0-10.255.255.255），留空表示不過濾"
+    },
+    {
+      "name": "bt_peer_filter_invalid",
+      "value": "第 %1$d 行規則無效"
+    },
+    {
+      "name": "bt_peer_filter_none",
+      "value": "未啟用"
+    },
+    {
+      "name": "bt_peer_filter_n",
+      "value": "%1$d 條規則"
+    },
+    {
       "name": "local_error_chapter_missing",
       "value": "章節檔案不存在"
     },

@@ -9,6 +9,7 @@ import { LocalSource } from '../source/LocalSource';
 import { LocalNovelSource } from '../source/LocalNovelSource';
 import { LocalVideoSource } from '../source/LocalVideoSource';
 import { DownloadService } from '../data/DownloadService';
+import { BtFlow } from '../data/BtFlow';
 import { PluginService } from '../data/PluginService';
 import { BackupService } from '../data/BackupService';
 import { EngineGateway } from '../jsvm/EngineGateway';
@@ -71,9 +72,11 @@ export default class EntryAbility extends UIAbility {
     // 契约：此处初始化的服务允许在回调执行前被访问——各服务必须容忍“未 init 先使用”
     // （内部空安全/延迟就绪），不得假设构造期已完成初始化；首帧路径严禁依赖本级服务。
     setTimeout((): void => {
-      // 网络监听先行启动：下载"仅 Wi-Fi"门禁依赖其判定（判定失败 fail-open 放行）
+      // 网络监听先行启动：下载"仅 Wi-Fi"门禁依赖其判定（判定失败 fail-open 放行）；
+      // 判定变化同时联动 BT 计费网络限上传（蜂窝时压至 10KB/s）
       NetworkMonitor.start((): void => {
         DownloadService.refreshNetworkGate();
+        BtFlow.applyLimitsLive();
       });
       DownloadService.init(this.context);
       CookieJar.init(this.context);

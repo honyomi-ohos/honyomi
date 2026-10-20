@@ -489,6 +489,34 @@ export class Settings {
     Settings.setStr('btExtraTrackers', v);
   }
 
+  // BT 分享率限制（上传/下载比值，达标后停止优先做种；1000 = 不限）
+  static getBtShareRatioLimit(): number {
+    const n = Settings.getNum('btShareRatioLimit', 2.0);
+    return n >= 1.0 ? n : 2.0;
+  }
+
+  static setBtShareRatioLimit(v: number): void {
+    Settings.setNum('btShareRatioLimit', v);
+  }
+
+  // 计费网络（蜂窝）限制上传为 10KB/s
+  static getBtLimitUploadOnMetered(): boolean {
+    return Settings.getBool('btLimitUploadOnMetered', true);
+  }
+
+  static setBtLimitUploadOnMetered(v: boolean): void {
+    Settings.setBool('btLimitUploadOnMetered', v);
+  }
+
+  // BT Peer 过滤规则（多行文本，每行 "from-to" 区间或单个 IP，屏蔽连接）
+  static getBtPeerFilter(): string {
+    return Settings.getStr('btPeerFilter', '');
+  }
+
+  static setBtPeerFilter(v: string): void {
+    Settings.setStr('btPeerFilter', v);
+  }
+
   // ---- 下载设置（对齐 Mihon DownloadPreferences） ----
 
   // 章节保存为 CBZ 压缩包（阅读时解压到缓存目录；与原版默认 true 不同，

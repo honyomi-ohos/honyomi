@@ -9,6 +9,8 @@ import { LibrarySettingsContent } from './LibrarySettingsPage';
 import { ReaderSettingsContent } from './ReaderSettingsPage';
 import { PlayerSettingsContent } from './PlayerSettingsPage';
 import { DownloadsSettingsContent } from './DownloadsSettingsPage';
+import { BtSettingsContent } from './BtSettingsPage';
+import { BtComponentInstaller } from '../../common/BtComponentInstaller';
 import { BrowseSettingsContent } from './BrowseSettingsPage';
 import { DataStorageContent } from './DataStoragePage';
 import { TrackingContent } from './TrackingPage';
@@ -22,10 +24,12 @@ import { LimitedBody } from '../components/LimitedBody';
 // lg 双栏左栏分类（index 与 CAT_ICONS、catTitle() 一一对应）
 const CAT_ICONS: string[] = [
   'tune', 'palette', 'collections_bookmark', 'image', 'play_arrow',
-  'download', 'explore', 'sync', 'storage', 'lock', 'settings', 'info'
+  'download', 'share', 'explore', 'sync', 'storage', 'lock', 'settings', 'info'
 ];
-// 分类索引：0 常规 / 1 外观 / 2 书库 / 3 阅读器 / 4 播放器 / 5 下载 / 6 浏览
-// / 7 追踪 / 8 数据与存储 / 9 隐私 / 10 高级 / 11 关于
+// BitTorrent 分类索引（仅 torrent 组件已安装时显示）
+const BT_CAT: number = 6;
+// 分类索引：0 常规 / 1 外观 / 2 书库 / 3 阅读器 / 4 播放器 / 5 下载 / 6 BitTorrent
+// / 7 浏览 / 8 追踪 / 9 数据与存储 / 10 隐私 / 11 高级 / 12 关于
 const CAT_DEFAULT: number = 1;
 
 // 设置中心主页：sm/md 为「常规 + 各分类入口」列表；lg(≥840vp) 双栏
@@ -40,6 +44,8 @@ export struct SettingsPage {
   @State selCat: number = CAT_DEFAULT;
   // 右栏二级页：'' 分类内容本身；'Language' 外观分类内的语言选择
   @State rightSub: string = '';
+  // torrent 组件已安装才显示 BitTorrent 分类（onShown 时刷新，安装后返回即出现）
+  @State btInstalled: boolean = false;
 
   @Builder
   railItem(index: number) {
@@ -137,7 +143,9 @@ export struct SettingsPage {
         Scroll() {
           Column({ space: 4 }) {
             ForEach(CAT_ICONS, (icon: string, index: number) => {
-              this.railItem(index)
+              if (index !== BT_CAT || this.btInstalled) {
+                this.railItem(index)
+              }
             }, (icon: string, index: number) => `cat-${index}`)
           }
           .width('100%')
@@ -191,18 +199,25 @@ export struct SettingsPage {
               DownloadsSettingsContent()
                 .layoutWeight(1)
             } else if (this.selCat === 6) {
-              BrowseSettingsContent()
+              BtSettingsContent({
+                openPeerFilter: (): void => {
+                  this.pathStack.pushPathByName('BtPeerFilter', null);
+                }
+              })
                 .layoutWeight(1)
             } else if (this.selCat === 7) {
-              TrackingContent()
+              BrowseSettingsContent()
                 .layoutWeight(1)
             } else if (this.selCat === 8) {
-              DataStorageContent()
+              TrackingContent()
                 .layoutWeight(1)
             } else if (this.selCat === 9) {
-              PrivacyContent()
+              DataStorageContent()
                 .layoutWeight(1)
             } else if (this.selCat === 10) {
+              PrivacyContent()
+                .layoutWeight(1)
+            } else if (this.selCat === 11) {
               AdvancedContent({
                 onOpenOnboarding: (): void => {
                   const params: OnboardingParams = { firstRun: false };
@@ -299,6 +314,16 @@ export struct SettingsPage {
               this.pathStack.pushPathByName('DownloadsSettings', null);
             }
           })
+          if (this.btInstalled) {
+            Divider().color(this.pal.divider).margin({ left: 16 })
+            IconRow({
+              title: $r('app.string.bt_set_group'),
+              icon: 'share',
+              onTap: (): void => {
+                this.pathStack.pushPathByName('BtSettings', null);
+              }
+            })
+          }
           Divider().color(this.pal.divider).margin({ left: 16 })
           IconRow({
             title: $r('app.string.settings_browse'),
@@ -378,7 +403,22 @@ export struct SettingsPage {
     .onReady((ctx: NavDestinationContext) => {
       this.pathStack = ctx.pathStack;
     })
+    .onShown(() => {
+      this.refreshBtInstalled();
+    })
     .backgroundColor(this.pal.bg)
+  }
+
+  aboutToAppear(): void {
+    this.refreshBtInstalled();
+  }
+
+  // torrent 组件安装状态变化时刷新分类可见性；选中项失效则回退默认分类
+  private refreshBtInstalled(): void {
+    this.btInstalled = BtComponentInstaller.isInstalled();
+    if (!this.btInstalled && this.selCat === BT_CAT) {
+      this.selCat = CAT_DEFAULT;
+    }
   }
 
   private catTitle(index: number): ResourceStr {
@@ -396,14 +436,16 @@ export struct SettingsPage {
       case 5:
         return $r('app.string.settings_downloads');
       case 6:
-        return $r('app.string.settings_browse');
+        return $r('app.string.bt_set_group');
       case 7:
-        return $r('app.string.track_title');
+        return $r('app.string.settings_browse');
       case 8:
-        return $r('app.string.data_storage_title');
+        return $r('app.string.track_title');
       case 9:
-        return $r('app.string.privacy_title');
+        return $r('app.string.data_storage_title');
       case 10:
+        return $r('app.string.privacy_title');
+      case 11:
         return $r('app.string.settings_advanced');
       default:
         return $r('app.string.settings_about');

@@ -3089,6 +3089,54 @@
       "value": "%1$d trackers"
     },
     {
+      "name": "bt_set_share_group",
+      "value": "Seeding"
+    },
+    {
+      "name": "bt_set_share_ratio",
+      "value": "Share ratio limit"
+    },
+    {
+      "name": "bt_share_ratio_value",
+      "value": "%1$s"
+    },
+    {
+      "name": "bt_set_limit_upload_metered",
+      "value": "Limit upload on metered networks"
+    },
+    {
+      "name": "bt_set_limit_upload_metered_sub",
+      "value": "Cap upload at 10 KB/s on cellular to save data"
+    },
+    {
+      "name": "bt_set_peer_filter",
+      "value": "Peer filter"
+    },
+    {
+      "name": "bt_set_peer_filter_sub",
+      "value": "Block peers by IP address or range"
+    },
+    {
+      "name": "bt_peer_filter_title",
+      "value": "Peer filter"
+    },
+    {
+      "name": "bt_peer_filter_hint",
+      "value": "One rule per line: an IP (192.168.1.1) or a range (10.0.0.0-10.255.255.255). Leave empty to disable"
+    },
+    {
+      "name": "bt_peer_filter_invalid",
+      "value": "Invalid rule on line %1$d"
+    },
+    {
+      "name": "bt_peer_filter_none",
+      "value": "Off"
+    },
+    {
+      "name": "bt_peer_filter_n",
+      "value": "%1$d rules"
+    },
+    {
       "name": "local_error_chapter_missing",
       "value": "Chapter file not found"
     },

@@ -111,6 +111,16 @@
       "pageSourceFile": "src/main/ets/pages/settings/DownloadsSettingsPage.ets"
     },
     {
+      "buildFunction": "BtSettingsBuilder",
+      "name": "BtSettings",
+      "pageSourceFile": "src/main/ets/pages/settings/BtSettingsPage.ets"
+    },
+    {
+      "buildFunction": "BtPeerFilterBuilder",
+      "name": "BtPeerFilter",
+      "pageSourceFile": "src/main/ets/pages/settings/BtPeerFilterPage.ets"
+    },
+    {
       "buildFunction": "BrowseSettingsBuilder",
       "name": "BrowseSettings",
       "pageSourceFile": "src/main/ets/pages/settings/BrowseSettingsPage.ets"

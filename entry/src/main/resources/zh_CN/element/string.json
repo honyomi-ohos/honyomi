@@ -3053,6 +3053,54 @@
       "value": "%1$d 个"
     },
     {
+      "name": "bt_set_share_group",
+      "value": "做种"
+    },
+    {
+      "name": "bt_set_share_ratio",
+      "value": "分享率限制"
+    },
+    {
+      "name": "bt_share_ratio_value",
+      "value": "%1$s"
+    },
+    {
+      "name": "bt_set_limit_upload_metered",
+      "value": "计费网络限制上传"
+    },
+    {
+      "name": "bt_set_limit_upload_metered_sub",
+      "value": "蜂窝网络下将上传压至 10 KB/s 以节省流量"
+    },
+    {
+      "name": "bt_set_peer_filter",
+      "value": "Peer 过滤器"
+    },
+    {
+      "name": "bt_set_peer_filter_sub",
+      "value": "按 IP 或网段屏蔽连接"
+    },
+    {
+      "name": "bt_peer_filter_title",
+      "value": "Peer 过滤器"
+    },
+    {
+      "name": "bt_peer_filter_hint",
+      "value": "每行一条规则：单个 IP（192.168.1.1）或网段（10.0.0.0-10.255.255.255），留空表示不过滤"
+    },
+    {
+      "name": "bt_peer_filter_invalid",
+      "value": "第 %1$d 行规则无效"
+    },
+    {
+      "name": "bt_peer_filter_none",
+      "value": "未启用"
+    },
+    {
+      "name": "bt_peer_filter_n",
+      "value": "%1$d 条规则"
+    },
+    {
       "name": "local_error_chapter_missing",
       "value": "章节文件不存在"
     },

@@ -12,25 +12,62 @@
  */
 import type { TorrentFileJson, TorrentStatusJson } from '@honyomi/torrent';
 import { Settings } from '../common/Settings';
+import { NetworkMonitor } from '../common/NetworkMonitor';
 
 export class BtModule {
   // 引擎惰性启动：未启动则启动（downloadDir 为引擎级默认下载目录）。
   // 动态 import 或 start 失败均归一为 bt_component_required：
   // 前者代表组件缺失（走安装引导），后者为引擎初始化异常（极少见，
   // 复用同一引导入口兜底，用户可关闭弹窗后重试）。
-  // 会话级限速（设置页可调）在启动时一并下发。
+  // 会话级限速（设置页可调）在启动时一并下发；分享率限制与 Peer 过滤
+  // 规则幂等跟随设置（引擎已启动时确保与设置一致，单条失败下次重试）。
   static async ensureStarted(downloadDir: string): Promise<void> {
     try {
       const ns = await import('@honyomi/torrent');
       if (!ns.TorrentManager.isStarted()) {
         await ns.TorrentManager.start(downloadDir, {
           downloadLimit: Settings.getBtDownloadLimitKb() * 1024,
-          uploadLimit: Settings.getBtUploadLimitKb() * 1024
+          uploadLimit: BtModule.effectiveUploadLimitBytes()
         });
       }
+      ns.TorrentManager.setLimits(Settings.getBtDownloadLimitKb() * 1024,
+        BtModule.effectiveUploadLimitBytes())
+        .catch((): void => {
+        });
+      ns.TorrentManager.setShareRatioLimit(Settings.getBtShareRatioLimit())
+        .catch((): void => {
+        });
+      ns.TorrentManager.setIpFilter(BtModule.peerFilterRules())
+        .catch((): void => {
+        });
     } catch (e) {
       throw new Error('bt_component_required');
     }
+  }
+
+  // 计费网络限制上传（animeko 对齐）：蜂窝/离线时上传压至 10KB/s。
+  // OHOS 无 metered 能力位，按"非 Wi-Fi/以太网"判定（fail-open 见 NetworkMonitor）
+  static effectiveUploadLimitBytes(): number {
+    if (Settings.getBtLimitUploadOnMetered() && !NetworkMonitor.isWifiLike()) {
+      return 10 * 1024;
+    }
+    return Settings.getBtUploadLimitKb() * 1024;
+  }
+
+  // Peer 过滤规则：多行文本（每行 "from-to" 区间或单个 IP）→ 字符串数组
+  static peerFilterRules(): string[] {
+    const raw = Settings.getBtPeerFilter();
+    const out: string[] = [];
+    if (raw === '') {
+      return out;
+    }
+    for (const line of raw.split(/\r?\n/)) {
+      const trimmed = line.trim();
+      if (trimmed !== '') {
+        out.push(trimmed);
+      }
+    }
+    return out;
   }
 
   static async addMagnet(magnetUri: string, savePath: string): Promise<number> {
@@ -65,6 +102,18 @@ export class BtModule {
   static async setLimits(downloadLimit: number, uploadLimit: number): Promise<void> {
     const ns = await import('@honyomi/torrent');
     return ns.TorrentManager.setLimits(downloadLimit, uploadLimit);
+  }
+
+  // 更新会话级分享率限制（上传/下载比值，达标后停止优先做种）
+  static async setShareRatioLimit(ratio: number): Promise<void> {
+    const ns = await import('@honyomi/torrent');
+    return ns.TorrentManager.setShareRatioLimit(ratio);
+  }
+
+  // 替换会话级 Peer 过滤规则（每项 "from-to" 或单个 IP；空列表清除过滤）
+  static async setIpFilter(rules: string[]): Promise<void> {
+    const ns = await import('@honyomi/torrent');
+    return ns.TorrentManager.setIpFilter(rules);
   }
 
   static async status(key: number): Promise<TorrentStatusJson> {
