@@ -5,11 +5,9 @@ import { Util } from '../common/Util';
 import { AppInfo } from '../common/AppInfo';
 import { IconRow, PrefGroup, SwitchRow } from './components/Prefs';
 
-const HELP_URL: string = 'https://mihon.app/docs/guides/troubleshooting/';
-
 // 更多页（对齐 Mihon MoreScreen）：
 // Logo 头部 + 全局开关（仅下载/无痕，带副标题）+ 功能入口（含数据与存储一级直达）
-// + 设置 / 支持我们 / 关于 / 帮助
+// + 设置 / 关于 / 帮助（应用内自有帮助文档，不再外链 mihon.app）
 @Component
 export struct MorePage {
   @Consume('navStack') pathStack: NavPathStack;
@@ -151,8 +149,7 @@ export struct MorePage {
               title: $r('app.string.more_help'),
               icon: 'help',
               onTap: (): void => {
-                const context = Util.hostAbilityContext(this.getUIContext());
-                Util.openUrl(context, HELP_URL);
+                this.pathStack.pushPathByName('Help', null);
               }
             })
           }

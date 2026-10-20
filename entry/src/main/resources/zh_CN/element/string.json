@@ -9,28 +9,8 @@
       "value": "暂停记录阅读历史"
     },
     {
-      "name": "more_support",
-      "value": "支持我们"
-    },
-    {
       "name": "more_help",
       "value": "帮助"
-    },
-    {
-      "name": "support_perks",
-      "value": "赞助者可访问专属频道，更多福利即将推出。"
-    },
-    {
-      "name": "support_patreon",
-      "value": "Patreon（首选）"
-    },
-    {
-      "name": "support_supported_by",
-      "value": "目前 Mihon 已获得 %d+ 位赞助者的支持。我们衷心感谢大家。让我们携手把 Mihon 办得更出色。"
-    },
-    {
-      "name": "support_contact_msg",
-      "value": "如需替代方案或有任何相关问题，请加入我们的 Discord 服务器。"
     },
     {
       "name": "data_storage_title",
@@ -1393,6 +1373,26 @@
       "value": "卸载失败"
     },
     {
+      "name": "ext_untrusted_title",
+      "value": "未受信任的插件"
+    },
+    {
+      "name": "ext_untrusted_message",
+      "value": "恶意插件可能会读取已保存的登录凭据，或执行任意代码。\n\n信任此插件即表示您接受这些风险。"
+    },
+    {
+      "name": "ext_trust",
+      "value": "信任"
+    },
+    {
+      "name": "ext_untrusted_tag",
+      "value": "未受信任"
+    },
+    {
+      "name": "plugin_trust_done",
+      "value": "已信任 %s"
+    },
+    {
       "name": "settings_title",
       "value": "设置"
     },
@@ -1610,7 +1610,15 @@
     },
     {
       "name": "privacy_policy_tracking_body",
-      "value": "你可以选择连接 AniList、MyAnimeList、Bangumi、Kitsu、Shikimori 等追踪服务。登录在对应服务页面由你本人授权，令牌仅保存在本地，用于同步阅读进度。"
+      "value": "你可以选择连接 AniList、MyAnimeList、Kitsu、Shikimori、Bangumi、MangaUpdates、MangaBaka、Hikka 等追踪服务。登录在对应服务页面由你本人授权，令牌仅保存在本地，用于同步阅读进度。"
+    },
+    {
+      "name": "privacy_policy_danmaku_title",
+      "value": "弹幕（视频评论）"
+    },
+    {
+      "name": "privacy_policy_danmaku_body",
+      "value": "视频播放的弹幕功能默认开启，可随时在播放器设置或播放页关闭。开启状态下，会将正在播放的作品标题发送至第三方弹幕服务 dandanplay（api.dandanplay.net）用于匹配剧集并加载弹幕；不会发送任何账号或设备标识，弹幕数据仅在内存中临时缓存。该服务受其自身隐私政策约束。"
     },
     {
       "name": "privacy_policy_permissions_title",
@@ -1626,7 +1634,95 @@
     },
     {
       "name": "privacy_policy_contact_body",
-      "value": "Honyomi 是一款受 Mihon 启发的开源项目。如对隐私说明有疑问，可通过 Discord 或 GitHub 联系我们。"
+      "value": "Honyomi 是一款受 Mihon 启发的开源项目。如对隐私说明有疑问，可通过 GitHub 联系我们。"
+    },
+    {
+      "name": "help_title",
+      "value": "帮助"
+    },
+    {
+      "name": "help_intro",
+      "value": "Honyomi 使用手册：从导入内容、安装扩展，到阅读听书、同步备份与隐私安全，这里汇总了常用功能说明与问题排查思路。"
+    },
+    {
+      "name": "help_getting_started_title",
+      "value": "入门指南"
+    },
+    {
+      "name": "help_getting_started_body",
+      "value": "通过「本地」源或直接打开文件可导入 CBZ、EPUB 等本地内容。在线内容请在「浏览 → 插件」添加插件仓库并安装扩展，即可浏览与搜索其书源。在作品详情页点「加入书架」即可收藏，长按书架作品可批量管理。首次使用建议在「设置」中按习惯调整主题、启动页与阅读偏好。"
+    },
+    {
+      "name": "help_extensions_title",
+      "value": "插件与扩展"
+    },
+    {
+      "name": "help_extensions_body",
+      "value": "在线书源由扩展插件提供，在「浏览 → 插件」统一管理：添加仓库，即可安装、更新或卸载扩展；列表下拉可检查插件更新。请只添加你信任的仓库——仓库下线后，其扩展将无法继续更新或重装。"
+    },
+    {
+      "name": "help_reader_title",
+      "value": "阅读与听书"
+    },
+    {
+      "name": "help_reader_body",
+      "value": "阅读器提供从左到右、从右到左、竖排与条漫等多种模式，可调节背景与亮度，并按作品分别记忆。小说支持语音听书，可调节语速、设置睡眠定时，朗读可持续后台播放；动画可在线播放并支持弹幕。阅读进度自动记录，无需手动保存。"
+    },
+    {
+      "name": "help_downloads_title",
+      "value": "下载管理"
+    },
+    {
+      "name": "help_downloads_body",
+      "value": "在作品详情页或章节列表可将章节加入下载，离线随时阅读。下载任务可在「更多 → 下载管理」查看进度、暂停或删除；「设置 → 下载」提供仅 Wi-Fi 下载、新章节自动下载、读完自动删除等选项。"
+    },
+    {
+      "name": "help_tracking_title",
+      "value": "追踪与同步"
+    },
+    {
+      "name": "help_tracking_body",
+      "value": "在作品详情页的「追踪」中可连接 AniList、MyAnimeList、Bangumi、Kitsu、Shikimori 等服务，关联后状态与阅读进度会自动同步；令牌仅保存在本机，可随时取消关联。"
+    },
+    {
+      "name": "help_migration_title",
+      "value": "书源迁移"
+    },
+    {
+      "name": "help_migration_body",
+      "value": "更换同一作品的其他源时，在详情页菜单选择「迁移」，按标题或作者匹配目标源后，阅读进度与已下载内容会一并保留。原源停更或失效时，迁移可让你无缝切换到新源继续追更。"
+    },
+    {
+      "name": "help_updates_title",
+      "value": "更新与「即将更新」"
+    },
+    {
+      "name": "help_updates_body",
+      "value": "「更新」页集中检查书架内作品的新章节，下拉即可手动刷新，有新章节的作品会优先展示。「即将更新」按作品的历史发布节奏预估下次更新时间，仅供参考。"
+    },
+    {
+      "name": "help_storage_title",
+      "value": "数据与存储"
+    },
+    {
+      "name": "help_storage_body",
+      "value": "书架、进度与设置仅存储在本机，不上传任何服务器。可在「更多 → 数据与存储」备份与还原、查看存储占用、清理章节缓存，并可设置自动备份周期。更换设备或重装应用前，建议先手动完成一次备份。"
+    },
+    {
+      "name": "help_security_title",
+      "value": "隐私与安全"
+    },
+    {
+      "name": "help_security_body",
+      "value": "应用本地优先、不收集个人数据。「设置 → 隐私」提供应用锁（生物识别解锁）、隐藏通知内容与禁止截屏录屏；「更多」页的无痕模式可暂停记录阅读历史。成人内容源（NSFW）默认隐藏，可在「设置 → 浏览」中开启。"
+    },
+    {
+      "name": "help_troubleshooting_title",
+      "value": "故障排查"
+    },
+    {
+      "name": "help_troubleshooting_body",
+      "value": "页面加载失败时请先检查网络，或在「设置 → 高级」中切换 DNS-over-HTTPS 供应商；出现站点人机验证时按提示完成即可。书源异常时可下拉刷新扩展列表检查插件更新，或重新安装对应扩展。问题仍未解决时，建议先在「数据与存储」中备份，再清理章节缓存尝试恢复。"
     },
     {
       "name": "browse_set_title",
@@ -1915,6 +2011,14 @@
     {
       "name": "global_search_failed",
       "value": "搜索失败"
+    },
+    {
+      "name": "has_results",
+      "value": "有结果"
+    },
+    {
+      "name": "no_results_found",
+      "value": "没有结果"
     },
     {
       "name": "ext_search_hint",
@@ -2971,6 +3075,18 @@
     {
       "name": "bt_set_group",
       "value": "BitTorrent"
+    },
+    {
+      "name": "bt_set_service",
+      "value": "BT 服务"
+    },
+    {
+      "name": "bt_set_service_sub",
+      "value": "关闭后停止 BT 引擎，BT 下载将不可用"
+    },
+    {
+      "name": "bt_service_disabled",
+      "value": "BT 服务已关闭，请在 设置 → BitTorrent 中开启"
     },
     {
       "name": "bt_set_engine",

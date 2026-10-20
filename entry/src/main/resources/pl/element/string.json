@@ -997,6 +997,14 @@
       "value": "Wyszukiwanie nie powiodło się"
     },
     {
+      "name": "has_results",
+      "value": "Ma wyniki"
+    },
+    {
+      "name": "no_results_found",
+      "value": "Nie znaleziono wyników"
+    },
+    {
       "name": "ext_search_hint",
       "value": "Szukaj rozszerzeń"
     },
@@ -2098,7 +2106,7 @@
     },
     {
       "name": "privacy_policy_contact_body",
-      "value": "Honyomi to projekt open source inspirowany przez Mihon. Pytania o to oświadczenie o prywatności kieruj przez Discord lub GitHub."
+      "value": "Honyomi to projekt open source inspirowany przez Mihon. Pytania o to oświadczenie o prywatności kieruj przez GitHub."
     },
     {
       "name": "dl_set_save_cbz",

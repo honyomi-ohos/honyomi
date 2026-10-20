@@ -33,6 +33,20 @@ export struct BtSettingsContent {
     Scroll() {
       Column({ space: 12 }) {
         PrefGroup({ groupTitle: $r('app.string.bt_set_group') }) {
+          // 服务总开关：关→立即停引擎；开→不主动启动，下次 BT 使用按需启
+          PrefSwitchRow({
+            title: $r('app.string.bt_set_service'),
+            subtitle: $r('app.string.bt_set_service_sub'),
+            initValue: Settings.getBtServiceEnabled(),
+            apply: (value: boolean): void => {
+              Settings.setBtServiceEnabled(value);
+              if (!value) {
+                BtModule.stopEngine().catch((): void => {
+                });
+              }
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
           PrefSelectRow({
             title: $r('app.string.bt_set_engine'),
             options: this.btEngineOptions(),

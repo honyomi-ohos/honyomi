@@ -6,7 +6,7 @@ import { AppKeys } from '../common/AppKeys';
 import { TitleMatch } from '../common/TitleMatch';
 import EntryAbility from './EntryAbility';
 
-// 自定义意图：打开书架作品（"用 Mihon 打开海贼王"）。
+// 自定义意图：打开书架作品（"用 Honyomi 打开海贼王"）。
 // 书架内标题模糊匹配 → 命中打开详情页；未命中降级全局搜索（携带搜索词）。
 @InsightIntentEntry({
   intentName: 'OpenManga',
@@ -14,7 +14,7 @@ import EntryAbility from './EntryAbility';
   intentVersion: '1.0.1',
   displayName: '打开书架作品',
   icon: $r('app.media.ic_collections_bookmark'),
-  llmDescription: '打开书架（收藏）中已有作品的详情页。当用户想查看或打开某部已收藏的漫画、小说、视频时使用，例如："用Mihon打开海贼王"、"打开书架里的航海王"。若作品不在书架中，将打开全局搜索帮助用户查找。',
+  llmDescription: '打开书架（收藏）中已有作品的详情页。当用户想查看或打开某部已收藏的漫画、小说、视频时使用，例如："用Honyomi打开海贼王"、"打开书架里的航海王"。若作品不在书架中，将打开全局搜索帮助用户查找。',
   keywords: ['打开漫画', '打开作品', '查看作品'],
   abilityName: 'EntryAbility',
   executeMode: [insightIntent.ExecuteMode.UI_ABILITY_FOREGROUND],

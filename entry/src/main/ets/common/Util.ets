@@ -311,6 +311,9 @@ export class Util {
       case 'bt_component_required':
         res = $r('app.string.download_bt_component_required');
         break;
+      case 'bt_service_disabled':
+        res = $r('app.string.bt_service_disabled');
+        break;
       case 'download_cancelled':
         res = $r('app.string.download_error_cancelled');
         break;

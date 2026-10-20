@@ -9,10 +9,6 @@
       "value": "Призупиняє історію читання"
     },
     {
-      "name": "more_support",
-      "value": "Підтримати нас"
-    },
-    {
       "name": "more_help",
       "value": "Допомога"
     },
@@ -1027,6 +1023,14 @@
     {
       "name": "global_search_failed",
       "value": "Помилка пошуку"
+    },
+    {
+      "name": "has_results",
+      "value": "Має результати"
+    },
+    {
+      "name": "no_results_found",
+      "value": "Нічого не знайдено"
     },
     {
       "name": "ext_search_hint",
@@ -2134,7 +2138,7 @@
     },
     {
       "name": "privacy_policy_contact_body",
-      "value": "Honyomi — проєкт із відкритим кодом, натхненний Mihon. Питання щодо цієї політики можна поставити в Discord або на GitHub."
+      "value": "Honyomi — проєкт із відкритим кодом, натхненний Mihon. Питання щодо цієї політики можна поставити в GitHub."
     },
     {
       "name": "dl_set_save_cbz",

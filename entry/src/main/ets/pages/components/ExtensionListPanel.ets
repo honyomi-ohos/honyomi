@@ -1,5 +1,5 @@
 import { picker } from '@kit.CoreFileKit';
-import { InstalledPlugin, PluginService, RepoEntry } from '../../data/PluginService';
+import { InstallOutcome, InstalledPlugin, PluginService, RepoEntry } from '../../data/PluginService';
 import { ContentType } from '../../model/Models';
 import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
@@ -24,6 +24,62 @@ const LANG_NAMES: Record<string, string> = {
   'multi': 'Multi',
   'all': 'Multi',
 };
+
+// 插件信任确认弹窗（对齐 Mihon ExtensionTrustDialog）：
+// 恶意插件风险告知 + 信任/卸载双动作；点遮罩关闭 = 暂不处理（保持未受信任状态）
+@CustomDialog
+struct TrustPluginDialog {
+  controller?: CustomDialogController;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  onTrust: () => void = () => {
+  };
+  onUninstall: () => void = () => {
+  };
+  onClose: () => void = () => {
+  };
+
+  build() {
+    Column({ space: 16 }) {
+      Text($r('app.string.ext_untrusted_title'))
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+        .width('100%')
+      Text($r('app.string.ext_untrusted_message'))
+        .fontSize(14)
+        .fontColor(this.pal.sub)
+        .width('100%')
+      Row({ space: 12 }) {
+        Button($r('app.string.common_uninstall'))
+          .layoutWeight(1)
+          .backgroundColor(this.pal.chip)
+          .fontColor('#E05252')
+          .onClick(() => {
+            this.dismiss();
+            this.onUninstall();
+          })
+        Button($r('app.string.ext_trust'))
+          .layoutWeight(1)
+          .backgroundColor(this.pal.primary)
+          .fontColor(this.pal.onPrimary)
+          .onClick(() => {
+            this.dismiss();
+            this.onTrust();
+          })
+      }
+      .width('100%')
+    }
+    .padding(20)
+    .width('100%')
+  }
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
+  }
+}
 
 // 在线插件语言分组（对齐 Mihon available 按语言分组）
 class LangGroup {
@@ -167,6 +223,22 @@ export struct ExtensionListPanel {
             .fontSize(12)
             .fontColor(this.pal.sub)
             .maxLines(1)
+          if (!item.trusted) {
+            // 未受信任徽标（对齐 Mihon ext_untrusted 标签）
+            Text($r('app.string.ext_untrusted_tag'))
+              .fontSize(9)
+              .fontWeight(FontWeight.Bold)
+              .fontColor('#FFFFFF')
+              .backgroundColor('#E8A33D')
+              .borderRadius(4)
+              .padding({
+                left: 4,
+                right: 4,
+                top: 1,
+                bottom: 1
+              })
+              .margin({ left: 6 })
+          }
           if (item.manifest.nsfw) {
             NsfwTag()
               .margin({ left: 6 })
@@ -183,17 +255,31 @@ export struct ExtensionListPanel {
       .layoutWeight(1)
       .margin({ left: 16 })
 
-      // 设置按钮进插件详情（Mihon Loaded 行同款）
-      AppIcon({ name: 'settings', iconSize: 22, tint: this.pal.sub })
-        .padding({
-          left: 8,
-          right: updatable ? 0 : 8,
-          top: 10,
-          bottom: 10
-        })
-        .onClick(() => {
-          this.onOpenPlugin(item.manifest.key);
-        })
+      if (!item.trusted) {
+        // 未受信任：信任确认入口（对齐 Mihon VerifiedUser 图标），设置按钮隐藏
+        AppIcon({ name: 'verified_user', iconSize: 22, tint: '#E8A33D' })
+          .padding({
+            left: 8,
+            right: 8,
+            top: 10,
+            bottom: 10
+          })
+          .onClick(() => {
+            this.showTrustDialog(item.manifest.key, item.manifest.name);
+          })
+      } else {
+        // 设置按钮进插件详情（Mihon Loaded 行同款）
+        AppIcon({ name: 'settings', iconSize: 22, tint: this.pal.sub })
+          .padding({
+            left: 8,
+            right: updatable ? 0 : 8,
+            top: 10,
+            bottom: 10
+          })
+          .onClick(() => {
+            this.onOpenPlugin(item.manifest.key);
+          })
+      }
 
       // 有新版本时显示更新按钮（对齐 Mihon hasUpdate → Download 图标）
       if (updatable) {
@@ -218,7 +304,12 @@ export struct ExtensionListPanel {
       bottom: 8
     })
     .onClick(() => {
-      this.onOpenPlugin(item.manifest.key);
+      // 未受信任：整行点击弹信任确认（对齐 Mihon Untrusted 行交互）；已受信任进详情
+      if (item.trusted) {
+        this.onOpenPlugin(item.manifest.key);
+      } else {
+        this.showTrustDialog(item.manifest.key, item.manifest.name);
+      }
     })
     .gesture(
       LongPressGesture({ repeat: false, duration: 500 })
@@ -336,7 +427,7 @@ export struct ExtensionListPanel {
             this.sectionHeader($r('app.string.ext_updates_pending'), true)
             ForEach(this.pendingUpdates, (item: InstalledPlugin) => {
               this.installedRow(item, true)
-            }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}`)
+            }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}-${item.trusted}`)
           }
 
           // 已安装分组（无新版本）
@@ -344,7 +435,7 @@ export struct ExtensionListPanel {
             this.sectionHeader($r('app.string.plugin_installed_section'), false)
             ForEach(this.shownInstalled, (item: InstalledPlugin) => {
               this.installedRow(item, false)
-            }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}`)
+            }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}-${item.trusted}`)
           }
 
           if (this.repoUrls.length === 0) {
@@ -662,13 +753,18 @@ export struct ExtensionListPanel {
     }
     this.busy = true;
     try {
-      const key = await PluginService.installFromFile(uri);
+      const outcome: InstallOutcome = await PluginService.installFromFile(uri);
       if (this.disposed) {
         return;
       }
       this.refreshInstalled();
       PluginService.markDirty();
-      Util.toastRes(this.getUIContext(), $r('app.string.plugin_installed'), [key]);
+      if (outcome.trusted) {
+        Util.toastRes(this.getUIContext(), $r('app.string.plugin_installed'), [outcome.key]);
+      } else {
+        // 未受信任：弹信任确认（信任后激活 / 卸载），对齐 Mihon 安装后弹 ExtensionTrustDialog
+        this.showTrustDialog(outcome.key, outcome.name);
+      }
     } catch (e) {
       if (this.disposed) {
         return;
@@ -681,16 +777,22 @@ export struct ExtensionListPanel {
     }
   }
 
-  // 单次仓库安装/更新核心（不含 busy 门控，供单项安装与“全部更新”复用）
-  private async performRepoInstall(entry: RepoEntry): Promise<void> {
+  // 单次仓库安装/更新核心（不含 busy 门控，供单项安装与“全部更新”复用）：
+  // interactive = true 时未受信任结果弹信任确认；批量更新传 false（行内展示未受信任
+  // 状态，由用户逐个点击确认，避免连续弹窗）
+  private async performRepoInstall(entry: RepoEntry, interactive: boolean): Promise<void> {
     try {
-      await PluginService.installFromRepo(entry);
+      const outcome: InstallOutcome = await PluginService.installFromRepo(entry);
       if (this.disposed) {
         return;
       }
       this.refreshInstalled();
       PluginService.markDirty();
-      Util.toastRes(this.getUIContext(), $r('app.string.plugin_installed_name'), [entry.name]);
+      if (outcome.trusted) {
+        Util.toastRes(this.getUIContext(), $r('app.string.plugin_installed_name'), [entry.name]);
+      } else if (interactive) {
+        this.showTrustDialog(outcome.key, entry.name);
+      }
     } catch (e) {
       if (this.disposed) {
         return;
@@ -705,7 +807,7 @@ export struct ExtensionListPanel {
       return;
     }
     this.busy = true;
-    await this.performRepoInstall(entry);
+    await this.performRepoInstall(entry, true);
     if (!this.disposed) {
       this.busy = false;
     }
@@ -739,7 +841,54 @@ export struct ExtensionListPanel {
     }
     this.busy = true;
     for (const entry of snapshot) {
-      await this.performRepoInstall(entry);
+      await this.performRepoInstall(entry, false);
+    }
+    if (!this.disposed) {
+      this.busy = false;
+    }
+  }
+
+  // ---- 信任确认（对齐 Mihon ExtensionTrustDialog）----
+
+  // 未受信任插件确认弹窗：信任 → 登记信任并激活（拉引擎注册源）；卸载 → 移除插件；
+  // 点遮罩/返回关闭 = 暂不处理（保持未受信任状态，不执行任何插件代码）
+  private showTrustDialog(key: string, name: string): void {
+    const dialog = new CustomDialogController({
+      builder: TrustPluginDialog({
+        onTrust: (): void => {
+          this.activateTrusted(key, name);
+        },
+        onUninstall: (): void => {
+          this.uninstallPlugin(key);
+        },
+        onClose: (): void => {
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  // 用户确认信任：登记信任记录并拉起引擎激活源，完成后刷新列表
+  private async activateTrusted(key: string, name: string): Promise<void> {
+    if (this.busy) {
+      return;
+    }
+    this.busy = true;
+    try {
+      await PluginService.trustAndActivate(key);
+      if (this.disposed) {
+        return;
+      }
+      this.refreshInstalled();
+      PluginService.markDirty();
+      Util.toastRes(this.getUIContext(), $r('app.string.plugin_trust_done'), [name]);
+    } catch (e) {
+      if (this.disposed) {
+        return;
+      }
+      Util.toastRes(this.getUIContext(), $r('app.string.plugin_install_failed'),
+        [Util.errText(this.getUIContext(), (e as Error).message)]);
     }
     if (!this.disposed) {
       this.busy = false;

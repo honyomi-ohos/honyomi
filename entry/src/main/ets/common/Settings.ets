@@ -349,6 +349,78 @@ export class Settings {
     return m !== null ? m[1] : url;
   }
 
+  // ---- 受信任插件（对齐 Mihon trustedExtensions）----
+
+  // 受信任插件记录（JSON string[]，元素 "key:versionCode:contentHash"）：
+  // 插件激活（拉引擎执行插件代码）前必须命中记录；版本升级或内容变化后需重新确认信任
+  static getTrustedPlugins(): string[] {
+    const raw = Settings.getStr('trustedPlugins', '[]');
+    try {
+      const parsed = JSON.parse(raw) as string[];
+      if (Array.isArray(parsed)) {
+        const out: string[] = [];
+        for (const item of parsed) {
+          if (typeof item === 'string' && item !== '') {
+            out.push(item);
+          }
+        }
+        return out;
+      }
+    } catch (_e) {
+    }
+    return [];
+  }
+
+  static setTrustedPlugins(list: string[]): void {
+    Settings.setStr('trustedPlugins', JSON.stringify(list));
+  }
+
+  // 信任记录键是否存在（首次引入信任门禁时对既有安装做一次性 grandfather 迁移的判定标记）
+  static hasTrustedPlugins(): boolean {
+    if (Settings.store === undefined) {
+      return false;
+    }
+    try {
+      return Settings.store.hasSync('trustedPlugins');
+    } catch (_e) {
+      return false;
+    }
+  }
+
+  static isPluginTrusted(key: string, versionCode: number, contentHash: string): boolean {
+    return Settings.getTrustedPlugins().indexOf(`${key}:${versionCode}:${contentHash}`) >= 0;
+  }
+
+  // 登记信任：移除同 key 旧版本记录后写入新记录（对齐 Mihon TrustExtension.trust）
+  static trustPlugin(key: string, versionCode: number, contentHash: string): void {
+    const prefix = `${key}:`;
+    const kept: string[] = [];
+    for (const item of Settings.getTrustedPlugins()) {
+      if (!item.startsWith(prefix)) {
+        kept.push(item);
+      }
+    }
+    kept.push(`${key}:${versionCode}:${contentHash}`);
+    Settings.setTrustedPlugins(kept);
+  }
+
+  // 移除单个插件的信任记录（卸载时调用；重装同版本也需重新确认信任）
+  static revokePluginTrust(key: string): void {
+    const prefix = `${key}:`;
+    const kept: string[] = [];
+    for (const item of Settings.getTrustedPlugins()) {
+      if (!item.startsWith(prefix)) {
+        kept.push(item);
+      }
+    }
+    Settings.setTrustedPlugins(kept);
+  }
+
+  // 撤销全部插件信任记录（对齐 Mihon ext_revoke_trust）
+  static revokeAllPluginTrust(): void {
+    Settings.setTrustedPlugins([]);
+  }
+
   // 自动备份频率（小时，0=关闭）
   static getBackupInterval(): number {
     return Settings.getNum('backupInterval', 0);
@@ -437,6 +509,16 @@ export class Settings {
   }
 
   // ---- BT / BitTorrent ----
+
+  // BT 服务总开关：关闭后立即停引擎（TorrentManager.shutdown，worker 保留
+  // 可再启），BT 下载请求被拒（bt_service_disabled）；重新开启后按需启动
+  static getBtServiceEnabled(): boolean {
+    return Settings.getBool('btServiceEnabled', true);
+  }
+
+  static setBtServiceEnabled(v: boolean): void {
+    Settings.setBool('btServiceEnabled', v);
+  }
 
   // BT 下载引擎选择：'ask'（未决，每次询问）| 'module'（内置引擎）| 'system'（交给系统应用）
   static getBtEngineChoice(): string {
@@ -1222,6 +1304,15 @@ export class Settings {
 
   static setPinnedSources(v: string): void {
     Settings.setStr('pinnedSources', v);
+  }
+
+  // 全局搜索“只显示有结果的源”开关（对齐 Mihon globalSearchFilterState 偏好）
+  static getGlobalSearchFilterResults(): boolean {
+    return Settings.getBool('globalSearchFilterResults', false);
+  }
+
+  static setGlobalSearchFilterResults(v: boolean): void {
+    Settings.setBool('globalSearchFilterResults', v);
   }
 
   // 根据设置与系统颜色模式计算是否深色，并写入 AppStorage 与 palette

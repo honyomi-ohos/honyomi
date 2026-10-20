@@ -7,7 +7,7 @@ import EntryAbility from './EntryAbility';
 
 const DOMAIN = 0x0001;
 
-// 自定义意图：刷新书库检查更新（"用 Mihon 检查更新"）。
+// 自定义意图：刷新书库检查更新（"用 Honyomi 检查更新"）。
 // 切到更新页签 + 异步触发全库刷新（不阻塞意图返回，网络刷新耗时较长）；
 // 成功推进刷新时间戳并标记书库脏（与 Index.autoRefresh 同一套约定）。
 @InsightIntentEntry({
@@ -16,7 +16,7 @@ const DOMAIN = 0x0001;
   intentVersion: '1.0.1',
   displayName: '刷新书库检查更新',
   icon: $r('app.media.ic_sync'),
-  llmDescription: '刷新书架全部作品，检查是否有新章节更新。当用户表达"检查更新/刷新书库/看看有没有更新"等需求时使用，例如："用Mihon检查更新"、"刷新一下书库"。',
+  llmDescription: '刷新书架全部作品，检查是否有新章节更新。当用户表达"检查更新/刷新书库/看看有没有更新"等需求时使用，例如："用Honyomi检查更新"、"刷新一下书库"。',
   keywords: ['刷新书库', '检查更新', '检查新章节'],
   abilityName: 'EntryAbility',
   executeMode: [insightIntent.ExecuteMode.UI_ABILITY_FOREGROUND]

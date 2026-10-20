@@ -12,6 +12,7 @@ import { ContentType, PluginRecord } from '../model/Models';
 import { Http } from '../net/Http';
 import { Util } from '../common/Util';
 import { AppKeys } from '../common/AppKeys';
+import { Settings } from '../common/Settings';
 import { AppDb } from './AppDb';
 import { MangaRepo, PluginRepo } from './Repos';
 
@@ -51,6 +52,24 @@ interface RawManifest {
 export interface InstalledPlugin {
   manifest: PluginManifest;
   iconPath: string;
+  // 是否已受信任：未受信任插件不注册源、不执行插件代码，仅列表展示待确认状态
+  trusted: boolean;
+}
+
+// 安装结果：trusted = false 表示包已落盘但未受信任（未注册源、未执行插件代码），
+// 需用户在信任弹窗（对齐 Mihon ExtensionTrustDialog）确认后经 trustAndActivate 激活
+export class InstallOutcome {
+  key: string = '';
+  name: string = '';
+  trusted: boolean = true;
+
+  static of(key: string, name: string, trusted: boolean): InstallOutcome {
+    const o = new InstallOutcome();
+    o.key = key;
+    o.name = name;
+    o.trusted = trusted;
+    return o;
+  }
 }
 
 export interface RepoEntry {
@@ -230,6 +249,7 @@ export class PluginService {
         const item: InstalledPlugin = {
           manifest: manifest,
           iconPath: PluginService.iconUrlOf(manifest),
+          trusted: await PluginService.isRecordTrusted(manifest.key, manifest.versionCode),
         };
         result.push(item);
       }
@@ -241,8 +261,9 @@ export class PluginService {
 
   // 已安装插件列表（异步 DB 版）：读 plugin 元数据索引，不触碰引擎；
 
-  // 从文件选择器 URI 安装插件包
-  static async installFromFile(uri: string): Promise<string> {
+  // 从文件选择器 URI 安装插件包：受信任（同版本且内容指纹一致）直接激活，
+  // 否则仅落盘返回未受信任结果，由 UI 弹信任确认（对齐 Mihon TrustExtension 门禁）
+  static async installFromFile(uri: string): Promise<InstallOutcome> {
     const zipPath = `${PluginService.cacheDir}/plugin_install_${Date.now()}_${util.generateRandomUUID()}.honyomiplug`;
     try {
       const srcFile = fs.openSync(uri, fs.OpenMode.READ_ONLY);
@@ -272,7 +293,7 @@ export class PluginService {
   }
 
   // 从仓库条目下载并安装：release 强制 https（调试构建放行 http），索引声明 checksum（sha256）时校验完整性
-  static async installFromRepo(entry: RepoEntry): Promise<string> {
+  static async installFromRepo(entry: RepoEntry): Promise<InstallOutcome> {
     if (entry.file.startsWith('http://') && !PluginService.isDebugBuild()) {
       throw new Error('plugin_repo_not_https');
     }
@@ -313,6 +334,8 @@ export class PluginService {
   static async uninstall(key: string): Promise<void> {
     const packageKey = PluginService.packageKeyOf(key);
     PluginService.unregisterPackage(packageKey);
+    // 卸载即撤销信任记录：重装同版本也需重新确认（防止换包后凭旧信任静默激活）
+    Settings.revokePluginTrust(packageKey);
     // 清除引擎启动记忆（含失败 rejected 记忆），重装后可重新拉起
     PluginService.startPromises.delete(packageKey);
     // 卸载即销毁插件持久化数据：明文偏好 blob + SecureStore 条目 + 敏感键注册表一并清除，
@@ -352,6 +375,58 @@ export class PluginService {
   // 供 ImageCache 等消费方在冷启动竞态下等待插件源注册完成
   static ready(): Promise<void> {
     return PluginService.loadAllPromise ?? Promise.resolve();
+  }
+
+  // ---------------- 信任门禁（对齐 Mihon TrustExtension）----------------
+
+  // 已安装插件内容指纹（manifest.json + main.js 的 sha256）：
+  // 信任记录按 "key:versionCode:contentHash" 命中，插件文件被替换后指纹变化即失信
+  private static async contentHashOf(packageKey: string): Promise<string> {
+    const dir = `${PluginService.pluginsDir}/${packageKey}`;
+    const text = `${fs.readTextSync(`${dir}/manifest.json`)}\n${fs.readTextSync(`${dir}/main.js`)}`;
+    return PluginService.sha256Text(text);
+  }
+
+  private static async sha256Text(text: string): Promise<string> {
+    try {
+      if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest')) {
+        const md: cryptoFramework.Md = cryptoFramework.createMd('SHA256');
+        const bytes = util.TextEncoder.create('utf-8').encodeInto(text);
+        await md.update({ data: bytes });
+        const digest: cryptoFramework.DataBlob = await md.digest();
+        let out = '';
+        for (let i = 0; i < digest.data.length; i++) {
+          const byte: number = digest.data[i];
+          out += byte < 16 ? `0${byte.toString(16)}` : byte.toString(16);
+        }
+        return out;
+      }
+      throw new Error('crypto unavailable');
+    } catch (e) {
+      throw new Error(`plugin_hash_failed|${Util.errSummary(e)}`);
+    }
+  }
+
+  // 已安装记录当前是否受信任：目录缺失/读取失败视为未受信任
+  private static async isRecordTrusted(packageKey: string, versionCode: number): Promise<boolean> {
+    try {
+      const contentHash = await PluginService.contentHashOf(packageKey);
+      return Settings.isPluginTrusted(packageKey, versionCode, contentHash);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // 用户确认信任后激活插件：登记信任记录 → 拉引擎注册源 → 同步元数据。
+  // 版本升级后重新确认信任走同一路径（新指纹覆盖旧记录）
+  static async trustAndActivate(packageKey: string): Promise<void> {
+    const manifestText = fs.readTextSync(`${PluginService.pluginsDir}/${packageKey}/manifest.json`);
+    const manifest = PluginService.parseManifest(manifestText);
+    const contentHash = await PluginService.contentHashOf(packageKey);
+    Settings.trustPlugin(manifest.key, manifest.versionCode, contentHash);
+    PluginService.startPromises.delete(packageKey);
+    await PluginService.doStartEngine(packageKey);
+    hilog.info(DOMAIN, TAG, 'plugin trusted and activated: %{public}s', packageKey);
   }
 
   // 记忆化：并发/重复调用共享同一次加载
@@ -552,12 +627,37 @@ export class PluginService {
     if (records.length === 0) {
       return;
     }
-    // 只注册占位源：nsfw/methods/supportsLatest 等来自持久化元数据，
-    // 引擎在源被实际调用时经 engineStarter 惰性拉起
-    for (const record of records) {
-      PluginService.registerPlaceholders(record);
+    // 信任门禁首次启用：既有已安装插件一次性登记为受信任（grandfather 迁移，
+    // 对齐 Mihon TrustExtensionRepositoryMigration），避免升级后全部失效
+    if (!Settings.hasTrustedPlugins()) {
+      for (const record of records) {
+        try {
+          const contentHash = await PluginService.contentHashOf(record.key);
+          Settings.trustPlugin(record.key, record.versionCode, contentHash);
+        } catch (e) {
+          hilog.warn(DOMAIN, TAG, 'grandfather trust %{public}s failed: %{public}s',
+            record.key, (e as Error).message);
+        }
+      }
+      if (Settings.getTrustedPlugins().length === 0) {
+        // 全部登记失败也要写入标记，避免每次启动重复尝试
+        Settings.setTrustedPlugins([]);
+      }
+      hilog.info(DOMAIN, TAG, 'trust gate migrated for %{public}d existing plugins', records.length);
     }
-    hilog.info(DOMAIN, TAG, 'registered %{public}d plugin packages from db index', records.length);
+    // 只注册受信任插件的占位源：nsfw/methods/supportsLatest 等来自持久化元数据，
+    // 未受信任插件不注册源、不拉引擎（不执行任何插件代码），由插件列表引导用户确认信任
+    let trustedCount = 0;
+    for (const record of records) {
+      if (!(await PluginService.isRecordTrusted(record.key, record.versionCode))) {
+        hilog.info(DOMAIN, TAG, 'skip untrusted plugin: %{public}s', record.key);
+        continue;
+      }
+      PluginService.registerPlaceholders(record);
+      trustedCount++;
+    }
+    hilog.info(DOMAIN, TAG, 'registered %{public}d/%{public}d plugin packages from db index',
+      trustedCount, records.length);
     // 预热：仅为"在库漫画且导出 getHeaders"的插件包拉引擎（封面需要 Referer/Cookie）
     await PluginService.prewarmLibrary();
   }
@@ -840,8 +940,9 @@ export class PluginService {
     }
   }
 
-  // 先解压/复制到临时目录，全部成功后再原子替换旧插件目录，失败保留旧插件
-  private static async installZip(zipPath: string): Promise<string> {
+  // 先解压/复制到临时目录，全部成功后再原子替换旧插件目录，失败保留旧插件；
+  // 落盘后过信任门禁：受信任直接激活，未受信任返回待确认结果（不执行插件代码）
+  private static async installZip(zipPath: string): Promise<InstallOutcome> {
     const extractDir = `${PluginService.cacheDir}/plugin_extract_${Date.now()}_${util.generateRandomUUID()}`;
     try {
       if (!fs.accessSync(extractDir)) {
@@ -924,11 +1025,30 @@ export class PluginService {
         }
       } catch (e) {
       }
-      // 重装/升级：清除旧启动记忆（含失败 rejected 记忆）后拉起引擎并同步注册表/元数据
+      // 重装/升级：清除旧启动记忆（含失败 rejected 记忆）
       PluginService.startPromises.delete(manifest.key);
-      await PluginService.doStartEngine(manifest.key);
-      hilog.info(DOMAIN, TAG, 'plugin installed: %{public}s', manifest.key);
-      return manifest.key;
+      // 信任门禁（对齐 Mihon TrustExtension）：已信任（同版本且内容指纹一致）直接拉起引擎；
+      // 未信任仅落元数据索引供插件列表展示"未受信任"状态，不注册源、不执行插件代码
+      const contentHash = await PluginService.contentHashOf(manifest.key);
+      if (Settings.isPluginTrusted(manifest.key, manifest.versionCode, contentHash)) {
+        await PluginService.doStartEngine(manifest.key);
+        hilog.info(DOMAIN, TAG, 'plugin installed (trusted): %{public}s', manifest.key);
+        return InstallOutcome.of(manifest.key, manifest.name, true);
+      }
+      await PluginService.persistRecord(manifest, [], PluginService.resolveSpecs(manifest));
+      // 旧版本源可能仍注册在案：磁盘文件已被未受信任的新版本替换，惰性拉起会执行
+      // 新代码，必须下线旧源并卸载运行中引擎（数据保留，信任后重新激活）
+      PluginService.unregisterPackage(manifest.key);
+      const engine = EngineGateway.get();
+      if (engine !== undefined) {
+        try {
+          await engine.unloadExtension(manifest.key);
+        } catch (e) {
+          hilog.warn(DOMAIN, TAG, 'unload replaced extension failed: %{public}s', (e as Error).message);
+        }
+      }
+      hilog.info(DOMAIN, TAG, 'plugin installed (untrusted): %{public}s', manifest.key);
+      return InstallOutcome.of(manifest.key, manifest.name, false);
     } finally {
       try {
         if (stagingDir !== '' && fs.accessSync(stagingDir)) {

@@ -700,12 +700,11 @@ export struct BrowsePage {
             .padding({ left: 0, right: 4 })
             .bindMenu(this.extMenu)
         } else {
-          // 迁移：帮助（打开迁移指南）
+          // 迁移：帮助（应用内帮助文档的「书源迁移」小节）
           AppIcon({ name: 'info', iconSize: 22 })
             .padding({ left: 12, right: 4 })
             .onClick(() => {
-              const context = Util.hostAbilityContext(this.getUIContext());
-              Util.openUrl(context, 'https://mihon.app/docs/guides/source-migration');
+              this.pathStack.pushPathByName('Help', null);
             })
         }
       }

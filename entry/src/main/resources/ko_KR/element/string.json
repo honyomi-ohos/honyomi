@@ -9,28 +9,8 @@
       "value": "읽은 내역의 기록을 일시 정지합니다"
     },
     {
-      "name": "more_support",
-      "value": "저희를 지원해 주세요"
-    },
-    {
       "name": "more_help",
       "value": "도움말"
-    },
-    {
-      "name": "support_perks",
-      "value": "후원해 주시는 분들은 더 많은 혜택이 적용될 예정인 독점 채널에 접속할 수 있습니다."
-    },
-    {
-      "name": "support_patreon",
-      "value": "Patreon (선호됨)"
-    },
-    {
-      "name": "support_supported_by",
-      "value": "Mihon은 현재 %d+의 후원자 분들의 도움을 받고 있습니다. 모든 분들께 감사를 전하고 싶습니다. 함께 Mihon을 더욱 발전시켜 나갑시다."
-    },
-    {
-      "name": "support_contact_msg",
-      "value": "대체 옵션 또는 관련 질문이 있으실 경우, Discord 서버에 방문해 주십시오."
     },
     {
       "name": "data_storage_title",
@@ -1047,6 +1027,14 @@
     {
       "name": "global_search_failed",
       "value": "검색 실패"
+    },
+    {
+      "name": "has_results",
+      "value": "결과가 있는 것만 보기"
+    },
+    {
+      "name": "no_results_found",
+      "value": "검색 결과가 없습니다"
     },
     {
       "name": "ext_search_hint",
@@ -2162,7 +2150,7 @@
     },
     {
       "name": "privacy_policy_contact_body",
-      "value": "Honyomi는 Mihon에서 영감을 받은 오픈 소스 프로젝트입니다. 이 개인정보 처리방침에 대한 문의는 Discord 또는 GitHub로 연락해 주세요."
+      "value": "Honyomi는 Mihon에서 영감을 받은 오픈 소스 프로젝트입니다. 이 개인정보 처리방침에 대한 문의는 GitHub로 연락해 주세요."
     },
     {
       "name": "dl_set_save_cbz",

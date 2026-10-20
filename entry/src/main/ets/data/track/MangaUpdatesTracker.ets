@@ -4,7 +4,7 @@ import { Settings } from '../../common/Settings';
 import { Tracker, TrackHttp } from './Tracker';
 
 const MU_BASE_URL = 'https://api.mangaupdates.com';
-const MU_USER_AGENT = 'Mihon-Harmony/1.0 (HarmonyOS)';
+const MU_USER_AGENT = 'Honyomi/1.0 (HarmonyOS)';
 
 // ---- 原始 JSON 模型 ----
 interface MuContextRaw {

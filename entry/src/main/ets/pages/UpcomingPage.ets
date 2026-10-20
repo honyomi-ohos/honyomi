@@ -12,8 +12,7 @@ import { AppIcon } from './components/AppIcon';
 import { CoverPlaceholder } from './components/CoverPlaceholder';
 import { UpdatesFilterSheet } from './components/UpdatesFilterSheet';
 
-// 即将推出页帮助文档（对齐 Mihon Constants.URL_HELP_UPCOMING）
-const HELP_URL: string = 'https://mihon.app/docs/faq/updates/upcoming';
+// 即将推出页帮助：跳转应用内帮助文档（更新与「即将更新」小节）
 const DAY_MS: number = 24 * 60 * 60 * 1000;
 
 // 列表行模型：日期分组头 / 漫画条目
@@ -308,8 +307,7 @@ export struct UpcomingPage {
           AppIcon({ name: 'help', iconSize: 22, tint: this.pal.text })
             .padding({ left: 12 })
             .onClick(() => {
-              const context = Util.hostAbilityContext(this.getUIContext());
-              Util.openUrl(context, HELP_URL);
+              this.pathStack.pushPathByName('Help', null);
             })
         }
 

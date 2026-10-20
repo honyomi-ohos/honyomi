@@ -22,6 +22,11 @@ export class BtModule {
   // 会话级限速（设置页可调）在启动时一并下发；分享率限制与 Peer 过滤
   // 规则幂等跟随设置（引擎已启动时确保与设置一致，单条失败下次重试）。
   static async ensureStarted(downloadDir: string): Promise<void> {
+    // 服务总开关关闭（BT 设置页手动关闭）→ BT 下载直接拒绝；
+    // 独立于 try 外抛出，避免被归一为 bt_component_required 走安装引导
+    if (!Settings.getBtServiceEnabled()) {
+      throw new Error('bt_service_disabled');
+    }
     try {
       const ns = await import('@honyomi/torrent');
       if (!ns.TorrentManager.isStarted()) {
@@ -42,6 +47,19 @@ export class BtModule {
         });
     } catch (e) {
       throw new Error('bt_component_required');
+    }
+  }
+
+  // 手动停引擎（BT 设置总开关关闭时调用）：shutdown 仅停引擎不销毁
+  // worker，再次 ensureStarted 可原线程重启；组件缺失/未启动时静默
+  static async stopEngine(): Promise<void> {
+    try {
+      const ns = await import('@honyomi/torrent');
+      if (ns.TorrentManager.isStarted()) {
+        await ns.TorrentManager.shutdown();
+      }
+    } catch (e) {
+      // 组件缺失时无引擎可停
     }
   }
 

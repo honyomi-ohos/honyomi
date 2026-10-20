@@ -93,10 +93,6 @@ const ICONS: Record<string, Resource> = {
   'calendar_month': $r('app.media.ic_calendar_month'),
   'format_size': $r('app.media.ic_format_size'),
   'help': $r('app.media.ic_help'),
-  'volunteer_activism': $r('app.media.ic_volunteer_activism'),
-  'patreon': $r('app.media.ic_patreon'),
-  'opencollective': $r('app.media.ic_opencollective'),
-  'discord': $r('app.media.ic_discord'),
   'lock': $r('app.media.ic_lock'),
   'lock_open': $r('app.media.ic_lock_open'),
   'speed': $r('app.media.ic_speed'),
@@ -110,7 +106,8 @@ const ICONS: Record<string, Resource> = {
   'replay_30': $r('app.media.ic_replay_30'),
   'forward_30': $r('app.media.ic_forward_30'),
   'replay_10': $r('app.media.ic_replay_10'),
-  'rocket_launch': $r('app.media.ic_rocket_launch')
+  'rocket_launch': $r('app.media.ic_rocket_launch'),
+  'verified_user': $r('app.media.ic_verified_user')
 };
 
 export class AppIconRes {

@@ -166,6 +166,11 @@
       "pageSourceFile": "src/main/ets/pages/settings/PrivacyPolicyPage.ets"
     },
     {
+      "buildFunction": "HelpBuilder",
+      "name": "Help",
+      "pageSourceFile": "src/main/ets/pages/settings/HelpPage.ets"
+    },
+    {
       "buildFunction": "OnboardingBuilder",
       "name": "Onboarding",
       "pageSourceFile": "src/main/ets/pages/OnboardingPage.ets"

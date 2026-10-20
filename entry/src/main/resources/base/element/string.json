@@ -9,36 +9,8 @@
       "value": "Pauses reading history"
     },
     {
-      "name": "more_support",
-      "value": "Support Us"
-    },
-    {
       "name": "more_help",
       "value": "Help"
-    },
-    {
-      "name": "support_perks",
-      "value": "Patrons get access to exclusive channels, with more perks to come."
-    },
-    {
-      "name": "support_patreon",
-      "value": "Patreon (preferred)"
-    },
-    {
-      "name": "support_opencollective",
-      "value": "OpenCollective"
-    },
-    {
-      "name": "support_supported_by",
-      "value": "Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together."
-    },
-    {
-      "name": "support_contact_msg",
-      "value": "For alternative options or any related questions, join our Discord server."
-    },
-    {
-      "name": "support_discord",
-      "value": "Discord"
     },
     {
       "name": "data_storage_title",
@@ -227,6 +199,14 @@
     {
       "name": "global_search_failed",
       "value": "Search failed"
+    },
+    {
+      "name": "has_results",
+      "value": "Has results"
+    },
+    {
+      "name": "no_results_found",
+      "value": "No results found"
     },
     {
       "name": "ext_search_hint",
@@ -1913,6 +1893,26 @@
       "value": "Uninstall failed"
     },
     {
+      "name": "ext_untrusted_title",
+      "value": "Untrusted extension"
+    },
+    {
+      "name": "ext_untrusted_message",
+      "value": "Malicious extensions can read any stored login credentials or execute arbitrary code.\n\nBy trusting this extension, you accept these risks."
+    },
+    {
+      "name": "ext_trust",
+      "value": "Trust"
+    },
+    {
+      "name": "ext_untrusted_tag",
+      "value": "Untrusted"
+    },
+    {
+      "name": "plugin_trust_done",
+      "value": "Trusted %s"
+    },
+    {
       "name": "settings_title",
       "value": "Settings"
     },
@@ -2130,7 +2130,15 @@
     },
     {
       "name": "privacy_policy_tracking_body",
-      "value": "You can optionally connect tracker accounts such as AniList, MyAnimeList, Bangumi, Kitsu and Shikimori. Login is authorized by you on the tracker's own page, and access tokens are saved only on your device to sync reading progress."
+      "value": "You can optionally connect tracker accounts such as AniList, MyAnimeList, Kitsu, Shikimori, Bangumi, MangaUpdates, MangaBaka and Hikka. Login is authorized by you on the tracker's own page, and access tokens are saved only on your device to sync reading progress."
+    },
+    {
+      "name": "privacy_policy_danmaku_title",
+      "value": "Danmaku (video comments)"
+    },
+    {
+      "name": "privacy_policy_danmaku_body",
+      "value": "Danmaku for video playback is enabled by default and can be turned off at any time in player settings or during playback. While enabled, the title of the work being played is sent to the third-party danmaku service dandanplay (api.dandanplay.net) to match the episode and load its comment pool. No account or device identifiers are sent, and downloaded comments are kept in memory only. The service is governed by its own privacy policy."
     },
     {
       "name": "privacy_policy_permissions_title",
@@ -2146,7 +2154,95 @@
     },
     {
       "name": "privacy_policy_contact_body",
-      "value": "Honyomi is an open-source project inspired by Mihon. If you have questions about this privacy statement, reach us via Discord or GitHub."
+      "value": "Honyomi is an open-source project inspired by Mihon. If you have questions about this privacy statement, reach us via GitHub."
+    },
+    {
+      "name": "help_title",
+      "value": "Help"
+    },
+    {
+      "name": "help_intro",
+      "value": "The Honyomi handbook: from importing content and installing extensions to reading, listening, backups and privacy — everyday features explained, plus troubleshooting tips."
+    },
+    {
+      "name": "help_getting_started_title",
+      "value": "Getting started"
+    },
+    {
+      "name": "help_getting_started_body",
+      "value": "Add local files (CBZ, EPUB and more) via the Local source or by opening a file directly. For online content, add an extension repository in Browse > Extensions, install extensions, then browse and search their sources. Tap Add to library on a work's page to keep it on your shelf, and long-press library items to manage them in bulk. On first use, adjust the theme, start screen and reading preferences in Settings."
+    },
+    {
+      "name": "help_extensions_title",
+      "value": "Extensions and plugins"
+    },
+    {
+      "name": "help_extensions_body",
+      "value": "Online sources are provided by extension plugins, managed in Browse > Extensions: add repositories, then install, update or remove extensions. Pull down the list to check for plugin updates. Only add repositories you trust — once a repository goes offline, its extensions can no longer be updated or reinstalled."
+    },
+    {
+      "name": "help_reader_title",
+      "value": "Reading and listening"
+    },
+    {
+      "name": "help_reader_body",
+      "value": "The reader offers paged, vertical and webtoon modes with adjustable direction, background and brightness, remembered per work. Novels can be read aloud with adjustable speed, a sleep timer and background playback; videos play online with danmaku support. Reading progress is recorded automatically."
+    },
+    {
+      "name": "help_downloads_title",
+      "value": "Download management"
+    },
+    {
+      "name": "help_downloads_body",
+      "value": "Queue chapters from a work's page or chapter list to read offline. Review progress, pause or remove tasks in More > Download manager; Settings > Downloads offers Wi-Fi-only downloads, auto-download of new chapters and automatic deletion of read chapters."
+    },
+    {
+      "name": "help_tracking_title",
+      "value": "Trackers and sync"
+    },
+    {
+      "name": "help_tracking_body",
+      "value": "Connect AniList, MyAnimeList, Bangumi, Kitsu or Shikimori from the Tracking section of a work's page. Your status and reading progress sync automatically once linked; tokens are stored only on your device and you can unlink at any time."
+    },
+    {
+      "name": "help_migration_title",
+      "value": "Migrating sources"
+    },
+    {
+      "name": "help_migration_body",
+      "value": "When a work moves to a different source of the same type, open it and choose Migrate from the menu. Honyomi matches the target source by title or author and carries over your reading progress and downloads, so you can seamlessly continue from the new source."
+    },
+    {
+      "name": "help_updates_title",
+      "value": "Updates and upcoming"
+    },
+    {
+      "name": "help_updates_body",
+      "value": "The Updates tab checks your library for new chapters — pull down to refresh, and works with new chapters are surfaced first. The Upcoming page estimates each work's next update time from its historical release rhythm; estimates are indicative only."
+    },
+    {
+      "name": "help_storage_title",
+      "value": "Data and storage"
+    },
+    {
+      "name": "help_storage_body",
+      "value": "Your library, progress and settings are stored only on your device and never uploaded. Use More > Data and storage to back up and restore, review storage usage, clear the chapter cache, and schedule automatic backups. Manually back up before switching devices or reinstalling."
+    },
+    {
+      "name": "help_security_title",
+      "value": "Privacy and security"
+    },
+    {
+      "name": "help_security_body",
+      "value": "Honyomi is local-first and collects no personal data. Settings > Privacy offers a biometric app lock, notification-content hiding and screenshot blocking; incognito mode on the More page pauses reading history. NSFW sources stay hidden until enabled in Settings > Browse."
+    },
+    {
+      "name": "help_troubleshooting_title",
+      "value": "Troubleshooting"
+    },
+    {
+      "name": "help_troubleshooting_body",
+      "value": "If pages fail to load, check your network or switch the DNS-over-HTTPS provider under Settings > Advanced, and complete the site's verification prompt when it appears. If a source misbehaves, pull to refresh the extension list to check for plugin updates, or reinstall the extension. For stubborn issues, back up in Data and storage first, then clear the chapter cache."
     },
     {
       "name": "browse_set_title",
@@ -3007,6 +3103,18 @@
     {
       "name": "bt_set_group",
       "value": "BitTorrent"
+    },
+    {
+      "name": "bt_set_service",
+      "value": "BT service"
+    },
+    {
+      "name": "bt_set_service_sub",
+      "value": "Turn off to stop the BT engine; BT downloads are unavailable while off"
+    },
+    {
+      "name": "bt_service_disabled",
+      "value": "BT service is off. Enable it in Settings - BitTorrent"
     },
     {
       "name": "bt_set_engine",

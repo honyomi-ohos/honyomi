@@ -9,28 +9,8 @@
       "value": "Dừng lưu giữ lịch sử đọc"
     },
     {
-      "name": "more_support",
-      "value": "Hỗ trợ chúng tôi"
-    },
-    {
       "name": "more_help",
       "value": "Trợ giúp"
-    },
-    {
-      "name": "support_perks",
-      "value": "Người hỗ trợ có quyền truy cập vào các kênh độc quyền và nhận được nhiều đặc quyền hơn."
-    },
-    {
-      "name": "support_patreon",
-      "value": "Patreon (ưu tiên)"
-    },
-    {
-      "name": "support_supported_by",
-      "value": "Mihon hiện được hỗ trợ bởi %d+ người hỗ trợ. Chúng tôi muốn cảm ơn tất cả các bạn. Hãy cùng nhau làm cho Mihon trở nên tốt hơn nữa."
-    },
-    {
-      "name": "support_contact_msg",
-      "value": "Để biết các lựa chọn thay thế hoặc bất kỳ câu hỏi liên quan nào, hãy tham gia máy chủ Discord của chúng tôi."
     },
     {
       "name": "data_storage_title",
@@ -1031,6 +1011,14 @@
     {
       "name": "global_search_failed",
       "value": "Tìm kiếm thất bại"
+    },
+    {
+      "name": "has_results",
+      "value": "Có kết quả"
+    },
+    {
+      "name": "no_results_found",
+      "value": "Không tìm thấy kết quả nào"
     },
     {
       "name": "ext_search_hint",
@@ -2138,7 +2126,7 @@
     },
     {
       "name": "privacy_policy_contact_body",
-      "value": "Honyomi là dự án mã nguồn mở lấy cảm hứng từ Mihon. Nếu bạn có câu hỏi về tuyên bố quyền riêng tư này, hãy liên hệ qua Discord hoặc GitHub."
+      "value": "Honyomi là dự án mã nguồn mở lấy cảm hứng từ Mihon. Nếu bạn có câu hỏi về tuyên bố quyền riêng tư này, hãy liên hệ qua GitHub."
     },
     {
       "name": "dl_set_save_cbz",

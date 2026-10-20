@@ -5,7 +5,7 @@ import { HistoryItem } from '../model/Models';
 import { AppKeys } from '../common/AppKeys';
 import EntryAbility from './EntryAbility';
 
-// 自定义意图：继续阅读（"用 Mihon 继续看漫画"）。
+// 自定义意图：继续阅读（"用 Honyomi 继续看漫画"）。
 // 取最近一条阅读记录 → 第一个未读章节（全部已读则重读最近章节）→ 经 cardAction 通道由 Index 拉起阅读器。
 @InsightIntentEntry({
   intentName: 'ContinueReading',
@@ -13,7 +13,7 @@ import EntryAbility from './EntryAbility';
   intentVersion: '1.0.1',
   displayName: '继续阅读',
   icon: $r('app.media.ic_play_arrow'),
-  llmDescription: '继续阅读上次看的作品（漫画/小说/视频）。当用户表达"继续看/继续读/接着看上次的作品"等需求时使用，例如："用Mihon继续看漫画"、"继续阅读上次的作品"。应用需已有阅读历史才能继续。',
+  llmDescription: '继续阅读上次看的作品（漫画/小说/视频）。当用户表达"继续看/继续读/接着看上次的作品"等需求时使用，例如："用Honyomi继续看漫画"、"继续阅读上次的作品"。应用需已有阅读历史才能继续。',
   keywords: ['继续阅读', '续读', '接着看'],
   abilityName: 'EntryAbility',
   executeMode: [insightIntent.ExecuteMode.UI_ABILITY_FOREGROUND]

@@ -10,7 +10,7 @@ const BGM_LOGIN_URL = 'https://bgm.tv/oauth/authorize';
 const BGM_CLIENT_ID = 'bgm291665acbd06a4c28';
 const BGM_CLIENT_SECRET = '43e5ce36b207de16e5d3cfd3e79118db';
 const BGM_REDIRECT_URL = 'mihon://bangumi-auth';
-const BGM_USER_AGENT = 'mihon-harmony/1.0 (HarmonyOS) (https://github.com/mihonapp/mihon)';
+const BGM_USER_AGENT = 'Honyomi/1.0 (HarmonyOS)';
 const BGM_SUBJECT_URL_PREFIX = 'https://bangumi.tv/subject/';
 
 // ---- 原始 JSON 模型 ----

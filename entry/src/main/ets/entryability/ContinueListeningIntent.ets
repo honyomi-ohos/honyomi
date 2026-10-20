@@ -6,7 +6,7 @@ import { AppKeys } from '../common/AppKeys';
 import { TtsPlaybackService } from '../common/TtsPlaybackService';
 import EntryAbility from './EntryAbility';
 
-// 自定义意图：继续听书（"用 Mihon 继续听书"）。
+// 自定义意图：继续听书（"用 Honyomi 继续听书"）。
 // 听书服务存活：暂停则续播并打开播放器页；
 // 未存活（应用被杀/首次）：取最近一部小说的历史记录从头朗读本章。
 @InsightIntentEntry({
@@ -15,7 +15,7 @@ import EntryAbility from './EntryAbility';
   intentVersion: '1.0.1',
   displayName: '继续听书',
   icon: $r('app.media.ic_playlist_play'),
-  llmDescription: '继续收听有声书（小说朗读）。当用户表达"继续听书/接着听小说"等需求时使用，例如："用Mihon继续听书"、"接着听上次听的小说"。听书服务正在运行时直接续播；未在播放时从最近听读的小说继续朗读。',
+  llmDescription: '继续收听有声书（小说朗读）。当用户表达"继续听书/接着听小说"等需求时使用，例如："用Honyomi继续听书"、"接着听上次听的小说"。听书服务正在运行时直接续播；未在播放时从最近听读的小说继续朗读。',
   keywords: ['继续听书', '听小说', '续听'],
   abilityName: 'EntryAbility',
   executeMode: [insightIntent.ExecuteMode.UI_ABILITY_FOREGROUND]

@@ -5,6 +5,7 @@ import { PageHeader } from '../components/PageHeader';
 
 // 隐私说明小节：标题 + 正文（均走资源本地化）
 interface PrivacySection {
+  id: string;
   title: ResourceStr;
   body: ResourceStr;
 }
@@ -15,11 +16,12 @@ export struct PrivacyPolicyPage {
 
   private sections(): PrivacySection[] {
     const sections: PrivacySection[] = [
-      { title: $r('app.string.privacy_policy_local_title'), body: $r('app.string.privacy_policy_local_body') },
-      { title: $r('app.string.privacy_policy_network_title'), body: $r('app.string.privacy_policy_network_body') },
-      { title: $r('app.string.privacy_policy_tracking_title'), body: $r('app.string.privacy_policy_tracking_body') },
-      { title: $r('app.string.privacy_policy_permissions_title'), body: $r('app.string.privacy_policy_permissions_body') },
-      { title: $r('app.string.privacy_policy_contact_title'), body: $r('app.string.privacy_policy_contact_body') }
+      { id: 'local', title: $r('app.string.privacy_policy_local_title'), body: $r('app.string.privacy_policy_local_body') },
+      { id: 'network', title: $r('app.string.privacy_policy_network_title'), body: $r('app.string.privacy_policy_network_body') },
+      { id: 'tracking', title: $r('app.string.privacy_policy_tracking_title'), body: $r('app.string.privacy_policy_tracking_body') },
+      { id: 'danmaku', title: $r('app.string.privacy_policy_danmaku_title'), body: $r('app.string.privacy_policy_danmaku_body') },
+      { id: 'permissions', title: $r('app.string.privacy_policy_permissions_title'), body: $r('app.string.privacy_policy_permissions_body') },
+      { id: 'contact', title: $r('app.string.privacy_policy_contact_title'), body: $r('app.string.privacy_policy_contact_body') }
     ];
     return sections;
   }
@@ -58,7 +60,7 @@ export struct PrivacyPolicyPage {
               .backgroundColor(this.pal.card)
               .borderRadius(16)
               .constraintSize({ maxWidth: 720 })
-            }, (section: PrivacySection) => `${section.title}`)
+            }, (section: PrivacySection) => section.id)
           }
           .width('100%')
           .padding({ left: 16, right: 16, top: 4, bottom: 24 })

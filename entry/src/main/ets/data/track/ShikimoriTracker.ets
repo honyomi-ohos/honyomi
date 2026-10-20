@@ -11,7 +11,7 @@ const SM_LOGIN_URL = `${SM_BASE_URL}/oauth/authorize`;
 const SM_CLIENT_ID = 'PB9dq8DzI405s7wdtwTdirYqHiyVMh--djnP7lBUqSA';
 const SM_CLIENT_SECRET = 'NajpZcOBKB9sJtgNcejf8OB9jBN1OYYoo-k4h2WWZus';
 const SM_REDIRECT_URL = 'mihon://shikimori-auth';
-const SM_USER_AGENT = 'Mihon-Harmony/1.0 (HarmonyOS)';
+const SM_USER_AGENT = 'Honyomi/1.0 (HarmonyOS)';
 
 // ---- 原始 JSON 模型 ----
 interface SmPosterRaw {

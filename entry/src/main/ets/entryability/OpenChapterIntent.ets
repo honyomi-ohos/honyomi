@@ -6,7 +6,7 @@ import { AppKeys } from '../common/AppKeys';
 import { TitleMatch } from '../common/TitleMatch';
 import EntryAbility from './EntryAbility';
 
-// 自定义意图：打开指定章节（"用 Mihon 打开海贼王第10话"）。
+// 自定义意图：打开指定章节（"用 Honyomi 打开海贼王第10话"）。
 // 书架内标题匹配定位作品 → 章节号/章节名匹配定位章节 → 直达对应类型阅读器；
 // 作品未命中降级全局搜索，章节未命中打开作品详情页。
 @InsightIntentEntry({
@@ -15,7 +15,7 @@ import EntryAbility from './EntryAbility';
   intentVersion: '1.0.1',
   displayName: '打开指定章节',
   icon: $r('app.media.ic_playlist_play'),
-  llmDescription: '打开书架（收藏）中某部作品的指定章节开始阅读。当用户想直接跳到某一话/某一章时使用，例如："用Mihon打开海贼王第10话"、"看火影忍者的最终话"。作品需已在书架中，章节支持章节号（如"第10话"）或章节名。',
+  llmDescription: '打开书架（收藏）中某部作品的指定章节开始阅读。当用户想直接跳到某一话/某一章时使用，例如："用Honyomi打开海贼王第10话"、"看火影忍者的最终话"。作品需已在书架中，章节支持章节号（如"第10话"）或章节名。',
   keywords: ['打开章节', '看某一话', '跳到章节'],
   abilityName: 'EntryAbility',
   executeMode: [insightIntent.ExecuteMode.UI_ABILITY_FOREGROUND],

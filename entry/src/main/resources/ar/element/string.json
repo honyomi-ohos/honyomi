@@ -9,36 +9,8 @@
       "value": "إيقاف سجل القراءة"
     },
     {
-      "name": "more_support",
-      "value": "إدعمنا"
-    },
-    {
       "name": "more_help",
       "value": "المساعدة"
-    },
-    {
-      "name": "support_perks",
-      "value": "يحصل الداعمون على إمكانية الوصول إلى قنوات حصرية، مع المزيد من الامتيازات القادمة."
-    },
-    {
-      "name": "support_patreon",
-      "value": "داعم على باتريون (مستحسنة)"
-    },
-    {
-      "name": "support_opencollective",
-      "value": "منصة « OpenCollective»"
-    },
-    {
-      "name": "support_supported_by",
-      "value": "ميهون مدعوم حاليًا بواسطة %d+ داعم. نشكركم جميعًا لدعمكم . معًا لجعل ميهون مكانًا أفضل."
-    },
-    {
-      "name": "support_contact_msg",
-      "value": "للحصول على خيارات بديلة أو أي أسئلة ذات صلة، انضم إلى خادم ديسكورد الخاص بنا."
-    },
-    {
-      "name": "support_discord",
-      "value": "ديسكورد"
     },
     {
       "name": "data_storage_title",
@@ -1051,6 +1023,14 @@
     {
       "name": "global_search_failed",
       "value": "فشل البحث"
+    },
+    {
+      "name": "has_results",
+      "value": "وُجدت نتائج"
+    },
+    {
+      "name": "no_results_found",
+      "value": "لم يُعثر على أيِّ نتائج"
     },
     {
       "name": "ext_search_hint",
@@ -2166,7 +2146,7 @@
     },
     {
       "name": "privacy_policy_contact_body",
-      "value": "Honyomi مشروع مفتوح المصدر مستوحى من Mihon. إذا كانت لديك أسئلة عن بيان الخصوصية هذا، تواصل معنا عبر Discord أو GitHub."
+      "value": "Honyomi مشروع مفتوح المصدر مستوحى من Mihon. إذا كانت لديك أسئلة عن بيان الخصوصية هذا، تواصل معنا عبر GitHub."
     },
     {
       "name": "dl_set_save_cbz",

@@ -53,7 +53,7 @@ export class VideoCacheServer {
     }
     VideoCacheServer.setUrlHeaders(url, headers);
     const proxyUrl: string = await VideoCacheServer.server.getProxyUrl(url);
-    hilog.info(0xDEAD, 'VideoCache', 'getProxyUrl origin=%{public}s -> %{public}s', url, proxyUrl);
+    hilog.info(0xDEAD, 'VideoCache', 'getProxyUrl origin=%s -> %{public}s', url, proxyUrl);
     return proxyUrl;
   }
 

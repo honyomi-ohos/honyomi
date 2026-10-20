@@ -9,28 +9,8 @@
       "value": "暫停閱讀記錄"
     },
     {
-      "name": "more_support",
-      "value": "支持我們"
-    },
-    {
       "name": "more_help",
       "value": "說明"
-    },
-    {
-      "name": "support_perks",
-      "value": "贊助者可使用專屬頻道，未來也會提供更多福利。"
-    },
-    {
-      "name": "support_patreon",
-      "value": "Patreon（建議優先使用）"
-    },
-    {
-      "name": "support_supported_by",
-      "value": "Mihon 目前由 %d 位以上的贊助者支持。感謝每一位的支持，讓我們一起讓 Mihon 變得更好。"
-    },
-    {
-      "name": "support_contact_msg",
-      "value": "如需其他贊助方式或有相關問題，請加入我們的 Discord 伺服器。"
     },
     {
       "name": "data_storage_title",
@@ -1458,7 +1438,15 @@
     },
     {
       "name": "privacy_policy_tracking_body",
-      "value": "你可以選擇連結 AniList、MyAnimeList、Bangumi、Kitsu、Shikimori 等追蹤服務。登入在對應服務頁面由你本人授權，權杖僅保存在本機，用於同步閱讀進度。"
+      "value": "你可以選擇連結 AniList、MyAnimeList、Kitsu、Shikimori、Bangumi、MangaUpdates、MangaBaka、Hikka 等追蹤服務。登入在對應服務頁面由你本人授權，權杖僅保存在本機，用於同步閱讀進度。"
+    },
+    {
+      "name": "privacy_policy_danmaku_title",
+      "value": "彈幕（影片評論）"
+    },
+    {
+      "name": "privacy_policy_danmaku_body",
+      "value": "影片播放的彈幕功能預設開啟，可隨時在播放器設定或播放頁關閉。開啟狀態下，會將正在播放的作品標題傳送至第三方彈幕服務 dandanplay（api.dandanplay.net）用於匹配劇集並載入彈幕；不會傳送任何帳號或裝置識別資訊，彈幕資料僅在記憶體中暫存。該服務受其自身隱私政策約束。"
     },
     {
       "name": "privacy_policy_permissions_title",
@@ -1474,7 +1462,95 @@
     },
     {
       "name": "privacy_policy_contact_body",
-      "value": "Honyomi 是一款受 Mihon 啟發的開源專案。如對隱私說明有疑問，可透過 Discord 或 GitHub 與我們聯絡。"
+      "value": "Honyomi 是一款受 Mihon 啟發的開源專案。如對隱私說明有疑問，可透過 GitHub 與我們聯絡。"
+    },
+    {
+      "name": "help_title",
+      "value": "說明"
+    },
+    {
+      "name": "help_intro",
+      "value": "Honyomi 使用手冊：從匯入內容、安裝擴充套件，到閱讀聽書、同步備份與隱私安全，這裡彙整了常用功能說明與問題排查思路。"
+    },
+    {
+      "name": "help_getting_started_title",
+      "value": "入門指南"
+    },
+    {
+      "name": "help_getting_started_body",
+      "value": "透過「本機」源或直接開啟檔案可匯入 CBZ、EPUB 等本機內容。線上內容請在「瀏覽 → 擴充套件」新增外掛倉庫並安裝擴充套件，即可瀏覽與搜尋其書源。在作品詳情頁點「加入書櫃」即可收藏，長按書櫃作品可批次管理。首次使用建議在「設定」中調整主題、啟動頁與閱讀偏好。"
+    },
+    {
+      "name": "help_extensions_title",
+      "value": "擴充套件與外掛"
+    },
+    {
+      "name": "help_extensions_body",
+      "value": "線上書源由擴充套件外掛提供，在「瀏覽 → 擴充套件」統一管理：新增倉庫後即可安裝、更新或解除安裝擴充套件；列表下拉可檢查外掛更新。請只新增你信任的倉庫——倉庫下線後，其擴充套件將無法繼續更新或重裝。"
+    },
+    {
+      "name": "help_reader_title",
+      "value": "閱讀與聽書"
+    },
+    {
+      "name": "help_reader_body",
+      "value": "閱讀器提供由左至右、由右至左、直排與條漫等多種模式，可調整背景與亮度，並按作品分別記憶。小說支援語音聽書，可調整語速、設定睡眠定時，朗讀可於背景持續播放；動畫可線上播放並支援彈幕。閱讀進度自動記錄，無需手動儲存。"
+    },
+    {
+      "name": "help_downloads_title",
+      "value": "下載管理"
+    },
+    {
+      "name": "help_downloads_body",
+      "value": "在作品詳情頁或章節列表可將章節加入下載，離線隨時閱讀。下載任務可在「更多 → 下載管理」查看進度、暫停或刪除；「設定 → 下載」提供僅 Wi-Fi 下載、新章節自動下載、讀完自動刪除等選項。"
+    },
+    {
+      "name": "help_tracking_title",
+      "value": "追蹤與同步"
+    },
+    {
+      "name": "help_tracking_body",
+      "value": "在作品詳情頁的「追蹤」可連接 AniList、MyAnimeList、Bangumi、Kitsu、Shikimori 等服務，關聯後狀態與閱讀進度會自動同步；令牌僅儲存在本機，可隨時取消關聯。"
+    },
+    {
+      "name": "help_migration_title",
+      "value": "書源遷移"
+    },
+    {
+      "name": "help_migration_body",
+      "value": "更換同一作品的其他來源時，在詳情頁選單選擇「遷移」，按標題或作者比對目標來源後，閱讀進度與已下載內容會一併保留。原來源停更或失效時，遷移可讓你無縫切換到新來源繼續追更。"
+    },
+    {
+      "name": "help_updates_title",
+      "value": "更新與「即將更新」"
+    },
+    {
+      "name": "help_updates_body",
+      "value": "「更新」頁集中檢查書櫃內作品的新章節，下拉即可手動重新整理，有新章節的作品會優先顯示。「即將更新」依作品的歷史發布節奏預估下次更新時間，僅供參考。"
+    },
+    {
+      "name": "help_storage_title",
+      "value": "資料與儲存"
+    },
+    {
+      "name": "help_storage_body",
+      "value": "書櫃、進度與設定僅儲存在本機，不上傳任何伺服器。可在「更多 → 資料與儲存」備份與還原、查看儲存用量、清理章節快取，並可設定自動備份週期。更換裝置或重裝應用前，建議先手動完成一次備份。"
+    },
+    {
+      "name": "help_security_title",
+      "value": "隱私與安全"
+    },
+    {
+      "name": "help_security_body",
+      "value": "應用本機優先、不蒐集個人資料。「設定 → 隱私」提供應用鎖（生物辨識解鎖）、隱藏通知內容與阻止截屏錄影；「更多」頁的無痕模式可暫停記錄閱讀歷史。成人內容源（NSFW）預設隱藏，可在「設定 → 瀏覽」中開啟。"
+    },
+    {
+      "name": "help_troubleshooting_title",
+      "value": "疑難排解"
+    },
+    {
+      "name": "help_troubleshooting_body",
+      "value": "頁面載入失敗時請先檢查網路，或在「設定 → 進階」切換 DNS-over-HTTPS 供應商；出現站點人機驗證時依提示完成即可。書源異常時可下拉重整擴充套件列表檢查外掛更新，或重新安裝對應擴充套件。問題仍未解決時，建議先在「資料與儲存」備份，再清理章節快取嘗試恢復。"
     },
     {
       "name": "browse_set_title",
@@ -1663,6 +1739,14 @@
     {
       "name": "global_search_failed",
       "value": "搜尋失敗"
+    },
+    {
+      "name": "has_results",
+      "value": "有結果"
+    },
+    {
+      "name": "no_results_found",
+      "value": "找不到結果"
     },
     {
       "name": "ext_search_hint",
@@ -2567,6 +2651,18 @@
     {
       "name": "bt_set_group",
       "value": "BitTorrent"
+    },
+    {
+      "name": "bt_set_service",
+      "value": "BT 服務"
+    },
+    {
+      "name": "bt_set_service_sub",
+      "value": "關閉後停止 BT 引擎，BT 下載將不可用"
+    },
+    {
+      "name": "bt_service_disabled",
+      "value": "BT 服務已關閉，請在 設定 → BitTorrent 中開啟"
     },
     {
       "name": "bt_set_engine",

@@ -10,7 +10,6 @@ import { PrefGroup, PrefSelectRow, PrefSwitchRow, TextRow } from '../components/
 import { ExportColumnsDialog } from '../components/Dialogs';
 import { AppIcon } from '../components/AppIcon';
 
-const HELP_URL: string = 'https://mihon.app/docs/faq/storage';
 // 备份频率选项（小时）：关闭 / 6 / 12 / 24 / 48 / 每周（对齐 Mihon backupInterval）
 const INTERVAL_HOURS: number[] = [0, 6, 12, 24, 48, 168];
 
@@ -341,6 +340,7 @@ export struct DataStorageContent {
 @Component
 export struct DataStoragePage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  pathStack: NavPathStack = new NavPathStack();
 
   build() {
     NavDestination() {
@@ -349,8 +349,7 @@ export struct DataStoragePage {
           AppIcon({ name: 'help', iconSize: 22 })
             .padding(8)
             .onClick(() => {
-              const context = Util.hostAbilityContext(this.getUIContext());
-              Util.openUrl(context, HELP_URL);
+              this.pathStack.pushPathByName('Help', null);
             })
         }
 
@@ -363,6 +362,9 @@ export struct DataStoragePage {
     }
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)
+    .onReady((ctx: NavDestinationContext) => {
+      this.pathStack = ctx.pathStack;
+    })
   }
 }
 

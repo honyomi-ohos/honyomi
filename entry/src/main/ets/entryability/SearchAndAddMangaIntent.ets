@@ -17,7 +17,7 @@ export class SearchAndAddResultDef {
 }
 
 // 自定义意图：搜索作品并加入书架（由小艺解析用户自然语言触发）。
-// 触发语料须包含应用名，如"用 Mihon 搜索海贼王并加入书架"。
+// 触发语料须包含应用名，如"用 Honyomi 搜索海贼王并加入书架"。
 // 执行流程：指定/全部书源并发搜索 → 标题相似度评分选最佳 → 入库并加入书架 → 跳详情页；
 // 未找到高置信匹配时降级为全局搜索页（携带搜索词，由用户手动挑选）。
 @InsightIntentEntry({
@@ -26,7 +26,7 @@ export class SearchAndAddResultDef {
   intentVersion: '1.0.1',
   displayName: '搜索作品并加入书架',
   icon: $r('app.media.ic_bookmark'),
-  llmDescription: '按作品名称在漫画阅读应用的书源（插件）中搜索漫画/小说，将标题最匹配的作品自动加入书架（收藏），并打开该作品的详情页。当用户明确表达"搜索某作品并加入书架/收藏"的需求时使用，例如："用Mihon搜索海贼王并加入书架"、"帮我在Mihon里收藏航海王"。若用户只是想打开应用页面或浏览内容，不应调用此意图。可选择性指定书源（插件）名称以缩小搜索范围。',
+  llmDescription: '按作品名称在漫画阅读应用的书源（插件）中搜索漫画/小说，将标题最匹配的作品自动加入书架（收藏），并打开该作品的详情页。当用户明确表达"搜索某作品并加入书架/收藏"的需求时使用，例如："用Honyomi搜索海贼王并加入书架"、"帮我在Honyomi里收藏航海王"。若用户只是想打开应用页面或浏览内容，不应调用此意图。可选择性指定书源（插件）名称以缩小搜索范围。',
   keywords: ['搜索漫画', '加入书架', '收藏漫画', '搜书'],
   abilityName: 'EntryAbility',
   executeMode: [insightIntent.ExecuteMode.UI_ABILITY_FOREGROUND],

@@ -11,7 +11,7 @@ import { OnboardingParams } from '../model/RouteParams';
 import { AppIcon } from './components/AppIcon';
 import { ThemePicker } from './components/ThemePicker';
 
-const GETTING_STARTED_URL: string = 'https://mihon.app/docs/guides/getting-started';
+// 入门指南：应用内帮助文档（不再外链 mihon.app）
 const APP_NAME: string = 'Honyomi';
 
 // 步骤 1：主题（复用外观设置的主题模式/主题/AMOLED 逻辑）
@@ -330,8 +330,7 @@ export struct OnboardingPage {
   }
 
   private openGuide(): void {
-    const context = Util.hostAbilityContext(this.getUIContext());
-    Util.openUrl(context, GETTING_STARTED_URL);
+    this.pathStack.pushPathByName('Help', null);
   }
 
   // 还原备份（复用 BackupService；成功后视同完成引导，对齐 Mihon onRestoreBackup 行为）

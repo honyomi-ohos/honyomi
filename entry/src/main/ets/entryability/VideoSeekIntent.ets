@@ -8,7 +8,7 @@ interface VideoSeekPayload {
   ts: number; // 时间戳：同一指令重复下发也保证被消费
 }
 
-// 自定义意图：视频快进/跳转时间（"用 Mihon 快进30秒"、"跳到第10分钟"）。
+// 自定义意图：视频快进/跳转时间（"用 Honyomi 快进30秒"、"跳到第10分钟"）。
 // 视频播放页在前台时由其监听 videoSeek 键执行 seek；无视频页打开时指令静默忽略。
 @InsightIntentEntry({
   intentName: 'VideoSeek',

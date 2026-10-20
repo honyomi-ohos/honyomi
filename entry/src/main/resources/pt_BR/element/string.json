@@ -9,28 +9,8 @@
       "value": "Pausa o histórico de leitura"
     },
     {
-      "name": "more_support",
-      "value": "Apoie-nos"
-    },
-    {
       "name": "more_help",
       "value": "Ajuda"
-    },
-    {
-      "name": "support_perks",
-      "value": "Patrons tem acesso a canais exclusivos, com mais recursos por vir."
-    },
-    {
-      "name": "support_patreon",
-      "value": "Patreon (preferido)"
-    },
-    {
-      "name": "support_supported_by",
-      "value": "Mihon atualmente conta com o apoio de %d+ patrons. Nós queremos agradecer cada um de vocês. Vamos fazer Mihon ainda melhor juntos."
-    },
-    {
-      "name": "support_contact_msg",
-      "value": "Para opções alternativas ou qualquer perguntas relacionadas, se junte ao nosso servidor no Discord."
     },
     {
       "name": "data_storage_title",
@@ -983,6 +963,14 @@
     {
       "name": "global_search_failed",
       "value": "Falha na pesquisa"
+    },
+    {
+      "name": "has_results",
+      "value": "Há resultados"
+    },
+    {
+      "name": "no_results_found",
+      "value": "Nenhum resultado encontrado"
     },
     {
       "name": "ext_search_hint",
@@ -2074,7 +2062,7 @@
     },
     {
       "name": "privacy_policy_contact_body",
-      "value": "O Honyomi é um projeto de código aberto inspirado no Mihon. Se você tiver dúvidas sobre esta declaração de privacidade, fale conosco pelo Discord ou pelo GitHub."
+      "value": "O Honyomi é um projeto de código aberto inspirado no Mihon. Se você tiver dúvidas sobre esta declaração de privacidade, fale conosco pelo GitHub."
     },
     {
       "name": "dl_set_save_cbz",
