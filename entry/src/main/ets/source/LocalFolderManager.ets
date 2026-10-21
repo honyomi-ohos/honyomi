@@ -65,7 +65,7 @@ export class LocalFolderManager {
   // 无文件夹选择入口，MIXED 覆盖面更广；文件由下方目录校验兜底拒绝。
   static async chooseFolder(context: common.UIAbilityContext): Promise<boolean> {
     const options = new picker.DocumentSelectOptions();
-    options.selectMode = picker.DocumentSelectMode.MIXED;
+    options.selectMode = picker.DocumentSelectMode.FOLDER;
     options.maxSelectNumber = 1;
     // 必须传入 UIAbilityContext 构造：无参构造为不推荐用法，概率性拉起异常
     const docPicker = new picker.DocumentViewPicker(context);

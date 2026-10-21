@@ -253,8 +253,7 @@ export class NativeHttpBridge {
   }
 
   // 手动重定向链：https 起始的请求禁止降级到 http；
-  // 跨源跳转剥离插件自定义的敏感头（Authorization/Referer/Cookie），
-
+  // 跨源跳转剥离插件自定义的敏感头（Authorization/Referer/Cookie）。
   // decoded as text on this path.
   private static async executeShared(req: JsvmBridgeRequest): Promise<JsvmSharedResult> {
     const url = req.url;
@@ -311,11 +310,13 @@ export class NativeHttpBridge {
     wantBytes: boolean
   ): Promise<NativeHttpFollowed> {
     let url = startUrl;
-    let method = NativeHttpBridge.methodOf(methodName);
+    // RequestMethod 没有 PROPFIND：与 Http.ets 的 PATCH 一样走 customMethod（优先于 method）。
+    let customMethod = NativeHttpBridge.customMethodOf(methodName);
+    let method = customMethod !== '' ? http.RequestMethod.POST : NativeHttpBridge.methodOf(methodName);
     let extra = body;
     const httpsStart = startUrl.indexOf('https://') === 0;
     for (let hop = 0; hop < 8; hop++) {
-      const resp = await NativeHttpBridge.requestOnce(url, method, headers, extra, wantBytes);
+      const resp = await NativeHttpBridge.requestOnce(url, method, headers, extra, wantBytes, customMethod);
       CookieJar.storeFromResponse(url, resp.header);
       if (!NativeHttpBridge.isRedirect(resp.responseCode)) {
         const followed: NativeHttpFollowed = { url: url, resp: resp };
@@ -335,9 +336,12 @@ export class NativeHttpBridge {
       if (NativeHttpBridge.originOf(next) !== NativeHttpBridge.originOf(url)) {
         headers = NativeHttpBridge.stripSensitiveHeaders(headers);
       }
+      // 303 或（301/302 且真实 POST）转 GET 并丢弃请求体；customMethod（PROPFIND）仅在 303 时转换
       if (resp.responseCode === 303 ||
-        ((resp.responseCode === 301 || resp.responseCode === 302) && method === http.RequestMethod.POST)) {
+        ((resp.responseCode === 301 || resp.responseCode === 302) &&
+          method === http.RequestMethod.POST && customMethod === '')) {
         method = http.RequestMethod.GET;
+        customMethod = '';
         extra = '';
       }
       url = next;
@@ -364,7 +368,8 @@ export class NativeHttpBridge {
     method: http.RequestMethod,
     headers: Record<string, string>,
     body: string,
-    wantBytes: boolean
+    wantBytes: boolean,
+    customMethod: string = ''
   ): Promise<http.HttpResponse> {
     // DoH 开启时先注入 host 解析规则（失败内部静默回落系统 DNS）
     await Doh.prepare(url);
@@ -378,6 +383,9 @@ export class NativeHttpBridge {
         readTimeout: wantBytes ? 60000 : 20000,
         usingProtocol: http.HttpProtocol.HTTP1_1,
       };
+      if (customMethod !== '') {
+        options.customMethod = customMethod;
+      }
       if (body !== '' && method !== http.RequestMethod.GET && method !== http.RequestMethod.HEAD) {
         options.extraData = body;
       }
@@ -408,6 +416,14 @@ export class NativeHttpBridge {
   // extension header overrides, then CookieJar auto-attach. Form POSTs get a
   // default Content-Type when the extension omitted one (Madara ajax).
   // 域名已有 cf_clearance 会话时忽略插件自定义 UA：cf_clearance 与验证
+
+  // 系统枚举没有的 WebDAV 方法。只放行列目录需要的 PROPFIND。
+  private static customMethodOf(name: string): string {
+    if (name.toUpperCase() === 'PROPFIND') {
+      return 'PROPFIND';
+    }
+    return '';
+  }
 
   private static methodOf(name: string): http.RequestMethod {
     const upper = name.toUpperCase();
@@ -541,6 +557,9 @@ export class NativeHttpBridge {
     }
     if (code === 204) {
       return 'No Content';
+    }
+    if (code === 207) {
+      return 'Multi-Status';
     }
     if (code === 301) {
       return 'Moved Permanently';
