@@ -658,7 +658,7 @@
     },
     {
       "name": "card_manga_empty",
-      "value": "Add from a title's details page"
+      "value": "Add from a title\u0027s details page"
     },
     {
       "name": "detail_add_to_desktop",
@@ -666,7 +666,7 @@
     },
     {
       "name": "detail_card_add_failed",
-      "value": "Couldn't add the card"
+      "value": "Couldn\u0027t add the card"
     },
     {
       "name": "stats_title",
@@ -978,7 +978,7 @@
     },
     {
       "name": "theme_name_teal_turquoise",
-      "value": "Teal & Turquoise"
+      "value": "Teal \u0026 Turquoise"
     },
     {
       "name": "theme_name_tidal_wave",
@@ -986,7 +986,7 @@
     },
     {
       "name": "theme_name_yin_yang",
-      "value": "Yin & Yang"
+      "value": "Yin \u0026 Yang"
     },
     {
       "name": "theme_name_yotsuba",
@@ -1706,11 +1706,11 @@
     },
     {
       "name": "transition_no_next",
-      "value": "There's no next chapter"
+      "value": "There\u0027s no next chapter"
     },
     {
       "name": "transition_no_previous",
-      "value": "There's no previous chapter"
+      "value": "There\u0027s no previous chapter"
     },
     {
       "name": "reader_loading_chapter",
@@ -2130,7 +2130,7 @@
     },
     {
       "name": "privacy_policy_tracking_body",
-      "value": "You can optionally connect tracker accounts such as AniList, MyAnimeList, Kitsu, Shikimori, Bangumi, MangaUpdates, MangaBaka and Hikka. Login is authorized by you on the tracker's own page, and access tokens are saved only on your device to sync reading progress."
+      "value": "You can optionally connect tracker accounts such as AniList, MyAnimeList, Kitsu, Shikimori, Bangumi, MangaUpdates, MangaBaka and Hikka. Login is authorized by you on the tracker\u0027s own page, and access tokens are saved only on your device to sync reading progress."
     },
     {
       "name": "privacy_policy_danmaku_title",
@@ -2170,7 +2170,7 @@
     },
     {
       "name": "help_getting_started_body",
-      "value": "Add local files (CBZ, EPUB and more) via the Local source or by opening a file directly. For online content, add an extension repository in Browse > Extensions, install extensions, then browse and search their sources. Tap Add to library on a work's page to keep it on your shelf, and long-press library items to manage them in bulk. On first use, adjust the theme, start screen and reading preferences in Settings."
+      "value": "Add local files (CBZ, EPUB and more) via the Local source or by opening a file directly. For online content, add an extension repository in Browse \u003e Extensions, install extensions, then browse and search their sources. Tap Add to library on a work\u0027s page to keep it on your shelf, and long-press library items to manage them in bulk. On first use, adjust the theme, start screen and reading preferences in Settings."
     },
     {
       "name": "help_extensions_title",
@@ -2178,7 +2178,7 @@
     },
     {
       "name": "help_extensions_body",
-      "value": "Online sources are provided by extension plugins, managed in Browse > Extensions: add repositories, then install, update or remove extensions. Pull down the list to check for plugin updates. Only add repositories you trust — once a repository goes offline, its extensions can no longer be updated or reinstalled."
+      "value": "Online sources are provided by extension plugins, managed in Browse \u003e Extensions: add repositories, then install, update or remove extensions. Pull down the list to check for plugin updates. Only add repositories you trust — once a repository goes offline, its extensions can no longer be updated or reinstalled."
     },
     {
       "name": "help_reader_title",
@@ -2194,7 +2194,7 @@
     },
     {
       "name": "help_downloads_body",
-      "value": "Queue chapters from a work's page or chapter list to read offline. Review progress, pause or remove tasks in More > Download manager; Settings > Downloads offers Wi-Fi-only downloads, auto-download of new chapters and automatic deletion of read chapters."
+      "value": "Queue chapters from a work\u0027s page or chapter list to read offline. Review progress, pause or remove tasks in More \u003e Download manager; Settings \u003e Downloads offers Wi-Fi-only downloads, auto-download of new chapters and automatic deletion of read chapters."
     },
     {
       "name": "help_tracking_title",
@@ -2202,7 +2202,7 @@
     },
     {
       "name": "help_tracking_body",
-      "value": "Connect AniList, MyAnimeList, Bangumi, Kitsu or Shikimori from the Tracking section of a work's page. Your status and reading progress sync automatically once linked; tokens are stored only on your device and you can unlink at any time."
+      "value": "Connect AniList, MyAnimeList, Bangumi, Kitsu or Shikimori from the Tracking section of a work\u0027s page. Your status and reading progress sync automatically once linked; tokens are stored only on your device and you can unlink at any time."
     },
     {
       "name": "help_migration_title",
@@ -2218,7 +2218,7 @@
     },
     {
       "name": "help_updates_body",
-      "value": "The Updates tab checks your library for new chapters — pull down to refresh, and works with new chapters are surfaced first. The Upcoming page estimates each work's next update time from its historical release rhythm; estimates are indicative only."
+      "value": "The Updates tab checks your library for new chapters — pull down to refresh, and works with new chapters are surfaced first. The Upcoming page estimates each work\u0027s next update time from its historical release rhythm; estimates are indicative only."
     },
     {
       "name": "help_storage_title",
@@ -2226,7 +2226,7 @@
     },
     {
       "name": "help_storage_body",
-      "value": "Your library, progress and settings are stored only on your device and never uploaded. Use More > Data and storage to back up and restore, review storage usage, clear the chapter cache, and schedule automatic backups. Manually back up before switching devices or reinstalling."
+      "value": "Your library, progress and settings are stored only on your device and never uploaded. Use More \u003e Data and storage to back up and restore, review storage usage, clear the chapter cache, and schedule automatic backups. Manually back up before switching devices or reinstalling."
     },
     {
       "name": "help_security_title",
@@ -2234,7 +2234,7 @@
     },
     {
       "name": "help_security_body",
-      "value": "Honyomi is local-first and collects no personal data. Settings > Privacy offers a biometric app lock, notification-content hiding and screenshot blocking; incognito mode on the More page pauses reading history. NSFW sources stay hidden until enabled in Settings > Browse."
+      "value": "Honyomi is local-first and collects no personal data. Settings \u003e Privacy offers a biometric app lock, notification-content hiding and screenshot blocking; incognito mode on the More page pauses reading history. NSFW sources stay hidden until enabled in Settings \u003e Browse."
     },
     {
       "name": "help_troubleshooting_title",
@@ -2242,7 +2242,7 @@
     },
     {
       "name": "help_troubleshooting_body",
-      "value": "If pages fail to load, check your network or switch the DNS-over-HTTPS provider under Settings > Advanced, and complete the site's verification prompt when it appears. If a source misbehaves, pull to refresh the extension list to check for plugin updates, or reinstall the extension. For stubborn issues, back up in Data and storage first, then clear the chapter cache."
+      "value": "If pages fail to load, check your network or switch the DNS-over-HTTPS provider under Settings \u003e Advanced, and complete the site\u0027s verification prompt when it appears. If a source misbehaves, pull to refresh the extension list to check for plugin updates, or reinstall the extension. For stubborn issues, back up in Data and storage first, then clear the chapter cache."
     },
     {
       "name": "browse_set_title",
@@ -2866,7 +2866,7 @@
     },
     {
       "name": "detail_cover_save_failed",
-      "value": "Couldn't update the cover"
+      "value": "Couldn\u0027t update the cover"
     },
     {
       "name": "detail_cover_saved",
@@ -2886,7 +2886,7 @@
     },
     {
       "name": "onboarding_description",
-      "value": "Let's set some things up first. You can always change these in the settings later too."
+      "value": "Let\u0027s set some things up first. You can always change these in the settings later too."
     },
     {
       "name": "onboarding_action_next",
@@ -3074,7 +3074,7 @@
     },
     {
       "name": "bt_choice_msg",
-      "value": "This chapter is a BitTorrent torrent. Choose how to download it (you can change this later in Settings > Downloads):\n· Built-in engine: download in app, supports progressive playback (component about %1$d MB)\n· System app: hand the magnet/torrent to another app (e.g. a torrent client)"
+      "value": "This chapter is a BitTorrent torrent. Choose how to download it (you can change this later in Settings \u003e Downloads):\n· Built-in engine: download in app, supports progressive playback (component about %1$d MB)\n· System app: hand the magnet/torrent to another app (e.g. a torrent client)"
     },
     {
       "name": "bt_choice_system",
@@ -3278,11 +3278,11 @@
     },
     {
       "name": "net_host_resolve_failed",
-      "value": "Couldn't resolve the server address, please check your network connection and try again"
+      "value": "Couldn\u0027t resolve the server address, please check your network connection and try again"
     },
     {
       "name": "net_connect_failed",
-      "value": "Couldn't connect to the server, please check your network and try again"
+      "value": "Couldn\u0027t connect to the server, please check your network and try again"
     },
     {
       "name": "net_timeout",
@@ -3358,7 +3358,7 @@
     },
     {
       "name": "plugin_error_app_too_old",
-      "value": "This plugin requires app versionCode >= %s, please update first"
+      "value": "This plugin requires app versionCode \u003e\u003d %s, please update first"
     },
     {
       "name": "plugin_error_read_failed",

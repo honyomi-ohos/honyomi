@@ -113,10 +113,10 @@
         "name": "ohos.permission.KEEP_BACKGROUND_RUNNING",
         "reason": "$string:keep_background_running_reason",
         "usedScene": {
+          "when": "always",
           "abilities": [
             "EntryAbility"
-          ],
-          "when": "always"
+          ]
         }
       }
     ]

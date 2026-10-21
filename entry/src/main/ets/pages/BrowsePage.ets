@@ -709,6 +709,7 @@ export struct BrowsePage {
         }
       }
       .width('100%')
+      .height(58)
       .padding({
         left: 16 + this.inset(),
         right: 16 + this.inset(),
