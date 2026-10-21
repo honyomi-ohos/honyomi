@@ -348,6 +348,8 @@ export struct LibraryPage {
               .backgroundColor(this.pal.chip)
               .borderRadius(19)
               .padding({ left: 16, right: 16 })
+              .transition(TransitionEffect.OPACITY
+                .combine(TransitionEffect.translate({ x: -24 })))
               .onChange((value: string) => {
                 this.searchQuery = value;
                 // 200ms 防抖：停止输入后再全量重算视图缓存
@@ -362,13 +364,7 @@ export struct LibraryPage {
             AppIcon({ name: 'close', iconSize: 22, tint: this.pal.text })
               .padding({ left: 12 })
               .onClick(() => {
-                if (this.searchTimer >= 0) {
-                  clearTimeout(this.searchTimer);
-                  this.searchTimer = -1;
-                }
-                this.searchOpen = false;
-                this.searchQuery = '';
-                this.refreshView();
+                this.closeSearchAnimated();
               })
           } else {
             Text($r('app.string.library_title'))
@@ -387,7 +383,7 @@ export struct LibraryPage {
             AppIcon({ name: 'search', iconSize: 22, tint: this.pal.text })
               .padding({ left: 12 })
               .onClick(() => {
-                this.searchOpen = true;
+                this.openSearchAnimated();
               })
             AppIcon({ name: 'filter_list', iconSize: 22, tint: this.filterActive() ? this.pal.primary : this.pal.text })
               .padding({ left: 12 })
@@ -409,7 +405,7 @@ export struct LibraryPage {
           }
         }
         .width('100%')
-        .height(38)
+        .height(58)
         .padding({
           left: 16,
           right: 16,
@@ -609,6 +605,24 @@ export struct LibraryPage {
 
   private onLibSearchReq(): void {
     this.takePendingLibSearch();
+    this.refreshView();
+  }
+
+  private openSearchAnimated(): void {
+    this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
+      this.searchOpen = true;
+    });
+  }
+
+  private closeSearchAnimated(): void {
+    if (this.searchTimer >= 0) {
+      clearTimeout(this.searchTimer);
+      this.searchTimer = -1;
+    }
+    this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
+      this.searchOpen = false;
+      this.searchQuery = '';
+    });
     this.refreshView();
   }
 

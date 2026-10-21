@@ -3,6 +3,7 @@ import { KeyCode } from '@kit.InputKit';
 import { media } from '@kit.MediaKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { window } from '@kit.ArkUI';
+import { deviceInfo } from '@kit.BasicServicesKit';
 import { CacheListener } from '@ohos/video-cache';
 import { AppDb } from '../data/AppDb';
 import { ChapterRepo, HistoryRepo, MangaRepo } from '../data/Repos';
@@ -104,6 +105,9 @@ export struct VideoPlayerPage {
   @State boostSpeedIndex: number = 2;
   @State scaleMode: number = 0;
   @State cachePercent: number = 0;
+  @State volume: number = 1.0;
+  @State muted: boolean = false;
+  @State volHudPct: number = -1;
   private mangaId: number = -1;
   private chapterId: number = -1;
   private resumeMs: number = 0;
@@ -133,7 +137,14 @@ export struct VideoPlayerPage {
   private boostDownX: number = 0;
   private boostAnchorX: number = 0;
   private suppressClick: boolean = false;
+  // 键盘长按空格：延迟判定计时 + 按下状态（过滤系统按键重复）
+  private spaceTimer: number = -1;
+  private spaceDown: boolean = false;
+  private volumeHudTimer: number = -1;
   private win: window.Window | undefined = undefined;
+  // PC/2in1：真全屏走窗口最大化沉浸式；进入前是悬浮窗则退出时 recover 还原尺寸位置
+  private pcLike: boolean = deviceInfo.deviceType === 'pc' || deviceInfo.deviceType === '2in1';
+  private pcWasFloating: boolean = true;
   private dmCtrl: DanmakuController = new DanmakuController();
   private dmLoading: boolean = false;
   private dmChapterId: number = -1;
@@ -149,6 +160,7 @@ export struct VideoPlayerPage {
   aboutToAppear(): void {
     this.log('aboutToAppear');
     this.speed = Settings.getVideoSpeed();
+    this.volume = Settings.getVideoVolume();
     this.autoNext = Settings.getVideoAutoNext();
     this.scaleMode = Settings.getVideoScaleMode();
     this.danmakuOn = Settings.getDanmakuEnabled();
@@ -180,7 +192,11 @@ export struct VideoPlayerPage {
     this.clearUiTimers();
     this.releasePlayer();
     if (this.win !== undefined) {
-      // 还原系统栏与窗口方向
+      // 还原系统栏与窗口方向；PC 全屏态先退出沉浸式，避免下一页残留无标题栏窗口
+      if (this.pcLike && this.fullscreen) {
+        this.exitPcFullscreen();
+        this.fullscreen = false;
+      }
       if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
         this.win.setPreferredOrientation(window.Orientation.UNSPECIFIED).catch((): void => {
         });
@@ -885,7 +901,7 @@ export struct VideoPlayerPage {
         if (this.seekToast !== 0) {
           Row({ space: 6 }) {
             AppIcon({ name: this.seekToast < 0 ? 'replay_10' : 'forward_10', iconSize: 24, tint: Color.White })
-            Text(`${this.seekToast < 0 ? '-10s' : '+10s'}`)
+            Text(`${this.seekToast > 0 ? '+' : ''}${this.seekToast}s`)
               .fontSize(15)
               .fontColor(Color.White)
           }
@@ -898,6 +914,34 @@ export struct VideoPlayerPage {
           .borderRadius(20)
           .backgroundColor('rgba(0,0,0,0.6)')
           .offset({ x: this.seekToast < 0 ? '-22%' : '22%', y: '-10%' })
+        }
+
+        // 键盘音量 HUD：↑↓/M 调节时短暂显示音量条
+        if (this.volHudPct >= 0) {
+          Row({ space: 8 }) {
+            AppIcon({ name: this.volHudPct <= 0 ? 'volume_off' : 'volume_up', iconSize: 22, tint: Color.White })
+            Progress({
+              value: this.volHudPct,
+              total: 100,
+              type: ProgressType.Linear
+            })
+              .width(110)
+              .height(4)
+              .color(Color.White)
+              .backgroundColor('rgba(255,255,255,0.3)')
+            Text(`${this.volHudPct}%`)
+              .fontSize(13)
+              .fontColor(Color.White)
+          }
+          .padding({
+            left: 16,
+            right: 16,
+            top: 10,
+            bottom: 10
+          })
+          .borderRadius(20)
+          .backgroundColor('rgba(0,0,0,0.6)')
+          .offset({ y: '-18%' })
         }
 
         if (this.errorText !== '') {
@@ -972,12 +1016,23 @@ export struct VideoPlayerPage {
     hilog.info(0xDEAD, 'VP', '[inst%{public}d] %{public}s', this.instId, msg);
   }
 
-  // 全屏横屏切换
+  // 全屏切换：PC/2in1 最大化进入沉浸式（隐藏标题栏/Dock，悬停热区呼出）；其余设备横竖屏切换
   private toggleFullscreen(): void {
     if (this.win === undefined) {
       return;
     }
     this.fullscreen = !this.fullscreen;
+    if (this.pcLike) {
+      if (this.fullscreen) {
+        this.pcWasFloating = this.pcWindowFloating();
+        this.win.maximize(window.MaximizePresentation.ENTER_IMMERSIVE).catch((): void => {
+        });
+      } else {
+        this.exitPcFullscreen();
+      }
+      this.pokeControls();
+      return;
+    }
     if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
       const target: window.Orientation = this.fullscreen ?
         window.Orientation.AUTO_ROTATION_LANDSCAPE : window.Orientation.AUTO_ROTATION_PORTRAIT;
@@ -985,6 +1040,32 @@ export struct VideoPlayerPage {
       });
     }
     this.pokeControls();
+  }
+
+  // PC/2in1 退出沉浸式全屏：进入前是悬浮窗则还原悬浮窗，否则回最大化（带标题栏）
+  private exitPcFullscreen(): void {
+    if (this.win === undefined) {
+      return;
+    }
+    if (this.pcWasFloating) {
+      this.win.recover().catch((): void => {
+      });
+    } else {
+      this.win.maximize(window.MaximizePresentation.EXIT_IMMERSIVE).catch((): void => {
+      });
+    }
+  }
+
+  private pcWindowFloating(): boolean {
+    if (this.win === undefined) {
+      return true;
+    }
+    try {
+      const st: window.WindowStatusType = this.win.getWindowStatus();
+      return st !== window.WindowStatusType.MAXIMIZE && st !== window.WindowStatusType.FULL_SCREEN;
+    } catch (_e) {
+      return true;
+    }
   }
 
   private clearUiTimers(): void {
@@ -1008,6 +1089,15 @@ export struct VideoPlayerPage {
       clearTimeout(this.suppressTimer);
       this.suppressTimer = -1;
     }
+    if (this.spaceTimer >= 0) {
+      clearTimeout(this.spaceTimer);
+      this.spaceTimer = -1;
+    }
+    if (this.volumeHudTimer >= 0) {
+      clearTimeout(this.volumeHudTimer);
+      this.volumeHudTimer = -1;
+    }
+    this.spaceDown = false;
   }
 
   private async loadChapter(): Promise<void> {
@@ -1474,6 +1564,12 @@ export struct VideoPlayerPage {
           // @SuppressWarnings syscap
           player.seek(this.resumeMs, media.SeekMode.SEEK_PREV_SYNC);
         }
+        // 恢复上次软件音量（prepared 状态起 setVolume 可用）
+        try {
+          player.setVolume(this.muted ? 0 : this.volume);
+        } catch (e) {
+          this.log(`prepared setVolume catch: ${e}`);
+        }
         player.play();
         player.setSpeed(this.speedToEnum(this.speed));
         this.playing = true;
@@ -1667,8 +1763,12 @@ export struct VideoPlayerPage {
       this.pokeControls();
       return;
     }
-    const delta = side * 10000;
-    let target = this.positionMs + delta;
+    this.seekBy(side * 10000);
+  }
+
+  // 相对位移寻址：toast 显示实际位移秒数（方向键 ±10s，PgUp/PgDn ±60s）
+  private seekBy(deltaMs: number): void {
+    let target = this.positionMs + deltaMs;
     if (target < 0) {
       target = 0;
     }
@@ -1676,7 +1776,7 @@ export struct VideoPlayerPage {
       target = this.durationMs;
     }
     this.seekTo(target);
-    this.seekToast = side;
+    this.seekToast = deltaMs / 1000;
     if (this.seekToastTimer >= 0) {
       clearTimeout(this.seekToastTimer);
     }
@@ -1684,6 +1784,15 @@ export struct VideoPlayerPage {
       this.seekToastTimer = -1;
       this.seekToast = 0;
     }, 600);
+  }
+
+  // 数字键 0-9：按总时长 0%-90% 跳转
+  private seekToPercent(tenth: number): void {
+    if (this.durationMs <= 0) {
+      return;
+    }
+    this.seekTo(Math.floor(this.durationMs * tenth / 10));
+    this.pokeControls();
   }
 
   // ---- 长按快进（按住 ~0.5s 进入倍速快进，可左右滑动换档，松开恢复原速） ----
@@ -1828,40 +1937,23 @@ export struct VideoPlayerPage {
     this.armAutoHide();
   }
 
-  // ---- 键盘控制（外接键盘/PC）：空格播放/暂停，左右方向键快退/快进 10s，
-  // 回车切换控制条，Escape 退出全屏/页面 ----
+  // ---- 键盘控制（外接键盘/PC）----
+  // 空格：短按播放/暂停，长按 ~0.5s 进入倍速快进（复用长按快进档位，松开恢复）
+  // ↑↓：软件音量 ±10%；M：静音；←→：±10s；PgUp/PgDn：±60s
+  // Home/End：跳首/跳尾；0-9：按总时长百分比跳转；F：全屏；D：弹幕
+  // 回车：切换控制条；Escape：关闭弹层/退出全屏/退出页面
   private handlePlayerKey(event: KeyEvent): void {
+    if (event.type === KeyType.Up) {
+      if (event.keyCode === KeyCode.KEYCODE_SPACE) {
+        this.onSpaceKeyRelease();
+      }
+      return;
+    }
     if (event.type !== KeyType.Down) {
       return;
     }
-    if (event.keyCode === KeyCode.KEYCODE_SPACE) {
-      if (this.locked) {
-        this.pokeControls();
-        return;
-      }
-      if (!this.loading && this.errorText === '') {
-        this.togglePlay();
-        this.pokeControls();
-      }
-      return;
-    }
-    if (event.keyCode === KeyCode.KEYCODE_ENTER) {
-      if (this.locked) {
-        this.pokeControls();
-      } else {
-        this.toggleControls();
-      }
-      return;
-    }
-    if (event.keyCode === KeyCode.KEYCODE_DPAD_LEFT) {
-      this.onDoubleTap(-1);
-      return;
-    }
-    if (event.keyCode === KeyCode.KEYCODE_DPAD_RIGHT) {
-      this.onDoubleTap(1);
-      return;
-    }
-    if (event.keyCode === KeyCode.KEYCODE_ESCAPE) {
+    const code = event.keyCode;
+    if (code === KeyCode.KEYCODE_ESCAPE) {
       if (this.showSheet) {
         this.showSheet = false;
       } else if (this.fullscreen) {
@@ -1871,9 +1963,166 @@ export struct VideoPlayerPage {
       }
       return;
     }
-    if (event.keyCode === KeyCode.KEYCODE_DPAD_UP || event.keyCode === KeyCode.KEYCODE_DPAD_DOWN) {
-      this.pokeControls();
+    // 弹层打开时交给弹层交互，锁定时仅唤起控制条
+    if (this.showSheet) {
+      return;
     }
+    if (this.locked) {
+      this.pokeControls();
+      return;
+    }
+    if (code === KeyCode.KEYCODE_SPACE) {
+      this.onSpaceKeyPress();
+      return;
+    }
+    if (code === KeyCode.KEYCODE_ENTER) {
+      this.toggleControls();
+      return;
+    }
+    if (code === KeyCode.KEYCODE_DPAD_LEFT) {
+      this.onDoubleTap(-1);
+      return;
+    }
+    if (code === KeyCode.KEYCODE_DPAD_RIGHT) {
+      this.onDoubleTap(1);
+      return;
+    }
+    if (code === KeyCode.KEYCODE_DPAD_UP) {
+      this.stepVolume(1);
+      return;
+    }
+    if (code === KeyCode.KEYCODE_DPAD_DOWN) {
+      this.stepVolume(-1);
+      return;
+    }
+    if (code === KeyCode.KEYCODE_PAGE_UP) {
+      this.seekBy(-60000);
+      return;
+    }
+    if (code === KeyCode.KEYCODE_PAGE_DOWN) {
+      this.seekBy(60000);
+      return;
+    }
+    if (code === KeyCode.KEYCODE_MOVE_HOME) {
+      this.seekTo(0);
+      this.pokeControls();
+      return;
+    }
+    if (code === KeyCode.KEYCODE_MOVE_END) {
+      if (this.durationMs > 0) {
+        this.seekTo(this.durationMs);
+        this.pokeControls();
+      }
+      return;
+    }
+    if (code === KeyCode.KEYCODE_M) {
+      this.toggleMute();
+      return;
+    }
+    if (code === KeyCode.KEYCODE_F) {
+      this.toggleFullscreen();
+      return;
+    }
+    if (code === KeyCode.KEYCODE_D) {
+      this.toggleDanmaku();
+      return;
+    }
+    if (code >= KeyCode.KEYCODE_0 && code <= KeyCode.KEYCODE_9) {
+      this.seekToPercent(code - KeyCode.KEYCODE_0);
+      return;
+    }
+  }
+
+  // 空格按下：可加速时延迟判定长按，否则保持原有即时播放/暂停
+  private onSpaceKeyPress(): void {
+    if (this.spaceDown) {
+      return; // 过滤系统按键重复
+    }
+    this.spaceDown = true;
+    if (this.loading || this.errorText !== '' || !this.playing || this.speed >= 3.0) {
+      if (!this.loading && this.errorText === '') {
+        this.togglePlay();
+        this.pokeControls();
+      }
+      return;
+    }
+    if (this.spaceTimer >= 0) {
+      clearTimeout(this.spaceTimer);
+    }
+    this.spaceTimer = setTimeout(() => {
+      this.spaceTimer = -1;
+      if (this.playing) {
+        this.startBoost();
+      }
+    }, 500);
+  }
+
+  // 空格松开：未触发加速为短按（播放/暂停），加速中恢复原速
+  private onSpaceKeyRelease(): void {
+    if (!this.spaceDown) {
+      return;
+    }
+    this.spaceDown = false;
+    if (this.spaceTimer >= 0) {
+      clearTimeout(this.spaceTimer);
+      this.spaceTimer = -1;
+      if (!this.loading && this.errorText === '') {
+        this.togglePlay();
+        this.pokeControls();
+      }
+      return;
+    }
+    if (this.boosting) {
+      this.endBoost();
+    }
+  }
+
+  // ---- 键盘软件音量（AVPlayer 0-1，↑↓ 步进 10%，M 静音，HUD 短暂显示） ----
+  private stepVolume(dir: number): void {
+    let next = this.volume + dir * 0.1;
+    if (next < 0) {
+      next = 0;
+    }
+    if (next > 1) {
+      next = 1;
+    }
+    next = Math.round(next * 10) / 10;
+    if (next !== this.volume) {
+      this.volume = next;
+      Settings.setVideoVolume(next);
+    }
+    this.muted = false;
+    this.applyVolume();
+    this.showVolumeHud();
+  }
+
+  private toggleMute(): void {
+    this.muted = !this.muted;
+    this.applyVolume();
+    this.showVolumeHud();
+  }
+
+  private applyVolume(): void {
+    const player = this.player;
+    if (player === undefined) {
+      return;
+    }
+    try {
+      player.setVolume(this.muted || this.volume <= 0 ? 0 : this.volume);
+    } catch (e) {
+      this.log(`applyVolume catch: ${e}`);
+    }
+  }
+
+  private showVolumeHud(): void {
+    this.volHudPct = this.muted || this.volume <= 0 ? 0 : Math.round(this.volume * 100);
+    if (this.volumeHudTimer >= 0) {
+      clearTimeout(this.volumeHudTimer);
+    }
+    this.volumeHudTimer = setTimeout(() => {
+      this.volumeHudTimer = -1;
+      this.volHudPct = -1;
+    }, 800);
   }
 
   // 意图框架快进/跳转指令（VideoSeekIntent 写入）：仅栈顶最新实例、且时间戳递增时消费

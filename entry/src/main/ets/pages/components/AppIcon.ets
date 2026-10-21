@@ -107,7 +107,9 @@ const ICONS: Record<string, Resource> = {
   'forward_30': $r('app.media.ic_forward_30'),
   'replay_10': $r('app.media.ic_replay_10'),
   'rocket_launch': $r('app.media.ic_rocket_launch'),
-  'verified_user': $r('app.media.ic_verified_user')
+  'verified_user': $r('app.media.ic_verified_user'),
+  'volume_up': $r('app.media.ic_volume_up'),
+  'volume_off': $r('app.media.ic_volume_off')
 };
 
 export class AppIconRes {

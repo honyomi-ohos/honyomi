@@ -1221,6 +1221,16 @@ export class Settings {
     Settings.setNum('videoScaleMode', v);
   }
 
+  // 播放器软件音量（0.0-1.0，键盘 ↑↓ 步进调节，M 静音）
+  static getVideoVolume(): number {
+    const n = Settings.getNum('videoVolume', 1.0);
+    return n >= 0 && n <= 1 ? n : 1.0;
+  }
+
+  static setVideoVolume(v: number): void {
+    Settings.setNum('videoVolume', v);
+  }
+
   // ---- 弹幕 ----
   static getDanmakuEnabled(): boolean {
     return Settings.getBool('danmakuEnabled', true);
