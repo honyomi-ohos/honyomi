@@ -1,6 +1,7 @@
 import { CategoryRecord } from '../../model/Models';
 import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
+import { KeyCode } from '@kit.InputKit';
 
 // 文本输入弹窗（新建分类 / 导入漫画命名 / 敏感偏好输入）
 @CustomDialog
@@ -38,6 +39,11 @@ export struct InputDialog {
         .onChange((value: string) => {
           this.inputText = value;
         })
+        .enterKeyType(EnterKeyType.Done)
+        .onSubmit(() => {
+          this.dismiss();
+          this.onConfirm(this.inputText);
+        })
       Row({ space: 12 }) {
         Button($r('app.string.common_cancel'))
           .layoutWeight(1)
@@ -59,6 +65,11 @@ export struct InputDialog {
     }
     .padding(20)
     .width('100%')
+    .onKeyEvent((event: KeyEvent) => {
+      if (event.type === KeyType.Down && event.keyCode === KeyCode.KEYCODE_ESCAPE) {
+        this.dismiss();
+      }
+    })
   }
 
   private dismiss(): void {
@@ -95,16 +106,30 @@ export struct CredentialsDialog {
         text: this.username,
       })
         .defaultFocus(true)
+        .enterKeyType(EnterKeyType.Next)
         .onChange((value: string) => {
           this.username = value;
+        })
+        .onSubmit(() => {
+          // 用户名回车跳密码框（手动迁移焦点，失败时仍可 Tab 切换）
+          try {
+            this.getUIContext().getFocusController().requestFocus('credPasswordKey');
+          } catch (e) {
+          }
         })
       TextInput({
         placeholder: this.passwordPlaceholder,
         text: this.password,
       })
         .type(InputType.Password)
+        .key('credPasswordKey')
+        .enterKeyType(EnterKeyType.Done)
         .onChange((value: string) => {
           this.password = value;
+        })
+        .onSubmit(() => {
+          this.dismiss();
+          this.onConfirm(this.username.trim(), this.password);
         })
       Row({ space: 12 }) {
         Button($r('app.string.common_cancel'))
@@ -127,6 +152,11 @@ export struct CredentialsDialog {
     }
     .padding(20)
     .width('100%')
+    .onKeyEvent((event: KeyEvent) => {
+      if (event.type === KeyType.Down && event.keyCode === KeyCode.KEYCODE_ESCAPE) {
+        this.dismiss();
+      }
+    })
   }
 
   private dismiss(): void {
@@ -175,6 +205,13 @@ export struct CategoryDialog {
     }
     .padding(20)
     .width('100%')
+    .focusable(true)
+    .defaultFocus(true)
+    .onKeyEvent((event: KeyEvent) => {
+      if (event.type === KeyType.Down && event.keyCode === KeyCode.KEYCODE_ESCAPE) {
+        this.dismiss();
+      }
+    })
   }
 
   private dismiss(): void {
@@ -259,6 +296,13 @@ export struct ExportColumnsDialog {
     }
     .padding(20)
     .width('100%')
+    .focusable(true)
+    .defaultFocus(true)
+    .onKeyEvent((event: KeyEvent) => {
+      if (event.type === KeyType.Down && event.keyCode === KeyCode.KEYCODE_ESCAPE) {
+        this.dismiss();
+      }
+    })
   }
 
   private dismiss(): void {
@@ -313,6 +357,13 @@ export struct ConfirmDialog {
     }
     .padding(20)
     .width('100%')
+    .focusable(true)
+    .defaultFocus(true)
+    .onKeyEvent((event: KeyEvent) => {
+      if (event.type === KeyType.Down && event.keyCode === KeyCode.KEYCODE_ESCAPE) {
+        this.dismiss();
+      }
+    })
   }
 
   private dismiss(): void {

@@ -34,6 +34,8 @@ export struct UpdatesPage {
   @State loading: boolean = true;
   @State refreshing: boolean = false;
   @State showFilterSheet: boolean = false;
+  // Index 根节点 Esc 广播：关闭筛选弹层（计数器递增触发）
+  @StorageLink('sheetEsc') @Watch('onSheetEsc') sheetEsc: number = 0;
   // 筛选状态（对齐 Mihon UpdatesPreferences）
   @State fDownloaded: string = 'ignore';
   @State fUnread: string = 'ignore';
@@ -56,6 +58,13 @@ export struct UpdatesPage {
 
   onLibDirty(): void {
     this.loadData();
+  }
+
+  // Esc 广播：关闭筛选半模态弹层
+  onSheetEsc(): void {
+    if (this.showFilterSheet) {
+      this.showFilterSheet = false;
+    }
   }
 
   async loadCategories(): Promise<void> {

@@ -50,4 +50,10 @@ export class AppKeys {
   static readonly BT_COMPONENT_ASK: string = 'btComponentAsk';
   // 用户已拒绝 BT 组件安装引导（抑制自动弹窗，手动重试/retryBtComponentTasks 重置）
   static readonly BT_ASK_DISMISSED: string = 'btAskDismissed';
+  // Esc 关闭弹层信号（Index 键盘 Esc 广播，计数器递增；各页 @StorageLink + @Watch 消费关闭自身半模态弹层）
+  static readonly SHEET_ESC: string = 'sheetEsc';
+  // 书库键盘多选信号（Index 根节点按键广播，LibraryPage 消费）：Ctrl+A 全选
+  static readonly LIB_SELECT_ALL_REQ: string = 'libSelectAllReq';
+  // 书库键盘多选信号：Delete 删除选中（LibraryPage 内部判定选择态，非选择态为空操作）
+  static readonly LIB_DELETE_SEL_REQ: string = 'libDeleteSelReq';
 }

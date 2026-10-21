@@ -50,6 +50,8 @@ export struct BrowseSourcePage {
   // 过滤器面板刷新计数：嵌套 state 变更后递增触发 ForEach 重建
   @State filterRev: number = 0;
   @State showFilterSheet: boolean = false;
+  // Index 根节点 Esc 广播：关闭文件夹/过滤弹层（计数器递增触发）
+  @StorageLink('sheetEsc') @Watch('onSheetEsc') sheetEsc: number = 0;
 
   currentSource(): Source | undefined {
     return SourceRegistry.get(this.sourceKey);
@@ -84,6 +86,16 @@ export struct BrowseSourcePage {
         [Util.errText(this.getUIContext(), (e as Error).message)]);
     }
     this.searching = false;
+  }
+
+  // Esc 广播：关闭文件夹/过滤半模态弹层
+  onSheetEsc(): void {
+    if (this.showFolderSheet) {
+      this.showFolderSheet = false;
+    }
+    if (this.showFilterSheet) {
+      this.showFilterSheet = false;
+    }
   }
 
   async search(): Promise<void> {

@@ -2190,6 +2190,17 @@ export struct NovelReaderPage {
 
   // ---- 键盘控制（外接键盘/PC）：方向键/PgUp/PgDn/空格翻页或滚动，回车呼出菜单，Escape 逐级退出 ----
 
+  // Ctrl +/- 字号调节：同文本面板滑杆范围（14..32），提交设置并重新分页
+  private adjustFont(delta: number): void {
+    const next = Math.min(32, Math.max(14, this.fontSize + delta));
+    if (next === this.fontSize) {
+      return;
+    }
+    this.fontSize = next;
+    Settings.setNovelFontSize(next);
+    this.ensurePaginated();
+  }
+
   private handleReaderKey(event: KeyEvent): void {
     if (event.type !== KeyType.Down) {
       return;
@@ -2212,6 +2223,16 @@ export struct NovelReaderPage {
       if (!this.loading && this.body !== '') {
         this.toggleMenu();
       }
+      return;
+    }
+    // Ctrl +/-（含小键盘）：字号调节，与文本设置面板滑杆同范围 14..32
+    const ctrlDown = event.getModifierKeyState !== undefined && event.getModifierKeyState(['Ctrl']);
+    if (ctrlDown && (event.keyCode === KeyCode.KEYCODE_EQUALS || event.keyCode === KeyCode.KEYCODE_NUMPAD_ADD)) {
+      this.adjustFont(1);
+      return;
+    }
+    if (ctrlDown && (event.keyCode === KeyCode.KEYCODE_MINUS || event.keyCode === KeyCode.KEYCODE_NUMPAD_SUBTRACT)) {
+      this.adjustFont(-1);
       return;
     }
     let delta = 0;

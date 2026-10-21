@@ -22,6 +22,8 @@ export struct CategoriesPage {
   @StorageProp('windowW') windowW: number = 0;
   @State categories: CategoryRecord[] = [];
   @State showItemSheet: boolean = false;
+  // Index 根节点 Esc 广播：关闭条目操作弹层（计数器递增触发）
+  @StorageLink('sheetEsc') @Watch('onSheetEsc') sheetEsc: number = 0;
   @State dragId: number = -1;
   @State offsetY: number = 0;
   @State rowH: number = 0;
@@ -29,6 +31,13 @@ export struct CategoriesPage {
   private dragRefOffsetY: number = 0;
   private panning: boolean = false;
   private orderDirty: boolean = false;
+
+  // Esc 广播：关闭条目操作半模态弹层
+  onSheetEsc(): void {
+    if (this.showItemSheet) {
+      this.showItemSheet = false;
+    }
+  }
 
   aboutToAppear(): void {
     const context = Util.hostAbilityContext(this.getUIContext());

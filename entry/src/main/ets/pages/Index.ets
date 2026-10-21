@@ -1,5 +1,6 @@
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { KeyCode } from '@kit.InputKit';
 import { AnimatorOptions, AnimatorResult, curves } from '@kit.ArkUI';
 import { webview } from '@kit.ArkWeb';
 import { HdsTabsHost, HdsTabsHostController, HdsTabsHostMiniBar } from '../common/HdsTabsHost';
@@ -824,6 +825,33 @@ struct Index {
     .width('100%')
     .height('100%')
     .backgroundColor(this.pal.bg)
+    // 桌面键鼠交互：根节点持有焦点接收按键事件（键盘快捷键全局宿主）
+    .focusable(true)
+    .defaultFocus(true)
+    // Ctrl+1..5 快速切换页签（与侧边 Rail 点击行为一致：路由页内先清栈回首页）
+    .keyboardShortcut('1', [ModifierKey.CTRL], (): void => {
+      this.railTap(0);
+    })
+    .keyboardShortcut('2', [ModifierKey.CTRL], (): void => {
+      this.railTap(1);
+    })
+    .keyboardShortcut('3', [ModifierKey.CTRL], (): void => {
+      this.railTap(2);
+    })
+    .keyboardShortcut('4', [ModifierKey.CTRL], (): void => {
+      this.railTap(3);
+    })
+    .keyboardShortcut('5', [ModifierKey.CTRL], (): void => {
+      this.railTap(4);
+    })
+    // Ctrl+F 全局搜索
+    .keyboardShortcut('f', [ModifierKey.CTRL], (): void => {
+      this.pathStack.pushPathByName('GlobalSearch', null);
+    })
+    // Esc：先关 CF 验证弹层，再广播关闭各页半模态弹层（阅读器/播放器等自行处理 Esc 的页面不受影响）
+    .onKeyEvent((event: KeyEvent) => {
+      this.onRootKeyEvent(event);
+    })
     // 一多断点跟踪：外层 Row = 整窗宽度（含 Rail），避免 840vp 临界值来回抖动；
     // 同步发布到 AppStorage，供各页面按断点做限宽/边距适配
     .onAreaChange((_old: Area, newArea: Area) => {
@@ -925,6 +953,42 @@ struct Index {
   // 详情页回退主页的书架搜索请求：切到书架页签（搜索词由 LibraryPage 消费 libSearchQuery）
   private onLibSearchReq(): void {
     this.switchTab(0);
+  }
+
+  // 根节点按键：Esc 关闭 CF 验证弹层或广播关闭各页半模态弹层；
+  // 书库页签下 Ctrl+A 全选、Delete 删除选中（信号由 LibraryPage 消费）
+  // （路由页自行处理 Esc 的场景：焦点在路由页上时事件沿焦点链冒泡至此，
+  //  广播仅递增计数，未打开弹层的页面 @Watch 为幂等空操作；
+  //  焦点在文本框内时 Ctrl+A/Enter 等被输入框消费，不会冒泡至此）
+  private onRootKeyEvent(event: KeyEvent): void {
+    if (event.type !== KeyType.Down) {
+      return;
+    }
+    const code = event.keyCode;
+    if (code === KeyCode.KEYCODE_ESCAPE) {
+      if (this.cfSheetShow) {
+        this.cfSheetShow = false;
+        return;
+      }
+      AppStorage.setOrCreate(AppKeys.SHEET_ESC, (AppStorage.get<number>(AppKeys.SHEET_ESC) ?? 0) + 1);
+      return;
+    }
+    if (this.topRouteName !== '' || this.currentTab !== 0) {
+      return;
+    }
+    if (this.ctrlPressed(event) && code === KeyCode.KEYCODE_A) {
+      AppStorage.setOrCreate(AppKeys.LIB_SELECT_ALL_REQ,
+        (AppStorage.get<number>(AppKeys.LIB_SELECT_ALL_REQ) ?? 0) + 1);
+      return;
+    }
+    if (code === KeyCode.KEYCODE_FORWARD_DEL) {
+      AppStorage.setOrCreate(AppKeys.LIB_DELETE_SEL_REQ,
+        (AppStorage.get<number>(AppKeys.LIB_DELETE_SEL_REQ) ?? 0) + 1);
+    }
+  }
+
+  private ctrlPressed(event: KeyEvent): boolean {
+    return event.getModifierKeyState !== undefined && event.getModifierKeyState(['Ctrl']);
   }
 
   // 桌面卡片点击 / 意图框架（小艺）导航：切页签或跳阅读器/详情页

@@ -253,6 +253,8 @@ export struct MangaDetailPage {
   @State relatedWorks: SManga[] = [];
   @State showCoverViewer: boolean = false;
   @State showSettingsSheet: boolean = false;
+  // Index 根节点 Esc 广播：关闭追踪/章节设置弹层（计数器递增触发）
+  @StorageLink('sheetEsc') @Watch('onSheetEsc') sheetEsc: number = 0;
   // 章节排序/筛选状态（持久化于 manga.chapterFlags，对齐 Mihon ChapterSettingsDialog）
   @State @Watch('onFilterStateChanged') sortMode: number = ChapterFlags.SORTING_SOURCE;
   @State @Watch('onFilterStateChanged') sortAscending: boolean = false;
@@ -1370,6 +1372,16 @@ export struct MangaDetailPage {
   }
 
   // 吸顶栏渐显进度：随滚动偏移 0 → 1
+  // Esc 广播：关闭追踪/章节设置半模态弹层
+  onSheetEsc(): void {
+    if (this.showTrackSheet) {
+      this.showTrackSheet = false;
+    }
+    if (this.showSettingsSheet) {
+      this.showSettingsSheet = false;
+    }
+  }
+
   private syncTopBar(): void {
     const y = this.listScroller.currentOffset().yOffset;
     const p = Math.min(1, Math.max(0, y / 180));

@@ -1714,6 +1714,15 @@ export struct ReaderPage {
       }
       return;
     }
+    // Home/End：跳本章首页/末页
+    if (event.keyCode === KeyCode.KEYCODE_MOVE_HOME) {
+      this.jumpEdge(false);
+      return;
+    }
+    if (event.keyCode === KeyCode.KEYCODE_MOVE_END) {
+      this.jumpEdge(true);
+      return;
+    }
     let delta = 0;
     const verticalScroll = this.mode === 'vertical' || this.mode === 'webtoon';
     if (event.keyCode === KeyCode.KEYCODE_PAGE_DOWN || event.keyCode === KeyCode.KEYCODE_SPACE) {
@@ -1732,6 +1741,15 @@ export struct ReaderPage {
     if (delta !== 0) {
       this.keyTurn(delta);
     }
+  }
+
+  // Home/End：跳本章首页/末页（复用 Slider 跳页入口，条漫滚动/其余翻页自适应）
+  private jumpEdge(toEnd: boolean): void {
+    if (this.loading || this.pages.length === 0 || this.showMenu ||
+      this.showSettings || this.showModeSheet || this.showOrientationSheet) {
+      return;
+    }
+    this.jumpToReal(toEnd ? this.pages.length - 1 : 0);
   }
 
   // 键盘翻页统一入口：条漫整屏滚动、仿真走翻页令牌、其余走 step

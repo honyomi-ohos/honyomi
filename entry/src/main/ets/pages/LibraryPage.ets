@@ -96,6 +96,11 @@ export struct LibraryPage {
   @State @Watch('refreshView') showCategoryTabs: boolean = true;
   @State showMangaCount: boolean = false;
   @State showFilterSheet: boolean = false; // 聚合数据
+  // Index 根节点 Esc 广播：关闭筛选弹层 / 退出多选（计数器递增触发）
+  @StorageLink('sheetEsc') @Watch('onSheetEsc') sheetEsc: number = 0;
+  // Index 根节点键盘广播：Ctrl+A 全选、Delete 删除选中
+  @StorageLink('libSelectAllReq') @Watch('onSelectAllReq') libSelectAllReq: number = 0;
+  @StorageLink('libDeleteSelReq') @Watch('onDeleteSelReq') libDeleteSelReq: number = 0;
   @State statsMap: Record<string, MangaStats> = {};
   @State downloadCounts: Record<string, number> = {};
   @State trackedIds: Set<number> = new Set<number>();
@@ -127,6 +132,29 @@ export struct LibraryPage {
 
   onLibDirty(): void {
     this.loadData();
+  }
+
+  // Esc 广播：优先关筛选弹层，其次退出多选
+  onSheetEsc(): void {
+    if (this.showFilterSheet) {
+      this.showFilterSheet = false;
+      return;
+    }
+    if (this.selection.size > 0) {
+      this.clearSelection();
+    }
+  }
+
+  // Ctrl+A：全选当前筛选视图（未进入选择态时顺带进入）
+  onSelectAllReq(): void {
+    this.selectAllShown();
+  }
+
+  // Delete：选择态下弹出删除确认（非选择态空操作）
+  onDeleteSelReq(): void {
+    if (this.selectionMode()) {
+      this.showDeleteConfirm();
+    }
   }
 
   async loadData(): Promise<void> {

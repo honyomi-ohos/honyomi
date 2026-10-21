@@ -51,6 +51,8 @@ export struct UpcomingPage {
   @State selYear: number = 0;
   @State selMonth: number = 0;
   @State showFilterSheet: boolean = false;
+  // Index 根节点 Esc 广播：关闭筛选弹层（计数器递增触发）
+  @StorageLink('sheetEsc') @Watch('onSheetEsc') sheetEsc: number = 0;
   @State categories: CategoryRecord[] = [];
   @State includedCats: number[] = [];
   @State excludedCats: number[] = [];
@@ -77,6 +79,13 @@ export struct UpcomingPage {
     }
     this.buildWeekdayLabels();
     this.loadData();
+  }
+
+  // Esc 广播：关闭筛选半模态弹层
+  onSheetEsc(): void {
+    if (this.showFilterSheet) {
+      this.showFilterSheet = false;
+    }
   }
 
   async loadData(): Promise<void> {
