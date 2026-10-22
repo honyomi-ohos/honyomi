@@ -2481,6 +2481,30 @@
       "value": "재생 속도"
     },
     {
+      "name": "video_cast",
+      "value": "캐스트"
+    },
+    {
+      "name": "video_cast_hint",
+      "value": "캐스트를 시작할 기기를 선택하세요"
+    },
+    {
+      "name": "video_cast_disconnect",
+      "value": "캐스트 중지"
+    },
+    {
+      "name": "video_cast_connected_toast",
+      "value": "%1$s에 캐스팅 중"
+    },
+    {
+      "name": "video_cast_disconnected",
+      "value": "캐스트 연결이 끊겼습니다"
+    },
+    {
+      "name": "video_cast_unsupported",
+      "value": "이 콘텐츠는 캐스트할 수 없습니다"
+    },
+    {
       "name": "video_danmaku_on",
       "value": "탄막 켜짐"
     },

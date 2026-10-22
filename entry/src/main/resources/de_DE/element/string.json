@@ -2341,6 +2341,30 @@
       "value": "Wiedergabegeschwindigkeit"
     },
     {
+      "name": "video_cast",
+      "value": "Übertragen"
+    },
+    {
+      "name": "video_cast_hint",
+      "value": "Wähle ein Gerät für die Übertragung"
+    },
+    {
+      "name": "video_cast_disconnect",
+      "value": "Übertragung beenden"
+    },
+    {
+      "name": "video_cast_connected_toast",
+      "value": "Übertragung zu %1$s"
+    },
+    {
+      "name": "video_cast_disconnected",
+      "value": "Übertragung beendet"
+    },
+    {
+      "name": "video_cast_unsupported",
+      "value": "Aktuelle Inhalte können nicht übertragen werden"
+    },
+    {
       "name": "video_danmaku_on",
       "value": "Danmaku an"
     },

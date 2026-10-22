@@ -2389,6 +2389,30 @@
       "value": "Velocidade de reprodução"
     },
     {
+      "name": "video_cast",
+      "value": "Transmitir"
+    },
+    {
+      "name": "video_cast_hint",
+      "value": "Selecione um dispositivo para iniciar a transmissão"
+    },
+    {
+      "name": "video_cast_disconnect",
+      "value": "Parar transmissão"
+    },
+    {
+      "name": "video_cast_connected_toast",
+      "value": "Transmitindo para %1$s"
+    },
+    {
+      "name": "video_cast_disconnected",
+      "value": "Transmissão encerrada"
+    },
+    {
+      "name": "video_cast_unsupported",
+      "value": "Não é possível transmitir este conteúdo"
+    },
+    {
       "name": "video_danmaku_on",
       "value": "Danmaku ligado"
     },

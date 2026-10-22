@@ -2449,6 +2449,30 @@
       "value": "Tốc độ phát"
     },
     {
+      "name": "video_cast",
+      "value": "Truyền phát"
+    },
+    {
+      "name": "video_cast_hint",
+      "value": "Chọn thiết bị để bắt đầu truyền phát"
+    },
+    {
+      "name": "video_cast_disconnect",
+      "value": "Dừng truyền phát"
+    },
+    {
+      "name": "video_cast_connected_toast",
+      "value": "Đang truyền phát tới %1$s"
+    },
+    {
+      "name": "video_cast_disconnected",
+      "value": "Đã ngừng truyền phát"
+    },
+    {
+      "name": "video_cast_unsupported",
+      "value": "Không thể truyền phát nội dung này"
+    },
+    {
       "name": "video_danmaku_on",
       "value": "Bật danmaku"
     },

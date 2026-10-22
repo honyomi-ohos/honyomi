@@ -2265,6 +2265,30 @@
       "value": "倍速"
     },
     {
+      "name": "video_cast",
+      "value": "投放"
+    },
+    {
+      "name": "video_cast_hint",
+      "value": "選擇裝置開始投放"
+    },
+    {
+      "name": "video_cast_disconnect",
+      "value": "停止投放"
+    },
+    {
+      "name": "video_cast_connected_toast",
+      "value": "正在投放至 %1$s"
+    },
+    {
+      "name": "video_cast_disconnected",
+      "value": "已停止投放"
+    },
+    {
+      "name": "video_cast_unsupported",
+      "value": "目前內容不支援投放"
+    },
+    {
       "name": "video_danmaku_on",
       "value": "彈幕已開啟"
     },

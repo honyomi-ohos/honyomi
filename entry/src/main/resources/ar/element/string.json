@@ -2477,6 +2477,30 @@
       "value": "سرعة التشغيل"
     },
     {
+      "name": "video_cast",
+      "value": "البث"
+    },
+    {
+      "name": "video_cast_hint",
+      "value": "اختر جهازًا لبدء البث"
+    },
+    {
+      "name": "video_cast_disconnect",
+      "value": "إيقاف البث"
+    },
+    {
+      "name": "video_cast_connected_toast",
+      "value": "جارٍ البث إلى %1$s"
+    },
+    {
+      "name": "video_cast_disconnected",
+      "value": "تم قطع البث"
+    },
+    {
+      "name": "video_cast_unsupported",
+      "value": "لا يمكن بث هذا المحتوى"
+    },
+    {
       "name": "video_danmaku_on",
       "value": "دانماكو مفعّل"
     },

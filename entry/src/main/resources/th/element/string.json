@@ -2473,6 +2473,30 @@
       "value": "ความเร็วการเล่น"
     },
     {
+      "name": "video_cast",
+      "value": "แคสต์"
+    },
+    {
+      "name": "video_cast_hint",
+      "value": "เลือกอุปกรณ์เพื่อเริ่มแคสต์"
+    },
+    {
+      "name": "video_cast_disconnect",
+      "value": "หยุดแคสต์"
+    },
+    {
+      "name": "video_cast_connected_toast",
+      "value": "กำลังแคสต์ไปที่ %1$s"
+    },
+    {
+      "name": "video_cast_disconnected",
+      "value": "ยกเลิกแคสต์แล้ว"
+    },
+    {
+      "name": "video_cast_unsupported",
+      "value": "แคสต์เนื้อหานี้ไม่ได้"
+    },
+    {
       "name": "video_danmaku_on",
       "value": "เปิดดานมากุ"
     },

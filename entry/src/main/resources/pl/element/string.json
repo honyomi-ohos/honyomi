@@ -2429,6 +2429,30 @@
       "value": "Prędkość odtwarzania"
     },
     {
+      "name": "video_cast",
+      "value": "Przesyłanie"
+    },
+    {
+      "name": "video_cast_hint",
+      "value": "Wybierz urządzenie, aby rozpocząć przesyłanie"
+    },
+    {
+      "name": "video_cast_disconnect",
+      "value": "Zatrzymaj przesyłanie"
+    },
+    {
+      "name": "video_cast_connected_toast",
+      "value": "Przesyłanie do %1$s"
+    },
+    {
+      "name": "video_cast_disconnected",
+      "value": "Przesyłanie zakończone"
+    },
+    {
+      "name": "video_cast_unsupported",
+      "value": "Nie można przesłać tego materiału"
+    },
+    {
       "name": "video_danmaku_on",
       "value": "Danmaku włączone"
     },

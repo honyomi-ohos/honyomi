@@ -2457,6 +2457,30 @@
       "value": "Oynatma hızı"
     },
     {
+      "name": "video_cast",
+      "value": "Yayınla"
+    },
+    {
+      "name": "video_cast_hint",
+      "value": "Yayına başlamak için bir cihaz seçin"
+    },
+    {
+      "name": "video_cast_disconnect",
+      "value": "Yayını durdur"
+    },
+    {
+      "name": "video_cast_connected_toast",
+      "value": "%1$s cihazına yayınlanıyor"
+    },
+    {
+      "name": "video_cast_disconnected",
+      "value": "Yayın bağlantısı kesildi"
+    },
+    {
+      "name": "video_cast_unsupported",
+      "value": "Bu içerik yayınlanamıyor"
+    },
+    {
       "name": "video_danmaku_on",
       "value": "Danmaku açık"
     },

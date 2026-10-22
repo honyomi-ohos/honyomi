@@ -2353,6 +2353,30 @@
       "value": "Vitesse de lecture"
     },
     {
+      "name": "video_cast",
+      "value": "Diffuser"
+    },
+    {
+      "name": "video_cast_hint",
+      "value": "Sélectionnez un appareil pour démarrer la diffusion"
+    },
+    {
+      "name": "video_cast_disconnect",
+      "value": "Arrêter la diffusion"
+    },
+    {
+      "name": "video_cast_connected_toast",
+      "value": "Diffusion vers %1$s"
+    },
+    {
+      "name": "video_cast_disconnected",
+      "value": "Diffusion arrêtée"
+    },
+    {
+      "name": "video_cast_unsupported",
+      "value": "Impossible de diffuser ce contenu"
+    },
+    {
       "name": "video_danmaku_on",
       "value": "Danmaku activé"
     },

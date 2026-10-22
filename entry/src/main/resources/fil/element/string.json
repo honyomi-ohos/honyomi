@@ -2313,6 +2313,30 @@
       "value": "Bilis ng playback"
     },
     {
+      "name": "video_cast",
+      "value": "I-cast"
+    },
+    {
+      "name": "video_cast_hint",
+      "value": "Pumili ng device para simulan ang pag-cast"
+    },
+    {
+      "name": "video_cast_disconnect",
+      "value": "Itigil ang pag-cast"
+    },
+    {
+      "name": "video_cast_connected_toast",
+      "value": "Nagka-cast sa %1$s"
+    },
+    {
+      "name": "video_cast_disconnected",
+      "value": "Natigil ang pag-cast"
+    },
+    {
+      "name": "video_cast_unsupported",
+      "value": "Hindi ma-cast ang content na ito"
+    },
+    {
       "name": "video_danmaku_on",
       "value": "Naka-on ang danmaku"
     },

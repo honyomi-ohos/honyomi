@@ -2409,6 +2409,30 @@
       "value": "Kelajuan main"
     },
     {
+      "name": "video_cast",
+      "value": "Transmisi"
+    },
+    {
+      "name": "video_cast_hint",
+      "value": "Pilih peranti untuk mula menghantar"
+    },
+    {
+      "name": "video_cast_disconnect",
+      "value": "Henti hantar"
+    },
+    {
+      "name": "video_cast_connected_toast",
+      "value": "Menghantar ke %1$s"
+    },
+    {
+      "name": "video_cast_disconnected",
+      "value": "Transmisi terputus"
+    },
+    {
+      "name": "video_cast_unsupported",
+      "value": "Kandungan ini tidak boleh dihantar"
+    },
+    {
       "name": "video_danmaku_on",
       "value": "Danmaku hidup"
     },

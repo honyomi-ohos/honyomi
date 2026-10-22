@@ -2469,6 +2469,30 @@
       "value": "Скорость"
     },
     {
+      "name": "video_cast",
+      "value": "Трансляция"
+    },
+    {
+      "name": "video_cast_hint",
+      "value": "Выберите устройство для трансляции"
+    },
+    {
+      "name": "video_cast_disconnect",
+      "value": "Остановить трансляцию"
+    },
+    {
+      "name": "video_cast_connected_toast",
+      "value": "Трансляция на %1$s"
+    },
+    {
+      "name": "video_cast_disconnected",
+      "value": "Трансляция отключена"
+    },
+    {
+      "name": "video_cast_unsupported",
+      "value": "Этот контент нельзя транслировать"
+    },
+    {
       "name": "video_danmaku_on",
       "value": "Данмаку включены"
     },

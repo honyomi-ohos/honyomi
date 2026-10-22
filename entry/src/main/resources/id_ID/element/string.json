@@ -2389,6 +2389,30 @@
       "value": "Kecepatan putar"
     },
     {
+      "name": "video_cast",
+      "value": "Transmisikan"
+    },
+    {
+      "name": "video_cast_hint",
+      "value": "Pilih perangkat untuk memulai transmisi"
+    },
+    {
+      "name": "video_cast_disconnect",
+      "value": "Hentikan transmisi"
+    },
+    {
+      "name": "video_cast_connected_toast",
+      "value": "Mentransmisikan ke %1$s"
+    },
+    {
+      "name": "video_cast_disconnected",
+      "value": "Transmisi terputus"
+    },
+    {
+      "name": "video_cast_unsupported",
+      "value": "Konten ini tidak dapat ditransmisikan"
+    },
+    {
       "name": "video_danmaku_on",
       "value": "Danmaku nyala"
     },

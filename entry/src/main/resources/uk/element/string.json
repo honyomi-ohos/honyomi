@@ -2469,6 +2469,30 @@
       "value": "Швидкість"
     },
     {
+      "name": "video_cast",
+      "value": "Трансляція"
+    },
+    {
+      "name": "video_cast_hint",
+      "value": "Виберіть пристрій для трансляції"
+    },
+    {
+      "name": "video_cast_disconnect",
+      "value": "Зупинити трансляцію"
+    },
+    {
+      "name": "video_cast_connected_toast",
+      "value": "Трансляція на %1$s"
+    },
+    {
+      "name": "video_cast_disconnected",
+      "value": "Трансляцію припинено"
+    },
+    {
+      "name": "video_cast_unsupported",
+      "value": "Цей вміст не можна транслювати"
+    },
+    {
       "name": "video_danmaku_on",
       "value": "Данмаку увімкнено"
     },

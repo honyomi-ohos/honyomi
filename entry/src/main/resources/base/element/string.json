@@ -2709,6 +2709,30 @@
       "value": "Playback speed"
     },
     {
+      "name": "video_cast",
+      "value": "Cast"
+    },
+    {
+      "name": "video_cast_hint",
+      "value": "Select a device to start casting"
+    },
+    {
+      "name": "video_cast_disconnect",
+      "value": "Stop casting"
+    },
+    {
+      "name": "video_cast_connected_toast",
+      "value": "Casting to %1$s"
+    },
+    {
+      "name": "video_cast_disconnected",
+      "value": "Cast disconnected"
+    },
+    {
+      "name": "video_cast_unsupported",
+      "value": "Current media can't be cast"
+    },
+    {
       "name": "video_danmaku_on",
       "value": "Danmaku on"
     },

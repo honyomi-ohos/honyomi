@@ -4,6 +4,7 @@ import { media } from '@kit.MediaKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { window } from '@kit.ArkUI';
 import { deviceInfo } from '@kit.BasicServicesKit';
+import { AVCastPicker } from '@kit.AVSessionKit';
 import { CacheListener } from '@ohos/video-cache';
 import { AppDb } from '../data/AppDb';
 import { ChapterRepo, HistoryRepo, MangaRepo } from '../data/Repos';
@@ -23,6 +24,7 @@ import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { VideoCacheServer } from '../common/VideoCacheServer';
+import { VideoCastItem, VideoCastManager } from '../common/VideoCast';
 import { ChapterNeighbors, ReaderChapterNav } from '../common/ReaderChapterNav';
 import { AppIcon } from './components/AppIcon';
 import { DanmakuController, DanmakuView } from './components/DanmakuView';
@@ -108,6 +110,8 @@ export struct VideoPlayerPage {
   @State volume: number = 1.0;
   @State muted: boolean = false;
   @State volHudPct: number = -1;
+  @State casting: boolean = false;
+  @State castDevice: string = '';
   private mangaId: number = -1;
   private chapterId: number = -1;
   private resumeMs: number = 0;
@@ -149,6 +153,32 @@ export struct VideoPlayerPage {
   private dmLoading: boolean = false;
   private dmChapterId: number = -1;
   private instId: number = ++vpSeq;
+  // 投屏：AVCastPicker 发现设备，连接/断开/远端播放态经 VideoCastManager 回调驱动页面
+  private castMgr: VideoCastManager = new VideoCastManager({
+    onConnected: (deviceName: string): void => {
+      this.onCastConnected(deviceName);
+    },
+    onDisconnected: (positionMs: number): void => {
+      this.onCastDisconnected(positionMs);
+    },
+    onPlayback: (playing: boolean, positionMs: number, durationMs: number): void => {
+      this.onCastPlayback(playing, positionMs, durationMs);
+    },
+    onEnded: (): void => {
+      this.onCastEnded();
+    },
+    onCommand: (command: string): void => {
+      if (command === 'play') {
+        if (!this.playing) {
+          this.togglePlay();
+        }
+      } else if (command === 'pause') {
+        if (this.playing) {
+          this.togglePlay();
+        }
+      }
+    }
+  });
   // BT 边下边播：localPath 为预分配稀疏文件，fdSrc 须限制在已下载字节数内，
   // 到达边界（completed/error）后等待新数据重开播放器并续播
   private btPending: boolean = false;
@@ -191,6 +221,7 @@ export struct VideoPlayerPage {
     this.stopTicker();
     this.clearUiTimers();
     this.releasePlayer();
+    this.castMgr.destroy();
     if (this.win !== undefined) {
       // 还原系统栏与窗口方向；PC 全屏态先退出沉浸式，避免下一页残留无标题栏窗口
       if (this.pcLike && this.fullscreen) {
@@ -246,6 +277,23 @@ export struct VideoPlayerPage {
           })
           .margin({ right: 8 })
       }
+      Column() {
+        AppIcon({
+          name: 'cast',
+          iconSize: 20,
+          tint: this.casting ? this.pal.primary : Color.White
+        })
+      }
+      .width(38)
+      .height(38)
+      .borderRadius(19)
+      .justifyContent(FlexAlign.Center)
+      .alignItems(HorizontalAlign.Center)
+      .backgroundColor('rgba(255,255,255,0.12)')
+      .margin({ right: 8 })
+      .onClick(() => {
+        this.openCastSheet();
+      })
       Column() {
         AppIcon({ name: 'lock', iconSize: 20, tint: Color.White })
       }
@@ -488,6 +536,8 @@ export struct VideoPlayerPage {
             this.qualityPane()
           } else if (this.sheetMode === 3) {
             this.speedPane()
+          } else if (this.sheetMode === 5) {
+            this.castPane()
           } else {
             this.settingsPane()
           }
@@ -586,6 +636,49 @@ export struct VideoPlayerPage {
       .width('100%')
     }
     .width('100%')
+  }
+
+  // 投屏弹层：系统 AVCastPicker 发现连接设备；已连接时显示设备与断开入口
+  @Builder
+  castPane() {
+    Column({ space: 16 }) {
+      if (this.casting) {
+        Row({ space: 10 }) {
+          AppIcon({ name: 'cast', iconSize: 22, tint: this.pal.primary })
+          Text(this.castDevice)
+            .fontSize(16)
+            .fontColor(this.pal.text)
+            .layoutWeight(1)
+            .maxLines(1)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+          Button($r('app.string.video_cast_disconnect'))
+            .fontSize(14)
+            .height(36)
+            .backgroundColor(this.pal.primary)
+            .onClick(() => {
+              this.showSheet = false;
+              this.castMgr.stopCasting();
+            })
+        }
+        .width('100%')
+      } else {
+        Text($r('app.string.video_cast_hint'))
+          .fontSize(14)
+          .fontColor(this.pal.sub)
+        Row() {
+          AVCastPicker({
+            normalColor: '#666666'
+          })
+            .width(44)
+            .height(44)
+        }
+        .width('100%')
+        .justifyContent(FlexAlign.Center)
+        .margin({ top: 8 })
+      }
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
   }
 
   @Builder
@@ -916,6 +1009,27 @@ export struct VideoPlayerPage {
           .offset({ x: this.seekToast < 0 ? '-22%' : '22%', y: '-10%' })
         }
 
+        // 投屏中指示：顶部居中显示远端设备名
+        if (this.casting) {
+          Row({ space: 6 }) {
+            AppIcon({ name: 'cast', iconSize: 16, tint: Color.White })
+            Text(this.castDevice)
+              .fontSize(12)
+              .fontColor(Color.White)
+              .maxLines(1)
+          }
+          .padding({
+            left: 12,
+            right: 12,
+            top: 5,
+            bottom: 5
+          })
+          .borderRadius(14)
+          .backgroundColor('rgba(0,0,0,0.55)')
+          .position({ x: '50%', y: this.fullscreen ? 56 : this.statusBarH + 64 })
+          .markAnchor({ x: '50%' })
+        }
+
         // 键盘音量 HUD：↑↓/M 调节时短暂显示音量条
         if (this.volHudPct >= 0) {
           Row({ space: 8 }) {
@@ -1218,6 +1332,11 @@ export struct VideoPlayerPage {
 
   private startCurrent(): void {
     if (this.surfaceId === '') {
+      return;
+    }
+    // 投屏中：本机不播放，改为向远端下发当前资源
+    if (this.casting) {
+      this.startCastPlayback();
       return;
     }
     // BT 章节未完整下载：进入等待流（引擎选择/入队/轮询头部就绪起播）
@@ -1629,6 +1748,10 @@ export struct VideoPlayerPage {
       if (player === undefined || this.dragging) {
         return;
       }
+      // 投屏中进度来自远端 playbackStateChange 回调，跳过本机轮询
+      if (this.casting) {
+        return;
+      }
       if (player.currentTime >= 0) {
         this.positionMs = player.currentTime;
       }
@@ -1817,7 +1940,7 @@ export struct VideoPlayerPage {
       clearTimeout(this.boostTimer);
       this.boostTimer = -1;
     }
-    if (this.locked || !this.playing || this.speed >= 3.0) {
+    if (this.locked || this.casting || !this.playing || this.speed >= 3.0) {
       return;
     }
     this.boostTimer = setTimeout(() => {
@@ -1912,6 +2035,10 @@ export struct VideoPlayerPage {
   }
 
   private togglePlay(): void {
+    if (this.casting) {
+      this.castMgr.sendPlay(!this.playing);
+      return;
+    }
     const player = this.player;
     if (player === undefined) {
       this.startCurrent();
@@ -2169,6 +2296,11 @@ export struct VideoPlayerPage {
   }
 
   private seekTo(ms: number): void {
+    if (this.casting) {
+      this.positionMs = ms;
+      this.castMgr.seek(ms);
+      return;
+    }
     const player = this.player;
     if (player === undefined) {
       return;
@@ -2224,6 +2356,139 @@ export struct VideoPlayerPage {
     this.stopTicker();
     this.chapterId = id;
     this.loadChapter();
+  }
+
+  // ---- 投屏（仅支持网络直链：BT 边下边播/纯本地文件无远端可拉流地址） ----
+
+  // 当前画质是否可投屏，可投返回直链，否则返回空串
+  private canCastUrl(): string {
+    if (this.btPending || this.btProgressive) {
+      return '';
+    }
+    if (this.qualityIndex < 0 || this.qualityIndex >= this.videos.length) {
+      return '';
+    }
+    const video = this.videos[this.qualityIndex];
+    return video.url.indexOf('http') === 0 ? video.url : '';
+  }
+
+  // 投屏入口：先确保 AVSession 与元数据就绪（否则 picker 设备列表为空），再打开投屏弹层
+  private async openCastSheet(): Promise<void> {
+    if (this.loading) {
+      return;
+    }
+    if (this.casting) {
+      this.openSheet(5);
+      return;
+    }
+    if (this.canCastUrl() === '') {
+      Util.toastRes(this.getUIContext(), $r('app.string.video_cast_unsupported'));
+      return;
+    }
+    const ok: boolean = await this.castMgr.ensureSession(Util.hostAbilityContext(this.getUIContext()), {
+      assetId: `cast-${this.chapterId}-${this.qualityIndex}`,
+      title: this.chapter.name,
+      artist: this.manga.title
+    });
+    if (!ok) {
+      return;
+    }
+    this.openSheet(5);
+  }
+
+  // 向远端下发当前资源（切集/切画质在投屏中复用本方法）
+  private startCastPlayback(): void {
+    const url = this.canCastUrl();
+    if (url === '') {
+      Util.toastRes(this.getUIContext(), $r('app.string.video_cast_unsupported'));
+      this.castMgr.stopCasting();
+      return;
+    }
+    const item: VideoCastItem = {
+      assetId: `cast-${this.chapterId}-${this.qualityIndex}`,
+      title: this.chapter.name,
+      artist: this.manga.title,
+      mediaUri: url,
+      startPosition: Math.floor(this.positionMs),
+      duration: Math.floor(this.durationMs)
+    };
+    this.castMgr.startCast(item);
+  }
+
+  // 远端设备连接成功：暂停本机播放并从当前进度开始投屏
+  private onCastConnected(deviceName: string): void {
+    if (this.destroyed) {
+      return;
+    }
+    this.log(`cast connected: ${deviceName}`);
+    this.casting = true;
+    this.castDevice = deviceName;
+    Util.toastRes(this.getUIContext(), $r('app.string.video_cast_connected_toast'), [deviceName]);
+    const player = this.player;
+    if (player !== undefined) {
+      try {
+        player.pause();
+      } catch (e) {
+        this.log(`cast pause local catch: ${e}`);
+      }
+    }
+    this.playing = false;
+    this.persist(false);
+    this.startCastPlayback();
+  }
+
+  // 投屏断开：按远端进度续播本机
+  private onCastDisconnected(positionMs: number): void {
+    if (this.destroyed) {
+      return;
+    }
+    this.log(`cast disconnected at ${positionMs}`);
+    this.casting = false;
+    this.castDevice = '';
+    Util.toastRes(this.getUIContext(), $r('app.string.video_cast_disconnected'));
+    const resume: number = positionMs > 0 ? positionMs : Math.floor(this.positionMs);
+    this.positionMs = resume;
+    this.resumeMs = resume;
+    const player = this.player;
+    if (player !== undefined && this.errorText === '' && !this.loading) {
+      try {
+        player.seek(resume, media.SeekMode.SEEK_PREV_SYNC);
+        player.play();
+        this.playing = true;
+        this.armAutoHide();
+      } catch (e) {
+        this.log(`cast resume local catch: ${e}`);
+      }
+    } else if (!this.loading && this.errorText === '') {
+      // 投屏中切集后本机播放器已释放：重新起播续接远端进度
+      this.startCurrent();
+    }
+  }
+
+  // 远端播放状态同步（进度/时长/播放中）
+  private onCastPlayback(playing: boolean, positionMs: number, durationMs: number): void {
+    if (this.destroyed) {
+      return;
+    }
+    this.positionMs = positionMs;
+    if (durationMs > 0) {
+      this.durationMs = durationMs;
+    }
+    this.playing = playing;
+    if (Math.abs(positionMs - this.savedMs) >= 5000) {
+      this.persist(false);
+    }
+  }
+
+  // 远端播放完毕：自动下一集（下一集仍走投屏路径）
+  private onCastEnded(): void {
+    if (this.destroyed) {
+      return;
+    }
+    this.persist(true);
+    if (this.autoNext && this.nextId > 0) {
+      this.openChapter(this.nextId);
+    }
   }
 
   // ---- 倍速 / 弹幕 ----
@@ -2371,6 +2636,9 @@ export struct VideoPlayerPage {
     }
     if (this.sheetMode === 3) {
       return $r('app.string.video_speed');
+    }
+    if (this.sheetMode === 5) {
+      return $r('app.string.video_cast');
     }
     return $r('app.string.video_settings');
   }

@@ -2817,6 +2817,30 @@
       "value": "再生速度"
     },
     {
+      "name": "video_cast",
+      "value": "キャスト"
+    },
+    {
+      "name": "video_cast_hint",
+      "value": "キャストを開始するデバイスを選択"
+    },
+    {
+      "name": "video_cast_disconnect",
+      "value": "キャストを停止"
+    },
+    {
+      "name": "video_cast_connected_toast",
+      "value": "%1$s にキャストしています"
+    },
+    {
+      "name": "video_cast_disconnected",
+      "value": "キャストを切断しました"
+    },
+    {
+      "name": "video_cast_unsupported",
+      "value": "このコンテンツはキャストできません"
+    },
+    {
       "name": "video_danmaku_on",
       "value": "弾幕オン"
     },
