@@ -941,10 +941,6 @@
       "value": "웹툰"
     },
     {
-      "name": "reader_set_dual_page",
-      "value": "두 페이지 (가로)"
-    },
-    {
       "name": "reader_set_display_group",
       "value": "표시"
     },
@@ -1315,10 +1311,6 @@
     {
       "name": "reader_nav_none",
       "value": "없음"
-    },
-    {
-      "name": "reader_dual_page",
-      "value": "두 페이지"
     },
     {
       "name": "reader_webtoon_padding",

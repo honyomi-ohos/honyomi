@@ -909,10 +909,6 @@
       "value": "Lungsur halaman menegak"
     },
     {
-      "name": "reader_set_dual_page",
-      "value": "Dua halaman (rentang)"
-    },
-    {
       "name": "reader_set_display_group",
       "value": "Paparan"
     },
@@ -1279,10 +1275,6 @@
     {
       "name": "reader_nav_none",
       "value": "Tiada"
-    },
-    {
-      "name": "reader_dual_page",
-      "value": "Paparan dua halaman"
     },
     {
       "name": "reader_webtoon_padding",

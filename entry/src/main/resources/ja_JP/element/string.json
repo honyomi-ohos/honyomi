@@ -937,10 +937,6 @@
       "value": "ウェブトゥーン"
     },
     {
-      "name": "reader_set_dual_page",
-      "value": "見開き（横向き）"
-    },
-    {
       "name": "reader_set_display_group",
       "value": "表示"
     },
@@ -1311,10 +1307,6 @@
     {
       "name": "reader_nav_none",
       "value": "なし"
-    },
-    {
-      "name": "reader_dual_page",
-      "value": "見開き"
     },
     {
       "name": "reader_webtoon_padding",

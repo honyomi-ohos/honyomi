@@ -917,10 +917,6 @@
       "value": "Geser halaman vertikal"
     },
     {
-      "name": "reader_set_dual_page",
-      "value": "Dua halaman (lanskap)"
-    },
-    {
       "name": "reader_set_display_group",
       "value": "Tampilan"
     },
@@ -1283,10 +1279,6 @@
     {
       "name": "reader_nav_none",
       "value": "Tidak ada"
-    },
-    {
-      "name": "reader_dual_page",
-      "value": "Tampilan dua halaman"
     },
     {
       "name": "reader_webtoon_padding",

@@ -593,10 +593,6 @@
       "value": "None"
     },
     {
-      "name": "reader_dual_page",
-      "value": "Dual page view"
-    },
-    {
       "name": "reader_webtoon_padding",
       "value": "Webtoon side padding"
     },
@@ -2439,10 +2435,6 @@
     {
       "name": "reader_set_mode_webtoon",
       "value": "Webtoon"
-    },
-    {
-      "name": "reader_set_dual_page",
-      "value": "Dual page (landscape)"
     },
     {
       "name": "reader_set_display_group",

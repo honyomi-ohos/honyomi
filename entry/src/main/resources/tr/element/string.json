@@ -929,10 +929,6 @@
       "value": "Dikey sayfalama"
     },
     {
-      "name": "reader_set_dual_page",
-      "value": "Çift sayfa (yatay)"
-    },
-    {
       "name": "reader_set_display_group",
       "value": "Görünüm"
     },
@@ -1303,10 +1299,6 @@
     {
       "name": "reader_nav_none",
       "value": "Yok"
-    },
-    {
-      "name": "reader_dual_page",
-      "value": "Çift sayfa"
     },
     {
       "name": "reader_webtoon_padding",

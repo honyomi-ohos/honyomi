@@ -937,10 +937,6 @@
       "value": "ويبتون"
     },
     {
-      "name": "reader_set_dual_page",
-      "value": "صفحتان (أفقي)"
-    },
-    {
       "name": "reader_set_display_group",
       "value": "العرض"
     },
@@ -1311,10 +1307,6 @@
     {
       "name": "reader_nav_none",
       "value": "بدون"
-    },
-    {
-      "name": "reader_dual_page",
-      "value": "عرض صفحتين"
     },
     {
       "name": "reader_webtoon_padding",

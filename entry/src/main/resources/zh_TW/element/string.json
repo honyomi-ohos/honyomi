@@ -1085,10 +1085,6 @@
       "value": "無"
     },
     {
-      "name": "reader_dual_page",
-      "value": "雙頁顯示"
-    },
-    {
       "name": "reader_webtoon_padding",
       "value": "條漫側邊距"
     },
@@ -1651,10 +1647,6 @@
     {
       "name": "reader_set_mode_smart_grip",
       "value": "智感握姿"
-    },
-    {
-      "name": "reader_set_dual_page",
-      "value": "雙頁顯示（橫向模式）"
     },
     {
       "name": "reader_set_display_group",

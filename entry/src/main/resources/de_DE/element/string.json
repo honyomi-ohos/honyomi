@@ -861,10 +861,6 @@
       "value": "Vertikales Blättern"
     },
     {
-      "name": "reader_set_dual_page",
-      "value": "Doppelseite (Querformat)"
-    },
-    {
       "name": "reader_set_display_group",
       "value": "Anzeige"
     },
@@ -1235,10 +1231,6 @@
     {
       "name": "reader_nav_none",
       "value": "Keine"
-    },
-    {
-      "name": "reader_dual_page",
-      "value": "Doppelseitenansicht"
     },
     {
       "name": "reader_webtoon_padding",

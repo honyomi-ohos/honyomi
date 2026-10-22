@@ -925,10 +925,6 @@
       "value": "Lật trang dọc"
     },
     {
-      "name": "reader_set_dual_page",
-      "value": "Hai trang (ngang)"
-    },
-    {
       "name": "reader_set_display_group",
       "value": "Hiển thị"
     },
@@ -1299,10 +1295,6 @@
     {
       "name": "reader_nav_none",
       "value": "Không"
-    },
-    {
-      "name": "reader_dual_page",
-      "value": "Xem hai trang"
     },
     {
       "name": "reader_webtoon_padding",

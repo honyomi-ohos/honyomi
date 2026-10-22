@@ -933,10 +933,6 @@
       "value": "เว็บตูน"
     },
     {
-      "name": "reader_set_dual_page",
-      "value": "สองหน้า (แนวนอน)"
-    },
-    {
       "name": "reader_set_display_group",
       "value": "การแสดงผล"
     },
@@ -1307,10 +1303,6 @@
     {
       "name": "reader_nav_none",
       "value": "ไม่มี"
-    },
-    {
-      "name": "reader_dual_page",
-      "value": "แสดงสองหน้า"
     },
     {
       "name": "reader_webtoon_padding",

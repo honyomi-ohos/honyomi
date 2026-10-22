@@ -117,8 +117,8 @@ export struct ReaderPage {
   @State filterSaturation: number = 100;
   // 点击翻页区域导航：'default','ltr','rtl','vertical','edge','none'
   @State navMode: string = 'default';
-  // 双页显示（横向分页模式生效）
-  @State dualPage: boolean = false;
+  // 横屏（内容区宽>高）自动双页：横向分页模式下一屏两页，竖屏恢复单页
+  @State isLandscape: boolean = false;
   // 条漫侧边距（%）
   @State webtoonPadding: number = 0;
   // 翻页动画：curl=仿真 slide=滑动 cover=覆盖（条漫与垂直模式不走仿真）
@@ -170,7 +170,6 @@ export struct ReaderPage {
     this.filterSaturation = Settings.getReaderSaturation();
     this.navMode = Settings.getReaderNavMode();
     this.pageAnim = Settings.getReaderPageAnim();
-    this.dualPage = Settings.getReaderDualPage();
     this.webtoonPadding = Settings.getReaderWebtoonPadding();
     this.applyOrientation();
     this.applyBrightness();
@@ -653,6 +652,9 @@ export struct ReaderPage {
           .width('100%')
           .height('100%')
           .justifyContent(FlexAlign.Center)
+          .onAreaChange((_old: Area, newArea: Area) => {
+            this.syncReaderArea(newArea);
+          })
         } else if (this.mode === 'webtoon') {
           // 条漫模式：PixelMap 直绘的无限竖向滚动（防防盗链拦截 + 内存受控）
           ReaderFilterArea({
@@ -879,17 +881,6 @@ export struct ReaderPage {
             bottom: 8
           })
 
-          if (this.mode !== 'vertical') {
-            Divider().color(this.pal.divider)
-            SwitchRow({
-              title: $r('app.string.reader_dual_page'),
-              isOn: this.dualPage,
-              onChange: (value: boolean): void => {
-                this.dualPage = value;
-                Settings.setReaderDualPage(value);
-              }
-            })
-          }
           Divider().color(this.pal.divider)
           SwitchRow({
             title: $r('app.string.reader_crop_borders'),
@@ -1244,6 +1235,7 @@ export struct ReaderPage {
     if (typeof gy === 'number') {
       this.readerOffY = gy;
     }
+    this.isLandscape = this.readerW > this.readerH;
   }
 
   private async loadChapter(): Promise<void> {
@@ -1537,9 +1529,9 @@ export struct ReaderPage {
     Settings.setReaderCrop(v);
   }
 
-  // 双页显示：横向分页模式（LTR/RTL/智感握姿）下 Swiper 一屏两页
+  // 双页显示：横屏（内容区宽>高）时横向分页模式（LTR/RTL/智感握姿）下 Swiper 一屏两页
   private dualPageActive(): boolean {
-    return this.dualPage && this.mode !== 'vertical';
+    return this.isLandscape && this.mode !== 'vertical' && this.mode !== 'webtoon';
   }
 
   // Slider 跳页（按真实页序）
@@ -1786,7 +1778,7 @@ export struct ReaderPage {
   }
 
   private curlDual(): boolean {
-    return this.dualPage && this.mode !== 'vertical';
+    return this.isLandscape && this.mode !== 'vertical' && this.mode !== 'webtoon';
   }
 
   private curlCount(): number {

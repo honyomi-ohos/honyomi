@@ -937,10 +937,6 @@
       "value": "Вебтун"
     },
     {
-      "name": "reader_set_dual_page",
-      "value": "Дві сторінки (альбомна)"
-    },
-    {
       "name": "reader_set_display_group",
       "value": "Відображення"
     },
@@ -1311,10 +1307,6 @@
     {
       "name": "reader_nav_none",
       "value": "Немає"
-    },
-    {
-      "name": "reader_dual_page",
-      "value": "Дві сторінки"
     },
     {
       "name": "reader_webtoon_padding",

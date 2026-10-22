@@ -877,10 +877,6 @@
       "value": "Patayong paglipat ng pahina"
     },
     {
-      "name": "reader_set_dual_page",
-      "value": "Dalawang pahina (landscape)"
-    },
-    {
       "name": "reader_set_show_page_number",
       "value": "Ipakita ang numero ng pahina"
     },
@@ -1231,10 +1227,6 @@
     {
       "name": "reader_nav_none",
       "value": "Wala"
-    },
-    {
-      "name": "reader_dual_page",
-      "value": "Dalawang pahina"
     },
     {
       "name": "reader_webtoon_padding",

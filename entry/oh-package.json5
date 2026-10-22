@@ -7,8 +7,10 @@
   "license": "",
   "dependencies": {
     "@ohos/video-cache": "^1.0.0",
-    "@honyomi/torrent": "file:./libs/torrent-default.tgz",
     "libjsvmengine.so": "file:./src/main/cpp/types/libjsvmengine"
+  },
+  "dynamicDependencies": {
+    "@honyomi/torrent": "file:../torrent/torrent"
   },
   "devDependencies": {
     "@ohos/hamock": "1.0.0"

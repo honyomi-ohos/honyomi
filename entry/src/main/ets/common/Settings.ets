@@ -1033,14 +1033,6 @@ export class Settings {
     Settings.setBool('readerShowPageNumber', v);
   }
 
-  static getReaderDualPage(): boolean {
-    return Settings.getBool('readerDualPage', false);
-  }
-
-  static setReaderDualPage(v: boolean): void {
-    Settings.setBool('readerDualPage', v);
-  }
-
   static getReaderTheme(): number {
     return Settings.getNum('readerTheme', 3);
   }

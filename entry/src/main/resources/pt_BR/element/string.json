@@ -877,10 +877,6 @@
       "value": "Paginação vertical"
     },
     {
-      "name": "reader_set_dual_page",
-      "value": "Página dupla (paisagem)"
-    },
-    {
       "name": "reader_set_display_group",
       "value": "Exibição"
     },
@@ -1235,10 +1231,6 @@
     {
       "name": "reader_nav_none",
       "value": "Nenhum"
-    },
-    {
-      "name": "reader_dual_page",
-      "value": "Visualização de página dupla"
     },
     {
       "name": "reader_webtoon_padding",

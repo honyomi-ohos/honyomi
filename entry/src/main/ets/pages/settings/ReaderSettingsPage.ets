@@ -7,7 +7,7 @@ import { PrefGroup, PrefSelectRow, PrefSwitchRow, TextRow } from '../components/
 
 const THEME_VALUES: number[] = [3, 0, 1, 2];
 
-// 阅读器设置内容：默认模式/双页/页码/背景色/亮度
+// 阅读器设置内容：默认模式/页码/背景色/亮度（双页改为横屏自动，无需设置项）
 @Component
 export struct ReaderSettingsContent {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
@@ -43,14 +43,6 @@ export struct ReaderSettingsContent {
             selectedIndex: this.modeIndex(),
             onSelectIndex: (index: number): void => {
               Settings.setReaderMode(this.modeValues[index]);
-            }
-          })
-          Divider().color(this.pal.divider).margin({ left: 16 })
-          PrefSwitchRow({
-            title: $r('app.string.reader_set_dual_page'),
-            initValue: Settings.getReaderDualPage(),
-            apply: (value: boolean): void => {
-              Settings.setReaderDualPage(value);
             }
           })
         }

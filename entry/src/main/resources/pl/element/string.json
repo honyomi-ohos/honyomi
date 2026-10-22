@@ -909,10 +909,6 @@
       "value": "Pionowe przewracanie"
     },
     {
-      "name": "reader_set_dual_page",
-      "value": "Podwójna strona (poziomo)"
-    },
-    {
       "name": "reader_set_display_group",
       "value": "Wyświetlanie"
     },
@@ -1283,10 +1279,6 @@
     {
       "name": "reader_nav_none",
       "value": "Brak"
-    },
-    {
-      "name": "reader_dual_page",
-      "value": "Widok dwóch stron"
     },
     {
       "name": "reader_webtoon_padding",
