@@ -1973,6 +1973,18 @@
       "value": "AES-GCM-Ver- und Entschlüsselung für Erweiterungen (Plug-in-Laufzeit)"
     },
     {
+      "name": "licenses_desc_libtorrent",
+      "value": "BitTorrent-Download-Engine für Torrent-Downloads"
+    },
+    {
+      "name": "licenses_desc_openssl",
+      "value": "TLS- und Kryptografie-Unterstützung für die BitTorrent-Engine"
+    },
+    {
+      "name": "licenses_desc_boost",
+      "value": "C++-Bibliotheks-Header, die von libtorrent benötigt werden"
+    },
+    {
       "name": "privacy_policy_title",
       "value": "Datenschutzrichtlinie"
     },

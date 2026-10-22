@@ -2041,6 +2041,18 @@
       "value": "Penyulitan dan penyahsulitan AES-GCM untuk sambungan (masa jalan pemalam)"
     },
     {
+      "name": "licenses_desc_libtorrent",
+      "value": "Enjin muat turun BitTorrent untuk muat turun torrent"
+    },
+    {
+      "name": "licenses_desc_openssl",
+      "value": "Sokongan TLS dan kriptografi untuk enjin BitTorrent"
+    },
+    {
+      "name": "licenses_desc_boost",
+      "value": "Header pustaka C++ yang diperlukan oleh libtorrent"
+    },
+    {
       "name": "privacy_policy_title",
       "value": "Dasar privasi"
     },

@@ -1965,6 +1965,18 @@
       "value": "Pag-encrypt at pag-decrypt ng AES-GCM para sa mga extension (runtime ng plugin)"
     },
     {
+      "name": "licenses_desc_libtorrent",
+      "value": "Download engine ng BitTorrent para sa mga torrent download"
+    },
+    {
+      "name": "licenses_desc_openssl",
+      "value": "Suporta sa TLS at kriptograpiya para sa engine ng BitTorrent"
+    },
+    {
+      "name": "licenses_desc_boost",
+      "value": "Mga header ng C++ library na kailangan ng libtorrent"
+    },
+    {
       "name": "privacy_policy_title",
       "value": "Patakaran sa privacy"
     },

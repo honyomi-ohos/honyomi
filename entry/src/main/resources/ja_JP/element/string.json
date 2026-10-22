@@ -2433,6 +2433,18 @@
       "value": "拡張機能向け AES-GCM の暗号化と復号（プラグインランタイム）"
     },
     {
+      "name": "licenses_desc_libtorrent",
+      "value": "Torrent ダウンロードのための BitTorrent ダウンロードエンジン"
+    },
+    {
+      "name": "licenses_desc_openssl",
+      "value": "BitTorrent エンジン向けの TLS・暗号化サポート"
+    },
+    {
+      "name": "licenses_desc_boost",
+      "value": "libtorrent が必要とする C++ ライブラリヘッダー"
+    },
+    {
       "name": "privacy_policy_title",
       "value": "プライバシーポリシー"
     },

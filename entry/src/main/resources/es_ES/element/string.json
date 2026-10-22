@@ -2037,6 +2037,18 @@
       "value": "Cifrado y descifrado AES-GCM para extensiones (ejecución del plugin)"
     },
     {
+      "name": "licenses_desc_libtorrent",
+      "value": "Motor de descarga BitTorrent para descargas torrent"
+    },
+    {
+      "name": "licenses_desc_openssl",
+      "value": "Soporte de TLS y cifrado para el motor BitTorrent"
+    },
+    {
+      "name": "licenses_desc_boost",
+      "value": "Cabeceras de bibliotecas C++ requeridas por libtorrent"
+    },
+    {
       "name": "privacy_policy_title",
       "value": "Política de privacidad"
     },

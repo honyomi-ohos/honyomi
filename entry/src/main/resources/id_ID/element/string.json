@@ -2029,6 +2029,18 @@
       "value": "Enkripsi dan dekripsi AES-GCM untuk ekstensi (runtime plugin)"
     },
     {
+      "name": "licenses_desc_libtorrent",
+      "value": "Mesin unduh BitTorrent untuk unduhan torrent"
+    },
+    {
+      "name": "licenses_desc_openssl",
+      "value": "Dukungan TLS dan kriptografi untuk mesin BitTorrent"
+    },
+    {
+      "name": "licenses_desc_boost",
+      "value": "Header pustaka C++ yang dibutuhkan libtorrent"
+    },
+    {
       "name": "privacy_policy_title",
       "value": "Kebijakan privasi"
     },

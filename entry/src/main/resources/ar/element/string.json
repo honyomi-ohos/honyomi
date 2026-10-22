@@ -2093,6 +2093,18 @@
       "value": "تشفير وفك تشفير AES-GCM للإضافات (بيئة الإضافة)"
     },
     {
+      "name": "licenses_desc_libtorrent",
+      "value": "محرك تنزيل BitTorrent لتنزيلات التورنت"
+    },
+    {
+      "name": "licenses_desc_openssl",
+      "value": "دعم TLS والتشفير لمحرك BitTorrent"
+    },
+    {
+      "name": "licenses_desc_boost",
+      "value": "ترويسات مكتبة C++ التي يتطلبها libtorrent"
+    },
+    {
       "name": "privacy_policy_title",
       "value": "سياسة الخصوصية"
     },

@@ -135,6 +135,32 @@ function buildLicenseItems(): LicenseItem[] {
       url: 'https://github.com/ricmoo/aes-js',
       licenseFile: 'license_mit.txt',
       description: $r('app.string.licenses_desc_aesjs')
+    },
+    {
+      // torrent 模块（@honyomi/torrent）内置的 BT 下载引擎及其依赖，
+      // 预编译静态库随包分发，协议全文取自模块 prebuilt 目录
+      name: 'libtorrent-rasterbar',
+      version: '2.0.15',
+      license: 'BSD-3-Clause',
+      url: 'https://github.com/arvidn/libtorrent',
+      licenseFile: 'license_libtorrent.txt',
+      description: $r('app.string.licenses_desc_libtorrent')
+    },
+    {
+      name: 'OpenSSL',
+      version: '3.5.9',
+      license: 'Apache-2.0',
+      url: 'https://github.com/openssl/openssl',
+      licenseFile: 'license_openssl.txt',
+      description: $r('app.string.licenses_desc_openssl')
+    },
+    {
+      name: 'Boost',
+      version: '1.86.0',
+      license: 'BSL-1.0',
+      url: 'https://www.boost.org/',
+      licenseFile: 'license_boost.txt',
+      description: $r('app.string.licenses_desc_boost')
     }
   ];
   return items;

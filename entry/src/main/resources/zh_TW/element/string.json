@@ -1405,6 +1405,18 @@
       "value": "擴充功能 AES-GCM 加解密（插件執行時）"
     },
     {
+      "name": "licenses_desc_libtorrent",
+      "value": "BitTorrent 下載引擎，用於種子/磁力下載"
+    },
+    {
+      "name": "licenses_desc_openssl",
+      "value": "為 BT 引擎提供 TLS 與加密支援"
+    },
+    {
+      "name": "licenses_desc_boost",
+      "value": "libtorrent 所需的 C++ 函式庫標頭檔"
+    },
+    {
       "name": "privacy_policy_title",
       "value": "隱私說明"
     },

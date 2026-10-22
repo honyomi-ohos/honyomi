@@ -2077,6 +2077,18 @@
       "value": "Uzantılar için AES-GCM şifreleme ve şifre çözme (eklenti çalışma zamanı)"
     },
     {
+      "name": "licenses_desc_libtorrent",
+      "value": "Torrent indirmeleri için BitTorrent indirme motoru"
+    },
+    {
+      "name": "licenses_desc_openssl",
+      "value": "BitTorrent motoru için TLS ve şifreleme desteği"
+    },
+    {
+      "name": "licenses_desc_boost",
+      "value": "libtorrent için gerekli C++ kitaplık başlıkları"
+    },
+    {
       "name": "privacy_policy_title",
       "value": "Gizlilik ilkesi"
     },

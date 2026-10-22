@@ -2101,6 +2101,18 @@
       "value": "AES-GCM encryption and decryption for extensions (plugin runtime)"
     },
     {
+      "name": "licenses_desc_libtorrent",
+      "value": "BitTorrent download engine for torrent downloads"
+    },
+    {
+      "name": "licenses_desc_openssl",
+      "value": "TLS and cryptography support for the BitTorrent engine"
+    },
+    {
+      "name": "licenses_desc_boost",
+      "value": "C++ library headers required by libtorrent"
+    },
+    {
       "name": "privacy_policy_title",
       "value": "Privacy policy"
     },

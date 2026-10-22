@@ -2085,6 +2085,18 @@
       "value": "Шифрование и расшифровка AES-GCM для расширений (среда плагинов)"
     },
     {
+      "name": "licenses_desc_libtorrent",
+      "value": "Движок загрузки BitTorrent для торрент-загрузок"
+    },
+    {
+      "name": "licenses_desc_openssl",
+      "value": "Поддержка TLS и криптографии для движка BitTorrent"
+    },
+    {
+      "name": "licenses_desc_boost",
+      "value": "Заголовки библиотек C++, необходимые для libtorrent"
+    },
+    {
       "name": "privacy_policy_title",
       "value": "Политика конфиденциальности"
     },

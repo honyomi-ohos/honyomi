@@ -2089,6 +2089,18 @@
       "value": "เข้ารหัสและถอดรหัส AES-GCM สำหรับส่วนขยาย (รันไทม์ปลั๊กอิน)"
     },
     {
+      "name": "licenses_desc_libtorrent",
+      "value": "เอนจินดาวน์โหลด BitTorrent สำหรับการดาวน์โหลดทอร์เรนต์"
+    },
+    {
+      "name": "licenses_desc_openssl",
+      "value": "การรองรับ TLS และการเข้ารหัสสำหรับเอนจิน BitTorrent"
+    },
+    {
+      "name": "licenses_desc_boost",
+      "value": "ส่วนหัวไลบรารี C++ ที่ libtorrent ต้องใช้"
+    },
+    {
       "name": "privacy_policy_title",
       "value": "นโยบายความเป็นส่วนตัว"
     },

@@ -2069,6 +2069,18 @@
       "value": "Crittografia e decrittografia AES-GCM per le estensioni (esecuzione del plugin)"
     },
     {
+      "name": "licenses_desc_libtorrent",
+      "value": "Motore di download BitTorrent per i download torrent"
+    },
+    {
+      "name": "licenses_desc_openssl",
+      "value": "Supporto TLS e crittografia per il motore BitTorrent"
+    },
+    {
+      "name": "licenses_desc_boost",
+      "value": "Intestazioni di librerie C++ richieste da libtorrent"
+    },
+    {
       "name": "privacy_policy_title",
       "value": "Informativa sulla privacy"
     },

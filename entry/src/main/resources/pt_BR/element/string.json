@@ -2009,6 +2009,18 @@
       "value": "Criptografia e descriptografia AES-GCM para extensões (ambiente de execução do plugin)"
     },
     {
+      "name": "licenses_desc_libtorrent",
+      "value": "Motor de download BitTorrent para downloads de torrent"
+    },
+    {
+      "name": "licenses_desc_openssl",
+      "value": "Suporte a TLS e criptografia para o motor BitTorrent"
+    },
+    {
+      "name": "licenses_desc_boost",
+      "value": "Cabeçalhos de bibliotecas C++ exigidos pelo libtorrent"
+    },
+    {
       "name": "privacy_policy_title",
       "value": "Política de privacidade"
     },
