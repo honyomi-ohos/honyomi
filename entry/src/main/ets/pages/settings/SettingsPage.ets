@@ -4,6 +4,7 @@ import { Bp } from '../../common/Breakpoint';
 import { PageHeader } from '../components/PageHeader';
 import { IconRow, PrefGroup, PrefSelectRow } from '../components/Prefs';
 import { AppIcon } from '../components/AppIcon';
+import { BtRateBadge } from '../components/BtRateBadge';
 import { AppearanceContent } from './AppearancePage';
 import { LibrarySettingsContent } from './LibrarySettingsPage';
 import { ReaderSettingsContent } from './ReaderSettingsPage';
@@ -61,6 +62,10 @@ export struct SettingsPage {
         .fontColor(this.selCat === index ? this.pal.primary : this.pal.text)
         .layoutWeight(1)
         .maxLines(1)
+      // BitTorrent 分类：右侧两行小字显示当前 BT 下载/上传速率
+      if (index === BT_CAT) {
+        BtRateBadge()
+      }
     }
     .width('100%')
     .height(48)
@@ -316,13 +321,16 @@ export struct SettingsPage {
           })
           if (this.btInstalled) {
             Divider().color(this.pal.divider).margin({ left: 16 })
+            // 右侧两行小字显示当前 BT 下载/上传速率
             IconRow({
               title: $r('app.string.bt_set_group'),
               icon: 'share',
               onTap: (): void => {
                 this.pathStack.pushPathByName('BtSettings', null);
               }
-            })
+            }) {
+              BtRateBadge()
+            }
           }
           Divider().color(this.pal.divider).margin({ left: 16 })
           IconRow({

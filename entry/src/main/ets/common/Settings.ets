@@ -510,10 +510,11 @@ export class Settings {
 
   // ---- BT / BitTorrent ----
 
-  // BT 服务总开关：关闭后立即停引擎（TorrentManager.shutdown，worker 保留
-  // 可再启），BT 下载请求被拒（bt_service_disabled）；重新开启后按需启动
+  // BT 服务总开关：默认关闭，用户在 BT 设置页主动开启；关闭后立即停引擎
+  // （TorrentManager.shutdown，worker 保留可再启），BT 下载请求被拒
+  // （bt_service_disabled）；重新开启后按需启动
   static getBtServiceEnabled(): boolean {
-    return Settings.getBool('btServiceEnabled', true);
+    return Settings.getBool('btServiceEnabled', false);
   }
 
   static setBtServiceEnabled(v: boolean): void {

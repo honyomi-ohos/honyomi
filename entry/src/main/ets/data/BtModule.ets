@@ -15,18 +15,21 @@ import { Settings } from '../common/Settings';
 import { NetworkMonitor } from '../common/NetworkMonitor';
 
 export class BtModule {
+  // 会话级实时速率聚合：订阅引擎 1s 进度快照，各任务速率求和写入
+  // AppStorage（btDownRate/btUpRate，字节/秒），供设置页 BitTorrent 入口
+  // 右侧速率展示；快照停止推送（无活动任务）3.5s 后自动归零防残留末值
+  private static rateSubscribed: boolean = false;
+  private static rateResetTimer: number = -1;
+
   // 引擎惰性启动：未启动则启动（downloadDir 为引擎级默认下载目录）。
   // 动态 import 或 start 失败均归一为 bt_component_required：
   // 前者代表组件缺失（走安装引导），后者为引擎初始化异常（极少见，
   // 复用同一引导入口兜底，用户可关闭弹窗后重试）。
   // 会话级限速（设置页可调）在启动时一并下发；分享率限制与 Peer 过滤
   // 规则幂等跟随设置（引擎已启动时确保与设置一致，单条失败下次重试）。
+  // 服务总开关默认关闭（应用启动不自动起引擎），触发 BT 下载时自动
+  // 打开并按需启动引擎（开关同步为开启，与设置页状态一致）。
   static async ensureStarted(downloadDir: string): Promise<void> {
-    // 服务总开关关闭（BT 设置页手动关闭）→ BT 下载直接拒绝；
-    // 独立于 try 外抛出，避免被归一为 bt_component_required 走安装引导
-    if (!Settings.getBtServiceEnabled()) {
-      throw new Error('bt_service_disabled');
-    }
     try {
       const ns = await import('@honyomi/torrent');
       if (!ns.TorrentManager.isStarted()) {
@@ -35,6 +38,17 @@ export class BtModule {
           uploadLimit: BtModule.effectiveUploadLimitBytes()
         });
       }
+      if (!BtModule.rateSubscribed) {
+        BtModule.rateSubscribed = true;
+        ns.TorrentManager.onProgress((statuses: TorrentStatusJson[]): void => {
+          BtModule.pushSessionRates(statuses);
+        });
+      }
+      // 触发 BT 下载即启动引擎：同步打开服务总开关（默认关闭，仅代表
+      // 「当前引擎开关状态」，不再拦截 BT 下载）
+      Settings.setBtServiceEnabled(true);
+      // 引擎已启动标志：设置页 BitTorrent 入口右侧速率徽标的可见性
+      AppStorage.setOrCreate('btEngineStarted', true);
       ns.TorrentManager.setLimits(Settings.getBtDownloadLimitKb() * 1024,
         BtModule.effectiveUploadLimitBytes())
         .catch((): void => {
@@ -58,9 +72,41 @@ export class BtModule {
       if (ns.TorrentManager.isStarted()) {
         await ns.TorrentManager.shutdown();
       }
+      AppStorage.setOrCreate('btEngineStarted', false);
+      BtModule.zeroSessionRates();
     } catch (e) {
       // 组件缺失时无引擎可停
     }
+  }
+
+  // 聚合各任务速率写入 AppStorage，并重置归零定时器
+  private static pushSessionRates(statuses: TorrentStatusJson[]): void {
+    let down = 0;
+    let up = 0;
+    for (let i = 0; i < statuses.length; i++) {
+      down += statuses[i].downloadRate;
+      up += statuses[i].uploadRate;
+    }
+    AppStorage.setOrCreate('btDownRate', down);
+    AppStorage.setOrCreate('btUpRate', up);
+    if (BtModule.rateResetTimer >= 0) {
+      clearTimeout(BtModule.rateResetTimer);
+    }
+    BtModule.rateResetTimer = setTimeout(() => {
+      BtModule.rateResetTimer = -1;
+      AppStorage.setOrCreate('btDownRate', 0);
+      AppStorage.setOrCreate('btUpRate', 0);
+    }, 3500);
+  }
+
+  // 速率立即归零并清理挂起的归零定时器
+  private static zeroSessionRates(): void {
+    if (BtModule.rateResetTimer >= 0) {
+      clearTimeout(BtModule.rateResetTimer);
+      BtModule.rateResetTimer = -1;
+    }
+    AppStorage.setOrCreate('btDownRate', 0);
+    AppStorage.setOrCreate('btUpRate', 0);
   }
 
   // 计费网络限制上传（animeko 对齐）：蜂窝/离线时上传压至 10KB/s。

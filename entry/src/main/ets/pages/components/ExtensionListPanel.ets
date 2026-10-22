@@ -856,12 +856,15 @@ export struct ExtensionListPanel {
     const dialog = new CustomDialogController({
       builder: TrustPluginDialog({
         onTrust: (): void => {
+          dialog.close();
           this.activateTrusted(key, name);
         },
         onUninstall: (): void => {
+          dialog.close();
           this.uninstallPlugin(key);
         },
         onClose: (): void => {
+          dialog.close();
         },
       }),
       autoCancel: true,

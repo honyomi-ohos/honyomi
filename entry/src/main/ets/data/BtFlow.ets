@@ -9,18 +9,20 @@
  * 设置页「下载」分类下可随时更改。
  */
 import { common, Want } from '@kit.AbilityKit';
-import { UIContext } from '@kit.ArkUI';
+import { ComponentContent, UIContext } from '@kit.ArkUI';
+import { BusinessError } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
 import { DownloadService } from './DownloadService';
 import { BtModule } from './BtModule';
-
-// 内置引擎组件体量提示（MB，约值：arm64 libtorrent 压缩后；与 BtComponentDialog 保持一致）
-const BT_ENGINE_SIZE_MB = 12;
+import { BtEngineChoiceBuilder, BtEngineChoiceParams } from '../pages/components/BtEngineChoiceDialog';
 
 // acquireEngineChoice 进行中的 resolver（同一时刻至多一个选择弹窗）
 let btChoiceResolve: ((choice: string) => void) | undefined = undefined;
+// 选择弹窗实例（finishChoice 关闭/释放用）
+let btChoiceUi: UIContext | undefined = undefined;
+let btChoiceContent: ComponentContent<BtEngineChoiceParams> | undefined = undefined;
 
 export class BtFlow {
   // 读取/询问 BT 引擎选择：已决（module/system）直接返回，未决弹窗询问。
@@ -32,29 +34,26 @@ export class BtFlow {
     }
     return new Promise<string>((resolve: (choice: string) => void) => {
       btChoiceResolve = resolve;
-      AlertDialog.show({
-        title: Util.resStr(ui, $r('app.string.bt_choice_title')),
-        message: Util.resStr(ui, $r('app.string.bt_choice_msg', BT_ENGINE_SIZE_MB)),
-        primaryButton: {
-          value: Util.resStr(ui, $r('app.string.bt_choice_system')),
-          action: (): void => {
-            BtFlow.finishChoice('system');
-          }
-        },
-        secondaryButton: {
-          value: Util.resStr(ui, $r('app.string.bt_choice_module')),
-          action: (): void => {
-            BtFlow.finishChoice('module');
-          }
-        },
-        cancel: (): void => {
-          BtFlow.finishChoice('cancel');
-        },
+      const params = new BtEngineChoiceParams();
+      params.onPick = (choice: string): void => {
+        BtFlow.finishChoice(choice);
+      };
+      params.onCancel = (): void => {
+        BtFlow.finishChoice('cancel');
+      };
+      const content = new ComponentContent<BtEngineChoiceParams>(ui, wrapBuilder(BtEngineChoiceBuilder), params);
+      btChoiceUi = ui;
+      btChoiceContent = content;
+      ui.getPromptAction().openCustomDialog(content, {
         alignment: DialogAlignment.Center,
+        autoCancel: true,
         onWillDismiss: (dismissDialogAction: DismissDialogAction) => {
           dismissDialogAction.dismiss();
           BtFlow.finishChoice('cancel');
         }
+      }).catch((e: BusinessError) => {
+        hilog.warn(0x0001, 'BtFlow', 'open choice dialog failed: %{public}s', `${e}`);
+        BtFlow.finishChoice('cancel');
       });
     });
   }
@@ -63,8 +62,21 @@ export class BtFlow {
     if (choice === 'module' || choice === 'system') {
       Settings.setBtEngineChoice(choice);
     }
+    const ui = btChoiceUi;
+    const content = btChoiceContent;
     const resolve = btChoiceResolve;
+    btChoiceUi = undefined;
+    btChoiceContent = undefined;
     btChoiceResolve = undefined;
+    if (ui !== undefined && content !== undefined) {
+      ui.getPromptAction().closeCustomDialog(content)
+        .then((): void => {
+          content.dispose();
+        })
+        .catch((): void => {
+          content.dispose();
+        });
+    }
     if (resolve !== undefined) {
       resolve(choice);
     }

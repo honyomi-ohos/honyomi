@@ -133,6 +133,8 @@ export struct IconRow {
   @State hovered: boolean = false;
   title: Resource | string = '';
   @Prop icon: string = '';
+  // 行尾自定义内容（chevron 前），如 BitTorrent 入口的实时速率徽标
+  @BuilderParam trailing: () => void = emptyContent;
   onTap: () => void = () => {
   };
 
@@ -145,6 +147,7 @@ export struct IconRow {
         .layoutWeight(1)
         .margin({ left: 16 })
         .maxLines(1)
+      this.trailing()
       AppIcon({ name: 'keyboard_arrow_right', iconSize: 20 })
     }
     .width('100%')

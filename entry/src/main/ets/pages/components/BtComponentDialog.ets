@@ -10,8 +10,8 @@ import { AppKeys } from '../../common/AppKeys';
 import { BtComponentInstaller } from '../../common/BtComponentInstaller';
 import { DownloadService } from '../../data/DownloadService';
 
-// 组件下载体量提示（MB，约值：arm64 libtorrent 压缩后）
-const BT_COMPONENT_SIZE_MB = 12;
+// 组件下载体量提示（MB，约值：arm64 libtorrent release HSP 实测 9.8MB）
+const BT_COMPONENT_SIZE_MB = 10;
 
 @Component
 export struct BtComponentDialog {

@@ -1,4 +1,4 @@
-{
+﻿{
   "string": [
     {
       "name": "more_downloaded_only_summary",
@@ -3062,7 +3062,7 @@
     },
     {
       "name": "bt_choice_msg",
-      "value": "本章节为 BitTorrent 种子。请选择下载方式（之后可在 设置 → 下载 中修改）：\n· 内置引擎：应用内下载，支持边下边播（组件约 %1$d MB）\n· 系统应用：将磁力/种子链接移交给其他应用（如迅雷）"
+      "value": "本章节为 BitTorrent 种子，请选择下载方式"
     },
     {
       "name": "bt_choice_system",
@@ -3071,6 +3071,22 @@
     {
       "name": "bt_choice_module",
       "value": "内置引擎"
+    },
+    {
+      "name": "bt_choice_module_desc",
+      "value": "应用内下载，支持边下边播"
+    },
+    {
+      "name": "bt_choice_system_desc",
+      "value": "将磁力/种子链接移交给其他应用（如迅雷）"
+    },
+    {
+      "name": "bt_choice_size_mb",
+      "value": "组件约 %1$d MB"
+    },
+    {
+      "name": "bt_choice_hint",
+      "value": "选择将被记住，之后可在 设置 → 下载 中修改"
     },
     {
       "name": "bt_handoff_started",
@@ -3098,7 +3114,7 @@
     },
     {
       "name": "bt_set_service_sub",
-      "value": "关闭后停止 BT 引擎，BT 下载将不可用"
+      "value": "关闭后停止 BT 引擎，触发 BT 下载时自动开启"
     },
     {
       "name": "bt_service_disabled",
@@ -3163,6 +3179,10 @@
     {
       "name": "bt_limit_mb",
       "value": "%1$d MB/s"
+    },
+    {
+      "name": "bt_rate_mb",
+      "value": "%1$s MB/s"
     },
     {
       "name": "bt_set_extra_trackers",
