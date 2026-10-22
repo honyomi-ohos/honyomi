@@ -28,7 +28,11 @@ struct AncestorInfo {
     std::string className;
     std::string text;
     std::string ownText;
+    // 前置兄弟元素摘要（最近优先，最多 kMaxPrevSiblings 个；兄弟自身不再嵌套展开）
+    std::vector<AncestorInfo> prevSiblings;
 };
+
+constexpr size_t kMaxPrevSiblings = 16;
 
 struct SelectedElement {
     std::string outerHtml;
@@ -38,6 +42,7 @@ struct SelectedElement {
     std::string tag;
     std::map<std::string, std::string> attrs;
     AncestorInfo prev;
+    std::vector<AncestorInfo> prevSiblings;
     std::vector<AncestorInfo> parents;
 };
 
@@ -140,6 +145,24 @@ const lxb_dom_node_t *PreviousElementSibling(const lxb_dom_node_t *node)
     return nullptr;
 }
 
+// 前置兄弟元素摘要（最近优先），供 '+'/'~' 组合器在链式判断中使用
+void FillPrevSiblings(const lxb_dom_node_t *node, std::vector<AncestorInfo> &out)
+{
+    size_t count = 0;
+    for (const lxb_dom_node_t *p = node->prev; p != nullptr && count < kMaxPrevSiblings; p = p->prev) {
+        if (p->type != LXB_DOM_NODE_TYPE_ELEMENT) {
+            continue;
+        }
+        AncestorInfo info;
+        FillAncestor(p, info);
+        if (info.tag.empty()) {
+            continue;
+        }
+        out.push_back(std::move(info));
+        count++;
+    }
+}
+
 std::string CollapseWhitespace(const std::string &input)
 {
     std::string out;
@@ -208,6 +231,7 @@ lxb_status_t FindCallback(lxb_dom_node_t *node, lxb_css_selector_specificity_t s
     if (prev != nullptr) {
         FillAncestor(prev, element.prev);
     }
+    FillPrevSiblings(node, element.prevSiblings);
     constexpr size_t kMaxParents = 24;
     for (const lxb_dom_node_t *p = node->parent; p != nullptr && element.parents.size() < kMaxParents;
          p = p->parent) {
@@ -219,11 +243,32 @@ lxb_status_t FindCallback(lxb_dom_node_t *node, lxb_css_selector_specificity_t s
         if (info.tag.empty()) {
             continue;
         }
+        FillPrevSiblings(p, info.prevSiblings);
         element.parents.push_back(std::move(info));
     }
 
     selectCtx->out->push_back(std::move(element));
     return LXB_STATUS_OK;
+}
+
+// 序列化 AncestorInfo；siblings 中的条目不递归展开 prevSiblings
+std::string AncestorToJson(const AncestorInfo &an, bool withPrevSiblings)
+{
+    std::string json = "{\"tag\":\"" + JsonEscape(an.tag) + "\",\"id\":\"" + JsonEscape(an.id) +
+                       "\",\"className\":\"" + JsonEscape(an.className) + "\",\"text\":\"" +
+                       JsonEscape(an.text) + "\",\"ownText\":\"" + JsonEscape(an.ownText) + "\"";
+    if (withPrevSiblings) {
+        json += ",\"prevSiblings\":[";
+        for (size_t s = 0; s < an.prevSiblings.size(); s++) {
+            if (s > 0) {
+                json += ",";
+            }
+            json += AncestorToJson(an.prevSiblings[s], false);
+        }
+        json += "]";
+    }
+    json += "}";
+    return json;
 }
 
 std::string BuildJson(const std::vector<SelectedElement> &elements)
@@ -246,18 +291,19 @@ std::string BuildJson(const std::vector<SelectedElement> &elements)
             json += "\"" + JsonEscape(attr.first) + "\":\"" + JsonEscape(attr.second) + "\"";
             a++;
         }
-        json += "},\"prev\":{\"tag\":\"" + JsonEscape(e.prev.tag) + "\",\"id\":\"" +
-                JsonEscape(e.prev.id) + "\",\"className\":\"" + JsonEscape(e.prev.className) +
-                "\",\"text\":\"" + JsonEscape(e.prev.text) + "\",\"ownText\":\"" +
-                JsonEscape(e.prev.ownText) + "\"},\"parents\":[";
+        json += "},\"prev\":" + AncestorToJson(e.prev, false) + ",\"prevSiblings\":[";
+        for (size_t s = 0; s < e.prevSiblings.size(); s++) {
+            if (s > 0) {
+                json += ",";
+            }
+            json += AncestorToJson(e.prevSiblings[s], false);
+        }
+        json += "],\"parents\":[";
         for (size_t p = 0; p < e.parents.size(); p++) {
             if (p > 0) {
                 json += ",";
             }
-            const AncestorInfo &an = e.parents[p];
-            json += "{\"tag\":\"" + JsonEscape(an.tag) + "\",\"id\":\"" + JsonEscape(an.id) +
-                    "\",\"className\":\"" + JsonEscape(an.className) + "\",\"text\":\"" +
-                    JsonEscape(an.text) + "\",\"ownText\":\"" + JsonEscape(an.ownText) + "\"}";
+            json += AncestorToJson(e.parents[p], true);
         }
         json += "]}";
     }

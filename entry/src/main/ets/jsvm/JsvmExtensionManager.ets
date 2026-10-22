@@ -38,6 +38,7 @@ export const MAX_LIVE_ENGINES: number = 12;
 
 const READY_TIMEOUT_MS: number = 30000;
 const CALL_TIMEOUT_MS: number = 190000; // > native 180s pump deadline
+const TERMINATE_GRACE_MS: number = 3000;
 
 interface PendingCall {
   resolve: (json: string) => void;
@@ -159,10 +160,24 @@ export class JsvmExtensionManager {
     }
     JsvmExtensionManager.extensions.delete(key);
     JsvmExtensionManager.failAll(entry, new Error('extension unloaded'));
+    // 先发 destroy 让 worker 执行 destroyEngine 释放原生引擎，再挂 terminate 安全网
+    JsvmExtensionManager.gracefulShutdown(entry);
+  }
+
+  /**
+   * Posts 'destroy' so the worker can run destroyEngine and release its
+   * native JSVM engine, then arms the terminate safety net. The worker
+   * self-terminates via workerPort.close() after cleanup; the timer only
+   * kills wedged workers that never processed the destroy message.
+   */
+  private static gracefulShutdown(entry: ExtensionEntry): void {
     try {
       entry.worker.postMessage('{"type":"destroy"}');
     } catch (e) {
       // worker already gone
+    }
+    if (entry.terminateTimer >= 0) {
+      clearTimeout(entry.terminateTimer);
     }
     const workerRef = entry.worker;
     entry.terminateTimer = setTimeout(() => {
@@ -174,9 +189,7 @@ export class JsvmExtensionManager {
         // when the worker has already self-terminated via workerPort.close();
         // an uncaught throw here crashes the whole app (jscrash).
       }
-    }, 3000);
-    // The worker self-terminates via workerPort.close(); the timer above is
-    // only a safety net for wedged engines.
+    }, TERMINATE_GRACE_MS);
   }
 
   /**
@@ -349,14 +362,11 @@ export class JsvmExtensionManager {
       const timer = setTimeout(() => {
         if (entry.pending.has(seq)) {
           entry.pending.delete(seq);
-          // 调用超时：标记 broken 并强杀 worker，避免后续调用继续挂在死 worker 上
+          // 调用超时：标记 broken 并让 worker 先执行 destroyEngine 释放原生引擎，
+          // 再挂 terminate 安全网（与 unload 路径一致），避免直接强杀泄漏 JSVM 原生内存
           entry.broken = true;
           JsvmExtensionManager.failAll(entry, new Error(`ext_call_timeout|${method}`));
-          try {
-            entry.worker.terminate();
-          } catch (e) {
-            // worker 可能已自行退出（BusinessError 1003）
-          }
+          JsvmExtensionManager.gracefulShutdown(entry);
         }
       }, CALL_TIMEOUT_MS);
       entry.pending.set(seq, {

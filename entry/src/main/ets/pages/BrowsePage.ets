@@ -9,6 +9,7 @@ import { Util } from '../common/Util';
 import { AppKeys } from '../common/AppKeys';
 import { Settings } from '../common/Settings';
 import { EmptyScreen } from './components/EmptyScreen';
+import { LoadingState } from './components/LoadingState';
 import { ExtensionListPanel } from './components/ExtensionListPanel';
 import { AppIcon } from './components/AppIcon';
 import { TypeBadgedIcon } from './components/TypeBadgedIcon';
@@ -530,15 +531,9 @@ export struct BrowsePage {
   @Builder
   migrateTabContent() {
     if (!this.migrateLoaded) {
-      Column() {
-        LoadingProgress()
-          .width(36)
-          .height(36)
-          .color(this.pal.primary)
-      }
-      .width('100%')
-      .height('100%')
-      .justifyContent(FlexAlign.Center)
+      LoadingState({ fill: false })
+        .width('100%')
+        .height('100%')
     } else if (this.migrateItems.length === 0) {
       Column() {
         EmptyScreen({ message: $r('app.string.migrate_empty_library') })

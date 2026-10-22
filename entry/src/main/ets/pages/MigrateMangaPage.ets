@@ -6,6 +6,7 @@ import { MigrateMangaParams, MigrateSearchParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
+import { LoadingState } from './components/LoadingState';
 import { SmartImage } from './components/SmartImage';
 import { AppIcon } from './components/AppIcon';
 
@@ -67,14 +68,7 @@ export struct MigrateMangaPage {
 
         // 列表
         if (this.loading) {
-          Column() {
-            LoadingProgress()
-              .width(36)
-              .height(36)
-              .color(this.pal.primary)
-          }
-          .layoutWeight(1)
-          .justifyContent(FlexAlign.Center)
+          LoadingState()
         } else if (this.items.length === 0) {
           Column() {
             EmptyScreen({ message: $r('app.string.migrate_empty_library') })

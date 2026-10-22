@@ -6,6 +6,7 @@ import { MigrateSearchParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
+import { LoadingState } from './components/LoadingState';
 import { MangaRow } from './components/MangaRow';
 import { ConfirmDialog } from './components/Dialogs';
 import { AppIcon } from './components/AppIcon';
@@ -129,14 +130,7 @@ export struct MigrateSearchPage {
         })
 
         if (this.loading) {
-          Column() {
-            LoadingProgress()
-              .width(36)
-              .height(36)
-              .color(this.pal.primary)
-          }
-          .layoutWeight(1)
-          .justifyContent(FlexAlign.Center)
+          LoadingState()
         } else if (this.queue.length === 0 || this.targetSources().length === 0) {
           Column() {
             EmptyScreen({ message: $r('app.string.migrate_no_target') })
@@ -233,14 +227,7 @@ export struct MigrateSearchPage {
 
           // 搜索结果
           if (this.searching) {
-            Column() {
-              LoadingProgress()
-                .width(28)
-                .height(28)
-                .color(this.pal.primary)
-            }
-            .layoutWeight(1)
-            .justifyContent(FlexAlign.Center)
+            LoadingState({ spinnerSize: 28 })
           } else if (this.results.length === 0) {
             Column() {
               EmptyScreen({ message: $r('app.string.browse_no_results') })

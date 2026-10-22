@@ -3,8 +3,8 @@
 // - 搜索：按标题在所选追踪器搜索并注册绑定
 // - 详情：状态/章节/评分/日期/私密编辑与解绑/远端删除
 import { ThemePalette } from '../../common/Theme';
-import { Bp } from '../../common/Breakpoint';
 import { Util } from '../../common/Util';
+import { SheetPreset } from './SheetPreset';
 import { TrackRecord, TrackSearchResult } from '../../model/Models';
 import { TrackRepo } from '../../data/Repos';
 import { Tracker } from '../../data/track/Tracker';
@@ -309,15 +309,8 @@ export struct TrackSheet {
           .onClick(() => {
             this.showStatusPicker = true;
           })
-          .bindSheet($$this.showStatusPicker, this.statusPickerBuilder(), {
-            preferType: Bp.sheetType(this.windowW),
-            width: Bp.sheetWidth(this.windowW),
-            height: SheetSize.FIT_CONTENT,
-            detents: [SheetSize.FIT_CONTENT],
-            dragBar: true,
-            showClose: false,
-            backgroundColor: this.pal.bg
-          })
+          .bindSheet($$this.showStatusPicker, this.statusPickerBuilder(),
+            SheetPreset.fit(this.windowW, { showClose: false, bg: this.pal.bg }))
 
           Divider().color(this.pal.divider).margin({ left: 16 })
 
@@ -364,15 +357,8 @@ export struct TrackSheet {
           .onClick(() => {
             this.showScorePicker = true;
           })
-          .bindSheet($$this.showScorePicker, this.scorePickerBuilder(), {
-            preferType: Bp.sheetType(this.windowW),
-            width: Bp.sheetWidth(this.windowW),
-            height: SheetSize.FIT_CONTENT,
-            detents: [SheetSize.FIT_CONTENT],
-            dragBar: true,
-            showClose: false,
-            backgroundColor: this.pal.bg
-          })
+          .bindSheet($$this.showScorePicker, this.scorePickerBuilder(),
+            SheetPreset.fit(this.windowW, { showClose: false, bg: this.pal.bg }))
 
           if (this.selTrackerInst.supportsReadingDates) {
             Divider().color(this.pal.divider).margin({ left: 16 })
@@ -467,15 +453,8 @@ export struct TrackSheet {
         .onClick(() => {
           this.showRemovePicker = true;
         })
-        .bindSheet($$this.showRemovePicker, this.removePickerBuilder(), {
-          preferType: Bp.sheetType(this.windowW),
-          width: Bp.sheetWidth(this.windowW),
-          height: SheetSize.FIT_CONTENT,
-          detents: [SheetSize.FIT_CONTENT],
-          dragBar: true,
-          showClose: false,
-          backgroundColor: this.pal.bg
-        })
+        .bindSheet($$this.showRemovePicker, this.removePickerBuilder(),
+          SheetPreset.fit(this.windowW, { showClose: false, bg: this.pal.bg }))
       }
       .width('100%')
       .padding({
@@ -605,16 +584,13 @@ export struct TrackSheet {
     .width('100%')
     .height('100%')
     .alignItems(HorizontalAlign.Start)
-    .bindSheet($$this.showOAuth, this.oauthBuilder(), {
-      height: '80%',
-      detents: [SheetSize.MEDIUM, SheetSize.LARGE],
-      dragBar: true,
-      showClose: false,
-      preferType: Bp.isWide(this.windowW) ? SheetType.CENTER : SheetType.BOTTOM,
-      width: Bp.isWide(this.windowW) ? 560 : '100%',
-      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
-      maskColor: 'rgba(0,0,0,0.45)'
-    })
+    .bindSheet($$this.showOAuth, this.oauthBuilder(),
+      SheetPreset.fit(this.windowW, {
+        height: '80%',
+        detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+        showClose: false,
+        maskColor: 'rgba(0,0,0,0.45)'
+      }))
   }
 
   // ----- 搜索模式 -----

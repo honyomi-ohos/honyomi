@@ -1,4 +1,5 @@
 import { AppDb } from '../data/AppDb';
+import { SheetPreset } from './components/SheetPreset';
 import { CategoryRepo, UpdatesQuery, UpdatesRepo } from '../data/Repos';
 import { DownloadService } from '../data/DownloadService';
 import { UpdateService } from '../data/UpdateService';
@@ -10,6 +11,7 @@ import { Bp } from '../common/Breakpoint';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
+import { LoadingState } from './components/LoadingState';
 import { AppIcon } from './components/AppIcon';
 import { SmartImage } from './components/SmartImage';
 import { UpdatesFilterSheet } from './components/UpdatesFilterSheet';
@@ -179,15 +181,13 @@ export struct UpdatesPage {
           .onClick(() => {
             this.showFilterSheet = true;
           })
-          .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(), {
-            preferType: Bp.sheetType(this.windowW),
-            width: Bp.sheetWidth(this.windowW),
-            height: Bp.sheetHeight(this.windowW),
-            detents: ['60%', SheetSize.LARGE],
-            showClose: false,
-            dragBar: true,
-            backgroundColor: this.pal.bg
-          })
+          .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(),
+            SheetPreset.fit(this.windowW, {
+              height: Bp.sheetHeight(this.windowW),
+              detents: ['60%', SheetSize.LARGE],
+              showClose: false,
+              bg: this.pal.bg
+            }))
         AppIcon({ name: 'calendar_month', iconSize: 22, tint: this.pal.text })
           .padding({ left: 12 })
           .onClick(() => {
@@ -209,14 +209,7 @@ export struct UpdatesPage {
       })
 
       if (this.loading) {
-        Column() {
-          LoadingProgress()
-            .width(36)
-            .height(36)
-            .color(this.pal.primary)
-        }
-        .layoutWeight(1)
-        .justifyContent(FlexAlign.Center)
+        LoadingState()
       } else if (this.items.length === 0) {
         Column() {
           EmptyScreen({ message: $r('app.string.updates_empty') })

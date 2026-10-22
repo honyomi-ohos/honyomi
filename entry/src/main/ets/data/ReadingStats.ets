@@ -68,8 +68,9 @@ export class ReadingStatsRepo {
   static async durationByType(): Promise<Record<string, number>> {
     const store = await AppDb.get();
     const map: Record<string, number> = { 'manga': 0, 'novel': 0, 'video': 0 };
+    let rs: relationalStore.ResultSet | undefined = undefined;
     try {
-      const rs = await store.querySql(
+      rs = await store.querySql(
         `SELECT CASE WHEN m.contentType IN ('novel', 'video') THEN m.contentType ELSE 'manga' END AS kind,
                 COALESCE(SUM(s.duration), 0) AS total
          FROM readingSession s LEFT JOIN manga m ON m.id = s.mangaId
@@ -77,9 +78,12 @@ export class ReadingStatsRepo {
       while (rs.goToNextRow()) {
         map[rs.getString(rs.getColumnIndex('kind'))] = rs.getLong(rs.getColumnIndex('total'));
       }
-      closeQuietly(rs);
     } catch (e) {
       throw new Error(`durationByType failed: ${e}`);
+    } finally {
+      if (rs !== undefined) {
+        closeQuietly(rs);
+      }
     }
     return map;
   }
@@ -88,15 +92,19 @@ export class ReadingStatsRepo {
   static async totalDuration(): Promise<number> {
     const store = await AppDb.get();
     let total = 0;
+    let rs: relationalStore.ResultSet | undefined = undefined;
     try {
-      const rs = await store.querySql(
+      rs = await store.querySql(
         `SELECT COALESCE(SUM(duration), 0) AS total FROM readingSession`);
       if (rs.goToNextRow()) {
         total = rs.getLong(rs.getColumnIndex('total'));
       }
-      closeQuietly(rs);
     } catch (e) {
       throw new Error(`totalDuration failed: ${e}`);
+    } finally {
+      if (rs !== undefined) {
+        closeQuietly(rs);
+      }
     }
     return total;
   }
@@ -105,16 +113,20 @@ export class ReadingStatsRepo {
   static async dailyTotals(fromDay: string, toDay: string): Promise<Record<string, number>> {
     const store = await AppDb.get();
     const totals: Record<string, number> = {};
+    let rs: relationalStore.ResultSet | undefined = undefined;
     try {
-      const rs = await store.querySql(
+      rs = await store.querySql(
         `SELECT day, COALESCE(SUM(duration), 0) AS total FROM readingSession
          WHERE day >= ? AND day <= ? GROUP BY day`, [fromDay, toDay]);
       while (rs.goToNextRow()) {
         totals[rs.getString(rs.getColumnIndex('day'))] = rs.getLong(rs.getColumnIndex('total'));
       }
-      closeQuietly(rs);
     } catch (e) {
       throw new Error(`dailyTotals failed: ${e}`);
+    } finally {
+      if (rs !== undefined) {
+        closeQuietly(rs);
+      }
     }
     return totals;
   }

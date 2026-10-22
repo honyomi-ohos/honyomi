@@ -1,4 +1,5 @@
 import { ThemePalette } from '../../common/Theme';
+import { SheetPreset } from '../components/SheetPreset';
 import { Settings } from '../../common/Settings';
 import { Util } from '../../common/Util';
 import { Bp } from '../../common/Breakpoint';
@@ -159,16 +160,11 @@ export struct BtSettingsContent {
           .constraintSize({ minHeight: 52 })
           .padding({ left: 16, right: 12, top: 10, bottom: 10 })
           .alignItems(VerticalAlign.Center)
-          .bindSheet($$this.showTrackerSheet, this.trackerSheetBuilder(), {
-            preferType: Bp.sheetType(this.windowW),
-            width: Bp.sheetWidth(this.windowW),
-            height: SheetSize.FIT_CONTENT,
-            title: { title: $r('app.string.bt_set_extra_trackers') },
-            detents: [SheetSize.FIT_CONTENT],
-            dragBar: true,
-            showClose: false,
-            blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
-          })
+          .bindSheet($$this.showTrackerSheet, this.trackerSheetBuilder(),
+            SheetPreset.fit(this.windowW, {
+              title: $r('app.string.bt_set_extra_trackers'),
+              showClose: false
+            }))
           .onClick(() => {
             this.trackerDraft = Settings.getBtExtraTrackers();
             this.showTrackerSheet = true;

@@ -9,4 +9,4 @@
 	url = https://github.com/AOMediaCodec/libavif
 [submodule "torrent"]
 	path = torrent
-	url = D:/project/torrent
+	url = https://github.com/honyomi-ohos/torrent.git

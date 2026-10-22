@@ -1,5 +1,6 @@
 import { i18n } from '@kit.LocalizationKit';
 import { AppDb } from '../data/AppDb';
+import { SheetPreset } from './components/SheetPreset';
 import { CategoryRepo, UpcomingRepo } from '../data/Repos';
 import { CategoryRecord, UpcomingManga } from '../model/Models';
 import { DetailParams } from '../model/RouteParams';
@@ -304,15 +305,13 @@ export struct UpcomingPage {
             .onClick(() => {
               this.showFilterSheet = true;
             })
-            .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(), {
-              preferType: Bp.sheetType(this.windowW),
-              width: Bp.sheetWidth(this.windowW),
-              height: Bp.sheetHeight(this.windowW),
-              detents: ['60%', SheetSize.LARGE],
-              showClose: false,
-              dragBar: true,
-              backgroundColor: this.pal.bg
-            })
+            .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(),
+              SheetPreset.fit(this.windowW, {
+                height: Bp.sheetHeight(this.windowW),
+                detents: ['60%', SheetSize.LARGE],
+                showClose: false,
+                bg: this.pal.bg
+              }))
           AppIcon({ name: 'help', iconSize: 22, tint: this.pal.text })
             .padding({ left: 12 })
             .onClick(() => {

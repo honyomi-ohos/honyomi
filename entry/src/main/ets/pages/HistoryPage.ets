@@ -6,6 +6,7 @@ import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
+import { LoadingState } from './components/LoadingState';
 import { SmartImage } from './components/SmartImage';
 import { ConfirmDialog } from './components/Dialogs';
 import { AppIcon } from './components/AppIcon';
@@ -33,6 +34,9 @@ export struct HistoryPage {
   // 多选删除（对齐 Mihon HistoryScreen 长按进入选择模式）
   @State selecting: boolean = false;
   @State selectedIds: Set<number> = new Set<number>();
+  // 顶栏搜索（对齐 Mihon SearchToolbar：search 图标展开输入框，close 收起）
+  @State searchOpen: boolean = false;
+  @State searchQuery: string = '';
   // 清空确认 3 秒倒计时定时器：销毁时清理，防回调写已销毁组件状态
   private confirmTimerId: number = -1;
 
@@ -98,18 +102,44 @@ export struct HistoryPage {
   bodyContent() {
     Column() {
       Row() {
-        Text($r('app.string.history_title'))
-          .fontSize(22)
-          .fontWeight(FontWeight.Bold)
-          .fontColor(this.pal.text)
-          .layoutWeight(1)
-        if (!this.selecting) {
-          Text(this.confirmClear ? $r('app.string.history_confirm_clear') : $r('app.string.history_clear'))
-            .fontSize(14)
-            .fontColor(this.confirmClear ? '#E05252' : this.pal.sub)
-            .padding({ left: 8, right: 8 })
+        if (this.searchOpen) {
+          TextInput({ text: this.searchQuery, placeholder: $r('app.string.history_search_hint') })
+            .layoutWeight(1)
+            .height(38)
+            .fontSize(15)
+            .fontColor(this.pal.text)
+            .placeholderColor(this.pal.sub)
+            .backgroundColor(this.pal.chip)
+            .borderRadius(19)
+            .padding({ left: 16, right: 16 })
+            .onChange((value: string) => {
+              this.searchQuery = value;
+            })
+          AppIcon({ name: 'close', iconSize: 22, tint: this.pal.text })
+            .padding({ left: 12 })
+            .onClick(() => {
+              this.closeSearch();
+            })
+        } else {
+          Text($r('app.string.history_title'))
+            .fontSize(22)
+            .fontWeight(FontWeight.Bold)
+            .fontColor(this.pal.text)
+            .layoutWeight(1)
+          // 清空历史：delete_sweep 图标（对齐 Mihon DeleteSweep），二次点击 3 秒内确认
+          AppIcon({
+            name: 'delete_sweep',
+            iconSize: 22,
+            tint: this.confirmClear ? this.pal.badgeRed : this.pal.text
+          })
+            .padding({ left: 12 })
             .onClick(() => {
               this.clearHistory();
+            })
+          AppIcon({ name: 'search', iconSize: 22, tint: this.pal.text })
+            .padding({ left: 12 })
+            .onClick(() => {
+              this.openSearch();
             })
         }
       }
@@ -123,24 +153,21 @@ export struct HistoryPage {
       })
 
       if (this.loading) {
+        LoadingState()
+      } else if (this.visibleItems().length === 0) {
         Column() {
-          LoadingProgress()
-            .width(36)
-            .height(36)
-            .color(this.pal.primary)
-        }
-        .layoutWeight(1)
-        .justifyContent(FlexAlign.Center)
-      } else if (this.items.length === 0) {
-        Column() {
-          EmptyScreen({ message: $r('app.string.history_empty') })
+          // 搜索无结果与无历史区分文案（对齐 Mihon HistoryScreen）
+          EmptyScreen({
+            message: this.searchQuery.trim() !== '' ?
+            $r('app.string.no_results_found') : $r('app.string.history_empty')
+          })
         }
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)
       } else {
         Column() {
           List({ space: 0 }) {
-            ForEach(this.items, (item: HistoryItem) => {
+            ForEach(this.visibleItems(), (item: HistoryItem) => {
               ListItem() {
                 Row({ space: 12 }) {
                   // 多选态行首勾选框（对齐 Mihon 选择模式）
@@ -298,6 +325,27 @@ export struct HistoryPage {
     this.resumeLastRead();
   }
 
+  // ----- 顶栏搜索（对齐 Mihon SearchToolbar） -----
+
+  private openSearch(): void {
+    this.searchOpen = true;
+  }
+
+  private closeSearch(): void {
+    this.searchOpen = false;
+    this.searchQuery = '';
+  }
+
+  // 按标题/章节名过滤（对齐 Mihon HistoryViewModel searchQuery 过滤）
+  private visibleItems(): HistoryItem[] {
+    const q: string = this.searchQuery.trim().toLowerCase();
+    if (q === '') {
+      return this.items;
+    }
+    return this.items.filter((it: HistoryItem): boolean =>
+      it.mangaTitle.toLowerCase().indexOf(q) >= 0 || it.chapterName.toLowerCase().indexOf(q) >= 0);
+  }
+
   // ----- 多选删除 -----
 
   // PC 右键菜单「选择」：单条进入多选（与长按一致；移动端仍走长按手势）
@@ -334,7 +382,8 @@ export struct HistoryPage {
   }
 
   private allSelected(): boolean {
-    return this.items.length > 0 && this.selectedIds.size >= this.items.length;
+    const visible: HistoryItem[] = this.visibleItems();
+    return visible.length > 0 && this.selectedIds.size >= visible.length;
   }
 
   private toggleSelectAll(): void {
@@ -343,7 +392,7 @@ export struct HistoryPage {
       return;
     }
     const ids: Set<number> = new Set<number>();
-    for (const item of this.items) {
+    for (const item of this.visibleItems()) {
       ids.add(item.chapterId);
     }
     this.selectedIds = ids;

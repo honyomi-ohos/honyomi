@@ -1,4 +1,5 @@
 import { AppDb } from '../data/AppDb';
+import { SheetPreset } from './components/SheetPreset';
 import { CategoryRepo, MangaRepo } from '../data/Repos';
 import { Source, SourceRegistry } from '../source/Source';
 import { JsvmSource, RawFilter } from '../source/JsvmSource';
@@ -724,16 +725,11 @@ export struct BrowseSourcePage {
         .width('100%')
         .height('100%')
         .backgroundColor(this.pal.bg)
-        .bindSheet($$this.showFolderSheet, this.folderSheetBuilder(), {
-          preferType: Bp.sheetType(this.windowW),
-          width: Bp.sheetWidth(this.windowW),
-          height: SheetSize.FIT_CONTENT,
-          title: { title: $r('app.string.browse_local_folder_title') },
-          detents: [SheetSize.FIT_CONTENT],
-          dragBar: true,
-          showClose: false,
-          blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
-        })
+        .bindSheet($$this.showFolderSheet, this.folderSheetBuilder(),
+          SheetPreset.fit(this.windowW, {
+            title: $r('app.string.browse_local_folder_title'),
+            showClose: false
+          }))
         .onAreaChange((_old: Area, newArea: Area) => {
           const w = newArea.width;
           if (typeof w === 'number') {
@@ -772,15 +768,12 @@ export struct BrowseSourcePage {
       .width('100%')
       .height('100%')
       // 插件自定义过滤器半模态（挂在 Stack 根上，与内层 Column 的文件夹 Sheet 分离）
-      .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(), {
-        preferType: Bp.sheetType(this.windowW),
-        width: Bp.sheetWidth(this.windowW),
-        height: this.windowW >= Bp.LG_MIN ? 560 : '78%',
-        title: { title: $r('app.string.action_filter') },
-        dragBar: true,
-        showClose: true,
-        blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
-      })
+      .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(),
+        SheetPreset.fit(this.windowW, {
+          height: this.windowW >= Bp.LG_MIN ? 560 : '78%',
+          title: $r('app.string.action_filter'),
+          showClose: true
+        }))
     }
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)

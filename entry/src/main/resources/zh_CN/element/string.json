@@ -661,6 +661,10 @@
       "value": "没有可继续的章节"
     },
     {
+      "name": "history_search_hint",
+      "value": "搜索历史"
+    },
+    {
       "name": "browse_title",
       "value": "浏览"
     },

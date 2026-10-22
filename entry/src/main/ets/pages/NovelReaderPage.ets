@@ -1,4 +1,4 @@
-import { display, uiMaterial } from '@kit.ArkUI';
+import { display } from '@kit.ArkUI';
 import { KeyCode } from '@kit.InputKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppDb } from '../data/AppDb';
@@ -50,6 +50,7 @@ import {
   ReaderPagePill
 } from './components/ReaderChrome';
 import { LoadingBackButton } from './components/LoadingBackButton';
+import { SheetPreset } from './components/SheetPreset';
 
 // 翻屏进度持久化防抖间隔（毫秒）
 const PERSIST_DEBOUNCE_MS: number = 2000;
@@ -771,18 +772,13 @@ export struct NovelReaderPage {
     }
     .hideTitleBar(true)
     .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
-    .bindSheet($$this.showOrientationSheet, this.orientationSheetBuilder(), {
-      preferType: Bp.sheetType(this.windowW),
-      width: Bp.sheetWidth(this.windowW),
-      height: SheetSize.FIT_CONTENT,
-      title: { title: $r('app.string.reader_screen_orientation') },
-      detents: [SheetSize.FIT_CONTENT],
-      dragBar: true,
-      showClose: false,
-      systemMaterial: new uiMaterial.ImmersiveMaterial(),
-      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
-      enableOutsideInteractive: true
-    })
+    .bindSheet($$this.showOrientationSheet, this.orientationSheetBuilder(),
+      SheetPreset.fit(this.windowW, {
+        title: $r('app.string.reader_screen_orientation'),
+        showClose: false,
+        glass: true,
+        interactive: true
+      }))
     .onReady((ctx: NavDestinationContext) => {
       this.pathStack = ctx.pathStack;
       const params = ctx.pathInfo.param as ReaderParams;
@@ -1012,19 +1008,13 @@ export struct NovelReaderPage {
           .width(0)
           .height(0)
           .hitTestBehavior(HitTestMode.None)
-          .bindSheet($$this.showPanelSheet, this.panelSheetBuilder(), {
-            preferType: Bp.sheetType(this.windowW),
-            width: Bp.sheetWidth(this.windowW),
-            height: SheetSize.FIT_CONTENT,
-            title: { title: this.panelTitleRes() },
-            detents: [SheetSize.FIT_CONTENT],
-            dragBar: true,
-            showClose: false,
-            // 沉浸光感（液态玻璃）：支持设备上启用系统材质，低版本自动回退模糊样式
-            systemMaterial: new uiMaterial.ImmersiveMaterial(),
-            blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
-            enableOutsideInteractive: true
-          })
+          .bindSheet($$this.showPanelSheet, this.panelSheetBuilder(),
+            SheetPreset.fit(this.windowW, {
+              title: this.panelTitleRes(),
+              showClose: false,
+              glass: true,
+              interactive: true
+            }))
       }
       .width('100%')
       .height('100%')
@@ -1036,18 +1026,13 @@ export struct NovelReaderPage {
       .onKeyEvent((event: KeyEvent) => {
         this.handleReaderKey(event);
       })
-      .bindSheet($$this.showModeSheet, this.modeSheetBuilder(), {
-        preferType: Bp.sheetType(this.windowW),
-        width: Bp.sheetWidth(this.windowW),
-        height: SheetSize.FIT_CONTENT,
-        title: { title: $r('app.string.reader_reading_mode') },
-        detents: [SheetSize.FIT_CONTENT],
-        dragBar: true,
-        showClose: false,
-        systemMaterial: new uiMaterial.ImmersiveMaterial(),
-        blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
-        enableOutsideInteractive: true
-      })
+      .bindSheet($$this.showModeSheet, this.modeSheetBuilder(),
+        SheetPreset.fit(this.windowW, {
+          title: $r('app.string.reader_reading_mode'),
+          showClose: false,
+          glass: true,
+          interactive: true
+        }))
   }
 
   private applyOrientation(): void {

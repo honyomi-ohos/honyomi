@@ -2,6 +2,7 @@ import { webview } from '@kit.ArkWeb';
 import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
 import { Settings } from '../../common/Settings';
+import { Log } from '../../common/Log';
 import { AppKeys } from '../../common/AppKeys';
 import { AppDb } from '../../data/AppDb';
 import { CookieJar } from '../../net/CookieJar';
@@ -54,6 +55,7 @@ export struct AdvancedContent {
             initValue: Settings.getVerboseLogging(),
             apply: (value: boolean): void => {
               Settings.setVerboseLogging(value);
+              Log.applyVerboseLogging();
             }
           })
           Divider().color(this.pal.divider).margin({ left: 16 })

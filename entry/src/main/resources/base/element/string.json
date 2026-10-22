@@ -1257,6 +1257,10 @@
       "value": "No next chapter"
     },
     {
+      "name": "history_search_hint",
+      "value": "Search history"
+    },
+    {
       "name": "browse_title",
       "value": "Browse"
     },

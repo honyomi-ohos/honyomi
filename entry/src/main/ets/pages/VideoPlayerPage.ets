@@ -1,4 +1,5 @@
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { SheetPreset } from './components/SheetPreset';
 import { KeyCode } from '@kit.InputKit';
 import { media } from '@kit.MediaKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
@@ -1094,15 +1095,12 @@ export struct VideoPlayerPage {
       .onKeyEvent((event: KeyEvent) => {
         this.handlePlayerKey(event);
       })
-      .bindSheet($$this.showSheet, this.sheetBuilder(), {
-        preferType: Bp.sheetType(this.windowW),
-        width: Bp.sheetWidth(this.windowW),
-        height: Bp.sheetHeight(this.windowW),
-        detents: [SheetSize.MEDIUM, SheetSize.LARGE],
-        dragBar: true,
-        showClose: false,
-        blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
-      })
+      .bindSheet($$this.showSheet, this.sheetBuilder(),
+        SheetPreset.fit(this.windowW, {
+          height: Bp.sheetHeight(this.windowW),
+          detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+          showClose: false
+        }))
     }
     .hideTitleBar(true)
     .backgroundColor('#000000')

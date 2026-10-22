@@ -2,6 +2,7 @@
 // 项目依赖/内置三方库清单，点击条目弹出详情 sheet，
 // 协议全文随包打包在 rawfile（license_*.txt）中直接应用内展示，不跳转网页
 import { ThemePalette } from '../../common/Theme';
+import { SheetPreset } from '../components/SheetPreset';
 import { Util } from '../../common/Util';
 import { Bp } from '../../common/Breakpoint';
 import { PageHeader } from '../components/PageHeader';
@@ -335,15 +336,12 @@ export struct LicensesPage {
       .width('100%')
       .height('100%')
       .backgroundColor(this.pal.bg)
-      .bindSheet($$this.showDetail, this.detailBuilder(), {
-        preferType: Bp.sheetType(this.windowW),
-        width: Bp.sheetWidth(this.windowW),
-        height: SheetSize.MEDIUM,
-        detents: [SheetSize.MEDIUM, SheetSize.LARGE],
-        dragBar: true,
-        showClose: false,
-        blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
-      })
+      .bindSheet($$this.showDetail, this.detailBuilder(),
+        SheetPreset.fit(this.windowW, {
+          height: SheetSize.MEDIUM,
+          detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+          showClose: false
+        }))
     }
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)

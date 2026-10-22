@@ -1,4 +1,5 @@
 import { Want } from '@kit.AbilityKit';
+import { SheetPreset } from './components/SheetPreset';
 import { BusinessError, pasteboard } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { formInfo, formProvider } from '@kit.FormKit';
@@ -23,6 +24,7 @@ import { Settings } from '../common/Settings';
 import { WidgetUpdater } from '../form/WidgetUpdater';
 import { CategoryDialog, ConfirmDialog } from './components/Dialogs';
 import { SmartImage } from './components/SmartImage';
+import { LoadingState } from './components/LoadingState';
 import { EmptyScreen } from './components/EmptyScreen';
 import { AppIcon } from './components/AppIcon';
 import { CoverViewer } from './components/CoverViewer';
@@ -710,15 +712,13 @@ export struct MangaDetailPage {
                   .onClick(() => {
                     this.showTrackSheet = true;
                   })
-                  .bindSheet($$this.showTrackSheet, this.trackSheetBuilder(), {
-                    preferType: Bp.sheetType(this.windowW),
-                    width: Bp.sheetWidth(this.windowW),
-                    height: Bp.sheetHeight(this.windowW),
-                    detents: ['75%', SheetSize.LARGE],
-                    dragBar: true,
-                    showClose: false,
-                    backgroundColor: this.pal.bg
-                  })
+                  .bindSheet($$this.showTrackSheet, this.trackSheetBuilder(),
+                    SheetPreset.fit(this.windowW, {
+                      height: Bp.sheetHeight(this.windowW),
+                      detents: ['75%', SheetSize.LARGE],
+                      showClose: false,
+                      bg: this.pal.bg
+                    }))
 
                   if (this.manga.inLibrary) {
                     Column({ space: 5 }) {
@@ -875,15 +875,13 @@ export struct MangaDetailPage {
                     .onClick(() => {
                       this.showSettingsSheet = true;
                     })
-                    .bindSheet($$this.showSettingsSheet, this.chapterSettingsSheetBuilder(), {
-                      preferType: Bp.sheetType(this.windowW),
-                      width: Bp.sheetWidth(this.windowW),
-                      height: Bp.sheetHeight(this.windowW),
-                      detents: ['45%', SheetSize.LARGE],
-                      showClose: false,
-                      dragBar: true,
-                      backgroundColor: this.pal.bg
-                    })
+                    .bindSheet($$this.showSettingsSheet, this.chapterSettingsSheetBuilder(),
+                      SheetPreset.fit(this.windowW, {
+                        height: Bp.sheetHeight(this.windowW),
+                        detents: ['45%', SheetSize.LARGE],
+                        showClose: false,
+                        bg: this.pal.bg
+                      }))
                   Text($r('app.string.detail_mark_all_read'))
                     .fontSize(13)
                     .fontColor(this.pal.primary)
@@ -909,15 +907,9 @@ export struct MangaDetailPage {
               // 章节列表（分组承载分割线，随整页滚动）
               if (this.loading) {
                 ListItem() {
-                  Column() {
-                    LoadingProgress()
-                      .width(36)
-                      .height(36)
-                      .color(this.pal.primary)
-                  }
-                  .width('100%')
-                  .padding({ top: 48, bottom: 48 })
-                  .justifyContent(FlexAlign.Center)
+                  LoadingState({ fill: false })
+                    .width('100%')
+                    .padding({ top: 48, bottom: 48 })
                 }
               } else if (this.chapters.length === 0) {
                 ListItem() {

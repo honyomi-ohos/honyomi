@@ -1,4 +1,5 @@
 import { fileIo as fs } from '@kit.CoreFileKit';
+import { SheetPreset } from './components/SheetPreset';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { KeyCode } from '@kit.InputKit';
 import { AnimatorOptions, AnimatorResult, curves } from '@kit.ArkUI';
@@ -770,27 +771,24 @@ struct Index {
           }
           .width('100%')
           .height('100%')
-          .bindSheet($$this.cfSheetShow, this.cfSheetBuilder(), {
-            height: SheetSize.LARGE,
-            detents: [SheetSize.MEDIUM, SheetSize.LARGE],
-            dragBar: true,
-            showClose: false,
-            preferType: this.isWide() ? SheetType.CENTER : SheetType.BOTTOM,
-            width: this.isWide() ? 560 : '100%',
-            blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
-            maskColor: 'rgba(0,0,0,0.45)',
-            onDisappear: (): void => {
-              // 弹层关闭：回写 ArkWeb 会话 Cookie 到 CookieJar，并复位 challenge 标记
-              const url = this.cfChallengeUrl;
-              if (url !== '') {
-                this.cfChallengeUrl = '';
-                webview.WebCookieManager.fetchCookie(url).then((cookies: string) => {
-                  CookieJar.importCookieString(url, cookies);
-                }).catch((_e: Error) => {
-                });
-              }
-            }
-          })
+           .bindSheet($$this.cfSheetShow, this.cfSheetBuilder(),
+             SheetPreset.fit(this.windowW, {
+               height: SheetSize.LARGE,
+               detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+               showClose: false,
+               maskColor: 'rgba(0,0,0,0.45)',
+               onDisappear: (): void => {
+                 // 弹层关闭：回写 ArkWeb 会话 Cookie 到 CookieJar，并复位 challenge 标记
+                 const url = this.cfChallengeUrl;
+                 if (url !== '') {
+                   this.cfChallengeUrl = '';
+                   webview.WebCookieManager.fetchCookie(url).then((cookies: string) => {
+                     CookieJar.importCookieString(url, cookies);
+                   }).catch((_e: Error) => {
+                   });
+                 }
+               }
+             }))
       }
       .layoutWeight(1)
       .hideTitleBar(true)

@@ -1061,11 +1061,15 @@ export class DownloadService {
         const height = i === partCount - 1 ? h - top : sliceH;
         const region: image.Region = { x: 0, y: top, size: { width: w, height: height } };
         const pm: image.PixelMap = await src.createPixelMap({ desiredRegion: region });
-        const buf: ArrayBuffer = await packer.packing(pm, { format: 'image/jpeg', quality: 90 });
-        const slicePath = `${base}__${DownloadService.pad(i + 1)}.jpg`;
-        DownloadService.writePageFile(slicePath, buf);
-        slices.push(slicePath);
-        pm.release();
+        try {
+          const buf: ArrayBuffer = await packer.packing(pm, { format: 'image/jpeg', quality: 90 });
+          const slicePath = `${base}__${DownloadService.pad(i + 1)}.jpg`;
+          DownloadService.writePageFile(slicePath, buf);
+          slices.push(slicePath);
+        } finally {
+          // packing/写盘抛错时也要释放当前切片，避免 PixelMap 原生内存泄漏
+          pm.release();
+        }
       }
       fileIo.unlinkSync(filePath);
     } catch (e) {

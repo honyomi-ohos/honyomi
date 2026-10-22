@@ -1,5 +1,6 @@
 // 通用偏好设置行组件：PrefGroup / TextRow / SwitchRow / IconRow / PrefSelectRow / PrefSwitchRow
 import { ThemePalette } from '../../common/Theme';
+import { SheetPreset } from './SheetPreset';
 import { Bp } from '../../common/Breakpoint';
 import { AppIcon } from './AppIcon';
 import { PickerSheet } from './PickerSheet';
@@ -215,16 +216,8 @@ export struct PrefSelectRow {
     .height(52)
     .padding({ left: 16, right: 12 })
     .backgroundColor(this.hovered ? this.pal.chip : Color.Transparent)
-    .bindSheet($$this.showPicker, this.pickerSheetBuilder(), {
-      preferType: Bp.sheetType(this.windowW),
-      width: Bp.sheetWidth(this.windowW),
-      height: SheetSize.FIT_CONTENT,
-      title: { title: this.title },
-      detents: [SheetSize.FIT_CONTENT],
-      dragBar: true,
-      showClose: false,
-      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
-    })
+    .bindSheet($$this.showPicker, this.pickerSheetBuilder(),
+      SheetPreset.fit(this.windowW, { title: this.title, showClose: false }))
     .onClick(() => {
       this.showPicker = true;
     })

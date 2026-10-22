@@ -1,4 +1,5 @@
 import { picker } from '@kit.CoreFileKit';
+import { SheetPreset } from './SheetPreset';
 import { InstallOutcome, InstalledPlugin, PluginService, RepoEntry } from '../../data/PluginService';
 import { ContentType } from '../../model/Models';
 import { ThemePalette } from '../../common/Theme';
@@ -512,16 +513,14 @@ export struct ExtensionListPanel {
     .layoutWeight(1)
     .width('100%')
     .height('100%')
-    .bindSheet($$this.showSitePreview, this.sitePreviewBuilder(), {
-      height: SheetSize.LARGE,
-      detents: [SheetSize.MEDIUM, SheetSize.LARGE],
-      dragBar: true,
-      showClose: false,
-      preferType: Bp.sheetType(this.windowW),
-      width: Bp.sheetWidth(this.windowW, 560),
-      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
-      maskColor: 'rgba(0,0,0,0.45)',
-    })
+    .bindSheet($$this.showSitePreview, this.sitePreviewBuilder(),
+      SheetPreset.fit(this.windowW, {
+        height: SheetSize.LARGE,
+        detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+        showClose: false,
+        wideWidth: 560,
+        maskColor: 'rgba(0,0,0,0.45)'
+      }))
   }
 
   // 宿主改仓库列表（增删/刷新）后触发

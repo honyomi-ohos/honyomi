@@ -21,7 +21,9 @@
  * Returns a JSON array of hits:
  *   {"outerHtml","innerHtml","text","ownText","tag","attrs",
  *    "prev":{"tag","id","className","text","ownText"},
- *    "parents":[{"tag","id","className","text","ownText"}, ...]}
+ *    "prevSiblings":[{"tag","id","className","text","ownText"}, ...],
+ *    "parents":[{"tag","id","className","text","ownText",
+ *                "prevSiblings":[...]}, ...]}
  * Returns "[]" when nothing matches or on parse failure.
  *
  * The input buffer is parsed IN PLACE: lexbor text nodes reference the caller's

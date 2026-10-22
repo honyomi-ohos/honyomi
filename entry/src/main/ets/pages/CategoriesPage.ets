@@ -1,5 +1,6 @@
 import { curves } from '@kit.ArkUI';
 import { AppDb } from '../data/AppDb';
+import { SheetPreset } from './components/SheetPreset';
 import { CategoryRepo } from '../data/Repos';
 import { CategoryRecord, ContentType } from '../model/Models';
 import { ThemePalette } from '../common/Theme';
@@ -242,16 +243,11 @@ export struct CategoriesPage {
     .width('100%')
     .height('100%')
     .backgroundColor(this.pal.bg)
-    .bindSheet($$this.showItemSheet, this.itemSheetBuilder(), {
-      preferType: Bp.sheetType(this.windowW),
-      width: Bp.sheetWidth(this.windowW),
-      height: SheetSize.FIT_CONTENT,
-      title: { title: this.menuCat === null ? '' : Util.categoryLabel(this.menuCat.name) },
-      detents: [SheetSize.FIT_CONTENT],
-      dragBar: true,
-      showClose: false,
-      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
-    })
+    .bindSheet($$this.showItemSheet, this.itemSheetBuilder(),
+      SheetPreset.fit(this.windowW, {
+        title: this.menuCat === null ? '' : Util.categoryLabel(this.menuCat.name),
+        showClose: false
+      }))
   }
 
   private reload(): void {

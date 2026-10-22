@@ -577,10 +577,10 @@ export class NovelTts {
     NovelTts.taskRunning = false;
     try {
       if (NovelTts.taskId >= 0) {
+        // 定点撤销，避免无 taskId 的全量撤销误杀下载模块的 DATA_TRANSFER 长任务；
+        // taskId 未知时跳过撤销，残留任务由系统超时回收
         await backgroundTaskManager.stopBackgroundRunning(ctx, NovelTts.taskId);
         NovelTts.taskId = -1;
-      } else {
-        await backgroundTaskManager.stopBackgroundRunning(ctx);
       }
     } catch (_e) {
     }

@@ -4,6 +4,7 @@ import { window } from '@kit.ArkUI';
 import { deviceInfo } from '@kit.BasicServicesKit';
 import { fileIo as fs, fileUri } from '@kit.CoreFileKit';
 import { Settings } from '../common/Settings';
+import { Log } from '../common/Log';
 import { AppDb } from '../data/AppDb';
 import { SourceRegistry } from '../source/Source';
 import { LocalSource } from '../source/LocalSource';
@@ -45,6 +46,8 @@ export default class EntryAbility extends UIAbility {
     AppStorage.setOrCreate(AppKeys.PLUGINS_DIRTY, 0);
     AppStorage.setOrCreate(AppKeys.CF_CHALLENGE_URL, '');
     Settings.init(this.context);
+    // 「详细日志」开关接入 hilog 全局最低级别（关闭时全进程 debug 零输出）
+    Log.applyVerboseLogging();
     // 自定义 User-Agent 同步到网络层（Settings.init 之后，先于任意网络请求）
     Http.syncUserAgent();
     // 全局功能开关从持久化偏好恢复（NSFW 源显示等）

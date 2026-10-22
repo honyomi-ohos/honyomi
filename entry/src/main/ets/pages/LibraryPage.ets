@@ -1,4 +1,5 @@
 import { AppDb } from '../data/AppDb';
+import { SheetPreset } from './components/SheetPreset';
 import { CategoryRepo, ChapterRepo, MangaRepo, TrackRepo } from '../data/Repos';
 import { UpdateService } from '../data/UpdateService';
 import { DownloadService } from '../data/DownloadService';
@@ -13,6 +14,7 @@ import { Util } from '../common/Util';
 import { AppKeys } from '../common/AppKeys';
 import { CategoryDialog, ConfirmDialog } from './components/Dialogs';
 import { EmptyScreen } from './components/EmptyScreen';
+import { LoadingState } from './components/LoadingState';
 import { AppIcon } from './components/AppIcon';
 import { LibraryMangaItem } from './components/LibraryItems';
 import { LibrarySettingsSheet } from './components/LibrarySettingsSheet';
@@ -418,15 +420,13 @@ export struct LibraryPage {
               .onClick(() => {
                 this.showFilterSheet = true;
               })
-              .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(), {
-                preferType: Bp.sheetType(this.windowW),
-                width: Bp.sheetWidth(this.windowW),
-                height: Bp.sheetHeight(this.windowW),
-                detents: ['70%', SheetSize.LARGE],
-                showClose: false,
-                dragBar: true,
-                backgroundColor: this.pal.bg
-              })
+              .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(),
+                SheetPreset.fit(this.windowW, {
+                  height: Bp.sheetHeight(this.windowW),
+                  detents: ['70%', SheetSize.LARGE],
+                  showClose: false,
+                  bg: this.pal.bg
+                }))
             AppIcon({ name: 'more_vert', iconSize: 22, tint: this.pal.text })
               .padding({ left: 12 })
               .bindMenu(this.libMenu)
@@ -492,14 +492,7 @@ export struct LibraryPage {
       // 内容
       Column() {
         if (this.loading) {
-          Column() {
-            LoadingProgress()
-              .width(36)
-              .height(36)
-              .color(this.pal.primary)
-          }
-          .layoutWeight(1)
-          .justifyContent(FlexAlign.Center)
+          LoadingState()
         } else if (this.shownList.length === 0) {
           Column() {
             EmptyScreen({

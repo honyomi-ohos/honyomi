@@ -8,6 +8,8 @@ import { Util } from '../common/Util';
 import { Settings } from '../common/Settings';
 import { Bp } from '../common/Breakpoint';
 import { AppIcon } from './components/AppIcon';
+import { LoadingState } from './components/LoadingState';
+import { ErrorState } from './components/ErrorState';
 import { SmartImage } from './components/SmartImage';
 
 // 语言显示名（与 BrowsePage 保持一致，对齐 Mihon 源列表语言标签）
@@ -386,27 +388,14 @@ export struct GlobalSearchPage {
   @Builder
   sectionBody(section: SearchSection) {
     if (section.state === 'loading') {
-      Column() {
-        LoadingProgress()
-          .width(16)
-          .height(16)
-          .color(this.pal.primary)
-      }
-      .width('100%')
-      .padding({ top: 16, bottom: 16 })
-      .alignItems(HorizontalAlign.Center)
+      LoadingState({ spinnerSize: 16, fill: false })
+        .width('100%')
+        .padding({ top: 16, bottom: 16 })
     } else if (section.state === 'error') {
-      Column() {
-        AppIcon({ name: 'error', iconSize: 24, tint: this.pal.sub })
-        Text(section.errorMessage !== '' ? section.errorMessage : $r('app.string.global_search_failed'))
-          .fontSize(13)
-          .fontColor(this.pal.sub)
-          .textAlign(TextAlign.Center)
-          .margin({ top: 4 })
-      }
-      .width('100%')
-      .padding({ left: 16, right: 16, top: 8, bottom: 8 })
-      .alignItems(HorizontalAlign.Center)
+      ErrorState({
+        message: section.errorMessage !== '' ? section.errorMessage : $r('app.string.global_search_failed')
+      })
+        .padding({ left: 16, right: 16, top: 8, bottom: 8 })
     } else if (section.results.length === 0) {
       Text($r('app.string.no_results_found'))
         .fontSize(13)

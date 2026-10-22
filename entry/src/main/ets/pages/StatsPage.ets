@@ -8,6 +8,7 @@ import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { PageHeader } from './components/PageHeader';
 import { PrefGroup } from './components/Prefs';
+import { LoadingState } from './components/LoadingState';
 
 // 统计页汇总数据
 class StatsSummary {
@@ -255,15 +256,7 @@ export struct StatsPage {
       Column() {
         PageHeader({ title: $r('app.string.stats_title') })
         if (this.loading) {
-          Column() {
-            LoadingProgress()
-              .width(40)
-              .height(40)
-              .color(this.pal.primary)
-          }
-          .width('100%')
-          .layoutWeight(1)
-          .justifyContent(FlexAlign.Center)
+          LoadingState({ spinnerSize: 40 })
         } else {
           Scroll() {
             Column({ space: 12 }) {

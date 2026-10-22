@@ -4,6 +4,7 @@ import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
+import { LoadingState } from './components/LoadingState';
 import { AppIcon } from './components/AppIcon';
 import { ConfirmDialog } from './components/Dialogs';
 
@@ -547,15 +548,9 @@ export struct DownloadPage {
       List({ space: 0 }) {
         if (this.loading) {
           ListItem() {
-            Row() {
-              LoadingProgress()
-                .width(28)
-                .height(28)
-                .color(this.pal.primary)
-            }
-            .width('100%')
-            .justifyContent(FlexAlign.Center)
-            .padding({ top: 40, bottom: 40 })
+            LoadingState({ spinnerSize: 28, fill: false })
+              .width('100%')
+              .padding({ top: 40, bottom: 40 })
           }
         } else if (this.downloadedRows.length === 0) {
           ListItem() {

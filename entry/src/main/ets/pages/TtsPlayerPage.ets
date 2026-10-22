@@ -14,6 +14,7 @@ import {
   TtsServiceStateHandler
 } from '../common/TtsPlaybackService';
 import { SmartImage } from './components/SmartImage';
+import { SheetPreset } from './components/SheetPreset';
 import { CoverPlaceholder } from './components/CoverPlaceholder';
 import { AppIcon } from './components/AppIcon';
 
@@ -123,33 +124,23 @@ export struct TtsPlayerPage {
           .width(0)
           .height(0)
           .hitTestBehavior(HitTestMode.None)
-          .bindSheet($$this.showSpeed, this.speedSheetBuilder(), {
-            preferType: Bp.sheetType(this.windowW),
-            width: Bp.sheetWidth(this.windowW, 480),
-            height: SheetSize.FIT_CONTENT,
-            title: { title: $r('app.string.novel_tts_speed') },
-            detents: [SheetSize.FIT_CONTENT],
-            dragBar: true,
-            showClose: true,
-            blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
-            enableOutsideInteractive: true
-          })
+          .bindSheet($$this.showSpeed, this.speedSheetBuilder(),
+            SheetPreset.fit(this.windowW, {
+              title: $r('app.string.novel_tts_speed'),
+              wideWidth: 480,
+              interactive: true
+            }))
 
         Column()
           .width(0)
           .height(0)
           .hitTestBehavior(HitTestMode.None)
-          .bindSheet($$this.showSleep, this.sleepSheetBuilder(), {
-            preferType: Bp.sheetType(this.windowW),
-            width: Bp.sheetWidth(this.windowW, 480),
-            height: SheetSize.FIT_CONTENT,
-            title: { title: $r('app.string.tts_sleep_timer') },
-            detents: [SheetSize.FIT_CONTENT],
-            dragBar: true,
-            showClose: true,
-            blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
-            enableOutsideInteractive: true
-          })
+          .bindSheet($$this.showSleep, this.sleepSheetBuilder(),
+            SheetPreset.fit(this.windowW, {
+              title: $r('app.string.tts_sleep_timer'),
+              wideWidth: 480,
+              interactive: true
+            }))
       }
       .width('100%')
       .height('100%')
@@ -164,17 +155,14 @@ export struct TtsPlayerPage {
     }
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)
-    .bindSheet($$this.showChapters, this.chapterSheetBuilder(), {
-      preferType: Bp.sheetType(this.windowW),
-      width: Bp.sheetWidth(this.windowW, 480),
-      height: SheetSize.LARGE,
-      title: { title: $r('app.string.tts_chapters') },
-      detents: [SheetSize.MEDIUM, SheetSize.LARGE],
-      dragBar: true,
-      showClose: true,
-      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
-      enableOutsideInteractive: true
-    })
+    .bindSheet($$this.showChapters, this.chapterSheetBuilder(),
+      SheetPreset.fit(this.windowW, {
+        title: $r('app.string.tts_chapters'),
+        height: SheetSize.LARGE,
+        detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+        wideWidth: 480,
+        interactive: true
+      }))
     .onReady((ctx: NavDestinationContext) => {
       this.pathStack = ctx.pathStack;
     })

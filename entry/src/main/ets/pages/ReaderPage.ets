@@ -1,7 +1,6 @@
 import { motion } from '@kit.MultimodalAwarenessKit';
 import { KeyCode } from '@kit.InputKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
-import { uiMaterial } from '@kit.ArkUI';
 import { AppDb } from '../data/AppDb';
 import { ChapterRepo, HistoryRepo, MangaRepo } from '../data/Repos';
 import { ReadingStatsRepo } from '../data/ReadingStats';
@@ -22,6 +21,7 @@ import { SmartImage } from './components/SmartImage';
 import { ComicStripViewer, STRIP_LEAD_COUNT } from './components/ComicStripViewer';
 import { SwitchRow, TextRow } from './components/Prefs';
 import { PickerSheet } from './components/PickerSheet';
+import { SheetPreset } from './components/SheetPreset';
 import { EmulationFlipView } from './components/PageFlip';
 import {
   ReaderFilterArea,
@@ -611,17 +611,12 @@ export struct ReaderPage {
     }
     .hideTitleBar(true)
     .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
-    .bindSheet($$this.showOrientationSheet, this.orientationSheetBuilder(), {
-      preferType: Bp.sheetType(this.windowW),
-      width: Bp.sheetWidth(this.windowW),
-      height: SheetSize.FIT_CONTENT,
-      title: { title: $r('app.string.reader_screen_orientation') },
-      detents: [SheetSize.FIT_CONTENT],
-      dragBar: true,
-      showClose: false,
-      systemMaterial: new uiMaterial.ImmersiveMaterial(),
-      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
-    })
+    .bindSheet($$this.showOrientationSheet, this.orientationSheetBuilder(),
+      SheetPreset.fit(this.windowW, {
+        title: $r('app.string.reader_screen_orientation'),
+        showClose: false,
+        glass: true
+      }))
     .onReady((ctx: NavDestinationContext) => {
       this.pathStack = ctx.pathStack;
       const params = ctx.pathInfo.param as ReaderParams;
@@ -755,18 +750,12 @@ export struct ReaderPage {
           .width(0)
           .height(0)
           .hitTestBehavior(HitTestMode.None)
-          .bindSheet($$this.showSettings, this.settingsSheet(), {
-            preferType: Bp.sheetType(this.windowW),
-            width: Bp.sheetWidth(this.windowW),
-            height: SheetSize.FIT_CONTENT,
-            title: { title: $r('app.string.reader_settings') },
-            detents: [SheetSize.FIT_CONTENT],
-            dragBar: true,
-            showClose: false,
-            // 沉浸光感（液态玻璃）：支持设备上启用系统材质，低版本自动回退模糊样式
-            systemMaterial: new uiMaterial.ImmersiveMaterial(),
-            blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
-          })
+          .bindSheet($$this.showSettings, this.settingsSheet(),
+            SheetPreset.fit(this.windowW, {
+              title: $r('app.string.reader_settings'),
+              showClose: false,
+              glass: true
+            }))
       }
       .width('100%')
       .height('100%')
@@ -778,17 +767,12 @@ export struct ReaderPage {
       .onKeyEvent((event: KeyEvent) => {
         this.handleReaderKey(event);
       })
-      .bindSheet($$this.showModeSheet, this.modeSheetBuilder(), {
-        preferType: Bp.sheetType(this.windowW),
-        width: Bp.sheetWidth(this.windowW),
-        height: SheetSize.FIT_CONTENT,
-        title: { title: $r('app.string.reader_reading_mode') },
-        detents: [SheetSize.FIT_CONTENT],
-        dragBar: true,
-        showClose: false,
-        systemMaterial: new uiMaterial.ImmersiveMaterial(),
-        blurStyle: BlurStyle.COMPONENT_ULTRA_THICK
-      })
+      .bindSheet($$this.showModeSheet, this.modeSheetBuilder(),
+        SheetPreset.fit(this.windowW, {
+          title: $r('app.string.reader_reading_mode'),
+          showClose: false,
+          glass: true
+        }))
   }
 
   // 阅读器设置面板（参考 Mihon：阅读模式 / 常规 / 滤镜）
