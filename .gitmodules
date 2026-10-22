@@ -7,3 +7,6 @@
 [submodule "entry/src/main/cpp/third_party/avif/libavif"]
 	path = entry/src/main/cpp/third_party/avif/libavif
 	url = https://github.com/AOMediaCodec/libavif
+[submodule "torrent"]
+	path = torrent
+	url = D:/project/torrent
