@@ -5,6 +5,7 @@ import { KeyCode } from '@kit.InputKit';
 import { AnimatorOptions, AnimatorResult, curves } from '@kit.ArkUI';
 import { webview } from '@kit.ArkWeb';
 import { HdsTabsHost, HdsTabsHostController, HdsTabsHostMiniBar } from '../common/HdsTabsHost';
+import { NavGlassRoot, HOME_HEADER_H } from '../common/HdsNavHost';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Settings } from '../common/Settings';
@@ -17,11 +18,11 @@ import { AppKeys } from '../common/AppKeys';
 import { CookieJar } from '../net/CookieJar';
 import { CoverStore } from '../common/CoverStore';
 import { TtsPlaybackService, TtsServiceStateHandler } from '../common/TtsPlaybackService';
-import { LibraryPage } from './LibraryPage';
-import { UpdatesPage } from './UpdatesPage';
-import { HistoryPage } from './HistoryPage';
-import { BrowsePage } from './BrowsePage';
-import { MorePage } from './MorePage';
+import { LibraryPage, LibraryHeader } from './LibraryPage';
+import { UpdatesPage, UpdatesHeader } from './UpdatesPage';
+import { HistoryPage, HistoryHeader } from './HistoryPage';
+import { BrowsePage, BrowseHeader } from './BrowsePage';
+import { MorePage, MoreHeader } from './MorePage';
 import { ContentOpen } from './ContentOpen';
 import { AppIcon } from './components/AppIcon';
 import { CfVerifySheet } from './components/CfVerifySheet';
@@ -461,6 +462,27 @@ struct Index {
     })
   }
 
+  // 首页页签头部（置于 Navigation 标题栏，获得沉浸光感材质）：按当前页签切换；
+  // 顶部补 statusBarH——全屏布局下标题栏内容自 y=0 起绘，需避开状态栏
+  @Builder
+  homeHeader() {
+    Column() {
+      if (this.currentTab === 0) {
+        LibraryHeader()
+      } else if (this.currentTab === 1) {
+        UpdatesHeader()
+      } else if (this.currentTab === 2) {
+        HistoryHeader()
+      } else if (this.currentTab === 3) {
+        BrowseHeader()
+      } else {
+        MoreHeader()
+      }
+    }
+    .width('100%')
+    .padding({ top: this.statusBarH })
+  }
+
   // 路由切换后同步栈顶路由名（驱动外层导航 完整栏 ↔ 图标栏）。
   // 仅在转场结束后（didShow）触发，且宽度变化放入动画：若在转场中途切换
 
@@ -490,7 +512,7 @@ struct Index {
         LibraryPage()
       }
       .height('100%')
-      .padding({ top: this.statusBarH })
+      .padding({ top: this.statusBarH + HOME_HEADER_H })
     }
     .tabBar(this.tabBuilder('library', $r('app.string.tab_library'), 0))
 
@@ -499,7 +521,7 @@ struct Index {
         UpdatesPage()
       }
       .height('100%')
-      .padding({ top: this.statusBarH })
+      .padding({ top: this.statusBarH + HOME_HEADER_H })
     }
     .tabBar(this.tabBuilder('updates', $r('app.string.tab_updates'), 1))
 
@@ -508,7 +530,7 @@ struct Index {
         HistoryPage()
       }
       .height('100%')
-      .padding({ top: this.statusBarH })
+      .padding({ top: this.statusBarH + HOME_HEADER_H })
     }
     .tabBar(this.tabBuilder('history', $r('app.string.tab_history'), 2))
 
@@ -517,7 +539,7 @@ struct Index {
         BrowsePage()
       }
       .height('100%')
-      .padding({ top: this.statusBarH })
+      .padding({ top: this.statusBarH + HOME_HEADER_H })
     }
     .tabBar(this.tabBuilder('browse', $r('app.string.tab_browse'), 3))
 
@@ -526,7 +548,7 @@ struct Index {
         MorePage()
       }
       .height('100%')
-      .padding({ top: this.statusBarH })
+      .padding({ top: this.statusBarH + HOME_HEADER_H })
     }
     .tabBar(this.tabBuilder('more', $r('app.string.tab_more'), 4))
   }
@@ -662,7 +684,7 @@ struct Index {
           LibraryPage()
         }
         .height('100%')
-        .padding({ top: this.statusBarH })
+        .padding({ top: this.statusBarH + HOME_HEADER_H })
         .visibility(this.currentTab === 0 ? Visibility.Visible : Visibility.None)
       }
       if (this.tabMounted(1)) {
@@ -670,7 +692,7 @@ struct Index {
           UpdatesPage()
         }
         .height('100%')
-        .padding({ top: this.statusBarH })
+        .padding({ top: this.statusBarH + HOME_HEADER_H })
         .visibility(this.currentTab === 1 ? Visibility.Visible : Visibility.None)
       }
       if (this.tabMounted(2)) {
@@ -678,7 +700,7 @@ struct Index {
           HistoryPage()
         }
         .height('100%')
-        .padding({ top: this.statusBarH })
+        .padding({ top: this.statusBarH + HOME_HEADER_H })
         .visibility(this.currentTab === 2 ? Visibility.Visible : Visibility.None)
       }
       if (this.tabMounted(3)) {
@@ -686,7 +708,7 @@ struct Index {
           BrowsePage()
         }
         .height('100%')
-        .padding({ top: this.statusBarH })
+        .padding({ top: this.statusBarH + HOME_HEADER_H })
         .visibility(this.currentTab === 3 ? Visibility.Visible : Visibility.None)
       }
       if (this.tabMounted(4)) {
@@ -694,7 +716,7 @@ struct Index {
           MorePage()
         }
         .height('100%')
-        .padding({ top: this.statusBarH })
+        .padding({ top: this.statusBarH + HOME_HEADER_H })
         .visibility(this.currentTab === 4 ? Visibility.Visible : Visibility.None)
       }
     }
@@ -714,6 +736,74 @@ struct Index {
     })
   }
 
+  // 首页内容（NavGlassRoot 的 content 经命名参数注入——宿主含多个 @BuilderParam，
+  // 不能用尾随闭包初始化）
+  @Builder
+  homeContent() {
+    Stack({ alignContent: Alignment.TopStart }) {
+      if (this.isWide()) {
+        this.wideContent()
+      } else {
+        // 手机端 HDS 沉浸浮动页签栏（预览器由 src/mock 的标准 Tabs Mock 等效渲染）
+        HdsTabsHost({
+          index: this.currentTab,
+          scrollable: true,
+          barBottomMargin: Math.max(this.navBarH + 2, 8),
+          controller: this.tabsController,
+          miniBar: this.ttsMiniBarOptions(),
+          onTabChange: (index: number): void => {
+            this.currentTab = index;
+          }
+        }) {
+          this.phoneTabContents()
+        }
+      }
+      // 听书迷你条（PC/宽屏无底部页签条）：MusicHome 风格胶囊悬于右下角
+      // （28 圆角 + 1px 描边 + 卡片底色，无阴影）
+      if (this.isWide() && this.ttsActive) {
+        Stack({ alignContent: Alignment.BottomEnd }) {
+          Column() {
+            TtsMiniBar({
+              onOpenPlayer: (): void => {
+                this.pathStack.pushPathByName('TtsPlayer', null);
+              }
+            })
+          }
+          .width(360)
+          .height(56)
+          .justifyContent(FlexAlign.Center)
+          .borderRadius(28)
+          .backgroundColor(this.pal.card)
+          .border({ width: 1, color: this.pal.divider })
+          .margin({ right: 24, bottom: 16 })
+        }
+        .width('100%')
+        .height('100%')
+        .hitTestBehavior(HitTestMode.Transparent)
+      }
+    }
+    .width('100%')
+    .height('100%')
+    .bindSheet($$this.cfSheetShow, this.cfSheetBuilder(),
+      SheetPreset.fit(this.windowW, {
+        height: SheetSize.LARGE,
+        detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+        showClose: false,
+        maskColor: 'rgba(0,0,0,0.45)',
+        onDisappear: (): void => {
+          // 弹层关闭：回写 ArkWeb 会话 Cookie 到 CookieJar，并复位 challenge 标记
+          const url = this.cfChallengeUrl;
+          if (url !== '') {
+            this.cfChallengeUrl = '';
+            webview.WebCookieManager.fetchCookie(url).then((cookies: string) => {
+              CookieJar.importCookieString(url, cookies);
+            }).catch((_e: Error) => {
+            });
+          }
+        }
+      }))
+  }
+
   build() {
     Stack() {
       Row() {
@@ -726,90 +816,31 @@ struct Index {
             this.wideRail()
           }
         }
-        Navigation(this.pathStack) {
-          Stack({ alignContent: Alignment.TopStart }) {
-            if (this.isWide()) {
-              this.wideContent()
-            } else {
-              // 手机端 HDS 沉浸浮动页签栏（预览器由 src/mock 的标准 Tabs Mock 等效渲染）
-              HdsTabsHost({
-                index: this.currentTab,
-                scrollable: true,
-                barBottomMargin: Math.max(this.navBarH + 2, 8),
-                controller: this.tabsController,
-                miniBar: this.ttsMiniBarOptions(),
-                onTabChange: (index: number): void => {
-                  this.currentTab = index;
+        // HDS 液态玻璃导航根宿主（预览器由 src/mock 的标准 Navigation Mock 等效渲染）；
+        // 外层 Column 承接 layoutWeight（自定义组件尾随闭包后不可链式调用属性）
+        Column() {
+          NavGlassRoot({
+            header: (): void => {
+              this.homeHeader();
+            },
+            content: (): void => {
+              this.homeContent();
+            },
+            onNavBarStateChange: (isVisible: boolean): void => {
+              if (isVisible) {
+                if (this.navSyncTimerId >= 0) {
+                  clearTimeout(this.navSyncTimerId);
                 }
-              }) {
-                this.phoneTabContents()
+                this.navSyncTimerId = setTimeout((): void => {
+                  this.navSyncTimerId = -1;
+                  this.syncTopRoute();
+                }, 450);
               }
             }
-            // 听书迷你条（PC/宽屏无底部页签条）：MusicHome 风格胶囊悬于右下角
-            // （28 圆角 + 1px 描边 + 卡片底色，无阴影）
-            if (this.isWide() && this.ttsActive) {
-              Stack({ alignContent: Alignment.BottomEnd }) {
-                Column() {
-                  TtsMiniBar({
-                    onOpenPlayer: (): void => {
-                      this.pathStack.pushPathByName('TtsPlayer', null);
-                    }
-                  })
-                }
-                .width(360)
-                .height(56)
-                .justifyContent(FlexAlign.Center)
-                .borderRadius(28)
-                .backgroundColor(this.pal.card)
-                .border({ width: 1, color: this.pal.divider })
-                .margin({ right: 24, bottom: 16 })
-              }
-              .width('100%')
-              .height('100%')
-              .hitTestBehavior(HitTestMode.Transparent)
-            }
-          }
-          .width('100%')
-          .height('100%')
-           .bindSheet($$this.cfSheetShow, this.cfSheetBuilder(),
-             SheetPreset.fit(this.windowW, {
-               height: SheetSize.LARGE,
-               detents: [SheetSize.MEDIUM, SheetSize.LARGE],
-               showClose: false,
-               maskColor: 'rgba(0,0,0,0.45)',
-               onDisappear: (): void => {
-                 // 弹层关闭：回写 ArkWeb 会话 Cookie 到 CookieJar，并复位 challenge 标记
-                 const url = this.cfChallengeUrl;
-                 if (url !== '') {
-                   this.cfChallengeUrl = '';
-                   webview.WebCookieManager.fetchCookie(url).then((cookies: string) => {
-                     CookieJar.importCookieString(url, cookies);
-                   }).catch((_e: Error) => {
-                   });
-                 }
-               }
-             }))
-      }
-      .layoutWeight(1)
-      .hideTitleBar(true)
-      .mode(NavigationMode.Stack)
-      .backgroundColor(this.pal.bg)
-      // 裁剪内容到自身边界：Stack 模式推入路由页时首页向左平移让位，
-      // 不裁剪会溢出画到左侧 Rail 区域上（Rail 被"挤压"至不可见）
-      .clip(true)
-      // 返回首页时兜底同步（didShow 正常覆盖此场景，此处仅防极端未触发导致
-      // 导航卡在图标栏）；延迟到转场结束后执行，避免导航宽度在动画中途跳变
-      .onNavBarStateChange((isVisible: boolean) => {
-        if (isVisible) {
-          if (this.navSyncTimerId >= 0) {
-            clearTimeout(this.navSyncTimerId);
-          }
-          this.navSyncTimerId = setTimeout((): void => {
-            this.navSyncTimerId = -1;
-            this.syncTopRoute();
-          }, 450);
+          })
         }
-      })
+        .layoutWeight(1)
+        .height('100%')
       }
       // 应用锁（隐私设置）：锁定时全屏覆盖，拦截一切交互直至系统认证通过
       if (this.appLocked) {

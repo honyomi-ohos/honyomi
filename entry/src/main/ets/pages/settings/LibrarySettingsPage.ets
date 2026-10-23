@@ -1,6 +1,6 @@
 import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
-import { PageHeader } from '../components/PageHeader';
+import { NavGlassPage } from '../../common/HdsNavHost';
 import { PrefGroup, PrefSelectRow, PrefSliderRow, PrefSwitchRow } from '../components/Prefs';
 
 const SORT_VALUES: string[] = [
@@ -143,18 +143,14 @@ export struct LibrarySettingsPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   build() {
-    NavDestination() {
+    NavGlassPage({ title: $r('app.string.lib_set_title') }) {
       Column() {
-        PageHeader({ title: $r('app.string.lib_set_title') })
         LibrarySettingsContent()
           .layoutWeight(1)
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
   }
 }
 

@@ -1,7 +1,7 @@
 // 隐私说明页（对齐 Mihon privacy policy，改为应用内展示）：
 // 说明本地优先的数据存储、在线源/扩展、追踪服务与权限用途
 import { ThemePalette } from '../../common/Theme';
-import { PageHeader } from '../components/PageHeader';
+import { NavGlassPage } from '../../common/HdsNavHost';
 
 // 隐私说明小节：标题 + 正文（均走资源本地化）
 interface PrivacySection {
@@ -13,6 +13,7 @@ interface PrivacySection {
 @Component
 export struct PrivacyPolicyPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  private policyScroller: Scroller = new Scroller();
 
   private sections(): PrivacySection[] {
     const sections: PrivacySection[] = [
@@ -27,10 +28,9 @@ export struct PrivacyPolicyPage {
   }
 
   build() {
-    NavDestination() {
+    NavGlassPage({ title: $r('app.string.privacy_policy_title'), scroller: this.policyScroller }) {
       Column() {
-        PageHeader({ title: $r('app.string.privacy_policy_title') })
-        Scroll() {
+        Scroll(this.policyScroller) {
           Column({ space: 12 }) {
             Text($r('app.string.privacy_policy_intro'))
               .fontSize(14)
@@ -71,10 +71,7 @@ export struct PrivacyPolicyPage {
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
   }
 }
 

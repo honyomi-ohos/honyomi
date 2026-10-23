@@ -2,5 +2,10 @@
   // 预览器无 HDS 运行时：用标准 Tabs 等效 Mock 整体替换生产 HdsTabsHost 模块
   "common/HdsTabsHost.ets": {
     "source": "src/mock/HdsTabsHost.mock.ets"
+  },
+  // 预览器无 HDS 运行时：用标准 Navigation/NavDestination + PageHeader Mock
+  // 整体替换生产 HdsNavHost 模块（液态玻璃导航宿主）
+  "common/HdsNavHost.ets": {
+    "source": "src/mock/HdsNavHost.mock.ets"
   }
 }

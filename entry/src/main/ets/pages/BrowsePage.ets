@@ -276,6 +276,113 @@ struct SourceFilterDialog {
   }
 }
 
+// 浏览页头部（已移入 Navigation 标题栏，经 AppStorage 与内容区通信）
+// 头部随外部页签切换卸载，所有跨侧状态仅走 AppStorage（键见 AppKeys）
+@Component
+export struct BrowseHeader {
+  @Consume('navStack') pathStack: NavPathStack;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @StorageProp('windowW') windowW: number = 0;
+  // 当前内部页签（内容区写入，头部按页签切换右上角图标组）
+  @StorageProp('browseCurrentTab') currentTab: number = 0;
+  // 插件搜索框打开态（头部持有，页签切换不丢失）与搜索词（头部写，内容区面板过滤读）
+  @StorageLink('browseExtSearchOpen') extSearchOpen: boolean = false;
+  @StorageLink('browseExtQuery') extQuery: string = '';
+
+  @Builder
+  extMenu() {
+    Menu() {
+      MenuItem({ content: $r('app.string.ext_install_local') })
+        .onClick(() => {
+          AppStorage.setOrCreate(AppKeys.EXT_LOCAL_INSTALL,
+            (AppStorage.get<number>(AppKeys.EXT_LOCAL_INSTALL) ?? 0) + 1);
+        })
+      MenuItem({ content: $r('app.string.ext_repo_settings') })
+        .onClick(() => {
+          this.pathStack.pushPathByName('ExtensionStores', null);
+        })
+      MenuItem({ content: $r('app.string.ext_refresh_repo') })
+        .onClick(() => {
+          // 刷新仓库逻辑在内容区，经信号转发
+          AppStorage.setOrCreate(AppKeys.BROWSE_REFRESH_REPO_REQ,
+            (AppStorage.get<number>(AppKeys.BROWSE_REFRESH_REPO_REQ) ?? 0) + 1);
+        })
+    }
+  }
+
+  build() {
+    Row() {
+      if (this.extSearchOpen && this.currentTab === 1) {
+        TextInput({ text: this.extQuery, placeholder: $r('app.string.ext_search_hint') })
+          .layoutWeight(1)
+          .height(38)
+          .backgroundColor(this.pal.card)
+          .onChange((value: string) => {
+            this.extQuery = value;
+          })
+        AppIcon({ name: 'close', iconSize: 20 })
+          .padding({ left: 12, right: 4 })
+          .onClick(() => {
+            this.extSearchOpen = false;
+            this.extQuery = '';
+          })
+      } else {
+        Text($r('app.string.browse_title'))
+          .fontSize(22)
+          .fontWeight(FontWeight.Bold)
+          .fontColor(this.pal.text)
+          .layoutWeight(1)
+      }
+
+      if (this.currentTab === 0) {
+        // 图源：全局搜索 + 过滤（语言/内容类型，经信号转发到内容区弹窗）
+        AppIcon({ name: 'travel_explore', iconSize: 22 })
+          .padding({ left: 12, right: 12 })
+          .onClick(() => {
+            this.pathStack.pushPathByName('GlobalSearch', null);
+          })
+        AppIcon({ name: 'filter_list', iconSize: 22 })
+          .padding({ left: 0, right: 4 })
+          .onClick(() => {
+            AppStorage.setOrCreate(AppKeys.BROWSE_SOURCE_FILTER_REQ,
+              (AppStorage.get<number>(AppKeys.BROWSE_SOURCE_FILTER_REQ) ?? 0) + 1);
+          })
+      } else if (this.currentTab === 1) {
+        // 插件：搜索 + 类型过滤（信号转发）+ 溢出菜单
+        AppIcon({ name: 'search', iconSize: 22 })
+          .padding({ left: 12, right: 12 })
+          .onClick(() => {
+            this.extSearchOpen = true;
+          })
+        AppIcon({ name: 'filter_list', iconSize: 22 })
+          .padding({ left: 0, right: 12 })
+          .onClick(() => {
+            AppStorage.setOrCreate(AppKeys.BROWSE_EXT_FILTER_REQ,
+              (AppStorage.get<number>(AppKeys.BROWSE_EXT_FILTER_REQ) ?? 0) + 1);
+          })
+        AppIcon({ name: 'more_vert', iconSize: 22 })
+          .padding({ left: 0, right: 4 })
+          .bindMenu(this.extMenu)
+      } else {
+        // 迁移：帮助（应用内帮助文档的「书源迁移」小节）
+        AppIcon({ name: 'info', iconSize: 22 })
+          .padding({ left: 12, right: 4 })
+          .onClick(() => {
+            this.pathStack.pushPathByName('Help', null);
+          })
+      }
+    }
+    .width('100%')
+    .height(58)
+    .padding({
+      left: 16 + Bp.contentInset(this.windowW),
+      right: 16 + Bp.contentInset(this.windowW),
+      top: 12,
+      bottom: 4
+    })
+  }
+}
+
 // 浏览页：图源 / 插件 / 迁移 三 Tab（对齐原版 Mihon BrowseTab）
 @Component
 export struct BrowsePage {
@@ -291,23 +398,29 @@ export struct BrowsePage {
   @StorageProp('pluginsDirty') @Watch('onPluginsChanged') pluginsDirty: number = 0;
   // NSFW 源显示开关（浏览设置页写入 AppStorage）
   @StorageProp('showNsfw') showNsfw: boolean = false;
-  @State currentTab: number = 0;
+  // 当前内部页签：经 AppStorage 发布给标题栏头部（头部随外部页签切换卸载）
+  @StorageLink('browseCurrentTab') currentTab: number = 0;
   // 图源 Tab
   @State sources: Source[] = [];
   @State pinnedKeys: string[] = [];
   @State enabledLangs: string[] = []; // 空数组 = 全部语言
   @State enabledTypes: string[] = []; // 空数组 = 全部内容类型
-  // 插件 Tab
-  @State extSearchOpen: boolean = false;
-  @State extQuery: string = '';
+  // 插件 Tab（搜索框打开态由头部持有；搜索词经 AppStorage 与头部共享）
+  @StorageLink('browseExtQuery') extQuery: string = '';
   @State extTypes: string[] = []; // 空数组 = 全部内容类型
   // 迁移 Tab
   @State migrateItems: MigrateSourceCount[] = [];
   @State migrateLoaded: boolean = false;
   @State migrateSortByCount: boolean = true;
   @State migrateSortAsc: boolean = true;
+  // 标题栏头部 → 内容区信号（计数器递增触发 @Watch，弹窗/刷新逻辑留在内容区）
+  @StorageLink('browseSourceFilterReq') @Watch('onSourceFilterReq') sourceFilterReq: number = 0;
+  @StorageLink('browseExtFilterReq') @Watch('onExtFilterReq') extFilterReq: number = 0;
+  @StorageLink('browseRefreshRepoReq') @Watch('onRefreshRepoReq') refreshRepoReq: number = 0;
 
   aboutToAppear(): void {
+    // 确保页签初始值已发布（头部可能在内容区挂载前先读）
+    AppStorage.setOrCreate(AppKeys.BROWSE_CURRENT_TAB, this.currentTab);
     this.refreshSources();
     this.loadPins();
   }
@@ -315,6 +428,19 @@ export struct BrowsePage {
   // 插件安装/启停后刷新源列表
   onPluginsChanged(): void {
     this.refreshSources();
+  }
+
+  // 头部筛选/溢出菜单信号 → 复用原有弹窗与刷新逻辑
+  onSourceFilterReq(): void {
+    this.showSourceFilter();
+  }
+
+  onExtFilterReq(): void {
+    this.showExtTypeFilter();
+  }
+
+  onRefreshRepoReq(): void {
+    this.refreshRepo();
   }
 
   // 源列表分节：已置顶在前，其后按语言分组
@@ -372,25 +498,6 @@ export struct BrowsePage {
     .onClick(() => {
       this.tabController.changeIndex(index);
     })
-  }
-
-  @Builder
-  extMenu() {
-    Menu() {
-      MenuItem({ content: $r('app.string.ext_install_local') })
-        .onClick(() => {
-          AppStorage.setOrCreate(AppKeys.EXT_LOCAL_INSTALL,
-            (AppStorage.get<number>(AppKeys.EXT_LOCAL_INSTALL) ?? 0) + 1);
-        })
-      MenuItem({ content: $r('app.string.ext_repo_settings') })
-        .onClick(() => {
-          this.pathStack.pushPathByName('ExtensionStores', null);
-        })
-      MenuItem({ content: $r('app.string.ext_refresh_repo') })
-        .onClick(() => {
-          this.refreshRepo();
-        })
-    }
   }
 
   // PC 鼠标右键菜单：置顶/取消置顶（与长按弹窗同一动作；移动端仍走长按手势）
@@ -643,74 +750,7 @@ export struct BrowsePage {
   @Builder
   bodyContent() {
     Column() {
-      // 顶栏（标题 + 按页签变化的右上角按钮，对齐原版 TabbedScreen）
-      Row() {
-        if (this.extSearchOpen && this.currentTab === 1) {
-          TextInput({ placeholder: $r('app.string.ext_search_hint') })
-            .layoutWeight(1)
-            .height(38)
-            .backgroundColor(this.pal.card)
-            .onChange((value: string) => {
-              this.extQuery = value;
-            })
-          AppIcon({ name: 'close', iconSize: 20 })
-            .padding({ left: 12, right: 4 })
-            .onClick(() => {
-              this.extSearchOpen = false;
-              this.extQuery = '';
-            })
-        } else {
-          Text($r('app.string.browse_title'))
-            .fontSize(22)
-            .fontWeight(FontWeight.Bold)
-            .fontColor(this.pal.text)
-            .layoutWeight(1)
-        }
-
-        if (this.currentTab === 0) {
-          // 图源：全局搜索 + 过滤（语言/内容类型）
-          AppIcon({ name: 'travel_explore', iconSize: 22 })
-            .padding({ left: 12, right: 12 })
-            .onClick(() => {
-              this.pathStack.pushPathByName('GlobalSearch', null);
-            })
-          AppIcon({ name: 'filter_list', iconSize: 22 })
-            .padding({ left: 0, right: 4 })
-            .onClick(() => {
-              this.showSourceFilter();
-            })
-        } else if (this.currentTab === 1) {
-          // 插件：搜索 + 类型过滤 + 溢出菜单
-          AppIcon({ name: 'search', iconSize: 22 })
-            .padding({ left: 12, right: 12 })
-            .onClick(() => {
-              this.extSearchOpen = true;
-            })
-          AppIcon({ name: 'filter_list', iconSize: 22 })
-            .padding({ left: 0, right: 12 })
-            .onClick(() => {
-              this.showExtTypeFilter();
-            })
-          AppIcon({ name: 'more_vert', iconSize: 22 })
-            .padding({ left: 0, right: 4 })
-            .bindMenu(this.extMenu)
-        } else {
-          // 迁移：帮助（应用内帮助文档的「书源迁移」小节）
-          AppIcon({ name: 'info', iconSize: 22 })
-            .padding({ left: 12, right: 4 })
-            .onClick(() => {
-              this.pathStack.pushPathByName('Help', null);
-            })
-        }
-      }
-      .width('100%')
-      .height(58)
-      .padding({
-        left: 16 + this.inset(),
-        right: 16 + this.inset(),
-        top: 12,
-        bottom: 4
-      })
+      // 顶栏已移入 Navigation 标题栏（见 BrowseHeader）
 
       // 页签标签行：在限宽内容列内均分三份（对齐 Mihon TabRow），点击经控制器切换
       Row() {

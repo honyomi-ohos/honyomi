@@ -18,6 +18,7 @@ import { LoadingState } from './components/LoadingState';
 import { AppIcon } from './components/AppIcon';
 import { LibraryMangaItem } from './components/LibraryItems';
 import { LibrarySettingsSheet } from './components/LibrarySettingsSheet';
+import { HOME_HEADER_H } from '../common/HdsNavHost';
 
 // LazyForEach 数据源：shownList 变化时 onDataReloaded 通知
 class LibMangaSource implements IDataSource {
@@ -53,6 +54,164 @@ class LibMangaSource implements IDataSource {
   }
 }
 
+// 书库页签头部（置于 Index 的 Navigation 标题栏，获得沉浸光感材质）：
+// 选择模式下切换为多选工具栏。与内容区经 AppStorage 桥接——
+// 头部随页签切换卸载，持久状态走全局存储，动作走计数信号。
+@Component
+export struct LibraryHeader {
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  // 多选数（内容区 onSelectionChanged 发布）：>0 显示选择工具栏
+  @StorageProp('libSelectionCount') selectionCount: number = 0;
+  // 刷新中（内容区发布）与筛选生效态（内容区 refreshView 发布）
+  @StorageProp('libRefreshing') refreshing: boolean = false;
+  @StorageProp('libFilterActive') filterActive: boolean = false;
+  // 搜索框打开态与搜索词：详情页回退搜索时内容区也会写入
+  @StorageLink('libSearchOpen') searchOpen: boolean = false;
+  @StorageLink('libSearchQuery') searchQuery: string = '';
+
+  build() {
+    if (this.selectionCount > 0) {
+      this.selectionToolbar()
+    } else {
+      this.titleRow()
+    }
+  }
+
+  // 选择模式工具栏（对齐 Mihon LibrarySelectionToolbar）
+  @Builder
+  selectionToolbar() {
+    Row() {
+      AppIcon({ name: 'close', iconSize: 22, tint: this.pal.text })
+        .onClick(() => {
+          this.sendSignal(AppKeys.LIB_SEL_CLEAR_REQ);
+        })
+      Text(`${this.selectionCount}`)
+        .fontSize(18)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+        .margin({ left: 16 })
+      Blank()
+        .layoutWeight(1)
+      AppIcon({ name: 'select_all', iconSize: 22, tint: this.pal.text })
+        .padding({ left: 12 })
+        .onClick(() => {
+          this.sendSignal(AppKeys.LIB_SELECT_ALL_REQ);
+        })
+      AppIcon({ name: 'autorenew', iconSize: 22, tint: this.pal.text })
+        .padding({ left: 12 })
+        .onClick(() => {
+          this.sendSignal(AppKeys.LIB_SEL_INVERT_REQ);
+        })
+    }
+    .width('100%')
+    .height(HOME_HEADER_H)
+    .padding({
+      left: 16,
+      right: 16,
+      top: 12,
+      bottom: 8
+    })
+  }
+
+  // 常规顶栏：标题(+刷新指示)/搜索框 + 搜索/筛选/更多
+  @Builder
+  titleRow() {
+    Row() {
+      if (this.searchOpen) {
+        TextInput({ text: this.searchQuery, placeholder: $r('app.string.library_search_hint') })
+          .layoutWeight(1)
+          .height(38)
+          .fontSize(15)
+          .fontColor(this.pal.text)
+          .placeholderColor(this.pal.sub)
+          .backgroundColor(this.pal.chip)
+          .borderRadius(19)
+          .padding({ left: 16, right: 16 })
+          .transition(TransitionEffect.OPACITY
+            .combine(TransitionEffect.translate({ x: -24 })))
+          .onChange((value: string) => {
+            this.searchQuery = value;
+          })
+        AppIcon({ name: 'close', iconSize: 22, tint: this.pal.text })
+          .padding({ left: 12 })
+          .onClick(() => {
+            this.closeSearch();
+          })
+      } else {
+        Text($r('app.string.library_title'))
+          .fontSize(22)
+          .fontWeight(FontWeight.Bold)
+          .fontColor(this.pal.text)
+        if (this.refreshing) {
+          LoadingProgress()
+            .width(20)
+            .height(20)
+            .color(this.pal.primary)
+            .margin({ left: 8 })
+        }
+        Blank()
+          .layoutWeight(1)
+        AppIcon({ name: 'search', iconSize: 22, tint: this.pal.text })
+          .padding({ left: 12 })
+          .onClick(() => {
+            this.openSearch();
+          })
+        AppIcon({ name: 'filter_list', iconSize: 22, tint: this.filterActive ? this.pal.primary : this.pal.text })
+          .padding({ left: 12 })
+          .onClick(() => {
+            this.sendSignal(AppKeys.LIB_FILTER_SHEET_REQ);
+          })
+        AppIcon({ name: 'more_vert', iconSize: 22, tint: this.pal.text })
+          .padding({ left: 12 })
+          .bindMenu(this.libMenu)
+      }
+    }
+    .width('100%')
+    .height(HOME_HEADER_H)
+    .padding({
+      left: 16,
+      right: 16,
+      top: 12,
+      bottom: 8
+    })
+  }
+
+  @Builder
+  libMenu() {
+    Menu() {
+      MenuItem({ content: $r('app.string.action_update_library') })
+        .onClick(() => {
+          this.sendSignal(AppKeys.LIB_REFRESH_REQ);
+        })
+      MenuItem({ content: $r('app.string.action_update_category') })
+        .onClick(() => {
+          this.sendSignal(AppKeys.LIB_REFRESH_CATEGORY_REQ);
+        })
+      MenuItem({ content: $r('app.string.action_open_random_manga') })
+        .onClick(() => {
+          this.sendSignal(AppKeys.LIB_RANDOM_REQ);
+        })
+    }
+  }
+
+  private openSearch(): void {
+    this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
+      this.searchOpen = true;
+    });
+  }
+
+  private closeSearch(): void {
+    this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
+      this.searchOpen = false;
+      this.searchQuery = '';
+    });
+  }
+
+  private sendSignal(key: string): void {
+    AppStorage.setOrCreate(key, (AppStorage.get<number>(key) ?? 0) + 1);
+  }
+}
+
 // 书架页：分类 + 搜索/过滤弹层（筛选/排序/显示）/四种显示模式
 @Component
 export struct LibraryPage {
@@ -66,8 +225,9 @@ export struct LibraryPage {
   @State mangas: MangaRecord[] = [];
   @State categories: CategoryRecord[] = [];
   @State loading: boolean = true;
-  @State refreshing: boolean = false;
-  @State searchOpen: boolean = false;
+  // 刷新中/搜索框打开态：经 AppStorage 与头部（Navigation 标题栏）共享
+  @StorageLink('libRefreshing') refreshing: boolean = false;
+  @StorageLink('libSearchOpen') searchOpen: boolean = false;
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
   // 复刻 Mihon：再次点击书架页签打开筛选/显示设置弹层（LibraryTab.onReselect）
   @StorageLink('libReselect') @Watch('onLibReselect') libReselect: number = 0;
@@ -87,8 +247,8 @@ export struct LibraryPage {
   @State @Watch('refreshView') fTracked: string = 'ignore';
   @State @Watch('refreshView') contentFilter: string = 'all';
   @State @Watch('refreshView') selectedCategory: number = 0;
-  // 搜索词单独防抖刷新（见 TextInput onChange），不挂 @Watch 避免逐键全量重算
-  @State searchQuery: string = '';
+  // 搜索词（头部 TextInput 写入）：200ms 防抖刷新，避免逐键全量重算
+  @StorageLink('libSearchQuery') @Watch('onSearchQuery') searchQuery: string = '';
   @State viewMode: string = 'compact';
   @State gridCols: number = 0;
   @State showUnreadBadge: boolean = true;
@@ -103,6 +263,13 @@ export struct LibraryPage {
   // Index 根节点键盘广播：Ctrl+A 全选、Delete 删除选中
   @StorageLink('libSelectAllReq') @Watch('onSelectAllReq') libSelectAllReq: number = 0;
   @StorageLink('libDeleteSelReq') @Watch('onDeleteSelReq') libDeleteSelReq: number = 0;
+  // 头部（Navigation 标题栏）信号：筛选弹层 / 菜单动作 / 多选工具栏（计数器递增触发）
+  @StorageLink('libFilterSheetReq') @Watch('onFilterSheetReq') libFilterSheetReq: number = 0;
+  @StorageLink('libRefreshReq') @Watch('onRefreshReq') libRefreshReq: number = 0;
+  @StorageLink('libRefreshCategoryReq') @Watch('onRefreshCategoryReq') libRefreshCategoryReq: number = 0;
+  @StorageLink('libRandomReq') @Watch('onRandomReq') libRandomReq: number = 0;
+  @StorageLink('libSelClearReq') @Watch('onSelClearReq') libSelClearReq: number = 0;
+  @StorageLink('libSelInvertReq') @Watch('onSelInvertReq') libSelInvertReq: number = 0;
   @State statsMap: Record<string, MangaStats> = {};
   @State downloadCounts: Record<string, number> = {};
   @State trackedIds: Set<number> = new Set<number>();
@@ -288,24 +455,6 @@ export struct LibraryPage {
   }
 
   @Builder
-  libMenu() {
-    Menu() {
-      MenuItem({ content: $r('app.string.action_update_library') })
-        .onClick(() => {
-          this.refreshLibrary();
-        })
-      MenuItem({ content: $r('app.string.action_update_category') })
-        .onClick(() => {
-          this.refreshCategoryNow();
-        })
-      MenuItem({ content: $r('app.string.action_open_random_manga') })
-        .onClick(() => {
-          this.openRandomManga();
-        })
-    }
-  }
-
-  @Builder
   filterSheetBuilder() {
     LibrarySettingsSheet({
       sortKey: this.sortKey,
@@ -333,114 +482,7 @@ export struct LibraryPage {
 
   build() {
     Column() {
-      // 顶栏（选择模式下显示选择工具栏，对齐 Mihon LibrarySelectionToolbar）
-      if (this.selectionMode()) {
-        Row() {
-          AppIcon({ name: 'close', iconSize: 22, tint: this.pal.text })
-            .onClick(() => {
-              this.clearSelection();
-            })
-          Text(`${this.selection.size}`)
-            .fontSize(18)
-            .fontWeight(FontWeight.Bold)
-            .fontColor(this.pal.text)
-            .margin({ left: 16 })
-          Blank()
-            .layoutWeight(1)
-          AppIcon({ name: 'select_all', iconSize: 22, tint: this.pal.text })
-            .padding({ left: 12 })
-            .onClick(() => {
-              this.selectAllShown();
-            })
-          AppIcon({ name: 'autorenew', iconSize: 22, tint: this.pal.text })
-            .padding({ left: 12 })
-            .onClick(() => {
-              this.invertSelection();
-            })
-        }
-        .width('100%')
-        .height(38)
-        .padding({
-          left: 16,
-          right: 16,
-          top: 12,
-          bottom: 8
-        })
-      } else {
-        Row() {
-          if (this.searchOpen) {
-            TextInput({ text: this.searchQuery, placeholder: $r('app.string.library_search_hint') })
-              .layoutWeight(1)
-              .height(38)
-              .fontSize(15)
-              .fontColor(this.pal.text)
-              .placeholderColor(this.pal.sub)
-              .backgroundColor(this.pal.chip)
-              .borderRadius(19)
-              .padding({ left: 16, right: 16 })
-              .transition(TransitionEffect.OPACITY
-                .combine(TransitionEffect.translate({ x: -24 })))
-              .onChange((value: string) => {
-                this.searchQuery = value;
-                // 200ms 防抖：停止输入后再全量重算视图缓存
-                if (this.searchTimer >= 0) {
-                  clearTimeout(this.searchTimer);
-                }
-                this.searchTimer = setTimeout((): void => {
-                  this.searchTimer = -1;
-                  this.refreshView();
-                }, 200);
-              })
-            AppIcon({ name: 'close', iconSize: 22, tint: this.pal.text })
-              .padding({ left: 12 })
-              .onClick(() => {
-                this.closeSearchAnimated();
-              })
-          } else {
-            Text($r('app.string.library_title'))
-              .fontSize(22)
-              .fontWeight(FontWeight.Bold)
-              .fontColor(this.pal.text)
-            if (this.refreshing) {
-              LoadingProgress()
-                .width(20)
-                .height(20)
-                .color(this.pal.primary)
-                .margin({ left: 8 })
-            }
-            Blank()
-              .layoutWeight(1)
-            AppIcon({ name: 'search', iconSize: 22, tint: this.pal.text })
-              .padding({ left: 12 })
-              .onClick(() => {
-                this.openSearchAnimated();
-              })
-            AppIcon({ name: 'filter_list', iconSize: 22, tint: this.filterActive() ? this.pal.primary : this.pal.text })
-              .padding({ left: 12 })
-              .onClick(() => {
-                this.showFilterSheet = true;
-              })
-              .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(),
-                SheetPreset.fit(this.windowW, {
-                  height: Bp.sheetHeight(this.windowW),
-                  detents: ['70%', SheetSize.LARGE],
-                  showClose: false,
-                  bg: this.pal.bg
-                }))
-            AppIcon({ name: 'more_vert', iconSize: 22, tint: this.pal.text })
-              .padding({ left: 12 })
-              .bindMenu(this.libMenu)
-          }
-        }
-        .width('100%')
-        .height(58)
-        .padding({
-          left: 16,
-          right: 16,
-          top: 12,
-          bottom: 8
-        })
-      }
+      // 顶栏已移至 Index 的 Navigation 标题栏（LibraryHeader，沉浸光感材质）
 
       // 分类 chips
       if (this.showCategoryTabs) {
@@ -598,6 +640,14 @@ export struct LibraryPage {
     .width('100%')
     .height('100%')
     .backgroundColor(this.pal.bg)
+    // 筛选弹层（头部筛选图标经 libFilterSheetReq 信号触发）
+    .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(),
+      SheetPreset.fit(this.windowW, {
+        height: Bp.sheetHeight(this.windowW),
+        detents: ['70%', SheetSize.LARGE],
+        showClose: false,
+        bg: this.pal.bg
+      }))
   }
 
   private onSelectionChanged(): void {
@@ -607,6 +657,32 @@ export struct LibraryPage {
 
   private onLibReselect(): void {
     this.showFilterSheet = true;
+  }
+
+  // 头部（Navigation 标题栏）信号处理：筛选弹层 / 更新书库 / 更新分类 /
+  // 随机打开 / 取消多选 / 反选（计数器递增触发）
+  private onFilterSheetReq(): void {
+    this.showFilterSheet = true;
+  }
+
+  private onRefreshReq(): void {
+    this.refreshLibrary();
+  }
+
+  private onRefreshCategoryReq(): void {
+    this.refreshCategoryNow();
+  }
+
+  private onRandomReq(): void {
+    this.openRandomManga();
+  }
+
+  private onSelClearReq(): void {
+    this.clearSelection();
+  }
+
+  private onSelInvertReq(): void {
+    this.invertSelection();
   }
 
   // 消费详情页回退书架的搜索请求（已挂载时由 @Watch 触发；未挂载时由 aboutToAppear 兜底）
@@ -629,22 +705,15 @@ export struct LibraryPage {
     this.refreshView();
   }
 
-  private openSearchAnimated(): void {
-    this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
-      this.searchOpen = true;
-    });
-  }
-
-  private closeSearchAnimated(): void {
+  // 搜索词变化（头部 TextInput / 详情页回退搜索写入）：200ms 防抖后全量重算视图缓存
+  private onSearchQuery(): void {
     if (this.searchTimer >= 0) {
       clearTimeout(this.searchTimer);
-      this.searchTimer = -1;
     }
-    this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
-      this.searchOpen = false;
-      this.searchQuery = '';
-    });
-    this.refreshView();
+    this.searchTimer = setTimeout((): void => {
+      this.searchTimer = -1;
+      this.refreshView();
+    }, 200);
   }
 
   private applySettings(): void {
@@ -681,6 +750,8 @@ export struct LibraryPage {
     this.shownList = this.selectedCategory > 0 && this.showCategoryTabs ?
       sorted.filter((m: MangaRecord): boolean => m.categoryId === this.selectedCategory) : sorted;
     this.libSource.setItems(this.shownList);
+    // 发布筛选生效态给头部（Navigation 标题栏筛选图标着色）
+    AppStorage.setOrCreate(AppKeys.LIB_FILTER_ACTIVE, this.filterActive());
   }
 
   // 随机排序洗牌（sortKey === 'random' 时生效）；洗牌后需重算视图

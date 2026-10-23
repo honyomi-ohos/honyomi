@@ -7,7 +7,7 @@ import { Settings } from '../../common/Settings';
 import { Util } from '../../common/Util';
 import { Tracker } from '../../data/track/Tracker';
 import { TrackerManager } from '../../data/track/TrackerManager';
-import { PageHeader } from '../components/PageHeader';
+import { NavGlassPage } from '../../common/HdsNavHost';
 import { PrefGroup, SwitchRow } from '../components/Prefs';
 import { TrackLogo } from '../components/TrackLogo';
 import { OAuthSheet } from '../components/OAuthSheet';
@@ -275,18 +275,14 @@ export struct TrackingPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   build() {
-    NavDestination() {
+    NavGlassPage({ title: $r('app.string.track_title') }) {
       Column() {
-        PageHeader({ title: $r('app.string.track_title') })
         TrackingContent()
           .layoutWeight(1)
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
   }
 }
 

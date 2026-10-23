@@ -5,10 +5,9 @@ import { Util } from '../../common/Util';
 import { AppKeys } from '../../common/AppKeys';
 import { ImageCache } from '../../common/ImageCache';
 import { BackupService } from '../../data/BackupService';
-import { PageHeader } from '../components/PageHeader';
+import { NavGlassPage, NavGlassAction } from '../../common/HdsNavHost';
 import { PrefGroup, PrefSelectRow, PrefSwitchRow, TextRow } from '../components/Prefs';
 import { ExportColumnsDialog } from '../components/Dialogs';
-import { AppIcon } from '../components/AppIcon';
 
 // 备份频率选项（小时）：关闭 / 6 / 12 / 24 / 48 / 每周（对齐 Mihon backupInterval）
 const INTERVAL_HOURS: number[] = [0, 6, 12, 24, 48, 168];
@@ -342,29 +341,33 @@ export struct DataStoragePage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   pathStack: NavPathStack = new NavPathStack();
 
-  build() {
-    NavDestination() {
-      Column() {
-        PageHeader({ title: $r('app.string.data_storage_title') }) {
-          AppIcon({ name: 'help', iconSize: 22 })
-            .padding(8)
-            .onClick(() => {
-              this.pathStack.pushPathByName('Help', null);
-            })
+  // 标题栏右侧动作：帮助入口
+  private headerActions(): NavGlassAction[] {
+    return [
+      {
+        icon: $r('app.media.ic_help'),
+        action: (): void => {
+          this.pathStack.pushPathByName('Help', null);
         }
+      }
+    ];
+  }
 
+  build() {
+    NavGlassPage({
+      title: $r('app.string.data_storage_title'),
+      actions: this.headerActions(),
+      onReady: (ctx: NavDestinationContext): void => {
+        this.pathStack = ctx.pathStack;
+      }
+    }) {
+      Column() {
         DataStorageContent()
           .layoutWeight(1)
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
-    .onReady((ctx: NavDestinationContext) => {
-      this.pathStack = ctx.pathStack;
-    })
   }
 }
 

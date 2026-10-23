@@ -1,7 +1,7 @@
 // 帮助文档页（应用内自有文档，替代外部 mihon.app 帮助链接）：
 // 入门指南 / 书源迁移 / 数据与存储 / 更新与「即将更新」/ 故障排查
 import { ThemePalette } from '../../common/Theme';
-import { PageHeader } from '../components/PageHeader';
+import { NavGlassPage } from '../../common/HdsNavHost';
 
 // 帮助文档小节：标题 + 正文（均走资源本地化）
 interface HelpSection {
@@ -13,6 +13,7 @@ interface HelpSection {
 @Component
 export struct HelpPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  private helpScroller: Scroller = new Scroller();
 
   private sections(): HelpSection[] {
     const sections: HelpSection[] = [
@@ -31,10 +32,9 @@ export struct HelpPage {
   }
 
   build() {
-    NavDestination() {
+    NavGlassPage({ title: $r('app.string.help_title'), scroller: this.helpScroller }) {
       Column() {
-        PageHeader({ title: $r('app.string.help_title') })
-        Scroll() {
+        Scroll(this.helpScroller) {
           Column({ space: 12 }) {
             Text($r('app.string.help_intro'))
               .fontSize(14)
@@ -75,10 +75,7 @@ export struct HelpPage {
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
   }
 }
 

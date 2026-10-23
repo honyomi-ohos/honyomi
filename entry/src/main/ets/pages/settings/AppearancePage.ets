@@ -3,7 +3,7 @@ import { Settings } from '../../common/Settings';
 import { Languages } from '../../common/Languages';
 import { Util } from '../../common/Util';
 import { AppKeys } from '../../common/AppKeys';
-import { PageHeader } from '../components/PageHeader';
+import { NavGlassPage } from '../../common/HdsNavHost';
 import { PrefGroup, PrefSwitchRow, TextRow } from '../components/Prefs';
 import { ThemePicker } from '../components/ThemePicker';
 
@@ -122,9 +122,13 @@ export struct AppearancePage {
   pathStack: NavPathStack = new NavPathStack();
 
   build() {
-    NavDestination() {
+    NavGlassPage({
+      title: $r('app.string.appearance_title'),
+      onReady: (ctx: NavDestinationContext): void => {
+        this.pathStack = ctx.pathStack;
+      }
+    }) {
       Column() {
-        PageHeader({ title: $r('app.string.appearance_title') })
         AppearanceContent({
           onNavigate: (route: string): void => {
             this.pathStack.pushPathByName(route, null);
@@ -134,13 +138,7 @@ export struct AppearancePage {
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .onReady((ctx: NavDestinationContext) => {
-      this.pathStack = ctx.pathStack;
-    })
-    .backgroundColor(this.pal.bg)
   }
 }
 

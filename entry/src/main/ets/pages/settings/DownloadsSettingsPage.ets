@@ -1,7 +1,7 @@
 import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
 import { DownloadService } from '../../data/DownloadService';
-import { PageHeader } from '../components/PageHeader';
+import { NavGlassPage } from '../../common/HdsNavHost';
 import { PrefGroup, PrefSelectRow, PrefSliderRow, PrefSwitchRow } from '../components/Prefs';
 
 // "阅读后自动删除"选项值：-1 禁用，1-5 倒数第 N 个已读章节
@@ -190,18 +190,14 @@ export struct DownloadsSettingsPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   build() {
-    NavDestination() {
+    NavGlassPage({ title: $r('app.string.dl_set_title') }) {
       Column() {
-        PageHeader({ title: $r('app.string.dl_set_title') })
         DownloadsSettingsContent()
           .layoutWeight(1)
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
   }
 }
 

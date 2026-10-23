@@ -2,6 +2,7 @@
 import { Settings } from '../../common/Settings';
 import { Bp } from '../../common/Breakpoint';
 import { PageHeader } from '../components/PageHeader';
+import { NavGlassPage } from '../../common/HdsNavHost';
 import { IconRow, PrefGroup, PrefSelectRow } from '../components/Prefs';
 import { AppIcon } from '../components/AppIcon';
 import { BtRateBadge } from '../components/BtRateBadge';
@@ -47,6 +48,8 @@ export struct SettingsPage {
   @State rightSub: string = '';
   // torrent 组件已安装才显示 BitTorrent 分类（onShown 时刷新，安装后返回即出现）
   @State btInstalled: boolean = false;
+  // 窄屏分类列表滚动容器：标题栏滚动联动
+  private settingsScroller: Scroller = new Scroller();
 
   @Builder
   railItem(index: number) {
@@ -258,7 +261,7 @@ export struct SettingsPage {
   // 窄屏（sm/md）分类入口列表
   @Builder
   compactList() {
-    Scroll() {
+    Scroll(this.settingsScroller) {
       Column({ space: 12 }) {
         PrefGroup({ groupTitle: $r('app.string.settings_general') }) {
           PrefSelectRow({
@@ -394,27 +397,28 @@ export struct SettingsPage {
   }
 
   build() {
-    NavDestination() {
+    NavGlassPage({
+      title: $r('app.string.settings_title'),
+      // lg 双栏布局自带左栏头部与右栏状态栏避让，隐藏通栏玻璃标题栏
+      showTitleBar: !Bp.isWide(this.windowW),
+      scroller: this.settingsScroller,
+      onReady: (ctx: NavDestinationContext): void => {
+        this.pathStack = ctx.pathStack;
+      },
+      onShown: (): void => {
+        this.refreshBtInstalled();
+      }
+    }) {
       Column() {
         if (Bp.isWide(this.windowW)) {
           this.wideBody()
         } else {
-          PageHeader({ title: $r('app.string.settings_title') })
           this.compactList()
         }
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .onReady((ctx: NavDestinationContext) => {
-      this.pathStack = ctx.pathStack;
-    })
-    .onShown(() => {
-      this.refreshBtInstalled();
-    })
-    .backgroundColor(this.pal.bg)
   }
 
   aboutToAppear(): void {

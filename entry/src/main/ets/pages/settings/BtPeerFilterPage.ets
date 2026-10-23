@@ -2,7 +2,7 @@ import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
 import { Util } from '../../common/Util';
 import { BtFlow } from '../../data/BtFlow';
-import { PageHeader } from '../components/PageHeader';
+import { NavGlassPage } from '../../common/HdsNavHost';
 
 // BT Peer 过滤器编辑页（对齐 animeko AnitorrentEngineSettings 独立页模式）：
 // 每行一条规则，"from-to" 区间或单个 IP（IPv4/IPv6），空 = 不过滤。
@@ -15,6 +15,8 @@ export struct BtPeerFilterPage {
   @State draft: string = '';
   // 路由栈：NavDestination onReady 时从自身上下文获取（官方推荐方式）
   pathStack: NavPathStack = new NavPathStack();
+  // 标题栏滚动联动：绑定本页滚动容器
+  private peerFilterScroller: Scroller = new Scroller();
 
   // 轻量校验：非空行须为 "from-to" 或单个 IP，字符集限数字/字母/./:/-
   // 严格 IP 解析在桥接层（保存后 applyPeerFilterLive 失败会 toast）
@@ -59,10 +61,15 @@ export struct BtPeerFilterPage {
   }
 
   build() {
-    NavDestination() {
+    NavGlassPage({
+      title: $r('app.string.bt_peer_filter_title'),
+      scroller: this.peerFilterScroller,
+      onReady: (ctx: NavDestinationContext): void => {
+        this.pathStack = ctx.pathStack;
+      }
+    }) {
       Column() {
-        PageHeader({ title: $r('app.string.bt_peer_filter_title') })
-        Scroll() {
+        Scroll(this.peerFilterScroller) {
           Column({ space: 12 }) {
             Text($r('app.string.bt_peer_filter_hint'))
               .fontSize(13)
@@ -95,13 +102,7 @@ export struct BtPeerFilterPage {
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
-    .onReady((ctx: NavDestinationContext) => {
-      this.pathStack = ctx.pathStack;
-    })
   }
 
   aboutToAppear(): void {

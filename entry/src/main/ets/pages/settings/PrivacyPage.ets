@@ -5,7 +5,7 @@ import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
 import { AppLock } from '../../common/AppLock';
 import { Util } from '../../common/Util';
-import { PageHeader } from '../components/PageHeader';
+import { NavGlassPage } from '../../common/HdsNavHost';
 import { PrefGroup, PrefSelectRow, PrefSwitchRow } from '../components/Prefs';
 
 // 空闲锁定档位值（对齐 Mihon LockAfterValues）：0=切后台立即锁 / 1/2/5/10 分钟 / -1=从不
@@ -115,18 +115,14 @@ export struct PrivacyPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   build() {
-    NavDestination() {
+    NavGlassPage({ title: $r('app.string.privacy_title') }) {
       Column() {
-        PageHeader({ title: $r('app.string.privacy_title') })
         PrivacyContent()
           .layoutWeight(1)
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
   }
 }
 

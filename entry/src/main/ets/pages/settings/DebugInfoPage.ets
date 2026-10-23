@@ -4,7 +4,7 @@ import { display } from '@kit.ArkUI';
 import { i18n } from '@kit.LocalizationKit';
 import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
-import { PageHeader } from '../components/PageHeader';
+import { NavGlassPage } from '../../common/HdsNavHost';
 import { PrefGroup } from '../components/Prefs';
 
 // 调试信息行模型：标签 + 值
@@ -121,18 +121,14 @@ export struct DebugInfoPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   build() {
-    NavDestination() {
+    NavGlassPage({ title: $r('app.string.pref_debug_info') }) {
       Column() {
-        PageHeader({ title: $r('app.string.pref_debug_info') })
         DebugInfoContent()
           .layoutWeight(1)
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
   }
 }
 

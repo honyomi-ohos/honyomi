@@ -5,7 +5,7 @@ import { Util } from '../../common/Util';
 import { Bp } from '../../common/Breakpoint';
 import { BtFlow } from '../../data/BtFlow';
 import { BtModule } from '../../data/BtModule';
-import { PageHeader } from '../components/PageHeader';
+import { NavGlassPage } from '../../common/HdsNavHost';
 import { PrefGroup, PrefSelectRow, PrefSliderRow, PrefSwitchRow } from '../components/Prefs';
 import { AppIcon } from '../components/AppIcon';
 
@@ -297,9 +297,13 @@ export struct BtSettingsPage {
   pathStack: NavPathStack = new NavPathStack();
 
   build() {
-    NavDestination() {
+    NavGlassPage({
+      title: $r('app.string.bt_set_group'),
+      onReady: (ctx: NavDestinationContext): void => {
+        this.pathStack = ctx.pathStack;
+      }
+    }) {
       Column() {
-        PageHeader({ title: $r('app.string.bt_set_group') })
         BtSettingsContent({
           openPeerFilter: (): void => {
             this.pathStack.pushPathByName('BtPeerFilter', null);
@@ -309,13 +313,7 @@ export struct BtSettingsPage {
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
-    .onReady((ctx: NavDestinationContext) => {
-      this.pathStack = ctx.pathStack;
-    })
   }
 }
 

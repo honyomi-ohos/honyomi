@@ -7,7 +7,7 @@ import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { AppKeys } from '../common/AppKeys';
-import { PageHeader } from './components/PageHeader';
+import { NavGlassPage, NavGlassAction } from '../common/HdsNavHost';
 import { AppIcon } from './components/AppIcon';
 import { InputDialog } from './components/Dialogs';
 import { PickerSheet } from './components/PickerSheet';
@@ -32,6 +32,8 @@ export struct CategoriesPage {
   private dragRefOffsetY: number = 0;
   private panning: boolean = false;
   private orderDirty: boolean = false;
+  // 标题栏滚动联动：绑定分类列表
+  private listScroller: Scroller = new Scroller();
 
   // Esc 广播：关闭条目操作半模态弹层
   onSheetEsc(): void {
@@ -75,21 +77,19 @@ export struct CategoriesPage {
     })
   }
 
-  @Builder
-  headerRight() {
-    AppIcon({ name: 'add', iconSize: 24 })
-      .padding(8)
-      .onClick(() => {
-        this.showAdd();
-      })
-  }
-
   build() {
-    NavDestination() {
+    NavGlassPage({
+      title: $r('app.string.categories_title'),
+      actions: [{
+        icon: $r('app.media.ic_add'),
+        action: (): void => {
+          this.showAdd();
+        }
+      }],
+      scroller: this.listScroller
+    }) {
       this.bodyContent()
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
   }
 
   // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（720 上限）
@@ -100,12 +100,8 @@ export struct CategoriesPage {
   @Builder
   bodyContent() {
     Column() {
-      PageHeader({ title: $r('app.string.categories_title'), inset: this.inset() }) {
-        this.headerRight()
-      }
-
       Column() {
-        List({ space: 0 }) {
+        List({ space: 0, scroller: this.listScroller }) {
           ForEach(this.categories, (cat: CategoryRecord) => {
             ListItem() {
               Row() {
@@ -242,7 +238,6 @@ export struct CategoriesPage {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor(this.pal.bg)
     .bindSheet($$this.showItemSheet, this.itemSheetBuilder(),
       SheetPreset.fit(this.windowW, {
         title: this.menuCat === null ? '' : Util.categoryLabel(this.menuCat.name),

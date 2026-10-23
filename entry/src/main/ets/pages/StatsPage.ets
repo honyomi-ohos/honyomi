@@ -6,7 +6,7 @@ import { DayDuration, ReadingStatsRepo } from '../data/ReadingStats';
 import { DownloadService } from '../data/DownloadService';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
-import { PageHeader } from './components/PageHeader';
+import { NavGlassPage } from '../common/HdsNavHost';
 import { PrefGroup } from './components/Prefs';
 import { LoadingState } from './components/LoadingState';
 
@@ -68,6 +68,8 @@ export struct StatsPage {
   @State chartMode: number = 0;
   @State weekDays: DayDuration[] = [];
   @State monthDays: DayDuration[] = [];
+  // 标题栏滚动联动：绑定统计页滚动容器
+  private statsScroller: Scroller = new Scroller();
 
   aboutToAppear(): void {
     this.loadData();
@@ -252,13 +254,12 @@ export struct StatsPage {
   }
 
   build() {
-    NavDestination() {
+    NavGlassPage({ title: $r('app.string.stats_title'), scroller: this.statsScroller }) {
       Column() {
-        PageHeader({ title: $r('app.string.stats_title') })
         if (this.loading) {
           LoadingState({ spinnerSize: 40 })
         } else {
-          Scroll() {
+          Scroll(this.statsScroller) {
             Column({ space: 12 }) {
               // 概览
               PrefGroup({ groupTitle: $r('app.string.stats_overview_section') }) {
@@ -358,10 +359,7 @@ export struct StatsPage {
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
   }
 
   private ctx(): common.UIAbilityContext {

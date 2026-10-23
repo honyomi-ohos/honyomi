@@ -1,7 +1,7 @@
 import { Settings } from '../../common/Settings';
 import { AppLanguage, Languages } from '../../common/Languages';
 import { ThemePalette } from '../../common/Theme';
-import { PageHeader } from '../components/PageHeader';
+import { NavGlassPage } from '../../common/HdsNavHost';
 import { AppIcon } from '../components/AppIcon';
 
 // 语言选择内容：跟随系统 + 各语言自称单选列表（参考 Mihon App language）
@@ -69,18 +69,14 @@ export struct LanguagePage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   build() {
-    NavDestination() {
+    NavGlassPage({ title: $r('app.string.appearance_language') }) {
       Column() {
-        PageHeader({ title: $r('app.string.appearance_language') })
         LanguageContent()
           .layoutWeight(1)
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
   }
 }
 

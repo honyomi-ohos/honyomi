@@ -1,6 +1,6 @@
 import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
-import { PageHeader } from '../components/PageHeader';
+import { NavGlassPage } from '../../common/HdsNavHost';
 import { PrefGroup, PrefSwitchRow } from '../components/Prefs';
 
 // 浏览设置内容：NSFW 源显示
@@ -40,21 +40,15 @@ export struct BrowseSettingsContent {
 // 浏览设置路由壳（手机/平板窄屏 push 进入）
 @Component
 export struct BrowseSettingsPage {
-  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-
   build() {
-    NavDestination() {
+    NavGlassPage({ title: $r('app.string.browse_set_title') }) {
       Column() {
-        PageHeader({ title: $r('app.string.browse_set_title') })
         BrowseSettingsContent()
           .layoutWeight(1)
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
   }
 }
 

@@ -5,12 +5,100 @@ import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
+import { AppKeys } from '../common/AppKeys';
 import { EmptyScreen } from './components/EmptyScreen';
 import { LoadingState } from './components/LoadingState';
 import { SmartImage } from './components/SmartImage';
 import { ConfirmDialog } from './components/Dialogs';
 import { AppIcon } from './components/AppIcon';
 import { SourceRegistry } from '../source/Source';
+
+// 历史页头部：渲染于根 Navigation 标题栏（Index 挂载，组件随页签切换卸载），
+// 与内容区的全部通信经 AppStorage 进行（键见 AppKeys）
+@Component
+export struct HistoryHeader {
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @StorageProp('windowW') windowW: number = 0;
+  // 搜索框打开态（对齐 Mihon SearchToolbar：search 图标展开输入框，close 收起）；
+  // AppStorage 持有，页签切换头部卸载不丢失
+  @StorageLink('historySearchOpen') searchOpen: boolean = false;
+  // 搜索词：头部 TextInput 写，内容区过滤读
+  @StorageLink('historySearchQuery') searchQuery: string = '';
+  // 确认清空态：内容区发布，delete_sweep 图标着色读
+  @StorageProp('historyConfirmClear') confirmClear: boolean = false;
+
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
+  }
+
+  build() {
+    Row() {
+      if (this.searchOpen) {
+        TextInput({ text: this.searchQuery, placeholder: $r('app.string.history_search_hint') })
+          .layoutWeight(1)
+          .height(38)
+          .fontSize(15)
+          .fontColor(this.pal.text)
+          .placeholderColor(this.pal.sub)
+          .backgroundColor(this.pal.chip)
+          .borderRadius(19)
+          .padding({ left: 16, right: 16 })
+          .onChange((value: string) => {
+            this.searchQuery = value;
+          })
+        AppIcon({ name: 'close', iconSize: 22, tint: this.pal.text })
+          .padding({ left: 12 })
+          .onClick(() => {
+            this.closeSearch();
+          })
+      } else {
+        Text($r('app.string.history_title'))
+          .fontSize(22)
+          .fontWeight(FontWeight.Bold)
+          .fontColor(this.pal.text)
+          .layoutWeight(1)
+        // 清空历史：delete_sweep 图标（对齐 Mihon DeleteSweep），
+        // 点击发清空请求信号，二次确认（武装/执行）逻辑在内容区 clearHistory
+        AppIcon({
+          name: 'delete_sweep',
+          iconSize: 22,
+          tint: this.confirmClear ? this.pal.badgeRed : this.pal.text
+        })
+          .padding({ left: 12 })
+          .onClick(() => {
+            this.requestClear();
+          })
+        AppIcon({ name: 'search', iconSize: 22, tint: this.pal.text })
+          .padding({ left: 12 })
+          .onClick(() => {
+            this.openSearch();
+          })
+      }
+    }
+    .width('100%')
+    .height(58)
+    .padding({
+      left: 16 + this.inset(),
+      right: 16 + this.inset(),
+      top: 12,
+      bottom: 8
+    })
+  }
+
+  private openSearch(): void {
+    this.searchOpen = true;
+  }
+
+  private closeSearch(): void {
+    this.searchOpen = false;
+    this.searchQuery = '';
+  }
+
+  // 清空请求信号（计数器递增，内容区 @Watch 消费）
+  private requestClear(): void {
+    AppStorage.setOrCreate(AppKeys.HISTORY_CLEAR_REQ, (AppStorage.get<number>(AppKeys.HISTORY_CLEAR_REQ) ?? 0) + 1);
+  }
+}
 
 // 历史页：最近阅读记录
 @Component
@@ -30,13 +118,15 @@ export struct HistoryPage {
   @StorageProp('pluginsDirty') @Watch('onLibDirty') pluginsDirty: number = 0;
   @State items: HistoryItem[] = [];
   @State loading: boolean = true;
-  @State confirmClear: boolean = false;
+  // 确认清空态经 AppStorage 发布（头部 HistoryHeader 的 delete_sweep 图标着色读）
+  @StorageLink('historyConfirmClear') confirmClear: boolean = false;
   // 多选删除（对齐 Mihon HistoryScreen 长按进入选择模式）
   @State selecting: boolean = false;
   @State selectedIds: Set<number> = new Set<number>();
-  // 顶栏搜索（对齐 Mihon SearchToolbar：search 图标展开输入框，close 收起）
-  @State searchOpen: boolean = false;
-  @State searchQuery: string = '';
+  // 搜索词与头部共享（头部 TextInput 写，此处过滤读）
+  @StorageLink('historySearchQuery') searchQuery: string = '';
+  // 头部清空请求信号（计数器递增触发 @Watch 走 clearHistory 二次确认逻辑）
+  @StorageLink('historyClearReq') @Watch('onClearReq') historyClearReq: number = 0;
   // 清空确认 3 秒倒计时定时器：销毁时清理，防回调写已销毁组件状态
   private confirmTimerId: number = -1;
 
@@ -101,57 +191,6 @@ export struct HistoryPage {
   @Builder
   bodyContent() {
     Column() {
-      Row() {
-        if (this.searchOpen) {
-          TextInput({ text: this.searchQuery, placeholder: $r('app.string.history_search_hint') })
-            .layoutWeight(1)
-            .height(38)
-            .fontSize(15)
-            .fontColor(this.pal.text)
-            .placeholderColor(this.pal.sub)
-            .backgroundColor(this.pal.chip)
-            .borderRadius(19)
-            .padding({ left: 16, right: 16 })
-            .onChange((value: string) => {
-              this.searchQuery = value;
-            })
-          AppIcon({ name: 'close', iconSize: 22, tint: this.pal.text })
-            .padding({ left: 12 })
-            .onClick(() => {
-              this.closeSearch();
-            })
-        } else {
-          Text($r('app.string.history_title'))
-            .fontSize(22)
-            .fontWeight(FontWeight.Bold)
-            .fontColor(this.pal.text)
-            .layoutWeight(1)
-          // 清空历史：delete_sweep 图标（对齐 Mihon DeleteSweep），二次点击 3 秒内确认
-          AppIcon({
-            name: 'delete_sweep',
-            iconSize: 22,
-            tint: this.confirmClear ? this.pal.badgeRed : this.pal.text
-          })
-            .padding({ left: 12 })
-            .onClick(() => {
-              this.clearHistory();
-            })
-          AppIcon({ name: 'search', iconSize: 22, tint: this.pal.text })
-            .padding({ left: 12 })
-            .onClick(() => {
-              this.openSearch();
-            })
-        }
-      }
-      .width('100%')
-      .height(58)
-      .padding({
-        left: 16 + this.inset(),
-        right: 16 + this.inset(),
-        top: 12,
-        bottom: 8
-      })
-
       if (this.loading) {
         LoadingState()
       } else if (this.visibleItems().length === 0) {
@@ -325,15 +364,9 @@ export struct HistoryPage {
     this.resumeLastRead();
   }
 
-  // ----- 顶栏搜索（对齐 Mihon SearchToolbar） -----
-
-  private openSearch(): void {
-    this.searchOpen = true;
-  }
-
-  private closeSearch(): void {
-    this.searchOpen = false;
-    this.searchQuery = '';
+  // 头部清空请求信号：走原 clearHistory 二次确认逻辑（首击武装，3 秒内再击执行）
+  private onClearReq(): void {
+    this.clearHistory();
   }
 
   // 按标题/章节名过滤（对齐 Mihon HistoryViewModel searchQuery 过滤）

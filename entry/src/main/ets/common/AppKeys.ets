@@ -56,4 +56,35 @@ export class AppKeys {
   static readonly LIB_SELECT_ALL_REQ: string = 'libSelectAllReq';
   // 书库键盘多选信号：Delete 删除选中（LibraryPage 内部判定选择态，非选择态为空操作）
   static readonly LIB_DELETE_SEL_REQ: string = 'libDeleteSelReq';
+  // ===== 首页页签头部桥接（头部已移入 Navigation 标题栏，经 AppStorage 与内容区通信）=====
+  // 书库：刷新中（内容区写，头部读 spinner）；搜索框打开（详情页回退搜索时内容区也会写）
+  static readonly LIB_REFRESHING: string = 'libRefreshing';
+  static readonly LIB_SEARCH_OPEN: string = 'libSearchOpen';
+  // 书库：筛选是否生效（内容区写，头部筛选图标着色读）
+  static readonly LIB_FILTER_ACTIVE: string = 'libFilterActive';
+  // 书库：头部 → 内容区信号（计数器递增触发 @Watch）
+  static readonly LIB_FILTER_SHEET_REQ: string = 'libFilterSheetReq';
+  static readonly LIB_REFRESH_REQ: string = 'libRefreshReq';
+  static readonly LIB_REFRESH_CATEGORY_REQ: string = 'libRefreshCategoryReq';
+  static readonly LIB_RANDOM_REQ: string = 'libRandomReq';
+  static readonly LIB_SEL_CLEAR_REQ: string = 'libSelClearReq';
+  static readonly LIB_SEL_INVERT_REQ: string = 'libSelInvertReq';
+  // 更新：刷新中/筛选生效（内容区写，头部读）；头部 → 内容区信号
+  static readonly UPDATES_REFRESHING: string = 'updatesRefreshing';
+  static readonly UPDATES_FILTER_ACTIVE: string = 'updatesFilterActive';
+  static readonly UPDATES_FILTER_SHEET_REQ: string = 'updatesFilterSheetReq';
+  static readonly UPDATES_REFRESH_REQ: string = 'updatesRefreshReq';
+  // 历史：搜索框打开态（头部持有，页签切换不丢失）；搜索词（头部写，内容区过滤读）；确认清空态（内容区写，头部图标读）；清空请求信号
+  static readonly HISTORY_SEARCH_OPEN: string = 'historySearchOpen';
+  static readonly HISTORY_SEARCH_QUERY: string = 'historySearchQuery';
+  static readonly HISTORY_CONFIRM_CLEAR: string = 'historyConfirmClear';
+  static readonly HISTORY_CLEAR_REQ: string = 'historyClearReq';
+  // 浏览：当前内部页签（内容区写，头部图标组读）；插件搜索框打开与搜索词（头部写，内容区面板读）
+  static readonly BROWSE_CURRENT_TAB: string = 'browseCurrentTab';
+  static readonly BROWSE_EXT_SEARCH_OPEN: string = 'browseExtSearchOpen';
+  static readonly BROWSE_EXT_QUERY: string = 'browseExtQuery';
+  // 浏览：头部 → 内容区信号（图源筛选/插件类型筛选/刷新仓库）
+  static readonly BROWSE_SOURCE_FILTER_REQ: string = 'browseSourceFilterReq';
+  static readonly BROWSE_EXT_FILTER_REQ: string = 'browseExtFilterReq';
+  static readonly BROWSE_REFRESH_REPO_REQ: string = 'browseRefreshRepoReq';
 }

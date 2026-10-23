@@ -12,7 +12,7 @@ import { CrashLogs } from '../../data/CrashLogs';
 import { MangaRepo } from '../../data/Repos';
 import { MangaRecord } from '../../model/Models';
 import { SourceRegistry } from '../../source/Source';
-import { PageHeader } from '../components/PageHeader';
+import { NavGlassPage } from '../../common/HdsNavHost';
 import { IconRow, PrefGroup, PrefSelectRow, PrefSwitchRow, TextRow } from '../components/Prefs';
 import { ConfirmDialog, InputDialog } from '../components/Dialogs';
 import { OnboardingParams } from '../../model/RouteParams';
@@ -374,9 +374,13 @@ export struct AdvancedPage {
   pathStack: NavPathStack = new NavPathStack();
 
   build() {
-    NavDestination() {
+    NavGlassPage({
+      title: $r('app.string.advanced_title'),
+      onReady: (ctx: NavDestinationContext): void => {
+        this.pathStack = ctx.pathStack;
+      }
+    }) {
       Column() {
-        PageHeader({ title: $r('app.string.advanced_title') })
         AdvancedContent({
           onOpenOnboarding: (): void => {
             const params: OnboardingParams = { firstRun: false };
@@ -390,13 +394,7 @@ export struct AdvancedPage {
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .onReady((ctx: NavDestinationContext) => {
-      this.pathStack = ctx.pathStack;
-    })
-    .backgroundColor(this.pal.bg)
   }
 }
 

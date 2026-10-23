@@ -5,7 +5,7 @@ import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
 import { AppInfo } from '../../common/AppInfo';
 import { Bp } from '../../common/Breakpoint';
-import { PageHeader } from '../components/PageHeader';
+import { NavGlassPage } from '../../common/HdsNavHost';
 import { IconRow, PrefGroup, TextRow } from '../components/Prefs';
 import { pasteboard, BusinessError } from '@kit.BasicServicesKit';
 
@@ -129,18 +129,14 @@ export struct AboutPage {
   }
 
   build() {
-    NavDestination() {
+    NavGlassPage({ title: $r('app.string.about_title') }) {
       Column() {
-        PageHeader({ title: $r('app.string.about_title'), inset: this.inset() })
         AboutContent({ inset: this.inset() })
           .layoutWeight(1)
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
   }
 }
 

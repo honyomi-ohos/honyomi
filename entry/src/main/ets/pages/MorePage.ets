@@ -32,18 +32,6 @@ export struct MorePage {
   @Builder
   bodyContent() {
     Column() {
-      Text($r('app.string.more_title'))
-        .fontSize(22)
-        .fontWeight(FontWeight.Bold)
-        .fontColor(this.pal.text)
-        .width('100%')
-        .padding({
-          left: 16 + this.inset(),
-          right: 16 + this.inset(),
-          top: 12,
-          bottom: 12
-        })
-
       Scroll() {
         Column({ space: 12 }) {
           // Logo 头部
@@ -169,5 +157,31 @@ export struct MorePage {
     .width('100%')
     .height('100%')
     .backgroundColor(this.pal.bg)
+  }
+}
+
+// 更多页顶部标题栏：抽取供 Index 挂载到 Navigation 标题栏（高度 58，含 contentInset 横向留白，不含状态栏避让）
+@Component
+export struct MoreHeader {
+  @StorageProp('windowW') windowW: number = 0;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
+  }
+
+  build() {
+    Row() {
+      Text($r('app.string.more_title'))
+        .fontSize(22)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+    }
+    .width('100%')
+    .height(58)
+    .padding({
+      left: 16 + this.inset(),
+      right: 16 + this.inset()
+    })
   }
 }

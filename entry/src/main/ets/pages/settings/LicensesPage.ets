@@ -5,7 +5,7 @@ import { ThemePalette } from '../../common/Theme';
 import { SheetPreset } from '../components/SheetPreset';
 import { Util } from '../../common/Util';
 import { Bp } from '../../common/Breakpoint';
-import { PageHeader } from '../components/PageHeader';
+import { NavGlassPage } from '../../common/HdsNavHost';
 import { AppIcon } from '../components/AppIcon';
 
 // 开源组件条目：名称 / 版本 / 协议 / 主页 / 协议全文 rawfile / 用途说明（说明走资源本地化）
@@ -221,6 +221,7 @@ export struct LicensesPage {
   // 当前详情展示的协议全文（点击条目时从 rawfile 读取，带缓存）
   @State licenseText: string = '';
   private textCache: Map<string, string> = new Map();
+  private licensesScroller: Scroller = new Scroller();
 
   aboutToAppear(): void {
     this.items = buildLicenseItems();
@@ -328,10 +329,9 @@ export struct LicensesPage {
   }
 
   build() {
-    NavDestination() {
+    NavGlassPage({ title: $r('app.string.licenses_title'), scroller: this.licensesScroller }) {
       Column() {
-        PageHeader({ title: $r('app.string.licenses_title') })
-        Scroll() {
+        Scroll(this.licensesScroller) {
           Column({ space: 12 }) {
             Column() {
               ForEach(this.items, (item: LicenseItem, index: number) => {
@@ -361,7 +361,6 @@ export struct LicensesPage {
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
       .bindSheet($$this.showDetail, this.detailBuilder(),
         SheetPreset.fit(this.windowW, {
           height: SheetSize.MEDIUM,
@@ -369,8 +368,6 @@ export struct LicensesPage {
           showClose: false
         }))
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
   }
 }
 

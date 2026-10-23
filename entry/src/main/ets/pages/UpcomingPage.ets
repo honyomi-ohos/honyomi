@@ -8,7 +8,7 @@ import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
-import { PageHeader } from './components/PageHeader';
+import { NavGlassPage, NavGlassAction } from '../common/HdsNavHost';
 import { AppIcon } from './components/AppIcon';
 import { CoverPlaceholder } from './components/CoverPlaceholder';
 import { UpdatesFilterSheet } from './components/UpdatesFilterSheet';
@@ -296,61 +296,63 @@ export struct UpcomingPage {
     .padding({ top: 4, bottom: 8 })
   }
 
+  // 标题栏右侧动作：分类筛选（半模态）+ 帮助入口
+  private headerActions(): NavGlassAction[] {
+    return [
+      {
+        icon: $r('app.media.ic_filter_list'),
+        action: (): void => {
+          this.showFilterSheet = true;
+        }
+      },
+      {
+        icon: $r('app.media.ic_help'),
+        action: (): void => {
+          this.pathStack.pushPathByName('Help', null);
+        }
+      }
+    ];
+  }
+
   build() {
-    NavDestination() {
+    NavGlassPage({
+      title: $r('app.string.label_upcoming'),
+      scroller: this.scroller,
+      actions: this.headerActions(),
+      onReady: (ctx: NavDestinationContext): void => {
+        this.pathStack = ctx.pathStack;
+      }
+    }) {
       Column() {
-        PageHeader({ title: $r('app.string.label_upcoming'), inset: this.inset() }) {
-          AppIcon({ name: 'filter_list', iconSize: 22, tint: this.filterActive() ? this.pal.primary : this.pal.text })
-            .padding({ left: 12 })
-            .onClick(() => {
-              this.showFilterSheet = true;
-            })
-            .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(),
-              SheetPreset.fit(this.windowW, {
-                height: Bp.sheetHeight(this.windowW),
-                detents: ['60%', SheetSize.LARGE],
-                showClose: false,
-                bg: this.pal.bg
-              }))
-          AppIcon({ name: 'help', iconSize: 22, tint: this.pal.text })
-            .padding({ left: 12 })
-            .onClick(() => {
-              this.pathStack.pushPathByName('Help', null);
-            })
-        }
-
-        Column() {
-          List({ scroller: this.scroller }) {
-            ListItem() {
-              this.calendarBlock()
-            }
-
-            ForEach(this.rows, (row: UpcomingRow, idx: number) => {
-              ListItem() {
-                if (row.isHeader) {
-                  this.dateHeader(row)
-                } else if (row.manga !== undefined) {
-                  this.mangaItem(row.manga)
-                }
-              }
-            }, (row: UpcomingRow, idx: number) => row.isHeader ? `uh-${row.dateMs}` : `ui-${row.manga?.mangaId ?? idx}`)
+        List({ scroller: this.scroller }) {
+          ListItem() {
+            this.calendarBlock()
           }
-          .layoutWeight(1)
-          .scrollBar(BarState.Auto)
-          .contentEndOffset(this.navBarH + 16)
+
+          ForEach(this.rows, (row: UpcomingRow, idx: number) => {
+            ListItem() {
+              if (row.isHeader) {
+                this.dateHeader(row)
+              } else if (row.manga !== undefined) {
+                this.mangaItem(row.manga)
+              }
+            }
+          }, (row: UpcomingRow, idx: number) => row.isHeader ? `uh-${row.dateMs}` : `ui-${row.manga?.mangaId ?? idx}`)
         }
-        .width('100%')
         .layoutWeight(1)
+        .scrollBar(BarState.Auto)
+        .contentEndOffset(this.navBarH + 16)
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
+      .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(),
+        SheetPreset.fit(this.windowW, {
+          height: Bp.sheetHeight(this.windowW),
+          detents: ['60%', SheetSize.LARGE],
+          showClose: false,
+          bg: this.pal.bg
+        }))
     }
-    .hideTitleBar(true)
-    .onReady((ctx: NavDestinationContext) => {
-      this.pathStack = ctx.pathStack;
-    })
-    .backgroundColor(this.pal.bg)
   }
 
   private localeTag(): string {
@@ -380,10 +382,6 @@ export struct UpcomingPage {
       return false;
     }
     return true;
-  }
-
-  private filterActive(): boolean {
-    return this.includedCats.length > 0 || this.excludedCats.length > 0;
   }
 
   // 过滤 + 按预计日分组，生成分组头/条目行与日历事件计数

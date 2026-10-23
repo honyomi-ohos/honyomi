@@ -1,6 +1,6 @@
 import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
-import { PageHeader } from '../components/PageHeader';
+import { NavGlassPage } from '../../common/HdsNavHost';
 import { PrefGroup, PrefSelectRow, PrefSwitchRow } from '../components/Prefs';
 
 const SPEED_VALUES: number[] = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
@@ -152,18 +152,14 @@ export struct PlayerSettingsPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   build() {
-    NavDestination() {
+    NavGlassPage({ title: $r('app.string.player_set_title') }) {
       Column() {
-        PageHeader({ title: $r('app.string.player_set_title') })
         PlayerSettingsContent()
           .layoutWeight(1)
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
   }
 }
 

@@ -10,6 +10,7 @@ import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
+import { AppKeys } from '../common/AppKeys';
 import { EmptyScreen } from './components/EmptyScreen';
 import { LoadingState } from './components/LoadingState';
 import { AppIcon } from './components/AppIcon';
@@ -19,6 +20,8 @@ import { SourceRegistry } from '../source/Source';
 
 // 更新页：书架最新章节（对齐 Mihon UpdatesScreen）
 // 顶栏三操作：筛选（FilterList）/ 查看即将推出（CalendarMonth）/ 更新书架（Refresh）
+// 顶栏已抽取为 UpdatesHeader（本文件底部）供 Index 挂载到 Navigation 标题栏，
+// 头部随页签切换卸载，双方仅经 AppStorage 通信（updates* 键见 AppKeys）
 @Component
 export struct UpdatesPage {
   @Consume('navStack') pathStack: NavPathStack;
@@ -34,8 +37,14 @@ export struct UpdatesPage {
   @StorageProp('pluginsDirty') @Watch('onLibDirty') pluginsDirty: number = 0;
   @State items: UpdateItem[] = [];
   @State loading: boolean = true;
-  @State refreshing: boolean = false;
+  // 刷新中：经 AppStorage 发布给 UpdatesHeader 的 spinner（头部读 updatesRefreshing）
+  @StorageLink('updatesRefreshing') refreshing: boolean = false;
   @State showFilterSheet: boolean = false;
+  // 筛选生效标记：发布给 UpdatesHeader 的筛选图标着色（头部读 updatesFilterActive）
+  @StorageLink('updatesFilterActive') filterActivePub: boolean = false;
+  // 头部 → 内容区信号（计数器递增触发 @Watch）：打开筛选弹层 / 刷新书架
+  @StorageLink('updatesFilterSheetReq') @Watch('onFilterSheetReq') updatesFilterSheetReq: number = 0;
+  @StorageLink('updatesRefreshReq') @Watch('onRefreshReq') updatesRefreshReq: number = 0;
   // Index 根节点 Esc 广播：关闭筛选弹层（计数器递增触发）
   @StorageLink('sheetEsc') @Watch('onSheetEsc') sheetEsc: number = 0;
   // 筛选状态（对齐 Mihon UpdatesPreferences）
@@ -54,6 +63,7 @@ export struct UpdatesPage {
     this.fBookmarked = Settings.getUpdatesTriState('bookmarked');
     this.includedCats = Settings.getUpdatesIncludedCategories();
     this.excludedCats = Settings.getUpdatesExcludedCategories();
+    this.publishFilterActive();
     this.loadData();
     this.loadCategories();
   }
@@ -67,6 +77,16 @@ export struct UpdatesPage {
     if (this.showFilterSheet) {
       this.showFilterSheet = false;
     }
+  }
+
+  // 头部筛选图标请求：打开筛选半模态弹层（弹层与 filterSheetBuilder 仍由本页持有）
+  onFilterSheetReq(): void {
+    this.showFilterSheet = true;
+  }
+
+  // 头部刷新图标请求：刷新书架
+  onRefreshReq(): void {
+    this.refreshLibrary();
   }
 
   async loadCategories(): Promise<void> {
@@ -143,6 +163,7 @@ export struct UpdatesPage {
       onCategoriesChanged: (included: number[], excluded: number[]): void => {
         this.includedCats = included;
         this.excludedCats = excluded;
+        this.publishFilterActive();
         Settings.setUpdatesIncludedCategories(included);
         Settings.setUpdatesExcludedCategories(excluded);
         this.loadData();
@@ -162,52 +183,7 @@ export struct UpdatesPage {
   @Builder
   bodyContent() {
     Column() {
-      // 顶栏：标题 + 筛选/日历/刷新（对齐 Mihon UpdatesAppBar）
-      Row() {
-        Text($r('app.string.updates_title'))
-          .fontSize(22)
-          .fontWeight(FontWeight.Bold)
-          .fontColor(this.pal.text)
-          .layoutWeight(1)
-        if (this.refreshing) {
-          LoadingProgress()
-            .width(20)
-            .height(20)
-            .color(this.pal.primary)
-            .margin({ left: 8 })
-        }
-        AppIcon({ name: 'filter_list', iconSize: 22, tint: this.filterActive() ? this.pal.primary : this.pal.text })
-          .padding({ left: 12 })
-          .onClick(() => {
-            this.showFilterSheet = true;
-          })
-          .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(),
-            SheetPreset.fit(this.windowW, {
-              height: Bp.sheetHeight(this.windowW),
-              detents: ['60%', SheetSize.LARGE],
-              showClose: false,
-              bg: this.pal.bg
-            }))
-        AppIcon({ name: 'calendar_month', iconSize: 22, tint: this.pal.text })
-          .padding({ left: 12 })
-          .onClick(() => {
-            this.pathStack.pushPathByName('Upcoming', null);
-          })
-        AppIcon({ name: 'refresh', iconSize: 22, tint: this.pal.text })
-          .padding({ left: 12 })
-          .onClick(() => {
-            this.refreshLibrary();
-          })
-      }
-      .width('100%')
-      .height(58)
-      .padding({
-        left: 16 + this.inset(),
-        right: 16 + this.inset(),
-        top: 12,
-        bottom: 8
-      })
-
+      // 顶栏（标题 + 筛选/日历/刷新）已抽取为 UpdatesHeader，由 Index 挂载到 Navigation 标题栏
       if (this.loading) {
         LoadingState()
       } else if (this.items.length === 0) {
@@ -308,12 +284,25 @@ export struct UpdatesPage {
     .width('100%')
     .height('100%')
     .backgroundColor(this.pal.bg)
+    // 筛选半模态：原锚点为顶栏筛选图标，顶栏外移后锚到页面根容器（选项保持不变）
+    .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(),
+      SheetPreset.fit(this.windowW, {
+        height: Bp.sheetHeight(this.windowW),
+        detents: ['60%', SheetSize.LARGE],
+        showClose: false,
+        bg: this.pal.bg
+      }))
   }
 
   private filterActive(): boolean {
     return this.fDownloaded !== 'ignore' || this.fUnread !== 'ignore' ||
       this.fStarted !== 'ignore' || this.fBookmarked !== 'ignore' ||
       this.includedCats.length > 0 || this.excludedCats.length > 0;
+  }
+
+  // 发布筛选生效标记给头部（所有筛选状态变更点均须调用：aboutToAppear / applyTriState / onCategoriesChanged）
+  private publishFilterActive(): void {
+    this.filterActivePub = this.filterActive();
   }
 
   private applyTriState(key: string, v: string): void {
@@ -326,6 +315,7 @@ export struct UpdatesPage {
     } else {
       this.fBookmarked = v;
     }
+    this.publishFilterActive();
     Settings.setUpdatesTriState(key, v);
     this.loadData();
   }
@@ -333,5 +323,64 @@ export struct UpdatesPage {
   private openDetail(mangaId: number): void {
     const params: DetailParams = { mangaId: mangaId };
     this.pathStack.pushPathByName('MangaDetail', params);
+  }
+}
+
+// 更新页顶部标题栏：抽取供 Index 挂载到 Navigation 标题栏
+// （高度 58，含 contentInset 横向留白，不含状态栏避让——由 Index 外部补齐）
+// 筛选/刷新经 AppStorage 计数信号转发给内容区；筛选弹层仍由 UpdatesPage 持有
+@Component
+export struct UpdatesHeader {
+  @Consume('navStack') pathStack: NavPathStack;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @StorageProp('windowW') windowW: number = 0;
+  // 内容区发布：刷新中（spinner 显示）/ 筛选生效（筛选图标着色）
+  @StorageProp('updatesRefreshing') refreshing: boolean = false;
+  @StorageProp('updatesFilterActive') filterActive: boolean = false;
+
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
+  }
+
+  build() {
+    Row() {
+      Text($r('app.string.updates_title'))
+        .fontSize(22)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+        .layoutWeight(1)
+      if (this.refreshing) {
+        LoadingProgress()
+          .width(20)
+          .height(20)
+          .color(this.pal.primary)
+          .margin({ left: 8 })
+      }
+      AppIcon({ name: 'filter_list', iconSize: 22, tint: this.filterActive ? this.pal.primary : this.pal.text })
+        .padding({ left: 12 })
+        .onClick(() => {
+          AppStorage.setOrCreate(AppKeys.UPDATES_FILTER_SHEET_REQ,
+            (AppStorage.get<number>(AppKeys.UPDATES_FILTER_SHEET_REQ) ?? 0) + 1);
+        })
+      AppIcon({ name: 'calendar_month', iconSize: 22, tint: this.pal.text })
+        .padding({ left: 12 })
+        .onClick(() => {
+          this.pathStack.pushPathByName('Upcoming', null);
+        })
+      AppIcon({ name: 'refresh', iconSize: 22, tint: this.pal.text })
+        .padding({ left: 12 })
+        .onClick(() => {
+          AppStorage.setOrCreate(AppKeys.UPDATES_REFRESH_REQ,
+            (AppStorage.get<number>(AppKeys.UPDATES_REFRESH_REQ) ?? 0) + 1);
+        })
+    }
+    .width('100%')
+    .height(58)
+    .padding({
+      left: 16 + this.inset(),
+      right: 16 + this.inset(),
+      top: 12,
+      bottom: 8
+    })
   }
 }

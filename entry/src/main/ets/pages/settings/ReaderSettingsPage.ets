@@ -2,7 +2,7 @@ import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
 import { Util } from '../../common/Util';
 import { GripSupport } from '../../common/GripSupport';
-import { PageHeader } from '../components/PageHeader';
+import { NavGlassPage } from '../../common/HdsNavHost';
 import { PrefGroup, PrefSelectRow, PrefSwitchRow, TextRow } from '../components/Prefs';
 
 const THEME_VALUES: number[] = [3, 0, 1, 2];
@@ -107,18 +107,14 @@ export struct ReaderSettingsPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   build() {
-    NavDestination() {
+    NavGlassPage({ title: $r('app.string.reader_set_title') }) {
       Column() {
-        PageHeader({ title: $r('app.string.reader_set_title') })
         ReaderSettingsContent()
           .layoutWeight(1)
       }
       .width('100%')
       .height('100%')
-      .backgroundColor(this.pal.bg)
     }
-    .hideTitleBar(true)
-    .backgroundColor(this.pal.bg)
   }
 }
 
