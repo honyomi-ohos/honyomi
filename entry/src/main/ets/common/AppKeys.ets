@@ -52,6 +52,9 @@ export class AppKeys {
   static readonly BT_PEER_FILTER_TICK: string = 'btPeerFilterTick';
   // 用户已拒绝 BT 组件安装引导（抑制自动弹窗，手动重试/retryBtComponentTasks 重置）
   static readonly BT_ASK_DISMISSED: string = 'btAskDismissed';
+  // 阅读器窄屏手动胶囊模式（ReaderHdsHost 在 HdsTabs 区域宽度 <440vp 时写入；
+  // ReaderChapterButton/ReaderMenuIconButton/ReaderPagePill 读取，切换高对比前景色）
+  static readonly READER_NARROW_BARS: string = 'readerNarrowBars';
   // Esc 关闭弹层信号（Index 键盘 Esc 广播，计数器递增；各页 @StorageLink + @Watch 消费关闭自身半模态弹层）
   static readonly SHEET_ESC: string = 'sheetEsc';
   // 书库键盘多选信号（Index 根节点按键广播，LibraryPage 消费）：Ctrl+A 全选

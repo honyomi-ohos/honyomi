@@ -2,6 +2,7 @@
 // 菜单骨架（顶栏+占位）、HDS 沉浸宿主、章节导航行、页码胶囊、指示徽标、方向 Sheet、滤镜容器。
 // 样式与两页原实现逐行一致，行为不变。
 import { HdsTabsHost, HdsTabsHostController, HdsTabsHostMiniBar } from '../../common/HdsTabsHost';
+import { AppKeys } from '../../common/AppKeys';
 import { AppIcon, AppIconRes } from './AppIcon';
 import { PickerSheet } from './PickerSheet';
 import { WideSlider } from './WideSlider';
@@ -102,6 +103,16 @@ export struct ReaderMenu {
 // 玻璃胶囊与沉浸材质由 HDS 绘制（systemMaterialEffect IMMERSIVE/ADAPTIVE，
 // 系统按需 colorInvert 保证前景可读）。
 // barsVisible 驱动官方显隐动效（对齐首页多选显隐用法）。
+// 例外——HdsTabs 区域宽度不足以并排放下两块浮动胶囊时（< 2*barWidth+64vp）：
+// 宽度 < 440vp：HDS 自动把页签栏切成手机样式全宽底栏
+// （HdsTabsBarChangeMode.NORMAL 屏幕尺寸触发，无公开 API 禁止该切换），
+// 页签栏内容从窗口左缘排起、与迷你栏胶囊同高重叠，VERTICAL 堆叠失效；
+// 宽度 440-720vp：HDS 浮动样式对“两栏同时展开”无定义（440-600 仅定义一展开
+// 一折叠的居中规则），实测页签栏贴左、迷你栏底部居中，横向重叠。
+// 此阈值以下改为手动渲染两块 backgroundEffect 玻璃胶囊（对齐 ReaderMenu 顶栏），
+// 前景色经 AppStorage 'readerNarrowBars' 信号由 ReaderChapterButton /
+// ReaderMenuIconButton / ReaderPagePill 切换为 bgDark 高对比硬编码色
+// （手动玻璃无 HDS 材质 colorInvert，sys 色跟随系统深浅色而非阅读页明暗）。
 @Component
 export struct ReaderHdsHost {
   // 菜单开合：true 显示浮动页签栏，false 隐藏（沉浸阅读）
@@ -112,6 +123,12 @@ export struct ReaderHdsHost {
   @Prop barWidth: number = 328;
   // 胶囊高度（barHeight 显式数值；进度行 44vp / 设置行 48vp + 胶囊内边距）
   private capsuleHeight: number = 56;
+  // 阅读页背景是否为深色（手动胶囊描边取高对比色）
+  @StorageProp('readerBgDark') bgDark: boolean = false;
+  // HdsTabs 区域宽度不足以并排两块胶囊：手动胶囊模式（见 struct 头注释与 manualThreshold）
+  @State narrow: boolean = false;
+  // HdsTabs 区域宽度（vp）：手动胶囊限宽用
+  @State hostWidth: number = 0;
   @BuilderParam content: () => void = this.emptyBuilder;
   // 迷你栏胶囊内容（进度行，上排）
   @BuilderParam progressBar: () => void = this.emptyBuilder;
@@ -120,21 +137,146 @@ export struct ReaderHdsHost {
   private controller: HdsTabsHostController = new HdsTabsHostController();
 
   aboutToAppear(): void {
+    // 会话起点复位窄屏信号（消除上次阅读残留），子组件挂载前写入
+    AppStorage.setOrCreate(AppKeys.READER_NARROW_BARS, false);
     // 延迟到 HdsTabs 与控制器完成绑定后：菜单初始收起
+    // （首帧布局后若已切窄屏手动模式，控制器随 HdsTabsHost 卸载，跳过避免未绑定调用）
     setTimeout(() => {
-      if (!this.barsVisible) {
+      if (!this.barsVisible && !this.narrow) {
         this.controller.applyHideAnimation();
       }
     }, 0);
   }
 
-  // 菜单开合 → 官方显隐动效（迷你栏+页签栏同步）
+  aboutToDisappear(): void {
+    // 离开阅读器时复位窄屏信号，避免残留影响下次会话初始取值
+    AppStorage.setOrCreate(AppKeys.READER_NARROW_BARS, false);
+  }
+
+  // 菜单开合 → 官方显隐动效（迷你栏+页签栏同步）；
+  // 窄屏手动胶囊由 barsVisible 条件渲染 + 转场承接，不经过控制器
   onBarsVisibleChange(): void {
+    if (this.narrow) {
+      return;
+    }
     if (this.barsVisible) {
       this.controller.applyShowAnimation();
     } else {
       this.controller.applyHideAnimation();
     }
+  }
+
+  build() {
+    Stack({ alignContent: Alignment.Bottom }) {
+      if (this.narrow) {
+        // 窄屏：正文铺满 + 底部渐变遮罩 + 手动双胶囊底部居中
+        this.content()
+        this.manualBarsScrim()
+        this.manualBars()
+      } else {
+        HdsTabsHost({
+          scrollable: false,
+          barHeight: this.capsuleHeight,
+          barWidth: this.barWidth,
+          barBottomMargin: this.barBottomMargin,
+          // 阅读器无需页签栏上方跟手分割线
+          dividerFollowScroll: false,
+          controller: this.controller,
+          miniBar: this.readerMiniBar(),
+          content: (): void => {
+            this.readerContent()
+          }
+        })
+      }
+    }
+    .width('100%')
+    .height('100%')
+    // 跟踪宿主区域宽度（vp）：跨过 manualThreshold 阈值时在 HDS 官方胶囊与手动胶囊间切换
+    .onAreaChange((_old: Area, newArea: Area): void => {
+      const w = newArea.width;
+      if (typeof w === 'number') {
+        this.hostWidth = w;
+        const narrow: boolean = w > 0 && w < this.manualThreshold();
+        if (narrow !== this.narrow) {
+          this.narrow = narrow;
+          AppStorage.setOrCreate(AppKeys.READER_NARROW_BARS, narrow);
+        }
+      }
+    })
+  }
+
+  // 窄屏底部渐变遮罩：对齐 HDS 浮动栏背板蒙层（gradientMask 默认色，
+  // 浅色 #CCF1F3F5 / 深色 #99000000，高度 = 内容高度 + 32vp），
+  // 半透明渐变保证胶囊区域前景可读；触摸穿透不拦截菜单关闭点击
+  @Builder
+  manualBarsScrim() {
+    if (this.barsVisible) {
+      Column()
+        .width('100%')
+        .height(this.capsuleHeight * 2 + 8 + this.barBottomMargin + 32)
+        .linearGradient({
+          direction: GradientDirection.Bottom,
+          colors: this.scrimColors()
+        })
+        .hitTestBehavior(HitTestMode.None)
+        .transition(
+          TransitionEffect.OPACITY.animation({ duration: 150, curve: Curve.Linear })
+        )
+    }
+  }
+
+  // 遮罩渐变端点：顶部全透明 → 底部 HDS 背板蒙层默认色（按阅读页背景明暗取色）
+  private scrimColors(): Array<[ResourceColor, number]> {
+    const colors: Array<[ResourceColor, number]> = this.bgDark
+      ? [['#00000000', 0], ['#99000000', 1]]
+      : [['#00F1F3F5', 0], ['#CCF1F3F5', 1]];
+    return colors;
+  }
+
+  // 窄屏手动双胶囊：进度行（上）+ 设置行（下），纯 backgroundEffect 玻璃
+  // （无背景色，对齐 ReaderMenu 顶栏；开合对齐顶栏滑移+渐隐转场节奏）
+  @Builder
+  manualBars() {
+    if (this.barsVisible) {
+      Column({ space: 8 }) {
+        Column() {
+          this.progressBar()
+        }
+        .width(this.manualBarWidth())
+        .height(this.capsuleHeight)
+        .justifyContent(FlexAlign.Center)
+        .backgroundEffect({ radius: 32, saturation: 1.5 })
+        .borderRadius(28)
+        .border({ width: 0.5, color: this.bgDark ? '#2EFFFFFF' : '#2E000000' })
+
+        Column() {
+          this.settingsBar()
+        }
+        .width(this.manualBarWidth())
+        .height(this.capsuleHeight)
+        .justifyContent(FlexAlign.Center)
+        .backgroundEffect({ radius: 32, saturation: 1.5 })
+        .borderRadius(28)
+        .border({ width: 0.5, color: this.bgDark ? '#2EFFFFFF' : '#2E000000' })
+      }
+      .margin({ bottom: this.barBottomMargin })
+      .transition(
+        TransitionEffect.translate({ y: 80 })
+          .animation({ duration: 200, curve: Curve.FastOutSlowIn })
+          .combine(TransitionEffect.OPACITY.animation({ duration: 150, curve: Curve.Linear }))
+      )
+    }
+  }
+
+  // 手动胶囊模式宽度阈值（vp）：两块 barWidth 胶囊并排 + 左右边距(16/24/32vp) + 间隙
+  private manualThreshold(): number {
+    return this.barWidth * 2 + 64;
+  }
+
+  // 手动胶囊宽度：barWidth 上限内不超出宿主区域宽 - 24vp 左右留白
+  private manualBarWidth(): number {
+    const available: number = this.hostWidth > 0 ? this.hostWidth - 24 : this.barWidth;
+    return Math.min(this.barWidth, available);
   }
 
   // 迷你栏内容（进度胶囊，VERTICAL 上排）：直接 @Builder 调用形式挂入
@@ -148,22 +290,6 @@ export struct ReaderHdsHost {
   @Builder
   settingsTabItem() {
     this.settingsBar()
-  }
-
-  build() {
-    HdsTabsHost({
-      scrollable: false,
-      barHeight: this.capsuleHeight,
-      barWidth: this.barWidth,
-      barBottomMargin: this.barBottomMargin,
-      // 阅读器无需页签栏上方跟手分割线
-      dividerFollowScroll: false,
-      controller: this.controller,
-      miniBar: this.readerMiniBar(),
-      content: (): void => {
-        this.readerContent()
-      }
-    })
   }
 
   // 唯一 TabContent：正文（设置行挂页签栏胶囊，进度行挂迷你栏胶囊）
@@ -233,6 +359,10 @@ export struct ReaderNavRow {
 // 章节跳转圆钮（44×44，禁用态 opacity 0.4；是否可点的 guard 由调用方回调内保留）
 @Component
 export struct ReaderChapterButton {
+  @StorageProp('readerBgDark') bgDark: boolean = false;
+  // 窄屏手动胶囊模式（ReaderHdsHost 写入）：无 HDS 材质 colorInvert，
+  // sys 图标色跟随系统深浅色而非阅读页明暗，改取 bgDark 高对比硬编码色
+  @StorageProp('readerNarrowBars') narrowBars: boolean = false;
   @Prop icon: string = 'skip_previous';
   @Prop isActive: boolean = true;
   onTap: () => void = (): void => {
@@ -243,8 +373,9 @@ export struct ReaderChapterButton {
       Image(AppIconRes.get(this.icon))
         .width(24)
         .height(24)
-        // sys.color 资源配合材质 colorInvert 自动反色（硬编码颜色不触发反色）
-        .fillColor($r('sys.color.icon_primary'))
+        // sys.color 资源配合材质 colorInvert 自动反色（硬编码颜色不触发反色）；
+        // 窄屏手动玻璃下改按阅读页背景明暗取高对比色
+        .fillColor(this.narrowBars ? (this.bgDark ? '#FFFFFF' : '#111111') : $r('sys.color.icon_primary'))
     }
     .width(44)
     .height(44)
@@ -262,6 +393,9 @@ export struct ReaderChapterButton {
 @Component
 export struct ReaderMenuIconButton {
   @StorageProp('readerBgDark') bgDark: boolean = false;
+  // 窄屏手动胶囊模式（ReaderHdsHost 写入）：同 ReaderChapterButton，
+  // 无 HDS 材质 colorInvert，改按阅读页背景明暗取高对比硬编码色
+  @StorageProp('readerNarrowBars') narrowBars: boolean = false;
   @Prop icon: string = 'settings';
   onTap: () => void = (): void => {
   };
@@ -271,8 +405,9 @@ export struct ReaderMenuIconButton {
       Image(AppIconRes.get(this.icon))
         .width(24)
         .height(24)
-        // sys.color 资源配合材质 colorInvert 自动反色（硬编码颜色不触发反色）
-        .fillColor($r('sys.color.icon_primary'))
+        // sys.color 资源配合材质 colorInvert 自动反色（硬编码颜色不触发反色）；
+        // 窄屏手动玻璃下改按阅读页背景明暗取高对比色
+        .fillColor(this.narrowBars ? (this.bgDark ? '#FFFFFF' : '#111111') : $r('sys.color.icon_primary'))
     }
     .width(48)
     .height(44)
@@ -287,6 +422,9 @@ export struct ReaderMenuIconButton {
 @Component
 export struct ReaderPagePill {
   @StorageProp('readerBgDark') bgDark: boolean = false;
+  // 窄屏手动胶囊模式（ReaderHdsHost 写入）：页码文本同图标处理，
+  // 无 HDS 材质 colorInvert，改按阅读页背景明暗取高对比硬编码色
+  @StorageProp('readerNarrowBars') narrowBars: boolean = false;
   @Prop pos: number = 1;
   @Prop total: number = 1;
   onSeek: (value: number) => void = (value: number): void => {
@@ -296,8 +434,9 @@ export struct ReaderPagePill {
     Row() {
       Text(`${this.pos}`)
         .fontSize(13)
-        // sys.color 资源配合材质 colorInvert 自动反色（硬编码颜色不触发反色）
-        .fontColor($r('sys.color.font_primary'))
+        // sys.color 资源配合材质 colorInvert 自动反色（硬编码颜色不触发反色）；
+        // 窄屏手动玻璃下改按阅读页背景明暗取高对比色
+        .fontColor(this.narrowBars ? (this.bgDark ? '#FFFFFF' : '#111111') : $r('sys.color.font_primary'))
         .width(24)
         .textAlign(TextAlign.End)
       WideSlider({
@@ -321,8 +460,9 @@ export struct ReaderPagePill {
         .margin({ left: 4, right: 4 })
       Text(`${this.total}`)
         .fontSize(13)
-        // sys.color 资源配合材质 colorInvert 自动反色（硬编码颜色不触发反色）
-        .fontColor($r('sys.color.font_primary'))
+        // sys.color 资源配合材质 colorInvert 自动反色（硬编码颜色不触发反色）；
+        // 窄屏手动玻璃下改按阅读页背景明暗取高对比色
+        .fontColor(this.narrowBars ? (this.bgDark ? '#FFFFFF' : '#111111') : $r('sys.color.font_primary'))
         .width(24)
     }
     .layoutWeight(1)
