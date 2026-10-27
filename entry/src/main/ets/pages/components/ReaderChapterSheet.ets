@@ -9,7 +9,7 @@ import { AppIcon } from './AppIcon';
 export struct ReaderChapterSheet {
   @Prop chapters: ChapterRecord[] = [];
   @Prop currentId: number = -1;
-  pal: ThemePalette = new ThemePalette();
+  @Prop pal: ThemePalette = new ThemePalette();
   private listScroller: Scroller = new Scroller();
 
   onPick: (id: number) => void = (id: number): void => {

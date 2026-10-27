@@ -123,7 +123,7 @@ export struct NovelDisplayPanel {
       })
   }
 
-  // 背景 chip（与漫画阅读器共用 readerTheme：自动/白/灰/黑）
+  // 背景 chip（与漫画阅读器共用 readerTheme：自动/白/纸张/灰/黑）
   @Builder
   themeChip(label: ResourceStr, value: number) {
     Text(label)

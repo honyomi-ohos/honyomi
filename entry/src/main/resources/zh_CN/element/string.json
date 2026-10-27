@@ -1973,6 +1973,10 @@
       "value": "灰色"
     },
     {
+      "name": "reader_set_theme_paper",
+      "value": "纸张"
+    },
+    {
       "name": "reader_set_reset_brightness",
       "value": "重置阅读器亮度"
     },

@@ -23,6 +23,7 @@ import { SwitchRow, TextRow } from './components/Prefs';
 import { WideSlider } from './components/WideSlider';
 import { PickerSheet } from './components/PickerSheet';
 import { SheetPreset } from './components/SheetPreset';
+import { ReaderChapterSheet } from './components/ReaderChapterSheet';
 import { EmulationFlipView } from './components/PageFlip';
 import {
   ReaderFilterArea,
@@ -154,6 +155,16 @@ export struct ReaderPage {
   // 内容区在窗口中的偏移（TouchObject.x/y 为窗口坐标，点击热区需换算为组件内坐标）
   private readerOffX: number = 0;
   private readerOffY: number = 0;
+  // 图片缩放（图库式手势）：双指捏合/双击放大，松手捏合或双击回位；翻页/切章自动复位
+  @State zoomScale: number = 1;
+  @State zoomX: number = 0;
+  @State zoomY: number = 0;
+  private pinchBase: number = 1;
+  private panBaseX: number = 0;
+  private panBaseY: number = 0;
+  // 单击调度（延迟 260ms 识别双击缩放）：待执行动作与定时器 id
+  private pendingTap: (() => void) | null = null;
+  private pendingTapTimer: number = -1;
 
   aboutToAppear(): void {
     this.gripSupported = GripSupport.isSupported();
@@ -182,6 +193,7 @@ export struct ReaderPage {
     this.libDirty += 1;
     ReadingStatsRepo.flush();
     this.updateGripListener(false);
+    this.cancelPendingTap();
     if (this.resumeTimerId !== -1) {
       clearTimeout(this.resumeTimerId);
       this.resumeTimerId = -1;
@@ -438,7 +450,8 @@ export struct ReaderPage {
   // 普通翻页（Swiper）内容体：首尾为章节过渡页，中间为正文页
   @Builder
   swiperBody() {
-    Swiper() {
+    Stack() {
+      Swiper() {
       LazyForEach(this.dataSource, (page: SPage, index: number) => {
         Stack() {
           if (page.url === TRANS_PREV_URL || page.url === TRANS_NEXT_URL) {
@@ -496,6 +509,59 @@ export struct ReaderPage {
     .onAreaChange((_old: Area, newArea: Area) => {
       this.syncReaderArea(newArea);
     })
+    .scale({ x: this.zoomScale, y: this.zoomScale })
+    .translate({ x: this.zoomX, y: this.zoomY })
+    .gesture(PinchGesture({ fingers: 2 })
+      .onActionStart((event: GestureEvent) => {
+        this.pinchBase = this.zoomScale;
+      })
+      .onActionUpdate((event: GestureEvent) => {
+        // 以捏合起点缩放为基准，实时跟随捏合比例
+        this.applyZoom(this.pinchBase * event.scale, this.zoomX, this.zoomY);
+      })
+      .onActionEnd(() => {
+        if (this.zoomScale <= 1.02) {
+          this.resetZoom();
+        }
+      }))
+      if (this.zoomScale > 1.001) {
+        this.zoomPanOverlay()
+      }
+    }
+    .width('100%')
+    .height('100%')
+  }
+
+  // 缩放后的平移/捏合/双击回位覆盖层：盖在 Swiper 上方接管手势，避免单指拖动触发翻页
+  @Builder
+  zoomPanOverlay() {
+    Column()
+      .width('100%')
+      .height('100%')
+      .gesture(PanGesture({ direction: PanDirection.All, distance: 5 })
+        .onActionStart((event: GestureEvent) => {
+          this.panBaseX = this.zoomX;
+          this.panBaseY = this.zoomY;
+        })
+        .onActionUpdate((event: GestureEvent) => {
+          this.applyZoom(this.zoomScale, this.panBaseX + event.offsetX, this.panBaseY + event.offsetY);
+        }))
+      .gesture(PinchGesture({ fingers: 2 })
+        .onActionStart((event: GestureEvent) => {
+          this.pinchBase = this.zoomScale;
+        })
+        .onActionUpdate((event: GestureEvent) => {
+          this.applyZoom(this.pinchBase * event.scale, this.zoomX, this.zoomY);
+        })
+        .onActionEnd(() => {
+          if (this.zoomScale <= 1.02) {
+            this.resetZoom();
+          }
+        }))
+      .gesture(TapGesture({ count: 2 })
+        .onAction((event: GestureEvent) => {
+          this.resetZoom();
+        }))
   }
 
   // 仿真翻页边界的章节过渡覆盖层（Swiper 单元格方案不适用于仿真翻页，改为全屏层）
@@ -1260,6 +1326,7 @@ export struct ReaderPage {
     this.loading = true;
     this.showMenu = false;
     this.transOverlay = 0;
+    this.resetZoom();
     // 切章：先结算上一章的阅读会话
     ReadingStatsRepo.flush();
     try {
@@ -1371,6 +1438,7 @@ export struct ReaderPage {
 
   // 非 RTL：[上一章过渡, 页0..页N-1, 下一章过渡]；RTL 整体反转（阅读前进 = 索引递减）
   private applyMode(scrollToResume: boolean): void {
+    this.resetZoom();
     const cellCount = this.pages.length + 2;
     this.coverX = Util.zeros(cellCount);
     this.coverY = Util.zeros(cellCount);
@@ -1436,6 +1504,7 @@ export struct ReaderPage {
 
   private async onSwipe(displayIdx: number): Promise<void> {
     this.displayIndex = displayIdx;
+    this.resetZoom();
     const kind = this.cellKind(displayIdx);
     if (kind === 'next') {
       // 落在“下一章”过渡页：没有下一章时呼出菜单（对齐 Mihon），有则等待继续前翻
@@ -1593,9 +1662,16 @@ export struct ReaderPage {
   }
 
   // 翻页模式点击区域（导航模式：默认/从左到右/从右到左/垂直/边缘/无，对齐 Mihon pref_viewer_nav）
+  // 单击延迟 260ms 派发，为双击缩放（图库手势）留出识别窗口
   private handleTouch(event: TouchEvent): void {
     if (event.type === TouchType.Down) {
       if (event.touches.length === 0) {
+        return;
+      }
+      if (event.touches.length > 1) {
+        // 第二根手指按下：进入捏合，作废单击与待派发的单击动作
+        this.touchDownX = -1;
+        this.cancelPendingTap();
         return;
       }
       const down: TouchObject = event.touches[0];
@@ -1618,51 +1694,113 @@ export struct ReaderPage {
       if (this.pages.length === 0) {
         return;
       }
-      if (this.navMode === 'none') {
+      if (this.pendingTapTimer >= 0) {
+        // 双击窗口内的第二次抬起：取消待派发单击，改为双击缩放
+        this.cancelPendingTap();
+        this.toggleZoomAt(upX, upY);
+        return;
+      }
+      this.pendingTap = (): void => {
+        this.dispatchTapZone(upX, upY);
+      };
+      this.pendingTapTimer = setTimeout(() => {
+        this.pendingTapTimer = -1;
+        const act = this.pendingTap;
+        this.pendingTap = null;
+        if (act !== null) {
+          act();
+        }
+      }, 260);
+    }
+  }
+
+  // 单击热区派发：在 260ms 双击窗口确认后执行（原 handleTouch Up 逻辑）
+  private dispatchTapZone(upX: number, upY: number): void {
+    if (this.navMode === 'none') {
+      this.showMenu = !this.showMenu;
+      return;
+    }
+    if (this.navMode === 'vertical') {
+      const zoneY = upY / (this.readerH > 0 ? this.readerH : 640);
+      if (zoneY < 0.3) {
+        this.step(-1);
+      } else if (zoneY > 0.7) {
+        this.step(1);
+      } else {
         this.showMenu = !this.showMenu;
-        return;
       }
-      if (this.navMode === 'vertical') {
-        const zoneY = upY / (this.readerH > 0 ? this.readerH : 640);
-        if (zoneY < 0.3) {
-          this.step(-1);
-        } else if (zoneY > 0.7) {
-          this.step(1);
-        } else {
-          this.showMenu = !this.showMenu;
-        }
-        return;
-      }
-      const zone = upX / (this.readerW > 0 ? this.readerW : 360);
-      // “下一页”是否在左侧：默认跟随阅读模式（RTL；智感握姿下左手握持时握持侧为下一页），可被导航模式覆盖
-      let nextOnLeft: boolean = this.mode === 'rtl' ||
-        (this.mode === 'smart_grip' && !this.gripRight);
-      if (this.navMode === 'ltr') {
-        nextOnLeft = false;
-      } else if (this.navMode === 'rtl') {
-        nextOnLeft = true;
-      }
-      if (this.navMode === 'edge') {
-        // 边缘导航：仅屏幕左右边缘窄条翻页，其余区域切换菜单
-        if (zone < 0.12) {
-          this.step(nextOnLeft ? 1 : -1);
-        } else if (zone > 0.88) {
-          this.step(nextOnLeft ? -1 : 1);
-        } else {
-          this.showMenu = !this.showMenu;
-        }
-        return;
-      }
-      if (zone < 0.3) {
-        // 左侧区域
+      return;
+    }
+    const zone = upX / (this.readerW > 0 ? this.readerW : 360);
+    // “下一页”是否在左侧：默认跟随阅读模式（RTL；智感握姿下左手握持时握持侧为下一页），可被导航模式覆盖
+    let nextOnLeft: boolean = this.mode === 'rtl' ||
+      (this.mode === 'smart_grip' && !this.gripRight);
+    if (this.navMode === 'ltr') {
+      nextOnLeft = false;
+    } else if (this.navMode === 'rtl') {
+      nextOnLeft = true;
+    }
+    if (this.navMode === 'edge') {
+      // 边缘导航：仅屏幕左右边缘窄条翻页，其余区域切换菜单
+      if (zone < 0.12) {
         this.step(nextOnLeft ? 1 : -1);
-      } else if (zone > 0.7) {
-        // 右侧区域
+      } else if (zone > 0.88) {
         this.step(nextOnLeft ? -1 : 1);
       } else {
         this.showMenu = !this.showMenu;
       }
+      return;
     }
+    if (zone < 0.3) {
+      // 左侧区域
+      this.step(nextOnLeft ? 1 : -1);
+    } else if (zone > 0.7) {
+      // 右侧区域
+      this.step(nextOnLeft ? -1 : 1);
+    } else {
+      this.showMenu = !this.showMenu;
+    }
+  }
+
+  // ---- 图片缩放（图库式手势）----
+
+  // 应用缩放并夹取平移量，保证图片边缘不被拖出屏幕
+  private applyZoom(scale: number, tx: number, ty: number): void {
+    const s = Math.max(1, Math.min(4, scale));
+    const maxTx = ((s - 1) * this.readerW) / 2;
+    const maxTy = ((s - 1) * this.readerH) / 2;
+    this.zoomScale = s;
+    this.zoomX = Math.max(-maxTx, Math.min(maxTx, tx));
+    this.zoomY = Math.max(-maxTy, Math.min(maxTy, ty));
+  }
+
+  private resetZoom(): void {
+    this.zoomScale = 1;
+    this.zoomX = 0;
+    this.zoomY = 0;
+  }
+
+  // 双击切换缩放：已放大则复位，未放大则 2.5 倍缩放并对准点击位置
+  private toggleZoomAt(upX: number, upY: number): void {
+    if (this.zoomScale > 1.001) {
+      this.resetZoom();
+      return;
+    }
+    const s = 2.5;
+    // 缩放以组件中心为轴，使点击点保持不动需要的平移量：(1-s)*(P-C)
+    const cx = this.readerW / 2;
+    const cy = this.readerH / 2;
+    this.applyZoom(s, (1 - s) * (upX - cx), (1 - s) * (upY - cy));
+    Haptics.soft();
+  }
+
+  // 取消待派发的单击（双击确认/捏合打断/组件销毁时调用）
+  private cancelPendingTap(): void {
+    if (this.pendingTapTimer >= 0) {
+      clearTimeout(this.pendingTapTimer);
+      this.pendingTapTimer = -1;
+    }
+    this.pendingTap = null;
   }
 
   // 在过渡页上继续前/后翻即切换章节（上一章落在末页，下一章落在首页）

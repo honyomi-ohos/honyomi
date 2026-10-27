@@ -5,7 +5,7 @@ import { GripSupport } from '../../common/GripSupport';
 import { NavGlassPage } from '../../common/HdsNavHost';
 import { PrefGroup, PrefSelectRow, PrefSwitchRow, TextRow } from '../components/Prefs';
 
-const THEME_VALUES: number[] = [3, 0, 1, 2];
+const THEME_VALUES: number[] = [3, 0, 1, 2, 4];
 
 // 阅读器设置内容：默认模式/页码/背景色/亮度（双页改为横屏自动，无需设置项）
 @Component
@@ -62,7 +62,8 @@ export struct ReaderSettingsContent {
               $r('app.string.reader_set_theme_follow'),
               $r('app.string.reader_set_theme_white'),
               $r('app.string.reader_set_theme_black'),
-              $r('app.string.reader_set_theme_gray')
+              $r('app.string.reader_set_theme_gray'),
+              $r('app.string.reader_set_theme_paper')
             ],
             selectedIndex: this.themeIndex(),
             onSelectIndex: (index: number): void => {

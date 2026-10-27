@@ -2407,7 +2407,9 @@ export struct VideoPlayerPage {
       return;
     }
     // 上下滑的方向（亮度/音量）按手势起点所在半屏决定
-    this.panLeftHalf = this.getUIContext().vp2px(event.globalX) < this.areaW / 2;
+    const fingers: FingerInfo[] = event.fingerList;
+    this.panLeftHalf = fingers.length > 0 ?
+      this.getUIContext().vp2px(fingers[0].localX) < this.areaW / 2 : false;
     this.disarmBoost();
   }
 

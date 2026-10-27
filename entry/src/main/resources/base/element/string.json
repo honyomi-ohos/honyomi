@@ -2489,6 +2489,10 @@
       "value": "Gray"
     },
     {
+      "name": "reader_set_theme_paper",
+      "value": "Paper"
+    },
+    {
       "name": "reader_set_reset_brightness",
       "value": "Reset reader brightness"
     },
