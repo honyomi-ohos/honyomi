@@ -302,7 +302,7 @@ export class Theme {
     return pal;
   }
 
-  // 阅读器背景：readerTheme 0=白 1=黑 2=灰 3=自动（跟随深色模式）
+  // 阅读器背景：readerTheme 0=白 1=黑 2=灰 3=自动（跟随深色模式） 4=纸张（护眼米黄）
   static readerBg(theme: number, dark: boolean): string {
     if (theme === 0) {
       return '#FFFFFF';
@@ -312,6 +312,9 @@ export class Theme {
     }
     if (theme === 2) {
       return '#3A3A3A';
+    }
+    if (theme === 4) {
+      return '#F1ECE1';
     }
     return dark ? '#000000' : '#FFFFFF';
   }

@@ -29,11 +29,13 @@ export function BtEngineChoiceBuilder(params: BtEngineChoiceParams) {
 
 @Component
 struct BtEngineChoiceContent {
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+
   onPick: (choice: string) => void = (_choice: string) => {
   };
+
   onCancel: () => void = () => {
   };
-  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
 
   build() {
     Column({ space: 14 }) {
@@ -58,10 +60,16 @@ struct BtEngineChoiceContent {
           Text($r('app.string.bt_choice_size_mb', BT_ENGINE_SIZE_MB))
             .fontSize(11)
             .fontColor(this.pal.primary)
-            .padding({ left: 7, right: 7, top: 2, bottom: 2 })
+            .padding({
+              left: 7,
+              right: 7,
+              top: 2,
+              bottom: 2
+            })
             .borderRadius(8)
             .backgroundColor(this.pal.card)
         }
+
         Text($r('app.string.bt_choice_module_desc'))
           .fontSize(12)
           .fontColor(this.pal.sub)

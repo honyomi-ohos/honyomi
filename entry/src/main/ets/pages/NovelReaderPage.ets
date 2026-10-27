@@ -8,7 +8,6 @@ import { SourceRegistry } from '../source/Source';
 import { ChapterRecord, MangaRecord } from '../model/Models';
 import { ReaderParams } from '../model/RouteParams';
 import { Theme, ThemePalette } from '../common/Theme';
-import { Bp } from '../common/Breakpoint';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
 import {
@@ -21,6 +20,7 @@ import {
 } from '../common/TtsPlaybackService';
 import { TtsText } from '../common/TtsText';
 import { ReaderWindow } from '../common/ReaderWindow';
+import { Haptics } from '../common/Haptics';
 import { ChapterNeighbors, ReaderChapterNav } from '../common/ReaderChapterNav';
 import { DownloadService } from '../data/DownloadService';
 import { TrackService } from '../data/track/TrackService';
@@ -52,6 +52,7 @@ import {
 import { LoadingBackButton } from './components/LoadingBackButton';
 import { SheetPreset } from './components/SheetPreset';
 import { WideSlider } from './components/WideSlider';
+import { ReaderChapterSheet } from './components/ReaderChapterSheet';
 
 // 翻屏进度持久化防抖间隔（毫秒）
 const PERSIST_DEBOUNCE_MS: number = 2000;
@@ -137,6 +138,9 @@ export struct NovelReaderPage {
   // 前面的会被立即关闭，故用单个 isShow + panelKind 切换内容
   @State showPanelSheet: boolean = false;
   @State panelKind: string = '';
+  // 章节目录抽屉（参考华为阅读）与章节列表数据
+  @State showChapterSheet: boolean = false;
+  @State tocChapters: ChapterRecord[] = [];
   @State brightLv: number = 0;
   // 听书（系统 TTS）：播放中 / 当前朗读段
   @State ttsPlaying: boolean = false;
@@ -563,17 +567,17 @@ export struct NovelReaderPage {
 
   // 切换章节；fromEnd=true 表示由阅读边界向回退触发，新章落在末尾（千分比 1000），
 
-  // 0=白 1=黑 2=灰 3=自动（跟随深色模式）
+  // 0=白 1=黑 2=灰 3=自动（跟随深色模式） 4=纸张（护眼米黄）
   syncReaderBgDark(): void {
     const t = this.readerTheme === 3 ? (this.isDark ? 1 : 0) : this.readerTheme;
-    AppStorage.setOrCreate('readerBgDark', t !== 0);
+    AppStorage.setOrCreate('readerBgDark', t !== 0 && t !== 4);
   }
 
   // ---- 听书（系统 TTS，经 TtsPlaybackService 与页面生命周期解耦）----
 
   isBgDark(): boolean {
     const t = this.readerTheme === 3 ? (this.isDark ? 1 : 0) : this.readerTheme;
-    return t !== 0;
+    return t !== 0 && t !== 4;
   }
 
   onDarkChanged(): void {
@@ -631,10 +635,16 @@ export struct NovelReaderPage {
     }
   }
 
-  // 设置行：阅读模式 / 屏幕方向 / 画面 / 文本 / 听书
+  // 设置行：章节目录 / 阅读模式 / 屏幕方向 / 画面 / 文本 / 听书
   @Builder
   menuSettingsRow() {
     Row() {
+      ReaderMenuIconButton({
+        icon: 'view_list',
+        onTap: (): void => {
+          this.openChapterSheet();
+        }
+      })
       ReaderMenuIconButton({
         icon: this.novelModeIcon(),
         onTap: (): void => {
@@ -812,245 +822,273 @@ export struct NovelReaderPage {
   @Builder
   readerBody() {
     Stack({ alignContent: Alignment.BottomEnd }) {
-        // 内容区
-        if (this.loading) {
+      // 内容区
+      if (this.loading) {
+        Column() {
+          LoadingProgress()
+            .width(36)
+            .height(36)
+            .color(this.pal.primary)
+        }
+        .width('100%')
+        .height('100%')
+        .justifyContent(FlexAlign.Center)
+        .onClick(() => {
+          this.contentTap();
+        })
+      } else if (this.body === '') {
+        Column() {
+          Text($r('app.string.novel_empty'))
+            .fontSize(14)
+            .fontColor(this.pal.sub)
+        }
+        .width('100%')
+        .height('100%')
+        .justifyContent(FlexAlign.Center)
+        .onClick(() => {
+          this.contentTap();
+        })
+      } else if (this.mode === 'scroll') {
+        Scroll(this.scroller) {
           Column() {
-            LoadingProgress()
-              .width(36)
-              .height(36)
-              .color(this.pal.primary)
+            this.ScrollBody()
           }
           .width('100%')
-          .height('100%')
-          .justifyContent(FlexAlign.Center)
-          .onClick(() => {
-            this.contentTap();
-          })
-        } else if (this.body === '') {
-          Column() {
-            Text($r('app.string.novel_empty'))
-              .fontSize(14)
-              .fontColor(this.pal.sub)
-          }
-          .width('100%')
-          .height('100%')
-          .justifyContent(FlexAlign.Center)
-          .onClick(() => {
-            this.contentTap();
-          })
-        } else if (this.mode === 'scroll') {
-          Scroll(this.scroller) {
-            Column() {
-              this.ScrollBody()
-            }
-            .width('100%')
-            .padding({
-              left: this.pageMargin,
-              right: this.pageMargin,
-              top: this.statusBarH + 16,
-              bottom: this.navBarH + 24
-            })
-            .onAreaChange((_old: Area, neu: Area) => {
-              const h = neu.height;
-              if (typeof h === 'number') {
-                this.contentH = h;
-                this.restoreOnce();
-              }
-            })
-          }
-          .width('100%')
-          .height('100%')
-          .scrollBar(BarState.Off)
-          .onAreaChange((_old: Area, neu: Area) => {
-            const w = neu.width;
-            const h = neu.height;
-            if (typeof w === 'number') {
-              this.scrollW = w;
-            }
-            if (typeof h === 'number') {
-              this.viewH = h;
-              this.restoreOnce();
-            }
-          })
-          .onDidScroll((_x: number, y: number, state: ScrollState) => {
-            this.captureOffset(y);
-            // 手势拖动期间离开过末尾（permille<1000）即武装边界切章：
-            // 只有真实读过末尾的拖动才在停稳于末尾时进入下一章
-            if (state === ScrollState.Scroll && this.permille < 1000) {
-              this.scrollDragArmed = true;
-            }
-          })
-          .onScrollStop(() => {
-            this.permilleUi = this.permille;
-            this.persist();
-            if (this.scrollDragArmed && this.permille >= 1000 && this.nextId > 0 && !this.loading) {
-              this.scrollDragArmed = false;
-              this.openChapter(this.nextId);
-              return;
-            }
-            this.scrollDragArmed = false;
-          })
-          .onClick(() => {
-            this.contentTap();
-          })
-        } else {
-          Column() {
-            if (this.curlActive() && this.mode === 'double') {
-              this.DoubleLeaf()
-            } else if (this.curlActive()) {
-              EmulationFlipView({
-                index: this.readingIndex(),
-                pageCount: this.screenIdxs.length,
-                fromLeft: this.mode === 'paged_rtl',
-                nextOnLeft: this.mode === 'paged_rtl',
-                tapMode: 'horizontal',
-                flipEnabled: !this.anySheetOpen(),
-                turnToken: this.leafTurn,
-                bgColor: Theme.readerBg(this.readerTheme, this.isDark),
-                onIndexChange: (index: number): void => {
-                  this.onCurlIndex(index);
-                },
-                onCenterTap: (): void => {
-                  this.contentTap();
-                },
-                onOverscroll: (dir: number): void => {
-                  this.onCurlOverscroll(dir);
-                },
-                pageContent: (index: number): void => {
-                  this.curlPageBody(index)
-                }
-              })
-                .width('100%')
-                .height('100%')
-            } else {
-              Swiper(this.swiperCtrl) {
-                LazyForEach(this.screenSource, (sIdx: number) => {
-                  // 每屏包一层容器：translate/zIndex 仅能挂在实体组件上；
-                  // 双页模式容器透明（遮盖由左右半页承担），单页模式整屏不透明。
-                  Stack() {
-                    this.PageScreen(sIdx)
-                  }
-                  .width('100%')
-                  .height('100%')
-                  .backgroundColor(this.mode === 'double' ? Color.Transparent :
-                    Theme.readerBg(this.readerTheme, this.isDark))
-                  .translate({ x: this.transX[sIdx] })
-                  .zIndex(this.transZ[sIdx])
-                }, (sIdx: number) => `${this.pagSig}#${sIdx}`)
-              }
-              .width('100%')
-              .height('100%')
-              .loop(false)
-              .indicator(false)
-              .index(this.pageIdx)
-              .customContentTransition({
-                timeout: 1000,
-                transition: (proxy: SwiperContentTransitionProxy) => {
-                  this.onContentTransition(proxy);
-                }
-              })
-              .onChange((idx: number) => {
-                this.onScreenChange(idx);
-              })
-              .onTouch((event: TouchEvent) => {
-                if (event.type === TouchType.Down || event.type === TouchType.Move) {
-                  this.updateGrabY(event.touches[0].y);
-                }
-              })
-            }
-          }
-          .width('100%')
-          .height('100%')
           .padding({
             left: this.pageMargin,
             right: this.pageMargin,
-            top: this.statusBarH + 8,
-            bottom: this.navBarH + 8
+            top: this.statusBarH + 16,
+            bottom: this.navBarH + 24
           })
           .onAreaChange((_old: Area, neu: Area) => {
-            const w = neu.width;
             const h = neu.height;
-            if (typeof w === 'number' && typeof h === 'number') {
-              this.contW = w;
-              this.contH = h;
-              this.ensurePaginated();
-            }
-          })
-          .onClick((event: ClickEvent) => {
-            if (!this.curlActive()) {
-              this.handleTap(event);
+            if (typeof h === 'number') {
+              this.contentH = h;
+              this.restoreOnce();
             }
           })
         }
-
-        // 加载中：PC 无返回手势，左上角返回 + ESC 兜底退出，避免卡在加载页等网络超时
-        if (this.loading) {
-          LoadingBackButton({
-            onBack: (): void => {
-              this.pathStack.pop();
-            }
-          })
-        }
-
-        // 进度/页码指示（菜单收起时）
-        if (!this.showMenu && !this.loading && this.body !== '' && this.showPageNumber &&
-          this.indicatorText() !== '') {
-          ReaderIndicatorBadge({
-            text: this.indicatorText(),
-            navBarH: this.navBarH
-          })
-        }
-
-        // 菜单：顶栏 + 点击关闭占位 + 底栏（章节导航行 + 设置行）
-        if (this.showMenu) {
-          ReaderMenu({
-            title: this.manga.title,
-            subtitle: this.chapter.name,
-            statusBarH: this.statusBarH,
-            onBack: (): void => {
-              this.pathStack.pop();
-            },
-            onBackdrop: (): void => {
-              if (this.anySheetOpen()) {
-                this.dismissSheets();
-                return;
+        .width('100%')
+        .height('100%')
+        .scrollBar(BarState.Off)
+        .onAreaChange((_old: Area, neu: Area) => {
+          const w = neu.width;
+          const h = neu.height;
+          if (typeof w === 'number') {
+            this.scrollW = w;
+          }
+          if (typeof h === 'number') {
+            this.viewH = h;
+            this.restoreOnce();
+          }
+        })
+        .onDidScroll((_x: number, y: number, state: ScrollState) => {
+          this.captureOffset(y);
+          // 手势拖动期间离开过末尾（permille<1000）即武装边界切章：
+          // 只有真实读过末尾的拖动才在停稳于末尾时进入下一章
+          if (state === ScrollState.Scroll && this.permille < 1000) {
+            this.scrollDragArmed = true;
+          }
+        })
+        .onScrollStop(() => {
+          this.permilleUi = this.permille;
+          this.persist();
+          if (this.scrollDragArmed && this.permille >= 1000 && this.nextId > 0 && !this.loading) {
+            this.scrollDragArmed = false;
+            this.openChapter(this.nextId);
+            return;
+          }
+          this.scrollDragArmed = false;
+        })
+        .onClick(() => {
+          this.contentTap();
+        })
+      } else {
+        Column() {
+          if (this.curlActive() && this.mode === 'double') {
+            this.DoubleLeaf()
+          } else if (this.curlActive()) {
+            EmulationFlipView({
+              index: this.readingIndex(),
+              pageCount: this.screenIdxs.length,
+              fromLeft: this.mode === 'paged_rtl',
+              nextOnLeft: this.mode === 'paged_rtl',
+              tapMode: 'horizontal',
+              flipEnabled: !this.anySheetOpen(),
+              turnToken: this.leafTurn,
+              bgColor: Theme.readerBg(this.readerTheme, this.isDark),
+              onIndexChange: (index: number): void => {
+                this.onCurlIndex(index);
+              },
+              onCenterTap: (): void => {
+                this.contentTap();
+              },
+              onOverscroll: (dir: number): void => {
+                this.onCurlOverscroll(dir);
+              },
+              pageContent: (index: number): void => {
+                this.curlPageBody(index)
               }
-              this.showMenu = false;
+            })
+              .width('100%')
+              .height('100%')
+          } else {
+            Swiper(this.swiperCtrl) {
+              LazyForEach(this.screenSource, (sIdx: number) => {
+                // 每屏包一层容器：translate/zIndex 仅能挂在实体组件上；
+                // 双页模式容器透明（遮盖由左右半页承担），单页模式整屏不透明。
+                Stack() {
+                  this.PageScreen(sIdx)
+                }
+                .width('100%')
+                .height('100%')
+                .backgroundColor(this.mode === 'double' ? Color.Transparent :
+                  Theme.readerBg(this.readerTheme, this.isDark))
+                .translate({ x: this.transX[sIdx] })
+                .zIndex(this.transZ[sIdx])
+              }, (sIdx: number) => `${this.pagSig}#${sIdx}`)
             }
-          })
+            .width('100%')
+            .height('100%')
+            .loop(false)
+            .indicator(false)
+            .index(this.pageIdx)
+            .customContentTransition({
+              timeout: 1000,
+              transition: (proxy: SwiperContentTransitionProxy) => {
+                this.onContentTransition(proxy);
+              }
+            })
+            .onChange((idx: number) => {
+              this.onScreenChange(idx);
+            })
+            .onTouch((event: TouchEvent) => {
+              if (event.type === TouchType.Down || event.type === TouchType.Move) {
+                this.updateGrabY(event.touches[0].y);
+              }
+            })
+          }
         }
-
-        // 设置面板 bindSheet 常驻宿主：挂 if(showMenu) 条件节点时菜单收起即销毁宿主，弹层不可靠；
-        // 同一节点链式绑定多个 bindSheet 只有最后一个生效，故用独立常驻节点承载
-        Column()
-          .width(0)
-          .height(0)
-          .hitTestBehavior(HitTestMode.None)
-          .bindSheet($$this.showPanelSheet, this.panelSheetBuilder(),
-            SheetPreset.fit(this.windowW, {
-              title: this.panelTitleRes(),
-              showClose: false,
-              glass: true,
-              interactive: true
-            }))
+        .width('100%')
+        .height('100%')
+        .padding({
+          left: this.pageMargin,
+          right: this.pageMargin,
+          top: this.statusBarH + 8,
+          bottom: this.navBarH + 8
+        })
+        .onAreaChange((_old: Area, neu: Area) => {
+          const w = neu.width;
+          const h = neu.height;
+          if (typeof w === 'number' && typeof h === 'number') {
+            this.contW = w;
+            this.contH = h;
+            this.ensurePaginated();
+          }
+        })
+        .onClick((event: ClickEvent) => {
+          if (!this.curlActive()) {
+            this.handleTap(event);
+          }
+        })
       }
-      .width('100%')
-      .height('100%')
-      .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
-      // 键盘控制宿主：默认获焦使 onKeyEvent 生效，触摸重聚焦避免焦点漂移后按键失灵
-      .focusable(true)
-      .defaultFocus(true)
-      .focusOnTouch(true)
-      .onKeyEvent((event: KeyEvent) => {
-        this.handleReaderKey(event);
-      })
-      .bindSheet($$this.showModeSheet, this.modeSheetBuilder(),
-        SheetPreset.fit(this.windowW, {
-          title: $r('app.string.reader_reading_mode'),
-          showClose: false,
-          glass: true,
-          interactive: true
-        }))
+
+      // 加载中：PC 无返回手势，左上角返回 + ESC 兜底退出，避免卡在加载页等网络超时
+      if (this.loading) {
+        LoadingBackButton({
+          onBack: (): void => {
+            this.pathStack.pop();
+          }
+        })
+      }
+
+      // 进度/页码指示（菜单收起时）
+      if (!this.showMenu && !this.loading && this.body !== '' && this.showPageNumber &&
+        this.indicatorText() !== '') {
+        ReaderIndicatorBadge({
+          text: this.indicatorText(),
+          navBarH: this.navBarH
+        })
+      }
+
+      // 菜单：顶栏 + 点击关闭占位 + 底栏（章节导航行 + 设置行）
+      if (this.showMenu) {
+        ReaderMenu({
+          title: this.manga.title,
+          subtitle: this.chapter.name,
+          statusBarH: this.statusBarH,
+          onBack: (): void => {
+            this.pathStack.pop();
+          },
+          onBackdrop: (): void => {
+            if (this.anySheetOpen()) {
+              this.dismissSheets();
+              return;
+            }
+            this.showMenu = false;
+          }
+        })
+      }
+
+      // 设置面板 bindSheet 常驻宿主：挂 if(showMenu) 条件节点时菜单收起即销毁宿主，弹层不可靠；
+      // 同一节点链式绑定多个 bindSheet 只有最后一个生效，故用独立常驻节点承载
+      Column()
+        .width(0)
+        .height(0)
+        .hitTestBehavior(HitTestMode.None)
+        .bindSheet($$this.showPanelSheet, this.panelSheetBuilder(),
+          SheetPreset.fit(this.windowW, {
+            title: this.panelTitleRes(),
+            showClose: false,
+            glass: true,
+            interactive: true
+          }))
+      // 章节目录抽屉宿主（同上：独立常驻节点承载）
+      Column()
+        .width(0)
+        .height(0)
+        .hitTestBehavior(HitTestMode.None)
+        .bindSheet($$this.showChapterSheet, this.chapterSheetBuilder(),
+          SheetPreset.fit(this.windowW, {
+            title: $r('app.string.reader_chapter_list'),
+            showClose: false,
+            glass: true,
+            height: SheetSize.MEDIUM
+          }))
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
+    // 键盘控制宿主：默认获焦使 onKeyEvent 生效，触摸重聚焦避免焦点漂移后按键失灵
+    .focusable(true)
+    .defaultFocus(true)
+    .focusOnTouch(true)
+    .onKeyEvent((event: KeyEvent) => {
+      this.handleReaderKey(event);
+    })
+    .bindSheet($$this.showModeSheet, this.modeSheetBuilder(),
+      SheetPreset.fit(this.windowW, {
+        title: $r('app.string.reader_reading_mode'),
+        showClose: false,
+        glass: true,
+        interactive: true
+      }))
+  }
+
+  @Builder
+  chapterSheetBuilder() {
+    ReaderChapterSheet({
+      chapters: this.tocChapters,
+      currentId: this.chapterId,
+      pal: this.pal,
+      onPick: (id: number): void => {
+        this.showChapterSheet = false;
+        if (id !== this.chapterId) {
+          Haptics.medium();
+          this.openChapter(id);
+        }
+      }
+    })
   }
 
   private applyOrientation(): void {
@@ -1187,6 +1225,8 @@ export struct NovelReaderPage {
     this.permilleUi = this.permille;
   }
 
+  // 解析 html 章节为「文本段 + 插图」块序列（NovelChapterText.parseBlocks），
+
   private captureOffset(y: number): void {
     this.scrollY = y;
     ReadingStatsRepo.tick();
@@ -1204,8 +1244,6 @@ export struct NovelReaderPage {
     }
     this.permille = value;
   }
-
-  // 解析 html 章节为「文本段 + 插图」块序列（NovelChapterText.parseBlocks），
 
   // 切章/退出经 flushPersist 立即写盘，旧章 permille 不会写入新章
   private persist(): void {
@@ -1229,6 +1267,10 @@ export struct NovelReaderPage {
     }, PERSIST_DEBOUNCE_MS);
   }
 
+  // ---- 翻页 / 双页模式：按文本测量分页（页=段落数组，支持段间距） ----
+
+  // 根据当前容器尺寸与模式计算单页文本可用宽高（vp）；
+
   // 立即落盘待写的进度快照（切章/退出时调用）
   private flushPersist(): void {
     if (this.persistTimerId !== -1) {
@@ -1241,10 +1283,6 @@ export struct NovelReaderPage {
     this.persistPending = false;
     this.persistWrite(this.persistSnapChapterId, this.persistSnapMangaId, this.persistSnapPermille);
   }
-
-  // ---- 翻页 / 双页模式：按文本测量分页（页=段落数组，支持段间距） ----
-
-  // 根据当前容器尺寸与模式计算单页文本可用宽高（vp）；
 
   private persistWrite(chapterId: number, mangaId: number, permille: number): void {
     ChapterRepo.setLastPageRead(chapterId, permille).catch((e: Object): void => {
@@ -1270,6 +1308,7 @@ export struct NovelReaderPage {
     }
     // 先把上一章的进度快照立即落盘，再切换章节，防止旧章 permille 写入新章
     this.flushPersist();
+    Haptics.medium();
     this.gotoEnd = fromEnd;
     this.chapterId = id;
     this.loadChapter();
@@ -1280,6 +1319,7 @@ export struct NovelReaderPage {
     (_playing: boolean, _paused: boolean, _mangaId: number, _chapterId: number): void => {
       this.syncTtsUi();
     };
+
   private readonly ttsOnPara: TtsServiceParaHandler =
     (_mangaId: number, chapterId: number, paraIdx: number): void => {
       if (chapterId !== this.chapterId) {
@@ -1291,6 +1331,7 @@ export struct NovelReaderPage {
         this.followTtsPara(paraIdx);
       }
     };
+
   private readonly ttsOnChapter: TtsServiceChapterHandler = (mangaId: number, chapterId: number): void => {
     if (mangaId !== this.mangaId) {
       return;
@@ -1302,11 +1343,13 @@ export struct NovelReaderPage {
     // 听书自动进入下一章：阅读器跟随加载（不打断朗读）
     this.openChapter(chapterId);
   };
+
   private readonly ttsOnError: TtsServiceErrorHandler = (message: string): void => {
     Util.toastRes(this.getUIContext(), $r('app.string.novel_tts_error'),
       [Util.errText(this.getUIContext(), message)]);
     this.syncTtsUi();
   };
+
   private readonly ttsOnFinish: TtsServiceFinishHandler = (): void => {
     Util.toastRes(this.getUIContext(), $r('app.string.novel_tts_finish'));
     this.syncTtsUi();
@@ -1357,6 +1400,8 @@ export struct NovelReaderPage {
     return Math.min(paras.length - 1, Math.max(0, Math.round(this.permille * (paras.length - 1) / 1000)));
   }
 
+  // 点击左右 30% 区域翻页；点击中间呼出/收起菜单（从右到左阅读时点击区镜像）
+
   private async startTts(fromPara: number): Promise<void> {
     if (this.body === '') {
       return;
@@ -1376,8 +1421,6 @@ export struct NovelReaderPage {
     }
   }
 
-  // 点击左右 30% 区域翻页；点击中间呼出/收起菜单（从右到左阅读时点击区镜像）
-
   // 听书按钮：直接起播/续播并进入播放器（不弹听书设置面板）；播放中点击则暂停
   private async startTtsAndOpenPlayer(): Promise<void> {
     if (TtsPlaybackService.isPlaying()) {
@@ -1395,6 +1438,8 @@ export struct NovelReaderPage {
     }
   }
 
+  // 翻页/双页：边界处跳上一章/下一章（dir 为阅读方向：+1 下一页，-1 上一页）；
+
   // 跟随朗读进度：滚动模式滚到对应段落，翻页/双页翻到对应页
   private followTtsPara(idx: number): void {
     // 插图高度不定，含插图章节的滚动模式不做听书跟随
@@ -1407,8 +1452,6 @@ export struct NovelReaderPage {
       this.followTtsPaged(idx);
     }
   }
-
-  // 翻页/双页：边界处跳上一章/下一章（dir 为阅读方向：+1 下一页，-1 上一页）；
 
   // 滚动跟随：按测量计算段落纵向偏移（带签名缓存），段落不在可视区时滚动过去
   private followTtsScroll(idx: number): void {
@@ -1467,6 +1510,11 @@ export struct NovelReaderPage {
     }
   }
 
+  // 由原始章节文本派生渲染正文：
+  // 1. 插件返回的无插图 html 正文剥成纯文本走统一的分页/渲染路径，
+  //    翻页/双页分页与字号/行距/字体设置才能生效（原 RichText 路径两者均不支持）
+  // 2. 开启「合并空行」时折叠段落间连续空行（部分站点段落间大量空行，观感差）
+
   // 同时标记 hasImages 供渲染路径分流；无插图时保持原有渲染路径
   private parseChapterBlocks(): void {
     this.blocks = NovelChapterText.parseBlocks(this.html, this.body);
@@ -1479,10 +1527,6 @@ export struct NovelReaderPage {
     }
   }
 
-  // 由原始章节文本派生渲染正文：
-  // 1. 插件返回的无插图 html 正文剥成纯文本走统一的分页/渲染路径，
-  //    翻页/双页分页与字号/行距/字体设置才能生效（原 RichText 路径两者均不支持）
-  // 2. 开启「合并空行」时折叠段落间连续空行（部分站点段落间大量空行，观感差）
   // 3. 「段落缩进」>0 时为无缩进段落补全角空格首行缩进（含插图章节按文本块缩进）
   private applyChapterText(): void {
     const text = this.rawText;
@@ -1526,6 +1570,9 @@ export struct NovelReaderPage {
     }
   }
 
+  // 分页参数（正文/模式/字号/行距/段距/页面尺寸）变化时重新分页；
+  // 缓存命中直接复用整章结果；未命中走渐进分页：首批同步出页立即可读，
+
   // 内容区为全屏，已预留状态栏/导航栏内边距，此处从整高中扣除
   private recalcPageBox(): void {
     if (this.mode === 'double') {
@@ -1537,8 +1584,6 @@ export struct NovelReaderPage {
     this.pageH = Math.floor(this.contH - (this.statusBarH + 8) - (this.navBarH + 8));
   }
 
-  // 分页参数（正文/模式/字号/行距/段距/页面尺寸）变化时重新分页；
-  // 缓存命中直接复用整章结果；未命中走渐进分页：首批同步出页立即可读，
   // 剩余切片到后续帧补齐（大章节不再一次性卡住主线程），完成后按进度恢复位置
   private ensurePaginated(): void {
     if (this.loading || this.body === '' || this.mode === 'scroll') {
@@ -1597,6 +1642,8 @@ export struct NovelReaderPage {
     }, 0);
   }
 
+  // 渐进分页中间态：新产出的页面并入状态（push 逐项观察），
+
   // 渐进分页下一批：小步预算推进，有新页面即刷新屏幕，直至完成后结算
   private paginateNextStep(): void {
     const cursor = this.pagCursor;
@@ -1614,7 +1661,8 @@ export struct NovelReaderPage {
     }, 0);
   }
 
-  // 渐进分页中间态：新产出的页面并入状态（push 逐项观察），
+  // 渐进分页完成：结果写入 LRU 缓存；用户翻过页则保持当前屏（并按完整页数重算进度），
+
   // 屏幕数变化才重建屏幕序列与数据源；paraPage 为游标内数组的共享引用
   private applyPartialPages(fresh: NovelPage[]): void {
     if (this.pagCursor === null) {
@@ -1643,7 +1691,6 @@ export struct NovelReaderPage {
     this.halfTilt = 0;
   }
 
-  // 渐进分页完成：结果写入 LRU 缓存；用户翻过页则保持当前屏（并按完整页数重算进度），
   // 否则按分页开始时的进度恢复位置
   private completePagination(): void {
     const cursor = this.pagCursor;
@@ -1786,7 +1833,8 @@ export struct NovelReaderPage {
 
   // 任一设置 Sheet 打开时，内容区点击一律忽略（防止蒙层点击透传触发翻页/菜单）
   private anySheetOpen(): boolean {
-    return this.showModeSheet || this.showOrientationSheet || this.showPanelSheet;
+    return this.showModeSheet || this.showOrientationSheet || this.showPanelSheet ||
+      this.showChapterSheet;
   }
 
   // 关闭全部设置 Sheet（enableOutsideInteractive 模式下由页面点击主动接管关闭）
@@ -1794,6 +1842,7 @@ export struct NovelReaderPage {
     this.showModeSheet = false;
     this.showOrientationSheet = false;
     this.showPanelSheet = false;
+    this.showChapterSheet = false;
   }
 
   // 打开指定 Sheet（互斥：先关其余，避免多个 bindSheet 叠加）
@@ -1807,6 +1856,13 @@ export struct NovelReaderPage {
       this.panelKind = which;
       this.showPanelSheet = true;
     }
+  }
+
+  // 打开章节目录抽屉（参考华为阅读）：加载全量章节，当前章高亮定位
+  private async openChapterSheet(): Promise<void> {
+    this.dismissSheets();
+    this.tocChapters = await ChapterRepo.listByManga(this.mangaId);
+    this.showChapterSheet = true;
   }
 
   private contentTap(): void {
@@ -1876,6 +1932,7 @@ export struct NovelReaderPage {
     }
     // showNext/showPrevious 自带动效并触发自定义过渡回调（仿真/滑动/覆盖均有动画）；
     // 不先改 this.pageIdx：index 属性变化是无动画瞬跳，会吞掉 changeIndex 的动效
+    Haptics.soft();
     try {
       if (target > this.pageIdx) {
         this.swiperCtrl.showNext();
@@ -1966,7 +2023,8 @@ export struct NovelReaderPage {
     }
   }
 
-  // 正文颜色：配色为浅色/深色时强制文字色，自动时按阅读背景推导（白底深色字，黑/灰底浅色字）
+  // 正文颜色：配色为浅色/深色时强制文字色，自动时按阅读背景推导
+  // （白底/纸张底深色字，黑/灰底浅色字）
   private readerTextCol(): string {
     if (this.colorScheme === 'light') {
       return '#ECEEF2';
@@ -1975,7 +2033,7 @@ export struct NovelReaderPage {
       return '#16181D';
     }
     const t = this.readerTheme === 3 ? (this.isDark ? 1 : 0) : this.readerTheme;
-    if (t === 0) {
+    if (t === 0 || t === 4) {
       return '#16181D';
     }
     return '#ECEEF2';

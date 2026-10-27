@@ -7,7 +7,7 @@ import { AppInfo } from '../../common/AppInfo';
 import { Bp } from '../../common/Breakpoint';
 import { NavGlassPage } from '../../common/HdsNavHost';
 import { IconRow, PrefGroup, TextRow } from '../components/Prefs';
-import { pasteboard, BusinessError } from '@kit.BasicServicesKit';
+import { BusinessError, pasteboard } from '@kit.BasicServicesKit';
 
 @Component
 export struct AboutContent {
@@ -125,10 +125,6 @@ export struct AboutPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('windowW') windowW: number = 0;
 
-  private inset(): number {
-    return Bp.contentInset(this.windowW);
-  }
-
   build() {
     NavGlassPage({ title: $r('app.string.about_title') }) {
       Column() {
@@ -138,6 +134,10 @@ export struct AboutPage {
       .width('100%')
       .height('100%')
     }
+  }
+
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
   }
 }
 

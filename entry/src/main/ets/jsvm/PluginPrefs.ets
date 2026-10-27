@@ -193,6 +193,46 @@ export class PluginPrefs {
 
   // 明文偏好 + SecureStore 敏感值合并（seedScript / currentValues / updatePref 共用）。
   // 全链路契约：__PREFS_STORE__ 是单个扩展自己的扁平偏好映射（k→v），
+
+  // 声明了敏感键的扩展先分流（敏感值 → SecureStore，其余 → 明文偏好）
+  static persist(key: string, storeJson: string): void {
+    if (PluginPrefs.store === undefined || storeJson === '') {
+      return;
+    }
+    const plainJson = PluginPrefs.splitSecure(key, storeJson);
+    PluginPrefs.pending.set(key, plainJson);
+    if (PluginPrefs.debounceTimer >= 0) {
+      clearTimeout(PluginPrefs.debounceTimer);
+    }
+    PluginPrefs.debounceTimer = setTimeout(() => {
+      PluginPrefs.debounceTimer = -1;
+      PluginPrefs.writePending();
+    }, 300);
+  }
+
+  // 防抖持久化：300ms 窗口内同一扩展仅保留最新快照，合并为一次 putSync + flush；
+
+  // 立即落盘全部待写偏好并等待 flush 完成（供退出/销毁路径 await）
+  static async flushAll(): Promise<void> {
+    if (PluginPrefs.debounceTimer >= 0) {
+      clearTimeout(PluginPrefs.debounceTimer);
+      PluginPrefs.debounceTimer = -1;
+    }
+    if (PluginPrefs.pending.size > 0) {
+      PluginPrefs.writePending();
+    }
+    const store = PluginPrefs.store;
+    if (store !== undefined) {
+      try {
+        await store.flush();
+      } catch (e) {
+        throw new Error(`flush plugin prefs failed: ${e}`);
+      }
+    }
+  }
+
+  // 敏感分流：把快照 JSON 拆为“敏感值 → SecureStore / 其余 → 明文偏好”，
+
   // 仅接受顶层字符串键；损坏/非对象载荷整体丢弃。
   private static mergedPrefs(key: string): Record<string, Object> {
     const merged: Record<string, Object> = {};
@@ -231,44 +271,6 @@ export class PluginPrefs {
       }
     }
     return merged;
-  }
-
-  // 防抖持久化：300ms 窗口内同一扩展仅保留最新快照，合并为一次 putSync + flush；
-  // 声明了敏感键的扩展先分流（敏感值 → SecureStore，其余 → 明文偏好）
-  static persist(key: string, storeJson: string): void {
-    if (PluginPrefs.store === undefined || storeJson === '') {
-      return;
-    }
-    const plainJson = PluginPrefs.splitSecure(key, storeJson);
-    PluginPrefs.pending.set(key, plainJson);
-    if (PluginPrefs.debounceTimer >= 0) {
-      clearTimeout(PluginPrefs.debounceTimer);
-    }
-    PluginPrefs.debounceTimer = setTimeout(() => {
-      PluginPrefs.debounceTimer = -1;
-      PluginPrefs.writePending();
-    }, 300);
-  }
-
-  // 敏感分流：把快照 JSON 拆为“敏感值 → SecureStore / 其余 → 明文偏好”，
-
-  // 立即落盘全部待写偏好并等待 flush 完成（供退出/销毁路径 await）
-  static async flushAll(): Promise<void> {
-    if (PluginPrefs.debounceTimer >= 0) {
-      clearTimeout(PluginPrefs.debounceTimer);
-      PluginPrefs.debounceTimer = -1;
-    }
-    if (PluginPrefs.pending.size > 0) {
-      PluginPrefs.writePending();
-    }
-    const store = PluginPrefs.store;
-    if (store !== undefined) {
-      try {
-        await store.flush();
-      } catch (e) {
-        throw new Error(`flush plugin prefs failed: ${e}`);
-      }
-    }
   }
 
   // 返回应写入明文偏好的 JSON（无敏感键时原样返回）

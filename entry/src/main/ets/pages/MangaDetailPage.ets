@@ -60,6 +60,7 @@ struct DetailChapterRow {
         })
     }
   }
+
   // 指示器点击：state 为行内当前下载状态（none/downloading/queued/downloaded）
   onIndicatorTap: (chapter: ChapterRecord, state: string) => void = (_c: ChapterRecord, _s: string) => {
   };
@@ -784,13 +785,13 @@ export struct MangaDetailPage {
                       }
                     }
                   }
-                   .alignItems(HorizontalAlign.Start)
-                   .width('100%')
-                   .padding({
-                     left: 16 + this.contentInset(),
-                     right: 16 + this.contentInset(),
-                     top: 10
-                   })
+                  .alignItems(HorizontalAlign.Start)
+                  .width('100%')
+                  .padding({
+                    left: 16 + this.contentInset(),
+                    right: 16 + this.contentInset(),
+                    top: 10
+                  })
                 }
               }
 
@@ -1057,6 +1058,38 @@ export struct MangaDetailPage {
     })
   }
 
+  // PC 右键复制标题（移动端仍走长按复制）
+  @Builder
+  titleContextMenu() {
+    Menu() {
+      MenuItem({ content: $r('app.string.common_copy_to_clipboard') })
+        .onClick(() => {
+          this.copyText(this.manga.title);
+        })
+    }
+  }
+
+  // PC 右键复制作者（移动端仍走长按复制）
+  @Builder
+  authorContextMenu() {
+    Menu() {
+      MenuItem({ content: $r('app.string.common_copy_to_clipboard') })
+        .onClick(() => {
+          this.copyText(this.manga.author);
+        })
+    }
+  }
+
+  // Esc 广播：关闭追踪/章节设置半模态弹层
+  onSheetEsc(): void {
+    if (this.showTrackSheet) {
+      this.showTrackSheet = false;
+    }
+    if (this.showSettingsSheet) {
+      this.showSettingsSheet = false;
+    }
+  }
+
   // fire-and-forget 异步处理器统一包装：捕获异常 + 日志 + toast，替代裸调用
   private runSafe(fn: () => Promise<void>): void {
     fn().catch((e: Error) => {
@@ -1157,28 +1190,6 @@ export struct MangaDetailPage {
     });
   }
 
-  // PC 右键复制标题（移动端仍走长按复制）
-  @Builder
-  titleContextMenu() {
-    Menu() {
-      MenuItem({ content: $r('app.string.common_copy_to_clipboard') })
-        .onClick(() => {
-          this.copyText(this.manga.title);
-        })
-    }
-  }
-
-  // PC 右键复制作者（移动端仍走长按复制）
-  @Builder
-  authorContextMenu() {
-    Menu() {
-      MenuItem({ content: $r('app.string.common_copy_to_clipboard') })
-        .onClick(() => {
-          this.copyText(this.manga.author);
-        })
-    }
-  }
-
   // 未下载→入队；下载中/排队→取消；已下载→确认后删除
   private onChapterIndicatorTap(chapter: ChapterRecord, state: string): void {
     if (state === 'downloaded') {
@@ -1211,6 +1222,8 @@ export struct MangaDetailPage {
     Util.toastRes(this.getUIContext(), $r('app.string.detail_dl_deleted_one'));
   }
 
+  // 相关/推荐作品：插件导出 getRelatedWorks 时加载（失败静默，不阻塞详情主流程）。
+
   private async loadAll(): Promise<void> {
     try {
       await this.syncFromSource();
@@ -1225,7 +1238,6 @@ export struct MangaDetailPage {
     }
   }
 
-  // 相关/推荐作品：插件导出 getRelatedWorks 时加载（失败静默，不阻塞详情主流程）。
   // 排除自身后最多展示 20 项。
   private async loadRelatedWorks(): Promise<void> {
     try {
@@ -1275,6 +1287,8 @@ export struct MangaDetailPage {
     this.loading = false;
   }
 
+  // 从持久化标志位解码排序/筛选状态（对齐 Mihon Manga.chapterFlags 解码）
+
   private async syncFromSource(): Promise<void> {
     if (this.syncing) {
       // 下拉刷新在同步进行中时明确提示，而不是静默失效
@@ -1304,8 +1318,6 @@ export struct MangaDetailPage {
     }
   }
 
-  // 从持久化标志位解码排序/筛选状态（对齐 Mihon Manga.chapterFlags 解码）
-
   // 下拉刷新：全量重新同步源数据（含源端已删除章节的移除）
   private async refreshFromSource(): Promise<void> {
     try {
@@ -1321,6 +1333,9 @@ export struct MangaDetailPage {
     this.trackCount = list.length;
   }
 
+  // 展示顺序：先按三态筛选过滤（对齐 Mihon applyFilters），再按排序模式/方向排序。
+  // 本地源 sortOrder 已按自然顺序（含中文数字）生成，"按源顺序"即为真实章节顺序；
+
   // 是否存在已读章节（注册追踪时远端合并进度用）
   private hasReadChapters(): boolean {
     for (const c of this.chapters) {
@@ -1330,9 +1345,6 @@ export struct MangaDetailPage {
     }
     return false;
   }
-
-  // 展示顺序：先按三态筛选过滤（对齐 Mihon applyFilters），再按排序模式/方向排序。
-  // 本地源 sortOrder 已按自然顺序（含中文数字）生成，"按源顺序"即为真实章节顺序；
 
   // 排序/筛选状态变化（弹层回调或本地数据应用）时重算展示缓存
   private onFilterStateChanged(): void {
@@ -1352,26 +1364,18 @@ export struct MangaDetailPage {
     this.chapterSource.setItems(this.shownChapterCache);
   }
 
+  // 大屏响应式限宽缩进：内容列限宽 720vp 居中，超出部分左右留白；
+
   // 头部总高度：保证封面信息在任意状态栏高度下完整展示
   private headerHeight(): number {
     return Math.max(280, this.statusBarH + 236);
   }
 
-  // 大屏响应式限宽缩进：内容列限宽 720vp 居中，超出部分左右留白；
+  // 吸顶栏渐显进度：随滚动偏移 0 → 1
+
   // 虚化封面背景保持全宽，仅内容（信息/操作/简介/章节）随缩进收窄
   private contentInset(): number {
     return Bp.contentInset(this.windowW);
-  }
-
-  // 吸顶栏渐显进度：随滚动偏移 0 → 1
-  // Esc 广播：关闭追踪/章节设置半模态弹层
-  onSheetEsc(): void {
-    if (this.showTrackSheet) {
-      this.showTrackSheet = false;
-    }
-    if (this.showSettingsSheet) {
-      this.showSettingsSheet = false;
-    }
   }
 
   private syncTopBar(): void {

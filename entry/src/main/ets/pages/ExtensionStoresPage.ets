@@ -13,13 +13,15 @@ import { ConfirmDialog } from './components/Dialogs';
 // 对齐 Mihon ExtensionStoreCreateDialog
 @Component
 struct ExtStoreAddDialog {
-  closeDialog: () => void = () => {
-  };
   existingUrls: string[] = [];
   @State urlText: string = '';
   @State processing: boolean = false;
   @State errorText: string = '';
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+
+  closeDialog: () => void = () => {
+  };
+
   onAdded: (store: PluginStoreRecord) => void = (_s: PluginStoreRecord) => {
   };
   onClose: () => void = () => {
@@ -275,20 +277,35 @@ export struct ExtensionStoresPage {
         // 打开仓库官网（索引声明 website 时显示）
         if (store.website !== '') {
           AppIcon({ name: 'public', iconSize: 20, tint: this.pal.sub })
-            .padding({ left: 10, right: 10, top: 8, bottom: 8 })
+            .padding({
+              left: 10,
+              right: 10,
+              top: 8,
+              bottom: 8
+            })
             .onClick(() => {
               this.openWebsite(store.website);
             })
         }
 
         AppIcon({ name: 'content_copy', iconSize: 20, tint: this.pal.sub })
-          .padding({ left: 10, right: 10, top: 8, bottom: 8 })
+          .padding({
+            left: 10,
+            right: 10,
+            top: 8,
+            bottom: 8
+          })
           .onClick(() => {
             this.copyStoreUrl(store.url);
           })
 
         AppIcon({ name: 'delete', iconSize: 20, tint: '#E05252' })
-          .padding({ left: 10, right: 10, top: 8, bottom: 8 })
+          .padding({
+            left: 10,
+            right: 10,
+            top: 8,
+            bottom: 8
+          })
           .onClick(() => {
             this.confirmDelete(store);
           })
@@ -296,12 +313,30 @@ export struct ExtensionStoresPage {
       .width('100%')
       .justifyContent(FlexAlign.End)
       .alignItems(VerticalAlign.Center)
-      .padding({ left: 8, right: 8, top: 6, bottom: 6 })
+      .padding({
+        left: 8,
+        right: 8,
+        top: 6,
+        bottom: 6
+      })
     }
     .width('100%')
     .backgroundColor(this.pal.card)
     .borderRadius(14)
     .margin({ top: 10 })
+  }
+
+  @Builder
+  addDialogBuilder() {
+    ExtStoreAddDialog({
+      existingUrls: this.storeUrls(),
+      closeDialog: (): void => {
+        this.closeActiveDialog();
+      },
+      onAdded: (store: PluginStoreRecord): void => {
+        this.onStoreAdded(store);
+      },
+    })
   }
 
   // 大屏限宽缩进：与全局限宽内容列对齐
@@ -404,28 +439,19 @@ export struct ExtensionStoresPage {
   }
 
   private showAddDialog(): void {
-    this.getUIContext().getPromptAction().openCustomDialog({
-      builder: (): void => {
-        this.addDialogBuilder();
-      },
-      autoCancel: true,
-    }).then((dialogId: number) => {
-      this.activeDialogId = dialogId;
-    }).catch((_e: BusinessError) => {
-    });
-  }
-
-  @Builder
-  addDialogBuilder() {
-    ExtStoreAddDialog({
-      existingUrls: this.storeUrls(),
-      closeDialog: (): void => {
-        this.closeActiveDialog();
-      },
-      onAdded: (store: PluginStoreRecord): void => {
-        this.onStoreAdded(store);
-      },
-    })
+    this.getUIContext()
+      .getPromptAction()
+      .openCustomDialog({
+        builder: (): void => {
+          this.addDialogBuilder();
+        },
+        autoCancel: true,
+      })
+      .then((dialogId: number) => {
+        this.activeDialogId = dialogId;
+      })
+      .catch((_e: BusinessError) => {
+      });
   }
 
   private storeUrls(): string[] {

@@ -1,4 +1,4 @@
-import { http, connection, socket } from '@kit.NetworkKit';
+import { connection, http, socket } from '@kit.NetworkKit';
 import { Settings } from '../common/Settings';
 import { Log } from '../common/Log';
 
@@ -9,6 +9,7 @@ export interface DohProvider {
   id: string;
   label: string;
   url: string;
+
   // true = 走 DNS-over-HTTPS JSON API（Google resolve 风格 ?name=&type=A）。
   // doh.pub 实测 wire API 应答被上游污染，JSON API 返回干净结果，故 dnspod 走 JSON
   json?: boolean;
@@ -59,7 +60,12 @@ export class Doh {
     { id: 'adguard', label: 'AdGuard', url: 'https://dns.adguard-dns.com/dns-query' },
     { id: 'quad9', label: 'Quad9', url: 'https://dns.quad9.net/dns-query' },
     { id: 'alidns', label: 'AliDNS', url: 'https://dns.alidns.com/dns-query' },
-    { id: 'dnspod', label: 'DNSPod', url: 'https://doh.pub/dns-query', json: true },
+    {
+      id: 'dnspod',
+      label: 'DNSPod',
+      url: 'https://doh.pub/dns-query',
+      json: true
+    },
     { id: '360', label: '360', url: 'https://doh.360.cn/dns-query' },
     { id: 'quad101', label: 'Quad 101', url: 'https://dns.twnic.tw/dns-query' },
     { id: 'mullvad', label: 'Mullvad', url: 'https://dns.mullvad.net/dns-query' },
@@ -67,16 +73,13 @@ export class Doh {
     { id: 'njalla', label: 'Njalla', url: 'https://dns.njal.la/dns-query' },
     { id: 'shecan', label: 'Shecan', url: 'https://free.shecan.ir/dns-query' },
   ];
-
   // 插件显式 pin（$.dns.set）的有效期：netstack 规则进程内常驻，
   // 缓存 pin 只为拦住 DoH prepare 的重复解析/覆盖，取一个足够长的会话级 TTL
   private static readonly PIN_TTL_MS: number = 24 * 3600 * 1000;
-
   private static cache: Map<string, DohCacheEntry> = new Map();
   private static inflight: Map<string, Promise<void>> = new Map();
   private static querySeq: number = 1;
   private static providerFailedUntil: number = 0;
-
   // 供应商网络故障退避窗口
   private static readonly PROVIDER_BACKOFF_MS: number = 60 * 1000;
   // 应答 IP 真实性探测参数（真 IP 秒连，假 IP 黑洞/RST 被拒）
@@ -86,7 +89,6 @@ export class Doh {
   private static readonly RESOLVE_ATTEMPTS: number = 3;
   // 连续被拒后的短负缓存：窗口内 fail-open 不再烧查询/探测
   private static readonly NEG_TTL_MS: number = 15 * 1000;
-
   // GFW 污染假 IP 段（Facebook/Twitter 段 + 经典单 IP）。命中即弃用；
   // 未命中仍经 TCP 探测验证，此表只做黑名单快速路径
   private static readonly FAKE_RANGES: number[][] = [
@@ -107,7 +109,7 @@ export class Doh {
     [0x3B1803AD, 0xFFFFFFFF], // 59.24.3.173
     [0x5D2E0859, 0xFFFFFFFF], // 93.46.8.89
     [0xCB620741, 0xFFFFFFFF], // 203.98.7.65
-    [0xF3B9BB27, 0xFFFFFFFF], // 243.185.187.39
+    [0xF3B9BB27, 0xFFFFFFFF],// 243.185.187.39
   ];
 
   // 当前生效供应商（设置未开启时 undefined）
@@ -192,7 +194,8 @@ export class Doh {
       } catch (e) {
         // 供应商网络故障（连接超时/被 RST 等）：60s 内 fail-open，避免每请求烧超时
         Doh.providerFailedUntil = Date.now() + Doh.PROVIDER_BACKOFF_MS;
-        Log.warn(TAG, `provider ${provider.id} unreachable, backoff ${Doh.PROVIDER_BACKOFF_MS / 1000}s, fail-open: ${e}`);
+        Log.warn(TAG,
+          `provider ${provider.id} unreachable, backoff ${Doh.PROVIDER_BACKOFF_MS / 1000}s, fail-open: ${e}`);
         return;
       }
       if (answer === undefined || answer.ips.length === 0) {
@@ -217,7 +220,8 @@ export class Doh {
         ttl = answer.ttl;
         break;
       }
-      Log.warn(TAG, `answer for ${host} rejected (poisoned/unreachable): ${answer.ips.join(',')} via ${provider.id} (attempt ${attempt}/${Doh.RESOLVE_ATTEMPTS})`);
+      Log.warn(TAG, `answer for ${host} rejected (poisoned/unreachable): ${answer.ips.join(
+        ',')} via ${provider.id} (attempt ${attempt}/${Doh.RESOLVE_ATTEMPTS})`);
     }
     if (validated.length === 0) {
       // 连续被拒：短负缓存后 fail-open（回落系统 DNS），窗口过后自动重试

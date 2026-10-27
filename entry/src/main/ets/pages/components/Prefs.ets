@@ -1,7 +1,6 @@
 // 通用偏好设置行组件：PrefGroup / TextRow / SwitchRow / IconRow / PrefSelectRow / PrefSwitchRow
 import { ThemePalette } from '../../common/Theme';
 import { SheetPreset } from './SheetPreset';
-import { Bp } from '../../common/Breakpoint';
 import { AppIcon } from './AppIcon';
 import { PickerSheet } from './PickerSheet';
 import { WideSlider } from './WideSlider';

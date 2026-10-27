@@ -1721,12 +1721,20 @@
       "value": "Reader settings"
     },
     {
+      "name": "reader_chapter_list",
+      "value": "Chapters"
+    },
+    {
       "name": "reader_background",
       "value": "Background"
     },
     {
       "name": "reader_theme_auto",
       "value": "Auto"
+    },
+    {
+      "name": "reader_theme_paper",
+      "value": "Paper"
     },
     {
       "name": "reader_theme_white",
@@ -3055,6 +3063,22 @@
     {
       "name": "video_quality_local",
       "value": "Local"
+    },
+    {
+      "name": "video_brightness",
+      "value": "Brightness"
+    },
+    {
+      "name": "video_seek_to",
+      "value": "Skip to"
+    },
+    {
+      "name": "video_resume_tip",
+      "value": "Resumed from last position"
+    },
+    {
+      "name": "video_resume_restart",
+      "value": "Restart"
     },
     {
       "name": "download_error_cancelled",

@@ -20,13 +20,22 @@ export class LocalNovelSource extends LocalFsSource {
     BookParser.init(filesDir);
   }
 
-  // 列表 = txt 目录 + 任意深度书籍文件（嵌套书籍也升格）
-  protected listDirs(): string[] {
-    const names = super.listDirs();
-    const bookFiles: string[] = [];
-    this.collectEntriesByExts(this.rootDir(), '', bookFiles, BookParser.bookExts());
-    const all = names.concat(bookFiles);
-    return all.sort((a: string, b: string): number => NaturalCompare.compare(a, b));
+  private static noDotDot(path: string): boolean {
+    const segs = path.split('/');
+    for (const seg of segs) {
+      if (seg === '..') {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // 相对路径条目名 → 文件名去扩展名（含 '/' 的嵌套 key 取末段）
+  private static baseNameNoExt(entry: string): string {
+    const slashIdx = entry.lastIndexOf('/');
+    const base = slashIdx >= 0 ? entry.substring(slashIdx + 1) : entry;
+    const dotIdx = base.lastIndexOf('.');
+    return dotIdx > 0 ? base.substring(0, dotIdx) : base;
   }
 
   async getChapterList(workKey: string): Promise<SChapter[]> {
@@ -100,6 +109,15 @@ export class LocalNovelSource extends LocalFsSource {
     return this.buildManga(workKey);
   }
 
+  // 列表 = txt 目录 + 任意深度书籍文件（嵌套书籍也升格）
+  protected listDirs(): string[] {
+    const names = super.listDirs();
+    const bookFiles: string[] = [];
+    this.collectEntriesByExts(this.rootDir(), '', bookFiles, BookParser.bookExts());
+    const all = names.concat(bookFiles);
+    return all.sort((a: string, b: string): number => NaturalCompare.compare(a, b));
+  }
+
   // 列表页书籍条目：标题取文件名去扩展名（不解析，保证列表性能）
   protected buildManga(dirName: string): SManga {
     if (BookParser.isBookFile(dirName)) {
@@ -127,23 +145,5 @@ export class LocalNovelSource extends LocalFsSource {
 
   protected mangaDescription(): string {
     return 'local_desc_novel';
-  }
-
-  private static noDotDot(path: string): boolean {
-    const segs = path.split('/');
-    for (const seg of segs) {
-      if (seg === '..') {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  // 相对路径条目名 → 文件名去扩展名（含 '/' 的嵌套 key 取末段）
-  private static baseNameNoExt(entry: string): string {
-    const slashIdx = entry.lastIndexOf('/');
-    const base = slashIdx >= 0 ? entry.substring(slashIdx + 1) : entry;
-    const dotIdx = base.lastIndexOf('.');
-    return dotIdx > 0 ? base.substring(0, dotIdx) : base;
   }
 }

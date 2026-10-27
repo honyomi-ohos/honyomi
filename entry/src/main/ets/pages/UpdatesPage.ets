@@ -175,11 +175,6 @@ export struct UpdatesPage {
     this.bodyContent()
   }
 
-  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中
-  private inset(): number {
-    return Bp.contentInset(this.windowW);
-  }
-
   @Builder
   bodyContent() {
     Column() {
@@ -294,6 +289,11 @@ export struct UpdatesPage {
       }))
   }
 
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
+  }
+
   private filterActive(): boolean {
     return this.fDownloaded !== 'ignore' || this.fUnread !== 'ignore' ||
       this.fStarted !== 'ignore' || this.fBookmarked !== 'ignore' ||
@@ -338,10 +338,6 @@ export struct UpdatesHeader {
   @StorageProp('updatesRefreshing') refreshing: boolean = false;
   @StorageProp('updatesFilterActive') filterActive: boolean = false;
 
-  private inset(): number {
-    return Bp.contentInset(this.windowW);
-  }
-
   build() {
     Row() {
       Text($r('app.string.updates_title'))
@@ -382,5 +378,9 @@ export struct UpdatesHeader {
       top: 12,
       bottom: 8
     })
+  }
+
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
   }
 }

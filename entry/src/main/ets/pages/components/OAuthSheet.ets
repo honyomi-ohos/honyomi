@@ -16,11 +16,6 @@ export struct OAuthSheet {
   @Prop authUrl: string = '';
   @Prop sheetTitle: Resource | string = '';
   private handled: boolean = false;
-  // 拦截到 scheme 回调后回传参数（query 优先，缺失取 fragment）
-  onOAuthResult: (params: Record<string, string>) => void = (_p: Record<string, string>) => {
-  };
-  onClose: () => void = () => {
-  };
 
   // 解析 scheme://host?query 或 scheme://host#fragment 中的键值对
   static parseParams(url: string): Record<string, string> {
@@ -55,6 +50,13 @@ export struct OAuthSheet {
     }
     return params;
   }
+
+  // 拦截到 scheme 回调后回传参数（query 优先，缺失取 fragment）
+  onOAuthResult: (params: Record<string, string>) => void = (_p: Record<string, string>) => {
+  };
+
+  onClose: () => void = () => {
+  };
 
   build() {
     WebViewSheetBase({

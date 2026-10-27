@@ -23,15 +23,6 @@ export struct WideSlider {
     (value: number, mode: SliderChangeMode) => {
     };
 
-  // 圆点刻度仅在 1~30 档时绘制（每档仍有可见间距）
-  private hasStepDots(): boolean {
-    if (!this.dotsEnabled || this.step <= 0 || this.max <= this.min) {
-      return false;
-    }
-    const intervals: number = (this.max - this.min) / this.step;
-    return intervals >= 1 && intervals <= 30;
-  }
-
   build() {
     Slider({
       value: this.sliderValue,
@@ -54,5 +45,14 @@ export struct WideSlider {
       .onChange((v: number, mode: SliderChangeMode) => {
         this.onChange(v, mode);
       })
+  }
+
+  // 圆点刻度仅在 1~30 档时绘制（每档仍有可见间距）
+  private hasStepDots(): boolean {
+    if (!this.dotsEnabled || this.step <= 0 || this.max <= this.min) {
+      return false;
+    }
+    const intervals: number = (this.max - this.min) / this.step;
+    return intervals >= 1 && intervals <= 30;
   }
 }

@@ -121,8 +121,6 @@ export struct ReaderHdsHost {
   @Prop barBottomMargin: number = 12;
   // 浮动胶囊宽度（页签栏/迷你栏宽度，显式设置可超过默认 328vp 上限）
   @Prop barWidth: number = 328;
-  // 胶囊高度（barHeight 显式数值；进度行 44vp / 设置行 48vp + 胶囊内边距）
-  private capsuleHeight: number = 56;
   // 阅读页背景是否为深色（手动胶囊描边取高对比色）
   @StorageProp('readerBgDark') bgDark: boolean = false;
   // HdsTabs 区域宽度不足以并排两块胶囊：手动胶囊模式（见 struct 头注释与 manualThreshold）
@@ -134,6 +132,8 @@ export struct ReaderHdsHost {
   @BuilderParam progressBar: () => void = this.emptyBuilder;
   // 页签栏胶囊内容（设置行，下排）
   @BuilderParam settingsBar: () => void = this.emptyBuilder;
+  // 胶囊高度（barHeight 显式数值；进度行 44vp / 设置行 48vp + 胶囊内边距）
+  private capsuleHeight: number = 56;
   private controller: HdsTabsHostController = new HdsTabsHostController();
 
   aboutToAppear(): void {
@@ -225,15 +225,6 @@ export struct ReaderHdsHost {
     }
   }
 
-  // 遮罩渐变端点：顶部全透明 → 底部 HDS 背板蒙层默认色（按阅读页背景明暗取色）
-  private scrimColors(): Array<[ResourceColor, number]> {
-    const colors: Array<[ResourceColor, number]> = this.bgDark
-      ? [['#00000000', 0], ['#99000000', 1]]
-      : [['#00F1F3F5', 0], ['#CCF1F3F5', 1]];
-    return colors;
-  }
-
-  // 窄屏手动双胶囊：进度行（上）+ 设置行（下），纯 backgroundEffect 玻璃
   // （无背景色，对齐 ReaderMenu 顶栏；开合对齐顶栏滑移+渐隐转场节奏）
   @Builder
   manualBars() {
@@ -268,18 +259,8 @@ export struct ReaderHdsHost {
     }
   }
 
-  // 手动胶囊模式宽度阈值（vp）：两块 barWidth 胶囊并排 + 左右边距(16/24/32vp) + 间隙
-  private manualThreshold(): number {
-    return this.barWidth * 2 + 64;
-  }
+  // 窄屏手动双胶囊：进度行（上）+ 设置行（下），纯 backgroundEffect 玻璃
 
-  // 手动胶囊宽度：barWidth 上限内不超出宿主区域宽 - 24vp 左右留白
-  private manualBarWidth(): number {
-    const available: number = this.hostWidth > 0 ? this.hostWidth - 24 : this.barWidth;
-    return Math.min(this.barWidth, available);
-  }
-
-  // 迷你栏内容（进度胶囊，VERTICAL 上排）：直接 @Builder 调用形式挂入
   // （对齐首页 tabBuilder 用法；箭头函数形式在 HDS 浮动页签栏下内容不挂载）
   @Builder
   progressMiniBar() {
@@ -301,6 +282,31 @@ export struct ReaderHdsHost {
     .tabBar(this.settingsTabItem())
   }
 
+  // 迷你栏内容（进度胶囊，VERTICAL 上排）：直接 @Builder 调用形式挂入
+
+  @Builder
+  emptyBuilder() {
+  }
+
+  // 遮罩渐变端点：顶部全透明 → 底部 HDS 背板蒙层默认色（按阅读页背景明暗取色）
+  private scrimColors(): Array<[ResourceColor, number]> {
+    const colors: Array<[ResourceColor, number]> = this.bgDark
+      ? [['#00000000', 0], ['#99000000', 1]]
+      : [['#00F1F3F5', 0], ['#CCF1F3F5', 1]];
+    return colors;
+  }
+
+  // 手动胶囊模式宽度阈值（vp）：两块 barWidth 胶囊并排 + 左右边距(16/24/32vp) + 间隙
+  private manualThreshold(): number {
+    return this.barWidth * 2 + 64;
+  }
+
+  // 手动胶囊宽度：barWidth 上限内不超出宿主区域宽 - 24vp 左右留白
+  private manualBarWidth(): number {
+    const available: number = this.hostWidth > 0 ? this.hostWidth - 24 : this.barWidth;
+    return Math.min(this.barWidth, available);
+  }
+
   // 迷你条配置：垂直堆叠常驻展开（进度行常驻展开，VERTICAL 下不受窄屏联动约束）
   private readerMiniBar(): HdsTabsHostMiniBar {
     return {
@@ -309,10 +315,6 @@ export struct ReaderHdsHost {
       },
       verticalLayout: true
     };
-  }
-
-  @Builder
-  emptyBuilder() {
   }
 }
 

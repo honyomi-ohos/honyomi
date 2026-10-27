@@ -7,7 +7,7 @@ import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { AppKeys } from '../common/AppKeys';
-import { NavGlassPage, NavGlassAction } from '../common/HdsNavHost';
+import { NavGlassPage } from '../common/HdsNavHost';
 import { AppIcon } from './components/AppIcon';
 import { InputDialog } from './components/Dialogs';
 import { PickerSheet } from './components/PickerSheet';
@@ -90,11 +90,6 @@ export struct CategoriesPage {
     }) {
       this.bodyContent()
     }
-  }
-
-  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（720 上限）
-  private inset(): number {
-    return Bp.contentInset(this.windowW);
   }
 
   @Builder
@@ -243,6 +238,11 @@ export struct CategoriesPage {
         title: this.menuCat === null ? '' : Util.categoryLabel(this.menuCat.name),
         showClose: false
       }))
+  }
+
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（720 上限）
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
   }
 
   private reload(): void {

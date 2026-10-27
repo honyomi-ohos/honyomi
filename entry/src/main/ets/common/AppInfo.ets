@@ -5,14 +5,6 @@ import { deviceInfo } from '@kit.BasicServicesKit';
 export class AppInfo {
   private static cached: bundleManager.BundleInfo | undefined = undefined;
 
-  private static bundleInfo(): bundleManager.BundleInfo {
-    if (AppInfo.cached === undefined) {
-      AppInfo.cached = bundleManager.getBundleInfoForSelfSync(
-        bundleManager.BundleFlag.GET_BUNDLE_INFO_DEFAULT);
-    }
-    return AppInfo.cached;
-  }
-
   static versionName(): string {
     try {
       const name: string = AppInfo.bundleInfo().versionName;
@@ -38,5 +30,13 @@ export class AppInfo {
       `API: ${deviceInfo.sdkApiVersion}`
     ];
     return lines.join('\n');
+  }
+
+  private static bundleInfo(): bundleManager.BundleInfo {
+    if (AppInfo.cached === undefined) {
+      AppInfo.cached = bundleManager.getBundleInfoForSelfSync(
+        bundleManager.BundleFlag.GET_BUNDLE_INFO_DEFAULT);
+    }
+    return AppInfo.cached;
   }
 }

@@ -4,7 +4,6 @@
 import { ThemePalette } from '../../common/Theme';
 import { SheetPreset } from '../components/SheetPreset';
 import { Util } from '../../common/Util';
-import { Bp } from '../../common/Breakpoint';
 import { NavGlassPage } from '../../common/HdsNavHost';
 import { AppIcon } from '../components/AppIcon';
 
@@ -201,7 +200,12 @@ struct LicenseRow {
     }
     .width('100%')
     .constraintSize({ minHeight: 52 })
-    .padding({ left: 16, right: 12, top: 8, bottom: 8 })
+    .padding({
+      left: 16,
+      right: 12,
+      top: 8,
+      bottom: 8
+    })
     .alignItems(VerticalAlign.Center)
     .backgroundColor(this.hovered ? this.pal.chip : Color.Transparent)
     .onClick(() => this.onTap())
@@ -225,33 +229,6 @@ export struct LicensesPage {
 
   aboutToAppear(): void {
     this.items = buildLicenseItems();
-  }
-
-  // 条目副标题：版本在前 + 协议（无版本时仅协议），如「v1.4.2 · BSD-2-Clause」
-  private itemSub(item: LicenseItem): string {
-    return item.version !== '' ? `v${item.version} · ${item.license}` : item.license;
-  }
-
-  // 从 rawfile 读取协议全文（按文件名缓存，避免重复 IO）
-  private loadLicenseText(fileName: string): string {
-    if (fileName === '') {
-      return '';
-    }
-    const cached: string | undefined = this.textCache.get(fileName);
-    if (cached !== undefined) {
-      return cached;
-    }
-    try {
-      const ctx = this.getUIContext().getHostContext();
-      if (ctx === undefined) {
-        return '';
-      }
-      const text: string = Util.decodeBytes(ctx.resourceManager.getRawFileContentSync(fileName));
-      this.textCache.set(fileName, text);
-      return text;
-    } catch (e) {
-      return '';
-    }
   }
 
   @Builder
@@ -353,7 +330,12 @@ export struct LicensesPage {
             .constraintSize({ maxWidth: 720 })
           }
           .width('100%')
-          .padding({ left: 16, right: 16, top: 4, bottom: 24 })
+          .padding({
+            left: 16,
+            right: 16,
+            top: 4,
+            bottom: 24
+          })
         }
         .layoutWeight(1)
         .scrollBar(BarState.Off)
@@ -367,6 +349,33 @@ export struct LicensesPage {
           detents: [SheetSize.MEDIUM, SheetSize.LARGE],
           showClose: false
         }))
+    }
+  }
+
+  // 条目副标题：版本在前 + 协议（无版本时仅协议），如「v1.4.2 · BSD-2-Clause」
+  private itemSub(item: LicenseItem): string {
+    return item.version !== '' ? `v${item.version} · ${item.license}` : item.license;
+  }
+
+  // 从 rawfile 读取协议全文（按文件名缓存，避免重复 IO）
+  private loadLicenseText(fileName: string): string {
+    if (fileName === '') {
+      return '';
+    }
+    const cached: string | undefined = this.textCache.get(fileName);
+    if (cached !== undefined) {
+      return cached;
+    }
+    try {
+      const ctx = this.getUIContext().getHostContext();
+      if (ctx === undefined) {
+        return '';
+      }
+      const text: string = Util.decodeBytes(ctx.resourceManager.getRawFileContentSync(fileName));
+      this.textCache.set(fileName, text);
+      return text;
+    } catch (e) {
+      return '';
     }
   }
 }

@@ -52,6 +52,7 @@ interface RawManifest {
 export interface InstalledPlugin {
   manifest: PluginManifest;
   iconPath: string;
+
   // 是否已受信任：未受信任插件不注册源、不执行插件代码，仅列表展示待确认状态
   trusted: boolean;
 }
@@ -80,6 +81,7 @@ export interface RepoEntry {
   versionCode: number;
   file: string;
   nsfw: boolean;
+
   // BT 源标记（索引 bt 字段，缺省 false）：UI 展示 BT 徽标
   bt: boolean;
   icon: string;
@@ -120,6 +122,7 @@ interface RawRepoIndex {
 export interface RepoStoreInfo {
   url: string;
   name: string;
+
   // 仓库官网（索引声明 website 字段，http(s) 归一化）；未声明为空字符串
   website: string;
 }
@@ -380,44 +383,7 @@ export class PluginService {
   // ---------------- 信任门禁（对齐 Mihon TrustExtension）----------------
 
   // 已安装插件内容指纹（manifest.json + main.js 的 sha256）：
-  // 信任记录按 "key:versionCode:contentHash" 命中，插件文件被替换后指纹变化即失信
-  private static async contentHashOf(packageKey: string): Promise<string> {
-    const dir = `${PluginService.pluginsDir}/${packageKey}`;
-    const text = `${fs.readTextSync(`${dir}/manifest.json`)}\n${fs.readTextSync(`${dir}/main.js`)}`;
-    return PluginService.sha256Text(text);
-  }
 
-  private static async sha256Text(text: string): Promise<string> {
-    try {
-      if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest')) {
-        const md: cryptoFramework.Md = cryptoFramework.createMd('SHA256');
-        const bytes = util.TextEncoder.create('utf-8').encodeInto(text);
-        await md.update({ data: bytes });
-        const digest: cryptoFramework.DataBlob = await md.digest();
-        let out = '';
-        for (let i = 0; i < digest.data.length; i++) {
-          const byte: number = digest.data[i];
-          out += byte < 16 ? `0${byte.toString(16)}` : byte.toString(16);
-        }
-        return out;
-      }
-      throw new Error('crypto unavailable');
-    } catch (e) {
-      throw new Error(`plugin_hash_failed|${Util.errSummary(e)}`);
-    }
-  }
-
-  // 已安装记录当前是否受信任：目录缺失/读取失败视为未受信任
-  private static async isRecordTrusted(packageKey: string, versionCode: number): Promise<boolean> {
-    try {
-      const contentHash = await PluginService.contentHashOf(packageKey);
-      return Settings.isPluginTrusted(packageKey, versionCode, contentHash);
-    } catch (e) {
-      return false;
-    }
-  }
-
-  // 用户确认信任后激活插件：登记信任记录 → 拉引擎注册源 → 同步元数据。
   // 版本升级后重新确认信任走同一路径（新指纹覆盖旧记录）
   static async trustAndActivate(packageKey: string): Promise<void> {
     const manifestText = fs.readTextSync(`${PluginService.pluginsDir}/${packageKey}/manifest.json`);
@@ -455,51 +421,15 @@ export class PluginService {
     PluginService.startPromises.delete(packageKey);
   }
 
-  // 等待全部插件源注册完成（尚未开始加载时立即返回）；
+  // 用户确认信任后激活插件：登记信任记录 → 拉引擎注册源 → 同步元数据。
 
   static markDirty(): void {
     AppStorage.setOrCreate(AppKeys.PLUGINS_DIRTY, (AppStorage.get<number>(AppKeys.PLUGINS_DIRTY) ?? 0) + 1);
   }
 
-  // 加载全部插件：注册占位源（DB 元数据索引，不扫盘不拉引擎）+ 预热在库源；
-
   static async fetchRepo(url: string): Promise<RepoEntry[]> {
     const text = await Http.get(url, undefined);
     return PluginService.parseRepoIndex(url, JSON.parse(text) as RawRepoIndex);
-  }
-
-  // 仓库索引 JSON → 条目列表（fetchRepo / fetchStoreInfo 共用解析）
-  private static parseRepoIndex(url: string, raw: RawRepoIndex): RepoEntry[] {
-    const entries: RepoEntry[] = [];
-    const list = raw.plugins;
-    if (Array.isArray(list)) {
-      for (const item of list) {
-        const key = item.key ?? '';
-        const file = item.file ?? '';
-        if (key === '' || file === '') {
-          continue;
-        }
-        const entry: RepoEntry = {
-          key: key,
-          name: item.name ?? key,
-          lang: item.lang ?? 'multi',
-          version: item.version ?? '',
-          versionCode: item.versionCode ?? 0,
-          file: PluginService.resolveRepoFile(url, file),
-          nsfw: item.nsfw === true,
-          bt: item.bt === true,
-          icon: item.icon !== undefined && item.icon !== '' ?
-            PluginService.resolveRepoIcon(url, item.icon) : '',
-          contentType: item.contentType !== undefined && item.contentType !== null ?
-            ContentType.normalize(item.contentType) : '',
-          checksum: item.checksum ?? '',
-          site: PluginService.normalizeSiteUrl(item.site !== undefined && item.site !== '' ?
-            item.site : item.baseUrl),
-        };
-        entries.push(entry);
-      }
-    }
-    return entries;
   }
 
   // 所有插件一律 jsvm 引擎：main.js 前固定拼接共享运行时（rawfile plugin_runtime_jsvm.js）
@@ -507,8 +437,8 @@ export class PluginService {
     return `${PluginService.getRuntime('jsvm')}\n;\n${mainJs}`;
   }
 
-  // 仓库索引信息（添加仓库时校验 + 管理页展示）：
-  // 拉取索引并要求 plugins 数组可解析；展示名取索引声明 name，缺省回退地址主机名；
+  // 等待全部插件源注册完成（尚未开始加载时立即返回）；
+
   // 官网取索引声明 website（仅接受 http(s) 绝对地址，其余视为未声明）
   static async fetchStoreInfo(url: string): Promise<RepoStoreInfo> {
     if (url.startsWith('http://') && !PluginService.isDebugBuild()) {
@@ -533,6 +463,8 @@ export class PluginService {
     return info;
   }
 
+  // 加载全部插件：注册占位源（DB 元数据索引，不扫盘不拉引擎）+ 预热在库源；
+
   // 多仓库条目合并（插件商店支持多仓库）：同 key 插件保留 versionCode 更高的条目
   static mergeRepoEntries(lists: RepoEntry[][]): RepoEntry[] {
     const byKey = new Map<string, RepoEntry>();
@@ -551,234 +483,6 @@ export class PluginService {
     return merged;
   }
 
-  // 清理上次崩溃/失败安装遗留的 staging/备份目录（.staging_*/.old_*，含 manifest.json 会被误识别为插件）
-  private static cleanStaleStaging(): void {
-    let names: string[] = [];
-    try {
-      if (!fs.accessSync(PluginService.pluginsDir)) {
-        return;
-      }
-      names = fs.listFileSync(PluginService.pluginsDir);
-    } catch (e) {
-      return;
-    }
-    for (const name of names) {
-      if (!name.startsWith('.staging_') && !name.startsWith('.old_')) {
-        continue;
-      }
-      const path = `${PluginService.pluginsDir}/${name}`;
-      try {
-        fs.rmdirSync(path);
-        hilog.info(DOMAIN, TAG, 'cleaned stale staging: %{public}s', name);
-      } catch (e) {
-        hilog.warn(DOMAIN, TAG, 'clean stale staging failed: %{public}s %{public}s', name, (e as Error).message);
-      }
-    }
-  }
-
-  // 预热在库源：对"书架有漫画且声明 getHeaders"的插件包立即拉引擎并预热图片头，
-
-  // 清理历史失败安装遗留的临时文件/目录（plugin_extract_*/plugin_install_*/plugin_repo_*）
-  private static cleanStaleTemp(): void {
-    let names: string[] = [];
-    try {
-      if (!fs.accessSync(PluginService.cacheDir)) {
-        return;
-      }
-      names = fs.listFileSync(PluginService.cacheDir);
-    } catch (e) {
-      return;
-    }
-    for (const name of names) {
-      if (!name.startsWith('plugin_extract_') && !name.startsWith('plugin_install_') &&
-        !name.startsWith('plugin_repo_')) {
-        continue;
-      }
-      const path = `${PluginService.cacheDir}/${name}`;
-      try {
-        if (fs.statSync(path).isDirectory()) {
-          fs.rmdirSync(path);
-        } else {
-          fs.unlinkSync(path);
-        }
-        hilog.info(DOMAIN, TAG, 'cleaned stale temp: %{public}s', name);
-      } catch (e) {
-        hilog.warn(DOMAIN, TAG, 'clean stale temp failed: %{public}s %{public}s', name, (e as Error).message);
-      }
-    }
-  }
-
-  // 惰性引擎启动（记忆化）：引擎已加载直接返回；进行中共享同一次启动；
-
-  // 拉起单个插件引擎：读盘 manifest 门禁 → 组装脚本 → prefs 回注 → loadExtension
-
-  private static async doLoadAll(): Promise<void> {
-    // 元数据索引在数据库中：等待数据库就绪（EntryAbility 已发起 ready，此处共享同一实例）
-    if (PluginService.context !== undefined) {
-      await AppDb.ready(PluginService.context);
-    }
-    let records: PluginRecord[] = [];
-    try {
-      records = await PluginRepo.list();
-    } catch (e) {
-      hilog.error(DOMAIN, TAG, 'read plugin index failed: %{public}s', (e as Error).message);
-      return;
-    }
-    if (records.length === 0) {
-      return;
-    }
-    // 信任门禁首次启用：既有已安装插件一次性登记为受信任（grandfather 迁移，
-    // 对齐 Mihon TrustExtensionRepositoryMigration），避免升级后全部失效
-    if (!Settings.hasTrustedPlugins()) {
-      for (const record of records) {
-        try {
-          const contentHash = await PluginService.contentHashOf(record.key);
-          Settings.trustPlugin(record.key, record.versionCode, contentHash);
-        } catch (e) {
-          hilog.warn(DOMAIN, TAG, 'grandfather trust %{public}s failed: %{public}s',
-            record.key, (e as Error).message);
-        }
-      }
-      if (Settings.getTrustedPlugins().length === 0) {
-        // 全部登记失败也要写入标记，避免每次启动重复尝试
-        Settings.setTrustedPlugins([]);
-      }
-      hilog.info(DOMAIN, TAG, 'trust gate migrated for %{public}d existing plugins', records.length);
-    }
-    // 只注册受信任插件的占位源：nsfw/methods/supportsLatest 等来自持久化元数据，
-    // 未受信任插件不注册源、不拉引擎（不执行任何插件代码），由插件列表引导用户确认信任
-    let trustedCount = 0;
-    for (const record of records) {
-      if (!(await PluginService.isRecordTrusted(record.key, record.versionCode))) {
-        hilog.info(DOMAIN, TAG, 'skip untrusted plugin: %{public}s', record.key);
-        continue;
-      }
-      PluginService.registerPlaceholders(record);
-      trustedCount++;
-    }
-    hilog.info(DOMAIN, TAG, 'registered %{public}d/%{public}d plugin packages from db index',
-      trustedCount, records.length);
-    // 预热：仅为"在库漫画且导出 getHeaders"的插件包拉引擎（封面需要 Referer/Cookie）
-    await PluginService.prewarmLibrary();
-  }
-
-  // 插件敏感偏好声明注册（引擎启动后调用）：读取 getSettingsSchema，
-
-  // 保证冷启动书架封面带 Referer/Cookie；其余插件保持惰性
-  private static async prewarmLibrary(): Promise<void> {
-    if (EngineGateway.get() === undefined) {
-      // 预览器等场景无引擎后端：占位源保持惰性
-      return;
-    }
-    try {
-      const counts = await MangaRepo.countBySource();
-      const packageKeys = new Set<string>();
-      for (const source of SourceRegistry.all()) {
-        if (source instanceof JsvmSource && (counts[source.key] ?? 0) > 0 &&
-          source.hasMethod('getHeaders')) {
-          packageKeys.add(source.packageKey);
-        }
-      }
-      for (const packageKey of packageKeys) {
-        try {
-          await PluginService.ensureEngine(packageKey);
-        } catch (e) {
-          hilog.warn(DOMAIN, TAG, 'prewarm %{public}s failed: %{public}s',
-            packageKey, (e as Error).message);
-        }
-      }
-    } catch (e) {
-      hilog.warn(DOMAIN, TAG, 'prewarm library failed: %{public}s', (e as Error).message);
-    }
-  }
-
-  // ---------------- 仓库索引 ----------------
-
-  // → 解析最终源规格 → 同步注册表（就地升级占位源）→ 元数据落库 → 预热图片头
-  private static async doStartEngine(packageKey: string): Promise<void> {
-    const dir = `${PluginService.pluginsDir}/${packageKey}`;
-    let manifestText = '';
-    let scriptText = '';
-    try {
-      manifestText = fs.readTextSync(`${dir}/manifest.json`);
-      scriptText = fs.readTextSync(`${dir}/main.js`);
-    } catch (e) {
-      throw new Error(`plugin_start_read_failed|${Util.errSummary(e)}`);
-    }
-    const manifest = PluginService.parseManifest(manifestText);
-    const script = PluginService.composeScript(scriptText);
-    // 插件偏好持久化：确保 Preferences 就绪，并把已存的 __PREFS_STORE__ 注回引擎
-    let seed = '';
-    if (PluginService.context !== undefined) {
-      try {
-        await PluginPrefs.ensureInit(PluginService.context);
-        seed = PluginPrefs.seedScript(manifest.key);
-      } catch (e) {
-        hilog.warn(DOMAIN, TAG, 'plugin prefs init failed: %{public}s', (e as Error).message);
-      }
-    }
-    const engine: EngineBackend = EngineGateway.require();
-    const info = await engine.loadExtension(manifest.key, script, seed);
-    const specs = PluginService.resolveSpecs(manifest);
-    PluginService.syncRegistry(manifest, info.methods, specs);
-    // 元数据落库（安装/升级/引擎重启均幂等覆盖）
-    await PluginService.persistRecord(manifest, info.methods, specs);
-    // 插件敏感偏好声明注册：getSettingsSchema 中 sensitive: true / type: 'password'
-    // 的键登记到 SecureStore 分流注册表（见 PluginPrefs.registerSensitiveKeys）
-    PluginService.registerSensitivePrefKeys(manifest.key);
-    // 插件可选导出 getHeaders：声明后图片经宿主 http 管线加载（Referer/Cookie）
-    for (const spec of specs) {
-      const src = SourceRegistry.get(spec.key);
-      if (src instanceof JsvmSource) {
-        src.warmImageHeaders();
-      }
-    }
-    hilog.info(DOMAIN, TAG, 'jsvm engine started: %{public}s v%{public}s (%{public}d sources, mem %{public}d)',
-      manifest.key, manifest.version, specs.length, engine.memoryBytes(manifest.key));
-  }
-
-  // 把 sensitive 声明的键登记到 PluginPrefs 注册表，供 persist 分流 / seed 回注。
-  // manifest settings 静态声明优先（无需引擎）；未声明时回退运行期 getSettingsSchema 契约。
-  private static registerSensitivePrefKeys(packageKey: string): void {
-    PluginService.declaredSettings(packageKey).then((items: SourcePrefItem[]): void => {
-      const keys: string[] = [];
-      for (const item of items) {
-        if (item.sensitive) {
-          keys.push(item.key);
-        }
-      }
-      if (keys.length > 0) {
-        PluginPrefs.registerSensitiveKeys(packageKey, keys);
-        return;
-      }
-      PluginService.registerSensitivePrefKeysLegacy(packageKey);
-    }).catch((_e: Error): void => {
-      PluginService.registerSensitivePrefKeysLegacy(packageKey);
-    });
-  }
-
-  // 运行期 getSettingsSchema 契约的敏感键注册（未迁移 manifest settings 的插件）
-  private static registerSensitivePrefKeysLegacy(packageKey: string): void {
-    const src = SourceRegistry.get(packageKey);
-    if (!(src instanceof JsvmSource) || !src.hasMethod('getSettingsSchema')) {
-      return;
-    }
-    src.getSettingsSchema().then((schema: SourcePrefItem[]): void => {
-      const keys: string[] = [];
-      for (const item of schema) {
-        if (item.sensitive) {
-          keys.push(item.key);
-        }
-      }
-      PluginPrefs.registerSensitiveKeys(packageKey, keys);
-    }).catch((e: Error): void => {
-      hilog.warn(DOMAIN, TAG, 'read sensitive pref schema of %{public}s failed: %{public}s',
-        packageKey, e.message);
-    });
-  }
-
-  // manifest 静态声明的插件设置：读安装目录 manifest.json 的 settings 数组，
-  // 合并 PluginPrefs 当前值 → SourcePrefItem[]。全程不触碰 JSVM 引擎。
   // 无声明/解析失败返回空数组（调用方回退运行期 getSettingsSchema 契约）。
   static async declaredSettings(packageKey: string): Promise<SourcePrefItem[]> {
     let manifestText = '';
@@ -833,7 +537,6 @@ export class PluginService {
     return items;
   }
 
-  // manifest 静态设置写入：直接落 PluginPrefs（不拉起引擎）；引擎恰在运行时
   // 转发 setPreference 同步插件内存态（best-effort，见 JsvmSource.syncPreferenceLive）
   static async setDeclaredPref(packageKey: string, key: string, value: string): Promise<void> {
     if (PluginService.context !== undefined) {
@@ -844,6 +547,312 @@ export class PluginService {
     if (src instanceof JsvmSource) {
       await src.syncPreferenceLive(key, value);
     }
+  }
+
+  // 仓库索引信息（添加仓库时校验 + 管理页展示）：
+  // 拉取索引并要求 plugins 数组可解析；展示名取索引声明 name，缺省回退地址主机名；
+
+  // 信任记录按 "key:versionCode:contentHash" 命中，插件文件被替换后指纹变化即失信
+  private static async contentHashOf(packageKey: string): Promise<string> {
+    const dir = `${PluginService.pluginsDir}/${packageKey}`;
+    const text = `${fs.readTextSync(`${dir}/manifest.json`)}\n${fs.readTextSync(`${dir}/main.js`)}`;
+    return PluginService.sha256Text(text);
+  }
+
+  private static async sha256Text(text: string): Promise<string> {
+    try {
+      if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest')) {
+        const md: cryptoFramework.Md = cryptoFramework.createMd('SHA256');
+        const bytes = util.TextEncoder.create('utf-8').encodeInto(text);
+        await md.update({ data: bytes });
+        const digest: cryptoFramework.DataBlob = await md.digest();
+        let out = '';
+        for (let i = 0; i < digest.data.length; i++) {
+          const byte: number = digest.data[i];
+          out += byte < 16 ? `0${byte.toString(16)}` : byte.toString(16);
+        }
+        return out;
+      }
+      throw new Error('crypto unavailable');
+    } catch (e) {
+      throw new Error(`plugin_hash_failed|${Util.errSummary(e)}`);
+    }
+  }
+
+  // 已安装记录当前是否受信任：目录缺失/读取失败视为未受信任
+  private static async isRecordTrusted(packageKey: string, versionCode: number): Promise<boolean> {
+    try {
+      const contentHash = await PluginService.contentHashOf(packageKey);
+      return Settings.isPluginTrusted(packageKey, versionCode, contentHash);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // 预热在库源：对"书架有漫画且声明 getHeaders"的插件包立即拉引擎并预热图片头，
+
+  // 仓库索引 JSON → 条目列表（fetchRepo / fetchStoreInfo 共用解析）
+  private static parseRepoIndex(url: string, raw: RawRepoIndex): RepoEntry[] {
+    const entries: RepoEntry[] = [];
+    const list = raw.plugins;
+    if (Array.isArray(list)) {
+      for (const item of list) {
+        const key = item.key ?? '';
+        const file = item.file ?? '';
+        if (key === '' || file === '') {
+          continue;
+        }
+        const entry: RepoEntry = {
+          key: key,
+          name: item.name ?? key,
+          lang: item.lang ?? 'multi',
+          version: item.version ?? '',
+          versionCode: item.versionCode ?? 0,
+          file: PluginService.resolveRepoFile(url, file),
+          nsfw: item.nsfw === true,
+          bt: item.bt === true,
+          icon: item.icon !== undefined && item.icon !== '' ?
+            PluginService.resolveRepoIcon(url, item.icon) : '',
+          contentType: item.contentType !== undefined && item.contentType !== null ?
+            ContentType.normalize(item.contentType) : '',
+          checksum: item.checksum ?? '',
+          site: PluginService.normalizeSiteUrl(item.site !== undefined && item.site !== '' ?
+            item.site : item.baseUrl),
+        };
+        entries.push(entry);
+      }
+    }
+    return entries;
+  }
+
+  // 惰性引擎启动（记忆化）：引擎已加载直接返回；进行中共享同一次启动；
+
+  // 拉起单个插件引擎：读盘 manifest 门禁 → 组装脚本 → prefs 回注 → loadExtension
+
+  // 清理上次崩溃/失败安装遗留的 staging/备份目录（.staging_*/.old_*，含 manifest.json 会被误识别为插件）
+  private static cleanStaleStaging(): void {
+    let names: string[] = [];
+    try {
+      if (!fs.accessSync(PluginService.pluginsDir)) {
+        return;
+      }
+      names = fs.listFileSync(PluginService.pluginsDir);
+    } catch (e) {
+      return;
+    }
+    for (const name of names) {
+      if (!name.startsWith('.staging_') && !name.startsWith('.old_')) {
+        continue;
+      }
+      const path = `${PluginService.pluginsDir}/${name}`;
+      try {
+        fs.rmdirSync(path);
+        hilog.info(DOMAIN, TAG, 'cleaned stale staging: %{public}s', name);
+      } catch (e) {
+        hilog.warn(DOMAIN, TAG, 'clean stale staging failed: %{public}s %{public}s', name, (e as Error).message);
+      }
+    }
+  }
+
+  // 插件敏感偏好声明注册（引擎启动后调用）：读取 getSettingsSchema，
+
+  // 清理历史失败安装遗留的临时文件/目录（plugin_extract_*/plugin_install_*/plugin_repo_*）
+  private static cleanStaleTemp(): void {
+    let names: string[] = [];
+    try {
+      if (!fs.accessSync(PluginService.cacheDir)) {
+        return;
+      }
+      names = fs.listFileSync(PluginService.cacheDir);
+    } catch (e) {
+      return;
+    }
+    for (const name of names) {
+      if (!name.startsWith('plugin_extract_') && !name.startsWith('plugin_install_') &&
+        !name.startsWith('plugin_repo_')) {
+        continue;
+      }
+      const path = `${PluginService.cacheDir}/${name}`;
+      try {
+        if (fs.statSync(path).isDirectory()) {
+          fs.rmdirSync(path);
+        } else {
+          fs.unlinkSync(path);
+        }
+        hilog.info(DOMAIN, TAG, 'cleaned stale temp: %{public}s', name);
+      } catch (e) {
+        hilog.warn(DOMAIN, TAG, 'clean stale temp failed: %{public}s %{public}s', name, (e as Error).message);
+      }
+    }
+  }
+
+  // ---------------- 仓库索引 ----------------
+
+  private static async doLoadAll(): Promise<void> {
+    // 元数据索引在数据库中：等待数据库就绪（EntryAbility 已发起 ready，此处共享同一实例）
+    if (PluginService.context !== undefined) {
+      await AppDb.ready(PluginService.context);
+    }
+    let records: PluginRecord[] = [];
+    try {
+      records = await PluginRepo.list();
+    } catch (e) {
+      hilog.error(DOMAIN, TAG, 'read plugin index failed: %{public}s', (e as Error).message);
+      return;
+    }
+    if (records.length === 0) {
+      return;
+    }
+    // 信任门禁首次启用：既有已安装插件一次性登记为受信任（grandfather 迁移，
+    // 对齐 Mihon TrustExtensionRepositoryMigration），避免升级后全部失效
+    if (!Settings.hasTrustedPlugins()) {
+      for (const record of records) {
+        try {
+          const contentHash = await PluginService.contentHashOf(record.key);
+          Settings.trustPlugin(record.key, record.versionCode, contentHash);
+        } catch (e) {
+          hilog.warn(DOMAIN, TAG, 'grandfather trust %{public}s failed: %{public}s',
+            record.key, (e as Error).message);
+        }
+      }
+      if (Settings.getTrustedPlugins().length === 0) {
+        // 全部登记失败也要写入标记，避免每次启动重复尝试
+        Settings.setTrustedPlugins([]);
+      }
+      hilog.info(DOMAIN, TAG, 'trust gate migrated for %{public}d existing plugins', records.length);
+    }
+    // 只注册受信任插件的占位源：nsfw/methods/supportsLatest 等来自持久化元数据，
+    // 未受信任插件不注册源、不拉引擎（不执行任何插件代码），由插件列表引导用户确认信任
+    let trustedCount = 0;
+    for (const record of records) {
+      if (!(await PluginService.isRecordTrusted(record.key, record.versionCode))) {
+        hilog.info(DOMAIN, TAG, 'skip untrusted plugin: %{public}s', record.key);
+        continue;
+      }
+      PluginService.registerPlaceholders(record);
+      trustedCount++;
+    }
+    hilog.info(DOMAIN, TAG, 'registered %{public}d/%{public}d plugin packages from db index',
+      trustedCount, records.length);
+    // 预热：仅为"在库漫画且导出 getHeaders"的插件包拉引擎（封面需要 Referer/Cookie）
+    await PluginService.prewarmLibrary();
+  }
+
+  // 把 sensitive 声明的键登记到 PluginPrefs 注册表，供 persist 分流 / seed 回注。
+
+  // 保证冷启动书架封面带 Referer/Cookie；其余插件保持惰性
+  private static async prewarmLibrary(): Promise<void> {
+    if (EngineGateway.get() === undefined) {
+      // 预览器等场景无引擎后端：占位源保持惰性
+      return;
+    }
+    try {
+      const counts = await MangaRepo.countBySource();
+      const packageKeys = new Set<string>();
+      for (const source of SourceRegistry.all()) {
+        if (source instanceof JsvmSource && (counts[source.key] ?? 0) > 0 &&
+          source.hasMethod('getHeaders')) {
+          packageKeys.add(source.packageKey);
+        }
+      }
+      for (const packageKey of packageKeys) {
+        try {
+          await PluginService.ensureEngine(packageKey);
+        } catch (e) {
+          hilog.warn(DOMAIN, TAG, 'prewarm %{public}s failed: %{public}s',
+            packageKey, (e as Error).message);
+        }
+      }
+    } catch (e) {
+      hilog.warn(DOMAIN, TAG, 'prewarm library failed: %{public}s', (e as Error).message);
+    }
+  }
+
+  // → 解析最终源规格 → 同步注册表（就地升级占位源）→ 元数据落库 → 预热图片头
+  private static async doStartEngine(packageKey: string): Promise<void> {
+    const dir = `${PluginService.pluginsDir}/${packageKey}`;
+    let manifestText = '';
+    let scriptText = '';
+    try {
+      manifestText = fs.readTextSync(`${dir}/manifest.json`);
+      scriptText = fs.readTextSync(`${dir}/main.js`);
+    } catch (e) {
+      throw new Error(`plugin_start_read_failed|${Util.errSummary(e)}`);
+    }
+    const manifest = PluginService.parseManifest(manifestText);
+    const script = PluginService.composeScript(scriptText);
+    // 插件偏好持久化：确保 Preferences 就绪，并把已存的 __PREFS_STORE__ 注回引擎
+    let seed = '';
+    if (PluginService.context !== undefined) {
+      try {
+        await PluginPrefs.ensureInit(PluginService.context);
+        seed = PluginPrefs.seedScript(manifest.key);
+      } catch (e) {
+        hilog.warn(DOMAIN, TAG, 'plugin prefs init failed: %{public}s', (e as Error).message);
+      }
+    }
+    const engine: EngineBackend = EngineGateway.require();
+    const info = await engine.loadExtension(manifest.key, script, seed);
+    const specs = PluginService.resolveSpecs(manifest);
+    PluginService.syncRegistry(manifest, info.methods, specs);
+    // 元数据落库（安装/升级/引擎重启均幂等覆盖）
+    await PluginService.persistRecord(manifest, info.methods, specs);
+    // 插件敏感偏好声明注册：getSettingsSchema 中 sensitive: true / type: 'password'
+    // 的键登记到 SecureStore 分流注册表（见 PluginPrefs.registerSensitiveKeys）
+    PluginService.registerSensitivePrefKeys(manifest.key);
+    // 插件可选导出 getHeaders：声明后图片经宿主 http 管线加载（Referer/Cookie）
+    for (const spec of specs) {
+      const src = SourceRegistry.get(spec.key);
+      if (src instanceof JsvmSource) {
+        src.warmImageHeaders();
+      }
+    }
+    hilog.info(DOMAIN, TAG, 'jsvm engine started: %{public}s v%{public}s (%{public}d sources, mem %{public}d)',
+      manifest.key, manifest.version, specs.length, engine.memoryBytes(manifest.key));
+  }
+
+  // manifest 静态声明的插件设置：读安装目录 manifest.json 的 settings 数组，
+  // 合并 PluginPrefs 当前值 → SourcePrefItem[]。全程不触碰 JSVM 引擎。
+
+  // manifest settings 静态声明优先（无需引擎）；未声明时回退运行期 getSettingsSchema 契约。
+  private static registerSensitivePrefKeys(packageKey: string): void {
+    PluginService.declaredSettings(packageKey).then((items: SourcePrefItem[]): void => {
+      const keys: string[] = [];
+      for (const item of items) {
+        if (item.sensitive) {
+          keys.push(item.key);
+        }
+      }
+      if (keys.length > 0) {
+        PluginPrefs.registerSensitiveKeys(packageKey, keys);
+        return;
+      }
+      PluginService.registerSensitivePrefKeysLegacy(packageKey);
+    }).catch((_e: Error): void => {
+      PluginService.registerSensitivePrefKeysLegacy(packageKey);
+    });
+  }
+
+  // manifest 静态设置写入：直接落 PluginPrefs（不拉起引擎）；引擎恰在运行时
+
+  // 运行期 getSettingsSchema 契约的敏感键注册（未迁移 manifest settings 的插件）
+  private static registerSensitivePrefKeysLegacy(packageKey: string): void {
+    const src = SourceRegistry.get(packageKey);
+    if (!(src instanceof JsvmSource) || !src.hasMethod('getSettingsSchema')) {
+      return;
+    }
+    src.getSettingsSchema().then((schema: SourcePrefItem[]): void => {
+      const keys: string[] = [];
+      for (const item of schema) {
+        if (item.sensitive) {
+          keys.push(item.key);
+        }
+      }
+      PluginPrefs.registerSensitiveKeys(packageKey, keys);
+    }).catch((e: Error): void => {
+      hilog.warn(DOMAIN, TAG, 'read sensitive pref schema of %{public}s failed: %{public}s',
+        packageKey, e.message);
+    });
   }
 
   // 单条 manifest 静态设置声明 → SourcePrefItem（类型白名单外的条目丢弃）

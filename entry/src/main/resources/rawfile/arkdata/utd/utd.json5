@@ -2,9 +2,15 @@
   "UniformDataTypeDeclarations": [
     {
       "TypeId": "fun.shuey.honyomi.prc",
-      "BelongingToTypes": ["general.ebook"],
-      "FilenameExtensions": [".prc"],
-      "MIMETypes": ["application/x-mobipocket-ebook"],
+      "BelongingToTypes": [
+        "general.ebook"
+      ],
+      "FilenameExtensions": [
+        ".prc"
+      ],
+      "MIMETypes": [
+        "application/x-mobipocket-ebook"
+      ],
       "Description": "Palm Resource Codec 电子书文件格式类型",
       "ReferenceURL": ""
     }

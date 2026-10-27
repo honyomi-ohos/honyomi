@@ -743,10 +743,6 @@ export struct BrowsePage {
     this.bodyContent()
   }
 
-  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中
-  private inset(): number {
-    return Bp.contentInset(this.windowW);
-  }
   @Builder
   bodyContent() {
     Column() {
@@ -798,6 +794,11 @@ export struct BrowsePage {
     .width('100%')
     .height('100%')
     .backgroundColor(this.pal.bg)
+  }
+
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
   }
 
   // 分节键需包含成员源 key：ForEach 按 key 复用组件，若 key 只含语言标识，

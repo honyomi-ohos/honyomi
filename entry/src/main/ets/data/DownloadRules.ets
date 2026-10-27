@@ -12,7 +12,6 @@ const TAG = 'DownloadRules';
 // - 库更新发现新章节时自动入队下载
 // - 阅读时当前章+下一章均已下载则预下载后续未读章节
 export class DownloadRules {
-
   // 手动标记已读后按设置删除对应下载（多选"标记已读"路径）
   static onDeleteMarkedRead(mangaId: number, chapterIds: number[]): void {
     if (!Settings.getRemoveAfterMarkedAsRead() || chapterIds.length === 0) {

@@ -18,6 +18,7 @@ export interface NavGlassAction {
 
 // 首页页签头部统一高度（vp）：各页签头部行等高，切换页签时标题栏高度不跳变
 export const HOME_HEADER_H: number = 58;
+
 // 二级页 MINI 标题栏高度（vp）：STACK 堆叠模式下内容手动避让用
 export const NAV_BAR_H: number = 56;
 
@@ -54,11 +55,12 @@ export struct NavGlassRoot {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('statusBarH') statusBarH: number = 0;
-  onNavBarStateChange: (isVisible: boolean) => void = (_v: boolean): void => {
-  };
   // 首页页签头部（Index 按当前页签切换注入）
   @BuilderParam header: () => void = this.emptyBuilder;
   @BuilderParam content: () => void = this.emptyBuilder;
+
+  onNavBarStateChange: (isVisible: boolean) => void = (_v: boolean): void => {
+  };
 
   build() {
     Navigation(this.pathStack) {
@@ -106,13 +108,16 @@ export struct NavGlassPage {
   actions: NavGlassAction[] = [];
   // 兼容保留：标准 NavDestination 标题栏自动联动滚动容器，无需显式绑定
   scroller: Scroller | undefined = undefined;
+  @BuilderParam content: () => void = this.emptyBuilder;
+
   onReady: (ctx: NavDestinationContext) => void = (_ctx: NavDestinationContext): void => {
   };
+
   onShown: () => void = (): void => {
   };
+
   onHidden: () => void = (): void => {
   };
-  @BuilderParam content: () => void = this.emptyBuilder;
 
   build() {
     NavDestination() {

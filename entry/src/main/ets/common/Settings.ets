@@ -13,6 +13,7 @@ const TAG = 'Settings';
 export interface PluginStoreRecord {
   url: string;
   name: string;
+
   // 仓库官网（索引声明 website 字段）；未声明为空字符串
   website: string;
 }
@@ -1232,6 +1233,16 @@ export class Settings {
 
   static setVideoVolume(v: number): void {
     Settings.setNum('videoVolume', v);
+  }
+
+  // 播放器亮度（0=跟随系统，(0,1]=固定亮度；左半屏上下滑手势调节）
+  static getVideoBrightness(): number {
+    const n = Settings.getNum('videoBrightness', 0);
+    return n >= 0 && n <= 1 ? n : 0;
+  }
+
+  static setVideoBrightness(v: number): void {
+    Settings.setNum('videoBrightness', v);
   }
 
   // ---- 弹幕 ----

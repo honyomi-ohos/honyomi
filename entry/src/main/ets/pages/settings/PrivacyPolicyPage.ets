@@ -15,18 +15,6 @@ export struct PrivacyPolicyPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   private policyScroller: Scroller = new Scroller();
 
-  private sections(): PrivacySection[] {
-    const sections: PrivacySection[] = [
-      { id: 'local', title: $r('app.string.privacy_policy_local_title'), body: $r('app.string.privacy_policy_local_body') },
-      { id: 'network', title: $r('app.string.privacy_policy_network_title'), body: $r('app.string.privacy_policy_network_body') },
-      { id: 'tracking', title: $r('app.string.privacy_policy_tracking_title'), body: $r('app.string.privacy_policy_tracking_body') },
-      { id: 'danmaku', title: $r('app.string.privacy_policy_danmaku_title'), body: $r('app.string.privacy_policy_danmaku_body') },
-      { id: 'permissions', title: $r('app.string.privacy_policy_permissions_title'), body: $r('app.string.privacy_policy_permissions_body') },
-      { id: 'contact', title: $r('app.string.privacy_policy_contact_title'), body: $r('app.string.privacy_policy_contact_body') }
-    ];
-    return sections;
-  }
-
   build() {
     NavGlassPage({ title: $r('app.string.privacy_policy_title'), scroller: this.policyScroller }) {
       Column() {
@@ -63,7 +51,12 @@ export struct PrivacyPolicyPage {
             }, (section: PrivacySection) => section.id)
           }
           .width('100%')
-          .padding({ left: 16, right: 16, top: 4, bottom: 24 })
+          .padding({
+            left: 16,
+            right: 16,
+            top: 4,
+            bottom: 24
+          })
         }
         .layoutWeight(1)
         .scrollBar(BarState.Off)
@@ -72,6 +65,42 @@ export struct PrivacyPolicyPage {
       .width('100%')
       .height('100%')
     }
+  }
+
+  private sections(): PrivacySection[] {
+    const sections: PrivacySection[] = [
+      {
+        id: 'local',
+        title: $r('app.string.privacy_policy_local_title'),
+        body: $r('app.string.privacy_policy_local_body')
+      },
+      {
+        id: 'network',
+        title: $r('app.string.privacy_policy_network_title'),
+        body: $r('app.string.privacy_policy_network_body')
+      },
+      {
+        id: 'tracking',
+        title: $r('app.string.privacy_policy_tracking_title'),
+        body: $r('app.string.privacy_policy_tracking_body')
+      },
+      {
+        id: 'danmaku',
+        title: $r('app.string.privacy_policy_danmaku_title'),
+        body: $r('app.string.privacy_policy_danmaku_body')
+      },
+      {
+        id: 'permissions',
+        title: $r('app.string.privacy_policy_permissions_title'),
+        body: $r('app.string.privacy_policy_permissions_body')
+      },
+      {
+        id: 'contact',
+        title: $r('app.string.privacy_policy_contact_title'),
+        body: $r('app.string.privacy_policy_contact_body')
+      }
+    ];
+    return sections;
   }
 }
 

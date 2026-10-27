@@ -28,9 +28,10 @@ export struct HdsTabsHost {
   controller: HdsTabsHostController = new HdsTabsHostController();
   miniBar: HdsTabsHostMiniBar | undefined = undefined;
   @Prop miniBarEnabled: boolean = true;
+  @BuilderParam content: () => void = this.emptyBuilder;
+
   onTabChange: (index: number) => void = (_i: number): void => {
   };
-  @BuilderParam content: () => void = this.emptyBuilder;
 
   build() {
     Stack({ alignContent: Alignment.Bottom }) {

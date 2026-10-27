@@ -1,6 +1,6 @@
 import { picker } from '@kit.CoreFileKit';
 import { SheetPreset } from './SheetPreset';
-import { InstallOutcome, InstalledPlugin, PluginService, RepoEntry } from '../../data/PluginService';
+import { InstalledPlugin, InstallOutcome, PluginService, RepoEntry } from '../../data/PluginService';
 import { ContentType } from '../../model/Models';
 import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
@@ -428,7 +428,8 @@ export struct ExtensionListPanel {
             this.sectionHeader($r('app.string.ext_updates_pending'), true)
             ForEach(this.pendingUpdates, (item: InstalledPlugin) => {
               this.installedRow(item, true)
-            }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}-${item.trusted}`)
+            }, (
+              item: InstalledPlugin) => `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}-${item.trusted}`)
           }
 
           // 已安装分组（无新版本）
@@ -436,7 +437,8 @@ export struct ExtensionListPanel {
             this.sectionHeader($r('app.string.plugin_installed_section'), false)
             ForEach(this.shownInstalled, (item: InstalledPlugin) => {
               this.installedRow(item, false)
-            }, (item: InstalledPlugin) => `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}-${item.trusted}`)
+            }, (
+              item: InstalledPlugin) => `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}-${item.trusted}`)
           }
 
           if (this.repoUrls.length === 0) {

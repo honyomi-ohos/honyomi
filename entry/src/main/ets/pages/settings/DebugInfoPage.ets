@@ -47,7 +47,12 @@ export struct DebugInfoContent {
             }
             .width('100%')
             .constraintSize({ minHeight: 52 })
-            .padding({ left: 16, right: 16, top: 8, bottom: 8 })
+            .padding({
+              left: 16,
+              right: 16,
+              top: 8,
+              bottom: 8
+            })
             .alignItems(VerticalAlign.Center)
           }, (row: DebugRow, index: number) => `dbg-${index}-${row.label}`)
         }

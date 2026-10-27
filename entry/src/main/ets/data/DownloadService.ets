@@ -9,7 +9,16 @@ import { image } from '@kit.ImageKit';
 import { util } from '@kit.ArkTS';
 import { Http } from '../net/Http';
 import { Source, SourceRegistry } from '../source/Source';
-import { ContentType, ChapterRecord, DownloadedChapter, DownloadedManga, DownloadTask, MangaRecord, SPage, SVideo } from '../model/Models';
+import {
+  ChapterRecord,
+  ContentType,
+  DownloadedChapter,
+  DownloadedManga,
+  DownloadTask,
+  MangaRecord,
+  SPage,
+  SVideo
+} from '../model/Models';
 import { ChapterRepo, MangaRepo } from './Repos';
 import { Settings } from '../common/Settings';
 import { NetworkMonitor } from '../common/NetworkMonitor';
@@ -85,13 +94,9 @@ export class DownloadService {
   private static bgHeartbeat: number = -1;
   private static bgLastPct: number = -1;
   private static bgCancelBound: boolean = false;
-
-  // 长时任务被用户移除通知/系统取消时重置状态，下个任务开始时重新申请
-  private static onBgTaskCancel = (info: backgroundTaskManager.ContinuousTaskCancelInfo): void => {
-    if (DownloadService.bgTaskId >= 0 && info.id === DownloadService.bgTaskId) {
-      DownloadService.resetBgTask();
-    }
-  };
+  // BT 种子常见视频容器扩展（localVideo 扫描回退用）
+  private static readonly VIDEO_EXTS: string[] =
+    ['.mp4', '.mkv', '.ts', '.avi', '.mov', '.webm', '.m4v', '.wmv', '.flv', '.mpg', '.mpeg'];
 
   static init(context: common.UIAbilityContext): void {
     DownloadService.context = context;
@@ -475,10 +480,6 @@ export class DownloadService {
     return '';
   }
 
-  // BT 种子常见视频容器扩展（localVideo 扫描回退用）
-  private static readonly VIDEO_EXTS: string[] =
-    ['.mp4', '.mkv', '.ts', '.avi', '.mov', '.webm', '.m4v', '.wmv', '.flv', '.mpg', '.mpeg'];
-
   // 文件名是否为种子内视频容器（播放器边下边播选取目标文件用）
   static isVideoName(name: string): boolean {
     const lower = name.toLowerCase();
@@ -509,7 +510,6 @@ export class DownloadService {
     return true;
   }
 
-  // 网络环境/仅 Wi-Fi 开关变化后的门禁刷新：
   // 不可用 → 活动任务在页边界回到队列；可用 → 恢复泵送
   static refreshNetworkGate(): void {
     if (!DownloadService.networkAllowed()) {
@@ -523,6 +523,8 @@ export class DownloadService {
       DownloadService.pump();
     }
   }
+
+  // 网络环境/仅 Wi-Fi 开关变化后的门禁刷新：
 
   static chapterDir(mangaId: number, chapterId: number): string {
     return `${DownloadService.rootDir}/${mangaId}/${chapterId}`;
@@ -645,77 +647,6 @@ export class DownloadService {
     return DownloadService.scanVideoFile(dir);
   }
 
-  private static scanVideoFile(dir: string): string {
-    if (DownloadService.rootDir === '') {
-      return '';
-    }
-    try {
-      if (!fileIo.accessSync(dir)) {
-        return '';
-      }
-      return DownloadService.scanVideoDir(dir);
-    } catch (e) {
-      return '';
-    }
-  }
-
-  // 递归扫描目录内最大的视频文件（BT 章节可能含多文件/子目录，播放主视频取最大者）
-  private static scanVideoDir(dir: string): string {
-    let best = '';
-    let bestSize = -1;
-    let entries: string[] = [];
-    try {
-      entries = fileIo.listFileSync(dir);
-    } catch (e) {
-      return '';
-    }
-    for (const name of entries) {
-      if (name === 'done.mark' || name === 'video.mp4' || name === 'video.ts') {
-        continue;
-      }
-      const full = `${dir}/${name}`;
-      let isDir = false;
-      let size = -1;
-      try {
-        const stat = fileIo.statSync(full);
-        isDir = stat.isDirectory();
-        size = stat.size;
-      } catch (e) {
-        continue;
-      }
-      if (isDir) {
-        const sub = DownloadService.scanVideoDir(full);
-        if (sub !== '') {
-          const subSize = DownloadService.fileSizeOf(sub);
-          if (subSize > bestSize) {
-            best = sub;
-            bestSize = subSize;
-          }
-        }
-        continue;
-      }
-      const lower = name.toLowerCase();
-      for (const ext of DownloadService.VIDEO_EXTS) {
-        if (lower.endsWith(ext)) {
-          if (size > bestSize) {
-            best = full;
-            bestSize = size;
-          }
-          break;
-        }
-      }
-    }
-    return best;
-  }
-
-  private static fileSizeOf(path: string): number {
-    try {
-      return fileIo.statSync(path).size;
-    } catch (e) {
-      return 0;
-    }
-  }
-
   static localPages(mangaId: number, chapterId: number): string[] {
     const dir = DownloadService.chapterDir(mangaId, chapterId);
     try {
@@ -817,6 +748,95 @@ export class DownloadService {
       return result;
     } catch (e) {
       throw new Error(`list downloaded failed: ${e}`);
+    }
+  }
+
+  // BT 链接判定：magnet URI 或 .torrent 直链
+  static isBtUrl(url: string): boolean {
+    const u = url.trim();
+    if (u.startsWith('magnet:')) {
+      return true;
+    }
+    const q = u.indexOf('?');
+    const path = q >= 0 ? u.substring(0, q) : u;
+    return path.toLowerCase().endsWith('.torrent');
+  }
+
+  // 长时任务被用户移除通知/系统取消时重置状态，下个任务开始时重新申请
+  private static onBgTaskCancel = (info: backgroundTaskManager.ContinuousTaskCancelInfo): void => {
+    if (DownloadService.bgTaskId >= 0 && info.id === DownloadService.bgTaskId) {
+      DownloadService.resetBgTask();
+    }
+  };
+
+  private static scanVideoFile(dir: string): string {
+    if (DownloadService.rootDir === '') {
+      return '';
+    }
+    try {
+      if (!fileIo.accessSync(dir)) {
+        return '';
+      }
+      return DownloadService.scanVideoDir(dir);
+    } catch (e) {
+      return '';
+    }
+  }
+
+  // 递归扫描目录内最大的视频文件（BT 章节可能含多文件/子目录，播放主视频取最大者）
+  private static scanVideoDir(dir: string): string {
+    let best = '';
+    let bestSize = -1;
+    let entries: string[] = [];
+    try {
+      entries = fileIo.listFileSync(dir);
+    } catch (e) {
+      return '';
+    }
+    for (const name of entries) {
+      if (name === 'done.mark' || name === 'video.mp4' || name === 'video.ts') {
+        continue;
+      }
+      const full = `${dir}/${name}`;
+      let isDir = false;
+      let size = -1;
+      try {
+        const stat = fileIo.statSync(full);
+        isDir = stat.isDirectory();
+        size = stat.size;
+      } catch (e) {
+        continue;
+      }
+      if (isDir) {
+        const sub = DownloadService.scanVideoDir(full);
+        if (sub !== '') {
+          const subSize = DownloadService.fileSizeOf(sub);
+          if (subSize > bestSize) {
+            best = sub;
+            bestSize = subSize;
+          }
+        }
+        continue;
+      }
+      const lower = name.toLowerCase();
+      for (const ext of DownloadService.VIDEO_EXTS) {
+        if (lower.endsWith(ext)) {
+          if (size > bestSize) {
+            best = full;
+            bestSize = size;
+          }
+          break;
+        }
+      }
+    }
+    return best;
+  }
+
+  private static fileSizeOf(path: string): number {
+    try {
+      return fileIo.statSync(path).size;
+    } catch (e) {
+      return 0;
     }
   }
 
@@ -1000,6 +1020,8 @@ export class DownloadService {
     }
   }
 
+  // 拆分超长条漫图片（对齐 Mihon splitTallImage）：超过阈值高度均分为多片 JPEG，
+
   // 单章页面下载 worker：按共享游标领取下一页，直至取尽或被取消/阻断
   private static async pageWorker(task: DownloadTask, pages: SPage[], dir: string,
     imageHeaders: Record<string, string> | undefined, flags: DlFlags, cursor: PageCursor): Promise<void> {
@@ -1035,7 +1057,8 @@ export class DownloadService {
     }
   }
 
-  // 拆分超长条漫图片（对齐 Mihon splitTallImage）：超过阈值高度均分为多片 JPEG，
+  // CBZ 打包（对齐 Mihon archiveChapter）：页面目录压缩为 chapter.cbz 后删除零散页文件；
+
   // 全部切片落盘成功后删除原图；任一步失败保留原图不影响阅读
   private static async splitTallIfNeeded(filePath: string): Promise<void> {
     if (!Settings.getSplitTallImages()) {
@@ -1090,7 +1113,8 @@ export class DownloadService {
     }
   }
 
-  // CBZ 打包（对齐 Mihon archiveChapter）：页面目录压缩为 chapter.cbz 后删除零散页文件；
+  // CBZ 读取：解压到 cacheDir/cbz_extract/{mangaId}/{chapterId}，extract.ok 标记完整性；
+
   // 打包失败保留文件夹形式，阅读路径不受影响
   private static async buildCbz(task: DownloadTask, dir: string): Promise<void> {
     if (!Settings.getSaveChaptersAsCbz()) {
@@ -1139,7 +1163,6 @@ export class DownloadService {
     }
   }
 
-  // CBZ 读取：解压到 cacheDir/cbz_extract/{mangaId}/{chapterId}，extract.ok 标记完整性；
   // 缓存被系统清理或上次解压中断时自动重解
   private static async extractCbzPages(cbzPath: string, mangaId: number, chapterId: number): Promise<string[]> {
     const ctx = DownloadService.context;
@@ -1362,23 +1385,13 @@ export class DownloadService {
     task.state = 2;
   }
 
-  // BT 链接判定：magnet URI 或 .torrent 直链
-  static isBtUrl(url: string): boolean {
-    const u = url.trim();
-    if (u.startsWith('magnet:')) {
-      return true;
-    }
-    const q = u.indexOf('?');
-    const path = q >= 0 ? u.substring(0, q) : u;
-    return path.toLowerCase().endsWith('.torrent');
-  }
-
   // BT 下载：magnet/.torrent → BtModule（torrent HSP 动态加载，libtorrent worker）。
   // 产物落 chapterDir（种子内部文件名/子目录由种子决定，localVideo 递归扫描定位）。
   // 重启恢复：队列恢复为 queued → 重走 downloadVideo → 同 savePath 重加种子 → re-check 续传，无需额外状态。
   // 取消：remove(key,false) 保留分片；完成：remove(key,false) 保留文件并停止做种。
   // 组件未装（AGC 按需分发）→ bt_component_required → process 置前台安装引导标志。
   // tracker 兜底在引擎层完成（TorrentManager 对每个新任务自动叠加内置公共 tracker 列表，
+
   // 对齐 animeko/anitorrent），此处 magnet 保持原样传入。
   private static async downloadBt(task: DownloadTask, url: string, dir: string, flags: DlFlags): Promise<void> {
     if (DownloadService.context === undefined) {

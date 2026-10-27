@@ -6,22 +6,31 @@ import { Bp } from '../../common/Breakpoint';
 export interface SheetExtras {
   /** 标题（不提供则不设标题栏） */
   title?: ResourceStr;
+
   /** 高度（默认 SheetSize.FIT_CONTENT） */
   height?: SheetSize | Dimension;
+
   /** 档位（默认 [SheetSize.FIT_CONTENT]，最多 3 档） */
   detents?: [SheetSize | Dimension, (SheetSize | Dimension)?, (SheetSize | Dimension)?];
+
   /** 是否显示关闭按钮（默认 true） */
   showClose?: boolean;
+
   /** true = 沉浸光感（液态玻璃）系统材质，低版本自动回退模糊样式 */
   glass?: boolean;
+
   /** true = 弹层外可交互 */
   interactive?: boolean;
+
   /** 背景色（覆盖默认模糊底） */
   bg?: ResourceColor;
+
   /** 遮罩颜色 */
   maskColor?: ResourceColor;
+
   /** 宽屏定宽（默认 560vp，与 HDS 弹窗规范一致） */
   wideWidth?: number;
+
   /** 弹层关闭回调 */
   onDisappear?: () => void;
 }

@@ -20,8 +20,9 @@ export class CrashLogs {
         const logs = await FaultLogger.query(type);
         for (const info of logs) {
           const time = new Date(info.timestamp).toISOString();
-          sections.push(`===== [${CrashLogs.typeLabel(type)}] ${time} reason=${info.reason} module=${info.module} =====\n` +
-            `${info.fullLog}\n`);
+          sections.push(
+            `===== [${CrashLogs.typeLabel(type)}] ${time} reason=${info.reason} module=${info.module} =====\n` +
+              `${info.fullLog}\n`);
         }
       } catch (_e) {
         // 单类查询失败不阻断整体导出

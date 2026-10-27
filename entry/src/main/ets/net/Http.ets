@@ -47,7 +47,7 @@ export class Http {
   // 默认 UA（对齐桌面 Chrome；cf_clearance 与 UA 绑定，http 层与验证 Web 必须一致）
   static readonly DEFAULT_USER_AGENT: string =
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +
-    '(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+      '(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
   // 运行时生效 UA：高级设置可自定义覆盖，各请求层与 CF 验证 WebView
   // 均在请求时实时读取本字段，无需重启即生效
   static USER_AGENT: string = Http.DEFAULT_USER_AGENT;

@@ -137,11 +137,10 @@ export class NovelTts {
   // 后台长任务
   private static ctx: common.UIAbilityContext | undefined = undefined;
   private static taskRequested: boolean = false;
-
   private static taskRunning: boolean = false;
-
   // 本长时任务 id：定点撤销，避免 stopBackgroundRunning(ctx) 取消全部任务时误杀下载 DATA_TRANSFER 长时任务
   private static taskId: number = -1;
+
   static isPlaying(): boolean {
     return !NovelTts.stopped;
   }
@@ -552,8 +551,9 @@ export class NovelTts {
         NovelTts.taskRequested = false;
         NovelTts.taskRunning = false;
         if (res.continuousTaskId !== undefined) {
-          await backgroundTaskManager.stopBackgroundRunning(ctx, res.continuousTaskId).catch((_e: BusinessError): void => {
-          });
+          await backgroundTaskManager.stopBackgroundRunning(ctx, res.continuousTaskId)
+            .catch((_e: BusinessError): void => {
+            });
         }
         return;
       }

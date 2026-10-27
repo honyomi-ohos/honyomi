@@ -3,7 +3,7 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppDb } from './AppDb';
 import { ChapterRepo, MangaRepo } from './Repos';
 import { Source, SourceRegistry } from '../source/Source';
-import { ContentType, ChapterRecord, MangaRecord } from '../model/Models';
+import { ChapterRecord, ContentType, MangaRecord } from '../model/Models';
 import { WidgetUpdater } from '../form/WidgetUpdater';
 import { AppKeys } from '../common/AppKeys';
 import { Settings } from '../common/Settings';

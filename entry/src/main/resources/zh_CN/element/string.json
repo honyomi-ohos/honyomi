@@ -1201,12 +1201,20 @@
       "value": "阅读器设置"
     },
     {
+      "name": "reader_chapter_list",
+      "value": "章节目录"
+    },
+    {
       "name": "reader_background",
       "value": "背景"
     },
     {
       "name": "reader_theme_auto",
       "value": "自动"
+    },
+    {
+      "name": "reader_theme_paper",
+      "value": "纸张"
     },
     {
       "name": "reader_theme_white",
@@ -3027,6 +3035,22 @@
     {
       "name": "video_quality_local",
       "value": "本地"
+    },
+    {
+      "name": "video_brightness",
+      "value": "亮度"
+    },
+    {
+      "name": "video_seek_to",
+      "value": "跳转到"
+    },
+    {
+      "name": "video_resume_tip",
+      "value": "已从上次位置继续"
+    },
+    {
+      "name": "video_resume_restart",
+      "value": "从头播放"
     },
     {
       "name": "download_error_cancelled",

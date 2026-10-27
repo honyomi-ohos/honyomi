@@ -27,10 +27,6 @@ export struct HistoryHeader {
   // 确认清空态：内容区发布，delete_sweep 图标着色读
   @StorageProp('historyConfirmClear') confirmClear: boolean = false;
 
-  private inset(): number {
-    return Bp.contentInset(this.windowW);
-  }
-
   build() {
     Row() {
       if (this.searchOpen) {
@@ -83,6 +79,10 @@ export struct HistoryHeader {
       top: 12,
       bottom: 8
     })
+  }
+
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
   }
 
   private openSearch(): void {
@@ -183,11 +183,6 @@ export struct HistoryPage {
     this.bodyContent()
   }
 
-  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中
-  private inset(): number {
-    return Bp.contentInset(this.windowW);
-  }
-
   @Builder
   bodyContent() {
     Column() {
@@ -198,7 +193,7 @@ export struct HistoryPage {
           // 搜索无结果与无历史区分文案（对齐 Mihon HistoryScreen）
           EmptyScreen({
             message: this.searchQuery.trim() !== '' ?
-            $r('app.string.no_results_found') : $r('app.string.history_empty')
+              $r('app.string.no_results_found') : $r('app.string.history_empty')
           })
         }
         .layoutWeight(1)
@@ -360,27 +355,6 @@ export struct HistoryPage {
     .backgroundColor(this.pal.bg)
   }
 
-  private onHistoryReselect(): void {
-    this.resumeLastRead();
-  }
-
-  // 头部清空请求信号：走原 clearHistory 二次确认逻辑（首击武装，3 秒内再击执行）
-  private onClearReq(): void {
-    this.clearHistory();
-  }
-
-  // 按标题/章节名过滤（对齐 Mihon HistoryViewModel searchQuery 过滤）
-  private visibleItems(): HistoryItem[] {
-    const q: string = this.searchQuery.trim().toLowerCase();
-    if (q === '') {
-      return this.items;
-    }
-    return this.items.filter((it: HistoryItem): boolean =>
-      it.mangaTitle.toLowerCase().indexOf(q) >= 0 || it.chapterName.toLowerCase().indexOf(q) >= 0);
-  }
-
-  // ----- 多选删除 -----
-
   // PC 右键菜单「选择」：单条进入多选（与长按一致；移动端仍走长按手势）
   @Builder
   historyItemMenu(item: HistoryItem) {
@@ -390,6 +364,32 @@ export struct HistoryPage {
           this.enterSelection(item.chapterId);
         })
     }
+  }
+
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
+  }
+
+  private onHistoryReselect(): void {
+    this.resumeLastRead();
+  }
+
+  // 头部清空请求信号：走原 clearHistory 二次确认逻辑（首击武装，3 秒内再击执行）
+  private onClearReq(): void {
+    this.clearHistory();
+  }
+
+  // ----- 多选删除 -----
+
+  // 按标题/章节名过滤（对齐 Mihon HistoryViewModel searchQuery 过滤）
+  private visibleItems(): HistoryItem[] {
+    const q: string = this.searchQuery.trim().toLowerCase();
+    if (q === '') {
+      return this.items;
+    }
+    return this.items.filter((it: HistoryItem): boolean =>
+    it.mangaTitle.toLowerCase().indexOf(q) >= 0 || it.chapterName.toLowerCase().indexOf(q) >= 0);
   }
 
   private enterSelection(chapterId: number): void {

@@ -20,6 +20,61 @@ export struct BtPeerFilterPage {
   private peerFilterScroller: Scroller = new Scroller();
 
   // 轻量校验：非空行须为 "from-to" 或单个 IP，字符集限数字/字母/./:/-
+
+  build() {
+    NavGlassPage({
+      title: $r('app.string.bt_peer_filter_title'),
+      scroller: this.peerFilterScroller,
+      onReady: (ctx: NavDestinationContext): void => {
+        this.pathStack = ctx.pathStack;
+      }
+    }) {
+      Column() {
+        Scroll(this.peerFilterScroller) {
+          Column({ space: 12 }) {
+            Text($r('app.string.bt_peer_filter_hint'))
+              .fontSize(13)
+              .fontColor(this.pal.sub)
+              .width('100%')
+              .textAlign(TextAlign.Start)
+            TextArea({ text: this.draft, placeholder: $r('app.string.bt_peer_filter_hint') })
+              .fontSize(14)
+              .height(240)
+              .width('100%')
+              .enabled(true)
+              .onChange((value: string) => {
+                this.draft = value;
+              })
+            Button($r('app.string.common_save'))
+              .width('100%')
+              .buttonStyle(ButtonStyleMode.NORMAL)
+              .backgroundColor(this.pal.primary)
+              .onClick(() => {
+                this.save();
+              })
+          }
+          .width('100%')
+          .padding({
+            left: 16,
+            right: 16,
+            top: 4,
+            bottom: 24
+          })
+        }
+        .layoutWeight(1)
+        .width('100%')
+        .scrollBar(BarState.Off)
+        .align(Alignment.TopStart)
+      }
+      .width('100%')
+      .height('100%')
+    }
+  }
+
+  aboutToAppear(): void {
+    this.draft = Settings.getBtPeerFilter();
+  }
+
   // 严格 IP 解析在桥接层（保存后 applyPeerFilterLive 失败会 toast）
   private isValidRule(line: string): boolean {
     const parts: string[] = line.split('-');
@@ -62,55 +117,6 @@ export struct BtPeerFilterPage {
     AppStorage.setOrCreate(AppKeys.BT_PEER_FILTER_TICK,
       (AppStorage.get<number>(AppKeys.BT_PEER_FILTER_TICK) ?? 0) + 1);
     this.pathStack.pop();
-  }
-
-  build() {
-    NavGlassPage({
-      title: $r('app.string.bt_peer_filter_title'),
-      scroller: this.peerFilterScroller,
-      onReady: (ctx: NavDestinationContext): void => {
-        this.pathStack = ctx.pathStack;
-      }
-    }) {
-      Column() {
-        Scroll(this.peerFilterScroller) {
-          Column({ space: 12 }) {
-            Text($r('app.string.bt_peer_filter_hint'))
-              .fontSize(13)
-              .fontColor(this.pal.sub)
-              .width('100%')
-              .textAlign(TextAlign.Start)
-            TextArea({ text: this.draft, placeholder: $r('app.string.bt_peer_filter_hint') })
-              .fontSize(14)
-              .height(240)
-              .width('100%')
-              .enabled(true)
-              .onChange((value: string) => {
-                this.draft = value;
-              })
-            Button($r('app.string.common_save'))
-              .width('100%')
-              .buttonStyle(ButtonStyleMode.NORMAL)
-              .backgroundColor(this.pal.primary)
-              .onClick(() => {
-                this.save();
-              })
-          }
-          .width('100%')
-          .padding({ left: 16, right: 16, top: 4, bottom: 24 })
-        }
-        .layoutWeight(1)
-        .width('100%')
-        .scrollBar(BarState.Off)
-        .align(Alignment.TopStart)
-      }
-      .width('100%')
-      .height('100%')
-    }
-  }
-
-  aboutToAppear(): void {
-    this.draft = Settings.getBtPeerFilter();
   }
 }
 

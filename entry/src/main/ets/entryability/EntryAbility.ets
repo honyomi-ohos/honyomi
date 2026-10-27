@@ -36,6 +36,51 @@ export default class EntryAbility extends UIAbility {
   // 供意图执行器等非组件环境获取应用 context（onCreate 即赋值，先于任意意图执行）
   static appContext: common.UIAbilityContext | undefined = undefined;
 
+  // 已配置本地源文件夹时尽力向用户文件夹同步落一份，防止整树重新同步覆盖 local_root 后导入丢失
+  private static async importBookToNovelSource(context: common.UIAbilityContext,
+    srcUri: string, name: string): Promise<void> {
+    const novelDir = `${LocalFolderManager.syncedRootPath(context.filesDir)}/${LocalFolderManager.NOVEL_SUBDIR}`;
+    try {
+      if (!fs.accessSync(novelDir)) {
+        fs.mkdirSync(novelDir, true);
+      }
+    } catch (e) {
+      throw new Error('mkdir_failed');
+    }
+    const destPath = `${novelDir}/${name}`;
+    try {
+      fs.unlinkSync(destPath);
+    } catch (e) {
+      // 目标不存在，继续拷贝
+    }
+    await fs.copy(srcUri, fileUri.getUriFromPath(destPath));
+    const folderUri = Settings.getLocalFolderUri();
+    if (folderUri !== '') {
+      try {
+        const userDestUri = `${folderUri}/${LocalFolderManager.NOVEL_SUBDIR}/${name}`;
+        try {
+          fs.unlinkSync(userDestUri);
+        } catch (e) {
+          // 目标不存在，继续拷贝
+        }
+        await fs.copy(srcUri, userDestUri);
+      } catch (e) {
+        // 用户文件夹写入失败不影响本次导入（沙箱副本已就位）
+      }
+    }
+    const dotIdx = name.lastIndexOf('.');
+    const baseName = dotIdx > 0 ? name.substring(0, dotIdx) : name;
+    const payload: Record<string, string | number> = {
+      'target': 'browsesource',
+      'mangaId': 0,
+      'chapterId': 0,
+      'contentType': '',
+      'sourceKey': 'local_novel',
+      'query': baseName
+    };
+    AppStorage.setOrCreate(AppKeys.CARD_ACTION, JSON.stringify(payload));
+  }
+
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     hilog.info(DOMAIN, 'Mihon', '%{public}s', 'Ability onCreate');
     EntryAbility.appContext = this.context;
@@ -186,13 +231,16 @@ export default class EntryAbility extends UIAbility {
     });
   }
 
+  // 系统"打开方式"拉起（文件管理器等选择本应用打开书籍文件）：
+
   onNewWant(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     hilog.info(DOMAIN, 'Mihon', '%{public}s', 'Ability onNewWant');
     this.handleCardWant(want);
     this.handleFileOpenWant(want);
   }
 
-  // 系统"打开方式"拉起（文件管理器等选择本应用打开书籍文件）：
+  // 书籍导入：拷入沙箱本地小说源目录（立即出现在本地小说源列表）；
+
   // 识别 epub/mobi/azw/azw3/prc 后导入本地小说源，经 cardAction 通道由 Index 导航定位
   private handleFileOpenWant(want: Want): void {
     const uri = want.uri;
@@ -206,52 +254,6 @@ export default class EntryAbility extends UIAbility {
     EntryAbility.importBookToNovelSource(this.context, uri, name).catch((e: Error): void => {
       hilog.warn(DOMAIN, 'Mihon', 'import opened book failed: %{public}s', e.message);
     });
-  }
-
-  // 书籍导入：拷入沙箱本地小说源目录（立即出现在本地小说源列表）；
-  // 已配置本地源文件夹时尽力向用户文件夹同步落一份，防止整树重新同步覆盖 local_root 后导入丢失
-  private static async importBookToNovelSource(context: common.UIAbilityContext,
-    srcUri: string, name: string): Promise<void> {
-    const novelDir = `${LocalFolderManager.syncedRootPath(context.filesDir)}/${LocalFolderManager.NOVEL_SUBDIR}`;
-    try {
-      if (!fs.accessSync(novelDir)) {
-        fs.mkdirSync(novelDir, true);
-      }
-    } catch (e) {
-      throw new Error('mkdir_failed');
-    }
-    const destPath = `${novelDir}/${name}`;
-    try {
-      fs.unlinkSync(destPath);
-    } catch (e) {
-      // 目标不存在，继续拷贝
-    }
-    await fs.copy(srcUri, fileUri.getUriFromPath(destPath));
-    const folderUri = Settings.getLocalFolderUri();
-    if (folderUri !== '') {
-      try {
-        const userDestUri = `${folderUri}/${LocalFolderManager.NOVEL_SUBDIR}/${name}`;
-        try {
-          fs.unlinkSync(userDestUri);
-        } catch (e) {
-          // 目标不存在，继续拷贝
-        }
-        await fs.copy(srcUri, userDestUri);
-      } catch (e) {
-        // 用户文件夹写入失败不影响本次导入（沙箱副本已就位）
-      }
-    }
-    const dotIdx = name.lastIndexOf('.');
-    const baseName = dotIdx > 0 ? name.substring(0, dotIdx) : name;
-    const payload: Record<string, string | number> = {
-      'target': 'browsesource',
-      'mangaId': 0,
-      'chapterId': 0,
-      'contentType': '',
-      'sourceKey': 'local_novel',
-      'query': baseName
-    };
-    AppStorage.setOrCreate(AppKeys.CARD_ACTION, JSON.stringify(payload));
   }
 
   // 解析桌面卡片 router 事件参数，写入 AppStorage 供 Index 导航

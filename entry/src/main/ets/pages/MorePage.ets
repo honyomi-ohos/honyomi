@@ -1,7 +1,6 @@
 import { ThemePalette } from '../common/Theme';
 import { Settings } from '../common/Settings';
 import { Bp } from '../common/Breakpoint';
-import { Util } from '../common/Util';
 import { AppInfo } from '../common/AppInfo';
 import { IconRow, PrefGroup, SwitchRow } from './components/Prefs';
 
@@ -22,11 +21,6 @@ export struct MorePage {
 
   build() {
     this.bodyContent()
-  }
-
-  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中
-  private inset(): number {
-    return Bp.contentInset(this.windowW);
   }
 
   @Builder
@@ -158,6 +152,11 @@ export struct MorePage {
     .height('100%')
     .backgroundColor(this.pal.bg)
   }
+
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
+  }
 }
 
 // 更多页顶部标题栏：抽取供 Index 挂载到 Navigation 标题栏（高度 58，含 contentInset 横向留白，不含状态栏避让）
@@ -165,10 +164,6 @@ export struct MorePage {
 export struct MoreHeader {
   @StorageProp('windowW') windowW: number = 0;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-
-  private inset(): number {
-    return Bp.contentInset(this.windowW);
-  }
 
   build() {
     Row() {
@@ -183,5 +178,9 @@ export struct MoreHeader {
       left: 16 + this.inset(),
       right: 16 + this.inset()
     })
+  }
+
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
   }
 }

@@ -79,37 +79,6 @@ export class BtModule {
     }
   }
 
-  // 聚合各任务速率写入 AppStorage，并重置归零定时器
-  private static pushSessionRates(statuses: TorrentStatusJson[]): void {
-    let down = 0;
-    let up = 0;
-    for (let i = 0; i < statuses.length; i++) {
-      down += statuses[i].downloadRate;
-      up += statuses[i].uploadRate;
-    }
-    AppStorage.setOrCreate('btDownRate', down);
-    AppStorage.setOrCreate('btUpRate', up);
-    if (BtModule.rateResetTimer >= 0) {
-      clearTimeout(BtModule.rateResetTimer);
-    }
-    BtModule.rateResetTimer = setTimeout(() => {
-      BtModule.rateResetTimer = -1;
-      AppStorage.setOrCreate('btDownRate', 0);
-      AppStorage.setOrCreate('btUpRate', 0);
-    }, 3500);
-  }
-
-  // 速率立即归零并清理挂起的归零定时器
-  private static zeroSessionRates(): void {
-    if (BtModule.rateResetTimer >= 0) {
-      clearTimeout(BtModule.rateResetTimer);
-      BtModule.rateResetTimer = -1;
-    }
-    AppStorage.setOrCreate('btDownRate', 0);
-    AppStorage.setOrCreate('btUpRate', 0);
-  }
-
-  // 计费网络限制上传（animeko 对齐）：蜂窝/离线时上传压至 10KB/s。
   // OHOS 无 metered 能力位，按"非 Wi-Fi/以太网"判定（fail-open 见 NetworkMonitor）
   static effectiveUploadLimitBytes(): number {
     if (Settings.getBtLimitUploadOnMetered() && !NetworkMonitor.isWifiLike()) {
@@ -133,6 +102,8 @@ export class BtModule {
     }
     return out;
   }
+
+  // 计费网络限制上传（animeko 对齐）：蜂窝/离线时上传压至 10KB/s。
 
   static async addMagnet(magnetUri: string, savePath: string): Promise<number> {
     const ns = await import('@honyomi/torrent');
@@ -188,5 +159,35 @@ export class BtModule {
   static async remove(key: number, deleteFiles: boolean): Promise<void> {
     const ns = await import('@honyomi/torrent');
     return ns.TorrentManager.remove(key, deleteFiles);
+  }
+
+  // 聚合各任务速率写入 AppStorage，并重置归零定时器
+  private static pushSessionRates(statuses: TorrentStatusJson[]): void {
+    let down = 0;
+    let up = 0;
+    for (let i = 0; i < statuses.length; i++) {
+      down += statuses[i].downloadRate;
+      up += statuses[i].uploadRate;
+    }
+    AppStorage.setOrCreate('btDownRate', down);
+    AppStorage.setOrCreate('btUpRate', up);
+    if (BtModule.rateResetTimer >= 0) {
+      clearTimeout(BtModule.rateResetTimer);
+    }
+    BtModule.rateResetTimer = setTimeout(() => {
+      BtModule.rateResetTimer = -1;
+      AppStorage.setOrCreate('btDownRate', 0);
+      AppStorage.setOrCreate('btUpRate', 0);
+    }, 3500);
+  }
+
+  // 速率立即归零并清理挂起的归零定时器
+  private static zeroSessionRates(): void {
+    if (BtModule.rateResetTimer >= 0) {
+      clearTimeout(BtModule.rateResetTimer);
+      BtModule.rateResetTimer = -1;
+    }
+    AppStorage.setOrCreate('btDownRate', 0);
+    AppStorage.setOrCreate('btUpRate', 0);
   }
 }

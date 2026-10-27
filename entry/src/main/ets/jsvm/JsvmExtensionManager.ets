@@ -165,34 +165,6 @@ export class JsvmExtensionManager {
   }
 
   /**
-   * Posts 'destroy' so the worker can run destroyEngine and release its
-   * native JSVM engine, then arms the terminate safety net. The worker
-   * self-terminates via workerPort.close() after cleanup; the timer only
-   * kills wedged workers that never processed the destroy message.
-   */
-  private static gracefulShutdown(entry: ExtensionEntry): void {
-    try {
-      entry.worker.postMessage('{"type":"destroy"}');
-    } catch (e) {
-      // worker already gone
-    }
-    if (entry.terminateTimer >= 0) {
-      clearTimeout(entry.terminateTimer);
-    }
-    const workerRef = entry.worker;
-    entry.terminateTimer = setTimeout(() => {
-      entry.terminateTimer = -1;
-      try {
-        workerRef.terminate();
-      } catch (e) {
-        // terminate() throws BusinessError 1003 "worker is not running"
-        // when the worker has already self-terminated via workerPort.close();
-        // an uncaught throw here crashes the whole app (jscrash).
-      }
-    }, TERMINATE_GRACE_MS);
-  }
-
-  /**
    * Calls a normalized extension method. Returns the adapter envelope's
    * `data` payload. Throws WebChallengeError for Cloudflare challenges.
    */
@@ -218,6 +190,34 @@ export class JsvmExtensionManager {
     } finally {
       entry.activeCalls -= 1;
     }
+  }
+
+  /**
+   * Posts 'destroy' so the worker can run destroyEngine and release its
+   * native JSVM engine, then arms the terminate safety net. The worker
+   * self-terminates via workerPort.close() after cleanup; the timer only
+   * kills wedged workers that never processed the destroy message.
+   */
+  private static gracefulShutdown(entry: ExtensionEntry): void {
+    try {
+      entry.worker.postMessage('{"type":"destroy"}');
+    } catch (e) {
+      // worker already gone
+    }
+    if (entry.terminateTimer >= 0) {
+      clearTimeout(entry.terminateTimer);
+    }
+    const workerRef = entry.worker;
+    entry.terminateTimer = setTimeout(() => {
+      entry.terminateTimer = -1;
+      try {
+        workerRef.terminate();
+      } catch (e) {
+        // terminate() throws BusinessError 1003 "worker is not running"
+        // when the worker has already self-terminated via workerPort.close();
+        // an uncaught throw here crashes the whole app (jscrash).
+      }
+    }, TERMINATE_GRACE_MS);
   }
 
   // ------------------------------------------------------------------ private

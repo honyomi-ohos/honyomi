@@ -15,22 +15,6 @@ export struct HelpPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   private helpScroller: Scroller = new Scroller();
 
-  private sections(): HelpSection[] {
-    const sections: HelpSection[] = [
-      { id: 'getting_started', title: $r('app.string.help_getting_started_title'), body: $r('app.string.help_getting_started_body') },
-      { id: 'extensions', title: $r('app.string.help_extensions_title'), body: $r('app.string.help_extensions_body') },
-      { id: 'reader', title: $r('app.string.help_reader_title'), body: $r('app.string.help_reader_body') },
-      { id: 'downloads', title: $r('app.string.help_downloads_title'), body: $r('app.string.help_downloads_body') },
-      { id: 'tracking', title: $r('app.string.help_tracking_title'), body: $r('app.string.help_tracking_body') },
-      { id: 'migration', title: $r('app.string.help_migration_title'), body: $r('app.string.help_migration_body') },
-      { id: 'updates', title: $r('app.string.help_updates_title'), body: $r('app.string.help_updates_body') },
-      { id: 'storage', title: $r('app.string.help_storage_title'), body: $r('app.string.help_storage_body') },
-      { id: 'security', title: $r('app.string.help_security_title'), body: $r('app.string.help_security_body') },
-      { id: 'troubleshooting', title: $r('app.string.help_troubleshooting_title'), body: $r('app.string.help_troubleshooting_body') }
-    ];
-    return sections;
-  }
-
   build() {
     NavGlassPage({ title: $r('app.string.help_title'), scroller: this.helpScroller }) {
       Column() {
@@ -67,7 +51,12 @@ export struct HelpPage {
             }, (section: HelpSection) => section.id)
           }
           .width('100%')
-          .padding({ left: 16, right: 16, top: 4, bottom: 24 })
+          .padding({
+            left: 16,
+            right: 16,
+            top: 4,
+            bottom: 24
+          })
         }
         .layoutWeight(1)
         .scrollBar(BarState.Off)
@@ -76,6 +65,30 @@ export struct HelpPage {
       .width('100%')
       .height('100%')
     }
+  }
+
+  private sections(): HelpSection[] {
+    const sections: HelpSection[] = [
+      {
+        id: 'getting_started',
+        title: $r('app.string.help_getting_started_title'),
+        body: $r('app.string.help_getting_started_body')
+      },
+      { id: 'extensions', title: $r('app.string.help_extensions_title'), body: $r('app.string.help_extensions_body') },
+      { id: 'reader', title: $r('app.string.help_reader_title'), body: $r('app.string.help_reader_body') },
+      { id: 'downloads', title: $r('app.string.help_downloads_title'), body: $r('app.string.help_downloads_body') },
+      { id: 'tracking', title: $r('app.string.help_tracking_title'), body: $r('app.string.help_tracking_body') },
+      { id: 'migration', title: $r('app.string.help_migration_title'), body: $r('app.string.help_migration_body') },
+      { id: 'updates', title: $r('app.string.help_updates_title'), body: $r('app.string.help_updates_body') },
+      { id: 'storage', title: $r('app.string.help_storage_title'), body: $r('app.string.help_storage_body') },
+      { id: 'security', title: $r('app.string.help_security_title'), body: $r('app.string.help_security_body') },
+      {
+        id: 'troubleshooting',
+        title: $r('app.string.help_troubleshooting_title'),
+        body: $r('app.string.help_troubleshooting_body')
+      }
+    ];
+    return sections;
   }
 }
 

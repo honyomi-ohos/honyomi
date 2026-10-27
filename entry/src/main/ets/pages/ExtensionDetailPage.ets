@@ -107,10 +107,6 @@ export struct ExtensionDetailPage {
     this.destroyed = true;
   }
 
-  private inset(): number {
-    return Bp.contentInset(this.windowW);
-  }
-
   @Builder
   infoCell(primary: string, secondary: ResourceStr) {
     Column() {
@@ -435,6 +431,10 @@ export struct ExtensionDetailPage {
       this.loadPlugin();
       this.loadSchema();
     })
+  }
+
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
   }
 
   private currentSource(): Source | undefined {

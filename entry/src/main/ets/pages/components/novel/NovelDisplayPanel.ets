@@ -84,6 +84,7 @@ export struct NovelDisplayPanel {
         Flex({ wrap: FlexWrap.Wrap }) {
           this.themeChip($r('app.string.reader_theme_auto'), 3)
           this.themeChip($r('app.string.reader_theme_white'), 0)
+          this.themeChip($r('app.string.reader_theme_paper'), 4)
           this.themeChip($r('app.string.reader_theme_gray'), 2)
           this.themeChip($r('app.string.reader_theme_black'), 1)
         }

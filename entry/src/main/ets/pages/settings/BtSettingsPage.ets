@@ -2,7 +2,6 @@ import { ThemePalette } from '../../common/Theme';
 import { SheetPreset } from '../components/SheetPreset';
 import { Settings } from '../../common/Settings';
 import { Util } from '../../common/Util';
-import { Bp } from '../../common/Breakpoint';
 import { BtFlow } from '../../data/BtFlow';
 import { BtModule } from '../../data/BtModule';
 import { NavGlassPage } from '../../common/HdsNavHost';
@@ -35,10 +34,6 @@ export struct BtSettingsContent {
   };
 
   aboutToAppear(): void {
-    this.peerFilterCount = BtModule.peerFilterRules().length;
-  }
-
-  private refreshPeerFilterCount(): void {
     this.peerFilterCount = BtModule.peerFilterRules().length;
   }
 
@@ -92,6 +87,7 @@ export struct BtSettingsContent {
             }
             .layoutWeight(1)
             .alignItems(HorizontalAlign.Start)
+
             Text(this.peerFilterCountText())
               .fontSize(14)
               .fontColor(this.pal.sub)
@@ -102,7 +98,12 @@ export struct BtSettingsContent {
           }
           .width('100%')
           .constraintSize({ minHeight: 52 })
-          .padding({ left: 16, right: 12, top: 10, bottom: 10 })
+          .padding({
+            left: 16,
+            right: 12,
+            top: 10,
+            bottom: 10
+          })
           .alignItems(VerticalAlign.Center)
           .onClick(() => {
             this.openPeerFilter();
@@ -160,6 +161,7 @@ export struct BtSettingsContent {
             }
             .layoutWeight(1)
             .alignItems(HorizontalAlign.Start)
+
             Text(this.trackerCountText())
               .fontSize(14)
               .fontColor(this.pal.sub)
@@ -170,7 +172,12 @@ export struct BtSettingsContent {
           }
           .width('100%')
           .constraintSize({ minHeight: 52 })
-          .padding({ left: 16, right: 12, top: 10, bottom: 10 })
+          .padding({
+            left: 16,
+            right: 12,
+            top: 10,
+            bottom: 10
+          })
           .alignItems(VerticalAlign.Center)
           .bindSheet($$this.showTrackerSheet, this.trackerSheetBuilder(),
             SheetPreset.fit(this.windowW, {
@@ -205,6 +212,39 @@ export struct BtSettingsContent {
     .height('100%')
     .scrollBar(BarState.Off)
     .align(Alignment.TopStart)
+  }
+
+  @Builder
+  trackerSheetBuilder() {
+    Column({ space: 12 }) {
+      TextArea({ text: this.trackerDraft, placeholder: $r('app.string.bt_set_extra_trackers_hint') })
+        .fontSize(14)
+        .height(160)
+        .width('100%')
+        .onChange((value: string) => {
+          this.trackerDraft = value;
+        })
+      Button($r('app.string.common_save'))
+        .width('100%')
+        .buttonStyle(ButtonStyleMode.NORMAL)
+        .backgroundColor(this.pal.primary)
+        .onClick(() => {
+          Settings.setBtExtraTrackers(this.trackerDraft);
+          this.showTrackerSheet = false;
+        })
+    }
+    .width('100%')
+    .padding({
+      left: 20,
+      right: 20,
+      top: 8,
+      bottom: 24
+    })
+    .alignItems(HorizontalAlign.Start)
+  }
+
+  private refreshPeerFilterCount(): void {
+    this.peerFilterCount = BtModule.peerFilterRules().length;
   }
 
   private btEngineOptions(): ResourceStr[] {
@@ -273,30 +313,6 @@ export struct BtSettingsContent {
       return Util.resStr(this.getUIContext(), $r('app.string.bt_peer_filter_none'));
     }
     return Util.resStr(this.getUIContext(), $r('app.string.bt_peer_filter_n', this.peerFilterCount));
-  }
-
-  @Builder
-  trackerSheetBuilder() {
-    Column({ space: 12 }) {
-      TextArea({ text: this.trackerDraft, placeholder: $r('app.string.bt_set_extra_trackers_hint') })
-        .fontSize(14)
-        .height(160)
-        .width('100%')
-        .onChange((value: string) => {
-          this.trackerDraft = value;
-        })
-      Button($r('app.string.common_save'))
-        .width('100%')
-        .buttonStyle(ButtonStyleMode.NORMAL)
-        .backgroundColor(this.pal.primary)
-        .onClick(() => {
-          Settings.setBtExtraTrackers(this.trackerDraft);
-          this.showTrackerSheet = false;
-        })
-    }
-    .width('100%')
-    .padding({ left: 20, right: 20, top: 8, bottom: 24 })
-    .alignItems(HorizontalAlign.Start)
   }
 }
 

@@ -27,6 +27,7 @@ import { Util } from '../common/Util';
 import { VideoCacheServer } from '../common/VideoCacheServer';
 import { VideoCastItem, VideoCastManager } from '../common/VideoCast';
 import { ChapterNeighbors, ReaderChapterNav } from '../common/ReaderChapterNav';
+import { Haptics } from '../common/Haptics';
 import { AppIcon } from './components/AppIcon';
 import { DanmakuController, DanmakuView } from './components/DanmakuView';
 
@@ -111,6 +112,11 @@ export struct VideoPlayerPage {
   @State volume: number = 1.0;
   @State muted: boolean = false;
   @State volHudPct: number = -1;
+  // 华为视频手势：亮度 HUD（左半屏上下滑）/ 快进 HUD（横滑）/ 续播提示
+  @State brightHudPct: number = -1;
+  @State seekHudMs: number = -1;
+  @State showResumeTip: boolean = false;
+  @State resumeTipMs: number = 0;
   @State casting: boolean = false;
   @State castDevice: string = '';
   private mangaId: number = -1;
@@ -146,6 +152,18 @@ export struct VideoPlayerPage {
   private spaceTimer: number = -1;
   private spaceDown: boolean = false;
   private volumeHudTimer: number = -1;
+  // ---- 华为视频手势状态 ----
+  // 手势类型：0 无 1 亮度（左半屏上下滑）2 音量（右半屏上下滑）3 快进（横滑）
+  private panMode: number = 0;
+  private panLeftHalf: boolean = false;
+  private panBaseBright: number = 0.5;
+  private panBaseVol: number = 1;
+  private panSeekFrom: number = 0;
+  private brightHudTimer: number = -1;
+  private resumeTipTimer: number = -1;
+  private resumeTipArmed: boolean = false;
+  // 播放器亮度（0=跟随系统，(0,1]=固定亮度，随手势更新并持久化）
+  private videoBright: number = 0;
   private win: window.Window | undefined = undefined;
   // PC/2in1：真全屏走窗口最大化沉浸式；进入前是悬浮窗则退出时 recover 还原尺寸位置
   private pcLike: boolean = deviceInfo.deviceType === 'pc' || deviceInfo.deviceType === '2in1';
@@ -192,6 +210,7 @@ export struct VideoPlayerPage {
     this.log('aboutToAppear');
     this.speed = Settings.getVideoSpeed();
     this.volume = Settings.getVideoVolume();
+    this.videoBright = Settings.getVideoBrightness();
     this.autoNext = Settings.getVideoAutoNext();
     this.scaleMode = Settings.getVideoScaleMode();
     this.danmakuOn = Settings.getDanmakuEnabled();
@@ -233,6 +252,9 @@ export struct VideoPlayerPage {
         this.win.setPreferredOrientation(window.Orientation.UNSPECIFIED).catch((): void => {
         });
         this.win.setWindowSystemBarEnable(['status', 'navigation']).catch((): void => {
+        });
+        // 还原手势调节的窗口亮度（0=跟随系统）
+        this.win.setWindowBrightness(0).catch((): void => {
         });
       }
       Settings.applySystemBar(Util.hostAbilityContext(this.getUIContext()));
@@ -295,6 +317,7 @@ export struct VideoPlayerPage {
       .onClick(() => {
         this.openCastSheet();
       })
+
       Column() {
         AppIcon({ name: 'lock', iconSize: 20, tint: Color.White })
       }
@@ -967,6 +990,20 @@ export struct VideoPlayerPage {
         }
         .width('100%')
         .height('100%')
+        // 华为视频手势：上下滑调亮度/音量、横滑快进（与双击/长按共存，PanGesture 与 Tap 不冲突）
+        .gesture(PanGesture({ fingers: 1, direction: PanDirection.All, distance: 10 })
+          .onActionStart((event: GestureEvent) => {
+            this.panStart(event);
+          })
+          .onActionUpdate((event: GestureEvent) => {
+            this.panUpdate(event);
+          })
+          .onActionEnd(() => {
+            this.panEnd();
+          })
+          .onActionCancel(() => {
+            this.panEnd();
+          }))
 
         if (this.boosting) {
           // 长按快进：页面顶部显示四个平行速度胶囊，当前档位轻微高亮
@@ -1057,6 +1094,99 @@ export struct VideoPlayerPage {
           .borderRadius(20)
           .backgroundColor('rgba(0,0,0,0.6)')
           .offset({ y: '-18%' })
+        }
+
+        // 手势亮度 HUD：左半屏上下滑调节窗口亮度（0=跟随系统不可低于 5%）
+        if (this.brightHudPct >= 0) {
+          Row({ space: 8 }) {
+            Text($r('app.string.video_brightness'))
+              .fontSize(13)
+              .fontColor(Color.White)
+            Progress({
+              value: this.brightHudPct,
+              total: 100,
+              type: ProgressType.Linear
+            })
+              .width(110)
+              .height(4)
+              .color(Color.White)
+              .backgroundColor('rgba(255,255,255,0.3)')
+            Text(`${this.brightHudPct}%`)
+              .fontSize(13)
+              .fontColor(Color.White)
+          }
+          .padding({
+            left: 16,
+            right: 16,
+            top: 10,
+            bottom: 10
+          })
+          .borderRadius(20)
+          .backgroundColor('rgba(0,0,0,0.6)')
+          .offset({ y: '-18%' })
+        }
+
+        // 手势快进 HUD：横滑预览目标时间，松手跳转
+        if (this.seekHudMs >= 0) {
+          Row({ space: 8 }) {
+            AppIcon({
+              name: this.seekHudMs >= this.panSeekFrom ? 'forward_30' : 'replay_30',
+              iconSize: 22,
+              tint: Color.White
+            })
+            Text($r('app.string.video_seek_to'))
+              .fontSize(13)
+              .fontColor(Color.White)
+            Text(this.clock(this.seekHudMs))
+              .fontSize(15)
+              .fontColor(Color.White)
+          }
+          .padding({
+            left: 16,
+            right: 16,
+            top: 10,
+            bottom: 10
+          })
+          .borderRadius(20)
+          .backgroundColor('rgba(0,0,0,0.6)')
+          .offset({ y: '-26%' })
+        }
+
+        // 续播提示（参考华为视频）：继续播放上次进度，可一键「从头播放」
+        if (this.showResumeTip) {
+          Row({ space: 10 }) {
+            AppIcon({ name: 'play_arrow', iconSize: 18, tint: Color.White })
+            Text($r('app.string.video_resume_tip'))
+              .fontSize(13)
+              .fontColor(Color.White)
+            Text(this.clock(this.resumeTipMs))
+              .fontSize(13)
+              .fontColor('rgba(255,255,255,0.7)')
+            Text($r('app.string.video_resume_restart'))
+              .fontSize(13)
+              .fontColor(this.pal.primary)
+              .padding({ left: 6, right: 6 })
+              .onClick(() => {
+                this.showResumeTip = false;
+                if (this.resumeTipTimer >= 0) {
+                  clearTimeout(this.resumeTipTimer);
+                  this.resumeTipTimer = -1;
+                }
+                Haptics.soft();
+                this.seekTo(0);
+                this.pokeControls();
+              })
+          }
+          .padding({
+            left: 16,
+            right: 16,
+            top: 10,
+            bottom: 10
+          })
+          .borderRadius(20)
+          .backgroundColor('rgba(0,0,0,0.6)')
+          .position({ x: '50%', y: '80%' })
+          .markAnchor({ x: '50%' })
         }
 
         if (this.errorText !== '') {
@@ -1209,6 +1339,14 @@ export struct VideoPlayerPage {
       clearTimeout(this.volumeHudTimer);
       this.volumeHudTimer = -1;
     }
+    if (this.brightHudTimer >= 0) {
+      clearTimeout(this.brightHudTimer);
+      this.brightHudTimer = -1;
+    }
+    if (this.resumeTipTimer >= 0) {
+      clearTimeout(this.resumeTipTimer);
+      this.resumeTipTimer = -1;
+    }
     this.spaceDown = false;
   }
 
@@ -1243,6 +1381,8 @@ export struct VideoPlayerPage {
       this.resumeMs = chapter.lastPageRead > 0 ? chapter.lastPageRead : 0;
       this.positionMs = this.resumeMs;
       this.savedMs = this.resumeMs;
+      // 续播提示（参考华为视频）：跳过 30s 以上才提示可「从头播放」
+      this.resumeTipArmed = this.resumeMs > 30000;
       const manga = await MangaRepo.get(chapter.mangaId);
       if (gen !== this.loadGen) {
         return;
@@ -1680,6 +1820,10 @@ export struct VideoPlayerPage {
         if (this.resumeMs > 0 && (this.durationMs === 0 || this.resumeMs < this.durationMs)) {
           // @SuppressWarnings syscap
           player.seek(this.resumeMs, media.SeekMode.SEEK_PREV_SYNC);
+          if (this.resumeTipArmed) {
+            this.resumeTipArmed = false;
+            this.showResumeTipAt(this.resumeMs);
+          }
         }
         // 恢复上次软件音量（prepared 状态起 setVolume 可用）
         try {
@@ -1884,6 +2028,7 @@ export struct VideoPlayerPage {
       this.pokeControls();
       return;
     }
+    Haptics.soft();
     this.seekBy(side * 10000);
   }
 
@@ -1973,6 +2118,7 @@ export struct VideoPlayerPage {
     this.boostSpeedIndex = 2;
     this.boostAnchorX = this.boostDownX;
     this.log(`boost start ${BOOST_SPEEDS[this.boostSpeedIndex]}x pos=${this.positionMs}`);
+    Haptics.medium();
     player.setSpeed(this.boostSpeedToEnum(this.boostSpeedIndex));
     this.boosting = true;
   }
@@ -1992,6 +2138,7 @@ export struct VideoPlayerPage {
     if (idx !== this.boostSpeedIndex) {
       this.boostAnchorX = x;
       this.boostSpeedIndex = idx;
+      Haptics.soft();
       const player = this.player;
       if (player !== undefined) {
         this.log(`boost speed ${BOOST_SPEEDS[idx]}x`);
@@ -2248,6 +2395,119 @@ export struct VideoPlayerPage {
       this.volumeHudTimer = -1;
       this.volHudPct = -1;
     }, 800);
+  }
+
+  // ---- 华为视频手势：左半屏上下滑亮度 / 右半屏上下滑音量 / 横滑快进 ----
+
+  private panStart(event: GestureEvent): void {
+    this.panMode = 0;
+    this.panSeekFrom = this.positionMs;
+    this.seekHudMs = -1;
+    if (this.locked || this.showSheet) {
+      return;
+    }
+    // 上下滑的方向（亮度/音量）按手势起点所在半屏决定
+    this.panLeftHalf = this.getUIContext().vp2px(event.globalX) < this.areaW / 2;
+    this.disarmBoost();
+  }
+
+  private panUpdate(event: GestureEvent): void {
+    if (this.panMode === 0 && (this.locked || this.showSheet)) {
+      return;
+    }
+    const density: number = this.getUIContext().vp2px(1);
+    const dx: number = this.getUIContext().vp2px(event.offsetX);
+    const dy: number = this.getUIContext().vp2px(event.offsetY);
+    if (this.panMode === 0) {
+      // 首个显著位移判型：横向=快进，纵向=亮度/音量
+      if (Math.abs(dx) < 12 * density && Math.abs(dy) < 12 * density) {
+        return;
+      }
+      if (Math.abs(dx) > Math.abs(dy)) {
+        if (this.durationMs <= 0) {
+          return;
+        }
+        this.panMode = 3;
+        this.panSeekFrom = this.positionMs;
+      } else if (this.panLeftHalf) {
+        this.panMode = 1;
+        this.panBaseBright = this.videoBright > 0 ? this.videoBright : 0.5;
+      } else {
+        this.panMode = 2;
+        this.panBaseVol = this.volume;
+      }
+    }
+    const h: number = this.areaH > 0 ? this.areaH : 1;
+    if (this.panMode === 1) {
+      // 亮度：整屏纵向滑动覆盖全量程，下限 5% 防止全黑
+      let next = this.panBaseBright - dy / h;
+      next = Math.min(1, Math.max(0.05, next));
+      this.videoBright = next;
+      this.applyVideoBrightness();
+      this.showBrightHud();
+    } else if (this.panMode === 2) {
+      // 音量：软件音量 0-1，整屏纵向滑动覆盖全量程
+      let next = this.panBaseVol - dy / h;
+      next = Math.min(1, Math.max(0, next));
+      if (next !== this.volume) {
+        this.volume = next;
+        this.muted = false;
+        this.applyVolume();
+      }
+      this.showVolumeHud();
+    } else if (this.panMode === 3) {
+      // 快进：整屏横向滑动覆盖总时长，HUD 预览目标时间，松手才真正跳转
+      const w: number = this.areaW > 0 ? this.areaW : 1;
+      let target = this.panSeekFrom + dx / w * this.durationMs;
+      target = Math.min(this.durationMs, Math.max(0, target));
+      this.seekHudMs = target;
+    }
+  }
+
+  private panEnd(): void {
+    if (this.panMode === 1) {
+      Settings.setVideoBrightness(this.videoBright);
+    } else if (this.panMode === 2) {
+      Settings.setVideoVolume(this.volume);
+    } else if (this.panMode === 3 && this.seekHudMs >= 0) {
+      if (Math.abs(this.seekHudMs - this.panSeekFrom) >= 1000) {
+        Haptics.soft();
+        this.seekTo(Math.floor(this.seekHudMs));
+      }
+      this.seekHudMs = -1;
+    }
+    this.panMode = 0;
+  }
+
+  private applyVideoBrightness(): void {
+    if (this.win === undefined) {
+      return;
+    }
+    this.win.setWindowBrightness(this.videoBright).catch((): void => {
+    });
+  }
+
+  private showBrightHud(): void {
+    this.brightHudPct = Math.round(this.videoBright * 100);
+    if (this.brightHudTimer >= 0) {
+      clearTimeout(this.brightHudTimer);
+    }
+    this.brightHudTimer = setTimeout(() => {
+      this.brightHudTimer = -1;
+      this.brightHudPct = -1;
+    }, 800);
+  }
+
+  private showResumeTipAt(ms: number): void {
+    this.resumeTipMs = ms;
+    this.showResumeTip = true;
+    if (this.resumeTipTimer >= 0) {
+      clearTimeout(this.resumeTipTimer);
+    }
+    this.resumeTipTimer = setTimeout(() => {
+      this.resumeTipTimer = -1;
+      this.showResumeTip = false;
+    }, 6000);
   }
 
   // 意图框架快进/跳转指令（VideoSeekIntent 写入）：仅栈顶最新实例、且时间戳递增时消费

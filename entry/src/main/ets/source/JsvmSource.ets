@@ -14,6 +14,7 @@ export interface PluginManifest {
   versionCode: number;
   baseUrl: string;
   nsfw: boolean;
+
   // BT 源标记：内容为种子/magnet 下载（manifest 可选，缺省 false）
   bt: boolean;
   supportsLatest: boolean;

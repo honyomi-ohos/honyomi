@@ -14,25 +14,26 @@ export struct BtRateBadge {
   build() {
     if (this.engineStarted) {
       Column({ space: 1 }) {
-      // 箭头置于速率之后：整体右对齐，箭头固定贴右，速率数字向左伸缩不抖动
-      Row({ space: 3 }) {
-        Text(this.rateText(this.downRate))
-          .fontSize(10)
-          .fontColor(this.pal.sub)
-          .maxLines(1)
-        Text('↓')
-          .fontSize(10)
-          .fontColor(this.pal.sub)
-      }
-      Row({ space: 3 }) {
-        Text(this.rateText(this.upRate))
-          .fontSize(10)
-          .fontColor(this.pal.sub)
-          .maxLines(1)
-        Text('↑')
-          .fontSize(10)
-          .fontColor(this.pal.sub)
-      }
+        // 箭头置于速率之后：整体右对齐，箭头固定贴右，速率数字向左伸缩不抖动
+        Row({ space: 3 }) {
+          Text(this.rateText(this.downRate))
+            .fontSize(10)
+            .fontColor(this.pal.sub)
+            .maxLines(1)
+          Text('↓')
+            .fontSize(10)
+            .fontColor(this.pal.sub)
+        }
+
+        Row({ space: 3 }) {
+          Text(this.rateText(this.upRate))
+            .fontSize(10)
+            .fontColor(this.pal.sub)
+            .maxLines(1)
+          Text('↑')
+            .fontSize(10)
+            .fontColor(this.pal.sub)
+        }
       }
       .alignItems(HorizontalAlign.End)
     }

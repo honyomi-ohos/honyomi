@@ -39,10 +39,6 @@ export struct BrowseSourcePage {
   @State hasNextPage: boolean = false;
   @State loadingMore: boolean = false;
   @State contentW: number = 0;
-  // 结果网格视口高度（补拉判定用，不参与渲染）
-  private gridH: number = 0;
-  // 上次补拉触发时的条数（加载后条数无增长时终止补拉链）
-  private fillChecked: number = -1;
   @State folderReady: boolean = false;
   @State syncing: boolean = false;
   @State showFolderSheet: boolean = false;
@@ -53,6 +49,10 @@ export struct BrowseSourcePage {
   @State showFilterSheet: boolean = false;
   // Index 根节点 Esc 广播：关闭文件夹/过滤弹层（计数器递增触发）
   @StorageLink('sheetEsc') @Watch('onSheetEsc') sheetEsc: number = 0;
+  // 结果网格视口高度（补拉判定用，不参与渲染）
+  private gridH: number = 0;
+  // 上次补拉触发时的条数（加载后条数无增长时终止补拉链）
+  private fillChecked: number = -1;
 
   currentSource(): Source | undefined {
     return SourceRegistry.get(this.sourceKey);
@@ -260,27 +260,6 @@ export struct BrowseSourcePage {
 
   // 内容不足一屏时的补拉兜底：大屏列数多 + 插件单页条数少（如哔咔 20 条/页）时，
   // Grid 内容不溢出无法滚动，onReachEnd 永远不触发。按卡片实际尺寸估算铺满视口所需条数，
-  // 不足则继续加载下一页；loadMore 成功后回到这里形成补拉链。
-  private ensureFilled(): void {
-    if (this.gridH <= 0 || this.results.length === 0 || this.loadingMore || !this.hasNextPage) {
-      return;
-    }
-    // 上次补拉后条数没有增长（插件返回空页）：终止补拉链，避免死循环
-    if (this.results.length === this.fillChecked) {
-      return;
-    }
-    const columns = this.gridColumns();
-    // 卡片宽度 = (网格宽 - 左右内边距 32 - 列间距 12*(cols-1)) / cols
-    const cardW = (this.contentW - 32 - (columns - 1) * 12) / columns;
-    // 行高 = 封面（宽高比 0.7）+ 标题两行 + 行间距
-    const rowH = cardW / 0.7 + 56;
-    // 多备一行缓冲：内容恰好等于视口高度时仍不可滚动，预留余量保证 onReachEnd 可触发
-    const rowsNeeded = Math.ceil(this.gridH / rowH) + 1;
-    if (this.results.length < rowsNeeded * columns) {
-      this.fillChecked = this.results.length;
-      this.loadMore();
-    }
-  }
 
   async toRecords(sourceKey: string, mangas: SManga[]): Promise<MangaRecord[]> {
     const records: MangaRecord[] = [];
@@ -316,8 +295,6 @@ export struct BrowseSourcePage {
     }
   }
 
-  // ---- 过滤器面板 Builder（对齐 Mihon SourceFilterDialog：下拉/整行切换，不用胶囊） ----
-
   // 已在书架 → 提示；存在自建分类 → 弹分类选择；否则直接入库（默认分类）
   async quickAddToLibrary(record: MangaRecord): Promise<void> {
     try {
@@ -340,6 +317,8 @@ export struct BrowseSourcePage {
       Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
     }
   }
+
+  // ---- 过滤器面板 Builder（对齐 Mihon SourceFilterDialog：下拉/整行切换，不用胶囊） ----
 
   toSManga(record: MangaRecord): SManga {
     const m: SManga = {
@@ -793,6 +772,28 @@ export struct BrowseSourcePage {
         this.loadFirst();
       }
     })
+  }
+
+  // 不足则继续加载下一页；loadMore 成功后回到这里形成补拉链。
+  private ensureFilled(): void {
+    if (this.gridH <= 0 || this.results.length === 0 || this.loadingMore || !this.hasNextPage) {
+      return;
+    }
+    // 上次补拉后条数没有增长（插件返回空页）：终止补拉链，避免死循环
+    if (this.results.length === this.fillChecked) {
+      return;
+    }
+    const columns = this.gridColumns();
+    // 卡片宽度 = (网格宽 - 左右内边距 32 - 列间距 12*(cols-1)) / cols
+    const cardW = (this.contentW - 32 - (columns - 1) * 12) / columns;
+    // 行高 = 封面（宽高比 0.7）+ 标题两行 + 行间距
+    const rowH = cardW / 0.7 + 56;
+    // 多备一行缓冲：内容恰好等于视口高度时仍不可滚动，预留余量保证 onReachEnd 可触发
+    const rowsNeeded = Math.ceil(this.gridH / rowH) + 1;
+    if (this.results.length < rowsNeeded * columns) {
+      this.fillChecked = this.results.length;
+      this.loadMore();
+    }
   }
 
   // NSFW 源内的漫画卡片角标（MangaCard 右下红标）

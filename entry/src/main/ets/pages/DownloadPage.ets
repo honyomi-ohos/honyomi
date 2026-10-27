@@ -227,11 +227,6 @@ export struct DownloadPage {
     })
   }
 
-  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（720 上限）
-  private inset(): number {
-    return Bp.contentInset(this.windowW);
-  }
-
   // 排序菜单（对齐 Mihon 排序键：章节号升/降序 + 上传日期从新到旧/从旧到新）
   @Builder
   sortMenuBuilder() {
@@ -337,7 +332,6 @@ export struct DownloadPage {
     })
   }
 
-  // 已下载分组头：普通态点击折叠/展开、长按进入多选并勾选整组、尾部图标整作品删除；
   // 多选态头部变勾选框，点击整组勾选/取消
   @Builder
   downloadedGroupHeader(group: DownloadedManga) {
@@ -404,7 +398,8 @@ export struct DownloadPage {
     }, ResponseType.RightClick)
   }
 
-  // 已下载章节行：普通态尾部单章删除、长按进入多选；
+  // 已下载分组头：普通态点击折叠/展开、长按进入多选并勾选整组、尾部图标整作品删除；
+
   // 多选态头部勾选框、点击行切换选中
   @Builder
   downloadedChapterRow(item: DownloadedChapter) {
@@ -457,6 +452,8 @@ export struct DownloadPage {
       this.downloadedChapterMenu(item);
     }, ResponseType.RightClick)
   }
+
+  // 已下载章节行：普通态尾部单章删除、长按进入多选；
 
   // 下载中 Tab：分组队列列表 + 拖拽排序 + 暂停/继续 FAB
   @Builder
@@ -713,7 +710,34 @@ export struct DownloadPage {
     .backgroundColor(this.pal.bg)
   }
 
+  // PC 右键菜单「选择」：整组进入多选（与长按一致；移动端仍走长按手势）
+  @Builder
+  downloadedGroupMenu(group: DownloadedManga) {
+    Menu() {
+      MenuItem({ content: $r('app.string.common_select') })
+        .onClick(() => {
+          this.enterGroupSelection(group);
+        })
+    }
+  }
+
   // ----- 队列分组折叠 -----
+
+  // PC 右键菜单「选择」：单章进入多选（与长按一致）
+  @Builder
+  downloadedChapterMenu(item: DownloadedChapter) {
+    Menu() {
+      MenuItem({ content: $r('app.string.common_select') })
+        .onClick(() => {
+          this.enterSelection(item.chapterId);
+        })
+    }
+  }
+
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（720 上限）
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
+  }
 
   private isQueueGroupCollapsed(mangaId: number): boolean {
     return this.collapsedQueueIds.has(mangaId);
@@ -728,6 +752,8 @@ export struct DownloadPage {
     this.rebuildQueueRows();
   }
 
+  // ----- 渲染模型重建 -----
+
   private isDownloadedGroupCollapsed(mangaId: number): boolean {
     return this.collapsedDownloadedIds.has(mangaId);
   }
@@ -741,7 +767,7 @@ export struct DownloadPage {
     this.rebuildDownloadedRows();
   }
 
-  // ----- 渲染模型重建 -----
+  // ----- 组内拖拽排序（对齐 Mihon shouldMove：跨组拖拽禁止） -----
 
   // 队列摊平：分组头 + （展开组的）任务行；分组按首次出现顺序
   private rebuildQueueRows(): void {
@@ -769,6 +795,8 @@ export struct DownloadPage {
     this.queueRows = rows;
   }
 
+  // 拖拽落位后把可见行顺序同步回 DownloadService：
+
   // 已下载摊平：分组头 + （展开组的）章节行
   private rebuildDownloadedRows(): void {
     const rows: DownloadedRowItem[] = [];
@@ -792,7 +820,7 @@ export struct DownloadPage {
     this.downloadedCount = count;
   }
 
-  // ----- 组内拖拽排序（对齐 Mihon shouldMove：跨组拖拽禁止） -----
+  // ----- 数据加载 -----
 
   private onQueueMove(from: number, to: number): void {
     if (from === to) {
@@ -818,7 +846,6 @@ export struct DownloadPage {
     this.syncDraggedGroupOrder(movedTask.mangaId);
   }
 
-  // 拖拽落位后把可见行顺序同步回 DownloadService：
   // 被拖组按行内新顺序、其余分组按原顺序，分组间保持原相对顺序
   private syncDraggedGroupOrder(mangaId: number): void {
     const visible: number[] = [];
@@ -855,8 +882,6 @@ export struct DownloadPage {
     this.queue = DownloadService.getQueue();
   }
 
-  // ----- 数据加载 -----
-
   private onQueueChanged = (): void => {
     this.queue = DownloadService.getQueue().slice();
     this.paused = DownloadService.isPaused();
@@ -877,6 +902,10 @@ export struct DownloadPage {
     return ids.join(',');
   }
 
+  // ----- 行 key：折叠态编入分组头 key -----
+  // ForEach 对同 key 行复用组件而不重跑生成器，折叠集合又非状态成员，
+  // 箭头图标无法驱动刷新；将折叠态编入 key 使头行在切换时销毁重建
+
   private async loadDownloaded(): Promise<void> {
     this.downloaded = await DownloadService.listDownloaded();
     this.rebuildDownloadedRows();
@@ -890,9 +919,7 @@ export struct DownloadPage {
     Util.toastRes(this.getUIContext(), $r('app.string.download_deleted'));
   }
 
-  // ----- 行 key：折叠态编入分组头 key -----
-  // ForEach 对同 key 行复用组件而不重跑生成器，折叠集合又非状态成员，
-  // 箭头图标无法驱动刷新；将折叠态编入 key 使头行在切换时销毁重建
+  // ----- 已下载多选 -----
 
   private queueRowKey(item: QueueRowItem): string {
     if (item.isHeader) {
@@ -906,30 +933,6 @@ export struct DownloadPage {
       return `dh-${item.group.mangaId}-${this.collapsedDownloadedIds.has(item.group.mangaId) ? 'c' : 'e'}`;
     }
     return item.key();
-  }
-
-  // ----- 已下载多选 -----
-
-  // PC 右键菜单「选择」：整组进入多选（与长按一致；移动端仍走长按手势）
-  @Builder
-  downloadedGroupMenu(group: DownloadedManga) {
-    Menu() {
-      MenuItem({ content: $r('app.string.common_select') })
-        .onClick(() => {
-          this.enterGroupSelection(group);
-        })
-    }
-  }
-
-  // PC 右键菜单「选择」：单章进入多选（与长按一致）
-  @Builder
-  downloadedChapterMenu(item: DownloadedChapter) {
-    Menu() {
-      MenuItem({ content: $r('app.string.common_select') })
-        .onClick(() => {
-          this.enterSelection(item.chapterId);
-        })
-    }
   }
 
   private enterSelection(chapterId: number): void {

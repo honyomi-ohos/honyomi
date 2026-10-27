@@ -101,6 +101,9 @@
         "name": "ohos.permission.GET_NETWORK_INFO"
       },
       {
+        "name": "ohos.permission.VIBRATE"
+      },
+      {
         "name": "ohos.permission.FILE_ACCESS_PERSIST"
       },
       {

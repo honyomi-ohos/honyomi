@@ -24,16 +24,18 @@ import { OnboardingParams } from '../../model/RouteParams';
 @Component
 export struct AdvancedContent {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  // 打开新手引导/调试信息（由宿主注入导航；lg 双栏与窄屏壳均 push 路由）
-  onOpenOnboarding: () => void = () => {
-  };
-  onOpenDebugInfo: () => void = () => {
-  };
   // 长任务进行中（刷新封面等），防重复触发
   @State busy: boolean = false;
   // UA 响应式镜像：Settings 非响应式，编辑/重置后须手动刷新行文本
   @State userAgent: string = Settings.getUserAgent();
   private disposed: boolean = false;
+
+  // 打开新手引导/调试信息（由宿主注入导航；lg 双栏与窄屏壳均 push 路由）
+  onOpenOnboarding: () => void = () => {
+  };
+
+  onOpenDebugInfo: () => void = () => {
+  };
 
   aboutToDisappear(): void {
     this.disposed = true;

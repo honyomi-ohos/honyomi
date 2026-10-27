@@ -155,12 +155,6 @@ export struct GlobalSearchPage {
     }
   }
 
-  // 点击源标题行：进入该源浏览页并携带当前搜索词（对齐 Mihon onClickSource）
-  private openSourceBrowse(section: SearchSection): void {
-    const params: BrowseSourceParams = { sourceKey: section.sourceKey, mode: 'popular', query: this.searchQuery };
-    this.pathStack.pushPathByName('BrowseSource', params);
-  }
-
   build() {
     NavDestination() {
       this.bodyContent()
@@ -176,35 +170,6 @@ export struct GlobalSearchPage {
         this.startSearch();
       }
     })
-  }
-
-  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（720 上限）
-  private inset(): number {
-    return Bp.contentInset(this.windowW);
-  }
-
-  private doneCount(): number {
-    let n = 0;
-    for (const s of this.sections) {
-      if (s.state !== 'loading') {
-        n++;
-      }
-    }
-    return n;
-  }
-
-  // “只显示有结果的源”过滤后的分节列表
-  private visibleSections(): SearchSection[] {
-    if (!this.onlyHasResults) {
-      return this.sections;
-    }
-    const list: SearchSection[] = [];
-    for (const s of this.sections) {
-      if (s.state === 'done' && s.results.length > 0) {
-        list.push(s);
-      }
-    }
-    return list;
   }
 
   @Builder
@@ -293,7 +258,12 @@ export struct GlobalSearchPage {
       .scrollable(ScrollDirection.Horizontal)
       .scrollBar(BarState.Off)
       .width('100%')
-      .padding({ left: 8 + this.inset(), right: 8 + this.inset(), top: 4, bottom: 8 })
+      .padding({
+        left: 8 + this.inset(),
+        right: 8 + this.inset(),
+        top: 4,
+        bottom: 8
+      })
 
       Divider()
         .color(this.pal.divider)
@@ -395,12 +365,22 @@ export struct GlobalSearchPage {
       ErrorState({
         message: section.errorMessage !== '' ? section.errorMessage : $r('app.string.global_search_failed')
       })
-        .padding({ left: 16, right: 16, top: 8, bottom: 8 })
+        .padding({
+          left: 16,
+          right: 16,
+          top: 8,
+          bottom: 8
+        })
     } else if (section.results.length === 0) {
       Text($r('app.string.no_results_found'))
         .fontSize(13)
         .fontColor(this.pal.sub)
-        .padding({ left: 16, right: 16, top: 8, bottom: 8 })
+        .padding({
+          left: 16,
+          right: 16,
+          top: 8,
+          bottom: 8
+        })
     } else {
       Scroll() {
         Row({ space: 4 }) {
@@ -421,6 +401,41 @@ export struct GlobalSearchPage {
       .width('100%')
       .align(Alignment.Start)
     }
+  }
+
+  // 点击源标题行：进入该源浏览页并携带当前搜索词（对齐 Mihon onClickSource）
+  private openSourceBrowse(section: SearchSection): void {
+    const params: BrowseSourceParams = { sourceKey: section.sourceKey, mode: 'popular', query: this.searchQuery };
+    this.pathStack.pushPathByName('BrowseSource', params);
+  }
+
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（720 上限）
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
+  }
+
+  private doneCount(): number {
+    let n = 0;
+    for (const s of this.sections) {
+      if (s.state !== 'loading') {
+        n++;
+      }
+    }
+    return n;
+  }
+
+  // “只显示有结果的源”过滤后的分节列表
+  private visibleSections(): SearchSection[] {
+    if (!this.onlyHasResults) {
+      return this.sections;
+    }
+    const list: SearchSection[] = [];
+    for (const s of this.sections) {
+      if (s.state === 'done' && s.results.length > 0) {
+        list.push(s);
+      }
+    }
+    return list;
   }
 
   // 切换源范围筛选（对齐 Mihon setSourceFilter：切换后立即重搜，同词复用已有结果）

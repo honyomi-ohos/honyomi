@@ -8,11 +8,11 @@ import {
   HdsBarLayoutMode,
   HdsBarStyle,
   HdsBarWidthRangeOptions,
+  hdsMaterial,
   HdsTabs,
   HdsTabsController,
   HdsTabsFloatingStyle,
-  HdsTabsMiniBar,
-  hdsMaterial
+  HdsTabsMiniBar
 } from '@kit.UIDesignKit';
 
 // 迷你条配置：builder 必填；verticalLayout=true 表示迷你栏与页签栏垂直堆叠且常驻展开
@@ -54,9 +54,10 @@ export struct HdsTabsHost {
   // @Prop 开关驱动 floatingStyle 重新应用，false 时不配置避免空胶囊
   miniBar: HdsTabsHostMiniBar | undefined = undefined;
   @Prop miniBarEnabled: boolean = true;
+  @BuilderParam content: () => void = this.emptyBuilder;
+
   onTabChange: (index: number) => void = (_i: number): void => {
   };
-  @BuilderParam content: () => void = this.emptyBuilder;
 
   build() {
     HdsTabs({ barPosition: BarPosition.End, index: this.index, controller: this.controller.impl }) {
@@ -82,6 +83,11 @@ export struct HdsTabsHost {
   }
 
   // 浮动样式：沉浸材质常驻 IMMERSIVE/ADAPTIVE；迷你条按需挂入（无迷你条不配置，
+
+  @Builder
+  emptyBuilder() {
+  }
+
   // 避免空胶囊）；verticalLayout 追加垂直堆叠常驻展开配置
   private floatingStyle(): HdsTabsFloatingStyle {
     const style: HdsTabsFloatingStyle = {
@@ -118,9 +124,5 @@ export struct HdsTabsHost {
       style.miniBar = config;
     }
     return style;
-  }
-
-  @Builder
-  emptyBuilder() {
   }
 }

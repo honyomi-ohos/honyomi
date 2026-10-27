@@ -8,7 +8,7 @@ import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
-import { NavGlassPage, NavGlassAction } from '../common/HdsNavHost';
+import { NavGlassAction, NavGlassPage } from '../common/HdsNavHost';
 import { AppIcon } from './components/AppIcon';
 import { CoverPlaceholder } from './components/CoverPlaceholder';
 import { UpdatesFilterSheet } from './components/UpdatesFilterSheet';
@@ -114,11 +114,6 @@ export struct UpcomingPage {
         this.recompute();
       }
     })
-  }
-
-  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（720 上限）
-  private inset(): number {
-    return Bp.contentInset(this.windowW);
   }
 
   @Builder
@@ -299,24 +294,6 @@ export struct UpcomingPage {
     .padding({ top: 4, bottom: 8 })
   }
 
-  // 标题栏右侧动作：分类筛选（半模态）+ 帮助入口
-  private headerActions(): NavGlassAction[] {
-    return [
-      {
-        icon: $r('app.media.ic_filter_list'),
-        action: (): void => {
-          this.showFilterSheet = true;
-        }
-      },
-      {
-        icon: $r('app.media.ic_help'),
-        action: (): void => {
-          this.pathStack.pushPathByName('Help', null);
-        }
-      }
-    ];
-  }
-
   build() {
     NavGlassPage({
       title: $r('app.string.label_upcoming'),
@@ -356,6 +333,29 @@ export struct UpcomingPage {
           bg: this.pal.bg
         }))
     }
+  }
+
+  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（720 上限）
+  private inset(): number {
+    return Bp.contentInset(this.windowW);
+  }
+
+  // 标题栏右侧动作：分类筛选（半模态）+ 帮助入口
+  private headerActions(): NavGlassAction[] {
+    return [
+      {
+        icon: $r('app.media.ic_filter_list'),
+        action: (): void => {
+          this.showFilterSheet = true;
+        }
+      },
+      {
+        icon: $r('app.media.ic_help'),
+        action: (): void => {
+          this.pathStack.pushPathByName('Help', null);
+        }
+      }
+    ];
   }
 
   private localeTag(): string {

@@ -8,7 +8,8 @@ import { util } from '@kit.ArkTS';
 const HIKKA_BASE_URL = 'https://hikka.io';
 const HIKKA_API_URL = 'https://api.hikka.io';
 const HIKKA_CLIENT_REFERENCE = 'f883a935-8fc1-4f09-9583-869da786240c';
-const HIKKA_CLIENT_SECRET = 'P6GybEgqmVDrvv-wAY1kYLtMNLXMSOsNFT48JM4jFnjGb2dEsDaDMrQyWiQf2RqB0uTPMAigPKggbAaJLyvzhc8zheFsfxbI_0W5N3tSaqlsW-WQSpa354y-BVqNzBTe';
+const HIKKA_CLIENT_SECRET =
+  'P6GybEgqmVDrvv-wAY1kYLtMNLXMSOsNFT48JM4jFnjGb2dEsDaDMrQyWiQf2RqB0uTPMAigPKggbAaJLyvzhc8zheFsfxbI_0W5N3tSaqlsW-WQSpa354y-BVqNzBTe';
 
 // ---- 原始 JSON 模型 ----
 interface HikkaMangaRaw {

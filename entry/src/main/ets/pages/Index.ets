@@ -5,7 +5,7 @@ import { KeyCode } from '@kit.InputKit';
 import { AnimatorOptions, AnimatorResult, curves } from '@kit.ArkUI';
 import { webview } from '@kit.ArkWeb';
 import { HdsTabsHost, HdsTabsHostController, HdsTabsHostMiniBar } from '../common/HdsTabsHost';
-import { NavGlassRoot, HOME_HEADER_H } from '../common/HdsNavHost';
+import { HOME_HEADER_H, NavGlassRoot } from '../common/HdsNavHost';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Settings } from '../common/Settings';
@@ -18,11 +18,11 @@ import { AppKeys } from '../common/AppKeys';
 import { CookieJar } from '../net/CookieJar';
 import { CoverStore } from '../common/CoverStore';
 import { TtsPlaybackService, TtsServiceStateHandler } from '../common/TtsPlaybackService';
-import { LibraryPage, LibraryHeader } from './LibraryPage';
-import { UpdatesPage, UpdatesHeader } from './UpdatesPage';
-import { HistoryPage, HistoryHeader } from './HistoryPage';
-import { BrowsePage, BrowseHeader } from './BrowsePage';
-import { MorePage, MoreHeader } from './MorePage';
+import { LibraryHeader, LibraryPage } from './LibraryPage';
+import { UpdatesHeader, UpdatesPage } from './UpdatesPage';
+import { HistoryHeader, HistoryPage } from './HistoryPage';
+import { BrowseHeader, BrowsePage } from './BrowsePage';
+import { MoreHeader, MorePage } from './MorePage';
 import { ContentOpen } from './ContentOpen';
 import { AppIcon } from './components/AppIcon';
 import { CfVerifySheet } from './components/CfVerifySheet';
@@ -30,7 +30,7 @@ import { LockOverlay } from './components/LockOverlay';
 import { BtComponentDialog } from './components/BtComponentDialog';
 import { TtsMiniBar } from './components/novel/TtsMiniBar';
 import { BROWSE_MORPH, LIBRARY_MORPH, PathMorph, UPDATES_MORPH } from './components/PathMorph';
-import { DetailParams, BrowseSourceParams, GlobalSearchParams, OnboardingParams } from '../model/RouteParams';
+import { BrowseSourceParams, DetailParams, GlobalSearchParams, OnboardingParams } from '../model/RouteParams';
 import { MangaRecord } from '../model/Models';
 
 // 桌面卡片 router 事件载荷（由 EntryAbility.handleCardWant 写入 AppStorage）
@@ -843,6 +843,7 @@ struct Index {
         .layoutWeight(1)
         .height('100%')
       }
+
       // 应用锁（隐私设置）：锁定时全屏覆盖，拦截一切交互直至系统认证通过
       if (this.appLocked) {
         LockOverlay()

@@ -131,14 +131,14 @@ export class NovelPaginator {
 // 按时间预算步进，供阅读器把大章节分页切片到多帧执行（首批同步出页，后续异步补齐）。
 // 每个单元至少执行一次再查预算，保证有进度；步进结果与一次性分页完全一致
 export class PaginateCursor {
-  private readonly paginator: NovelPaginator;
-  private readonly blocks: NovelBlock[];
   // 已产出的页面（内部累加，step 返回其中新增部分）
   readonly pages: NovelPage[] = [];
   // 段落 → 页码映射（随分页增长，听书跟随翻页用）
   readonly paraPage: number[] = [];
   // 全部块处理完毕（含末页收尾）
   done: boolean = false;
+  private readonly paginator: NovelPaginator;
+  private readonly blocks: NovelBlock[];
   // 当前装页状态：未满页的段集合 / 已用高度
   private current: string[] = [];
   private used: number = 0;

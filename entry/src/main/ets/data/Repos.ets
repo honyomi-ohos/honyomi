@@ -1478,7 +1478,8 @@ export class PluginRepo {
           methodsJson = excluded.methodsJson, sourcesJson = excluded.sourcesJson,
           installedAt = excluded.installedAt`,
         [record.key, record.name, record.lang, record.version, record.versionCode, record.baseUrl,
-          record.nsfw ? 1 : 0, record.bt ? 1 : 0, record.supportsLatest ? 1 : 0, record.minAppVersion, record.dslVersion,
+          record.nsfw ? 1 : 0, record.bt ? 1 : 0, record.supportsLatest ? 1 : 0, record.minAppVersion,
+          record.dslVersion,
           record.icon, ContentType.normalize(record.contentType),
           record.methodsJson, record.sourcesJson, record.installedAt]);
     } catch (e) {

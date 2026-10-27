@@ -45,28 +45,6 @@ class TsTimelineFixer {
   // 已输出时间线上最近的最大 PES PTS；-1 表示尚未见过任何 PES
   private lastOutPts: number = -1;
 
-  // 处理一个 TS 分片（原位改写 buf）。无 PES 的分片直接跳过。
-  processSegment(buf: Uint8Array): void {
-    const scan: TsPesScan = TsTimelineFixer.scanPes(buf, this.curOffset, false);
-    if (scan.firstPts < 0) {
-      return;
-    }
-    // 首个 PES 相对已输出时间线倒退超过 1s：判定为新时间轴块，块首紧接上一块结尾
-    // （留 40ms 间隙），此后所有分片叠加新偏移
-    if (this.lastOutPts >= 0 && scan.firstPts + this.curOffset < this.lastOutPts - 90000) {
-      this.curOffset = this.lastOutPts + 3600 - scan.firstPts;
-      hilog.info(0x0001, 'HlsDownload', 'ts timeline stitched: new block, offset=%{public}d ticks (%{public}ds)',
-        this.curOffset, Math.round(this.curOffset / 90000));
-    }
-    if (this.curOffset === 0) {
-      // 尚无任何时间轴断裂：重写是恒等变换，只推进 lastOutPts
-      this.lastOutPts = scan.maxPts;
-    } else {
-      this.lastOutPts = TsTimelineFixer.scanPes(buf, this.curOffset, true).maxPts;
-    }
-  }
-
-  // 扫描（rewrite=true 时原位重写）分片内全部 188 字节 TS 包：
   // 视频/音频 PES 的 PTS/DTS 与自适应字段中的 PCR 基值按 offset 平移（33bit 取模）
   private static scanPes(buf: Uint8Array, offset: number, rewrite: boolean): TsPesScan {
     const out: TsPesScan = new TsPesScan();
@@ -114,6 +92,8 @@ class TsTimelineFixer {
     return out;
   }
 
+  // 扫描（rewrite=true 时原位重写）分片内全部 188 字节 TS 包：
+
   // PTS/DTS 33bit 编码读取（5 字节，含 marker 位）
   private static readPts(b: Uint8Array, p: number): number {
     return (b[p] >> 1 & 7) * 1073741824 + b[p + 1] * 4194304 +
@@ -147,6 +127,27 @@ class TsTimelineFixer {
     b[p + 3] = Math.floor(nb / 2) & 0xFF;
     b[p + 4] = ((nb & 1) << 7) | ((ext >> 8) & 0x7F);
     b[p + 5] = ext & 0xFF;
+  }
+
+  // 处理一个 TS 分片（原位改写 buf）。无 PES 的分片直接跳过。
+  processSegment(buf: Uint8Array): void {
+    const scan: TsPesScan = TsTimelineFixer.scanPes(buf, this.curOffset, false);
+    if (scan.firstPts < 0) {
+      return;
+    }
+    // 首个 PES 相对已输出时间线倒退超过 1s：判定为新时间轴块，块首紧接上一块结尾
+    // （留 40ms 间隙），此后所有分片叠加新偏移
+    if (this.lastOutPts >= 0 && scan.firstPts + this.curOffset < this.lastOutPts - 90000) {
+      this.curOffset = this.lastOutPts + 3600 - scan.firstPts;
+      hilog.info(0x0001, 'HlsDownload', 'ts timeline stitched: new block, offset=%{public}d ticks (%{public}ds)',
+        this.curOffset, Math.round(this.curOffset / 90000));
+    }
+    if (this.curOffset === 0) {
+      // 尚无任何时间轴断裂：重写是恒等变换，只推进 lastOutPts
+      this.lastOutPts = scan.maxPts;
+    } else {
+      this.lastOutPts = TsTimelineFixer.scanPes(buf, this.curOffset, true).maxPts;
+    }
   }
 }
 

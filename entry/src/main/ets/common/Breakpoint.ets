@@ -6,7 +6,6 @@ export class Bp {
   static readonly MD_MIN: number = 600;
   static readonly LG_MIN: number = 840;
   static readonly XL_MIN: number = 1200;
-
   // 宽屏左侧常驻导航栏宽度（Index wideRail），页面计算内容限宽缩进时需扣除
   static readonly WIDE_RAIL_W: number = 200;
 

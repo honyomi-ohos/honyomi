@@ -5,7 +5,7 @@ import { Util } from '../../common/Util';
 import { AppKeys } from '../../common/AppKeys';
 import { ImageCache } from '../../common/ImageCache';
 import { BackupService } from '../../data/BackupService';
-import { NavGlassPage, NavGlassAction } from '../../common/HdsNavHost';
+import { NavGlassAction, NavGlassPage } from '../../common/HdsNavHost';
 import { PrefGroup, PrefSelectRow, PrefSwitchRow, TextRow } from '../components/Prefs';
 import { ExportColumnsDialog } from '../components/Dialogs';
 
@@ -341,18 +341,6 @@ export struct DataStoragePage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   pathStack: NavPathStack = new NavPathStack();
 
-  // 标题栏右侧动作：帮助入口
-  private headerActions(): NavGlassAction[] {
-    return [
-      {
-        icon: $r('app.media.ic_help'),
-        action: (): void => {
-          this.pathStack.pushPathByName('Help', null);
-        }
-      }
-    ];
-  }
-
   build() {
     NavGlassPage({
       title: $r('app.string.data_storage_title'),
@@ -368,6 +356,18 @@ export struct DataStoragePage {
       .width('100%')
       .height('100%')
     }
+  }
+
+  // 标题栏右侧动作：帮助入口
+  private headerActions(): NavGlassAction[] {
+    return [
+      {
+        icon: $r('app.media.ic_help'),
+        action: (): void => {
+          this.pathStack.pushPathByName('Help', null);
+        }
+      }
+    ];
   }
 }
 
