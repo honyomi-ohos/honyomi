@@ -1,6 +1,7 @@
-// 小说阅读器「文本」设置面板：字号 / 边距 / 段间距 / 行间距 / 字体
+// 小说阅读器「文本」设置面板：字号 / 边距 / 段间距 / 合并空行 / 段落缩进 / 行间距 / 字体
 // （从 NovelReaderPage 拆出，Wave 3I；行为与原 textSheetBuilder 一致）
 import { ThemePalette } from '../../../common/Theme';
+import { WideSlider } from '../WideSlider';
 
 @Component
 export struct NovelTextPanel {
@@ -8,6 +9,8 @@ export struct NovelTextPanel {
   @Link fontSize: number;
   @Link pageMargin: number;
   @Link paraSpacing: number;
+  @Link mergeBlank: boolean;
+  @Link indentChars: number;
   @Link lineHeight: number;
   @Prop fontFamily: string = 'default';
   onFontSizeDone: (v: number) => void = (v: number): void => {
@@ -15,6 +18,10 @@ export struct NovelTextPanel {
   onMarginDone: (v: number) => void = (v: number): void => {
   };
   onParaSpacingDone: (v: number) => void = (v: number): void => {
+  };
+  onMergeBlank: (v: boolean) => void = (v: boolean): void => {
+  };
+  onIndentDone: (v: number) => void = (v: number): void => {
   };
   onLineHeightDone: (v: number) => void = (v: number): void => {
   };
@@ -48,6 +55,20 @@ export struct NovelTextPanel {
           this.paraSpacing = value;
           if (done) {
             this.onParaSpacingDone(value);
+          }
+        })
+
+      Divider().color(this.pal.divider)
+
+      this.mergeBlankRow()
+
+      Divider().color(this.pal.divider)
+
+      this.novelSliderRow($r('app.string.novel_paragraph_indent'), this.indentChars, 0, 4,
+        (value: number, done: boolean): void => {
+          this.indentChars = value;
+          if (done) {
+            this.onIndentDone(value);
           }
         })
 
@@ -89,6 +110,31 @@ export struct NovelTextPanel {
     .width('100%')
   }
 
+  // 合并空行开关行：部分站点段落间大量空行，开启后折叠为单个换行
+  @Builder
+  mergeBlankRow() {
+    Row() {
+      Text($r('app.string.novel_merge_blank_lines'))
+        .fontSize(13)
+        .fontColor(this.pal.sub)
+        .layoutWeight(1)
+      Toggle({ type: ToggleType.Switch, isOn: this.mergeBlank })
+        .selectedColor(this.pal.primary)
+        .switchPointColor(this.pal.onPrimary)
+        .onChange((isOn: boolean) => {
+          this.mergeBlank = isOn;
+          this.onMergeBlank(isOn);
+        })
+    }
+    .width('100%')
+    .padding({
+      left: 16,
+      right: 16,
+      top: 10,
+      bottom: 6
+    })
+  }
+
   // 字体 chip（默认 / 宋体 / 黑体 / 等宽）
   @Builder
   fontChip(label: ResourceStr, value: string) {
@@ -119,20 +165,17 @@ export struct NovelTextPanel {
         .fontColor(this.pal.sub)
         .width('100%')
       Row() {
-        Slider({
-          value: value,
+        WideSlider({
+          sliderValue: value,
           min: min,
           max: max,
-          step: 1
-        })
-          .layoutWeight(1)
-          .blockColor(this.pal.primary)
-          .selectedColor(this.pal.primary)
-          .trackColor(this.pal.divider)
-          .onChange((sliderValue: number, mode: SliderChangeMode) => {
+          step: 1,
+          onChange: (sliderValue: number, mode: SliderChangeMode): void => {
             onChange(Math.round(sliderValue),
               mode === SliderChangeMode.End || mode === SliderChangeMode.Click);
-          })
+          }
+        })
+          .layoutWeight(1)
         Text(`${value}`)
           .fontSize(13)
           .fontColor(this.pal.text)

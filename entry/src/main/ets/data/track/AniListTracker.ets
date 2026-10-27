@@ -4,7 +4,8 @@ import { Settings } from '../../common/Settings';
 import { GraphqlErrorRaw, OAuthToken, TrackDate, Tracker, TrackHttp } from './Tracker';
 
 const AL_API_URL = 'https://graphql.anilist.co/';
-const AL_AUTH_URL = 'https://anilist.co/api/v2/oauth/authorize?client_id=16329&response_type=token';
+const AL_CLIENT_ID = '55119';
+const AL_AUTH_URL = `https://anilist.co/api/v2/oauth/authorize?client_id=${AL_CLIENT_ID}&response_type=token`;
 const AL_MANGA_URL_PREFIX = 'https://anilist.co/manga/';
 // implicit token 有效期 1 年
 const AL_TOKEN_LIFETIME_SEC = 31536000;

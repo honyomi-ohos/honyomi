@@ -1,4 +1,4 @@
-﻿{
+{
   "string": [
     {
       "name": "more_downloaded_only_summary",
@@ -1622,7 +1622,7 @@
     },
     {
       "name": "privacy_policy_tracking_body",
-      "value": "你可以选择连接 AniList、MyAnimeList、Kitsu、Shikimori、Bangumi、MangaUpdates、MangaBaka、Hikka 等追踪服务。登录在对应服务页面由你本人授权，令牌仅保存在本地，用于同步阅读进度。"
+      "value": "你可以选择连接 AniList、MyAnimeList、Kitsu、Shikimori、Bangumi、MangaUpdates、Hikka 等追踪服务。登录在对应服务页面由你本人授权，令牌仅保存在本地，用于同步阅读进度。"
     },
     {
       "name": "privacy_policy_danmaku_title",
@@ -2527,6 +2527,14 @@
     {
       "name": "novel_paragraph_spacing",
       "value": "段间距"
+    },
+    {
+      "name": "novel_merge_blank_lines",
+      "value": "合并空行"
+    },
+    {
+      "name": "novel_paragraph_indent",
+      "value": "段落缩进"
     },
     {
       "name": "novel_tab_display",

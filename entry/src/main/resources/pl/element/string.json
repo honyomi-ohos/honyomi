@@ -2277,6 +2277,14 @@
       "value": "Odstęp między akapitami"
     },
     {
+      "name": "novel_merge_blank_lines",
+      "value": "Scal puste wiersze"
+    },
+    {
+      "name": "novel_paragraph_indent",
+      "value": "Wcięcie akapitu"
+    },
+    {
       "name": "novel_tab_display",
       "value": "Wyświetlanie"
     },

@@ -100,8 +100,9 @@ export struct NavGlassPage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   title: Resource | string = '';
-  // false 时隐藏玻璃标题栏（页面自行管理头部/安全区，如设置页 lg 双栏布局）
-  showTitleBar: boolean = true;
+  // false 时隐藏玻璃标题栏（页面自行管理头部/安全区，如设置页 lg 双栏布局）。
+  // 宽窄屏切换会动态改变该值（Bp.isWide），必须 @Prop 同步否则栏显隐滞留旧布局
+  @Prop showTitleBar: boolean = true;
   actions: NavGlassAction[] = [];
   // 兼容保留：标准 NavDestination 标题栏自动联动滚动容器，无需显式绑定
   scroller: Scroller | undefined = undefined;
@@ -172,19 +173,23 @@ export struct NavGlassPage {
         .maxLines(1)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
       ForEach(this.actions, (act: NavGlassAction) => {
-        Image(act.icon)
-          .width(24)
-          .height(24)
-          .fillColor(this.pal.text)
-          .padding({
-            left: 8,
-            right: 8,
-            top: 8,
-            bottom: 8
-          })
-          .onClick(() => {
-            act.action();
-          })
+        // 外层容器承担 padding（点击区 40x40）：padding 直接叠加在定宽 Image 上
+        // 会挤压图标内容区（24-16=8vp），图标实际渲染过小
+        Column() {
+          Image(act.icon)
+            .width(24)
+            .height(24)
+            .fillColor(this.pal.text)
+        }
+        .padding({
+          left: 8,
+          right: 8,
+          top: 8,
+          bottom: 8
+        })
+        .onClick(() => {
+          act.action();
+        })
       }, (act: NavGlassAction, index: number) => index.toString())
     }
     .width('100%')

@@ -51,6 +51,7 @@ import {
 } from './components/ReaderChrome';
 import { LoadingBackButton } from './components/LoadingBackButton';
 import { SheetPreset } from './components/SheetPreset';
+import { WideSlider } from './components/WideSlider';
 
 // 翻屏进度持久化防抖间隔（毫秒）
 const PERSIST_DEBOUNCE_MS: number = 2000;
@@ -110,6 +111,8 @@ export struct NovelReaderPage {
   @State fontSize: number = 18;
   @State lineHeight: number = 32;
   @State paraSpacing: number = 0;
+  @State mergeBlank: boolean = false;
+  @State indentChars: number = 0;
   @State prevId: number = 0;
   @State nextId: number = 0;
   @State mode: string = 'scroll';
@@ -182,6 +185,8 @@ export struct NovelReaderPage {
   private paraOffSig: string = '';
   // html 章节解析出的「文本段 + 插图」块序列（hasImages 时有效）
   private blocks: NovelBlock[] = [];
+  // 本次加载的原始章节文本：改设置（合并空行）时免重新请求网络，本地重派生正文
+  private rawText: string = '';
   // 章节加载代次号：连续切章时旧 loadChapter 续体据此丢弃
   private loadGen: number = 0;
   // 边界切章落点：true=上一章落在末尾（千分比 1000），false=按历史进度恢复
@@ -216,6 +221,8 @@ export struct NovelReaderPage {
     this.fontSize = Settings.getNovelFontSize();
     this.lineHeight = Settings.getNovelLineHeight();
     this.paraSpacing = Settings.getNovelParagraphSpacing();
+    this.mergeBlank = Settings.getNovelMergeBlankLines();
+    this.indentChars = Settings.getNovelParagraphIndent();
     this.readerTheme = Settings.getReaderTheme();
     this.syncReaderBgDark();
     this.showPageNumber = Settings.getReaderShowPageNumber();
@@ -584,24 +591,25 @@ export struct NovelReaderPage {
           .fontColor($r('sys.color.font_primary'))
           .width(44)
           .textAlign(TextAlign.End)
-        Slider({
-          value: this.permilleUi,
+        WideSlider({
+          sliderValue: this.permilleUi,
           min: 0,
           max: 1000,
           step: 1,
-          style: SliderStyle.OutSet
-        })
-          .layoutWeight(1)
+          dotsEnabled: false,
           // Slider 颜色不在系统反色支持列表内，按阅读页背景明暗手动取高对比色
-          .blockColor(this.isBgDark() ? '#FFFFFF' : '#111111')
-          .selectedColor(this.isBgDark() ? '#99FFFFFF' : '#99000000')
-          .trackColor(this.isBgDark() ? '#40FFFFFF' : '#40000000')
-          .margin({ left: 8, right: 8 })
-          .onChange((value: number, mode: SliderChangeMode) => {
+          knobTint: this.isBgDark() ? '#FFFFFF' : '#111111',
+          fillTint: this.isBgDark() ? '#99FFFFFF' : '#99000000',
+          trackTint: this.isBgDark() ? '#40FFFFFF' : '#40000000',
+          knobBorderTint: Color.Transparent,
+          onChange: (value: number, mode: SliderChangeMode): void => {
             if (mode === SliderChangeMode.End || mode === SliderChangeMode.Click) {
               this.scrollToPermille(Math.round(value));
             }
-          })
+          }
+        })
+          .layoutWeight(1)
+          .margin({ left: 4, right: 4 })
         Text('100%')
           .fontSize(13)
           // sys.color 资源配合材质 colorInvert 自动反色（硬编码颜色不触发反色）
@@ -610,10 +618,6 @@ export struct NovelReaderPage {
       }
       .layoutWeight(1)
       .height(44)
-      .borderRadius(22)
-      // 玻璃内嵌胶囊：无填充，仅发丝描边；描边仅作不支持材质设备的回退
-      .border({ width: 0.5, color: this.isBgDark() ? '#2EFFFFFF' : '#2E000000' })
-      .padding({ left: 14, right: 14 })
     } else if (this.screenIdxs.length > 0) {
       ReaderPagePill({
         pos: this.pagedSliderPos(),
@@ -724,6 +728,8 @@ export struct NovelReaderPage {
         fontSize: this.fontSize,
         pageMargin: this.pageMargin,
         paraSpacing: this.paraSpacing,
+        mergeBlank: this.mergeBlank,
+        indentChars: this.indentChars,
         lineHeight: this.lineHeight,
         fontFamily: this.fontFamily,
         onFontSizeDone: (v: number): void => {
@@ -736,6 +742,18 @@ export struct NovelReaderPage {
         },
         onParaSpacingDone: (v: number): void => {
           Settings.setNovelParagraphSpacing(v);
+          this.ensurePaginated();
+        },
+        onMergeBlank: (v: boolean): void => {
+          this.mergeBlank = v;
+          Settings.setNovelMergeBlankLines(v);
+          this.applyChapterText();
+          this.ensurePaginated();
+        },
+        onIndentDone: (v: number): void => {
+          this.indentChars = v;
+          Settings.setNovelParagraphIndent(v);
+          this.applyChapterText();
           this.ensurePaginated();
         },
         onLineHeightDone: (v: number): void => {
@@ -1050,6 +1068,7 @@ export struct NovelReaderPage {
     this.restored = false;
     this.scrollDragArmed = false;
     this.body = '';
+    this.rawText = '';
     this.pages = [];
     this.blocks = [];
     this.hasImages = false;
@@ -1069,6 +1088,8 @@ export struct NovelReaderPage {
     this.fontSize = Settings.getNovelFontSize();
     this.lineHeight = Settings.getNovelLineHeight();
     this.paraSpacing = Settings.getNovelParagraphSpacing();
+    this.mergeBlank = Settings.getNovelMergeBlankLines();
+    this.indentChars = Settings.getNovelParagraphIndent();
     this.animMode = Settings.getNovelPageAnim();
     this.colorScheme = Settings.getNovelColorScheme();
     this.pageMargin = Settings.getNovelMargin();
@@ -1124,16 +1145,8 @@ export struct NovelReaderPage {
       if (text === '') {
         throw new Error('no_content');
       }
-      this.html = NovelChapterText.looksLikeHtml(text);
-      this.body = text;
-      this.parseChapterBlocks();
-      // 插件返回的无插图 html 正文：剥成纯文本走统一的分页/渲染路径，
-      // 翻页/双页分页与字号/行距/字体设置才能生效（原 RichText 路径两者均不支持）
-      if (this.html && !this.hasImages) {
-        this.body = NovelChapterText.htmlToPlain(text);
-        this.html = false;
-        this.parseChapterBlocks();
-      }
+      this.rawText = text;
+      this.applyChapterText();
       await this.loadNeighbors();
       if (this.destroyed || gen !== this.loadGen) {
         return;
@@ -1466,6 +1479,46 @@ export struct NovelReaderPage {
     }
   }
 
+  // 由原始章节文本派生渲染正文：
+  // 1. 插件返回的无插图 html 正文剥成纯文本走统一的分页/渲染路径，
+  //    翻页/双页分页与字号/行距/字体设置才能生效（原 RichText 路径两者均不支持）
+  // 2. 开启「合并空行」时折叠段落间连续空行（部分站点段落间大量空行，观感差）
+  // 3. 「段落缩进」>0 时为无缩进段落补全角空格首行缩进（含插图章节按文本块缩进）
+  private applyChapterText(): void {
+    const text = this.rawText;
+    this.html = NovelChapterText.looksLikeHtml(text);
+    this.body = text;
+    this.parseChapterBlocks();
+    if (this.html && !this.hasImages) {
+      this.body = NovelChapterText.htmlToPlain(text);
+      this.html = false;
+      this.parseChapterBlocks();
+    }
+    if (!this.html && this.mergeBlank) {
+      const merged = NovelChapterText.mergeBlankLines(this.body);
+      if (merged !== this.body) {
+        this.body = merged;
+        this.parseChapterBlocks();
+      }
+    }
+    if (this.indentChars > 0) {
+      if (!this.html) {
+        const indented = NovelChapterText.indentLines(this.body, this.indentChars);
+        if (indented !== this.body) {
+          this.body = indented;
+          this.parseChapterBlocks();
+        }
+      } else if (this.hasImages) {
+        // 含插图 html 章节：body 为原始 html 不能改动，改为逐文本块缩进
+        for (let i = 0; i < this.blocks.length; i++) {
+          if (!this.blocks[i].isImage) {
+            this.blocks[i].text = NovelChapterText.indentLine(this.blocks[i].text, this.indentChars);
+          }
+        }
+      }
+    }
+  }
+
   private toggleMenu(): void {
     this.showMenu = !this.showMenu;
     if (this.showMenu) {
@@ -1495,8 +1548,9 @@ export struct NovelReaderPage {
     if (this.pageW <= 0 || this.pageH <= 0) {
       return;
     }
+    // 分页影响因子；含插图章节 body 为原始 html 不随缩进变化，indentChars 须显式参与
     const sig = `${this.body.length}|${this.mode}|${this.fontSize}|${this.lineHeight}|${this.paraSpacing}|` +
-      `${this.pageMargin}|${this.fontFamily}|${Math.round(this.pageW)}|${Math.round(this.pageH)}`;
+      `${this.pageMargin}|${this.fontFamily}|${this.indentChars}|${Math.round(this.pageW)}|${Math.round(this.pageH)}`;
     if (sig === this.pagSig) {
       return;
     }

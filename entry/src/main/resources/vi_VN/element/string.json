@@ -2297,6 +2297,14 @@
       "value": "Giãn đoạn"
     },
     {
+      "name": "novel_merge_blank_lines",
+      "value": "Gộp dòng trống"
+    },
+    {
+      "name": "novel_paragraph_indent",
+      "value": "Thụt lề đoạn văn"
+    },
+    {
       "name": "novel_tab_display",
       "value": "Hiển thị"
     },

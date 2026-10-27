@@ -2237,6 +2237,14 @@
       "value": "Espaçamento entre parágrafos"
     },
     {
+      "name": "novel_merge_blank_lines",
+      "value": "Mesclar linhas em branco"
+    },
+    {
+      "name": "novel_paragraph_indent",
+      "value": "Recuo de parágrafo"
+    },
+    {
       "name": "novel_tab_display",
       "value": "Exibição"
     },

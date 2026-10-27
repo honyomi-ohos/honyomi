@@ -372,6 +372,42 @@ export class NovelChapterText {
       .trim();
   }
 
+  // 合并连续空行：两个及以上换行（含其间仅空格/制表/全角空格/NBSP 的行）
+  // 折叠为单个换行；阅读器正文与听书段落共用，保证段落下标一致
+  static mergeBlankLines(body: string): string {
+    return body.replace(/(\r?\n[ \t\u00A0\u3000]*){2,}/g, '\n');
+  }
+
+  // 段落首行缩进：为无缩进的段落行前置 chars 个全角空格；
+  // 空行与已带空白缩进（空格/制表/全角空格/NBSP）的行保持原样，避免二次缩进。
+  // 缩进写入文本本身而非渲染属性：分页器与渲染用同一字符串测量，断行才一致
+  static indentLine(line: string, chars: number): string {
+    if (chars <= 0 || line === '') {
+      return line;
+    }
+    const first = line.charAt(0);
+    if (first === ' ' || first === '\t' || first === '\u3000' || first === '\u00A0') {
+      return line;
+    }
+    let pad = '';
+    for (let i = 0; i < chars; i++) {
+      pad += '\u3000';
+    }
+    return pad + line;
+  }
+
+  // 多行正文整体加段落缩进（按 \n 拆分逐行处理）
+  static indentLines(body: string, chars: number): string {
+    if (chars <= 0 || body === '') {
+      return body;
+    }
+    const lines = body.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      lines[i] = NovelChapterText.indentLine(lines[i], chars);
+    }
+    return lines.join('\n');
+  }
+
   // 把 <img> 之间的 html 片段剥成纯文本段落，追加为文本块（跳过空段）；
 
   // 纯文本章节的块视图：每行一个文本块（与 body.split('\n') 等价）

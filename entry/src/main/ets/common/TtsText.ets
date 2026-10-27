@@ -1,4 +1,5 @@
 import { NovelChapterText } from '../pages/components/novel/NovelPaginator';
+import { Settings } from './Settings';
 
 // 小说听书文本工具：章节正文 → 朗读段落序列、语种推断。
 // 阅读器与听书播放服务（TtsPlaybackService）共用同一算法，
@@ -8,13 +9,16 @@ export class TtsText {
   // - html 含插图：取「文本段 + 插图」块序列中的文本块（与阅读器渲染路径一致）
   // - html 纯文本：剥除标签后按行拆分（保留空行，下标与阅读器旧实现一致）
   // - 纯文本：按行拆分
+  // 开启「合并空行」时与阅读器正文同步折叠连续空行，段落下标保持对齐
   static chapterParas(text: string): string[] {
     if (text === '') {
       return [];
     }
+    const mergeBlank = Settings.getNovelMergeBlankLines();
     const html = NovelChapterText.looksLikeHtml(text);
     if (!html) {
-      return text.split('\n');
+      const plain = mergeBlank ? NovelChapterText.mergeBlankLines(text) : text;
+      return plain.split('\n');
     }
     const blocks = NovelChapterText.parseBlocks(true, text);
     let hasImages = false;
@@ -35,7 +39,8 @@ export class TtsText {
     }
     // html 纯文本：剥成纯文本按行拆分（与阅读器对无插图 html 的正文归一一致，
     // 保证听书段落下标与阅读器渲染段落对齐）
-    return NovelChapterText.htmlToPlain(text).split('\n');
+    const stripped = NovelChapterText.htmlToPlain(text);
+    return (mergeBlank ? NovelChapterText.mergeBlankLines(stripped) : stripped).split('\n');
   }
 
   // 按开头若干段采样推断语种（ASCII 过半判英文）

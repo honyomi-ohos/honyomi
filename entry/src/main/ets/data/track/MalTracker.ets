@@ -4,7 +4,7 @@ import { Settings } from '../../common/Settings';
 import { OAuthToken, Pkce, TrackDate, Tracker, TrackHttp } from './Tracker';
 import { Http } from '../../net/Http';
 
-const MAL_CLIENT_ID = 'c46c9e24640a64dad5be5ca7a1a53a0f';
+const MAL_CLIENT_ID = '2ee3e1670f3e0cb4616565171cea22f7';
 const MAL_OAUTH_BASE = 'https://myanimelist.net/v1/oauth2';
 const MAL_API_BASE = 'https://api.myanimelist.net/v2';
 const MAL_MANGA_URL_PREFIX = 'https://myanimelist.net/manga/';

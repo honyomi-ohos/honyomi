@@ -7,7 +7,6 @@ import { ShikimoriTracker } from './ShikimoriTracker';
 import { BangumiTracker } from './BangumiTracker';
 import { MangaUpdatesTracker } from './MangaUpdatesTracker';
 import { HikkaTracker } from './HikkaTracker';
-import { MangaBakaTracker } from './MangaBakaTracker';
 
 export class TrackerManager {
   static readonly myAnimeList: MalTracker = new MalTracker();
@@ -17,7 +16,6 @@ export class TrackerManager {
   static readonly bangumi: BangumiTracker = new BangumiTracker();
   static readonly mangaUpdates: MangaUpdatesTracker = new MangaUpdatesTracker();
   static readonly hikka: HikkaTracker = new HikkaTracker();
-  static readonly mangaBaka: MangaBakaTracker = new MangaBakaTracker();
   static readonly trackers: Tracker[] = [
     TrackerManager.myAnimeList,
     TrackerManager.aniList,
@@ -26,7 +24,6 @@ export class TrackerManager {
     TrackerManager.bangumi,
     TrackerManager.mangaUpdates,
     TrackerManager.hikka,
-    TrackerManager.mangaBaka,
   ];
 
   static loggedInTrackers(): Tracker[] {

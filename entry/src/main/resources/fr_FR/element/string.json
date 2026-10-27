@@ -2209,6 +2209,14 @@
       "value": "Espacement des paragraphes"
     },
     {
+      "name": "novel_merge_blank_lines",
+      "value": "Fusionner les lignes vides"
+    },
+    {
+      "name": "novel_paragraph_indent",
+      "value": "Indentation des paragraphes"
+    },
+    {
       "name": "novel_tab_display",
       "value": "Affichage"
     },

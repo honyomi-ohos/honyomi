@@ -2321,6 +2321,14 @@
       "value": "تباعد الفقرات"
     },
     {
+      "name": "novel_merge_blank_lines",
+      "value": "دمج الأسطر الفارغة"
+    },
+    {
+      "name": "novel_paragraph_indent",
+      "value": "مسافة بادئة للفقرة"
+    },
+    {
       "name": "novel_tab_display",
       "value": "العرض"
     },

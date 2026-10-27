@@ -2661,6 +2661,14 @@
       "value": "段落の間隔"
     },
     {
+      "name": "novel_merge_blank_lines",
+      "value": "空行を結合"
+    },
+    {
+      "name": "novel_paragraph_indent",
+      "value": "段落インデント"
+    },
+    {
       "name": "novel_tab_display",
       "value": "表示"
     },

@@ -19,7 +19,7 @@ export class OAuthToken {
   refreshToken: string = '';
   createdAt: number = 0; // epoch 秒
   expiresIn: number = 0; // 秒；<=0 表示未知（不主动判定过期）
-  // 绝对过期时间（epoch 秒）；>0 时优先于 createdAt+expiresIn 判定（MangaBaka 返回 expires_at）
+  // 绝对过期时间（epoch 秒）；>0 时优先于 createdAt+expiresIn 判定
   expiresAt: number = 0;
 
   static fromJson(raw: string): OAuthToken | undefined {

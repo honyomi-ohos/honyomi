@@ -2253,6 +2253,14 @@
       "value": "Jarak paragraf"
     },
     {
+      "name": "novel_merge_blank_lines",
+      "value": "Gabungkan baris kosong"
+    },
+    {
+      "name": "novel_paragraph_indent",
+      "value": "Indentasi paragraf"
+    },
+    {
       "name": "novel_tab_display",
       "value": "Tampilan"
     },

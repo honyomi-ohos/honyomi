@@ -2189,6 +2189,14 @@
       "value": "Agwat ng talata"
     },
     {
+      "name": "novel_merge_blank_lines",
+      "value": "Pagsamahin ang mga blankong linya"
+    },
+    {
+      "name": "novel_paragraph_indent",
+      "value": "Indent ng talata"
+    },
+    {
       "name": "novel_tab_text",
       "value": "Teksto"
     },

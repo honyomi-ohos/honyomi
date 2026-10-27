@@ -2142,7 +2142,7 @@
     },
     {
       "name": "privacy_policy_tracking_body",
-      "value": "You can optionally connect tracker accounts such as AniList, MyAnimeList, Kitsu, Shikimori, Bangumi, MangaUpdates, MangaBaka and Hikka. Login is authorized by you on the tracker\u0027s own page, and access tokens are saved only on your device to sync reading progress."
+      "value": "You can optionally connect tracker accounts such as AniList, MyAnimeList, Kitsu, Shikimori, Bangumi, MangaUpdates and Hikka. Login is authorized by you on the tracker\u0027s own page, and access tokens are saved only on your device to sync reading progress."
     },
     {
       "name": "privacy_policy_danmaku_title",
@@ -2555,6 +2555,14 @@
     {
       "name": "novel_paragraph_spacing",
       "value": "Paragraph spacing"
+    },
+    {
+      "name": "novel_merge_blank_lines",
+      "value": "Merge blank lines"
+    },
+    {
+      "name": "novel_paragraph_indent",
+      "value": "Paragraph indent"
     },
     {
       "name": "novel_tab_display",

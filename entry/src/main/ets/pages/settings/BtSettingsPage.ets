@@ -26,9 +26,21 @@ export struct BtSettingsContent {
   // 额外 tracker 编辑草稿（bindSheet 内 TextArea 双向暂存，保存时落库）
   @State showTrackerSheet: boolean = false;
   @State trackerDraft: string = '';
+  // Peer 过滤规则数：BtPeerFilterPage 保存后经 AppStorage tick 通知刷新
+  // （返回本页无状态变化不会重渲染，需响应式信号驱动）
+  @StorageProp('btPeerFilterTick') @Watch('refreshPeerFilterCount') btPeerFilterTick: number = 0;
+  @State peerFilterCount: number = 0;
   // Peer 过滤器页跳转（宿主 shell/SettingsPage 注入，两处均有可用 pathStack）
   openPeerFilter: () => void = (): void => {
   };
+
+  aboutToAppear(): void {
+    this.peerFilterCount = BtModule.peerFilterRules().length;
+  }
+
+  private refreshPeerFilterCount(): void {
+    this.peerFilterCount = BtModule.peerFilterRules().length;
+  }
 
   build() {
     Scroll() {
@@ -257,11 +269,10 @@ export struct BtSettingsContent {
   }
 
   private peerFilterCountText(): string {
-    const n = BtModule.peerFilterRules().length;
-    if (n === 0) {
+    if (this.peerFilterCount === 0) {
       return Util.resStr(this.getUIContext(), $r('app.string.bt_peer_filter_none'));
     }
-    return Util.resStr(this.getUIContext(), $r('app.string.bt_peer_filter_n', n));
+    return Util.resStr(this.getUIContext(), $r('app.string.bt_peer_filter_n', this.peerFilterCount));
   }
 
   @Builder

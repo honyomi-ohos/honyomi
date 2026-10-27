@@ -23,10 +23,11 @@ export struct HdsTabsHost {
   scrollable: boolean = true;
   barHeight: number = 56;
   barWidth: number = 0;
-  barBottomMargin: number = 8;
+  @Prop barBottomMargin: number = 8;
   dividerFollowScroll: boolean = true;
   controller: HdsTabsHostController = new HdsTabsHostController();
   miniBar: HdsTabsHostMiniBar | undefined = undefined;
+  @Prop miniBarEnabled: boolean = true;
   onTabChange: (index: number) => void = (_i: number): void => {
   };
   @BuilderParam content: () => void = this.emptyBuilder;
@@ -48,7 +49,7 @@ export struct HdsTabsHost {
       .height('100%')
 
       // 迷你条：悬于页签栏上方（约等于 HDS 浮动条的预览占位）
-      if (this.miniBar !== undefined) {
+      if (this.miniBarEnabled && this.miniBar !== undefined) {
         Column() {
           this.miniBar.builder()
         }

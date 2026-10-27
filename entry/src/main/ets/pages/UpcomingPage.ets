@@ -259,6 +259,9 @@ export struct UpcomingPage {
           })
       }
       .width('100%')
+      // 大屏边距：月份标题左侧已按 contentInset 限宽，右侧箭头同步避让，
+      // 避免 SM/LG 宽屏上切换箭头贴窗口边而其余内容居中
+      .padding({ right: 16 + this.inset() })
 
       // 星期标题行
       Row() {

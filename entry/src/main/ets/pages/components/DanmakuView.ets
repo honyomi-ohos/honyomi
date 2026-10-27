@@ -108,10 +108,17 @@ export struct DanmakuView {
       })
   }
 
-  private onDmSettingChanged(): void {
+  private onDmSettingChanged(propName: string): void {
+    // 仅影响绘制参数的设置无需清场重排
+    if (propName === 'opacityPct' || propName === 'durSec') {
+      return;
+    }
     this.fontPx = Math.max(9, Math.floor(this.getUIContext().vp2px(this.fontVp)));
-    this.softReset();
-    this.tick();
+    // 禁用期间 cursor 冻结：重新开启时须按当前位置重定位，否则错过的弹幕会瞬间全部激活
+    this.resetTo(this.positionProvider());
+    if (this.canvasW > 0 && this.canvasH > 0) {
+      this.ctx.clearRect(0, 0, this.canvasW, this.canvasH);
+    }
   }
 
   private softReset(): void {

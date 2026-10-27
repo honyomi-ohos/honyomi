@@ -2261,6 +2261,14 @@
       "value": "Espaciado de párrafos"
     },
     {
+      "name": "novel_merge_blank_lines",
+      "value": "Combinar líneas vacías"
+    },
+    {
+      "name": "novel_paragraph_indent",
+      "value": "Sangría de párrafo"
+    },
+    {
       "name": "novel_tab_display",
       "value": "Visualización"
     },

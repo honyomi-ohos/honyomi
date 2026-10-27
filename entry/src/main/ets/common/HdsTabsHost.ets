@@ -44,11 +44,16 @@ export struct HdsTabsHost {
   scrollable: boolean = true;
   barHeight: number = 56;
   barWidth: number = 0;
-  barBottomMargin: number = 8;
+  // 页签栏与窗口底边距离（调用点随导航条高度动态计算，@Prop 保证同步）
+  @Prop barBottomMargin: number = 8;
   // 页签栏上方跟手分割线：true=HDS 默认 FOLLOW_SCROLL，false=关闭（阅读器场景）
   dividerFollowScroll: boolean = true;
   controller: HdsTabsHostController = new HdsTabsHostController();
+  // miniBar 配置为普通成员（含 builder，仅创建时赋值）；是否挂入 HDS 由
+  // miniBarEnabled 门控——父组件动态显隐（如首页听书 ttsActive）必须经由
+  // @Prop 开关驱动 floatingStyle 重新应用，false 时不配置避免空胶囊
   miniBar: HdsTabsHostMiniBar | undefined = undefined;
+  @Prop miniBarEnabled: boolean = true;
   onTabChange: (index: number) => void = (_i: number): void => {
   };
   @BuilderParam content: () => void = this.emptyBuilder;
@@ -95,7 +100,7 @@ export struct HdsTabsHost {
       style.barWidth = width;
     }
     const mini: HdsTabsHostMiniBar | undefined = this.miniBar;
-    if (mini !== undefined) {
+    if (this.miniBarEnabled && mini !== undefined) {
       const config: HdsTabsMiniBar = {
         miniBarBuilder: (): void => {
           mini.builder();

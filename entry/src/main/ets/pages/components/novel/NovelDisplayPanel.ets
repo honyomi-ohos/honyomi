@@ -1,6 +1,7 @@
 // 小说阅读器「画面」设置面板：亮度 / 配色 / 背景
 // （从 NovelReaderPage 拆出，Wave 3I；行为与原 displaySheetBuilder 一致）
 import { ThemePalette } from '../../../common/Theme';
+import { WideSlider } from '../WideSlider';
 
 @Component
 export struct NovelDisplayPanel {
@@ -23,21 +24,18 @@ export struct NovelDisplayPanel {
           .fontColor(this.pal.sub)
           .width('100%')
         Row() {
-          Slider({
-            value: this.brightLv,
+          WideSlider({
+            sliderValue: this.brightLv,
             min: 0,
             max: 1,
-            step: 0.05
-          })
-            .layoutWeight(1)
-            .blockColor(this.pal.primary)
-            .selectedColor(this.pal.primary)
-            .trackColor(this.pal.divider)
-            .onChange((value: number, mode: SliderChangeMode) => {
+            step: 0.05,
+            onChange: (value: number, mode: SliderChangeMode): void => {
               if (mode === SliderChangeMode.End || mode === SliderChangeMode.Click) {
                 this.onBrightness(Math.round(value * 20) / 20);
               }
-            })
+            }
+          })
+            .layoutWeight(1)
           Text(this.brightLv === 0 ? $r('app.string.reader_auto') : `${Math.round(this.brightLv * 100)}%`)
             .fontSize(13)
             .fontColor(this.pal.text)

@@ -4,6 +4,7 @@ import { SheetPreset } from './SheetPreset';
 import { Bp } from '../../common/Breakpoint';
 import { AppIcon } from './AppIcon';
 import { PickerSheet } from './PickerSheet';
+import { WideSlider } from './WideSlider';
 
 @Builder
 function emptyContent() {
@@ -47,7 +48,9 @@ export struct TextRow {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State hovered: boolean = false;
   title: Resource | string = '';
-  value: Resource | string = '';
+  // 动态取值（如亮度标签/缓存大小/UA）必须 @Prop：普通成员仅创建时赋值，
+  // 父组件状态变化后行文本不会刷新
+  @Prop value: Resource | string = '';
   onTap: () => void = () => {
   };
 
@@ -267,26 +270,22 @@ export struct PrefSliderRow {
       }
       .width('100%')
 
-      Slider({
-        value: this.currentVal,
+      WideSlider({
+        sliderValue: this.currentVal,
         min: this.minValue,
         max: this.maxValue,
         step: this.stepValue,
-        style: SliderStyle.OutSet
-      })
-        .selectedColor(this.pal.primary)
-        .trackColor(this.pal.chip)
-        .blockColor(this.pal.primary)
-        .width('100%')
-        .margin({ top: 4 })
-        .onChange((v: number, mode: SliderChangeMode) => {
+        onChange: (v: number, mode: SliderChangeMode): void => {
           const n: number = Math.floor(v);
           this.currentVal = n;
           if ((mode === SliderChangeMode.End || mode === SliderChangeMode.Click) && n !== this.savedVal) {
             this.savedVal = n;
             this.apply(n);
           }
-        })
+        }
+      })
+        .width('100%')
+        .margin({ top: 4 })
     }
     .width('100%')
     .constraintSize({ minHeight: 52 })

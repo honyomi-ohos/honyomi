@@ -2317,6 +2317,14 @@
       "value": "ระยะย่อหน้า"
     },
     {
+      "name": "novel_merge_blank_lines",
+      "value": "รวมบรรทัดว่าง"
+    },
+    {
+      "name": "novel_paragraph_indent",
+      "value": "ย่อหน้าเยื้อง"
+    },
+    {
       "name": "novel_tab_display",
       "value": "การแสดงผล"
     },

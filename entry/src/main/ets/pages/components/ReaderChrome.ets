@@ -4,6 +4,7 @@
 import { HdsTabsHost, HdsTabsHostController, HdsTabsHostMiniBar } from '../../common/HdsTabsHost';
 import { AppIcon, AppIconRes } from './AppIcon';
 import { PickerSheet } from './PickerSheet';
+import { WideSlider } from './WideSlider';
 
 // HDS 沉浸宿主由 common/HdsTabsHost 统一承载（全项目唯一 @kit.UIDesignKit 导入点）；
 // 预览器经 src/mock/HdsTabsHost.mock.ets 等效渲染（标准 Tabs），生产包不含 Mock。
@@ -201,7 +202,7 @@ export struct ReaderNavRow {
   };
 
   build() {
-    Row({ space: 12 }) {
+    Row({ space: 8 }) {
       ReaderChapterButton({
         icon: 'skip_previous',
         isActive: this.prevActive,
@@ -221,7 +222,7 @@ export struct ReaderNavRow {
       })
     }
     .width('100%')
-    .padding({ left: 16, right: 16 })
+    .padding({ left: 8, right: 8 })
   }
 
   @Builder
@@ -232,7 +233,6 @@ export struct ReaderNavRow {
 // 章节跳转圆钮（44×44，禁用态 opacity 0.4；是否可点的 guard 由调用方回调内保留）
 @Component
 export struct ReaderChapterButton {
-  @StorageProp('readerBgDark') bgDark: boolean = false;
   @Prop icon: string = 'skip_previous';
   @Prop isActive: boolean = true;
   onTap: () => void = (): void => {
@@ -250,8 +250,7 @@ export struct ReaderChapterButton {
     .height(44)
     .borderRadius(22)
     .justifyContent(FlexAlign.Center)
-    // 玻璃内嵌控件：无填充，仅发丝描边；描边仅作不支持材质设备的回退
-    .border({ width: 0.5, color: this.bgDark ? '#2EFFFFFF' : '#2E000000' })
+    // 外层玻璃胶囊已有描边，内嵌按钮不再画边框
     .opacity(this.isActive ? 1 : 0.4)
     .onClick(() => {
       this.onTap();
@@ -301,24 +300,25 @@ export struct ReaderPagePill {
         .fontColor($r('sys.color.font_primary'))
         .width(24)
         .textAlign(TextAlign.End)
-      Slider({
-        value: this.pos,
+      WideSlider({
+        sliderValue: this.pos,
         min: 1,
         max: this.total > 1 ? this.total : 2,
         step: 1,
-        style: SliderStyle.OutSet
-      })
-        .layoutWeight(1)
+        dotsEnabled: false,
         // Slider 颜色不在系统反色支持列表内，按阅读页背景明暗手动取高对比色
-        .blockColor(this.bgDark ? '#FFFFFF' : '#111111')
-        .selectedColor(this.bgDark ? '#99FFFFFF' : '#99000000')
-        .trackColor(this.bgDark ? '#40FFFFFF' : '#40000000')
-        .margin({ left: 8, right: 8 })
-        .onChange((value: number, mode: SliderChangeMode) => {
+        knobTint: this.bgDark ? '#FFFFFF' : '#111111',
+        fillTint: this.bgDark ? '#99FFFFFF' : '#99000000',
+        trackTint: this.bgDark ? '#40FFFFFF' : '#40000000',
+        knobBorderTint: Color.Transparent,
+        onChange: (value: number, mode: SliderChangeMode): void => {
           if (mode === SliderChangeMode.End || mode === SliderChangeMode.Click) {
             this.onSeek(Math.round(value));
           }
-        })
+        }
+      })
+        .layoutWeight(1)
+        .margin({ left: 4, right: 4 })
       Text(`${this.total}`)
         .fontSize(13)
         // sys.color 资源配合材质 colorInvert 自动反色（硬编码颜色不触发反色）
@@ -327,10 +327,6 @@ export struct ReaderPagePill {
     }
     .layoutWeight(1)
     .height(44)
-    .borderRadius(22)
-    // 玻璃内嵌胶囊：无填充，仅发丝描边；描边仅作不支持材质设备的回退
-    .border({ width: 0.5, color: this.bgDark ? '#2EFFFFFF' : '#2E000000' })
-    .padding({ left: 14, right: 14 })
   }
 }
 

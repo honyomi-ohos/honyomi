@@ -2293,6 +2293,14 @@
       "value": "Spaziatura dei paragrafi"
     },
     {
+      "name": "novel_merge_blank_lines",
+      "value": "Unisci righe vuote"
+    },
+    {
+      "name": "novel_paragraph_indent",
+      "value": "Rientro paragrafo"
+    },
+    {
       "name": "novel_tab_display",
       "value": "Visualizzazione"
     },

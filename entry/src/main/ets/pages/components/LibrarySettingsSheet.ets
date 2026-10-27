@@ -2,6 +2,7 @@ import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
 import { ContentType } from '../../model/Models';
 import { AppIcon } from './AppIcon';
+import { WideSlider } from './WideSlider';
 
 // 排序键（对齐 Mihon LibrarySort）
 const SORT_KEYS: string[] = [
@@ -250,19 +251,12 @@ export struct LibrarySettingsSheet {
                   }
                   .width('100%')
 
-                  Slider({
-                    value: this.gridCols,
+                  WideSlider({
+                    sliderValue: this.gridCols,
                     min: 0,
                     max: 10,
                     step: 1,
-                    style: SliderStyle.OutSet
-                  })
-                    .selectedColor(this.pal.primary)
-                    .trackColor(this.pal.chip)
-                    .blockColor(this.pal.primary)
-                    .width('100%')
-                    .margin({ top: 4 })
-                    .onChange((v: number, mode: SliderChangeMode) => {
+                    onChange: (v: number, mode: SliderChangeMode): void => {
                       const n: number = Math.floor(v);
                       if (n !== this.gridCols) {
                         this.gridCols = n;
@@ -272,7 +266,10 @@ export struct LibrarySettingsSheet {
                           Settings.setLibraryGridCols(n);
                         }
                       }
-                    })
+                    }
+                  })
+                    .width('100%')
+                    .margin({ top: 4 })
                 }
                 .width('100%')
                 .padding({

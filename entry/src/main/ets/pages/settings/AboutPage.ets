@@ -16,7 +16,8 @@ export struct AboutContent {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @State versionName: string = '';
   @State versionCode: number = 0;
-  inset: number = 0;
+  // 路由壳随 windowW 计算传入（Bp.contentInset），@Prop 保证旋转/分屏时同步
+  @Prop inset: number = 0;
 
   aboutToAppear(): void {
     this.versionName = AppInfo.versionName();

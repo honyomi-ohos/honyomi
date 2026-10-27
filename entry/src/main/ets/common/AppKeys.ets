@@ -48,6 +48,8 @@ export class AppKeys {
   static readonly APP_LOCKED: string = 'appLocked';
   // BT 组件安装引导（DownloadService 失败捕获写入，Index/BtComponentDialog 消费）
   static readonly BT_COMPONENT_ASK: string = 'btComponentAsk';
+  // Peer 过滤规则保存信号（计数器递增；BtSettingsPage 消费刷新规则计数）
+  static readonly BT_PEER_FILTER_TICK: string = 'btPeerFilterTick';
   // 用户已拒绝 BT 组件安装引导（抑制自动弹窗，手动重试/retryBtComponentTasks 重置）
   static readonly BT_ASK_DISMISSED: string = 'btAskDismissed';
   // Esc 关闭弹层信号（Index 键盘 Esc 广播，计数器递增；各页 @StorageLink + @Watch 消费关闭自身半模态弹层）

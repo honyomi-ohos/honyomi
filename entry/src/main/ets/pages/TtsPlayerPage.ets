@@ -17,6 +17,7 @@ import { SmartImage } from './components/SmartImage';
 import { SheetPreset } from './components/SheetPreset';
 import { CoverPlaceholder } from './components/CoverPlaceholder';
 import { AppIcon } from './components/AppIcon';
+import { WideSlider } from './components/WideSlider';
 
 // 语速选项（与阅读器听书面板一致）
 const SPEED_OPTIONS: number[] = [0.5, 0.75, 1, 1.25, 1.5, 2];
@@ -365,18 +366,12 @@ export struct TtsPlayerPage {
         .fontWeight(FontWeight.Bold)
         .fontColor(this.pal.text)
 
-      Slider({
-        value: this.speedIndex(),
+      WideSlider({
+        sliderValue: this.speedIndex(),
         min: 0,
         max: SPEED_OPTIONS.length - 1,
         step: 1,
-        style: SliderStyle.OutSet
-      })
-        .selectedColor(this.pal.primary)
-        .trackColor(this.pal.chip)
-        .blockColor(this.pal.primary)
-        .width('100%')
-        .onChange((value: number, mode: SliderChangeMode) => {
+        onChange: (value: number, mode: SliderChangeMode): void => {
           const idx = Math.round(value);
           if (idx < 0 || idx >= SPEED_OPTIONS.length) {
             return;
@@ -385,7 +380,9 @@ export struct TtsPlayerPage {
           if (mode === SliderChangeMode.End || mode === SliderChangeMode.Click) {
             TtsPlaybackService.setSpeed(this.speed);
           }
-        })
+        }
+      })
+        .width('100%')
 
       // 两端刻度
       Row() {

@@ -2313,6 +2313,14 @@
       "value": "Інтервал абзаців"
     },
     {
+      "name": "novel_merge_blank_lines",
+      "value": "Об'єднати порожні рядки"
+    },
+    {
+      "name": "novel_paragraph_indent",
+      "value": "Відступ абзацу"
+    },
+    {
       "name": "novel_tab_display",
       "value": "Відображення"
     },

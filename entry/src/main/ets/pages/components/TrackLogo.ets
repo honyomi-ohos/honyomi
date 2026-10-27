@@ -29,7 +29,7 @@ export struct TrackLogo {
 
   private hasIcon(): boolean {
     return this.syncId === 1 || this.syncId === 2 || this.syncId === 3 || this.syncId === 4 ||
-      this.syncId === 5 || this.syncId === 7 || this.syncId === 10 || this.syncId === 11;
+      this.syncId === 5 || this.syncId === 7 || this.syncId === 10;
   }
 
   private iconRes(): Resource {
@@ -48,8 +48,6 @@ export struct TrackLogo {
         return $r('app.media.tracker_mangaupdates');
       case 10:
         return $r('app.media.tracker_hikka');
-      case 11:
-        return $r('app.media.tracker_mangabaka');
       default:
         return $r('app.media.tracker_anilist');
     }

@@ -31,6 +31,8 @@ export struct AdvancedContent {
   };
   // 长任务进行中（刷新封面等），防重复触发
   @State busy: boolean = false;
+  // UA 响应式镜像：Settings 非响应式，编辑/重置后须手动刷新行文本
+  @State userAgent: string = Settings.getUserAgent();
   private disposed: boolean = false;
 
   aboutToDisappear(): void {
@@ -113,7 +115,7 @@ export struct AdvancedContent {
           Divider().color(this.pal.divider).margin({ left: 16 })
           TextRow({
             title: $r('app.string.pref_user_agent_string'),
-            value: Settings.getUserAgent(),
+            value: this.userAgent,
             onTap: (): void => {
               this.editUserAgent();
             }
@@ -282,6 +284,7 @@ export struct AdvancedContent {
           // 输入留空等同恢复默认 UA
           Settings.setUserAgent(text.trim());
           Http.syncUserAgent();
+          this.userAgent = Settings.getUserAgent();
           Util.toastRes(this.getUIContext(), $r('app.string.pref_user_agent_saved'));
         },
         onClose: (): void => {
@@ -296,6 +299,7 @@ export struct AdvancedContent {
   private resetUserAgent(): void {
     Settings.setUserAgent('');
     Http.syncUserAgent();
+    this.userAgent = Settings.getUserAgent();
     Util.toastRes(this.getUIContext(), $r('app.string.pref_user_agent_saved'));
   }
 

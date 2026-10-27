@@ -2325,6 +2325,14 @@
       "value": "문단 간격"
     },
     {
+      "name": "novel_merge_blank_lines",
+      "value": "빈 줄 병합"
+    },
+    {
+      "name": "novel_paragraph_indent",
+      "value": "단락 들여쓰기"
+    },
+    {
       "name": "novel_tab_display",
       "value": "표시"
     },

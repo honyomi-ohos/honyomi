@@ -2265,6 +2265,14 @@
       "value": "Jarak perenggan"
     },
     {
+      "name": "novel_merge_blank_lines",
+      "value": "Gabung baris kosong"
+    },
+    {
+      "name": "novel_paragraph_indent",
+      "value": "Penyenjangan perenggan"
+    },
+    {
       "name": "novel_tab_display",
       "value": "Paparan"
     },

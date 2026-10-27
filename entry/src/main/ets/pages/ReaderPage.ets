@@ -20,6 +20,7 @@ import { TrackService } from '../data/track/TrackService';
 import { SmartImage } from './components/SmartImage';
 import { ComicStripViewer, STRIP_LEAD_COUNT } from './components/ComicStripViewer';
 import { SwitchRow, TextRow } from './components/Prefs';
+import { WideSlider } from './components/WideSlider';
 import { PickerSheet } from './components/PickerSheet';
 import { SheetPreset } from './components/SheetPreset';
 import { EmulationFlipView } from './components/PageFlip';
@@ -917,23 +918,20 @@ export struct ReaderPage {
             .fontSize(16)
             .fontColor(this.pal.text)
             .width(64)
-          Slider({
-            value: this.brightLv,
+          WideSlider({
+            sliderValue: this.brightLv,
             min: 0,
             max: 1,
-            step: 0.05
-          })
-            .layoutWeight(1)
-            .blockColor(this.pal.primary)
-            .selectedColor(this.pal.primary)
-            .trackColor(this.pal.divider)
-            .onChange((value: number, mode: SliderChangeMode) => {
+            step: 0.05,
+            onChange: (value: number, mode: SliderChangeMode): void => {
               if (mode === SliderChangeMode.End || mode === SliderChangeMode.Click) {
                 this.brightLv = Math.round(value * 20) / 20;
                 Settings.setReaderBrightness(this.brightLv);
                 this.applyBrightness();
               }
-            })
+            }
+          })
+            .layoutWeight(1)
           Text(this.brightLv === 0 ? $r('app.string.reader_auto') : `${Math.round(this.brightLv * 100)}%`)
             .fontSize(12)
             .fontColor(this.pal.sub)
@@ -1056,21 +1054,18 @@ export struct ReaderPage {
         .fontSize(16)
         .fontColor(this.pal.text)
         .width(64)
-      Slider({
-        value: value,
+      WideSlider({
+        sliderValue: value,
         min: min,
         max: max,
-        step: 1
-      })
-        .layoutWeight(1)
-        .blockColor(this.pal.primary)
-        .selectedColor(this.pal.primary)
-        .trackColor(this.pal.divider)
-        .margin({ left: 8, right: 8 })
-        .onChange((sliderValue: number, mode: SliderChangeMode) => {
+        step: 1,
+        onChange: (sliderValue: number, mode: SliderChangeMode): void => {
           onChange(Math.round(sliderValue),
             mode === SliderChangeMode.End || mode === SliderChangeMode.Click);
-        })
+        }
+      })
+        .layoutWeight(1)
+        .margin({ left: 8, right: 8 })
       Text(`${Math.round(value)}%`)
         .fontSize(12)
         .fontColor(this.pal.sub)

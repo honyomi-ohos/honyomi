@@ -7,9 +7,9 @@ import { Http } from '../../net/Http';
 const BGM_API_URL = 'https://api.bgm.tv';
 const BGM_OAUTH_URL = 'https://bgm.tv/oauth/access_token';
 const BGM_LOGIN_URL = 'https://bgm.tv/oauth/authorize';
-const BGM_CLIENT_ID = 'bgm291665acbd06a4c28';
-const BGM_CLIENT_SECRET = '43e5ce36b207de16e5d3cfd3e79118db';
-const BGM_REDIRECT_URL = 'mihon://bangumi-auth';
+const BGM_CLIENT_ID = 'bgm74166ae06145a0f07';
+const BGM_CLIENT_SECRET = '9dfec3d559362bd957afd73dd8993dab';
+const BGM_REDIRECT_URL = 'honyomi://bangumi-auth';
 const BGM_USER_AGENT = 'Honyomi/1.0 (HarmonyOS)';
 const BGM_SUBJECT_URL_PREFIX = 'https://bangumi.tv/subject/';
 

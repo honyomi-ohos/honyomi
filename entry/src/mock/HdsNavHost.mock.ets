@@ -62,8 +62,8 @@ export struct NavGlassPage {
   @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   title: Resource | string = '';
-  // false 时隐藏标题栏（页面自行管理头部/安全区）
-  showTitleBar: boolean = true;
+  // false 时隐藏标题栏（页面自行管理头部/安全区）；宽窄屏动态切换，须 @Prop 同步
+  @Prop showTitleBar: boolean = true;
   actions: NavGlassAction[] = [];
   scroller: Scroller | undefined = undefined;
   onReady: (ctx: NavDestinationContext) => void = (_ctx: NavDestinationContext): void => {
@@ -124,19 +124,22 @@ export struct NavGlassPage {
         .maxLines(1)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
       ForEach(this.actions, (act: NavGlassAction) => {
-        Image(act.icon)
-          .width(24)
-          .height(24)
-          .fillColor(this.pal.text)
-          .padding({
-            left: 8,
-            right: 8,
-            top: 8,
-            bottom: 8
-          })
-          .onClick(() => {
-            act.action();
-          })
+        // 外层容器承担 padding：与生产宿主一致，避免 padding 挤压定宽图标内容区
+        Column() {
+          Image(act.icon)
+            .width(24)
+            .height(24)
+            .fillColor(this.pal.text)
+        }
+        .padding({
+          left: 8,
+          right: 8,
+          top: 8,
+          bottom: 8
+        })
+        .onClick(() => {
+          act.action();
+        })
       }, (act: NavGlassAction, index: number) => index.toString())
     }
     .width('100%')

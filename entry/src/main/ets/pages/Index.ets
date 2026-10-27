@@ -751,6 +751,7 @@ struct Index {
           barBottomMargin: Math.max(this.navBarH + 2, 8),
           controller: this.tabsController,
           miniBar: this.ttsMiniBarOptions(),
+          miniBarEnabled: this.ttsActive,
           onTabChange: (index: number): void => {
             this.currentTab = index;
           }
@@ -1203,11 +1204,9 @@ struct Index {
     }
   }
 
-  // 听书未进行时不配置 miniBar，避免空胶囊
+  // 听书迷你条配置：builder 常驻配置；是否挂入 HDS 由 miniBarEnabled(ttsActive)
+  // 控制（miniBar 为普通成员仅创建时赋值，动态显隐必须走 @Prop 开关重新应用样式）
   private ttsMiniBarOptions(): HdsTabsHostMiniBar | undefined {
-    if (!this.ttsActive) {
-      return undefined;
-    }
     return {
       builder: (): void => {
         this.ttsMiniBar();

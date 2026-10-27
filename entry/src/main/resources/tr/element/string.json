@@ -2301,6 +2301,14 @@
       "value": "Paragraf aralığı"
     },
     {
+      "name": "novel_merge_blank_lines",
+      "value": "Boş satırları birleştir"
+    },
+    {
+      "name": "novel_paragraph_indent",
+      "value": "Paragraf girintisi"
+    },
+    {
       "name": "novel_tab_display",
       "value": "Görünüm"
     },

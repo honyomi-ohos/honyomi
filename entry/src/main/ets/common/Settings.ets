@@ -167,6 +167,25 @@ export class Settings {
     Settings.setNum('novelParagraphSpacing', v);
   }
 
+  // 小说正文合并空行：段落间连续空行（含仅空白字符行）合并为单个换行
+  static getNovelMergeBlankLines(): boolean {
+    return Settings.getBool('novelMergeBlankLines', false);
+  }
+
+  static setNovelMergeBlankLines(v: boolean): void {
+    Settings.setBool('novelMergeBlankLines', v);
+  }
+
+  // 小说段落首行缩进（全角空格数，0 = 不缩进）：无缩进正文自动补缩进
+  static getNovelParagraphIndent(): number {
+    const n = Settings.getNum('novelParagraphIndent', 0);
+    return n >= 0 && n <= 4 ? n : 0;
+  }
+
+  static setNovelParagraphIndent(v: number): void {
+    Settings.setNum('novelParagraphIndent', v);
+  }
+
   // 听书语速（0.5 - 2.0，默认 1.0）
   static getNovelTtsSpeed(): number {
     const n = Settings.getNum('novelTtsSpeed', 1);
@@ -238,15 +257,6 @@ export class Settings {
 
   static setKitsuScoreType(v: string): void {
     Settings.setStr('kitsuScoreType', v);
-  }
-
-  // MangaBaka 评分制：STEP_1 / STEP_5 / STEP_10 / STEP_20 / STEP_25（0-100 步进）
-  static getMangabakaScoreType(): string {
-    return Settings.getStr('mangabakaScoreType', 'STEP_10');
-  }
-
-  static setMangabakaScoreType(v: string): void {
-    Settings.setStr('mangabakaScoreType', v);
   }
 
   // 阅读完成后自动同步追踪进度

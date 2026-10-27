@@ -3,6 +3,7 @@ import { Settings } from '../../common/Settings';
 import { Util } from '../../common/Util';
 import { BtFlow } from '../../data/BtFlow';
 import { NavGlassPage } from '../../common/HdsNavHost';
+import { AppKeys } from '../../common/AppKeys';
 
 // BT Peer 过滤器编辑页（对齐 animeko AnitorrentEngineSettings 独立页模式）：
 // 每行一条规则，"from-to" 区间或单个 IP（IPv4/IPv6），空 = 不过滤。
@@ -57,6 +58,9 @@ export struct BtPeerFilterPage {
     Settings.setBtPeerFilter(this.draft);
     // 即时下发引擎（未启动静默，下次启动由 ensureStarted 读取）
     BtFlow.applyPeerFilterLive();
+    // 通知 BT 设置页刷新规则计数（返回后无状态变化不会重渲染）
+    AppStorage.setOrCreate(AppKeys.BT_PEER_FILTER_TICK,
+      (AppStorage.get<number>(AppKeys.BT_PEER_FILTER_TICK) ?? 0) + 1);
     this.pathStack.pop();
   }
 
