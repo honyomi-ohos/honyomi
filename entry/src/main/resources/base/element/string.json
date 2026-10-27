@@ -1737,6 +1737,34 @@
       "value": "Paper"
     },
     {
+      "name": "reader_set_auto_page",
+      "value": "Auto page turn"
+    },
+    {
+      "name": "reader_auto_off",
+      "value": "Off"
+    },
+    {
+      "name": "reader_auto_sec_fmt",
+      "value": "%d s"
+    },
+    {
+      "name": "reader_auto_page_on",
+      "value": "Auto page turn on"
+    },
+    {
+      "name": "reader_auto_page_off",
+      "value": "Auto page turn off"
+    },
+    {
+      "name": "reader_auto_page_webtoon_off",
+      "value": "Auto page turn is unavailable in webtoon mode"
+    },
+    {
+      "name": "video_pip_unsupported",
+      "value": "Picture-in-picture is unavailable on this device"
+    },
+    {
       "name": "reader_theme_white",
       "value": "White"
     },

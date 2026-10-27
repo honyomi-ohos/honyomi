@@ -3,8 +3,8 @@ import { SheetPreset } from './components/SheetPreset';
 import { KeyCode } from '@kit.InputKit';
 import { media } from '@kit.MediaKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
-import { window } from '@kit.ArkUI';
-import { deviceInfo } from '@kit.BasicServicesKit';
+import { window, PiPWindow } from '@kit.ArkUI';
+import { deviceInfo, BusinessError } from '@kit.BasicServicesKit';
 import { AVCastPicker } from '@kit.AVSessionKit';
 import { CacheListener } from '@ohos/video-cache';
 import { AppDb } from '../data/AppDb';
@@ -129,6 +129,10 @@ export struct VideoPlayerPage {
   private cacheListener: CacheListener | undefined = undefined;
   private cacheUrl: string = '';
   private xCtrl: XComponentController = new XComponentController();
+  // 画中画（华为视频对齐）：XComponent 内容迁移至系统小窗；退后台时按播放状态自动小窗
+  @State pipEnabled: boolean = false;
+  @State pipActive: boolean = false;
+  private pipController: PiPWindow.PiPController | undefined = undefined;
   private ticker: number = -1;
   private dragging: boolean = false;
   private localPath: string = '';
@@ -218,6 +222,7 @@ export struct VideoPlayerPage {
     this.dmOpacity = Settings.getDanmakuOpacityPct();
     this.dmArea = Settings.getDanmakuAreaPct();
     this.dmDur = Settings.getDanmakuDurationSec();
+    this.pipEnabled = PiPWindow.isPiPEnabled();
     // 沉浸式：隐藏状态栏与导航栏（页面已销毁则放弃，避免销毁后隐藏系统栏且无法还原）
     window.getLastWindow(Util.hostAbilityContext(this.getUIContext())).then((w: window.Window) => {
       if (this.destroyed) {
@@ -241,6 +246,11 @@ export struct VideoPlayerPage {
     this.stopTicker();
     this.clearUiTimers();
     this.releasePlayer();
+    // 离开播放页时关闭画中画小窗
+    if (this.pipController !== undefined && this.pipActive) {
+      this.pipController.stopPiP().catch((): void => {
+      });
+    }
     this.castMgr.destroy();
     if (this.win !== undefined) {
       // 还原系统栏与窗口方向；PC 全屏态先退出沉浸式，避免下一页残留无标题栏窗口
@@ -312,7 +322,8 @@ export struct VideoPlayerPage {
       .borderRadius(19)
       .justifyContent(FlexAlign.Center)
       .alignItems(HorizontalAlign.Center)
-      .backgroundColor('rgba(255,255,255,0.12)')
+      .backgroundEffect({ radius: 24, saturation: 1.4 })
+      .border({ width: 0.5, color: 'rgba(255,255,255,0.2)' })
       .margin({ right: 8 })
       .onClick(() => {
         this.openCastSheet();
@@ -326,7 +337,8 @@ export struct VideoPlayerPage {
       .borderRadius(19)
       .justifyContent(FlexAlign.Center)
       .alignItems(HorizontalAlign.Center)
-      .backgroundColor('rgba(255,255,255,0.12)')
+      .backgroundEffect({ radius: 24, saturation: 1.4 })
+      .border({ width: 0.5, color: 'rgba(255,255,255,0.2)' })
       .onClick(() => {
         this.locked = true;
         Util.toastRes(this.getUIContext(), $r('app.string.video_locked'));
@@ -372,7 +384,8 @@ export struct VideoPlayerPage {
       .borderRadius(34)
       .justifyContent(FlexAlign.Center)
       .alignItems(HorizontalAlign.Center)
-      .backgroundColor('rgba(255,255,255,0.14)')
+      .backgroundEffect({ radius: 40, saturation: 1.4 })
+      .border({ width: 0.5, color: 'rgba(255,255,255,0.24)' })
       .onClick(() => {
         this.togglePlay();
       })
@@ -391,6 +404,8 @@ export struct VideoPlayerPage {
     .transition(TransitionEffect.OPACITY.animation({ duration: 180 }))
   }
 
+  // 液态玻璃圆形按钮（华为视频对齐）：backgroundEffect 实时模糊视频画面，
+  // 叠 0.5vp 发丝描边提升玻璃边界感，替代原先的半透明纯色底
   @Builder
   ctrlBtn(icon: string, onTap: () => void) {
     Column() {
@@ -401,7 +416,8 @@ export struct VideoPlayerPage {
     .borderRadius(19)
     .justifyContent(FlexAlign.Center)
     .alignItems(HorizontalAlign.Center)
-    .backgroundColor('rgba(255,255,255,0.12)')
+    .backgroundEffect({ radius: 24, saturation: 1.4 })
+    .border({ width: 0.5, color: 'rgba(255,255,255,0.2)' })
     .onClick(() => {
       onTap();
     })
@@ -480,7 +496,8 @@ export struct VideoPlayerPage {
         .borderRadius(19)
         .justifyContent(FlexAlign.Center)
         .alignItems(HorizontalAlign.Center)
-        .backgroundColor('rgba(255,255,255,0.12)')
+        .backgroundEffect({ radius: 24, saturation: 1.4 })
+        .border({ width: 0.5, color: 'rgba(255,255,255,0.2)' })
         .onClick(() => {
           this.toggleDanmaku();
         })
@@ -488,6 +505,11 @@ export struct VideoPlayerPage {
         this.ctrlBtn('tune', (): void => {
           this.openSheet(4);
         })
+        if (this.pipEnabled) {
+          this.ctrlBtn(this.pipActive ? 'fullscreen_exit' : 'open_in_new', (): void => {
+            this.togglePiP();
+          })
+        }
         this.ctrlBtn(this.fullscreen ? 'fullscreen_exit' : 'fullscreen', (): void => {
           this.toggleFullscreen();
         })
@@ -519,8 +541,8 @@ export struct VideoPlayerPage {
     .borderRadius(23)
     .justifyContent(FlexAlign.Center)
     .alignItems(HorizontalAlign.Center)
-    .backgroundColor('rgba(0,0,0,0.55)')
-    .border({ width: 1, color: 'rgba(255,255,255,0.4)' })
+    .backgroundEffect({ radius: 28, saturation: 1.4 })
+    .border({ width: 0.5, color: 'rgba(255,255,255,0.28)' })
     .position({ x: '86%', y: '44%' })
     .onClick(() => {
       this.locked = false;
@@ -1817,6 +1839,7 @@ export struct VideoPlayerPage {
         this.videoW = player.width > 0 ? player.width : 0;
         this.videoH = player.height > 0 ? player.height : 0;
         this.adjustSurface();
+        this.preparePip();
         if (this.resumeMs > 0 && (this.durationMs === 0 || this.resumeMs < this.durationMs)) {
           // @SuppressWarnings syscap
           player.seek(this.resumeMs, media.SeekMode.SEEK_PREV_SYNC);
@@ -1839,9 +1862,11 @@ export struct VideoPlayerPage {
         this.playing = true;
         this.buffering = false;
         this.armAutoHide();
+        this.setPipAutoStart(true);
       } else if (state === 'paused' || state === 'stopped') {
         this.playing = false;
         this.buffering = false;
+        this.setPipAutoStart(false);
       } else if (state === 'completed') {
         // BT 边下边播：completed 可能是 fdSrc 截断处的数据边界而非真实片尾
         if (this.btProgressive && this.btSafeLen < this.btStatSize) {
@@ -1850,6 +1875,7 @@ export struct VideoPlayerPage {
         }
         this.playing = false;
         this.buffering = false;
+        this.setPipAutoStart(false);
         this.persist(true);
         if (this.autoNext && this.nextId > 0) {
           this.openChapter(this.nextId);
@@ -2395,6 +2421,86 @@ export struct VideoPlayerPage {
       this.volumeHudTimer = -1;
       this.volHudPct = -1;
     }, 800);
+  }
+
+  // ---- 画中画（华为视频对齐）----
+
+  // 创建（复用）画中画控制器；系统要求必须在应用前台创建，首次 prepared 时触发
+  private async ensurePipController(): Promise<PiPWindow.PiPController | undefined> {
+    if (this.pipController !== undefined) {
+      return this.pipController;
+    }
+    if (!this.pipEnabled) {
+      return undefined;
+    }
+    const hostCtx = this.getUIContext().getHostContext();
+    if (hostCtx === undefined) {
+      return undefined;
+    }
+    const config: PiPWindow.PiPConfiguration = {
+      context: hostCtx,
+      componentController: this.xCtrl,
+      templateType: PiPWindow.PiPTemplateType.VIDEO_PLAY,
+      contentWidth: this.videoW > 0 ? this.videoW : 1280,
+      contentHeight: this.videoH > 0 ? this.videoH : 720
+    };
+    try {
+      const ctrl = await PiPWindow.create(config);
+      ctrl.on('stateChange', (state: PiPWindow.PiPState, reason: string) => {
+        this.pipActive = state === PiPWindow.PiPState.STARTED;
+        this.log(`pip stateChange: ${state} ${reason}`);
+      });
+      this.pipController = ctrl;
+      return ctrl;
+    } catch (e) {
+      this.log(`pip create failed: ${e}`);
+      return undefined;
+    }
+  }
+
+  // prepared 时确保控制器存在并同步媒体尺寸、开启退后台自动小窗
+  private async preparePip(): Promise<void> {
+    if (!this.pipEnabled) {
+      return;
+    }
+    const ctrl = await this.ensurePipController();
+    if (ctrl === undefined) {
+      return;
+    }
+    if (this.videoW > 0 && this.videoH > 0) {
+      ctrl.updateContentSize(this.videoW, this.videoH);
+    }
+    ctrl.setAutoStartEnabled(true);
+  }
+
+  // 跟随播放/暂停切换“退后台自动启动画中画”（华为视频行为）
+  private setPipAutoStart(enable: boolean): void {
+    if (this.pipController !== undefined) {
+      this.pipController.setAutoStartEnabled(enable);
+    }
+  }
+
+  // 手动开关画中画小窗
+  private async togglePiP(): Promise<void> {
+    if (!this.pipEnabled) {
+      Util.toastRes(this.getUIContext(), $r('app.string.video_pip_unsupported'));
+      return;
+    }
+    const ctrl = await this.ensurePipController();
+    if (ctrl === undefined) {
+      Util.toastRes(this.getUIContext(), $r('app.string.video_pip_unsupported'));
+      return;
+    }
+    if (this.pipActive) {
+      await ctrl.stopPiP().catch((e: BusinessError): void => {
+        this.log(`pip stop failed: ${e.code}`);
+      });
+      return;
+    }
+    await ctrl.startPiP().catch((e: BusinessError): void => {
+      this.log(`pip start failed: ${e.code}`);
+      Util.toastRes(this.getUIContext(), $r('app.string.video_pip_unsupported'));
+    });
   }
 
   // ---- 华为视频手势：左半屏上下滑亮度 / 右半屏上下滑音量 / 横滑快进 ----

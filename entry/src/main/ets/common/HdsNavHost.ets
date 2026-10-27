@@ -58,7 +58,6 @@ export struct NavGlassRoot {
   // 首页页签头部（Index 按当前页签切换注入）
   @BuilderParam header: () => void = this.emptyBuilder;
   @BuilderParam content: () => void = this.emptyBuilder;
-
   onNavBarStateChange: (isVisible: boolean) => void = (_v: boolean): void => {
   };
 
@@ -109,13 +108,10 @@ export struct NavGlassPage {
   // 兼容保留：标准 NavDestination 标题栏自动联动滚动容器，无需显式绑定
   scroller: Scroller | undefined = undefined;
   @BuilderParam content: () => void = this.emptyBuilder;
-
   onReady: (ctx: NavDestinationContext) => void = (_ctx: NavDestinationContext): void => {
   };
-
   onShown: () => void = (): void => {
   };
-
   onHidden: () => void = (): void => {
   };
 

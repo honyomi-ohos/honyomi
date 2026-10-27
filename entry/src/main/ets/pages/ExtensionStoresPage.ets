@@ -18,10 +18,8 @@ struct ExtStoreAddDialog {
   @State processing: boolean = false;
   @State errorText: string = '';
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-
   closeDialog: () => void = () => {
   };
-
   onAdded: (store: PluginStoreRecord) => void = (_s: PluginStoreRecord) => {
   };
   onClose: () => void = () => {

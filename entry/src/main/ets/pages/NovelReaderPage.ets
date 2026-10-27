@@ -1319,7 +1319,6 @@ export struct NovelReaderPage {
     (_playing: boolean, _paused: boolean, _mangaId: number, _chapterId: number): void => {
       this.syncTtsUi();
     };
-
   private readonly ttsOnPara: TtsServiceParaHandler =
     (_mangaId: number, chapterId: number, paraIdx: number): void => {
       if (chapterId !== this.chapterId) {
@@ -1331,7 +1330,6 @@ export struct NovelReaderPage {
         this.followTtsPara(paraIdx);
       }
     };
-
   private readonly ttsOnChapter: TtsServiceChapterHandler = (mangaId: number, chapterId: number): void => {
     if (mangaId !== this.mangaId) {
       return;
@@ -1343,13 +1341,11 @@ export struct NovelReaderPage {
     // 听书自动进入下一章：阅读器跟随加载（不打断朗读）
     this.openChapter(chapterId);
   };
-
   private readonly ttsOnError: TtsServiceErrorHandler = (message: string): void => {
     Util.toastRes(this.getUIContext(), $r('app.string.novel_tts_error'),
       [Util.errText(this.getUIContext(), message)]);
     this.syncTtsUi();
   };
-
   private readonly ttsOnFinish: TtsServiceFinishHandler = (): void => {
     Util.toastRes(this.getUIContext(), $r('app.string.novel_tts_finish'));
     this.syncTtsUi();

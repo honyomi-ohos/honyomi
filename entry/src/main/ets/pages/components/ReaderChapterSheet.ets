@@ -11,7 +11,6 @@ export struct ReaderChapterSheet {
   @Prop currentId: number = -1;
   @Prop pal: ThemePalette = new ThemePalette();
   private listScroller: Scroller = new Scroller();
-
   onPick: (id: number) => void = (id: number): void => {
   };
 

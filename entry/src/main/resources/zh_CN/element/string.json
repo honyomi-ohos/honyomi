@@ -1217,6 +1217,34 @@
       "value": "纸张"
     },
     {
+      "name": "reader_set_auto_page",
+      "value": "自动翻页"
+    },
+    {
+      "name": "reader_auto_off",
+      "value": "关闭"
+    },
+    {
+      "name": "reader_auto_sec_fmt",
+      "value": "%d 秒"
+    },
+    {
+      "name": "reader_auto_page_on",
+      "value": "自动翻页已开启"
+    },
+    {
+      "name": "reader_auto_page_off",
+      "value": "自动翻页已关闭"
+    },
+    {
+      "name": "reader_auto_page_webtoon_off",
+      "value": "条漫模式暂不支持自动翻页"
+    },
+    {
+      "name": "video_pip_unsupported",
+      "value": "当前设备不支持画中画"
+    },
+    {
       "name": "reader_theme_white",
       "value": "白色"
     },

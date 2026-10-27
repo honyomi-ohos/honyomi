@@ -30,10 +30,8 @@ export function BtEngineChoiceBuilder(params: BtEngineChoiceParams) {
 @Component
 struct BtEngineChoiceContent {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-
   onPick: (choice: string) => void = (_choice: string) => {
   };
-
   onCancel: () => void = () => {
   };
 

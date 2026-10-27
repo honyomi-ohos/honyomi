@@ -6,6 +6,8 @@ import { NavGlassPage } from '../../common/HdsNavHost';
 import { PrefGroup, PrefSelectRow, PrefSwitchRow, TextRow } from '../components/Prefs';
 
 const THEME_VALUES: number[] = [3, 0, 1, 2, 4];
+// 自动翻页间隔（秒，0=关闭；华为阅读对齐）
+const AUTO_PAGE_VALUES: number[] = [0, 5, 10, 15, 20, 30, 60];
 
 // 阅读器设置内容：默认模式/页码/背景色/亮度（双页改为横屏自动，无需设置项）
 @Component
@@ -14,6 +16,7 @@ export struct ReaderSettingsContent {
   @State brightnessLabel: string = '';
   private modeValues: string[] = [];
   private modeOptions: ResourceStr[] = [];
+  private autoPageOptions: ResourceStr[] = [];
 
   aboutToAppear(): void {
     this.modeValues = ['ltr', 'rtl', 'vertical', 'webtoon'];
@@ -31,6 +34,13 @@ export struct ReaderSettingsContent {
     const b = Settings.getReaderBrightness();
     this.brightnessLabel = b === 0 ?
       Util.resStr(this.getUIContext(), $r('app.string.lang_follow_system')) : `${b}`;
+    // 自动翻页间隔选项：关闭 + 各档位（“N 秒”）
+    const pageOpts: ResourceStr[] = [Util.resStr(this.getUIContext(), $r('app.string.reader_auto_off'))];
+    for (let i = 1; i < AUTO_PAGE_VALUES.length; i++) {
+      pageOpts.push(Util.resStr(this.getUIContext(),
+        $r('app.string.reader_auto_sec_fmt'), [AUTO_PAGE_VALUES[i]]));
+    }
+    this.autoPageOptions = pageOpts;
   }
 
   build() {
@@ -43,6 +53,15 @@ export struct ReaderSettingsContent {
             selectedIndex: this.modeIndex(),
             onSelectIndex: (index: number): void => {
               Settings.setReaderMode(this.modeValues[index]);
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          PrefSelectRow({
+            title: $r('app.string.reader_set_auto_page'),
+            options: this.autoPageOptions,
+            selectedIndex: this.autoPageIndex(),
+            onSelectIndex: (index: number): void => {
+              Settings.setReaderAutoPageSec(AUTO_PAGE_VALUES[index]);
             }
           })
         }
@@ -98,6 +117,11 @@ export struct ReaderSettingsContent {
 
   private themeIndex(): number {
     const i = THEME_VALUES.indexOf(Settings.getReaderTheme());
+    return i >= 0 ? i : 0;
+  }
+
+  private autoPageIndex(): number {
+    const i = AUTO_PAGE_VALUES.indexOf(Settings.getReaderAutoPageSec());
     return i >= 0 ? i : 0;
   }
 }

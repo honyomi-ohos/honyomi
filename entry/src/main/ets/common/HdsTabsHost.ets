@@ -55,7 +55,6 @@ export struct HdsTabsHost {
   miniBar: HdsTabsHostMiniBar | undefined = undefined;
   @Prop miniBarEnabled: boolean = true;
   @BuilderParam content: () => void = this.emptyBuilder;
-
   onTabChange: (index: number) => void = (_i: number): void => {
   };
 

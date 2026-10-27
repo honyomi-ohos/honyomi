@@ -1175,6 +1175,15 @@ export class Settings {
     Settings.setNum('readerWebtoonPadding', v);
   }
 
+  // 自动翻页间隔（秒，0=关闭；华为阅读对齐）
+  static getReaderAutoPageSec(): number {
+    return Settings.getNum('readerAutoPageSec', 0);
+  }
+
+  static setReaderAutoPageSec(v: number): void {
+    Settings.setNum('readerAutoPageSec', v);
+  }
+
   static getViewerMode(mangaId: string): string {
     return Settings.getStr('viewer_mode:' + mangaId, '');
   }

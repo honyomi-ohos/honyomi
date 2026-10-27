@@ -28,7 +28,6 @@ export struct NavGlassRoot {
   @StorageProp('statusBarH') statusBarH: number = 0;
   @BuilderParam header: () => void = this.emptyBuilder;
   @BuilderParam content: () => void = this.emptyBuilder;
-
   onNavBarStateChange: (isVisible: boolean) => void = (_v: boolean): void => {
   };
 
@@ -69,13 +68,10 @@ export struct NavGlassPage {
   actions: NavGlassAction[] = [];
   scroller: Scroller | undefined = undefined;
   @BuilderParam content: () => void = this.emptyBuilder;
-
   onReady: (ctx: NavDestinationContext) => void = (_ctx: NavDestinationContext): void => {
   };
-
   onShown: () => void = (): void => {
   };
-
   onHidden: () => void = (): void => {
   };
 

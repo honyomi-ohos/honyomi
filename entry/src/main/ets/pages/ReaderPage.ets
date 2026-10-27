@@ -165,6 +165,10 @@ export struct ReaderPage {
   // 单击调度（延迟 260ms 识别双击缩放）：待执行动作与定时器 id
   private pendingTap: (() => void) | null = null;
   private pendingTapTimer: number = -1;
+  // 自动翻页（华为阅读）：间隔可调，定时步进下一页；条漫模式不适用
+  @State autoPageSec: number = 0;
+  @State autoRunning: boolean = false;
+  private autoTimerId: number = -1;
 
   aboutToAppear(): void {
     this.gripSupported = GripSupport.isSupported();
@@ -185,6 +189,7 @@ export struct ReaderPage {
     this.navMode = Settings.getReaderNavMode();
     this.pageAnim = Settings.getReaderPageAnim();
     this.webtoonPadding = Settings.getReaderWebtoonPadding();
+    this.autoPageSec = Settings.getReaderAutoPageSec();
     this.applyOrientation();
     this.applyBrightness();
   }
@@ -194,6 +199,7 @@ export struct ReaderPage {
     ReadingStatsRepo.flush();
     this.updateGripListener(false);
     this.cancelPendingTap();
+    this.stopAutoPage();
     if (this.resumeTimerId !== -1) {
       clearTimeout(this.resumeTimerId);
       this.resumeTimerId = -1;
@@ -452,78 +458,79 @@ export struct ReaderPage {
   swiperBody() {
     Stack() {
       Swiper() {
-      LazyForEach(this.dataSource, (page: SPage, index: number) => {
-        Stack() {
-          if (page.url === TRANS_PREV_URL || page.url === TRANS_NEXT_URL) {
-            // 章节过渡页（对齐 Mihon：越界展示上一章/下一章信息）
-            Column() {
-              ReaderTransition({
-                kind: page.url === TRANS_NEXT_URL ? 'next' : 'prev',
-                currentName: this.chapter.name,
-                targetName: page.url === TRANS_NEXT_URL ? this.nextChapterName : this.prevChapterName,
-                textCol: this.readerTextCol(),
-                subCol: this.readerSubCol()
-              })
-            }
-            .width('100%')
-            .height('100%')
-            .justifyContent(FlexAlign.Center)
-            .alignItems(HorizontalAlign.Center)
-          } else {
-            SmartImage({
-              url: page.url,
-              sourceKey: this.manga.sourceKey,
-              fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
-              fill: true,
-              highQuality: Settings.getReaderHighQuality()
-            })
+        LazyForEach(this.dataSource, (page: SPage, index: number) => {
+          Stack() {
+            if (page.url === TRANS_PREV_URL || page.url === TRANS_NEXT_URL) {
+              // 章节过渡页（对齐 Mihon：越界展示上一章/下一章信息）
+              Column() {
+                ReaderTransition({
+                  kind: page.url === TRANS_NEXT_URL ? 'next' : 'prev',
+                  currentName: this.chapter.name,
+                  targetName: page.url === TRANS_NEXT_URL ? this.nextChapterName : this.prevChapterName,
+                  textCol: this.readerTextCol(),
+                  subCol: this.readerSubCol()
+                })
+              }
               .width('100%')
               .height('100%')
+              .justifyContent(FlexAlign.Center)
+              .alignItems(HorizontalAlign.Center)
+            } else {
+              SmartImage({
+                url: page.url,
+                sourceKey: this.manga.sourceKey,
+                fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
+                fill: true,
+                highQuality: Settings.getReaderHighQuality()
+              })
+                .width('100%')
+                .height('100%')
+            }
           }
-        }
-        .width('100%')
-        .height('100%')
-        .translate({ x: this.coverAt(this.coverX, index), y: this.coverAt(this.coverY, index) })
-        .zIndex(this.coverAt(this.coverZ, index))
-      }, (page: SPage) => page.url)
-    }
-    .width('100%')
-    .height('100%')
-    .displayCount(this.dualPageActive() ? 2 : 1)
-    .loop(false)
-    .vertical(this.mode === 'vertical')
-    .index(this.displayIndex)
-    .indicator(false)
-    .customContentTransition({
-      timeout: 800,
-      transition: (proxy: SwiperContentTransitionProxy): void => {
-        this.onCoverTransition(proxy);
+          .width('100%')
+          .height('100%')
+          .translate({ x: this.coverAt(this.coverX, index), y: this.coverAt(this.coverY, index) })
+          .zIndex(this.coverAt(this.coverZ, index))
+        }, (page: SPage) => page.url)
       }
-    })
-    .onChange((index: number) => {
-      this.onSwipe(index);
-    })
-    .onTouch((event: TouchEvent) => {
-      this.handleTouch(event);
-    })
-    .onAreaChange((_old: Area, newArea: Area) => {
-      this.syncReaderArea(newArea);
-    })
-    .scale({ x: this.zoomScale, y: this.zoomScale })
-    .translate({ x: this.zoomX, y: this.zoomY })
-    .gesture(PinchGesture({ fingers: 2 })
-      .onActionStart((event: GestureEvent) => {
-        this.pinchBase = this.zoomScale;
-      })
-      .onActionUpdate((event: GestureEvent) => {
-        // 以捏合起点缩放为基准，实时跟随捏合比例
-        this.applyZoom(this.pinchBase * event.scale, this.zoomX, this.zoomY);
-      })
-      .onActionEnd(() => {
-        if (this.zoomScale <= 1.02) {
-          this.resetZoom();
+      .width('100%')
+      .height('100%')
+      .displayCount(this.dualPageActive() ? 2 : 1)
+      .loop(false)
+      .vertical(this.mode === 'vertical')
+      .index(this.displayIndex)
+      .indicator(false)
+      .customContentTransition({
+        timeout: 800,
+        transition: (proxy: SwiperContentTransitionProxy): void => {
+          this.onCoverTransition(proxy);
         }
-      }))
+      })
+      .onChange((index: number) => {
+        this.onSwipe(index);
+      })
+      .onTouch((event: TouchEvent) => {
+        this.handleTouch(event);
+      })
+      .onAreaChange((_old: Area, newArea: Area) => {
+        this.syncReaderArea(newArea);
+      })
+      .scale({ x: this.zoomScale, y: this.zoomScale })
+      .translate({ x: this.zoomX, y: this.zoomY })
+      .gesture(PinchGesture({ fingers: 2 })
+        .onActionStart((event: GestureEvent) => {
+          this.pinchBase = this.zoomScale;
+        })
+        .onActionUpdate((event: GestureEvent) => {
+          // 以捏合起点缩放为基准，实时跟随捏合比例
+          this.applyZoom(this.pinchBase * event.scale, this.zoomX, this.zoomY);
+        })
+        .onActionEnd(() => {
+          if (this.zoomScale <= 1.02) {
+            this.resetZoom();
+          }
+        }))
+
       if (this.zoomScale > 1.001) {
         this.zoomPanOverlay()
       }
@@ -625,7 +632,7 @@ export struct ReaderPage {
     }
   }
 
-  // 设置行：章节目录 / 阅读模式 / 旋转 / 裁边 / 设置
+  // 设置行：章节目录 / 自动翻页 / 阅读模式 / 旋转 / 裁边 / 设置
   @Builder
   menuSettingsRow() {
     Row() {
@@ -633,6 +640,12 @@ export struct ReaderPage {
         icon: 'view_list',
         onTap: (): void => {
           this.openChapterSheet();
+        }
+      })
+      ReaderMenuIconButton({
+        icon: 'schedule',
+        onTap: (): void => {
+          this.toggleAutoPage();
         }
       })
       ReaderMenuIconButton({
@@ -1415,6 +1428,7 @@ export struct ReaderPage {
       return;
     }
     this.loading = false;
+    this.armAutoPage();
   }
 
   private async refreshNeighbors(): Promise<void> {
@@ -1505,6 +1519,7 @@ export struct ReaderPage {
   private async onSwipe(displayIdx: number): Promise<void> {
     this.displayIndex = displayIdx;
     this.resetZoom();
+    this.armAutoPage();
     const kind = this.cellKind(displayIdx);
     if (kind === 'next') {
       // 落在“下一章”过渡页：没有下一章时呼出菜单（对齐 Mihon），有则等待继续前翻
@@ -1548,6 +1563,12 @@ export struct ReaderPage {
     this.transOverlay = 0;
     Settings.setReaderMode(mode);
     this.applyMode(true);
+    // 条漫不支持自动翻页，切回分页模式时若此前开启则恢复倒计时
+    if (this.mode === 'webtoon') {
+      this.stopAutoPage();
+    } else {
+      this.armAutoPage();
+    }
   }
 
   private modeIcon(): string {
@@ -1801,6 +1822,54 @@ export struct ReaderPage {
       this.pendingTapTimer = -1;
     }
     this.pendingTap = null;
+  }
+
+  // ---- 自动翻页（华为阅读对齐）----
+
+  // 切换自动翻页：条漫模式不适用；未设置间隔时默认 15 秒并持久化
+  private toggleAutoPage(): void {
+    if (this.autoRunning) {
+      this.stopAutoPage();
+      Util.toastRes(this.getUIContext(), $r('app.string.reader_auto_page_off'));
+      return;
+    }
+    if (this.mode === 'webtoon') {
+      Util.toastRes(this.getUIContext(), $r('app.string.reader_auto_page_webtoon_off'));
+      return;
+    }
+    if (this.autoPageSec <= 0) {
+      this.autoPageSec = 15;
+      Settings.setReaderAutoPageSec(15);
+    }
+    this.autoRunning = true;
+    Haptics.soft();
+    this.armAutoPage();
+    Util.toastRes(this.getUIContext(), $r('app.string.reader_auto_page_on'));
+  }
+
+  private stopAutoPage(): void {
+    this.autoRunning = false;
+    if (this.autoTimerId !== -1) {
+      clearTimeout(this.autoTimerId);
+      this.autoTimerId = -1;
+    }
+  }
+
+  // 重新起算自动翻页倒计时（每次翻页/切章/手动操作后调用，手动翻页也会重置倒计时）
+  private armAutoPage(): void {
+    if (this.autoTimerId !== -1) {
+      clearTimeout(this.autoTimerId);
+      this.autoTimerId = -1;
+    }
+    if (!this.autoRunning || this.loading || this.autoPageSec <= 0 || this.mode === 'webtoon') {
+      return;
+    }
+    this.autoTimerId = setTimeout(() => {
+      this.autoTimerId = -1;
+      if (this.autoRunning && !this.loading) {
+        this.step(1);
+      }
+    }, this.autoPageSec * 1000);
   }
 
   // 在过渡页上继续前/后翻即切换章节（上一章落在末页，下一章落在首页）

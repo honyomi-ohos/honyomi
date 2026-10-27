@@ -53,18 +53,14 @@ export struct WebViewSheetBase {
   private controller: webview.WebviewController = new webview.WebviewController();
   // Web 延迟挂载定时器：销毁时清理，防回调写已销毁组件状态
   private mountTimerId: number = -1;
-
   // 弹层关闭回调
   onClose: () => void = () => {
   };
-
   // onLoadIntercept 钩子：返回 true 表示该次导航已消费（OAuth 拦截 mihon:// 回调用）
   onInterceptLoad: (url: string) => boolean = (_url: string) => false;
-
   // 页面开始/结束导航钩子（携带当前地址；OAuth fragment 兜底拦截、CF 通过检查等用）
   onPageBegun: (url: string) => void = (_url: string) => {
   };
-
   onPageEnded: (url: string) => void = (_url: string) => {
   };
 
