@@ -3,7 +3,7 @@ import { SheetPreset } from './components/SheetPreset';
 import { KeyCode } from '@kit.InputKit';
 import { media } from '@kit.MediaKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
-import { window, PiPWindow } from '@kit.ArkUI';
+import { window, PiPWindow, uiMaterial } from '@kit.ArkUI';
 import { deviceInfo, BusinessError } from '@kit.BasicServicesKit';
 import { AVCastPicker } from '@kit.AVSessionKit';
 import { CacheListener } from '@ohos/video-cache';
@@ -39,6 +39,17 @@ const DM_FONT_VALUES: number[] = [12, 14, 16, 18, 20];
 const DM_OPACITY_VALUES: number[] = [30, 50, 80, 100];
 const DM_AREA_VALUES: number[] = [25, 50, 75, 100];
 const DM_DUR_VALUES: number[] = [12, 10, 8, 6];
+// 视频播控按钮液态玻璃材质（官方沉浸光感，Button.systemMaterial 生效）：
+// 薄材质 THIN + 暗色赋色保证任意画面下白色图标可读，交互形变 + 点光源按压反馈
+// 替代默认按压态。Button 必须显式设置 backgroundColor：材质生效时按该颜色渲染材质，
+// 材质不生效的设备（PC/2in1 模拟器等）回退为该暗色底，任何路径都不会露出 Button 默认主题蓝
+const VIDEO_GLASS: uiMaterial.ImmersiveMaterial = new uiMaterial.ImmersiveMaterial({
+  style: uiMaterial.ImmersiveStyle.THIN,
+  materialColor: '#66000000',
+  interactive: true,
+  lightEffect: { color: Color.White }
+});
+const VIDEO_BTN_BG: ResourceColor = '#66000000';
 let vpSeq: number = 0;
 
 // 意图框架快进指令载荷（AppStorage videoSeek 键，VideoSeekIntent 写入）
@@ -133,6 +144,9 @@ export struct VideoPlayerPage {
   @State pipEnabled: boolean = false;
   @State pipActive: boolean = false;
   private pipController: PiPWindow.PiPController | undefined = undefined;
+  // 期望的退后台自动小窗开关：控制器异步创建期间先记录，创建完成后统一同步，
+  // 避免“暂停后才创建完成、被 preparePip 强制打开”的竞态导致未播放也弹 PiP
+  private pipAutoStartWanted: boolean = false;
   private ticker: number = -1;
   private dragging: boolean = false;
   private localPath: string = '';
@@ -246,7 +260,8 @@ export struct VideoPlayerPage {
     this.stopTicker();
     this.clearUiTimers();
     this.releasePlayer();
-    // 离开播放页时关闭画中画小窗
+    // 离开播放页时关闭画中画小窗，并解除退后台自动小窗（否则离开后最小化仍会弹 PiP）
+    this.setPipAutoStart(false);
     if (this.pipController !== undefined && this.pipActive) {
       this.pipController.stopPiP().catch((): void => {
       });
@@ -310,7 +325,7 @@ export struct VideoPlayerPage {
           })
           .margin({ right: 8 })
       }
-      Column() {
+      Button({ type: ButtonType.Normal, stateEffect: true }) {
         AppIcon({
           name: 'cast',
           iconSize: 20,
@@ -320,25 +335,23 @@ export struct VideoPlayerPage {
       .width(38)
       .height(38)
       .borderRadius(19)
-      .justifyContent(FlexAlign.Center)
-      .alignItems(HorizontalAlign.Center)
-      .backgroundEffect({ radius: 24, saturation: 1.4 })
-      .border({ width: 0.5, color: 'rgba(255,255,255,0.2)' })
+      .padding(0)
+      .backgroundColor(VIDEO_BTN_BG)
+      .systemMaterial(VIDEO_GLASS)
       .margin({ right: 8 })
       .onClick(() => {
         this.openCastSheet();
       })
 
-      Column() {
+      Button({ type: ButtonType.Normal, stateEffect: true }) {
         AppIcon({ name: 'lock', iconSize: 20, tint: Color.White })
       }
       .width(38)
       .height(38)
       .borderRadius(19)
-      .justifyContent(FlexAlign.Center)
-      .alignItems(HorizontalAlign.Center)
-      .backgroundEffect({ radius: 24, saturation: 1.4 })
-      .border({ width: 0.5, color: 'rgba(255,255,255,0.2)' })
+      .padding(0)
+      .backgroundColor(VIDEO_BTN_BG)
+      .systemMaterial(VIDEO_GLASS)
       .onClick(() => {
         this.locked = true;
         Util.toastRes(this.getUIContext(), $r('app.string.video_locked'));
@@ -372,7 +385,7 @@ export struct VideoPlayerPage {
         .onClick(() => {
           this.onDoubleTap(-1);
         })
-      Column() {
+      Button({ type: ButtonType.Normal, stateEffect: true }) {
         if (this.loading || this.buffering) {
           LoadingProgress().width(40).height(40).color(Color.White)
         } else {
@@ -382,10 +395,9 @@ export struct VideoPlayerPage {
       .width(68)
       .height(68)
       .borderRadius(34)
-      .justifyContent(FlexAlign.Center)
-      .alignItems(HorizontalAlign.Center)
-      .backgroundEffect({ radius: 40, saturation: 1.4 })
-      .border({ width: 0.5, color: 'rgba(255,255,255,0.24)' })
+      .padding(0)
+      .backgroundColor(VIDEO_BTN_BG)
+      .systemMaterial(VIDEO_GLASS)
       .onClick(() => {
         this.togglePlay();
       })
@@ -404,20 +416,19 @@ export struct VideoPlayerPage {
     .transition(TransitionEffect.OPACITY.animation({ duration: 180 }))
   }
 
-  // 液态玻璃圆形按钮（华为视频对齐）：backgroundEffect 实时模糊视频画面，
-  // 叠 0.5vp 发丝描边提升玻璃边界感，替代原先的半透明纯色底
+  // 液态玻璃圆形按钮（华为视频对齐）：Button + systemMaterial 官方沉浸光感材质，
+  // 毛玻璃/流光/按压点光源均由系统材质绘制，非手写模糊
   @Builder
   ctrlBtn(icon: string, onTap: () => void) {
-    Column() {
+    Button({ type: ButtonType.Normal, stateEffect: true }) {
       AppIcon({ name: icon, iconSize: 20, tint: Color.White })
     }
     .width(38)
     .height(38)
     .borderRadius(19)
-    .justifyContent(FlexAlign.Center)
-    .alignItems(HorizontalAlign.Center)
-    .backgroundEffect({ radius: 24, saturation: 1.4 })
-    .border({ width: 0.5, color: 'rgba(255,255,255,0.2)' })
+    .padding(0)
+    .backgroundColor(VIDEO_BTN_BG)
+    .systemMaterial(VIDEO_GLASS)
     .onClick(() => {
       onTap();
     })
@@ -488,16 +499,15 @@ export struct VideoPlayerPage {
         this.ctrlBtn('speed', (): void => {
           this.openSheet(3);
         })
-        Column() {
+        Button({ type: ButtonType.Normal, stateEffect: true }) {
           AppIcon({ name: 'forum', iconSize: 20, tint: this.danmakuOn ? Color.White : 'rgba(255,255,255,0.35)' })
         }
         .width(38)
         .height(38)
         .borderRadius(19)
-        .justifyContent(FlexAlign.Center)
-        .alignItems(HorizontalAlign.Center)
-        .backgroundEffect({ radius: 24, saturation: 1.4 })
-        .border({ width: 0.5, color: 'rgba(255,255,255,0.2)' })
+        .padding(0)
+        .backgroundColor(VIDEO_BTN_BG)
+        .systemMaterial(VIDEO_GLASS)
         .onClick(() => {
           this.toggleDanmaku();
         })
@@ -533,16 +543,15 @@ export struct VideoPlayerPage {
 
   @Builder
   unlockBtn() {
-    Column() {
+    Button({ type: ButtonType.Normal, stateEffect: true }) {
       AppIcon({ name: 'lock_open', iconSize: 22, tint: Color.White })
     }
     .width(46)
     .height(46)
     .borderRadius(23)
-    .justifyContent(FlexAlign.Center)
-    .alignItems(HorizontalAlign.Center)
-    .backgroundEffect({ radius: 28, saturation: 1.4 })
-    .border({ width: 0.5, color: 'rgba(255,255,255,0.28)' })
+    .padding(0)
+    .backgroundColor(VIDEO_BTN_BG)
+    .systemMaterial(VIDEO_GLASS)
     .position({ x: '86%', y: '44%' })
     .onClick(() => {
       this.locked = false;
@@ -2446,10 +2455,19 @@ export struct VideoPlayerPage {
     };
     try {
       const ctrl = await PiPWindow.create(config);
+      if (this.destroyed) {
+        // 页面已销毁后才创建完成：解除退后台自动小窗并停掉小窗，避免残留
+        ctrl.setAutoStartEnabled(false);
+        ctrl.stopPiP().catch((): void => {
+        });
+        return undefined;
+      }
       ctrl.on('stateChange', (state: PiPWindow.PiPState, reason: string) => {
         this.pipActive = state === PiPWindow.PiPState.STARTED;
         this.log(`pip stateChange: ${state} ${reason}`);
       });
+      // 创建完成后同步当前期望的自动小窗状态（可能已随暂停/完成变为 false）
+      ctrl.setAutoStartEnabled(this.pipAutoStartWanted);
       this.pipController = ctrl;
       return ctrl;
     } catch (e) {
@@ -2458,7 +2476,8 @@ export struct VideoPlayerPage {
     }
   }
 
-  // prepared 时确保控制器存在并同步媒体尺寸、开启退后台自动小窗
+  // prepared 时确保控制器存在并同步媒体尺寸；自动小窗开关跟随实际播放状态（pipAutoStartWanted），
+  // 不再无条件开启，只有真正进入 playing 后才会允许退后台自动弹小窗
   private async preparePip(): Promise<void> {
     if (!this.pipEnabled) {
       return;
@@ -2467,14 +2486,19 @@ export struct VideoPlayerPage {
     if (ctrl === undefined) {
       return;
     }
+    if (this.destroyed) {
+      return;
+    }
     if (this.videoW > 0 && this.videoH > 0) {
       ctrl.updateContentSize(this.videoW, this.videoH);
     }
-    ctrl.setAutoStartEnabled(true);
+    ctrl.setAutoStartEnabled(this.pipAutoStartWanted);
   }
 
-  // 跟随播放/暂停切换“退后台自动启动画中画”（华为视频行为）
+  // 跟随播放/暂停切换“退后台自动启动画中画”（华为视频行为）；
+  // 控制器未创建时仅记录期望值，创建完成后由 ensurePipController 统一同步
   private setPipAutoStart(enable: boolean): void {
+    this.pipAutoStartWanted = enable;
     if (this.pipController !== undefined) {
       this.pipController.setAutoStartEnabled(enable);
     }
