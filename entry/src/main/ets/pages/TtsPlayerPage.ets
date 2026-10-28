@@ -43,6 +43,7 @@ export struct TtsPlayerPage {
   @State paraIdx: number = -1;
   @State paraTotal: number = 0;
   @State speed: number = 1;
+  @State voice: string = 'default';
   @State mangaTitle: string = '';
   @State mangaAuthor: string = '';
   @State coverUrl: string = '';
@@ -55,6 +56,7 @@ export struct TtsPlayerPage {
   @State sleepChaptersLeft: number = 0;
   @State showChapters: boolean = false;
   @State showSpeed: boolean = false;
+  @State showVoice: boolean = false;
   @State showSleep: boolean = false;
 
   aboutToAppear(): void {
@@ -128,6 +130,17 @@ export struct TtsPlayerPage {
           .bindSheet($$this.showSpeed, this.speedSheetBuilder(),
             SheetPreset.fit(this.windowW, {
               title: $r('app.string.novel_tts_speed'),
+              wideWidth: 480,
+              interactive: true
+            }))
+
+        Column()
+          .width(0)
+          .height(0)
+          .hitTestBehavior(HitTestMode.None)
+          .bindSheet($$this.showVoice, this.voiceSheetBuilder(),
+            SheetPreset.fit(this.windowW, {
+              title: $r('app.string.novel_tts_voice'),
               wideWidth: 480,
               interactive: true
             }))
@@ -324,6 +337,19 @@ export struct TtsPlayerPage {
           })
 
           Column({ space: 6 }) {
+            AppIcon({ name: 'graphic_eq', iconSize: 22 })
+            Text(this.voiceLabel())
+              .fontSize(12)
+              .fontColor(this.pal.text)
+          }
+          .layoutWeight(1)
+          .padding({ top: 12, bottom: 12 })
+          .alignItems(HorizontalAlign.Center)
+          .onClick(() => {
+            this.showVoice = true;
+          })
+
+          Column({ space: 6 }) {
             AppIcon({
               name: 'schedule',
               iconSize: 22,
@@ -395,6 +421,72 @@ export struct TtsPlayerPage {
       }
       .width('100%')
       .justifyContent(FlexAlign.SpaceBetween)
+    }
+    .width('100%')
+    .padding({
+      left: 16,
+      right: 16,
+      top: 8,
+      bottom: 20
+    })
+  }
+
+  // 音色面板：女声（默认）/ 男声；播放中切换即从当前段以新音色续播
+  @Builder
+  voiceSheetBuilder() {
+    Column() {
+      Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.Center }) {
+        Text($r('app.string.tts_voice_default'))
+          .fontSize(14)
+          .fontColor(this.voice === 'default' ? this.pal.onPrimary : this.pal.text)
+          .padding({
+            left: 18,
+            right: 18,
+            top: 8,
+            bottom: 8
+          })
+          .borderRadius(18)
+          .backgroundColor(this.voice === 'default' ? this.pal.primary : this.pal.chip)
+          .margin({
+            left: 5,
+            right: 5,
+            top: 6,
+            bottom: 10
+          })
+          .onClick(() => {
+            this.voice = 'default';
+            TtsPlaybackService.setVoice('default');
+          })
+        Text($r('app.string.tts_voice_male'))
+          .fontSize(14)
+          .fontColor(this.voice === 'male' ? this.pal.onPrimary : this.pal.text)
+          .padding({
+            left: 18,
+            right: 18,
+            top: 8,
+            bottom: 8
+          })
+          .borderRadius(18)
+          .backgroundColor(this.voice === 'male' ? this.pal.primary : this.pal.chip)
+          .margin({
+            left: 5,
+            right: 5,
+            top: 6,
+            bottom: 10
+          })
+          .onClick(() => {
+            this.voice = 'male';
+            TtsPlaybackService.setVoice('male');
+          })
+      }
+      .width('100%')
+
+      Text($r('app.string.tts_voice_male_hint'))
+        .fontSize(12)
+        .fontColor(this.pal.sub)
+        .width('100%')
+        .textAlign(TextAlign.Center)
+        .margin({ top: 4, bottom: 8 })
     }
     .width('100%')
     .padding({
@@ -615,6 +707,7 @@ export struct TtsPlayerPage {
     this.paraIdx = TtsPlaybackService.currentParaIdx();
     this.paraTotal = TtsPlaybackService.paraTotal();
     this.speed = Settings.getNovelTtsSpeed();
+    this.voice = Settings.getNovelTtsVoice();
     this.sleepRemainingMs = -1;
     this.sleepMinutes = TtsPlaybackService.sleepTimerMinutes();
     this.sleepChaptersLeft = TtsPlaybackService.sleepChaptersLeftCount();
@@ -655,9 +748,10 @@ export struct TtsPlayerPage {
       return;
     }
     if (event.keyCode === KeyCode.KEYCODE_ESCAPE) {
-      if (this.showChapters || this.showSpeed || this.showSleep) {
+      if (this.showChapters || this.showSpeed || this.showVoice || this.showSleep) {
         this.showChapters = false;
         this.showSpeed = false;
+        this.showVoice = false;
         this.showSleep = false;
       } else {
         this.pathStack.pop();
@@ -705,6 +799,12 @@ export struct TtsPlayerPage {
   private speedIndex(): number {
     const idx = SPEED_OPTIONS.indexOf(this.speed);
     return idx >= 0 ? idx : SPEED_OPTIONS.indexOf(1);
+  }
+
+  // 音色入口文案：当前音色名
+  private voiceLabel(): ResourceStr {
+    return this.voice === 'male' ? $r('app.string.tts_voice_male') :
+      $r('app.string.tts_voice_default');
   }
 
   // 定时是否生效（时长或章数任一）

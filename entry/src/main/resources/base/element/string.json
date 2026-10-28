@@ -2585,6 +2585,22 @@
       "value": "This chapter has no text"
     },
     {
+      "name": "novel_trans_progress",
+      "value": "Translating… %1$d%%"
+    },
+    {
+      "name": "novel_trans_done",
+      "value": "Translation complete"
+    },
+    {
+      "name": "novel_trans_failed",
+      "value": "Translation failed"
+    },
+    {
+      "name": "novel_trans_cancel",
+      "value": "Translation cancelled"
+    },
+    {
       "name": "novel_mode_scroll",
       "value": "Scroll"
     },
@@ -2677,12 +2693,76 @@
       "value": "Reading speed"
     },
     {
+      "name": "novel_tts_voice",
+      "value": "Voice"
+    },
+    {
+      "name": "tts_voice_default",
+      "value": "Female (default)"
+    },
+    {
+      "name": "tts_voice_male",
+      "value": "Male"
+    },
+    {
+      "name": "tts_voice_male_hint",
+      "value": "If the male voice is unavailable (not downloaded), the default female voice will be used."
+    },
+    {
       "name": "novel_tts_finish",
       "value": "Reached the end of this chapter"
     },
     {
       "name": "novel_tts_error",
       "value": "Text-to-speech failed: %s"
+    },
+    {
+      "name": "novel_keep_screen_on",
+      "value": "Keep screen on"
+    },
+    {
+      "name": "novel_volume_turn",
+      "value": "Volume keys turn pages"
+    },
+    {
+      "name": "novel_justify",
+      "value": "Justify text"
+    },
+    {
+      "name": "novel_search",
+      "value": "Search in chapter"
+    },
+    {
+      "name": "novel_search_hint",
+      "value": "Search text in this chapter"
+    },
+    {
+      "name": "novel_search_empty",
+      "value": "No matches"
+    },
+    {
+      "name": "novel_bookmarks",
+      "value": "Bookmarks"
+    },
+    {
+      "name": "novel_bookmark_add",
+      "value": "Bookmark current position"
+    },
+    {
+      "name": "novel_bookmark_added",
+      "value": "Bookmark added"
+    },
+    {
+      "name": "novel_bookmark_empty",
+      "value": "No bookmarks yet"
+    },
+    {
+      "name": "novel_auto_on",
+      "value": "Auto reading on"
+    },
+    {
+      "name": "novel_auto_end",
+      "value": "Reached the end of the last chapter"
     },
     {
       "name": "tts_player_title",
@@ -3505,6 +3585,10 @@
       "value": "Repository file URLs must use https, http:// entries are rejected"
     },
     {
+      "name": "plugin_error_repo_checksum_required",
+      "value": "Repository entries must declare a sha256 checksum, entries without one are rejected"
+    },
+    {
       "name": "plugin_error_runtime_invalid",
       "value": "Invalid plugin runtime name: %s"
     },
@@ -3935,6 +4019,98 @@
     {
       "name": "debug_language",
       "value": "Language"
+    },
+    {
+      "name": "trans_title",
+      "value": "Translation"
+    },
+    {
+      "name": "trans_enable",
+      "value": "Enable translation"
+    },
+    {
+      "name": "trans_enable_sub",
+      "value": "Translate text in reader via configured engines"
+    },
+    {
+      "name": "trans_test",
+      "value": "Test translation"
+    },
+    {
+      "name": "trans_target",
+      "value": "Target language"
+    },
+    {
+      "name": "trans_test_running",
+      "value": "Translating…"
+    },
+    {
+      "name": "trans_test_fail",
+      "value": "All engines failed"
+    },
+    {
+      "name": "trans_engines",
+      "value": "Engine priority"
+    },
+    {
+      "name": "trans_engines_hint",
+      "value": "Long-press and drag to reorder engines"
+    },
+    {
+      "name": "trans_status_ready",
+      "value": "Ready"
+    },
+    {
+      "name": "trans_status_missing",
+      "value": "Not configured"
+    },
+    {
+      "name": "trans_status_free",
+      "value": "No setup needed"
+    },
+    {
+      "name": "trans_status_set",
+      "value": "Set"
+    },
+    {
+      "name": "trans_baidu",
+      "value": "Baidu Translate"
+    },
+    {
+      "name": "trans_baidu_appid",
+      "value": "App ID"
+    },
+    {
+      "name": "trans_baidu_key",
+      "value": "Secret key"
+    },
+    {
+      "name": "trans_youdao",
+      "value": "Youdao Zhiyun"
+    },
+    {
+      "name": "trans_youdao_key",
+      "value": "App key"
+    },
+    {
+      "name": "trans_youdao_secret",
+      "value": "App secret"
+    },
+    {
+      "name": "trans_caiyun",
+      "value": "Caiyun Xiaoyi"
+    },
+    {
+      "name": "trans_caiyun_token",
+      "value": "API token"
+    },
+    {
+      "name": "trans_google",
+      "value": "Google Translate"
+    },
+    {
+      "name": "trans_deepl",
+      "value": "DeepL"
     }
   ]
 }

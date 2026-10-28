@@ -187,6 +187,52 @@ export class Settings {
     Settings.setNum('novelParagraphIndent', v);
   }
 
+  // 小说阅读时屏幕常亮（默认开）
+  static getNovelKeepScreenOn(): boolean {
+    return Settings.getBool('novelKeepScreenOn', true);
+  }
+
+  static setNovelKeepScreenOn(v: boolean): void {
+    Settings.setBool('novelKeepScreenOn', v);
+  }
+
+  // 音量键翻页（默认关；开=音量上/下代替翻页）
+  static getNovelVolumeTurn(): boolean {
+    return Settings.getBool('novelVolumeTurn', false);
+  }
+
+  static setNovelVolumeTurn(v: boolean): void {
+    Settings.setBool('novelVolumeTurn', v);
+  }
+
+  // 正文两端对齐（默认开）
+  static getNovelJustify(): boolean {
+    return Settings.getBool('novelJustify', true);
+  }
+
+  static setNovelJustify(v: boolean): void {
+    Settings.setBool('novelJustify', v);
+  }
+
+  // 自动阅读速度档位（1-10，默认 4：滚动=档位*8 vp/s，翻页=13-档位 秒/页）
+  static getNovelAutoSpeed(): number {
+    const n = Settings.getNum('novelAutoSpeed', 4);
+    return n >= 1 && n <= 10 ? n : 4;
+  }
+
+  static setNovelAutoSpeed(v: number): void {
+    Settings.setNum('novelAutoSpeed', v);
+  }
+
+  // 小说章内阅读位置书签（按漫画持久化为 JSON，模型见 common/NovelBookmarks）
+  static getNovelBookmarkJson(mangaId: number): string {
+    return Settings.getStr(`novelBm_${mangaId}`, '[]');
+  }
+
+  static setNovelBookmarkJson(mangaId: number, v: string): void {
+    Settings.setStr(`novelBm_${mangaId}`, v);
+  }
+
   // 听书语速（0.5 - 2.0，默认 1.0）
   static getNovelTtsSpeed(): number {
     const n = Settings.getNum('novelTtsSpeed', 1);
@@ -195,6 +241,16 @@ export class Settings {
 
   static setNovelTtsSpeed(v: number): void {
     Settings.setNum('novelTtsSpeed', v);
+  }
+
+  // 听书音色：default 女声（默认）| male 男声（需系统已下载，未下载回退女声）
+  static getNovelTtsVoice(): string {
+    const raw = Settings.getStr('novelTtsVoice', 'default');
+    return raw === 'male' ? raw : 'default';
+  }
+
+  static setNovelTtsVoice(v: string): void {
+    Settings.setStr('novelTtsVoice', v);
   }
 
   // 书架类型筛选：all | manga | novel | video
@@ -1203,6 +1259,97 @@ export class Settings {
     Settings.scheduleFlush();
   }
 
+  // ---- 阅读体验 ----
+
+  // 音量键翻页（漫画阅读器，默认关；开=音量上/下代替翻页）
+  static getReaderVolumeTurn(): boolean {
+    return Settings.getBool('readerVolumeTurn', false);
+  }
+
+  static setReaderVolumeTurn(v: boolean): void {
+    Settings.setBool('readerVolumeTurn', v);
+  }
+
+  // 阅读时屏幕常亮（漫画阅读器，默认开）
+  static getReaderKeepScreenOn(): boolean {
+    return Settings.getBool('readerKeepScreenOn', true);
+  }
+
+  static setReaderKeepScreenOn(v: boolean): void {
+    Settings.setBool('readerKeepScreenOn', v);
+  }
+
+  // 预加载后续页数（0-10，默认 4；分页模式 Swiper cachedCount）
+  static getReaderPreloadPages(): number {
+    const n = Settings.getNum('readerPreloadPages', 4);
+    return n >= 0 && n <= 10 ? Math.floor(n) : 4;
+  }
+
+  static setReaderPreloadPages(v: number): void {
+    Settings.setNum('readerPreloadPages', v);
+  }
+
+  // 双页模式：'auto'（横屏自动，默认）| 'force'（始终双页）| 'off'（始终单页）
+  static getReaderDualPageMode(): string {
+    const raw = Settings.getStr('readerDualPageMode', 'auto');
+    if (raw === 'force' || raw === 'off') {
+      return raw;
+    }
+    return 'auto';
+  }
+
+  static setReaderDualPageMode(v: string): void {
+    Settings.setStr('readerDualPageMode', v);
+  }
+
+  // 双页时封面独立成页（默认开，对齐 Mihon dualPageSkip TbC）
+  static getReaderDualPageCover(): boolean {
+    return Settings.getBool('readerDualPageCover', true);
+  }
+
+  static setReaderDualPageCover(v: boolean): void {
+    Settings.setBool('readerDualPageCover', v);
+  }
+
+  // 条漫/连续模式页间距（vp，0-40）
+  static getReaderWebtoonGap(): number {
+    const n = Settings.getNum('readerWebtoonGap', 0);
+    return n >= 0 && n <= 40 ? n : 0;
+  }
+
+  static setReaderWebtoonGap(v: number): void {
+    Settings.setNum('readerWebtoonGap', v);
+  }
+
+  // 显示页眉页脚（章节名/页码常驻边角，默认关）
+  static getReaderShowHeaderFooter(): boolean {
+    return Settings.getBool('readerShowHeaderFooter', false);
+  }
+
+  static setReaderShowHeaderFooter(v: boolean): void {
+    Settings.setBool('readerShowHeaderFooter', v);
+  }
+
+  // ---- 页面处理 ----
+
+  // 跳过重复页（相邻页文件大小+首尾采样哈希一致即跳过，仅本地页）
+  static getReaderSkipDuplicatePages(): boolean {
+    return Settings.getBool('readerSkipDuplicatePages', false);
+  }
+
+  static setReaderSkipDuplicatePages(v: boolean): void {
+    Settings.setBool('readerSkipDuplicatePages', v);
+  }
+
+  // 清理空白页（解码缩略图判定纯色页并跳过，仅本地页）
+  static getReaderCleanBlankPages(): boolean {
+    return Settings.getBool('readerCleanBlankPages', false);
+  }
+
+  static setReaderCleanBlankPages(v: boolean): void {
+    Settings.setBool('readerCleanBlankPages', v);
+  }
+
   // ---- 阅读器导航/条漫 ----
 
   // 默认播放倍速（0.5 - 3.0）
@@ -1441,6 +1588,78 @@ export class Settings {
       }
     }).catch((_e: Error) => {
     });
+  }
+
+  // ---- 翻译 ----
+
+  // 翻译功能总开关（阅读器内文本翻译）
+  static getTransEnabled(): boolean {
+    return Settings.getBool('transEnabled', false);
+  }
+
+  static setTransEnabled(v: boolean): void {
+    Settings.setBool('transEnabled', v);
+  }
+
+  // 翻译引擎优先级顺序（CSV，id 见 TranslationService.ENGINE_IDS）
+  static getTransEngineOrder(): string {
+    return Settings.getStr('transEngineOrder', 'baidu,caiyun,youdao,deepl,google');
+  }
+
+  static setTransEngineOrder(v: string): void {
+    Settings.setStr('transEngineOrder', v);
+  }
+
+  // 翻译目标语言（应用内语言码，候选见 TransLangs.TARGETS）
+  static getTransTargetLang(): string {
+    return Settings.getStr('transTargetLang', 'zh');
+  }
+
+  static setTransTargetLang(v: string): void {
+    Settings.setStr('transTargetLang', v);
+  }
+
+  // 百度翻译开放平台凭据（appid + 密钥）
+  static getTransBaiduAppid(): string {
+    return Settings.getStr('transBaiduAppid', '');
+  }
+
+  static setTransBaiduAppid(v: string): void {
+    Settings.setStr('transBaiduAppid', v);
+  }
+
+  static getTransBaiduKey(): string {
+    return Settings.getStr('transBaiduKey', '');
+  }
+
+  static setTransBaiduKey(v: string): void {
+    Settings.setStr('transBaiduKey', v);
+  }
+
+  // 有道智云凭据（应用ID + 应用密钥）
+  static getTransYoudaoKey(): string {
+    return Settings.getStr('transYoudaoKey', '');
+  }
+
+  static setTransYoudaoKey(v: string): void {
+    Settings.setStr('transYoudaoKey', v);
+  }
+
+  static getTransYoudaoSecret(): string {
+    return Settings.getStr('transYoudaoSecret', '');
+  }
+
+  static setTransYoudaoSecret(v: string): void {
+    Settings.setStr('transYoudaoSecret', v);
+  }
+
+  // 彩云小译令牌
+  static getTransCaiyunToken(): string {
+    return Settings.getStr('transCaiyunToken', '');
+  }
+
+  static setTransCaiyunToken(v: string): void {
+    Settings.setStr('transCaiyunToken', v);
   }
 
   // 取值后 typeof 校验：跨版本类型变更时回退默认值，避免静默返回错误类型

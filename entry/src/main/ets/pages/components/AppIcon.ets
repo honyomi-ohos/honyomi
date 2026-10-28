@@ -96,6 +96,7 @@ const ICONS: Record<string, Resource> = {
   'lock': $r('app.media.ic_lock'),
   'lock_open': $r('app.media.ic_lock_open'),
   'speed': $r('app.media.ic_speed'),
+  'graphic_eq': $r('app.media.ic_graphic_eq'),
   'playlist_play': $r('app.media.ic_playlist_play'),
   'high_quality': $r('app.media.ic_high_quality'),
   'forum': $r('app.media.ic_forum'),
@@ -108,6 +109,7 @@ const ICONS: Record<string, Resource> = {
   'replay_10': $r('app.media.ic_replay_10'),
   'rocket_launch': $r('app.media.ic_rocket_launch'),
   'verified_user': $r('app.media.ic_verified_user'),
+  'translate': $r('app.media.ic_translate'),
   'volume_up': $r('app.media.ic_volume_up'),
   'volume_off': $r('app.media.ic_volume_off'),
   'cast': $r('app.media.ic_cast')

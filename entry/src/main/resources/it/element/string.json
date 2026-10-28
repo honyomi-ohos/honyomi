@@ -2953,6 +2953,10 @@
       "value": "Gli URL dei file del repository devono usare https; le voci http:// vengono rifiutate"
     },
     {
+      "name": "plugin_error_repo_checksum_required",
+      "value": "Le voci del repository devono dichiarare un checksum sha256, le voci senza checksum vengono rifiutate"
+    },
+    {
       "name": "plugin_error_runtime_invalid",
       "value": "Nome di esecuzione del plugin non valido: %s"
     },

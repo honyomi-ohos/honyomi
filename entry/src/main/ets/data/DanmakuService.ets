@@ -1,5 +1,7 @@
 import { Http } from '../net/Http';
 import { ChapterRecord, MangaRecord } from '../model/Models';
+import { cryptoFramework } from '@kit.CryptoArchitectureKit';
+import { util } from '@kit.ArkTS';
 
 // 单条弹幕（时间毫秒 + dandanplay 模式 + 24bit 颜色 + 文本）
 export class DanmakuItem {
@@ -44,6 +46,9 @@ export class DanmakuService {
   private static readonly MAX_ITEMS: number = 5000;
   // 缓存 LRU 上限：最多保留 10 章弹幕，超出淘汰最旧
   private static readonly MAX_CHAPTERS: number = 10;
+  // dandanplay 开放弹幕网络应用凭证（dev.dandanplay.com 申请；应用审核通过后生效）
+  private static readonly APP_ID: string = 'vgdq26b2dw';
+  private static readonly APP_SECRET: string = 'B8RQi45EvYIczfbAuvZb5uC4StuqWLzj';
 
   static async loadForChapter(manga: MangaRecord, chapter: ChapterRecord): Promise<DanmakuItem[]> {
     const cached: DanmakuItem[] | undefined = DanmakuService.cache.get(chapter.id);
@@ -79,7 +84,7 @@ export class DanmakuService {
     // 1. 按标题搜索剧集
     const searchUrl: string =
       `https://api.dandanplay.net/api/v2/search/episodes?anime=${encodeURIComponent(title)}&withRelated=true`;
-    const searchRaw: string = await Http.get(searchUrl, Http.defaultHeaders());
+    const searchRaw: string = await Http.get(searchUrl, await DanmakuService.authHeaders(searchUrl));
     let parsed: DdpSearchRaw;
     try {
       parsed = JSON.parse(searchRaw) as DdpSearchRaw;
@@ -93,7 +98,7 @@ export class DanmakuService {
     // 2. 拉取该集弹幕池（chConvert=1 繁转简）
     const commentUrl: string =
       `https://api.dandanplay.net/api/v2/comment/${episodeId}?withRelated=true&chConvert=1`;
-    const commentRaw: string = await Http.get(commentUrl, Http.defaultHeaders());
+    const commentRaw: string = await Http.get(commentUrl, await DanmakuService.authHeaders(commentUrl));
     let parsedComments: DdpCommentRootRaw;
     try {
       parsedComments = JSON.parse(commentRaw) as DdpCommentRootRaw;
@@ -113,6 +118,45 @@ export class DanmakuService {
     }
     items.sort((a: DanmakuItem, b: DanmakuItem): number => a.timeMs - b.timeMs);
     return items;
+  }
+
+  // dandanplay 请求鉴权（官方规范，doc.dandanplay.com/open）：
+  // 签名模式 X-AppId/X-Timestamp/X-Signature，签名 = base64(sha256(AppId + Timestamp + Path + AppSecret))，
+  // Path 为不含 query 的接口路径；SHA256 能力不可用时退化为凭证模式（X-AppId/X-AppSecret）
+  private static async authHeaders(url: string): Promise<Record<string, string>> {
+    const headers: Record<string, string> = Http.defaultHeaders();
+    headers['X-AppId'] = DanmakuService.APP_ID;
+    const ts: number = Math.floor(Date.now() / 1000);
+    if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest')) {
+      try {
+        const data: string =
+          `${DanmakuService.APP_ID}${ts}${DanmakuService.apiPath(url)}${DanmakuService.APP_SECRET}`;
+        const md: cryptoFramework.Md = cryptoFramework.createMd('SHA256');
+        await md.update({ data: new util.TextEncoder().encodeInto(data) });
+        const digest: cryptoFramework.DataBlob = await md.digest();
+        headers['X-Timestamp'] = `${ts}`;
+        headers['X-Signature'] = new util.Base64Helper().encodeToStringSync(digest.data);
+        return headers;
+      } catch (_e) {
+      }
+    }
+    headers['X-AppSecret'] = DanmakuService.APP_SECRET;
+    return headers;
+  }
+
+  // 提取签名用接口路径：去掉协议与域名、去掉 query，统一小写
+  private static apiPath(url: string): string {
+    let rest: string = url;
+    const schemeIdx: number = url.indexOf('://');
+    if (schemeIdx >= 0) {
+      const slashIdx: number = url.indexOf('/', schemeIdx + 3);
+      rest = slashIdx >= 0 ? url.substring(slashIdx) : '/';
+    }
+    const qIdx: number = rest.indexOf('?');
+    if (qIdx >= 0) {
+      rest = rest.substring(0, qIdx);
+    }
+    return rest.toLowerCase();
   }
 
   // 写入缓存并维持 LRU 上限（Map 迭代序即最近使用序，淘汰首个即最旧）

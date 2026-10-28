@@ -759,6 +759,10 @@ export struct EmulationFlipView {
   @State showCurl: boolean = false;
   @State areaW: number = 0;
   @State areaH: number = 0;
+  // 捏合缩放（1-3x）与缩放平移；缩放中禁用翻页手势，平移转为图片平移
+  @State zoomScale: number = 1;
+  @State zoomX: number = 0;
+  @State zoomY: number = 0;
   private model: FlipModel = new FlipModel();
   private controller: FlipNodeController = new FlipNodeController();
   private pxW: number = 0;
@@ -777,6 +781,9 @@ export struct EmulationFlipView {
   private backCurId: string = '';
   private backPrevId: string = '';
   private lastTurn: number = 0;
+  private pinchBase: number = 1;
+  private zoomPanBaseX: number = 0;
+  private zoomPanBaseY: number = 0;
   onAreaTap: (x: number, y: number) => void = (_x: number, _y: number): void => {
   };
   onIndexChange: (index: number) => void = (_index: number): void => {
@@ -885,6 +892,8 @@ export struct EmulationFlipView {
     .height('100%')
     .backgroundColor(this.bgColor)
     .clip(true)
+    .scale({ x: this.zoomScale, y: this.zoomScale })
+    .translate({ x: this.zoomX, y: this.zoomY })
     .onAreaChange((_old: Area, neu: Area) => {
       const w = neu.width;
       const h = neu.height;
@@ -900,24 +909,74 @@ export struct EmulationFlipView {
       }
     })
     .gesture(
-      PanGesture({ fingers: 1 })
-        .onActionUpdate((event: GestureEvent) => {
-          if (event.fingerList.length <= 0) {
-            return;
-          }
-          const finger = event.fingerList[0];
-          this.onFinger(finger.localX, finger.localY);
-        })
-        .onActionEnd(() => {
-          this.onPanEnd();
-        })
-        .onActionCancel(() => {
-          this.finishGesture(false);
-        })
+      GestureGroup(GestureMode.Exclusive,
+        PinchGesture()
+          .onActionStart((_event: GestureEvent) => {
+            this.pinchBase = this.zoomScale;
+          })
+          .onActionUpdate((event: GestureEvent) => {
+            this.applyZoomScale(this.pinchBase * event.scale);
+          })
+          .onActionEnd(() => {
+            if (this.zoomScale < 1.05) {
+              this.resetZoom();
+            }
+          }),
+        PanGesture({ fingers: 1 })
+          .onActionStart((event: GestureEvent) => {
+            if (this.zoomScale > 1) {
+              this.zoomPanBaseX = this.zoomX;
+              this.zoomPanBaseY = this.zoomY;
+            }
+          })
+          .onActionUpdate((event: GestureEvent) => {
+            if (this.zoomScale > 1) {
+              this.applyZoomPan(this.zoomPanBaseX + event.offsetX, this.zoomPanBaseY + event.offsetY);
+              return;
+            }
+            if (event.fingerList.length <= 0) {
+              return;
+            }
+            const finger = event.fingerList[0];
+            this.onFinger(finger.localX, finger.localY);
+          })
+          .onActionEnd(() => {
+            this.onPanEnd();
+          })
+          .onActionCancel(() => {
+            this.finishGesture(false);
+          })
+      )
     )
     .onClick((event: ClickEvent) => {
       this.onViewClick(event);
     })
+  }
+
+  // 捏合缩放钳制到 [1, 3]；回到 1 时复位平移
+  private applyZoomScale(v: number): void {
+    const s = Math.min(3, Math.max(1, v));
+    this.zoomScale = s;
+    if (s <= 1) {
+      this.zoomX = 0;
+      this.zoomY = 0;
+    } else {
+      this.applyZoomPan(this.zoomX, this.zoomY);
+    }
+  }
+
+  // 缩放平移钳制到放大后的可视范围内
+  private applyZoomPan(x: number, y: number): void {
+    const maxX = (this.zoomScale - 1) * this.areaW / 2;
+    const maxY = (this.zoomScale - 1) * this.areaH / 2;
+    this.zoomX = Math.min(maxX, Math.max(-maxX, x));
+    this.zoomY = Math.min(maxY, Math.max(-maxY, y));
+  }
+
+  private resetZoom(): void {
+    this.zoomScale = 1;
+    this.zoomX = 0;
+    this.zoomY = 0;
   }
 
   private syncIndex(): void {
@@ -925,6 +984,7 @@ export struct EmulationFlipView {
       return;
     }
     this.cancelAnim();
+    this.resetZoom();
     this.page = this.index;
   }
 
@@ -1194,6 +1254,7 @@ export struct EmulationFlipView {
     if (!this.flipEnabled || this.pxW <= 1 || this.timeID !== -1) {
       return;
     }
+    this.resetZoom();
     if (!this.canTurn(dir)) {
       this.onOverscroll(dir);
       return;

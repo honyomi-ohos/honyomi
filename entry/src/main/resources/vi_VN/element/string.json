@@ -2965,6 +2965,10 @@
       "value": "URL tệp kho phải dùng https, mục http:// bị từ chối"
     },
     {
+      "name": "plugin_error_repo_checksum_required",
+      "value": "Mục kho phải khai báo checksum sha256; mục không có checksum bị từ chối"
+    },
+    {
       "name": "plugin_error_runtime_invalid",
       "value": "Tên môi trường chạy plugin không hợp lệ: %s"
     },

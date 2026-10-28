@@ -159,8 +159,13 @@ napi_value AvifDecodeToJpeg(napi_env env, napi_callback_info info)
     // ---- 4) Pixelmap → JPEG via the system ImagePacker (quality 88)
     OH_PackingOptions* packingOptions = nullptr;
     OH_ImagePackerNative* packer = nullptr;
-    uint8_t* jpegBuffer = static_cast<uint8_t*>(malloc(rgbaSize)); // JPEG@88 always fits the RGBA budget
-    size_t jpegSize = jpegBuffer != nullptr ? rgbaSize : 0;
+    // JPEG@88 fits the RGBA budget for real-world images, but tiny frames
+    // (headers + entropy floor can exceed a few hundred bytes of raw data)
+    // and noise-heavy content can overflow it; give the encoder a budget
+    // with a floor instead of failing those into the WASM fallback.
+    const size_t jpegBudget = rgbaSize > (64 * 1024) ? rgbaSize : (64 * 1024);
+    uint8_t* jpegBuffer = static_cast<uint8_t*>(malloc(jpegBudget));
+    size_t jpegSize = jpegBuffer != nullptr ? jpegBudget : 0;
     if (jpegBuffer == nullptr) {
         code = IMAGE_BAD_PARAMETER;
     }

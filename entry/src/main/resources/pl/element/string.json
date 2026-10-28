@@ -2941,6 +2941,10 @@
       "value": "Adresy URL plików repozytorium muszą używać https, wpisy http:// są odrzucane"
     },
     {
+      "name": "plugin_error_repo_checksum_required",
+      "value": "Wpisy repozytorium muszą deklarować sumę kontrolną sha256, wpisy bez sumy są odrzucane"
+    },
+    {
       "name": "plugin_error_runtime_invalid",
       "value": "Nieprawidłowa nazwa środowiska wtyczki: %s"
     },

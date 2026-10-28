@@ -24,6 +24,8 @@
         "startWindowIcon": "$media:startIcon",
         "startWindowBackground": "$color:start_window_background",
         "exported": true,
+        // 多设备协同：应用接续（跨设备迁移阅读/播放进度）
+        "continuable": true,
         "backgroundModes": [
           "audioPlayback",
           "dataTransfer"
@@ -36,6 +38,22 @@
             "actions": [
               "ohos.want.action.home"
             ]
+          },
+          {
+            // App Linking：碰一碰分享链接直达阅读内容（华为分享域名校验）
+            "entities": [
+              "entity.system.browsable"
+            ],
+            "actions": [
+              "ohos.want.action.viewData"
+            ],
+            "uris": [
+              {
+                "scheme": "https",
+                "host": "api.honyomi.shuey.fun"
+              }
+            ],
+            "domainVerify": true
           },
           {
             "actions": [
@@ -111,6 +129,10 @@
       },
       {
         "name": "ohos.permission.PRIVACY_WINDOW"
+      },
+      {
+        // 碰一碰应用间推送（serviceInteraction.sendMessage，API 26+，仅手机）
+        "name": "ohos.permission.KNOCK_COLLABORATION"
       },
       {
         "name": "ohos.permission.KEEP_BACKGROUND_RUNNING",

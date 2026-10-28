@@ -18,6 +18,7 @@ import { DataStorageContent } from './DataStoragePage';
 import { TrackingContent } from './TrackingPage';
 import { PrivacyContent } from './PrivacyPage';
 import { AdvancedContent } from './AdvancedPage';
+import { TranslationContent } from './TranslationPage';
 import { AboutContent } from './AboutPage';
 import { LanguageContent } from './LanguagePage';
 import { OnboardingParams } from '../../model/RouteParams';
@@ -26,12 +27,12 @@ import { LimitedBody } from '../components/LimitedBody';
 // lg 双栏左栏分类（index 与 CAT_ICONS、catTitle() 一一对应）
 const CAT_ICONS: string[] = [
   'tune', 'palette', 'collections_bookmark', 'image', 'play_arrow',
-  'download', 'share', 'explore', 'sync', 'storage', 'lock', 'settings', 'info'
+  'download', 'share', 'explore', 'sync', 'storage', 'lock', 'settings', 'translate', 'info'
 ];
 // BitTorrent 分类索引（仅 torrent 组件已安装时显示）
 const BT_CAT: number = 6;
 // 分类索引：0 常规 / 1 外观 / 2 书库 / 3 阅读器 / 4 播放器 / 5 下载 / 6 BitTorrent
-// / 7 浏览 / 8 追踪 / 9 数据与存储 / 10 隐私 / 11 高级 / 12 关于
+// / 7 浏览 / 8 追踪 / 9 数据与存储 / 10 隐私 / 11 高级 / 12 翻译 / 13 关于
 const CAT_DEFAULT: number = 1;
 
 // 设置中心主页：sm/md 为「常规 + 各分类入口」列表；lg(≥840vp) 双栏
@@ -236,6 +237,9 @@ export struct SettingsPage {
                 }
               })
                 .layoutWeight(1)
+            } else if (this.selCat === 12) {
+              TranslationContent()
+                .layoutWeight(1)
             } else {
               AboutContent()
                 .layoutWeight(1)
@@ -375,6 +379,14 @@ export struct SettingsPage {
               this.pathStack.pushPathByName('Advanced', null);
             }
           })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          IconRow({
+            title: $r('app.string.trans_title'),
+            icon: 'translate',
+            onTap: (): void => {
+              this.pathStack.pushPathByName('Translation', null);
+            }
+          })
         }
 
         PrefGroup({ groupTitle: $r('app.string.appearance_other') }) {
@@ -459,6 +471,8 @@ export struct SettingsPage {
         return $r('app.string.privacy_title');
       case 11:
         return $r('app.string.settings_advanced');
+      case 12:
+        return $r('app.string.trans_title');
       default:
         return $r('app.string.settings_about');
     }

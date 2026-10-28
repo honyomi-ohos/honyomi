@@ -14,6 +14,8 @@ export struct SmartImage {
   @Prop highQuality: boolean = false;
   // 无封面时默认封面占位的图标尺寸（小尺寸列表封面传小值）
   @Prop placeholderIconSize: number = 30;
+  // 失败态允许点击重试（阅读器页面加载失败时点击重新解析）
+  @Prop retryable: boolean = false;
   @State display: string = '';
   @State failed: boolean = false;
   @State imgReady: boolean = false;
@@ -31,6 +33,11 @@ export struct SmartImage {
     .width('100%')
     .height(this.fill ? '100%' : 120)
     .justifyContent(FlexAlign.Center)
+    .onClick((): void => {
+      if (this.retryable) {
+        this.retry();
+      }
+    })
   }
 
   @Builder
@@ -82,6 +89,12 @@ export struct SmartImage {
   }
 
   private onUrlChanged(): void {
+    this.resolve();
+  }
+
+  // 失败重试：清空解析锁与状态后重新走 resolve（ImageCache 失败不缓存，会重新请求）
+  private retry(): void {
+    this.resolving = '';
     this.resolve();
   }
 

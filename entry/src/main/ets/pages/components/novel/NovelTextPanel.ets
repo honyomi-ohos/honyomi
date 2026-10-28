@@ -1,4 +1,4 @@
-// 小说阅读器「文本」设置面板：字号 / 边距 / 段间距 / 合并空行 / 段落缩进 / 行间距 / 字体
+// 小说阅读器「文本」设置面板：字号 / 边距 / 段间距 / 合并空行 / 段落缩进 / 行间距 / 字体 / 两端对齐
 // （从 NovelReaderPage 拆出，Wave 3I；行为与原 textSheetBuilder 一致）
 import { ThemePalette } from '../../../common/Theme';
 import { WideSlider } from '../WideSlider';
@@ -12,6 +12,7 @@ export struct NovelTextPanel {
   @Link mergeBlank: boolean;
   @Link indentChars: number;
   @Link lineHeight: number;
+  @Link justify: boolean;
   @Prop fontFamily: string = 'default';
   onFontSizeDone: (v: number) => void = (v: number): void => {
   };
@@ -24,6 +25,8 @@ export struct NovelTextPanel {
   onIndentDone: (v: number) => void = (v: number): void => {
   };
   onLineHeightDone: (v: number) => void = (v: number): void => {
+  };
+  onJustify: (v: boolean) => void = (v: boolean): void => {
   };
   onFontFamily: (v: string) => void = (v: string): void => {
   };
@@ -84,6 +87,10 @@ export struct NovelTextPanel {
 
       Divider().color(this.pal.divider)
 
+      this.justifyRow()
+
+      Divider().color(this.pal.divider)
+
       Column({ space: 8 }) {
         Text($r('app.string.novel_font_family'))
           .fontSize(13)
@@ -108,6 +115,31 @@ export struct NovelTextPanel {
       Column().height(16)
     }
     .width('100%')
+  }
+
+  // 两端对齐开关行：正文段落（末行除外）左右两端对齐排版
+  @Builder
+  justifyRow() {
+    Row() {
+      Text($r('app.string.novel_justify'))
+        .fontSize(13)
+        .fontColor(this.pal.sub)
+        .layoutWeight(1)
+      Toggle({ type: ToggleType.Switch, isOn: this.justify })
+        .selectedColor(this.pal.primary)
+        .switchPointColor(this.pal.onPrimary)
+        .onChange((isOn: boolean) => {
+          this.justify = isOn;
+          this.onJustify(isOn);
+        })
+    }
+    .width('100%')
+    .padding({
+      left: 16,
+      right: 16,
+      top: 10,
+      bottom: 6
+    })
   }
 
   // 合并空行开关行：部分站点段落间大量空行，开启后折叠为单个换行

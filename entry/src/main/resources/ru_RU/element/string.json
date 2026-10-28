@@ -2989,6 +2989,10 @@
       "value": "URL файлов репозитория должны использовать https, записи http:// отклонены"
     },
     {
+      "name": "plugin_error_repo_checksum_required",
+      "value": "Записи репозитория должны объявлять контрольную сумму sha256, записи без неё отклоняются"
+    },
+    {
       "name": "plugin_error_runtime_invalid",
       "value": "Неверное имя среды плагина: %s"
     },

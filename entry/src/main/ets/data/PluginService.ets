@@ -295,10 +295,15 @@ export class PluginService {
     return PluginService.debugBuild;
   }
 
-  // 从仓库条目下载并安装：release 强制 https（调试构建放行 http），索引声明 checksum（sha256）时校验完整性
+  // 从仓库条目下载并安装：release 强制 https（调试构建放行 http）；
+  // release 同时强制索引声明 checksum（sha256）——索引经 TLS 传输，checksum 把
+  // 插件包完整性绑定到索引内容，形成独立于传输层的完整性校验链；缺失直接拒绝安装
   static async installFromRepo(entry: RepoEntry): Promise<InstallOutcome> {
     if (entry.file.startsWith('http://') && !PluginService.isDebugBuild()) {
       throw new Error('plugin_repo_not_https');
+    }
+    if (entry.checksum === '' && !PluginService.isDebugBuild()) {
+      throw new Error('plugin_repo_checksum_required');
     }
     const buffer: ArrayBuffer = await Http.getBuffer(entry.file, undefined);
     if (entry.checksum !== '') {
@@ -428,6 +433,11 @@ export class PluginService {
   }
 
   static async fetchRepo(url: string): Promise<RepoEntry[]> {
+    // 索引本身经明文 http 传输时整个条目列表（名称/图标/包地址）可被中间人篡改，
+    // 诱导安装恶意插件：release 一律强制 https，仅调试签名构建放行 http（本地调试仓库）
+    if (url.startsWith('http://') && !PluginService.isDebugBuild()) {
+      throw new Error('plugin_repo_not_https');
+    }
     const text = await Http.get(url, undefined);
     return PluginService.parseRepoIndex(url, JSON.parse(text) as RawRepoIndex);
   }

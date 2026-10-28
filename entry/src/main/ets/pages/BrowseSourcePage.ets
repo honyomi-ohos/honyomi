@@ -7,7 +7,6 @@ import { LocalFolderManager } from '../source/LocalFolderManager';
 import { CategoryRecord, ContentType, MangaRecord, SManga, WorksPage } from '../model/Models';
 import { BrowseSourceParams, DetailParams, DetailSearchResult } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
-import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { MangaCard } from './components/MangaCard';
 import { MangaSkeletonGrid } from './components/MangaSkeletonGrid';
@@ -163,14 +162,14 @@ export struct BrowseSourcePage {
     Column() {
       Text(filter.name ?? '')
         .fontSize(14)
-        .fontColor(this.pal.text)
-        .margin({ top: 8, bottom: 4 })
+        .fontColor(this.pal.sub)
+        .margin({ top: 12, bottom: 8 })
       Select(this.selectOptions(filter))
         .selected(this.selectIndex(filter))
         .value(this.selectValueText(filter))
         .width('100%')
-        .height(42)
-        .font({ size: 14 })
+        .height(40)
+        .font({ size: 16 })
         .fontColor(this.pal.text)
         .backgroundColor(this.pal.chip)
         .borderRadius(8)
@@ -188,18 +187,20 @@ export struct BrowseSourcePage {
     Row() {
       AppIcon({
         name: filter.state === true ? 'check_box' : 'check_box_outline_blank',
-        iconSize: 22,
+        iconSize: 24,
         tint: filter.state === true ? this.pal.primary : this.pal.sub,
       })
+        .margin({ right: 16 })
       Text(filter.name ?? '')
-        .fontSize(15)
+        .fontSize(16)
         .fontColor(this.pal.text)
         .layoutWeight(1)
         .maxLines(1)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
     }
     .width('100%')
-    .padding({ top: 8, bottom: 8 })
+    .constraintSize({ minHeight: 48 })
+    .alignItems(VerticalAlign.Center)
     .onClick(() => {
       this.toggleFilterCheckbox(filter);
     })
@@ -211,18 +212,20 @@ export struct BrowseSourcePage {
     Row() {
       AppIcon({
         name: this.filterTriIcon(this.filterNumberState(filter, 0)),
-        iconSize: 22,
+        iconSize: 24,
         tint: this.filterNumberState(filter, 0) === 0 ? this.pal.sub : this.pal.primary,
       })
+        .margin({ right: 16 })
       Text(filter.name ?? '')
-        .fontSize(15)
+        .fontSize(16)
         .fontColor(this.pal.text)
         .layoutWeight(1)
         .maxLines(1)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
     }
     .width('100%')
-    .padding({ top: 8, bottom: 8 })
+    .constraintSize({ minHeight: 48 })
+    .alignItems(VerticalAlign.Center)
     .onClick(() => {
       this.cycleFilterTristate(filter);
     })
@@ -339,11 +342,11 @@ export struct BrowseSourcePage {
     Column() {
       Text(filter.name ?? '')
         .fontSize(14)
-        .fontColor(this.pal.text)
-        .margin({ top: 6, bottom: 6 })
+        .fontColor(this.pal.sub)
+        .margin({ top: 12, bottom: 8 })
       TextInput({ text: typeof filter.state === 'string' ? filter.state as string : '' })
-        .height(38)
-        .fontSize(14)
+        .height(40)
+        .fontSize(16)
         .backgroundColor(this.pal.chip)
         .onChange((value: string) => {
           filter.state = value;
@@ -377,10 +380,10 @@ export struct BrowseSourcePage {
     Column() {
       if ((group.name ?? '') !== '') {
         Text(group.name)
-          .fontSize(13)
-          .fontWeight(FontWeight.Bold)
+          .fontSize(14)
+          .fontWeight(FontWeight.Medium)
           .fontColor(this.pal.sub)
-          .margin({ top: 10, bottom: 4 })
+          .margin({ top: 16, bottom: 8 })
       }
       ForEach(group.filters ?? [], (sub: RawFilter, subIndex: number) => {
         this.filterLeafBuilder(sub)
@@ -390,51 +393,17 @@ export struct BrowseSourcePage {
     .alignItems(HorizontalAlign.Start)
   }
 
-  // 过滤器面板：顶部 重置|过滤 操作行 + 过滤器列表（对齐 Mihon SourceFilterDialog stickyHeader）
+  // 过滤器面板（HDS 半模态规范，高度自适应内容）：选项区在上、底部固定操作区（重置 | 过滤）在下，
+  // 单个筛选项时弹层贴内容收起；选项行 48vp 触控高度、16fp 正文、24vp 侧边距，
+  // 列表超出系统限高时在 Scroll 内滚动，底部按钮始终可见
   @Builder
   filterSheetBuilder() {
     Column() {
-      Row() {
-        Text($r('app.string.browse_filter_reset'))
-          .fontSize(14)
-          .fontColor(this.pal.primary)
-          .padding({
-            left: 8,
-            right: 8,
-            top: 10,
-            bottom: 10
-          })
-          .onClick(() => {
-            this.resetFilterSheet();
-          })
-        Button($r('app.string.action_filter'))
-          .fontSize(14)
-          .height(36)
-          .padding({ left: 20, right: 20 })
-          .backgroundColor(this.pal.primary)
-          .fontColor(this.pal.onPrimary)
-          .onClick(() => {
-            this.applyFilters();
-          })
-      }
-      .width('100%')
-      .padding({ left: 16, right: 16 })
-      .justifyContent(FlexAlign.SpaceBetween)
-
-      Divider()
-        .color(this.pal.divider)
-        .margin({ left: 16, right: 16 })
-
       if (this.filters.length === 0) {
-        Column() {
-          Text($r('app.string.browse_filter_empty'))
-            .fontSize(14)
-            .fontColor(this.pal.sub)
-            .margin({ top: 32, bottom: 32 })
-        }
-        .layoutWeight(1)
-        .width('100%')
-        .justifyContent(FlexAlign.Center)
+        Text($r('app.string.browse_filter_empty'))
+          .fontSize(14)
+          .fontColor(this.pal.sub)
+          .padding({ top: 32, bottom: 32 })
       } else {
         Scroll() {
           Column() {
@@ -448,19 +417,45 @@ export struct BrowseSourcePage {
           }
           .width('100%')
           .padding({
-            left: 16,
-            right: 16,
+            left: 24,
+            right: 24,
             top: 4,
-            bottom: 16
+            bottom: 8
           })
         }
-        .layoutWeight(1)
         .width('100%')
         .scrollBar(BarState.Off)
       }
+
+      Divider()
+        .color(this.pal.divider)
+        .margin({ left: 24, right: 24 })
+
+      // 底部操作区：重置（次要）+ 过滤（主操作）等宽双按钮
+      Row({ space: 12 }) {
+        Button($r('app.string.browse_filter_reset'))
+          .layoutWeight(1)
+          .height(40)
+          .fontSize(16)
+          .backgroundColor(this.pal.chip)
+          .fontColor(this.pal.text)
+          .onClick(() => {
+            this.resetFilterSheet();
+          })
+        Button($r('app.string.action_filter'))
+          .layoutWeight(1)
+          .height(40)
+          .fontSize(16)
+          .backgroundColor(this.pal.primary)
+          .fontColor(this.pal.onPrimary)
+          .onClick(() => {
+            this.applyFilters();
+          })
+      }
+      .width('100%')
+      .padding({ left: 24, right: 24, top: 16, bottom: 24 })
     }
     .width('100%')
-    .height('100%')
   }
 
   @Builder
@@ -746,10 +741,10 @@ export struct BrowseSourcePage {
       }
       .width('100%')
       .height('100%')
-      // 插件自定义过滤器半模态（挂在 Stack 根上，与内层 Column 的文件夹 Sheet 分离）
+      // 插件自定义过滤器半模态（挂在 Stack 根上，与内层 Column 的文件夹 Sheet 分离）：
+      // 高度自适应内容（SheetPreset 默认 FIT_CONTENT），筛选项少时弹层收起，多时滚动
       .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(),
         SheetPreset.fit(this.windowW, {
-          height: this.windowW >= Bp.LG_MIN ? 560 : '78%',
           title: $r('app.string.action_filter'),
           showClose: true
         }))

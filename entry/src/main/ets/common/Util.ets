@@ -455,6 +455,9 @@ export class Util {
       case 'plugin_repo_entry_not_https':
         res = $r('app.string.plugin_error_repo_entry_not_https');
         break;
+      case 'plugin_repo_checksum_required':
+        res = $r('app.string.plugin_error_repo_checksum_required');
+        break;
       case 'plugin_runtime_invalid':
         res = $r('app.string.plugin_error_runtime_invalid');
         break;

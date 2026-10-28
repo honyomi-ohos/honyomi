@@ -1,6 +1,5 @@
 // OAuth 授权 WebView 弹层（bindSheet 半模态承载，骨架由 WebViewSheetBase 承载）：
-// - 各追踪器授权完成后统一重定向自定义 scheme 回调（mihon://<tracker>-auth 或
-//   honyomi://<tracker>-auth），携带 query 或 fragment 参数
+// - 各追踪器授权完成后统一重定向 honyomi://<tracker>-auth 回调，携带 query 或 fragment 参数
 // - onLoadIntercept 钩子拦截回调跳转并解析参数，回传发起方完成登录；
 //   部分引擎 onLoadIntercept 不含 fragment 时由 onPageBegun 钩子兜底捕获
 // - 对齐 Mihon TrackLoginActivity：query 优先，缺失时取 fragment
@@ -8,8 +7,8 @@
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { WebViewSheetBase } from './WebViewSheetBase';
 
-// 迁移期双 scheme：未换凭据的追踪器仍回调 mihon://，已注册新凭据的回调 honyomi://
-const CALLBACK_SCHEMES: string[] = ['mihon://', 'honyomi://'];
+// 回调 scheme：各追踪器 OAuth 应用注册的回调均为 honyomi://<tracker>-auth
+const CALLBACK_SCHEMES: string[] = ['honyomi://'];
 
 @Component
 export struct OAuthSheet {

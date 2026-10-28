@@ -2557,6 +2557,22 @@
       "value": "这一章没有正文"
     },
     {
+      "name": "novel_trans_progress",
+      "value": "翻译进度 %1$d%%"
+    },
+    {
+      "name": "novel_trans_done",
+      "value": "翻译完成"
+    },
+    {
+      "name": "novel_trans_failed",
+      "value": "翻译失败"
+    },
+    {
+      "name": "novel_trans_cancel",
+      "value": "已取消翻译"
+    },
+    {
       "name": "novel_mode_scroll",
       "value": "滚动"
     },
@@ -2649,12 +2665,76 @@
       "value": "朗读语速"
     },
     {
+      "name": "novel_tts_voice",
+      "value": "朗读音色"
+    },
+    {
+      "name": "tts_voice_default",
+      "value": "女声（默认）"
+    },
+    {
+      "name": "tts_voice_male",
+      "value": "男声"
+    },
+    {
+      "name": "tts_voice_male_hint",
+      "value": "男声音色需在系统中下载，未下载时将使用默认女声"
+    },
+    {
       "name": "novel_tts_finish",
       "value": "本章已朗读完毕"
     },
     {
       "name": "novel_tts_error",
       "value": "朗读失败：%s"
+    },
+    {
+      "name": "novel_keep_screen_on",
+      "value": "屏幕常亮"
+    },
+    {
+      "name": "novel_volume_turn",
+      "value": "音量键翻页"
+    },
+    {
+      "name": "novel_justify",
+      "value": "两端对齐"
+    },
+    {
+      "name": "novel_search",
+      "value": "章内搜索"
+    },
+    {
+      "name": "novel_search_hint",
+      "value": "搜索本章内容"
+    },
+    {
+      "name": "novel_search_empty",
+      "value": "未找到匹配内容"
+    },
+    {
+      "name": "novel_bookmarks",
+      "value": "阅读书签"
+    },
+    {
+      "name": "novel_bookmark_add",
+      "value": "添加当前进度书签"
+    },
+    {
+      "name": "novel_bookmark_added",
+      "value": "已添加书签"
+    },
+    {
+      "name": "novel_bookmark_empty",
+      "value": "暂无书签"
+    },
+    {
+      "name": "novel_auto_on",
+      "value": "已开启自动阅读"
+    },
+    {
+      "name": "novel_auto_end",
+      "value": "已读到最后，自动阅读停止"
     },
     {
       "name": "tts_player_title",
@@ -3477,6 +3557,10 @@
       "value": "插件仓库地址必须使用 https，已拒绝 http:// 条目"
     },
     {
+      "name": "plugin_error_repo_checksum_required",
+      "value": "仓库条目必须声明 sha256 校验值，已拒绝无校验条目"
+    },
+    {
       "name": "plugin_error_runtime_invalid",
       "value": "插件 runtime 名称无效：%s"
     },
@@ -3907,6 +3991,98 @@
     {
       "name": "debug_language",
       "value": "语言"
+    },
+    {
+      "name": "trans_title",
+      "value": "翻译"
+    },
+    {
+      "name": "trans_enable",
+      "value": "启用翻译"
+    },
+    {
+      "name": "trans_enable_sub",
+      "value": "在阅读器中通过已配置的引擎翻译文本"
+    },
+    {
+      "name": "trans_test",
+      "value": "测试翻译"
+    },
+    {
+      "name": "trans_target",
+      "value": "目标语言"
+    },
+    {
+      "name": "trans_test_running",
+      "value": "翻译中…"
+    },
+    {
+      "name": "trans_test_fail",
+      "value": "所有引擎翻译失败"
+    },
+    {
+      "name": "trans_engines",
+      "value": "引擎优先级"
+    },
+    {
+      "name": "trans_engines_hint",
+      "value": "长按拖拽调整引擎优先级"
+    },
+    {
+      "name": "trans_status_ready",
+      "value": "已配置"
+    },
+    {
+      "name": "trans_status_missing",
+      "value": "未配置"
+    },
+    {
+      "name": "trans_status_free",
+      "value": "无需配置"
+    },
+    {
+      "name": "trans_status_set",
+      "value": "已设置"
+    },
+    {
+      "name": "trans_baidu",
+      "value": "百度翻译"
+    },
+    {
+      "name": "trans_baidu_appid",
+      "value": "AppID"
+    },
+    {
+      "name": "trans_baidu_key",
+      "value": "密钥"
+    },
+    {
+      "name": "trans_youdao",
+      "value": "有道智云"
+    },
+    {
+      "name": "trans_youdao_key",
+      "value": "应用ID"
+    },
+    {
+      "name": "trans_youdao_secret",
+      "value": "应用密钥"
+    },
+    {
+      "name": "trans_caiyun",
+      "value": "彩云小译"
+    },
+    {
+      "name": "trans_caiyun_token",
+      "value": "API 令牌"
+    },
+    {
+      "name": "trans_google",
+      "value": "谷歌翻译"
+    },
+    {
+      "name": "trans_deepl",
+      "value": "DeepL"
     }
   ]
 }

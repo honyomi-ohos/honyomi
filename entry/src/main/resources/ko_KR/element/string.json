@@ -3013,6 +3013,10 @@
       "value": "저장소 파일 URL은 https를 사용해야 합니다. http:// 항목은 거부됩니다"
     },
     {
+      "name": "plugin_error_repo_checksum_required",
+      "value": "저장소 항목은 sha256 체크섬을 선언해야 합니다. 체크섬이 없는 항목은 거부됩니다"
+    },
+    {
       "name": "plugin_error_runtime_invalid",
       "value": "플러그인 런타임 이름이 잘못되었습니다: %s"
     },

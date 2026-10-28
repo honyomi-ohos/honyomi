@@ -2841,6 +2841,10 @@
       "value": "URLs von Repository-Dateien müssen https verwenden, http://-Einträge werden abgelehnt"
     },
     {
+      "name": "plugin_error_repo_checksum_required",
+      "value": "Repository-Einträge müssen eine sha256-Prüfsumme deklarieren, Einträge ohne Prüfsumme werden abgelehnt"
+    },
+    {
       "name": "plugin_error_runtime_invalid",
       "value": "Ungültiger Name der Plug-in-Laufzeit: %s"
     },

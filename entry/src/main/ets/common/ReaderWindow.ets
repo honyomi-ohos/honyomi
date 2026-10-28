@@ -39,7 +39,16 @@ export class ReaderWindow {
     });
   }
 
-  // 退出阅读页：还原窗口方向与亮度
+  // 阅读中屏幕常亮（true=保持常亮，false=恢复系统默认熄屏策略）
+  static setKeepScreenOn(ctx: common.UIAbilityContext, on: boolean): void {
+    window.getLastWindow(ctx).then((win: window.Window) => {
+      win.setWindowKeepScreenOn(on).catch(() => {
+      });
+    }).catch(() => {
+    });
+  }
+
+  // 退出阅读页：还原窗口方向、亮度与熄屏策略
   static restore(ctx: common.UIAbilityContext): void {
     window.getLastWindow(ctx).then((win: window.Window) => {
       if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
@@ -47,6 +56,8 @@ export class ReaderWindow {
         });
       }
       win.setWindowBrightness(0).catch(() => {
+      });
+      win.setWindowKeepScreenOn(false).catch(() => {
       });
     }).catch(() => {
     });

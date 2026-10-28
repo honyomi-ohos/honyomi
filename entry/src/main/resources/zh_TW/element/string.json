@@ -2993,6 +2993,10 @@
       "value": "外掛倉庫位址必須使用 https，已拒絕 http:// 條目"
     },
     {
+      "name": "plugin_error_repo_checksum_required",
+      "value": "倉庫條目必須宣告 sha256 校驗值，已拒絕無校驗條目"
+    },
+    {
       "name": "plugin_error_runtime_invalid",
       "value": "外掛 runtime 名稱無效：%s"
     },
@@ -3377,12 +3381,76 @@
       "value": "朗讀語速"
     },
     {
+      "name": "novel_tts_voice",
+      "value": "朗讀音色"
+    },
+    {
+      "name": "tts_voice_default",
+      "value": "女聲（預設）"
+    },
+    {
+      "name": "tts_voice_male",
+      "value": "男聲"
+    },
+    {
+      "name": "tts_voice_male_hint",
+      "value": "男聲音色需在系統中下載，未下載時將使用預設女聲"
+    },
+    {
       "name": "novel_tts_finish",
       "value": "本章已朗讀完畢"
     },
     {
       "name": "novel_tts_error",
       "value": "朗讀失敗：%s"
+    },
+    {
+      "name": "novel_keep_screen_on",
+      "value": "螢幕常亮"
+    },
+    {
+      "name": "novel_volume_turn",
+      "value": "音量鍵翻頁"
+    },
+    {
+      "name": "novel_justify",
+      "value": "兩端對齊"
+    },
+    {
+      "name": "novel_search",
+      "value": "章內搜尋"
+    },
+    {
+      "name": "novel_search_hint",
+      "value": "搜尋本章內容"
+    },
+    {
+      "name": "novel_search_empty",
+      "value": "未找到符合內容"
+    },
+    {
+      "name": "novel_bookmarks",
+      "value": "閱讀書籤"
+    },
+    {
+      "name": "novel_bookmark_add",
+      "value": "加入目前進度書籤"
+    },
+    {
+      "name": "novel_bookmark_added",
+      "value": "已加入書籤"
+    },
+    {
+      "name": "novel_bookmark_empty",
+      "value": "尚無書籤"
+    },
+    {
+      "name": "novel_auto_on",
+      "value": "已開啟自動閱讀"
+    },
+    {
+      "name": "novel_auto_end",
+      "value": "已讀到最後，自動閱讀停止"
     },
     {
       "name": "tts_player_title",

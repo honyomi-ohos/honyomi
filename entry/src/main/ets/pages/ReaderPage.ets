@@ -5,8 +5,9 @@ import { AppDb } from '../data/AppDb';
 import { ChapterRepo, HistoryRepo, MangaRepo } from '../data/Repos';
 import { ReadingStatsRepo } from '../data/ReadingStats';
 import { SourceRegistry } from '../source/Source';
-import { ChapterRecord, MangaRecord, SPage } from '../model/Models';
+import { ChapterRecord, ContentType, MangaRecord, SPage } from '../model/Models';
 import { ReaderParams } from '../model/RouteParams';
+import { ContinueSession } from '../common/ContinueSession';
 import { Theme, ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { Settings } from '../common/Settings';
@@ -16,6 +17,7 @@ import { Haptics } from '../common/Haptics';
 import { ChapterNeighbors, ReaderChapterNav } from '../common/ReaderChapterNav';
 import { DownloadService } from '../data/DownloadService';
 import { DownloadRules } from '../data/DownloadRules';
+import { PageSanitizer } from '../common/PageSanitizer';
 import { TrackService } from '../data/track/TrackService';
 import { SmartImage } from './components/SmartImage';
 import { ComicStripViewer, STRIP_LEAD_COUNT } from './components/ComicStripViewer';
@@ -27,7 +29,9 @@ import { ReaderChapterSheet } from './components/ReaderChapterSheet';
 import { EmulationFlipView } from './components/PageFlip';
 import {
   ReaderFilterArea,
+  ReaderFooterText,
   ReaderHdsHost,
+  ReaderHeaderText,
   ReaderIndicatorBadge,
   ReaderMenu,
   ReaderMenuIconButton,
@@ -42,6 +46,8 @@ import { LoadingBackButton } from './components/LoadingBackButton';
 // 翻到章节边界时展示上一章/下一章过渡视图（对齐 Mihon ChapterTransition）
 const TRANS_PREV_URL: string = '@@transition/prev';
 const TRANS_NEXT_URL: string = '@@transition/next';
+// 双页“封面独立成页”时垫在上一章过渡页后的空白占位页（index 为负）
+const DUAL_BLANK_URL: string = '@@dual/blank';
 
 // LazyForEach 数据源
 class PageDataSource implements IDataSource {
@@ -169,6 +175,20 @@ export struct ReaderPage {
   @State autoPageSec: number = 0;
   @State autoRunning: boolean = false;
   private autoTimerId: number = -1;
+  // 音量键翻页（默认关；开=音量上/下代替翻页）
+  @State volumeTurn: boolean = false;
+  // 阅读时屏幕常亮（默认开）
+  @State keepScreenOn: boolean = true;
+  // 预加载后续页数（Swiper cachedCount）
+  @State preloadPages: number = 4;
+  // 双页模式：'auto'（横屏自动，默认）| 'force'（始终双页）| 'off'（始终单页）
+  @State dualPageMode: string = 'auto';
+  // 双页时封面独立成页（默认开）
+  @State dualCover: boolean = true;
+  // 条漫/连续模式页间距（vp）
+  @State webtoonGap: number = 0;
+  // 显示页眉页脚（章节名/页码常驻边角）
+  @State showHeaderFooter: boolean = false;
 
   aboutToAppear(): void {
     this.gripSupported = GripSupport.isSupported();
@@ -190,8 +210,17 @@ export struct ReaderPage {
     this.pageAnim = Settings.getReaderPageAnim();
     this.webtoonPadding = Settings.getReaderWebtoonPadding();
     this.autoPageSec = Settings.getReaderAutoPageSec();
+    this.volumeTurn = Settings.getReaderVolumeTurn();
+    this.keepScreenOn = Settings.getReaderKeepScreenOn();
+    this.preloadPages = Settings.getReaderPreloadPages();
+    this.dualPageMode = Settings.getReaderDualPageMode();
+    this.dualCover = Settings.getReaderDualPageCover();
+    this.webtoonGap = Settings.getReaderWebtoonGap();
+    this.showHeaderFooter = Settings.getReaderShowHeaderFooter();
     this.applyOrientation();
     this.applyBrightness();
+    // 阅读时保持屏幕常亮（退出时由 ReaderWindow.restore 还原熄屏策略）
+    ReaderWindow.setKeepScreenOn(Util.hostAbilityContext(this.getUIContext()), this.keepScreenOn);
   }
 
   aboutToDisappear(): void {
@@ -245,7 +274,8 @@ export struct ReaderPage {
         sourceKey: this.manga.sourceKey,
         fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
         fill: true,
-        highQuality: Settings.getReaderHighQuality()
+        highQuality: Settings.getReaderHighQuality(),
+        retryable: true
       })
         .width('100%')
         .height('100%')
@@ -260,7 +290,8 @@ export struct ReaderPage {
         sourceKey: this.manga.sourceKey,
         fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
         fill: true,
-        highQuality: Settings.getReaderHighQuality()
+        highQuality: Settings.getReaderHighQuality(),
+        retryable: true
       })
         .layoutWeight(1)
         .height('100%')
@@ -370,7 +401,7 @@ export struct ReaderPage {
     }
   }
 
-  // 条漫模式内容体
+  // 条漫/连续模式内容体
   @Builder
   webtoonBody() {
     ComicStripViewer({
@@ -379,6 +410,10 @@ export struct ReaderPage {
       initialIndex: this.currentReal + STRIP_LEAD_COUNT,
       isDark: this.isDark,
       sidePadding: this.webtoonPadding,
+      gap: this.webtoonGap,
+      // 连续模式：按屏高裁切逐页竖向滚动；条漫模式：原图直绘不限制高度
+      fit: this.mode === 'continuous' ? ImageFit.Cover : ImageFit.Contain,
+      maxItemHeight: this.mode === 'continuous' ? Math.floor(this.readerH) : 0,
       currentChapterName: this.chapter.name,
       prevChapterName: this.prevChapterName,
       nextChapterName: this.nextChapterName,
@@ -416,6 +451,9 @@ export struct ReaderPage {
     })
       .width('100%')
       .height('100%')
+      .onAreaChange((_old: Area, newArea: Area) => {
+        this.syncReaderArea(newArea);
+      })
   }
 
   // 单仿真翻页内容体
@@ -475,13 +513,19 @@ export struct ReaderPage {
               .height('100%')
               .justifyContent(FlexAlign.Center)
               .alignItems(HorizontalAlign.Center)
+            } else if (page.url === DUAL_BLANK_URL) {
+              // 双页“封面独立成页”占位：空白格（透出阅读器背景）
+              Column()
+                .width('100%')
+                .height('100%')
             } else {
               SmartImage({
                 url: page.url,
                 sourceKey: this.manga.sourceKey,
                 fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
                 fill: true,
-                highQuality: Settings.getReaderHighQuality()
+                highQuality: Settings.getReaderHighQuality(),
+                retryable: true
               })
                 .width('100%')
                 .height('100%')
@@ -496,6 +540,7 @@ export struct ReaderPage {
       .width('100%')
       .height('100%')
       .displayCount(this.dualPageActive() ? 2 : 1)
+      .cachedCount(this.preloadPages)
       .loop(false)
       .vertical(this.mode === 'vertical')
       .index(this.displayIndex)
@@ -1401,6 +1446,8 @@ export struct ReaderPage {
           ? chapter.lastPageRead : 0;
       }
       this.gotoBoundary = 0;
+      // 跨设备接续/碰一碰会话快照：随章节加载刷新（进度语义=页码）
+      ContinueSession.update(ContentType.MANGA, this.manga, chapter, this.currentReal);
       await this.refreshNeighbors();
       if (gen !== this.loadGen) {
         return;
@@ -1539,6 +1586,7 @@ export struct ReaderPage {
   }
 
   private async persistProgress(): Promise<void> {
+    ContinueSession.updateProgress(this.currentReal);
     try {
       ReadingStatsRepo.tick();
       await ChapterRepo.setLastPageRead(this.chapterId, this.currentReal);

@@ -913,13 +913,26 @@ static const char *BOOTSTRAP_JS = R"JS((function () {
 
   // ---- DOM-ish selector bridge ---------------------------------------------
   // Accepts an HTML string, an ArrayBuffer or a TypedArray view. Buffer inputs
-  // are parsed in place by lexbor (zero-copy).
+  // are parsed in place by lexbor (zero-copy). The native layer returns
+  // {results, truncated}: truncated === true means the serialized output hit
+  // the internal byte budget and the traversal stopped early — log it loudly
+  // so incomplete data is never mistaken for a complete match set. The
+  // plugin-visible API still returns the plain results array.
   g.querySelectorAll = function (html, cssQuery) {
-    if (html instanceof ArrayBuffer || (typeof ArrayBuffer !== 'undefined' &&
-        ArrayBuffer.isView && ArrayBuffer.isView(html))) {
-      return JSON.parse(nativeSelectorBuffer(html, String(cssQuery)));
+    var raw = (html instanceof ArrayBuffer || (typeof ArrayBuffer !== 'undefined' &&
+        ArrayBuffer.isView && ArrayBuffer.isView(html)))
+      ? nativeSelectorBuffer(html, String(cssQuery))
+      : nativeSelector(String(html), String(cssQuery));
+    var r;
+    try { r = JSON.parse(raw); } catch (e) { r = null; }
+    if (r !== null && Array.isArray(r.results)) {
+      if (r.truncated) {
+        console.warn('querySelectorAll: output budget hit, truncated to ' +
+          r.results.length + ' matched elements (selector: ' + String(cssQuery) + ')');
+      }
+      return r.results;
     }
-    return JSON.parse(nativeSelector(String(html), String(cssQuery)));
+    return [];
   };
 
   // raw native 桥退出插件可见全局（上方包装器已持有闭包引用）。

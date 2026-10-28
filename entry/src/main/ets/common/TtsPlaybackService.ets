@@ -1,10 +1,11 @@
 import { common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { ChapterRepo, HistoryRepo, MangaRepo } from '../data/Repos';
-import { ChapterRecord, MangaRecord } from '../model/Models';
+import { ChapterRecord, ContentType, MangaRecord } from '../model/Models';
 import { SourceRegistry } from '../source/Source';
 import { DownloadService } from '../data/DownloadService';
 import { Settings } from './Settings';
+import { ContinueSession } from './ContinueSession';
 import { readTextAutoAsync } from './bookparser/TextLoadTasks';
 import { NovelTts } from './NovelTts';
 import { TtsText } from './TtsText';
@@ -274,6 +275,9 @@ export class TtsPlaybackService {
       TtsPlaybackService.resumeNextChapterId = 0;
       TtsPlaybackService.wireEngine();
       TtsPlaybackService.events.emitChapter(mangaId, chapterId);
+      // 跨设备接续/碰一碰会话快照：听书与小说阅读共用 novel 语义（进度=千分比）；
+      // 自动切章（onChapterDone）经 start() 复入，此处已覆盖
+      ContinueSession.update(ContentType.NOVEL, manga, chapter, chapter.lastPageRead);
       TtsPlaybackService.updateSession();
       const ok = await NovelTts.start(paras, fromPara, TtsPlaybackService.lang, context);
       if (gen !== TtsPlaybackService.loadGen) {
@@ -452,6 +456,41 @@ export class TtsPlaybackService {
       }
     }).catch((e: Object): void => {
       hilog.warn(DOMAIN, TAG, 'restart after speed change failed: %{public}s', `${e}`);
+      if (TtsPlaybackService.playingState) {
+        TtsPlaybackService.playingState = false;
+        TtsAvSession.setPlaying(false);
+        TtsPlaybackService.events.emitError('tts_unavailable');
+        TtsPlaybackService.emitState();
+      }
+    });
+  }
+
+  // 音色（default 女声 / male 男声）：持久化；播放中销毁引擎并以新音色从当前段续播
+  static setVoice(voice: string): void {
+    Settings.setNovelTtsVoice(voice);
+    if (!TtsPlaybackService.playingState) {
+      return;
+    }
+    const ctx = TtsPlaybackService.ctx;
+    if (ctx === undefined || TtsPlaybackService.paras.length === 0) {
+      return;
+    }
+    const from = TtsPlaybackService.paraIdx >= 0 ? TtsPlaybackService.paraIdx : NovelTts.currentPara();
+    const paras = TtsPlaybackService.paras;
+    const lang = TtsPlaybackService.lang;
+    NovelTts.stop();
+    NovelTts.start(paras, from, lang, ctx).then((ok: boolean) => {
+      if (!TtsPlaybackService.playingState) {
+        return;
+      }
+      if (!ok) {
+        TtsPlaybackService.playingState = false;
+        TtsAvSession.setPlaying(false);
+        TtsPlaybackService.events.emitError('tts_unavailable');
+        TtsPlaybackService.emitState();
+      }
+    }).catch((e: Object): void => {
+      hilog.warn(DOMAIN, TAG, 'restart after voice change failed: %{public}s', `${e}`);
       if (TtsPlaybackService.playingState) {
         TtsPlaybackService.playingState = false;
         TtsAvSession.setPlaying(false);

@@ -146,6 +146,11 @@
       "pageSourceFile": "src/main/ets/pages/settings/AdvancedPage.ets"
     },
     {
+      "buildFunction": "TranslationBuilder",
+      "name": "Translation",
+      "pageSourceFile": "src/main/ets/pages/settings/TranslationPage.ets"
+    },
+    {
       "buildFunction": "DebugInfoBuilder",
       "name": "DebugInfo",
       "pageSourceFile": "src/main/ets/pages/settings/DebugInfoPage.ets"

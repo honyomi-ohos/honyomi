@@ -1,4 +1,4 @@
-// 小说阅读器「画面」设置面板：亮度 / 配色 / 背景
+// 小说阅读器「画面」设置面板：亮度 / 配色 / 背景 / 屏幕常亮 / 音量键翻页
 // （从 NovelReaderPage 拆出，Wave 3I；行为与原 displaySheetBuilder 一致）
 import { ThemePalette } from '../../../common/Theme';
 import { WideSlider } from '../WideSlider';
@@ -9,11 +9,17 @@ export struct NovelDisplayPanel {
   @Prop brightLv: number = 0;
   @Prop colorScheme: string = 'auto';
   @Prop readerTheme: number = 3;
+  @Prop keepScreenOn: boolean = true;
+  @Prop volumeTurn: boolean = false;
   onBrightness: (v: number) => void = (v: number): void => {
   };
   onColorScheme: (v: string) => void = (v: string): void => {
   };
   onTheme: (v: number) => void = (v: number): void => {
+  };
+  onKeepScreenOn: (v: boolean) => void = (v: boolean): void => {
+  };
+  onVolumeTurn: (v: boolean) => void = (v: boolean): void => {
   };
 
   build() {
@@ -98,9 +104,47 @@ export struct NovelDisplayPanel {
         bottom: 4
       })
 
+      Divider().color(this.pal.divider)
+
+      this.toggleRow($r('app.string.novel_keep_screen_on'), this.keepScreenOn,
+        (isOn: boolean): void => {
+          this.onKeepScreenOn(isOn);
+        })
+
+      Divider().color(this.pal.divider)
+
+      this.toggleRow($r('app.string.novel_volume_turn'), this.volumeTurn,
+        (isOn: boolean): void => {
+          this.onVolumeTurn(isOn);
+        })
+
       Column().height(16)
     }
     .width('100%')
+  }
+
+  // 布尔开关行（屏幕常亮 / 音量键翻页）
+  @Builder
+  toggleRow(label: ResourceStr, isOn: boolean, onChange: (isOn: boolean) => void) {
+    Row() {
+      Text(label)
+        .fontSize(13)
+        .fontColor(this.pal.sub)
+        .layoutWeight(1)
+      Toggle({ type: ToggleType.Switch, isOn: isOn })
+        .selectedColor(this.pal.primary)
+        .switchPointColor(this.pal.onPrimary)
+        .onChange((value: boolean) => {
+          onChange(value);
+        })
+    }
+    .width('100%')
+    .padding({
+      left: 16,
+      right: 16,
+      top: 10,
+      bottom: 6
+    })
   }
 
   // 配色 chip（自动 / 浅色 / 深色）

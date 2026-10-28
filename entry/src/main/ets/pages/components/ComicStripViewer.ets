@@ -43,12 +43,25 @@ struct StripItemView {
   @Prop sourceKey: string = '';
   @Prop pageUrl: string = '';
   @Prop isDark: boolean = false;
+  // 图片填充模式：条漫 Contain；连续滚动裁边模式 Cover
+  @Prop fit: ImageFit = ImageFit.Contain;
+  // 单条目最大高度（0=不限）：连续滚动裁边时钳制为阅读区高度
+  @Prop maxItemHeight: number = 0;
   @State pixelMap: image.PixelMap | undefined = undefined;
   @State failed: boolean = false;
   @State loading: boolean = false;
+  // 每条目独立捏合缩放（1-3x）与缩放平移（不可命名为 scale：与基类通用属性方法冲突）
+  @State zoomScale: number = 1;
+  @State offX: number = 0;
+  @State offY: number = 0;
   private loadToken: number = 0;
   // 条目销毁标记：回调内校验后再写 @State
   private destroyed: boolean = false;
+  private pinchStart: number = 1;
+  private panStartX: number = 0;
+  private panStartY: number = 0;
+  private viewW: number = 0;
+  private viewH: number = 0;
   onTap: () => void = () => {
   };
 
@@ -65,12 +78,80 @@ struct StripItemView {
   build() {
     Column() {
       if (this.pixelMap !== undefined) {
-        // 仅约束宽度，高度随图片纵横比自适应
-        Image(this.pixelMap)
-          .width('100%')
-          .objectFit(ImageFit.Contain)
-          .interpolation(ImageInterpolation.High)
-          .draggable(false)
+        Stack() {
+          // 仅约束宽度，高度随图片纵横比自适应
+          Image(this.pixelMap)
+            .width('100%')
+            .objectFit(this.fit)
+            .interpolation(ImageInterpolation.High)
+            .draggable(false)
+            .scale({ x: this.zoomScale, y: this.zoomScale })
+            .translate({ x: this.offX, y: this.offY })
+            .constraintSize({ maxHeight: this.maxItemHeight > 0 ? this.maxItemHeight : 100000 })
+            .gesture(GestureGroup(GestureMode.Exclusive,
+              PinchGesture()
+                .onActionStart((e: PinchGestureEvent) => {
+                  this.pinchStart = this.zoomScale;
+                })
+                .onActionUpdate((e: PinchGestureEvent) => {
+                  this.applyScale(this.pinchStart * e.scale);
+                })
+                .onActionEnd(() => {
+                  if (this.zoomScale < 1.05) {
+                    this.resetZoom();
+                  }
+                }),
+              TapGesture({ count: 2 })
+                .onAction(() => {
+                  if (this.zoomScale > 1) {
+                    this.resetZoom();
+                  } else {
+                    this.zoomScale = 2;
+                  }
+                }),
+              TapGesture({ count: 1 })
+                .onAction(() => {
+                  this.onTap();
+                })
+            ))
+          if (this.zoomScale > 1) {
+            // 缩放后覆盖透明层承载平移/捏合，避免 Pan 与 List 滚动手势竞争
+            Column()
+              .width('100%')
+              .height('100%')
+              .gesture(GestureGroup(GestureMode.Exclusive,
+                PanGesture()
+                  .onActionStart((e: PanGestureEvent) => {
+                    this.panStartX = this.offX;
+                    this.panStartY = this.offY;
+                  })
+                  .onActionUpdate((e: PanGestureEvent) => {
+                    this.applyPan(this.panStartX + e.offsetX, this.panStartY + e.offsetY);
+                  }),
+                PinchGesture()
+                  .onActionStart((e: PinchGestureEvent) => {
+                    this.pinchStart = this.zoomScale;
+                  })
+                  .onActionUpdate((e: PinchGestureEvent) => {
+                    this.applyScale(this.pinchStart * e.scale);
+                  })
+                  .onActionEnd(() => {
+                    if (this.zoomScale < 1.05) {
+                      this.resetZoom();
+                    }
+                  }),
+                TapGesture({ count: 1 })
+                  .onAction(() => {
+                    this.onTap();
+                  })
+              ))
+          }
+        }
+        .width('100%')
+        .onAreaChange((_o: Area, n: Area) => {
+          this.viewW = Number(n.width);
+          this.viewH = Number(n.height);
+        })
       } else if (this.loading) {
         Column() {
           LoadingProgress()
@@ -85,6 +166,9 @@ struct StripItemView {
         .width('100%')
         .height(320)
         .justifyContent(FlexAlign.Center)
+        .onClick(() => {
+          this.onTap();
+        })
       } else {
         Column() {
           Text($r('app.string.viewer_load_failed'))
@@ -108,13 +192,35 @@ struct StripItemView {
         .justifyContent(FlexAlign.Center)
         .onClick(() => {
           this.load();
+          this.onTap();
         })
       }
     }
     .width('100%')
-    .onClick(() => {
-      this.onTap();
-    })
+  }
+
+  private applyScale(v: number): void {
+    const s = Math.min(3, Math.max(1, v));
+    this.zoomScale = s;
+    if (s <= 1) {
+      this.offX = 0;
+      this.offY = 0;
+    } else {
+      this.applyPan(this.offX, this.offY);
+    }
+  }
+
+  private applyPan(x: number, y: number): void {
+    const maxX = (this.zoomScale - 1) * this.viewW / 2;
+    const maxY = (this.zoomScale - 1) * this.viewH / 2;
+    this.offX = Math.min(maxX, Math.max(-maxX, x));
+    this.offY = Math.min(maxY, Math.max(-maxY, y));
+  }
+
+  private resetZoom(): void {
+    this.zoomScale = 1;
+    this.offX = 0;
+    this.offY = 0;
   }
 
   private load(): void {
@@ -161,6 +267,12 @@ export struct ComicStripViewer {
   // 过渡页文字配色（宿主按阅读背景推导）
   @Prop textCol: string = '#ECEEF2';
   @Prop subCol: string = '#99ECEEF2';
+  // 条目间距（vp，条漫/连续模式页间距）
+  @Prop gap: number = 0;
+  // 图片填充模式（连续滚动裁边传 Cover，默认条漫 Contain）
+  @Prop fit: ImageFit = ImageFit.Contain;
+  // 单条目最大高度（0=不限；连续滚动裁边传阅读区高度）
+  @Prop maxItemHeight: number = 0;
   scroller: Scroller = new Scroller();
   private dataSource: StripDataSource = new StripDataSource();
   private lastVisible: number = -1;
@@ -178,7 +290,7 @@ export struct ComicStripViewer {
   }
 
   build() {
-    List({ scroller: this.scroller, initialIndex: this.initialIndex }) {
+    List({ scroller: this.scroller, initialIndex: this.initialIndex, space: this.gap }) {
       // 头部：上一章过渡页
       ListItem() {
         Column() {
@@ -210,6 +322,8 @@ export struct ComicStripViewer {
             sourceKey: this.sourceKey,
             pageUrl: page.pageUrl ?? '',
             isDark: this.isDark,
+            fit: this.fit,
+            maxItemHeight: this.maxItemHeight,
             onTap: (): void => {
               this.onTap();
             }

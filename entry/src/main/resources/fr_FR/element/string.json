@@ -2857,6 +2857,10 @@
       "value": "Les URL des fichiers du dépôt doivent utiliser https, les entrées http:// sont refusées"
     },
     {
+      "name": "plugin_error_repo_checksum_required",
+      "value": "Les entrées du dépôt doivent déclarer une somme de contrôle sha256, les entrées sans somme sont rejetées"
+    },
+    {
       "name": "plugin_error_runtime_invalid",
       "value": "Nom d'exécution du plugin non valide : %s"
     },

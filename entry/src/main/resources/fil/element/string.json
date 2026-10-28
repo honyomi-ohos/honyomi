@@ -2813,6 +2813,10 @@
       "value": "Dapat https ang mga URL ng file ng repository, tinatanggihan ang mga entry na http://"
     },
     {
+      "name": "plugin_error_repo_checksum_required",
+      "value": "Dapat magdeklara ng sha256 checksum ang mga entry ng repositoryo; tinatanggihan ang mga entry na walang checksum"
+    },
+    {
       "name": "plugin_error_runtime_invalid",
       "value": "Hindi wastong pangalan ng runtime ng plugin: %s"
     },

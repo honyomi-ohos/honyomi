@@ -2965,6 +2965,10 @@
       "value": "Depo dosyası URL'leri https kullanmalıdır, http:// girdileri reddedilir"
     },
     {
+      "name": "plugin_error_repo_checksum_required",
+      "value": "Depo girdileri bir sha256 sağlama toplamı bildirmelidir; sağlama toplamı olmayan girdiler reddedilir"
+    },
+    {
       "name": "plugin_error_runtime_invalid",
       "value": "Geçersiz eklenti çalışma zamanı adı: %s"
     },

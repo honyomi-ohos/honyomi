@@ -181,6 +181,15 @@ export class MangaRepo {
       (rs: relationalStore.ResultSet): MangaRecord => MangaRepo.rowToManga(rs), 'get manga failed');
   }
 
+  // 跨设备接续：各设备本地 mangaId 不同，须以源身份（sourceKey + 源内 url）定位作品
+  static async getBySourceUrl(sourceKey: string, url: string): Promise<MangaRecord | undefined> {
+    const store = await AppDb.get();
+    const pred = new relationalStore.RdbPredicates('manga');
+    pred.equalTo('sourceKey', sourceKey).and().equalTo('url', url);
+    return queryFirst<MangaRecord>(store.query(pred, MangaRepo.COLUMNS),
+      (rs: relationalStore.ResultSet): MangaRecord => MangaRepo.rowToManga(rs), 'get manga by source url failed');
+  }
+
   static async getLibrary(): Promise<MangaRecord[]> {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('manga');
@@ -531,6 +540,15 @@ export class ChapterRepo {
     pred.equalTo('id', id);
     return queryFirst<ChapterRecord>(store.query(pred, ChapterRepo.COLUMNS),
       (rs: relationalStore.ResultSet): ChapterRecord => ChapterRepo.rowToChapter(rs), 'get chapter failed');
+  }
+
+  // 跨设备接续：按作品 id + 源内 url 定位章节（对端 chapterId 与本机不可比）
+  static async getByMangaUrl(mangaId: number, url: string): Promise<ChapterRecord | undefined> {
+    const store = await AppDb.get();
+    const pred = new relationalStore.RdbPredicates('chapter');
+    pred.equalTo('mangaId', mangaId).and().equalTo('url', url);
+    return queryFirst<ChapterRecord>(store.query(pred, ChapterRepo.COLUMNS),
+      (rs: relationalStore.ResultSet): ChapterRecord => ChapterRepo.rowToChapter(rs), 'get chapter by url failed');
   }
 
   static async listByManga(mangaId: number): Promise<ChapterRecord[]> {

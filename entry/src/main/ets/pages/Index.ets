@@ -12,8 +12,7 @@ import { Settings } from '../common/Settings';
 import { UpdateService } from '../data/UpdateService';
 import { AppDb } from '../data/AppDb';
 import { PluginService } from '../data/PluginService';
-import { MangaRepo } from '../data/Repos';
-import { Util } from '../common/Util';
+import { ChapterRepo, HistoryRepo, MangaRepo } from '../data/Repos';import { Util } from '../common/Util';
 import { AppKeys } from '../common/AppKeys';
 import { CookieJar } from '../net/CookieJar';
 import { CoverStore } from '../common/CoverStore';
@@ -32,8 +31,10 @@ import { TtsMiniBar } from './components/novel/TtsMiniBar';
 import { BROWSE_MORPH, LIBRARY_MORPH, PathMorph, UPDATES_MORPH } from './components/PathMorph';
 import { BrowseSourceParams, DetailParams, GlobalSearchParams, OnboardingParams } from '../model/RouteParams';
 import { MangaRecord } from '../model/Models';
+import { KnockShare } from '../common/KnockShare';
 
-// 桌面卡片 router 事件载荷（由 EntryAbility.handleCardWant 写入 AppStorage）
+// 桌面卡片 router 事件载荷（由 EntryAbility.handleCardWant 写入 AppStorage）；
+// target='continue' 时为跨设备接续/碰一碰载荷（源身份字段，见 consumeCardAction）
 interface CardActionPayload {
   target: string;
   mangaId: number;
@@ -41,6 +42,11 @@ interface CardActionPayload {
   contentType: string;
   query?: string;
   sourceKey?: string;
+  mangaUrl?: string;
+  chapterUrl?: string;
+  page?: number;
+  title?: string;
+  chapterName?: string;
 }
 
 // 底部导航图标：逐 Tab 复刻 Mihon 的 AnimatedImageVector 动画
@@ -429,10 +435,16 @@ struct Index {
     this.loadInstalledPlugins();
     this.autoRefresh();
     this.consumeCardAction();
+    // 碰一碰（华为分享链接 + 应用间推送）随主页生命周期注册/注销
+    const winId = this.getUIContext().getWindowId();
+    if (winId !== undefined) {
+      KnockShare.register(winId);
+    }
   }
 
   aboutToDisappear(): void {
     TtsPlaybackService.events.offState(this.onTtsState);
+    KnockShare.unregister();
     if (this.navSyncTimerId >= 0) {
       clearTimeout(this.navSyncTimerId);
       this.navSyncTimerId = -1;
@@ -1128,9 +1140,70 @@ struct Index {
       }
       return;
     }
+    // 跨设备接续/碰一碰续读：以源身份（sourceKey+mangaUrl+chapterUrl）定位本机记录
+    if (raw.target === 'continue') {
+      this.resolveContinueTarget(raw);
+      return;
+    }
     if (raw.target === 'detail' && raw.mangaId > 0) {
       const params: DetailParams = { mangaId: raw.mangaId };
       this.pathStack.pushPathByName('MangaDetail', params);
+    }
+  }
+
+  // 接续解析：找到作品+章节→恢复进度后打开对应阅读器；仅找到作品→详情页；
+  // 本机无记录→按标题全局搜索兜底；进度语义随内容类型（漫画页码/小说千分比/视频毫秒），
+  // 三类阅读器均以 chapter.lastPageRead 恢复进度
+  private resolveContinueTarget(raw: CardActionPayload): void {
+    const sourceKey = raw.sourceKey !== undefined ? raw.sourceKey : '';
+    const mangaUrl = raw.mangaUrl !== undefined ? raw.mangaUrl : '';
+    if (sourceKey === '' || mangaUrl === '') {
+      return;
+    }
+    const context = Util.hostAbilityContext(this.getUIContext());
+    AppDb.ready(context).then(async () => {
+      const manga = await MangaRepo.getBySourceUrl(sourceKey, mangaUrl);
+      if (manga === undefined) {
+        this.continueFallback(raw.title);
+        return;
+      }
+      const chapterUrl = raw.chapterUrl !== undefined ? raw.chapterUrl : '';
+      if (chapterUrl === '') {
+        const params: DetailParams = { mangaId: manga.id };
+        this.pathStack.pushPathByName('MangaDetail', params);
+        return;
+      }
+      const chapter = await ChapterRepo.getByMangaUrl(manga.id, chapterUrl);
+      if (chapter === undefined) {
+        const params: DetailParams = { mangaId: manga.id };
+        this.pathStack.pushPathByName('MangaDetail', params);
+        return;
+      }
+      const page = raw.page !== undefined && raw.page > 0 ? Math.floor(raw.page) : 0;
+      if (page > 0) {
+        ChapterRepo.setLastPageRead(chapter.id, page).catch((e: Object): void => {
+          hilog.warn(0x0001, 'Index', 'continue set page failed: %{public}s', `${e}`);
+        });
+        HistoryRepo.upsert(manga.id, chapter.id, page).catch((e: Object): void => {
+          hilog.warn(0x0001, 'Index', 'continue upsert history failed: %{public}s', `${e}`);
+        });
+      }
+      ContentOpen.push(this.pathStack, manga.contentType, manga.id, chapter.id);
+    }).catch((e: Error) => {
+      hilog.warn(0x0001, 'Index', 'continue resolve failed: %{public}s', e.message);
+      Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
+    });
+  }
+
+  // 本机无对应作品时按标题全局搜索兜底（引导在已安装源中重新找到同书）
+  private continueFallback(title: string | undefined): void {
+    const q = title !== undefined ? title.trim() : '';
+    if (q !== '') {
+      this.switchTab(3);
+      const searchParams: GlobalSearchParams = { query: q };
+      this.pathStack.pushPathByName('GlobalSearch', searchParams);
+    } else {
+      Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
     }
   }
 

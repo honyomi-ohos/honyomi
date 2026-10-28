@@ -18,7 +18,7 @@ export const READER_ORIENTATION_ICONS: string[] =
   ['screen_rotation', 'stay_current_portrait', 'stay_current_landscape', 'screen_lock_portrait',
     'screen_lock_landscape'];
 
-// 阅读器菜单骨架：顶栏（返回 + 标题/章节名）+ 点击关闭占位
+// 阅读器菜单骨架：顶栏（返回 + 标题/章节名 + 右侧动作区）+ 点击关闭占位
 // 顶栏从上方滑入（底栏由 ReaderHdsHost 浮动胶囊承载，不在此渲染）
 @Component
 export struct ReaderMenu {
@@ -27,6 +27,8 @@ export struct ReaderMenu {
   @Prop title: string = '';
   @Prop subtitle: string = '';
   @Prop statusBarH: number = 0;
+  // 顶栏右侧动作区（宿主注入图标按钮；默认空）
+  @BuilderParam actions: () => void = this.emptyBuilder;
   onBack: () => void = (): void => {
   };
   onBackdrop: () => void = (): void => {
@@ -56,6 +58,7 @@ export struct ReaderMenu {
         }
         .alignItems(HorizontalAlign.Start)
         .layoutWeight(1)
+        this.actions()
       }
       .width('100%')
       .padding({
@@ -92,6 +95,10 @@ export struct ReaderMenu {
         TransitionEffect.OPACITY.animation({ duration: 200, curve: Curve.Linear })
       )
     )
+  }
+
+  @Builder
+  emptyBuilder() {
   }
 }
 
@@ -447,10 +454,13 @@ export struct ReaderPagePill {
         max: this.total > 1 ? this.total : 2,
         step: 1,
         dotsEnabled: false,
-        // Slider 颜色不在系统反色支持列表内，按阅读页背景明暗手动取高对比色
-        knobTint: this.bgDark ? '#FFFFFF' : '#111111',
-        fillTint: this.bgDark ? '#99FFFFFF' : '#99000000',
-        trackTint: this.bgDark ? '#40FFFFFF' : '#40000000',
+        // HDS 材质下取 sys.color（与同层文字/图标同源，跟随颜色模式/材质反色；
+        // 硬编码 bgDark 键色在深色模式或深色内容下会与 sys 前景正好相反——
+        // 文字/图标反色为白而滑条仍为黑）；窄屏手动玻璃无材质 colorInvert，
+        // 保持按阅读页背景明暗取高对比硬编码色
+        knobTint: this.narrowBars ? (this.bgDark ? '#FFFFFF' : '#111111') : $r('sys.color.icon_primary'),
+        fillTint: this.narrowBars ? (this.bgDark ? '#99FFFFFF' : '#99000000') : $r('sys.color.icon_secondary'),
+        trackTint: this.narrowBars ? (this.bgDark ? '#40FFFFFF' : '#40000000') : $r('sys.color.icon_tertiary'),
         knobBorderTint: Color.Transparent,
         onChange: (value: number, mode: SliderChangeMode): void => {
           if (mode === SliderChangeMode.End || mode === SliderChangeMode.Click) {
@@ -499,6 +509,44 @@ export struct ReaderIndicatorBadge {
         right: 16,
         bottom: this.navBarH + 16
       })
+  }
+}
+
+// 页眉章节名（常驻左上角小字；hitTest 不拦截点击，菜单打开时由宿主隐藏）
+@Component
+export struct ReaderHeaderText {
+  @StorageProp('readerBgDark') bgDark: boolean = false;
+  @Prop text: string = '';
+  @Prop statusBarH: number = 0;
+
+  build() {
+    Text(this.text)
+      .fontSize(11)
+      .fontColor(this.bgDark ? '#99FFFFFF' : '#99111111')
+      .maxLines(1)
+      .textOverflow({ overflow: TextOverflow.Ellipsis })
+      .constraintSize({ maxWidth: '80%' })
+      .position({ x: 16, y: this.statusBarH + 8 })
+      .hitTestBehavior(HitTestMode.None)
+  }
+}
+
+// 页脚页码（常驻左下角小字；hitTest 不拦截点击，菜单打开时由宿主隐藏）
+@Component
+export struct ReaderFooterText {
+  @StorageProp('readerBgDark') bgDark: boolean = false;
+  @Prop text: string = '';
+  @Prop navBarH: number = 0;
+
+  build() {
+    Text(this.text)
+      .fontSize(11)
+      .fontColor(this.bgDark ? '#99FFFFFF' : '#99111111')
+      .maxLines(1)
+      .position({ x: 16, y: '100%' })
+      .markAnchor({ y: '100%' })
+      .translate({ y: -(this.navBarH + 8) })
+      .hitTestBehavior(HitTestMode.None)
   }
 }
 

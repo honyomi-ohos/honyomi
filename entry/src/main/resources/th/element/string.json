@@ -3005,6 +3005,10 @@
       "value": "URL ของไฟล์ในที่เก็บต้องใช้ https รายการ http:// ถูกปฏิเสธ"
     },
     {
+      "name": "plugin_error_repo_checksum_required",
+      "value": "รายการของคลังต้องระบุ checksum sha256 รายการที่ไม่ระบุจะถูกปฏิเสธ"
+    },
+    {
       "name": "plugin_error_runtime_invalid",
       "value": "ชื่อรันไทม์ปลั๊กอินไม่ถูกต้อง: %s"
     },

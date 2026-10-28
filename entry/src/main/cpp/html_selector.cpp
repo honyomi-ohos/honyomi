@@ -18,6 +18,8 @@
 
 #include <cstdio>
 #include <map>
+#include <memory>
+#include <unordered_map>
 #include <vector>
 
 namespace {
@@ -29,10 +31,19 @@ struct AncestorInfo {
     std::string text;
     std::string ownText;
     // 前置兄弟元素摘要（最近优先，最多 kMaxPrevSiblings 个；兄弟自身不再嵌套展开）
-    std::vector<AncestorInfo> prevSiblings;
+    std::vector<std::shared_ptr<AncestorInfo>> prevSiblings;
 };
 
 constexpr size_t kMaxPrevSiblings = 16;
+// Accumulated serialized-output budget per query. Match COUNT is a poor cost
+// proxy (1024 nested <div> matches dwarf 100k tiny ones), so the guard is on
+// output bytes instead: realistic result sets (chapter/image lists, whole-page
+// anchors) stay far below it, while pathological selectors ("div", "*") that
+// would otherwise accumulate O(page_size x depth) serialized memory are cut
+// off here and the caller sees "truncated": true in the result.
+constexpr size_t kMaxOutputBytes = 64 * 1024 * 1024;
+// Uniform early-return value; every failure path keeps the same JSON shape.
+constexpr char kEmptyResultJson[] = "{\"results\":[],\"truncated\":false}";
 
 struct SelectedElement {
     std::string outerHtml;
@@ -41,13 +52,25 @@ struct SelectedElement {
     std::string ownText;
     std::string tag;
     std::map<std::string, std::string> attrs;
-    AncestorInfo prev;
-    std::vector<AncestorInfo> prevSiblings;
-    std::vector<AncestorInfo> parents;
+    std::shared_ptr<AncestorInfo> prev;
+    std::vector<std::shared_ptr<AncestorInfo>> prevSiblings;
+    std::vector<std::shared_ptr<AncestorInfo>> parents;
 };
 
 struct SelectContext {
     std::vector<SelectedElement> *out;
+    // Per-RunSelect memoization of AncestorInfo keyed by node pointer.
+    // Adjacent matches share parents/siblings heavily; without the cache
+    // every match would re-collect the full text of each of its (up to 24)
+    // ancestors and their prev-siblings — quadratic blowup on large
+    // documents. The document is immutable during the find, so pointers
+    // are stable keys.
+    std::unordered_map<const lxb_dom_node_t *, std::shared_ptr<AncestorInfo>> nodeCache;
+    // Serialized-output bytes accumulated so far (per-match owned strings).
+    // Bounds both the results vector and, indirectly, the nodeCache: the
+    // cache only grows while the traversal keeps producing matches.
+    size_t accumulatedBytes = 0;
+    bool truncated = false;
 };
 
 lxb_status_t AppendSerialize(const lxb_char_t *data, size_t len, void *ctx)
@@ -103,7 +126,7 @@ std::string ElementTag(lxb_dom_element_t *el)
     return std::string(reinterpret_cast<const char *>(name), nameLen);
 }
 
-void FillAncestor(const lxb_dom_node_t *node, AncestorInfo &info)
+void FillAncestorBase(const lxb_dom_node_t *node, AncestorInfo &info)
 {
     if (node == nullptr || node->type != LXB_DOM_NODE_TYPE_ELEMENT) {
         return;
@@ -145,22 +168,44 @@ const lxb_dom_node_t *PreviousElementSibling(const lxb_dom_node_t *node)
     return nullptr;
 }
 
+std::shared_ptr<AncestorInfo> GetNodeInfo(SelectContext &ctx, const lxb_dom_node_t *node);
+
 // 前置兄弟元素摘要（最近优先），供 '+'/'~' 组合器在链式判断中使用
-void FillPrevSiblings(const lxb_dom_node_t *node, std::vector<AncestorInfo> &out)
+void FillPrevSiblings(SelectContext &ctx, const lxb_dom_node_t *node,
+                      std::vector<std::shared_ptr<AncestorInfo>> &out)
 {
     size_t count = 0;
     for (const lxb_dom_node_t *p = node->prev; p != nullptr && count < kMaxPrevSiblings; p = p->prev) {
         if (p->type != LXB_DOM_NODE_TYPE_ELEMENT) {
             continue;
         }
-        AncestorInfo info;
-        FillAncestor(p, info);
-        if (info.tag.empty()) {
+        std::shared_ptr<AncestorInfo> info = GetNodeInfo(ctx, p);
+        if (info == nullptr || info->tag.empty()) {
             continue;
         }
         out.push_back(std::move(info));
         count++;
     }
+}
+
+// Returns the memoized AncestorInfo for an element node (base fields plus
+// prevSiblings); nullptr for null / non-element nodes. Recursion terminates:
+// prevSiblings of a node only ever reference strictly earlier siblings,
+// which are cached on first computation.
+std::shared_ptr<AncestorInfo> GetNodeInfo(SelectContext &ctx, const lxb_dom_node_t *node)
+{
+    if (node == nullptr || node->type != LXB_DOM_NODE_TYPE_ELEMENT) {
+        return nullptr;
+    }
+    auto it = ctx.nodeCache.find(node);
+    if (it != ctx.nodeCache.end()) {
+        return it->second;
+    }
+    auto info = std::make_shared<AncestorInfo>();
+    FillAncestorBase(node, *info);
+    ctx.nodeCache[node] = info;
+    FillPrevSiblings(ctx, node, info->prevSiblings);
+    return info;
 }
 
 std::string CollapseWhitespace(const std::string &input)
@@ -228,26 +273,30 @@ lxb_status_t FindCallback(lxb_dom_node_t *node, lxb_css_selector_specificity_t s
     }
 
     const lxb_dom_node_t *prev = PreviousElementSibling(node);
-    if (prev != nullptr) {
-        FillAncestor(prev, element.prev);
+    element.prev = prev != nullptr ? GetNodeInfo(*selectCtx, prev) : nullptr;
+    if (element.prev == nullptr) {
+        element.prev = std::make_shared<AncestorInfo>(); // keep the JSON shape
     }
-    FillPrevSiblings(node, element.prevSiblings);
+    FillPrevSiblings(*selectCtx, node, element.prevSiblings);
     constexpr size_t kMaxParents = 24;
     for (const lxb_dom_node_t *p = node->parent; p != nullptr && element.parents.size() < kMaxParents;
          p = p->parent) {
-        if (p->type != LXB_DOM_NODE_TYPE_ELEMENT) {
+        std::shared_ptr<AncestorInfo> info = GetNodeInfo(*selectCtx, p);
+        if (info == nullptr || info->tag.empty()) {
             continue;
         }
-        AncestorInfo info;
-        FillAncestor(p, info);
-        if (info.tag.empty()) {
-            continue;
-        }
-        FillPrevSiblings(p, info.prevSiblings);
         element.parents.push_back(std::move(info));
     }
 
+    selectCtx->accumulatedBytes += element.outerHtml.size() + element.innerHtml.size() +
+                                   element.text.size() + element.ownText.size();
     selectCtx->out->push_back(std::move(element));
+    if (selectCtx->accumulatedBytes >= kMaxOutputBytes) {
+        // LXB_STATUS_STOP aborts the traversal cleanly: matches collected so
+        // far are kept and lxb_selectors_find still returns LXB_STATUS_OK.
+        selectCtx->truncated = true;
+        return LXB_STATUS_STOP;
+    }
     return LXB_STATUS_OK;
 }
 
@@ -263,7 +312,7 @@ std::string AncestorToJson(const AncestorInfo &an, bool withPrevSiblings)
             if (s > 0) {
                 json += ",";
             }
-            json += AncestorToJson(an.prevSiblings[s], false);
+            json += AncestorToJson(*an.prevSiblings[s], false);
         }
         json += "]";
     }
@@ -291,19 +340,19 @@ std::string BuildJson(const std::vector<SelectedElement> &elements)
             json += "\"" + JsonEscape(attr.first) + "\":\"" + JsonEscape(attr.second) + "\"";
             a++;
         }
-        json += "},\"prev\":" + AncestorToJson(e.prev, false) + ",\"prevSiblings\":[";
+        json += "},\"prev\":" + AncestorToJson(*e.prev, false) + ",\"prevSiblings\":[";
         for (size_t s = 0; s < e.prevSiblings.size(); s++) {
             if (s > 0) {
                 json += ",";
             }
-            json += AncestorToJson(e.prevSiblings[s], false);
+            json += AncestorToJson(*e.prevSiblings[s], false);
         }
         json += "],\"parents\":[";
         for (size_t p = 0; p < e.parents.size(); p++) {
             if (p > 0) {
                 json += ",";
             }
-            json += AncestorToJson(e.parents[p], true);
+            json += AncestorToJson(*e.parents[p], true);
         }
         json += "]}";
     }
@@ -314,17 +363,17 @@ std::string BuildJson(const std::vector<SelectedElement> &elements)
 std::string RunSelect(const lxb_char_t *data, size_t length, const std::string &cssQuery)
 {
     if (data == nullptr || length == 0 || cssQuery.empty()) {
-        return "[]";
+        return kEmptyResultJson;
     }
 
     lxb_html_document_t *document = lxb_html_document_create();
     if (document == nullptr) {
-        return "[]";
+        return kEmptyResultJson;
     }
     lxb_status_t status = lxb_html_document_parse(document, data, length);
     if (status != LXB_STATUS_OK) {
         lxb_html_document_destroy(document);
-        return "[]";
+        return kEmptyResultJson;
     }
 
     lxb_css_parser_t *parser = lxb_css_parser_create();
@@ -333,7 +382,7 @@ std::string RunSelect(const lxb_char_t *data, size_t length, const std::string &
             lxb_css_parser_destroy(parser, true);
         }
         lxb_html_document_destroy(document);
-        return "[]";
+        return kEmptyResultJson;
     }
 
     lxb_selectors_t *selectors = lxb_selectors_create();
@@ -343,7 +392,7 @@ std::string RunSelect(const lxb_char_t *data, size_t length, const std::string &
         }
         lxb_css_parser_destroy(parser, true);
         lxb_html_document_destroy(document);
-        return "[]";
+        return kEmptyResultJson;
     }
 
     lxb_css_selector_list_t *list = lxb_css_selectors_parse(
@@ -355,7 +404,7 @@ std::string RunSelect(const lxb_char_t *data, size_t length, const std::string &
             lxb_css_selector_list_destroy_memory(list);
         }
         lxb_html_document_destroy(document);
-        return "[]";
+        return kEmptyResultJson;
     }
 
     std::vector<SelectedElement> results;
@@ -367,47 +416,108 @@ std::string RunSelect(const lxb_char_t *data, size_t length, const std::string &
     lxb_css_selector_list_destroy_memory(list);
     lxb_html_document_destroy(document);
 
-    return BuildJson(results);
+    std::string json = "{\"results\":" + BuildJson(results);
+    json += ctx.truncated ? ",\"truncated\":true}" : ",\"truncated\":false}";
+    return json;
 }
 
 } // namespace
 
+// Escapes JSON-special characters AND sanitizes to strict UTF-8: any invalid
+// byte sequence is replaced with U+FFFD, so the result can never smuggle
+// malformed UTF-8 into JS strings. Pages served as GBK/Shift-JIS/latin-1
+// (this build has no lexbor encoding module, so bytes pass through raw)
+// otherwise produce corrupted text downstream.
 std::string JsonEscape(const std::string &input)
 {
     std::string out;
     out.reserve(input.size() + 16);
-    for (size_t i = 0; i < input.size(); i++) {
-        unsigned char c = static_cast<unsigned char>(input[i]);
+    const size_t n = input.size();
+    size_t i = 0;
+    while (i < n) {
+        const unsigned char c = static_cast<unsigned char>(input[i]);
+        char simple = '\0';
         switch (c) {
             case '"':
-                out += "\\\"";
+                simple = '"';
                 break;
             case '\\':
-                out += "\\\\";
+                simple = '\\';
                 break;
             case '\b':
-                out += "\\b";
+                simple = 'b';
                 break;
             case '\f':
-                out += "\\f";
+                simple = 'f';
                 break;
             case '\n':
-                out += "\\n";
+                simple = 'n';
                 break;
             case '\r':
-                out += "\\r";
+                simple = 'r';
                 break;
             case '\t':
-                out += "\\t";
+                simple = 't';
                 break;
             default:
-                if (c < 0x20) {
-                    char buf[8];
-                    (void)snprintf(buf, sizeof(buf), "\\u%04x", c);
-                    out += buf;
-                } else {
-                    out += static_cast<char>(c);
+                break;
+        }
+        if (simple != '\0') {
+            out += '\\';
+            out += simple;
+            i += 1;
+            continue;
+        }
+        if (c < 0x20) {
+            char buf[8];
+            (void)snprintf(buf, sizeof(buf), "\\u%04x", c);
+            out += buf;
+            i += 1;
+            continue;
+        }
+        if (c < 0x80) {
+            out += static_cast<char>(c);
+            i += 1;
+            continue;
+        }
+        // Multi-byte UTF-8 sequence: validate structure, overlong forms,
+        // surrogates and > U+10FFFF before passing through.
+        size_t len = 0;
+        uint32_t cp = 0;
+        if ((c & 0xE0) == 0xC0) {
+            len = 2;
+            cp = c & 0x1Fu;
+        } else if ((c & 0xF0) == 0xE0) {
+            len = 3;
+            cp = c & 0x0Fu;
+        } else if ((c & 0xF8) == 0xF0) {
+            len = 4;
+            cp = c & 0x07u;
+        }
+        bool valid = len > 0 && i + len <= n;
+        if (valid) {
+            for (size_t k = 1; k < len; k++) {
+                const unsigned char cc = static_cast<unsigned char>(input[i + k]);
+                if ((cc & 0xC0) != 0x80) {
+                    valid = false;
+                    break;
                 }
+                cp = (cp << 6) | (cc & 0x3Fu);
+            }
+        }
+        if (valid) {
+            if ((len == 2 && cp < 0x80) || (len == 3 && cp < 0x800) ||
+                (len == 4 && cp < 0x10000) || cp > 0x10FFFF ||
+                (cp >= 0xD800 && cp <= 0xDFFF)) {
+                valid = false;
+            }
+        }
+        if (valid) {
+            out.append(input, i, len);
+            i += len;
+        } else {
+            out += "\xEF\xBF\xBD"; // U+FFFD
+            i += 1;
         }
     }
     return out;

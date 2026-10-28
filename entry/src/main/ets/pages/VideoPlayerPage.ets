@@ -18,8 +18,9 @@ import { AppKeys } from '../common/AppKeys';
 import { DanmakuItem, DanmakuService } from '../data/DanmakuService';
 import { SourceRegistry } from '../source/Source';
 import { Http } from '../net/Http';
-import { ChapterRecord, MangaRecord, SVideo } from '../model/Models';
+import { ChapterRecord, ContentType, MangaRecord, SVideo } from '../model/Models';
 import { ReaderParams } from '../model/RouteParams';
+import { ContinueSession } from '../common/ContinueSession';
 import { Settings } from '../common/Settings';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
@@ -1444,6 +1445,8 @@ export struct VideoPlayerPage {
         return;
       }
       await HistoryRepo.upsert(chapter.mangaId, chapter.id, this.resumeMs);
+      // 跨设备接续/碰一碰会话快照：随章节加载刷新（进度语义=播放位置毫秒）
+      ContinueSession.update(ContentType.VIDEO, this.manga, chapter, this.resumeMs);
       if (gen !== this.loadGen) {
         return;
       }
@@ -2713,6 +2716,7 @@ export struct VideoPlayerPage {
     }
     const pos = finished && this.durationMs > 0 ? this.durationMs : Math.floor(this.positionMs);
     this.savedMs = pos;
+    ContinueSession.updateProgress(pos);
     ChapterRepo.setLastPageRead(this.chapterId, pos).catch((e: Error): void => {
       hilog.warn(0xDEAD, 'VP', 'persist setLastPageRead failed, chapter=%{public}d, err=%{public}s',
         this.chapterId, `${e}`);

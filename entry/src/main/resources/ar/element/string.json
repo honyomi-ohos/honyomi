@@ -3009,6 +3009,10 @@
       "value": "يجب أن تستخدم عناوين ملفات المستودع https، وتُرفض إدخالات http://"
     },
     {
+      "name": "plugin_error_repo_checksum_required",
+      "value": "يجب أن تعلن إدخالات المستودع عن المجموع الاختباري sha256، وتُرفض الإدخالات بدونه"
+    },
+    {
       "name": "plugin_error_runtime_invalid",
       "value": "اسم بيئة تشغيل الإضافة غير صالح: %s"
     },

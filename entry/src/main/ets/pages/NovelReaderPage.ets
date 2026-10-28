@@ -5,8 +5,9 @@ import { AppDb } from '../data/AppDb';
 import { ChapterRepo, HistoryRepo, MangaRepo } from '../data/Repos';
 import { ReadingStatsRepo } from '../data/ReadingStats';
 import { SourceRegistry } from '../source/Source';
-import { ChapterRecord, MangaRecord } from '../model/Models';
+import { ChapterRecord, ContentType, MangaRecord } from '../model/Models';
 import { ReaderParams } from '../model/RouteParams';
+import { ContinueSession } from '../common/ContinueSession';
 import { Theme, ThemePalette } from '../common/Theme';
 import { Settings } from '../common/Settings';
 import { Util } from '../common/Util';
@@ -24,6 +25,7 @@ import { Haptics } from '../common/Haptics';
 import { ChapterNeighbors, ReaderChapterNav } from '../common/ReaderChapterNav';
 import { DownloadService } from '../data/DownloadService';
 import { TrackService } from '../data/track/TrackService';
+import { NovelBookmark, NovelBookmarks } from '../common/NovelBookmarks';
 import { EmulationFlipView } from './components/PageFlip';
 import {
   EMPTY_NOVEL_PAGE,
@@ -40,6 +42,9 @@ import { readTextAutoAsync } from '../common/bookparser/TextLoadTasks';
 import { NovelModeSheet } from './components/novel/NovelModeSheet';
 import { NovelDisplayPanel } from './components/novel/NovelDisplayPanel';
 import { NovelTextPanel } from './components/novel/NovelTextPanel';
+import { NovelSearchHit, NovelSearchSheet } from './components/novel/NovelSearchSheet';
+import { NovelBookmarkSheet } from './components/novel/NovelBookmarkSheet';
+import { AppIcon } from './components/AppIcon';
 import {
   ReaderHdsHost,
   ReaderIndicatorBadge,
@@ -53,6 +58,7 @@ import { LoadingBackButton } from './components/LoadingBackButton';
 import { SheetPreset } from './components/SheetPreset';
 import { WideSlider } from './components/WideSlider';
 import { ReaderChapterSheet } from './components/ReaderChapterSheet';
+import { TranslationService } from '../translate/TranslationService';
 
 // 翻屏进度持久化防抖间隔（毫秒）
 const PERSIST_DEBOUNCE_MS: number = 2000;
@@ -99,6 +105,8 @@ class NovelScreenSource implements IDataSource {
 export struct NovelReaderPage {
   pathStack: NavPathStack = new NavPathStack();
   @StorageProp('isDark') @Watch('onDarkChanged') isDark: boolean = false;
+  // 窄屏手动胶囊模式（ReaderHdsHost 写入）：滑条配色同 ReaderPagePill 处理
+  @StorageProp('readerNarrowBars') narrowBars: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageProp('navBarH') navBarH: number = 0;
@@ -150,6 +158,21 @@ export struct NovelReaderPage {
   @State pageMargin: number = 20;
   // 正文字体：default/serif/sans/mono
   @State fontFamily: string = 'default';
+  // 阅读时屏幕常亮（画面面板开关）
+  @State keepScreenOn: boolean = true;
+  // 音量键翻页（画面面板开关；开=音量上/下代替翻页）
+  @State volumeTurn: boolean = false;
+  // 正文两端对齐（文本面板开关）
+  @State justify: boolean = true;
+  // 自动阅读：开=自动滚屏/自动翻页
+  @State autoReading: boolean = false;
+  // 自动阅读速度档位（1-10：滚动=档位*0.8vp/100ms，翻页=13-档位 秒/页）
+  @State autoSpeed: number = 4;
+  // 章内搜索 / 阅读位置书签 Sheet
+  @State showSearchSheet: boolean = false;
+  @State showBookmarkSheet: boolean = false;
+  @State searchHits: NovelSearchHit[] = [];
+  @State bookmarks: NovelBookmark[] = [];
   // 翻页动画逐帧变换（与 screenIdxs 一一对应）：x 位移 / y 轴翻转角 / 层级
   @State transX: number[] = [];
   @State transAngle: number[] = [];
@@ -214,6 +237,26 @@ export struct NovelReaderPage {
   private paginateStartPermille: number = 0;
   // 整章分页结果 LRU（切回上一章/改回设置时免重分页）
   private paginateCache: PaginateCache = new PaginateCache(6);
+  // 边界切章落点：openChapter 显式指定的千分比进度（>=0 有效，进入章节后消费）
+  private gotoPermille: number = -1;
+  // 下一章正文预取：缓存（已取回）与在途请求（防重复发起）
+  private preloadCache: Map<number, string> = new Map();
+  private preloadInflight: Map<number, Promise<string>> = new Map();
+  // 翻页模式末页滑动自动切章：滑动轨迹跟踪（起点/横滑意图）
+  private swipeStartX: number = 0;
+  private swipeStartY: number = 0;
+  private swipeTracking: boolean = false;
+  private swipeIntentX: boolean = false;
+  // 自动阅读定时器与翻页截止时间（翻页模式）
+  private autoTimerId: number = -1;
+  private autoTurnDeadline: number = 0;
+  // 搜索命中高亮临时定时器（3 秒后清除段落高亮）
+  private searchHlTimer: number = -1;
+  // 整章翻译：会话开关（设置页 transEnabled 初始化，菜单可切换）/ 译文中 / 已展示译文
+  @State transOn: boolean = false;
+  @State translating: boolean = false;
+  private translated: boolean = false;
+  private transGen: number = 0;
 
   aboutToAppear(): void {
     try {
@@ -236,15 +279,36 @@ export struct NovelReaderPage {
     this.pageMargin = Settings.getNovelMargin();
     this.fontFamily = Settings.getNovelFontFamily();
     this.brightLv = Settings.getReaderBrightness();
+    this.keepScreenOn = Settings.getNovelKeepScreenOn();
+    this.volumeTurn = Settings.getNovelVolumeTurn();
+    this.justify = Settings.getNovelJustify();
+    this.autoSpeed = Settings.getNovelAutoSpeed();
+    // 翻译总开关：开启时进入章节自动整章翻译（菜单图标可会话内切换）
+    this.transOn = Settings.getTransEnabled();
     this.applyOrientation();
     this.applyBrightness();
+    this.applyKeepScreenOn();
     this.wireTtsEvents();
   }
 
   aboutToDisappear(): void {
     this.destroyed = true;
     this.loadGen += 1;
+    // 整章翻译随页面销毁中止
+    this.transGen += 1;
     this.cancelProgressivePagination();
+    // 停止自动阅读与搜索高亮定时器
+    this.autoReading = false;
+    if (this.autoTimerId !== -1) {
+      clearInterval(this.autoTimerId);
+      this.autoTimerId = -1;
+    }
+    if (this.searchHlTimer !== -1) {
+      clearTimeout(this.searchHlTimer);
+      this.searchHlTimer = -1;
+    }
+    this.preloadCache.clear();
+    this.preloadInflight.clear();
     // 听书播放与页面生命周期解耦：离开阅读器不停止朗读，仅退订本实例回调
     TtsPlaybackService.events.offState(this.ttsOnState);
     TtsPlaybackService.events.offPara(this.ttsOnPara);
@@ -357,6 +421,8 @@ export struct NovelReaderPage {
             .lineHeight(this.lineHeight)
             .fontFamily(this.fontFamilyVal())
             .fontColor(this.readerTextCol())
+            .textAlign(this.justify ? TextAlign.JUSTIFY : TextAlign.Start)
+            .copyOption(CopyOptions.LocalDevice)
             .width('100%')
         }, (para: string, i: number) => `${this.pagSig}#${pIdx}#${i}`)
       }
@@ -370,6 +436,8 @@ export struct NovelReaderPage {
           .lineHeight(this.lineHeight)
           .fontFamily(this.fontFamilyVal())
           .fontColor(this.readerTextCol())
+          .textAlign(this.justify ? TextAlign.JUSTIFY : TextAlign.Start)
+          .copyOption(CopyOptions.LocalDevice)
           .width('100%')
       }
       .width('100%')
@@ -512,6 +580,8 @@ export struct NovelReaderPage {
               .lineHeight(this.lineHeight)
               .fontFamily(this.fontFamilyVal())
               .fontColor(this.readerTextCol())
+              .textAlign(this.justify ? TextAlign.JUSTIFY : TextAlign.Start)
+              .copyOption(CopyOptions.LocalDevice)
               .width('100%')
               .backgroundColor(this.ttsParaIdx === block.ttsIdx ? '#2E808080' : Color.Transparent)
               .borderRadius(this.ttsParaIdx === block.ttsIdx ? 4 : 0)
@@ -527,6 +597,8 @@ export struct NovelReaderPage {
             .lineHeight(this.lineHeight)
             .fontFamily(this.fontFamilyVal())
             .fontColor(this.readerTextCol())
+            .textAlign(this.justify ? TextAlign.JUSTIFY : TextAlign.Start)
+            .copyOption(CopyOptions.LocalDevice)
             .width('100%')
             .backgroundColor(this.ttsParaIdx === i ? '#2E808080' : Color.Transparent)
             .borderRadius(this.ttsParaIdx === i ? 4 : 0)
@@ -539,6 +611,8 @@ export struct NovelReaderPage {
         .lineHeight(this.lineHeight)
         .fontFamily(this.fontFamilyVal())
         .fontColor(this.readerTextCol())
+        .textAlign(this.justify ? TextAlign.JUSTIFY : TextAlign.Start)
+        .copyOption(CopyOptions.LocalDevice)
         .width('100%')
     }
   }
@@ -601,10 +675,15 @@ export struct NovelReaderPage {
           max: 1000,
           step: 1,
           dotsEnabled: false,
-          // Slider 颜色不在系统反色支持列表内，按阅读页背景明暗手动取高对比色
-          knobTint: this.isBgDark() ? '#FFFFFF' : '#111111',
-          fillTint: this.isBgDark() ? '#99FFFFFF' : '#99000000',
-          trackTint: this.isBgDark() ? '#40FFFFFF' : '#40000000',
+          // HDS 材质下取 sys.color（与同层文字/图标同源，跟随颜色模式/材质反色；
+          // 硬编码 bgDark 键色在深色模式或深色内容下会与 sys 前景正好相反）；
+          // 窄屏手动玻璃无材质 colorInvert，保持按阅读页背景明暗取高对比色
+          knobTint: this.narrowBars ? (this.isBgDark() ? '#FFFFFF' : '#111111')
+            : $r('sys.color.icon_primary'),
+          fillTint: this.narrowBars ? (this.isBgDark() ? '#99FFFFFF' : '#99000000')
+            : $r('sys.color.icon_secondary'),
+          trackTint: this.narrowBars ? (this.isBgDark() ? '#40FFFFFF' : '#40000000')
+            : $r('sys.color.icon_tertiary'),
           knobBorderTint: Color.Transparent,
           onChange: (value: number, mode: SliderChangeMode): void => {
             if (mode === SliderChangeMode.End || mode === SliderChangeMode.Click) {
@@ -670,6 +749,12 @@ export struct NovelReaderPage {
         }
       })
       ReaderMenuIconButton({
+        icon: 'translate',
+        onTap: (): void => {
+          this.toggleTranslate();
+        }
+      })
+      ReaderMenuIconButton({
         icon: this.ttsPlaying ? 'pause' : 'playlist_play',
         onTap: (): void => {
           this.startTtsAndOpenPlayer();
@@ -679,6 +764,32 @@ export struct NovelReaderPage {
     .width('100%')
     .height(48)
     .justifyContent(FlexAlign.SpaceEvenly)
+  }
+
+  // 顶栏右侧动作区：章内搜索 / 阅读位置书签 / 自动阅读开关
+  @Builder
+  menuActionsBar() {
+    Row({ space: 2 }) {
+      this.menuActionIcon('search', (): void => {
+        this.openSearchSheet();
+      })
+      this.menuActionIcon(this.bookmarkIconNow(), (): void => {
+        this.openBookmarkSheet();
+      })
+      this.menuActionIcon(this.autoReading ? 'pause' : 'play_arrow', (): void => {
+        this.toggleAutoReading();
+      })
+    }
+  }
+
+  // 顶栏动作图标（前景色按阅读页背景明暗取高对比色）
+  @Builder
+  menuActionIcon(name: string, onTap: () => void) {
+    AppIcon({ name: name, iconSize: 22, tint: this.isBgDark() ? '#FFFFFF' : '#111111' })
+      .padding({ left: 8, right: 8, top: 6, bottom: 6 })
+      .onClick(() => {
+        onTap();
+      })
   }
 
   @Builder
@@ -718,6 +829,8 @@ export struct NovelReaderPage {
         brightLv: this.brightLv,
         colorScheme: this.colorScheme,
         readerTheme: this.readerTheme,
+        keepScreenOn: this.keepScreenOn,
+        volumeTurn: this.volumeTurn,
         onBrightness: (v: number): void => {
           this.brightLv = v;
           Settings.setReaderBrightness(v);
@@ -731,6 +844,15 @@ export struct NovelReaderPage {
           this.readerTheme = v;
           Settings.setReaderTheme(v);
           this.syncReaderBgDark();
+        },
+        onKeepScreenOn: (v: boolean): void => {
+          this.keepScreenOn = v;
+          Settings.setNovelKeepScreenOn(v);
+          this.applyKeepScreenOn();
+        },
+        onVolumeTurn: (v: boolean): void => {
+          this.volumeTurn = v;
+          Settings.setNovelVolumeTurn(v);
         }
       })
     } else if (this.panelKind === 'text') {
@@ -742,6 +864,7 @@ export struct NovelReaderPage {
         indentChars: this.indentChars,
         lineHeight: this.lineHeight,
         fontFamily: this.fontFamily,
+        justify: this.justify,
         onFontSizeDone: (v: number): void => {
           Settings.setNovelFontSize(v);
           this.ensurePaginated();
@@ -774,6 +897,9 @@ export struct NovelReaderPage {
           this.fontFamily = v;
           Settings.setNovelFontFamily(v);
           this.ensurePaginated();
+        },
+        onJustify: (v: boolean): void => {
+          Settings.setNovelJustify(v);
         }
       })
     }
@@ -963,8 +1089,18 @@ export struct NovelReaderPage {
               this.onScreenChange(idx);
             })
             .onTouch((event: TouchEvent) => {
-              if (event.type === TouchType.Down || event.type === TouchType.Move) {
+              // 记录翻页抓取纵向位置 + 末页滑动切章轨迹跟踪
+              if (event.type === TouchType.Down) {
                 this.updateGrabY(event.touches[0].y);
+                this.trackSwipeStart(event.touches[0].x, event.touches[0].y);
+              } else if (event.type === TouchType.Move) {
+                this.updateGrabY(event.touches[0].y);
+                this.trackSwipeMove(event.touches[0].x, event.touches[0].y);
+              } else if (event.type === TouchType.Up || event.type === TouchType.Cancel) {
+                const changed = event.changedTouches.length > 0 ? event.changedTouches[0] : undefined;
+                if (changed !== undefined) {
+                  this.trackSwipeEnd(changed.x);
+                }
               }
             })
           }
@@ -1017,6 +1153,9 @@ export struct NovelReaderPage {
           title: this.manga.title,
           subtitle: this.chapter.name,
           statusBarH: this.statusBarH,
+          actions: (): void => {
+            this.menuActionsBar();
+          },
           onBack: (): void => {
             this.pathStack.pop();
           },
@@ -1055,6 +1194,75 @@ export struct NovelReaderPage {
             glass: true,
             height: SheetSize.MEDIUM
           }))
+      // 章内搜索面板宿主（同上：独立常驻节点承载）
+      Column()
+        .width(0)
+        .height(0)
+        .hitTestBehavior(HitTestMode.None)
+        .bindSheet($$this.showSearchSheet, this.searchSheetBuilder(),
+          SheetPreset.fit(this.windowW, {
+            title: $r('app.string.novel_search'),
+            showClose: false,
+            glass: true,
+            interactive: true
+          }))
+      // 阅读位置书签面板宿主（同上：独立常驻节点承载）
+      Column()
+        .width(0)
+        .height(0)
+        .hitTestBehavior(HitTestMode.None)
+        .bindSheet($$this.showBookmarkSheet, this.bookmarkSheetBuilder(),
+          SheetPreset.fit(this.windowW, {
+            title: $r('app.string.novel_bookmarks'),
+            showClose: false,
+            glass: true,
+            height: SheetSize.MEDIUM
+          }))
+
+      // 自动阅读浮动速度条（菜单收起、非加载时悬浮于底部中央：减速/速度/加速/停止）
+      if (this.autoReading && !this.showMenu && !this.loading) {
+        Row() {
+          Row({ space: 12 }) {
+            Text('−')
+              .fontSize(20)
+              .fontColor('#FFFFFF')
+              .width(24)
+              .textAlign(TextAlign.Center)
+              .onClick(() => {
+                this.adjustAutoSpeed(-1);
+              })
+            Text(`${this.autoSpeed}`)
+              .fontSize(14)
+              .fontColor('#FFFFFF')
+              .width(18)
+              .textAlign(TextAlign.Center)
+            Text('+')
+              .fontSize(20)
+              .fontColor('#FFFFFF')
+              .width(24)
+              .textAlign(TextAlign.Center)
+              .onClick(() => {
+                this.adjustAutoSpeed(1);
+              })
+            Divider()
+              .vertical(true)
+              .strokeWidth(1)
+              .height(14)
+              .color('#59FFFFFF')
+            AppIcon({ name: 'close', iconSize: 16, tint: '#FFFFFF' })
+              .onClick(() => {
+                this.stopAutoReading(false);
+              })
+          }
+          .padding({ left: 14, right: 12, top: 8, bottom: 8 })
+          .borderRadius(22)
+          .backgroundColor('#B3222228')
+          .justifyContent(FlexAlign.Center)
+        }
+        .width('100%')
+        .justifyContent(FlexAlign.Center)
+        .margin({ bottom: this.navBarH + 44 })
+      }
     }
     .width('100%')
     .height('100%')
@@ -1091,12 +1299,49 @@ export struct NovelReaderPage {
     })
   }
 
+  // 章内搜索面板（顶栏搜索动作呼出）
+  @Builder
+  searchSheetBuilder() {
+    NovelSearchSheet({
+      hits: this.searchHits,
+      onSearch: (q: string): void => {
+        this.runSearch(q);
+      },
+      onJump: (hit: NovelSearchHit): void => {
+        this.jumpToSearchHit(hit);
+      }
+    })
+  }
+
+  // 阅读位置书签面板（顶栏书签动作呼出）
+  @Builder
+  bookmarkSheetBuilder() {
+    NovelBookmarkSheet({
+      bookmarks: this.bookmarks,
+      currentChapterId: this.chapterId,
+      onAdd: (): void => {
+        this.addBookmarkNow();
+      },
+      onJump: (bm: NovelBookmark): void => {
+        this.jumpToBookmark(bm);
+      },
+      onDelete: (bm: NovelBookmark): void => {
+        this.bookmarks = NovelBookmarks.remove(this.mangaId, bm.time);
+      }
+    })
+  }
+
   private applyOrientation(): void {
     ReaderWindow.applyOrientation(Util.hostAbilityContext(this.getUIContext()), this.orientation);
   }
 
   private applyBrightness(): void {
     ReaderWindow.applyBrightness(Util.hostAbilityContext(this.getUIContext()), this.brightLv);
+  }
+
+  // 阅读中屏幕常亮：随「画面」面板开关即时生效
+  private applyKeepScreenOn(): void {
+    ReaderWindow.setKeepScreenOn(Util.hostAbilityContext(this.getUIContext()), this.keepScreenOn);
   }
 
   private async loadChapter(): Promise<void> {
@@ -1114,6 +1359,10 @@ export struct NovelReaderPage {
     this.screenSource.setItems([]);
     this.pageIdx = 0;
     this.pagSig = '';
+    // 上一章在途翻译作废；新章译文态复位（transOn 保持会话开关语义）
+    this.transGen += 1;
+    this.translating = false;
+    this.translated = false;
     this.cancelProgressivePagination();
     // 打开其它章节时停止听书；听书服务正在朗读本章（跟随切章/重新进入）不打断
     if (TtsPlaybackService.currentChapterId() !== this.chapterId) {
@@ -1151,10 +1400,13 @@ export struct NovelReaderPage {
       }
       this.chapter = chapter;
       this.mangaId = chapter.mangaId;
-      // 边界向回退进入上一章落在末尾；其余按历史进度恢复
+      // 边界向回退进入上一章落在末尾；书签跳转带显式进度；其余按历史进度恢复
       if (this.gotoEnd) {
         this.permille = 1000;
         this.gotoEnd = false;
+      } else if (this.gotoPermille >= 0) {
+        this.permille = this.gotoPermille;
+        this.gotoPermille = -1;
       } else {
         this.permille = chapter.lastPageRead > 0 && chapter.lastPageRead <= 1000 ? chapter.lastPageRead : 0;
       }
@@ -1167,7 +1419,17 @@ export struct NovelReaderPage {
       }
       const local = DownloadService.localText(chapter.mangaId, chapter.id);
       let text = '';
-      if (local !== '') {
+      const preloaded = this.preloadCache.get(chapter.id);
+      const inflight = this.preloadInflight.get(chapter.id);
+      if (preloaded !== undefined) {
+        // 下一章预取命中：免网络/磁盘直接取回
+        this.preloadCache.delete(chapter.id);
+        text = preloaded;
+      } else if (inflight !== undefined) {
+        // 预取在途：等待同一请求完成，不重复发起
+        this.preloadInflight.delete(chapter.id);
+        text = await inflight;
+      } else if (local !== '') {
         // 本地章节文本：读取与编码识别在 taskpool 线程，避免大文件阻塞 UI
         text = await readTextAutoAsync(local);
       } else {
@@ -1190,6 +1452,8 @@ export struct NovelReaderPage {
         return;
       }
       await HistoryRepo.upsert(chapter.mangaId, chapter.id, this.permille);
+      // 跨设备接续/碰一碰会话快照：随章节加载刷新（进度语义=千分比）
+      ContinueSession.update(ContentType.NOVEL, this.manga, chapter, this.permille);
       if (this.destroyed || gen !== this.loadGen) {
         return;
       }
@@ -1205,8 +1469,57 @@ export struct NovelReaderPage {
     }
     this.loading = false;
     this.ensurePaginated();
+    // 会话翻译开启：章节就绪后自动整章翻译
+    if (this.transOn && this.body !== '') {
+      this.translateChapter();
+    }
     // 听书服务若正在朗读本章（跟随切章/重新进入），同步播放态与朗读高亮
     this.syncTtsUi();
+    // 下一章正文预取（命中预取缓存/在途请求时免重复）
+    this.preloadNext();
+  }
+
+  // 取章节正文：本地下载优先，否则走插件源请求
+  private async fetchChapterText(chapter: ChapterRecord): Promise<string> {
+    const local = DownloadService.localText(chapter.mangaId, chapter.id);
+    if (local !== '') {
+      return readTextAutoAsync(local);
+    }
+    const source = SourceRegistry.get(this.manga.sourceKey);
+    if (source === undefined) {
+      throw new Error('source_unavailable');
+    }
+    return source.getChapterText(chapter.url);
+  }
+
+  // 下一章预取：读取完成后后台取下一章正文，切章时秒开
+  private preloadNext(): void {
+    const nextId = this.nextId;
+    if (nextId <= 0 || this.destroyed || this.preloadCache.has(nextId) || this.preloadInflight.has(nextId)) {
+      return;
+    }
+    const task = this.preloadChapter(nextId);
+    this.preloadInflight.set(nextId, task);
+    task.then((text: string): void => {
+      this.preloadInflight.delete(nextId);
+      if (text !== '') {
+        // 预取缓存上限 4 章：超限整体清空（按需重新预取，避免跨章节堆积）
+        if (this.preloadCache.size >= 4) {
+          this.preloadCache.clear();
+        }
+        this.preloadCache.set(nextId, text);
+      }
+    }).catch((): void => {
+      this.preloadInflight.delete(nextId);
+    });
+  }
+
+  private async preloadChapter(chapterId: number): Promise<string> {
+    const next = await ChapterRepo.getById(chapterId);
+    if (next === undefined) {
+      throw new Error('chapter_not_found');
+    }
+    return this.fetchChapterText(next);
   }
 
   private async loadNeighbors(): Promise<void> {
@@ -1285,6 +1598,7 @@ export struct NovelReaderPage {
   }
 
   private persistWrite(chapterId: number, mangaId: number, permille: number): void {
+    ContinueSession.updateProgress(permille);
     ChapterRepo.setLastPageRead(chapterId, permille).catch((e: Object): void => {
       hilog.warn(0x0001, 'NovelReader', 'setLastPageRead failed: %{public}s', `${e}`);
     });
@@ -1301,8 +1615,8 @@ export struct NovelReaderPage {
     }
   }
 
-  // 菜单按钮/听书跟随触发按历史进度恢复
-  private openChapter(id: number, fromEnd: boolean = false): void {
+  // 菜单按钮/听书跟随触发按历史进度恢复；permille>=0 时进入章节后定位到指定进度（书签跳转）
+  private openChapter(id: number, fromEnd: boolean = false, permille: number = -1): void {
     if (id <= 0) {
       return;
     }
@@ -1310,6 +1624,7 @@ export struct NovelReaderPage {
     this.flushPersist();
     Haptics.medium();
     this.gotoEnd = fromEnd;
+    this.gotoPermille = permille;
     this.chapterId = id;
     this.loadChapter();
   }
@@ -1563,6 +1878,113 @@ export struct NovelReaderPage {
     this.showMenu = !this.showMenu;
     if (this.showMenu) {
       this.permilleUi = this.permille;
+      // 顶栏书签图标按最新进度取实/空心：每次呼出菜单刷新书签列表
+      this.refreshBookmarks();
+    }
+  }
+
+  // ---- 整章翻译（菜单图标开关；译文替换原文展示，还原走 rawText 重派生）----
+
+  // 翻译中再点=取消；已展示译文再点=还原原文；否则发起整章翻译
+  private toggleTranslate(): void {
+    if (this.translating) {
+      this.transGen += 1;
+      this.translating = false;
+      this.transOn = false;
+      Util.toastRes(this.getUIContext(), $r('app.string.novel_trans_cancel'));
+      return;
+    }
+    if (this.translated) {
+      this.transOn = false;
+      this.restoreOriginalText();
+      return;
+    }
+    if (this.body === '') {
+      return;
+    }
+    this.transOn = true;
+    this.translateChapter();
+  }
+
+  // 整章翻译：普通章节翻 body 段落，含插图章节翻文本块（图片块原样）；
+  // 完成后译文替换原文并回到原阅读位置（分页签名含译文标记，与原文缓存互不冲突）
+  private async translateChapter(): Promise<void> {
+    if (this.translating || this.body === '') {
+      return;
+    }
+    const gen = ++this.transGen;
+    this.translating = true;
+    const ui = this.getUIContext();
+    const permille = this.permille;
+    const texts: string[] = [];
+    const positions: number[] = [];
+    if (this.hasImages) {
+      for (let i = 0; i < this.blocks.length; i++) {
+        if (!this.blocks[i].isImage) {
+          texts.push(this.blocks[i].text);
+          positions.push(i);
+        }
+      }
+    } else {
+      const paras: string[] = this.body.split('\n');
+      for (let i = 0; i < paras.length; i++) {
+        texts.push(paras[i]);
+        positions.push(i);
+      }
+    }
+    try {
+      const out: string[] = await TranslationService.translateParagraphs(texts, 'auto',
+        Settings.getTransTargetLang(),
+        (done: number, total: number): void => {
+          Util.toastRes(ui, $r('app.string.novel_trans_progress'),
+            [Math.round(done * 100 / Math.max(1, total))]);
+        },
+        (): boolean => this.destroyed || gen !== this.transGen);
+      if (this.destroyed || gen !== this.transGen) {
+        return;
+      }
+      this.translating = false;
+      this.translated = true;
+      if (this.hasImages) {
+        for (let j = 0; j < positions.length; j++) {
+          this.blocks[positions[j]].text = out[j];
+        }
+      } else {
+        this.body = out.join('\n');
+        this.parseChapterBlocks();
+      }
+      this.permille = permille;
+      this.pagSig = '';
+      this.ensurePaginated();
+      if (this.mode === 'scroll') {
+        // 译文渲染后再按千分比回到原阅读位置
+        setTimeout((): void => {
+          this.scrollToPermille(permille);
+        }, 80);
+      }
+      Util.toastRes(ui, $r('app.string.novel_trans_done'));
+    } catch (_e) {
+      if (this.destroyed || gen !== this.transGen) {
+        return;
+      }
+      this.translating = false;
+      this.transOn = false;
+      Util.toastRes(ui, $r('app.string.novel_trans_failed'));
+    }
+  }
+
+  // 还原原文：rawText 重派生 body/blocks 并回到原阅读位置
+  private restoreOriginalText(): void {
+    const permille = this.permille;
+    this.translated = false;
+    this.applyChapterText();
+    this.permille = permille;
+    this.pagSig = '';
+    this.ensurePaginated();
+    if (this.mode === 'scroll') {
+      setTimeout((): void => {
+        this.scrollToPermille(permille);
+      }, 80);
     }
   }
 
@@ -1589,9 +2011,11 @@ export struct NovelReaderPage {
     if (this.pageW <= 0 || this.pageH <= 0) {
       return;
     }
-    // 分页影响因子；含插图章节 body 为原始 html 不随缩进变化，indentChars 须显式参与
+    // 分页影响因子；含插图章节 body 为原始 html 不随缩进变化，indentChars 须显式参与；
+    // 整章译文参与分页（含插图章节译文只写 blocks 不改 body），translated 标记区分两套缓存
     const sig = `${this.body.length}|${this.mode}|${this.fontSize}|${this.lineHeight}|${this.paraSpacing}|` +
-      `${this.pageMargin}|${this.fontFamily}|${this.indentChars}|${Math.round(this.pageW)}|${Math.round(this.pageH)}`;
+      `${this.pageMargin}|${this.fontFamily}|${this.indentChars}|${Math.round(this.pageW)}|${Math.round(this.pageH)}` +
+      `|${this.translated ? 1 : 0}`;
     if (sig === this.pagSig) {
       return;
     }
@@ -1830,7 +2254,7 @@ export struct NovelReaderPage {
   // 任一设置 Sheet 打开时，内容区点击一律忽略（防止蒙层点击透传触发翻页/菜单）
   private anySheetOpen(): boolean {
     return this.showModeSheet || this.showOrientationSheet || this.showPanelSheet ||
-      this.showChapterSheet;
+      this.showChapterSheet || this.showSearchSheet || this.showBookmarkSheet;
   }
 
   // 关闭全部设置 Sheet（enableOutsideInteractive 模式下由页面点击主动接管关闭）
@@ -1839,6 +2263,8 @@ export struct NovelReaderPage {
     this.showOrientationSheet = false;
     this.showPanelSheet = false;
     this.showChapterSheet = false;
+    this.showSearchSheet = false;
+    this.showBookmarkSheet = false;
   }
 
   // 打开指定 Sheet（互斥：先关其余，避免多个 bindSheet 叠加）
@@ -1859,6 +2285,300 @@ export struct NovelReaderPage {
     this.dismissSheets();
     this.tocChapters = await ChapterRepo.listByManga(this.mangaId);
     this.showChapterSheet = true;
+  }
+
+  // ---- 章内搜索 ----
+
+  private openSearchSheet(): void {
+    this.dismissSheets();
+    this.searchHits = [];
+    this.showSearchSheet = true;
+  }
+
+  // 关键词搜索正文：插图章搜文本块（ttsIdx 对齐听书/翻页映射），纯文本章按行搜；命中上限 100
+  private runSearch(query: string): void {
+    const q = query.trim().toLowerCase();
+    if (q === '') {
+      this.searchHits = [];
+      return;
+    }
+    const hits: NovelSearchHit[] = [];
+    if (this.hasImages) {
+      for (let i = 0; i < this.blocks.length && hits.length < 100; i++) {
+        const block = this.blocks[i];
+        if (!block.isImage) {
+          this.collectHits(block.text, block.ttsIdx, q, hits);
+        }
+      }
+    } else {
+      const paras = this.body.split('\n');
+      for (let i = 0; i < paras.length && hits.length < 100; i++) {
+        this.collectHits(paras[i], i, q, hits);
+      }
+    }
+    this.searchHits = hits;
+  }
+
+  // 单段落内收集全部命中（大小写不敏感）
+  private collectHits(text: string, paraIdx: number, q: string, out: NovelSearchHit[]): void {
+    const lower = text.toLowerCase();
+    let from = 0;
+    while (out.length < 100) {
+      const pos = lower.indexOf(q, from);
+      if (pos < 0) {
+        return;
+      }
+      out.push(NovelSearchHit.make(paraIdx, text, pos, q.length));
+      from = pos + q.length;
+    }
+  }
+
+  // 点击命中跳转：滚动模式滚到段落并短暂高亮；翻页模式翻到对应页
+  private jumpToSearchHit(hit: NovelSearchHit): void {
+    this.showSearchSheet = false;
+    if (this.hasImages && this.mode === 'scroll') {
+      // 插图章滚动模式无段落偏移映射：按块序估算滚动位置
+      this.scrollToBlockRatio(hit.paraIdx);
+      return;
+    }
+    if (this.mode === 'scroll') {
+      this.followTtsScroll(hit.paraIdx);
+      this.flashSearchHighlight(hit.paraIdx);
+      return;
+    }
+    this.followTtsPaged(hit.paraIdx);
+  }
+
+  // 搜索命中段落 3 秒高亮（与听书朗读高亮复用 ttsParaIdx；播放中不抢占）
+  private flashSearchHighlight(paraIdx: number): void {
+    if (this.ttsPlaying || this.destroyed) {
+      return;
+    }
+    if (this.paraSpacing <= 0 && !this.hasImages) {
+      // 整段合并渲染路径无逐段高亮，滚动定位本身已可见
+      return;
+    }
+    if (this.searchHlTimer !== -1) {
+      clearTimeout(this.searchHlTimer);
+    }
+    this.ttsParaIdx = paraIdx;
+    this.searchHlTimer = setTimeout((): void => {
+      this.searchHlTimer = -1;
+      if (!this.ttsPlaying) {
+        this.ttsParaIdx = -1;
+      }
+    }, 3000);
+  }
+
+  // 插图章滚动模式：按块序比例估算滚动位置（插图高度不定，仅近似）
+  private scrollToBlockRatio(blockIdx: number): void {
+    const total = this.blocks.length;
+    if (total <= 0 || this.contentH <= this.viewH) {
+      return;
+    }
+    const ratio = Math.min(1, Math.max(0, blockIdx / Math.max(1, total - 1)));
+    const range = this.contentH - this.viewH;
+    this.restored = true;
+    this.scrollDragArmed = false;
+    this.scroller.scrollTo({ xOffset: 0, yOffset: range * ratio, animation: true });
+  }
+
+  // ---- 阅读位置书签 ----
+
+  private openBookmarkSheet(): void {
+    this.dismissSheets();
+    this.refreshBookmarks();
+    this.showBookmarkSheet = true;
+  }
+
+  private refreshBookmarks(): void {
+    this.bookmarks = NovelBookmarks.list(this.mangaId);
+  }
+
+  // 顶栏书签图标：当前进度附近已有书签（容差内）显示实心
+  private bookmarkIconNow(): string {
+    if (NovelBookmarks.hasAt(this.bookmarks, this.chapterId, this.permille)) {
+      return 'bookmark_filled';
+    }
+    return 'bookmark';
+  }
+
+  private addBookmarkNow(): void {
+    const bm = new NovelBookmark();
+    bm.chapterId = this.chapterId;
+    bm.permille = this.permille;
+    bm.chapterName = this.chapter.name;
+    bm.time = Date.now();
+    this.bookmarks = NovelBookmarks.add(this.mangaId, bm);
+    Util.toastRes(this.getUIContext(), $r('app.string.novel_bookmark_added'));
+  }
+
+  // 书签跳转：同章直接定位；跨章带进度加载目标章节
+  private jumpToBookmark(bm: NovelBookmark): void {
+    this.showBookmarkSheet = false;
+    if (bm.chapterId === this.chapterId) {
+      if (this.mode === 'scroll') {
+        this.scrollToPermille(bm.permille);
+      } else {
+        this.jumpToPermille(bm.permille);
+        this.onScreenChange(this.pageIdx);
+      }
+      return;
+    }
+    this.openChapter(bm.chapterId, false, bm.permille);
+  }
+
+  // ---- 自动阅读（自动滚屏 / 自动翻页）----
+
+  private toggleAutoReading(): void {
+    if (this.autoReading) {
+      this.stopAutoReading(false);
+    } else {
+      this.startAutoReading();
+    }
+  }
+
+  private startAutoReading(): void {
+    if (this.loading || this.body === '' || this.ttsPlaying || this.destroyed) {
+      return;
+    }
+    this.autoReading = true;
+    this.autoTurnDeadline = Date.now();
+    this.ensureAutoTimer();
+    Util.toastRes(this.getUIContext(), $r('app.string.novel_auto_on'));
+  }
+
+  // reachedEnd=true 表示读到末章末尾自然停止（提示）；手动停止不提示
+  private stopAutoReading(reachedEnd: boolean): void {
+    if (!this.autoReading) {
+      return;
+    }
+    this.autoReading = false;
+    if (this.autoTimerId !== -1) {
+      clearInterval(this.autoTimerId);
+      this.autoTimerId = -1;
+    }
+    if (reachedEnd) {
+      Util.toastRes(this.getUIContext(), $r('app.string.novel_auto_end'));
+    }
+  }
+
+  private ensureAutoTimer(): void {
+    if (this.autoTimerId !== -1) {
+      return;
+    }
+    this.autoTimerId = setInterval((): void => {
+      this.autoTick();
+    }, 100);
+  }
+
+  // 自动阅读节拍（100ms）：滚动模式匀速滚屏（末尾切下一章）；
+  // 翻页模式按速度档位定时翻页（末页切下一章，末章末页停止）
+  private autoTick(): void {
+    if (!this.autoReading || this.destroyed) {
+      return;
+    }
+    if (this.loading || this.showMenu || this.anySheetOpen() || this.ttsPlaying) {
+      return;
+    }
+    if (this.mode === 'scroll') {
+      const range = this.contentH - this.viewH;
+      if (range <= 0 || this.permille >= 1000) {
+        // 章节内容不足一屏或已滚到末尾：进入下一章（无下一章则停止）
+        if (this.nextId > 0) {
+          this.openChapter(this.nextId);
+        } else {
+          this.stopAutoReading(true);
+        }
+        return;
+      }
+      this.scrollDragArmed = false;
+      this.scroller.scrollBy(0, this.autoSpeed * 0.8);
+      return;
+    }
+    // 翻页模式：渐进分页未完成不翻页
+    if (this.pagCursor !== null) {
+      return;
+    }
+    if (Date.now() < this.autoTurnDeadline) {
+      return;
+    }
+    const rtl = this.mode === 'paged_rtl';
+    const atLast = rtl ? this.pageIdx <= 0 : this.pageIdx >= this.screenIdxs.length - 1;
+    if (atLast) {
+      if (this.nextId > 0) {
+        this.openChapter(this.nextId);
+      } else {
+        this.stopAutoReading(true);
+      }
+      return;
+    }
+    this.autoTurnDeadline = Date.now() + (13 - this.autoSpeed) * 1000;
+    if (this.curlActive()) {
+      this.requestLeaf(1);
+      return;
+    }
+    this.turnScreen(1);
+  }
+
+  // 浮动速度条调节：档位 1-10，翻页间隔随之变化
+  private adjustAutoSpeed(delta: number): void {
+    const next = Math.min(10, Math.max(1, this.autoSpeed + delta));
+    if (next === this.autoSpeed) {
+      return;
+    }
+    this.autoSpeed = next;
+    Settings.setNovelAutoSpeed(next);
+    this.autoTurnDeadline = Date.now();
+  }
+
+  // ---- 翻页模式末页滑动自动切章（slide/cover 动画的 Swiper 路径；curl 已由 onCurlOverscroll 处理）----
+
+  private trackSwipeStart(x: number, y: number): void {
+    this.swipeStartX = x;
+    this.swipeStartY = y;
+    this.swipeTracking = true;
+    this.swipeIntentX = false;
+  }
+
+  private trackSwipeMove(x: number, y: number): void {
+    if (!this.swipeTracking) {
+      return;
+    }
+    const dx = Math.abs(x - this.swipeStartX);
+    const dy = Math.abs(y - this.swipeStartY);
+    if (dy > dx + 16) {
+      // 纵向意图（状态栏下拉/返回手势）：不是横滑翻页
+      this.swipeTracking = false;
+    } else if (dx > 16) {
+      this.swipeIntentX = true;
+    }
+  }
+
+  private trackSwipeEnd(x: number): void {
+    if (!this.swipeTracking) {
+      return;
+    }
+    this.swipeTracking = false;
+    // 渐进分页未完成（末屏仍在增长）或弹层打开时不切章
+    if (!this.swipeIntentX || this.pagCursor !== null || this.anySheetOpen()) {
+      return;
+    }
+    const dx = x - this.swipeStartX;
+    if (Math.abs(dx) <= 64) {
+      return;
+    }
+    const rtl = this.mode === 'paged_rtl';
+    // 阅读前进方向的滑动：ltr=左滑，rtl=右滑（屏幕序反转）
+    const swipeNext = rtl ? dx > 64 : dx < -64;
+    const swipePrev = rtl ? dx < -64 : dx > 64;
+    const atLast = rtl ? this.pageIdx <= 0 : this.pageIdx >= this.screenIdxs.length - 1;
+    const atFirst = rtl ? this.pageIdx >= this.screenIdxs.length - 1 : this.pageIdx <= 0;
+    if (atLast && swipeNext && this.nextId > 0) {
+      this.openChapter(this.nextId, false);
+    } else if (atFirst && swipePrev && this.prevId > 0) {
+      this.openChapter(this.prevId, true);
+    }
   }
 
   private contentTap(): void {
@@ -2296,6 +3016,14 @@ export struct NovelReaderPage {
 
   private handleReaderKey(event: KeyEvent): void {
     if (event.type !== KeyType.Down) {
+      return;
+    }
+    // 音量键翻页（画面面板开关）：音量上=上一页/回滚，音量下=下一页；
+    // 听书播放中不接管（保留系统音量调节），菜单/弹层打开时不消费按键
+    if (this.volumeTurn && !this.ttsPlaying && !this.loading && this.body !== '' &&
+      !this.showMenu && !this.anySheetOpen() &&
+      (event.keyCode === KeyCode.KEYCODE_VOLUME_UP || event.keyCode === KeyCode.KEYCODE_VOLUME_DOWN)) {
+      this.keyTurn(event.keyCode === KeyCode.KEYCODE_VOLUME_UP ? -1 : 1);
       return;
     }
     if (event.keyCode === KeyCode.KEYCODE_ESCAPE) {

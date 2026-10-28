@@ -2917,6 +2917,10 @@
       "value": "Las URL de los archivos del repositorio deben usar https; se rechazan las entradas http://"
     },
     {
+      "name": "plugin_error_repo_checksum_required",
+      "value": "Las entradas del repositorio deben declarar una suma de verificación sha256; las entradas sin ella se rechazan"
+    },
+    {
       "name": "plugin_error_runtime_invalid",
       "value": "Nombre de ejecución del plugin no válido: %s"
     },

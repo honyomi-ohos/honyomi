@@ -9,14 +9,14 @@ project(mihon_jsvm_engine)
 
 set(LEXBOR_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/third_party/lexbor/source)
 
-file(GLOB LEXBOR_CORE_SRC
+file(GLOB LEXBOR_CORE_SRC CONFIGURE_DEPENDS
     ${LEXBOR_ROOT}/lexbor/core/*.c)
 
-file(GLOB LEXBOR_DOM_SRC
+file(GLOB LEXBOR_DOM_SRC CONFIGURE_DEPENDS
     ${LEXBOR_ROOT}/lexbor/dom/*.c
     ${LEXBOR_ROOT}/lexbor/dom/interfaces/*.c)
 
-file(GLOB LEXBOR_HTML_SRC
+file(GLOB LEXBOR_HTML_SRC CONFIGURE_DEPENDS
     ${LEXBOR_ROOT}/lexbor/html/*.c
     ${LEXBOR_ROOT}/lexbor/html/interfaces/*.c
     ${LEXBOR_ROOT}/lexbor/html/tokenizer/*.c

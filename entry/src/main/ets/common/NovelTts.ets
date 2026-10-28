@@ -115,6 +115,8 @@ export class NovelTts {
   static events: TtsEvents = new TtsEvents();
   private static engine: textToSpeech.TextToSpeechEngine | undefined = undefined;
   private static engineLang: string = '';
+  // 当前引擎所用音色（'default' | 'male'）：与设置不一致时重建引擎
+  private static engineVoice: string = '';
   private static chunks: string[] = [];
   private static chunkPara: number[] = [];
   private static pos: number = 0;
@@ -265,12 +267,17 @@ export class NovelTts {
   }
 
   private static async ensureEngine(): Promise<boolean> {
-    if (NovelTts.engine !== undefined && NovelTts.engineLang === NovelTts.lang) {
+    const voice: string = Settings.getNovelTtsVoice();
+    if (NovelTts.engine !== undefined && NovelTts.engineLang === NovelTts.lang
+      && NovelTts.engineVoice === voice) {
       return true;
     }
     NovelTts.killEngine();
-    // 官方文档推荐音色优先，不可用时回退默认音色
-    const persons: number[] = NovelTts.lang === 'en-US' ? [8, 0] : [3, 0];
+    // 官方文档推荐音色优先，不可用时回退默认音色；
+    // 男声（凌飞哲 21）需系统已下载，未下载时创建失败自动回退默认女声；
+    // 英文仅有劳拉女声（8），男声设置对英文无效（同样回退 8）
+    const persons: number[] = NovelTts.lang === 'en-US' ? [8, 0] :
+      (voice === 'male' ? [21, 3, 0] : [3, 0]);
     for (let p = 0; p < persons.length; p++) {
       try {
         const extra: Record<string, Object> = {
@@ -289,6 +296,7 @@ export class NovelTts {
         eng.setListener(new TtsListener());
         NovelTts.engine = eng;
         NovelTts.engineLang = NovelTts.lang;
+        NovelTts.engineVoice = voice;
         return true;
       } catch (_e) {
         // 换下一个音色重试
@@ -308,6 +316,7 @@ export class NovelTts {
       }
       NovelTts.engine = undefined;
       NovelTts.engineLang = '';
+      NovelTts.engineVoice = '';
     }
   }
 

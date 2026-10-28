@@ -1965,6 +1965,10 @@
       "value": "リポジトリの URL は https を使用してください。http:// のエントリは拒否されました"
     },
     {
+      "name": "plugin_error_repo_checksum_required",
+      "value": "リポジトリ項目には sha256 チェックサムの宣言が必要です。未宣言の項目は拒否されます"
+    },
+    {
       "name": "plugin_error_runtime_invalid",
       "value": "プラグインの runtime 名が無効です：%s"
     },

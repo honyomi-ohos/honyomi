@@ -29,6 +29,7 @@ import { TtsPlaybackService } from '../common/TtsPlaybackService';
 import { AppKeys } from '../common/AppKeys';
 import { PluginPrefs } from '../jsvm/PluginPrefs';
 import { AppLock } from '../common/AppLock';
+import { ContinueSession } from '../common/ContinueSession';
 
 const DOMAIN = 0x0001;
 
@@ -120,6 +121,7 @@ export default class EntryAbility extends UIAbility {
     engineBackend.init();
     this.handleCardWant(want);
     this.handleFileOpenWant(want);
+    this.handleContinueWant(want);
     // ── 第1级（主线程空闲即执行，先于首帧内容挂载）：非首帧必需的服务初始化 ──
     // 契约：此处初始化的服务允许在回调执行前被访问——各服务必须容忍“未 init 先使用”
     // （内部空安全/延迟就绪），不得假设构造期已完成初始化；首帧路径严禁依赖本级服务。
@@ -237,6 +239,38 @@ export default class EntryAbility extends UIAbility {
     hilog.info(DOMAIN, 'Mihon', '%{public}s', 'Ability onNewWant');
     this.handleCardWant(want);
     this.handleFileOpenWant(want);
+    this.handleContinueWant(want);
+  }
+
+  // 应用接续（源端）：系统跨设备迁移时序列化当前阅读/播放会话快照；
+  // 无活动会话时返回 REJECT（无内容可接续，源端继续正常迁移由系统回退）
+  onContinue(wantParam: Record<string, Object>): AbilityConstant.OnContinueResult {
+    hilog.info(DOMAIN, 'Mihon', '%{public}s', 'Ability onContinue');
+    const json = ContinueSession.toJson();
+    if (json === '') {
+      return AbilityConstant.OnContinueResult.REJECT;
+    }
+    wantParam['honyomi.continue'] = json;
+    return AbilityConstant.OnContinueResult.AGREE;
+  }
+
+  // 接续（目标端）：读取源端迁移数据或 App Linking 链接，经 cardAction 通道由 Index 定位续读
+  private handleContinueWant(want: Want): void {
+    const params = want.parameters;
+    if (params !== undefined) {
+      const continueJson = params['honyomi.continue'];
+      if (typeof continueJson === 'string' && continueJson !== '') {
+        AppStorage.setOrCreate(AppKeys.CARD_ACTION, continueJson);
+        return;
+      }
+    }
+    const uri = want.uri;
+    if (typeof uri === 'string' && uri.indexOf('https://') === 0) {
+      const payload = ContinueSession.parseAppLink(uri);
+      if (payload !== undefined) {
+        AppStorage.setOrCreate(AppKeys.CARD_ACTION, JSON.stringify(payload));
+      }
+    }
   }
 
   // 书籍导入：拷入沙箱本地小说源目录（立即出现在本地小说源列表）；

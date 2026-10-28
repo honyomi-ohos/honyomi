@@ -2897,6 +2897,10 @@
       "value": "URL file repositori harus memakai https, entri http:// ditolak"
     },
     {
+      "name": "plugin_error_repo_checksum_required",
+      "value": "Entri repositori harus mendeklarasikan checksum sha256; entri tanpa checksum ditolak"
+    },
+    {
       "name": "plugin_error_runtime_invalid",
       "value": "Nama runtime plugin tidak valid: %s"
     },
