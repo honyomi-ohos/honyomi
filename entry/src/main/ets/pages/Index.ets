@@ -635,6 +635,7 @@ struct Index {
     Column({ space: 4 }) {
       RailItem({
         kind: 'library',
+
         compact: true,
         selected: this.currentTab === 0,
         onTap: (): void => {

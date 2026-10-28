@@ -597,6 +597,70 @@
       "value": "Webtoon side padding"
     },
     {
+      "name": "reader_webtoon_gap",
+      "value": "Page spacing"
+    },
+    {
+      "name": "reader_mode_continuous",
+      "value": "Continuous"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Dual page"
+    },
+    {
+      "name": "reader_dual_auto",
+      "value": "Auto (landscape)"
+    },
+    {
+      "name": "reader_dual_force",
+      "value": "Always"
+    },
+    {
+      "name": "reader_dual_off",
+      "value": "Off"
+    },
+    {
+      "name": "reader_dual_cover",
+      "value": "Cover page alone"
+    },
+    {
+      "name": "reader_volume_turn",
+      "value": "Volume keys turn pages"
+    },
+    {
+      "name": "reader_keep_screen_on",
+      "value": "Keep screen on"
+    },
+    {
+      "name": "reader_show_header_footer",
+      "value": "Show chapter name and page number"
+    },
+    {
+      "name": "reader_preload_pages",
+      "value": "Preload pages"
+    },
+    {
+      "name": "reader_skip_duplicate_pages",
+      "value": "Skip duplicate pages"
+    },
+    {
+      "name": "reader_clean_blank_pages",
+      "value": "Remove blank pages"
+    },
+    {
+      "name": "reader_set_experience_group",
+      "value": "Reading experience"
+    },
+    {
+      "name": "reader_set_page_process_group",
+      "value": "Page handling"
+    },
+    {
+      "name": "reader_set_mode_continuous",
+      "value": "Continuous vertical"
+    },
+    {
       "name": "EntryFormAbility_label",
       "value": "Honyomi cards"
     },
@@ -2599,6 +2663,66 @@
     {
       "name": "novel_trans_cancel",
       "value": "Translation cancelled"
+    },
+    {
+      "name": "manga_ocr_unavailable",
+      "value": "Text recognition service unavailable. Try again later (may not be supported on emulators)"
+    },
+    {
+      "name": "manga_trans_image",
+      "value": "Image translation"
+    },
+    {
+      "name": "manga_trans_image_sub",
+      "value": "Auto-recognize and translate every page, overlaying the result"
+    },
+    {
+      "name": "novel_trans_chapter",
+      "value": "Chapter translation"
+    },
+    {
+      "name": "novel_trans_chapter_sub",
+      "value": "Auto-translate this chapter and show the result when enabled"
+    },
+    {
+      "name": "reader_ctx_save_page",
+      "value": "Save page image"
+    },
+    {
+      "name": "reader_ctx_copy_page",
+      "value": "Copy image"
+    },
+    {
+      "name": "reader_ctx_share_page",
+      "value": "Share page"
+    },
+    {
+      "name": "reader_ctx_view_original",
+      "value": "View original"
+    },
+    {
+      "name": "reader_page_saved",
+      "value": "Page image saved"
+    },
+    {
+      "name": "reader_page_save_failed",
+      "value": "Save failed"
+    },
+    {
+      "name": "reader_save_confirm_title",
+      "value": "Save image to gallery"
+    },
+    {
+      "name": "reader_page_copied",
+      "value": "Image copied"
+    },
+    {
+      "name": "reader_page_copy_failed",
+      "value": "Copy failed"
+    },
+    {
+      "name": "reader_page_share_failed",
+      "value": "Share failed"
     },
     {
       "name": "novel_mode_scroll",

@@ -1,4 +1,4 @@
-// 小说阅读器「文本」设置面板：字号 / 边距 / 段间距 / 合并空行 / 段落缩进 / 行间距 / 字体 / 两端对齐
+// 小说阅读器「文本」设置面板：字号 / 边距 / 段间距 / 合并空行 / 段落缩进 / 行间距 / 字体 / 两端对齐 / 整章翻译
 // （从 NovelReaderPage 拆出，Wave 3I；行为与原 textSheetBuilder 一致）
 import { ThemePalette } from '../../../common/Theme';
 import { WideSlider } from '../WideSlider';
@@ -13,6 +13,7 @@ export struct NovelTextPanel {
   @Link indentChars: number;
   @Link lineHeight: number;
   @Link justify: boolean;
+  @Link transOn: boolean;
   @Prop fontFamily: string = 'default';
   onFontSizeDone: (v: number) => void = (v: number): void => {
   };
@@ -27,6 +28,8 @@ export struct NovelTextPanel {
   onLineHeightDone: (v: number) => void = (v: number): void => {
   };
   onJustify: (v: boolean) => void = (v: boolean): void => {
+  };
+  onTransChange: (v: boolean) => void = (v: boolean): void => {
   };
   onFontFamily: (v: string) => void = (v: string): void => {
   };
@@ -88,6 +91,11 @@ export struct NovelTextPanel {
       Divider().color(this.pal.divider)
 
       this.justifyRow()
+
+      Divider().color(this.pal.divider)
+
+      // 整章翻译开关（开启后自动翻译本章，译文替换原文）
+      this.transRow()
 
       Divider().color(this.pal.divider)
 
@@ -159,6 +167,42 @@ export struct NovelTextPanel {
         })
     }
     .width('100%')
+    .padding({
+      left: 16,
+      right: 16,
+      top: 10,
+      bottom: 6
+    })
+  }
+
+  // 整章翻译开关行：开启后自动翻译本章并展示译文，关闭还原原文
+  @Builder
+  transRow() {
+    Row() {
+      Column() {
+        Text($r('app.string.novel_trans_chapter'))
+          .fontSize(13)
+          .fontColor(this.pal.sub)
+          .width('100%')
+        Text($r('app.string.novel_trans_chapter_sub'))
+          .fontSize(11)
+          .fontColor(this.pal.sub)
+          .width('100%')
+          .margin({ top: 2 })
+      }
+      .layoutWeight(1)
+      .alignItems(HorizontalAlign.Start)
+
+      Toggle({ type: ToggleType.Switch, isOn: this.transOn })
+        .selectedColor(this.pal.primary)
+        .switchPointColor(this.pal.onPrimary)
+        .onChange((isOn: boolean) => {
+          this.transOn = isOn;
+          this.onTransChange(isOn);
+        })
+    }
+    .width('100%')
+    .alignItems(VerticalAlign.Center)
     .padding({
       left: 16,
       right: 16,

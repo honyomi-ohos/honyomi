@@ -20,6 +20,7 @@ import { DownloadRules } from '../data/DownloadRules';
 import { PageSanitizer } from '../common/PageSanitizer';
 import { TrackService } from '../data/track/TrackService';
 import { SmartImage } from './components/SmartImage';
+import { AppIconRes } from './components/AppIcon';
 import { ComicStripViewer, STRIP_LEAD_COUNT } from './components/ComicStripViewer';
 import { SwitchRow, TextRow } from './components/Prefs';
 import { WideSlider } from './components/WideSlider';
@@ -41,6 +42,12 @@ import {
   ReaderTransition
 } from './components/ReaderChrome';
 import { LoadingBackButton } from './components/LoadingBackButton';
+import { MangaTransOverlay } from './components/MangaTransOverlay';
+import { EMPTY_TRANS, MangaOcrTranslator, PageTransData } from '../translate/MangaOcr';
+import { CoverViewer } from './components/CoverViewer';
+import { SaveConfirmDialog } from './components/Dialogs';
+import { ImageActions } from '../common/ImageActions';
+import { ImageCache } from '../common/ImageCache';
 
 // 章节过渡标记页（PageDataSource 混入的伪页，url 为保留前缀，index 为负）：
 // 翻到章节边界时展示上一章/下一章过渡视图（对齐 Mihon ChapterTransition）
@@ -78,7 +85,7 @@ class PageDataSource implements IDataSource {
   }
 }
 
-// 阅读器：翻页(LTR) / 右到左(RTL) / 条漫(Webtoon) 三模式
+// 阅读器：翻页(LTR) / 右到左(RTL) / 垂直 / 条漫(Webtoon) / 连续滚动(Continuous) / 智感握姿
 // 底栏对齐 Mihon：章节导航行（圆形上/下一章按钮 + 页码胶囊 Slider）+ 设置行（模式/旋转/裁边/设置）
 @Component
 export struct ReaderPage {
@@ -145,6 +152,12 @@ export struct ReaderPage {
   private gripListening: boolean = false;
   private dataSource: PageDataSource = new PageDataSource();
   private scroller: Scroller = new Scroller();
+  // Swiper 控制器：翻页必须走控制器（showNext/changeIndex 等自带切换动画并触发过渡回调）；
+  // 直接改 .index() 绑定变量是无动画瞬跳（见 NovelReaderPage 同样结论）
+  private swiperCtrl: SwiperController = new SwiperController();
+  // 控制器动画进行中的目标索引（-1 = 空闲）：动画期间 displayIndex 尚未更新，
+  // 连续快翻需基于 pending 目标累计，否则会被旧值吞掉
+  private flipTarget: number = -1;
   private touchDownX: number = -1;
   private touchDownY: number = -1;
   // 阅读器实际内容宽度/高度（vp）：平板分屏/悬浮窗/旋转下以组件实时宽高计算点击分区
@@ -189,6 +202,17 @@ export struct ReaderPage {
   @State webtoonGap: number = 0;
   // 显示页眉页脚（章节名/页码常驻边角）
   @State showHeaderFooter: boolean = false;
+  // 整章图片翻译（漫画 OCR）：会话开关 / 进行中 / 每页译文叠加数据（与 pages 对齐，null=未翻译）
+  @State transOn: boolean = false;
+  @State translating: boolean = false;
+  @State pageTrans: (PageTransData | null)[] = [];
+  // 译文完成计数（驱动条漫 LazyForEach 条目刷新）
+  @State transStamp: number = 0;
+  // 查看原图（右键菜单）：当前页全屏查看器
+  @State showPageViewer: boolean = false;
+  @State viewPageUrl: string = '';
+  private transGen: number = 0;
+  private destroyed: boolean = false;
 
   aboutToAppear(): void {
     this.gripSupported = GripSupport.isSupported();
@@ -217,6 +241,7 @@ export struct ReaderPage {
     this.dualCover = Settings.getReaderDualPageCover();
     this.webtoonGap = Settings.getReaderWebtoonGap();
     this.showHeaderFooter = Settings.getReaderShowHeaderFooter();
+    this.transOn = Settings.getTransEnabled();
     this.applyOrientation();
     this.applyBrightness();
     // 阅读时保持屏幕常亮（退出时由 ReaderWindow.restore 还原熄屏策略）
@@ -224,6 +249,8 @@ export struct ReaderPage {
   }
 
   aboutToDisappear(): void {
+    this.destroyed = true;
+    this.transGen += 1;
     this.libDirty += 1;
     ReadingStatsRepo.flush();
     this.updateGripListener(false);
@@ -269,32 +296,52 @@ export struct ReaderPage {
   @Builder
   curlFull(index: number) {
     if (index >= 0 && index < this.pages.length) {
-      SmartImage({
-        url: this.pages[index].url,
-        sourceKey: this.manga.sourceKey,
-        fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
-        fill: true,
-        highQuality: Settings.getReaderHighQuality(),
-        retryable: true
-      })
-        .width('100%')
-        .height('100%')
+      Stack() {
+        SmartImage({
+          url: this.pages[index].url,
+          sourceKey: this.manga.sourceKey,
+          fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
+          fill: true,
+          highQuality: Settings.getReaderHighQuality(),
+          retryable: true
+        })
+          .width('100%')
+          .height('100%')
+        if (this.transOn) {
+          MangaTransOverlay({
+            data: this.pageTrans[index] ?? EMPTY_TRANS,
+            fit: this.crop ? ImageFit.Cover : ImageFit.Contain
+          })
+        }
+      }
+      .width('100%')
+      .height('100%')
     }
   }
 
   @Builder
   curlHalf(index: number) {
     if (index >= 0 && index < this.pages.length) {
-      SmartImage({
-        url: this.pages[index].url,
-        sourceKey: this.manga.sourceKey,
-        fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
-        fill: true,
-        highQuality: Settings.getReaderHighQuality(),
-        retryable: true
-      })
-        .layoutWeight(1)
-        .height('100%')
+      Stack() {
+        SmartImage({
+          url: this.pages[index].url,
+          sourceKey: this.manga.sourceKey,
+          fit: this.crop ? ImageFit.Cover : ImageFit.Contain,
+          fill: true,
+          highQuality: Settings.getReaderHighQuality(),
+          retryable: true
+        })
+          .width('100%')
+          .height('100%')
+        if (this.transOn) {
+          MangaTransOverlay({
+            data: this.pageTrans[index] ?? EMPTY_TRANS,
+            fit: this.crop ? ImageFit.Cover : ImageFit.Contain
+          })
+        }
+      }
+      .layoutWeight(1)
+      .height('100%')
     } else {
       Column()
         .layoutWeight(1)
@@ -414,6 +461,14 @@ export struct ReaderPage {
       // 连续模式：按屏高裁切逐页竖向滚动；条漫模式：原图直绘不限制高度
       fit: this.mode === 'continuous' ? ImageFit.Cover : ImageFit.Contain,
       maxItemHeight: this.mode === 'continuous' ? Math.floor(this.readerH) : 0,
+      transOn: this.transOn,
+      transStamp: this.transStamp,
+      overlayFor: (index: number): PageTransData => {
+        if (index < 0 || index >= this.pageTrans.length) {
+          return EMPTY_TRANS;
+        }
+        return this.pageTrans[index] ?? EMPTY_TRANS;
+      },
       currentChapterName: this.chapter.name,
       prevChapterName: this.prevChapterName,
       nextChapterName: this.nextChapterName,
@@ -495,7 +550,7 @@ export struct ReaderPage {
   @Builder
   swiperBody() {
     Stack() {
-      Swiper() {
+      Swiper(this.swiperCtrl) {
         LazyForEach(this.dataSource, (page: SPage, index: number) => {
           Stack() {
             if (page.url === TRANS_PREV_URL || page.url === TRANS_NEXT_URL) {
@@ -529,6 +584,12 @@ export struct ReaderPage {
               })
                 .width('100%')
                 .height('100%')
+              if (this.transOn) {
+                MangaTransOverlay({
+                  data: this.pageTrans[page.index] ?? EMPTY_TRANS,
+                  fit: this.crop ? ImageFit.Cover : ImageFit.Contain
+                })
+              }
             }
           }
           .width('100%')
@@ -539,7 +600,8 @@ export struct ReaderPage {
       }
       .width('100%')
       .height('100%')
-      .displayCount(this.dualPageActive() ? 2 : 1)
+      // 双页按组翻页（swipeByGroup）：一次滑动/步进整组（两页）
+      .displayCount(this.dualPageActive() ? 2 : 1, this.dualPageActive())
       .cachedCount(this.preloadPages)
       .loop(false)
       .vertical(this.mode === 'vertical')
@@ -723,6 +785,217 @@ export struct ReaderPage {
     .justifyContent(FlexAlign.SpaceEvenly)
   }
 
+  // 整章图片翻译：OCR 识别 + 分块翻译，当前页起先后再回绕，逐页叠加译文
+  private async translateChapterImages(): Promise<void> {
+    if (this.translating || this.pages.length === 0 || this.destroyed) {
+      return;
+    }
+    const gen = ++this.transGen;
+    this.translating = true;
+    const ui = this.getUIContext();
+    if (this.pageTrans.length !== this.pages.length) {
+      const slots: (PageTransData | null)[] = [];
+      for (let i = 0; i < this.pages.length; i++) {
+        slots.push(i < this.pageTrans.length ? this.pageTrans[i] : null);
+      }
+      this.pageTrans = slots;
+    }
+    if (!await MangaOcrTranslator.retain()) {
+      this.translating = false;
+      this.transOn = false;
+      // OCR 服务不可用与翻译引擎失败分开提示（模拟器常无 AI OCR 服务）
+      Util.toastRes(ui, $r('app.string.manga_ocr_unavailable'));
+      return;
+    }
+    const order: number[] = [];
+    for (let i = this.currentReal; i < this.pages.length; i++) {
+      order.push(i);
+    }
+    for (let i = 0; i < this.currentReal; i++) {
+      order.push(i);
+    }
+    let failed = false;
+    try {
+      const to = Settings.getTransTargetLang();
+      for (const idx of order) {
+        if (this.destroyed || gen !== this.transGen) {
+          return;
+        }
+        const done = this.pageTrans[idx];
+        if (done !== null && done !== undefined) {
+          continue;
+        }
+        const page: SPage = this.pages[idx];
+        try {
+          const data: PageTransData = await MangaOcrTranslator.translateImage(page.url,
+            this.manga.sourceKey, page.pageUrl ?? '', to,
+            (): boolean => this.destroyed || gen !== this.transGen);
+          if (this.destroyed || gen !== this.transGen) {
+            return;
+          }
+          this.pageTrans[idx] = data;
+          this.transStamp += 1;
+        } catch (e) {
+          hilog.warn(0x0001, 'Reader', 'manga ocr translate failed: %{public}s',
+            e instanceof Error ? e.message : String(e));
+          failed = true;
+          break;
+        }
+      }
+    } finally {
+      void MangaOcrTranslator.release();
+      this.translating = false;
+    }
+    if (this.destroyed || gen !== this.transGen) {
+      return;
+    }
+    if (failed) {
+      this.transOn = false;
+      Util.toastRes(ui, $r('app.string.novel_trans_failed'));
+    } else {
+      Util.toastRes(ui, $r('app.string.novel_trans_done'));
+    }
+  }
+
+  // ---- PC/2in1 右键菜单：本页图片 保存 / 复制 / 分享 / 查看原图 ----
+
+  // 标准 Menu 组件（与全 app 右键菜单一致）：系统玻璃材质/动效/键盘导航；
+  // 图标经 dark 资源限定符适配明暗（base 黑 / dark 白）
+  @Builder
+  readerContextMenu() {
+    Menu() {
+      MenuItem({ content: $r('app.string.reader_ctx_save_page'), startIcon: AppIconRes.get('download') })
+        .onClick(() => {
+          void this.saveCurrentPage();
+        })
+      MenuItem({ content: $r('app.string.reader_ctx_copy_page'), startIcon: AppIconRes.get('content_copy') })
+        .onClick(() => {
+          void this.copyCurrentPage();
+        })
+      MenuItem({ content: $r('app.string.reader_ctx_share_page'), startIcon: AppIconRes.get('share') })
+        .onClick(() => {
+          void this.shareCurrentPage();
+        })
+      MenuItem({ content: $r('app.string.reader_ctx_view_original'), startIcon: AppIconRes.get('image') })
+        .onClick(() => {
+          this.openPageViewer();
+        })
+    }
+  }
+
+  // 查看原图：CoverViewer 全屏（自带缩放/保存/分享，显示原图）
+  @Builder
+  pageViewerBuilder() {
+    CoverViewer({
+      coverUrl: this.viewPageUrl,
+      sourceKey: this.manga.sourceKey,
+      title: `${this.manga.title} p${this.currentReal + 1}`,
+      onClose: (): void => {
+        this.showPageViewer = false;
+      }
+    })
+  }
+
+  // 当前页原图落盘沙箱（ImageCache 下载/缓存），失败返回空串
+  private async ensurePageLocal(): Promise<string> {
+    const page: SPage | undefined = this.pages[this.currentReal];
+    if (page === undefined) {
+      return '';
+    }
+    try {
+      const local = await ImageCache.ensureLocal(Util.hostAbilityContext(this.getUIContext()),
+        page.url, this.manga.sourceKey);
+      hilog.info(0x0001, 'Reader', 'ctx menu: page local resolved, len=%{public}d', local.length);
+      return local;
+    } catch (e) {
+      hilog.warn(0x0001, 'Reader', 'page download failed: %{public}s',
+        e instanceof Error ? e.message : String(e));
+      return '';
+    }
+  }
+
+  // 保存当前页原图到图库
+  private async saveCurrentPage(): Promise<void> {
+    hilog.info(0x0001, 'Reader', 'ctx menu: save page %{public}d', this.currentReal);
+    const ui = this.getUIContext();
+    const local = await this.ensurePageLocal();
+    if (local === '') {
+      Util.toastRes(ui, $r('app.string.reader_page_save_failed'));
+      return;
+    }
+    const title = `${ImageActions.safeName(this.manga.title)}_p${this.currentReal + 1}`;
+    const result = await ImageActions.saveToGallery(Util.hostAbilityContext(ui), local, title);
+    hilog.info(0x0001, 'Reader', 'ctx menu: save result=%{public}s', result);
+    if (result === 'ok') {
+      Util.toastRes(ui, $r('app.string.reader_page_saved'));
+      return;
+    }
+    if (result === 'declined') {
+      Util.toastRes(ui, $r('app.string.reader_page_save_failed'));
+      return;
+    }
+    // 系统保存对话框不可用：回退 SaveButton 确认弹窗
+    const fileName = `${title}.${ImageActions.fileExtOf(local)}`;
+    const dialog = new CustomDialogController({
+      builder: SaveConfirmDialog({
+        title: $r('app.string.reader_save_confirm_title'),
+        fileName: fileName,
+        onConfirmed: (): void => {
+          ImageActions.saveViaCreateAsset(Util.hostAbilityContext(ui), local, title)
+            .then((ok2: boolean) => {
+              hilog.info(0x0001, 'Reader', 'ctx menu: save fallback result=%{public}s', ok2 ? 'ok' : 'fail');
+              Util.toastRes(ui, ok2 ? $r('app.string.reader_page_saved') :
+                $r('app.string.reader_page_save_failed'));
+            });
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  // 复制当前页原图到剪贴板
+  private async copyCurrentPage(): Promise<void> {
+    hilog.info(0x0001, 'Reader', 'ctx menu: copy page %{public}d', this.currentReal);
+    const ui = this.getUIContext();
+    const local = await this.ensurePageLocal();
+    if (local === '') {
+      Util.toastRes(ui, $r('app.string.reader_page_copy_failed'));
+      return;
+    }
+    const ok = await ImageActions.copyToClipboard(local);
+    hilog.info(0x0001, 'Reader', 'ctx menu: copy result=%{public}s', ok ? 'ok' : 'fail');
+    Util.toastRes(ui, ok ? $r('app.string.reader_page_copied') : $r('app.string.reader_page_copy_failed'));
+  }
+
+  // 分享当前页原图
+  private async shareCurrentPage(): Promise<void> {
+    hilog.info(0x0001, 'Reader', 'ctx menu: share page %{public}d', this.currentReal);
+    const ui = this.getUIContext();
+    const local = await this.ensurePageLocal();
+    if (local === '') {
+      Util.toastRes(ui, $r('app.string.reader_page_share_failed'));
+      return;
+    }
+    const ok = await ImageActions.share(Util.hostAbilityContext(ui), local,
+      `${this.manga.title} p${this.currentReal + 1}`);
+    hilog.info(0x0001, 'Reader', 'ctx menu: share result=%{public}s', ok ? 'ok' : 'fail');
+    if (!ok) {
+      Util.toastRes(ui, $r('app.string.reader_page_share_failed'));
+    }
+  }
+
+  // 全屏查看当前页原图
+  private openPageViewer(): void {
+    hilog.info(0x0001, 'Reader', 'ctx menu: view original page %{public}d', this.currentReal);
+    const page: SPage | undefined = this.pages[this.currentReal];
+    if (page === undefined) {
+      return;
+    }
+    this.viewPageUrl = page.url;
+    this.showPageViewer = true;
+  }
+
   build() {
     NavDestination() {
       // HDS 沉浸宿主：设置行挂入页签栏胶囊、进度行挂入迷你栏胶囊，
@@ -783,8 +1056,8 @@ export struct ReaderPage {
         .onAreaChange((_old: Area, newArea: Area) => {
           this.syncReaderArea(newArea);
         })
-      } else if (this.mode === 'webtoon') {
-        // 条漫模式：PixelMap 直绘的无限竖向滚动（防防盗链拦截 + 内存受控）
+      } else if (this.stripMode()) {
+        // 条漫/连续模式：PixelMap 直绘的无限竖向滚动（防防盗链拦截 + 内存受控）
         ReaderFilterArea({
           grayOn: this.filterGrayscale,
           invOn: this.filterInvert,
@@ -862,6 +1135,18 @@ export struct ReaderPage {
         })
       }
 
+      // 页眉页脚常驻小字（章节名/页码；菜单打开或加载中隐藏）
+      if (this.showHeaderFooter && !this.showMenu && !this.loading && this.pages.length > 0) {
+        ReaderHeaderText({
+          text: this.chapter.name,
+          statusBarH: this.statusBarH
+        })
+        ReaderFooterText({
+          text: `${this.currentReal + 1}/${this.pages.length}`,
+          navBarH: this.navBarH
+        })
+      }
+
       // 菜单
       if (this.showMenu) {
         ReaderMenu({
@@ -917,6 +1202,13 @@ export struct ReaderPage {
         showClose: false,
         glass: true
       }))
+    // PC/2in1：内容区右键菜单（保存/复制/分享/查看原图），标准 Menu 组件
+    .bindContextMenu(this.readerContextMenu, ResponseType.RightClick)
+    // 查看原图：复用 CoverViewer 全屏查看（自带缩放/保存/分享）
+    .bindContentCover($$this.showPageViewer, this.pageViewerBuilder(), {
+      modalTransition: ModalTransition.ALPHA,
+      backgroundColor: '#B3000000'
+    })
   }
 
   // 阅读器设置面板（参考 Mihon：阅读模式 / 常规 / 滤镜）
@@ -952,7 +1244,7 @@ export struct ReaderPage {
           }
         })
         Divider().color(this.pal.divider)
-        if (this.mode !== 'webtoon') {
+        if (!this.stripMode()) {
           Column({ space: 8 }) {
             Text($r('app.string.novel_page_animation'))
               .fontSize(13)
@@ -975,13 +1267,21 @@ export struct ReaderPage {
 
           Divider().color(this.pal.divider)
         }
-        if (this.mode === 'webtoon') {
-          // 条漫：侧边距
+        if (this.stripMode()) {
+          // 条漫/连续：侧边距 + 页间距
           this.filterSliderRow($r('app.string.reader_webtoon_padding'), this.webtoonPadding, 0, 25,
             (value: number, done: boolean): void => {
               this.webtoonPadding = value;
               if (done) {
                 Settings.setReaderWebtoonPadding(value);
+              }
+            })
+          Divider().color(this.pal.divider).margin({ top: 4, bottom: 4 })
+          this.filterSliderRow($r('app.string.reader_webtoon_gap'), this.webtoonGap, 0, 40,
+            (value: number, done: boolean): void => {
+              this.webtoonGap = value;
+              if (done) {
+                Settings.setReaderWebtoonGap(value);
               }
             })
         } else {
@@ -1008,8 +1308,8 @@ export struct ReaderPage {
             top: 12,
             bottom: 8
           })
-
           Divider().color(this.pal.divider)
+
           SwitchRow({
             title: $r('app.string.reader_crop_borders'),
             isOn: this.crop,
@@ -1017,6 +1317,41 @@ export struct ReaderPage {
               this.setCrop(value);
             }
           })
+
+          Divider().color(this.pal.divider)
+
+          // 双页显示（横向分页模式：自动=横屏双页 / 始终 / 关闭）
+          Column({ space: 8 }) {
+            Text($r('app.string.reader_dual_page'))
+              .fontSize(13)
+              .fontColor(this.pal.sub)
+              .width('100%')
+            Flex({ wrap: FlexWrap.Wrap }) {
+              this.dualChip($r('app.string.reader_dual_auto'), 'auto')
+              this.dualChip($r('app.string.reader_dual_force'), 'force')
+              this.dualChip($r('app.string.reader_dual_off'), 'off')
+            }
+            .width('100%')
+          }
+          .width('100%')
+          .padding({
+            left: 16,
+            right: 16,
+            top: 12,
+            bottom: 8
+          })
+
+          if (this.mode !== 'rtl') {
+            SwitchRow({
+              title: $r('app.string.reader_dual_cover'),
+              isOn: this.dualCover,
+              onChange: (value: boolean): void => {
+                this.dualCover = value;
+                Settings.setReaderDualPageCover(value);
+                this.applyMode(false);
+              }
+            })
+          }
         }
       } else if (this.settingsTab === 1) {
         // 常规：背景色 / 显示页码 / 亮度
@@ -1051,6 +1386,27 @@ export struct ReaderPage {
           onChange: (value: boolean): void => {
             this.showPageNumber = value;
             Settings.setReaderShowPageNumber(value);
+          }
+        })
+
+        Divider().color(this.pal.divider).margin({ top: 4, bottom: 4 })
+
+        // 图片翻译（OCR 整章翻译叠加）
+        SwitchRow({
+          title: $r('app.string.manga_trans_image'),
+          subtitle: $r('app.string.manga_trans_image_sub'),
+          isOn: this.transOn,
+          onChange: (value: boolean): void => {
+            Settings.setTransEnabled(value);
+            if (!value) {
+              // 关闭：取消在途翻译并隐藏叠加
+              this.transGen += 1;
+              this.translating = false;
+              this.transOn = false;
+              return;
+            }
+            this.transOn = true;
+            void this.translateChapterImages();
           }
         })
 
@@ -1261,6 +1617,31 @@ export struct ReaderPage {
       })
   }
 
+  // 双页模式 chip：auto=横屏自动（默认） force=始终双页 off=始终单页
+  @Builder
+  dualChip(label: ResourceStr, value: string) {
+    Text(label)
+      .fontSize(13)
+      .fontColor(this.dualPageMode === value ? this.pal.onPrimary : this.pal.text)
+      .padding({
+        left: 12,
+        right: 12,
+        top: 6,
+        bottom: 6
+      })
+      .borderRadius(14)
+      .backgroundColor(this.dualPageMode === value ? this.pal.primary : this.pal.chip)
+      .margin({ right: 8, bottom: 8 })
+      .onClick(() => {
+        if (this.dualPageMode === value) {
+          return;
+        }
+        this.dualPageMode = value;
+        Settings.setReaderDualPageMode(value);
+        this.applyMode(false);
+      })
+  }
+
   // 0=白 1=黑 2=灰 3=自动（跟随深色模式） 4=纸张（护眼米黄）
   syncReaderBgDark(): void {
     const t = this.readerTheme === 3 ? (this.isDark ? 1 : 0) : this.readerTheme;
@@ -1376,7 +1757,13 @@ export struct ReaderPage {
     if (typeof gy === 'number') {
       this.readerOffY = gy;
     }
+    const wasLandscape = this.isLandscape;
     this.isLandscape = this.readerW > this.readerH;
+    // 横竖屏翻转后双页 auto 激活态/成组占位可能变化，重建分页单元格并对齐到当前页所在组
+    if (wasLandscape !== this.isLandscape && !this.loading && this.pages.length > 0
+      && !this.stripMode() && this.mode !== 'vertical') {
+      this.applyMode(false);
+    }
   }
 
   private async loadChapter(): Promise<void> {
@@ -1384,6 +1771,10 @@ export struct ReaderPage {
     this.loading = true;
     this.showMenu = false;
     this.transOverlay = 0;
+    // 切章作废在途图片翻译并清空译文叠加（transOn 保持会话开关语义）
+    this.transGen += 1;
+    this.translating = false;
+    this.pageTrans = [];
     this.resetZoom();
     // 切章：先结算上一章的阅读会话
     ReadingStatsRepo.flush();
@@ -1429,8 +1820,19 @@ export struct ReaderPage {
       if (gen !== this.loadGen) {
         return;
       }
+      // 页面处理：仅对本地（file://）页跳过重复页/清理空白页（在线页直接通过）
+      if (pages.length > 0) {
+        pages = await PageSanitizer.sanitize(pages, Settings.getReaderSkipDuplicatePages(),
+          Settings.getReaderCleanBlankPages());
+        if (gen !== this.loadGen) {
+          return;
+        }
+      }
       this.pages = pages;
-      this.mode = Settings.getReaderMode();
+      // 每部漫画独立阅读模式（对齐 Mihon per-manga viewer）：
+      // 本漫画设置过的模式优先，未设置回退全局默认模式
+      const perMangaMode: string = Settings.getViewerMode(`${chapter.mangaId}`);
+      this.mode = perMangaMode !== '' ? perMangaMode : Settings.getReaderMode();
       // 历史保存的智感握姿在当前设备不支持时，静默回退为从左到右
       if (this.mode === 'smart_grip' && !this.gripSupported) {
         this.mode = 'ltr';
@@ -1476,6 +1878,10 @@ export struct ReaderPage {
     }
     this.loading = false;
     this.armAutoPage();
+    // 会话开关开着：新章加载完成后自动开始图片翻译
+    if (this.transOn && this.pages.length > 0) {
+      void this.translateChapterImages();
+    }
   }
 
   private async refreshNeighbors(): Promise<void> {
@@ -1497,10 +1903,13 @@ export struct ReaderPage {
     this.nextChapterName = nextName;
   }
 
-  // 非 RTL：[上一章过渡, 页0..页N-1, 下一章过渡]；RTL 整体反转（阅读前进 = 索引递减）
+  // 非 RTL：[上一章过渡, (双页封面独立时空白占位), 页0..页N-1, 下一章过渡]；
+  // RTL 整体反转（阅读前进 = 索引递减），双页成组对齐时在下一章过渡页后垫空白占位
   private applyMode(scrollToResume: boolean): void {
     this.resetZoom();
-    const cellCount = this.pages.length + 2;
+    this.flipTarget = -1;
+    const extra = this.dualExtra();
+    const cellCount = this.pages.length + 2 + extra;
     this.coverX = Util.zeros(cellCount);
     this.coverY = Util.zeros(cellCount);
     this.coverZ = Util.zeros(cellCount);
@@ -1509,22 +1918,32 @@ export struct ReaderPage {
     const nextT: SPage = { index: -2, url: TRANS_NEXT_URL };
     if (this.mode === 'rtl') {
       cells.push(nextT);
+      if (extra > 0) {
+        // 双页成组对齐占位：保证封面组按“封面独立”设置落位
+        const blankCell: SPage = { index: -3, url: DUAL_BLANK_URL };
+        cells.push(blankCell);
+      }
       for (let i = this.pages.length - 1; i >= 0; i--) {
         cells.push(this.pages[i]);
       }
       cells.push(prevT);
       this.dataSource.setPages(cells);
-      this.displayIndex = this.pages.length - this.currentReal;
+      this.displayIndex = this.realToDisplay(this.currentReal);
     } else {
       cells.push(prevT);
+      if (extra > 0) {
+        // 双页封面独立：上一章过渡页后垫空白占位，封面页不再与过渡页配对
+        const blankCell: SPage = { index: -3, url: DUAL_BLANK_URL };
+        cells.push(blankCell);
+      }
       for (let i = 0; i < this.pages.length; i++) {
         cells.push(this.pages[i]);
       }
       cells.push(nextT);
       this.dataSource.setPages(cells);
-      this.displayIndex = this.currentReal + 1;
+      this.displayIndex = this.realToDisplay(this.currentReal);
     }
-    if (this.mode === 'webtoon' && scrollToResume) {
+    if (this.stripMode() && scrollToResume) {
       const target = this.currentReal + STRIP_LEAD_COUNT;
       if (this.resumeTimerId !== -1) {
         clearTimeout(this.resumeTimerId);
@@ -1537,8 +1956,17 @@ export struct ReaderPage {
     this.updateGripListener(true);
   }
 
-  // 展示单元格（含过渡页）→ 真实页序；过渡页换算结果越界由调用方校验
+  // 展示单元格（含过渡页）→ 真实页序；双页取组内先读页（LTR 左页、RTL 右页），
+  // 组内无真实页（纯过渡组）返回 -1 由调用方校验
   private displayToReal(displayIdx: number): number {
+    if (this.dualPageActive()) {
+      const rtl = this.mode === 'rtl';
+      const first = this.dualCellReal(rtl ? displayIdx + 1 : displayIdx);
+      if (first >= 0) {
+        return first;
+      }
+      return this.dualCellReal(rtl ? displayIdx : displayIdx + 1);
+    }
     if (this.mode === 'rtl') {
       return this.pages.length - displayIdx;
     }
@@ -1546,18 +1974,32 @@ export struct ReaderPage {
   }
 
   private realToDisplay(realIdx: number): number {
+    if (this.dualPageActive()) {
+      // 真实页所在单元格 → 对齐到组起始格（偶数）
+      const cell = this.mode === 'rtl' ? this.pages.length + this.dualExtra() - realIdx
+        : realIdx + (this.dualCover ? 1 : 2);
+      return cell - (cell % 2);
+    }
     if (this.mode === 'rtl') {
       return this.pages.length - realIdx;
     }
     return realIdx + 1;
   }
 
-  // 展示单元格种类：'prev'/'next' 为过渡页，'' 为普通页（首尾单元格恒为过渡页）
+  // 展示单元格种类：'prev'/'next' 为过渡组/页，'' 为普通页（首尾单元格恒为过渡）
   private cellKind(cell: number): string {
     if (cell === 0) {
       return this.mode === 'rtl' ? 'next' : 'prev';
     }
-    if (cell === this.pages.length + 1) {
+    const lastCell = this.pages.length + 1 + this.dualExtra();
+    if (this.dualPageActive()) {
+      // 双页：远端过渡页所在组整体视为过渡组
+      if (cell === lastCell - (lastCell % 2)) {
+        return this.mode === 'rtl' ? 'prev' : 'next';
+      }
+      return '';
+    }
+    if (cell === lastCell) {
       return this.mode === 'rtl' ? 'prev' : 'next';
     }
     return '';
@@ -1565,10 +2007,15 @@ export struct ReaderPage {
 
   private async onSwipe(displayIdx: number): Promise<void> {
     this.displayIndex = displayIdx;
+    this.flipTarget = -1;
     this.resetZoom();
     this.armAutoPage();
     const kind = this.cellKind(displayIdx);
     if (kind === 'next') {
+      // 双页：边界组可能与末页同屏，先记录组内真实页进度
+      if (this.dualPageActive()) {
+        await this.persistDualBoundary(displayIdx);
+      }
       // 落在“下一章”过渡页：没有下一章时呼出菜单（对齐 Mihon），有则等待继续前翻
       if (!this.hasNext) {
         this.showMenu = true;
@@ -1576,10 +2023,27 @@ export struct ReaderPage {
       return;
     }
     if (kind === 'prev') {
+      // 双页：边界组可能与封面同屏，先记录组内真实页进度
+      if (this.dualPageActive()) {
+        await this.persistDualBoundary(displayIdx);
+      }
       return;
     }
     const real = this.displayToReal(displayIdx);
+    // 空白占位/过渡页等非正文页：不更新阅读进度
+    if (real < 0 || real >= this.pages.length) {
+      return;
+    }
     if (real !== this.currentReal) {
+      this.currentReal = real;
+      await this.persistProgress();
+    }
+  }
+
+  // 双页边界组（过渡页与真实页同组）内真实页进度记录
+  private async persistDualBoundary(displayIdx: number): Promise<void> {
+    const real = this.displayToReal(displayIdx);
+    if (real >= 0 && real < this.pages.length && real !== this.currentReal) {
       this.currentReal = real;
       await this.persistProgress();
     }
@@ -1609,10 +2073,11 @@ export struct ReaderPage {
   private setMode(mode: string): void {
     this.mode = mode;
     this.transOverlay = 0;
-    Settings.setReaderMode(mode);
+    // 模式按漫画保存（对齐 Mihon per-manga viewer），不改全局默认模式
+    Settings.setViewerMode(`${this.mangaId}`, mode);
     this.applyMode(true);
-    // 条漫不支持自动翻页，切回分页模式时若此前开启则恢复倒计时
-    if (this.mode === 'webtoon') {
+    // 条漫/连续不支持自动翻页，切回分页模式时若此前开启则恢复倒计时
+    if (this.stripMode()) {
       this.stopAutoPage();
     } else {
       this.armAutoPage();
@@ -1626,6 +2091,9 @@ export struct ReaderPage {
     if (this.mode === 'webtoon') {
       return 'reader_webtoon';
     }
+    if (this.mode === 'continuous') {
+      return 'reader_continuous';
+    }
     if (this.mode === 'vertical') {
       return 'reader_vertical';
     }
@@ -1637,7 +2105,7 @@ export struct ReaderPage {
 
   // 当前设备可用的阅读模式（智感握姿仅在支持的设备上提供）
   private availableModes(): string[] {
-    const modes: string[] = ['ltr', 'rtl', 'vertical', 'webtoon'];
+    const modes: string[] = ['ltr', 'rtl', 'vertical', 'webtoon', 'continuous'];
     if (this.gripSupported) {
       modes.push('smart_grip');
     }
@@ -1646,7 +2114,8 @@ export struct ReaderPage {
 
   private modeOptions(): ResourceStr[] {
     const opts: ResourceStr[] = [$r('app.string.reader_mode_ltr'), $r('app.string.reader_mode_rtl'),
-      $r('app.string.reader_mode_vertical'), $r('app.string.reader_mode_webtoon')];
+      $r('app.string.reader_mode_vertical'), $r('app.string.reader_mode_webtoon'),
+      $r('app.string.reader_mode_continuous')];
     if (this.gripSupported) {
       opts.push($r('app.string.reader_mode_smart_grip'));
     }
@@ -1654,7 +2123,7 @@ export struct ReaderPage {
   }
 
   private modeIcons(): string[] {
-    const icons: string[] = ['reader_ltr', 'reader_rtl', 'reader_vertical', 'reader_webtoon'];
+    const icons: string[] = ['reader_ltr', 'reader_rtl', 'reader_vertical', 'reader_webtoon', 'reader_continuous'];
     if (this.gripSupported) {
       icons.push('smart_grip');
     }
@@ -1690,9 +2159,99 @@ export struct ReaderPage {
     Settings.setReaderCrop(v);
   }
 
-  // 双页显示：横屏（内容区宽>高）时横向分页模式（LTR/RTL/智感握姿）下 Swiper 一屏两页
+  // 条漫/连续滚动模式（像素直绘竖向滚动）
+  private stripMode(): boolean {
+    return this.mode === 'webtoon' || this.mode === 'continuous';
+  }
+
+  // 双页显示：'auto'=横屏（内容区宽>高）自动（默认），'force'=始终双页，'off'=始终单页；
+  // 条漫/连续与垂直模式不适用
   private dualPageActive(): boolean {
-    return this.isLandscape && this.mode !== 'vertical' && this.mode !== 'webtoon';
+    if (this.dualPageMode === 'off' || this.stripMode() || this.mode === 'vertical') {
+      return false;
+    }
+    if (this.dualPageMode === 'force') {
+      return true;
+    }
+    return this.isLandscape;
+  }
+
+  // 双页“封面独立成页”占位数（按组翻页时用于成组对齐）：
+  // LTR 关闭该开关时在上一章过渡页后垫 1 张空白，使 (p0,p1) 成组、封面不与过渡页同屏；
+  // RTL 需按 p0 所在格奇偶性垫 1 张对齐封面组（开=封面与上一章过渡页同组，关=封面与 p1 同组）
+  private dualExtra(): number {
+    if (!this.dualPageActive()) {
+      return 0;
+    }
+    if (this.mode === 'rtl') {
+      // 无垫时 p0 位于第 n 格；cover=true 需其落偶数格（与 prevT 成组），否则落奇数格（与 p1 成组）
+      const p0Even = this.pages.length % 2 === 0;
+      return p0Even === this.dualCover ? 0 : 1;
+    }
+    return this.dualCover ? 0 : 1;
+  }
+
+  // 双页单元格 → 真实页序；过渡页/空白占位返回 -1
+  private dualCellReal(cell: number): number {
+    if (this.mode === 'rtl') {
+      const real = this.pages.length + this.dualExtra() - cell;
+      return real >= 0 && real < this.pages.length ? real : -1;
+    }
+    const real = cell - (this.dualCover ? 1 : 2);
+    return real >= 0 && real < this.pages.length ? real : -1;
+  }
+
+  // 双页最后一组的起始单元格
+  private lastGroupStart(): number {
+    const lastCell = this.pages.length + 1 + this.dualExtra();
+    return lastCell - (lastCell % 2);
+  }
+
+  // 双页按组步进：一次前进/后退一组（两页）；边界组朝章内方向先回到正文组
+  private stepDual(delta: number): void {
+    const dir = this.mode === 'rtl' ? -delta : delta;
+    const base = this.flipTarget >= 0 ? this.flipTarget : this.displayIndex;
+    const kind = this.cellKind(base);
+    if (kind === 'next') {
+      if (delta > 0) {
+        this.gotoChapter(true, true);
+      } else if (this.displayToReal(base) >= 0) {
+        this.moveGroup(dir);
+      } else {
+        this.backFromTransition();
+      }
+      return;
+    }
+    if (kind === 'prev') {
+      if (delta < 0) {
+        this.gotoChapter(false, true);
+      } else if (this.displayToReal(base) >= 0) {
+        this.moveGroup(dir);
+      } else {
+        this.backFromTransition();
+      }
+      return;
+    }
+    this.moveGroup(dir);
+  }
+
+  // 双页翻一组（2 个单元格），越界不动；走控制器保证组切换动画
+  private moveGroup(dir: number): void {
+    const base = this.flipTarget >= 0 ? this.flipTarget : this.displayIndex;
+    const target = base + dir * 2;
+    if (target < 0 || target > this.lastGroupStart()) {
+      return;
+    }
+    Haptics.soft();
+    this.flipTarget = target;
+    try {
+      this.swiperCtrl.changeIndex(target, true);
+    } catch (e) {
+      // Swiper 未挂载：回退属性瞬跳
+      this.flipTarget = -1;
+      this.displayIndex = target;
+      this.onSwipe(target);
+    }
   }
 
   // Slider 跳页（按真实页序）
@@ -1702,7 +2261,7 @@ export struct ReaderPage {
     }
     const display = this.realToDisplay(real);
     this.displayIndex = display;
-    if (this.mode === 'webtoon') {
+    if (this.stripMode()) {
       this.scroller.scrollToIndex(display, false, ScrollAlign.START);
       this.currentReal = real;
       this.persistProgress();
@@ -1881,7 +2440,7 @@ export struct ReaderPage {
       Util.toastRes(this.getUIContext(), $r('app.string.reader_auto_page_off'));
       return;
     }
-    if (this.mode === 'webtoon') {
+    if (this.stripMode()) {
       Util.toastRes(this.getUIContext(), $r('app.string.reader_auto_page_webtoon_off'));
       return;
     }
@@ -1909,7 +2468,7 @@ export struct ReaderPage {
       clearTimeout(this.autoTimerId);
       this.autoTimerId = -1;
     }
-    if (!this.autoRunning || this.loading || this.autoPageSec <= 0 || this.mode === 'webtoon') {
+    if (!this.autoRunning || this.loading || this.autoPageSec <= 0 || this.stripMode()) {
       return;
     }
     this.autoTimerId = setTimeout(() => {
@@ -1922,8 +2481,13 @@ export struct ReaderPage {
 
   // 在过渡页上继续前/后翻即切换章节（上一章落在末页，下一章落在首页）
   private step(delta: number): void {
+    if (this.dualPageActive()) {
+      this.stepDual(delta);
+      return;
+    }
     const ddelta = this.mode === 'rtl' ? -delta : delta;
-    const kind = this.cellKind(this.displayIndex);
+    const base = this.flipTarget >= 0 ? this.flipTarget : this.displayIndex;
+    const kind = this.cellKind(base);
     if (kind === 'next') {
       if (delta > 0) {
         this.gotoChapter(true, true);
@@ -1940,26 +2504,54 @@ export struct ReaderPage {
       }
       return;
     }
-    const target = this.displayIndex + ddelta;
+    const target = base + ddelta;
     if (target < 0 || target > this.pages.length + 1) {
       return;
     }
     Haptics.soft();
-    this.displayIndex = target;
-    this.onSwipe(target);
+    // 走控制器步进（自带切换动画）；不预写 displayIndex，属性变化是瞬跳
+    this.flipTarget = target;
+    try {
+      if (ddelta > 0) {
+        this.swiperCtrl.showNext();
+      } else {
+        this.swiperCtrl.showPrevious();
+      }
+    } catch (e) {
+      // Swiper 未挂载：回退属性瞬跳
+      this.flipTarget = -1;
+      this.displayIndex = target;
+      this.onSwipe(target);
+    }
   }
 
   // 从过渡页返回本章边界页（真实进度未变，仅回到当前页）
   private backFromTransition(): void {
     const back = this.realToDisplay(this.currentReal);
-    this.displayIndex = back;
-    this.onSwipe(back);
+    this.flipTarget = back;
+    try {
+      this.swiperCtrl.changeIndex(back, true);
+    } catch (e) {
+      // Swiper 未挂载：回退属性瞬跳
+      this.flipTarget = -1;
+      this.displayIndex = back;
+      this.onSwipe(back);
+    }
   }
 
   // ---- 键盘控制（外接键盘/PC）：方向键/PgUp/PgDn/空格翻页，回车呼出菜单，Escape 逐级退出 ----
 
   private handleReaderKey(event: KeyEvent): void {
     if (event.type !== KeyType.Down) {
+      return;
+    }
+    // 音量键翻页（阅读体验开关）：音量上=上一页，音量下=下一页；
+    // 菜单/弹层打开或加载中不接管按键，保留系统音量调节
+    if (this.volumeTurn && !this.loading && this.pages.length > 0 && !this.showMenu &&
+      !this.showSettings && !this.showModeSheet && !this.showOrientationSheet &&
+      !this.showChapterSheet &&
+      (event.keyCode === KeyCode.KEYCODE_VOLUME_UP || event.keyCode === KeyCode.KEYCODE_VOLUME_DOWN)) {
+      this.keyTurn(event.keyCode === KeyCode.KEYCODE_VOLUME_UP ? -1 : 1);
       return;
     }
     if (event.keyCode === KeyCode.KEYCODE_ESCAPE) {
@@ -1998,7 +2590,7 @@ export struct ReaderPage {
       return;
     }
     let delta = 0;
-    const verticalScroll = this.mode === 'vertical' || this.mode === 'webtoon';
+    const verticalScroll = this.mode === 'vertical' || this.stripMode();
     if (event.keyCode === KeyCode.KEYCODE_PAGE_DOWN || event.keyCode === KeyCode.KEYCODE_SPACE) {
       delta = 1;
     } else if (event.keyCode === KeyCode.KEYCODE_PAGE_UP) {
@@ -2033,7 +2625,7 @@ export struct ReaderPage {
       this.showSettings || this.showModeSheet || this.showOrientationSheet) {
       return;
     }
-    if (this.mode === 'webtoon') {
+    if (this.stripMode()) {
       this.scroller.scrollBy(0, delta * (this.readerH > 0 ? this.readerH : 640));
       return;
     }
@@ -2056,11 +2648,11 @@ export struct ReaderPage {
   // 只能调用 @Builder 方法，不能内联 UI 组件语法） ----
 
   private useCurl(): boolean {
-    return this.pageAnim === 'curl' && this.mode !== 'webtoon' && this.mode !== 'vertical' && this.pages.length > 0;
+    return this.pageAnim === 'curl' && !this.stripMode() && this.mode !== 'vertical' && this.pages.length > 0;
   }
 
   private curlDual(): boolean {
-    return this.isLandscape && this.mode !== 'vertical' && this.mode !== 'webtoon';
+    return this.dualPageActive();
   }
 
   private curlCount(): number {
@@ -2234,12 +2826,40 @@ export struct ReaderPage {
       return;
     }
     const p = proxy.position;
+    const span = proxy.mainAxisLength;
+    const selected = proxy.selectedIndex;
+    if (this.dualPageActive()) {
+      // 按组翻页：position 含各页槽位偏移，组位移比例 = p - (i - 组起始)，
+      // 前翻 move∈[-2,0]、后翻 move∈[0,2]，符号即方向
+      const gs = selected - (selected % 2);
+      const rel = i - gs;
+      const move = p - rel;
+      if (Math.abs(move) < 0.001 || Math.abs(move) >= 2 - 0.001) {
+        // 起始/完成帧：恢复默认布局
+        this.setCover(i, 0, 0, 0);
+        return;
+      }
+      if (move < 0) {
+        // 前翻：离场组原位固定垫底，进场组自然滑入覆盖
+        if (rel === 0 || rel === 1) {
+          this.setCover(i, -move * span, 0, 0);
+        } else {
+          this.setCover(i, 0, 0, 2);
+        }
+      } else {
+        // 后翻：进场组固定于窗口槽垫底，离场组自然滑出揭开
+        if (rel === -2 || rel === -1) {
+          this.setCover(i, (2 - move) * span, 0, 0);
+        } else {
+          this.setCover(i, 0, 0, 2);
+        }
+      }
+      return;
+    }
     if (Math.abs(p - Math.round(p)) < 0.001) {
       this.setCover(i, 0, 0, 0);
       return;
     }
-    const span = proxy.mainAxisLength;
-    const selected = proxy.selectedIndex;
     const vertical = this.mode === 'vertical';
     const pinX = vertical ? 0 : -p * span;
     const pinY = vertical ? -p * span : 0;
@@ -2325,6 +2945,9 @@ export struct ReaderPage {
     }
     if (this.mode === 'webtoon') {
       return $r('app.string.reader_mode_webtoon');
+    }
+    if (this.mode === 'continuous') {
+      return $r('app.string.reader_mode_continuous');
     }
     if (this.mode === 'smart_grip') {
       return $r('app.string.reader_mode_smart_grip');

@@ -1,5 +1,6 @@
-﻿// 应用内图标组件：单套 material-symbols SVG（无 fill 属性），
-// 使用时通过 fillColor 以当前主题色板填充（默认 pal.text，可用 tint 覆盖）。
+﻿// 应用内图标：Material Symbols（无 fill，由 fillColor 着色）。
+// 双页用 two_pager，智感握姿用 mobile_arrow_right。
+// 阅读方向、条漫、滚动、连续没有同名符号，用同一套框线、线宽和箭头拼出。
 // 用法：AppIcon({ name: 'search', iconSize: 24 })，name 为 icons 名（不带 ic_ 前缀）。
 import { ThemePalette } from '../../common/Theme';
 
@@ -79,6 +80,7 @@ const ICONS: Record<string, Resource> = {
   'reader_webtoon': $r('app.media.ic_reader_webtoon'),
   'reader_vertical': $r('app.media.ic_reader_vertical'),
   'reader_scroll': $r('app.media.ic_reader_scroll'),
+  'reader_continuous': $r('app.media.ic_reader_continuous'),
   'reader_double': $r('app.media.ic_reader_double'),
   'smart_grip': $r('app.media.ic_smart_grip'),
   'stay_current_portrait': $r('app.media.ic_stay_current_portrait'),

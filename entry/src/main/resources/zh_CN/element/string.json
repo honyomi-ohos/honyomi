@@ -1161,6 +1161,70 @@
       "value": "条漫侧边距"
     },
     {
+      "name": "reader_webtoon_gap",
+      "value": "页间距"
+    },
+    {
+      "name": "reader_mode_continuous",
+      "value": "连续滚动"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "双页显示"
+    },
+    {
+      "name": "reader_dual_auto",
+      "value": "自动（横屏）"
+    },
+    {
+      "name": "reader_dual_force",
+      "value": "始终双页"
+    },
+    {
+      "name": "reader_dual_off",
+      "value": "关闭"
+    },
+    {
+      "name": "reader_dual_cover",
+      "value": "封面独立成页"
+    },
+    {
+      "name": "reader_volume_turn",
+      "value": "音量键翻页"
+    },
+    {
+      "name": "reader_keep_screen_on",
+      "value": "阅读时屏幕常亮"
+    },
+    {
+      "name": "reader_show_header_footer",
+      "value": "显示章节名与页码"
+    },
+    {
+      "name": "reader_preload_pages",
+      "value": "预加载后续页数"
+    },
+    {
+      "name": "reader_skip_duplicate_pages",
+      "value": "跳过重复页"
+    },
+    {
+      "name": "reader_clean_blank_pages",
+      "value": "清理空白页"
+    },
+    {
+      "name": "reader_set_experience_group",
+      "value": "阅读体验"
+    },
+    {
+      "name": "reader_set_page_process_group",
+      "value": "页面处理"
+    },
+    {
+      "name": "reader_set_mode_continuous",
+      "value": "连续滚动"
+    },
+    {
       "name": "reader_last_chapter",
       "value": "已经是最后一章"
     },
@@ -2571,6 +2635,66 @@
     {
       "name": "novel_trans_cancel",
       "value": "已取消翻译"
+    },
+    {
+      "name": "manga_ocr_unavailable",
+      "value": "文字识别服务不可用，请稍后重试（模拟器可能不支持）"
+    },
+    {
+      "name": "manga_trans_image",
+      "value": "图片翻译"
+    },
+    {
+      "name": "manga_trans_image_sub",
+      "value": "开启后自动识别并翻译每一页，叠加显示译文"
+    },
+    {
+      "name": "novel_trans_chapter",
+      "value": "整章翻译"
+    },
+    {
+      "name": "novel_trans_chapter_sub",
+      "value": "开启后自动翻译本章并展示译文"
+    },
+    {
+      "name": "reader_ctx_save_page",
+      "value": "保存本页图片"
+    },
+    {
+      "name": "reader_ctx_copy_page",
+      "value": "复制图片"
+    },
+    {
+      "name": "reader_ctx_share_page",
+      "value": "分享本页"
+    },
+    {
+      "name": "reader_ctx_view_original",
+      "value": "查看原图"
+    },
+    {
+      "name": "reader_page_saved",
+      "value": "已保存本页图片"
+    },
+    {
+      "name": "reader_page_save_failed",
+      "value": "保存失败"
+    },
+    {
+      "name": "reader_save_confirm_title",
+      "value": "保存图片到图库"
+    },
+    {
+      "name": "reader_page_copied",
+      "value": "已复制图片"
+    },
+    {
+      "name": "reader_page_copy_failed",
+      "value": "复制失败"
+    },
+    {
+      "name": "reader_page_share_failed",
+      "value": "分享失败"
     },
     {
       "name": "novel_mode_scroll",

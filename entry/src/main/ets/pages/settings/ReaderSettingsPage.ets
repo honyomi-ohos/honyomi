@@ -9,7 +9,7 @@ const THEME_VALUES: number[] = [3, 0, 1, 2, 4];
 // 自动翻页间隔（秒，0=关闭；华为阅读对齐）
 const AUTO_PAGE_VALUES: number[] = [0, 5, 10, 15, 20, 30, 60];
 
-// 阅读器设置内容：默认模式/页码/背景色/亮度（双页改为横屏自动，无需设置项）
+// 阅读器设置内容：默认模式/阅读体验/页面处理/显示/亮度
 @Component
 export struct ReaderSettingsContent {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
@@ -17,14 +17,16 @@ export struct ReaderSettingsContent {
   private modeValues: string[] = [];
   private modeOptions: ResourceStr[] = [];
   private autoPageOptions: ResourceStr[] = [];
+  private preloadOptions: ResourceStr[] = [];
 
   aboutToAppear(): void {
-    this.modeValues = ['ltr', 'rtl', 'vertical', 'webtoon'];
+    this.modeValues = ['ltr', 'rtl', 'vertical', 'webtoon', 'continuous'];
     this.modeOptions = [
       $r('app.string.reader_set_mode_ltr'),
       $r('app.string.reader_set_mode_rtl'),
       $r('app.string.reader_set_mode_vertical'),
-      $r('app.string.reader_set_mode_webtoon')
+      $r('app.string.reader_set_mode_webtoon'),
+      $r('app.string.reader_set_mode_continuous')
     ];
     // 智感握姿仅在支持的设备上提供
     if (GripSupport.isSupported()) {
@@ -41,6 +43,10 @@ export struct ReaderSettingsContent {
         $r('app.string.reader_auto_sec_fmt'), [AUTO_PAGE_VALUES[i]]));
     }
     this.autoPageOptions = pageOpts;
+    // 预加载后续页数选项：0-10 页
+    for (let i = 0; i <= 10; i++) {
+      this.preloadOptions.push(`${i}`);
+    }
   }
 
   build() {
@@ -62,6 +68,59 @@ export struct ReaderSettingsContent {
             selectedIndex: this.autoPageIndex(),
             onSelectIndex: (index: number): void => {
               Settings.setReaderAutoPageSec(AUTO_PAGE_VALUES[index]);
+            }
+          })
+        }
+
+        PrefGroup({ groupTitle: $r('app.string.reader_set_experience_group') }) {
+          PrefSwitchRow({
+            title: $r('app.string.reader_volume_turn'),
+            initValue: Settings.getReaderVolumeTurn(),
+            apply: (value: boolean): void => {
+              Settings.setReaderVolumeTurn(value);
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          PrefSwitchRow({
+            title: $r('app.string.reader_keep_screen_on'),
+            initValue: Settings.getReaderKeepScreenOn(),
+            apply: (value: boolean): void => {
+              Settings.setReaderKeepScreenOn(value);
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          PrefSwitchRow({
+            title: $r('app.string.reader_show_header_footer'),
+            initValue: Settings.getReaderShowHeaderFooter(),
+            apply: (value: boolean): void => {
+              Settings.setReaderShowHeaderFooter(value);
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          PrefSelectRow({
+            title: $r('app.string.reader_preload_pages'),
+            options: this.preloadOptions,
+            selectedIndex: Settings.getReaderPreloadPages(),
+            onSelectIndex: (index: number): void => {
+              Settings.setReaderPreloadPages(index);
+            }
+          })
+        }
+
+        PrefGroup({ groupTitle: $r('app.string.reader_set_page_process_group') }) {
+          PrefSwitchRow({
+            title: $r('app.string.reader_skip_duplicate_pages'),
+            initValue: Settings.getReaderSkipDuplicatePages(),
+            apply: (value: boolean): void => {
+              Settings.setReaderSkipDuplicatePages(value);
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          PrefSwitchRow({
+            title: $r('app.string.reader_clean_blank_pages'),
+            initValue: Settings.getReaderCleanBlankPages(),
+            apply: (value: boolean): void => {
+              Settings.setReaderCleanBlankPages(value);
             }
           })
         }

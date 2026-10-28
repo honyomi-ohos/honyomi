@@ -373,3 +373,55 @@ export struct ConfirmDialog {
     this.onClose();
   }
 }
+
+// 保存确认弹窗：系统保存对话框不可用时的回退方案，
+// 通过 SaveButton 安全控件获取临时媒体库授权后创建资源
+@CustomDialog
+export struct SaveConfirmDialog {
+  controller?: CustomDialogController;
+  title: Resource | string = '';
+  fileName: string = '';
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  onConfirmed: () => void = () => {
+  };
+  onCancel: () => void = () => {
+  };
+
+  build() {
+    Column({ space: 16 }) {
+      Text(this.title)
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+      Text(this.fileName)
+        .fontSize(13)
+        .fontColor(this.pal.sub)
+        .maxLines(2)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+      Row({ space: 12 }) {
+        Button($r('app.string.common_cancel'))
+          .backgroundColor(this.pal.chip)
+          .fontColor(this.pal.text)
+          .onClick(() => {
+            if (this.controller !== undefined) {
+              this.controller.close();
+            }
+            this.onCancel();
+          })
+        SaveButton({ text: SaveDescription.SAVE_TO_GALLERY, buttonType: ButtonType.Capsule })
+          .onClick((event: ClickEvent, result: SaveButtonOnClickResult) => {
+            if (result === SaveButtonOnClickResult.SUCCESS) {
+              if (this.controller !== undefined) {
+                this.controller.close();
+              }
+              this.onConfirmed();
+            }
+          })
+      }
+      .width('100%')
+      .justifyContent(FlexAlign.End)
+    }
+    .padding(20)
+    .width('100%')
+  }
+}

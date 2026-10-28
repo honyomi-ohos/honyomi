@@ -233,9 +233,10 @@ export class TtsPlaybackService {
 
   // ---- 播放控制 ----
 
-  // 从指定章节/段落开始朗读（加载正文并接管 AVSession）
+  // 从指定章节/段落开始朗读（加载正文并接管 AVSession）；
+  // translatedParas：整章已翻译时由阅读器注入译文段落（免取原文，直接朗读译文）
   static async start(mangaId: number, chapterId: number, fromPara: number,
-    context: common.UIAbilityContext): Promise<boolean> {
+    context: common.UIAbilityContext, translatedParas?: string[]): Promise<boolean> {
     if (TtsPlaybackService.starting) {
       return false;
     }
@@ -255,11 +256,16 @@ export class TtsPlaybackService {
       if (gen !== TtsPlaybackService.loadGen) {
         return false;
       }
-      const text = await TtsPlaybackService.fetchText(manga, chapter);
-      if (text === '' || gen !== TtsPlaybackService.loadGen) {
-        return false;
+      let paras: string[] = [];
+      if (translatedParas !== undefined && translatedParas.length > 0) {
+        paras = translatedParas;
+      } else {
+        const text = await TtsPlaybackService.fetchText(manga, chapter);
+        if (text === '' || gen !== TtsPlaybackService.loadGen) {
+          return false;
+        }
+        paras = TtsText.chapterParas(text);
       }
-      const paras = TtsText.chapterParas(text);
       if (paras.length === 0 || gen !== TtsPlaybackService.loadGen) {
         return false;
       }
@@ -501,6 +507,44 @@ export class TtsPlaybackService {
   }
 
   // ---- 相对快进/快退 ----
+
+  // 整章译文注入/还原：阅读器整章翻译完成（或还原原文）后替换当前章朗读内容；
+  // 译文段落数与原文一致（翻译逐段一对一），播放中从当前段切到新内容，暂停态仅替换续播内容
+  static swapParas(paras: string[]): void {
+    if (TtsPlaybackService.chapter === undefined || paras.length === 0) {
+      return;
+    }
+    if (!TtsPlaybackService.playingState && !TtsPlaybackService.pausedState) {
+      return;
+    }
+    TtsPlaybackService.paras = paras;
+    TtsPlaybackService.lang = TtsText.detectLang(paras);
+    const ctx = TtsPlaybackService.ctx;
+    if (!TtsPlaybackService.playingState || ctx === undefined) {
+      return;
+    }
+    const from = TtsPlaybackService.paraIdx >= 0 ? TtsPlaybackService.paraIdx : NovelTts.currentPara();
+    NovelTts.stop();
+    NovelTts.start(paras, from, TtsPlaybackService.lang, ctx).then((ok: boolean) => {
+      if (!TtsPlaybackService.playingState) {
+        return;
+      }
+      if (!ok) {
+        TtsPlaybackService.playingState = false;
+        TtsAvSession.setPlaying(false);
+        TtsPlaybackService.events.emitError('tts_unavailable');
+        TtsPlaybackService.emitState();
+      }
+    }).catch((e: Object): void => {
+      hilog.warn(DOMAIN, TAG, 'restart after paras swap failed: %{public}s', `${e}`);
+      if (TtsPlaybackService.playingState) {
+        TtsPlaybackService.playingState = false;
+        TtsAvSession.setPlaying(false);
+        TtsPlaybackService.events.emitError('tts_unavailable');
+        TtsPlaybackService.emitState();
+      }
+    });
+  }
 
   // 秒级相对跳转（正为快进，负为快退）：TTS 无时间轨，
   // 按 1x 约 4.5 字/秒、乘以当前语速折算目标段的累计字数估算

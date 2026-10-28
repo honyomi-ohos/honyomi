@@ -749,12 +749,6 @@ export struct NovelReaderPage {
         }
       })
       ReaderMenuIconButton({
-        icon: 'translate',
-        onTap: (): void => {
-          this.toggleTranslate();
-        }
-      })
-      ReaderMenuIconButton({
         icon: this.ttsPlaying ? 'pause' : 'playlist_play',
         onTap: (): void => {
           this.startTtsAndOpenPlayer();
@@ -865,6 +859,7 @@ export struct NovelReaderPage {
         lineHeight: this.lineHeight,
         fontFamily: this.fontFamily,
         justify: this.justify,
+        transOn: this.transOn,
         onFontSizeDone: (v: number): void => {
           Settings.setNovelFontSize(v);
           this.ensurePaginated();
@@ -900,6 +895,9 @@ export struct NovelReaderPage {
         },
         onJustify: (v: boolean): void => {
           Settings.setNovelJustify(v);
+        },
+        onTransChange: (v: boolean): void => {
+          this.applyTransSwitch(v);
         }
       })
     }
@@ -1683,8 +1681,18 @@ export struct NovelReaderPage {
     }
   }
 
-  // 听书文本段落：html 章节剥除标签，纯文本按行拆分（与 TtsPlaybackService 共用算法）
+  // 听书文本段落：html 章节剥除标签，纯文本按行拆分（与 TtsPlaybackService 共用算法）；
+  // 整章已翻译时返回译文段落（含插图章节译文在 blocks，body 仍为原文）
   private ttsParas(): string[] {
+    if (this.translated && this.hasImages) {
+      const out: string[] = [];
+      for (let i = 0; i < this.blocks.length; i++) {
+        if (!this.blocks[i].isImage) {
+          out.push(this.blocks[i].text);
+        }
+      }
+      return out;
+    }
     return TtsText.chapterParas(this.body);
   }
 
@@ -1723,7 +1731,7 @@ export struct NovelReaderPage {
     }
     this.ttsPlaying = true;
     const ok = await TtsPlaybackService.start(this.mangaId, this.chapterId, fromPara,
-      Util.hostAbilityContext(this.getUIContext()));
+      Util.hostAbilityContext(this.getUIContext()), this.translated ? paras : undefined);
     if (!ok) {
       this.ttsPlaying = false;
       this.ttsParaIdx = -1;
@@ -1883,27 +1891,28 @@ export struct NovelReaderPage {
     }
   }
 
-  // ---- 整章翻译（菜单图标开关；译文替换原文展示，还原走 rawText 重派生）----
+  // ---- 整章翻译（文本设置面板开关；译文替换原文展示，还原走 rawText 重派生）----
 
-  // 翻译中再点=取消；已展示译文再点=还原原文；否则发起整章翻译
-  private toggleTranslate(): void {
+  // 文本面板「整章翻译」开关：开=立即整章翻译（已译则仅恢复译文态）；关=取消在途并还原原文
+  private applyTransSwitch(v: boolean): void {
+    Settings.setTransEnabled(v);
+    if (v) {
+      this.transOn = true;
+      if (!this.translated) {
+        this.translateChapter();
+      }
+      return;
+    }
+    this.transOn = false;
     if (this.translating) {
       this.transGen += 1;
       this.translating = false;
-      this.transOn = false;
       Util.toastRes(this.getUIContext(), $r('app.string.novel_trans_cancel'));
       return;
     }
     if (this.translated) {
-      this.transOn = false;
       this.restoreOriginalText();
-      return;
     }
-    if (this.body === '') {
-      return;
-    }
-    this.transOn = true;
-    this.translateChapter();
   }
 
   // 整章翻译：普通章节翻 body 段落，含插图章节翻文本块（图片块原样）；
@@ -1956,6 +1965,10 @@ export struct NovelReaderPage {
       this.permille = permille;
       this.pagSig = '';
       this.ensurePaginated();
+      // 听书正在朗读/暂停本章：朗读内容切换为译文（段落数与原文一致，从当前段继续）
+      if (TtsPlaybackService.currentChapterId() === this.chapterId && TtsPlaybackService.isActive()) {
+        TtsPlaybackService.swapParas(this.ttsParas());
+      }
       if (this.mode === 'scroll') {
         // 译文渲染后再按千分比回到原阅读位置
         setTimeout((): void => {
@@ -1981,6 +1994,10 @@ export struct NovelReaderPage {
     this.permille = permille;
     this.pagSig = '';
     this.ensurePaginated();
+    // 听书正在朗读/暂停本章：朗读内容同步还原为原文
+    if (TtsPlaybackService.currentChapterId() === this.chapterId && TtsPlaybackService.isActive()) {
+      TtsPlaybackService.swapParas(this.ttsParas());
+    }
     if (this.mode === 'scroll') {
       setTimeout((): void => {
         this.scrollToPermille(permille);

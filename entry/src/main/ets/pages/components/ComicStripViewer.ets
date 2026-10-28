@@ -2,6 +2,8 @@ import { image } from '@kit.ImageKit';
 import { SPage } from '../../model/Models';
 import { StripImagePipeline } from '../../common/StripImagePipeline';
 import { Theme } from '../../common/Theme';
+import { EMPTY_TRANS, PageTransData } from '../../translate/MangaOcr';
+import { MangaTransOverlay } from './MangaTransOverlay';
 import { ReaderTransition } from './ReaderChrome';
 
 // 条漫(List)头部固定条目数（章节过渡页）：真实页 index = List index - STRIP_LEAD_COUNT
@@ -47,6 +49,8 @@ struct StripItemView {
   @Prop fit: ImageFit = ImageFit.Contain;
   // 单条目最大高度（0=不限）：连续滚动裁边时钳制为阅读区高度
   @Prop maxItemHeight: number = 0;
+  // 图片翻译叠加数据（空数据=未翻译/无文字；不可命名为 overlay：与基类通用属性方法冲突）
+  @Prop transData: PageTransData = new PageTransData(1, 1, []);
   @State pixelMap: image.PixelMap | undefined = undefined;
   @State failed: boolean = false;
   @State loading: boolean = false;
@@ -114,6 +118,12 @@ struct StripItemView {
                   this.onTap();
                 })
             ))
+          // 图片翻译叠加：随图片同缩放同平移，不拦截触摸
+          if (this.transData.boxes.length > 0) {
+            MangaTransOverlay({ data: this.transData, fit: this.fit })
+              .scale({ x: this.zoomScale, y: this.zoomScale })
+              .translate({ x: this.offX, y: this.offY })
+          }
           if (this.zoomScale > 1) {
             // 缩放后覆盖透明层承载平移/捏合，避免 Pan 与 List 滚动手势竞争
             Column()
@@ -273,6 +283,10 @@ export struct ComicStripViewer {
   @Prop fit: ImageFit = ImageFit.Contain;
   // 单条目最大高度（0=不限；连续滚动裁边传阅读区高度）
   @Prop maxItemHeight: number = 0;
+  // 图片翻译叠加：宿主按真实页索引提供译文数据；transStamp 变化驱动条目刷新
+  @Prop transOn: boolean = false;
+  @Prop transStamp: number = 0;
+  overlayFor: (index: number) => PageTransData = (_i: number): PageTransData => EMPTY_TRANS;
   scroller: Scroller = new Scroller();
   private dataSource: StripDataSource = new StripDataSource();
   private lastVisible: number = -1;
@@ -324,6 +338,7 @@ export struct ComicStripViewer {
             isDark: this.isDark,
             fit: this.fit,
             maxItemHeight: this.maxItemHeight,
+            transData: this.transStamp >= 0 && this.transOn ? this.overlayFor(page.index) : EMPTY_TRANS,
             onTap: (): void => {
               this.onTap();
             }

@@ -50,6 +50,26 @@ export class StripImagePipeline {
     }
   }
 
+  // OCR 专用解码：CoreVisionKit 文字识别仅接受 RGBA_8888；
+  // 复用防盗链字节获取与解码上限，不入内存缓存，调用方负责 release()
+  static async loadForOcr(url: string, sourceKey: string, pageUrl: string): Promise<image.PixelMap> {
+    const buffer = await StripImagePipeline.fetchBytes(url, sourceKey, pageUrl);
+    const source: image.ImageSource = image.createImageSource(buffer);
+    try {
+      const base = await StripImagePipeline.decodeOptions(source);
+      const opts: image.DecodingOptions = {
+        desiredPixelFormat: image.PixelMapFormat.RGBA_8888
+      };
+      if (base !== undefined && base.desiredSize !== undefined) {
+        opts.desiredSize = base.desiredSize;
+      }
+      return await source.createPixelMap(opts);
+    } finally {
+      source.release().catch((_e: Object) => {
+      });
+    }
+  }
+
   // 立即回收单张（如章节关闭）
   static release(url: string): void {
     // 同时撤销 inflight 任务并标记已释放：解码完成后不再 put 回缓存，防止条目"复活"
