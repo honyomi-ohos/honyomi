@@ -1,7 +1,10 @@
-import { CategoryRecord } from '../../model/Models';
+import { CategoryRecord, DuplicateManga } from '../../model/Models';
 import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
 import { KeyCode } from '@kit.InputKit';
+import { AppIcon } from './AppIcon';
+import { SmartImage } from './SmartImage';
+import { SourceRegistry } from '../../source/Source';
 
 // 文本输入弹窗（新建分类 / 导入漫画命名 / 敏感偏好输入）
 @CustomDialog
@@ -222,6 +225,276 @@ export struct CategoryDialog {
   }
 }
 
+// 多选分类弹窗（对齐 Mihon ChangeCategoryDialog）：
+// 分类多选 + 编辑分类 / 取消 / 确定；预选 membership 高亮
+@CustomDialog
+export struct ChangeCategoryDialog {
+  controller?: CustomDialogController;
+  categories: CategoryRecord[] = [];
+  // 预选分类 id（编辑已有作品分类时传当前 membership）
+  preselectedIds: number[] = [];
+  title: Resource | string = '';
+  @State selected: Set<number> = new Set<number>();
+  @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  onConfirm: (categoryIds: number[]) => void = (_ids: number[]) => {
+  };
+  onEditCategories: () => void = () => {
+  };
+  onClose: () => void = () => {
+  };
+
+  aboutToAppear(): void {
+    const ids: Set<number> = new Set<number>();
+    for (const id of this.preselectedIds) {
+      ids.add(id);
+    }
+    this.selected = ids;
+  }
+
+  build() {
+    Column({ space: 16 }) {
+      Text(this.title !== '' ? this.title : $r('app.string.action_move_category'))
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+      if (this.categories.length === 0) {
+        Text($r('app.string.information_empty_category_dialog'))
+          .fontSize(14)
+          .fontColor(this.pal.sub)
+      } else {
+        Scroll() {
+          Column() {
+            ForEach(this.categories, (cat: CategoryRecord) => {
+              Row({ space: 12 }) {
+                Checkbox()
+                  .select(this.selected.has(cat.id))
+                  .selectedColor(this.pal.primary)
+                  .onChange((_checked: boolean) => {
+                    this.toggle(cat.id);
+                  })
+                Text(Util.categoryLabel(cat.name))
+                  .fontSize(15)
+                  .fontColor(this.pal.text)
+                  .layoutWeight(1)
+                  .maxLines(1)
+                  .textOverflow({ overflow: TextOverflow.Ellipsis })
+              }
+              .width('100%')
+              .constraintSize({ minHeight: 44 })
+              .onClick(() => {
+                this.toggle(cat.id);
+              })
+            }, (cat: CategoryRecord) => `ccat-${cat.id}`)
+          }
+          .width('100%')
+        }
+        .constraintSize({ maxHeight: 320 })
+        .scrollBar(BarState.Auto)
+        .align(Alignment.TopStart)
+        .width('100%')
+      }
+      Row({ space: 8 }) {
+        Button($r('app.string.action_edit'))
+          .layoutWeight(1)
+          .backgroundColor(this.pal.chip)
+          .fontColor(this.pal.text)
+          .onClick(() => {
+            this.dismiss();
+            this.onEditCategories();
+          })
+        Button($r('app.string.common_cancel'))
+          .layoutWeight(1)
+          .backgroundColor(this.pal.chip)
+          .fontColor(this.pal.text)
+          .onClick(() => {
+            this.dismiss();
+          })
+        Button($r('app.string.common_ok'))
+          .layoutWeight(1)
+          .backgroundColor(this.pal.primary)
+          .fontColor(this.pal.onPrimary)
+          .enabled(this.categories.length > 0)
+          .onClick(() => {
+            const ids: number[] = [];
+            this.selected.forEach((id: number): void => {
+              ids.push(id);
+            });
+            this.dismiss();
+            this.onConfirm(ids);
+          })
+      }
+      .width('100%')
+    }
+    .padding(20)
+    .width('100%')
+    .focusable(true)
+    .defaultFocus(true)
+    .onKeyEvent((event: KeyEvent) => {
+      if (event.type === KeyType.Down && event.keyCode === KeyCode.KEYCODE_ESCAPE) {
+        this.dismiss();
+      }
+    })
+  }
+
+  private toggle(id: number): void {
+    const next: Set<number> = new Set<number>(this.selected);
+    if (next.has(id)) {
+      next.delete(id);
+    } else {
+      next.add(id);
+    }
+    this.selected = next;
+  }
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
+  }
+}
+
+// 疑似重复作品弹窗（对齐 Mihon DuplicateMangaDialog）：
+// 重复卡片横向列表（点击迁移/长按打开详情）+ 依然添加 + 取消
+@CustomDialog
+export struct DuplicateMangaDialog {
+  controller?: CustomDialogController;
+  duplicates: DuplicateManga[] = [];
+  @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  onAddAnyway: () => void = () => {
+  };
+  onOpenManga: (mangaId: number) => void = (_id: number) => {
+  };
+  onMigrate: (mangaId: number) => void = (_id: number) => {
+  };
+  onClose: () => void = () => {
+  };
+
+  build() {
+    Column({ space: 16 }) {
+      Text($r('app.string.possible_duplicates_title'))
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+      Text($r('app.string.possible_duplicates_summary'))
+        .fontSize(13)
+        .fontColor(this.pal.sub)
+        .width('100%')
+      Scroll() {
+        Row({ space: 12 }) {
+          ForEach(this.duplicates, (dup: DuplicateManga) => {
+            Column({ space: 6 }) {
+              Stack({ alignContent: Alignment.TopStart }) {
+                SmartImage({
+                  url: dup.coverUrl,
+                  sourceKey: dup.sourceKey,
+                  fit: ImageFit.Cover,
+                  placeholderIconSize: 20
+                })
+                  .width('100%')
+                  .height(140)
+                  .borderRadius(8)
+                  .backgroundColor(this.pal.chip)
+                Text($r('app.string.manga_num_chapters', dup.chapterCount))
+                  .fontSize(10)
+                  .fontColor(this.pal.onPrimary)
+                  .backgroundColor(this.pal.primary)
+                  .borderRadius(8)
+                  .padding({ left: 6, right: 6, top: 2, bottom: 2 })
+                  .margin(4)
+              }
+              .width('100%')
+              Text(dup.title)
+                .fontSize(13)
+                .fontWeight(FontWeight.Medium)
+                .fontColor(this.pal.text)
+                .maxLines(2)
+                .minLines(2)
+                .textOverflow({ overflow: TextOverflow.Ellipsis })
+                .width('100%')
+              if (dup.author !== '') {
+                Text(dup.author)
+                  .fontSize(11)
+                  .fontColor(this.pal.sub)
+                  .maxLines(1)
+                  .textOverflow({ overflow: TextOverflow.Ellipsis })
+                  .width('100%')
+              }
+              Text(Util.statusLabel(dup.status))
+                .fontSize(11)
+                .fontColor(this.pal.sub)
+                .width('100%')
+              Text(this.sourceName(dup))
+                .fontSize(10)
+                .fontColor(this.pal.sub)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Ellipsis })
+                .width('100%')
+            }
+            .width(110)
+            .alignItems(HorizontalAlign.Start)
+            .padding(8)
+            .borderRadius(12)
+            .backgroundColor(this.pal.chip)
+            .onClick(() => {
+              this.dismiss();
+              this.onMigrate(dup.id);
+            })
+            .gesture(LongPressGesture()
+              .onAction(() => {
+                this.dismiss();
+                this.onOpenManga(dup.id);
+              }))
+          }, (dup: DuplicateManga) => `dup-${dup.id}`)
+        }
+        .padding({ top: 4, bottom: 4 })
+      }
+      .scrollable(ScrollDirection.Horizontal)
+      .scrollBar(BarState.Auto)
+      .width('100%')
+      Button($r('app.string.action_add_anyway'))
+        .width('100%')
+        .backgroundColor(this.pal.primary)
+        .fontColor(this.pal.onPrimary)
+        .onClick(() => {
+          this.dismiss();
+          this.onAddAnyway();
+        })
+      Button($r('app.string.common_cancel'))
+        .width('100%')
+        .backgroundColor(this.pal.chip)
+        .fontColor(this.pal.primary)
+        .onClick(() => {
+          this.dismiss();
+        })
+    }
+    .padding(20)
+    .width('100%')
+    .focusable(true)
+    .defaultFocus(true)
+    .onKeyEvent((event: KeyEvent) => {
+      if (event.type === KeyType.Down && event.keyCode === KeyCode.KEYCODE_ESCAPE) {
+        this.dismiss();
+      }
+    })
+  }
+
+  // 源显示名：已注册源取名称，未注册（插件未加载/已卸载）回退 key
+  private sourceName(dup: DuplicateManga): string {
+    const source = SourceRegistry.get(dup.sourceKey);
+    return source !== undefined ? source.name : dup.sourceKey;
+  }
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
+  }
+}
+
 // 导出列选择弹窗（书架列表 CSV 导出：标题/作者，对齐 Mihon ColumnSelectionDialog）
 @CustomDialog
 export struct ExportColumnsDialog {
@@ -398,30 +671,55 @@ export struct SaveConfirmDialog {
         .fontColor(this.pal.sub)
         .maxLines(2)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
+      // 两按钮等宽等高同圆角；SaveButton 不支持 layoutWeight，用等权容器包一层实现等分；
+      // 授权失败也先收起弹窗再提示，避免弹窗滞留
       Row({ space: 12 }) {
         Button($r('app.string.common_cancel'))
+          .layoutWeight(1)
+          .height(40)
+          .borderRadius(20)
           .backgroundColor(this.pal.chip)
           .fontColor(this.pal.text)
           .onClick(() => {
-            if (this.controller !== undefined) {
-              this.controller.close();
-            }
-            this.onCancel();
+            this.dismiss();
           })
-        SaveButton({ text: SaveDescription.SAVE_TO_GALLERY, buttonType: ButtonType.Capsule })
-          .onClick((event: ClickEvent, result: SaveButtonOnClickResult) => {
-            if (result === SaveButtonOnClickResult.SUCCESS) {
-              if (this.controller !== undefined) {
-                this.controller.close();
+        Row() {
+          SaveButton({ text: SaveDescription.SAVE_TO_GALLERY, buttonType: ButtonType.Capsule })
+            .width('100%')
+            .height(40)
+            .backgroundColor(this.pal.primary)
+            .fontColor(this.pal.onPrimary)
+            .onClick((event: ClickEvent, result: SaveButtonOnClickResult) => {
+              this.dismiss();
+              if (result === SaveButtonOnClickResult.SUCCESS) {
+                this.onConfirmed();
+              } else {
+                Util.toastRes(this.getUIContext(), $r('app.string.reader_page_save_failed'));
               }
-              this.onConfirmed();
-            }
-          })
+            })
+        }
+        .layoutWeight(1)
+        // 安全组件忽略 borderRadius（实测渲染为方角），用容器裁剪出与取消一致的圆角
+        .borderRadius(20)
+        .clip(true)
       }
       .width('100%')
-      .justifyContent(FlexAlign.End)
     }
     .padding(20)
     .width('100%')
+    .focusable(true)
+    .defaultFocus(true)
+    .onKeyEvent((event: KeyEvent) => {
+      if (event.type === KeyType.Down && event.keyCode === KeyCode.KEYCODE_ESCAPE) {
+        this.dismiss();
+      }
+    })
+  }
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onCancel();
   }
 }

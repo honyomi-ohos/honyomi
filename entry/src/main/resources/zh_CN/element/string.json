@@ -4150,7 +4150,7 @@
     },
     {
       "name": "trans_engines_hint",
-      "value": "长按拖拽调整引擎优先级"
+      "value": "长按拖拽调整引擎优先级，点击配置引擎密钥"
     },
     {
       "name": "trans_status_ready",
@@ -4207,6 +4207,54 @@
     {
       "name": "trans_deepl",
       "value": "DeepL"
+    },
+    {
+      "name": "action_edit",
+      "value": "编辑"
+    },
+    {
+      "name": "action_add_anyway",
+      "value": "依然添加"
+    },
+    {
+      "name": "information_empty_category_dialog",
+      "value": "还没有创建分类。"
+    },
+    {
+      "name": "possible_duplicates_title",
+      "value": "可能重复的作品"
+    },
+    {
+      "name": "possible_duplicates_summary",
+      "value": "在你的书架中有一些名称相似的作品。\n\n请选择其中一个作品进行迁移或仍然新增。"
+    },
+    {
+      "name": "manga_num_chapters",
+      "value": "共 %d 章"
+    },
+    {
+      "name": "snack_add_to_library",
+      "value": "要添加到书架吗？"
+    },
+    {
+      "name": "delete_downloads_for_manga",
+      "value": "要删除已下载的章节吗？"
+    },
+    {
+      "name": "delete_downloads_for_manga_msg",
+      "value": "将删除该作品的已下载章节。"
+    },
+    {
+      "name": "default_category",
+      "value": "默认归入分类"
+    },
+    {
+      "name": "default_category_summary",
+      "value": "每次都询问"
+    },
+    {
+      "name": "default_category_auto",
+      "value": "自动（按内容类型）"
     }
   ]
 }

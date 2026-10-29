@@ -975,6 +975,16 @@ export class Settings {
 
   // ---- 书架 ----
 
+  // 默认归入分类（对齐 Mihon LibraryPreferences.defaultCategory）：
+  // 0 自动（默认：按内容类型落漫画/小说/动画）| -1 每次都询问 | >0 指定分类 id
+  static getDefaultCategory(): number {
+    return Settings.getNum('defaultCategory', 0);
+  }
+
+  static setDefaultCategory(v: number): void {
+    Settings.setNum('defaultCategory', v);
+  }
+
   // 三态：key 为 'downloaded','unread','started','bookmarked'
   static getUpdatesTriState(key: string): string {
     return Settings.getStr('updFilter:' + key, 'ignore');

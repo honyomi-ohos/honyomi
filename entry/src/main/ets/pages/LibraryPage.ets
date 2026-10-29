@@ -12,12 +12,13 @@ import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { AppKeys } from '../common/AppKeys';
-import { CategoryDialog, ConfirmDialog } from './components/Dialogs';
+import { ChangeCategoryDialog, ConfirmDialog } from './components/Dialogs';
 import { EmptyScreen } from './components/EmptyScreen';
 import { LoadingState } from './components/LoadingState';
 import { AppIcon } from './components/AppIcon';
 import { LibraryMangaItem } from './components/LibraryItems';
 import { LibrarySettingsSheet } from './components/LibrarySettingsSheet';
+import { LibraryAddFlow } from '../common/LibraryAddFlow';
 import { HOME_HEADER_H } from '../common/HdsNavHost';
 
 // LazyForEach 数据源：shownList 变化时 onDataReloaded 通知
@@ -283,6 +284,9 @@ export struct LibraryPage {
   // 输入变化经 @Watch('refreshView') 一次性重算，build 内不做逐帧过滤排序
   @State shownList: MangaRecord[] = [];
   @State categoryCounts: Record<string, number> = {};
+  // manga_category membership 真源（mangaId → 分类 id 列表，仅 inLibrary）：
+  // 分类计数/选中分类过滤/批量分类预选均以 membership 为准，categoryId 仅回退
+  private categoryIdsMap: Map<number, number[]> = new Map<number, number[]>();
   private libSource: LibMangaSource = new LibMangaSource();
   private searchTimer: number = -1;
 
@@ -331,6 +335,7 @@ export struct LibraryPage {
     await AppDb.ready(context);
     this.categories = await CategoryRepo.list();
     this.mangas = await MangaRepo.getLibrary();
+    this.categoryIdsMap = await MangaRepo.libraryCategoryIds();
     this.statsMap = await MangaRepo.stats();
     this.downloadCounts = DownloadService.downloadedChapterCounts();
     this.trackedIds = await TrackRepo.trackedMangaIds();
@@ -523,7 +528,7 @@ export struct LibraryPage {
                 })
             }, (cat: CategoryRecord) => `chip-${cat.id}-${cat.name}`)
           }
-          .padding({ left: 16, right: 16 })
+          .padding({ left: 16, right: 16, top: 8 })
         }
         .scrollable(ScrollDirection.Horizontal)
         .scrollBar(BarState.Off)
@@ -739,19 +744,32 @@ export struct LibraryPage {
   // 输入（搜索词/筛选/排序/分类/洗牌/数据刷新）变化后重算视图缓存（O(M log M) 单次）
   private refreshView(): void {
     const filtered = this.filteredAll();
+    // 分类计数按 membership：一部作品可同时计入多个分类；'0' 为全部分类总数
     const counts: Record<string, number> = {};
     for (const m of filtered) {
-      const key = `${m.categoryId}`;
-      counts[key] = (counts[key] || 0) + 1;
+      const ids: number[] = this.categoryIdsOf(m);
+      for (const cid of ids) {
+        const key = `${cid}`;
+        counts[key] = (counts[key] || 0) + 1;
+      }
     }
     counts['0'] = filtered.length;
     this.categoryCounts = counts;
     const sorted = filtered.slice().sort((a: MangaRecord, b: MangaRecord): number => this.compareMangas(a, b));
     this.shownList = this.selectedCategory > 0 && this.showCategoryTabs ?
-      sorted.filter((m: MangaRecord): boolean => m.categoryId === this.selectedCategory) : sorted;
+      sorted.filter((m: MangaRecord): boolean => this.categoryIdsOf(m).includes(this.selectedCategory)) : sorted;
     this.libSource.setItems(this.shownList);
     // 发布筛选生效态给头部（Navigation 标题栏筛选图标着色）
     AppStorage.setOrCreate(AppKeys.LIB_FILTER_ACTIVE, this.filterActive());
+  }
+
+  // 作品的 membership 分类列表（membership 为空时回退主分类 categoryId）
+  private categoryIdsOf(m: MangaRecord): number[] {
+    const ids: number[] | undefined = this.categoryIdsMap.get(m.id);
+    if (ids !== undefined && ids.length > 0) {
+      return ids;
+    }
+    return [m.categoryId];
   }
 
   // 随机排序洗牌（sortKey === 'random' 时生效）；洗牌后需重算视图
@@ -957,17 +975,16 @@ export struct LibraryPage {
     this.toggleSelection(record.id);
   }
 
-  // 长按快速修改分类：弹分类选择（高亮当前分类），确认后落库刷新
+  // 长按快速修改分类：多选弹窗（预选当前 membership），确认后覆盖落库刷新
   private showQuickCategoryMenu(record: MangaRecord): void {
+    const preselected: number[] = this.categoryIdsOf(record);
     const dialog = new CustomDialogController({
-      builder: CategoryDialog({
+      builder: ChangeCategoryDialog({
         categories: this.categories,
-        selectedId: record.categoryId,
-        onPick: (categoryId: number): void => {
-          if (categoryId === record.categoryId) {
-            return;
-          }
-          MangaRepo.setCategory(record.id, categoryId)
+        preselectedIds: preselected,
+        title: $r('app.string.action_move_category'),
+        onConfirm: (categoryIds: number[]): void => {
+          MangaRepo.setCategories(record.id, LibraryAddFlow.normalizeCategoryIds(categoryIds))
             .then((): Promise<void> => {
               this.clearSelection();
               return this.loadData();
@@ -976,6 +993,9 @@ export struct LibraryPage {
               Util.toastRes(this.getUIContext(), $r('app.string.library_move_failed'));
               this.loadData();
             });
+        },
+        onEditCategories: (): void => {
+          this.pathStack.pushPathByName('Categories', null);
         },
         onClose: (): void => {
           dialog.close();
@@ -986,20 +1006,37 @@ export struct LibraryPage {
     dialog.open();
   }
 
-  // 移动分类（对选中集合批量应用）
+  // 批量移动分类：预选全部选中作品的共有分类，确认后逐个覆盖 membership
   private showMultiCategoryMenu(): void {
+    const ids: number[] = Array.from(this.selection);
+    if (ids.length === 0) {
+      return;
+    }
+    // 共有分类：所有选中作品 membership 均包含的分类才预选
+    const first: number[] = this.categoryIdsOf(this.mangas.find((m: MangaRecord): boolean => m.id === ids[0]) ??
+      new MangaRecord());
+    const common: number[] = first.filter((cid: number): boolean =>
+      ids.every((id: number): boolean => {
+        const manga: MangaRecord | undefined = this.mangas.find((m: MangaRecord): boolean => m.id === id);
+        return manga !== undefined && this.categoryIdsOf(manga).includes(cid);
+      }));
     const dialog = new CustomDialogController({
-      builder: CategoryDialog({
+      builder: ChangeCategoryDialog({
         categories: this.categories,
-        onPick: (categoryId: number): void => {
-          const ids: number[] = Array.from(this.selection);
+        preselectedIds: common,
+        title: $r('app.string.action_move_category'),
+        onConfirm: (categoryIds: number[]): void => {
+          const target: number[] = LibraryAddFlow.normalizeCategoryIds(categoryIds);
           this.clearSelection();
-          Promise.all(ids.map((id: number): Promise<void> => MangaRepo.setCategory(id, categoryId)))
+          Promise.all(ids.map((id: number): Promise<void> => MangaRepo.setCategories(id, target)))
             .then((): Promise<void> => this.loadData())
             .catch((_e: Error): void => {
               Util.toastRes(this.getUIContext(), $r('app.string.library_move_failed'));
               this.loadData();
             });
+        },
+        onEditCategories: (): void => {
+          this.pathStack.pushPathByName('Categories', null);
         },
         onClose: (): void => {
           dialog.close();

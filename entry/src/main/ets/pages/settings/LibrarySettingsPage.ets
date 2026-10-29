@@ -1,5 +1,9 @@
 import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
+import { Util } from '../../common/Util';
+import { AppDb } from '../../data/AppDb';
+import { CategoryRepo } from '../../data/Repos';
+import { CategoryRecord } from '../../model/Models';
 import { NavGlassPage } from '../../common/HdsNavHost';
 import { PrefGroup, PrefSelectRow, PrefSliderRow, PrefSwitchRow } from '../components/Prefs';
 
@@ -8,14 +12,39 @@ const SORT_VALUES: string[] = [
 ];
 const VIEW_VALUES: string[] = ['compact', 'comfortable', 'cover', 'list'];
 
-// 书架设置内容：默认排序/视图/列数/徽标（筛选与三态逻辑在书架过滤弹层中）
+// 书架设置内容：默认归入分类/默认排序/视图/列数/徽标（筛选与三态逻辑在书架过滤弹层中）
 @Component
 export struct LibrarySettingsContent {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  // 分类列表（默认归入分类选项）：挂载后异步加载，加载完成前不渲染该行
+  @State categories: CategoryRecord[] = [];
+
+  aboutToAppear(): void {
+    this.loadCategories();
+  }
 
   build() {
     Scroll() {
       Column({ space: 12 }) {
+        PrefGroup({ groupTitle: $r('app.string.categories_title') }) {
+          if (this.categories.length > 0) {
+            PrefSelectRow({
+              title: $r('app.string.default_category'),
+              options: this.defaultCategoryOptions(),
+              selectedIndex: this.defaultCategoryIndex(),
+              onSelectIndex: (index: number): void => {
+                if (index === 0) {
+                  Settings.setDefaultCategory(0);
+                } else if (index === 1) {
+                  Settings.setDefaultCategory(-1);
+                } else {
+                  Settings.setDefaultCategory(this.categories[index - 2].id);
+                }
+              }
+            })
+          }
+        }
+
         PrefGroup({ groupTitle: $r('app.string.lib_set_sort_group') }) {
           PrefSelectRow({
             title: $r('app.string.lib_set_sort_default'),
@@ -124,6 +153,34 @@ export struct LibrarySettingsContent {
     .height('100%')
     .scrollBar(BarState.Off)
     .align(Alignment.TopStart)
+  }
+
+  private async loadCategories(): Promise<void> {
+    const context = Util.hostAbilityContext(this.getUIContext());
+    await AppDb.ready(context);
+    this.categories = await CategoryRepo.list();
+  }
+
+  // 选项：自动（按内容类型）+ 每次都询问 + 各分类名
+  private defaultCategoryOptions(): ResourceStr[] {
+    const options: ResourceStr[] =
+      [$r('app.string.default_category_auto'), $r('app.string.default_category_summary')];
+    for (const cat of this.categories) {
+      options.push(Util.categoryLabel(cat.name));
+    }
+    return options;
+  }
+
+  private defaultCategoryIndex(): number {
+    const value: number = Settings.getDefaultCategory();
+    if (value === 0) {
+      return 0;
+    }
+    if (value < 0) {
+      return 1;
+    }
+    const index: number = this.categories.findIndex((c: CategoryRecord): boolean => c.id === value);
+    return index >= 0 ? index + 2 : 0;
   }
 
   private sortIndex(): number {

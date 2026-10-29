@@ -1,5 +1,5 @@
-// 翻译设置页：总开关 + 引擎优先级（长按拖拽排序）+ 各引擎密钥配置（BYOK）+ 连通性测试。
-// 引擎凭据均不回显明文，行尾仅显示「已设置/未设置」状态
+// 翻译设置页：总开关 + 引擎优先级（长按拖拽排序，点击行打开该引擎密钥配置）+ 连通性测试。
+// 引擎凭据均不回显明文，行尾仅显示「已配置/未配置/无需配置」状态
 // 拖拽参考官方 grid-drag-sort 示例的"直接拖拽"模式（同分类管理）：
 // 长按浮起（translate/zIndex/scale）→ 跟手位移 → 越过半行高时弹簧动画换位 → 松手持久化
 import { curves } from '@kit.ArkUI';
@@ -23,8 +23,6 @@ export struct TranslationContent {
   @StorageProp('windowW') windowW: number = 0;
   // 引擎优先级内存镜像（持久化 CSV：Settings.transEngineOrder）
   @State engineOrder: string[] = [];
-  // 凭据状态快照（行尾状态展示，顺序同引擎默认优先级）：[百度appid, 百度密钥, 彩云令牌, 有道应用ID, 有道应用密钥]
-  @State credSet: boolean[] = [false, false, false, false, false];
   @State testing: boolean = false;
   // 目标语言（应用内语言码，见 TransLangs.TARGETS）
   @State targetLang: string = 'zh';
@@ -131,6 +129,10 @@ export struct TranslationContent {
           })
       )
     )
+    // 点击行打开该引擎的密钥配置（免密钥引擎提示无需配置）
+    .onClick(() => {
+      this.openEngineConfig(id);
+    })
   }
 
   build() {
@@ -178,52 +180,6 @@ export struct TranslationContent {
           .width('100%')
           .textAlign(TextAlign.Center)
           .padding({ left: 12, right: 12 })
-
-        PrefGroup({ groupTitle: $r('app.string.trans_baidu') }) {
-          TextRow({
-            title: $r('app.string.trans_baidu_appid'),
-            value: this.credLabel(this.credSet[0]),
-            onTap: (): void => {
-              this.editBaidu();
-            }
-          })
-          Divider().color(this.pal.divider).margin({ left: 16 })
-          TextRow({
-            title: $r('app.string.trans_baidu_key'),
-            value: this.credLabel(this.credSet[1]),
-            onTap: (): void => {
-              this.editBaidu();
-            }
-          })
-        }
-
-        PrefGroup({ groupTitle: $r('app.string.trans_caiyun') }) {
-          TextRow({
-            title: $r('app.string.trans_caiyun_token'),
-            value: this.credLabel(this.credSet[2]),
-            onTap: (): void => {
-              this.editCaiyun();
-            }
-          })
-        }
-
-        PrefGroup({ groupTitle: $r('app.string.trans_youdao') }) {
-          TextRow({
-            title: $r('app.string.trans_youdao_key'),
-            value: this.credLabel(this.credSet[3]),
-            onTap: (): void => {
-              this.editYoudao();
-            }
-          })
-          Divider().color(this.pal.divider).margin({ left: 16 })
-          TextRow({
-            title: $r('app.string.trans_youdao_secret'),
-            value: this.credLabel(this.credSet[4]),
-            onTap: (): void => {
-              this.editYoudao();
-            }
-          })
-        }
       }
       .width('100%')
       .padding({ left: 16, right: 16, top: 4, bottom: 24 })
@@ -292,10 +248,6 @@ export struct TranslationContent {
       ? $r('app.string.trans_status_ready') : $r('app.string.trans_status_missing');
   }
 
-  private credLabel(set: boolean): ResourceStr {
-    return set ? $r('app.string.trans_status_set') : $r('app.string.trans_status_missing');
-  }
-
   // 数组内移动引擎（换位），标记顺序已变更
   private itemMove(index: number, newIndex: number): void {
     if (index < 0 || newIndex < 0 || newIndex >= this.engineOrder.length || index === newIndex) {
@@ -323,17 +275,22 @@ export struct TranslationContent {
   private refreshState(): void {
     this.engineOrder = TranslationService.effectiveOrder();
     this.targetLang = Settings.getTransTargetLang();
-    const creds: boolean[] = [
-      Settings.getTransBaiduAppid() !== '',
-      Settings.getTransBaiduKey() !== '',
-      Settings.getTransCaiyunToken() !== '',
-      Settings.getTransYoudaoKey() !== '',
-      Settings.getTransYoudaoSecret() !== ''
-    ];
-    this.credSet = creds;
   }
 
   // ---- 凭据编辑 ----
+
+  // 点击引擎行：需密钥引擎弹出对应配置框，免密钥引擎提示无需配置
+  private openEngineConfig(id: string): void {
+    if (id === 'baidu') {
+      this.editBaidu();
+    } else if (id === 'youdao') {
+      this.editYoudao();
+    } else if (id === 'caiyun') {
+      this.editCaiyun();
+    } else {
+      Util.toastRes(this.getUIContext(), $r('app.string.trans_status_free'));
+    }
+  }
 
   private editBaidu(): void {
     const dialog = new CustomDialogController({

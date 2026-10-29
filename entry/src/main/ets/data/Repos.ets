@@ -5,6 +5,7 @@ import {
   CategoryRecord,
   ChapterRecord,
   ContentType,
+  DuplicateManga,
   HistoryItem,
   MangaRecord,
   MangaStats,
@@ -210,10 +211,16 @@ export class MangaRepo {
       (rs: relationalStore.ResultSet): MangaRecord => MangaRepo.rowToManga(rs), 'get library by status failed');
   }
 
-  // 重新加入/移出不得抹掉用户已设置的 categoryId/addedAt
+  // 重新加入/移出不得抹掉用户已设置的 categoryId/addedAt；
+  // 首次加入按内容类型落默认分类，并在 manga_category 种子 membership（已有 membership 时不覆盖）
   static async setInLibrary(id: number, inLibrary: boolean): Promise<void> {
     const store = await AppDb.get();
     const flag = inLibrary ? 1 : 0;
+    try {
+      store.beginTransaction();
+    } catch (e) {
+      throw new Error(`set inLibrary failed: ${e}`);
+    }
     try {
       await store.executeSql(
         `UPDATE manga SET inLibrary = ?,` +
@@ -228,21 +235,138 @@ export class MangaRepo {
           ContentType.VIDEO, ContentType.CATEGORY_VIDEO,
           ContentType.CATEGORY_MANGA,
           flag, Date.now(), id]);
+      if (inLibrary) {
+        await store.executeSql(
+          `INSERT OR IGNORE INTO manga_category(mangaId, categoryId)
+           SELECT id, categoryId FROM manga WHERE id = ?`, [id]);
+      }
+      store.commit();
     } catch (e) {
+      try {
+        store.rollBack();
+      } catch (e2) {
+      }
       throw new Error(`set inLibrary failed: ${e}`);
     }
   }
 
+  // 兼容包装：单分类设置（备份恢复等旧调用方），内部走多分类事务
   static async setCategory(id: number, categoryId: number): Promise<void> {
+    await MangaRepo.setCategories(id, [categoryId]);
+  }
+
+  // 多分类设置（对齐 Mihon setCategories）：重写 membership，
+  // manga.categoryId 冗余为 membership 中 id 最小的分类 id（空则回退 1）
+  static async setCategories(id: number, categoryIds: number[]): Promise<void> {
     const store = await AppDb.get();
-    const values: relationalStore.ValuesBucket = { 'categoryId': categoryId };
-    const pred = new relationalStore.RdbPredicates('manga');
-    pred.equalTo('id', id);
-    try {
-      await store.update(values, pred);
-    } catch (e) {
-      throw new Error(`set category failed: ${e}`);
+    const ids: number[] = [];
+    const seen: Set<number> = new Set<number>();
+    for (const cid of categoryIds) {
+      if (!seen.has(cid)) {
+        seen.add(cid);
+        ids.push(cid);
+      }
     }
+    try {
+      store.beginTransaction();
+    } catch (e) {
+      throw new Error(`set categories failed: ${e}`);
+    }
+    try {
+      const pred = new relationalStore.RdbPredicates('manga_category');
+      pred.equalTo('mangaId', id);
+      await store.delete(pred);
+      for (const cid of ids) {
+        const values: relationalStore.ValuesBucket = {
+          'mangaId': id,
+          'categoryId': cid,
+        };
+        await store.insert('manga_category', values);
+      }
+      const primaryId: number = ids.length > 0 ? Math.min(...ids) : 1;
+      const valuesManga: relationalStore.ValuesBucket = { 'categoryId': primaryId };
+      const predManga = new relationalStore.RdbPredicates('manga');
+      predManga.equalTo('id', id);
+      await store.update(valuesManga, predManga);
+      store.commit();
+    } catch (e) {
+      try {
+        store.rollBack();
+      } catch (e2) {
+      }
+      throw new Error(`set categories failed: ${e}`);
+    }
+  }
+
+  // 某部漫画的全部分类 id（对齐 Mihon getCategories），空返回 []
+  static async getCategoryIds(id: number): Promise<number[]> {
+    const store = await AppDb.get();
+    return queryAll<number>(store.querySql(
+      `SELECT categoryId FROM manga_category WHERE mangaId = ? ORDER BY categoryId`, [id]),
+      (rs: relationalStore.ResultSet): number => rs.getLong(rs.getColumnIndex('categoryId')),
+      'get category ids failed');
+  }
+
+  // 全部漫画的多分类 membership（书架分组/计数/过滤用），空 membership 视为不属任何分类
+  static async libraryCategoryIds(): Promise<Map<number, number[]>> {
+    const store = await AppDb.get();
+    const map: Map<number, number[]> = new Map<number, number[]>();
+    let rs: relationalStore.ResultSet | undefined = undefined;
+    try {
+      rs = await store.querySql(
+        `SELECT mc.mangaId AS mangaId, mc.categoryId AS categoryId
+         FROM manga_category mc
+         JOIN manga m ON m.id = mc.mangaId
+         WHERE m.inLibrary = 1
+         ORDER BY mc.mangaId, mc.categoryId`);
+      while (rs.goToNextRow()) {
+        const mangaId: number = rs.getLong(rs.getColumnIndex('mangaId'));
+        const categoryId: number = rs.getLong(rs.getColumnIndex('categoryId'));
+        let list: number[] | undefined = map.get(mangaId);
+        if (list === undefined) {
+          list = [];
+          map.set(mangaId, list);
+        }
+        list.push(categoryId);
+      }
+    } catch (e) {
+      throw new Error(`library category ids failed: ${e}`);
+    } finally {
+      if (rs !== undefined) {
+        closeQuietly(rs);
+      }
+    }
+    return map;
+  }
+
+  // 库内疑似重复作品（对齐 Mihon getDuplicateLibraryManga）：
+  // 标题互相包含（instr 忽略大小写）或绑定相同追踪器（syncId + remoteId）
+  static async getDuplicateLibraryManga(id: number, title: string): Promise<DuplicateManga[]> {
+    const store = await AppDb.get();
+    return queryAll<DuplicateManga>(store.querySql(
+      `SELECT m.id AS id, m.title AS title, m.thumbnailUrl AS coverUrl, m.author AS author,
+              m.status AS status, m.sourceKey AS sourceKey,
+              (SELECT COUNT(*) FROM chapter c WHERE c.mangaId = m.id) AS chapterCount
+       FROM manga m
+       WHERE m.inLibrary = 1 AND m.id != ?
+         AND (instr(lower(m.title), lower(?)) > 0
+           OR EXISTS (
+             SELECT 1 FROM track t1
+             JOIN track t2 ON t2.syncId = t1.syncId AND t2.remoteId = t1.remoteId
+             WHERE t2.mangaId = m.id AND t1.mangaId = ?))
+       ORDER BY m.title ASC`,
+      [id, title, id]),
+      (rs: relationalStore.ResultSet): DuplicateManga => {
+        const d = new DuplicateManga();
+        d.id = rs.getLong(rs.getColumnIndex('id'));
+        d.title = rs.getString(rs.getColumnIndex('title'));
+        d.coverUrl = rs.getString(rs.getColumnIndex('coverUrl'));
+        d.author = rs.getString(rs.getColumnIndex('author'));
+        d.status = rs.getString(rs.getColumnIndex('status'));
+        d.sourceKey = rs.getString(rs.getColumnIndex('sourceKey'));
+        d.chapterCount = rs.getLong(rs.getColumnIndex('chapterCount'));
+        return d;
+      }, 'get duplicate library manga failed');
   }
 
   // 章节列表排序/筛选标志位持久化（对齐 Mihon SetMangaChapterFlags）
@@ -902,10 +1026,7 @@ export class CategoryRepo {
     if (ContentType.isBuiltinCategory(await CategoryRepo.nameOf(store, id))) {
       return;
     }
-    // 该分类下的漫画移回默认分类 + 删除分类，同一事务内完成
-    const values: relationalStore.ValuesBucket = { 'categoryId': 1 };
-    const predManga = new relationalStore.RdbPredicates('manga');
-    predManga.equalTo('categoryId', id);
+    // 清理/回填 membership + 重算主分类 + 删除分类，同一事务内完成
     const predCategory = new relationalStore.RdbPredicates('category');
     predCategory.equalTo('id', id);
     try {
@@ -914,7 +1035,18 @@ export class CategoryRepo {
       throw new Error(`category remove failed: ${e}`);
     }
     try {
-      await store.update(values, predManga);
+      // 1) 删除该分类的全部 membership
+      await store.executeSql(`DELETE FROM manga_category WHERE categoryId = ?`, [id]);
+      // 2) membership 清空的在库漫画回退默认分类 1
+      await store.executeSql(
+        `INSERT OR IGNORE INTO manga_category(mangaId, categoryId)
+         SELECT id, 1 FROM manga
+         WHERE inLibrary = 1
+           AND NOT EXISTS (SELECT 1 FROM manga_category mc WHERE mc.mangaId = manga.id)`);
+      // 3) 主分类冗余列统一按 membership 最小 id 重算
+      await store.executeSql(
+        `UPDATE manga SET categoryId = COALESCE(
+           (SELECT MIN(mc.categoryId) FROM manga_category mc WHERE mc.mangaId = manga.id), 1)`);
       await store.delete(predCategory);
       store.commit();
     } catch (e) {
@@ -961,7 +1093,8 @@ export class HistoryRepo {
       `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
               h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
               m.sourceKey AS sourceKey,
-              m.thumbnailUrl AS coverUrl, c.name AS chapterName
+              m.thumbnailUrl AS coverUrl, c.name AS chapterName,
+              m.inLibrary AS inLibrary
        FROM history h
        JOIN manga m ON m.id = h.mangaId
        JOIN chapter c ON c.id = h.chapterId
@@ -1041,10 +1174,11 @@ export class HistoryRepo {
     }
   }
 
-  // 行 → HistoryItem 统一映射（recent/lastForManga/lastInLibrary 共用）
+  // 行 → HistoryItem 统一映射（recent/lastForManga/lastInLibrary 共用）；
+  // inLibrary 列仅 recent 查询携带，其余查询走列存在性探测
   private static rowToItem(rs: relationalStore.ResultSet): HistoryItem {
     try {
-      return HistoryItem.of(
+      const item = HistoryItem.of(
         rs.getLong(rs.getColumnIndex('mangaId')),
         rs.getLong(rs.getColumnIndex('chapterId')),
         rs.getString(rs.getColumnIndex('mangaTitle')),
@@ -1053,6 +1187,11 @@ export class HistoryRepo {
         rs.getLong(rs.getColumnIndex('seenAt')),
         rs.getLong(rs.getColumnIndex('lastPageRead')),
         rs.getString(rs.getColumnIndex('sourceKey')));
+      const inLibraryIdx: number = rs.getColumnIndex('inLibrary');
+      if (inLibraryIdx >= 0) {
+        item.inLibrary = rs.getLong(inLibraryIdx) === 1;
+      }
+      return item;
     } catch (e) {
       throw new Error(`map history row failed: ${e}`);
     }

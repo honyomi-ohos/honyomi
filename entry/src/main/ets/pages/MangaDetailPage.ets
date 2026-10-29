@@ -7,8 +7,8 @@ import { photoAccessHelper } from '@kit.MediaLibraryKit';
 import { AppDb } from '../data/AppDb';
 import { CategoryRepo, ChapterRepo, MangaRepo, TrackRepo } from '../data/Repos';
 import { SourceRegistry } from '../source/Source';
-import { CategoryRecord, ChapterRecord, ContentType, DownloadTask, MangaRecord, SManga } from '../model/Models';
-import { DetailParams, DetailSearchResult, GlobalSearchParams } from '../model/RouteParams';
+import { DuplicateManga, CategoryRecord, ChapterRecord, ContentType, DownloadTask, MangaRecord, SManga } from '../model/Models';
+import { DetailParams, DetailSearchResult, GlobalSearchParams, MigrateSearchParams } from '../model/RouteParams';
 import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
@@ -21,8 +21,9 @@ import { DownloadService } from '../data/DownloadService';
 import { DownloadRules } from '../data/DownloadRules';
 import { BtFlow } from '../data/BtFlow';
 import { Settings } from '../common/Settings';
+import { LibraryAddFlow } from '../common/LibraryAddFlow';
 import { WidgetUpdater } from '../form/WidgetUpdater';
-import { CategoryDialog, ConfirmDialog } from './components/Dialogs';
+import { ChangeCategoryDialog, ConfirmDialog, DuplicateMangaDialog } from './components/Dialogs';
 import { SmartImage } from './components/SmartImage';
 import { LoadingState } from './components/LoadingState';
 import { EmptyScreen } from './components/EmptyScreen';
@@ -270,6 +271,8 @@ export struct MangaDetailPage {
   // 滚动（onScroll → syncTopBar）不再触发全量重算
   @State shownChapterCache: ChapterRecord[] = [];
   private mangaId: number = -1;
+  // 下载后「加入书架」提示每次进入详情页只弹一次（对齐 Mihon 一次性 snackbar）
+  private libPromptShown: boolean = false;
   private listScroller: Scroller = new Scroller();
   private chapterSource: ChapterDataSource = new ChapterDataSource();
   private alSearchId: number = 0;
@@ -665,7 +668,7 @@ export struct MangaDetailPage {
                 Row() {
                   Column({ space: 5 }) {
                     AppIcon({
-                      name: 'favorite',
+                      name: this.manga.inLibrary ? 'favorite' : 'favorite_border',
                       iconSize: 22,
                       tint: this.manga.inLibrary ? this.pal.primary : this.pal.sub
                     })
@@ -680,6 +683,12 @@ export struct MangaDetailPage {
                   .onClick(() => {
                     this.runSafe((): Promise<void> => this.toggleLibrary());
                   })
+                  .gesture(LongPressGesture().onAction(() => {
+                    // 长按编辑已入库作品的分类（对齐 Mihon MangaInfoHeader onLongClick）
+                    if (this.manga.inLibrary) {
+                      this.runSafe((): Promise<void> => this.editCategories());
+                    }
+                  }))
 
                   Column({ space: 5 }) {
                     AppIcon({ name: 'play_arrow', iconSize: 22, tint: this.pal.sub })
@@ -1474,45 +1483,43 @@ export struct MangaDetailPage {
 
   // 封面查看器（对齐 Mihon MangaCoverDialog）：点击封面进入全屏查看，
 
+  // 收藏切换（对齐 Mihon MangaViewModel.changeFavorite）：
+  // 在库 → 移出（有下载时二次确认清理）；不在库 → 查重提示 → 默认分类分流 → 入库
   private async toggleLibrary(): Promise<void> {
     if (this.manga.inLibrary) {
-      // 移出书架：直接执行
-      await MangaRepo.setInLibrary(this.manga.id, false);
-      AppStorage.set(AppKeys.LIB_DIRTY, this.libDirty + 1);
-      Util.toastRes(this.getUIContext(), $r('app.string.detail_removed_from_library'));
+      await this.removeFromLibrary();
       return;
     }
-    // 加入书架：存在用户自建（非默认）分类时，先弹分类选择，确定后再入库
     const context = Util.hostAbilityContext(this.getUIContext());
     await AppDb.ready(context);
-    const categories: CategoryRecord[] = await CategoryRepo.list();
-    const hasCustom = categories.some((c: CategoryRecord): boolean => !ContentType.isBuiltinCategory(c.name));
-    if (hasCustom) {
-      this.showAddCategoryDialog(categories);
+    // 先查库内疑似重复（同名标题或相同追踪器绑定）
+    const duplicates = await MangaRepo.getDuplicateLibraryManga(this.manga.id, this.manga.title);
+    if (duplicates.length > 0) {
+      this.showDuplicateMangaDialog(duplicates);
       return;
     }
-    await this.addToLibrary(-1);
+    await this.pickCategoriesAndAdd();
   }
 
-  // 入库（categoryId >= 0 时覆盖默认分类），只写 libDirty 由 @Watch 统一刷新书架
-  private async addToLibrary(categoryId: number): Promise<void> {
-    await MangaRepo.setInLibrary(this.manga.id, true);
-    if (categoryId >= 0) {
-      await MangaRepo.setCategory(this.manga.id, categoryId);
-    }
+  // 移出书架：更新状态；本地仍存在该作品下载时确认是否顺带删除
+  private async removeFromLibrary(): Promise<void> {
+    await MangaRepo.setInLibrary(this.manga.id, false);
     AppStorage.set(AppKeys.LIB_DIRTY, this.libDirty + 1);
-    // 入库即持久化封面（AVIF 经图片管线转码为 JPEG 落盘），书架离线可显、无插件注册竞态
-    this.persistCover();
-    Util.toastRes(this.getUIContext(), $r('app.string.detail_added_to_library'));
+    Util.toastRes(this.getUIContext(), $r('app.string.detail_removed_from_library'));
+    const counts = DownloadService.downloadedChapterCounts();
+    if ((counts[`${this.manga.id}`] ?? 0) > 0) {
+      this.confirmDeleteMangaDownloads();
+    }
   }
 
-  // 入库前分类选择弹窗（存在非默认分类时），选中分类即确认入库
-  private showAddCategoryDialog(categories: CategoryRecord[]): void {
+  // 删除该作品全部下载的确认框
+  private confirmDeleteMangaDownloads(): void {
     const dialog = new CustomDialogController({
-      builder: CategoryDialog({
-        categories: categories,
-        onPick: (categoryId: number): void => {
-          this.runSafe((): Promise<void> => this.addToLibrary(categoryId));
+      builder: ConfirmDialog({
+        title: $r('app.string.delete_downloads_for_manga'),
+        confirmText: $r('app.string.common_delete'),
+        onConfirm: (): void => {
+          this.runSafe((): Promise<void> => this.deleteMangaDownloads());
         },
         onClose: (): void => {
           dialog.close();
@@ -1523,23 +1530,123 @@ export struct MangaDetailPage {
     dialog.open();
   }
 
-  // 封面持久化（fire-and-forget）：完成后再写 libDirty 刷新书架显示
-  private async persistCover(): Promise<void> {
-    try {
-      const url = this.manga.origThumbnail !== '' ? this.manga.origThumbnail : this.manga.thumbnailUrl;
-      if (url.indexOf('http://') !== 0 && url.indexOf('https://') !== 0) {
-        return;
-      }
-      const context = Util.hostAbilityContext(this.getUIContext());
-      const path = await CoverStore.persistFromUrl(context, this.manga.id, url, this.manga.sourceKey);
-      if (path === '') {
-        return;
-      }
-      await MangaRepo.setLocalCover(this.manga.id, path, url);
-      AppStorage.set(AppKeys.LIB_DIRTY, this.libDirty + 1);
-    } catch (_e) {
-      // 持久化失败不阻塞入库，书架回退在线封面路径
+  private async deleteMangaDownloads(): Promise<void> {
+    await DownloadService.deleteManga(this.manga.id);
+    this.runSafe((): Promise<void> => this.reloadLocal());
+  }
+
+  // 加入书架：默认归入分类偏好分流（对齐 MangaViewModel.kt:366-387）
+  // 返回非 null 时直接按预设入库；null 时弹分类多选
+  private async pickCategoriesAndAdd(): Promise<void> {
+    const categories = await CategoryRepo.list();
+    const preset = LibraryAddFlow.resolveDefaultCategoryIds(categories, Settings.getDefaultCategory());
+    if (preset !== null) {
+      await LibraryAddFlow.commit(this.getUIContext(), this.manga, preset);
+      return;
     }
+    this.showAddCategoryDialog(categories);
+  }
+
+  // 入库前分类多选弹窗（默认分类为「每次都询问」或已被删除时）
+  private showAddCategoryDialog(categories: CategoryRecord[]): void {
+    const dialog = new CustomDialogController({
+      builder: ChangeCategoryDialog({
+        categories: categories,
+        preselectedIds: [],
+        title: $r('app.string.detail_add_to_library'),
+        onConfirm: (categoryIds: number[]): void => {
+          this.runSafe((): Promise<void> => LibraryAddFlow.commit(this.getUIContext(), this.manga,
+            LibraryAddFlow.normalizeCategoryIds(categoryIds)));
+        },
+        onEditCategories: (): void => {
+          this.pathStack.pushPathByName('Categories', null);
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  // 长按收藏按钮：编辑已入库作品的分类 membership（预选当前分类）
+  private async editCategories(): Promise<void> {
+    const context = Util.hostAbilityContext(this.getUIContext());
+    await AppDb.ready(context);
+    const categories = await CategoryRepo.list();
+    const current = await MangaRepo.getCategoryIds(this.manga.id);
+    const dialog = new CustomDialogController({
+      builder: ChangeCategoryDialog({
+        categories: categories,
+        preselectedIds: current,
+        title: $r('app.string.action_move_category'),
+        onConfirm: (categoryIds: number[]): void => {
+          this.runSafe((): Promise<void> => this.applyCategoryEdit(categoryIds));
+        },
+        onEditCategories: (): void => {
+          this.pathStack.pushPathByName('Categories', null);
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  // 保存分类编辑：重写 membership 并刷新书架
+  private async applyCategoryEdit(categoryIds: number[]): Promise<void> {
+    await MangaRepo.setCategories(this.manga.id, LibraryAddFlow.normalizeCategoryIds(categoryIds));
+    AppStorage.set(AppKeys.LIB_DIRTY, this.libDirty + 1);
+  }
+
+  // 疑似重复作品弹窗：依然添加继续入库；点卡片迁移、长按打开详情
+  private showDuplicateMangaDialog(duplicates: DuplicateManga[]): void {
+    const dialog = new CustomDialogController({
+      builder: DuplicateMangaDialog({
+        duplicates: duplicates,
+        onAddAnyway: (): void => {
+          this.runSafe((): Promise<void> => this.pickCategoriesAndAdd());
+        },
+        onOpenManga: (mangaId: number): void => {
+          const params: DetailParams = { mangaId: mangaId };
+          this.pathStack.pushPathByName('MangaDetail', params);
+        },
+        onMigrate: (mangaId: number): void => {
+          const params: MigrateSearchParams = { mangaIds: [mangaId] };
+          this.pathStack.pushPathByName('MigrateSearch', params);
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  // 下载后提示加入书架（对齐 Mihon snack_add_to_library）：每次进入详情页最多提示一次
+  private promptAddAfterDownload(): void {
+    if (this.manga.inLibrary || this.libPromptShown) {
+      return;
+    }
+    this.libPromptShown = true;
+    const dialog = new CustomDialogController({
+      builder: ConfirmDialog({
+        title: $r('app.string.snack_add_to_library'),
+        confirmText: $r('app.string.detail_add_to_library'),
+        onConfirm: (): void => {
+          this.runSafe((): Promise<void> => this.toggleLibrary());
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
   }
 
   // 更换封面（对齐 Mihon Edit cover）：系统图库选图 → 复制为自定义封面 → 详情/书架同步生效
@@ -1718,6 +1825,7 @@ export struct MangaDetailPage {
     const status = await this.enqueueDownload(chapter);
     if (status === 'ok') {
       Util.toastRes(this.getUIContext(), $r('app.string.detail_download_queued'));
+      this.promptAddAfterDownload();
     } else {
       Util.toastRes(this.getUIContext(), $r('app.string.detail_download_failed'));
     }
@@ -1737,6 +1845,7 @@ export struct MangaDetailPage {
     const status = await this.enqueueDownload(chapter);
     if (status === 'ok') {
       Util.toastRes(this.getUIContext(), $r('app.string.detail_download_queued'));
+      this.promptAddAfterDownload();
     } else {
       Util.toastRes(this.getUIContext(), $r('app.string.detail_download_failed'));
     }
@@ -1789,6 +1898,7 @@ export struct MangaDetailPage {
     await Promise.all([worker(), worker()]);
     if (count > 0) {
       Util.toastRes(this.getUIContext(), $r('app.string.detail_dl_queued_n'), [count]);
+      this.promptAddAfterDownload();
     } else if (btList.length === 0) {
       Util.toastRes(this.getUIContext(), $r('app.string.detail_download_failed'));
     }

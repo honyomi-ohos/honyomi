@@ -1,15 +1,18 @@
 import { AppDb } from '../data/AppDb';
-import { ChapterRepo, HistoryRepo } from '../data/Repos';
-import { HistoryItem } from '../model/Models';
+import { CategoryRepo, ChapterRepo, HistoryRepo, MangaRepo } from '../data/Repos';
+import { DuplicateManga, HistoryItem, MangaRecord } from '../model/Models';
+import { DetailParams, MigrateSearchParams } from '../model/RouteParams';
 import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { AppKeys } from '../common/AppKeys';
+import { Settings } from '../common/Settings';
+import { LibraryAddFlow } from '../common/LibraryAddFlow';
 import { EmptyScreen } from './components/EmptyScreen';
 import { LoadingState } from './components/LoadingState';
 import { SmartImage } from './components/SmartImage';
-import { ConfirmDialog } from './components/Dialogs';
+import { ChangeCategoryDialog, ConfirmDialog, DuplicateMangaDialog } from './components/Dialogs';
 import { AppIcon } from './components/AppIcon';
 import { SourceRegistry } from '../source/Source';
 
@@ -179,6 +182,81 @@ export struct HistoryPage {
     Util.toastRes(this.getUIContext(), $r('app.string.history_cleared'));
   }
 
+  // 未入库历史条目加入书架：查重 → 默认分类分流 → 入库（对齐 Mihon HistoryViewModel.addFavorite）
+  private async addFavorite(item: HistoryItem): Promise<void> {
+    const context = Util.hostAbilityContext(this.getUIContext());
+    await AppDb.ready(context);
+    const manga = await MangaRepo.get(item.mangaId);
+    if (manga === undefined || manga.inLibrary) {
+      return;
+    }
+    // 库内疑似重复（同名标题或相同追踪器绑定）
+    const duplicates = await MangaRepo.getDuplicateLibraryManga(manga.id, manga.title);
+    if (duplicates.length > 0) {
+      this.showHistoryDuplicateDialog(manga, duplicates);
+      return;
+    }
+    await this.pickCategoriesAndAdd(manga);
+  }
+
+  // 默认归入分类偏好分流；null 时弹分类多选（对齐 MangaViewModel.kt:366-387）
+  private async pickCategoriesAndAdd(manga: MangaRecord): Promise<void> {
+    const categories = await CategoryRepo.list();
+    const preset = LibraryAddFlow.resolveDefaultCategoryIds(categories, Settings.getDefaultCategory());
+    if (preset !== null) {
+      await LibraryAddFlow.commit(this.getUIContext(), manga, preset);
+      return;
+    }
+    const dialog = new CustomDialogController({
+      builder: ChangeCategoryDialog({
+        categories: categories,
+        preselectedIds: [],
+        title: $r('app.string.detail_add_to_library'),
+        onConfirm: (categoryIds: number[]): void => {
+          LibraryAddFlow.commit(this.getUIContext(), manga,
+            LibraryAddFlow.normalizeCategoryIds(categoryIds)).catch((_e: Error): void => {
+            Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
+          });
+        },
+        onEditCategories: (): void => {
+          this.pathStack.pushPathByName('Categories', null);
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  // 历史条目查重弹窗：依然添加继续入库；点卡片迁移、长按打开详情
+  private showHistoryDuplicateDialog(manga: MangaRecord, duplicates: DuplicateManga[]): void {
+    const dialog = new CustomDialogController({
+      builder: DuplicateMangaDialog({
+        duplicates: duplicates,
+        onAddAnyway: (): void => {
+          this.pickCategoriesAndAdd(manga).catch((_e: Error): void => {
+            Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
+          });
+        },
+        onOpenManga: (mangaId: number): void => {
+          const params: DetailParams = { mangaId: mangaId };
+          this.pathStack.pushPathByName('MangaDetail', params);
+        },
+        onMigrate: (mangaId: number): void => {
+          const params: MigrateSearchParams = { mangaIds: [mangaId] };
+          this.pathStack.pushPathByName('MigrateSearch', params);
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
   build() {
     this.bodyContent()
   }
@@ -246,6 +324,20 @@ export struct HistoryPage {
                   .layoutWeight(1)
 
                   if (!this.selecting) {
+                    // 未入库条目的心形按钮：点击加入书架（对齐 Mihon HistoryItem Favorite）
+                    if (!item.inLibrary) {
+                      AppIcon({
+                        name: 'favorite',
+                        iconSize: 20,
+                        tint: this.pal.sub
+                      })
+                        .padding({ left: 4, right: 4 })
+                        .onClick(() => {
+                          this.addFavorite(item).catch((_e: Error): void => {
+                            Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
+                          });
+                        })
+                    }
                     Text($r('app.string.history_continue'))
                       .fontSize(12)
                       .fontColor(this.pal.primary)
@@ -290,7 +382,7 @@ export struct HistoryPage {
                   this.historyItemMenu(item);
                 }, ResponseType.RightClick)
               }
-            }, (item: HistoryItem) => `his-${item.chapterId}-${item.seenAt}-${item.coverUrl}`)
+            }, (item: HistoryItem) => `his-${item.chapterId}-${item.seenAt}-${item.coverUrl}-${item.inLibrary}`)
           }
           .layoutWeight(1)
           .scrollBar(BarState.Auto)

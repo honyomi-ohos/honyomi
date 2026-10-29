@@ -3823,6 +3823,50 @@
     {
       "name": "debug_language",
       "value": "語言"
+    },
+    {
+      "name": "action_edit",
+      "value": "編輯"
+    },
+    {
+      "name": "action_add_anyway",
+      "value": "仍要新增"
+    },
+    {
+      "name": "information_empty_category_dialog",
+      "value": "你目前沒有任何類別"
+    },
+    {
+      "name": "possible_duplicates_title",
+      "value": "可能重複的作品"
+    },
+    {
+      "name": "possible_duplicates_summary",
+      "value": "您的書櫃有相似名稱的作品\n\n請選擇一個作品進行遷移或仍然新增"
+    },
+    {
+      "name": "manga_num_chapters",
+      "value": "共 %d 章"
+    },
+    {
+      "name": "snack_add_to_library",
+      "value": "將作品收藏至書櫃？"
+    },
+    {
+      "name": "delete_downloads_for_manga",
+      "value": "刪除下載的章節？"
+    },
+    {
+      "name": "default_category",
+      "value": "預設類別"
+    },
+    {
+      "name": "default_category_summary",
+      "value": "總是詢問"
+    },
+    {
+      "name": "default_category_auto",
+      "value": "自動（依內容類型）"
     }
   ]
 }

@@ -194,6 +194,8 @@ export class HistoryItem {
   lastPageRead: number = 0;
   // 所属源 key：关闭“显示 NSFW 源”时按源过滤历史条目
   sourceKey: string = '';
+  // 是否已在书架：历史页非在库条目显示心形入库按钮
+  inLibrary: boolean = false;
 
   static of(mangaId: number, chapterId: number, mangaTitle: string, coverUrl: string,
     chapterName: string, seenAt: number, lastPageRead: number, sourceKey: string = ''): HistoryItem {
@@ -208,6 +210,17 @@ export class HistoryItem {
     item.sourceKey = sourceKey;
     return item;
   }
+}
+
+// 疑似重复的库内作品（加入书架前查重，对齐 Mihon MangaWithChapterCount 子集）
+export class DuplicateManga {
+  id: number = 0;
+  title: string = '';
+  coverUrl: string = '';
+  author: string = '';
+  status: string = '';
+  sourceKey: string = '';
+  chapterCount: number = 0;
 }
 
 // 已安装插件元数据索引（plugin 表记录）：启动时据此注册占位源，引擎按需惰性拉起

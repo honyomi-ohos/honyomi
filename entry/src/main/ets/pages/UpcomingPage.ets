@@ -1,7 +1,7 @@
 import { i18n } from '@kit.LocalizationKit';
 import { AppDb } from '../data/AppDb';
 import { SheetPreset } from './components/SheetPreset';
-import { CategoryRepo, UpcomingRepo } from '../data/Repos';
+import { CategoryRepo, MangaRepo, UpcomingRepo } from '../data/Repos';
 import { CategoryRecord, UpcomingManga } from '../model/Models';
 import { DetailParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
@@ -57,6 +57,8 @@ export struct UpcomingPage {
   @State categories: CategoryRecord[] = [];
   @State includedCats: number[] = [];
   @State excludedCats: number[] = [];
+  // manga_category membership 真源（mangaId → 分类 id 列表，仅 inLibrary）
+  private categoryIdsMap: Map<number, number[]> = new Map<number, number[]>();
   private headerIndex: Record<string, number> = {};
   private scroller: Scroller = new Scroller();
   private firstDayOfWeek: number = 1;
@@ -96,6 +98,8 @@ export struct UpcomingPage {
     this.includedCats = Settings.getUpcomingIncludedCategories();
     this.excludedCats = Settings.getUpcomingExcludedCategories();
     this.allManga = await UpcomingRepo.upcomingList();
+    // membership 真源（mangaId → 分类 id 列表，仅 inLibrary）：分类筛选含任一 membership 即算
+    this.categoryIdsMap = await MangaRepo.libraryCategoryIds();
     this.recompute();
   }
 
@@ -387,11 +391,28 @@ export struct UpcomingPage {
     return true;
   }
 
+  // 作品分类 id 列表：membership 优先（含任一 membership 即算），空则回退主分类
+  private categoriesOf(m: UpcomingManga): number[] {
+    const ids: number[] | undefined = this.categoryIdsMap.get(m.mangaId);
+    if (ids !== undefined && ids.length > 0) {
+      return ids;
+    }
+    return [m.categoryId];
+  }
+
   // 过滤 + 按预计日分组，生成分组头/条目行与日历事件计数
   private recompute(): void {
     const shown: UpcomingManga[] = [];
     for (const m of this.allManga) {
-      if (this.catAllowed(m.categoryId)) {
+      // 任一所属分类通过筛选即展示
+      let allowed = false;
+      for (const cid of this.categoriesOf(m)) {
+        if (this.catAllowed(cid)) {
+          allowed = true;
+          break;
+        }
+      }
+      if (allowed) {
         shown.push(m);
       }
     }

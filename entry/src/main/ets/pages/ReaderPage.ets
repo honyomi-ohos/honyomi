@@ -915,7 +915,24 @@ export struct ReaderPage {
   }
 
   // 保存当前页原图到图库
+  // 防抖：系统保存对话框在部分环境会静默挂起十几秒才失败，期间无任何反馈，
+  // 用户会反复触发导致回退确认弹窗层叠（点一次按钮只关一层，看似关不掉）
+  private saveInFlight: boolean = false;
+
   private async saveCurrentPage(): Promise<void> {
+    if (this.saveInFlight) {
+      hilog.info(0x0001, 'Reader', 'ctx menu: save already in flight, ignore');
+      return;
+    }
+    this.saveInFlight = true;
+    try {
+      await this.doSaveCurrentPage();
+    } finally {
+      this.saveInFlight = false;
+    }
+  }
+
+  private async doSaveCurrentPage(): Promise<void> {
     hilog.info(0x0001, 'Reader', 'ctx menu: save page %{public}d', this.currentReal);
     const ui = this.getUIContext();
     const local = await this.ensurePageLocal();

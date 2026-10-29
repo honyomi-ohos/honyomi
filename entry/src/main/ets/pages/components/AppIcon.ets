@@ -71,6 +71,7 @@ const ICONS: Record<string, Resource> = {
   'play_arrow': $r('app.media.ic_play_arrow'),
   'push_pin_filled': $r('app.media.ic_push_pin_filled'),
   'favorite': $r('app.media.ic_favorite'),
+  'favorite_border': $r('app.media.ic_favorite_border'),
   'skip_previous': $r('app.media.ic_skip_previous'),
   'skip_next': $r('app.media.ic_skip_next'),
   'crop': $r('app.media.ic_crop'),

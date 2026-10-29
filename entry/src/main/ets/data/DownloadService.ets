@@ -714,6 +714,45 @@ export class DownloadService {
     DownloadService.notify();
   }
 
+  // 删除整部作品的本地下载（移出书架时清理，对齐 Mihon DownloadHelper.deleteManga）：
+  // 先取消队列/活动任务，再逐章节目录删除（复用 deleteChapter 的等待/缓存清理逻辑）
+  static async deleteManga(mangaId: number): Promise<void> {
+    const chapterIds: number[] = [];
+    try {
+      const mangaPath = `${DownloadService.rootDir}/${mangaId}`;
+      if (DownloadService.rootDir !== '' && fileIo.accessSync(mangaPath)) {
+        const chapterDirs = fileIo.listFileSync(mangaPath);
+        for (const cd of chapterDirs) {
+          const chapterId = parseInt(cd, 10);
+          if (chapterId >= 0) {
+            chapterIds.push(chapterId);
+          }
+        }
+      }
+    } catch (e) {
+      throw new Error(`delete manga downloads failed: ${e}`);
+    }
+    if (chapterIds.length === 0) {
+      DownloadService.cancelSeries(mangaId);
+      return;
+    }
+    DownloadService.cancelSeries(mangaId);
+    for (const chapterId of chapterIds) {
+      try {
+        await DownloadService.deleteChapter(mangaId, chapterId);
+      } catch (_e) {
+        // 单章删除失败继续删其余章节，避免部分残留阻塞整体清理
+      }
+    }
+    try {
+      const mangaPath = `${DownloadService.rootDir}/${mangaId}`;
+      if (DownloadService.rootDir !== '' && fileIo.accessSync(mangaPath)) {
+        DownloadService.rmdir(mangaPath);
+      }
+    } catch (_e) {
+    }
+  }
+
   static async listDownloaded(): Promise<DownloadedManga[]> {
     const result: DownloadedManga[] = [];
     try {

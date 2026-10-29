@@ -15,13 +15,18 @@ export class UpdateService {
     return UpdateService.refreshCategory(context, 0);
   }
 
-  // categoryId 为 0 时刷新全部书架
+  // categoryId 为 0 时刷新全部书架；指定分类按 membership 过滤（含任一 membership 即算）
   static async refreshCategory(context: common.UIAbilityContext, categoryId: number): Promise<number> {
     await AppDb.ready(context);
     const library = await MangaRepo.getLibrary();
-    const list: MangaRecord[] = categoryId > 0
-      ? library.filter((m: MangaRecord): boolean => m.categoryId === categoryId)
-      : library;
+    let list: MangaRecord[] = library;
+    if (categoryId > 0) {
+      const memberships: Map<number, number[]> = await MangaRepo.libraryCategoryIds();
+      list = library.filter((m: MangaRecord): boolean => {
+        const ids: number[] | undefined = memberships.get(m.id);
+        return ids !== undefined ? ids.includes(categoryId) : m.categoryId === categoryId;
+      });
+    }
     // 按源分组：同一源的请求串行避免打挂源站，不同源之间最多 3 组并发
     const groups = new Map<string, MangaRecord[]>();
     for (const manga of list) {

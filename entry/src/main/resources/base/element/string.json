@@ -4178,7 +4178,7 @@
     },
     {
       "name": "trans_engines_hint",
-      "value": "Long-press and drag to reorder engines"
+      "value": "Long-press and drag to reorder; tap an engine to configure its keys"
     },
     {
       "name": "trans_status_ready",
@@ -4235,6 +4235,54 @@
     {
       "name": "trans_deepl",
       "value": "DeepL"
+    },
+    {
+      "name": "action_edit",
+      "value": "Edit"
+    },
+    {
+      "name": "action_add_anyway",
+      "value": "Add anyway"
+    },
+    {
+      "name": "information_empty_category_dialog",
+      "value": "You don't have any categories yet."
+    },
+    {
+      "name": "possible_duplicates_title",
+      "value": "Possible duplicates"
+    },
+    {
+      "name": "possible_duplicates_summary",
+      "value": "You have entries in your library with a similar name.\n\nSelect an entry to migrate or add anyway."
+    },
+    {
+      "name": "manga_num_chapters",
+      "value": "%d chapters"
+    },
+    {
+      "name": "snack_add_to_library",
+      "value": "Add to library?"
+    },
+    {
+      "name": "delete_downloads_for_manga",
+      "value": "Delete downloaded chapters?"
+    },
+    {
+      "name": "delete_downloads_for_manga_msg",
+      "value": "Downloaded chapters of this entry will be deleted."
+    },
+    {
+      "name": "default_category",
+      "value": "Default category"
+    },
+    {
+      "name": "default_category_summary",
+      "value": "Always ask"
+    },
+    {
+      "name": "default_category_auto",
+      "value": "Automatic (by content type)"
     }
   ]
 }

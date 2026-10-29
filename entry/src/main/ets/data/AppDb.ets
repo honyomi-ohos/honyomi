@@ -46,17 +46,13 @@ export class AppDb {
   }
 
   // 初始分类：漫画 / 小说 / 动画（对应三种内容类型），每次启动幂等执行；
-  // 旧库「默认」更名为「漫画」（id = 1 为删除分类/入库缺省的回退分类），
-  // 另两类按名补建（用户已建同名分类则复用，不占固定 id）
+  // id = 1 为删除分类/入库缺省的回退分类，另两类按名补建（用户已建同名分类则复用，不占固定 id）
   private static async ensureDefaultCategories(store: relationalStore.RdbStore): Promise<void> {
     try {
       await store.executeSql(
         `INSERT INTO category(id, name, sortOrder)
          SELECT 1, ?, 0
          WHERE NOT EXISTS (SELECT 1 FROM category WHERE id = 1)`,
-        [ContentType.CATEGORY_MANGA]);
-      await store.executeSql(
-        `UPDATE category SET name = ? WHERE id = 1 AND name = '默认'`,
         [ContentType.CATEGORY_MANGA]);
       await store.executeSql(
         `INSERT INTO category(name, sortOrder)
@@ -148,6 +144,12 @@ export class AppDb {
         isPrivate INTEGER DEFAULT 0,
         UNIQUE(mangaId, syncId)
       )`);
+      // 漫画 × 分类多对多（对齐 Mihon MangaCategory）；manga.categoryId 保留为主分类冗余列
+      await store.executeSql(`CREATE TABLE IF NOT EXISTS manga_category (
+        mangaId INTEGER NOT NULL,
+        categoryId INTEGER NOT NULL,
+        UNIQUE(mangaId, categoryId)
+      )`);
       await store.executeSql(`CREATE TABLE IF NOT EXISTS plugin (
         key TEXT PRIMARY KEY,
         name TEXT NOT NULL,
@@ -175,6 +177,8 @@ export class AppDb {
   private static async createIndexes(store: relationalStore.RdbStore): Promise<void> {
     try {
       await store.executeSql(`CREATE INDEX IF NOT EXISTS idx_manga_inLibrary ON manga(inLibrary, categoryId)`);
+      await store.executeSql(`CREATE INDEX IF NOT EXISTS idx_manga_category ON manga_category(categoryId, mangaId)`);
+      await store.executeSql(`CREATE INDEX IF NOT EXISTS idx_manga_category_manga ON manga_category(mangaId)`);
       await store.executeSql(`CREATE INDEX IF NOT EXISTS idx_chapter_read_upload ON chapter(read, dateUpload)`);
       await store.executeSql(`CREATE INDEX IF NOT EXISTS idx_chapter_sortOrder ON chapter(mangaId, sortOrder)`);
       await store.executeSql(`CREATE INDEX IF NOT EXISTS idx_history_mangaId ON history(mangaId, seenAt)`);
