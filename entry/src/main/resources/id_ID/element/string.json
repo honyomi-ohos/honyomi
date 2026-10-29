@@ -1901,6 +1901,10 @@
       "value": "Pelacakan"
     },
     {
+      "name": "detail_action_webview",
+      "value": "Tampilan web"
+    },
+    {
       "name": "detail_dl_cancelled",
       "value": "Unduhan dibatalkan"
     },
@@ -3053,6 +3057,10 @@
       "value": "Sedang dibaca"
     },
     {
+      "name": "track_unread",
+      "value": "Belum dibaca"
+    },
+    {
       "name": "track_completed",
       "value": "Selesai"
     },
@@ -3319,6 +3327,186 @@
     {
       "name": "debug_language",
       "value": "Bahasa"
+    },
+    {
+      "name": "updates_tab_updates",
+      "value": "Updates"
+    },
+    {
+      "name": "updates_tab_schedule",
+      "value": "Schedule"
+    },
+    {
+      "name": "schedule_load_failed",
+      "value": "Failed to load the schedule"
+    },
+    {
+      "name": "schedule_empty",
+      "value": "No shows in the schedule"
+    },
+    {
+      "name": "browse_local_folders",
+      "value": "Folder"
+    },
+    {
+      "name": "browse_folder_up",
+      "value": "Folder induk"
+    },
+    {
+      "name": "browse_folder_empty",
+      "value": "Folder ini kosong"
+    },
+    {
+      "name": "player_set_skip_oped",
+      "value": "Lewati OP/ED otomatis"
+    },
+    {
+      "name": "player_set_subtitle_enable",
+      "value": "Aktifkan subtitle"
+    },
+    {
+      "name": "video_skip_section",
+      "value": "Lewati OP/ED"
+    },
+    {
+      "name": "video_skip_op_start",
+      "value": "Awal OP"
+    },
+    {
+      "name": "video_skip_op_end",
+      "value": "Akhir OP"
+    },
+    {
+      "name": "video_skip_ed_start",
+      "value": "Awal ED"
+    },
+    {
+      "name": "video_skip_ed_end",
+      "value": "Akhir ED"
+    },
+    {
+      "name": "video_skip_save",
+      "value": "Simpan"
+    },
+    {
+      "name": "video_skip_clear",
+      "value": "Hapus"
+    },
+    {
+      "name": "video_skip_op",
+      "value": "OP dilewati"
+    },
+    {
+      "name": "video_skip_ed",
+      "value": "ED dilewati"
+    },
+    {
+      "name": "video_skip_set_current",
+      "value": "Sekarang"
+    },
+    {
+      "name": "video_subtitle_none",
+      "value": "Tanpa subtitle"
+    },
+    {
+      "name": "video_subtitle_pick",
+      "value": "Pilih berkas subtitle"
+    },
+    {
+      "name": "video_subtitle_clear",
+      "value": "Hapus"
+    },
+    {
+      "name": "video_danmaku_login_hint",
+      "value": "Masuk dengan akun dandanplay Anda untuk mengirim danmaku"
+    },
+    {
+      "name": "video_danmaku_username",
+      "value": "Nama pengguna"
+    },
+    {
+      "name": "video_danmaku_password",
+      "value": "Kata sandi"
+    },
+    {
+      "name": "video_danmaku_logging",
+      "value": "Sedang masuk…"
+    },
+    {
+      "name": "video_danmaku_login",
+      "value": "Masuk"
+    },
+    {
+      "name": "video_danmaku_logged_in",
+      "value": "Masuk sebagai: %s"
+    },
+    {
+      "name": "video_danmaku_logout",
+      "value": "Keluar"
+    },
+    {
+      "name": "video_danmaku_input_hint",
+      "value": "Masukkan teks danmaku"
+    },
+    {
+      "name": "video_danmaku_mode_scroll",
+      "value": "Gulir"
+    },
+    {
+      "name": "video_danmaku_mode_top",
+      "value": "Atas"
+    },
+    {
+      "name": "video_danmaku_mode_bottom",
+      "value": "Bawah"
+    },
+    {
+      "name": "video_danmaku_color",
+      "value": "Warna"
+    },
+    {
+      "name": "video_danmaku_sending",
+      "value": "Mengirim…"
+    },
+    {
+      "name": "video_danmaku_send",
+      "value": "Kirim"
+    },
+    {
+      "name": "video_danmaku_send_title",
+      "value": "Kirim danmaku"
+    },
+    {
+      "name": "subject_detail_title",
+      "value": "Detail subjek"
+    },
+    {
+      "name": "subject_load_failed",
+      "value": "Gagal memuat detail"
+    },
+    {
+      "name": "subject_search_in_app",
+      "value": "Cari di aplikasi"
+    },
+    {
+      "name": "subject_label_air_date",
+      "value": "Tanggal tayang"
+    },
+    {
+      "name": "subject_label_eps",
+      "value": "Episode"
+    },
+    {
+      "name": "subject_label_score",
+      "value": "Skor"
+    },
+    {
+      "name": "subject_label_summary",
+      "value": "Ringkasan"
+    },
+    {
+      "name": "subject_summary_empty",
+      "value": "Belum ada ringkasan"
     }
   ]
 }

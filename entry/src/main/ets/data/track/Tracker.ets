@@ -6,7 +6,7 @@
 // - PKCE：随机 32 字节 base64url verifier + S256 challenge
 import { cryptoFramework } from '@kit.CryptoArchitectureKit';
 import { util } from '@kit.ArkTS';
-import { TrackRecord, TrackSearchResult } from '../../model/Models';
+import { MangaRecord, TrackRecord, TrackSearchResult } from '../../model/Models';
 import { Settings } from '../../common/Settings';
 import { Util } from '../../common/Util';
 import { SecureStore } from '../../common/SecureStore';
@@ -134,6 +134,13 @@ export class TrackHttp {
     };
   }
 
+  // Basic Auth 头（用户名:密码 base64）
+  static basic(username: string, password: string): string {
+    const raw: Uint8Array = new util.TextEncoder().encodeInto(`${username}:${password}`);
+    const helper = new util.Base64Helper();
+    return `Basic ${helper.encodeToStringSync(raw, util.Type.BASIC)}`;
+  }
+
   // 非 2xx 抛错；返回响应体
   static async send(method: string, url: string, headers: Record<string, string> | undefined,
     body: string): Promise<string> {
@@ -257,6 +264,26 @@ export abstract class Tracker {
 
   loadToken(): OAuthToken | undefined {
     return OAuthToken.fromJson(SecureStore.getSync(Tracker.tokenAlias(this.syncId)));
+  }
+
+  // ---- 增强型追踪器（对齐 Mihon EnhancedTracker）----
+  // 是否增强型：仅与特定源绑定，按 sourceKey + url 自动匹配（无需用户搜索）
+  isEnhanced: boolean = false;
+
+  // 增强型：是否接受该源（sourceKey 前缀约定由各追踪器实现）
+  acceptsSourceKey(_sourceKey: string): boolean {
+    return false;
+  }
+
+  // 增强型：按漫画记录自动匹配远端条目（零或一条结果）；不匹配返回 undefined
+  async match(_manga: MangaRecord): Promise<TrackSearchResult | undefined> {
+    return undefined;
+  }
+
+  // 自托管服务器型登录：服务器地址 + 可选用户名/密钥（非服务器型追踪器抛错）
+  // 服务器地址存 Settings trackUsername_{syncId}；密码/密钥经 saveCredentials 入 Asset Store
+  async loginWithServer(_serverUrl: string, _username: string, _secret: string): Promise<void> {
+    throw new Error('unsupported');
   }
 
   // ---- 抽象接口 ----
@@ -400,5 +427,15 @@ export abstract class Tracker {
     if (copyRemotePrivate) {
       track.isPrivate = remote.isPrivate;
     }
+  }
+
+  // 从搜索结果拷贝个人进度字段（增强型追踪器 refresh/update：远端状态即 TrackSearchResult）
+  protected copyPersonalFromSearch(track: TrackRecord, remote: TrackSearchResult): void {
+    track.status = remote.status;
+    track.lastChapterRead = remote.lastChapterRead;
+    track.score = remote.score;
+    track.startDate = remote.startReadDate;
+    track.finishDate = remote.finishReadDate;
+    track.totalChapters = remote.totalChapters;
   }
 }

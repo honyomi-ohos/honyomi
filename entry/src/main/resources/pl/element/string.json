@@ -1921,6 +1921,10 @@
       "value": "Śledzenie"
     },
     {
+      "name": "detail_action_webview",
+      "value": "Widok sieciowy"
+    },
+    {
       "name": "detail_dl_cancelled",
       "value": "Pobieranie anulowane"
     },
@@ -3097,6 +3101,10 @@
       "value": "Czytam"
     },
     {
+      "name": "track_unread",
+      "value": "Nieprzeczytane"
+    },
+    {
       "name": "track_completed",
       "value": "Ukończone"
     },
@@ -3371,6 +3379,186 @@
     {
       "name": "debug_language",
       "value": "Język"
+    },
+    {
+      "name": "updates_tab_updates",
+      "value": "Updates"
+    },
+    {
+      "name": "updates_tab_schedule",
+      "value": "Schedule"
+    },
+    {
+      "name": "schedule_load_failed",
+      "value": "Failed to load the schedule"
+    },
+    {
+      "name": "schedule_empty",
+      "value": "No shows in the schedule"
+    },
+    {
+      "name": "browse_local_folders",
+      "value": "Foldery"
+    },
+    {
+      "name": "browse_folder_up",
+      "value": "Folder nadrzędny"
+    },
+    {
+      "name": "browse_folder_empty",
+      "value": "Ten folder jest pusty"
+    },
+    {
+      "name": "player_set_skip_oped",
+      "value": "Automatycznie pomijaj OP/ED"
+    },
+    {
+      "name": "player_set_subtitle_enable",
+      "value": "Włącz napisy"
+    },
+    {
+      "name": "video_skip_section",
+      "value": "Pomijaj OP/ED"
+    },
+    {
+      "name": "video_skip_op_start",
+      "value": "Początek OP"
+    },
+    {
+      "name": "video_skip_op_end",
+      "value": "Koniec OP"
+    },
+    {
+      "name": "video_skip_ed_start",
+      "value": "Początek ED"
+    },
+    {
+      "name": "video_skip_ed_end",
+      "value": "Koniec ED"
+    },
+    {
+      "name": "video_skip_save",
+      "value": "Zapisz"
+    },
+    {
+      "name": "video_skip_clear",
+      "value": "Wyczyść"
+    },
+    {
+      "name": "video_skip_op",
+      "value": "Pominięto OP"
+    },
+    {
+      "name": "video_skip_ed",
+      "value": "Pominięto ED"
+    },
+    {
+      "name": "video_skip_set_current",
+      "value": "Teraz"
+    },
+    {
+      "name": "video_subtitle_none",
+      "value": "Brak napisów"
+    },
+    {
+      "name": "video_subtitle_pick",
+      "value": "Wybierz plik napisów"
+    },
+    {
+      "name": "video_subtitle_clear",
+      "value": "Wyczyść"
+    },
+    {
+      "name": "video_danmaku_login_hint",
+      "value": "Zaloguj się kontem dandanplay, aby wysyłać danmaku"
+    },
+    {
+      "name": "video_danmaku_username",
+      "value": "Nazwa użytkownika"
+    },
+    {
+      "name": "video_danmaku_password",
+      "value": "Hasło"
+    },
+    {
+      "name": "video_danmaku_logging",
+      "value": "Logowanie…"
+    },
+    {
+      "name": "video_danmaku_login",
+      "value": "Zaloguj się"
+    },
+    {
+      "name": "video_danmaku_logged_in",
+      "value": "Zalogowano: %s"
+    },
+    {
+      "name": "video_danmaku_logout",
+      "value": "Wyloguj się"
+    },
+    {
+      "name": "video_danmaku_input_hint",
+      "value": "Wpisz tekst danmaku"
+    },
+    {
+      "name": "video_danmaku_mode_scroll",
+      "value": "Przewijanie"
+    },
+    {
+      "name": "video_danmaku_mode_top",
+      "value": "U góry"
+    },
+    {
+      "name": "video_danmaku_mode_bottom",
+      "value": "Na dole"
+    },
+    {
+      "name": "video_danmaku_color",
+      "value": "Kolor"
+    },
+    {
+      "name": "video_danmaku_sending",
+      "value": "Wysyłanie…"
+    },
+    {
+      "name": "video_danmaku_send",
+      "value": "Wyślij"
+    },
+    {
+      "name": "video_danmaku_send_title",
+      "value": "Wyślij danmaku"
+    },
+    {
+      "name": "subject_detail_title",
+      "value": "Szczegóły tytułu"
+    },
+    {
+      "name": "subject_load_failed",
+      "value": "Nie udało się wczytać szczegółów"
+    },
+    {
+      "name": "subject_search_in_app",
+      "value": "Szukaj w aplikacji"
+    },
+    {
+      "name": "subject_label_air_date",
+      "value": "Data emisji"
+    },
+    {
+      "name": "subject_label_eps",
+      "value": "Odcinki"
+    },
+    {
+      "name": "subject_label_score",
+      "value": "Ocena"
+    },
+    {
+      "name": "subject_label_summary",
+      "value": "Streszczenie"
+    },
+    {
+      "name": "subject_summary_empty",
+      "value": "Brak streszczenia"
     }
   ]
 }

@@ -7,6 +7,7 @@ import { photoAccessHelper } from '@kit.MediaLibraryKit';
 import { AppDb } from '../data/AppDb';
 import { CategoryRepo, ChapterRepo, MangaRepo, TrackRepo } from '../data/Repos';
 import { SourceRegistry } from '../source/Source';
+import { JsvmSource } from '../source/JsvmSource';
 import { DuplicateManga, CategoryRecord, ChapterRecord, ContentType, DownloadTask, MangaRecord, SManga } from '../model/Models';
 import { DetailParams, DetailSearchResult, GlobalSearchParams, MigrateSearchParams } from '../model/RouteParams';
 import { ContentOpen } from './ContentOpen';
@@ -16,6 +17,7 @@ import { Util } from '../common/Util';
 import { AppKeys } from '../common/AppKeys';
 import { CoverStore } from '../common/CoverStore';
 import { ChapterFlags } from '../common/ChapterFlags';
+import { MissingChapters } from '../common/ChapterTools';
 import { NaturalCompare } from '../common/NaturalCompare';
 import { DownloadService } from '../data/DownloadService';
 import { DownloadRules } from '../data/DownloadRules';
@@ -32,6 +34,9 @@ import { CoverViewer } from './components/CoverViewer';
 import { CoverPlaceholder } from './components/CoverPlaceholder';
 import { ChapterSettingsSheet } from './components/ChapterSettingsSheet';
 import { TrackSheet } from './components/TrackSheet';
+import { NotesSheet, NotesDisplay } from './components/NotesSheet';
+import { UpdateIntervalSheet } from './components/UpdateIntervalSheet';
+import { SitePreviewSheet } from './components/SitePreviewSheet';
 
 // 章节行：自订阅 DownloadService 变化刷新下载指示器，
 // 避免 ForEach key 携带全局版本号导致整个章节列表重建
@@ -107,9 +112,25 @@ struct DetailChapterRow {
         }
         .width('100%')
 
-        Text(Util.formatDate(this.chapter.dateUpload))
-          .fontSize(11)
-          .fontColor(this.pal.sub)
+        // 上传日期 + 汉化组（对齐 Mihon MangaChapterListItem：scanlator 以圆点分隔展示）
+        Row({ space: 4 }) {
+          Text(Util.formatDate(this.chapter.dateUpload))
+            .fontSize(11)
+            .fontColor(this.pal.sub)
+            .maxLines(1)
+          if (this.chapter.scanlator !== '') {
+            Text('·')
+              .fontSize(11)
+              .fontColor(this.pal.sub)
+            Text(this.chapter.scanlator)
+              .fontSize(11)
+              .fontColor(this.pal.sub)
+              .maxLines(1)
+              .textOverflow({ overflow: TextOverflow.Ellipsis })
+              .layoutWeight(1)
+          }
+        }
+        .width('100%')
       }
       .alignItems(HorizontalAlign.Start)
       .layoutWeight(1)
@@ -250,6 +271,9 @@ export struct MangaDetailPage {
   @State descExpanded: boolean = false;
   @State syncing: boolean = false;
   @State refreshing: boolean = false;
+  // 两列布局下左/右列各自的刷新状态，避免两个 Refresh 指示器同时转
+  @State refreshingLeft: boolean = false;
+  @State refreshingRight: boolean = false;
   @State topBarProgress: number = 0;
   @State trackCount: number = 0;
   @State showTrackSheet: boolean = false;
@@ -257,6 +281,17 @@ export struct MangaDetailPage {
   @State relatedWorks: SManga[] = [];
   @State showCoverViewer: boolean = false;
   @State showSettingsSheet: boolean = false;
+  // 更新间隔选择弹层（对齐 Mihon SetIntervalDialog）
+  @State showIntervalSheet: boolean = false;
+  // 笔记编辑半模态（对齐 Mihon MangaNotesScreen：RichEditor 富文本 + 自动保存）
+  @State showNotesSheet: boolean = false;
+  // 作品源页 WebView 半模态（对齐 Mihon WebViewActivity：加载 manga.url，复用 CookieJar 会话）
+  @State showWebView: boolean = false;
+  // 章节列表展示缓存：filter+sort 结果仅在 章节数据/筛选/排序 变化时重算，
+  // 滚动（onScroll → syncTopBar）不再触发全量重算
+  @State shownChapterCache: ChapterRecord[] = [];
+  // 当前展示列表的缺失章节数（对齐 Mihon ChapterHeader MissingChaptersWarning）
+  @State missingCount: number = 0;
   // Index 根节点 Esc 广播：关闭追踪/章节设置弹层（计数器递增触发）
   @StorageLink('sheetEsc') @Watch('onSheetEsc') sheetEsc: number = 0;
   // 章节排序/筛选状态（持久化于 manga.chapterFlags，对齐 Mihon ChapterSettingsDialog）
@@ -267,13 +302,12 @@ export struct MangaDetailPage {
   @State @Watch('onFilterStateChanged') fBookmarked: string = 'ignore';
   // 多选章节 id 集合（非空即处于选择模式）；变化时通知 LazyForEach 重跑行生成器刷新勾选态
   @State @Watch('onSelectedIdsChanged') selectedIds: Set<number> = new Set<number>();
-  // 章节列表展示缓存：filter+sort 结果仅在 章节数据/筛选/排序 变化时重算，
-  // 滚动（onScroll → syncTopBar）不再触发全量重算
-  @State shownChapterCache: ChapterRecord[] = [];
   private mangaId: number = -1;
   // 下载后「加入书架」提示每次进入详情页只弹一次（对齐 Mihon 一次性 snackbar）
   private libPromptShown: boolean = false;
   private listScroller: Scroller = new Scroller();
+  // 两列布局左列（介绍）滚动容器：吸顶栏渐显跟随左列滚动
+  private leftScroller: Scroller = new Scroller();
   private chapterSource: ChapterDataSource = new ChapterDataSource();
   private alSearchId: number = 0;
   private applyingFlags: boolean = false;
@@ -389,6 +423,95 @@ export struct MangaDetailPage {
         this.runSafe((): Promise<void> => this.persistChapterFlags());
       }
     })
+  }
+
+  // 更新间隔选择弹层（对齐 Mihon SetIntervalDialog）
+  @Builder
+  intervalSheetBuilder() {
+    UpdateIntervalSheet({
+      initHours: this.manga.updateInterval,
+      onPicked: (hours: number): void => {
+        this.showIntervalSheet = false;
+        this.runSafe((): Promise<void> => this.applyUpdateInterval(hours));
+      },
+      onClose: (): void => {
+        this.showIntervalSheet = false;
+      },
+    })
+  }
+
+  // 解析作品源页完整地址：插件返回的 key 多为站内相对路径（如 /comic/123），
+  // 直接交 WebView 会打开错误页面；相对路径须拼接源 manifest.baseUrl
+  private resolveWorkPageUrl(): string {
+    const url = this.manga.url;
+    if (url === '') {
+      return '';
+    }
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    const source = SourceRegistry.get(this.manga.sourceKey);
+    if (source instanceof JsvmSource) {
+      const base = source.manifest.baseUrl;
+      if (base.startsWith('http://') || base.startsWith('https://')) {
+        const head = base.endsWith('/') ? base.substring(0, base.length - 1) : base;
+        const tail = url.startsWith('/') ? url : '/' + url;
+        return head + tail;
+      }
+    }
+    return url;
+  }
+
+  // 作品源页 WebView 半模态（复用 SitePreviewSheet：注入 CookieJar 会话 + 刷新/浏览器打开/复制链接菜单）
+  @Builder
+  webViewSheetBuilder() {
+    SitePreviewSheet({
+      siteUrl: this.resolveWorkPageUrl(),
+      defaultTitle: this.manga.title,
+      onClose: (): void => {
+        this.showWebView = false;
+      }
+    })
+  }
+
+  // 笔记编辑半模态（对齐 Mihon MangaNotesScreen）：RichEditor 富文本编辑，
+  // 防抖自动保存回调落库（saveNotes → MangaRepo.setNotes）
+  @Builder
+  notesSheetBuilder() {
+    NotesSheet({
+      initialMarkdown: this.manga.notes,
+      onSave: (md: string): void => {
+        this.runSafe((): Promise<void> => this.saveNotes(md));
+      }
+    })
+  }
+
+  // 右上角更多菜单（对齐 Mihon 详情页溢出菜单）：
+  // 更新间隔 / 添加笔记 / 添加到桌面 / 编辑分类；前三项仅已入库作品显示，笔记对所有作品可用
+  @Builder
+  detailMenuBuilder() {
+    Menu() {
+      if (this.manga.inLibrary) {
+        MenuItem({ content: '更新间隔' })
+          .onClick(() => {
+            this.showIntervalSheet = true;
+          })
+      }
+      MenuItem({ content: this.manga.notes !== '' ? '笔记' : '添加笔记' })
+        .onClick(() => {
+          this.showNotesSheet = true;
+        })
+      if (this.manga.inLibrary) {
+        MenuItem({ content: $r('app.string.detail_add_to_desktop') })
+          .onClick(() => {
+            this.addToDesktop();
+          })
+        MenuItem({ content: $r('app.string.action_move_category') })
+          .onClick(() => {
+            this.runSafe((): Promise<void> => this.editCategories());
+          })
+      }
+    }
   }
 
   // 批量下载菜单（对齐 Mihon DownloadAction）
@@ -521,530 +644,14 @@ export struct MangaDetailPage {
   build() {
     NavDestination() {
       Stack({ alignContent: Alignment.Top }) {
-        Column() {
-          // 整页滚动 + 下拉刷新：头部随列表上滑收起，不再固定占位
-          Refresh({ refreshing: $$this.refreshing }) {
-            List({ scroller: this.listScroller }) {
-              // 头部：封面背景 + 信息
-              ListItem() {
-                Stack({ alignContent: Alignment.TopStart }) {
-                  if (this.manga.thumbnailUrl !== '') {
-                    SmartImage({
-                      url: this.manga.thumbnailUrl,
-                      sourceKey: this.manga.sourceKey,
-                      fit: ImageFit.Cover,
-                      fill: true
-                    })
-                      .width('100%')
-                      .height(this.headerHeight())
-                      .blur(30)
-                  } else {
-                    CoverPlaceholder()
-                      .width('100%')
-                      .height(this.headerHeight())
-                      .blur(30)
-                  }
-                  Column()
-                    .width('100%')
-                    .height(this.headerHeight())
-                    .linearGradient({
-                      angle: 180,
-                      colors: [['#80000000', 0.0], [this.isDark ? '#F0101318' : '#F0F2F3F7', 1.0]],
-                    })
-
-                  Column() {
-                    // 吸顶栏占位（状态栏 + 返回/标题栏高度）
-                    Column()
-                      .height(this.statusBarH + 52)
-                    Row({ space: 14 }) {
-                      // 封面：点击进入全屏查看器（对齐 Mihon onCoverClick）
-                      Stack() {
-                        if (this.manga.thumbnailUrl !== '') {
-                          SmartImage({
-                            url: this.manga.thumbnailUrl,
-                            sourceKey: this.manga.sourceKey,
-                            fit: ImageFit.Cover,
-                            fill: true
-                          })
-                        } else {
-                          CoverPlaceholder({ iconSize: 34 })
-                        }
-                      }
-                      .width(110)
-                      .height(150)
-                      .borderRadius(10)
-                      .clip(true)
-                      .backgroundColor(this.pal.chip)
-                      .onClick(() => {
-                        this.showCoverViewer = true;
-                      })
-                      .bindContentCover($$this.showCoverViewer, this.coverViewerBuilder(), {
-                        modalTransition: ModalTransition.ALPHA,
-                        backgroundColor: '#B3000000',
-                      })
-
-                      // 标题/作者/状态+源名（对齐 Mihon MangaContentInfo）：
-                      // 标题、作者点击跳全局搜索，长按复制；源名点击回上一页文本搜索
-                      // PC 右键标题/作者复制（移动端仍走长按复制）
-                      Column({ space: 5 }) {
-                        Text(this.manga.title)
-                          .fontSize(20)
-                          .fontWeight(FontWeight.Bold)
-                          .fontColor(this.pal.text)
-                          .maxLines(3)
-                          .textOverflow({ overflow: TextOverflow.Ellipsis })
-                          .onClick(() => {
-                            if (this.manga.title.trim() !== '') {
-                              this.searchGlobal(this.manga.title.trim());
-                            }
-                          })
-                          .gesture(LongPressGesture({ repeat: false })
-                            .onAction(() => {
-                              this.copyText(this.manga.title);
-                            }))
-                          .bindContextMenu(this.titleContextMenu, ResponseType.RightClick)
-                        if (this.manga.author !== '') {
-                          Text(this.manga.author)
-                            .fontSize(13)
-                            .fontColor(this.pal.sub)
-                            .maxLines(1)
-                            .textOverflow({ overflow: TextOverflow.Ellipsis })
-                            .onClick(() => {
-                              this.searchGlobal(this.manga.author);
-                            })
-                            .gesture(LongPressGesture({ repeat: false })
-                              .onAction(() => {
-                                this.copyText(this.manga.author);
-                              }))
-                            .bindContextMenu(this.authorContextMenu, ResponseType.RightClick)
-                        }
-                        Row({ space: 4 }) {
-                          AppIcon({
-                            name: this.statusIconName(),
-                            iconSize: 15,
-                            tint: this.pal.primary
-                          })
-                          Text(ContentType.isLocal(this.manga.sourceKey) ? $r('app.string.detail_status_local') :
-                            Util.statusLabel(this.manga.status))
-                            .fontSize(12)
-                            .fontColor(this.pal.primary)
-                            .maxLines(1)
-                          Text('·')
-                            .fontSize(12)
-                            .fontColor(this.pal.sub)
-                          Text(this.sourceDisplayName())
-                            .fontSize(12)
-                            .fontColor(this.pal.sub)
-                            .maxLines(1)
-                            .textOverflow({ overflow: TextOverflow.Ellipsis })
-                            .layoutWeight(1)
-                            .onClick(() => {
-                              // 源名点击：回上一页（单源浏览页/书架）按源名文本搜索
-                              this.searchInPrevious(this.sourceDisplayName());
-                            })
-                        }
-                        .width('100%')
-                      }
-                      .alignItems(HorizontalAlign.Start)
-                      .layoutWeight(1)
-                    }
-                    .width('100%')
-                    .padding({
-                      left: 16 + this.contentInset(),
-                      right: 16 + this.contentInset(),
-                      top: 12
-                    })
-                    .alignItems(VerticalAlign.Top)
-                  }
-                  .width('100%')
-                  .alignItems(HorizontalAlign.Start)
-                }
-                .width('100%')
-                .height(this.headerHeight())
-              }
-
-              // 操作按钮行（对齐 Mihon MangaActionRow）：收藏 / 续读 / 追踪 / 桌面卡片
-              ListItem() {
-                Row() {
-                  Column({ space: 5 }) {
-                    AppIcon({
-                      name: this.manga.inLibrary ? 'favorite' : 'favorite_border',
-                      iconSize: 22,
-                      tint: this.manga.inLibrary ? this.pal.primary : this.pal.sub
-                    })
-                    Text(this.manga.inLibrary ? $r('app.string.detail_in_library') :
-                      $r('app.string.detail_add_to_library'))
-                      .fontSize(11)
-                      .maxLines(2)
-                      .textAlign(TextAlign.Center)
-                      .fontColor(this.manga.inLibrary ? this.pal.primary : this.pal.sub)
-                  }
-                  .layoutWeight(1)
-                  .onClick(() => {
-                    this.runSafe((): Promise<void> => this.toggleLibrary());
-                  })
-                  .gesture(LongPressGesture().onAction(() => {
-                    // 长按编辑已入库作品的分类（对齐 Mihon MangaInfoHeader onLongClick）
-                    if (this.manga.inLibrary) {
-                      this.runSafe((): Promise<void> => this.editCategories());
-                    }
-                  }))
-
-                  Column({ space: 5 }) {
-                    AppIcon({ name: 'play_arrow', iconSize: 22, tint: this.pal.sub })
-                    Text(this.actionLabel())
-                      .fontSize(11)
-                      .maxLines(2)
-                      .textAlign(TextAlign.Center)
-                      .fontColor(this.pal.sub)
-                  }
-                  .layoutWeight(1)
-                  .onClick(() => {
-                    const chapter = this.continueChapter();
-                    if (chapter !== undefined) {
-                      this.openReader(chapter.id);
-                    }
-                  })
-
-                  Column({ space: 5 }) {
-                    AppIcon({
-                      name: 'sync',
-                      iconSize: 22,
-                      tint: this.trackCount > 0 ? this.pal.primary : this.pal.sub
-                    })
-                    Text($r('app.string.detail_action_tracking'))
-                      .fontSize(11)
-                      .maxLines(2)
-                      .textAlign(TextAlign.Center)
-                      .fontColor(this.trackCount > 0 ? this.pal.primary : this.pal.sub)
-                  }
-                  .layoutWeight(1)
-                  .onClick(() => {
-                    this.showTrackSheet = true;
-                  })
-                  .bindSheet($$this.showTrackSheet, this.trackSheetBuilder(),
-                    SheetPreset.fit(this.windowW, {
-                      height: Bp.sheetHeight(this.windowW),
-                      detents: ['75%', SheetSize.LARGE],
-                      showClose: false,
-                      bg: this.pal.bg
-                    }))
-
-                  if (this.manga.inLibrary) {
-                    Column({ space: 5 }) {
-                      AppIcon({ name: 'collections_bookmark', iconSize: 22, tint: this.pal.sub })
-                      Text($r('app.string.detail_add_to_desktop'))
-                        .fontSize(11)
-                        .maxLines(2)
-                        .textAlign(TextAlign.Center)
-                        .fontColor(this.pal.sub)
-                    }
-                    .layoutWeight(1)
-                    .onClick(() => {
-                      this.addToDesktop();
-                    })
-                  }
-                }
-                .width('100%')
-                .padding({
-                  left: 8 + this.contentInset(),
-                  right: 8 + this.contentInset(),
-                  top: 14
-                })
-              }
-
-              // 简介 + 标签（对齐 Mihon ExpandableMangaDescription）
-              if (this.manga.description !== '' || this.tagList().length > 0) {
-                ListItem() {
-                  Column() {
-                    if (this.manga.description !== '') {
-                      Text(Util.localDescriptionLabel(this.getUIContext(), this.manga.description))
-                        .fontSize(13)
-                        .fontColor(this.pal.sub)
-                        .maxLines(this.descExpanded ? 999 : 3)
-                        .textOverflow({ overflow: TextOverflow.Ellipsis })
-                        .width('100%')
-                      Text(this.descExpanded ? $r('app.string.detail_collapse') : $r('app.string.detail_expand'))
-                        .fontSize(12)
-                        .fontColor(this.pal.primary)
-                        .margin({ top: 4 })
-                        .onClick(() => {
-                          this.descExpanded = !this.descExpanded;
-                        })
-                    }
-                    // 标签：展开时流式换行，收起时单行横向滚动（对齐 Mihon tags chips）
-                    if (this.tagList().length > 0) {
-                      if (this.descExpanded) {
-                        Flex({ wrap: FlexWrap.Wrap }) {
-                          ForEach(this.tagList(), (tag: string) => {
-                            this.TagChip(tag)
-                          }, (tag: string, idx: number) => `tag-${idx}-${tag}`)
-                        }
-                      } else {
-                        Scroll() {
-                          Row() {
-                            ForEach(this.tagList(), (tag: string) => {
-                              this.TagChip(tag)
-                            }, (tag: string, idx: number) => `tag-${idx}-${tag}`)
-                          }
-                        }
-                        .scrollable(ScrollDirection.Horizontal)
-                        .scrollBar(BarState.Off)
-                        .edgeEffect(EdgeEffect.None)
-                      }
-                    }
-                  }
-                  .alignItems(HorizontalAlign.Start)
-                  .width('100%')
-                  .padding({
-                    left: 16 + this.contentInset(),
-                    right: 16 + this.contentInset(),
-                    top: 10
-                  })
-                }
-              }
-
-              // 相关/推荐作品（插件导出 getRelatedWorks 时展示）：横向封面卡片，点击入库并进详情
-              if (this.relatedWorks.length > 0) {
-                ListItem() {
-                  Column() {
-                    Text($r('app.string.detail_related_works'))
-                      .fontSize(16)
-                      .fontWeight(FontWeight.Bold)
-                      .fontColor(this.pal.text)
-                    Scroll() {
-                      Row({ space: 10 }) {
-                        ForEach(this.relatedWorks, (m: SManga) => {
-                          Column() {
-                            SmartImage({
-                              url: m.coverUrl,
-                              sourceKey: this.manga.sourceKey,
-                              fit: ImageFit.Cover,
-                              fill: true
-                            })
-                              .width('100%')
-                              .aspectRatio(0.7)
-                              .borderRadius(8)
-                              .clip(true)
-                              .backgroundColor(this.pal.chip)
-                            Text(m.title)
-                              .fontSize(11)
-                              .fontColor(this.pal.sub)
-                              .maxLines(2)
-                              .textOverflow({ overflow: TextOverflow.Ellipsis })
-                              .margin({ top: 5 })
-                          }
-                          .width(88)
-                          .alignItems(HorizontalAlign.Start)
-                          .onClick(() => {
-                            this.runSafe((): Promise<void> => this.openRelatedWork(m));
-                          })
-                        }, (m: SManga, idx: number) => `rel-${idx}-${m.key}`)
-                      }
-                    }
-                    .scrollable(ScrollDirection.Horizontal)
-                    .scrollBar(BarState.Off)
-                    .edgeEffect(EdgeEffect.None)
-                    .margin({ top: 10 })
-                  }
-                  .alignItems(HorizontalAlign.Start)
-                  .width('100%')
-                  .padding({
-                    left: 16 + this.contentInset(),
-                    right: 16 + this.contentInset(),
-                    top: 10
-                  })
-                }
-              }
-
-              // 章节标题栏：标题/排序/筛选入口 + 批量下载 + 全部已读（对齐 Mihon ChapterHeader）
-              ListItem() {
-                Row() {
-                  Text($r('app.string.detail_chapters_count', this.chapters.length))
-                    .fontSize(16)
-                    .fontWeight(FontWeight.Bold)
-                    .fontColor(this.pal.text)
-                    .layoutWeight(1)
-                    .onClick(() => {
-                      this.showSettingsSheet = true;
-                    })
-                  if (!ContentType.isLocal(this.manga.sourceKey)) {
-                    AppIcon({ name: 'download', iconSize: 22, tint: this.pal.text })
-                      .padding({ left: 10 })
-                      .onClick(() => {
-                        this.downloadAction(-1);
-                      })
-                      .bindMenu(this.bulkDownloadMenu)
-                  }
-                  AppIcon({
-                    name: this.filterActive() ? 'filter_list' : 'sort',
-                    iconSize: 22,
-                    tint: this.filterActive() ? this.pal.primary : this.pal.text
-                  })
-                    .padding({ left: 10 })
-                    .onClick(() => {
-                      this.showSettingsSheet = true;
-                    })
-                    .bindSheet($$this.showSettingsSheet, this.chapterSettingsSheetBuilder(),
-                      SheetPreset.fit(this.windowW, {
-                        height: Bp.sheetHeight(this.windowW),
-                        detents: ['45%', SheetSize.LARGE],
-                        showClose: false,
-                        bg: this.pal.bg
-                      }))
-                  Text($r('app.string.detail_mark_all_read'))
-                    .fontSize(13)
-                    .fontColor(this.pal.primary)
-                    .padding({
-                      left: 10,
-                      right: 6,
-                      top: 6,
-                      bottom: 6
-                    })
-                    .onClick(() => {
-                      this.runSafe((): Promise<void> => this.markAllRead());
-                    })
-                }
-                .width('100%')
-                .padding({
-                  left: 16 + this.contentInset(),
-                  right: 16 + this.contentInset(),
-                  top: 14,
-                  bottom: 6
-                })
-              }
-
-              // 章节列表（分组承载分割线，随整页滚动）
-              if (this.loading) {
-                ListItem() {
-                  LoadingState({ fill: false })
-                    .width('100%')
-                    .padding({ top: 48, bottom: 48 })
-                }
-              } else if (this.chapters.length === 0) {
-                ListItem() {
-                  Column() {
-                    EmptyScreen({ message: $r('app.string.detail_no_chapters') })
-                  }
-                  .width('100%')
-                  .padding({ top: 32, bottom: 32 })
-                }
-              } else {
-                ListItemGroup() {
-                  LazyForEach(this.chapterSource, (chapter: ChapterRecord) => {
-                    ListItem() {
-                      DetailChapterRow({
-                        chapter: chapter,
-                        isLocalSource: ContentType.isLocal(this.manga.sourceKey),
-                        selectionMode: this.selectedIds.size > 0,
-                        selected: this.selectedIds.has(chapter.id),
-                        onTap: (c: ChapterRecord): void => {
-                          if (this.selectedIds.size > 0) {
-                            this.toggleSelected(c.id);
-                          } else {
-                            this.openReader(c.id);
-                          }
-                        },
-                        onLongPress: (c: ChapterRecord): void => {
-                          this.toggleSelected(c.id);
-                        },
-                        onIndicatorTap: (c: ChapterRecord, state: string): void => {
-                          this.onChapterIndicatorTap(c, state);
-                        },
-                      })
-                    }
-                    .padding({
-                      left: this.contentInset(),
-                      right: this.contentInset()
-                    })
-                  }, (chapter: ChapterRecord) => `ch-${chapter.id}`)
-                }
-                .divider({
-                  strokeWidth: 1,
-                  color: this.pal.divider,
-                  startMargin: 16 + this.contentInset(),
-                  endMargin: 16 + this.contentInset(),
-                })
-              }
-            }
-            .width('100%')
-            .height('100%')
-            .scrollBar(BarState.Auto)
-            .onDidScroll((_scrollOffset: number, _state: ScrollState) => {
-              this.syncTopBar();
-            })
-            .onReachStart(() => {
-              this.syncTopBar();
-            })
-          }
-          .width('100%')
-          .height('100%')
-          .onRefreshing(() => {
-            this.runSafe((): Promise<void> => this.refreshFromSource());
-          })
+        if (this.isTwoPane()) {
+          this.twoPaneBody()
+        } else {
+          this.singlePaneBody()
         }
-        .width('100%')
-        .height('100%')
-
-        // 吸顶栏：背景/标题随滚动渐显，返回按钮常驻
-        Stack({ alignContent: Alignment.TopStart }) {
-          Column()
-            .width('100%')
-            .height(this.statusBarH + 52)
-            .backgroundColor(this.pal.bg)
-            .opacity(this.topBarProgress)
-          Row() {
-            Stack() {
-              AppIcon({ name: 'arrow_back', iconSize: 22, tint: '#FFFFFF' })
-                .opacity(1 - this.topBarProgress)
-              AppIcon({ name: 'arrow_back', iconSize: 22, tint: this.pal.text })
-                .opacity(this.topBarProgress)
-            }
-            .width(40)
-            .height(40)
-            .onClick(() => {
-              this.pathStack.pop();
-            })
-
-            Text(this.manga.title)
-              .fontSize(16)
-              .fontWeight(FontWeight.Bold)
-              .fontColor(this.pal.text)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Ellipsis })
-              .layoutWeight(1)
-              .margin({ left: 4 })
-              .opacity(this.topBarProgress)
-
-            if (this.syncing) {
-              LoadingProgress()
-                .width(18)
-                .height(18)
-                .color(this.topBarProgress > 0.5 ? this.pal.text : '#FFFFFF')
-                .margin({ left: 8 })
-            }
-          }
-          .width('100%')
-          .height(this.statusBarH + 52)
-          .padding({
-            left: 8 + this.contentInset(),
-            right: 16 + this.contentInset(),
-            top: this.statusBarH
-          })
-          .alignItems(VerticalAlign.Center)
-          .hitTestBehavior(HitTestMode.Transparent)
-        }
-        .width('100%')
-        .hitTestBehavior(HitTestMode.Transparent)
-
-        // 多选模式：底部动作条（对齐 Mihon 选择模式）
+        this.topBarOverlay()
         if (this.selectedIds.size > 0) {
-          Stack({ alignContent: Alignment.Bottom }) {
-            this.selectionActionBar()
-          }
-          .width('100%')
-          .height('100%')
-          .hitTestBehavior(HitTestMode.Transparent)
+          this.selectionOverlay()
         }
       }
       .width('100%')
@@ -1065,6 +672,725 @@ export struct MangaDetailPage {
       this.mangaId = mangaId;
       this.loadAll();
     })
+  }
+
+  // 单列布局（手机/折叠屏，对齐 Mihon MangaScreenSmallImpl）：整页滚动，介绍与章节纵向串联
+  @Builder
+  singlePaneBody() {
+    Column() {
+      // 整页滚动 + 下拉刷新：头部随列表上滑收起，不再固定占位
+      Refresh({ refreshing: $$this.refreshing }) {
+        List({ scroller: this.listScroller }) {
+          // 头部：封面背景 + 信息
+          ListItem() {
+            this.headerContent()
+          }
+
+          // 操作按钮行（对齐 Mihon MangaActionRow）
+          ListItem() {
+            this.actionRowContent()
+          }
+
+          // 简介 + 标签 + 笔记（对齐 Mihon ExpandableMangaDescription / MangaNotesSection）
+          if (this.manga.notes !== '' || this.manga.description !== '' || this.tagList().length > 0) {
+            ListItem() {
+              this.descContent()
+            }
+          }
+
+          // 相关/推荐作品（插件导出 getRelatedWorks 时展示）
+          if (this.relatedWorks.length > 0) {
+            ListItem() {
+              this.relatedContent()
+            }
+          }
+
+          // 章节标题栏（对齐 Mihon ChapterHeader）
+          ListItem() {
+            this.chapterHeaderContent()
+          }
+
+          // 章节列表（分组承载分割线，随整页滚动）
+          this.chapterListBody()
+        }
+        .width('100%')
+        .height('100%')
+        .scrollBar(BarState.Auto)
+        .onDidScroll((_scrollOffset: number, _state: ScrollState) => {
+          this.syncTopBar();
+        })
+        .onReachStart(() => {
+          this.syncTopBar();
+        })
+      }
+      .width('100%')
+      .height('100%')
+      .onRefreshing(() => {
+        this.runSafe((): Promise<void> => this.refreshFromSource());
+      })
+    }
+    .width('100%')
+    .height('100%')
+  }
+
+  // 两列布局（平板 lg 档，对齐 Mihon 平板 MangaScreenLargeImpl TwoPanelBox）：
+  // 左列 = 介绍（头部信息/操作行/简介标签/相关作品），右列 = 章节列表，两列各自独立滚动
+  @Builder
+  twoPaneBody() {
+    Row() {
+      // 左列：介绍，宽度取可用宽度一半（上限 450），吸顶栏渐显跟随本列滚动
+      Refresh({ refreshing: $$this.refreshingLeft }) {
+        Scroll(this.leftScroller) {
+          Column() {
+            this.headerContent()
+            this.actionRowContent()
+            if (this.manga.notes !== '' || this.manga.description !== '' || this.tagList().length > 0) {
+              this.descContent()
+            }
+            if (this.relatedWorks.length > 0) {
+              this.relatedContent()
+            }
+          }
+          .width('100%')
+          .alignItems(HorizontalAlign.Start)
+        }
+        .width('100%')
+        .height('100%')
+        .scrollBar(BarState.Auto)
+        .align(Alignment.Top)
+        .onDidScroll((_x: number, _y: number, _state: ScrollState) => {
+          this.syncTopBar();
+        })
+      }
+      .width(this.leftPaneW())
+      .height('100%')
+      .onRefreshing(() => {
+        this.runSafe((): Promise<void> => this.refreshPanesFromSource());
+      })
+
+      // 右列：章节，顶部避开状态栏 + 吸顶栏，独立滚动
+      Column() {
+        Column()
+          .height(this.statusBarH + 52)
+        Refresh({ refreshing: $$this.refreshingRight }) {
+          List() {
+            ListItem() {
+              this.chapterHeaderContent()
+            }
+            this.chapterListBody()
+          }
+          .width('100%')
+          .height('100%')
+          .scrollBar(BarState.Auto)
+        }
+        .layoutWeight(1)
+        .width('100%')
+        .onRefreshing(() => {
+          this.runSafe((): Promise<void> => this.refreshPanesFromSource());
+        })
+      }
+      .layoutWeight(1)
+      .height('100%')
+    }
+    .width('100%')
+    .height('100%')
+  }
+
+  // 头部：封面虚化背景 + 封面/标题/作者/状态/源名（对齐 Mihon MangaInfoBox）：
+  // 标题、作者点击跳全局搜索，长按复制；源名点击回上一页文本搜索
+  // PC 右键标题/作者复制（移动端仍走长按复制）
+  @Builder
+  headerContent() {
+    Stack({ alignContent: Alignment.TopStart }) {
+      if (this.manga.thumbnailUrl !== '') {
+        SmartImage({
+          url: this.manga.thumbnailUrl,
+          sourceKey: this.manga.sourceKey,
+          fit: ImageFit.Cover,
+          fill: true
+        })
+          .width('100%')
+          .height(this.headerHeight())
+          .blur(30)
+      } else {
+        CoverPlaceholder()
+          .width('100%')
+          .height(this.headerHeight())
+          .blur(30)
+      }
+      Column()
+        .width('100%')
+        .height(this.headerHeight())
+        .linearGradient({
+          angle: 180,
+          colors: [['#80000000', 0.0], [this.isDark ? '#F0101318' : '#F0F2F3F7', 1.0]],
+        })
+
+      Column() {
+        // 吸顶栏占位（状态栏 + 返回/标题栏高度）
+        Column()
+          .height(this.statusBarH + 52)
+        Row({ space: 14 }) {
+          // 封面：点击进入全屏查看器（对齐 Mihon onCoverClick）
+          Stack() {
+            if (this.manga.thumbnailUrl !== '') {
+              SmartImage({
+                url: this.manga.thumbnailUrl,
+                sourceKey: this.manga.sourceKey,
+                fit: ImageFit.Cover,
+                fill: true
+              })
+            } else {
+              CoverPlaceholder({ iconSize: 34 })
+            }
+          }
+          .width(110)
+          .height(150)
+          .borderRadius(10)
+          .clip(true)
+          .backgroundColor(this.pal.chip)
+          .onClick(() => {
+            this.showCoverViewer = true;
+          })
+          .bindContentCover($$this.showCoverViewer, this.coverViewerBuilder(), {
+            modalTransition: ModalTransition.ALPHA,
+            backgroundColor: '#B3000000',
+          })
+
+          // 标题/作者/状态+源名（对齐 Mihon MangaContentInfo）：
+          Column({ space: 5 }) {
+            Text(this.manga.title)
+              .fontSize(20)
+              .fontWeight(FontWeight.Bold)
+              .fontColor(this.pal.text)
+              .maxLines(3)
+              .textOverflow({ overflow: TextOverflow.Ellipsis })
+              .onClick(() => {
+                if (this.manga.title.trim() !== '') {
+                  this.searchGlobal(this.manga.title.trim());
+                }
+              })
+              .gesture(LongPressGesture({ repeat: false })
+                .onAction(() => {
+                  this.copyText(this.manga.title);
+                }))
+              .bindContextMenu(this.titleContextMenu, ResponseType.RightClick)
+            if (this.manga.author !== '') {
+              Text(this.manga.author)
+                .fontSize(13)
+                .fontColor(this.pal.sub)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Ellipsis })
+                .onClick(() => {
+                  this.searchGlobal(this.manga.author);
+                })
+                .gesture(LongPressGesture({ repeat: false })
+                  .onAction(() => {
+                    this.copyText(this.manga.author);
+                  }))
+                .bindContextMenu(this.authorContextMenu, ResponseType.RightClick)
+            }
+            Row({ space: 4 }) {
+              AppIcon({
+                name: this.statusIconName(),
+                iconSize: 15,
+                tint: this.pal.primary
+              })
+              Text(ContentType.isLocal(this.manga.sourceKey) ? $r('app.string.detail_status_local') :
+                Util.statusLabel(this.manga.status))
+                .fontSize(12)
+                .fontColor(this.pal.primary)
+                .maxLines(1)
+              // 作品类别（多类型插件下作品实际归属；未声明时与插件类型一致）
+              Text('·')
+                .fontSize(12)
+                .fontColor(this.pal.sub)
+              Text(Util.categoryLabel(this.manga.contentType))
+                .fontSize(12)
+                .fontColor(this.pal.sub)
+                .maxLines(1)
+              Text('·')
+                .fontSize(12)
+                .fontColor(this.pal.sub)
+              Text(this.sourceDisplayName())
+                .fontSize(12)
+                .fontColor(this.pal.sub)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Ellipsis })
+                .layoutWeight(1)
+                .onClick(() => {
+                  // 源名点击：回上一页（单源浏览页/书架）按源名文本搜索
+                  this.searchInPrevious(this.sourceDisplayName());
+                })
+            }
+            .width('100%')
+          }
+          .alignItems(HorizontalAlign.Start)
+          .layoutWeight(1)
+        }
+        .width('100%')
+        .padding({
+          left: 16 + this.padInset(),
+          right: 16 + this.padInset(),
+          top: 12
+        })
+        .alignItems(VerticalAlign.Top)
+      }
+      .width('100%')
+      .alignItems(HorizontalAlign.Start)
+    }
+    .width('100%')
+    .height(this.headerHeight())
+  }
+
+  // 操作按钮行（对齐 Mihon MangaActionRow）：收藏 / 续读 / 追踪
+  // （更新间隔/笔记/添加到桌面/编辑分类移至右上角更多菜单）
+  @Builder
+  actionRowContent() {
+    Row() {
+      Column({ space: 5 }) {
+        AppIcon({
+          name: this.manga.inLibrary ? 'favorite' : 'favorite_border',
+          iconSize: 22,
+          tint: this.manga.inLibrary ? this.pal.primary : this.pal.sub
+        })
+        Text(this.manga.inLibrary ? $r('app.string.detail_in_library') :
+          $r('app.string.detail_add_to_library'))
+          .fontSize(11)
+          .maxLines(2)
+          .textAlign(TextAlign.Center)
+          .fontColor(this.manga.inLibrary ? this.pal.primary : this.pal.sub)
+      }
+      .layoutWeight(1)
+      .onClick(() => {
+        this.runSafe((): Promise<void> => this.toggleLibrary());
+      })
+      .gesture(LongPressGesture().onAction(() => {
+        // 长按编辑已入库作品的分类（对齐 Mihon MangaInfoHeader onLongClick）
+        if (this.manga.inLibrary) {
+          this.runSafe((): Promise<void> => this.editCategories());
+        }
+      }))
+
+      Column({ space: 5 }) {
+        AppIcon({ name: 'play_arrow', iconSize: 22, tint: this.pal.sub })
+        Text(this.actionLabel())
+          .fontSize(11)
+          .maxLines(2)
+          .textAlign(TextAlign.Center)
+          .fontColor(this.pal.sub)
+      }
+      .layoutWeight(1)
+      .onClick(() => {
+        const chapter = this.continueChapter();
+        if (chapter !== undefined) {
+          this.openReader(chapter.id);
+        }
+      })
+
+      Column({ space: 5 }) {
+        AppIcon({
+          name: 'sync',
+          iconSize: 22,
+          tint: this.trackCount > 0 ? this.pal.primary : this.pal.sub
+        })
+        Text($r('app.string.detail_action_tracking'))
+          .fontSize(11)
+          .maxLines(2)
+          .textAlign(TextAlign.Center)
+          .fontColor(this.trackCount > 0 ? this.pal.primary : this.pal.sub)
+      }
+      .layoutWeight(1)
+      .onClick(() => {
+        this.showTrackSheet = true;
+      })
+        .bindSheet($$this.showTrackSheet, this.trackSheetBuilder(),
+          SheetPreset.fit(this.windowW, {
+            height: Bp.sheetHeight(this.windowW),
+            detents: ['75%', SheetSize.LARGE],
+            showClose: false,
+            bg: this.pal.bg
+          }))
+
+      // WebView 按钮（对齐 Mihon MangaActionRow 第四按钮）：
+      // 点击打开作品源页半模态 WebView；长按复制源页链接；仅线上源且有 url 时显示
+      if (this.manga.url !== '' && !ContentType.isLocal(this.manga.sourceKey)) {
+        Column({ space: 5 }) {
+          AppIcon({ name: 'public', iconSize: 22, tint: this.pal.sub })
+          Text($r('app.string.detail_action_webview'))
+            .fontSize(11)
+            .maxLines(2)
+            .textAlign(TextAlign.Center)
+            .fontColor(this.pal.sub)
+        }
+        .layoutWeight(1)
+        .onClick(() => {
+          this.showWebView = true;
+        })
+        .gesture(LongPressGesture().onAction(() => {
+          this.copyText(this.resolveWorkPageUrl());
+        }))
+        .bindSheet($$this.showWebView, this.webViewSheetBuilder(),
+          SheetPreset.fit(this.windowW, {
+            height: SheetSize.LARGE,
+            detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+            showClose: false,
+            wideWidth: 560,
+            maskColor: 'rgba(0,0,0,0.45)'
+          }))
+      }
+    }
+    .width('100%')
+    .padding({
+      left: 8 + this.padInset(),
+      right: 8 + this.padInset(),
+      top: 14
+    })
+  }
+
+  // 简介 + 标签（对齐 Mihon ExpandableMangaDescription）
+  @Builder
+  descContent() {
+    Column() {
+      // 笔记（对齐 Mihon MangaNotesSection：简介上方展示，展开时露出编辑入口）
+      if (this.manga.notes !== '') {
+        Column() {
+          NotesDisplay({ markdown: this.manga.notes })
+          if (this.descExpanded) {
+            Row({ space: 4 }) {
+              AppIcon({ name: 'edit', iconSize: 16, tint: this.pal.primary })
+              Text('编辑笔记')
+                .fontSize(13)
+                .fontColor(this.pal.primary)
+            }
+            .padding({ top: 6, bottom: 2 })
+            .onClick(() => {
+              this.showNotesSheet = true;
+            })
+          }
+          Divider()
+            .color(this.pal.divider)
+            .margin({ top: 8, bottom: 8 })
+        }
+        .width('100%')
+        .alignItems(HorizontalAlign.Start)
+      }
+      if (this.manga.description !== '') {
+        Text(Util.localDescriptionLabel(this.getUIContext(), this.manga.description))
+          .fontSize(13)
+          .fontColor(this.pal.sub)
+          .maxLines(this.descExpanded ? 999 : 3)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+          .width('100%')
+        Text(this.descExpanded ? $r('app.string.detail_collapse') : $r('app.string.detail_expand'))
+          .fontSize(12)
+          .fontColor(this.pal.primary)
+          .margin({ top: 4 })
+          .onClick(() => {
+            this.descExpanded = !this.descExpanded;
+          })
+      }
+      // 标签：展开时流式换行，收起时单行横向滚动（对齐 Mihon tags chips）
+      if (this.tagList().length > 0) {
+        if (this.descExpanded) {
+          Flex({ wrap: FlexWrap.Wrap }) {
+            ForEach(this.tagList(), (tag: string) => {
+              this.TagChip(tag)
+            }, (tag: string, idx: number) => `tag-${idx}-${tag}`)
+          }
+        } else {
+          Scroll() {
+            Row() {
+              ForEach(this.tagList(), (tag: string) => {
+                this.TagChip(tag)
+              }, (tag: string, idx: number) => `tag-${idx}-${tag}`)
+            }
+          }
+          .scrollable(ScrollDirection.Horizontal)
+          .scrollBar(BarState.Off)
+          .edgeEffect(EdgeEffect.None)
+        }
+      }
+    }
+    .alignItems(HorizontalAlign.Start)
+    .width('100%')
+    .padding({
+      left: 16 + this.padInset(),
+      right: 16 + this.padInset(),
+      top: 10
+    })
+  }
+
+  // 相关/推荐作品（插件导出 getRelatedWorks 时展示）：横向封面卡片，点击入库并进详情
+  @Builder
+  relatedContent() {
+    Column() {
+      Text($r('app.string.detail_related_works'))
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+      Scroll() {
+        Row({ space: 10 }) {
+          ForEach(this.relatedWorks, (m: SManga) => {
+            Column() {
+              SmartImage({
+                url: m.coverUrl,
+                sourceKey: this.manga.sourceKey,
+                fit: ImageFit.Cover,
+                fill: true
+              })
+                .width('100%')
+                .aspectRatio(0.7)
+                .borderRadius(8)
+                .clip(true)
+                .backgroundColor(this.pal.chip)
+              Text(m.title)
+                .fontSize(11)
+                .fontColor(this.pal.sub)
+                .maxLines(2)
+                .textOverflow({ overflow: TextOverflow.Ellipsis })
+                .margin({ top: 5 })
+            }
+            .width(88)
+            .alignItems(HorizontalAlign.Start)
+            .onClick(() => {
+              this.runSafe((): Promise<void> => this.openRelatedWork(m));
+            })
+          }, (m: SManga, idx: number) => `rel-${idx}-${m.key}`)
+        }
+      }
+      .scrollable(ScrollDirection.Horizontal)
+      .scrollBar(BarState.Off)
+      .edgeEffect(EdgeEffect.None)
+      .margin({ top: 10 })
+    }
+    .alignItems(HorizontalAlign.Start)
+    .width('100%')
+    .padding({
+      left: 16 + this.padInset(),
+      right: 16 + this.padInset(),
+      top: 10
+    })
+  }
+
+  // 章节标题栏：标题/排序/筛选入口 + 批量下载 + 全部已读（对齐 Mihon ChapterHeader）
+  @Builder
+  chapterHeaderContent() {
+    Column() {
+      Row() {
+        Text($r('app.string.detail_chapters_count', this.chapters.length))
+          .fontSize(16)
+          .fontWeight(FontWeight.Bold)
+          .fontColor(this.pal.text)
+          .layoutWeight(1)
+          .onClick(() => {
+            this.showSettingsSheet = true;
+          })
+        if (!ContentType.isLocal(this.manga.sourceKey)) {
+          AppIcon({ name: 'download', iconSize: 22, tint: this.pal.text })
+            .padding({ left: 10 })
+            .onClick(() => {
+              this.downloadAction(-1);
+            })
+            .bindMenu(this.bulkDownloadMenu)
+        }
+        AppIcon({
+          name: this.filterActive() ? 'filter_list' : 'sort',
+          iconSize: 22,
+          tint: this.filterActive() ? this.pal.primary : this.pal.text
+        })
+          .padding({ left: 10 })
+          .onClick(() => {
+            this.showSettingsSheet = true;
+          })
+          .bindSheet($$this.showSettingsSheet, this.chapterSettingsSheetBuilder(),
+            SheetPreset.fit(this.windowW, {
+              showClose: false,
+              bg: this.pal.bg
+            }))
+        Text($r('app.string.detail_mark_all_read'))
+          .fontSize(13)
+          .fontColor(this.pal.primary)
+          .padding({
+            left: 10,
+            right: 6,
+            top: 6,
+            bottom: 6
+          })
+          .onClick(() => {
+            this.runSafe((): Promise<void> => this.markAllRead());
+          })
+      }
+      .width('100%')
+
+      // 缺失章节提示（对齐 Mihon MissingChaptersWarning，错误色小字）
+      if (this.missingCount > 0) {
+        Text(`缺失 ${this.missingCount} 章`)
+          .fontSize(12)
+          .fontColor(this.pal.badgeRed)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+          .width('100%')
+      }
+    }
+    .alignItems(HorizontalAlign.Start)
+    .width('100%')
+    .padding({
+      left: 16 + this.padInset(),
+      right: 16 + this.padInset(),
+      top: 14,
+      bottom: 6
+    })
+  }
+
+  // 章节列表体：加载中 / 空 / 章节行（单列与两列右列共用）
+  @Builder
+  chapterListBody() {
+    if (this.loading) {
+      ListItem() {
+        LoadingState({ fill: false })
+          .width('100%')
+          .padding({ top: 48, bottom: 48 })
+      }
+    } else if (this.chapters.length === 0) {
+      ListItem() {
+        Column() {
+          EmptyScreen({ message: $r('app.string.detail_no_chapters') })
+        }
+        .width('100%')
+        .padding({ top: 32, bottom: 32 })
+      }
+    } else {
+      ListItemGroup() {
+        LazyForEach(this.chapterSource, (chapter: ChapterRecord) => {
+          ListItem() {
+            DetailChapterRow({
+              chapter: chapter,
+              isLocalSource: ContentType.isLocal(this.manga.sourceKey),
+              selectionMode: this.selectedIds.size > 0,
+              selected: this.selectedIds.has(chapter.id),
+              onTap: (c: ChapterRecord): void => {
+                if (this.selectedIds.size > 0) {
+                  this.toggleSelected(c.id);
+                } else {
+                  this.openReader(c.id);
+                }
+              },
+              onLongPress: (c: ChapterRecord): void => {
+                this.toggleSelected(c.id);
+              },
+              onIndicatorTap: (c: ChapterRecord, state: string): void => {
+                this.onChapterIndicatorTap(c, state);
+              },
+            })
+          }
+          .padding({
+            left: this.padInset(),
+            right: this.padInset()
+          })
+        }, (chapter: ChapterRecord) => `ch-${chapter.id}`)
+      }
+      .divider({
+        strokeWidth: 1,
+        color: this.pal.divider,
+        startMargin: 16 + this.padInset(),
+        endMargin: 16 + this.padInset(),
+      })
+    }
+  }
+
+  // 吸顶栏：背景/标题随滚动渐显，返回按钮常驻
+  // （单列随整页滚动渐显；两列随左列"介绍"滚动渐显）
+  @Builder
+  topBarOverlay() {
+    Stack({ alignContent: Alignment.TopStart }) {
+      Column()
+        .width('100%')
+        .height(this.statusBarH + 52)
+        .backgroundColor(this.pal.bg)
+        .opacity(this.topBarProgress)
+      Row() {
+        Stack() {
+          AppIcon({ name: 'arrow_back', iconSize: 22, tint: '#FFFFFF' })
+            .opacity(1 - this.topBarProgress)
+          AppIcon({ name: 'arrow_back', iconSize: 22, tint: this.pal.text })
+            .opacity(this.topBarProgress)
+        }
+        .width(40)
+        .height(40)
+        .onClick(() => {
+          this.pathStack.pop();
+        })
+
+        Text(this.manga.title)
+          .fontSize(16)
+          .fontWeight(FontWeight.Bold)
+          .fontColor(this.pal.text)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+          .layoutWeight(1)
+          .margin({ left: 4 })
+          .opacity(this.topBarProgress)
+
+        if (this.syncing && !this.isPullRefreshing()) {
+          LoadingProgress()
+            .width(18)
+            .height(18)
+            .color(this.topBarProgress > 0.5 ? this.pal.text : '#FFFFFF')
+            .margin({ left: 8 })
+        }
+
+        // 右上角更多菜单：更新间隔 / 添加笔记 / 添加到桌面 / 编辑分类
+        // 图标随吸顶栏渐显换色（白色 → 主题色），更新间隔弹层挂载于此
+        Stack() {
+          AppIcon({ name: 'more_vert', iconSize: 22, tint: '#FFFFFF' })
+            .opacity(1 - this.topBarProgress)
+          AppIcon({ name: 'more_vert', iconSize: 22, tint: this.pal.text })
+            .opacity(this.topBarProgress)
+        }
+        .width(40)
+        .height(40)
+        .bindMenu(this.detailMenuBuilder)
+        .bindSheet($$this.showIntervalSheet, this.intervalSheetBuilder(),
+          SheetPreset.fit(this.windowW, {
+            title: '更改更新间隔',
+            detents: ['60%', SheetSize.LARGE],
+            showClose: true,
+            bg: this.pal.bg
+          }))
+      }
+      .width('100%')
+      .height(this.statusBarH + 52)
+      .padding({
+        left: 8 + this.padInset(),
+        right: 16 + this.padInset(),
+        top: this.statusBarH
+      })
+      .alignItems(VerticalAlign.Center)
+      .hitTestBehavior(HitTestMode.Transparent)
+      // 笔记编辑弹层挂载于吸顶栏行（more_vert 节点已绑定更新间隔弹层，不可复用）
+      .bindSheet($$this.showNotesSheet, this.notesSheetBuilder(),
+        SheetPreset.fit(this.windowW, {
+          title: this.manga.notes !== '' ? '编辑笔记' : '添加笔记',
+          height: SheetSize.LARGE,
+          detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+          showClose: true,
+          bg: this.pal.bg
+        }))
+    }
+    .width('100%')
+    .hitTestBehavior(HitTestMode.Transparent)
+  }
+
+  // 多选模式：底部动作条（对齐 Mihon 选择模式）
+  @Builder
+  selectionOverlay() {
+    Stack({ alignContent: Alignment.Bottom }) {
+      this.selectionActionBar()
+    }
+    .width('100%')
+    .height('100%')
+    .hitTestBehavior(HitTestMode.Transparent)
   }
 
   // PC 右键复制标题（移动端仍走长按复制）
@@ -1089,13 +1415,19 @@ export struct MangaDetailPage {
     }
   }
 
-  // Esc 广播：关闭追踪/章节设置半模态弹层
+  // Esc 广播：关闭追踪/章节设置/更新间隔/笔记半模态弹层
   onSheetEsc(): void {
     if (this.showTrackSheet) {
       this.showTrackSheet = false;
     }
     if (this.showSettingsSheet) {
       this.showSettingsSheet = false;
+    }
+    if (this.showIntervalSheet) {
+      this.showIntervalSheet = false;
+    }
+    if (this.showNotesSheet) {
+      this.showNotesSheet = false;
     }
   }
 
@@ -1336,6 +1668,22 @@ export struct MangaDetailPage {
     }
   }
 
+  // 两列布局下拉刷新：结束时复位两列刷新状态，
+  // 保证只有被拉取的一列显示加载指示器（切换布局后也不残留）
+  private async refreshPanesFromSource(): Promise<void> {
+    try {
+      await this.syncFromSource();
+    } finally {
+      this.refreshingLeft = false;
+      this.refreshingRight = false;
+    }
+  }
+
+  // 下拉刷新已有 Refresh 指示器在转，此时不显示吸顶栏同步转圈，避免出现多个 loading
+  private isPullRefreshing(): boolean {
+    return this.refreshing || this.refreshingLeft || this.refreshingRight;
+  }
+
   // 当前漫画的追踪记录数（操作行"追踪"按钮着色）
   private async refreshTrackCount(): Promise<void> {
     const list = await TrackRepo.listByManga(this.mangaId);
@@ -1367,9 +1715,11 @@ export struct MangaDetailPage {
     this.chapterSource.notifyReload();
   }
 
-  // 重算 filter+sort 展示缓存并推给 LazyForEach 数据源
+  // 重算 filter+sort 展示缓存并推给 LazyForEach 数据源；
+  // 缺失章节数基于当前展示列表重算（对齐 Mihon ChapterHeader missingChaptersCount）
   private rebuildShownChapters(): void {
     this.shownChapterCache = this.shownChapters();
+    this.missingCount = MissingChapters.count(this.shownChapterCache);
     this.chapterSource.setItems(this.shownChapterCache);
   }
 
@@ -1387,8 +1737,28 @@ export struct MangaDetailPage {
     return Bp.contentInset(this.windowW);
   }
 
+  // 平板宽度档（lg，840~1200vp）使用两列布局（对齐 Mihon 平板 MangaScreenLargeImpl）；
+  // PC 等更大屏幕（xl，≥1200vp）沿用单列内容限宽（720vp）左右缩进居中方案
+  private isTwoPane(): boolean {
+    return this.windowW >= Bp.LG_MIN && this.windowW < Bp.XL_MIN;
+  }
+
+  // 两列布局下列宽自身已约束，内容不再整体限宽缩进
+  private padInset(): number {
+    return this.isTwoPane() ? 0 : this.contentInset();
+  }
+
+  // 左列宽度：可用宽度一半，上限 450（对齐 Mihon TwoPanelBox firstWidth）
+  private leftPaneW(): number {
+    const rail = Bp.isWide(this.windowW) ? Bp.WIDE_RAIL_W : 0;
+    const avail = Math.max(0, this.windowW - rail);
+    return Math.min(Math.floor(avail / 2), 450);
+  }
+
   private syncTopBar(): void {
-    const y = this.listScroller.currentOffset().yOffset;
+    // 两列布局跟随左列（介绍）滚动；单列跟随整页列表滚动
+    const y = this.isTwoPane() ? this.leftScroller.currentOffset().yOffset :
+      this.listScroller.currentOffset().yOffset;
     const p = Math.min(1, Math.max(0, y / 180));
     if (p !== this.topBarProgress) {
       this.topBarProgress = p;
@@ -1416,6 +1786,24 @@ export struct MangaDetailPage {
     }
     this.manga.chapterFlags = flags;
     await MangaRepo.setChapterFlags(this.mangaId, flags);
+  }
+
+  // 应用更新间隔选择（对齐 Mihon setFetchInterval）：落库并刷新概要区展示
+  private async applyUpdateInterval(hours: number): Promise<void> {
+    if (hours === this.manga.updateInterval) {
+      return;
+    }
+    await MangaRepo.setUpdateInterval(this.mangaId, hours);
+    this.manga.updateInterval = hours;
+  }
+
+  // 保存笔记（对齐 Mihon updateNotes）：落库并刷新入口视觉提示
+  private async saveNotes(notes: string): Promise<void> {
+    if (notes === this.manga.notes) {
+      return;
+    }
+    await MangaRepo.setNotes(this.mangaId, notes);
+    this.manga.notes = notes;
   }
 
   // 是否有筛选生效（头部图标着色提示）

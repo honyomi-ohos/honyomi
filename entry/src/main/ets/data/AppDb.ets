@@ -3,9 +3,27 @@ import { common } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { ContentType } from '../model/Models';
 
+// 单个迁移步骤：必须幂等（重复执行无副作用），
+// 同一套步骤同时服务"全量建表后的新装库"与"旧版本升级库"
+interface DbMigrationStep {
+  desc: string;
+  run: (store: relationalStore.RdbStore) => Promise<void>;
+}
+
+// 版本化迁移（对齐 Mihon SQLDelight .sqm 增量迁移）：
+// - 版本记录：RdbStore.version（PRAGMA user_version）
+// - v1：基线 schema（迁移框架引入前的建表全集，含既有安装）
+// - v2：manga.updateInterval / manga.notes / chapter.scanlator / excluded_scanlators
+// - v3：plugin.contentTypes（内容类型全量列表，逗号分隔，主类型在前）
+// 新增 schema 变更时：更新 createTables 到最新结构 + 追加 DbMigration 条目 + DB_VERSION 递增
+interface DbMigration {
+  toVersion: number;
+  steps: DbMigrationStep[];
+}
+
 // RelationalStore 数据库（对齐 Mihon Room schema 的 P1 子集）
-// 开发阶段：无版本迁移，建表语句即完整 schema（结构变更需清除应用数据重建）
 export class AppDb {
+  private static readonly DB_VERSION: number = 3;
   private static store: relationalStore.RdbStore | undefined = undefined;
   private static initPromise: Promise<void> | undefined = undefined;
 
@@ -39,10 +57,109 @@ export class AppDb {
       throw new Error(`init rdb store failed: ${e}`);
     }
     await AppDb.createTables(store);
+    await AppDb.migrate(store);
     await AppDb.createIndexes(store);
     await AppDb.ensureDefaultCategories(store);
     AppDb.store = store;
-    hilog.info(0x0001, 'AppDb', 'database ready');
+    hilog.info(0x0001, 'AppDb', 'database ready (v%{public}d)', AppDb.DB_VERSION);
+  }
+
+  // 版本迁移：步骤全部幂等（addColumnIfMissing / CREATE IF NOT EXISTS / INSERT OR IGNORE），
+  // 新装库（建表已是最新结构）与升级库（旧表缺列）执行同一套步骤；
+  // 全部成功后把 user_version 推进到 DB_VERSION，任何失败如实上抛阻止数据库就绪
+  private static async migrate(store: relationalStore.RdbStore): Promise<void> {
+    let version: number = 0;
+    try {
+      version = store.version;
+    } catch (_e) {
+      version = 0;
+    }
+    if (version >= AppDb.DB_VERSION) {
+      return;
+    }
+    const migrations: DbMigration[] = [AppDb.MIGRATION_V2, AppDb.MIGRATION_V3];
+    for (const migration of migrations) {
+      if (migration.toVersion <= version) {
+        continue;
+      }
+      for (const step of migration.steps) {
+        try {
+          await step.run(store);
+        } catch (e) {
+          throw new Error(`migrate db to v${migration.toVersion} (${step.desc}) failed: ${e}`);
+        }
+      }
+      hilog.info(0x0001, 'AppDb', 'database migrated to v%{public}d', migration.toVersion);
+    }
+    try {
+      store.version = AppDb.DB_VERSION;
+    } catch (e) {
+      throw new Error(`set db version failed: ${e}`);
+    }
+  }
+
+  // v1 → v2：作品级更新间隔 / 作品备注 / 章节汉化组 / 汉化组排除表
+  private static readonly MIGRATION_V2: DbMigration = {
+    toVersion: 2,
+    steps: [
+      {
+        desc: 'manga.updateInterval',
+        run: (store: relationalStore.RdbStore): Promise<void> =>
+          AppDb.addColumnIfMissing(store, 'manga', 'updateInterval', 'INTEGER DEFAULT 0'),
+      },
+      {
+        desc: 'manga.notes',
+        run: (store: relationalStore.RdbStore): Promise<void> =>
+          AppDb.addColumnIfMissing(store, 'manga', 'notes', `TEXT DEFAULT ''`),
+      },
+      {
+        desc: 'chapter.scanlator',
+        run: (store: relationalStore.RdbStore): Promise<void> =>
+          AppDb.addColumnIfMissing(store, 'chapter', 'scanlator', `TEXT DEFAULT ''`),
+      },
+      {
+        desc: 'excluded_scanlators',
+        run: (store: relationalStore.RdbStore): Promise<void> =>
+          store.executeSql(`CREATE TABLE IF NOT EXISTS excluded_scanlators (
+            scanlator TEXT PRIMARY KEY
+          )`),
+      },
+    ],
+  };
+
+  // v2 → v3：多类型插件全量内容类型列表（逗号分隔，主类型在前）
+  private static readonly MIGRATION_V3: DbMigration = {
+    toVersion: 3,
+    steps: [
+      {
+        desc: 'plugin.contentTypes',
+        run: (store: relationalStore.RdbStore): Promise<void> =>
+          AppDb.addColumnIfMissing(store, 'plugin', 'contentTypes', `TEXT DEFAULT ''`),
+      },
+    ],
+  };
+
+  // 已有表安全加列：先探测列存在性，缺列才 ALTER TABLE ADD COLUMN（幂等）
+  private static async addColumnIfMissing(store: relationalStore.RdbStore,
+    table: string, column: string, typeDef: string): Promise<void> {
+    let rs: relationalStore.ResultSet | undefined = undefined;
+    let has = false;
+    try {
+      rs = await store.querySql(`SELECT * FROM ${table} LIMIT 0`);
+      has = rs.getColumnIndex(column) >= 0;
+    } catch (_e) {
+      has = false;
+    } finally {
+      if (rs !== undefined) {
+        try {
+          rs.close();
+        } catch (_e) {
+        }
+      }
+    }
+    if (!has) {
+      await store.executeSql(`ALTER TABLE ${table} ADD COLUMN ${column} ${typeDef}`);
+    }
   }
 
   // 初始分类：漫画 / 小说 / 动画（对应三种内容类型），每次启动幂等执行；
@@ -69,6 +186,7 @@ export class AppDb {
     }
   }
 
+  // 全量建表（CREATE IF NOT EXISTS，新装库直接落最新 schema；升级库由 migrate 补齐差异）
   private static async createTables(store: relationalStore.RdbStore): Promise<void> {
     try {
       await store.executeSql(`CREATE TABLE IF NOT EXISTS manga (
@@ -91,6 +209,8 @@ export class AppDb {
         chapterFlags INTEGER DEFAULT 0,
         localCover TEXT DEFAULT '',
         localCoverUrl TEXT DEFAULT '',
+        updateInterval INTEGER DEFAULT 0,
+        notes TEXT DEFAULT '',
         UNIQUE(sourceKey, url)
       )`);
       await store.executeSql(`CREATE TABLE IF NOT EXISTS chapter (
@@ -105,12 +225,16 @@ export class AppDb {
         read INTEGER DEFAULT 0,
         bookmark INTEGER DEFAULT 0,
         lastPageRead INTEGER DEFAULT 0,
+        scanlator TEXT DEFAULT '',
         UNIQUE(mangaId, url)
       )`);
       await store.executeSql(`CREATE TABLE IF NOT EXISTS category (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         sortOrder INTEGER DEFAULT 0
+      )`);
+      await store.executeSql(`CREATE TABLE IF NOT EXISTS excluded_scanlators (
+        scanlator TEXT PRIMARY KEY
       )`);
       await store.executeSql(`CREATE TABLE IF NOT EXISTS history (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -163,7 +287,7 @@ export class AppDb {
         minAppVersion INTEGER DEFAULT 1,
         dslVersion INTEGER DEFAULT 1,
         icon TEXT DEFAULT '',
-        contentType TEXT DEFAULT 'manga',
+        contentTypes TEXT DEFAULT '',
         methodsJson TEXT DEFAULT '[]',
         sourcesJson TEXT DEFAULT '[]',
         installedAt INTEGER DEFAULT 0

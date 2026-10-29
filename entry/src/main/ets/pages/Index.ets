@@ -1265,6 +1265,12 @@ struct Index {
     if (Date.now() - last < 12 * 60 * 60 * 1000) {
       return;
     }
+    // 批量更新网络/电源限制不满足时不推进时间戳，下次启动仍会重试
+    const blockReason = UpdateService.checkUpdateRestrictions();
+    if (blockReason !== '') {
+      hilog.info(0x0001, 'Index', 'skip autoRefresh: %{public}s', blockReason);
+      return;
+    }
     try {
       const context = Util.hostAbilityContext(this.getUIContext());
       const newCount = await UpdateService.refreshLibrary(context);

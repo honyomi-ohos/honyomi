@@ -2961,6 +2961,10 @@
       "value": "Binabasa"
     },
     {
+      "name": "track_unread",
+      "value": "Hindi pa nababasa"
+    },
+    {
       "name": "track_completed",
       "value": "Tapos na"
     },
@@ -3211,6 +3215,190 @@
     {
       "name": "debug_language",
       "value": "Wika"
+    },
+    {
+      "name": "updates_tab_updates",
+      "value": "Updates"
+    },
+    {
+      "name": "updates_tab_schedule",
+      "value": "Schedule"
+    },
+    {
+      "name": "schedule_load_failed",
+      "value": "Failed to load the schedule"
+    },
+    {
+      "name": "schedule_empty",
+      "value": "No shows in the schedule"
+    },
+    {
+      "name": "browse_local_folders",
+      "value": "Folder"
+    },
+    {
+      "name": "browse_folder_up",
+      "value": "Parent folder"
+    },
+    {
+      "name": "browse_folder_empty",
+      "value": "Walang laman ang folder na ito"
+    },
+    {
+      "name": "player_set_skip_oped",
+      "value": "Awtomatikong laktawan ang OP/ED"
+    },
+    {
+      "name": "player_set_subtitle_enable",
+      "value": "I-enable ang subtitle"
+    },
+    {
+      "name": "video_skip_section",
+      "value": "Laktawan ang OP/ED"
+    },
+    {
+      "name": "video_skip_op_start",
+      "value": "Simula ng OP"
+    },
+    {
+      "name": "video_skip_op_end",
+      "value": "Wakas ng OP"
+    },
+    {
+      "name": "video_skip_ed_start",
+      "value": "Simula ng ED"
+    },
+    {
+      "name": "video_skip_ed_end",
+      "value": "Wakas ng ED"
+    },
+    {
+      "name": "video_skip_save",
+      "value": "I-save"
+    },
+    {
+      "name": "video_skip_clear",
+      "value": "Burahin"
+    },
+    {
+      "name": "video_skip_op",
+      "value": "Nalaktawan ang OP"
+    },
+    {
+      "name": "video_skip_ed",
+      "value": "Nalaktawan ang ED"
+    },
+    {
+      "name": "video_skip_set_current",
+      "value": "Ngayon"
+    },
+    {
+      "name": "video_subtitle_none",
+      "value": "Walang subtitle"
+    },
+    {
+      "name": "video_subtitle_pick",
+      "value": "Pumili ng file ng subtitle"
+    },
+    {
+      "name": "video_subtitle_clear",
+      "value": "Burahin"
+    },
+    {
+      "name": "video_danmaku_login_hint",
+      "value": "Mag-login sa iyong dandanplay account para makapagpadala ng danmaku"
+    },
+    {
+      "name": "video_danmaku_username",
+      "value": "Username"
+    },
+    {
+      "name": "video_danmaku_password",
+      "value": "Password"
+    },
+    {
+      "name": "video_danmaku_logging",
+      "value": "Nagla-log in…"
+    },
+    {
+      "name": "video_danmaku_login",
+      "value": "Mag-login"
+    },
+    {
+      "name": "video_danmaku_logged_in",
+      "value": "Naka-login: %s"
+    },
+    {
+      "name": "video_danmaku_logout",
+      "value": "Mag-log out"
+    },
+    {
+      "name": "video_danmaku_input_hint",
+      "value": "Ilagay ang teksto ng danmaku"
+    },
+    {
+      "name": "video_danmaku_mode_scroll",
+      "value": "Scroll"
+    },
+    {
+      "name": "video_danmaku_mode_top",
+      "value": "Itaas"
+    },
+    {
+      "name": "video_danmaku_mode_bottom",
+      "value": "Ibaba"
+    },
+    {
+      "name": "video_danmaku_color",
+      "value": "Kulay"
+    },
+    {
+      "name": "video_danmaku_sending",
+      "value": "Nagpapadala…"
+    },
+    {
+      "name": "video_danmaku_send",
+      "value": "Ipadala"
+    },
+    {
+      "name": "video_danmaku_send_title",
+      "value": "Magpadala ng danmaku"
+    },
+    {
+      "name": "subject_detail_title",
+      "value": "Detalye ng subject"
+    },
+    {
+      "name": "subject_load_failed",
+      "value": "Nabigo ang pag-load ng detalye"
+    },
+    {
+      "name": "subject_search_in_app",
+      "value": "Maghanap sa app"
+    },
+    {
+      "name": "subject_label_air_date",
+      "value": "Petsa ng pag-ere"
+    },
+    {
+      "name": "subject_label_eps",
+      "value": "Mga episode"
+    },
+    {
+      "name": "subject_label_score",
+      "value": "Iskor"
+    },
+    {
+      "name": "subject_label_summary",
+      "value": "Buod"
+    },
+    {
+      "name": "subject_summary_empty",
+      "value": "Wala pang buod"
+    },
+    {
+      "name": "detail_action_webview",
+      "value": "Web view"
     }
   ]
 }

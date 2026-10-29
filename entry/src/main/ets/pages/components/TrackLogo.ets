@@ -29,7 +29,8 @@ export struct TrackLogo {
 
   private hasIcon(): boolean {
     return this.syncId === 1 || this.syncId === 2 || this.syncId === 3 || this.syncId === 4 ||
-      this.syncId === 5 || this.syncId === 7 || this.syncId === 10;
+      this.syncId === 5 || this.syncId === 6 || this.syncId === 7 || this.syncId === 8 ||
+      this.syncId === 9 || this.syncId === 10;
   }
 
   private iconRes(): Resource {
@@ -44,8 +45,14 @@ export struct TrackLogo {
         return $r('app.media.tracker_shikimori');
       case 5:
         return $r('app.media.tracker_bangumi');
+      case 6:
+        return $r('app.media.tracker_komga');
       case 7:
         return $r('app.media.tracker_mangaupdates');
+      case 8:
+        return $r('app.media.tracker_kavita');
+      case 9:
+        return $r('app.media.tracker_suwayomi');
       case 10:
         return $r('app.media.tracker_hikka');
       default:

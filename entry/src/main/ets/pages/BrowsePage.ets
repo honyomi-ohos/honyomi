@@ -1,5 +1,6 @@
 import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 import { Source, SourceRegistry } from '../source/Source';
 import { BrowseSourceParams, ExtensionDetailParams, MigrateMangaParams } from '../model/RouteParams';
 import { ContentType } from '../model/Models';
@@ -17,6 +18,8 @@ import { NsfwTag } from './components/NsfwTag';
 import { BtTag } from './components/BtTag';
 
 // 语言显示名（对齐 Mihon 源列表的语言分组头）
+const DOMAIN = 0x0001;
+const TAG = 'Mihon';
 const LANG_NAMES: Record<string, string> = {
   'en': 'English',
   'ja': '日本語',
@@ -319,6 +322,7 @@ export struct BrowseHeader {
           .backgroundColor(this.pal.card)
           .onChange((value: string) => {
             this.extQuery = value;
+            hilog.info(DOMAIN, TAG, 'extQuery input: %{public}s', value);
           })
         AppIcon({ name: 'close', iconSize: 20 })
           .padding({ left: 12, right: 4 })

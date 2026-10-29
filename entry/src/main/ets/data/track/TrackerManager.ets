@@ -5,8 +5,11 @@ import { AniListTracker } from './AniListTracker';
 import { KitsuTracker } from './KitsuTracker';
 import { ShikimoriTracker } from './ShikimoriTracker';
 import { BangumiTracker } from './BangumiTracker';
+import { KomgaTracker } from './KomgaTracker';
 import { MangaUpdatesTracker } from './MangaUpdatesTracker';
 import { HikkaTracker } from './HikkaTracker';
+import { KavitaTracker } from './KavitaTracker';
+import { SuwayomiTracker } from './SuwayomiTracker';
 
 export class TrackerManager {
   static readonly myAnimeList: MalTracker = new MalTracker();
@@ -14,16 +17,22 @@ export class TrackerManager {
   static readonly kitsu: KitsuTracker = new KitsuTracker();
   static readonly shikimori: ShikimoriTracker = new ShikimoriTracker();
   static readonly bangumi: BangumiTracker = new BangumiTracker();
+  static readonly komga: KomgaTracker = new KomgaTracker();
   static readonly mangaUpdates: MangaUpdatesTracker = new MangaUpdatesTracker();
   static readonly hikka: HikkaTracker = new HikkaTracker();
+  static readonly kavita: KavitaTracker = new KavitaTracker();
+  static readonly suwayomi: SuwayomiTracker = new SuwayomiTracker();
   static readonly trackers: Tracker[] = [
     TrackerManager.myAnimeList,
     TrackerManager.aniList,
     TrackerManager.kitsu,
     TrackerManager.shikimori,
     TrackerManager.bangumi,
+    TrackerManager.komga,
     TrackerManager.mangaUpdates,
     TrackerManager.hikka,
+    TrackerManager.kavita,
+    TrackerManager.suwayomi,
   ];
 
   static loggedInTrackers(): Tracker[] {

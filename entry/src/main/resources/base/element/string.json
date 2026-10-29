@@ -718,7 +718,7 @@
     },
     {
       "name": "card_manga_empty",
-      "value": "Add from a title\u0027s details page"
+      "value": "Add from a title's details page"
     },
     {
       "name": "detail_add_to_desktop",
@@ -726,7 +726,7 @@
     },
     {
       "name": "detail_card_add_failed",
-      "value": "Couldn\u0027t add the card"
+      "value": "Couldn't add the card"
     },
     {
       "name": "stats_title",
@@ -1038,7 +1038,7 @@
     },
     {
       "name": "theme_name_teal_turquoise",
-      "value": "Teal \u0026 Turquoise"
+      "value": "Teal & Turquoise"
     },
     {
       "name": "theme_name_tidal_wave",
@@ -1046,7 +1046,7 @@
     },
     {
       "name": "theme_name_yin_yang",
-      "value": "Yin \u0026 Yang"
+      "value": "Yin & Yang"
     },
     {
       "name": "theme_name_yotsuba",
@@ -1689,6 +1689,10 @@
       "value": "Tracking"
     },
     {
+      "name": "detail_action_webview",
+      "value": "Web view"
+    },
+    {
       "name": "detail_dl_cancelled",
       "value": "Download cancelled"
     },
@@ -1770,11 +1774,11 @@
     },
     {
       "name": "transition_no_next",
-      "value": "There\u0027s no next chapter"
+      "value": "There's no next chapter"
     },
     {
       "name": "transition_no_previous",
-      "value": "There\u0027s no previous chapter"
+      "value": "There's no previous chapter"
     },
     {
       "name": "reader_loading_chapter",
@@ -2242,7 +2246,7 @@
     },
     {
       "name": "privacy_policy_tracking_body",
-      "value": "You can optionally connect tracker accounts such as AniList, MyAnimeList, Kitsu, Shikimori, Bangumi, MangaUpdates and Hikka. Login is authorized by you on the tracker\u0027s own page, and access tokens are saved only on your device to sync reading progress."
+      "value": "You can optionally connect tracker accounts such as AniList, MyAnimeList, Kitsu, Shikimori, Bangumi, MangaUpdates and Hikka. Login is authorized by you on the tracker's own page, and access tokens are saved only on your device to sync reading progress."
     },
     {
       "name": "privacy_policy_danmaku_title",
@@ -2282,7 +2286,7 @@
     },
     {
       "name": "help_getting_started_body",
-      "value": "Add local files (CBZ, EPUB and more) via the Local source or by opening a file directly. For online content, add an extension repository in Browse \u003e Extensions, install extensions, then browse and search their sources. Tap Add to library on a work\u0027s page to keep it on your shelf, and long-press library items to manage them in bulk. On first use, adjust the theme, start screen and reading preferences in Settings."
+      "value": "Add local files (CBZ, EPUB and more) via the Local source or by opening a file directly. For online content, add an extension repository in Browse > Extensions, install extensions, then browse and search their sources. Tap Add to library on a work's page to keep it on your shelf, and long-press library items to manage them in bulk. On first use, adjust the theme, start screen and reading preferences in Settings."
     },
     {
       "name": "help_extensions_title",
@@ -2290,7 +2294,7 @@
     },
     {
       "name": "help_extensions_body",
-      "value": "Online sources are provided by extension plugins, managed in Browse \u003e Extensions: add repositories, then install, update or remove extensions. Pull down the list to check for plugin updates. Only add repositories you trust — once a repository goes offline, its extensions can no longer be updated or reinstalled."
+      "value": "Online sources are provided by extension plugins, managed in Browse > Extensions: add repositories, then install, update or remove extensions. Pull down the list to check for plugin updates. Only add repositories you trust — once a repository goes offline, its extensions can no longer be updated or reinstalled."
     },
     {
       "name": "help_reader_title",
@@ -2306,7 +2310,7 @@
     },
     {
       "name": "help_downloads_body",
-      "value": "Queue chapters from a work\u0027s page or chapter list to read offline. Review progress, pause or remove tasks in More \u003e Download manager; Settings \u003e Downloads offers Wi-Fi-only downloads, auto-download of new chapters and automatic deletion of read chapters."
+      "value": "Queue chapters from a work's page or chapter list to read offline. Review progress, pause or remove tasks in More > Download manager; Settings > Downloads offers Wi-Fi-only downloads, auto-download of new chapters and automatic deletion of read chapters."
     },
     {
       "name": "help_tracking_title",
@@ -2314,7 +2318,7 @@
     },
     {
       "name": "help_tracking_body",
-      "value": "Connect AniList, MyAnimeList, Bangumi, Kitsu or Shikimori from the Tracking section of a work\u0027s page. Your status and reading progress sync automatically once linked; tokens are stored only on your device and you can unlink at any time."
+      "value": "Connect AniList, MyAnimeList, Bangumi, Kitsu or Shikimori from the Tracking section of a work's page. Your status and reading progress sync automatically once linked; tokens are stored only on your device and you can unlink at any time."
     },
     {
       "name": "help_migration_title",
@@ -2330,7 +2334,7 @@
     },
     {
       "name": "help_updates_body",
-      "value": "The Updates tab checks your library for new chapters — pull down to refresh, and works with new chapters are surfaced first. The Upcoming page estimates each work\u0027s next update time from its historical release rhythm; estimates are indicative only."
+      "value": "The Updates tab checks your library for new chapters — pull down to refresh, and works with new chapters are surfaced first. The Upcoming page estimates each work's next update time from its historical release rhythm; estimates are indicative only."
     },
     {
       "name": "help_storage_title",
@@ -2338,7 +2342,7 @@
     },
     {
       "name": "help_storage_body",
-      "value": "Your library, progress and settings are stored only on your device and never uploaded. Use More \u003e Data and storage to back up and restore, review storage usage, clear the chapter cache, and schedule automatic backups. Manually back up before switching devices or reinstalling."
+      "value": "Your library, progress and settings are stored only on your device and never uploaded. Use More > Data and storage to back up and restore, review storage usage, clear the chapter cache, and schedule automatic backups. Manually back up before switching devices or reinstalling."
     },
     {
       "name": "help_security_title",
@@ -2346,7 +2350,7 @@
     },
     {
       "name": "help_security_body",
-      "value": "Honyomi is local-first and collects no personal data. Settings \u003e Privacy offers a biometric app lock, notification-content hiding and screenshot blocking; incognito mode on the More page pauses reading history. NSFW sources stay hidden until enabled in Settings \u003e Browse."
+      "value": "Honyomi is local-first and collects no personal data. Settings > Privacy offers a biometric app lock, notification-content hiding and screenshot blocking; incognito mode on the More page pauses reading history. NSFW sources stay hidden until enabled in Settings > Browse."
     },
     {
       "name": "help_troubleshooting_title",
@@ -2354,7 +2358,7 @@
     },
     {
       "name": "help_troubleshooting_body",
-      "value": "If pages fail to load, check your network or switch the DNS-over-HTTPS provider under Settings \u003e Advanced, and complete the site\u0027s verification prompt when it appears. If a source misbehaves, pull to refresh the extension list to check for plugin updates, or reinstall the extension. For stubborn issues, back up in Data and storage first, then clear the chapter cache."
+      "value": "If pages fail to load, check your network or switch the DNS-over-HTTPS provider under Settings > Advanced, and complete the site's verification prompt when it appears. If a source misbehaves, pull to refresh the extension list to check for plugin updates, or reinstall the extension. For stubborn issues, back up in Data and storage first, then clear the chapter cache."
     },
     {
       "name": "browse_set_title",
@@ -2663,6 +2667,10 @@
     {
       "name": "novel_trans_cancel",
       "value": "Translation cancelled"
+    },
+    {
+      "name": "trans_same_lang",
+      "value": "Content language matches the target language, no translation needed"
     },
     {
       "name": "manga_ocr_unavailable",
@@ -3150,7 +3158,7 @@
     },
     {
       "name": "detail_cover_save_failed",
-      "value": "Couldn\u0027t update the cover"
+      "value": "Couldn't update the cover"
     },
     {
       "name": "detail_cover_saved",
@@ -3170,7 +3178,7 @@
     },
     {
       "name": "onboarding_description",
-      "value": "Let\u0027s set some things up first. You can always change these in the settings later too."
+      "value": "Let's set some things up first. You can always change these in the settings later too."
     },
     {
       "name": "onboarding_action_next",
@@ -3398,7 +3406,7 @@
     },
     {
       "name": "bt_choice_hint",
-      "value": "Your choice is remembered. You can change it later in Settings \u003e Downloads"
+      "value": "Your choice is remembered. You can change it later in Settings > Downloads"
     },
     {
       "name": "bt_handoff_started",
@@ -3598,11 +3606,11 @@
     },
     {
       "name": "net_host_resolve_failed",
-      "value": "Couldn\u0027t resolve the server address, please check your network connection and try again"
+      "value": "Couldn't resolve the server address, please check your network connection and try again"
     },
     {
       "name": "net_connect_failed",
-      "value": "Couldn\u0027t connect to the server, please check your network and try again"
+      "value": "Couldn't connect to the server, please check your network and try again"
     },
     {
       "name": "net_timeout",
@@ -3678,7 +3686,7 @@
     },
     {
       "name": "plugin_error_app_too_old",
-      "value": "This plugin requires app versionCode \u003e\u003d %s, please update first"
+      "value": "This plugin requires app versionCode >= %s, please update first"
     },
     {
       "name": "plugin_error_read_failed",
@@ -3867,6 +3875,10 @@
     {
       "name": "track_reading",
       "value": "Reading"
+    },
+    {
+      "name": "track_unread",
+      "value": "Unread"
     },
     {
       "name": "track_completed",
@@ -4237,6 +4249,42 @@
       "value": "DeepL"
     },
     {
+      "name": "trans_microsoft",
+      "value": "Microsoft Bing"
+    },
+    {
+      "name": "trans_tencent",
+      "value": "Tencent Cloud"
+    },
+    {
+      "name": "trans_tencent_secret_id",
+      "value": "SecretId"
+    },
+    {
+      "name": "trans_tencent_secret_key",
+      "value": "SecretKey"
+    },
+    {
+      "name": "trans_volcano",
+      "value": "Volcano Engine"
+    },
+    {
+      "name": "trans_volcano_access_key",
+      "value": "Access Key ID"
+    },
+    {
+      "name": "trans_volcano_secret_key",
+      "value": "Secret Access Key"
+    },
+    {
+      "name": "trans_niutrans",
+      "value": "NiuTrans"
+    },
+    {
+      "name": "trans_niutrans_apikey",
+      "value": "API key"
+    },
+    {
       "name": "action_edit",
       "value": "Edit"
     },
@@ -4283,6 +4331,430 @@
     {
       "name": "default_category_auto",
       "value": "Automatic (by content type)"
+    },
+    {
+      "name": "updates_tab_updates",
+      "value": "Updates"
+    },
+    {
+      "name": "updates_tab_schedule",
+      "value": "Schedule"
+    },
+    {
+      "name": "schedule_load_failed",
+      "value": "Failed to load the schedule"
+    },
+    {
+      "name": "schedule_empty",
+      "value": "No shows in the schedule"
+    },
+    {
+      "name": "reader_set_appearance_group",
+      "value": "Appearance"
+    },
+    {
+      "name": "reader_set_nav_group",
+      "value": "Navigation"
+    },
+    {
+      "name": "reader_set_general_group",
+      "value": "General"
+    },
+    {
+      "name": "reader_set_eink_group",
+      "value": "E-ink refresh flash"
+    },
+    {
+      "name": "reader_set_skip_read",
+      "value": "Skip read chapters"
+    },
+    {
+      "name": "reader_set_skip_filtered",
+      "value": "Skip filtered chapters"
+    },
+    {
+      "name": "reader_set_skip_duplicate",
+      "value": "Skip duplicate chapters"
+    },
+    {
+      "name": "reader_set_chapter_transition",
+      "value": "Chapter transition page"
+    },
+    {
+      "name": "reader_set_flash_enable",
+      "value": "Flash on page change"
+    },
+    {
+      "name": "reader_set_flash_color",
+      "value": "Flash color"
+    },
+    {
+      "name": "reader_flash_color_white",
+      "value": "White"
+    },
+    {
+      "name": "reader_flash_color_black",
+      "value": "Black"
+    },
+    {
+      "name": "reader_flash_color_both",
+      "value": "White then black"
+    },
+    {
+      "name": "reader_set_flash_duration",
+      "value": "Flash duration (ms)"
+    },
+    {
+      "name": "reader_set_flash_every",
+      "value": "Flash every N pages"
+    },
+    {
+      "name": "reader_set_crop_paged",
+      "value": "Crop borders (paged modes)"
+    },
+    {
+      "name": "reader_set_crop_webtoon",
+      "value": "Crop borders (webtoon)"
+    },
+    {
+      "name": "reader_set_color_blend",
+      "value": "Color filter blend mode"
+    },
+    {
+      "name": "reader_blend_none",
+      "value": "None"
+    },
+    {
+      "name": "reader_blend_multiply",
+      "value": "Multiply"
+    },
+    {
+      "name": "reader_blend_screen",
+      "value": "Screen"
+    },
+    {
+      "name": "reader_blend_overlay",
+      "value": "Overlay"
+    },
+    {
+      "name": "reader_blend_darken",
+      "value": "Darken"
+    },
+    {
+      "name": "reader_blend_lighten",
+      "value": "Lighten"
+    },
+    {
+      "name": "reader_set_webtoon_no_zoom_out",
+      "value": "Disable zoom out (webtoon)"
+    },
+    {
+      "name": "reader_set_zoom_start",
+      "value": "Zoom start position"
+    },
+    {
+      "name": "reader_zoom_automatic",
+      "value": "Automatic"
+    },
+    {
+      "name": "reader_zoom_left",
+      "value": "Left"
+    },
+    {
+      "name": "reader_zoom_right",
+      "value": "Right"
+    },
+    {
+      "name": "reader_zoom_center",
+      "value": "Center"
+    },
+    {
+      "name": "reader_nav_lshape",
+      "value": "L-shape"
+    },
+    {
+      "name": "reader_nav_kindle",
+      "value": "Kindle style"
+    },
+    {
+      "name": "novel_anim_cube",
+      "value": "3D cube"
+    },
+    {
+      "name": "novel_anim_stack",
+      "value": "Stack"
+    },
+    {
+      "name": "novel_anim_fade",
+      "value": "Fade"
+    },
+    {
+      "name": "novel_anim_flip",
+      "value": "3D flip"
+    },
+    {
+      "name": "novel_anim_sphere",
+      "value": "Sphere"
+    },
+    {
+      "name": "transition_tap_continue",
+      "value": "Tap to continue"
+    },
+    {
+      "name": "browse_local_folders",
+      "value": "Folders"
+    },
+    {
+      "name": "missing_chapters_warning",
+      "value": "Skipping %d chapters, either the source is missing them or they have been filtered out"
+    },
+    {
+      "name": "player_set_skip_oped",
+      "value": "Auto skip OP/ED"
+    },
+    {
+      "name": "player_set_skip_oped_sub",
+      "value": "Set skip points in the player settings panel"
+    },
+    {
+      "name": "player_set_subtitle",
+      "value": "Subtitles"
+    },
+    {
+      "name": "player_set_subtitle_enable",
+      "value": "Enable subtitles"
+    },
+    {
+      "name": "player_set_subtitle_enable_sub",
+      "value": "Load external .srt subtitle files"
+    },
+    {
+      "name": "player_set_subtitle_font",
+      "value": "Subtitle text size"
+    },
+    {
+      "name": "player_set_danmaku_filter",
+      "value": "Danmaku filters"
+    },
+    {
+      "name": "player_set_danmaku_filter_sub",
+      "value": "Comments matching any of these regex rules will be hidden"
+    },
+    {
+      "name": "player_set_danmaku_filter_add",
+      "value": "Add"
+    },
+    {
+      "name": "player_set_danmaku_filter_hint",
+      "value": "Enter a regex rule, e.g. \\d+"
+    },
+    {
+      "name": "player_set_danmaku_filter_invalid",
+      "value": "Invalid or duplicate rule"
+    },
+    {
+      "name": "player_set_danmaku_filter_empty",
+      "value": "No filter rules yet"
+    },
+    {
+      "name": "player_set_danmaku_filter_applied",
+      "value": "Filters applied"
+    },
+    {
+      "name": "video_skip_section",
+      "value": "Skip OP/ED"
+    },
+    {
+      "name": "video_skip_op_start",
+      "value": "OP start"
+    },
+    {
+      "name": "video_skip_op_end",
+      "value": "OP end"
+    },
+    {
+      "name": "video_skip_ed_start",
+      "value": "ED start"
+    },
+    {
+      "name": "video_skip_ed_end",
+      "value": "ED end"
+    },
+    {
+      "name": "video_skip_set_current",
+      "value": "Now"
+    },
+    {
+      "name": "video_skip_save",
+      "value": "Save"
+    },
+    {
+      "name": "video_skip_clear",
+      "value": "Clear"
+    },
+    {
+      "name": "video_skip_saved",
+      "value": "Skip points saved"
+    },
+    {
+      "name": "video_skip_invalid",
+      "value": "Invalid time format"
+    },
+    {
+      "name": "video_skip_op",
+      "value": "Skipped OP"
+    },
+    {
+      "name": "video_skip_ed",
+      "value": "Skipped ED"
+    },
+    {
+      "name": "video_subtitle_none",
+      "value": "No subtitle"
+    },
+    {
+      "name": "video_subtitle_pick",
+      "value": "Pick subtitle file"
+    },
+    {
+      "name": "video_subtitle_clear",
+      "value": "Clear"
+    },
+    {
+      "name": "video_subtitle_loaded",
+      "value": "Subtitle loaded"
+    },
+    {
+      "name": "video_subtitle_invalid",
+      "value": "Invalid subtitle file"
+    },
+    {
+      "name": "video_subtitle_pick_failed",
+      "value": "Failed to read the file"
+    },
+    {
+      "name": "video_danmaku_send_title",
+      "value": "Send danmaku"
+    },
+    {
+      "name": "video_danmaku_login_hint",
+      "value": "Log in with your dandanplay account to send danmaku"
+    },
+    {
+      "name": "video_danmaku_username",
+      "value": "Username"
+    },
+    {
+      "name": "video_danmaku_password",
+      "value": "Password"
+    },
+    {
+      "name": "video_danmaku_login",
+      "value": "Login"
+    },
+    {
+      "name": "video_danmaku_logging",
+      "value": "Logging in..."
+    },
+    {
+      "name": "video_danmaku_logged_in",
+      "value": "Logged in: %s"
+    },
+    {
+      "name": "video_danmaku_logout",
+      "value": "Logout"
+    },
+    {
+      "name": "video_danmaku_login_failed",
+      "value": "Login failed: %s"
+    },
+    {
+      "name": "video_danmaku_input_hint",
+      "value": "Enter danmaku text"
+    },
+    {
+      "name": "video_danmaku_mode_scroll",
+      "value": "Scroll"
+    },
+    {
+      "name": "video_danmaku_mode_top",
+      "value": "Top"
+    },
+    {
+      "name": "video_danmaku_mode_bottom",
+      "value": "Bottom"
+    },
+    {
+      "name": "video_danmaku_color",
+      "value": "Color"
+    },
+    {
+      "name": "video_danmaku_sending",
+      "value": "Sending..."
+    },
+    {
+      "name": "video_danmaku_send",
+      "value": "Send"
+    },
+    {
+      "name": "video_danmaku_not_matched",
+      "value": "No matched episode in the danmaku library"
+    },
+    {
+      "name": "video_danmaku_login_required",
+      "value": "Please log in first"
+    },
+    {
+      "name": "video_danmaku_send_no_episode",
+      "value": "This chapter has no matched episode"
+    },
+    {
+      "name": "video_danmaku_sent",
+      "value": "Sent"
+    },
+    {
+      "name": "video_danmaku_send_failed",
+      "value": "Send failed: %s"
+    },
+    {
+      "name": "subject_detail_title",
+      "value": "Subject detail"
+    },
+    {
+      "name": "subject_load_failed",
+      "value": "Failed to load details"
+    },
+    {
+      "name": "subject_search_in_app",
+      "value": "Search in app"
+    },
+    {
+      "name": "subject_label_air_date",
+      "value": "Air date"
+    },
+    {
+      "name": "subject_label_eps",
+      "value": "Episodes"
+    },
+    {
+      "name": "subject_label_score",
+      "value": "Score"
+    },
+    {
+      "name": "subject_label_summary",
+      "value": "Summary"
+    },
+    {
+      "name": "subject_summary_empty",
+      "value": "No summary yet"
+    },
+    {
+      "name": "browse_folder_up",
+      "value": "Up"
+    },
+    {
+      "name": "browse_folder_empty",
+      "value": "This folder is empty"
     }
   ]
 }

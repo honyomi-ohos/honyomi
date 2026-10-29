@@ -78,8 +78,8 @@ function buildLicenseItems(): LicenseItem[] {
       description: $r('app.string.licenses_desc_videocache')
     },
     {
-      // 插件运行时由 plugins/runtime 经 esbuild 在宿主构建时生成（不入库），
-      // 以下为其 npm 依赖；版本以 plugins/runtime/package.json 为准
+      // 插件运行时由 @honyomi/plugin-runtime 经 esbuild 在宿主构建时生成（不入库），
+      // 以下为其 npm 依赖；版本以 extension-sdk/packages/runtime/package.json 为准
       name: 'whatwg-url',
       version: '14.2.0',
       license: 'MIT',

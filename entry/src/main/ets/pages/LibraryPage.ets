@@ -16,7 +16,7 @@ import { ChangeCategoryDialog, ConfirmDialog } from './components/Dialogs';
 import { EmptyScreen } from './components/EmptyScreen';
 import { LoadingState } from './components/LoadingState';
 import { AppIcon } from './components/AppIcon';
-import { LibraryMangaItem } from './components/LibraryItems';
+import { SwipeActionItem } from './components/SwipeActionItem';
 import { LibrarySettingsSheet } from './components/LibrarySettingsSheet';
 import { LibraryAddFlow } from '../common/LibraryAddFlow';
 import { HOME_HEADER_H } from '../common/HdsNavHost';
@@ -252,6 +252,9 @@ export struct LibraryPage {
   @StorageLink('libSearchQuery') @Watch('onSearchQuery') searchQuery: string = '';
   @State viewMode: string = 'compact';
   @State gridCols: number = 0;
+  // 卡片滑动动作（起始/末端，'read' | 'none'）：条目滑动包装组件消费
+  @State swipeStartAction: string = 'read';
+  @State swipeEndAction: string = 'none';
   @State showUnreadBadge: boolean = true;
   @State showDownloadBadge: boolean = true;
   @State showLocalBadge: boolean = false;
@@ -355,6 +358,12 @@ export struct LibraryPage {
     if (this.refreshing) {
       return;
     }
+    // 网络限制（仅 Wi-Fi / 仅充电）不满足时跳过本次批量更新并提示
+    const blockReason = UpdateService.checkUpdateRestrictions();
+    if (blockReason !== '') {
+      Util.toast(this.getUIContext(), blockReason);
+      return;
+    }
     this.refreshing = true;
     try {
       const context = Util.hostAbilityContext(this.getUIContext());
@@ -374,6 +383,12 @@ export struct LibraryPage {
   // 溢出菜单：更新分类（仅刷新当前分类）
   async refreshCategoryNow(): Promise<void> {
     if (this.refreshing) {
+      return;
+    }
+    // 网络限制（仅 Wi-Fi / 仅充电）不满足时跳过本次批量更新并提示
+    const blockReason = UpdateService.checkUpdateRestrictions();
+    if (blockReason !== '') {
+      Util.toast(this.getUIContext(), blockReason);
       return;
     }
     this.refreshing = true;
@@ -554,9 +569,11 @@ export struct LibraryPage {
             List({ space: 0 }) {
               LazyForEach(this.libSource, (record: MangaRecord) => {
                 ListItem() {
-                  LibraryMangaItem({
+                  SwipeActionItem({
                     record: record,
                     mode: 'list',
+                    startAction: this.itemSwipeStart(),
+                    endAction: this.itemSwipeEnd(),
                     unreadCount: this.unreadOf(record.id),
                     downloadCount: this.downloadCounts[`${record.id}`] || 0,
                     langLabel: ContentType.isLocal(record.sourceKey) ? '' : this.langMap[record.sourceKey] || '',
@@ -577,6 +594,9 @@ export struct LibraryPage {
                     },
                     onItemMenuCategory: (r: MangaRecord): void => {
                       this.showQuickCategoryMenu(r);
+                    },
+                    onSwipe: (action: string): void => {
+                      this.onItemSwipe(record, action);
                     }
                   })
                 }
@@ -592,9 +612,11 @@ export struct LibraryPage {
           Grid() {
             LazyForEach(this.libSource, (record: MangaRecord) => {
               GridItem() {
-                LibraryMangaItem({
+                SwipeActionItem({
                   record: record,
                   mode: this.viewMode,
+                  startAction: this.itemSwipeStart(),
+                  endAction: this.itemSwipeEnd(),
                   unreadCount: this.unreadOf(record.id),
                   downloadCount: this.downloadCounts[`${record.id}`] || 0,
                   langLabel: ContentType.isLocal(record.sourceKey) ? '' : this.langMap[record.sourceKey] || '',
@@ -615,6 +637,9 @@ export struct LibraryPage {
                   },
                   onItemMenuCategory: (r: MangaRecord): void => {
                     this.showQuickCategoryMenu(r);
+                  },
+                  onSwipe: (action: string): void => {
+                    this.onItemSwipe(record, action);
                   }
                 })
               }
@@ -739,6 +764,8 @@ export struct LibraryPage {
     this.showLanguageBadge = Settings.getShowLanguageBadge();
     this.showCategoryTabs = Settings.getShowCategoryTabs();
     this.showMangaCount = Settings.getShowMangaCount();
+    this.swipeStartAction = Settings.getLibrarySwipeStartAction();
+    this.swipeEndAction = Settings.getLibrarySwipeEndAction();
   }
 
   // 输入（搜索词/筛选/排序/分类/洗牌/数据刷新）变化后重算视图缓存（O(M log M) 单次）
@@ -959,6 +986,31 @@ export struct LibraryPage {
     } else {
       this.openDetail(record);
     }
+  }
+
+  // 卡片滑动动作：多选模式下禁用；起始/末端动作由设置决定
+  private itemSwipeStart(): string {
+    return this.selectionMode() ? 'none' : this.swipeStartAction;
+  }
+
+  private itemSwipeEnd(): string {
+    return this.selectionMode() ? 'none' : this.swipeEndAction;
+  }
+
+  // 滑动动作执行：'read' = 切换已读/未读（有未读标已读，无未读标未读，对齐 Mihon swipe 切换）
+  private async onItemSwipe(record: MangaRecord, action: string): Promise<void> {
+    if (action !== 'read') {
+      return;
+    }
+    const markRead: boolean = this.unreadOf(record.id) > 0;
+    await ChapterRepo.markAllRead(record.id, markRead);
+    // 标记已读：按下载设置删除已读章节的下载
+    if (markRead) {
+      DownloadRules.onDeleteAllRead(record.id);
+    }
+    Util.toastRes(this.getUIContext(),
+      markRead ? $r('app.string.action_mark_as_read') : $r('app.string.action_mark_as_unread'));
+    await this.loadData();
   }
 
   // 取消弹窗仍保持选中（保留原多选入口），选中分类则应用到该条目

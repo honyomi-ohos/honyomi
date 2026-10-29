@@ -70,6 +70,46 @@ export struct LibrarySettingsContent {
           })
         }
 
+        PrefGroup({ groupTitle: '全局更新' }) {
+          PrefSwitchRow({
+            title: '仅 Wi-Fi 时更新',
+            subtitle: '非 Wi-Fi 网络时跳过书架更新',
+            initValue: Settings.getLibraryUpdateWifiOnly(),
+            apply: (value: boolean): void => {
+              Settings.setLibraryUpdateWifiOnly(value);
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          PrefSwitchRow({
+            title: '仅充电时更新',
+            subtitle: '未连接充电器时跳过书架更新',
+            initValue: Settings.getLibraryUpdateChargingOnly(),
+            apply: (value: boolean): void => {
+              Settings.setLibraryUpdateChargingOnly(value);
+            }
+          })
+        }
+
+        PrefGroup({ groupTitle: '滑动操作' }) {
+          PrefSelectRow({
+            title: '起始端动作',
+            options: ['标记已读', '无'],
+            selectedIndex: this.swipeStartIndex(),
+            onSelectIndex: (index: number): void => {
+              Settings.setLibrarySwipeStartAction(index === 1 ? 'none' : 'read');
+            }
+          })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          PrefSelectRow({
+            title: '末端动作',
+            options: ['标记已读', '无'],
+            selectedIndex: this.swipeEndIndex(),
+            onSelectIndex: (index: number): void => {
+              Settings.setLibrarySwipeEndAction(index === 1 ? 'none' : 'read');
+            }
+          })
+        }
+
         PrefGroup({ groupTitle: $r('app.string.lib_set_display_group') }) {
           PrefSelectRow({
             title: $r('app.string.lib_set_view_default'),
@@ -191,6 +231,15 @@ export struct LibrarySettingsContent {
   private viewIndex(): number {
     const i = VIEW_VALUES.indexOf(Settings.getLibraryView());
     return i >= 0 ? i : 0;
+  }
+
+  // 滑动动作选项索引：0 = 标记已读（'read'），1 = 无（'none'）
+  private swipeStartIndex(): number {
+    return Settings.getLibrarySwipeStartAction() === 'none' ? 1 : 0;
+  }
+
+  private swipeEndIndex(): number {
+    return Settings.getLibrarySwipeEndAction() === 'none' ? 1 : 0;
   }
 }
 

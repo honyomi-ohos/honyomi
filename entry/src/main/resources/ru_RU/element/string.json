@@ -1953,6 +1953,10 @@
       "value": "Трекинг"
     },
     {
+      "name": "detail_action_webview",
+      "value": "Веб-просмотр"
+    },
+    {
       "name": "detail_dl_cancelled",
       "value": "Загрузка отменена"
     },
@@ -3149,6 +3153,10 @@
       "value": "Читаю"
     },
     {
+      "name": "track_unread",
+      "value": "Не прочитано"
+    },
+    {
       "name": "track_completed",
       "value": "Завершено"
     },
@@ -3419,6 +3427,186 @@
     {
       "name": "debug_language",
       "value": "Язык"
+    },
+    {
+      "name": "updates_tab_updates",
+      "value": "Updates"
+    },
+    {
+      "name": "updates_tab_schedule",
+      "value": "Schedule"
+    },
+    {
+      "name": "schedule_load_failed",
+      "value": "Failed to load the schedule"
+    },
+    {
+      "name": "schedule_empty",
+      "value": "No shows in the schedule"
+    },
+    {
+      "name": "browse_local_folders",
+      "value": "Папки"
+    },
+    {
+      "name": "browse_folder_up",
+      "value": "На уровень выше"
+    },
+    {
+      "name": "browse_folder_empty",
+      "value": "Эта папка пуста"
+    },
+    {
+      "name": "player_set_skip_oped",
+      "value": "Автоматически пропускать опенинг/эндинг"
+    },
+    {
+      "name": "player_set_subtitle_enable",
+      "value": "Включить субтитры"
+    },
+    {
+      "name": "video_skip_section",
+      "value": "Пропуск опенинга/эндинга"
+    },
+    {
+      "name": "video_skip_op_start",
+      "value": "Начало опенинга"
+    },
+    {
+      "name": "video_skip_op_end",
+      "value": "Конец опенинга"
+    },
+    {
+      "name": "video_skip_ed_start",
+      "value": "Начало эндинга"
+    },
+    {
+      "name": "video_skip_ed_end",
+      "value": "Конец эндинга"
+    },
+    {
+      "name": "video_skip_save",
+      "value": "Сохранить"
+    },
+    {
+      "name": "video_skip_clear",
+      "value": "Очистить"
+    },
+    {
+      "name": "video_skip_op",
+      "value": "Опенинг пропущен"
+    },
+    {
+      "name": "video_skip_ed",
+      "value": "Эндинг пропущен"
+    },
+    {
+      "name": "video_skip_set_current",
+      "value": "Сейчас"
+    },
+    {
+      "name": "video_subtitle_none",
+      "value": "Без субтитров"
+    },
+    {
+      "name": "video_subtitle_pick",
+      "value": "Выбрать файл субтитров"
+    },
+    {
+      "name": "video_subtitle_clear",
+      "value": "Очистить"
+    },
+    {
+      "name": "video_danmaku_login_hint",
+      "value": "Войдите в аккаунт dandanplay, чтобы отправлять данмаку"
+    },
+    {
+      "name": "video_danmaku_username",
+      "value": "Имя пользователя"
+    },
+    {
+      "name": "video_danmaku_password",
+      "value": "Пароль"
+    },
+    {
+      "name": "video_danmaku_logging",
+      "value": "Вход…"
+    },
+    {
+      "name": "video_danmaku_login",
+      "value": "Войти"
+    },
+    {
+      "name": "video_danmaku_logged_in",
+      "value": "Вы вошли: %s"
+    },
+    {
+      "name": "video_danmaku_logout",
+      "value": "Выйти"
+    },
+    {
+      "name": "video_danmaku_input_hint",
+      "value": "Введите текст данмаку"
+    },
+    {
+      "name": "video_danmaku_mode_scroll",
+      "value": "Прокрутка"
+    },
+    {
+      "name": "video_danmaku_mode_top",
+      "value": "Сверху"
+    },
+    {
+      "name": "video_danmaku_mode_bottom",
+      "value": "Снизу"
+    },
+    {
+      "name": "video_danmaku_color",
+      "value": "Цвет"
+    },
+    {
+      "name": "video_danmaku_sending",
+      "value": "Отправка…"
+    },
+    {
+      "name": "video_danmaku_send",
+      "value": "Отправить"
+    },
+    {
+      "name": "video_danmaku_send_title",
+      "value": "Отправить данмаку"
+    },
+    {
+      "name": "subject_detail_title",
+      "value": "Подробности тайтла"
+    },
+    {
+      "name": "subject_load_failed",
+      "value": "Не удалось загрузить подробности"
+    },
+    {
+      "name": "subject_search_in_app",
+      "value": "Искать в приложении"
+    },
+    {
+      "name": "subject_label_air_date",
+      "value": "Дата выхода"
+    },
+    {
+      "name": "subject_label_eps",
+      "value": "Эпизоды"
+    },
+    {
+      "name": "subject_label_score",
+      "value": "Оценка"
+    },
+    {
+      "name": "subject_label_summary",
+      "value": "Описание"
+    },
+    {
+      "name": "subject_summary_empty",
+      "value": "Описание пока отсутствует"
     }
   ]
 }

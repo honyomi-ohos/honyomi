@@ -1961,6 +1961,10 @@
       "value": "التتبع"
     },
     {
+      "name": "detail_action_webview",
+      "value": "عرض الويب"
+    },
+    {
       "name": "detail_dl_cancelled",
       "value": "أُلغي التنزيل"
     },
@@ -3169,6 +3173,10 @@
       "value": "يُقرأ"
     },
     {
+      "name": "track_unread",
+      "value": "غير مقروء"
+    },
+    {
       "name": "track_completed",
       "value": "مكتمل"
     },
@@ -3443,6 +3451,186 @@
     {
       "name": "debug_language",
       "value": "اللغة"
+    },
+    {
+      "name": "updates_tab_updates",
+      "value": "Updates"
+    },
+    {
+      "name": "updates_tab_schedule",
+      "value": "Schedule"
+    },
+    {
+      "name": "schedule_load_failed",
+      "value": "Failed to load the schedule"
+    },
+    {
+      "name": "schedule_empty",
+      "value": "No shows in the schedule"
+    },
+    {
+      "name": "browse_local_folders",
+      "value": "المجلدات"
+    },
+    {
+      "name": "browse_folder_up",
+      "value": "المجلد الأعلى"
+    },
+    {
+      "name": "browse_folder_empty",
+      "value": "هذا المجلد فارغ"
+    },
+    {
+      "name": "player_set_skip_oped",
+      "value": "Skip OP/ED"
+    },
+    {
+      "name": "player_set_subtitle_enable",
+      "value": "Subtitles"
+    },
+    {
+      "name": "video_skip_section",
+      "value": "Skip OP/ED"
+    },
+    {
+      "name": "video_skip_op_start",
+      "value": "OP start"
+    },
+    {
+      "name": "video_skip_op_end",
+      "value": "OP end"
+    },
+    {
+      "name": "video_skip_ed_start",
+      "value": "ED start"
+    },
+    {
+      "name": "video_skip_ed_end",
+      "value": "ED end"
+    },
+    {
+      "name": "video_skip_save",
+      "value": "Save"
+    },
+    {
+      "name": "video_skip_clear",
+      "value": "Clear"
+    },
+    {
+      "name": "video_skip_op",
+      "value": "OP"
+    },
+    {
+      "name": "video_skip_ed",
+      "value": "ED"
+    },
+    {
+      "name": "video_skip_set_current",
+      "value": "Set to current position"
+    },
+    {
+      "name": "video_subtitle_none",
+      "value": "No subtitles"
+    },
+    {
+      "name": "video_subtitle_pick",
+      "value": "Pick a subtitle file"
+    },
+    {
+      "name": "video_subtitle_clear",
+      "value": "Clear subtitles"
+    },
+    {
+      "name": "video_danmaku_login_hint",
+      "value": "Log in to your danmaku account to send comments"
+    },
+    {
+      "name": "video_danmaku_username",
+      "value": "Username"
+    },
+    {
+      "name": "video_danmaku_password",
+      "value": "Password"
+    },
+    {
+      "name": "video_danmaku_logging",
+      "value": "Logging in…"
+    },
+    {
+      "name": "video_danmaku_login",
+      "value": "Log in"
+    },
+    {
+      "name": "video_danmaku_logged_in",
+      "value": "Logged in"
+    },
+    {
+      "name": "video_danmaku_logout",
+      "value": "Log out"
+    },
+    {
+      "name": "video_danmaku_input_hint",
+      "value": "Send a comment"
+    },
+    {
+      "name": "video_danmaku_mode_scroll",
+      "value": "Scroll"
+    },
+    {
+      "name": "video_danmaku_mode_top",
+      "value": "Top"
+    },
+    {
+      "name": "video_danmaku_mode_bottom",
+      "value": "Bottom"
+    },
+    {
+      "name": "video_danmaku_color",
+      "value": "Comment color"
+    },
+    {
+      "name": "video_danmaku_sending",
+      "value": "Sending…"
+    },
+    {
+      "name": "video_danmaku_send",
+      "value": "Send"
+    },
+    {
+      "name": "video_danmaku_send_title",
+      "value": "Send comment"
+    },
+    {
+      "name": "subject_detail_title",
+      "value": "Subject details"
+    },
+    {
+      "name": "subject_load_failed",
+      "value": "Failed to load the subject"
+    },
+    {
+      "name": "subject_search_in_app",
+      "value": "Search in app"
+    },
+    {
+      "name": "subject_label_air_date",
+      "value": "Air date"
+    },
+    {
+      "name": "subject_label_eps",
+      "value": "Episodes"
+    },
+    {
+      "name": "subject_label_score",
+      "value": "Score"
+    },
+    {
+      "name": "subject_label_summary",
+      "value": "Summary"
+    },
+    {
+      "name": "subject_summary_empty",
+      "value": "No summary yet"
     }
   ]
 }

@@ -1210,10 +1210,13 @@ export class Settings {
     Settings.setNum('readerSaturation', v);
   }
 
-  // 漫画翻页动画（横向分页）：curl（仿真）| slide（滑动）| cover（覆盖）。垂直滚动与条漫不使用仿真。
+  // 漫画翻页动画（横向分页）：curl（仿真）| slide（滑动）| cover（覆盖）
+  // | cube（3D 立方体）| stack（堆叠）| fade（淡入淡出）| flip（3D 翻转）| sphere（球面）
+  // 垂直滚动与条漫不使用。3D 模式经组件 rotate/scale 过渡实现。
   static getReaderPageAnim(): string {
     const raw = Settings.getStr('readerPageAnim', 'slide');
-    if (raw === 'curl' || raw === 'cover') {
+    if (raw === 'curl' || raw === 'cover' || raw === 'cube' || raw === 'stack' ||
+      raw === 'fade' || raw === 'flip' || raw === 'sphere') {
       return raw;
     }
     return 'slide';
@@ -1223,9 +1226,14 @@ export class Settings {
     Settings.setStr('readerPageAnim', v);
   }
 
-  // 点击翻页区域：'default','ltr','rtl','vertical','edge','none'
+  // 点击翻页区域：'default','ltr','rtl','vertical','edge','none','lshape'（L 型）,'kindle'（Kindle 式）
   static getReaderNavMode(): string {
-    return Settings.getStr('readerNavMode', 'default');
+    const raw = Settings.getStr('readerNavMode', 'default');
+    if (raw === 'ltr' || raw === 'rtl' || raw === 'vertical' || raw === 'edge' ||
+      raw === 'none' || raw === 'lshape' || raw === 'kindle') {
+      return raw;
+    }
+    return 'default';
   }
 
   static setReaderNavMode(v: string): void {
@@ -1462,6 +1470,86 @@ export class Settings {
     Settings.setNum('danmakuDuration', v);
   }
 
+  // 弹幕屏蔽过滤规则（正则字符串数组，命中任一即隐藏该条弹幕）
+  static getDanmakuFilters(): string[] {
+    const raw: string = Settings.getStr('danmakuFilters', '[]');
+    try {
+      const parsed: Object[] = JSON.parse(raw) as Object[];
+      const out: string[] = [];
+      for (let i = 0; i < parsed.length; i++) {
+        const item: Object | undefined = parsed[i];
+        if (typeof item === 'string' && item !== '') {
+          out.push(item);
+        }
+      }
+      return out;
+    } catch (_e) {
+      return [];
+    }
+  }
+
+  static setDanmakuFilters(v: string[]): void {
+    Settings.setStr('danmakuFilters', JSON.stringify(v));
+  }
+
+  // ---- 视频跳过片头/片尾 ----
+
+  // 自动跳过 OP/ED 全局开关
+  static getVideoSkipOpEd(): boolean {
+    return Settings.getBool('videoSkipOpEd', false);
+  }
+
+  static setVideoSkipOpEd(v: boolean): void {
+    Settings.setBool('videoSkipOpEd', v);
+  }
+
+  // 按漫画存储跳过区间（秒，-1 未设置）：返回 [opS, opE, edS, edE]
+  static getVideoSkipRanges(mangaId: number): number[] {
+    const raw: string = Settings.getStr(`videoSkipRange.${mangaId}`, '');
+    if (raw === '') {
+      return [-1, -1, -1, -1];
+    }
+    const segs: string[] = raw.split(',');
+    if (segs.length < 4) {
+      return [-1, -1, -1, -1];
+    }
+    const out: number[] = [];
+    for (let i = 0; i < 4; i++) {
+      const n: number = parseInt(segs[i], 10);
+      out.push(isFinite(n) ? n : -1);
+    }
+    return out;
+  }
+
+  static setVideoSkipRanges(mangaId: number, opS: number, opE: number, edS: number, edE: number): void {
+    Settings.setStr(`videoSkipRange.${mangaId}`, `${opS},${opE},${edS},${edE}`);
+  }
+
+  static clearVideoSkipRanges(mangaId: number): void {
+    Settings.setStr(`videoSkipRange.${mangaId}`, '');
+  }
+
+  // ---- 外挂字幕 ----
+
+  // 字幕启用开关
+  static getSubtitleEnabled(): boolean {
+    return Settings.getBool('subtitleEnabled', true);
+  }
+
+  static setSubtitleEnabled(v: boolean): void {
+    Settings.setBool('subtitleEnabled', v);
+  }
+
+  // 字幕字号（vp）
+  static getSubtitleFont(): number {
+    const n = Settings.getNum('subtitleFont', 18);
+    return n >= 12 && n <= 28 ? n : 18;
+  }
+
+  static setSubtitleFont(v: number): void {
+    Settings.setNum('subtitleFont', v);
+  }
+
   // ---- 本地源文件夹（Mihon local source：固定一个用户文件夹，同步进沙箱扫描）----
   static getLocalFolderUri(): string {
     return Settings.getStr('localFolderUri', '');
@@ -1613,7 +1701,8 @@ export class Settings {
 
   // 翻译引擎优先级顺序（CSV，id 见 TranslationService.ENGINE_IDS）
   static getTransEngineOrder(): string {
-    return Settings.getStr('transEngineOrder', 'baidu,caiyun,youdao,deepl,google');
+    return Settings.getStr('transEngineOrder',
+      'baidu,caiyun,youdao,tencent,volcano,niutrans,deepl,microsoft,google');
   }
 
   static setTransEngineOrder(v: string): void {
@@ -1627,6 +1716,241 @@ export class Settings {
 
   static setTransTargetLang(v: string): void {
     Settings.setStr('transTargetLang', v);
+  }
+
+  // ---- Mihon 对齐增补 ----
+
+  // 章末行为：自动进入下一章时跳过已读章节
+  static getReaderSkipRead(): boolean {
+    return Settings.getBool('readerSkipRead', false);
+  }
+
+  static setReaderSkipRead(v: boolean): void {
+    Settings.setBool('readerSkipRead', v);
+  }
+
+  // 章末行为：跳过被详情页筛选隐藏的章节
+  static getReaderSkipFiltered(): boolean {
+    return Settings.getBool('readerSkipFiltered', false);
+  }
+
+  static setReaderSkipFiltered(v: boolean): void {
+    Settings.setBool('readerSkipFiltered', v);
+  }
+
+  // 章末行为：跳过重复章节（同章节号已读过其它版本）
+  static getReaderSkipDuplicate(): boolean {
+    return Settings.getBool('readerSkipDuplicate', false);
+  }
+
+  static setReaderSkipDuplicate(v: boolean): void {
+    Settings.setBool('readerSkipDuplicate', v);
+  }
+
+  // 章节转换页：章与章之间显示转换信息页（关闭则直接进入下一章）
+  static getReaderShowChapterTransition(): boolean {
+    return Settings.getBool('readerShowChapterTransition', true);
+  }
+
+  static setReaderShowChapterTransition(v: boolean): void {
+    Settings.setBool('readerShowChapterTransition', v);
+  }
+
+  // 书库条目滑动操作：开始侧动作
+  // 值：'none'（禁用）| 'read'（切换已读）| 'bookmark'（切换书签）| 'download'（下载未读章节）
+  static getLibrarySwipeStartAction(): string {
+    const raw = Settings.getStr('librarySwipeStartAction', 'read');
+    if (raw === 'none' || raw === 'bookmark' || raw === 'download') {
+      return raw;
+    }
+    return 'read';
+  }
+
+  static setLibrarySwipeStartAction(v: string): void {
+    Settings.setStr('librarySwipeStartAction', v);
+  }
+
+  // 书库条目滑动操作：结束侧动作（默认禁用）
+  static getLibrarySwipeEndAction(): string {
+    const raw = Settings.getStr('librarySwipeEndAction', 'none');
+    if (raw === 'read' || raw === 'bookmark' || raw === 'download') {
+      return raw;
+    }
+    return 'none';
+  }
+
+  static setLibrarySwipeEndAction(v: string): void {
+    Settings.setStr('librarySwipeEndAction', v);
+  }
+
+  // NSFW 插件门禁：开启 NSFW 显示 / 进入 NSFW 插件详情时需生物识别确认
+  static getNsfwBiometricConfirm(): boolean {
+    return Settings.getBool('nsfwBiometricConfirm', true);
+  }
+
+  static setNsfwBiometricConfirm(v: boolean): void {
+    Settings.setBool('nsfwBiometricConfirm', v);
+  }
+
+  // 按插件隐身：指定插件浏览时默认隐身模式（对齐 Mihon incognitoExtensions）
+  static getIncognitoPlugins(): string[] {
+    const raw = Settings.getStr('incognitoPlugins', '[]');
+    try {
+      const parsed = JSON.parse(raw) as string[];
+      if (Array.isArray(parsed)) {
+        const out: string[] = [];
+        for (const item of parsed) {
+          if (typeof item === 'string' && item !== '') {
+            out.push(item);
+          }
+        }
+        return out;
+      }
+    } catch (_e) {
+    }
+    return [];
+  }
+
+  static setIncognitoPlugins(list: string[]): void {
+    Settings.setStr('incognitoPlugins', JSON.stringify(list));
+  }
+
+  static isPluginIncognito(key: string): boolean {
+    return Settings.getIncognitoPlugins().indexOf(key) >= 0;
+  }
+
+  // 快速判断：是否存在任何「按插件隐身」配置（无痕闸门短路用，避免每次 JSON 解析）
+  static hasIncognitoPlugins(): boolean {
+    return Settings.getStr('incognitoPlugins', '[]') !== '[]';
+  }
+
+  // 扩展更新检查：刷新仓库索引时比对已装插件版本并提醒更新
+  static getExtensionUpdateCheck(): boolean {
+    return Settings.getBool('extensionUpdateCheck', true);
+  }
+
+  static setExtensionUpdateCheck(v: boolean): void {
+    Settings.setBool('extensionUpdateCheck', v);
+  }
+
+  // 上次扩展更新提醒时间戳（同批更新只提醒一次）
+  static getLastExtUpdateNotifiedAt(): number {
+    return Settings.getNum('lastExtUpdateNotifiedAt', 0);
+  }
+
+  static setLastExtUpdateNotifiedAt(v: number): void {
+    Settings.setNum('lastExtUpdateNotifiedAt', v);
+  }
+
+  // 库全局更新限制（对齐 Mihon updateRestrictions）：仅 Wi-Fi / 仅充电
+  static getLibraryUpdateWifiOnly(): boolean {
+    return Settings.getBool('libraryUpdateWifiOnly', false);
+  }
+
+  static setLibraryUpdateWifiOnly(v: boolean): void {
+    Settings.setBool('libraryUpdateWifiOnly', v);
+  }
+
+  static getLibraryUpdateChargingOnly(): boolean {
+    return Settings.getBool('libraryUpdateChargingOnly', false);
+  }
+
+  static setLibraryUpdateChargingOnly(v: boolean): void {
+    Settings.setBool('libraryUpdateChargingOnly', v);
+  }
+
+  // 阅读器裁切边框（分页模式 / 条漫模式分别设置）
+  static getReaderCropBordersPaged(): boolean {
+    return Settings.getBool('readerCropBordersPaged', false);
+  }
+
+  static setReaderCropBordersPaged(v: boolean): void {
+    Settings.setBool('readerCropBordersPaged', v);
+  }
+
+  static getReaderCropBordersWebtoon(): boolean {
+    return Settings.getBool('readerCropBordersWebtoon', false);
+  }
+
+  static setReaderCropBordersWebtoon(v: boolean): void {
+    Settings.setBool('readerCropBordersWebtoon', v);
+  }
+
+  // 色彩滤镜混合模式：'none' | 'multiply' | 'screen' | 'overlay' | 'darken' | 'lighten'
+  static getReaderColorFilterBlend(): string {
+    const raw = Settings.getStr('readerColorFilterBlend', 'none');
+    if (raw === 'multiply' || raw === 'screen' || raw === 'overlay' || raw === 'darken' || raw === 'lighten') {
+      return raw;
+    }
+    return 'none';
+  }
+
+  static setReaderColorFilterBlend(v: string): void {
+    Settings.setStr('readerColorFilterBlend', v);
+  }
+
+  // 条漫禁止缩小（保持页面宽度不低于适配宽度）
+  static getReaderWebtoonDisableZoomOut(): boolean {
+    return Settings.getBool('readerWebtoonDisableZoomOut', false);
+  }
+
+  static setReaderWebtoonDisableZoomOut(v: boolean): void {
+    Settings.setBool('readerWebtoonDisableZoomOut', v);
+  }
+
+  // 缩放起始位置：'automatic' | 'left' | 'right' | 'center'
+  static getReaderZoomStart(): string {
+    const raw = Settings.getStr('readerZoomStart', 'automatic');
+    if (raw === 'left' || raw === 'right' || raw === 'center') {
+      return raw;
+    }
+    return 'automatic';
+  }
+
+  static setReaderZoomStart(v: string): void {
+    Settings.setStr('readerZoomStart', v);
+  }
+
+  // 防残影闪屏：翻页时黑/白闪屏冲刷残影（对齐 Mihon flashPagePrefetch）
+  static getReaderFlashEnabled(): boolean {
+    return Settings.getBool('readerFlashEnabled', false);
+  }
+
+  static setReaderFlashEnabled(v: boolean): void {
+    Settings.setBool('readerFlashEnabled', v);
+  }
+
+  // 闪屏颜色：'white' | 'black' | 'both'（黑白交替）
+  static getReaderFlashColor(): string {
+    const raw = Settings.getStr('readerFlashColor', 'white');
+    if (raw === 'black' || raw === 'both') {
+      return raw;
+    }
+    return 'white';
+  }
+
+  static setReaderFlashColor(v: string): void {
+    Settings.setStr('readerFlashColor', v);
+  }
+
+  // 闪屏时长（毫秒，40-500）
+  static getReaderFlashDurationMs(): number {
+    const n = Settings.getNum('readerFlashDurationMs', 100);
+    return n >= 40 && n <= 500 ? n : 100;
+  }
+
+  static setReaderFlashDurationMs(v: number): void {
+    Settings.setNum('readerFlashDurationMs', v);
+  }
+
+  // 闪屏间隔（每翻 N 页闪一次，1-10）
+  static getReaderFlashEveryPages(): number {
+    const n = Settings.getNum('readerFlashEveryPages', 1);
+    return n >= 1 && n <= 10 ? Math.floor(n) : 1;
+  }
+
+  static setReaderFlashEveryPages(v: number): void {
+    Settings.setNum('readerFlashEveryPages', v);
   }
 
   // 百度翻译开放平台凭据（appid + 密钥）
@@ -1670,6 +1994,49 @@ export class Settings {
 
   static setTransCaiyunToken(v: string): void {
     Settings.setStr('transCaiyunToken', v);
+  }
+
+  // 腾讯云机器翻译凭据（SecretId + SecretKey）
+  static getTransTencentSecretId(): string {
+    return Settings.getStr('transTencentSecretId', '');
+  }
+
+  static setTransTencentSecretId(v: string): void {
+    Settings.setStr('transTencentSecretId', v);
+  }
+
+  static getTransTencentSecretKey(): string {
+    return Settings.getStr('transTencentSecretKey', '');
+  }
+
+  static setTransTencentSecretKey(v: string): void {
+    Settings.setStr('transTencentSecretKey', v);
+  }
+
+  // 火山引擎机器翻译凭据（AccessKeyID + SecretAccessKey）
+  static getTransVolcanoAccessKey(): string {
+    return Settings.getStr('transVolcanoAccessKey', '');
+  }
+
+  static setTransVolcanoAccessKey(v: string): void {
+    Settings.setStr('transVolcanoAccessKey', v);
+  }
+
+  static getTransVolcanoSecretKey(): string {
+    return Settings.getStr('transVolcanoSecretKey', '');
+  }
+
+  static setTransVolcanoSecretKey(v: string): void {
+    Settings.setStr('transVolcanoSecretKey', v);
+  }
+
+  // 小牛翻译 API 密钥
+  static getTransNiutransApikey(): string {
+    return Settings.getStr('transNiutransApikey', '');
+  }
+
+  static setTransNiutransApikey(v: string): void {
+    Settings.setStr('transNiutransApikey', v);
   }
 
   // 取值后 typeof 校验：跨版本类型变更时回退默认值，避免静默返回错误类型

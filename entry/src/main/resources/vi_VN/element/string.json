@@ -1941,6 +1941,10 @@
       "value": "Theo dõi"
     },
     {
+      "name": "detail_action_webview",
+      "value": "Xem web"
+    },
+    {
       "name": "detail_dl_cancelled",
       "value": "Đã hủy tải xuống"
     },
@@ -3125,6 +3129,10 @@
       "value": "Đang đọc"
     },
     {
+      "name": "track_unread",
+      "value": "Chưa đọc"
+    },
+    {
       "name": "track_completed",
       "value": "Đã xong"
     },
@@ -3395,6 +3403,186 @@
     {
       "name": "debug_language",
       "value": "Ngôn ngữ"
+    },
+    {
+      "name": "updates_tab_updates",
+      "value": "Updates"
+    },
+    {
+      "name": "updates_tab_schedule",
+      "value": "Schedule"
+    },
+    {
+      "name": "schedule_load_failed",
+      "value": "Failed to load the schedule"
+    },
+    {
+      "name": "schedule_empty",
+      "value": "No shows in the schedule"
+    },
+    {
+      "name": "browse_local_folders",
+      "value": "Thư mục"
+    },
+    {
+      "name": "browse_folder_up",
+      "value": "Thư mục cha"
+    },
+    {
+      "name": "browse_folder_empty",
+      "value": "Thư mục này trống"
+    },
+    {
+      "name": "player_set_skip_oped",
+      "value": "Tự động bỏ qua OP/ED"
+    },
+    {
+      "name": "player_set_subtitle_enable",
+      "value": "Bật phụ đề"
+    },
+    {
+      "name": "video_skip_section",
+      "value": "Bỏ qua OP/ED"
+    },
+    {
+      "name": "video_skip_op_start",
+      "value": "Đầu OP"
+    },
+    {
+      "name": "video_skip_op_end",
+      "value": "Cuối OP"
+    },
+    {
+      "name": "video_skip_ed_start",
+      "value": "Đầu ED"
+    },
+    {
+      "name": "video_skip_ed_end",
+      "value": "Cuối ED"
+    },
+    {
+      "name": "video_skip_save",
+      "value": "Lưu"
+    },
+    {
+      "name": "video_skip_clear",
+      "value": "Xóa"
+    },
+    {
+      "name": "video_skip_op",
+      "value": "Đã bỏ qua OP"
+    },
+    {
+      "name": "video_skip_ed",
+      "value": "Đã bỏ qua ED"
+    },
+    {
+      "name": "video_skip_set_current",
+      "value": "Bây giờ"
+    },
+    {
+      "name": "video_subtitle_none",
+      "value": "Không có phụ đề"
+    },
+    {
+      "name": "video_subtitle_pick",
+      "value": "Chọn tệp phụ đề"
+    },
+    {
+      "name": "video_subtitle_clear",
+      "value": "Xóa"
+    },
+    {
+      "name": "video_danmaku_login_hint",
+      "value": "Đăng nhập tài khoản dandanplay để gửi danmaku"
+    },
+    {
+      "name": "video_danmaku_username",
+      "value": "Tên đăng nhập"
+    },
+    {
+      "name": "video_danmaku_password",
+      "value": "Mật khẩu"
+    },
+    {
+      "name": "video_danmaku_logging",
+      "value": "Đang đăng nhập…"
+    },
+    {
+      "name": "video_danmaku_login",
+      "value": "Đăng nhập"
+    },
+    {
+      "name": "video_danmaku_logged_in",
+      "value": "Đã đăng nhập: %s"
+    },
+    {
+      "name": "video_danmaku_logout",
+      "value": "Đăng xuất"
+    },
+    {
+      "name": "video_danmaku_input_hint",
+      "value": "Nhập nội dung danmaku"
+    },
+    {
+      "name": "video_danmaku_mode_scroll",
+      "value": "Cuộn"
+    },
+    {
+      "name": "video_danmaku_mode_top",
+      "value": "Trên cùng"
+    },
+    {
+      "name": "video_danmaku_mode_bottom",
+      "value": "Dưới cùng"
+    },
+    {
+      "name": "video_danmaku_color",
+      "value": "Màu sắc"
+    },
+    {
+      "name": "video_danmaku_sending",
+      "value": "Đang gửi…"
+    },
+    {
+      "name": "video_danmaku_send",
+      "value": "Gửi"
+    },
+    {
+      "name": "video_danmaku_send_title",
+      "value": "Gửi danmaku"
+    },
+    {
+      "name": "subject_detail_title",
+      "value": "Chi tiết tác phẩm"
+    },
+    {
+      "name": "subject_load_failed",
+      "value": "Không tải được chi tiết"
+    },
+    {
+      "name": "subject_search_in_app",
+      "value": "Tìm trong ứng dụng"
+    },
+    {
+      "name": "subject_label_air_date",
+      "value": "Ngày phát sóng"
+    },
+    {
+      "name": "subject_label_eps",
+      "value": "Số tập"
+    },
+    {
+      "name": "subject_label_score",
+      "value": "Điểm"
+    },
+    {
+      "name": "subject_label_summary",
+      "value": "Tóm tắt"
+    },
+    {
+      "name": "subject_summary_empty",
+      "value": "Chưa có tóm tắt"
     }
   ]
 }

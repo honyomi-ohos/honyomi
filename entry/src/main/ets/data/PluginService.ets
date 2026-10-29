@@ -1,6 +1,7 @@
 import { bundleManager, common } from '@kit.AbilityKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
-import { zlib } from '@kit.BasicServicesKit';
+import { BusinessError, zlib } from '@kit.BasicServicesKit';
+import { notificationManager } from '@kit.NotificationKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { util } from '@kit.ArkTS';
 import { cryptoFramework } from '@kit.CryptoArchitectureKit';
@@ -15,6 +16,7 @@ import { AppKeys } from '../common/AppKeys';
 import { Settings } from '../common/Settings';
 import { AppDb } from './AppDb';
 import { MangaRepo, PluginRepo } from './Repos';
+import { RepoProto, RepoProtoStore } from './RepoProto';
 
 const DOMAIN = 0x0002;
 const TAG = 'PluginService';
@@ -47,6 +49,8 @@ interface RawManifest {
   dslVersion?: number;
   icon?: string;
   contentType?: string;
+  // 内容类型全量列表（多类型插件；声明时优先于 contentType，主类型须包含在内）
+  contentTypes?: string[];
 }
 
 export interface InstalledPlugin {
@@ -86,8 +90,8 @@ export interface RepoEntry {
   bt: boolean;
   icon: string;
 
-  // manga | novel | video；仓库索引未声明时为空字符串（UI 不显示类型角标）
-  contentType: string;
+  // 内容类型全量列表（主类型在前，恒非空）：类型过滤任一命中即匹配，[0] 为主类型（角标/路由）
+  contentTypes: string[];
 
   // 仓库索引声明的 sha256（可选），下载后校验插件包完整性
   checksum: string;
@@ -106,7 +110,9 @@ interface RawRepoEntry {
   nsfw?: boolean;
   bt?: boolean;
   icon?: string;
+  // 单值主类型：仅作者侧旧 JSON 索引条目携带（宿主读入即归一为 contentTypes）
   contentType?: string;
+  contentTypes?: string[];
   checksum?: string;
   site?: string;
   baseUrl?: string;
@@ -116,6 +122,18 @@ interface RawRepoIndex {
   name?: string;
   website?: string;
   plugins?: RawRepoEntry[];
+}
+
+// 仓库索引拉取结果（JSON / protobuf 双格式收敛后的统一载荷）
+interface RepoIndexPayload {
+  rawIndex: RawRepoIndex;
+  storeName: string;
+  website?: string;
+}
+
+// 仓库索引缓存文件（plugin_repo_index.json）载荷
+interface RepoCacheFile {
+  entries?: RepoEntry[];
 }
 
 // 插件仓库信息（仓库管理页展示：地址 + 展示名 + 官网）
@@ -159,6 +177,17 @@ export class PluginService {
   static readonly HOST_DSL_VERSION: number = 2;
   private static pluginsDir: string = '';
   private static cacheDir: string = '';
+  // 仓库索引缓存：合并后的条目列表落盘（cacheDir/plugin_repo_index.json），
+  // 浏览-插件面板优先读缓存，不再每次进入都请求仓库索引（对齐 Mihon
+  // availableExtensionMapFlow 常驻内存 + ExtensionApi.findExtensions 单次拉取）
+  private static repoCacheFile: string = '';
+  // 仓库图标本地缓存目录（cacheDir/plugin_repo_icons）：索引图标下载落盘后
+  // 条目 icon 回写为 file:// 路径，面板图标离线即时显示
+  private static repoIconsDir: string = '';
+  // 内存态合并条目（undefined = 尚未从磁盘加载）
+  private static cachedRepoEntries: RepoEntry[] | undefined = undefined;
+  // 进行中的索引刷新 Promise（并发调用共享同一次刷新）
+  private static repoRefreshPromise: Promise<RepoEntry[]> | undefined = undefined;
   private static context: common.UIAbilityContext | undefined = undefined;
   private static runtimeCache: Map<string, string> = new Map();
   private static appVersionCode: number = 1;
@@ -173,6 +202,8 @@ export class PluginService {
   static init(context: common.UIAbilityContext): void {
     PluginService.pluginsDir = `${context.filesDir}/plugins`;
     PluginService.cacheDir = context.cacheDir;
+    PluginService.repoCacheFile = `${context.cacheDir}/plugin_repo_index.json`;
+    PluginService.repoIconsDir = `${context.cacheDir}/plugin_repo_icons`;
     PluginService.context = context;
     try {
       const bundleInfo = bundleManager.getBundleInfoForSelfSync(
@@ -224,6 +255,8 @@ export class PluginService {
       !new RegExp('^[A-Za-z0-9_.-]+$').test(icon))) {
       icon = '';
     }
+    const contentTypes: string[] =
+      PluginService.normalizeContentTypeList(raw.contentType, raw.contentTypes);
     const manifest: PluginManifest = {
       key: key,
       name: name,
@@ -237,9 +270,40 @@ export class PluginService {
       minAppVersion: minAppVersion,
       dslVersion: dslVersion,
       icon: icon,
-      contentType: ContentType.normalize(raw.contentType),
+      contentTypes: contentTypes,
     };
     return manifest;
+  }
+
+  // 内容类型列表归一：全量列表逐项校验去重；显式声明的单值主类型置于首位；
+  // 两者均未声明回退 [manga]（对齐 tools/contentTypesOf 语义）
+  private static normalizeContentTypeList(primary: string | undefined,
+    list: string[] | undefined): string[] {
+    const out: string[] = [];
+    if (list !== undefined && list !== null) {
+      for (const t of list) {
+        if (typeof t === 'string' && t !== '') {
+          const n = ContentType.normalize(t);
+          if (out.indexOf(n) < 0) {
+            out.push(n);
+          }
+        }
+      }
+    }
+    if (primary !== undefined && primary !== '') {
+      const head = ContentType.normalize(primary);
+      const idx = out.indexOf(head);
+      if (idx > 0) {
+        out.splice(idx, 1);
+        out.unshift(head);
+      } else if (idx < 0) {
+        out.unshift(head);
+      }
+    }
+    if (out.length === 0) {
+      out.push(ContentType.MANGA);
+    }
+    return out;
   }
 
   // DB 异常时降级为空列表（面板显示"暂无插件"）
@@ -366,6 +430,8 @@ export class PluginService {
     // 元数据索引同步移除；DB 不可用时降级告警（残留记录重装时被覆盖）
     try {
       await PluginRepo.remove(packageKey);
+      // sourceKey→pluginKey 缓存失效（按插件隐身判定等消费方下次查询重建）
+      PluginRepo.invalidateSourceMap();
     } catch (e) {
       hilog.warn(DOMAIN, TAG, 'remove plugin record failed: %{public}s', (e as Error).message);
     }
@@ -397,6 +463,8 @@ export class PluginService {
     Settings.trustPlugin(manifest.key, manifest.versionCode, contentHash);
     PluginService.startPromises.delete(packageKey);
     await PluginService.doStartEngine(packageKey);
+    // 元数据已重新落库（sourcesJson 可能变化）：sourceKey→pluginKey 缓存失效
+    PluginRepo.invalidateSourceMap();
     hilog.info(DOMAIN, TAG, 'plugin trusted and activated: %{public}s', packageKey);
   }
 
@@ -432,14 +500,412 @@ export class PluginService {
     AppStorage.setOrCreate(AppKeys.PLUGINS_DIRTY, (AppStorage.get<number>(AppKeys.PLUGINS_DIRTY) ?? 0) + 1);
   }
 
+  // ---------------- 扩展更新检查（对齐 Mihon Extension updates）----------------
+
+  // AppStorage 扩展可更新数量键（已集中登记 AppKeys.EXT_UPDATE_COUNT；
+  // 此处保留同名常量供服务层引用，@StorageProp 装饰器调用点写字面量 'extUpdateCount'）
+  static readonly EXT_UPDATE_COUNT: string = 'extUpdateCount';
+  // 扩展更新提醒通知 id（与下载实况窗等系统通知 id 空间互不冲突）
+  private static readonly EXT_UPDATE_NOTIF_ID: number = 202;
+  // 同批扩展更新提醒最小间隔（24 小时内不重复通知）
+  private static readonly EXT_UPDATE_NOTIFY_INTERVAL: number = 24 * 60 * 60 * 1000;
+
+  // 刷新仓库索引后调用：比对已装插件 versionCode 与索引最新 versionCode。
+  // 返回可更新数量，并发布到 AppStorage('extUpdateCount')（列表页/设置页徽标）；
+  // 「扩展更新检查」开启且存在更新时发本地通知（24 小时内不重复提醒）
+  static async checkExtensionUpdates(repoEntries: RepoEntry[]): Promise<number> {
+    // 索引按 key 聚合最高 versionCode（多仓库同 key 保留更高版本）
+    const latestByKey = new Map<string, number>();
+    for (const entry of repoEntries) {
+      const existing: number | undefined = latestByKey.get(entry.key);
+      if (existing === undefined || entry.versionCode > existing) {
+        latestByKey.set(entry.key, entry.versionCode);
+      }
+    }
+    let count = 0;
+    try {
+      const records = await PluginRepo.list();
+      for (const record of records) {
+        const latest: number | undefined = latestByKey.get(record.key);
+        if (latest !== undefined && latest > record.versionCode) {
+          count++;
+        }
+      }
+    } catch (e) {
+      hilog.warn(DOMAIN, TAG, 'check extension updates failed: %{public}s', (e as Error).message);
+    }
+    AppStorage.setOrCreate(PluginService.EXT_UPDATE_COUNT, count);
+    if (count > 0 && Settings.getExtensionUpdateCheck()) {
+      PluginService.notifyExtensionUpdates(count);
+    }
+    return count;
+  }
+
+  // 扩展更新本地通知：24 小时去重；仅在发布成功后记录时间戳（通知开关未授权等
+  // 失败场景下次刷新可重试），失败静默降级（不中断仓库刷新流程）
+  private static notifyExtensionUpdates(count: number): void {
+    const now = Date.now();
+    if (now - Settings.getLastExtUpdateNotifiedAt() < PluginService.EXT_UPDATE_NOTIFY_INTERVAL) {
+      return;
+    }
+    const request: notificationManager.NotificationRequest = {
+      id: PluginService.EXT_UPDATE_NOTIF_ID,
+      content: {
+        notificationContentType: notificationManager.ContentType.NOTIFICATION_CONTENT_BASIC_TEXT,
+        normal: {
+          title: '扩展更新',
+          text: `${count} 个扩展有新版本，可在插件页更新`,
+        },
+      },
+      notificationSlotType: notificationManager.SlotType.SERVICE_INFORMATION,
+    };
+    notificationManager.publish(request).then((): void => {
+      Settings.setLastExtUpdateNotifiedAt(now);
+    }).catch((e: BusinessError): void => {
+      hilog.warn(DOMAIN, TAG, 'publish ext update notification failed: %{public}d %{public}s',
+        e.code, e.message);
+    });
+  }
+
   static async fetchRepo(url: string): Promise<RepoEntry[]> {
     // 索引本身经明文 http 传输时整个条目列表（名称/图标/包地址）可被中间人篡改，
     // 诱导安装恶意插件：release 一律强制 https，仅调试签名构建放行 http（本地调试仓库）
     if (url.startsWith('http://') && !PluginService.isDebugBuild()) {
       throw new Error('plugin_repo_not_https');
     }
-    const text = await Http.get(url, undefined);
-    return PluginService.parseRepoIndex(url, JSON.parse(text) as RawRepoIndex);
+    const payload = await PluginService.fetchRepoIndex(url);
+    return PluginService.parseRepoIndex(url, payload.rawIndex);
+  }
+
+  // 拉取仓库索引（index.bin）：首字节嗅探分流（对齐 mihon ExtensionStoreService）——
+  // '{' / '[' → 旧 JSON 索引（兼容存量仓库），其余 → protobuf 经 RepoProto 解码。
+  // 两种格式统一收敛为 RawRepoIndex 载荷，parseRepoIndex 保持单一解析路径
+  private static async fetchRepoIndex(url: string): Promise<RepoIndexPayload> {
+    const buffer = await Http.getBuffer(url, undefined);
+    hilog.info(DOMAIN, TAG, 'repo index fetched: %{public}s bytes=%{public}d proto=%{public}s',
+      url, buffer.byteLength, `${RepoProto.looksLikeRepoProto(buffer)}`);
+    if (RepoProto.looksLikeRepoProto(buffer)) {
+      const store: RepoProtoStore = RepoProto.decodeRepoIndex(buffer);
+      const payload: RepoIndexPayload = {
+        rawIndex: PluginService.protoToRawIndex(store),
+        storeName: store.name,
+        website: store.website,
+      };
+      return payload;
+    }
+    const text = util.TextDecoder.create('utf-8').decodeToString(new Uint8Array(buffer));
+    const parsed = JSON.parse(text) as RawRepoIndex | null;
+    const empty: RawRepoIndex = {};
+    const raw: RawRepoIndex = parsed === null || parsed === undefined ? empty : parsed;
+    const payload: RepoIndexPayload = {
+      rawIndex: raw,
+      storeName: typeof raw.name === 'string' ? raw.name : '',
+      website: raw.website,
+    };
+    return payload;
+  }
+
+  // protobuf 仓库索引 → RawRepoIndex（语言/站点取 sources[0]，contentWarning 3 视为 nsfw）
+  private static protoToRawIndex(store: RepoProtoStore): RawRepoIndex {
+    const plugins: RawRepoEntry[] = [];
+    for (const ext of store.extensions) {
+      const source = ext.sources.length > 0 ? ext.sources[0] : undefined;
+      const entry: RawRepoEntry = {
+        key: ext.packageName,
+        name: ext.name,
+        lang: source !== undefined && source.language !== '' ? source.language : 'multi',
+        version: ext.versionName,
+        versionCode: ext.versionCode,
+        file: ext.apkUrl,
+        nsfw: ext.contentWarning === RepoProto.CONTENT_WARNING_NSFW,
+        bt: ext.bt,
+        icon: ext.iconUrl,
+        contentTypes: ext.contentTypes,
+        checksum: ext.checksum,
+        site: source !== undefined ? source.homeUrl : '',
+      };
+      plugins.push(entry);
+    }
+    const raw: RawRepoIndex = {
+      name: store.name,
+      website: store.website,
+      plugins: plugins,
+    };
+    return raw;
+  }
+
+  // ---------------- 仓库索引缓存（对齐 Mihon ExtensionApi） ----------------
+
+  // 读取仓库索引缓存：内存 → 磁盘；均无返回空数组（面板据空态决定是否首拉）。
+  // file:// 图标文件可能已被系统清理（cacheDir 可被回收），缺失时降级为无图标
+  static async loadCachedRepoEntries(): Promise<RepoEntry[]> {
+    if (PluginService.cachedRepoEntries !== undefined) {
+      return PluginService.cachedRepoEntries;
+    }
+    if (PluginService.repoCacheFile === '') {
+      return [];
+    }
+    let text = '';
+    try {
+      text = fs.readTextSync(PluginService.repoCacheFile);
+    } catch (e) {
+      return [];
+    }
+    let entries: RepoEntry[] = [];
+    try {
+      const raw = JSON.parse(text) as RepoCacheFile;
+      if (raw !== null && Array.isArray(raw.entries)) {
+        entries = PluginService.normalizeRepoEntries(raw.entries);
+      }
+    } catch (e) {
+      return [];
+    }
+    for (const entry of entries) {
+      if (entry.icon.startsWith('file://') &&
+        !PluginService.fileExists(entry.icon.substring('file://'.length))) {
+        entry.icon = '';
+      }
+    }
+    PluginService.cachedRepoEntries = entries;
+    return entries;
+  }
+
+  // 刷新仓库索引并检查扩展更新（对齐 Mihon ExtensionApi.checkForUpdates：
+  // 多仓库拉取 → 合并 → 缓存落盘 → 比对已装 versionCode 发布可更新数量/通知）。
+  // 并发调用共享同一次刷新；返回刷新后的合并条目；全部仓库失败抛首个底层错误
+  static refreshRepoEntries(): Promise<RepoEntry[]> {
+    const pending = PluginService.repoRefreshPromise;
+    if (pending !== undefined) {
+      return pending;
+    }
+    const task: Promise<RepoEntry[]> = PluginService.doRefreshRepoEntries();
+    PluginService.repoRefreshPromise = task;
+    task.then((): void => {
+      if (PluginService.repoRefreshPromise === task) {
+        PluginService.repoRefreshPromise = undefined;
+      }
+    }, (): void => {
+      if (PluginService.repoRefreshPromise === task) {
+        PluginService.repoRefreshPromise = undefined;
+      }
+    });
+    return task;
+  }
+
+  private static async doRefreshRepoEntries(): Promise<RepoEntry[]> {
+    const urls: string[] = [];
+    for (const store of Settings.getPluginStores()) {
+      urls.push(store.url);
+    }
+    const lists: RepoEntry[][] = [];
+    let firstError = '';
+    for (const url of urls) {
+      try {
+        lists.push(await PluginService.fetchRepo(url));
+      } catch (e) {
+        hilog.warn(DOMAIN, TAG, 'fetch repo %{public}s failed: %{public}s', url, (e as Error).message);
+        if (firstError === '') {
+          firstError = (e as Error).message;
+        }
+      }
+    }
+    // 全部仓库失败：保留旧缓存，向调用方抛首个底层错误（面板提示）
+    if (lists.length === 0 && urls.length > 0) {
+      throw new Error(firstError !== '' ? firstError : 'plugin_repo_load_failed');
+    }
+    const merged = PluginService.mergeRepoEntries(lists);
+    PluginService.cachedRepoEntries = merged;
+    PluginService.persistRepoCache(merged);
+    // 扩展更新检查：比对已装 versionCode，发布可更新数量 + 24h 去重通知（对齐 Mihon）
+    PluginService.checkExtensionUpdates(merged);
+    // 图标后台预热：下载落盘后回写缓存并发布信号，面板重读即时显示（不阻塞本次返回）
+    PluginService.warmRepoIcons().catch((e: Error): void => {
+      hilog.warn(DOMAIN, TAG, 'warm repo icons failed: %{public}s', e.message);
+    });
+    return merged;
+  }
+
+  // 缓存条目落盘（原子写：先临时文件再改名）
+  private static persistRepoCache(entries: RepoEntry[]): void {
+    if (PluginService.repoCacheFile === '') {
+      return;
+    }
+    try {
+      const payload: RepoCacheFile = { entries: entries };
+      const tmp = `${PluginService.repoCacheFile}.tmp`;
+      const file = fs.openSync(tmp, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE | fs.OpenMode.TRUNC);
+      try {
+        fs.writeSync(file.fd, JSON.stringify(payload));
+      } finally {
+        fs.closeSync(file);
+      }
+      fs.renameSync(tmp, PluginService.repoCacheFile);
+    } catch (e) {
+      hilog.warn(DOMAIN, TAG, 'persist repo cache failed: %{public}s', (e as Error).message);
+    }
+  }
+
+  // 磁盘缓存条目归一：字段逐项校验（损坏数据容忍），缺失必需字段（key/file）的条目丢弃
+  private static normalizeRepoEntries(list: RepoEntry[]): RepoEntry[] {
+    const out: RepoEntry[] = [];
+    for (const item of list) {
+      if (item === undefined || item === null || typeof item.key !== 'string' || item.key === '' ||
+        typeof item.file !== 'string' || item.file === '') {
+        continue;
+      }
+      // 内容类型全量列表（主类型在前）；旧缓存缺列表时按 [manga] 处理
+      const contentTypes: string[] = PluginService.normalizeContentTypeList(undefined,
+        Array.isArray(item.contentTypes) ? item.contentTypes : []);
+      const entry: RepoEntry = {
+        key: item.key,
+        name: typeof item.name === 'string' && item.name !== '' ? item.name : item.key,
+        lang: typeof item.lang === 'string' ? item.lang : 'multi',
+        version: typeof item.version === 'string' ? item.version : '',
+        versionCode: typeof item.versionCode === 'number' ? item.versionCode : 0,
+        file: item.file,
+        nsfw: item.nsfw === true,
+        bt: item.bt === true,
+        icon: typeof item.icon === 'string' ? item.icon : '',
+        contentTypes: contentTypes,
+        checksum: typeof item.checksum === 'string' ? item.checksum : '',
+        site: typeof item.site === 'string' ? item.site : '',
+      };
+      out.push(entry);
+    }
+    return out;
+  }
+
+  // 仓库图标预热：按 URL sha256 落盘（图标文件名内容寻址，URL 不变即秒过），
+  // 全部完成后把条目 icon 回写为 file:// 路径、缓存落盘并发布缓存更新信号
+  private static async warmRepoIcons(): Promise<void> {
+    const entries = PluginService.cachedRepoEntries;
+    if (entries === undefined || PluginService.repoIconsDir === '') {
+      return;
+    }
+    // 去重远程图标地址（仅 http(s)；file:// 已是本地）
+    const urls: string[] = [];
+    for (const entry of entries) {
+      if ((entry.icon.startsWith('https://') || entry.icon.startsWith('http://')) &&
+        urls.indexOf(entry.icon) < 0) {
+        urls.push(entry.icon);
+      }
+    }
+    if (urls.length === 0) {
+      return;
+    }
+    if (!PluginService.fileExists(PluginService.repoIconsDir)) {
+      try {
+        fs.mkdirSync(PluginService.repoIconsDir, true);
+      } catch (e) {
+        hilog.warn(DOMAIN, TAG, 'mkdir repo icons failed: %{public}s', (e as Error).message);
+        return;
+      }
+    }
+    // 并发下载（4 路）：单图标失败保留远程地址交系统 Image 直连
+    const localByIcon = new Map<string, string>();
+    const CONCURRENCY = 4;
+    let first = 0;
+    while (first < urls.length) {
+      const batch = urls.slice(first, first + CONCURRENCY);
+      const tasks: Promise<void>[] = [];
+      for (const url of batch) {
+        const task = PluginService.downloadRepoIcon(url).then((path: string): void => {
+          if (path !== '') {
+            localByIcon.set(url, path);
+          }
+        }).catch((_e: Error): void => {
+        });
+        tasks.push(task);
+      }
+      await Promise.all(tasks);
+      first += CONCURRENCY;
+    }
+    if (localByIcon.size === 0) {
+      return;
+    }
+    // 回写本地图标路径（未命中的条目保留远程地址）
+    const rewritten: RepoEntry[] = [];
+    for (const entry of entries) {
+      const local: string | undefined = localByIcon.get(entry.icon);
+      if (local !== undefined) {
+        const copy = PluginService.copyRepoEntry(entry);
+        copy.icon = `file://${local}`;
+        rewritten.push(copy);
+      } else {
+        rewritten.push(entry);
+      }
+    }
+    PluginService.cachedRepoEntries = rewritten;
+    PluginService.persistRepoCache(rewritten);
+    AppStorage.setOrCreate(AppKeys.EXT_REPO_CACHE_TICK,
+      (AppStorage.get<number>(AppKeys.EXT_REPO_CACHE_TICK) ?? 0) + 1);
+    hilog.info(DOMAIN, TAG, 'warmed %{public}d repo icons', localByIcon.size);
+  }
+
+  // 下载单个仓库图标（命中本地直接返回路径）；失败返回空字符串
+  private static async downloadRepoIcon(url: string): Promise<string> {
+    try {
+      const name = `${await PluginService.sha256Text(url)}${PluginService.iconExtOf(url)}`;
+      const path = `${PluginService.repoIconsDir}/${name}`;
+      if (PluginService.fileExists(path)) {
+        return path;
+      }
+      const buffer: ArrayBuffer = await Http.getBuffer(url, undefined);
+      const tmp = `${path}.tmp`;
+      const file = fs.openSync(tmp, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE | fs.OpenMode.TRUNC);
+      try {
+        fs.writeSync(file.fd, buffer);
+      } finally {
+        fs.closeSync(file);
+      }
+      if (!PluginService.fileExists(path)) {
+        fs.renameSync(tmp, path);
+      } else {
+        fs.unlinkSync(tmp);
+      }
+      return path;
+    } catch (e) {
+      hilog.warn(DOMAIN, TAG, 'download repo icon failed: %{public}s %{public}s',
+        url, (e as Error).message);
+      return '';
+    }
+  }
+
+  // 图标文件扩展名（去 query 后取尾缀，超过 6 字符视为无扩展名，缺省 .png）
+  private static iconExtOf(url: string): string {
+    const q = url.indexOf('?');
+    const path = q >= 0 ? url.substring(0, q) : url;
+    const dot = path.lastIndexOf('.');
+    if (dot >= 0 && path.length - dot <= 6) {
+      return path.substring(dot);
+    }
+    return '.png';
+  }
+
+  private static copyRepoEntry(entry: RepoEntry): RepoEntry {
+    const copy: RepoEntry = {
+      key: entry.key,
+      name: entry.name,
+      lang: entry.lang,
+      version: entry.version,
+      versionCode: entry.versionCode,
+      file: entry.file,
+      nsfw: entry.nsfw,
+      bt: entry.bt,
+      icon: entry.icon,
+      contentTypes: entry.contentTypes,
+      checksum: entry.checksum,
+      site: entry.site,
+    };
+    return copy;
+  }
+
+  private static fileExists(path: string): boolean {
+    try {
+      return fs.accessSync(path);
+    } catch (e) {
+      return false;
+    }
   }
 
   // 所有插件一律 jsvm 引擎：main.js 前固定拼接共享运行时（rawfile plugin_runtime_jsvm.js）
@@ -454,13 +920,13 @@ export class PluginService {
     if (url.startsWith('http://') && !PluginService.isDebugBuild()) {
       throw new Error('plugin_repo_not_https');
     }
-    const text = await Http.get(url, undefined);
-    const raw = JSON.parse(text) as RawRepoIndex;
+    const payload = await PluginService.fetchRepoIndex(url);
+    const raw = payload.rawIndex;
     if (raw === null || raw === undefined || !Array.isArray(raw.plugins)) {
       throw new Error('plugin_repo_bad_index');
     }
     PluginService.parseRepoIndex(url, raw);
-    let name = typeof raw.name === 'string' ? raw.name : '';
+    let name = payload.storeName;
     if (name === '') {
       const m = new RegExp('^https?://([^/?#]+)').exec(url);
       name = m !== null ? m[1] : url;
@@ -468,7 +934,7 @@ export class PluginService {
     const info: RepoStoreInfo = {
       url: url,
       name: name,
-      website: PluginService.normalizeSiteUrl(raw.website),
+      website: PluginService.normalizeSiteUrl(payload.website),
     };
     return info;
   }
@@ -601,7 +1067,7 @@ export class PluginService {
 
   // 预热在库源：对"书架有漫画且声明 getHeaders"的插件包立即拉引擎并预热图片头，
 
-  // 仓库索引 JSON → 条目列表（fetchRepo / fetchStoreInfo 共用解析）
+  // 仓库索引（JSON / protobuf 收敛后的 RawRepoIndex）→ 条目列表（fetchRepo / fetchStoreInfo 共用解析）
   private static parseRepoIndex(url: string, raw: RawRepoIndex): RepoEntry[] {
     const entries: RepoEntry[] = [];
     const list = raw.plugins;
@@ -612,6 +1078,9 @@ export class PluginService {
         if (key === '' || file === '') {
           continue;
         }
+        // 内容类型全量列表（主类型在前）：contentTypes 声明优先，缺省回退单值 / [manga]
+        const contentTypes: string[] = PluginService.normalizeContentTypeList(item.contentType,
+          Array.isArray(item.contentTypes) ? item.contentTypes : []);
         const entry: RepoEntry = {
           key: key,
           name: item.name ?? key,
@@ -623,8 +1092,7 @@ export class PluginService {
           bt: item.bt === true,
           icon: item.icon !== undefined && item.icon !== '' ?
             PluginService.resolveRepoIcon(url, item.icon) : '',
-          contentType: item.contentType !== undefined && item.contentType !== null ?
-            ContentType.normalize(item.contentType) : '',
+          contentTypes: contentTypes,
           checksum: item.checksum ?? '',
           site: PluginService.normalizeSiteUrl(item.site !== undefined && item.site !== '' ?
             item.site : item.baseUrl),
@@ -917,7 +1385,7 @@ export class PluginService {
     return /^https?:\/\//.test(u) ? u : '';
   }
 
-  // 插件运行时 shim：rawfile 产物由 plugins/runtime/src 经 esbuild 打包直出
+  // 插件运行时 shim：rawfile 产物由 @honyomi/plugin-runtime 经 esbuild 打包直出
   // 并随仓库提交（文件名是宿主/沙箱稳定契约），此处仅按名读取缓存
   private static getRuntime(name: string): string {
     const cached = PluginService.runtimeCache.get(name);
@@ -1051,6 +1519,8 @@ export class PluginService {
       const contentHash = await PluginService.contentHashOf(manifest.key);
       if (Settings.isPluginTrusted(manifest.key, manifest.versionCode, contentHash)) {
         await PluginService.doStartEngine(manifest.key);
+        // 安装/升级后元数据已更新：sourceKey→pluginKey 缓存失效
+        PluginRepo.invalidateSourceMap();
         hilog.info(DOMAIN, TAG, 'plugin installed (trusted): %{public}s', manifest.key);
         return InstallOutcome.of(manifest.key, manifest.name, true);
       }
@@ -1067,6 +1537,8 @@ export class PluginService {
         }
       }
       hilog.info(DOMAIN, TAG, 'plugin installed (untrusted): %{public}s', manifest.key);
+      // 元数据索引已落库（persistRecord）：sourceKey→pluginKey 缓存失效
+      PluginRepo.invalidateSourceMap();
       return InstallOutcome.of(manifest.key, manifest.name, false);
     } finally {
       try {
@@ -1102,7 +1574,7 @@ export class PluginService {
     throw new Error('plugin_no_manifest');
   }
 
-  // 仓库索引里的 file 可以是绝对 URL，也可以相对 index.json 所在目录；release 强制 https，调试构建放行 http。
+  // 仓库索引里的 file 可以是绝对 URL，也可以相对 index.bin 所在目录；release 强制 https，调试构建放行 http。
   private static resolveRepoFile(indexUrl: string, file: string): string {
     if (file.startsWith('http://')) {
       // 明文 http 分发插件包等同远程代码注入面：仅调试签名构建放行，release 一律拒绝
@@ -1231,6 +1703,11 @@ export class PluginService {
 
   // plugin 表记录 → 包级 manifest（占位源/详情页展示用）
   private static manifestOfRecord(record: PluginRecord): PluginManifest {
+    // 已安装记录持久化的全量类型列表（逗号分隔，主类型在前）
+    const stored: string[] | undefined = record.contentTypes !== '' ?
+      record.contentTypes.split(',') : undefined;
+    const contentTypes: string[] =
+      PluginService.normalizeContentTypeList(undefined, stored);
     const manifest: PluginManifest = {
       key: record.key,
       name: record.name,
@@ -1244,7 +1721,7 @@ export class PluginService {
       minAppVersion: record.minAppVersion,
       dslVersion: record.dslVersion,
       icon: record.icon,
-      contentType: ContentType.normalize(record.contentType),
+      contentTypes: contentTypes,
     };
     return manifest;
   }
@@ -1264,7 +1741,7 @@ export class PluginService {
       minAppVersion: base.minAppVersion,
       dslVersion: base.dslVersion,
       icon: base.icon,
-      contentType: ContentType.normalize(base.contentType),
+      contentTypes: base.contentTypes,
     };
     return manifest;
   }
@@ -1285,7 +1762,7 @@ export class PluginService {
     record.minAppVersion = manifest.minAppVersion;
     record.dslVersion = manifest.dslVersion;
     record.icon = manifest.icon;
-    record.contentType = manifest.contentType;
+    record.contentTypes = manifest.contentTypes.join(',');
     record.methodsJson = JSON.stringify(methods);
     record.sourcesJson = JSON.stringify(specs);
     record.installedAt = Date.now();

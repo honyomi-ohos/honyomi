@@ -23,6 +23,7 @@ import { ChapterRepo, MangaRepo } from './Repos';
 import { Settings } from '../common/Settings';
 import { NetworkMonitor } from '../common/NetworkMonitor';
 import { HlsDownloader } from '../common/HlsDownloader';
+import { ArchiveReader } from '../common/ArchiveReader';
 import { BtModule } from './BtModule';
 import { BtFlow } from './BtFlow';
 import { BtComponentInstaller } from '../common/BtComponentInstaller';
@@ -1210,18 +1211,14 @@ export class DownloadService {
     }
     const extractDir = `${ctx.cacheDir}/cbz_extract/${mangaId}/${chapterId}`;
     const markPath = `${extractDir}/extract.ok`;
-    const opts: zlib.Options = {
-      level: zlib.CompressLevel.COMPRESS_LEVEL_DEFAULT_COMPRESSION,
-      memLevel: zlib.MemLevel.MEM_LEVEL_DEFAULT,
-      strategy: zlib.CompressStrategy.COMPRESS_STRATEGY_DEFAULT_STRATEGY
-    };
     try {
       if (!fileIo.accessSync(markPath)) {
         if (fileIo.accessSync(extractDir)) {
           DownloadService.rmdir(extractDir);
         }
         fileIo.mkdirSync(extractDir, true);
-        await zlib.decompressFile(cbzPath, extractDir, opts);
+        // 统一走归档分派层（chapter.cbz 为 zip 格式，zlib 解压）
+        await ArchiveReader.openArchive(cbzPath, extractDir);
         const fd = fileIo.openSync(markPath,
           fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE).fd;
         fileIo.closeSync(fd);

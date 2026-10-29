@@ -4,6 +4,7 @@ import { CategoryRepo, MangaRepo } from '../data/Repos';
 import { Source, SourceRegistry } from '../source/Source';
 import { JsvmSource, RawFilter } from '../source/JsvmSource';
 import { LocalFolderManager } from '../source/LocalFolderManager';
+import { LocalSource } from '../source/LocalSource';
 import { DuplicateManga, CategoryRecord, ContentType, MangaRecord, SManga, WorksPage } from '../model/Models';
 import { BrowseSourceParams, DetailParams, DetailSearchResult, MigrateSearchParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
@@ -17,6 +18,7 @@ import { ChangeCategoryDialog, DuplicateMangaDialog } from './components/Dialogs
 import { AppKeys } from '../common/AppKeys';
 import { Settings } from '../common/Settings';
 import { LibraryAddFlow } from '../common/LibraryAddFlow';
+import { IncognitoSourceBanner } from './components/IncognitoSourceBanner';
 
 // 单源浏览页（图源 Tab 点进某个源）：顶栏返回 + 搜索 + 热门/最新/过滤切换行 + 结果网格
 // 本地源：固定一个本地文件夹（授权持久化），同步进沙箱后按内容归类扫描
@@ -42,6 +44,9 @@ export struct BrowseSourcePage {
   @State folderReady: boolean = false;
   @State syncing: boolean = false;
   @State showFolderSheet: boolean = false;
+  // 本地源文件夹模式（对齐 Mihon LocalSource In-folder）：folderPath 为当前相对目录（''=根）
+  @State folderMode: boolean = false;
+  @State folderPath: string = '';
   // 插件自定义过滤器（getFilterList 拉取，select/checkbox/tristate/text/group）
   @State filters: RawFilter[] = [];
   // 过滤器面板刷新计数：嵌套 state 变更后递增触发 ForEach 重建
@@ -278,7 +283,9 @@ export struct BrowseSourcePage {
       record.genre = m.genre;
       record.status = m.status;
       const src = SourceRegistry.get(sourceKey);
-      record.contentType = src !== undefined ? src.contentType : ContentType.MANGA;
+      // 作品级类型声明优先，未声明回退源（插件）类型
+      record.contentType = m.contentType !== undefined && m.contentType !== '' ?
+        m.contentType : (src !== undefined ? src.contentType : ContentType.MANGA);
       records.push(record);
     }
     return records;
@@ -347,6 +354,7 @@ export struct BrowseSourcePage {
       description: record.description,
       genre: record.genre,
       status: record.status,
+      contentType: record.contentType,
     };
     return m;
   }
@@ -548,6 +556,14 @@ export struct BrowseSourcePage {
             bottom: 8
           })
 
+          // 按插件隐身提示条（所属插件开启「隐身浏览」时显示）
+          IncognitoSourceBanner({ sourceKey: this.sourceKey })
+            .padding({
+              left: 16,
+              right: 16,
+              bottom: 6
+            })
+
           // 搜索栏
           if (this.searchOpen && this.sourceKey !== 'local') {
             Row({ space: 8 }) {
@@ -637,6 +653,66 @@ export struct BrowseSourcePage {
             .padding({ left: 16, right: 16, bottom: 8 })
           }
 
+          // 本地源模式切换行：热门 / 文件夹（+ 返回上级），对齐 Mihon LocalSource In-folder
+          if (this.currentSource() instanceof LocalSource) {
+            Row({ space: 8 }) {
+              Text($r('app.string.browse_popular'))
+                .fontSize(13)
+                .fontColor(!this.folderMode ? this.pal.onPrimary : this.pal.sub)
+                .backgroundColor(!this.folderMode ? this.pal.primary : this.pal.chip)
+                .borderRadius(12)
+                .padding({
+                  left: 12,
+                  right: 12,
+                  top: 4,
+                  bottom: 4
+                })
+                .onClick(() => {
+                  if (this.folderMode) {
+                    this.folderMode = false;
+                    this.folderPath = '';
+                    this.loadFirst();
+                  }
+                })
+              Text($r('app.string.browse_local_folders'))
+                .fontSize(13)
+                .fontColor(this.folderMode ? this.pal.onPrimary : this.pal.sub)
+                .backgroundColor(this.folderMode ? this.pal.primary : this.pal.chip)
+                .borderRadius(12)
+                .padding({
+                  left: 12,
+                  right: 12,
+                  top: 4,
+                  bottom: 4
+                })
+                .onClick(() => {
+                  if (!this.folderMode) {
+                    this.folderMode = true;
+                    this.folderPath = '';
+                    this.loadFolder();
+                  }
+                })
+              if (this.folderMode && this.folderPath !== '') {
+                Text($r('app.string.browse_folder_up'))
+                  .fontSize(13)
+                  .fontColor(this.pal.sub)
+                  .backgroundColor(this.pal.chip)
+                  .borderRadius(12)
+                  .padding({
+                    left: 12,
+                    right: 12,
+                    top: 4,
+                    bottom: 4
+                  })
+                  .onClick(() => {
+                    this.openParentFolder();
+                  })
+              }
+            }
+            .width('100%')
+            .padding({ left: 16, right: 16, bottom: 8 })
+          }
+
           // 结果网格
           if (this.currentSource() === undefined) {
             Column() {
@@ -676,12 +752,24 @@ export struct BrowseSourcePage {
                     record: record,
                     badge: this.nsfwBadge(),
                     onCardClick: (r: MangaRecord): void => {
+                      // 文件夹模式目录条目：下钻而非进详情
+                      if (this.folderMode && r.status === 'local_folder') {
+                        this.folderPath = r.url;
+                        this.loadFolder();
+                        return;
+                      }
                       this.openDetail(r);
                     },
                     onCardLongPress: (r: MangaRecord): void => {
+                      if (this.folderMode && r.status === 'local_folder') {
+                        return;
+                      }
                       this.quickAddToLibrary(r);
                     },
                     onCardMenuAddToLibrary: (r: MangaRecord): void => {
+                      if (this.folderMode && r.status === 'local_folder') {
+                        return;
+                      }
                       this.quickAddToLibrary(r);
                     },
                   })
@@ -771,6 +859,8 @@ export struct BrowseSourcePage {
       const params = ctx.pathInfo.param as BrowseSourceParams;
       this.sourceKey = params !== undefined && params !== null ? params.sourceKey : '';
       this.mode = params !== undefined && params !== null && params.mode === 'latest' ? 'latest' : 'popular';
+      this.folderMode = false;
+      this.folderPath = '';
       this.folderReady = LocalFolderManager.hasFolder();
       // 外部"打开方式"导入书籍后跳入：预填搜索词并直接执行，定位导入的书籍
       const prefill = params !== undefined && params !== null && params.query !== undefined ? params.query : '';
@@ -832,6 +922,33 @@ export struct BrowseSourcePage {
       return source.getLatestWorks(page);
     }
     return source.getPopularWorks(page);
+  }
+
+  // 文件夹模式加载：browseFolder 不分页（hasNextPage 恒 false，loadMore 自然短路）
+  private async loadFolder(): Promise<void> {
+    const source = this.currentSource();
+    if (!(source instanceof LocalSource)) {
+      return;
+    }
+    this.searching = true;
+    this.results = [];
+    this.hasNextPage = false;
+    try {
+      const works = await source.browseFolder(this.folderPath);
+      this.results = await this.toRecords(source.key, works);
+    } catch (e) {
+      Util.toastRes(this.getUIContext(), $r('app.string.browse_load_failed'),
+        [Util.errText(this.getUIContext(), (e as Error).message)]);
+    }
+    this.searching = false;
+  }
+
+  // 返回上级目录：folderPath 去掉最后一段；根目录时按钮不显示
+  private openParentFolder(): void {
+    const segs = this.folderPath.split('/');
+    segs.pop();
+    this.folderPath = segs.join('/');
+    this.loadFolder();
   }
 
   // 在插件过滤器列表中按名匹配标签并置位；命中返回 true（未命中不改过滤器状态）
@@ -1080,7 +1197,11 @@ export struct BrowseSourcePage {
     }
   }
 
-  private localEmptyMessage(): Resource {
+  private localEmptyMessage(): ResourceStr {
+    // 文件夹模式：目录为空
+    if (this.folderMode) {
+      return $r('app.string.browse_folder_empty');
+    }
     if (ContentType.isLocal(this.sourceKey)) {
       if (!this.folderReady) {
         return $r('app.string.browse_local_folder_empty');

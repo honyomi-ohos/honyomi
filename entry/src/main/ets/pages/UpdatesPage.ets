@@ -3,8 +3,9 @@ import { SheetPreset } from './components/SheetPreset';
 import { CategoryRepo, UpdatesQuery, UpdatesRepo } from '../data/Repos';
 import { DownloadService } from '../data/DownloadService';
 import { UpdateService } from '../data/UpdateService';
+import { BangumiApi, BgmCalendarItem } from '../data/BangumiApi';
 import { CategoryRecord, UpdateItem } from '../model/Models';
-import { DetailParams } from '../model/RouteParams';
+import { DetailParams, SubjectDetailParams } from '../model/RouteParams';
 import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
@@ -17,6 +18,9 @@ import { AppIcon } from './components/AppIcon';
 import { SmartImage } from './components/SmartImage';
 import { UpdatesFilterSheet } from './components/UpdatesFilterSheet';
 import { SourceRegistry } from '../source/Source';
+
+// 时间表星期 chips 顺序：周一起排（周日殿后）
+const SCHEDULE_DAY_ORDER: number[] = [1, 2, 3, 4, 5, 6, 0];
 
 // 更新页：书架最新章节（对齐 Mihon UpdatesScreen）
 // 顶栏三操作：筛选（FilterList）/ 查看即将推出（CalendarMonth）/ 更新书架（Refresh）
@@ -55,6 +59,17 @@ export struct UpdatesPage {
   @State includedCats: number[] = [];
   @State excludedCats: number[] = [];
   @State categories: CategoryRecord[] = [];
+  // 页内分段：'updates' 更新列表 | 'schedule' 新番时间表
+  @State updTab: string = 'updates';
+  // 时间表状态（Bangumi 每日放送）
+  @State scheduleLoading: boolean = false;
+  @State scheduleError: string = '';
+  @State scheduleAll: BgmCalendarItem[] = [];
+  // 选中星期（JS 约定 0=周日..6=周六），初始为今天
+  @State scheduleDay: number = new Date().getDay();
+  // 星期短标签（索引 = JS 星期）
+  @State weekdayLabels: string[] = [];
+  private todayJs: number = new Date().getDay();
 
   aboutToAppear(): void {
     this.fDownloaded = Settings.getUpdatesTriState('downloaded');
@@ -64,6 +79,7 @@ export struct UpdatesPage {
     this.includedCats = Settings.getUpdatesIncludedCategories();
     this.excludedCats = Settings.getUpdatesExcludedCategories();
     this.publishFilterActive();
+    this.buildWeekdayLabels();
     this.loadData();
     this.loadCategories();
   }
@@ -84,9 +100,13 @@ export struct UpdatesPage {
     this.showFilterSheet = true;
   }
 
-  // 头部刷新图标请求：刷新书架
+  // 头部刷新图标请求：时间表页刷新 Bangumi 日历，否则刷新书架
   onRefreshReq(): void {
-    this.refreshLibrary();
+    if (this.updTab === 'schedule') {
+      this.loadSchedule(true);
+    } else {
+      this.refreshLibrary();
+    }
   }
 
   async loadCategories(): Promise<void> {
@@ -128,6 +148,12 @@ export struct UpdatesPage {
 
   async refreshLibrary(): Promise<void> {
     if (this.refreshing) {
+      return;
+    }
+    // 批量更新网络/电源限制（仅 Wi-Fi / 仅充电）：不满足时提示并跳过
+    const blockReason = UpdateService.checkUpdateRestrictions();
+    if (blockReason !== '') {
+      Util.toast(this.getUIContext(), blockReason);
       return;
     }
     this.refreshing = true;
@@ -179,101 +205,107 @@ export struct UpdatesPage {
   bodyContent() {
     Column() {
       // 顶栏（标题 + 筛选/日历/刷新）已抽取为 UpdatesHeader，由 Index 挂载到 Navigation 标题栏
-      if (this.loading) {
-        LoadingState()
-      } else if (this.items.length === 0) {
-        Column() {
-          EmptyScreen({ message: $r('app.string.updates_empty') })
-        }
-        .layoutWeight(1)
-        .justifyContent(FlexAlign.Center)
-      } else {
-        Column() {
-          List({ space: 0 }) {
-            ForEach(this.items, (item: UpdateItem) => {
-              ListItem() {
-                Row({ space: 12 }) {
-                  // 封面（无封面时 SmartImage 内部渲染默认封面占位）；
-                  // UpdateItem 不含 sourceKey，传空串走网络/缓存通用路径
-                  SmartImage({
-                    url: item.coverUrl,
-                    sourceKey: '',
-                    fit: ImageFit.Cover,
-                    placeholderIconSize: 20
-                  })
-                    .width(44)
-                    .height(60)
-                    .borderRadius(6)
-                    .backgroundColor(this.pal.chip)
-                    // HitTestMode.Block 阻断冒泡：避免同时触发整行 onClick（直接打开阅读器）
-                    .hitTestBehavior(HitTestMode.Block)
-                    .onClick(() => {
-                      this.openDetail(item.mangaId);
-                    })
-                  Column() {
-                    Text(item.mangaTitle)
-                      .fontSize(14)
-                      .fontWeight(FontWeight.Medium)
-                      .fontColor(this.pal.text)
-                      .maxLines(1)
-                      .textOverflow({ overflow: TextOverflow.Ellipsis })
-                      .opacity(item.read ? 0.38 : 1)
-                    Row({ space: 4 }) {
-                      if (!item.read) {
-                        Column()
-                          .width(8)
-                          .height(8)
-                          .borderRadius(4)
-                          .backgroundColor(this.pal.primary)
-                      }
-                      if (item.bookmark) {
-                        AppIcon({ name: 'bookmark_filled', iconSize: 12, tint: this.pal.primary })
-                      }
-                      Text(item.chapterName)
-                        .fontSize(13)
-                        .fontColor(this.pal.sub)
-                        .maxLines(1)
-                        .textOverflow({ overflow: TextOverflow.Ellipsis })
-                        .layoutWeight(1)
-                        .opacity(item.read ? 0.38 : 1)
-                    }
-                    .margin({ top: 4 })
-                    .alignItems(VerticalAlign.Center)
-
-                    Text(Util.timeAgo(item.dateUpload))
-                      .fontSize(11)
-                      .fontColor(this.pal.sub)
-                      .margin({ top: 4 })
-                      .opacity(item.read ? 0.38 : 1)
-                  }
-                  .alignItems(HorizontalAlign.Start)
-                  .layoutWeight(1)
-                }
-                .width('100%')
-                .padding({
-                  left: 16 + this.inset(),
-                  right: 16 + this.inset(),
-                  top: 10,
-                  bottom: 10
-                })
-                .onClick(() => {
-                  ContentOpen.open(this.pathStack, item.mangaId, item.chapterId);
-                })
-              }
-            }, (item: UpdateItem) => `upd-${item.chapterId}-${item.coverUrl}-${item.read}-${item.bookmark}`)
+      // 页内分段：「更新 | 时间表」
+      this.tabBar()
+      if (this.updTab === 'updates') {
+        if (this.loading) {
+          LoadingState()
+        } else if (this.items.length === 0) {
+          Column() {
+            EmptyScreen({ message: $r('app.string.updates_empty') })
           }
           .layoutWeight(1)
-          .scrollBar(BarState.Auto)
-          .contentEndOffset(this.navBarH + this.tabPadH)
-          .divider({
-            strokeWidth: 1,
-            color: this.pal.divider,
-            startMargin: 72 + this.inset(),
-            endMargin: 16 + this.inset(),
-          })
+          .justifyContent(FlexAlign.Center)
+        } else {
+          Column() {
+            List({ space: 0 }) {
+              ForEach(this.items, (item: UpdateItem) => {
+                ListItem() {
+                  Row({ space: 12 }) {
+                    // 封面（无封面时 SmartImage 内部渲染默认封面占位）；
+                    // UpdateItem 不含 sourceKey，传空串走网络/缓存通用路径
+                    SmartImage({
+                      url: item.coverUrl,
+                      sourceKey: '',
+                      fit: ImageFit.Cover,
+                      placeholderIconSize: 20
+                    })
+                      .width(44)
+                      .height(60)
+                      .borderRadius(6)
+                      .backgroundColor(this.pal.chip)
+                      // HitTestMode.Block 阻断冒泡：避免同时触发整行 onClick（直接打开阅读器）
+                      .hitTestBehavior(HitTestMode.Block)
+                      .onClick(() => {
+                        this.openDetail(item.mangaId);
+                      })
+                    Column() {
+                      Text(item.mangaTitle)
+                        .fontSize(14)
+                        .fontWeight(FontWeight.Medium)
+                        .fontColor(this.pal.text)
+                        .maxLines(1)
+                        .textOverflow({ overflow: TextOverflow.Ellipsis })
+                        .opacity(item.read ? 0.38 : 1)
+                      Row({ space: 4 }) {
+                        if (!item.read) {
+                          Column()
+                            .width(8)
+                            .height(8)
+                            .borderRadius(4)
+                            .backgroundColor(this.pal.primary)
+                        }
+                        if (item.bookmark) {
+                          AppIcon({ name: 'bookmark_filled', iconSize: 12, tint: this.pal.primary })
+                        }
+                        Text(item.chapterName)
+                          .fontSize(13)
+                          .fontColor(this.pal.sub)
+                          .maxLines(1)
+                          .textOverflow({ overflow: TextOverflow.Ellipsis })
+                          .layoutWeight(1)
+                          .opacity(item.read ? 0.38 : 1)
+                      }
+                      .margin({ top: 4 })
+                      .alignItems(VerticalAlign.Center)
+
+                      Text(Util.timeAgo(item.dateUpload))
+                        .fontSize(11)
+                        .fontColor(this.pal.sub)
+                        .margin({ top: 4 })
+                        .opacity(item.read ? 0.38 : 1)
+                    }
+                    .alignItems(HorizontalAlign.Start)
+                    .layoutWeight(1)
+                  }
+                  .width('100%')
+                  .padding({
+                    left: 16 + this.inset(),
+                    right: 16 + this.inset(),
+                    top: 10,
+                    bottom: 10
+                  })
+                  .onClick(() => {
+                    ContentOpen.open(this.pathStack, item.mangaId, item.chapterId);
+                  })
+                }
+              }, (item: UpdateItem) => `upd-${item.chapterId}-${item.coverUrl}-${item.read}-${item.bookmark}`)
+            }
+            .layoutWeight(1)
+            .scrollBar(BarState.Auto)
+            .contentEndOffset(this.navBarH + this.tabPadH)
+            .divider({
+              strokeWidth: 1,
+              color: this.pal.divider,
+              startMargin: 72 + this.inset(),
+              endMargin: 16 + this.inset(),
+            })
+          }
+          .width('100%')
+          .layoutWeight(1)
         }
-        .width('100%')
-        .layoutWeight(1)
+      } else {
+        this.scheduleContent()
       }
     }
     .width('100%')
@@ -287,6 +319,186 @@ export struct UpdatesPage {
         showClose: false,
         bg: this.pal.bg
       }))
+  }
+
+  // 页内分段控件：「更新 | 时间表」
+  @Builder
+  tabBar() {
+    Row({ space: 4 }) {
+      this.tabChip($r('app.string.updates_tab_updates'), 'updates')
+      this.tabChip($r('app.string.updates_tab_schedule'), 'schedule')
+    }
+    .width('100%')
+    .padding({
+      left: 12 + this.inset(),
+      right: 12 + this.inset(),
+      top: 2,
+      bottom: 6
+    })
+    .alignItems(VerticalAlign.Center)
+  }
+
+  @Builder
+  tabChip(label: Resource, tab: string) {
+    Text(label)
+      .fontSize(14)
+      .fontWeight(this.updTab === tab ? FontWeight.Bold : FontWeight.Medium)
+      .fontColor(this.updTab === tab ? this.pal.text : this.pal.sub)
+      .padding({ left: 14, right: 14, top: 6, bottom: 6 })
+      .borderRadius(16)
+      .backgroundColor(this.updTab === tab ? this.pal.chip : Color.Transparent)
+      .onClick(() => {
+        this.switchTab(tab);
+      })
+  }
+
+  // 新番时间表内容：星期 chips（周一起排、今日主色描边）+ 按选中星期过滤的封面网格
+  @Builder
+  scheduleContent() {
+    Column() {
+      Scroll() {
+        Row({ space: 6 }) {
+          ForEach(SCHEDULE_DAY_ORDER, (day: number) => {
+            this.dayChip(day)
+          }, (day: number) => `wd-${day}`)
+        }
+        .padding({
+          left: 16 + this.inset(),
+          right: 16 + this.inset()
+        })
+      }
+      .scrollable(ScrollDirection.Horizontal)
+      .scrollBar(BarState.Off)
+      .width('100%')
+
+      if (this.scheduleLoading) {
+        LoadingState()
+      } else if (this.scheduleError !== '') {
+        Column() {
+          EmptyScreen({ message: $r('app.string.schedule_load_failed') })
+          Text($r('app.string.common_retry'))
+            .fontSize(14)
+            .fontWeight(FontWeight.Medium)
+            .fontColor(this.pal.primary)
+            .padding({ top: 4, bottom: 12 })
+            .onClick(() => {
+              this.loadSchedule(true);
+            })
+        }
+        .layoutWeight(1)
+        .width('100%')
+        .justifyContent(FlexAlign.Center)
+      } else if (this.dayItems().length === 0) {
+        Column() {
+          EmptyScreen({ message: $r('app.string.schedule_empty') })
+        }
+        .layoutWeight(1)
+        .width('100%')
+        .justifyContent(FlexAlign.Center)
+      } else {
+        Scroll() {
+          Column({ space: 14 }) {
+            ForEach(this.scheduleRows(), (row: BgmCalendarItem[]) => {
+              Row({ space: 14 }) {
+                ForEach(row, (item: BgmCalendarItem) => {
+                  this.scheduleCard(item)
+                }, (item: BgmCalendarItem) => `bgm-${item.id}`)
+              }
+              .width('100%')
+            }, (row: BgmCalendarItem[], idx: number) =>
+            `bgmrow-${idx}-${row.length > 0 ? row[0].id : 0}`)
+          }
+          .constraintSize({ maxWidth: 720 })
+          .width('100%')
+          .padding({
+            left: 16 + this.inset(),
+            right: 16 + this.inset(),
+            top: 8,
+            bottom: this.navBarH + this.tabPadH
+          })
+        }
+        .layoutWeight(1)
+        .scrollBar(BarState.Auto)
+        .width('100%')
+        .align(Alignment.Top)
+      }
+    }
+    .width('100%')
+    .layoutWeight(1)
+  }
+
+  // 星期 chip：选中实心、今日描边
+  @Builder
+  dayChip(day: number) {
+    Text(this.weekdayLabel(day))
+      .fontSize(13)
+      .fontWeight(this.scheduleDay === day ? FontWeight.Bold : FontWeight.Medium)
+      .fontColor(this.scheduleDay === day ? this.pal.onPrimary :
+        (this.todayJs === day ? this.pal.primary : this.pal.sub))
+      .padding({ left: 14, right: 14, top: 7, bottom: 7 })
+      .borderRadius(16)
+      .backgroundColor(this.scheduleDay === day ? this.pal.primary : Color.Transparent)
+      .border({
+        width: this.scheduleDay !== day && this.todayJs === day ? 1 : 0,
+        color: this.pal.primary
+      })
+      .onClick(() => {
+        this.scheduleDay = day;
+      })
+  }
+
+  // 时间表卡片：封面（2:3）+ 评分角标 + 标题 + 放送日期，点击进条目详情
+  @Builder
+  scheduleCard(item: BgmCalendarItem) {
+    Column() {
+      Stack({ alignContent: Alignment.BottomEnd }) {
+        SmartImage({
+          url: item.cover,
+          fit: ImageFit.Cover,
+          placeholderIconSize: 24
+        })
+          .width('100%')
+          .aspectRatio(2 / 3)
+          .borderRadius(8)
+          .clip(true)
+          .backgroundColor(this.pal.chip)
+
+        if (item.score > 0) {
+          Text(`★ ${item.score.toFixed(1)}`)
+            .fontSize(10)
+            .fontWeight(FontWeight.Medium)
+            .fontColor('#FFD180')
+            .padding({ left: 6, right: 6, top: 2, bottom: 2 })
+            .borderRadius(8)
+            .backgroundColor('#CC000000')
+            .margin(5)
+        }
+      }
+      .width('100%')
+
+      Text(item.nameCn !== '' ? item.nameCn : item.name)
+        .fontSize(13)
+        .fontWeight(FontWeight.Medium)
+        .fontColor(this.pal.text)
+        .maxLines(2)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .margin({ top: 6 })
+
+      if (item.airDate !== '') {
+        Text(item.airDate)
+          .fontSize(11)
+          .fontColor(this.pal.sub)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+          .margin({ top: 2 })
+      }
+    }
+    .layoutWeight(1)
+    .alignItems(HorizontalAlign.Start)
+    .onClick(() => {
+      const params: SubjectDetailParams = { subjectId: item.id };
+      this.pathStack.pushPathByName('SubjectDetail', params);
+    })
   }
 
   // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中
@@ -323,6 +535,75 @@ export struct UpdatesPage {
   private openDetail(mangaId: number): void {
     const params: DetailParams = { mangaId: mangaId };
     this.pathStack.pushPathByName('MangaDetail', params);
+  }
+
+  // ---- 新番时间表 ----
+
+  // 分段切换：首次进入时间表时拉取 Bangumi 日历
+  private switchTab(tab: string): void {
+    if (this.updTab === tab) {
+      return;
+    }
+    this.updTab = tab;
+    if (tab === 'schedule' && this.scheduleAll.length === 0 && this.scheduleError === '') {
+      this.loadSchedule(false);
+    }
+  }
+
+  private async loadSchedule(force: boolean): Promise<void> {
+    this.scheduleLoading = true;
+    this.scheduleError = '';
+    try {
+      this.scheduleAll = await BangumiApi.getCalendar(force);
+      this.scheduleLoading = false;
+    } catch (e) {
+      this.scheduleLoading = false;
+      this.scheduleError = e instanceof Error ? e.message : 'load_failed';
+    }
+  }
+
+  // 星期短标签（索引 = JS 星期 0=周日..6=周六）
+  private buildWeekdayLabels(): void {
+    const ctx = Util.hostAbilityContext(this.getUIContext());
+    const labels: string[] = [];
+    for (let day = 0; day < 7; day++) {
+      labels.push(Util.weekdayShort(ctx, day));
+    }
+    this.weekdayLabels = labels;
+  }
+
+  private weekdayLabel(day: number): string {
+    return this.weekdayLabels.length === 7 ? (this.weekdayLabels[day] ?? '') : `${day}`;
+  }
+
+  // 选中星期的条目
+  private dayItems(): BgmCalendarItem[] {
+    return this.scheduleAll.filter((it: BgmCalendarItem): boolean => it.jsDay === this.scheduleDay);
+  }
+
+  // 网格列数随窗口宽度：2-5 列
+  private scheduleCols(): number {
+    if (this.windowW >= 1200) {
+      return 5;
+    }
+    if (this.windowW >= 840) {
+      return 4;
+    }
+    if (this.windowW >= 600) {
+      return 3;
+    }
+    return 2;
+  }
+
+  // 条目按列数分块为行（响应式网格）
+  private scheduleRows(): BgmCalendarItem[][] {
+    const items: BgmCalendarItem[] = this.dayItems();
+    const cols: number = this.scheduleCols();
+    const rows: BgmCalendarItem[][] = [];
+    for (let i = 0; i < items.length; i += cols) {
+      rows.push(items.slice(i, i + cols));
+    }
+    return rows;
   }
 }
 

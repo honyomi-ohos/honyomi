@@ -39,6 +39,12 @@ export default class RefreshLibraryImpl extends InsightIntentEntryExecutor<strin
       'contentType': ''
     };
     AppStorage.setOrCreate(AppKeys.CARD_ACTION, JSON.stringify(payload));
+    // 批量更新网络/电源限制不满足时跳过刷新（与 Index.autoRefresh 同一套闸门）
+    const blockReason = UpdateService.checkUpdateRestrictions();
+    if (blockReason !== '') {
+      hilog.info(DOMAIN, 'Mihon', 'RefreshLibrary intent skipped: %{public}s', blockReason);
+      return Promise.resolve(RefreshLibraryImpl.result(0, `已跳过书库刷新：${blockReason}`));
+    }
     // 异步刷新：不阻塞意图返回
     UpdateService.refreshLibrary(context).then((newCount: number) => {
       Settings.setLastRefreshAt(Date.now());

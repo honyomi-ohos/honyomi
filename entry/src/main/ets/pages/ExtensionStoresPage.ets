@@ -1,4 +1,5 @@
 import { BusinessError, pasteboard } from '@kit.BasicServicesKit';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 import { PluginService, RepoStoreInfo } from '../data/PluginService';
 import { PluginStoreRecord, Settings } from '../common/Settings';
 import { ThemePalette } from '../common/Theme';
@@ -8,6 +9,9 @@ import { AppKeys } from '../common/AppKeys';
 import { AppIcon } from './components/AppIcon';
 import { EmptyScreen } from './components/EmptyScreen';
 import { ConfirmDialog } from './components/Dialogs';
+
+const DOMAIN = 0x0001;
+const TAG = 'Mihon';
 
 // 添加仓库弹窗：地址输入 + 已存在校验 + 拉取索引校验（处理中/失败态）
 // 对齐 Mihon ExtensionStoreCreateDialog
@@ -117,9 +121,13 @@ struct ExtStoreAddDialog {
       this.dismiss();
       this.onAdded(record);
     } catch (e) {
+      const err = e as Error;
+      // 诊断日志：完整错误对象 + 堆栈（定位"undefined is not callable"具体调用点）
+      hilog.error(DOMAIN, TAG, 'addRepo failed: name=%{public}s msg=%{public}s', err.name, err.message);
+      hilog.error(DOMAIN, TAG, 'addRepo stack: %{public}s', err.stack ?? '');
       this.processing = false;
       this.errorText = Util.resStr(this.getUIContext(), $r('app.string.ext_stores_add_failed'),
-        [Util.errText(this.getUIContext(), (e as Error).message)]);
+        [Util.errText(this.getUIContext(), err.message)]);
     }
   }
 

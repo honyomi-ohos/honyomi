@@ -1945,6 +1945,10 @@
       "value": "Takip"
     },
     {
+      "name": "detail_action_webview",
+      "value": "Web görünümü"
+    },
+    {
       "name": "detail_dl_cancelled",
       "value": "İndirme iptal edildi"
     },
@@ -3125,6 +3129,10 @@
       "value": "Okunuyor"
     },
     {
+      "name": "track_unread",
+      "value": "Okunmadı"
+    },
+    {
       "name": "track_completed",
       "value": "Tamamlandı"
     },
@@ -3395,6 +3403,186 @@
     {
       "name": "debug_language",
       "value": "Dil"
+    },
+    {
+      "name": "updates_tab_updates",
+      "value": "Updates"
+    },
+    {
+      "name": "updates_tab_schedule",
+      "value": "Schedule"
+    },
+    {
+      "name": "schedule_load_failed",
+      "value": "Failed to load the schedule"
+    },
+    {
+      "name": "schedule_empty",
+      "value": "No shows in the schedule"
+    },
+    {
+      "name": "browse_local_folders",
+      "value": "Klasörler"
+    },
+    {
+      "name": "browse_folder_up",
+      "value": "Üst klasör"
+    },
+    {
+      "name": "browse_folder_empty",
+      "value": "Bu klasör boş"
+    },
+    {
+      "name": "player_set_skip_oped",
+      "value": "OP/ED'i otomatik atla"
+    },
+    {
+      "name": "player_set_subtitle_enable",
+      "value": "Altyazıları etkinleştir"
+    },
+    {
+      "name": "video_skip_section",
+      "value": "OP/ED atla"
+    },
+    {
+      "name": "video_skip_op_start",
+      "value": "OP başlangıcı"
+    },
+    {
+      "name": "video_skip_op_end",
+      "value": "OP bitişi"
+    },
+    {
+      "name": "video_skip_ed_start",
+      "value": "ED başlangıcı"
+    },
+    {
+      "name": "video_skip_ed_end",
+      "value": "ED bitişi"
+    },
+    {
+      "name": "video_skip_save",
+      "value": "Kaydet"
+    },
+    {
+      "name": "video_skip_clear",
+      "value": "Temizle"
+    },
+    {
+      "name": "video_skip_op",
+      "value": "OP atlandı"
+    },
+    {
+      "name": "video_skip_ed",
+      "value": "ED atlandı"
+    },
+    {
+      "name": "video_skip_set_current",
+      "value": "Şimdi"
+    },
+    {
+      "name": "video_subtitle_none",
+      "value": "Altyazı yok"
+    },
+    {
+      "name": "video_subtitle_pick",
+      "value": "Altyazı dosyası seç"
+    },
+    {
+      "name": "video_subtitle_clear",
+      "value": "Temizle"
+    },
+    {
+      "name": "video_danmaku_login_hint",
+      "value": "Danmaku göndermek için dandanplay hesabınla giriş yap"
+    },
+    {
+      "name": "video_danmaku_username",
+      "value": "Kullanıcı adı"
+    },
+    {
+      "name": "video_danmaku_password",
+      "value": "Şifre"
+    },
+    {
+      "name": "video_danmaku_logging",
+      "value": "Giriş yapılıyor…"
+    },
+    {
+      "name": "video_danmaku_login",
+      "value": "Giriş yap"
+    },
+    {
+      "name": "video_danmaku_logged_in",
+      "value": "Giriş yapıldı: %s"
+    },
+    {
+      "name": "video_danmaku_logout",
+      "value": "Çıkış yap"
+    },
+    {
+      "name": "video_danmaku_input_hint",
+      "value": "Danmaku metnini gir"
+    },
+    {
+      "name": "video_danmaku_mode_scroll",
+      "value": "Kaydırma"
+    },
+    {
+      "name": "video_danmaku_mode_top",
+      "value": "Üstte"
+    },
+    {
+      "name": "video_danmaku_mode_bottom",
+      "value": "Altta"
+    },
+    {
+      "name": "video_danmaku_color",
+      "value": "Renk"
+    },
+    {
+      "name": "video_danmaku_sending",
+      "value": "Gönderiliyor…"
+    },
+    {
+      "name": "video_danmaku_send",
+      "value": "Gönder"
+    },
+    {
+      "name": "video_danmaku_send_title",
+      "value": "Danmaku gönder"
+    },
+    {
+      "name": "subject_detail_title",
+      "value": "Eser ayrıntıları"
+    },
+    {
+      "name": "subject_load_failed",
+      "value": "Ayrıntılar yüklenemedi"
+    },
+    {
+      "name": "subject_search_in_app",
+      "value": "Uygulamada ara"
+    },
+    {
+      "name": "subject_label_air_date",
+      "value": "Yayın tarihi"
+    },
+    {
+      "name": "subject_label_eps",
+      "value": "Bölümler"
+    },
+    {
+      "name": "subject_label_score",
+      "value": "Puan"
+    },
+    {
+      "name": "subject_label_summary",
+      "value": "Özet"
+    },
+    {
+      "name": "subject_summary_empty",
+      "value": "Henüz özet yok"
     }
   ]
 }

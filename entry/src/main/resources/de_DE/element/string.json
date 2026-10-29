@@ -2993,6 +2993,10 @@
       "value": "Am Lesen"
     },
     {
+      "name": "track_unread",
+      "value": "Ungelesen"
+    },
+    {
       "name": "track_completed",
       "value": "Abgeschlossen"
     },
@@ -3267,6 +3271,190 @@
     {
       "name": "debug_language",
       "value": "Sprache"
+    },
+    {
+      "name": "updates_tab_updates",
+      "value": "Updates"
+    },
+    {
+      "name": "updates_tab_schedule",
+      "value": "Schedule"
+    },
+    {
+      "name": "schedule_load_failed",
+      "value": "Failed to load the schedule"
+    },
+    {
+      "name": "schedule_empty",
+      "value": "No shows in the schedule"
+    },
+    {
+      "name": "browse_local_folders",
+      "value": "Ordner"
+    },
+    {
+      "name": "browse_folder_up",
+      "value": "Übergeordneter Ordner"
+    },
+    {
+      "name": "browse_folder_empty",
+      "value": "Dieser Ordner ist leer"
+    },
+    {
+      "name": "player_set_skip_oped",
+      "value": "OP/ED automatisch überspringen"
+    },
+    {
+      "name": "player_set_subtitle_enable",
+      "value": "Untertitel aktivieren"
+    },
+    {
+      "name": "video_skip_section",
+      "value": "OP/ED überspringen"
+    },
+    {
+      "name": "video_skip_op_start",
+      "value": "OP-Anfang"
+    },
+    {
+      "name": "video_skip_op_end",
+      "value": "OP-Ende"
+    },
+    {
+      "name": "video_skip_ed_start",
+      "value": "ED-Anfang"
+    },
+    {
+      "name": "video_skip_ed_end",
+      "value": "ED-Ende"
+    },
+    {
+      "name": "video_skip_save",
+      "value": "Speichern"
+    },
+    {
+      "name": "video_skip_clear",
+      "value": "Löschen"
+    },
+    {
+      "name": "video_skip_op",
+      "value": "OP übersprungen"
+    },
+    {
+      "name": "video_skip_ed",
+      "value": "ED übersprungen"
+    },
+    {
+      "name": "video_skip_set_current",
+      "value": "Jetzt"
+    },
+    {
+      "name": "video_subtitle_none",
+      "value": "Kein Untertitel"
+    },
+    {
+      "name": "video_subtitle_pick",
+      "value": "Untertiteldatei wählen"
+    },
+    {
+      "name": "video_subtitle_clear",
+      "value": "Löschen"
+    },
+    {
+      "name": "video_danmaku_login_hint",
+      "value": "Melde dich mit deinem dandanplay-Konto an, um Danmaku zu senden"
+    },
+    {
+      "name": "video_danmaku_username",
+      "value": "Benutzername"
+    },
+    {
+      "name": "video_danmaku_password",
+      "value": "Passwort"
+    },
+    {
+      "name": "video_danmaku_logging",
+      "value": "Anmeldung läuft…"
+    },
+    {
+      "name": "video_danmaku_login",
+      "value": "Anmelden"
+    },
+    {
+      "name": "video_danmaku_logged_in",
+      "value": "Angemeldet: %s"
+    },
+    {
+      "name": "video_danmaku_logout",
+      "value": "Abmelden"
+    },
+    {
+      "name": "video_danmaku_input_hint",
+      "value": "Danmaku-Text eingeben"
+    },
+    {
+      "name": "video_danmaku_mode_scroll",
+      "value": "Laufschrift"
+    },
+    {
+      "name": "video_danmaku_mode_top",
+      "value": "Oben"
+    },
+    {
+      "name": "video_danmaku_mode_bottom",
+      "value": "Unten"
+    },
+    {
+      "name": "video_danmaku_color",
+      "value": "Farbe"
+    },
+    {
+      "name": "video_danmaku_sending",
+      "value": "Wird gesendet…"
+    },
+    {
+      "name": "video_danmaku_send",
+      "value": "Senden"
+    },
+    {
+      "name": "video_danmaku_send_title",
+      "value": "Danmaku senden"
+    },
+    {
+      "name": "subject_detail_title",
+      "value": "Titeldetails"
+    },
+    {
+      "name": "subject_load_failed",
+      "value": "Details konnten nicht geladen werden"
+    },
+    {
+      "name": "subject_search_in_app",
+      "value": "In der App suchen"
+    },
+    {
+      "name": "subject_label_air_date",
+      "value": "Ausstrahlungsdatum"
+    },
+    {
+      "name": "subject_label_eps",
+      "value": "Episoden"
+    },
+    {
+      "name": "subject_label_score",
+      "value": "Bewertung"
+    },
+    {
+      "name": "subject_label_summary",
+      "value": "Zusammenfassung"
+    },
+    {
+      "name": "subject_summary_empty",
+      "value": "Noch keine Zusammenfassung"
+    },
+    {
+      "name": "detail_action_webview",
+      "value": "Webansicht"
     }
   ]
 }

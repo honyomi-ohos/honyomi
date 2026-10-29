@@ -2305,6 +2305,10 @@
       "value": "トラッキング"
     },
     {
+      "name": "detail_action_webview",
+      "value": "WebView で開く"
+    },
+    {
       "name": "detail_dl_cancelled",
       "value": "ダウンロードをキャンセルしました"
     },
@@ -3169,6 +3173,10 @@
       "value": "読書中"
     },
     {
+      "name": "track_unread",
+      "value": "未読"
+    },
+    {
       "name": "track_completed",
       "value": "完了"
     },
@@ -3443,6 +3451,186 @@
     {
       "name": "debug_language",
       "value": "言語"
+    },
+    {
+      "name": "updates_tab_updates",
+      "value": "更新"
+    },
+    {
+      "name": "updates_tab_schedule",
+      "value": "放送表"
+    },
+    {
+      "name": "schedule_load_failed",
+      "value": "放送表の読み込みに失敗しました"
+    },
+    {
+      "name": "schedule_empty",
+      "value": "放送作品がありません"
+    },
+    {
+      "name": "browse_local_folders",
+      "value": "フォルダー"
+    },
+    {
+      "name": "browse_folder_up",
+      "value": "上のフォルダーへ"
+    },
+    {
+      "name": "browse_folder_empty",
+      "value": "このフォルダーは空です"
+    },
+    {
+      "name": "player_set_skip_oped",
+      "value": "OP/ED を自動スキップ"
+    },
+    {
+      "name": "player_set_subtitle_enable",
+      "value": "字幕を有効にする"
+    },
+    {
+      "name": "video_skip_section",
+      "value": "OP/ED スキップ"
+    },
+    {
+      "name": "video_skip_op_start",
+      "value": "OP 開始"
+    },
+    {
+      "name": "video_skip_op_end",
+      "value": "OP 終了"
+    },
+    {
+      "name": "video_skip_ed_start",
+      "value": "ED 開始"
+    },
+    {
+      "name": "video_skip_ed_end",
+      "value": "ED 終了"
+    },
+    {
+      "name": "video_skip_save",
+      "value": "保存"
+    },
+    {
+      "name": "video_skip_clear",
+      "value": "クリア"
+    },
+    {
+      "name": "video_skip_op",
+      "value": "OP をスキップしました"
+    },
+    {
+      "name": "video_skip_ed",
+      "value": "ED をスキップしました"
+    },
+    {
+      "name": "video_skip_set_current",
+      "value": "現在"
+    },
+    {
+      "name": "video_subtitle_none",
+      "value": "字幕なし"
+    },
+    {
+      "name": "video_subtitle_pick",
+      "value": "字幕ファイルを選択"
+    },
+    {
+      "name": "video_subtitle_clear",
+      "value": "クリア"
+    },
+    {
+      "name": "video_danmaku_login_hint",
+      "value": "dandanplay アカウントにログインするとコメントを送信できます"
+    },
+    {
+      "name": "video_danmaku_username",
+      "value": "ユーザー名"
+    },
+    {
+      "name": "video_danmaku_password",
+      "value": "パスワード"
+    },
+    {
+      "name": "video_danmaku_logging",
+      "value": "ログイン中…"
+    },
+    {
+      "name": "video_danmaku_login",
+      "value": "ログイン"
+    },
+    {
+      "name": "video_danmaku_logged_in",
+      "value": "ログイン済み: %s"
+    },
+    {
+      "name": "video_danmaku_logout",
+      "value": "ログアウト"
+    },
+    {
+      "name": "video_danmaku_input_hint",
+      "value": "コメントを入力"
+    },
+    {
+      "name": "video_danmaku_mode_scroll",
+      "value": "スクロール"
+    },
+    {
+      "name": "video_danmaku_mode_top",
+      "value": "上部"
+    },
+    {
+      "name": "video_danmaku_mode_bottom",
+      "value": "下部"
+    },
+    {
+      "name": "video_danmaku_color",
+      "value": "色"
+    },
+    {
+      "name": "video_danmaku_sending",
+      "value": "送信中…"
+    },
+    {
+      "name": "video_danmaku_send",
+      "value": "送信"
+    },
+    {
+      "name": "video_danmaku_send_title",
+      "value": "コメントを送信"
+    },
+    {
+      "name": "subject_detail_title",
+      "value": "作品詳細"
+    },
+    {
+      "name": "subject_load_failed",
+      "value": "詳細の読み込みに失敗しました"
+    },
+    {
+      "name": "subject_search_in_app",
+      "value": "アプリ内で検索"
+    },
+    {
+      "name": "subject_label_air_date",
+      "value": "放送日"
+    },
+    {
+      "name": "subject_label_eps",
+      "value": "話数"
+    },
+    {
+      "name": "subject_label_score",
+      "value": "評点"
+    },
+    {
+      "name": "subject_label_summary",
+      "value": "あらすじ"
+    },
+    {
+      "name": "subject_summary_empty",
+      "value": "あらすじはまだありません"
     }
   ]
 }

@@ -146,6 +146,12 @@ export default class EntryAbility extends UIAbility {
       BackupService.runAutoBackupIfDue(this.context).catch((e: Error) => {
         hilog.warn(DOMAIN, 'Mihon', 'auto backup failed: %{public}s', e.message);
       });
+      // 扩展更新检查（对齐 Mihon MainActivity checkForUpdates）：后台刷新仓库索引
+      // 缓存（含图标预热），比对已装插件 versionCode 发布可更新数量并按需提醒；
+      // 浏览-插件页此后直接读缓存，不再每次进入都请求仓库索引
+      PluginService.refreshRepoEntries().catch((e: Error) => {
+        hilog.warn(DOMAIN, 'Mihon', 'ext repo refresh failed: %{public}s', e.message);
+      });
     }).catch((e: Error) => {
       hilog.error(DOMAIN, 'Mihon', 'db init failed: %{public}s', e.message);
     });

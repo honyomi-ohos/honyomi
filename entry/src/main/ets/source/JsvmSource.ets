@@ -24,8 +24,9 @@ export interface PluginManifest {
   // 可选：插件包内图标文件名（如 icon.png）
   icon: string;
 
-  // manga | novel | video，缺省 manga
-  contentType: string;
+  // 内容类型全量列表（主类型在前，host 归一后恒非空）：作者侧 manifest 的
+  // contentType 单值缩写 / contentTypes 数组在解析时统一收敛为此数组
+  contentTypes: string[];
 }
 
 // 插件返回的作品（宽松 JSON：key/url、coverUrl/thumbnailUrl 都接受）
@@ -40,6 +41,8 @@ interface RawWork {
   description?: string;
   genre?: string[] | string;
   status?: number | string;
+  // 作品级内容类型声明（manga | novel | video）：多类型插件区分单部作品归属，未声明回退插件主类型
+  contentType?: string;
 }
 
 interface RawWorksPage {
@@ -174,9 +177,17 @@ export class JsvmSource implements Source {
     this.iconPath = iconPath;
     this.exportedMethods = exportedMethods;
     this.supportsLatest = manifest.supportsLatest && exportedMethods.indexOf('getLatestWorks') >= 0;
-    this.contentType = ContentType.normalize(manifest.contentType);
+    this.contentType = JsvmSource.primaryTypeOf(manifest);
     this.nsfw = manifest.nsfw;
     this.bt = manifest.bt;
+  }
+
+  // 主内容类型 = 全量列表 [0]（host 归一保证非空，此处兜底漫画）
+  private static primaryTypeOf(manifest: PluginManifest): string {
+    if (manifest.contentTypes.length === 0) {
+      return ContentType.MANGA;
+    }
+    return ContentType.normalize(manifest.contentTypes[0]);
   }
 
   private static prefValueToString(v: string | boolean | number | undefined): string {
@@ -392,8 +403,17 @@ export class JsvmSource implements Source {
       description: raw.description ?? '',
       genre: JsvmSource.toGenre(raw.genre),
       status: JsvmSource.toStatus(raw.status),
+      contentType: JsvmSource.toContentType(raw.contentType),
     };
     return manga;
+  }
+
+  // 作品级类型归一：仅接受 manga | novel | video，其余视为未声明（undefined，入库回退插件主类型）
+  private static toContentType(raw: string | undefined): string | undefined {
+    if (raw === ContentType.NOVEL || raw === ContentType.VIDEO || raw === ContentType.MANGA) {
+      return raw;
+    }
+    return undefined;
   }
 
   private static toSChapter(raw: RawChapter | undefined, index: number): SChapter | undefined {
@@ -462,7 +482,7 @@ export class JsvmSource implements Source {
     this.name = manifest.name;
     this.lang = manifest.lang;
     this.supportsLatest = manifest.supportsLatest && exportedMethods.indexOf('getLatestWorks') >= 0;
-    this.contentType = ContentType.normalize(manifest.contentType);
+    this.contentType = JsvmSource.primaryTypeOf(manifest);
     this.nsfw = manifest.nsfw;
     this.bt = manifest.bt;
     this.exportedMethods = exportedMethods;

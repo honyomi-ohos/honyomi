@@ -146,6 +146,7 @@ export struct GlobalSearchPage {
         description: record.description,
         genre: record.genre,
         status: record.status,
+        contentType: record.contentType,
       };
       const id = await MangaRepo.upsertFromSource(record.sourceKey, m, record.contentType);
       const params: DetailParams = { mangaId: id };
@@ -497,7 +498,9 @@ export struct GlobalSearchPage {
         record.url = m.key;
         record.title = m.title;
         record.thumbnailUrl = m.coverUrl;
-        record.contentType = source.contentType;
+        // 作品级类型声明优先，未声明回退源（插件）类型
+        record.contentType = m.contentType !== undefined && m.contentType !== '' ?
+          m.contentType : source.contentType;
         record.inLibrary = libUrls.has(m.key);
         records.push(record);
       }

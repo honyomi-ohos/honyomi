@@ -11,6 +11,7 @@ import { NavGlassPage } from '../../common/HdsNavHost';
 import { PrefGroup, SwitchRow } from '../components/Prefs';
 import { TrackLogo } from '../components/TrackLogo';
 import { OAuthSheet } from '../components/OAuthSheet';
+import { ServerLoginDialog } from '../components/TrackSheet';
 import { ConfirmDialog, CredentialsDialog } from '../components/Dialogs';
 import { AppIcon } from '../components/AppIcon';
 
@@ -159,6 +160,12 @@ export struct TrackingContent {
       this.showCredentialsLogin(t);
       return;
     }
+    // 服务器地址登录型：Komga / Kavita / Suwayomi
+    if (t.syncId === TrackerManager.komga.syncId || t.syncId === TrackerManager.kavita.syncId ||
+      t.syncId === TrackerManager.suwayomi.syncId) {
+      this.showServerLogin(t);
+      return;
+    }
     this.oauthSyncId = t.syncId;
     this.oauthTitle = t.name;
     this.busy = true;
@@ -166,6 +173,57 @@ export struct TrackingContent {
       this.busy = false;
       this.oauthUrl = url;
       this.showOAuth = true;
+    }).catch((): void => {
+      this.busy = false;
+      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
+    });
+  }
+
+  // 服务器地址登录：自托管追踪器（服务器地址 + 凭据，字段按追踪器显示）
+  private showServerLogin(t: Tracker): void {
+    let serverHint = 'http://192.168.1.1:25600';
+    let userHint = '';
+    let secretHint = '';
+    if (t.syncId === TrackerManager.komga.syncId) {
+      userHint = '邮箱 / 用户名';
+      secretHint = Util.resStr(this.getUIContext(), $r('app.string.track_password'));
+    } else if (t.syncId === TrackerManager.kavita.syncId) {
+      serverHint = 'http://192.168.1.1:5000';
+      secretHint = 'API Key（Kavita 服务器设置生成）';
+    } else {
+      serverHint = 'http://192.168.1.1:4567';
+      userHint = '用户名（可选，Basic Auth）';
+      secretHint = '密码（可选，Basic Auth）';
+    }
+    const dialog = new CustomDialogController({
+      builder: ServerLoginDialog({
+        title: t.name,
+        serverPlaceholder: serverHint,
+        userPlaceholder: userHint,
+        secretPlaceholder: secretHint,
+        initialServer: t.getUsername(),
+        onConfirm: (serverUrl: string, username: string, secret: string): void => {
+          this.doServerLogin(t, serverUrl, username, secret);
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  private doServerLogin(t: Tracker, serverUrl: string, username: string, secret: string): void {
+    if (serverUrl === '') {
+      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
+      return;
+    }
+    this.busy = true;
+    t.loginWithServer(serverUrl, username, secret).then((): void => {
+      this.busy = false;
+      this.loginTick += 1;
+      Util.toastRes(this.getUIContext(), $r('app.string.track_logged_in'), [t.name]);
     }).catch((): void => {
       this.busy = false;
       Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));

@@ -4,9 +4,10 @@
 // - 详情：状态/章节/评分/日期/私密编辑与解绑/远端删除
 import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
+import { KeyCode } from '@kit.InputKit';
 import { SheetPreset } from './SheetPreset';
-import { TrackRecord, TrackSearchResult } from '../../model/Models';
-import { TrackRepo } from '../../data/Repos';
+import { MangaRecord, TrackRecord, TrackSearchResult } from '../../model/Models';
+import { MangaRepo, TrackRepo } from '../../data/Repos';
 import { Tracker } from '../../data/track/Tracker';
 import { TrackerManager } from '../../data/track/TrackerManager';
 import { TrackLogo } from './TrackLogo';
@@ -24,6 +25,121 @@ const MODE_DETAIL: number = 2;
 // 日期选择目标
 const DATE_START: number = 0;
 const DATE_FINISH: number = 1;
+
+// 服务器地址登录弹窗（自托管追踪器 Komga/Kavita/Suwayomi 专用）：
+// 服务器地址必填；用户名/密钥字段按占位符显示（空占位符表示隐藏该字段）
+@CustomDialog
+export struct ServerLoginDialog {
+  controller?: CustomDialogController;
+  title: Resource | string = '';
+  serverPlaceholder: Resource | string = '';
+  userPlaceholder: Resource | string = '';
+  secretPlaceholder: Resource | string = '';
+  initialServer: string = '';
+  @State serverUrl: string = '';
+  @State username: string = '';
+  @State secret: string = '';
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  onConfirm: (serverUrl: string, username: string, secret: string) => void =
+    (_s: string, _u: string, _p: string) => {
+    };
+  onClose: () => void = () => {
+  };
+
+  aboutToAppear(): void {
+    this.serverUrl = this.initialServer;
+  }
+
+  build() {
+    Column({ space: 16 }) {
+      Text(this.title)
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+      TextInput({
+        placeholder: this.serverPlaceholder,
+        text: this.serverUrl,
+      })
+        .defaultFocus(true)
+        .enterKeyType(EnterKeyType.Next)
+        .onChange((value: string) => {
+          this.serverUrl = value;
+        })
+        .onSubmit(() => {
+          // 服务器地址回车跳下一输入框（手动迁移焦点，失败时仍可 Tab 切换）
+          try {
+            this.getUIContext().getFocusController().requestFocus('serverUserKey');
+          } catch (_e) {
+          }
+        })
+      if (this.userPlaceholder !== '') {
+        TextInput({
+          placeholder: this.userPlaceholder,
+          text: this.username,
+        })
+          .key('serverUserKey')
+          .enterKeyType(EnterKeyType.Next)
+          .onChange((value: string) => {
+            this.username = value;
+          })
+          .onSubmit(() => {
+            try {
+              this.getUIContext().getFocusController().requestFocus('serverSecretKey');
+            } catch (_e) {
+            }
+          })
+      }
+      if (this.secretPlaceholder !== '') {
+        TextInput({
+          placeholder: this.secretPlaceholder,
+          text: this.secret,
+        })
+          .type(InputType.Password)
+          .key('serverSecretKey')
+          .enterKeyType(EnterKeyType.Done)
+          .onChange((value: string) => {
+            this.secret = value;
+          })
+          .onSubmit(() => {
+            this.dismiss();
+            this.onConfirm(this.serverUrl.trim(), this.username.trim(), this.secret);
+          })
+      }
+      Row({ space: 12 }) {
+        Button($r('app.string.common_cancel'))
+          .layoutWeight(1)
+          .backgroundColor(this.pal.chip)
+          .fontColor(this.pal.text)
+          .onClick(() => {
+            this.dismiss();
+          })
+        Button($r('app.string.common_ok'))
+          .layoutWeight(1)
+          .backgroundColor(this.pal.primary)
+          .fontColor(this.pal.onPrimary)
+          .onClick(() => {
+            this.dismiss();
+            this.onConfirm(this.serverUrl.trim(), this.username.trim(), this.secret);
+          })
+      }
+      .width('100%')
+    }
+    .padding(20)
+    .width('100%')
+    .onKeyEvent((event: KeyEvent) => {
+      if (event.type === KeyType.Down && event.keyCode === KeyCode.KEYCODE_ESCAPE) {
+        this.dismiss();
+      }
+    })
+  }
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
+  }
+}
 
 @Component
 export struct TrackSheet {
@@ -335,30 +451,32 @@ export struct TrackSheet {
             this.editChapters();
           })
 
-          Divider().color(this.pal.divider).margin({ left: 16 })
+          // 评分（评分列表为空的自托管追踪器不显示，对齐 Mihon）
+          if (this.selTrackerInst.getScoreList().length > 0) {
+            Divider().color(this.pal.divider).margin({ left: 16 })
 
-          // 评分
-          Row() {
-            Text($r('app.string.track_score'))
-              .fontSize(15)
-              .fontColor(this.pal.text)
-              .layoutWeight(1)
-              .maxLines(1)
-            Text(this.selTrackerInst.displayScore(this.selTrackRec))
-              .fontSize(14)
-              .fontColor(this.pal.sub)
-              .maxLines(1)
-            AppIcon({ name: 'keyboard_arrow_right', iconSize: 20, tint: this.pal.sub })
-              .margin({ left: 4 })
+            Row() {
+              Text($r('app.string.track_score'))
+                .fontSize(15)
+                .fontColor(this.pal.text)
+                .layoutWeight(1)
+                .maxLines(1)
+              Text(this.selTrackerInst.displayScore(this.selTrackRec))
+                .fontSize(14)
+                .fontColor(this.pal.sub)
+                .maxLines(1)
+              AppIcon({ name: 'keyboard_arrow_right', iconSize: 20, tint: this.pal.sub })
+                .margin({ left: 4 })
+            }
+            .width('100%')
+            .height(50)
+            .padding({ left: 16, right: 12 })
+            .onClick(() => {
+              this.showScorePicker = true;
+            })
+            .bindSheet($$this.showScorePicker, this.scorePickerBuilder(),
+              SheetPreset.fit(this.windowW, { showClose: false, bg: this.pal.bg }))
           }
-          .width('100%')
-          .height(50)
-          .padding({ left: 16, right: 12 })
-          .onClick(() => {
-            this.showScorePicker = true;
-          })
-          .bindSheet($$this.showScorePicker, this.scorePickerBuilder(),
-            SheetPreset.fit(this.windowW, { showClose: false, bg: this.pal.bg }))
 
           if (this.selTrackerInst.supportsReadingDates) {
             Divider().color(this.pal.divider).margin({ left: 16 })
@@ -648,6 +766,10 @@ export struct TrackSheet {
     if (track !== undefined) {
       this.selTrackRec = track;
       this.mode = MODE_DETAIL;
+    } else if (t.isEnhanced) {
+      // 增强型追踪器（Komga/Kavita/Suwayomi）：跳过搜索，按源自动匹配绑定
+      this.selTrackRec = new TrackRecord();
+      this.enhancedRegister(t);
     } else {
       this.selTrackRec = new TrackRecord();
       this.mode = MODE_SEARCH;
@@ -663,6 +785,12 @@ export struct TrackSheet {
       this.showCredentialsLogin(t);
       return;
     }
+    // 服务器地址登录型：Komga / Kavita / Suwayomi
+    if (t.syncId === TrackerManager.komga.syncId || t.syncId === TrackerManager.kavita.syncId ||
+      t.syncId === TrackerManager.suwayomi.syncId) {
+      this.showServerLogin(t);
+      return;
+    }
     this.oauthSyncId = t.syncId;
     this.oauthTitle = t.name;
     this.busy = true;
@@ -670,6 +798,94 @@ export struct TrackSheet {
       this.busy = false;
       this.oauthUrl = url;
       this.showOAuth = true;
+    }).catch((): void => {
+      this.busy = false;
+      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
+    });
+  }
+
+  // 增强型追踪器绑定：按漫画 sourceKey + url 自动匹配远端条目后注册（对齐 Mihon EnhancedTracker.match）
+  private enhancedRegister(t: Tracker): void {
+    if (this.busy) {
+      return;
+    }
+    this.busy = true;
+    MangaRepo.get(this.mangaId)
+      .then((manga: MangaRecord | undefined): Promise<TrackSearchResult | undefined> => {
+        if (manga === undefined) {
+          return Promise.resolve<TrackSearchResult | undefined>(undefined);
+        }
+        return t.match(manga);
+      })
+      .then((item: TrackSearchResult | undefined): void => {
+        if (item === undefined) {
+          this.busy = false;
+          Util.toastRes(this.getUIContext(), $r('app.string.track_no_results'));
+          return;
+        }
+        t.register(item, this.mangaId, this.hasReadChapters).then((): void => {
+          this.busy = false;
+          this.refreshTracks();
+          this.onChanged();
+          this.mode = MODE_DETAIL;
+          Util.toastRes(this.getUIContext(), $r('app.string.track_added'));
+        }).catch((): void => {
+          this.busy = false;
+          Util.toastRes(this.getUIContext(), $r('app.string.track_add_failed'));
+        });
+      })
+      .catch((): void => {
+        this.busy = false;
+        Util.toastRes(this.getUIContext(), $r('app.string.track_add_failed'));
+      });
+  }
+
+  // 服务器地址登录：自托管追踪器（服务器地址 + 凭据，字段按追踪器显示）
+  private showServerLogin(t: Tracker): void {
+    let serverHint = 'http://192.168.1.1:25600';
+    let userHint = '';
+    let secretHint = '';
+    if (t.syncId === TrackerManager.komga.syncId) {
+      userHint = '邮箱 / 用户名';
+      secretHint = Util.resStr(this.getUIContext(), $r('app.string.track_password'));
+    } else if (t.syncId === TrackerManager.kavita.syncId) {
+      serverHint = 'http://192.168.1.1:5000';
+      secretHint = 'API Key（Kavita 服务器设置生成）';
+    } else {
+      serverHint = 'http://192.168.1.1:4567';
+      userHint = '用户名（可选，Basic Auth）';
+      secretHint = '密码（可选，Basic Auth）';
+    }
+    const dialog = new CustomDialogController({
+      builder: ServerLoginDialog({
+        title: t.name,
+        serverPlaceholder: serverHint,
+        userPlaceholder: userHint,
+        secretPlaceholder: secretHint,
+        initialServer: t.getUsername(),
+        onConfirm: (serverUrl: string, username: string, secret: string): void => {
+          this.doServerLogin(t, serverUrl, username, secret);
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  private doServerLogin(t: Tracker, serverUrl: string, username: string, secret: string): void {
+    if (serverUrl === '') {
+      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
+      return;
+    }
+    this.busy = true;
+    t.loginWithServer(serverUrl, username, secret).then((): void => {
+      this.busy = false;
+      this.loginTick += 1;
+      this.refreshTracks();
+      Util.toastRes(this.getUIContext(), $r('app.string.track_logged_in'), [t.name]);
     }).catch((): void => {
       this.busy = false;
       Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));

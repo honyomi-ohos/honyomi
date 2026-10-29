@@ -152,7 +152,6 @@ export struct ChapterSettingsSheet {
         }
         .tabBar(this.tabBarLabel(1, $r('app.string.detail_filter_tab')))
       }
-      .layoutWeight(1)
       .barHeight(48)
       .barWidth('100%')
       .barMode(BarMode.Fixed)
@@ -164,7 +163,6 @@ export struct ChapterSettingsSheet {
       })
     }
     .width('100%')
-    .height('100%')
     .backgroundColor(this.pal.bg)
   }
 

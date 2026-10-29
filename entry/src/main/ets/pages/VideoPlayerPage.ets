@@ -2,7 +2,8 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { SheetPreset } from './components/SheetPreset';
 import { KeyCode } from '@kit.InputKit';
 import { media } from '@kit.MediaKit';
-import { fileIo as fs } from '@kit.CoreFileKit';
+import { fileIo as fs, picker } from '@kit.CoreFileKit';
+import { util } from '@kit.ArkTS';
 import { window, PiPWindow, uiMaterial } from '@kit.ArkUI';
 import { deviceInfo, BusinessError } from '@kit.BasicServicesKit';
 import { AVCastPicker } from '@kit.AVSessionKit';
@@ -15,7 +16,8 @@ import { BtFlow } from '../data/BtFlow';
 import { BtModule } from '../data/BtModule';
 import type { TorrentFileJson } from '@honyomi/torrent';
 import { AppKeys } from '../common/AppKeys';
-import { DanmakuItem, DanmakuService } from '../data/DanmakuService';
+import { DanmakuItem, DanmakuService, DdpAccount } from '../data/DanmakuService';
+import { SubCue, SubtitleParser } from '../common/SubtitleParser';
 import { SourceRegistry } from '../source/Source';
 import { Http } from '../net/Http';
 import { ChapterRecord, ContentType, MangaRecord, SVideo } from '../model/Models';
@@ -40,6 +42,8 @@ const DM_FONT_VALUES: number[] = [12, 14, 16, 18, 20];
 const DM_OPACITY_VALUES: number[] = [30, 50, 80, 100];
 const DM_AREA_VALUES: number[] = [25, 50, 75, 100];
 const DM_DUR_VALUES: number[] = [12, 10, 8, 6];
+// 弹幕发送可选颜色（dandanplay 24bit）
+const DM_SEND_COLORS: number[] = [0xFFFFFF, 0xFE0302, 0xFF7204, 0xFFFF00, 0x00CD00, 0x00BFFF, 0xFF00FF];
 // 视频播控按钮液态玻璃材质（官方沉浸光感，Button.systemMaterial 生效）：
 // 薄材质 THIN + 暗色赋色保证任意画面下白色图标可读，交互形变 + 点光源按压反馈
 // 替代默认按压态。Button 必须显式设置 backgroundColor：材质生效时按该颜色渲染材质，
@@ -190,6 +194,37 @@ export struct VideoPlayerPage {
   private dmCtrl: DanmakuController = new DanmakuController();
   private dmLoading: boolean = false;
   private dmChapterId: number = -1;
+  // ---- 跳过 OP/ED（区间秒，-1 未设置）----
+  @State skipOpS: number = -1;
+  @State skipOpE: number = -1;
+  @State skipEdS: number = -1;
+  @State skipEdE: number = -1;
+  @State skipOpText: string = '';
+  @State skipOpEText: string = '';
+  @State skipEdSText: string = '';
+  @State skipEdEText: string = '';
+  // 全局开关（持久化）+ 生效标记（开关且已配置区间）
+  @State skipEnabled: boolean = false;
+  @State skipActive: boolean = false;
+  // 区间触发时短暂显示的浮动提示：0 无 1 跳片头 2 跳片尾
+  @State skipChip: number = 0;
+  private edSkipFired: boolean = false;
+  // ---- 外挂字幕 ----
+  @State subtitleOn: boolean = false;
+  @State subFont: number = 18;
+  @State subText: string = '';
+  private subCues: SubCue[] = [];
+  private subPath: string = '';
+  // ---- 弹幕发送（dandanplay 账号）----
+  @State dmAccount: DdpAccount | undefined = undefined;
+  @State dmLoginName: string = '';
+  @State dmLoginPass: string = '';
+  @State dmLogging: boolean = false;
+  @State dmSendText: string = '';
+  @State dmSendMode: number = 1;
+  @State dmSendColor: number = 0xFFFFFF;
+  @State dmSending: boolean = false;
+  private dmItems: DanmakuItem[] = [];
   private instId: number = ++vpSeq;
   // 投屏：AVCastPicker 发现设备，连接/断开/远端播放态经 VideoCastManager 回调驱动页面
   private castMgr: VideoCastManager = new VideoCastManager({
@@ -237,6 +272,8 @@ export struct VideoPlayerPage {
     this.dmOpacity = Settings.getDanmakuOpacityPct();
     this.dmArea = Settings.getDanmakuAreaPct();
     this.dmDur = Settings.getDanmakuDurationSec();
+    this.skipEnabled = Settings.getVideoSkipOpEd();
+    this.subFont = Settings.getSubtitleFont();
     this.pipEnabled = PiPWindow.isPiPEnabled();
     // 沉浸式：隐藏状态栏与导航栏（页面已销毁则放弃，避免销毁后隐藏系统栏且无法还原）
     window.getLastWindow(Util.hostAbilityContext(this.getUIContext())).then((w: window.Window) => {
@@ -513,6 +550,10 @@ export struct VideoPlayerPage {
           this.toggleDanmaku();
         })
 
+        this.ctrlBtn('edit', (): void => {
+          this.openSheet(6);
+        })
+
         this.ctrlBtn('tune', (): void => {
           this.openSheet(4);
         })
@@ -594,6 +635,8 @@ export struct VideoPlayerPage {
             this.speedPane()
           } else if (this.sheetMode === 5) {
             this.castPane()
+          } else if (this.sheetMode === 6) {
+            this.dmSendPane()
           } else {
             this.settingsPane()
           }
@@ -808,6 +851,117 @@ export struct VideoPlayerPage {
 
       Divider().color(this.pal.divider)
 
+      // ---- 跳过片头/片尾 ----
+      Row() {
+        Text($r('app.string.player_set_skip_oped'))
+          .fontSize(15)
+          .fontColor(this.pal.text)
+          .layoutWeight(1)
+        Toggle({ type: ToggleType.Switch, isOn: this.skipEnabled })
+          .selectedColor(this.pal.primary)
+          .onChange((value: boolean) => {
+            this.skipEnabled = value;
+            Settings.setVideoSkipOpEd(value);
+            this.skipActive = value && this.hasSkipRanges();
+          })
+      }
+      .width('100%')
+      .height(48)
+
+      Text($r('app.string.video_skip_section'))
+        .fontSize(13)
+        .fontColor(this.pal.sub)
+      Row({ space: 8 }) {
+        this.skipField($r('app.string.video_skip_op_start'), (): string => this.skipOpText,
+          (v: string): void => {
+            this.skipOpText = v;
+          })
+        this.skipField($r('app.string.video_skip_op_end'), (): string => this.skipOpEText,
+          (v: string): void => {
+            this.skipOpEText = v;
+          })
+      }
+      .width('100%')
+      .alignItems(VerticalAlign.Bottom)
+      Row({ space: 8 }) {
+        this.skipField($r('app.string.video_skip_ed_start'), (): string => this.skipEdSText,
+          (v: string): void => {
+            this.skipEdSText = v;
+          })
+        this.skipField($r('app.string.video_skip_ed_end'), (): string => this.skipEdEText,
+          (v: string): void => {
+            this.skipEdEText = v;
+          })
+      }
+      .width('100%')
+      .alignItems(VerticalAlign.Bottom)
+      Row({ space: 12 }) {
+        Button($r('app.string.video_skip_save'))
+          .fontSize(14)
+          .height(36)
+          .backgroundColor(this.pal.primary)
+          .onClick(() => {
+            this.saveSkipRanges();
+          })
+        Button($r('app.string.video_skip_clear'))
+          .fontSize(14)
+          .height(36)
+          .backgroundColor(this.pal.chip)
+          .fontColor(this.pal.text)
+          .onClick(() => {
+            this.clearSkipRanges();
+          })
+      }
+      .width('100%')
+      .margin({ top: 4 })
+
+      Divider().color(this.pal.divider)
+
+      // ---- 外挂字幕 ----
+      Row() {
+        Text($r('app.string.player_set_subtitle_enable'))
+          .fontSize(15)
+          .fontColor(this.pal.text)
+          .layoutWeight(1)
+        Toggle({ type: ToggleType.Switch, isOn: this.subtitleOn })
+          .selectedColor(this.pal.primary)
+          .enabled(this.subCues.length > 0)
+          .onChange((value: boolean) => {
+            this.subtitleOn = value;
+            Settings.setSubtitleEnabled(value);
+          })
+      }
+      .width('100%')
+      .height(48)
+      Row() {
+        Text(this.subPath !== '' ? this.subBaseName() : $r('app.string.video_subtitle_none'))
+          .fontSize(13)
+          .fontColor(this.pal.sub)
+          .layoutWeight(1)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+        Text($r('app.string.video_subtitle_pick'))
+          .fontSize(13)
+          .fontWeight(FontWeight.Medium)
+          .fontColor(this.pal.primary)
+          .padding({ left: 8, top: 6, bottom: 6 })
+          .onClick(() => {
+            this.pickSubtitle();
+          })
+        if (this.subCues.length > 0) {
+          Text($r('app.string.video_subtitle_clear'))
+            .fontSize(13)
+            .fontColor(this.pal.sub)
+            .padding({ left: 10, top: 6, bottom: 6 })
+            .onClick(() => {
+              this.clearSubtitle();
+            })
+        }
+      }
+      .width('100%')
+
+      Divider().color(this.pal.divider)
+
       Row() {
         Text($r('app.string.player_set_danmaku_enable'))
           .fontSize(15)
@@ -933,6 +1087,190 @@ export struct VideoPlayerPage {
     }
     .width('100%')
     .alignItems(HorizontalAlign.Start)
+  }
+
+  // 跳过区间输入字段：标签 + mm:ss 输入 + 「当前」快填
+  @Builder
+  skipField(label: Resource, getText: () => string, setValue: (v: string) => void) {
+    Column({ space: 4 }) {
+      Text(label)
+        .fontSize(12)
+        .fontColor(this.pal.sub)
+      Row({ space: 4 }) {
+        TextInput({ text: getText() })
+          .fontSize(13)
+          .height(36)
+          .fontColor(this.pal.text)
+          .caretColor(this.pal.primary)
+          .backgroundColor(this.pal.chip)
+          .borderRadius(8)
+          .padding({ left: 8, right: 4 })
+          .layoutWeight(1)
+          .onChange((v: string) => {
+            setValue(v);
+          })
+        Text($r('app.string.video_skip_set_current'))
+          .fontSize(12)
+          .fontColor(this.pal.primary)
+          .padding({ left: 4, right: 2 })
+          .onClick(() => {
+            setValue(this.secToClock(Math.floor(this.positionMs / 1000)));
+          })
+      }
+      .width('100%')
+      .alignItems(VerticalAlign.Center)
+    }
+    .layoutWeight(1)
+  }
+
+  // 弹幕发送面板：未登录显示账号登录表单，已登录显示输入 + 模式/颜色 + 发送
+  @Builder
+  dmSendPane() {
+    Column({ space: 14 }) {
+      if (this.dmAccount === undefined) {
+        Text($r('app.string.video_danmaku_login_hint'))
+          .fontSize(13)
+          .fontColor(this.pal.sub)
+        TextInput({ text: this.dmLoginName, placeholder: $r('app.string.video_danmaku_username') })
+          .fontSize(14)
+          .height(44)
+          .fontColor(this.pal.text)
+          .caretColor(this.pal.primary)
+          .backgroundColor(this.pal.chip)
+          .borderRadius(10)
+          .padding({ left: 12, right: 8 })
+          .onChange((v: string) => {
+            this.dmLoginName = v;
+          })
+        TextInput({ text: this.dmLoginPass, placeholder: $r('app.string.video_danmaku_password') })
+          .type(InputType.Password)
+          .fontSize(14)
+          .height(44)
+          .fontColor(this.pal.text)
+          .caretColor(this.pal.primary)
+          .backgroundColor(this.pal.chip)
+          .borderRadius(10)
+          .padding({ left: 12, right: 8 })
+          .onChange((v: string) => {
+            this.dmLoginPass = v;
+          })
+          .onSubmit(() => {
+            this.doDmLogin();
+          })
+        Button(this.dmLogging ? $r('app.string.video_danmaku_logging') : $r('app.string.video_danmaku_login'))
+          .fontSize(14)
+          .height(40)
+          .width('100%')
+          .backgroundColor(this.pal.primary)
+          .enabled(!this.dmLogging)
+          .onClick(() => {
+            this.doDmLogin();
+          })
+      } else {
+        Row() {
+          Text($r('app.string.video_danmaku_logged_in'))
+            .fontSize(12)
+            .fontColor(this.pal.sub)
+          Text(this.dmAccount.userName)
+            .fontSize(14)
+            .fontWeight(FontWeight.Medium)
+            .fontColor(this.pal.text)
+            .layoutWeight(1)
+            .maxLines(1)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+            .margin({ left: 6 })
+          Text($r('app.string.video_danmaku_logout'))
+            .fontSize(13)
+            .fontColor(this.pal.sub)
+            .padding({ left: 8, top: 4, bottom: 4 })
+            .onClick(() => {
+              DanmakuService.logout();
+              this.dmAccount = undefined;
+            })
+        }
+        .width('100%')
+        .alignItems(VerticalAlign.Center)
+
+        TextInput({ text: this.dmSendText, placeholder: $r('app.string.video_danmaku_input_hint') })
+          .fontSize(14)
+          .height(44)
+          .fontColor(this.pal.text)
+          .caretColor(this.pal.primary)
+          .backgroundColor(this.pal.chip)
+          .borderRadius(10)
+          .padding({ left: 12, right: 8 })
+          .onChange((v: string) => {
+            this.dmSendText = v;
+          })
+          .onSubmit(() => {
+            this.doDmSend();
+          })
+
+        // 弹幕模式：滚动 / 顶部 / 底部
+        Row({ space: 8 }) {
+          this.dmModeChip($r('app.string.video_danmaku_mode_scroll'), 1)
+          this.dmModeChip($r('app.string.video_danmaku_mode_top'), 5)
+          this.dmModeChip($r('app.string.video_danmaku_mode_bottom'), 4)
+        }
+        .width('100%')
+
+        // 弹幕颜色
+        Text($r('app.string.video_danmaku_color'))
+          .fontSize(12)
+          .fontColor(this.pal.sub)
+        Row({ space: 10 }) {
+          ForEach(DM_SEND_COLORS, (c: number) => {
+            Column()
+              .width(26)
+              .height(26)
+              .borderRadius(13)
+              .backgroundColor(`#${this.hex6(c)}`)
+              .border({
+                width: this.dmSendColor === c ? 2 : 0,
+                color: this.pal.text
+              })
+              .onClick(() => {
+                this.dmSendColor = c;
+              })
+          }, (c: number) => `dmc-${c}`)
+        }
+        .width('100%')
+
+        Row() {
+          Text(this.clock(this.positionMs))
+            .fontSize(12)
+            .fontColor(this.pal.sub)
+            .layoutWeight(1)
+          Button(this.dmSending ? $r('app.string.video_danmaku_sending') : $r('app.string.video_danmaku_send'))
+            .fontSize(14)
+            .height(40)
+            .backgroundColor(this.pal.primary)
+            .enabled(!this.dmSending)
+            .onClick(() => {
+              this.doDmSend();
+            })
+        }
+        .width('100%')
+        .alignItems(VerticalAlign.Center)
+      }
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+  }
+
+  // 弹幕模式 chip
+  @Builder
+  dmModeChip(label: Resource, mode: number) {
+    Text(label)
+      .fontSize(13)
+      .fontWeight(this.dmSendMode === mode ? FontWeight.Bold : FontWeight.Normal)
+      .fontColor(this.dmSendMode === mode ? this.pal.onPrimary : this.pal.text)
+      .padding({ left: 14, right: 14, top: 7, bottom: 7 })
+      .borderRadius(16)
+      .backgroundColor(this.dmSendMode === mode ? this.pal.primary : this.pal.chip)
+      .onClick(() => {
+        this.dmSendMode = mode;
+      })
   }
 
   build() {
@@ -1221,6 +1559,47 @@ export struct VideoPlayerPage {
           .markAnchor({ x: '50%' })
         }
 
+        // 跳过 OP/ED 触发提示：区间命中时短暂显示
+        if (this.skipChip !== 0) {
+          Row({ space: 6 }) {
+            AppIcon({ name: 'forward_10', iconSize: 16, tint: Color.White })
+            Text(this.skipChip === 1 ? $r('app.string.video_skip_op') : $r('app.string.video_skip_ed'))
+              .fontSize(13)
+              .fontColor(Color.White)
+          }
+          .padding({
+            left: 14,
+            right: 14,
+            top: 8,
+            bottom: 8
+          })
+          .borderRadius(18)
+          .backgroundColor('rgba(0,0,0,0.6)')
+          .position({ x: '50%', y: '30%' })
+          .markAnchor({ x: '50%' })
+        }
+
+        // 外挂字幕：底部居中悬浮，不拦截手势
+        if (this.subtitleOn && this.subText !== '') {
+          Text(this.subText)
+            .fontSize(this.subFont)
+            .fontColor(Color.White)
+            .textAlign(TextAlign.Center)
+            .maxLines(2)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+            .constraintSize({ maxWidth: '80%' })
+            .textShadow({
+              radius: 3,
+              color: 'rgba(0,0,0,0.9)',
+              offsetX: 0,
+              offsetY: 1
+            })
+            .hitTestBehavior(HitTestMode.None)
+            .position({ x: '50%', y: '100%' })
+            .markAnchor({ x: '50%', y: '100%' })
+            .offset({ y: -64 })
+        }
+
         if (this.errorText !== '') {
           Text(Util.errText(this.getUIContext(), this.errorText))
             .fontSize(13)
@@ -1393,6 +1772,8 @@ export struct VideoPlayerPage {
     this.releasePlayer();
     this.dmChapterId = -1;
     this.dmCtrl.reset();
+    this.dmItems = [];
+    this.edSkipFired = false;
     try {
       const context = Util.hostAbilityContext(this.getUIContext());
       await AppDb.ready(context);
@@ -1422,10 +1803,14 @@ export struct VideoPlayerPage {
       if (manga !== undefined) {
         this.manga = manga;
       }
+      // 按漫画加载跳过 OP/ED 区间（需 mangaId 已就绪）
+      this.loadSkipRanges();
       this.localPath = DownloadService.localVideo(chapter.mangaId, chapter.id);
       // BT 章节未完整下载：localVideo 可能命中下载中的预分配稀疏文件，标记后走边下边播等待流
       this.btPending = DownloadService.isBtUrl(chapter.url) && !DownloadService.isDownloaded(chapter.id);
       this.btProgressive = false;
+      // 外挂字幕：缓存优先 → 本地视频同名 .srt（需 localPath 已就绪）
+      this.loadSubtitle();
       if (this.localPath === '' && !this.btPending) {
         const source = SourceRegistry.get(this.manga.sourceKey);
         if (source === undefined) {
@@ -1490,6 +1875,7 @@ export struct VideoPlayerPage {
     Util.toastRes(this.getUIContext(), $r('app.string.video_danmaku_loading'));
     DanmakuService.loadForChapter(this.manga, this.chapter).then((items: DanmakuItem[]) => {
       this.dmLoading = false;
+      this.dmItems = items;
       this.dmCtrl.setItems(items);
       if (items.length > 0) {
         Util.toastRes(this.getUIContext(), $r('app.string.video_danmaku_loaded'), [items.length]);
@@ -1938,6 +2324,9 @@ export struct VideoPlayerPage {
       if (player.duration > 0) {
         this.durationMs = player.duration;
       }
+      // 自动跳过 OP/ED（区间命中时秒跳）与字幕行刷新
+      this.applyAutoSkip();
+      this.updateSubtitle();
       if (Math.abs(this.positionMs - this.savedMs) >= 5000) {
         this.persist(false);
       }
@@ -2885,6 +3274,359 @@ export struct VideoPlayerPage {
     }
   }
 
+  // ---- 跳过 OP/ED ----
+
+  // ticker 每拍检查：进入 OP 区间秒跳到区间尾；进入 ED 区间直接结束本集
+  private applyAutoSkip(): void {
+    if (!this.skipActive || this.durationMs <= 0 || this.positionMs <= 0) {
+      return;
+    }
+    const posSec: number = this.positionMs / 1000;
+    // OP：区间 [opS, opE) 命中即跳到 opE
+    if (this.skipOpS >= 0 && this.skipOpE > this.skipOpS &&
+      posSec >= this.skipOpS && posSec < this.skipOpE) {
+      this.showSkipChip(1);
+      this.seekTo(this.skipOpE * 1000);
+      return;
+    }
+    // ED：越过 edS 即视为片尾（自动下一集或跳至片尾停住）
+    if (this.skipEdS >= 0 && posSec >= this.skipEdS && !this.edSkipFired) {
+      this.edSkipFired = true;
+      this.showSkipChip(2);
+      if (this.autoNext && this.nextId > 0) {
+        this.openChapter(this.nextId);
+      } else {
+        this.seekTo(Math.max(0, this.durationMs - 500));
+      }
+      return;
+    }
+    // 回退到 ED 之前：重新武装片尾跳过
+    if (this.skipEdS < 0 || posSec < this.skipEdS) {
+      this.edSkipFired = false;
+    }
+  }
+
+  // 跳过触发提示：短暂显示浮动 chip
+  private showSkipChip(kind: number): void {
+    this.skipChip = kind;
+    setTimeout(() => {
+      this.skipChip = 0;
+    }, 1200);
+  }
+
+  // 按漫画加载持久化的跳过区间（秒）
+  private loadSkipRanges(): void {
+    const r: number[] = Settings.getVideoSkipRanges(this.mangaId);
+    this.skipOpS = r[0] ?? -1;
+    this.skipOpE = r[1] ?? -1;
+    this.skipEdS = r[2] ?? -1;
+    this.skipEdE = r[3] ?? -1;
+    this.skipOpText = this.skipOpS >= 0 ? this.secToClock(this.skipOpS) : '';
+    this.skipOpEText = this.skipOpE >= 0 ? this.secToClock(this.skipOpE) : '';
+    this.skipEdSText = this.skipEdS >= 0 ? this.secToClock(this.skipEdS) : '';
+    this.skipEdEText = this.skipEdE >= 0 ? this.secToClock(this.skipEdE) : '';
+    this.skipActive = this.skipEnabled && this.hasSkipRanges();
+    this.edSkipFired = false;
+  }
+
+  // 是否配置了有效跳过区间（OP 成对或 ED 有起点）
+  private hasSkipRanges(): boolean {
+    return (this.skipOpS >= 0 && this.skipOpE > this.skipOpS) || this.skipEdS >= 0;
+  }
+
+  // 保存设置面板输入的跳过区间（mm:ss），带成对/顺序校验
+  private saveSkipRanges(): void {
+    const opS: number = this.parseClock(this.skipOpText);
+    const opE: number = this.parseClock(this.skipOpEText);
+    const edS: number = this.parseClock(this.skipEdSText);
+    const edE: number = this.parseClock(this.skipEdEText);
+    // 非空但解析失败：格式非法
+    if ((this.skipOpText.trim() !== '' && opS < 0) || (this.skipOpEText.trim() !== '' && opE < 0) ||
+      (this.skipEdSText.trim() !== '' && edS < 0) || (this.skipEdEText.trim() !== '' && edE < 0) ||
+      (edS >= 0 && edE >= 0 && edE <= edS)) {
+      Util.toastRes(this.getUIContext(), $r('app.string.video_skip_invalid'));
+      return;
+    }
+    // OP 区间必须成对且 start < end
+    if ((opS >= 0) !== (opE >= 0) || (opS >= 0 && opE <= opS)) {
+      Util.toastRes(this.getUIContext(), $r('app.string.video_skip_invalid'));
+      return;
+    }
+    this.skipOpS = opS;
+    this.skipOpE = opE;
+    this.skipEdS = edS;
+    this.skipEdE = edE;
+    if (opS < 0 && edS < 0) {
+      Settings.clearVideoSkipRanges(this.mangaId);
+    } else {
+      Settings.setVideoSkipRanges(this.mangaId, opS, opE, edS, edE);
+    }
+    this.skipActive = this.skipEnabled && this.hasSkipRanges();
+    this.edSkipFired = false;
+    Util.toastRes(this.getUIContext(), $r('app.string.video_skip_saved'));
+  }
+
+  private clearSkipRanges(): void {
+    this.skipOpS = -1;
+    this.skipOpE = -1;
+    this.skipEdS = -1;
+    this.skipEdE = -1;
+    this.skipOpText = '';
+    this.skipOpEText = '';
+    this.skipEdSText = '';
+    this.skipEdEText = '';
+    this.skipActive = false;
+    this.edSkipFired = false;
+    Settings.clearVideoSkipRanges(this.mangaId);
+  }
+
+  // 秒 → "m:ss"
+  private secToClock(sec: number): string {
+    const s: number = Math.max(0, Math.floor(sec));
+    const m: number = Math.floor(s / 60);
+    const r: number = s % 60;
+    return `${m}:${r < 10 ? '0' : ''}${r}`;
+  }
+
+  // "ss" / "m:ss" / "h:mm:ss" → 秒；空串或非法返回 -1
+  private parseClock(text: string): number {
+    const t: string = text.trim();
+    if (t === '') {
+      return -1;
+    }
+    const segs: string[] = t.split(':');
+    if (segs.length > 3) {
+      return -1;
+    }
+    let sec: number = 0;
+    for (let i = 0; i < segs.length; i++) {
+      if (!/^\d{1,2}$/.test(segs[i])) {
+        return -1;
+      }
+      sec = sec * 60 + parseInt(segs[i], 10);
+    }
+    return sec;
+  }
+
+  // ---- 外挂字幕 ----
+
+  // 字幕缓存路径（用户手动选择后缓存，下次进本集自动加载）
+  private subCachePath(): string {
+    const context = Util.hostAbilityContext(this.getUIContext());
+    return `${context.cacheDir}/subs/${this.mangaId}_${this.chapterId}.srt`;
+  }
+
+  // 字幕加载：手动缓存优先 → 本地视频同名 .srt 自动探测
+  private loadSubtitle(): void {
+    this.subCues = [];
+    this.subText = '';
+    this.subPath = '';
+    this.subtitleOn = false;
+    let text: string = '';
+    // 1. 手动选择过的字幕缓存
+    const cacheP: string = this.subCachePath();
+    if (fs.accessSync(cacheP)) {
+      try {
+        text = fs.readTextSync(cacheP);
+        this.subPath = cacheP;
+      } catch (_e) {
+        text = '';
+      }
+    }
+    // 2. 本地视频同名 .srt
+    if (text === '' && this.localPath !== '') {
+      const dot: number = this.localPath.lastIndexOf('.');
+      if (dot > 0) {
+        const cand: string = `${this.localPath.substring(0, dot)}.srt`;
+        if (fs.accessSync(cand)) {
+          try {
+            text = fs.readTextSync(cand);
+            this.subPath = cand;
+          } catch (_e) {
+            text = '';
+          }
+        }
+      }
+    }
+    if (text !== '') {
+      this.subCues = SubtitleParser.parseSrt(text);
+      this.subtitleOn = this.subCues.length > 0 && Settings.getSubtitleEnabled();
+    }
+  }
+
+  // ticker 每拍刷新当前字幕行（命中变化才写状态，避免高频重绘）
+  private updateSubtitle(): void {
+    if (!this.subtitleOn || this.subCues.length === 0) {
+      return;
+    }
+    const text: string = SubtitleParser.activeText(this.subCues, this.positionMs);
+    if (text !== this.subText) {
+      this.subText = text;
+    }
+  }
+
+  // 手动选择字幕文件（DocumentViewPicker，.srt），成功后缓存并立即生效
+  private async pickSubtitle(): Promise<void> {
+    try {
+      const docPicker: picker.DocumentViewPicker = new picker.DocumentViewPicker();
+      const uris: string[] = await docPicker.select({ fileSuffixFilters: ['.srt'] });
+      if (uris.length === 0) {
+        return;
+      }
+      const text: string = this.readTextFromUri(uris[0]);
+      const cues: SubCue[] = SubtitleParser.parseSrt(text);
+      if (cues.length === 0) {
+        Util.toastRes(this.getUIContext(), $r('app.string.video_subtitle_invalid'));
+        return;
+      }
+      this.subCues = cues;
+      this.subPath = uris[0];
+      this.cacheSubtitle(text);
+      this.subtitleOn = true;
+      Settings.setSubtitleEnabled(true);
+      Util.toastRes(this.getUIContext(), $r('app.string.video_subtitle_loaded'), [cues.length]);
+    } catch (e) {
+      this.log(`pickSubtitle catch: ${e}`);
+      Util.toastRes(this.getUIContext(), $r('app.string.video_subtitle_pick_failed'));
+    }
+  }
+
+  // 读取用户选择的文件（URI）：一次性读入（字幕文件较小，上限 8MB）
+  private readTextFromUri(uri: string): string {
+    const file: fs.File = fs.openSync(uri, fs.OpenMode.READ_ONLY);
+    try {
+      const stat: fs.Stat = fs.statSync(file.fd);
+      const size: number = Math.min(stat.size, 8 * 1024 * 1024);
+      if (size <= 0) {
+        return '';
+      }
+      const buf: ArrayBuffer = new ArrayBuffer(size);
+      const read: number = fs.readSync(file.fd, buf);
+      if (read <= 0) {
+        return '';
+      }
+      return util.TextDecoder.create('utf-8', { fatal: false })
+        .decodeToString(new Uint8Array(buf.slice(0, read)));
+    } finally {
+      try {
+        fs.closeSync(file);
+      } catch (_e) {
+        // 已关闭
+      }
+    }
+  }
+
+  // 字幕文本写入缓存（下次进本集自动加载）
+  private cacheSubtitle(text: string): void {
+    try {
+      const context = Util.hostAbilityContext(this.getUIContext());
+      const dir: string = `${context.cacheDir}/subs`;
+      if (!fs.accessSync(dir)) {
+        fs.mkdirSync(dir, true);
+      }
+      const path: string = this.subCachePath();
+      const file: fs.File = fs.openSync(path,
+        fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE | fs.OpenMode.TRUNC);
+      try {
+        fs.writeSync(file.fd, text);
+        this.subPath = path;
+      } finally {
+        fs.closeSync(file);
+      }
+    } catch (e) {
+      this.log(`cacheSubtitle catch: ${e}`);
+    }
+  }
+
+  // 停用字幕：仅删除应用缓存内的副本，不碰用户选择的源文件
+  private clearSubtitle(): void {
+    const cacheP: string = this.subCachePath();
+    if (this.subPath === cacheP && fs.accessSync(cacheP)) {
+      try {
+        fs.unlinkSync(cacheP);
+      } catch (_e) {
+      }
+    }
+    this.subCues = [];
+    this.subText = '';
+    this.subPath = '';
+    this.subtitleOn = false;
+  }
+
+  // 字幕文件显示名（截取最后一段路径）
+  private subBaseName(): string {
+    const p: string = this.subPath;
+    const slash: number = Math.max(p.lastIndexOf('/'), p.lastIndexOf('\\'));
+    return slash >= 0 ? p.substring(slash + 1) : p;
+  }
+
+  // ---- 弹幕发送（dandanplay 账号） ----
+
+  private async doDmLogin(): Promise<void> {
+    if (this.dmLogging) {
+      return;
+    }
+    const name: string = this.dmLoginName.trim();
+    if (name === '' || this.dmLoginPass === '') {
+      Util.toastRes(this.getUIContext(), $r('app.string.video_danmaku_not_matched'));
+      return;
+    }
+    this.dmLogging = true;
+    try {
+      const acct: DdpAccount = await DanmakuService.login(name, this.dmLoginPass);
+      this.dmAccount = acct;
+      this.dmLoginPass = '';
+      Util.toastRes(this.getUIContext(), $r('app.string.video_danmaku_logged_in'), [acct.userName]);
+    } catch (e) {
+      this.log(`doDmLogin catch: ${e}`);
+      Util.toastRes(this.getUIContext(), $r('app.string.video_danmaku_login_failed'));
+    }
+    this.dmLogging = false;
+  }
+
+  // 发送弹幕：成功后本地立即上屏（加入 dmItems 并整表重设）
+  private async doDmSend(): Promise<void> {
+    if (this.dmSending) {
+      return;
+    }
+    const text: string = this.dmSendText.trim();
+    if (text === '') {
+      Util.toastRes(this.getUIContext(), $r('app.string.video_danmaku_not_matched'));
+      return;
+    }
+    this.dmSending = true;
+    try {
+      const posMs: number = this.currentPlayPos();
+      await DanmakuService.send(this.chapterId, text, posMs, this.dmSendMode, this.dmSendColor);
+      const item: DanmakuItem = new DanmakuItem();
+      item.timeMs = Math.floor(posMs);
+      item.mode = this.dmSendMode;
+      item.color = this.dmSendColor;
+      item.text = text;
+      this.dmItems.push(item);
+      this.dmCtrl.setItems(this.dmItems);
+      this.dmSendText = '';
+      Util.toastRes(this.getUIContext(), $r('app.string.video_danmaku_sent'));
+    } catch (e) {
+      const msg: string = e instanceof Error ? e.message : '';
+      this.log(`doDmSend catch: ${msg}`);
+      if (msg === 'ddp_no_episode') {
+        Util.toastRes(this.getUIContext(), $r('app.string.video_danmaku_send_no_episode'));
+      } else if (msg === 'ddp_login_required') {
+        this.dmAccount = undefined;
+        Util.toastRes(this.getUIContext(), $r('app.string.video_danmaku_login_required'));
+      } else {
+        Util.toastRes(this.getUIContext(), $r('app.string.video_danmaku_send_failed'));
+      }
+    }
+    this.dmSending = false;
+  }
+
+  // 24bit 颜色 → 6 位十六进制（颜色 swatch 用）
+  private hex6(n: number): string {
+    return (n & 0xFFFFFF).toString(16).toUpperCase().padStart(6, '0');
+  }
+
   // ---- 倍速 / 弹幕 ----
   private speedToEnum(v: number): media.PlaybackSpeed {
     if (v === 0.5) {
@@ -2949,6 +3691,10 @@ export struct VideoPlayerPage {
       this.hideTimer = -1;
     }
     this.sheetMode = mode;
+    // 发送弹幕面板：进入时刷新已保存的 dandanplay 账号
+    if (mode === 6) {
+      this.dmAccount = DanmakuService.savedAccount();
+    }
     this.showSheet = true;
   }
 
@@ -3033,6 +3779,9 @@ export struct VideoPlayerPage {
     }
     if (this.sheetMode === 5) {
       return $r('app.string.video_cast');
+    }
+    if (this.sheetMode === 6) {
+      return $r('app.string.video_danmaku_send_title');
     }
     return $r('app.string.video_settings');
   }

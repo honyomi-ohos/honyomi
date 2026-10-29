@@ -1,9 +1,9 @@
 import { fileIo as fs } from '@kit.CoreFileKit';
-import { zlib } from '@kit.BasicServicesKit';
-import { ContentType, SChapter, SPage } from '../model/Models';
+import { ContentType, SChapter, SManga, SPage, WorksPage } from '../model/Models';
 import { LocalFolderManager } from './LocalFolderManager';
 import { LocalFsSource } from './LocalFsSource';
 import { NaturalCompare } from '../common/NaturalCompare';
+import { ArchiveFormat, ArchiveReader } from '../common/ArchiveReader';
 
 // local_extract 解压缓存条目（容量管理用）
 interface ExtractCacheDir {
@@ -13,11 +13,15 @@ interface ExtractCacheDir {
 }
 
 // 本地漫画源：扫描固定本地源文件夹的同步副本（filesDir/local_root）
-// 目录结构：<系列名>/<章节名>.zip|.cbz 或 <章节名>/图片；
-// 支持子目录分层（卷/章），章节名按相对路径显示为“卷 / 章”
+// 目录结构：<系列名>/<章节名>.归档 或 <章节名>/图片；
+// 归档对齐 Mihon 支持集：zip/cbz/tar/cbt 可解包阅读，rar/cbr 与 7z/cb7 识别后给友好错误；
+// 支持子目录分层（卷/章），章节名按相对路径显示为“卷 / 章”；
+// 另提供文件夹模式浏览 browseFolder（目录下钻 + 相对路径 workKey）
 export class LocalSource extends LocalFsSource {
   // 解压缓存总量上限：超限时按目录 mtime 淘汰最旧的解压目录
   private static readonly EXTRACT_CACHE_LIMIT: number = 256 * 1024 * 1024;
+  // 文件夹模式/嵌套作品扫描的目录递归深度上限
+  private static readonly MAX_FOLDER_DEPTH: number = 8;
   readonly key = 'local';
   readonly name = '本地漫画';
   readonly contentType = ContentType.MANGA;
@@ -67,6 +71,30 @@ export class LocalSource extends LocalFsSource {
     }
   }
 
+  // 搜索：顶层作品（现有行为）+ 任意深度嵌套作品（文件夹模式可发现的目录随搜索可达）
+  async getSearchWorks(_page: number, query: string): Promise<WorksPage> {
+    const q = query.toLowerCase();
+    const names = this.listDirs().filter((n: string): boolean => n.toLowerCase().includes(q));
+    const nested: string[] = [];
+    this.collectNestedWorks('', q, nested, 0);
+    const seen = new Set<string>();
+    const merged: string[] = [];
+    for (const n of names) {
+      if (!seen.has(n)) {
+        seen.add(n);
+        merged.push(n);
+      }
+    }
+    for (const n of nested) {
+      if (!seen.has(n)) {
+        seen.add(n);
+        merged.push(n);
+      }
+    }
+    merged.sort((a: string, b: string): number => NaturalCompare.compare(a, b));
+    return this.namesToWorks(merged);
+  }
+
   async getChapterList(workKey: string): Promise<SChapter[]> {
     // 递归收集章节条目相对路径（含卷级子目录），按层级自然排序
     const relEntries: string[] = [];
@@ -98,14 +126,191 @@ export class LocalSource extends LocalFsSource {
     throw new Error('unsupported_format');
   }
 
+  // ---------------- #12 文件夹模式分层浏览 ----------------
+  // 契约：返回 SManga 列表，status === 'local_folder' 为目录条目（key=相对路径，
+  // 点击应再次调用 browseFolder(key) 下钻；relDir 传 '' 为根目录）；
+  // 其余为作品条目（key 即 workKey，可含 '/' 的相对路径，
+  // 走 getWorkDetail/getChapterList/getPageList 全链路，进详情打开阅读）。
+  // 顶层 getPopularWorks/getSearchWorks 行为保持向后兼容（搜索额外并入嵌套作品）。
+  async browseFolder(relDir: string): Promise<SManga[]> {
+    const clean = LocalSource.sanitizeRelPath(relDir);
+    const listDir = clean === '' ? this.rootDir() : `${this.rootDir()}/${clean}`;
+    let entries: string[] = [];
+    try {
+      if (!fs.accessSync(listDir)) {
+        return [];
+      }
+      entries = fs.listFileSync(listDir).sort((a: string, b: string): number => NaturalCompare.compare(a, b));
+    } catch (e) {
+      return [];
+    }
+    const result: SManga[] = [];
+    for (const entry of entries) {
+      if (entry.startsWith('.')) {
+        continue;
+      }
+      const full = `${listDir}/${entry}`;
+      let isDir = false;
+      try {
+        isDir = fs.statSync(full).isDirectory();
+      } catch (e) {
+        continue;
+      }
+      if (!isDir) {
+        continue;
+      }
+      const rel = clean === '' ? entry : `${clean}/${entry}`;
+      if (this.hasDirectChapters(full)) {
+        // 作品：第一层直接含章节条目（归档文件 / 图片文件夹）
+        result.push(this.buildManga(rel));
+      } else if (this.containsChapterDeep(full, 0)) {
+        // 文件夹：更深一层才含漫画内容，可继续下钻
+        result.push(LocalSource.buildFolderEntry(rel, entry));
+      }
+    }
+    return result;
+  }
+
+  // 目录条目（status=local_folder，点击下钻而非进详情）
+  private static buildFolderEntry(relPath: string, name: string): SManga {
+    const folder: SManga = {
+      key: relPath,
+      title: name,
+      coverUrl: '',
+      author: '',
+      description: '',
+      genre: '本地',
+      status: 'local_folder',
+    };
+    return folder;
+  }
+
+  // 相对路径净化：剔除空段与 '.'，'..' 段整条拒绝（路径穿越防护）
+  private static sanitizeRelPath(relDir: string): string {
+    const segs = relDir.split('/');
+    const kept: string[] = [];
+    for (const seg of segs) {
+      if (seg === '' || seg === '.') {
+        continue;
+      }
+      if (seg === '..') {
+        return '';
+      }
+      kept.push(seg);
+    }
+    return kept.join('/');
+  }
+
+  // 目录第一层是否直接含章节条目（归档文件 / 含图片的子目录）
+  private hasDirectChapters(dir: string): boolean {
+    let entries: string[] = [];
+    try {
+      entries = fs.listFileSync(dir);
+    } catch (e) {
+      return false;
+    }
+    for (const entry of entries) {
+      if (entry.startsWith('.')) {
+        continue;
+      }
+      if (this.isArchive(entry)) {
+        return true;
+      }
+      const full = `${dir}/${entry}`;
+      let isDir = false;
+      try {
+        isDir = fs.statSync(full).isDirectory();
+      } catch (e) {
+        continue;
+      }
+      if (isDir && this.listImages(full).length > 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // 目录内任意深度是否含章节条目（有界递归，文件夹条目判定用）
+  private containsChapterDeep(dir: string, depth: number): boolean {
+    if (depth > LocalSource.MAX_FOLDER_DEPTH) {
+      return false;
+    }
+    let entries: string[] = [];
+    try {
+      entries = fs.listFileSync(dir);
+    } catch (e) {
+      return false;
+    }
+    for (const entry of entries) {
+      if (entry.startsWith('.')) {
+        continue;
+      }
+      if (this.isArchive(entry)) {
+        return true;
+      }
+      const full = `${dir}/${entry}`;
+      let isDir = false;
+      try {
+        isDir = fs.statSync(full).isDirectory();
+      } catch (e) {
+        continue;
+      }
+      if (!isDir) {
+        continue;
+      }
+      if (this.listImages(full).length > 0 || this.containsChapterDeep(full, depth + 1)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // 收集嵌套作品相对路径（第一层直接含章节条目的目录；匹配 query，不进入作品内部）
+  private collectNestedWorks(prefix: string, query: string, out: string[], depth: number): void {
+    if (depth > LocalSource.MAX_FOLDER_DEPTH) {
+      return;
+    }
+    const listDir = prefix === '' ? this.rootDir() : `${this.rootDir()}/${prefix}`;
+    let entries: string[] = [];
+    try {
+      if (!fs.accessSync(listDir)) {
+        return;
+      }
+      entries = fs.listFileSync(listDir).sort((a: string, b: string): number => NaturalCompare.compare(a, b));
+    } catch (e) {
+      return;
+    }
+    for (const entry of entries) {
+      if (entry.startsWith('.')) {
+        continue;
+      }
+      const full = `${listDir}/${entry}`;
+      const rel = prefix === '' ? entry : `${prefix}/${entry}`;
+      let isDir = false;
+      try {
+        isDir = fs.statSync(full).isDirectory();
+      } catch (e) {
+        continue;
+      }
+      if (!isDir) {
+        continue;
+      }
+      if (this.hasDirectChapters(full)) {
+        if (rel.toLowerCase().includes(query)) {
+          out.push(rel);
+        }
+      } else {
+        this.collectNestedWorks(rel, query, out, depth + 1);
+      }
+    }
+  }
+
   protected syncSubDir(): string {
     return LocalFolderManager.COMIC_SUBDIR;
   }
 
-  // 递归收集章节条目相对路径：归档文件与含图片的目录为章节，
-
   protected contentExts(): string[] {
-    return this.imageExts.concat(['.zip', '.cbz']);
+    return this.imageExts.concat(ArchiveFormat.supportedExts());
   }
 
   protected mangaDescription(): string {
@@ -147,8 +352,7 @@ export class LocalSource extends LocalFsSource {
   }
 
   private isArchive(name: string): boolean {
-    const lower = name.toLowerCase();
-    return lower.endsWith('.zip') || lower.endsWith('.cbz');
+    return ArchiveFormat.isSupported(name);
   }
 
   // 列出目录下的图片（自然排序）
@@ -170,8 +374,8 @@ export class LocalSource extends LocalFsSource {
   }
 
   private async extractArchive(mangaDir: string, entry: string): Promise<string[]> {
-    const zipPath = `${this.rootDir()}/${mangaDir}/${entry}`;
-    const safeEntry = entry.replace(new RegExp('\\.(zip|cbz)$', 'i'), '');
+    const archivePath = `${this.rootDir()}/${mangaDir}/${entry}`;
+    const safeEntry = ArchiveFormat.stripArchiveExt(entry);
     const outDir = `${this.cacheDir}/local_extract/${mangaDir}/${safeEntry}`;
     // 已解压过则直接复用（通过标记文件判断）
     const doneFlag = `${outDir}/.extracted`;
@@ -188,7 +392,9 @@ export class LocalSource extends LocalFsSource {
       this.ensureExtractBudget();
       try {
         fs.mkdirSync(outDir, true);
-        await zlib.decompressFile(zipPath, outDir);
+        // 统一分派：zip/cbz 走 zlib，tar/cbt 走 TarExtractor，
+        // rar/cbr、7z/cb7 抛出带中文文案的业务错误
+        await ArchiveReader.openArchive(archivePath, outDir);
         const flagFile = fs.openSync(doneFlag, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
         fs.writeSync(flagFile.fd, 'ok');
         fs.closeSync(flagFile);

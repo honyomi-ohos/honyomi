@@ -1,10 +1,12 @@
 import { InstalledPlugin, PluginService } from '../data/PluginService';
+import { ContentType } from '../model/Models';
 import { Source, SourceRegistry } from '../source/Source';
 import { JsvmSource, SourcePrefItem, SourcePrefOption } from '../source/JsvmSource';
 import { BrowseSourceParams, ExtensionDetailParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { Bp } from '../common/Breakpoint';
+import { Settings } from '../common/Settings';
 import { EmptyScreen } from './components/EmptyScreen';
 import { ConfirmDialog, InputDialog } from './components/Dialogs';
 import { AppIcon } from './components/AppIcon';
@@ -100,6 +102,8 @@ export struct ExtensionDetailPage {
   // 设置来源：true = manifest 静态声明（宿主直读直写，不拉引擎）
   @State manifestSettings: boolean = false;
   @State busy: boolean = false;
+  // 按插件隐身（对齐 Mihon incognito extensions）：浏览该插件的源时不记录历史/统计
+  @State incognitoMode: boolean = false;
   // 页面已销毁标志：await 返回后组件可能已析构，禁止再访问 UIContext/执行导航
   private destroyed: boolean = false;
 
@@ -244,7 +248,8 @@ export struct ExtensionDetailPage {
                     .toUpperCase(),
                   iconSize: 72,
                   cornerRadius: 16,
-                  contentType: this.plugin.manifest.contentType,
+                  contentType: this.plugin.manifest.contentTypes.length > 0 ?
+                    this.plugin.manifest.contentTypes[0] : ContentType.MANGA,
                   badgeBorder: this.pal.card,
                 })
                   .margin({ top: 8 })
@@ -294,6 +299,35 @@ export struct ExtensionDetailPage {
                   .onClick(() => {
                     this.confirmUninstall();
                   })
+
+                // 按插件隐身开关（对齐 Mihon DetailsHeader 的 Incognito mode 行）
+                Divider()
+                  .color(this.pal.divider)
+                  .margin({ top: 16 })
+                Row() {
+                  Column() {
+                    Text('隐身浏览')
+                      .fontSize(15)
+                      .fontColor(this.pal.text)
+                    Text('浏览此插件的源时不记录阅读历史与统计')
+                      .fontSize(11)
+                      .fontColor(this.pal.sub)
+                      .margin({ top: 2 })
+                  }
+                  .alignItems(HorizontalAlign.Start)
+                  .layoutWeight(1)
+
+                  Toggle({ type: ToggleType.Switch, isOn: this.incognitoMode })
+                    .selectedColor(this.pal.primary)
+                    .onChange((on: boolean) => {
+                      if (on !== this.incognitoMode) {
+                        this.toggleIncognito(on);
+                      }
+                    })
+                }
+                .width('100%')
+                .alignItems(VerticalAlign.Center)
+                .padding({ top: 12 })
               }
               .width('100%')
               .alignItems(HorizontalAlign.Center)
@@ -428,6 +462,7 @@ export struct ExtensionDetailPage {
         return;
       }
       this.pluginKey = key;
+      this.incognitoMode = Settings.isPluginIncognito(key);
       this.loadPlugin();
       this.loadSchema();
     })
@@ -622,6 +657,18 @@ export struct ExtensionDetailPage {
   private openSource(key: string): void {
     const params: BrowseSourceParams = { sourceKey: key, mode: 'popular' };
     this.pathStack.pushPathByName('BrowseSource', params);
+  }
+
+  // 按插件隐身开关：从隐身插件列表中增删当前插件 key（列表整体写回，
+  // 复用 Settings.setIncognitoPlugins 中心化存储；无痕闸门 HistoryRepo.isIncognitoFor
+  // 每次实时读 Settings，无需额外失效通知）
+  private toggleIncognito(on: boolean): void {
+    const list = Settings.getIncognitoPlugins().filter((k: string): boolean => k !== this.pluginKey);
+    if (on) {
+      list.push(this.pluginKey);
+    }
+    Settings.setIncognitoPlugins(list);
+    this.incognitoMode = Settings.isPluginIncognito(this.pluginKey);
   }
 }
 

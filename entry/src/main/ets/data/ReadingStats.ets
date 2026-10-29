@@ -1,7 +1,7 @@
 import { relationalStore } from '@kit.ArkData';
 import { AppDb } from './AppDb';
 import { Util } from '../common/Util';
-import { AppKeys } from '../common/AppKeys';
+import { HistoryRepo } from './Repos';
 
 function closeQuietly(rs: relationalStore.ResultSet): void {
   try {
@@ -174,7 +174,8 @@ export class ReadingStatsRepo {
 
   private static async insertSession(mangaId: number, chapterId: number,
     startAt: number, seconds: number): Promise<void> {
-    if (AppStorage.get<boolean>(AppKeys.INCOGNITO) ?? false) {
+    // 无痕中心化闸门：全局无痕 或 作品所属插件被「按插件隐身」时不记录
+    if (await HistoryRepo.isIncognitoFor(mangaId)) {
       return;
     }
     try {

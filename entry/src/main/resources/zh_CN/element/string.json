@@ -1029,6 +1029,10 @@
       "value": "追踪"
     },
     {
+      "name": "detail_action_webview",
+      "value": "网页视图"
+    },
+    {
       "name": "detail_dl_cancelled",
       "value": "已取消下载"
     },
@@ -2637,6 +2641,10 @@
       "value": "已取消翻译"
     },
     {
+      "name": "trans_same_lang",
+      "value": "内容语言与目标语言一致，无需翻译"
+    },
+    {
       "name": "manga_ocr_unavailable",
       "value": "文字识别服务不可用，请稍后重试（模拟器可能不支持）"
     },
@@ -3841,6 +3849,10 @@
       "value": "在看"
     },
     {
+      "name": "track_unread",
+      "value": "未读"
+    },
+    {
       "name": "track_completed",
       "value": "看完"
     },
@@ -4209,6 +4221,42 @@
       "value": "DeepL"
     },
     {
+      "name": "trans_microsoft",
+      "value": "微软必应"
+    },
+    {
+      "name": "trans_tencent",
+      "value": "腾讯云"
+    },
+    {
+      "name": "trans_tencent_secret_id",
+      "value": "SecretId"
+    },
+    {
+      "name": "trans_tencent_secret_key",
+      "value": "SecretKey"
+    },
+    {
+      "name": "trans_volcano",
+      "value": "火山引擎"
+    },
+    {
+      "name": "trans_volcano_access_key",
+      "value": "Access Key ID"
+    },
+    {
+      "name": "trans_volcano_secret_key",
+      "value": "Secret Access Key"
+    },
+    {
+      "name": "trans_niutrans",
+      "value": "小牛翻译"
+    },
+    {
+      "name": "trans_niutrans_apikey",
+      "value": "API 密钥"
+    },
+    {
       "name": "action_edit",
       "value": "编辑"
     },
@@ -4255,6 +4303,446 @@
     {
       "name": "default_category_auto",
       "value": "自动（按内容类型）"
+    },
+    {
+      "name": "updates_tab_updates",
+      "value": "更新"
+    },
+    {
+      "name": "updates_tab_schedule",
+      "value": "时间表"
+    },
+    {
+      "name": "schedule_load_failed",
+      "value": "时间表加载失败"
+    },
+    {
+      "name": "schedule_empty",
+      "value": "当日暂无放送作品"
+    },
+    {
+      "name": "reader_set_appearance_group",
+      "value": "外观"
+    },
+    {
+      "name": "reader_set_nav_group",
+      "value": "导航"
+    },
+    {
+      "name": "reader_set_general_group",
+      "value": "常规"
+    },
+    {
+      "name": "reader_set_eink_group",
+      "value": "墨水屏刷新闪屏"
+    },
+    {
+      "name": "reader_set_skip_read",
+      "value": "跳过已读章节"
+    },
+    {
+      "name": "reader_set_skip_filtered",
+      "value": "跳过被筛选的章节"
+    },
+    {
+      "name": "reader_set_skip_duplicate",
+      "value": "跳过重复章节"
+    },
+    {
+      "name": "reader_set_chapter_transition",
+      "value": "章节过渡页"
+    },
+    {
+      "name": "reader_set_flash_enable",
+      "value": "翻页时闪屏"
+    },
+    {
+      "name": "reader_set_flash_color",
+      "value": "闪屏颜色"
+    },
+    {
+      "name": "reader_flash_color_white",
+      "value": "白色"
+    },
+    {
+      "name": "reader_flash_color_black",
+      "value": "黑色"
+    },
+    {
+      "name": "reader_flash_color_both",
+      "value": "白转黑"
+    },
+    {
+      "name": "reader_set_flash_duration",
+      "value": "闪屏时长（毫秒）"
+    },
+    {
+      "name": "reader_set_flash_every",
+      "value": "每 N 页闪屏"
+    },
+    {
+      "name": "reader_set_crop_paged",
+      "value": "裁切页边（分页模式）"
+    },
+    {
+      "name": "reader_set_crop_webtoon",
+      "value": "裁切页边（条漫）"
+    },
+    {
+      "name": "reader_set_color_blend",
+      "value": "颜色滤镜混合模式"
+    },
+    {
+      "name": "reader_blend_none",
+      "value": "无"
+    },
+    {
+      "name": "reader_blend_multiply",
+      "value": "正片叠底"
+    },
+    {
+      "name": "reader_blend_screen",
+      "value": "滤色"
+    },
+    {
+      "name": "reader_blend_overlay",
+      "value": "叠加"
+    },
+    {
+      "name": "reader_blend_darken",
+      "value": "变暗"
+    },
+    {
+      "name": "reader_blend_lighten",
+      "value": "变亮"
+    },
+    {
+      "name": "reader_set_webtoon_no_zoom_out",
+      "value": "禁止缩小（条漫）"
+    },
+    {
+      "name": "reader_set_zoom_start",
+      "value": "缩放起始位置"
+    },
+    {
+      "name": "reader_zoom_automatic",
+      "value": "自动"
+    },
+    {
+      "name": "reader_zoom_left",
+      "value": "左侧"
+    },
+    {
+      "name": "reader_zoom_right",
+      "value": "右侧"
+    },
+    {
+      "name": "reader_zoom_center",
+      "value": "居中"
+    },
+    {
+      "name": "reader_nav_lshape",
+      "value": "L 形"
+    },
+    {
+      "name": "reader_nav_kindle",
+      "value": "Kindle 样式"
+    },
+    {
+      "name": "novel_anim_cube",
+      "value": "3D 立方"
+    },
+    {
+      "name": "novel_anim_stack",
+      "value": "堆叠"
+    },
+    {
+      "name": "novel_anim_fade",
+      "value": "淡入淡出"
+    },
+    {
+      "name": "novel_anim_flip",
+      "value": "3D 翻转"
+    },
+    {
+      "name": "novel_anim_sphere",
+      "value": "球体"
+    },
+    {
+      "name": "transition_tap_continue",
+      "value": "点击继续"
+    },
+    {
+      "name": "browse_local_folders",
+      "value": "文件夹"
+    },
+    {
+      "name": "missing_chapters_warning",
+      "value": "跳过了 %d 章，可能是图源没有这些章节，或者被筛选规则排除了"
+    },
+    {
+      "name": "player_set_skip_oped",
+      "value": "自动跳过 OP/ED"
+    },
+    {
+      "name": "player_set_skip_oped_sub",
+      "value": "在播放器设置面板中设定跳过点"
+    },
+    {
+      "name": "player_set_subtitle",
+      "value": "字幕"
+    },
+    {
+      "name": "player_set_subtitle_enable",
+      "value": "启用字幕"
+    },
+    {
+      "name": "player_set_subtitle_enable_sub",
+      "value": "加载外挂 .srt 字幕文件"
+    },
+    {
+      "name": "player_set_subtitle_font",
+      "value": "字幕字号"
+    },
+    {
+      "name": "player_set_danmaku_filter",
+      "value": "弹幕屏蔽规则"
+    },
+    {
+      "name": "player_set_danmaku_filter_sub",
+      "value": "命中任意正则规则的弹幕将被隐藏"
+    },
+    {
+      "name": "player_set_danmaku_filter_add",
+      "value": "添加"
+    },
+    {
+      "name": "player_set_danmaku_filter_hint",
+      "value": "输入正则规则，如 \\d+"
+    },
+    {
+      "name": "player_set_danmaku_filter_invalid",
+      "value": "规则无效或已存在"
+    },
+    {
+      "name": "player_set_danmaku_filter_empty",
+      "value": "暂无屏蔽规则"
+    },
+    {
+      "name": "player_set_danmaku_filter_applied",
+      "value": "规则已生效"
+    },
+    {
+      "name": "video_skip_section",
+      "value": "跳过片头片尾"
+    },
+    {
+      "name": "video_skip_op_start",
+      "value": "片头开始"
+    },
+    {
+      "name": "video_skip_op_end",
+      "value": "片头结束"
+    },
+    {
+      "name": "video_skip_ed_start",
+      "value": "片尾开始"
+    },
+    {
+      "name": "video_skip_ed_end",
+      "value": "片尾结束"
+    },
+    {
+      "name": "video_skip_set_current",
+      "value": "当前"
+    },
+    {
+      "name": "video_skip_save",
+      "value": "保存"
+    },
+    {
+      "name": "video_skip_clear",
+      "value": "清除"
+    },
+    {
+      "name": "video_skip_saved",
+      "value": "跳过点已保存"
+    },
+    {
+      "name": "video_skip_invalid",
+      "value": "时间格式无效"
+    },
+    {
+      "name": "video_skip_op",
+      "value": "已跳过片头"
+    },
+    {
+      "name": "video_skip_ed",
+      "value": "已跳过片尾"
+    },
+    {
+      "name": "video_subtitle_none",
+      "value": "未加载字幕"
+    },
+    {
+      "name": "video_subtitle_pick",
+      "value": "选择字幕文件"
+    },
+    {
+      "name": "video_subtitle_clear",
+      "value": "清除"
+    },
+    {
+      "name": "video_subtitle_loaded",
+      "value": "字幕已加载"
+    },
+    {
+      "name": "video_subtitle_invalid",
+      "value": "字幕文件无效"
+    },
+    {
+      "name": "video_subtitle_pick_failed",
+      "value": "读取文件失败"
+    },
+    {
+      "name": "video_danmaku_send_title",
+      "value": "发送弹幕"
+    },
+    {
+      "name": "video_danmaku_login_hint",
+      "value": "登录弹弹play账号后即可发送弹幕"
+    },
+    {
+      "name": "video_danmaku_username",
+      "value": "用户名"
+    },
+    {
+      "name": "video_danmaku_password",
+      "value": "密码"
+    },
+    {
+      "name": "video_danmaku_login",
+      "value": "登录"
+    },
+    {
+      "name": "video_danmaku_logging",
+      "value": "正在登录…"
+    },
+    {
+      "name": "video_danmaku_logged_in",
+      "value": "已登录：%s"
+    },
+    {
+      "name": "video_danmaku_logout",
+      "value": "退出登录"
+    },
+    {
+      "name": "video_danmaku_login_failed",
+      "value": "登录失败：%s"
+    },
+    {
+      "name": "video_danmaku_input_hint",
+      "value": "输入弹幕内容"
+    },
+    {
+      "name": "video_danmaku_mode_scroll",
+      "value": "滚动"
+    },
+    {
+      "name": "video_danmaku_mode_top",
+      "value": "顶部"
+    },
+    {
+      "name": "video_danmaku_mode_bottom",
+      "value": "底部"
+    },
+    {
+      "name": "video_danmaku_color",
+      "value": "颜色"
+    },
+    {
+      "name": "video_danmaku_sending",
+      "value": "发送中…"
+    },
+    {
+      "name": "video_danmaku_send",
+      "value": "发送"
+    },
+    {
+      "name": "video_danmaku_not_matched",
+      "value": "弹幕库中未匹配到剧集"
+    },
+    {
+      "name": "video_danmaku_login_required",
+      "value": "请先登录"
+    },
+    {
+      "name": "video_danmaku_send_no_episode",
+      "value": "当前章节未匹配到剧集"
+    },
+    {
+      "name": "video_danmaku_sent",
+      "value": "已发送"
+    },
+    {
+      "name": "video_danmaku_send_failed",
+      "value": "发送失败：%s"
+    },
+    {
+      "name": "subject_detail_title",
+      "value": "番剧详情"
+    },
+    {
+      "name": "subject_load_failed",
+      "value": "加载详情失败"
+    },
+    {
+      "name": "subject_search_in_app",
+      "value": "在应用内搜索"
+    },
+    {
+      "name": "subject_label_air_date",
+      "value": "放送日期"
+    },
+    {
+      "name": "subject_label_eps",
+      "value": "集数"
+    },
+    {
+      "name": "subject_label_score",
+      "value": "评分"
+    },
+    {
+      "name": "subject_label_summary",
+      "value": "简介"
+    },
+    {
+      "name": "subject_summary_empty",
+      "value": "暂无简介"
+    },
+    {
+      "name": "browse_folder_up",
+      "value": "上一级"
+    },
+    {
+      "name": "browse_folder_empty",
+      "value": "此文件夹为空"
+    },
+    {
+      "name": "categories_title",
+      "value": "分类"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
     }
   ]
 }

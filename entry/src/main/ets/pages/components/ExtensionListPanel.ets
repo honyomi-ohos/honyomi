@@ -1,7 +1,9 @@
 import { picker } from '@kit.CoreFileKit';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 import { SheetPreset } from './SheetPreset';
 import { InstalledPlugin, InstallOutcome, PluginService, RepoEntry } from '../../data/PluginService';
 import { ContentType } from '../../model/Models';
+
 import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
 import { Settings } from '../../common/Settings';
@@ -106,6 +108,8 @@ export struct ExtensionListPanel {
   @StorageProp('extRepoRefresh') @Watch('onRepoRefresh') extRepoRefresh: number = 0;
   @StorageProp('extLocalInstall') @Watch('onLocalInstall') extLocalInstall: number = 0;
   @StorageProp('pluginsDirty') @Watch('onPluginsDirty') pluginsDirty: number = 0;
+  // 服务侧仓库索引缓存更新（图标预热完成/启动后台刷新完成）：重读缓存刷新列表
+  @StorageProp('extRepoCacheTick') @Watch('onRepoCacheTick') repoCacheTick: number = 0;
   @Prop @Watch('onFilterChanged') searchQuery: string = '';
   // 内容类型过滤（宿主过滤弹窗下发）；空数组 = 全部类型
   @Prop @Watch('onFilterChanged') typeFilter: string[] = [];
@@ -141,9 +145,7 @@ export struct ExtensionListPanel {
   aboutToAppear(): void {
     this.refreshInstalled();
     this.repoUrls = this.loadStoreUrls();
-    if (this.repoUrls.length > 0) {
-      this.refreshRepo();
-    }
+    this.initRepoEntries();
   }
 
   aboutToDisappear(): void {
@@ -205,7 +207,7 @@ export struct ExtensionListPanel {
         fallbackChar: this.firstCharOf(item.manifest.name),
         iconSize: 40,
         cornerRadius: 10,
-        contentType: item.manifest.contentType,
+        contentType: this.primaryType(item.manifest.contentTypes),
         badgeBorder: this.pal.bg,
       })
 
@@ -332,7 +334,7 @@ export struct ExtensionListPanel {
         fallbackChar: this.firstCharOf(entry.name),
         iconSize: 40,
         cornerRadius: 10,
-        contentType: entry.contentType,
+        contentType: this.primaryType(entry.contentTypes),
         badgeBorder: this.pal.bg,
       })
 
@@ -493,7 +495,7 @@ export struct ExtensionListPanel {
               ForEach(g.entries, (entry: RepoEntry) => {
                 this.availableRow(entry)
               }, (entry: RepoEntry) => `repo-${entry.key}-${entry.versionCode}-${entry.icon}`)
-            }, (g: LangGroup) => `grp-${g.lang}`)
+            }, (g: LangGroup) => this.groupRenderKey(g))
           }
         }
         .width('100%')
@@ -528,10 +530,14 @@ export struct ExtensionListPanel {
   // 宿主改仓库列表（增删/刷新）后触发
   private onRepoRefresh(): void {
     this.repoUrls = this.loadStoreUrls();
-    this.repoEntries = [];
-    this.recomputeLists();
     if (this.repoUrls.length > 0) {
+      // 刷新期间保留现有列表展示，网络拉取完成后整体替换（避免清空闪空）
       this.refreshRepo();
+    } else {
+      // 仓库已全部移除：清空在线列表并收起 spinner
+      this.repoEntries = [];
+      this.recomputeLists();
+      this.loadingRepo = false;
     }
   }
 
@@ -561,11 +567,56 @@ export struct ExtensionListPanel {
       return;
     }
     this.recomputeLists();
+    // 安装/卸载后同步可更新数量徽标（对齐 Mihon updatePendingUpdatesCount；
+    // 仓库缓存未加载时跳过，避免把启动检查发布的数量误清零）
+    if (this.repoEntries.length > 0) {
+      PluginService.checkExtensionUpdates(this.repoEntries);
+    }
+  }
+
+  // 首次进入：优先读仓库索引缓存（列表/图标即时显示，不再每次请求仓库索引）；
+  // 无缓存且已配置仓库时才发起网络拉取（对齐 Mihon findAvailableExtensions 首拉）
+  private async initRepoEntries(): Promise<void> {
+    const cached = await PluginService.loadCachedRepoEntries();
+    if (this.disposed) {
+      return;
+    }
+    if (cached.length > 0) {
+      this.repoEntries = cached;
+      this.recomputeLists();
+      return;
+    }
+    if (this.repoUrls.length > 0) {
+      this.refreshRepo();
+    }
+  }
+
+  // 服务侧仓库索引缓存更新（图标预热完成/启动后台刷新完成）→ 重读缓存刷新列表
+  private onRepoCacheTick(): void {
+    this.applyRepoCache();
+  }
+
+  private async applyRepoCache(): Promise<void> {
+    const cached = await PluginService.loadCachedRepoEntries();
+    if (this.disposed || cached.length === 0) {
+      return;
+    }
+    this.repoEntries = cached;
+    this.recomputeLists();
   }
 
   // 宿主搜索词/类型过滤/NSFW 开关变化时重算分组
   private onFilterChanged(): void {
+    // 诊断日志：定位插件搜索过滤链路（@Prop 同步是否到达面板）
+    hilog.info(0x0001, 'Mihon', 'panel filter changed: q=%{public}s types=%{public}d',
+      this.searchQuery, this.typeFilter.length);
     this.recomputeLists();
+    let avail = 0;
+    for (const g of this.availableGroups) {
+      avail += g.entries.length;
+    }
+    hilog.info(0x0001, 'Mihon', 'panel recompute done: pending=%{public}d installed=%{public}d avail=%{public}d repoTotal=%{public}d',
+      this.pendingUpdates.length, this.shownInstalled.length, avail, this.repoEntries.length);
   }
 
   private firstCharOf(name: string): string {
@@ -573,6 +624,16 @@ export struct ExtensionListPanel {
       return '?';
     }
     return name.substring(0, 1).toUpperCase();
+  }
+
+  // 分组渲染键：必须携带组内成员签名——ForEach 键相同即复用旧组件且不重执行构建器，
+  // 搜索/过滤/NSFW 开关使组内成员变化时若键不变，English 等常驻分组会一直展示旧数据
+  private groupRenderKey(g: LangGroup): string {
+    const parts: string[] = [];
+    for (const e of g.entries) {
+      parts.push(`${e.key}@${e.versionCode}`);
+    }
+    return `grp-${g.lang}-${parts.join(',')}`;
   }
 
   // 分组重算（对齐 Mihon ExtensionsViewModel.items）：
@@ -585,16 +646,25 @@ export struct ExtensionListPanel {
     return name.toLowerCase().indexOf(q) >= 0 || key.toLowerCase().indexOf(q) >= 0;
   }
 
-  // 仓库索引未声明 contentType 的条目按宿主约定视为漫画
-  private effectiveType(contentType: string): string {
-    return contentType === '' ? ContentType.MANGA : contentType;
+  // 主内容类型 = 全量列表 [0]（归一保证非空，此处兜底漫画；角标显示用）
+  private primaryType(contentTypes: string[]): string {
+    if (contentTypes.length === 0) {
+      return ContentType.MANGA;
+    }
+    return contentTypes[0];
   }
 
-  private matchesType(contentType: string): boolean {
+  // 类型过滤：内容类型全量列表任一命中即通过（多类型插件可被多个类型筛选命中）
+  private matchesType(contentTypes: string[]): boolean {
     if (this.typeFilter.length === 0) {
       return true;
     }
-    return this.typeFilter.indexOf(this.effectiveType(contentType)) >= 0;
+    for (const t of contentTypes) {
+      if (this.typeFilter.indexOf(t) >= 0) {
+        return true;
+      }
+    }
+    return false;
   }
 
   // 语言显示名（all/multi 用本地化“多语言”，对齐 Mihon multi_lang）
@@ -632,7 +702,7 @@ export struct ExtensionListPanel {
         continue;
       }
       if (!this.matchesQuery(item.manifest.name, item.manifest.key) ||
-        !this.matchesType(item.manifest.contentType)) {
+        !this.matchesType(item.manifest.contentTypes)) {
         continue;
       }
       const entry: RepoEntry | undefined = byKey.get(item.manifest.key);
@@ -654,7 +724,7 @@ export struct ExtensionListPanel {
       if (entry.nsfw && !this.showNsfw) {
         continue;
       }
-      if (!this.matchesQuery(entry.name, entry.key) || !this.matchesType(entry.contentType)) {
+      if (!this.matchesQuery(entry.name, entry.key) || !this.matchesType(entry.contentTypes)) {
         continue;
       }
       let group: LangGroup | undefined = undefined;
@@ -687,9 +757,8 @@ export struct ExtensionListPanel {
     return this.searchQuery.trim() !== '' || this.typeFilter.length > 0;
   }
 
-  // 多仓库聚合拉取（对齐 Mihon findAvailableExtensions 多 store 聚合）：
-  // 逐仓库拉取索引，合并去重（同 key 保留 versionCode 更高者）；单仓库失败不中断其余，
-  // 全部失败才报错（部分成功按成功处理）
+  // 手动刷新仓库（下拉/溢出菜单/仓库配置变更）：强制网络拉取并更新缓存；
+  // 并发防抖（与下拉 spinner 状态分离），全部仓库失败才提示错误（部分成功按成功处理）
   private async refreshRepo(): Promise<void> {
     if (this.repoUrls.length === 0 || this.repoFetching) {
       // 无仓库时收起下拉 spinner
@@ -701,25 +770,18 @@ export struct ExtensionListPanel {
     this.repoFetching = true;
     this.loadingRepo = true;
     try {
-      const lists: RepoEntry[][] = [];
-      let firstError = '';
-      for (const url of this.repoUrls) {
-        try {
-          lists.push(await PluginService.fetchRepo(url));
-        } catch (e) {
-          if (firstError === '') {
-            firstError = Util.errText(this.getUIContext(), (e as Error).message);
-          }
-        }
-      }
+      const entries = await PluginService.refreshRepoEntries();
       if (this.disposed) {
         return;
       }
-      if (lists.length === 0 && firstError !== '') {
-        Util.toastRes(this.getUIContext(), $r('app.string.plugin_repo_load_failed'), [firstError]);
-      }
-      this.repoEntries = PluginService.mergeRepoEntries(lists);
+      this.repoEntries = entries;
       this.recomputeLists();
+    } catch (e) {
+      if (this.disposed) {
+        return;
+      }
+      Util.toastRes(this.getUIContext(), $r('app.string.plugin_repo_load_failed'),
+        [Util.errText(this.getUIContext(), (e as Error).message)]);
     } finally {
       if (!this.disposed) {
         this.loadingRepo = false;

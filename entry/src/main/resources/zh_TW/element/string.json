@@ -957,6 +957,10 @@
       "value": "追蹤"
     },
     {
+      "name": "detail_action_webview",
+      "value": "網頁視圖"
+    },
+    {
       "name": "detail_dl_cancelled",
       "value": "已取消下載"
     },
@@ -3625,6 +3629,10 @@
       "value": "在看"
     },
     {
+      "name": "track_unread",
+      "value": "未讀"
+    },
+    {
       "name": "track_completed",
       "value": "看完"
     },
@@ -3867,6 +3875,186 @@
     {
       "name": "default_category_auto",
       "value": "自動（依內容類型）"
+    },
+    {
+      "name": "updates_tab_updates",
+      "value": "更新"
+    },
+    {
+      "name": "updates_tab_schedule",
+      "value": "時間表"
+    },
+    {
+      "name": "schedule_load_failed",
+      "value": "時間表載入失敗"
+    },
+    {
+      "name": "schedule_empty",
+      "value": "當日暫無放送作品"
+    },
+    {
+      "name": "browse_local_folders",
+      "value": "資料夾"
+    },
+    {
+      "name": "browse_folder_up",
+      "value": "返回上層"
+    },
+    {
+      "name": "browse_folder_empty",
+      "value": "此資料夾是空的"
+    },
+    {
+      "name": "player_set_skip_oped",
+      "value": "自動跳過 OP/ED"
+    },
+    {
+      "name": "player_set_subtitle_enable",
+      "value": "啟用字幕"
+    },
+    {
+      "name": "video_skip_section",
+      "value": "跳過片頭片尾"
+    },
+    {
+      "name": "video_skip_op_start",
+      "value": "片頭開始"
+    },
+    {
+      "name": "video_skip_op_end",
+      "value": "片頭結束"
+    },
+    {
+      "name": "video_skip_ed_start",
+      "value": "片尾開始"
+    },
+    {
+      "name": "video_skip_ed_end",
+      "value": "片尾結束"
+    },
+    {
+      "name": "video_skip_save",
+      "value": "儲存"
+    },
+    {
+      "name": "video_skip_clear",
+      "value": "清除"
+    },
+    {
+      "name": "video_skip_op",
+      "value": "已跳過片頭"
+    },
+    {
+      "name": "video_skip_ed",
+      "value": "已跳過片尾"
+    },
+    {
+      "name": "video_skip_set_current",
+      "value": "目前"
+    },
+    {
+      "name": "video_subtitle_none",
+      "value": "未載入字幕"
+    },
+    {
+      "name": "video_subtitle_pick",
+      "value": "選擇字幕檔案"
+    },
+    {
+      "name": "video_subtitle_clear",
+      "value": "清除"
+    },
+    {
+      "name": "video_danmaku_login_hint",
+      "value": "登入彈彈play帳號後即可傳送彈幕"
+    },
+    {
+      "name": "video_danmaku_username",
+      "value": "使用者名稱"
+    },
+    {
+      "name": "video_danmaku_password",
+      "value": "密碼"
+    },
+    {
+      "name": "video_danmaku_logging",
+      "value": "正在登入…"
+    },
+    {
+      "name": "video_danmaku_login",
+      "value": "登入"
+    },
+    {
+      "name": "video_danmaku_logged_in",
+      "value": "已登入：%s"
+    },
+    {
+      "name": "video_danmaku_logout",
+      "value": "登出"
+    },
+    {
+      "name": "video_danmaku_input_hint",
+      "value": "輸入彈幕內容"
+    },
+    {
+      "name": "video_danmaku_mode_scroll",
+      "value": "捲動"
+    },
+    {
+      "name": "video_danmaku_mode_top",
+      "value": "頂部"
+    },
+    {
+      "name": "video_danmaku_mode_bottom",
+      "value": "底部"
+    },
+    {
+      "name": "video_danmaku_color",
+      "value": "顏色"
+    },
+    {
+      "name": "video_danmaku_sending",
+      "value": "傳送中…"
+    },
+    {
+      "name": "video_danmaku_send",
+      "value": "傳送"
+    },
+    {
+      "name": "video_danmaku_send_title",
+      "value": "傳送彈幕"
+    },
+    {
+      "name": "subject_detail_title",
+      "value": "番劇詳情"
+    },
+    {
+      "name": "subject_load_failed",
+      "value": "載入詳情失敗"
+    },
+    {
+      "name": "subject_search_in_app",
+      "value": "在應用程式內搜尋"
+    },
+    {
+      "name": "subject_label_air_date",
+      "value": "放送日期"
+    },
+    {
+      "name": "subject_label_eps",
+      "value": "集數"
+    },
+    {
+      "name": "subject_label_score",
+      "value": "評分"
+    },
+    {
+      "name": "subject_label_summary",
+      "value": "簡介"
+    },
+    {
+      "name": "subject_summary_empty",
+      "value": "暫無簡介"
     }
   ]
 }

@@ -115,7 +115,9 @@ const ICONS: Record<string, Resource> = {
   'translate': $r('app.media.ic_translate'),
   'volume_up': $r('app.media.ic_volume_up'),
   'volume_off': $r('app.media.ic_volume_off'),
-  'cast': $r('app.media.ic_cast')
+  'cast': $r('app.media.ic_cast'),
+  'format_list_bulleted': $r('app.media.ic_format_list_bulleted'),
+  'format_list_numbered': $r('app.media.ic_format_list_numbered')
 };
 
 export class AppIconRes {

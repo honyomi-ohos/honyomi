@@ -742,7 +742,7 @@ export struct EmulationFlipView {
   @Prop @Watch('syncFromLeft') fromLeft: boolean = false;
   // 点击“下一页”是否在左侧。与卷曲方向独立，便于漫画导航模式覆盖。
   @Prop nextOnLeft: boolean = false;
-  // horizontal | vertical | edge | none
+  // horizontal | vertical | edge | lshape | kindle | none
   @Prop tapMode: string = 'horizontal';
   @Prop flipEnabled: boolean = true;
   // 为 true 时，纸背使用 backContent 的截图（双页里半页的背面文字），否则反射正面。
@@ -1305,6 +1305,32 @@ export struct EmulationFlipView {
         dir = -1;
       } else if (y > 0.7) {
         dir = 1;
+      }
+    } else if (this.tapMode === 'lshape' || this.tapMode === 'kindle') {
+      // 对齐 Mihon LNavigation / KindlishNavigation：
+      // lshape 上 1/3 上一页、下 1/3 下一页、中带左/右 1/3 上一页/下一页、中间菜单；
+      // kindle 上 1/3 菜单、下方左 1/3 上一页、右 2/3 下一页；
+      // nextOnLeft 时水平镜像（左右区域语义互换，上下带不受影响）
+      const nx = event.x / (this.areaW > 0 ? this.areaW : 1);
+      const ny = event.y / (this.areaH > 0 ? this.areaH : 1);
+      if (this.tapMode === 'lshape') {
+        if (ny < 0.33) {
+          dir = -1;
+        } else if (ny >= 0.66) {
+          dir = 1;
+        } else if (nx < 0.33) {
+          dir = this.nextOnLeft ? 1 : -1;
+        } else if (nx >= 0.66) {
+          dir = this.nextOnLeft ? -1 : 1;
+        }
+      } else {
+        if (ny >= 0.33) {
+          if (this.nextOnLeft) {
+            dir = nx >= 0.66 ? -1 : 1;
+          } else {
+            dir = nx < 0.33 ? -1 : 1;
+          }
+        }
       }
     } else {
       const left = event.x < this.areaW * edge;

@@ -2,6 +2,8 @@ import { Http } from '../net/Http';
 import { ChapterRecord, MangaRecord } from '../model/Models';
 import { cryptoFramework } from '@kit.CryptoArchitectureKit';
 import { util } from '@kit.ArkTS';
+import { SecureStore } from '../common/SecureStore';
+import { Settings } from '../common/Settings';
 
 // 单条弹幕（时间毫秒 + dandanplay 模式 + 24bit 颜色 + 文本）
 export class DanmakuItem {
@@ -9,6 +11,15 @@ export class DanmakuItem {
   mode: number = 1; // 1 滚动 4 底部 5 顶部
   color: number = 0xFFFFFF;
   text: string = '';
+}
+
+// dandanplay 登录账号（token 持久化于 SecureStore）
+export class DdpAccount {
+  accessToken: string = '';
+  // 过期时间（unix 秒；0 表示未知）
+  expires: number = 0;
+  userId: number = 0;
+  userName: string = '';
 }
 
 interface DdpEpisodeRaw {
@@ -38,17 +49,54 @@ interface DdpCommentRootRaw {
   comments: DdpCommentRaw[];
 }
 
+// POST /api/v2/login 请求体
+interface DdpLoginReq {
+  userName: string;
+  password: string;
+}
+
+// 登录响应（token 直接位于根对象）
+interface DdpLoginResRaw {
+  accessToken?: string;
+  expires?: number;
+  userId?: number;
+  userName?: string;
+}
+
+// POST /api/v2/comment/{episodeId} 请求体（time 单位秒）
+interface DdpSendReq {
+  time: number;
+  mode: number;
+  color: number;
+  text: string;
+}
+
 // 弹幕数据服务：按作品标题 + 集数匹配 dandanplay 剧集并拉取弹幕池
 export class DanmakuService {
   private static cache: Map<number, DanmakuItem[]> = new Map();
   // 同章并发调用去重：在途请求复用同一 Promise
   private static inflight: Map<number, Promise<DanmakuItem[]>> = new Map();
+  // 章节 → dandanplay 剧集 ID（发送弹幕时需要）
+  private static episodeIds: Map<number, number> = new Map();
   private static readonly MAX_ITEMS: number = 5000;
   // 缓存 LRU 上限：最多保留 10 章弹幕，超出淘汰最旧
   private static readonly MAX_CHAPTERS: number = 10;
+  // dandanplay 登录凭据的 SecureStore 别名
+  private static readonly TOKEN_ALIAS: string = 'ddp_token';
   // dandanplay 开放弹幕网络应用凭证（dev.dandanplay.com 申请；应用审核通过后生效）
   private static readonly APP_ID: string = 'vgdq26b2dw';
   private static readonly APP_SECRET: string = 'B8RQi45EvYIczfbAuvZb5uC4StuqWLzj';
+
+  // 章节对应的 dandanplay 剧集 ID（拉取过弹幕后有效；-1 未知）
+  static episodeIdOf(chapterId: number): number {
+    const id: number | undefined = DanmakuService.episodeIds.get(chapterId);
+    return id !== undefined ? id : -1;
+  }
+
+  // 清空弹幕缓存（屏蔽规则变更后调用，强制下次重新拉取过滤）
+  static clearCache(): void {
+    DanmakuService.cache.clear();
+  }
 
   static async loadForChapter(manga: MangaRecord, chapter: ChapterRecord): Promise<DanmakuItem[]> {
     const cached: DanmakuItem[] | undefined = DanmakuService.cache.get(chapter.id);
@@ -95,6 +143,7 @@ export class DanmakuService {
     if (episodeId <= 0) {
       return [];
     }
+    DanmakuService.episodeIds.set(chapter.id, episodeId);
     // 2. 拉取该集弹幕池（chConvert=1 繁转简）
     const commentUrl: string =
       `https://api.dandanplay.net/api/v2/comment/${episodeId}?withRelated=true&chConvert=1`;
@@ -116,8 +165,121 @@ export class DanmakuService {
         break;
       }
     }
-    items.sort((a: DanmakuItem, b: DanmakuItem): number => a.timeMs - b.timeMs);
-    return items;
+    // 3. 应用用户屏蔽规则（正则命中即隐藏；无效正则跳过）
+    let filtered: DanmakuItem[] = items;
+    const filters: string[] = Settings.getDanmakuFilters();
+    if (filters.length > 0) {
+      const regexes: RegExp[] = [];
+      for (let fi = 0; fi < filters.length; fi++) {
+        try {
+          regexes.push(new RegExp(filters[fi]));
+        } catch (_e) {
+          // 无效正则：忽略该条规则
+        }
+      }
+      if (regexes.length > 0) {
+        filtered = [];
+        for (let i = 0; i < items.length; i++) {
+          if (!DanmakuService.matchesAny(items[i].text, regexes)) {
+            filtered.push(items[i]);
+          }
+        }
+      }
+    }
+    filtered.sort((a: DanmakuItem, b: DanmakuItem): number => a.timeMs - b.timeMs);
+    return filtered;
+  }
+
+  // 文本是否命中任一屏蔽正则
+  private static matchesAny(text: string, regexes: RegExp[]): boolean {
+    for (let i = 0; i < regexes.length; i++) {
+      if (regexes[i].test(text)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // ---- 弹幕发送（dandanplay 账号） ----
+
+  // 读取已保存的登录账号；不存在或已过期返回 undefined
+  static savedAccount(): DdpAccount | undefined {
+    const raw: string = SecureStore.getSync(DanmakuService.TOKEN_ALIAS);
+    if (raw === '') {
+      return undefined;
+    }
+    try {
+      const parsed: DdpLoginResRaw = JSON.parse(raw) as DdpLoginResRaw;
+      const acct: DdpAccount | undefined = DanmakuService.parseAccount(parsed);
+      if (acct === undefined) {
+        return undefined;
+      }
+      if (acct.expires > 0 && acct.expires * 1000 < Date.now()) {
+        return undefined;
+      }
+      return acct;
+    } catch (_e) {
+      return undefined;
+    }
+  }
+
+  // dandanplay 账号登录（POST /api/v2/login）；成功后凭据持久化到 SecureStore
+  static async login(userName: string, password: string): Promise<DdpAccount> {
+    const url: string = 'https://api.dandanplay.net/api/v2/login';
+    const req: DdpLoginReq = { userName: userName, password: password };
+    const raw: string = await Http.post(url, JSON.stringify(req), await DanmakuService.authHeaders(url));
+    let parsed: DdpLoginResRaw;
+    try {
+      parsed = JSON.parse(raw) as DdpLoginResRaw;
+    } catch (e) {
+      throw new Error('ddp_login_invalid');
+    }
+    const acct: DdpAccount | undefined = DanmakuService.parseAccount(parsed);
+    if (acct === undefined || acct.accessToken === '') {
+      throw new Error('ddp_login_failed');
+    }
+    SecureStore.putSync(DanmakuService.TOKEN_ALIAS, JSON.stringify(acct));
+    return acct;
+  }
+
+  // 退出登录：清除持久化凭据
+  static logout(): void {
+    SecureStore.removeSync(DanmakuService.TOKEN_ALIAS);
+  }
+
+  // 发送弹幕到当前章节对应剧集（POST /api/v2/comment/{episodeId}，需已登录）
+  static async send(chapterId: number, text: string, timeMs: number, mode: number, color: number): Promise<void> {
+    const episodeId: number = DanmakuService.episodeIdOf(chapterId);
+    if (episodeId <= 0) {
+      throw new Error('ddp_no_episode');
+    }
+    const acct: DdpAccount | undefined = DanmakuService.savedAccount();
+    if (acct === undefined) {
+      throw new Error('ddp_login_required');
+    }
+    const url: string = `https://api.dandanplay.net/api/v2/comment/${episodeId}`;
+    const req: DdpSendReq = {
+      time: Math.round(timeMs) / 1000,
+      mode: mode,
+      color: color & 0xFFFFFF,
+      text: text
+    };
+    const headers: Record<string, string> = await DanmakuService.authHeaders(url);
+    headers['Authorization'] = `Bearer ${acct.accessToken}`;
+    await Http.post(url, JSON.stringify(req), headers);
+  }
+
+  // 从登录响应提取账号；token 缺失返回 undefined
+  private static parseAccount(parsed: DdpLoginResRaw): DdpAccount | undefined {
+    if (typeof parsed.accessToken !== 'string' || parsed.accessToken === '') {
+      return undefined;
+    }
+    const acct: DdpAccount = new DdpAccount();
+    acct.accessToken = parsed.accessToken;
+    acct.expires = typeof parsed.expires === 'number' ? parsed.expires : 0;
+    acct.userId = typeof parsed.userId === 'number' ? parsed.userId : 0;
+    acct.userName = typeof parsed.userName === 'string' ? parsed.userName : '';
+    return acct;
   }
 
   // dandanplay 请求鉴权（官方规范，doc.dandanplay.com/open）：

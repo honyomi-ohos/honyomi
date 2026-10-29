@@ -1869,6 +1869,10 @@
       "value": "Suivi"
     },
     {
+      "name": "detail_action_webview",
+      "value": "Vue web"
+    },
+    {
       "name": "detail_dl_cancelled",
       "value": "Téléchargement annulé"
     },
@@ -3017,6 +3021,10 @@
       "value": "En cours de lecture"
     },
     {
+      "name": "track_unread",
+      "value": "Non lu"
+    },
+    {
       "name": "track_completed",
       "value": "Terminé"
     },
@@ -3275,6 +3283,186 @@
     {
       "name": "debug_language",
       "value": "Langue"
+    },
+    {
+      "name": "updates_tab_updates",
+      "value": "Updates"
+    },
+    {
+      "name": "updates_tab_schedule",
+      "value": "Schedule"
+    },
+    {
+      "name": "schedule_load_failed",
+      "value": "Failed to load the schedule"
+    },
+    {
+      "name": "schedule_empty",
+      "value": "No shows in the schedule"
+    },
+    {
+      "name": "browse_local_folders",
+      "value": "Dossiers"
+    },
+    {
+      "name": "browse_folder_up",
+      "value": "Dossier parent"
+    },
+    {
+      "name": "browse_folder_empty",
+      "value": "Ce dossier est vide"
+    },
+    {
+      "name": "player_set_skip_oped",
+      "value": "Passer automatiquement l'OP/ED"
+    },
+    {
+      "name": "player_set_subtitle_enable",
+      "value": "Activer les sous-titres"
+    },
+    {
+      "name": "video_skip_section",
+      "value": "Passer l'OP/ED"
+    },
+    {
+      "name": "video_skip_op_start",
+      "value": "Début de l'OP"
+    },
+    {
+      "name": "video_skip_op_end",
+      "value": "Fin de l'OP"
+    },
+    {
+      "name": "video_skip_ed_start",
+      "value": "Début de l'ED"
+    },
+    {
+      "name": "video_skip_ed_end",
+      "value": "Fin de l'ED"
+    },
+    {
+      "name": "video_skip_save",
+      "value": "Enregistrer"
+    },
+    {
+      "name": "video_skip_clear",
+      "value": "Effacer"
+    },
+    {
+      "name": "video_skip_op",
+      "value": "OP passé"
+    },
+    {
+      "name": "video_skip_ed",
+      "value": "ED passé"
+    },
+    {
+      "name": "video_skip_set_current",
+      "value": "Maintenant"
+    },
+    {
+      "name": "video_subtitle_none",
+      "value": "Aucun sous-titre"
+    },
+    {
+      "name": "video_subtitle_pick",
+      "value": "Choisir un fichier de sous-titres"
+    },
+    {
+      "name": "video_subtitle_clear",
+      "value": "Effacer"
+    },
+    {
+      "name": "video_danmaku_login_hint",
+      "value": "Connectez-vous avec votre compte dandanplay pour envoyer des danmaku"
+    },
+    {
+      "name": "video_danmaku_username",
+      "value": "Nom d'utilisateur"
+    },
+    {
+      "name": "video_danmaku_password",
+      "value": "Mot de passe"
+    },
+    {
+      "name": "video_danmaku_logging",
+      "value": "Connexion…"
+    },
+    {
+      "name": "video_danmaku_login",
+      "value": "Se connecter"
+    },
+    {
+      "name": "video_danmaku_logged_in",
+      "value": "Connecté : %s"
+    },
+    {
+      "name": "video_danmaku_logout",
+      "value": "Se déconnecter"
+    },
+    {
+      "name": "video_danmaku_input_hint",
+      "value": "Saisir le texte du danmaku"
+    },
+    {
+      "name": "video_danmaku_mode_scroll",
+      "value": "Défilement"
+    },
+    {
+      "name": "video_danmaku_mode_top",
+      "value": "Haut"
+    },
+    {
+      "name": "video_danmaku_mode_bottom",
+      "value": "Bas"
+    },
+    {
+      "name": "video_danmaku_color",
+      "value": "Couleur"
+    },
+    {
+      "name": "video_danmaku_sending",
+      "value": "Envoi…"
+    },
+    {
+      "name": "video_danmaku_send",
+      "value": "Envoyer"
+    },
+    {
+      "name": "video_danmaku_send_title",
+      "value": "Envoyer un danmaku"
+    },
+    {
+      "name": "subject_detail_title",
+      "value": "Détails du titre"
+    },
+    {
+      "name": "subject_load_failed",
+      "value": "Échec du chargement des détails"
+    },
+    {
+      "name": "subject_search_in_app",
+      "value": "Rechercher dans l'application"
+    },
+    {
+      "name": "subject_label_air_date",
+      "value": "Date de diffusion"
+    },
+    {
+      "name": "subject_label_eps",
+      "value": "Épisodes"
+    },
+    {
+      "name": "subject_label_score",
+      "value": "Note"
+    },
+    {
+      "name": "subject_label_summary",
+      "value": "Résumé"
+    },
+    {
+      "name": "subject_summary_empty",
+      "value": "Aucun résumé pour le moment"
     }
   ]
 }

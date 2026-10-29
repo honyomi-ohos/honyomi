@@ -1,6 +1,7 @@
 import { relationalStore } from '@kit.ArkData';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { AppDb } from './AppDb';
+import { Settings } from '../common/Settings';
 import {
   CategoryRecord,
   ChapterRecord,
@@ -16,6 +17,11 @@ import {
   UpcomingManga,
   UpdateItem
 } from '../model/Models';
+
+// plugin.sourcesJson 条目的最小形状（避免 Repos ↔ PluginService 循环依赖，仅解析 key 字段）
+interface PluginSourceSpecRaw {
+  key?: Object;
+}
 
 function closeQuietly(rs: relationalStore.ResultSet): void {
   try {
@@ -60,9 +66,13 @@ export class MangaRepo {
     'id', 'sourceKey', 'url', 'title', 'thumbnailUrl', 'origThumbnail', 'author',
     'description', 'genre', 'status', 'contentType', 'inLibrary', 'categoryId', 'addedAt',
     'lastUpdateAt', 'fetchedAt', 'chapterFlags', 'localCover', 'localCoverUrl',
+    'updateInterval', 'notes',
   ];
 
   static async upsertFromSource(sourceKey: string, m: SManga, contentType: string): Promise<number> {
+    // 作品级类型声明优先（SManga.contentType），未声明回退源（插件）类型
+    const effectiveType: string = m.contentType !== undefined && m.contentType !== '' ?
+      ContentType.normalize(m.contentType) : ContentType.normalize(contentType);
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('sourceKey', sourceKey).and().equalTo('url', m.key);
@@ -115,7 +125,7 @@ export class MangaRepo {
         'description': m.description !== '' ? m.description : oldDesc,
         'genre': m.genre !== '' ? m.genre : oldGenre,
         'status': m.status !== '' ? m.status : oldStatus,
-        'contentType': ContentType.normalize(contentType),
+        'contentType': effectiveType,
       };
       try {
         await store.update(values, pred);
@@ -133,7 +143,7 @@ export class MangaRepo {
       'description': m.description,
       'genre': m.genre,
       'status': m.status,
-      'contentType': ContentType.normalize(contentType),
+      'contentType': effectiveType,
       'inLibrary': 0,
       'categoryId': 1,
       'addedAt': Date.now(),
@@ -165,7 +175,7 @@ export class MangaRepo {
           'description': m.description,
           'genre': m.genre,
           'status': m.status,
-          'contentType': ContentType.normalize(contentType),
+          'contentType': effectiveType,
         };
         await store.update(retry, pred);
       }
@@ -414,6 +424,9 @@ export class MangaRepo {
 
   // 迁移：切换源与地址并更新元数据，清空旧章节/历史/阅读时长记录（进度不保留）；自定义封面保留（对齐 Mihon）
   static async migrate(id: number, sourceKey: string, url: string, m: SManga, contentType: string): Promise<void> {
+    // 作品级类型声明优先，未声明回退目标源（插件）类型
+    const effectiveType: string = m.contentType !== undefined && m.contentType !== '' ?
+      ContentType.normalize(m.contentType) : ContentType.normalize(contentType);
     const store = await AppDb.get();
     const predOld = new relationalStore.RdbPredicates('manga');
     predOld.equalTo('id', id);
@@ -457,7 +470,7 @@ export class MangaRepo {
         'description': m.description,
         'genre': m.genre,
         'status': m.status,
-        'contentType': ContentType.normalize(contentType),
+        'contentType': effectiveType,
       };
       await store.update(values, pred);
       await store.executeSql(`DELETE FROM chapter WHERE mangaId = ?`, [id]);
@@ -622,6 +635,32 @@ export class MangaRepo {
     return map;
   }
 
+  // 作品级自定义更新间隔（小时：0 跟随默认 / -1 从不 / >0 小时，对齐 Mihon manga.updateInterval）
+  static async setUpdateInterval(id: number, hours: number): Promise<void> {
+    const store = await AppDb.get();
+    const values: relationalStore.ValuesBucket = { 'updateInterval': hours };
+    const pred = new relationalStore.RdbPredicates('manga');
+    pred.equalTo('id', id);
+    try {
+      await store.update(values, pred);
+    } catch (e) {
+      throw new Error(`set update interval failed: ${e}`);
+    }
+  }
+
+  // 用户备注（对齐 Mihon manga.notes）
+  static async setNotes(id: number, notes: string): Promise<void> {
+    const store = await AppDb.get();
+    const values: relationalStore.ValuesBucket = { 'notes': notes };
+    const pred = new relationalStore.RdbPredicates('manga');
+    pred.equalTo('id', id);
+    try {
+      await store.update(values, pred);
+    } catch (e) {
+      throw new Error(`set notes failed: ${e}`);
+    }
+  }
+
   private static rowToManga(rs: relationalStore.ResultSet): MangaRecord {
     try {
       const m = new MangaRecord();
@@ -644,6 +683,8 @@ export class MangaRepo {
       m.chapterFlags = rs.getLong(rs.getColumnIndex('chapterFlags'));
       m.localCover = rs.getString(rs.getColumnIndex('localCover'));
       m.localCoverUrl = rs.getString(rs.getColumnIndex('localCoverUrl'));
+      m.updateInterval = rs.getLong(rs.getColumnIndex('updateInterval'));
+      m.notes = rs.getString(rs.getColumnIndex('notes'));
       return m;
     } catch (e) {
       throw new Error(`map manga row failed: ${e}`);
@@ -655,7 +696,7 @@ export class MangaRepo {
 export class ChapterRepo {
   private static readonly COLUMNS: string[] = [
     'id', 'mangaId', 'url', 'name', 'chapterNumber', 'dateUpload',
-    'pages', 'sortOrder', 'read', 'bookmark', 'lastPageRead',
+    'pages', 'sortOrder', 'read', 'bookmark', 'lastPageRead', 'scanlator',
   ];
 
   static async getById(id: number): Promise<ChapterRecord | undefined> {
@@ -727,6 +768,7 @@ export class ChapterRepo {
             'dateUpload': c.dateUpload,
             'pages': c.pages,
             'sortOrder': c.sortOrder,
+            'scanlator': c.scanlator ?? '',
           };
           const pred = new relationalStore.RdbPredicates('chapter');
           pred.equalTo('mangaId', mangaId).and().equalTo('url', c.key);
@@ -743,6 +785,7 @@ export class ChapterRepo {
             'read': 0,
             'bookmark': 0,
             'lastPageRead': 0,
+            'scanlator': c.scanlator ?? '',
           };
           await store.insert('chapter', values);
           newCount += 1;
@@ -934,9 +977,47 @@ export class ChapterRepo {
       c.read = rs.getLong(rs.getColumnIndex('read')) === 1;
       c.bookmark = rs.getLong(rs.getColumnIndex('bookmark')) === 1;
       c.lastPageRead = rs.getLong(rs.getColumnIndex('lastPageRead'));
+      c.scanlator = rs.getString(rs.getColumnIndex('scanlator'));
       return c;
     } catch (e) {
       throw new Error(`map chapter row failed: ${e}`);
+    }
+  }
+}
+
+// 汉化组排除仓库（excluded_scanlators 表，对齐 Mihon ExcludedScanlators）：
+// 全局隐藏指定汉化组的章节（详情页章节列表与阅读器换章时过滤）
+export class ExcludedScanlatorRepo {
+  static async list(): Promise<string[]> {
+    const store = await AppDb.get();
+    const pred = new relationalStore.RdbPredicates('excluded_scanlators');
+    pred.orderByAsc('scanlator');
+    return queryAll<string>(store.query(pred, ['scanlator']),
+      (rs: relationalStore.ResultSet): string => rs.getString(rs.getColumnIndex('scanlator')),
+      'list excluded scanlators failed');
+  }
+
+  static async add(name: string): Promise<void> {
+    const trimmed = name.trim();
+    if (trimmed === '') {
+      return;
+    }
+    const store = await AppDb.get();
+    try {
+      await store.executeSql(`INSERT OR IGNORE INTO excluded_scanlators (scanlator) VALUES (?)`, [trimmed]);
+    } catch (e) {
+      throw new Error(`add excluded scanlator failed: ${e}`);
+    }
+  }
+
+  static async remove(name: string): Promise<void> {
+    const store = await AppDb.get();
+    const pred = new relationalStore.RdbPredicates('excluded_scanlators');
+    pred.equalTo('scanlator', name);
+    try {
+      await store.delete(pred);
+    } catch (e) {
+      throw new Error(`remove excluded scanlator failed: ${e}`);
     }
   }
 }
@@ -1075,6 +1156,11 @@ export class CategoryRepo {
 // 阅读历史仓库
 export class HistoryRepo {
   static async upsert(mangaId: number, chapterId: number, lastPageRead: number): Promise<void> {
+    // 无痕模式（全局开关 / 作品所属插件被「按插件隐身」）不记录阅读历史
+    // （对齐 Mihon incognito / incognitoExtensions）
+    if (await HistoryRepo.isIncognitoFor(mangaId)) {
+      return;
+    }
     const store = await AppDb.get();
     // v2 起有 UNIQUE(mangaId, chapterId) 索引，单条原子 upsert
     try {
@@ -1085,6 +1171,27 @@ export class HistoryRepo {
     } catch (e) {
       throw new Error(`upsert history failed: ${e}`);
     }
+  }
+
+  // 无痕判定（中心化消费点）：全局无痕开启，或作品所属插件被「按插件隐身」。
+  // 返回 true 时 history / readingStats 一律不落库。
+  static async isIncognitoFor(mangaId: number): Promise<boolean> {
+    if (Settings.getIncognito()) {
+      return true;
+    }
+    if (!Settings.hasIncognitoPlugins()) {
+      return false;
+    }
+    const store = await AppDb.get();
+    const sourceKey = await queryFirst<string>(
+      store.querySql(`SELECT sourceKey FROM manga WHERE id = ?`, [mangaId]),
+      (rs: relationalStore.ResultSet): string => rs.getString(rs.getColumnIndex('sourceKey')),
+      'sourceKey of manga failed') ?? '';
+    if (sourceKey === '') {
+      return false;
+    }
+    const pluginKey = await PluginRepo.pluginKeyOfSource(sourceKey);
+    return Settings.isPluginIncognito(pluginKey);
   }
 
   static async recent(limit: number): Promise<HistoryItem[]> {
@@ -1595,9 +1702,12 @@ export class TrackRepo {
 export class PluginRepo {
   private static readonly COLUMNS: string[] = [
     'key', 'name', 'lang', 'version', 'versionCode', 'baseUrl', 'nsfw', 'bt', 'supportsLatest',
-    'minAppVersion', 'dslVersion', 'icon', 'contentType',
+    'minAppVersion', 'dslVersion', 'icon', 'contentTypes',
     'methodsJson', 'sourcesJson', 'installedAt',
   ];
+
+  // sourceKey → pluginKey 进程内缓存（启动/安装后懒加载，未命中重建一次）
+  private static sourceMap: Map<string, string> | undefined = undefined;
 
   static async upsert(record: PluginRecord): Promise<void> {
     const store = await AppDb.get();
@@ -1614,7 +1724,7 @@ export class PluginRepo {
       'minAppVersion': record.minAppVersion,
       'dslVersion': record.dslVersion,
       'icon': record.icon,
-      'contentType': ContentType.normalize(record.contentType),
+      'contentTypes': record.contentTypes,
       'methodsJson': record.methodsJson,
       'sourcesJson': record.sourcesJson,
       'installedAt': record.installedAt,
@@ -1623,7 +1733,7 @@ export class PluginRepo {
       // key 为主键：INSERT OR REPLACE 原子完成重装/升级覆盖
       await store.executeSql(
         `INSERT INTO plugin (key, name, lang, version, versionCode, baseUrl, nsfw, bt, supportsLatest,
-          minAppVersion, dslVersion, icon, contentType, methodsJson, sourcesJson, installedAt)
+          minAppVersion, dslVersion, icon, contentTypes, methodsJson, sourcesJson, installedAt)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
          ON CONFLICT(key) DO UPDATE SET
           name = excluded.name, lang = excluded.lang, version = excluded.version,
@@ -1631,13 +1741,13 @@ export class PluginRepo {
           bt = excluded.bt,
           supportsLatest = excluded.supportsLatest, minAppVersion = excluded.minAppVersion,
           dslVersion = excluded.dslVersion, icon = excluded.icon,
-          contentType = excluded.contentType,
+          contentTypes = excluded.contentTypes,
           methodsJson = excluded.methodsJson, sourcesJson = excluded.sourcesJson,
           installedAt = excluded.installedAt`,
         [record.key, record.name, record.lang, record.version, record.versionCode, record.baseUrl,
           record.nsfw ? 1 : 0, record.bt ? 1 : 0, record.supportsLatest ? 1 : 0, record.minAppVersion,
           record.dslVersion,
-          record.icon, ContentType.normalize(record.contentType),
+          record.icon, record.contentTypes,
           record.methodsJson, record.sourcesJson, record.installedAt]);
     } catch (e) {
       throw new Error(`upsert plugin failed: ${e}`);
@@ -1670,6 +1780,53 @@ export class PluginRepo {
       'count plugins failed') ?? 0;
   }
 
+  // sourceKey → 所属插件 key（无痕判定、插件详情跳转等用）。
+  // 未命中缓存时重建一次；查不到返回原 sourceKey（内置源/单源插件 key 即 sourceKey 前缀）
+  static async pluginKeyOfSource(sourceKey: string): Promise<string> {
+    if (PluginRepo.sourceMap === undefined) {
+      await PluginRepo.rebuildSourceMap();
+    }
+    let mapped: string | undefined = PluginRepo.sourceMap?.get(sourceKey);
+    if (mapped === undefined) {
+      // 可能刚安装/升级插件，重建一次再查
+      await PluginRepo.rebuildSourceMap();
+      mapped = PluginRepo.sourceMap?.get(sourceKey);
+    }
+    return mapped !== undefined ? mapped : sourceKey;
+  }
+
+  // 失效缓存（插件安装/卸载/升级后由 PluginService 调用）
+  static invalidateSourceMap(): void {
+    PluginRepo.sourceMap = undefined;
+  }
+
+  private static async rebuildSourceMap(): Promise<void> {
+    const map = new Map<string, string>();
+    try {
+      const plugins = await PluginRepo.list();
+      for (const p of plugins) {
+        // 插件 key 本身也是合法 sourceKey（单源插件）
+        map.set(p.key, p.key);
+        if (p.sourcesJson === '') {
+          continue;
+        }
+        try {
+          const specs = JSON.parse(p.sourcesJson) as PluginSourceSpecRaw[];
+          if (Array.isArray(specs)) {
+            for (const spec of specs) {
+              if (spec !== null && spec !== undefined && typeof spec.key === 'string' && spec.key !== '') {
+                map.set(spec.key as string, p.key);
+              }
+            }
+          }
+        } catch (e2) {
+        }
+      }
+    } catch (e) {
+    }
+    PluginRepo.sourceMap = map;
+  }
+
   private static rowToPlugin(rs: relationalStore.ResultSet): PluginRecord {
     try {
       const p = new PluginRecord();
@@ -1685,7 +1842,7 @@ export class PluginRepo {
       p.minAppVersion = rs.getLong(rs.getColumnIndex('minAppVersion'));
       p.dslVersion = rs.getLong(rs.getColumnIndex('dslVersion'));
       p.icon = rs.getString(rs.getColumnIndex('icon'));
-      p.contentType = ContentType.normalize(rs.getString(rs.getColumnIndex('contentType')));
+      p.contentTypes = rs.getString(rs.getColumnIndex('contentTypes'));
       p.methodsJson = rs.getString(rs.getColumnIndex('methodsJson'));
       p.sourcesJson = rs.getString(rs.getColumnIndex('sourcesJson'));
       p.installedAt = rs.getLong(rs.getColumnIndex('installedAt'));

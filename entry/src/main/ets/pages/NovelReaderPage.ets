@@ -39,6 +39,7 @@ import {
   SPINE_W
 } from './components/novel/NovelPaginator';
 import { readTextAutoAsync } from '../common/bookparser/TextLoadTasks';
+import { LangDetect } from '../translate/LangDetect';
 import { NovelModeSheet } from './components/novel/NovelModeSheet';
 import { NovelDisplayPanel } from './components/novel/NovelDisplayPanel';
 import { NovelTextPanel } from './components/novel/NovelTextPanel';
@@ -351,9 +352,18 @@ export struct NovelReaderPage {
       .layoutWeight(1)
       .height('100%')
       .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
-      .onClick((event: ClickEvent) => {
-        this.onSpreadTap(event.x, false);
-      })
+      // 正文 Text 开启 copyOption 后内部点击识别会吞掉落在文字上的点击，
+      // 普通 onClick 仅段间距空白可点；改用优先级单击手势先于子组件识别，
+      // 行为对齐右半页 EmulationFlipView 的整区接管，长按选择不受影响
+      .priorityGesture(
+        TapGesture({ count: 1 })
+          .onAction((event: GestureEvent) => {
+            if (event.fingerList.length <= 0) {
+              return;
+            }
+            this.onSpreadTap(event.fingerList[0].localX, false);
+          })
+      )
 
       Column() {
         Divider()
@@ -366,6 +376,10 @@ export struct NovelReaderPage {
       .height('100%')
       .justifyContent(FlexAlign.Center)
       .backgroundColor(Theme.readerBg(this.readerTheme, this.isDark))
+      // 中缝为屏幕居中热区：点击唤起/收起菜单（对齐右半页收起面板的 contentTap 语义）
+      .onClick(() => {
+        this.contentTap();
+      })
 
       EmulationFlipView({
         index: this.pageIdx,
@@ -1942,6 +1956,13 @@ export struct NovelReaderPage {
       }
     }
     try {
+      // 翻译前判断当前语言与目标语言：一致则不触发翻译
+      if (LangDetect.sameLang(texts.join('\n'), Settings.getTransTargetLang())) {
+        this.translating = false;
+        this.transOn = false;
+        Util.toastRes(ui, $r('app.string.trans_same_lang'));
+        return;
+      }
       const out: string[] = await TranslationService.translateParagraphs(texts, 'auto',
         Settings.getTransTargetLang(),
         (done: number, total: number): void => {

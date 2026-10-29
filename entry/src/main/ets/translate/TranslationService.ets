@@ -8,6 +8,10 @@ import { YoudaoProvider } from './YoudaoProvider';
 import { CaiyunProvider } from './CaiyunProvider';
 import { GoogleProvider } from './GoogleProvider';
 import { DeeplProvider } from './DeepLProvider';
+import { MicrosoftProvider } from './MicrosoftProvider';
+import { TencentProvider } from './TencentProvider';
+import { VolcanoProvider } from './VolcanoProvider';
+import { NiutransProvider } from './NiuTransProvider';
 import { Settings } from '../common/Settings';
 import { Log } from '../common/Log';
 
@@ -54,16 +58,21 @@ class EngineGate {
 
 export class TranslationService {
   // 全部引擎 id（默认优先级顺序；需密钥引擎在前，免密钥引擎殿后）
-  static readonly ENGINE_IDS: string[] = ['baidu', 'caiyun', 'youdao', 'deepl', 'google'];
+  static readonly ENGINE_IDS: string[] =
+    ['baidu', 'caiyun', 'youdao', 'tencent', 'volcano', 'niutrans', 'deepl', 'microsoft', 'google'];
   // 免密钥引擎 id（其余均需密钥）：顺序调整/新引擎补位一律遵守「需密钥在前、免密钥殿后」
-  private static readonly KEYLESS_IDS: string[] = ['deepl', 'google'];
+  private static readonly KEYLESS_IDS: string[] = ['deepl', 'microsoft', 'google'];
   // 各引擎请求最小间隔（毫秒，QPS 保护）
   private static readonly ENGINE_GAP_MS: Record<string, number> = {
     'baidu': 1100,
     'youdao': 1100,
     'caiyun': 600,
     'deepl': 1200,
-    'google': 400
+    'google': 400,
+    'tencent': 600,
+    'volcano': 600,
+    'niutrans': 600,
+    'microsoft': 800
   };
   private static readonly CACHE_LIMIT: number = 2000;
   // 长文分块上限：单块段落数 / 单块字符总量（引擎单请求长度受限：百度/有道 q 上限、DeepL 匿名 1500）
@@ -75,6 +84,10 @@ export class TranslationService {
   private static readonly CAIYUN: CaiyunProvider = new CaiyunProvider();
   private static readonly GOOGLE: GoogleProvider = new GoogleProvider();
   private static readonly DEEPL: DeeplProvider = new DeeplProvider();
+  private static readonly MICROSOFT: MicrosoftProvider = new MicrosoftProvider();
+  private static readonly TENCENT: TencentProvider = new TencentProvider();
+  private static readonly VOLCANO: VolcanoProvider = new VolcanoProvider();
+  private static readonly NIUTRANS: NiutransProvider = new NiutransProvider();
 
   // 引擎无关结果缓存：from>to|原文 → 译文
   private static cache: Map<string, string> = new Map<string, string>();
@@ -265,6 +278,18 @@ export class TranslationService {
     }
     if (id === 'deepl') {
       return TranslationService.DEEPL;
+    }
+    if (id === 'microsoft') {
+      return TranslationService.MICROSOFT;
+    }
+    if (id === 'tencent') {
+      return TranslationService.TENCENT;
+    }
+    if (id === 'volcano') {
+      return TranslationService.VOLCANO;
+    }
+    if (id === 'niutrans') {
+      return TranslationService.NIUTRANS;
     }
     return TranslationService.GOOGLE;
   }

@@ -8,6 +8,9 @@ export interface SManga {
   description: string;
   genre: string;
   status: string;
+  // 作品级内容类型声明（manga | novel | video）：多类型插件区分单部作品归属；
+  // 未声明（undefined）时入库回退源（插件）类型
+  contentType?: string;
 }
 
 export interface SChapter {
@@ -17,6 +20,8 @@ export interface SChapter {
   dateUpload: number;
   pages: number;
   sortOrder: number;
+  // 汉化组（对齐 Mihon SChapter.scanlator）：源显式提供或由章节名前缀 [组名] 解析
+  scanlator?: string;
 }
 
 export interface SPage {
@@ -111,6 +116,11 @@ export class MangaRecord {
   fetchedAt: number = 0;
   // 章节列表排序/筛选标志位（位常量见 common/ChapterFlags，对齐 Mihon chapterFlags）
   chapterFlags: number = 0;
+  // 作品级自定义更新间隔（小时，对齐 Mihon manga.updateInterval）：
+  // 0 = 跟随默认（每次全局刷新都检查）；-1 = 从不参与全局更新；>0 = 距上次更新超过 N 小时才刷新
+  updateInterval: number = 0;
+  // 用户备注（详情页编辑与展示，对齐 Mihon manga.notes）
+  notes: string = '';
 }
 
 // 书架统计（章节/历史聚合查询结果）
@@ -136,6 +146,8 @@ export class ChapterRecord {
   read: boolean = false;
   bookmark: boolean = false;
   lastPageRead: number = 0;
+  // 汉化组（对齐 Mihon SChapter.scanlator；空串 = 未知）
+  scanlator: string = '';
 }
 
 export class CategoryRecord {
@@ -240,7 +252,8 @@ export class PluginRecord {
   dslVersion: number = 1;
   // 包内图标文件名（如 icon.png）
   icon: string = '';
-  contentType: string = 'manga';
+  // 内容类型全量列表（逗号分隔，主类型在前），空表示旧记录（按漫画处理）
+  contentTypes: string = '';
   // 引擎探测到的导出方法列表（JSON string[]），占位源据此判断 hasMethod/supportsLatest
   methodsJson: string = '[]';
   // 最终注册源规格（JSON SourceSpec[]，含子源注册 key），manga.sourceKey 引用其 key

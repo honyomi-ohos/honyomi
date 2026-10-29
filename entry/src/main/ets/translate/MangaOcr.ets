@@ -3,6 +3,7 @@ import { image } from '@kit.ImageKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { StripImagePipeline } from '../common/StripImagePipeline';
 import { TranslationService } from './TranslationService';
+import { LangDetect } from './LangDetect';
 
 // 漫画页 OCR 译文框：坐标为解码后图像的像素坐标（左上原点），bg/fg 为叠加层配色
 export class OcrTextBox {
@@ -105,9 +106,10 @@ export class MangaOcrTranslator {
     }
   }
 
-  // 单页 OCR + 翻译：返回译文叠加数据（无文字页 boxes 为空）
+  // 单页 OCR + 翻译：返回译文叠加数据（无文字页 boxes 为空）；
+  // 页面语言与目标语言一致时返回 null（调用方据此跳过/终止翻译流程）
   static async translateImage(url: string, sourceKey: string, pageUrl: string, to: string,
-    shouldStop: () => boolean): Promise<PageTransData> {
+    shouldStop: () => boolean): Promise<PageTransData | null> {
     // RGBA_8888 专用解码（CoreVisionKit 仅支持该格式），不占用条漫内存缓存
     const pm: image.PixelMap = await StripImagePipeline.loadForOcr(url, sourceKey, pageUrl);
     try {
@@ -126,6 +128,10 @@ export class MangaOcrTranslator {
       const texts: string[] = [];
       for (const unit of units) {
         texts.push(unit.text);
+      }
+      // 翻译前判断当前语言与目标语言：一致则不触发翻译
+      if (LangDetect.sameLang(texts.join('\n'), to)) {
+        return null;
       }
       const translated: string[] = await TranslationService.translatePage(texts, 'auto', to);
       if (shouldStop()) {

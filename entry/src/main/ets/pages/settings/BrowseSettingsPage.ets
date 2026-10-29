@@ -3,10 +3,12 @@ import { Settings } from '../../common/Settings';
 import { NavGlassPage } from '../../common/HdsNavHost';
 import { PrefGroup, PrefSwitchRow } from '../components/Prefs';
 
-// 浏览设置内容：NSFW 源显示
+// 浏览设置内容：NSFW 源显示 + 扩展更新检查
 @Component
 export struct BrowseSettingsContent {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  // 可更新扩展数量徽标（PluginService.checkExtensionUpdates 刷新仓库索引后写入）
+  @StorageProp('extUpdateCount') extUpdateCount: number = 0;
 
   build() {
     Scroll() {
@@ -17,6 +19,20 @@ export struct BrowseSettingsContent {
             initValue: Settings.getShowNsfw(),
             apply: (value: boolean): void => {
               Settings.setShowNsfw(value);
+            }
+          })
+        }
+
+        // 扩展更新检查（对齐 Mihon Extension updates）：刷新插件仓库索引时
+        // 比对已装插件版本，有更新时发本地通知提醒（24 小时内不重复）
+        PrefGroup({ groupTitle: '扩展更新' }) {
+          PrefSwitchRow({
+            title: '检查扩展更新',
+            subtitle: this.extUpdateCount > 0 ?
+              `有 ${this.extUpdateCount} 个扩展可更新` : '刷新插件仓库时检查扩展更新并提醒',
+            initValue: Settings.getExtensionUpdateCheck(),
+            apply: (value: boolean): void => {
+              Settings.setExtensionUpdateCheck(value);
             }
           })
         }

@@ -237,11 +237,23 @@ export struct TranslationContent {
     if (id === 'deepl') {
       return $r('app.string.trans_deepl');
     }
+    if (id === 'microsoft') {
+      return $r('app.string.trans_microsoft');
+    }
+    if (id === 'tencent') {
+      return $r('app.string.trans_tencent');
+    }
+    if (id === 'volcano') {
+      return $r('app.string.trans_volcano');
+    }
+    if (id === 'niutrans') {
+      return $r('app.string.trans_niutrans');
+    }
     return $r('app.string.trans_google');
   }
 
   private engineStatus(id: string): ResourceStr {
-    if (id === 'deepl' || id === 'google') {
+    if (id === 'deepl' || id === 'google' || id === 'microsoft') {
       return $r('app.string.trans_status_free');
     }
     return TranslationService.isEngineConfigured(id)
@@ -287,6 +299,12 @@ export struct TranslationContent {
       this.editYoudao();
     } else if (id === 'caiyun') {
       this.editCaiyun();
+    } else if (id === 'tencent') {
+      this.editTencent();
+    } else if (id === 'volcano') {
+      this.editVolcano();
+    } else if (id === 'niutrans') {
+      this.editNiutrans();
     } else {
       Util.toastRes(this.getUIContext(), $r('app.string.trans_status_free'));
     }
@@ -340,6 +358,65 @@ export struct TranslationContent {
         initialText: Settings.getTransCaiyunToken(),
         onConfirm: (text: string): void => {
           Settings.setTransCaiyunToken(text.trim());
+          this.refreshState();
+        },
+        onClose: (): void => {
+          dialog.close();
+        }
+      }),
+      autoCancel: true
+    });
+    dialog.open();
+  }
+
+  private editTencent(): void {
+    const dialog = new CustomDialogController({
+      builder: CredentialsDialog({
+        title: $r('app.string.trans_tencent'),
+        usernamePlaceholder: $r('app.string.trans_tencent_secret_id'),
+        passwordPlaceholder: $r('app.string.trans_tencent_secret_key'),
+        onConfirm: (secretId: string, secretKey: string): void => {
+          Settings.setTransTencentSecretId(secretId.trim());
+          Settings.setTransTencentSecretKey(secretKey.trim());
+          this.refreshState();
+        },
+        onClose: (): void => {
+          dialog.close();
+        }
+      }),
+      autoCancel: true
+    });
+    dialog.open();
+  }
+
+  private editVolcano(): void {
+    const dialog = new CustomDialogController({
+      builder: CredentialsDialog({
+        title: $r('app.string.trans_volcano'),
+        usernamePlaceholder: $r('app.string.trans_volcano_access_key'),
+        passwordPlaceholder: $r('app.string.trans_volcano_secret_key'),
+        onConfirm: (accessKey: string, secretKey: string): void => {
+          Settings.setTransVolcanoAccessKey(accessKey.trim());
+          Settings.setTransVolcanoSecretKey(secretKey.trim());
+          this.refreshState();
+        },
+        onClose: (): void => {
+          dialog.close();
+        }
+      }),
+      autoCancel: true
+    });
+    dialog.open();
+  }
+
+  private editNiutrans(): void {
+    const dialog = new CustomDialogController({
+      builder: InputDialog({
+        title: $r('app.string.trans_niutrans_apikey'),
+        placeholder: $r('app.string.trans_niutrans_apikey'),
+        initialText: Settings.getTransNiutransApikey(),
+        onConfirm: (text: string): void => {
+          Settings.setTransNiutransApikey(text.trim());
           this.refreshState();
         },
         onClose: (): void => {

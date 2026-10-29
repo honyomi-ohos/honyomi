@@ -20,6 +20,11 @@ export class AppKeys {
   static readonly PLUGINS_DIRTY: string = 'pluginsDirty';
   static readonly EXT_REPO_REFRESH: string = 'extRepoRefresh';
   static readonly EXT_LOCAL_INSTALL: string = 'extLocalInstall';
+  // 扩展可更新数量（checkExtensionUpdates 发布，徽标/设置页副标题消费）
+  static readonly EXT_UPDATE_COUNT: string = 'extUpdateCount';
+  // 仓库索引缓存更新信号（计数器递增；PluginService 刷新索引/图标预热完成后发布，
+  // 浏览-插件面板 @Watch 重读缓存刷新列表）
+  static readonly EXT_REPO_CACHE_TICK: string = 'extRepoCacheTick';
   // 页签重复点击信号（计数器递增）
   static readonly LIB_RESELECT: string = 'libReselect';
   static readonly HISTORY_RESELECT: string = 'historyReselect';

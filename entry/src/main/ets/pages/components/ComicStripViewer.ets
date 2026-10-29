@@ -4,9 +4,10 @@ import { StripImagePipeline } from '../../common/StripImagePipeline';
 import { Theme } from '../../common/Theme';
 import { EMPTY_TRANS, PageTransData } from '../../translate/MangaOcr';
 import { MangaTransOverlay } from './MangaTransOverlay';
-import { ReaderTransition } from './ReaderChrome';
+import { ReaderChapterTransitionView } from './ReaderChapterTransitionView';
 
-// 条漫(List)头部固定条目数（章节过渡页）：真实页 index = List index - STRIP_LEAD_COUNT
+// 条漫(List)头部条目数（章节过渡页）：真实页 index = List index - 头部偏移。
+// 过渡页可按宿主开关隐藏，实际偏移由宿主计算（showPrevTransition ? STRIP_LEAD_COUNT : 0）
 export const STRIP_LEAD_COUNT: number = 1;
 
 // 条漫(Webtoon)模式数据源
@@ -49,6 +50,10 @@ struct StripItemView {
   @Prop fit: ImageFit = ImageFit.Contain;
   // 单条目最大高度（0=不限）：连续滚动裁边时钳制为阅读区高度
   @Prop maxItemHeight: number = 0;
+  // 禁止缩小（对齐 Mihon pref_webtoon_disable_zoom_out；本实现缩放下限恒为 1，近似无操作）
+  @Prop disableZoomOut: boolean = false;
+  // 裁边（近似：图片放大 1.1 倍后按容器裁切，约裁去各边 5%）
+  @Prop cropBorders: boolean = false;
   // 图片翻译叠加数据（空数据=未翻译/无文字；不可命名为 overlay：与基类通用属性方法冲突）
   @Prop transData: PageTransData = new PageTransData(1, 1, []);
   @State pixelMap: image.PixelMap | undefined = undefined;
@@ -121,7 +126,7 @@ struct StripItemView {
           // 图片翻译叠加：随图片同缩放同平移，不拦截触摸
           if (this.transData.boxes.length > 0) {
             MangaTransOverlay({ data: this.transData, fit: this.fit })
-              .scale({ x: this.zoomScale, y: this.zoomScale })
+              .scale({ x: this.itemScale(), y: this.itemScale() })
               .translate({ x: this.offX, y: this.offY })
           }
           if (this.zoomScale > 1) {
@@ -158,6 +163,7 @@ struct StripItemView {
           }
         }
         .width('100%')
+        .clip(this.cropBorders)
         .onAreaChange((_o: Area, n: Area) => {
           this.viewW = Number(n.width);
           this.viewH = Number(n.height);
@@ -209,8 +215,20 @@ struct StripItemView {
     .width('100%')
   }
 
+  // 裁边近似系数：裁边时放大 1.1 倍配合容器裁切
+  private cropScale(): number {
+    return this.cropBorders ? 1.1 : 1;
+  }
+
+  private itemScale(): number {
+    return this.cropScale() * this.zoomScale;
+  }
+
   private applyScale(v: number): void {
-    const s = Math.min(3, Math.max(1, v));
+    // 缩放下限恒为 1（适配宽度）：本实现不支持缩小到适配宽度以下，
+    // 禁止缩小（disableZoomOut）因此近似无操作，仅保留对齐 Mihon 偏好项
+    const minScale = this.disableZoomOut ? 1 : 1;
+    const s = Math.min(3, Math.max(minScale, v));
     this.zoomScale = s;
     if (s <= 1) {
       this.offX = 0;
@@ -274,6 +292,19 @@ export struct ComicStripViewer {
   @Prop currentChapterName: string = '';
   @Prop prevChapterName: string = '';
   @Prop nextChapterName: string = '';
+  // 过渡页显示开关（宿主按 Mihon 逻辑计算：始终显示或仅缺章时显示）
+  @Prop showPrevTransition: boolean = true;
+  @Prop showNextTransition: boolean = true;
+  // 当前章/相邻章汉化组与下载状态（过渡页展示）
+  @Prop currentChapterScanlator: string = '';
+  @Prop currentChapterDownloaded: boolean = false;
+  @Prop prevChapterScanlator: string = '';
+  @Prop prevChapterDownloaded: boolean = false;
+  @Prop nextChapterScanlator: string = '';
+  @Prop nextChapterDownloaded: boolean = false;
+  // 相邻章与当前章之间的缺章数（>0 时过渡页显示缺章警告卡片）
+  @Prop prevGap: number = 0;
+  @Prop nextGap: number = 0;
   // 过渡页文字配色（宿主按阅读背景推导）
   @Prop textCol: string = '#ECEEF2';
   @Prop subCol: string = '#99ECEEF2';
@@ -283,6 +314,10 @@ export struct ComicStripViewer {
   @Prop fit: ImageFit = ImageFit.Contain;
   // 单条目最大高度（0=不限；连续滚动裁边传阅读区高度）
   @Prop maxItemHeight: number = 0;
+  // 禁止缩小到适配宽度以下（对齐 Mihon pref_webtoon_disable_zoom_out；本实现下限恒为 1，近似无操作）
+  @Prop disableZoomOut: boolean = false;
+  // 条漫裁边（近似：条目图片放大 1.1 倍后按容器裁切）
+  @Prop cropBorders: boolean = false;
   // 图片翻译叠加：宿主按真实页索引提供译文数据；transStamp 变化驱动条目刷新
   @Prop transOn: boolean = false;
   @Prop transStamp: number = 0;
@@ -298,6 +333,9 @@ export struct ComicStripViewer {
   };
   onNextChapter: () => void = () => {
   };
+  // 列表触底回调（尾部过渡页隐藏时宿主用于无缝进入下一章）
+  onEndReached: () => void = () => {
+  };
 
   aboutToAppear(): void {
     this.dataSource.setPages(this.pages);
@@ -305,28 +343,35 @@ export struct ComicStripViewer {
 
   build() {
     List({ scroller: this.scroller, initialIndex: this.initialIndex, space: this.gap }) {
-      // 头部：上一章过渡页
-      ListItem() {
-        Column() {
-          ReaderTransition({
-            kind: 'prev',
-            currentName: this.currentChapterName,
-            targetName: this.prevChapterName,
-            textCol: this.textCol,
-            subCol: this.subCol
+      // 头部：上一章过渡页（按开关隐藏）
+      if (this.showPrevTransition) {
+        ListItem() {
+          Column() {
+            ReaderChapterTransitionView({
+              kind: 'prev',
+              currentName: this.currentChapterName,
+              currentScanlator: this.currentChapterScanlator,
+              currentDownloaded: this.currentChapterDownloaded,
+              targetName: this.prevChapterName,
+              targetScanlator: this.prevChapterScanlator,
+              targetDownloaded: this.prevChapterDownloaded,
+              gapCount: this.prevGap,
+              textCol: this.textCol,
+              subCol: this.subCol
+            })
+          }
+          .width('100%')
+          .constraintSize({ minHeight: 320 })
+          .justifyContent(FlexAlign.Center)
+          .padding({ top: 48, bottom: 24 })
+          .onClick(() => {
+            if (this.prevChapterName !== '') {
+              this.onPrevChapter();
+            } else {
+              this.onTap();
+            }
           })
         }
-        .width('100%')
-        .constraintSize({ minHeight: 320 })
-        .justifyContent(FlexAlign.Center)
-        .padding({ top: 48, bottom: 24 })
-        .onClick(() => {
-          if (this.prevChapterName !== '') {
-            this.onPrevChapter();
-          } else {
-            this.onTap();
-          }
-        })
       }
 
       LazyForEach(this.dataSource, (page: SPage) => {
@@ -338,6 +383,8 @@ export struct ComicStripViewer {
             isDark: this.isDark,
             fit: this.fit,
             maxItemHeight: this.maxItemHeight,
+            disableZoomOut: this.disableZoomOut,
+            cropBorders: this.cropBorders,
             transData: this.transStamp >= 0 && this.transOn ? this.overlayFor(page.index) : EMPTY_TRANS,
             onTap: (): void => {
               this.onTap();
@@ -345,28 +392,35 @@ export struct ComicStripViewer {
           })
         }
       }, (page: SPage) => `${page.index}:${page.url}`)
-      // 尾部：下一章过渡页
-      ListItem() {
-        Column() {
-          ReaderTransition({
-            kind: 'next',
-            currentName: this.currentChapterName,
-            targetName: this.nextChapterName,
-            textCol: this.textCol,
-            subCol: this.subCol
+      // 尾部：下一章过渡页（按开关隐藏）
+      if (this.showNextTransition) {
+        ListItem() {
+          Column() {
+            ReaderChapterTransitionView({
+              kind: 'next',
+              currentName: this.currentChapterName,
+              currentScanlator: this.currentChapterScanlator,
+              currentDownloaded: this.currentChapterDownloaded,
+              targetName: this.nextChapterName,
+              targetScanlator: this.nextChapterScanlator,
+              targetDownloaded: this.nextChapterDownloaded,
+              gapCount: this.nextGap,
+              textCol: this.textCol,
+              subCol: this.subCol
+            })
+          }
+          .width('100%')
+          .constraintSize({ minHeight: 320 })
+          .justifyContent(FlexAlign.Center)
+          .padding({ top: 24, bottom: 48 })
+          .onClick(() => {
+            if (this.nextChapterName !== '') {
+              this.onNextChapter();
+            } else {
+              this.onTap();
+            }
           })
         }
-        .width('100%')
-        .constraintSize({ minHeight: 320 })
-        .justifyContent(FlexAlign.Center)
-        .padding({ top: 24, bottom: 48 })
-        .onClick(() => {
-          if (this.nextChapterName !== '') {
-            this.onNextChapter();
-          } else {
-            this.onTap();
-          }
-        })
       }
     }
     .width('100%')
@@ -375,6 +429,9 @@ export struct ComicStripViewer {
     .cachedCount(2)
     .scrollBar(BarState.Off)
     .edgeEffect(EdgeEffect.None)
+    .onReachEnd(() => {
+      this.onEndReached();
+    })
     .onScrollIndex((first: number, _last: number) => {
       if (first >= 0 && first !== this.lastVisible) {
         this.lastVisible = first;

@@ -1957,6 +1957,10 @@
       "value": "การติดตาม"
     },
     {
+      "name": "detail_action_webview",
+      "value": "เปิดในเว็บ"
+    },
+    {
       "name": "detail_dl_cancelled",
       "value": "ยกเลิกการดาวน์โหลดแล้ว"
     },
@@ -3165,6 +3169,10 @@
       "value": "กำลังอ่าน"
     },
     {
+      "name": "track_unread",
+      "value": "ยังไม่ได้อ่าน"
+    },
+    {
       "name": "track_completed",
       "value": "อ่านจบ"
     },
@@ -3435,6 +3443,186 @@
     {
       "name": "debug_language",
       "value": "ภาษา"
+    },
+    {
+      "name": "updates_tab_updates",
+      "value": "Updates"
+    },
+    {
+      "name": "updates_tab_schedule",
+      "value": "Schedule"
+    },
+    {
+      "name": "schedule_load_failed",
+      "value": "Failed to load the schedule"
+    },
+    {
+      "name": "schedule_empty",
+      "value": "No shows in the schedule"
+    },
+    {
+      "name": "browse_local_folders",
+      "value": "โฟลเดอร์"
+    },
+    {
+      "name": "browse_folder_up",
+      "value": "โฟลเดอร์ระดับบน"
+    },
+    {
+      "name": "browse_folder_empty",
+      "value": "โฟลเดอร์นี้ว่างเปล่า"
+    },
+    {
+      "name": "player_set_skip_oped",
+      "value": "ข้าม OP/ED อัตโนมัติ"
+    },
+    {
+      "name": "player_set_subtitle_enable",
+      "value": "เปิดใช้ซับไตเติล"
+    },
+    {
+      "name": "video_skip_section",
+      "value": "ข้าม OP/ED"
+    },
+    {
+      "name": "video_skip_op_start",
+      "value": "OP เริ่ม"
+    },
+    {
+      "name": "video_skip_op_end",
+      "value": "OP จบ"
+    },
+    {
+      "name": "video_skip_ed_start",
+      "value": "ED เริ่ม"
+    },
+    {
+      "name": "video_skip_ed_end",
+      "value": "ED จบ"
+    },
+    {
+      "name": "video_skip_save",
+      "value": "บันทึก"
+    },
+    {
+      "name": "video_skip_clear",
+      "value": "ล้าง"
+    },
+    {
+      "name": "video_skip_op",
+      "value": "ข้าม OP แล้ว"
+    },
+    {
+      "name": "video_skip_ed",
+      "value": "ข้าม ED แล้ว"
+    },
+    {
+      "name": "video_skip_set_current",
+      "value": "ตอนนี้"
+    },
+    {
+      "name": "video_subtitle_none",
+      "value": "ไม่มีซับไตเติล"
+    },
+    {
+      "name": "video_subtitle_pick",
+      "value": "เลือกไฟล์ซับไตเติล"
+    },
+    {
+      "name": "video_subtitle_clear",
+      "value": "ล้าง"
+    },
+    {
+      "name": "video_danmaku_login_hint",
+      "value": "เข้าสู่ระบบด้วยบัญชี dandanplay เพื่อส่งดันมากุ"
+    },
+    {
+      "name": "video_danmaku_username",
+      "value": "ชื่อผู้ใช้"
+    },
+    {
+      "name": "video_danmaku_password",
+      "value": "รหัสผ่าน"
+    },
+    {
+      "name": "video_danmaku_logging",
+      "value": "กำลังเข้าสู่ระบบ…"
+    },
+    {
+      "name": "video_danmaku_login",
+      "value": "เข้าสู่ระบบ"
+    },
+    {
+      "name": "video_danmaku_logged_in",
+      "value": "เข้าสู่ระบบแล้ว: %s"
+    },
+    {
+      "name": "video_danmaku_logout",
+      "value": "ออกจากระบบ"
+    },
+    {
+      "name": "video_danmaku_input_hint",
+      "value": "พิมพ์ข้อความดันมากุ"
+    },
+    {
+      "name": "video_danmaku_mode_scroll",
+      "value": "เลื่อน"
+    },
+    {
+      "name": "video_danmaku_mode_top",
+      "value": "ด้านบน"
+    },
+    {
+      "name": "video_danmaku_mode_bottom",
+      "value": "ด้านล่าง"
+    },
+    {
+      "name": "video_danmaku_color",
+      "value": "สี"
+    },
+    {
+      "name": "video_danmaku_sending",
+      "value": "กำลังส่ง…"
+    },
+    {
+      "name": "video_danmaku_send",
+      "value": "ส่ง"
+    },
+    {
+      "name": "video_danmaku_send_title",
+      "value": "ส่งดันมากุ"
+    },
+    {
+      "name": "subject_detail_title",
+      "value": "รายละเอียดเรื่อง"
+    },
+    {
+      "name": "subject_load_failed",
+      "value": "โหลดรายละเอียดไม่สำเร็จ"
+    },
+    {
+      "name": "subject_search_in_app",
+      "value": "ค้นหาในแอป"
+    },
+    {
+      "name": "subject_label_air_date",
+      "value": "วันออกอากาศ"
+    },
+    {
+      "name": "subject_label_eps",
+      "value": "จำนวนตอน"
+    },
+    {
+      "name": "subject_label_score",
+      "value": "คะแนน"
+    },
+    {
+      "name": "subject_label_summary",
+      "value": "เรื่องย่อ"
+    },
+    {
+      "name": "subject_summary_empty",
+      "value": "ยังไม่มีเรื่องย่อ"
     }
   ]
 }

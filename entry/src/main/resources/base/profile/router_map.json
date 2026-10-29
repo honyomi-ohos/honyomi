@@ -41,6 +41,11 @@
       "pageSourceFile": "src/main/ets/pages/GlobalSearchPage.ets"
     },
     {
+      "buildFunction": "SubjectDetailBuilder",
+      "name": "SubjectDetail",
+      "pageSourceFile": "src/main/ets/pages/SubjectDetailPage.ets"
+    },
+    {
       "buildFunction": "MigrateMangaBuilder",
       "name": "MigrateManga",
       "pageSourceFile": "src/main/ets/pages/MigrateMangaPage.ets"
