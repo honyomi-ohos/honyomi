@@ -11,6 +11,9 @@ export interface SManga {
   // 作品级内容类型声明（manga | novel | video）：多类型插件区分单部作品归属；
   // 未声明（undefined）时入库回退源（插件）类型
   contentType?: string;
+  // 平台评分（源站点评分，如 Bangumi 0-10 / 万倍百分比）：未提供为 undefined，
+  // 入库持久化供书架"平台评分"排序
+  rating?: number;
 }
 
 export interface SChapter {
@@ -121,6 +124,8 @@ export class MangaRecord {
   updateInterval: number = 0;
   // 用户备注（详情页编辑与展示，对齐 Mihon manga.notes）
   notes: string = '';
+  // 平台评分（源站点评分，详情同步时更新；0 = 未提供）
+  rating: number = 0;
 }
 
 // 书架统计（章节/历史聚合查询结果）
@@ -247,6 +252,8 @@ export class PluginRecord {
   nsfw: boolean = false;
   // BT 源标记（manifest bt，缺省 false）
   bt: boolean = false;
+  // ACGN 内容标记（manifest acgn，缺省 false）：详情页按名称+作者匹配 Bangumi 相关系列
+  acgn: boolean = false;
   supportsLatest: boolean = false;
   minAppVersion: number = 1;
   dslVersion: number = 1;

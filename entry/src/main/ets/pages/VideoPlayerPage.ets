@@ -90,8 +90,6 @@ class VpCacheListener implements CacheListener {
 export struct VideoPlayerPage {
   pathStack: NavPathStack = new NavPathStack();
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  @StorageProp('statusBarH') statusBarH: number = 0;
-  @StorageProp('navBarH') navBarH: number = 0;
   @StorageProp('windowW') windowW: number = 0;
   // 退出播放器时递增，驱动历史/书架等常驻页签重载数据（同 ReaderPage）
   @StorageLink('libDirty') libDirty: number = 0;
@@ -190,6 +188,8 @@ export struct VideoPlayerPage {
   // 播放器亮度（0=跟随系统，(0,1]=固定亮度，随手势更新并持久化）
   private videoBright: number = 0;
   private win: window.Window | undefined = undefined;
+  // 设备旋转监听（竖屏跟随设备方向；转横屏自动进横屏全屏，离开页面反注册）
+  private rotateListener: ((size: window.Size) => void) | undefined = undefined;
   // PC/2in1：真全屏走窗口最大化沉浸式；进入前是悬浮窗则退出时 recover 还原尺寸位置
   private pcLike: boolean = deviceInfo.deviceType === 'pc' || deviceInfo.deviceType === '2in1';
   private pcWasFloating: boolean = true;
@@ -284,8 +284,28 @@ export struct VideoPlayerPage {
       }
       this.win = w;
       if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
-        w.setWindowSystemBarEnable([]).catch((): void => {
-        });
+        if (this.pcLike) {
+          w.setWindowSystemBarEnable([]).catch((): void => {
+          });
+        } else {
+          // 竖屏：非全屏布局 + 显示状态栏，系统自动避让状态栏/摄像头挖孔区
+          w.setWindowLayoutFullScreen(false).catch((): void => {
+          });
+          w.setWindowSystemBarEnable(['status']).catch((): void => {
+          });
+          // 竖屏不锁方向：窗口跟随设备旋转，转横屏时经监听自动切入横屏全屏
+          w.setPreferredOrientation(window.Orientation.AUTO_ROTATION).catch((): void => {
+          });
+          this.rotateListener = (size: window.Size): void => {
+            if (this.destroyed || this.pcLike || this.pipActive) {
+              return;
+            }
+            if (size.width > size.height && !this.fullscreen) {
+              this.toggleFullscreen();
+            }
+          };
+          w.on('windowSizeChange', this.rotateListener);
+        }
       }
     }).catch((): void => {
     });
@@ -310,12 +330,22 @@ export struct VideoPlayerPage {
     }
     this.castMgr.destroy();
     if (this.win !== undefined) {
+      // 反注册旋转监听（off 传回调避免误删其他来源的 windowSizeChange 监听）
+      if (this.rotateListener !== undefined) {
+        this.win.off('windowSizeChange', this.rotateListener);
+        this.rotateListener = undefined;
+      }
       // 还原系统栏与窗口方向；PC 全屏态先退出沉浸式，避免下一页残留无标题栏窗口
       if (this.pcLike && this.fullscreen) {
         this.exitPcFullscreen();
         this.fullscreen = false;
       }
       if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
+        if (!this.pcLike) {
+          // 还原应用级沉浸式全屏布局（EntryAbility 默认 true），其余页面手动避让依赖该模式
+          this.win.setWindowLayoutFullScreen(true).catch((): void => {
+          });
+        }
         this.win.setPreferredOrientation(window.Orientation.UNSPECIFIED).catch((): void => {
         });
         this.win.setWindowSystemBarEnable(['status', 'navigation']).catch((): void => {
@@ -408,7 +438,7 @@ export struct VideoPlayerPage {
     .padding({
       left: 10,
       right: 12,
-      top: this.fullscreen ? 10 : this.statusBarH + 4,
+      top: this.fullscreen ? 10 : 4,
       bottom: 12
     })
     .linearGradient({ angle: 180, colors: [['rgba(0,0,0,0.65)', 0], [Color.Transparent, 1]] })
@@ -579,7 +609,7 @@ export struct VideoPlayerPage {
       left: 14,
       right: 14,
       top: 10,
-      bottom: this.fullscreen ? 14 : this.navBarH + 10
+      bottom: this.fullscreen ? 14 : 10
     })
     .linearGradient({ angle: 180, colors: [[Color.Transparent, 0], ['rgba(0,0,0,0.65)', 1]] })
     .position({ x: 0, y: '100%' })
@@ -1438,7 +1468,7 @@ export struct VideoPlayerPage {
           })
           .borderRadius(14)
           .backgroundColor('rgba(0,0,0,0.55)')
-          .position({ x: '50%', y: this.fullscreen ? 56 : this.statusBarH + 64 })
+          .position({ x: '50%', y: this.fullscreen ? 56 : 64 })
           .markAnchor({ x: '50%' })
         }
 
@@ -1691,9 +1721,15 @@ export struct VideoPlayerPage {
       return;
     }
     if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
+      // 横屏全屏锁定横向；退出全屏恢复自由旋转（窗口跟随设备方向）
       const target: window.Orientation = this.fullscreen ?
-        window.Orientation.AUTO_ROTATION_LANDSCAPE : window.Orientation.AUTO_ROTATION_PORTRAIT;
+        window.Orientation.AUTO_ROTATION_LANDSCAPE : window.Orientation.AUTO_ROTATION;
       this.win.setPreferredOrientation(target).catch((): void => {
+      });
+      // 布局全屏跟随方向：横屏沉浸式（窗口延伸至系统栏下铺满）；竖屏非全屏（系统自动避让状态栏/摄像头区）
+      this.win.setWindowLayoutFullScreen(this.fullscreen).catch((): void => {
+      });
+      this.win.setWindowSystemBarEnable(this.fullscreen ? [] : ['status']).catch((): void => {
       });
     }
     this.pokeControls();
@@ -2298,6 +2334,14 @@ export struct VideoPlayerPage {
     });
     player.on('seekDone', () => {
       this.buffering = false;
+    });
+    // 播放中途网络卡顿进入/退出缓冲：置位 buffering 驱动界面 loading（控制条可见时由中央按钮转圈展示）
+    player.on('bufferingUpdate', (infoType: media.BufferingInfoType, _value: number) => {
+      if (infoType === media.BufferingInfoType.BUFFERING_START) {
+        this.buffering = true;
+      } else if (infoType === media.BufferingInfoType.BUFFERING_END) {
+        this.buffering = false;
+      }
     });
     player.on('error', (_err: Error) => {
       this.log(`player error cb: ${_err.message}, native state: ${player.state}`);

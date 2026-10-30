@@ -15,6 +15,10 @@ export interface Source {
   // BT 源标记（插件 manifest 声明）：内容为种子/magnet 下载，UI 展示 BT 徽标
   readonly bt: boolean;
 
+  // ACGN 内容标记（插件 manifest 声明）：true = 源内容为动画/漫画/游戏/小说，
+  // 作品详情页按名称+作者匹配 Bangumi 条目并展示相关系列；图片站等非 ACGN 源为 false
+  readonly acgn: boolean;
+
   // 源图标（file:// 路径或网络 URL）；空字符串表示无图标，由 UI 回退首字母
   readonly iconPath: string;
 

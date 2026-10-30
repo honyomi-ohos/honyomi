@@ -1,6 +1,8 @@
 // Bangumi 条目详情页（新番时间表卡片进入）：
-// 封面 + 标题/中文名 + 放送信息 + 简介 + “在应用内搜索”入口（跳全局搜索）
-import { BangumiApi, BgmSubjectDetail } from '../data/BangumiApi';
+// 封面 + 标题/中文名 + 放送信息 + 简介 + 相关条目（横滑卡片，bgm.tv 关联条目）
+// + “在应用内搜索”入口（跳全局搜索）
+import { BangumiApi, BgmRelatedSubject, BgmSubjectDetail } from '../data/BangumiApi';
+import { AppDb } from '../data/AppDb';
 import { GlobalSearchParams, SubjectDetailParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
@@ -19,6 +21,8 @@ export struct SubjectDetailPage {
   @State loading: boolean = true;
   @State loadError: string = '';
   @State detail: BgmSubjectDetail | undefined = undefined;
+  // 相关条目（bgm.tv 关联条目，加载失败或无关联时保持空数组即隐藏区块）
+  @State related: BgmRelatedSubject[] = [];
   private subjectId: number = 0;
   private scroller: Scroller = new Scroller();
 
@@ -62,6 +66,7 @@ export struct SubjectDetailPage {
             this.headerBlock(this.detail)
             this.infoRows(this.detail)
             this.summaryBlock(this.detail)
+            this.relatedBlock()
           }
           .width('100%')
           .constraintSize({ maxWidth: 720 })
@@ -198,6 +203,66 @@ export struct SubjectDetailPage {
     })
   }
 
+  // 相关条目块（横滑卡片；参考 animeko RelatedSubjectsRow）
+  @Builder
+  relatedBlock() {
+    if (this.related.length > 0) {
+      Column({ space: 8 }) {
+        Text($r('app.string.subject_label_related'))
+          .fontSize(15)
+          .fontWeight(FontWeight.Bold)
+          .fontColor(this.pal.text)
+        List({ space: 12 }) {
+          ForEach(this.related, (item: BgmRelatedSubject) => {
+            ListItem() {
+              Column({ space: 6 }) {
+                SmartImage({
+                  url: item.cover,
+                  fit: ImageFit.Cover,
+                  placeholderIconSize: 24
+                })
+                .width(96)
+                .aspectRatio(2 / 3)
+                .borderRadius(8)
+                .clip(true)
+                .backgroundColor(this.pal.chip)
+
+                Text(item.nameCn !== '' ? item.nameCn : item.name)
+                  .fontSize(13)
+                  .fontColor(this.pal.text)
+                  .maxLines(1)
+                  .textOverflow({ overflow: TextOverflow.Ellipsis })
+
+                Text(this.relationLabel(item.relation))
+                  .fontSize(11)
+                  .fontColor(this.pal.sub)
+                  .maxLines(1)
+                  .textOverflow({ overflow: TextOverflow.Ellipsis })
+              }
+              .width(96)
+              .alignItems(HorizontalAlign.Start)
+              .onClick(() => {
+                this.openRelated(item);
+              })
+            }
+          }, (item: BgmRelatedSubject): string => `rel-${item.id}`)
+        }
+        .listDirection(Axis.Horizontal)
+        .scrollBar(BarState.Off)
+        .edgeEffect(EdgeEffect.Spring)
+        .width('100%')
+      }
+      .width('100%')
+      .alignItems(HorizontalAlign.Start)
+      .padding({
+        left: 16 + Bp.contentInset(this.windowW),
+        right: 16 + Bp.contentInset(this.windowW),
+        top: 12,
+        bottom: 24
+      })
+    }
+  }
+
   // ---- 数据 ----
 
   private async loadDetail(): Promise<void> {
@@ -208,6 +273,13 @@ export struct SubjectDetailPage {
     }
     this.loading = true;
     this.loadError = '';
+    // 数据库就绪后 Bangumi 数据才可读写本地缓存（未就绪时 API 内部自动跳过缓存）
+    try {
+      await AppDb.ready(Util.hostAbilityContext(this.getUIContext()));
+    } catch (e) {
+      // 数据库初始化失败不阻塞详情加载
+    }
+    this.loadRelated();
     try {
       this.detail = await BangumiApi.getSubject(this.subjectId);
       this.loading = false;
@@ -215,6 +287,27 @@ export struct SubjectDetailPage {
       this.loading = false;
       this.loadError = e instanceof Error ? e.message : 'load_failed';
     }
+  }
+
+  // 相关条目：与详情并行加载，失败静默隐藏区块
+  private async loadRelated(): Promise<void> {
+    this.related = [];
+    try {
+      this.related = await BangumiApi.getSubjectRelations(this.subjectId);
+    } catch (e) {
+      this.related = [];
+    }
+  }
+
+  // 关系文案：已知关系本地化，未知（如“游戏”“角色出演”）原样展示
+  private relationLabel(relation: string): ResourceStr {
+    return BangumiApi.relationLabelRes(relation);
+  }
+
+  // 点击关联卡片：进入该条目自己的详情页
+  private openRelated(item: BgmRelatedSubject): void {
+    const params: SubjectDetailParams = { subjectId: item.id };
+    this.pathStack.pushPathByName('SubjectDetail', params);
   }
 
   // “在应用内搜索”：用中文名（回退原名）发起全局搜索

@@ -9,7 +9,7 @@ import { CategoryRepo, ChapterRepo, MangaRepo, TrackRepo } from '../data/Repos';
 import { SourceRegistry } from '../source/Source';
 import { JsvmSource } from '../source/JsvmSource';
 import { DuplicateManga, CategoryRecord, ChapterRecord, ContentType, DownloadTask, MangaRecord, SManga } from '../model/Models';
-import { DetailParams, DetailSearchResult, GlobalSearchParams, MigrateSearchParams } from '../model/RouteParams';
+import { DetailParams, DetailSearchResult, GlobalSearchParams, MigrateSearchParams, SubjectDetailParams } from '../model/RouteParams';
 import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
@@ -22,6 +22,7 @@ import { NaturalCompare } from '../common/NaturalCompare';
 import { DownloadService } from '../data/DownloadService';
 import { DownloadRules } from '../data/DownloadRules';
 import { BtFlow } from '../data/BtFlow';
+import { BangumiApi, BgmRelatedSubject } from '../data/BangumiApi';
 import { Settings } from '../common/Settings';
 import { LibraryAddFlow } from '../common/LibraryAddFlow';
 import { WidgetUpdater } from '../form/WidgetUpdater';
@@ -323,6 +324,8 @@ export struct MangaDetailPage {
   @State showTrackSheet: boolean = false;
   // 相关/推荐作品（插件可选导出 getRelatedWorks；为空不渲染该区块）
   @State relatedWorks: SManga[] = [];
+  // Bangumi 相关系列（ACGN 源按名称+作者匹配；匹配失败/非 ACGN 源为空）
+  @State bgmRelated: BgmRelatedSubject[] = [];
   @State showCoverViewer: boolean = false;
   @State showSettingsSheet: boolean = false;
   // 更新间隔选择弹层（对齐 Mihon SetIntervalDialog）
@@ -760,6 +763,13 @@ export struct MangaDetailPage {
             }
           }
 
+          // Bangumi 相关系列（ACGN 源按名称+作者匹配）
+          if (this.bgmRelated.length > 0) {
+            ListItem() {
+              this.bgmRelatedContent()
+            }
+          }
+
           // 章节标题栏（对齐 Mihon ChapterHeader）
           ListItem() {
             this.chapterHeaderContent()
@@ -805,6 +815,9 @@ export struct MangaDetailPage {
             }
             if (this.relatedWorks.length > 0) {
               this.relatedContent()
+            }
+            if (this.bgmRelated.length > 0) {
+              this.bgmRelatedContent()
             }
           }
           .width('100%')
@@ -1230,6 +1243,66 @@ export struct MangaDetailPage {
     })
   }
 
+  // Bangumi 相关系列（ACGN 源按名称+作者匹配）：横滑卡片 = 封面 + 标题 + 关系文案，
+  // 点击进入条目详情页（对齐 SubjectDetailPage 相关条目块样式）
+  @Builder
+  bgmRelatedContent() {
+    Column() {
+      Text($r('app.string.detail_bgm_related'))
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+      List({ space: 12 }) {
+        ForEach(this.bgmRelated, (item: BgmRelatedSubject) => {
+          ListItem() {
+            Column() {
+              SmartImage({
+                url: item.cover,
+                fit: ImageFit.Cover,
+                placeholderIconSize: 24
+              })
+                .width(96)
+                .aspectRatio(2 / 3)
+                .borderRadius(8)
+                .clip(true)
+                .backgroundColor(this.pal.chip)
+
+              Text(item.nameCn !== '' ? item.nameCn : item.name)
+                .fontSize(13)
+                .fontColor(this.pal.text)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Ellipsis })
+                .margin({ top: 5 })
+
+              Text(BangumiApi.relationLabelRes(item.relation))
+                .fontSize(11)
+                .fontColor(this.pal.sub)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Ellipsis })
+            }
+            .width(96)
+            .alignItems(HorizontalAlign.Start)
+            .onClick(() => {
+              this.openBgmRelated(item);
+            })
+          }
+        }, (item: BgmRelatedSubject): string => `bgm-${item.id}`)
+      }
+      .listDirection(Axis.Horizontal)
+      .scrollBar(BarState.Off)
+      .edgeEffect(EdgeEffect.Spring)
+      .width('100%')
+      .margin({ top: 10 })
+    }
+    .alignItems(HorizontalAlign.Start)
+    .width('100%')
+    .padding({
+      left: 16 + this.padInset(),
+      right: 16 + this.padInset(),
+      top: 10
+    })
+  }
+
   // 章节标题栏：标题/排序/筛选入口 + 批量下载 + 全部已读（对齐 Mihon ChapterHeader）
   @Builder
   chapterHeaderContent() {
@@ -1630,6 +1703,7 @@ export struct MangaDetailPage {
       await this.syncFromSource();
       await this.refreshTrackCount();
       await this.loadRelatedWorks();
+      this.loadBgmRelated();
     } catch (e) {
       const msg = e instanceof Error ? e.message : `${e}`;
       hilog.warn(0x0001, 'MangaDetail', 'loadAll failed: %{public}s', msg);
@@ -1658,6 +1732,47 @@ export struct MangaDetailPage {
     } catch (e) {
       this.relatedWorks = [];
     }
+  }
+
+  // Bangumi 相关系列：ACGN 源（manifest acgn 声明）按名称+作者匹配条目后取关联列表，
+  // 失败/无匹配静默隐藏区块（对齐 animeko 相关条目入口，不阻塞详情主流程）。
+  private async loadBgmRelated(): Promise<void> {
+    this.bgmRelated = [];
+    try {
+      const source = SourceRegistry.get(this.manga.sourceKey);
+      if (source === undefined || !source.acgn) {
+        return;
+      }
+      // 数据库就绪后 Bangumi 数据才可读写本地缓存（未就绪时 API 内部自动跳过缓存）
+      try {
+        await AppDb.ready(Util.hostAbilityContext(this.getUIContext()));
+      } catch (dbErr) {
+        // 数据库初始化失败不阻塞相关系列加载
+      }
+      // 作品级内容类型决定 Bangumi 搜索类型：视频源 → 动画(2)，漫画/小说源 → 书籍(1)
+      const type: number = this.manga.contentType === ContentType.VIDEO ? 2 : 1;
+      const subjectId: number = await BangumiApi.matchSubject(
+        this.manga.title, this.manga.author, type);
+      if (subjectId <= 0) {
+        return;
+      }
+      const list: BgmRelatedSubject[] = await BangumiApi.getSubjectRelations(subjectId);
+      const filtered: BgmRelatedSubject[] = [];
+      for (const item of list) {
+        if (item.id !== subjectId && filtered.length < 20) {
+          filtered.push(item);
+        }
+      }
+      this.bgmRelated = filtered;
+    } catch (e) {
+      this.bgmRelated = [];
+    }
+  }
+
+  // 点击 Bangumi 相关系列卡片：进入该条目详情页（SubjectDetail 路由）
+  private openBgmRelated(item: BgmRelatedSubject): void {
+    const params: SubjectDetailParams = { subjectId: item.id };
+    this.pathStack.pushPathByName('SubjectDetail', params);
   }
 
   // 点击相关作品：入库（upsertFromSource）后压入详情页
@@ -1723,6 +1838,7 @@ export struct MangaDetailPage {
   private async refreshFromSource(): Promise<void> {
     try {
       await this.syncFromSource();
+      this.loadBgmRelated();
     } finally {
       this.refreshing = false;
     }
@@ -1733,6 +1849,7 @@ export struct MangaDetailPage {
   private async refreshPanesFromSource(): Promise<void> {
     try {
       await this.syncFromSource();
+      this.loadBgmRelated();
     } finally {
       this.refreshingLeft = false;
       this.refreshingRight = false;

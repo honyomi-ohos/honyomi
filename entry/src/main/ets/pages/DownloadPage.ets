@@ -39,7 +39,8 @@ class DownloadedRowItem {
 
 // 队列行子组件：ForEach key 固定为章节 id 后同 key 行会被复用而不重跑生成器，
 // 进度/状态改由本组件自订阅 DownloadService 通知刷新（DownloadTask 非 @Observed）
-// 行布局对齐 Mihon download_item.xml：拖拽把手 | 章节标题+页数文本 | 细进度条 | 溢出菜单
+// 行布局对齐 Mihon download_item.xml：拖拽把手 | 作品标题+页数文本 / 章节名(12sp) |
+// 细进度条 | 溢出菜单
 @Component
 struct QueueTaskRow {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
@@ -107,11 +108,11 @@ struct QueueTaskRow {
   build() {
     Row() {
       AppIcon({ name: 'drag_handle', iconSize: 20, tint: this.pal.sub })
-        .margin({ right: 8 })
+        .padding({ left: 12, right: 4 })
       Column() {
         Row() {
-          // 组头已展示作品标题，行内主文本为章节名（对齐 Mihon DownloadHolder）
-          Text(this.task.chapterName)
+          // 对齐 Mihon download_item.xml：行内主文本为作品标题，页数进度文本随行尾
+          Text(this.task.mangaTitle)
             .fontSize(14)
             .fontColor(this.pal.text)
             .maxLines(1)
@@ -128,9 +129,16 @@ struct QueueTaskRow {
         }
         .width('100%')
 
+        Text(this.task.chapterName)
+          .fontSize(12)
+          .fontColor(this.pal.text)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+          .margin({ top: 2 })
+
         if (this.total > 0) {
           Progress({ value: this.progress, total: this.total, type: ProgressType.Linear })
-            .style({ strokeWidth: 3 })
+            .style({ strokeWidth: 4 })
             .color(this.state === 3 ? this.pal.badgeRed : this.pal.primary)
             .backgroundColor(this.pal.chip)
             .margin({ top: 6 })
@@ -154,8 +162,8 @@ struct QueueTaskRow {
     .padding({
       left: 12 + Bp.contentInset(this.windowW),
       right: 12 + Bp.contentInset(this.windowW),
-      top: 10,
-      bottom: 10
+      top: 8,
+      bottom: 8
     })
   }
 
@@ -178,8 +186,9 @@ struct QueueTaskRow {
 }
 
 // 下载管理页：双 Tab 分别管理"下载中"队列与"已下载"章节
-// （交互对齐 Mihon DownloadQueueScreen：按作品分组可折叠、标题数量 Pill 徽标、
-// 排序/溢出菜单、组内拖拽排序、行菜单整体调整优先级、右下角暂停/继续 FAB）
+// （风格对齐 Mihon DownloadQueueScreen：SectionHeader 分组头「作品 (N)」、
+// 标题数量 Pill 徽标、M3 TabRow 页签、排序/溢出菜单、组内拖拽排序、
+// 行菜单整体调整优先级、右下角暂停/继续 FAB；已下载分组默认折叠）
 @Component
 export struct DownloadPage {
   pathStack: NavPathStack = new NavPathStack();
@@ -199,7 +208,8 @@ export struct DownloadPage {
   @State selectedIds: Set<number> = new Set<number>();
   private downloaded: DownloadedManga[] = [];
   private collapsedQueueIds: Set<number> = new Set<number>();
-  private collapsedDownloadedIds: Set<number> = new Set<number>();
+  // 已下载分组默认折叠：仅记录用户显式展开的作品组
+  private expandedDownloadedIds: Set<number> = new Set<number>();
   private tabsController: TabsController = new TabsController();
   private lastQueueSignature: string = '';
 
@@ -266,20 +276,23 @@ export struct DownloadPage {
     }
   }
 
-  // 页签标签：选中超粗+主色，附数量徽标（对齐 Mihon TabRow + Pill 计数）
+  // 页签标签：M3 TabRow 风格（选中主色 + 底部指示条），附数量徽标（对齐 Mihon Pill 计数）
+  // 数量在 Builder 内经 @State 派生：@Builder 按值传参不会随状态变化刷新（徽标数量不跟随问题）
   @Builder
-  tabLabel(title: ResourceStr, count: number, index: number) {
+  tabLabel(index: number) {
     Column() {
       Row({ space: 5 }) {
-        Text(title)
+        Text(index === 0 ? $r('app.string.download_tab_queue') : $r('app.string.download_tab_downloaded'))
           .fontSize(14)
-          .fontWeight(this.currentTab === index ? FontWeight.Bold : FontWeight.Normal)
-          .fontColor(this.currentTab === index ? this.pal.primary : this.pal.text)
-        if (count > 0) {
-          Text(`${count}`)
+          .fontWeight(FontWeight.Medium)
+          .fontColor(this.currentTab === index ? this.pal.primary : this.secondaryText())
+        if (index === 0 ? this.activeQueueCount() > 0 : this.downloadedCount > 0) {
+          Text(`${index === 0 ? this.activeQueueCount() : this.downloadedCount}`)
             .fontSize(11)
-            .fontColor(this.currentTab === index ? this.pal.primary : this.pal.sub)
-            .backgroundColor(this.isDark ? this.pal.text + '1F' : this.pal.text + '14')
+            // 徽标文本用主文本色（对齐 Mihon Pill：onBackground 全对比度）
+            .fontColor(this.pal.text)
+            // 徽标底色用 chip 表面色：原 text+alpha 底色在暗色下与亮色文字对比不足
+            .backgroundColor(this.pal.chip)
             .borderRadius(9)
             .padding({
               left: 6,
@@ -290,41 +303,66 @@ export struct DownloadPage {
         }
       }
       .justifyContent(FlexAlign.Center)
+      .height(38)
+
+      // M3 TabRow 指示条：选中时主色短横线
+      Row()
+        .width(32)
+        .height(3)
+        .borderRadius(2)
+        .backgroundColor(this.currentTab === index ? this.pal.primary : Color.Transparent)
     }
     .height(44)
     .layoutWeight(1)
-    .justifyContent(FlexAlign.Center)
+    .alignItems(HorizontalAlign.Center)
     .onClick(() => {
       this.tabsController.changeIndex(index);
     })
   }
 
-  // 下载中分组头：折叠开关 + 作品标题 + 章节数（点击整行切换折叠）
+  // SectionHeader 文本色（对齐 M3 onSurfaceVariant：暗色需保持高对比度，
+  // 深色 sub 值偏暗，改用主文本色 85% 透明近似 M3 暗色层次）
+  private secondaryText(): string {
+    return this.isDark ? this.pal.text + 'D9' : this.pal.sub;
+  }
+
+  // 「下载中」计数仅统计排队/下载中任务：失败(3)任务不出队（供重试），
+  // 但不应让徽标在实际下载数为 0 时仍显示
+  private activeQueueCount(): number {
+    let n: number = 0;
+    for (const t of this.queue) {
+      if (t.state === 0 || t.state === 1) {
+        n++;
+      }
+    }
+    return n;
+  }
+
+  // 下载中分组头：SectionHeader 风格「作品名 (N)」（对齐 Mihon download_header.xml
+  // TextAppearance.Tachiyomi.SectionHeader：14sp Medium 次级色），点击整行切换折叠
   @Builder
   queueGroupHeader(group: QueueGroup) {
-    Row({ space: 8 }) {
-      AppIcon({
-        name: this.isQueueGroupCollapsed(group.mangaId) ? 'expand_more' : 'expand_less',
-        iconSize: 18,
-        tint: this.pal.sub
-      })
-      Text(group.mangaTitle)
+    Row() {
+      Text(`${group.mangaTitle} (${group.tasks.length})`)
         .fontSize(14)
-        .fontWeight(FontWeight.Bold)
-        .fontColor(this.pal.text)
+        .fontWeight(FontWeight.Medium)
+        .fontColor(this.secondaryText())
         .maxLines(1)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
         .layoutWeight(1)
-      Text($r('app.string.download_chapter_count', group.tasks.length))
-        .fontSize(11)
-        .fontColor(this.pal.sub)
+      // 折叠态指示箭头：体现分组头与任务行的父子层级
+      AppIcon({
+        name: this.isQueueGroupCollapsed(group.mangaId) ? 'expand_more' : 'expand_less',
+        iconSize: 20,
+        tint: this.pal.sub
+      })
     }
     .width('100%')
     .padding({
-      left: 12 + this.inset(),
-      right: 12 + this.inset(),
-      top: 12,
-      bottom: 6
+      left: 16 + this.inset(),
+      right: 16 + this.inset(),
+      top: 14,
+      bottom: 8
     })
     .backgroundColor(this.pal.bg)
     .onClick(() => {
@@ -332,7 +370,8 @@ export struct DownloadPage {
     })
   }
 
-  // 多选态头部变勾选框，点击整组勾选/取消
+  // 已下载分组头：SectionHeader 风格「作品名 (N)」，点击展开/折叠（默认折叠）；
+  // 多选态头部变勾选框，点击整组勾选/取消，尾部图标整作品删除
   @Builder
   downloadedGroupHeader(group: DownloadedManga) {
     Row({ space: 8 }) {
@@ -342,24 +381,14 @@ export struct DownloadPage {
           iconSize: 20,
           tint: this.isGroupFullySelected(group) ? this.pal.primary : this.pal.sub
         })
-      } else {
-        AppIcon({
-          name: this.isDownloadedGroupCollapsed(group.mangaId) ? 'expand_more' : 'expand_less',
-          iconSize: 18,
-          tint: this.pal.sub
-        })
       }
-      AppIcon({ name: 'photo', iconSize: 16 })
-      Text(group.mangaTitle)
+      Text(`${group.mangaTitle} (${group.chapters.length})`)
         .fontSize(14)
-        .fontWeight(FontWeight.Bold)
-        .fontColor(this.pal.text)
+        .fontWeight(FontWeight.Medium)
+        .fontColor(this.secondaryText())
         .maxLines(1)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
         .layoutWeight(1)
-      Text($r('app.string.download_chapter_count', group.chapters.length))
-        .fontSize(11)
-        .fontColor(this.pal.sub)
       if (!this.selecting) {
         AppIcon({ name: 'delete_sweep', iconSize: 20, tint: this.pal.sub })
           .padding({ left: 6, right: 2 })
@@ -367,11 +396,19 @@ export struct DownloadPage {
             this.confirmDeleteSeries(group);
           })
       }
+      // 折叠态指示箭头：体现分组头与章节行的父子层级
+      if (!this.selecting) {
+        AppIcon({
+          name: this.isDownloadedGroupCollapsed(group.mangaId) ? 'expand_more' : 'expand_less',
+          iconSize: 20,
+          tint: this.pal.sub
+        })
+      }
     }
     .width('100%')
     .padding({
-      left: 12 + this.inset(),
-      right: 12 + this.inset(),
+      left: 16 + this.inset(),
+      right: 16 + this.inset(),
       top: 14,
       bottom: 8
     })
@@ -398,9 +435,8 @@ export struct DownloadPage {
     }, ResponseType.RightClick)
   }
 
-  // 已下载分组头：普通态点击折叠/展开、长按进入多选并勾选整组、尾部图标整作品删除；
-
-  // 多选态头部勾选框、点击行切换选中
+  // 已下载章节行：单行章节名 + 尾部删除（Mihon 章节列表样式）；
+  // 垂直/右侧内边距与下载中行保持一致，普通态尾部单章删除、长按进入多选
   @Builder
   downloadedChapterRow(item: DownloadedChapter) {
     Row({ space: 8 }) {
@@ -410,7 +446,6 @@ export struct DownloadPage {
           iconSize: 20,
           tint: this.selectedIds.has(item.chapterId) ? this.pal.primary : this.pal.sub
         })
-          .margin({ left: 8 })
       }
       Text(item.chapterName)
         .fontSize(14)
@@ -420,7 +455,7 @@ export struct DownloadPage {
         .layoutWeight(1)
       if (!this.selecting) {
         AppIcon({ name: 'delete', iconSize: 20, tint: this.pal.sub })
-          .padding(6)
+          .padding({ left: 6, right: 2 })
           .onClick(() => {
             this.deleteChapter(item);
           })
@@ -428,10 +463,11 @@ export struct DownloadPage {
     }
     .width('100%')
     .padding({
-      left: (this.selecting ? 12 : 42) + this.inset(),
-      right: 6 + this.inset(),
-      top: 6,
-      bottom: 6
+      // 章节行相对分组头缩进，体现从属层级
+      left: 32 + this.inset(),
+      right: 12 + this.inset(),
+      top: 8,
+      bottom: 8
     })
     .onClick((event?: ClickEvent) => {
       if (event !== undefined && Util.isCtrlHeld(event) && !this.selecting) {
@@ -452,8 +488,6 @@ export struct DownloadPage {
       this.downloadedChapterMenu(item);
     }, ResponseType.RightClick)
   }
-
-  // 已下载章节行：普通态尾部单章删除、长按进入多选；
 
   // 下载中 Tab：分组队列列表 + 拖拽排序 + 暂停/继续 FAB
   @Builder
@@ -486,12 +520,6 @@ export struct DownloadPage {
       .width('100%')
       .height('100%')
       .scrollBar(BarState.Auto)
-      .divider({
-        strokeWidth: 1,
-        color: this.pal.divider,
-        startMargin: 16 + this.inset(),
-        endMargin: 16 + this.inset(),
-      })
       .onWillScroll((offset: number) => {
         // 对齐 Mihon FAB 手势行为：向列表底部滚动收起、回滚展开
         if (offset > 0) {
@@ -501,14 +529,19 @@ export struct DownloadPage {
         }
       })
 
-      // 暂停/继续 FAB（对齐 Mihon SmallExtendedFloatingActionButton：队列空时隐藏）
+      // 暂停/继续 FAB（对齐 Mihon SmallExtendedFloatingActionButton：
+      // 浅色 M3 容器色；暗色主题容器色过暗（近背景 1.7:1），改用主色实底保证对比度）
       if (this.queue.length > 0) {
         Row({ space: 6 }) {
-          AppIcon({ name: this.paused ? 'play_arrow' : 'pause', iconSize: 20, tint: this.pal.onPrimary })
+          AppIcon({
+            name: this.paused ? 'play_arrow' : 'pause',
+            iconSize: 20,
+            tint: this.isDark ? this.pal.onPrimary : this.pal.onPrimarySoft
+          })
           if (this.fabExpanded) {
             Text(this.paused ? $r('app.string.download_resume') : $r('app.string.download_pause'))
               .fontSize(14)
-              .fontColor(this.pal.onPrimary)
+              .fontColor(this.isDark ? this.pal.onPrimary : this.pal.onPrimarySoft)
           }
         }
         .padding({
@@ -518,7 +551,7 @@ export struct DownloadPage {
           bottom: 11,
         })
         .borderRadius(24)
-        .backgroundColor(this.pal.primary)
+        .backgroundColor(this.isDark ? this.pal.primary : this.pal.primarySoft)
         .shadow({ radius: 8, color: '#66000000', offsetY: 4 })
         .margin({ right: 20 + this.inset(), bottom: 28 })
         .animation({ duration: 150 })
@@ -572,12 +605,6 @@ export struct DownloadPage {
       .width('100%')
       .height('100%')
       .scrollBar(BarState.Auto)
-      .divider({
-        strokeWidth: 1,
-        color: this.pal.divider,
-        startMargin: 16 + this.inset(),
-        endMargin: 16 + this.inset(),
-      })
 
       // 多选底部操作条：退出 / 已选计数 / 全选切换 / 删除
       if (this.selecting) {
@@ -643,11 +670,12 @@ export struct DownloadPage {
             .fontWeight(FontWeight.Bold)
             .fontColor(this.pal.text)
             .maxLines(1)
-          if (this.queue.length > 0) {
-            Text(`${this.queue.length}`)
+          if (this.activeQueueCount() > 0) {
+            Text(`${this.activeQueueCount()}`)
               .fontSize(12)
               .fontColor(this.pal.text)
-              .backgroundColor(this.isDark ? this.pal.text + '1F' : this.pal.text + '14')
+              // 徽标底色用 chip 表面色：原 text+alpha 底色在暗色下与亮色文字对比不足
+              .backgroundColor(this.pal.chip)
               .borderRadius(11)
               .padding({
                 left: 7,
@@ -678,9 +706,10 @@ export struct DownloadPage {
       })
 
       // 页签标签行：在限宽内容列内均分两份（对齐 Mihon TabRow），点击经控制器切换
+      // 「下载中」徽标只统计排队/下载中任务（activeQueueCount），失败任务不计入
       Row() {
-        this.tabLabel($r('app.string.download_tab_queue'), this.queue.length, 0)
-        this.tabLabel($r('app.string.download_tab_downloaded'), this.downloadedCount, 1)
+        this.tabLabel(0)
+        this.tabLabel(1)
       }
       .width('100%')
       .padding({
@@ -754,16 +783,19 @@ export struct DownloadPage {
 
   // ----- 渲染模型重建 -----
 
+  // 已下载分组默认折叠（对齐"默认收起"交互），仅显式展开的组显示章节行
   private isDownloadedGroupCollapsed(mangaId: number): boolean {
-    return this.collapsedDownloadedIds.has(mangaId);
+    return !this.expandedDownloadedIds.has(mangaId);
   }
 
   private toggleDownloadedGroup(mangaId: number): void {
-    if (this.collapsedDownloadedIds.has(mangaId)) {
-      this.collapsedDownloadedIds.delete(mangaId);
+    const next: Set<number> = new Set<number>(this.expandedDownloadedIds);
+    if (next.has(mangaId)) {
+      next.delete(mangaId);
     } else {
-      this.collapsedDownloadedIds.add(mangaId);
+      next.add(mangaId);
     }
+    this.expandedDownloadedIds = next;
     this.rebuildDownloadedRows();
   }
 
@@ -807,7 +839,7 @@ export struct DownloadPage {
       header.isHeader = true;
       header.group = group;
       rows.push(header);
-      if (this.collapsedDownloadedIds.has(group.mangaId)) {
+      if (!this.expandedDownloadedIds.has(group.mangaId)) {
         continue;
       }
       for (const ch of group.chapters) {
@@ -923,14 +955,16 @@ export struct DownloadPage {
 
   private queueRowKey(item: QueueRowItem): string {
     if (item.isHeader) {
-      return `h-${item.group.mangaId}-${this.collapsedQueueIds.has(item.group.mangaId) ? 'c' : 'e'}`;
+      return `h-${item.group.mangaId}-${item.group.tasks.length}-` +
+        `${this.collapsedQueueIds.has(item.group.mangaId) ? 'c' : 'e'}`;
     }
     return item.key();
   }
 
   private downloadedRowKey(item: DownloadedRowItem): string {
     if (item.isHeader) {
-      return `dh-${item.group.mangaId}-${this.collapsedDownloadedIds.has(item.group.mangaId) ? 'c' : 'e'}`;
+      return `dh-${item.group.mangaId}-${item.group.chapters.length}-` +
+        `${this.isDownloadedGroupCollapsed(item.group.mangaId) ? 'c' : 'e'}`;
     }
     return item.key();
   }
@@ -956,6 +990,8 @@ export struct DownloadPage {
   private exitSelection(): void {
     this.selectedIds = new Set<number>();
     this.selecting = false;
+    // 退出多选后恢复「已下载默认折叠」
+    this.collapseAllDownloadedGroups();
   }
 
   private toggleSelected(chapterId: number): void {
@@ -1012,10 +1048,19 @@ export struct DownloadPage {
   }
 
   private expandAllDownloadedGroups(): void {
-    if (this.collapsedDownloadedIds.size === 0) {
+    const next: Set<number> = new Set<number>();
+    for (const group of this.downloaded) {
+      next.add(group.mangaId);
+    }
+    this.expandedDownloadedIds = next;
+    this.rebuildDownloadedRows();
+  }
+
+  private collapseAllDownloadedGroups(): void {
+    if (this.expandedDownloadedIds.size === 0) {
       return;
     }
-    this.collapsedDownloadedIds = new Set<number>();
+    this.expandedDownloadedIds = new Set<number>();
     this.rebuildDownloadedRows();
   }
 

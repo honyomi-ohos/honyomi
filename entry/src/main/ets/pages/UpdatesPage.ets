@@ -10,7 +10,7 @@ import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Settings } from '../common/Settings';
-import { Util } from '../common/Util';
+import { Util, LibGrid } from '../common/Util';
 import { AppKeys } from '../common/AppKeys';
 import { EmptyScreen } from './components/EmptyScreen';
 import { LoadingState } from './components/LoadingState';
@@ -34,9 +34,9 @@ export struct UpdatesPage {
   @StorageProp('navBarH') navBarH: number = 0;
   // 页签浮动条避让高度：宽屏无页签条时为 0（Index 按断点发布）
   @StorageProp('tabPadH') tabPadH: number = 76;
-  @StorageProp('windowW') @Watch('onWindowWChange') windowW: number = 0;
-  // 时间表网格列数镜像：断点跨越时经 animateTo 更新，行重排带过渡动画
-  @State schedCols: number = 2;
+  @StorageProp('windowW') windowW: number = 0;
+  // 时间表网格内容区宽度镜像：列数与书架同规则（LibGrid 推导），档位跨越时经 animateTo 平滑重排
+  @State schedW: number = 0;
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
   // 关闭“显示 NSFW 源”时隐藏 NSFW 插件源的更新；插件注册完成后（pluginsDirty）重算过滤
   @StorageProp('showNsfw') @Watch('onLibDirty') showNsfw: boolean = false;
@@ -80,7 +80,6 @@ export struct UpdatesPage {
     this.fBookmarked = Settings.getUpdatesTriState('bookmarked');
     this.includedCats = Settings.getUpdatesIncludedCategories();
     this.excludedCats = Settings.getUpdatesExcludedCategories();
-    this.schedCols = this.colsForWidth(this.windowW);
     this.publishFilterActive();
     this.buildWeekdayLabels();
     this.loadData();
@@ -362,6 +361,7 @@ export struct UpdatesPage {
   }
 
   // 新番时间表内容：星期 chips（周一起排、今日主色描边）+ 按选中星期过滤的封面网格
+  // 网格与书架同构：Grid + columnsTemplate，列数同规则（书架手动列数/自动档），宽屏不限宽
   @Builder
   scheduleContent() {
     Column() {
@@ -372,8 +372,8 @@ export struct UpdatesPage {
           }, (day: number) => `wd-${day}`)
         }
         .padding({
-          left: 16 + this.inset(),
-          right: 16 + this.inset()
+          left: 16,
+          right: 16
         })
       }
       .scrollable(ScrollDirection.Horizontal)
@@ -405,36 +405,30 @@ export struct UpdatesPage {
         .width('100%')
         .justifyContent(FlexAlign.Center)
       } else {
-        Scroll() {
-          Column({ space: 14 }) {
-            ForEach(this.scheduleRows(), (row: BgmCalendarItem[]) => {
-              Row({ space: 14 }) {
-                ForEach(row, (item: BgmCalendarItem) => {
-                  this.scheduleCard(item)
-                }, (item: BgmCalendarItem) => `bgm-${item.id}`)
-              }
-              .width('100%')
-              .transition(TransitionEffect.OPACITY.animation({ duration: 250, curve: Curve.Friction }))
-            }, (row: BgmCalendarItem[], idx: number) =>
-            `bgmrow-${idx}-${row.length > 0 ? row[0].id : 0}`)
-          }
-          .constraintSize({ maxWidth: 720 })
-          .width('100%')
-          .padding({
-            left: 16 + this.inset(),
-            right: 16 + this.inset(),
-            top: 8,
-            bottom: this.navBarH + this.tabPadH
-          })
+        Grid() {
+          ForEach(this.dayItems(), (item: BgmCalendarItem) => {
+            GridItem() {
+              this.scheduleCard(item)
+            }
+          }, (item: BgmCalendarItem) => `bgm-${item.id}`)
         }
+        .columnsTemplate(this.schedColumnsTemplate())
+        .columnsGap(8)
+        .rowsGap(12)
+        .padding({ left: 8, right: 8, top: 8 })
+        .contentEndOffset(this.navBarH + this.tabPadH)
         .layoutWeight(1)
         .scrollBar(BarState.Auto)
-        .width('100%')
-        .align(Alignment.Top)
       }
     }
     .width('100%')
     .layoutWeight(1)
+    .onAreaChange((_old: Area, newArea: Area) => {
+      const w = newArea.width;
+      if (typeof w === 'number') {
+        this.applySchedW(w);
+      }
+    })
   }
 
   // 星期 chip：选中实心、今日描边
@@ -486,24 +480,24 @@ export struct UpdatesPage {
       }
       .width('100%')
 
+      // 标题固定 2 行、放送日期固定 1 行：文字长短/缺失不改变卡片高度，同行卡片底部对齐
       Text(item.nameCn !== '' ? item.nameCn : item.name)
         .fontSize(13)
         .fontWeight(FontWeight.Medium)
         .fontColor(this.pal.text)
+        .minLines(2)
         .maxLines(2)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
         .margin({ top: 6 })
 
-      if (item.airDate !== '') {
-        Text(item.airDate)
-          .fontSize(11)
-          .fontColor(this.pal.sub)
-          .maxLines(1)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
-          .margin({ top: 2 })
-      }
+      Text(item.airDate)
+        .fontSize(11)
+        .fontColor(this.pal.sub)
+        .maxLines(1)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .margin({ top: 2 })
     }
-    .layoutWeight(1)
+    .width('100%')
     .alignItems(HorizontalAlign.Start)
     .onClick(() => {
       const params: SubjectDetailParams = { subjectId: item.id };
@@ -591,43 +585,40 @@ export struct UpdatesPage {
     return this.scheduleAll.filter((it: BgmCalendarItem): boolean => it.jsDay === this.scheduleDay);
   }
 
-  // 网格列数随窗口宽度：2-5 列
-  private colsForWidth(w: number): number {
-    if (w >= 1200) {
-      return 5;
+  // 当前生效列数：与书架同规则——书架手动列数按可行区间收敛（0=自动），自动档约 128vp 一格
+  private effectiveSchedCols(w: number): number {
+    const manual: number = Settings.getLibraryGridCols();
+    if (manual > 0) {
+      return LibGrid.clampCols(manual, w);
     }
-    if (w >= 840) {
-      return 4;
-    }
-    if (w >= 600) {
-      return 3;
-    }
-    return 2;
+    return LibGrid.autoCols(w);
   }
 
-  private scheduleCols(): number {
-    return this.schedCols;
+  private schedColsCount(): number {
+    return this.effectiveSchedCols(this.schedW > 0 ? this.schedW : 360);
   }
 
-  // 窗口宽度跨越列数档位：包 animateTo 让时间表行重排带过渡动画
-  private onWindowWChange(): void {
-    const next: number = this.colsForWidth(this.windowW);
-    if (next !== this.schedCols) {
+  // 网格宽变化：生效列数档位变化时包 animateTo，让网格重排带过渡动画
+  private applySchedW(w: number): void {
+    if (w === this.schedW) {
+      return;
+    }
+    const reflow: boolean = this.effectiveSchedCols(w) !== this.schedColsCount();
+    if (reflow) {
       this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
-        this.schedCols = next;
+        this.schedW = w;
       });
+    } else {
+      this.schedW = w;
     }
   }
 
-  // 条目按列数分块为行（响应式网格）
-  private scheduleRows(): BgmCalendarItem[][] {
-    const items: BgmCalendarItem[] = this.dayItems();
-    const cols: number = this.scheduleCols();
-    const rows: BgmCalendarItem[][] = [];
-    for (let i = 0; i < items.length; i += cols) {
-      rows.push(items.slice(i, i + cols));
+  private schedColumnsTemplate(): string {
+    let tpl = '';
+    for (let i = 0; i < this.schedColsCount(); i++) {
+      tpl += '1fr ';
     }
-    return rows;
+    return tpl.trim();
   }
 }
 

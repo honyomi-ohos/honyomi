@@ -8,7 +8,7 @@ import { LocalSource } from '../source/LocalSource';
 import { DuplicateManga, CategoryRecord, ContentType, MangaRecord, SManga, WorksPage } from '../model/Models';
 import { BrowseSourceParams, DetailParams, DetailSearchResult, MigrateSearchParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
-import { Util } from '../common/Util';
+import { LibGrid, Util } from '../common/Util';
 import { MangaCard } from './components/MangaCard';
 import { MangaSkeletonGrid } from './components/MangaSkeletonGrid';
 import { EmptyScreen } from './components/EmptyScreen';
@@ -918,9 +918,13 @@ export struct BrowseSourcePage {
     return source !== undefined && source.nsfw ? 'NSFW' : '';
   }
 
-  // 结果网格列数：手机双列，平板/横屏按约 160vp 一卡自适应增加列数
+  // 结果网格列数：与书架保持一致——手动列数按可行区间收敛，0=自动（约 128vp 一格）
   private colsForWidth(w: number): number {
-    return Math.max(2, Math.floor((w - 32 - 12) / 160));
+    const manual: number = Settings.getLibraryGridCols();
+    if (manual > 0) {
+      return LibGrid.clampCols(manual, w);
+    }
+    return LibGrid.autoCols(w);
   }
 
   private gridColumns(): number {

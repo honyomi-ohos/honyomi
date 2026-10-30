@@ -27,6 +27,8 @@ export interface RepoProtoExtension {
   // 内容类型全量列表（manga | novel | video；可多选，[0] 为主类型）
   contentTypes: string[];
   checksum: string;
+  // ACGN 内容源标记（宿主据此启用 Bangumi 相关系列匹配）
+  acgn: boolean;
   sources: RepoProtoSource[];
 }
 
@@ -225,6 +227,7 @@ export class RepoProto {
     let contentWarning: number = 0;
     let bt: boolean = false;
     let checksum: string = '';
+    let acgn: boolean = false;
     const contentTypes: string[] = [];
     const sources: RepoProtoSource[] = [];
     while (!reader.eof()) {
@@ -283,6 +286,12 @@ export class RepoProto {
         }
       } else if (field === 11) {
         checksum = reader.readStringField(wire);
+      } else if (field === 12) {
+        if (wire === 0) {
+          acgn = reader.readVarint() !== 0;
+        } else {
+          reader.skipField(wire);
+        }
       } else {
         // extensionLib(4)：宿主暂不消费，按未知字段跳过
         reader.skipField(wire);
@@ -306,6 +315,7 @@ export class RepoProto {
       bt: bt,
       contentTypes: contentTypes,
       checksum: checksum,
+      acgn: acgn,
       sources: sources,
     };
     return ext;

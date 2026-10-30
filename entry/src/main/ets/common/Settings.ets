@@ -253,19 +253,6 @@ export class Settings {
     Settings.setStr('novelTtsVoice', v);
   }
 
-  // 书架类型筛选：all | manga | novel | video
-  static getLibraryContentFilter(): string {
-    const raw = Settings.getStr('libContentFilter', 'all');
-    if (raw === 'manga' || raw === 'novel' || raw === 'video') {
-      return raw;
-    }
-    return 'all';
-  }
-
-  static setLibraryContentFilter(v: string): void {
-    Settings.setStr('libContentFilter', v);
-  }
-
   static getThemeMode(): string {
     return Settings.getStr('themeMode', 'auto');
   }
@@ -867,6 +854,65 @@ export class Settings {
     Settings.setStr('userAgent', v);
   }
 
+  // Bangumi API 镜像（高级设置）：存储原始输入，空串 = 未设置（默认 api.bgm.tv）
+  static getBangumiApiBaseInput(): string {
+    return Settings.getStr('bangumiApiBase', '').trim();
+  }
+
+  static setBangumiApiBase(v: string): void {
+    Settings.setStr('bangumiApiBase', v.trim());
+  }
+
+  // 生效的 Bangumi API 基地址：自定义镜像强制 https:// 前缀（去尾部斜杠），
+  // 未设置/非法回退默认 https://api.bgm.tv（国内网络可指向自建反代）
+  static bangumiApiBase(): string {
+    const raw: string = Settings.getBangumiApiBaseInput().replace(/\/+$/, '');
+    if (/^https:\/\//.test(raw)) {
+      return raw;
+    }
+    return 'https://api.bgm.tv';
+  }
+
+  // Bangumi 图片镜像（高级设置）：与 API 镜像成对（bgm 反代一般同时代理
+  // api.bgm.tv 与 lain.bgm.tv）；存储原始输入，空串 = 未设置
+  static getBangumiImgBaseInput(): string {
+    return Settings.getStr('bangumiImgBase', '').trim();
+  }
+
+  static setBangumiImgBase(v: string): void {
+    Settings.setStr('bangumiImgBase', v.trim());
+  }
+
+  // 生效的 Bangumi 图片基地址：强制 https:// 前缀，未设置/非法回退默认 https://lain.bgm.tv
+  static bangumiImgBase(): string {
+    const raw: string = Settings.getBangumiImgBaseInput().replace(/\/+$/, '');
+    if (/^https:\/\//.test(raw)) {
+      return raw;
+    }
+    return 'https://lain.bgm.tv';
+  }
+
+  // Bangumi 图片 URL 统一出口：协议相对（//lain.bgm.tv/...）补 https；
+  // host 为 lain.bgm.tv 时替换为图片镜像基地址（路径原样保留），其余 URL 原样返回
+  static rewriteBangumiImageUrl(url: string): string {
+    if (url === '') {
+      return '';
+    }
+    const normalized: string = url.indexOf('//') === 0 ? `https:${url}` : url;
+    const schemeIdx: number = normalized.indexOf('://');
+    if (schemeIdx < 0) {
+      return normalized;
+    }
+    const rest: string = normalized.substring(schemeIdx + 3);
+    const slashIdx: number = rest.indexOf('/');
+    const host: string = slashIdx < 0 ? rest : rest.substring(0, slashIdx);
+    if (host !== 'lain.bgm.tv') {
+      return normalized;
+    }
+    const path: string = slashIdx < 0 ? '' : rest.substring(slashIdx);
+    return Settings.bangumiImgBase() + path;
+  }
+
   // DoH 供应商 id（空串 = 关闭；供应商清单见 net/Doh.ets）
   static getDohProvider(): string {
     return Settings.getStr('dohProvider', '');
@@ -945,7 +991,7 @@ export class Settings {
     }
   }
 
-  // 排序键：'alpha','total','lastRead','lastUpdate','unread','latestChapter','fetchDate','dateAdded','random'
+  // 排序键：'alpha','total','lastRead','lastUpdate','unread','latestChapter','fetchDate','dateAdded','rating','random'
   static getLibrarySort(): string {
     return Settings.getStr('librarySort', 'alpha');
   }

@@ -853,6 +853,10 @@
       "value": "相關作品"
     },
     {
+      "name": "detail_bgm_related",
+      "value": "相關系列"
+    },
+    {
       "name": "detail_chapters_count",
       "value": "章節（%d）"
     },
@@ -2123,6 +2127,10 @@
     {
       "name": "lib_sort_date_added",
       "value": "收藏日期"
+    },
+    {
+      "name": "lib_sort_rating",
+      "value": "平台評分"
     },
     {
       "name": "lib_sort_random",
@@ -3765,6 +3773,38 @@
       "value": "自訂 User-Agent"
     },
     {
+      "name": "pref_bangumi_api_mirror",
+      "value": "Bangumi API 鏡像"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_hint",
+      "value": "如 https://your-proxy.example.com，留空恢復預設 api.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_invalid",
+      "value": "位址需以 https:// 開頭"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_saved",
+      "value": "Bangumi API 鏡像已保存"
+    },
+    {
+      "name": "pref_bangumi_img_mirror",
+      "value": "Bangumi 圖片鏡像"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_hint",
+      "value": "如 https://your-proxy.example.com，留空恢復預設 lain.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_invalid",
+      "value": "位址需以 https:// 開頭"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_saved",
+      "value": "Bangumi 圖片鏡像已保存"
+    },
+    {
       "name": "pref_user_agent_hint",
       "value": "留空使用預設值"
     },
@@ -4059,6 +4099,34 @@
     {
       "name": "subject_summary_empty",
       "value": "暫無簡介"
+    },
+    {
+      "name": "subject_label_related",
+      "value": "相關條目"
+    },
+    {
+      "name": "subject_relation_prequel",
+      "value": "前傳"
+    },
+    {
+      "name": "subject_relation_sequel",
+      "value": "續集"
+    },
+    {
+      "name": "subject_relation_derived",
+      "value": "衍生"
+    },
+    {
+      "name": "subject_relation_special",
+      "value": "番外篇"
+    },
+    {
+      "name": "subject_relation_main_story",
+      "value": "主線故事"
+    },
+    {
+      "name": "subject_relation_compilation",
+      "value": "總集篇"
     }
   ]
 }

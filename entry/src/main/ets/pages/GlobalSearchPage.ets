@@ -6,7 +6,6 @@ import { BrowseSourceParams, DetailParams, GlobalSearchParams } from '../model/R
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { Settings } from '../common/Settings';
-import { Bp } from '../common/Breakpoint';
 import { AppIcon } from './components/AppIcon';
 import { LoadingState } from './components/LoadingState';
 import { ErrorState } from './components/ErrorState';
@@ -121,7 +120,6 @@ export struct GlobalSearchPage {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageProp('navBarH') navBarH: number = 0;
-  @StorageProp('windowW') windowW: number = 0;
   @State searchQuery: string = '';
   // 'pinned'：只搜已置顶源（Mihon SourceFilter.PinnedOnly 默认值）| 'all'：全部源
   @State sourceFilter: string = 'pinned';
@@ -228,8 +226,8 @@ export struct GlobalSearchPage {
       .width('100%')
       .alignItems(VerticalAlign.Center)
       .padding({
-        left: 4 + this.inset(),
-        right: 12 + this.inset(),
+        left: 4,
+        right: 12,
         top: this.statusBarH + 8,
         bottom: 8
       })
@@ -247,29 +245,25 @@ export struct GlobalSearchPage {
       // 筛选 Chip 行（对齐 Mihon GlobalSearchToolbar：已置顶 / 全部 | 有结果）
       Scroll() {
         Row() {
-          this.filterChip($r('app.string.browse_pinned'), 'push_pin', this.sourceFilter === 'pinned', (): void => {
-            this.setSourceFilter('pinned');
-          })
-          this.filterChip($r('app.string.common_all'), 'done_all', this.sourceFilter === 'all', (): void => {
-            this.setSourceFilter('all');
-          })
+          this.filterChip('pinned', $r('app.string.browse_pinned'), 'push_pin')
+          this.filterChip('all', $r('app.string.common_all'), 'done_all')
           Divider()
             .vertical(true)
             .height(24)
             .color(this.pal.divider)
             .margin({ right: 8 })
-          this.filterChip($r('app.string.has_results'), 'filter_list', this.onlyHasResults, (): void => {
-            this.toggleResults();
-          })
+          this.filterChip('results', $r('app.string.has_results'), 'filter_list')
         }
         .alignItems(VerticalAlign.Center)
       }
       .scrollable(ScrollDirection.Horizontal)
       .scrollBar(BarState.Off)
       .width('100%')
+      // 内容窄于视口时贴左（通用 align 默认 Center 会导致胶囊整体居中）
+      .align(Alignment.Start)
       .padding({
-        left: 8 + this.inset(),
-        right: 8 + this.inset(),
+        left: 8,
+        right: 8,
         top: 4,
         bottom: 8
       })
@@ -286,11 +280,7 @@ export struct GlobalSearchPage {
           }, (section: SearchSection) => `sec-${section.sourceKey}-${section.state}-${section.results.length}`)
         }
         .width('100%')
-        .padding({
-          left: this.inset(),
-          right: this.inset(),
-          bottom: this.navBarH + 24
-        })
+        .padding({ bottom: this.navBarH + 24 })
       }
       .layoutWeight(1)
       .scrollBar(BarState.Auto)
@@ -302,22 +292,45 @@ export struct GlobalSearchPage {
   }
 
   // 筛选 Chip（对齐 Mihon FilterChip：图标 + 文案，选中反色）
+  // 选中态必须在 Builder 内经 this 读取状态变量：@Builder 按值参数不随状态变化刷新 UI
   @Builder
-  filterChip(label: ResourceStr, iconName: string, selected: boolean, onTap: () => void) {
+  filterChip(kind: string, label: ResourceStr, iconName: string) {
     Row() {
-      AppIcon({ name: iconName, iconSize: 16, tint: selected ? this.pal.onPrimarySoft : this.pal.sub })
+      AppIcon({
+        name: iconName,
+        iconSize: 16,
+        tint: this.chipSelected(kind) ? this.pal.onPrimarySoft : this.pal.sub
+      })
       Text(label)
         .fontSize(13)
-        .fontColor(selected ? this.pal.onPrimarySoft : this.pal.text)
+        .fontColor(this.chipSelected(kind) ? this.pal.onPrimarySoft : this.pal.text)
         .margin({ left: 6 })
     }
     .height(32)
     .padding({ left: 14, right: 14 })
     .borderRadius(16)
-    .backgroundColor(selected ? this.pal.primarySoft : this.pal.chip)
+    .backgroundColor(this.chipSelected(kind) ? this.pal.primarySoft : this.pal.chip)
     .margin({ right: 8 })
     .alignItems(VerticalAlign.Center)
-    .onClick(onTap)
+    .onClick(() => {
+      this.onChipTap(kind);
+    })
+  }
+
+  // Chip 选中判定：results 对应“有结果”开关，其余对应源范围筛选
+  private chipSelected(kind: string): boolean {
+    if (kind === 'results') {
+      return this.onlyHasResults;
+    }
+    return this.sourceFilter === kind;
+  }
+
+  private onChipTap(kind: string): void {
+    if (kind === 'results') {
+      this.toggleResults();
+      return;
+    }
+    this.setSourceFilter(kind);
   }
 
   @Builder
@@ -419,11 +432,6 @@ export struct GlobalSearchPage {
   private openSourceBrowse(section: SearchSection): void {
     const params: BrowseSourceParams = { sourceKey: section.sourceKey, mode: 'popular', query: this.searchQuery };
     this.pathStack.pushPathByName('BrowseSource', params);
-  }
-
-  // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（720 上限）
-  private inset(): number {
-    return Bp.contentInset(this.windowW);
   }
 
   private doneCount(): number {

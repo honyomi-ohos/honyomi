@@ -761,7 +761,7 @@ struct Index {
         HdsTabsHost({
           index: this.currentTab,
           scrollable: true,
-          barBottomMargin: Math.max(this.navBarH + 2, 8),
+          barBottomMargin: Math.max(this.navBarH, 6),
           controller: this.tabsController,
           miniBar: this.ttsMiniBarOptions(),
           miniBarEnabled: this.ttsActive,

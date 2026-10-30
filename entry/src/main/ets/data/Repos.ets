@@ -87,7 +87,7 @@ export class MangaRepo {
     'id', 'sourceKey', 'url', 'title', 'thumbnailUrl', 'origThumbnail', 'author',
     'description', 'genre', 'status', 'contentType', 'inLibrary', 'categoryId', 'addedAt',
     'lastUpdateAt', 'fetchedAt', 'chapterFlags', 'localCover', 'localCoverUrl',
-    'updateInterval', 'notes',
+    'updateInterval', 'notes', 'rating',
   ];
 
   static async upsertFromSource(sourceKey: string, m: SManga, contentType: string): Promise<number> {
@@ -106,10 +106,11 @@ export class MangaRepo {
     let oldDesc = '';
     let oldGenre = '';
     let oldStatus = '';
+    let oldRating = 0;
     let rs: relationalStore.ResultSet | undefined = undefined;
     try {
       rs = await store.query(pred,
-        ['id', 'inLibrary', 'title', 'thumbnailUrl', 'origThumbnail', 'author', 'description', 'genre', 'status']);
+        ['id', 'inLibrary', 'title', 'thumbnailUrl', 'origThumbnail', 'author', 'description', 'genre', 'status', 'rating']);
       if (rs.goToNextRow()) {
         id = rs.getLong(rs.getColumnIndex('id'));
         inLibrary = rs.getLong(rs.getColumnIndex('inLibrary'));
@@ -120,6 +121,7 @@ export class MangaRepo {
         oldDesc = rs.getString(rs.getColumnIndex('description'));
         oldGenre = rs.getString(rs.getColumnIndex('genre'));
         oldStatus = rs.getString(rs.getColumnIndex('status'));
+        oldRating = rs.getDouble(rs.getColumnIndex('rating'));
       }
     } catch (e) {
       throw new Error(`query manga failed: ${e}`);
@@ -147,6 +149,8 @@ export class MangaRepo {
         'genre': m.genre !== '' ? m.genre : oldGenre,
         'status': m.status !== '' ? m.status : oldStatus,
         'contentType': effectiveType,
+        // 平台评分：源未提供（undefined/0）时保留旧值，避免解析回退清掉已获取评分
+        'rating': m.rating !== undefined && m.rating > 0 ? m.rating : oldRating,
       };
       try {
         await store.update(values, pred);
@@ -165,6 +169,7 @@ export class MangaRepo {
       'genre': m.genre,
       'status': m.status,
       'contentType': effectiveType,
+      'rating': m.rating ?? 0,
       'inLibrary': 0,
       'categoryId': 1,
       'addedAt': Date.now(),
@@ -197,6 +202,7 @@ export class MangaRepo {
           'genre': m.genre,
           'status': m.status,
           'contentType': effectiveType,
+          'rating': m.rating ?? 0,
         };
         await store.update(retry, pred);
       }
@@ -706,6 +712,7 @@ export class MangaRepo {
       m.localCoverUrl = rs.getString(rs.getColumnIndex('localCoverUrl'));
       m.updateInterval = rs.getLong(rs.getColumnIndex('updateInterval'));
       m.notes = rs.getString(rs.getColumnIndex('notes'));
+      m.rating = rs.getDouble(rs.getColumnIndex('rating'));
       return m;
     } catch (e) {
       throw new Error(`map manga row failed: ${e}`);
@@ -1722,7 +1729,7 @@ export class TrackRepo {
 // 启动时据此注册占位源（不扫盘、不拉引擎），支撑千级插件
 export class PluginRepo {
   private static readonly COLUMNS: string[] = [
-    'key', 'name', 'lang', 'version', 'versionCode', 'baseUrl', 'nsfw', 'bt', 'supportsLatest',
+    'key', 'name', 'lang', 'version', 'versionCode', 'baseUrl', 'nsfw', 'bt', 'acgn', 'supportsLatest',
     'minAppVersion', 'dslVersion', 'icon', 'contentTypes',
     'methodsJson', 'sourcesJson', 'installedAt',
   ];
@@ -1741,6 +1748,7 @@ export class PluginRepo {
       'baseUrl': record.baseUrl,
       'nsfw': record.nsfw ? 1 : 0,
       'bt': record.bt ? 1 : 0,
+      'acgn': record.acgn ? 1 : 0,
       'supportsLatest': record.supportsLatest ? 1 : 0,
       'minAppVersion': record.minAppVersion,
       'dslVersion': record.dslVersion,
@@ -1753,20 +1761,20 @@ export class PluginRepo {
     try {
       // key 为主键：INSERT OR REPLACE 原子完成重装/升级覆盖
       await store.executeSql(
-        `INSERT INTO plugin (key, name, lang, version, versionCode, baseUrl, nsfw, bt, supportsLatest,
+        `INSERT INTO plugin (key, name, lang, version, versionCode, baseUrl, nsfw, bt, acgn, supportsLatest,
           minAppVersion, dslVersion, icon, contentTypes, methodsJson, sourcesJson, installedAt)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
          ON CONFLICT(key) DO UPDATE SET
           name = excluded.name, lang = excluded.lang, version = excluded.version,
           versionCode = excluded.versionCode, baseUrl = excluded.baseUrl, nsfw = excluded.nsfw,
-          bt = excluded.bt,
+          bt = excluded.bt, acgn = excluded.acgn,
           supportsLatest = excluded.supportsLatest, minAppVersion = excluded.minAppVersion,
           dslVersion = excluded.dslVersion, icon = excluded.icon,
           contentTypes = excluded.contentTypes,
           methodsJson = excluded.methodsJson, sourcesJson = excluded.sourcesJson,
           installedAt = excluded.installedAt`,
         [record.key, record.name, record.lang, record.version, record.versionCode, record.baseUrl,
-          record.nsfw ? 1 : 0, record.bt ? 1 : 0, record.supportsLatest ? 1 : 0, record.minAppVersion,
+          record.nsfw ? 1 : 0, record.bt ? 1 : 0, record.acgn ? 1 : 0, record.supportsLatest ? 1 : 0, record.minAppVersion,
           record.dslVersion,
           record.icon, record.contentTypes,
           record.methodsJson, record.sourcesJson, record.installedAt]);
@@ -1859,6 +1867,7 @@ export class PluginRepo {
       p.baseUrl = rs.getString(rs.getColumnIndex('baseUrl'));
       p.nsfw = rs.getLong(rs.getColumnIndex('nsfw')) === 1;
       p.bt = rs.getLong(rs.getColumnIndex('bt')) === 1;
+      p.acgn = rs.getLong(rs.getColumnIndex('acgn')) === 1;
       p.supportsLatest = rs.getLong(rs.getColumnIndex('supportsLatest')) === 1;
       p.minAppVersion = rs.getLong(rs.getColumnIndex('minAppVersion'));
       p.dslVersion = rs.getLong(rs.getColumnIndex('dslVersion'));

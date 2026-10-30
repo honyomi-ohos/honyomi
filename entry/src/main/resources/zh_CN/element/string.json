@@ -925,6 +925,10 @@
       "value": "相关作品"
     },
     {
+      "name": "detail_bgm_related",
+      "value": "相关系列"
+    },
+    {
       "name": "detail_chapters_count",
       "value": "章节（%d）"
     },
@@ -2387,6 +2391,10 @@
     {
       "name": "lib_sort_date_added",
       "value": "收藏日期"
+    },
+    {
+      "name": "lib_sort_rating",
+      "value": "平台评分"
     },
     {
       "name": "lib_sort_random",
@@ -4061,6 +4069,38 @@
       "value": "自定义 User-Agent"
     },
     {
+      "name": "pref_bangumi_api_mirror",
+      "value": "Bangumi API 镜像"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_hint",
+      "value": "如 https://your-proxy.example.com，留空恢复默认 api.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_invalid",
+      "value": "地址需以 https:// 开头"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_saved",
+      "value": "Bangumi API 镜像已保存"
+    },
+    {
+      "name": "pref_bangumi_img_mirror",
+      "value": "Bangumi 图片镜像"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_hint",
+      "value": "如 https://your-proxy.example.com，留空恢复默认 lain.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_invalid",
+      "value": "地址需以 https:// 开头"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_saved",
+      "value": "Bangumi 图片镜像已保存"
+    },
+    {
       "name": "pref_user_agent_hint",
       "value": "留空使用默认值"
     },
@@ -4723,6 +4763,34 @@
     {
       "name": "subject_summary_empty",
       "value": "暂无简介"
+    },
+    {
+      "name": "subject_label_related",
+      "value": "相关条目"
+    },
+    {
+      "name": "subject_relation_prequel",
+      "value": "前传"
+    },
+    {
+      "name": "subject_relation_sequel",
+      "value": "续集"
+    },
+    {
+      "name": "subject_relation_derived",
+      "value": "衍生"
+    },
+    {
+      "name": "subject_relation_special",
+      "value": "番外篇"
+    },
+    {
+      "name": "subject_relation_main_story",
+      "value": "主线故事"
+    },
+    {
+      "name": "subject_relation_compilation",
+      "value": "总集篇"
     },
     {
       "name": "browse_folder_up",

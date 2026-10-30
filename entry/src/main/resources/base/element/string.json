@@ -461,6 +461,10 @@
       "value": "Date added"
     },
     {
+      "name": "lib_sort_rating",
+      "value": "Rating"
+    },
+    {
       "name": "lib_sort_random",
       "value": "Random"
     },
@@ -1587,6 +1591,10 @@
     {
       "name": "detail_related_works",
       "value": "Related"
+    },
+    {
+      "name": "detail_bgm_related",
+      "value": "Related Series"
     },
     {
       "name": "detail_chapters_count",
@@ -4089,6 +4097,38 @@
       "value": "Custom User-Agent"
     },
     {
+      "name": "pref_bangumi_api_mirror",
+      "value": "Bangumi API mirror"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_hint",
+      "value": "https://your-proxy.example.com, empty = default api.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_invalid",
+      "value": "Address must start with https://"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_saved",
+      "value": "Bangumi API mirror saved"
+    },
+    {
+      "name": "pref_bangumi_img_mirror",
+      "value": "Bangumi image mirror"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_hint",
+      "value": "https://your-proxy.example.com, empty = default lain.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_invalid",
+      "value": "Address must start with https://"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_saved",
+      "value": "Bangumi image mirror saved"
+    },
+    {
       "name": "pref_user_agent_hint",
       "value": "Leave empty to use the default"
     },
@@ -4751,6 +4791,34 @@
     {
       "name": "subject_summary_empty",
       "value": "No summary yet"
+    },
+    {
+      "name": "subject_label_related",
+      "value": "Related"
+    },
+    {
+      "name": "subject_relation_prequel",
+      "value": "Prequel"
+    },
+    {
+      "name": "subject_relation_sequel",
+      "value": "Sequel"
+    },
+    {
+      "name": "subject_relation_derived",
+      "value": "Spin-off"
+    },
+    {
+      "name": "subject_relation_special",
+      "value": "Special"
+    },
+    {
+      "name": "subject_relation_main_story",
+      "value": "Main story"
+    },
+    {
+      "name": "subject_relation_compilation",
+      "value": "Compilation"
     },
     {
       "name": "browse_folder_up",

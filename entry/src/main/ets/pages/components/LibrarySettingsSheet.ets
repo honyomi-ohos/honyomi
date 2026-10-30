@@ -1,13 +1,12 @@
 import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
 import { LibGrid } from '../../common/Util';
-import { ContentType } from '../../model/Models';
 import { AppIcon } from './AppIcon';
 import { WideSlider } from './WideSlider';
 
-// 排序键（对齐 Mihon LibrarySort）
+// 排序键（对齐 Mihon LibrarySort + 平台评分）
 const SORT_KEYS: string[] = [
-  'alpha', 'total', 'lastRead', 'lastUpdate', 'unread', 'latestChapter', 'fetchDate', 'dateAdded', 'random'
+  'alpha', 'total', 'lastRead', 'lastUpdate', 'unread', 'latestChapter', 'fetchDate', 'dateAdded', 'rating', 'random'
 ];
 // 三态筛选键
 const FILTER_KEYS: string[] = ['downloaded', 'unread', 'started', 'bookmarked', 'completed', 'tracked'];
@@ -26,7 +25,6 @@ export struct LibrarySettingsSheet {
   @Link filterBookmarked: string;
   @Link filterCompleted: string;
   @Link filterTracked: string;
-  @Link contentFilter: string;
   @Link viewMode: string;
   @Link gridCols: number;
   // 书架内容区宽度：列数滑条按其限制最小/最大列
@@ -80,51 +78,12 @@ export struct LibrarySettingsSheet {
     })
   }
 
-  @Builder
-  typeChip(type: string, label: Resource) {
-    Text(label)
-      .fontSize(13)
-      .fontColor(this.contentFilter === type ? this.pal.onPrimary : this.pal.text)
-      .backgroundColor(this.contentFilter === type ? this.pal.primary : this.pal.chip)
-      .borderRadius(14)
-      .padding({
-        left: 12,
-        right: 12,
-        top: 6,
-        bottom: 6
-      })
-      .margin({ right: 8, bottom: 8 })
-      .onClick(() => {
-        this.contentFilter = type;
-        Settings.setLibraryContentFilter(type);
-      })
-  }
-
   build() {
     Column() {
       Tabs({ barPosition: BarPosition.Start, index: this.sheetTab }) {
         TabContent() {
           Scroll() {
             Column() {
-              Text($r('app.string.lib_filter_content'))
-                .fontSize(13)
-                .fontColor(this.pal.sub)
-                .width('100%')
-                .padding({
-                  left: 24,
-                  right: 24,
-                  top: 8,
-                  bottom: 8
-                })
-              Flex({ wrap: FlexWrap.Wrap }) {
-                this.typeChip('all', $r('app.string.lib_filter_type_all'))
-                this.typeChip(ContentType.MANGA, $r('app.string.browse_type_manga'))
-                this.typeChip(ContentType.NOVEL, $r('app.string.browse_type_novel'))
-                this.typeChip(ContentType.VIDEO, $r('app.string.browse_type_video'))
-              }
-              .width('100%')
-              .padding({ left: 24, right: 24, bottom: 8 })
-
               ForEach(FILTER_KEYS, (key: string) => {
                 Row() {
                   AppIcon({
@@ -450,6 +409,9 @@ export struct LibrarySettingsSheet {
     }
     if (key === 'dateAdded') {
       return $r('app.string.lib_sort_date_added');
+    }
+    if (key === 'rating') {
+      return $r('app.string.lib_sort_rating');
     }
     if (key === 'random') {
       return $r('app.string.lib_sort_random');

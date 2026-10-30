@@ -44,6 +44,7 @@ interface RawManifest {
   baseUrl?: string;
   nsfw?: boolean;
   bt?: boolean;
+  acgn?: boolean;
   supportsLatest?: boolean;
   minAppVersion?: number;
   dslVersion?: number;
@@ -267,6 +268,7 @@ export class PluginService {
       baseUrl: raw.baseUrl ?? '',
       nsfw: raw.nsfw === true,
       bt: raw.bt === true,
+      acgn: raw.acgn === true,
       supportsLatest: raw.supportsLatest !== false,
       minAppVersion: minAppVersion,
       dslVersion: dslVersion,
@@ -1793,6 +1795,7 @@ const err = e as Error;
       baseUrl: record.baseUrl,
       nsfw: record.nsfw,
       bt: record.bt,
+      acgn: record.acgn,
       supportsLatest: record.supportsLatest,
       minAppVersion: record.minAppVersion,
       dslVersion: record.dslVersion,
@@ -1813,6 +1816,7 @@ const err = e as Error;
       baseUrl: spec.baseUrl !== '' ? spec.baseUrl : base.baseUrl,
       nsfw: spec.nsfw,
       bt: base.bt,
+      acgn: base.acgn,
       supportsLatest: spec.supportsLatest,
       minAppVersion: base.minAppVersion,
       dslVersion: base.dslVersion,
@@ -1834,6 +1838,7 @@ const err = e as Error;
     record.baseUrl = manifest.baseUrl;
     record.nsfw = manifest.nsfw;
     record.bt = manifest.bt;
+    record.acgn = manifest.acgn;
     record.supportsLatest = manifest.supportsLatest;
     record.minAppVersion = manifest.minAppVersion;
     record.dslVersion = manifest.dslVersion;

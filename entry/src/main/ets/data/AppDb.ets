@@ -39,6 +39,7 @@ export class AppDb {
       throw new Error(`init rdb store failed: ${e}`);
     }
     await AppDb.createTables(store);
+    await AppDb.migrateSchema(store);
     await AppDb.createIndexes(store);
     await AppDb.ensureDefaultCategories(store);
     AppDb.store = store;
@@ -69,6 +70,16 @@ export class AppDb {
     }
   }
 
+  // 轻量列迁移（幂等）：老库补齐新增列，重复执行/列已存在时忽略错误。
+  // plugin.acgn（ACGN 内容标记）为后加列，建表语句只覆盖新装库，升级库由此补齐
+  private static async migrateSchema(store: relationalStore.RdbStore): Promise<void> {
+    try {
+      await store.executeSql(`ALTER TABLE plugin ADD COLUMN acgn INTEGER DEFAULT 0`);
+    } catch (e) {
+      // duplicate column（列已存在）等错误忽略
+    }
+  }
+
   // 全量建表（CREATE IF NOT EXISTS，新装库直接落最新 schema；升级库由 migrate 补齐差异）
   private static async createTables(store: relationalStore.RdbStore): Promise<void> {
     try {
@@ -94,6 +105,7 @@ export class AppDb {
         localCoverUrl TEXT DEFAULT '',
         updateInterval INTEGER DEFAULT 0,
         notes TEXT DEFAULT '',
+        rating REAL DEFAULT 0,
         UNIQUE(sourceKey, url)
       )`);
       await store.executeSql(`CREATE TABLE IF NOT EXISTS chapter (
@@ -166,6 +178,7 @@ export class AppDb {
         baseUrl TEXT DEFAULT '',
         nsfw INTEGER DEFAULT 0,
         bt INTEGER DEFAULT 0,
+        acgn INTEGER DEFAULT 0,
         supportsLatest INTEGER DEFAULT 0,
         minAppVersion INTEGER DEFAULT 1,
         dslVersion INTEGER DEFAULT 1,
@@ -174,6 +187,13 @@ export class AppDb {
         methodsJson TEXT DEFAULT '[]',
         sourcesJson TEXT DEFAULT '[]',
         installedAt INTEGER DEFAULT 0
+      )`);
+      // Bangumi 数据本地缓存（每日放送/条目详情/相关系列/匹配结果）：
+      // key → 原始响应 payload + 拉取时间，命中后由 BangumiApi 重走解析路径
+      await store.executeSql(`CREATE TABLE IF NOT EXISTS bgmCache (
+        key TEXT PRIMARY KEY,
+        payload TEXT NOT NULL,
+        fetchedAt INTEGER NOT NULL
       )`);
     } catch (e) {
       throw new Error(`create tables failed: ${e}`);

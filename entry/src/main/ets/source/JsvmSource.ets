@@ -17,6 +17,10 @@ export interface PluginManifest {
 
   // BT 源标记：内容为种子/magnet 下载（manifest 可选，缺省 false）
   bt: boolean;
+
+  // ACGN 内容标记（manifest 可选，缺省 false）：源内容为动画/漫画/游戏/小说时声明 true，
+  // 作品详情页按名称+作者匹配 Bangumi 相关系列；图片站等非 ACGN 源保持 false
+  acgn: boolean;
   supportsLatest: boolean;
   minAppVersion: number;
   dslVersion: number;
@@ -43,6 +47,9 @@ interface RawWork {
   status?: number | string;
   // 作品级内容类型声明（manga | novel | video）：多类型插件区分单部作品归属，未声明回退插件主类型
   contentType?: string;
+  // 平台评分（rating|score 宽松别名，number|string）：源站点评分，解析失败/未提供归 0
+  rating?: number | string;
+  score?: number | string;
 }
 
 interface RawWorksPage {
@@ -151,6 +158,7 @@ export class JsvmSource implements Source {
   contentType: string;
   nsfw: boolean;
   bt: boolean;
+  acgn: boolean;
   manifest: PluginManifest;
   // 插件包目录名。多语言扩展共用一个 JSVM 引擎，浏览列表里每个语言各有自己的 key。
   readonly packageKey: string;
@@ -180,6 +188,7 @@ export class JsvmSource implements Source {
     this.contentType = JsvmSource.primaryTypeOf(manifest);
     this.nsfw = manifest.nsfw;
     this.bt = manifest.bt;
+    this.acgn = manifest.acgn;
   }
 
   // 主内容类型 = 全量列表 [0]（host 归一保证非空，此处兜底漫画）
@@ -404,8 +413,19 @@ export class JsvmSource implements Source {
       genre: JsvmSource.toGenre(raw.genre),
       status: JsvmSource.toStatus(raw.status),
       contentType: JsvmSource.toContentType(raw.contentType),
+      rating: JsvmSource.toRating(raw),
     };
     return manga;
+  }
+
+  // 平台评分归一：rating 优先、score 别名兜底；string 尝试 parseFloat，非法/负值归 0
+  private static toRating(raw: RawWork): number {
+    const value: number | string | undefined = raw.rating !== undefined ? raw.rating : raw.score;
+    if (value === undefined) {
+      return 0;
+    }
+    const parsed: number = typeof value === 'number' ? value : parseFloat(value);
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
   }
 
   // 作品级类型归一：仅接受 manga | novel | video，其余视为未声明（undefined，入库回退插件主类型）
@@ -485,6 +505,7 @@ export class JsvmSource implements Source {
     this.contentType = JsvmSource.primaryTypeOf(manifest);
     this.nsfw = manifest.nsfw;
     this.bt = manifest.bt;
+    this.acgn = manifest.acgn;
     this.exportedMethods = exportedMethods;
     this.warmHeadersPromise = undefined;
   }

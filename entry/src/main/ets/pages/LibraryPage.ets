@@ -303,7 +303,6 @@ export struct LibraryPage {
   @State @Watch('onViewInput') fBookmarked: string = 'ignore';
   @State @Watch('onViewInput') fCompleted: string = 'ignore';
   @State @Watch('onViewInput') fTracked: string = 'ignore';
-  @State @Watch('onViewInput') contentFilter: string = 'all';
   @State @Watch('onViewInput') selectedCategory: number = 0;
   // 搜索词（头部 TextInput 写入）：200ms 防抖刷新，避免逐键全量重算
   @StorageLink('libSearchQuery') @Watch('onSearchQuery') searchQuery: string = '';
@@ -547,7 +546,6 @@ export struct LibraryPage {
       filterBookmarked: this.fBookmarked,
       filterCompleted: this.fCompleted,
       filterTracked: this.fTracked,
-      contentFilter: this.contentFilter,
       viewMode: this.viewMode,
       gridCols: this.gridCols,
       contentW: this.contentW,
@@ -828,7 +826,6 @@ export struct LibraryPage {
     this.fBookmarked = Settings.getLibraryTriState('bookmarked');
     this.fCompleted = Settings.getLibraryTriState('completed');
     this.fTracked = Settings.getLibraryTriState('tracked');
-    this.contentFilter = Settings.getLibraryContentFilter();
     this.viewMode = Settings.getLibraryView();
     this.gridCols = Settings.getLibraryGridCols();
     this.showUnreadBadge = Settings.getShowUnreadBadge();
@@ -922,7 +919,7 @@ export struct LibraryPage {
   }
 
   private filterActive(): boolean {
-    return this.contentFilter !== 'all' || this.fDownloaded !== 'ignore' || this.fUnread !== 'ignore' ||
+    return this.fDownloaded !== 'ignore' || this.fUnread !== 'ignore' ||
       this.fStarted !== 'ignore' || this.fBookmarked !== 'ignore' || this.fCompleted !== 'ignore' ||
       this.fTracked !== 'ignore';
   }
@@ -943,9 +940,6 @@ export struct LibraryPage {
       list = list.filter((m: MangaRecord): boolean => m.title.toLowerCase().includes(q));
     }
     return list.filter((m: MangaRecord): boolean => {
-      if (this.contentFilter !== 'all' && m.contentType !== this.contentFilter) {
-        return false;
-      }
       const s: MangaStats | undefined = this.statsMap[`${m.id}`];
       if (!this.passesTriState(this.fDownloaded, (this.downloadCounts[`${m.id}`] || 0) > 0)) {
         return false;
@@ -1005,6 +999,9 @@ export struct LibraryPage {
         cmp = (sa !== undefined ? sa.latest : 0) - (sb !== undefined ? sb.latest : 0);
       } else if (this.sortKey === 'fetchDate') {
         cmp = a.fetchedAt - b.fetchedAt;
+      } else if (this.sortKey === 'rating') {
+        // 平台评分（源站点评分）：0 = 未提供
+        cmp = a.rating - b.rating;
       } else {
         cmp = a.addedAt - b.addedAt;
       }

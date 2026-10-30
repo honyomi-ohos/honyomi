@@ -4,7 +4,8 @@ import { Settings } from '../../common/Settings';
 import { OAuthToken, TrackDate, Tracker, TrackHttp } from './Tracker';
 import { Http } from '../../net/Http';
 
-const BGM_API_URL = 'https://api.bgm.tv';
+// API 基地址经 Settings.bangumiApiBase() 动态读取（支持高级设置镜像）；
+// OAuth 授权/登录页固定在 bgm.tv 网页域（api 镜像只代理 /v0 数据接口）
 const BGM_OAUTH_URL = 'https://bgm.tv/oauth/access_token';
 const BGM_LOGIN_URL = 'https://bgm.tv/oauth/authorize';
 const BGM_CLIENT_ID = 'bgm74166ae06145a0f07';
@@ -205,7 +206,7 @@ export class BangumiTracker extends Tracker {
     const body = `{"keyword":${JSON.stringify(query)},"sort":"match","filter":{"type":[1]}}`;
     const headers = await this.authHeaders();
     headers['Content-Type'] = 'application/json';
-    const resp = await TrackHttp.send('POST', `${BGM_API_URL}/v0/search/subjects?limit=20`, headers, body);
+    const resp = await TrackHttp.send('POST', `${Settings.bangumiApiBase()}/v0/search/subjects?limit=20`, headers, body);
     const raw = JSON.parse(resp) as BgmSearchResultRaw;
     const results: TrackSearchResult[] = [];
     for (const subject of raw.data ?? []) {
@@ -273,7 +274,7 @@ export class BangumiTracker extends Tracker {
   }
 
   private async getCurrentUser(): Promise<BgmUserRaw> {
-    const resp = await TrackHttp.send('GET', `${BGM_API_URL}/v0/me`, await this.authHeaders(), '');
+    const resp = await TrackHttp.send('GET', `${Settings.bangumiApiBase()}/v0/me`, await this.authHeaders(), '');
     const raw = JSON.parse(resp) as BgmUserRaw;
     if (typeof raw.username !== 'string' || raw.username === '') {
       throw new Error('Bangumi: failed to get current user');
@@ -287,7 +288,7 @@ export class BangumiTracker extends Tracker {
     const headers = await this.authHeaders();
     headers['Content-Type'] = 'application/json';
     // 成功返回 202，无响应体
-    await TrackHttp.send('POST', `${BGM_API_URL}/v0/users/-/collections/${track.remoteId}`, headers, body);
+    await TrackHttp.send('POST', `${Settings.bangumiApiBase()}/v0/users/-/collections/${track.remoteId}`, headers, body);
     return track;
   }
 
@@ -297,7 +298,7 @@ export class BangumiTracker extends Tracker {
     const headers = await this.authHeaders();
     headers['Content-Type'] = 'application/json';
     // 成功返回 204
-    await TrackHttp.send('PATCH', `${BGM_API_URL}/v0/users/-/collections/${track.remoteId}`, headers, body);
+    await TrackHttp.send('PATCH', `${Settings.bangumiApiBase()}/v0/users/-/collections/${track.remoteId}`, headers, body);
     return track;
   }
 
@@ -309,7 +310,7 @@ export class BangumiTracker extends Tracker {
     }
     const headers = await this.authHeaders();
     const resp = await Http.requestRaw('GET',
-      `${BGM_API_URL}/v0/users/${encodeURIComponent(username)}/collections/${track.remoteId}`, '', headers);
+      `${Settings.bangumiApiBase()}/v0/users/${encodeURIComponent(username)}/collections/${track.remoteId}`, '', headers);
     if (resp.code === 404) {
       return undefined;
     }
@@ -330,7 +331,7 @@ export class BangumiTracker extends Tracker {
   private async getMangaDetails(id: number): Promise<TrackSearchResult | undefined> {
     const headers = await this.authHeaders();
     headers['Content-Type'] = 'application/json';
-    const resp = await TrackHttp.send('GET', `${BGM_API_URL}/v0/subjects/${id}`, headers, '');
+    const resp = await TrackHttp.send('GET', `${Settings.bangumiApiBase()}/v0/subjects/${id}`, headers, '');
     const raw = JSON.parse(resp) as BgmSubjectRaw;
     if (!this.isMangaPlatform(raw.platform)) {
       return undefined;
@@ -349,7 +350,7 @@ export class BangumiTracker extends Tracker {
     r.remoteId = subject.id;
     const nameCn = subject.name_cn ?? '';
     r.title = nameCn !== '' ? nameCn : subject.name;
-    r.coverUrl = subject.images?.common ?? '';
+    r.coverUrl = Settings.rewriteBangumiImageUrl(subject.images?.common ?? '');
     const summary = (subject.summary ?? '').trim();
     r.summary = nameCn !== '' ? `作品原名：${subject.name}\n${summary}` : summary;
     r.score = subject.rating?.score ?? -1;
