@@ -1,5 +1,7 @@
 // 源层数据模型（对齐 Mihon source-api 的 SManga / SChapter / Page）
 
+import { fileIo as fs } from '@kit.CoreFileKit';
+
 export interface SManga {
   key: string;
   title: string;
@@ -126,6 +128,21 @@ export class MangaRecord {
   notes: string = '';
   // 平台评分（源站点评分，详情同步时更新；0 = 未提供）
   rating: number = 0;
+
+  // 封面展示地址：与书架一致优先持久化本地封面（本地文件秒开，免去缓存未命中时的
+  // 插件等待与网络下载）；自定义封面（origThumbnail 非空）时 thumbnailUrl 已是 file:// 本地路径；
+  // 文件缺失或无持久化封面回退在线地址
+  coverDisplay(): string {
+    if (this.origThumbnail === '' && this.localCover !== '') {
+      try {
+        if (fs.accessSync(this.localCover)) {
+          return `file://${this.localCover}`;
+        }
+      } catch (e) {
+      }
+    }
+    return this.thumbnailUrl;
+  }
 }
 
 // 书架统计（章节/历史聚合查询结果）
@@ -197,6 +214,8 @@ export class UpcomingManga {
   mangaId: number = 0;
   title: string = '';
   coverUrl: string = '';
+  // 所属源 key：封面经 SmartImage 公共图片缓存管线加载时附加源请求头
+  sourceKey: string = '';
   categoryId: number = 1;
   expectedAt: number = 0;
 }

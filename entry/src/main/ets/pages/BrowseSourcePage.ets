@@ -9,6 +9,7 @@ import { DuplicateManga, CategoryRecord, ContentType, MangaRecord, SManga, Works
 import { BrowseSourceParams, DetailParams, DetailSearchResult, MigrateSearchParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { LibGrid, Util } from '../common/Util';
+import { Bp } from '../common/Breakpoint';
 import { MangaCard } from './components/MangaCard';
 import { MangaSkeletonGrid } from './components/MangaSkeletonGrid';
 import { EmptyScreen } from './components/EmptyScreen';
@@ -927,18 +928,29 @@ export struct BrowseSourcePage {
     return LibGrid.autoCols(w);
   }
 
+  // 首帧宽度估计：窗口宽扣除宽屏侧边导航栏（真实宽度待 onAreaChange 首次测量回填），
+  // 避免大屏首帧按 360vp 兜底算出 2 列、骨架/网格先渲染出超大封面
+  private estContentW(): number {
+    if (this.windowW <= 0) {
+      return 360;
+    }
+    return Math.max(0, this.windowW - (Bp.isWide(this.windowW) ? Bp.WIDE_RAIL_W : 0));
+  }
+
   private gridColumns(): number {
-    const w = this.contentW > 0 ? this.contentW : 360;
+    const w = this.contentW > 0 ? this.contentW : this.estContentW();
     return this.colsForWidth(w);
   }
 
-  // 网格宽变化：列数档位变化时包 animateTo，让网格重排带过渡动画
+  // 网格宽变化：列数档位变化时包 animateTo，让网格重排带过渡动画；
+  // 首次测量回填不包动画——首帧已按窗口宽估计列数，档位校正即时生效，不播收缩动画
   private applyContentW(w: number): void {
     if (w === this.contentW) {
       return;
     }
+    const firstMeasure: boolean = this.contentW <= 0;
     const reflow: boolean = this.colsForWidth(w) !== this.gridColumns();
-    if (reflow) {
+    if (!firstMeasure && reflow) {
       this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
         this.contentW = w;
       });

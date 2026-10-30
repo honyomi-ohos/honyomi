@@ -3587,6 +3587,106 @@
     {
       "name": "subject_summary_empty",
       "value": "Henüz özet yok"
+    },
+    {
+      "name": "subject_show_more",
+      "value": "Daha fazla göster"
+    },
+    {
+      "name": "subject_show_less",
+      "value": "Daha az göster"
+    },
+    {
+      "name": "subject_label_tags",
+      "value": "Etiketler"
+    },
+    {
+      "name": "subject_label_info",
+      "value": "Bilgiler"
+    },
+    {
+      "name": "subject_label_characters",
+      "value": "Karakterler"
+    },
+    {
+      "name": "subject_label_staff",
+      "value": "Ekip"
+    },
+    {
+      "name": "subject_rating_total",
+      "value": "%d değerlendirme"
+    },
+    {
+      "name": "subject_rating_rank",
+      "value": "Sıralama #%d"
+    },
+    {
+      "name": "subject_stat_collect",
+      "value": "%d topladı"
+    },
+    {
+      "name": "subject_stat_doing",
+      "value": "%d izliyor"
+    },
+    {
+      "name": "subject_stat_dropped",
+      "value": "%d bıraktı"
+    },
+    {
+      "name": "subject_stat_wish",
+      "value": "%d izlemek istiyor"
+    },
+    {
+      "name": "subject_role_main",
+      "value": "Ana rol"
+    },
+    {
+      "name": "subject_role_supporting",
+      "value": "Yan rol"
+    },
+    {
+      "name": "subject_role_guest",
+      "value": "Konuk"
+    },
+    {
+      "name": "subject_infobox_air_start",
+      "value": "Yayın tarihi"
+    },
+    {
+      "name": "subject_infobox_weekday",
+      "value": "Yayın günü"
+    },
+    {
+      "name": "subject_infobox_aliases",
+      "value": "Diğer adlar"
+    },
+    {
+      "name": "subject_infobox_director",
+      "value": "Yönetmen"
+    },
+    {
+      "name": "subject_infobox_script",
+      "value": "Senaryo"
+    },
+    {
+      "name": "subject_infobox_series_composition",
+      "value": "Seri kompozisyonu"
+    },
+    {
+      "name": "subject_infobox_music",
+      "value": "Müzik"
+    },
+    {
+      "name": "subject_infobox_studio",
+      "value": "Animasyon stüdyosu"
+    },
+    {
+      "name": "subject_infobox_character_design",
+      "value": "Karakter tasarımı"
+    },
+    {
+      "name": "subject_infobox_duration",
+      "value": "Süre"
     }
   ]
 }

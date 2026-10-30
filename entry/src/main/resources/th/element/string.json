@@ -3627,6 +3627,106 @@
     {
       "name": "subject_summary_empty",
       "value": "ยังไม่มีเรื่องย่อ"
+    },
+    {
+      "name": "subject_show_more",
+      "value": "แสดงเพิ่มเติม"
+    },
+    {
+      "name": "subject_show_less",
+      "value": "แสดงน้อยลง"
+    },
+    {
+      "name": "subject_label_tags",
+      "value": "แท็ก"
+    },
+    {
+      "name": "subject_label_info",
+      "value": "ข้อมูล"
+    },
+    {
+      "name": "subject_label_characters",
+      "value": "ตัวละคร"
+    },
+    {
+      "name": "subject_label_staff",
+      "value": "ทีมงาน"
+    },
+    {
+      "name": "subject_rating_total",
+      "value": "%d การให้คะแนน"
+    },
+    {
+      "name": "subject_rating_rank",
+      "value": "อันดับ #%d"
+    },
+    {
+      "name": "subject_stat_collect",
+      "value": "%d คอลเลกชัน"
+    },
+    {
+      "name": "subject_stat_doing",
+      "value": "%d กำลังดู"
+    },
+    {
+      "name": "subject_stat_dropped",
+      "value": "%d ละทิ้ง"
+    },
+    {
+      "name": "subject_stat_wish",
+      "value": "%d อยากดู"
+    },
+    {
+      "name": "subject_role_main",
+      "value": "หลัก"
+    },
+    {
+      "name": "subject_role_supporting",
+      "value": "รอง"
+    },
+    {
+      "name": "subject_role_guest",
+      "value": "รับเชิญ"
+    },
+    {
+      "name": "subject_infobox_air_start",
+      "value": "วันเริ่มออกอากาศ"
+    },
+    {
+      "name": "subject_infobox_weekday",
+      "value": "วันออกอากาศ"
+    },
+    {
+      "name": "subject_infobox_aliases",
+      "value": "ชื่ออื่น"
+    },
+    {
+      "name": "subject_infobox_director",
+      "value": "ผู้กำกับ"
+    },
+    {
+      "name": "subject_infobox_script",
+      "value": "บทภาพยนตร์"
+    },
+    {
+      "name": "subject_infobox_series_composition",
+      "value": "ผู้แต่งเรียบเรียง"
+    },
+    {
+      "name": "subject_infobox_music",
+      "value": "ดนตรี"
+    },
+    {
+      "name": "subject_infobox_studio",
+      "value": "สตูดิโอแอนิเมชัน"
+    },
+    {
+      "name": "subject_infobox_character_design",
+      "value": "ออกแบบตัวละคร"
+    },
+    {
+      "name": "subject_infobox_duration",
+      "value": "ความยาว"
     }
   ]
 }

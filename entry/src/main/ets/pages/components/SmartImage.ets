@@ -1,13 +1,19 @@
 import { ImageCache } from '../../common/ImageCache';
+import { BgmCoverCache } from '../../common/BgmCoverCache';
 import { AppIcon } from './AppIcon';
 import { CoverPlaceholder } from './CoverPlaceholder';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 
-// 智能图片：源需要请求头时经 ImageCache 管线加载（Referer/UA/Cookie），
-// 本地文件与未声明请求头的源保持系统 Image 直连行为
+// 智能图片：Bangumi 条目封面（bgmId > 0）经 BgmCoverCache 独立缓存加载；
+// 其余经 ImageCache 管线（源防盗链请求头 + AVIF→JPEG + LRU 淘汰），
+// 本地文件保持系统 Image 直连行为
 @Component
 export struct SmartImage {
   @Prop @Watch('onUrlChanged') url: string = '';
   @Prop sourceKey: string = '';
+  // Bangumi 条目 id：> 0 时封面经 BgmCoverCache 独立缓存（按条目 id 落盘，
+  // 时间表/条目详情/相关条目跨页共享，不受章节缓存清除影响）
+  @Prop @Watch('onUrlChanged') bgmId: number = 0;
   @Prop fit: ImageFit = ImageFit.Cover;
   @Prop fill: boolean = true;
   // 高质量渲染（阅读器设置）：开启时对位图启用高精度插值，放大缩小更平滑但更耗性能
@@ -74,6 +80,7 @@ export struct SmartImage {
               this.imgReady = true;
             })
             .onError((): void => {
+              hilog.warn(0x0000, 'CoverDbg', 'image onError display=%{public}s', this.display);
               this.failed = true;
             })
         }
@@ -115,12 +122,16 @@ export struct SmartImage {
       this.display = u;
       return;
     }
-    ImageCache.resolve(u, this.sourceKey).then((p: string) => {
+    // Bangumi 条目封面走独立缓存；其余走公共 ImageCache 管线
+    const task: Promise<string> = this.bgmId > 0 ?
+      BgmCoverCache.resolve(this.bgmId, u) : ImageCache.resolve(u, this.sourceKey);
+    task.then((p: string) => {
       if (this.resolving === u) {
         this.display = p;
       }
     }).catch((_e: Error) => {
       if (this.resolving === u) {
+        hilog.warn(0x0000, 'CoverDbg', 'resolve rejected url=%{public}s err=%{public}s', u, `${_e}`);
         this.failed = true;
       }
     });

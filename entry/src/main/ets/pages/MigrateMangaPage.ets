@@ -86,9 +86,10 @@ export struct MigrateMangaPage {
                         this.toggle(m.id);
                       }
                     })
-                  // 封面（无封面时 SmartImage 内部渲染默认封面占位）
+                  // 封面（无封面时 SmartImage 内部渲染默认封面占位）；
+                  // MangaRecord.coverDisplay()：与书架一致优先持久化封面本地秒开
                   SmartImage({
-                    url: m.thumbnailUrl,
+                    url: m.coverDisplay(),
                     sourceKey: m.sourceKey,
                     fit: ImageFit.Cover,
                     fill: true,

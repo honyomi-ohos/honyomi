@@ -3587,6 +3587,106 @@
     {
       "name": "subject_summary_empty",
       "value": "Chưa có tóm tắt"
+    },
+    {
+      "name": "subject_show_more",
+      "value": "Xem thêm"
+    },
+    {
+      "name": "subject_show_less",
+      "value": "Thu gọn"
+    },
+    {
+      "name": "subject_label_tags",
+      "value": "Thẻ"
+    },
+    {
+      "name": "subject_label_info",
+      "value": "Thông tin"
+    },
+    {
+      "name": "subject_label_characters",
+      "value": "Nhân vật"
+    },
+    {
+      "name": "subject_label_staff",
+      "value": "Đội ngũ"
+    },
+    {
+      "name": "subject_rating_total",
+      "value": "%d lượt đánh giá"
+    },
+    {
+      "name": "subject_rating_rank",
+      "value": "Hạng #%d"
+    },
+    {
+      "name": "subject_stat_collect",
+      "value": "%d đã xem"
+    },
+    {
+      "name": "subject_stat_doing",
+      "value": "%d đang xem"
+    },
+    {
+      "name": "subject_stat_dropped",
+      "value": "%d đã bỏ"
+    },
+    {
+      "name": "subject_stat_wish",
+      "value": "%d muốn xem"
+    },
+    {
+      "name": "subject_role_main",
+      "value": "Chính"
+    },
+    {
+      "name": "subject_role_supporting",
+      "value": "Phụ"
+    },
+    {
+      "name": "subject_role_guest",
+      "value": "Khách mời"
+    },
+    {
+      "name": "subject_infobox_air_start",
+      "value": "Ngày phát sóng"
+    },
+    {
+      "name": "subject_infobox_weekday",
+      "value": "Thứ phát sóng"
+    },
+    {
+      "name": "subject_infobox_aliases",
+      "value": "Tên khác"
+    },
+    {
+      "name": "subject_infobox_director",
+      "value": "Đạo diễn"
+    },
+    {
+      "name": "subject_infobox_script",
+      "value": "Kịch bản"
+    },
+    {
+      "name": "subject_infobox_series_composition",
+      "value": "Biên tập series"
+    },
+    {
+      "name": "subject_infobox_music",
+      "value": "Âm nhạc"
+    },
+    {
+      "name": "subject_infobox_studio",
+      "value": "Studio hoạt hình"
+    },
+    {
+      "name": "subject_infobox_character_design",
+      "value": "Thiết kế nhân vật"
+    },
+    {
+      "name": "subject_infobox_duration",
+      "value": "Thời lượng"
     }
   ]
 }

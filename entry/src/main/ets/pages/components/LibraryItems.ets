@@ -1,4 +1,3 @@
-import { fileIo as fs } from '@kit.CoreFileKit';
 import { MangaRecord } from '../../model/Models';
 import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
@@ -287,14 +286,6 @@ export struct LibraryMangaItem {
 
   // 其次书架持久化封面（入库时落盘的 JPEG，文件存在才用），最后回退在线地址
   private coverDisplay(): string {
-    if (this.record.origThumbnail === '' && this.record.localCover !== '') {
-      try {
-        if (fs.accessSync(this.record.localCover)) {
-          return `file://${this.record.localCover}`;
-        }
-      } catch (e) {
-      }
-    }
-    return this.record.thumbnailUrl;
+    return this.record.coverDisplay();
   }
 }

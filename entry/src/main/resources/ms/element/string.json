@@ -3535,6 +3535,106 @@
     {
       "name": "subject_summary_empty",
       "value": "Belum ada ringkasan"
+    },
+    {
+      "name": "subject_show_more",
+      "value": "Tunjuk lagi"
+    },
+    {
+      "name": "subject_show_less",
+      "value": "Tunjuk kurang"
+    },
+    {
+      "name": "subject_label_tags",
+      "value": "Tag"
+    },
+    {
+      "name": "subject_label_info",
+      "value": "Maklumat"
+    },
+    {
+      "name": "subject_label_characters",
+      "value": "Watak"
+    },
+    {
+      "name": "subject_label_staff",
+      "value": "Kakitangan"
+    },
+    {
+      "name": "subject_rating_total",
+      "value": "%d penilaian"
+    },
+    {
+      "name": "subject_rating_rank",
+      "value": "Kedudukan #%d"
+    },
+    {
+      "name": "subject_stat_collect",
+      "value": "%d koleksi"
+    },
+    {
+      "name": "subject_stat_doing",
+      "value": "%d menonton"
+    },
+    {
+      "name": "subject_stat_dropped",
+      "value": "%d berhenti"
+    },
+    {
+      "name": "subject_stat_wish",
+      "value": "%d ingin tonton"
+    },
+    {
+      "name": "subject_role_main",
+      "value": "Utama"
+    },
+    {
+      "name": "subject_role_supporting",
+      "value": "Pembantu"
+    },
+    {
+      "name": "subject_role_guest",
+      "value": "Tetamu"
+    },
+    {
+      "name": "subject_infobox_air_start",
+      "value": "Tarikh mula"
+    },
+    {
+      "name": "subject_infobox_weekday",
+      "value": "Hari siaran"
+    },
+    {
+      "name": "subject_infobox_aliases",
+      "value": "Nama lain"
+    },
+    {
+      "name": "subject_infobox_director",
+      "value": "Pengarah"
+    },
+    {
+      "name": "subject_infobox_script",
+      "value": "Skrip"
+    },
+    {
+      "name": "subject_infobox_series_composition",
+      "value": "Komposisi siri"
+    },
+    {
+      "name": "subject_infobox_music",
+      "value": "Muzik"
+    },
+    {
+      "name": "subject_infobox_studio",
+      "value": "Studio animasi"
+    },
+    {
+      "name": "subject_infobox_character_design",
+      "value": "Reka bentuk watak"
+    },
+    {
+      "name": "subject_infobox_duration",
+      "value": "Tempoh"
     }
   ]
 }

@@ -4127,6 +4127,106 @@
     {
       "name": "subject_relation_compilation",
       "value": "總集篇"
+    },
+    {
+      "name": "subject_show_more",
+      "value": "顯示更多"
+    },
+    {
+      "name": "subject_show_less",
+      "value": "收合"
+    },
+    {
+      "name": "subject_label_tags",
+      "value": "標籤"
+    },
+    {
+      "name": "subject_label_info",
+      "value": "作品資訊"
+    },
+    {
+      "name": "subject_label_characters",
+      "value": "角色"
+    },
+    {
+      "name": "subject_label_staff",
+      "value": "製作人員"
+    },
+    {
+      "name": "subject_rating_total",
+      "value": "%d人評分"
+    },
+    {
+      "name": "subject_rating_rank",
+      "value": "排名 #%d"
+    },
+    {
+      "name": "subject_stat_collect",
+      "value": "%d 收藏"
+    },
+    {
+      "name": "subject_stat_doing",
+      "value": "%d 在看"
+    },
+    {
+      "name": "subject_stat_dropped",
+      "value": "%d 拋棄"
+    },
+    {
+      "name": "subject_stat_wish",
+      "value": "%d 想看"
+    },
+    {
+      "name": "subject_role_main",
+      "value": "主角"
+    },
+    {
+      "name": "subject_role_supporting",
+      "value": "配角"
+    },
+    {
+      "name": "subject_role_guest",
+      "value": "客串"
+    },
+    {
+      "name": "subject_infobox_air_start",
+      "value": "放送開始"
+    },
+    {
+      "name": "subject_infobox_weekday",
+      "value": "放送星期"
+    },
+    {
+      "name": "subject_infobox_aliases",
+      "value": "別名"
+    },
+    {
+      "name": "subject_infobox_director",
+      "value": "導演"
+    },
+    {
+      "name": "subject_infobox_script",
+      "value": "編劇"
+    },
+    {
+      "name": "subject_infobox_series_composition",
+      "value": "系列構成"
+    },
+    {
+      "name": "subject_infobox_music",
+      "value": "音樂"
+    },
+    {
+      "name": "subject_infobox_studio",
+      "value": "動畫製作"
+    },
+    {
+      "name": "subject_infobox_character_design",
+      "value": "人物設定"
+    },
+    {
+      "name": "subject_infobox_duration",
+      "value": "時長"
     }
   ]
 }

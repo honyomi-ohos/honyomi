@@ -3611,6 +3611,106 @@
     {
       "name": "subject_summary_empty",
       "value": "Описание пока отсутствует"
+    },
+    {
+      "name": "subject_show_more",
+      "value": "Показать больше"
+    },
+    {
+      "name": "subject_show_less",
+      "value": "Показать меньше"
+    },
+    {
+      "name": "subject_label_tags",
+      "value": "Теги"
+    },
+    {
+      "name": "subject_label_info",
+      "value": "Информация"
+    },
+    {
+      "name": "subject_label_characters",
+      "value": "Персонажи"
+    },
+    {
+      "name": "subject_label_staff",
+      "value": "Создатели"
+    },
+    {
+      "name": "subject_rating_total",
+      "value": "%d оценок"
+    },
+    {
+      "name": "subject_rating_rank",
+      "value": "Ранг #%d"
+    },
+    {
+      "name": "subject_stat_collect",
+      "value": "%d коллекционируют"
+    },
+    {
+      "name": "subject_stat_doing",
+      "value": "%d смотрят"
+    },
+    {
+      "name": "subject_stat_dropped",
+      "value": "%d бросили"
+    },
+    {
+      "name": "subject_stat_wish",
+      "value": "%d хотят смотреть"
+    },
+    {
+      "name": "subject_role_main",
+      "value": "Главная роль"
+    },
+    {
+      "name": "subject_role_supporting",
+      "value": "Второстепенная"
+    },
+    {
+      "name": "subject_role_guest",
+      "value": "Эпизодическая"
+    },
+    {
+      "name": "subject_infobox_air_start",
+      "value": "Дата начала"
+    },
+    {
+      "name": "subject_infobox_weekday",
+      "value": "День недели"
+    },
+    {
+      "name": "subject_infobox_aliases",
+      "value": "Другие названия"
+    },
+    {
+      "name": "subject_infobox_director",
+      "value": "Режиссёр"
+    },
+    {
+      "name": "subject_infobox_script",
+      "value": "Сценарий"
+    },
+    {
+      "name": "subject_infobox_series_composition",
+      "value": "Композиция серии"
+    },
+    {
+      "name": "subject_infobox_music",
+      "value": "Музыка"
+    },
+    {
+      "name": "subject_infobox_studio",
+      "value": "Студия анимации"
+    },
+    {
+      "name": "subject_infobox_character_design",
+      "value": "Дизайн персонажей"
+    },
+    {
+      "name": "subject_infobox_duration",
+      "value": "Длительность"
     }
   ]
 }

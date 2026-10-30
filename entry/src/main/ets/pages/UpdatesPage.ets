@@ -229,10 +229,10 @@ export struct UpdatesPage {
                 ListItem() {
                   Row({ space: 12 }) {
                     // 封面（无封面时 SmartImage 内部渲染默认封面占位）；
-                    // UpdateItem 不含 sourceKey，传空串走网络/缓存通用路径
+                    // 传入真实 sourceKey：缓存未命中时可用插件源请求头/并发去重下载
                     SmartImage({
                       url: item.coverUrl,
-                      sourceKey: '',
+                      sourceKey: item.sourceKey,
                       fit: ImageFit.Cover,
                       placeholderIconSize: 20
                     })
@@ -467,6 +467,7 @@ export struct UpdatesPage {
       Stack({ alignContent: Alignment.BottomEnd }) {
         SmartImage({
           url: item.cover,
+          bgmId: item.id,
           fit: ImageFit.Cover,
           placeholderIconSize: 24
         })
@@ -603,17 +604,28 @@ export struct UpdatesPage {
     return LibGrid.autoCols(w);
   }
 
-  private schedColsCount(): number {
-    return this.effectiveSchedCols(this.schedW > 0 ? this.schedW : 360);
+  // 首帧宽度估计：窗口宽扣除宽屏侧边导航栏（真实宽度待 onAreaChange 首次测量回填），
+  // 避免大屏首帧按 360vp 兜底算出 2 列、骨架/网格先渲染出超大封面
+  private estSchedW(): number {
+    if (this.windowW <= 0) {
+      return 360;
+    }
+    return Math.max(0, this.windowW - (Bp.isWide(this.windowW) ? Bp.WIDE_RAIL_W : 0));
   }
 
-  // 网格宽变化：生效列数档位变化时包 animateTo，让网格重排带过渡动画
+  private schedColsCount(): number {
+    return this.effectiveSchedCols(this.schedW > 0 ? this.schedW : this.estSchedW());
+  }
+
+  // 网格宽变化：生效列数档位变化时包 animateTo，让网格重排带过渡动画；
+  // 首次测量回填不包动画——首帧已按窗口宽估计列数，档位校正即时生效，不播收缩动画
   private applySchedW(w: number): void {
     if (w === this.schedW) {
       return;
     }
+    const firstMeasure: boolean = this.schedW <= 0;
     const reflow: boolean = this.effectiveSchedCols(w) !== this.schedColsCount();
-    if (reflow) {
+    if (!firstMeasure && reflow) {
       this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
         this.schedW = w;
       });

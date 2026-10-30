@@ -22,6 +22,24 @@ interface BgmImagesRaw {
 
 interface BgmRatingRaw {
   score?: number;
+  total?: number;
+  rank?: number;
+  // 评分直方图：键为 "1".."10"（星级），值为该星级人数
+  count?: Record<string, number>;
+}
+
+// v0 subject 收藏统计
+interface BgmCollectionRaw {
+  wish?: number;
+  collect?: number;
+  doing?: number;
+  on_hold?: number;
+  dropped?: number;
+}
+
+interface BgmTagRaw {
+  name?: string;
+  count?: number;
 }
 
 interface BgmCalendarItemRaw {
@@ -50,7 +68,10 @@ interface BgmSubjectRaw {
   platform?: string;
   images?: BgmImagesRaw;
   eps?: number;
+  total_episodes?: number;
   rating?: BgmRatingRaw;
+  collection?: BgmCollectionRaw;
+  tags?: BgmTagRaw[];
   infobox?: BgmInfoboxRowRaw[];
 }
 
@@ -94,6 +115,31 @@ interface BgmRelatedSubjectRaw {
   images?: BgmImagesRaw;
 }
 
+// v0 /v0/subjects/{id}/characters 角色项
+interface BgmCharacterRaw {
+  id?: number;
+  name?: string;
+  // 1=主角 2=配角 3=客串
+  type?: number;
+  images?: BgmImagesRaw;
+  // 出演声优（取首位）
+  actors?: BgmActorRaw[];
+}
+
+interface BgmActorRaw {
+  id?: number;
+  name?: string;
+}
+
+// v0 /v0/subjects/{id}/persons 制作人员项
+interface BgmPersonRaw {
+  id?: number;
+  name?: string;
+  // 职务列表（如 ["导演","分镜"]），以「/」连接
+  career?: string[];
+  images?: BgmImagesRaw;
+}
+
 // ---- 公开模型 ----
 
 // 每日放送条目（日历卡片）
@@ -119,9 +165,62 @@ export class BgmSubjectDetail {
   platform: string = '';
   cover: string = '';
   eps: number = 0;
+  // v0 total_episodes：动画正片总集数（0 = 未知）
+  totalEps: number = 0;
   score: number = 0;
+  // 评分人数与排名（0 = 无）
+  ratingTotal: number = 0;
+  ratingRank: number = 0;
+  // 评分直方图：索引 0..9 对应 1..10 星人数
+  scoreHistogram: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   // infobox 作者/原作（作者校验用；解析不到为空串）
   author: string = '';
+  // 标签（含热度）
+  tags: BgmTag[] = [];
+  // infobox 键值行（作品信息表）
+  infobox: BgmInfoboxEntry[] = [];
+  // 收藏统计
+  collection: BgmCollectionStats = new BgmCollectionStats();
+}
+
+// 条目标签（bgm.tv 热门标签，count = 标记人数）
+export class BgmTag {
+  name: string = '';
+  count: number = 0;
+}
+
+// infobox 键值行（作品信息表展示用）
+export class BgmInfoboxEntry {
+  key: string = '';
+  text: string = '';
+}
+
+// 收藏统计（wish 想看 / collect 看过 / doing 在看 / onHold 搁置 / dropped 抛弃）
+export class BgmCollectionStats {
+  wish: number = 0;
+  collect: number = 0;
+  doing: number = 0;
+  onHold: number = 0;
+  dropped: number = 0;
+}
+
+// 角色（含出演声优）
+export class BgmCharacter {
+  id: number = 0;
+  name: string = '';
+  // 1=主角 2=配角 3=客串
+  roleType: number = 0;
+  cover: string = '';
+  actorName: string = '';
+}
+
+// 制作人员
+export class BgmPerson {
+  id: number = 0;
+  name: string = '';
+  // 职务（「/」连接，如「导演/分镜」）
+  career: string = '';
+  cover: string = '';
 }
 
 // 相关条目卡片（v0 /v0/subjects/{id}/subjects）
@@ -146,6 +245,10 @@ export class BangumiApi {
   private static subjectCache: Map<number, BgmSubjectDetail> = new Map<number, BgmSubjectDetail>();
   // 相关条目缓存
   private static relatedCache: Map<number, BgmRelatedSubject[]> = new Map<number, BgmRelatedSubject[]>();
+  // 角色缓存
+  private static charactersCache: Map<number, BgmCharacter[]> = new Map<number, BgmCharacter[]>();
+  // 制作人员缓存
+  private static personsCache: Map<number, BgmPerson[]> = new Map<number, BgmPerson[]>();
   // 名称+作者匹配结果缓存（key = type|title|author → 条目 id，0 = 无匹配）
   private static matchCache: Map<string, number> = new Map<string, number>();
 
@@ -345,6 +448,90 @@ export class BangumiApi {
     const items: BgmRelatedSubject[] = BangumiApi.parseRelations(raw);
     BangumiApi.relatedCache.set(id, items);
     BangumiApi.cachePut(`relations:${id}`, raw);
+    return items;
+  }
+
+  // 角色列表（内存缓存 → 本地数据库缓存 7 天 → 网络落库；失败回退旧缓存）
+  static async getSubjectCharacters(id: number): Promise<BgmCharacter[]> {
+    const cached: BgmCharacter[] | undefined = BangumiApi.charactersCache.get(id);
+    if (cached !== undefined) {
+      return cached;
+    }
+    const persisted: string | undefined = await BangumiApi.cacheGet(`characters:${id}`, BangumiApi.DB_TTL_MS);
+    if (persisted !== undefined) {
+      try {
+        const items: BgmCharacter[] = BangumiApi.parseCharacters(persisted);
+        BangumiApi.charactersCache.set(id, items);
+        return items;
+      } catch (e) {
+        // 缓存行损坏按未命中处理
+      }
+    }
+    const headers: Record<string, string> = Http.defaultHeaders();
+    headers['User-Agent'] = BangumiApi.UA;
+    let raw: string;
+    try {
+      raw = await Http.get(`${Settings.bangumiApiBase()}/v0/subjects/${id}/characters`, headers);
+    } catch (e) {
+      // 网络失败回退本地旧缓存（忽略过期），仍无则原样抛错
+      const stale: string | undefined = await BangumiApi.cacheGetAnyAge(`characters:${id}`);
+      if (stale !== undefined) {
+        try {
+          const items: BgmCharacter[] = BangumiApi.parseCharacters(stale);
+          BangumiApi.charactersCache.set(id, items);
+          return items;
+        } catch (e2) {
+          // 旧缓存损坏继续走抛错
+        }
+      }
+      const charErr = e as Error;
+      throw charErr;
+    }
+    const items: BgmCharacter[] = BangumiApi.parseCharacters(raw);
+    BangumiApi.charactersCache.set(id, items);
+    BangumiApi.cachePut(`characters:${id}`, raw);
+    return items;
+  }
+
+  // 制作人员列表（内存缓存 → 本地数据库缓存 7 天 → 网络落库；失败回退旧缓存）
+  static async getSubjectPersons(id: number): Promise<BgmPerson[]> {
+    const cached: BgmPerson[] | undefined = BangumiApi.personsCache.get(id);
+    if (cached !== undefined) {
+      return cached;
+    }
+    const persisted: string | undefined = await BangumiApi.cacheGet(`persons:${id}`, BangumiApi.DB_TTL_MS);
+    if (persisted !== undefined) {
+      try {
+        const items: BgmPerson[] = BangumiApi.parsePersons(persisted);
+        BangumiApi.personsCache.set(id, items);
+        return items;
+      } catch (e) {
+        // 缓存行损坏按未命中处理
+      }
+    }
+    const headers: Record<string, string> = Http.defaultHeaders();
+    headers['User-Agent'] = BangumiApi.UA;
+    let raw: string;
+    try {
+      raw = await Http.get(`${Settings.bangumiApiBase()}/v0/subjects/${id}/persons`, headers);
+    } catch (e) {
+      // 网络失败回退本地旧缓存（忽略过期），仍无则原样抛错
+      const stale: string | undefined = await BangumiApi.cacheGetAnyAge(`persons:${id}`);
+      if (stale !== undefined) {
+        try {
+          const items: BgmPerson[] = BangumiApi.parsePersons(stale);
+          BangumiApi.personsCache.set(id, items);
+          return items;
+        } catch (e2) {
+          // 旧缓存损坏继续走抛错
+        }
+      }
+      const personErr = e as Error;
+      throw personErr;
+    }
+    const items: BgmPerson[] = BangumiApi.parsePersons(raw);
+    BangumiApi.personsCache.set(id, items);
+    BangumiApi.cachePut(`persons:${id}`, raw);
     return items;
   }
 
@@ -558,11 +745,156 @@ export class BangumiApi {
     detail.date = typeof parsed.date === 'string' ? parsed.date : '';
     detail.platform = typeof parsed.platform === 'string' ? parsed.platform : '';
     detail.eps = typeof parsed.eps === 'number' ? Math.floor(parsed.eps) : 0;
-    detail.score = parsed.rating !== undefined && typeof parsed.rating.score === 'number' ?
-      parsed.rating.score : 0;
+    detail.totalEps = typeof parsed.total_episodes === 'number' ? Math.floor(parsed.total_episodes) : 0;
+    if (parsed.rating !== undefined && parsed.rating !== null) {
+      detail.score = typeof parsed.rating.score === 'number' ? parsed.rating.score : 0;
+      detail.ratingTotal = typeof parsed.rating.total === 'number' ? Math.floor(parsed.rating.total) : 0;
+      detail.ratingRank = typeof parsed.rating.rank === 'number' ? Math.floor(parsed.rating.rank) : 0;
+      detail.scoreHistogram = BangumiApi.parseHistogram(parsed.rating.count);
+    }
+    if (parsed.collection !== undefined && parsed.collection !== null) {
+      detail.collection = BangumiApi.parseCollection(parsed.collection);
+    }
+    detail.tags = BangumiApi.parseTags(parsed.tags);
+    detail.infobox = BangumiApi.parseInfobox(parsed.infobox);
     detail.author = BangumiApi.infoboxAuthor(parsed.infobox);
     detail.cover = BangumiApi.imageUrl(parsed.images);
     return detail;
+  }
+
+  // 评分直方图：{"1":n,..."10":n} → 长度 10 数组（索引 0..9 对应 1..10 星）
+  private static parseHistogram(count: Record<string, number> | undefined): number[] {
+    const histogram: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    if (count === undefined || count === null) {
+      return histogram;
+    }
+    for (let star = 1; star <= 10; star++) {
+      const value: number = count[String(star)];
+      if (typeof value === 'number' && value >= 0) {
+        histogram[star - 1] = Math.floor(value);
+      }
+    }
+    return histogram;
+  }
+
+  private static parseCollection(raw: BgmCollectionRaw): BgmCollectionStats {
+    const stats: BgmCollectionStats = new BgmCollectionStats();
+    stats.wish = typeof raw.wish === 'number' ? Math.floor(raw.wish) : 0;
+    stats.collect = typeof raw.collect === 'number' ? Math.floor(raw.collect) : 0;
+    stats.doing = typeof raw.doing === 'number' ? Math.floor(raw.doing) : 0;
+    stats.onHold = typeof raw.on_hold === 'number' ? Math.floor(raw.on_hold) : 0;
+    stats.dropped = typeof raw.dropped === 'number' ? Math.floor(raw.dropped) : 0;
+    return stats;
+  }
+
+  // 标签解析（name + count），过滤空名并按 count 降序
+  private static parseTags(raw: BgmTagRaw[] | undefined): BgmTag[] {
+    const tags: BgmTag[] = [];
+    if (raw === undefined || raw === null || !Array.isArray(raw)) {
+      return tags;
+    }
+    for (let i = 0; i < raw.length; i++) {
+      const entry: BgmTagRaw = raw[i];
+      if (typeof entry.name !== 'string' || entry.name.trim() === '') {
+        continue;
+      }
+      const tag: BgmTag = new BgmTag();
+      tag.name = entry.name.trim();
+      tag.count = typeof entry.count === 'number' && entry.count >= 0 ? Math.floor(entry.count) : 0;
+      tags.push(tag);
+    }
+    tags.sort((a: BgmTag, b: BgmTag): number => b.count - a.count);
+    return tags;
+  }
+
+  // infobox 键值行解析（作者/原作保留在作者校验通道，信息表同样展示）
+  private static parseInfobox(infobox: BgmInfoboxRowRaw[] | undefined): BgmInfoboxEntry[] {
+    const entries: BgmInfoboxEntry[] = [];
+    if (infobox === undefined || infobox === null || !Array.isArray(infobox)) {
+      return entries;
+    }
+    for (let i = 0; i < infobox.length; i++) {
+      const row: BgmInfoboxRowRaw = infobox[i];
+      if (typeof row.key !== 'string' || row.key.trim() === '') {
+        continue;
+      }
+      const text: string = BangumiApi.infoboxValueText(row.value);
+      if (text === '') {
+        continue;
+      }
+      const entry: BgmInfoboxEntry = new BgmInfoboxEntry();
+      entry.key = row.key.trim();
+      entry.text = text;
+      entries.push(entry);
+    }
+    return entries;
+  }
+
+  // 角色原始响应解析（结构非法抛 bgm_characters_invalid）：
+  // 主角 → 配角 → 客串 排序，最多保留 30 条（横滑头像条 + 展开全部够用）
+  private static parseCharacters(raw: string): BgmCharacter[] {
+    let parsed: BgmCharacterRaw[];
+    try {
+      parsed = JSON.parse(raw) as BgmCharacterRaw[];
+    } catch (e) {
+      throw new Error('bgm_characters_invalid');
+    }
+    if (!Array.isArray(parsed)) {
+      throw new Error('bgm_characters_invalid');
+    }
+    const items: BgmCharacter[] = [];
+    for (let i = 0; i < parsed.length; i++) {
+      const entry: BgmCharacterRaw = parsed[i];
+      if (typeof entry.id !== 'number' || entry.id <= 0) {
+        continue;
+      }
+      if (typeof entry.name !== 'string' || entry.name.trim() === '') {
+        continue;
+      }
+      const item: BgmCharacter = new BgmCharacter();
+      item.id = entry.id;
+      item.name = entry.name.trim();
+      item.roleType = typeof entry.type === 'number' ? entry.type : 0;
+      item.cover = BangumiApi.imageUrl(entry.images);
+      if (entry.actors !== undefined && Array.isArray(entry.actors) && entry.actors.length > 0) {
+        const actor: BgmActorRaw = entry.actors[0];
+        item.actorName = typeof actor.name === 'string' ? actor.name.trim() : '';
+      }
+      items.push(item);
+    }
+    items.sort((a: BgmCharacter, b: BgmCharacter): number => a.roleType - b.roleType);
+    return items.length > 30 ? items.slice(0, 30) : items;
+  }
+
+  // 制作人员原始响应解析（结构非法抛 bgm_persons_invalid），最多保留 40 条
+  private static parsePersons(raw: string): BgmPerson[] {
+    let parsed: BgmPersonRaw[];
+    try {
+      parsed = JSON.parse(raw) as BgmPersonRaw[];
+    } catch (e) {
+      throw new Error('bgm_persons_invalid');
+    }
+    if (!Array.isArray(parsed)) {
+      throw new Error('bgm_persons_invalid');
+    }
+    const items: BgmPerson[] = [];
+    for (let i = 0; i < parsed.length; i++) {
+      const entry: BgmPersonRaw = parsed[i];
+      if (typeof entry.id !== 'number' || entry.id <= 0) {
+        continue;
+      }
+      if (typeof entry.name !== 'string' || entry.name.trim() === '') {
+        continue;
+      }
+      const item: BgmPerson = new BgmPerson();
+      item.id = entry.id;
+      item.name = entry.name.trim();
+      item.career = entry.career !== undefined && Array.isArray(entry.career)
+        ? entry.career.filter((c: string): boolean => typeof c === 'string' && c.trim() !== '').join('/') : '';
+      item.cover = BangumiApi.imageUrl(entry.images);
+      items.push(item);
+    }
+    return items.length > 40 ? items.slice(0, 40) : items;
   }
 
   // 相关条目原始响应解析（结构非法抛 bgm_relations_invalid；排序权重同 animeko）

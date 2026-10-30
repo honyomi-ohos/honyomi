@@ -263,9 +263,17 @@ export class WidgetUpdater {
       record['chapter'] = chapterName;
       record['chapterId'] = `${chapterId}`;
     }
-    let coverPath = await ImageCache.ensureLocal(context, manga.thumbnailUrl, manga.sourceKey);
-    if (coverPath.indexOf('file://') === 0) {
-      coverPath = coverPath.substring('file://'.length);
+    // 与书架一致优先持久化封面（自定义/入库落盘文件均为本地，直接取 fd），
+    // 无持久化封面再经 ImageCache 管线下载缓存
+    let coverPath = '';
+    const localDisplay: string = manga.coverDisplay();
+    if (localDisplay.indexOf('file://') === 0) {
+      coverPath = localDisplay.substring('file://'.length);
+    } else {
+      coverPath = await ImageCache.ensureLocal(context, manga.thumbnailUrl, manga.sourceKey);
+      if (coverPath.indexOf('file://') === 0) {
+        coverPath = coverPath.substring('file://'.length);
+      }
     }
     let file: fs.File | undefined = undefined;
     try {

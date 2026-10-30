@@ -3467,6 +3467,106 @@
     {
       "name": "subject_summary_empty",
       "value": "Aucun résumé pour le moment"
+    },
+    {
+      "name": "subject_show_more",
+      "value": "Afficher plus"
+    },
+    {
+      "name": "subject_show_less",
+      "value": "Afficher moins"
+    },
+    {
+      "name": "subject_label_tags",
+      "value": "Tags"
+    },
+    {
+      "name": "subject_label_info",
+      "value": "Informations"
+    },
+    {
+      "name": "subject_label_characters",
+      "value": "Personnages"
+    },
+    {
+      "name": "subject_label_staff",
+      "value": "Équipe"
+    },
+    {
+      "name": "subject_rating_total",
+      "value": "%d notes"
+    },
+    {
+      "name": "subject_rating_rank",
+      "value": "Rang #%d"
+    },
+    {
+      "name": "subject_stat_collect",
+      "value": "%d collectionnés"
+    },
+    {
+      "name": "subject_stat_doing",
+      "value": "%d en cours"
+    },
+    {
+      "name": "subject_stat_dropped",
+      "value": "%d abandonnés"
+    },
+    {
+      "name": "subject_stat_wish",
+      "value": "%d veulent voir"
+    },
+    {
+      "name": "subject_role_main",
+      "value": "Rôle principal"
+    },
+    {
+      "name": "subject_role_supporting",
+      "value": "Rôle secondaire"
+    },
+    {
+      "name": "subject_role_guest",
+      "value": "Invité"
+    },
+    {
+      "name": "subject_infobox_air_start",
+      "value": "Diffusé"
+    },
+    {
+      "name": "subject_infobox_weekday",
+      "value": "Jour de diffusion"
+    },
+    {
+      "name": "subject_infobox_aliases",
+      "value": "Alias"
+    },
+    {
+      "name": "subject_infobox_director",
+      "value": "Réalisation"
+    },
+    {
+      "name": "subject_infobox_script",
+      "value": "Scénario"
+    },
+    {
+      "name": "subject_infobox_series_composition",
+      "value": "Composition de la série"
+    },
+    {
+      "name": "subject_infobox_music",
+      "value": "Musique"
+    },
+    {
+      "name": "subject_infobox_studio",
+      "value": "Studio d'animation"
+    },
+    {
+      "name": "subject_infobox_character_design",
+      "value": "Character design"
+    },
+    {
+      "name": "subject_infobox_duration",
+      "value": "Durée"
     }
   ]
 }

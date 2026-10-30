@@ -3543,6 +3543,106 @@
     {
       "name": "subject_summary_empty",
       "value": "Sin sinopsis por ahora"
+    },
+    {
+      "name": "subject_show_more",
+      "value": "Mostrar más"
+    },
+    {
+      "name": "subject_show_less",
+      "value": "Mostrar menos"
+    },
+    {
+      "name": "subject_label_tags",
+      "value": "Etiquetas"
+    },
+    {
+      "name": "subject_label_info",
+      "value": "Información"
+    },
+    {
+      "name": "subject_label_characters",
+      "value": "Personajes"
+    },
+    {
+      "name": "subject_label_staff",
+      "value": "Equipo"
+    },
+    {
+      "name": "subject_rating_total",
+      "value": "%d valoraciones"
+    },
+    {
+      "name": "subject_rating_rank",
+      "value": "Puesto #%d"
+    },
+    {
+      "name": "subject_stat_collect",
+      "value": "%d coleccionados"
+    },
+    {
+      "name": "subject_stat_doing",
+      "value": "%d viendo"
+    },
+    {
+      "name": "subject_stat_dropped",
+      "value": "%d abandonados"
+    },
+    {
+      "name": "subject_stat_wish",
+      "value": "%d quieren ver"
+    },
+    {
+      "name": "subject_role_main",
+      "value": "Protagonista"
+    },
+    {
+      "name": "subject_role_supporting",
+      "value": "Secundario"
+    },
+    {
+      "name": "subject_role_guest",
+      "value": "Invitado"
+    },
+    {
+      "name": "subject_infobox_air_start",
+      "value": "Emitido"
+    },
+    {
+      "name": "subject_infobox_weekday",
+      "value": "Día de emisión"
+    },
+    {
+      "name": "subject_infobox_aliases",
+      "value": "Alias"
+    },
+    {
+      "name": "subject_infobox_director",
+      "value": "Dirección"
+    },
+    {
+      "name": "subject_infobox_script",
+      "value": "Guion"
+    },
+    {
+      "name": "subject_infobox_series_composition",
+      "value": "Composición de la serie"
+    },
+    {
+      "name": "subject_infobox_music",
+      "value": "Música"
+    },
+    {
+      "name": "subject_infobox_studio",
+      "value": "Estudio de animación"
+    },
+    {
+      "name": "subject_infobox_character_design",
+      "value": "Diseño de personajes"
+    },
+    {
+      "name": "subject_infobox_duration",
+      "value": "Duración"
     }
   ]
 }

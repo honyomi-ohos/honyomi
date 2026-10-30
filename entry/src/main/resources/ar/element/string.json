@@ -3635,6 +3635,106 @@
     {
       "name": "subject_summary_empty",
       "value": "No summary yet"
+    },
+    {
+      "name": "subject_show_more",
+      "value": "عرض المزيد"
+    },
+    {
+      "name": "subject_show_less",
+      "value": "عرض أقل"
+    },
+    {
+      "name": "subject_label_tags",
+      "value": "الوسوم"
+    },
+    {
+      "name": "subject_label_info",
+      "value": "معلومات"
+    },
+    {
+      "name": "subject_label_characters",
+      "value": "الشخصيات"
+    },
+    {
+      "name": "subject_label_staff",
+      "value": "طاقم العمل"
+    },
+    {
+      "name": "subject_rating_total",
+      "value": "%d تقييمًا"
+    },
+    {
+      "name": "subject_rating_rank",
+      "value": "الترتيب #%d"
+    },
+    {
+      "name": "subject_stat_collect",
+      "value": "%d جمعوها"
+    },
+    {
+      "name": "subject_stat_doing",
+      "value": "%d يشاهدون"
+    },
+    {
+      "name": "subject_stat_dropped",
+      "value": "%d توقفوا"
+    },
+    {
+      "name": "subject_stat_wish",
+      "value": "%d يريدون مشاهدته"
+    },
+    {
+      "name": "subject_role_main",
+      "value": "رئيسي"
+    },
+    {
+      "name": "subject_role_supporting",
+      "value": "مساعد"
+    },
+    {
+      "name": "subject_role_guest",
+      "value": "ضيف"
+    },
+    {
+      "name": "subject_infobox_air_start",
+      "value": "تاريخ البث"
+    },
+    {
+      "name": "subject_infobox_weekday",
+      "value": "يوم البث"
+    },
+    {
+      "name": "subject_infobox_aliases",
+      "value": "أسماء أخرى"
+    },
+    {
+      "name": "subject_infobox_director",
+      "value": "إخراج"
+    },
+    {
+      "name": "subject_infobox_script",
+      "value": "سيناريو"
+    },
+    {
+      "name": "subject_infobox_series_composition",
+      "value": "تأليف السلسلة"
+    },
+    {
+      "name": "subject_infobox_music",
+      "value": "موسيقى"
+    },
+    {
+      "name": "subject_infobox_studio",
+      "value": "استوديو الأنميشن"
+    },
+    {
+      "name": "subject_infobox_character_design",
+      "value": "تصميم الشخصيات"
+    },
+    {
+      "name": "subject_infobox_duration",
+      "value": "المدة"
     }
   ]
 }

@@ -715,7 +715,8 @@ export struct TtsPlayerPage {
     const ch: ChapterRecord | undefined = TtsPlaybackService.getChapter();
     this.mangaTitle = m !== undefined ? m.title : '';
     this.mangaAuthor = m !== undefined ? m.author : '';
-    this.coverUrl = m !== undefined ? m.thumbnailUrl : '';
+    // 与书架一致优先持久化封面（本地文件秒开）
+    this.coverUrl = m !== undefined ? m.coverDisplay() : '';
     this.sourceKey = m !== undefined ? m.sourceKey : '';
     this.chapterId = ch !== undefined ? ch.id : -1;
     this.chapterName = ch !== undefined ? ch.name : '';

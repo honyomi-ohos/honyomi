@@ -1,5 +1,4 @@
 import { Want } from '@kit.AbilityKit';
-import { fileIo as fs } from '@kit.CoreFileKit';
 import { SheetPreset } from './components/SheetPreset';
 import { BusinessError, pasteboard } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
@@ -327,10 +326,11 @@ export struct MangaDetailPage {
   @State relatedWorks: SManga[] = [];
   // Bangumi 相关系列（ACGN 源按名称+作者匹配；匹配失败/非 ACGN 源为空）
   @State bgmRelated: BgmRelatedSubject[] = [];
-  // 单列布局（手机/PC）「相关系列」默认折叠，点标题/箭头展开；平板两列布局常展无折叠交互
-  @State bgmRelatedCollapsed: boolean = true;
   // Bangumi 关系图半模态（「相关系列」标题右侧 account_tree 图标进入）
   @State showBgmGraphSheet: boolean = false;
+  // 关系图节点点击的待跳转条目：先记录、待弹层完全收起（onDisappear）再跳转，
+  // 避免半模态收起动画与页面转场动画同帧叠加导致新页面渲染异常（内容不显示）
+  private bgmGraphPendingOpen: BgmRelatedSubject | undefined = undefined;
   @State showCoverViewer: boolean = false;
   @State showSettingsSheet: boolean = false;
   // 更新间隔选择弹层（对齐 Mihon SetIntervalDialog）
@@ -425,19 +425,10 @@ export struct MangaDetailPage {
   }
 
   // 底部提供关闭/分享/保存/编辑封面，编辑含恢复原封面入口
-  // 封面展示地址：与书架一致优先书架持久化封面（本地文件秒开，免去缓存未命中时的
-  // 插件等待与网络下载），自定义封面（origThumbnail 非空）时 thumbnailUrl 已是 file:// 本地路径；
-  // 文件缺失或无持久化封面回退在线地址
+  // 封面展示地址：与书架一致优先书架持久化封面（MangaRecord.coverDisplay，
+  // 本地文件秒开，免去缓存未命中时的插件等待与网络下载）
   private coverDisplay(): string {
-    if (this.manga.origThumbnail === '' && this.manga.localCover !== '') {
-      try {
-        if (fs.accessSync(this.manga.localCover)) {
-          return `file://${this.manga.localCover}`;
-        }
-      } catch (e) {
-      }
-    }
-    return this.manga.thumbnailUrl;
+    return this.manga.coverDisplay();
   }
 
   @Builder
@@ -1263,10 +1254,9 @@ export struct MangaDetailPage {
     })
   }
 
-  // Bangumi 相关系列（ACGN 源按名称+作者匹配）：横滑卡片 = 封面 + 标题 + 关系文案，
-  // 点击进入条目详情页（对齐 SubjectDetailPage 相关条目块样式）。
-  // 标题行右侧：关系图入口（account_tree → bgmGraphSheetBuilder）；
-  // 单列布局默认折叠（点标题/箭头展开），平板两列布局常展、不渲染折叠交互
+  // Bangumi 相关系列（ACGN 源按名称+作者匹配）：
+  // 小屏（单列）仅保留标题行 + 关系图入口，信息统一通过关系图半模态呈现（无展开交互）；
+  // 平板两列布局保留横滑卡片（封面 + 标题 + 关系文案，点击进入条目详情页）
   @Builder
   bgmRelatedContent() {
     Column() {
@@ -1276,9 +1266,6 @@ export struct MangaDetailPage {
           .fontWeight(FontWeight.Bold)
           .fontColor(this.pal.text)
           .layoutWeight(1)
-          .onClick(() => {
-            this.toggleBgmRelated();
-          })
         AppIcon({ name: 'account_tree', iconSize: 20, tint: this.pal.sub })
           .padding({ left: 10 })
           .onClick(() => {
@@ -1290,31 +1277,24 @@ export struct MangaDetailPage {
               height: SheetSize.MEDIUM,
               detents: [SheetSize.MEDIUM, SheetSize.LARGE],
               showClose: true,
-              bg: this.pal.bg
+              bg: this.pal.bg,
+              onDisappear: (): void => {
+                this.consumeBgmGraphPendingOpen();
+              }
             }))
-        if (!this.isTwoPane()) {
-          AppIcon({
-            name: this.bgmRelatedCollapsed ? 'expand_more' : 'expand_less',
-            iconSize: 20,
-            tint: this.pal.sub
-          })
-            .padding({ left: 10 })
-            .onClick(() => {
-              this.toggleBgmRelated();
-            })
-        }
       }
       .width('100%')
       .alignItems(VerticalAlign.Center)
 
-      // 单列折叠态隐藏卡片列表；两列布局（平板）常展
-      if (this.isTwoPane() || !this.bgmRelatedCollapsed) {
+      // 平板两列布局：横滑卡片常展；小屏通过关系图查看，不渲染列表
+      if (this.isTwoPane()) {
         List({ space: 12 }) {
           ForEach(this.bgmRelated, (item: BgmRelatedSubject) => {
             ListItem() {
               Column() {
                 SmartImage({
                   url: item.cover,
+                  bgmId: item.id,
                   fit: ImageFit.Cover,
                   placeholderIconSize: 24
                 })
@@ -1350,7 +1330,6 @@ export struct MangaDetailPage {
         .edgeEffect(EdgeEffect.Spring)
         .width('100%')
         .margin({ top: 10 })
-        .transition(TransitionEffect.OPACITY.animation({ duration: 200, curve: Curve.Friction }))
       }
     }
     .alignItems(HorizontalAlign.Start)
@@ -1362,19 +1341,16 @@ export struct MangaDetailPage {
     })
   }
 
-  // 「相关系列」折叠/展开切换（单列布局；两列布局无折叠交互）
-  private toggleBgmRelated(): void {
-    if (this.isTwoPane()) {
-      return;
-    }
-    this.getUIContext().animateTo({ duration: 200, curve: Curve.Friction }, (): void => {
-      this.bgmRelatedCollapsed = !this.bgmRelatedCollapsed;
-    });
-  }
-
   // Bangumi 关系图半模态（animeko 风格树状关系图）：
-  // 中心节点（当前作品，主色描边）→ 主干连线 → 竖向脊线 → 每个关联条目一根带关系文案的分支，
-  // 连接线用分隔色细矩形拼出；分支节点点击进入条目详情
+  // 中心节点（当前作品，主色描边）→ 主干 → 逐行分支（竖向连线 + 关系文案 + 关联节点）。
+  // 对齐规则（全部由固定尺寸推导，不依赖文本实际渲染高度）：
+  // 1. 封面统一 96 高 → 横向连线一律锚定封面垂直中线 y=48（封面等高容器内垂直居中实现）；
+  // 2. 行高统一 156（节点 140 + 行距 16 计入行高），竖向连线按行内三段绘制：
+  //    上段 0→47（首行透明占位）+ 接头段 47→49（恒着色，与横向连线同厚对齐）+
+  //    下段 49→156（末行透明占位），相邻行段首尾相接即贯通脊线，
+  //    且精确止于首/末分支连线的上下边缘，不出头、无半线宽豁口；
+  // 3. 整棵树在弹层内水平居中；
+  // 4. 分支节点点击：记录待跳转条目并收起弹层，待弹层完全收起（onDisappear）再进入条目详情
   @Builder
   bgmGraphSheetBuilder() {
     Column() {
@@ -1383,7 +1359,7 @@ export struct MangaDetailPage {
           // 中心节点：当前作品（主色描边突出）
           Column() {
             SmartImage({
-              url: this.manga.thumbnailUrl,
+              url: this.coverDisplay(),
               sourceKey: this.manga.sourceKey,
               fit: ImageFit.Cover,
               placeholderIconSize: 20
@@ -1405,74 +1381,113 @@ export struct MangaDetailPage {
           .width(64)
           .alignItems(HorizontalAlign.Start)
 
-          // 主干连线（中心节点 → 脊线中点）
-          Column()
-            .width(14)
-            .height(2)
-            .backgroundColor(this.pal.divider)
-
-          // 分支区：竖向脊线（贯通首末分支中点）+ 关联节点列
-          Stack({ alignContent: Alignment.TopStart }) {
+          // 主干连线：封面等高容器内垂直居中 → 与各分支连线同处 y=48
+          Column() {
             Column()
-              .width(2)
-              .height(this.bgmGraphSpineH())
+              .width(14)
+              .height(2)
               .backgroundColor(this.pal.divider)
-              .margin({ top: 64 })
-            Column({ space: 16 }) {
-              ForEach(this.bgmRelated, (item: BgmRelatedSubject) => {
-                Row() {
-                  // 分支连线（脊线 → 关系文案）
-                  Column()
-                    .width(12)
-                    .height(2)
-                    .backgroundColor(this.pal.divider)
-                  // 关系文案（连线上的边标签，定宽保证节点列对齐）
-                  Text(BangumiApi.relationLabelRes(item.relation))
-                    .fontSize(10)
-                    .fontColor(this.pal.sub)
-                    .width(60)
-                    .textAlign(TextAlign.Center)
-                    .maxLines(1)
-                    .textOverflow({ overflow: TextOverflow.Ellipsis })
-                  // 关系文案 → 节点连线
-                  Column()
-                    .width(8)
-                    .height(2)
-                    .backgroundColor(this.pal.divider)
-                  // 关联节点：封面 + 标题，点击进条目详情
-                  Column() {
-                    SmartImage({
-                      url: item.cover,
-                      fit: ImageFit.Cover,
-                      placeholderIconSize: 16
-                    })
-                      .width(64)
-                      .aspectRatio(2 / 3)
-                      .borderRadius(8)
-                      .clip(true)
-                      .backgroundColor(this.pal.chip)
-                    Text(item.nameCn !== '' ? item.nameCn : item.name)
-                      .fontSize(10)
-                      .fontColor(this.pal.text)
-                      .minLines(2)
-                      .maxLines(2)
-                      .textOverflow({ overflow: TextOverflow.Ellipsis })
-                      .margin({ top: 4 })
+          }
+          .height(96)
+          .justifyContent(FlexAlign.Center)
+
+          // 分支列：每行 = 竖向连线段 + [连线 | 关系文案 | 连线] + 关联节点
+          Column() {
+            ForEach(this.bgmRelated, (item: BgmRelatedSubject, idx: number) => {
+              Row() {
+                // 竖向连线（宽 2，x 与各行对齐），三段拼满整行高 156：
+                // 上段 47（首行透明占位）+ 接头段 2（恒着色，与横向连线同厚且同处 y=47..49，
+                // 补齐首/末接头处竖线只画到连线中点留下的半线宽豁口）+ 下段 107（末行透明占位）
+                Column() {
+                  if (idx > 0) {
+                    Column()
+                      .width(2)
+                      .height(47)
+                      .backgroundColor(this.pal.divider)
+                  } else {
+                    Column()
+                      .width(2)
+                      .height(47)
                   }
-                  .width(64)
-                  .alignItems(HorizontalAlign.Start)
-                  .onClick(() => {
-                    this.openBgmRelated(item);
-                  })
+                  Column()
+                    .width(2)
+                    .height(2)
+                    .backgroundColor(this.pal.divider)
+                  if (idx < this.bgmRelated.length - 1) {
+                    Column()
+                      .width(2)
+                      .height(107)
+                      .backgroundColor(this.pal.divider)
+                  } else {
+                    Column()
+                      .width(2)
+                      .height(107)
+                  }
                 }
-                .alignItems(VerticalAlign.Center)
-              }, (item: BgmRelatedSubject): string => `bgmgraph-${item.id}`)
-            }
-            .padding({ left: 2 })
+                .width(2)
+                .height(156)
+
+                // 横向连线带：封面等高（96）容器内垂直居中 → 连线 y=48 与封面中线重合
+                Column() {
+                  Row() {
+                    Column()
+                      .width(12)
+                      .height(2)
+                      .backgroundColor(this.pal.divider)
+                    Text(BangumiApi.relationLabelRes(item.relation))
+                      .fontSize(10)
+                      .fontColor(this.pal.sub)
+                      .width(60)
+                      .textAlign(TextAlign.Center)
+                      .maxLines(1)
+                      .textOverflow({ overflow: TextOverflow.Ellipsis })
+                    Column()
+                      .width(8)
+                      .height(2)
+                      .backgroundColor(this.pal.divider)
+                  }
+                  .alignItems(VerticalAlign.Center)
+                }
+                .height(96)
+                .justifyContent(FlexAlign.Center)
+
+                // 关联节点：封面 + 标题；点击关闭关系图弹层并进入条目详情
+                Column() {
+                  SmartImage({
+                    url: item.cover,
+                    bgmId: item.id,
+                    fit: ImageFit.Cover,
+                    placeholderIconSize: 16
+                  })
+                    .width(64)
+                    .aspectRatio(2 / 3)
+                    .borderRadius(8)
+                    .clip(true)
+                    .backgroundColor(this.pal.chip)
+                  Text(item.nameCn !== '' ? item.nameCn : item.name)
+                    .fontSize(10)
+                    .fontColor(this.pal.text)
+                    .minLines(2)
+                    .maxLines(2)
+                    .textOverflow({ overflow: TextOverflow.Ellipsis })
+                    .margin({ top: 4 })
+                }
+                .width(64)
+                .alignItems(HorizontalAlign.Start)
+                .onClick(() => {
+                  // 先记录待跳转条目并收起弹层，待 onDisappear（收起完成）再 push
+                  this.bgmGraphPendingOpen = item;
+                  this.showBgmGraphSheet = false;
+                })
+              }
+              .alignItems(VerticalAlign.Top)
+            }, (item: BgmRelatedSubject): string => `bgmgraph-${item.id}`)
           }
         }
-        .alignItems(VerticalAlign.Center)
-        .padding({ left: 20, right: 20, top: 8, bottom: 24 })
+        .alignItems(VerticalAlign.Top)
+        .width('100%')
+        .justifyContent(FlexAlign.Center)
+        .padding({ left: 20, right: 20, top: 16, bottom: 24 })
       }
       .layoutWeight(1)
       .width('100%')
@@ -1483,13 +1498,6 @@ export struct MangaDetailPage {
     .width('100%')
     .height('100%')
     .backgroundColor(this.pal.bg)
-  }
-
-  // 关系图脊线高度：分支行高 128（封面 96 + 标题两行）+ 行距 16，
-  // 脊线仅贯通首末分支中点之间：(n - 1) * (128 + 16)
-  private bgmGraphSpineH(): number {
-    const n: number = this.bgmRelated.length;
-    return n > 1 ? (n - 1) * 144 : 0;
   }
 
   // 章节标题栏：标题/排序/筛选入口 + 批量下载 + 全部已读（对齐 Mihon ChapterHeader）
@@ -1737,7 +1745,7 @@ export struct MangaDetailPage {
     }
   }
 
-  // Esc 广播：关闭追踪/章节设置/更新间隔/笔记半模态弹层
+  // Esc 广播：关闭追踪/章节设置/更新间隔/笔记/关系图半模态弹层
   onSheetEsc(): void {
     if (this.showTrackSheet) {
       this.showTrackSheet = false;
@@ -1750,6 +1758,9 @@ export struct MangaDetailPage {
     }
     if (this.showNotesSheet) {
       this.showNotesSheet = false;
+    }
+    if (this.showBgmGraphSheet) {
+      this.showBgmGraphSheet = false;
     }
   }
 
@@ -1889,10 +1900,15 @@ export struct MangaDetailPage {
 
   private async loadAll(): Promise<void> {
     try {
+      // 首次进入先载入本地记录（sourceKey/标题/作者就位），主内容与相关系列才具备加载条件
+      if (this.manga.id !== this.mangaId) {
+        await this.reloadLocal();
+      }
+      // 相关系列：本地记录就位后立即加载（Bangumi 缓存命中时瞬间可见），与源网络同步并行执行
+      this.loadBgmRelated();
       await this.syncFromSource();
       await this.refreshTrackCount();
       await this.loadRelatedWorks();
-      this.loadBgmRelated();
     } catch (e) {
       const msg = e instanceof Error ? e.message : `${e}`;
       hilog.warn(0x0001, 'MangaDetail', 'loadAll failed: %{public}s', msg);
@@ -1927,6 +1943,10 @@ export struct MangaDetailPage {
   // 失败/无匹配静默隐藏区块（对齐 animeko 相关条目入口，不阻塞详情主流程）。
   private async loadBgmRelated(): Promise<void> {
     this.bgmRelated = [];
+    // 依赖本地记录（sourceKey/标题/作者做匹配）：manga 未载入（首次进入 reloadLocal 之前）不加载
+    if (this.manga.id !== this.mangaId) {
+      return;
+    }
     try {
       const source = SourceRegistry.get(this.manga.sourceKey);
       if (source === undefined || !source.acgn) {
@@ -1962,6 +1982,17 @@ export struct MangaDetailPage {
   private openBgmRelated(item: BgmRelatedSubject): void {
     const params: SubjectDetailParams = { subjectId: item.id };
     this.pathStack.pushPathByName('SubjectDetail', params);
+  }
+
+  // 关系图弹层完全收起后消费待跳转条目：节点点击时已记录 bgmGraphPendingOpen，
+  // 此处（onDisappear，收起动画已结束、无转场动画竞争）才执行跳转；
+  // Esc/下滑/关闭按钮等其他关闭路径无待跳转项，不触发跳转
+  private consumeBgmGraphPendingOpen(): void {
+    const pending: BgmRelatedSubject | undefined = this.bgmGraphPendingOpen;
+    this.bgmGraphPendingOpen = undefined;
+    if (pending !== undefined) {
+      this.openBgmRelated(pending);
+    }
   }
 
   // 点击相关作品：入库（upsertFromSource）后压入详情页

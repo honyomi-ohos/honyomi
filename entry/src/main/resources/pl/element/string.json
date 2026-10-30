@@ -3563,6 +3563,106 @@
     {
       "name": "subject_summary_empty",
       "value": "Brak streszczenia"
+    },
+    {
+      "name": "subject_show_more",
+      "value": "Pokaż więcej"
+    },
+    {
+      "name": "subject_show_less",
+      "value": "Pokaż mniej"
+    },
+    {
+      "name": "subject_label_tags",
+      "value": "Tagi"
+    },
+    {
+      "name": "subject_label_info",
+      "value": "Informacje"
+    },
+    {
+      "name": "subject_label_characters",
+      "value": "Postacie"
+    },
+    {
+      "name": "subject_label_staff",
+      "value": "Ekipa"
+    },
+    {
+      "name": "subject_rating_total",
+      "value": "%d ocen"
+    },
+    {
+      "name": "subject_rating_rank",
+      "value": "Ranking #%d"
+    },
+    {
+      "name": "subject_stat_collect",
+      "value": "%d zebranych"
+    },
+    {
+      "name": "subject_stat_doing",
+      "value": "%d ogląda"
+    },
+    {
+      "name": "subject_stat_dropped",
+      "value": "%d porzuconych"
+    },
+    {
+      "name": "subject_stat_wish",
+      "value": "%d chce zobaczyć"
+    },
+    {
+      "name": "subject_role_main",
+      "value": "Główna"
+    },
+    {
+      "name": "subject_role_supporting",
+      "value": "Drugoplanowa"
+    },
+    {
+      "name": "subject_role_guest",
+      "value": "Gościnna"
+    },
+    {
+      "name": "subject_infobox_air_start",
+      "value": "Data premiery"
+    },
+    {
+      "name": "subject_infobox_weekday",
+      "value": "Dzień tygodnia"
+    },
+    {
+      "name": "subject_infobox_aliases",
+      "value": "Aliasy"
+    },
+    {
+      "name": "subject_infobox_director",
+      "value": "Reżyseria"
+    },
+    {
+      "name": "subject_infobox_script",
+      "value": "Scenariusz"
+    },
+    {
+      "name": "subject_infobox_series_composition",
+      "value": "Kompozycja serii"
+    },
+    {
+      "name": "subject_infobox_music",
+      "value": "Muzyka"
+    },
+    {
+      "name": "subject_infobox_studio",
+      "value": "Studio animacji"
+    },
+    {
+      "name": "subject_infobox_character_design",
+      "value": "Projekt postaci"
+    },
+    {
+      "name": "subject_infobox_duration",
+      "value": "Czas trwania"
     }
   ]
 }

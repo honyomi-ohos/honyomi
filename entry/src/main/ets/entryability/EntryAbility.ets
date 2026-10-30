@@ -21,6 +21,7 @@ import { JsvmEngineBackend } from '../jsvm/JsvmEngineBackend';
 import { CookieJar } from '../net/CookieJar';
 import { Http } from '../net/Http';
 import { ImageCache } from '../common/ImageCache';
+import { BgmCoverCache } from '../common/BgmCoverCache';
 import { NetworkMonitor } from '../common/NetworkMonitor';
 
 import { WidgetUpdater } from '../form/WidgetUpdater';
@@ -143,6 +144,8 @@ const err = e as Error;
       DownloadService.init(this.context);
       CookieJar.init(this.context);
       ImageCache.init(this.context);
+      // Bangumi 封面独立缓存（新番时间表/条目详情共用，与章节缓存清除隔离）
+      BgmCoverCache.init(this.context);
       // 启动时清除章节缓存（数据与存储设置）
       if (Settings.getAutoClearChapterCache()) {
         ImageCache.clearAll();

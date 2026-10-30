@@ -11,6 +11,7 @@ import { Util } from '../common/Util';
 import { NavGlassAction, NavGlassPage } from '../common/HdsNavHost';
 import { AppIcon } from './components/AppIcon';
 import { CoverPlaceholder } from './components/CoverPlaceholder';
+import { SmartImage } from './components/SmartImage';
 import { UpdatesFilterSheet } from './components/UpdatesFilterSheet';
 
 // 即将推出页帮助：跳转应用内帮助文档（更新与「即将更新」小节）
@@ -197,10 +198,16 @@ export struct UpcomingPage {
           .height(80)
           .borderRadius(4)
       } else {
-        Image(m.coverUrl)
+        // 封面经 SmartImage 公共图片缓存管线（LRU）加载，不再 Image 直连
+        SmartImage({
+          url: m.coverUrl,
+          sourceKey: m.sourceKey,
+          fit: ImageFit.Cover,
+          fill: true,
+          placeholderIconSize: 20
+        })
           .width(56)
           .height(80)
-          .objectFit(ImageFit.Cover)
           .borderRadius(4)
           .backgroundColor(this.pal.chip)
       }

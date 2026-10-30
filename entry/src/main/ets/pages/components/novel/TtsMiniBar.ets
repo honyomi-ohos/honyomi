@@ -111,7 +111,8 @@ export struct TtsMiniBar {
     const m: MangaRecord | undefined = TtsPlaybackService.getManga();
     const ch: ChapterRecord | undefined = TtsPlaybackService.getChapter();
     this.mangaTitle = m !== undefined ? m.title : '';
-    this.coverUrl = m !== undefined ? m.thumbnailUrl : '';
+    // 与书架一致优先持久化封面（本地文件秒开）
+    this.coverUrl = m !== undefined ? m.coverDisplay() : '';
     this.coverSource = m !== undefined ? m.sourceKey : '';
     this.chapterName = ch !== undefined ? ch.name : '';
   }

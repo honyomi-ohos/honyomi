@@ -3515,6 +3515,106 @@
     {
       "name": "subject_summary_empty",
       "value": "Ainda sem resumo"
+    },
+    {
+      "name": "subject_show_more",
+      "value": "Mostrar mais"
+    },
+    {
+      "name": "subject_show_less",
+      "value": "Mostrar menos"
+    },
+    {
+      "name": "subject_label_tags",
+      "value": "Tags"
+    },
+    {
+      "name": "subject_label_info",
+      "value": "Informações"
+    },
+    {
+      "name": "subject_label_characters",
+      "value": "Personagens"
+    },
+    {
+      "name": "subject_label_staff",
+      "value": "Equipe"
+    },
+    {
+      "name": "subject_rating_total",
+      "value": "%d avaliações"
+    },
+    {
+      "name": "subject_rating_rank",
+      "value": "Ranking #%d"
+    },
+    {
+      "name": "subject_stat_collect",
+      "value": "%d coletados"
+    },
+    {
+      "name": "subject_stat_doing",
+      "value": "%d assistindo"
+    },
+    {
+      "name": "subject_stat_dropped",
+      "value": "%d abandonados"
+    },
+    {
+      "name": "subject_stat_wish",
+      "value": "%d querem assistir"
+    },
+    {
+      "name": "subject_role_main",
+      "value": "Principal"
+    },
+    {
+      "name": "subject_role_supporting",
+      "value": "Coadjuvante"
+    },
+    {
+      "name": "subject_role_guest",
+      "value": "Convidado"
+    },
+    {
+      "name": "subject_infobox_air_start",
+      "value": "Estreia"
+    },
+    {
+      "name": "subject_infobox_weekday",
+      "value": "Dia da semana"
+    },
+    {
+      "name": "subject_infobox_aliases",
+      "value": "Apelidos"
+    },
+    {
+      "name": "subject_infobox_director",
+      "value": "Direção"
+    },
+    {
+      "name": "subject_infobox_script",
+      "value": "Roteiro"
+    },
+    {
+      "name": "subject_infobox_series_composition",
+      "value": "Composição da série"
+    },
+    {
+      "name": "subject_infobox_music",
+      "value": "Música"
+    },
+    {
+      "name": "subject_infobox_studio",
+      "value": "Estúdio de animação"
+    },
+    {
+      "name": "subject_infobox_character_design",
+      "value": "Design de personagens"
+    },
+    {
+      "name": "subject_infobox_duration",
+      "value": "Duração"
     }
   ]
 }

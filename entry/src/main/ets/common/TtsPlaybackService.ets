@@ -802,13 +802,16 @@ export class TtsPlaybackService {
     if (ctx === undefined || m === undefined || ch === undefined) {
       return;
     }
+    // 与书架一致优先持久化封面：自定义/书架持久化封面均为 file:// 本地文件，
+    // 播控中心可直接展示；在线地址不作为 media coverUri
+    const coverUri: string = m.coverDisplay();
     const meta: TtsSessionMeta = {
       assetId: `${m.id}-${ch.id}`,
       title: ch.name,
       artist: m.author,
       queueName: m.title,
       queueId: `${m.id}`,
-      coverUri: m.thumbnailUrl.indexOf('file://') === 0 ? m.thumbnailUrl : ''
+      coverUri: coverUri.indexOf('file://') === 0 ? coverUri : ''
     };
     TtsAvSession.setup(ctx, meta, {
       onPlay: (): void => {

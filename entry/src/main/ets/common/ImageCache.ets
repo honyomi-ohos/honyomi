@@ -3,6 +3,7 @@ import { common } from '@kit.AbilityKit';
 import { util } from '@kit.ArkTS';
 import { cryptoFramework } from '@kit.CryptoArchitectureKit';
 import { BusinessError } from '@kit.BasicServicesKit';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 import { Http } from '../net/Http';
 import { SourceRegistry } from '../source/Source';
 import { PluginService } from '../data/PluginService';
@@ -15,6 +16,13 @@ interface CacheFileMeta {
   size: number;
 }
 
+// 进程内解析结果（同一 URL 全部界面共享同一结果，杜绝状态分叉）
+interface ResolvedEntry {
+  value: string;
+  ok: boolean;
+  at: number;
+}
+
 // 远程图片落盘缓存（对齐 Mihon Coil 图片管线中"按源请求头"的部分）
 // 源声明了 imageRequestHeaders 时走宿主 http 管线并缓存到本地，否则交由系统 Image 直连
 export class ImageCache {
@@ -22,6 +30,11 @@ export class ImageCache {
   private static readonly MAX_DISK_BYTES: number = 256 * 1024 * 1024;
   private static dir: string = '';
   private static inflight: Map<string, Promise<string>> = new Map();
+  // 进程内结果缓存：成功永久有效（文件被淘汰时自动失效重取），失败回退按 TTL 过期重试
+  private static resolved: Map<string, ResolvedEntry> = new Map();
+  private static readonly FAIL_TTL_MS: number = 60000;
+  private static readonly MAX_MEMO: number = 512;
+  private static seq: number = 0;
   // 目录累计字节数（init 时延后一拍统计一次，写入增量维护）
   private static totalBytes: number = 0;
   private static evicting: boolean = false;
@@ -35,13 +48,37 @@ export class ImageCache {
     } catch (e) {
       throw new Error(`init cache dir failed: ${e}`);
     }
-    // 启动路径不做同步全量统计：延后一拍在后台累计字节数
+    // 启动路径不做同步全量统计：延后一拍在后台累计字节数，并清扫进程被杀残留的临时文件
     setTimeout((): void => {
+      ImageCache.sweepTmp();
       ImageCache.rescanBytes();
     }, 0);
   }
 
-  // 解析展示地址：http(s) 且源需要请求头 → file:// 本地缓存；其余原样返回
+  // 清理 1 小时前的 .tmp 残留（进程被杀时未及 rename 的下载半成品）
+  private static sweepTmp(): void {
+    try {
+      const names = fs.listFileSync(ImageCache.dir);
+      const now = Date.now();
+      for (let i = 0; i < names.length; i++) {
+        const name = names[i];
+        if (name.indexOf('.tmp') !== name.length - '.tmp'.length) {
+          continue;
+        }
+        const stat = fs.statSync(`${ImageCache.dir}/${name}`);
+        const mtimeMs = stat.mtime * 1000;
+        if (now - mtimeMs > 3600000) {
+          fs.unlinkSync(`${ImageCache.dir}/${name}`);
+        }
+      }
+    } catch (_e) {
+    }
+  }
+
+  // 解析展示地址：http(s) 一律经宿主 http 管线下载落盘（AVIF→JPEG 转码 + LRU 淘汰）
+  // 后返回 file:// 本地路径；源声明请求头（Referer/UA/Cookie）时附加，未声明用空请求头
+  // （Http 层自动补默认 UA）；下载失败回退原始地址交系统 Image 直连兜底；本地文件原样返回。
+  // 统一单例语义：同一 URL 无论多少界面并发请求，共享同一网络任务与同一结果（含失败回退）
   static async resolve(url: string, sourceKey: string, pageUrl?: string): Promise<string> {
     if (url.indexOf('http://') !== 0 && url.indexOf('https://') !== 0) {
       return url;
@@ -49,6 +86,24 @@ export class ImageCache {
     // 自初始化防护：早于 EntryAbility 初始化时直接返回原 url，避免拼出 "/hash.jpg" 根路径
     if (ImageCache.dir === '') {
       return url;
+    }
+    // 进程内结果缓存：任一界面加载成功后其余界面直接秒回同一结果
+    const memo = ImageCache.resolved.get(url);
+    if (memo !== undefined) {
+      if (memo.ok) {
+        try {
+          if (fs.accessSync(memo.value.substring('file://'.length))) {
+            return memo.value;
+          }
+        } catch (_e) {
+        }
+        ImageCache.resolved.delete(url);
+      } else if (Date.now() - memo.at < ImageCache.FAIL_TTL_MS) {
+        // 失败回退记录在 TTL 内直接复用，保证各界面状态一致；过期后允许重试网络
+        return memo.value;
+      } else {
+        ImageCache.resolved.delete(url);
+      }
     }
     // 缓存命中优先（不依赖源注册状态，历史/更新页等无 sourceKey 场景同样本地服务）
     const path = await ImageCache.cachedPath(url);
@@ -59,7 +114,9 @@ export class ImageCache {
       throw new Error(`access cache file failed: ${e}`);
     }
     if (exists) {
-      return `file://${path}`;
+      const hit = `file://${path}`;
+      ImageCache.remember(url, hit, true);
+      return hit;
     }
     let source = SourceRegistry.get(sourceKey);
     if (source === undefined && sourceKey !== '') {
@@ -67,24 +124,45 @@ export class ImageCache {
       await ImageCache.waitPluginsLoaded();
       source = SourceRegistry.get(sourceKey);
     }
-    if (source === undefined) {
-      return url;
-    }
-    const headers = source.imageRequestHeaders();
-    if (headers === undefined) {
-      return url;
-    }
+    // 源请求头：声明了用源请求头（防盗链），未声明/未知源用空请求头；
+    // 统一经宿主管线下载缓存（未入库封面同样进 LRU 公共缓存）
+    const srcHeaders = source !== undefined ? source.imageRequestHeaders() : undefined;
+    const headers: Record<string, string> = srcHeaders !== undefined ? srcHeaders : {};
+    // 单例任务：创建者与并发加入者共享同一 Promise；任务内部自带失败回退，
+    // 所有调用方拿到完全一致的结果，不会出现裸拒绝穿透导致的状态分叉
     const pending = ImageCache.inflight.get(url);
     if (pending !== undefined) {
       return pending;
     }
-    const task = ImageCache.fetch(url, ImageCache.withReferer(headers, pageUrl), path);
+    const task = ImageCache.settleFetch(url, ImageCache.withReferer(headers, pageUrl), path);
     ImageCache.inflight.set(url, task);
     try {
       return await task;
     } finally {
       ImageCache.inflight.delete(url);
     }
+  }
+
+  // 包装一次下载任务：成功记录进程内结果并返回 file://；失败记录回退结果并返回原始 url
+  private static settleFetch(url: string, headers: Record<string, string>, path: string): Promise<string> {
+    return ImageCache.fetch(url, headers, path).then((p: string): string => {
+      ImageCache.remember(url, p, true);
+      return p;
+    }, (e: Error): string => {
+      // 管线下载失败（网络异常/防盗链拦截等）：回退原始地址，交系统 Image 直连兜底；
+      // 结果同样进进程内缓存，TTL 内所有界面共享同一回退状态，不再各自重试或分叉
+      hilog.warn(0x0000, 'CoverDbg', 'fetch failed url=%{public}s err=%{public}s', url, `${e}`);
+      ImageCache.remember(url, url, false);
+      return url;
+    });
+  }
+
+  private static remember(url: string, value: string, ok: boolean): void {
+    if (ImageCache.resolved.size >= ImageCache.MAX_MEMO) {
+      ImageCache.resolved.clear();
+    }
+    const entry: ResolvedEntry = { value: value, ok: ok, at: Date.now() };
+    ImageCache.resolved.set(url, entry);
   }
 
   // 限时等待插件加载完成（加载挂死时 8s 超时回落直连）；
@@ -110,22 +188,20 @@ export class ImageCache {
     if (exists) {
       return path;
     }
+    // 复用统一单例任务：与 resolve 共享同一 inflight 条目（自带回退、不会裸拒绝），
+    // 拿到回退 url（非 file://）时说明本次下载失败，按约定返回 ''
+    const pending = ImageCache.inflight.get(url);
+    if (pending !== undefined) {
+      const done = await pending;
+      return done.indexOf('file://') === 0 ? done.substring('file://'.length) : '';
+    }
+    const task = ImageCache.settleFetch(url, headers, path);
+    ImageCache.inflight.set(url, task);
     try {
-      const pending = ImageCache.inflight.get(url);
-      if (pending !== undefined) {
-        const done = await pending;
-        return done.substring('file://'.length);
-      }
-      const task = ImageCache.fetch(url, headers, path);
-      ImageCache.inflight.set(url, task);
-      try {
-        const done = await task;
-        return done.substring('file://'.length);
-      } finally {
-        ImageCache.inflight.delete(url);
-      }
-    } catch (_e) {
-      return '';
+      const done = await task;
+      return done.indexOf('file://') === 0 ? done.substring('file://'.length) : '';
+    } finally {
+      ImageCache.inflight.delete(url);
     }
   }
 
@@ -257,8 +333,9 @@ export class ImageCache {
         // 转换失败：保留原始 AVIF 字节（支持 AVIF 的设备仍可显示）
       }
     }
-    // 原子落盘：先写临时文件再改名，避免应用进程与表单进程并发写坏同一封面
-    const tmp = `${path}.tmp`;
+    // 原子落盘：先写临时文件再改名，避免应用进程与表单进程并发写坏同一封面；
+    // 临时文件名带时间戳+序号，多进程/多任务并发写同一封面也不会互相覆盖
+    const tmp = `${path}.${Date.now()}.${ImageCache.seq++}.tmp`;
     let existed = false;
     try {
       const file = fs.openSync(tmp, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE | fs.OpenMode.TRUNC);

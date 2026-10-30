@@ -3403,6 +3403,106 @@
     {
       "name": "detail_action_webview",
       "value": "Web view"
+    },
+    {
+      "name": "subject_show_more",
+      "value": "Ipakita pa"
+    },
+    {
+      "name": "subject_show_less",
+      "value": "Ipakita nang mas kaunti"
+    },
+    {
+      "name": "subject_label_tags",
+      "value": "Mga tag"
+    },
+    {
+      "name": "subject_label_info",
+      "value": "Impormasyon"
+    },
+    {
+      "name": "subject_label_characters",
+      "value": "Mga karakter"
+    },
+    {
+      "name": "subject_label_staff",
+      "value": "Kagawaran"
+    },
+    {
+      "name": "subject_rating_total",
+      "value": "%d mga rating"
+    },
+    {
+      "name": "subject_rating_rank",
+      "value": "Rank #%d"
+    },
+    {
+      "name": "subject_stat_collect",
+      "value": "%d nakolekta"
+    },
+    {
+      "name": "subject_stat_doing",
+      "value": "%d nanonood"
+    },
+    {
+      "name": "subject_stat_dropped",
+      "value": "%d iniwan"
+    },
+    {
+      "name": "subject_stat_wish",
+      "value": "%d gusto panoorin"
+    },
+    {
+      "name": "subject_role_main",
+      "value": "Pangunahin"
+    },
+    {
+      "name": "subject_role_supporting",
+      "value": "Suporta"
+    },
+    {
+      "name": "subject_role_guest",
+      "value": "Bisita"
+    },
+    {
+      "name": "subject_infobox_air_start",
+      "value": "Petsa ng pag-ere"
+    },
+    {
+      "name": "subject_infobox_weekday",
+      "value": "Araw ng pag-ere"
+    },
+    {
+      "name": "subject_infobox_aliases",
+      "value": "Iba pang pangalan"
+    },
+    {
+      "name": "subject_infobox_director",
+      "value": "Direktor"
+    },
+    {
+      "name": "subject_infobox_script",
+      "value": "Iskrip"
+    },
+    {
+      "name": "subject_infobox_series_composition",
+      "value": "Komposisyon ng serye"
+    },
+    {
+      "name": "subject_infobox_music",
+      "value": "Musika"
+    },
+    {
+      "name": "subject_infobox_studio",
+      "value": "Studio ng animasyon"
+    },
+    {
+      "name": "subject_infobox_character_design",
+      "value": "Disenyo ng karakter"
+    },
+    {
+      "name": "subject_infobox_duration",
+      "value": "Haba"
     }
   ]
 }

@@ -31,6 +31,21 @@ function closeQuietly(rs: relationalStore.ResultSet): void {
   }
 }
 
+// 封面展示地址：与书架一致优先持久化本地封面（本地文件秒开，免去缓存未命中时的
+// 插件等待与网络下载）；自定义封面（origThumbnail 非空）时 fallback 已是 file:// 本地路径；
+// 文件缺失或无持久化封面回退原地址
+function preferLocalCover(origThumbnail: string, localCover: string, fallback: string): string {
+  if (origThumbnail === '' && localCover !== '') {
+    try {
+      if (fs.accessSync(localCover)) {
+        return `file://${localCover}`;
+      }
+    } catch (e) {
+    }
+  }
+  return fallback;
+}
+
 // 异常安全的行集合读取：行映射抛错也保证游标关闭（ResultSet 为 native 资源，必须 finally 释放）
 async function queryAll<R>(query: Promise<relationalStore.ResultSet>,
   mapRow: (rs: relationalStore.ResultSet) => R, context: string): Promise<R[]> {
@@ -381,17 +396,18 @@ export class MangaRepo {
   // 标题互相包含（instr 忽略大小写）或绑定相同追踪器（syncId + remoteId）
   static async getDuplicateLibraryManga(id: number, title: string): Promise<DuplicateManga[]> {
     const store = await AppDb.get();
-    return queryAll<DuplicateManga>(safeQuerySql(store, 
+    return queryAll<DuplicateManga>(safeQuerySql(store,
       `SELECT m.id AS id, m.title AS title, m.thumbnailUrl AS coverUrl, m.author AS author,
               m.status AS status, m.sourceKey AS sourceKey,
+              m.localCover AS localCover, m.origThumbnail AS origThumbnail,
               (SELECT COUNT(*) FROM chapter c WHERE c.mangaId = m.id) AS chapterCount
        FROM manga m
        WHERE m.inLibrary = 1 AND m.id != ?
          AND (instr(lower(m.title), lower(?)) > 0
            OR EXISTS (
-             SELECT 1 FROM track t1
-             JOIN track t2 ON t2.syncId = t1.syncId AND t2.remoteId = t1.remoteId
-             WHERE t2.mangaId = m.id AND t1.mangaId = ?))
+              SELECT 1 FROM track t1
+              JOIN track t2 ON t2.syncId = t1.syncId AND t2.remoteId = t1.remoteId
+              WHERE t2.mangaId = m.id AND t1.mangaId = ?))
        ORDER BY m.title ASC`,
       [id, title, id]),
       (rs: relationalStore.ResultSet): DuplicateManga => {
@@ -403,6 +419,9 @@ export class MangaRepo {
         d.status = rs.getString(rs.getColumnIndex('status'));
         d.sourceKey = rs.getString(rs.getColumnIndex('sourceKey'));
         d.chapterCount = rs.getLong(rs.getColumnIndex('chapterCount'));
+        // 与书架一致优先持久化封面（本地文件秒开）
+        d.coverUrl = preferLocalCover(rs.getString(rs.getColumnIndex('origThumbnail')),
+          rs.getString(rs.getColumnIndex('localCover')), d.coverUrl);
         return d;
       }, 'get duplicate library manga failed');
   }
@@ -1354,24 +1373,16 @@ export class HistoryRepo {
 export class UpdatesRepo {
   static async unreadChapters(limit: number): Promise<UpdateItem[]> {
     const store = await AppDb.get();
-    return queryAll<UpdateItem>(safeQuerySql(store, 
+    return queryAll<UpdateItem>(safeQuerySql(store,
       `SELECT c.id AS chapterId, c.mangaId AS mangaId, c.name AS chapterName,
               c.dateUpload AS dateUpload, c.read AS readFlag, c.bookmark AS bookmarkFlag,
-              m.title AS mangaTitle, m.sourceKey AS sourceKey, m.thumbnailUrl AS coverUrl
+              m.title AS mangaTitle, m.sourceKey AS sourceKey, m.thumbnailUrl AS coverUrl,
+              m.localCover AS localCover, m.origThumbnail AS origThumbnail
        FROM chapter c
        JOIN manga m ON m.id = c.mangaId
        WHERE m.inLibrary = 1 AND c.read = 0
        ORDER BY c.dateUpload DESC LIMIT ?`, [limit]),
-      (rs: relationalStore.ResultSet): UpdateItem => UpdateItem.of(
-        rs.getLong(rs.getColumnIndex('mangaId')),
-        rs.getLong(rs.getColumnIndex('chapterId')),
-        rs.getString(rs.getColumnIndex('mangaTitle')),
-        rs.getString(rs.getColumnIndex('coverUrl')),
-        rs.getString(rs.getColumnIndex('chapterName')),
-        rs.getLong(rs.getColumnIndex('dateUpload')),
-        rs.getLong(rs.getColumnIndex('readFlag')) === 1,
-        rs.getLong(rs.getColumnIndex('bookmarkFlag')) === 1,
-        rs.getString(rs.getColumnIndex('sourceKey'))), 'unread chapters failed');
+      (rs: relationalStore.ResultSet): UpdateItem => UpdatesRepo.rowToItem(rs), 'unread chapters failed');
   }
 
   // 未读章节总数（更新卡片角标）
@@ -1392,7 +1403,8 @@ export class UpdatesRepo {
     let sql: string =
       `SELECT c.id AS chapterId, c.mangaId AS mangaId, c.name AS chapterName,
               c.dateUpload AS dateUpload, c.read AS readFlag, c.bookmark AS bookmarkFlag,
-              m.title AS mangaTitle, m.sourceKey AS sourceKey, m.thumbnailUrl AS coverUrl
+              m.title AS mangaTitle, m.sourceKey AS sourceKey, m.thumbnailUrl AS coverUrl,
+              m.localCover AS localCover, m.origThumbnail AS origThumbnail
        FROM chapter c
        JOIN manga m ON m.id = c.mangaId
        WHERE m.inLibrary = 1`;
@@ -1431,16 +1443,25 @@ export class UpdatesRepo {
     sql += ' ORDER BY c.dateUpload DESC LIMIT ?';
     args.push(limit);
     return queryAll<UpdateItem>(safeQuerySql(store, sql, args),
-      (rs: relationalStore.ResultSet): UpdateItem => UpdateItem.of(
-        rs.getLong(rs.getColumnIndex('mangaId')),
-        rs.getLong(rs.getColumnIndex('chapterId')),
-        rs.getString(rs.getColumnIndex('mangaTitle')),
-        rs.getString(rs.getColumnIndex('coverUrl')),
-        rs.getString(rs.getColumnIndex('chapterName')),
-        rs.getLong(rs.getColumnIndex('dateUpload')),
-        rs.getLong(rs.getColumnIndex('readFlag')) === 1,
-        rs.getLong(rs.getColumnIndex('bookmarkFlag')) === 1,
-        rs.getString(rs.getColumnIndex('sourceKey'))), 'filtered chapters failed');
+      (rs: relationalStore.ResultSet): UpdateItem => UpdatesRepo.rowToItem(rs), 'filtered chapters failed');
+  }
+
+  // 行 → UpdateItem 统一映射（unreadChapters/filteredChapters 共用）：
+  // 与书架一致优先持久化封面，本地文件秒开
+  private static rowToItem(rs: relationalStore.ResultSet): UpdateItem {
+    const item = UpdateItem.of(
+      rs.getLong(rs.getColumnIndex('mangaId')),
+      rs.getLong(rs.getColumnIndex('chapterId')),
+      rs.getString(rs.getColumnIndex('mangaTitle')),
+      rs.getString(rs.getColumnIndex('coverUrl')),
+      rs.getString(rs.getColumnIndex('chapterName')),
+      rs.getLong(rs.getColumnIndex('dateUpload')),
+      rs.getLong(rs.getColumnIndex('readFlag')) === 1,
+      rs.getLong(rs.getColumnIndex('bookmarkFlag')) === 1,
+      rs.getString(rs.getColumnIndex('sourceKey')));
+    item.coverUrl = preferLocalCover(rs.getString(rs.getColumnIndex('origThumbnail')),
+      rs.getString(rs.getColumnIndex('localCover')), item.coverUrl);
+    return item;
   }
 }
 
@@ -1470,7 +1491,9 @@ export class UpcomingRepo {
       const um: UpcomingManga = new UpcomingManga();
       um.mangaId = m.id;
       um.title = m.title;
-      um.coverUrl = m.thumbnailUrl;
+      // 与书架一致优先持久化封面（本地文件秒开）
+      um.coverUrl = preferLocalCover(m.origThumbnail, m.localCover, m.thumbnailUrl);
+      um.sourceKey = m.sourceKey;
       um.categoryId = m.categoryId;
       const chapterDates: number[] = dates[`${m.id}`] ?? [];
       um.expectedAt = UpcomingRepo.nextUpdate(m.lastUpdateAt, UpcomingRepo.calcInterval(chapterDates), now);

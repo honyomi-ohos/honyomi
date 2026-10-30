@@ -3639,6 +3639,106 @@
     {
       "name": "subject_summary_empty",
       "value": "줄거리 없음"
+    },
+    {
+      "name": "subject_show_more",
+      "value": "더 보기"
+    },
+    {
+      "name": "subject_show_less",
+      "value": "접기"
+    },
+    {
+      "name": "subject_label_tags",
+      "value": "태그"
+    },
+    {
+      "name": "subject_label_info",
+      "value": "작품 정보"
+    },
+    {
+      "name": "subject_label_characters",
+      "value": "캐릭터"
+    },
+    {
+      "name": "subject_label_staff",
+      "value": "제작진"
+    },
+    {
+      "name": "subject_rating_total",
+      "value": "평가 %d건"
+    },
+    {
+      "name": "subject_rating_rank",
+      "value": "순위 #%d"
+    },
+    {
+      "name": "subject_stat_collect",
+      "value": "%d명 시청"
+    },
+    {
+      "name": "subject_stat_doing",
+      "value": "%d명 시청 중"
+    },
+    {
+      "name": "subject_stat_dropped",
+      "value": "%d명 중단"
+    },
+    {
+      "name": "subject_stat_wish",
+      "value": "%d명 보고 싶음"
+    },
+    {
+      "name": "subject_role_main",
+      "value": "주연"
+    },
+    {
+      "name": "subject_role_supporting",
+      "value": "조연"
+    },
+    {
+      "name": "subject_role_guest",
+      "value": "게스트"
+    },
+    {
+      "name": "subject_infobox_air_start",
+      "value": "방영 시작"
+    },
+    {
+      "name": "subject_infobox_weekday",
+      "value": "방영 요일"
+    },
+    {
+      "name": "subject_infobox_aliases",
+      "value": "별명"
+    },
+    {
+      "name": "subject_infobox_director",
+      "value": "감독"
+    },
+    {
+      "name": "subject_infobox_script",
+      "value": "각본"
+    },
+    {
+      "name": "subject_infobox_series_composition",
+      "value": "시리즈 구성"
+    },
+    {
+      "name": "subject_infobox_music",
+      "value": "음악"
+    },
+    {
+      "name": "subject_infobox_studio",
+      "value": "애니메이션 제작"
+    },
+    {
+      "name": "subject_infobox_character_design",
+      "value": "캐릭터 디자인"
+    },
+    {
+      "name": "subject_infobox_duration",
+      "value": "길이"
     }
   ]
 }

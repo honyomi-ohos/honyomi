@@ -3611,6 +3611,106 @@
     {
       "name": "subject_summary_empty",
       "value": "Опису ще немає"
+    },
+    {
+      "name": "subject_show_more",
+      "value": "Показати більше"
+    },
+    {
+      "name": "subject_show_less",
+      "value": "Показати менше"
+    },
+    {
+      "name": "subject_label_tags",
+      "value": "Теги"
+    },
+    {
+      "name": "subject_label_info",
+      "value": "Інформація"
+    },
+    {
+      "name": "subject_label_characters",
+      "value": "Персонажі"
+    },
+    {
+      "name": "subject_label_staff",
+      "value": "Команда"
+    },
+    {
+      "name": "subject_rating_total",
+      "value": "%d оцінок"
+    },
+    {
+      "name": "subject_rating_rank",
+      "value": "Ранг #%d"
+    },
+    {
+      "name": "subject_stat_collect",
+      "value": "%d у колекції"
+    },
+    {
+      "name": "subject_stat_doing",
+      "value": "%d дивляться"
+    },
+    {
+      "name": "subject_stat_dropped",
+      "value": "%d кинули"
+    },
+    {
+      "name": "subject_stat_wish",
+      "value": "%d хочуть дивитися"
+    },
+    {
+      "name": "subject_role_main",
+      "value": "Головна роль"
+    },
+    {
+      "name": "subject_role_supporting",
+      "value": "Другорядна"
+    },
+    {
+      "name": "subject_role_guest",
+      "value": "Епізодична"
+    },
+    {
+      "name": "subject_infobox_air_start",
+      "value": "Дата початку"
+    },
+    {
+      "name": "subject_infobox_weekday",
+      "value": "День тижня"
+    },
+    {
+      "name": "subject_infobox_aliases",
+      "value": "Інші назви"
+    },
+    {
+      "name": "subject_infobox_director",
+      "value": "Режисер"
+    },
+    {
+      "name": "subject_infobox_script",
+      "value": "Сценарій"
+    },
+    {
+      "name": "subject_infobox_series_composition",
+      "value": "Композиція серії"
+    },
+    {
+      "name": "subject_infobox_music",
+      "value": "Музика"
+    },
+    {
+      "name": "subject_infobox_studio",
+      "value": "Студія анімації"
+    },
+    {
+      "name": "subject_infobox_character_design",
+      "value": "Дизайн персонажів"
+    },
+    {
+      "name": "subject_infobox_duration",
+      "value": "Тривалість"
     }
   ]
 }

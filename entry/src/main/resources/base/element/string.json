@@ -4821,6 +4821,106 @@
       "value": "Compilation"
     },
     {
+      "name": "subject_show_more",
+      "value": "Show more"
+    },
+    {
+      "name": "subject_show_less",
+      "value": "Show less"
+    },
+    {
+      "name": "subject_label_tags",
+      "value": "Tags"
+    },
+    {
+      "name": "subject_label_info",
+      "value": "Info"
+    },
+    {
+      "name": "subject_label_characters",
+      "value": "Characters"
+    },
+    {
+      "name": "subject_label_staff",
+      "value": "Staff"
+    },
+    {
+      "name": "subject_rating_total",
+      "value": "%d ratings"
+    },
+    {
+      "name": "subject_rating_rank",
+      "value": "Rank #%d"
+    },
+    {
+      "name": "subject_stat_collect",
+      "value": "%d collected"
+    },
+    {
+      "name": "subject_stat_doing",
+      "value": "%d watching"
+    },
+    {
+      "name": "subject_stat_dropped",
+      "value": "%d dropped"
+    },
+    {
+      "name": "subject_stat_wish",
+      "value": "%d want to watch"
+    },
+    {
+      "name": "subject_role_main",
+      "value": "Main"
+    },
+    {
+      "name": "subject_role_supporting",
+      "value": "Supporting"
+    },
+    {
+      "name": "subject_role_guest",
+      "value": "Guest"
+    },
+    {
+      "name": "subject_infobox_air_start",
+      "value": "Aired"
+    },
+    {
+      "name": "subject_infobox_weekday",
+      "value": "Weekday"
+    },
+    {
+      "name": "subject_infobox_aliases",
+      "value": "Aliases"
+    },
+    {
+      "name": "subject_infobox_director",
+      "value": "Director"
+    },
+    {
+      "name": "subject_infobox_script",
+      "value": "Screenplay"
+    },
+    {
+      "name": "subject_infobox_series_composition",
+      "value": "Series composition"
+    },
+    {
+      "name": "subject_infobox_music",
+      "value": "Music"
+    },
+    {
+      "name": "subject_infobox_studio",
+      "value": "Animation studio"
+    },
+    {
+      "name": "subject_infobox_character_design",
+      "value": "Character design"
+    },
+    {
+      "name": "subject_infobox_duration",
+      "value": "Duration"
+    },
+    {
       "name": "browse_folder_up",
       "value": "Up"
     },
