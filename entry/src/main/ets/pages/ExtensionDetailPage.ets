@@ -594,7 +594,8 @@ export struct ExtensionDetailPage {
       await PluginService.uninstall(this.pluginKey);
       PluginService.markDirty();
       if (!this.destroyed) {
-        Util.toastRes(this.getUIContext(), $r('app.string.plugin_uninstalled'), [this.pluginKey]);
+        const name = this.plugin !== undefined ? this.plugin.manifest.name : this.pluginKey;
+        Util.toastRes(this.getUIContext(), $r('app.string.plugin_uninstalled'), [name]);
         this.pathStack.pop();
       }
     } catch (e) {

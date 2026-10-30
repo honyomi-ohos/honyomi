@@ -949,6 +949,10 @@
       "value": "Épinglée"
     },
     {
+      "name": "browse_recent",
+      "value": "Récemment utilisées"
+    },
+    {
       "name": "browse_sources_empty",
       "value": "Aucune source disponible. Installez-en depuis l’onglet Extensions"
     },

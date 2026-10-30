@@ -933,6 +933,10 @@
       "value": "Naka-pin"
     },
     {
+      "name": "browse_recent",
+      "value": "Kamakailang ginamit"
+    },
+    {
       "name": "browse_sources_empty",
       "value": "Walang available na source. Mag-install mula sa tab na Mga extension"
     },

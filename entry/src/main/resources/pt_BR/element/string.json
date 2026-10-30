@@ -937,6 +937,10 @@
       "value": "Fixada"
     },
     {
+      "name": "browse_recent",
+      "value": "Usadas recentemente"
+    },
+    {
       "name": "browse_sources_empty",
       "value": "Nenhuma fonte disponível. Instale na aba Extensões"
     },

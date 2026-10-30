@@ -948,9 +948,14 @@ export struct EmulationFlipView {
           })
       )
     )
-    .onClick((event: ClickEvent) => {
-      this.onViewClick(event);
-    })
+    // 优先级单击先于子组件识别：正文 Text 开启 copyOption 后内部点击识别会吞掉落在文字上的
+    // 点击，普通 onClick 仅段间距空白可点；长按选择不受影响
+    .priorityGesture(
+      TapGesture({ count: 1 })
+        .onAction((event: GestureEvent) => {
+          this.onViewTap(event);
+        })
+    )
   }
 
   // 捏合缩放钳制到 [1, 3]；回到 1 时复位平移
@@ -1276,17 +1281,25 @@ export struct EmulationFlipView {
     }
   }
 
-  private onViewClick(event: ClickEvent): void {
+  private onViewTap(event: GestureEvent): void {
+    if (event.fingerList.length <= 0) {
+      return;
+    }
+    this.dispatchAreaTap(event.fingerList[0].localX, event.fingerList[0].localY);
+  }
+
+  // 热区派发：翻页动画进行中先快进收尾再继续派发（原实现直接 return，动画窗口吞掉
+  // 唤起菜单/连续翻页的点击），finishGesture 同步提交页码后 canTurn 按新页判断
+  private dispatchAreaTap(x: number, y: number): void {
     if (!this.flipEnabled) {
       this.onCenterTap();
       return;
     }
     if (this.timeID !== -1) {
       this.finishGesture(true);
-      return;
     }
     if (!this.ownTap) {
-      this.onAreaTap(event.x, event.y);
+      this.onAreaTap(x, y);
       return;
     }
     if (this.areaW <= 0 || this.pageCount <= 0) {
@@ -1300,10 +1313,10 @@ export struct EmulationFlipView {
       return;
     }
     if (this.tapMode === 'vertical') {
-      const y = event.y / (this.areaH > 0 ? this.areaH : 1);
-      if (y < 0.3) {
+      const ny = y / (this.areaH > 0 ? this.areaH : 1);
+      if (ny < 0.3) {
         dir = -1;
-      } else if (y > 0.7) {
+      } else if (ny > 0.7) {
         dir = 1;
       }
     } else if (this.tapMode === 'lshape' || this.tapMode === 'kindle') {
@@ -1311,8 +1324,8 @@ export struct EmulationFlipView {
       // lshape 上 1/3 上一页、下 1/3 下一页、中带左/右 1/3 上一页/下一页、中间菜单；
       // kindle 上 1/3 菜单、下方左 1/3 上一页、右 2/3 下一页；
       // nextOnLeft 时水平镜像（左右区域语义互换，上下带不受影响）
-      const nx = event.x / (this.areaW > 0 ? this.areaW : 1);
-      const ny = event.y / (this.areaH > 0 ? this.areaH : 1);
+      const nx = x / (this.areaW > 0 ? this.areaW : 1);
+      const ny = y / (this.areaH > 0 ? this.areaH : 1);
       if (this.tapMode === 'lshape') {
         if (ny < 0.33) {
           dir = -1;
@@ -1333,8 +1346,8 @@ export struct EmulationFlipView {
         }
       }
     } else {
-      const left = event.x < this.areaW * edge;
-      const right = event.x > this.areaW * (1 - edge);
+      const left = x < this.areaW * edge;
+      const right = x > this.areaW * (1 - edge);
       if (left) {
         dir = this.nextOnLeft ? 1 : -1;
       } else if (right) {
@@ -1351,8 +1364,8 @@ export struct EmulationFlipView {
     }
     const move = dir > 0 ? FlipMove.NEXT : FlipMove.PREV;
     const snap = dir > 0 ? this.midId : this.prevId;
-    const xPx = this.algoX(event.x);
-    const yPx = this.getUIContext().vp2px(event.y);
+    const xPx = this.algoX(x);
+    const yPx = this.getUIContext().vp2px(y);
     if (!this.beginCurl(move, xPx, yPx, snap)) {
       return;
     }

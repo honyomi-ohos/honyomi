@@ -1593,6 +1593,42 @@ export class Settings {
     Settings.setBool('globalSearchFilterResults', v);
   }
 
+  // ---- 浏览：最近使用的源（图源 Tab 顶部“最近使用”分组）----
+
+  static getRecentSources(): string {
+    return Settings.getStr('recentSources', '[]');
+  }
+
+  static setRecentSources(v: string): void {
+    Settings.setStr('recentSources', v);
+  }
+
+  // 记录一次源使用：key 前移去重，最多保留 5 个；
+  // 递增 AppStorage 版本号，图源 Tab 在栈底未卸载时经 @Watch 重载分组
+  static touchRecentSource(key: string): void {
+    if (key === '') {
+      return;
+    }
+    let keys: string[] = [];
+    try {
+      const parsed = JSON.parse(Settings.getRecentSources()) as string[];
+      if (Array.isArray(parsed)) {
+        keys = parsed;
+      }
+    } catch (_e) {
+      keys = [];
+    }
+    const next: string[] = [key];
+    for (const k of keys) {
+      if (k !== key && next.length < 5) {
+        next.push(k);
+      }
+    }
+    Settings.setRecentSources(JSON.stringify(next));
+    AppStorage.setOrCreate(AppKeys.RECENT_SOURCES_VER,
+      (AppStorage.get<number>(AppKeys.RECENT_SOURCES_VER) ?? 0) + 1);
+  }
+
   // 根据设置与系统颜色模式计算是否深色，并写入 AppStorage 与 palette
   static applyTheme(systemDark: boolean): void {
     const mode: string = Settings.getThemeMode();

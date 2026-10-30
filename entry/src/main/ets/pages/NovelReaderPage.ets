@@ -112,6 +112,8 @@ export struct NovelReaderPage {
   @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageProp('navBarH') navBarH: number = 0;
   @StorageProp('windowW') windowW: number = 0;
+  // 退出阅读器时递增，驱动历史/书架等常驻页签重载数据（同 ReaderPage）
+  @StorageLink('libDirty') libDirty: number = 0;
   @State manga: MangaRecord = new MangaRecord();
   @State chapter: ChapterRecord = new ChapterRecord();
   @State body: string = '';
@@ -318,6 +320,8 @@ export struct NovelReaderPage {
     TtsPlaybackService.events.offFinish(this.ttsOnFinish);
     this.flushPersist();
     ReadingStatsRepo.flush();
+    // 章节历史已随加载/进度落库：递增 libDirty 让历史页等常驻页签及时刷新
+    this.libDirty += 1;
     // 还原窗口方向与亮度
     ReaderWindow.restore(Util.hostAbilityContext(this.getUIContext()));
   }
@@ -1038,9 +1042,15 @@ export struct NovelReaderPage {
           }
           this.scrollDragArmed = false;
         })
-        .onClick(() => {
-          this.contentTap();
-        })
+        // 正文 Text 开启 copyOption 后内部点击识别会吞掉落在文字上的点击（见 DoubleLeaf
+        // 左半页注释），普通 onClick 仅段间距空白可点；改用优先级单击先于子组件识别，
+        // 整屏任意位置（含文字上）均可唤起/收起菜单，长按选择不受影响
+        .priorityGesture(
+          TapGesture({ count: 1 })
+            .onAction(() => {
+              this.contentTap();
+            })
+        )
       } else {
         Column() {
           if (this.curlActive() && this.mode === 'double') {
@@ -1115,6 +1125,13 @@ export struct NovelReaderPage {
                 }
               }
             })
+            // 正文 Text copyOption 吞点击：热区派发改挂 Swiper 优先级单击（先于子组件识别）
+            .priorityGesture(
+              TapGesture({ count: 1 })
+                .onAction((event: GestureEvent) => {
+                  this.handleTap(event);
+                })
+            )
           }
         }
         .width('100%')
@@ -1132,11 +1149,6 @@ export struct NovelReaderPage {
             this.contW = w;
             this.contH = h;
             this.ensurePaginated();
-          }
-        })
-        .onClick((event: ClickEvent) => {
-          if (!this.curlActive()) {
-            this.handleTap(event);
           }
         })
       }
@@ -2639,7 +2651,12 @@ export struct NovelReaderPage {
   // 单页与双页的仿真卷曲均由 EmulationFlipView 接管。此处只服务滑动与覆盖。
   // proxy.position 为该页相对动画起始位置的位移比例（负=向左），默认位移=position*mainAxisLength，
 
-  private handleTap(event: ClickEvent): void {
+  // Swiper 优先级单击热区派发：手势坐标基于 Swiper（外层 Column 内容区），
+  // 补回 Column padding 对齐原 ClickEvent 坐标语义（updateGrabY 内含 statusBarH+8 偏移扣减）
+  private handleTap(event: GestureEvent): void {
+    if (event.fingerList.length <= 0) {
+      return;
+    }
     if (this.anySheetOpen()) {
       this.dismissSheets();
       return;
@@ -2647,20 +2664,22 @@ export struct NovelReaderPage {
     if (this.contW <= 0) {
       return;
     }
-    this.updateGrabY(event.y);
+    const x = event.fingerList[0].localX + this.pageMargin;
+    const y = event.fingerList[0].localY + this.statusBarH + 8;
+    this.updateGrabY(y);
     if (this.mode === 'paged_rtl') {
-      if (event.x < this.contW * 0.3) {
+      if (x < this.contW * 0.3) {
         this.turnScreen(1);
-      } else if (event.x > this.contW * 0.7) {
+      } else if (x > this.contW * 0.7) {
         this.turnScreen(-1);
       } else {
         this.toggleMenu();
       }
       return;
     }
-    if (event.x < this.contW * 0.3) {
+    if (x < this.contW * 0.3) {
       this.turnScreen(-1);
-    } else if (event.x > this.contW * 0.7) {
+    } else if (x > this.contW * 0.7) {
       this.turnScreen(1);
     } else {
       this.toggleMenu();

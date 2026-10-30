@@ -1725,6 +1725,10 @@
       "value": "已釘選"
     },
     {
+      "name": "browse_recent",
+      "value": "最近使用"
+    },
+    {
       "name": "browse_sources_empty",
       "value": "沒有可用的來源，請在擴充功能頁安裝"
     },

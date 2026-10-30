@@ -977,6 +977,10 @@
       "value": "Disematkan"
     },
     {
+      "name": "browse_recent",
+      "value": "Baru digunakan"
+    },
+    {
       "name": "browse_sources_empty",
       "value": "Tidak ada sumber. Pasang dari tab Ekstensi"
     },

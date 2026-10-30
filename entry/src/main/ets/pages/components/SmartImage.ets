@@ -33,11 +33,15 @@ export struct SmartImage {
     .width('100%')
     .height(this.fill ? '100%' : 120)
     .justifyContent(FlexAlign.Center)
-    .onClick((): void => {
-      if (this.retryable) {
-        this.retry();
-      }
-    })
+    // 优先级单击：宿主（仿真翻页）根节点也挂优先级单击时，子组件优先级手势仍可先识别，保留点按重试
+    .priorityGesture(
+      TapGesture({ count: 1 })
+        .onAction((): void => {
+          if (this.retryable) {
+            this.retry();
+          }
+        })
+    )
   }
 
   @Builder

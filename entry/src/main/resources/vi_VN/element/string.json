@@ -985,6 +985,10 @@
       "value": "Đã ghim"
     },
     {
+      "name": "browse_recent",
+      "value": "Đã dùng gần đây"
+    },
+    {
       "name": "browse_sources_empty",
       "value": "Không có nguồn. Cài từ tab Tiện ích mở rộng"
     },

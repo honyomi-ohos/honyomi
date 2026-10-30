@@ -921,6 +921,10 @@
       "value": "Angeheftet"
     },
     {
+      "name": "browse_recent",
+      "value": "Kürzlich verwendet"
+    },
+    {
       "name": "browse_sources_empty",
       "value": "Keine Quellen verfügbar. Installiere sie im Tab Erweiterungen"
     },

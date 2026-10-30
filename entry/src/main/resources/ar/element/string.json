@@ -997,6 +997,10 @@
       "value": "مثبّت"
     },
     {
+      "name": "browse_recent",
+      "value": "مستخدمة حديثًا"
+    },
+    {
       "name": "browse_sources_empty",
       "value": "لا توجد مصادر. ثبّتها من تبويب الإضافات"
     },

@@ -2105,6 +2105,10 @@
       "value": "已置顶"
     },
     {
+      "name": "browse_recent",
+      "value": "最近使用"
+    },
+    {
       "name": "browse_sources_empty",
       "value": "没有可用的源，请在插件页安装"
     },

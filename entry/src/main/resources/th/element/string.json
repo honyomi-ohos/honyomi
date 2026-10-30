@@ -993,6 +993,10 @@
       "value": "ปักหมุดแล้ว"
     },
     {
+      "name": "browse_recent",
+      "value": "ใช้ล่าสุด"
+    },
+    {
       "name": "browse_sources_empty",
       "value": "ไม่มีแหล่ง ติดตั้งจากแท็บส่วนขยาย"
     },

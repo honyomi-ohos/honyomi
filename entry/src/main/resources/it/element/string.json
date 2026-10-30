@@ -985,6 +985,10 @@
       "value": "Fissata"
     },
     {
+      "name": "browse_recent",
+      "value": "Usate di recente"
+    },
+    {
       "name": "browse_sources_empty",
       "value": "Nessuna fonte. Installale dalla scheda Estensioni"
     },

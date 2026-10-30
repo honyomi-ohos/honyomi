@@ -969,6 +969,10 @@
       "value": "Disemat"
     },
     {
+      "name": "browse_recent",
+      "value": "Digunakan baru-baru ini"
+    },
+    {
       "name": "browse_sources_empty",
       "value": "Tiada sumber. Pasang dari tab Sambungan"
     },

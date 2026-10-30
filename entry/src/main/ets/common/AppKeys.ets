@@ -27,6 +27,9 @@ export class AppKeys {
   static readonly EXT_REPO_CACHE_TICK: string = 'extRepoCacheTick';
   // 页签重复点击信号（计数器递增）
   static readonly LIB_RESELECT: string = 'libReselect';
+  // 书架设置页配置变更信号（计数器递增；设置-书架任意项改动时发布，
+  // 常驻挂载的书架页 @Watch 后重读配置即时生效）
+  static readonly LIB_SETTINGS_DIRTY: string = 'libSettingsDirty';
   static readonly HISTORY_RESELECT: string = 'historyReselect';
   // 详情页回退书架/主页的搜索请求（计数触发，查询词经 libSearchQuery 传递）
   static readonly LIB_SEARCH_REQ: string = 'libSearchReq';
@@ -97,4 +100,6 @@ export class AppKeys {
   static readonly BROWSE_SOURCE_FILTER_REQ: string = 'browseSourceFilterReq';
   static readonly BROWSE_EXT_FILTER_REQ: string = 'browseExtFilterReq';
   static readonly BROWSE_REFRESH_REPO_REQ: string = 'browseRefreshRepoReq';
+  // 浏览：最近使用源记录版本号（写入源时递增，图源 Tab 监听后重载分组）
+  static readonly RECENT_SOURCES_VER: string = 'recentSourcesVer';
 }

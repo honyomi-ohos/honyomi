@@ -873,6 +873,8 @@ export struct BrowseSourcePage {
       const params = ctx.pathInfo.param as BrowseSourceParams;
       this.sourceKey = params !== undefined && params !== null ? params.sourceKey : '';
       this.mode = params !== undefined && params !== null && params.mode === 'latest' ? 'latest' : 'popular';
+      // 记录最近使用（图源 Tab 顶部“最近使用”分组数据源）
+      Settings.touchRecentSource(this.sourceKey);
       this.folderMode = false;
       this.folderPath = '';
       this.folderReady = LocalFolderManager.hasFolder();

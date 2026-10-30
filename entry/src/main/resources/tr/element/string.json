@@ -989,6 +989,10 @@
       "value": "Sabitlendi"
     },
     {
+      "name": "browse_recent",
+      "value": "Son kullanılanlar"
+    },
+    {
       "name": "browse_sources_empty",
       "value": "Kaynak yok. Uzantılar sekmesinden yükleyin"
     },

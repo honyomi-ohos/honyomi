@@ -93,6 +93,8 @@ export struct VideoPlayerPage {
   @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageProp('navBarH') navBarH: number = 0;
   @StorageProp('windowW') windowW: number = 0;
+  // 退出播放器时递增，驱动历史/书架等常驻页签重载数据（同 ReaderPage）
+  @StorageLink('libDirty') libDirty: number = 0;
   // 意图框架快进/跳转指令（仅栈顶最新实例消费）
   @StorageLink('videoSeek') @Watch('onSeekCommand') seekCommand: string = '';
   @State manga: MangaRecord = new MangaRecord();
@@ -295,6 +297,8 @@ export struct VideoPlayerPage {
     this.loadGen += 1;
     this.persist(false);
     ReadingStatsRepo.flush();
+    // 观看历史已随加载/进度落库：递增 libDirty 让历史页等常驻页签及时刷新
+    this.libDirty += 1;
     this.stopTicker();
     this.clearUiTimers();
     this.releasePlayer();

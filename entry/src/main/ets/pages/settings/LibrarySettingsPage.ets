@@ -1,5 +1,6 @@
 import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
+import { AppKeys } from '../../common/AppKeys';
 import { LibGrid, Util } from '../../common/Util';
 import { AppDb } from '../../data/AppDb';
 import { CategoryRepo } from '../../data/Repos';
@@ -60,6 +61,7 @@ export struct LibrarySettingsContent {
             selectedIndex: this.sortIndex(),
             onSelectIndex: (index: number): void => {
               Settings.setLibrarySort(SORT_VALUES[index]);
+              this.bumpLibSettings();
             }
           })
           Divider().color(this.pal.divider).margin({ left: 16 })
@@ -68,6 +70,7 @@ export struct LibrarySettingsContent {
             initValue: Settings.getLibrarySortAsc(),
             apply: (value: boolean): void => {
               Settings.setLibrarySortAsc(value);
+              this.bumpLibSettings();
             }
           })
         }
@@ -99,6 +102,7 @@ export struct LibrarySettingsContent {
             selectedIndex: this.swipeStartIndex(),
             onSelectIndex: (index: number): void => {
               Settings.setLibrarySwipeStartAction(index === 1 ? 'none' : 'read');
+              this.bumpLibSettings();
             }
           })
           Divider().color(this.pal.divider).margin({ left: 16 })
@@ -108,6 +112,7 @@ export struct LibrarySettingsContent {
             selectedIndex: this.swipeEndIndex(),
             onSelectIndex: (index: number): void => {
               Settings.setLibrarySwipeEndAction(index === 1 ? 'none' : 'read');
+              this.bumpLibSettings();
             }
           })
         }
@@ -122,6 +127,7 @@ export struct LibrarySettingsContent {
             selectedIndex: this.viewIndex(),
             onSelectIndex: (index: number): void => {
               Settings.setLibraryView(VIEW_VALUES[index]);
+              this.bumpLibSettings();
             }
           })
           Divider().color(this.pal.divider).margin({ left: 16 })
@@ -136,6 +142,7 @@ export struct LibrarySettingsContent {
               : `${LibGrid.colsOfPos(pos, this.gridW())}`,
             apply: (pos: number): void => {
               Settings.setLibraryGridCols(LibGrid.colsOfPos(pos, this.gridW()));
+              this.bumpLibSettings();
             }
           })
           Divider().color(this.pal.divider).margin({ left: 16 })
@@ -144,6 +151,7 @@ export struct LibrarySettingsContent {
             initValue: Settings.getShowUnreadBadge(),
             apply: (value: boolean): void => {
               Settings.setShowUnreadBadge(value);
+              this.bumpLibSettings();
             }
           })
           Divider().color(this.pal.divider).margin({ left: 16 })
@@ -152,6 +160,7 @@ export struct LibrarySettingsContent {
             initValue: Settings.getShowDownloadBadge(),
             apply: (value: boolean): void => {
               Settings.setShowDownloadBadge(value);
+              this.bumpLibSettings();
             }
           })
           Divider().color(this.pal.divider).margin({ left: 16 })
@@ -160,6 +169,7 @@ export struct LibrarySettingsContent {
             initValue: Settings.getShowLocalBadge(),
             apply: (value: boolean): void => {
               Settings.setShowLocalBadge(value);
+              this.bumpLibSettings();
             }
           })
           Divider().color(this.pal.divider).margin({ left: 16 })
@@ -168,6 +178,7 @@ export struct LibrarySettingsContent {
             initValue: Settings.getShowLanguageBadge(),
             apply: (value: boolean): void => {
               Settings.setShowLanguageBadge(value);
+              this.bumpLibSettings();
             }
           })
         }
@@ -178,6 +189,7 @@ export struct LibrarySettingsContent {
             initValue: Settings.getShowCategoryTabs(),
             apply: (value: boolean): void => {
               Settings.setShowCategoryTabs(value);
+              this.bumpLibSettings();
             }
           })
           Divider().color(this.pal.divider).margin({ left: 16 })
@@ -186,6 +198,7 @@ export struct LibrarySettingsContent {
             initValue: Settings.getShowMangaCount(),
             apply: (value: boolean): void => {
               Settings.setShowMangaCount(value);
+              this.bumpLibSettings();
             }
           })
         }
@@ -209,6 +222,12 @@ export struct LibrarySettingsContent {
   // 本页与书架网格同为 Navigation 内容区全宽，量本级 Scroll 即可
   private gridW(): number {
     return this.contentW > 0 ? this.contentW : 360;
+  }
+
+  // 配置变更信号：书架页常驻挂载不会重建，需主动通知其重读配置（applySettings）
+  private bumpLibSettings(): void {
+    AppStorage.setOrCreate(AppKeys.LIB_SETTINGS_DIRTY,
+      (AppStorage.get<number>(AppKeys.LIB_SETTINGS_DIRTY) ?? 0) + 1);
   }
 
   private async loadCategories(): Promise<void> {

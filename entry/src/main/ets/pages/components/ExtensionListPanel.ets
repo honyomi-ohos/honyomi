@@ -1098,7 +1098,7 @@ export struct ExtensionListPanel {
         },
         onUninstall: (): void => {
           dialog.close();
-          this.uninstallPlugin(key);
+          this.uninstallPlugin(key, name);
         },
         onClose: (): void => {
           dialog.close();
@@ -1144,7 +1144,7 @@ export struct ExtensionListPanel {
           [item.manifest.name]),
         confirmText: $r('app.string.common_uninstall'),
         onConfirm: (): void => {
-          this.uninstallPlugin(item.manifest.key);
+          this.uninstallPlugin(item.manifest.key, item.manifest.name);
         },
         onClose: (): void => {
           dialog.close();
@@ -1155,7 +1155,7 @@ export struct ExtensionListPanel {
     dialog.open();
   }
 
-  private async uninstallPlugin(key: string): Promise<void> {
+  private async uninstallPlugin(key: string, name: string): Promise<void> {
     if (this.busy) {
       return;
     }
@@ -1164,7 +1164,7 @@ export struct ExtensionListPanel {
       await PluginService.uninstall(key);
       PluginService.markDirty();
       if (!this.disposed) {
-        Util.toastRes(this.getUIContext(), $r('app.string.plugin_uninstalled'), [key]);
+        Util.toastRes(this.getUIContext(), $r('app.string.plugin_uninstalled'), [name]);
       }
     } catch (e) {
       if (!this.disposed) {

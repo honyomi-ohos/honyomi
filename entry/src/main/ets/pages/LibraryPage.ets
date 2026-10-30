@@ -286,6 +286,9 @@ export struct LibraryPage {
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
   // 复刻 Mihon：再次点击书架页签打开筛选/显示设置弹层（LibraryTab.onReselect）
   @StorageLink('libReselect') @Watch('onLibReselect') libReselect: number = 0;
+  // 设置-书架配置变更（计数器递增）：书架页常驻挂载，设置页只写 Preferences，
+  // 经此信号触发重读配置（applySettings），否则改动需重启应用才生效
+  @StorageLink('libSettingsDirty') @Watch('onLibSettingsDirty') libSettingsDirty: number = 0;
   // 详情页回退书架的文本搜索请求（对齐 Mihon LibraryTab.search）：计数触发，查询词经 libSearchQuery 传递
   @StorageLink('libSearchReq') @Watch('onLibSearchReq') libSearchReq: number = 0;
   // NSFW 源显示开关：关闭时隐藏 NSFW 插件源的作品；插件注册完成后（pluginsDirty）重算过滤
@@ -362,6 +365,11 @@ export struct LibraryPage {
 
   onLibDirty(): void {
     this.loadData();
+  }
+
+  // 设置-书架任意配置改动：重读排序/显示/徽标等配置即时生效
+  onLibSettingsDirty(): void {
+    this.applySettings();
   }
 
   // Esc 广播：优先关筛选弹层，其次退出多选
@@ -602,6 +610,8 @@ export struct LibraryPage {
         }
         .scrollable(ScrollDirection.Horizontal)
         .scrollBar(BarState.Off)
+        // 分类不足一屏时内容靠左排布（Scroll 默认居中）
+        .align(Alignment.Start)
         .width('100%')
         .margin({ bottom: 4 })
       }
@@ -1050,8 +1060,6 @@ export struct LibraryPage {
     return this.selection.size > 0;
   }
 
-  // 长按：进入/切换多选；从非选择态长按单个条目时顺带弹出快速改分类弹窗，
-
   private toggleSelection(id: number): void {
     const next: Set<number> = new Set<number>(this.selection);
     if (next.has(id)) {
@@ -1120,21 +1128,18 @@ export struct LibraryPage {
     await this.loadData();
   }
 
-  // 取消弹窗仍保持选中（保留原多选入口），选中分类则应用到该条目
+  // 长按：仅进入/切换多选（对齐 Mihon 书架选择模式，不弹改分类弹窗；
+  // 改分类走详情页长按「已在书架」或多选操作条「移动分类」）
   private onItemLongPress(record: MangaRecord): void {
-    const wasEmpty = this.selection.size === 0;
     this.toggleSelection(record.id);
-    if (wasEmpty) {
-      this.showQuickCategoryMenu(record);
-    }
   }
 
-  // PC 右键菜单「选择」/ Ctrl+点击：切换多选（不弹快速分类，移动端长按行为不变）
+  // PC 右键菜单「选择」/ Ctrl+点击：切换多选（与长按一致）
   private menuSelectItem(record: MangaRecord): void {
     this.toggleSelection(record.id);
   }
 
-  // 长按快速修改分类：多选弹窗（预选当前 membership），确认后覆盖落库刷新
+  // PC 右键菜单「移动分类」：单条改分类弹窗（预选当前 membership），确认后覆盖落库刷新
   private showQuickCategoryMenu(record: MangaRecord): void {
     const preselected: number[] = this.categoryIdsOf(record);
     const dialog = new CustomDialogController({

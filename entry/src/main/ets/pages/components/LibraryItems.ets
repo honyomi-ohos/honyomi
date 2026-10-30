@@ -65,10 +65,10 @@ export struct LibraryMangaItem {
   };
   onItemLongPress: (record: MangaRecord) => void = (_r: MangaRecord) => {
   };
-  // PC 右键菜单「选择」：进入/切换多选（与长按一致，但不弹快速分类）
+  // PC 右键菜单「选择」：进入/切换多选（与长按一致）
   onItemMenuSelect: (record: MangaRecord) => void = (_r: MangaRecord) => {
   };
-  // PC 右键菜单「移动分类」：弹快速改分类弹窗（与长按快速分类一致）
+  // PC 右键菜单「移动分类」：弹改分类弹窗（对齐详情页长按「已在书架」）
   onItemMenuCategory: (record: MangaRecord) => void = (_r: MangaRecord) => {
   };
 

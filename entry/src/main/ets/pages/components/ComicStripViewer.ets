@@ -71,8 +71,6 @@ struct StripItemView {
   private panStartY: number = 0;
   private viewW: number = 0;
   private viewH: number = 0;
-  onTap: () => void = () => {
-  };
 
   aboutToAppear(): void {
     this.load();
@@ -117,10 +115,6 @@ struct StripItemView {
                   } else {
                     this.zoomScale = 2;
                   }
-                }),
-              TapGesture({ count: 1 })
-                .onAction(() => {
-                  this.onTap();
                 })
             ))
           // 图片翻译叠加：随图片同缩放同平移，不拦截触摸
@@ -154,10 +148,6 @@ struct StripItemView {
                     if (this.zoomScale < 1.05) {
                       this.resetZoom();
                     }
-                  }),
-                TapGesture({ count: 1 })
-                  .onAction(() => {
-                    this.onTap();
                   })
               ))
           }
@@ -182,9 +172,6 @@ struct StripItemView {
         .width('100%')
         .height(320)
         .justifyContent(FlexAlign.Center)
-        .onClick(() => {
-          this.onTap();
-        })
       } else {
         Column() {
           Text($r('app.string.viewer_load_failed'))
@@ -208,7 +195,6 @@ struct StripItemView {
         .justifyContent(FlexAlign.Center)
         .onClick(() => {
           this.load();
-          this.onTap();
         })
       }
     }
@@ -336,9 +322,21 @@ export struct ComicStripViewer {
   // 列表触底回调（尾部过渡页隐藏时宿主用于无缝进入下一章）
   onEndReached: () => void = () => {
   };
+  // 列表级触摸单击检测：onTouch 不参与手势仲裁，滚动刚停下或点击落在条目间距/裁切
+  // 留白时单击依然可达（原图片级 TapGesture 会与 List 滚动、双击缩放仲裁竞争偶现丢弃）
+  private touchDownX: number = -1;
+  private touchDownY: number = -1;
+  private pendingTap: (() => void) | null = null;
+  private pendingTapTimer: number = -1;
+  // 过渡页自带点击（切章/回落菜单）的时间戳：抑制列表级单击二次派发
+  private childTapAt: number = 0;
 
   aboutToAppear(): void {
     this.dataSource.setPages(this.pages);
+  }
+
+  aboutToDisappear(): void {
+    this.cancelPendingTap();
   }
 
   build() {
@@ -365,6 +363,8 @@ export struct ComicStripViewer {
           .justifyContent(FlexAlign.Center)
           .padding({ top: 48, bottom: 24 })
           .onClick(() => {
+            // 戳记时间戳：列表级单击检测在双击窗口后派发时据此跳过，避免二次唤起
+            this.childTapAt = Date.now();
             if (this.prevChapterName !== '') {
               this.onPrevChapter();
             } else {
@@ -385,10 +385,7 @@ export struct ComicStripViewer {
             maxItemHeight: this.maxItemHeight,
             disableZoomOut: this.disableZoomOut,
             cropBorders: this.cropBorders,
-            transData: this.transStamp >= 0 && this.transOn ? this.overlayFor(page.index) : EMPTY_TRANS,
-            onTap: (): void => {
-              this.onTap();
-            }
+            transData: this.transStamp >= 0 && this.transOn ? this.overlayFor(page.index) : EMPTY_TRANS
           })
         }
       }, (page: SPage) => `${page.index}:${page.url}`)
@@ -414,6 +411,8 @@ export struct ComicStripViewer {
           .justifyContent(FlexAlign.Center)
           .padding({ top: 24, bottom: 48 })
           .onClick(() => {
+            // 戳记时间戳：列表级单击检测在双击窗口后派发时据此跳过，避免二次唤起
+            this.childTapAt = Date.now();
             if (this.nextChapterName !== '') {
               this.onNextChapter();
             } else {
@@ -438,6 +437,75 @@ export struct ComicStripViewer {
         this.onPageVisible(first);
       }
     })
+    .onTouch((event: TouchEvent) => {
+      this.handleTouch(event);
+    })
+  }
+
+  // 单击派发走 260ms 双击窗口确认（双击窗口内的第二次抬起交给图片双击缩放，不唤起菜单），
+  // 移动超 20vp 视为滚动取消待派发单击；对齐 ReaderPage.handleTouch 的阈值语义
+  private handleTouch(event: TouchEvent): void {
+    if (event.type === TouchType.Down) {
+      if (event.touches.length > 1) {
+        this.touchDownX = -1;
+        this.cancelPendingTap();
+        return;
+      }
+      if (event.touches.length === 0) {
+        return;
+      }
+      this.touchDownX = event.touches[0].x;
+      this.touchDownY = event.touches[0].y;
+    } else if (event.type === TouchType.Move) {
+      if (this.touchDownX >= 0 && event.touches.length > 0) {
+        const dx = Math.abs(event.touches[0].x - this.touchDownX);
+        const dy = Math.abs(event.touches[0].y - this.touchDownY);
+        if (dx > 20 || dy > 20) {
+          this.cancelPendingTap();
+        }
+      }
+    } else if (event.type === TouchType.Up) {
+      if (this.touchDownX < 0 || event.changedTouches.length === 0) {
+        return;
+      }
+      const up = event.changedTouches[0];
+      const dx = Math.abs(up.x - this.touchDownX);
+      const dy = Math.abs(up.y - this.touchDownY);
+      this.touchDownX = -1;
+      if (dx > 20 || dy > 20) {
+        return;
+      }
+      if (this.pendingTapTimer >= 0) {
+        // 双击窗口内的第二次抬起：取消待派发单击，交给图片 TapGesture(2) 双击缩放
+        this.cancelPendingTap();
+        return;
+      }
+      this.pendingTap = (): void => {
+        // 过渡页/失败占位自带点击已处理（切章/重试/回落菜单），避免二次唤起菜单
+        if (Date.now() - this.childTapAt < 300) {
+          return;
+        }
+        this.onTap();
+      };
+      this.pendingTapTimer = setTimeout(() => {
+        this.pendingTapTimer = -1;
+        const act = this.pendingTap;
+        this.pendingTap = null;
+        if (act !== null) {
+          act();
+        }
+      }, 260);
+    } else if (event.type === TouchType.Cancel) {
+      this.touchDownX = -1;
+    }
+  }
+
+  private cancelPendingTap(): void {
+    if (this.pendingTapTimer >= 0) {
+      clearTimeout(this.pendingTapTimer);
+      this.pendingTapTimer = -1;
+    }
+    this.pendingTap = null;
   }
 
   private onPagesChanged(): void {

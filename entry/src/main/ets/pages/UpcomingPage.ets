@@ -16,6 +16,9 @@ import { UpdatesFilterSheet } from './components/UpdatesFilterSheet';
 // 即将推出页帮助：跳转应用内帮助文档（更新与「即将更新」小节）
 const DAY_MS: number = 24 * 60 * 60 * 1000;
 
+// 宽屏双列内容总宽上限：超出部分居中留白（对齐 xl 档限宽策略）
+const WIDE_PANE_MAX_W: number = 960;
+
 // 列表行模型：日期分组头 / 漫画条目
 class UpcomingRow {
   isHeader: boolean = false;
@@ -298,6 +301,70 @@ export struct UpcomingPage {
     .padding({ top: 4, bottom: 8 })
   }
 
+  // 更新列表行（单列/宽屏右列共用）：日期分组头 + 条目
+  @Builder
+  updatingRows() {
+    ForEach(this.rows, (row: UpcomingRow, idx: number) => {
+      ListItem() {
+        if (row.isHeader) {
+          this.dateHeader(row)
+        } else if (row.manga !== undefined) {
+          this.mangaItem(row.manga)
+        }
+      }
+    }, (row: UpcomingRow, idx: number) => row.isHeader ? `uh-${row.dateMs}` : `ui-${row.manga?.mangaId ?? idx}`)
+  }
+
+  // 窄屏单列：日历为列表首项，与更新列表同容器滚动
+  @Builder
+  compactBody() {
+    List({ scroller: this.scroller }) {
+      ListItem() {
+        this.calendarBlock()
+      }
+
+      this.updatingRows()
+    }
+    .layoutWeight(1)
+    .scrollBar(BarState.Auto)
+    .contentEndOffset(this.navBarH + 16)
+    .transition(TransitionEffect.OPACITY.animation({ duration: 300, curve: Curve.FastOutSlowIn }))
+  }
+
+  // 宽屏双列（lg 及以上，对齐 Mihon 平板 UpcomingScreen 双栏）：
+  // 左列 = 月历（独立滚动），右列 = 更新列表（独立滚动），中间竖分隔线
+  @Builder
+  wideBody() {
+    Row() {
+      Scroll() {
+        Column() {
+          this.calendarBlock()
+        }
+        .width('100%')
+      }
+      .width(this.calendarPaneW())
+      .height('100%')
+      .align(Alignment.Top)
+      .scrollBar(BarState.Auto)
+
+      Column()
+        .width(0.5)
+        .height('100%')
+        .backgroundColor(this.pal.divider)
+
+      List({ scroller: this.scroller }) {
+        this.updatingRows()
+      }
+      .layoutWeight(1)
+      .height('100%')
+      .scrollBar(BarState.Auto)
+      .contentEndOffset(this.navBarH + 16)
+    }
+    .width(this.widePaneW())
+    .height('100%')
+    .transition(TransitionEffect.OPACITY.animation({ duration: 300, curve: Curve.FastOutSlowIn }))
+  }
+
   build() {
     NavGlassPage({
       title: $r('app.string.label_upcoming'),
@@ -308,24 +375,11 @@ export struct UpcomingPage {
       }
     }) {
       Column() {
-        List({ scroller: this.scroller }) {
-          ListItem() {
-            this.calendarBlock()
-          }
-
-          ForEach(this.rows, (row: UpcomingRow, idx: number) => {
-            ListItem() {
-              if (row.isHeader) {
-                this.dateHeader(row)
-              } else if (row.manga !== undefined) {
-                this.mangaItem(row.manga)
-              }
-            }
-          }, (row: UpcomingRow, idx: number) => row.isHeader ? `uh-${row.dateMs}` : `ui-${row.manga?.mangaId ?? idx}`)
+        if (this.isWideLayout()) {
+          this.wideBody()
+        } else {
+          this.compactBody()
         }
-        .layoutWeight(1)
-        .scrollBar(BarState.Auto)
-        .contentEndOffset(this.navBarH + 16)
       }
       .width('100%')
       .height('100%')
@@ -340,8 +394,25 @@ export struct UpcomingPage {
   }
 
   // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中（720 上限）
+  // 宽屏双列布局下列宽自身已约束，内容不再整体限宽缩进
   private inset(): number {
-    return Bp.contentInset(this.windowW);
+    return this.isWideLayout() ? 0 : Bp.contentInset(this.windowW);
+  }
+
+  // 宽屏（lg 及以上）：左右双列布局（左日历右列表）
+  private isWideLayout(): boolean {
+    return Bp.isWide(this.windowW);
+  }
+
+  // 宽屏双列内容总宽：可用宽度（扣除左侧常驻导航栏），上限 960 居中
+  private widePaneW(): number {
+    const avail: number = Math.max(0, this.windowW - Bp.WIDE_RAIL_W);
+    return Math.min(avail, WIDE_PANE_MAX_W);
+  }
+
+  // 宽屏左列（日历）宽度：双列总宽一半，上限 450
+  private calendarPaneW(): number {
+    return Math.min(Math.floor(this.widePaneW() / 2), 450);
   }
 
   // 标题栏右侧动作：分类筛选（半模态）+ 帮助入口
@@ -522,12 +593,12 @@ export struct UpcomingPage {
     return dots;
   }
 
-  // 点击日期滚动到对应分组头（日历为列表首项，行索引需 +1）
+  // 点击日期滚动到对应分组头（单列布局日历为列表首项，行索引需 +1；宽屏双列无需偏移）
   private onDayClick(day: number): void {
     const key: string = dateKeyOf(this.cellDateMs(day));
     const idx: number | undefined = this.headerIndex[key];
     if (idx !== undefined) {
-      this.scroller.scrollToIndex(1 + idx);
+      this.scroller.scrollToIndex(this.isWideLayout() ? idx : 1 + idx);
     }
   }
 

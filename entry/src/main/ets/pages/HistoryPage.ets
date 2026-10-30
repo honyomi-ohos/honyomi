@@ -12,7 +12,7 @@ import { LibraryAddFlow } from '../common/LibraryAddFlow';
 import { EmptyScreen } from './components/EmptyScreen';
 import { LoadingState } from './components/LoadingState';
 import { SmartImage } from './components/SmartImage';
-import { ChangeCategoryDialog, ConfirmDialog, DuplicateMangaDialog } from './components/Dialogs';
+import { ChangeCategoryDialog, DuplicateMangaDialog } from './components/Dialogs';
 import { AppIcon } from './components/AppIcon';
 import { SourceRegistry } from '../source/Source';
 
@@ -125,7 +125,7 @@ export struct HistoryHeader {
   }
 }
 
-// 历史页：最近阅读记录
+// 历史页：最近阅读记录。点击行续读；行尾删除按钮移除单条记录（不做多选）
 @Component
 export struct HistoryPage {
   @Consume('navStack') pathStack: NavPathStack;
@@ -145,9 +145,6 @@ export struct HistoryPage {
   @State loading: boolean = true;
   // 确认清空态经 AppStorage 发布（头部 HistoryHeader 的 delete_sweep 图标着色读）
   @StorageLink('historyConfirmClear') confirmClear: boolean = false;
-  // 多选删除（对齐 Mihon HistoryScreen 长按进入选择模式）
-  @State selecting: boolean = false;
-  @State selectedIds: Set<number> = new Set<number>();
   // 搜索词与头部共享（头部 TextInput 写，此处过滤读）
   @StorageLink('historySearchQuery') searchQuery: string = '';
   // 头部清空请求信号（计数器递增触发 @Watch 走 clearHistory 二次确认逻辑）
@@ -299,188 +296,99 @@ export struct HistoryPage {
         .layoutWeight(1)
         .justifyContent(FlexAlign.Center)
       } else {
-        Column() {
-          List({ space: 0 }) {
-            ForEach(this.visibleItems(), (item: HistoryItem) => {
-              ListItem() {
-                Row({ space: 12 }) {
-                  // 多选态行首勾选框（对齐 Mihon 选择模式）
-                  if (this.selecting) {
-                    AppIcon({
-                      name: this.selectedIds.has(item.chapterId) ? 'check_circle' : 'check_box_outline_blank',
-                      iconSize: 20,
-                      tint: this.selectedIds.has(item.chapterId) ? this.pal.primary : this.pal.sub
-                    })
-                  }
-                  // 封面（无封面时 SmartImage 内部渲染默认封面占位）；
-                  // HistoryItem 不含 sourceKey，传空串走网络/缓存通用路径
-                  SmartImage({
-                    url: item.coverUrl,
-                    sourceKey: '',
-                    fit: ImageFit.Cover,
-                    placeholderIconSize: 20
-                  })
-                    .width(44)
-                    .height(60)
-                    .borderRadius(6)
-                    .backgroundColor(this.pal.chip)
-                  Column() {
-                    Text(item.mangaTitle)
-                      .fontSize(14)
-                      .fontWeight(FontWeight.Medium)
-                      .fontColor(this.pal.text)
-                      .maxLines(1)
-                      .textOverflow({ overflow: TextOverflow.Ellipsis })
-                    Text(item.chapterName)
-                      .fontSize(13)
-                      .fontColor(this.pal.sub)
-                      .maxLines(1)
-                      .textOverflow({ overflow: TextOverflow.Ellipsis })
-                      .margin({ top: 4 })
-                    Text(Util.timeAgo(item.seenAt))
-                      .fontSize(11)
-                      .fontColor(this.pal.sub)
-                      .margin({ top: 4 })
-                  }
-                  .alignItems(HorizontalAlign.Start)
-                  .layoutWeight(1)
-
-                  if (!this.selecting) {
-                    // 未入库条目的心形按钮：点击加入书架（对齐 Mihon HistoryItem Favorite）
-                    if (!item.inLibrary) {
-                      AppIcon({
-                        name: 'favorite',
-                        iconSize: 20,
-                        tint: this.pal.sub
-                      })
-                        .padding({ left: 4, right: 4 })
-                        .onClick(() => {
-                          this.addFavorite(item).catch((_e: Error): void => {
-                            Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
-                          });
-                        })
-                    }
-                    Text($r('app.string.history_continue'))
-                      .fontSize(12)
-                      .fontColor(this.pal.primary)
-                      .backgroundColor(this.pal.chip)
-                      .borderRadius(12)
-                      .padding({
-                        left: 10,
-                        right: 10,
-                        top: 4,
-                        bottom: 4
-                      })
-                  }
+        List({ space: 0 }) {
+          ForEach(this.visibleItems(), (item: HistoryItem) => {
+            ListItem() {
+              Row({ space: 12 }) {
+                // 封面（无封面时 SmartImage 内部渲染默认封面占位）；
+                // HistoryItem 不含 sourceKey，传空串走网络/缓存通用路径
+                SmartImage({
+                  url: item.coverUrl,
+                  sourceKey: '',
+                  fit: ImageFit.Cover,
+                  placeholderIconSize: 20
+                })
+                  .width(44)
+                  .height(60)
+                  .borderRadius(6)
+                  .backgroundColor(this.pal.chip)
+                Column() {
+                  Text(item.mangaTitle)
+                    .fontSize(14)
+                    .fontWeight(FontWeight.Medium)
+                    .fontColor(this.pal.text)
+                    .maxLines(1)
+                    .textOverflow({ overflow: TextOverflow.Ellipsis })
+                  Text(item.chapterName)
+                    .fontSize(13)
+                    .fontColor(this.pal.sub)
+                    .maxLines(1)
+                    .textOverflow({ overflow: TextOverflow.Ellipsis })
+                    .margin({ top: 4 })
+                  Text(Util.timeAgo(item.seenAt))
+                    .fontSize(11)
+                    .fontColor(this.pal.sub)
+                    .margin({ top: 4 })
                 }
-                .width('100%')
-                .padding({
-                  left: (this.selecting ? 8 : 16) + this.inset(),
-                  right: 16 + this.inset(),
-                  top: 10,
-                  bottom: 10
-                })
-                // 搜索过滤行增删转场：淡入淡出 + 轻微位移
-                .transition(TransitionEffect.OPACITY.combine(TransitionEffect.translate({ y: 8 }))
-                  .animation({ duration: 200, curve: Curve.Friction }))
-                .onClick((event?: ClickEvent) => {
-                  // PC Ctrl+点击直接进入多选（与右键菜单「选择」一致）
-                  if (event !== undefined && Util.isCtrlHeld(event) && !this.selecting) {
-                    this.enterSelection(item.chapterId);
-                    return;
-                  }
-                  if (this.selecting) {
-                    this.toggleSelected(item.chapterId);
-                  } else {
-                    ContentOpen.open(this.pathStack, item.mangaId, item.chapterId);
-                  }
-                })
-                // 移动端长按进入多选（对齐 Mihon）
-                .gesture(LongPressGesture()
-                  .onAction(() => {
-                    if (!this.selecting) {
-                      this.enterSelection(item.chapterId);
-                    }
-                  }))
-                // PC 右键菜单「选择」
-                .bindContextMenu((): void => {
-                  this.historyItemMenu(item);
-                }, ResponseType.RightClick)
-              }
-            }, (item: HistoryItem) => `his-${item.chapterId}-${item.seenAt}-${item.coverUrl}-${item.inLibrary}`)
-          }
-          .layoutWeight(1)
-          .scrollBar(BarState.Auto)
-          .contentEndOffset(this.navBarH + this.tabPadH)
-          .divider({
-            strokeWidth: 1,
-            color: this.pal.divider,
-            startMargin: 72 + this.inset(),
-            endMargin: 16 + this.inset(),
-          })
-
-          // 多选底部操作条：退出 / 已选计数 / 全选切换 / 删除
-          if (this.selecting) {
-            Row({ space: 14 }) {
-              AppIcon({ name: 'close', iconSize: 20, tint: this.pal.text })
-                .onClick(() => {
-                  this.exitSelection();
-                })
-              Text($r('app.string.detail_selected_count', this.selectedIds.size))
-                .fontSize(14)
-                .fontWeight(FontWeight.Bold)
-                .fontColor(this.pal.text)
+                .alignItems(HorizontalAlign.Start)
                 .layoutWeight(1)
-              AppIcon({
-                name: this.allSelected() ? 'deselect' : 'select_all',
-                iconSize: 20,
-                tint: this.pal.text
-              })
-                .onClick(() => {
-                  this.toggleSelectAll();
-                })
-              Row({ space: 4 }) {
-                AppIcon({ name: 'delete', iconSize: 18, tint: this.pal.badgeRed })
-                Text($r('app.string.common_delete'))
-                  .fontSize(14)
-                  .fontColor(this.pal.badgeRed)
-              }
-              .opacity(this.selectedIds.size > 0 ? 1 : 0.4)
-              .onClick(() => {
-                if (this.selectedIds.size > 0) {
-                  this.confirmRemoveSelected();
+
+                // 未入库条目的心形按钮：点击加入书架（对齐 Mihon HistoryItem Favorite，空心表示未入库）
+                if (!item.inLibrary) {
+                  AppIcon({
+                    name: 'favorite_border',
+                    iconSize: 20,
+                    tint: this.pal.sub
+                  })
+                    .padding({ left: 4, right: 4 })
+                    .onClick(() => {
+                      this.addFavorite(item).catch((_e: Error): void => {
+                        Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
+                      });
+                    })
                 }
+                // 行尾删除按钮：移除单条历史记录
+                AppIcon({
+                  name: 'delete',
+                  iconSize: 20,
+                  tint: this.pal.sub
+                })
+                  .padding({ left: 4, right: 4 })
+                  .onClick(() => {
+                    this.removeItem(item);
+                  })
+              }
+              .width('100%')
+              .padding({
+                left: 16 + this.inset(),
+                right: 16 + this.inset(),
+                top: 10,
+                bottom: 10
+              })
+              // 搜索过滤行增删转场：淡入淡出 + 轻微位移
+              .transition(TransitionEffect.OPACITY.combine(TransitionEffect.translate({ y: 8 }))
+                .animation({ duration: 200, curve: Curve.Friction }))
+              // 点击行续读（对齐 Mihon HistoryItem onClick）
+              .onClick(() => {
+                ContentOpen.open(this.pathStack, item.mangaId, item.chapterId);
               })
             }
-            .width('100%')
-            .padding({
-              left: 16 + this.inset(),
-              right: 16 + this.inset(),
-              top: 10,
-              bottom: 14
-            })
-            .backgroundColor(this.pal.bg)
-            .shadow({ radius: 12, color: '#33000000', offsetY: -2 })
-          }
+          }, (item: HistoryItem) => `his-${item.chapterId}-${item.seenAt}-${item.coverUrl}-${item.inLibrary}`)
         }
-        .width('100%')
         .layoutWeight(1)
+        .scrollBar(BarState.Auto)
+        .contentEndOffset(this.navBarH + this.tabPadH)
+        .divider({
+          strokeWidth: 1,
+          color: this.pal.divider,
+          startMargin: 72 + this.inset(),
+          endMargin: 16 + this.inset(),
+        })
       }
     }
     .width('100%')
     .height('100%')
     .backgroundColor(this.pal.bg)
-  }
-
-  // PC 右键菜单「选择」：单条进入多选（与长按一致；移动端仍走长按手势）
-  @Builder
-  historyItemMenu(item: HistoryItem) {
-    Menu() {
-      MenuItem({ content: $r('app.string.common_select') })
-        .onClick(() => {
-          this.enterSelection(item.chapterId);
-        })
-    }
   }
 
   // 页面主体：滚动容器全宽（滚动条贴窗口边），内容列经 contentInset 限宽居中
@@ -497,8 +405,6 @@ export struct HistoryPage {
     this.clearHistory();
   }
 
-  // ----- 多选删除 -----
-
   // 按标题/章节名过滤（对齐 Mihon HistoryViewModel searchQuery 过滤）
   private visibleItems(): HistoryItem[] {
     const q: string = this.searchQuery.trim().toLowerCase();
@@ -509,69 +415,10 @@ export struct HistoryPage {
     it.mangaTitle.toLowerCase().indexOf(q) >= 0 || it.chapterName.toLowerCase().indexOf(q) >= 0);
   }
 
-  private enterSelection(chapterId: number): void {
-    const ids: Set<number> = new Set<number>();
-    ids.add(chapterId);
-    this.selectedIds = ids;
-    this.selecting = true;
-  }
-
-  private exitSelection(): void {
-    this.selectedIds = new Set<number>();
-    this.selecting = false;
-  }
-
-  private toggleSelected(chapterId: number): void {
-    const ids: Set<number> = new Set<number>(this.selectedIds);
-    if (ids.has(chapterId)) {
-      ids.delete(chapterId);
-    } else {
-      ids.add(chapterId);
-    }
-    this.selectedIds = ids;
-  }
-
-  private allSelected(): boolean {
-    const visible: HistoryItem[] = this.visibleItems();
-    return visible.length > 0 && this.selectedIds.size >= visible.length;
-  }
-
-  private toggleSelectAll(): void {
-    if (this.allSelected()) {
-      this.selectedIds = new Set<number>();
-      return;
-    }
-    const ids: Set<number> = new Set<number>();
-    for (const item of this.visibleItems()) {
-      ids.add(item.chapterId);
-    }
-    this.selectedIds = ids;
-  }
-
-  private confirmRemoveSelected(): void {
-    const dialog: CustomDialogController = new CustomDialogController({
-      builder: ConfirmDialog({
-        title: $r('app.string.common_delete'),
-        message: $r('app.string.history_remove_selected_confirm', this.selectedIds.size),
-        confirmText: $r('app.string.common_delete'),
-        onConfirm: (): void => {
-          dialog.close();
-          this.removeSelected();
-        },
-        onClose: (): void => {
-          dialog.close();
-        },
-      }),
-      autoCancel: true,
-    });
-    dialog.open();
-  }
-
-  private async removeSelected(): Promise<void> {
+  // 移除单条历史记录并刷新
+  private async removeItem(item: HistoryItem): Promise<void> {
     try {
-      const ids: number[] = Array.from(this.selectedIds);
-      await HistoryRepo.removeByChapters(ids);
-      this.exitSelection();
+      await HistoryRepo.removeByChapters([item.chapterId]);
       await this.loadData();
       Util.toastRes(this.getUIContext(), $r('app.string.history_removed'));
     } catch (_e) {

@@ -977,6 +977,10 @@
       "value": "Fijada"
     },
     {
+      "name": "browse_recent",
+      "value": "Usadas recientemente"
+    },
+    {
       "name": "browse_sources_empty",
       "value": "No hay fuentes. Instálalas desde la pestaña Extensiones"
     },

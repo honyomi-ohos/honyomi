@@ -177,6 +177,10 @@
       "value": "Pinned"
     },
     {
+      "name": "browse_recent",
+      "value": "Recently used"
+    },
+    {
       "name": "browse_sources_empty",
       "value": "No sources available. Install from the Extensions tab"
     },

@@ -1001,6 +1001,10 @@
       "value": "고정됨"
     },
     {
+      "name": "browse_recent",
+      "value": "최근 사용"
+    },
+    {
       "name": "browse_sources_empty",
       "value": "사용 가능한 소스가 없습니다. 확장 기능 탭에서 설치하세요"
     },

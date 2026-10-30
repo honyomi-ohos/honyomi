@@ -73,50 +73,6 @@ export class MigrateSourceCount {
   }
 }
 
-// 源长按选项弹窗（置顶）
-@CustomDialog
-struct SourceOptionsDialog {
-  controller?: CustomDialogController;
-  sourceName: Resource | string = '';
-  isPinned: boolean = false;
-  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  onPin: () => void = () => {
-  };
-  onClose: () => void = () => {
-  };
-
-  build() {
-    Column() {
-      Text(this.sourceName)
-        .fontSize(16)
-        .fontWeight(FontWeight.Bold)
-        .fontColor(this.pal.text)
-        .width('100%')
-        .maxLines(1)
-        .textOverflow({ overflow: TextOverflow.Ellipsis })
-        .margin({ bottom: 8 })
-      Text(this.isPinned ? $r('app.string.browse_unpin') : $r('app.string.browse_pin'))
-        .fontSize(15)
-        .fontColor(this.pal.text)
-        .width('100%')
-        .padding({ top: 14, bottom: 14 })
-        .onClick(() => {
-          this.dismiss();
-          this.onPin();
-        })
-    }
-    .padding(20)
-    .width('100%')
-  }
-
-  private dismiss(): void {
-    if (this.controller !== undefined) {
-      this.controller.close();
-    }
-    this.onClose();
-  }
-}
-
 // 内容类型过滤项（漫画/小说/动画）
 const FILTER_TYPES: string[] = [ContentType.MANGA, ContentType.NOVEL, ContentType.VIDEO];
 
@@ -434,6 +390,7 @@ export struct BrowsePage {
   // 图源 Tab
   @State sources: Source[] = [];
   @State pinnedKeys: string[] = [];
+  @State recentKeys: string[] = [];
   @State enabledLangs: string[] = []; // 空数组 = 全部语言
   @State enabledTypes: string[] = []; // 空数组 = 全部内容类型
   // 插件 Tab（搜索框打开态由头部持有；搜索词经 AppStorage 与头部共享）
@@ -448,17 +405,25 @@ export struct BrowsePage {
   @StorageLink('browseSourceFilterReq') @Watch('onSourceFilterReq') sourceFilterReq: number = 0;
   @StorageLink('browseExtFilterReq') @Watch('onExtFilterReq') extFilterReq: number = 0;
   @StorageLink('browseRefreshRepoReq') @Watch('onRefreshRepoReq') refreshRepoReq: number = 0;
+  // 最近使用源记录版本号（BrowseSourcePage 打开源时递增；本页在栈底未卸载，经 @Watch 重载）
+  @StorageLink('recentSourcesVer') @Watch('onRecentChanged') recentSourcesVer: number = 0;
 
   aboutToAppear(): void {
     // 确保页签初始值已发布（头部可能在内容区挂载前先读）
     AppStorage.setOrCreate(AppKeys.BROWSE_CURRENT_TAB, this.currentTab);
     this.refreshSources();
     this.loadPins();
+    this.loadRecents();
   }
 
   // 插件安装/启停后刷新源列表
   onPluginsChanged(): void {
     this.refreshSources();
+  }
+
+  // 源使用记录变化（从 BrowseSource 返回前后）重载最近使用分组
+  onRecentChanged(): void {
+    this.loadRecents();
   }
 
   // 头部筛选/溢出菜单信号 → 复用原有弹窗与刷新逻辑
@@ -474,21 +439,23 @@ export struct BrowsePage {
     this.refreshRepo();
   }
 
-  // 源列表分节：已置顶在前，其后按语言分组
+  // 源列表分节：已置顶在前，最近使用其次，其后按语言分组
   sourceSections(): SourceSection[] {
     const sections: SourceSection[] = [];
+    const recent: Source[] = [];
     const pinned: Source[] = [];
     const byLang: Record<string, Source[]> = {};
     const langOrder: string[] = [];
+    // 最近使用：按使用顺序（新→旧）匹配已安装源；已置顶源跳过（置顶分组优先展示）
+    for (const k of this.recentKeys) {
+      const s = this.sourceByKey(k);
+      if (s === undefined || this.isPinned(s.key) || !this.passSourceFilters(s)) {
+        continue;
+      }
+      recent.push(s);
+    }
     for (const s of this.sources) {
-      if (this.enabledLangs.length > 0 && this.enabledLangs.indexOf(s.lang) < 0) {
-        continue;
-      }
-      if (this.enabledTypes.length > 0 && this.enabledTypes.indexOf(s.contentType) < 0) {
-        continue;
-      }
-      // 关闭“显示 NSFW 源”时隐藏 NSFW 源
-      if (s.nsfw && !this.showNsfw) {
+      if (!this.passSourceFilters(s)) {
         continue;
       }
       if (this.isPinned(s.key)) {
@@ -506,6 +473,9 @@ export struct BrowsePage {
     if (pinned.length > 0) {
       sections.push(SourceSection.of('pinned', $r('app.string.browse_pinned'), pinned));
     }
+    if (recent.length > 0) {
+      sections.push(SourceSection.of('recent', $r('app.string.browse_recent'), recent));
+    }
     for (const lang of langOrder) {
       const group: Source[] | undefined = byLang[lang];
       if (group !== undefined && group.length > 0) {
@@ -513,6 +483,29 @@ export struct BrowsePage {
       }
     }
     return sections;
+  }
+
+  // 语言/内容类型/NSFW 过滤统一判定（最近使用与语言分组共用）
+  private passSourceFilters(s: Source): boolean {
+    if (this.enabledLangs.length > 0 && this.enabledLangs.indexOf(s.lang) < 0) {
+      return false;
+    }
+    if (this.enabledTypes.length > 0 && this.enabledTypes.indexOf(s.contentType) < 0) {
+      return false;
+    }
+    if (s.nsfw && !this.showNsfw) {
+      return false;
+    }
+    return true;
+  }
+
+  private sourceByKey(key: string): Source | undefined {
+    for (const s of this.sources) {
+      if (s.key === key) {
+        return s;
+      }
+    }
+    return undefined;
   }
 
   @Builder
@@ -529,19 +522,6 @@ export struct BrowsePage {
     .onClick(() => {
       this.tabController.changeIndex(index);
     })
-  }
-
-  // PC 鼠标右键菜单：置顶/取消置顶（与长按弹窗同一动作；移动端仍走长按手势）
-  @Builder
-  sourceContextMenu(s: Source) {
-    Menu() {
-      MenuItem({
-        content: this.isPinned(s.key) ? $r('app.string.browse_unpin') : $r('app.string.browse_pin')
-      })
-        .onClick(() => {
-          this.togglePin(s.key);
-        })
-    }
   }
 
   @Builder
@@ -615,15 +595,6 @@ export struct BrowsePage {
     .onClick(() => {
       this.openBrowseSource(s, 'popular');
     })
-    .gesture(
-      LongPressGesture()
-        .onAction(() => {
-          this.showSourceOptions(s);
-        })
-    )
-    .bindContextMenu((): void => {
-      this.sourceContextMenu(s);
-    }, ResponseType.RightClick)
   }
 
   @Builder
@@ -657,7 +628,7 @@ export struct BrowsePage {
                 .animation({ duration: 200, curve: Curve.Friction }))
             ForEach(section.sources, (s: Source) => {
               this.sourceRow(s)
-            }, (s: Source) => `src-${s.key}-${this.isPinned(s.key)}`)
+            }, (s: Source) => `src-${section.key}-${s.key}-${this.isPinned(s.key)}`)
           }, (section: SourceSection) => this.sectionKey(section))
         }
         .width('100%')
@@ -862,6 +833,20 @@ export struct BrowsePage {
     Settings.setPinnedSources(JSON.stringify(this.pinnedKeys));
   }
 
+  private loadRecents(): void {
+    let keys: string[] = [];
+    try {
+      const parsed = JSON.parse(Settings.getRecentSources()) as string[];
+      // 存储值可能被写坏为非数组（旧版本/手改），Array.isArray 防护
+      if (Array.isArray(parsed)) {
+        keys = parsed;
+      }
+    } catch (_e) {
+      keys = [];
+    }
+    this.recentKeys = keys;
+  }
+
   private isPinned(key: string): boolean {
     return this.pinnedKeys.indexOf(key) >= 0;
   }
@@ -917,23 +902,6 @@ export struct BrowsePage {
       fp += `|${s.key}`;
     }
     return fp;
-  }
-
-  private showSourceOptions(s: Source): void {
-    const dialog = new CustomDialogController({
-      builder: SourceOptionsDialog({
-        sourceName: this.sourceDisplayName(s),
-        isPinned: this.isPinned(s.key),
-        onPin: (): void => {
-          this.togglePin(s.key);
-        },
-        onClose: (): void => {
-          dialog.close();
-        },
-      }),
-      autoCancel: true,
-    });
-    dialog.open();
   }
 
   private showSourceFilter(): void {

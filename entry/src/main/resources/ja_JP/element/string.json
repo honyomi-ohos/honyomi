@@ -997,6 +997,10 @@
       "value": "ピン留め済み"
     },
     {
+      "name": "browse_recent",
+      "value": "最近使用"
+    },
+    {
       "name": "browse_sources_empty",
       "value": "利用できるソースがありません。拡張機能タブからインストールしてください"
     },
