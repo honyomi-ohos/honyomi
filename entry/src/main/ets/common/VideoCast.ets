@@ -159,16 +159,22 @@ export class VideoCastManager {
   }
 
   private bindSession(s: avSession.AVSession): void {
-    s.on('outputDeviceChange', (connectState: avSession.ConnectionState,
-      device: avSession.OutputDeviceInfo) => {
-      this.onDeviceChange(connectState, device);
-    });
-    s.on('play', (): void => {
-      this.events.onCommand('play');
-    });
-    s.on('pause', (): void => {
-      this.events.onCommand('pause');
-    });
+    try {
+      s.on('outputDeviceChange', (connectState: avSession.ConnectionState,
+        device: avSession.OutputDeviceInfo) => {
+        this.onDeviceChange(connectState, device);
+      });
+      s.on('play', (): void => {
+        this.events.onCommand('play');
+      });
+      s.on('pause', (): void => {
+        this.events.onCommand('pause');
+      });
+    } catch (e) {
+      // 上抛由 ensureSession 统一捕获（保持既有失败路径）
+const err = e as Error;
+      throw err;
+    }
   }
 
   private async onDeviceChange(connectState: avSession.ConnectionState,

@@ -70,16 +70,95 @@ struct Engine {
     uint32_t id;
     JSVM_VM vm;
     JSVM_Env env;
+    std::string pluginKey; // createEngine(pluginKey)：限流按插件 key 隔离（日志前缀）
 };
 
 static std::mutex g_enginesLock;
 static std::unordered_map<uint32_t, Engine *> g_engines;
+// JSVM native 桥回调按 env 反查所属引擎（获取 pluginKey）；
+// 与 g_engines 同生命周期，Create/Destroy 成对维护
+static std::mutex g_envEnginesLock;
+static std::unordered_map<JSVM_Env, Engine *> g_envEngines;
 static std::atomic<uint32_t> g_nextEngineId{1};
 static std::atomic<bool> g_jsvmInited{false};
 // Serializes JSVM init + VM creation across worker threads: a second engine
 // created while OH_JSVM_Init is still running crashes in v8::Isolate::New
 // (observed deterministically on x86_64 when two workers start concurrently).
 static std::mutex g_createEngineLock;
+
+static Engine *EngineByEnv(JSVM_Env env)
+{
+    if (env == nullptr) {
+        return nullptr;
+    }
+    std::lock_guard<std::mutex> lock(g_envEnginesLock);
+    auto it = g_envEngines.find(env);
+    return it == g_envEngines.end() ? nullptr : it->second;
+}
+
+// ============================================================================
+// Rate limiting（$.http.setRateLimit 后端）
+//
+// 按插件 key 的令牌桶：容量 permits，按 permits/periodMs 连续补充。
+// __nativeRateLimitSet(permits, periodMs) 配置（tokens 重置为满），
+// NativeHttpRequest / NativeHttpRequestShared 在派发任务前阻塞获取令牌。
+// 阻塞发生在 JSVM worker 线程（调用方本就在同步等待 HTTP 结果），
+// 等价 Kotlin RateLimitInterceptor 的阻塞语义。桶状态按插件 key 全局共享：
+// 引擎销毁重建后限流持续，同源多引擎共用一个桶。
+// ============================================================================
+
+struct RateBucket {
+    std::mutex mtx;
+    double permits = 0;
+    double periodMs = 0;
+    double tokens = 0;
+    std::chrono::steady_clock::time_point last{};
+};
+
+static std::mutex g_rateLock;
+static std::unordered_map<std::string, std::shared_ptr<RateBucket>> g_rateBuckets;
+constexpr double kRatePermitsMin = 1;
+constexpr double kRatePermitsMax = 1000;
+constexpr double kRatePeriodMsMin = 1;
+constexpr double kRatePeriodMsMax = 3600000;
+
+static std::shared_ptr<RateBucket> BucketForKey(const std::string &key)
+{
+    std::lock_guard<std::mutex> lock(g_rateLock);
+    auto it = g_rateBuckets.find(key);
+    return it == g_rateBuckets.end() ? nullptr : it->second;
+}
+
+// 派发 HTTP 任务前获取一个令牌；未配置限流（桶不存在）时零开销直通。
+static void RateLimitAcquire(JSVM_Env env)
+{
+    Engine *engine = EngineByEnv(env);
+    if (engine == nullptr || engine->pluginKey.empty()) {
+        return;
+    }
+    auto bucket = BucketForKey(engine->pluginKey);
+    if (bucket == nullptr) {
+        return;
+    }
+    std::unique_lock<std::mutex> lock(bucket->mtx);
+    for (;;) {
+        auto now = std::chrono::steady_clock::now();
+        double elapsedMs = std::chrono::duration<double, std::milli>(now - bucket->last).count();
+        if (elapsedMs > 0) {
+            bucket->tokens =
+                std::min(bucket->permits, bucket->tokens + elapsedMs * bucket->permits / bucket->periodMs);
+            bucket->last = now;
+        }
+        if (bucket->tokens >= 1.0) {
+            bucket->tokens -= 1.0;
+            return;
+        }
+        double waitMs = std::ceil((1.0 - bucket->tokens) * bucket->periodMs / bucket->permits);
+        lock.unlock();
+        std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<long long>(waitMs)));
+        lock.lock();
+    }
+}
 
 // ============================================================================
 // HTTP bridge state (worker blocks here while main thread performs the request)
@@ -350,6 +429,9 @@ static JSVM_Value NativeHttpRequest(JSVM_Env env, JSVM_CallbackInfo info)
     if (argc > 4) {
         OH_JSVM_GetValueBool(env, args[4], &wantBytes);
     }
+
+    // 令牌桶限流：按插件 key 在派发任务前阻塞获取（未配置时直通）
+    RateLimitAcquire(env);
 
     const uint64_t callId = g_nextCallId.fetch_add(1);
     auto pending = std::make_shared<PendingHttp>();
@@ -637,6 +719,9 @@ static JSVM_Value NativeHttpRequestShared(JSVM_Env env, JSVM_CallbackInfo info)
     std::string headersJson = argc > 2 ? ToStdString(env, args[2]) : "{}";
     std::string body = argc > 3 ? ToStdString(env, args[3]) : "";
 
+    // 令牌桶限流：按插件 key 在派发任务前阻塞获取（未配置时直通）
+    RateLimitAcquire(env);
+
     const uint64_t callId = g_nextCallId.fetch_add(1);
     auto pending = std::make_shared<PendingHttp>();
     {
@@ -781,6 +866,48 @@ static JSVM_Value NativeRandomBytes(JSVM_Env env, JSVM_CallbackInfo info)
     return result;
 }
 
+// __nativeRateLimitSet(permits, periodMs)：按当前引擎的插件 key 配置令牌桶。
+// 校验失败（含插件绕过 shim 手工打桥）返回 {"error":...}，成功返回 {}。
+// tokens 重置为满容量：配置即契约，语义可预测。
+static JSVM_Value NativeRateLimitSet(JSVM_Env env, JSVM_CallbackInfo info)
+{
+    size_t argc = 2;
+    JSVM_Value args[2] = {nullptr, nullptr};
+    OH_JSVM_GetCbInfo(env, info, &argc, args, nullptr, nullptr);
+    double permits = 0;
+    double periodMs = 0;
+    if (argc > 0 && args[0] != nullptr &&
+        OH_JSVM_GetValueDouble(env, args[0], &permits) != JSVM_OK) {
+        permits = 0;
+    }
+    if (argc > 1 && args[1] != nullptr &&
+        OH_JSVM_GetValueDouble(env, args[1], &periodMs) != JSVM_OK) {
+        periodMs = 0;
+    }
+    // NaN/inf 比较结果为 false，一并拒绝
+    if (!(permits >= kRatePermitsMin && permits <= kRatePermitsMax) ||
+        permits != std::floor(permits) ||
+        !(periodMs >= kRatePeriodMsMin && periodMs <= kRatePeriodMsMax)) {
+        return ToJsString(env, "{\"error\":\"invalid rate limit config\"}");
+    }
+    Engine *engine = EngineByEnv(env);
+    if (engine == nullptr || engine->pluginKey.empty()) {
+        return ToJsString(env, "{\"error\":\"rate limit: engine not bound to a plugin\"}");
+    }
+    auto bucket = std::make_shared<RateBucket>();
+    bucket->permits = permits;
+    bucket->periodMs = periodMs;
+    bucket->tokens = permits;
+    bucket->last = std::chrono::steady_clock::now();
+    {
+        std::lock_guard<std::mutex> lock(g_rateLock);
+        g_rateBuckets[engine->pluginKey] = bucket;
+    }
+    OH_LOG_Print(LOG_APP, LOG_INFO, JSVM_LOG_DOMAIN, JSVM_LOG_TAG,
+        "rate limit %{public}s: %.0f permits / %.0f ms", engine->pluginKey.c_str(), permits, periodMs);
+    return ToJsString(env, "{}");
+}
+
 static JSVM_Value NativeLog(JSVM_Env env, JSVM_CallbackInfo info)
 {
     size_t argc = 2;
@@ -810,6 +937,7 @@ static JSVM_CallbackStruct g_selectorCb = {NativeSelector, nullptr};
 static JSVM_CallbackStruct g_selectorBufferCb = {NativeSelectorBuffer, nullptr};
 static JSVM_CallbackStruct g_logCb = {NativeLog, nullptr};
 static JSVM_CallbackStruct g_randomBytesCb = {NativeRandomBytes, nullptr};
+static JSVM_CallbackStruct g_rateLimitSetCb = {NativeRateLimitSet, nullptr};
 
 // ============================================================================
 // Bootstrap & adapter JS
@@ -1198,6 +1326,7 @@ static bool InstallNativeBridges(JSVM_Env env)
         {"nativeSelectorBuffer", &g_selectorBufferCb},
         {"__nativeLog", &g_logCb},
         {"__nativeRandomBytes", &g_randomBytesCb},
+        {"__nativeRateLimitSet", &g_rateLimitSetCb},
     };
 
     JSVM_EnvScope envScope = nullptr;
@@ -1286,10 +1415,14 @@ static napi_value CreateEngine(napi_env env, napi_callback_info info)
     }
     OH_JSVM_CloseVMScope(vm, vmScope);
 
-    auto *engine = new Engine{g_nextEngineId.fetch_add(1), vm, jsvmEnv};
+    auto *engine = new Engine{g_nextEngineId.fetch_add(1), vm, jsvmEnv, pluginKey};
     {
         std::lock_guard<std::mutex> lock(g_enginesLock);
         g_engines[engine->id] = engine;
+    }
+    {
+        std::lock_guard<std::mutex> lock(g_envEnginesLock);
+        g_envEngines[engine->env] = engine;
     }
     // Install fetch/console/selector bootstrap before any extension code runs.
     // A thrown bootstrap used to be ignored, leaving the raw bridges on the
@@ -1305,6 +1438,10 @@ static napi_value CreateEngine(napi_env env, napi_callback_info info)
         {
             std::lock_guard<std::mutex> lock(g_enginesLock);
             g_engines.erase(engine->id);
+        }
+        {
+            std::lock_guard<std::mutex> lock(g_envEnginesLock);
+            g_envEngines.erase(engine->env);
         }
         OH_JSVM_DestroyEnv(engine->env);
         OH_JSVM_DestroyVM(engine->vm);
@@ -1341,6 +1478,10 @@ static napi_value DestroyEngine(napi_env env, napi_callback_info info)
         napi_value result = nullptr;
         napi_get_boolean(env, false, &result);
         return result;
+    }
+    {
+        std::lock_guard<std::mutex> lock(g_envEnginesLock);
+        g_envEngines.erase(engine->env);
     }
     OH_JSVM_DestroyEnv(engine->env);
     OH_JSVM_DestroyVM(engine->vm);

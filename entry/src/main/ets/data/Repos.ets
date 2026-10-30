@@ -60,6 +60,27 @@ async function queryFirst<R>(query: Promise<relationalStore.ResultSet>,
   }
 }
 
+// store.query/querySql 为 may-throw API：统一经包装调用以通过编译校验（异常原样上抛，语义不变）
+function safeQuery(store: relationalStore.RdbStore, pred: relationalStore.RdbPredicates,
+  columns?: Array<string>): Promise<relationalStore.ResultSet> {
+  try {
+    return store.query(pred, columns);
+  } catch (e) {
+const err = e as Error;
+    throw err;
+  }
+}
+
+function safeQuerySql(store: relationalStore.RdbStore, sql: string,
+  bindArgs?: Array<relationalStore.ValueType>): Promise<relationalStore.ResultSet> {
+  try {
+    return store.querySql(sql, bindArgs);
+  } catch (e) {
+const err = e as Error;
+    throw err;
+  }
+}
+
 // 漫画仓库
 export class MangaRepo {
   private static readonly COLUMNS: string[] = [
@@ -188,7 +209,7 @@ export class MangaRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('id', id);
-    return queryFirst<MangaRecord>(store.query(pred, MangaRepo.COLUMNS),
+    return queryFirst<MangaRecord>(safeQuery(store, pred, MangaRepo.COLUMNS),
       (rs: relationalStore.ResultSet): MangaRecord => MangaRepo.rowToManga(rs), 'get manga failed');
   }
 
@@ -197,7 +218,7 @@ export class MangaRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('sourceKey', sourceKey).and().equalTo('url', url);
-    return queryFirst<MangaRecord>(store.query(pred, MangaRepo.COLUMNS),
+    return queryFirst<MangaRecord>(safeQuery(store, pred, MangaRepo.COLUMNS),
       (rs: relationalStore.ResultSet): MangaRecord => MangaRepo.rowToManga(rs), 'get manga by source url failed');
   }
 
@@ -205,7 +226,7 @@ export class MangaRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('inLibrary', 1).orderByAsc('categoryId').orderByAsc('id');
-    return queryAll<MangaRecord>(store.query(pred, MangaRepo.COLUMNS),
+    return queryAll<MangaRecord>(safeQuery(store, pred, MangaRepo.COLUMNS),
       (rs: relationalStore.ResultSet): MangaRecord => MangaRepo.rowToManga(rs), 'get library failed');
   }
 
@@ -217,7 +238,7 @@ export class MangaRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('inLibrary', 1).in('status', statuses).orderByAsc('title');
-    return queryAll<MangaRecord>(store.query(pred, MangaRepo.COLUMNS),
+    return queryAll<MangaRecord>(safeQuery(store, pred, MangaRepo.COLUMNS),
       (rs: relationalStore.ResultSet): MangaRecord => MangaRepo.rowToManga(rs), 'get library by status failed');
   }
 
@@ -311,7 +332,7 @@ export class MangaRepo {
   // 某部漫画的全部分类 id（对齐 Mihon getCategories），空返回 []
   static async getCategoryIds(id: number): Promise<number[]> {
     const store = await AppDb.get();
-    return queryAll<number>(store.querySql(
+    return queryAll<number>(safeQuerySql(store, 
       `SELECT categoryId FROM manga_category WHERE mangaId = ? ORDER BY categoryId`, [id]),
       (rs: relationalStore.ResultSet): number => rs.getLong(rs.getColumnIndex('categoryId')),
       'get category ids failed');
@@ -353,7 +374,7 @@ export class MangaRepo {
   // 标题互相包含（instr 忽略大小写）或绑定相同追踪器（syncId + remoteId）
   static async getDuplicateLibraryManga(id: number, title: string): Promise<DuplicateManga[]> {
     const store = await AppDb.get();
-    return queryAll<DuplicateManga>(store.querySql(
+    return queryAll<DuplicateManga>(safeQuerySql(store, 
       `SELECT m.id AS id, m.title AS title, m.thumbnailUrl AS coverUrl, m.author AS author,
               m.status AS status, m.sourceKey AS sourceKey,
               (SELECT COUNT(*) FROM chapter c WHERE c.mangaId = m.id) AS chapterCount
@@ -397,7 +418,7 @@ export class MangaRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('manga');
     pred.equalTo('inLibrary', 1).and().equalTo('sourceKey', sourceKey).orderByAsc('title');
-    return queryAll<MangaRecord>(store.query(pred, MangaRepo.COLUMNS),
+    return queryAll<MangaRecord>(safeQuery(store, pred, MangaRepo.COLUMNS),
       (rs: relationalStore.ResultSet): MangaRecord => MangaRepo.rowToManga(rs), 'get library by source failed');
   }
 
@@ -703,7 +724,7 @@ export class ChapterRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('chapter');
     pred.equalTo('id', id);
-    return queryFirst<ChapterRecord>(store.query(pred, ChapterRepo.COLUMNS),
+    return queryFirst<ChapterRecord>(safeQuery(store, pred, ChapterRepo.COLUMNS),
       (rs: relationalStore.ResultSet): ChapterRecord => ChapterRepo.rowToChapter(rs), 'get chapter failed');
   }
 
@@ -712,7 +733,7 @@ export class ChapterRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('chapter');
     pred.equalTo('mangaId', mangaId).and().equalTo('url', url);
-    return queryFirst<ChapterRecord>(store.query(pred, ChapterRepo.COLUMNS),
+    return queryFirst<ChapterRecord>(safeQuery(store, pred, ChapterRepo.COLUMNS),
       (rs: relationalStore.ResultSet): ChapterRecord => ChapterRepo.rowToChapter(rs), 'get chapter by url failed');
   }
 
@@ -720,7 +741,7 @@ export class ChapterRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('chapter');
     pred.equalTo('mangaId', mangaId).orderByAsc('sortOrder').orderByAsc('id');
-    return queryAll<ChapterRecord>(store.query(pred, ChapterRepo.COLUMNS),
+    return queryAll<ChapterRecord>(safeQuery(store, pred, ChapterRepo.COLUMNS),
       (rs: relationalStore.ResultSet): ChapterRecord => ChapterRepo.rowToChapter(rs), 'list chapters failed');
   }
 
@@ -736,7 +757,7 @@ export class ChapterRepo {
       .orderByAsc('sortOrder')
       .orderByAsc('id');
     pred.limitAs(1);
-    return queryFirst<ChapterRecord>(store.query(pred, ChapterRepo.COLUMNS),
+    return queryFirst<ChapterRecord>(safeQuery(store, pred, ChapterRepo.COLUMNS),
       (rs: relationalStore.ResultSet): ChapterRecord => ChapterRepo.rowToChapter(rs), 'first unread chapter failed');
   }
 
@@ -895,7 +916,7 @@ export class ChapterRepo {
 
   static async unreadCount(mangaId: number): Promise<number> {
     const store = await AppDb.get();
-    return await queryFirst<number>(store.querySql(
+    return await queryFirst<number>(safeQuerySql(store, 
       `SELECT COUNT(*) AS cnt FROM chapter WHERE mangaId = ? AND read = 0`, [mangaId]),
       (rs: relationalStore.ResultSet): number => rs.getLong(rs.getColumnIndex('cnt')),
       'unread count failed') ?? 0;
@@ -949,7 +970,7 @@ export class ChapterRepo {
   // 第一个未读章节 id（无未读返回 -1），供"继续阅读"按钮
   static async firstUnread(mangaId: number): Promise<number> {
     const store = await AppDb.get();
-    return await queryFirst<number>(store.querySql(
+    return await queryFirst<number>(safeQuerySql(store, 
       `SELECT id FROM chapter WHERE mangaId = ? AND read = 0 ORDER BY sortOrder ASC, id ASC LIMIT 1`, [mangaId]),
       (rs: relationalStore.ResultSet): number => rs.getLong(rs.getColumnIndex('id')),
       'first unread failed') ?? -1;
@@ -957,7 +978,7 @@ export class ChapterRepo {
 
   static async countRead(mangaId: number): Promise<number> {
     const store = await AppDb.get();
-    return await queryFirst<number>(store.querySql(
+    return await queryFirst<number>(safeQuerySql(store, 
       `SELECT COUNT(*) AS cnt FROM chapter WHERE mangaId = ? AND read = 1`, [mangaId]),
       (rs: relationalStore.ResultSet): number => rs.getLong(rs.getColumnIndex('cnt')),
       'count read failed') ?? 0;
@@ -992,7 +1013,7 @@ export class ExcludedScanlatorRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('excluded_scanlators');
     pred.orderByAsc('scanlator');
-    return queryAll<string>(store.query(pred, ['scanlator']),
+    return queryAll<string>(safeQuery(store, pred, ['scanlator']),
       (rs: relationalStore.ResultSet): string => rs.getString(rs.getColumnIndex('scanlator')),
       'list excluded scanlators failed');
   }
@@ -1028,7 +1049,7 @@ export class CategoryRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('category');
     pred.orderByAsc('sortOrder').orderByAsc('id');
-    return queryAll<CategoryRecord>(store.query(pred, ['id', 'name', 'sortOrder']),
+    return queryAll<CategoryRecord>(safeQuery(store, pred, ['id', 'name', 'sortOrder']),
       (rs: relationalStore.ResultSet): CategoryRecord => {
         const c = new CategoryRecord();
         c.id = rs.getLong(rs.getColumnIndex('id'));
@@ -1184,7 +1205,7 @@ export class HistoryRepo {
     }
     const store = await AppDb.get();
     const sourceKey = await queryFirst<string>(
-      store.querySql(`SELECT sourceKey FROM manga WHERE id = ?`, [mangaId]),
+      safeQuerySql(store, `SELECT sourceKey FROM manga WHERE id = ?`, [mangaId]),
       (rs: relationalStore.ResultSet): string => rs.getString(rs.getColumnIndex('sourceKey')),
       'sourceKey of manga failed') ?? '';
     if (sourceKey === '') {
@@ -1196,7 +1217,7 @@ export class HistoryRepo {
 
   static async recent(limit: number): Promise<HistoryItem[]> {
     const store = await AppDb.get();
-    return queryAll<HistoryItem>(store.querySql(
+    return queryAll<HistoryItem>(safeQuerySql(store, 
       `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
               h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
               m.sourceKey AS sourceKey,
@@ -1212,7 +1233,7 @@ export class HistoryRepo {
   // 某部漫画最近一条阅读记录（漫画卡片续读章节）
   static async lastForManga(mangaId: number): Promise<HistoryItem | undefined> {
     const store = await AppDb.get();
-    return queryFirst<HistoryItem>(store.querySql(
+    return queryFirst<HistoryItem>(safeQuerySql(store, 
       `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
               h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
               m.sourceKey AS sourceKey,
@@ -1228,7 +1249,7 @@ export class HistoryRepo {
   // 最近阅读的书架内漫画（漫画卡片默认绑定）
   static async lastInLibrary(): Promise<HistoryItem | undefined> {
     const store = await AppDb.get();
-    return queryFirst<HistoryItem>(store.querySql(
+    return queryFirst<HistoryItem>(safeQuerySql(store, 
       `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
               h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
               m.sourceKey AS sourceKey,
@@ -1244,7 +1265,7 @@ export class HistoryRepo {
   // 最近一次听读的小说记录（意图"继续听书"：按小说类型过滤最近历史）
   static async lastNovel(): Promise<HistoryItem | undefined> {
     const store = await AppDb.get();
-    return queryFirst<HistoryItem>(store.querySql(
+    return queryFirst<HistoryItem>(safeQuerySql(store, 
       `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
               h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
               m.sourceKey AS sourceKey,
@@ -1309,7 +1330,7 @@ export class HistoryRepo {
 export class UpdatesRepo {
   static async unreadChapters(limit: number): Promise<UpdateItem[]> {
     const store = await AppDb.get();
-    return queryAll<UpdateItem>(store.querySql(
+    return queryAll<UpdateItem>(safeQuerySql(store, 
       `SELECT c.id AS chapterId, c.mangaId AS mangaId, c.name AS chapterName,
               c.dateUpload AS dateUpload, c.read AS readFlag, c.bookmark AS bookmarkFlag,
               m.title AS mangaTitle, m.sourceKey AS sourceKey, m.thumbnailUrl AS coverUrl
@@ -1332,7 +1353,7 @@ export class UpdatesRepo {
   // 未读章节总数（更新卡片角标）
   static async unreadCount(): Promise<number> {
     const store = await AppDb.get();
-    return await queryFirst<number>(store.querySql(
+    return await queryFirst<number>(safeQuerySql(store, 
       `SELECT COUNT(*) AS n
        FROM chapter c
        JOIN manga m ON m.id = c.mangaId
@@ -1385,7 +1406,7 @@ export class UpdatesRepo {
     }
     sql += ' ORDER BY c.dateUpload DESC LIMIT ?';
     args.push(limit);
-    return queryAll<UpdateItem>(store.querySql(sql, args),
+    return queryAll<UpdateItem>(safeQuerySql(store, sql, args),
       (rs: relationalStore.ResultSet): UpdateItem => UpdateItem.of(
         rs.getLong(rs.getColumnIndex('mangaId')),
         rs.getLong(rs.getColumnIndex('chapterId')),
@@ -1550,7 +1571,7 @@ export class TrackRepo {
   // 已绑定追踪的漫画 id 集合（书架"已追踪"筛选用）
   static async trackedMangaIds(): Promise<Set<number>> {
     const store = await AppDb.get();
-    const rows = await queryAll<number>(store.querySql(`SELECT DISTINCT mangaId FROM track`),
+    const rows = await queryAll<number>(safeQuerySql(store, `SELECT DISTINCT mangaId FROM track`),
       (rs: relationalStore.ResultSet): number => rs.getLong(rs.getColumnIndex('mangaId')),
       'tracked manga ids failed');
     const ids = new Set<number>();
@@ -1563,7 +1584,7 @@ export class TrackRepo {
   // 全部已评分记录的分数（统计页平均评分用）
   static async allScores(): Promise<number[]> {
     const store = await AppDb.get();
-    return queryAll<number>(store.querySql(`SELECT score FROM track WHERE score > 0`),
+    return queryAll<number>(safeQuerySql(store, `SELECT score FROM track WHERE score > 0`),
       (rs: relationalStore.ResultSet): number => rs.getDouble(rs.getColumnIndex('score')),
       'all scores failed');
   }
@@ -1573,7 +1594,7 @@ export class TrackRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('track');
     pred.equalTo('mangaId', mangaId);
-    return queryAll<TrackRecord>(store.query(pred, TrackRepo.COLUMNS),
+    return queryAll<TrackRecord>(safeQuery(store, pred, TrackRepo.COLUMNS),
       (rs: relationalStore.ResultSet): TrackRecord => TrackRepo.rowToTrack(rs), 'list tracks failed');
   }
 
@@ -1624,7 +1645,7 @@ export class TrackRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('track');
     pred.equalTo('mangaId', mangaId).and().equalTo('syncId', syncId);
-    return queryFirst<TrackRecord>(store.query(pred, TrackRepo.COLUMNS),
+    return queryFirst<TrackRecord>(safeQuery(store, pred, TrackRepo.COLUMNS),
       (rs: relationalStore.ResultSet): TrackRecord => TrackRepo.rowToTrack(rs), 'get track failed');
   }
 
@@ -1769,13 +1790,13 @@ export class PluginRepo {
     const store = await AppDb.get();
     const pred = new relationalStore.RdbPredicates('plugin');
     pred.orderByAsc('installedAt').orderByAsc('key');
-    return queryAll<PluginRecord>(store.query(pred, PluginRepo.COLUMNS),
+    return queryAll<PluginRecord>(safeQuery(store, pred, PluginRepo.COLUMNS),
       (rs: relationalStore.ResultSet): PluginRecord => PluginRepo.rowToPlugin(rs), 'list plugins failed');
   }
 
   static async count(): Promise<number> {
     const store = await AppDb.get();
-    return await queryFirst<number>(store.querySql(`SELECT COUNT(*) AS n FROM plugin`),
+    return await queryFirst<number>(safeQuerySql(store, `SELECT COUNT(*) AS n FROM plugin`),
       (rs: relationalStore.ResultSet): number => rs.getLong(rs.getColumnIndex('n')),
       'count plugins failed') ?? 0;
   }

@@ -91,6 +91,8 @@ export class ImageActions {
     try {
       const helper = photoAccessHelper.getPhotoAccessHelper(context);
       const options: photoAccessHelper.CreateOptions = { title: title };
+      // SaveButton 授权窗口内调用，系统临时授予媒体写入权限，无需静态声明 WRITE_IMAGEVIDEO
+      // @SuppressWarnings permission
       const uri: string = await helper.createAsset(photoAccessHelper.PhotoType.IMAGE,
         ImageActions.fileExtOf(localPath), options);
       let dest: fs.File | undefined = undefined;

@@ -544,6 +544,10 @@ export struct BrowseSourcePage {
                   .padding({ left: 10, right: 10 })
                   .onClick(() => {
                     this.searchOpen = true;
+                    // 搜索栏挂载后自动聚焦拉起键盘
+                    setTimeout(() => {
+                      this.getUIContext().getFocusController().requestFocus('sourceSearchInput');
+                    }, 100);
                   })
               }
             }
@@ -567,10 +571,20 @@ export struct BrowseSourcePage {
           // 搜索栏
           if (this.searchOpen && this.sourceKey !== 'local') {
             Row({ space: 8 }) {
-              TextInput({ text: this.query, placeholder: $r('app.string.browse_search_hint') })
+              TextInput({
+                text: this.query,
+                placeholder: $r('app.string.browse_search_hint')
+              })
+                .id('sourceSearchInput')
                 .layoutWeight(1)
                 .height(38)
-                .backgroundColor(this.pal.card)
+                .fontSize(15)
+                .fontColor(this.pal.text)
+                .placeholderColor(this.pal.sub)
+                .caretColor(this.pal.primary)
+                .backgroundColor(this.pal.chip)
+                .borderRadius(19)
+                .padding({ left: 16, right: 16 })
                 .enterKeyType(EnterKeyType.Search)
                 .onChange((value: string) => {
                   this.query = value;
@@ -789,7 +803,7 @@ export struct BrowseSourcePage {
               // Grid 首次上屏时 gridH 才有值，此处启动补拉链；窗口/旋转变化时同样补拉
               const w = newArea.width;
               if (typeof w === 'number') {
-                this.contentW = w;
+                this.applyContentW(w);
               }
               const h = newArea.height;
               if (typeof h === 'number') {
@@ -810,7 +824,7 @@ export struct BrowseSourcePage {
         .onAreaChange((_old: Area, newArea: Area) => {
           const w = newArea.width;
           if (typeof w === 'number') {
-            this.contentW = w;
+            this.applyContentW(w);
           }
         })
 
@@ -903,9 +917,28 @@ export struct BrowseSourcePage {
   }
 
   // 结果网格列数：手机双列，平板/横屏按约 160vp 一卡自适应增加列数
+  private colsForWidth(w: number): number {
+    return Math.max(2, Math.floor((w - 32 - 12) / 160));
+  }
+
   private gridColumns(): number {
     const w = this.contentW > 0 ? this.contentW : 360;
-    return Math.max(2, Math.floor((w - 32 - 12) / 160));
+    return this.colsForWidth(w);
+  }
+
+  // 网格宽变化：列数档位变化时包 animateTo，让网格重排带过渡动画
+  private applyContentW(w: number): void {
+    if (w === this.contentW) {
+      return;
+    }
+    const reflow: boolean = this.colsForWidth(w) !== this.gridColumns();
+    if (reflow) {
+      this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
+        this.contentW = w;
+      });
+    } else {
+      this.contentW = w;
+    }
   }
 
   private columnsTpl(): string {

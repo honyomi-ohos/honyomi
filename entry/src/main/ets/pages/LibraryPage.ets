@@ -10,7 +10,7 @@ import { DetailParams, MigrateSearchParams } from '../model/RouteParams';
 import { Source, SourceRegistry } from '../source/Source';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
-import { Util } from '../common/Util';
+import { LibGrid, Util } from '../common/Util';
 import { AppKeys } from '../common/AppKeys';
 import { ChangeCategoryDialog, ConfirmDialog } from './components/Dialogs';
 import { EmptyScreen } from './components/EmptyScreen';
@@ -29,6 +29,48 @@ class LibMangaSource implements IDataSource {
   setItems(items: MangaRecord[]): void {
     this.items = items;
     this.notifyReload();
+  }
+
+  // diff 替换：搜索/筛选/分类切换时按 id 逐行增删通知（公共行相对顺序不变，
+  // 双指针定位插入点；结果与新序列长度不一致时回退整体重载），
+  // 配合行 transition 播放行增删动效
+  setItemsDiff(items: MangaRecord[]): void {
+    const kept = new Set<number>();
+    for (const it of items) {
+      kept.add(it.id);
+    }
+    for (let i = this.items.length - 1; i >= 0; i--) {
+      if (!kept.has(this.items[i].id)) {
+        this.items.splice(i, 1);
+        this.notifyDelete(i);
+      }
+    }
+    let oldIdx = 0;
+    for (let i = 0; i < items.length; i++) {
+      if (oldIdx < this.items.length && this.items[oldIdx].id === items[i].id) {
+        oldIdx++;
+      } else {
+        this.items.splice(i, 0, items[i]);
+        oldIdx = i + 1;
+        this.notifyAdd(i);
+      }
+    }
+    if (this.items.length !== items.length) {
+      this.items = items;
+      this.notifyReload();
+    }
+  }
+
+  private notifyAdd(index: number): void {
+    for (const listener of this.listeners) {
+      listener.onDataAdd(index);
+    }
+  }
+
+  private notifyDelete(index: number): void {
+    for (const listener of this.listeners) {
+      listener.onDataDelete(index);
+    }
   }
 
   // 选中集合变化时通知 LazyForEach 重跑行生成器（刷新 isSelected 勾选态）
@@ -119,12 +161,17 @@ export struct LibraryHeader {
   titleRow() {
     Row() {
       if (this.searchOpen) {
-        TextInput({ text: this.searchQuery, placeholder: $r('app.string.library_search_hint') })
+        TextInput({
+          text: this.searchQuery,
+          placeholder: $r('app.string.library_search_hint')
+        })
+          .id('libSearchInput')
           .layoutWeight(1)
           .height(38)
           .fontSize(15)
           .fontColor(this.pal.text)
           .placeholderColor(this.pal.sub)
+          .caretColor(this.pal.primary)
           .backgroundColor(this.pal.chip)
           .borderRadius(19)
           .padding({ left: 16, right: 16 })
@@ -196,7 +243,14 @@ export struct LibraryHeader {
   }
 
   private openSearch(): void {
-    this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
+    // 展开动画结束后自动聚焦输入框
+    this.getUIContext().animateTo({
+      duration: 250,
+      curve: Curve.Friction,
+      onFinish: (): void => {
+        this.getUIContext().getFocusController().requestFocus('libSearchInput');
+      }
+    }, (): void => {
       this.searchOpen = true;
     });
   }
@@ -235,19 +289,19 @@ export struct LibraryPage {
   // 详情页回退书架的文本搜索请求（对齐 Mihon LibraryTab.search）：计数触发，查询词经 libSearchQuery 传递
   @StorageLink('libSearchReq') @Watch('onLibSearchReq') libSearchReq: number = 0;
   // NSFW 源显示开关：关闭时隐藏 NSFW 插件源的作品；插件注册完成后（pluginsDirty）重算过滤
-  @StorageProp('showNsfw') @Watch('refreshView') showNsfw: boolean = false;
-  @StorageProp('pluginsDirty') @Watch('refreshView') pluginsDirty: number = 0;
+  @StorageProp('showNsfw') @Watch('onDataInput') showNsfw: boolean = false;
+  @StorageProp('pluginsDirty') @Watch('onDataInput') pluginsDirty: number = 0;
   // 弹层状态（与 Settings 同步）；筛选/排序输入变化时重算缓存列表
-  @State @Watch('refreshView') sortKey: string = 'alpha';
-  @State @Watch('refreshView') sortAsc: boolean = true;
-  @State @Watch('refreshView') fDownloaded: string = 'ignore';
-  @State @Watch('refreshView') fUnread: string = 'ignore';
-  @State @Watch('refreshView') fStarted: string = 'ignore';
-  @State @Watch('refreshView') fBookmarked: string = 'ignore';
-  @State @Watch('refreshView') fCompleted: string = 'ignore';
-  @State @Watch('refreshView') fTracked: string = 'ignore';
-  @State @Watch('refreshView') contentFilter: string = 'all';
-  @State @Watch('refreshView') selectedCategory: number = 0;
+  @State @Watch('onViewInput') sortKey: string = 'alpha';
+  @State @Watch('onViewInput') sortAsc: boolean = true;
+  @State @Watch('onViewInput') fDownloaded: string = 'ignore';
+  @State @Watch('onViewInput') fUnread: string = 'ignore';
+  @State @Watch('onViewInput') fStarted: string = 'ignore';
+  @State @Watch('onViewInput') fBookmarked: string = 'ignore';
+  @State @Watch('onViewInput') fCompleted: string = 'ignore';
+  @State @Watch('onViewInput') fTracked: string = 'ignore';
+  @State @Watch('onViewInput') contentFilter: string = 'all';
+  @State @Watch('onViewInput') selectedCategory: number = 0;
   // 搜索词（头部 TextInput 写入）：200ms 防抖刷新，避免逐键全量重算
   @StorageLink('libSearchQuery') @Watch('onSearchQuery') searchQuery: string = '';
   @State viewMode: string = 'compact';
@@ -259,7 +313,7 @@ export struct LibraryPage {
   @State showDownloadBadge: boolean = true;
   @State showLocalBadge: boolean = false;
   @State showLanguageBadge: boolean = false;
-  @State @Watch('refreshView') showCategoryTabs: boolean = true;
+  @State @Watch('onViewInput') showCategoryTabs: boolean = true;
   @State showMangaCount: boolean = false;
   @State showFilterSheet: boolean = false; // 聚合数据
   // Index 根节点 Esc 广播：关闭筛选弹层 / 退出多选（计数器递增触发）
@@ -488,6 +542,7 @@ export struct LibraryPage {
       contentFilter: this.contentFilter,
       viewMode: this.viewMode,
       gridCols: this.gridCols,
+      contentW: this.contentW,
       showUnreadBadge: this.showUnreadBadge,
       showDownloadBadge: this.showDownloadBadge,
       showLocalBadge: this.showLocalBadge,
@@ -600,6 +655,9 @@ export struct LibraryPage {
                     }
                   })
                 }
+                // 搜索/筛选/分类切换行增删转场：淡入淡出 + 轻微位移
+                .transition(TransitionEffect.OPACITY.combine(TransitionEffect.translate({ y: 8 }))
+                  .animation({ duration: 200, curve: Curve.Friction }))
               }, (record: MangaRecord) => `lib-${record.id}`)
             }
             .scrollBar(BarState.Off)
@@ -608,6 +666,7 @@ export struct LibraryPage {
           }
           .width('100%')
           .layoutWeight(1)
+          .transition(TransitionEffect.OPACITY.animation({ duration: 250, curve: Curve.Friction }))
         } else {
           Grid() {
             LazyForEach(this.libSource, (record: MangaRecord) => {
@@ -638,19 +697,23 @@ export struct LibraryPage {
                   onItemMenuCategory: (r: MangaRecord): void => {
                     this.showQuickCategoryMenu(r);
                   },
-                  onSwipe: (action: string): void => {
-                    this.onItemSwipe(record, action);
-                  }
-                })
-              }
-            }, (record: MangaRecord) => `lib-${record.id}`)
-          }
-          .columnsTemplate(this.columnsTemplate())
+                    onSwipe: (action: string): void => {
+                      this.onItemSwipe(record, action);
+                    }
+                  })
+                }
+                // 搜索/筛选/分类切换行增删转场：淡入淡出 + 轻微位移
+                .transition(TransitionEffect.OPACITY.combine(TransitionEffect.translate({ y: 8 }))
+                  .animation({ duration: 200, curve: Curve.Friction }))
+              }, (record: MangaRecord) => `lib-${record.id}`)
+            }
+            .columnsTemplate(this.columnsTemplate())
           .columnsGap(8)
           .rowsGap(12)
           .padding({ left: 8, right: 8, top: 4 })
           .contentEndOffset(this.navBarH + this.tabPadH)
           .layoutWeight(1)
+          .transition(TransitionEffect.OPACITY.animation({ duration: 250, curve: Curve.Friction }))
         }
       }
       .layoutWeight(1)
@@ -658,7 +721,7 @@ export struct LibraryPage {
       .onAreaChange((_old: Area, newArea: Area) => {
         const w = newArea.width;
         if (typeof w === 'number') {
-          this.contentW = w;
+          this.applyContentW(w);
         }
       })
 
@@ -732,7 +795,7 @@ export struct LibraryPage {
 
   private onLibSearchReq(): void {
     this.takePendingLibSearch();
-    this.refreshView();
+    this.onViewInput();
   }
 
   // 搜索词变化（头部 TextInput / 详情页回退搜索写入）：200ms 防抖后全量重算视图缓存
@@ -742,7 +805,7 @@ export struct LibraryPage {
     }
     this.searchTimer = setTimeout((): void => {
       this.searchTimer = -1;
-      this.refreshView();
+      this.onViewInput();
     }, 200);
   }
 
@@ -768,8 +831,9 @@ export struct LibraryPage {
     this.swipeEndAction = Settings.getLibrarySwipeEndAction();
   }
 
-  // 输入（搜索词/筛选/排序/分类/洗牌/数据刷新）变化后重算视图缓存（O(M log M) 单次）
-  private refreshView(): void {
+  // 输入（搜索词/筛选/排序/分类/洗牌/数据刷新）变化后重算视图缓存（O(M log M) 单次）；
+  // animate = true 时走 diff 通知以触发行增删转场（由 onViewInput 包 animateTo 调用）
+  private refreshView(animate: boolean): void {
     const filtered = this.filteredAll();
     // 分类计数按 membership：一部作品可同时计入多个分类；'0' 为全部分类总数
     const counts: Record<string, number> = {};
@@ -785,9 +849,30 @@ export struct LibraryPage {
     const sorted = filtered.slice().sort((a: MangaRecord, b: MangaRecord): number => this.compareMangas(a, b));
     this.shownList = this.selectedCategory > 0 && this.showCategoryTabs ?
       sorted.filter((m: MangaRecord): boolean => this.categoryIdsOf(m).includes(this.selectedCategory)) : sorted;
-    this.libSource.setItems(this.shownList);
+    if (animate) {
+      this.libSource.setItemsDiff(this.shownList);
+    } else {
+      this.libSource.setItems(this.shownList);
+    }
     // 发布筛选生效态给头部（Navigation 标题栏筛选图标着色）
     AppStorage.setOrCreate(AppKeys.LIB_FILTER_ACTIVE, this.filterActive());
+  }
+
+  // 用户搜索/筛选/排序/分类切换：包 animateTo + diff 通知，行增删与补位滑动入动画
+  private onViewInput(): void {
+    // 首次装载（loading 中）不动画，避免启动期批量初始化触发转场
+    if (this.loading) {
+      this.refreshView(false);
+      return;
+    }
+    this.getUIContext().animateTo({ duration: 200, curve: Curve.Friction }, (): void => {
+      this.refreshView(true);
+    });
+  }
+
+  // 数据层变化（NSFW 开关/插件重载）：直接重算视图，不走行转场
+  private onDataInput(): void {
+    this.refreshView(false);
   }
 
   // 作品的 membership 分类列表（membership 为空时回退主分类 categoryId）
@@ -813,7 +898,7 @@ export struct LibraryPage {
       order[`${id}`] = i;
     });
     this.randomOrder = order;
-    this.refreshView();
+    this.refreshView(false);
   }
 
   private passesTriState(value: string, cond: boolean): boolean {
@@ -922,13 +1007,35 @@ export struct LibraryPage {
     return this.categoryCounts[`${categoryId}`] || 0;
   }
 
-  private gridColsCount(): number {
+  private colsForWidth(w: number): number {
+    return LibGrid.autoCols(w);
+  }
+
+  // 当前生效列数：手动值按书架宽度可行区间收敛（PC 下限、手机上限），0=自动
+  private effectiveCols(w: number): number {
     if (this.gridCols > 0) {
-      return this.gridCols;
+      return LibGrid.clampCols(this.gridCols, w);
     }
-    // 自动：约 128vp 一格
-    const w = this.contentW > 0 ? this.contentW : 360;
-    return Math.max(1, Math.floor((w - 16) / 128));
+    return this.colsForWidth(w);
+  }
+
+  private gridColsCount(): number {
+    return this.effectiveCols(this.contentW > 0 ? this.contentW : 360);
+  }
+
+  // 网格宽变化：生效列数档位变化时包 animateTo，让网格重排带过渡动画
+  private applyContentW(w: number): void {
+    if (w === this.contentW) {
+      return;
+    }
+    const reflow: boolean = this.effectiveCols(w) !== this.gridColsCount();
+    if (reflow) {
+      this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
+        this.contentW = w;
+      });
+    } else {
+      this.contentW = w;
+    }
   }
 
   private columnsTemplate(): string {

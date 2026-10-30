@@ -1,5 +1,6 @@
 import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
+import { LibGrid } from '../../common/Util';
 import { ContentType } from '../../model/Models';
 import { AppIcon } from './AppIcon';
 import { WideSlider } from './WideSlider';
@@ -28,6 +29,8 @@ export struct LibrarySettingsSheet {
   @Link contentFilter: string;
   @Link viewMode: string;
   @Link gridCols: number;
+  // 书架内容区宽度：列数滑条按其限制最小/最大列
+  @Prop contentW: number = 0;
   @Link showUnreadBadge: boolean;
   @Link showDownloadBadge: boolean;
   @Link showLocalBadge: boolean;
@@ -236,7 +239,9 @@ export struct LibrarySettingsSheet {
                       .fontSize(15)
                       .fontColor(this.pal.text)
                     Blank()
-                    Text(this.gridCols === 0 ? $r('app.string.lib_display_grid_auto') : `${this.gridCols}`)
+                    Text(this.gridCols === 0
+                      ? $r('app.string.lib_display_grid_auto')
+                      : `${LibGrid.clampCols(this.gridCols, this.gridW())}`)
                       .fontSize(13)
                       .fontColor(this.pal.text)
                       .backgroundColor(this.pal.chip)
@@ -252,14 +257,17 @@ export struct LibrarySettingsSheet {
                   .width('100%')
 
                   WideSlider({
-                    sliderValue: this.gridCols,
+                    sliderValue: LibGrid.posOfCols(this.gridCols, this.gridW()),
                     min: 0,
-                    max: 10,
+                    max: LibGrid.maxPos(this.gridW()),
                     step: 1,
                     onChange: (v: number, mode: SliderChangeMode): void => {
-                      const n: number = Math.floor(v);
+                      const n: number = LibGrid.colsOfPos(Math.floor(v), this.gridW());
                       if (n !== this.gridCols) {
-                        this.gridCols = n;
+                        // 列数变化：包 animateTo 让书架网格重排带过渡动画
+                        this.getUIContext().animateTo({ duration: 200, curve: Curve.Friction }, (): void => {
+                          this.gridCols = n;
+                        });
                         // 拖动中仅更新 UI（@Link 联动书架实时预览），
                         // 松手/点击时才落库，避免逐 tick 写 preferences
                         if (mode === SliderChangeMode.End || mode === SliderChangeMode.Click) {
@@ -353,6 +361,11 @@ export struct LibrarySettingsSheet {
     .width('100%')
     .height('100%')
     .backgroundColor(this.pal.bg)
+  }
+
+  // 书架内容区宽度（未测得时按手机宽度兜底）
+  private gridW(): number {
+    return this.contentW > 0 ? this.contentW : 360;
   }
 
   private filterValue(key: string): string {
@@ -494,7 +507,10 @@ export struct LibrarySettingsSheet {
     if (this.viewMode === mode) {
       return;
     }
-    this.viewMode = mode;
+    // 显示模式切换：包 animateTo，配合书架 list/grid 分支的 transition 产生切换过渡
+    this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
+      this.viewMode = mode;
+    });
     Settings.setLibraryView(mode);
   }
 }

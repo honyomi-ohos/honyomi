@@ -164,6 +164,10 @@ export struct GlobalSearchPage {
     .backgroundColor(this.pal.bg)
     .onReady((ctx: NavDestinationContext) => {
       this.pathStack = ctx.pathStack;
+      // 进入搜索页自动聚焦输入框（等待页面构建完成后拉起键盘）
+      setTimeout(() => {
+        this.getUIContext().getFocusController().requestFocus('globalSearchInput');
+      }, 100);
       // 详情页跳转携带初始搜索词：进入即自动执行搜索
       const params = ctx.pathInfo.param as GlobalSearchParams;
       if (params !== undefined && params !== null && params.query.trim() !== '') {
@@ -186,9 +190,13 @@ export struct GlobalSearchPage {
 
         Row() {
           AppIcon({ name: 'search', iconSize: 20, tint: this.pal.sub })
-          TextInput({ text: this.searchQuery, placeholder: $r('app.string.global_search_hint') })
+          TextInput({
+            text: this.searchQuery,
+            placeholder: $r('app.string.global_search_hint')
+          })
+            .id('globalSearchInput')
             .layoutWeight(1)
-            .height(40)
+            .height(38)
             .backgroundColor(Color.Transparent)
             .padding(0)
             .fontSize(15)
@@ -211,9 +219,9 @@ export struct GlobalSearchPage {
           }
         }
         .layoutWeight(1)
-        .height(40)
-        .borderRadius(20)
-        .backgroundColor(this.pal.card)
+        .height(38)
+        .borderRadius(19)
+        .backgroundColor(this.pal.chip)
         .alignItems(VerticalAlign.Center)
         .padding({ left: 10, right: 4 })
       }
@@ -320,6 +328,9 @@ export struct GlobalSearchPage {
     }
     .width('100%')
     .alignItems(HorizontalAlign.Start)
+    // 搜索/筛选驱动的分节增删转场：淡入淡出 + 轻微位移
+    .transition(TransitionEffect.OPACITY.combine(TransitionEffect.translate({ y: 8 }))
+      .animation({ duration: 200, curve: Curve.Friction }))
   }
 
   // 源标题行（对齐 Mihon GlobalSearchResultItem：源名 + 语言 + 右侧箭头，整行可点进源）
@@ -448,9 +459,11 @@ export struct GlobalSearchPage {
     this.startSearch();
   }
 
-  // 切换“只显示有结果的源”（持久化）
+  // 切换“只显示有结果的源”（持久化）：“有结果”过滤列表变化包 animateTo 播放分节增删转场
   private toggleResults(): void {
-    this.onlyHasResults = !this.onlyHasResults;
+    this.getUIContext().animateTo({ duration: 200, curve: Curve.Friction }, (): void => {
+      this.onlyHasResults = !this.onlyHasResults;
+    });
     Settings.setGlobalSearchFilterResults(this.onlyHasResults);
   }
 
@@ -604,7 +617,10 @@ export struct GlobalSearchPage {
       }
     }
     sections.sort(sectionCompare);
-    this.sections = sections;
+    // 搜索提交/源范围筛选驱动的分节列表变化：包 animateTo，配合分节 transition 播放增删转场
+    this.getUIContext().animateTo({ duration: 200, curve: Curve.Friction }, (): void => {
+      this.sections = sections;
+    });
     const context = Util.hostAbilityContext(this.getUIContext());
     AppDb.ready(context).then(() => {
       for (const s of sections) {

@@ -316,26 +316,41 @@ export struct BrowseHeader {
   build() {
     Row() {
       if (this.extSearchOpen && this.currentTab === 1) {
-        TextInput({ text: this.extQuery, placeholder: $r('app.string.ext_search_hint') })
+        AppIcon({ name: 'arrow_back', iconSize: 22 })
+          .padding({ left: 0, right: 12 })
+          .onClick(() => {
+            this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
+              this.extSearchOpen = false;
+              this.extQuery = '';
+            });
+          })
+          .transition(TransitionEffect.OPACITY.combine(TransitionEffect.translate({ x: -16 })))
+        TextInput({
+          text: this.extQuery,
+          placeholder: $r('app.string.ext_search_hint')
+        })
+          .id('browseExtSearchInput')
           .layoutWeight(1)
           .height(38)
-          .backgroundColor(this.pal.card)
+          .fontSize(15)
+          .fontColor(this.pal.text)
+          .placeholderColor(this.pal.sub)
+          .caretColor(this.pal.primary)
+          .backgroundColor(this.pal.chip)
+          .borderRadius(19)
+          .padding({ left: 16, right: 16 })
           .onChange((value: string) => {
             this.extQuery = value;
             hilog.info(DOMAIN, TAG, 'extQuery input: %{public}s', value);
           })
-        AppIcon({ name: 'close', iconSize: 20 })
-          .padding({ left: 12, right: 4 })
-          .onClick(() => {
-            this.extSearchOpen = false;
-            this.extQuery = '';
-          })
+          .transition(TransitionEffect.OPACITY)
       } else {
         Text($r('app.string.browse_title'))
           .fontSize(22)
           .fontWeight(FontWeight.Bold)
           .fontColor(this.pal.text)
           .layoutWeight(1)
+          .transition(TransitionEffect.OPACITY)
       }
 
       if (this.currentTab === 0) {
@@ -352,14 +367,26 @@ export struct BrowseHeader {
               (AppStorage.get<number>(AppKeys.BROWSE_SOURCE_FILTER_REQ) ?? 0) + 1);
           })
       } else if (this.currentTab === 1) {
-        // 插件：搜索 + 类型过滤（信号转发）+ 溢出菜单
-        AppIcon({ name: 'search', iconSize: 22 })
-          .padding({ left: 12, right: 12 })
-          .onClick(() => {
-            this.extSearchOpen = true;
-          })
+        // 插件：搜索 + 类型过滤（信号转发）+ 溢出菜单（搜索框展开时隐藏搜索图标）
+        if (!this.extSearchOpen) {
+          AppIcon({ name: 'search', iconSize: 22 })
+            .padding({ left: 12, right: 12 })
+            .onClick(() => {
+              // 展开动画结束后自动聚焦输入框
+              this.getUIContext().animateTo({
+                duration: 250,
+                curve: Curve.Friction,
+                onFinish: (): void => {
+                  this.getUIContext().getFocusController().requestFocus('browseExtSearchInput');
+                }
+              }, (): void => {
+                this.extSearchOpen = true;
+              });
+            })
+            .transition(TransitionEffect.OPACITY)
+        }
         AppIcon({ name: 'filter_list', iconSize: 22 })
-          .padding({ left: 0, right: 12 })
+          .padding({ left: 12, right: 12 })
           .onClick(() => {
             AppStorage.setOrCreate(AppKeys.BROWSE_EXT_FILTER_REQ,
               (AppStorage.get<number>(AppKeys.BROWSE_EXT_FILTER_REQ) ?? 0) + 1);
@@ -582,6 +609,9 @@ export struct BrowsePage {
     .width('100%')
     .alignItems(VerticalAlign.Center)
     .padding({ top: 8, bottom: 8 })
+    // 过滤/置顶变化行增删转场：淡入淡出 + 轻微位移
+    .transition(TransitionEffect.OPACITY.combine(TransitionEffect.translate({ y: 8 }))
+      .animation({ duration: 200, curve: Curve.Friction }))
     .onClick(() => {
       this.openBrowseSource(s, 'popular');
     })
@@ -623,6 +653,8 @@ export struct BrowsePage {
               .fontColor(this.pal.sub)
               .width('100%')
               .padding({ top: 12, bottom: 4 })
+              .transition(TransitionEffect.OPACITY
+                .animation({ duration: 200, curve: Curve.Friction }))
             ForEach(section.sources, (s: Source) => {
               this.sourceRow(s)
             }, (s: Source) => `src-${s.key}-${this.isPinned(s.key)}`)
@@ -911,8 +943,11 @@ export struct BrowsePage {
         initialLangs: this.enabledLangs,
         initialTypes: this.enabledTypes,
         onApply: (langs: string[], types: string[]): void => {
-          this.enabledLangs = langs.length === 0 || langs.length === this.allLangs().length ? [] : langs;
-          this.enabledTypes = types.length === FILTER_TYPES.length ? [] : types;
+          // 过滤结果行增删转场：包 animateTo，配合行/分节头 transition 动画
+          this.getUIContext().animateTo({ duration: 200, curve: Curve.Friction }, (): void => {
+            this.enabledLangs = langs.length === 0 || langs.length === this.allLangs().length ? [] : langs;
+            this.enabledTypes = types.length === FILTER_TYPES.length ? [] : types;
+          });
         },
         onClose: (): void => {
           dialog.close();

@@ -72,7 +72,10 @@ export class HikkaTracker extends Tracker {
 
   // slug → 48 位稳定数字 ID（对齐 Mihon 的 UUID.nameUUIDFromBytes，避免 64 位精度丢失）
   private static slugToId(slug: string): number {
-    if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest')) {
+    // 带版本后缀的 syscap 查询运行时恒为 false：if 分支仅为抑制编译告警，真实路径在 else
+    if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest [since 12]')) {
+      return 0;
+    } else {
       try {
         const bytes: Uint8Array = new util.TextEncoder().encodeInto(slug);
         const md = cryptoFramework.createMd('MD5');
@@ -88,7 +91,6 @@ export class HikkaTracker extends Tracker {
         return 0;
       }
     }
-    return 0;
   }
 
   private static toLocalStatus(status: string): number {

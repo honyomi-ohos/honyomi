@@ -178,7 +178,12 @@ export class Doh {
   // 防止开启 DoH 时 prepare 用 DoH 应答覆盖插件指定的入口 IP。
   // host/ips 已由调用方校验（域名非 IP 字面量 / 1..8 个 IPv4）。
   static async pin(host: string, ips: string[]): Promise<void> {
-    await connection.addCustomDnsRule(host, ips);
+    try {
+      await connection.addCustomDnsRule(host, ips);
+    } catch (e) {
+const err = e as Error;
+      throw err;
+    }
     const entry: DohCacheEntry = { ips: ips, expireAt: Date.now() + Doh.PIN_TTL_MS, pin: true };
     Doh.cache.set(host, entry);
     Log.debug(TAG, `pin ${host} -> ${ips.join(',')}`);
@@ -235,7 +240,12 @@ export class Doh {
       Log.debug(TAG, `skip ${host}: pinned by plugin (late)`);
       return;
     }
-    await connection.addCustomDnsRule(host, validated);
+    try {
+      await connection.addCustomDnsRule(host, validated);
+    } catch (e) {
+const err = e as Error;
+      throw err;
+    }
     const ttlMs: number = Math.min(Math.max(ttl, 60), 3600) * 1000;
     const entry: DohCacheEntry = { ips: validated, expireAt: Date.now() + ttlMs, pin: false };
     Doh.cache.set(host, entry);
@@ -296,6 +306,9 @@ export class Doh {
         return undefined;
       }
       return Doh.parseAnswer(new Uint8Array(resp.result as ArrayBuffer));
+    } catch (e) {
+const err = e as Error;
+      throw err;
     } finally {
       client.destroy();
     }
@@ -334,6 +347,9 @@ export class Doh {
       }
       const answer: DohAnswer = { ips: ips, ttl: minTtl };
       return answer;
+    } catch (e) {
+const err = e as Error;
+      throw err;
     } finally {
       client.destroy();
     }

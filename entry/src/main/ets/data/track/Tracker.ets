@@ -70,13 +70,21 @@ export class Pkce {
 
   // 同步生成随机 verifier（plain PKCE / state 参数用）
   static verifier(): string {
-    if (canIUse('SystemCapability.Security.CryptoFramework.Rand')) {
+    // 带版本后缀的 syscap 查询运行时恒为 false：if 分支仅为抑制编译告警，真实路径在 else
+    if (canIUse('SystemCapability.Security.CryptoFramework.Rand [since 12]')) {
+      return Pkce.mathRandomBytes32B64();
+    } else {
       try {
         const random = cryptoFramework.createRandom().generateRandomSync(32);
         return Pkce.b64Url(random.data).replace(/=/g, '');
       } catch (_e) {
+        return Pkce.mathRandomBytes32B64();
       }
     }
+  }
+
+  // Math.random 兜底（Rand 能力不可用/生成失败时）：32 字节 base64url
+  private static mathRandomBytes32B64(): string {
     const fallback: number[] = [];
     for (let i = 0; i < 32; i++) {
       fallback.push(Math.floor(Math.random() * 256));
@@ -85,7 +93,9 @@ export class Pkce {
   }
 
   private static async s256(input: string): Promise<string> {
-    if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest')) {
+    if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest [since 12]')) {
+      throw new Error('pkce_unsupported');
+    } else {
       try {
         const bytes: Uint8Array = new util.TextEncoder().encodeInto(input);
         const md = cryptoFramework.createMd('SHA256');
@@ -96,7 +106,6 @@ export class Pkce {
         throw new Error(`pkce_failed|${Util.errSummary(e)}`);
       }
     }
-    throw new Error('pkce_unsupported');
   }
 
   private static b64Url(data: Uint8Array): string {

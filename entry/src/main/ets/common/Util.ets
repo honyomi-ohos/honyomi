@@ -592,3 +592,60 @@ export class Util {
     return util.TextDecoder.create(encoding, options).decodeToString(data);
   }
 }
+
+// 书架网格列数度量：按书架内容区宽度推导列数可行区间。
+// 单格宽度限制在 [MIN_CELL, MAX_CELL] 内——下限防列数过多挤压封面，
+// 上限防 PC 宽屏下 1 列过宽；间距/内边距与 LibraryPage 的 Grid 参数保持一致。
+export class LibGrid {
+  static readonly GAP: number = 8;
+  static readonly PAD: number = 16;
+  static readonly AUTO_CELL: number = 128;
+  static readonly MIN_CELL: number = 60;
+  static readonly MAX_CELL: number = 160;
+
+  // 自动档列数（约 128vp 一格）
+  static autoCols(w: number): number {
+    return Math.max(1, Math.floor(Math.max(0, w - LibGrid.PAD) / LibGrid.AUTO_CELL));
+  }
+
+  // 当前宽度下列数下限（单格不超过 MAX_CELL）
+  static minCols(w: number): number {
+    const inner = Math.max(0, w - LibGrid.PAD);
+    return Math.max(1, Math.floor((inner + LibGrid.GAP) / (LibGrid.MAX_CELL + LibGrid.GAP)));
+  }
+
+  // 当前宽度下列数上限（单格不小于 MIN_CELL）
+  static maxCols(w: number): number {
+    const inner = Math.max(0, w - LibGrid.PAD);
+    return Math.max(LibGrid.minCols(w), Math.floor((inner + LibGrid.GAP) / (LibGrid.MIN_CELL + LibGrid.GAP)));
+  }
+
+  // 手动列数按当前宽度可行区间收敛（0=自动原样返回）
+  static clampCols(n: number, w: number): number {
+    if (n <= 0) {
+      return 0;
+    }
+    return Math.min(LibGrid.maxCols(w), Math.max(LibGrid.minCols(w), n));
+  }
+
+  // 滑条档位映射：档 0 = 自动，档 p>=1 对应 minCols+p-1 列，
+  // 跳过区间外的档位，使滑条两端始终贴合可行区间
+  static posOfCols(cols: number, w: number): number {
+    if (cols <= 0) {
+      return 0;
+    }
+    return LibGrid.clampCols(cols, w) - LibGrid.minCols(w) + 1;
+  }
+
+  static colsOfPos(pos: number, w: number): number {
+    if (pos <= 0) {
+      return 0;
+    }
+    return Math.min(LibGrid.maxCols(w), LibGrid.minCols(w) + pos - 1);
+  }
+
+  // 滑条最大档位
+  static maxPos(w: number): number {
+    return LibGrid.maxCols(w) - LibGrid.minCols(w) + 1;
+  }
+}

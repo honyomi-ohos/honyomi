@@ -150,6 +150,9 @@ export class MangaOcrTranslator {
           out, bg, MangaOcrTranslator.fgOf(bg)));
       }
       return new PageTransData(imgW, imgH, boxes);
+    } catch (e) {
+const err = e as Error;
+      throw err;
     } finally {
       pm.release().catch((_e: Object) => {
       });

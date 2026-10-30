@@ -98,38 +98,40 @@ export class KnockShare {
   // ---- 通道二：应用间碰一碰建链（serviceInteraction）----
 
   private static registerServiceInteraction(windowId: number): void {
-    if (KnockShare.serviceListening || !canIUse('SystemCapability.Collaboration.Connection')) {
+    if (KnockShare.serviceListening) {
       return;
     }
-    try {
-      const config: serviceInteraction.CollaborationConfig = {
-        triggerType: serviceInteraction.TriggerType.KNOCK,
-        windowId: windowId,
-        appLinking: ContinueSession.toAppLink(),
-        timeOut: 20
-      };
-      const callbacks: serviceInteraction.ServiceInteractionCallback = {
-        onDeviceConnect: (connection: serviceInteraction.Connection): void => {
-          KnockShare.onDeviceConnect(connection);
-        },
-        onDeviceDisconnect: (connection: serviceInteraction.Connection, retCode: number): void => {
-          hilog.info(DOMAIN, TAG, 'service disconnected: %{public}d %{public}d', connection.connectId, retCode);
-        },
-        onMessageReceive: (connection: serviceInteraction.Connection, data: ArrayBuffer): void => {
-          KnockShare.onMessageReceive(data);
-        },
-        onConnectFail: (retCode: number): void => {
-          hilog.warn(DOMAIN, TAG, 'service connect failed: %{public}d', retCode);
-        }
-      };
-      serviceInteraction.onServiceInteraction(config, callbacks);
-      KnockShare.serviceConfig = config;
-      KnockShare.serviceCallbacks = callbacks;
-      KnockShare.serviceListening = true;
-      hilog.info(DOMAIN, TAG, 'serviceInteraction registered, window=%{public}d', windowId);
-    } catch (e) {
-      const err = e as BusinessError;
-      hilog.warn(DOMAIN, TAG, 'serviceInteraction register failed: %{public}d %{public}s', err.code, err.message);
+    if (canIUse('SystemCapability.Collaboration.Connection')) {
+      try {
+        const config: serviceInteraction.CollaborationConfig = {
+          triggerType: serviceInteraction.TriggerType.KNOCK,
+          windowId: windowId,
+          appLinking: ContinueSession.toAppLink(),
+          timeOut: 20
+        };
+        const callbacks: serviceInteraction.ServiceInteractionCallback = {
+          onDeviceConnect: (connection: serviceInteraction.Connection): void => {
+            KnockShare.onDeviceConnect(connection);
+          },
+          onDeviceDisconnect: (connection: serviceInteraction.Connection, retCode: number): void => {
+            hilog.info(DOMAIN, TAG, 'service disconnected: %{public}d %{public}d', connection.connectId, retCode);
+          },
+          onMessageReceive: (connection: serviceInteraction.Connection, data: ArrayBuffer): void => {
+            KnockShare.onMessageReceive(data);
+          },
+          onConnectFail: (retCode: number): void => {
+            hilog.warn(DOMAIN, TAG, 'service connect failed: %{public}d', retCode);
+          }
+        };
+        serviceInteraction.onServiceInteraction(config, callbacks);
+        KnockShare.serviceConfig = config;
+        KnockShare.serviceCallbacks = callbacks;
+        KnockShare.serviceListening = true;
+        hilog.info(DOMAIN, TAG, 'serviceInteraction registered, window=%{public}d', windowId);
+      } catch (e) {
+        const err = e as BusinessError;
+        hilog.warn(DOMAIN, TAG, 'serviceInteraction register failed: %{public}d %{public}s', err.code, err.message);
+      }
     }
   }
 
@@ -138,8 +140,10 @@ export class KnockShare {
       return;
     }
     try {
-      if (KnockShare.serviceConfig !== undefined && KnockShare.serviceCallbacks !== undefined) {
-        serviceInteraction.offServiceInteraction(KnockShare.serviceConfig, KnockShare.serviceCallbacks);
+      if (canIUse('SystemCapability.Collaboration.Connection')) {
+        if (KnockShare.serviceConfig !== undefined && KnockShare.serviceCallbacks !== undefined) {
+          serviceInteraction.offServiceInteraction(KnockShare.serviceConfig, KnockShare.serviceCallbacks);
+        }
       }
       KnockShare.serviceListening = false;
       KnockShare.serviceConfig = undefined;
@@ -152,28 +156,35 @@ export class KnockShare {
 
   // 建链成功：把当前会话 JSON 推到对端后断开（一次性推送，无需保持连接）
   private static onDeviceConnect(connection: serviceInteraction.Connection): void {
-    const json = ContinueSession.toJson();
-    if (json === '') {
-      connection.disconnect().catch((e: BusinessError): void => {
-        hilog.warn(DOMAIN, TAG, 'disconnect failed: %{public}d %{public}s', e.code, e.message);
-      });
-      return;
-    }
-    try {
-      const bytes: Uint8Array = util.TextEncoder.create('utf-8').encodeInto(json);
-      const ab: ArrayBuffer = new ArrayBuffer(bytes.byteLength);
-      new Uint8Array(ab).set(bytes);
-      connection.sendMessage(ab).then((): void => {
-        hilog.info(DOMAIN, TAG, 'session pushed');
-        connection.disconnect().catch((e: BusinessError): void => {
-          hilog.warn(DOMAIN, TAG, 'disconnect failed: %{public}d %{public}s', e.code, e.message);
+    if (canIUse('SystemCapability.Collaboration.Connection')) {
+      const json = ContinueSession.toJson();
+      if (json === '') {
+        try {
+          connection.disconnect().catch((e: BusinessError): void => {
+            hilog.warn(DOMAIN, TAG, 'disconnect failed: %{public}d %{public}s', e.code, e.message);
+          });
+        } catch (e) {
+          const err = e as BusinessError;
+          hilog.warn(DOMAIN, TAG, 'disconnect failed: %{public}d %{public}s', err.code, err.message);
+        }
+        return;
+      }
+      try {
+        const bytes: Uint8Array = util.TextEncoder.create('utf-8').encodeInto(json);
+        const ab: ArrayBuffer = new ArrayBuffer(bytes.byteLength);
+        new Uint8Array(ab).set(bytes);
+        connection.sendMessage(ab).then((): void => {
+          hilog.info(DOMAIN, TAG, 'session pushed');
+          connection.disconnect().catch((e: BusinessError): void => {
+            hilog.warn(DOMAIN, TAG, 'disconnect failed: %{public}d %{public}s', e.code, e.message);
+          });
+        }).catch((e: BusinessError): void => {
+          hilog.warn(DOMAIN, TAG, 'send session failed: %{public}d %{public}s', e.code, e.message);
         });
-      }).catch((e: BusinessError): void => {
-        hilog.warn(DOMAIN, TAG, 'send session failed: %{public}d %{public}s', e.code, e.message);
-      });
-    } catch (e) {
-      const err = e as BusinessError;
-      hilog.warn(DOMAIN, TAG, 'send session exception: %{public}d %{public}s', err.code, err.message);
+      } catch (e) {
+        const err = e as BusinessError;
+        hilog.warn(DOMAIN, TAG, 'send session exception: %{public}d %{public}s', err.code, err.message);
+      }
     }
   }
 

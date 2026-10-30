@@ -125,7 +125,7 @@ export struct CredentialsDialog {
         text: this.password,
       })
         .type(InputType.Password)
-        .key('credPasswordKey')
+        .id('credPasswordKey')
         .enterKeyType(EnterKeyType.Done)
         .onChange((value: string) => {
           this.password = value;

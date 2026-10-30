@@ -1,6 +1,6 @@
 import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
-import { Util } from '../../common/Util';
+import { LibGrid, Util } from '../../common/Util';
 import { AppDb } from '../../data/AppDb';
 import { CategoryRepo } from '../../data/Repos';
 import { CategoryRecord } from '../../model/Models';
@@ -18,6 +18,8 @@ export struct LibrarySettingsContent {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   // 分类列表（默认归入分类选项）：挂载后异步加载，加载完成前不渲染该行
   @State categories: CategoryRecord[] = [];
+  // 页面内容区宽度：列数滑条按其限制最小/最大列（与书架网格宽度一致）
+  @State contentW: number = 0;
 
   aboutToAppear(): void {
     this.loadCategories();
@@ -125,13 +127,15 @@ export struct LibrarySettingsContent {
           Divider().color(this.pal.divider).margin({ left: 16 })
           PrefSliderRow({
             title: $r('app.string.lib_set_grid_cols'),
-            initValue: Settings.getLibraryGridCols(),
+            initValue: LibGrid.posOfCols(Settings.getLibraryGridCols(), this.gridW()),
             minValue: 0,
-            maxValue: 10,
+            maxValue: LibGrid.maxPos(this.gridW()),
             stepValue: 1,
-            valueText: (v: number): ResourceStr => v === 0 ? $r('app.string.lib_display_grid_auto') : `${v}`,
-            apply: (v: number): void => {
-              Settings.setLibraryGridCols(v);
+            valueText: (pos: number): ResourceStr => pos === 0
+              ? $r('app.string.lib_display_grid_auto')
+              : `${LibGrid.colsOfPos(pos, this.gridW())}`,
+            apply: (pos: number): void => {
+              Settings.setLibraryGridCols(LibGrid.colsOfPos(pos, this.gridW()));
             }
           })
           Divider().color(this.pal.divider).margin({ left: 16 })
@@ -193,6 +197,18 @@ export struct LibrarySettingsContent {
     .height('100%')
     .scrollBar(BarState.Off)
     .align(Alignment.TopStart)
+    .onAreaChange((_old: Area, newArea: Area) => {
+      const w = newArea.width;
+      if (typeof w === 'number') {
+        this.contentW = w;
+      }
+    })
+  }
+
+  // 书架内容区宽度近似（未测得时按手机宽度兜底）：
+  // 本页与书架网格同为 Navigation 内容区全宽，量本级 Scroll 即可
+  private gridW(): number {
+    return this.contentW > 0 ? this.contentW : 360;
   }
 
   private async loadCategories(): Promise<void> {

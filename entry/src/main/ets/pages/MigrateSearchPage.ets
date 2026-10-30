@@ -199,7 +199,13 @@ export struct MigrateSearchPage {
             TextInput({ text: this.query, placeholder: $r('app.string.migrate_search_hint') })
               .layoutWeight(1)
               .height(38)
-              .backgroundColor(this.pal.card)
+              .fontSize(15)
+              .fontColor(this.pal.text)
+              .placeholderColor(this.pal.sub)
+              .caretColor(this.pal.primary)
+              .backgroundColor(this.pal.chip)
+              .borderRadius(19)
+              .padding({ left: 16, right: 16 })
               .enterKeyType(EnterKeyType.Search)
               .onChange((value: string) => {
                 this.query = value;

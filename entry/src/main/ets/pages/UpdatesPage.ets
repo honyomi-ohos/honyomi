@@ -34,7 +34,9 @@ export struct UpdatesPage {
   @StorageProp('navBarH') navBarH: number = 0;
   // 页签浮动条避让高度：宽屏无页签条时为 0（Index 按断点发布）
   @StorageProp('tabPadH') tabPadH: number = 76;
-  @StorageProp('windowW') windowW: number = 0;
+  @StorageProp('windowW') @Watch('onWindowWChange') windowW: number = 0;
+  // 时间表网格列数镜像：断点跨越时经 animateTo 更新，行重排带过渡动画
+  @State schedCols: number = 2;
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
   // 关闭“显示 NSFW 源”时隐藏 NSFW 插件源的更新；插件注册完成后（pluginsDirty）重算过滤
   @StorageProp('showNsfw') @Watch('onLibDirty') showNsfw: boolean = false;
@@ -78,6 +80,7 @@ export struct UpdatesPage {
     this.fBookmarked = Settings.getUpdatesTriState('bookmarked');
     this.includedCats = Settings.getUpdatesIncludedCategories();
     this.excludedCats = Settings.getUpdatesExcludedCategories();
+    this.schedCols = this.colsForWidth(this.windowW);
     this.publishFilterActive();
     this.buildWeekdayLabels();
     this.loadData();
@@ -142,7 +145,10 @@ export struct UpdatesPage {
         return wantDownloaded === downloaded.has(it.chapterId);
       });
     }
-    this.items = items;
+    // 筛选/数据刷新列表变化：包 animateTo，配合行 transition 播放增删转场
+    this.getUIContext().animateTo({ duration: 200, curve: Curve.Friction }, (): void => {
+      this.items = items;
+    });
     this.loading = false;
   }
 
@@ -285,6 +291,9 @@ export struct UpdatesPage {
                     top: 10,
                     bottom: 10
                   })
+                  // 筛选结果行增删转场：淡入淡出 + 轻微位移
+                  .transition(TransitionEffect.OPACITY.combine(TransitionEffect.translate({ y: 8 }))
+                    .animation({ duration: 200, curve: Curve.Friction }))
                   .onClick(() => {
                     ContentOpen.open(this.pathStack, item.mangaId, item.chapterId);
                   })
@@ -405,6 +414,7 @@ export struct UpdatesPage {
                 }, (item: BgmCalendarItem) => `bgm-${item.id}`)
               }
               .width('100%')
+              .transition(TransitionEffect.OPACITY.animation({ duration: 250, curve: Curve.Friction }))
             }, (row: BgmCalendarItem[], idx: number) =>
             `bgmrow-${idx}-${row.length > 0 ? row[0].id : 0}`)
           }
@@ -582,17 +592,31 @@ export struct UpdatesPage {
   }
 
   // 网格列数随窗口宽度：2-5 列
-  private scheduleCols(): number {
-    if (this.windowW >= 1200) {
+  private colsForWidth(w: number): number {
+    if (w >= 1200) {
       return 5;
     }
-    if (this.windowW >= 840) {
+    if (w >= 840) {
       return 4;
     }
-    if (this.windowW >= 600) {
+    if (w >= 600) {
       return 3;
     }
     return 2;
+  }
+
+  private scheduleCols(): number {
+    return this.schedCols;
+  }
+
+  // 窗口宽度跨越列数档位：包 animateTo 让时间表行重排带过渡动画
+  private onWindowWChange(): void {
+    const next: number = this.colsForWidth(this.windowW);
+    if (next !== this.schedCols) {
+      this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
+        this.schedCols = next;
+      });
+    }
   }
 
   // 条目按列数分块为行（响应式网格）

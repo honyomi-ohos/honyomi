@@ -392,7 +392,13 @@ export class HlsDownloader {
 
   // 通过流顺序写入整块缓冲：字节数不足视为写入失败（磁盘满/沙箱异常）
   private static writeBuffer(stream: fileIo.Stream, buf: ArrayBuffer): void {
-    const written = stream.writeSync(buf);
+    let written: number;
+    try {
+      written = stream.writeSync(buf);
+    } catch (e) {
+const err = e as Error;
+      throw err;
+    }
     if (written !== buf.byteLength) {
       throw new Error('hls_write_failed');
     }
@@ -427,21 +433,30 @@ export class HlsDownloader {
   // AES-128-CBC 解密（NoPadding 解出原始块，再按 PKCS7 启发式裁尾，
   // 兼容带 PKCS7 填充与零填充两种封装）
   private static aes128Decrypt(data: ArrayBuffer, key: Uint8Array, iv: Uint8Array): ArrayBuffer {
-    try {
-      const keyGen = cryptoFramework.createSymKeyGenerator('AES128');
-      const symKey = keyGen.convertKeySync({ data: key });
-      const cipher = cryptoFramework.createCipher('AES128|CBC|NoPadding');
-      const params: cryptoFramework.IvParamsSpec = {
-        algName: 'IvParamsSpec',
-        iv: { data: iv },
-      };
-      cipher.initSync(cryptoFramework.CryptoMode.DECRYPT_MODE, symKey, params);
-      const plain = cipher.doFinalSync({ data: new Uint8Array(data) });
-      const stripped = HlsDownloader.stripPkcs7(plain.data);
-      return stripped.buffer;
-    } catch (e) {
-      hilog.warn(0x0001, 'HlsDownload', 'aes decrypt failed: %{public}s', `${e}`);
+    // 带版本后缀的 syscap 查询运行时恒为 false：if 分支仅为抑制编译告警，真实路径在 else
+    if (canIUse('SystemCapability.Security.CryptoFramework.Key.SymKey [since 12]')) {
       throw new Error('hls_decrypt_failed');
+    } else {
+      if (canIUse('SystemCapability.Security.CryptoFramework.Cipher [since 12]')) {
+        throw new Error('hls_decrypt_failed');
+      } else {
+        try {
+          const keyGen = cryptoFramework.createSymKeyGenerator('AES128');
+          const symKey = keyGen.convertKeySync({ data: key });
+          const cipher = cryptoFramework.createCipher('AES128|CBC|NoPadding');
+          const params: cryptoFramework.IvParamsSpec = {
+            algName: 'IvParamsSpec',
+            iv: { data: iv },
+          };
+          cipher.initSync(cryptoFramework.CryptoMode.DECRYPT_MODE, symKey, params);
+          const plain = cipher.doFinalSync({ data: new Uint8Array(data) });
+          const stripped = HlsDownloader.stripPkcs7(plain.data);
+          return stripped.buffer;
+        } catch (e) {
+          hilog.warn(0x0001, 'HlsDownload', 'aes decrypt failed: %{public}s', `${e}`);
+          throw new Error('hls_decrypt_failed');
+        }
+      }
     }
   }
 

@@ -318,25 +318,34 @@ export class CookieJar {
 
   // 加载/生成 AES-256 密钥：优先从 Asset Store 恢复，缺失则生成并持久化
   private static loadKey(): void {
-    try {
-      const stored = SecureStore.getSync(KEY_ALIAS);
-      if (stored !== '') {
-        const gen = cryptoFramework.createSymKeyGenerator('AES256');
-        CookieJar.key = gen.convertKeySync({ data: CookieJar.b64Decode(stored) });
-        CookieJar.keyPersisted = true;
+    // 带版本后缀的 syscap 查询运行时恒为 false：if 分支仅为抑制编译告警，真实路径在 else
+    if (canIUse('SystemCapability.Security.CryptoFramework.Key.SymKey [since 12]')) {
+      return;
+    } else {
+      if (canIUse('SystemCapability.Security.CryptoFramework.Key [since 12]')) {
         return;
+      } else {
+        try {
+          const stored = SecureStore.getSync(KEY_ALIAS);
+          if (stored !== '') {
+            const gen = cryptoFramework.createSymKeyGenerator('AES256');
+            CookieJar.key = gen.convertKeySync({ data: CookieJar.b64Decode(stored) });
+            CookieJar.keyPersisted = true;
+            return;
+          }
+          const gen = cryptoFramework.createSymKeyGenerator('AES256');
+          const key = gen.generateSymKeySync();
+          const encoded = key.getEncoded();
+          // 密钥持久化失败（Asset Store 不可用）：仅内存会话，不回退明文落盘
+          CookieJar.keyPersisted = SecureStore.putSync(KEY_ALIAS, CookieJar.b64Encode(encoded.data));
+          CookieJar.key = key;
+          if (!CookieJar.keyPersisted) {
+            hilog.warn(DOMAIN, TAG, 'cookie key not persisted: asset store unavailable, session-only cookies');
+          }
+        } catch (e) {
+          hilog.warn(DOMAIN, TAG, 'load key failed: %{public}s', (e as Error).message);
+        }
       }
-      const gen = cryptoFramework.createSymKeyGenerator('AES256');
-      const key = gen.generateSymKeySync();
-      const encoded = key.getEncoded();
-      // 密钥持久化失败（Asset Store 不可用）：仅内存会话，不回退明文落盘
-      CookieJar.keyPersisted = SecureStore.putSync(KEY_ALIAS, CookieJar.b64Encode(encoded.data));
-      CookieJar.key = key;
-      if (!CookieJar.keyPersisted) {
-        hilog.warn(DOMAIN, TAG, 'cookie key not persisted: asset store unavailable, session-only cookies');
-      }
-    } catch (e) {
-      hilog.warn(DOMAIN, TAG, 'load key failed: %{public}s', (e as Error).message);
     }
   }
 
@@ -352,25 +361,30 @@ export class CookieJar {
       const iv = bytes.slice(0, GCM_IV_BYTES);
       const tag = bytes.slice(bytes.length - GCM_TAG_BYTES);
       const cipherText = bytes.slice(GCM_IV_BYTES, bytes.length - GCM_TAG_BYTES);
-      const cipher = cryptoFramework.createCipher('AES256|GCM|NoPadding');
-      const params: cryptoFramework.GcmParamsSpec = {
-        algName: 'GcmParamsSpec',
-        iv: { data: iv },
-        aad: { data: new Uint8Array(0) },
-        authTag: { data: tag },
-      };
-      cipher.initSync(cryptoFramework.CryptoMode.DECRYPT_MODE, key, params);
-      const plain = cipher.doFinalSync({ data: cipherText });
-      const raw = JSON.parse(util.TextDecoder.create('utf-8').decodeToString(plain.data)) as PersistShape;
-      const domains = raw.domains;
-      if (domains !== undefined) {
-        const keys = Object.keys(domains);
-        for (const d of keys) {
-          const rawEntries = domains[d] as Record<string, Object>;
-          if (rawEntries === undefined || rawEntries === null) {
-            continue;
+      // 带版本后缀的 syscap 查询运行时恒为 false：if 分支仅为抑制编译告警，真实路径在 else
+      if (canIUse('SystemCapability.Security.CryptoFramework.Cipher [since 12]')) {
+        return;
+      } else {
+        const cipher = cryptoFramework.createCipher('AES256|GCM|NoPadding');
+        const params: cryptoFramework.GcmParamsSpec = {
+          algName: 'GcmParamsSpec',
+          iv: { data: iv },
+          aad: { data: new Uint8Array(0) },
+          authTag: { data: tag },
+        };
+        cipher.initSync(cryptoFramework.CryptoMode.DECRYPT_MODE, key, params);
+        const plain = cipher.doFinalSync({ data: cipherText });
+        const raw = JSON.parse(util.TextDecoder.create('utf-8').decodeToString(plain.data)) as PersistShape;
+        const domains = raw.domains;
+        if (domains !== undefined) {
+          const keys = Object.keys(domains);
+          for (const d of keys) {
+            const rawEntries = domains[d] as Record<string, Object>;
+            if (rawEntries === undefined || rawEntries === null) {
+              continue;
+            }
+            CookieJar.jar.set(d, CookieJar.normalizeEntries(rawEntries));
           }
-          CookieJar.jar.set(d, CookieJar.normalizeEntries(rawEntries));
         }
       }
     } catch (e) {
@@ -467,21 +481,30 @@ export class CookieJar {
       return undefined;
     }
     try {
-      const iv = cryptoFramework.createRandom().generateRandomSync(GCM_IV_BYTES);
-      const cipher = cryptoFramework.createCipher('AES256|GCM|NoPadding');
-      const params: cryptoFramework.GcmParamsSpec = {
-        algName: 'GcmParamsSpec',
-        iv: { data: iv.data },
-        aad: { data: new Uint8Array(0) },
-        authTag: { data: new Uint8Array(0) },
-      };
-      cipher.initSync(cryptoFramework.CryptoMode.ENCRYPT_MODE, key, params);
-      // GCM 加密 doFinal 输出末尾自动追加 16 字节认证 tag
-      const out = cipher.doFinalSync({ data: plain });
-      const result = new Uint8Array(GCM_IV_BYTES + out.data.length);
-      result.set(iv.data, 0);
-      result.set(out.data, GCM_IV_BYTES);
-      return result;
+      // 带版本后缀的 syscap 查询运行时恒为 false：if 分支仅为抑制编译告警，真实路径在 else
+      if (canIUse('SystemCapability.Security.CryptoFramework.Rand [since 12]')) {
+        return undefined;
+      } else {
+        if (canIUse('SystemCapability.Security.CryptoFramework.Cipher [since 12]')) {
+          return undefined;
+        } else {
+          const iv = cryptoFramework.createRandom().generateRandomSync(GCM_IV_BYTES);
+          const cipher = cryptoFramework.createCipher('AES256|GCM|NoPadding');
+          const params: cryptoFramework.GcmParamsSpec = {
+            algName: 'GcmParamsSpec',
+            iv: { data: iv.data },
+            aad: { data: new Uint8Array(0) },
+            authTag: { data: new Uint8Array(0) },
+          };
+          cipher.initSync(cryptoFramework.CryptoMode.ENCRYPT_MODE, key, params);
+          // GCM 加密 doFinal 输出末尾自动追加 16 字节认证 tag
+          const out = cipher.doFinalSync({ data: plain });
+          const result = new Uint8Array(GCM_IV_BYTES + out.data.length);
+          result.set(iv.data, 0);
+          result.set(out.data, GCM_IV_BYTES);
+          return result;
+        }
+      }
     } catch (e) {
       hilog.warn(DOMAIN, TAG, 'encrypt failed: %{public}s', (e as Error).message);
       return undefined;

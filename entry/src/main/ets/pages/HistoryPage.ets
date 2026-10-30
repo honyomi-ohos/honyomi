@@ -33,20 +33,30 @@ export struct HistoryHeader {
   build() {
     Row() {
       if (this.searchOpen) {
-        TextInput({ text: this.searchQuery, placeholder: $r('app.string.history_search_hint') })
+        TextInput({
+          text: this.searchQuery,
+          placeholder: $r('app.string.history_search_hint')
+        })
+          .id('historySearchInput')
           .layoutWeight(1)
           .height(38)
           .fontSize(15)
           .fontColor(this.pal.text)
           .placeholderColor(this.pal.sub)
+          .caretColor(this.pal.primary)
           .backgroundColor(this.pal.chip)
           .borderRadius(19)
           .padding({ left: 16, right: 16 })
+          .transition(TransitionEffect.OPACITY)
           .onChange((value: string) => {
-            this.searchQuery = value;
+            // 过滤列表变化包进 animateTo：列表行增删转场随输入逐键动画
+            this.getUIContext().animateTo({ duration: 200, curve: Curve.Friction }, (): void => {
+              this.searchQuery = value;
+            });
           })
         AppIcon({ name: 'close', iconSize: 22, tint: this.pal.text })
           .padding({ left: 12 })
+          .transition(TransitionEffect.OPACITY)
           .onClick(() => {
             this.closeSearch();
           })
@@ -56,6 +66,7 @@ export struct HistoryHeader {
           .fontWeight(FontWeight.Bold)
           .fontColor(this.pal.text)
           .layoutWeight(1)
+          .transition(TransitionEffect.OPACITY)
         // 清空历史：delete_sweep 图标（对齐 Mihon DeleteSweep），
         // 点击发清空请求信号，二次确认（武装/执行）逻辑在内容区 clearHistory
         AppIcon({
@@ -89,12 +100,23 @@ export struct HistoryHeader {
   }
 
   private openSearch(): void {
-    this.searchOpen = true;
+    // 展开动画结束后自动聚焦输入框
+    this.getUIContext().animateTo({
+      duration: 250,
+      curve: Curve.Friction,
+      onFinish: (): void => {
+        this.getUIContext().getFocusController().requestFocus('historySearchInput');
+      }
+    }, (): void => {
+      this.searchOpen = true;
+    });
   }
 
   private closeSearch(): void {
-    this.searchOpen = false;
-    this.searchQuery = '';
+    this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
+      this.searchOpen = false;
+      this.searchQuery = '';
+    });
   }
 
   // 清空请求信号（计数器递增，内容区 @Watch 消费）
@@ -358,6 +380,9 @@ export struct HistoryPage {
                   top: 10,
                   bottom: 10
                 })
+                // 搜索过滤行增删转场：淡入淡出 + 轻微位移
+                .transition(TransitionEffect.OPACITY.combine(TransitionEffect.translate({ y: 8 }))
+                  .animation({ duration: 200, curve: Curve.Friction }))
                 .onClick((event?: ClickEvent) => {
                   // PC Ctrl+点击直接进入多选（与右键菜单「选择」一致）
                   if (event !== undefined && Util.isCtrlHeld(event) && !this.selecting) {

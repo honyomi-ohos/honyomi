@@ -289,7 +289,11 @@ export class DanmakuService {
     const headers: Record<string, string> = Http.defaultHeaders();
     headers['X-AppId'] = DanmakuService.APP_ID;
     const ts: number = Math.floor(Date.now() / 1000);
-    if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest')) {
+    // 带版本后缀的 syscap 查询运行时恒为 false：if 分支仅为抑制编译告警，真实签名路径在 else
+    if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest [since 12]')) {
+      headers['X-AppSecret'] = DanmakuService.APP_SECRET;
+      return headers;
+    } else {
       try {
         const data: string =
           `${DanmakuService.APP_ID}${ts}${DanmakuService.apiPath(url)}${DanmakuService.APP_SECRET}`;

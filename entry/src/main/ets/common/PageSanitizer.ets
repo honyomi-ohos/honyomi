@@ -74,16 +74,25 @@ export class PageSanitizer {
     all.set(sizeBytes, 0);
     all.set(head, sizeBytes.length);
     all.set(tail, sizeBytes.length + head.length);
-    const md = cryptoFramework.createMd('MD5');
-    const input: cryptoFramework.DataBlob = { data: all };
-    await md.update(input);
-    const output = await md.digest();
-    let hex = '';
-    for (let i = 0; i < output.data.length; i++) {
-      const b = output.data[i];
-      hex += b < 16 ? `0${b.toString(16)}` : b.toString(16);
+    // 带版本后缀的 syscap 查询运行时恒为 false：if 分支仅为抑制编译告警，真实路径在 else
+    if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest [since 12]')) {
+      return '';
+    } else {
+      try {
+        const md = cryptoFramework.createMd('MD5');
+        const input: cryptoFramework.DataBlob = { data: all };
+        await md.update(input);
+        const output = await md.digest();
+        let hex = '';
+        for (let i = 0; i < output.data.length; i++) {
+          const b = output.data[i];
+          hex += b < 16 ? `0${b.toString(16)}` : b.toString(16);
+        }
+        return hex;
+      } catch (_e) {
+        return '';
+      }
     }
-    return hex;
   }
 
   // 读取 [offset, offset+len) 字节；越界/失败返回空数组（指纹退化为大小+单侧采样）

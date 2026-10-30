@@ -30,6 +30,7 @@ import { AppKeys } from '../common/AppKeys';
 import { PluginPrefs } from '../jsvm/PluginPrefs';
 import { AppLock } from '../common/AppLock';
 import { ContinueSession } from '../common/ContinueSession';
+import { CrashLogs } from '../data/CrashLogs';
 
 const DOMAIN = 0x0001;
 
@@ -54,7 +55,12 @@ export default class EntryAbility extends UIAbility {
     } catch (e) {
       // 目标不存在，继续拷贝
     }
-    await fs.copy(srcUri, fileUri.getUriFromPath(destPath));
+    try {
+      await fs.copy(srcUri, fileUri.getUriFromPath(destPath));
+    } catch (e) {
+const err = e as Error;
+      throw err;
+    }
     const folderUri = Settings.getLocalFolderUri();
     if (folderUri !== '') {
       try {
@@ -84,6 +90,8 @@ export default class EntryAbility extends UIAbility {
 
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     hilog.info(DOMAIN, 'Mihon', '%{public}s', 'Ability onCreate');
+    // 故障事件订阅必须先于业务逻辑注册（faultLogger 已弃用，改用 hiAppEvent 缓冲崩溃/卡死事件）
+    CrashLogs.startWatch();
     EntryAbility.appContext = this.context;
     // ── 第0级（同步关键路径）：首帧渲染必需的全局状态、主题与插件宿主桥 ──
     AppStorage.setOrCreate(AppKeys.IS_DARK, false);

@@ -1080,7 +1080,14 @@ export class DownloadService {
       const p = pages[i];
       const fileName = DownloadService.pad(p.index);
       const filePath = `${dir}/${fileName}.jpg`;
-      if (!fileIo.accessSync(filePath)) {
+      let exists: boolean;
+      try {
+        exists = fileIo.accessSync(filePath);
+      } catch (e) {
+const err = e as Error;
+        throw err;
+      }
+      if (!exists) {
         const buffer = await Http.getBuffer(p.url, imageHeaders);
         if (flags.cancelled) {
           throw new Error('download_cancelled');
@@ -1125,7 +1132,7 @@ export class DownloadService {
         const region: image.Region = { x: 0, y: top, size: { width: w, height: height } };
         const pm: image.PixelMap = await src.createPixelMap({ desiredRegion: region });
         try {
-          const buf: ArrayBuffer = await packer.packing(pm, { format: 'image/jpeg', quality: 90 });
+          const buf: ArrayBuffer = await packer.packToData(pm, { format: 'image/jpeg', quality: 90 });
           const slicePath = `${base}__${DownloadService.pad(i + 1)}.jpg`;
           DownloadService.writePageFile(slicePath, buf);
           slices.push(slicePath);
@@ -1161,7 +1168,13 @@ export class DownloadService {
       return;
     }
     let hasPage = false;
-    const files = fileIo.listFileSync(dir);
+    let files: string[];
+    try {
+      files = fileIo.listFileSync(dir);
+    } catch (e) {
+const err = e as Error;
+      throw err;
+    }
     for (const f of files) {
       if (f.endsWith('.jpg')) {
         hasPage = true;

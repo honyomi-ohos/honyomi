@@ -131,6 +131,10 @@
         "name": "ohos.permission.PRIVACY_WINDOW"
       },
       {
+        // 智感握姿：motion.on('holdingHandChanged') 感知握持手变化
+        "name": "ohos.permission.DETECT_GESTURE"
+      },
+      {
         // 碰一碰应用间推送（serviceInteraction.sendMessage，API 26+，仅手机）
         "name": "ohos.permission.KNOCK_COLLABORATION"
       },

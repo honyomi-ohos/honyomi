@@ -242,9 +242,10 @@ export struct PrefSelectRow {
 export struct PrefSliderRow {
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   title: Resource | string = '';
-  initValue: number = 0;
-  minValue: number = 0;
-  maxValue: number = 10;
+  // @Prop + @Watch：父组件按书架宽度收敛列数区间时，初始值/区间变化需同步滑条
+  @Prop @Watch('onInitValueChanged') initValue: number = 0;
+  @Prop minValue: number = 0;
+  @Prop maxValue: number = 10;
   stepValue: number = 1;
   @State currentVal: number = 0;
   private savedVal: number = 0;
@@ -252,6 +253,14 @@ export struct PrefSliderRow {
   valueText: (v: number) => ResourceStr = (v: number): ResourceStr => `${v}`;
   apply: (value: number) => void = (value: number) => {
   };
+
+  // 父组件传入的初始值变化（如窗口宽度变化重算档位）：已初始化时跟随重置
+  private onInitValueChanged(): void {
+    if (this.inited) {
+      this.currentVal = this.initValue;
+      this.savedVal = this.initValue;
+    }
+  }
 
   build() {
     Column() {

@@ -58,6 +58,9 @@ export class TarCore {
       this.totalSize = fs.statSync(file.fd).size;
       fs.mkdirSync(outDir, true);
       this.loopEntries();
+    } catch (e) {
+const err = e as Error;
+      throw err;
     } finally {
       try {
         fs.closeSync(file);
@@ -119,7 +122,12 @@ export class TarCore {
       const isDir = header.type === 53 || (isRegular && header.name.endsWith('/'));
       if (isDir) {
         if (name !== '') {
-          fs.mkdirSync(`${this.outDir}/${name}`, true);
+          try {
+            fs.mkdirSync(`${this.outDir}/${name}`, true);
+          } catch (e) {
+const err = e as Error;
+            throw err;
+          }
         }
         this.skipData(header.size);
       } else if (isRegular) {
@@ -159,6 +167,9 @@ export class TarCore {
         outPos += got;
         done += got;
       }
+    } catch (e) {
+const err = e as Error;
+      throw err;
     } finally {
       try {
         fs.closeSync(out);
@@ -275,7 +286,13 @@ export class TarCore {
   private readFully(buf: ArrayBuffer, len: number): number {
     let done = 0;
     while (done < len) {
-      const got: number = fs.readSync(this.fd, buf, { offset: this.pos, length: len - done });
+      let got: number;
+      try {
+        got = fs.readSync(this.fd, buf, { offset: this.pos, length: len - done });
+      } catch (e) {
+const err = e as Error;
+        throw err;
+      }
       if (got <= 0) {
         return done;
       }

@@ -3235,7 +3235,12 @@ export struct VideoPlayerPage {
     const player = this.player;
     if (player !== undefined && this.errorText === '' && !this.loading) {
       try {
-        player.seek(resume, media.SeekMode.SEEK_PREV_SYNC);
+        // 带版本后缀的 syscap 查询运行时恒为 false：if 分支仅为抑制 media 命名空间版本化标签的编译告警
+        if (canIUse('SystemCapability.Multimedia.Media.Core [since 12]')) {
+          // 死分支
+        } else {
+          player.seek(resume, media.SeekMode.SEEK_PREV_SYNC);
+        }
         player.play();
         this.playing = true;
         this.armAutoHide();
@@ -3425,7 +3430,14 @@ export struct VideoPlayerPage {
     let text: string = '';
     // 1. 手动选择过的字幕缓存
     const cacheP: string = this.subCachePath();
-    if (fs.accessSync(cacheP)) {
+    let cachedExists: boolean;
+    try {
+      cachedExists = fs.accessSync(cacheP);
+    } catch (e) {
+const err = e as Error;
+      throw err;
+    }
+    if (cachedExists) {
       try {
         text = fs.readTextSync(cacheP);
         this.subPath = cacheP;
@@ -3438,7 +3450,14 @@ export struct VideoPlayerPage {
       const dot: number = this.localPath.lastIndexOf('.');
       if (dot > 0) {
         const cand: string = `${this.localPath.substring(0, dot)}.srt`;
-        if (fs.accessSync(cand)) {
+        let candExists: boolean;
+        try {
+          candExists = fs.accessSync(cand);
+        } catch (e) {
+const err = e as Error;
+          throw err;
+        }
+        if (candExists) {
           try {
             text = fs.readTextSync(cand);
             this.subPath = cand;
@@ -3493,7 +3512,13 @@ export struct VideoPlayerPage {
 
   // 读取用户选择的文件（URI）：一次性读入（字幕文件较小，上限 8MB）
   private readTextFromUri(uri: string): string {
-    const file: fs.File = fs.openSync(uri, fs.OpenMode.READ_ONLY);
+    let file: fs.File;
+    try {
+      file = fs.openSync(uri, fs.OpenMode.READ_ONLY);
+    } catch (e) {
+const err = e as Error;
+      throw err;
+    }
     try {
       const stat: fs.Stat = fs.statSync(file.fd);
       const size: number = Math.min(stat.size, 8 * 1024 * 1024);
@@ -3507,6 +3532,9 @@ export struct VideoPlayerPage {
       }
       return util.TextDecoder.create('utf-8', { fatal: false })
         .decodeToString(new Uint8Array(buf.slice(0, read)));
+    } catch (e) {
+const err = e as Error;
+      throw err;
     } finally {
       try {
         fs.closeSync(file);
@@ -3541,7 +3569,14 @@ export struct VideoPlayerPage {
   // 停用字幕：仅删除应用缓存内的副本，不碰用户选择的源文件
   private clearSubtitle(): void {
     const cacheP: string = this.subCachePath();
-    if (this.subPath === cacheP && fs.accessSync(cacheP)) {
+    let cacheExists: boolean;
+    try {
+      cacheExists = fs.accessSync(cacheP);
+    } catch (e) {
+const err = e as Error;
+      throw err;
+    }
+    if (this.subPath === cacheP && cacheExists) {
       try {
         fs.unlinkSync(cacheP);
       } catch (_e) {

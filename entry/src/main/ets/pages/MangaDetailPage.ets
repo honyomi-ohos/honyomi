@@ -233,6 +233,48 @@ class ChapterDataSource implements IDataSource {
     this.notifyReload();
   }
 
+  // diff 替换：筛选/排序变化时按 id 逐行增删通知（公共行相对顺序不变，
+  // 双指针定位插入点；结果与新序列长度不一致时回退整体重载），
+  // 配合行 transition 播放行增删动效
+  setItemsDiff(items: ChapterRecord[]): void {
+    const kept = new Set<number>();
+    for (const it of items) {
+      kept.add(it.id);
+    }
+    for (let i = this.items.length - 1; i >= 0; i--) {
+      if (!kept.has(this.items[i].id)) {
+        this.items.splice(i, 1);
+        this.notifyDelete(i);
+      }
+    }
+    let oldIdx = 0;
+    for (let i = 0; i < items.length; i++) {
+      if (oldIdx < this.items.length && this.items[oldIdx].id === items[i].id) {
+        oldIdx++;
+      } else {
+        this.items.splice(i, 0, items[i]);
+        oldIdx = i + 1;
+        this.notifyAdd(i);
+      }
+    }
+    if (this.items.length !== items.length) {
+      this.items = items;
+      this.notifyReload();
+    }
+  }
+
+  private notifyAdd(index: number): void {
+    for (const listener of this.listeners) {
+      listener.onDataAdd(index);
+    }
+  }
+
+  private notifyDelete(index: number): void {
+    for (const listener of this.listeners) {
+      listener.onDataDelete(index);
+    }
+  }
+
   notifyReload(): void {
     for (const listener of this.listeners) {
       listener.onDataReloaded();
@@ -263,7 +305,9 @@ export struct MangaDetailPage {
   @StorageProp('isDark') isDark: boolean = false;
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('statusBarH') statusBarH: number = 0;
-  @StorageProp('windowW') windowW: number = 0;
+  @StorageProp('windowW') @Watch('onWindowWChange') windowW: number = 0;
+  // 单列/两列布局状态：断点跨越时经 animateTo 翻转，配合两布局根节点的 transition 产生切换过渡
+  @State twoPane: boolean = false;
   @StorageLink('libDirty') @Watch('onLibDirty') libDirty: number = 0;
   @State manga: MangaRecord = new MangaRecord();
   @State chapters: ChapterRecord[] = [];
@@ -314,6 +358,17 @@ export struct MangaDetailPage {
 
   aboutToAppear(): void {
     DownloadService.addListener(this.onDlNotify);
+    this.twoPane = this.windowW >= Bp.LG_MIN && this.windowW < Bp.XL_MIN;
+  }
+
+  // 窗口宽度跨越 lg/xl 断点：翻转单列/两列布局并带过渡动画
+  private onWindowWChange(): void {
+    const next: boolean = this.windowW >= Bp.LG_MIN && this.windowW < Bp.XL_MIN;
+    if (next !== this.twoPane) {
+      this.getUIContext().animateTo({ duration: 300, curve: Curve.FastOutSlowIn }, (): void => {
+        this.twoPane = next;
+      });
+    }
   }
 
   aboutToDisappear(): void {
@@ -731,6 +786,7 @@ export struct MangaDetailPage {
     }
     .width('100%')
     .height('100%')
+    .transition(TransitionEffect.OPACITY.animation({ duration: 300, curve: Curve.FastOutSlowIn }))
   }
 
   // 两列布局（平板 lg 档，对齐 Mihon 平板 MangaScreenLargeImpl TwoPanelBox）：
@@ -794,6 +850,7 @@ export struct MangaDetailPage {
     }
     .width('100%')
     .height('100%')
+    .transition(TransitionEffect.OPACITY.animation({ duration: 300, curve: Curve.FastOutSlowIn }))
   }
 
   // 头部：封面虚化背景 + 封面/标题/作者/状态/源名（对齐 Mihon MangaInfoBox）：
@@ -1288,6 +1345,9 @@ export struct MangaDetailPage {
             left: this.padInset(),
             right: this.padInset()
           })
+          // 筛选/排序变化行增删转场：淡入淡出 + 轻微位移
+          .transition(TransitionEffect.OPACITY.combine(TransitionEffect.translate({ y: 8 }))
+            .animation({ duration: 200, curve: Curve.Friction }))
         }, (chapter: ChapterRecord) => `ch-${chapter.id}`)
       }
       .divider({
@@ -1703,10 +1763,13 @@ export struct MangaDetailPage {
     return false;
   }
 
-  // 排序/筛选状态变化（弹层回调或本地数据应用）时重算展示缓存
+  // 排序/筛选状态变化（弹层回调或本地数据应用）时重算展示缓存；
+  // 弹层内交互（非 applyChapterFlags 批量应用）走动画 diff，逐行播放增删转场
   private onFilterStateChanged(): void {
     if (!this.applyingFlags) {
-      this.rebuildShownChapters();
+      this.getUIContext().animateTo({ duration: 200, curve: Curve.Friction }, (): void => {
+        this.rebuildShownChapters(true);
+      });
     }
   }
 
@@ -1717,10 +1780,15 @@ export struct MangaDetailPage {
 
   // 重算 filter+sort 展示缓存并推给 LazyForEach 数据源；
   // 缺失章节数基于当前展示列表重算（对齐 Mihon ChapterHeader missingChaptersCount）
-  private rebuildShownChapters(): void {
+  // animate=true 时按 id diff 通知（配合行 transition 播放增删动效），否则整体重载
+  private rebuildShownChapters(animate: boolean = false): void {
     this.shownChapterCache = this.shownChapters();
     this.missingCount = MissingChapters.count(this.shownChapterCache);
-    this.chapterSource.setItems(this.shownChapterCache);
+    if (animate) {
+      this.chapterSource.setItemsDiff(this.shownChapterCache);
+    } else {
+      this.chapterSource.setItems(this.shownChapterCache);
+    }
   }
 
   // 大屏响应式限宽缩进：内容列限宽 720vp 居中，超出部分左右留白；
@@ -1740,7 +1808,7 @@ export struct MangaDetailPage {
   // 平板宽度档（lg，840~1200vp）使用两列布局（对齐 Mihon 平板 MangaScreenLargeImpl）；
   // PC 等更大屏幕（xl，≥1200vp）沿用单列内容限宽（720vp）左右缩进居中方案
   private isTwoPane(): boolean {
-    return this.windowW >= Bp.LG_MIN && this.windowW < Bp.XL_MIN;
+    return this.twoPane;
   }
 
   // 两列布局下列宽自身已约束，内容不再整体限宽缩进

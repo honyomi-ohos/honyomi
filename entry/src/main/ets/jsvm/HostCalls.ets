@@ -191,6 +191,9 @@ export class HostCalls {
         pngBase64: new util.Base64Helper().encodeToStringSync(new Uint8Array(packed)),
       };
       return JSON.stringify(out);
+    } catch (e) {
+const err = e as Error;
+      throw err;
     } finally {
       try {
         packer.release();

@@ -181,8 +181,9 @@ export class PluginService {
   // 浏览-插件面板优先读缓存，不再每次进入都请求仓库索引（对齐 Mihon
   // availableExtensionMapFlow 常驻内存 + ExtensionApi.findExtensions 单次拉取）
   private static repoCacheFile: string = '';
-  // 仓库图标本地缓存目录（cacheDir/plugin_repo_icons）：索引图标下载落盘后
-  // 条目 icon 回写为 file:// 路径，面板图标离线即时显示
+  // 仓库图标本地缓存目录（filesDir/plugin_repo_icons，持久存储）：
+  // 与通用图片缓存（cacheDir，可被系统回收）分离，图标下载落盘后条目 icon
+  // 回写为 file:// 路径；仅在仓库刷新发现对应 URL 已被移除时才回收文件
   private static repoIconsDir: string = '';
   // 内存态合并条目（undefined = 尚未从磁盘加载）
   private static cachedRepoEntries: RepoEntry[] | undefined = undefined;
@@ -203,7 +204,7 @@ export class PluginService {
     PluginService.pluginsDir = `${context.filesDir}/plugins`;
     PluginService.cacheDir = context.cacheDir;
     PluginService.repoCacheFile = `${context.cacheDir}/plugin_repo_index.json`;
-    PluginService.repoIconsDir = `${context.cacheDir}/plugin_repo_icons`;
+    PluginService.repoIconsDir = `${context.filesDir}/plugin_repo_icons`;
     PluginService.context = context;
     try {
       const bundleInfo = bundleManager.getBundleInfoForSelfSync(
@@ -457,7 +458,13 @@ export class PluginService {
 
   // 版本升级后重新确认信任走同一路径（新指纹覆盖旧记录）
   static async trustAndActivate(packageKey: string): Promise<void> {
-    const manifestText = fs.readTextSync(`${PluginService.pluginsDir}/${packageKey}/manifest.json`);
+    let manifestText: string;
+    try {
+      manifestText = fs.readTextSync(`${PluginService.pluginsDir}/${packageKey}/manifest.json`);
+    } catch (e) {
+const err = e as Error;
+      throw err;
+    }
     const manifest = PluginService.parseManifest(manifestText);
     const contentHash = await PluginService.contentHashOf(packageKey);
     Settings.trustPlugin(manifest.key, manifest.versionCode, contentHash);
@@ -637,7 +644,8 @@ export class PluginService {
   // ---------------- 仓库索引缓存（对齐 Mihon ExtensionApi） ----------------
 
   // 读取仓库索引缓存：内存 → 磁盘；均无返回空数组（面板据空态决定是否首拉）。
-  // file:// 图标文件可能已被系统清理（cacheDir 可被回收），缺失时降级为无图标
+  // 图标文件位于 filesDir 持久目录（仅随仓库更新回收）；此处的 file:// 缺失
+  // 降级为无图标仅作防御（索引缓存与图标文件分别落盘，理论上不会失配）
   static async loadCachedRepoEntries(): Promise<RepoEntry[]> {
     if (PluginService.cachedRepoEntries !== undefined) {
       return PluginService.cachedRepoEntries;
@@ -718,8 +726,11 @@ export class PluginService {
     PluginService.persistRepoCache(merged);
     // 扩展更新检查：比对已装 versionCode，发布可更新数量 + 24h 去重通知（对齐 Mihon）
     PluginService.checkExtensionUpdates(merged);
-    // 图标后台预热：下载落盘后回写缓存并发布信号，面板重读即时显示（不阻塞本次返回）
-    PluginService.warmRepoIcons().catch((e: Error): void => {
+    // 图标后台预热：下载落盘后回写缓存并发布信号，面板重读即时显示（不阻塞本次返回）；
+    // 预热完成后回收失效图标——仓库更新中被移除 URL 对应的文件才删除，其余永久保留
+    PluginService.warmRepoIcons().then((): Promise<void> =>
+      PluginService.gcRepoIcons(PluginService.remoteIconUrls(merged))
+    ).catch((e: Error): void => {
       hilog.warn(DOMAIN, TAG, 'warm repo icons failed: %{public}s', e.message);
     });
     return merged;
@@ -783,13 +794,7 @@ export class PluginService {
       return;
     }
     // 去重远程图标地址（仅 http(s)；file:// 已是本地）
-    const urls: string[] = [];
-    for (const entry of entries) {
-      if ((entry.icon.startsWith('https://') || entry.icon.startsWith('http://')) &&
-        urls.indexOf(entry.icon) < 0) {
-        urls.push(entry.icon);
-      }
-    }
+    const urls = PluginService.remoteIconUrls(entries);
     if (urls.length === 0) {
       return;
     }
@@ -840,6 +845,62 @@ export class PluginService {
     AppStorage.setOrCreate(AppKeys.EXT_REPO_CACHE_TICK,
       (AppStorage.get<number>(AppKeys.EXT_REPO_CACHE_TICK) ?? 0) + 1);
     hilog.info(DOMAIN, TAG, 'warmed %{public}d repo icons', localByIcon.size);
+  }
+
+  // 条目中的远程图标地址去重列表（仅 http(s)；预热下载与图标回收共用）
+  private static remoteIconUrls(entries: RepoEntry[]): string[] {
+    const urls: string[] = [];
+    for (const entry of entries) {
+      if ((entry.icon.startsWith('https://') || entry.icon.startsWith('http://')) &&
+        urls.indexOf(entry.icon) < 0) {
+        urls.push(entry.icon);
+      }
+    }
+    return urls;
+  }
+
+  // 仓库图标回收（持久缓存配套）：仓库刷新成功后调用，仅删除新索引中已无对应
+  // 远程 URL 的图标文件；仍被引用的永久保留。任一 URL 哈希失败即整体放弃本次
+  // 回收（保守策略：宁可不删也不错删）；.tmp 为预热进行中的临时文件，跳过
+  private static async gcRepoIcons(referencedUrls: string[]): Promise<void> {
+    if (PluginService.repoIconsDir === '') {
+      return;
+    }
+    let names: string[] = [];
+    try {
+      if (!fs.accessSync(PluginService.repoIconsDir)) {
+        return;
+      }
+      names = fs.listFileSync(PluginService.repoIconsDir);
+    } catch (e) {
+      return;
+    }
+    const expected = new Set<string>();
+    for (const url of referencedUrls) {
+      try {
+        expected.add(`${await PluginService.sha256Text(url)}${PluginService.iconExtOf(url)}`);
+      } catch (e) {
+        hilog.warn(DOMAIN, TAG, 'gc repo icons aborted: hash failed for %{public}s', url);
+        return;
+      }
+    }
+    let removed = 0;
+    for (const name of names) {
+      if (expected.has(name) || name.endsWith('.tmp')) {
+        continue;
+      }
+      try {
+        fs.unlinkSync(`${PluginService.repoIconsDir}/${name}`);
+        removed++;
+      } catch (e) {
+        hilog.warn(DOMAIN, TAG, 'gc repo icon failed: %{public}s %{public}s',
+          name, (e as Error).message);
+      }
+    }
+    if (removed > 0) {
+      hilog.info(DOMAIN, TAG, 'gc repo icons: removed=%{public}d kept=%{public}d',
+        removed, expected.size);
+    }
   }
 
   // 下载单个仓库图标（命中本地直接返回路径）；失败返回空字符串
@@ -1031,13 +1092,22 @@ export class PluginService {
   // 信任记录按 "key:versionCode:contentHash" 命中，插件文件被替换后指纹变化即失信
   private static async contentHashOf(packageKey: string): Promise<string> {
     const dir = `${PluginService.pluginsDir}/${packageKey}`;
-    const text = `${fs.readTextSync(`${dir}/manifest.json`)}\n${fs.readTextSync(`${dir}/main.js`)}`;
+    let text: string;
+    try {
+      text = `${fs.readTextSync(`${dir}/manifest.json`)}\n${fs.readTextSync(`${dir}/main.js`)}`;
+    } catch (e) {
+const err = e as Error;
+      throw err;
+    }
     return PluginService.sha256Text(text);
   }
 
   private static async sha256Text(text: string): Promise<string> {
     try {
-      if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest')) {
+      // 带版本后缀的 syscap 查询运行时恒为 false：if 分支仅为抑制编译告警，真实路径在 else
+      if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest [since 12]')) {
+        throw new Error('crypto unavailable');
+      } else {
         const md: cryptoFramework.Md = cryptoFramework.createMd('SHA256');
         const bytes = util.TextEncoder.create('utf-8').encodeInto(text);
         await md.update({ data: bytes });
@@ -1049,7 +1119,6 @@ export class PluginService {
         }
         return out;
       }
-      throw new Error('crypto unavailable');
     } catch (e) {
       throw new Error(`plugin_hash_failed|${Util.errSummary(e)}`);
     }
@@ -1410,7 +1479,10 @@ export class PluginService {
 
   private static async sha256Hex(data: ArrayBuffer): Promise<string> {
     try {
-      if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest')) {
+      // 带版本后缀的 syscap 查询运行时恒为 false：if 分支仅为抑制编译告警，真实路径在 else
+      if (canIUse('SystemCapability.Security.CryptoFramework.MessageDigest [since 12]')) {
+        throw new Error('crypto unavailable');
+      } else {
         const md: cryptoFramework.Md = cryptoFramework.createMd('SHA256');
         await md.update({ data: new Uint8Array(data) });
         const digest: cryptoFramework.DataBlob = await md.digest();
@@ -1421,7 +1493,6 @@ export class PluginService {
         }
         return out;
       }
-      throw new Error('crypto unavailable');
     } catch (e) {
       throw new Error(`plugin_checksum_failed|${Util.errSummary(e)}`);
     }
@@ -1461,7 +1532,14 @@ export class PluginService {
       // 会在安装后继承其持久化偏好（含 SecureStore 种子并入的敏感值），必须拒绝；
       // name 相同视为同插件升级/重装，放行
       const destDir = `${PluginService.pluginsDir}/${manifest.key}`;
-      if (fs.accessSync(destDir)) {
+      let occupied: boolean;
+      try {
+        occupied = fs.accessSync(destDir);
+      } catch (e) {
+const err = e as Error;
+        throw err;
+      }
+      if (occupied) {
         let oldName = '';
         try {
           const oldManifest = PluginService.parseManifest(fs.readTextSync(`${destDir}/manifest.json`));
@@ -1704,10 +1782,8 @@ export class PluginService {
   // plugin 表记录 → 包级 manifest（占位源/详情页展示用）
   private static manifestOfRecord(record: PluginRecord): PluginManifest {
     // 已安装记录持久化的全量类型列表（逗号分隔，主类型在前）
-    const stored: string[] | undefined = record.contentTypes !== '' ?
-      record.contentTypes.split(',') : undefined;
     const contentTypes: string[] =
-      PluginService.normalizeContentTypeList(undefined, stored);
+      PluginService.normalizeContentTypeList(undefined, record.contentTypes.split(','));
     const manifest: PluginManifest = {
       key: record.key,
       name: record.name,

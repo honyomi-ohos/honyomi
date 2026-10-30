@@ -252,7 +252,7 @@ export class PluginRecord {
   dslVersion: number = 1;
   // 包内图标文件名（如 icon.png）
   icon: string = '';
-  // 内容类型全量列表（逗号分隔，主类型在前），空表示旧记录（按漫画处理）
+  // 内容类型全量列表（逗号分隔，主类型在前）
   contentTypes: string = '';
   // 引擎探测到的导出方法列表（JSON string[]），占位源据此判断 hasMethod/supportsLatest
   methodsJson: string = '[]';

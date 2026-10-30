@@ -92,6 +92,99 @@ class LangGroup {
   entries: RepoEntry[] = [];
 }
 
+// 扁平行模型：分组头/已安装行/在线行/提示/加载/空态统一摊平，
+// 供 List + LazyForEach 按需渲染（千级插件不再一次性构建全部行组件）
+class ExtRow {
+  // header | installed | available | hint | loading | empty
+  kind: string = '';
+  key: string = '';
+  // header 标题 / hint·empty 文案
+  title: ResourceStr = '';
+  showUpdateAll: boolean = false;
+  item: InstalledPlugin | null = null;
+  entry: RepoEntry | null = null;
+  updatable: boolean = false;
+}
+
+// LazyForEach 数据源：整体替换（onDataReloaded，无行级动效）与
+// diff 替换（逐行增删通知，配合 List.animateItemDuration 播放行增删动效）
+class ExtRowSource implements IDataSource {
+  private rows: ExtRow[] = [];
+  private listeners: DataChangeListener[] = [];
+
+  // 整体替换：首屏装载、安装/卸载/仓库刷新等非过滤场景
+  setRows(rows: ExtRow[]): void {
+    this.rows = rows;
+    this.notifyReload();
+  }
+
+  // diff 替换：搜索/类型过滤时逐行增删（公共行相对顺序不变，双指针定位插入点），
+  // 行键含内容签名，键不变即内容不变；结果与新序列长度不一致时回退整体重载
+  setRowsDiff(rows: ExtRow[]): void {
+    const keptKeys = new Set<string>();
+    for (const r of rows) {
+      keptKeys.add(r.key);
+    }
+    // 自底向上删除新序列中不存在的旧行（从后往前删保证未删索引稳定）
+    for (let i = this.rows.length - 1; i >= 0; i--) {
+      if (!keptKeys.has(this.rows[i].key)) {
+        this.rows.splice(i, 1);
+        this.notifyDelete(i);
+      }
+    }
+    // 按新序列顺序插入新增行
+    let oldIdx = 0;
+    for (let i = 0; i < rows.length; i++) {
+      if (oldIdx < this.rows.length && this.rows[oldIdx].key === rows[i].key) {
+        oldIdx++;
+      } else {
+        this.rows.splice(i, 0, rows[i]);
+        oldIdx = i + 1;
+        this.notifyAdd(i);
+      }
+    }
+    // 兜底：公共行顺序变化等 diff 不一致场景
+    if (this.rows.length !== rows.length) {
+      this.rows = rows;
+      this.notifyReload();
+    }
+  }
+
+  private notifyReload(): void {
+    for (const listener of this.listeners) {
+      listener.onDataReloaded();
+    }
+  }
+
+  private notifyAdd(index: number): void {
+    for (const listener of this.listeners) {
+      listener.onDataAdd(index);
+    }
+  }
+
+  private notifyDelete(index: number): void {
+    for (const listener of this.listeners) {
+      listener.onDataDelete(index);
+    }
+  }
+
+  totalCount(): number {
+    return this.rows.length;
+  }
+
+  getData(index: number): ExtRow {
+    return this.rows[index];
+  }
+
+  registerDataChangeListener(listener: DataChangeListener): void {
+    this.listeners.push(listener);
+  }
+
+  unregisterDataChangeListener(listener: DataChangeListener): void {
+    this.listeners = this.listeners.filter((l: DataChangeListener): boolean => l !== listener);
+  }
+}
+
 // 插件列表面板（浏览页“插件”Tab 内嵌），完全对齐 Mihon ExtensionsScreen：
 // - 分组结构：待更新（含“全部更新”按钮）→ 已安装 → 在线可用（按语言分组，组内按名称排序）
 // - 已安装插件有新版本时归入“待更新”分组，行尾显示更新（下载）按钮
@@ -135,6 +228,8 @@ export struct ExtensionListPanel {
   @StorageProp('windowW') windowW: number = 0;
   // 仓库 key → entry 映射（更新检查/单项更新用），随 recomputeLists 重建
   private repoByKey: Map<string, RepoEntry> = new Map();
+  // 懒加载行数据源：recomputeLists 结果摊平后整体替换
+  private rowSource: ExtRowSource = new ExtRowSource();
   // 仓库请求并发防抖标志（与下拉 spinner 状态分离）
   private repoFetching: boolean = false;
   // 面板销毁标志：异步续体据此跳过 toast/写状态
@@ -423,90 +518,26 @@ export struct ExtensionListPanel {
 
   build() {
     Refresh({ refreshing: $$this.loadingRepo }) {
-      Scroll() {
-        Column() {
-          // 待更新分组（对齐 Mihon ext_updates_pending，含“全部更新”按钮）
-          if (this.pendingUpdates.length > 0) {
-            this.sectionHeader($r('app.string.ext_updates_pending'), true)
-            ForEach(this.pendingUpdates, (item: InstalledPlugin) => {
-              this.installedRow(item, true)
-            }, (
-              item: InstalledPlugin) => `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}-${item.trusted}`)
+      List() {
+        LazyForEach(this.rowSource, (row: ExtRow) => {
+        ListItem() {
+          Column() {
+            this.rowContent(row)
           }
-
-          // 已安装分组（无新版本）
-          if (this.shownInstalled.length > 0) {
-            this.sectionHeader($r('app.string.plugin_installed_section'), false)
-            ForEach(this.shownInstalled, (item: InstalledPlugin) => {
-              this.installedRow(item, false)
-            }, (
-              item: InstalledPlugin) => `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}-${item.trusted}`)
-          }
-
-          if (this.repoUrls.length === 0) {
-            // 未配置仓库：提示 + 已安装为空时给空态
-            this.sectionHeader($r('app.string.plugin_repo'), false)
-            if (this.pendingUpdates.length === 0 && this.shownInstalled.length === 0) {
-              EmptyScreen({
-                message: $r('app.string.plugin_repo_hint'),
-                compact: true,
-              })
-            } else {
-              Text($r('app.string.plugin_repo_hint'))
-                .fontSize(12)
-                .fontColor(this.pal.sub)
-                .width('100%')
-                .padding({
-                  left: 16,
-                  right: 16,
-                  top: 8,
-                  bottom: 8
-                })
-            }
-          } else if (this.loadingRepo && this.repoEntries.length === 0) {
-            // 首次加载仓库
-            this.sectionHeader($r('app.string.plugin_repo'), false)
-            Row({ space: 8 }) {
-              LoadingProgress()
-                .width(18)
-                .height(18)
-                .color(this.pal.primary)
-              Text($r('app.string.plugin_repo_loading'))
-                .fontSize(12)
-                .fontColor(this.pal.sub)
-            }
-            .width('100%')
-            .justifyContent(FlexAlign.Center)
-            .padding({ top: 16, bottom: 16 })
-          } else if (this.availableGroups.length === 0) {
-            // 仓库无匹配：全部为空时空态，否则静默（有已安装内容即可）
-            if (this.pendingUpdates.length === 0 && this.shownInstalled.length === 0) {
-              EmptyScreen({
-                message: this.hasActiveFilter() ?
-                  $r('app.string.ext_search_no_match') :
-                  $r('app.string.plugin_empty'),
-                compact: true,
-              })
-            }
-          } else {
-            // 在线可用：按语言分组展示（对齐 Mihon available 按语言分组）
-            ForEach(this.availableGroups, (g: LangGroup) => {
-              this.sectionHeader(g.label, false)
-              ForEach(g.entries, (entry: RepoEntry) => {
-                this.availableRow(entry)
-              }, (entry: RepoEntry) => `repo-${entry.key}-${entry.versionCode}-${entry.icon}`)
-            }, (g: LangGroup) => this.groupRenderKey(g))
-          }
+          .width('100%')
+          // 大屏限宽缩进：滚动容器全宽（滚动条贴窗口边），内容列与浏览页 720 列对齐
+          .padding({
+            left: Bp.contentInset(this.windowW),
+            right: Bp.contentInset(this.windowW)
+          })
         }
-        .width('100%')
-        // 大屏限宽缩进：滚动容器全宽（滚动条贴窗口边），内容列与浏览页 720 列对齐
-        .padding({
-          left: Bp.contentInset(this.windowW),
-          right: Bp.contentInset(this.windowW)
-        })
+        // 行增删组件内转场：过滤 diff 通知行插入/删除时淡入淡出并轻微位移
+        .transition(TransitionEffect.OPACITY.combine(TransitionEffect.translate({ y: 8 }))
+          .animation({ duration: 200, curve: Curve.Friction }))
+        }, (row: ExtRow) => row.key)
       }
+      .cachedCount(8)
       .scrollBar(BarState.Auto)
-      .align(Alignment.Top)
       .contentEndOffset(this.navBarH + this.tabPadH)
       .width('100%')
       .height('100%')
@@ -527,6 +558,51 @@ export struct ExtensionListPanel {
       }))
   }
 
+  // 扁平行渲染分流：LazyForEach 仅构建视口内行（千级插件规模内存/首帧可控）
+  @Builder
+  rowContent(row: ExtRow) {
+    if (row.kind === 'header') {
+      this.sectionHeader(row.title, row.showUpdateAll)
+    } else if (row.kind === 'installed') {
+      if (row.item !== null) {
+        this.installedRow(row.item, row.updatable)
+      }
+    } else if (row.kind === 'available') {
+      if (row.entry !== null) {
+        this.availableRow(row.entry)
+      }
+    } else if (row.kind === 'hint') {
+      Text(row.title)
+        .fontSize(12)
+        .fontColor(this.pal.sub)
+        .width('100%')
+        .padding({
+          left: 16,
+          right: 16,
+          top: 8,
+          bottom: 8
+        })
+    } else if (row.kind === 'loading') {
+      Row({ space: 8 }) {
+        LoadingProgress()
+          .width(18)
+          .height(18)
+          .color(this.pal.primary)
+        Text($r('app.string.plugin_repo_loading'))
+          .fontSize(12)
+          .fontColor(this.pal.sub)
+      }
+      .width('100%')
+      .justifyContent(FlexAlign.Center)
+      .padding({ top: 16, bottom: 16 })
+    } else {
+      EmptyScreen({
+        message: row.title,
+        compact: true,
+      })
+    }
+  }
+
   // 宿主改仓库列表（增删/刷新）后触发
   private onRepoRefresh(): void {
     this.repoUrls = this.loadStoreUrls();
@@ -536,7 +612,7 @@ export struct ExtensionListPanel {
     } else {
       // 仓库已全部移除：清空在线列表并收起 spinner
       this.repoEntries = [];
-      this.recomputeLists();
+      this.recomputeLists(false);
       this.loadingRepo = false;
     }
   }
@@ -566,7 +642,7 @@ export struct ExtensionListPanel {
     if (this.disposed) {
       return;
     }
-    this.recomputeLists();
+    this.recomputeLists(false);
     // 安装/卸载后同步可更新数量徽标（对齐 Mihon updatePendingUpdatesCount；
     // 仓库缓存未加载时跳过，避免把启动检查发布的数量误清零）
     if (this.repoEntries.length > 0) {
@@ -583,7 +659,7 @@ export struct ExtensionListPanel {
     }
     if (cached.length > 0) {
       this.repoEntries = cached;
-      this.recomputeLists();
+      this.recomputeLists(false);
       return;
     }
     if (this.repoUrls.length > 0) {
@@ -602,7 +678,7 @@ export struct ExtensionListPanel {
       return;
     }
     this.repoEntries = cached;
-    this.recomputeLists();
+    this.recomputeLists(false);
   }
 
   // 宿主搜索词/类型过滤/NSFW 开关变化时重算分组
@@ -610,7 +686,10 @@ export struct ExtensionListPanel {
     // 诊断日志：定位插件搜索过滤链路（@Prop 同步是否到达面板）
     hilog.info(0x0001, 'Mihon', 'panel filter changed: q=%{public}s types=%{public}d',
       this.searchQuery, this.typeFilter.length);
-    this.recomputeLists();
+    // 过滤变化走 diff 通知 + animateTo：行级转场与剩余行布局位移（补位滑动）一并入动画
+    this.getUIContext().animateTo({ duration: 200, curve: Curve.Friction }, (): void => {
+      this.recomputeLists(true);
+    });
     let avail = 0;
     for (const g of this.availableGroups) {
       avail += g.entries.length;
@@ -626,14 +705,54 @@ export struct ExtensionListPanel {
     return name.substring(0, 1).toUpperCase();
   }
 
-  // 分组渲染键：必须携带组内成员签名——ForEach 键相同即复用旧组件且不重执行构建器，
-  // 搜索/过滤/NSFW 开关使组内成员变化时若键不变，English 等常驻分组会一直展示旧数据
-  private groupRenderKey(g: LangGroup): string {
-    const parts: string[] = [];
-    for (const e of g.entries) {
-      parts.push(`${e.key}@${e.versionCode}`);
-    }
-    return `grp-${g.lang}-${parts.join(',')}`;
+  // 行工厂：分组头（showUpdateAll 为“待更新”分组的“全部更新”按钮）
+  private headerRow(id: string, title: ResourceStr, showUpdateAll: boolean): ExtRow {
+    const r = new ExtRow();
+    r.kind = 'header';
+    r.key = `hdr-${id}`;
+    r.title = title;
+    r.showUpdateAll = showUpdateAll;
+    return r;
+  }
+
+  private installedRowOf(item: InstalledPlugin, updatable: boolean): ExtRow {
+    const r = new ExtRow();
+    r.kind = 'installed';
+    r.item = item;
+    r.updatable = updatable;
+    r.key = `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}-${item.trusted}`;
+    return r;
+  }
+
+  private availableRowOf(entry: RepoEntry): ExtRow {
+    const r = new ExtRow();
+    r.kind = 'available';
+    r.entry = entry;
+    r.key = `repo-${entry.key}-${entry.versionCode}-${entry.icon}`;
+    return r;
+  }
+
+  private hintRow(message: ResourceStr, key: string): ExtRow {
+    const r = new ExtRow();
+    r.kind = 'hint';
+    r.key = key;
+    r.title = message;
+    return r;
+  }
+
+  private emptyRow(message: ResourceStr, key: string): ExtRow {
+    const r = new ExtRow();
+    r.kind = 'empty';
+    r.key = key;
+    r.title = message;
+    return r;
+  }
+
+  private loadingRow(key: string): ExtRow {
+    const r = new ExtRow();
+    r.kind = 'loading';
+    r.key = key;
+    return r;
   }
 
   // 分组重算（对齐 Mihon ExtensionsViewModel.items）：
@@ -686,7 +805,7 @@ export struct ExtensionListPanel {
   }
 
   // 待更新（已安装且仓库版本更高）→ 已安装（无更新）→ 在线可用（未安装）按语言分组
-  private recomputeLists(): void {
+  private recomputeLists(animate: boolean): void {
     const byKey = new Map<string, RepoEntry>();
     for (const entry of this.repoEntries) {
       byKey.set(entry.key, entry);
@@ -717,6 +836,7 @@ export struct ExtensionListPanel {
 
     // 在线可用：未安装且通过过滤，按语言分组（组内按名称排序，组间按语言显示名排序）
     const groups: LangGroup[] = [];
+    const groupByLang = new Map<string, LangGroup>();
     for (const entry of this.repoEntries) {
       if (installedKeys.has(entry.key)) {
         continue;
@@ -727,18 +847,13 @@ export struct ExtensionListPanel {
       if (!this.matchesQuery(entry.name, entry.key) || !this.matchesType(entry.contentTypes)) {
         continue;
       }
-      let group: LangGroup | undefined = undefined;
-      for (const g of groups) {
-        if (g.lang === entry.lang) {
-          group = g;
-          break;
-        }
-      }
+      let group: LangGroup | undefined = groupByLang.get(entry.lang);
       if (group === undefined) {
         group = new LangGroup();
         group.lang = entry.lang;
         group.label = this.langLabel(entry.lang);
         group.sortKey = this.sortKeyOf(entry.lang);
+        groupByLang.set(entry.lang, group);
         groups.push(group);
       }
       group.entries.push(entry);
@@ -750,6 +865,65 @@ export struct ExtensionListPanel {
     }
     groups.sort(groupSorter);
     this.availableGroups = groups;
+
+    this.rebuildRows(animate);
+  }
+
+  // 计算结果 → 扁平行序列，整体推给 LazyForEach 数据源（仅视口内行会被构建）；
+  // animate = true 走 diff 通知以触发行增删动效
+  private rebuildRows(animate: boolean): void {
+    const rows: ExtRow[] = [];
+
+    // 待更新分组（对齐 Mihon ext_updates_pending，含“全部更新”按钮）
+    if (this.pendingUpdates.length > 0) {
+      rows.push(this.headerRow('pending', $r('app.string.ext_updates_pending'), true));
+      for (const item of this.pendingUpdates) {
+        rows.push(this.installedRowOf(item, true));
+      }
+    }
+
+    // 已安装分组（无新版本）
+    if (this.shownInstalled.length > 0) {
+      rows.push(this.headerRow('installed', $r('app.string.plugin_installed_section'), false));
+      for (const item of this.shownInstalled) {
+        rows.push(this.installedRowOf(item, false));
+      }
+    }
+
+    if (this.repoUrls.length === 0) {
+      // 未配置仓库：提示 + 已安装为空时给空态
+      rows.push(this.headerRow('repo', $r('app.string.plugin_repo'), false));
+      if (this.pendingUpdates.length === 0 && this.shownInstalled.length === 0) {
+        rows.push(this.emptyRow($r('app.string.plugin_repo_hint'), 'empty-repo'));
+      } else {
+        rows.push(this.hintRow($r('app.string.plugin_repo_hint'), 'hint-repo'));
+      }
+    } else if (this.loadingRepo && this.repoEntries.length === 0) {
+      // 首次加载仓库
+      rows.push(this.headerRow('repo', $r('app.string.plugin_repo'), false));
+      rows.push(this.loadingRow('row-loading'));
+    } else if (this.availableGroups.length === 0) {
+      // 仓库无匹配：全部为空时空态，否则静默（有已安装内容即可）
+      if (this.pendingUpdates.length === 0 && this.shownInstalled.length === 0) {
+        rows.push(this.emptyRow(this.hasActiveFilter() ?
+          $r('app.string.ext_search_no_match') :
+          $r('app.string.plugin_empty'), 'empty-all'));
+      }
+    } else {
+      // 在线可用：按语言分组展示（对齐 Mihon available 按语言分组）
+      for (const g of this.availableGroups) {
+        rows.push(this.headerRow(`lang-${g.lang}`, g.label, false));
+        for (const entry of g.entries) {
+          rows.push(this.availableRowOf(entry));
+        }
+      }
+    }
+
+    if (animate) {
+      this.rowSource.setRowsDiff(rows);
+    } else {
+      this.rowSource.setRows(rows);
+    }
   }
 
   // 当前是否有搜索/类型过滤（空态文案切换用）
@@ -775,7 +949,7 @@ export struct ExtensionListPanel {
         return;
       }
       this.repoEntries = entries;
-      this.recomputeLists();
+      this.recomputeLists(false);
     } catch (e) {
       if (this.disposed) {
         return;

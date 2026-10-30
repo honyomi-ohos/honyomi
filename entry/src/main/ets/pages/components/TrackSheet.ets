@@ -77,7 +77,7 @@ export struct ServerLoginDialog {
           placeholder: this.userPlaceholder,
           text: this.username,
         })
-          .key('serverUserKey')
+          .id('serverUserKey')
           .enterKeyType(EnterKeyType.Next)
           .onChange((value: string) => {
             this.username = value;
@@ -95,7 +95,7 @@ export struct ServerLoginDialog {
           text: this.secret,
         })
           .type(InputType.Password)
-          .key('serverSecretKey')
+          .id('serverSecretKey')
           .enterKeyType(EnterKeyType.Done)
           .onChange((value: string) => {
             this.secret = value;

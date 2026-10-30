@@ -20,6 +20,7 @@
 #include <map>
 #include <memory>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 namespace {
@@ -71,6 +72,11 @@ struct SelectContext {
     // cache only grows while the traversal keeps producing matches.
     size_t accumulatedBytes = 0;
     bool truncated = false;
+    // lxb_selectors_find 对逗号选择器列表的每个匹配段都会对同一节点回调一次
+    // （lxb_selectors_next_list 在同一节点上继续尝试列表中的下一段）。合并段
+    // （jsoup 逗号 = 文档序去重并集）后同一元素会重复序列化；按节点指针去重，
+    // 文档在 find 期间不可变，指针是稳定键。
+    std::unordered_set<const lxb_dom_node_t *> seenNodes;
 };
 
 lxb_status_t AppendSerialize(const lxb_char_t *data, size_t len, void *ctx)
@@ -242,6 +248,11 @@ lxb_status_t FindCallback(lxb_dom_node_t *node, lxb_css_selector_specificity_t s
     if (node == nullptr || node->type != LXB_DOM_NODE_TYPE_ELEMENT) {
         return LXB_STATUS_OK;
     }
+    // 同一元素命中逗号列表的多个段时只保留首次（jsoup 去重并集语义）
+    if (selectCtx->seenNodes.find(node) != selectCtx->seenNodes.end()) {
+        return LXB_STATUS_OK;
+    }
+    selectCtx->seenNodes.insert(node);
 
     SelectedElement element;
     // serialize semantics (lexbor):
