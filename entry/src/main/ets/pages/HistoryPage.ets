@@ -301,10 +301,10 @@ export struct HistoryPage {
             ListItem() {
               Row({ space: 12 }) {
                 // 封面（无封面时 SmartImage 内部渲染默认封面占位）；
-                // HistoryItem 不含 sourceKey，传空串走网络/缓存通用路径
+                // 传入真实 sourceKey：缓存未命中时可用插件源请求头/并发去重下载
                 SmartImage({
                   url: item.coverUrl,
-                  sourceKey: '',
+                  sourceKey: item.sourceKey,
                   fit: ImageFit.Cover,
                   placeholderIconSize: 20
                 })

@@ -14,6 +14,7 @@ import { Util, LibGrid } from '../common/Util';
 import { AppKeys } from '../common/AppKeys';
 import { EmptyScreen } from './components/EmptyScreen';
 import { LoadingState } from './components/LoadingState';
+import { MangaSkeletonGrid } from './components/MangaSkeletonGrid';
 import { AppIcon } from './components/AppIcon';
 import { SmartImage } from './components/SmartImage';
 import { UpdatesFilterSheet } from './components/UpdatesFilterSheet';
@@ -381,7 +382,15 @@ export struct UpdatesPage {
       .width('100%')
 
       if (this.scheduleLoading) {
-        LoadingState()
+        // 首次加载骨架屏（与时间表网格同布局的占位卡片）
+        MangaSkeletonGrid({
+          columns: this.schedColsCount(),
+          coverRatio: 2 / 3,
+          gapX: 8,
+          gapY: 12,
+          padH: 8,
+          padTop: 8
+        })
       } else if (this.scheduleError !== '') {
         Column() {
           EmptyScreen({ message: $r('app.string.schedule_load_failed') })

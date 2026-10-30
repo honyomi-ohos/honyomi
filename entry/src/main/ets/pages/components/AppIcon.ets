@@ -17,6 +17,7 @@ const ICONS: Record<string, Resource> = {
   'settings': $r('app.media.ic_settings'),
   'close': $r('app.media.ic_close'),
   'add': $r('app.media.ic_add'),
+  'account_tree': $r('app.media.ic_account_tree'),
   'delete': $r('app.media.ic_delete'),
   'delete_sweep': $r('app.media.ic_delete_sweep'),
   'share': $r('app.media.ic_share'),

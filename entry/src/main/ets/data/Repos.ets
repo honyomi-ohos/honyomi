@@ -1,4 +1,5 @@
 import { relationalStore } from '@kit.ArkData';
+import { fileIo as fs } from '@kit.CoreFileKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { AppDb } from './AppDb';
 import { Settings } from '../common/Settings';
@@ -1224,11 +1225,12 @@ export class HistoryRepo {
 
   static async recent(limit: number): Promise<HistoryItem[]> {
     const store = await AppDb.get();
-    return queryAll<HistoryItem>(safeQuerySql(store, 
+    return queryAll<HistoryItem>(safeQuerySql(store,
       `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
               h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
               m.sourceKey AS sourceKey,
-              m.thumbnailUrl AS coverUrl, c.name AS chapterName,
+              m.thumbnailUrl AS coverUrl, m.localCover AS localCover,
+              m.origThumbnail AS origThumbnail, c.name AS chapterName,
               m.inLibrary AS inLibrary
        FROM history h
        JOIN manga m ON m.id = h.mangaId
@@ -1240,11 +1242,12 @@ export class HistoryRepo {
   // 某部漫画最近一条阅读记录（漫画卡片续读章节）
   static async lastForManga(mangaId: number): Promise<HistoryItem | undefined> {
     const store = await AppDb.get();
-    return queryFirst<HistoryItem>(safeQuerySql(store, 
+    return queryFirst<HistoryItem>(safeQuerySql(store,
       `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
               h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
               m.sourceKey AS sourceKey,
-              m.thumbnailUrl AS coverUrl, c.name AS chapterName
+              m.thumbnailUrl AS coverUrl, m.localCover AS localCover,
+              m.origThumbnail AS origThumbnail, c.name AS chapterName
        FROM history h
        JOIN manga m ON m.id = h.mangaId
        JOIN chapter c ON c.id = h.chapterId
@@ -1256,11 +1259,12 @@ export class HistoryRepo {
   // 最近阅读的书架内漫画（漫画卡片默认绑定）
   static async lastInLibrary(): Promise<HistoryItem | undefined> {
     const store = await AppDb.get();
-    return queryFirst<HistoryItem>(safeQuerySql(store, 
+    return queryFirst<HistoryItem>(safeQuerySql(store,
       `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
               h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
               m.sourceKey AS sourceKey,
-              m.thumbnailUrl AS coverUrl, c.name AS chapterName
+              m.thumbnailUrl AS coverUrl, m.localCover AS localCover,
+              m.origThumbnail AS origThumbnail, c.name AS chapterName
        FROM history h
        JOIN manga m ON m.id = h.mangaId
        JOIN chapter c ON c.id = h.chapterId
@@ -1272,11 +1276,12 @@ export class HistoryRepo {
   // 最近一次听读的小说记录（意图"继续听书"：按小说类型过滤最近历史）
   static async lastNovel(): Promise<HistoryItem | undefined> {
     const store = await AppDb.get();
-    return queryFirst<HistoryItem>(safeQuerySql(store, 
+    return queryFirst<HistoryItem>(safeQuerySql(store,
       `SELECT h.mangaId AS mangaId, h.chapterId AS chapterId, h.seenAt AS seenAt,
               h.lastPageRead AS lastPageRead, m.title AS mangaTitle,
               m.sourceKey AS sourceKey,
-              m.thumbnailUrl AS coverUrl, c.name AS chapterName
+              m.thumbnailUrl AS coverUrl, m.localCover AS localCover,
+              m.origThumbnail AS origThumbnail, c.name AS chapterName
        FROM history h
        JOIN manga m ON m.id = h.mangaId
        JOIN chapter c ON c.id = h.chapterId
@@ -1325,6 +1330,18 @@ export class HistoryRepo {
       const inLibraryIdx: number = rs.getColumnIndex('inLibrary');
       if (inLibraryIdx >= 0) {
         item.inLibrary = rs.getLong(inLibraryIdx) === 1;
+      }
+      // 与书架一致优先持久化封面：自定义封面（origThumbnail 非空）时 thumbnailUrl 已是 file:// 本地路径；
+      // 否则 localCover 文件存在时直接本地秒开，免去缓存未命中时的插件等待与网络下载
+      const origThumbnail: string = rs.getString(rs.getColumnIndex('origThumbnail'));
+      const localCover: string = rs.getString(rs.getColumnIndex('localCover'));
+      if (origThumbnail === '' && localCover !== '') {
+        try {
+          if (fs.accessSync(localCover)) {
+            item.coverUrl = `file://${localCover}`;
+          }
+        } catch (e) {
+        }
       }
       return item;
     } catch (e) {

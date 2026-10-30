@@ -1,4 +1,5 @@
 import { Want } from '@kit.AbilityKit';
+import { fileIo as fs } from '@kit.CoreFileKit';
 import { SheetPreset } from './components/SheetPreset';
 import { BusinessError, pasteboard } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
@@ -326,6 +327,10 @@ export struct MangaDetailPage {
   @State relatedWorks: SManga[] = [];
   // Bangumi 相关系列（ACGN 源按名称+作者匹配；匹配失败/非 ACGN 源为空）
   @State bgmRelated: BgmRelatedSubject[] = [];
+  // 单列布局（手机/PC）「相关系列」默认折叠，点标题/箭头展开；平板两列布局常展无折叠交互
+  @State bgmRelatedCollapsed: boolean = true;
+  // Bangumi 关系图半模态（「相关系列」标题右侧 account_tree 图标进入）
+  @State showBgmGraphSheet: boolean = false;
   @State showCoverViewer: boolean = false;
   @State showSettingsSheet: boolean = false;
   // 更新间隔选择弹层（对齐 Mihon SetIntervalDialog）
@@ -420,10 +425,25 @@ export struct MangaDetailPage {
   }
 
   // 底部提供关闭/分享/保存/编辑封面，编辑含恢复原封面入口
+  // 封面展示地址：与书架一致优先书架持久化封面（本地文件秒开，免去缓存未命中时的
+  // 插件等待与网络下载），自定义封面（origThumbnail 非空）时 thumbnailUrl 已是 file:// 本地路径；
+  // 文件缺失或无持久化封面回退在线地址
+  private coverDisplay(): string {
+    if (this.manga.origThumbnail === '' && this.manga.localCover !== '') {
+      try {
+        if (fs.accessSync(this.manga.localCover)) {
+          return `file://${this.manga.localCover}`;
+        }
+      } catch (e) {
+      }
+    }
+    return this.manga.thumbnailUrl;
+  }
+
   @Builder
   coverViewerBuilder() {
     CoverViewer({
-      coverUrl: this.manga.thumbnailUrl,
+      coverUrl: this.coverDisplay(),
       sourceKey: this.manga.sourceKey,
       isCustom: this.manga.origThumbnail !== '',
       title: this.manga.title,
@@ -872,9 +892,9 @@ export struct MangaDetailPage {
   @Builder
   headerContent() {
     Stack({ alignContent: Alignment.TopStart }) {
-      if (this.manga.thumbnailUrl !== '') {
+      if (this.coverDisplay() !== '') {
         SmartImage({
-          url: this.manga.thumbnailUrl,
+          url: this.coverDisplay(),
           sourceKey: this.manga.sourceKey,
           fit: ImageFit.Cover,
           fill: true
@@ -903,9 +923,9 @@ export struct MangaDetailPage {
         Row({ space: 14 }) {
           // 封面：点击进入全屏查看器（对齐 Mihon onCoverClick）
           Stack() {
-            if (this.manga.thumbnailUrl !== '') {
+            if (this.coverDisplay() !== '') {
               SmartImage({
-                url: this.manga.thumbnailUrl,
+                url: this.coverDisplay(),
                 sourceKey: this.manga.sourceKey,
                 fit: ImageFit.Cover,
                 fill: true
@@ -1244,55 +1264,94 @@ export struct MangaDetailPage {
   }
 
   // Bangumi 相关系列（ACGN 源按名称+作者匹配）：横滑卡片 = 封面 + 标题 + 关系文案，
-  // 点击进入条目详情页（对齐 SubjectDetailPage 相关条目块样式）
+  // 点击进入条目详情页（对齐 SubjectDetailPage 相关条目块样式）。
+  // 标题行右侧：关系图入口（account_tree → bgmGraphSheetBuilder）；
+  // 单列布局默认折叠（点标题/箭头展开），平板两列布局常展、不渲染折叠交互
   @Builder
   bgmRelatedContent() {
     Column() {
-      Text($r('app.string.detail_bgm_related'))
-        .fontSize(16)
-        .fontWeight(FontWeight.Bold)
-        .fontColor(this.pal.text)
-      List({ space: 12 }) {
-        ForEach(this.bgmRelated, (item: BgmRelatedSubject) => {
-          ListItem() {
-            Column() {
-              SmartImage({
-                url: item.cover,
-                fit: ImageFit.Cover,
-                placeholderIconSize: 24
-              })
-                .width(96)
-                .aspectRatio(2 / 3)
-                .borderRadius(8)
-                .clip(true)
-                .backgroundColor(this.pal.chip)
-
-              Text(item.nameCn !== '' ? item.nameCn : item.name)
-                .fontSize(13)
-                .fontColor(this.pal.text)
-                .maxLines(1)
-                .textOverflow({ overflow: TextOverflow.Ellipsis })
-                .margin({ top: 5 })
-
-              Text(BangumiApi.relationLabelRes(item.relation))
-                .fontSize(11)
-                .fontColor(this.pal.sub)
-                .maxLines(1)
-                .textOverflow({ overflow: TextOverflow.Ellipsis })
-            }
-            .width(96)
-            .alignItems(HorizontalAlign.Start)
+      Row() {
+        Text($r('app.string.detail_bgm_related'))
+          .fontSize(16)
+          .fontWeight(FontWeight.Bold)
+          .fontColor(this.pal.text)
+          .layoutWeight(1)
+          .onClick(() => {
+            this.toggleBgmRelated();
+          })
+        AppIcon({ name: 'account_tree', iconSize: 20, tint: this.pal.sub })
+          .padding({ left: 10 })
+          .onClick(() => {
+            this.showBgmGraphSheet = true;
+          })
+          .bindSheet($$this.showBgmGraphSheet, this.bgmGraphSheetBuilder(),
+            SheetPreset.fit(this.windowW, {
+              title: $r('app.string.detail_bgm_related'),
+              height: SheetSize.MEDIUM,
+              detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+              showClose: true,
+              bg: this.pal.bg
+            }))
+        if (!this.isTwoPane()) {
+          AppIcon({
+            name: this.bgmRelatedCollapsed ? 'expand_more' : 'expand_less',
+            iconSize: 20,
+            tint: this.pal.sub
+          })
+            .padding({ left: 10 })
             .onClick(() => {
-              this.openBgmRelated(item);
+              this.toggleBgmRelated();
             })
-          }
-        }, (item: BgmRelatedSubject): string => `bgm-${item.id}`)
+        }
       }
-      .listDirection(Axis.Horizontal)
-      .scrollBar(BarState.Off)
-      .edgeEffect(EdgeEffect.Spring)
       .width('100%')
-      .margin({ top: 10 })
+      .alignItems(VerticalAlign.Center)
+
+      // 单列折叠态隐藏卡片列表；两列布局（平板）常展
+      if (this.isTwoPane() || !this.bgmRelatedCollapsed) {
+        List({ space: 12 }) {
+          ForEach(this.bgmRelated, (item: BgmRelatedSubject) => {
+            ListItem() {
+              Column() {
+                SmartImage({
+                  url: item.cover,
+                  fit: ImageFit.Cover,
+                  placeholderIconSize: 24
+                })
+                  .width(96)
+                  .aspectRatio(2 / 3)
+                  .borderRadius(8)
+                  .clip(true)
+                  .backgroundColor(this.pal.chip)
+
+                Text(item.nameCn !== '' ? item.nameCn : item.name)
+                  .fontSize(13)
+                  .fontColor(this.pal.text)
+                  .maxLines(1)
+                  .textOverflow({ overflow: TextOverflow.Ellipsis })
+                  .margin({ top: 5 })
+
+                Text(BangumiApi.relationLabelRes(item.relation))
+                  .fontSize(11)
+                  .fontColor(this.pal.sub)
+                  .maxLines(1)
+                  .textOverflow({ overflow: TextOverflow.Ellipsis })
+              }
+              .width(96)
+              .alignItems(HorizontalAlign.Start)
+              .onClick(() => {
+                this.openBgmRelated(item);
+              })
+            }
+          }, (item: BgmRelatedSubject): string => `bgm-${item.id}`)
+        }
+        .listDirection(Axis.Horizontal)
+        .scrollBar(BarState.Off)
+        .edgeEffect(EdgeEffect.Spring)
+        .width('100%')
+        .margin({ top: 10 })
+        .transition(TransitionEffect.OPACITY.animation({ duration: 200, curve: Curve.Friction }))
+      }
     }
     .alignItems(HorizontalAlign.Start)
     .width('100%')
@@ -1301,6 +1360,136 @@ export struct MangaDetailPage {
       right: 16 + this.padInset(),
       top: 10
     })
+  }
+
+  // 「相关系列」折叠/展开切换（单列布局；两列布局无折叠交互）
+  private toggleBgmRelated(): void {
+    if (this.isTwoPane()) {
+      return;
+    }
+    this.getUIContext().animateTo({ duration: 200, curve: Curve.Friction }, (): void => {
+      this.bgmRelatedCollapsed = !this.bgmRelatedCollapsed;
+    });
+  }
+
+  // Bangumi 关系图半模态（animeko 风格树状关系图）：
+  // 中心节点（当前作品，主色描边）→ 主干连线 → 竖向脊线 → 每个关联条目一根带关系文案的分支，
+  // 连接线用分隔色细矩形拼出；分支节点点击进入条目详情
+  @Builder
+  bgmGraphSheetBuilder() {
+    Column() {
+      Scroll() {
+        Row() {
+          // 中心节点：当前作品（主色描边突出）
+          Column() {
+            SmartImage({
+              url: this.manga.thumbnailUrl,
+              sourceKey: this.manga.sourceKey,
+              fit: ImageFit.Cover,
+              placeholderIconSize: 20
+            })
+              .width(64)
+              .aspectRatio(2 / 3)
+              .borderRadius(8)
+              .clip(true)
+              .backgroundColor(this.pal.chip)
+              .border({ width: 1.5, color: this.pal.primary })
+            Text(this.manga.title)
+              .fontSize(10)
+              .fontColor(this.pal.text)
+              .minLines(2)
+              .maxLines(2)
+              .textOverflow({ overflow: TextOverflow.Ellipsis })
+              .margin({ top: 4 })
+          }
+          .width(64)
+          .alignItems(HorizontalAlign.Start)
+
+          // 主干连线（中心节点 → 脊线中点）
+          Column()
+            .width(14)
+            .height(2)
+            .backgroundColor(this.pal.divider)
+
+          // 分支区：竖向脊线（贯通首末分支中点）+ 关联节点列
+          Stack({ alignContent: Alignment.TopStart }) {
+            Column()
+              .width(2)
+              .height(this.bgmGraphSpineH())
+              .backgroundColor(this.pal.divider)
+              .margin({ top: 64 })
+            Column({ space: 16 }) {
+              ForEach(this.bgmRelated, (item: BgmRelatedSubject) => {
+                Row() {
+                  // 分支连线（脊线 → 关系文案）
+                  Column()
+                    .width(12)
+                    .height(2)
+                    .backgroundColor(this.pal.divider)
+                  // 关系文案（连线上的边标签，定宽保证节点列对齐）
+                  Text(BangumiApi.relationLabelRes(item.relation))
+                    .fontSize(10)
+                    .fontColor(this.pal.sub)
+                    .width(60)
+                    .textAlign(TextAlign.Center)
+                    .maxLines(1)
+                    .textOverflow({ overflow: TextOverflow.Ellipsis })
+                  // 关系文案 → 节点连线
+                  Column()
+                    .width(8)
+                    .height(2)
+                    .backgroundColor(this.pal.divider)
+                  // 关联节点：封面 + 标题，点击进条目详情
+                  Column() {
+                    SmartImage({
+                      url: item.cover,
+                      fit: ImageFit.Cover,
+                      placeholderIconSize: 16
+                    })
+                      .width(64)
+                      .aspectRatio(2 / 3)
+                      .borderRadius(8)
+                      .clip(true)
+                      .backgroundColor(this.pal.chip)
+                    Text(item.nameCn !== '' ? item.nameCn : item.name)
+                      .fontSize(10)
+                      .fontColor(this.pal.text)
+                      .minLines(2)
+                      .maxLines(2)
+                      .textOverflow({ overflow: TextOverflow.Ellipsis })
+                      .margin({ top: 4 })
+                  }
+                  .width(64)
+                  .alignItems(HorizontalAlign.Start)
+                  .onClick(() => {
+                    this.openBgmRelated(item);
+                  })
+                }
+                .alignItems(VerticalAlign.Center)
+              }, (item: BgmRelatedSubject): string => `bgmgraph-${item.id}`)
+            }
+            .padding({ left: 2 })
+          }
+        }
+        .alignItems(VerticalAlign.Center)
+        .padding({ left: 20, right: 20, top: 8, bottom: 24 })
+      }
+      .layoutWeight(1)
+      .width('100%')
+      .align(Alignment.Start)
+      .scrollBar(BarState.Off)
+      .edgeEffect(EdgeEffect.Spring)
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor(this.pal.bg)
+  }
+
+  // 关系图脊线高度：分支行高 128（封面 96 + 标题两行）+ 行距 16，
+  // 脊线仅贯通首末分支中点之间：(n - 1) * (128 + 16)
+  private bgmGraphSpineH(): number {
+    const n: number = this.bgmRelated.length;
+    return n > 1 ? (n - 1) * 144 : 0;
   }
 
   // 章节标题栏：标题/排序/筛选入口 + 批量下载 + 全部已读（对齐 Mihon ChapterHeader）
