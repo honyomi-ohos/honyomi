@@ -10,6 +10,7 @@ import { readTextAutoAsync } from './bookparser/TextLoadTasks';
 import { NovelTts } from './NovelTts';
 import { TtsText } from './TtsText';
 import { TtsAvSession, TtsSessionMeta } from './TtsAvSession';
+import { ReaderChapterNav } from './ReaderChapterNav';
 
 const DOMAIN = 0x0001;
 const TAG = 'TtsService';
@@ -252,10 +253,12 @@ export class TtsPlaybackService {
       if (manga === undefined || gen !== TtsPlaybackService.loadGen) {
         return false;
       }
-      const chapters = await ChapterRepo.listByManga(mangaId);
+      // 章节表按阅读正序排列（上一章/下一章/播完自动续播按旧→新推进）
+      const raw = await ChapterRepo.listByManga(mangaId);
       if (gen !== TtsPlaybackService.loadGen) {
         return false;
       }
+      const chapters = ReaderChapterNav.readingOrder(raw, manga.chapterFlags, manga.sourceKey);
       let paras: string[] = [];
       if (translatedParas !== undefined && translatedParas.length > 0) {
         paras = translatedParas;

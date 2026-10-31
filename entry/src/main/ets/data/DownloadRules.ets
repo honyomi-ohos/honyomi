@@ -1,8 +1,9 @@
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { Settings } from '../common/Settings';
 import { DownloadService } from './DownloadService';
-import { ChapterRepo } from './Repos';
+import { ChapterRepo, MangaRepo } from './Repos';
 import { ChapterRecord, ContentType, DownloadTask, MangaRecord } from '../model/Models';
+import { ReaderChapterNav } from '../common/ReaderChapterNav';
 
 const TAG = 'DownloadRules';
 
@@ -46,7 +47,14 @@ export class DownloadRules {
     if (slots < 1) {
       return;
     }
-    ChapterRepo.listByManga(mangaId).then((list: ChapterRecord[]): Promise<void> => {
+    Promise.all([
+      ChapterRepo.listByManga(mangaId),
+      MangaRepo.get(mangaId),
+    ]).then((pair: [ChapterRecord[], MangaRecord | undefined]): Promise<void> => {
+      // 阅读正序定位：倒数第 N 章 = 阅读方向上更早的章节
+      const list = ReaderChapterNav.readingOrder(pair[0],
+        pair[1] !== undefined ? pair[1].chapterFlags : 0,
+        pair[1] !== undefined ? pair[1].sourceKey : '');
       let idx = -1;
       for (let i = 0; i < list.length; i++) {
         if (list[i].id === chapterId) {
@@ -99,7 +107,9 @@ export class DownloadRules {
     if (ContentType.isLocal(manga.sourceKey) || manga.contentType === ContentType.VIDEO) {
       return;
     }
-    ChapterRepo.listByManga(manga.id).then((list: ChapterRecord[]): void => {
+    ChapterRepo.listByManga(manga.id).then((raw: ChapterRecord[]): void => {
+      // 阅读正序：下一章 = 阅读方向上更靠后的章节（不受源"新→旧"返回顺序影响）
+      const list = ReaderChapterNav.readingOrder(raw, manga.chapterFlags, manga.sourceKey);
       let idx = -1;
       for (let i = 0; i < list.length; i++) {
         if (list[i].id === chapterId) {

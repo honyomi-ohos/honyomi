@@ -46,22 +46,23 @@ export struct ChapterSettingsSheet {
 
   // Tab 项（选中高亮 + 底部指示条，点击切换）：
   // 不用 Tabs 组件——其在 FIT_CONTENT 半模态内会撑满剩余高度，导致弹层无法贴内容收起
+  // 指示条贴 tab 栏底边、与内容分割线 0 间距，避免 header 区域出现两条分离的线
   @Builder
   tabLabelItem(index: number, label: Resource) {
     Column() {
+      Blank()
       Text(label)
         .fontSize(14)
         .fontWeight(this.sheetTab === index ? FontWeight.Bold : FontWeight.Normal)
         .fontColor(this.sheetTab === index ? this.pal.primary : this.pal.text)
         .maxLines(1)
+      Blank()
       Divider()
         .width(24)
         .height(2)
         .borderRadius(1)
-        .margin({ top: 5 })
         .color(this.sheetTab === index ? this.pal.primary : Color.Transparent)
     }
-    .justifyContent(FlexAlign.Center)
     .layoutWeight(1)
     .height(48)
     .onClick(() => {

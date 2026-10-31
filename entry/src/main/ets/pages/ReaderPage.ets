@@ -15,6 +15,7 @@ import { GripSupport } from '../common/GripSupport';
 import { ReaderWindow } from '../common/ReaderWindow';
 import { Haptics } from '../common/Haptics';
 import { ChapterFlags } from '../common/ChapterFlags';
+import { ReaderChapterNav } from '../common/ReaderChapterNav';
 import { DownloadService } from '../data/DownloadService';
 import { DownloadRules } from '../data/DownloadRules';
 import { PageSanitizer } from '../common/PageSanitizer';
@@ -2298,12 +2299,10 @@ export struct ReaderPage {
         list.push(cur);
       }
     }
-    list.sort((a: ChapterRecord, b: ChapterRecord): number => {
-      if (a.sortOrder !== b.sortOrder) {
-        return a.sortOrder - b.sortOrder;
-      }
-      return a.id - b.id;
-    });
+    // 阅读正序（对齐 Mihon getChapterSort(manga, sortDescending=false)）：
+    // 源顺序模式在线源 = sortOrder 降序（源约定"新→旧"返回），本地源 = 升序；
+    // 章节号/日期/字母模式 = 对应键升序。prev/next 不再受源列表原始顺序反转影响
+    list = ReaderChapterNav.readingOrder(list, this.manga.chapterFlags, this.manga.sourceKey);
     if (this.skipDuplicate) {
       list = this.removeDuplicateChapters(list);
     }
@@ -2345,12 +2344,7 @@ export struct ReaderPage {
       }
       out.push(newest);
     });
-    out.sort((a: ChapterRecord, b: ChapterRecord): number => {
-      if (a.sortOrder !== b.sortOrder) {
-        return a.sortOrder - b.sortOrder;
-      }
-      return a.id - b.id;
-    });
+    // 保持传入的阅读正序（对齐 Mihon removeDuplicates 保序去重），不再按 sortOrder 重排
     return out;
   }
 

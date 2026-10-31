@@ -225,6 +225,8 @@ export struct VideoPlayerPage {
   @State dmSendMode: number = 1;
   @State dmSendColor: number = 0xFFFFFF;
   @State dmSending: boolean = false;
+  // 弹幕输入框聚焦中：控制条不自动隐藏，避免输入被打断
+  @State dmInputFocused: boolean = false;
   private dmItems: DanmakuItem[] = [];
   private instId: number = ++vpSeq;
   // 投屏：AVCastPicker 发现设备，连接/断开/远端播放态经 VideoCastManager 回调驱动页面
@@ -273,6 +275,8 @@ export struct VideoPlayerPage {
     this.dmOpacity = Settings.getDanmakuOpacityPct();
     this.dmArea = Settings.getDanmakuAreaPct();
     this.dmDur = Settings.getDanmakuDurationSec();
+    // 底部弹幕输入条按登录态渲染：进入页面即恢复已保存的 dandanplay 账号
+    this.dmAccount = DanmakuService.savedAccount();
     this.skipEnabled = Settings.getVideoSkipOpEd();
     this.subFont = Settings.getSubtitleFont();
     this.pipEnabled = PiPWindow.isPiPEnabled();
@@ -299,11 +303,21 @@ export struct VideoPlayerPage {
             if (this.destroyed || this.pcLike || this.pipActive) {
               return;
             }
-            if (size.width > size.height && !this.fullscreen) {
-              this.toggleFullscreen();
+            // 横屏即全屏：双向跟随窗口方向，横屏必为全屏、竖屏必为非全屏，不存在中间态
+            if (size.width > size.height) {
+              if (!this.fullscreen) {
+                this.applyFullscreen(true);
+              }
+            } else if (this.fullscreen) {
+              this.applyFullscreen(false);
             }
           };
           w.on('windowSizeChange', this.rotateListener);
+          // 进入页面时窗口已横向（设备横持）：直接横屏全屏，不等尺寸变化事件
+          const rect: window.Rect = w.getWindowProperties().windowRect;
+          if (rect.width > rect.height) {
+            this.applyFullscreen(true);
+          }
         }
       }
     }).catch((): void => {
@@ -524,6 +538,86 @@ export struct VideoPlayerPage {
     })
   }
 
+  // 弹幕输入条：占满控制条空余空间；未登录点击弹登录面板，已登录直接输入，
+  // 有内容时出现小飞机发送按钮
+  @Builder
+  dmInputBar() {
+    if (this.dmAccount === undefined) {
+      Row() {
+        Text($r('app.string.video_danmaku_input_hint'))
+          .fontSize(13)
+          .fontColor('rgba(255,255,255,0.55)')
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+          .margin({ left: 14 })
+          .layoutWeight(1)
+        AppIcon({ name: 'send', iconSize: 18, tint: 'rgba(255,255,255,0.4)' })
+          .margin({ right: 11 })
+      }
+      .height(40)
+      .borderRadius(20)
+      .backgroundColor(VIDEO_BTN_BG)
+      .systemMaterial(VIDEO_GLASS)
+      .layoutWeight(1)
+      .alignItems(VerticalAlign.Center)
+      .onClick(() => {
+        this.openSheet(6);
+      })
+    } else {
+      Row() {
+        TextInput({ text: this.dmSendText, placeholder: $r('app.string.video_danmaku_input_hint') })
+          .fontSize(13)
+          .height(40)
+          .fontColor('#FFFFFF')
+          .placeholderColor('rgba(255,255,255,0.55)')
+          .caretColor(this.pal.primary)
+          .enterKeyType(EnterKeyType.Send)
+          .backgroundColor(Color.Transparent)
+          .padding({ left: 14, right: 4 })
+          .layoutWeight(1)
+          .onChange((v: string) => {
+            this.dmSendText = v;
+          })
+          .onSubmit(() => {
+            this.doDmSend();
+          })
+          .onFocus(() => {
+            this.dmInputFocused = true;
+            if (this.hideTimer >= 0) {
+              clearTimeout(this.hideTimer);
+              this.hideTimer = -1;
+            }
+          })
+          .onBlur(() => {
+            this.dmInputFocused = false;
+            this.armAutoHide();
+          })
+        if (this.dmSendText.length > 0) {
+          Button({ type: ButtonType.Normal, stateEffect: true }) {
+            AppIcon({ name: 'send', iconSize: 18, tint: Color.White })
+          }
+          .width(32)
+          .height(32)
+          .borderRadius(16)
+          .padding(0)
+          .margin({ right: 4 })
+          .backgroundColor(this.pal.primary)
+          .enabled(!this.dmSending)
+          .transition(TransitionEffect.OPACITY.animation({ duration: 150 }))
+          .onClick(() => {
+            this.doDmSend();
+          })
+        }
+      }
+      .height(40)
+      .borderRadius(20)
+      .backgroundColor(VIDEO_BTN_BG)
+      .systemMaterial(VIDEO_GLASS)
+      .layoutWeight(1)
+      .alignItems(VerticalAlign.Center)
+    }
+  }
+
   @Builder
   bottomBar() {
     Column() {
@@ -588,16 +682,11 @@ export struct VideoPlayerPage {
             this.openSheet(2);
           }, Color.White)
         }
-        this.ctrlBtn('speed', (): void => {
-          this.openSheet(3);
-        }, Color.White)
         this.ctrlBtn('forum', (): void => {
           this.toggleDanmaku();
         }, this.danmakuOn ? Color.White : 'rgba(255,255,255,0.35)')
 
-        this.ctrlBtn('edit', (): void => {
-          this.openSheet(6);
-        }, Color.White)
+        this.dmInputBar()
 
         this.ctrlBtn('tune', (): void => {
           this.openSheet(4);
@@ -672,8 +761,6 @@ export struct VideoPlayerPage {
             this.episodesPane()
           } else if (this.sheetMode === 2) {
             this.qualityPane()
-          } else if (this.sheetMode === 3) {
-            this.speedPane()
           } else if (this.sheetMode === 5) {
             this.castPane()
           } else if (this.sheetMode === 6) {
@@ -744,35 +831,6 @@ export struct VideoPlayerPage {
           this.pickQuality(index);
         })
       }, (video: SVideo, index: number) => `q-${index}-${video.quality}`)
-    }
-    .width('100%')
-  }
-
-  // 远程播放：直链先经 VideoCacheServer 代理（边下边播，快进命中缓存即刻起播）；
-
-  @Builder
-  speedPane() {
-    Column() {
-      Flex({ wrap: FlexWrap.Wrap }) {
-        ForEach(SPEEDS, (s: number) => {
-          Text(this.speedLabel(s))
-            .fontSize(14)
-            .fontColor(this.speed === s ? Color.White : this.pal.text)
-            .backgroundColor(this.speed === s ? this.pal.primary : this.pal.chip)
-            .borderRadius(16)
-            .padding({
-              left: 16,
-              right: 16,
-              top: 8,
-              bottom: 8
-            })
-            .margin({ right: 8, top: 8 })
-            .onClick(() => {
-              this.applySpeed(s);
-            })
-        }, (s: number) => `spd-${s}`)
-      }
-      .width('100%')
     }
     .width('100%')
   }
@@ -1725,16 +1783,36 @@ export struct VideoPlayerPage {
       this.pokeControls();
       return;
     }
-    if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
-      // 横屏全屏锁定横向；退出全屏恢复自由旋转（窗口跟随设备方向）
-      const target: window.Orientation = this.fullscreen ?
-        window.Orientation.AUTO_ROTATION_LANDSCAPE : window.Orientation.AUTO_ROTATION;
-      this.win.setPreferredOrientation(target).catch((): void => {
-      });
+    // 横屏即全屏：PC/2in1 无方向概念走窗口最大化；其余设备进入=锁定横向沉浸式，
+    // 退出=强制回竖屏（不存在"横屏非全屏"的中间态），竖屏态保持自由旋转可再次转屏进全屏
+    this.applyFullscreen(!this.fullscreen);
+  }
+
+  // 横屏即全屏的唯一落地实现：全屏=锁定横向(含倒置)+沉浸式铺满(隐藏系统栏)；
+  // 退出=强制竖屏落位。竖屏态恢复自由旋转，设备转横屏经监听自动再进全屏
+  private applyFullscreen(fs: boolean): void {
+    this.fullscreen = fs;
+    if (this.win !== undefined && canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
+      if (fs) {
+        // 全屏锁定横向：横持观看不因误晃退出全屏
+        this.win.setPreferredOrientation(window.Orientation.AUTO_ROTATION_LANDSCAPE).catch((): void => {
+        });
+      } else {
+        const rect: window.Rect = this.win.getWindowProperties().windowRect;
+        if (rect.width < rect.height) {
+          // 窗口已是竖屏（设备转回竖屏触发）：恢复自由旋转即可
+          this.win.setPreferredOrientation(window.Orientation.AUTO_ROTATION).catch((): void => {
+          });
+        } else {
+          // 横屏态退出（按钮/返回键）：强制回竖屏，杜绝停留在"横屏非全屏"
+          this.win.setPreferredOrientation(window.Orientation.AUTO_ROTATION_PORTRAIT).catch((): void => {
+          });
+        }
+      }
       // 布局全屏跟随方向：横屏沉浸式（窗口延伸至系统栏下铺满）；竖屏非全屏（系统自动避让状态栏/摄像头区）
-      this.win.setWindowLayoutFullScreen(this.fullscreen).catch((): void => {
+      this.win.setWindowLayoutFullScreen(fs).catch((): void => {
       });
-      this.win.setWindowSystemBarEnable(this.fullscreen ? [] : ['status']).catch((): void => {
+      this.win.setWindowSystemBarEnable(fs ? [] : ['status']).catch((): void => {
       });
     }
     this.pokeControls();
@@ -2461,7 +2539,8 @@ export struct VideoPlayerPage {
       clearTimeout(this.hideTimer);
       this.hideTimer = -1;
     }
-    if (this.playing) {
+    // 弹幕输入框聚焦时控制条常驻，失焦后再恢复自动隐藏
+    if (this.playing && !this.dmInputFocused) {
       this.hideTimer = setTimeout(() => {
         this.hideTimer = -1;
         this.showControls = false;
@@ -3843,9 +3922,6 @@ const err = e as Error;
     }
     if (this.sheetMode === 2) {
       return $r('app.string.video_quality');
-    }
-    if (this.sheetMode === 3) {
-      return $r('app.string.video_speed');
     }
     if (this.sheetMode === 5) {
       return $r('app.string.video_cast');
