@@ -45,6 +45,9 @@ export class AppKeys {
   static readonly CF_CHALLENGE_URL: string = 'cfChallengeUrl';
   // CF 质询通过信号（计数器递增代表验证完成，JsvmSource 轮询读取）
   static readonly CF_VERIFIED_TICK: string = 'cfVerifiedTick';
+  // 插件源网络活动信号（计数器递增代表某插件源刚成功完成 API 调用；
+  // 插件可能在此时机注入/更新 DNS 直连规则，Index 消费后重试书架封面回填）
+  static readonly PLUGIN_NET_TICK: string = 'pluginNetTick';
   static readonly LIB_SELECTION_COUNT: string = 'libSelectionCount';
   // 更新抓取失败章节数（UpdatesPage 徽标）
   static readonly UPDATE_FAILED_COUNT: string = 'updateFailedCount';

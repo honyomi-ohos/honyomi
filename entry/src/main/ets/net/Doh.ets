@@ -189,6 +189,54 @@ const err = e as Error;
     Log.debug(TAG, `pin ${host} -> ${ips.join(',')}`);
   }
 
+  // rcp 手动重定向跟随用：返回该 URL 的 host 当前可用的解析结果。
+  // 插件 pin（长期有效）或未过期的 DoH 应答返回 IP 列表；
+  // 负缓存（探测被拒）、过期、未解析返回 undefined（回落 rcp 默认解析）。
+  static resolvedIpsOf(url: string): string[] | undefined {
+    const host = Doh.hostOf(url);
+    if (host === '' || Doh.isIpLiteral(host)) {
+      return undefined;
+    }
+    const hit = Doh.cache.get(host);
+    if (hit === undefined || hit.ips.length === 0) {
+      return undefined;
+    }
+    if (!hit.pin && hit.expireAt <= Date.now()) {
+      return undefined;
+    }
+    const out: string[] = [];
+    for (const ip of hit.ips) {
+      out.push(ip);
+    }
+    return out;
+  }
+
+  // 跨主机重定向的 pin 继承：源 host 存在插件 pin 且目标 host 尚无
+  // 可用解析时，把目标 host pin 到同一入口 IP（哔咔模式：插件全部
+  // 域名共享同一组入口）。负缓存/过期不阻断继承，pin 优先。
+  static async inheritPin(fromUrl: string, toUrl: string): Promise<void> {
+    const fromHost = Doh.hostOf(fromUrl);
+    const toHost = Doh.hostOf(toUrl);
+    if (fromHost === '' || toHost === '' || fromHost === toHost) {
+      return;
+    }
+    const from = Doh.cache.get(fromHost);
+    if (from === undefined || !from.pin || from.ips.length === 0) {
+      return;
+    }
+    const to = Doh.cache.get(toHost);
+    if (to !== undefined &&
+      (to.pin || (to.ips.length > 0 && to.expireAt > Date.now()))) {
+      return;
+    }
+    try {
+      await Doh.pin(toHost, from.ips);
+      Log.info(TAG, `inherit pin ${toHost} -> ${from.ips.join(',')} (from ${fromHost})`);
+    } catch (e) {
+      Log.debug(TAG, `inherit pin ${toHost} failed: ${e}`);
+    }
+  }
+
   private static async resolveAndRegister(host: string, provider: DohProvider): Promise<void> {
     let answer: DohAnswer | undefined;
     let validated: string[] = [];
@@ -480,7 +528,7 @@ const err = e as Error;
   }
 
   // 从 URL 提取主机名（剥离协议/端口/路径/凭据）
-  private static hostOf(url: string): string {
+  static hostOf(url: string): string {
     let s = url;
     if (s.indexOf('https://') === 0) {
       s = s.substring(8);

@@ -16,6 +16,7 @@ import { ChapterRepo, HistoryRepo, MangaRepo } from '../data/Repos';import { Uti
 import { AppKeys } from '../common/AppKeys';
 import { CookieJar } from '../net/CookieJar';
 import { CoverStore } from '../common/CoverStore';
+import { ImageCache } from '../common/ImageCache';
 import { TtsPlaybackService, TtsServiceStateHandler } from '../common/TtsPlaybackService';
 import { LibraryHeader, LibraryPage } from './LibraryPage';
 import { UpdatesHeader, UpdatesPage } from './UpdatesPage';
@@ -403,6 +404,9 @@ struct Index {
   @StorageLink('cardAction') @Watch('onCardActionChanged') cardActionJson: string = '';
   // 应用锁锁定态（隐私设置）：true 时全屏覆盖锁定层并拉起系统认证
   @StorageProp('appLocked') appLocked: boolean = false;
+  // 插件源网络活动信号：插件成功完成 API 调用（可能刚注入 DNS 直连规则，
+  // 如哔咔频道 pin）后去抖重试书架封面回填，把此前因网络不可达失败的封面落盘
+  @StorageProp(AppKeys.PLUGIN_NET_TICK) @Watch('onPluginNetTick') pluginNetTick: number = 0;
   @StorageLink('btComponentAsk') btComponentAsk: boolean = false;
   // 详情页“搜索此处”回退主页时切到书架页签执行文本搜索（对齐 Mihon HomeScreen.search → LibraryTab）
   @StorageLink('libSearchReq') @Watch('onLibSearchReq') libSearchReq: number = 0;
@@ -1228,6 +1232,23 @@ struct Index {
     this.backfillLibraryCovers();
   }
 
+  // 插件源网络活动去抖定时器：连续 API 调用（如哔咔 V() 连续 pin 多个域名）
+  // 合并为一次回填重试；销毁时清理，防对已销毁组件执行回填
+  private pluginNetRetryTimer: number = -1;
+
+  private onPluginNetTick(): void {
+    // 清空封面下载失败记录：DNS 直连规则可能刚落地，后续解析立即重试网络
+    ImageCache.resetFailed();
+    hilog.info(0x0001, 'Index', 'plugin net tick, cover backfill retry in 5s');
+    if (this.pluginNetRetryTimer >= 0) {
+      clearTimeout(this.pluginNetRetryTimer);
+    }
+    this.pluginNetRetryTimer = setTimeout((): void => {
+      this.pluginNetRetryTimer = -1;
+      this.backfillLibraryCovers();
+    }, 5000);
+  }
+
   // 逐条串行落盘（下载+AVIF→JPEG 转码），完成后统一写 libDirty 刷新书架
   private async backfillLibraryCovers(): Promise<void> {
     try {
@@ -1235,6 +1256,7 @@ struct Index {
       await AppDb.ready(context);
       const list: MangaRecord[] = await MangaRepo.getLibrary();
       let changed = 0;
+      let failed = 0;
       for (const m of list) {
         const url = m.origThumbnail !== '' ? m.origThumbnail : m.thumbnailUrl;
         if (url.indexOf('http://') !== 0 && url.indexOf('https://') !== 0) {
@@ -1248,11 +1270,16 @@ struct Index {
         if (path !== '') {
           await MangaRepo.setLocalCover(m.id, path, url);
           changed++;
+          hilog.info(0x0001, 'Index', 'cover persisted mangaId=%{public}d', m.id);
+        } else {
+          failed++;
         }
       }
       if (changed > 0) {
         AppStorage.set(AppKeys.LIB_DIRTY, (AppStorage.get<number>(AppKeys.LIB_DIRTY) ?? 0) + 1);
-        hilog.info(0x0001, 'Index', 'backfill covers done: %{public}d', changed);
+      }
+      if (changed > 0 || failed > 0) {
+        hilog.info(0x0001, 'Index', 'backfill covers: %{public}d ok, %{public}d failed', changed, failed);
       }
     } catch (e) {
       hilog.warn(0x0001, 'Index', 'backfill covers failed: %{public}s', `${e}`);

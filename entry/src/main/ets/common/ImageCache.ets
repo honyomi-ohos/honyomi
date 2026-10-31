@@ -165,6 +165,16 @@ export class ImageCache {
     ImageCache.resolved.set(url, entry);
   }
 
+  // 网络环境变化（插件 API 调用成功、可能刚注入 DNS 直连规则）时清空失败回退记录：
+  // 后续请求不再等失败 TTL 过期，立即重新走网络（成功记录保留，仍秒回本地文件）
+  static resetFailed(): void {
+    ImageCache.resolved.forEach((entry: ResolvedEntry, url: string): void => {
+      if (!entry.ok) {
+        ImageCache.resolved.delete(url);
+      }
+    });
+  }
+
   // 限时等待插件加载完成（加载挂死时 8s 超时回落直连）；
 
   // 命中缓存直接返回；未命中无论源是否声明请求头都下载落盘；失败返回 ''

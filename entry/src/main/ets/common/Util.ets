@@ -274,6 +274,32 @@ export class Util {
     return `net_request_failed|${Util.errSummary(e)}`;
   }
 
+  // rcp（Remote Communication Kit）错误归组：与 netErrOf 同一套稳定码，
+  // rcp 网络类错误码基数为 1007900000（+ curl 码），未识别保留原始 code + message
+  static rcpNetErrOf(e: Object | string): string {
+    const be = e as BusinessError;
+    const code: number = typeof be.code === 'number' ? be.code : -1;
+    if (code === 1007900006) {
+      return 'net_host_resolve_failed';
+    }
+    if (code === 1007900007) {
+      return 'net_connect_failed';
+    }
+    if (code === 1007900028) {
+      return 'net_timeout';
+    }
+    if (code === 1007900056) {
+      return 'net_interrupted';
+    }
+    const curl: number = code - 1007900000;
+    if (curl === 35 || curl === 51 || curl === 53 || curl === 54 || curl === 58 || curl === 59 ||
+      curl === 60 || curl === 64 || curl === 66 || curl === 77 || curl === 80 || curl === 82 ||
+      curl === 83 || curl === 90 || curl === 91) {
+      return 'net_ssl_failed';
+    }
+    return `net_request_failed|${Util.errSummary(e)}`;
+  }
+
   // 网络层 BusinessError（@ohos.net.http 返回 curl 系错误码，基数 2300000）→ 稳定错误码：
 
   // 未识别内容（插件自抛消息/引擎透传/系统错误）原样返回

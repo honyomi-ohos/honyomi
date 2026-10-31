@@ -756,11 +756,20 @@ export class JsvmSource implements Source {
     return args;
   }
 
+  // 插件源 API 调用成功：插件可能在此过程中注入/更新了 DNS 直连规则
+  // （如哔咔频道地址 pin），通知封面回填重试此前因网络不可达失败的下载
+  private bumpNetTick(): void {
+    AppStorage.setOrCreate(AppKeys.PLUGIN_NET_TICK,
+      (AppStorage.get<number>(AppKeys.PLUGIN_NET_TICK) ?? 0) + 1);
+  }
+
   private async call<T>(method: string, args: Array<string | number | boolean | object>): Promise<T> {
     // 占位源首调：先等待引擎惰性拉起（引擎已加载时立即返回）
     await this.ensureEngineStarted();
     try {
-      return await JsvmSource.engine().callData<T>(this.packageKey, method, args);
+      const result = await JsvmSource.engine().callData<T>(this.packageKey, method, args);
+      this.bumpNetTick();
+      return result;
     } catch (e) {
       if (e instanceof WebChallengeError) {
         AppStorage.setOrCreate(AppKeys.CF_CHALLENGE_URL, e.challengeUrl);
@@ -768,9 +777,15 @@ export class JsvmSource implements Source {
         // cf_clearance 自动重试一次；用户放弃（验证页关闭未通过）则原样上抛
         const solved = await JsvmSource.waitChallengeSolved();
         if (solved) {
-          return await JsvmSource.engine().callData<T>(this.packageKey, method, args);
+          const retried = await JsvmSource.engine().callData<T>(this.packageKey, method, args);
+          this.bumpNetTick();
+          return retried;
         }
       }
+      // 调用失败同样可能已完成 DNS pin（哔咔 V() 在发请求前 pin 全部域名，
+      // 即使 API 因源站故障返回 5xx，图片域名直连规则也已生效），
+      // 通知封面回填重试
+      this.bumpNetTick();
       throw e as Error;
     }
   }

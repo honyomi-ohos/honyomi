@@ -19,6 +19,7 @@ import { Http } from '../net/Http';
 import { Doh } from '../net/Doh';
 import { CfChallenge } from '../net/CfChallenge';
 import { Util } from '../common/Util';
+import { Log } from '../common/Log';
 import { challengeError } from './EngineGateway';
 import { HostCalls } from './HostCalls';
 
@@ -706,6 +707,7 @@ export class NativeHttpBridge {
       ips.push(ip);
     }
     await Doh.pin(host, ips);
+    Log.info('NativeHttpBridge', `dns pin ${host} -> ${ips.join(',')}`);
   }
 
   // 按响应 Content-Type 声明的 charset 解码响应体；未声明或不受支持时

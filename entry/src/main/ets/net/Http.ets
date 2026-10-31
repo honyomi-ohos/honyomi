@@ -1,4 +1,5 @@
 import { http } from '@kit.NetworkKit';
+import { rcp } from '@kit.RemoteCommunicationKit';
 import { request } from '@kit.BasicServicesKit';
 import { common } from '@kit.AbilityKit';
 import { CookieJar } from './CookieJar';
@@ -255,17 +256,89 @@ export class Http {
   }
 
   private static async getBufferOnce(url: string, headers: Record<string, string> | undefined): Promise<ArrayBuffer> {
-    const followed = await Http.follow(url, http.RequestMethod.GET, Http.copyHeaders(headers), '',
-      http.HttpDataType.ARRAY_BUFFER, 60000);
-    const resp = followed.resp;
-    if (CfChallenge.isCfChallenge(resp.responseCode, '', resp.header)) {
-      AppStorage.setOrCreate(AppKeys.CF_CHALLENGE_URL, followed.url);
+    // 二进制抓取走 rcp 而非 @ohos.net.http：netstack 的 client.request 会
+    // 自动跟随重定向且无法关闭，重定向段在 netstack 内部静默发起，绕过
+    // 逐跳 DNS 准备，污染系统 DNS 下必死（哔咔 storage-b 301 → img 即此死法）。
+    // rcp 关闭 autoRedirect 后由本方法手动逐跳跟随：每跳独立请求，先
+    // Doh.prepare + pin 继承，再把 pin 以 StaticDnsRules 直接随请求带给
+    // rcp，不依赖进程级规则是否对该网络栈生效。
+    let current = url;
+    let currentHeaders = Http.copyHeaders(headers);
+    const httpsStart = url.indexOf('https://') === 0;
+    for (let hop = 0; hop < 8; hop++) {
+      await Doh.prepare(current);
+      const req: rcp.Request = new rcp.Request(current, 'GET', Http.buildHeaders(current, currentHeaders));
+      const ips: string[] | undefined = Doh.resolvedIpsOf(current);
+      if (ips !== undefined) {
+        const rule: rcp.StaticDnsRule = {
+          host: Doh.hostOf(current),
+          port: current.indexOf('https://') === 0 ? 443 : 80,
+          ipAddresses: ips,
+        };
+        const rules: rcp.StaticDnsRules = [rule];
+        req.configuration = { dns: { dnsRules: rules } };
+      }
+      let resp: rcp.Response;
+      try {
+        Log.debug('Http', `rcp GET ${current}`);
+        resp = await Http.imageSession().fetch(req);
+      } catch (e) {
+        throw new Error(Util.rcpNetErrOf(e));
+      }
+      CookieJar.storeFromResponse(current, resp.headers);
+      const code: number = resp.statusCode;
+      if (!Http.isRedirect(code)) {
+        return Http.bufferFrom(resp, code, current);
+      }
+      const loc = Http.headerValue(resp.headers, 'Location');
+      const next = Http.resolveLocation(current, loc);
+      if (next === '') {
+        return Http.bufferFrom(resp, code, current);
+      }
+      // https 起始禁止降级：目标非 https（降级 http 或其他协议）即终止并报错
+      if (httpsStart && next.indexOf('https://') !== 0) {
+        throw new Error(`redirect_blocked|${next}`);
+      }
+      // 跨源跳转剥离敏感头，凭证明文不外送
+      if (Http.originOf(next) !== Http.originOf(current)) {
+        currentHeaders = Http.stripSensitiveHeaders(currentHeaders);
+      }
+      Log.info('Http', `redirect hop${hop} ${code} ${Http.originOf(current)} -> ${Http.originOf(next)}`);
+      await Doh.inheritPin(current, next);
+      current = next;
+    }
+    throw new Error(`too_many_redirects|${url}`);
+  }
+
+  // 终态响应 → ArrayBuffer：CF 盾检测、非 2xx/空响应体报错
+  private static bufferFrom(resp: rcp.Response, code: number, url: string): ArrayBuffer {
+    if (CfChallenge.isCfChallenge(code, '', resp.headers)) {
+      AppStorage.setOrCreate(AppKeys.CF_CHALLENGE_URL, url);
       throw new HttpCfError('cf_required');
     }
-    if (resp.responseCode < 200 || resp.responseCode >= 300) {
-      throw new HttpStatusError(`HTTP ${resp.responseCode}: ${followed.url}`);
+    if (code < 200 || code >= 300) {
+      throw new HttpStatusError(`HTTP ${code}: ${url}`);
     }
-    return resp.result as ArrayBuffer;
+    const body = resp.body;
+    if (body === undefined) {
+      throw new HttpStatusError(`HTTP ${code}: empty body: ${url}`);
+    }
+    return body;
+  }
+
+  // rcp 会话（图片/二进制抓取专用）：关闭自动重定向，超时对齐旧路径
+  // （connect 15s / transfer 60s）。会话全局复用，进程内常驻。
+  private static rcpImageSession: rcp.Session | undefined = undefined;
+
+  private static imageSession(): rcp.Session {
+    if (Http.rcpImageSession === undefined) {
+      const transfer: rcp.TransferConfiguration = {
+        autoRedirect: false,
+        timeout: { connectMs: 15000, transferMs: 60000 },
+      };
+      Http.rcpImageSession = rcp.createSession({ requestConfiguration: { transfer: transfer } });
+    }
+    return Http.rcpImageSession;
   }
 
   // 手动重定向链（策略对齐 NativeHttpBridge.follow）：
