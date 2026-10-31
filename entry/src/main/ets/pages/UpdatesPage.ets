@@ -3,7 +3,8 @@ import { SheetPreset } from './components/SheetPreset';
 import { CategoryRepo, UpdatesQuery, UpdatesRepo } from '../data/Repos';
 import { DownloadService } from '../data/DownloadService';
 import { UpdateService } from '../data/UpdateService';
-import { CategoryRecord, UpdateItem } from '../model/Models';
+import { BtFlow } from '../data/BtFlow';
+import { CategoryRecord, ContentType, DownloadTask, UpdateItem } from '../model/Models';
 import { DetailParams } from '../model/RouteParams';
 import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
@@ -15,8 +16,117 @@ import { EmptyScreen } from './components/EmptyScreen';
 import { LoadingState } from './components/LoadingState';
 import { AppIcon } from './components/AppIcon';
 import { SmartImage } from './components/SmartImage';
+import { ConfirmDialog } from './components/Dialogs';
 import { UpdatesFilterSheet } from './components/UpdatesFilterSheet';
 import { SourceRegistry } from '../source/Source';
+
+// 更新行右侧下载指示器（对齐 Mihon ChapterDownloadIndicator）：
+// 未下载=下载图标 / 下载中=进度环 / 排队=spinner / 失败=错误图标 / 已下载=对勾
+// 自订阅 DownloadService 通知刷新（ForEach key 不含下载状态，避免整列表重建）
+@Component
+struct UpdateDlIndicator {
+  @Prop item: UpdateItem = new UpdateItem();
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @State downloaded: boolean = false;
+  @State queued: boolean = false;
+  @State downloading: boolean = false;
+  @State failed: boolean = false;
+  @State dlPct: number = 0;
+  onTap: (item: UpdateItem, state: string) => void = (_i: UpdateItem, _s: string) => {
+  };
+
+  aboutToAppear(): void {
+    this.refreshDlState();
+    DownloadService.addListener(this.onDlNotify);
+  }
+
+  aboutToDisappear(): void {
+    DownloadService.removeListener(this.onDlNotify);
+  }
+
+  build() {
+    Row() {
+      if (this.downloaded) {
+        AppIcon({ name: 'check_circle', iconSize: 20, tint: this.pal.sub })
+      } else if (this.failed) {
+        AppIcon({ name: 'error', iconSize: 20, tint: this.pal.badgeRed })
+      } else if (this.downloading) {
+        Progress({ value: this.dlPct, total: 100, type: ProgressType.Ring })
+          .width(18)
+          .height(18)
+          .color(this.pal.sub)
+          .style({ strokeWidth: 2 })
+      } else if (this.queued) {
+        LoadingProgress()
+          .width(16)
+          .height(16)
+          .color(this.pal.sub)
+      } else {
+        AppIcon({ name: 'download', iconSize: 20, tint: this.pal.sub })
+      }
+    }
+    .width(40)
+    .height(40)
+    .justifyContent(FlexAlign.End)
+    // 阻断冒泡：避免同时触发整行 onClick（直接打开阅读器）
+    .hitTestBehavior(HitTestMode.Block)
+    .onClick(() => {
+      this.onTap(this.item, this.dlState());
+    })
+  }
+
+  private onDlNotify = (): void => {
+    this.refreshDlState();
+  };
+
+  private refreshDlState(): void {
+    const d = DownloadService.isDownloaded(this.item.chapterId);
+    let queued = false;
+    let downloading = false;
+    let failed = false;
+    let dlPct = 0;
+    if (!d) {
+      const task = DownloadService.getQueue().find((t: DownloadTask): boolean => {
+        return t.chapterId === this.item.chapterId;
+      });
+      if (task !== undefined) {
+        if (task.state === 3) {
+          failed = true;
+        } else {
+          queued = true;
+          if (task.state === 1 && task.total > 0) {
+            downloading = true;
+            dlPct = Math.round(task.progress * 100 / task.total);
+          }
+        }
+      }
+    }
+    if (d !== this.downloaded || queued !== this.queued || downloading !== this.downloading ||
+      failed !== this.failed || dlPct !== this.dlPct) {
+      this.downloaded = d;
+      this.queued = queued;
+      this.downloading = downloading;
+      this.failed = failed;
+      this.dlPct = dlPct;
+    }
+  }
+
+  private dlState(): string {
+    if (this.downloaded) {
+      return 'downloaded';
+    }
+    if (this.failed) {
+      return 'error';
+    }
+    if (this.downloading) {
+      return 'downloading';
+    }
+    if (this.queued) {
+      return 'queued';
+    }
+    return 'none';
+  }
+}
 
 // 更新页：书架最新章节（对齐 Mihon UpdatesScreen）
 // 顶栏四操作：筛选（FilterList）/ 即将推出（CalendarMonth）/ 新番时间表（Schedule）/ 更新书架（Refresh）
@@ -57,6 +167,8 @@ export struct UpdatesPage {
   @State includedCats: number[] = [];
   @State excludedCats: number[] = [];
   @State categories: CategoryRecord[] = [];
+  // “已下载”筛选的成员快照键：onDlNotify 比对判断是否需重查列表
+  private lastDlKey: string = '';
 
   aboutToAppear(): void {
     this.fDownloaded = Settings.getUpdatesTriState('downloaded');
@@ -68,6 +180,34 @@ export struct UpdatesPage {
     this.publishFilterActive();
     this.loadData();
     this.loadCategories();
+    DownloadService.addListener(this.onDlNotify);
+  }
+
+  aboutToDisappear(): void {
+    DownloadService.removeListener(this.onDlNotify);
+  }
+
+  // 下载完成/删除影响“已下载”筛选结果时重算列表（其余下载状态变化由行内指示器自刷新）：
+  // 以“列表内已下载章节 id 序列”为键比对，逐页进度通知不触发重查
+  private onDlNotify = (): void => {
+    if (this.fDownloaded === 'ignore') {
+      return;
+    }
+    const key = this.dlFilterKey();
+    if (key !== this.lastDlKey) {
+      this.loadData();
+    }
+  };
+
+  private dlFilterKey(): string {
+    const downloaded = DownloadService.downloadedChapterIdSet();
+    let key = '';
+    for (const it of this.items) {
+      if (downloaded.has(it.chapterId)) {
+        key += `${it.chapterId},`;
+      }
+    }
+    return key;
   }
 
   onLibDirty(): void {
@@ -132,6 +272,7 @@ export struct UpdatesPage {
     this.getUIContext().animateTo({ duration: 200, curve: Curve.Friction }, (): void => {
       this.items = items;
     });
+    this.lastDlKey = this.dlFilterKey();
     this.loading = false;
   }
 
@@ -264,6 +405,16 @@ export struct UpdatesPage {
                   }
                   .alignItems(HorizontalAlign.Start)
                   .layoutWeight(1)
+                  // 行尾直接下载按钮（对齐 Mihon UpdatesUiItem 的 ChapterDownloadIndicator）；
+                  // 本地源无下载能力，不显示
+                  if (!ContentType.isLocal(item.sourceKey)) {
+                    UpdateDlIndicator({
+                      item: item,
+                      onTap: (it: UpdateItem, state: string): void => {
+                        this.onUpdateIndicatorTap(it, state);
+                      }
+                    })
+                  }
                 }
                 .width('100%')
                 .padding({
@@ -341,6 +492,75 @@ export struct UpdatesPage {
   private openDetail(mangaId: number): void {
     const params: DetailParams = { mangaId: mangaId };
     this.pathStack.pushPathByName('MangaDetail', params);
+  }
+
+  // 行尾下载指示器点击（对齐 Mihon onDownloadChapter）：
+  // 未下载→入队；下载中/排队→取消；失败→重试；已下载→确认后删除
+  private onUpdateIndicatorTap(item: UpdateItem, state: string): void {
+    if (state === 'downloaded') {
+      const dialog = new CustomDialogController({
+        builder: ConfirmDialog({
+          title: $r('app.string.detail_dl_delete_confirm'),
+          message: item.chapterName,
+          confirmText: $r('app.string.common_delete'),
+          onConfirm: (): void => {
+            dialog.close();
+            DownloadService.deleteChapter(item.mangaId, item.chapterId).then((): void => {
+              Util.toastRes(this.getUIContext(), $r('app.string.detail_dl_deleted_one'));
+            }).catch((_e: Error): void => {
+              Util.toastRes(this.getUIContext(), $r('app.string.common_op_failed'));
+            });
+          },
+          onClose: (): void => {
+            dialog.close();
+          },
+        }),
+        autoCancel: true,
+      });
+      dialog.open();
+    } else if (state === 'downloading' || state === 'queued') {
+      DownloadService.cancel(item.chapterId);
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_dl_cancelled'));
+    } else if (state === 'error') {
+      DownloadService.retry(item.chapterId);
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_download_queued'));
+    } else {
+      this.downloadUpdateItem(item).catch((_e: Error): void => {
+        Util.toastRes(this.getUIContext(), $r('app.string.detail_download_failed'));
+      });
+    }
+  }
+
+  // 更新条目直接入队下载：UpdateItem 已带全任务字段，无需回查详情；
+  // BT 链接走引擎选择（对齐详情页 downloadChapter 分流）
+  private async downloadUpdateItem(item: UpdateItem): Promise<void> {
+    if (DownloadService.isBtUrl(item.chapterUrl)) {
+      const choice = await BtFlow.acquireEngineChoice(this.getUIContext());
+      if (choice === 'cancel') {
+        return;
+      }
+      if (choice === 'system') {
+        await BtFlow.handOffToSystem(this.getUIContext(), item.chapterUrl);
+        return;
+      }
+      AppStorage.setOrCreate(AppKeys.BT_ASK_DISMISSED, false);
+    }
+    if (SourceRegistry.get(item.sourceKey) === undefined) {
+      Util.toastRes(this.getUIContext(), $r('app.string.detail_download_failed'));
+      return;
+    }
+    const task = new DownloadTask();
+    task.mangaId = item.mangaId;
+    task.mangaTitle = item.mangaTitle;
+    task.chapterId = item.chapterId;
+    task.chapterName = item.chapterName;
+    task.chapterNumber = item.chapterNumber;
+    task.dateUpload = item.dateUpload;
+    task.sourceKey = item.sourceKey;
+    task.mangaUrl = item.mangaUrl;
+    task.chapterUrl = item.chapterUrl;
+    DownloadService.enqueue(task);
+    Util.toastRes(this.getUIContext(), $r('app.string.detail_download_queued'));
   }
 }
 

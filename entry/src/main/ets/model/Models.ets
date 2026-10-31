@@ -191,6 +191,10 @@ export class UpdateItem {
   bookmark: boolean = false;
   // 所属源 key：关闭“显示 NSFW 源”时按源过滤更新条目
   sourceKey: string = '';
+  // 章节/作品地址与章节号：更新页行内下载按钮直接构造 DownloadTask 用
+  chapterUrl: string = '';
+  mangaUrl: string = '';
+  chapterNumber: number = 0;
 
   static of(mangaId: number, chapterId: number, mangaTitle: string, coverUrl: string,
     chapterName: string, dateUpload: number, read: boolean, bookmark: boolean,

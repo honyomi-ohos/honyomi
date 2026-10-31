@@ -131,11 +131,10 @@ export struct LibrarySettingsSheet {
               .fontColor(this.pal.text)
           }
           .width('100%')
+          .height(48)
           .padding({
             left: 24,
-            right: 24,
-            top: 10,
-            bottom: 10
+            right: 24
           })
           .onClick(() => {
             this.applyFilter(key);
@@ -176,12 +175,12 @@ export struct LibrarySettingsSheet {
               }
             }
           }
+          // 固定行高：尾部图标仅选中项渲染，不固定高度会导致选中行比其他行高、点击后选项错位
           .width('100%')
+          .height(48)
           .padding({
             left: 24,
-            right: 24,
-            top: 10,
-            bottom: 10
+            right: 24
           })
           .onClick(() => {
             this.applySort(key);

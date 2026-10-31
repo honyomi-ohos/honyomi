@@ -1076,6 +1076,15 @@ export class Settings {
     Settings.setStr('libraryView', v);
   }
 
+  // 源浏览页显示模式：'comfortable','compact','list'（对齐 Mihon pref_display_mode_catalogue）
+  static getBrowseView(): string {
+    return Settings.getStr('browseView', 'comfortable');
+  }
+
+  static setBrowseView(v: string): void {
+    Settings.setStr('browseView', v);
+  }
+
   // 每行数目：0 = 自动
   static getLibraryGridCols(): number {
     const v: number = Settings.getNum('libraryGridCols', 0);

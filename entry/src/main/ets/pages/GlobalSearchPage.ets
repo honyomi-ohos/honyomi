@@ -178,69 +178,73 @@ export struct GlobalSearchPage {
   @Builder
   bodyContent() {
     Column() {
-      // 搜索栏（对齐 Mihon SearchToolbar：返回 + 搜索输入 + 清除）
-      Row() {
-        AppIcon({ name: 'arrow_back', iconSize: 24 })
-          .padding(12)
-          .onClick(() => {
-            this.pathStack.pop();
-          })
-
+      // 搜索栏 + 进度条叠加层：进度条浮在搜索栏底部 padding 区，出现/消失不挤压下方内容
+      Stack({ alignContent: Alignment.Bottom }) {
+        // 搜索栏（对齐 Mihon SearchToolbar：返回 + 搜索输入 + 清除）
         Row() {
-          AppIcon({ name: 'search', iconSize: 20, tint: this.pal.sub })
-          TextInput({
-            text: this.searchQuery,
-            placeholder: $r('app.string.global_search_hint')
-          })
-            .id('globalSearchInput')
-            .layoutWeight(1)
-            .height(38)
+          AppIcon({ name: 'arrow_back', iconSize: 24 })
+            .padding(12)
+            .onClick(() => {
+              this.pathStack.pop();
+            })
+
+          Row() {
+            AppIcon({ name: 'search', iconSize: 20, tint: this.pal.sub })
+            TextInput({
+              text: this.searchQuery,
+              placeholder: $r('app.string.global_search_hint')
+            })
+              .id('globalSearchInput')
+              .layoutWeight(1)
+              .height(38)
+              .backgroundColor(Color.Transparent)
+              .padding(0)
+              .fontSize(15)
+              .fontColor(this.pal.text)
+              .placeholderColor(this.pal.sub)
+              .caretColor(this.pal.primary)
+              .enterKeyType(EnterKeyType.Search)
+              .onChange((value: string) => {
+                this.searchQuery = value;
+              })
+              .onSubmit(() => {
+                this.startSearch();
+              })
+            if (this.searchQuery !== '') {
+              AppIcon({ name: 'close', iconSize: 18, tint: this.pal.sub })
+                .padding(6)
+                .onClick(() => {
+                  this.searchQuery = '';
+                })
+            }
+          }
+          .layoutWeight(1)
+          .height(38)
+          .borderRadius(19)
+          .backgroundColor(this.pal.chip)
+          .alignItems(VerticalAlign.Center)
+          .padding({ left: 10, right: 4 })
+        }
+        .width('100%')
+        .alignItems(VerticalAlign.Center)
+        .padding({
+          left: 4,
+          right: 12,
+          top: this.statusBarH + 8,
+          bottom: 8
+        })
+
+        // 搜索进度条（对齐 Mihon：完成数在 1..<总数 时显示于搜索栏下方）
+        if (this.sections.length > 0 && this.doneCount() > 0 && this.doneCount() < this.sections.length) {
+          Progress({ value: this.doneCount(), total: this.sections.length, type: ProgressType.Linear })
+            .width('100%')
+            .height(4)
+            .color(this.pal.primary)
             .backgroundColor(Color.Transparent)
             .padding(0)
-            .fontSize(15)
-            .fontColor(this.pal.text)
-            .placeholderColor(this.pal.sub)
-            .caretColor(this.pal.primary)
-            .enterKeyType(EnterKeyType.Search)
-            .onChange((value: string) => {
-              this.searchQuery = value;
-            })
-            .onSubmit(() => {
-              this.startSearch();
-            })
-          if (this.searchQuery !== '') {
-            AppIcon({ name: 'close', iconSize: 18, tint: this.pal.sub })
-              .padding(6)
-              .onClick(() => {
-                this.searchQuery = '';
-              })
-          }
         }
-        .layoutWeight(1)
-        .height(38)
-        .borderRadius(19)
-        .backgroundColor(this.pal.chip)
-        .alignItems(VerticalAlign.Center)
-        .padding({ left: 10, right: 4 })
       }
       .width('100%')
-      .alignItems(VerticalAlign.Center)
-      .padding({
-        left: 4,
-        right: 12,
-        top: this.statusBarH + 8,
-        bottom: 8
-      })
-
-      // 搜索进度条（对齐 Mihon：完成数在 1..<总数 时显示于搜索栏下方）
-      if (this.sections.length > 0 && this.doneCount() > 0 && this.doneCount() < this.sections.length) {
-        Progress({ value: this.doneCount(), total: this.sections.length, type: ProgressType.Linear })
-          .width('100%')
-          .height(4)
-          .color(this.pal.primary)
-          .backgroundColor(Color.Transparent)
-          .padding(0)
-      }
 
       // 筛选 Chip 行（对齐 Mihon GlobalSearchToolbar：已置顶 / 全部 | 有结果）
       Scroll() {

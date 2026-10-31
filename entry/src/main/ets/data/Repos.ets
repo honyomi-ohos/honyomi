@@ -1382,7 +1382,8 @@ export class UpdatesRepo {
       `SELECT c.id AS chapterId, c.mangaId AS mangaId, c.name AS chapterName,
               c.dateUpload AS dateUpload, c.read AS readFlag, c.bookmark AS bookmarkFlag,
               m.title AS mangaTitle, m.sourceKey AS sourceKey, m.thumbnailUrl AS coverUrl,
-              m.localCover AS localCover, m.origThumbnail AS origThumbnail
+              m.localCover AS localCover, m.origThumbnail AS origThumbnail,
+              c.url AS chapterUrl, c.chapterNumber AS chapterNumber, m.url AS mangaUrl
        FROM chapter c
        JOIN manga m ON m.id = c.mangaId
        WHERE m.inLibrary = 1 AND c.read = 0
@@ -1409,7 +1410,8 @@ export class UpdatesRepo {
       `SELECT c.id AS chapterId, c.mangaId AS mangaId, c.name AS chapterName,
               c.dateUpload AS dateUpload, c.read AS readFlag, c.bookmark AS bookmarkFlag,
               m.title AS mangaTitle, m.sourceKey AS sourceKey, m.thumbnailUrl AS coverUrl,
-              m.localCover AS localCover, m.origThumbnail AS origThumbnail
+              m.localCover AS localCover, m.origThumbnail AS origThumbnail,
+              c.url AS chapterUrl, c.chapterNumber AS chapterNumber, m.url AS mangaUrl
        FROM chapter c
        JOIN manga m ON m.id = c.mangaId
        WHERE m.inLibrary = 1`;
@@ -1466,6 +1468,9 @@ export class UpdatesRepo {
       rs.getString(rs.getColumnIndex('sourceKey')));
     item.coverUrl = preferLocalCover(rs.getString(rs.getColumnIndex('origThumbnail')),
       rs.getString(rs.getColumnIndex('localCover')), item.coverUrl);
+    item.chapterUrl = rs.getString(rs.getColumnIndex('chapterUrl'));
+    item.chapterNumber = rs.getLong(rs.getColumnIndex('chapterNumber'));
+    item.mangaUrl = rs.getString(rs.getColumnIndex('mangaUrl'));
     return item;
   }
 }

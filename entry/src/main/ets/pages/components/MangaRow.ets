@@ -12,6 +12,9 @@ export struct MangaRow {
   @BuilderParam trailing: () => void = this.emptyTrailing;
   onRowClick: (record: MangaRecord) => void = (_r: MangaRecord) => {
   };
+  // 长按快速入库（浏览源列表模式对齐 Mihon onMangaLongClick）
+  onRowLongPress: (record: MangaRecord) => void = (_r: MangaRecord) => {
+  };
 
   @Builder
   emptyTrailing() {
@@ -63,6 +66,12 @@ export struct MangaRow {
     .onClick(() => {
       this.onRowClick(this.record);
     })
+    .gesture(
+      LongPressGesture()
+        .onAction(() => {
+          this.onRowLongPress(this.record);
+        })
+    )
     .onHover((isHover: boolean) => {
       this.hovered = isHover;
     })

@@ -6,22 +6,31 @@ import { JsvmSource, RawFilter } from '../source/JsvmSource';
 import { LocalFolderManager } from '../source/LocalFolderManager';
 import { LocalSource } from '../source/LocalSource';
 import { DuplicateManga, CategoryRecord, ContentType, MangaRecord, SManga, WorksPage } from '../model/Models';
-import { BrowseSourceParams, DetailParams, DetailSearchResult, MigrateSearchParams } from '../model/RouteParams';
+import { BrowseSourceParams, DetailParams, DetailSearchResult, ExtensionDetailParams, MigrateSearchParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { LibGrid, Util } from '../common/Util';
 import { Bp } from '../common/Breakpoint';
 import { MangaCard } from './components/MangaCard';
+import { MangaRow } from './components/MangaRow';
 import { MangaSkeletonGrid } from './components/MangaSkeletonGrid';
 import { EmptyScreen } from './components/EmptyScreen';
-import { AppIcon } from './components/AppIcon';
+import { AppIcon, AppIconRes } from './components/AppIcon';
 import { PickerSheet } from './components/PickerSheet';
+import { SitePreviewSheet } from './components/SitePreviewSheet';
 import { ChangeCategoryDialog, DuplicateMangaDialog } from './components/Dialogs';
 import { AppKeys } from '../common/AppKeys';
 import { Settings } from '../common/Settings';
 import { LibraryAddFlow } from '../common/LibraryAddFlow';
 import { IncognitoSourceBanner } from './components/IncognitoSourceBanner';
 
-// 单源浏览页（图源 Tab 点进某个源）：顶栏返回 + 搜索 + 热门/最新/过滤切换行 + 结果网格
+// 布局切换菜单选项（对齐 Mihon BrowseSourceToolbar 显示模式下拉）
+class BrowseDisplayOption {
+  key: string = '';
+  label: ResourceStr = '';
+}
+
+// 单源浏览页（图源 Tab 点进某个源）：顶栏返回 + 标题 + 搜索/布局切换/更多 +
+// 顶栏内搜索框（对齐 Mihon SearchToolbar）+ 热门/最新/过滤胶囊行（带图标）+ 结果网格
 // 本地源：固定一个本地文件夹（授权持久化），同步进沙箱后按内容归类扫描
 @Component
 export struct BrowseSourcePage {
@@ -36,6 +45,9 @@ export struct BrowseSourcePage {
   // 标签过滤搜索模式：query 为空仍走 getSearchWorks（过滤器在插件侧生效）
   @State filterSearch: boolean = false;
   @State searchOpen: boolean = false;
+  // 结果显示模式：'comfortable' 松散网格 / 'compact' 紧凑网格 / 'list' 列表
+  @State displayMode: string = 'comfortable';
+  @State showWebView: boolean = false;
   @State results: MangaRecord[] = [];
   @State searching: boolean = false;
   @State page: number = 1;
@@ -499,79 +511,77 @@ export struct BrowseSourcePage {
     })
   }
 
+  // 布局切换下拉（对齐 Mihon BrowseSourceToolbar 显示模式 DropdownMenu）：标准 MenuItem，无选中标记
+  @Builder
+  displayModeMenuBuilder() {
+    Menu() {
+      ForEach(this.displayModeOptions(), (opt: BrowseDisplayOption) => {
+        MenuItem({ content: opt.label })
+          .onClick(() => {
+            this.applyDisplayMode(opt.key);
+          })
+      }, (opt: BrowseDisplayOption) => `dm-${opt.key}`)
+    }
+  }
+
+  // 右上角更多菜单（对齐 Mihon BrowseSourceToolbar 溢出菜单）：
+  // 插件源：网页视图（源站首页）/ 设置（插件详情页）；本地源：帮助
+  @Builder
+  sourceMenuBuilder() {
+    Menu() {
+      if (this.sourceHomeUrl() !== '') {
+        MenuItem({ content: $r('app.string.detail_action_webview') })
+          .onClick(() => {
+            this.showWebView = true;
+          })
+      }
+      if (this.currentSource() instanceof JsvmSource) {
+        MenuItem({ content: $r('app.string.settings_title') })
+          .onClick(() => {
+            this.openSourceSettings();
+          })
+      }
+      if (ContentType.isLocal(this.sourceKey)) {
+        MenuItem({ content: $r('app.string.help_title') })
+          .onClick(() => {
+            this.pathStack.pushPathByName('Help', null);
+          })
+      }
+    }
+  }
+
+  // 源站首页 WebView 半模态（复用 SitePreviewSheet：注入 CookieJar 会话）
+  @Builder
+  webViewSheetBuilder() {
+    SitePreviewSheet({
+      siteUrl: this.sourceHomeUrl(),
+      defaultTitle: this.currentSource() !== undefined ?
+        Util.localSourceName(this.getUIContext(), this.sourceKey, (this.currentSource() as Source).name) : '',
+      onClose: (): void => {
+        this.showWebView = false;
+      }
+    })
+  }
+
   build() {
     NavDestination() {
       Stack() {
         Column() {
-          // 顶栏
+          // 顶栏（对齐 Mihon SearchToolbar/BrowseSourceToolbar）：
+          // 常态：返回 + 标题 + [搜索 | 布局切换 | 更多]；
+          // 搜索态：返回（关闭搜索）+ 顶栏内搜索框 + [布局切换 | 更多]（对齐浏览页头部的插件搜索）
           Row() {
             AppIcon({ name: 'arrow_back', iconSize: 24 })
               .onClick(() => {
-                this.pathStack.pop();
+                if (this.searchOpen && !ContentType.isLocal(this.sourceKey)) {
+                  this.closeSearch();
+                } else {
+                  this.pathStack.pop();
+                }
               })
-            Text(this.currentSource() !== undefined ?
-              Util.localSourceName(this.getUIContext(), this.sourceKey, (this.currentSource() as Source).name) : '')
-              .fontSize(18)
-              .fontWeight(FontWeight.Bold)
-              .fontColor(this.pal.text)
-              .margin({ left: 8 })
-              .layoutWeight(1)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Ellipsis })
+              .transition(TransitionEffect.OPACITY.combine(TransitionEffect.translate({ x: -16 })))
 
-            if (ContentType.isLocal(this.sourceKey)) {
-              Text(this.folderReady ? $r('app.string.browse_local_sync') : $r('app.string.browse_local_setup'))
-                .fontSize(13)
-                .fontColor(this.pal.primary)
-                .padding({ left: 8, right: 8 })
-                .onClick(() => {
-                  if (this.folderReady) {
-                    this.showFolderSheet = true;
-                  } else {
-                    this.chooseFolder();
-                  }
-                })
-            } else {
-              if (this.searchOpen) {
-                AppIcon({ name: 'close', iconSize: 20 })
-                  .padding({ left: 10, right: 10 })
-                  .onClick(() => {
-                    this.searchOpen = false;
-                    this.query = '';
-                    this.loadFirst();
-                  })
-              } else {
-                AppIcon({ name: 'search', iconSize: 20 })
-                  .padding({ left: 10, right: 10 })
-                  .onClick(() => {
-                    this.searchOpen = true;
-                    // 搜索栏挂载后自动聚焦拉起键盘
-                    setTimeout(() => {
-                      this.getUIContext().getFocusController().requestFocus('sourceSearchInput');
-                    }, 100);
-                  })
-              }
-            }
-          }
-          .width('100%')
-          .padding({
-            left: 16,
-            right: 16,
-            top: this.statusBarH + 10,
-            bottom: 8
-          })
-
-          // 按插件隐身提示条（所属插件开启「隐身浏览」时显示）
-          IncognitoSourceBanner({ sourceKey: this.sourceKey })
-            .padding({
-              left: 16,
-              right: 16,
-              bottom: 6
-            })
-
-          // 搜索栏
-          if (this.searchOpen && this.sourceKey !== 'local') {
-            Row({ space: 8 }) {
+            if (this.searchOpen && !ContentType.isLocal(this.sourceKey)) {
               TextInput({
                 text: this.query,
                 placeholder: $r('app.string.browse_search_hint')
@@ -586,6 +596,7 @@ export struct BrowseSourcePage {
                 .backgroundColor(this.pal.chip)
                 .borderRadius(19)
                 .padding({ left: 16, right: 16 })
+                .margin({ left: 8 })
                 .enterKeyType(EnterKeyType.Search)
                 .onChange((value: string) => {
                   this.query = value;
@@ -593,120 +604,214 @@ export struct BrowseSourcePage {
                 .onSubmit(() => {
                   this.search();
                 })
-              Button($r('app.string.common_search'))
-                .fontSize(14)
-                .height(38)
-                .backgroundColor(this.pal.primary)
-                .fontColor(this.pal.onPrimary)
-                .onClick(() => {
-                  this.search();
-                })
+                .transition(TransitionEffect.OPACITY)
+            } else {
+              Text(this.currentSource() !== undefined ?
+                Util.localSourceName(this.getUIContext(), this.sourceKey, (this.currentSource() as Source).name) : '')
+                .fontSize(18)
+                .fontWeight(FontWeight.Bold)
+                .fontColor(this.pal.text)
+                .margin({ left: 8 })
+                .layoutWeight(1)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Ellipsis })
+                .transition(TransitionEffect.OPACITY)
             }
-            .width('100%')
-            .padding({ left: 16, right: 16, bottom: 8 })
-          }
 
-          // 模式切换行：热门 / 最近更新 / 过滤 同行（对齐 Mihon BrowseSourceScreen FilterChip 行）
+            if (ContentType.isLocal(this.sourceKey)) {
+              Text(this.folderReady ? $r('app.string.browse_local_sync') : $r('app.string.browse_local_setup'))
+                .fontSize(13)
+                .fontColor(this.pal.primary)
+                .padding({ left: 8, right: 8 })
+                .onClick(() => {
+                  if (this.folderReady) {
+                    this.showFolderSheet = true;
+                  } else {
+                    this.chooseFolder();
+                  }
+                })
+            } else {
+              if (!this.searchOpen) {
+                AppIcon({ name: 'search', iconSize: 20 })
+                  .padding({ left: 10, right: 10 })
+                  .onClick(() => {
+                    this.openSearch();
+                  })
+                  .transition(TransitionEffect.OPACITY)
+              }
+            }
+
+            // 布局切换（当前为列表时显示列表图标，否则网格图标；点击下拉选择显示模式）
+            AppIcon({ name: this.displayMode === 'list' ? 'view_list' : 'view_module', iconSize: 20 })
+              .padding({ left: 10, right: 10 })
+              .bindMenu(this.displayModeMenuBuilder)
+
+            // 更多菜单
+            AppIcon({ name: 'more_vert', iconSize: 20 })
+              .padding({ left: 0, right: 4 })
+              .bindMenu(this.sourceMenuBuilder)
+          }
+          .width('100%')
+          // 固定内容高度 = 搜索态行高（容纳 38 高搜索框），避免展开搜索时顶栏高度跳变；
+          // statusBar 间距用 margin 外扩（height 含 padding 会挤压内容导致溢出重叠）
+          .height(48)
+          .padding({ left: 16, right: 16 })
+          .margin({ top: this.statusBarH })
+          .bindSheet($$this.showWebView, this.webViewSheetBuilder(),
+            SheetPreset.fit(this.windowW, {
+              height: SheetSize.LARGE,
+              detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+              showClose: false,
+              wideWidth: 560,
+              maskColor: 'rgba(0,0,0,0.45)'
+            }))
+
+          // 按插件隐身提示条（所属插件开启「隐身浏览」时显示）
+          IncognitoSourceBanner({ sourceKey: this.sourceKey })
+            .padding({
+              left: 16,
+              right: 16,
+              bottom: 6
+            })
+
+          // 模式切换行：热门 / 最近更新 / 过滤 同行（对齐 Mihon BrowseSourceScreen FilterChip 行，胶囊带图标）
           if (!ContentType.isLocal(this.sourceKey) &&
             (this.currentSource()?.supportsLatest === true || this.sourceSupportsFilters())) {
             Row({ space: 8 }) {
-              Text($r('app.string.browse_popular'))
-                .fontSize(13)
-                .fontColor(!this.filterSearch && this.mode === 'popular' ? this.pal.onPrimary : this.pal.sub)
-                .backgroundColor(!this.filterSearch && this.mode === 'popular' ? this.pal.primary : this.pal.chip)
+              // 热门（Mihon FilterChip leadingIcon: RoundedFilled.Favorite）
+              Row({ space: 5 }) {
+                AppIcon({
+                  name: 'favorite',
+                  iconSize: 15,
+                  tint: !this.filterSearch && this.mode === 'popular' ? this.pal.onPrimary : this.pal.sub,
+                })
+                Text($r('app.string.browse_popular'))
+                  .fontSize(13)
+                  .fontColor(!this.filterSearch && this.mode === 'popular' ? this.pal.onPrimary : this.pal.sub)
+              }
+              .backgroundColor(!this.filterSearch && this.mode === 'popular' ? this.pal.primary : this.pal.chip)
+              .borderRadius(12)
+              .padding({
+                left: 12,
+                right: 14,
+                top: 4,
+                bottom: 4
+              })
+              .onClick(() => {
+                if (this.mode !== 'popular' || this.filterSearch) {
+                  this.mode = 'popular';
+                  this.loadFirst();
+                }
+              })
+              if (this.currentSource()?.supportsLatest === true) {
+                // 最新（Mihon FilterChip leadingIcon: Rounded.NewReleases）
+                Row({ space: 5 }) {
+                  AppIcon({
+                    name: 'new_releases',
+                    iconSize: 15,
+                    tint: !this.filterSearch && this.mode === 'latest' ? this.pal.onPrimary : this.pal.sub,
+                  })
+                  Text($r('app.string.browse_latest'))
+                    .fontSize(13)
+                    .fontColor(!this.filterSearch && this.mode === 'latest' ? this.pal.onPrimary : this.pal.sub)
+                }
+                .backgroundColor(!this.filterSearch && this.mode === 'latest' ? this.pal.primary : this.pal.chip)
                 .borderRadius(12)
                 .padding({
                   left: 12,
-                  right: 12,
+                  right: 14,
                   top: 4,
                   bottom: 4
                 })
                 .onClick(() => {
-                  if (this.mode !== 'popular' || this.filterSearch) {
-                    this.mode = 'popular';
+                  if (this.mode !== 'latest' || this.filterSearch) {
+                    this.mode = 'latest';
                     this.loadFirst();
                   }
                 })
-              if (this.currentSource()?.supportsLatest === true) {
-                Text($r('app.string.browse_latest'))
-                  .fontSize(13)
-                  .fontColor(!this.filterSearch && this.mode === 'latest' ? this.pal.onPrimary : this.pal.sub)
-                  .backgroundColor(!this.filterSearch && this.mode === 'latest' ? this.pal.primary : this.pal.chip)
-                  .borderRadius(12)
-                  .padding({
-                    left: 12,
-                    right: 12,
-                    top: 4,
-                    bottom: 4
-                  })
-                  .onClick(() => {
-                    if (this.mode !== 'latest' || this.filterSearch) {
-                      this.mode = 'latest';
-                      this.loadFirst();
-                    }
-                  })
               }
-              // 插件自定义过滤器入口（过滤器激活时高亮）
+              // 插件自定义过滤器入口（过滤器激活时高亮；Mihon leadingIcon: Rounded.FilterList）
               if (this.sourceSupportsFilters()) {
-                Text($r('app.string.action_filter'))
-                  .fontSize(13)
-                  .fontColor(this.filterSearch ? this.pal.onPrimary : this.pal.sub)
-                  .backgroundColor(this.filterSearch ? this.pal.primary : this.pal.chip)
-                  .borderRadius(12)
-                  .padding({
-                    left: 12,
-                    right: 12,
-                    top: 4,
-                    bottom: 4
+                Row({ space: 5 }) {
+                  AppIcon({
+                    name: 'filter_list',
+                    iconSize: 15,
+                    tint: this.filterSearch ? this.pal.onPrimary : this.pal.sub,
                   })
-                  .onClick(() => {
-                    this.openFilterSheet();
-                  })
+                  Text($r('app.string.action_filter'))
+                    .fontSize(13)
+                    .fontColor(this.filterSearch ? this.pal.onPrimary : this.pal.sub)
+                }
+                .backgroundColor(this.filterSearch ? this.pal.primary : this.pal.chip)
+                .borderRadius(12)
+                .padding({
+                  left: 12,
+                  right: 14,
+                  top: 4,
+                  bottom: 4
+                })
+                .onClick(() => {
+                  this.openFilterSheet();
+                })
               }
             }
             .width('100%')
             .padding({ left: 16, right: 16, bottom: 8 })
           }
 
-          // 本地源模式切换行：热门 / 文件夹（+ 返回上级），对齐 Mihon LocalSource In-folder
+          // 本地源模式切换行：热门 / 文件夹（+ 返回上级），对齐 Mihon LocalSource In-folder，胶囊带图标
           if (this.currentSource() instanceof LocalSource) {
             Row({ space: 8 }) {
-              Text($r('app.string.browse_popular'))
-                .fontSize(13)
-                .fontColor(!this.folderMode ? this.pal.onPrimary : this.pal.sub)
-                .backgroundColor(!this.folderMode ? this.pal.primary : this.pal.chip)
-                .borderRadius(12)
-                .padding({
-                  left: 12,
-                  right: 12,
-                  top: 4,
-                  bottom: 4
+              Row({ space: 5 }) {
+                AppIcon({
+                  name: 'favorite',
+                  iconSize: 15,
+                  tint: !this.folderMode ? this.pal.onPrimary : this.pal.sub,
                 })
-                .onClick(() => {
-                  if (this.folderMode) {
-                    this.folderMode = false;
-                    this.folderPath = '';
-                    this.loadFirst();
-                  }
+                Text($r('app.string.browse_popular'))
+                  .fontSize(13)
+                  .fontColor(!this.folderMode ? this.pal.onPrimary : this.pal.sub)
+              }
+              .backgroundColor(!this.folderMode ? this.pal.primary : this.pal.chip)
+              .borderRadius(12)
+              .padding({
+                left: 12,
+                right: 14,
+                top: 4,
+                bottom: 4
+              })
+              .onClick(() => {
+                if (this.folderMode) {
+                  this.folderMode = false;
+                  this.folderPath = '';
+                  this.loadFirst();
+                }
+              })
+              Row({ space: 5 }) {
+                AppIcon({
+                  name: 'folder',
+                  iconSize: 15,
+                  tint: this.folderMode ? this.pal.onPrimary : this.pal.sub,
                 })
-              Text($r('app.string.browse_local_folders'))
-                .fontSize(13)
-                .fontColor(this.folderMode ? this.pal.onPrimary : this.pal.sub)
-                .backgroundColor(this.folderMode ? this.pal.primary : this.pal.chip)
-                .borderRadius(12)
-                .padding({
-                  left: 12,
-                  right: 12,
-                  top: 4,
-                  bottom: 4
-                })
-                .onClick(() => {
-                  if (!this.folderMode) {
-                    this.folderMode = true;
-                    this.folderPath = '';
-                    this.loadFolder();
-                  }
-                })
+                Text($r('app.string.browse_local_folders'))
+                  .fontSize(13)
+                  .fontColor(this.folderMode ? this.pal.onPrimary : this.pal.sub)
+              }
+              .backgroundColor(this.folderMode ? this.pal.primary : this.pal.chip)
+              .borderRadius(12)
+              .padding({
+                left: 12,
+                right: 14,
+                top: 4,
+                bottom: 4
+              })
+              .onClick(() => {
+                if (!this.folderMode) {
+                  this.folderMode = true;
+                  this.folderPath = '';
+                  this.loadFolder();
+                }
+              })
               if (this.folderMode && this.folderPath !== '') {
                 Text($r('app.string.browse_folder_up'))
                   .fontSize(13)
@@ -763,31 +868,42 @@ export struct BrowseSourcePage {
             Grid() {
               ForEach(this.results, (record: MangaRecord) => {
                 GridItem() {
-                  MangaCard({
-                    record: record,
-                    badge: this.nsfwBadge(),
-                    onCardClick: (r: MangaRecord): void => {
-                      // 文件夹模式目录条目：下钻而非进详情
-                      if (this.folderMode && r.status === 'local_folder') {
-                        this.folderPath = r.url;
-                        this.loadFolder();
-                        return;
-                      }
-                      this.openDetail(r);
-                    },
-                    onCardLongPress: (r: MangaRecord): void => {
-                      if (this.folderMode && r.status === 'local_folder') {
-                        return;
-                      }
-                      this.quickAddToLibrary(r);
-                    },
-                    onCardMenuAddToLibrary: (r: MangaRecord): void => {
-                      if (this.folderMode && r.status === 'local_folder') {
-                        return;
-                      }
-                      this.quickAddToLibrary(r);
-                    },
-                  })
+                  if (this.displayMode === 'list') {
+                    // 列表模式（对齐 Mihon BrowseSourceList）
+                    MangaRow({
+                      record: record,
+                      onRowClick: (r: MangaRecord): void => {
+                        this.onResultItemClicked(r);
+                      },
+                      onRowLongPress: (r: MangaRecord): void => {
+                        if (this.folderMode && r.status === 'local_folder') {
+                          return;
+                        }
+                        this.quickAddToLibrary(r);
+                      },
+                    })
+                  } else {
+                    MangaCard({
+                      record: record,
+                      badge: this.nsfwBadge(),
+                      mode: this.displayMode,
+                      onCardClick: (r: MangaRecord): void => {
+                        this.onResultItemClicked(r);
+                      },
+                      onCardLongPress: (r: MangaRecord): void => {
+                        if (this.folderMode && r.status === 'local_folder') {
+                          return;
+                        }
+                        this.quickAddToLibrary(r);
+                      },
+                      onCardMenuAddToLibrary: (r: MangaRecord): void => {
+                        if (this.folderMode && r.status === 'local_folder') {
+                          return;
+                        }
+                        this.quickAddToLibrary(r);
+                      },
+                    })
+                  }
                 }
               }, (record: MangaRecord) => `bs-${record.sourceKey}-${record.url}`)
             }
@@ -879,6 +995,9 @@ export struct BrowseSourcePage {
       this.folderMode = false;
       this.folderPath = '';
       this.folderReady = LocalFolderManager.hasFolder();
+      // 显示模式偏好（布局切换菜单写入）；非法值回退松散网格
+      const savedView = Settings.getBrowseView();
+      this.displayMode = savedView === 'compact' || savedView === 'list' ? savedView : 'comfortable';
       // 外部"打开方式"导入书籍后跳入：预填搜索词并直接执行，定位导入的书籍
       const prefill = params !== undefined && params !== null && params.query !== undefined ? params.query : '';
       if (prefill !== '') {
@@ -903,14 +1022,25 @@ export struct BrowseSourcePage {
     const columns = this.gridColumns();
     // 卡片宽度 = (网格宽 - 左右内边距 32 - 列间距 12*(cols-1)) / cols
     const cardW = (this.contentW - 32 - (columns - 1) * 12) / columns;
-    // 行高 = 封面（宽高比 0.7）+ 标题两行 + 行间距
-    const rowH = cardW / 0.7 + 56;
+    const rowH = this.rowHeightEstimate(cardW);
     // 多备一行缓冲：内容恰好等于视口高度时仍不可滚动，预留余量保证 onReachEnd 可触发
     const rowsNeeded = Math.ceil(this.gridH / rowH) + 1;
     if (this.results.length < rowsNeeded * columns) {
       this.fillChecked = this.results.length;
       this.loadMore();
     }
+  }
+
+  // 各显示模式下的行高估计（补拉判定用）：列表固定行高；紧凑网格无下方标题；
+  // 松散网格 = 封面（宽高比 0.7）+ 标题两行 + 行间距
+  private rowHeightEstimate(cardW: number): number {
+    if (this.displayMode === 'list') {
+      return 74;
+    }
+    if (this.displayMode === 'compact') {
+      return cardW / 0.7;
+    }
+    return cardW / 0.7 + 56;
   }
 
   // NSFW 源内的漫画卡片角标（MangaCard 右下红标）
@@ -938,6 +1068,10 @@ export struct BrowseSourcePage {
   }
 
   private gridColumns(): number {
+    // 列表模式固定单列（对齐 Mihon BrowseSourceList）
+    if (this.displayMode === 'list') {
+      return 1;
+    }
     const w = this.contentW > 0 ? this.contentW : this.estContentW();
     return this.colsForWidth(w);
   }
@@ -965,6 +1099,90 @@ export struct BrowseSourcePage {
       tpl += '1fr ';
     }
     return tpl.trim();
+  }
+
+  // 结果条目点击（网格/列表共用）：文件夹模式目录条目下钻而非进详情
+  private onResultItemClicked(record: MangaRecord): void {
+    if (this.folderMode && record.status === 'local_folder') {
+      this.folderPath = record.url;
+      this.loadFolder();
+      return;
+    }
+    this.openDetail(record);
+  }
+
+  // 打开顶栏搜索框（展开动画结束后自动聚焦拉起键盘，对齐浏览页头部的插件搜索）
+  private openSearch(): void {
+    this.getUIContext().animateTo({
+      duration: 250,
+      curve: Curve.Friction,
+      onFinish: (): void => {
+        this.getUIContext().getFocusController().requestFocus('sourceSearchInput');
+      }
+    }, (): void => {
+      this.searchOpen = true;
+    });
+  }
+
+  // 关闭顶栏搜索框并复位列表
+  private closeSearch(): void {
+    this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
+      this.searchOpen = false;
+      this.query = '';
+    });
+    this.loadFirst();
+  }
+
+  // 布局切换下拉选项（对齐 Mihon BrowseSourceToolbar：松散网格 / 紧凑网格 / 列表）
+  private displayModeOptions(): BrowseDisplayOption[] {
+    const opts: BrowseDisplayOption[] = [];
+    const comfortable = new BrowseDisplayOption();
+    comfortable.key = 'comfortable';
+    comfortable.label = $r('app.string.lib_display_comfortable');
+    opts.push(comfortable);
+    const compact = new BrowseDisplayOption();
+    compact.key = 'compact';
+    compact.label = $r('app.string.lib_display_compact');
+    opts.push(compact);
+    const list = new BrowseDisplayOption();
+    list.key = 'list';
+    list.label = $r('app.string.lib_display_list');
+    opts.push(list);
+    return opts;
+  }
+
+  // 切换结果显示模式：包 animateTo 配合网格/列表分支转场；持久化偏好
+  private applyDisplayMode(nextMode: string): void {
+    if (this.displayMode === nextMode) {
+      return;
+    }
+    this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, (): void => {
+      this.displayMode = nextMode;
+    });
+    Settings.setBrowseView(nextMode);
+    this.fillChecked = -1;
+    this.ensureFilled();
+  }
+
+  // 源站首页地址（网页视图菜单用）：插件 manifest.baseUrl，非 http(s) 返回空
+  private sourceHomeUrl(): string {
+    const source = this.currentSource();
+    if (source instanceof JsvmSource) {
+      const base = source.manifest.baseUrl;
+      if (base.startsWith('http://') || base.startsWith('https://')) {
+        return base;
+      }
+    }
+    return '';
+  }
+
+  // 更多菜单 → 设置：跳转所属插件详情页（插件设置/源设置入口）
+  private openSourceSettings(): void {
+    const source = this.currentSource();
+    if (source instanceof JsvmSource) {
+      const params: ExtensionDetailParams = { pluginKey: source.packageKey };
+      this.pathStack.pushPathByName('ExtensionDetail', params);
+    }
   }
 
   // 当前模式下的列表页（最新模式仅在源支持时生效）

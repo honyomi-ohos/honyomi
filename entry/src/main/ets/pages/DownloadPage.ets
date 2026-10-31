@@ -16,7 +16,8 @@ class QueueGroup {
   tasks: DownloadTask[] = [];
 }
 
-// 队列渲染项：分组头/任务行混合摊平进单个 ForEach，支撑 onMove 组内拖拽排序
+// 队列渲染项：分组头/任务行混合摊平进单个 ForEach，支撑 onMove 拖拽排序
+// （任务行 = 组内排序；分组头 = 整组迁移，改变真实下载顺序）
 class QueueRowItem {
   isHeader: boolean = false;
   group: QueueGroup = new QueueGroup();
@@ -806,7 +807,7 @@ export struct DownloadPage {
     this.rebuildDownloadedRows();
   }
 
-  // ----- 组内拖拽排序（对齐 Mihon shouldMove：跨组拖拽禁止） -----
+  // ----- 拖拽排序：任务行组内排序 + 分组头整组迁移 -----
 
   // 队列摊平：分组头 + （展开组的）任务行；分组按首次出现顺序
   private rebuildQueueRows(): void {
@@ -834,8 +835,6 @@ export struct DownloadPage {
     this.queueRows = rows;
   }
 
-  // 拖拽落位后把可见行顺序同步回 DownloadService：
-
   // 已下载摊平：分组头 + （展开组的）章节行
   private rebuildDownloadedRows(): void {
     const rows: DownloadedRowItem[] = [];
@@ -861,18 +860,27 @@ export struct DownloadPage {
 
   // ----- 数据加载 -----
 
+  // 拖拽落位分发：分组头拖拽 = 整组迁移（组内任务行随组整体移动）；
+  // 任务行拖拽 = 组内排序（对齐 Mihon shouldMove：任务跨组拖拽禁止）
   private onQueueMove(from: number, to: number): void {
     if (from === to) {
       return;
     }
     const fromItem: QueueRowItem | undefined = this.queueRows[from];
     const toItem: QueueRowItem | undefined = this.queueRows[to];
-    if (fromItem === undefined || toItem === undefined || fromItem.isHeader || toItem.isHeader) {
+    if (fromItem === undefined || toItem === undefined) {
       return;
     }
-    const movedTask: DownloadTask = fromItem.task;
-    const targetTask: DownloadTask = toItem.task;
-    if (movedTask.mangaId !== targetTask.mangaId) {
+    if (fromItem.isHeader) {
+      const draggedId: number = fromItem.group.mangaId;
+      const targetId: number = toItem.isHeader ? toItem.group.mangaId : toItem.task.mangaId;
+      this.moveQueueGroup(draggedId, targetId, to > from);
+      return;
+    }
+    if (toItem.isHeader) {
+      return;
+    }
+    if (fromItem.task.mangaId !== toItem.task.mangaId) {
       return;
     }
     const removed: QueueRowItem[] = this.queueRows.splice(from, 1);
@@ -882,43 +890,100 @@ export struct DownloadPage {
     }
     this.queueRows.splice(to, 0, moved);
     this.queueRows = this.queueRows.slice();
-    this.syncDraggedGroupOrder(movedTask.mangaId);
+    this.syncQueueOrderFromRows();
   }
 
-  // 被拖组按行内新顺序、其余分组按原顺序，分组间保持原相对顺序
-  private syncDraggedGroupOrder(mangaId: number): void {
-    const visible: number[] = [];
-    for (const item of this.queueRows) {
-      if (!item.isHeader && item.task.mangaId === mangaId) {
-        visible.push(item.task.chapterId);
+  // 整组迁移：draggedId 组移动到 targetId 组之前/之后，组内任务顺序保持不变
+  private moveQueueGroup(draggedId: number, targetId: number, after: boolean): void {
+    if (draggedId === targetId) {
+      return;
+    }
+    const order: number[] = [];
+    for (const t of this.queue) {
+      if (order.indexOf(t.mangaId) < 0) {
+        order.push(t.mangaId);
       }
     }
-    const ids: number[] = [];
-    const seen: Set<number> = new Set<number>();
+    const draggedIdx: number = order.indexOf(draggedId);
+    const targetIdx: number = order.indexOf(targetId);
+    if (draggedIdx < 0 || targetIdx < 0) {
+      return;
+    }
+    order.splice(draggedIdx, 1);
+    const insertAt: number = after ? order.indexOf(targetId) + 1 : order.indexOf(targetId);
+    order.splice(insertAt, 0, draggedId);
+    this.applyQueueGroupOrder(order);
+  }
+
+  // 按新分组顺序重建页面队列快照，并同步 DownloadService 真实下载顺序
+  private applyQueueGroupOrder(order: number[]): void {
+    const groups = new Map<number, DownloadTask[]>();
     for (const t of this.queue) {
-      if (seen.has(t.mangaId)) {
-        continue;
+      let g: DownloadTask[] | undefined = groups.get(t.mangaId);
+      if (g === undefined) {
+        g = [];
+        groups.set(t.mangaId, g);
       }
-      seen.add(t.mangaId);
-      if (t.mangaId === mangaId) {
-        for (const id of visible) {
-          ids.push(id);
+      g.push(t);
+    }
+    const next: DownloadTask[] = [];
+    for (const mid of order) {
+      const g: DownloadTask[] | undefined = groups.get(mid);
+      if (g !== undefined) {
+        for (const t of g) {
+          next.push(t);
         }
-        for (const tt of this.queue) {
-          if (tt.mangaId === mangaId && visible.indexOf(tt.chapterId) < 0) {
-            ids.push(tt.chapterId);
-          }
+      }
+    }
+    this.queue = next;
+    const ids: number[] = [];
+    for (const t of next) {
+      ids.push(t.chapterId);
+    }
+    DownloadService.reorderQueue(ids);
+    this.lastQueueSignature = this.queueSignature();
+    this.rebuildQueueRows();
+  }
+
+  // 按行序列同步真实下载顺序：分组顺序取 header 行序，组内顺序取可见任务行序；
+  // 折叠组任务不在行内，按原队列相对顺序并入所属分组
+  private syncQueueOrderFromRows(): void {
+    const groupOrder: number[] = [];
+    const rowOrder = new Map<number, number[]>();
+    for (const item of this.queueRows) {
+      if (item.isHeader) {
+        if (groupOrder.indexOf(item.group.mangaId) < 0) {
+          groupOrder.push(item.group.mangaId);
         }
       } else {
-        for (const tt of this.queue) {
-          if (tt.mangaId === t.mangaId) {
-            ids.push(tt.chapterId);
-          }
+        let arr: number[] | undefined = rowOrder.get(item.task.mangaId);
+        if (arr === undefined) {
+          arr = [];
+          rowOrder.set(item.task.mangaId, arr);
+        }
+        arr.push(item.task.chapterId);
+      }
+    }
+    const emitted: Set<number> = new Set<number>();
+    const ids: number[] = [];
+    for (const mid of groupOrder) {
+      const arr: number[] | undefined = rowOrder.get(mid);
+      if (arr !== undefined) {
+        for (const id of arr) {
+          ids.push(id);
+          emitted.add(id);
+        }
+      }
+      for (const t of this.queue) {
+        if (t.mangaId === mid && !emitted.has(t.chapterId)) {
+          ids.push(t.chapterId);
+          emitted.add(t.chapterId);
         }
       }
     }
     DownloadService.reorderQueue(ids);
     this.queue = DownloadService.getQueue();
+    this.lastQueueSignature = this.queueSignature();
   }
 
   private onQueueChanged = (): void => {

@@ -57,6 +57,8 @@ export struct UpcomingPage {
   @State selYear: number = 0;
   @State selMonth: number = 0;
   @State showFilterSheet: boolean = false;
+  // 日历选中日期（当天 0 点毫秒值，0 = 未选中）
+  @State selDateMs: number = 0;
   // Index 根节点 Esc 广播：关闭筛选弹层（计数器递增触发）
   @StorageLink('sheetEsc') @Watch('onSheetEsc') sheetEsc: number = 0;
   @State categories: CategoryRecord[] = [];
@@ -128,7 +130,14 @@ export struct UpcomingPage {
   @Builder
   dayCell(day: number) {
     Stack() {
-      if (this.cellDateMs(day) === this.todayStart()) {
+      // 选中日：主色实心圆；今日未选中时：描边圆
+      if (this.isDaySelected(day)) {
+        Column()
+          .width(40)
+          .height(40)
+          .borderRadius(20)
+          .backgroundColor(this.pal.primary)
+      } else if (this.cellDateMs(day) === this.todayStart()) {
         Column()
           .width(40)
           .height(40)
@@ -138,14 +147,14 @@ export struct UpcomingPage {
       Text(`${day}`)
         .fontSize(16)
         .fontWeight(FontWeight.Medium)
-        .fontColor(this.cellDateMs(day) < this.todayStart() ? this.pal.sub : this.pal.text)
+        .fontColor(this.dayTextColor(day))
       Row({ space: 2 }) {
         ForEach(this.dayDots(day), (i: number) => {
           Column()
             .width(5)
             .height(5)
             .borderRadius(2.5)
-            .backgroundColor(this.pal.primary)
+            .backgroundColor(this.isDaySelected(day) ? this.pal.onPrimary : this.pal.primary)
             .opacity((i + 1) * 0.3)
         }, (i: number) => `dot-${i}`)
       }
@@ -153,6 +162,7 @@ export struct UpcomingPage {
     }
     .layoutWeight(1)
     .height(48)
+    .hoverEffect(HoverEffect.Highlight)
     .onClick(() => {
       this.onDayClick(day);
     })
@@ -626,13 +636,27 @@ export struct UpcomingPage {
     return dots;
   }
 
-  // 点击日期滚动到对应分组头（单列布局日历为列表首项，行索引需 +1；宽屏双列无需偏移）
+  // 点击日期：记录选中态并滚动到对应分组头（单列布局日历为列表首项，行索引需 +1；宽屏双列无需偏移）
   private onDayClick(day: number): void {
-    const key: string = dateKeyOf(this.cellDateMs(day));
+    this.selDateMs = this.cellDateMs(day);
+    const key: string = dateKeyOf(this.selDateMs);
     const idx: number | undefined = this.headerIndex[key];
     if (idx !== undefined) {
       this.scroller.scrollToIndex(this.isWideLayout() ? idx : 1 + idx);
     }
+  }
+
+  // 日历选中判断
+  private isDaySelected(day: number): boolean {
+    return this.selDateMs > 0 && this.selDateMs === this.cellDateMs(day);
+  }
+
+  // 日期数字颜色：选中 → 主色反色；过去 → 弱化；其余 → 常规
+  private dayTextColor(day: number): ResourceColor {
+    if (this.isDaySelected(day)) {
+      return this.pal.onPrimary;
+    }
+    return this.cellDateMs(day) < this.todayStart() ? this.pal.sub : this.pal.text;
   }
 
   // 相对日期文本（对齐 LocalDate.toRelativeString）：今天 / N 天前 / N 天后 / 具体日期
