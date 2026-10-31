@@ -27,6 +27,7 @@ import { Settings } from '../common/Settings';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { VideoCacheServer } from '../common/VideoCacheServer';
+import { PipPageHooks, PipSessionInfo, VideoPipManager } from '../common/VideoPipManager';
 import { VideoCastItem, VideoCastManager } from '../common/VideoCast';
 import { ChapterNeighbors, ReaderChapterNav } from '../common/ReaderChapterNav';
 import { Haptics } from '../common/Haptics';
@@ -147,10 +148,9 @@ export struct VideoPlayerPage {
   // 画中画（华为视频对齐）：XComponent 内容迁移至系统小窗；退后台时按播放状态自动小窗
   @State pipEnabled: boolean = false;
   @State pipActive: boolean = false;
-  private pipController: PiPWindow.PiPController | undefined = undefined;
-  // 期望的退后台自动小窗开关：控制器异步创建期间先记录，创建完成后统一同步，
-  // 避免“暂停后才创建完成、被 preparePip 强制打开”的竞态导致未播放也弹 PiP
-  private pipAutoStartWanted: boolean = false;
+  // 手动小窗移交成功标记：aboutToDisappear 时跳过 PiP 清理（会话已归管理器接管）
+  private pipHandedOff: boolean = false;
+  private pipPageHooks: PipPageHooks | undefined = undefined;
   private ticker: number = -1;
   private dragging: boolean = false;
   private localPath: string = '';
@@ -321,11 +321,11 @@ export struct VideoPlayerPage {
     this.stopTicker();
     this.clearUiTimers();
     this.releasePlayer();
-    // 离开播放页时关闭画中画小窗，并解除退后台自动小窗（否则离开后最小化仍会弹 PiP）
-    this.setPipAutoStart(false);
-    if (this.pipController !== undefined && this.pipActive) {
-      this.pipController.stopPiP().catch((): void => {
-      });
+    // 画中画：手动小窗已移交管理器（会话存活）则保留；否则解除退后台自动小窗并停止页面持有的 PiP
+    if (this.pipHandedOff) {
+      this.pipHandedOff = false;
+    } else {
+      VideoPipManager.getInstance().detachPage(this.pipPageHooks, true);
     }
     this.castMgr.destroy();
     if (this.win !== undefined) {
@@ -396,6 +396,26 @@ export struct VideoPlayerPage {
           })
           .margin({ right: 8 })
       }
+      if (this.pipEnabled) {
+        Button({ type: ButtonType.Normal, stateEffect: true }) {
+          AppIcon({
+            name: 'pip',
+            iconSize: 20,
+            tint: this.pipActive ? this.pal.primary : Color.White
+          })
+        }
+        .width(38)
+        .height(38)
+        .borderRadius(19)
+        .padding(0)
+        .backgroundColor(VIDEO_BTN_BG)
+        .systemMaterial(VIDEO_GLASS)
+        .margin({ right: 8 })
+        .onClick(() => {
+          this.togglePiP();
+        })
+      }
+
       Button({ type: ButtonType.Normal, stateEffect: true }) {
         AppIcon({
           name: 'cast',
@@ -590,11 +610,6 @@ export struct VideoPlayerPage {
         this.ctrlBtn('tune', (): void => {
           this.openSheet(4);
         })
-        if (this.pipEnabled) {
-          this.ctrlBtn(this.pipActive ? 'fullscreen_exit' : 'open_in_new', (): void => {
-            this.togglePiP();
-          })
-        }
         this.ctrlBtn(this.fullscreen ? 'fullscreen_exit' : 'fullscreen', (): void => {
           this.toggleFullscreen();
         })
@@ -1807,6 +1822,8 @@ export struct VideoPlayerPage {
     this.videos = [];
     this.playing = false;
     ReadingStatsRepo.flush();
+    // 换章会重建播放器并重置 surface：打断手动小窗会话（小窗随旧会话关闭，回页续播走重新加载）
+    VideoPipManager.getInstance().interrupt();
     this.releasePlayer();
     this.dmChapterId = -1;
     this.dmCtrl.reset();
@@ -2267,8 +2284,9 @@ export struct VideoPlayerPage {
     player.on('stateChange', (state: media.AVPlayerState) => {
       this.log(`stateChange: ${state}`);
       if (state === 'initialized') {
-        // surfaceId 仅支持在 initialized 状态设置，须在 prepare() 之前完成
-        player.surfaceId = this.surfaceId;
+        // surfaceId 仅支持在 initialized 状态设置，须在 prepare() 之前完成；
+        // 自动小窗期间重建播放器时渲染目标须落在小窗 surface
+        player.surfaceId = VideoPipManager.getInstance().resolveSurface(this.surfaceId);
         player.prepare();
       } else if (state === 'prepared') {
         this.durationMs = player.duration > 0 ? player.duration : 0;
@@ -2872,97 +2890,76 @@ export struct VideoPlayerPage {
 
   // ---- 画中画（华为视频对齐）----
 
-  // 创建（复用）画中画控制器；系统要求必须在应用前台创建，首次 prepared 时触发
-  private async ensurePipController(): Promise<PiPWindow.PiPController | undefined> {
-    if (this.pipController !== undefined) {
-      return this.pipController;
+  // 页面钩子：小窗期间由管理器回调取渲染 surface / 播放器 / 通知小窗激活态
+  private pipHooks(): PipPageHooks {
+    if (this.pipPageHooks === undefined) {
+      const hooks: PipPageHooks = new PipPageHooks();
+      hooks.getSurfaceId = (): string => this.surfaceId;
+      hooks.getPlayer = (): media.AVPlayer | undefined => this.player;
+      hooks.onPipActive = (active: boolean): void => {
+        if (!this.destroyed) {
+          this.pipActive = active;
+        }
+      };
+      this.pipPageHooks = hooks;
     }
-    if (!this.pipEnabled) {
-      return undefined;
-    }
-    const hostCtx = this.getUIContext().getHostContext();
-    if (hostCtx === undefined) {
-      return undefined;
-    }
-    const config: PiPWindow.PiPConfiguration = {
-      context: hostCtx,
-      componentController: this.xCtrl,
-      templateType: PiPWindow.PiPTemplateType.VIDEO_PLAY,
-      contentWidth: this.videoW > 0 ? this.videoW : 1280,
-      contentHeight: this.videoH > 0 ? this.videoH : 720
-    };
-    try {
-      const ctrl = await PiPWindow.create(config);
-      if (this.destroyed) {
-        // 页面已销毁后才创建完成：解除退后台自动小窗并停掉小窗，避免残留
-        ctrl.setAutoStartEnabled(false);
-        ctrl.stopPiP().catch((): void => {
-        });
-        return undefined;
-      }
-      ctrl.on('stateChange', (state: PiPWindow.PiPState, reason: string) => {
-        this.pipActive = state === PiPWindow.PiPState.STARTED;
-        this.log(`pip stateChange: ${state} ${reason}`);
-      });
-      // 创建完成后同步当前期望的自动小窗状态（可能已随暂停/完成变为 false）
-      ctrl.setAutoStartEnabled(this.pipAutoStartWanted);
-      this.pipController = ctrl;
-      return ctrl;
-    } catch (e) {
-      this.log(`pip create failed: ${e}`);
-      return undefined;
-    }
+    return this.pipPageHooks;
   }
 
-  // prepared 时确保控制器存在并同步媒体尺寸；自动小窗开关跟随实际播放状态（pipAutoStartWanted），
+  // prepared 时注册页面钩子并同步媒体尺寸；自动小窗开关跟随实际播放状态（manager 内部缓存），
   // 不再无条件开启，只有真正进入 playing 后才会允许退后台自动弹小窗
   private async preparePip(): Promise<void> {
     if (!this.pipEnabled) {
       return;
     }
-    const ctrl = await this.ensurePipController();
-    if (ctrl === undefined) {
-      return;
-    }
-    if (this.destroyed) {
-      return;
-    }
-    if (this.videoW > 0 && this.videoH > 0) {
-      ctrl.updateContentSize(this.videoW, this.videoH);
-    }
-    ctrl.setAutoStartEnabled(this.pipAutoStartWanted);
+    await VideoPipManager.getInstance().prepare(this.getUIContext(), this.pipHooks(),
+      this.videoW, this.videoH);
   }
 
-  // 跟随播放/暂停切换“退后台自动启动画中画”（华为视频行为）；
-  // 控制器未创建时仅记录期望值，创建完成后由 ensurePipController 统一同步
+  // 跟随播放/暂停切换“退后台自动启动画中画”（华为视频行为）
   private setPipAutoStart(enable: boolean): void {
-    this.pipAutoStartWanted = enable;
-    if (this.pipController !== undefined) {
-      this.pipController.setAutoStartEnabled(enable);
-    }
+    VideoPipManager.getInstance().setAutoStart(enable);
   }
 
-  // 手动开关画中画小窗
+  // 手动开关画中画小窗：开启 = 移交播放器/媒体句柄给管理器并退出播放页；关闭 = 停止小窗
   private async togglePiP(): Promise<void> {
     if (!this.pipEnabled) {
       Util.toastRes(this.getUIContext(), $r('app.string.video_pip_unsupported'));
       return;
     }
-    const ctrl = await this.ensurePipController();
-    if (ctrl === undefined) {
+    const mgr = VideoPipManager.getInstance();
+    if (mgr.isPipActive()) {
+      mgr.stopActive();
+      return;
+    }
+    const player = this.player;
+    if (player === undefined || this.casting || this.btPending || this.btProgressive) {
       Util.toastRes(this.getUIContext(), $r('app.string.video_pip_unsupported'));
       return;
     }
-    if (this.pipActive) {
-      await ctrl.stopPiP().catch((e: BusinessError): void => {
-        this.log(`pip stop failed: ${e.code}`);
-      });
+    // mediaFile 仅本地文件播放才有；网络/代理 URL 播放为 undefined，由管理器按需关闭
+    const session: PipSessionInfo = {
+      player: player,
+      mediaFile: this.mediaFile,
+      mangaId: this.mangaId,
+      chapterId: this.chapterId,
+      videoW: this.videoW,
+      videoH: this.videoH,
+      stack: this.pathStack
+    };
+    const ok = await mgr.startManual(session, this.getUIContext());
+    if (!ok) {
+      Util.toastRes(this.getUIContext(), $r('app.string.video_pip_unsupported'));
       return;
     }
-    await ctrl.startPiP().catch((e: BusinessError): void => {
-      this.log(`pip start failed: ${e.code}`);
-      Util.toastRes(this.getUIContext(), $r('app.string.video_pip_unsupported'));
-    });
+    // 移交成功：页面立即让出播放器/媒体句柄并退出播放页（aboutToDisappear 借 pipHandedOff 跳过清理）
+    this.pipHandedOff = true;
+    this.player = undefined;
+    this.mediaFile = undefined;
+    this.detachCacheListener();
+    this.stopTicker();
+    this.persist(false);
+    this.pathStack.pop();
   }
 
   // ---- 华为视频手势：左半屏上下滑亮度 / 右半屏上下滑音量 / 横滑快进 ----
